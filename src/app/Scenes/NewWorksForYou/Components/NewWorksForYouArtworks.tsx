@@ -8,11 +8,11 @@ import {
   NewWorksForYouScreenProps,
   PAGE_SIZE,
 } from "app/Scenes/NewWorksForYou/NewWorksForYou"
-import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
-import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
+import { useViewOptionNumColumns } from "app/utils/masonryHelpers/viewOptionHelpers"
 import { pluralize } from "app/utils/pluralize"
+import { useLayoutEffect, useRef, useState } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 interface NewWorksForYouProps {
@@ -20,13 +20,34 @@ interface NewWorksForYouProps {
 }
 
 export const NewWorksForYouArtworks: React.FC<NewWorksForYouProps> = ({ viewer }) => {
-  const defaultViewOption = GlobalStore.useAppState((state) => state.userPrefs.defaultViewOption)
-
+  const numColumns = useViewOptionNumColumns("onyx_new_works_for_you_feed")
   const { data } = usePaginationFragment(newWorksForYouArtworksFragment, viewer)
   const { scrollHandler } = Screen.useListenForScreenScroll()
-
   const artworks = extractNodes(data.artworks)
-  const numColumns = defaultViewOption === "grid" ? NUM_COLUMNS_MASONRY : 1
+
+  const [hasChangedLayout, setHasChangedLayout] = useState(false)
+
+  const firstUpdate = useRef(true)
+
+  // This is a hack to force the grid to re-render when the layout changes
+  // Flashlist makes a werid animation when changing between numColumns
+  // We avoid it by showing the placeholder for a second while it's happening
+  useLayoutEffect(() => {
+    if (firstUpdate.current) {
+      firstUpdate.current = false
+      return
+    }
+
+    setHasChangedLayout(true)
+  }, [numColumns])
+
+  if (hasChangedLayout) {
+    setTimeout(() => {
+      setHasChangedLayout(false)
+    }, 1000)
+
+    return <NewWorksForYouPlaceholder />
+  }
 
   return (
     <Flex style={{ height: "100%" }}>
@@ -34,7 +55,6 @@ export const NewWorksForYouArtworks: React.FC<NewWorksForYouProps> = ({ viewer }
         animated
         artworks={artworks}
         numColumns={numColumns}
-        disableAutoLayout
         pageSize={PAGE_SIZE}
         contextScreenOwnerType={OwnerType.newWorksForYou}
         contextScreen={OwnerType.newWorksForYou}
@@ -42,9 +62,13 @@ export const NewWorksForYouArtworks: React.FC<NewWorksForYouProps> = ({ viewer }
           <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
         }
         ListHeaderComponent={() => (
-          <Text variant="xs" pt={2} px={2}>
-            {artworks.length} {pluralize("Artwork", artworks.length)}
-          </Text>
+          // We need padding when the grid is full width
+          <Flex px={numColumns === 1 ? 2 : 0}>
+            <Text variant="lg-display">New Works for You</Text>
+            <Text variant="xs" pt={2}>
+              {artworks.length} {pluralize("Artwork", artworks.length)}
+            </Text>
+          </Flex>
         )}
         hasMore={false}
         onScroll={scrollHandler}

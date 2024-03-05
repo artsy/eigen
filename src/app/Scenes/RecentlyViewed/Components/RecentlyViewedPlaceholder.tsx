@@ -1,15 +1,15 @@
 import { Flex, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
-import { GlobalStore } from "app/store/GlobalStore"
+import { usePlaceholderView } from "app/utils/masonryHelpers/viewOptionHelpers"
 import { PlaceholderGrid } from "app/utils/placeholderGrid"
 import { times } from "lodash"
 
 export const RecentlyViewedPlaceholder: React.FC = () => {
-  const defaultViewOption = GlobalStore.useAppState((state) => state.userPrefs.defaultViewOption)
+  const placeholderView = usePlaceholderView("onyx_new_works_for_you_feed")
 
   return (
     <Skeleton>
       <Flex my={2} testID="RecentlyViewedScreenPlaceholder">
-        {defaultViewOption === "grid" ? (
+        {placeholderView === "grid" ? (
           <PlaceholderGrid />
         ) : (
           <Flex width="100%">
