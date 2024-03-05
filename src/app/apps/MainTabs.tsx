@@ -43,7 +43,7 @@ const ProfileTab = () => (
 
 export const MainTabs = () => {
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false }}>
+    <Tab.Navigator initialRouteName="SearchTab" screenOptions={{ headerShown: false }}>
       <Tab.Screen name="HomeTab" component={HomeTab} />
       <Tab.Screen name="SearchTab" component={SearchTab} />
       <Tab.Screen name="InboxTab" component={InboxTab} />

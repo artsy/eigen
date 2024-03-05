@@ -51,7 +51,7 @@ const Main2 = () => {
         }}
       >
         {AuthRouter({ isLoggedIn })}
-        {SearchRouter()}
+        {/* {SearchRouter()} */}
         {!!isLoggedIn && onboardingState === "complete" && (
           <>
             <StackNav.Screen name="MainTabs" component={MainTabs} />
