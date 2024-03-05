@@ -47,7 +47,7 @@ export const NewActivityContent: React.FC = () => {
               )
             }}
           >
-            <MoreIcon fill="black100" accessibilityLabel="Notifications menu" />
+            <MoreIcon fill="black100" accessibilityLabel="Notifications menu" top="2px" />
           </Touchable>
         }
       />
