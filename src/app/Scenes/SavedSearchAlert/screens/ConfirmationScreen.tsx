@@ -177,7 +177,7 @@ const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection,
     requestAnimationFrame(() => {
       navigate(`/artist/${attributes.artistIDs?.[0]}`, {
         passProps: {
-          searchCriteriaID: route.params.searchCriteriaID,
+          search_criteria_id: route.params.searchCriteriaID,
         },
       })
     })

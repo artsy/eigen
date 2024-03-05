@@ -23,8 +23,8 @@ import {
   tracks,
 } from "./CreateSavedSearchModal"
 
-jest.mock("../../../Scenes/SavedSearchAlert/queries/getSavedSearchIdByCriteria", () => ({
-  getSavedSearchIdByCriteria: () => Promise.resolve(null),
+jest.mock("../../../Scenes/SavedSearchAlert/queries/getAlertByCriteria", () => ({
+  getAlertByCriteria: () => Promise.resolve(null),
 }))
 
 jest.mock("../../../Scenes/SavedSearchAlert/mutations/createSavedSearchAlert", () => ({

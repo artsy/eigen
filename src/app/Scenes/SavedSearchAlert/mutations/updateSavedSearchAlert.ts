@@ -1,5 +1,5 @@
-import { SearchCriteriaAttributes } from "__generated__/getSavedSearchIdByCriteriaQuery.graphql"
 import { updateSavedSearchAlertMutation } from "__generated__/updateSavedSearchAlertMutation.graphql"
+import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { SavedSearchAlertFormValues } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { commitMutation, graphql } from "react-relay"

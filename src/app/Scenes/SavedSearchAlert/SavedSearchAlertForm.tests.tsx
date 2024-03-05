@@ -31,13 +31,13 @@ describe("SavedSearchAlertForm", () => {
   const withoutDuplicateAlert = async () => {
     await waitFor(() => {
       const mutation = mockEnvironment.mock.getMostRecentOperation()
-      expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
+      expect(mutation.fragment.node.name).toBe("getAlertByCriteriaQuery")
     })
 
     // No duplicate alert
     resolveMostRecentRelayOperation(mockEnvironment, {
       Me: () => ({
-        savedSearch: null,
+        alertsConnection: [],
       }),
     })
   }
@@ -666,7 +666,7 @@ describe("SavedSearchAlertForm", () => {
 
         await waitFor(() => {
           const mutation = mockEnvironment.mock.getMostRecentOperation()
-          expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
+          expect(mutation.fragment.node.name).toBe("getAlertByCriteriaQuery")
         })
 
         // No duplicate alert
@@ -689,7 +689,7 @@ describe("SavedSearchAlertForm", () => {
 
         await waitFor(() => {
           const mutation = mockEnvironment.mock.getMostRecentOperation()
-          expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
+          expect(mutation.fragment.node.name).toBe("getAlertByCriteriaQuery")
         })
 
         resolveMostRecentRelayOperation(mockEnvironment)
@@ -707,7 +707,7 @@ describe("SavedSearchAlertForm", () => {
 
         await waitFor(() => {
           const mutation = mockEnvironment.mock.getMostRecentOperation()
-          expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
+          expect(mutation.fragment.node.name).toBe("getAlertByCriteriaQuery")
         })
 
         resolveMostRecentRelayOperation(mockEnvironment)
@@ -728,7 +728,7 @@ describe("SavedSearchAlertForm", () => {
 
         await waitFor(() => {
           const mutation = mockEnvironment.mock.getMostRecentOperation()
-          expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
+          expect(mutation.fragment.node.name).toBe("getAlertByCriteriaQuery")
         })
 
         // No duplicate alert
@@ -755,7 +755,7 @@ describe("SavedSearchAlertForm", () => {
 
         await waitFor(() => {
           const mutation = mockEnvironment.mock.getMostRecentOperation()
-          expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
+          expect(mutation.fragment.node.name).toBe("getAlertByCriteriaQuery")
         })
 
         resolveMostRecentRelayOperation(mockEnvironment)
@@ -776,7 +776,7 @@ describe("SavedSearchAlertForm", () => {
 
         await waitFor(() => {
           const mutation = mockEnvironment.mock.getMostRecentOperation()
-          expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
+          expect(mutation.fragment.node.name).toBe("getAlertByCriteriaQuery")
         })
 
         resolveMostRecentRelayOperation(mockEnvironment)

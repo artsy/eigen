@@ -7,6 +7,7 @@ import {
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
+import { getAlertByCriteria } from "app/Scenes/SavedSearchAlert/queries/getAlertByCriteria"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -35,7 +36,6 @@ import { createSavedSearchAlert } from "./mutations/createSavedSearchAlert"
 import { deleteSavedSearchMutation } from "./mutations/deleteSavedSearchAlert"
 import { updateNotificationPreferences } from "./mutations/updateNotificationPreferences"
 import { updateSavedSearchAlert } from "./mutations/updateSavedSearchAlert"
-import { getSavedSearchIdByCriteria } from "./queries/getSavedSearchIdByCriteria"
 import { useSavedSearchPills } from "./useSavedSearchPills"
 
 export interface SavedSearchAlertFormProps {
@@ -136,8 +136,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
          * - this is update alert flow AND there were changes in filters
          */
         if (!isUpdateForm || (isUpdateForm && hasChangedFilters)) {
-          // TODO: getAlertByCriteria
-          duplicateAlertID = await getSavedSearchIdByCriteria(clearedAttributes)
+          duplicateAlertID = await getAlertByCriteria(clearedAttributes)
         }
 
         if (duplicateAlertID) {

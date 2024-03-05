@@ -34,7 +34,7 @@ interface SavedSearchesListProps extends SavedSearchListWrapperProps {
 }
 
 const SORT_OPTIONS: SortOption[] = [
-  { value: "CREATED_AT_DESC", text: "Recently Added" },
+  { value: "ENABLED_AT_DESC", text: "Recently Added" },
   { value: "NAME_ASC", text: "Name (A-Z)" },
 ]
 
@@ -101,7 +101,7 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
   const { relay } = props
 
   const [modalVisible, setModalVisible] = useState(false)
-  const [selectedSortValue, setSelectedSortValue] = useState("CREATED_AT_DESC")
+  const [selectedSortValue, setSelectedSortValue] = useState("ENABLED_AT_DESC")
   const prevSelectedSortValue = usePrevious(selectedSortValue)
   const [fetchingMore, setFetchingMore] = useState(false)
   const [refreshMode, setRefreshMode] = useState<RefreshType | null>(null)

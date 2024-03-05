@@ -141,9 +141,9 @@ describe("CreateSavedSearchAlert", () => {
     fireEvent.press(screen.getByTestId("save-alert-button"))
 
     // Check alert duplicate
-    await mockOperationByName("getSavedSearchIdByCriteriaQuery", {
+    await mockOperationByName("getAlertByCriteriaQuery", {
       Me: () => ({
-        savedSearch: null,
+        alertsConnection: [],
       }),
     })
 

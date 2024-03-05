@@ -70,7 +70,7 @@ describe("EditSavedSearchAlert", () => {
 
     await waitFor(() => {
       const operation = mockEnvironment.mock.getMostRecentOperation()
-      expect(operation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
+      expect(operation.fragment.node.name).toBe("getAlertByCriteriaQuery")
     })
 
     resolveMostRecentRelayOperation(mockEnvironment, {
@@ -299,11 +299,11 @@ describe("EditSavedSearchAlert", () => {
         await flushPromiseQueue()
 
         expect(mockEnvironment.mock.getMostRecentOperation().fragment.node.name).toBe(
-          "getSavedSearchIdByCriteriaQuery"
+          "getAlertByCriteriaQuery"
         )
         resolveMostRecentRelayOperation(mockEnvironment, {
-          SearchCriteria: () => ({
-            internalID: null,
+          Me: () => ({
+            alertsConnection: [],
           }),
         })
 

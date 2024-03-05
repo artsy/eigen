@@ -248,7 +248,6 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
 
   return (
     <SearchCriteriaQueryRenderer
-      // TODO: convert search_criteria_id to alertID? How?
       alertId={alertID ?? search_criteria_id}
       environment={environment}
       render={{
