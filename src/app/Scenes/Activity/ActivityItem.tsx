@@ -110,7 +110,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = memo(
 
                     {!!isEditorial && <Text variant="xs">{item.message}</Text>}
 
-                    <Flex flexDirection="row">
+                    <Flex flexDirection="row" mt="1px">
                       <ActivityItemTypeLabel notificationType={item.notificationType} />
                       {!isPartnerOffer && (
                         <Text variant="xs" mr={0.5}>

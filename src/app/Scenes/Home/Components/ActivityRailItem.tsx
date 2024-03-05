@@ -123,7 +123,7 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
             </Text>
           )}
 
-          <Flex flexDirection="row">
+          <Flex flexDirection="row" mt="1px">
             <ActivityItemTypeLabel notificationType={item.notificationType} />
 
             {item.notificationType !== "PARTNER_OFFER_CREATED" &&
