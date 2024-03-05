@@ -1,5 +1,4 @@
-import { Flex, useColor, Text } from "@artsy/palette-mobile"
-import { Switch } from "react-native"
+import { Flex, Text, Switch } from "@artsy/palette-mobile"
 
 interface SwitchMenuProps {
   onChange: (value: boolean) => void
@@ -18,7 +17,6 @@ export const SwitchMenu = ({
   disabled = false,
   testID,
 }: SwitchMenuProps) => {
-  const color = useColor()
   return (
     <Flex flexDirection="row" alignItems="flex-start" flexShrink={0} my={1}>
       <Flex style={{ width: "80%", justifyContent: "center" }}>
@@ -29,13 +27,14 @@ export const SwitchMenu = ({
           {description}
         </Text>
       </Flex>
+
       <Flex style={{ width: "20%" }} alignItems="flex-end">
         <Switch
           testID={testID}
-          trackColor={{
-            false: color("black10"),
-            true: disabled ? color("black30") : color("black100"),
-          }}
+          thumbColorActive="white100"
+          thumbColorInactive="white100"
+          trackColorActive="black100"
+          trackColorInactive="black10"
           onValueChange={onChange}
           value={value}
           disabled={disabled}
