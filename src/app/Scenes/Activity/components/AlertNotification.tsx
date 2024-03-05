@@ -7,6 +7,7 @@ import {
   ArrowRightIcon,
   Touchable,
   Pill,
+  DEFAULT_HIT_SLOP,
 } from "@artsy/palette-mobile"
 import { AlertNotification_notification$key } from "__generated__/AlertNotification_notification.graphql"
 import { ActivityErrorScreen } from "app/Scenes/Activity/components/ActivityErrorScreen"
@@ -50,12 +51,14 @@ export const AlertNotification: FC<AlertNotificationProps> = ({ notification }) 
         onBack={goBack}
         title="Alerts"
         rightElements={
-          <TouchableOpacity onPress={handleEditAlertPress} testID="edit-alert-header-link">
-            <Flex width={100} height="100%" justifyContent="center">
-              <Text textAlign="right" variant="xs">
-                Edit
-              </Text>
-            </Flex>
+          <TouchableOpacity
+            onPress={handleEditAlertPress}
+            testID="edit-alert-header-link"
+            hitSlop={DEFAULT_HIT_SLOP}
+          >
+            <Text textAlign="right" variant="xs">
+              Edit
+            </Text>
           </TouchableOpacity>
         }
       />

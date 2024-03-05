@@ -89,12 +89,11 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
                   setDefaultViewOption(defaultViewOption === "list" ? "grid" : "list")
                   LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
                 }}
-                style={{ top: 5 }}
               >
                 {defaultViewOption === "grid" ? (
-                  <FullWidthIcon height={ICON_SIZE} width={ICON_SIZE} />
+                  <FullWidthIcon height={ICON_SIZE} width={ICON_SIZE} top="2px" />
                 ) : (
-                  <GridIcon height={ICON_SIZE} width={ICON_SIZE} />
+                  <GridIcon height={ICON_SIZE} width={ICON_SIZE} top="2px" />
                 )}
               </MotiPressable>
             ) : undefined

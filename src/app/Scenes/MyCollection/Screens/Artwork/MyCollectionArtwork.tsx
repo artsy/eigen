@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, EditCollectedArtwork, OwnerType } from "@artsy/cohesion"
-import { Flex, Screen, Tabs, Text } from "@artsy/palette-mobile"
+import { DEFAULT_HIT_SLOP, Flex, Screen, Tabs, Text } from "@artsy/palette-mobile"
 import { MyCollectionArtworkQuery } from "__generated__/MyCollectionArtworkQuery.graphql"
 import { LoadingSpinner } from "app/Components/Modals/LoadingModal"
 import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
@@ -42,33 +42,39 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
     { fetchPolicy: "store-and-network" }
   )
 
+  const { artwork } = data
+
   const comparableWorksCount = data?.artwork?.comparableAuctionResults?.totalCount
   const auctionResultsCount = data?.artwork?.artist?.auctionResultsConnection?.totalCount
 
   const handleEdit = useCallback(() => {
-    trackEvent(tracks.editCollectedArtwork(data.artwork!.internalID, data.artwork!.slug))
-    GlobalStore.actions.myCollection.artwork.startEditingArtwork(data.artwork as any)
+    if (!artwork) {
+      return
+    }
 
-    navigate(`my-collection/artworks/${data.artwork?.internalID}/edit`, {
+    trackEvent(tracks.editCollectedArtwork(artwork?.internalID, artwork?.slug))
+    GlobalStore.actions.myCollection.artwork.startEditingArtwork(artwork as any)
+
+    navigate(`my-collection/artworks/${artwork?.internalID}/edit`, {
       passProps: {
         mode: "edit",
         onDelete: popToRoot,
       },
     })
-  }, [data.artwork])
+  }, [artwork])
 
-  if (!data.artwork) {
+  const shouldShowInsightsTab =
+    !!data?._marketPriceInsights ||
+    (comparableWorksCount ?? 0) > 0 ||
+    (auctionResultsCount ?? 0) > 0
+
+  if (!artwork) {
     return (
       <Flex flex={1} justifyContent="center" alignItems="center">
         <Text>The requested Artwork is not available</Text>
       </Flex>
     )
   }
-
-  const shouldShowInsightsTab =
-    !!data?._marketPriceInsights ||
-    (comparableWorksCount ?? 0) > 0 ||
-    (auctionResultsCount ?? 0) > 0
 
   return (
     <>
@@ -77,18 +83,18 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
           <Screen.Header
             onBack={goBack}
             rightElements={
-              <TouchableOpacity onPress={handleEdit}>
+              <TouchableOpacity onPress={handleEdit} hitSlop={DEFAULT_HIT_SLOP}>
                 <Text>Edit</Text>
               </TouchableOpacity>
             }
           />
           {!!shouldShowInsightsTab ? (
-            <Tabs renderHeader={() => <MyCollectionArtworkHeader artwork={data.artwork!} />}>
+            <Tabs renderHeader={() => <MyCollectionArtworkHeader artwork={artwork} />}>
               {!!shouldShowInsightsTab && (
                 <Tabs.Tab name={Tab.insights} label={Tab.insights}>
                   <Tabs.Lazy>
                     <MyCollectionArtworkInsights
-                      artwork={data.artwork}
+                      artwork={artwork}
                       marketPriceInsights={data.marketPriceInsights}
                       me={data.me}
                     />
@@ -98,7 +104,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
               <Tabs.Tab name={Tab.about} label={Tab.about}>
                 <Tabs.Lazy>
                   <MyCollectionArtworkAbout
-                    artwork={data.artwork}
+                    artwork={artwork}
                     marketPriceInsights={data.marketPriceInsights}
                   />
                 </Tabs.Lazy>
@@ -106,10 +112,10 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
             </Tabs>
           ) : (
             <ScrollView>
-              <MyCollectionArtworkHeader artwork={data.artwork} />
+              <MyCollectionArtworkHeader artwork={artwork} />
               <MyCollectionArtworkAbout
                 renderWithoutScrollView
-                artwork={data.artwork}
+                artwork={artwork}
                 marketPriceInsights={data.marketPriceInsights}
               />
             </ScrollView>
