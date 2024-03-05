@@ -86,7 +86,7 @@ export const CreateOrEditArtworkListForm: FC<CreateOrEditArtworkListFormProps> =
 
                     <Text variant="xs" color="black60">
                       Share your interest in artworks with their respective galleries. Switching to
-                      private will make lists visible only to you and opt you them of offers. List
+                      private will make lists visible only to you and opt them out of offers. List
                       names are always private.
                     </Text>
                   </Flex>
