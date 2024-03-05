@@ -271,7 +271,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
       alwaysPresentModally: true,
       safeAreaEdges: ["bottom"],
     }),
-    addWebViewRoute("/artists"),
     addWebViewRoute("/buy-now-feature-faq"),
     addWebViewRoute("/buyer-guarantee"),
     addWebViewRoute("/categories"),
@@ -280,7 +279,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
       safeAreaEdges: ["bottom"],
     }),
     addWebViewRoute("/identity-verification-faq"),
-    addWebViewRoute("/galleries"),
     addWebViewRoute("/meet-the-specialists"),
     addWebViewRoute("/orders/:orderID", {
       mimicBrowserBackButton: true,
