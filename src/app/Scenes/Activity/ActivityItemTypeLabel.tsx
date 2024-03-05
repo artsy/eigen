@@ -1,49 +1,28 @@
 import { Text } from "@artsy/palette-mobile"
 import { NotificationTypesEnum } from "__generated__/ActivityRail_notificationsConnection.graphql"
-import {
-  getNewNotificationTypeLabel,
-  getNotificationTypeColor,
-  getNotificationTypeLabel,
-} from "app/Scenes/Activity/utils/getNotificationTypeLabel"
-import { shouldDisplayNotificationTypeLabel } from "app/Scenes/Activity/utils/shouldDisplayNotificationTypeLabel"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { getNotificationTypeLabel } from "app/Scenes/Activity/utils/getNotificationTypeLabel"
 
 interface Props {
   notificationType: NotificationTypesEnum
 }
 
 export const ActivityItemTypeLabel: React.FC<Props> = ({ notificationType }) => {
-  const enableNewActivityPanelManagement = useFeatureFlag("AREnableNewActivityPanelManagement")
-
-  if (!shouldDisplayNotificationTypeLabel(notificationType) && !enableNewActivityPanelManagement) {
-    return null
-  }
-
-  const notificationTypeLabel = enableNewActivityPanelManagement
-    ? getNewNotificationTypeLabel(notificationType)
-    : getNotificationTypeLabel(notificationType)
-  const notificationTypeColor = getNotificationTypeColor(notificationType)
-
-  if (enableNewActivityPanelManagement) {
-    return (
-      <Text
-        variant="xs"
-        fontWeight="bold"
-        accessibilityLabel={`Notification type: ${notificationTypeLabel}`}
-      >
-        {notificationTypeLabel}
-      </Text>
-    )
-  }
+  const isPartnerOffer = notificationType === "PARTNER_OFFER_CREATED"
+  const notificationTypeLabel = getNotificationTypeLabel(notificationType)
 
   return (
     <Text
       variant="xs"
+      fontWeight="bold"
       accessibilityLabel={`Notification type: ${notificationTypeLabel}`}
-      color={notificationTypeColor}
     >
-      {notificationTypeLabel}
-      {notificationType !== "PARTNER_OFFER_CREATED" && " • "}
+      {notificationTypeLabel}{" "}
+      {!isPartnerOffer && (
+        <Text variant="xs" mr={0.5}>
+          {" "}
+          •{" "}
+        </Text>
+      )}
     </Text>
   )
 }
