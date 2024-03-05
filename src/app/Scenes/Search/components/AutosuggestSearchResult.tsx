@@ -17,6 +17,7 @@ import {
   navigateToEntity,
   navigateToPartner,
   SlugType,
+  useNavigate,
 } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
 import { useContext } from "react"
@@ -72,8 +73,47 @@ export const AutosuggestSearchResult: React.FC<{
   const { inputRef, queryRef } = useContext(SearchContext)
   const { trackEvent } = useTracking()
 
+  const navigate = useNavigate()
+
   const showNavigationButtons =
     showQuickNavigationButtons && !!result.statuses?.artworks && !!result.statuses?.auctionLots
+
+  /**
+   * For some entities (fairs, partners) we pass along some context
+   * about the entity type to render the correct placeholder/skeleton loader
+   * @param result
+   */
+  const navigateToResult = (result: AutosuggestResult, props?: PassedProps) => {
+    if (!result.href) {
+      return
+    }
+
+    console.log("Here is where I should navigate to the result", result, props)
+    if (result.displayType === "Gallery" || result.displayType === "Institution") {
+      // TODO: handle partner type
+      // navigateToPartner(result.href!)
+    } else if (result.displayType === "Fair") {
+      // TODO: handle fair type
+      // navigateToEntity(result.href!, EntityType.Fair, SlugType.ProfileID)
+    } else if (result.__typename === "Artist") {
+      switch (props?.initialTab) {
+        case "Insights":
+          navigate(`${result.href}/auction-results`, { passProps: props })
+          break
+        case "Artworks":
+          navigate(`${result.href}/artworks`, {
+            passProps: props,
+          })
+          break
+
+        default:
+          navigate(result.href)
+          break
+      }
+    } else {
+      navigate(result.href)
+    }
+  }
 
   const onPress: HandleResultPress = (passProps) => {
     if (onResultPress) {
@@ -187,34 +227,4 @@ export const AutosuggestSearchResult: React.FC<{
       )}
     </>
   )
-}
-
-/**
- * For some entities (fairs, partners) we pass along some context
- * about the entity type to render the correct placeholder/skeleton loader
- * @param result
- */
-function navigateToResult(result: AutosuggestResult, props?: PassedProps) {
-  if (result.displayType === "Gallery" || result.displayType === "Institution") {
-    navigateToPartner(result.href!)
-  } else if (result.displayType === "Fair") {
-    navigateToEntity(result.href!, EntityType.Fair, SlugType.ProfileID)
-  } else if (result.__typename === "Artist") {
-    switch (props?.initialTab) {
-      case "Insights":
-        navigate(`${result.href!}/auction-results`, { passProps: props })
-        break
-      case "Artworks":
-        navigate(`${result.href!}/artworks`, {
-          passProps: props,
-        })
-        break
-
-      default:
-        navigate(result.href!)
-        break
-    }
-  } else {
-    navigate(result.href!)
-  }
 }
