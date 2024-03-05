@@ -1,7 +1,7 @@
 import { Flex, Join, Separator, Text } from "@artsy/palette-mobile"
 import { ScrollView } from "react-native-gesture-handler"
 
-export default function App() {
+export const L0IntroductionToReanimated: React.FC<{}> = () => {
   const content = [
     {
       title: "DECLARATIVE",

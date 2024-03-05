@@ -3,7 +3,7 @@ import { MotiView } from "moti"
 import { useState } from "react"
 import { StyleSheet } from "react-native"
 
-export default function App() {
+export const L3Moti: React.FC<{}> = () => {
   const [visible, setVisible] = useState(true)
   const [scale, setScale] = useState(1)
 

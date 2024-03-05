@@ -9,7 +9,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated"
 
-export default function App() {
+export const Exercice: React.FC<{}> = () => {
   return (
     <ScrollView>
       <Flex px={2}>

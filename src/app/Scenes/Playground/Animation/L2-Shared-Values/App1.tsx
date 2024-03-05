@@ -1,6 +1,6 @@
 import Animated, { useSharedValue } from "react-native-reanimated"
 
-export default function App() {
+export const SharedValuesLevel1: React.FC<{}> = () => {
   const width = useSharedValue(100)
 
   return (

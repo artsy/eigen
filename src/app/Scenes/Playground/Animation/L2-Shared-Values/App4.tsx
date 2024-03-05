@@ -2,7 +2,7 @@ import { Button } from "@artsy/palette-mobile"
 import { View } from "react-native"
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated"
 
-export default function App() {
+export const SharedValuesLevel4: React.FC<{}> = () => {
   const translateX = useSharedValue(0)
 
   const handlePress = () => {

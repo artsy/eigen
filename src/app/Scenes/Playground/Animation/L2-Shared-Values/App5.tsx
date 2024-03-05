@@ -7,7 +7,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated"
 
-export default function App() {
+export const SharedValuesLevel5: React.FC<{}> = () => {
   const translateX = useSharedValue(0)
 
   const handlePress = () => {

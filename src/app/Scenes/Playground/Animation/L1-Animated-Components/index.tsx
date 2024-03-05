@@ -1,6 +1,6 @@
 import Animated from "react-native-reanimated"
 
-export default function App() {
+export const L1AnimatedComponent: React.FC<{}> = () => {
   return (
     <Animated.View
       style={{

@@ -1,7 +1,7 @@
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
 import Animated from "react-native-reanimated"
 
-export default function App() {
+export const L4Gestures: React.FC<{}> = () => {
   // Other available gestures include
   // Tap, Pan, LongPress, Fling, Pinch, Rotation, ForceTouch
   const tap = Gesture.Pan()
