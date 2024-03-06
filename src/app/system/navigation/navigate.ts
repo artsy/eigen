@@ -153,7 +153,10 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
     }
 
     if (waitForTabsToChange) {
-      requestAnimationFrame(pushView)
+      const timeoutTime = __TEST__ ? 0 : 200
+      setTimeout(() => {
+        requestAnimationFrame(pushView)
+      }, timeoutTime)
     } else {
       pushView()
     }
