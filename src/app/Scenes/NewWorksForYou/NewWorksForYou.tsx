@@ -116,40 +116,44 @@ export const NewWorksForYouPlaceholder: React.FC<{ defaultViewOption?: ViewOptio
   const placeholderView = usePlaceholderView("onyx_new_works_for_you_feed")
 
   return (
-    <Skeleton>
+    <>
       <Flex flexDirection="row">
         <Flex px={2}>
-          <Flex justifyContent="space-between" alignItems="center">
+          <Flex justifyContent="space-between">
             <Text variant="lg-display">New Works for You</Text>
 
-            <SkeletonText variant="xs" mt={2}>
-              XX Artworks
-            </SkeletonText>
+            <Skeleton>
+              <SkeletonText variant="xs" mt={2}>
+                XX Artworks
+              </SkeletonText>
+            </Skeleton>
           </Flex>
         </Flex>
       </Flex>
-      <Spacer y={2} />
-      {!enableNewWorksForYouFeed || placeholderView === "grid" ? (
-        <PlaceholderGrid />
-      ) : (
-        <Flex width="100%" px={2}>
-          {times(4).map((i) => (
-            <Flex key={i} mt={1} mb={2}>
-              <Flex>
-                <SkeletonBox key={i} width="100%" height={400} />
+      <Skeleton>
+        <Spacer y={2} />
+        {!enableNewWorksForYouFeed || placeholderView === "grid" ? (
+          <PlaceholderGrid />
+        ) : (
+          <Flex width="100%" px={2}>
+            {times(4).map((i) => (
+              <Flex key={i} mt={1} mb={2}>
+                <Flex>
+                  <SkeletonBox key={i} width="100%" height={400} />
+                </Flex>
+                <Spacer y={1} />
+                <SkeletonText>David Hockey</SkeletonText>
+                <Spacer y={0.5} />
+                <SkeletonText>Mercy from the Virtues H9-13 </SkeletonText>
+                <Spacer y={0.5} />
+                <SkeletonText>Berg Contemporary</SkeletonText>
+                <Spacer y={0.5} />
+                <SkeletonText>£38,000</SkeletonText>
               </Flex>
-              <Spacer y={1} />
-              <SkeletonText>David Hockey</SkeletonText>
-              <Spacer y={0.5} />
-              <SkeletonText>Mercy from the Virtues H9-13 </SkeletonText>
-              <Spacer y={0.5} />
-              <SkeletonText>Berg Contemporary</SkeletonText>
-              <Spacer y={0.5} />
-              <SkeletonText>£38,000</SkeletonText>
-            </Flex>
-          ))}
-        </Flex>
-      )}
-    </Skeleton>
+            ))}
+          </Flex>
+        )}
+      </Skeleton>
+    </>
   )
 }
