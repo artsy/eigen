@@ -92,8 +92,11 @@ export const AutosuggestSearchResult: React.FC<{
     if (result.displayType === "Gallery" || result.displayType === "Institution") {
       // TODO: handle partner type
       // navigateToPartner(result.href!)
+      console.warn("Gallery nav")
+      navigate(result.href)
     } else if (result.displayType === "Fair") {
       // TODO: handle fair type
+      navigate(result.href)
       // navigateToEntity(result.href!, EntityType.Fair, SlugType.ProfileID)
     } else if (result.__typename === "Artist") {
       switch (props?.initialTab) {

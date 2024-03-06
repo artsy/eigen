@@ -53,9 +53,13 @@ export const useNavigate = () => {
 
       // TODO: leaking old nav into new nav for time being, remove this when we have a new nav
       const result = matchRoute(url)
+
+      console.log("navigate result", result)
       if (result.type === "match") {
         if (result.module === "Artist") {
           navigation.navigate("Artist", result.params as { artistID: string })
+        } else if (result.module === "Partner") {
+          navigation.navigate("Partner", result.params as { partnerID: string })
         } else if (result.module === "LocalDiscovery") {
           navigation.navigate("LocalDiscovery")
         }
@@ -286,7 +290,6 @@ export function navigateToPartner(href: string) {
 
 /**
  * Looks up the entity by slug passed in and presents appropriate viewController
- * @param component: ignored, kept for compatibility
  * @param slug: identifier for the entity to be presented
  * @param entity: type of entity we are routing to, this is currently used to determine what loading
  * state to show, either 'fair' or 'partner'
