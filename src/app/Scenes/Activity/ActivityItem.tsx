@@ -148,9 +148,11 @@ export const ActivityItem: React.FC<ActivityItemProps> = memo(
             <Flex flexDirection="row">
               <ActivityItemTypeLabel notificationType={item.notificationType} />
 
-              <Text variant="xs" color="black60">
-                {item.publishedAt}
-              </Text>
+              {!isPartnerOffer && (
+                <Text variant="xs" color="black60">
+                  {item.publishedAt}
+                </Text>
+              )}
             </Flex>
 
             <Text variant="sm-display" fontWeight="bold">
