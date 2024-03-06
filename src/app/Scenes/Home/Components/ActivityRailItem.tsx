@@ -2,6 +2,7 @@ import { Flex, Image, Text } from "@artsy/palette-mobile"
 import {
   ActivityRailItem_item$data,
   ActivityRailItem_item$key,
+  NotificationTypesEnum,
 } from "__generated__/ActivityRailItem_item.graphql"
 import { ActivityItemTypeLabel } from "app/Scenes/Activity/ActivityItemTypeLabel"
 import {
@@ -23,6 +24,10 @@ interface ActivityRailItemProps {
 
 export const ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE = 55
 const MAX_WIDTH = 240
+const NOTIFICATION_TYPES_WITH_TWO_LINE_HEADLINE: NotificationTypesEnum[] = [
+  "ARTWORK_ALERT",
+  "ARTWORK_PUBLISHED",
+]
 
 export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
   const enableNavigateToASingleNotification = useFeatureFlag("AREnableSingleActivityPanelScreen")
@@ -92,6 +97,10 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
     )
   }
 
+  const hasTwoLineHeadline = NOTIFICATION_TYPES_WITH_TWO_LINE_HEADLINE.includes(
+    item.notificationType
+  )
+
   return (
     <TouchableOpacity activeOpacity={0.65} onPress={handlePress}>
       <Flex flexDirection="row">
@@ -113,7 +122,12 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
         <Flex maxWidth={MAX_WIDTH} overflow="hidden">
           {!!isPartnerOffer && <PartnerOfferBadge notificationType={item.notificationType} />}
 
-          <Text variant="sm-display" fontWeight="bold" ellipsizeMode="tail" numberOfLines={1}>
+          <Text
+            variant="sm-display"
+            fontWeight="bold"
+            ellipsizeMode="tail"
+            numberOfLines={hasTwoLineHeadline ? 2 : 1}
+          >
             {item.headline}
           </Text>
 
