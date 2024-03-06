@@ -22,8 +22,8 @@ interface ActivityRailItemProps {
   onPress?: (item: ActivityRailItem_item$data) => void
 }
 
-export const ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE = 55
-const MAX_WIDTH = 240
+export const ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE = 60
+const MAX_WIDTH = 180
 const NOTIFICATION_TYPES_WITH_TWO_LINE_HEADLINE: NotificationTypesEnum[] = [
   "ARTWORK_ALERT",
   "ARTWORK_PUBLISHED",
