@@ -1,5 +1,5 @@
 import { Spinner, Button } from "@artsy/palette-mobile"
-import { ArtsyWebView } from "app/Components/ArtsyWebView"
+import { ArtsyWebView, ArtsyWebViewPage } from "app/Components/ArtsyWebView"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { extractText } from "app/utils/tests/extractText"
@@ -123,6 +123,6 @@ describe(VanityURLPossibleRedirect, () => {
     })
     const tree = renderWithWrappersLEGACY(<VanityURLPossibleRedirect slug="genes" />)
     await flushPromiseQueue()
-    expect(tree.root.findAllByType(ArtsyWebView)).toHaveLength(1)
+    expect(tree.root.findAllByType(ArtsyWebViewPage)).toHaveLength(1)
   })
 })

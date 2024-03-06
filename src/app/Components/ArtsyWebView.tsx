@@ -14,6 +14,7 @@ import { useWebViewCallback } from "app/utils/useWebViewEvent"
 import { debounce } from "lodash"
 import { parse as parseQueryString } from "query-string"
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
+import { View } from "react-native"
 import { Edge, SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 import Share from "react-native-share"
 import WebView, { WebViewNavigation, WebViewProps } from "react-native-webview"
@@ -253,8 +254,10 @@ export const ArtsyWebView = forwardRef<
       }
     }
 
+    const WebViewWrapper = isPresentedModally ? SafeAreaView : View
+
     return (
-      <SafeAreaView style={{ flex: 1 }} edges={safeAreaEdges}>
+      <WebViewWrapper style={{ flex: 1 }} edges={safeAreaEdges}>
         <WebView
           ref={innerRef}
           // sharedCookiesEnabled is required on iOS for the user to be implicitly logged into force/prediction
@@ -285,7 +288,7 @@ export const ArtsyWebView = forwardRef<
             <Text color="red">webview</Text>
           </Flex>
         )}
-      </SafeAreaView>
+      </WebViewWrapper>
     )
   }
 )
@@ -312,7 +315,10 @@ function useUrlCookies(url: string, accessToken: string | null, isLoggedIn: bool
 
 class CookieRequestAttempt {
   invalidated = false
-  constructor(public url: string, public accessToken: string) {}
+  constructor(
+    public url: string,
+    public accessToken: string
+  ) {}
   async makeAttempt() {
     if (this.invalidated) {
       return

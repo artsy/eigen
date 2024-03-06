@@ -1,5 +1,5 @@
 import { Flex, Text, Spinner, Button } from "@artsy/palette-mobile"
-import { ArtsyWebView } from "app/Components/ArtsyWebView"
+import { ArtsyWebViewPage } from "app/Components/ArtsyWebView"
 import { Stack } from "app/Components/Stack"
 import { matchRoute } from "app/routes"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -38,12 +38,12 @@ export const VanityURLPossibleRedirect: React.FC<{ slug: string }> = ({ slug }) 
           navigate(response.url)
         } else if (screen.module === "ReactWebView") {
           // Test this with `artsy:///artsy-vanguard-2019` which force should redirect to /series/artsy-vanguard-2019
-          setJSX(<ArtsyWebView url={response.url} />)
+          setJSX(<ArtsyWebViewPage url={response.url} />)
         } else if (screen.module === "VanityURLEntity" && slug === (screen.params as any).slug) {
           // No redirect, it's some other kind of single-segment URI path.
           // Just show the web version of this page.
           // Test this with `artsy:///identity-verification-faq`
-          setJSX(<ArtsyWebView url={response.url} />)
+          setJSX(<ArtsyWebViewPage url={response.url} />)
         } else {
           // The app has a native screen for the redirect URL, let's show it.
           // Test this with `artsy:///auction` which force should redirect to /auctions
