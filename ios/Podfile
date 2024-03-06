@@ -129,9 +129,9 @@ target 'Artsy' do
   pod 'Pulley', git: 'https://github.com/artsy/Pulley.git', branch: 'master'
 
   # Facebook
-  pod 'FBSDKCoreKit', '15.0.0'
-  pod 'FBSDKLoginKit', '15.0.0'
-  pod 'FBSDKShareKit', '15.0.0'
+  pod 'FBSDKCoreKit', '~> 16.3.1'
+  pod 'FBSDKLoginKit', '~> 16.3.1'
+  pod 'FBSDKShareKit', '~> 16.3.1'
 
   # Google & Firebase
   pod 'GoogleSignIn', '5.0.2'
