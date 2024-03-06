@@ -50,7 +50,7 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
   const isPartnerOffer = item.notificationType === "PARTNER_OFFER_CREATED"
   const isEditorial = item.notificationType === "ARTICLE_FEATURED_ARTIST"
 
-  if (!enableNavigateToASingleNotification) {
+  if (!enableNewActivityPanelManagement) {
     return (
       <TouchableOpacity activeOpacity={0.65} onPress={handlePress}>
         <Flex flexDirection="row">
