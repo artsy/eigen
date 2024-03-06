@@ -155,7 +155,7 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
     if (waitForTabsToChange) {
       setTimeout(() => {
         requestAnimationFrame(pushView)
-      }, 200)
+      }, 0)
     } else {
       pushView()
     }

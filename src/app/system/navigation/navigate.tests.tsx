@@ -222,7 +222,7 @@ describe(navigate, () => {
     })
   })
 
-  xit("switches tab before pushing in cases where that's required", async () => {
+  it("switches tab before pushing in cases where that's required", async () => {
     await navigate("/conversation/234")
     expect(GlobalStore.actions.bottomTabs.setSelectedTab).toHaveBeenCalledWith("inbox")
     expect(LegacyNativeModules.ARScreenPresenterModule.switchTab).toHaveBeenCalledWith("inbox")
@@ -245,7 +245,7 @@ describe(navigate, () => {
     `)
   })
 
-  xit("pop to root tab view in cases where that's required", async () => {
+  it("pop to root tab view in cases where that's required", async () => {
     await navigate("my-profile/payment")
     await navigate("settings/alerts", {
       popToRootTabView: true,
