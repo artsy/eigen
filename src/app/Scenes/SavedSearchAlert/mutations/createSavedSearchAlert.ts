@@ -30,7 +30,7 @@ export const createSavedSearchAlert = (
         }
       `,
       variables: {
-        input: input as { artistIDs: string[] }, // TODO: leave a note why
+        input: input as { artistIDs: string[] }, // artistIDs is required in the input type
       },
       onCompleted: (response) => {
         resolve(response)

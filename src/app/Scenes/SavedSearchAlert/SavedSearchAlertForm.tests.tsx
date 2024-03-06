@@ -36,8 +36,8 @@ describe("SavedSearchAlertForm", () => {
 
     // No duplicate alert
     resolveMostRecentRelayOperation(mockEnvironment, {
-      Me: () => ({
-        alertsConnection: [],
+      Alert: () => ({
+        internalID: null,
       }),
     })
   }
@@ -664,18 +664,7 @@ describe("SavedSearchAlertForm", () => {
 
         fireEvent.press(screen.getByTestId("save-alert-button"))
 
-        await waitFor(() => {
-          const mutation = mockEnvironment.mock.getMostRecentOperation()
-          expect(mutation.fragment.node.name).toBe("getAlertByCriteriaQuery")
-        })
-
-        // No duplicate alert
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          Me: () => ({
-            savedSearch: null,
-          }),
-        })
-
+        withoutDuplicateAlert()
         await waitFor(() => {
           const mutation = mockEnvironment.mock.getMostRecentOperation()
           expect(mutation.fragment.node.name).toBe("createSavedSearchAlertMutation")

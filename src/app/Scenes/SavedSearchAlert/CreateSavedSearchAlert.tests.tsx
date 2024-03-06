@@ -142,8 +142,8 @@ describe("CreateSavedSearchAlert", () => {
 
     // Check alert duplicate
     await mockOperationByName("getAlertByCriteriaQuery", {
-      Me: () => ({
-        alertsConnection: [],
+      Alert: () => ({
+        internalID: null,
       }),
     })
 
