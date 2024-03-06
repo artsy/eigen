@@ -12426,6 +12426,9 @@ type Me implements Node {
 
 type MeCounts {
   followedArtists: Int!
+
+  # Returns the total count of followed profiles. There is currently no way to filter this count by `owner_type`.
+  followedProfiles: Int!
   savedArtworks: Int!
   savedSearches: Int!
 }
