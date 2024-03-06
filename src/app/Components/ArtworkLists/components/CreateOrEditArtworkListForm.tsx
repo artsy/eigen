@@ -1,16 +1,19 @@
-import { Button, Spacer } from "@artsy/palette-mobile"
+import { Button, Flex, Spacer, Switch, Text } from "@artsy/palette-mobile"
 import { CreateNewArtworkListInput } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/components/CreateNewArtworkListInput"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Formik, FormikHelpers } from "formik"
 import { FC } from "react"
 import * as Yup from "yup"
 
 export interface CreateOrEditArtworkListFormValues {
   name: string
+  shareableWithPartners: boolean
 }
 
 const MAX_NAME_LENGTH = 40
 const INITIAL_FORM_VALUES: CreateOrEditArtworkListFormValues = {
   name: "",
+  shareableWithPartners: true,
 }
 
 const validationSchema = Yup.object().shape({
@@ -33,6 +36,8 @@ export const CreateOrEditArtworkListForm: FC<CreateOrEditArtworkListFormProps> =
   onSubmit,
   onBackPress,
 }) => {
+  const AREnableArtworkListOfferability = useFeatureFlag("AREnableArtworkListOfferability")
+
   const handleSubmit = (
     values: CreateOrEditArtworkListFormValues,
     helpers: FormikHelpers<CreateOrEditArtworkListFormValues>
@@ -68,6 +73,31 @@ export const CreateOrEditArtworkListForm: FC<CreateOrEditArtworkListFormProps> =
               onBlur={formik.handleBlur("name")}
               onChangeText={formik.handleChange("name")}
             />
+
+            {mode === "create" && !!AREnableArtworkListOfferability && (
+              <>
+                <Spacer y={4} />
+
+                <Flex flexDirection="row">
+                  <Flex flex={1} mr={1}>
+                    <Text variant="sm-display" color="black100" mb={0.5}>
+                      Shared list
+                    </Text>
+
+                    <Text variant="xs" color="black60">
+                      Share your interest in artworks with their respective galleries. Switching to
+                      private will make lists visible only to you and opt them out of offers. List
+                      names are always private.
+                    </Text>
+                  </Flex>
+
+                  <Switch
+                    value={formik.values.shareableWithPartners}
+                    onValueChange={(value) => formik.setFieldValue("shareableWithPartners", value)}
+                  />
+                </Flex>
+              </>
+            )}
 
             <Spacer y={4} />
 
