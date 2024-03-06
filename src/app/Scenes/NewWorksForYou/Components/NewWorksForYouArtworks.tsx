@@ -13,6 +13,7 @@ import { withSuspense } from "app/utils/hooks/withSuspense"
 import { useViewOptionNumColumns } from "app/utils/masonryHelpers/viewOptionHelpers"
 import { pluralize } from "app/utils/pluralize"
 import { useLayoutEffect, useRef, useState } from "react"
+import { LayoutAnimation } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 interface NewWorksForYouProps {
@@ -44,6 +45,7 @@ export const NewWorksForYouArtworks: React.FC<NewWorksForYouProps> = ({ viewer }
   if (hasChangedLayout) {
     setTimeout(() => {
       setHasChangedLayout(false)
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     }, 1000)
 
     return <NewWorksForYouPlaceholder />
