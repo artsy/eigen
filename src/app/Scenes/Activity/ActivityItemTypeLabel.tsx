@@ -43,6 +43,7 @@ export const ActivityItemTypeLabel: React.FC<Props> = ({ notificationType }) => 
       color={notificationTypeColor}
     >
       {notificationTypeLabel}
+      {notificationType !== "PARTNER_OFFER_CREATED" && " • "}
     </Text>
   )
 }

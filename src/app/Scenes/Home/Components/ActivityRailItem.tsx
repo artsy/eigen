@@ -25,6 +25,8 @@ const MAX_WIDTH = 220
 
 export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
   const enableNavigateToASingleNotification = useFeatureFlag("AREnableSingleActivityPanelScreen")
+  const enableNewActivityPanelManagement = useFeatureFlag("AREnableNewActivityPanelManagement")
+
   const markAsRead = useMarkNotificationAsRead()
 
   const item = useFragment(ActivityRailItemFragment, props.item)
@@ -61,12 +63,17 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
           <Flex flexDirection="row" style={{ marginTop: -4 }}>
             <ActivityItemTypeLabel notificationType={item.notificationType} />
 
-            {item.notificationType !== "PARTNER_OFFER_CREATED" && (
-              <Text variant="xs" color="black60">
-                {" "}
-                • {item.publishedAt}
-              </Text>
-            )}
+            {item.notificationType !== "PARTNER_OFFER_CREATED" &&
+              (enableNewActivityPanelManagement ? (
+                <Text variant="xs" color="black60">
+                  {" "}
+                  • {item.publishedAt}
+                </Text>
+              ) : (
+                <Text variant="xs" color="black60">
+                  {item.publishedAt}
+                </Text>
+              ))}
           </Flex>
 
           <Text variant="sm-display" fontWeight="bold" ellipsizeMode="tail" numberOfLines={1}>
