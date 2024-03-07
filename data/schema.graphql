@@ -10254,6 +10254,7 @@ input FollowProfileInput {
 
 type FollowProfilePayload {
   clientMutationId: String
+  me: Me!
   profile: Profile
 }
 
