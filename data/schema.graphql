@@ -7299,6 +7299,12 @@ type Conversation implements Node {
     # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
+  collectorInterestsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): UserInterestConnection
 
   # The collector profile of the user who initiated the conversation. Do not use this field for Partners
   collectorResume: CollectorResume
