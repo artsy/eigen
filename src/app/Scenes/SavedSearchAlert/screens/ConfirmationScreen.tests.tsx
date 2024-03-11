@@ -61,10 +61,10 @@ describe(ConfirmationScreen, () => {
   it("displays the newly created alert criteria", () => {
     renderWithRelay()
 
-    expect(screen.queryByText("Your alert has been saved")).toBeOnTheScreen()
-    expect(screen.queryByText("David Hockney")).toBeOnTheScreen()
-    expect(screen.queryByText("Unique")).toBeOnTheScreen()
-    expect(screen.queryByText("Painting")).toBeOnTheScreen()
+    expect(screen.getByText("Your alert has been saved")).toBeOnTheScreen()
+    expect(screen.getByText("David Hockney")).toBeOnTheScreen()
+    expect(screen.getByText("Unique")).toBeOnTheScreen()
+    expect(screen.getByText("Painting")).toBeOnTheScreen()
   })
 
   it("displays the correct message when there are many matches", async () => {
@@ -72,10 +72,10 @@ describe(ConfirmationScreen, () => {
       FilterArtworksConnection: () => ({ counts: { total: NUMBER_OF_ARTWORKS_TO_SHOW + 1 } }),
     })
 
-    await waitForElementToBeRemoved(() => screen.getByTestId("MatchingArtworksPlaceholder"))
+    await waitForElementToBeRemoved(() => screen.queryByTestId("MatchingArtworksPlaceholder"))
 
     expect(
-      screen.queryByText(
+      screen.getByText(
         "11 works currently on Artsy match your criteria. See our top picks for you:"
       )
     ).toBeOnTheScreen()
@@ -86,12 +86,10 @@ describe(ConfirmationScreen, () => {
       FilterArtworksConnection: () => ({ counts: { total: NUMBER_OF_ARTWORKS_TO_SHOW - 1 } }),
     })
 
-    await waitForElementToBeRemoved(() => screen.getByTestId("MatchingArtworksPlaceholder"))
+    await waitForElementToBeRemoved(() => screen.queryByTestId("MatchingArtworksPlaceholder"))
 
     expect(
-      screen.queryByText(
-        "You might like these 9 works currently on Artsy that match your criteria:"
-      )
+      screen.getByText("You might like these 9 works currently on Artsy that match your criteria:")
     ).toBeOnTheScreen()
   })
 
@@ -100,10 +98,10 @@ describe(ConfirmationScreen, () => {
       FilterArtworksConnection: () => ({ counts: { total: 0 } }),
     })
 
-    await waitForElementToBeRemoved(() => screen.getByTestId("MatchingArtworksPlaceholder"))
+    await waitForElementToBeRemoved(() => screen.queryByTestId("MatchingArtworksPlaceholder"))
 
     expect(
-      screen.queryByText("There aren't any works available that meet the criteria at this time.")
+      screen.getByText("There aren't any works available that meet the criteria at this time.")
     ).toBeOnTheScreen()
   })
 
@@ -111,7 +109,7 @@ describe(ConfirmationScreen, () => {
     renderWithRelay({
       FilterArtworksConnection: () => artworksConnection,
     })
-    await waitForElementToBeRemoved(() => screen.getByTestId("MatchingArtworksPlaceholder"))
+    await waitForElementToBeRemoved(() => screen.queryByTestId("MatchingArtworksPlaceholder"))
 
     expect(screen.getByText("Untitled #1")).toBeOnTheScreen()
     expect(screen.getByText("Untitled #2")).toBeOnTheScreen()
@@ -134,7 +132,7 @@ describe(ConfirmationScreen, () => {
       renderWithRelay({
         FilterArtworksConnection: () => ({ counts: { total: NUMBER_OF_ARTWORKS_TO_SHOW + 1 } }),
       })
-      await waitForElementToBeRemoved(() => screen.getByTestId("MatchingArtworksPlaceholder"))
+      await waitForElementToBeRemoved(() => screen.queryByTestId("MatchingArtworksPlaceholder"))
 
       const seeAllButton = screen.queryByText("See all matching works")
       expect(seeAllButton).toBeOnTheScreen()
@@ -143,7 +141,7 @@ describe(ConfirmationScreen, () => {
       await flushPromiseQueue()
 
       expect(navigate).toHaveBeenCalledWith("/artist/david-hockney", {
-        passProps: { searchCriteriaID: "foo-bar-42" },
+        passProps: { search_criteria_id: "foo-bar-42" },
       })
     })
 
@@ -151,7 +149,7 @@ describe(ConfirmationScreen, () => {
       renderWithRelay({
         FilterArtworksConnection: () => ({ counts: { total: NUMBER_OF_ARTWORKS_TO_SHOW - 1 } }),
       })
-      await waitForElementToBeRemoved(() => screen.getByTestId("MatchingArtworksPlaceholder"))
+      await waitForElementToBeRemoved(() => screen.queryByTestId("MatchingArtworksPlaceholder"))
 
       expect(screen.queryByText("See all matching works")).not.toBeOnTheScreen()
     })

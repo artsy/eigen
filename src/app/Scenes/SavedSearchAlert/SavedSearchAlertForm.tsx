@@ -7,6 +7,7 @@ import {
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
+import { getAlertByCriteria } from "app/Scenes/SavedSearchAlert/queries/getAlertByCriteria"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -35,7 +36,6 @@ import { createSavedSearchAlert } from "./mutations/createSavedSearchAlert"
 import { deleteSavedSearchMutation } from "./mutations/deleteSavedSearchAlert"
 import { updateNotificationPreferences } from "./mutations/updateNotificationPreferences"
 import { updateSavedSearchAlert } from "./mutations/updateSavedSearchAlert"
-import { getSavedSearchIdByCriteria } from "./queries/getSavedSearchIdByCriteria"
 import { useSavedSearchPills } from "./useSavedSearchPills"
 
 export interface SavedSearchAlertFormProps {
@@ -119,7 +119,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         }
 
         const submitHandler = isUpdateForm ? handleUpdateAlert : handleCreateAlert
-        let duplicateSavedSearchId: string | undefined
+        let duplicateAlertID: string | undefined
 
         /**
          * We perform the mutation only if
@@ -136,10 +136,10 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
          * - this is update alert flow AND there were changes in filters
          */
         if (!isUpdateForm || (isUpdateForm && hasChangedFilters)) {
-          duplicateSavedSearchId = await getSavedSearchIdByCriteria(clearedAttributes)
+          duplicateAlertID = await getAlertByCriteria(clearedAttributes)
         }
 
-        if (duplicateSavedSearchId) {
+        if (duplicateAlertID) {
           showWarningMessageForDuplicateAlert({
             onReplacePress: () => {
               submitHandler(userAlertSettings, clearedAttributes)
@@ -148,7 +148,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
               goBack()
 
               requestAnimationFrame(() => {
-                navigate(`/settings/alerts/${duplicateSavedSearchId}/edit`)
+                navigate(`/settings/alerts/${duplicateAlertID}/edit`)
               })
             },
           })
@@ -187,7 +187,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       )
 
       const result: SavedSearchAlertMutationResult = {
-        id: response.updateSavedSearch?.savedSearchOrErrors.internalID,
+        id: response.updateAlert?.responseOrError?.alert?.internalID,
       }
 
       onComplete?.(result)
@@ -206,10 +206,14 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       formik.setSubmitting(true)
       const response = await createSavedSearchAlert(userAlertSettings, alertAttributes)
       const result: SavedSearchAlertMutationResult = {
-        id: response.createSavedSearch?.savedSearchOrErrors.internalID,
+        id: response.createAlert?.responseOrError?.alert?.internalID,
+        searchCriteriaID: response.createAlert?.responseOrError?.alert?.searchCriteriaID,
       }
 
-      navigation.navigate("ConfirmationScreen", { searchCriteriaID: result.id })
+      navigation.navigate("ConfirmationScreen", {
+        alertID: result.id,
+        searchCriteriaID: result.searchCriteriaID,
+      })
       refreshSavedAlerts()
       onComplete?.(result)
     } catch (error) {

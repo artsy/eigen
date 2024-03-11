@@ -23,14 +23,18 @@ import {
   tracks,
 } from "./CreateSavedSearchModal"
 
-jest.mock("../../../Scenes/SavedSearchAlert/queries/getSavedSearchIdByCriteria", () => ({
-  getSavedSearchIdByCriteria: () => Promise.resolve(null),
+jest.mock("../../../Scenes/SavedSearchAlert/queries/getAlertByCriteria", () => ({
+  getAlertByCriteria: () => Promise.resolve(null),
 }))
 
 jest.mock("../../../Scenes/SavedSearchAlert/mutations/createSavedSearchAlert", () => ({
   createSavedSearchAlert: () =>
     Promise.resolve({
-      createSavedSearch: { savedSearchOrErrors: { internalID: "new-alert-4242" } },
+      createAlert: {
+        responseOrError: {
+          alert: { internalID: "new-alert-4242", searchCriteriaID: "criteria-id" },
+        },
+      },
     }),
 }))
 
@@ -106,7 +110,8 @@ describe("CreateSavedSearchModal", () => {
   it("tracks clicks when the create alert button is pressed", async () => {
     const { UNSAFE_root } = renderWithWrappers(<TestRenderer />)
 
-    UNSAFE_root.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)
+    const createSavedSearchAlert = await UNSAFE_root.findByType(CreateSavedSearchAlert)
+    createSavedSearchAlert.props.params.onComplete(mockedMutationResult)
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       tracks.toggleSavedSearch(true, OwnerType.artist, "ownerId", "ownerSlug", "savedSearchAlertId")
@@ -134,7 +139,8 @@ describe("CreateSavedSearchModal", () => {
     await flushPromiseQueue()
 
     expect(mockNavigate).toHaveBeenCalledWith("ConfirmationScreen", {
-      searchCriteriaID: "new-alert-4242",
+      alertID: "new-alert-4242",
+      searchCriteriaID: "criteria-id",
     })
   })
 })

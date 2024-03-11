@@ -30,7 +30,7 @@ describe("EditSavedSearchAlert", () => {
 
     // await waitFor(() => {
     resolveMostRecentRelayOperation(mockEnvironment, {
-      SearchCriteria: () => searchCriteria,
+      Alert: () => alert,
     })
 
     resolveMostRecentRelayOperation(mockEnvironment, {
@@ -52,7 +52,7 @@ describe("EditSavedSearchAlert", () => {
     renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
-      SearchCriteria: () => searchCriteria,
+      Alert: () => alert,
       Viewer: () => viewerMocked,
     })
     resolveMostRecentRelayOperation(mockEnvironment, {
@@ -70,25 +70,23 @@ describe("EditSavedSearchAlert", () => {
 
     await waitFor(() => {
       const operation = mockEnvironment.mock.getMostRecentOperation()
-      expect(operation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
+      expect(operation.fragment.node.name).toBe("getAlertByCriteriaQuery")
     })
 
     resolveMostRecentRelayOperation(mockEnvironment, {
-      Me: () => ({
-        savedSearch: null,
+      Alert: () => ({
+        internalID: null,
       }),
     })
 
     await waitFor(() => {
       const operation = mockEnvironment.mock.getMostRecentOperation()
       expect(operation.request.variables.input).toEqual({
-        searchCriteriaID: "savedSearchAlertId",
-        attributes: {
-          artistIDs: ["artistID"],
-          artistSeriesIDs: ["monkeys"],
-          materialsTerms: ["paper"],
-        },
-        userAlertSettings: {
+        id: "savedSearchAlertId",
+        artistIDs: ["artistID"],
+        artistSeriesIDs: ["monkeys"],
+        materialsTerms: ["paper"],
+        settings: {
           push: true,
           email: true,
           name: "",
@@ -103,11 +101,11 @@ describe("EditSavedSearchAlert", () => {
 
     await waitFor(() => {
       resolveMostRecentRelayOperation(mockEnvironment, {
-        SearchCriteria: () => ({
-          ...searchCriteria,
+        Alert: () => ({
+          ...alert,
           name: "",
-          userAlertSettings: {
-            ...searchCriteria.userAlertSettings,
+          settings: {
+            ...alert.settings,
           },
         }),
       })
@@ -132,7 +130,7 @@ describe("EditSavedSearchAlert", () => {
 
       await waitFor(() => {
         resolveMostRecentRelayOperation(mockEnvironment, {
-          SearchCriteria: () => searchCriteria,
+          Alert: () => alert,
         })
         resolveMostRecentRelayOperation(mockEnvironment, {
           FilterArtworksConnection: () => filterArtworks,
@@ -156,10 +154,10 @@ describe("EditSavedSearchAlert", () => {
 
       await waitFor(() => {
         resolveMostRecentRelayOperation(mockEnvironment, {
-          SearchCriteria: () => ({
-            ...searchCriteria,
-            userAlertSettings: {
-              ...searchCriteria.userAlertSettings,
+          Alert: () => ({
+            ...alert,
+            settings: {
+              ...alert.settings,
               email: false,
               push: false,
             },
@@ -187,10 +185,10 @@ describe("EditSavedSearchAlert", () => {
 
       await waitFor(() => {
         resolveMostRecentRelayOperation(mockEnvironment, {
-          SearchCriteria: () => ({
-            ...searchCriteria,
-            userAlertSettings: {
-              ...searchCriteria.userAlertSettings,
+          Alert: () => ({
+            ...alert,
+            settings: {
+              ...alert.settings,
               push: false,
             },
           }),
@@ -217,10 +215,10 @@ describe("EditSavedSearchAlert", () => {
 
       await waitFor(() => {
         resolveMostRecentRelayOperation(mockEnvironment, {
-          SearchCriteria: () => ({
-            ...searchCriteria,
-            userAlertSettings: {
-              ...searchCriteria.userAlertSettings,
+          Alert: () => ({
+            ...alert,
+            settings: {
+              ...alert.settings,
               email: false,
             },
           }),
@@ -256,7 +254,7 @@ describe("EditSavedSearchAlert", () => {
 
         await waitFor(() => {
           resolveMostRecentRelayOperation(mockEnvironment, {
-            SearchCriteria: () => searchCriteria,
+            Alert: () => alert,
           })
           resolveMostRecentRelayOperation(mockEnvironment, {
             FilterArtworksConnection: () => filterArtworks,
@@ -277,7 +275,7 @@ describe("EditSavedSearchAlert", () => {
 
         await waitFor(() => {
           resolveMostRecentRelayOperation(mockEnvironment, {
-            SearchCriteria: () => searchCriteria,
+            Alert: () => alert,
           })
           resolveMostRecentRelayOperation(mockEnvironment, {
             FilterArtworksConnection: () => filterArtworks,
@@ -301,10 +299,10 @@ describe("EditSavedSearchAlert", () => {
         await flushPromiseQueue()
 
         expect(mockEnvironment.mock.getMostRecentOperation().fragment.node.name).toBe(
-          "getSavedSearchIdByCriteriaQuery"
+          "getAlertByCriteriaQuery"
         )
         resolveMostRecentRelayOperation(mockEnvironment, {
-          SearchCriteria: () => ({
+          Alert: () => ({
             internalID: null,
           }),
         })
@@ -315,7 +313,7 @@ describe("EditSavedSearchAlert", () => {
           "updateSavedSearchAlertMutation"
         )
         resolveMostRecentRelayOperation(mockEnvironment, {
-          SearchCriteria: () => searchCriteria,
+          Alert: () => alert,
         })
 
         await flushPromiseQueue()
@@ -326,7 +324,7 @@ describe("EditSavedSearchAlert", () => {
   })
 })
 
-const searchCriteria = {
+const alert = {
   acquireable: null,
   additionalGeneIDs: [],
   artistIDs: ["artistID"],
@@ -346,7 +344,7 @@ const searchCriteria = {
   partnerIDs: [],
   priceRange: null,
   width: null,
-  userAlertSettings: {
+  settings: {
     name: null,
     push: true,
     email: true,

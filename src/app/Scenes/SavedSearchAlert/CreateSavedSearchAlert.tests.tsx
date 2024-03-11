@@ -141,22 +141,24 @@ describe("CreateSavedSearchAlert", () => {
     fireEvent.press(screen.getByTestId("save-alert-button"))
 
     // Check alert duplicate
-    await mockOperationByName("getSavedSearchIdByCriteriaQuery", {
-      Me: () => ({
-        savedSearch: null,
+    await mockOperationByName("getAlertByCriteriaQuery", {
+      Alert: () => ({
+        internalID: null,
       }),
     })
 
     // Update alert
     await mockOperationByName("createSavedSearchAlertMutation", {
-      SearchCriteria: () => ({
+      Alert: () => ({
         internalID: "internalID",
+        searchCriteriaID: "searchCriteriaID",
       }),
     })
 
     await waitFor(() =>
       expect(onCompleteMock).toHaveBeenCalledWith({
         id: "internalID",
+        searchCriteriaID: "searchCriteriaID",
       })
     )
   })

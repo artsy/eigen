@@ -34,14 +34,14 @@ interface SavedSearchesListProps extends SavedSearchListWrapperProps {
 }
 
 const SORT_OPTIONS: SortOption[] = [
-  { value: "CREATED_AT_DESC", text: "Recently Added" },
+  { value: "ENABLED_AT_DESC", text: "Recently Added" },
   { value: "NAME_ASC", text: "Name (A-Z)" },
 ]
 
 export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
   const { me, fetchingMore, refreshMode, onRefresh, onLoadMore } = props
   const { space } = useTheme()
-  const items = extractNodes(me.savedSearchesConnection)
+  const items = extractNodes(me.alertsConnection)
 
   const refresh = () => {
     onRefresh("default")
@@ -101,7 +101,7 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
   const { relay } = props
 
   const [modalVisible, setModalVisible] = useState(false)
-  const [selectedSortValue, setSelectedSortValue] = useState("CREATED_AT_DESC")
+  const [selectedSortValue, setSelectedSortValue] = useState("ENABLED_AT_DESC")
   const prevSelectedSortValue = usePrevious(selectedSortValue)
   const [fetchingMore, setFetchingMore] = useState(false)
   const [refreshMode, setRefreshMode] = useState<RefreshType | null>(null)
@@ -228,13 +228,12 @@ export const SavedSearchesListPaginationContainer = createPaginationContainer(
     me: graphql`
       fragment SavedSearchesList_me on Me
       @argumentDefinitions(
-        artistIDs: { type: "[String!]", defaultValue: [] }
         count: { type: "Int", defaultValue: 20 }
         cursor: { type: "String" }
-        sort: { type: "SavedSearchesSortEnum", defaultValue: CREATED_AT_DESC }
+        sort: { type: "AlertsConnectionSortEnum", defaultValue: ENABLED_AT_DESC }
       ) {
-        savedSearchesConnection(first: $count, after: $cursor, artistIDs: $artistIDs, sort: $sort)
-          @connection(key: "SavedSearches_savedSearchesConnection") {
+        alertsConnection(first: $count, after: $cursor, sort: $sort)
+          @connection(key: "SavedSearches_alertsConnection") {
           pageInfo {
             hasNextPage
             startCursor
@@ -260,18 +259,12 @@ export const SavedSearchesListPaginationContainer = createPaginationContainer(
       }
     },
     getConnectionFromProps(props) {
-      return props.me.savedSearchesConnection
+      return props.me.alertsConnection
     },
     query: graphql`
-      query SavedSearchesListQuery(
-        $artistIDs: [String!]
-        $count: Int!
-        $cursor: String
-        $sort: SavedSearchesSortEnum
-      ) {
+      query SavedSearchesListQuery($count: Int!, $cursor: String, $sort: AlertsConnectionSortEnum) {
         me {
-          ...SavedSearchesList_me
-            @arguments(artistIDs: $artistIDs, count: $count, cursor: $cursor, sort: $sort)
+          ...SavedSearchesList_me @arguments(count: $count, cursor: $cursor, sort: $sort)
         }
       }
     `,

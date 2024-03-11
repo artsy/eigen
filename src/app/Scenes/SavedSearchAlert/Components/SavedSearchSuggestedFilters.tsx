@@ -34,7 +34,7 @@ export const SavedSearchSuggestedFilters: React.FC<{}> = () => {
     useNavigation<NavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">>()
 
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
-  const isEditFlow = !!SavedSearchStore.useStoreState((state) => state.currentSavedSearchID)
+  const isEditFlow = !!SavedSearchStore.useStoreState((state) => state.currentAlertID)
   const currentArtworkID = SavedSearchStore.useStoreState((state) => state.currentArtworkID)
 
   const data = useLazyLoadQuery<SavedSearchSuggestedFiltersFetchQuery>(
