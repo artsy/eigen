@@ -42,6 +42,7 @@ describe("ActivityItem with feature flag disabled", () => {
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewActivityPanelManagement: false })
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSingleActivityPanelScreen: false })
   })
 
   const { renderWithRelay } = setupTestWrapper({
@@ -288,6 +289,7 @@ describe("ActivityItem with feature flag enabled", () => {
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewActivityPanelManagement: true })
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSingleActivityPanelScreen: false })
   })
 
   const { renderWithRelay } = setupTestWrapper({
