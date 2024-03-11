@@ -106,21 +106,29 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
             </>
           )}
           <Spacer y={2} />
-          {answers.map((answer) => (
-            <AnimatedFadingPill
-              mb={2}
-              isVisible={!hideUnselectedPills || !!selected(answer)}
-              key={`${answer}-pill`}
-              rounded
-              size="xs"
-              Icon={showPillTick && selected(answer) ? CheckCircleFillIconWhite : undefined}
-              iconPosition="left"
-              onPress={() => dispatch({ type: action, payload: answer })}
-              selected={selected(answer)}
-            >
-              {answer}
-            </AnimatedFadingPill>
-          ))}
+          {answers.map((answer) => {
+            const isVisible = !hideUnselectedPills || !!selected(answer)
+            const shouldShowPillTick = showPillTick && selected(answer)
+
+            return (
+              <>
+                <AnimatedFadingPill
+                  variant="default"
+                  isVisible={isVisible}
+                  key={`${answer}-pill`}
+                  Icon={!!shouldShowPillTick ? CheckCircleFillIconWhite : undefined}
+                  onPress={() => dispatch({ type: action, payload: answer })}
+                  selected={selected(answer)}
+                >
+                  {!!shouldShowPillTick && <Spacer x={1} />}
+                  <Text variant="sm" color={selected(answer) ? "white100" : "black100"}>
+                    {answer}
+                  </Text>
+                </AnimatedFadingPill>
+                {!!isVisible && <Spacer y={2} />}
+              </>
+            )
+          })}
         </Flex>
         <Flex>
           <Button block disabled={isDisabled} onPress={handleNext}>
