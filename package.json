@@ -103,7 +103,6 @@
   ],
   "dependenciesComments": {
     "react-native": "Try running `npx @rnx-kit/align-deps --requirements react-native@0.66.5` when upgrading to a version, here 0.66.5",
-    "react-spring": "Try removing this! We have reanimated now.",
     "deprecated-react-native-prop-types": "Needed for patching react-native and react-native-credit-card-input due to rn removing the proptypes from their repo",
     "@babel/plugin-transform-named-capturing-groups-regex": "Needed for compiling android with hermes enabled"
   },
@@ -188,7 +187,6 @@
     "react-native-vimeo-iframe": "1.2.1",
     "react-native-webview": "13.6.2",
     "react-relay": "16.0.0",
-    "react-spring": "8.0.23",
     "react-tracking": "9.2.0",
     "react-use": "17.1.0",
     "remove-markdown": "0.5.0",
