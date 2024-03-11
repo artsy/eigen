@@ -23,7 +23,7 @@ interface ActivityRailItemProps {
 }
 
 export const ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE = 60
-const MAX_WIDTH = 180
+const ACTIVITY_RAIL_ITEM_WIDTH = 240
 
 export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
   const enableNavigateToASingleNotification = useFeatureFlag("AREnableSingleActivityPanelScreen")
@@ -49,7 +49,7 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
   if (!enableNewActivityPanelManagement) {
     return (
       <TouchableOpacity activeOpacity={0.65} onPress={handlePress}>
-        <Flex flexDirection="row">
+        <Flex flexDirection="row" width={ACTIVITY_RAIL_ITEM_WIDTH} overflowX="hidden">
           <Flex
             mr={1}
             accessibilityLabel="Activity Artwork Image"
@@ -65,7 +65,7 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
             )}
           </Flex>
 
-          <Flex maxWidth={MAX_WIDTH} overflow="hidden">
+          <Flex flex={1} overflow="hidden">
             <Flex flexDirection="row">
               <ActivityItemTypeLabel notificationType={item.notificationType} />
 
@@ -95,7 +95,7 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
 
   return (
     <TouchableOpacity activeOpacity={0.65} onPress={handlePress}>
-      <Flex flexDirection="row">
+      <Flex flexDirection="row" width={ACTIVITY_RAIL_ITEM_WIDTH}>
         <Flex
           mr={1}
           accessibilityLabel="Activity Artwork Image"
@@ -111,7 +111,7 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
           )}
         </Flex>
 
-        <Flex maxWidth={MAX_WIDTH} overflow="hidden">
+        <Flex flex={1} overflow="hidden">
           {!!isPartnerOffer && <PartnerOfferBadge notificationType={item.notificationType} />}
 
           <Headline headline={item.headline} notificationType={item.notificationType} />
@@ -151,6 +151,7 @@ interface HeadlineProps {
 
 const Headline: React.FC<HeadlineProps> = ({ headline, notificationType }) => {
   if (["ARTWORK_ALERT", "ARTWORK_PUBLISHED"].includes(notificationType)) {
+    // Splitting the headline by " by " to display the artist name on a new line
     return (
       <Text variant="sm-display" fontWeight="bold" ellipsizeMode="tail" numberOfLines={2}>
         {headline.split(" by ")[0] + " by \n" + headline.split(" by ")[1]}
@@ -159,6 +160,7 @@ const Headline: React.FC<HeadlineProps> = ({ headline, notificationType }) => {
   }
 
   if (["PARTNER_OFFER_CREATED"].includes(notificationType)) {
+    // Splitting the headline by " by " to only display the artist name
     return (
       <Text variant="sm-display" fontWeight="bold" ellipsizeMode="tail" numberOfLines={1}>
         {headline.split(" by ")[1]}
