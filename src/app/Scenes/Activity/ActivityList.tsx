@@ -22,8 +22,6 @@ interface ActivityListProps {
   type: NotificationType
 }
 
-const INITIAL_LOADING_SIZE = 10
-
 export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) => {
   const enableNewActivityPanelManagement = unsafe_getFeatureFlag(
     "AREnableNewActivityPanelManagement"
@@ -43,10 +41,6 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
   const notifications = notificationsNodes.filter((notification) =>
     shouldDisplayNotification(notification as Notification)
   )
-
-  // This is needed because `totalCount` and therefor `relay.hasMore()` doesn't work reliably
-  // TODO: Remove this once we have a reliable `totalCount`
-  const isLoading = isLoadingNext && notifications.length >= INITIAL_LOADING_SIZE
 
   const handleLoadMore = () => {
     if (!hasNext || isLoadingNext) {
@@ -136,7 +130,7 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
                 alignItems="center"
                 justifyContent="center"
                 my={2}
-                style={{ opacity: isLoading && hasNext ? 1 : 0 }}
+                style={{ opacity: isLoadingNext && hasNext ? 1 : 0 }}
               >
                 <Spinner />
               </Flex>
