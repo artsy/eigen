@@ -3,6 +3,7 @@ import {
   Flex,
   FullWidthIcon,
   GridIcon,
+  NAVBAR_HEIGHT,
   Screen,
   Skeleton,
   SkeletonBox,
@@ -23,7 +24,7 @@ import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
 import { MotiPressable } from "moti/interactions"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { LayoutAnimation } from "react-native"
 import { isTablet } from "react-native-device-info"
 
@@ -49,9 +50,6 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
   maxWorksPerArtist = 3,
   version: versionProp,
 }) => {
-  const enableNewWorksForYouFeed = useFeatureFlag("AREnableNewWorksForYouScreenFeed")
-  const forceShowNewWorksForYouFeed = useDevToggle("DTForceShowNewWorksForYouScreenFeed")
-
   const experiment = useExperimentVariant("onyx_new_works_for_you_feed")
 
   const isReferredFromEmail = utm_medium === "email"
@@ -59,6 +57,43 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
   // Use the version specified in the URL or no version if the screen is opened from the email.
   const version =
     isReferredFromEmail && versionProp ? versionProp?.toUpperCase() : DEFAULT_RECS_MODEL_VERSION
+
+  useEffect(() => {
+    experiment.trackExperiment({
+      context_owner_type: OwnerType.newWorksForYou,
+    })
+  }, [])
+
+  return (
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({ context_screen_owner_type: OwnerType.newWorksForYou })}
+    >
+      <Screen>
+        <Header />
+        <Screen.Body fullwidth>
+          <NewWorksForYouArtworksQR maxWorksPerArtist={maxWorksPerArtist} version={version} />
+        </Screen.Body>
+      </Screen>
+    </ProvideScreenTrackingWithCohesionSchema>
+  )
+}
+
+const Header = () => {
+  const [hideTitle, setHideTitle] = useState(false)
+  const enableNewWorksForYouFeed = useFeatureFlag("AREnableNewWorksForYouScreenFeed")
+  const forceShowNewWorksForYouFeed = useDevToggle("DTForceShowNewWorksForYouScreenFeed")
+  const { currentScrollY } = Screen.useScreenScrollContext()
+
+  // Reveal the title again after scroll down
+  useEffect(() => {
+    if (hideTitle) {
+      if (currentScrollY >= NAVBAR_HEIGHT) {
+        setHideTitle(false)
+      }
+    }
+  }, [currentScrollY])
+
+  const experiment = useExperimentVariant("onyx_new_works_for_you_feed")
 
   const defaultViewOption = GlobalStore.useAppState((state) => state.userPrefs.defaultViewOption)
 
@@ -77,36 +112,27 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
     (experiment.variant === "experiment" || forceShowNewWorksForYouFeed)
 
   return (
-    <ProvideScreenTrackingWithCohesionSchema
-      info={screen({ context_screen_owner_type: OwnerType.newWorksForYou })}
-    >
-      <Screen>
-        <Screen.AnimatedHeader
-          onBack={goBack}
-          title="New Works For You"
-          rightElements={
-            showToggleViewOptionIcon ? (
-              <MotiPressable
-                onPress={() => {
-                  setDefaultViewOption(defaultViewOption === "list" ? "grid" : "list")
-                  LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-                }}
-              >
-                {defaultViewOption === "grid" ? (
-                  <FullWidthIcon height={ICON_SIZE} width={ICON_SIZE} top="2px" />
-                ) : (
-                  <GridIcon height={ICON_SIZE} width={ICON_SIZE} top="2px" />
-                )}
-              </MotiPressable>
-            ) : undefined
-          }
-        />
-        {/* <Screen.StickySubHeader title="New Works For You" /> */}
-        <Screen.Body fullwidth>
-          <NewWorksForYouArtworksQR maxWorksPerArtist={maxWorksPerArtist} version={version} />
-        </Screen.Body>
-      </Screen>
-    </ProvideScreenTrackingWithCohesionSchema>
+    <Screen.AnimatedHeader
+      onBack={goBack}
+      title={hideTitle ? "" : "New Works For You"}
+      rightElements={
+        showToggleViewOptionIcon ? (
+          <MotiPressable
+            onPress={() => {
+              setHideTitle(true)
+              setDefaultViewOption(defaultViewOption === "list" ? "grid" : "list")
+              LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+            }}
+          >
+            {defaultViewOption === "grid" ? (
+              <FullWidthIcon height={ICON_SIZE} width={ICON_SIZE} top="2px" />
+            ) : (
+              <GridIcon height={ICON_SIZE} width={ICON_SIZE} top="2px" />
+            )}
+          </MotiPressable>
+        ) : undefined
+      }
+    />
   )
 }
 
