@@ -100,14 +100,7 @@ describe("ActivityRail", () => {
 
     fireEvent.press(screen.getByText(/mock-value-for-field-"title"/))
 
-    expect(navigate).toHaveBeenCalledWith('<mock-value-for-field-"targetHref">', {
-      passProps: {
-        predefinedFilters: [
-          { displayText: "Recently Added", paramName: "sort", paramValue: "-published_at" },
-        ],
-        searchCriteriaID: undefined,
-      },
-    })
+    expect(navigate).toHaveBeenCalledWith("/notification/id-1")
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedActivityGroup",

@@ -1,4 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
@@ -28,6 +29,7 @@ describe("Activity", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewActivityPanelManagement: false })
   })
 
   it("renders items", async () => {
