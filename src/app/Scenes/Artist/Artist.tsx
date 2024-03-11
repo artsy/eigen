@@ -35,11 +35,11 @@ import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { SearchCriteriaQueryRenderer } from "app/Scenes/Artist/SearchCriteria"
-import { goBack } from "app/system/navigation/navigate"
+import { useGoBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import React, { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { ActivityIndicator, View } from "react-native"
 import { Environment, graphql } from "react-relay"
 
@@ -47,6 +47,7 @@ const INITIAL_TAB = "Artworks"
 
 // Move to a shared file if used elsewhere
 interface RouteParams {
+  artistID?: string
   props?: {
     [key: string]: any
   }
@@ -79,6 +80,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
   const [headerHeight, setHeaderHeight] = useState(0)
   const popoverMessage = usePopoverMessage()
   const { showShareSheet } = useShareSheet()
+  const goBack = useGoBack()
 
   useEffect(() => {
     if (!!fetchCriteriaError) {
@@ -225,7 +227,6 @@ export const defaultArtistVariables = () => ({
 
 export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) => {
   const {
-    artistID,
     categories,
     environment,
     initialTab,
@@ -236,14 +237,18 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
     sizes,
   } = props
 
-  // exctact filter params from the query string. This is needed when
+  // extract filter params from the query string. This is needed when
   // the screen is opened via deeplink (/artist/kaws?attribution_class=..., for instance)
   // to make sure the filters are applied correctly
   const route = useRoute()
-  const routeParams = (route?.params as RouteParams)?.props || {}
+  const routeParams = route?.params as RouteParams
+
+  // TODO: did this break deep linking and filter params? fix the types above
+  const artistID = routeParams.artistID
+  const routeProps = routeParams.props || {}
   const filters: FilterArray = [
     ...(predefinedFilters || []),
-    ...getFilterParamsFromRouteParams(routeParams),
+    ...getFilterParamsFromRouteParams(routeProps),
   ]
 
   return (
@@ -278,7 +283,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
               above={{
                 query: ArtistScreenQuery,
                 variables: {
-                  artistID,
+                  artistID: artistID as string,
                   input: input as FilterArtworksInput,
                 },
               }}
@@ -291,7 +296,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
                     }
                   }
                 `,
-                variables: { artistID },
+                variables: { artistID: artistID as string },
               }}
               render={{
                 renderPlaceholder: () => <ArtistSkeleton />,

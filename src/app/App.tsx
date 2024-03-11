@@ -1,4 +1,5 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
+import Main2 from "app/Navigation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { codePushOptions } from "app/system/codepush"
 import { AsyncStorageDevtools } from "app/system/devTools/AsyncStorageDevTools"
@@ -55,6 +56,7 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true)
 }
 
+// @ts-ignore
 const Main = () => {
   useRageShakeDevMenu()
   useEffect(() => {
@@ -150,7 +152,7 @@ const InnerApp = () => (
     <AsyncStorageDevtools />
 
     <DevMenuWrapper>
-      <Main />
+      <Main2 />
     </DevMenuWrapper>
 
     <DynamicIslandStagingIndicator />

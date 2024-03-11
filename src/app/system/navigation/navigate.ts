@@ -1,14 +1,17 @@
 import { EventEmitter } from "events"
 import { ActionType, OwnerType, Screen } from "@artsy/cohesion"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { addBreadcrumb, captureMessage } from "@sentry/react-native"
 import { AppModule, ViewOptions, modules } from "app/AppRegistry"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { NavigationRoutes } from "app/Navigation"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { matchRoute } from "app/routes"
 import { GlobalStore, unsafe__getSelectedTab } from "app/store/GlobalStore"
 import { propsStore } from "app/store/PropsStore"
 import { postEventToProviders } from "app/utils/track/providers"
 import { visualize } from "app/utils/visualizer"
+import { useCallback } from "react"
 import { InteractionManager, Linking, Platform } from "react-native"
 import { saveDevNavigationStateSelectedTab } from "./useReloadedDevNavigationState"
 
@@ -40,6 +43,33 @@ export interface NavigateOptions {
 }
 
 let lastInvocation = { url: "", timestamp: 0 }
+
+export const useNavigate = () => {
+  const navigation = useNavigation<NavigationProp<NavigationRoutes>>()
+
+  const navigate = useCallback(
+    async (url: string, options = {}) => {
+      console.log("navigate", url, options)
+
+      // TODO: leaking old nav into new nav for time being, remove this when we have a new nav
+      const result = matchRoute(url)
+
+      console.log("navigate result", result)
+      if (result.type === "match") {
+        if (result.module === "Artist") {
+          navigation.navigate("Artist", result.params as { artistID: string })
+        } else if (result.module === "Partner") {
+          navigation.navigate("Partner", result.params as { partnerID: string })
+        } else if (result.module === "LocalDiscovery") {
+          navigation.navigate("LocalDiscovery")
+        }
+      }
+    },
+    [navigation]
+  )
+
+  return navigate
+}
 
 export async function navigate(url: string, options: NavigateOptions = {}) {
   let targetURL = url
@@ -227,6 +257,16 @@ export function goBack(backProps?: GoBackProps) {
   navigationEvents.emit("goBack", backProps)
 }
 
+export const useGoBack = () => {
+  const navigation = useNavigation()
+
+  const goBack = useCallback(() => {
+    navigation.goBack()
+  }, [navigation])
+
+  return goBack
+}
+
 export function popParentViewController() {
   LegacyNativeModules.ARScreenPresenterModule.popStack(unsafe__getSelectedTab())
 }
@@ -253,7 +293,6 @@ export function navigateToPartner(href: string) {
 
 /**
  * Looks up the entity by slug passed in and presents appropriate viewController
- * @param component: ignored, kept for compatibility
  * @param slug: identifier for the entity to be presented
  * @param entity: type of entity we are routing to, this is currently used to determine what loading
  * state to show, either 'fair' or 'partner'

@@ -9,11 +9,12 @@ import {
   Spacer,
   Tabs,
 } from "@artsy/palette-mobile"
+import { RouteProp, useRoute } from "@react-navigation/native"
 import { PartnerInitialQuery } from "__generated__/PartnerInitialQuery.graphql"
 import { PartnerQuery } from "__generated__/PartnerQuery.graphql"
 import { Partner_partner$data } from "__generated__/Partner_partner.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { goBack } from "app/system/navigation/navigate"
+import { useGoBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -36,6 +37,7 @@ interface PartnerProps {
 const Partner: React.FC<PartnerProps> = (props) => {
   const { partner, initialTab } = props
   const { partnerType, displayFullPartnerPage } = partner
+  const goBack = useGoBack()
 
   if (!displayFullPartnerPage && partnerType !== "Brand") {
     return (
@@ -129,10 +131,16 @@ export const PartnerContainer = createRefetchContainer(
   `
 )
 
+// TODO: Does this belong here or colocated with other routing code?
+type PartnerScreenRouteProp = RouteProp<{ Partner: { partnerID: string } }, "Partner">
+
 export const PartnerQueryRenderer: React.FC<{
   partnerID: string
   isVisible: boolean
-}> = ({ partnerID, ...others }) => {
+}> = ({ ...others }) => {
+  const route = useRoute<PartnerScreenRouteProp>()
+  const { partnerID } = route.params
+
   const { loading, data } = useClientQuery<PartnerInitialQuery>({
     environment: getRelayEnvironment(),
     query: graphql`
