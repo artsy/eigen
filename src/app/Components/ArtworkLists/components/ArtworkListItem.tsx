@@ -1,28 +1,33 @@
-import { Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Join, Spacer, Switch, Text } from "@artsy/palette-mobile"
 import { ArtworkListItem_item$key } from "__generated__/ArtworkListItem_item.graphql"
 import { ArtworkListImagePreview } from "app/Components/ArtworkLists/components/ArtworkListImagePreview"
+import { ArtworkListItemSelectedIcon } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/components/ArtworkListItemSelectedIcon"
 import { extractNodes } from "app/utils/extractNodes"
 import { FC, memo } from "react"
 import { TouchableOpacity } from "react-native"
 import { useFragment, graphql } from "react-relay"
-import { ArtworkListItemSelectedIcon } from "./ArtworkListItemSelectedIcon"
 
 export interface PressedArtworkListItem {
   internalID: string
   name: string
-  isSavedArtwork: boolean
+  isSavedArtwork?: boolean
+  shareableWithPartners?: boolean
 }
 
 interface ArtworkListItemProps {
   item: ArtworkListItem_item$key
-  selected: boolean
   onPress: (item: PressedArtworkListItem) => void
+  selected: boolean
+  shareableWithPartners?: boolean
 }
 
 const Item: FC<ArtworkListItemProps> = (props) => {
   const artworkList = useFragment(ArtworkListItemFragment, props.item)
   const nodes = extractNodes(artworkList.artworksConnection)
   const imageURL = nodes[0]?.image?.resized?.url ?? null
+
+  const selectionList = artworkList.isSavedArtwork !== undefined
+  const privacyList = artworkList.shareableWithPartners !== undefined && !selectionList
 
   const getArtworksCountText = () => {
     if (artworkList.artworksCount === 1) {
@@ -33,17 +38,26 @@ const Item: FC<ArtworkListItemProps> = (props) => {
   }
 
   const handlePress = () => {
-    const result: PressedArtworkListItem = {
-      internalID: artworkList.internalID,
-      name: artworkList.name,
-      isSavedArtwork: artworkList.isSavedArtwork,
+    let result: PressedArtworkListItem
+    if (selectionList) {
+      result = {
+        internalID: artworkList.internalID,
+        name: artworkList.name,
+        isSavedArtwork: artworkList.isSavedArtwork,
+      }
+    } else {
+      result = {
+        internalID: artworkList.internalID,
+        name: artworkList.name,
+        shareableWithPartners: artworkList.shareableWithPartners,
+      }
     }
 
     props.onPress(result)
   }
 
   return (
-    <TouchableOpacity onPress={handlePress}>
+    <TouchableOpacity disabled={!!privacyList} onPress={handlePress}>
       <Flex py={1} px={2} flexDirection="row" alignItems="center">
         <Join separator={<Spacer x={1} />}>
           <ArtworkListImagePreview imageURL={imageURL} />
@@ -57,7 +71,10 @@ const Item: FC<ArtworkListItemProps> = (props) => {
             </Text>
           </Flex>
 
-          <ArtworkListItemSelectedIcon selected={props.selected} />
+          {!!selectionList && <ArtworkListItemSelectedIcon selected={props.selected} />}
+          {!!privacyList && (
+            <Switch value={props.shareableWithPartners} onValueChange={handlePress} />
+          )}
         </Join>
       </Flex>
     </TouchableOpacity>
@@ -67,10 +84,15 @@ const Item: FC<ArtworkListItemProps> = (props) => {
 export const ArtworkListItem = memo(Item)
 
 const ArtworkListItemFragment = graphql`
-  fragment ArtworkListItem_item on Collection @argumentDefinitions(artworkID: { type: "String!" }) {
+  fragment ArtworkListItem_item on Collection
+  @argumentDefinitions(
+    artworkID: { type: "String!" }
+    includeArtwork: { type: "Boolean", defaultValue: true }
+  ) {
     name
     internalID
-    isSavedArtwork(artworkID: $artworkID)
+    isSavedArtwork(artworkID: $artworkID) @include(if: $includeArtwork)
+    shareableWithPartners
     artworksCount(onlyVisible: true)
     artworksConnection(first: 4) {
       edges {

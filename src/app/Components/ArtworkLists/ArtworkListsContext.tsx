@@ -3,6 +3,7 @@ import { dispatchArtworkSavedStateChanged } from "app/Components/ArtworkLists/Ar
 import { ArtworkListEntity } from "app/Components/ArtworkLists/types"
 import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkListsToast"
 import { CreateNewArtworkListView } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/CreateNewArtworkListView"
+import { EditArtworkListsPrivacyView } from "app/Components/ArtworkLists/views/EditArtworkListsPrivacyView/EditArtworkListsPrivacyView"
 import { SelectArtworkListsForArtworkView } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/SelectArtworkListsForArtworkView"
 import { createContext, FC, useCallback, useContext, useReducer } from "react"
 import {
@@ -24,12 +25,15 @@ export interface ArtworkListsProviderProps {
 export const ARTWORK_LISTS_CONTEXT_INITIAL_STATE: ArtworkListState = {
   selectArtworkListsViewVisible: false,
   createNewArtworkListViewVisible: false,
+  editListPrivacyViewVisible: false,
   artwork: null,
   artworkListID: null,
   recentlyAddedArtworkList: null,
   selectedTotalCount: 0,
   addingArtworkLists: [],
   removingArtworkLists: [],
+  keepingArtworkListsPrivate: [],
+  sharingArtworkLists: [],
   hasUnsavedChanges: false,
   toastBottomPadding: null,
 }
@@ -178,11 +182,17 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
 
   const addingArtworkListIDs = state.addingArtworkLists.map((entity) => entity.internalID)
   const removingArtworkListIDs = state.removingArtworkLists.map((entity) => entity.internalID)
+  const keepArtworkListPrivateIDs = state.keepingArtworkListsPrivate.map(
+    (entity) => entity.internalID
+  )
+  const shareArtworkListIDs = state.sharingArtworkLists.map((entity) => entity.internalID)
   const value: ArtworkListsContextState = {
     state,
     artworkListId,
     addingArtworkListIDs,
     removingArtworkListIDs,
+    keepArtworkListPrivateIDs,
+    shareArtworkListIDs,
     dispatch,
     reset,
     onSave,
@@ -197,6 +207,7 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
           {!!state.artwork && !!state.selectArtworkListsViewVisible && (
             <SelectArtworkListsForArtworkView />
           )}
+          {!!state.editListPrivacyViewVisible && <EditArtworkListsPrivacyView />}
           {!!state.createNewArtworkListViewVisible && <CreateNewArtworkListView />}
         </>
       </BottomSheetModalProvider>
@@ -230,26 +241,7 @@ const reducer = (state: ArtworkListState, action: ArtworkListAction): ArtworkLis
         recentlyAddedArtworkList: action.payload,
       }
     case "ADD_OR_REMOVE_ARTWORK_LIST":
-      // eslint-disable-next-line no-case-declarations
-      const { artworkList, mode } = action.payload
-      // eslint-disable-next-line no-case-declarations
-      const artworkLists = state[mode]
-      // eslint-disable-next-line no-case-declarations
-      const ids = artworkLists.map((artworkList) => artworkList.internalID)
-      // eslint-disable-next-line no-case-declarations
-      const updatedState = { ...state }
-
-      if (ids.includes(artworkList.internalID)) {
-        updatedState[mode] = artworkLists.filter(
-          (entity) => entity.internalID !== artworkList.internalID
-        )
-      } else {
-        updatedState[mode] = [...artworkLists, artworkList]
-      }
-
-      updatedState.hasUnsavedChanges = hasChanges(updatedState)
-
-      return updatedState
+      return addOrRemoveArtworkList(state, action.payload)
     case "SET_SELECTED_TOTAL_COUNT":
       return {
         ...state,
@@ -265,9 +257,60 @@ const reducer = (state: ArtworkListState, action: ArtworkListAction): ArtworkLis
         ...state,
         hasUnsavedChanges: action.payload,
       }
+    case "SET_EDIT_LIST_PRIVACY_VIEW_VISIBLE":
+      return {
+        ...state,
+        editListPrivacyViewVisible: action.payload,
+      }
+    case "SHARE_OR_KEEP_ARTWORK_LIST":
+      return shareOrKeepArtworkList(state, action.payload)
     default:
       return state
   }
+}
+
+const addOrRemoveArtworkList = (
+  state: ArtworkListState,
+  actionPayload: Extract<ArtworkListAction, { type: "ADD_OR_REMOVE_ARTWORK_LIST" }>["payload"]
+): ArtworkListState => {
+  const { artworkList, mode } = actionPayload
+  const artworkLists = state[mode]
+  const ids = artworkLists.map((artworkList) => artworkList.internalID)
+  const updatedState = { ...state }
+
+  if (ids.includes(artworkList.internalID)) {
+    updatedState[mode] = artworkLists.filter(
+      (entity) => entity.internalID !== artworkList.internalID
+    )
+  } else {
+    updatedState[mode] = [...artworkLists, artworkList]
+  }
+
+  updatedState.hasUnsavedChanges = hasChanges(updatedState)
+
+  return updatedState
+}
+
+const shareOrKeepArtworkList = (
+  state: ArtworkListState,
+  actionPayload: Extract<ArtworkListAction, { type: "SHARE_OR_KEEP_ARTWORK_LIST" }>["payload"]
+): ArtworkListState => {
+  const { artworkList, mode } = actionPayload
+  const artworkLists = state[mode]
+  const ids = artworkLists.map((artworkList) => artworkList.internalID)
+  const updatedState = { ...state }
+
+  if (ids.includes(artworkList.internalID)) {
+    updatedState[mode] = artworkLists.filter(
+      (entity) => entity.internalID !== artworkList.internalID
+    )
+  } else {
+    updatedState[mode] = [...artworkLists, artworkList]
+  }
+
+  updatedState.hasUnsavedChanges = hasPrivacyChanges(updatedState)
+
+  return updatedState
 }
 
 const isArtworkListsIncludes = (artworkListID: string, artworkLists: ArtworkListEntity[]) => {
@@ -276,4 +319,8 @@ const isArtworkListsIncludes = (artworkListID: string, artworkLists: ArtworkList
 
 const hasChanges = (state: ArtworkListState) => {
   return state.addingArtworkLists.length !== 0 || state.removingArtworkLists.length !== 0
+}
+
+const hasPrivacyChanges = (state: ArtworkListState) => {
+  return state.sharingArtworkLists.length !== 0 || state.keepingArtworkListsPrivate.length !== 0
 }

@@ -19,7 +19,9 @@ export const StickyBottomContentPlaceholder = () => {
   return <Box height={STICKY_BOTTOM_CONTENT_HEIGHT + bottomOffset} />
 }
 
-export const StickyBottomContent: FC<BottomSheetFooterProps> = ({ animatedFooterPosition }) => {
+export const SelectArtworkListStickyBottomContent: FC<BottomSheetFooterProps> = ({
+  animatedFooterPosition,
+}) => {
   const {
     state: { hasUnsavedChanges },
   } = useArtworkListsContext()

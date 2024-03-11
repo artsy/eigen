@@ -2,6 +2,7 @@ import {
   AddIcon,
   Box,
   Button,
+  Flex,
   LinkText,
   Skeleton,
   SkeletonBox,
@@ -24,6 +25,13 @@ export const SavesTabHeader = () => {
     })
   }
 
+  const handleEditListPrivacy = () => {
+    dispatch({
+      type: "SET_EDIT_LIST_PRIVACY_VIEW_VISIBLE",
+      payload: true,
+    })
+  }
+
   return (
     <Box>
       <ProgressiveOnboardingSignalInterest>
@@ -40,17 +48,22 @@ export const SavesTabHeader = () => {
         </Text>
       </ProgressiveOnboardingSignalInterest>
 
-      <Button
-        haptic
-        variant="text"
-        size="small"
-        onPress={handleCreateList}
-        icon={<AddIcon />}
-        ml={-1}
-        my={2}
-      >
-        Create New List
-      </Button>
+      <Flex flexDirection="row" justifyContent="space-between" alignItems="center" my={2}>
+        <Button
+          haptic
+          variant="text"
+          size="small"
+          onPress={handleCreateList}
+          icon={<AddIcon />}
+          ml={-1}
+        >
+          Create New List
+        </Button>
+
+        <Button haptic variant="text" size="small" onPress={handleEditListPrivacy}>
+          Edit List Privacy
+        </Button>
+      </Flex>
     </Box>
   )
 }

@@ -30,6 +30,11 @@ export enum ArtworkListMode {
   RemovingArtworkList = "removingArtworkLists",
 }
 
+export enum ArtworkListPrivacyMode {
+  SharingArtworkLists = "sharingArtworkLists",
+  KeepingArtworkListsPrivate = "keepingArtworkListsPrivate",
+}
+
 export interface ArtworkListEntity {
   internalID: string
   name: string
@@ -38,12 +43,15 @@ export interface ArtworkListEntity {
 export type ArtworkListState = {
   selectArtworkListsViewVisible: boolean
   createNewArtworkListViewVisible: boolean
+  editListPrivacyViewVisible: boolean
   artwork: ArtworkEntity | null
   artworkListID: string | null
   recentlyAddedArtworkList: RecentlyAddedArtworkList | null
   selectedTotalCount: number
   addingArtworkLists: ArtworkListEntity[]
   removingArtworkLists: ArtworkListEntity[]
+  sharingArtworkLists: ArtworkListEntity[]
+  keepingArtworkListsPrivate: ArtworkListEntity[]
   hasUnsavedChanges: boolean
   toastBottomPadding: number | null
 }
@@ -66,12 +74,19 @@ export type ArtworkListAction =
     }
   | { type: "SET_SELECTED_TOTAL_COUNT"; payload: number }
   | { type: "SET_UNSAVED_CHANGES"; payload: boolean }
+  | { type: "SET_EDIT_LIST_PRIVACY_VIEW_VISIBLE"; payload: boolean }
+  | {
+      type: "SHARE_OR_KEEP_ARTWORK_LIST"
+      payload: { mode: ArtworkListPrivacyMode; artworkList: ArtworkListEntity }
+    }
 
 export interface ArtworkListsContextState {
   state: ArtworkListState
   artworkListId?: string
   addingArtworkListIDs: string[]
   removingArtworkListIDs: string[]
+  keepArtworkListPrivateIDs: string[]
+  shareArtworkListIDs: string[]
   dispatch: Dispatch<ArtworkListAction>
   reset: () => void
   onSave: (result: SaveResult) => void
