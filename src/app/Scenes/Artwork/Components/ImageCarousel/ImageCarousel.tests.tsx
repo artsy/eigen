@@ -1,4 +1,4 @@
-import { fireEvent, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ImageCarouselTestsQuery } from "__generated__/ImageCarouselTestsQuery.graphql"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -39,28 +39,22 @@ describe("ImageCarouselFragmentContainer", () => {
     })
 
     it("renders a flat list with five entries", () => {
-      const { getByLabelText, getAllByLabelText } = renderWithRelay({
-        Artwork: () => artworkFixture,
-      })
+      renderWithRelay({ Artwork: () => artworkFixture })
 
-      expect(getByLabelText("Image Carousel")).toBeTruthy()
-      expect(getAllByLabelText("Image with Loading State")).toHaveLength(5)
+      expect(screen.getByLabelText("Image Carousel")).toBeTruthy()
+      expect(screen.getAllByLabelText("Image with Loading State")).toHaveLength(5)
     })
 
     it("shows five pagination dots", () => {
-      const { getAllByLabelText } = renderWithRelay({
-        Artwork: () => artworkFixture,
-      })
+      renderWithRelay({ Artwork: () => artworkFixture })
 
-      expect(getAllByLabelText("Image Pagination Indicator")).toHaveLength(5)
+      expect(screen.getAllByLabelText("Image Pagination Indicator")).toHaveLength(5)
     })
 
     it("shows the first pagination dot as being selected and the rest as not selected", () => {
-      const { getAllByLabelText } = renderWithRelay({
-        Artwork: () => artworkFixture,
-      })
+      renderWithRelay({ Artwork: () => artworkFixture })
 
-      const indicators = getAllByLabelText("Image Pagination Indicator")
+      const indicators = screen.getAllByLabelText("Image Pagination Indicator")
 
       expect(indicators[0]).toHaveStyle({ opacity: 1 })
       expect(indicators[1]).toHaveStyle({ opacity: 0.1 })
@@ -74,11 +68,9 @@ describe("ImageCarouselFragmentContainer", () => {
         legacyFakeTimers: true,
       })
 
-      const { getByLabelText, getAllByLabelText } = renderWithRelay({
-        Artwork: () => artworkFixture,
-      })
+      renderWithRelay({ Artwork: () => artworkFixture })
 
-      const container = getByLabelText("Image Carousel")
+      const container = screen.getByLabelText("Image Carousel")
       const measurements = getMeasurements({
         media: artworkFixture?.figures as any,
         boundingBox: {
@@ -110,7 +102,7 @@ describe("ImageCarouselFragmentContainer", () => {
       })
       jest.advanceTimersByTime(5000)
 
-      const indicators = getAllByLabelText("Image Pagination Indicator")
+      const indicators = screen.getAllByLabelText("Image Pagination Indicator")
 
       expect(indicators[0]).toHaveStyle({ opacity: 1 })
       expect(indicators[1]).toHaveStyle({ opacity: 0.1 })
@@ -170,14 +162,9 @@ describe("ImageCarouselFragmentContainer", () => {
         return image
       })
 
-      const { getAllByLabelText } = renderWithRelay({
-        Artwork: () => ({
-          ...artworkFixture,
-          figures: fixtureWithoutZoom,
-        }),
-      })
+      renderWithRelay({ Artwork: () => ({ ...artworkFixture, figures: fixtureWithoutZoom }) })
 
-      expect(getAllByLabelText("Image Pagination Indicator")).toHaveLength(3)
+      expect(screen.getAllByLabelText("Image Pagination Indicator")).toHaveLength(3)
     })
 
     it("only shows one image when none of the images have deep zoom", () => {
@@ -186,15 +173,10 @@ describe("ImageCarouselFragmentContainer", () => {
         deepZoom: null,
       }))
 
-      const { getByLabelText, queryAllByLabelText } = renderWithRelay({
-        Artwork: () => ({
-          ...artworkFixture,
-          figures: noDeepZoomFixture,
-        }),
-      })
+      renderWithRelay({ Artwork: () => ({ ...artworkFixture, figures: noDeepZoomFixture }) })
 
-      expect(queryAllByLabelText("Image Pagination Indicator")).toHaveLength(0)
-      expect(getByLabelText("Image Carousel")).toHaveProp("scrollEnabled", false)
+      expect(screen.queryAllByLabelText("Image Pagination Indicator")).toHaveLength(0)
+      expect(screen.getByLabelText("Image Carousel")).toHaveProp("scrollEnabled", false)
     })
   })
 
@@ -205,19 +187,15 @@ describe("ImageCarouselFragmentContainer", () => {
     }
 
     it("shows no pagination dots", async () => {
-      const { queryAllByLabelText } = renderWithRelay({
-        Artwork: () => artwork,
-      })
+      renderWithRelay({ Artwork: () => artwork })
 
-      expect(queryAllByLabelText("Image Pagination Indicator")).toHaveLength(0)
+      expect(screen.queryAllByLabelText("Image Pagination Indicator")).toHaveLength(0)
     })
 
     it("disables scrolling", async () => {
-      const { getByLabelText } = renderWithRelay({
-        Artwork: () => artwork,
-      })
+      renderWithRelay({ Artwork: () => artwork })
 
-      expect(getByLabelText("Image Carousel")).toHaveProp("scrollEnabled", false)
+      expect(screen.getByLabelText("Image Carousel")).toHaveProp("scrollEnabled", false)
     })
   })
 
@@ -243,21 +221,17 @@ describe("ImageCarouselFragmentContainer", () => {
     }
 
     it("renders a flat list with two entries", () => {
-      const { getByLabelText, getAllByLabelText } = renderWithRelay({
-        Artwork: () => artwork,
-      })
+      renderWithRelay({ Artwork: () => artwork })
 
-      expect(getByLabelText("Image Carousel")).toBeTruthy()
-      expect(getAllByLabelText("Image with Loading State")).toHaveLength(1)
-      expect(getAllByLabelText("Vimeo Video Player")).toHaveLength(1)
+      expect(screen.getByLabelText("Image Carousel")).toBeTruthy()
+      expect(screen.getAllByLabelText("Image with Loading State")).toHaveLength(1)
+      expect(screen.getAllByLabelText("Vimeo Video Player")).toHaveLength(1)
     })
 
     it("shows pagination dots", async () => {
-      const { queryAllByLabelText } = renderWithRelay({
-        Artwork: () => artwork,
-      })
+      renderWithRelay({ Artwork: () => artwork })
 
-      expect(queryAllByLabelText("Image Pagination Indicator")).toHaveLength(2)
+      expect(screen.queryAllByLabelText("Image Pagination Indicator")).toHaveLength(2)
     })
 
     it("makes a request out to fetch video cover data", async () => {
@@ -267,9 +241,7 @@ describe("ImageCarouselFragmentContainer", () => {
         }),
       } as any)
 
-      renderWithRelay({
-        Artwork: () => artwork,
-      })
+      renderWithRelay({ Artwork: () => artwork })
 
       await waitFor(() => {
         expect(fetchMock).toHaveBeenCalledWith(
@@ -299,17 +271,17 @@ describe("ImageCarouselFragmentContainer", () => {
         }),
       } as any)
 
-      const { getAllByLabelText } = renderWithRelay({
+      renderWithRelay({
         Artwork: () => artwork,
       })
 
       await flushPromiseQueue()
-      const button = getAllByLabelText("Vimeo Play Button")
+      const button = screen.getAllByLabelText("Vimeo Play Button")
       expect(button).toHaveLength(1)
 
       fireEvent.press(button[0])
       await flushPromiseQueue()
-      expect(getAllByLabelText("Vimeo Video Player Controls")).toHaveLength(1)
+      expect(screen.getAllByLabelText("Vimeo Video Player Controls")).toHaveLength(1)
     })
   })
 
@@ -319,25 +291,23 @@ describe("ImageCarouselFragmentContainer", () => {
     }
 
     it("can display local images", () => {
-      const { getAllByLabelText } = renderWithWrappers(
-        <TestWrapper staticImages={localImages} cardHeight={275} />
-      )
+      renderWithWrappers(<TestWrapper staticImages={localImages} cardHeight={275} />)
 
-      expect(getAllByLabelText("Image with Loading State")).toHaveLength(localImages.length)
+      expect(screen.getAllByLabelText("Image with Loading State")).toHaveLength(localImages.length)
     })
 
     it("defaults to paginationDots", () => {
-      const { getAllByLabelText, queryByLabelText } = renderWithWrappers(
-        <TestWrapper staticImages={localImages} cardHeight={275} />
-      )
+      renderWithWrappers(<TestWrapper staticImages={localImages} cardHeight={275} />)
 
-      expect(getAllByLabelText("Image with Loading State")).toHaveLength(localImages.length)
-      expect(getAllByLabelText("Image Pagination Indicator")).toHaveLength(localImages.length)
-      expect(queryByLabelText("Image Pagination Scroll Bar")).toBeFalsy()
+      expect(screen.getAllByLabelText("Image with Loading State")).toHaveLength(localImages.length)
+      expect(screen.getAllByLabelText("Image Pagination Indicator")).toHaveLength(
+        localImages.length
+      )
+      expect(screen.queryByLabelText("Image Pagination Scroll Bar")).toBeFalsy()
     })
 
     it("Indicator can be a scrollbar", () => {
-      const { queryAllByLabelText, queryByLabelText } = renderWithWrappers(
+      renderWithWrappers(
         <TestWrapper
           staticImages={localImages}
           cardHeight={275}
@@ -345,8 +315,8 @@ describe("ImageCarouselFragmentContainer", () => {
         />
       )
 
-      expect(queryByLabelText("Image Pagination Scroll Bar")).toBeTruthy()
-      expect(queryAllByLabelText("Image Pagination Indicator")).toHaveLength(0)
+      expect(screen.getByLabelText("Image Pagination Scroll Bar")).toBeTruthy()
+      expect(screen.queryAllByLabelText("Image Pagination Indicator")).toHaveLength(0)
     })
   })
 })
@@ -417,6 +387,7 @@ const artworkFixture: ImageCarouselTestsQuery["rawResponse"]["artwork"] = {
 const localImages: CarouselImageDescriptor[] = [
   {
     internalID: "1",
+    blurhash: "H4$#",
     url: "file:///this/is/not/a/real/image.jpg",
     largeImageURL: "file:///this/is/not/a/real/image.jpg",
     resized: {
@@ -428,6 +399,7 @@ const localImages: CarouselImageDescriptor[] = [
   },
   {
     internalID: "2",
+    blurhash: "H4$#2",
     url: "file:///this/is/not/a/real/image.jpg",
     largeImageURL: "file:///this/is/not/a/real/image.jpg",
     resized: {
@@ -439,6 +411,7 @@ const localImages: CarouselImageDescriptor[] = [
   },
   {
     internalID: "3",
+    blurhash: "H4$#3",
     url: "file:///this/is/not/a/real/image.jpg",
     largeImageURL: "file:///this/is/not/a/real/image.jpg",
     resized: {

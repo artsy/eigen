@@ -48,7 +48,14 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
     useFeatureFlag("AREnableNewAuctionsRailCard") && cardSize === "large"
   const color = useColor()
   const tracking = useTracking()
-  const artwork = saleArtwork?.artwork!
+  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
+
+  const artwork = saleArtwork?.artwork
+
+  if (!artwork) {
+    return null
+  }
+
   const extendedBiddingEndAt = saleArtwork?.extendedBiddingEndAt
   const lotEndAt = saleArtwork?.endAt
   const endAt = extendedBiddingEndAt ?? lotEndAt ?? saleArtwork.sale?.endAt ?? ""
@@ -59,8 +66,8 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
       const trackingArgs: TappedEntityGroupArgs = {
         contextModule: ContextModule.auctionRail,
         contextScreenOwnerType: OwnerType.sale,
-        contextScreenOwnerId: artwork.internalID,
-        contextScreenOwnerSlug: artwork.slug,
+        contextScreenOwnerId: artwork?.internalID,
+        contextScreenOwnerSlug: artwork?.slug,
         destinationScreenOwnerType: OwnerType.artwork,
         type: "thumbnail",
       }
@@ -70,7 +77,7 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
     onPress()
   }
 
-  if (!!artwork.image?.imageURL && !artwork.image?.aspectRatio && !useSquareAspectRatio) {
+  if (!!artwork?.image?.imageURL && !artwork.image?.aspectRatio && !useSquareAspectRatio) {
     throw new Error("imageAspectRatio is required for non-square images")
   }
 
@@ -78,21 +85,17 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
 
   const imageWidth = useSquareAspectRatio
     ? IMAGE_CONTAINER_WIDTH
-    : (artwork.image?.aspectRatio ?? 1) * CONTAINER_HEIGHT
+    : (artwork?.image?.aspectRatio ?? 1) * CONTAINER_HEIGHT
 
-  const imageDisplay = artwork.image?.imageURL ? (
-    <OpaqueImageView
-      imageURL={artwork.image.imageURL}
-      width={imageWidth}
-      height={IMAGE_CONTAINER_WIDTH}
-      style={{
-        borderRadius: 2,
-        overflow: "hidden",
-        justifyContent: "flex-end",
-        paddingHorizontal: 5,
-        paddingBottom: 5,
-      }}
-    />
+  const imageDisplay = artwork?.image?.imageURL ? (
+    <Flex px={0.5} pb={0.5} justifyContent="flex-end" overflow="hidden" borderRadius={2}>
+      <OpaqueImageView
+        imageURL={artwork.image.imageURL}
+        width={imageWidth}
+        height={IMAGE_CONTAINER_WIDTH}
+        blurhash={showBlurhash ? artwork.image.blurhash : undefined}
+      />
+    </Flex>
   ) : (
     <Box
       bg={color("black30")}
@@ -198,6 +201,7 @@ export const SaleArtworkTileRailCardContainer = createFragmentContainer(SaleArtw
         image {
           imageURL: url(version: ["large"])
           aspectRatio
+          blurhash
         }
         internalID
         slug

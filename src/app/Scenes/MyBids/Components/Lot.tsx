@@ -20,12 +20,9 @@ class Lot extends React.Component<Props> {
     return (
       <Flex flexDirection="row" width="50%" paddingRight={2}>
         <Flex mr={isSmallScreen ? 0.5 : 1}>
-          <OpaqueImageView
-            width={50}
-            height={50}
-            style={{ borderRadius: 2, overflow: "hidden" }}
-            imageURL={saleArtwork?.artwork?.image?.url}
-          />
+          <Flex width={50} height={50} borderRadius={2} overflow="hidden">
+            <OpaqueImageView width={50} height={50} imageURL={saleArtwork?.artwork?.image?.url} />
+          </Flex>
           {!!ArtworkBadge && (
             <Box position="absolute" top={-2} left={-5}>
               <ArtworkBadge />

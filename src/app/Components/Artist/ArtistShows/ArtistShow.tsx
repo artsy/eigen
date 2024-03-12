@@ -3,6 +3,7 @@ import { Touchable } from "@artsy/palette-mobile"
 import { ArtistShow_show$data, ArtistShow_show$key } from "__generated__/ArtistShow_show.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { hrefForPartialShow } from "app/utils/router"
 import { View, ViewStyle } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -21,6 +22,7 @@ interface Props {
 
 export const ArtistShow: React.FC<Props> = ({ styles, show, index }) => {
   const tracking = useTracking()
+  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
   const data = useFragment(query, show)
 
   if (!data) {
@@ -40,7 +42,8 @@ export const ArtistShow: React.FC<Props> = ({ styles, show, index }) => {
       <View style={[styles?.container]}>
         <OpaqueImageView
           imageURL={imageURL}
-          style={[styles?.image, { overflow: "hidden", borderRadius: 2, flex: 0 }]}
+          blurhash={showBlurhash ? image?.blurhash : undefined}
+          style={[styles?.image as any, { overflow: "hidden", borderRadius: 2, flex: 0 }]}
         />
         {/* this wrapper required to make numberOfLines work when parent is a row */}
         <View style={{ flex: 1 }}>
@@ -59,6 +62,7 @@ const query = graphql`
     is_fair_booth: isFairBooth
     coverImage {
       url(version: "large")
+      blurhash
     }
     ...Metadata_show
   }

@@ -473,6 +473,7 @@ export const InfiniteScrollArtworksGridContainer = createFragmentContainer(
             id
             image(includeAll: false) {
               aspectRatio
+              blurhash
             }
             ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
             ...MyCollectionArtworkGridItem_artwork
@@ -504,6 +505,7 @@ export const InfiniteScrollMyCollectionArtworksGridContainer = createFragmentCon
             id
             image(includeAll: true) {
               aspectRatio
+              blurhash
             }
             artistNames
             medium

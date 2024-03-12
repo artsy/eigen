@@ -15,6 +15,7 @@ import {
   ArtistHeader_artist$key,
 } from "__generated__/ArtistHeader_artist.graphql"
 import { navigate } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { FlatList, LayoutChangeEvent, ViewProps } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
@@ -48,6 +49,8 @@ export const useArtistHeaderImageDimensions = () => {
 
 export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
   const space = useSpace()
+  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
+
   const { width, height, aspectRatio } = useArtistHeaderImageDimensions()
   const { updateScrollYOffset } = useScreenScrollContext()
   const tracking = useTracking()
@@ -107,6 +110,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
             width={width}
             height={height}
             style={{ alignSelf: "center" }}
+            blurhash={showBlurhash ? artistData.coverArtwork.image.blurhash : undefined}
           />
           <Spacer y={2} />
         </Flex>
@@ -164,6 +168,7 @@ const artistFragment = graphql`
     coverArtwork {
       title
       image {
+        blurhash
         url(version: "larger")
       }
     }
