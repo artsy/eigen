@@ -36,11 +36,13 @@ const TestRenderer = () => {
   return <ActivityItem notification={items[0] as unknown as ActivityItem_notification$key} />
 }
 
-describe("ActivityItem with feature flag disabled", () => {
+describe("ActivityItem with feature flags disabled", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
+
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSingleActivityPanelScreen: false })
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewActivityPanelManagement: false })
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSingleActivityPanelScreen: false })
   })
@@ -283,13 +285,11 @@ describe("ActivityItem with feature flag disabled", () => {
   })
 })
 
-describe("ActivityItem with feature flag enabled", () => {
+describe("ActivityItem", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewActivityPanelManagement: true })
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSingleActivityPanelScreen: false })
   })
 
   const { renderWithRelay } = setupTestWrapper({
@@ -347,7 +347,7 @@ describe("ActivityItem with feature flag enabled", () => {
     `)
   })
 
-  it("should pass predefined props when", async () => {
+  it("navigates to notification screen when supported", async () => {
     renderWithRelay({
       Notification: () => notificationWithFF,
     })
@@ -357,47 +357,7 @@ describe("ActivityItem with feature flag enabled", () => {
 
     await flushPromiseQueue()
 
-    expect(navigate).toHaveBeenCalledWith(targetUrl, {
-      passProps: {
-        predefinedFilters: [
-          {
-            displayText: "Recently Added",
-            paramName: "sort",
-            paramValue: "-published_at",
-          },
-        ],
-        scrollToArtworksGrid: true,
-        searchCriteriaID: undefined,
-      },
-    })
-  })
-
-  it("should pass search criteria id prop", async () => {
-    renderWithRelay({
-      Notification: () => ({
-        ...notificationWithFF,
-        targetHref: alertTargetUrl,
-      }),
-    })
-    await flushPromiseQueue()
-
-    fireEvent.press(screen.getByText("Notification Headline"))
-
-    await flushPromiseQueue()
-
-    expect(navigate).toHaveBeenCalledWith(alertTargetUrl, {
-      passProps: {
-        scrollToArtworksGrid: true,
-        searchCriteriaID: "searchCriteriaId",
-        predefinedFilters: [
-          {
-            displayText: "Recently Added",
-            paramName: "sort",
-            paramValue: "-published_at",
-          },
-        ],
-      },
-    })
+    expect(navigate).toHaveBeenCalledWith('/notification/<mock-value-for-field-"internalID">')
   })
 
   it("should NOT call `mark as read` mutation if the notification has already been read", async () => {
