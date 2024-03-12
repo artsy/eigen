@@ -9,7 +9,6 @@ import {
   SkeletonBox,
   SkeletonText,
   Spacer,
-  Text,
 } from "@artsy/palette-mobile"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { NewWorksForYouArtworksQR } from "app/Scenes/NewWorksForYou/Components/NewWorksForYouArtworks"
@@ -146,9 +145,8 @@ export const NewWorksForYouPlaceholder: React.FC<{ defaultViewOption?: ViewOptio
       <Flex flexDirection="row">
         <Flex px={2}>
           <Flex justifyContent="space-between">
-            <Text variant="lg-display">New Works for You</Text>
-
             <Skeleton>
+              <SkeletonText variant="lg-display">New Works for You</SkeletonText>
               <SkeletonText variant="xs" mt={2}>
                 XX Artworks
               </SkeletonText>
