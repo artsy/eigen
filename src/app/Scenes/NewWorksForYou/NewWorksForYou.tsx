@@ -12,13 +12,8 @@ import {
 } from "@artsy/palette-mobile"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { NewWorksForYouArtworksQR } from "app/Scenes/NewWorksForYou/Components/NewWorksForYouArtworks"
-import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
-import { useExperimentVariant } from "app/utils/experiments/hooks"
-import { useDevToggle } from "app/utils/hooks/useDevToggle"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { usePlaceholderView } from "app/utils/masonryHelpers/viewOptionHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
@@ -49,19 +44,11 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
   maxWorksPerArtist = 3,
   version: versionProp,
 }) => {
-  const experiment = useExperimentVariant("onyx_new_works_for_you_feed")
-
   const isReferredFromEmail = utm_medium === "email"
 
   // Use the version specified in the URL or no version if the screen is opened from the email.
   const version =
     isReferredFromEmail && versionProp ? versionProp?.toUpperCase() : DEFAULT_RECS_MODEL_VERSION
-
-  useEffect(() => {
-    experiment.trackExperiment({
-      context_owner_type: OwnerType.newWorksForYou,
-    })
-  }, [])
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -79,8 +66,6 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
 
 const Header = () => {
   const [hideTitle, setHideTitle] = useState(false)
-  const enableNewWorksForYouFeed = useFeatureFlag("AREnableNewWorksForYouScreenFeed")
-  const forceShowNewWorksForYouFeed = useDevToggle("DTForceShowNewWorksForYouScreenFeed")
   const { currentScrollY } = Screen.useScreenScrollContext()
 
   // Reveal the title again after scroll down
@@ -92,23 +77,11 @@ const Header = () => {
     }
   }, [currentScrollY])
 
-  const experiment = useExperimentVariant("onyx_new_works_for_you_feed")
-
   const defaultViewOption = GlobalStore.useAppState((state) => state.userPrefs.defaultViewOption)
 
   const setDefaultViewOption = GlobalStore.actions.userPrefs.setDefaultViewOption
 
-  useEffect(() => {
-    experiment.trackExperiment({
-      context_owner_type: OwnerType.newWorksForYou,
-    })
-  }, [])
-
-  const showToggleViewOptionIcon =
-    !isTablet() &&
-    enableNewWorksForYouFeed &&
-    experiment.enabled &&
-    (experiment.variant === "experiment" || forceShowNewWorksForYouFeed)
+  const showToggleViewOptionIcon = !isTablet()
 
   return (
     <Screen.AnimatedHeader
@@ -135,10 +108,8 @@ const Header = () => {
   )
 }
 
-export const NewWorksForYouPlaceholder: React.FC<{ defaultViewOption?: ViewOption }> = ({}) => {
-  const enableNewWorksForYouFeed = useFeatureFlag("AREnableNewWorksForYouScreenFeed")
-
-  const placeholderView = usePlaceholderView("onyx_new_works_for_you_feed")
+export const NewWorksForYouPlaceholder: React.FC<{}> = ({}) => {
+  const defaultViewOption = GlobalStore.useAppState((state) => state.userPrefs.defaultViewOption)
 
   return (
     <>
@@ -156,7 +127,7 @@ export const NewWorksForYouPlaceholder: React.FC<{ defaultViewOption?: ViewOptio
       </Flex>
       <Skeleton>
         <Spacer y={2} />
-        {!enableNewWorksForYouFeed || placeholderView === "grid" ? (
+        {defaultViewOption === "grid" ? (
           <PlaceholderGrid />
         ) : (
           <Flex width="100%" px={2}>

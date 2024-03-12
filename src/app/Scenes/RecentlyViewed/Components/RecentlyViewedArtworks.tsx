@@ -13,7 +13,7 @@ import { useLayoutEffect, useRef, useState } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 export const RecentlyViewedArtworks: React.FC = () => {
-  const numColumns = useViewOptionNumColumns("onyx_new_works_for_you_feed")
+  const numColumns = useViewOptionNumColumns()
 
   const queryData = useLazyLoadQuery<RecentlyViewedArtworksQuery>(
     RecentlyViewedScreenQuery,

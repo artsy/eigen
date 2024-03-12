@@ -25,7 +25,7 @@ export const NewWorksFromGalleriesYouFollow: React.FC = () => {
     NewWorksFromGalleriesYouFollow_artworksConnection$key
   >(artworkConnectionFragment, queryData.me)
 
-  const numColumns = useViewOptionNumColumns("onyx_new_works_for_you_feed")
+  const numColumns = useViewOptionNumColumns()
 
   const artworks = extractNodes(data?.newWorksFromGalleriesYouFollowConnection)
 

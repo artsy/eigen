@@ -21,7 +21,7 @@ interface NewWorksForYouProps {
 }
 
 export const NewWorksForYouArtworks: React.FC<NewWorksForYouProps> = ({ viewer }) => {
-  const numColumns = useViewOptionNumColumns("onyx_new_works_for_you_feed")
+  const numColumns = useViewOptionNumColumns()
   const { data } = usePaginationFragment(newWorksForYouArtworksFragment, viewer)
   const { scrollHandler } = Screen.useListenForScreenScroll()
   const artworks = extractNodes(data.artworks)
@@ -136,5 +136,5 @@ export const NewWorksForYouArtworksQR: React.FC<NewWorksForYouScreenProps> = wit
 
     return <NewWorksForYouArtworks viewer={data.viewer} />
   },
-  () => <NewWorksForYouPlaceholder defaultViewOption="grid" />
+  () => <NewWorksForYouPlaceholder />
 )
