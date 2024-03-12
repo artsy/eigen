@@ -627,7 +627,6 @@ export const modules = defineModules({
   SavedSearchAlertsList: reactModule(SavedSearchAlertsListQueryRenderer, {
     fullBleed: true,
     hidesBackButton: true,
-    hidesBottomTabs: true,
   }),
   Search: reactModule(SearchScreen, { isRootViewForTabName: "search" }, [SearchScreenQuery]),
   Show: reactModule(ShowQueryRenderer, { fullBleed: true }),

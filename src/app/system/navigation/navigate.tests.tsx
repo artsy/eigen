@@ -259,6 +259,8 @@ describe(navigate, () => {
       [
         "profile",
         {
+          "fullBleed": true,
+          "hidesBackButton": true,
           "moduleName": "SavedSearchAlertsList",
           "props": {},
           "replaceActiveModal": false,
