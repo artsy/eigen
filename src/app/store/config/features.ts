@@ -44,7 +44,6 @@ export type FeatureName = keyof typeof features
 export const features = {
   ARDarkModeSupport: {
     readyForRelease: false,
-    showInDevMenu: true,
     description: "Support dark mode",
   },
   AREnableArticleSlideShow: {
@@ -102,19 +101,16 @@ export const features = {
   AREnableArtworksLists: {
     readyForRelease: true,
     description: "Enable Artwork Lists",
-    showInDevMenu: true,
     echoFlagKey: "AREnableArtworksLists",
   },
   AREnableNewAuctionsRailCard: {
     description: "Enable New Auctions Home Rail Card",
     readyForRelease: true,
-    showInDevMenu: true,
     echoFlagKey: "AREnableNewAuctionsRailCard",
   },
   AREnableMyCollectionCollectedArtists: {
     description: "Enable Collected Artists in My Collection",
     readyForRelease: true,
-    showInDevMenu: true,
     echoFlagKey: "AREnableMyCollectionCollectedArtists",
   },
   // TODO: need to refresh it, not released yet but marked as ready since 3 months
@@ -127,61 +123,46 @@ export const features = {
   AREnableShowsForYouLocation: {
     description: "Enable Shows For You Location",
     readyForRelease: true,
-    showInDevMenu: true,
     echoFlagKey: "AREnableShowsForYouLocation",
   },
   AREnableGalleriesForYou: {
     description: "Enable Galleries For You",
     readyForRelease: true,
-    showInDevMenu: true,
     echoFlagKey: "AREnableGalleriesForYou",
   },
   AREnableAdditionalSiftAndroidTracking: {
     description: "Send additional events to Sift on Android",
     readyForRelease: true,
-    showInDevMenu: true,
     echoFlagKey: "AREnableAdditionalSiftAndroidTracking",
   },
   ARShowCollectedArtistOnboarding: {
     description: "Show Collected Artist Onboarding",
     readyForRelease: true,
-    showInDevMenu: true,
     echoFlagKey: "ARShowCollectedArtistOnboarding",
   },
   AREnableAuctionHeaderAlertCTA: {
     description: "Enable Auction Header Alert CTA",
     readyForRelease: true,
-    showInDevMenu: true,
     echoFlagKey: "AREnableAuctionHeaderAlertCTA",
   },
   ARShowCreateAlertInArtistArtworksListFooter: {
     description: "Show create alert in artist artworks list footer",
     readyForRelease: true,
-    showInDevMenu: true,
     echoFlagKey: "ARShowCreateAlertInArtistArtworksListFooter",
   },
   AREnableLatestActivityRail: {
     description: "Enable Latest Activity Rail",
     readyForRelease: true,
-    showInDevMenu: true,
     echoFlagKey: "AREnableLatestActivityRail",
-  },
-  ARShowArtistsAlertsSet: {
-    description: "Show Artists Alerts Set in Artist Page",
-    readyForRelease: false,
-    showInDevMenu: true,
-    echoFlagKey: "ARShowArtistsAlertsSet",
   },
   AREnableSingleActivityPanelScreen: {
     description: "Enable Single Activity Panel screen",
     readyForRelease: true,
-    showInDevMenu: true,
     echoFlagKey: "AREnableSingleActivityPanelScreen",
   },
   AREnableAlertsFilters: {
     description: "Enable filters in alerts screen",
     readyForRelease: true,
-    showInDevMenu: true,
     echoFlagKey: "AREnableAlertsFilters",
   },
   AREnableAlertsFiltersSizeFiltering: {
@@ -193,25 +174,21 @@ export const features = {
   AREnableAlertDetailsInput: {
     description: "Enable 'details' text input for alerts",
     readyForRelease: true,
-    showInDevMenu: true,
     echoFlagKey: "AREnableAlertDetailsInput",
   },
   AREnableArtistSeriesFilter: {
     description: "Enable artist series filter on Artist screen",
     readyForRelease: true,
-    showInDevMenu: true,
     echoFlagKey: "AREnableArtistSeriesFilter",
   },
   AREnableAlertsSuggestedFilters: {
     description: "Enable alerts suggested filters",
     readyForRelease: true,
-    showInDevMenu: true,
     echoFlagKey: "AREnableAlertsSuggestedFilters",
   },
   AREnablePartnerOffersNotificationSwitch: {
     description: "Enable partner offers notification switch",
     readyForRelease: true,
-    showInDevMenu: true,
     echoFlagKey: "AREnablePartnerOffersNotificationSwitch",
   },
   AREnableNewWorksForYouScreenFeed: {
@@ -223,13 +200,11 @@ export const features = {
   AREnablePartnerOffer: {
     description: "Enable partner offer content in the app",
     readyForRelease: true,
-    showInDevMenu: true,
     echoFlagKey: "AREnablePartnerOffer",
   },
   AREnableArtistSeriesSuggestions: {
     description: "Enable artist series suggestions",
     readyForRelease: true,
-    showInDevMenu: true,
     echoFlagKey: "AREnableArtistSeriesSuggestions",
   },
   AREnableProgressiveOnboardingAlerts: {
@@ -241,7 +216,6 @@ export const features = {
   AREnableAlertsFiltersArtistSeriesFiltering: {
     description: 'Enable artist series selection on "More Filters" screen',
     readyForRelease: true,
-    showInDevMenu: true,
     echoFlagKey: "AREnableAlertsFiltersArtistSeriesFiltering",
   },
   AREnableNewActivityPanelManagement: {
