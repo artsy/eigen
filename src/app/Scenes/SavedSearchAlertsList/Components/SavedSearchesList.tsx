@@ -1,8 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex, Spinner, useTheme } from "@artsy/palette-mobile"
+import { Flex, Screen, Separator, Spinner, useTheme } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
 import { SavedSearchesList_me$data } from "__generated__/SavedSearchesList_me.graphql"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { SortByModal, SortOption } from "app/Components/SortByModal/SortByModal"
 import { SAVED_SERCHES_PAGE_SIZE } from "app/Components/constants"
 import { GoBackProps, goBack, navigate, navigationEvents } from "app/system/navigation/navigate"
@@ -11,7 +10,6 @@ import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { RefreshEvents, SAVED_ALERT_REFRESH_KEY } from "app/utils/refreshHelpers"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useEffect, useRef, useState } from "react"
-import { FlatList } from "react-native"
 import { RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
 import { EmptyMessage } from "./EmptyMessage"
@@ -67,7 +65,7 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
   }
 
   return (
-    <FlatList
+    <Screen.FlatList
       data={items}
       keyExtractor={(item) => item.internalID}
       contentContainerStyle={{ paddingVertical: space(1) }}
@@ -75,10 +73,12 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
       onRefresh={() => {
         onRefresh("default")
       }}
+      ItemSeparatorComponent={() => <Separator borderColor="black5" />}
       renderItem={({ item }) => {
         return (
           <SavedSearchListItem
-            title={item.displayName}
+            title={item.title}
+            subtitle={item.subtitle}
             onPress={() => {
               navigate(`settings/alerts/${item.internalID}/edit`)
             }}
@@ -190,34 +190,33 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
         context_screen_owner_type: OwnerType.savedSearch,
       }}
     >
-      <FancyModalHeader
-        hideBottomDivider
-        onLeftButtonPress={goBack}
-        onRightButtonPress={() => {
-          setModalVisible(true)
-        }}
-        renderRightButton={() => {
-          return <SortButton onPress={() => setModalVisible(true)} />
-        }}
-      >
-        Alerts
-      </FancyModalHeader>
+      <Screen>
+        <Screen.AnimatedHeader
+          onBack={goBack}
+          title="Alerts"
+          rightElements={<SortButton onPress={() => setModalVisible(true)} />}
+        />
 
-      <SavedSearchesList
-        {...props}
-        fetchingMore={fetchingMore}
-        refreshMode={refreshMode}
-        onRefresh={onRefresh}
-        onLoadMore={handleLoadMore}
-      />
-      <SortByModal
-        visible={modalVisible}
-        options={SORT_OPTIONS}
-        selectedValue={selectedSortValue}
-        onCloseModal={handleCloseModal}
-        onSelectOption={handleSelectOption}
-        onModalFinishedClosing={handleSortByModalClosed}
-      />
+        <Screen.StickySubHeader title="Alerts" />
+
+        <Screen.Body fullwidth>
+          <SavedSearchesList
+            {...props}
+            fetchingMore={fetchingMore}
+            refreshMode={refreshMode}
+            onRefresh={onRefresh}
+            onLoadMore={handleLoadMore}
+          />
+          <SortByModal
+            visible={modalVisible}
+            options={SORT_OPTIONS}
+            selectedValue={selectedSortValue}
+            onCloseModal={handleCloseModal}
+            onSelectOption={handleSelectOption}
+            onModalFinishedClosing={handleSortByModalClosed}
+          />
+        </Screen.Body>
+      </Screen>
     </ProvideScreenTracking>
   )
 }
@@ -243,7 +242,8 @@ export const SavedSearchesListPaginationContainer = createPaginationContainer(
             node {
               internalID
               artistSeriesIDs
-              displayName
+              title: displayName(only: [artistIDs])
+              subtitle: displayName(except: [artistIDs])
             }
           }
         }
