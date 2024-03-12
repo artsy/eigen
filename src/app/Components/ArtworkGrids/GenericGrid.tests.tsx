@@ -13,7 +13,7 @@ it("handles showing an update when there are new artworks", () => {
   const artworks = [artwork(), artwork()] as any
   const newArtworks = [artwork(), artwork(), artwork()] as any
 
-  const grid = new GenericArtworksGrid({ artworks, navigateToPageableRoute: jest.fn() })
+  const grid = new GenericArtworksGrid({ artworks })
   const shouldUpdate = grid.shouldComponentUpdate({ artworks: newArtworks }, {} as any)
 
   expect(shouldUpdate).toBeTruthy()
@@ -25,7 +25,6 @@ it("handles showing an update when data loading was stopped", () => {
   const grid = new GenericArtworksGrid({
     artworks,
     isLoading: true,
-    navigateToPageableRoute: jest.fn(),
   })
   const shouldUpdate = grid.shouldComponentUpdate({ artworks, isLoading: false }, {} as any)
 

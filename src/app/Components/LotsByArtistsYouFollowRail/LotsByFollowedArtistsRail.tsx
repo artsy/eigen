@@ -5,7 +5,6 @@ import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SaleArtworkTileRailCardContainer } from "app/Components/SaleArtworkTileRailCard"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
-import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToEdge } from "app/utils/isCloseToEdge"
 import { debounce } from "lodash"
@@ -30,8 +29,6 @@ export const LotsByFollowedArtistsRail: React.FC<Props> = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false)
   const artworks = extractNodes(me?.lotsByFollowedArtistsConnection)
-
-  const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
 
   const hasSaleArtworks = artworks?.some((artwork) => artwork?.saleArtwork)
 
@@ -88,9 +85,12 @@ export const LotsByFollowedArtistsRail: React.FC<Props> = ({
           return (
             <SaleArtworkTileRailCardContainer
               onPress={() => {
-                navigateToPageableRoute(artwork.href!)
+                if (!artwork.href) {
+                  return
+                }
+                navigate(artwork.href)
               }}
-              saleArtwork={artwork.saleArtwork!}
+              saleArtwork={artwork.saleArtwork}
               useSquareAspectRatio
               useCustomSaleMessage
               contextScreenOwnerType={OwnerType.sale}

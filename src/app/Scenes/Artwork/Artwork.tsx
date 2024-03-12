@@ -8,8 +8,6 @@ import { Artwork_artworkBelowTheFold$data } from "__generated__/Artwork_artworkB
 import { Artwork_me$data } from "__generated__/Artwork_me.graphql"
 import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { AuctionTimerState, currentTimerState } from "app/Components/Bidding/Components/Timer"
-import { usePageableScreensContext } from "app/Components/PageableScreensView/PageableScreensContext"
-import { PageableScreensView } from "app/Components/PageableScreensView/PageableScreensView"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { ArtworkAuctionCreateAlertHeader } from "app/Scenes/Artwork/ArtworkAuctionCreateAlertHeader"
 import { ArtworkErrorScreen } from "app/Scenes/Artwork/Components/ArtworkError"
@@ -28,7 +26,7 @@ import {
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import {
   Environment,
@@ -151,18 +149,9 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
   }, [])
 
   // TODO: Remove feature flag once we're ready to launch.
-  const enablePageableArtworkScreens = useFeatureFlag("AREnablePageableArtworkScreens")
-  const { activeScreen } = usePageableScreensContext() ?? {}
-
   useEffect(() => {
-    if (enablePageableArtworkScreens) {
-      if (activeScreen.name === artworkAboveTheFold?.slug) {
-        onLoad(props)
-      }
-    } else {
-      onLoad(props)
-    }
-  }, [artworkAboveTheFold?.slug, activeScreen?.name])
+    onLoad(props)
+  }, [artworkAboveTheFold?.slug])
 
   // This is a hack to make useEffect behave exactly like didComponentUpdate.
   const firstUpdate = useRef(true)
@@ -658,7 +647,7 @@ export const ArtworkScreenQuery = graphql`
   }
 `
 
-export const ArtworkQueryRenderer: React.FC<ArtworkPageableScreenProps> = ({
+export const ArtworkQueryRenderer: React.FC<ArtworkScreenProps> = ({
   artworkID,
   environment,
   ...others
@@ -706,54 +695,24 @@ export const ArtworkQueryRenderer: React.FC<ArtworkPageableScreenProps> = ({
   )
 }
 
-interface ArtworkPageableScreenProps {
+interface ArtworkScreenProps {
   artworkID: string
   isVisible: boolean
-  pageableSlugs: string[]
   environment?: Environment | RelayMockEnvironment
   tracking?: TrackingProp
   onLoad: ArtworkProps["onLoad"]
 }
 
-export const ArtworkPageableScreen: React.FC<ArtworkPageableScreenProps> = (props) => {
-  const enablePageableArtworkScreens = useFeatureFlag("AREnablePageableArtworkScreens")
+export const ArtworkScreen: React.FC<ArtworkScreenProps> = (props) => {
   const [artworkProps, setArtworkProps] = useState<ArtworkProps | null>(null)
-
-  const pageableSlugs = props.pageableSlugs ?? []
-
-  const screens = useMemo(() => {
-    return pageableSlugs.map((slug) => ({
-      name: slug,
-      Component: () => (
-        <ArtworkQueryRenderer
-          {...props}
-          artworkID={slug}
-          onLoad={(props) => {
-            setArtworkProps(props)
-          }}
-        />
-      ),
-    }))
-  }, [JSON.stringify(pageableSlugs)])
 
   return (
     <>
       {!!artworkProps?.artworkAboveTheFold && (
         <ArtworkScreenHeader artwork={artworkProps.artworkAboveTheFold} />
       )}
-      {/*
-        Check to see if we're within the context of an artwork rail and show pager view.
-        TODO: Remove feature flag once we're ready to launch.
-      */}
-      {enablePageableArtworkScreens && screens.length > 0 ? (
-        <PageableScreensView
-          screens={screens}
-          initialScreenName={props.artworkID}
-          prefetchScreensCount={5}
-        />
-      ) : (
-        <ArtworkQueryRenderer {...props} onLoad={(props) => setArtworkProps(props)} />
-      )}
+
+      <ArtworkQueryRenderer {...props} onLoad={(props) => setArtworkProps(props)} />
     </>
   )
 }

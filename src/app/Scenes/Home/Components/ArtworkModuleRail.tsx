@@ -4,7 +4,6 @@ import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
-import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import {
   ArtworkActionTrackingProps,
   extractArtworkActionTrackingProps,
@@ -61,7 +60,7 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
 
   const viewAllUrl = getViewAllUrl(rail)
 
-  const contextModule = HomeAnalytics.artworkRailContextModule(rail.key!)
+  const contextModule = HomeAnalytics.artworkRailContextModule(rail.key ?? "")
 
   const context = rail.context
   let subtitle: string | undefined
@@ -75,8 +74,6 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
   // This is to satisfy the TypeScript compiler based on Metaphysics types.
   const artworks = compact(rail.results ?? [])
 
-  const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
-
   const showRail = artworks.length
 
   const trackingProps = extractArtworkActionTrackingProps(otherProps)
@@ -87,7 +84,7 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
 
   const handleTitlePress = viewAllUrl
     ? () => {
-        const tapEvent = HomeAnalytics.artworkHeaderTapEvent(rail.key!)
+        const tapEvent = HomeAnalytics.artworkHeaderTapEvent(rail.key ?? "")
         if (tapEvent) {
           tracking.trackEvent(tapEvent)
         }
@@ -97,7 +94,7 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
 
   const handlePressMore = viewAllUrl
     ? () => {
-        const tapEvent = HomeAnalytics.artworkShowMoreCardTapEvent(rail.key!)
+        const tapEvent = HomeAnalytics.artworkShowMoreCardTapEvent(rail.key ?? "")
         if (tapEvent) {
           tracking.trackEvent(tapEvent)
         }
@@ -119,6 +116,10 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
         listRef={listRef}
         artworks={artworks}
         onPress={(artwork, position) => {
+          if (!artwork.href) {
+            return
+          }
+
           if (contextModule) {
             tracking.trackEvent(
               HomeAnalytics.artworkThumbnailTapEvent(
@@ -131,7 +132,7 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
             )
           }
 
-          navigateToPageableRoute(artwork.href!)
+          navigate(artwork.href)
         }}
         onMorePress={handlePressMore}
       />

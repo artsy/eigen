@@ -1,7 +1,6 @@
 import { ScreenOwnerType } from "@artsy/cohesion"
 import { Flex, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import ArtworkGridItem, { PriceOfferMessage } from "app/Components/ArtworkGrids/ArtworkGridItem"
-import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
 import { ViewProps } from "react-native"
 import { FragmentRefs } from "relay-runtime"
@@ -26,7 +25,6 @@ interface MasonryArtworkGridItemProps {
   contextScreen?: ScreenOwnerType
   contextScreenOwnerId?: string
   contextScreenOwnerSlug?: string
-  navigateToPageableRoute: ReturnType<typeof useNavigateToPageableRoute>["navigateToPageableRoute"]
   numColumns?: number
   artworkMetaStyle?: ViewProps["style"]
   priceOfferMessage?: PriceOfferMessage
@@ -40,7 +38,6 @@ export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
   contextScreenOwnerId,
   contextScreenOwnerSlug,
   contextScreen,
-  navigateToPageableRoute,
   numColumns = NUM_COLUMNS_MASONRY,
   artworkMetaStyle = {},
   priceOfferMessage,
@@ -65,7 +62,6 @@ export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
         contextScreen={contextScreen}
         artwork={item}
         height={imgHeight}
-        navigateToPageableRoute={navigateToPageableRoute}
         artworkMetaStyle={artworkMetaStyle}
         priceOfferMessage={priceOfferMessage}
       />

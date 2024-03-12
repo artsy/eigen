@@ -20,11 +20,10 @@ import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilter
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { DurationProvider } from "app/Components/Countdown"
-
 import { OpaqueImageView as NewOpaqueImageView } from "app/Components/OpaqueImageView2"
 import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
 import { GlobalStore } from "app/store/GlobalStore"
-import { PageableRouteProps } from "app/system/navigation/useNavigateToPageableRoute"
+import { navigate } from "app/system/navigation/navigate"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
@@ -42,7 +41,7 @@ import { LotProgressBar } from "./LotProgressBar"
 const SAVE_ICON_SIZE = 22
 
 export type PriceOfferMessage = { priceListedMessage: string; priceWithDiscountMessage: string }
-export interface ArtworkProps extends Partial<PageableRouteProps>, ArtworkActionTrackingProps {
+export interface ArtworkProps extends ArtworkActionTrackingProps {
   /** styles for each field: allows for customization of each field */
   artistNamesTextStyle?: TextProps
   artwork: ArtworkGridItem_artwork$data
@@ -92,7 +91,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
   hideUrgencyTags = false,
   itemIndex,
   lotLabelTextStyle,
-  navigateToPageableRoute,
   onPress,
   partnerNameTextStyle,
   priceOfferMessage,
@@ -181,7 +179,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
     addArtworkToRecentSearches()
     trackArtworkTap()
     if (artwork.href) {
-      navigateToPageableRoute?.(artwork.href)
+      navigate?.(artwork.href)
     }
   }
 

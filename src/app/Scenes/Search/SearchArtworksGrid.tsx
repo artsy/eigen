@@ -19,7 +19,6 @@ import {
 } from "app/Components/ArtworkFilter/useArtworkFilters"
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
-import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   NUM_COLUMNS_MASONRY,
@@ -49,7 +48,6 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
   )
   const artworks = extractNodes(viewer.artworks)
   const { width } = useScreenDimensions()
-  const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
 
   const shouldDisplaySpinner = !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
 
@@ -150,7 +148,6 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
                   contextScreen={Schema.PageNames.Search}
                   artwork={item}
                   height={imgHeight}
-                  navigateToPageableRoute={navigateToPageableRoute}
                 />
               </Flex>
             )

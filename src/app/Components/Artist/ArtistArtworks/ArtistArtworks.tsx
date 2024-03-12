@@ -28,7 +28,6 @@ import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilter
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { Props as InfiniteScrollGridProps } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
@@ -71,8 +70,6 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   const gridRef = useRef<MasonryFlashListRef<(typeof artworks)[0]>>(null)
 
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
-
-  const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
 
   useArtworkFilters({
     relay,
@@ -272,7 +269,6 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
                 contextScreenOwnerSlug={artist.slug}
                 artwork={item}
                 height={imgHeight}
-                navigateToPageableRoute={navigateToPageableRoute}
               />
             </Flex>
           )
