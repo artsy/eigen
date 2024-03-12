@@ -6,6 +6,7 @@ import {
   Input,
   Join,
   LogoutIcon,
+  Pill,
   ReloadIcon,
   Screen,
   Separator,
@@ -71,6 +72,13 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
   const [featureFlagQuery, setFeatureFlagQuery] = useState("")
   const [devToolQuery, setDevToolQuery] = useState("")
   const [url, setUrl] = useState("")
+
+  const [isFeatureFlagOrderReversed, setIsFeatureFlagOrderReversed] = useState(true)
+
+  const toggleFeatureFlagDirection = () => {
+    setIsFeatureFlagOrderReversed(!isFeatureFlagOrderReversed)
+  }
+
   const migrationVersion = GlobalStore.useAppState((s) => s.version)
   const server = GlobalStore.useAppState((s) => s.devicePrefs.environment.strings.webURL).slice(
     "https://".length
@@ -160,20 +168,42 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
         <Flex mx={2}>
           <Expandable label="Feature Flags" expanded={false}>
             <Spacer y={1} />
-            <Flex mb={1}>
-              <SearchInput onChangeText={setFeatureFlagQuery} placeholder="Search feature flags" />
+            <Flex mb={1} flexDirection="row" flex={1}>
+              <Flex flex={8}>
+                <SearchInput
+                  onChangeText={setFeatureFlagQuery}
+                  placeholder="Search feature flags"
+                />
+              </Flex>
+              <Flex flex={3} justifyContent="center" pr={2}>
+                <Pill onPress={toggleFeatureFlagDirection}>
+                  {isFeatureFlagOrderReversed ? "Sort ↓" : "Sort ↑"}
+                </Pill>
+              </Flex>
             </Flex>
             <Flex mx={-2}>
-              {configurableFeatureFlagKeys
-                .filter(
-                  (flagKey) =>
-                    features[flagKey].description
-                      ?.toLowerCase()
-                      .includes(featureFlagQuery.toLowerCase())
-                )
-                .map((flagKey) => {
-                  return <FeatureFlagItem key={flagKey} flagKey={flagKey} />
-                })}
+              {isFeatureFlagOrderReversed
+                ? configurableFeatureFlagKeys
+                    .filter(
+                      (flagKey) =>
+                        features[flagKey].description
+                          ?.toLowerCase()
+                          .includes(featureFlagQuery.toLowerCase())
+                    )
+                    .map((flagKey) => {
+                      return <FeatureFlagItem key={flagKey} flagKey={flagKey} />
+                    })
+                : configurableFeatureFlagKeys
+                    .filter(
+                      (flagKey) =>
+                        features[flagKey].description
+                          ?.toLowerCase()
+                          .includes(featureFlagQuery.toLowerCase())
+                    )
+                    .reverse()
+                    .map((flagKey) => {
+                      return <FeatureFlagItem key={flagKey} flagKey={flagKey} />
+                    })}
               <DevMenuButtonItem
                 title="Revert all feature flags to default"
                 titleColor="red100"
