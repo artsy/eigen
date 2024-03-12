@@ -1,6 +1,5 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Screen } from "@artsy/palette-mobile"
 import { SavedSearchAlertsListQuery } from "__generated__/SavedSearchAlertsListQuery.graphql"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -25,17 +24,19 @@ export const SavedSearchAlertsListQueryRenderer: React.FC = () => {
       render={renderWithPlaceholder({
         Container: SavedSearchesListPaginationContainer,
         renderPlaceholder: () => (
-          <Flex>
-            <FancyModalHeader
-              hideBottomDivider
-              onLeftButtonPress={goBack}
-              onRightButtonPress={() => {}}
-              renderRightButton={() => <SortButton disabled />}
-            >
-              Alerts
-            </FancyModalHeader>
-            <SavedSearchAlertsListPlaceholder />
-          </Flex>
+          <Screen>
+            <Screen.AnimatedHeader
+              onBack={goBack}
+              title="Alerts"
+              rightElements={<SortButton disabled />}
+            />
+
+            <Screen.StickySubHeader title="Alerts" />
+
+            <Screen.Body fullwidth>
+              <SavedSearchAlertsListPlaceholder />
+            </Screen.Body>
+          </Screen>
         ),
       })}
     />

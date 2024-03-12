@@ -28,12 +28,13 @@ describe("SavedSearches", () => {
           edges: [
             {
               node: {
-                displayName: "one",
+                title: "Banksy",
+                subtitle: "Prints",
               },
             },
             {
               node: {
-                displayName: "two",
+                title: "KAWS",
               },
             },
           ],
@@ -41,8 +42,9 @@ describe("SavedSearches", () => {
       }),
     })
 
-    expect(screen.getByText("one")).toBeTruthy()
-    expect(screen.getByText("two")).toBeTruthy()
+    expect(screen.getByText("Banksy")).toBeTruthy()
+    expect(screen.getByText("Prints")).toBeTruthy()
+    expect(screen.getByText("KAWS")).toBeTruthy()
   })
 
   it("renders an empty message if there are no saved search alerts", () => {
@@ -64,12 +66,13 @@ describe("SavedSearches", () => {
           edges: [
             {
               node: {
-                displayName: "one",
+                title: "Banksy",
+                subtitle: "Prints",
               },
             },
             {
               node: {
-                displayName: null,
+                title: null,
               },
             },
           ],
@@ -77,7 +80,7 @@ describe("SavedSearches", () => {
       }),
     })
 
-    expect(screen.getByText("one")).toBeTruthy()
+    expect(screen.getByText("Banksy")).toBeTruthy()
     expect(screen.getByText("Untitled Alert")).toBeTruthy()
   })
 

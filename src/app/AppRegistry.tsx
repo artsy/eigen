@@ -624,7 +624,10 @@ export const modules = defineModules({
     SellWithArtsyHomeScreenQuery,
   ]),
   SalesNotRootTabView: reactModule(SellWithArtsy),
-  SavedSearchAlertsList: reactModule(SavedSearchAlertsListQueryRenderer),
+  SavedSearchAlertsList: reactModule(SavedSearchAlertsListQueryRenderer, {
+    fullBleed: true,
+    hidesBackButton: true,
+  }),
   Search: reactModule(SearchScreen, { isRootViewForTabName: "search" }, [SearchScreenQuery]),
   Show: reactModule(ShowQueryRenderer, { fullBleed: true }),
   ShowMoreInfo: reactModule(ShowMoreInfoQueryRenderer),
