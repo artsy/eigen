@@ -9,8 +9,8 @@ import { fetchQuery, graphql } from "react-relay"
 const currencies = ["USD", "EUR", "GBP"] as const
 const metrics = ["in", "cm"] as const
 
-export type Currency = typeof currencies[number]
-export type Metric = typeof metrics[number]
+export type Currency = (typeof currencies)[number]
+export type Metric = (typeof metrics)[number]
 export type ViewOption = "grid" | "list"
 
 // set default currency depending on device locale
@@ -48,7 +48,7 @@ export const getUserPrefsModel = (): UserPrefsModel => ({
   artworkViewOption: DEFAULT_VIEW_OPTION,
   artistViewOption: DEFAULT_VIEW_OPTION,
   priceRange: DEFAULT_PRICE_RANGE,
-  defaultViewOption: "list",
+  defaultViewOption: "grid",
   setCurrency: action((state, currency) => {
     if (currencies.includes(currency)) {
       state.currency = currency
