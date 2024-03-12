@@ -101,6 +101,13 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
 
   const androidTopInset = Platform.OS === "android" ? topInset : 0
 
+  const filteredAndMappedKeys = configurableFeatureFlagKeys
+    .filter(
+      (flagKey) =>
+        features[flagKey].description?.toLowerCase().includes(featureFlagQuery.toLowerCase())
+    )
+    .map((flagKey) => <FeatureFlagItem key={flagKey} flagKey={flagKey} />)
+
   return (
     <Screen>
       <Flex flexDirection="row" justifyContent="space-between" mt={`${androidTopInset}px`}>
@@ -182,28 +189,7 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
               </Flex>
             </Flex>
             <Flex mx={-2}>
-              {isFeatureFlagOrderReversed
-                ? configurableFeatureFlagKeys
-                    .filter(
-                      (flagKey) =>
-                        features[flagKey].description
-                          ?.toLowerCase()
-                          .includes(featureFlagQuery.toLowerCase())
-                    )
-                    .map((flagKey) => {
-                      return <FeatureFlagItem key={flagKey} flagKey={flagKey} />
-                    })
-                : configurableFeatureFlagKeys
-                    .filter(
-                      (flagKey) =>
-                        features[flagKey].description
-                          ?.toLowerCase()
-                          .includes(featureFlagQuery.toLowerCase())
-                    )
-                    .reverse()
-                    .map((flagKey) => {
-                      return <FeatureFlagItem key={flagKey} flagKey={flagKey} />
-                    })}
+              {isFeatureFlagOrderReversed ? filteredAndMappedKeys.reverse() : filteredAndMappedKeys}
               <DevMenuButtonItem
                 title="Revert all feature flags to default"
                 titleColor="red100"
