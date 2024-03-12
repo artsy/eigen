@@ -4,11 +4,11 @@ import {
   ArtworkIcon,
   CloseIcon,
   Flex,
+  Pill,
   Text,
   Touchable,
 } from "@artsy/palette-mobile"
 import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
-import { Pill } from "app/Components/Pill"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
 import { GlobalStore } from "app/store/GlobalStore"
 import {
@@ -128,7 +128,7 @@ export const AutosuggestSearchResult: React.FC<{
           <Spacer x={1} />
 
           <Flex flex={1}>
-            <ResultWithHighlight displayLabel={result.displayLabel!} highlight={highlight} />
+            <ResultWithHighlight displayLabel={result.displayLabel ?? ""} highlight={highlight} />
 
             {!!showResultType && !!resultType && (
               <Text variant="xs" color="black60">
@@ -163,23 +163,11 @@ export const AutosuggestSearchResult: React.FC<{
             <Spacer x={4} />
 
             <Spacer x={1} />
-            <Pill
-              highlightEnabled
-              Icon={ArtworkIcon}
-              rounded
-              onPress={() => onPress({ initialTab: "Artworks" })}
-              block
-            >
+            <Pill Icon={ArtworkIcon} onPress={() => onPress({ initialTab: "Artworks" })}>
               Artworks
             </Pill>
             <Spacer x={1} />
-            <Pill
-              highlightEnabled
-              Icon={AuctionIcon}
-              rounded
-              onPress={() => onPress({ initialTab: "Insights" })}
-              block
-            >
+            <Pill Icon={AuctionIcon} onPress={() => onPress({ initialTab: "Insights" })}>
               Auction Results
             </Pill>
           </Flex>
@@ -195,26 +183,30 @@ export const AutosuggestSearchResult: React.FC<{
  * @param result
  */
 function navigateToResult(result: AutosuggestResult, props?: PassedProps) {
+  if (!result.href) {
+    return
+  }
+
   if (result.displayType === "Gallery" || result.displayType === "Institution") {
-    navigateToPartner(result.href!)
+    navigateToPartner(result.href)
   } else if (result.displayType === "Fair") {
-    navigateToEntity(result.href!, EntityType.Fair, SlugType.ProfileID)
+    navigateToEntity(result.href, EntityType.Fair, SlugType.ProfileID)
   } else if (result.__typename === "Artist") {
     switch (props?.initialTab) {
       case "Insights":
-        navigate(`${result.href!}/auction-results`, { passProps: props })
+        navigate(`${result.href}/auction-results`, { passProps: props })
         break
       case "Artworks":
-        navigate(`${result.href!}/artworks`, {
+        navigate(`${result.href}/artworks`, {
           passProps: props,
         })
         break
 
       default:
-        navigate(result.href!)
+        navigate(result.href)
         break
     }
   } else {
-    navigate(result.href!)
+    navigate(result.href)
   }
 }

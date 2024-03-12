@@ -17,11 +17,9 @@ import { SafeAreaInsets } from "app/utils/hooks"
 import { Schema, screenTrack, track } from "app/utils/track"
 import { get, isEqual, uniq } from "lodash"
 import React from "react"
-import { Animated, Dimensions, Image, View } from "react-native"
+import { Animated, Dimensions, Image } from "react-native"
 import Config from "react-native-config"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
-// @ts-ignore
-import { animated, config, Spring } from "react-spring/renderprops-native.cjs" // TODO: get rid of this, and then remove `react-spring` from eigen.
 import styled from "styled-components/native"
 import Supercluster, { AnyProps, ClusterProperties, PointFeature } from "supercluster"
 import { CitySwitcherButton } from "./Components/CitySwitcherButton"
@@ -38,8 +36,6 @@ import {
 import { Fair, FilterData, RelayErrorState, Show } from "./types"
 
 MapboxGL.setAccessToken(Config.MAPBOX_API_CLIENT_KEY)
-
-const AnimatedView = animated(View)
 
 const ShowCardContainer = styled(Box)`
   position: absolute;
@@ -384,8 +380,8 @@ export class GlobalMap extends React.Component<Props, State> {
       return null
     }
 
-    const lat = item.location.coordinates! /* STRICTNESS_MIGRATION */.lat
-    const lng = item.location.coordinates! /* STRICTNESS_MIGRATION */.lng
+    const lat = item.location.coordinates?.lat
+    const lng = item.location.coordinates?.lng
     const id = item.slug
 
     if (type === "Fair") {
@@ -435,44 +431,29 @@ export class GlobalMap extends React.Component<Props, State> {
     })
 
     return (
-      <Spring
-        native
-        from={{ bottom: -150, progress: 0, opacity: 0 }}
-        to={
-          hasShows
-            ? { bottom: iPhoneHasEars ? 80 : 45, progress: 1, opacity: 1.0 }
-            : { bottom: -150, progress: 0, opacity: 0 }
-        }
-        config={config.stiff}
-        precision={1}
+      <Flex
+        style={{
+          bottom: hasShows ? (iPhoneHasEars ? 80 : 45) : -150,
+          left: 0,
+          right: 0,
+          position: "absolute",
+          height: 150,
+        }}
       >
-        {({ bottom, opacity }: any /* STRICTNESS_MIGRATION */) => (
-          <AnimatedView
-            style={{
-              bottom,
-              left: 0,
-              right: 0,
-              opacity,
-              position: "absolute",
-              height: 150,
+        {!!hasShows && (
+          <ShowCard
+            shows={updatedShows}
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+            relay={this.props.relay}
+            onSaveStarted={() => {
+              this.setState({ isSavingShow: true })
             }}
-          >
-            {!!hasShows && (
-              <ShowCard
-                shows={updatedShows}
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                relay={this.props.relay}
-                onSaveStarted={() => {
-                  this.setState({ isSavingShow: true })
-                }}
-                onSaveEnded={() => {
-                  this.setState({ isSavingShow: false })
-                }}
-              />
-            )}
-          </AnimatedView>
+            onSaveEnded={() => {
+              this.setState({ isSavingShow: false })
+            }}
+          />
         )}
-      </Spring>
+      </Flex>
     )
   }
 
@@ -598,51 +579,40 @@ export class GlobalMap extends React.Component<Props, State> {
                 </Flex>
               </Animated.View>
             </TopButtonsContainer>
-            <Spring
-              native
-              from={{ opacity: 0 }}
-              to={mapLoaded ? { opacity: 1.0 } : { opacity: 0 }}
-              config={{
-                duration: 300,
-              }}
-              precision={1}
-            >
-              {({ opacity }: { opacity: number }) => (
-                <AnimatedView style={{ flex: 1, opacity }}>
-                  <MapboxGL.MapView
-                    ref={this.map}
-                    style={{ width: "100%", height: Dimensions.get("window").height }}
-                    {...mapProps}
-                    onRegionIsChanging={this.onRegionIsChanging}
-                    onDidFinishRenderingMapFully={this.onDidFinishRenderingMapFully}
-                    onPress={this.onPressMap}
-                  >
-                    <MapboxGL.Camera
-                      ref={this.camera}
-                      animationMode="flyTo"
-                      zoomLevel={DefaultZoomLevel}
-                      minZoomLevel={MinZoomLevel}
-                      maxZoomLevel={MaxZoomLevel}
-                      centerCoordinate={[centerLng, centerLat]}
-                    />
-                    <MapboxGL.UserLocation onUpdate={this.onUserLocationUpdate} />
-                    {!!city && (
-                      <>
-                        {!!this.state.featureCollections && (
-                          <PinsShapeLayer
-                            filterID={cityTabs[this.state.activeIndex].id}
-                            featureCollections={this.state.featureCollections}
-                            onPress={(e) => this.handleFeaturePress(e)}
-                          />
-                        )}
-                        <ShowCardContainer>{this.renderShowCard()}</ShowCardContainer>
-                        {!!mapLoaded && !!activeShows && !!activePin && this.renderSelectedPin()}
-                      </>
+
+            <Flex flex={1}>
+              <MapboxGL.MapView
+                ref={this.map}
+                style={{ width: "100%", height: Dimensions.get("window").height }}
+                {...mapProps}
+                onRegionIsChanging={this.onRegionIsChanging}
+                onDidFinishRenderingMapFully={this.onDidFinishRenderingMapFully}
+                onPress={this.onPressMap}
+              >
+                <MapboxGL.Camera
+                  ref={this.camera}
+                  animationMode="flyTo"
+                  zoomLevel={DefaultZoomLevel}
+                  minZoomLevel={MinZoomLevel}
+                  maxZoomLevel={MaxZoomLevel}
+                  centerCoordinate={[centerLng, centerLat]}
+                />
+                <MapboxGL.UserLocation onUpdate={this.onUserLocationUpdate} />
+                {!!city && (
+                  <>
+                    {!!this.state.featureCollections && (
+                      <PinsShapeLayer
+                        filterID={cityTabs[this.state.activeIndex].id}
+                        featureCollections={this.state.featureCollections}
+                        onPress={(e) => this.handleFeaturePress(e)}
+                      />
                     )}
-                  </MapboxGL.MapView>
-                </AnimatedView>
-              )}
-            </Spring>
+                    <ShowCardContainer>{this.renderShowCard()}</ShowCardContainer>
+                    {!!mapLoaded && !!activeShows && !!activePin && this.renderSelectedPin()}
+                  </>
+                )}
+              </MapboxGL.MapView>
+            </Flex>
           </Flex>
         )}
       </ClassTheme>

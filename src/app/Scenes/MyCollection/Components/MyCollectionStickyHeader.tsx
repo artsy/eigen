@@ -8,10 +8,10 @@ import {
   ToolTip,
   Touchable,
   useSpace,
+  Pill,
 } from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
-import { Pill } from "app/Components/Pill"
 import { MyCollectionArtworkFilters } from "app/Scenes/MyCollection/Components/MyCollectionArtworkFiltersStickyTab"
 import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
 import { HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER } from "app/Scenes/MyCollection/MyCollection"
@@ -285,11 +285,9 @@ const AnimatedPill: React.FC<{
       <Pill
         accessibilityState={{ selected, disabled }}
         disabled={disabled}
-        highlightEnabled
         onPress={() => {
           handlePress()
         }}
-        rounded
         selected={selected}
       >
         {tab}
