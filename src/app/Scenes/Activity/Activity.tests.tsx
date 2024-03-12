@@ -1,19 +1,10 @@
 import { screen } from "@testing-library/react-native"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Suspense } from "react"
-import { createMockEnvironment } from "relay-test-utils"
 import { Activity } from "./Activity"
 
 describe("Activity", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewActivityPanelManagement: false })
-  })
-
   const { renderWithRelay } = setupTestWrapper({
     Component: () => (
       <Suspense fallback={null}>
@@ -23,10 +14,7 @@ describe("Activity", () => {
   })
 
   it("renders items", async () => {
-    const { mockResolveLastOperation } = renderWithRelay({
-      NotificationConnection: () => notifications,
-    })
-    mockResolveLastOperation({
+    renderWithRelay({
       NotificationConnection: () => notifications,
     })
 
@@ -42,7 +30,7 @@ describe("Activity", () => {
         NotificationConnection: () => notifications,
       })
       mockResolveLastOperation({
-        NotificationConnection: () => notifications,
+        NotificationConnection: () => ({ totalCount: 1 }),
       })
 
       await flushPromiseQueue()
