@@ -12,7 +12,6 @@ import { CreateSavedSearchAlertNavigationStack } from "app/Scenes/SavedSearchAle
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { useSavedSearchPills } from "app/Scenes/SavedSearchAlert/useSavedSearchPills"
 import { navigate } from "app/system/navigation/navigate"
-import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 import { withSuspense } from "app/utils/hooks/withSuspense"
@@ -167,7 +166,6 @@ const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection,
   const artworks = extractNodes(artworksConnection)
   const total = artworksConnection?.counts?.total
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
-  const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
 
   const areMoreMatchesAvailable =
     total > NUMBER_OF_ARTWORKS_TO_SHOW && attributes?.artistIDs?.length === 1
@@ -217,7 +215,7 @@ const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection,
           closeModal?.()
           tracks.tappedArtworkGroup(slug)
           requestAnimationFrame(() => {
-            navigateToPageableRoute?.(`artwork/${slug}`)
+            navigate?.(`artwork/${slug}`)
           })
         }}
       />

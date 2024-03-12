@@ -69,12 +69,6 @@ export const features = {
     readyForRelease: true,
     echoFlagKey: "ARImpressionsTrackingHomeRailViews",
   },
-  // Not yet released - don't cleanup waiting design feedback
-  AREnablePageableArtworkScreens: {
-    description: "Enable pageable artwork screens",
-    readyForRelease: false,
-    showInDevMenu: true,
-  },
   AREnableSWALandingPageMeetTheSpecialist: {
     description: "Enable MeetTheSpecialist on SWA Landing Page",
     readyForRelease: true,

@@ -17,7 +17,6 @@ import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { PAGE_SIZE } from "app/Components/constants"
 import { TagArtworksFilterHeader } from "app/Scenes/Tag/TagArtworksFilterHeader"
-import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   ESTIMATED_MASONRY_ITEM_SIZE,
@@ -43,7 +42,6 @@ const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay }) => {
   const initialArtworksTotal = useRef(artworksTotal)
   const artworks = extractNodes(tag?.artworks) ?? []
   const shouldDisplaySpinner = !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
-  const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
 
   const trackClear = () => {
     if (tag?.id && tag?.slug) {
@@ -118,7 +116,6 @@ const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay }) => {
                 contextScreenOwnerSlug={tag?.slug}
                 artwork={item}
                 height={imgHeight}
-                navigateToPageableRoute={navigateToPageableRoute}
               />
             </Flex>
           )

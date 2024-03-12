@@ -16,7 +16,6 @@ import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { GeneArtworksFilterHeader } from "app/Components/Gene/GeneArtworksFilterHeader"
 import { PAGE_SIZE } from "app/Components/constants"
-import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   ESTIMATED_MASONRY_ITEM_SIZE,
@@ -40,7 +39,6 @@ export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ ge
   const { width } = useScreenDimensions()
   const artworks = extractNodes(gene.artworks)
   const shouldDisplaySpinner = !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
-  const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
 
   const artworksTotal = gene.artworks?.counts?.total ?? 0
   const initialArtworksTotal = useRef(artworksTotal)
@@ -112,7 +110,6 @@ export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ ge
                 contextScreenOwnerSlug={gene.slug}
                 artwork={item}
                 height={imgHeight}
-                navigateToPageableRoute={navigateToPageableRoute}
               />
             </Flex>
           )
