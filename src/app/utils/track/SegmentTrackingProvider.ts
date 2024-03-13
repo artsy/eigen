@@ -90,7 +90,7 @@ export const SegmentTrackingProvider: TrackingProvider = {
     if ("event_name" in info) {
       const { event_name, ...rest } = info
       visualize("Track", event_name, info, visualizeDevToggle)
-      analytics.track(event_name, rest as any)
+      analytics?.track?.(event_name, rest)
       return
     }
 
