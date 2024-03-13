@@ -68,19 +68,35 @@ const createUnleashClient = (userId: string | undefined) => {
       },
     },
     bootstrapOverride: false,
-    bootstrap: (Object.keys(experiments) as EXPERIMENT_NAME[]).map((key) => ({
-      name: key,
-      enabled: experiments[key].fallbackEnabled,
-      variant: {
-        enabled: experiments[key].fallbackVariant ? true : false,
-        name: experiments[key].fallbackVariant ?? "disabled",
-        payload:
-          experiments[key].fallbackPayload === undefined
-            ? undefined
-            : { type: "string", value: String(experiments[key].fallbackPayload) },
-      },
-      impressionData: true,
-    })),
+    bootstrap: (Object.keys(experiments) as EXPERIMENT_NAME[]).map((key) => {
+      const experiment = experiments[key]
+
+      if (experiment.fallbackEnabled) {
+        return {
+          name: key,
+          enabled: true,
+          variant: {
+            enabled: true,
+            name: experiment.fallbackVariant ?? "disabled",
+            payload:
+              experiment.fallbackPayload === undefined
+                ? undefined
+                : { type: "string", value: String(experiment.fallbackPayload) },
+          },
+          impressionData: true,
+        }
+      }
+      return {
+        name: key,
+        enabled: false,
+        variant: {
+          enabled: experiment.fallbackEnabled,
+          name: "disabled",
+          payload: undefined,
+        },
+        impressionData: true,
+      }
+    }),
   })
 }
 
