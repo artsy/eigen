@@ -55,6 +55,7 @@ export const useNavigate = () => {
       const result = matchRoute(url)
 
       console.log("navigate result", result)
+      // TODO : Mounir says we can use link builder thing to do this cleaner
       if (result.type === "match") {
         if (result.module === "Artist") {
           navigation.navigate("Artist", result.params as { artistID: string })
@@ -62,6 +63,8 @@ export const useNavigate = () => {
           navigation.navigate("Partner", result.params as { partnerID: string })
         } else if (result.module === "LocalDiscovery") {
           navigation.navigate("LocalDiscovery")
+        } else if (result.module === "ArtistSeries") {
+          navigation.navigate("ArtistSeries", result.params as { artistSeriesID: string })
         }
       }
     },
