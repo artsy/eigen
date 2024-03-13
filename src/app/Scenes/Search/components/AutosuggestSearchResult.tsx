@@ -11,14 +11,7 @@ import { AutosuggestResult } from "app/Components/AutosuggestResults/Autosuggest
 import { Pill } from "app/Components/Pill"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
 import { GlobalStore } from "app/store/GlobalStore"
-import {
-  EntityType,
-  navigate,
-  navigateToEntity,
-  navigateToPartner,
-  SlugType,
-  useNavigate,
-} from "app/system/navigation/navigate"
+import { useConditionalNavigate } from "app/system/newNavigation/useConditionalNavigate"
 import { Schema } from "app/utils/track"
 import { useContext } from "react"
 import { useTracking } from "react-tracking"
@@ -73,7 +66,7 @@ export const AutosuggestSearchResult: React.FC<{
   const { inputRef, queryRef } = useContext(SearchContext)
   const { trackEvent } = useTracking()
 
-  const navigate = useNavigate()
+  const conditionalNav = useConditionalNavigate()
 
   const showNavigationButtons =
     showQuickNavigationButtons && !!result.statuses?.artworks && !!result.statuses?.auctionLots
@@ -83,38 +76,40 @@ export const AutosuggestSearchResult: React.FC<{
    * about the entity type to render the correct placeholder/skeleton loader
    * @param result
    */
+
+  // TODO: Test that all these types are working as expected, I believe we were
+  // passing hints to render correct skeleton loaders before and think this broke
+  // bring it back
   const navigateToResult = (result: AutosuggestResult, props?: PassedProps) => {
     if (!result.href) {
       return
     }
 
-    console.log("Here is where I should navigate to the result", result, props)
     if (result.displayType === "Gallery" || result.displayType === "Institution") {
       // TODO: handle partner type
       // navigateToPartner(result.href!)
-      console.warn("Gallery nav")
-      navigate(result.href)
+      conditionalNav(result.href)
     } else if (result.displayType === "Fair") {
       // TODO: handle fair type
-      navigate(result.href)
+      conditionalNav(result.href)
       // navigateToEntity(result.href!, EntityType.Fair, SlugType.ProfileID)
     } else if (result.__typename === "Artist") {
       switch (props?.initialTab) {
         case "Insights":
-          navigate(`${result.href}/auction-results`, { passProps: props })
+          conditionalNav(`${result.href}/auction-results`, { passProps: props })
           break
         case "Artworks":
-          navigate(`${result.href}/artworks`, {
+          conditionalNav(`${result.href}/artworks`, {
             passProps: props,
           })
           break
 
         default:
-          navigate(result.href)
+          conditionalNav(result.href)
           break
       }
     } else {
-      navigate(result.href)
+      conditionalNav(result.href)
     }
   }
 
@@ -171,8 +166,9 @@ export const AutosuggestSearchResult: React.FC<{
           <Spacer x={1} />
 
           <Flex flex={1}>
-            <ResultWithHighlight displayLabel={result.displayLabel!} highlight={highlight} />
-
+            {!!result.displayLabel && (
+              <ResultWithHighlight displayLabel={result.displayLabel} highlight={highlight} />
+            )}
             {!!showResultType && !!resultType && (
               <Text variant="xs" color="black60">
                 {resultType}

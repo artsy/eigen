@@ -1,6 +1,6 @@
 import { Spacer, Flex, Text, EntityHeader } from "@artsy/palette-mobile"
 import { PartnerCard_artwork$data } from "__generated__/PartnerCard_artwork.graphql"
-import { navigateToPartner } from "app/system/navigation/navigate"
+import { useConditionalNavigateToPartner } from "app/system/newNavigation/useConditionalNavigateToPartner"
 import { limitWithCount } from "app/utils/limitWithCount"
 import { compact } from "lodash"
 import React from "react"
@@ -15,7 +15,8 @@ interface PartnerCardProps {
 }
 
 export const PartnerCard: React.FC<PartnerCardProps> = ({ artwork, shouldShowQuestions }) => {
-  const handleTap = (href: string) => navigateToPartner(href)
+  const conditionNavigateToPartner = useConditionalNavigateToPartner()
+  const handleTap = (href: string) => conditionNavigateToPartner(href)
 
   const partner = artwork.partner
 

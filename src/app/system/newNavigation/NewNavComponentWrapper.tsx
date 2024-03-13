@@ -14,7 +14,7 @@ interface NewNavComponentWrapperProps {
 
 export const NewNavComponentWrapper: React.FC<NewNavComponentWrapperProps> = ({
   children,
-  route,
+  // route,
 }) => {
   // TODO: Implement useRouteParser
   const routeProps = {} // useRouteParser(route) // Custom hook to parse route params
