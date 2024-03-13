@@ -1,3 +1,4 @@
+import { EXPERIMENT_NAME } from "app/utils/experiments/experiments"
 import { ContextProps, reportExperimentVariant } from "app/utils/experiments/reporter"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useIsStaging } from "app/utils/hooks/useIsStaging"
@@ -5,7 +6,7 @@ import { useContext, useEffect, useState } from "react"
 import { UnleashContext } from "./UnleashProvider"
 import { getUnleashClient } from "./unleashClient"
 
-export function useExperimentFlag(name: string) {
+export function useExperimentFlag(name: EXPERIMENT_NAME) {
   const client = getUnleashClient()
   const [enabled, setEnabled] = useState(client.isEnabled(name))
 
@@ -17,7 +18,7 @@ export function useExperimentFlag(name: string) {
   return enabled
 }
 
-export function useExperimentVariant(name: string): {
+export function useExperimentVariant(name: EXPERIMENT_NAME): {
   enabled: boolean
   variant: string
   payload?: string
@@ -62,8 +63,8 @@ export function useUnleashEnvironment(): { unleashEnv: "staging" | "production" 
       ? "production"
       : "staging"
     : isStaging
-    ? "staging"
-    : "production"
+      ? "staging"
+      : "production"
 
   return { unleashEnv }
 }
