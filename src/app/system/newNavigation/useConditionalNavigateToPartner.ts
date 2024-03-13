@@ -1,4 +1,5 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { enableNewNavigation } from "app/App"
 import { NavigationRoutes } from "app/Navigation"
 import { navigateToPartner as oldNavigateToPartner } from "app/system/navigation/navigate"
 import { useConditionalNavigate } from "app/system/newNavigation/useConditionalNavigate"
@@ -11,8 +12,7 @@ export const useConditionalNavigateToPartner = () => {
 
   const navigateCallback = useCallback(
     (routeName: string, params?: object) => {
-      const isFeatureEnabled = true // TODO: Set up a real feature flag
-      if (isFeatureEnabled) {
+      if (enableNewNavigation) {
         newNavigate(routeName, params)
       } else {
         oldNavigateToPartner(routeName)

@@ -38,7 +38,7 @@ const AuthRouter: React.FC<{
   return null
 }
 
-const Main2 = () => {
+const NewNavMain = () => {
   useRegisterNativeModules()
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
   const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
@@ -63,4 +63,4 @@ const Main2 = () => {
   )
 }
 
-export default Main2
+export default NewNavMain

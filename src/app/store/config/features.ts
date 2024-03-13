@@ -261,6 +261,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableArtworksFeedView",
   },
+  AREnableNewNavigation: {
+    description: "Enable new navigation",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableNewNavigation",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
