@@ -22,7 +22,7 @@ export const ArtsyGuarantee: React.FC = () => {
   return (
     <Box>
       <Text variant="md" color="black100">
-        Be covered by the Artsy Guarantee when you checkout with Artsy
+        Be covered by the Artsy Guarantee when you check out with Artsy
       </Text>
       <Spacer y={2} />
 
