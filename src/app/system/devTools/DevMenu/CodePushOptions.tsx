@@ -66,114 +66,116 @@ export const CodePushOptions = () => {
   `
 
   return (
-    <Expandable label="Code Push" expanded={false}>
-      <Flex my={2}>
-        {!!currentRelease && (
-          <>
-            <Message title="Active Release" text={activeReleaseText} variant="info" />
-            <Spacer y={2} />
-          </>
-        )}
+    <Flex mx={2}>
+      <Expandable label="Code Push" expanded={false}>
+        <Flex my={2}>
+          {!!currentRelease && (
+            <>
+              <Message title="Active Release" text={activeReleaseText} variant="info" />
+              <Spacer y={2} />
+            </>
+          )}
 
-        {Object.keys(codePushDeploymentKeys).map((deployment) => {
-          return (
-            <TouchableOpacity
-              key={deployment}
-              onPress={() => setSelectedDeployment(deployment as CodePushDeployment)}
-            >
-              <Flex flexDirection="row" alignItems="center">
-                <RadioButton selected={deployment == selectedDeployment} />
-                <Text>{deployment}</Text>
-              </Flex>
-            </TouchableOpacity>
-          )
-        })}
-
-        {loadProgress > 0 && (
-          <Flex mt={2}>
-            <Text>{loadStatus}</Text>
-            <ProgressBar progress={loadProgress} />
-          </Flex>
-        )}
-
-        {!!errorMessage && (
-          <Flex mt={2}>
-            <Message title="Something went wrong" text={errorMessage} variant="error" />
-          </Flex>
-        )}
-
-        <Spacer y={2} />
-
-        <Button
-          block
-          loading={loading}
-          onPress={async () => {
-            const deploymentKey = codePushDeploymentKeys[selectedDeployment]
-            setLoading(true)
-            setLoadProgress(0)
-            setLoadStatus("")
-            setErrorMessage(null)
-            await CodePush.sync(
-              { deploymentKey: deploymentKey, installMode: CodePush.InstallMode.IMMEDIATE },
-              (status) => {
-                switch (status) {
-                  case CodePush.SyncStatus.UPDATE_INSTALLED:
-                    setLoadStatus("Update installed")
-                    setLoading(false)
-                    break
-                  case CodePush.SyncStatus.CHECKING_FOR_UPDATE:
-                    setLoadStatus("Checking server for update")
-                    break
-                  case CodePush.SyncStatus.DOWNLOADING_PACKAGE:
-                    setLoadStatus("Downloading update")
-                    break
-                  case CodePush.SyncStatus.INSTALLING_UPDATE:
-                    setLoadStatus("Installing update, app will restart")
-                    break
-                  case CodePush.SyncStatus.UP_TO_DATE:
-                    setLoadStatus("No updates available, checking for pending updates")
-                    CodePush.getUpdateMetadata(CodePush.UpdateState.PENDING).then((update) => {
-                      if (update) {
-                        setLoadStatus("Update found, installing, the app will restart")
-                        setLoading(false)
-                        update.install(CodePush.InstallMode.IMMEDIATE)
-                      } else {
-                        setLoadStatus("No update found, check the deployment in codepush")
-                        setLoading(false)
-                      }
-                    })
-                    break
-                  case CodePush.SyncStatus.UNKNOWN_ERROR:
-                    setErrorMessage("Sync failed with error, try again or check deployment")
-                    setLoading(false)
-                    break
-                  default:
-                    break
-                }
-              },
-              (progress) => {
-                const loadProgress = (progress.receivedBytes / progress.totalBytes) * 100
-                setLoadProgress(loadProgress)
-              },
-              (codePushPackage) => {
-                // binary version mismatch
-                const appVersion = DeviceInfo.getVersion()
-                const updateTargetVersion = codePushPackage.appVersion
-                const errorMessage = [
-                  "An update is available but it doesn't match your current app version.",
-                  "Maybe you need to update?",
-                  `app version: ${appVersion}`,
-                  `update target version: ${updateTargetVersion}`,
-                ].join("\n")
-                setErrorMessage(errorMessage)
-                setLoading(false)
-              }
+          {Object.keys(codePushDeploymentKeys).map((deployment) => {
+            return (
+              <TouchableOpacity
+                key={deployment}
+                onPress={() => setSelectedDeployment(deployment as CodePushDeployment)}
+              >
+                <Flex flexDirection="row" alignItems="center">
+                  <RadioButton selected={deployment == selectedDeployment} />
+                  <Text>{deployment}</Text>
+                </Flex>
+              </TouchableOpacity>
             )
-          }}
-        >
-          Fetch and Run Deployment
-        </Button>
-      </Flex>
-    </Expandable>
+          })}
+
+          {loadProgress > 0 && (
+            <Flex mt={2}>
+              <Text>{loadStatus}</Text>
+              <ProgressBar progress={loadProgress} />
+            </Flex>
+          )}
+
+          {!!errorMessage && (
+            <Flex mt={2}>
+              <Message title="Something went wrong" text={errorMessage} variant="error" />
+            </Flex>
+          )}
+
+          <Spacer y={2} />
+
+          <Button
+            block
+            loading={loading}
+            onPress={async () => {
+              const deploymentKey = codePushDeploymentKeys[selectedDeployment]
+              setLoading(true)
+              setLoadProgress(0)
+              setLoadStatus("")
+              setErrorMessage(null)
+              await CodePush.sync(
+                { deploymentKey: deploymentKey, installMode: CodePush.InstallMode.IMMEDIATE },
+                (status) => {
+                  switch (status) {
+                    case CodePush.SyncStatus.UPDATE_INSTALLED:
+                      setLoadStatus("Update installed")
+                      setLoading(false)
+                      break
+                    case CodePush.SyncStatus.CHECKING_FOR_UPDATE:
+                      setLoadStatus("Checking server for update")
+                      break
+                    case CodePush.SyncStatus.DOWNLOADING_PACKAGE:
+                      setLoadStatus("Downloading update")
+                      break
+                    case CodePush.SyncStatus.INSTALLING_UPDATE:
+                      setLoadStatus("Installing update, app will restart")
+                      break
+                    case CodePush.SyncStatus.UP_TO_DATE:
+                      setLoadStatus("No updates available, checking for pending updates")
+                      CodePush.getUpdateMetadata(CodePush.UpdateState.PENDING).then((update) => {
+                        if (update) {
+                          setLoadStatus("Update found, installing, the app will restart")
+                          setLoading(false)
+                          update.install(CodePush.InstallMode.IMMEDIATE)
+                        } else {
+                          setLoadStatus("No update found, check the deployment in codepush")
+                          setLoading(false)
+                        }
+                      })
+                      break
+                    case CodePush.SyncStatus.UNKNOWN_ERROR:
+                      setErrorMessage("Sync failed with error, try again or check deployment")
+                      setLoading(false)
+                      break
+                    default:
+                      break
+                  }
+                },
+                (progress) => {
+                  const loadProgress = (progress.receivedBytes / progress.totalBytes) * 100
+                  setLoadProgress(loadProgress)
+                },
+                (codePushPackage) => {
+                  // binary version mismatch
+                  const appVersion = DeviceInfo.getVersion()
+                  const updateTargetVersion = codePushPackage.appVersion
+                  const errorMessage = [
+                    "An update is available but it doesn't match your current app version.",
+                    "Maybe you need to update?",
+                    `app version: ${appVersion}`,
+                    `update target version: ${updateTargetVersion}`,
+                  ].join("\n")
+                  setErrorMessage(errorMessage)
+                  setLoading(false)
+                }
+              )
+            }}
+          >
+            Fetch and Run Deployment
+          </Button>
+        </Flex>
+      </Expandable>
+    </Flex>
   )
 }
