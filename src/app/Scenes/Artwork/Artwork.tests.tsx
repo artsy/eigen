@@ -546,7 +546,7 @@ describe("Artwork", () => {
       await flushPromiseQueue()
 
       expect(
-        screen.getByText("Be covered by the Artsy Guarantee when you checkout with Artsy")
+        screen.getByText("Be covered by the Artsy Guarantee when you check out with Artsy")
       ).toBeOnTheScreen()
     })
 
@@ -567,7 +567,7 @@ describe("Artwork", () => {
       await flushPromiseQueue()
 
       expect(
-        screen.queryByText("Be covered by the Artsy Guarantee when you checkout with Artsy")
+        screen.queryByText("Be covered by the Artsy Guarantee when you check out with Artsy")
       ).toBeNull()
     })
   })
