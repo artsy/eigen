@@ -38,7 +38,8 @@ import { CodePushOptions } from "app/system/devTools/DevMenu/CodePushOptions"
 import { eigenSentryReleaseName } from "app/system/errorReporting//sentrySetup"
 import { dismissModal, goBack, navigate } from "app/system/navigation/navigate"
 import { RelayCache } from "app/system/relay/RelayCache"
-import { useUnleashEnvironment } from "app/utils/experiments/hooks"
+import { EXPERIMENT_NAME, experiments } from "app/utils/experiments/experiments"
+import { useExperimentVariant, useUnleashEnvironment } from "app/utils/experiments/hooks"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { capitalize, compact, sortBy } from "lodash"
 import { useState } from "react"
@@ -197,6 +198,31 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
                   GlobalStore.actions.artsyPrefs.features.clearLocalOverrides()
                 }}
               />
+            </Flex>
+          </Expandable>
+          <Spacer y={1} />
+        </Flex>
+
+        <Flex mx={2}>
+          <Expandable label="Experiments" expanded={false}>
+            <Flex mx={-2} mt={1}>
+              <Text variant="xs" px={2} color="black60" italic>
+                Hint: Long press key or payload to copy them into your clipboard
+              </Text>
+              <Join separator={<Separator borderColor="black10" />}>
+                {Object.entries(experiments)
+                  // Reverse the order so that the most recent experiments are at the top
+                  .reverse()
+                  .map(([key, value]) => {
+                    return (
+                      <ExperimentFlagItem
+                        description={value.description}
+                        key={key}
+                        flag={key as EXPERIMENT_NAME}
+                      />
+                    )
+                  })}
+              </Join>
             </Flex>
           </Expandable>
           <Spacer y={1} />
@@ -646,5 +672,41 @@ export const DevMenuButtonItem: React.FC<{
         )}
       </Flex>
     </Touchable>
+  )
+}
+
+const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMENT_NAME }> = ({
+  description,
+  flag,
+}) => {
+  const experiment = useExperimentVariant(flag)
+  return (
+    <Flex py={1} px={2}>
+      <Text fontWeight="bold" selectable>
+        {flag}
+      </Text>
+      <Text>
+        Status:{" "}
+        {experiment.enabled ? (
+          <Text fontWeight="bold" color="blue100">
+            enabled
+          </Text>
+        ) : (
+          <Text fontWeight="bold" color="red100">
+            disabled
+          </Text>
+        )}
+      </Text>
+      <Text>
+        Variant: <Text fontWeight="bold">{experiment.variant}</Text>
+      </Text>
+      <Flex flexDirection="row" flexWrap="wrap">
+        <Text>Payload: </Text>
+        <Text fontWeight="bold" selectable>
+          {experiment.payload}
+        </Text>
+      </Flex>
+      <Text>Description: {description}</Text>
+    </Flex>
   )
 }
