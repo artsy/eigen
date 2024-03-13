@@ -248,6 +248,11 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "ARShowBlurhashImagePlaceholder",
   },
+  AREnableAlertBottomSheet: {
+    description: "Enable tapping on alerts to show bottom sheet",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {

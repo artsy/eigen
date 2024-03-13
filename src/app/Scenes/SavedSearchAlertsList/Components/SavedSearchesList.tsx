@@ -4,8 +4,13 @@ import { captureMessage } from "@sentry/react-native"
 import { SavedSearchesList_me$data } from "__generated__/SavedSearchesList_me.graphql"
 import { SortByModal, SortOption } from "app/Components/SortByModal/SortByModal"
 import { SAVED_SERCHES_PAGE_SIZE } from "app/Components/constants"
+import {
+  AlertBottomSheet,
+  BottomSheetAlert,
+} from "app/Scenes/SavedSearchAlertsList/Components/AlertBottomSheet"
 import { GoBackProps, goBack, navigate, navigationEvents } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { RefreshEvents, SAVED_ALERT_REFRESH_KEY } from "app/utils/refreshHelpers"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -29,6 +34,7 @@ interface SavedSearchesListProps extends SavedSearchListWrapperProps {
   fetchingMore: boolean
   onRefresh: (type: RefreshType) => void
   onLoadMore: () => void
+  onAlertPress: (alert: BottomSheetAlert) => void
 }
 
 const SORT_OPTIONS: SortOption[] = [
@@ -37,8 +43,9 @@ const SORT_OPTIONS: SortOption[] = [
 ]
 
 export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
-  const { me, fetchingMore, refreshMode, onRefresh, onLoadMore } = props
+  const { me, fetchingMore, refreshMode, onRefresh, onLoadMore, onAlertPress } = props
   const { space } = useTheme()
+  const enableTapToShowBottomSheet = useFeatureFlag("AREnableAlertBottomSheet")
   const items = extractNodes(me.alertsConnection)
 
   const refresh = () => {
@@ -80,7 +87,17 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
             title={item.title}
             subtitle={item.subtitle}
             onPress={() => {
-              navigate(`settings/alerts/${item.internalID}/edit`)
+              if (!!enableTapToShowBottomSheet) {
+                const artworksCount = item.artworksConnection?.counts?.total ?? 0
+
+                onAlertPress({
+                  id: item.internalID,
+                  title: item.title,
+                  artworksCount: artworksCount,
+                })
+              } else {
+                navigate(`settings/alerts/${item.internalID}/edit`)
+              }
             }}
           />
         )
@@ -100,7 +117,9 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
 export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (props) => {
   const { relay } = props
 
+  const enableTapToShowBottomSheet = useFeatureFlag("AREnableAlertBottomSheet")
   const [modalVisible, setModalVisible] = useState(false)
+  const [selectedAlert, setSelectedAlert] = useState<BottomSheetAlert | null>(null)
   const [selectedSortValue, setSelectedSortValue] = useState("ENABLED_AT_DESC")
   const prevSelectedSortValue = usePrevious(selectedSortValue)
   const [fetchingMore, setFetchingMore] = useState(false)
@@ -206,6 +225,9 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
             refreshMode={refreshMode}
             onRefresh={onRefresh}
             onLoadMore={handleLoadMore}
+            onAlertPress={(alert: BottomSheetAlert) => {
+              setSelectedAlert(alert)
+            }}
           />
           <SortByModal
             visible={modalVisible}
@@ -215,6 +237,14 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
             onSelectOption={handleSelectOption}
             onModalFinishedClosing={handleSortByModalClosed}
           />
+          {!!enableTapToShowBottomSheet && !!selectedAlert && (
+            <AlertBottomSheet
+              alert={selectedAlert}
+              onDismiss={() => {
+                setSelectedAlert(null)
+              }}
+            />
+          )}
         </Screen.Body>
       </Screen>
     </ProvideScreenTracking>
@@ -244,6 +274,11 @@ export const SavedSearchesListPaginationContainer = createPaginationContainer(
               artistSeriesIDs
               title: displayName(only: [artistIDs])
               subtitle: displayName(except: [artistIDs])
+              artworksConnection(first: 1) {
+                counts {
+                  total
+                }
+              }
             }
           }
         }
