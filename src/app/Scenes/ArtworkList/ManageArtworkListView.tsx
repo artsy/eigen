@@ -1,7 +1,7 @@
 import { Box, Join, Separator } from "@artsy/palette-mobile"
 import { ArtworkListsBottomSheetSectionTitle } from "app/Components/ArtworkLists/components/ArtworkListsBottomSheetSectionTitle"
-import { AutoHeightBottomSheet } from "app/Components/ArtworkLists/components/AutoHeightBottomSheet"
 import { useArtworkListsBottomOffset } from "app/Components/ArtworkLists/useArtworkListsBottomOffset"
+import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
 import { HeaderMenuArtworkListEntity } from "app/Scenes/ArtworkList/types"
 import { EditArtworkListView } from "app/Scenes/ArtworkList/views/EditArtworkListView/EditArtworkListView"
 import { FC, useCallback, useState } from "react"

@@ -1,6 +1,6 @@
 import { Button, Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { BottomSheetView, useBottomSheetDynamicSnapPoints } from "@gorhom/bottom-sheet"
-import { AutomountedBottomSheetModal } from "app/Components/ArtworkLists/components/AutomountedBottomSheetModal"
+import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { navigate } from "app/system/navigation/navigate"
 import { FC, useMemo } from "react"
 
