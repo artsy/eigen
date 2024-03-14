@@ -9,6 +9,7 @@ import { CollectionQueryRenderer } from "app/Scenes/Collection/Collection"
 import { PartnerQueryRenderer } from "app/Scenes/Partner/Partner"
 import { SaleQueryRenderer } from "app/Scenes/Sale/Sale"
 import { SearchScreen } from "app/Scenes/Search/Search"
+import { ShowMoreInfoQueryRenderer } from "app/Scenes/Show/Screens/ShowMoreInfo"
 import { ShowQueryRenderer } from "app/Scenes/Show/Show"
 import { LegacyBackButtonContext } from "app/system/navigation/NavStack"
 import { NewNavComponentWrapper } from "app/system/newNavigation/NewNavComponentWrapper"
@@ -27,6 +28,7 @@ export type SearchRoutes = {
   Collection: { collectionID: string }
   LocalDiscovery: undefined
   Show: { showID: string }
+  ShowMoreInfo: undefined
 }
 
 // TODO: These don't belong here, wrapper components POC, probably
@@ -206,6 +208,30 @@ const ShowWrapper: React.FC<ShowWrapperProps> = ({ route }) => {
   )
 }
 
+type ShowMoreInfoRouteParams = {
+  ShowMoreInfo: {
+    showID: string
+  }
+}
+
+type ShowMoreInfoWrapperProps = {
+  route: RouteProp<ShowMoreInfoRouteParams, "ShowMoreInfo">
+}
+
+const ShowMoreInfoWrapper: React.FC<ShowMoreInfoWrapperProps> = ({ route }) => {
+  const [_, updateShouldHideBackButton] = useState(false)
+  return (
+    <NewNavComponentWrapper route={route}>
+      <LegacyBackButtonContext.Provider value={{ updateShouldHideBackButton }}>
+        <ScreenPadding fullBleed={false} isPresentedModally={false} isVisible={true}>
+          <ShowMoreInfoQueryRenderer showID={route.params.showID} />
+          <BackButton show={true} />
+        </ScreenPadding>
+      </LegacyBackButtonContext.Provider>
+    </NewNavComponentWrapper>
+  )
+}
+
 export const SearchRouter = () => {
   return (
     <StackNav.Group>
@@ -219,6 +245,7 @@ export const SearchRouter = () => {
       <StackNav.Screen name="ArtistSeries" component={ArtistSeriesWrapper} />
       <StackNav.Screen name="LocalDiscovery" component={CityGuideView} />
       <StackNav.Screen name="Show" component={ShowWrapper} />
+      <StackNav.Screen name="ShowMoreInfo" component={ShowMoreInfoWrapper} />
     </StackNav.Group>
   )
 }

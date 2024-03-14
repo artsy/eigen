@@ -1,6 +1,6 @@
 import { ChevronIcon, Box, BoxProps, Text } from "@artsy/palette-mobile"
 import { ShowInfo_show$data } from "__generated__/ShowInfo_show.graphql"
-import { navigate } from "app/system/navigation/navigate"
+import { useConditionalNavigate } from "app/system/newNavigation/useConditionalNavigate"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -9,6 +9,7 @@ export interface ShowInfoProps extends BoxProps {
 }
 
 export const ShowInfo: React.FC<ShowInfoProps> = ({ show, ...rest }) => {
+  const navigate = useConditionalNavigate()
   return (
     <Box {...rest}>
       {!!show.about && (
