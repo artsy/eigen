@@ -9,7 +9,6 @@ import {
   Spacer,
   Tabs,
 } from "@artsy/palette-mobile"
-import { RouteProp, useRoute } from "@react-navigation/native"
 import { PartnerInitialQuery } from "__generated__/PartnerInitialQuery.graphql"
 import { PartnerQuery } from "__generated__/PartnerQuery.graphql"
 import { Partner_partner$data } from "__generated__/Partner_partner.graphql"
@@ -131,16 +130,10 @@ export const PartnerContainer = createRefetchContainer(
   `
 )
 
-// TODO: Does this belong here or colocated with other routing code?
-type PartnerScreenRouteProp = RouteProp<{ Partner: { partnerID: string } }, "Partner">
-
 export const PartnerQueryRenderer: React.FC<{
   partnerID: string
   isVisible: boolean
-}> = ({ ...others }) => {
-  const route = useRoute<PartnerScreenRouteProp>()
-  const { partnerID } = route.params
-
+}> = ({ partnerID, ...others }) => {
   const { loading, data } = useClientQuery<PartnerInitialQuery>({
     environment: getRelayEnvironment(),
     query: graphql`

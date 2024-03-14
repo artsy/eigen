@@ -101,12 +101,31 @@ const ArtistWrapper: React.FC<ArtistWrapperProps> = ({ route }) => {
   )
 }
 
+type PartnerRouteParams = {
+  Partner: {
+    partnerID: string
+  }
+}
+
+type PartnerWrapperProps = {
+  route: RouteProp<PartnerRouteParams, "Partner">
+}
+
+const PartnerWrapper: React.FC<PartnerWrapperProps> = ({ route }) => {
+  // TODO: What is with the isVisible prop?
+  return (
+    <NewNavComponentWrapper route={route}>
+      <PartnerQueryRenderer partnerID={route.params.partnerID} isVisible={true} />
+    </NewNavComponentWrapper>
+  )
+}
+
 export const SearchRouter = () => {
   return (
     <StackNav.Group>
       <StackNav.Screen name="Search" component={SearchScreen} />
       <StackNav.Screen name="Artist" component={ArtistWrapper} />
-      <StackNav.Screen name="Partner" component={PartnerQueryRenderer} />
+      <StackNav.Screen name="Partner" component={PartnerWrapper} />
       <StackNav.Screen name="Artwork" component={ArtworkWrapper} />
       <StackNav.Screen name="Collection" component={CollectionWrapper} />
       <StackNav.Screen name="ArtistSeries" component={ArtistSeriesWrapper} />
