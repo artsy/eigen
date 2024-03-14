@@ -1,12 +1,16 @@
 import { Flex, Join, Separator, Text } from "@artsy/palette-mobile"
 import { Expandable } from "app/Components/Expandable"
+import { GlobalStore } from "app/store/GlobalStore"
 import { ExperimentFlagItem } from "app/system/devTools/DevMenu/Components/ExperimentFlagItem"
-import { experiments, EXPERIMENT_NAME } from "app/utils/experiments/experiments"
+import { EXPERIMENT_NAME, experiments } from "app/utils/experiments/experiments"
 
 export const Experiments: React.FC<{}> = () => {
+  const {} = GlobalStore.actions.artsyPrefs.experiments
+
   return (
     <Flex mx={2}>
-      <Expandable label="Experiments" expanded={false}>
+      <Expandable label="Experiments" expanded>
+        {/* <Expandable label="Experiments" expanded={false}> */}
         <Flex mx={-2}>
           <Flex mt={1}>
             <Text variant="xs" px={2} color="black60" italic>
