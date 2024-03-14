@@ -19,6 +19,7 @@ export interface ExperimentsModel {
     ExperimentsModel,
     { key: EXPERIMENT_NAME; value: string | undefined | null }
   >
+  resetOverrides: Action<ExperimentsModel>
 }
 
 export const getExperimentsModel = (): ExperimentsModel => ({
@@ -45,5 +46,9 @@ export const getExperimentsModel = (): ExperimentsModel => ({
     } else {
       state.localPayloadOverrides[key] = value
     }
+  }),
+  resetOverrides: action((state) => {
+    state.localVariantOverrides = {}
+    state.localPayloadOverrides = {}
   }),
 })
