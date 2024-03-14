@@ -29,9 +29,8 @@ Want to learn how to switch between different variants, see how to [add an overr
 ## Ready for release checkboxes!
 
 - [ ] My feature has been QA'd and it was approved by product, design, and data!
-  - [ ] Future updates or bug fixes,
 - [ ] My feature related feature flag `readyForRelease` is set to `true`.
-- [ ] My feature feature flag is available in Echo and is set to `true`
-- [ ] My feature experiment flag is enabled for all users in `unleash.artsy.net`
+- [ ] My feature related feature flag is available in Echo and is set to `true`
+- [ ] My feature related **experiment flag** is enabled for all users in `unleash.artsy.net`
   - The standard strategy is `ON` for all users in production
   - The different variants split is also available in production (you can use `copy to environment` to get the split from `staging`)
