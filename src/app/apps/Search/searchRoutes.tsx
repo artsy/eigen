@@ -7,6 +7,7 @@ import { ArtistSeriesQueryRenderer } from "app/Scenes/ArtistSeries/ArtistSeries"
 import { ArtworkPageableScreen } from "app/Scenes/Artwork/Artwork"
 import { CollectionQueryRenderer } from "app/Scenes/Collection/Collection"
 import { PartnerQueryRenderer } from "app/Scenes/Partner/Partner"
+import { SaleQueryRenderer } from "app/Scenes/Sale/Sale"
 import { SearchScreen } from "app/Scenes/Search/Search"
 import { LegacyBackButtonContext } from "app/system/navigation/NavStack"
 import { NewNavComponentWrapper } from "app/system/newNavigation/NewNavComponentWrapper"
@@ -19,6 +20,7 @@ export type SearchRoutes = {
   Article: { articleID: string }
   Artist: { artistID: string } // TODO: some of these probably don't belong here
   Artwork: { artworkID: string }
+  Auction: { saleID: string }
   Partner: { partnerID: string }
   ArtistSeries: { artistSeriesID: string }
   Collection: { collectionID: string }
@@ -153,12 +155,38 @@ const ArticleWrapper: React.FC<ArticleWrapperProps> = ({ route }) => {
   )
 }
 
+type AuctionRouteParams = {
+  Auction: {
+    saleID: string
+  }
+}
+
+type AuctionWrapperProps = {
+  route: RouteProp<AuctionRouteParams, "Auction">
+}
+
+const AuctionWrapper: React.FC<AuctionWrapperProps> = ({ route }) => {
+  const [_, updateShouldHideBackButton] = useState(false)
+
+  return (
+    <NewNavComponentWrapper route={route}>
+      <LegacyBackButtonContext.Provider value={{ updateShouldHideBackButton }}>
+        <ScreenPadding fullBleed={false} isPresentedModally={false} isVisible={true}>
+          <SaleQueryRenderer saleID={route.params.saleID} />
+          <BackButton show={true} />
+        </ScreenPadding>
+      </LegacyBackButtonContext.Provider>
+    </NewNavComponentWrapper>
+  )
+}
+
 export const SearchRouter = () => {
   return (
     <StackNav.Group>
       <StackNav.Screen name="Search" component={SearchScreen} />
       <StackNav.Screen name="Artist" component={ArtistWrapper} />
       <StackNav.Screen name="Article" component={ArticleWrapper} />
+      <StackNav.Screen name="Auction" component={AuctionWrapper} />
       <StackNav.Screen name="Partner" component={PartnerWrapper} />
       <StackNav.Screen name="Artwork" component={ArtworkWrapper} />
       <StackNav.Screen name="Collection" component={CollectionWrapper} />
