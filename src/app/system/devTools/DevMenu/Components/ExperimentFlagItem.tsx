@@ -1,4 +1,6 @@
 import { Flex, LinkIcon, Text } from "@artsy/palette-mobile"
+import Clipboard from "@react-native-clipboard/clipboard"
+import { useToast } from "app/Components/Toast/toastHook"
 import { EXPERIMENT_NAME } from "app/utils/experiments/experiments"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { TouchableOpacity } from "react-native"
@@ -8,6 +10,8 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
   flag,
 }) => {
   const experiment = useExperimentVariant(flag)
+  const toast = useToast()
+
   return (
     <Flex py={1} px={2}>
       <Text fontWeight="bold" selectable>
@@ -36,7 +40,12 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
       </Flex>
       <Flex flexDirection="row">
         <Text color="black60">Unleash Url: </Text>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            Clipboard.setString(`https://unleash.artsy.net/projects/default/features/${flag}`)
+            toast.show("URL copied to clipboard", "bottom")
+          }}
+        >
           <Text>
             Copy URL <LinkIcon />
           </Text>
