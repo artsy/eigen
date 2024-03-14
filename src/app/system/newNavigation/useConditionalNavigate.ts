@@ -15,6 +15,7 @@ export const useConditionalNavigate = () => {
         // There are more standard ways in react-navigation to maintain mapping between route names and modules
         const result = matchRoute(routeName)
         if (result.type === "match") {
+          console.warn("Navigating to new route", result.module, result.params)
           // TODO: Danger beach! This means any screen in our old nav that is not in new nav will break, make it type safe before shipping
           navigation.navigate(result.module as any, result.params)
         }

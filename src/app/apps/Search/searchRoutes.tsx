@@ -1,6 +1,7 @@
 import { RouteProp } from "@react-navigation/native"
 import { CityGuideView } from "app/NativeModules/CityGuideView"
 import { StackNav } from "app/Navigation"
+import { ArticleScreen } from "app/Scenes/Article/ArticleScreen"
 import { ArtistQueryRenderer } from "app/Scenes/Artist/Artist"
 import { ArtistSeriesQueryRenderer } from "app/Scenes/ArtistSeries/ArtistSeries"
 import { ArtworkPageableScreen } from "app/Scenes/Artwork/Artwork"
@@ -15,6 +16,7 @@ import { useState } from "react"
 
 export type SearchRoutes = {
   Search: undefined
+  Article: { articleID: string }
   Artist: { artistID: string } // TODO: some of these probably don't belong here
   Artwork: { artworkID: string }
   Partner: { partnerID: string }
@@ -133,11 +135,30 @@ const PartnerWrapper: React.FC<PartnerWrapperProps> = ({ route }) => {
   )
 }
 
+type ArticleRouteParams = {
+  Article: {
+    articleID: string
+  }
+}
+
+type ArticleWrapperProps = {
+  route: RouteProp<ArticleRouteParams, "Article">
+}
+
+const ArticleWrapper: React.FC<ArticleWrapperProps> = ({ route }) => {
+  return (
+    <NewNavComponentWrapper route={route}>
+      <ArticleScreen articleID={route.params.articleID} />
+    </NewNavComponentWrapper>
+  )
+}
+
 export const SearchRouter = () => {
   return (
     <StackNav.Group>
       <StackNav.Screen name="Search" component={SearchScreen} />
       <StackNav.Screen name="Artist" component={ArtistWrapper} />
+      <StackNav.Screen name="Article" component={ArticleWrapper} />
       <StackNav.Screen name="Partner" component={PartnerWrapper} />
       <StackNav.Screen name="Artwork" component={ArtworkWrapper} />
       <StackNav.Screen name="Collection" component={CollectionWrapper} />
