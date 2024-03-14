@@ -61,7 +61,6 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
 // but do get benefit of being able to work piecemeal until release
 export const enableNewNavigation = false
 
-// @ts-ignore
 const Main = () => {
   useRageShakeDevMenu()
   useEffect(() => {
