@@ -11,17 +11,14 @@ export const useConditionalNavigate = () => {
   const navigateCallback = useCallback(
     (routeName: string, params?: object) => {
       if (enableNewNavigation) {
-        // Use React Navigation's navigate method for the new navigation system
+        // TODO: This works but is probably not what we want long term
+        // There are more standard ways in react-navigation to maintain mapping between route names and modules
         const result = matchRoute(routeName)
         if (result.type === "match") {
-          // TODO: Danger beach!
-
-          console.warn("navigate result", result)
+          // TODO: Danger beach! This means any screen in our old nav that is not in new nav will break, make it type safe before shipping
           navigation.navigate(result.module as any, result.params)
         }
       } else {
-        // Use the legacy navigation system's navigate function
-        // Adjust this call according to how your old navigate function is structured
         oldNavigate(routeName, params)
       }
     },
