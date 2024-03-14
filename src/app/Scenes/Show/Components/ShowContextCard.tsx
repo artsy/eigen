@@ -4,7 +4,7 @@ import { ShowContextCard_show$data } from "__generated__/ShowContextCard_show.gr
 import { SmallCard } from "app/Components/Cards"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { navigate } from "app/system/navigation/navigate"
+import { useConditionalNavigate } from "app/system/newNavigation/useConditionalNavigate"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -16,9 +16,11 @@ export interface ShowContextCardProps extends BoxProps {
 export const ShowContextCard: React.FC<ShowContextCardProps> = ({ show, ...rest }) => {
   const { isFairBooth, fair, partner } = show
 
+  const navigate = useConditionalNavigate()
+
   const { onPress, ...card } = isFairBooth
-    ? extractPropsFromFair(fair)
-    : extractPropsFromPartner(partner)
+    ? extractPropsFromFair(fair, navigate)
+    : extractPropsFromPartner(partner, navigate)
 
   const tracking = useTracking()
 
@@ -193,7 +195,11 @@ export const ShowContextCardFragmentContainer = createFragmentContainer(ShowCont
   `,
 })
 
-const extractPropsFromFair = (fair: ShowContextCard_show$data["fair"]): ContextCardProps => ({
+// TODO: Handle these nav functions in new nav
+const extractPropsFromFair = (
+  fair: ShowContextCard_show$data["fair"],
+  navigate: (routeName: string, params?: object | undefined) => void
+): ContextCardProps => ({
   sectionTitle: `Part of ${fair?.name}`,
   imageUrls: [fair?.image?.imageUrl ?? ""],
   iconUrl: fair?.profile?.icon?.imageUrl ?? "",
@@ -204,7 +210,8 @@ const extractPropsFromFair = (fair: ShowContextCard_show$data["fair"]): ContextC
 
 // TODO: confirm against bestiary of Show types? (regular, reference, online, stub)
 const extractPropsFromPartner = (
-  partner: ShowContextCard_show$data["partner"]
+  partner: ShowContextCard_show$data["partner"],
+  navigate: (routeName: string, params?: object | undefined) => void
 ): ContextCardProps => ({
   sectionTitle: `Presented by ${partner?.name}`,
   imageUrls:
