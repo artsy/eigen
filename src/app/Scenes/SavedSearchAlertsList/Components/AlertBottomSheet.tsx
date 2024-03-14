@@ -53,11 +53,21 @@ export const AlertBottomSheet: FC<AlertBottomSheetProps> = ({
               Edit Alert
             </Button>
 
-            <Button onPress={navigateToArtworks} variant="outline" block width={100} disabled>
-              View Artworks{" "}
-              <Text color="blue100" variant="xs">
-                {artworksCount}
-              </Text>
+            <Button onPress={navigateToArtworks} variant="outline" block width={100}>
+              <Flex flexDirection="row">
+                <Text variant="sm">View Artworks</Text>
+                {/* superscript - change font sizes and lineHeight cautiously */}
+                <Text
+                  color="blue100"
+                  variant="xs"
+                  style={{
+                    lineHeight: 20,
+                    verticalAlign: "top",
+                  }}
+                >
+                  {artworksCount}
+                </Text>
+              </Flex>
             </Button>
           </Join>
         </Flex>

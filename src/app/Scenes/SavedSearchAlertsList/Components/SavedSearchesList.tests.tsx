@@ -137,6 +137,7 @@ describe("SavedSearches", () => {
       })
 
       fireEvent.press(screen.getByText("Banksy"))
+
       expect(screen.getByText("Edit Alert")).toBeTruthy()
       expect(screen.getByText(/View Artworks/)).toBeTruthy()
       expect(screen.getByText(/57/)).toBeTruthy()

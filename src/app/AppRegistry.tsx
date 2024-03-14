@@ -27,6 +27,7 @@ import { PartnerOfferContainer } from "app/Scenes/PartnerOffer/PartnerOfferConta
 import { PriceDatabase } from "app/Scenes/PriceDatabase/PriceDatabase"
 import { RecentlyViewedScreenQuery } from "app/Scenes/RecentlyViewed/Components/RecentlyViewedArtworks"
 import { RecentlyViewedScreen } from "app/Scenes/RecentlyViewed/RecentlyViewed"
+import { AlertArtworks } from "app/Scenes/SavedSearchAlert/AlertArtworks"
 import { SearchScreen, SearchScreenQuery } from "app/Scenes/Search/Search"
 import { SimilarToRecentlyViewedScreen } from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
 import { ArtsyKeyboardAvoidingViewContext } from "app/utils/ArtsyKeyboardAvoidingView"
@@ -345,6 +346,11 @@ export const modules = defineModules({
   About: reactModule(About),
   AddMyCollectionArtist: reactModule(AddMyCollectionArtist, {
     hidesBackButton: true,
+  }),
+  AlertArtworks: reactModule(AlertArtworks, {
+    fullBleed: true,
+    hidesBackButton: true,
+    hidesBottomTabs: true,
   }),
   ArtQuiz: reactModule(ArtQuiz, { ...artQuizScreenOptions, hidesBottomTabs: true }),
   ArtQuizResults: reactModule(ArtQuizResults, {

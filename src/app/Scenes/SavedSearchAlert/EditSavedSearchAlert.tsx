@@ -13,6 +13,7 @@ import {
   SavedSearchEntityArtist,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
+import { AlertArtworks } from "app/Scenes/SavedSearchAlert/AlertArtworks"
 import { EditSavedSearchAlertContent } from "app/Scenes/SavedSearchAlert/EditSavedSearchAlertContent"
 import {
   EditSavedSearchAlertNavigationStack,
@@ -145,6 +146,11 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
                 name="EditSavedSearchAlertContent"
                 component={EditSavedSearchAlertContent}
                 initialParams={params}
+              />
+              <Stack.Screen
+                name="AlertArtworks"
+                component={AlertArtworks}
+                initialParams={{ alertId: savedSearchAlertId }}
               />
               <Stack.Screen name="EmailPreferences" component={EmailPreferencesScreen} />
               <Stack.Screen
