@@ -59,12 +59,14 @@ type ArtworkWrapperProps = {
 const ArtworkWrapper: React.FC<ArtworkWrapperProps> = ({ route }) => {
   return (
     <NewNavComponentWrapper route={route}>
-      <ArtworkPageableScreen
-        artworkID={route.params.artworkID}
-        isVisible={true}
-        pageableSlugs={[]}
-        onLoad={() => console.log("what was i made for :(?")}
-      />
+      <ScreenPadding fullBleed={false} isPresentedModally={false} isVisible={true}>
+        <ArtworkPageableScreen
+          artworkID={route.params.artworkID}
+          isVisible={true}
+          pageableSlugs={[]}
+          onLoad={() => console.log("what was i made for :(?")}
+        />
+      </ScreenPadding>
     </NewNavComponentWrapper>
   )
 }
