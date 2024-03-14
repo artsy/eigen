@@ -1,6 +1,7 @@
 import { useScreenDimensions } from "@artsy/palette-mobile"
 import { View } from "react-native"
 
+// TODO: Stolen from NavStack.tsx, should maybe be consolidated into a screen wrapper
 export const ScreenPadding: React.FC<{
   fullBleed: boolean
   isPresentedModally: boolean

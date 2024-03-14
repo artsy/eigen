@@ -7,8 +7,11 @@ import { ArtworkPageableScreen } from "app/Scenes/Artwork/Artwork"
 import { CollectionQueryRenderer } from "app/Scenes/Collection/Collection"
 import { PartnerQueryRenderer } from "app/Scenes/Partner/Partner"
 import { SearchScreen } from "app/Scenes/Search/Search"
+import { LegacyBackButtonContext } from "app/system/navigation/NavStack"
 import { NewNavComponentWrapper } from "app/system/newNavigation/NewNavComponentWrapper"
+import { BackButton } from "app/system/newNavigation/NewNavLegacyBackButton"
 import { ScreenPadding } from "app/system/newNavigation/ScreenPadding"
+import { useState } from "react"
 
 export type SearchRoutes = {
   Search: undefined
@@ -77,11 +80,16 @@ type CollectionWrapperProps = {
 }
 
 const CollectionWrapper: React.FC<CollectionWrapperProps> = ({ route }) => {
+  const [_, updateShouldHideBackButton] = useState(false)
+
   return (
     <NewNavComponentWrapper route={route}>
-      <ScreenPadding fullBleed={true} isPresentedModally={false} isVisible={true}>
-        <CollectionQueryRenderer collectionID={route.params.collectionID} />
-      </ScreenPadding>
+      <LegacyBackButtonContext.Provider value={{ updateShouldHideBackButton }}>
+        <ScreenPadding fullBleed={true} isPresentedModally={false} isVisible={true}>
+          <CollectionQueryRenderer collectionID={route.params.collectionID} />
+          <BackButton show={true} />
+        </ScreenPadding>
+      </LegacyBackButtonContext.Provider>
     </NewNavComponentWrapper>
   )
 }

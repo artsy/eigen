@@ -59,7 +59,7 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
 // This is dumb but it is too early in lifecycle to use feature flag infrastructure
 // Just use a dummy flag, we don't have the luxury of turning off an on via echo
 // but do get benefit of being able to work piecemeal until release
-export const enableNewNavigation = false
+export const enableNewNavigation = true
 
 const Main = () => {
   useRageShakeDevMenu()
