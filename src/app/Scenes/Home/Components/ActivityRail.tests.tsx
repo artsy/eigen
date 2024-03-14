@@ -30,7 +30,7 @@ describe("ActivityRail", () => {
     })
 
     expect(screen.getByText("Latest Activity Rail")).toBeOnTheScreen()
-    expect(screen.getByText(/mock-value-for-field-"title"/)).toBeOnTheScreen()
+    expect(screen.getByText(/mock-value-for-field-"headline"/)).toBeOnTheScreen()
   })
 
   it("handles header tap", () => {
@@ -98,7 +98,7 @@ describe("ActivityRail", () => {
       }),
     })
 
-    fireEvent.press(screen.getByText(/mock-value-for-field-"title"/))
+    fireEvent.press(screen.getByText(/mock-value-for-field-"headline"/))
 
     expect(navigate).toHaveBeenCalledWith("/notification/id-1")
 

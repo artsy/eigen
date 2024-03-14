@@ -215,7 +215,7 @@ describe("ActivityItem with feature flags disabled", () => {
   })
 
   describe("Notification type", () => {
-    it("should NOT be rendered by default", async () => {
+    it("should be rendered by default", async () => {
       renderWithRelay({
         Notification: () => notification,
       })
@@ -223,7 +223,7 @@ describe("ActivityItem with feature flags disabled", () => {
       await flushPromiseQueue()
 
       const label = screen.queryByLabelText(/Notification type: .+/i)
-      expect(label).toBeNull()
+      expect(label).not.toBeNull()
     })
 
     it("should render 'Alert'", async () => {
@@ -315,7 +315,7 @@ describe("ActivityItem", () => {
 
     await flushPromiseQueue()
 
-    expect(screen.queryByText("2 days ago")).toBeFalsy()
+    expect(screen.getByText("2 days ago")).toBeTruthy()
   })
 
   it("should render artwork images", async () => {

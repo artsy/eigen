@@ -1,18 +1,5 @@
 import { NotificationTypesEnum } from "__generated__/ActivityRail_notificationsConnection.graphql"
 
-export const getNotificationTypeLabel = (notificationType: NotificationTypesEnum) => {
-  switch (notificationType) {
-    case "ARTICLE_FEATURED_ARTIST":
-      return "Editorial"
-    case "ARTWORK_ALERT":
-      return "Alert"
-    case "PARTNER_OFFER_CREATED":
-      return "Limited Time Offer"
-    default:
-      return null
-  }
-}
-
 export const getNotificationTypeBadge = (notificationType: NotificationTypesEnum) => {
   switch (notificationType) {
     case "PARTNER_OFFER_CREATED":
@@ -22,7 +9,7 @@ export const getNotificationTypeBadge = (notificationType: NotificationTypesEnum
   }
 }
 
-export const getNewNotificationTypeLabel = (notificationType: NotificationTypesEnum) => {
+export const getNotificationTypeLabel = (notificationType: NotificationTypesEnum) => {
   switch (notificationType) {
     case "ARTICLE_FEATURED_ARTIST":
       return "Editorial"
@@ -38,16 +25,5 @@ export const getNewNotificationTypeLabel = (notificationType: NotificationTypesE
       return "Viewing Room"
     default:
       return null
-  }
-}
-
-export const getNotificationTypeColor = (notificationType: NotificationTypesEnum) => {
-  switch (notificationType) {
-    case "ARTWORK_ALERT":
-      return "blue100"
-    case "PARTNER_OFFER_CREATED":
-      return "blue100"
-    default:
-      return "black60"
   }
 }
