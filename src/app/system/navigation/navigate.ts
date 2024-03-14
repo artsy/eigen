@@ -1,6 +1,5 @@
 import { EventEmitter } from "events"
 import { ActionType, OwnerType, Screen } from "@artsy/cohesion"
-import { useNavigation } from "@react-navigation/native"
 import { addBreadcrumb, captureMessage } from "@sentry/react-native"
 import { AppModule, ViewOptions, modules } from "app/AppRegistry"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
@@ -10,7 +9,6 @@ import { GlobalStore, unsafe__getSelectedTab } from "app/store/GlobalStore"
 import { propsStore } from "app/store/PropsStore"
 import { postEventToProviders } from "app/utils/track/providers"
 import { visualize } from "app/utils/visualizer"
-import { useCallback } from "react"
 import { InteractionManager, Linking, Platform } from "react-native"
 import { saveDevNavigationStateSelectedTab } from "./useReloadedDevNavigationState"
 
@@ -224,16 +222,6 @@ export function dismissModal(after?: () => void) {
 export function goBack(backProps?: GoBackProps) {
   LegacyNativeModules.ARScreenPresenterModule.goBack(unsafe__getSelectedTab())
   navigationEvents.emit("goBack", backProps)
-}
-
-export const useGoBack = () => {
-  const navigation = useNavigation()
-
-  const goBack = useCallback(() => {
-    navigation.goBack()
-  }, [navigation])
-
-  return goBack
 }
 
 export function popParentViewController() {

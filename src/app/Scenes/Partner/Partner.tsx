@@ -14,7 +14,7 @@ import { PartnerInitialQuery } from "__generated__/PartnerInitialQuery.graphql"
 import { PartnerQuery } from "__generated__/PartnerQuery.graphql"
 import { Partner_partner$data } from "__generated__/Partner_partner.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { useGoBack } from "app/system/navigation/navigate"
+import { useConditionalGoBack } from "app/system/newNavigation/useConditionalGoBack"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -37,7 +37,7 @@ interface PartnerProps {
 const Partner: React.FC<PartnerProps> = (props) => {
   const { partner, initialTab } = props
   const { partnerType, displayFullPartnerPage } = partner
-  const goBack = useGoBack()
+  const goBack = useConditionalGoBack()
 
   if (!displayFullPartnerPage && partnerType !== "Brand") {
     return (
