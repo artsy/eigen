@@ -250,8 +250,9 @@ export const features = {
   },
   AREnableAlertBottomSheet: {
     description: "Enable tapping on alerts to show bottom sheet",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableAlertBottomSheet",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 
