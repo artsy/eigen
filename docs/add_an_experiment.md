@@ -2,6 +2,14 @@
 
 We are using Unleash to run A/B Testing experiments at Artsy. In order to create an experiment, we will need to first add it to the [Unleash dashboard](https://unleash.artsy.net/projects/default) then make code adjustments to use it.
 
+### Contents
+
+- [Adding an experiment to Unleash dashboard](#adding-an-experiment-to-unleash-dashboard)
+- [Adding an experiment to Eigen](#adding-an-experiment-to-eigen)
+- [Using an experiment](#using-an-experiment)
+- [Removing/killing an experiment](#removingkilling-an-experiment)
+- [Adding overrides](#adding-an-override)
+
 ## Adding an experiment to Unleash dashboard
 
 1. To login to our [Unleash instance](https://unleash.artsy.net/projects/default), use your Artsy Google account to proceed past the Cloudflare Access prompt and then use the shared admin credentials in 1Password to login to the dashboard.
@@ -17,6 +25,8 @@ We are using Unleash to run A/B Testing experiments at Artsy. In order to create
 ```ts
   "our-new-experiment": {
     fallbackEnabled: false,
+    description: "Experiment description",
+    payloadSuggestions: ["payload-1", "payload-2"] // If applicable
   },
 ```
 
@@ -26,10 +36,17 @@ or if we want a variant we can use something like
   "our-new-experiment": {
     fallbackEnabled: true,
     fallbackVariant: "the-variant-name",
+    description: "Experiment description",
+    payloadSuggestions: ["payload-1", "payload-2"] // If applicable
   },
 ```
 
-_The `fallback*` values are values we would like to fall back to in case something goes wrong with the client sdk_
+| value                | description                                                                                                      |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `fallbackEnabled`    | (`boolean`) the experiment flag has a fallback value in case we don't receive anything from Unleash client sdk   |
+| `fallbackVariant`    | (`string` or `undefined`) fallback value, applicable only if `fallbackEnabled` is set to `true`                  |
+| `description`        | (`string`) a string describing your experiment                                                                   |
+| `payloadSuggestions` | (`string[]`) a list of strings useful for quickly setting an admin override from Dev Settings > Experiments menu |
 
 Don't forget to add some tracking on this, using `reportExperimentVariant`. Look for other examples in the code.
 
@@ -58,11 +75,13 @@ You can access the variant value in a functional react component using `useExper
 + const ourNewExperiment = useExperimentVariant("our-new-experiment")
   return (
     <>
-+    {ourNewExperiment.enabled && ourNewExperiment.variant === "varA" && <AComponent />}
-+    {ourNewExperiment.enabled && ourNewExperiment.variant === "varB" && <BComponent custom={ourNewExperiment.payload} />}
++    {ourNewExperiment.enabled && ourNewExperiment.payload === "payloadA" && <AComponent />}
++    {ourNewExperiment.enabled && ourNewExperiment.payload === "payloadB" && <BComponent custom={ourNewExperiment.payload} />}
     <>
   )
 ```
+
+> Note: Avoid using `experiment.variant` and instead use the `experiment.payload` for rendering your UI! it's more future proof and it's more convenient this way to create multiple experiments using the same flag where you update the control variant
 
 ### Tracking an experiment
 
@@ -79,6 +98,20 @@ Once an experiment is done, usually we have a winner variant. In order to roll o
 For example, in the previous experiment, we were testing if `varA` is performing better than `varB`. Assuming that it actually did, we then set `varA` as a default variant.
 Then we need to update eigen to remove the experiment code and use only the winner variant code.
 After that, we can archive that experiment in the Unleash dashboard.
+
+## Adding an Override
+
+Our infra supports adding admin overrides from the dev menu. In order to add an override:
+
+1. Open the dev menu
+2. Tap on **Experiments**
+3. Tap on ✏️ next to the payload or the variant name.
+4. Add your own `variant`/`payload` override or select from the list of suggestions.
+5. Tap **Save**
+
+<center>
+  <img src="./screenshots/adding_an_admin_override.gif" width="250"/>
+</center>
 
 ## Still need help?
 

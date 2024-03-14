@@ -11,6 +11,7 @@ _Please note: Links should point to specific commits, and not a branch (in case 
 
 - [:world_map: Our Best Practices](#world_map-our-best-practices)
 - [Contents](#contents)
+
   - [Examples \& Hacks](#examples--hacks)
   - [History](#history)
     - [File Structure Organization](#file-structure-organization)
@@ -24,7 +25,9 @@ _Please note: Links should point to specific commits, and not a branch (in case 
   - [Navigation](#navigation)
     - [iOS Navigation](#ios-navigation)
   - [Analytics and tracking](#analytics-and-tracking)
+  - [A/b testing](a_b_testing_best_practices.md)
   - [VirtualizedList best practices](#virtualizedlist-best-practices)
+
     - [Never nest ScrollViews.](#never-nest-scrollviews)
     - [Always default to `FlashList`.](#always-default-to-flashlist)
     - [Use `memo` to the rescue. See: https://reactnative.dev/docs/optimizing-flatlist-configuration#use-memo](#use-memo-to-the-rescue-see-httpsreactnativedevdocsoptimizing-flatlist-configurationuse-memo)
@@ -32,6 +35,7 @@ _Please note: Links should point to specific commits, and not a branch (in case 
     - [Use `LazyFlatlist` in order to define your own lazy loading logic.](#use-lazyflatlist-in-order-to-define-your-own-lazy-loading-logic)
     - [Does your component contain animations?](#does-your-component-contain-animations)
     - [More granular control on when updates happen can do magic sometimes! `requestAnimationFrame`, `queueMicroTask` and `InteractionManager.runAfterInteractions` can come to the rescue here!](#more-granular-control-on-when-updates-happen-can-do-magic-sometimes-requestanimationframe-queuemicrotask-and-interactionmanagerrunafterinteractions-can-come-to-the-rescue-here)
+
   - [Formik](#formik)
   - [Miscellaneous](#miscellaneous)
     - [Parts of the app that are still being handled in native code (Objective-C and Swift) instead of react-native on iOS](#parts-of-the-app-that-are-still-being-handled-in-native-code-objective-c-and-swift-instead-of-react-native-on-ios)
