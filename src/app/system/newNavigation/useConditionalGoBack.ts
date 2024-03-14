@@ -10,7 +10,6 @@ export const useConditionalGoBack = () => {
     if (enableNewNavigation) {
       navigation.goBack()
     } else {
-      // TODO: Check that this works with the old nav
       oldGoBack()
     }
   }, [navigation])

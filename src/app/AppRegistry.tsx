@@ -160,8 +160,6 @@ LogBox.ignoreLogs([
 // They are used from native side but does that require explicit registration?
 // Red screen without this
 export function useRegisterNativeModules() {
-  console.warn("Registering city modules")
-
   const cityDescriptor = reactModule(CityGuideView, { fullBleed: true, ignoreTabs: true })
   const cityPickerDescriptor = reactModule(CityPicker, { fullBleed: true, ignoreTabs: true })
   const mapDescriptor = reactModule(MapContainer, { fullBleed: true, ignoreTabs: true })

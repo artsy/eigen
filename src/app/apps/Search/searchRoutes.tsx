@@ -8,6 +8,7 @@ import { CollectionQueryRenderer } from "app/Scenes/Collection/Collection"
 import { PartnerQueryRenderer } from "app/Scenes/Partner/Partner"
 import { SearchScreen } from "app/Scenes/Search/Search"
 import { NewNavComponentWrapper } from "app/system/newNavigation/NewNavComponentWrapper"
+import { ScreenPadding } from "app/system/newNavigation/ScreenPadding"
 
 export type SearchRoutes = {
   Search: undefined
@@ -78,7 +79,9 @@ type CollectionWrapperProps = {
 const CollectionWrapper: React.FC<CollectionWrapperProps> = ({ route }) => {
   return (
     <NewNavComponentWrapper route={route}>
-      <CollectionQueryRenderer collectionID={route.params.collectionID} />
+      <ScreenPadding fullBleed={true} isPresentedModally={false} isVisible={true}>
+        <CollectionQueryRenderer collectionID={route.params.collectionID} />
+      </ScreenPadding>
     </NewNavComponentWrapper>
   )
 }

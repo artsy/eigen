@@ -1,12 +1,10 @@
-import { Flex, useScreenDimensions } from "@artsy/palette-mobile"
 import { SearchScreen } from "app/Scenes/Search/Search"
+import { ScreenPadding } from "app/system/newNavigation/ScreenPadding"
 
 export const SearchTab = () => {
-  const topInset = useScreenDimensions().safeAreaInsets.top
-  // TODO: Nav bar background color is gray?
   return (
-    <Flex style={{ flex: 1, backgroundColor: "white", marginTop: topInset }}>
+    <ScreenPadding fullBleed={false} isPresentedModally={false} isVisible={true}>
       <SearchScreen />
-    </Flex>
+    </ScreenPadding>
   )
 }
