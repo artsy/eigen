@@ -53,7 +53,7 @@ export const AlertBottomSheet: FC<AlertBottomSheetProps> = ({
               Edit Alert
             </Button>
 
-            <Button onPress={navigateToArtworks} variant="outline" block width={100} disabled>
+            <Button onPress={navigateToArtworks} variant="outline" block width={100}>
               View Artworks{" "}
               <Text color="blue100" variant="xs">
                 {artworksCount}

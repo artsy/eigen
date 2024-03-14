@@ -62,6 +62,7 @@ export type EditSavedSearchAlertNavigationStack = {
   EmailPreferences: undefined
   ConfirmationScreen: ConfirmationScreenParams
   SavedSearchFilterScreen: undefined
+  AlertArtworks: AlertArtworksParams
 }
 
 export interface SavedSearchPill {
@@ -74,4 +75,8 @@ export interface ConfirmationScreenParams {
   alertID?: string
   searchCriteriaID?: string
   closeModal?: () => void
+}
+
+interface AlertArtworksParams {
+  alertId: string
 }
