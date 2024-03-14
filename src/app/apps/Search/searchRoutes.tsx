@@ -9,6 +9,7 @@ import { CollectionQueryRenderer } from "app/Scenes/Collection/Collection"
 import { PartnerQueryRenderer } from "app/Scenes/Partner/Partner"
 import { SaleQueryRenderer } from "app/Scenes/Sale/Sale"
 import { SearchScreen } from "app/Scenes/Search/Search"
+import { ShowQueryRenderer } from "app/Scenes/Show/Show"
 import { LegacyBackButtonContext } from "app/system/navigation/NavStack"
 import { NewNavComponentWrapper } from "app/system/newNavigation/NewNavComponentWrapper"
 import { BackButton } from "app/system/newNavigation/NewNavLegacyBackButton"
@@ -25,6 +26,7 @@ export type SearchRoutes = {
   ArtistSeries: { artistSeriesID: string }
   Collection: { collectionID: string }
   LocalDiscovery: undefined
+  Show: { showID: string }
 }
 
 // TODO: These don't belong here, wrapper components POC, probably
@@ -180,6 +182,30 @@ const AuctionWrapper: React.FC<AuctionWrapperProps> = ({ route }) => {
   )
 }
 
+type ShowRouteParams = {
+  Show: {
+    showID: string
+  }
+}
+
+type ShowWrapperProps = {
+  route: RouteProp<ShowRouteParams, "Show">
+}
+
+const ShowWrapper: React.FC<ShowWrapperProps> = ({ route }) => {
+  const [_, updateShouldHideBackButton] = useState(false)
+  return (
+    <NewNavComponentWrapper route={route}>
+      <LegacyBackButtonContext.Provider value={{ updateShouldHideBackButton }}>
+        <ScreenPadding fullBleed={true} isPresentedModally={false} isVisible={true}>
+          <ShowQueryRenderer showID={route.params.showID} />
+          <BackButton show={true} />
+        </ScreenPadding>
+      </LegacyBackButtonContext.Provider>
+    </NewNavComponentWrapper>
+  )
+}
+
 export const SearchRouter = () => {
   return (
     <StackNav.Group>
@@ -192,6 +218,7 @@ export const SearchRouter = () => {
       <StackNav.Screen name="Collection" component={CollectionWrapper} />
       <StackNav.Screen name="ArtistSeries" component={ArtistSeriesWrapper} />
       <StackNav.Screen name="LocalDiscovery" component={CityGuideView} />
+      <StackNav.Screen name="Show" component={ShowWrapper} />
     </StackNav.Group>
   )
 }
