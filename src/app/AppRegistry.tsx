@@ -656,7 +656,6 @@ export const modules = defineModules({
 for (const moduleName of Object.keys(modules)) {
   const descriptor = modules[moduleName as AppModule]
   if (Platform.OS === "ios") {
-    console.log("register", moduleName)
     // TODO: this should not be needed. right?
     register(moduleName, descriptor.Component, {
       fullBleed: descriptor.options.fullBleed,

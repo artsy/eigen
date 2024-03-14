@@ -6,7 +6,6 @@ import { SearchRouter, SearchRoutes } from "app/apps/Search/searchRoutes"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Text, View } from "react-native"
 
-// Define the type for your root stack navigation, if needed
 export type OtherRoutes = {
   Login: undefined
   MainTabs: undefined
@@ -14,7 +13,6 @@ export type OtherRoutes = {
 
 export type NavigationRoutes = SearchRoutes & OtherRoutes
 
-// Create a stack navigator
 export const StackNav = createNativeStackNavigator<NavigationRoutes>()
 
 const LoginScreen = () => {

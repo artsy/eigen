@@ -2,7 +2,6 @@ import { Flex, Text } from "@artsy/palette-mobile"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { SearchTab } from "app/apps/Search/SearchTab"
 
-// Define the type for your bottom tabs navigation
 export type BottomTabParamList = {
   HomeTab: undefined
   SearchTab: undefined
@@ -12,11 +11,8 @@ export type BottomTabParamList = {
 }
 
 // TODO: Why is bundler/metro so unhappy about putting a top-level apps folder
-
-// Create a bottom tab navigator
 const Tab = createBottomTabNavigator<BottomTabParamList>()
 
-// Components for tabs
 const HomeTab = () => (
   <Flex style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
     <Text>Home</Text>
