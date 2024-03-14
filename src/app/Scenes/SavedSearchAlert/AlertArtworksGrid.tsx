@@ -63,9 +63,7 @@ export const AlertArtworksGrid: FC<AlertArtworksGridProps> = ({ alertId }) => {
             artworks={artworks}
             hideSaveIcon
             onPress={(slug: string) => {
-              requestAnimationFrame(() => {
-                navigate?.(`artwork/${slug}`)
-              })
+              navigate?.(`artwork/${slug}`)
             }}
           />
         </Flex>
