@@ -5,7 +5,7 @@ import { TrendingArtists_query$key } from "__generated__/TrendingArtists_query.g
 import { ArtistCardContainer as ArtistCard } from "app/Components/Home/ArtistRails/ArtistCard"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { useNavigate } from "app/system/navigation/navigate"
+import { useConditionalNavigate } from "app/system/newNavigation/useConditionalNavigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { isTablet } from "react-native-device-info"
 import { usePaginationFragment, graphql } from "react-relay"
@@ -29,7 +29,7 @@ export const TrendingArtists: React.FC<TrendingArtistsProps> = ({ data, ...boxPr
   } = usePaginationFragment<SearchQuery, TrendingArtists_query$key>(trendingArtistsFragment, data)
   const nodes = extractNodes(result.curatedTrendingArtists)
 
-  const navigate = useNavigate()
+  const navigate = useConditionalNavigate()
 
   const loadMore = () => {
     if (!hasNext || isLoadingNext || nodes.length >= MAX_TRENDING_ARTTISTS_PER_RAIL) {

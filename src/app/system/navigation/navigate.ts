@@ -1,10 +1,9 @@
 import { EventEmitter } from "events"
 import { ActionType, OwnerType, Screen } from "@artsy/cohesion"
-import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { useNavigation } from "@react-navigation/native"
 import { addBreadcrumb, captureMessage } from "@sentry/react-native"
 import { AppModule, ViewOptions, modules } from "app/AppRegistry"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { NavigationRoutes } from "app/Navigation"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { matchRoute } from "app/routes"
 import { GlobalStore, unsafe__getSelectedTab } from "app/store/GlobalStore"
@@ -43,36 +42,6 @@ export interface NavigateOptions {
 }
 
 let lastInvocation = { url: "", timestamp: 0 }
-
-export const useNavigate = () => {
-  const navigation = useNavigation<NavigationProp<NavigationRoutes>>()
-
-  const navigate = useCallback(
-    async (url: string, options = {}) => {
-      console.log("navigate", url, options)
-
-      // TODO: leaking old nav into new nav for time being, remove this when we have a new nav
-      const result = matchRoute(url)
-
-      console.log("navigate result", result)
-      // TODO : Mounir says we can use link builder thing to do this cleaner
-      if (result.type === "match") {
-        if (result.module === "Artist") {
-          navigation.navigate("Artist", result.params as { artistID: string })
-        } else if (result.module === "Partner") {
-          navigation.navigate("Partner", result.params as { partnerID: string })
-        } else if (result.module === "LocalDiscovery") {
-          navigation.navigate("LocalDiscovery")
-        } else if (result.module === "ArtistSeries") {
-          navigation.navigate("ArtistSeries", result.params as { artistSeriesID: string })
-        }
-      }
-    },
-    [navigation]
-  )
-
-  return navigate
-}
 
 export async function navigate(url: string, options: NavigateOptions = {}) {
   let targetURL = url
