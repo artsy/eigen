@@ -970,4 +970,26 @@ describe("App version Versions.AddProgressiveOnboardingModel", () => {
       expect(migratedState.userPrefs.defaultViewOption).toEqual("list")
     })
   })
+
+  describe("App version Versions.AddExperimentsOverrides", () => {
+    const migrationToTest = Versions.AddExperimentsOverrides
+
+    it("adds empty localPayloadOverrides and localVariantsOverrides objects", () => {
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      expect(previousState.artsyPrefs.experiments.localPayloadOverrides).toEqual(undefined)
+      expect(previousState.artsyPrefs.experiments.localPayloadOverrides).toEqual(undefined)
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(migratedState.artsyPrefs.experiments.localPayloadOverrides).toEqual({})
+      expect(migratedState.artsyPrefs.experiments.localPayloadOverrides).toEqual({})
+    })
+  })
 })
