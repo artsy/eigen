@@ -1,5 +1,6 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { SavedSearchesListTestsQuery } from "__generated__/SavedSearchesListTestsQuery.graphql"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { SavedSearchesListPaginationContainer as SavedSearchesList } from "./SavedSearchesList"
@@ -108,6 +109,37 @@ describe("SavedSearches", () => {
     await waitFor(() => {
       const operation = env.mock.getMostRecentOperation()
       expect(operation.fragment.variables.sort).toBe("NAME_ASC")
+    })
+  })
+
+  describe("tapping on an alert", () => {
+    it("opens the bottom sheet", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAlertBottomSheet: true })
+
+      renderWithRelay({
+        Me: () => ({
+          alertsConnection: {
+            edges: [
+              {
+                node: {
+                  internalID: "banksy",
+                  title: "Banksy",
+                  artworksConnection: {
+                    counts: {
+                      total: 57,
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        }),
+      })
+
+      fireEvent.press(screen.getByText("Banksy"))
+      expect(screen.getByText("Edit Alert")).toBeTruthy()
+      expect(screen.getByText(/View Artworks/)).toBeTruthy()
+      expect(screen.getByText(/57/)).toBeTruthy()
     })
   })
 })

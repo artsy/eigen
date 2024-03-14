@@ -2,7 +2,7 @@ import { BottomSheetView, useBottomSheetDynamicSnapPoints } from "@gorhom/bottom
 import {
   AutomountedBottomSheetModal,
   AutomountedBottomSheetModalProps,
-} from "app/Components/ArtworkLists/components/AutomountedBottomSheetModal"
+} from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { FC, useMemo } from "react"
 
 export type AutoHeightBottomSheetProps = Omit<AutomountedBottomSheetModalProps, "snapPoints">

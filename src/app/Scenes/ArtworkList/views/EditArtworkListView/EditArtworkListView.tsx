@@ -4,15 +4,15 @@ import { useBottomSheetModal } from "@gorhom/bottom-sheet"
 import { captureMessage } from "@sentry/react-native"
 import { ArtworkListsBottomSheetSectionTitle } from "app/Components/ArtworkLists/components/ArtworkListsBottomSheetSectionTitle"
 import {
-  AutoHeightBottomSheet,
-  AutoHeightBottomSheetProps,
-} from "app/Components/ArtworkLists/components/AutoHeightBottomSheet"
-import {
   CreateOrEditArtworkListFormValues,
   CreateOrEditArtworkListForm,
 } from "app/Components/ArtworkLists/components/CreateOrEditArtworkListForm"
 import { useArtworkListsBottomOffset } from "app/Components/ArtworkLists/useArtworkListsBottomOffset"
 import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkListsToast"
+import {
+  AutoHeightBottomSheet,
+  AutoHeightBottomSheetProps,
+} from "app/Components/BottomSheet/AutoHeightBottomSheet"
 import { HeaderMenuArtworkListEntity } from "app/Scenes/ArtworkList/types"
 import { FormikHelpers } from "formik"
 import { FC } from "react"
