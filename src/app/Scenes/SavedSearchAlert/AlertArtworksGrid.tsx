@@ -85,18 +85,18 @@ export const AlertArtworksGrid: FC<AlertArtworksGridProps> = ({ alertId }) => {
 
       <Spacer y={2} />
 
-      <Button onPress={handleManageAlert} block mb={1} variant="outline">
-        {artworksCount === 0 ? "Manage Alert" : "Edit Alert"}
-      </Button>
-
       {!!areMoreMatchesAvailable && (
         <Flex>
-          <Spacer y={0.5} />
           <Button onPress={handleSeeAllMatchingWorks} block mb={1}>
             See all Matching Works
           </Button>
+          <Spacer y={0.5} />
         </Flex>
       )}
+
+      <Button onPress={handleManageAlert} block mb={1} variant="outline">
+        {artworksCount === 0 ? "Manage Alert" : "Edit Alert"}
+      </Button>
 
       <Spacer y={2} />
     </Flex>
