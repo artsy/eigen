@@ -17,7 +17,7 @@ export const AlertArtworksPills: FC<AlertArtworksPillsProps> = ({ alertId }) => 
 
   return (
     <Flex flexDirection="row" flexWrap="wrap">
-      {pills.map((pill: any) => {
+      {pills.map((pill) => {
         return (
           <Pill
             key={`param-${pill.field}-value-${pill.displayValue}`}

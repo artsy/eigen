@@ -39,18 +39,14 @@ export const AlertArtworksGrid: FC<AlertArtworksGridProps> = ({ alertId }) => {
   const numWorks = `${artworksCount} ${pluralize("work", artworksCount)}`
 
   const handleManageAlert = () => {
-    requestAnimationFrame(() => {
-      navigate(`settings/alerts/${alertId}/edit`)
-    })
+    navigate(`settings/alerts/${alertId}/edit`)
   }
 
   const handleSeeAllMatchingWorks = () => {
-    requestAnimationFrame(() => {
-      navigate(`/artist/${artistIDs?.[0]}`, {
-        passProps: {
-          search_criteria_id: alertId,
-        },
-      })
+    navigate(`/artist/${artistIDs?.[0]}`, {
+      passProps: {
+        search_criteria_id: alertId,
+      },
     })
   }
 
