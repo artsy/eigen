@@ -98,7 +98,7 @@ describe("AlertArtworksGrid", () => {
       fireEvent.press(screen.getByText("See all Matching Works"))
       await flushPromiseQueue()
 
-      expect(navigate).toHaveBeenCalledWith("artist/banksy", {
+      expect(navigate).toHaveBeenCalledWith("/artist/banksy", {
         passProps: { search_criteria_id: "alert-id" },
       })
     })
