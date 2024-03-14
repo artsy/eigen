@@ -83,11 +83,29 @@ const CollectionWrapper: React.FC<CollectionWrapperProps> = ({ route }) => {
   )
 }
 
+type ArtistRouteParams = {
+  Artist: {
+    artistID: string
+  }
+}
+
+type ArtistWrapperProps = {
+  route: RouteProp<ArtistRouteParams, "Artist">
+}
+
+const ArtistWrapper: React.FC<ArtistWrapperProps> = ({ route }) => {
+  return (
+    <NewNavComponentWrapper route={route}>
+      <ArtistQueryRenderer artistID={route.params.artistID} />
+    </NewNavComponentWrapper>
+  )
+}
+
 export const SearchRouter = () => {
   return (
     <StackNav.Group>
       <StackNav.Screen name="Search" component={SearchScreen} />
-      <StackNav.Screen name="Artist" component={ArtistQueryRenderer} />
+      <StackNav.Screen name="Artist" component={ArtistWrapper} />
       <StackNav.Screen name="Partner" component={PartnerQueryRenderer} />
       <StackNav.Screen name="Artwork" component={ArtworkWrapper} />
       <StackNav.Screen name="Collection" component={CollectionWrapper} />
