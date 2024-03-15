@@ -4166,6 +4166,9 @@ type CollectorResume {
   # The Collector follows the Gallery profile
   isCollectorFollowingPartner: Boolean!
 
+  # non-bnmo Collector's purchase history
+  purchases: purchases
+
   # Collector's ID used to stitch buyerActivity with the Exchange schema
   userId: String!
 }
@@ -14953,6 +14956,14 @@ type PublishViewingRoomPayload {
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
   viewingRoom: ViewingRoom!
+}
+
+type purchases {
+  # Total number of auction winning bids
+  totalAuctionCount: Int!
+
+  # Total number of private sales
+  totalPrivateSaleCount: Int!
 }
 
 type Query {
