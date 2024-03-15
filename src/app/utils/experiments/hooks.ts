@@ -1,3 +1,4 @@
+import { GlobalStore } from "app/store/GlobalStore"
 import { EXPERIMENT_NAME } from "app/utils/experiments/experiments"
 import { ContextProps, reportExperimentVariant } from "app/utils/experiments/reporter"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
@@ -22,11 +23,19 @@ export function useExperimentVariant(name: EXPERIMENT_NAME): {
   enabled: boolean
   variant: string
   payload?: string
+  unleashVariant: string
+  unleashPayload?: string
   trackExperiment: (contextProps?: ContextProps) => void
 } {
   const client = getUnleashClient()
   const [enabled, setEnabled] = useState(client.isEnabled(name))
   const [variant, setVariant] = useState(client.getVariant(name))
+  const localPayloadOverrides = GlobalStore.useAppState(
+    (s) => s.artsyPrefs.experiments.localPayloadOverrides
+  )
+  const localVariantOverrides = GlobalStore.useAppState(
+    (s) => s.artsyPrefs.experiments.localVariantOverrides
+  )
 
   const { lastUpdate } = useContext(UnleashContext)
   useEffect(() => {
@@ -47,10 +56,15 @@ export function useExperimentVariant(name: EXPERIMENT_NAME): {
     })
   }
 
+  const unleashVariant = variant?.name ?? "default-variant"
+  const unleashPayload = variant?.payload?.value
+
   return {
     enabled: enabled ?? false,
-    variant: variant?.name ?? "default-variant",
-    payload: variant?.payload?.value,
+    variant: localVariantOverrides[name] || unleashVariant,
+    payload: localPayloadOverrides[name] || unleashPayload,
+    unleashVariant,
+    unleashPayload,
     trackExperiment,
   }
 }

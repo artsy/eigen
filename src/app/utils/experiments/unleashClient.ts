@@ -1,5 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { EXPERIMENT_NAME, experiments } from "app/utils/experiments/experiments"
+import {
+  EXPERIMENT_NAME,
+  ExperimentDescriptorUnion,
+  experiments,
+} from "app/utils/experiments/experiments"
 import { nullToUndef } from "app/utils/nullAndUndef"
 import { Config } from "react-native-config"
 import { UnleashClient } from "unleash-proxy-client"
@@ -69,7 +73,7 @@ const createUnleashClient = (userId: string | undefined) => {
     },
     bootstrapOverride: false,
     bootstrap: (Object.keys(experiments) as EXPERIMENT_NAME[]).map((key) => {
-      const experiment = experiments[key]
+      const experiment = experiments[key] as ExperimentDescriptorUnion
 
       if (experiment.fallbackEnabled) {
         return {

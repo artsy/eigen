@@ -1,9 +1,23 @@
 import { Flex, Join, Separator, Text } from "@artsy/palette-mobile"
 import { Expandable } from "app/Components/Expandable"
+import { GlobalStore } from "app/store/GlobalStore"
+import { DevMenuButtonItem } from "app/system/devTools/DevMenu/Components/DevMenuButtonItem"
 import { ExperimentFlagItem } from "app/system/devTools/DevMenu/Components/ExperimentFlagItem"
-import { experiments, EXPERIMENT_NAME } from "app/utils/experiments/experiments"
+import { EXPERIMENT_NAME, experiments } from "app/utils/experiments/experiments"
+import { isEmpty } from "lodash"
+import { Alert } from "react-native"
 
 export const Experiments: React.FC<{}> = () => {
+  const { resetOverrides } = GlobalStore.actions.artsyPrefs.experiments
+
+  const localPayloadOverrides = GlobalStore.useAppState(
+    (s) => s.artsyPrefs.experiments.localPayloadOverrides
+  )
+  const localVariantOverrides = GlobalStore.useAppState(
+    (s) => s.artsyPrefs.experiments.localVariantOverrides
+  )
+  const hasOverrides = !isEmpty(localPayloadOverrides) || !isEmpty(localVariantOverrides)
+
   return (
     <Flex mx={2}>
       <Expandable label="Experiments" expanded={false}>
@@ -25,6 +39,23 @@ export const Experiments: React.FC<{}> = () => {
                     />
                   )
                 })}
+
+              <DevMenuButtonItem
+                title="Revert all experiments overrides"
+                titleColor={hasOverrides ? "red100" : "black60"}
+                disabled={!hasOverrides}
+                onPress={() => {
+                  Alert.alert("Are you sure?", "This will reset all local experiment overrides", [
+                    { text: "Cancel", style: "cancel" },
+                    {
+                      text: "Reset",
+                      onPress: () => {
+                        resetOverrides()
+                      },
+                    },
+                  ])
+                }}
+              />
             </Join>
           </Flex>
         </Flex>
