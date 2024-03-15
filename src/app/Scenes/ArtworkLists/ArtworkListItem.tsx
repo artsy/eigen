@@ -1,4 +1,11 @@
-import { Flex, Text, Touchable, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import {
+  Flex,
+  LockIcon,
+  Text,
+  Touchable,
+  useScreenDimensions,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { ArtworkListItem_collection$key } from "__generated__/ArtworkListItem_collection.graphql"
 import { FourUpImageLayout } from "app/Scenes/ArtworkLists/FourUpImageLayout"
 import { StackedImageLayout } from "app/Scenes/ArtworkLists/StackedImageLayout"
@@ -44,9 +51,15 @@ export const ArtworkListItem: FC<ArtworkListItemProps> = ({ artworkList, imagesL
         )}
 
         <Flex>
-          <Text variant="xs" numberOfLines={1}>
-            {item.name}
-          </Text>
+          <Flex flexDirection="row">
+            <Flex flex={1}>
+              <Text variant="xs" numberOfLines={1}>
+                {item.name}
+              </Text>
+            </Flex>
+
+            {!item.shareableWithPartners && <LockIcon ml={0.5} fill="black100" />}
+          </Flex>
           <Text variant="xs" color="black60" numberOfLines={1}>
             {item.artworksCount} {item.artworksCount === 1 ? "Artwork" : "Artworks"}
           </Text>
@@ -61,6 +74,7 @@ const artworkListItemFragment = graphql`
     name
     internalID
     artworksCount(onlyVisible: true)
+    shareableWithPartners
     artworksConnection(first: 4) {
       edges {
         node {

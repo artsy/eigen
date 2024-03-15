@@ -1,6 +1,7 @@
 import { Button, Flex, Separator, Text } from "@artsy/palette-mobile"
 import { ArtworkListEmptyState_me$key } from "__generated__/ArtworkListEmptyState_me.graphql"
 import { ArtworkListHeader } from "app/Scenes/ArtworkList/ArtworkListHeader"
+import { ArtworkListShareability } from "app/Scenes/ArtworkList/ArtworkListShareability"
 import { ArtworkListTitle } from "app/Scenes/ArtworkList/ArtworkListTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { ScrollView } from "react-native"
@@ -24,6 +25,10 @@ export const ArtworkListEmptyState = ({ me, refreshControl }: ArtworkListEmptySt
 
       <ScrollView style={{ flex: 1 }} refreshControl={refreshControl}>
         <ArtworkListTitle title={artworkList?.name ?? ""} />
+
+        <ArtworkListShareability
+          shareableWithPartners={artworkList?.shareableWithPartners ?? false}
+        />
 
         <Separator borderColor="black10" mt={1} />
 
@@ -54,6 +59,7 @@ const artworkListEmptyStateFragment = graphql`
       default
       name
       internalID
+      shareableWithPartners
     }
     ...ArtworkListHeader_me @arguments(listID: $listID)
   }
