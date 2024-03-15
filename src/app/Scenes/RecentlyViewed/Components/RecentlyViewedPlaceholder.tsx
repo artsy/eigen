@@ -4,12 +4,12 @@ import { PlaceholderGrid } from "app/utils/placeholderGrid"
 import { times } from "lodash"
 
 export const RecentlyViewedPlaceholder: React.FC = () => {
-  const defaultViewOption = GlobalStore.useAppState((state) => state.userPrefs.defaultViewOption)
+  const placeholderView = GlobalStore.useAppState((state) => state.userPrefs.defaultViewOption)
 
   return (
     <Skeleton>
       <Flex my={2} testID="RecentlyViewedScreenPlaceholder">
-        {defaultViewOption === "grid" ? (
+        {placeholderView === "grid" ? (
           <PlaceholderGrid />
         ) : (
           <Flex width="100%">

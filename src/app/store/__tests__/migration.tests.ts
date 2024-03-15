@@ -970,4 +970,24 @@ describe("App version Versions.AddProgressiveOnboardingModel", () => {
       expect(migratedState.userPrefs.defaultViewOption).toEqual("list")
     })
   })
+
+  describe("App version Versions.SetGridAsDefaultViewOption", () => {
+    const migrationToTest = Versions.SetGridAsDefaultViewOption
+
+    it("sets defaultViewOption to grid", () => {
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      expect(previousState.userPrefs.defaultViewOption).toEqual("list")
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(migratedState.userPrefs.defaultViewOption).toEqual("grid")
+    })
+  })
 })

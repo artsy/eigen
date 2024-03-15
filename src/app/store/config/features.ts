@@ -224,12 +224,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableNewActivityPanelManagement",
   },
-  AREnableArtworksFeedView: {
-    description: "Enable artworks feed view",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableArtworksFeedView",
-  },
   AREnableArtworkListOfferability: {
     description: "Enable Parnter Offer v1.5, edit sharing artwork list with partners for offers",
     readyForRelease: false,
@@ -323,9 +317,6 @@ export const devToggles: { [key: string]: DevToggleDescriptor } = {
   },
   DTEnableNewImageLabel: {
     description: "Show a label on new OpaqueImageView",
-  },
-  DTForceShowNewWorksForYouScreenFeed: {
-    description: "Force show new works for you feed",
   },
 }
 
