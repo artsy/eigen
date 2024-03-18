@@ -15,7 +15,7 @@ export const Screen: React.FC<{}> = () => {
 
       <Spacer y={2} />
 
-      <Input value={value2} onChangeText={setValue2} isFocused />
+      <Input value={value2} onChangeText={setValue2} isFocused required />
     </Flex>
   )
 }
