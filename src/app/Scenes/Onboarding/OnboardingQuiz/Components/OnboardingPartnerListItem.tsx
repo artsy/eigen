@@ -1,6 +1,5 @@
-import { EntityHeader } from "@artsy/palette-mobile"
+import { EntityHeader, FollowButton } from "@artsy/palette-mobile"
 import { OnboardingPartnerListItem_partner$key } from "__generated__/OnboardingPartnerListItem_partner.graphql"
-import { FollowButton } from "app/Components/Button/FollowButton"
 import { extractNodes } from "app/utils/extractNodes"
 import { uniq } from "lodash"
 import { graphql, useFragment, useMutation } from "react-relay"
