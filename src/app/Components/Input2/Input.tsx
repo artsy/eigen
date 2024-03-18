@@ -12,16 +12,17 @@ interface InputProps extends TextInputProps {
   onHintPress?: () => void
   hintText?: string
   label?: string
+  error?: string
 }
 
 export const Input: React.FC<InputProps> = ({
   value,
   onChangeText,
-  required = false,
   hintText = "What's this?",
   ...props
 }) => {
   const focused = useSharedValue(!!value)
+
   const space = useSpace()
 
   const handleChangeText = (text: string) => {
@@ -38,9 +39,19 @@ export const Input: React.FC<InputProps> = ({
   }
 
   const textInputAnimatedStyles = useAnimatedStyle(() => {
+    let borderColor = ""
+
+    if (props.error) {
+      borderColor = THEME.colors.red100
+    } else if (focused.value || value) {
+      THEME.colors.black60
+    } else {
+      THEME.colors.black30
+    }
+
     return {
       borderWidth: 1,
-      borderColor: withTiming(focused.value || value ? THEME.colors.black60 : THEME.colors.black30),
+      borderColor: borderColor,
     }
   })
 
@@ -52,11 +63,22 @@ export const Input: React.FC<InputProps> = ({
     paddingHorizontal: space(0.5),
     zIndex: 100,
   }
+
   const labelAnimatedStyles = useAnimatedStyle(() => {
     const shouldShrink = focused.value || value
 
+    let labelColor = ""
+
+    if (props.error) {
+      labelColor = THEME.colors.red100
+    } else if (shouldShrink) {
+      labelColor = THEME.colors.blue100
+    } else {
+      labelColor = THEME.colors.black30
+    }
+
     return {
-      color: withTiming(shouldShrink ? THEME.colors.blue100 : THEME.colors.black30),
+      color: labelColor,
       top: withTiming(shouldShrink || value ? 13 : 40),
       fontSize: withTiming(
         shouldShrink
@@ -106,9 +128,17 @@ export const Input: React.FC<InputProps> = ({
         onBlur={handleBlur}
         // placeholder={props.label}
       />
-      {!!required && (
+
+      {/* If an input has an error, we don't need to show "Required" because it's already pointed out */}
+      {!!props.required && !props.error && (
         <Text color="black60" variant="xs" paddingX="15px" mt={0.5}>
           * Required
+        </Text>
+      )}
+
+      {!!props.error && (
+        <Text color="red100" variant="xs" paddingX="15px" mt={0.5}>
+          {props.error}
         </Text>
       )}
     </>

@@ -16,10 +16,18 @@ export const Screen: React.FC<{}> = () => {
       }}
     >
       <Text variant="sm-display" mb={2}>
-        Default Input with short label
+        Default Input with no error
       </Text>
 
       <Input value={value1} onChangeText={setValue1} label="Label" />
+
+      <Separator my={2} />
+
+      <Text variant="sm-display" mb={2}>
+        Default Input with short label
+      </Text>
+
+      <Input value={value1} onChangeText={setValue1} label="Label" error="An ugly error message" />
 
       <Separator my={2} />
 
@@ -31,6 +39,7 @@ export const Screen: React.FC<{}> = () => {
         value={value4}
         onChangeText={setValue4}
         label="This is an input with a really really really long label"
+        error="Input Value Error Message/Reason"
       />
 
       <Separator my={2} />
@@ -39,7 +48,12 @@ export const Screen: React.FC<{}> = () => {
         Default Input without label
       </Text>
 
-      <Input value={value3} onChangeText={setValue3} label="Short label" />
+      <Input
+        value={value3}
+        onChangeText={setValue3}
+        label="Short label"
+        error="This is a very long error input that  need be displayed in just one line"
+      />
 
       <Separator my={2} />
 
