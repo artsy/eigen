@@ -13,7 +13,9 @@ export const Footer: React.FC<{
       <Text variant="lg-display" textAlign="center">
         Meet your new art advisor.{"\n"}It’s Artsy.
       </Text>
+
       <Spacer y={2} />
+
       <Button
         testID="footer-consign-CTA"
         block={!isTablet()}
@@ -24,11 +26,14 @@ export const Footer: React.FC<{
       >
         {buttonText}
       </Button>
+
       <Spacer y={4} />
+
       <Separator />
+
       <Flex my={2}>
         <Text variant="md">Gallerist or Art Dealer?</Text>
-        <Flex></Flex>
+
         <Text variant="xs" color="black60">
           <Text
             variant="xs"
@@ -42,8 +47,6 @@ export const Footer: React.FC<{
           to access the world’s largest online art marketplace.
         </Text>
       </Flex>
-      <Separator />
-      <Spacer y={4} />
     </Flex>
   )
 }
