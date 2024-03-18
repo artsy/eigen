@@ -12542,6 +12542,17 @@ type Message implements Node {
       reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
     )
 
+  # True if message was sent on the platform. False if sent via an email client.
+  isMessageSentOnPlatform: Boolean
+  sentAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+
   # Masked emails w/ display name of the recipients.
   to: [String!]!
 }
