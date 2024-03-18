@@ -14,7 +14,7 @@ import {
   State,
   useOnboardingContext,
 } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
-import { FC, useCallback, useState } from "react"
+import React, { FC, useCallback, useState } from "react"
 import { LayoutAnimation } from "react-native"
 import { AnimatedFadingPill, FADE_OUT_PILL_ANIMATION_DURATION } from "./AnimatedFadingPill"
 
@@ -106,12 +106,12 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
             </>
           )}
           <Spacer y={2} />
-          {answers.map((answer) => {
+          {answers.map((answer, index) => {
             const isVisible = !hideUnselectedPills || !!selected(answer)
             const shouldShowPillTick = showPillTick && selected(answer)
 
             return (
-              <>
+              <React.Fragment key={`${answer}+${index}`}>
                 <AnimatedFadingPill
                   variant="default"
                   isVisible={isVisible}
@@ -126,7 +126,7 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
                   </Text>
                 </AnimatedFadingPill>
                 {!!isVisible && <Spacer y={2} />}
-              </>
+              </React.Fragment>
             )
           })}
         </Flex>
