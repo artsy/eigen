@@ -1,5 +1,4 @@
 import { fireEvent } from "@testing-library/react-native"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { createMockEnvironment } from "relay-test-utils"
@@ -50,10 +49,6 @@ describe("New SellWithArtsyLandingPage", () => {
 
     beforeEach(() => {
       mockEnvironment = createMockEnvironment()
-      __globalStoreTestUtils__?.injectFeatureFlags({
-        AREnableSWALandingPageMeetTheSpecialist: true,
-        AREnableSWALandingPageTestimonials: true,
-      })
     })
 
     const TestWrapper = () => {
