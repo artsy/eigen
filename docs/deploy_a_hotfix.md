@@ -39,7 +39,7 @@ Latest iOS submission: ios-8.34.0-2024.03.07.11-submission
 Latest Android submission: android-8.34.0-1674645623-submission
 ```
 
-If it was a typical release they should be equivalent code, but you can confirm in the compare view in github.
+If it was a typical release they should be equivalent code and you should be safe to choose one, but if you have doubts you can confirm in the compare view in github.
 
 For our example let's say our last released build is `7.2.0 (2022.2.3.14)`
 We will want to checkout the tag `ios-7.2.0-2022.02.03.14-submission`:
