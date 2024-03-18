@@ -596,6 +596,8 @@ PODS:
     - React-Core
   - react-native-geolocation (3.0.6):
     - React-Core
+  - react-native-get-random-values (1.11.0):
+    - React-Core
   - react-native-in-app-review (4.2.1):
     - React-Core
   - react-native-mapbox-gl (8.5.0):
@@ -955,6 +957,7 @@ DEPENDENCIES:
   - react-native-flipper (from `../node_modules/react-native-flipper`)
   - react-native-flipper-performance-plugin (from `../node_modules/react-native-flipper-performance-plugin`)
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
+  - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
   - react-native-in-app-review (from `../node_modules/react-native-in-app-review`)
   - "react-native-mapbox-gl (from `../node_modules/@react-native-mapbox-gl/maps`)"
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
@@ -1180,6 +1183,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-flipper-performance-plugin"
   react-native-geolocation:
     :path: "../node_modules/@react-native-community/geolocation"
+  react-native-get-random-values:
+    :path: "../node_modules/react-native-get-random-values"
   react-native-in-app-review:
     :path: "../node_modules/react-native-in-app-review"
   react-native-mapbox-gl:
@@ -1398,6 +1403,7 @@ SPEC CHECKSUMS:
   react-native-flipper: 457f5d70546cdd4281e748ff3726385ffa06ba41
   react-native-flipper-performance-plugin: 42ec5017abd26e7c5a1f527f2db92c14a90cabdb
   react-native-geolocation: 0f7fe8a4c2de477e278b0365cce27d089a8c5903
+  react-native-get-random-values: 21325b2244dfa6b58878f51f9aa42821e7ba3d06
   react-native-in-app-review: a073f67c5f3392af6ea7fb383217cdb1aa2aa726
   react-native-mapbox-gl: 0308cba1da4edbc1aa0e82a7584ba50e52725996
   react-native-netinfo: 3a48f51c18dbd9253440621955e11de71bc51b32
