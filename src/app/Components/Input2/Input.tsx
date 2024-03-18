@@ -28,6 +28,13 @@ export const Input: React.FC<InputProps> = ({
     onChangeText(text)
   }
 
+  const styles = {
+    fontFamily: THEME.fonts.sans,
+    // TODO: This should be THEME.textVariants["sm-display"].fontSize
+    // But this doesn't match the design which shows 16px
+    fontSize: 16,
+    lineHeight: 20,
+  }
   const animatedStyles = useAnimatedStyle(() => {
     return {
       borderWidth: 1,
@@ -56,7 +63,7 @@ export const Input: React.FC<InputProps> = ({
       <AnimatedStyledInput
         value={value}
         onChangeText={handleChangeText}
-        style={animatedStyles}
+        style={[styles, animatedStyles]}
         onFocus={handleFocus}
         onBlur={handleBlur}
       />
