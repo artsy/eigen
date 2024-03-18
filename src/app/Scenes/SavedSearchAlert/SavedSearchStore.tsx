@@ -5,6 +5,7 @@ import {
   SearchCriteria,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
+import { PillPreview } from "app/Scenes/SavedSearchAlert/useSavedSearchPills"
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
 import { Action, action, createContextStore } from "easy-peasy"
 import { pick } from "lodash"
@@ -18,6 +19,7 @@ export interface SavedSearchModel {
   dirty: boolean
   entity: SavedSearchEntity
   unit: Metric
+  preview: PillPreview[]
 
   addValueToAttributesByKeyAction: Action<
     this,
@@ -37,6 +39,7 @@ export interface SavedSearchModel {
   setAttributeAction: Action<this, { key: SearchCriteria; value: any }>
   setUnitAction: Action<this, Metric>
   setAlertID: Action<this, string>
+  setPreviewAction: Action<this, PillPreview[]>
 }
 
 export const savedSearchModel: SavedSearchModel = {
@@ -55,6 +58,7 @@ export const savedSearchModel: SavedSearchModel = {
   },
   // this will be overwritten by the user's default unit when we initialize the store
   unit: "in",
+  preview: [],
 
   addValueToAttributesByKeyAction: action((state, payload) => {
     if (payload.key === "priceRange" && typeof payload.value === "string") {
@@ -101,6 +105,10 @@ export const savedSearchModel: SavedSearchModel = {
 
   setAlertID: action((state, payload) => {
     state.currentAlertID = payload
+  }),
+
+  setPreviewAction: action((state, payload) => {
+    state.preview = payload
   }),
 }
 
