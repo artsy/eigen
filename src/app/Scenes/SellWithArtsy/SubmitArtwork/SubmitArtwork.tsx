@@ -1,5 +1,12 @@
 import { OwnerType, ContextModule } from "@artsy/cohesion"
-import { CollapsibleMenuItem, Text, Separator, Join, Screen } from "@artsy/palette-mobile"
+import {
+  CollapsibleMenuItem,
+  Text,
+  Separator,
+  Join,
+  Screen,
+  useScreenDimensions,
+} from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps } from "@react-navigation/stack"
@@ -61,6 +68,7 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
 }) => {
   const { trackEvent } = useTracking()
   const { showActionSheetWithOptions } = useActionSheet()
+  const { safeAreaInsets } = useScreenDimensions()
   const {
     submissionId: submissionID,
     artworkDetails,
@@ -243,7 +251,7 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
       })}
     >
       <Screen.Header onBack={handleBackPress} />
-      <Screen.Body>
+      <Screen.Body pb={`${safeAreaInsets.bottom}px`}>
         <Screen.ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
           <Join separator={<Separator mt={4} mb={2} />}>
             {items.map(({ overtitle, title, Content, contextModule }, index) => (
