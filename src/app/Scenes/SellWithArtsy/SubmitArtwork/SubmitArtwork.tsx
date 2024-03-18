@@ -1,5 +1,5 @@
 import { OwnerType, ContextModule } from "@artsy/cohesion"
-import { CollapsibleMenuItem, Spacer, Flex, Text, Separator, Join } from "@artsy/palette-mobile"
+import { CollapsibleMenuItem, Text, Separator, Join, Screen } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps } from "@react-navigation/stack"
@@ -15,7 +15,6 @@ import {
   uploadPhotosCompletedEvent,
 } from "app/Scenes/SellWithArtsy/utils/TrackingEvent"
 import { GlobalStore } from "app/store/GlobalStore"
-import { BackButton } from "app/system/navigation/BackButton"
 import { goBack } from "app/system/navigation/navigate"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
@@ -187,7 +186,7 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
 
     const scrollToStep = () =>
       stepsRefs[indexToExpand].offsetTop().then((offset) => {
-        scrollViewRef.current?.scrollTo({ y: offset - 20 || 0 })
+        scrollViewRef.current?.scrollTo({ y: offset - 120 || 0 })
       })
 
     if (indexToCollapse >= 0) {
@@ -244,44 +243,46 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
         context_screen_owner_type: OwnerType.consignmentFlow,
       })}
     >
-      <ArtsyKeyboardAvoidingView>
-        <Flex>
-          <BackButton onPress={handleBackPress} style={{ top: 10, zIndex: 100 }} />
+      <Screen>
+        <Screen.Body fullwidth>
+          <Screen.Header onBack={handleBackPress} />
+
           <ScrollView
             ref={scrollViewRef}
             contentContainerStyle={{
-              paddingVertical: 50,
+              paddingBottom: 50,
               paddingHorizontal: 20,
               justifyContent: "center",
             }}
             keyboardShouldPersistTaps="handled"
           >
-            <Spacer y={4} />
-            <Join separator={<Separator my={2} marginTop="40" marginBottom="20" />}>
-              {items.map(({ overtitle, title, Content, contextModule }, index) => (
-                <CollapsibleMenuItem
-                  key={index}
-                  overtitle={overtitle}
-                  title={title}
-                  onExpand={() => {
-                    trackEvent(toggledAccordionEvent(submissionID, contextModule, title, true))
-                    expandCollapsibleMenuContent(index)
-                  }}
-                  onCollapse={() => {
-                    trackEvent(toggledAccordionEvent(submissionID, contextModule, title, false))
-                  }}
-                  isExpanded={index === 0}
-                  disabled={activeStep !== index}
-                  ref={(ref) => {
-                    if (ref) {
-                      stepsRefs[index] = ref
-                    }
-                  }}
-                >
-                  {Content}
-                </CollapsibleMenuItem>
-              ))}
-            </Join>
+            <ArtsyKeyboardAvoidingView>
+              <Join separator={<Separator my={2} marginTop="40" marginBottom="20" />}>
+                {items.map(({ overtitle, title, Content, contextModule }, index) => (
+                  <CollapsibleMenuItem
+                    key={index}
+                    overtitle={overtitle}
+                    title={title}
+                    onExpand={() => {
+                      trackEvent(toggledAccordionEvent(submissionID, contextModule, title, true))
+                      expandCollapsibleMenuContent(index)
+                    }}
+                    onCollapse={() => {
+                      trackEvent(toggledAccordionEvent(submissionID, contextModule, title, false))
+                    }}
+                    isExpanded={index === 0}
+                    disabled={activeStep !== index}
+                    ref={(ref) => {
+                      if (ref) {
+                        stepsRefs[index] = ref
+                      }
+                    }}
+                  >
+                    {Content}
+                  </CollapsibleMenuItem>
+                ))}
+              </Join>
+            </ArtsyKeyboardAvoidingView>
           </ScrollView>
           <FancyModal visible={hasError} onBackgroundPressed={() => setHasError(false)}>
             <FancyModalHeader onRightButtonPress={() => setHasError(false)} rightCloseButton>
@@ -293,8 +294,8 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
               } the Artwork. Please try again shortly`}
             />
           </FancyModal>
-        </Flex>
-      </ArtsyKeyboardAvoidingView>
+        </Screen.Body>
+      </Screen>
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }
@@ -306,7 +307,7 @@ export type SubmitArtworkOverviewNavigationStack = {
 
 const StackNavigator = createStackNavigator<SubmitArtworkOverviewNavigationStack>()
 
-export const SubmitArtwork = () => {
+export const SubmitArtwork: React.FC = () => {
   return (
     <NavigationContainer independent>
       <StackNavigator.Navigator
