@@ -107,7 +107,7 @@ export const Input: React.FC<InputProps> = ({
         // placeholder={props.label}
       />
       {!!required && (
-        <Text color="black60" variant="xs" paddingX="15px">
+        <Text color="black60" variant="xs" paddingX="15px" mt={0.5}>
           * Required
         </Text>
       )}
