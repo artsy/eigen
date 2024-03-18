@@ -1,4 +1,4 @@
-import { Text } from "@artsy/palette-mobile"
+import { Text, Touchable } from "@artsy/palette-mobile"
 import { THEME } from "@artsy/palette-tokens"
 import themeGet from "@styled-system/theme-get"
 import { TextInput, TextInputProps } from "react-native"
@@ -10,6 +10,8 @@ interface InputProps extends TextInputProps {
   onChangeText: (text: string) => void
   isFocused?: boolean
   required?: boolean
+  onHintPress?: () => void
+  hintText?: string
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -17,6 +19,8 @@ export const Input: React.FC<InputProps> = ({
   onChangeText,
   isFocused = false,
   required = false,
+  hintText = "What's this?",
+  ...props
 }) => {
   const focused = useSharedValue(isFocused ?? false)
 
@@ -41,6 +45,14 @@ export const Input: React.FC<InputProps> = ({
 
   return (
     <>
+      {!!props.onHintPress && (
+        <Touchable onPress={props.onHintPress} haptic="impactLight">
+          <Text underline variant="xs" color="black60" textAlign="right" mb={0.5}>
+            {hintText}
+          </Text>
+        </Touchable>
+      )}
+
       <AnimatedStyledInput
         value={value}
         onChangeText={handleChangeText}

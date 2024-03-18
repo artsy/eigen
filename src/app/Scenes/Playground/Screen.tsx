@@ -1,6 +1,7 @@
-import { Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Separator, Text } from "@artsy/palette-mobile"
 import { Input } from "app/Components/Input2"
 import { useState } from "react"
+import { Alert } from "react-native"
 
 export const Screen: React.FC<{}> = () => {
   const [value1, setValue1] = useState("Random Value")
@@ -8,14 +9,35 @@ export const Screen: React.FC<{}> = () => {
 
   return (
     <Flex px={2}>
-      <Text variant="lg-display" mb={2}>
-        Title
+      <Text variant="sm-display" mb={2}>
+        Default Input
       </Text>
+
       <Input value={value1} onChangeText={setValue1} />
 
-      <Spacer y={2} />
+      <Separator my={2} mx={-2} />
+
+      <Text variant="sm-display" mb={2}>
+        Focused Input
+      </Text>
 
       <Input value={value2} onChangeText={setValue2} isFocused required />
+
+      <Separator my={2} mx={-2} />
+
+      <Text variant="sm-display" mb={2}>
+        Required Default with hint
+      </Text>
+
+      <Input
+        value={value2}
+        onChangeText={setValue2}
+        isFocused
+        required
+        onHintPress={() => {
+          Alert.alert("Hint", "This is a hint")
+        }}
+      />
     </Flex>
   )
 }
