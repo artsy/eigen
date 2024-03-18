@@ -27,11 +27,19 @@ yarn setup:releases
 ## Check out the tag corresponding with the last release of Eigen
 
 All our live release versions should have a corresponding tag in git that will end in `-submission`.
-The exact build version and number can be found in app store connect. Android will have a similar tag,
-but unless we had an unusual release they should be equivalent. You can double check in the compare view
-in github but you should be safe to choose one.
-Ask for help in `#practice-mobile` if you have trouble finding this
-information.
+
+You can find the latest release tags using the script:
+
+`./scripts/deploys/latest-submissions`
+
+This will output the latest submission tags:
+
+```
+Latest iOS submission: ios-8.34.0-2024.03.07.11-submission
+Latest Android submission: android-8.34.0-1674645623-submission
+```
+
+If it was a typical release they should be equivalent code and you should be safe to choose one, but if you have doubts you can confirm in the compare view in github.
 
 For our example let's say our last released build is `7.2.0 (2022.2.3.14)`
 We will want to checkout the tag `ios-7.2.0-2022.02.03.14-submission`:
