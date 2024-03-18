@@ -641,7 +641,7 @@ export const modules = defineModules({
     hidesBackButton: true,
     fullBleed: true,
   }),
-  SubmitArtwork: reactModule(SubmitArtwork, { hidesBackButton: true }),
+  SubmitArtwork: reactModule(SubmitArtwork, { hidesBackButton: true, hidesBottomTabs: true }),
   Tag: reactModule(TagQueryRenderer, { hidesBackButton: true, fullBleed: true }),
   UnlistedArtworksFAQScreen: reactModule(UnlistedArtworksFAQScreen),
   VanityURLEntity: reactModule(VanityURLEntityRenderer, { fullBleed: true }),
