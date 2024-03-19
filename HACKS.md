@@ -340,7 +340,7 @@ When we upgrade to Reanimated 3.4.0
 
 Fixes some issues on Android when Reanimated stops. https://github.com/software-mansion/react-native-reanimated/issues/4626
 
-# Pod patch for NimbleSnapshots type failure
+## Pod patch for NimbleSnapshots type failure
 
 #### When can we remove this:
 
@@ -360,3 +360,16 @@ When we upgrade to 6.0.14 or higher, should do shortly but requires fixing a fai
 
 React native removed removeEventListener which this library uses and causes jest tests to fail with type errors. This commit fixes the issue:
 https://github.com/react-navigation/react-navigation/commit/6e9da7304127a7c33cda2da2fa9ea1740ef56604
+
+## Patch-package for react-native-device-info
+
+#### When we can remove this:
+
+When this discussion is settled and we update to a compliant release with either a privacy manifest or this code removed:
+https://github.com/react-native-device-info/react-native-device-info/issues/1622
+
+#### Explanation/Context
+
+Apples has started requiring apps and 3rd party libraries declare in a privacy manifest why they use some apis, and only certain reasons are allowed.
+Device info uses disk space apis that are not justified by these reasons currently.
+https://developer.apple.com/documentation/bundleresources/privacy_manifest_files/describing_use_of_required_reason_api?language=objc
