@@ -4,6 +4,7 @@ import Clipboard from "@react-native-clipboard/clipboard"
 import * as Sentry from "@sentry/react-native"
 import { Expandable } from "app/Components/Expandable"
 import { useToast } from "app/Components/Toast/toastHook"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { GlobalStore } from "app/store/GlobalStore"
 import { DevToggleName, devToggles } from "app/store/config/features"
 import { Versions } from "app/store/migration"
@@ -15,7 +16,7 @@ import { RelayCache } from "app/system/relay/RelayCache"
 import { useUnleashEnvironment } from "app/utils/experiments/hooks"
 import { capitalize, sortBy } from "lodash"
 import { useState } from "react"
-import { Alert, Button } from "react-native"
+import { Alert, Button, Platform } from "react-native"
 import Config from "react-native-config"
 import DeviceInfo from "react-native-device-info"
 import FastImage from "react-native-fast-image"
@@ -156,7 +157,12 @@ export const DevTools: React.FC<{}> = () => {
           <DevMenuButtonItem
             title="Copy push token"
             onPress={async () => {
-              const pushToken = await AsyncStorage.getItem("PUSH_NOTIFICATION_TOKEN")
+              let pushToken
+              if (Platform.OS === "ios") {
+                pushToken = await LegacyNativeModules.ArtsyNativeModule.getPushToken()
+              } else {
+                pushToken = await AsyncStorage.getItem("PUSH_NOTIFICATION_TOKEN")
+              }
               Clipboard.setString(pushToken ?? "")
               if (!pushToken) {
                 toast.show("No push token found", "middle")
