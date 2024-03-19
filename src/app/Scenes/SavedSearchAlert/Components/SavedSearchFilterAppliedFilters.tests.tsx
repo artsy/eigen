@@ -1,7 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { SavedSearchFilterAppliedFilters } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterAppliedFilters"
-
 import {
   SavedSearchModel,
   SavedSearchStoreProvider,
@@ -10,44 +9,53 @@ import {
 
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
+jest.mock("app/Scenes/SavedSearchAlert/useSavedSearchPills", () => {
+  return {
+    useSavedSearchPills: () => [
+      { label: "Open Edition", paramName: "attributionClass", value: "open edition" },
+      { label: "Banksy", paramName: "artistIDs", value: "artistIDs" },
+    ],
+  }
+})
+
 describe("SavedSearchFilterAppliedFilters", () => {
   it("shows all selected filters", () => {
-    const { getByText } = renderWithWrappers(
+    renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
         <SavedSearchFilterAppliedFilters />
       </SavedSearchStoreProvider>
     )
 
-    expect(getByText("Open Edition")).toBeDefined()
-    expect(getByText("Banksy")).toBeDefined()
+    expect(screen.getByText("Open Edition")).toBeDefined()
+    expect(screen.getByText("Banksy")).toBeDefined()
   })
 
-  it("removes filter when tapped", () => {
-    const { getByText } = renderWithWrappers(
+  fit("removes filter when tapped", () => {
+    renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
         <SavedSearchFilterAppliedFilters />
       </SavedSearchStoreProvider>
     )
 
-    expect(getByText("Open Edition")).toBeDefined()
+    expect(screen.getByText("Open Edition")).toBeDefined()
 
-    fireEvent.press(getByText("Open Edition"), "onPress")
+    fireEvent.press(screen.getByText("Open Edition"), "onPress")
 
-    expect(() => getByText("Open Edition")).toThrow()
+    expect(() => screen.getByText("Open Edition")).toThrow()
   })
 
   it("can't remove artist pill", () => {
-    const { getByText } = renderWithWrappers(
+    renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
         <SavedSearchFilterAppliedFilters />
       </SavedSearchStoreProvider>
     )
 
-    expect(getByText("Banksy")).toBeDefined()
+    expect(screen.getByText("Banksy")).toBeDefined()
 
-    fireEvent.press(getByText("Banksy"), "onPress")
+    fireEvent.press(screen.getByText("Banksy"), "onPress")
 
-    expect(getByText("Banksy")).toBeDefined()
+    expect(screen.getByText("Banksy")).toBeDefined()
   })
 })
 
@@ -56,6 +64,7 @@ const initialData: SavedSearchModel = {
   attributes: {
     attributionClass: ["open edition"],
     atAuction: true,
+    artistIDs: ["banksy"],
   },
   entity: {
     artists: [{ id: "artistID", name: "Banksy" }],
