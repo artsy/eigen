@@ -19,7 +19,7 @@ describe("AlertArtworksGrid", () => {
   })
 
   describe("no artworks matches", () => {
-    it("shows no matches message and manage alert button", async () => {
+    it("shows no matches message and edit alert button", async () => {
       renderWithRelay({
         Me: () => ({
           alert: {
@@ -36,9 +36,9 @@ describe("AlertArtworksGrid", () => {
       expect(
         screen.getByText("There aren't any works available that meet the criteria at this time.")
       ).toBeOnTheScreen()
-      expect(screen.getByText("Manage Alert")).toBeOnTheScreen()
+      expect(screen.getByText("Edit Alert")).toBeOnTheScreen()
 
-      fireEvent.press(screen.getByText("Manage Alert"))
+      fireEvent.press(screen.getByText("Edit Alert"))
       await flushPromiseQueue()
 
       expect(navigate).toHaveBeenCalledWith("settings/alerts/alert-id/edit")

@@ -18,18 +18,26 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 
 interface AlertArtworksGridProps {
   alertId: string
+  fetchKey?: number
 }
 
 const NUMBER_OF_ARTWORKS_TO_SHOW = 10
 
-export const AlertArtworksGrid: FC<AlertArtworksGridProps> = ({ alertId }) => {
+export const AlertArtworksGrid: FC<AlertArtworksGridProps> = ({ alertId, fetchKey }) => {
   const screen = useScreenDimensions()
   const { space } = useTheme()
 
-  const data = useLazyLoadQuery<AlertArtworksGridQuery>(alertArtworksGridQuery, {
-    alertId: alertId,
-    first: NUMBER_OF_ARTWORKS_TO_SHOW,
-  })
+  const data = useLazyLoadQuery<AlertArtworksGridQuery>(
+    alertArtworksGridQuery,
+    {
+      alertId: alertId,
+      first: NUMBER_OF_ARTWORKS_TO_SHOW,
+    },
+    {
+      fetchPolicy: "network-only",
+      fetchKey: fetchKey ?? 0,
+    }
+  )
   const artworks = extractNodes(data.me?.alert?.artworksConnection)
   const artworksCount = data.me?.alert?.artworksConnection?.counts?.total ?? 0
   const artistIDs = data.me?.alert?.artistIDs ?? []
@@ -89,7 +97,7 @@ export const AlertArtworksGrid: FC<AlertArtworksGridProps> = ({ alertId }) => {
       )}
 
       <Button onPress={handleManageAlert} block mb={1} variant="outline">
-        {artworksCount === 0 ? "Manage Alert" : "Edit Alert"}
+        Edit Alert
       </Button>
 
       <Spacer y={2} />
