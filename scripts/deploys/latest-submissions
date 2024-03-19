@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Script to get latest submission tags, if we are following our release conventions these
+# should correspond to the latest builds submitted to stores
+
+# suppress noisy output
+git fetch --tags > /dev/null 2>&1
+
+latest_ios_tag=$(git tag -l 'ios-*-submission' | sort -V | tail -n 1)
+latest_android_tag=$(git tag -l 'android-*-submission' | sort -V | tail -n 1)
+
+echo "Latest iOS submission: $latest_ios_tag"
+echo "Latest Android submission: $latest_android_tag"

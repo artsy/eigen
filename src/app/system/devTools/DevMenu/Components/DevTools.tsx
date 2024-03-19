@@ -154,6 +154,18 @@ export const DevTools: React.FC<{}> = () => {
             }}
           />
           <DevMenuButtonItem
+            title="Copy push token"
+            onPress={async () => {
+              const pushToken = await AsyncStorage.getItem("PUSH_NOTIFICATION_TOKEN")
+              Clipboard.setString(pushToken ?? "")
+              if (!pushToken) {
+                toast.show("No push token found", "middle")
+                return
+              }
+              toast.show("Copied to clipboard", "middle")
+            }}
+          />
+          <DevMenuButtonItem
             title="Log out"
             titleColor="red100"
             onPress={() => {
