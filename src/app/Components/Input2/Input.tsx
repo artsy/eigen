@@ -1,6 +1,7 @@
 import { Flex, Text, Touchable, useSpace } from "@artsy/palette-mobile"
 import { THEME } from "@artsy/palette-tokens"
 import themeGet from "@styled-system/theme-get"
+import { useState } from "react"
 import { TextInput, TextInputProps } from "react-native"
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
 import styled from "styled-components"
@@ -21,11 +22,13 @@ export const Input: React.FC<InputProps> = ({
   hintText = "What's this?",
   ...props
 }) => {
-  const focused = useSharedValue(!!value)
-
+  const [focused, setIsFocused] = useState(false)
+  const variant: InputVariant = props.error ? "error" : "default"
+  const animatedState = useSharedValue<InputState>(getInputState({ isFocused: !!focused, value }))
   const space = useSpace()
 
   const handleChangeText = (text: string) => {
+    "worklet"
     onChangeText(text)
   }
 
@@ -36,24 +39,8 @@ export const Input: React.FC<InputProps> = ({
     fontSize: 16,
     lineHeight: 20,
     minHeight: 56,
+    borderWidth: 1,
   }
-
-  const textInputAnimatedStyles = useAnimatedStyle(() => {
-    let borderColor = ""
-
-    if (props.error) {
-      borderColor = THEME.colors.red100
-    } else if (focused.value || value) {
-      THEME.colors.black60
-    } else {
-      THEME.colors.black30
-    }
-
-    return {
-      borderWidth: 1,
-      borderColor: borderColor,
-    }
-  })
 
   const labelStyles = {
     // this is neeeded too make sure the label is on top of the input
@@ -62,39 +49,31 @@ export const Input: React.FC<InputProps> = ({
     marginRight: space(0.5),
     paddingHorizontal: space(0.5),
     zIndex: 100,
+    fontFamily: THEME.fonts.sans,
   }
 
-  const labelAnimatedStyles = useAnimatedStyle(() => {
-    const shouldShrink = focused.value || value
+  animatedState.value = getInputState({ isFocused: !!focused, value })
 
-    let labelColor = ""
-
-    if (props.error) {
-      labelColor = THEME.colors.red100
-    } else if (shouldShrink) {
-      labelColor = THEME.colors.blue100
-    } else {
-      labelColor = THEME.colors.black30
-    }
-
+  const textInputAnimatedStyles = useAnimatedStyle(() => {
     return {
-      color: labelColor,
-      top: withTiming(shouldShrink || value ? 13 : 40),
-      fontSize: withTiming(
-        shouldShrink
-          ? parseInt(THEME.textVariants["xs"].fontSize, 10)
-          : parseInt(THEME.textVariants["sm-display"].fontSize, 10)
-      ),
-      fontFamily: THEME.fonts.sans,
+      borderColor: withTiming(VARIANTS[variant][animatedState.value].inputBorderColor),
+    }
+  })
+
+  const labelAnimatedStyles = useAnimatedStyle(() => {
+    return {
+      color: withTiming(VARIANTS[variant][animatedState.value].labelColor),
+      top: withTiming(VARIANTS[variant][animatedState.value].labelTop),
+      fontSize: withTiming(VARIANTS[variant][animatedState.value].labelFontSize),
     }
   })
 
   const handleFocus = () => {
-    focused.value = true
+    setIsFocused(true)
   }
 
   const handleBlur = () => {
-    focused.value = false
+    setIsFocused(false)
   }
 
   return (
@@ -108,13 +87,8 @@ export const Input: React.FC<InputProps> = ({
       )}
 
       {!!props.label && (
-        <Flex flexDirection="row" zIndex={100}>
-          <AnimatedText
-            style={[labelStyles, labelAnimatedStyles]}
-            numberOfLines={1}
-            // @ts-expect-error
-            pointerEvents="none" // do not respond to touch events
-          >
+        <Flex flexDirection="row" zIndex={100} pointerEvents="none">
+          <AnimatedText style={[labelStyles, labelAnimatedStyles]} numberOfLines={1}>
             {props.label}
           </AnimatedText>
         </Flex>
@@ -126,7 +100,6 @@ export const Input: React.FC<InputProps> = ({
         style={[styles, textInputAnimatedStyles]}
         onFocus={handleFocus}
         onBlur={handleBlur}
-        // placeholder={props.label}
       />
 
       {/* If an input has an error, we don't need to show "Required" because it's already pointed out */}
@@ -153,3 +126,81 @@ const StyledInput = styled(TextInput)`
 
 const AnimatedStyledInput = Animated.createAnimatedComponent(StyledInput)
 const AnimatedText = Animated.createAnimatedComponent(Text)
+
+const SHRINKED_LABEL_TOP = 13
+const EXPANDED_LABEL_TOP = 40
+
+const DEFAULT_VARIANT_STATES = {
+  // Unfocused input with no value
+  untouched: {
+    inputBorderColor: THEME.colors.black30,
+    labelFontSize: parseInt(THEME.textVariants["sm-display"].fontSize, 10),
+    labelColor: THEME.colors.black60,
+    labelTop: EXPANDED_LABEL_TOP,
+  },
+  // Unfocused input with value
+  touched: {
+    inputBorderColor: THEME.colors.black60,
+    labelFontSize: parseInt(THEME.textVariants["xs"].fontSize, 10),
+    labelColor: THEME.colors.black60,
+    labelTop: SHRINKED_LABEL_TOP,
+  },
+  // Focused input with or without value
+  focused: {
+    inputBorderColor: THEME.colors.blue100,
+    labelFontSize: parseInt(THEME.textVariants["xs"].fontSize, 10),
+    labelColor: THEME.colors.blue100,
+    labelTop: SHRINKED_LABEL_TOP,
+  },
+}
+
+const ERROR_VARIANT_STATES = {
+  // Unfocused error input with no value
+  untouched: {
+    inputBorderColor: THEME.colors.red100,
+    labelFontSize: parseInt(THEME.textVariants["sm-display"].fontSize, 10),
+    labelColor: THEME.colors.red100,
+    labelTop: EXPANDED_LABEL_TOP,
+  },
+  // Unfocused error input with value
+  touched: {
+    inputBorderColor: THEME.colors.red100,
+    labelFontSize: parseInt(THEME.textVariants["xs"].fontSize, 10),
+    labelColor: THEME.colors.red100,
+    labelTop: SHRINKED_LABEL_TOP,
+  },
+  // Focused error input with or without value
+  focused: {
+    inputBorderColor: THEME.colors.red100,
+    labelFontSize: parseInt(THEME.textVariants["xs"].fontSize, 10),
+    labelColor: THEME.colors.red100,
+    labelTop: SHRINKED_LABEL_TOP,
+  },
+
+  // // TODO: Implement disabled state
+  // disabled: {},
+}
+
+const VARIANTS = {
+  default: DEFAULT_VARIANT_STATES,
+  error: ERROR_VARIANT_STATES,
+}
+
+type InputState = keyof typeof DEFAULT_VARIANT_STATES
+type InputVariant = keyof typeof VARIANTS
+
+const getInputState = ({
+  isFocused,
+  value,
+}: {
+  isFocused: boolean
+  value: string | undefined
+}): InputState => {
+  if (isFocused) {
+    return "focused"
+  } else if (value) {
+    return "touched"
+  } else {
+    return "untouched"
+  }
+}

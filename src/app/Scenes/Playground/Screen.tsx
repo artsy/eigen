@@ -7,7 +7,7 @@ export const Screen: React.FC<{}> = () => {
   const [value1, setValue1] = useState("")
   const [value2, setValue2] = useState("")
   const [value3, setValue3] = useState("a value")
-  const [value4, setValue4] = useState("")
+  const [value4, setValue4] = useState("value 4")
 
   return (
     <ScrollView
@@ -27,7 +27,7 @@ export const Screen: React.FC<{}> = () => {
         Default Input with short label
       </Text>
 
-      <Input value={value1} onChangeText={setValue1} label="Label" error="An ugly error message" />
+      <Input value={value1} onChangeText={setValue1} label="Label" />
 
       <Separator my={2} />
 
