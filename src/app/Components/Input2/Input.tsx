@@ -20,10 +20,15 @@ export const Input: React.FC<InputProps> = ({
   value,
   onChangeText,
   hintText = "What's this?",
+  editable = true,
   ...props
 }) => {
   const [focused, setIsFocused] = useState(false)
-  const variant: InputVariant = props.error ? "error" : "default"
+  const variant: InputVariant = getInputVariant({
+    hasError: !!props.error,
+    editable: editable,
+  })
+
   const animatedState = useSharedValue<InputState>(getInputState({ isFocused: !!focused, value }))
   const space = useSpace()
 
@@ -57,6 +62,7 @@ export const Input: React.FC<InputProps> = ({
   const textInputAnimatedStyles = useAnimatedStyle(() => {
     return {
       borderColor: withTiming(VARIANTS[variant][animatedState.value].inputBorderColor),
+      color: withTiming(VARIANTS[variant][animatedState.value].inputTextColor),
     }
   })
 
@@ -100,6 +106,8 @@ export const Input: React.FC<InputProps> = ({
         style={[styles, textInputAnimatedStyles]}
         onFocus={handleFocus}
         onBlur={handleBlur}
+        editable={editable}
+        {...props}
       />
 
       {/* If an input has an error, we don't need to show "Required" because it's already pointed out */}
@@ -130,13 +138,38 @@ const AnimatedText = Animated.createAnimatedComponent(Text)
 const SHRINKED_LABEL_TOP = 13
 const EXPANDED_LABEL_TOP = 40
 
-const DEFAULT_VARIANT_STATES = {
+type VariantState = {
+  untouched: {
+    inputBorderColor: string
+    labelFontSize: number
+    labelColor: string
+    labelTop: number
+    inputTextColor: string
+  }
+  touched: {
+    inputBorderColor: string
+    labelFontSize: number
+    labelColor: string
+    labelTop: number
+    inputTextColor: string
+  }
+  focused: {
+    inputBorderColor: string
+    labelFontSize: number
+    labelColor: string
+    labelTop: number
+    inputTextColor: string
+  }
+}
+
+const DEFAULT_VARIANT_STATES: VariantState = {
   // Unfocused input with no value
   untouched: {
     inputBorderColor: THEME.colors.black30,
     labelFontSize: parseInt(THEME.textVariants["sm-display"].fontSize, 10),
     labelColor: THEME.colors.black60,
     labelTop: EXPANDED_LABEL_TOP,
+    inputTextColor: THEME.colors.black100,
   },
   // Unfocused input with value
   touched: {
@@ -144,6 +177,7 @@ const DEFAULT_VARIANT_STATES = {
     labelFontSize: parseInt(THEME.textVariants["xs"].fontSize, 10),
     labelColor: THEME.colors.black60,
     labelTop: SHRINKED_LABEL_TOP,
+    inputTextColor: THEME.colors.black100,
   },
   // Focused input with or without value
   focused: {
@@ -151,16 +185,18 @@ const DEFAULT_VARIANT_STATES = {
     labelFontSize: parseInt(THEME.textVariants["xs"].fontSize, 10),
     labelColor: THEME.colors.blue100,
     labelTop: SHRINKED_LABEL_TOP,
+    inputTextColor: THEME.colors.black100,
   },
 }
 
-const ERROR_VARIANT_STATES = {
+const ERROR_VARIANT_STATES: VariantState = {
   // Unfocused error input with no value
   untouched: {
     inputBorderColor: THEME.colors.red100,
     labelFontSize: parseInt(THEME.textVariants["sm-display"].fontSize, 10),
     labelColor: THEME.colors.red100,
     labelTop: EXPANDED_LABEL_TOP,
+    inputTextColor: THEME.colors.black100,
   },
   // Unfocused error input with value
   touched: {
@@ -168,6 +204,7 @@ const ERROR_VARIANT_STATES = {
     labelFontSize: parseInt(THEME.textVariants["xs"].fontSize, 10),
     labelColor: THEME.colors.red100,
     labelTop: SHRINKED_LABEL_TOP,
+    inputTextColor: THEME.colors.black100,
   },
   // Focused error input with or without value
   focused: {
@@ -175,15 +212,42 @@ const ERROR_VARIANT_STATES = {
     labelFontSize: parseInt(THEME.textVariants["xs"].fontSize, 10),
     labelColor: THEME.colors.red100,
     labelTop: SHRINKED_LABEL_TOP,
+    inputTextColor: THEME.colors.black100,
   },
+}
 
-  // // TODO: Implement disabled state
-  // disabled: {},
+const DISABLED_VARIANT_STATES: VariantState = {
+  // Unfocused disabled input with no value
+  untouched: {
+    inputBorderColor: THEME.colors.black30,
+    labelFontSize: parseInt(THEME.textVariants["sm-display"].fontSize, 10),
+    labelColor: THEME.colors.black30,
+    labelTop: EXPANDED_LABEL_TOP,
+    inputTextColor: THEME.colors.black30,
+  },
+  // Unfocused disabled input with value
+  touched: {
+    inputBorderColor: THEME.colors.black30,
+    labelFontSize: parseInt(THEME.textVariants["xs"].fontSize, 10),
+    labelColor: THEME.colors.black30,
+    labelTop: SHRINKED_LABEL_TOP,
+    inputTextColor: THEME.colors.black30,
+  },
+  // Focused disabled input with or without value
+  // Adding this just to satisfy typescript because a disabled input can't be focused
+  focused: {
+    inputBorderColor: THEME.colors.black30,
+    labelFontSize: parseInt(THEME.textVariants["xs"].fontSize, 10),
+    labelColor: THEME.colors.black30,
+    labelTop: SHRINKED_LABEL_TOP,
+    inputTextColor: THEME.colors.black30,
+  },
 }
 
 const VARIANTS = {
   default: DEFAULT_VARIANT_STATES,
   error: ERROR_VARIANT_STATES,
+  disabled: DISABLED_VARIANT_STATES,
 }
 
 type InputState = keyof typeof DEFAULT_VARIANT_STATES
@@ -203,4 +267,14 @@ const getInputState = ({
   } else {
     return "untouched"
   }
+}
+
+const getInputVariant = ({ editable, hasError }: { editable: boolean; hasError: boolean }) => {
+  if (hasError) {
+    return "error"
+  }
+  if (!editable) {
+    return "disabled"
+  }
+  return "default"
 }
