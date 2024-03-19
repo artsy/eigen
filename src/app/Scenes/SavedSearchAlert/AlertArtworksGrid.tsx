@@ -52,7 +52,7 @@ export const AlertArtworksGrid: FC<AlertArtworksGridProps> = ({ alertId }) => {
 
   return (
     <Flex>
-      {artworksCount > 1 && (
+      {artworksCount > 0 && (
         <Flex>
           <Text variant="sm">
             {numWorks} currently on Artsy match your criteria. See our top picks for you:
