@@ -6,12 +6,20 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 
 interface AlertArtworksPillsProps {
   alertId: string
+  fetchKey?: number
 }
 
-export const AlertArtworksPills: FC<AlertArtworksPillsProps> = ({ alertId }) => {
-  const data = useLazyLoadQuery<AlertArtworksPillsQuery>(alertArtworksPillsQuery, {
-    alertId: alertId,
-  })
+export const AlertArtworksPills: FC<AlertArtworksPillsProps> = ({ alertId, fetchKey }) => {
+  const data = useLazyLoadQuery<AlertArtworksPillsQuery>(
+    alertArtworksPillsQuery,
+    {
+      alertId: alertId,
+    },
+    {
+      fetchPolicy: "network-only",
+      fetchKey: fetchKey ?? 0,
+    }
+  )
 
   const pills = data.me?.alert?.pills || []
 
