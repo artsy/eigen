@@ -819,11 +819,11 @@ PODS:
   - RNScreens (3.29.0):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
-  - RNSentry (5.14.1):
+  - RNSentry (5.20.0):
     - hermes-engine
     - React-Core
     - React-hermes
-    - Sentry/HybridSDK (= 8.15.2)
+    - Sentry/HybridSDK (= 8.21.0)
   - RNShare (10.0.2):
     - React-Core
   - RNSVG (14.1.0):
@@ -840,9 +840,9 @@ PODS:
   - Segment-Appboy/Full-SDK (4.5.0):
     - Analytics
     - Appboy-iOS-SDK (~> 4.4.1)
-  - Sentry/HybridSDK (8.15.2):
-    - SentryPrivate (= 8.15.2)
-  - SentryPrivate (8.15.2)
+  - Sentry/HybridSDK (8.21.0):
+    - SentryPrivate (= 8.21.0)
+  - SentryPrivate (8.21.0)
   - Sift (2.1.5)
   - sift-react-native (0.1.8):
     - React
@@ -1008,6 +1008,7 @@ DEPENDENCIES:
   - RNSVG (from `../node_modules/react-native-svg`)
   - SDWebImage (= 5.11.1)
   - Segment-Appboy
+  - Sentry/HybridSDK (= 8.21.0)
   - sift-react-native (from `../node_modules/sift-react-native`)
   - Specta
   - Starscream (= 3.0.4)
@@ -1313,7 +1314,7 @@ SPEC CHECKSUMS:
   appcenter-core: e192ea8b373bebd3e44998882b43311078bd7dda
   AppCenterReactNativeShared: 01df23849b1c3c6eb8c4049f54322635650e98f0
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
-  boost: 7dcd2de282d72e344012f7d6564d024930a6a440
+  boost: 57d2868c099736d80fcd648bf211b4431e51a558
   BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
@@ -1449,14 +1450,14 @@ SPEC CHECKSUMS:
   RNReactNativeHapticFeedback: b83bfb4b537bdd78eb4f6ffe63c6884f7b049ead
   RNReanimated: 9f7068e43b9358a46a688d94a5a3adb258139457
   RNScreens: 3c5b9f4a9dcde752466854b6109b79c0e205dad3
-  RNSentry: ee1a9a80996414205d84ce9180c31bd855fd4641
+  RNSentry: 5381e9284aec59a546e4a7d40e33ad0839b99c1e
   RNShare: 859ff710211285676b0bcedd156c12437ea1d564
   RNSVG: ba3e7232f45e34b7b47e74472386cf4e1a676d0a
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   Segment-Appboy: 3ccf7ffd34701e11029e1d013e57eae0756a8eb1
-  Sentry: 6f5742b4c47c17c9adcf265f6f328cf4a0ed1923
-  SentryPrivate: b2f7996f37781080f04a946eb4e377ff63c64195
+  Sentry: ebc12276bd17613a114ab359074096b6b3725203
+  SentryPrivate: d651efb234cf385ec9a1cdd3eff94b5e78a0e0fe
   Sift: 7c27188ba3533c0a1be541d7efb68384e17e544c
   sift-react-native: 9ed8bc21788e3233399eaf196425246442aa7dee
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
@@ -1474,6 +1475,6 @@ SPEC CHECKSUMS:
   Yoga: d0003f849d2b5224c072cef6568b540d8bb15cd3
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 448dc621b71b4088fda9bd3613dfb47474331576
+PODFILE CHECKSUM: e42822d5e56597d2afb456426ae5a0fd78a12642
 
 COCOAPODS: 1.14.3
