@@ -68,16 +68,6 @@ export const features = {
     readyForRelease: true,
     echoFlagKey: "ARImpressionsTrackingHomeRailViews",
   },
-  AREnableSWALandingPageMeetTheSpecialist: {
-    description: "Enable MeetTheSpecialist on SWA Landing Page",
-    readyForRelease: true,
-    echoFlagKey: "AREnableSWALandingPageMeetTheSpecialist",
-  },
-  AREnableSWALandingPageTestimonials: {
-    description: "Enable Testimonials on SWA Landing Page",
-    readyForRelease: true,
-    echoFlagKey: "AREnableSWALandingPageTestimonials",
-  },
   AREnableSkeletonAnimation: {
     description: "Enable Skeleton Animation",
     readyForRelease: true,

@@ -46,7 +46,7 @@ export const Testimonials: React.FC = () => {
   }
 
   return (
-    <Flex mt={1}>
+    <Flex>
       <FlatList
         data={testimonials}
         horizontal
