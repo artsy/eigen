@@ -77,6 +77,7 @@ const CommercialButtons: React.FC<{
       {!hasEnded && !noLongerAvailable && (
         <BuyNowButton
           artwork={artworkData as BuyNowButton_artwork$key}
+          partnerOffer={partnerOffer}
           editionSetID={null}
           buttonText="Continue to Purchase"
         />
