@@ -1,167 +1,247 @@
-import { Flex, Text, Touchable, useSpace } from "@artsy/palette-mobile"
+import {
+  Flex,
+  Spinner,
+  Text,
+  Touchable,
+  XCircleIcon,
+  useColor,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { THEME } from "@artsy/palette-tokens"
 import themeGet from "@styled-system/theme-get"
 import { useMeasure } from "app/utils/hooks/useMeasure"
-import { useRef, useState } from "react"
+import { RefObject, forwardRef, useImperativeHandle, useRef, useState } from "react"
 import { TextInput, TextInputProps } from "react-native"
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
 import styled from "styled-components"
 
 interface InputProps extends TextInputProps {
-  value: string
-  onChangeText: (text: string) => void
-  required?: boolean
-  onHintPress?: () => void
+  enableClearButton?: boolean
+  error?: string
   hintText?: string
   label?: string
-  error?: string
+  loading?: boolean
+  onChangeText: (text: string) => void
+  onClear?(): void
+  onHintPress?: () => void
+  required?: boolean
   unit?: string | undefined | null
+  value: string
 }
 
 export const HORIZONTAL_PADDING = 15
 export const INPUT_BORDER_RADIUS = 4
 export const INPUT_MIN_HEIGHT = 56
 
-export const Input: React.FC<InputProps> = ({
-  value,
-  onChangeText,
-  hintText = "What's this?",
-  editable = true,
-  unit,
-  ...props
-}) => {
-  const [focused, setIsFocused] = useState(false)
-  const unitRef = useRef(null)
-
-  const variant: InputVariant = getInputVariant({
-    hasError: !!props.error,
-    editable: editable,
-  })
-
-  const hasUnit = !!unit
-
-  const animatedState = useSharedValue<InputState>(getInputState({ isFocused: !!focused, value }))
-  const space = useSpace()
-
-  const handleChangeText = (text: string) => {
-    "worklet"
-    onChangeText(text)
-  }
-
-  const { width: unitWidth = 0 } = useMeasure({ ref: unitRef })
-
-  const styles = {
-    fontFamily: THEME.fonts.sans,
-    fontSize: parseInt(THEME.textVariants["sm-display"].fontSize, 10),
-    minHeight: INPUT_MIN_HEIGHT,
-    borderWidth: 1,
-  }
-
-  const labelStyles = {
-    // this is neeeded too make sure the label is on top of the input
-    backgroundColor: "white",
-    marginRight: space(0.5),
-    paddingHorizontal: space(0.5),
-    zIndex: 100,
-    fontFamily: THEME.fonts.sans,
-  }
-
-  animatedState.value = getInputState({ isFocused: !!focused, value })
-
-  const textInputAnimatedStyles = useAnimatedStyle(() => {
-    return {
-      borderColor: withTiming(INPUT_VARIANTS[variant][animatedState.value].inputBorderColor),
-      color: withTiming(INPUT_VARIANTS[variant][animatedState.value].inputTextColor),
-      paddingLeft: withTiming(hasUnit ? unitWidth + HORIZONTAL_PADDING + 5 : HORIZONTAL_PADDING),
-    }
-  })
-
-  const labelAnimatedStyles = useAnimatedStyle(() => {
-    return {
-      color: withTiming(INPUT_VARIANTS[variant][animatedState.value].labelColor),
-      top: withTiming(INPUT_VARIANTS[variant][animatedState.value].labelTop),
-      fontSize: withTiming(INPUT_VARIANTS[variant][animatedState.value].labelFontSize),
-      marginLeft: withTiming(
-        hasUnit && !focused && !value ? unitWidth + HORIZONTAL_PADDING : HORIZONTAL_PADDING
-      ),
-    }
-  })
-
-  const handleFocus = () => {
-    setIsFocused(true)
-  }
-
-  const handleBlur = () => {
-    setIsFocused(false)
-  }
-
-  const renderLeftComponent = () => {
-    if (unit) {
-      return (
-        <Flex
-          flexDirection="row"
-          position="absolute"
-          left={`${HORIZONTAL_PADDING}px`}
-          top={43}
-          ref={unitRef}
-          zIndex={40}
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Text color={editable ? "black60" : "black30"} variant="sm-display">
-            {unit}
-          </Text>
-        </Flex>
-      )
-    }
-
-    return null
-  }
-  return (
-    <Flex>
-      {!!props.onHintPress && (
-        <Touchable onPress={props.onHintPress} haptic="impactLight">
-          <Text underline variant="xs" color="black60" textAlign="right" mb={0.5}>
-            {hintText}
-          </Text>
-        </Touchable>
-      )}
-
-      {!!props.label && (
-        <Flex flexDirection="row" zIndex={100} pointerEvents="none">
-          <AnimatedText style={[labelStyles, labelAnimatedStyles]} numberOfLines={1}>
-            {props.label}
-          </AnimatedText>
-        </Flex>
-      )}
-
-      {renderLeftComponent()}
-
-      <AnimatedStyledInput
-        value={value}
-        onChangeText={handleChangeText}
-        style={[styles, textInputAnimatedStyles]}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        editable={editable}
-        {...props}
-      />
-
-      {/* If an input has an error, we don't need to show "Required" because it's already pointed out */}
-      {!!props.required && !props.error && (
-        <Text color="black60" variant="xs" px={`${HORIZONTAL_PADDING}px`} mt={0.5}>
-          * Required
-        </Text>
-      )}
-
-      {!!props.error && (
-        <Text color="red100" variant="xs" px={`${HORIZONTAL_PADDING}px`} mt={0.5}>
-          {props.error}
-        </Text>
-      )}
-    </Flex>
-  )
+export interface InputRef {
+  focus: () => void
+  blur: () => void
+  clear: () => void
 }
+
+export const Input = forwardRef<InputRef, InputProps>(
+  (
+    {
+      editable = true,
+      enableClearButton = false,
+      hintText = "What's this?",
+      loading = false,
+      onChangeText,
+      onClear,
+      unit,
+      value,
+      ...props
+    },
+    ref
+  ) => {
+    const color = useColor()
+    const [focused, setIsFocused] = useState(false)
+    const unitRef = useRef(null)
+    const inputRef = useRef<TextInput>()
+
+    const variant: InputVariant = getInputVariant({
+      hasError: !!props.error,
+      editable: editable,
+    })
+
+    const hasUnit = !!unit
+
+    const animatedState = useSharedValue<InputState>(getInputState({ isFocused: !!focused, value }))
+    const space = useSpace()
+
+    const handleChangeText = (text: string) => {
+      "worklet"
+      onChangeText(text)
+    }
+
+    useImperativeHandle(ref, () => inputRef.current as InputRef)
+
+    const { width: unitWidth = 0 } = useMeasure({ ref: unitRef })
+
+    const styles = {
+      fontFamily: THEME.fonts.sans,
+      fontSize: parseInt(THEME.textVariants["sm-display"].fontSize, 10),
+      minHeight: INPUT_MIN_HEIGHT,
+      borderWidth: 1,
+    }
+
+    const labelStyles = {
+      // this is neeeded too make sure the label is on top of the input
+      backgroundColor: "white",
+      marginRight: space(0.5),
+      paddingHorizontal: space(0.5),
+      zIndex: 100,
+      fontFamily: THEME.fonts.sans,
+    }
+
+    animatedState.value = getInputState({ isFocused: !!focused, value })
+
+    const textInputAnimatedStyles = useAnimatedStyle(() => {
+      return {
+        borderColor: withTiming(INPUT_VARIANTS[variant][animatedState.value].inputBorderColor),
+        color: withTiming(INPUT_VARIANTS[variant][animatedState.value].inputTextColor),
+        paddingLeft: withTiming(hasUnit ? unitWidth + HORIZONTAL_PADDING + 5 : HORIZONTAL_PADDING),
+      }
+    })
+
+    const labelAnimatedStyles = useAnimatedStyle(() => {
+      return {
+        color: withTiming(INPUT_VARIANTS[variant][animatedState.value].labelColor),
+        top: withTiming(INPUT_VARIANTS[variant][animatedState.value].labelTop),
+        fontSize: withTiming(INPUT_VARIANTS[variant][animatedState.value].labelFontSize),
+        marginLeft: withTiming(
+          hasUnit && !focused && !value ? unitWidth + HORIZONTAL_PADDING : HORIZONTAL_PADDING
+        ),
+      }
+    })
+
+    const handleFocus = () => {
+      setIsFocused(true)
+    }
+
+    const handleBlur = () => {
+      setIsFocused(false)
+    }
+
+    const handleClear = () => {
+      // input.current?.clear()
+      handleChangeText("")
+      onClear?.()
+    }
+
+    const renderLeftComponent = () => {
+      if (unit) {
+        return (
+          <Flex
+            flexDirection="row"
+            position="absolute"
+            left={`${HORIZONTAL_PADDING}px`}
+            top={43}
+            ref={unitRef}
+            zIndex={40}
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Text color={editable ? "black60" : "black30"} variant="sm-display">
+              {unit}
+            </Text>
+          </Flex>
+        )
+      }
+
+      return null
+    }
+
+    const renderRightCompoent = () => {
+      if (loading) {
+        return (
+          <Spinner
+            size="medium"
+            style={{
+              right: HORIZONTAL_PADDING,
+              width: 15,
+              height: 4,
+              backgroundColor: color("black60"),
+              position: "absolute",
+              top: 52,
+            }}
+          />
+        )
+      }
+
+      if (enableClearButton && value) {
+        return (
+          <Flex
+            justifyContent="center"
+            position="absolute"
+            right={`${HORIZONTAL_PADDING}px`}
+            top={45}
+            ref={unitRef}
+            zIndex={45}
+          >
+            <Touchable
+              haptic="impactMedium"
+              onPress={handleClear}
+              hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
+              accessibilityLabel="Clear input button"
+            >
+              <XCircleIcon fill="black30" />
+            </Touchable>
+          </Flex>
+        )
+      }
+      return null
+    }
+
+    return (
+      <Flex>
+        {!!props.onHintPress && (
+          <Touchable onPress={props.onHintPress} haptic="impactLight">
+            <Text underline variant="xs" color="black60" textAlign="right" mb={0.5}>
+              {hintText}
+            </Text>
+          </Touchable>
+        )}
+
+        {!!props.label && (
+          <Flex flexDirection="row" zIndex={100} pointerEvents="none">
+            <AnimatedText style={[labelStyles, labelAnimatedStyles]} numberOfLines={1}>
+              {props.label}
+            </AnimatedText>
+          </Flex>
+        )}
+
+        {renderLeftComponent()}
+
+        {renderRightCompoent()}
+
+        <AnimatedStyledInput
+          value={value}
+          onChangeText={handleChangeText}
+          style={[styles, textInputAnimatedStyles]}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          editable={editable}
+          ref={inputRef as RefObject<TextInput>}
+          {...props}
+        />
+
+        {/* If an input has an error, we don't need to show "Required" because it's already pointed out */}
+        {!!props.required && !props.error && (
+          <Text color="black60" variant="xs" px={`${HORIZONTAL_PADDING}px`} mt={0.5}>
+            * Required
+          </Text>
+        )}
+
+        {!!props.error && (
+          <Text color="red100" variant="xs" px={`${HORIZONTAL_PADDING}px`} mt={0.5}>
+            {props.error}
+          </Text>
+        )}
+      </Flex>
+    )
+  }
+)
 
 const StyledInput = styled(TextInput)`
   padding: ${HORIZONTAL_PADDING}px;

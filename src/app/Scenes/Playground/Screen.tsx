@@ -6,7 +6,7 @@ import { useState } from "react"
 import { Alert, ScrollView } from "react-native"
 
 export const Screen: React.FC<{}> = () => {
-  const [value1, setValue1] = useState("")
+  const [value1, setValue1] = useState("test")
   const [value2, setValue2] = useState("")
   const [value3, setValue3] = useState("a value")
   const [value4, setValue4] = useState("value 4")
@@ -46,7 +46,7 @@ export const Screen: React.FC<{}> = () => {
       <Text variant="sm-display" mb={2}>
         Default Input with no error
       </Text>
-      <Input value={value1} onChangeText={setValue1} label="Label" />
+      <Input value={value1} onChangeText={setValue1} label="Label" enableClearButton />
       <Separator my={2} />
       <Text variant="sm-display" mb={2}>
         Default Input with short label
