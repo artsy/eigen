@@ -461,6 +461,7 @@ function getNativeModules(): OurNativeModules {
       gitCommitShortHash: "de4dc0de",
       isBetaOrDev: true,
       updateAuthState: jest.fn(),
+      getPushToken: jest.fn(),
       clearUserData: jest.fn(),
       clearCache: jest.fn(),
     },
@@ -530,6 +531,7 @@ jest.mock("app/NativeModules/LegacyNativeModules", () => ({
       isBetaOrDev: true,
       updateAuthState: jest.fn(),
       clearUserData: jest.fn(),
+      getPushToken: jest.fn(),
     },
   },
 }))
