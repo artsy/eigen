@@ -1,3 +1,5 @@
 This update includes a number of improvements and bug fixes.
 
+- Improved image loaders across the app
+
 Have feedback? Email us at support@artsy.net
