@@ -238,6 +238,7 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
 
     goBack()
   }
+
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({
