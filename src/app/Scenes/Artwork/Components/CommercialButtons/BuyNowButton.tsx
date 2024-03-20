@@ -2,6 +2,7 @@ import { ActionType, ContextModule, OwnerType, TappedBuyNow } from "@artsy/cohes
 import { ButtonProps, Button } from "@artsy/palette-mobile"
 import { BuyNowButtonOrderMutation } from "__generated__/BuyNowButtonOrderMutation.graphql"
 import { BuyNowButton_artwork$key } from "__generated__/BuyNowButton_artwork.graphql"
+import { PartnerOffer } from "app/Scenes/Activity/components/NotificationArtworkList"
 import { navigate } from "app/system/navigation/navigate"
 import { promptForReview } from "app/utils/promptForReview"
 import { useSetWebViewCallback } from "app/utils/useWebViewEvent"
@@ -12,6 +13,7 @@ import { useTracking } from "react-tracking"
 
 export interface BuyNowButtonProps {
   artwork: BuyNowButton_artwork$key
+  partnerOffer?: PartnerOffer
   variant?: ButtonProps["variant"]
   // EditionSetID is passed down from the edition selected by the user
   editionSetID: string | null
@@ -21,6 +23,7 @@ export interface BuyNowButtonProps {
 
 export const BuyNowButton = ({
   artwork,
+  partnerOffer,
   variant,
   editionSetID,
   renderSaleMessage,
@@ -45,6 +48,11 @@ export const BuyNowButton = ({
 
   const handleCreateOrder = () => {
     trackEvent(tracks.tappedBuyNow(slug, internalID))
+
+    if (partnerOffer?.targetHref) {
+      navigate(partnerOffer.targetHref)
+      return
+    }
 
     if (isCommittingCreateOrderMutation) {
       return
