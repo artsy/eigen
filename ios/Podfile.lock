@@ -1008,7 +1008,6 @@ DEPENDENCIES:
   - RNSVG (from `../node_modules/react-native-svg`)
   - SDWebImage (= 5.11.1)
   - Segment-Appboy
-  - Sentry/HybridSDK (= 8.21.0)
   - sift-react-native (from `../node_modules/sift-react-native`)
   - Specta
   - Starscream (= 3.0.4)
@@ -1314,7 +1313,7 @@ SPEC CHECKSUMS:
   appcenter-core: e192ea8b373bebd3e44998882b43311078bd7dda
   AppCenterReactNativeShared: 01df23849b1c3c6eb8c4049f54322635650e98f0
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
-  boost: 57d2868c099736d80fcd648bf211b4431e51a558
+  boost: 7dcd2de282d72e344012f7d6564d024930a6a440
   BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
@@ -1475,6 +1474,6 @@ SPEC CHECKSUMS:
   Yoga: d0003f849d2b5224c072cef6568b540d8bb15cd3
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: e42822d5e56597d2afb456426ae5a0fd78a12642
+PODFILE CHECKSUM: 448dc621b71b4088fda9bd3613dfb47474331576
 
 COCOAPODS: 1.14.3
