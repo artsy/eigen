@@ -4,7 +4,7 @@ interface ArtworkCategoryPickerProps<T> {
   handleChange: (v: T) => void
   options: Array<SelectOption<T>>
   required?: boolean
-  value: T
+  value: T | undefined | null
 }
 
 export const CategoryPicker = <ValueType,>({

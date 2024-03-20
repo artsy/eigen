@@ -18,7 +18,9 @@ interface InputProps extends TextInputProps {
   unit?: string | undefined | null
 }
 
-const HORIZONTAL_PADDING = 15
+export const HORIZONTAL_PADDING = 15
+export const INPUT_BORDER_RADIUS = 4
+export const INPUT_MIN_HEIGHT = 56
 
 export const Input: React.FC<InputProps> = ({
   value,
@@ -51,7 +53,7 @@ export const Input: React.FC<InputProps> = ({
   const styles = {
     fontFamily: THEME.fonts.sans,
     fontSize: parseInt(THEME.textVariants["sm-display"].fontSize, 10),
-    minHeight: 56,
+    minHeight: INPUT_MIN_HEIGHT,
     borderWidth: 1,
   }
 
@@ -68,17 +70,17 @@ export const Input: React.FC<InputProps> = ({
 
   const textInputAnimatedStyles = useAnimatedStyle(() => {
     return {
-      borderColor: withTiming(VARIANTS[variant][animatedState.value].inputBorderColor),
-      color: withTiming(VARIANTS[variant][animatedState.value].inputTextColor),
+      borderColor: withTiming(INPUT_VARIANTS[variant][animatedState.value].inputBorderColor),
+      color: withTiming(INPUT_VARIANTS[variant][animatedState.value].inputTextColor),
       paddingLeft: withTiming(hasUnit ? unitWidth + HORIZONTAL_PADDING + 5 : HORIZONTAL_PADDING),
     }
   })
 
   const labelAnimatedStyles = useAnimatedStyle(() => {
     return {
-      color: withTiming(VARIANTS[variant][animatedState.value].labelColor),
-      top: withTiming(VARIANTS[variant][animatedState.value].labelTop),
-      fontSize: withTiming(VARIANTS[variant][animatedState.value].labelFontSize),
+      color: withTiming(INPUT_VARIANTS[variant][animatedState.value].labelColor),
+      top: withTiming(INPUT_VARIANTS[variant][animatedState.value].labelTop),
+      fontSize: withTiming(INPUT_VARIANTS[variant][animatedState.value].labelFontSize),
       marginLeft: withTiming(
         hasUnit && !focused && !value ? unitWidth + HORIZONTAL_PADDING : HORIZONTAL_PADDING
       ),
@@ -164,7 +166,7 @@ export const Input: React.FC<InputProps> = ({
 const StyledInput = styled(TextInput)`
   padding: ${HORIZONTAL_PADDING}px;
   font-family: ${themeGet("fonts.sans.regular")};
-  border-radius: 4px;
+  border-radius: ${INPUT_BORDER_RADIUS}px;
 `
 
 const AnimatedStyledInput = Animated.createAnimatedComponent(StyledInput)
@@ -279,16 +281,16 @@ const DISABLED_VARIANT_STATES: VariantState = {
   },
 }
 
-const VARIANTS = {
+export const INPUT_VARIANTS = {
   default: DEFAULT_VARIANT_STATES,
   error: ERROR_VARIANT_STATES,
   disabled: DISABLED_VARIANT_STATES,
 }
 
-type InputState = keyof typeof DEFAULT_VARIANT_STATES
-type InputVariant = keyof typeof VARIANTS
+export type InputState = keyof typeof DEFAULT_VARIANT_STATES
+export type InputVariant = keyof typeof INPUT_VARIANTS
 
-const getInputState = ({
+export const getInputState = ({
   isFocused,
   value,
 }: {
@@ -304,7 +306,13 @@ const getInputState = ({
   }
 }
 
-const getInputVariant = ({ editable, hasError }: { editable: boolean; hasError: boolean }) => {
+export const getInputVariant = ({
+  editable,
+  hasError,
+}: {
+  editable: boolean
+  hasError: boolean
+}) => {
   if (hasError) {
     return "error"
   }

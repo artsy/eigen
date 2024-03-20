@@ -254,6 +254,11 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableAlertBottomSheet",
   },
+  AREnableNewInputComponent: {
+    description: "Enable new input component",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
