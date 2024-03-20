@@ -7,7 +7,6 @@ import {
   Screen,
   useScreenDimensions,
 } from "@artsy/palette-mobile"
-import { useActionSheet } from "@expo/react-native-action-sheet"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps } from "@react-navigation/stack"
 import { captureMessage } from "@sentry/react-native"
@@ -26,9 +25,7 @@ import { goBack } from "app/system/navigation/navigate"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { isEqual } from "lodash"
 import React, { useRef, useState } from "react"
-import { ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
 import { ArtworkDetails } from "./ArtworkDetails/ArtworkDetails"
 import { createOrUpdateSubmission } from "./ArtworkDetails/utils/createOrUpdateSubmission"
@@ -67,13 +64,10 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
   stepsInOrder,
 }) => {
   const { trackEvent } = useTracking()
-  const { showActionSheetWithOptions } = useActionSheet()
   const { safeAreaInsets } = useScreenDimensions()
-  const {
-    submissionId: submissionID,
-    artworkDetails,
-    dirtyArtworkDetailsValues,
-  } = GlobalStore.useAppState((store) => store.artworkSubmission.submission)
+  const { submissionId: submissionID, artworkDetails } = GlobalStore.useAppState(
+    (store) => store.artworkSubmission.submission
+  )
 
   const { userID, userEmail } = GlobalStore.useAppState((state) => state.auth)
 
@@ -186,15 +180,11 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
   })
 
   const stepsRefs = useRef<CollapsibleMenuItem[]>(new Array(items.length).fill(null)).current
-  const scrollViewRef = useRef<ScrollView>(null)
 
   const expandCollapsibleMenuContent = (indexToExpand: number) => {
     const indexToCollapse = stepsRefs.findIndex((ref) => ref.isExpanded())
 
-    const scrollToStep = () =>
-      stepsRefs[indexToExpand].offsetTop().then((offset) => {
-        scrollViewRef.current?.scrollTo({ y: offset - 20 || 0 })
-      })
+    const scrollToStep = () => stepsRefs[indexToExpand].offsetTop()
 
     if (indexToCollapse >= 0) {
       stepsRefs[indexToCollapse].collapse(() => {
@@ -211,46 +201,13 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
     }
   }
 
-  const handleBackPress = async () => {
-    const isFormDirty = !isEqual(artworkDetailsFromValuesRef.current, dirtyArtworkDetailsValues)
-
-    /*
-    action sheet is displayed only on 1st screen (Artwork Details)
-    since form data is saved on the server and a draft submission is created  after the first step
-    */
-    if (activeStep === 0 && isFormDirty) {
-      const leaveSubmission = await new Promise((resolve) =>
-        showActionSheetWithOptions(
-          {
-            title: "Do you want to discard your changes?",
-            options: ["Discard", "Keep editing"],
-            destructiveButtonIndex: 0,
-            cancelButtonIndex: 1,
-            useModal: true,
-          },
-          (buttonIndex) => {
-            if (buttonIndex === 0) {
-              resolve(true)
-            }
-          }
-        )
-      )
-
-      if (!leaveSubmission) {
-        return
-      }
-    }
-
-    goBack()
-  }
-
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({
         context_screen_owner_type: OwnerType.consignmentFlow,
       })}
     >
-      <Screen.Header onBack={handleBackPress} />
+      <Screen.Header onBack={() => goBack()} />
       <Screen.Body pb={`${safeAreaInsets.bottom}px`}>
         <Screen.ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
           <Join separator={<Separator mt={4} mb={2} />}>
