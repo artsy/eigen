@@ -5,7 +5,7 @@ import { Alert, ScrollView } from "react-native"
 
 export const Screen: React.FC<{}> = () => {
   const [value1, setValue1] = useState("")
-  const [value2, setValue2] = useState("test")
+  const [value2, setValue2] = useState("")
   const [value3, setValue3] = useState("a value")
   const [value4, setValue4] = useState("value 4")
 
@@ -27,7 +27,7 @@ export const Screen: React.FC<{}> = () => {
         Default Input with short label
       </Text>
 
-      <Input value={value2} onChangeText={setValue2} label="Label" editable={false} />
+      <Input value={value2} onChangeText={setValue2} label="Label" unit="USD" />
 
       <Separator my={2} />
 

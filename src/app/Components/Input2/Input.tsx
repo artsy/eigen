@@ -1,7 +1,8 @@
 import { Flex, Text, Touchable, useSpace } from "@artsy/palette-mobile"
 import { THEME } from "@artsy/palette-tokens"
 import themeGet from "@styled-system/theme-get"
-import { useState } from "react"
+import { useMeasure } from "app/utils/hooks/useMeasure"
+import { useRef, useState } from "react"
 import { TextInput, TextInputProps } from "react-native"
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
 import styled from "styled-components"
@@ -14,20 +15,28 @@ interface InputProps extends TextInputProps {
   hintText?: string
   label?: string
   error?: string
+  unit?: string | undefined | null
 }
+
+const HORIZONTAL_PADDING = 15
 
 export const Input: React.FC<InputProps> = ({
   value,
   onChangeText,
   hintText = "What's this?",
   editable = true,
+  unit,
   ...props
 }) => {
   const [focused, setIsFocused] = useState(false)
+  const unitRef = useRef(null)
+
   const variant: InputVariant = getInputVariant({
     hasError: !!props.error,
     editable: editable,
   })
+
+  const hasUnit = !!unit
 
   const animatedState = useSharedValue<InputState>(getInputState({ isFocused: !!focused, value }))
   const space = useSpace()
@@ -37,12 +46,11 @@ export const Input: React.FC<InputProps> = ({
     onChangeText(text)
   }
 
+  const { width: unitWidth = 0 } = useMeasure({ ref: unitRef })
+
   const styles = {
     fontFamily: THEME.fonts.sans,
-    // TODO: This should be THEME.textVariants["sm-display"].fontSize
-    // But this doesn't match the design which shows 16px
-    fontSize: 16,
-    lineHeight: 20,
+    fontSize: parseInt(THEME.textVariants["sm-display"].fontSize, 10),
     minHeight: 56,
     borderWidth: 1,
   }
@@ -50,7 +58,6 @@ export const Input: React.FC<InputProps> = ({
   const labelStyles = {
     // this is neeeded too make sure the label is on top of the input
     backgroundColor: "white",
-    marginLeft: 15,
     marginRight: space(0.5),
     paddingHorizontal: space(0.5),
     zIndex: 100,
@@ -63,6 +70,7 @@ export const Input: React.FC<InputProps> = ({
     return {
       borderColor: withTiming(VARIANTS[variant][animatedState.value].inputBorderColor),
       color: withTiming(VARIANTS[variant][animatedState.value].inputTextColor),
+      paddingLeft: withTiming(hasUnit ? unitWidth + HORIZONTAL_PADDING + 5 : HORIZONTAL_PADDING),
     }
   })
 
@@ -71,6 +79,9 @@ export const Input: React.FC<InputProps> = ({
       color: withTiming(VARIANTS[variant][animatedState.value].labelColor),
       top: withTiming(VARIANTS[variant][animatedState.value].labelTop),
       fontSize: withTiming(VARIANTS[variant][animatedState.value].labelFontSize),
+      marginLeft: withTiming(
+        hasUnit && !focused && !value ? unitWidth + HORIZONTAL_PADDING : HORIZONTAL_PADDING
+      ),
     }
   })
 
@@ -82,8 +93,30 @@ export const Input: React.FC<InputProps> = ({
     setIsFocused(false)
   }
 
+  const renderLeftComponent = () => {
+    if (unit) {
+      return (
+        <Flex
+          flexDirection="row"
+          position="absolute"
+          left={`${HORIZONTAL_PADDING}px`}
+          top={43}
+          ref={unitRef}
+          zIndex={40}
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Text color={editable ? "black60" : "black30"} variant="sm-display">
+            {unit}
+          </Text>
+        </Flex>
+      )
+    }
+
+    return null
+  }
   return (
-    <>
+    <Flex>
       {!!props.onHintPress && (
         <Touchable onPress={props.onHintPress} haptic="impactLight">
           <Text underline variant="xs" color="black60" textAlign="right" mb={0.5}>
@@ -100,6 +133,8 @@ export const Input: React.FC<InputProps> = ({
         </Flex>
       )}
 
+      {renderLeftComponent()}
+
       <AnimatedStyledInput
         value={value}
         onChangeText={handleChangeText}
@@ -112,22 +147,22 @@ export const Input: React.FC<InputProps> = ({
 
       {/* If an input has an error, we don't need to show "Required" because it's already pointed out */}
       {!!props.required && !props.error && (
-        <Text color="black60" variant="xs" paddingX="15px" mt={0.5}>
+        <Text color="black60" variant="xs" px={`${HORIZONTAL_PADDING}px`} mt={0.5}>
           * Required
         </Text>
       )}
 
       {!!props.error && (
-        <Text color="red100" variant="xs" paddingX="15px" mt={0.5}>
+        <Text color="red100" variant="xs" px={`${HORIZONTAL_PADDING}px`} mt={0.5}>
           {props.error}
         </Text>
       )}
-    </>
+    </Flex>
   )
 }
 
 const StyledInput = styled(TextInput)`
-  padding: 15px;
+  padding: ${HORIZONTAL_PADDING}px;
   font-family: ${themeGet("fonts.sans.regular")};
   border-radius: 4px;
 `
@@ -136,7 +171,7 @@ const AnimatedStyledInput = Animated.createAnimatedComponent(StyledInput)
 const AnimatedText = Animated.createAnimatedComponent(Text)
 
 const SHRINKED_LABEL_TOP = 13
-const EXPANDED_LABEL_TOP = 40
+const EXPANDED_LABEL_TOP = 41
 
 type VariantState = {
   untouched: {
