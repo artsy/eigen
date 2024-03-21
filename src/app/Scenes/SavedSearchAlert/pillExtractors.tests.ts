@@ -58,7 +58,9 @@ describe("extractPillFromAggregation", () => {
 
 describe("extractSizeLabel", () => {
   it("returns correcly label when full range is specified", () => {
-    expect(extractSizeLabel({ prefix: "w", value: "5-10", unit: "in" })).toBe("w: 5-10 in")
+    expect(extractSizeLabel({ prefix: "w", value: "5-10", unit: "in" })).toBe(
+      "w: 5-10 inFoooooooooooo"
+    )
     expect(extractSizeLabel({ prefix: "w", value: "5-10", unit: "cm" })).toBe("w: 12.7-25.4 cm")
   })
 
