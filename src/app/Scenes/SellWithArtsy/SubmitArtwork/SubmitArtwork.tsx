@@ -6,6 +6,7 @@ import {
   Join,
   Screen,
   useScreenDimensions,
+  Box,
 } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { NavigationContainer } from "@react-navigation/native"
@@ -23,11 +24,13 @@ import {
 } from "app/Scenes/SellWithArtsy/utils/TrackingEvent"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
+import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { isEqual } from "lodash"
 import React, { useRef, useState } from "react"
+import { ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
 import { ArtworkDetails } from "./ArtworkDetails/ArtworkDetails"
 import { createOrUpdateSubmission } from "./ArtworkDetails/utils/createOrUpdateSubmission"
@@ -185,11 +188,15 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
   })
 
   const stepsRefs = useRef<CollapsibleMenuItem[]>(new Array(items.length).fill(null)).current
+  const scrollViewRef = useRef<ScrollView>(null)
 
   const expandCollapsibleMenuContent = (indexToExpand: number) => {
     const indexToCollapse = stepsRefs.findIndex((ref) => ref.isExpanded())
 
-    const scrollToStep = () => stepsRefs[indexToExpand].offsetTop()
+    const scrollToStep = () =>
+      stepsRefs[indexToExpand].offsetTop().then((offset) => {
+        scrollViewRef.current?.scrollTo({ y: offset - 110 || 0 })
+      })
 
     if (indexToCollapse >= 0) {
       stepsRefs[indexToCollapse].collapse(() => {
@@ -246,35 +253,41 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
       })}
     >
       <Screen.Header onBack={handleBackPress} />
-      <Screen.Body pb={`${safeAreaInsets.bottom}px`}>
-        <Screen.ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
-          <Join separator={<Separator mt={4} mb={2} />}>
-            {items.map(({ overtitle, title, Content, contextModule }, index) => (
-              <CollapsibleMenuItem
-                key={index}
-                overtitle={overtitle}
-                title={title}
-                onExpand={() => {
-                  trackEvent(toggledAccordionEvent(submissionID, contextModule, title, true))
-                  expandCollapsibleMenuContent(index)
-                }}
-                onCollapse={() => {
-                  trackEvent(toggledAccordionEvent(submissionID, contextModule, title, false))
-                }}
-                isExpanded={index === 0}
-                disabled={activeStep !== index}
-                ref={(ref) => {
-                  if (ref) {
-                    stepsRefs[index] = ref
-                  }
-                }}
-              >
-                {Content}
-              </CollapsibleMenuItem>
-            ))}
-          </Join>
-        </Screen.ScrollView>
-      </Screen.Body>
+      <ArtsyKeyboardAvoidingView>
+        <ScrollView
+          ref={scrollViewRef}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+        >
+          <Box px={2} pb={`${safeAreaInsets.bottom}px`}>
+            <Join separator={<Separator mt={4} mb={2} />}>
+              {items.map(({ overtitle, title, Content, contextModule }, index) => (
+                <CollapsibleMenuItem
+                  key={index}
+                  overtitle={overtitle}
+                  title={title}
+                  onExpand={() => {
+                    trackEvent(toggledAccordionEvent(submissionID, contextModule, title, true))
+                    expandCollapsibleMenuContent(index)
+                  }}
+                  onCollapse={() => {
+                    trackEvent(toggledAccordionEvent(submissionID, contextModule, title, false))
+                  }}
+                  isExpanded={index === 0}
+                  disabled={activeStep !== index}
+                  ref={(ref) => {
+                    if (ref) {
+                      stepsRefs[index] = ref
+                    }
+                  }}
+                >
+                  {Content}
+                </CollapsibleMenuItem>
+              ))}
+            </Join>
+          </Box>
+        </ScrollView>
+      </ArtsyKeyboardAvoidingView>
       <FancyModal visible={hasError} onBackgroundPressed={() => setHasError(false)}>
         <FancyModalHeader onRightButtonPress={() => setHasError(false)} rightCloseButton>
           <Text variant="md">Error</Text>
