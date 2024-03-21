@@ -2,6 +2,7 @@ import { Flex, Separator, Text } from "@artsy/palette-mobile"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { ArtworkListShareability } from "app/Scenes/ArtworkList/ArtworkListShareability"
 import { ArtworkListTitle } from "app/Scenes/ArtworkList/ArtworkListTitle"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { FC } from "react"
 
 interface ArtworkListArtworksGridHeaderProps {
@@ -17,10 +18,14 @@ export const ArtworkListArtworksGridHeader: FC<ArtworkListArtworksGridHeaderProp
   shareableWithPartners,
   onSortButtonPress,
 }) => {
+  const isArtworkListOfferabilityEnabled = useFeatureFlag("AREnableArtworkListOfferability")
+
   return (
     <Flex>
       <ArtworkListTitle title={title} />
-      <ArtworkListShareability shareableWithPartners={shareableWithPartners} />
+      {!!isArtworkListOfferabilityEnabled && (
+        <ArtworkListShareability shareableWithPartners={shareableWithPartners} />
+      )}
       <Separator borderColor="black10" mt={1} />
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
         <Text ml={2} variant="xs" color="black60">

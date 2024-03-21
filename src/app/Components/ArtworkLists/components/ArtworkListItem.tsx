@@ -3,9 +3,10 @@ import { ArtworkListItem_item$key } from "__generated__/ArtworkListItem_item.gra
 import { ArtworkListImagePreview } from "app/Components/ArtworkLists/components/ArtworkListImagePreview"
 import { ArtworkListItemSelectedIcon } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/components/ArtworkListItemSelectedIcon"
 import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { FC, memo } from "react"
 import { TouchableOpacity } from "react-native"
-import { useFragment, graphql } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 
 export interface PressedArtworkListItem {
   internalID: string
@@ -24,10 +25,14 @@ interface ArtworkListItemProps {
 const Item: FC<ArtworkListItemProps> = (props) => {
   const artworkList = useFragment(ArtworkListItemFragment, props.item)
   const nodes = extractNodes(artworkList.artworksConnection)
+  const isArtworkListOfferabilityEnabled = useFeatureFlag("AREnableArtworkListOfferability")
   const imageURL = nodes[0]?.image?.resized?.url ?? null
 
   const selectionList = artworkList.isSavedArtwork !== undefined
-  const privacyList = artworkList.shareableWithPartners !== undefined && !selectionList
+  const privacyList =
+    artworkList.shareableWithPartners !== undefined &&
+    !selectionList &&
+    !!isArtworkListOfferabilityEnabled
 
   const getArtworksCountText = () => {
     if (artworkList.artworksCount === 1) {
@@ -70,7 +75,9 @@ const Item: FC<ArtworkListItemProps> = (props) => {
                 </Text>
               </Flex>
 
-              {!artworkList.shareableWithPartners && <LockIcon ml={0.5} fill="black100" />}
+              {!artworkList.shareableWithPartners && !!isArtworkListOfferabilityEnabled && (
+                <LockIcon ml={0.5} fill="black100" />
+              )}
             </Flex>
             <Text variant="xs" color="black60">
               {getArtworksCountText()}

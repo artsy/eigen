@@ -12,11 +12,13 @@ import {
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { ProgressiveOnboardingSignalInterest } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSignalInterest"
 import { navigate } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 
 const PARTNER_OFFER_HELP_ARTICLE_URL = "https://support.artsy.net/s/article/Offers-on-saved-works"
 
 export const SavesTabHeader = () => {
   const { dispatch } = useArtworkListsContext()
+  const isArtworkListOfferabilityEnabled = useFeatureFlag("AREnableArtworkListOfferability")
 
   const handleCreateList = () => {
     dispatch({
@@ -60,15 +62,19 @@ export const SavesTabHeader = () => {
           Create New List
         </Button>
 
-        <Button haptic variant="text" size="small" onPress={handleEditListPrivacy}>
-          Edit List Privacy
-        </Button>
+        {!!isArtworkListOfferabilityEnabled && (
+          <Button haptic variant="text" size="small" onPress={handleEditListPrivacy}>
+            Edit List Privacy
+          </Button>
+        )}
       </Flex>
     </Box>
   )
 }
 
 export const SavesTabHeaderPlaceholder = () => {
+  const isArtworkListOfferabilityEnabled = useFeatureFlag("AREnableArtworkListOfferability")
+
   return (
     <Skeleton>
       <SkeletonText variant="xs">
@@ -77,8 +83,11 @@ export const SavesTabHeaderPlaceholder = () => {
       <SkeletonText variant="xs" mt={0.5}>
         your interest to galleries
       </SkeletonText>
+      <Flex flexDirection="row" justifyContent="space-between">
+        <SkeletonBox my={2} height={30} width="45%" />
 
-      <SkeletonBox my={2} height={30} width="45%" />
+        {!!isArtworkListOfferabilityEnabled && <SkeletonBox my={2} height={30} width="45%" />}
+      </Flex>
     </Skeleton>
   )
 }

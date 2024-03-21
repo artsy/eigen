@@ -12,6 +12,7 @@ import { StackedImageLayout } from "app/Scenes/ArtworkLists/StackedImageLayout"
 import { useArtworkListsColCount } from "app/Scenes/ArtworkLists/useArtworkListsColCount"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { FC } from "react"
 import { graphql, useFragment } from "react-relay"
 
@@ -30,6 +31,7 @@ export const ArtworkListItem: FC<ArtworkListItemProps> = ({ artworkList, imagesL
   const allOffsets = offset * (numColumns + 1)
   const containerWidth = screen.width - allOffsets
   const itemWidth = containerWidth / numColumns
+  const isArtworkListOfferabilityEnabled = useFeatureFlag("AREnableArtworkListOfferability")
 
   const item = useFragment(artworkListItemFragment, artworkList)
   const artworkNodes = extractNodes(item.artworksConnection)
@@ -58,7 +60,9 @@ export const ArtworkListItem: FC<ArtworkListItemProps> = ({ artworkList, imagesL
               </Text>
             </Flex>
 
-            {!item.shareableWithPartners && <LockIcon ml={0.5} fill="black100" />}
+            {!item.shareableWithPartners && !!isArtworkListOfferabilityEnabled && (
+              <LockIcon ml={0.5} fill="black100" />
+            )}
           </Flex>
           <Text variant="xs" color="black60" numberOfLines={1}>
             {item.artworksCount} {item.artworksCount === 1 ? "Artwork" : "Artworks"}

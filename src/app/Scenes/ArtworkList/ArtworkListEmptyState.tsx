@@ -4,6 +4,7 @@ import { ArtworkListHeader } from "app/Scenes/ArtworkList/ArtworkListHeader"
 import { ArtworkListShareability } from "app/Scenes/ArtworkList/ArtworkListShareability"
 import { ArtworkListTitle } from "app/Scenes/ArtworkList/ArtworkListTitle"
 import { navigate } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ScrollView } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
@@ -14,6 +15,7 @@ interface ArtworkListEmptyStateProps {
 
 export const ArtworkListEmptyState = ({ me, refreshControl }: ArtworkListEmptyStateProps) => {
   const data = useFragment(artworkListEmptyStateFragment, me)
+  const isArtworkListOfferabilityEnabled = useFeatureFlag("AREnableArtworkListOfferability")
 
   const artworkList = data?.artworkList
   const isDefaultArtworkList = artworkList?.default ?? false
@@ -26,9 +28,11 @@ export const ArtworkListEmptyState = ({ me, refreshControl }: ArtworkListEmptySt
       <ScrollView style={{ flex: 1 }} refreshControl={refreshControl}>
         <ArtworkListTitle title={artworkList?.name ?? ""} />
 
-        <ArtworkListShareability
-          shareableWithPartners={artworkList?.shareableWithPartners ?? false}
-        />
+        {!!isArtworkListOfferabilityEnabled && (
+          <ArtworkListShareability
+            shareableWithPartners={artworkList?.shareableWithPartners ?? false}
+          />
+        )}
 
         <Separator borderColor="black10" mt={1} />
 
