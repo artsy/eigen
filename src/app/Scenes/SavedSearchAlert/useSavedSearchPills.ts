@@ -26,9 +26,7 @@ export const useSavedSearchPills = () => {
   } = attributes as { [key: string]: any }
 
   useEffect(() => {
-    console.log("[Debug] Pre fetchPreview cleanAttributes", cleanAttributes)
     fetchPreview(cleanAttributes).then((data) => {
-      console.log("[Debug] data", data)
       if (data?.viewer?.previewSavedSearch?.labels) {
         setPreview(data.viewer.previewSavedSearch.labels)
       }
