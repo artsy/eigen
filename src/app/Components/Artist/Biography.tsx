@@ -22,6 +22,7 @@ export const Biography: React.FC<BiographyProps> = ({ artist }) => {
   }
 
   const text = data.biographyBlurb.text
+
   const truncatedText = text.slice(0, MAX_CHARS)
   const canExpand = text.length > MAX_CHARS
 

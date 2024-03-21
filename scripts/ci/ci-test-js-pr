@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# set -exo pipefail
 
 UPDATED_GLOBAL_FILES=$(git diff --name-only origin/main...$CIRCLE_SHA1 | grep -E '^.+\.(ts|tsx)$' | grep -v '^src/app/Scenes/' | grep -v '^src/__generated__/')
 
@@ -9,7 +8,8 @@ UPDATED_FILES=$(git diff --name-only origin/main...$CIRCLE_SHA1 | grep -E '^.+\.
 JEST_OPTIONS="--ci --forceExit --logHeapUsage --runInBand --reporters=default --reporters=jest-junit --shard=$(expr $CIRCLE_NODE_INDEX + 1)/$CIRCLE_NODE_TOTAL"
 
 
-# Run all tests if any global files are updated
+# Run all tests if any global files are updated because they could affect any test.
+# If only scene files are updated, run tests only for those scenes and specific files.
 if [ -z "$UPDATED_GLOBAL_FILES" ]
 then
     yarn jest $UPDATED_SCENES $UPDATED_FILES $JEST_OPTIONS
