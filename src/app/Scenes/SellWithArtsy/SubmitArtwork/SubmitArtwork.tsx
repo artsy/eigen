@@ -71,6 +71,7 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
   const { trackEvent } = useTracking()
   const { showActionSheetWithOptions } = useActionSheet()
   const { safeAreaInsets } = useScreenDimensions()
+
   const {
     submissionId: submissionID,
     artworkDetails,
@@ -259,7 +260,7 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
         >
-          <Box px={2} pb={`${safeAreaInsets.bottom}px`}>
+          <Box px={2} mb={`${safeAreaInsets.bottom}px`}>
             <Join separator={<Separator mt={4} mb={2} />}>
               {items.map(({ overtitle, title, Content, contextModule }, index) => (
                 <CollapsibleMenuItem
