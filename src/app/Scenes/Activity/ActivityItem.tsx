@@ -9,7 +9,6 @@ import {
 import { PartnerOfferBadge } from "app/Scenes/Activity/components/PartnerOffeBadge"
 import { useMarkNotificationAsRead } from "app/Scenes/Activity/mutations/useMarkNotificationAsRead"
 import { navigateToActivityItem } from "app/Scenes/Activity/utils/navigateToActivityItem"
-import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { memo } from "react"
@@ -51,11 +50,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = memo(
         markAsRead(item)
       }
 
-      if (enableNavigateToASingleNotification) {
-        navigate(`/notification/${item.internalID}`)
-      } else {
-        navigateToActivityItem(item, enableNavigateToASingleNotification)
-      }
+      navigateToActivityItem(item, enableNavigateToASingleNotification)
     }
 
     const showAsRow = enableNewActivityPanelManagement && isPartnerOffer
