@@ -66,6 +66,15 @@ const defaultParams: CreateSavedSearchAlertParams = {
   onClosePress: jest.fn(),
 }
 
+jest.mock("app/Scenes/SavedSearchAlert/useSavedSearchPills", () => {
+  return {
+    useSavedSearchPills: () => [
+      { label: "Open Edition", paramName: "attributionClass", value: "open-edition" },
+      { label: "Bid", paramName: "atAuction", value: "bid" },
+    ],
+  }
+})
+
 describe("CreateSavedSearchAlert", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const notificationPermissions = mockFetchNotificationPermissions(false)
