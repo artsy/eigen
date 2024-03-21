@@ -248,8 +248,9 @@ jobs:
       - install-node-modules
       - run-relay-compiler
       - run:
-          command: yarn jest $(git diff --name-only HEAD main | xargs -n 1 basename | grep -E '^.+\.(ts|tsx)$') $(git diff --name-only HEAD main | grep -E '^.+\.(ts|tsx)$' | sed -n 's#^src/app/Scenes/\([^/]*\)/.*#src/app/Scenes/\1#p' | uniq) --ci --forceExit --logHeapUsage --runInBand --reporters=default --reporters=jest-junit --shard=$(expr $CIRCLE_NODE_INDEX + 1)/$CIRCLE_NODE_TOTAL
-          name: Run Jest For Updated Files and Scenes
+          name: Run Jest For Updated Files and Scenes Only
+          command: ./scripts/ci/ci-test-js-pr
+          no_output_timeout: 3600s
           environment:
             JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
             JEST_JUNIT_UNIQUE_OUTPUT_NAME: true

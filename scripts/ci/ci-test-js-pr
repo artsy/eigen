@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -exo pipefail
+
+UPDATED_GLOBAL_FILES=$(git diff --name-only origin/main...$CIRCLE_SHA1 | grep -E '^.+\.(ts|tsx)$' | grep -v '^src/app/Scenes/' | grep -v '^src/__generated__/')
+
+UPDATED_SCENES=$(git diff --name-only origin/main...$CIRCLE_SHA1 | grep -E '^.+\.(ts|tsx)$' | sed -n 's#^src/app/Scenes/\([^/]*\)/.*#src/app/Scenes/\1#p' | uniq)
+UPDATED_FILES=$(git diff --name-only origin/main...$CIRCLE_SHA1 | grep -E '^.+\.(ts|tsx)$' | xargs -n 1 basename)
+
+JEST_OPTIONS="--ci --forceExit --logHeapUsage --runInBand --reporters=default --reporters=jest-junit --shard=$(expr $CIRCLE_NODE_INDEX + 1)/$CIRCLE_NODE_TOTAL"
+
+# Run all tests if any global files are updated
+if [ -n "$UPDATED_GLOBAL_FILES" ]
+then
+    yarn jest $JEST_OPTIONS
+else
+    yarn jest $UPDATED_SCENES $UPDATED_FILES $JEST_OPTIONS
+fi
