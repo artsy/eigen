@@ -3,4 +3,4 @@ appId: ${MAESTRO_APP_ID}
 - runFlow:
     file: signup.yml
 - tapOn: "Skip.*"
-- assertVisible: "New Works for You"
+- assertVisible: "Activity"
