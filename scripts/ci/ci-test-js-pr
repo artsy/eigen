@@ -8,11 +8,14 @@ UPDATED_FILES=$(git diff --name-only origin/main...$CIRCLE_SHA1 | grep -E '^.+\.
 JEST_OPTIONS="--ci --forceExit --logHeapUsage --runInBand --reporters=default --reporters=jest-junit --shard=$(expr $CIRCLE_NODE_INDEX + 1)/$CIRCLE_NODE_TOTAL"
 
 
-# Run all tests if any global files are updated because they could affect any test.
+# If no ts|tsx files are updated, don't run any tests
 # If only scene files are updated, run tests only for those scenes and specific files.
-if [ -z "$UPDATED_GLOBAL_FILES" ]
+# Run all tests if any global files are updated because they could affect any test.
+if [ -z "$UPDATED_GLOBAL_FILES" ] && [ -n "$UPDATED_SCENES" ] && [ -n "$UPDATED_FILES" ]
 then
     yarn jest $UPDATED_SCENES $UPDATED_FILES $JEST_OPTIONS
-else
-   yarn jest $JEST_OPTIONS
+elif [ -z "$UPDATED_GLOBAL_FILES" ]
+    echo "No ts|tsx files are updated. Skipping tests."
+then
+    yarn jest $JEST_OPTIONS
 fi
