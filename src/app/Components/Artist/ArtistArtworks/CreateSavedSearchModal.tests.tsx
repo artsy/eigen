@@ -38,6 +38,12 @@ jest.mock("../../../Scenes/SavedSearchAlert/mutations/createSavedSearchAlert", (
     }),
 }))
 
+jest.mock("app/Scenes/SavedSearchAlert/useSavedSearchPills", () => {
+  return {
+    useSavedSearchPills: () => [],
+  }
+})
+
 const mockNavigate = jest.fn()
 jest.mock("@react-navigation/native", () => {
   const actualNav = jest.requireActual("@react-navigation/native")
