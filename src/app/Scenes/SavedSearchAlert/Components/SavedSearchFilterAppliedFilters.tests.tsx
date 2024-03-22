@@ -6,20 +6,20 @@ import {
   SavedSearchStoreProvider,
   savedSearchModel,
 } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
+import { useSavedSearchPills } from "app/Scenes/SavedSearchAlert/useSavedSearchPills"
 
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
-jest.mock("app/Scenes/SavedSearchAlert/useSavedSearchPills", () => {
-  return {
-    useSavedSearchPills: () => [
-      { label: "Open Edition", paramName: "attributionClass", value: "open edition" },
-      { label: "Banksy", paramName: "artistIDs", value: "banksy" },
-    ],
-  }
-})
+jest.mock("app/Scenes/SavedSearchAlert/useSavedSearchPills")
 
 describe("SavedSearchFilterAppliedFilters", () => {
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
   it("shows all selected filters", () => {
+    ;(useSavedSearchPills as jest.Mock).mockImplementationOnce(() => [banksyPill, openEditionPill])
+
     renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
         <SavedSearchFilterAppliedFilters />
@@ -30,9 +30,12 @@ describe("SavedSearchFilterAppliedFilters", () => {
     expect(screen.getByText("Banksy")).toBeDefined()
   })
 
-  // TODO: fix this test
-  it.skip("removes filter when tapped", () => {
-    renderWithWrappers(
+  it("removes filter when tapped", () => {
+    ;(useSavedSearchPills as jest.Mock)
+      .mockImplementationOnce(() => [banksyPill, openEditionPill])
+      .mockImplementationOnce(() => [banksyPill])
+
+    const { rerender } = renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
         <SavedSearchFilterAppliedFilters />
       </SavedSearchStoreProvider>
@@ -40,12 +43,20 @@ describe("SavedSearchFilterAppliedFilters", () => {
 
     expect(screen.getByText("Open Edition")).toBeDefined()
 
-    fireEvent.press(screen.getByText("Open Edition"), "onPress")
+    fireEvent.press(screen.getByText("Open Edition"))
 
-    expect(() => screen.getByText("Open Edition")).toThrow()
+    rerender(
+      <SavedSearchStoreProvider runtimeModel={initialData}>
+        <SavedSearchFilterAppliedFilters />
+      </SavedSearchStoreProvider>
+    )
+
+    expect(screen.queryByText("Open Edition")).not.toBeOnTheScreen()
   })
 
   it("can't remove artist pill", () => {
+    ;(useSavedSearchPills as jest.Mock).mockImplementationOnce(() => [banksyPill, openEditionPill])
+
     renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
         <SavedSearchFilterAppliedFilters />
@@ -75,4 +86,15 @@ const initialData: SavedSearchModel = {
       slug: "ownerSlug",
     },
   },
+}
+
+const openEditionPill = {
+  label: "Open Edition",
+  paramName: "attributionClass",
+  value: "open edition",
+}
+const banksyPill = {
+  label: "Banksy",
+  paramName: "artistIDs",
+  value: "banksy",
 }
