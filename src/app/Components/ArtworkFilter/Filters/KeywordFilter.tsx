@@ -1,11 +1,11 @@
 import { ActionType, ContextModule } from "@artsy/cohesion"
+import { Input2 } from "@artsy/palette-mobile"
 import {
   filterArtworksParams,
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import SearchIcon from "app/Components/Icons/SearchIcon"
-import { Input } from "app/Components/Input"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { debounce, throttle } from "lodash"
 import React, { useEffect, useMemo, useRef, useState } from "react"
@@ -88,7 +88,7 @@ export const KeywordFilter: React.FC<KeywordFilterProps> = ({
       : "Search by artwork title, series, or description"
 
   return (
-    <Input
+    <Input2
       loading={loading}
       icon={<SearchIcon width={18} height={18} />}
       placeholder={placeholder}

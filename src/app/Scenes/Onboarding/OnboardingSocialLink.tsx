@@ -1,6 +1,5 @@
-import { Spacer, Flex, Text, Spinner, Touchable, Button } from "@artsy/palette-mobile"
+import { Button, Flex, Input2, Spacer, Spinner, Text, Touchable } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
-import { Input } from "app/Components/Input"
 import { OAuthProvider } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { BackButton } from "app/system/navigation/BackButton"
@@ -176,7 +175,7 @@ export const OnboardingSocialLink: React.FC<
 
             <Spacer y={4} />
 
-            <Input
+            <Input2
               title="Artsy Password"
               secureTextEntry
               autoFocus

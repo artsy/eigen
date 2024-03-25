@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Flex,
+  Input2,
   Join,
   Pill,
   Spacer,
@@ -12,7 +13,6 @@ import {
 } from "@artsy/palette-mobile"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
-import { Input } from "app/Components/Input"
 import { SavedSearchSuggestedFiltersQueryRenderer } from "app/Scenes/SavedSearchAlert/Components/SavedSearchSuggestedFilters"
 import {
   SavedSearchAlertFormValues,
@@ -150,7 +150,7 @@ export const Form: React.FC<FormProps> = ({
 
             <Spacer y={1} />
 
-            <Input
+            <Input2
               placeholder="For example, a specific request such as ‘figurative painting’ or ‘David Hockney iPad drawings.’"
               value={values.details}
               onChangeText={handleChange("details")}
