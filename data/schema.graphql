@@ -2513,6 +2513,9 @@ type Artwork implements Node & Searchable & Sellable {
   isShareable: Boolean
   isSold: Boolean
   isUnique: Boolean
+
+  # Artwork is marked as "unlisted" (or private) by the partner
+  isUnlisted: Boolean!
   lastSavedAt(
     format: String
 
