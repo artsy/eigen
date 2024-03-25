@@ -6,6 +6,7 @@ import { useState } from "react"
 import { Alert, ScrollView } from "react-native"
 
 export const Screen: React.FC<{}> = () => {
+  const [value0, setValue0] = useState("")
   const [value1, setValue1] = useState("test")
   const [value2, setValue2] = useState("")
   const [value3, setValue3] = useState("a value")
@@ -18,27 +19,17 @@ export const Screen: React.FC<{}> = () => {
         padding: 20,
       }}
     >
-      <Spacer y={2} />
-
-      <CategoryPicker<string>
-        value={selectedValue}
-        // value={artworkMediumCategories[0].value}
-        options={artworkMediumCategories}
-        handleChange={(value) => {
-          setSelectedValue(value)
-
-          // do nothing
-        }}
-      />
-
-      <Spacer y={2} />
-
-      <CategoryPicker<string>
-        value={undefined}
-        options={artworkMediumCategories}
-        handleChange={() => {
-          // do nothing
-        }}
+      <Text variant="sm-display" mb={2}>
+        Default Input
+      </Text>
+      <Input
+        value={value0}
+        onChangeText={setValue0}
+        label="Label"
+        // enableClearButton
+        optional
+        secureTextEntry
+        placeholder="MM/YY"
       />
 
       <Spacer y={2} />
@@ -54,6 +45,7 @@ export const Screen: React.FC<{}> = () => {
         multiline
         required
         maxLength={200}
+        showLimit
         // fixedRightPlaceholder="cm"
       />
       <Separator my={2} />
@@ -96,6 +88,29 @@ export const Screen: React.FC<{}> = () => {
         required
         onHintPress={() => {
           Alert.alert("Hint", "This is a hint")
+        }}
+      />
+
+      <Spacer y={2} />
+
+      <CategoryPicker<string>
+        value={selectedValue}
+        // value={artworkMediumCategories[0].value}
+        options={artworkMediumCategories}
+        handleChange={(value) => {
+          setSelectedValue(value)
+
+          // do nothing
+        }}
+      />
+
+      <Spacer y={2} />
+
+      <CategoryPicker<string>
+        value={undefined}
+        options={artworkMediumCategories}
+        handleChange={() => {
+          // do nothing
         }}
       />
     </ScrollView>

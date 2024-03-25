@@ -1,5 +1,7 @@
 import { EventEmitter } from "events"
 import {
+  EyeClosedIcon,
+  EyeOpenedIcon,
   Flex,
   Spinner,
   Text,
@@ -41,7 +43,9 @@ interface InputProps extends TextInputProps {
   onChangeText: (text: string) => void
   onClear?(): void
   onHintPress?: () => void
+  optional?: boolean
   required?: boolean
+  showLimit?: boolean
   unit?: string | undefined | null
   value: string
 }
@@ -69,6 +73,8 @@ export const Input = forwardRef<InputRef, InputProps>(
       loading = false,
       onChangeText,
       onClear,
+      placeholder,
+      secureTextEntry = false,
       unit,
       value,
       ...props
@@ -79,6 +85,7 @@ export const Input = forwardRef<InputRef, InputProps>(
     const color = useColor()
 
     const [focused, setIsFocused] = useState(false)
+    const [showPassword, setShowPassword] = useState(!secureTextEntry)
 
     const unitRef = useRef(null)
     const rightComponentRef = useRef(null)
@@ -261,8 +268,38 @@ export const Input = forwardRef<InputRef, InputProps>(
           </Flex>
         )
       }
+
+      if (secureTextEntry) {
+        return (
+          <Flex
+            justifyContent="center"
+            position="absolute"
+            right={`${HORIZONTAL_PADDING}px`}
+            top={LABEL_HEIGHT}
+            height={INPUT_MIN_HEIGHT}
+            zIndex={100}
+            ref={rightComponentRef}
+          >
+            <Touchable
+              haptic
+              onPress={() => {
+                LayoutAnimation.configureNext({
+                  ...LayoutAnimation.Presets.easeInEaseOut,
+                  duration: 200,
+                })
+                setShowPassword(!showPassword)
+              }}
+              accessibilityLabel={showPassword ? "hide password button" : "show password button"}
+              hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
+            >
+              {!showPassword ? <EyeClosedIcon fill="black30" /> : <EyeOpenedIcon fill="black60" />}
+            </Touchable>
+          </Flex>
+        )
+      }
+
       return null
-    }, [fixedRightPlaceholder, loading, enableClearButton, value])
+    }, [fixedRightPlaceholder, loading, enableClearButton, value, secureTextEntry, showPassword])
 
     return (
       <Flex>
@@ -294,21 +331,25 @@ export const Input = forwardRef<InputRef, InputProps>(
           onBlur={handleBlur}
           editable={editable}
           ref={inputRef as RefObject<TextInput>}
+          placeholderTextColor={color("black60")}
+          placeholder={focused ? placeholder : ""}
+          secureTextEntry={!showPassword}
           {...props}
         />
 
         {/* If an input has an error, we don't need to show "Required" and maxChars per design */}
         {!props.error && (
           <Flex flexDirection="row" justifyContent="space-between">
-            {!!props.required ? (
+            {!!props.required || !!props.optional ? (
               <Text color="black60" variant="xs" pl={`${HORIZONTAL_PADDING}px`} mt={0.5}>
-                * Required
+                {!!props.required && "* Required"}
+                {!!props.optional && "* Optional"}
               </Text>
             ) : (
               // Adding this empty flex to make sure that the maxLength text is always on the right
               <Flex />
             )}
-            {!!props.maxLength && (
+            {!!props.maxLength && !!props.showLimit && (
               <Text color="black60" variant="xs" pr={`${HORIZONTAL_PADDING}px`} mt={0.5}>
                 {value.length} / {props.maxLength}
               </Text>
