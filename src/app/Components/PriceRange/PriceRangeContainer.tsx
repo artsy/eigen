@@ -1,7 +1,6 @@
-import { Flex, Histogram, HistogramBarEntity, Spacer } from "@artsy/palette-mobile"
+import { Flex, Histogram, HistogramBarEntity, Input2, Spacer } from "@artsy/palette-mobile"
 import { parsePriceRange } from "app/Components/ArtworkFilter/Filters/helpers"
 import { RecentPriceRanges } from "app/Components/ArtworkFilter/RecentPriceRanges"
-import { Input } from "app/Components/Input"
 import { PriceRangeSlider } from "app/Components/PriceRange/PriceRangeSlider"
 import { RANGE_DOT_SIZE } from "app/Components/PriceRange/constants"
 import { PriceRange } from "app/Components/PriceRange/types"
@@ -123,29 +122,25 @@ export const PriceRangeContainer: React.FC<PriceRangeContainerProps> = ({
       <Spacer y={2} />
 
       <Flex flexDirection="row" mx={2}>
-        <Input
-          containerStyle={{ flex: 1 }}
-          description="Min"
+        <Input2
+          title="Min"
           fixedRightPlaceholder="$USD"
           enableClearButton
           keyboardType="number-pad"
           value={getInputValue(minValue)}
           onChangeText={handleTextChange(0)}
           testID="price-min-input"
-          descriptionColor="black100"
           accessibilityLabel="Minimum Price Range Input"
         />
         <Spacer x={2} />
-        <Input
-          containerStyle={{ flex: 1 }}
-          description="Max"
+        <Input2
+          title="Max"
           fixedRightPlaceholder="$USD"
           enableClearButton
           keyboardType="number-pad"
           value={getInputValue(maxValue)}
           onChangeText={handleTextChange(1)}
           testID="price-max-input"
-          descriptionColor="black100"
           accessibilityLabel="Maximum Price Range Input"
         />
       </Flex>

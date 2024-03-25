@@ -1,10 +1,9 @@
-import { Flex, Text, Button } from "@artsy/palette-mobile"
+import { Flex, Text, Button, Input2Ref, Input2 } from "@artsy/palette-mobile"
 import { findCountryNameByCountryCode } from "app/Components/Bidding/Utils/findCountryNameByCountryCode"
 import { validateAddressFieldsPresence } from "app/Components/Bidding/Validators/validateAddressFieldsPresence"
 import { Address } from "app/Components/Bidding/types"
 import { CountrySelect } from "app/Components/CountrySelect"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { Input } from "app/Components/Input"
 import { Stack } from "app/Components/Stack"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
@@ -31,13 +30,13 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
 }) => {
   const scrollViewRef = useRef<ScrollView>(null)
 
-  const fullNameRef = useRef<Input>(null)
-  const addressLine1Ref = useRef<Input>(null)
-  const addressLine2Ref = useRef<Input>(null)
-  const cityRef = useRef<Input>(null)
-  const stateRef = useRef<Input>(null)
-  const postalCodeRef = useRef<Input>(null)
-  const phoneRef = useRef<Input>(null)
+  const fullNameRef = useRef<Input2Ref>(null)
+  const addressLine1Ref = useRef<Input2Ref>(null)
+  const addressLine2Ref = useRef<Input2Ref>(null)
+  const cityRef = useRef<Input2Ref>(null)
+  const stateRef = useRef<Input2Ref>(null)
+  const postalCodeRef = useRef<Input2Ref>(null)
+  const phoneRef = useRef<Input2Ref>(null)
 
   const [address, setAddress] = useState<Address>({
     fullName: "",
@@ -119,7 +118,7 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
         keyboardShouldPersistTaps="handled"
       >
         <Stack spacing={4}>
-          <Input
+          <Input2
             ref={fullNameRef}
             title="Full name"
             placeholder="Add your full name"
@@ -132,7 +131,7 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
             testID="input-full-name"
           />
 
-          <Input
+          <Input2
             ref={addressLine1Ref}
             title="Address line 1"
             placeholder="Add your street address"
@@ -145,7 +144,7 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
             testID="input-address-1"
           />
 
-          <Input
+          <Input2
             ref={addressLine2Ref}
             title="Address line 2"
             optional
@@ -158,7 +157,7 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
             testID="input-address-2"
           />
 
-          <Input
+          <Input2
             ref={cityRef}
             title="City"
             placeholder="Add your city"
@@ -171,7 +170,7 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
             testID="input-city"
           />
 
-          <Input
+          <Input2
             ref={stateRef}
             title="State, Province, or Region"
             placeholder="Add state, province, or region"
@@ -184,7 +183,7 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
             testID="input-state-province-region"
           />
 
-          <Input
+          <Input2
             ref={postalCodeRef}
             title="Postal code"
             placeholder="Add your postal code"
@@ -197,7 +196,7 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
             testID="input-post-code"
           />
 
-          <Input
+          <Input2
             ref={phoneRef}
             title="Phone"
             placeholder="Add your phone number"

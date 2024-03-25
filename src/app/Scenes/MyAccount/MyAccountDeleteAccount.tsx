@@ -1,9 +1,17 @@
-import { Spacer, GenomeIcon, AuctionIcon, Flex, Box, Text, Button } from "@artsy/palette-mobile"
+import {
+  Spacer,
+  GenomeIcon,
+  AuctionIcon,
+  Flex,
+  Box,
+  Text,
+  Button,
+  Input2,
+} from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { MyAccountDeleteAccountQuery } from "__generated__/MyAccountDeleteAccountQuery.graphql"
 import { MyAccountDeleteAccount_me$data } from "__generated__/MyAccountDeleteAccount_me.graphql"
 import { DeleteAccountInput } from "__generated__/deleteUserAccountMutation.graphql"
-import { Input } from "app/Components/Input"
 import { GlobalStore } from "app/store/GlobalStore"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
@@ -64,7 +72,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
             </Text>
           </Flex>
           <Spacer y={4} />
-          <Input
+          <Input2
             multiline
             placeholder="Please share with us why you are leaving"
             onChangeText={setExplanation}
@@ -78,7 +86,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
           <Spacer y={2} />
           {!!hasPassword && (
             <>
-              <Input
+              <Input2
                 secureTextEntry
                 placeholder="Enter your password to continue"
                 onChangeText={setPassword}

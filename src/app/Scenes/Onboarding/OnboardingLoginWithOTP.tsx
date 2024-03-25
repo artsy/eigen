@@ -1,15 +1,15 @@
 import {
-  Spacer,
-  Flex,
   Box,
-  useColor,
-  Text,
+  Button,
+  Flex,
+  Input2,
   LinkText,
   SimpleMessage,
-  Button,
+  Spacer,
+  Text,
+  useColor,
 } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
-import { Input } from "app/Components/Input"
 import { GlobalStore } from "app/store/GlobalStore"
 import { BackButton } from "app/system/navigation/BackButton"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
@@ -62,7 +62,7 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
     validateForm,
   } = useFormikContext<OnboardingLoginWithOTPValuesSchema>()
 
-  const otpInputRef = useRef<Input>(null)
+  const otpInputRef = useRef<Input2>(null)
   const [recoveryCodeMode, setRecoveryCodeMode] = useState(false)
 
   return (
@@ -79,7 +79,7 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
           <Text variant="lg-display">Authentication Code</Text>
           <Box>
             <Spacer y={6} />
-            <Input
+            <Input2
               ref={otpInputRef}
               autoCapitalize="none"
               autoCorrect={false}
