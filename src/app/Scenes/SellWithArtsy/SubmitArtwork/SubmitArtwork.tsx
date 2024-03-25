@@ -279,7 +279,7 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
                   }}
                   isExpanded={index === 0}
                   disabled={index > activeStep}
-                  noUnmount
+                  preventUnmount
                   ref={(ref) => {
                     if (ref) {
                       stepsRefs[index] = ref
