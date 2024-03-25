@@ -11,7 +11,15 @@ import {
 import { THEME } from "@artsy/palette-tokens"
 import themeGet from "@styled-system/theme-get"
 import { useMeasure } from "app/utils/hooks/useMeasure"
-import { RefObject, forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
+import {
+  RefObject,
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react"
 import { LayoutAnimation, TextInput, TextInputProps } from "react-native"
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
 import styled from "styled-components"
@@ -41,7 +49,7 @@ interface InputProps extends TextInputProps {
 export const HORIZONTAL_PADDING = 15
 export const INPUT_BORDER_RADIUS = 4
 export const INPUT_MIN_HEIGHT = 56
-export const LABEL_HEIGHT = 26
+export const LABEL_HEIGHT = 25
 
 export interface InputRef {
   focus: () => void
@@ -72,6 +80,7 @@ export const Input = forwardRef<InputRef, InputProps>(
     const [focused, setIsFocused] = useState(false)
 
     const unitRef = useRef(null)
+    const rightComponentRef = useRef(null)
     const inputRef = useRef<TextInput>()
 
     const variant: InputVariant = getInputVariant({
@@ -108,6 +117,7 @@ export const Input = forwardRef<InputRef, InputProps>(
     }, [])
 
     const { width: unitWidth = 0 } = useMeasure({ ref: unitRef })
+    const { width: rightComponentWidth = 0 } = useMeasure({ ref: rightComponentRef })
 
     const handleChangeText = (text: string) => {
       "worklet"
@@ -119,6 +129,7 @@ export const Input = forwardRef<InputRef, InputProps>(
       fontSize: parseInt(THEME.textVariants["sm-display"].fontSize, 10),
       minHeight: INPUT_MIN_HEIGHT,
       borderWidth: 1,
+      paddingRight: rightComponentWidth + space(2),
     }
 
     const labelStyles = {
@@ -166,7 +177,7 @@ export const Input = forwardRef<InputRef, InputProps>(
       onClear?.()
     }
 
-    const renderLeftComponent = () => {
+    const renderLeftComponent = useCallback(() => {
       if (unit) {
         return (
           <Flex
@@ -187,9 +198,9 @@ export const Input = forwardRef<InputRef, InputProps>(
       }
 
       return null
-    }
+    }, [unit])
 
-    const renderRightCompoent = () => {
+    const renderRightComponent = useCallback(() => {
       if (fixedRightPlaceholder) {
         return (
           <Flex
@@ -198,6 +209,7 @@ export const Input = forwardRef<InputRef, InputProps>(
             right={`${HORIZONTAL_PADDING}px`}
             top={LABEL_HEIGHT}
             height={INPUT_MIN_HEIGHT}
+            ref={rightComponentRef}
           >
             <Text color={editable ? "black60" : "black30"}>{fixedRightPlaceholder}</Text>
           </Flex>
@@ -212,6 +224,7 @@ export const Input = forwardRef<InputRef, InputProps>(
             right={`${HORIZONTAL_PADDING}px`}
             top={LABEL_HEIGHT}
             height={INPUT_MIN_HEIGHT}
+            ref={rightComponentRef}
           >
             <Spinner
               size="medium"
@@ -234,6 +247,7 @@ export const Input = forwardRef<InputRef, InputProps>(
             top={LABEL_HEIGHT}
             height={INPUT_MIN_HEIGHT}
             zIndex={100}
+            ref={rightComponentRef}
           >
             <Touchable
               haptic="impactMedium"
@@ -247,7 +261,7 @@ export const Input = forwardRef<InputRef, InputProps>(
         )
       }
       return null
-    }
+    }, [fixedRightPlaceholder, loading, enableClearButton, value])
 
     return (
       <Flex>
@@ -269,7 +283,7 @@ export const Input = forwardRef<InputRef, InputProps>(
 
         {renderLeftComponent()}
 
-        {renderRightCompoent()}
+        {renderRightComponent()}
 
         <AnimatedStyledInput
           value={value}
