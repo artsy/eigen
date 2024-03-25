@@ -14,7 +14,7 @@ import {
   State,
   useOnboardingContext,
 } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
-import { FC, useCallback, useState } from "react"
+import React, { FC, useCallback, useState } from "react"
 import { LayoutAnimation } from "react-native"
 import { AnimatedFadingPill, FADE_OUT_PILL_ANIMATION_DURATION } from "./AnimatedFadingPill"
 
@@ -106,21 +106,29 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
             </>
           )}
           <Spacer y={2} />
-          {answers.map((answer) => (
-            <AnimatedFadingPill
-              mb={2}
-              isVisible={!hideUnselectedPills || !!selected(answer)}
-              key={`${answer}-pill`}
-              rounded
-              size="xs"
-              Icon={showPillTick && selected(answer) ? CheckCircleFillIconWhite : undefined}
-              iconPosition="left"
-              onPress={() => dispatch({ type: action, payload: answer })}
-              selected={selected(answer)}
-            >
-              {answer}
-            </AnimatedFadingPill>
-          ))}
+          {answers.map((answer, index) => {
+            const isVisible = !hideUnselectedPills || !!selected(answer)
+            const shouldShowPillTick = showPillTick && selected(answer)
+
+            return (
+              <React.Fragment key={`${answer}+${index}`}>
+                <AnimatedFadingPill
+                  variant="default"
+                  isVisible={isVisible}
+                  key={`${answer}-pill`}
+                  Icon={!!shouldShowPillTick ? CheckCircleFillIconWhite : undefined}
+                  onPress={() => dispatch({ type: action, payload: answer })}
+                  selected={selected(answer)}
+                >
+                  {!!shouldShowPillTick && <Spacer x={1} />}
+                  <Text variant="sm" color={selected(answer) ? "white100" : "black100"}>
+                    {answer}
+                  </Text>
+                </AnimatedFadingPill>
+                {!!isVisible && <Spacer y={2} />}
+              </React.Fragment>
+            )
+          })}
         </Flex>
         <Flex>
           <Button block disabled={isDisabled} onPress={handleNext}>

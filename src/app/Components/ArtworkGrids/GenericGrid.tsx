@@ -4,10 +4,6 @@ import { GenericGrid_artworks$data } from "__generated__/GenericGrid_artworks.gr
 import Spinner from "app/Components/Spinner"
 import { Stack } from "app/Components/Stack"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
-import {
-  PageableRouteProps,
-  useNavigateToPageableRoute,
-} from "app/system/navigation/useNavigateToPageableRoute"
 import { RandomNumberGenerator } from "app/utils/placeholders"
 import { times } from "lodash"
 import React from "react"
@@ -16,7 +12,7 @@ import { isTablet } from "react-native-device-info"
 import { createFragmentContainer, graphql } from "react-relay"
 import Artwork, { ArtworkGridItemPlaceholder, ArtworkProps } from "./ArtworkGridItem"
 
-interface Props extends Partial<PageableRouteProps> {
+interface Props {
   artistNamesTextStyle?: TextProps
   saleInfoTextStyle?: TextProps
   artworks: GenericGrid_artworks$data
@@ -226,12 +222,7 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-const injectHooks = (Component: typeof GenericArtworksGrid) => (props: Props & PropsForArtwork) => {
-  const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: props.artworks })
-  return <Component {...props} navigateToPageableRoute={navigateToPageableRoute} />
-}
-
-const GenericGrid = createFragmentContainer(injectHooks(GenericArtworksGrid), {
+const GenericGrid = createFragmentContainer(GenericArtworksGrid, {
   artworks: graphql`
     fragment GenericGrid_artworks on Artwork @relay(plural: true) {
       id

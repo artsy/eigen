@@ -1,6 +1,5 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Screen } from "@artsy/palette-mobile"
 import { SavedSearchAlertsListQuery } from "__generated__/SavedSearchAlertsListQuery.graphql"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -9,41 +8,35 @@ import { SavedSearchAlertsListPlaceholder } from "./Components/SavedSearchAlerts
 import { SavedSearchesListPaginationContainer } from "./Components/SavedSearchesList"
 import { SortButton } from "./Components/SortButton"
 
-interface Props {
-  artistID: string
-}
-export const SavedSearchAlertsListQueryRenderer: React.FC<Props> = ({ artistID }) => {
+export const SavedSearchAlertsListQueryRenderer: React.FC = () => {
   return (
     <QueryRenderer<SavedSearchAlertsListQuery>
       environment={getRelayEnvironment()}
       query={graphql`
-        query SavedSearchAlertsListQuery($artistIDs: [String!]) {
+        query SavedSearchAlertsListQuery {
           me {
-            ...SavedSearchesList_me @arguments(artistIDs: $artistIDs)
+            ...SavedSearchesList_me
           }
         }
       `}
-      variables={{
-        artistIDs: artistID ? [artistID] : [],
-      }}
+      variables={{}}
       cacheConfig={{ force: true }}
       render={renderWithPlaceholder({
         Container: SavedSearchesListPaginationContainer,
-        initialProps: {
-          artistIDs: [artistID],
-        },
         renderPlaceholder: () => (
-          <Flex>
-            <FancyModalHeader
-              hideBottomDivider
-              onLeftButtonPress={goBack}
-              onRightButtonPress={() => {}}
-              renderRightButton={() => <SortButton disabled />}
-            >
-              Alerts
-            </FancyModalHeader>
-            <SavedSearchAlertsListPlaceholder />
-          </Flex>
+          <Screen>
+            <Screen.AnimatedHeader
+              onBack={goBack}
+              title="Alerts"
+              rightElements={<SortButton disabled />}
+            />
+
+            <Screen.StickySubHeader title="Alerts" />
+
+            <Screen.Body fullwidth>
+              <SavedSearchAlertsListPlaceholder />
+            </Screen.Body>
+          </Screen>
         ),
       })}
     />

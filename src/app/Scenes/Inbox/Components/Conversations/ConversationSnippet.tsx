@@ -70,15 +70,13 @@ export class ConversationSnippet extends React.Component<Props> {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const item = conversation.items[0].item
 
-    let imageURL: string
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    if (item.__typename === "Artwork") {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      imageURL = item.image && item.image.url
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    } else if (item.__typename === "Show") {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      imageURL = item.coverImage && item.coverImage.url
+    let imageURL: string | null | undefined
+    let blurhash: string | null | undefined
+    if (item?.__typename === "Artwork") {
+      imageURL = item.image?.url
+      blurhash = item.image?.blurhash
+    } else if (item?.__typename === "Show") {
+      imageURL = item.coverImage?.url
     }
 
     const partnerName = conversation.to.name
@@ -98,7 +96,7 @@ export class ConversationSnippet extends React.Component<Props> {
                       <Indicator />
                     </Unread>
                   )}
-                  <ImageView imageURL={imageURL} />
+                  <ImageView imageURL={imageURL} blurhash={blurhash} />
                 </Flex>
                 <Flex ml={1} style={{ flex: 1 }}>
                   <Flex flexDirection="row" mb="2px" style={{ flex: 0, alignItems: "center" }}>
@@ -161,6 +159,7 @@ export default createFragmentContainer(ConversationSnippet, {
             artistNames
             image {
               url
+              blurhash
             }
           }
           ... on Show {
@@ -170,6 +169,7 @@ export default createFragmentContainer(ConversationSnippet, {
             name
             coverImage {
               url
+              blurhash
             }
           }
         }

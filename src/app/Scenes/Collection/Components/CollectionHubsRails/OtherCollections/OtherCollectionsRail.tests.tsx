@@ -1,9 +1,8 @@
-import { Text } from "@artsy/palette-mobile"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { CollectionHubRailsOtherCollectionsRailFixture } from "app/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { navigate } from "app/system/navigation/navigate"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { TouchableOpacity } from "react-native"
-import { CollectionGroupMemberPill, OtherCollectionsRail } from "./OtherCollectionsRail"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { OtherCollectionsRail } from "./OtherCollectionsRail"
 
 describe("Other Collections Rail", () => {
   const TestRenderer = () => (
@@ -13,27 +12,24 @@ describe("Other Collections Rail", () => {
   )
 
   it("renders a title", () => {
-    const { root } = renderWithWrappersLEGACY(<TestRenderer />)
-    const {
-      props: { children },
-    } = root.findAllByType(Text)[0]
+    renderWithWrappers(<TestRenderer />)
 
-    expect(children).toContain("Browse by Movement")
+    expect(screen.getByText("Browse by Movement")).toBeOnTheScreen()
   })
 
   it("renders the other collection pills", () => {
-    const { root } = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
-    expect(
-      root.findAllByType(CollectionGroupMemberPill).map(({ props: { children } }) => children)
-    ).toEqual(["Abstract Expressionist Art", "Arte Povera", "Black Arts Movement"])
+    expect(screen.getByText("Browse by Movement")).toBeOnTheScreen()
+    expect(screen.getByText("Abstract Expressionist Art")).toBeOnTheScreen()
+    expect(screen.getByText("Arte Povera")).toBeOnTheScreen()
+    expect(screen.getByText("Black Arts Movement")).toBeOnTheScreen()
   })
 
   it("navigates to a new collection when a pill is tapped", () => {
-    const { root } = renderWithWrappersLEGACY(<TestRenderer />)
-    const [button] = root.findAllByType(TouchableOpacity)
+    renderWithWrappers(<TestRenderer />)
 
-    button.props.onPress()
+    fireEvent.press(screen.getByText("Abstract Expressionist Art"))
 
     expect(navigate).toHaveBeenCalledWith("/collection/abstract-expressionism")
   })

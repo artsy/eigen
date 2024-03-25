@@ -15,7 +15,6 @@ import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { useScreenDimensions } from "app/utils/hooks"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useSwitchStatusBarStyle } from "app/utils/useStatusBarStyle"
 import { useEffect } from "react"
@@ -36,9 +35,6 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
   recentlySoldArtworks,
   me,
 }) => {
-  const enableMeetTheSpecialist = useFeatureFlag("AREnableSWALandingPageMeetTheSpecialist")
-  const enableTestimonials = useFeatureFlag("AREnableSWALandingPageTestimonials")
-
   const onFocusStatusBarStyle: StatusBarStyle = "dark-content"
   const onBlurStatusBarStyle: StatusBarStyle = "dark-content"
 
@@ -97,41 +93,36 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
         alignItems="center"
         minHeight={screenHeight}
         style={{ paddingTop: safeAreaInsets.top }}
+        pb={6}
       >
         <ScrollView showsVerticalScrollIndicator={false} ref={scrollViewRef}>
-          <Flex pb={6}>
+          <Join separator={<Spacer y={6} />}>
             <Header onConsignPress={handleConsignPress} onInquiryPress={handleInquiryPress} />
-            <Spacer y={4} />
-            <Join separator={<Spacer y={4} />}>
-              <Highlights />
-              <WaysWeSell />
-            </Join>
-            <Spacer y={6} />
+
+            <Highlights />
+
+            <WaysWeSell />
+
             <HowItWorks onConsignPress={handleConsignPress} />
-            <Spacer y={2} />
-            <Spacer y={4} />
+
             <SpeakToTheTeam onInquiryPress={handleInquiryPress} />
-            {!!enableMeetTheSpecialist && <Spacer y={6} />}
-            {!!enableMeetTheSpecialist && (
-              <MeetTheSpecialists onInquiryPress={handleInquiryPress} />
-            )}
-            <Spacer y={6} />
+
+            <MeetTheSpecialists onInquiryPress={handleInquiryPress} />
+
             <CollectorsNetwork />
-            <Spacer y={6} />
 
             {!!recentlySoldArtworks && (
               <SellWithArtsyRecentlySold recentlySoldArtworks={recentlySoldArtworks} />
             )}
-            <Join separator={<Spacer y={6} />}>
-              <></>
-              {!!enableTestimonials && <Testimonials />}
-              <FAQSWA />
-            </Join>
-            <Spacer y={4} />
-            <Spacer y={2} />
+
+            <Testimonials />
+
+            <FAQSWA />
+
             <Footer onConsignPress={handleConsignPress} />
-            <Spacer y={4} />
-          </Flex>
+          </Join>
+
+          <Spacer y={4} />
         </ScrollView>
       </Flex>
     </LegacyScreen.Background>

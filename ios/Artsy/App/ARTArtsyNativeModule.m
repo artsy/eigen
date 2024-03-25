@@ -7,6 +7,7 @@
 #import "ARUserManager.h"
 #import "ArtsyAPI+Private.h"
 #import "ArtsyAPI+DeviceTokens.h"
+#import "ARAppConstants.h"
 
 
 @implementation ARTArtsyNativeModule
@@ -28,6 +29,12 @@ RCT_EXPORT_METHOD(clearUserData:(RCTPromiseResolveBlock)completion reject:(RCTPr
         [ARUserManager clearUserData];
         completion(nil);
     }];
+}
+
+RCT_EXPORT_METHOD(getPushToken:(RCTPromiseResolveBlock)completion reject:(RCTPromiseRejectBlock) _reject)
+{
+    NSString *pushToken = [[NSUserDefaults standardUserDefaults] stringForKey:ARAPNSDeviceTokenKey];
+    completion(pushToken);
 }
 
 + (BOOL)requiresMainQueueSetup

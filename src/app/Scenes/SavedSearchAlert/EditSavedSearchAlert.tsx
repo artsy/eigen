@@ -13,6 +13,7 @@ import {
   SavedSearchEntityArtist,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
+import { AlertArtworks } from "app/Scenes/SavedSearchAlert/AlertArtworks"
 import { EditSavedSearchAlertContent } from "app/Scenes/SavedSearchAlert/EditSavedSearchAlertContent"
 import {
   EditSavedSearchAlertNavigationStack,
@@ -53,7 +54,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
   const { localizedUnit } = useLocalizedUnit()
 
   const aggregations = (artworksConnection.aggregations ?? []) as Aggregations
-  const { userAlertSettings, ...attributes } = me?.savedSearch ?? {}
+  const { settings, ...attributes } = me?.alert ?? {}
   const isCustomAlertsNotificationsEnabled = viewer.notificationPreferences.some((preference) => {
     return (
       preference.channel === "email" &&
@@ -100,7 +101,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
   }, [])
 
   const params: EditSavedSearchAlertParams = {
-    userAlertSettings,
+    userAlertSettings: settings,
     savedSearchAlertId,
     userAllowsEmails,
     onComplete,
@@ -119,7 +120,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
         <SavedSearchStoreProvider
           runtimeModel={{
             ...savedSearchModel,
-            currentSavedSearchID: savedSearchAlertId,
+            currentAlertID: savedSearchAlertId,
             attributes: localizeHeightAndWidthAttributes({
               attributes: attributes as SearchCriteriaAttributes,
               // Sizes are always injected in inches
@@ -145,6 +146,11 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
                 name="EditSavedSearchAlertContent"
                 component={EditSavedSearchAlertContent}
                 initialParams={params}
+              />
+              <Stack.Screen
+                name="AlertArtworks"
+                component={AlertArtworks}
+                initialParams={{ alertId: savedSearchAlertId }}
               />
               <Stack.Screen name="EmailPreferences" component={EmailPreferencesScreen} />
               <Stack.Screen
@@ -217,7 +223,7 @@ export const EditSavedSearchAlertQueryRenderer: React.FC<EditSavedSearchAlertBas
 
   return (
     <SavedSearchAlertQueryRenderer
-      savedSearchAlertId={savedSearchAlertId}
+      alertId={savedSearchAlertId}
       render={renderWithPlaceholder({
         render: (relayProps: SavedSearchAlertQuery["response"]) => (
           <QueryRenderer<EditSavedSearchAlertQuery>
@@ -247,7 +253,7 @@ export const EditSavedSearchAlertQueryRenderer: React.FC<EditSavedSearchAlertBas
                 }
               }
             `}
-            variables={{ artistIDs: relayProps.me?.savedSearch?.artistIDs as string[] }}
+            variables={{ artistIDs: relayProps.me?.alert?.artistIDs as string[] }}
             render={renderWithPlaceholder({
               Container: EditSavedSearchAlertRefetchContainer,
               renderPlaceholder: () => <EditSavedSearchFormPlaceholder />,

@@ -31,13 +31,13 @@ describe("SavedSearchAlertForm", () => {
   const withoutDuplicateAlert = async () => {
     await waitFor(() => {
       const mutation = mockEnvironment.mock.getMostRecentOperation()
-      expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
+      expect(mutation.fragment.node.name).toBe("getAlertByCriteriaQuery")
     })
 
     // No duplicate alert
     resolveMostRecentRelayOperation(mockEnvironment, {
-      Me: () => ({
-        savedSearch: null,
+      Alert: () => ({
+        internalID: null,
       }),
     })
   }
@@ -113,8 +113,8 @@ describe("SavedSearchAlertForm", () => {
 
           expect(mutation.request.variables).toEqual({
             input: {
-              attributes: createMutationAttributes,
-              userAlertSettings: {
+              ...createMutationAttributes,
+              settings: {
                 name: "name",
                 email: true,
                 push: true,
@@ -136,8 +136,7 @@ describe("SavedSearchAlertForm", () => {
         await waitFor(() => {
           expect(mockEnvironment.mock.getMostRecentOperation().request.variables).toMatchObject({
             input: {
-              attributes,
-              userAlertSettings: {
+              settings: {
                 name: "",
               },
             },
@@ -172,7 +171,7 @@ describe("SavedSearchAlertForm", () => {
         await waitFor(() => {
           expect(mockEnvironment.mock.getMostRecentOperation().request.variables).toMatchObject({
             input: {
-              userAlertSettings: {
+              settings: {
                 name: "update value",
               },
             },
@@ -201,9 +200,9 @@ describe("SavedSearchAlertForm", () => {
 
           expect(mutation.request.variables).toEqual({
             input: {
-              attributes,
-              searchCriteriaID: "savedSearchAlertId",
-              userAlertSettings: {
+              ...attributes,
+              id: "savedSearchAlertId",
+              settings: {
                 name: "name",
                 email: true,
                 push: true,
@@ -315,8 +314,8 @@ describe("SavedSearchAlertForm", () => {
         const mutation = mockEnvironment.mock.getMostRecentOperation()
         expect(mutation.request.variables).toEqual({
           input: {
-            attributes: createMutationAttributes,
-            userAlertSettings: {
+            ...createMutationAttributes,
+            settings: {
               name: "name",
               email: true,
               push: true,
@@ -337,8 +336,8 @@ describe("SavedSearchAlertForm", () => {
         const mutation = mockEnvironment.mock.getMostRecentOperation()
         expect(mutation.request.variables).toEqual({
           input: {
-            attributes: createMutationAttributes,
-            userAlertSettings: {
+            ...createMutationAttributes,
+            settings: {
               name: "name",
               email: false,
               push: true,
@@ -359,8 +358,8 @@ describe("SavedSearchAlertForm", () => {
         const mutation = mockEnvironment.mock.getMostRecentOperation()
         expect(mutation.request.variables).toEqual({
           input: {
-            attributes: createMutationAttributes,
-            userAlertSettings: {
+            ...createMutationAttributes,
+            settings: {
               name: "name",
               email: true,
               push: false,
@@ -665,18 +664,7 @@ describe("SavedSearchAlertForm", () => {
 
         fireEvent.press(screen.getByTestId("save-alert-button"))
 
-        await waitFor(() => {
-          const mutation = mockEnvironment.mock.getMostRecentOperation()
-          expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
-        })
-
-        // No duplicate alert
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          Me: () => ({
-            savedSearch: null,
-          }),
-        })
-
+        withoutDuplicateAlert()
         await waitFor(() => {
           const mutation = mockEnvironment.mock.getMostRecentOperation()
           expect(mutation.fragment.node.name).toBe("createSavedSearchAlertMutation")
@@ -690,7 +678,7 @@ describe("SavedSearchAlertForm", () => {
 
         await waitFor(() => {
           const mutation = mockEnvironment.mock.getMostRecentOperation()
-          expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
+          expect(mutation.fragment.node.name).toBe("getAlertByCriteriaQuery")
         })
 
         resolveMostRecentRelayOperation(mockEnvironment)
@@ -708,7 +696,7 @@ describe("SavedSearchAlertForm", () => {
 
         await waitFor(() => {
           const mutation = mockEnvironment.mock.getMostRecentOperation()
-          expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
+          expect(mutation.fragment.node.name).toBe("getAlertByCriteriaQuery")
         })
 
         resolveMostRecentRelayOperation(mockEnvironment)
@@ -729,7 +717,7 @@ describe("SavedSearchAlertForm", () => {
 
         await waitFor(() => {
           const mutation = mockEnvironment.mock.getMostRecentOperation()
-          expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
+          expect(mutation.fragment.node.name).toBe("getAlertByCriteriaQuery")
         })
 
         // No duplicate alert
@@ -756,7 +744,7 @@ describe("SavedSearchAlertForm", () => {
 
         await waitFor(() => {
           const mutation = mockEnvironment.mock.getMostRecentOperation()
-          expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
+          expect(mutation.fragment.node.name).toBe("getAlertByCriteriaQuery")
         })
 
         resolveMostRecentRelayOperation(mockEnvironment)
@@ -777,7 +765,7 @@ describe("SavedSearchAlertForm", () => {
 
         await waitFor(() => {
           const mutation = mockEnvironment.mock.getMostRecentOperation()
-          expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
+          expect(mutation.fragment.node.name).toBe("getAlertByCriteriaQuery")
         })
 
         resolveMostRecentRelayOperation(mockEnvironment)

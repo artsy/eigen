@@ -31,7 +31,7 @@ describe("SearchCriteria", () => {
 
     renderWithWrappers(
       <SearchCriteriaQueryRenderer
-        searchCriteriaId="search-criter-id"
+        alertId="alert-id"
         render={{ renderComponent: mockRenderComponent, renderPlaceholder: jest.fn() }}
         environment={mockEnvironment}
       />
@@ -50,7 +50,7 @@ describe("SearchCriteria", () => {
 
     renderWithWrappers(
       <SearchCriteriaQueryRenderer
-        searchCriteriaId="search-criter-id"
+        alertId="alert-id"
         render={{ renderComponent: jest.fn(() => <></>), renderPlaceholder: mockRenderPlaceholder }}
         environment={mockEnvironment}
       />
@@ -64,7 +64,7 @@ describe("SearchCriteria", () => {
 
     renderWithWrappers(
       <SearchCriteriaQueryRenderer
-        searchCriteriaId="search-criter-id"
+        alertId="alert-id"
         render={{ renderComponent: mockRenderComponent, renderPlaceholder: jest.fn() }}
         environment={mockEnvironment}
       />

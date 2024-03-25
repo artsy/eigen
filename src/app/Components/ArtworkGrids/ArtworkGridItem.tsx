@@ -4,6 +4,7 @@ import {
   Flex,
   HeartFillIcon,
   HeartIcon,
+  Image,
   Skeleton,
   SkeletonBox,
   SkeletonText,
@@ -20,13 +21,12 @@ import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilter
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { DurationProvider } from "app/Components/Countdown"
-
-import { OpaqueImageView as NewOpaqueImageView } from "app/Components/OpaqueImageView2"
 import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
 import { GlobalStore } from "app/store/GlobalStore"
-import { PageableRouteProps } from "app/system/navigation/useNavigateToPageableRoute"
+import { navigate } from "app/system/navigation/navigate"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { RandomNumberGenerator } from "app/utils/placeholders"
 import {
@@ -42,7 +42,7 @@ import { LotProgressBar } from "./LotProgressBar"
 const SAVE_ICON_SIZE = 22
 
 export type PriceOfferMessage = { priceListedMessage: string; priceWithDiscountMessage: string }
-export interface ArtworkProps extends Partial<PageableRouteProps>, ArtworkActionTrackingProps {
+export interface ArtworkProps extends ArtworkActionTrackingProps {
   /** styles for each field: allows for customization of each field */
   artistNamesTextStyle?: TextProps
   artwork: ArtworkGridItem_artwork$data
@@ -92,7 +92,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
   hideUrgencyTags = false,
   itemIndex,
   lotLabelTextStyle,
-  navigateToPageableRoute,
   onPress,
   partnerNameTextStyle,
   priceOfferMessage,
@@ -107,6 +106,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const color = useColor()
   const tracking = useTracking()
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
+  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
   let filterParams: any = undefined
 
@@ -181,7 +181,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
     addArtworkToRecentSearches()
     trackArtworkTap()
     if (artwork.href) {
-      navigateToPageableRoute?.(artwork.href)
+      navigate?.(artwork.href)
     }
   }
 
@@ -239,12 +239,15 @@ export const Artwork: React.FC<ArtworkProps> = ({
           testID={`artworkGridItem-${artwork.title}`}
         >
           <View ref={itemRef}>
-            {!!artwork.image && (
+            {!!artwork.image?.url && (
               <View>
-                <NewOpaqueImageView
-                  aspectRatio={artwork.image?.aspectRatio ?? 1}
-                  imageURL={artwork.image?.url}
+                <Image
+                  src={artwork.image.url}
+                  aspectRatio={artwork.image.aspectRatio ?? 1}
                   height={height}
+                  width={Number(height) * (artwork.image.aspectRatio ?? 1)}
+                  blurhash={showBlurhash ? artwork.image.blurhash : undefined}
+                  resizeMode="contain"
                 />
                 {Boolean(
                   !hideUrgencyTags &&
@@ -535,6 +538,7 @@ export default createFragmentContainer(Artwork, {
         name
       }
       image(includeAll: $includeAllImages) {
+        blurhash
         url(version: "large")
         aspectRatio
         resized(width: $width) {

@@ -9,7 +9,6 @@ import {
 import { PartnerOfferBadge } from "app/Scenes/Activity/components/PartnerOffeBadge"
 import { useMarkNotificationAsRead } from "app/Scenes/Activity/mutations/useMarkNotificationAsRead"
 import { navigateToActivityItem } from "app/Scenes/Activity/utils/navigateToActivityItem"
-import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { memo } from "react"
@@ -51,11 +50,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = memo(
         markAsRead(item)
       }
 
-      if (enableNavigateToASingleNotification) {
-        navigate(`/notification/${item.internalID}`)
-      } else {
-        navigateToActivityItem(item, enableNavigateToASingleNotification)
-      }
+      navigateToActivityItem(item, enableNavigateToASingleNotification)
     }
 
     const showAsRow = enableNewActivityPanelManagement && isPartnerOffer
@@ -110,16 +105,15 @@ export const ActivityItem: React.FC<ActivityItemProps> = memo(
 
                     {!!isEditorial && <Text variant="xs">{item.message}</Text>}
 
-                    <Flex flexDirection="row">
+                    <Flex flexDirection="row" mt="1px">
                       <ActivityItemTypeLabel notificationType={item.notificationType} />
                       {!isPartnerOffer && (
                         <Text variant="xs" mr={0.5}>
-                          {" "}
-                          • {item.publishedAt}
+                          {item.publishedAt}
                         </Text>
                       )}
                       {shouldDisplayExpiresInTimer(item.notificationType, item.item) && (
-                        <Flex ml={0.5}>
+                        <Flex ml="1px">
                           <ExpiresInTimer item={item.item} />
                         </Flex>
                       )}
@@ -149,7 +143,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = memo(
               <ActivityItemTypeLabel notificationType={item.notificationType} />
 
               {!isPartnerOffer && (
-                <Text variant="xs" color="black60">
+                <Text variant="xs" mr={0.5}>
                   {item.publishedAt}
                 </Text>
               )}

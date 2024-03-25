@@ -1,5 +1,5 @@
-import { Spacer, Flex, useSpace, Join } from "@artsy/palette-mobile"
-import { useImagePlaceholderDimensions } from "app/Scenes/Artwork/helpers"
+import { Flex, Join, Spacer, useSpace } from "@artsy/palette-mobile"
+import { useImagePlaceholder } from "app/Scenes/Artwork/helpers"
 import { PlaceholderBox, PlaceholderText, RandomNumberGenerator } from "app/utils/placeholders"
 import { times } from "lodash"
 import { useMemo } from "react"
@@ -53,7 +53,7 @@ const ArtworkDetailsPlaceholder = () => {
 }
 
 export const AboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> = ({ artworkID }) => {
-  const { width, height } = useImagePlaceholderDimensions(artworkID)
+  const { width, height } = useImagePlaceholder(artworkID)
 
   return (
     <Flex flex={1}>
@@ -69,7 +69,7 @@ export const AboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> = (
       </Flex>
 
       {/* Artwork thumbnail */}
-      <Flex mx="auto">
+      <Flex mx="auto" pt={2}>
         <PlaceholderBox width={width} height={height} />
       </Flex>
 

@@ -4044,10 +4044,6 @@ enum CollectionSorts {
   UPDATED_AT_DESC
 }
 
-type CollectorProfileArtists {
-  name: String
-}
-
 type CollectorProfileType implements Node {
   artsyUserSince(
     format: String
@@ -4060,9 +4056,6 @@ type CollectorProfileType implements Node {
   bio: String
   collectedArtworksCount: Int!
   collectorLevel: Int
-
-  # List of artists the Collector is interested in.
-  collectorProfileArtists: [CollectorProfileArtists]
   companyName: String
   companyWebsite: String
   confirmedBuyerAt(
@@ -4165,6 +4158,9 @@ type CollectorResume {
 
   # The Collector follows the Gallery profile
   isCollectorFollowingPartner: Boolean!
+
+  # non-bnmo Collector's purchase history
+  purchases: purchases
 
   # Collector's ID used to stitch buyerActivity with the Exchange schema
   userId: String!
@@ -11162,9 +11158,6 @@ type InquirerCollectorProfile {
   bio: String
   collectedArtworksCount: Int!
   collectorLevel: Int
-
-  # List of artists the Collector is interested in.
-  collectorProfileArtists: [CollectorProfileArtists]
   companyName: String
   companyWebsite: String
   confirmedBuyerAt(
@@ -12254,6 +12247,16 @@ type Me implements Node {
   # Collector's position with relevant institutions
   otherRelevantPositions: String
   paddleNumber: String
+  partnerOffersConnection(
+    after: String
+    artworkID: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+    size: Int
+    sort: PartnerOfferToCollectorSorts
+  ): PartnerOfferToCollectorConnection
 
   # A list of the current user’s managed partners
   partners(size: Int): [Partner]
@@ -12538,6 +12541,17 @@ type Message implements Node {
     @deprecated(
       reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
     )
+
+  # True if message was sent on the platform. False if sent via an email client.
+  isMessageSentOnPlatform: Boolean
+  sentAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
 
   # Masked emails w/ display name of the recipients.
   to: [String!]!
@@ -14438,7 +14452,7 @@ type PartnerMeta {
   title: String
 }
 
-type PartnerOffer {
+type PartnerOffer implements Node {
   artworkId: String
   createdAt(
     format: String
@@ -14457,15 +14471,21 @@ type PartnerOffer {
     # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
-  id: String
+
+  # A globally unique ID.
+  id: ID!
 
   # A type-specific ID.
   internalID: ID!
   isAvailable: Boolean
   note: String
   partnerId: String
+  priceListed: Money
   priceListedMessage: String
+    @deprecated(reason: "This field is deprecated. Use 'priceListed' instead.")
+  priceWithDiscount: Money
   priceWithDiscountMessage: String
+    @deprecated(reason: "This field is deprecated. Use 'priceWithDiscount' instead.")
   userIds: [String]
 }
 
@@ -14508,6 +14528,62 @@ type PartnerOfferEdge {
 }
 
 enum PartnerOfferSorts {
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  END_AT_ASC
+  END_AT_DESC
+}
+
+type PartnerOfferToCollector implements Node {
+  artworkId: String
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  endAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID.
+  internalID: ID!
+  isAvailable: Boolean
+  partnerId: String
+  priceWithDiscount: Money
+}
+
+# A connection to a list of items.
+type PartnerOfferToCollectorConnection {
+  # A list of edges.
+  edges: [PartnerOfferToCollectorEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type PartnerOfferToCollectorEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: PartnerOfferToCollector
+}
+
+enum PartnerOfferToCollectorSorts {
   CREATED_AT_ASC
   CREATED_AT_DESC
   END_AT_ASC
@@ -14955,6 +15031,14 @@ type PublishViewingRoomPayload {
   viewingRoom: ViewingRoom!
 }
 
+type purchases {
+  # Total number of auction winning bids
+  totalAuctionCount: Int!
+
+  # Total number of private sales
+  totalPrivateSaleCount: Int!
+}
+
 type Query {
   # Do not use (only used internally for stitching)
   _do_not_use_conversation(
@@ -15347,6 +15431,7 @@ type Query {
     last: Int
     marketable: Boolean
     maxWorksPerArtist: Int
+    onlyAtAuction: Boolean = false
     page: Int
     userId: String
     version: String
@@ -18480,9 +18565,6 @@ type UpdateCollectorProfilePayload {
   clientMutationId: String
   collectedArtworksCount: Int!
   collectorLevel: Int
-
-  # List of artists the Collector is interested in.
-  collectorProfileArtists: [CollectorProfileArtists]
   companyName: String
   companyWebsite: String
   confirmedBuyerAt(
@@ -20089,6 +20171,7 @@ type Viewer {
     last: Int
     marketable: Boolean
     maxWorksPerArtist: Int
+    onlyAtAuction: Boolean = false
     page: Int
     userId: String
     version: String

@@ -30,7 +30,7 @@ describe("ActivityRail", () => {
     })
 
     expect(screen.getByText("Latest Activity Rail")).toBeOnTheScreen()
-    expect(screen.getByText(/mock-value-for-field-"title"/)).toBeOnTheScreen()
+    expect(screen.getByText(/mock-value-for-field-"headline"/)).toBeOnTheScreen()
   })
 
   it("handles header tap", () => {
@@ -98,16 +98,9 @@ describe("ActivityRail", () => {
       }),
     })
 
-    fireEvent.press(screen.getByText(/mock-value-for-field-"title"/))
+    fireEvent.press(screen.getByText(/mock-value-for-field-"headline"/))
 
-    expect(navigate).toHaveBeenCalledWith('<mock-value-for-field-"targetHref">', {
-      passProps: {
-        predefinedFilters: [
-          { displayText: "Recently Added", paramName: "sort", paramValue: "-published_at" },
-        ],
-        searchCriteriaID: undefined,
-      },
-    })
+    expect(navigate).toHaveBeenCalledWith("/notification/id-1")
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedActivityGroup",

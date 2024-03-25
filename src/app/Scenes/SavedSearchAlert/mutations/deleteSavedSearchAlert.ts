@@ -2,15 +2,17 @@ import { deleteSavedSearchAlertMutation } from "__generated__/deleteSavedSearchA
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { commitMutation, graphql } from "react-relay"
 
-export const deleteSavedSearchMutation = (savedSearchAlertId: string) => {
+export const deleteSavedSearchMutation = (id: string) => {
   return new Promise((resolve, reject) => {
     commitMutation<deleteSavedSearchAlertMutation>(getRelayEnvironment(), {
       mutation: graphql`
-        mutation deleteSavedSearchAlertMutation($input: DisableSavedSearchInput!) {
-          disableSavedSearch(input: $input) {
-            savedSearchOrErrors {
-              ... on SearchCriteria {
-                internalID
+        mutation deleteSavedSearchAlertMutation($input: deleteAlertInput!) {
+          deleteAlert(input: $input) {
+            responseOrError {
+              ... on DeleteAlertSuccess {
+                alert {
+                  internalID
+                }
               }
             }
           }
@@ -18,7 +20,7 @@ export const deleteSavedSearchMutation = (savedSearchAlertId: string) => {
       `,
       variables: {
         input: {
-          searchCriteriaID: savedSearchAlertId,
+          id,
         },
       },
       onCompleted: (response) => {

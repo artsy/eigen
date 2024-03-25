@@ -4,7 +4,6 @@ import { MasonryFlashList, MasonryFlashListProps } from "@shopify/flash-list"
 import { PriceOfferMessage } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { MasonryArtworkGridItem } from "app/Components/ArtworkGrids/MasonryArtworkGridItem"
 import { PAGE_SIZE } from "app/Components/constants"
-import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import {
   ESTIMATED_MASONRY_ITEM_SIZE,
   MasonryArtworkItem,
@@ -59,7 +58,6 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   ...rest
 }) => {
   const space = useSpace()
-  const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
   const shouldDisplaySpinner = !!artworks.length && !!isLoading && !!hasMore
   const shouldDisplayHeader = !!artworks.length && ListHeaderComponent !== undefined
 
@@ -74,7 +72,6 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       index={index}
       item={item}
       columnIndex={columnIndex}
-      navigateToPageableRoute={navigateToPageableRoute}
       contextScreenOwnerType={contextScreenOwnerType}
       contextScreen={contextScreen}
       contextScreenOwnerId={contextScreenOwnerId}

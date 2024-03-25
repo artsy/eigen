@@ -1,4 +1,4 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
 import {
   LightStarIcon,
   MoneyCircleIcon,
@@ -26,15 +26,17 @@ const reasons = [
 export const Highlights: React.FC = () => {
   return (
     <Flex px={2}>
-      {reasons.map(({ icon, title, text }) => (
-        <Flex mb={4} key={title + text}>
-          {icon}
-          <Text variant="md" mb={1} mt={0.5}>
-            {title}
-          </Text>
-          <Text variant="xs">{text}</Text>
-        </Flex>
-      ))}
+      <Join separator={<Spacer y={4} />}>
+        {reasons.map(({ icon, title, text }) => (
+          <Flex key={title + text}>
+            {icon}
+            <Text variant="md" mb={1} mt={0.5}>
+              {title}
+            </Text>
+            <Text variant="xs">{text}</Text>
+          </Flex>
+        ))}
+      </Join>
     </Flex>
   )
 }

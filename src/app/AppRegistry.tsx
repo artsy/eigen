@@ -27,6 +27,7 @@ import { PartnerOfferContainer } from "app/Scenes/PartnerOffer/PartnerOfferConta
 import { PriceDatabase } from "app/Scenes/PriceDatabase/PriceDatabase"
 import { RecentlyViewedScreenQuery } from "app/Scenes/RecentlyViewed/Components/RecentlyViewedArtworks"
 import { RecentlyViewedScreen } from "app/Scenes/RecentlyViewed/RecentlyViewed"
+import { AlertArtworks } from "app/Scenes/SavedSearchAlert/AlertArtworks"
 import { SearchScreen, SearchScreenQuery } from "app/Scenes/Search/Search"
 import { SimilarToRecentlyViewedScreen } from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
 import { ArtsyKeyboardAvoidingViewContext } from "app/utils/ArtsyKeyboardAvoidingView"
@@ -47,7 +48,7 @@ import { ArtistArticlesQueryRenderer } from "./Scenes/ArtistArticles/ArtistArtic
 import { ArtistSeriesQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeries"
 import { ArtistSeriesFullArtistSeriesListQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
 import { ArtistShows2QueryRenderer } from "./Scenes/ArtistShows/ArtistShows2"
-import { ArtworkPageableScreen, ArtworkScreenQuery } from "./Scenes/Artwork/Artwork"
+import { ArtworkScreen, ArtworkScreenQuery } from "./Scenes/Artwork/Artwork"
 import { CertificateOfAuthenticity } from "./Scenes/Artwork/Components/CertificateAuthenticity"
 import { UnlistedArtworksFAQScreen } from "./Scenes/Artwork/Components/UnlistedArtworksFAQScreen"
 import { ArtworkAttributionClassFAQQueryRenderer } from "./Scenes/ArtworkAttributionClassFAQ/ArtworkAttributionClassFAQ"
@@ -346,6 +347,11 @@ export const modules = defineModules({
   AddMyCollectionArtist: reactModule(AddMyCollectionArtist, {
     hidesBackButton: true,
   }),
+  AlertArtworks: reactModule(AlertArtworks, {
+    fullBleed: true,
+    hidesBackButton: true,
+    hidesBottomTabs: true,
+  }),
   ArtQuiz: reactModule(ArtQuiz, { ...artQuizScreenOptions, hidesBottomTabs: true }),
   ArtQuizResults: reactModule(ArtQuizResults, {
     fullBleed: true,
@@ -378,7 +384,7 @@ export const modules = defineModules({
     hidesBackButton: true,
   }),
   Artwork: reactModule(
-    ArtworkPageableScreen,
+    ArtworkScreen,
     {
       hidesBackButton: true,
       hidesBottomTabs: true,
@@ -624,7 +630,10 @@ export const modules = defineModules({
     SellWithArtsyHomeScreenQuery,
   ]),
   SalesNotRootTabView: reactModule(SellWithArtsy),
-  SavedSearchAlertsList: reactModule(SavedSearchAlertsListQueryRenderer),
+  SavedSearchAlertsList: reactModule(SavedSearchAlertsListQueryRenderer, {
+    fullBleed: true,
+    hidesBackButton: true,
+  }),
   Search: reactModule(SearchScreen, { isRootViewForTabName: "search" }, [SearchScreenQuery]),
   Show: reactModule(ShowQueryRenderer, { fullBleed: true }),
   ShowMoreInfo: reactModule(ShowMoreInfoQueryRenderer),

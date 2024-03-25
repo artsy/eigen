@@ -16,7 +16,7 @@ const App = () => {
     <Screen>
       <Screen.AnimatedHeader onBack={goBack} title="Activity" />
       <Screen.StickySubHeader title="Activity" />
-      <Screen.Body fullWidth>{children}</Screen.Body>
+      <Screen.Body fullwidth>{children}</Screen.Body>
     </Screen>
   )
 }
@@ -37,7 +37,7 @@ const App = () => {
     <Screen>
       <Screen.AnimatedHeader onBack={goBack} title="Activity" />
       <Screen.StickySubHeader title="Activity" />
-      <Screen.Body fullWidth>{children}</Screen.Body>
+      <Screen.Body fullwidth>{children}</Screen.Body>
     </Screen>
   )
 }
@@ -56,7 +56,7 @@ const App = () => {
   return (
     <Screen>
       <Screen.Header onBack={goBack} title="Activity" />
-      <Screen.Body fullWidth>{children}</Screen.Body>
+      <Screen.Body fullwidth>{children}</Screen.Body>
     </Screen>
   )
 }
@@ -78,7 +78,7 @@ const App = () => {
     <Screen>
       <Screen.AnimatedHeader onBack={goBack} title="Activity" />
       <Screen.StickySubHeader title="Activity" />
-      <Screen.Body fullWidth>
+      <Screen.Body fullwidth>
         <ComponentWithScrollView />
       </Screen.Body>
     </Screen>

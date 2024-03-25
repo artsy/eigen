@@ -1,6 +1,5 @@
-import { Spacer, Text, useSpace } from "@artsy/palette-mobile"
+import { Pill, Spacer, Text, useSpace } from "@artsy/palette-mobile"
 import { ArtistAboutRelatedGenes_genes$key } from "__generated__/ArtistAboutRelatedGenes_genes.graphql"
-import { Pill } from "app/Components/Pill"
 import { navigate } from "app/system/navigation/navigate"
 import { Fragment } from "react"
 import { ScrollView } from "react-native"
@@ -42,7 +41,7 @@ export const ArtistAboutRelatedGenes: React.FC<ArtistAboutRelatedGenesProps> = (
       >
         {data.slice(0, MAX_GENES).map(({ name, href, internalID }) => (
           <Fragment key={`gene-${internalID}`}>
-            <Pill rounded onPress={() => href && handlePillPress(href)}>
+            <Pill variant="default" onPress={() => href && handlePillPress(href)}>
               {name}
             </Pill>
             <Spacer x={1} y={4} />

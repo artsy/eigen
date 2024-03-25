@@ -6,7 +6,6 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { useItemsImpressionsTracking } from "app/Scenes/Home/Components/useImpressionsTracking"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
-import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   ArtworkActionTrackingProps,
@@ -47,8 +46,6 @@ export const ArtworkRecommendationsRail: React.FC<
 
   const artworks = extractNodes(artworkRecommendations)
 
-  const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
-
   if (!artworks.length) {
     return null
   }
@@ -68,8 +65,12 @@ export const ArtworkRecommendationsRail: React.FC<
           {...trackingProps}
           artworks={artworks}
           onPress={(artwork, position) => {
+            if (!artwork.href) {
+              return
+            }
+
             trackEvent(tracks.tappedArtwork(artwork.slug, artwork.internalID, position))
-            navigateToPageableRoute(artwork.href!)
+            navigate(artwork.href)
           }}
           onMorePress={() => handleMorePress("viewAll")}
           onViewableItemsChanged={onViewableItemsChanged}

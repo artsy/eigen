@@ -33,6 +33,7 @@ interface LegacyNativeModules {
   ArtsyNativeModule: {
     updateAuthState(userAccessToken: string, userAccessTokenExpiresIn: string, user: any): void
     clearUserData(): Promise<void>
+    getPushToken(): Promise<string | null>
   }
   ARNotificationsManager: {
     nativeState: NativeState
@@ -116,6 +117,7 @@ const LegacyNativeModulesAndroid = {
   ArtsyNativeModule: {
     updateAuthState: noop("updateAuthState"),
     clearUserData: () => Promise.resolve(),
+    getPushToken: () => Promise.resolve(null),
   },
 
   ARNotificationsManager: {

@@ -19,12 +19,12 @@ import { navigationEvents } from "app/system/navigation/navigate"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
-import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { merge } from "lodash"
 import { ActivityIndicator } from "react-native"
 import { createMockEnvironment } from "relay-test-utils"
-import { Artwork, ArtworkPageableScreen } from "./Artwork"
+import { Artwork, ArtworkScreen } from "./Artwork"
 import { ArtworksInSeriesRail } from "./Components/ArtworksInSeriesRail"
 import { OtherWorksFragmentContainer } from "./Components/OtherWorks/OtherWorks"
 
@@ -41,6 +41,7 @@ jest.mock("app/Components/Bidding/Context/TimeOffsetProvider", () => {
     }
 
     render() {
+      // eslint-disable-next-line testing-library/no-node-access
       return this.props.children
     }
   }
@@ -52,13 +53,12 @@ describe("Artwork", () => {
 
   const TestRenderer = ({ isVisible = true, onLoad = jest.fn() }) => (
     <ModalStack>
-      <ArtworkPageableScreen
+      <ArtworkScreen
         isVisible={isVisible}
         artworkID="ignored"
         environment={environment}
         tracking={{ trackEvent: jest.fn() } as any}
         onLoad={onLoad}
-        pageableSlugs={[]}
       />
     </ModalStack>
   )
@@ -79,11 +79,11 @@ describe("Artwork", () => {
     resolveMostRecentRelayOperation(environment)
 
     await flushPromiseQueue()
-    expect(screen.UNSAFE_queryByType(ArtworkScreenHeader)).toBeTruthy()
-    expect(screen.UNSAFE_queryByType(ImageCarousel)).toBeTruthy()
-    expect(screen.UNSAFE_queryByType(ArtworkDetails)).toBeTruthy()
-    expect(screen.UNSAFE_queryByType(ArtworkStickyBottomContent)).toBeTruthy()
-    expect(screen.UNSAFE_queryByType(ActivityIndicator)).toBeTruthy()
+    expect(screen.UNSAFE_queryByType(ArtworkScreenHeader)).toBeOnTheScreen()
+    expect(screen.UNSAFE_queryByType(ImageCarousel)).toBeOnTheScreen()
+    expect(screen.UNSAFE_queryByType(ArtworkDetails)).toBeOnTheScreen()
+    expect(screen.UNSAFE_queryByType(ArtworkStickyBottomContent)).toBeOnTheScreen()
+    expect(screen.UNSAFE_queryByType(ActivityIndicator)).toBeOnTheScreen()
   })
 
   it("renders all content after the full query has been resolved", async () => {
@@ -98,11 +98,11 @@ describe("Artwork", () => {
 
     await flushPromiseQueue()
 
-    expect(screen.UNSAFE_queryByType(ArtworkScreenHeader)).toBeTruthy()
-    expect(screen.UNSAFE_queryByType(ImageCarousel)).toBeTruthy()
-    expect(screen.UNSAFE_queryByType(ArtworkDetails)).toBeTruthy()
+    expect(screen.UNSAFE_queryByType(ArtworkScreenHeader)).toBeOnTheScreen()
+    expect(screen.UNSAFE_queryByType(ImageCarousel)).toBeOnTheScreen()
+    expect(screen.UNSAFE_queryByType(ArtworkDetails)).toBeOnTheScreen()
     expect(screen.UNSAFE_queryByType(ActivityIndicator)).toBeNull()
-    expect(screen.UNSAFE_queryByType(ArtworkHistory)).toBeTruthy()
+    expect(screen.UNSAFE_queryByType(ArtworkHistory)).toBeOnTheScreen()
   })
 
   describe("artist series components", () => {
@@ -134,8 +134,8 @@ describe("Artwork", () => {
 
       await flushPromiseQueue()
 
-      expect(screen.UNSAFE_queryByType(ArtistSeriesMoreSeries)).toBeTruthy()
-      expect(screen.UNSAFE_queryByType(ArtworksInSeriesRail)).toBeTruthy()
+      expect(screen.UNSAFE_queryByType(ArtistSeriesMoreSeries)).toBeOnTheScreen()
+      expect(screen.UNSAFE_queryByType(ArtworksInSeriesRail)).toBeOnTheScreen()
     })
 
     it("does not render when there are no artist series to show", async () => {
@@ -268,12 +268,12 @@ describe("Artwork", () => {
 
     await flushPromiseQueue()
 
-    expect(screen.queryByLabelText("Artwork Details")).toBeTruthy()
+    expect(screen.getByLabelText("Artwork Details")).toBeOnTheScreen()
   })
 
   it("updates the above-the-fold content on re-appear", async () => {
-    // TODO: remove the use of renderWithWrappersLEGACY
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    // eslint-disable-next-line testing-library/render-result-naming-convention
+    const tree = renderWithWrappers(<TestRenderer />)
 
     // ArtworkAboveTheFoldQuery
     resolveMostRecentRelayOperation(environment, {
@@ -284,6 +284,7 @@ describe("Artwork", () => {
 
     await flushPromiseQueue()
 
+    // eslint-disable-next-line testing-library/await-async-queries
     expect(tree.root.findByType(Artwork).props.artworkAboveTheFold.slug).toBe("my-special-artwork")
 
     expect(environment.mock.getMostRecentOperation()).toMatchObject({
@@ -343,6 +344,7 @@ describe("Artwork", () => {
     // ArtworkMarkAsRecentlyViewedQuery
     resolveMostRecentRelayOperation(environment)
 
+    // eslint-disable-next-line testing-library/await-async-queries
     expect(tree.root.findByType(Artwork).props.artworkAboveTheFold.slug).toBe(
       "completely-different-slug"
     )
@@ -365,7 +367,7 @@ describe("Artwork", () => {
           },
         })
 
-        expect(screen.queryByText("Enter live bidding")).toBeTruthy()
+        expect(screen.getByText("Enter live bidding")).toBeOnTheScreen()
       })
 
       it("for which I am not registered and registration is open", async () => {
@@ -385,8 +387,8 @@ describe("Artwork", () => {
 
         await flushPromiseQueue()
 
-        expect(screen.queryByText("Watch live bidding")).toBeTruthy()
-        expect(screen.queryByText("Registration closed")).toBeTruthy()
+        expect(screen.getByText("Watch live bidding")).toBeOnTheScreen()
+        expect(screen.getByText("Registration closed")).toBeOnTheScreen()
       })
 
       it("for which I am not registered and registration is closed", () => {
@@ -404,7 +406,7 @@ describe("Artwork", () => {
           },
         })
 
-        expect(screen.queryByText("Enter live bidding")).toBeTruthy()
+        expect(screen.getByText("Enter live bidding")).toBeOnTheScreen()
       })
     })
   })
@@ -433,9 +435,9 @@ describe("Artwork", () => {
         }),
       })
 
-      expect(screen.queryByText("Gallery")).toBeTruthy()
-      expect(screen.queryByText("Questions about this piece?")).toBeTruthy()
-      expect(screen.queryByText("Contact Gallery")).toBeTruthy()
+      expect(screen.getByText("Gallery")).toBeOnTheScreen()
+      expect(screen.getByText("Questions about this piece?")).toBeOnTheScreen()
+      expect(screen.getByText("Contact Gallery")).toBeOnTheScreen()
     })
 
     it("should not display contact gallery button when partner is not inquireable", () => {
@@ -461,15 +463,15 @@ describe("Artwork", () => {
         }),
       })
 
-      expect(screen.queryByText("Gallery")).toBeTruthy()
-      expect(screen.queryByText("Questions about this piece?")).toBeNull()
-      expect(screen.queryByText("Contact Gallery")).toBeNull()
+      expect(screen.getByText("Gallery")).toBeOnTheScreen()
+      expect(screen.queryByText("Questions about this piece?")).not.toBeOnTheScreen()
+      expect(screen.queryByText("Contact Gallery")).not.toBeOnTheScreen()
     })
   })
 
   describe("Shipping and taxes", () => {
-    it("should be rendered when the work has `for sale` availability", () => {
-      const { queryByText } = renderWithWrappers(<TestRenderer />)
+    it("should be rendered when the work has `for sale` availability", async () => {
+      renderWithWrappers(<TestRenderer />)
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment)
@@ -478,15 +480,18 @@ describe("Artwork", () => {
       // ArtworkBelowTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
+          isInAuction: false,
           isForSale: true,
         }),
       })
 
-      expect(queryByText("Shipping and taxes")).toBeDefined()
+      await flushPromiseQueue()
+
+      expect(screen.getByText("Shipping and taxes")).toBeOnTheScreen()
     })
 
     it("should NOT be rendered if the work has any other availability", () => {
-      const { queryByText } = renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment)
       // ArtworkMarkAsRecentlyViewedQuery
@@ -498,11 +503,11 @@ describe("Artwork", () => {
         }),
       })
 
-      expect(queryByText("Shipping and taxes")).toBeNull()
+      expect(screen.queryByText("Shipping and taxes")).not.toBeOnTheScreen()
     })
 
     it("should NOT be rendered if the work is in auction", () => {
-      const { queryByText } = renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
@@ -519,7 +524,7 @@ describe("Artwork", () => {
         }),
       })
 
-      expect(queryByText("Shipping and taxes")).toBeNull()
+      expect(screen.queryByText("Shipping and taxes")).not.toBeOnTheScreen()
     })
   })
 
@@ -541,8 +546,8 @@ describe("Artwork", () => {
       await flushPromiseQueue()
 
       expect(
-        screen.queryByText("Be covered by the Artsy Guarantee when you checkout with Artsy")
-      ).toBeTruthy()
+        screen.getByText("Be covered by the Artsy Guarantee when you check out with Artsy")
+      ).toBeOnTheScreen()
     })
 
     it("should not be displayed when ineligible for artsy guarantee", async () => {
@@ -562,7 +567,7 @@ describe("Artwork", () => {
       await flushPromiseQueue()
 
       expect(
-        screen.queryByText("Be covered by the Artsy Guarantee when you checkout with Artsy")
+        screen.queryByText("Be covered by the Artsy Guarantee when you check out with Artsy")
       ).toBeNull()
     })
   })
@@ -588,7 +593,7 @@ describe("Artwork", () => {
       await flushPromiseQueue()
 
       expect(screen.queryByText("Auction")).toBeNull()
-      expect(screen.UNSAFE_queryByType(OtherWorksFragmentContainer)).toBeTruthy()
+      expect(screen.UNSAFE_queryByType(OtherWorksFragmentContainer)).toBeOnTheScreen()
     })
 
     it("should be displayed if the work is in an auction", async () => {
@@ -618,8 +623,8 @@ describe("Artwork", () => {
 
       await flushPromiseQueue()
 
-      expect(screen.queryByText("Auction")).toBeTruthy()
-      expect(screen.queryByLabelText("Context Card Image")).toBeTruthy()
+      expect(screen.getByText("Auction")).toBeOnTheScreen()
+      expect(screen.getByLabelText("Context Card Image")).toBeOnTheScreen()
     })
   })
 
@@ -660,7 +665,7 @@ describe("Artwork", () => {
 
       await flushPromiseQueue()
 
-      expect(screen.getByText("About the work")).toBeTruthy()
+      expect(screen.getByText("About the work")).toBeOnTheScreen()
     })
   })
 
@@ -706,9 +711,9 @@ describe("Artwork", () => {
 
       await flushPromiseQueue()
 
-      expect(screen.getByText("Provenance")).toBeTruthy()
-      expect(screen.getByText("Exhibition history")).toBeTruthy()
-      expect(screen.getByText("Bibliography")).toBeTruthy()
+      expect(screen.getByText("Provenance")).toBeOnTheScreen()
+      expect(screen.getByText("Exhibition history")).toBeOnTheScreen()
+      expect(screen.getByText("Bibliography")).toBeOnTheScreen()
     })
   })
 
@@ -752,7 +757,7 @@ describe("Artwork", () => {
 
       await flushPromiseQueue()
 
-      expect(screen.getByText("About the artist")).toBeTruthy()
+      expect(screen.getByText("About the artist")).toBeOnTheScreen()
     })
   })
 
@@ -814,7 +819,7 @@ describe("Artwork", () => {
 
       await flushPromiseQueue()
 
-      expect(screen.queryByText("Grid Name")).toBeTruthy()
+      expect(screen.getByText("Grid Name")).toBeOnTheScreen()
     })
   })
 
@@ -840,7 +845,7 @@ describe("Artwork", () => {
       })
       await flushPromiseQueue()
 
-      expect(screen.queryByText(/Consign with Artsy/)).toBeTruthy()
+      expect(screen.getByText(/Consign with Artsy/)).toBeOnTheScreen()
     })
 
     it("doesn't render section", async () => {

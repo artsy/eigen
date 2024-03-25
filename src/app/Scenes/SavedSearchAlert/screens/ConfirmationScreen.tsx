@@ -12,7 +12,6 @@ import { CreateSavedSearchAlertNavigationStack } from "app/Scenes/SavedSearchAle
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { useSavedSearchPills } from "app/Scenes/SavedSearchAlert/useSavedSearchPills"
 import { navigate } from "app/system/navigation/navigate"
-import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 import { withSuspense } from "app/utils/hooks/withSuspense"
@@ -122,6 +121,7 @@ const MatchingArtworksPlaceholder: React.FC = () => {
 
 const MatchingArtworksContainer: React.FC<{ closeModal?: () => void }> = withSuspense(
   ({ closeModal }) => {
+    // TODO: instead of using artworksConnection and passing attributes from the store, use `alert.artworksConnection` field instead.
     const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
     const currentArtworkID = SavedSearchStore.useStoreState((state) => state.currentArtworkID)
     const data = useLazyLoadQuery<ConfirmationScreenMatchingArtworksQuery>(matchingArtworksQuery, {
@@ -166,7 +166,6 @@ const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection,
   const artworks = extractNodes(artworksConnection)
   const total = artworksConnection?.counts?.total
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
-  const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
 
   const areMoreMatchesAvailable =
     total > NUMBER_OF_ARTWORKS_TO_SHOW && attributes?.artistIDs?.length === 1
@@ -176,7 +175,7 @@ const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection,
     requestAnimationFrame(() => {
       navigate(`/artist/${attributes.artistIDs?.[0]}`, {
         passProps: {
-          searchCriteriaID: route.params.searchCriteriaID,
+          search_criteria_id: route.params.searchCriteriaID,
         },
       })
     })
@@ -216,7 +215,7 @@ const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection,
           closeModal?.()
           tracks.tappedArtworkGroup(slug)
           requestAnimationFrame(() => {
-            navigateToPageableRoute?.(`artwork/${slug}`)
+            navigate?.(`artwork/${slug}`)
           })
         }}
       />

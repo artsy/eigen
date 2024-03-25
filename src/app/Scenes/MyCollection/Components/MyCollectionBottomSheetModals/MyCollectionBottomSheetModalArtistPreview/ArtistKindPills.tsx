@@ -1,6 +1,5 @@
-import { Join, Spacer, useSpace } from "@artsy/palette-mobile"
+import { Join, Pill, Spacer, useSpace } from "@artsy/palette-mobile"
 import { ArtistKindPills_artist$key } from "__generated__/ArtistKindPills_artist.graphql"
-import { Pill } from "app/Components/Pill"
 import { ScrollView } from "react-native"
 import { useFragment, graphql } from "react-relay"
 
@@ -28,7 +27,7 @@ export const ArtistKindPills: React.FC<ArtistKindPillsProps> = ({ artist }) => {
     >
       <Join separator={<Spacer x={1} />}>
         {data.insights.map((i: any, index: number) => (
-          <Pill key={index} rounded badge>
+          <Pill key={index} variant="badge" disabled>
             {i.label}
           </Pill>
         ))}

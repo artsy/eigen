@@ -1,5 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { createMockEnvironment } from "relay-test-utils"
@@ -50,10 +49,6 @@ describe("New SellWithArtsyLandingPage", () => {
 
     beforeEach(() => {
       mockEnvironment = createMockEnvironment()
-      __globalStoreTestUtils__?.injectFeatureFlags({
-        AREnableSWALandingPageMeetTheSpecialist: true,
-        AREnableSWALandingPageTestimonials: true,
-      })
     })
 
     const TestWrapper = () => {
@@ -63,8 +58,8 @@ describe("New SellWithArtsyLandingPage", () => {
     // HEADER
     describe("Header Events", () => {
       it("tracks Consign Events", () => {
-        const { getByTestId } = renderWithWrappers(<TestWrapper />)
-        const headerConsignButton = getByTestId("header-consign-CTA")
+        renderWithWrappers(<TestWrapper />)
+        const headerConsignButton = screen.getByTestId("header-consign-CTA")
 
         fireEvent(headerConsignButton, "onPress")
         expect(mockTrackEvent).toHaveBeenCalledTimes(1)
@@ -80,8 +75,8 @@ describe("New SellWithArtsyLandingPage", () => {
       })
 
       it("tracks Inquiry Events", () => {
-        const { getByTestId } = renderWithWrappers(<TestWrapper />)
-        const headerInquiryButton = getByTestId("Header-inquiry-CTA")
+        renderWithWrappers(<TestWrapper />)
+        const headerInquiryButton = screen.getByTestId("Header-inquiry-CTA")
 
         fireEvent(headerInquiryButton, "onPress")
         expect(mockTrackEvent).toHaveBeenCalledTimes(1)
@@ -100,8 +95,8 @@ describe("New SellWithArtsyLandingPage", () => {
     // HOWITWORKS
     describe("HowItWorks Events", () => {
       it("tracks Consign Events", () => {
-        const { getByTestId } = renderWithWrappers(<TestWrapper />)
-        const headerConsignButton = getByTestId("HowItWorks-consign-CTA")
+        renderWithWrappers(<TestWrapper />)
+        const headerConsignButton = screen.getByTestId("HowItWorks-consign-CTA")
 
         fireEvent(headerConsignButton, "onPress")
         expect(mockTrackEvent).toHaveBeenCalledTimes(1)
@@ -120,8 +115,8 @@ describe("New SellWithArtsyLandingPage", () => {
     // MEETTHESPECIALISTS
     describe("MeetTheSpecialists Events", () => {
       it("tracks Inquiry Events", () => {
-        const { getByTestId } = renderWithWrappers(<TestWrapper />)
-        const headerConsignButton = getByTestId("MeetTheSpecialists-inquiry-CTA")
+        renderWithWrappers(<TestWrapper />)
+        const headerConsignButton = screen.getByTestId("MeetTheSpecialists-inquiry-CTA")
 
         fireEvent(headerConsignButton, "onPress")
         expect(mockTrackEvent).toHaveBeenCalledTimes(1)
@@ -140,8 +135,8 @@ describe("New SellWithArtsyLandingPage", () => {
     // SPEAKTOTHETEAM
     describe("SpeakToTheTeam Events", () => {
       it("tracks Inquiry Events", () => {
-        const { getByTestId } = renderWithWrappers(<TestWrapper />)
-        const headerConsignButton = getByTestId("SpeakToTheTeam-inquiry-CTA")
+        renderWithWrappers(<TestWrapper />)
+        const headerConsignButton = screen.getByTestId("SpeakToTheTeam-inquiry-CTA")
 
         fireEvent(headerConsignButton, "onPress")
         expect(mockTrackEvent).toHaveBeenCalledTimes(1)

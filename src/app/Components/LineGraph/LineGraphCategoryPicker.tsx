@@ -1,5 +1,4 @@
-import { Flex, Spacer, useSpace, useColor, Text } from "@artsy/palette-mobile"
-import { Pill } from "app/Components/Pill"
+import { Flex, Spacer, useSpace, useColor, Pill, Text } from "@artsy/palette-mobile"
 import { memo, useEffect, useRef, useState } from "react"
 import { Dimensions, LayoutRectangle, ViewProps } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
@@ -57,9 +56,9 @@ export const LineGraphCategoryPicker: React.FC<LineGraphCategoryPickerProps> = m
         }
         let left = 20
         for (let i = 0; i < selectedIndex; i++) {
-          left += categoryLayouts[i]!.width
+          left += categoryLayouts[i]?.width ?? 0
         }
-        const center = left + categoryLayouts[selectedIndex]!.width / 2
+        const center = left + (categoryLayouts[selectedIndex]?.width ?? 0) / 2
         const scrollLeft = center - screenWidth / 2
         scrollViewRef.current?.scrollTo({ x: scrollLeft })
       }
@@ -128,7 +127,6 @@ export const CategoryPill: React.FC<CategoryPillProps> = ({
 
   const isEnabled = selectedCategory === category
 
-  const borderColor = isEnabled ? color("black60") : color("black30")
   const textColor = isEnabled ? color("black100") : color("black60")
   const pillDotColor = isEnabled ? dotColor : color("black30")
 
@@ -138,25 +136,11 @@ export const CategoryPill: React.FC<CategoryPillProps> = ({
 
   return (
     <Pill
-      highlightEnabled
       Icon={() => <ColoredDot color={pillDotColor} />}
-      rounded
       onPress={handlePress}
       onLayout={onLayout}
       testID="categoryPill"
       hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
-      stateStyle={{
-        pressed: {
-          textColor: dotColor,
-          backgroundColor: color("white100"),
-          borderColor: dotColor,
-        },
-        enabled: {
-          textColor: color("black100"),
-          backgroundColor: color("white100"),
-          borderColor,
-        },
-      }}
     >
       <Text variant="xs" color={textColor}>
         {category}

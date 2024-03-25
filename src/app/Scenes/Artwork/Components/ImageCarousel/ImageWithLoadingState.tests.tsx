@@ -1,19 +1,25 @@
 import { screen } from "@testing-library/react-native"
-import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { Image } from "react-native"
 import { ImageWithLoadingState } from "./ImageWithLoadingState"
 
 const imageURL = "https://image.com/image.jpg"
 const style = { width: 100, height: 300 }
 
+// React-test-renderer has issues with memo components, so we need to mock the palette-mobile Image component
+// Until it gets fixed
+// See https://github.com/facebook/react/issues/17301
+jest.mock("@artsy/palette-mobile", () => ({
+  ...jest.requireActual("@artsy/palette-mobile"),
+  Image: require("react-native").Image,
+}))
+
 describe("ImageWithLoadingState", () => {
   it("renders the image", async () => {
-    // Add 'async' keyword to the test function
     renderWithWrappers(<ImageWithLoadingState imageURL={imageURL} {...style} />)
     const images = screen.getAllByLabelText("Image with Loading State")
 
     expect(images).toHaveLength(1)
-    const image = await images[0].findByType(OpaqueImageView)
-    expect(image.props.imageURL).toBe(imageURL)
+    expect(await images[0].findByType(Image)).toHaveProp("src", imageURL)
   })
 })

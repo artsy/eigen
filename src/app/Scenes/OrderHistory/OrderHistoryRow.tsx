@@ -1,11 +1,12 @@
-import { Flex, Box, Text, Button } from "@artsy/palette-mobile"
+import { Flex, Box, Text, Button, Image } from "@artsy/palette-mobile"
 import { OrderHistoryRow_order$data } from "__generated__/OrderHistoryRow_order.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { getOrderStatus } from "app/utils/getOrderStatus"
 import { getTrackingUrl } from "app/utils/getTrackingUrl"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import moment from "moment"
-import { Image, Linking } from "react-native"
+import { Linking } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface OrderHistoryRowProps {
@@ -15,6 +16,7 @@ interface OrderHistoryRowProps {
 export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
   const [lineItem] = extractNodes(order?.lineItems)
   const { artwork, artworkVersion } = lineItem || {}
+  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
   const trackingUrl = getTrackingUrl(lineItem)
   const orderStatus = getOrderStatus(order.displayState)
   const orderIsInactive = orderStatus === "canceled" || orderStatus === "refunded"
@@ -29,8 +31,10 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
           <Flex justifyContent="center" testID="image-container" mr={2}>
             {!!artworkImageUrl ? (
               <Image
-                source={{ uri: artworkImageUrl }}
-                style={{ height: 50, width: 50 }}
+                src={artworkImageUrl}
+                blurhash={showBlurhash ? artworkVersion.image.blurhash : undefined}
+                height={50}
+                width={50}
                 testID="image"
               />
             ) : (
@@ -126,6 +130,7 @@ export const OrderHistoryRowContainer = createFragmentContainer(OrderHistoryRow,
                 resized(width: 55) {
                   url
                 }
+                blurhash
               }
             }
             artwork {

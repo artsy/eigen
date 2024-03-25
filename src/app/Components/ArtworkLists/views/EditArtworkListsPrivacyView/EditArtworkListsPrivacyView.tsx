@@ -1,10 +1,10 @@
 import { Flex } from "@artsy/palette-mobile"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
-import { AutomountedBottomSheetModal } from "app/Components/ArtworkLists/components/AutomountedBottomSheetModal"
 import { EditArtworkListsPrivacy } from "app/Components/ArtworkLists/views/EditArtworkListsPrivacyView/components/EditArtworkListsPrivacy"
 import { EditArtworkListsPrivacyHeader } from "app/Components/ArtworkLists/views/EditArtworkListsPrivacyView/components/EditArtworkListsPrivacyHeader"
 import { EditArtworkListsPrivacyStickyBottomContent } from "app/Components/ArtworkLists/views/EditArtworkListsPrivacyView/components/EditArtworkListsPrivacyStickyBottomContent"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
+import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 
 const SNAP_POINTS = ["50%", "95%"]
 

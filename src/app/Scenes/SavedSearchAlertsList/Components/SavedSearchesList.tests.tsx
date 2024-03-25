@@ -1,5 +1,6 @@
-import { fireEvent, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { SavedSearchesListTestsQuery } from "__generated__/SavedSearchesListTestsQuery.graphql"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { SavedSearchesListPaginationContainer as SavedSearchesList } from "./SavedSearchesList"
@@ -22,83 +23,124 @@ describe("SavedSearches", () => {
   })
 
   it("renders correctly", () => {
-    const { getByText } = renderWithRelay({
-      SearchCriteriaConnection: () => ({
-        edges: [
-          {
-            node: {
-              displayName: "one",
+    renderWithRelay({
+      Me: () => ({
+        alertsConnection: {
+          edges: [
+            {
+              node: {
+                title: "Banksy",
+                subtitle: "Prints",
+              },
             },
-          },
-          {
-            node: {
-              displayName: "two",
+            {
+              node: {
+                title: "KAWS",
+              },
             },
-          },
-        ],
+          ],
+        },
       }),
     })
 
-    expect(getByText("one")).toBeTruthy()
-    expect(getByText("two")).toBeTruthy()
+    expect(screen.getByText("Banksy")).toBeTruthy()
+    expect(screen.getByText("Prints")).toBeTruthy()
+    expect(screen.getByText("KAWS")).toBeTruthy()
   })
 
   it("renders an empty message if there are no saved search alerts", () => {
-    const { getByText } = renderWithRelay({
-      SearchCriteriaConnection: () => ({
-        edges: [],
+    renderWithRelay({
+      Me: () => ({
+        alertsConnection: {
+          edges: [],
+        },
       }),
     })
 
-    expect(getByText("Get notifications when there’s a match.")).toBeTruthy()
+    expect(screen.getByText("Get notifications when there’s a match.")).toBeTruthy()
   })
 
   it("renders the default name placeholder if there is no name for saved search alert", () => {
-    const { getByText } = renderWithRelay({
-      SearchCriteriaConnection: () => ({
-        edges: [
-          {
-            node: {
-              displayName: "one",
+    renderWithRelay({
+      Me: () => ({
+        alertsConnection: {
+          edges: [
+            {
+              node: {
+                title: "Banksy",
+                subtitle: "Prints",
+              },
             },
-          },
-          {
-            node: {
-              displayName: null,
+            {
+              node: {
+                title: null,
+              },
             },
-          },
-        ],
+          ],
+        },
       }),
     })
 
-    expect(getByText("one")).toBeTruthy()
-    expect(getByText("Untitled Alert")).toBeTruthy()
+    expect(screen.getByText("Banksy")).toBeTruthy()
+    expect(screen.getByText("Untitled Alert")).toBeTruthy()
   })
 
   it("should display Sort By button", () => {
-    const { getByText } = renderWithRelay()
+    renderWithRelay()
 
-    expect(getByText("Sort By")).toBeTruthy()
+    expect(screen.getByText("Sort By")).toBeTruthy()
   })
 
   it("should display sort options when Sort By button is pressed", () => {
-    const { getByText } = renderWithRelay()
+    renderWithRelay()
 
-    fireEvent.press(getByText("Sort By"))
+    fireEvent.press(screen.getByText("Sort By"))
 
-    expect(getByText("Recently Added")).toBeTruthy()
-    expect(getByText("Name (A-Z)")).toBeTruthy()
+    expect(screen.getByText("Recently Added")).toBeTruthy()
+    expect(screen.getByText("Name (A-Z)")).toBeTruthy()
   })
 
   it("should pass selected sort option to query variables", async () => {
-    const { getByText, env } = renderWithRelay()
+    const { env } = renderWithRelay()
 
-    fireEvent.press(getByText("Sort By"))
-    fireEvent.press(getByText("Name (A-Z)"))
+    fireEvent.press(screen.getByText("Sort By"))
+    fireEvent.press(screen.getByText("Name (A-Z)"))
 
     await waitFor(() => {
       const operation = env.mock.getMostRecentOperation()
       expect(operation.fragment.variables.sort).toBe("NAME_ASC")
+    })
+  })
+
+  describe("tapping on an alert", () => {
+    it("opens the bottom sheet", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAlertBottomSheet: true })
+
+      renderWithRelay({
+        Me: () => ({
+          alertsConnection: {
+            edges: [
+              {
+                node: {
+                  internalID: "banksy",
+                  title: "Banksy",
+                  artworksConnection: {
+                    counts: {
+                      total: 57,
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        }),
+      })
+
+      fireEvent.press(screen.getByText("Banksy"))
+
+      expect(screen.getByText("Edit Alert")).toBeTruthy()
+      expect(screen.getByText(/View Artworks/)).toBeTruthy()
+      expect(screen.getByText(/57/)).toBeTruthy()
     })
   })
 })

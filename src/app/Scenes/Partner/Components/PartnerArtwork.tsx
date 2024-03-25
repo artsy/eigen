@@ -9,7 +9,6 @@ import {
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { TabEmptyState } from "app/Components/TabEmptyState"
-import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
 
 import {
@@ -44,8 +43,6 @@ export const PartnerArtwork: React.FC<{
       relay.loadMore(10)
     }
   }, [relay.hasMore(), relay.isLoading()])
-
-  const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
 
   const shouldDisplaySpinner = !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
 
@@ -82,7 +79,6 @@ export const PartnerArtwork: React.FC<{
                 contextScreenOwnerSlug={partner.slug}
                 artwork={item}
                 height={imgHeight}
-                navigateToPageableRoute={navigateToPageableRoute}
               />
             </Flex>
           )

@@ -13,7 +13,6 @@ import ParentAwareScrollView from "app/Components/ParentAwareScrollView"
 import { PAGE_SIZE } from "app/Components/constants"
 import { MyCollectionArtworkGridItemFragmentContainer } from "app/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkGridItem"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
-import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
@@ -201,8 +200,6 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
 }) => {
   const artworks = extractNodes(connection)
 
-  const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
-
   const getSectionDimension = (gridWidth: number | null | undefined) => {
     // Setting the dimension to 1 for tests to avoid adjusting the screen width
     if (__TEST__) {
@@ -211,10 +208,10 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
 
     if (gridWidth) {
       // This is the sum of all margins in between sections, so do not count to the right of last column.
-      const sectionMargins = sectionMargin! * (sectionCount! - 1)
+      const sectionMargins = sectionMargin * (sectionCount - 1)
       const artworkPadding = shouldAddPadding ? 40 : 0
 
-      return (gridWidth - sectionMargins - artworkPadding) / sectionCount!
+      return (gridWidth - sectionMargins - artworkPadding) / sectionCount
     }
     return 0
   }
@@ -229,7 +226,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
 
     setLocalIsLoading(true)
 
-    loadMore(pageSize!, (error) => {
+    loadMore(pageSize, (error) => {
       setLocalIsLoading(false)
       if (error) {
         // FIXME: Handle error
@@ -331,7 +328,6 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
             showLotLabel={showLotLabel}
             itemIndex={itemIndex}
             updateRecentSearchesOnTap={updateRecentSearchesOnTap}
-            navigateToPageableRoute={navigateToPageableRoute}
             {...itemComponentProps}
             height={imgHeight}
             {...componentSpecificProps}
@@ -477,6 +473,7 @@ export const InfiniteScrollArtworksGridContainer = createFragmentContainer(
             id
             image(includeAll: false) {
               aspectRatio
+              blurhash
             }
             ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
             ...MyCollectionArtworkGridItem_artwork
@@ -508,6 +505,7 @@ export const InfiniteScrollMyCollectionArtworksGridContainer = createFragmentCon
             id
             image(includeAll: true) {
               aspectRatio
+              blurhash
             }
             artistNames
             medium

@@ -1,7 +1,6 @@
 import { ActionType, ContextModule, OwnerType, TappedConsignmentInquiry } from "@artsy/cohesion"
-import { Flex, Spacer, Text, useColor, useSpace, Button } from "@artsy/palette-mobile"
+import { Flex, Spacer, Text, useColor, useSpace, Button, Pill } from "@artsy/palette-mobile"
 import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
-import { Pill } from "app/Components/Pill"
 import { ReadMore } from "app/Components/ReadMore"
 import {
   SpecialistsData,
@@ -27,7 +26,6 @@ type InqueryPress = (
 export const MeetTheSpecialists: React.FC<{
   onInquiryPress: InqueryPress
 }> = ({ onInquiryPress }) => {
-  const color = useColor()
   const space = useSpace()
 
   const [specialityFilter, setSpecialityFilter] = useState<Specialty | null>(null)
@@ -79,24 +77,11 @@ export const MeetTheSpecialists: React.FC<{
         {pillLabels.map((pill) => (
           <Pill
             key={pill.title}
-            rounded
             selected={specialityFilter === pill.type}
             onPress={() => {
               setSpecialityFilter(specialityFilter === pill.type ? null : pill.type)
             }}
             mr={1}
-            stateStyle={{
-              pressed: {
-                textColor: color("white100"),
-                backgroundColor: color("black60"),
-                borderColor: color("white100"),
-              },
-              selected: {
-                textColor: color("white100"),
-                backgroundColor: color("black100"),
-                borderColor: color("black100"),
-              },
-            }}
           >
             {pill.title}
           </Pill>

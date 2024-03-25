@@ -1,17 +1,20 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex, Spinner, useTheme } from "@artsy/palette-mobile"
+import { Flex, Screen, Separator, Spinner, useTheme } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
 import { SavedSearchesList_me$data } from "__generated__/SavedSearchesList_me.graphql"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { SortByModal, SortOption } from "app/Components/SortByModal/SortByModal"
 import { SAVED_SERCHES_PAGE_SIZE } from "app/Components/constants"
+import {
+  AlertBottomSheet,
+  BottomSheetAlert,
+} from "app/Scenes/SavedSearchAlertsList/Components/AlertBottomSheet"
 import { GoBackProps, goBack, navigate, navigationEvents } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { RefreshEvents, SAVED_ALERT_REFRESH_KEY } from "app/utils/refreshHelpers"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useEffect, useRef, useState } from "react"
-import { FlatList } from "react-native"
 import { RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
 import { EmptyMessage } from "./EmptyMessage"
@@ -31,17 +34,19 @@ interface SavedSearchesListProps extends SavedSearchListWrapperProps {
   fetchingMore: boolean
   onRefresh: (type: RefreshType) => void
   onLoadMore: () => void
+  onAlertPress: (alert: BottomSheetAlert) => void
 }
 
 const SORT_OPTIONS: SortOption[] = [
-  { value: "CREATED_AT_DESC", text: "Recently Added" },
+  { value: "ENABLED_AT_DESC", text: "Recently Added" },
   { value: "NAME_ASC", text: "Name (A-Z)" },
 ]
 
 export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
-  const { me, fetchingMore, refreshMode, onRefresh, onLoadMore } = props
+  const { me, fetchingMore, refreshMode, onRefresh, onLoadMore, onAlertPress } = props
   const { space } = useTheme()
-  const items = extractNodes(me.savedSearchesConnection)
+  const enableTapToShowBottomSheet = useFeatureFlag("AREnableAlertBottomSheet")
+  const items = extractNodes(me.alertsConnection)
 
   const refresh = () => {
     onRefresh("default")
@@ -67,7 +72,7 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
   }
 
   return (
-    <FlatList
+    <Screen.FlatList
       data={items}
       keyExtractor={(item) => item.internalID}
       contentContainerStyle={{ paddingVertical: space(1) }}
@@ -75,12 +80,24 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
       onRefresh={() => {
         onRefresh("default")
       }}
+      ItemSeparatorComponent={() => <Separator borderColor="black5" />}
       renderItem={({ item }) => {
         return (
           <SavedSearchListItem
-            title={item.displayName}
+            title={item.title}
+            subtitle={item.subtitle}
             onPress={() => {
-              navigate(`settings/alerts/${item.internalID}/edit`)
+              if (!!enableTapToShowBottomSheet) {
+                const artworksCount = item.artworksConnection?.counts?.total ?? 0
+
+                onAlertPress({
+                  id: item.internalID,
+                  title: item.title,
+                  artworksCount: artworksCount,
+                })
+              } else {
+                navigate(`settings/alerts/${item.internalID}/edit`)
+              }
             }}
           />
         )
@@ -100,8 +117,10 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
 export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (props) => {
   const { relay } = props
 
+  const enableTapToShowBottomSheet = useFeatureFlag("AREnableAlertBottomSheet")
   const [modalVisible, setModalVisible] = useState(false)
-  const [selectedSortValue, setSelectedSortValue] = useState("CREATED_AT_DESC")
+  const [selectedAlert, setSelectedAlert] = useState<BottomSheetAlert | null>(null)
+  const [selectedSortValue, setSelectedSortValue] = useState("ENABLED_AT_DESC")
   const prevSelectedSortValue = usePrevious(selectedSortValue)
   const [fetchingMore, setFetchingMore] = useState(false)
   const [refreshMode, setRefreshMode] = useState<RefreshType | null>(null)
@@ -190,34 +209,44 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
         context_screen_owner_type: OwnerType.savedSearch,
       }}
     >
-      <FancyModalHeader
-        hideBottomDivider
-        onLeftButtonPress={goBack}
-        onRightButtonPress={() => {
-          setModalVisible(true)
-        }}
-        renderRightButton={() => {
-          return <SortButton onPress={() => setModalVisible(true)} />
-        }}
-      >
-        Alerts
-      </FancyModalHeader>
+      <Screen>
+        <Screen.AnimatedHeader
+          onBack={goBack}
+          title="Alerts"
+          rightElements={<SortButton onPress={() => setModalVisible(true)} />}
+        />
 
-      <SavedSearchesList
-        {...props}
-        fetchingMore={fetchingMore}
-        refreshMode={refreshMode}
-        onRefresh={onRefresh}
-        onLoadMore={handleLoadMore}
-      />
-      <SortByModal
-        visible={modalVisible}
-        options={SORT_OPTIONS}
-        selectedValue={selectedSortValue}
-        onCloseModal={handleCloseModal}
-        onSelectOption={handleSelectOption}
-        onModalFinishedClosing={handleSortByModalClosed}
-      />
+        <Screen.StickySubHeader title="Alerts" />
+
+        <Screen.Body fullwidth>
+          <SavedSearchesList
+            {...props}
+            fetchingMore={fetchingMore}
+            refreshMode={refreshMode}
+            onRefresh={onRefresh}
+            onLoadMore={handleLoadMore}
+            onAlertPress={(alert: BottomSheetAlert) => {
+              setSelectedAlert(alert)
+            }}
+          />
+          <SortByModal
+            visible={modalVisible}
+            options={SORT_OPTIONS}
+            selectedValue={selectedSortValue}
+            onCloseModal={handleCloseModal}
+            onSelectOption={handleSelectOption}
+            onModalFinishedClosing={handleSortByModalClosed}
+          />
+          {!!enableTapToShowBottomSheet && !!selectedAlert && (
+            <AlertBottomSheet
+              alert={selectedAlert}
+              onDismiss={() => {
+                setSelectedAlert(null)
+              }}
+            />
+          )}
+        </Screen.Body>
+      </Screen>
     </ProvideScreenTracking>
   )
 }
@@ -228,13 +257,12 @@ export const SavedSearchesListPaginationContainer = createPaginationContainer(
     me: graphql`
       fragment SavedSearchesList_me on Me
       @argumentDefinitions(
-        artistIDs: { type: "[String!]", defaultValue: [] }
         count: { type: "Int", defaultValue: 20 }
         cursor: { type: "String" }
-        sort: { type: "SavedSearchesSortEnum", defaultValue: CREATED_AT_DESC }
+        sort: { type: "AlertsConnectionSortEnum", defaultValue: ENABLED_AT_DESC }
       ) {
-        savedSearchesConnection(first: $count, after: $cursor, artistIDs: $artistIDs, sort: $sort)
-          @connection(key: "SavedSearches_savedSearchesConnection") {
+        alertsConnection(first: $count, after: $cursor, sort: $sort)
+          @connection(key: "SavedSearches_alertsConnection") {
           pageInfo {
             hasNextPage
             startCursor
@@ -244,7 +272,13 @@ export const SavedSearchesListPaginationContainer = createPaginationContainer(
             node {
               internalID
               artistSeriesIDs
-              displayName
+              title: displayName(only: [artistIDs])
+              subtitle: displayName(except: [artistIDs])
+              artworksConnection(first: 1) {
+                counts {
+                  total
+                }
+              }
             }
           }
         }
@@ -260,18 +294,12 @@ export const SavedSearchesListPaginationContainer = createPaginationContainer(
       }
     },
     getConnectionFromProps(props) {
-      return props.me.savedSearchesConnection
+      return props.me.alertsConnection
     },
     query: graphql`
-      query SavedSearchesListQuery(
-        $artistIDs: [String!]
-        $count: Int!
-        $cursor: String
-        $sort: SavedSearchesSortEnum
-      ) {
+      query SavedSearchesListQuery($count: Int!, $cursor: String, $sort: AlertsConnectionSortEnum) {
         me {
-          ...SavedSearchesList_me
-            @arguments(artistIDs: $artistIDs, count: $count, cursor: $cursor, sort: $sort)
+          ...SavedSearchesList_me @arguments(count: $count, cursor: $cursor, sort: $sort)
         }
       }
     `,
