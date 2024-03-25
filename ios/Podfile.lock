@@ -203,9 +203,9 @@ PODS:
     - AppAuth/Core (~> 1.6)
     - GTMSessionFetcher/Core (< 3.0, >= 1.5)
   - GTMSessionFetcher/Core (1.7.2)
-  - hermes-engine (0.72.10):
-    - hermes-engine/Pre-built (= 0.72.10)
-  - hermes-engine/Pre-built (0.72.10)
+  - hermes-engine (0.72.12):
+    - hermes-engine/Pre-built (= 0.72.12)
+  - hermes-engine/Pre-built (0.72.12)
   - Interstellar/Core (2.0.0)
   - INTUAnimationEngine (1.4.2):
     - INTUAnimationEngine/SpringSolver (= 1.4.2)
@@ -1352,7 +1352,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: 0759d1a57ebb953965c2dfe0ba4c82e95ccc2e34
   GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
   GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
-  hermes-engine: 90e4033deb00bee33330a9f15eff0f874bd82f6d
+  hermes-engine: e89344b9e9e54351c3c5cac075e0275148fb37ba
   Interstellar: ab67502af03105f92100a043e178d188a1a437c9
   INTUAnimationEngine: 3a7d63738cd51af573d16848a771feedea7cc9f2
   ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
