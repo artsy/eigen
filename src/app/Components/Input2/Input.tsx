@@ -128,7 +128,6 @@ export const Input = forwardRef<InputRef, InputProps>(
     const { width: rightComponentWidth = 0 } = useMeasure({ ref: rightComponentRef })
 
     const handleChangeText = (text: string) => {
-      "worklet"
       onChangeText(text)
     }
 
