@@ -1,8 +1,8 @@
-import { Input, InputProps } from "@artsy/palette-mobile"
+import { Input2, Input2Props } from "@artsy/palette-mobile"
 import { useBottomSheetInternal } from "@gorhom/bottom-sheet"
 import { memo, useCallback, forwardRef } from "react"
 
-const BottomSheetInputComponent = forwardRef<Input, InputProps>(
+const BottomSheetInputComponent = forwardRef<Input2, Input2Props>(
   ({ onFocus, onBlur, ...rest }, ref) => {
     const { shouldHandleKeyboardEvents } = useBottomSheetInternal()
 
@@ -22,7 +22,7 @@ const BottomSheetInputComponent = forwardRef<Input, InputProps>(
       [onBlur, shouldHandleKeyboardEvents]
     )
 
-    return <Input ref={ref} onFocus={handleOnFocus} onBlur={handleOnBlur} {...rest} />
+    return <Input2 ref={ref} onFocus={handleOnFocus} onBlur={handleOnBlur} {...rest} />
   }
 )
 

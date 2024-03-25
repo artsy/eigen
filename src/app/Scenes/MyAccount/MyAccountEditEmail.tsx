@@ -1,6 +1,6 @@
+import { Input2 } from "@artsy/palette-mobile"
 import { MyAccountEditEmailQuery } from "__generated__/MyAccountEditEmailQuery.graphql"
 import { MyAccountEditEmail_me$data } from "__generated__/MyAccountEditEmail_me.graphql"
-import { Input } from "app/Components/Input"
 import { useToast } from "app/Components/Toast/toastHook"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PlaceholderBox } from "app/utils/placeholders"
@@ -52,7 +52,7 @@ const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me$data; relay: Rela
         }
       }}
     >
-      <Input
+      <Input2
         accessibilityLabel="email-input"
         enableClearButton
         value={email}

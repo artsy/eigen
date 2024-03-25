@@ -1,6 +1,14 @@
-import { Flex, SpacingUnitDSValueNumber, useSpace, Text } from "@artsy/palette-mobile"
+import {
+  Flex,
+  Input2,
+  Input2Props,
+  Input2Ref,
+  SpacingUnitDSValueNumber,
+  Text,
+  useSpace,
+} from "@artsy/palette-mobile"
 import SearchIcon from "app/Components/Icons/SearchIcon"
-import { Input, INPUT_HEIGHT, InputProps, InputRef } from "app/Components/Input"
+import { INPUT_HEIGHT, InputRef } from "app/Components/Input"
 import { forwardRef, useImperativeHandle, useRef, useState } from "react"
 import { TouchableOpacity, useWindowDimensions } from "react-native"
 import Animated, {
@@ -13,7 +21,7 @@ import Animated, {
 const MX = 2
 const CANCEL_BUTTON_DURATION = 180
 
-export interface SearchInputProps extends InputProps {
+export interface SearchInputProps extends Input2Props {
   mx?: SpacingUnitDSValueNumber
   enableCancelButton?: boolean
   onCancelPress?: () => void
@@ -35,13 +43,13 @@ export const SearchInput = forwardRef<InputRef, SearchInputProps>(
       }
     }, [cancelButtonShown, cancelWidth])
 
-    const inputRef = useRef<InputRef>(null)
-    useImperativeHandle(ref, () => inputRef.current!)
+    const inputRef = useRef<Input2Ref>(null)
+    useImperativeHandle(ref, () => inputRef.current as Input2Ref)
 
     return (
       <Flex flexDirection="row">
         <Animated.View style={[shrinkAnim, { paddingTop: 2 }]}>
-          <Input
+          <Input2
             ref={inputRef}
             icon={<SearchIcon width={18} height={18} />}
             autoCorrect={false}
