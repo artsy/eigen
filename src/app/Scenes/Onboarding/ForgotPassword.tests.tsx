@@ -1,7 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { mockNavigate } from "app/utils/tests/navigationMocks"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
-import { ForgotPasswordForm } from "./ForgotPassword"
+import { ForgotPasswordForm } from "./ForgotPasswordForm"
 
 const navigationPropsMock = {
   navigate: mockNavigate,

@@ -1,8 +1,16 @@
-import { BulletedItem, Spacer, Flex, Box, Text, RadioButton } from "@artsy/palette-mobile"
+import {
+  Box,
+  BulletedItem,
+  Flex,
+  Input2,
+  InputTitle,
+  RadioButton,
+  Spacer,
+  Text,
+} from "@artsy/palette-mobile"
 import { ArtistAutosuggest } from "app/Components/ArtistAutosuggest/ArtistAutosuggest"
 import { LinkButton } from "app/Components/Button/LinkButton"
-import { Input, InputTitle } from "app/Components/Input"
-import { buildLocationDisplay, LocationAutocomplete } from "app/Components/LocationAutocomplete"
+import { LocationAutocomplete, buildLocationDisplay } from "app/Components/LocationAutocomplete"
 import { Select, SelectOption } from "app/Components/Select"
 import { CategoryPicker } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/CategoryPicker"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -12,8 +20,8 @@ import { useFormikContext } from "formik"
 import React, { useEffect, useRef, useState } from "react"
 import { InfoModal } from "./InfoModal/InfoModal"
 import {
-  acceptableCategoriesForSubmission,
   AcceptableCategoryValue,
+  acceptableCategoriesForSubmission,
 } from "./utils/acceptableCategoriesForSubmission"
 import { limitedEditionValue, rarityOptions } from "./utils/rarityOptions"
 import { ArtworkDetailsFormModel } from "./validation"
@@ -39,7 +47,7 @@ export const ArtworkDetailsForm: React.FC = () => {
     <>
       <ArtistAutosuggest />
       <StandardSpace />
-      <Input
+      <Input2
         title="Title"
         placeholder="Add title or write 'Unknown'"
         testID="Submission_TitleInput"
@@ -48,7 +56,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         accessibilityLabel="Title"
       />
       <StandardSpace />
-      <Input
+      <Input2
         title="Year"
         placeholder="YYYY"
         keyboardType="number-pad"
@@ -65,7 +73,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         value={values.category}
       />
       <StandardSpace />
-      <Input
+      <Input2
         title="Materials"
         placeholder="Oil on canvas, mixed media, lithograph.."
         testID="Submission_MaterialsInput"
@@ -108,7 +116,7 @@ export const ArtworkDetailsForm: React.FC = () => {
           <Spacer y={2} />
           <Flex flexDirection="row" justifyContent="space-between">
             <Box width="48%" mr={1}>
-              <Input
+              <Input2
                 title="Edition Number"
                 keyboardType="decimal-pad"
                 testID="Submission_EditionNumberInput"
@@ -118,7 +126,7 @@ export const ArtworkDetailsForm: React.FC = () => {
               />
             </Box>
             <Box width="48%">
-              <Input
+              <Input2
                 title="Edition Size"
                 keyboardType="decimal-pad"
                 testID="Submission_EditionSizeInput"
@@ -149,7 +157,7 @@ export const ArtworkDetailsForm: React.FC = () => {
       <Spacer y={2} />
       <Flex flexDirection="row" justifyContent="space-between">
         <Box width="31%" mr={1}>
-          <Input
+          <Input2
             title="Height"
             keyboardType="decimal-pad"
             testID="Submission_HeightInput"
@@ -159,7 +167,7 @@ export const ArtworkDetailsForm: React.FC = () => {
           />
         </Box>
         <Box width="31%" mr={1}>
-          <Input
+          <Input2
             title="Width"
             keyboardType="decimal-pad"
             testID="Submission_WidthInput"
@@ -169,7 +177,7 @@ export const ArtworkDetailsForm: React.FC = () => {
           />
         </Box>
         <Box width="31%">
-          <Input
+          <Input2
             title="Depth"
             optional
             keyboardType="decimal-pad"
@@ -191,7 +199,7 @@ export const ArtworkDetailsForm: React.FC = () => {
           What is this?
         </LinkButton>
       </Flex>
-      <Input
+      <Input2
         placeholder="Describe how you acquired the artwork"
         testID="Submission_ProvenanceInput"
         value={values.provenance}
