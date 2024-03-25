@@ -49,6 +49,7 @@ interface InputProps extends TextInputProps {
 export const HORIZONTAL_PADDING = 15
 export const INPUT_BORDER_RADIUS = 4
 export const INPUT_MIN_HEIGHT = 56
+export const MULTILINE_INPUT_MIN_HEIGHT = 110
 export const LABEL_HEIGHT = 25
 
 export interface InputRef {
@@ -127,9 +128,9 @@ export const Input = forwardRef<InputRef, InputProps>(
     const styles = {
       fontFamily: THEME.fonts.sans,
       fontSize: parseInt(THEME.textVariants["sm-display"].fontSize, 10),
-      minHeight: INPUT_MIN_HEIGHT,
+      minHeight: props.multiline ? MULTILINE_INPUT_MIN_HEIGHT : INPUT_MIN_HEIGHT,
       borderWidth: 1,
-      paddingRight: rightComponentWidth + space(2),
+      paddingRight: rightComponentWidth + HORIZONTAL_PADDING,
     }
 
     const labelStyles = {
