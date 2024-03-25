@@ -50,8 +50,8 @@ export const Screen: React.FC<{}> = () => {
         value={value1}
         onChangeText={setValue1}
         label="Label"
-        enableClearButton
-        // fixedRightPlaceholder="cm"
+        // enableClearButton
+        fixedRightPlaceholder="cm"
       />
       <Separator my={2} />
       <Text variant="sm-display" mb={2}>

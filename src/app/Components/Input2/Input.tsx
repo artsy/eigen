@@ -1,3 +1,4 @@
+import { EventEmitter } from "events"
 import {
   Flex,
   Spinner,
@@ -11,18 +12,25 @@ import { THEME } from "@artsy/palette-tokens"
 import themeGet from "@styled-system/theme-get"
 import { useMeasure } from "app/utils/hooks/useMeasure"
 import { RefObject, forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
-import { TextInput, TextInputProps } from "react-native"
+import { LayoutAnimation, TextInput, TextInputProps } from "react-native"
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
 import styled from "styled-components"
 
+export const inputEvents = new EventEmitter()
+
+export const emitInputClearEvent = () => {
+  inputEvents.emit("clear")
+}
+
 interface InputProps extends TextInputProps {
+  addClearListener?: boolean
   enableClearButton?: boolean
   error?: string
+  fixedRightPlaceholder?: string
   hintText?: string
   label?: string
   loading?: boolean
   onChangeText: (text: string) => void
-  fixedRightPlaceholder?: string
   onClear?(): void
   onHintPress?: () => void
   required?: boolean
@@ -44,6 +52,7 @@ export interface InputRef {
 export const Input = forwardRef<InputRef, InputProps>(
   (
     {
+      addClearListener = false,
       editable = true,
       enableClearButton = false,
       fixedRightPlaceholder,
@@ -85,6 +94,18 @@ export const Input = forwardRef<InputRef, InputProps>(
         style: { fontFamily },
       })
     }, [fontFamily])
+
+    useEffect(() => {
+      if (!addClearListener) {
+        return
+      }
+
+      inputEvents.addListener("clear", handleClear)
+
+      return () => {
+        inputEvents.removeListener("clear", handleClear)
+      }
+    }, [])
 
     const { width: unitWidth = 0 } = useMeasure({ ref: unitRef })
 
@@ -139,6 +160,7 @@ export const Input = forwardRef<InputRef, InputProps>(
     }
 
     const handleClear = () => {
+      LayoutAnimation.configureNext({ ...LayoutAnimation.Presets.easeInEaseOut, duration: 200 })
       inputRef.current?.clear()
       handleChangeText("")
       onClear?.()
@@ -177,7 +199,7 @@ export const Input = forwardRef<InputRef, InputProps>(
             top={LABEL_HEIGHT}
             height={INPUT_MIN_HEIGHT}
           >
-            <Text color="black60">{fixedRightPlaceholder}</Text>
+            <Text color={editable ? "black60" : "black30"}>{fixedRightPlaceholder}</Text>
           </Flex>
         )
       }
@@ -211,6 +233,7 @@ export const Input = forwardRef<InputRef, InputProps>(
             right={`${HORIZONTAL_PADDING}px`}
             top={LABEL_HEIGHT}
             height={INPUT_MIN_HEIGHT}
+            zIndex={100}
           >
             <Touchable
               haptic="impactMedium"
