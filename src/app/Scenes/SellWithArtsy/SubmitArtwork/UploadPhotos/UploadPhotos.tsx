@@ -1,6 +1,6 @@
 import { BulletedItem, Spacer, Flex } from "@artsy/palette-mobile"
-import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs"
 import { CTAButton } from "app/Components/Button/CTAButton"
+import { useBottomTabBarHeight } from "app/Scenes/BottomTabs/useBottomTabBarHeight"
 import {
   Photo,
   PhotosFormModel,
