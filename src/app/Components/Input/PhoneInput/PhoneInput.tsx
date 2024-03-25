@@ -1,4 +1,4 @@
-import { Spacer, TriangleDown, Flex, useColor, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, Spacer, Text, Touchable, TriangleDown, useColor } from "@artsy/palette-mobile"
 import {
   INTERNALSelectAndInputCombinationBase,
   ValuePayload,
@@ -85,6 +85,7 @@ export const PhoneInput = forwardRef<
         select: { value: code },
         input: { value: phone },
       } = selectAndInputValue
+
       const newDialCode = countryIndex[code].dialCode ?? dialCode
       const fullPhoneNumber = newDialCode ? `+${newDialCode} ${phone}` : phone
 
@@ -98,6 +99,8 @@ export const PhoneInput = forwardRef<
 
       setPhoneNumber(formattedPhoneNumber.replace(/\D+$/, ""))
     }
+
+    const selectedCountry = countries.find((c) => c.iso2 === countryISO2Code)
 
     return (
       <Flex style={{ height: 50 }}>
@@ -117,6 +120,9 @@ export const PhoneInput = forwardRef<
           optionsForSelect={countryOptions}
           enableSearchForSelect
           valueForSelect={countryCode}
+          selectDisplayLabel={
+            selectedCountry ? `${selectedCountry.flag} +${selectedCountry.dialCode}` : ""
+          }
           maxModalHeightForSelect={maxModalHeight}
           onModalFinishedClosingForSelect={onModalFinishedClosing}
           onSelectValueForSelect={(newCountryCode) => {
