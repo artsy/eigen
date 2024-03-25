@@ -297,11 +297,23 @@ export const Input = forwardRef<InputRef, InputProps>(
           {...props}
         />
 
-        {/* If an input has an error, we don't need to show "Required" because it's already pointed out */}
-        {!!props.required && !props.error && (
-          <Text color="black60" variant="xs" px={`${HORIZONTAL_PADDING}px`} mt={0.5}>
-            * Required
-          </Text>
+        {/* If an input has an error, we don't need to show "Required" and maxChars per design */}
+        {!props.error && (
+          <Flex flexDirection="row" justifyContent="space-between">
+            {!!props.required ? (
+              <Text color="black60" variant="xs" pl={`${HORIZONTAL_PADDING}px`} mt={0.5}>
+                * Required
+              </Text>
+            ) : (
+              // Adding this empty flex to make sure that the maxLength text is always on the right
+              <Flex />
+            )}
+            {!!props.maxLength && (
+              <Text color="black60" variant="xs" pr={`${HORIZONTAL_PADDING}px`} mt={0.5}>
+                {value.length} / {props.maxLength}
+              </Text>
+            )}
+          </Flex>
         )}
 
         {!!props.error && (

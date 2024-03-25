@@ -52,6 +52,8 @@ export const Screen: React.FC<{}> = () => {
         label="Label"
         // enableClearButton
         multiline
+        required
+        maxLength={200}
         // fixedRightPlaceholder="cm"
       />
       <Separator my={2} />
