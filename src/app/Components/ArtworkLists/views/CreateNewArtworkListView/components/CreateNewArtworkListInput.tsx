@@ -1,8 +1,8 @@
-import { Box, Flex, InputProps, Text, computeBorderColor, useColor } from "@artsy/palette-mobile"
+import { Box, Flex, Input2Props, Text, computeBorderColor, useColor } from "@artsy/palette-mobile"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
 import { RemainingCharactersLabel } from "./RemainingCharactersLabel"
 
-interface CreateNewArtworkListInputProps extends InputProps {
+interface CreateNewArtworkListInputProps extends Input2Props {
   value: string
   maxLength: number
 }

@@ -1,6 +1,5 @@
-import { Spacer, Flex, Box, useColor, Text, Touchable, Button } from "@artsy/palette-mobile"
+import { Box, Button, Flex, Input2, Spacer, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
-import { Input } from "app/Components/Input"
 import { showBlockedAuthError } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { BackButton } from "app/system/navigation/BackButton"
@@ -49,8 +48,8 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
     setErrors,
   } = useFormikContext<OnboardingLoginValuesSchema>()
 
-  const passwordInputRef = useRef<Input>(null)
-  const emailInputRef = useRef<Input>(null)
+  const passwordInputRef = useRef<Input2>(null)
+  const emailInputRef = useRef<Input2>(null)
 
   /**
    * When we land on OnboardingLogin from the OnboardingCreateAccount
@@ -90,7 +89,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
           <Text variant="lg-display">Log In</Text>
           <Spacer y={6} />
           <Box>
-            <Input
+            <Input2
               ref={emailInputRef}
               autoCapitalize="none"
               autoComplete="email"
@@ -107,7 +106,6 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
               }}
               onBlur={() => validateForm()}
               blurOnSubmit={false} // This is needed to avoid UI jump when the user submits
-              placeholder="Email address"
               placeholderTextColor={color("black30")}
               title="Email"
               returnKeyType="next"
@@ -120,7 +118,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
               testID="email-address"
             />
             <Spacer y={2} />
-            <Input
+            <Input2
               autoCapitalize="none"
               autoComplete="password"
               autoCorrect={false}
@@ -143,7 +141,6 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
                 }
               }}
               onBlur={() => validateForm()}
-              placeholder="Password"
               placeholderTextColor={color("black30")}
               ref={passwordInputRef}
               secureTextEntry

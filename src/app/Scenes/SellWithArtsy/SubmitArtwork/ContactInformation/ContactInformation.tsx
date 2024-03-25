@@ -1,14 +1,13 @@
-import { Spacer, Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Input2, Spacer, Text } from "@artsy/palette-mobile"
 import { ContactInformationQueryRendererQuery } from "__generated__/ContactInformationQueryRendererQuery.graphql"
 import { ContactInformation_me$data } from "__generated__/ContactInformation_me.graphql"
 import { CTAButton } from "app/Components/Button/CTAButton"
-import { Input } from "app/Components/Input"
 import { PhoneInput } from "app/Components/Input/PhoneInput/PhoneInput"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { Formik } from "formik"
 import { noop } from "lodash"
 import React, { useState } from "react"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { QueryRenderer, createFragmentContainer, graphql } from "react-relay"
 import { ContactInformationFormModel, contactInformationValidationSchema } from "./validation"
 
 export const ContactInformation: React.FC<{
@@ -40,7 +39,7 @@ export const ContactInformation: React.FC<{
             We will only use these details to contact you regarding your submission.
           </Text>
           <Spacer y={4} />
-          <Input
+          <Input2
             title="Name"
             placeholder="Your full name"
             onChangeText={handleChange("userName")}
@@ -51,7 +50,7 @@ export const ContactInformation: React.FC<{
             error={!isNameInputFocused && values.userName && errors.userName ? errors.userName : ""}
           />
           <Spacer y={4} />
-          <Input
+          <Input2
             title="Email"
             placeholder="Your email address"
             keyboardType="email-address"

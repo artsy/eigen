@@ -1,5 +1,4 @@
-import { Spacer, Flex, Text, RadioButton } from "@artsy/palette-mobile"
-import { Input } from "app/Components/Input"
+import { Spacer, Flex, Text, RadioButton, Input2 } from "@artsy/palette-mobile"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -45,8 +44,8 @@ export const Dimensions: React.FC = () => {
       <Spacer y={1} />
       <Flex flexDirection="row">
         <Flex mr={1} flex={1}>
-          <Input
-            title="HEIGHT"
+          <Input2
+            title="Height"
             keyboardType="decimal-pad"
             onChangeText={formik.handleChange("height")}
             onBlur={formik.handleBlur("height")}
@@ -55,8 +54,8 @@ export const Dimensions: React.FC = () => {
           />
         </Flex>
         <Flex mr={1} flex={1}>
-          <Input
-            title="WIDTH"
+          <Input2
+            title="Width"
             keyboardType="decimal-pad"
             onChangeText={formik.handleChange("width")}
             onBlur={formik.handleBlur("width")}
@@ -65,8 +64,8 @@ export const Dimensions: React.FC = () => {
           />
         </Flex>
         <Flex flex={1}>
-          <Input
-            title="DEPTH"
+          <Input2
+            title="Depth"
             keyboardType="decimal-pad"
             onChangeText={formik.handleChange("depth")}
             onBlur={formik.handleBlur("depth")}
