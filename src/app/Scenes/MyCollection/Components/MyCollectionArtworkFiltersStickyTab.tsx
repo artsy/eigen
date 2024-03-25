@@ -1,11 +1,11 @@
 import {
   useSpace,
   Flex,
-  Input,
   TouchableHighlightColor,
   FilterIcon,
   bullet,
   Text,
+  Input2,
 } from "@artsy/palette-mobile"
 import SearchIcon from "app/Components/Icons/SearchIcon"
 import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
@@ -31,7 +31,7 @@ export const MyCollectionArtworkFilters: React.FC<FiltersProps> = (props) => {
 
   return (
     <Flex backgroundColor="white100" flexDirection="row" pb={1}>
-      <Input
+      <Input2
         testID="MyCollectionSearchBarInput"
         icon={<SearchIcon width={18} height={18} />}
         placeholder="Search Your Artworks"
