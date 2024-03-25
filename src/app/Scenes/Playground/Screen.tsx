@@ -46,7 +46,13 @@ export const Screen: React.FC<{}> = () => {
       <Text variant="sm-display" mb={2}>
         Default Input with no error
       </Text>
-      <Input value={value1} onChangeText={setValue1} label="Label" enableClearButton />
+      <Input
+        value={value1}
+        onChangeText={setValue1}
+        label="Label"
+        enableClearButton
+        // fixedRightPlaceholder="cm"
+      />
       <Separator my={2} />
       <Text variant="sm-display" mb={2}>
         Default Input with short label

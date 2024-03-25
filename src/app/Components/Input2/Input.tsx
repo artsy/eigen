@@ -10,7 +10,7 @@ import {
 import { THEME } from "@artsy/palette-tokens"
 import themeGet from "@styled-system/theme-get"
 import { useMeasure } from "app/utils/hooks/useMeasure"
-import { RefObject, forwardRef, useImperativeHandle, useRef, useState } from "react"
+import { RefObject, forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 import { TextInput, TextInputProps } from "react-native"
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
 import styled from "styled-components"
@@ -22,6 +22,7 @@ interface InputProps extends TextInputProps {
   label?: string
   loading?: boolean
   onChangeText: (text: string) => void
+  fixedRightPlaceholder?: string
   onClear?(): void
   onHintPress?: () => void
   required?: boolean
@@ -32,6 +33,7 @@ interface InputProps extends TextInputProps {
 export const HORIZONTAL_PADDING = 15
 export const INPUT_BORDER_RADIUS = 4
 export const INPUT_MIN_HEIGHT = 56
+export const LABEL_HEIGHT = 26
 
 export interface InputRef {
   focus: () => void
@@ -44,6 +46,7 @@ export const Input = forwardRef<InputRef, InputProps>(
     {
       editable = true,
       enableClearButton = false,
+      fixedRightPlaceholder,
       hintText = "What's this?",
       loading = false,
       onChangeText,
@@ -54,8 +57,11 @@ export const Input = forwardRef<InputRef, InputProps>(
     },
     ref
   ) => {
+    const space = useSpace()
     const color = useColor()
+
     const [focused, setIsFocused] = useState(false)
+
     const unitRef = useRef(null)
     const inputRef = useRef<TextInput>()
 
@@ -67,16 +73,25 @@ export const Input = forwardRef<InputRef, InputProps>(
     const hasUnit = !!unit
 
     const animatedState = useSharedValue<InputState>(getInputState({ isFocused: !!focused, value }))
-    const space = useSpace()
+
+    useImperativeHandle(ref, () => inputRef.current as InputRef)
+
+    const fontFamily = THEME.fonts.sans
+
+    useEffect(() => {
+      /* to make the font work for secure text inputs,
+      see https://github.com/facebook/react-native/issues/30123#issuecomment-711076098 */
+      inputRef.current?.setNativeProps({
+        style: { fontFamily },
+      })
+    }, [fontFamily])
+
+    const { width: unitWidth = 0 } = useMeasure({ ref: unitRef })
 
     const handleChangeText = (text: string) => {
       "worklet"
       onChangeText(text)
     }
-
-    useImperativeHandle(ref, () => inputRef.current as InputRef)
-
-    const { width: unitWidth = 0 } = useMeasure({ ref: unitRef })
 
     const styles = {
       fontFamily: THEME.fonts.sans,
@@ -124,7 +139,7 @@ export const Input = forwardRef<InputRef, InputProps>(
     }
 
     const handleClear = () => {
-      // input.current?.clear()
+      inputRef.current?.clear()
       handleChangeText("")
       onClear?.()
     }
@@ -153,19 +168,38 @@ export const Input = forwardRef<InputRef, InputProps>(
     }
 
     const renderRightCompoent = () => {
+      if (fixedRightPlaceholder) {
+        return (
+          <Flex
+            justifyContent="center"
+            position="absolute"
+            right={`${HORIZONTAL_PADDING}px`}
+            top={LABEL_HEIGHT}
+            height={INPUT_MIN_HEIGHT}
+          >
+            <Text color="black60">{fixedRightPlaceholder}</Text>
+          </Flex>
+        )
+      }
+
       if (loading) {
         return (
-          <Spinner
-            size="medium"
-            style={{
-              right: HORIZONTAL_PADDING,
-              width: 15,
-              height: 4,
-              backgroundColor: color("black60"),
-              position: "absolute",
-              top: 52,
-            }}
-          />
+          <Flex
+            justifyContent="center"
+            position="absolute"
+            right={`${HORIZONTAL_PADDING}px`}
+            top={LABEL_HEIGHT}
+            height={INPUT_MIN_HEIGHT}
+          >
+            <Spinner
+              size="medium"
+              style={{
+                right: 0,
+                width: 15,
+                backgroundColor: color("black60"),
+              }}
+            />
+          </Flex>
         )
       }
 
@@ -175,9 +209,8 @@ export const Input = forwardRef<InputRef, InputProps>(
             justifyContent="center"
             position="absolute"
             right={`${HORIZONTAL_PADDING}px`}
-            top={45}
-            ref={unitRef}
-            zIndex={45}
+            top={LABEL_HEIGHT}
+            height={INPUT_MIN_HEIGHT}
           >
             <Touchable
               haptic="impactMedium"
@@ -204,7 +237,7 @@ export const Input = forwardRef<InputRef, InputProps>(
         )}
 
         {!!props.label && (
-          <Flex flexDirection="row" zIndex={100} pointerEvents="none">
+          <Flex flexDirection="row" zIndex={100} pointerEvents="none" height={LABEL_HEIGHT}>
             <AnimatedText style={[labelStyles, labelAnimatedStyles]} numberOfLines={1}>
               {props.label}
             </AnimatedText>
