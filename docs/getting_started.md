@@ -60,7 +60,6 @@ yarn relay
 
 You will need [awscli](https://formulae.brew.sh/formula/awscli) to get our ENV vars.
 
-1. `Artsy/App/EchoNew.json` is used to toggle features and it is not checked in (a sample file is included for OSS contributors). When you run `pod install`, the latest `EchoNew.json` file will be downloaded for you.
 </details>
 
 <details><summary>Independent Contributor?</summary>
