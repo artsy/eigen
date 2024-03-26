@@ -1,9 +1,8 @@
-import { Flex, Box, Text } from "@artsy/palette-mobile"
+import { Flex, Box, Text, Touchable } from "@artsy/palette-mobile"
 import { toTitleCase } from "@artsy/to-title-case"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { ArtworkSubmissionStatusFAQ } from "app/Scenes/MyCollection/Screens/Artwork/ArtworkSubmissionStatusFAQ"
-import { Touchable } from "@artsy/palette-mobile"
 import { useState } from "react"
 
 // TODO:- We are using displayText for Statuses for now. Consider changing the logic when proper statuses are made available on Metaphysics.
@@ -25,7 +24,7 @@ export const MyCollectionArtworkSubmissionStatus: React.FC<{ displayText?: strin
     return null
   }
 
-  const approvedDisplayText = STATUSES[displayText!.toLowerCase()]?.text
+  const approvedDisplayText = STATUSES[(displayText as string).toLowerCase()]?.text
 
   if (!Boolean(approvedDisplayText)) {
     return null
@@ -47,14 +46,14 @@ export const MyCollectionArtworkSubmissionStatus: React.FC<{ displayText?: strin
           </Text>
           <Touchable onPress={() => setIsSubmissionStatusModalVisible(true)}>
             <Text style={{ textDecorationLine: "underline" }} variant="xs" color="black60">
-              What is this?
+              What's this?
             </Text>
           </Touchable>
         </Flex>
         <Text
           lineHeight="16px"
           mt={1}
-          color={STATUSES[displayText!.toLowerCase()]?.color ?? "black100"}
+          color={STATUSES[(displayText as string).toLowerCase()]?.color ?? "black100"}
         >
           {toTitleCase(approvedDisplayText)}
         </Text>

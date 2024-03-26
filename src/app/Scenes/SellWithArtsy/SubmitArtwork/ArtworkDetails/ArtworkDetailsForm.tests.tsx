@@ -39,11 +39,11 @@ describe("ArtworkDetailsForm", () => {
   })
 
   it("when rarity is limited edition, renders additional inputs for edition number and size", () => {
-    const { getByTestId } = renderWithWrappers(<ArtworkDetailsForm />)
+    renderWithWrappers(<ArtworkDetailsForm />)
 
     const inputs = {
-      editionNumber: getByTestId("Submission_EditionNumberInput"),
-      editionSize: getByTestId("Submission_EditionSizeInput"),
+      editionNumber: screen.getByTestId("Submission_EditionNumberInput"),
+      editionSize: screen.getByTestId("Submission_EditionSizeInput"),
     }
 
     expect(inputs.editionNumber).toBeOnTheScreen()
@@ -53,7 +53,7 @@ describe("ArtworkDetailsForm", () => {
   it("opens up rarity modal, when rarity select tooltip pressed", async () => {
     renderWithWrappers(<ArtworkDetailsForm />)
 
-    const raritySelectTooltip = screen.getAllByText("What is this?")[0]
+    const raritySelectTooltip = screen.getAllByText("What's this?")[0]
     expect(raritySelectTooltip).toBeOnTheScreen()
 
     fireEvent.press(raritySelectTooltip)
@@ -61,22 +61,22 @@ describe("ArtworkDetailsForm", () => {
     await flushPromiseQueue()
 
     artworkRarityClassifications.map((classification) => {
-      expect(screen.queryByText(classification.description)).toBeOnTheScreen()
+      expect(screen.getByText(classification.description)).toBeOnTheScreen()
     })
   })
 
   it("opens up provenance modal, when provenance tooltip pressed", async () => {
     renderWithWrappers(<ArtworkDetailsForm />)
 
-    const provenanceTooltip = screen.getAllByText("What is this?")[1]
+    const provenanceTooltip = screen.getAllByText("What's this?")[1]
     expect(provenanceTooltip).toBeOnTheScreen()
 
     fireEvent.press(provenanceTooltip)
 
     await flushPromiseQueue()
 
-    expect(screen.queryByText("Invoices from previous owners")).toBeOnTheScreen()
-    expect(screen.queryByText("Certificates of authenticity")).toBeOnTheScreen()
-    expect(screen.queryByText("Gallery exhibition catalogues")).toBeOnTheScreen()
+    expect(screen.getByText("Invoices from previous owners")).toBeOnTheScreen()
+    expect(screen.getByText("Certificates of authenticity")).toBeOnTheScreen()
+    expect(screen.getByText("Gallery exhibition catalogues")).toBeOnTheScreen()
   })
 })

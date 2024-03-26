@@ -37,14 +37,14 @@ describe("ContactInformationForm", () => {
     renderWithRelay({})
 
     expect(
-      screen.queryByText("We will only use these details to contact you regarding your submission.")
+      screen.getByText("We will only use these details to contact you regarding your submission.")
     ).toBeOnTheScreen()
   })
 
   it("Happy path: User can submit information", async () => {
     GlobalStore.actions.artworkSubmission.submission.setSubmissionId(mockFormDataForSubmission.id)
 
-    const { queryByText, getByText, getByPlaceholderText } = renderWithWrappers(
+    renderWithWrappers(
       <SubmitSWAArtworkFlow
         navigation={jest.fn() as any}
         stepsInOrder={[STEPS.ContactInformation]}
@@ -64,10 +64,12 @@ describe("ContactInformationForm", () => {
     await flushPromiseQueue()
 
     const inputs = {
-      nameInput: getByPlaceholderText("Your full name"),
-      emailInput: getByPlaceholderText("Your email address"),
-      phoneInput: getByPlaceholderText("(000) 000-0000"),
+      nameInput: screen.getByText("Name"),
+      emailInput: screen.getByText("Email"),
+      phoneInput: screen.getByText("Phone number"),
     }
+
+    console.log(inputs.nameInput)
 
     expect(inputs.nameInput).toBeTruthy()
     expect(inputs.nameInput).toHaveProp("value", "Angela")
@@ -78,9 +80,9 @@ describe("ContactInformationForm", () => {
     expect(inputs.phoneInput).toBeTruthy()
     expect(inputs.phoneInput).toHaveProp("value", "(202) 555-0174")
 
-    expect(queryByText("Submit Artwork")).toBeTruthy()
+    expect(screen.getByText("Submit Artwork")).toBeTruthy()
 
-    fireEvent.press(getByText("Submit Artwork"))
+    fireEvent.press(screen.getByText("Submit Artwork"))
 
     await flushPromiseQueue()
 
@@ -98,9 +100,9 @@ describe("ContactInformationForm", () => {
     })
 
     const inputs = {
-      nameInput: screen.getByPlaceholderText("Your full name"),
-      emailInput: screen.getByPlaceholderText("Your email address"),
-      phoneInput: screen.getByPlaceholderText("(000) 000-0000"),
+      nameInput: screen.getByText("Name"),
+      emailInput: screen.getByText("Email"),
+      phoneInput: screen.getByText("Phone number"),
     }
 
     const submitButton = screen.getByText("Submit Artwork")
@@ -125,14 +127,14 @@ describe("ContactInformationForm", () => {
       })
 
       const inputs = {
-        nameInput: screen.getByPlaceholderText("Your full name"),
-        emailInput: screen.getByPlaceholderText("Your email address"),
+        nameInput: screen.getByText("Name"),
+        emailInput: screen.getByText("Email"),
       }
 
       fireEvent.changeText(inputs.nameInput, "a")
       fireEvent.changeText(inputs.emailInput, "aa")
 
-      await waitFor(() => screen.getByText("Please enter your full name."))
+      await screen.findByText("Please enter your full name.")
     })
 
     it("displays error message for email address", async () => {
@@ -143,14 +145,14 @@ describe("ContactInformationForm", () => {
       })
 
       const inputs = {
-        emailInput: screen.getByPlaceholderText("Your email address"),
-        phoneInput: screen.getByPlaceholderText("(000) 000-0000"),
+        emailInput: screen.getByText("Email"),
+        phoneInput: screen.getByText("Phone number"),
       }
 
       fireEvent.changeText(inputs.emailInput, "aa")
       fireEvent.changeText(inputs.phoneInput, "12")
 
-      await waitFor(() => screen.getByText("Please enter a valid email address."))
+      await screen.findByText("Please enter a valid email address.")
     })
   })
 
@@ -170,7 +172,7 @@ describe("ContactInformationForm", () => {
     })
 
     it("tracks uploadPhotosCompleted event on save", async () => {
-      const { getByTestId } = renderWithWrappers(
+      renderWithWrappers(
         <SubmitSWAArtworkFlow
           navigation={jest.fn() as any}
           stepsInOrder={[
@@ -193,7 +195,7 @@ describe("ContactInformationForm", () => {
 
       await flushPromiseQueue()
 
-      const contactInfoCTA = getByTestId("Submission_ContactInformation_Button")
+      const contactInfoCTA = screen.getByTestId("Submission_ContactInformation_Button")
       fireEvent.press(contactInfoCTA)
 
       await flushPromiseQueue()

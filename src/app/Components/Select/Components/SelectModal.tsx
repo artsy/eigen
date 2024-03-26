@@ -131,6 +131,7 @@ export const SelectModal: React.FC<{
         </Flex>
         <TouchableOpacity
           onPress={onDismiss}
+          testID="select-close-button"
           hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}
           style={{ flex: 1, alignItems: "flex-end" }}
         >
@@ -173,7 +174,7 @@ export const SelectModal: React.FC<{
                 onSelectValue(item.value, index)
               }}
               style={{ flexGrow: 0 }}
-              testID="select-option"
+              testID={`select-option-${item.index}`}
             >
               <Flex
                 flexDirection="row"
