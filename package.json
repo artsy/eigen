@@ -132,6 +132,7 @@
     "@sentry/react-native": "5.20.0",
     "@shopify/flash-list": "^1.5.0",
     "@styled-system/theme-get": "5.1.2",
+    "add": "2.0.6",
     "autosuggest-highlight": "3.1.1",
     "deprecated-react-native-prop-types": "4.1.0",
     "easy-peasy": "6.0.0",
@@ -202,6 +203,7 @@
     "unleash-proxy-client": "3.1.1",
     "url": "0.11.3",
     "victory-native": "36.6.8",
+    "yarn": "1.22.22",
     "yup": "0.31.1"
   },
   "devDependencies": {
