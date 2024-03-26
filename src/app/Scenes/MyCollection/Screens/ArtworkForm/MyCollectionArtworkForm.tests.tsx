@@ -315,8 +315,8 @@ describe("MyCollectionArtworkForm", () => {
 
         // Add Artist Screen
 
-        fireEvent.changeText(screen.getByPlaceholderText("Artist Name"), "My Artist")
-        fireEvent.changeText(screen.getByPlaceholderText("Nationality"), "bar foo")
+        fireEvent.changeText(screen.getByTestId("artist-input"), "My Artist")
+        fireEvent.changeText(screen.getByTestId("nationality-input"), "bar foo")
 
         await flushPromiseQueue()
 
