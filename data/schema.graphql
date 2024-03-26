@@ -2513,6 +2513,9 @@ type Artwork implements Node & Searchable & Sellable {
   isShareable: Boolean
   isSold: Boolean
   isUnique: Boolean
+
+  # Artwork is marked as "unlisted" (or private) by the partner
+  isUnlisted: Boolean!
   lastSavedAt(
     format: String
 
@@ -13198,6 +13201,11 @@ type Mutation {
   # updates a hero unit.
   updateHeroUnit(input: UpdateHeroUnitMutationInput!): UpdateHeroUnitMutationPayload
 
+  # Updates the user's collections in batch.
+  updateMeCollectionsMutation(
+    input: updateMeCollectionsMutationInput!
+  ): updateMeCollectionsMutationPayload
+
   # Update a message.
   updateMessage(input: UpdateMessageMutationInput!): UpdateMessageMutationPayload
 
@@ -18804,6 +18812,31 @@ union updateHeroUnitResponseOrError = updateHeroUnitFailure | updateHeroUnitSucc
 
 type updateHeroUnitSuccess {
   heroUnit: HeroUnit
+}
+
+input UpdateMeCollectionInput {
+  id: String!
+  shareableWithPartners: Boolean!
+}
+
+type UpdateMeCollectionsFailure {
+  mutationError: GravityMutationError
+}
+
+input updateMeCollectionsMutationInput {
+  attributes: [UpdateMeCollectionInput!]!
+  clientMutationId: String
+}
+
+type updateMeCollectionsMutationPayload {
+  clientMutationId: String
+  meCollectionsOrErrors: [UpdateMeCollectionsResponseOrError!]!
+}
+
+union UpdateMeCollectionsResponseOrError = UpdateMeCollectionsFailure | UpdateMeCollectionsSuccess
+
+type UpdateMeCollectionsSuccess {
+  collection: Collection
 }
 
 type UpdateMessageFailure {

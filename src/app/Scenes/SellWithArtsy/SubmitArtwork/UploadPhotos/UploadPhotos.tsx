@@ -1,5 +1,6 @@
 import { BulletedItem, Spacer, Flex } from "@artsy/palette-mobile"
 import { CTAButton } from "app/Components/Button/CTAButton"
+import { useBottomTabBarHeight } from "app/Scenes/BottomTabs/useBottomTabBarHeight"
 import {
   Photo,
   PhotosFormModel,
@@ -20,13 +21,14 @@ export const UploadPhotos = ({
 }) => {
   const { submission } = GlobalStore.useAppState((state) => state.artworkSubmission)
   const initialSubmissionPhotos = useRef(submission.photos).current
+  const bottomTabBarHeight = useBottomTabBarHeight()
 
   const submitUploadPhotosStep = () => {
     handlePress({})
   }
 
   return (
-    <Flex py={1} mt={1}>
+    <Flex py={1} mt={1} mb={`${bottomTabBarHeight}px`}>
       <Flex>
         <BulletedItem>
           To evaluate your submission faster, please upload high-quality photos of the work's front
@@ -59,8 +61,8 @@ export const UploadPhotos = ({
                 {!!isAnyPhotoLoading
                   ? "Processing Photos..."
                   : isLastStep
-                  ? "Submit Artwork"
-                  : "Save & Continue"}
+                    ? "Submit Artwork"
+                    : "Save & Continue"}
               </CTAButton>
             </>
           )
