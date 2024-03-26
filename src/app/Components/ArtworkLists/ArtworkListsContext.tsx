@@ -130,6 +130,16 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
   const onSave = (result: SaveResult) => {
     dispatch({ type: "SET_UNSAVED_CHANGES", payload: false })
 
+    if (!result.artwork) {
+      if (result.action === ResultAction.ModifiedArtworkListsPrivacy) {
+        toast.changesSaved()
+
+        return
+      }
+
+      throw new Error("Unexpected save result for artwork lists")
+    }
+
     if (state.artworkListID !== null) {
       if (result.action !== ResultAction.ModifiedArtworkLists) {
         throw new Error("You should pass `ModifiedArtworkLists` action")
@@ -155,7 +165,7 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
 
     if (result.action === ResultAction.SavedToDefaultArtworkList) {
       toast.savedToDefaultArtworkList({
-        onToastPress: () => openSelectArtworkListsForArtworkView(result.artwork),
+        onToastPress: () => openSelectArtworkListsForArtworkView(result.artwork as ArtworkEntity),
       })
       return
     }
@@ -182,17 +192,17 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
 
   const addingArtworkListIDs = state.addingArtworkLists.map((entity) => entity.internalID)
   const removingArtworkListIDs = state.removingArtworkLists.map((entity) => entity.internalID)
+  const shareArtworkListIDs = state.sharingArtworkLists.map((entity) => entity.internalID)
   const keepArtworkListPrivateIDs = state.keepingArtworkListsPrivate.map(
     (entity) => entity.internalID
   )
-  const shareArtworkListIDs = state.sharingArtworkLists.map((entity) => entity.internalID)
   const value: ArtworkListsContextState = {
     state,
     artworkListId,
     addingArtworkListIDs,
     removingArtworkListIDs,
-    keepArtworkListPrivateIDs,
     shareArtworkListIDs,
+    keepArtworkListPrivateIDs,
     dispatch,
     reset,
     onSave,

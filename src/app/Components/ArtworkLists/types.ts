@@ -9,6 +9,7 @@ export enum ResultAction {
   SavedToDefaultArtworkList,
   RemovedFromDefaultArtworkList,
   ModifiedArtworkLists,
+  ModifiedArtworkListsPrivacy,
 }
 
 export interface ArtworkEntity {
@@ -22,7 +23,7 @@ export interface ArtworkEntity {
 
 export type SaveResult = {
   action: ResultAction
-  artwork: ArtworkEntity
+  artwork?: ArtworkEntity
 }
 
 export enum ArtworkListMode {
