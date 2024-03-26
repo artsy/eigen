@@ -55,7 +55,6 @@ describe("SavedSearchAlertForm", () => {
         runtimeModel={{
           ...savedSearchModel,
           attributes: attributes as SearchCriteriaAttributes,
-          aggregations: [],
           entity: savedSearchEntity,
         }}
       >

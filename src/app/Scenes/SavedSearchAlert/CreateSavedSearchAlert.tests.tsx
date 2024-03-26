@@ -56,7 +56,6 @@ const savedSearchEntity: SavedSearchEntity = {
 }
 
 const defaultParams: CreateSavedSearchAlertParams = {
-  aggregations: [],
   attributes: {
     attributionClass: ["open edition"],
     atAuction: true,

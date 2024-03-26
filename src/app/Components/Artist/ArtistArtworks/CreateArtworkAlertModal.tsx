@@ -60,12 +60,15 @@ export const CreateArtworkAlertModal: React.FC<CreateArtworkAlertModalProps> = (
 
   const artworkAlert = computeArtworkAlertProps(data)
 
+  if (!artworkAlert.entity || !artworkAlert.attributes) {
+    return null
+  }
+
   return (
     <CreateSavedSearchModal
       visible={visible}
-      entity={artworkAlert.entity!}
-      attributes={artworkAlert.attributes!}
-      aggregations={artworkAlert.aggregations!}
+      entity={artworkAlert.entity}
+      attributes={artworkAlert.attributes}
       closeModal={onClose}
       contextModule={contextModule}
       currentArtworkID={data.internalID}
@@ -93,7 +96,7 @@ export const computeArtworkAlertProps = (
   const attributionClass = compact([artwork?.attributionClass?.internalID])
   const formattedArtists: SavedSearchEntityArtist[] = artists.map((artist) => ({
     id: artist.internalID,
-    name: artist.name!,
+    name: artist.name ?? "",
   }))
 
   const entity: SavedSearchEntity = {

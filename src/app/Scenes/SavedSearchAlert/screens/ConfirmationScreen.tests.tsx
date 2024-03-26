@@ -1,6 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
 import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
-import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   SavedSearchEntity,
   SearchCriteriaAttributes,
@@ -51,7 +50,6 @@ const TestWrapper: React.FC = ({ children }) => (
     runtimeModel={{
       ...savedSearchModel,
       attributes,
-      aggregations,
       entity,
     }}
   >
@@ -191,13 +189,6 @@ const attributes: SearchCriteriaAttributes = {
   attributionClass: ["unique"],
   additionalGeneIDs: ["painting"],
 }
-
-const aggregations: Aggregations = [
-  {
-    slice: "MEDIUM",
-    counts: [{ name: "Painting", value: "painting", count: 42 }],
-  },
-]
 
 const entity: SavedSearchEntity = {
   artists: [

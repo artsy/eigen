@@ -42,7 +42,6 @@ describe("EditSavedSearchAlert", () => {
     })
 
     resolveMostRecentRelayOperation(mockEnvironment, {
-      FilterArtworksConnection: () => filterArtworks,
       Viewer: () => viewerMocked,
     })
 
@@ -75,7 +74,6 @@ describe("EditSavedSearchAlert", () => {
         internalID: "artistID",
         slug: "artistSlug",
       }),
-      FilterArtworksConnection: () => filterArtworks,
     })
 
     await flushPromiseQueue()
@@ -134,7 +132,6 @@ describe("EditSavedSearchAlert", () => {
           name: "Artist Name",
           slug: "artistSlug",
         }),
-        FilterArtworksConnection: () => filterArtworks,
         Viewer: () => viewerMocked,
       })
     })
@@ -149,7 +146,6 @@ describe("EditSavedSearchAlert", () => {
           Alert: () => alert,
         })
         resolveMostRecentRelayOperation(mockEnvironment, {
-          FilterArtworksConnection: () => filterArtworks,
           Viewer: () => ({
             notificationPreferences: [
               {
@@ -180,7 +176,6 @@ describe("EditSavedSearchAlert", () => {
           }),
         })
         resolveMostRecentRelayOperation(mockEnvironment, {
-          FilterArtworksConnection: () => filterArtworks,
           Viewer: () => viewerMocked,
         })
       })
@@ -210,7 +205,6 @@ describe("EditSavedSearchAlert", () => {
           }),
         })
         resolveMostRecentRelayOperation(mockEnvironment, {
-          FilterArtworksConnection: () => filterArtworks,
           Viewer: () => viewerMocked,
         })
       })
@@ -240,7 +234,6 @@ describe("EditSavedSearchAlert", () => {
           }),
         })
         resolveMostRecentRelayOperation(mockEnvironment, {
-          FilterArtworksConnection: () => filterArtworks,
           Viewer: () => ({
             notificationPreferences: [
               {
@@ -273,7 +266,6 @@ describe("EditSavedSearchAlert", () => {
             Alert: () => alert,
           })
           resolveMostRecentRelayOperation(mockEnvironment, {
-            FilterArtworksConnection: () => filterArtworks,
             Viewer: () => viewerMocked,
           })
 
@@ -294,7 +286,6 @@ describe("EditSavedSearchAlert", () => {
             Alert: () => alert,
           })
           resolveMostRecentRelayOperation(mockEnvironment, {
-            FilterArtworksConnection: () => filterArtworks,
             Viewer: () => viewerMocked,
           })
           resolveMostRecentRelayOperation(mockEnvironment, {
@@ -366,26 +357,6 @@ const alert = {
     email: true,
     details: null,
   },
-}
-
-const filterArtworks = {
-  aggregations: [
-    {
-      slice: "MATERIALS_TERMS",
-      counts: [
-        {
-          count: 641,
-          name: "Lithograph",
-          value: "lithograph",
-        },
-        {
-          count: 411,
-          name: "Paper",
-          value: "paper",
-        },
-      ],
-    },
-  ],
 }
 
 const viewerMocked = {

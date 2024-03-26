@@ -1,5 +1,4 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   SavedSearchEntity,
   SearchCriteria,
@@ -11,7 +10,6 @@ import { Action, action, createContextStore } from "easy-peasy"
 import { pick } from "lodash"
 
 export interface SavedSearchModel {
-  aggregations: Aggregations
   attributes: SearchCriteriaAttributes
   /** Artwork ID, if the current saved search alert is being set from an artwork */
   currentArtworkID?: string
@@ -44,7 +42,6 @@ export interface SavedSearchModel {
 
 export const savedSearchModel: SavedSearchModel = {
   attributes: {},
-  aggregations: [],
   currentArtworkID: undefined,
   currentAlertID: undefined,
   dirty: false,

@@ -83,7 +83,6 @@ const defaultProps: CreateSavedSearchModalProps = {
   visible: true,
   entity: savedSearchEntity,
   attributes,
-  aggregations: [],
   closeModal: jest.fn,
 }
 
@@ -96,7 +95,6 @@ const TestWrapper: React.FC = ({ children }) => (
     runtimeModel={{
       ...savedSearchModel,
       attributes,
-      aggregations: [],
       entity: savedSearchEntity,
     }}
   >

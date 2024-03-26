@@ -22,7 +22,7 @@ const Stack = createStackNavigator<CreateSavedSearchAlertNavigationStack>()
 
 export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (props) => {
   const { visible, params } = props
-  const { attributes, aggregations, entity, currentArtworkID, sizeMetric } = params
+  const { attributes, entity, currentArtworkID, sizeMetric } = params
   const { localizedUnit } = useLocalizedUnit()
 
   return (
@@ -35,7 +35,6 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
             from: "in",
             to: sizeMetric || localizedUnit,
           }),
-          aggregations,
           currentArtworkID,
           entity,
           unit: sizeMetric || localizedUnit,
