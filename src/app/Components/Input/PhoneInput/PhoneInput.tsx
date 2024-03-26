@@ -129,7 +129,7 @@ export const PhoneInput = forwardRef<
           enableSearchForSelect
           valueForSelect={countryCode}
           selectDisplayLabel={
-            selectedCountry ? `${selectedCountry.flag} +${selectedCountry.dialCode}` : ""
+            selectedCountry ? `${selectedCountry.flag}+${selectedCountry.dialCode}` : ""
           }
           maxModalHeightForSelect={maxModalHeight}
           onModalFinishedClosingForSelect={onModalFinishedClosing}

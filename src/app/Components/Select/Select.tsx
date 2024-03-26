@@ -17,7 +17,6 @@ export interface SelectProps<ValueType> {
   value: ValueType | null | undefined
   placeholder?: string
   title: string
-  showTitleLabel?: boolean
   optional?: boolean
   required?: boolean
   subTitle?: string
@@ -39,7 +38,6 @@ export const Select = <ValueType,>({
   value,
   placeholder,
   title,
-  showTitleLabel = true,
   optional,
   required,
   subTitle,
@@ -97,7 +95,6 @@ export const Select = <ValueType,>({
           disabled={disabled}
           testID={testID}
           title={title}
-          showTitleLabel={showTitleLabel}
           subTitle={subTitle}
           tooltipText={tooltipText}
           placeholder={placeholder}
