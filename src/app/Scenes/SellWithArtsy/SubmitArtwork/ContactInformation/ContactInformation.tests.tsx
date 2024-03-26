@@ -64,12 +64,10 @@ describe("ContactInformationForm", () => {
     await flushPromiseQueue()
 
     const inputs = {
-      nameInput: screen.getByText("Name"),
-      emailInput: screen.getByText("Email"),
-      phoneInput: screen.getByText("Phone number"),
+      nameInput: screen.getByTestId("name-input"),
+      emailInput: screen.getByTestId("email-input"),
+      phoneInput: screen.getByTestId("phone-input"),
     }
-
-    console.log(inputs.nameInput)
 
     expect(inputs.nameInput).toBeTruthy()
     expect(inputs.nameInput).toHaveProp("value", "Angela")
@@ -100,9 +98,9 @@ describe("ContactInformationForm", () => {
     })
 
     const inputs = {
-      nameInput: screen.getByText("Name"),
-      emailInput: screen.getByText("Email"),
-      phoneInput: screen.getByText("Phone number"),
+      nameInput: screen.getByTestId("name-input"),
+      emailInput: screen.getByTestId("email-input"),
+      phoneInput: screen.getByTestId("phone-input"),
     }
 
     const submitButton = screen.getByText("Submit Artwork")
@@ -127,8 +125,8 @@ describe("ContactInformationForm", () => {
       })
 
       const inputs = {
-        nameInput: screen.getByText("Name"),
-        emailInput: screen.getByText("Email"),
+        nameInput: screen.getByTestId("name-input"),
+        emailInput: screen.getByTestId("email-input"),
       }
 
       fireEvent.changeText(inputs.nameInput, "a")
@@ -145,8 +143,8 @@ describe("ContactInformationForm", () => {
       })
 
       const inputs = {
-        emailInput: screen.getByText("Email"),
-        phoneInput: screen.getByText("Phone number"),
+        emailInput: screen.getByTestId("email-input"),
+        phoneInput: screen.getByTestId("phone-input"),
       }
 
       fireEvent.changeText(inputs.emailInput, "aa")
