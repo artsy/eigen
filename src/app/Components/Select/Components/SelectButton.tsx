@@ -6,18 +6,15 @@ import {
   INPUT_MIN_HEIGHT,
   INPUT_VARIANTS,
   InputState,
-  InputTitle,
   InputVariant,
   Text,
   Touchable,
   TriangleDown,
   getInputState,
   getInputVariant,
-  useColor,
-  useTextStyleForPalette,
+  useSpace,
 } from "@artsy/palette-mobile"
 import { THEME } from "@artsy/palette-tokens"
-import { TouchableOpacity } from "react-native"
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
 
 export const SelectButton: React.FC<{
@@ -29,7 +26,6 @@ export const SelectButton: React.FC<{
   optional?: boolean
   placeholder?: string
   required?: boolean
-  showTitleLabel?: boolean
   subTitle?: string
   testID?: string
   title?: string
@@ -44,15 +40,12 @@ export const SelectButton: React.FC<{
   optional,
   placeholder,
   required,
-  showTitleLabel,
-  subTitle,
   testID,
   title,
   tooltipText,
   value,
 }) => {
-  const color = useColor()
-  const textStyle = useTextStyleForPalette("sm")
+  const space = useSpace()
 
   const variant: InputVariant = getInputVariant({
     hasError: !!hasError,
@@ -94,11 +87,18 @@ export const SelectButton: React.FC<{
   return (
     <>
       {!!tooltipText && !!onTooltipPress && (
-        <Touchable onPress={onTooltipPress} haptic="impactLight">
-          <Text underline variant="xs" color="black60" textAlign="right" mb={0.5}>
-            {tooltipText}
-          </Text>
-        </Touchable>
+        <Flex
+          style={{
+            alignItems: "flex-end",
+            marginBottom: space(0.5),
+          }}
+        >
+          <Touchable onPress={onTooltipPress} haptic="impactLight">
+            <Text underline variant="xs" color="black60">
+              {tooltipText}
+            </Text>
+          </Touchable>
+        </Flex>
       )}
       <Touchable accessible accessibilityRole="button" onPress={onPress} testID={testID}>
         <AnimatedFlex
@@ -141,50 +141,13 @@ export const SelectButton: React.FC<{
           </Flex>
         </AnimatedFlex>
       </Touchable>
+      {!!required || !!optional ? (
+        <Text color="black60" variant="xs" pl={`${HORIZONTAL_PADDING}px`} mt={0.5}>
+          {!!required && "* Required"}
+          {!!optional && "* Optional"}
+        </Text>
+      ) : null}
     </>
-  )
-
-  return (
-    <Flex>
-      <Flex flexDirection="row">
-        <Flex flex={1}>
-          {!!showTitleLabel && (
-            <InputTitle optional={optional} required={required}>
-              {title}
-            </InputTitle>
-          )}
-
-          {!!subTitle && (
-            <Text variant="xs" color="black60" mb={0.5}>
-              {subTitle}
-            </Text>
-          )}
-        </Flex>
-        {!!tooltipText && (
-          <Flex justifyContent="flex-end" ml="auto">
-            <Text variant="xs" color="black60" mb={0.5} onPress={onTooltipPress}>
-              {tooltipText}
-            </Text>
-          </Flex>
-        )}
-      </Flex>
-      <TouchableOpacity accessible accessibilityRole="button" onPress={onPress} testID={testID}>
-        <Flex
-          px={1}
-          flexDirection="row"
-          height={INPUT_HEIGHT}
-          borderWidth={1}
-          borderColor={hasError ? color("red100") : color("black30")}
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          <Text style={textStyle} color={value ? "black100" : "black60"} mr={0.5}>
-            {value ?? placeholder ?? "Pick an option"}
-          </Text>
-          <TriangleDown />
-        </Flex>
-      </TouchableOpacity>
-    </Flex>
   )
 }
 
