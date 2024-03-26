@@ -296,10 +296,13 @@ jest.mock("react-native/Libraries/LayoutAnimation/LayoutAnimation", () => ({
 }))
 
 jest.mock("react-native-gesture-handler", () => {
+  const actual = jest.requireActual("react-native-gesture-handler")
   const View = require("react-native/Libraries/Components/View/View")
   const TouchableWithoutFeedback = require("react-native/Libraries/Components/Touchable/TouchableWithoutFeedback")
   const TouchableHighlight = require("react-native/Libraries/Components/Touchable/TouchableHighlight")
+
   return {
+    ...actual,
     Swipeable: View,
     DrawerLayout: View,
     State: {},

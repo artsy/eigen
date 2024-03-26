@@ -10,6 +10,7 @@ module.exports = {
     "jest-extended/all",
     "@testing-library/jest-native/extend-expect",
     "./src/setupJest.tsx",
+    "./node_modules/react-native-gesture-handler/jestSetup.js",
   ],
   testMatch: ["<rootDir>/**/*.tests.(ts|tsx|js)"],
   testEnvironment: "jest-environment-jsdom",

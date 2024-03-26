@@ -2,6 +2,8 @@ import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { SavedSearchesListTestsQuery } from "__generated__/SavedSearchesListTestsQuery.graphql"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { PanGesture } from "react-native-gesture-handler"
+import { fireGestureHandler, getByGestureTestId } from "react-native-gesture-handler/jest-utils"
 import { graphql } from "react-relay"
 import { SavedSearchesListPaginationContainer as SavedSearchesList } from "./SavedSearchesList"
 
@@ -141,6 +143,40 @@ describe("SavedSearches", () => {
       expect(screen.getByText("Edit Alert")).toBeTruthy()
       expect(screen.getByText(/View Artworks/)).toBeTruthy()
       expect(screen.getByText(/57/)).toBeTruthy()
+    })
+  })
+
+  describe("swipe to delete", () => {
+    it("shows delete button and delete alert dialog when clicking on the button", () => {
+      renderWithRelay({
+        Me: () => ({
+          alertsConnection: {
+            edges: [
+              {
+                node: {
+                  internalID: "banksy",
+                  title: "Banksy",
+                },
+              },
+            ],
+          },
+        }),
+      })
+
+      fireGestureHandler<PanGesture>(getByGestureTestId(`pan-alert-banksy`), [
+        { translationX: 0 },
+        { translationX: -100 },
+      ])
+
+      expect(screen.getByTestId(`delete-button-banksy`)).toBeVisible()
+      fireEvent.press(screen.getByTestId(`delete-button-banksy`))
+
+      expect(screen.getByText("Delete Alert")).toBeTruthy()
+      expect(
+        screen.getByText(
+          "You will no longer receive notifications for artworks matching the criteria in this alert."
+        )
+      ).toBeTruthy()
     })
   })
 })

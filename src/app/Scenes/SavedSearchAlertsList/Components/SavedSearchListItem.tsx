@@ -52,6 +52,7 @@ export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) =
   const pan = Gesture.Pan()
     .failOffsetY([-5, 5])
     .activeOffsetX([-5, 5])
+    .withTestId(`pan-alert-${id}`)
     .onBegin(() => {
       runOnJS(onSwipeBegin)(id)
     })
@@ -130,7 +131,7 @@ export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) =
             backgroundColor="red100"
             width={DELETE_BUTTON_WIDTH}
           >
-            <Touchable onPress={() => setVisibleDeleteDialog(true)}>
+            <Touchable onPress={() => setVisibleDeleteDialog(true)} testID={`delete-button-${id}`}>
               <Flex flexDirection="row" alignItems="center" width="100%" height="100%">
                 <Text variant="sm-display" color="white100">
                   Delete
