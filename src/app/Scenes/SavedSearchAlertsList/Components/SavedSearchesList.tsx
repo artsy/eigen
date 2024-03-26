@@ -46,7 +46,9 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
   const { me, fetchingMore, refreshMode, onRefresh, onLoadMore, onAlertPress } = props
   const { space } = useTheme()
   const enableTapToShowBottomSheet = useFeatureFlag("AREnableAlertBottomSheet")
-  const items = extractNodes(me.alertsConnection)
+  const [items, setItems] = useState(
+    extractNodes(me.alertsConnection).map((node) => ({ ...node, isSwipingActive: false }))
+  )
 
   const refresh = () => {
     onRefresh("default")
@@ -75,7 +77,7 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
     <Screen.FlatList
       data={items}
       keyExtractor={(item) => item.internalID}
-      contentContainerStyle={{ paddingVertical: space(1) }}
+      contentContainerStyle={{ paddingTop: space(1) }}
       refreshing={refreshMode !== null}
       onRefresh={() => {
         onRefresh("default")
@@ -84,8 +86,10 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
       renderItem={({ item }) => {
         return (
           <SavedSearchListItem
+            id={item.internalID}
             title={item.title}
             subtitle={item.subtitle}
+            isSwipingActive={item.isSwipingActive}
             onPress={() => {
               if (!!enableTapToShowBottomSheet) {
                 const artworksCount = item.artworksConnection?.counts?.total ?? 0
@@ -98,6 +102,19 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
               } else {
                 navigate(`settings/alerts/${item.internalID}/edit`)
               }
+            }}
+            onDelete={(id) => {
+              // remove item from the list
+              setItems((prevItems) => prevItems.filter((item) => item.internalID !== id))
+            }}
+            onSwipeBegin={(id) => {
+              // reset swiping state for all items that are not the one being swiped
+              setItems((prevItems) =>
+                prevItems.map((item) => ({
+                  ...item,
+                  isSwipingActive: item.internalID === id ? true : false,
+                }))
+              )
             }}
           />
         )
