@@ -98,7 +98,7 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
                 recoveryCodeMode ? "Enter a recovery code" : "Enter an authentication code"
               }
               placeholderTextColor={color("black30")}
-              title={recoveryCodeMode ? "Recovery code" : "Authentication code"}
+              title={recoveryCodeMode ? "Recovery code" : undefined}
               returnKeyType="done"
               value={values.otp}
               error={errors.otp}
