@@ -47,6 +47,7 @@ export const OnboardingCreateAccountEmail: React.FC<OnboardingCreateAccountEmail
         onSubmitEditing={handleSubmit}
         blurOnSubmit={false}
         placeholderTextColor={color("black30")}
+        placeholder="Email address"
         value={values.email}
         returnKeyType="next"
         spellCheck={false}

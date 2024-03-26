@@ -129,7 +129,6 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
         value={selectedPriceInsight.medium}
         options={mediumOptions.current}
         title="Select medium"
-        showTitleLabel={false}
         onSelectValue={(selectedMedium) => {
           const priceInsight = priceInsights.find((p) => p.medium === selectedMedium)
           if (priceInsight) {
