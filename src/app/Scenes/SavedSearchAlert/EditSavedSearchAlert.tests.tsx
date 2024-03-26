@@ -1,4 +1,5 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { useSavedSearchPills } from "app/Scenes/SavedSearchAlert/useSavedSearchPills"
 import { goBack } from "app/system/navigation/navigate"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
@@ -10,16 +11,7 @@ import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRece
 import { createMockEnvironment } from "relay-test-utils"
 import { EditSavedSearchAlertQueryRenderer } from "./EditSavedSearchAlert"
 
-jest.mock("app/Scenes/SavedSearchAlert/useSavedSearchPills", () => {
-  return {
-    useSavedSearchPills: () => [
-      { label: "Banksy", paramName: "artistIDs", value: "banksy" },
-      { label: "Monkeys", paramName: "artistSeriesIDs", value: "monkeys" },
-      { label: "Lithograph", paramName: "materialTerms", value: "lithograph" },
-      { label: "Paper", paramName: "materialTerms", value: "paper" },
-    ],
-  }
-})
+jest.mock("app/Scenes/SavedSearchAlert/useSavedSearchPills")
 
 describe("EditSavedSearchAlert", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -30,6 +22,11 @@ describe("EditSavedSearchAlert", () => {
     notificationPermissions.mockImplementationOnce((cb) =>
       cb(null, PushAuthorizationStatus.Authorized)
     )
+    ;(useSavedSearchPills as jest.Mock).mockImplementation(() => pills)
+  })
+
+  afterEach(() => {
+    jest.clearAllMocks()
   })
 
   const TestRenderer = () => {
@@ -61,6 +58,12 @@ describe("EditSavedSearchAlert", () => {
 
   // TODO: fix this test
   it.skip("should pass updated criteria to update mutation when pills are removed", async () => {
+    ;(useSavedSearchPills as jest.Mock)
+      .mockImplementationOnce(() => pills)
+      .mockImplementationOnce(() => pills)
+      .mockImplementationOnce(() => pills)
+      .mockImplementation(() => pills.filter((pill) => pill.label !== "Lithograph"))
+
     renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
@@ -78,6 +81,7 @@ describe("EditSavedSearchAlert", () => {
     await flushPromiseQueue()
 
     fireEvent.press(screen.getByText("Lithograph"))
+    console.log("[Debug] press")
     fireEvent.press(screen.getAllByText("Save Alert")[0])
 
     await waitFor(() => {
@@ -395,4 +399,11 @@ const mockSuggestedFilters = [
     name: "Medium",
     value: "painting",
   },
+]
+
+const pills = [
+  { label: "Banksy", paramName: "artistIDs", value: "banksy" },
+  { label: "Monkeys", paramName: "artistSeriesIDs", value: "monkeys" },
+  { label: "Lithograph", paramName: "materialTerms", value: "lithograph" },
+  { label: "Paper", paramName: "materialTerms", value: "paper" },
 ]

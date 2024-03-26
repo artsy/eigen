@@ -4,6 +4,7 @@ import {
   SavedSearchEntity,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
+import { useSavedSearchPills } from "app/Scenes/SavedSearchAlert/useSavedSearchPills"
 import { navigate } from "app/system/navigation/navigate"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
@@ -17,18 +18,7 @@ import { createMockEnvironment } from "relay-test-utils"
 import { SavedSearchAlertForm, SavedSearchAlertFormProps, tracks } from "./SavedSearchAlertForm"
 import { SavedSearchStoreProvider, savedSearchModel } from "./SavedSearchStore"
 
-jest.mock("app/Scenes/SavedSearchAlert/useSavedSearchPills", () => {
-  return {
-    useSavedSearchPills: () => [
-      { label: "artistName", paramName: "artistIDs", value: "artist-name" },
-      { label: "Prints", paramName: "additionalGeneIDs", value: "prints" },
-      { label: "Photography", paramName: "additionalGeneIDs", value: "prints" },
-      { label: "Limited Edition", paramName: "attributionClass", value: "limited-edition" },
-      { label: "Tate Ward Auctions", paramName: "partnerIDs", value: "tate-ward-auctions" },
-      { label: "New York, NY, USA", paramName: "locationCities", value: "new-york-ny-usa" },
-    ],
-  }
-})
+jest.mock("app/Scenes/SavedSearchAlert/useSavedSearchPills")
 
 describe("SavedSearchAlertForm", () => {
   const spyAlert = jest.spyOn(Alert, "alert")
@@ -38,6 +28,11 @@ describe("SavedSearchAlertForm", () => {
 
   beforeEach(() => {
     mockEnvironment = getMockRelayEnvironment()
+    ;(useSavedSearchPills as jest.Mock).mockImplementation(() => pills)
+  })
+
+  afterEach(() => {
+    jest.clearAllMocks()
   })
 
   const withoutDuplicateAlert = async () => {
@@ -536,8 +531,15 @@ describe("SavedSearchAlertForm", () => {
       expect(screen.getByText("Prints")).toBeTruthy()
     })
 
-    // TODO: fix test
-    it.skip("should have removable filter pills", async () => {
+    it("should have removable filter pills", async () => {
+      ;(useSavedSearchPills as jest.Mock)
+        .mockImplementationOnce(() => pills)
+        .mockImplementationOnce(() => pills)
+        .mockImplementationOnce(() => pills)
+        .mockImplementationOnce(() =>
+          pills.filter((pill) => pill.label !== "Prints" && pill.label !== "Photography")
+        )
+
       renderWithWrappers(<TestRenderer />)
       // artist pill should appear and not be removable
       expect(screen.getByText("artistName")).toBeTruthy()
@@ -824,3 +826,12 @@ const baseProps: SavedSearchAlertFormProps = {
   },
   userAllowsEmails: true,
 }
+
+const pills = [
+  { label: "artistName", paramName: "artistIDs", value: "artist-name" },
+  { label: "Prints", paramName: "additionalGeneIDs", value: "prints" },
+  { label: "Photography", paramName: "additionalGeneIDs", value: "prints" },
+  { label: "Limited Edition", paramName: "attributionClass", value: "limited-edition" },
+  { label: "Tate Ward Auctions", paramName: "partnerIDs", value: "tate-ward-auctions" },
+  { label: "New York, NY, USA", paramName: "locationCities", value: "new-york-ny-usa" },
+]
