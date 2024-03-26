@@ -39,17 +39,17 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
   const phoneRef = useRef<Input2Ref>(null)
 
   const [address, setAddress] = useState<Address>({
-    fullName: "",
-    addressLine1: "",
-    addressLine2: "",
-    city: "",
-    state: "",
+    fullName: billingAddress?.fullName || "",
+    addressLine1: billingAddress?.addressLine1 || "",
+    addressLine2: billingAddress?.addressLine2 || "",
+    city: billingAddress?.city || "",
+    state: billingAddress?.state || "",
     country: {
-      longName: "",
-      shortName: "",
+      longName: billingAddress?.country.longName || "",
+      shortName: billingAddress?.country.shortName || "",
     },
-    postalCode: "",
-    phoneNumber: "",
+    postalCode: billingAddress?.postalCode || "",
+    phoneNumber: billingAddress?.phoneNumber || "",
   })
 
   const [addressFieldsWithError, setAddressFieldsWithError] = useState<string[]>([])
@@ -57,13 +57,6 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
   // focus on the initial input on mount
   useEffect(() => {
     fullNameRef.current?.focus()
-  }, [])
-
-  // set billing address, if passed as prop
-  useEffect(() => {
-    if (billingAddress) {
-      setAddress(billingAddress)
-    }
   }, [])
 
   // fired on each input change -> updates the relevant field in local state
