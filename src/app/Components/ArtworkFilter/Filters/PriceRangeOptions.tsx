@@ -3,6 +3,7 @@ import { Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
 import {
+  FilterData,
   FilterDisplayName,
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
@@ -34,7 +35,10 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
   )
 
   const selectedOptions = useSelectedOptionsDisplay()
-  const selectedFilterOption = selectedOptions.find((option) => option.paramName === PARAM_NAME)!
+  const selectedFilterOption = selectedOptions.find(
+    (option) => option.paramName === PARAM_NAME
+  ) as FilterData
+
   const [filterPriceRange, setFilterPriceRange] = useState(
     selectedFilterOption.paramValue as string
   )
