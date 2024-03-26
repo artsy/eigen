@@ -63,6 +63,7 @@ export const CustomSizeInputs: React.FC<CustomSizeInputsProps> = ({
               fixedRightPlaceholder={selectedMetric}
               accessibilityLabel={`Minimum ${label} Input`}
               value={getValue(localRange.min)}
+              disableOnChangeOptimisation
             />
           </Flex>
           <Flex flex={1}>
@@ -73,6 +74,7 @@ export const CustomSizeInputs: React.FC<CustomSizeInputsProps> = ({
               fixedRightPlaceholder={selectedMetric}
               accessibilityLabel={`Maximum ${label} Input`}
               value={getValue(localRange.max)}
+              disableOnChangeOptimisation
             />
           </Flex>
         </Join>

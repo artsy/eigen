@@ -48,6 +48,7 @@ export const ContactInformation: React.FC<{
             onBlur={() => setIsNameInputFocused(false)}
             onFocus={() => setIsNameInputFocused(true)}
             error={!isNameInputFocused && values.userName && errors.userName ? errors.userName : ""}
+            testID="name-input"
           />
           <Spacer y={4} />
           <Input2
@@ -62,6 +63,7 @@ export const ContactInformation: React.FC<{
             error={
               !isEmailInputFocused && values.userEmail && errors.userEmail ? errors.userEmail : ""
             }
+            testID="email-input"
           />
           <Spacer y={4} />
           <PhoneInput
@@ -72,6 +74,7 @@ export const ContactInformation: React.FC<{
             setValidation={noop}
             accessibilityLabel="Phone number"
             shouldDisplayLocalError={false}
+            testID="phone-input"
           />
           <Spacer y={6} />
           <CTAButton
