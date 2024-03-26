@@ -35,6 +35,7 @@ export const OnboardingCreateAccountName: React.FC<OnboardingCreateAccountNamePr
         autoComplete="name"
         autoCorrect={false}
         autoFocus
+        title="Full Name"
         onChangeText={(text) => {
           if (errors.name) {
             setErrors({

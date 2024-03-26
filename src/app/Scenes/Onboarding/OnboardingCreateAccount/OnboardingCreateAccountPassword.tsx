@@ -27,6 +27,7 @@ export const OnboardingCreateAccountPassword: React.FC<OnboardingCreateAccountPa
       <Input2
         autoCapitalize="none"
         autoComplete="password"
+        title="Password"
         autoCorrect={false}
         autoFocus
         onChangeText={(text) => {
@@ -40,7 +41,6 @@ export const OnboardingCreateAccountPassword: React.FC<OnboardingCreateAccountPa
         }}
         onSubmitEditing={handleSubmit}
         blurOnSubmit={false}
-        placeholder="Password"
         placeholderTextColor={color("black30")}
         secureTextEntry
         returnKeyType="done"
