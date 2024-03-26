@@ -315,6 +315,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
             onChangeText={setMessage}
             onFocus={scrollToInput}
             style={{ justifyContent: "flex-start" }}
+            testID="add-message-input"
           />
         </Box>
       </ScrollView>

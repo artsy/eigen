@@ -128,6 +128,7 @@ export const AddMyCollectionArtist: React.FC = () => {
                 returnKeyType="next"
                 title="Artist Name"
                 value={values.name}
+                testID="artist-input"
               />
               <Input2
                 accessibilityLabel="Nationality"
@@ -141,6 +142,7 @@ export const AddMyCollectionArtist: React.FC = () => {
                 returnKeyType="next"
                 title="Nationality"
                 value={values.nationality}
+                testID="nationality-input"
               />
               <Flex flexDirection="row" flex={2}>
                 <Join separator={<Spacer x={4} />}>
@@ -157,6 +159,7 @@ export const AddMyCollectionArtist: React.FC = () => {
                       ref={birthYearInputRef}
                       title="Birth Year"
                       value={values.birthYear}
+                      testID="birth-year-input"
                     />
                   </Flex>
                   <Flex flex={1}>
@@ -172,6 +175,7 @@ export const AddMyCollectionArtist: React.FC = () => {
                       ref={deathYearInputRef}
                       title="Death Year"
                       value={values.deathYear}
+                      testID="death-year-input"
                     />
                   </Flex>
                 </Join>
