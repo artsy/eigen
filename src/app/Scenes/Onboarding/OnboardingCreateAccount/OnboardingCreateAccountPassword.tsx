@@ -42,6 +42,7 @@ export const OnboardingCreateAccountPassword: React.FC<OnboardingCreateAccountPa
         onSubmitEditing={handleSubmit}
         blurOnSubmit={false}
         placeholderTextColor={color("black30")}
+        placeholder="Password"
         secureTextEntry
         returnKeyType="done"
         // We need to to set textContentType to password here
