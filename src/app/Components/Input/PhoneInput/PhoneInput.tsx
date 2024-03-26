@@ -1,9 +1,17 @@
-import { Flex, Spacer, Text, Touchable, TriangleDown, useColor } from "@artsy/palette-mobile"
+import {
+  Flex,
+  Input2Props,
+  Spacer,
+  Text,
+  Touchable,
+  TriangleDown,
+  useColor,
+} from "@artsy/palette-mobile"
 import {
   INTERNALSelectAndInputCombinationBase,
   ValuePayload,
 } from "app/Components/Input/INTERNALSelectAndInputCombinationBase"
-import { InputProps, InputRef } from "app/Components/Input/Input"
+import { InputRef } from "app/Components/Input/Input"
 import { SelectOption } from "app/Components/Select"
 import * as glibphone from "google-libphonenumber"
 import replace from "lodash/replace"
@@ -20,7 +28,7 @@ export const PhoneInput = forwardRef<
     onModalFinishedClosing?: () => void
     maxModalHeight?: number
     shouldDisplayLocalError?: boolean
-  } & Omit<InputProps, "onChange">
+  } & Omit<Input2Props, "onChange">
 >(
   (
     {

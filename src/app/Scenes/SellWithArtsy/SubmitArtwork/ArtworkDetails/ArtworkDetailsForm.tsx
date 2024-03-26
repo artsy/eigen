@@ -189,17 +189,10 @@ export const ArtworkDetailsForm: React.FC = () => {
         </Box>
       </Flex>
       <StandardSpace />
-      <Flex flexDirection="row" justifyContent="space-between">
-        <InputTitle>Provenance</InputTitle>
-        <LinkButton
-          variant="xs"
-          color="black60"
-          onPress={() => setIsProvenanceInfoModalVisible(true)}
-        >
-          What is this?
-        </LinkButton>
-      </Flex>
+
       <Input2
+        title="Provenance"
+        onHintPress={() => setIsProvenanceInfoModalVisible(true)}
         placeholder="Describe how you acquired the artwork"
         testID="Submission_ProvenanceInput"
         value={values.provenance}
