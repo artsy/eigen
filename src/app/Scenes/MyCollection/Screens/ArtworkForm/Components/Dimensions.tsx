@@ -51,6 +51,7 @@ export const Dimensions: React.FC = () => {
             onBlur={formik.handleBlur("height")}
             value={formik.values.height}
             testID="HeightInput"
+            disableOnChangeOptimisation
           />
         </Flex>
         <Flex mr={1} flex={1}>
@@ -61,6 +62,7 @@ export const Dimensions: React.FC = () => {
             onBlur={formik.handleBlur("width")}
             value={formik.values.width}
             testID="WidthInput"
+            disableOnChangeOptimisation
           />
         </Flex>
         <Flex flex={1}>
@@ -71,6 +73,7 @@ export const Dimensions: React.FC = () => {
             onBlur={formik.handleBlur("depth")}
             value={formik.values.depth}
             testID="DepthInput"
+            disableOnChangeOptimisation
           />
         </Flex>
       </Flex>
