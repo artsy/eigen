@@ -1,5 +1,4 @@
 import { Flex, Input2, Input2Props, MapPinIcon, Text, Touchable } from "@artsy/palette-mobile"
-import { Input } from "app/Components/Input"
 import {
   LocationWithDetails,
   SimpleLocation,
@@ -47,7 +46,7 @@ export const LocationAutocomplete: React.FC<LocationAutocompleteProps> = ({
   const [predictions, setPredictions] = useState<SimpleLocation[]>([])
   const [selectedLocation, setSelectedLocation] = useState(initialLocation)
   const [query, setQuery] = useState(selectedLocation?.name || displayLocation)
-  const innerRef = useRef<Input>(null)
+  const innerRef = useRef<Input2>(null)
   const ref = inputRef || innerRef
 
   const selectedLocationQuery = selectedLocation?.name || displayLocation
