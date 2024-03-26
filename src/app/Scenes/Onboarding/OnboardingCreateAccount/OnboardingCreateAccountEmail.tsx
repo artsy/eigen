@@ -33,6 +33,7 @@ export const OnboardingCreateAccountEmail: React.FC<OnboardingCreateAccountEmail
         autoComplete="email"
         enableClearButton
         autoFocus
+        title="Email"
         keyboardType="email-address"
         onChangeText={(text) => {
           // Hide error when the user starts to type again
@@ -45,7 +46,6 @@ export const OnboardingCreateAccountEmail: React.FC<OnboardingCreateAccountEmail
         }}
         onSubmitEditing={handleSubmit}
         blurOnSubmit={false}
-        placeholder="Email address"
         placeholderTextColor={color("black30")}
         returnKeyType="next"
         spellCheck={false}
