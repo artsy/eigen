@@ -121,28 +121,33 @@ export const PriceRangeContainer: React.FC<PriceRangeContainerProps> = ({
 
       <Spacer y={2} />
 
-      <Flex flexDirection="row" mx={2}>
-        <Input2
-          title="Min"
-          fixedRightPlaceholder="$USD"
-          enableClearButton
-          keyboardType="number-pad"
-          value={getInputValue(minValue)}
-          onChangeText={handleTextChange(0)}
-          testID="price-min-input"
-          accessibilityLabel="Minimum Price Range Input"
-        />
-        <Spacer x={2} />
-        <Input2
-          title="Max"
-          fixedRightPlaceholder="$USD"
-          enableClearButton
-          keyboardType="number-pad"
-          value={getInputValue(maxValue)}
-          onChangeText={handleTextChange(1)}
-          testID="price-max-input"
-          accessibilityLabel="Maximum Price Range Input"
-        />
+      <Flex flexDirection="row" mx={2} justifyContent="space-around">
+        <Flex flex={1} pr={1}>
+          <Input2
+            title="Min"
+            fixedRightPlaceholder="$USD"
+            enableClearButton
+            keyboardType="number-pad"
+            value={getInputValue(minValue)}
+            onChangeText={handleTextChange(0)}
+            disableOnChangeOptimisation
+            testID="price-min-input"
+            accessibilityLabel="Minimum Price Range Input"
+          />
+        </Flex>
+        <Flex flex={1} pl={1}>
+          <Input2
+            title="Max"
+            fixedRightPlaceholder="$USD"
+            enableClearButton
+            keyboardType="number-pad"
+            value={getInputValue(maxValue)}
+            onChangeText={handleTextChange(1)}
+            disableOnChangeOptimisation
+            testID="price-max-input"
+            accessibilityLabel="Maximum Price Range Input"
+          />
+        </Flex>
       </Flex>
       <Spacer y={2} />
 
