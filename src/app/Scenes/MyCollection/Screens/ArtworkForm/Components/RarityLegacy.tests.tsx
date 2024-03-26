@@ -1,7 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useFormikContext } from "formik"
-import { Rarity } from "./Rarity.1"
+import { Rarity } from "./RarityLegacy"
 
 jest.mock("formik")
 
@@ -34,7 +34,7 @@ describe("Rarity", () => {
   it("displays the modal with all classification types", async () => {
     renderWithWrappers(<Rarity />)
 
-    fireEvent.press(screen.getByText("What is this?"))
+    fireEvent.press(screen.getByText("What's this?"))
     screen.getByText("Classifications")
 
     expect(screen.getByText("Unique")).toBeTruthy()

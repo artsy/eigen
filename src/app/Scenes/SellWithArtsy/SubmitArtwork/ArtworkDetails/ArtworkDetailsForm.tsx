@@ -84,6 +84,7 @@ export const ArtworkDetailsForm: React.FC = () => {
       <StandardSpace />
       <Select
         onSelectValue={(e) => setFieldValue("attributionClass", e)}
+        onTooltipPress={() => setIsRarityInfoModalVisible(true)}
         value={values.attributionClass}
         enableSearch={false}
         title="Rarity"
@@ -93,7 +94,7 @@ export const ArtworkDetailsForm: React.FC = () => {
             color="black60"
             onPress={() => setIsRarityInfoModalVisible(true)}
           >
-            What is this?
+            What's this?
           </LinkButton>
         }
         placeholder="Select a classification"
