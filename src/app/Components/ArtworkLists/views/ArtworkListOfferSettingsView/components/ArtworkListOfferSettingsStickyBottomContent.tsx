@@ -37,7 +37,7 @@ export const ArtworkListOfferSettingsStickyBottomContent: React.FC<BottomSheetFo
       <Box bg="white100">
         <Box height={STICKY_BOTTOM_CONTENT_HEIGHT} px={2} pt={2}>
           <Button width="100%" block loading={inProgress} onPress={handleSave}>
-            Done
+            Save Changes
           </Button>
         </Box>
       </Box>
