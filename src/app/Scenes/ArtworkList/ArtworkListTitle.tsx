@@ -17,7 +17,7 @@ export const ArtworkListTitle: React.FC<ArtworkListTitleProps> = ({
       <Text variant="lg">{title}</Text>
 
       {!shareableWithPartners && !!isArtworkListOfferabilityEnabled && (
-        <EyeClosedIcon ml={0.5} mt={0.5} fill="black100" />
+        <EyeClosedIcon accessibilityLabel="EyeClosedIcon" mt={0.5} ml={0.5} fill="black100" />
       )}
     </Flex>
   )

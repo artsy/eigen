@@ -20,6 +20,7 @@ export interface ArtworkListsProviderProps {
   // Needs for tests
   artwork?: ArtworkEntity
   selectArtworkListsViewVisible?: boolean
+  artworkListOfferSettingsViewVisible?: boolean
 }
 
 export const ARTWORK_LISTS_CONTEXT_INITIAL_STATE: ArtworkListState = {
@@ -56,11 +57,13 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
   artworkListId,
   artwork,
   selectArtworkListsViewVisible,
+  artworkListOfferSettingsViewVisible,
 }) => {
   const [state, dispatch] = useReducer(reducer, {
     ...ARTWORK_LISTS_CONTEXT_INITIAL_STATE,
     artwork: artwork ?? null,
     selectArtworkListsViewVisible: selectArtworkListsViewVisible ?? false,
+    artworkListOfferSettingsViewVisible: artworkListOfferSettingsViewVisible ?? false,
   })
 
   const toast = useArtworkListToast(state.toastBottomPadding)

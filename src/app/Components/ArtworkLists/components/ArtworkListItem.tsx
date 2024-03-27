@@ -75,7 +75,7 @@ const Item: FC<ArtworkListItemProps> = (props) => {
               </Flex>
 
               {!props.shareableWithPartners && !!isArtworkListOfferabilityEnabled && (
-                <EyeClosedIcon ml={0.5} fill="black100" />
+                <EyeClosedIcon accessibilityLabel="EyeClosedIcon" ml={0.5} fill="black100" />
               )}
             </Flex>
             <Text variant="xs" color="black60">
@@ -84,7 +84,7 @@ const Item: FC<ArtworkListItemProps> = (props) => {
           </Flex>
 
           {!!offerSettingsList ? (
-            <Switch value={props.shareableWithPartners} onValueChange={handlePress} />
+            <Switch role="switch" value={props.shareableWithPartners} onValueChange={handlePress} />
           ) : (
             <ArtworkListItemSelectedIcon selected={props.selected} />
           )}
