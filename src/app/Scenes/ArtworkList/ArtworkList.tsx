@@ -19,7 +19,6 @@ import { ArtworkListArtworksGridHeader } from "app/Scenes/ArtworkList/ArtworkLis
 import { ArtworkListEmptyState } from "app/Scenes/ArtworkList/ArtworkListEmptyState"
 import { ArtworkListHeader } from "app/Scenes/ArtworkList/ArtworkListHeader"
 import { extractNodes } from "app/utils/extractNodes"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useRefreshControl } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
@@ -194,7 +193,6 @@ export const ArtworkListScreen: FC<ArtworkListScreenProps> = (props) => {
 const ArtworkListPlaceholder = () => {
   const screen = useScreenDimensions()
   const space = useSpace()
-  const isArtworkListOfferabilityEnabled = useFeatureFlag("AREnableArtworkListOfferability")
 
   return (
     <ProvidePlaceholderContext>
@@ -204,11 +202,6 @@ const ArtworkListPlaceholder = () => {
         <SkeletonText mb={2} variant="lg">
           Saved Artworks
         </SkeletonText>
-        {!!isArtworkListOfferabilityEnabled && (
-          <SkeletonText mb={2} variant="sm-display">
-            Shared
-          </SkeletonText>
-        )}
         <Separator borderColor="black10" mt={1} mb={2} />
         <Flex justifyContent="space-between" flexDirection="row" mb={2}>
           <SkeletonText variant="xs">3 Artworks</SkeletonText>
