@@ -17,10 +17,17 @@
   dependencies:
     core-js "3"
 
-"@artsy/palette-mobile@13.1.30":
-  version "13.1.30"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-13.1.30.tgz#578003dd33cbfc71b29b40f51805e22c697ee35a"
-  integrity sha512-0US/25TNl25ZJGdmOisc7SyRgjvsNJMXBQcfDwBuSCS5bPcSNq/vSRT9aqqs7YecWrm+octuoYT2GNBrp4yfgg==
+<<<<<<< HEAD
+"@artsy/palette-mobile@13.1.27":
+  version "13.1.27"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-13.1.27.tgz#c73eec20685189260decc3ccdad92961adb33357"
+  integrity sha512-fcOzyWcCr/Z1rkhmQKqMdG9j9ZpMzNkS5UI96jb72r6zzXJ+2jB9hzRB1xbAIIIzfmGKpyEbmLO0yuRY8tSXQw==
+=======
+"@artsy/palette-mobile@13.1.23--canary.207.1682.0":
+  version "13.1.23--canary.207.1682.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-13.1.23--canary.207.1682.0.tgz#549f316ca7fcc30531d950bd653f4d6d887386dc"
+  integrity sha512-umOhxg+AIWXBfN0HTG0C3eF3FnWSWZYQarOFtMjAg0GjhdnfpHxLvO9tOwYrszEu9F3FHfKFZ+NVE+iKYfI+UA==
+>>>>>>> b578328458 (chore: update palette-mopile)
   dependencies:
     "@artsy/palette-tokens" "^5.0.0"
     "@shopify/flash-list" "^1.5.0"
