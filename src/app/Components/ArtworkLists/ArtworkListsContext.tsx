@@ -275,7 +275,7 @@ const reducer = (state: ArtworkListState, action: ArtworkListAction): ArtworkLis
         ...state,
         artworkListOfferSettingsViewVisible: action.payload,
       }
-    case "SHARE_OR_KEEP_ARTWORK_LIST":
+    case "SHARE_OR_KEEP_ARTWORK_LIST_PRIVATE":
       return shareOrKeepArtworkList(state, action.payload)
     default:
       return state
@@ -306,7 +306,10 @@ const addOrRemoveArtworkList = (
 
 const shareOrKeepArtworkList = (
   state: ArtworkListState,
-  actionPayload: Extract<ArtworkListAction, { type: "SHARE_OR_KEEP_ARTWORK_LIST" }>["payload"]
+  actionPayload: Extract<
+    ArtworkListAction,
+    { type: "SHARE_OR_KEEP_ARTWORK_LIST_PRIVATE" }
+  >["payload"]
 ): ArtworkListState => {
   const { artworkList, mode } = actionPayload
   const artworkLists = state[mode]

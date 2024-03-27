@@ -77,7 +77,7 @@ export type ArtworkListAction =
   | { type: "SET_UNSAVED_CHANGES"; payload: boolean }
   | { type: "SET_OFFER_SETTINGS_VIEW_VISIBLE"; payload: boolean }
   | {
-      type: "SHARE_OR_KEEP_ARTWORK_LIST"
+      type: "SHARE_OR_KEEP_ARTWORK_LIST_PRIVATE"
       payload: { mode: ArtworkListOfferSettingsMode; artworkList: ArtworkListEntity }
     }
 

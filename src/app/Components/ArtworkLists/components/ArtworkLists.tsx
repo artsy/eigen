@@ -114,7 +114,7 @@ export const ArtworkLists: FC<ArtworkListsProps> = (props) => {
         : ArtworkListOfferSettingsMode.SharingArtworkLists
 
       dispatch({
-        type: "SHARE_OR_KEEP_ARTWORK_LIST",
+        type: "SHARE_OR_KEEP_ARTWORK_LIST_PRIVATE",
         payload: {
           mode,
           artworkList: {
