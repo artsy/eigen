@@ -74,7 +74,7 @@ const Item: FC<ArtworkListItemProps> = (props) => {
                 </Text>
               </Flex>
 
-              {!artworkList.shareableWithPartners && !!isArtworkListOfferabilityEnabled && (
+              {!props.shareableWithPartners && !!isArtworkListOfferabilityEnabled && (
                 <EyeClosedIcon ml={0.5} fill="black100" />
               )}
             </Flex>
