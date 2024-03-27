@@ -374,6 +374,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                 multiline
                 title="Provenance"
                 maxLength={500}
+                showLimit
                 placeholder="Describe how you acquired the artwork"
                 value={formikValues.provenance}
                 accessibilityLabel="Describe how you acquired the artwork"

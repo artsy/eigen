@@ -37,6 +37,7 @@ export const RequestForPriceEstimateForm = () => {
               placeholder="First and last name"
               returnKeyType="done"
               maxLength={128}
+              showLimit
               value={values.requesterName}
               error={errors.requesterName}
             />
