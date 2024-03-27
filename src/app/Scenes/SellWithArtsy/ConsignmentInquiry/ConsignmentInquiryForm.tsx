@@ -90,6 +90,7 @@ export const ConsignmentInquiryForm: React.FC<{
             blurOnSubmit={false}
             error={errors.name}
             maxLength={128}
+            showLimit
             onBlur={() => validateField("name")}
             onChangeText={(text) => handleOnChangeText("name", text)}
             onSubmitEditing={() => jumpToNextField("name")}

@@ -158,6 +158,7 @@ export const Form: React.FC<FormProps> = ({
               error={errors.details}
               multiline
               maxLength={700}
+              showLimit
               testID="alert-input-details"
             />
           </Flex>
