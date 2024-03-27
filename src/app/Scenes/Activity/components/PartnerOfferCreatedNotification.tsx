@@ -1,4 +1,5 @@
 import { DEFAULT_HIT_SLOP, Flex, Screen, Spacer, Text, Touchable } from "@artsy/palette-mobile"
+import { PartnerOfferCreatedNotification_notification$key } from "__generated__/PartnerOfferCreatedNotification_notification.graphql"
 import {
   ExpiresInTimer,
   shouldDisplayExpiresInTimer,
@@ -16,12 +17,15 @@ interface PartnerOfferCreatedNotificationProps {
 export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotificationProps> = ({
   notification,
 }) => {
-  const notificationData = useFragment(PartnerOfferCreatedNotificationFragment, notification)
+  const notificationData = useFragment<PartnerOfferCreatedNotification_notification$key>(
+    PartnerOfferCreatedNotificationFragment,
+    notification
+  )
 
   const { headline, item, notificationType, artworksConnection, targetHref } = notificationData
 
-  const { hasEnded } = getTimer(item.partnerOffer.endAt || "")
-  const noLongerAvailable = !item.partnerOffer.isAvailable
+  const { hasEnded } = getTimer(item?.partnerOffer?.endAt || "")
+  const noLongerAvailable = !item?.partnerOffer?.isAvailable
 
   let subtitle = "Review the offer on your saved artwork"
 
@@ -70,12 +74,14 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
           <NotificationArtworkList
             artworksConnection={artworksConnection}
             priceOfferMessage={{
-              priceListedMessage: item.partnerOffer.priceListedMessage,
-              priceWithDiscountMessage: item.partnerOffer.priceWithDiscountMessage,
+              priceListedMessage: artworksConnection?.edges?.[0]?.node?.price
+                ? artworksConnection.edges[0].node.price
+                : "Not publicly listed",
+              priceWithDiscountMessage: item?.partnerOffer?.priceWithDiscount?.display || "",
             }}
             partnerOffer={{
-              endAt: item.partnerOffer.endAt,
-              isAvailable: item.partnerOffer.isAvailable,
+              endAt: item?.partnerOffer?.endAt || "",
+              isAvailable: item?.partnerOffer?.isAvailable || false,
               targetHref: targetHref,
             }}
             showArtworkCommercialButtons
@@ -98,13 +104,19 @@ export const PartnerOfferCreatedNotificationFragment = graphql`
         partnerOffer {
           endAt
           isAvailable
-          priceListedMessage
-          priceWithDiscountMessage
+          priceWithDiscount {
+            display
+          }
         }
       }
     }
     artworksConnection(first: 10) {
       ...NotificationArtworkList_artworksConnection
+      edges {
+        node {
+          price
+        }
+      }
     }
   }
 `
