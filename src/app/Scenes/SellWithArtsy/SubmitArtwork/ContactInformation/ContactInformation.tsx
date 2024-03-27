@@ -38,7 +38,7 @@ export const ContactInformation: React.FC<{
           <Text color="black60">
             We will only use these details to contact you regarding your submission.
           </Text>
-          <Spacer y={4} />
+          <Spacer y={2} />
           <Input2
             title="Name"
             placeholder="Your full name"
@@ -50,7 +50,7 @@ export const ContactInformation: React.FC<{
             error={!isNameInputFocused && values.userName && errors.userName ? errors.userName : ""}
             testID="name-input"
           />
-          <Spacer y={4} />
+          <Spacer y={2} />
           <Input2
             title="Email"
             placeholder="Your email address"
@@ -65,7 +65,7 @@ export const ContactInformation: React.FC<{
             }
             testID="email-input"
           />
-          <Spacer y={4} />
+          <Spacer y={2} />
           <PhoneInput
             title="Phone number"
             placeholder="(000) 000-0000"
