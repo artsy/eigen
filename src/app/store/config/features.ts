@@ -244,6 +244,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableAlertBottomSheet",
   },
+  AREnableNewTermsAndConditions: {
+    description: "Enable new terms and conditions",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableAlertBottomSheet",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
