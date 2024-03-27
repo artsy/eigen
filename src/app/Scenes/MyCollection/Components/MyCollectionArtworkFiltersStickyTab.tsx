@@ -1,17 +1,21 @@
 import {
-  useSpace,
-  Flex,
-  TouchableHighlightColor,
   FilterIcon,
-  bullet,
-  Text,
+  Flex,
+  INPUT_HEIGHT,
   Input2,
+  Text,
+  TouchableHighlightColor,
+  bullet,
+  useScreenDimensions,
+  useSpace,
 } from "@artsy/palette-mobile"
 import SearchIcon from "app/Components/Icons/SearchIcon"
 import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
 import { FiltersProps } from "app/Scenes/MyCollection/Components/MyCollectionStickyHeader"
 import { debounce } from "lodash"
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
+
+const FILTER_ICON_WIDTH = 40
 
 export const MyCollectionArtworkFilters: React.FC<FiltersProps> = (props) => {
   const space = useSpace()
@@ -24,29 +28,37 @@ export const MyCollectionArtworkFilters: React.FC<FiltersProps> = (props) => {
     200
   )
 
+  const { width: screenWidth } = useScreenDimensions()
+
   useEffect(() => {
     // We're making the update here to avoid having a laggy experience when typing
     setKeyword(query)
   }, [query])
 
   return (
-    <Flex backgroundColor="white100" flexDirection="row" pb={1}>
-      <Input2
-        testID="MyCollectionSearchBarInput"
-        icon={<SearchIcon width={18} height={18} />}
-        placeholder="Search Your Artworks"
-        onChangeText={setQuery}
-        enableClearButton
-        value={query}
-        returnKeyType="done"
-        autoCorrect={false}
-        style={{
-          marginLeft: space(2),
-        }}
-        accessibilityLabel="Search Your Artworks"
-      />
+    <Flex backgroundColor="white100" pb={1} px={2}>
+      <Flex width={screenWidth - 2 * space(2) - FILTER_ICON_WIDTH}>
+        <Input2
+          testID="MyCollectionSearchBarInput"
+          icon={<SearchIcon width={18} height={18} />}
+          placeholder="Search Your Artworks"
+          onChangeText={setQuery}
+          enableClearButton
+          value={query}
+          returnKeyType="done"
+          autoCorrect={false}
+          accessibilityLabel="Search Your Artworks"
+        />
+      </Flex>
 
-      <Flex px={2} justifyContent="center">
+      <Flex
+        right={`${space(2)}px`}
+        width={FILTER_ICON_WIDTH}
+        alignItems="flex-end"
+        justifyContent="center"
+        position="absolute"
+        height={INPUT_HEIGHT}
+      >
         <TouchableHighlightColor
           haptic
           onPress={showModal}
