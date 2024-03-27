@@ -1,6 +1,6 @@
 import {
+  EyeClosedIcon,
   Flex,
-  LockIcon,
   Text,
   Touchable,
   useScreenDimensions,
@@ -53,7 +53,7 @@ export const ArtworkListItem: FC<ArtworkListItemProps> = ({ artworkList, imagesL
         )}
 
         <Flex>
-          <Flex flexDirection="row">
+          <Flex flexDirection="row" alignItems="flex-end">
             <Flex flex={1}>
               <Text variant="xs" numberOfLines={1}>
                 {item.name}
@@ -61,7 +61,7 @@ export const ArtworkListItem: FC<ArtworkListItemProps> = ({ artworkList, imagesL
             </Flex>
 
             {!item.shareableWithPartners && !!isArtworkListOfferabilityEnabled && (
-              <LockIcon ml={0.5} fill="black100" />
+              <EyeClosedIcon ml={0.5} fill="black100" />
             )}
           </Flex>
           <Text variant="xs" color="black60" numberOfLines={1}>

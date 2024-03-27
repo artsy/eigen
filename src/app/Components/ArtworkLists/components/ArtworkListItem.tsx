@@ -1,4 +1,4 @@
-import { Flex, Join, LockIcon, Spacer, Switch, Text } from "@artsy/palette-mobile"
+import { EyeClosedIcon, Flex, Join, Spacer, Switch, Text } from "@artsy/palette-mobile"
 import { ArtworkListItem_item$key } from "__generated__/ArtworkListItem_item.graphql"
 import { ArtworkListImagePreview } from "app/Components/ArtworkLists/components/ArtworkListImagePreview"
 import { ArtworkListItemSelectedIcon } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/components/ArtworkListItemSelectedIcon"
@@ -67,7 +67,7 @@ const Item: FC<ArtworkListItemProps> = (props) => {
           <ArtworkListImagePreview imageURL={imageURL} />
 
           <Flex flex={1}>
-            <Flex flexDirection="row">
+            <Flex flexDirection="row" alignItems="flex-end">
               <Flex flexShrink={1}>
                 <Text variant="xs" numberOfLines={1}>
                   {artworkList.name}
@@ -75,7 +75,7 @@ const Item: FC<ArtworkListItemProps> = (props) => {
               </Flex>
 
               {!artworkList.shareableWithPartners && !!isArtworkListOfferabilityEnabled && (
-                <LockIcon ml={0.5} fill="black100" />
+                <EyeClosedIcon ml={0.5} fill="black100" />
               )}
             </Flex>
             <Text variant="xs" color="black60">
