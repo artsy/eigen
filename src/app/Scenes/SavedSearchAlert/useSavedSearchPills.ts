@@ -1,8 +1,6 @@
-import {
-  SearchCriteria,
-  SearchCriteriaAttributes,
-} from "app/Components/ArtworkFilter/SavedSearch/types"
+import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { omit } from "lodash"
 import { useEffect } from "react"
 import { fetchQuery, graphql } from "react-relay"
 import { SavedSearchStore } from "./SavedSearchStore"
@@ -18,40 +16,37 @@ export const useSavedSearchPills = () => {
 
   const setPreview = SavedSearchStore.useStoreActions((actions) => actions.setPreviewAction)
   const preview = SavedSearchStore.useStoreState((state) => state.preview)
-
-  const {
-    dimensionRange: _dimensionRange,
-    displayName: _displayName,
-    ...cleanAttributes
-  } = attributes as { [key: string]: any }
+  const cleanAttributes = omit(attributes, ["displayName", "dimensionRange"])
 
   useEffect(() => {
-    fetchPreview(cleanAttributes).then((data) => {
-      if (data?.viewer?.previewSavedSearch?.labels) {
-        setPreview(data.viewer.previewSavedSearch.labels)
-      }
-    })
-  }, [attributes])
-
-  return preview
-}
-
-export const fetchPreview = (attributes: SearchCriteriaAttributes) => {
-  return fetchQuery<any>(
-    getRelayEnvironment(),
-    graphql`
-      query useSavedSearchPillsPreviewQuery($attributes: PreviewSavedSearchAttributes) {
-        viewer {
-          previewSavedSearch(attributes: $attributes) {
-            labels {
-              label: displayValue
-              paramName: field
-              value
+    const subscription = fetchQuery<any>(
+      getRelayEnvironment(),
+      graphql`
+        query useSavedSearchPillsPreviewQuery($attributes: PreviewSavedSearchAttributes) {
+          viewer {
+            previewSavedSearch(attributes: $attributes) {
+              labels {
+                label: displayValue
+                paramName: field
+                value
+              }
             }
           }
         }
-      }
-    `,
-    { attributes: attributes }
-  ).toPromise()
+      `,
+      { attributes: cleanAttributes }
+    )?.subscribe?.({
+      next: (data) => {
+        if (data?.viewer?.previewSavedSearch?.labels) {
+          setPreview(data.viewer.previewSavedSearch.labels)
+        }
+      },
+    })
+
+    return () => {
+      subscription?.unsubscribe?.()
+    }
+  }, [attributes])
+
+  return preview
 }

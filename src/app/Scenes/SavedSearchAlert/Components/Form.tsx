@@ -88,7 +88,8 @@ export const Form: React.FC<FormProps> = ({
     })
   }
 
-  const isArtistPill = (pill: SavedSearchPill) => pill.paramName === SearchCriteria.artistID
+  const isArtistPill = (pill: SavedSearchPill) =>
+    pill.paramName === SearchCriteria.artistID || pill.paramName === SearchCriteria.artistIDs
 
   return (
     <>
