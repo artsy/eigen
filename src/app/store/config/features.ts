@@ -248,7 +248,7 @@ export const features = {
     description: "Enable new terms and conditions",
     readyForRelease: false,
     showInDevMenu: true,
-    echoFlagKey: "AREnableAlertBottomSheet",
+    echoFlagKey: "AREnableNewTermsAndConditions",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 
