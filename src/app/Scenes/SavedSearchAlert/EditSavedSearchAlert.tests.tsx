@@ -79,7 +79,6 @@ describe("EditSavedSearchAlert", () => {
     await flushPromiseQueue()
 
     fireEvent.press(screen.getByText("Lithograph"))
-    console.log("[Debug] press")
     fireEvent.press(screen.getAllByText("Save Alert")[0])
 
     await waitFor(() => {
