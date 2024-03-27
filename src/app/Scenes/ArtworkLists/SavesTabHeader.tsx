@@ -27,9 +27,9 @@ export const SavesTabHeader = () => {
     })
   }
 
-  const handleEditListPrivacy = () => {
+  const handleOfferSettings = () => {
     dispatch({
-      type: "SET_EDIT_LIST_PRIVACY_VIEW_VISIBLE",
+      type: "SET_OFFER_SETTINGS_VIEW_VISIBLE",
       payload: true,
     })
   }
@@ -63,8 +63,8 @@ export const SavesTabHeader = () => {
         </Button>
 
         {!!isArtworkListOfferabilityEnabled && (
-          <Button haptic variant="text" size="small" onPress={handleEditListPrivacy}>
-            Edit List Privacy
+          <Button haptic variant="text" size="small" onPress={handleOfferSettings}>
+            Offer settings
           </Button>
         )}
       </Flex>

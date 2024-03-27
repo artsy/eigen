@@ -1,14 +1,14 @@
-import { useUpdateArtworkListPrivacyMutation } from "__generated__/useUpdateArtworkListPrivacyMutation.graphql"
+import { useUpdateArtworkListOfferSettingsMutation } from "__generated__/useUpdateArtworkListOfferSettingsMutation.graphql"
 import { UseMutationConfig, graphql, useMutation } from "react-relay"
 
-export type MutationConfig = UseMutationConfig<useUpdateArtworkListPrivacyMutation>
+export type MutationConfig = UseMutationConfig<useUpdateArtworkListOfferSettingsMutation>
 
-export const useUpdateArtworkListPrivacy = () => {
-  return useMutation<useUpdateArtworkListPrivacyMutation>(SaveArtworkListsPrivacyMutation)
+export const useUpdateArtworkListOfferSettings = () => {
+  return useMutation<useUpdateArtworkListOfferSettingsMutation>(SaveArtworkListsPrivacyMutation)
 }
 
 const SaveArtworkListsPrivacyMutation = graphql`
-  mutation useUpdateArtworkListPrivacyMutation($input: updateMeCollectionsMutationInput!) {
+  mutation useUpdateArtworkListOfferSettingsMutation($input: updateMeCollectionsMutationInput!) {
     updateMeCollectionsMutation(input: $input) {
       meCollectionsOrErrors {
         ... on UpdateMeCollectionsSuccess {

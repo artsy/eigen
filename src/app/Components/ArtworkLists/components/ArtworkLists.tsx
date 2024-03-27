@@ -2,7 +2,7 @@ import { BottomSheetFlatList } from "@gorhom/bottom-sheet"
 import { ArtworkLists_me$data, ArtworkLists_me$key } from "__generated__/ArtworkLists_me.graphql"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { ArtworkListsLoadingIndicator } from "app/Components/ArtworkLists/components/ArtworkListsLoadingIndicator"
-import { ArtworkListMode, ArtworkListPrivacyMode } from "app/Components/ArtworkLists/types"
+import { ArtworkListMode, ArtworkListOfferSettingsMode } from "app/Components/ArtworkLists/types"
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { FC, useCallback, useEffect, useState } from "react"
@@ -110,8 +110,8 @@ export const ArtworkLists: FC<ArtworkListsProps> = (props) => {
   const handleArtworkListPress = useCallback((artworkList: PressedArtworkListItem) => {
     if (artworkList.shareableWithPartners !== undefined) {
       const mode = artworkList.shareableWithPartners
-        ? ArtworkListPrivacyMode.KeepingArtworkListsPrivate
-        : ArtworkListPrivacyMode.SharingArtworkLists
+        ? ArtworkListOfferSettingsMode.KeepingArtworkListsPrivate
+        : ArtworkListOfferSettingsMode.SharingArtworkLists
 
       dispatch({
         type: "SHARE_OR_KEEP_ARTWORK_LIST",

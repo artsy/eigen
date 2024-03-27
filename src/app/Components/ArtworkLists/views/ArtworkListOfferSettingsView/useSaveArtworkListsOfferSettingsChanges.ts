@@ -3,8 +3,8 @@ import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkLists
 import { ResultAction } from "app/Components/ArtworkLists/types"
 import {
   MutationConfig,
-  useUpdateArtworkListPrivacy,
-} from "app/Components/ArtworkLists/views/EditArtworkListsPrivacyView/useUpdateArtworkListPrivacy"
+  useUpdateArtworkListOfferSettings,
+} from "app/Components/ArtworkLists/views/ArtworkListOfferSettingsView/useUpdateArtworkListOfferSettings"
 import { useCallback } from "react"
 
 interface Options {
@@ -12,9 +12,9 @@ interface Options {
   onError?: MutationConfig["onError"]
 }
 
-export const useSaveArtworkListsPrivacyChanges = (options?: Options) => {
+export const useSaveArtworkListsOfferSettingsChanges = (options?: Options) => {
   const { shareArtworkListIDs, keepArtworkListPrivateIDs, onSave } = useArtworkListsContext()
-  const [commit, inProgress] = useUpdateArtworkListPrivacy()
+  const [commit, inProgress] = useUpdateArtworkListOfferSettings()
 
   const save = useCallback(() => {
     commit({
@@ -28,7 +28,7 @@ export const useSaveArtworkListsPrivacyChanges = (options?: Options) => {
       },
       onCompleted: (...args) => {
         onSave({
-          action: ResultAction.ModifiedArtworkListsPrivacy,
+          action: ResultAction.ModifiedArtworkListsOfferSettings,
         })
 
         options?.onCompleted?.(...args)
@@ -37,7 +37,7 @@ export const useSaveArtworkListsPrivacyChanges = (options?: Options) => {
         if (__DEV__) {
           console.error(error)
         } else {
-          captureMessage(`useUpdateArtworkListPrivacyMutation: ${error.message}`)
+          captureMessage(`useUpdateArtworkListOfferSettingsMutation: ${error.message}`)
         }
 
         options?.onError?.(error)

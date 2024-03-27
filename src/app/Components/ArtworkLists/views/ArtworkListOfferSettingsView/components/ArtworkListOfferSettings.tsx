@@ -1,5 +1,5 @@
 import { Box, Flex, Join, SkeletonBox, Spacer } from "@artsy/palette-mobile"
-import { EditArtworkListsPrivacyQuery } from "__generated__/EditArtworkListsPrivacyQuery.graphql"
+import { ArtworkListOfferSettingsQuery } from "__generated__/ArtworkListOfferSettingsQuery.graphql"
 import { ArtworkLists } from "app/Components/ArtworkLists/components/ArtworkLists"
 import { RandomWidthPlaceholderText } from "app/utils/placeholders"
 import { times } from "lodash"
@@ -9,8 +9,8 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 
 const LOADING_PLACEHOLDER_COUNT = 10
 
-const EditArtworkListsPrivacyContent = () => {
-  const queryData = useLazyLoadQuery<EditArtworkListsPrivacyQuery>(
+const ArtworkListOfferSettingsContent = () => {
+  const queryData = useLazyLoadQuery<ArtworkListOfferSettingsQuery>(
     Query,
     {},
     { fetchPolicy: "network-only" }
@@ -23,10 +23,10 @@ const EditArtworkListsPrivacyContent = () => {
   return <ArtworkLists me={queryData.me} />
 }
 
-export const EditArtworkListsPrivacy = () => {
+export const ArtworkListOfferSettings = () => {
   return (
-    <Suspense fallback={<EditArtworkListsPrivacyPlaceholder />}>
-      <EditArtworkListsPrivacyContent />
+    <Suspense fallback={<ArtworkListOfferSettingsPlaceholder />}>
+      <ArtworkListOfferSettingsContent />
     </Suspense>
   )
 }
@@ -60,7 +60,7 @@ const ArtworkListLoadingPlaceholder = () => {
   )
 }
 
-const EditArtworkListsPrivacyPlaceholder = () => {
+const ArtworkListOfferSettingsPlaceholder = () => {
   return (
     <Box>
       {times(LOADING_PLACEHOLDER_COUNT).map((index) => (
@@ -71,7 +71,7 @@ const EditArtworkListsPrivacyPlaceholder = () => {
 }
 
 const Query = graphql`
-  query EditArtworkListsPrivacyQuery {
+  query ArtworkListOfferSettingsQuery {
     me {
       ...ArtworkLists_me @arguments(artworkID: "", includeArtwork: false)
     }

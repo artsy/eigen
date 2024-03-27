@@ -5,12 +5,12 @@ import {
   useBottomSheetModal,
 } from "@gorhom/bottom-sheet"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
-import { useSaveArtworkListsPrivacyChanges } from "app/Components/ArtworkLists/views/EditArtworkListsPrivacyView/useSaveArtworkListsPrivacyChanges"
+import { useSaveArtworkListsOfferSettingsChanges } from "app/Components/ArtworkLists/views/ArtworkListOfferSettingsView/useSaveArtworkListsOfferSettingsChanges"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
 
 const STICKY_BOTTOM_CONTENT_HEIGHT = 100
 
-export const EditArtworkListsPrivacyStickyBottomContent: React.FC<BottomSheetFooterProps> = ({
+export const ArtworkListOfferSettingsStickyBottomContent: React.FC<BottomSheetFooterProps> = ({
   animatedFooterPosition,
 }) => {
   const {
@@ -18,9 +18,9 @@ export const EditArtworkListsPrivacyStickyBottomContent: React.FC<BottomSheetFoo
   } = useArtworkListsContext()
   const { dismiss } = useBottomSheetModal()
 
-  const { save, inProgress } = useSaveArtworkListsPrivacyChanges({
+  const { save, inProgress } = useSaveArtworkListsOfferSettingsChanges({
     onCompleted: () => {
-      dismiss(ArtworkListsViewName.EditArtworkListsPrivacy)
+      dismiss(ArtworkListsViewName.ArtworkListOfferSettings)
     },
   })
 
@@ -28,7 +28,7 @@ export const EditArtworkListsPrivacyStickyBottomContent: React.FC<BottomSheetFoo
     if (hasUnsavedChanges) {
       save()
     } else {
-      dismiss(ArtworkListsViewName.EditArtworkListsPrivacy)
+      dismiss(ArtworkListsViewName.ArtworkListOfferSettings)
     }
   }
 

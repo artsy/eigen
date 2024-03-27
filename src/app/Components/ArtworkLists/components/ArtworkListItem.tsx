@@ -28,7 +28,7 @@ const Item: FC<ArtworkListItemProps> = (props) => {
   const isArtworkListOfferabilityEnabled = useFeatureFlag("AREnableArtworkListOfferability")
   const imageURL = nodes[0]?.image?.resized?.url ?? null
 
-  const privacyList =
+  const offerSettingsList =
     artworkList.shareableWithPartners !== undefined &&
     artworkList.isSavedArtwork === undefined &&
     !!isArtworkListOfferabilityEnabled
@@ -43,7 +43,7 @@ const Item: FC<ArtworkListItemProps> = (props) => {
 
   const handlePress = () => {
     let result: PressedArtworkListItem
-    if (privacyList) {
+    if (offerSettingsList) {
       result = {
         internalID: artworkList.internalID,
         name: artworkList.name,
@@ -61,7 +61,7 @@ const Item: FC<ArtworkListItemProps> = (props) => {
   }
 
   return (
-    <TouchableOpacity disabled={!!privacyList} onPress={handlePress}>
+    <TouchableOpacity disabled={!!offerSettingsList} onPress={handlePress}>
       <Flex py={1} px={2} flexDirection="row" alignItems="center">
         <Join separator={<Spacer x={1} />}>
           <ArtworkListImagePreview imageURL={imageURL} />
@@ -83,7 +83,7 @@ const Item: FC<ArtworkListItemProps> = (props) => {
             </Text>
           </Flex>
 
-          {!!privacyList ? (
+          {!!offerSettingsList ? (
             <Switch value={props.shareableWithPartners} onValueChange={handlePress} />
           ) : (
             <ArtworkListItemSelectedIcon selected={props.selected} />

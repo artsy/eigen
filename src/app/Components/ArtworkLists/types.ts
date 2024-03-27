@@ -9,7 +9,7 @@ export enum ResultAction {
   SavedToDefaultArtworkList,
   RemovedFromDefaultArtworkList,
   ModifiedArtworkLists,
-  ModifiedArtworkListsPrivacy,
+  ModifiedArtworkListsOfferSettings,
 }
 
 export interface ArtworkEntity {
@@ -31,7 +31,7 @@ export enum ArtworkListMode {
   RemovingArtworkList = "removingArtworkLists",
 }
 
-export enum ArtworkListPrivacyMode {
+export enum ArtworkListOfferSettingsMode {
   SharingArtworkLists = "sharingArtworkLists",
   KeepingArtworkListsPrivate = "keepingArtworkListsPrivate",
 }
@@ -44,7 +44,7 @@ export interface ArtworkListEntity {
 export type ArtworkListState = {
   selectArtworkListsViewVisible: boolean
   createNewArtworkListViewVisible: boolean
-  editListPrivacyViewVisible: boolean
+  artworkListOfferSettingsViewVisible: boolean
   artwork: ArtworkEntity | null
   artworkListID: string | null
   recentlyAddedArtworkList: RecentlyAddedArtworkList | null
@@ -75,10 +75,10 @@ export type ArtworkListAction =
     }
   | { type: "SET_SELECTED_TOTAL_COUNT"; payload: number }
   | { type: "SET_UNSAVED_CHANGES"; payload: boolean }
-  | { type: "SET_EDIT_LIST_PRIVACY_VIEW_VISIBLE"; payload: boolean }
+  | { type: "SET_OFFER_SETTINGS_VIEW_VISIBLE"; payload: boolean }
   | {
       type: "SHARE_OR_KEEP_ARTWORK_LIST"
-      payload: { mode: ArtworkListPrivacyMode; artworkList: ArtworkListEntity }
+      payload: { mode: ArtworkListOfferSettingsMode; artworkList: ArtworkListEntity }
     }
 
 export interface ArtworkListsContextState {

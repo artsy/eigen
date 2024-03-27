@@ -2,8 +2,8 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 import { dispatchArtworkSavedStateChanged } from "app/Components/ArtworkLists/ArtworkListEvents"
 import { ArtworkListEntity } from "app/Components/ArtworkLists/types"
 import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkListsToast"
+import { ArtworkListOfferSettingsView } from "app/Components/ArtworkLists/views/ArtworkListOfferSettingsView/ArtworkListOfferSettingsView"
 import { CreateNewArtworkListView } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/CreateNewArtworkListView"
-import { EditArtworkListsPrivacyView } from "app/Components/ArtworkLists/views/EditArtworkListsPrivacyView/EditArtworkListsPrivacyView"
 import { SelectArtworkListsForArtworkView } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/SelectArtworkListsForArtworkView"
 import { createContext, FC, useCallback, useContext, useReducer } from "react"
 import {
@@ -25,7 +25,7 @@ export interface ArtworkListsProviderProps {
 export const ARTWORK_LISTS_CONTEXT_INITIAL_STATE: ArtworkListState = {
   selectArtworkListsViewVisible: false,
   createNewArtworkListViewVisible: false,
-  editListPrivacyViewVisible: false,
+  artworkListOfferSettingsViewVisible: false,
   artwork: null,
   artworkListID: null,
   recentlyAddedArtworkList: null,
@@ -131,7 +131,7 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
     dispatch({ type: "SET_UNSAVED_CHANGES", payload: false })
 
     if (!result.artwork) {
-      if (result.action === ResultAction.ModifiedArtworkListsPrivacy) {
+      if (result.action === ResultAction.ModifiedArtworkListsOfferSettings) {
         toast.changesSaved()
 
         return
@@ -217,7 +217,7 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
           {!!state.artwork && !!state.selectArtworkListsViewVisible && (
             <SelectArtworkListsForArtworkView />
           )}
-          {!!state.editListPrivacyViewVisible && <EditArtworkListsPrivacyView />}
+          {!!state.artworkListOfferSettingsViewVisible && <ArtworkListOfferSettingsView />}
           {!!state.createNewArtworkListViewVisible && <CreateNewArtworkListView />}
         </>
       </BottomSheetModalProvider>
@@ -267,10 +267,10 @@ const reducer = (state: ArtworkListState, action: ArtworkListAction): ArtworkLis
         ...state,
         hasUnsavedChanges: action.payload,
       }
-    case "SET_EDIT_LIST_PRIVACY_VIEW_VISIBLE":
+    case "SET_OFFER_SETTINGS_VIEW_VISIBLE":
       return {
         ...state,
-        editListPrivacyViewVisible: action.payload,
+        artworkListOfferSettingsViewVisible: action.payload,
       }
     case "SHARE_OR_KEEP_ARTWORK_LIST":
       return shareOrKeepArtworkList(state, action.payload)
@@ -318,7 +318,7 @@ const shareOrKeepArtworkList = (
     updatedState[mode] = [...artworkLists, artworkList]
   }
 
-  updatedState.hasUnsavedChanges = hasPrivacyChanges(updatedState)
+  updatedState.hasUnsavedChanges = hasOfferSettingChanges(updatedState)
 
   return updatedState
 }
@@ -331,6 +331,6 @@ const hasChanges = (state: ArtworkListState) => {
   return state.addingArtworkLists.length !== 0 || state.removingArtworkLists.length !== 0
 }
 
-const hasPrivacyChanges = (state: ArtworkListState) => {
+const hasOfferSettingChanges = (state: ArtworkListState) => {
   return state.sharingArtworkLists.length !== 0 || state.keepingArtworkListsPrivate.length !== 0
 }
