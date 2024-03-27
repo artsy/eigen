@@ -13,6 +13,7 @@ import { deleteSavedSearchMutation } from "app/Scenes/SavedSearchAlert/mutations
 import { useState } from "react"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
 import Animated, {
+  Easing,
   runOnJS,
   useAnimatedStyle,
   useSharedValue,
@@ -45,7 +46,7 @@ export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) =
 
   // Reset the swipe when user swipes another item
   if (!isSwipingActive) {
-    translateX.value = withTiming(0)
+    translateX.value = withTiming(0, { duration: 500, easing: Easing.out(Easing.circle) })
     isDeleteButtonVisible.value = false
   }
 
@@ -74,11 +75,14 @@ export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) =
     .onEnd(() => {
       // If the user swipes more than half of the delete button width, show the delete button fully
       if (translateX.value < -DELETE_BUTTON_WIDTH / 2) {
-        translateX.value = withTiming(-DELETE_BUTTON_WIDTH)
+        translateX.value = withTiming(-DELETE_BUTTON_WIDTH, {
+          duration: 500,
+          easing: Easing.out(Easing.circle),
+        })
         isDeleteButtonVisible.value = true
       } else {
         // Otherwise, hide the delete button
-        translateX.value = withTiming(0)
+        translateX.value = withTiming(0, { duration: 500, easing: Easing.out(Easing.circle) })
         isDeleteButtonVisible.value = false
       }
     })
