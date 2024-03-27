@@ -114,7 +114,8 @@ export const SelectButton: React.FC<{
           ]}
           flexDirection="row"
         >
-          <AnimatedText style={labelStyles}>{title}</AnimatedText>
+          {!!title && <AnimatedText style={labelStyles}>{title}</AnimatedText>}
+
           {!!value && (
             <Text
               variant="sm-display"

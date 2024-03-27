@@ -111,7 +111,7 @@ export const PhoneInput = forwardRef<
     const selectedCountry = countries.find((c) => c.iso2 === countryISO2Code)
 
     return (
-      <Flex style={{ height: 50 }}>
+      <Flex>
         <INTERNALSelectAndInputCombinationBase
           // Props for Input
           {...rest}

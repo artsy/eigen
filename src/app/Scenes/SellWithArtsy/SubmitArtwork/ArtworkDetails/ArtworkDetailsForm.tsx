@@ -26,7 +26,7 @@ import {
 import { limitedEditionValue, rarityOptions } from "./utils/rarityOptions"
 import { ArtworkDetailsFormModel } from "./validation"
 
-const StandardSpace = () => <Spacer y={4} />
+const StandardSpace = () => <Spacer y={2} />
 
 export const ArtworkDetailsForm: React.FC = () => {
   const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
@@ -66,6 +66,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         accessibilityLabel="Year"
       />
       <StandardSpace />
+      <Spacer y={2} />
       <CategoryPicker<AcceptableCategoryValue | null>
         handleChange={(category) => setFieldValue("category", category)}
         options={categories}
