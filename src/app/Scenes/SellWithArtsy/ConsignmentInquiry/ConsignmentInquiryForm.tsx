@@ -90,13 +90,11 @@ export const ConsignmentInquiryForm: React.FC<{
             blurOnSubmit={false}
             error={errors.name}
             maxLength={128}
-            showLimit
             onBlur={() => validateField("name")}
             onChangeText={(text) => handleOnChangeText("name", text)}
             onSubmitEditing={() => jumpToNextField("name")}
             placeholder="First and last name"
             ref={nameInputRef}
-            required
             returnKeyType="next"
             testID="swa-inquiry-name-input"
             title="Name"
@@ -116,7 +114,6 @@ export const ConsignmentInquiryForm: React.FC<{
             onSubmitEditing={() => jumpToNextField("email")}
             placeholder="Email address"
             ref={emailInputRef}
-            required
             returnKeyType="next"
             spellCheck={false}
             testID="swa-inquiry-email-input"
@@ -134,11 +131,12 @@ export const ConsignmentInquiryForm: React.FC<{
             setValidation={() => null}
             shouldDisplayLocalError={false}
             style={{ flex: 1 }}
+            optional
             testID="swa-inquiry-phone-input"
             title="Phone number"
             value={values.phoneNumber}
           />
-          <Spacer y={4} />
+          <Spacer y={6} />
           <Input2
             accessibilityLabel="Message to the Artsy Specialist"
             blurOnSubmit={false}
