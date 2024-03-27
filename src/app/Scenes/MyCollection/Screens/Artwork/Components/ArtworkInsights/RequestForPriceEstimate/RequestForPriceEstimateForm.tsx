@@ -41,7 +41,6 @@ export const RequestForPriceEstimateForm = () => {
               value={values.requesterName}
               error={errors.requesterName}
             />
-            <Spacer y={2} />
             <Input2
               testID="request-price-estimate-email-input"
               title="Email"
