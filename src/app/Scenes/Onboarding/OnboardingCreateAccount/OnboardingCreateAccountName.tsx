@@ -1,6 +1,5 @@
-import { Flex, useColor } from "@artsy/palette-mobile"
+import { Flex, Input2, useColor } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
-import { Input } from "app/Components/Input"
 import { useFormikContext } from "formik"
 import React, { useState } from "react"
 import { Keyboard } from "react-native"
@@ -31,11 +30,12 @@ export const OnboardingCreateAccountName: React.FC<OnboardingCreateAccountNamePr
       title="What’s your full name?"
       caption="This is used to build your profile and collection on Artsy."
     >
-      <Input
+      <Input2
         autoCapitalize="words"
         autoComplete="name"
         autoCorrect={false}
         autoFocus
+        title="Full Name"
         onChangeText={(text) => {
           if (errors.name) {
             setErrors({

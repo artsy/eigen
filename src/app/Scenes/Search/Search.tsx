@@ -127,7 +127,6 @@ export const Search: React.FC = () => {
           <SearchInput
             ref={searchProviderValues?.inputRef}
             placeholder={SEARCH_INPUT_PLACEHOLDER}
-            enableCancelButton
             onChangeText={onSearchTextChanged}
           />
         </Flex>

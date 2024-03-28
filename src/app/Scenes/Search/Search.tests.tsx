@@ -86,7 +86,7 @@ describe("Search", () => {
     fireEvent(screen.getByText("Artworks"), "press")
 
     fireEvent(searchInput, "focus")
-    fireEvent(screen.getByText("Cancel"), "press")
+    fireEvent(screen.getByTestId("clear-input-button"), "press")
 
     fireEvent(searchInput, "changeText", "new value")
     // needed to resolve the relay operation triggered for the text change
@@ -106,7 +106,7 @@ describe("Search", () => {
     resolveMostRecentRelayOperation(env)
 
     SEARCH_PILLS.forEach((pill) => {
-      expect(screen.queryByText(pill.displayName)).toBeTruthy()
+      expect(screen.getByText(pill.displayName)).toBeTruthy()
     })
   })
 })

@@ -1,5 +1,6 @@
-import { Input, InputProps, InputRef } from "app/Components/Input/Input"
-import { Select } from "app/Components/Select"
+import { Input2, Input2Props, Input2Ref } from "@artsy/palette-mobile"
+import { InputRef } from "app/Components/Input/Input"
+import { SelectModal } from "app/Components/Select/Components/SelectModal"
 import { SelectProps } from "app/Components/Select/Select"
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 
@@ -24,7 +25,8 @@ export const INTERNALSelectAndInputCombinationBase = forwardRef<
     onValueChange: (value: ValuePayload) => void
     shouldDisplayLocalError?: boolean
     validate?: () => void
-  } & Omit<InputProps, "onChange" | "onChangeText" | "renderLeftHandSection"> &
+    displayForSelect?: string
+  } & Omit<Input2Props, "onChange" | "onChangeText" | "renderLeftHandSection"> &
     TypeForSelect
 >(
   (
@@ -40,16 +42,17 @@ export const INTERNALSelectAndInputCombinationBase = forwardRef<
       maxModalHeightForSelect,
       onModalFinishedClosingForSelect,
       onSelectValueForSelect,
+      selectDisplayLabel,
       titleForSelect,
-      renderButtonForSelect,
       renderItemLabelForSelect,
       ...rest
     },
     ref
   ) => {
+    const [showModal, setShowModal] = useState(false)
     const [innerValue, setInnerValue] = useState(value)
-    const innerRef = useRef<InputRef>(null)
-    useImperativeHandle(ref, () => innerRef.current!)
+    const innerRef = useRef<Input2Ref>(null)
+    useImperativeHandle(ref, () => innerRef.current as Input2Ref)
 
     const isFirstRun = useRef(true)
 
@@ -66,32 +69,39 @@ export const INTERNALSelectAndInputCombinationBase = forwardRef<
     }, [innerValue, value, valueForSelect])
 
     return (
-      <Input
-        {...rest}
-        ref={innerRef}
-        value={formatInputValue ? formatInputValue(innerValue) : value}
-        onChangeText={(text) => {
-          setInnerValue(text)
-        }}
-        renderLeftHandSection={() => (
-          <Select<string>
-            options={optionsForSelect}
-            enableSearch={enableSearchForSelect}
-            value={valueForSelect}
-            maxModalHeight={maxModalHeightForSelect}
-            onModalFinishedClosing={() => {
-              innerRef.current?.focus()
-              onModalFinishedClosingForSelect?.()
-            }}
-            onSelectValue={(selectValue, index) => {
-              onSelectValueForSelect(selectValue, index)
-            }}
-            title={titleForSelect}
-            renderButton={(args) => renderButtonForSelect?.(args) ?? <></>}
-            renderItemLabel={(args) => renderItemLabelForSelect?.(args) ?? <></>}
-          />
-        )}
-      />
+      <>
+        <SelectModal
+          visible={showModal}
+          title={titleForSelect || "Select an option"}
+          enableSearch={enableSearchForSelect}
+          value={value}
+          options={optionsForSelect}
+          maxHeight={maxModalHeightForSelect}
+          onDismiss={() => {
+            setShowModal(false)
+          }}
+          onSelectValue={(selectValue, index) => {
+            onSelectValueForSelect(selectValue as string, index)
+          }}
+          renderItemLabel={renderItemLabelForSelect}
+          onModalFinishedClosing={() => {
+            innerRef.current?.focus()
+            onModalFinishedClosingForSelect?.()
+          }}
+        />
+        <Input2
+          {...rest}
+          ref={innerRef}
+          value={formatInputValue ? formatInputValue(innerValue) : value}
+          onChangeText={(text) => {
+            setInnerValue(text)
+          }}
+          selectDisplayLabel={selectDisplayLabel || valueForSelect}
+          onSelectTap={() => {
+            setShowModal(true)
+          }}
+        />
+      </>
     )
   }
 )

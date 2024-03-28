@@ -62,7 +62,7 @@ const FakeApp = (props: InquiryModalTestsQuery["response"]) => {
 describe("<InquiryModal />", () => {
   it("renders the modal", () => {
     renderWithRelay()
-    expect(screen.queryByText("What information are you looking for?")).toBeOnTheScreen()
+    expect(screen.getByText("What information are you looking for?")).toBeOnTheScreen()
   })
 
   it("open and close modal", async () => {
@@ -190,7 +190,7 @@ describe("user can add a custom message", () => {
   it("add custom message", () => {
     renderWithRelay()
     const testString = "Test message"
-    const input = screen.getByPlaceholderText("Add a custom note...")
+    const input = screen.getByTestId("add-message-input")
     fireEvent.changeText(input, testString)
 
     expect(mockDispatch).toBeCalledWith({

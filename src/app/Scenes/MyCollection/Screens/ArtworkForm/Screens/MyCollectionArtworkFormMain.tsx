@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Flex,
+  Input2,
   Join,
   Message,
   Separator,
@@ -17,7 +18,6 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { captureMessage } from "@sentry/react-native"
 import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { Input } from "app/Components/Input"
 import { MoneyInput } from "app/Components/Input/MoneyInput"
 import { ScreenMargin } from "app/Scenes/MyCollection/Components/ScreenMargin"
 import { ArrowDetails } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArrowDetails"
@@ -313,22 +313,22 @@ export const MyCollectionArtworkFormMain: React.FC<
           <Flex p={2}>
             <Join separator={<Spacer y={2} />}>
               <ArtistField />
-              <Input
+              <Input2
                 title="Title"
-                placeholder="Title"
                 onChangeText={formik.handleChange("title")}
                 onBlur={formik.handleBlur("title")}
                 testID="TitleInput"
                 required
                 accessibilityLabel="Title"
                 value={formikValues.title}
+                disableOnChangeOptimisation
               />
               <CategoryPicker<string>
                 value={formikValues.category}
                 options={artworkMediumCategories}
                 handleChange={handleCategory}
               />
-              <Input
+              <Input2
                 title="Year"
                 keyboardType="number-pad"
                 placeholder="Year created"
@@ -337,15 +337,17 @@ export const MyCollectionArtworkFormMain: React.FC<
                 testID="DateInput"
                 accessibilityLabel="Year"
                 value={formikValues.date}
+                disableOnChangeOptimisation
               />
-              <Input
+              <Input2
                 title="Materials"
-                placeholder="Materials"
+                placeholder="Oil on canvas, mixed media, lithograph.."
                 onChangeText={formik.handleChange("medium")}
                 onBlur={formik.handleBlur("medium")}
                 testID="MaterialsInput"
                 accessibilityLabel="Materials"
                 value={formikValues.medium}
+                disableOnChangeOptimisation
               />
               <Rarity />
               <Dimensions />
@@ -353,6 +355,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                 accessibilityLabel="Price paid"
                 currencyTextVariant="xs"
                 format
+                disableOnChangeOptimisation
                 initialValues={{
                   currency: initialCurrency as Currency,
                   amount: formikValues.pricePaidDollars,
@@ -367,17 +370,19 @@ export const MyCollectionArtworkFormMain: React.FC<
                 shouldDisplayLocalError={false}
                 title="Price Paid"
               />
-              <Input
+              <Input2
                 multiline
                 title="Provenance"
                 maxLength={500}
+                showLimit
                 placeholder="Describe how you acquired the artwork"
                 value={formikValues.provenance}
                 accessibilityLabel="Describe how you acquired the artwork"
                 onChangeText={formik.handleChange("provenance")}
                 testID="ProvenanceInput"
+                disableOnChangeOptimisation
               />
-              <Input
+              <Input2
                 title="Location"
                 placeholder="Enter city where artwork is located"
                 onChangeText={formik.handleChange("artworkLocation")}
@@ -385,16 +390,19 @@ export const MyCollectionArtworkFormMain: React.FC<
                 testID="LocationInput"
                 accessibilityLabel="Enter city where the artwork is located"
                 value={formikValues.artworkLocation}
+                disableOnChangeOptimisation
               />
-              <Input
+              <Input2
                 multiline
                 maxLength={500}
+                showLimit
                 title="Notes"
                 onChangeText={formik.handleChange("confidentialNotes")}
                 onBlur={formik.handleBlur("confidentialNotes")}
                 testID="NotesInput"
                 accessibilityLabel="Notes"
                 value={formikValues.confidentialNotes}
+                disableOnChangeOptimisation
               />
             </Join>
           </Flex>
@@ -470,7 +478,7 @@ const ArtistField: React.FC = () => {
     return <ArtistCustomArtist artist={formik.values.customArtist} />
   } else
     return (
-      <Input
+      <Input2
         title="Artist"
         placeholder="Artist"
         onChangeText={formik.handleChange("artistDisplayName")}

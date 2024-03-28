@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { AddMyCollectionArtist } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
@@ -32,14 +32,14 @@ describe("AddMyCollectionArtist", () => {
   const TestRenderer = () => <AddMyCollectionArtist />
 
   it("renders the form with the right name", () => {
-    const { getByText, getByTestId, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
-    expect(getByText("Add New Artist")).toBeTruthy()
+    expect(screen.getByText("Add New Artist")).toBeTruthy()
 
-    const nameInput = getByPlaceholderText("Artist Name")
-    const nationalityInpur = getByPlaceholderText("Nationality")
-    const birthYearInput = getByPlaceholderText("Birth Year")
-    const deathYearInput = getByPlaceholderText("Death Year")
+    const nameInput = screen.getByTestId("artist-input")
+    const nationalityInpur = screen.getByTestId("nationality-input")
+    const birthYearInput = screen.getByTestId("birth-year-input")
+    const deathYearInput = screen.getByTestId("death-year-input")
 
     expect(nameInput).toBeTruthy()
     expect(nationalityInpur).toBeTruthy()
@@ -51,15 +51,15 @@ describe("AddMyCollectionArtist", () => {
     expect(birthYearInput).toHaveProp("value", "")
     expect(deathYearInput).toHaveProp("value", "")
 
-    const submitButton = getByTestId("submit-add-artist-button")
+    const submitButton = screen.getByTestId("submit-add-artist-button")
 
     expect(submitButton).toBeDisabled()
   })
 
   it("displays error message for name", async () => {
-    const { getByText, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
-    const nameInput = getByPlaceholderText("Artist Name")
+    const nameInput = screen.getByTestId("artist-input")
 
     fireEvent.changeText(nameInput, "Artist Name")
     await flushPromiseQueue()
@@ -69,16 +69,16 @@ describe("AddMyCollectionArtist", () => {
     await flushPromiseQueue()
     expect(nameInput).toHaveProp("value", "")
 
-    expect(getByText("Name field is required")).toBeTruthy()
+    expect(screen.getByText("Name field is required")).toBeTruthy()
   })
 
   it("can successfully create a new artist", async () => {
-    const { getByPlaceholderText, getByText, getByTestId } = renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
-    const submitButton = getByText("Add Artist")
+    const submitButton = screen.getByText("Add Artist")
     expect(submitButton).toBeTruthy()
 
-    const nameInput = getByPlaceholderText("Artist Name")
+    const nameInput = screen.getByTestId("artist-input")
     expect(nameInput).toHaveProp("value", "")
 
     fireEvent.changeText(nameInput, "Artist Name")
@@ -87,7 +87,7 @@ describe("AddMyCollectionArtist", () => {
 
     expect(submitButton).not.toBeDisabled()
 
-    fireEvent.press(getByTestId("submit-add-artist-button"))
+    fireEvent.press(screen.getByTestId("submit-add-artist-button"))
 
     // TODO: add tests later
   })

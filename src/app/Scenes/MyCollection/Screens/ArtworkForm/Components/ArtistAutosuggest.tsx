@@ -1,11 +1,10 @@
-import { AddIcon, Box, Button, Flex, Spacer, Text, Touchable } from "@artsy/palette-mobile"
+import { AddIcon, Box, Button, Flex, Input2, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { ArtistAutosuggestQuery } from "__generated__/ArtistAutosuggestQuery.graphql"
 import {
   AutosuggestResult,
   AutosuggestResults,
 } from "app/Components/AutosuggestResults/AutosuggestResults"
 import SearchIcon from "app/Components/Icons/SearchIcon"
-import { Input } from "app/Components/Input"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { filterArtistsByKeyword } from "app/Scenes/MyCollection/utils/filterArtistsByKeyword"
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
@@ -73,7 +72,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
   return (
     <SearchContext.Provider value={searchProviderValues}>
       <Box>
-        <Input
+        <Input2
           placeholder="Search for artists on Artsy"
           icon={<SearchIcon width={18} height={18} />}
           onChangeText={formik.handleChange("artist")}

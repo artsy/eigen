@@ -1,10 +1,18 @@
-import { Spacer, TriangleDown, Flex, useColor, Text, Touchable } from "@artsy/palette-mobile"
+import {
+  Flex,
+  Input2Props,
+  Spacer,
+  Text,
+  Touchable,
+  TriangleDown,
+  useColor,
+} from "@artsy/palette-mobile"
 import { TextVariant } from "@artsy/palette-tokens/dist/typography/v3"
 import {
   INTERNALSelectAndInputCombinationBase,
   ValuePayload,
 } from "app/Components/Input/INTERNALSelectAndInputCombinationBase"
-import { InputProps, InputRef, computeBorderColor } from "app/Components/Input/Input"
+import { InputRef, computeBorderColor } from "app/Components/Input/Input"
 import {
   concatDigitsAndCents,
   deformatMoney,
@@ -23,7 +31,7 @@ export const MoneyInput = forwardRef<
     onChange?: (value: { currency?: string; amount?: string }) => void
     onModalFinishedClosing?: () => void
     shouldDisplayLocalError?: boolean
-  } & Omit<InputProps, "onChange" | "onChangeText">
+  } & Omit<Input2Props, "onChange" | "onChangeText">
 >(
   (
     {

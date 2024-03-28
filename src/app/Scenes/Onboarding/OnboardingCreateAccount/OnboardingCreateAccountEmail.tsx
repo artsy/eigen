@@ -1,6 +1,5 @@
-import { useColor } from "@artsy/palette-mobile"
+import { Input2, useColor } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
-import { Input } from "app/Components/Input"
 import { useFormikContext } from "formik"
 import { Platform } from "react-native"
 import {
@@ -29,11 +28,12 @@ export const OnboardingCreateAccountEmail: React.FC<OnboardingCreateAccountEmail
       onBackButtonPress={route.params.navigateToWelcomeScreen}
       title="Sign Up with Email"
     >
-      <Input
+      <Input2
         autoCapitalize="none"
         autoComplete="email"
         enableClearButton
         autoFocus
+        title="Email"
         keyboardType="email-address"
         onChangeText={(text) => {
           // Hide error when the user starts to type again
@@ -46,8 +46,8 @@ export const OnboardingCreateAccountEmail: React.FC<OnboardingCreateAccountEmail
         }}
         onSubmitEditing={handleSubmit}
         blurOnSubmit={false}
-        placeholder="Email address"
         placeholderTextColor={color("black30")}
+        placeholder="Email address"
         value={values.email}
         returnKeyType="next"
         spellCheck={false}

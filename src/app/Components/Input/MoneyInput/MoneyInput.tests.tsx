@@ -1,7 +1,6 @@
-import { Text } from "@artsy/palette-mobile"
-import { waitFor } from "@testing-library/react-native"
-import { Input } from "app/Components/Input"
-import { Select } from "app/Components/Select"
+import { Input2, Text } from "@artsy/palette-mobile"
+import { screen, waitFor } from "@testing-library/react-native"
+import { SelectModal } from "app/Components/Select/Components/SelectModal"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { act } from "react-test-renderer"
 import { MoneyInput } from "./MoneyInput"
@@ -15,45 +14,41 @@ describe("MoneyInput", () => {
   })
 
   it("provides a Select for Currency", () => {
-    const wrapperWithInitialCurrency = renderWithWrappers(
-      <MoneyInput initialValues={{ currency: "EUR" }} onChange={onChange} />
-    )
-    expect(wrapperWithInitialCurrency.UNSAFE_getAllByType(Select)).toHaveLength(1)
-    expect(wrapperWithInitialCurrency.queryByText("EUR €")).toBeDefined()
-    expect(wrapperWithInitialCurrency.queryByText("USD $")).toBeNull()
+    renderWithWrappers(<MoneyInput initialValues={{ currency: "EUR" }} onChange={onChange} />)
+    expect(screen.UNSAFE_getAllByType(SelectModal)).toHaveLength(1)
+    expect(screen.getByText("EUR")).toBeDefined()
+    expect(screen.queryByText("USD")).toBeNull()
 
-    const wrapperWithoutInitialCurrency = renderWithWrappers(<MoneyInput onChange={onChange} />)
-    expect(wrapperWithoutInitialCurrency.queryByText("EUR €")).toBeNull()
+    renderWithWrappers(<MoneyInput onChange={onChange} />)
+    expect(screen.queryByText("EUR")).toBeNull()
     // defaults to USD
-    expect(wrapperWithoutInitialCurrency.queryByText("USD $")).toBeDefined()
+    expect(screen.getByText("USD")).toBeDefined()
   })
-
   it("renders an input with the amount pre-filled", () => {
-    const wrapper = renderWithWrappers(
-      <MoneyInput initialValues={{ amount: "2000" }} onChange={onChange} />
-    )
-    const inputs = wrapper.UNSAFE_getAllByType(Input)
+    renderWithWrappers(<MoneyInput initialValues={{ amount: "2000" }} onChange={onChange} />)
+    const inputs = screen.UNSAFE_getAllByType(Input2)
     expect(inputs).toHaveLength(1)
     expect(inputs[0].props.value).toBe("2,000")
   })
 
   it("shows custom error message, when error is controlled and amount is invalid", () => {
-    const wrapper = renderWithWrappers(
+    renderWithWrappers(
       <MoneyInput
         shouldDisplayLocalError={false}
         error="custom error message"
         onChange={onChange}
       />
     )
-    const input = wrapper.UNSAFE_getAllByType(Input)[0]
+    const input = screen.UNSAFE_getAllByType(Input2)[0]
 
     input.props.onChangeText("200---")
     input.parent?.props.validate()
-    expect(wrapper.UNSAFE_getAllByType(Text)[1].props.children).toBe("custom error message")
+    const texts = screen.UNSAFE_getAllByType(Text)
+    expect(texts[1].props["children"]).toBe("custom error message")
   })
 
   it("shows local error message when parent does not control error and amount is invalid if formatting is not enabled", async () => {
-    const wrapper = renderWithWrappers(
+    renderWithWrappers(
       <MoneyInput
         shouldDisplayLocalError
         error="custom error message"
@@ -61,24 +56,23 @@ describe("MoneyInput", () => {
         format={false}
       />
     )
-    const input = wrapper.UNSAFE_getAllByType(Input)[0]
+    const input = screen.UNSAFE_getAllByType(Input2)[0]
 
     await waitFor(() => {
       // if formatting is enabled "200---" will be automatically corrected
       input.props.onChangeText("200---")
       input.parent?.props.validate()
-      expect(wrapper.UNSAFE_getAllByType(Text)[1].props.children).toBe(
-        "Please enter a valid amount."
-      )
+      const texts = screen.UNSAFE_getAllByType(Text)
+      expect(texts[1].props["children"]).toBe("Please enter a valid amount.")
     })
   })
 
   it("calls onChange when the value changes", async () => {
-    const wrapper = renderWithWrappers(<MoneyInput onChange={onChange} />)
+    renderWithWrappers(<MoneyInput onChange={onChange} />)
     expect(onChange).not.toHaveBeenCalled()
 
-    const input = wrapper.UNSAFE_getAllByType(Input)[0]
-    const select = wrapper.UNSAFE_getAllByType(Select)[0]
+    const input = screen.UNSAFE_getAllByType(Input2)[0]
+    const select = screen.UNSAFE_getAllByType(SelectModal)[0]
 
     act(() => {
       input.props.onChangeText("200")

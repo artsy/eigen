@@ -72,8 +72,6 @@ export const SelectArtistModal: React.FC<SelectArtistModalProps> = ({
         <Flex pt={1} pb={2}>
           <SearchInput
             testID="select-artists-search-input"
-            enableCancelButton
-            onCancelPress={() => setQuery("")}
             placeholder="Search Artist from Your Collection"
             value={query}
             onChangeText={setQuery}

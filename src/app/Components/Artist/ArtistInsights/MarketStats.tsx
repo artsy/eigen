@@ -128,8 +128,8 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
       <Select
         value={selectedPriceInsight.medium}
         options={mediumOptions.current}
-        title="Select medium"
-        showTitleLabel={false}
+        title=""
+        testID="select-medium"
         onSelectValue={(selectedMedium) => {
           const priceInsight = priceInsights.find((p) => p.medium === selectedMedium)
           if (priceInsight) {

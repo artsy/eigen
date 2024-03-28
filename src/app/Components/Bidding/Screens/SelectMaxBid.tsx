@@ -80,10 +80,9 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
               {({ height }) => (
                 <Select
                   title="Your max bid"
-                  showTitleLabel={false}
                   maxModalHeight={height * 0.75}
                   value={bids[this.state.selectedBidIndex]?.cents ?? null}
-                  options={bids.map((b) => ({ label: b.display!, value: b.cents }))}
+                  options={bids.map((b) => ({ label: b.display || "", value: b.cents }))}
                   onSelectValue={(_, index) => this.setState({ selectedBidIndex: index })}
                 />
               )}
@@ -157,13 +156,18 @@ export const SelectMaxBidQueryRenderer: React.FC<{
           artworkID,
           saleID,
         }}
-        render={renderWithLoadProgress<SelectMaxBidQuery["response"]>((props) => (
-          <SelectMaxBidContainer
-            me={props.me!}
-            sale_artwork={props.artwork!.sale_artwork!}
-            navigator={navigator}
-          />
-        ))}
+        render={renderWithLoadProgress<SelectMaxBidQuery["response"]>((props) => {
+          if (props.artwork?.sale_artwork && props.me) {
+            return (
+              <SelectMaxBidContainer
+                me={props.me}
+                sale_artwork={props.artwork.sale_artwork}
+                navigator={navigator}
+              />
+            )
+          }
+          return null
+        })}
       />
     </Flex>
   )

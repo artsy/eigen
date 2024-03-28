@@ -46,40 +46,6 @@ describe("CreateNewArtworkListView", () => {
     `,
   })
 
-  describe("Remaining characters label", () => {
-    it("default state", () => {
-      renderWithRelay()
-
-      expect(screen.getByText("40 characters remaining")).toBeOnTheScreen()
-    })
-
-    it("when user entered 39 characters", () => {
-      renderWithRelay()
-
-      const longText = "a".repeat(39)
-      fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), longText)
-
-      expect(screen.getByText("1 character remaining")).toBeOnTheScreen()
-    })
-
-    it("when user entered something", () => {
-      renderWithRelay()
-
-      fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), "abc")
-
-      expect(screen.getByText("37 characters remaining")).toBeOnTheScreen()
-    })
-
-    it("when user has reached the allowed limit", () => {
-      renderWithRelay()
-
-      const longText = "a".repeat(100)
-      fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), longText)
-
-      expect(screen.getByText("0 characters remaining")).toBeOnTheScreen()
-    })
-  })
-
   describe("Error state", () => {
     it("when artwork list name is empty", async () => {
       renderWithRelay()

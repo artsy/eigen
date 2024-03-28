@@ -49,7 +49,6 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   return (
     <SearchBox
       ref={searchProviderValues.inputRef}
-      enableCancelButton
       placeholder={placeholder}
       onChangeText={(text) => {
         handleChangeText(text)

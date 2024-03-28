@@ -1,21 +1,20 @@
-import { MapPinIcon, Flex, Text, Touchable } from "@artsy/palette-mobile"
-import { Input, InputProps } from "app/Components/Input"
+import { Flex, Input2, Input2Props, MapPinIcon, Text, Touchable } from "@artsy/palette-mobile"
 import {
-  getLocationDetails,
-  getLocationPredictions,
   LocationWithDetails,
   SimpleLocation,
+  getLocationDetails,
+  getLocationPredictions,
 } from "app/utils/googleMaps"
 import { useScreenDimensions } from "app/utils/hooks"
 import React, { useEffect, useRef, useState } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 
-interface LocationAutocompleteProps extends Omit<InputProps, "onChange"> {
+interface LocationAutocompleteProps extends Omit<Input2Props, "onChange"> {
   floating?: boolean
   initialLocation?: LocationWithDetails | null
   displayLocation?: string
   allowCustomLocation?: boolean
-  inputRef?: React.RefObject<Input>
+  inputRef?: React.RefObject<Input2>
   showError?: boolean
   onChange: (l: LocationWithDetails) => void
   FooterComponent?: () => JSX.Element
@@ -47,7 +46,7 @@ export const LocationAutocomplete: React.FC<LocationAutocompleteProps> = ({
   const [predictions, setPredictions] = useState<SimpleLocation[]>([])
   const [selectedLocation, setSelectedLocation] = useState(initialLocation)
   const [query, setQuery] = useState(selectedLocation?.name || displayLocation)
-  const innerRef = useRef<Input>(null)
+  const innerRef = useRef<Input2>(null)
   const ref = inputRef || innerRef
 
   const selectedLocationQuery = selectedLocation?.name || displayLocation
@@ -115,7 +114,7 @@ export const LocationAutocomplete: React.FC<LocationAutocompleteProps> = ({
 
   return (
     <Flex>
-      <Input
+      <Input2
         {...restProps}
         ref={ref}
         testID="autocomplete-location-input"

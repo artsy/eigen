@@ -1,4 +1,4 @@
-import { Flex, Input } from "@artsy/palette-mobile"
+import { Flex, Input2 } from "@artsy/palette-mobile"
 import SearchIcon from "app/Components/Icons/SearchIcon"
 import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
 import { debounce } from "lodash"
@@ -20,7 +20,7 @@ export const MyCollectionArtistFilters: React.FC<{}> = () => {
 
   return (
     <Flex pb={1} px={2}>
-      <Input
+      <Input2
         testID="MyCollectionSearchBarInput"
         icon={<SearchIcon width={18} height={18} />}
         placeholder="Search Your Artists"

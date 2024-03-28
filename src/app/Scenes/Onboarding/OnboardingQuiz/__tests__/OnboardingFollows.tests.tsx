@@ -33,14 +33,14 @@ describe("OnboardingFollowArtists", () => {
   })
   it("should swap backfill with search results", async () => {
     renderWithHookWrappersTL(<OnboardingFollowArtists />, env)
-    const input = screen.getByPlaceholderText("Search Artists")
+    const input = screen.getByTestId("search-input")
 
     expect(input).toHaveProp("value", "")
 
     resolveMostRecentRelayOperation(env)
 
     expect(screen.UNSAFE_getByType(OnboardingOrderedSetScreen)).toBeTruthy()
-    expect(screen.queryByText("Follow artists to see more of their work")).toBeTruthy()
+    expect(screen.getByText("Follow artists to see more of their work")).toBeTruthy()
 
     // title goes away after typing one character but backfill is still rendered
     fireEvent(input, "changeText", "a")

@@ -26,12 +26,14 @@ describe("MarketStats", () => {
   it("renders market stats", () => {
     const tree = renderWithWrappersLEGACY(<TestWrapper />).root
     resolveMostRecentRelayOperation(environment)
+    // eslint-disable-next-line testing-library/await-async-queries
     expect(tree.findAllByType(MarketStatsFragmentContainer).length).toEqual(1)
   })
 
   describe("available mediums", () => {
     let tree: ReactTestInstance
     beforeEach(() => {
+      // eslint-disable-next-line testing-library/no-render-in-lifecycle
       tree = renderWithWrappersLEGACY(<TestWrapper />).root
       const priceInsights = {
         edges: [
@@ -46,12 +48,15 @@ describe("MarketStats", () => {
     })
 
     it("shows data for first medium", () => {
+      // eslint-disable-next-line testing-library/await-async-queries
       expect(extractText(tree.findByProps({ testID: "annualLotsSold" }))).toEqual("123")
     })
 
     it("shows data for other mediums when selected", () => {
-      tree.findByProps({ title: "Select medium" }).props.onSelectValue("fingerpaint")
+      // eslint-disable-next-line testing-library/await-async-queries
+      tree.findByProps({ testID: "select-medium" }).props.onSelectValue("fingerpaint")
 
+      // eslint-disable-next-line testing-library/await-async-queries
       expect(extractText(tree.findByProps({ testID: "annualLotsSold" }))).toEqual("456")
     })
   })
@@ -81,27 +86,34 @@ describe("MarketStats", () => {
     }
 
     it("displays down arrow when percentage is negative", () => {
+      // eslint-disable-next-line testing-library/render-result-naming-convention
       const tree = renderWithOnePriceInsightNode({
         medianSaleOverEstimatePercentage: -10,
       })
 
+      // eslint-disable-next-line testing-library/await-async-queries
       expect(tree.findByType(DecreaseIcon)).toBeDefined()
     })
 
     it("displays no arrow when percentage is 0", () => {
+      // eslint-disable-next-line testing-library/render-result-naming-convention
       const tree = renderWithOnePriceInsightNode({
         medianSaleOverEstimatePercentage: 0,
       })
 
+      // eslint-disable-next-line testing-library/await-async-queries
       expect(tree.findAllByType(DecreaseIcon).length).toEqual(0)
+      // eslint-disable-next-line testing-library/await-async-queries
       expect(tree.findAllByType(IncreaseIcon).length).toEqual(0)
     })
 
     it("displays up arrow when percentage is positive", () => {
+      // eslint-disable-next-line testing-library/render-result-naming-convention
       const tree = renderWithOnePriceInsightNode({
         medianSaleOverEstimatePercentage: 10,
       })
 
+      // eslint-disable-next-line testing-library/await-async-queries
       expect(tree.findByType(IncreaseIcon)).toBeDefined()
     })
   })
@@ -111,6 +123,7 @@ describe("MarketStats", () => {
       const tree = renderWithWrappersLEGACY(<TestWrapper />).root
       resolveMostRecentRelayOperation(environment)
 
+      // eslint-disable-next-line testing-library/await-async-queries
       const infoBubble = tree.findByType(InfoButton)
       infoBubble.props.trackEvent()
 
