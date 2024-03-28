@@ -31,10 +31,7 @@ export const ConfirmationScreen: React.FC = () => {
   const { closeModal } = route.params
   const { bottom: bottomInset } = useSafeAreaInsets()
 
-  const unit = SavedSearchStore.useStoreState((state) => state.unit)
-  const pills = useSavedSearchPills({
-    unit,
-  })
+  const pills = useSavedSearchPills()
 
   const { space } = useTheme()
 

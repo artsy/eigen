@@ -404,7 +404,6 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
             closeModal={() => setIsCreateAlertModalVisible(false)}
             onComplete={exitModal}
             attributes={attributes}
-            aggregations={filterState.aggregations}
             sizeMetric={filterState.sizeMetric}
           />
         </Flex>

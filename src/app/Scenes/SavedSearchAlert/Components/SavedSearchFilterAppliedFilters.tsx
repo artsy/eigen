@@ -8,9 +8,8 @@ export const SavedSearchFilterAppliedFilters: React.FC<{}> = ({}) => {
   const removeValueFromAttributesByKeyAction = SavedSearchStore.useStoreActions(
     (state) => state.removeValueFromAttributesByKeyAction
   )
-  const unit = SavedSearchStore.useStoreState((state) => state.unit)
 
-  const pills = useSavedSearchPills({ unit })
+  const pills = useSavedSearchPills()
 
   return (
     <Flex px={2}>

@@ -5,7 +5,6 @@ import {
   TappedCreateAlert,
   ToggledSavedSearch,
 } from "@artsy/cohesion"
-import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   SavedSearchEntity,
   SearchCriteriaAttributes,
@@ -19,7 +18,6 @@ import { useEffect } from "react"
 import { useTracking } from "react-tracking"
 
 export interface CreateSavedSearchModalProps {
-  aggregations: Aggregations
   attributes: SearchCriteriaAttributes
   closeModal: () => void
   contextModule?: ContextModule
@@ -32,7 +30,6 @@ export interface CreateSavedSearchModalProps {
 
 export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (props) => {
   const {
-    aggregations,
     attributes,
     closeModal,
     contextModule,
@@ -68,7 +65,6 @@ export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (pr
   }
 
   const params: CreateSavedSearchAlertParams = {
-    aggregations,
     attributes,
     entity,
     currentArtworkID,

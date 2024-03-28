@@ -34,13 +34,12 @@ const navigationMock = {
 
 describe("AlertPriceRangeScreen", () => {
   const { renderWithRelay } = setupTestWrapper({
-    Component: (props) => {
+    Component: () => {
       return (
         <SavedSearchStoreProvider
           runtimeModel={{
             ...savedSearchModel,
             attributes: attributes as SearchCriteriaAttributes,
-            aggregations: (props as any)?.aggregations ?? [],
             entity: savedSearchEntity,
           }}
         >
@@ -54,18 +53,20 @@ describe("AlertPriceRangeScreen", () => {
   })
 
   it("renders PriceRangeContainer with the correct props", async () => {
-    const { getByText, getByTestId } = renderWithRelay({
+    renderWithRelay({
       Artist: () => artist,
     })
 
     // wait for suspense to go away
-    await waitForElementToBeRemoved(() => screen.getByTestId("alert-price-range-spinner"))
+    await waitForElementToBeRemoved(() => screen.queryByTestId("alert-price-range-spinner"))
 
-    expect(getByText("Set price range you are interested in")).toBeTruthy()
+    expect(screen.getByText("Set price range you are interested in")).toBeTruthy()
 
-    const histogramRangeJson = getByTestId("histogramRange")
-    const histogramBarsJson = getByTestId("histogramBars")
+    const histogramRangeJson = screen.getByTestId("histogramRange")
+    const histogramBarsJson = screen.getByTestId("histogramBars")
+    // eslint-disable-next-line
     const histogramRange = JSON.parse(histogramRangeJson.children[0] as string)
+    // eslint-disable-next-line
     const histogramBars = JSON.parse(histogramBarsJson.children[0] as string)
 
     expect(histogramRange[0]).toEqual(800)
@@ -75,20 +76,20 @@ describe("AlertPriceRangeScreen", () => {
   })
 
   it("Clear button clears input fields", async () => {
-    const { getByText, getByTestId } = renderWithRelay({
+    renderWithRelay({
       Artist: () => artist,
     })
 
     // wait for suspense to go away
-    await waitForElementToBeRemoved(() => screen.getByTestId("alert-price-range-spinner"))
+    await waitForElementToBeRemoved(() => screen.queryByTestId("alert-price-range-spinner"))
 
-    const minInput = getByTestId("price-min-input")
-    const maxInput = getByTestId("price-max-input")
+    const minInput = screen.getByTestId("price-min-input")
+    const maxInput = screen.getByTestId("price-max-input")
 
     expect(minInput.props.value).toBe("800")
     expect(maxInput.props.value).toBe("1500")
 
-    const clearButton = getByText("Clear")
+    const clearButton = screen.getByText("Clear")
     fireEvent.press(clearButton)
 
     expect(minInput.props.value).toBe("")
@@ -96,14 +97,14 @@ describe("AlertPriceRangeScreen", () => {
   })
 
   it("Set Price Range button sets price range attribute, navigates back and saves recent price range", async () => {
-    const { getByText } = renderWithRelay({
+    renderWithRelay({
       Artist: () => artist,
     })
 
     // wait for suspense to go away
-    await waitForElementToBeRemoved(() => screen.getByTestId("alert-price-range-spinner"))
+    await waitForElementToBeRemoved(() => screen.queryByTestId("alert-price-range-spinner"))
 
-    const submitButton = getByText("Set Price Range")
+    const submitButton = screen.getByText("Set Price Range")
     fireEvent.press(submitButton)
 
     expect(goBackMock).toHaveBeenCalledTimes(1)
