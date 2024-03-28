@@ -1,13 +1,13 @@
 import { BottomSheetFlatList } from "@gorhom/bottom-sheet"
-import { ArtworkLists_me$key, ArtworkLists_me$data } from "__generated__/ArtworkLists_me.graphql"
+import { ArtworkLists_me$data, ArtworkLists_me$key } from "__generated__/ArtworkLists_me.graphql"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
-import { ArtworkListMode } from "app/Components/ArtworkLists/types"
+import { ArtworkListsLoadingIndicator } from "app/Components/ArtworkLists/components/ArtworkListsLoadingIndicator"
+import { ArtworkListMode, ArtworkListOfferSettingsMode } from "app/Components/ArtworkLists/types"
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { FC, useCallback, useEffect, useState } from "react"
-import { usePaginationFragment, graphql } from "react-relay"
+import { graphql, usePaginationFragment } from "react-relay"
 import { ArtworkListItem, PressedArtworkListItem } from "./ArtworkListItem"
-import { ArtworkListsLoadingIndicator } from "./ArtworkListsLoadingIndicator"
 
 interface ArtworkListsProps {
   me: ArtworkLists_me$key | null
@@ -19,7 +19,13 @@ type ArtworkList =
 
 export const ArtworkLists: FC<ArtworkListsProps> = (props) => {
   const [refreshing, setRefreshing] = useState(false)
-  const { addingArtworkListIDs, removingArtworkListIDs, dispatch } = useArtworkListsContext()
+  const {
+    shareArtworkListIDs,
+    keepArtworkListPrivateIDs,
+    addingArtworkListIDs,
+    removingArtworkListIDs,
+    dispatch,
+  } = useArtworkListsContext()
   const { data, hasNext, loadNext, isLoadingNext, refetch } = usePaginationFragment(
     ArtworkListsFragment,
     props.me
@@ -78,24 +84,61 @@ export const ArtworkLists: FC<ArtworkListsProps> = (props) => {
       return false
     }
 
-    return artworkList.isSavedArtwork
+    return !!artworkList.isSavedArtwork
+  }
+
+  const checkIsArtworkListShared = (artworkList: ArtworkList) => {
+    /**
+     * User turned on the switch on the list to be shared with partners
+     * So we have to display the artwork list as *shared*
+     */
+    if (shareArtworkListIDs.includes(artworkList.internalID)) {
+      return true
+    }
+
+    /**
+     * User turned on the switch on the list to be shared with partners
+     * So we have to display the artwork list as *unselected*
+     */
+    if (keepArtworkListPrivateIDs.includes(artworkList.internalID)) {
+      return false
+    }
+
+    return artworkList.shareableWithPartners
   }
 
   const handleArtworkListPress = useCallback((artworkList: PressedArtworkListItem) => {
-    const mode = artworkList.isSavedArtwork
-      ? ArtworkListMode.RemovingArtworkList
-      : ArtworkListMode.AddingArtworkList
+    if (artworkList.shareableWithPartners !== undefined) {
+      const mode = artworkList.shareableWithPartners
+        ? ArtworkListOfferSettingsMode.KeepingArtworkListsPrivate
+        : ArtworkListOfferSettingsMode.SharingArtworkLists
 
-    dispatch({
-      type: "ADD_OR_REMOVE_ARTWORK_LIST",
-      payload: {
-        mode,
-        artworkList: {
-          internalID: artworkList.internalID,
-          name: artworkList.name,
+      dispatch({
+        type: "SHARE_OR_KEEP_ARTWORK_LIST_PRIVATE",
+        payload: {
+          mode,
+          artworkList: {
+            internalID: artworkList.internalID,
+            name: artworkList.name,
+          },
         },
-      },
-    })
+      })
+    } else {
+      const mode = artworkList.isSavedArtwork
+        ? ArtworkListMode.RemovingArtworkList
+        : ArtworkListMode.AddingArtworkList
+
+      dispatch({
+        type: "ADD_OR_REMOVE_ARTWORK_LIST",
+        payload: {
+          mode,
+          artworkList: {
+            internalID: artworkList.internalID,
+            name: artworkList.name,
+          },
+        },
+      })
+    }
   }, [])
 
   return (
@@ -109,6 +152,7 @@ export const ArtworkLists: FC<ArtworkListsProps> = (props) => {
           <ArtworkListItem
             item={item}
             selected={checkIsArtworkListSelected(item)}
+            shareableWithPartners={checkIsArtworkListShared(item)}
             onPress={handleArtworkListPress}
           />
         )
@@ -123,14 +167,16 @@ const ArtworkListsFragment = graphql`
   fragment ArtworkLists_me on Me
   @argumentDefinitions(
     artworkID: { type: "String!" }
+    includeArtwork: { type: "Boolean", defaultValue: true }
     count: { type: "Int", defaultValue: 20 }
     after: { type: "String" }
   )
   @refetchable(queryName: "ArtworkLists_meRefetch") {
     savedArtworksArtworkList: collection(id: "saved-artwork") {
       internalID
-      isSavedArtwork(artworkID: $artworkID)
-      ...ArtworkListItem_item @arguments(artworkID: $artworkID)
+      isSavedArtwork(artworkID: $artworkID) @include(if: $includeArtwork)
+      shareableWithPartners
+      ...ArtworkListItem_item @arguments(artworkID: $artworkID, includeArtwork: $includeArtwork)
     }
 
     customArtworkLists: collectionsConnection(
@@ -143,8 +189,9 @@ const ArtworkListsFragment = graphql`
       edges {
         node {
           internalID
-          isSavedArtwork(artworkID: $artworkID)
-          ...ArtworkListItem_item @arguments(artworkID: $artworkID)
+          isSavedArtwork(artworkID: $artworkID) @include(if: $includeArtwork)
+          shareableWithPartners
+          ...ArtworkListItem_item @arguments(artworkID: $artworkID, includeArtwork: $includeArtwork)
         }
       }
     }

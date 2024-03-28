@@ -1,7 +1,24 @@
-import { Text } from "@artsy/palette-mobile"
+import { EyeClosedIcon, Flex, Text } from "@artsy/palette-mobile"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 
-export const ArtworkListTitle = ({ title }: { title: string }) => (
-  <Text mx={2} mb={1} variant="lg">
-    {title}
-  </Text>
-)
+interface ArtworkListTitleProps {
+  title: string
+  shareableWithPartners: boolean
+}
+
+export const ArtworkListTitle: React.FC<ArtworkListTitleProps> = ({
+  title,
+  shareableWithPartners,
+}) => {
+  const isArtworkListOfferabilityEnabled = useFeatureFlag("AREnableArtworkListOfferability")
+
+  return (
+    <Flex mx={2} mb={1} flexDirection="row" alignItems="center">
+      <Text variant="lg">{title}</Text>
+
+      {!shareableWithPartners && !!isArtworkListOfferabilityEnabled && (
+        <EyeClosedIcon accessibilityLabel="EyeClosedIcon" mt={0.5} ml={0.5} fill="black100" />
+      )}
+    </Flex>
+  )
+}

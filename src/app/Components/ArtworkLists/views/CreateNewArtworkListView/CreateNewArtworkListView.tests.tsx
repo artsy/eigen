@@ -21,6 +21,8 @@ describe("CreateNewArtworkListView", () => {
     },
     addingArtworkListIDs: [],
     removingArtworkListIDs: [],
+    keepArtworkListPrivateIDs: [],
+    shareArtworkListIDs: [],
     dispatch: noop,
     reset: noop,
     onSave: noop,

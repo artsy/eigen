@@ -1,10 +1,18 @@
-import { Flex, Text, Touchable, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import {
+  EyeClosedIcon,
+  Flex,
+  Text,
+  Touchable,
+  useScreenDimensions,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { ArtworkListItem_collection$key } from "__generated__/ArtworkListItem_collection.graphql"
 import { FourUpImageLayout } from "app/Scenes/ArtworkLists/FourUpImageLayout"
 import { StackedImageLayout } from "app/Scenes/ArtworkLists/StackedImageLayout"
 import { useArtworkListsColCount } from "app/Scenes/ArtworkLists/useArtworkListsColCount"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { FC } from "react"
 import { graphql, useFragment } from "react-relay"
 
@@ -23,6 +31,7 @@ export const ArtworkListItem: FC<ArtworkListItemProps> = ({ artworkList, imagesL
   const allOffsets = offset * (numColumns + 1)
   const containerWidth = screen.width - allOffsets
   const itemWidth = containerWidth / numColumns
+  const isArtworkListOfferabilityEnabled = useFeatureFlag("AREnableArtworkListOfferability")
 
   const item = useFragment(artworkListItemFragment, artworkList)
   const artworkNodes = extractNodes(item.artworksConnection)
@@ -44,9 +53,17 @@ export const ArtworkListItem: FC<ArtworkListItemProps> = ({ artworkList, imagesL
         )}
 
         <Flex>
-          <Text variant="xs" numberOfLines={1}>
-            {item.name}
-          </Text>
+          <Flex flexDirection="row" alignItems="flex-end">
+            <Flex flex={1}>
+              <Text variant="xs" numberOfLines={1}>
+                {item.name}
+              </Text>
+            </Flex>
+
+            {!item.shareableWithPartners && !!isArtworkListOfferabilityEnabled && (
+              <EyeClosedIcon ml={0.5} fill="black100" />
+            )}
+          </Flex>
           <Text variant="xs" color="black60" numberOfLines={1}>
             {item.artworksCount} {item.artworksCount === 1 ? "Artwork" : "Artworks"}
           </Text>
@@ -61,6 +78,7 @@ const artworkListItemFragment = graphql`
     name
     internalID
     artworksCount(onlyVisible: true)
+    shareableWithPartners
     artworksConnection(first: 4) {
       edges {
         node {
