@@ -32,8 +32,14 @@ export const createSavedSearchAlert = (
       variables: {
         input: input as { artistIDs: string[] }, // artistIDs is required in the input type
       },
-      onCompleted: (response) => {
-        resolve(response)
+      onCompleted: (response, errors) => {
+        if (errors) {
+          reject(errors)
+        } else if (!response.createAlert?.responseOrError?.alert) {
+          reject("Something went wrong")
+        } else {
+          resolve(response)
+        }
       },
       onError: (error) => {
         reject(error)

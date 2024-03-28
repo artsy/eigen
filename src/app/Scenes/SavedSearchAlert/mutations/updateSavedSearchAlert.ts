@@ -36,8 +36,14 @@ export const updateSavedSearchAlert = (
       variables: {
         input,
       },
-      onCompleted: (response) => {
-        resolve(response)
+      onCompleted: (response, errors) => {
+        if (errors) {
+          reject(errors)
+        } else if (!response.updateAlert?.responseOrError?.alert) {
+          reject("Something went wrong")
+        } else {
+          resolve(response)
+        }
       },
       onError: (error) => {
         reject(error)
