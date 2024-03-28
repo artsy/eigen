@@ -7,20 +7,18 @@ import {
 import { NotificationArtworkList } from "app/Scenes/Activity/components/NotificationArtworkList"
 import { PartnerOfferBadge } from "app/Scenes/Activity/components/PartnerOffeBadge"
 import { goBack, navigate } from "app/system/navigation/navigate"
+import { extractNodes } from "app/utils/extractNodes"
 import { getTimer } from "app/utils/getTimer"
 import { graphql, useFragment } from "react-relay"
 
 interface PartnerOfferCreatedNotificationProps {
-  notification: any
+  notification: PartnerOfferCreatedNotification_notification$key
 }
 
 export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotificationProps> = ({
   notification,
 }) => {
-  const notificationData = useFragment<PartnerOfferCreatedNotification_notification$key>(
-    PartnerOfferCreatedNotificationFragment,
-    notification
-  )
+  const notificationData = useFragment(PartnerOfferCreatedNotificationFragment, notification)
 
   const { headline, item, notificationType, artworksConnection, targetHref } = notificationData
 
@@ -74,9 +72,8 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
           <NotificationArtworkList
             artworksConnection={artworksConnection}
             priceOfferMessage={{
-              priceListedMessage: artworksConnection?.edges?.[0]?.node?.price
-                ? artworksConnection.edges[0].node.price
-                : "Not publicly listed",
+              priceListedMessage:
+                extractNodes(artworksConnection)[0]?.price || "Not publicly listed",
               priceWithDiscountMessage: item?.partnerOffer?.priceWithDiscount?.display || "",
             }}
             partnerOffer={{
