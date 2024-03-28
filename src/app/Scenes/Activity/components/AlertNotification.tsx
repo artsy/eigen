@@ -34,14 +34,10 @@ export const AlertNotification: FC<AlertNotificationProps> = ({ notification }) 
   }
 
   const handleEditAlertPress = () => {
-    // TODO: Add tracking
-
     navigate(`/settings/alerts/${alert.internalID}/edit`)
   }
 
   const handleViewAllWorksPress = () => {
-    // TODO: Add tracking
-
     navigate(`/artist/${artist?.slug}/works-for-sale`)
   }
 

@@ -81,6 +81,7 @@ const ActivityItemQuery = graphql`
         ...ArticleFeaturedArtistNotification_notification
         ...ViewingRoomPublishedNotification_notification
         ...PartnerOfferCreatedNotification_notification
+        ...PartnerShowOpenedNotification_notification
       }
     }
   }
