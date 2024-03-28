@@ -111,6 +111,7 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
     formValues: ArtworkDetailsFormModel | ContactInformationFormModel | {}
   ) => {
     const isLastStep = activeStep === stepsInOrder.length - 1
+
     const values = {
       ...artworkDetails,
       ...formValues,
@@ -192,6 +193,8 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
   const scrollViewRef = useRef<ScrollView>(null)
 
   const expandCollapsibleMenuContent = (indexToExpand: number) => {
+    setActiveStep(indexToExpand)
+
     const indexToCollapse = stepsRefs.findIndex((ref) => ref.isExpanded())
 
     const scrollToStep = () =>
@@ -275,7 +278,7 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
                     trackEvent(toggledAccordionEvent(submissionID, contextModule, title, false))
                   }}
                   isExpanded={index === 0}
-                  disabled={activeStep !== index}
+                  disabled={index > activeStep}
                   ref={(ref) => {
                     if (ref) {
                       stepsRefs[index] = ref
