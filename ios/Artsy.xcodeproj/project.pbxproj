@@ -4628,7 +4628,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ArtsyStickers/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Artsy Stickers";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/usr/lib/swift",
 					"$(inherited)",
@@ -4665,7 +4665,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ArtsyStickers/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Artsy Stickers";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/usr/lib/swift",
 					"$(inherited)",
@@ -4701,7 +4701,7 @@
 				INFOPLIST_FILE = BrazePushServiceExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = BrazePushServiceExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Artsy. All rights reserved.";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4746,7 +4746,7 @@
 				INFOPLIST_FILE = BrazePushServiceExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = BrazePushServiceExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Artsy. All rights reserved.";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
