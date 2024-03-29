@@ -761,7 +761,7 @@ PODS:
     - React-Core
   - RNFastImage (8.6.3):
     - React-Core
-    - SDWebImage (~> 5.11.1)
+    - SDWebImage (~> 5.19.1)
     - SDWebImageWebPCoder (~> 0.8.4)
   - RNFlashList (1.5.0):
     - React-Core
@@ -828,9 +828,9 @@ PODS:
     - React-Core
   - RNSVG (14.1.0):
     - React-Core
-  - SDWebImage (5.11.1):
-    - SDWebImage/Core (= 5.11.1)
-  - SDWebImage/Core (5.11.1)
+  - SDWebImage (5.19.1):
+    - SDWebImage/Core (= 5.19.1)
+  - SDWebImage/Core (5.19.1)
   - SDWebImageWebPCoder (0.8.5):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
@@ -1006,7 +1006,7 @@ DEPENDENCIES:
   - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - RNShare (from `../node_modules/react-native-share`)
   - RNSVG (from `../node_modules/react-native-svg`)
-  - SDWebImage (= 5.11.1)
+  - SDWebImage (= 5.19.1)
   - Segment-Appboy
   - sift-react-native (from `../node_modules/sift-react-native`)
   - Specta
@@ -1438,7 +1438,7 @@ SPEC CHECKSUMS:
   RNCClipboard: 245417a78ab585e0d4d83926c28907e7b2bc24bd
   RNDateTimePicker: f56338ebc86246f6b46f9e0953daa3a28acf909c
   RNDeviceInfo: 4701f0bf2a06b34654745053db0ce4cb0c53ada7
-  RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
+  RNFastImage: bb8cdea994fb18352557876cf345171a995eb57a
   RNFlashList: 25b0e092b4470c84db0386d4f5316dc34123bb6d
   RNGestureHandler: 38aa38413896620338948fbb5c90579a7b1c3fde
   RNGoogleSignin: 111fd4792913208f338fe3178005f7a22e490ff9
@@ -1452,7 +1452,7 @@ SPEC CHECKSUMS:
   RNSentry: 5381e9284aec59a546e4a7d40e33ad0839b99c1e
   RNShare: 859ff710211285676b0bcedd156c12437ea1d564
   RNSVG: ba3e7232f45e34b7b47e74472386cf4e1a676d0a
-  SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
+  SDWebImage: 40b0b4053e36c660a764958bff99eed16610acbb
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   Segment-Appboy: 3ccf7ffd34701e11029e1d013e57eae0756a8eb1
   Sentry: ebc12276bd17613a114ab359074096b6b3725203
@@ -1474,6 +1474,6 @@ SPEC CHECKSUMS:
   Yoga: 87e59f6d458e5061d2421086c5de994b3f7cd151
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 448dc621b71b4088fda9bd3613dfb47474331576
+PODFILE CHECKSUM: bc36222111072f2fab0487dc5294de8bc559a1ed
 
 COCOAPODS: 1.14.3
