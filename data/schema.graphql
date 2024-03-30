@@ -2526,6 +2526,7 @@ type Artwork implements Node & Searchable & Sellable {
   ): String
   layer(id: String): ArtworkLayer
   layers: [ArtworkLayer]
+  listedArtworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection!
   listPrice: ListPrice
   literature(format: Format): String
 
