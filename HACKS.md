@@ -352,7 +352,7 @@ And we update to the new version.
 Test compilations started failing in Xcode 15 due to a type conflict:
 https://github.com/ashfurrow/Nimble-Snapshots/pull/268
 
-# Patch-package for @react-navigation/native
+## Patch-package for @react-navigation/native
 
 #### When we can remove this:
 
@@ -387,3 +387,30 @@ https://github.com/SwiftyJSON/SwiftyJSON/issues/1154
 
 Apples has started requiring apps and certain 3rd party libraries declare in a privacy manifest why they use some apis, SwiftyJSON is one of them. The
 privacy manifest has been added in 5.0.2 but the version has not been published to cocoapods.
+
+## Patch-package for react-native-fast-image
+
+#### When we can remove this:
+
+When the library uses the latest SDWebImage that includes privacy manifests, a version >= 5.19
+https://github.com/DylanVann/react-native-fast-image/issues/1031
+
+####
+
+Apples has started requiring apps and certain 3rd party libraries declare in a privacy manifest why they use some apis. SDWebImage is one of those,
+SDWebImage has been updated to include a privacy manifest but the wrapper we use, react-native-fast-image, has not.
+https://developer.apple.com/documentation/bundleresources/privacy_manifest_files/describing_use_of_required_reason_api?language=objc
+
+## Modular headers for firebase deps in Podfile
+
+#### When we can remove this
+
+When we stop using flipper or this issue is resolved: https://github.com/invertase/react-native-firebase/issues/6425
+
+#### Explanation/Context
+
+The latest versions of react-native-firebase require using static frameworks, and unfortunately this breaks flipper.
+https://rnfirebase.io/#altering-cocoapods-to-use-frameworks
+The author of react-native-firebase basically said that people should just remove flipper since it is no longer going to be supported by
+react native in the future but a bit tough to pull off that bandaid so soon. If flipper does end up supporting this config: 1. remove the entries in the podfile
+that have `:modular_headers => true` and add the static frameworks line from the docs above.

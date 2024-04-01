@@ -40,7 +40,6 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-
 def check_for_existing_netrc_file
   mapbox_token = ENV['MAPBOX_DOWNLOAD_TOKEN']
   if !mapbox_token || mapbox_token.length <= 1
@@ -83,7 +82,6 @@ target 'Artsy' do
     config = use_native_modules!
   end
 
-
   use_react_native!(
     :path => config[:reactNativePath],
     :production => ENV['CIRCLE_BUILD_NUM'],
@@ -102,7 +100,7 @@ target 'Artsy' do
   # Networking
   pod 'AFNetworking', '2.7.0', subspecs: %w[NSURLSession NSURLConnection]
   pod 'AFNetworkActivityLogger'
-  pod 'SDWebImage', '5.11.1'
+  pod 'SDWebImage', '5.19.1'
   pod 'INTUAnimationEngine'
 
   # Core
@@ -134,8 +132,16 @@ target 'Artsy' do
   pod 'FBSDKShareKit', '~> 16.3.1'
 
   # Google & Firebase
-  pod 'GoogleSignIn', '5.0.2'
-  pod 'Firebase/Auth', '8.1.0'
+  pod 'Firebase/Auth', '10.23.0'
+
+  # Workaround for firebase flipper issues
+  # See https://github.com/invertase/react-native-firebase/issues/6425#issuecomment-1952403075
+  pod 'FirebaseCore', :modular_headers => true
+  pod 'FirebaseCoreExtension', :modular_headers => true
+  pod 'FirebaseInstallations', :modular_headers => true
+  pod 'GoogleDataTransport', :modular_headers => true
+  pod 'GoogleUtilities', :modular_headers => true
+  pod 'nanopb', :modular_headers => true
 
   # Analytics
   pod 'Segment-Appboy'
