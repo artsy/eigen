@@ -852,7 +852,7 @@ PODS:
   - SSZipArchive (2.2.3)
   - Starscream (3.0.4)
   - Stripe (14.0.2)
-  - SwiftyJSON (4.0.0)
+  - SwiftyJSON (5.0.2)
   - Then (2.3.0)
   - tipsi-stripe (7.5.0):
     - React
@@ -1011,7 +1011,7 @@ DEPENDENCIES:
   - sift-react-native (from `../node_modules/sift-react-native`)
   - Specta
   - Starscream (= 3.0.4)
-  - SwiftyJSON (= 4.0.0)
+  - SwiftyJSON (from `https://github.com/SwiftyJSON/SwiftyJSON/`, commit `af76cf3ef710b6ca5f8c05f3a31307d44a3c5828`)
   - Then (= 2.3.0)
   - tipsi-stripe (from `../node_modules/tipsi-stripe`)
   - UICKeyChainStore
@@ -1095,7 +1095,6 @@ SPEC REPOS:
     - SSZipArchive
     - Starscream
     - Stripe
-    - SwiftyJSON
     - Then
     - TOCropViewController
     - UICKeyChainStore
@@ -1283,6 +1282,9 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-svg"
   sift-react-native:
     :path: "../node_modules/sift-react-native"
+  SwiftyJSON:
+    :commit: af76cf3ef710b6ca5f8c05f3a31307d44a3c5828
+    :git: https://github.com/SwiftyJSON/SwiftyJSON/
   tipsi-stripe:
     :path: "../node_modules/tipsi-stripe"
   Yoga:
@@ -1301,6 +1303,9 @@ CHECKOUT OPTIONS:
   Pulley:
     :commit: f677b18b332ea3798dc379879dbc0d038efd3ccc
     :git: https://github.com/artsy/Pulley.git
+  SwiftyJSON:
+    :commit: af76cf3ef710b6ca5f8c05f3a31307d44a3c5828
+    :git: https://github.com/SwiftyJSON/SwiftyJSON/
 
 SPEC CHECKSUMS:
   Aerodramus: a22de7451c8fc85ae5d974f5d6a656f59046fffc
@@ -1464,7 +1469,7 @@ SPEC CHECKSUMS:
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
   Stripe: 25c07000e7e86ffc53da0e41a5dd1bce30470fe0
-  SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
+  SwiftyJSON: 576fbf26942d5ef414daad8870b1642413ecc00c
   Then: ee21c97b85ff6062b9b0080c9abb1eea46743345
   tipsi-stripe: 8aaaa6f5e4cfea5c35be3affbb616c4e6cfafa5f
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
@@ -1474,6 +1479,6 @@ SPEC CHECKSUMS:
   Yoga: 87e59f6d458e5061d2421086c5de994b3f7cd151
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 448dc621b71b4088fda9bd3613dfb47474331576
+PODFILE CHECKSUM: 835087133c086c0042701c59885f42bc0ee15c09
 
 COCOAPODS: 1.14.3
