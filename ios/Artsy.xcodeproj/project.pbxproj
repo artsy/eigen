@@ -459,7 +459,6 @@
 		CBE3276B27E275A400395A93 /* navigation_more_arrow_horizontal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE325EB27E275A200395A93 /* navigation_more_arrow_horizontal@2x.png */; };
 		CBE3276C27E275A400395A93 /* MTLModel+Dictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE325EE27E275A200395A93 /* MTLModel+Dictionary.m */; };
 		CBE3276D27E275A400395A93 /* MTLModel+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE325EF27E275A200395A93 /* MTLModel+JSON.m */; };
-		CBE3276E27E275A400395A93 /* StarscreamExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE325F327E275A200395A93 /* StarscreamExtensions.swift */; };
 		CBE3276F27E275A400395A93 /* LiveAuctionSocketCommunicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE325F427E275A200395A93 /* LiveAuctionSocketCommunicator.swift */; };
 		CBE3277127E275A400395A93 /* ArtsyAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE325FA27E275A200395A93 /* ArtsyAPI.m */; };
 		CBE3277227E275A400395A93 /* ArtsyAPI+HEAD.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE325FC27E275A200395A93 /* ArtsyAPI+HEAD.m */; };
@@ -1287,7 +1286,6 @@
 		CBE325EF27E275A200395A93 /* MTLModel+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MTLModel+JSON.m"; sourceTree = "<group>"; };
 		CBE325F027E275A200395A93 /* MTLModel+Dictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MTLModel+Dictionary.h"; sourceTree = "<group>"; };
 		CBE325F127E275A200395A93 /* MTLModel+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MTLModel+JSON.h"; sourceTree = "<group>"; };
-		CBE325F327E275A200395A93 /* StarscreamExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StarscreamExtensions.swift; sourceTree = "<group>"; };
 		CBE325F427E275A200395A93 /* LiveAuctionSocketCommunicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveAuctionSocketCommunicator.swift; sourceTree = "<group>"; };
 		CBE325F527E275A200395A93 /* ARRouter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARRouter.h; sourceTree = "<group>"; };
 		CBE325F627E275A200395A93 /* ARNetworkConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARNetworkConstants.h; sourceTree = "<group>"; };
@@ -3222,7 +3220,6 @@
 		CBE325F227E275A200395A93 /* Live_Auctions */ = {
 			isa = PBXGroup;
 			children = (
-				CBE325F327E275A200395A93 /* StarscreamExtensions.swift */,
 				CBE325F427E275A200395A93 /* LiveAuctionSocketCommunicator.swift */,
 			);
 			path = Live_Auctions;
@@ -3886,7 +3883,6 @@
 				CBE3278D27E275A400395A93 /* Article.m in Sources */,
 				CBE3277827E275A400395A93 /* ArtsyAPI+Profiles.m in Sources */,
 				CBE326F027E275A300395A93 /* ARVIRHorizontalPlaneInteractionController.m in Sources */,
-				CBE3276E27E275A400395A93 /* StarscreamExtensions.swift in Sources */,
 				CBE3279627E275A400395A93 /* Fair.m in Sources */,
 				CBE326D827E275A300395A93 /* UIViewController+BlurredStatusView.swift in Sources */,
 				CBE3270427E275A300395A93 /* LiveAuctionCurrentLotCTAPositionManager.swift in Sources */,

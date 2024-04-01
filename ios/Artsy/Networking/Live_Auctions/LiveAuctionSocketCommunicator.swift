@@ -2,18 +2,6 @@ import Foundation
 import Interstellar
 import Starscream
 
-protocol SocketType: AnyObject {
-    var onText: ((String) -> Void)? { get set }
-    var onConnect: (() -> Void)? { get set }
-    var onDisconnect: ((Error?) -> Void)? { get set }
-
-    func write(string: String)
-    func writePing()
-
-    func connect()
-    func disconnect()
-}
-
 protocol LiveAuctionSocketCommunicatorType {
     var updatedAuctionState: Observable<AnyObject> { get }
     var lotUpdateBroadcasts: Observable<AnyObject> { get }
@@ -28,8 +16,8 @@ protocol LiveAuctionSocketCommunicatorType {
 }
 
 class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType {
-    typealias SocketCreator = (_ host: String, _ saleID: String) -> SocketType
-    fileprivate let socket: SocketType
+    typealias SocketCreator = (_ host: String, _ saleID: String) -> WebSocket
+    fileprivate let socket: WebSocket
     fileprivate let causalitySaleID: String
     fileprivate var timer: Timer? // Heartbeat to keep socket connection alive.
 
@@ -69,7 +57,6 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
             let url = URL(string: "\(host)/socket?saleId=\(saleID)")
             let urlRequest = URLRequest(url: url!) // swiftlint:disable:this force_unwrapping
             let websocket = WebSocket(request: urlRequest)
-
             return websocket
         }
     }
@@ -92,14 +79,24 @@ private extension SocketSetup {
             self.pingSocket()
         }
         timer = Timer.scheduledTimer(timeInterval: 1, target: caller, selector: #selector(TimerCaller.invoke), userInfo: nil, repeats: true)
-        socket.onText = { [unowned self] text in
-            self.receivedText(text)
-        }
-        socket.onConnect = { [unowned self] in
-            self.socketConnected()
-        }
-        socket.onDisconnect = { [unowned self] error in
-            self.socketDisconnected(error)
+        socket.onEvent = { [unowned self] event in
+            switch event {
+            case .connected:
+                self.socketConnected()
+            case .disconnected(let error, _):
+                self.socketDisconnected(error)
+            case .text(let text):
+                self.receivedText(text)
+            case .error(let error):
+                if let error {
+                    print("Error occurred in socket connection \(error.localizedDescription)")
+                } else {
+                    print("Unknown error occurred in socket connection")
+                }
+            default:
+                // TODO: Handle more cases?
+                print("Unhandled socket event!")
+            }
         }
         socket.connect()
     }
@@ -111,8 +108,8 @@ private extension SocketSetup {
         return Void()
     }
 
-    func socketDisconnected(_ error: Error?) {
-        print("Socket disconnected: \(String(describing: error))")
+    func socketDisconnected(_ errorString: String) {
+        print("Socket disconnected: \(errorString)")
         socketConnectionSignal.update(false)
 
         // Give it half a second to re-connect
@@ -122,7 +119,7 @@ private extension SocketSetup {
     }
 
     func pingSocket() -> Void {
-        socket.writePing()
+        socket.write(string: "2")
     }
 
     func receivedText(_ text: String) {
