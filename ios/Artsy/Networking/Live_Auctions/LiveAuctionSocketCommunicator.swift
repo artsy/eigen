@@ -67,7 +67,8 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
     class func defaultSocketCreator() -> SocketCreator {
         return { host, saleID in
             let url = URL(string: "\(host)/socket?saleId=\(saleID)")
-            let websocket = WebSocket(url: url!) // swiftlint:disable:this force_unwrapping
+            let urlRequest = URLRequest(url: url!) // swiftlint:disable:this force_unwrapping
+            let websocket = WebSocket(request: urlRequest)
             // TODO: Discover whether we actually need this
 //            websocket.origin = nil
             return websocket
