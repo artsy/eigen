@@ -149,7 +149,7 @@ target 'Artsy' do
   # Swift pods 🎉
   pod 'Then', '2.3.0'
   pod 'Interstellar/Core', git: 'https://github.com/artsy/Interstellar.git', branch: 'observable-unsubscribe'
-  pod 'Starscream', '3.0.4'
+  pod 'Starscream', '4.0.8'
   # waiting on https://github.com/SwiftyJSON/SwiftyJSON/issues/1154
   pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON/', :commit => 'af76cf3ef710b6ca5f8c05f3a31307d44a3c5828'
 

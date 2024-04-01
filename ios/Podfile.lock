@@ -887,7 +887,7 @@ PODS:
   - SocketRocket (0.6.1)
   - Specta (1.0.7)
   - SSZipArchive (2.2.3)
-  - Starscream (3.0.4)
+  - Starscream (4.0.8)
   - Stripe (14.0.2)
   - SwiftyJSON (5.0.2)
   - Then (2.3.0)
@@ -1052,7 +1052,7 @@ DEPENDENCIES:
   - Segment-Appboy
   - sift-react-native (from `../node_modules/sift-react-native`)
   - Specta
-  - Starscream (= 3.0.4)
+  - Starscream (= 4.0.8)
   - SwiftyJSON (from `https://github.com/SwiftyJSON/SwiftyJSON/`, commit `af76cf3ef710b6ca5f8c05f3a31307d44a3c5828`)
   - Then (= 2.3.0)
   - tipsi-stripe (from `../node_modules/tipsi-stripe`)
@@ -1517,7 +1517,7 @@ SPEC CHECKSUMS:
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
-  Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
+  Starscream: 19b5533ddb925208db698f0ac508a100b884a1b9
   Stripe: 25c07000e7e86ffc53da0e41a5dd1bce30470fe0
   SwiftyJSON: 576fbf26942d5ef414daad8870b1642413ecc00c
   Then: ee21c97b85ff6062b9b0080c9abb1eea46743345
@@ -1529,6 +1529,6 @@ SPEC CHECKSUMS:
   Yoga: 87e59f6d458e5061d2421086c5de994b3f7cd151
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: b091951bde66fc4e0e428e3cf1cc6b70c98a7812
+PODFILE CHECKSUM: aaa36c75334db32ab0e72f090ee62b7e2c2c6bd9
 
 COCOAPODS: 1.14.3
