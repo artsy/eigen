@@ -3,29 +3,23 @@ import Starscream
 extension WebSocket: SocketType {
     var onText: ((String) -> Void)? {
         get {
-            fatalError("Must be implemented by subclass")
+            return nil
         }
-        set {
-            fatalError("Must be implemented by subclass")
-        }
+        set {}
     }
 
     var onConnect: (() -> Void)? {
         get {
-            fatalError("Must be implemented by subclass")
+            return nil
         }
-        set {
-            fatalError("Must be implemented by subclass")
-        }
+        set {}
     }
 
     var onDisconnect: ((Error?) -> Void)? {
         get {
-            fatalError("Must be implemented by subclass")
+            return nil
         }
-        set {
-            fatalError("Must be implemented by subclass")
-        }
+        set {}
     }
 
     func write(string: String) {
