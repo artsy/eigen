@@ -1,5 +1,5 @@
 import { Touchable } from "@artsy/palette-mobile"
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
 import { GlobalStore, GlobalStoreProvider } from "app/store/GlobalStore"
 import { EntityType, navigate, navigateToEntity, SlugType } from "app/system/navigation/navigate"
@@ -15,6 +15,7 @@ const onDeleteMock = jest.fn()
 
 const result = {
   displayLabel: "Banksy",
+  formattedNationalityAndBirthday: "British, b. 1974",
   href: "banksy-href",
   imageUrl: "blah",
   displayType: "Artist",
@@ -275,5 +276,10 @@ describe(AutosuggestSearchResult, () => {
     fireEvent.press(getAllByText("Banksy")[0])
 
     expect(trackResultPressMock).toBeCalledWith(result, 1)
+  })
+
+  it("renders disambiguating info for artists", () => {
+    renderWithWrappers(<TestWrapper result={result} highlight="Ban" />)
+    expect(screen.getByText("British, b. 1974")).toBeTruthy()
   })
 })

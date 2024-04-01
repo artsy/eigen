@@ -110,7 +110,12 @@ export const AutosuggestSearchResult: React.FC<{
 
   const resultType = getResultType(result)
 
-  const initials = result.__typename === "Artist" ? result.initials : undefined
+  let initials, secondaryLabel
+
+  if (result.__typename === "Artist") {
+    initials = result.initials
+    secondaryLabel = result.formattedNationalityAndBirthday || undefined
+  }
 
   return (
     <>
@@ -128,7 +133,11 @@ export const AutosuggestSearchResult: React.FC<{
           <Spacer x={1} />
 
           <Flex flex={1}>
-            <ResultWithHighlight displayLabel={result.displayLabel ?? ""} highlight={highlight} />
+            <ResultWithHighlight
+              displayLabel={result.displayLabel ?? ""}
+              secondaryLabel={secondaryLabel}
+              highlight={highlight}
+            />
 
             {!!showResultType && !!resultType && (
               <Text variant="xs" color="black60">
