@@ -16,8 +16,8 @@ protocol LiveAuctionSocketCommunicatorType {
 }
 
 class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType {
-    typealias SocketCreator = (_ host: String, _ saleID: String) -> WebSocket
-    fileprivate let socket: WebSocket
+    typealias SocketCreator = (_ host: String, _ saleID: String) -> WebSocketType
+    fileprivate let socket: WebSocketType
     fileprivate let causalitySaleID: String
     fileprivate var timer: Timer? // Heartbeat to keep socket connection alive.
 
@@ -47,7 +47,7 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
     }
 
     deinit {
-        socket.disconnect()
+        socket.disconnect(closeCode: CloseCode.normal.rawValue)
         timer?.invalidate()
         timer = nil
     }
@@ -103,7 +103,7 @@ private extension SocketSetup {
 
     func socketConnected() -> Void {
         print("Socket connected")
-        socket.write(string: "{\"type\":\"Authorize\",\"jwt\":\"\(jwt.string)\"}")
+        socket.write(string: "{\"type\":\"Authorize\",\"jwt\":\"\(jwt.string)\"}", completion: nil)
         socketConnectionSignal.update(true)
         return Void()
     }
@@ -119,7 +119,7 @@ private extension SocketSetup {
     }
 
     func pingSocket() -> Void {
-        socket.write(string: "2")
+        socket.write(string: "2", completion: nil)
     }
 
     func receivedText(_ text: String) {
@@ -207,7 +207,7 @@ extension PublicFunctions {
     func writeJSON(_ json: NSObject) {
         do {
             print(try json.stringify())
-            socket.write(string: try json.stringify())
+            socket.write(string: try json.stringify(), completion: nil)
         } catch {
             print("Error creating JSON string of socket event")
             return print(error)
