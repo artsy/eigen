@@ -8,6 +8,7 @@ import {
   showBlockedAuthError,
 } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { osMajorVersion } from "app/utils/platformUtil"
 import { capitalize } from "lodash"
 import { useEffect } from "react"
@@ -22,6 +23,7 @@ interface OnboardingSocialPickProps {
 export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode }) => {
   const navigation = useNavigation<NavigationProp<OnboardingNavigationStack>>()
   const isLoading = GlobalStore.useAppState((state) => state.auth.sessionState.isLoading)
+  const showNewDisclaimer = useFeatureFlag("AREnableNewTermsAndConditions")
 
   const isIOS = Platform.OS === "ios"
 
@@ -240,8 +242,8 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
               </Button>
             </>
 
-            <Text variant="xs" color="black60" textAlign="center">
-              By tapping Continue with Facebook, Google
+            <Text variant="xs" color="black60" textAlign="center" testID="disclaimer">
+              By tapping Continue with{showNewDisclaimer ? " Email," : ""} Facebook, Google
               {isIOS ? " or Apple" : ""}, you agree to Artsy's{" "}
               <Text
                 onPress={() => navigation.navigate("OnboardingWebView", { url: "/terms" })}
@@ -249,7 +251,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
                 underline
                 testID="openTerms"
               >
-                Terms of Use
+                {showNewDisclaimer ? "Terms and Conditions" : "Terms of Use"}
               </Text>{" "}
               and{" "}
               <Text
