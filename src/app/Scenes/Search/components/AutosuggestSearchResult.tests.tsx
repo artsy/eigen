@@ -4,8 +4,7 @@ import { SearchContext } from "app/Scenes/Search/SearchContext"
 import { GlobalStore, GlobalStoreProvider } from "app/store/GlobalStore"
 import { EntityType, navigate, navigateToEntity, SlugType } from "app/system/navigation/navigate"
 import { CatchErrors } from "app/utils/CatchErrors"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Pressable } from "react-native"
 import { act } from "react-test-renderer"
 import { AutosuggestSearchResult } from "./AutosuggestSearchResult"
@@ -86,9 +85,9 @@ describe(AutosuggestSearchResult, () => {
   })
 
   it("blurs the input and navigates to the correct page when tapped", async () => {
-    const { root } = renderWithWrappersLEGACY(<TestWrapper result={result} />)
+    renderWithWrappers(<TestWrapper result={result} />)
     expect(navigate).not.toHaveBeenCalled()
-    root.findByType(Touchable).props.onPress()
+    screen.UNSAFE_getByType(Touchable).props.onPress()
     await new Promise((r) => setTimeout(r, 50))
     expect(inputBlurMock).toHaveBeenCalled()
     expect(navigate).toHaveBeenCalledWith(`${result.href}`)
@@ -109,43 +108,41 @@ describe(AutosuggestSearchResult, () => {
   })
 
   it(`updates recent searches by default`, async () => {
-    const { root } = renderWithWrappersLEGACY(<TestWrapper result={result} />)
+    renderWithWrappers(<TestWrapper result={result} />)
     expect(navigate).not.toHaveBeenCalled()
     expect(recentSearchesArray).toHaveLength(0)
     act(() => {
-      root.findByType(Touchable).props.onPress()
+      screen.UNSAFE_getByType(Touchable).props.onPress()
     })
     await new Promise((r) => setTimeout(r, 50))
     expect(recentSearchesArray).toHaveLength(1)
   })
 
   it(`won't update recent searches if told not to`, async () => {
-    const { root } = renderWithWrappersLEGACY(
-      <TestWrapper result={result} updateRecentSearchesOnTap={false} />
-    )
+    renderWithWrappers(<TestWrapper result={result} updateRecentSearchesOnTap={false} />)
     expect(navigate).not.toHaveBeenCalled()
     expect(recentSearchesArray).toHaveLength(0)
     act(() => {
-      root.findByType(Touchable).props.onPress()
+      screen.UNSAFE_getByType(Touchable).props.onPress()
     })
     await new Promise((r) => setTimeout(r, 50))
     expect(recentSearchesArray).toHaveLength(0)
   })
 
   it(`optionally hides the entity type`, () => {
-    const { root } = renderWithWrappersLEGACY(<TestWrapper result={result} />)
-    expect(extractText(root)).not.toContain("Artist")
+    renderWithWrappers(<TestWrapper result={result} showResultType={false} />)
+    expect(screen.queryByText("Artist")).toBeFalsy()
   })
 
   it(`allows for custom touch handlers on search result items`, () => {
     const spy = jest.fn()
-    const { root } = renderWithWrappersLEGACY(<TestWrapper result={result} onResultPress={spy} />)
-    root.findByType(Touchable).props.onPress()
+    renderWithWrappers(<TestWrapper result={result} onResultPress={spy} />)
+    screen.UNSAFE_getByType(Touchable).props.onPress()
     expect(spy).toHaveBeenCalled()
   })
 
   it(`navigates correctly when the item is a fair`, async () => {
-    const { root } = renderWithWrappersLEGACY(
+    renderWithWrappers(
       <TestWrapper
         result={{
           displayLabel: "Art Expo 2020",
@@ -158,7 +155,7 @@ describe(AutosuggestSearchResult, () => {
       />
     )
     act(() => {
-      root.findByType(Touchable).props.onPress()
+      screen.UNSAFE_getByType(Touchable).props.onPress()
     })
     await new Promise((r) => setTimeout(r, 50))
     expect(navigateToEntity).toHaveBeenCalledWith(
@@ -169,7 +166,7 @@ describe(AutosuggestSearchResult, () => {
   })
 
   it(`shows navigation buttons when enabled and available`, async () => {
-    const { root } = renderWithWrappersLEGACY(
+    renderWithWrappers(
       <TestWrapper
         result={{
           displayLabel: "Banksy",
@@ -185,12 +182,12 @@ describe(AutosuggestSearchResult, () => {
       />
     )
 
-    expect(extractText(root)).toContain("Auction Results")
-    expect(extractText(root)).toContain("Artworks")
+    expect(screen.getByText("Auction Results")).toBeTruthy()
+    expect(screen.getByText("Artworks")).toBeTruthy()
   })
 
   it(`does not show navigation buttons when disabled`, async () => {
-    const { root } = renderWithWrappersLEGACY(
+    renderWithWrappers(
       <TestWrapper
         result={{
           displayLabel: "Banksy",
@@ -206,12 +203,12 @@ describe(AutosuggestSearchResult, () => {
       />
     )
 
-    expect(extractText(root)).not.toContain("Auction Results")
-    expect(extractText(root)).not.toContain("Artworks")
+    expect(screen.queryByText("Auction Results")).toBeFalsy()
+    expect(screen.queryByText("Artworks")).toBeFalsy()
   })
 
   it(`does not show navigation buttons when enabled, but unavailable`, async () => {
-    const { root } = renderWithWrappersLEGACY(
+    renderWithWrappers(
       <TestWrapper
         result={{
           displayLabel: "Banksy",
@@ -227,12 +224,12 @@ describe(AutosuggestSearchResult, () => {
       />
     )
 
-    expect(extractText(root)).not.toContain("Auction Results")
-    expect(extractText(root)).not.toContain("Artworks")
+    expect(screen.queryByText("Auction Results")).toBeFalsy()
+    expect(screen.queryByText("Artworks")).toBeFalsy()
   })
 
   it(`quick navigation buttons navigate correctly`, async () => {
-    const { root } = renderWithWrappersLEGACY(
+    renderWithWrappers(
       <TestWrapper
         result={{
           displayLabel: "Banksy",
@@ -249,7 +246,7 @@ describe(AutosuggestSearchResult, () => {
     )
 
     act(() => {
-      root.findAllByType(Pressable)[0].props.onPress()
+      screen.UNSAFE_getAllByType(Pressable)[0].props.onPress()
     })
     await new Promise((r) => setTimeout(r, 50))
     expect(navigate).toHaveBeenCalledWith("/artist/anto-carte/artworks", {
@@ -257,7 +254,7 @@ describe(AutosuggestSearchResult, () => {
     })
 
     act(() => {
-      root.findAllByType(Pressable)[1].props.onPress()
+      screen.UNSAFE_getAllByType(Pressable)[1].props.onPress()
     })
     await new Promise((r) => setTimeout(r, 50))
     expect(navigate).toHaveBeenCalledWith("/artist/anto-carte/auction-results", {
