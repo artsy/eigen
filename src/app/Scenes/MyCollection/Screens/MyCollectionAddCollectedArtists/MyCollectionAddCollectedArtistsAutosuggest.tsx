@@ -7,6 +7,7 @@ import {
   Spacer,
   Text,
   Touchable,
+  nbsp,
 } from "@artsy/palette-mobile"
 import { ArtistAutosuggestQuery } from "__generated__/ArtistAutosuggestQuery.graphql"
 import {
@@ -245,6 +246,7 @@ const CollectedArtistListItem: React.FC<{
 
         <ResultWithHighlight
           displayLabel={artist.displayLabel!}
+          secondaryLabel={artist.formattedNationalityAndBirthday || nbsp}
           numberOfLines={2}
           highlight={highlight}
           textAlign="center"
