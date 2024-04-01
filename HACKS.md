@@ -354,6 +354,8 @@ https://github.com/ashfurrow/Nimble-Snapshots/pull/268
 
 # Patch-package for @react-navigation/native
 
+#### When we can remove this:
+
 When we upgrade to 6.0.14 or higher, should do shortly but requires fixing a fair few type issues.
 
 ### Explanation/Context
@@ -373,3 +375,15 @@ https://github.com/react-native-device-info/react-native-device-info/issues/1622
 Apples has started requiring apps and 3rd party libraries declare in a privacy manifest why they use some apis, and only certain reasons are allowed.
 Device info uses disk space apis that are not justified by these reasons currently.
 https://developer.apple.com/documentation/bundleresources/privacy_manifest_files/describing_use_of_required_reason_api?language=objc
+
+## Git link in podfile for SwiftyJSON
+
+#### When we can remove this:
+
+When this issue is resolved and version 5.0.2 or above is published on Cocoapods.
+https://github.com/SwiftyJSON/SwiftyJSON/issues/1154
+
+#### Explanation/Context
+
+Apples has started requiring apps and certain 3rd party libraries declare in a privacy manifest why they use some apis, SwiftyJSON is one of them. The
+privacy manifest has been added in 5.0.2 but the version has not been published to cocoapods.
