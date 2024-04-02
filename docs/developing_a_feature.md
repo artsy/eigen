@@ -117,7 +117,7 @@ To enable your feature on a physical or virtual device
   - Enable Developer mode by going to Profile > About and tapping "Version" 7 times.
   - See a notification "Developer mode enabled"
   - Open the Dev Menu
-    - iOS: Do the shaeke gesture or press `command + control + z`
+    - iOS: Do the shake gesture or press `command + control + z`
     - Android: Tap the same area of the screen several times
 
 - Toggle the feature flag to "Yes".
