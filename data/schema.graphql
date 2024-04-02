@@ -2571,6 +2571,7 @@ type Artwork implements Node & Searchable & Sellable {
   priceIncludesTax: Boolean
   priceIncludesTaxDisplay: String
   priceListed: Money
+  priceListedDisplay: String
 
   # The price paid for the artwork in a user's 'my collection'
   pricePaid: Money
