@@ -13,9 +13,8 @@ require Pod::Executable.execute_command('node', ['-p',
     {paths: [process.argv[1]]},
   )', __dir__]).strip
 
-
 project 'Artsy.xcodeproj'
-platform :ios, min_ios_version_supported
+platform :ios, '14.0'
 inhibit_all_warnings! # ignore all warnings from all pods
 
 prepare_react_native_project!
@@ -158,6 +157,7 @@ target 'Artsy' do
 
   target 'ArtsyTests' do
     inherit! :search_paths
+    use_frameworks!
 
     pod 'OHHTTPStubs', '3.1.2'
     pod 'XCTest+OHHTTPStubSuiteCleanUp'
@@ -169,8 +169,8 @@ target 'Artsy' do
 
     # Swift pods 🎉
     pod 'Quick', '2.0.0'
-    pod 'Nimble', '7.3.4'
-    pod 'Nimble-Snapshots', '6.3.0'
+    pod 'Nimble', '~> 13.0'
+    pod 'Nimble-Snapshots', '9.7.0'
   end
 
   post_install do |installer|
@@ -186,14 +186,6 @@ target 'Artsy' do
     end
 
     $RNMBGL.post_install(installer)
-
-    # For now Nimble Snapshots needs to stay at Swift 4.0
-    swift4 = ['Nimble-Snapshots']
-    installer.pods_project.targets.each do |target|
-      target.build_configurations.each do |config|
-        config.build_settings['SWIFT_VERSION'] = '4.0' if swift4.include?(target.name)
-      end
-    end
 
     installer.pods_project.targets.each do |target|
         target.build_configurations.each do |config|

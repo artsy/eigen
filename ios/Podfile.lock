@@ -58,6 +58,15 @@ PODS:
     - JWT (~> 3.0.0-beta.12)
     - React-Core
     - SSZipArchive (~> 2.2.2)
+  - CwlCatchException (2.2.0):
+    - CwlCatchExceptionSupport (~> 2.2.0)
+  - CwlCatchExceptionSupport (2.2.0)
+  - CwlMachBadInstructionHandler (2.2.0)
+  - CwlPosixPreconditionTesting (2.2.0)
+  - CwlPreconditionTesting (2.2.1):
+    - CwlCatchException (~> 2.2.0)
+    - CwlMachBadInstructionHandler (~> 2.2.0)
+    - CwlPosixPreconditionTesting (~> 2.2.0)
   - DoubleConversion (1.1.6)
   - Expecta (1.0.6)
   - "Expecta+Snapshots (3.1.1)":
@@ -86,11 +95,7 @@ PODS:
     - FBSDKCoreKit (= 16.3.1)
   - FBSDKShareKit (16.3.1):
     - FBSDKCoreKit (= 16.3.1)
-  - FBSnapshotTestCase (2.1.4):
-    - FBSnapshotTestCase/SwiftSupport (= 2.1.4)
   - FBSnapshotTestCase/Core (2.1.4)
-  - FBSnapshotTestCase/SwiftSupport (2.1.4):
-    - FBSnapshotTestCase/Core
   - Firebase/Auth (10.23.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 10.23.0)
@@ -246,6 +251,11 @@ PODS:
   - INTUAnimationEngine (1.4.2):
     - INTUAnimationEngine/SpringSolver (= 1.4.2)
   - INTUAnimationEngine/SpringSolver (1.4.2)
+  - iOSSnapshotTestCase (8.0.0):
+    - iOSSnapshotTestCase/SwiftSupport (= 8.0.0)
+  - iOSSnapshotTestCase/Core (8.0.0)
+  - iOSSnapshotTestCase/SwiftSupport (8.0.0):
+    - iOSSnapshotTestCase/Core
   - ISO8601DateFormatter (0.7.1)
   - JSDecoupledAppDelegate (1.2.0)
   - JWT (3.0.0-beta.14):
@@ -278,12 +288,13 @@ PODS:
     - nanopb/encode (= 2.30910.0)
   - nanopb/decode (2.30910.0)
   - nanopb/encode (2.30910.0)
-  - Nimble (7.3.4)
-  - Nimble-Snapshots (6.3.0):
-    - Nimble-Snapshots/Core (= 6.3.0)
-  - Nimble-Snapshots/Core (6.3.0):
-    - FBSnapshotTestCase (~> 2.0)
-    - Nimble (~> 7.0)
+  - Nimble (13.2.1):
+    - CwlPreconditionTesting (~> 2.2.0)
+  - Nimble-Snapshots (9.7.0):
+    - Nimble-Snapshots/Core (= 9.7.0)
+  - Nimble-Snapshots/Core (9.7.0):
+    - iOSSnapshotTestCase (~> 8.0)
+    - Nimble (~> 13.0)
   - ObjectiveSugar (1.1.0)
   - OCMock (3.9.1)
   - OHHTTPStubs (3.1.2)
@@ -963,8 +974,8 @@ DEPENDENCIES:
   - MMMarkdown (= 0.4)
   - MultiDelegate
   - nanopb
-  - Nimble (= 7.3.4)
-  - Nimble-Snapshots (= 6.3.0)
+  - Nimble (~> 13.0)
+  - Nimble-Snapshots (= 9.7.0)
   - ObjectiveSugar
   - OCMock
   - OHHTTPStubs (= 3.1.2)
@@ -1075,6 +1086,11 @@ SPEC REPOS:
     - Base64
     - CocoaAsyncSocket
     - CocoaLumberjack
+    - CwlCatchException
+    - CwlCatchExceptionSupport
+    - CwlMachBadInstructionHandler
+    - CwlPosixPreconditionTesting
+    - CwlPreconditionTesting
     - Expecta
     - "Expecta+Snapshots"
     - FBAEMKit
@@ -1108,6 +1124,7 @@ SPEC REPOS:
     - GTMAppAuth
     - GTMSessionFetcher
     - INTUAnimationEngine
+    - iOSSnapshotTestCase
     - JSDecoupledAppDelegate
     - JWT
     - JWTDecode
@@ -1369,6 +1386,11 @@ SPEC CHECKSUMS:
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
   CodePush: 255d7607f428dcbec39085f81a206b170e01d012
+  CwlCatchException: 51bf8319009a31104ea6f0568730d1ecc25b6454
+  CwlCatchExceptionSupport: 1345d6adb01a505933f2bc972dab60dcb9ce3e50
+  CwlMachBadInstructionHandler: ea1030428925d9bf340882522af30712fb4bf356
+  CwlPosixPreconditionTesting: a125dee731883f2582715f548c6b6c92c7fde145
+  CwlPreconditionTesting: ccfd08aca58d14e04062b2a3dd2fd52e09857453
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   "Expecta+Snapshots": dcff217eef506dabd6dfdc7864ea2da321fafbb8
@@ -1409,6 +1431,7 @@ SPEC CHECKSUMS:
   hermes-engine: e89344b9e9e54351c3c5cac075e0275148fb37ba
   Interstellar: ab67502af03105f92100a043e178d188a1a437c9
   INTUAnimationEngine: 3a7d63738cd51af573d16848a771feedea7cc9f2
+  iOSSnapshotTestCase: a670511f9ee3829c2b9c23e6e68f315fd7b6790f
   ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
   JSDecoupledAppDelegate: 5905e144cbe6e0c889248eebbee6784510f315e1
   JWT: ef71dfb03e1f842081e64dc42eef0e164f35d251
@@ -1422,8 +1445,8 @@ SPEC CHECKSUMS:
   MMMarkdown: 44f1c5216cfcd70bc0e076b0f91876d6323a73b8
   MultiDelegate: 228e2321b74f45ea43ae19c268fdd60fd88d99b7
   nanopb: 438bc412db1928dac798aa6fd75726007be04262
-  Nimble: 051e3d8912d40138fa5591c78594f95fb172af37
-  Nimble-Snapshots: f5459b5b091678dc942d03ec4741cacb58ba4a52
+  Nimble: 9e81a67096dab1d1f5160d7a3f8fa7a1eeec38fd
+  Nimble-Snapshots: 7f2710c507469eb0fc4912f45d0f280e15f91966
   ObjectiveSugar: a6a25f23d657c19df0a0b972466d5b5ca9f5295c
   OCMock: 9491e4bec59e0b267d52a9184ff5605995e74be8
   OHHTTPStubs: c93230597bc5c8b74bcfdb403cc8773515b8b08c
@@ -1529,6 +1552,6 @@ SPEC CHECKSUMS:
   Yoga: 87e59f6d458e5061d2421086c5de994b3f7cd151
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: aaa36c75334db32ab0e72f090ee62b7e2c2c6bd9
+PODFILE CHECKSUM: ae54f11ed34bcc8c27ad4448dead6ff91a3c31d9
 
 COCOAPODS: 1.14.3
