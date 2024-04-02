@@ -1,15 +1,15 @@
+import Foundation
 import Starscream
 
-extension WebSocket: SocketType {
-    func write(string: String) {
-        write(string: string, completion: nil)
-    }
-
-    func disconnect() {
-        disconnect(forceTimeout: nil)
-    }
-
-    func writePing() {
-        write(string: "2")
-    }
+// Protocol should mirror WebSocket, allows for injection in tests
+protocol WebSocketType : AnyObject {
+    var delegate: WebSocketDelegate? { get set }
+    var onEvent: ((WebSocketEvent) -> Void)? { get set }
+    var request: URLRequest { get set }
+    var callbackQueue: DispatchQueue { get set }
+    func connect()
+    func disconnect(closeCode: UInt16)
+    func write(string: String, completion: (() -> ())?)
 }
+
+extension WebSocket: WebSocketType {}
