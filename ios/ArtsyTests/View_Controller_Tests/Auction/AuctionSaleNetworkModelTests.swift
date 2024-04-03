@@ -18,7 +18,7 @@ class AuctionSaleNetworkModelSpec: QuickSpec {
             let subject = AuctionSaleNetworkModel()
 
             var sale: Sale?
-            waitUntil(timeout: 10) { done in
+            waitUntil(timeout: .seconds(10)) { done in
                 subject.fetchSale(saleID).subscribe { result in
                     if case .success(let s) = result { sale = s }
                     done()
@@ -33,7 +33,7 @@ class AuctionSaleNetworkModelSpec: QuickSpec {
 
             let subject = AuctionSaleNetworkModel()
 
-            waitUntil(timeout: 10) { done in
+            waitUntil(timeout: .seconds(10)) { done in
                 subject.fetchSale(saleID).subscribe { result in
                     done()
                 }
