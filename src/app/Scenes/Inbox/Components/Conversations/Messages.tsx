@@ -73,7 +73,7 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
   // Combine and group events/messages
   useEffect(() => {
     const sortedMessages = sortBy([...orderEventsWithoutFailedPayment, ...allMessages], (message) =>
-      DateTime.fromISO(message.createdAt!)
+      DateTime.fromISO(message.createdAt ?? "")
     )
     const groupedMessages = groupConversationItems(sortedMessages)
 
@@ -108,7 +108,9 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
   // TODO: Refactor to not have to use this
   useImperativeHandle(ref, () => ({
     scrollToLastMessage() {
-      flatList.current?.scrollToIndex({ animated: true, index: 0 })
+      if (flatList.current && messages.length > 0) {
+        flatList.current?.scrollToIndex({ animated: true, index: 0 })
+      }
     },
   }))
 
@@ -148,7 +150,7 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
         Icon={() => <ShieldIcon shieldColor="white100" checkColor="white100" mr={1} />}
       />
       <FlatList
-        key={conversation.internalID!}
+        key={conversation.internalID}
         data={messages}
         initialNumToRender={messages?.length}
         renderItem={({ item, index }) => {
@@ -156,8 +158,8 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
             <MessageGroup
               isLastMessage={index === messages.length - 1}
               group={item}
-              conversationId={conversation.internalID!}
-              subjectItem={conversation.items?.[0]?.item!}
+              conversationId={conversation?.internalID ?? ""}
+              subjectItem={conversation.items?.[0]?.item}
             />
           )
         }}
