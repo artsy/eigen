@@ -4,10 +4,8 @@ import { NavigationContainer } from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import { EditSavedSearchAlertQuery } from "__generated__/EditSavedSearchAlertQuery.graphql"
 import { EditSavedSearchAlert_artists$data } from "__generated__/EditSavedSearchAlert_artists.graphql"
-import { EditSavedSearchAlert_artworksConnection$data } from "__generated__/EditSavedSearchAlert_artworksConnection.graphql"
 import { EditSavedSearchAlert_viewer$data } from "__generated__/EditSavedSearchAlert_viewer.graphql"
 import { SavedSearchAlertQuery } from "__generated__/SavedSearchAlertQuery.graphql"
-import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   SavedSearchEntity,
   SavedSearchEntityArtist,
@@ -43,17 +41,15 @@ interface EditSavedSearchAlertProps {
   viewer: EditSavedSearchAlert_viewer$data
   artists: EditSavedSearchAlert_artists$data
   savedSearchAlertId: string
-  artworksConnection: EditSavedSearchAlert_artworksConnection$data
   relay: RelayRefetchProp
 }
 
 const Stack = createStackNavigator<EditSavedSearchAlertNavigationStack>()
 
 export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props) => {
-  const { me, viewer, artists, artworksConnection, savedSearchAlertId, relay } = props
+  const { me, viewer, artists, savedSearchAlertId, relay } = props
   const { localizedUnit } = useLocalizedUnit()
 
-  const aggregations = (artworksConnection.aggregations ?? []) as Aggregations
   const { settings, ...attributes } = me?.alert ?? {}
   const isCustomAlertsNotificationsEnabled = viewer.notificationPreferences.some((preference) => {
     return (
@@ -127,7 +123,6 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
               from: "in",
               to: localizedUnit,
             }),
-            aggregations,
             entity,
             unit: localizedUnit,
           }}
@@ -194,18 +189,6 @@ export const EditSavedSearchAlertRefetchContainer = createRefetchContainer(
         name
       }
     `,
-    artworksConnection: graphql`
-      fragment EditSavedSearchAlert_artworksConnection on FilterArtworksConnection {
-        aggregations {
-          slice
-          counts {
-            count
-            name
-            value
-          }
-        }
-      }
-    `,
   },
   graphql`
     query EditSavedSearchAlertRefetchQuery {
@@ -235,21 +218,6 @@ export const EditSavedSearchAlertQueryRenderer: React.FC<EditSavedSearchAlertBas
                 }
                 artists(ids: $artistIDs) {
                   ...EditSavedSearchAlert_artists
-                }
-                artworksConnection(
-                  first: 0
-                  artistIDs: $artistIDs
-                  aggregations: [
-                    ARTIST
-                    ARTIST_SERIES
-                    LOCATION_CITY
-                    MATERIALS_TERMS
-                    MEDIUM
-                    PARTNER
-                    COLOR
-                  ]
-                ) {
-                  ...EditSavedSearchAlert_artworksConnection
                 }
               }
             `}

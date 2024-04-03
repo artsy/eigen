@@ -38,6 +38,12 @@ jest.mock("../../../Scenes/SavedSearchAlert/mutations/createSavedSearchAlert", (
     }),
 }))
 
+jest.mock("app/Scenes/SavedSearchAlert/useSavedSearchPills", () => {
+  return {
+    useSavedSearchPills: () => [],
+  }
+})
+
 const mockNavigate = jest.fn()
 jest.mock("@react-navigation/native", () => {
   const actualNav = jest.requireActual("@react-navigation/native")
@@ -77,7 +83,6 @@ const defaultProps: CreateSavedSearchModalProps = {
   visible: true,
   entity: savedSearchEntity,
   attributes,
-  aggregations: [],
   closeModal: jest.fn,
 }
 
@@ -90,7 +95,6 @@ const TestWrapper: React.FC = ({ children }) => (
     runtimeModel={{
       ...savedSearchModel,
       attributes,
-      aggregations: [],
       entity: savedSearchEntity,
     }}
   >
