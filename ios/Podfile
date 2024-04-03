@@ -161,9 +161,9 @@ target 'Artsy' do
 
     pod 'OHHTTPStubs', '3.1.2'
     pod 'XCTest+OHHTTPStubSuiteCleanUp'
-    pod 'Specta'
+    pod 'Specta', '~> 2.0'
     pod 'Expecta', '1.0.6'
-    pod 'Expecta+Snapshots', '3.1.1'
+    pod 'Expecta+Snapshots', git: 'https://github.com/artsy/ios-snapshot-test-case-expecta.git', branch: 'brian/support-specta-2'
     pod 'OCMock'
     pod 'Forgeries/Mocks'
 

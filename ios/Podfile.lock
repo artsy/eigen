@@ -71,8 +71,8 @@ PODS:
   - Expecta (1.0.6)
   - "Expecta+Snapshots (3.1.1)":
     - Expecta (~> 1.0)
-    - FBSnapshotTestCase/Core (~> 2.0)
-    - Specta (~> 1.0)
+    - iOSSnapshotTestCase (~> 8.0)
+    - Specta (~> 2.0)
   - FBAEMKit (16.3.1):
     - FBSDKCoreKit_Basics (= 16.3.1)
   - FBLazyVector (0.72.12)
@@ -95,7 +95,6 @@ PODS:
     - FBSDKCoreKit (= 16.3.1)
   - FBSDKShareKit (16.3.1):
     - FBSDKCoreKit (= 16.3.1)
-  - FBSnapshotTestCase/Core (2.1.4)
   - Firebase/Auth (10.23.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 10.23.0)
@@ -896,7 +895,7 @@ PODS:
     - React
     - Sift
   - SocketRocket (0.6.1)
-  - Specta (1.0.7)
+  - Specta (2.0.0)
   - SSZipArchive (2.2.3)
   - Starscream (4.0.8)
   - Stripe (14.0.2)
@@ -926,7 +925,7 @@ DEPENDENCIES:
   - CodePush (from `../node_modules/react-native-code-push`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - Expecta (= 1.0.6)
-  - "Expecta+Snapshots (= 3.1.1)"
+  - "Expecta+Snapshots (from `https://github.com/artsy/ios-snapshot-test-case-expecta.git`, branch `brian/support-specta-2`)"
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
   - FBSDKCoreKit (~> 16.3.1)
@@ -1062,7 +1061,7 @@ DEPENDENCIES:
   - SDWebImage (= 5.19.1)
   - Segment-Appboy
   - sift-react-native (from `../node_modules/sift-react-native`)
-  - Specta
+  - Specta (~> 2.0)
   - Starscream (= 4.0.8)
   - SwiftyJSON (from `https://github.com/SwiftyJSON/SwiftyJSON/`, commit `af76cf3ef710b6ca5f8c05f3a31307d44a3c5828`)
   - Then (= 2.3.0)
@@ -1092,14 +1091,12 @@ SPEC REPOS:
     - CwlPosixPreconditionTesting
     - CwlPreconditionTesting
     - Expecta
-    - "Expecta+Snapshots"
     - FBAEMKit
     - FBSDKCoreKit
     - FBSDKCoreKit_Basics
     - FBSDKGamingServicesKit
     - FBSDKLoginKit
     - FBSDKShareKit
-    - FBSnapshotTestCase
     - Firebase
     - FirebaseAppCheckInterop
     - FirebaseAuth
@@ -1176,6 +1173,9 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-code-push"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
+  "Expecta+Snapshots":
+    :branch: brian/support-specta-2
+    :git: https://github.com/artsy/ios-snapshot-test-case-expecta.git
   FBLazyVector:
     :path: "../node_modules/react-native/Libraries/FBLazyVector"
   FBReactNativeSpec:
@@ -1354,6 +1354,9 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 CHECKOUT OPTIONS:
+  "Expecta+Snapshots":
+    :commit: 47570aeb3b61845c3e80b57c17a9bb1e9b48e03e
+    :git: https://github.com/artsy/ios-snapshot-test-case-expecta.git
   FLKAutoLayout:
     :commit: 44a277d21d4fa104589703a34a4d82647414f435
     :git: https://github.com/artsy/FLKAutoLayout.git
@@ -1393,7 +1396,7 @@ SPEC CHECKSUMS:
   CwlPreconditionTesting: ccfd08aca58d14e04062b2a3dd2fd52e09857453
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
-  "Expecta+Snapshots": dcff217eef506dabd6dfdc7864ea2da321fafbb8
+  "Expecta+Snapshots": 317bc6dccd75400f084bf74c1a4d0216e8471788
   FBAEMKit: 6c7b5eb77c96861bb59e040842c6e55bf39512ce
   FBLazyVector: a31ac2336aea59512b5b982f8e231f65d7d148e1
   FBReactNativeSpec: 0976da6bc1ebd3ea9b3a65d04be2c0117d304c4c
@@ -1402,7 +1405,6 @@ SPEC CHECKSUMS:
   FBSDKGamingServicesKit: fb0dcf086e8ca51f5a0074908edb783dba286af0
   FBSDKLoginKit: 572cca0bc6c90067ef197187697cb3b584310c52
   FBSDKShareKit: d9269157b4e9620f0bc1a461c5ead35a65cede9a
-  FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   Firebase: 333ec7c6b12fa09c77b5162cda6b862102211d50
   FirebaseAppCheckInterop: a1955ce8c30f38f87e7d091630e871e91154d65d
   FirebaseAuth: 22eb85d3853141de7062bfabc131aa7d6335cade
@@ -1538,7 +1540,7 @@ SPEC CHECKSUMS:
   Sift: 7c27188ba3533c0a1be541d7efb68384e17e544c
   sift-react-native: 9ed8bc21788e3233399eaf196425246442aa7dee
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
-  Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
+  Specta: b79d84043684b35ffdc2680df578dc318ec2efc2
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Starscream: 19b5533ddb925208db698f0ac508a100b884a1b9
   Stripe: 25c07000e7e86ffc53da0e41a5dd1bce30470fe0
@@ -1552,6 +1554,6 @@ SPEC CHECKSUMS:
   Yoga: 87e59f6d458e5061d2421086c5de994b3f7cd151
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: ae54f11ed34bcc8c27ad4448dead6ff91a3c31d9
+PODFILE CHECKSUM: 3f7f914f333182834fdbccc07695988c3bf1cfed
 
 COCOAPODS: 1.14.3
