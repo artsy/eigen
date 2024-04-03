@@ -1,19 +1,27 @@
+import { ActionType, ContextModule, OwnerType, TappedNewsSection } from "@artsy/cohesion"
 import { Flex, Image, Separator, Text, Touchable, useSpace } from "@artsy/palette-mobile"
 import { ArticlesCards_viewer$key } from "__generated__/ArticlesCards_viewer.graphql"
 import { Stack } from "app/Components/Stack"
 import { navigate } from "app/system/navigation/navigate"
 import { graphql, useFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 
 export interface ArticleNewsProps {
   viewer: ArticlesCards_viewer$key
 }
 
 export const ArticlesCards: React.FC<ArticleNewsProps> = ({ viewer }) => {
+  const tracking = useTracking()
   const data = useFragment(ArticlesNewsFragment, viewer)
   const space = useSpace()
 
   if (!data.articles) {
     return null
+  }
+
+  const handleOnPress = (href: string) => {
+    tracking.trackEvent(tracks.tappedNewsSection())
+    navigate(href)
   }
 
   return (
@@ -24,11 +32,7 @@ export const ArticlesCards: React.FC<ArticleNewsProps> = ({ viewer }) => {
       </Flex>
       {data.articles.map((article, index) => (
         <Flex key={index} gap={space(1)}>
-          <Touchable
-            onPress={() => {
-              navigate(article.href ?? "")
-            }}
-          >
+          <Touchable onPress={() => handleOnPress(article.href ?? "")}>
             <Flex flexDirection="row" alignItems="center" gap={space(1)}>
               <Image src={article.thumbnailImage?.url ?? ""} aspectRatio={1.0} width={60} />
               <Text variant="sm-display" numberOfLines={3} style={{ width: "75%" }}>
@@ -68,3 +72,14 @@ const date = new Date().toLocaleDateString("en-US", {
   month: "short",
   day: "numeric",
 })
+
+const tracks = {
+  tappedNewsSection: (): TappedNewsSection => ({
+    action: ActionType.tappedNewsSection,
+    context_module: ContextModule.articleRail,
+    context_screen_owner_type: OwnerType.home,
+    context_screen_owner_id: "",
+    destination_screen_owner_id: "",
+    destination_screen_owner_type: OwnerType.articles,
+  }),
+}

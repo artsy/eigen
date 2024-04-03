@@ -115,7 +115,6 @@ export const useHomeModules = (props: HomeProps) => {
         title: "Artsy Editorial",
         type: "articles",
       },
-      // TODO: fix tracking
       {
         contextModule: ContextModule.articleRail,
         data: props.news,
