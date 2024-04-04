@@ -32,9 +32,24 @@ Check that Command Line Tools version is added in the Locations tab. Xcode>Setti
 
 ### Set up Android
 
+> [!IMPORTANT]
+> We use asdf for managing java, you can skip the section in the docs below around the Java Development Kit. Instead do:
+>
+> `asdf install` in the eigen directory.
+>
+> then set JAVA_HOME in you shell config (e.g. .zshrc) to the asdf java install path.
+>
+> find that path by running:
+>
+> `asdf where java`
+>
+> and then add to your shell config:
+>
+> `export JAVA_HOME="<YOUR-ASDF-JAVA-PATH-HERE>"`
+
 1. Android development environment: Follow the [official docs](https://reactnative.dev/docs/environment-setup). Select "React Native CLI Quickstart" tab
 
-1. [Create a virtual device](https://developer.android.com/studio/run/managing-avds) on which to run the Android app.
+2. [Create a virtual device](https://developer.android.com/studio/run/managing-avds) on which to run the Android app.
 
 ## Run Eigen
 
