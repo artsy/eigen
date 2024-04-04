@@ -10,6 +10,7 @@ import {
   Text,
 } from "@artsy/palette-mobile"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ProgressiveOnboardingOfferSettings } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingOfferSettings"
 import { ProgressiveOnboardingSignalInterest } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSignalInterest"
 import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -63,9 +64,11 @@ export const SavesTabHeader = () => {
         </Button>
 
         {!!isArtworkListOfferabilityEnabled && (
-          <Button haptic variant="text" size="small" onPress={handleOfferSettings}>
-            Offer settings
-          </Button>
+          <ProgressiveOnboardingOfferSettings>
+            <Button haptic variant="text" size="small" onPress={handleOfferSettings}>
+              Offer settings
+            </Button>
+          </ProgressiveOnboardingOfferSettings>
         )}
       </Flex>
     </Box>
