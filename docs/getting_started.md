@@ -37,9 +37,15 @@ Check that Command Line Tools version is added in the Locations tab. Xcode>Setti
 >
 > `asdf install` in the eigen directory.
 >
-> then set JAVA_HOME in you shell config (e.g. .zshrc) to the asdf java install path, usually something like:
+> then set JAVA_HOME in you shell config (e.g. .zshrc) to the asdf java install path.
 >
-> `export JAVA_HOME="<YOUR-USER-DIR>/.asdf/installs/java/zulu-11.58.15"`
+> find that path by running:
+>
+> `asdf where java`
+>
+> and then add to your shell config:
+>
+> `export JAVA_HOME="<YOUR-ASDF-JAVA-PATH-HERE>"`
 
 1. Android development environment: Follow the [official docs](https://reactnative.dev/docs/environment-setup). Select "React Native CLI Quickstart" tab
 
