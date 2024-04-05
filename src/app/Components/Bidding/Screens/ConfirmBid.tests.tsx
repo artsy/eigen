@@ -12,6 +12,8 @@ import { Address } from "app/Components/Bidding/types"
 import { Modal } from "app/Components/Modal"
 import Spinner from "app/Components/Spinner"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import * as navigation from "app/system/navigation/navigate"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import NavigatorIOS, {
   NavigatorIOSPushArgs,
@@ -66,6 +68,124 @@ describe("ConfirmBid", () => {
     nextStep = null // reset nextStep between tests
     // Because of how we mock metaphysics, the mocked value from one test can bleed into another.
     bidderPositionQueryMock.mockReset()
+  })
+
+  describe("disclaimer", () => {
+    describe("when the user is not registered", () => {
+      it("displays a checkbox", () => {
+        renderWithWrappers(<ConfirmBid {...initialProps} />)
+
+        expect(screen.getByTestId("disclaimer-checkbox")).toBeDefined()
+      })
+
+      it("displays a disclaimer", () => {
+        renderWithWrappers(<ConfirmBid {...initialProps} />)
+
+        expect(screen.getByTestId("disclaimer")).toHaveTextContent(
+          "I agree to Artsy's and Christie's Conditions of Sale. I understand that all bids are binding and may not be retracted."
+        )
+      })
+
+      it("navigates to the conditions of sale when the user taps the link", () => {
+        jest.mock("app/system/navigation/navigate", () => ({
+          ...jest.requireActual("app/system/navigation/navigate"),
+          navigate: jest.fn(),
+        }))
+
+        renderWithWrappers(<ConfirmBid {...initialProps} />)
+
+        fireEvent.press(screen.getByText("Artsy's and Christie's Conditions of Sale"))
+
+        expect(navigation.navigate).toHaveBeenCalledWith("/conditions-of-sale")
+      })
+
+      describe("when AREnableNewTermsAndConditions is enabled", () => {
+        beforeEach(() => {
+          __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewTermsAndConditions: true })
+        })
+
+        it("displays a disclaimer", () => {
+          renderWithWrappers(<ConfirmBid {...initialProps} />)
+
+          expect(screen.getByTestId("disclaimer")).toHaveTextContent(
+            "I agree to Artsy's and Christie's General Terms and Conditions of Sale. I understand that all bids are binding and may not be retracted."
+          )
+        })
+
+        it("navigates to the terms screen when the user taps the link", () => {
+          jest.mock("app/system/navigation/navigate", () => ({
+            ...jest.requireActual("app/system/navigation/navigate"),
+            navigate: jest.fn(),
+          }))
+
+          renderWithWrappers(<ConfirmBid {...initialProps} />)
+
+          fireEvent.press(
+            screen.getByText("Artsy's and Christie's General Terms and Conditions of Sale")
+          )
+
+          expect(navigation.navigate).toHaveBeenCalledWith("/terms")
+        })
+      })
+    })
+
+    describe("when the user is registered", () => {
+      it("does not display a checkbox", () => {
+        renderWithWrappers(<ConfirmBid {...initialPropsForRegisteredUser} />)
+
+        expect(screen.queryByTestId("disclaimer-checkbox")).toBeNull()
+      })
+
+      it("displays a disclaimer", () => {
+        renderWithWrappers(<ConfirmBid {...initialPropsForRegisteredUser} />)
+
+        expect(screen.getByTestId("disclaimer")).toHaveTextContent(
+          "I agree to Artsy's and Christie's Conditions of Sale. I understand that all bids are binding and may not be retracted."
+        )
+      })
+
+      it("navigates to the conditions of sale when the user taps the link", () => {
+        jest.mock("app/system/navigation/navigate", () => ({
+          ...jest.requireActual("app/system/navigation/navigate"),
+          navigate: jest.fn(),
+        }))
+
+        renderWithWrappers(<ConfirmBid {...initialPropsForRegisteredUser} />)
+
+        fireEvent.press(screen.getByText("Artsy's and Christie's Conditions of Sale"))
+
+        expect(navigation.navigate).toHaveBeenCalledWith("/conditions-of-sale")
+      })
+
+      describe("when AREnableNewTermsAndConditions is enabled", () => {
+        beforeEach(() => {
+          __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewTermsAndConditions: true })
+        })
+
+        it("displays a disclaimer", () => {
+          renderWithWrappers(<ConfirmBid {...initialPropsForRegisteredUser} />)
+
+          expect(screen.getByTestId("disclaimer")).toHaveTextContent(
+            "I agree to Artsy's and Christie's General Terms and Conditions of Sale. I understand that all bids are binding and may not be retracted."
+          )
+        })
+
+        it("navigates to the terms when the user taps the link", () => {
+          jest.mock("app/system/navigation/navigate", () => ({
+            ...jest.requireActual("app/system/navigation/navigate"),
+            navigate: jest.fn(),
+          }))
+
+          renderWithWrappers(<ConfirmBid {...initialPropsForRegisteredUser} />)
+
+          fireEvent.press(
+            screen.getByText("Artsy's and Christie's General Terms and Conditions of Sale")
+          )
+
+          expect(navigation.navigate).toHaveBeenCalledWith("/terms")
+        })
+      })
+    })
   })
 
   it("enables the bid button when checkbox is ticked", () => {
@@ -639,10 +759,8 @@ describe("ConfirmBid", () => {
       fireEvent.press(screen.getByTestId("bid-button"))
 
       // wait for modal to be displayed
-      await waitFor(() =>
-        screen.getByText(
-          "There was a problem processing your information. Check your payment details and try again."
-        )
+      await screen.findByText(
+        "There was a problem processing your information. Check your payment details and try again."
       )
       expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", true)
 
@@ -670,7 +788,7 @@ describe("ConfirmBid", () => {
       fireEvent.press(screen.UNSAFE_getByType(Checkbox))
       fireEvent.press(screen.getByTestId("bid-button"))
 
-      await waitFor(() => screen.getByText("Your card's security code is incorrect."))
+      await screen.findByText("Your card's security code is incorrect.")
       expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", true)
 
       // press the dismiss modal button
@@ -720,10 +838,8 @@ describe("ConfirmBid", () => {
       fireEvent.press(screen.UNSAFE_getByType(Checkbox))
       fireEvent.press(screen.getByTestId("bid-button"))
 
-      await waitFor(() =>
-        screen.getByText(
-          "There was a problem processing your information. Check your payment details and try again."
-        )
+      await screen.findByText(
+        "There was a problem processing your information. Check your payment details and try again."
       )
       expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", true)
 
