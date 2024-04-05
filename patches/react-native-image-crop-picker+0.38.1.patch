@@ -1,8 +1,8 @@
 diff --git a/node_modules/react-native-image-crop-picker/ios/src/ImageCropPicker.m b/node_modules/react-native-image-crop-picker/ios/src/ImageCropPicker.m
-index 3b867d1..6a19214 100644
+index 7101410..2fd5436 100644
 --- a/node_modules/react-native-image-crop-picker/ios/src/ImageCropPicker.m
 +++ b/node_modules/react-native-image-crop-picker/ios/src/ImageCropPicker.m
-@@ -123,8 +123,19 @@ - (void) setConfiguration:(NSDictionary *)options
+@@ -124,8 +124,21 @@ RCT_EXPORT_MODULE();
      }
  }
  
@@ -10,14 +10,16 @@ index 3b867d1..6a19214 100644
 -    UIViewController *root = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
 +- (UIViewController *) getRootVC {
 +    UIWindow *presentingWindow;
-+    for (UIWindow *window in [[UIApplication sharedApplication] windows]) {
-+        if ([window isKindOfClass:NSClassFromString(@"ARWindow")]) {
-+            presentingWindow = window;
++    if (!presentingWindow) {
++        for (UIWindow *window in [[UIApplication sharedApplication] windows]) {
++            if (![window isHidden] && [window windowLevel] == UIWindowLevelNormal) {
++                presentingWindow = window;
++            }
 +        }
 +    }
++
 +    if (!presentingWindow) {
-+        NSAssert(false, @"Unable to find ARWindow did it get renamed?");
-+        presentingWindow = [[[UIApplication sharedApplication] windows] lastObject];
++        presentingWindow = [[[UIApplication sharedApplication] windows] firstObject];
 +    }
 +
 +    UIViewController *root = [presentingWindow rootViewController];
