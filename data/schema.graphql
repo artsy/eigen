@@ -19224,6 +19224,7 @@ input UpdateUserInterestMutationInput {
 
 type UpdateUserInterestMutationPayload {
   clientMutationId: String
+  userInterestEdge: UserInterestEdge
 
   # On success: the new state of the UserInterest
   userInterestOrError: UpdateUserInterestResponseOrError
