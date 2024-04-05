@@ -5,7 +5,7 @@ index 3b867d1..6a19214 100644
 @@ -123,8 +123,19 @@ - (void) setConfiguration:(NSDictionary *)options
      }
  }
-
+ 
 -- (UIViewController*) getRootVC {
 -    UIViewController *root = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
 +- (UIViewController *) getRootVC {
