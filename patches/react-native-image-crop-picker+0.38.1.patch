@@ -1,8 +1,8 @@
 diff --git a/node_modules/react-native-image-crop-picker/ios/src/ImageCropPicker.m b/node_modules/react-native-image-crop-picker/ios/src/ImageCropPicker.m
-index 7101410..2fd5436 100644
+index 7101410..de44b83 100644
 --- a/node_modules/react-native-image-crop-picker/ios/src/ImageCropPicker.m
 +++ b/node_modules/react-native-image-crop-picker/ios/src/ImageCropPicker.m
-@@ -124,8 +124,21 @@ RCT_EXPORT_MODULE();
+@@ -124,8 +124,19 @@ RCT_EXPORT_MODULE();
      }
  }
  
@@ -10,11 +10,9 @@ index 7101410..2fd5436 100644
 -    UIViewController *root = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
 +- (UIViewController *) getRootVC {
 +    UIWindow *presentingWindow;
-+    if (!presentingWindow) {
-+        for (UIWindow *window in [[UIApplication sharedApplication] windows]) {
-+            if (![window isHidden] && [window windowLevel] == UIWindowLevelNormal) {
-+                presentingWindow = window;
-+            }
++    for (UIWindow *window in [[UIApplication sharedApplication] windows]) {
++        if (![window isHidden] && [window windowLevel] == UIWindowLevelNormal) {
++            presentingWindow = window;
 +        }
 +    }
 +
