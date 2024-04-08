@@ -46,12 +46,11 @@ describe("PartnerShowOpenedNotification", () => {
 
     await flushPromiseQueue()
 
-    expect(screen.getByText("2 shows published by Institute of Contemporary Art")).toBeTruthy()
-    expect(screen.getByText("Show • March 1 – April 1, 2024")).toBeTruthy()
-    expect(screen.getByText("Presented by Institute of Contemporary Art")).toBeTruthy()
+    expect(screen.getByText("Shows")).toBeTruthy()
 
-    expect(screen.getByText("Artwork Title 1")).toBeTruthy()
-    expect(screen.getByText("Artwork Title 2")).toBeTruthy()
+    expect(screen.getByText("1 show opened at THEO")).toBeTruthy()
+    expect(screen.getByText("THEO  at ART OnO")).toBeTruthy()
+    expect(screen.getByText("April 19 – 21, 2024")).toBeTruthy()
 
     // buttons
 
@@ -80,69 +79,42 @@ describe("PartnerShowOpenedNotification", () => {
 })
 
 const notification = {
-  title: "Institute of Contemporary Art",
-  message: "2 shows published",
-  headline: "2 shows published by Institute of Contemporary Art",
-  publishedAt: "2 days ago",
-  isUnread: false,
   notificationType: "PARTNER_SHOW_OPENED",
-  objectsCount: 1,
+  targetHref: "/show/theo-theo-at-art-ono",
+  artworksConnection: {
+    edges: [],
+    totalCount: 0,
+  },
+  headline: "1 show opened at THEO ",
   item: {
+    __typename: "ShowOpenedNotificationItem",
     partner: {
-      href: "/partner/institute-of-contemporary-art",
-      name: "Institute of Contemporary Art",
+      href: "/partner/theo",
+      name: "THEO",
       profile: {
-        internalID: "ica-profile-id",
+        internalID: "profile-id",
       },
     },
     showsConnection: {
-      edges: {
-        node: {
-          internalID: "show-one",
-          headline: "Damon Zucconi: When You’re Here, You’re Familiar",
-          href: "/show/damon-zucconi-when-youre-here-youre-familiar",
-          artworkConnection: {
-            edges: [
-              {
-                node: {
-                  title: "Artwork Title 1",
-                  internalID: "artwork-one",
-                  href: "/artwork/damon-zucconi-when-youre-here-youre-familiar",
-                  image: {
-                    imageURLs: {
-                      normalized: "artwork-image-one",
-                    },
-                    width: 6720,
-                    height: 4480,
-                  },
-                },
-              },
-              {
-                node: {
-                  title: "Artwork Title 2",
-                  internalID: "artwork-two",
-                  href: "/artwork/damon-zucconi-when-youre-here-youre-familiar",
-                  image: {
-                    imageURLs: {
-                      normalized: "artwork-image-two",
-                    },
-                    width: 6720,
-                    height: 4480,
-                  },
-                },
-              },
-            ],
-          },
-          introStatement: "intro statement...",
-          image: {
-            imageURLs: {
-              normalized: "artwork-image-one",
+      edges: [
+        {
+          node: {
+            location: {
+              city: null,
             },
-            width: 6720,
-            height: 4480,
+            exhibitionPeriod: "April 19 – 21, 2024",
+            startAt: "2024-04-19T14:00:00+02:00",
+            endAt: "2024-04-21T14:00:00+02:00",
+            name: "THEO  at ART OnO",
+            description: "show description",
+            slug: "theo-theo-at-art-ono",
           },
         },
-      },
+      ],
     },
+  },
+  publishedAt: "Today",
+  offerArtworksConnection: {
+    edges: [],
   },
 }

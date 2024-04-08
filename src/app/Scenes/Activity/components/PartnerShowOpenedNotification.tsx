@@ -1,12 +1,13 @@
-import { FC } from "react"
-import { useFragment, graphql } from "react-relay"
+import { Flex, FollowButton, Screen, Spacer, Text } from "@artsy/palette-mobile"
 import { PartnerShowOpenedNotification_notification$key } from "__generated__/PartnerShowOpenedNotification_notification.graphql"
-import { Button, Screen, Spacer, Text } from "@artsy/palette-mobile"
-import { NotificationArtworkList } from "app/Scenes/Activity/components/NotificationArtworkList"
-import { goBack, navigate } from "app/system/navigation/navigate"
-import { ScrollView, TouchableOpacity } from "react-native"
-import { extractNodes } from "app/utils/extractNodes"
+import { ArtistAboutShow } from "app/Components/Artist/ArtistAbout/ArtistAboutShow"
 import { ActivityErrorScreen } from "app/Scenes/Activity/components/ActivityErrorScreen"
+import { goBack } from "app/system/navigation/navigate"
+import { extractNodes } from "app/utils/extractNodes"
+import { useFollowProfile } from "app/utils/mutations/useFollowProfile"
+import { FC } from "react"
+import { ScrollView } from "react-native"
+import { useFragment, graphql } from "react-relay"
 
 interface PartnerShowOpenedNotificationProps {
   notification: PartnerShowOpenedNotification_notification$key
@@ -19,54 +20,45 @@ export const PartnerShowOpenedNotification: FC<PartnerShowOpenedNotificationProp
 
   const { headline, item } = notificationData
 
-  const partner = item?.partner
   const shows = extractNodes(item?.showsConnection)
   const show = shows[0]
-  const artworksConnection = show?.artworksConnection
+
+  const { followProfile, isInFlight } = useFollowProfile({
+    id: item?.partner?.profile?.id ?? "",
+    internalID: item?.partner?.profile?.internalID ?? "",
+    isFollowd: item?.partner?.profile?.isFollowed ?? false,
+  })
+
+  const partner = item?.partner
+  const profile = partner?.profile
 
   if (!partner || !show) {
-    return <ActivityErrorScreen headerTitle={"TODO"} />
-  }
-
-  const handleVisitShowPress = () => {
-    if (!show.href) return
-
-    navigate(show.href)
-  }
-  const handlePartnerNamePress = () => {
-    if (!partner.href) return
-
-    navigate(partner.href)
+    return <ActivityErrorScreen headerTitle="TODO" />
   }
 
   return (
     <Screen>
-      <Screen.Header onBack={goBack} title="Alerts" />
+      <Screen.Header onBack={goBack} title="Shows" />
       <ScrollView>
         <Text variant="lg-display">{headline}</Text>
-        <Text variant="xs">
-          Presented by{" "}
-          <TouchableOpacity onPress={handlePartnerNamePress}>{partner.name}</TouchableOpacity>
-        </Text>
-        <Text variant="xs">Show • {"March 1 – April 1, 2024"}</Text>
 
         <Spacer y={1} />
 
+        <FollowButton
+          haptic
+          isFollowed={!!profile?.isFollowed}
+          onPress={followProfile}
+          disabled={isInFlight}
+          mr={1}
+        />
+
         <Spacer y={4} />
 
-        <NotificationArtworkList artworksConnection={artworksConnection} />
-
-        <Spacer y={4} />
-
-        <Button
-          block
-          variant="outline"
-          onPress={handleVisitShowPress}
-          testID="visit-show-CTA"
-          mb={1}
-        >
-          Visit Show
-        </Button>
+        <Flex flexDirection="column" alignItems="center">
+          {shows.map((show) => (
+            <ArtistAboutShow show={show} key={show.internalID} />
+          ))}
+        </Flex>
       </ScrollView>
     </Screen>
   )
@@ -80,15 +72,19 @@ export const PartnerShowOpenedNotificationFragment = graphql`
         partner {
           href
           name
+          profile {
+            id
+            internalID
+            isFollowed
+            image {
+              url(version: "wide")
+            }
+          }
         }
         showsConnection {
           edges {
             node {
-              artworksConnection(first: 2) {
-                ...NotificationArtworkList_artworksConnection
-                totalCount
-              }
-              href
+              ...ArtistAboutShow_show
               internalID
             }
           }
