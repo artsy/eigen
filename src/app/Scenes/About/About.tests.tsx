@@ -1,35 +1,29 @@
+import { fireEvent, screen } from "@testing-library/react-native"
 import { navigate } from "app/system/navigation/navigate"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { About } from "./About"
 
 describe("About", () => {
   it("renders Terms and conditions", () => {
-    const tree = renderWithWrappersLEGACY(<About />)
-
-    expect(tree.root.findAllByProps({ title: "Terms of Use" })).toBeTruthy()
-    tree.root.findByProps({ title: "Terms of Use" }).props.onPress()
+    renderWithWrappers(<About />)
+    fireEvent.press(screen.getByText("Terms of Use"))
     expect(navigate).toHaveBeenCalledWith("/terms")
   })
 
   it("renders Privacy policy", () => {
-    const tree = renderWithWrappersLEGACY(<About />)
-
-    expect(tree.root.findAllByProps({ title: "Privacy Policy" })).toBeTruthy()
-    tree.root.findByProps({ title: "Privacy Policy" }).props.onPress()
+    renderWithWrappers(<About />)
+    fireEvent.press(screen.getByText("Privacy Policy"))
     expect(navigate).toHaveBeenCalledWith("/privacy")
   })
 
   it("renders Conditions of Sale", () => {
-    const tree = renderWithWrappersLEGACY(<About />)
-
-    expect(tree.root.findAllByProps({ title: "Conditions of Sale" })).toBeTruthy()
-    tree.root.findByProps({ title: "Conditions of Sale" }).props.onPress()
+    renderWithWrappers(<About />)
+    fireEvent.press(screen.getByText("Conditions of Sale"))
     expect(navigate).toHaveBeenCalledWith("/conditions-of-sale")
   })
 
   it("renders Version", () => {
-    const tree = renderWithWrappersLEGACY(<About />)
-
-    expect(tree.root.findAllByProps({ title: "Version" })).toBeTruthy()
+    renderWithWrappers(<About />)
+    expect(screen.getByText("Version")).toBeDefined()
   })
 })
