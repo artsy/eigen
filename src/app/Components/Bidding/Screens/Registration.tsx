@@ -116,6 +116,10 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     return true
   }
 
+  onPressGeneralTermsAndConditionsOfSale = () => {
+    navigate("/terms")
+  }
+
   onPressConditionsOfSale = () => {
     navigate("/conditions-of-sale")
   }
@@ -406,7 +410,8 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     const { isLoading, missingInformation: missingInformation } = this.state
 
     const saleTimeDetails = saleTime(sale)
-    const newTermsAndConditionsEnabled = unsafe_getFeatureFlag("AREnableNewTermsAndConditions")
+
+    const showNewDisclaimer = unsafe_getFeatureFlag("AREnableNewTermsAndConditions")
 
     return (
       <ScrollView
@@ -456,10 +461,12 @@ export class Registration extends React.Component<RegistrationProps, Registratio
             closeModal={this.closeModal.bind(this)}
           />
           <Checkbox mb={4} onPress={() => this.conditionsOfSalePressed()} disabled={isLoading}>
-            {newTermsAndConditionsEnabled ? (
+            {showNewDisclaimer ? (
               <Text variant="xs" fontSize="2">
                 I agree to Artsy's{" "}
-                <LinkText onPress={isLoading ? undefined : this.onPressConditionsOfSale}>
+                <LinkText
+                  onPress={isLoading ? undefined : this.onPressGeneralTermsAndConditionsOfSale}
+                >
                   General Terms and Conditions of Sale
                 </LinkText>
                 . I understand that all bids are binding and may not be retracted.

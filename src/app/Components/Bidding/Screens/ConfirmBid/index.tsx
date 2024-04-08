@@ -18,6 +18,7 @@ import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Modal } from "app/Components/Modal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { partnerName } from "app/Scenes/Artwork/Components/ArtworkExtraLinks/partnerName"
+import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { AuctionWebsocketContextProvider } from "app/utils/Websockets/auctions/AuctionSocketContext"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
@@ -348,6 +349,10 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     this.setState({ conditionsOfSaleChecked: !this.state.conditionsOfSaleChecked })
   }
 
+  onGeneralTermsAndConditionsOfSaleLinkPressed() {
+    navigate("/terms")
+  }
+
   onConditionsOfSaleLinkPressed() {
     navigate("/conditions-of-sale")
   }
@@ -452,6 +457,8 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
     const websocketEnabled = !!sale?.cascadingEndTimeIntervalMinutes
 
+    const showNewDisclaimer = unsafe_getFeatureFlag("AREnableNewTermsAndConditions")
+
     return (
       <AuctionWebsocketContextProvider
         channelInfo={{
@@ -551,7 +558,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
           </ScrollView>
           <Divider />
 
-          <Box>
+          <Box testID="disclaimer">
             {requiresCheckbox ? (
               <Checkbox
                 mt={4}
@@ -560,14 +567,22 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                 onPress={() => this.onConditionsOfSaleCheckboxPressed()}
                 disabled={isLoading}
                 flex={undefined}
+                testID="disclaimer-checkbox"
               >
                 <Text color="black60" variant="xs">
                   I agree to{" "}
                   <LinkText
                     variant="xs"
-                    onPress={isLoading ? undefined : () => this.onConditionsOfSaleLinkPressed()}
+                    onPress={
+                      isLoading
+                        ? undefined
+                        : showNewDisclaimer
+                          ? () => this.onGeneralTermsAndConditionsOfSaleLinkPressed()
+                          : () => this.onConditionsOfSaleLinkPressed()
+                    }
                   >
-                    {partnerName(sale!)} Conditions of Sale
+                    {partnerName(sale!)} {showNewDisclaimer ? "General Terms and " : ""}Conditions
+                    of Sale
                   </LinkText>
                   . I understand that all bids are binding and may not be retracted.
                 </Text>
@@ -578,9 +593,16 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                   I agree to{" "}
                   <LinkText
                     variant="xs"
-                    onPress={isLoading ? undefined : () => this.onConditionsOfSaleLinkPressed()}
+                    onPress={
+                      isLoading
+                        ? undefined
+                        : showNewDisclaimer
+                          ? () => this.onGeneralTermsAndConditionsOfSaleLinkPressed()
+                          : () => this.onConditionsOfSaleLinkPressed()
+                    }
                   >
-                    {partnerName(sale!)} Conditions of Sale
+                    {partnerName(sale!)} {showNewDisclaimer ? "General Terms and " : ""}Conditions
+                    of Sale
                   </LinkText>
                   . I understand that all bids are binding and may not be retracted.
                 </Text>
