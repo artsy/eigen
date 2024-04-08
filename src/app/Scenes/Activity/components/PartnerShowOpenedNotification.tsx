@@ -33,7 +33,7 @@ export const PartnerShowOpenedNotification: FC<PartnerShowOpenedNotificationProp
   const profile = partner?.profile
 
   if (!partner || !show) {
-    return <ActivityErrorScreen headerTitle="TODO" />
+    return <ActivityErrorScreen headerTitle="Shows" />
   }
 
   return (
