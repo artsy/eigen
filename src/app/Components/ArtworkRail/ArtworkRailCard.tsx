@@ -49,7 +49,9 @@ export type ArtworkCardSize = "small" | "large" | "extraLarge" | "fullWidth"
 
 export interface ArtworkRailCardProps extends ArtworkActionTrackingProps {
   artwork: ArtworkRailCard_artwork$key
+  displayContextMenu?: boolean
   dark?: boolean
+  enableSupressArtwork?: boolean
   hideArtistName?: boolean
   showPartnerName?: boolean
   isRecentlySoldArtwork?: boolean
@@ -59,6 +61,7 @@ export interface ArtworkRailCardProps extends ArtworkActionTrackingProps {
   metaContainerStyles?: {}
   performanceDisplay?: string
   onPress?: (event: GestureResponderEvent) => void
+  onSupressArtwork?: () => void
   priceRealizedDisplay?: string
   showSaveIcon?: boolean
   size: ArtworkCardSize
@@ -66,6 +69,8 @@ export interface ArtworkRailCardProps extends ArtworkActionTrackingProps {
 }
 
 export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
+  displayContextMenu = false,
+  enableSupressArtwork = false,
   hideArtistName = false,
   showPartnerName = false,
   dark = false,
@@ -76,6 +81,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   metaContainerStyles,
   performanceDisplay,
   onPress,
+  onSupressArtwork,
   priceRealizedDisplay,
   showSaveIcon = false,
   size,
@@ -185,6 +191,10 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     trackEvent(artworkActionTracks.saveOrUnsaveArtwork(saved, params))
   }
 
+  const supressArtwork = () => {
+    onSupressArtwork?.()
+  }
+
   const { isSaved, saveArtworkToLists } = useSaveArtworkToArtworkLists({
     artworkFragmentRef: artwork,
     onCompleted: onArtworkSavedOrUnSaved,
@@ -200,9 +210,12 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
       contextScreenOwnerType={contextScreenOwnerType}
     >
       <ContextMenuArtwork
+        displayContextMenu={displayContextMenu}
+        enableSupressArtwork={enableSupressArtwork}
         contextModule={contextModule}
         contextScreenOwnerType={contextScreenOwnerType}
         onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
+        onSupressArtwork={supressArtwork}
         artwork={artwork}
         artworkDisplayProps={{
           dark,

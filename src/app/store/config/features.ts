@@ -256,6 +256,11 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableNewTermsAndConditions",
   },
+  AREnableLongPressOnNewForYouRail: {
+    description: "Enable Context Menu on artwork cards on new for you rail",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {

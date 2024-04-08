@@ -36,7 +36,10 @@ export type ArtworkDisplayProps = Pick<
 interface ContextMenuArtworkProps {
   artwork: ArtworkRailCard_artwork$data | ArtworkGridItem_artwork$data
   onCreateAlertActionPress: () => void
+  onSupressArtwork?: () => void
   haptic?: HapticFeedbackTypes | boolean
+  displayContextMenu?: boolean
+  enableSupressArtwork?: boolean
   artworkDisplayProps?: ArtworkDisplayProps
   contextScreenOwnerType?: ScreenOwnerType
   contextModule?: ContextModule
@@ -46,14 +49,17 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   artwork,
   children,
   haptic = true,
+  displayContextMenu = false,
+  enableSupressArtwork = false,
   artworkDisplayProps,
   onCreateAlertActionPress,
+  onSupressArtwork,
   contextScreenOwnerType,
   contextModule,
 }) => {
   const { trackEvent } = useTracking()
   const { showShareSheet } = useShareSheet()
-  const enableContextMenu = useFeatureFlag("AREnableLongPressOnArtworkCards")
+  const enableContextMenu = useFeatureFlag("AREnableLongPressOnArtworkCards") || displayContextMenu
   const isIOS = Platform.OS === "ios"
   const color = useColor()
 
@@ -131,6 +137,18 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
       },
     ]
 
+    if (enableSupressArtwork) {
+      contextMenuActions.push({
+        title: "Hide",
+        systemIcon: "eye.slash",
+        onPress: () => {
+          InteractionManager.runAfterInteractions(() => {
+            onSupressArtwork?.()
+          })
+        },
+      })
+    }
+
     if (enableViewInRoom) {
       contextMenuActions.push({
         title: "View in room",
@@ -163,7 +181,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
 
   const handleContextPress: ContextMenuProps["onPress"] = (event) => {
     if (haptic) {
-      trigger(haptic === true ? "impactLight" : haptic)
+      trigger?.(haptic === true ? "impactLight" : haptic)
     }
 
     const onPressToCall = contextActions[event.nativeEvent.index].onPress
