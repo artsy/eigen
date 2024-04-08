@@ -1,24 +1,24 @@
 import { screen, fireEvent } from "@testing-library/react-native"
-import { ArtistAboutShowTestsQuery } from "__generated__/ArtistAboutShowTestsQuery.graphql"
+import { ShowItemTestsQuery } from "__generated__/ShowItemTestsQuery.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
-import { ArtistAboutShow } from "./ArtistAboutShow"
+import { ShowItem } from "./ShowItem"
 
-describe("ArtistAboutShow", () => {
-  const { renderWithRelay } = setupTestWrapper<ArtistAboutShowTestsQuery>({
+describe("ShowItem", () => {
+  const { renderWithRelay } = setupTestWrapper<ShowItemTestsQuery>({
     Component: ({ artist }) => {
       const shows = extractNodes(artist?.showsConnection)
-      return <ArtistAboutShow show={shows[0]} />
+      return <ShowItem show={shows[0]} />
     },
     query: graphql`
-      query ArtistAboutShowTestsQuery @relay_test_operation {
+      query ShowItemTestsQuery @relay_test_operation {
         artist(id: "test-id") {
           showsConnection(first: 5, status: "running") {
             edges {
               node {
-                ...ArtistAboutShow_show
+                ...ShowItem_show
               }
             }
           }

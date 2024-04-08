@@ -51,10 +51,6 @@ describe("PartnerShowOpenedNotification", () => {
     expect(screen.getByText("1 show opened at THEO")).toBeTruthy()
     expect(screen.getByText("THEO  at ART OnO")).toBeTruthy()
     expect(screen.getByText("April 19 – 21, 2024")).toBeTruthy()
-
-    // buttons
-
-    expect(screen.getByText("Visit Show")).toBeTruthy()
   })
 
   describe("'Visit Show CTA", () => {
@@ -67,13 +63,13 @@ describe("PartnerShowOpenedNotification", () => {
 
       await flushPromiseQueue()
 
-      const viewAllWorksByLink = screen.getByText("Visit Show")
+      const viewAllWorksByLink = screen.getByTestId("show-item-visit-show-link")
 
       fireEvent.press(viewAllWorksByLink)
 
       await flushPromiseQueue()
 
-      expect(navigate).toHaveBeenCalledWith("/show/damon-zucconi-when-youre-here-youre-familiar")
+      expect(navigate).toHaveBeenCalledWith("/show/theo-theo-at-art-ono?entity=fair-booth")
     })
   })
 })
@@ -108,6 +104,7 @@ const notification = {
             name: "THEO  at ART OnO",
             description: "show description",
             slug: "theo-theo-at-art-ono",
+            href: "/show/theo-theo-at-art-ono",
           },
         },
       ],

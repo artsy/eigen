@@ -13,12 +13,14 @@ import { ArticleFeaturedArtistNotification } from "app/Scenes/Activity/component
 import { ViewingRoomPublishedNotification } from "app/Scenes/Activity/components/ViewingRoomPublishedNotification"
 import { PartnerOfferCreatedNotification } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
 import { ActivityErrorScreen } from "app/Scenes/Activity/components/ActivityErrorScreen"
+import { PartnerShowOpenedNotification } from "app/Scenes/Activity/components/PartnerShowOpenedNotification"
 
 export const SUPPORTED_NOTIFICATION_TYPES = [
   "ARTWORK_ALERT",
   "ARTWORK_PUBLISHED",
   "ARTICLE_FEATURED_ARTIST",
   "PARTNER_OFFER_CREATED",
+  "PARTNER_SHOW_OPENED",
   "VIEWING_ROOM_PUBLISHED",
 ]
 
@@ -39,8 +41,6 @@ export const ActivityItemScreenQueryRenderer: FC<ActivityItemScreenQueryRenderer
         return <ActivityErrorScreen headerTitle="Activity" />
       }
 
-      const notificationType = notification?.item?.__typename
-
       // Redirect user to the notifications targetHref if the notification type is not supported
       useEffect(() => {
         if (!SUPPORTED_NOTIFICATION_TYPES.includes(notification?.notificationType as string)) {
@@ -48,17 +48,19 @@ export const ActivityItemScreenQueryRenderer: FC<ActivityItemScreenQueryRenderer
         }
       }, [notification])
 
-      switch (notificationType) {
-        case "AlertNotificationItem":
-          return <AlertNotification notification={notification} />
-        case "ArtworkPublishedNotificationItem":
-          return <ArtworkPublishedNotification notification={notification} />
-        case "ArticleFeaturedArtistNotificationItem":
-          return <ArticleFeaturedArtistNotification notification={notification} />
-        case "ViewingRoomPublishedNotificationItem":
-          return <ViewingRoomPublishedNotification notification={notification} />
-        case "PartnerOfferCreatedNotificationItem":
-          return <PartnerOfferCreatedNotification notification={data.me.notification} />
+      switch (notification?.notificationType) {
+        case "ARTWORK_ALERT":
+          return <AlertNotification notification={data.me?.notification} />
+        case "ARTWORK_PUBLISHED":
+          return <ArtworkPublishedNotification notification={data.me?.notification} />
+        case "ARTICLE_FEATURED_ARTIST":
+          return <ArticleFeaturedArtistNotification notification={data.me?.notification} />
+        case "PARTNER_OFFER_CREATED":
+          return <PartnerOfferCreatedNotification notification={data.me?.notification} />
+        case "PARTNER_SHOW_OPENED":
+          return <PartnerShowOpenedNotification notification={data.me?.notification} />
+        case "VIEWING_ROOM_PUBLISHED":
+          return <ViewingRoomPublishedNotification notification={data.me?.notification} />
         default:
           return null
       }
