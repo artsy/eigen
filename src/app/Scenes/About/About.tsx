@@ -4,6 +4,7 @@ import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { useToast } from "app/Components/Toast/toastHook"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import React, { useEffect, useState } from "react"
 import { ScrollView } from "react-native"
 import DeviceInfo from "react-native-device-info"
@@ -17,6 +18,7 @@ export const About: React.FC = () => {
   const { value: userIsDev, flipValue: userIsDevFlipValue } = GlobalStore.useAppState(
     (store) => store.artsyPrefs.userIsDev
   )
+  const showNewDisclaimer = useFeatureFlag("AREnableNewTermsAndConditions")
 
   useEffect(() => {
     const flip = (userIsDev && tapCount >= 3) || (!userIsDev && tapCount >= 7)
@@ -45,9 +47,15 @@ export const About: React.FC = () => {
   return (
     <PageWithSimpleHeader title="About">
       <ScrollView contentContainerStyle={{ paddingTop: 10 }}>
-        <MenuItem title="Terms of Use" onPress={() => navigate("/terms")} />
+        <MenuItem
+          title={showNewDisclaimer ? "Terms and Conditions" : "Terms of Use"}
+          onPress={() => navigate("/terms")}
+        />
         <MenuItem title="Privacy Policy" onPress={() => navigate("/privacy")} />
-        <MenuItem title="Conditions of Sale" onPress={() => navigate("/conditions-of-sale")} />
+        <MenuItem
+          title={showNewDisclaimer ? "Auction Supplement" : "Conditions of Sale"}
+          onPress={() => navigate(showNewDisclaimer ? "/supplemental-cos" : "/conditions-of-sale")}
+        />
         <MenuItem
           title="Version"
           text={appVersion}
