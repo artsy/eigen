@@ -8,7 +8,7 @@ export const ArtworkListOfferSettingsHeader = () => {
 
   return (
     <Box mx={2} mb={2}>
-      <Text variant="sm-display">Offer settings</Text>
+      <Text variant="sm-display">Offer Settings</Text>
 
       <Spacer y={2} />
 
