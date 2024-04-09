@@ -344,7 +344,7 @@ describe("ArtworkListsProvider", () => {
     it("should not be displayed by default", () => {
       renderOfferSettings({}, { artwork: null, artworkListOfferSettingsViewVisible: false })
 
-      expect(screen.queryByText("Offer settings")).not.toBeOnTheScreen()
+      expect(screen.queryByText("Offer Settings")).not.toBeOnTheScreen()
     })
 
     it("should display the artwork lists", async () => {
@@ -354,7 +354,7 @@ describe("ArtworkListsProvider", () => {
         mockResolveLastOperation({ Me: () => ({ savedArtworksArtworkList, customArtworkLists }) })
       )
 
-      expect(screen.getByText("Offer settings")).toBeOnTheScreen()
+      expect(screen.getByText("Offer Settings")).toBeOnTheScreen()
 
       expect(screen.getByText("Saved Artworks")).toBeOnTheScreen()
       expect(screen.getByText("Custom Artwork List 1")).toBeOnTheScreen()

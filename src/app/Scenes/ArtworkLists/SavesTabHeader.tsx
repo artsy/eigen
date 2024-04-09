@@ -55,7 +55,7 @@ export const SavesTabHeader = () => {
         {!!isArtworkListOfferabilityEnabled && (
           <ProgressiveOnboardingOfferSettings>
             <Button haptic variant="text" size="small" onPress={handleOfferSettings}>
-              Offer settings
+              Offer Settings
             </Button>
           </ProgressiveOnboardingOfferSettings>
         )}
