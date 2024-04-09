@@ -81,6 +81,8 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
         // Since the grid is full width,
         // we need to add padding to the artwork meta to make sure its readable
         paddingHorizontal: rest.numColumns !== 1 ? 0 : space(2),
+        // Extra space between items for one column artwork grids
+        paddingBottom: rest.numColumns !== 1 ? 0 : space(4),
       }}
       priceOfferMessage={priceOfferMessage}
     />
