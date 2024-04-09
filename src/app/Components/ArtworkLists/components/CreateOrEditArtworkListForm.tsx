@@ -74,7 +74,7 @@ export const CreateOrEditArtworkListForm: FC<CreateOrEditArtworkListFormProps> =
               onChangeText={formik.handleChange("name")}
             />
 
-            {mode === "create" && !!AREnableArtworkListOfferability && (
+            {!!AREnableArtworkListOfferability && (
               <>
                 <Spacer y={4} />
 

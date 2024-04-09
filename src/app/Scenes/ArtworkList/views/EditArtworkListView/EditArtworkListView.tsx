@@ -59,6 +59,7 @@ export const EditArtworkListView: FC<EditArtworkListViewProps> = ({
         input: {
           id: artworkListEntity.internalID,
           name: values.name,
+          shareableWithPartners: values.shareableWithPartners,
         },
       },
       onCompleted: () => {
@@ -89,7 +90,10 @@ export const EditArtworkListView: FC<EditArtworkListViewProps> = ({
 
         <CreateOrEditArtworkListForm
           mode="edit"
-          initialValues={{ name: artworkListEntity.title }}
+          initialValues={{
+            name: artworkListEntity.title,
+            shareableWithPartners: artworkListEntity.shareableWithPartners,
+          }}
           onSubmit={handleSubmit}
           onBackPress={closeView}
         />
