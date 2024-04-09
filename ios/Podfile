@@ -163,7 +163,7 @@ target 'Artsy' do
     pod 'XCTest+OHHTTPStubSuiteCleanUp'
     pod 'Specta', '~> 2.0'
     pod 'Expecta', '1.0.6'
-    pod 'Expecta+Snapshots', git: 'https://github.com/artsy/ios-snapshot-test-case-expecta.git', branch: 'brian/support-specta-2'
+    pod 'Expecta+Snapshots', git: 'https://github.com/dblock/ios-snapshot-test-case-expecta.git', :commit => '7f99f9061bd067af205cb94301de4df3e14a8636'
     pod 'OCMock'
     pod 'Forgeries/Mocks'
 
