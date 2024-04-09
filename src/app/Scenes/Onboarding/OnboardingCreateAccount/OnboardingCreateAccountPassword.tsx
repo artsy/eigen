@@ -17,7 +17,7 @@ export const OnboardingCreateAccountPassword: React.FC<OnboardingCreateAccountPa
   navigation,
 }) => {
   const color = useColor()
-  const { values, handleSubmit, handleChange, errors, setErrors } = useFormikContext<UserSchema>()
+  const { handleSubmit, handleChange, errors, setErrors } = useFormikContext<UserSchema>()
 
   return (
     <OnboardingCreateAccountScreenWrapper
@@ -48,7 +48,6 @@ export const OnboardingCreateAccountPassword: React.FC<OnboardingCreateAccountPa
         // We need to to set textContentType to password here
         // enable autofill of login details from the device keychain.
         textContentType="password"
-        value={values.password}
         error={errors.password}
         testID="passwordInput"
       />

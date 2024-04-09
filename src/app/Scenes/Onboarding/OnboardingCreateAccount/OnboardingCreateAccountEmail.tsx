@@ -22,7 +22,7 @@ export const OnboardingCreateAccountEmail: React.FC<OnboardingCreateAccountEmail
   route,
 }) => {
   const color = useColor()
-  const { values, handleChange, errors, setErrors, handleSubmit } = useFormikContext<FormikSchema>()
+  const { handleChange, errors, setErrors, handleSubmit } = useFormikContext<FormikSchema>()
 
   return (
     <OnboardingCreateAccountScreenWrapper
@@ -48,7 +48,6 @@ export const OnboardingCreateAccountEmail: React.FC<OnboardingCreateAccountEmail
         blurOnSubmit={false}
         placeholder="Email address"
         placeholderTextColor={color("black30")}
-        value={values.email}
         returnKeyType="next"
         spellCheck={false}
         autoCorrect={false}
