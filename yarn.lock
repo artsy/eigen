@@ -11775,10 +11775,10 @@ react-native-hyperlink@0.0.19:
     linkify-it "^2.2.0"
     mdurl "^1.0.0"
 
-react-native-image-crop-picker@0.38.1:
-  version "0.38.1"
-  resolved "https://registry.yarnpkg.com/react-native-image-crop-picker/-/react-native-image-crop-picker-0.38.1.tgz#5973b4a8b55835b987e6be2064de411e849ac005"
-  integrity sha512-cF5UQnWplzHCeiCO+aiGS/0VomWaLmFf3nSsgTMPfY+8+99h8N/eHQvVdSF7RsGw50B8394wGeGyqHjjp8YRWw==
+react-native-image-crop-picker@0.40.3:
+  version "0.40.3"
+  resolved "https://registry.yarnpkg.com/react-native-image-crop-picker/-/react-native-image-crop-picker-0.40.3.tgz#a6b135cd1218a33ad126c1a148ec5a1bd01737ff"
+  integrity sha512-45PKcTnsnLS+E36YwoXutllQdRSOuOsMN0IRcAcwsFXOuAQIOtugXlAuGGL28JHKb/ATaSSPvqCSrdG65Jv3GA==
 
 react-native-in-app-review@4.2.1:
   version "4.2.1"
