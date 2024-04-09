@@ -5,10 +5,17 @@ import {
   useBottomSheetModal,
 } from "@gorhom/bottom-sheet"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { useArtworkListsBottomOffset } from "app/Components/ArtworkLists/useArtworkListsBottomOffset"
 import { useSaveArtworkListsOfferSettingsChanges } from "app/Components/ArtworkLists/views/ArtworkListOfferSettingsView/useSaveArtworkListsOfferSettingsChanges"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
 
 const STICKY_BOTTOM_CONTENT_HEIGHT = 100
+
+export const StickyBottomContentPlaceholder = () => {
+  const bottomOffset = useArtworkListsBottomOffset(2)
+
+  return <Box height={STICKY_BOTTOM_CONTENT_HEIGHT + bottomOffset} />
+}
 
 export const ArtworkListOfferSettingsStickyBottomContent: React.FC<BottomSheetFooterProps> = ({
   animatedFooterPosition,
