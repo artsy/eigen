@@ -1,4 +1,5 @@
-import { screen } from "@testing-library/react-native"
+import { Text } from "@artsy/palette-mobile"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkList_Test_Query } from "__generated__/ArtworkList_Test_Query.graphql"
 import { ArtworkListScreen } from "app/Scenes/ArtworkList/ArtworkList"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
@@ -6,6 +7,11 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
 const CONTEXTUAL_MENU_LABEL = "Contextual Menu Button"
+
+jest.mock("@artsy/palette-mobile", () => ({
+  ...jest.requireActual("@artsy/palette-mobile"),
+  Popover: (props: any) => <MockedPopover {...props} />,
+}))
 
 describe("ArtworkList", () => {
   const { renderWithRelay } = setupTestWrapper<ArtworkList_Test_Query>({
@@ -97,6 +103,46 @@ describe("ArtworkList", () => {
 
       expect(screen.queryByLabelText("EyeClosedIcon")).not.toBeOnTheScreen()
     })
+
+    it("should display the Popover when user clicks the EyeClosedIcon", async () => {
+      const { mockResolveLastOperation } = renderWithRelay()
+
+      mockResolveLastOperation({
+        Me: () => ({ artworkList: { ...defaultArtworkList, shareableWithPartners: false } }),
+      })
+
+      fireEvent.press(screen.getByLabelText("EyeClosedIcon"))
+
+      expect(
+        screen.getByText(
+          "Artworks in this list are only visible to you and not eligible to receive offers."
+        )
+      ).toBeOnTheScreen()
+    })
+
+    it("should dismiss the Popover when the user clicks the EyeClosedIcon", async () => {
+      const { mockResolveLastOperation } = renderWithRelay()
+
+      mockResolveLastOperation({
+        Me: () => ({ artworkList: { ...defaultArtworkList, shareableWithPartners: false } }),
+      })
+
+      fireEvent.press(screen.getByLabelText("EyeClosedIcon"))
+
+      expect(
+        screen.getByText(
+          "Artworks in this list are only visible to you and not eligible to receive offers."
+        )
+      ).toBeOnTheScreen()
+
+      fireEvent.press(screen.getByLabelText("EyeClosedIcon"))
+
+      expect(
+        screen.queryByText(
+          "Artworks in this list are only visible to you and not eligible to receive offers."
+        )
+      ).not.toBeOnTheScreen()
+    })
   })
 })
 
@@ -134,4 +180,19 @@ const customArtworkList = {
 
 const me = {
   artworkList: defaultArtworkList,
+}
+
+const MockedPopover: React.FC<any> = ({ children, onDismiss, visible, title }) => {
+  if (!visible) {
+    return <>{children}</>
+  }
+
+  return (
+    <>
+      <Text onPress={onDismiss}>
+        <>{title}</>
+        <>{children}</>
+      </Text>
+    </>
+  )
 }
