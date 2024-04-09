@@ -6,7 +6,6 @@ import { ArtworkCardSize, ArtworkRailCard } from "app/Components/ArtworkRail/Art
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { Disappearable } from "app/Components/Disappearable"
 import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
-import { useDislikeArtwork } from "app/utils/mutations/useDislikeArtwork"
 import {
   ArtworkActionTrackingProps,
   extractArtworkActionTrackingProps,
@@ -68,7 +67,6 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
   enableSupressArtwork = false,
   ...otherProps
 }) => {
-  const [commitMutation] = useDislikeArtwork()
   const trackingProps = extractArtworkActionTrackingProps(otherProps)
   // We need to set the maximum number of artists to not cause layout shifts
   const artworksSlice = artworks.slice(0, MAX_NUMBER_OF_ARTWORKS).map((artwork) => {
@@ -80,12 +78,6 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
 
   const handleSupress = async (item: DissapearableArtwork) => {
     await item._disappearable?.disappear()
-
-    commitMutation({
-      variables: {
-        artworkID: item.internalID,
-      },
-    })
   }
 
   return (

@@ -9,6 +9,7 @@ import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { cm2in } from "app/utils/conversions"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { useDislikeArtwork } from "app/utils/mutations/useDislikeArtwork"
 import { Schema } from "app/utils/track"
 import { isEmpty } from "lodash"
 import { InteractionManager, Platform } from "react-native"
@@ -60,6 +61,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   const { trackEvent } = useTracking()
   const { showShareSheet } = useShareSheet()
   const enableContextMenu = useFeatureFlag("AREnableLongPressOnArtworkCards") || displayContextMenu
+  const [dislikeArtworkMutation] = useDislikeArtwork()
   const isIOS = Platform.OS === "ios"
   const color = useColor()
 
@@ -144,6 +146,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
         onPress: () => {
           InteractionManager.runAfterInteractions(() => {
             onSupressArtwork?.()
+            dislikeArtworkMutation({ variables: { artworkID: internalID } })
           })
         },
       })
