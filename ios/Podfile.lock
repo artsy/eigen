@@ -925,7 +925,7 @@ DEPENDENCIES:
   - CodePush (from `../node_modules/react-native-code-push`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - Expecta (= 1.0.6)
-  - "Expecta+Snapshots (from `https://github.com/artsy/ios-snapshot-test-case-expecta.git`, branch `brian/support-specta-2`)"
+  - "Expecta+Snapshots (from `https://github.com/dblock/ios-snapshot-test-case-expecta.git`, commit `7f99f9061bd067af205cb94301de4df3e14a8636`)"
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
   - FBSDKCoreKit (~> 16.3.1)
@@ -1174,8 +1174,8 @@ EXTERNAL SOURCES:
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   "Expecta+Snapshots":
-    :branch: brian/support-specta-2
-    :git: https://github.com/artsy/ios-snapshot-test-case-expecta.git
+    :commit: 7f99f9061bd067af205cb94301de4df3e14a8636
+    :git: https://github.com/dblock/ios-snapshot-test-case-expecta.git
   FBLazyVector:
     :path: "../node_modules/react-native/Libraries/FBLazyVector"
   FBReactNativeSpec:
@@ -1355,8 +1355,8 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   "Expecta+Snapshots":
-    :commit: da3f4eaa5e07b699e528a8400aa811511fc7cca4
-    :git: https://github.com/artsy/ios-snapshot-test-case-expecta.git
+    :commit: 7f99f9061bd067af205cb94301de4df3e14a8636
+    :git: https://github.com/dblock/ios-snapshot-test-case-expecta.git
   FLKAutoLayout:
     :commit: 44a277d21d4fa104589703a34a4d82647414f435
     :git: https://github.com/artsy/FLKAutoLayout.git
@@ -1554,6 +1554,6 @@ SPEC CHECKSUMS:
   Yoga: 87e59f6d458e5061d2421086c5de994b3f7cd151
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 3f7f914f333182834fdbccc07695988c3bf1cfed
+PODFILE CHECKSUM: 56ae0d9644539c8199972f90a90d0dbccbadf3d8
 
 COCOAPODS: 1.14.3
