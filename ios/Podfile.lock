@@ -1355,7 +1355,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   "Expecta+Snapshots":
-    :commit: 47570aeb3b61845c3e80b57c17a9bb1e9b48e03e
+    :commit: da3f4eaa5e07b699e528a8400aa811511fc7cca4
     :git: https://github.com/artsy/ios-snapshot-test-case-expecta.git
   FLKAutoLayout:
     :commit: 44a277d21d4fa104589703a34a4d82647414f435
@@ -1396,7 +1396,7 @@ SPEC CHECKSUMS:
   CwlPreconditionTesting: ccfd08aca58d14e04062b2a3dd2fd52e09857453
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
-  "Expecta+Snapshots": 317bc6dccd75400f084bf74c1a4d0216e8471788
+  "Expecta+Snapshots": 91dda1728ef81b99d243da0c13e4c50cf299b1ca
   FBAEMKit: 6c7b5eb77c96861bb59e040842c6e55bf39512ce
   FBLazyVector: a31ac2336aea59512b5b982f8e231f65d7d148e1
   FBReactNativeSpec: 0976da6bc1ebd3ea9b3a65d04be2c0117d304c4c
