@@ -53,7 +53,7 @@ export const features = {
     showInDevMenu: true,
   },
   AREnableEditorialNews: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable news app in the home screen",
     echoFlagKey: "AREnableEditorialNews",
     showInDevMenu: true,
@@ -228,7 +228,7 @@ export const features = {
   },
   AREnableArtworkListOfferability: {
     description: "Enable Parnter Offer v1.5, edit sharing artwork list with partners for offers",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableArtworkListOfferability",
   },
