@@ -1,35 +1,59 @@
+import { fireEvent, screen } from "@testing-library/react-native"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { About } from "./About"
 
 describe("About", () => {
-  it("renders Terms and conditions", () => {
-    const tree = renderWithWrappersLEGACY(<About />)
-
-    expect(tree.root.findAllByProps({ title: "Terms of Use" })).toBeTruthy()
-    tree.root.findByProps({ title: "Terms of Use" }).props.onPress()
+  it("renders Terms of Use", () => {
+    renderWithWrappers(<About />)
+    fireEvent.press(screen.getByText("Terms of Use"))
     expect(navigate).toHaveBeenCalledWith("/terms")
   })
 
-  it("renders Privacy policy", () => {
-    const tree = renderWithWrappersLEGACY(<About />)
-
-    expect(tree.root.findAllByProps({ title: "Privacy Policy" })).toBeTruthy()
-    tree.root.findByProps({ title: "Privacy Policy" }).props.onPress()
+  it("renders Privacy Policy", () => {
+    renderWithWrappers(<About />)
+    fireEvent.press(screen.getByText("Privacy Policy"))
     expect(navigate).toHaveBeenCalledWith("/privacy")
   })
 
   it("renders Conditions of Sale", () => {
-    const tree = renderWithWrappersLEGACY(<About />)
-
-    expect(tree.root.findAllByProps({ title: "Conditions of Sale" })).toBeTruthy()
-    tree.root.findByProps({ title: "Conditions of Sale" }).props.onPress()
+    renderWithWrappers(<About />)
+    fireEvent.press(screen.getByText("Conditions of Sale"))
     expect(navigate).toHaveBeenCalledWith("/conditions-of-sale")
   })
 
   it("renders Version", () => {
-    const tree = renderWithWrappersLEGACY(<About />)
+    renderWithWrappers(<About />)
+    expect(screen.getByText("Version")).toBeDefined()
+  })
 
-    expect(tree.root.findAllByProps({ title: "Version" })).toBeTruthy()
+  describe("when the new disclaimer is enabled", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewTermsAndConditions: true })
+    })
+
+    it("renders Terms and Conditions", () => {
+      renderWithWrappers(<About />)
+      fireEvent.press(screen.getByText("Terms and Conditions"))
+      expect(navigate).toHaveBeenCalledWith("/terms")
+    })
+
+    it("renders Privacy policy", () => {
+      renderWithWrappers(<About />)
+      fireEvent.press(screen.getByText("Privacy Policy"))
+      expect(navigate).toHaveBeenCalledWith("/privacy")
+    })
+
+    it("renders Auction Supplement", () => {
+      renderWithWrappers(<About />)
+      fireEvent.press(screen.getByText("Auction Supplement"))
+      expect(navigate).toHaveBeenCalledWith("/supplemental-cos")
+    })
+
+    it("renders Version", () => {
+      renderWithWrappers(<About />)
+      expect(screen.getByText("Version")).toBeDefined()
+    })
   })
 })
