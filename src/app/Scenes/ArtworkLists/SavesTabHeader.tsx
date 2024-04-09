@@ -52,6 +52,14 @@ export const SavesTabHeader = () => {
       </ProgressiveOnboardingSignalInterest>
 
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center" my={2}>
+        {!!isArtworkListOfferabilityEnabled && (
+          <ProgressiveOnboardingOfferSettings>
+            <Button haptic variant="text" size="small" onPress={handleOfferSettings}>
+              Offer settings
+            </Button>
+          </ProgressiveOnboardingOfferSettings>
+        )}
+
         <Button
           haptic
           variant="text"
@@ -62,14 +70,6 @@ export const SavesTabHeader = () => {
         >
           Create New List
         </Button>
-
-        {!!isArtworkListOfferabilityEnabled && (
-          <ProgressiveOnboardingOfferSettings>
-            <Button haptic variant="text" size="small" onPress={handleOfferSettings}>
-              Offer settings
-            </Button>
-          </ProgressiveOnboardingOfferSettings>
-        )}
       </Flex>
     </Box>
   )
