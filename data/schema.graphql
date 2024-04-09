@@ -12458,6 +12458,8 @@ type Me implements Node {
     # UserInterest InterestType to select. 'Artist' or 'Gene' type
     interestType: UserInterestInterestType
     last: Int
+    page: Int
+    size: Int
   ): UserInterestConnection
 
   # A list of lots a user is watching.
