@@ -53,7 +53,7 @@ export const features = {
     showInDevMenu: true,
   },
   AREnableEditorialNews: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable news app in the home screen",
     echoFlagKey: "AREnableEditorialNews",
     showInDevMenu: true,
