@@ -1,7 +1,7 @@
-import { Input } from "app/Components/Input"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { BackButton } from "app/system/navigation/BackButton"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { FormikProvider, useFormik } from "formik"
 import { emailSchema, UserSchema } from "./OnboardingCreateAccount"
 import { OnboardingCreateAccountEmail } from "./OnboardingCreateAccountEmail"
@@ -33,52 +33,66 @@ describe("OnboardingCreateAccountEmail", () => {
 
   describe("Backbutton", () => {
     it("navigates back to the onboading welcome screen", () => {
-      const tree = renderWithWrappersLEGACY(<Test />)
+      renderWithWrappers(<Test />)
 
-      const backButton = tree.root.findAllByType(BackButton)[0]
-      backButton.props.onPress()
+      const backButton = screen.UNSAFE_getByType(BackButton)
+      fireEvent.press(backButton)
+
       expect(navigateToWelcomeScreenMock).toHaveBeenCalled()
     })
   })
 
   describe("Form", () => {
-    it("renders the right email from the formik context", () => {
-      const tree1 = renderWithWrappersLEGACY(<Test />)
-      const input1 = tree1.root.findAllByType(Input)[0]
-      expect(input1.props.value).toEqual("")
+    it("renders the right email from the formik context", async () => {
+      renderWithWrappers(<Test />)
+      const emailInput = screen.getByPlaceholderText("Email address")
 
-      const tree2 = renderWithWrappersLEGACY(<Test email="test@email.com" />)
-      const input2 = tree2.root.findAllByType(Input)[0]
-      expect(input2.props.value).toEqual("test@email.com")
+      expect(emailInput).toHaveTextContent("")
+
+      fireEvent.changeText(emailInput, "test@email.com")
+
+      expect(emailInput).toHaveProp("value", "test@email.com")
     })
 
     it("does not validate email when the user is still typing", () => {
-      const tree = renderWithWrappersLEGACY(<Test />)
-      const input = tree.root.findByProps({ testID: "emailInput" })
-      input.props.onChangeText("test")
-      expect(input.props.error).toEqual(undefined)
+      renderWithWrappers(<Test />)
+      const emailInput = screen.getByPlaceholderText("Email address")
+
+      fireEvent.changeText(emailInput, "test")
+
+      expect(emailInput).not.toHaveProp("error")
     })
 
     it("does validate the email on submit", async () => {
-      const tree = renderWithWrappersLEGACY(<Test />)
-      const input = tree.root.findByProps({ testID: "emailInput" })
-      input.props.onChangeText("test")
-      input.props.onSubmitEditing()
+      renderWithWrappers(<Test />)
+      const emailInput = screen.getByPlaceholderText("Email address")
+      expect(screen.queryByText("Please provide a valid email address")).not.toBeOnTheScreen()
+
+      fireEvent.changeText(emailInput, "test")
+      fireEvent(emailInput, "submitEditing")
+
       await flushPromiseQueue()
-      expect(input.props.error).toEqual("Please provide a valid email address")
+
+      expect(screen.getByText("Please provide a valid email address")).toBeOnTheScreen()
     })
 
     it("hides the error message when the user types", async () => {
-      const tree = renderWithWrappersLEGACY(<Test />)
-      const input = tree.root.findByProps({ testID: "emailInput" })
-      input.props.onChangeText("test")
-      input.props.onSubmitEditing()
-      await flushPromiseQueue()
-      expect(input.props.error).toEqual("Please provide a valid email address")
+      renderWithWrappers(<Test />)
+      const emailInput = screen.getByPlaceholderText("Email address")
 
-      input.props.onChangeText("test2")
+      fireEvent.changeText(emailInput, "test")
+      fireEvent(emailInput, "submitEditing")
+
       await flushPromiseQueue()
-      expect(input.props.error).toEqual(undefined)
+
+      expect(screen.getByText("Please provide a valid email address")).toBeOnTheScreen()
+
+      fireEvent.changeText(emailInput, "test@email.com")
+      fireEvent(emailInput, "submitEditing")
+
+      await flushPromiseQueue()
+
+      expect(screen.queryByText("Please provide a valid email address")).not.toBeOnTheScreen()
     })
   })
 })

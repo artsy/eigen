@@ -1,6 +1,7 @@
+import { fireEvent, screen } from "@testing-library/react-native"
 import { BackButton } from "app/system/navigation/BackButton"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { FormikProvider, useFormik } from "formik"
 import { passwordSchema, UserSchema } from "./OnboardingCreateAccount"
 import { OnboardingCreateAccountPassword } from "./OnboardingCreateAccountPassword"
@@ -34,63 +35,75 @@ describe("OnboardingCreateAccountPassword", () => {
 
   describe("Backbutton", () => {
     it("navigates back to the password screen", () => {
-      const tree = renderWithWrappersLEGACY(<Test />)
+      renderWithWrappers(<Test />)
 
-      const backButton = tree.root.findAllByType(BackButton)[0]
-      backButton.props.onPress()
+      const backButton = screen.UNSAFE_getByType(BackButton)
+      fireEvent.press(backButton)
+
       expect(goBackMock).toHaveBeenCalled()
     })
   })
 
   describe("Form", () => {
     it("renders the right password from the formik context", () => {
-      const tree1 = renderWithWrappersLEGACY(<Test />)
-      const input1 = tree1.root.findByProps({ testID: "passwordInput" })
-      expect(input1.props.value).toEqual("")
+      renderWithWrappers(<Test />)
 
-      const tree2 = renderWithWrappersLEGACY(<Test password="1ValidPassword" />)
-      const input2 = tree2.root.findByProps({ testID: "passwordInput" })
-      expect(input2.props.value).toEqual("1ValidPassword")
+      const passwordInput = screen.getByPlaceholderText("Password")
+
+      expect(passwordInput).toHaveTextContent("")
+
+      fireEvent.changeText(passwordInput, "1ValidPassword")
+
+      expect(passwordInput).toHaveProp("value", "1ValidPassword")
     })
 
     it("does not validate password when the user is still typing", () => {
-      const tree = renderWithWrappersLEGACY(<Test />)
-      const input = tree.root.findByProps({ testID: "passwordInput" })
-      input.props.onChangeText("wrongpassword")
-      expect(input.props.error).toEqual(undefined)
+      renderWithWrappers(<Test />)
+      const passwordInput = screen.getByPlaceholderText("Password")
+
+      fireEvent.changeText(passwordInput, "wrongpassword")
+
+      expect(passwordInput).not.toHaveProp("error")
     })
 
     it("does validate the password properly on submit", async () => {
-      const tree = renderWithWrappersLEGACY(<Test />)
-      const input = tree.root.findByProps({ testID: "passwordInput" })
-      input.props.onChangeText("short")
-      input.props.onSubmitEditing()
-      await flushPromiseQueue()
-      expect(input.props.error).toEqual("Your password should be at least 8 characters")
+      renderWithWrappers(<Test />)
+      const passwordInput = screen.getByPlaceholderText("Password")
 
-      input.props.onChangeText("missing1uppercase")
-      input.props.onSubmitEditing()
-      await flushPromiseQueue()
-      expect(input.props.error).toEqual(
-        "Your password should contain at least one uppercase letter"
-      )
+      fireEvent.changeText(passwordInput, "short")
+      fireEvent(passwordInput, "submitEditing")
 
-      input.props.onChangeText("Nodigits")
-      input.props.onSubmitEditing()
       await flushPromiseQueue()
-      expect(input.props.error).toEqual("Your password should contain at least one digit")
 
-      input.props.onChangeText("MISSING1LOWERCASE")
-      input.props.onSubmitEditing()
-      await flushPromiseQueue()
-      expect(input.props.error).toEqual(
-        "Your password should contain at least one lowercase letter"
-      )
+      expect(screen.getByText("Your password should be at least 8 characters")).toBeOnTheScreen()
 
-      input.props.onChangeText("")
-      input.props.onSubmitEditing()
+      fireEvent.changeText(passwordInput, "missing1uppercase")
+      fireEvent(passwordInput, "submitEditing")
+
       await flushPromiseQueue()
-      expect(input.props.error).toEqual("Password field is required")
+
+      expect(
+        screen.getByText("Your password should contain at least one uppercase letter")
+      ).toBeOnTheScreen()
+
+      fireEvent.changeText(passwordInput, "Nodigits")
+      fireEvent(passwordInput, "submitEditing")
+
+      await flushPromiseQueue()
+      expect(screen.getByText("Your password should contain at least one digit"))
+
+      fireEvent.changeText(passwordInput, "MISSING1LOWERCASE")
+      fireEvent(passwordInput, "submitEditing")
+
+      await flushPromiseQueue()
+
+      expect(screen.getByText("Your password should contain at least one lowercase letter"))
+
+      fireEvent.changeText(passwordInput, "")
+      fireEvent(passwordInput, "submitEditing")
+
+      await flushPromiseQueue()
+      expect(screen.getByText("Password field is required"))
     })
   })
 })

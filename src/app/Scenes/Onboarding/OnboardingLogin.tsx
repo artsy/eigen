@@ -110,7 +110,6 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
               placeholder="Email address"
               placeholderTextColor={color("black30")}
               title="Email"
-              value={values.email}
               returnKeyType="next"
               spellCheck={false}
               autoCorrect={false}
@@ -153,7 +152,6 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
               // We need to to set textContentType to password here
               // enable autofill of login details from the device keychain.
               textContentType="password"
-              value={values.password}
               error={errors.password}
               testID="password"
             />
