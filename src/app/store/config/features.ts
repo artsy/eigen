@@ -252,7 +252,7 @@ export const features = {
   },
   AREnableNewTermsAndConditions: {
     description: "Enable new terms and conditions",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableNewTermsAndConditions",
   },
