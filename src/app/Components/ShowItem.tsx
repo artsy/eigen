@@ -1,4 +1,4 @@
-import { Image, Text, Touchable } from "@artsy/palette-mobile"
+import { Button, Image, Text, Touchable } from "@artsy/palette-mobile"
 import { ShowItem_show$key } from "__generated__/ShowItem_show.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { hrefForPartialShow } from "app/utils/router"
@@ -7,10 +7,11 @@ import { graphql, useFragment } from "react-relay"
 const DEFAULT_CELL_WIDTH = 335
 
 interface ShowItemProps {
+  displayViewShowButton?: boolean
   show: ShowItem_show$key
 }
 
-export const ShowItem: React.FC<ShowItemProps> = ({ show }) => {
+export const ShowItem: React.FC<ShowItemProps> = ({ displayViewShowButton = false, show }) => {
   const data = useFragment(showGraphql, show)
 
   if (!data) {
@@ -48,6 +49,12 @@ export const ShowItem: React.FC<ShowItemProps> = ({ show }) => {
         <Text variant="sm-display" color="black60">
           {data.exhibitionPeriod}
         </Text>
+      )}
+
+      {!!displayViewShowButton && (
+        <Button my={2} onPress={handleOnPress}>
+          View Show
+        </Button>
       )}
     </Touchable>
   )

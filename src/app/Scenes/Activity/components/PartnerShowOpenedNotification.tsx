@@ -21,18 +21,16 @@ export const PartnerShowOpenedNotification: FC<PartnerShowOpenedNotificationProp
   const { headline, item } = notificationData
 
   const shows = extractNodes(item?.showsConnection)
-  const show = shows[0]
-
-  const { followProfile, isInFlight } = useFollowProfile({
-    id: item?.partner?.profile?.id ?? "",
-    internalID: item?.partner?.profile?.internalID ?? "",
-    isFollowd: item?.partner?.profile?.isFollowed ?? false,
-  })
-
   const partner = item?.partner
   const profile = partner?.profile
 
-  if (!partner || !show) {
+  const { followProfile, isInFlight } = useFollowProfile({
+    id: profile?.id ?? "",
+    internalID: profile?.internalID ?? "",
+    isFollowd: profile?.isFollowed ?? false,
+  })
+
+  if (!profile || !shows.length) {
     return <ActivityErrorScreen headerTitle="Shows" />
   }
 
@@ -57,7 +55,7 @@ export const PartnerShowOpenedNotification: FC<PartnerShowOpenedNotificationProp
 
           <Flex flexDirection="column" alignItems="center">
             {shows.map((show) => (
-              <ShowItem show={show} key={show.internalID} />
+              <ShowItem displayViewShowButton show={show} key={show.internalID} />
             ))}
           </Flex>
         </Flex>
