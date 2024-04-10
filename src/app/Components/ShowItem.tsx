@@ -1,16 +1,17 @@
-import { Image, Text, Touchable } from "@artsy/palette-mobile"
-import { ArtistAboutShow_show$key } from "__generated__/ArtistAboutShow_show.graphql"
+import { Button, Image, Text, Touchable } from "@artsy/palette-mobile"
+import { ShowItem_show$key } from "__generated__/ShowItem_show.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { hrefForPartialShow } from "app/utils/router"
 import { graphql, useFragment } from "react-relay"
 
 const DEFAULT_CELL_WIDTH = 335
 
-interface ArtistAboutShowProps {
-  show: ArtistAboutShow_show$key
+interface ShowItemProps {
+  displayViewShowButton?: boolean
+  show: ShowItem_show$key
 }
 
-export const ArtistAboutShow: React.FC<ArtistAboutShowProps> = ({ show }) => {
+export const ShowItem: React.FC<ShowItemProps> = ({ displayViewShowButton = false, show }) => {
   const data = useFragment(showGraphql, show)
 
   if (!data) {
@@ -28,7 +29,11 @@ export const ArtistAboutShow: React.FC<ArtistAboutShowProps> = ({ show }) => {
   }
 
   return (
-    <Touchable onPress={handleOnPress} style={{ width: DEFAULT_CELL_WIDTH }}>
+    <Touchable
+      onPress={handleOnPress}
+      style={{ width: DEFAULT_CELL_WIDTH }}
+      testID="show-item-visit-show-link"
+    >
       <Image
         testID="show-cover"
         src={data.coverImage?.url ?? ""}
@@ -45,12 +50,18 @@ export const ArtistAboutShow: React.FC<ArtistAboutShowProps> = ({ show }) => {
           {data.exhibitionPeriod}
         </Text>
       )}
+
+      {!!displayViewShowButton && (
+        <Button my={2} onPress={handleOnPress}>
+          View Show
+        </Button>
+      )}
     </Touchable>
   )
 }
 
 const showGraphql = graphql`
-  fragment ArtistAboutShow_show on Show {
+  fragment ShowItem_show on Show {
     slug
     href
     name
