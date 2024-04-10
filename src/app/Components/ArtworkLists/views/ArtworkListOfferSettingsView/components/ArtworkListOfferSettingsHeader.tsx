@@ -14,7 +14,7 @@ export const ArtworkListOfferSettingsHeader = () => {
 
       <Text variant="xs">
         Shared lists are eligible to receive offers from galleries. Switching sharing off will make
-        them visible only to you, and you won't receive offers{" "}
+        them visible only to you, and you won't receive offers.{" "}
         <LinkText onPress={handleLearnMoreTap} variant="xs">
           Learn more
         </LinkText>
