@@ -39,8 +39,6 @@ interface ContextMenuArtworkProps {
   onCreateAlertActionPress: () => void
   onSupressArtwork?: () => void
   haptic?: HapticFeedbackTypes | boolean
-  displayContextMenu?: boolean
-  enableSupressArtwork?: boolean
   artworkDisplayProps?: ArtworkDisplayProps
   contextScreenOwnerType?: ScreenOwnerType
   contextModule?: ContextModule
@@ -50,8 +48,6 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   artwork,
   children,
   haptic = true,
-  displayContextMenu = false,
-  enableSupressArtwork = false,
   artworkDisplayProps,
   onCreateAlertActionPress,
   onSupressArtwork,
@@ -60,7 +56,10 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
 }) => {
   const { trackEvent } = useTracking()
   const { showShareSheet } = useShareSheet()
-  const enableContextMenu = useFeatureFlag("AREnableLongPressOnArtworkCards") || displayContextMenu
+  const enableContextMenuForRecommendations =
+    useFeatureFlag("AREnableLongPressOnNewForYouRail") && contextModule == "newWorksForYouRail"
+  const enableContextMenu =
+    useFeatureFlag("AREnableLongPressOnArtworkCards") || enableContextMenuForRecommendations
   const [dislikeArtworkMutation] = useDislikeArtwork()
   const isIOS = Platform.OS === "ios"
   const color = useColor()
@@ -72,6 +71,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   const shouldDisplayContextMenu = isIOS && enableContextMenu
   const enableCreateAlerts = !!artwork.artists?.length
   const enableViewInRoom = LegacyNativeModules.ARCocoaConstantsModule.AREnabled && isHangable
+  const enableSupressArtwork = contextModule == "newWorksForYouRail"
 
   const isOpenSale = !isEmpty(sale) && sale?.isAuction && !sale?.isClosed
 

@@ -10,6 +10,11 @@ export interface Disappearable {
   disappear(): Promise<void>
 }
 
+export interface DissapearableArtwork {
+  internalID: string
+  _disappearable: Disappearable | null
+}
+
 export const Disappearable = forwardRef<Disappearable, React.PropsWithChildren<{}>>(
   ({ children }, ref) => {
     const [showContent, setShowContent] = useState(true)

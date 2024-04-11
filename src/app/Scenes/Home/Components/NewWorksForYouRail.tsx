@@ -7,7 +7,6 @@ import { useItemsImpressionsTracking } from "app/Scenes/Home/Components/useImpre
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
   ArtworkActionTrackingProps,
   extractArtworkActionTrackingProps,
@@ -27,8 +26,6 @@ interface NewWorksForYouRailProps extends ArtworkActionTrackingProps {
 export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = memo(
   ({ title, artworkConnection, isRailVisible, scrollRef, ...restProps }) => {
     const { trackEvent } = useTracking()
-    const displayContextMenu = useFeatureFlag("AREnableLongPressOnNewForYouRail")
-
     const trackingProps = extractArtworkActionTrackingProps(restProps)
 
     const { artworksForUser } = useFragment(artworksFragment, artworkConnection)
@@ -87,8 +84,6 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
             }}
             onViewableItemsChanged={onViewableItemsChanged}
             viewabilityConfig={viewabilityConfig}
-            displayContextMenu={displayContextMenu}
-            enableSupressArtwork={true}
           />
         </View>
       </Flex>

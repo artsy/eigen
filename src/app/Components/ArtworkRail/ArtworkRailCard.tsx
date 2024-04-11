@@ -49,9 +49,7 @@ export type ArtworkCardSize = "small" | "large" | "extraLarge" | "fullWidth"
 
 export interface ArtworkRailCardProps extends ArtworkActionTrackingProps {
   artwork: ArtworkRailCard_artwork$key
-  displayContextMenu?: boolean
   dark?: boolean
-  enableSupressArtwork?: boolean
   hideArtistName?: boolean
   showPartnerName?: boolean
   isRecentlySoldArtwork?: boolean
@@ -69,8 +67,6 @@ export interface ArtworkRailCardProps extends ArtworkActionTrackingProps {
 }
 
 export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
-  displayContextMenu = false,
-  enableSupressArtwork = false,
   hideArtistName = false,
   showPartnerName = false,
   dark = false,
@@ -210,8 +206,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
       contextScreenOwnerType={contextScreenOwnerType}
     >
       <ContextMenuArtwork
-        displayContextMenu={displayContextMenu}
-        enableSupressArtwork={enableSupressArtwork}
         contextModule={contextModule}
         contextScreenOwnerType={contextScreenOwnerType}
         onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}

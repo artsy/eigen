@@ -4,7 +4,7 @@ import { SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$data } from
 import { SmallArtworkRail_artworks$data } from "__generated__/SmallArtworkRail_artworks.graphql"
 import { ArtworkCardSize, ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
-import { Disappearable } from "app/Components/Disappearable"
+import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
 import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
 import {
   ArtworkActionTrackingProps,
@@ -18,8 +18,6 @@ const MAX_NUMBER_OF_ARTWORKS = 30
 
 interface CommonArtworkRailProps {
   dark?: boolean
-  displayContextMenu?: boolean
-  enableSupressArtwork?: boolean
   hideArtistName?: boolean
   showPartnerName?: boolean
   ListFooterComponent?: ReactElement | null
@@ -32,11 +30,6 @@ interface CommonArtworkRailProps {
   onMorePress?: () => void
   viewabilityConfig?: ViewabilityConfig | undefined
   onViewableItemsChanged?: (info: { viewableItems: any[]; changed: any[] }) => void
-}
-
-interface DissapearableArtwork {
-  internalID: string
-  _disappearable: Disappearable | null
 }
 
 export interface ArtworkRailProps extends CommonArtworkRailProps, ArtworkActionTrackingProps {
@@ -63,8 +56,6 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
   viewabilityConfig,
   onViewableItemsChanged,
   onMorePress,
-  displayContextMenu = false,
-  enableSupressArtwork = false,
   ...otherProps
 }) => {
   const trackingProps = extractArtworkActionTrackingProps(otherProps)
@@ -115,8 +106,6 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
                 }}
                 showSaveIcon={showSaveIcon}
                 size={size}
-                displayContextMenu={displayContextMenu}
-                enableSupressArtwork={enableSupressArtwork}
                 onSupressArtwork={() => {
                   handleSupress(item)
                 }}
