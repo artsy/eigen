@@ -12346,6 +12346,13 @@ type Me implements Node {
     first: Int
     last: Int
   ): ArtworkConnection
+  recommendedArtworks(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+  ): ArtworkConnection
   saleRegistrationsConnection(
     after: String
     auctionState: AuctionState
