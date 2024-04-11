@@ -70,7 +70,7 @@ export const RecommendedAuctionsRail: React.FC<RecommendedAuctionsRailProps & Ra
               title={title}
               onPress={() => {
                 trackEvent(tracks.tappedHeader())
-                navigate("/auctions")
+                navigate("/auctions/lots-for-you-ending-soon")
               }}
             />
           </Flex>
@@ -81,7 +81,7 @@ export const RecommendedAuctionsRail: React.FC<RecommendedAuctionsRailProps & Ra
             showSaveIcon
             onMorePress={() => {
               trackEvent(tracks.tappedMoreCard())
-              navigate("/auctions")
+              navigate("/auctions/lots-for-you-ending-soon")
             }}
             onViewableItemsChanged={onViewableItemsChanged}
             viewabilityConfig={viewabilityConfig}
