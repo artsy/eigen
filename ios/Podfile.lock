@@ -69,7 +69,7 @@ PODS:
     - CwlPosixPreconditionTesting (~> 2.2.0)
   - DoubleConversion (1.1.6)
   - Expecta (1.0.6)
-  - "Expecta+Snapshots (3.1.1)":
+  - "Expecta+Snapshots (3.2.0)":
     - Expecta (~> 1.0)
     - iOSSnapshotTestCase (~> 8.0)
     - Specta (~> 2.0)
@@ -925,7 +925,7 @@ DEPENDENCIES:
   - CodePush (from `../node_modules/react-native-code-push`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - Expecta (= 1.0.6)
-  - "Expecta+Snapshots (from `https://github.com/dblock/ios-snapshot-test-case-expecta.git`, commit `7f99f9061bd067af205cb94301de4df3e14a8636`)"
+  - "Expecta+Snapshots (= 3.2.0)"
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
   - FBSDKCoreKit (~> 16.3.1)
@@ -1091,6 +1091,7 @@ SPEC REPOS:
     - CwlPosixPreconditionTesting
     - CwlPreconditionTesting
     - Expecta
+    - "Expecta+Snapshots"
     - FBAEMKit
     - FBSDKCoreKit
     - FBSDKCoreKit_Basics
@@ -1173,9 +1174,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-code-push"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
-  "Expecta+Snapshots":
-    :commit: 7f99f9061bd067af205cb94301de4df3e14a8636
-    :git: https://github.com/dblock/ios-snapshot-test-case-expecta.git
   FBLazyVector:
     :path: "../node_modules/react-native/Libraries/FBLazyVector"
   FBReactNativeSpec:
@@ -1354,9 +1352,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 CHECKOUT OPTIONS:
-  "Expecta+Snapshots":
-    :commit: 7f99f9061bd067af205cb94301de4df3e14a8636
-    :git: https://github.com/dblock/ios-snapshot-test-case-expecta.git
   FLKAutoLayout:
     :commit: 44a277d21d4fa104589703a34a4d82647414f435
     :git: https://github.com/artsy/FLKAutoLayout.git
@@ -1384,7 +1379,7 @@ SPEC CHECKSUMS:
   appcenter-core: e192ea8b373bebd3e44998882b43311078bd7dda
   AppCenterReactNativeShared: 01df23849b1c3c6eb8c4049f54322635650e98f0
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
-  boost: 57d2868c099736d80fcd648bf211b4431e51a558
+  boost: 7dcd2de282d72e344012f7d6564d024930a6a440
   BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
@@ -1396,7 +1391,7 @@ SPEC CHECKSUMS:
   CwlPreconditionTesting: ccfd08aca58d14e04062b2a3dd2fd52e09857453
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
-  "Expecta+Snapshots": 91dda1728ef81b99d243da0c13e4c50cf299b1ca
+  "Expecta+Snapshots": 7a3ac7ad2b9bae43aadb4dca08113bb495c98f3e
   FBAEMKit: 6c7b5eb77c96861bb59e040842c6e55bf39512ce
   FBLazyVector: a31ac2336aea59512b5b982f8e231f65d7d148e1
   FBReactNativeSpec: 0976da6bc1ebd3ea9b3a65d04be2c0117d304c4c
@@ -1554,6 +1549,6 @@ SPEC CHECKSUMS:
   Yoga: 87e59f6d458e5061d2421086c5de994b3f7cd151
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 56ae0d9644539c8199972f90a90d0dbccbadf3d8
+PODFILE CHECKSUM: 04a7db3b8ffb294e0c2a1349d5cd13ff437257ec
 
 COCOAPODS: 1.14.3
