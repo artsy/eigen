@@ -1,5 +1,14 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex, Screen, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
+import {
+  Flex,
+  FullWidthIcon,
+  GridIcon,
+  Screen,
+  Skeleton,
+  SkeletonBox,
+  SkeletonText,
+  Spacer,
+} from "@artsy/palette-mobile"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import {
   NewWorksForYouArtworksQR,
@@ -11,18 +20,44 @@ import { goBack } from "app/system/navigation/navigate"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
+import { MotiPressable } from "moti/interactions"
+import { LayoutAnimation } from "react-native"
+import { isTablet } from "react-native-device-info"
 
 export const SCREEN_TITLE = "Auction Lots for You"
 
+const ICON_SIZE = 26
+
 export const RecommendedAuctionLotsQueryRenderer: React.FC = () => {
   const defaultVariables = recommendedAuctionLotsDefaultVariables()
+  const defaultViewOption = GlobalStore.useAppState((state) => state.userPrefs.defaultViewOption)
+  const setDefaultViewOption = GlobalStore.actions.userPrefs.setDefaultViewOption
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.lotsByArtistsYouFollow })}
     >
       <Screen>
-        <Screen.AnimatedHeader onBack={goBack} title={SCREEN_TITLE} />
+        <Screen.AnimatedHeader
+          onBack={goBack}
+          title={SCREEN_TITLE}
+          rightElements={
+            !isTablet() ? (
+              <MotiPressable
+                onPress={() => {
+                  setDefaultViewOption(defaultViewOption === "list" ? "grid" : "list")
+                  LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+                }}
+              >
+                {defaultViewOption === "grid" ? (
+                  <FullWidthIcon height={ICON_SIZE} width={ICON_SIZE} top="2px" />
+                ) : (
+                  <GridIcon height={ICON_SIZE} width={ICON_SIZE} top="2px" />
+                )}
+              </MotiPressable>
+            ) : undefined
+          }
+        />
         <Screen.StickySubHeader title={SCREEN_TITLE} />
         <Screen.Body fullwidth>
           <NewWorksForYouArtworksQR
