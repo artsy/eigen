@@ -120,6 +120,7 @@ import { OrderHistoryQueryRender } from "./Scenes/OrderHistory/OrderHistory"
 import { PartnerQueryRenderer } from "./Scenes/Partner/Partner"
 import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
 import { PrivacyRequest } from "./Scenes/PrivacyRequest/PrivacyRequest"
+import { RecommendedAuctionLotsQueryRenderer } from "./Scenes/RecommendedAuctionLots/RecommendedAuctionLots"
 import { SaleQueryRenderer, SaleScreenQuery } from "./Scenes/Sale/Sale"
 import { SaleInfoQueryRenderer } from "./Scenes/SaleInfo/SaleInfo"
 import { SalesScreen, SalesScreenQuery } from "./Scenes/Sales/Sales"
@@ -635,6 +636,11 @@ export const modules = defineModules({
     },
     [RecentlyViewedScreenQuery]
   ),
+  RecommendedAuctionLots: reactModule(RecommendedAuctionLotsQueryRenderer, {
+    hidesBottomTabs: true,
+    hidesBackButton: true,
+    fullBleed: true,
+  }),
   Sales: reactModule(SellWithArtsy, { isRootViewForTabName: "sell", fullBleed: true }, [
     SellWithArtsyHomeScreenQuery,
   ]),

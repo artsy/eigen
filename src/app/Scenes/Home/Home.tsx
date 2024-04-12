@@ -89,7 +89,7 @@ import { isTablet } from "react-native-device-info"
 import { Environment, RelayRefetchProp, createRefetchContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { HeroUnitsRail } from "./Components/HeroUnitsRail"
-import { RecommendedAuctionsRail } from "./Components/RecommendedAuctionsRail"
+import { RecommendedAuctionLotsRail } from "./Components/RecommendedAuctionLotsRail"
 import HomeAnalytics from "./homeAnalytics"
 import { useHomeModules } from "./useHomeModules"
 
@@ -300,7 +300,7 @@ const Home = memo((props: HomeProps) => {
           return <ActivityRail title={item.title} notificationsConnection={item.data} />
         case "recommendedAuctions":
           return (
-            <RecommendedAuctionsRail
+            <RecommendedAuctionLotsRail
               {...trackingProps}
               artworkConnection={item.data}
               isRailVisible={visibleRails.has(item.title)}
@@ -473,19 +473,6 @@ export const HomeFragmentContainer = memo(
             savedArtworks
           }
           ...EmailConfirmationBanner_me
-          lotsByFollowedArtistsConnectionCount: lotsByFollowedArtistsConnection(
-            first: 1
-            includeArtworksByFollowedArtists: true
-            isAuction: true
-            liveSale: true
-          ) {
-            edges {
-              node {
-                id
-              }
-            }
-          }
-          ...LotsByFollowedArtistsRail_me
         }
       `,
       meBelow: graphql`
@@ -562,7 +549,7 @@ export const HomeFragmentContainer = memo(
       `,
       recommendedAuctions: graphql`
         fragment Home_recommendedAuctions on Viewer {
-          ...RecommendedAuctionsRail_artworkConnection
+          ...RecommendedAuctionLotsRail_artworkConnection
         }
       `,
     },

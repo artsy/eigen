@@ -170,7 +170,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/auction/:saleID/buyers-premium", "AuctionBuyersPremium"),
     addRoute("/auction/:saleID/info", "AuctionInfo"),
     addRoute("/auctions", "Auctions"),
-    addRoute("/auctions/lots-for-you-ending-soon", "LotsByArtistsYouFollow"),
+    addRoute("/auctions/lots-for-you-ending-soon", "RecommendedAuctionLots"),
     addRoute("/city-fair/:citySlug", "CityFairList"),
     addRoute("/city-save/:citySlug", "CitySavedList"),
     addRoute("/city/:citySlug/:section", "CitySectionList"),
