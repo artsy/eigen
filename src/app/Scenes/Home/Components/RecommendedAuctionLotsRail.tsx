@@ -94,7 +94,7 @@ export const RecommendedAuctionLotsRail: React.FC<
 
 const artworksFragment = graphql`
   fragment RecommendedAuctionLotsRail_artworkConnection on Viewer {
-    artworksForUser(maxWorksPerArtist: 3, includeBackfill: true, first: 40, onlyAtAuction: true) {
+    artworksForUser(maxWorksPerArtist: 3, includeBackfill: true, first: 10, onlyAtAuction: true) {
       edges {
         node {
           title

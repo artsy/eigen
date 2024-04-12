@@ -80,10 +80,6 @@ import { MakeOfferModalQueryRenderer } from "./Scenes/Inbox/Components/Conversat
 import { PurchaseModalQueryRenderer } from "./Scenes/Inbox/Components/Conversations/PurchaseModal"
 import { ConversationNavigator } from "./Scenes/Inbox/ConversationNavigator"
 import { ConversationDetailsQueryRenderer } from "./Scenes/Inbox/Screens/ConversationDetails"
-import {
-  LotsByArtistsYouFollowScreen,
-  LotsByArtistsYouFollowScreenQuery,
-} from "./Scenes/LotsByArtistsYouFollow/LotsByArtistsYouFollow"
 import { MapContainer } from "./Scenes/Map/MapContainer"
 import { MyAccountQueryRenderer } from "./Scenes/MyAccount/MyAccount"
 import { MyAccountDeleteAccountQueryRenderer } from "./Scenes/MyAccount/MyAccountDeleteAccount"
@@ -501,14 +497,6 @@ export const modules = defineModules({
     modalPresentationStyle: "fullScreen",
   }),
   LocalDiscovery: reactModule(CityGuideView, { fullBleed: true }),
-  LotsByArtistsYouFollow: reactModule(
-    LotsByArtistsYouFollowScreen,
-    {
-      fullBleed: true,
-      hidesBackButton: true,
-    },
-    [LotsByArtistsYouFollowScreenQuery]
-  ),
   MakeOfferModal: reactModule(MakeOfferModalQueryRenderer, {
     hasOwnModalCloseButton: true,
   }),

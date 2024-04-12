@@ -26,7 +26,6 @@ import { LayoutAnimation } from "react-native"
 import { isTablet } from "react-native-device-info"
 
 export const SCREEN_TITLE = "New Works for You"
-export const PAGE_SIZE = 100
 export const RECOMMENDATION_MODEL_EXPERIMENT_NAME = "eigen-new-works-for-you-recommendations-model"
 export const DEFAULT_RECS_MODEL_VERSION = "C"
 
@@ -81,7 +80,7 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
       <Screen>
         <Screen.AnimatedHeader
           onBack={goBack}
-          title="New Works For You"
+          title={SCREEN_TITLE}
           rightElements={
             showToggleViewOptionIcon ? (
               <MotiPressable
@@ -99,7 +98,7 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
             ) : undefined
           }
         />
-        <Screen.StickySubHeader title="New Works For You" />
+        <Screen.StickySubHeader title={SCREEN_TITLE} />
         <Screen.Body fullwidth>
           <NewWorksForYouArtworksQR maxWorksPerArtist={maxWorksPerArtist} version={version} />
         </Screen.Body>

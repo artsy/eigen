@@ -1,45 +1,46 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
-import { NewWorksForYouArtworksQR } from "app/Scenes/NewWorksForYou/Components/NewWorksForYouArtworks"
+import {
+  NewWorksForYouArtworksQR,
+  PAGE_SIZE,
+} from "app/Scenes/NewWorksForYou/Components/NewWorksForYouArtworks"
 import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
-export const SCREEN_TITLE = "New Works for You"
-export const PAGE_SIZE = 100
-export const RECOMMENDATION_MODEL_EXPERIMENT_NAME = "eigen-new-works-for-you-recommendations-model"
-export const DEFAULT_RECS_MODEL_VERSION = "C"
 
-export interface RecommendedAuctionLotsScreenProps {
-  maxWorksPerArtist: number
-}
+export const SCREEN_TITLE = "Auction Lots for You"
 
-interface RecommendedAuctionLotsQueryRendererProps {
-  maxWorksPerArtist?: number
-}
-
-export const RecommendedAuctionLotsQueryRenderer: React.FC<
-  RecommendedAuctionLotsQueryRendererProps
-> = ({ maxWorksPerArtist = 3 }) => {
-  // Use the version specified in the URL or no version if the screen is opened from the email.
+export const RecommendedAuctionLotsQueryRenderer: React.FC = () => {
+  const defaultVariables = recommendedAuctionLotsDefaultVariables()
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
-      info={screen({ context_screen_owner_type: OwnerType.newWorksForYou })}
+      info={screen({ context_screen_owner_type: OwnerType.lotsByArtistsYouFollow })}
     >
       <Screen>
-        <Screen.AnimatedHeader onBack={goBack} title="Auction Lots for You" />
-        <Screen.StickySubHeader title="Auction Lots for You" />
+        <Screen.AnimatedHeader onBack={goBack} title={SCREEN_TITLE} />
+        <Screen.StickySubHeader title={SCREEN_TITLE} />
         <Screen.Body fullwidth>
-          <NewWorksForYouArtworksQR maxWorksPerArtist={maxWorksPerArtist} onlyAtAuction />
+          <NewWorksForYouArtworksQR
+            maxWorksPerArtist={defaultVariables.maxWorksPerArtist}
+            onlyAtAuction
+          />
         </Screen.Body>
       </Screen>
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }
+
+export const recommendedAuctionLotsDefaultVariables = () => ({
+  maxWorksPerArtist: 3,
+  count: PAGE_SIZE,
+  includeBackfill: true,
+  onlyAtAuction: true,
+})
 
 export const RecommendedAuctionLotsPlaceholder: React.FC<{ defaultViewOption?: ViewOption }> = ({
   defaultViewOption,

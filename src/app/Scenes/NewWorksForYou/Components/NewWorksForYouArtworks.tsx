@@ -3,13 +3,15 @@ import { Flex, Screen, SimpleMessage, Text } from "@artsy/palette-mobile"
 import { NewWorksForYouArtworksQuery } from "__generated__/NewWorksForYouArtworksQuery.graphql"
 import { NewWorksForYouArtworks_viewer$key } from "__generated__/NewWorksForYouArtworks_viewer.graphql"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
-import { NewWorksForYouPlaceholder, PAGE_SIZE } from "app/Scenes/NewWorksForYou/NewWorksForYou"
+import { NewWorksForYouPlaceholder } from "app/Scenes/NewWorksForYou/NewWorksForYou"
 import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
 import { pluralize } from "app/utils/pluralize"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
+
+export const PAGE_SIZE = 100
 
 interface NewWorksForYouProps {
   viewer: NewWorksForYouArtworks_viewer$key

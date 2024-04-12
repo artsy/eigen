@@ -3,6 +3,7 @@ import { articlesQueryVariables } from "app/Scenes/Articles/Articles"
 import { newsArticlesQueryVariables } from "app/Scenes/Articles/News/News"
 import { isOnboardingVisible } from "app/Scenes/Home/Components/HomeFeedOnboardingRail"
 import { HomeModule, HomeProps } from "app/Scenes/Home/Home"
+import { recommendedAuctionLotsDefaultVariables } from "app/Scenes/RecommendedAuctionLots/RecommendedAuctionLots"
 import { isConnectionEmpty } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { isEmpty } from "lodash"
@@ -61,9 +62,8 @@ export const useHomeModules = (props: HomeProps) => {
         data: props.recommendedAuctions,
         isEmpty: isEmpty(props.recommendedAuctions),
         key: "recommendedAuctionsRail",
-        //TODO: update prefetch URL
-        // prefetchUrl: "/auctions",
-        // prefetchVariables: lotsByArtistsYouFollowDefaultVariables(),
+        prefetchUrl: "/auctions/lots-for-you-ending-soon",
+        prefetchVariables: recommendedAuctionLotsDefaultVariables(),
         title: "Auction Lots for You",
         type: "recommendedAuctions",
       },
