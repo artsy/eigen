@@ -35,7 +35,7 @@ export const ProgressiveOnboardingSignalInterest: React.FC = ({ children }) => {
         </Text>
       }
     >
-      <Flex pointerEvents="none">{children}</Flex>
+      <Flex>{children}</Flex>
     </Popover>
   )
 }
