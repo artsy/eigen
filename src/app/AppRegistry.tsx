@@ -51,7 +51,6 @@ import { ArtistSeriesFullArtistSeriesListQueryRenderer } from "./Scenes/ArtistSe
 import { ArtistShows2QueryRenderer } from "./Scenes/ArtistShows/ArtistShows2"
 import { ArtworkScreen, ArtworkScreenQuery } from "./Scenes/Artwork/Artwork"
 import { CertificateOfAuthenticity } from "./Scenes/Artwork/Components/CertificateAuthenticity"
-import { UnlistedArtworksFAQScreen } from "./Scenes/Artwork/Components/UnlistedArtworksFAQScreen"
 import { ArtworkAttributionClassFAQQueryRenderer } from "./Scenes/ArtworkAttributionClassFAQ/ArtworkAttributionClassFAQ"
 import { ArtworkMediumQueryRenderer } from "./Scenes/ArtworkMedium/ArtworkMedium"
 import { AuctionBuyersPremiumQueryRenderer } from "./Scenes/AuctionBuyersPremium/AuctionBuyersPremium"
@@ -652,7 +651,6 @@ export const modules = defineModules({
   }),
   SubmitArtwork: reactModule(SubmitArtwork, { hidesBackButton: true, hidesBottomTabs: true }),
   Tag: reactModule(TagQueryRenderer, { hidesBackButton: true, fullBleed: true }),
-  UnlistedArtworksFAQScreen: reactModule(UnlistedArtworksFAQScreen),
   VanityURLEntity: reactModule(VanityURLEntityRenderer, { fullBleed: true }),
   ViewingRoom: reactModule(ViewingRoomQueryRenderer, { fullBleed: true }),
   ViewingRoomArtwork: reactModule(ViewingRoomArtworkScreen),
