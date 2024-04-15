@@ -112,14 +112,14 @@ const tracks = {
     action: ActionType.tappedArtworkGroup,
     context_module: ContextModule.lotsForYouRail,
     context_screen_owner_type: OwnerType.home,
-    destination_screen_owner_type: OwnerType.auctions,
+    destination_screen_owner_type: OwnerType.lotsForYou,
     type: "header",
   }),
   tappedMoreCard: () => ({
     action: ActionType.tappedArtworkGroup,
     context_module: ContextModule.lotsForYouRail,
     context_screen_owner_type: OwnerType.home,
-    destination_screen_owner_type: OwnerType.auctions,
+    destination_screen_owner_type: OwnerType.lotsForYou,
     type: "viewAll",
   }),
 }

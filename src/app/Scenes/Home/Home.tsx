@@ -21,7 +21,7 @@ import { Home_meBelow$data } from "__generated__/Home_meBelow.graphql"
 import { Home_newWorksForYou$data } from "__generated__/Home_newWorksForYou.graphql"
 import { Home_news$data } from "__generated__/Home_news.graphql"
 import { Home_notificationsConnection$data } from "__generated__/Home_notificationsConnection.graphql"
-import { Home_recommendedAuctions$data } from "__generated__/Home_recommendedAuctions.graphql"
+import { Home_recommendedAuctionLots$data } from "__generated__/Home_recommendedAuctionLots.graphql"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { LargeArtworkRailPlaceholder } from "app/Components/ArtworkRail/LargeArtworkRail"
@@ -121,7 +121,7 @@ export interface HomeProps extends ViewProps {
   relay: RelayRefetchProp
   emergingPicks: Home_emergingPicks$data | null | undefined
   heroUnits: Home_heroUnits$data | null | undefined
-  recommendedAuctions: Home_recommendedAuctions$data | null | undefined
+  recommendedAuctionLots: Home_recommendedAuctionLots$data | null | undefined
 }
 
 const Home = memo((props: HomeProps) => {
@@ -298,7 +298,7 @@ const Home = memo((props: HomeProps) => {
           return <GalleriesForYouBanner />
         case "activity":
           return <ActivityRail title={item.title} notificationsConnection={item.data} />
-        case "recommendedAuctions":
+        case "recommendedAuctionLots":
           return (
             <RecommendedAuctionLotsRail
               {...trackingProps}
@@ -547,8 +547,8 @@ export const HomeFragmentContainer = memo(
             @arguments(input: { sort: "-decayed_merch" })
         }
       `,
-      recommendedAuctions: graphql`
-        fragment Home_recommendedAuctions on Viewer {
+      recommendedAuctionLots: graphql`
+        fragment Home_recommendedAuctionLots on Viewer {
           ...RecommendedAuctionLotsRail_artworkConnection
         }
       `,
@@ -586,8 +586,8 @@ export const HomeFragmentContainer = memo(
         emergingPicks: marketingCollection(slug: "curators-picks-emerging") @optionalField {
           ...Home_emergingPicks
         }
-        recommendedAuctions: viewer {
-          ...Home_recommendedAuctions
+        recommendedAuctionLots: viewer {
+          ...Home_recommendedAuctionLots
         }
       }
     `
@@ -812,8 +812,8 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
             news: viewer @optionalField {
               ...Home_news
             }
-            recommendedAuctions: viewer @optionalField {
-              ...Home_recommendedAuctions
+            recommendedAuctionLots: viewer @optionalField {
+              ...Home_recommendedAuctionLots
             }
           }
         `,
@@ -839,7 +839,7 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
               meBelow={below ? below.me : null}
               loading={!below}
               heroUnits={above ? above.viewer : null}
-              recommendedAuctions={below?.recommendedAuctions ?? null}
+              recommendedAuctionLots={below?.recommendedAuctionLots ?? null}
             />
           )
         },
