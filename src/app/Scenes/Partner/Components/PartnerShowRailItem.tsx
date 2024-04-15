@@ -1,6 +1,5 @@
-import { Spacer, Flex, Text, useScreenDimensions } from "@artsy/palette-mobile"
+import { Spacer, Flex, Text, useScreenDimensions, Image } from "@artsy/palette-mobile"
 import { PartnerShowRailItem_show$data } from "__generated__/PartnerShowRailItem_show.graphql"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { exhibitionDates } from "app/Scenes/Map/exhibitionPeriodParser"
 import { navigate } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
@@ -27,16 +26,14 @@ export const PartnerShowRailItem: React.FC<Props> = (props) => {
   const { name, exhibitionPeriod, endAt, coverImage, images } = show
   const imageURL = coverImage?.url || first(images)?.url
 
+  const sectionWidth = windowWidth - 100
+
   return (
     <TouchableWithoutFeedback onPress={onPress}>
-      <Flex my="15px" mr={2} width={windowWidth - 100}>
-        <OpaqueImageView
-          imageURL={imageURL}
-          blurhash={coverImage?.blurhash}
-          style={{ alignItems: "center", justifyContent: "center" }}
-          height={200}
-          width={windowWidth - 100}
-        />
+      <Flex my="15px" mr={2} width={sectionWidth}>
+        {!!imageURL && (
+          <Image height={200} width={sectionWidth} src={imageURL} blurhash={coverImage?.blurhash} />
+        )}
         <Spacer y={1} />
         <Text variant="sm" numberOfLines={1}>
           {name}
