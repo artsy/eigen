@@ -3,7 +3,7 @@ import { NotificationTypesEnum } from "__generated__/ActivityRail_notificationsC
 export const getNotificationTypeBadge = (notificationType: NotificationTypesEnum) => {
   switch (notificationType) {
     case "PARTNER_OFFER_CREATED":
-      return "Limited Time Offer"
+      return "Limited-Time Offer"
     default:
       return null
   }
