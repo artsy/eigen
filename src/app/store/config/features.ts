@@ -256,6 +256,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableNewTermsAndConditions",
   },
+  AREnablePartnerOfferV1Improvements: {
+    description: "Enable partner offer v1 improvements",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnablePartnerOfferV1Improvements",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
