@@ -494,57 +494,6 @@ describe("ActivityItem", () => {
   })
 })
 
-const artworks = [
-  {
-    node: {
-      internalID: "artwork-id-one",
-      title: "artwork one",
-      image: {
-        thumb: {
-          src: "artwork-image-one",
-          srcSet: "artwork-image-one",
-        },
-      },
-    },
-  },
-  {
-    node: {
-      internalID: "artwork-id-two",
-      title: "artwork two",
-      image: {
-        thumb: {
-          src: "artwork-image-two",
-          srcSet: "artwork-image-two",
-        },
-      },
-    },
-  },
-  {
-    node: {
-      internalID: "artwork-id-three",
-      title: "artwork three",
-      image: {
-        thumb: {
-          src: "artwork-image-three",
-          srcSet: "artwork-image-three",
-        },
-      },
-    },
-  },
-  {
-    node: {
-      internalID: "artwork-id-four",
-      title: "artwork four",
-      image: {
-        thumb: {
-          src: "artwork-image-four",
-          srcSet: "artwork-image-four",
-        },
-      },
-    },
-  },
-]
-
 const notification = {
   title: "Notification Title",
   message: "Notification Message",
@@ -553,9 +502,20 @@ const notification = {
   notificationType: "ARTWORK_PUBLISHED",
   targetHref: targetUrl,
   objectsCount: 4,
-  artworksConnection: {
-    edges: artworks,
-  },
+  previewImages: [
+    {
+      url: "artwork-image-one",
+    },
+    {
+      url: "artwork-image-two",
+    },
+    {
+      url: "artwork-image-three",
+    },
+    {
+      url: "artwork-image-four",
+    },
+  ],
 }
 
 const notificationWithFF = {
@@ -565,7 +525,18 @@ const notificationWithFF = {
   notificationType: "ARTWORK_PUBLISHED",
   targetHref: targetUrl,
   objectsCount: 4,
-  artworksConnection: {
-    edges: artworks,
-  },
+  previewImages: [
+    {
+      url: "artwork-image-one",
+    },
+    {
+      url: "artwork-image-two",
+    },
+    {
+      url: "artwork-image-three",
+    },
+    {
+      url: "artwork-image-four",
+    },
+  ],
 }
