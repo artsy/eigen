@@ -72,7 +72,7 @@ export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProp
     >
       <Separator />
       <Box px={2} py={1}>
-        <ArtworkPrice artwork={artworkData} mb={1} />
+        <ArtworkPrice artwork={artworkData} me={meData} mb={1} />
         <ArtworkCommercialButtons artwork={artworkData} me={meData} />
       </Box>
     </Box>
@@ -93,7 +93,9 @@ const artworkFragment = graphql`
 `
 
 const meFragment = graphql`
-  fragment ArtworkStickyBottomContent_me on Me {
+  fragment ArtworkStickyBottomContent_me on Me
+  @argumentDefinitions(artworkID: { type: "String!" }) {
     ...ArtworkCommercialButtons_me
+    ...ArtworkPrice_me @arguments(artworkID: $artworkID)
   }
 `
