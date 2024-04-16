@@ -6,14 +6,14 @@ import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/Ma
 import { CommercialButtonsQueryRenderer } from "app/Scenes/Activity/components/NotificationCommercialButtons"
 import { extractNodes } from "app/utils/extractNodes"
 import { FC } from "react"
-import { ImageBackground, View } from "react-native"
+import { ImageBackground } from "react-native"
 import { useFragment, graphql } from "react-relay"
 
 export interface PartnerOffer {
   endAt: string
   isAvailable: boolean
   targetHref: string
-  note: string
+  note?: string
 }
 
 interface NotificationArtworkListProps {
@@ -56,40 +56,27 @@ export const NotificationArtworkList: FC<NotificationArtworkListProps> = (props)
         />
       )}
       {!!note && (
-        <View
-          style={{
-            width: "100%",
-            flexDirection: "row",
-            padding: 20,
-          }}
-        >
-          <View
-            style={{
-              backgroundColor: color("black5"),
-              flexDirection: "row",
-              width: "100%",
-              padding: 10,
-            }}
-          >
+        <Flex width="100%" flexDirection="row" p={2}>
+          <Flex width="100%" flexDirection="row" backgroundColor={color("black5")} p={1}>
             {!!partnerIcon && (
-              <View style={{ marginRight: 10 }}>
+              <Flex marginRight={1}>
                 <ImageBackground
                   source={{ uri: partnerIcon }}
                   style={{ width: 30, height: 30 }}
                   imageStyle={{ borderRadius: 15, borderColor: color("black30"), borderWidth: 1 }}
                 />
-              </View>
+              </Flex>
             )}
-            <View style={{ flex: 1 }}>
+            <Flex flex={1}>
               <Text variant="sm" color="black100" fontWeight="bold">
                 Note from the gallery
               </Text>
               <Text variant="sm" color="black100">
                 "{note}"
               </Text>
-            </View>
-          </View>
-        </View>
+            </Flex>
+          </Flex>
+        </Flex>
       )}
     </Flex>
   )
