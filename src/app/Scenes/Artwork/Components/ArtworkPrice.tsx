@@ -69,7 +69,7 @@ export const ArtworkPrice: React.FC<ArtworkPriceProps> = ({ artwork, me, ...flex
   }
 
   if (!!partnerOffer && partnerOffer.isAvailable) {
-    const listPrice = message || "Not publicly listed"
+    const listPrice = artworkData.isPriceHidden ? "Not publicly listed" : message
 
     return (
       <Flex {...flexProps}>
