@@ -58,56 +58,6 @@ describe("ArtworkPrice", () => {
     })
   })
 
-  describe("Exclude shipping and taxes label", () => {
-    it("should NOT be displayed", () => {
-      renderWithRelay({
-        Artwork: () => ({
-          isEligibleForOnPlatformTransaction: false,
-          isInAuction: false,
-          isPriceHidden: false,
-        }),
-      })
-
-      expect(screen.queryByText("excl. Shipping and Taxes")).not.toBeOnTheScreen()
-    })
-
-    it("should NOT be displayed when artworks is in auction", () => {
-      renderWithRelay({
-        Artwork: () => ({
-          isEligibleForOnPlatformTransaction: true,
-          isInAuction: true,
-          isPriceHidden: false,
-        }),
-      })
-
-      expect(screen.queryByText("excl. Shipping and Taxes")).not.toBeOnTheScreen()
-    })
-
-    it("should NOT be displayed when price is hidden for artwork", () => {
-      renderWithRelay({
-        Artwork: () => ({
-          isEligibleForOnPlatformTransaction: true,
-          isInAuction: false,
-          isPriceHidden: true,
-        }),
-      })
-
-      expect(screen.queryByText("excl. Shipping and Taxes")).not.toBeOnTheScreen()
-    })
-
-    it("should be displayed when artworks is eligible for on-platform transaction", () => {
-      renderWithRelay({
-        Artwork: () => ({
-          isEligibleForOnPlatformTransaction: true,
-          isInAuction: false,
-          isPriceHidden: false,
-        }),
-      })
-
-      expect(screen.getByText("excl. Shipping and Taxes")).toBeOnTheScreen()
-    })
-  })
-
   it("should render the sale message of the selected edition set", () => {
     renderWithRelay(
       {

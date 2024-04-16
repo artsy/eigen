@@ -38,22 +38,6 @@ export const ArtworkPrice: React.FC<ArtworkPriceProps> = ({ artwork, me, ...flex
     return selectedEdition?.saleMessage
   }
 
-  const renderShippingAndTaxesInfo = () => {
-    if (
-      !artworkData.isEligibleForOnPlatformTransaction ||
-      artworkData.isInAuction ||
-      artworkData.isPriceHidden
-    ) {
-      return null
-    }
-
-    return (
-      <Text variant="xs" color="black60">
-        excl. Shipping and Taxes
-      </Text>
-    )
-  }
-
   if (artworkData.isInAuction) {
     if (auctionState === AuctionTimerState.LIVE_INTEGRATION_ONGOING) {
       return null
@@ -100,7 +84,6 @@ export const ArtworkPrice: React.FC<ArtworkPriceProps> = ({ artwork, me, ...flex
     return (
       <Flex {...flexProps}>
         <Text variant="lg-display">{message}</Text>
-        {renderShippingAndTaxesInfo()}
       </Flex>
     )
   }
@@ -113,7 +96,6 @@ const artworkPriceFragment = graphql`
     saleMessage
     availability
     isInAuction
-    isEligibleForOnPlatformTransaction
     isPriceHidden
     taxInfo {
       displayText
