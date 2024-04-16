@@ -1,4 +1,5 @@
 import { EnvelopeIcon, Spacer, Flex, Text, Join, Button, LegacyScreen } from "@artsy/palette-mobile"
+import { statusCodes } from "@react-native-google-signin/google-signin"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { captureMessage } from "@sentry/react-native"
 import LoadingModal from "app/Components/Modals/LoadingModal"
@@ -51,6 +52,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
       oauthToken,
       idToken,
       appleUid,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     } = meta!
     const navParams: Omit<
       OnboardingNavigationStack["OnboardingSocialLink"],
@@ -86,20 +88,25 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
   }
 
   const handleError = (error: AuthPromiseRejectType) => {
-    captureMessage("AUTH_FAILURE: " + error.message)
-
-    const canBeLinked =
-      error.error === "User Already Exists" && error.meta && error.meta.existingProviders
-    if (canBeLinked) {
-      handleErrorWithAlternativeProviders(error.meta)
+    if (error.message === statusCodes.SIGN_IN_CANCELLED) {
       return
-    }
-    GlobalStore.actions.auth.setSessionState({ isLoading: false })
+    } else {
+      captureMessage("AUTH_FAILURE: " + error.message)
 
-    InteractionManager.runAfterInteractions(() => {
-      const errorMode = error.message === "Attempt blocked" ? "attempt blocked" : "no account"
-      showErrorAlert(errorMode, error)
-    })
+      const canBeLinked =
+        error.error === "User Already Exists" && error.meta && error.meta.existingProviders
+      if (canBeLinked) {
+        handleErrorWithAlternativeProviders(error.meta)
+        return
+      }
+      GlobalStore.actions.auth.setSessionState({ isLoading: false })
+
+      InteractionManager.runAfterInteractions(() => {
+        const errorMode = error.message === "Attempt blocked" ? "attempt blocked" : "no account"
+        showErrorAlert(errorMode, error)
+        return
+      })
+    }
   }
 
   const showErrorAlert = (
