@@ -32,7 +32,7 @@ export const NotificationArtworkList: FC<NotificationArtworkListProps> = (props)
 
   const artworks = extractNodes(artworksConnectionData)
   const note = partnerOffer?.note
-  const partnerIcon = artworks[0].partner?.profile?.icon?.resized
+  const partnerIcon = artworks[0].partner?.profile?.icon?.url
   const color = useColor()
 
   return (
@@ -74,7 +74,7 @@ export const NotificationArtworkList: FC<NotificationArtworkListProps> = (props)
             {!!partnerIcon && (
               <View style={{ marginRight: 10 }}>
                 <ImageBackground
-                  source={{ uri: partnerIcon.src }}
+                  source={{ uri: partnerIcon }}
                   style={{ width: 30, height: 30 }}
                   imageStyle={{ borderRadius: 15, borderColor: color("black30"), borderWidth: 1 }}
                 />
@@ -106,10 +106,7 @@ export const notificationArtworkListFragment = graphql`
         partner {
           profile {
             icon {
-              resized(width: 30, height: 30) {
-                src
-                srcSet
-              }
+              url(version: "square140")
             }
           }
         }
