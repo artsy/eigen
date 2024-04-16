@@ -9,7 +9,6 @@ import {
 import { PartnerOfferBadge } from "app/Scenes/Activity/components/PartnerOffeBadge"
 import { useMarkNotificationAsRead } from "app/Scenes/Activity/mutations/useMarkNotificationAsRead"
 import { navigateToActivityItem } from "app/Scenes/Activity/utils/navigateToActivityItem"
-import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { memo } from "react"
 import { TouchableOpacity } from "react-native"
@@ -31,11 +30,11 @@ export const ActivityItem: React.FC<ActivityItemProps> = memo(
   (props) => {
     const enableNavigateToASingleNotification = useFeatureFlag("AREnableSingleActivityPanelScreen")
     const enableNewActivityPanelManagement = useFeatureFlag("AREnableNewActivityPanelManagement")
+    const enableBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
     const markAsRead = useMarkNotificationAsRead()
     const tracking = useTracking()
     const item = useFragment(activityItemFragment, props.notification)
-    const artworks = extractNodes(item.artworksConnection)
     const artworksCount = item.objectsCount
     const remainingArtworksCount = artworksCount - 4
     const shouldDisplayCounts =
@@ -63,10 +62,12 @@ export const ActivityItem: React.FC<ActivityItemProps> = memo(
               <Flex flexDirection="column" py={2}>
                 <Flex flexDirection={showAsRow ? "row" : "column"}>
                   <Flex flexDirection="row" alignItems="center">
-                    {artworks.map((artwork) => {
+                    {item.previewImages.map((image) => {
+                      if (!image.url) return null
+
                       return (
                         <Flex
-                          key={`${item.internalID}-${artwork.internalID}`}
+                          key={image.url}
                           mr={1}
                           mb={1}
                           accessibilityLabel="Activity Artwork Image"
@@ -74,10 +75,11 @@ export const ActivityItem: React.FC<ActivityItemProps> = memo(
                           width={NEW_ARTWORK_IMAGE_SIZE}
                         >
                           <Image
-                            src={artwork.image?.preview?.src ?? ""}
+                            src={image.url}
                             width={NEW_ARTWORK_IMAGE_SIZE}
                             height={NEW_ARTWORK_IMAGE_SIZE}
                             showLoadingState={!props.isVisible}
+                            blurhash={enableBlurhash ? image.blurhash : undefined}
                           />
                         </Flex>
                       )
@@ -162,17 +164,19 @@ export const ActivityItem: React.FC<ActivityItemProps> = memo(
             <Spacer y={1} />
 
             <Flex flexDirection="row" alignItems="center">
-              {artworks.map((artwork) => {
+              {item.previewImages.map((image) => {
+                if (!image.url) return null
+
                 return (
                   <Flex
-                    key={`${item.internalID}-${artwork.internalID}`}
+                    key={image.url}
                     mr={1}
                     accessibilityLabel="Activity Artwork Image"
                     height={NEW_ARTWORK_IMAGE_SIZE}
                     width={NEW_ARTWORK_IMAGE_SIZE}
                   >
                     <Image
-                      src={artwork.image?.preview?.src ?? ""}
+                      src={image.url}
                       width={ARTWORK_IMAGE_SIZE}
                       height={ARTWORK_IMAGE_SIZE}
                       showLoadingState={!props.isVisible}
@@ -227,19 +231,9 @@ const activityItemFragment = graphql`
       }
     }
 
-    artworksConnection(first: 4) {
-      edges {
-        node {
-          internalID
-          title
-          image {
-            aspectRatio
-            preview: cropped(width: 116, height: 116, version: "normalized") {
-              src
-            }
-          }
-        }
-      }
+    previewImages(size: 4) {
+      url(version: "thumbnail")
+      blurhash
     }
   }
 `
