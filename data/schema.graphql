@@ -13557,6 +13557,7 @@ type Notification implements Node {
   message: String!
   notificationType: NotificationTypesEnum!
   objectsCount: Int!
+  previewImages(size: Int): [Image!]!
   publishedAt(
     # pass `RELATIVE` to display the human-friendly date (e.g. "Today", "Yesterday", "5 days ago")
     format: String
