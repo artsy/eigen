@@ -810,7 +810,7 @@ PODS:
     - React-Core
     - SDWebImage (~> 5.19.1)
     - SDWebImageWebPCoder (~> 0.8.4)
-  - RNFlashList (1.5.0):
+  - RNFlashList (1.6.4):
     - React-Core
   - RNGestureHandler (2.13.1):
     - React-Core
@@ -1514,7 +1514,7 @@ SPEC CHECKSUMS:
   RNDateTimePicker: f56338ebc86246f6b46f9e0953daa3a28acf909c
   RNDeviceInfo: 4701f0bf2a06b34654745053db0ce4cb0c53ada7
   RNFastImage: bb8cdea994fb18352557876cf345171a995eb57a
-  RNFlashList: 25b0e092b4470c84db0386d4f5316dc34123bb6d
+  RNFlashList: b521ebdd7f9352673817f1d98e8bdc0c8cf8545b
   RNGestureHandler: 38aa38413896620338948fbb5c90579a7b1c3fde
   RNGoogleSignin: 24d3b3261f78b0fae0aa013f8ab6f8d25e369b0c
   RNImageCropPicker: e7ab6fb43d2fc3e84651e786ef4a080d63b0ed3d
@@ -1549,10 +1549,6 @@ SPEC CHECKSUMS:
   Yoga: 87e59f6d458e5061d2421086c5de994b3f7cd151
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-<<<<<<< HEAD
 PODFILE CHECKSUM: 04a7db3b8ffb294e0c2a1349d5cd13ff437257ec
-=======
-PODFILE CHECKSUM: 534c7271372739fa3225ab08fbc7b8cdcdb00cff
->>>>>>> 7864cf744f (feat: add select component)
 
 COCOAPODS: 1.14.3
