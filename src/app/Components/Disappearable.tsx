@@ -30,6 +30,8 @@ export const Disappearable = forwardRef<Disappearable, React.PropsWithChildren<{
       ref,
       () => ({
         async disappear() {
+          console.log("[Debug] inside disappear function")
+
           opacity.value = withTiming(0, { duration: 500 }, () => {
             runOnJS(setShowContent)(false)
           })

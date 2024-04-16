@@ -1,4 +1,4 @@
-import { OwnerType } from "@artsy/cohesion"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, SimpleMessage, Text } from "@artsy/palette-mobile"
 import { NewWorksForYouArtworksQuery } from "__generated__/NewWorksForYouArtworksQuery.graphql"
 import { NewWorksForYouArtworks_viewer$key } from "__generated__/NewWorksForYouArtworks_viewer.graphql"
@@ -36,6 +36,7 @@ export const NewWorksForYouArtworks: React.FC<NewWorksForYouProps> = ({ viewer }
         numColumns={numColumns}
         disableAutoLayout
         pageSize={PAGE_SIZE}
+        contextModule={ContextModule.newWorksForYouRail}
         contextScreenOwnerType={OwnerType.newWorksForYou}
         contextScreen={OwnerType.newWorksForYou}
         ListEmptyComponent={

@@ -60,7 +60,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
     useFeatureFlag("AREnableLongPressOnNewForYouRail") && contextModule == "newWorksForYouRail"
   const enableContextMenu =
     useFeatureFlag("AREnableLongPressOnArtworkCards") || enableContextMenuForRecommendations
-  const [dislikeArtworkMutation] = useDislikeArtwork()
+  const { submitMutation: dislikeArtworkMutation } = useDislikeArtwork()
   const isIOS = Platform.OS === "ios"
   const color = useColor()
 
@@ -141,7 +141,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
 
     if (enableSupressArtwork) {
       contextMenuActions.push({
-        title: "Hide",
+        title: "Not Interested",
         systemIcon: "eye.slash",
         onPress: () => {
           InteractionManager.runAfterInteractions(() => {

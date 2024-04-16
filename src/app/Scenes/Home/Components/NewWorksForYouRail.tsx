@@ -93,7 +93,8 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
 
 const artworksFragment = graphql`
   fragment NewWorksForYouRail_artworkConnection on Viewer {
-    artworksForUser(maxWorksPerArtist: 3, includeBackfill: true, first: 40, version: $version) {
+    artworksForUser(maxWorksPerArtist: 3, includeBackfill: true, first: 40, version: $version)
+      @connection(key: "NewWorksForYou_artworksForUser") {
       edges {
         node {
           title
