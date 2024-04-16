@@ -445,7 +445,7 @@ describe("ActivityItem", () => {
 
       const label = screen.getByLabelText("Notification type: Offer")
       expect(label).toBeTruthy()
-      const badge = screen.getByText("Limited Time Offer")
+      const badge = screen.getByText("Limited-Time Offer")
       expect(badge).toBeTruthy()
     })
   })

@@ -1,5 +1,3 @@
-import { pluralize } from "app/utils/pluralize"
-
 export const formattedTimeLeft = (time: {
   days: string
   hours: string
@@ -15,19 +13,16 @@ export const formattedTimeLeft = (time: {
   let copy
 
   if (parsedDays >= 1 && parsedHours >= 1) {
-    copy = `${parsedDays} ${pluralize("day", parsedDays)} ${parsedHours} ${pluralize(
-      "hour",
-      parsedHours
-    )}`
+    copy = `${parsedDays}d ${parsedHours}h`
   } else if (parsedDays >= 1) {
-    copy = `${parsedDays} ${pluralize("day", parsedDays)}`
+    copy = `${parsedDays}d`
   } else if (parsedDays < 1 && parsedHours >= 1) {
-    copy = `${parsedHours} ${pluralize("hour", parsedHours)}`
+    copy = `${parsedHours}h`
   } else if (parsedHours < 1 && parsedMinutes >= 1) {
-    copy = `${parsedMinutes} ${pluralize("minute", parsedMinutes)}`
+    copy = `${parsedMinutes}m`
     textColor = "orange100"
   } else if (parsedMinutes < 1) {
-    copy = `${parsedSeconds} ${pluralize("second", parsedSeconds)}`
+    copy = `${parsedSeconds}s`
     textColor = "orange100"
   }
 
