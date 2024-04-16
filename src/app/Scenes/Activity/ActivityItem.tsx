@@ -231,7 +231,7 @@ const activityItemFragment = graphql`
       }
     }
 
-    previewImages(size: 4) {
+    previewImages(size: 4) @optionalField {
       url(version: "thumbnail")
       blurhash
     }

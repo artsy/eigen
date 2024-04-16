@@ -195,7 +195,7 @@ const ActivityRailItemFragment = graphql`
     }
     notificationType
     objectsCount
-    previewImages(size: 1) {
+    previewImages(size: 1) @optionalField {
       blurhash
       url(version: "thumbnail")
     }
