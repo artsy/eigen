@@ -57,9 +57,9 @@ export const NotificationArtworkList: FC<NotificationArtworkListProps> = (props)
       )}
       {!!note && (
         <Flex width="100%" flexDirection="row" p={2}>
-          <Flex width="100%" flexDirection="row" backgroundColor={color("black5")} p={1}>
+          <Flex width="100%" flexDirection="row" bg="black5" p={1}>
             {!!partnerIcon && (
-              <Flex marginRight={1}>
+              <Flex mr={1}>
                 <ImageBackground
                   source={{ uri: partnerIcon }}
                   style={{ width: 30, height: 30 }}
