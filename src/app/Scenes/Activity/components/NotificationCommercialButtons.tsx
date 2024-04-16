@@ -1,4 +1,4 @@
-import { Button, Flex, useSpace } from "@artsy/palette-mobile"
+import { Button, Flex, useSpace, Join, Spacer } from "@artsy/palette-mobile"
 import { BuyNowButton_artwork$key } from "__generated__/BuyNowButton_artwork.graphql"
 import { CreateArtworkAlertModal_artwork$key } from "__generated__/CreateArtworkAlertModal_artwork.graphql"
 import { InquiryButtons_artwork$key } from "__generated__/InquiryButtons_artwork.graphql"
@@ -10,10 +10,12 @@ import { PartnerOffer } from "app/Scenes/Activity/components/NotificationArtwork
 import { BuyNowButton } from "app/Scenes/Artwork/Components/CommercialButtons/BuyNowButton"
 import { InquiryButtonsFragmentContainer } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryButtons"
 import { MakeOfferButtonFragmentContainer } from "app/Scenes/Artwork/Components/CommercialButtons/MakeOfferButton"
+import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { getTimer } from "app/utils/getTimer"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { useState } from "react"
+import { useState, Children } from "react"
 import { QueryRenderer, graphql, useFragment } from "react-relay"
 
 export const CommercialButtonsQueryRenderer: React.FC<{
@@ -35,10 +37,22 @@ export const CommercialButtonsQueryRenderer: React.FC<{
       variables={{ artworkID }}
       render={renderWithPlaceholder({
         Container: CommercialButtons,
-        initialProps: { partnerOffer },
+        initialProps: { partnerOffer, artworkID },
         renderPlaceholder: () => <></>,
       })}
     />
+  )
+}
+
+const RowContainer: React.FC = ({ children }) => {
+  const childArray = Children.map(children, (child) => {
+    return <Flex flex={1}>{child}</Flex>
+  })
+
+  return (
+    <Flex flexDirection="row" alignItems="center">
+      <Join separator={<Spacer x={1} />}>{childArray}</Join>
+    </Flex>
   )
 }
 
@@ -50,13 +64,15 @@ const CommercialButtons: React.FC<{
     | MakeOfferButton_artwork$key
     | InquiryButtons_artwork$key
   partnerOffer?: PartnerOffer
-}> = ({ artwork, partnerOffer }) => {
+  artworkID: string
+}> = ({ artwork, partnerOffer, artworkID }) => {
   const artworkData = useFragment(artworkFragment, artwork)
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
   const space = useSpace()
 
   const { hasEnded } = getTimer(partnerOffer?.endAt || "")
   const noLongerAvailable = !partnerOffer?.isAvailable
+  const enablePartnerOfferV1Improvements = useFeatureFlag("AREnablePartnerOfferV1Improvements")
 
   return (
     <Flex mx={2} gap={space(1)}>
@@ -74,13 +90,34 @@ const CommercialButtons: React.FC<{
         </>
       )}
 
-      {!hasEnded && !noLongerAvailable && (
+      {!hasEnded && !noLongerAvailable && !enablePartnerOfferV1Improvements && (
         <BuyNowButton
           artwork={artworkData as BuyNowButton_artwork$key}
           partnerOffer={partnerOffer}
           editionSetID={null}
           buttonText="Continue to Purchase"
         />
+      )}
+
+      {!hasEnded && !noLongerAvailable && !!enablePartnerOfferV1Improvements && (
+        <RowContainer>
+          <Button
+            onPress={() => {
+              navigate(`/artwork/${artworkID}?partner_offer_id=${partnerOffer?.id}`)
+            }}
+            variant="outline"
+            accessibilityLabel="View Work"
+            block
+          >
+            View Work
+          </Button>
+          <BuyNowButton
+            artwork={artworkData as BuyNowButton_artwork$key}
+            partnerOffer={partnerOffer}
+            editionSetID={null}
+            buttonText="Purchase"
+          />
+        </RowContainer>
       )}
 
       {!!noLongerAvailable && (

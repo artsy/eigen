@@ -10,6 +10,7 @@ import { ImageBackground } from "react-native"
 import { useFragment, graphql } from "react-relay"
 
 export interface PartnerOffer {
+  id: string
   endAt: string
   isAvailable: boolean
   targetHref: string
