@@ -278,7 +278,7 @@ export const MyCollectionContainer = createPaginationContainer(
           artworksCount
         }
         ...MyCollectionCollectedArtists_me
-        userInterestsConnection(first: 10, category: COLLECTED_BEFORE, interestType: ARTIST) {
+        userInterestsConnection(first: 20, category: COLLECTED_BEFORE, interestType: ARTIST) {
           totalCount
         }
         myCollectionConnection(first: $count, after: $cursor, sort: CREATED_AT_DESC)
