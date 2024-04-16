@@ -12,7 +12,6 @@ import {
 import { PartnerOfferBadge } from "app/Scenes/Activity/components/PartnerOffeBadge"
 import { useMarkNotificationAsRead } from "app/Scenes/Activity/mutations/useMarkNotificationAsRead"
 import { navigateToActivityItem } from "app/Scenes/Activity/utils/navigateToActivityItem"
-import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { TouchableOpacity } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -28,6 +27,7 @@ const ACTIVITY_RAIL_ITEM_WIDTH = 240
 export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
   const enableNavigateToASingleNotification = useFeatureFlag("AREnableSingleActivityPanelScreen")
   const enableNewActivityPanelManagement = useFeatureFlag("AREnableNewActivityPanelManagement")
+  const enableBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
   const markAsRead = useMarkNotificationAsRead()
 
@@ -41,7 +41,7 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
     navigateToActivityItem(item, enableNavigateToASingleNotification)
   }
 
-  const imageURL = getPreviewImage(item)
+  const image = item.previewImages[0]
 
   const isPartnerOffer = item.notificationType === "PARTNER_OFFER_CREATED"
   const isEditorial = item.notificationType === "ARTICLE_FEATURED_ARTIST"
@@ -56,11 +56,12 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
             width={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
             height={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
           >
-            {!!imageURL && (
+            {!!image.url && (
               <Image
-                src={imageURL}
+                src={image.url}
                 width={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
                 height={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
+                blurhash={enableBlurhash ? image.blurhash : undefined}
               />
             )}
           </Flex>
@@ -102,11 +103,12 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
           width={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
           height={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
         >
-          {!!imageURL && (
+          {!!image.url && (
             <Image
-              src={imageURL}
+              src={image.url}
               width={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
               height={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
+              blurhash={enableBlurhash ? image.blurhash : undefined}
             />
           )}
         </Flex>
@@ -175,19 +177,6 @@ const Headline: React.FC<HeadlineProps> = ({ headline, notificationType }) => {
   )
 }
 
-const getPreviewImage = (item: ActivityRailItem_item$data) => {
-  switch (item.notificationType) {
-    case "VIEWING_ROOM_PUBLISHED":
-      return extractNodes(item?.item?.viewingRoomsConnection)?.[0]?.image?.imageURLs?.normalized
-    case "ARTICLE_FEATURED_ARTIST":
-      return item?.item?.article?.thumbnailImage?.preview?.src
-    case "PARTNER_SHOW_OPENED":
-      return extractNodes(item?.item?.showsConnection)?.[0]?.coverImage?.preview?.src
-    default:
-      return extractNodes(item?.artworksConnection)?.[0]?.image?.preview?.src
-  }
-}
-
 const ActivityRailItemFragment = graphql`
   fragment ActivityRailItem_item on Notification {
     internalID
@@ -198,62 +187,17 @@ const ActivityRailItemFragment = graphql`
     publishedAt(format: "RELATIVE")
     targetHref
     isUnread
-    notificationType
-    objectsCount
-    artworksConnection(first: 1) {
-      edges {
-        node {
-          internalID
-          title
-          image {
-            aspectRatio
-            preview: cropped(width: 55, height: 55, version: "normalized") {
-              src
-            }
-          }
-        }
-      }
-    }
     item {
       ... on PartnerOfferCreatedNotificationItem {
         available
         expiresAt
       }
-      ... on ViewingRoomPublishedNotificationItem {
-        viewingRoomsConnection(first: 1) {
-          edges {
-            node {
-              image {
-                imageURLs {
-                  normalized
-                }
-              }
-            }
-          }
-        }
-      }
-      ... on ArticleFeaturedArtistNotificationItem {
-        article {
-          thumbnailImage {
-            preview: cropped(width: 55, height: 55, version: "normalized") {
-              src
-            }
-          }
-        }
-      }
-      ... on ShowOpenedNotificationItem {
-        showsConnection(first: 1) {
-          edges {
-            node {
-              coverImage {
-                preview: cropped(width: 55, height: 55, version: "normalized") {
-                  src
-                }
-              }
-            }
-          }
-        }
-      }
+    }
+    notificationType
+    objectsCount
+    previewImages(size: 1) {
+      blurhash
+      url(version: "thumbnail")
     }
   }
 `
