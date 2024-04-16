@@ -160,7 +160,7 @@ export const ArtworkDetailsForm: React.FC = () => {
       <Flex flexDirection="row" justifyContent="space-between">
         <Box width="31%" mr={1}>
           <Input2
-            title="Height"
+            title={`Height (${values.dimensionsMetric})`}
             keyboardType="decimal-pad"
             testID="Submission_HeightInput"
             value={values.height}
@@ -170,7 +170,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         </Box>
         <Box width="31%" mr={1}>
           <Input2
-            title="Width"
+            title={`Width (${values.dimensionsMetric})`}
             keyboardType="decimal-pad"
             testID="Submission_WidthInput"
             value={values.width}
@@ -180,7 +180,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         </Box>
         <Box width="31%">
           <Input2
-            title="Depth"
+            title={`Depth (${values.dimensionsMetric})`}
             optional
             keyboardType="decimal-pad"
             testID="Submission_DepthInput"

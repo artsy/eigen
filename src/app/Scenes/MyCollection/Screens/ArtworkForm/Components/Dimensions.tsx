@@ -45,7 +45,7 @@ export const Dimensions: React.FC = () => {
       <Flex flexDirection="row">
         <Flex mr={1} flex={1}>
           <Input2
-            title="Height"
+            title={`Height (${localMetric})`}
             keyboardType="decimal-pad"
             onChangeText={formik.handleChange("height")}
             onBlur={formik.handleBlur("height")}
@@ -56,7 +56,7 @@ export const Dimensions: React.FC = () => {
         </Flex>
         <Flex mr={1} flex={1}>
           <Input2
-            title="Width"
+            title={`Width (${localMetric})`}
             keyboardType="decimal-pad"
             onChangeText={formik.handleChange("width")}
             onBlur={formik.handleBlur("width")}
@@ -67,7 +67,7 @@ export const Dimensions: React.FC = () => {
         </Flex>
         <Flex flex={1}>
           <Input2
-            title="Depth"
+            title={`Depth (${localMetric})`}
             keyboardType="decimal-pad"
             onChangeText={formik.handleChange("depth")}
             onBlur={formik.handleBlur("depth")}
