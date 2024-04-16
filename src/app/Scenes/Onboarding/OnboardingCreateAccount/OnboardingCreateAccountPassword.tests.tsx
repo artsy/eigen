@@ -48,7 +48,7 @@ describe("OnboardingCreateAccountPassword", () => {
     it("renders the right password from the formik context", () => {
       renderWithWrappers(<Test />)
 
-      const passwordInput = screen.getByPlaceholderText("Password")
+      const passwordInput = screen.getByTestId("passwordInput")
 
       expect(passwordInput).toHaveTextContent("")
 
@@ -59,7 +59,7 @@ describe("OnboardingCreateAccountPassword", () => {
 
     it("does not validate password when the user is still typing", () => {
       renderWithWrappers(<Test />)
-      const passwordInput = screen.getByPlaceholderText("Password")
+      const passwordInput = screen.getByTestId("passwordInput")
 
       fireEvent.changeText(passwordInput, "wrongpassword")
 
@@ -68,7 +68,7 @@ describe("OnboardingCreateAccountPassword", () => {
 
     it("does validate the password properly on submit", async () => {
       renderWithWrappers(<Test />)
-      const passwordInput = screen.getByPlaceholderText("Password")
+      const passwordInput = screen.getByTestId("passwordInput")
 
       fireEvent.changeText(passwordInput, "short")
       fireEvent(passwordInput, "submitEditing")

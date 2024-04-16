@@ -1,7 +1,7 @@
 import { Flex, Text, TimerIcon } from "@artsy/palette-mobile"
 import { Time, getTimer } from "app/utils/getTimer"
 import { DateTime } from "luxon"
-import moment from "moment"
+import moment from "moment-timezone"
 import { useEffect, useState } from "react"
 import useInterval from "react-use/lib/useInterval"
 

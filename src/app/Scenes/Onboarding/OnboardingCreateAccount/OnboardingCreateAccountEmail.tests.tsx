@@ -45,7 +45,7 @@ describe("OnboardingCreateAccountEmail", () => {
   describe("Form", () => {
     it("renders the right email from the formik context", async () => {
       renderWithWrappers(<Test />)
-      const emailInput = screen.getByPlaceholderText("Email address")
+      const emailInput = screen.getByTestId("emailInput")
 
       expect(emailInput).toHaveTextContent("")
 
@@ -56,7 +56,7 @@ describe("OnboardingCreateAccountEmail", () => {
 
     it("does not validate email when the user is still typing", () => {
       renderWithWrappers(<Test />)
-      const emailInput = screen.getByPlaceholderText("Email address")
+      const emailInput = screen.getByTestId("emailInput")
 
       fireEvent.changeText(emailInput, "test")
 
@@ -65,7 +65,7 @@ describe("OnboardingCreateAccountEmail", () => {
 
     it("does validate the email on submit", async () => {
       renderWithWrappers(<Test />)
-      const emailInput = screen.getByPlaceholderText("Email address")
+      const emailInput = screen.getByTestId("emailInput")
       expect(screen.queryByText("Please provide a valid email address")).not.toBeOnTheScreen()
 
       fireEvent.changeText(emailInput, "test")
@@ -78,7 +78,7 @@ describe("OnboardingCreateAccountEmail", () => {
 
     it("hides the error message when the user types", async () => {
       renderWithWrappers(<Test />)
-      const emailInput = screen.getByPlaceholderText("Email address")
+      const emailInput = screen.getByTestId("emailInput")
 
       fireEvent.changeText(emailInput, "test")
       fireEvent(emailInput, "submitEditing")

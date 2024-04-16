@@ -17,24 +17,10 @@
   dependencies:
     core-js "3"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-"@artsy/palette-mobile@13.1.27":
-  version "13.1.27"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-13.1.27.tgz#c73eec20685189260decc3ccdad92961adb33357"
-  integrity sha512-fcOzyWcCr/Z1rkhmQKqMdG9j9ZpMzNkS5UI96jb72r6zzXJ+2jB9hzRB1xbAIIIzfmGKpyEbmLO0yuRY8tSXQw==
-=======
-"@artsy/palette-mobile@13.1.23--canary.207.1682.0":
-  version "13.1.23--canary.207.1682.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-13.1.23--canary.207.1682.0.tgz#549f316ca7fcc30531d950bd653f4d6d887386dc"
-  integrity sha512-umOhxg+AIWXBfN0HTG0C3eF3FnWSWZYQarOFtMjAg0GjhdnfpHxLvO9tOwYrszEu9F3FHfKFZ+NVE+iKYfI+UA==
->>>>>>> b578328458 (chore: update palette-mopile)
-=======
-"@artsy/palette-mobile@13.1.23--canary.207.1687.0":
-  version "13.1.23--canary.207.1687.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-13.1.23--canary.207.1687.0.tgz#d83d32ad3ef7ee681ee56c9fa77822cb450661b1"
-  integrity sha512-hBUEC5/tt14PfhXVl+ZCQ3pq9YEGQfV9jdIi2i+YsaNBx+ttL+z+6+dxYRGuh19BMFkRLam8ahuwfYXibVXrYQ==
->>>>>>> 6ddce8e538 (chore: update palette-mobile)
+"@artsy/palette-mobile@13.1.28--canary.207.1767.0":
+  version "13.1.28--canary.207.1767.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-13.1.28--canary.207.1767.0.tgz#dc0d00b02877b210a9c7ad59cf66ff874dc4778c"
+  integrity sha512-/Fc8Y/P8n7nDRHMjNP+7jaAelia6D52OTvV8TC8IMkflF3BF+cZ17fs62RD8HU4DFoNCRa9v8S87lNvMBvo7Vw==
   dependencies:
     "@artsy/palette-tokens" "^5.0.0"
     "@shopify/flash-list" "^1.5.0"
