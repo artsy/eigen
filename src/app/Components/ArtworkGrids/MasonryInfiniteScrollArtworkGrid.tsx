@@ -82,7 +82,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
         // we need to add padding to the artwork meta to make sure its readable
         paddingHorizontal: rest.numColumns !== 1 ? 0 : space(2),
         // Extra space between items for one column artwork grids
-        paddingBottom: rest.numColumns !== 1 ? 0 : space(4),
+        paddingBottom: rest.numColumns !== 1 ? 0 : artworks.length === 1 ? space(2) : space(4),
       }}
       priceOfferMessage={priceOfferMessage}
     />
@@ -96,7 +96,8 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       contentContainerStyle={{
         // No paddings are needed for single column grids
         paddingHorizontal: rest.numColumns === 1 ? 0 : space(2),
-        paddingBottom: space(6),
+        paddingBottom: artworks.length === 1 ? 0 : space(6),
+        // paddingBottom: space(6),
       }}
       data={artworks}
       keyExtractor={(item) => item.id}
