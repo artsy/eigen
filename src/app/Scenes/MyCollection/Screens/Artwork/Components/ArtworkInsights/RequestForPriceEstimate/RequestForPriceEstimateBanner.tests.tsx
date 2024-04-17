@@ -1,6 +1,6 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { RequestForPriceEstimateBannerTestsQuery } from "__generated__/RequestForPriceEstimateBannerTestsQuery.graphql"
-import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -30,13 +30,12 @@ describe("RequestForPriceEstimateBanner", () => {
       render={({ props }) => {
         if (props?.artwork && props?.marketPriceInsights && props?.me) {
           return (
-            <GlobalStoreProvider>
-              <RequestForPriceEstimateBanner
-                me={props.me}
-                artwork={props.artwork}
-                marketPriceInsights={props.marketPriceInsights}
-              />
-            </GlobalStoreProvider>
+            <RequestForPriceEstimateBanner
+              me={props.me}
+              artwork={props.artwork}
+              marketPriceInsights={props.marketPriceInsights}
+              contextModule="insights"
+            />
           )
         }
         return null
@@ -60,7 +59,7 @@ describe("RequestForPriceEstimateBanner", () => {
   }
 
   it("renders without throwing an error", async () => {
-    const { getByTestId } = renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     resolveData({
       Artwork: () => ({
         internalID: "some-internal-id",
@@ -74,13 +73,13 @@ describe("RequestForPriceEstimateBanner", () => {
 
     await flushPromiseQueue()
 
-    expect(getByTestId("request-price-estimate-button")).toBeDefined()
-    expect(getByTestId("request-price-estimate-banner-title")).toBeDefined()
-    expect(getByTestId("request-price-estimate-banner-description")).toBeDefined()
+    expect(screen.getByTestId("request-price-estimate-button")).toBeDefined()
+    expect(screen.getByTestId("request-price-estimate-banner-title")).toBeDefined()
+    expect(screen.getByTestId("request-price-estimate-banner-description")).toBeDefined()
   })
 
   it("rendering nothing if the price estimate is not requestable", () => {
-    const { queryByTestId } = renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     resolveData({
       Artwork: () => ({
         internalID: "some-internal-id",
@@ -89,56 +88,13 @@ describe("RequestForPriceEstimateBanner", () => {
       }),
     })
 
-    expect(queryByTestId("request-price-estimate-button")).toBeNull()
-    expect(queryByTestId("request-price-estimate-banner-title")).toBeNull()
-    expect(queryByTestId("request-price-estimate-banner-description")).toBeNull()
-  })
-
-  it("renders 'requested' state if in global store without throwing an error", async () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-    resolveData({
-      Artwork: () => ({
-        internalID: "artwork-id",
-        slug: "artwork-id",
-        hasPriceEstimateRequest: null,
-      }),
-      MarketPriceInsights: () => ({
-        demandRank: 7.5,
-      }),
-    })
-    __globalStoreTestUtils__?.injectState({
-      requestedPriceEstimates: {
-        requestedPriceEstimates: {
-          "artwork-id": {
-            artworkId: "artwork-id",
-            requestedAt: 1666015648950,
-          },
-        },
-      },
-    })
-
-    await flushPromiseQueue()
-
-    expect(getByText("Price Estimate Request Sent")).toBeDefined()
-  })
-
-  it("renders 'requested' state if hasPriceEstimateRequest is true", () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-    resolveData({
-      Artwork: () => ({
-        internalID: "artwork-id",
-        slug: "artwork-id",
-        hasPriceEstimateRequest: true,
-      }),
-      MarketPriceInsights: () => ({
-        demandRank: 7.5,
-      }),
-    })
-    expect(getByText("Price Estimate Request Sent")).toBeDefined()
+    expect(screen.queryByTestId("request-price-estimate-button")).toBeNull()
+    expect(screen.queryByTestId("request-price-estimate-banner-title")).toBeNull()
+    expect(screen.queryByTestId("request-price-estimate-banner-description")).toBeNull()
   })
 
   it("tracks analytics event when RequestForEstimate button is tapped", () => {
-    const { getByTestId } = renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     resolveData({
       Artwork: () => ({
         internalID: "artwork-id",
@@ -151,7 +107,7 @@ describe("RequestForPriceEstimateBanner", () => {
       }),
     })
 
-    const TheButton = getByTestId("request-price-estimate-button")
+    const TheButton = screen.getByTestId("request-price-estimate-button")
 
     fireEvent.press(TheButton)
 

@@ -35,7 +35,7 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
 
   return (
     <Flex>
-      <Separator mb={2} />
+      {contextModule === "about" && <Separator mb={2} borderColor="black10" />}
       <Text variant="sm-display" testID="SWA-banner-in-MC">
         Interested in Selling This Work?
       </Text>
@@ -80,6 +80,7 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
           </Text>
         </Text>
       </>
+      {contextModule === "insights" && <Separator mt={2} mb={2} borderColor="black10" />}
     </Flex>
   )
 }
