@@ -58,7 +58,7 @@ export const ArtworkPrice: React.FC<ArtworkPriceProps> = ({ artwork, me, ...flex
     return (
       <Flex {...flexProps}>
         <Flex flexDirection="row">
-          <Box borderRadius="3px" backgroundColor="blue10" px={0.5}>
+          <Box borderRadius={3} backgroundColor="blue10" px={0.5}>
             <Text variant="xs" color="blue100">
               Limited-Time Offer
             </Text>
