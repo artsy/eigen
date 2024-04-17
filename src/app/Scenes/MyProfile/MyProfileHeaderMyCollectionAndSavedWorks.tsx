@@ -45,14 +45,14 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<Props> = ({ init
     })
   }
   // if the progress of saved artwork onboarding reached the final stage of the chain we show the dot
-  if (isDismissed("find-saved-artwork").status && !isDismissed("save-highlight").status) {
-    indicators.push({
-      tabName: Tab.savedWorks,
-      Component: () => {
-        return <VisualClueDot style={{ left: -29, alignSelf: "flex-end", marginTop: 15 }} />
-      },
-    })
-  }
+  // if (isDismissed("find-saved-artwork").status && !isDismissed("save-highlight").status) {
+  //   indicators.push({
+  //     tabName: Tab.savedWorks,
+  //     Component: () => {
+  //       return <VisualClueDot style={{ left: -29, alignSelf: "flex-end", marginTop: 15 }} />
+  //     },
+  //   })
+  // }
 
   return (
     <>
@@ -61,6 +61,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<Props> = ({ init
           <Tabs
             initialTabName={initialTab}
             renderHeader={() => <MyProfileHeaderQueryRenderer />}
+            headerHeight={500}
             indicators={indicators}
             onTabPress={(tabName) => {
               if (tabName === Tab.insights) {
@@ -84,11 +85,11 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<Props> = ({ init
                 <MyCollectionInsightsQR />
               </Tabs.Lazy>
             </Tabs.Tab>
-            <Tabs.Tab name={Tab.savedWorks} label={Tab.savedWorks}>
+            {/* <Tabs.Tab name={Tab.savedWorks} label={Tab.savedWorks}>
               <Tabs.Lazy>
                 <ArtworkListsQR />
               </Tabs.Lazy>
-            </Tabs.Tab>
+            </Tabs.Tab> */}
           </Tabs>
         </Screen.Body>
       </Screen>

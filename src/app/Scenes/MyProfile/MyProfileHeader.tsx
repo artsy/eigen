@@ -10,6 +10,8 @@ import {
   Text,
   Touchable,
   useColor,
+  PersonIcon,
+  useSpace,
 } from "@artsy/palette-mobile"
 import { MyProfileHeaderQuery } from "__generated__/MyProfileHeaderQuery.graphql"
 import { MyProfileHeader_me$key } from "__generated__/MyProfileHeader_me.graphql"
@@ -25,6 +27,7 @@ import { normalizeMyProfileBio } from "./utils"
 const ICON_SIZE = 14
 
 export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props) => {
+  const space = useSpace()
   const { fetchKey, refetch } = useRefetch()
   const me = useFragment(myProfileHeaderFragment, props.me)
 
@@ -33,6 +36,57 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
   const localImage = useLocalImageStorage("profile", undefined, undefined, fetchKey)
 
   const userProfileImagePath = localImage?.path || me?.icon?.url
+
+  return (
+    <Flex justifyContent="center" alignItems="center" gap={space(0.5)}>
+      {/* Avatar */}
+      <Flex height={70} width={70} borderRadius={35} backgroundColor={color("black10")}>
+        <TouchableOpacity
+          onPress={() => {
+            navigate("/my-profile/edit", {
+              passProps: {
+                onSuccess: () => {
+                  refetch()
+                },
+              },
+            })
+          }}
+          testID="profile-image"
+          style={{
+            height: 70,
+            width: 70,
+            borderRadius: 35,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {!!userProfileImagePath ? (
+            <Avatar src={userProfileImagePath} size="xs" />
+          ) : (
+            <PersonIcon width={24} height={24} />
+          )}
+        </TouchableOpacity>
+      </Flex>
+
+      {/* Information */}
+      <Flex>
+        <Flex flexDirection="row" justifyContent="center">
+          <Text variant="md" color={color("black100")}>
+            {me?.name}
+          </Text>
+        </Flex>
+
+        {!!me.location?.display && (
+          <Flex flexDirection="row" justifyContent="center" alignItems="center">
+            <MapPinIcon />
+            <Text variant="xs" ml={0.5}>
+              {me.location?.display}
+            </Text>
+          </Flex>
+        )}
+      </Flex>
+    </Flex>
+  )
 
   return (
     <Flex pt={2}>
@@ -146,6 +200,10 @@ const myProfileHeaderFragment = graphql`
       url(version: "thumbnail")
     }
     createdAt
+    isIdentityVerified
+    collectorProfile @required(action: NONE) {
+      confirmedBuyerAt
+    }
   }
 `
 
