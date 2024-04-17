@@ -1,13 +1,5 @@
-import {
-  Spacer,
-  Box,
-  useSpace,
-  Text,
-  useScreenDimensions,
-  Flex,
-  Image,
-  BoxProps,
-} from "@artsy/palette-mobile"
+import { Spacer, Box, useSpace, Text, Flex, BoxProps } from "@artsy/palette-mobile"
+import FastImage from "react-native-fast-image"
 import { CardTag, CardTagProps } from "./CardTag"
 export interface SmallCardProps extends BoxProps {
   images: string[]
@@ -21,15 +13,9 @@ export interface SmallCardProps extends BoxProps {
  * one tall or two square images on the right, and text for title and subtitle
  * at the bottom.
  */
+// TODO: Fix palette image to accept aspectRatio only and respect flex props and use it here
 export const SmallCard: React.FC<SmallCardProps> = ({ images, title, subtitle, tag, ...rest }) => {
   const space = useSpace()
-  const { width: screenWidth } = useScreenDimensions()
-
-  const sectionWidth = screenWidth - space(4)
-
-  const heroImageWidth = (2 * sectionWidth) / 3
-
-  const smallImageWidth = sectionWidth / 3
 
   return (
     <Box {...rest}>
@@ -42,20 +28,22 @@ export const SmallCard: React.FC<SmallCardProps> = ({ images, title, subtitle, t
           aspectRatio: 1.5 / 1.0,
         }}
       >
-        <Flex flex={2} bg="black10" my="auto" mr={2} backgroundColor="red10">
-          <Image src={images[0]} width={heroImageWidth} aspectRatio={1} />
+        <Flex flex={2} bg="black10" my="auto" mr={2}>
+          <FastImage source={{ uri: images[0] }} style={{ flex: 1, aspectRatio: 1 }} />
         </Flex>
 
         <Spacer x="2px" />
 
-        <Flex flex={1} my="auto" alignItems="center" backgroundColor="green10">
+        <Flex flex={1} my="auto" alignItems="center">
           {images.length < 2 && <Flex flex={1} />}
-          {!!images[1] && <Image src={images[1]} width={smallImageWidth} aspectRatio={1} />}
+          {!!images[1] && (
+            <FastImage source={{ uri: images[1] }} style={{ flex: 1, aspectRatio: 1 }} />
+          )}
 
           {!!images[2] && (
             <>
               <Spacer y="2px" />
-              <Image src={images[2]} width={smallImageWidth} aspectRatio={1} />
+              <FastImage source={{ uri: images[2] }} style={{ flex: 1, aspectRatio: 1 }} />
             </>
           )}
         </Flex>
