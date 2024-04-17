@@ -43,7 +43,7 @@ export const ICON_SIZE = 26
 
 export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererProps> = ({
   utm_medium,
-  maxWorksPerArtist = 3,
+  maxWorksPerArtist,
   version: versionProp,
 }) => {
   const enableNewWorksForYouFeed = useFeatureFlag("AREnableNewWorksForYouScreenFeed")
@@ -72,7 +72,7 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
     enableNewWorksForYouFeed &&
     experiment.enabled &&
     (experiment.variant === "experiment" || forceShowNewWorksForYouFeed)
-
+  console.log(maxWorksPerArtist, "maxWorksPerArtist")
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.newWorksForYou })}

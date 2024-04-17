@@ -105,13 +105,13 @@ export const newWorksForYouArtworksQuery = graphql`
 `
 
 interface NewWorksForYouArtworksQRProps {
-  maxWorksPerArtist: number
+  maxWorksPerArtist?: number
   version?: string
   onlyAtAuction?: boolean
 }
 
 export const NewWorksForYouArtworksQR: React.FC<NewWorksForYouArtworksQRProps> = withSuspense(
-  ({ version, maxWorksPerArtist, onlyAtAuction = false }) => {
+  ({ version, onlyAtAuction = false, maxWorksPerArtist = 3 }) => {
     const data = useLazyLoadQuery<NewWorksForYouArtworksQuery>(newWorksForYouArtworksQuery, {
       version,
       maxWorksPerArtist,

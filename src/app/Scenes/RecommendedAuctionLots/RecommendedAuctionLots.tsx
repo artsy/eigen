@@ -28,7 +28,6 @@ import { isTablet } from "react-native-device-info"
 export const SCREEN_TITLE = "Auction Lots for You"
 
 export const RecommendedAuctionLotsQueryRenderer: React.FC = () => {
-  const defaultVariables = recommendedAuctionLotsDefaultVariables()
   const defaultViewOption = GlobalStore.useAppState((state) => state.userPrefs.defaultViewOption)
   const setDefaultViewOption = GlobalStore.actions.userPrefs.setDefaultViewOption
 
@@ -59,10 +58,7 @@ export const RecommendedAuctionLotsQueryRenderer: React.FC = () => {
         />
         <Screen.StickySubHeader title={SCREEN_TITLE} />
         <Screen.Body fullwidth>
-          <NewWorksForYouArtworksQR
-            maxWorksPerArtist={defaultVariables.maxWorksPerArtist}
-            onlyAtAuction
-          />
+          <NewWorksForYouArtworksQR onlyAtAuction />
         </Screen.Body>
       </Screen>
     </ProvideScreenTrackingWithCohesionSchema>
@@ -70,7 +66,6 @@ export const RecommendedAuctionLotsQueryRenderer: React.FC = () => {
 }
 
 export const recommendedAuctionLotsDefaultVariables = () => ({
-  maxWorksPerArtist: 3,
   count: PAGE_SIZE,
   includeBackfill: true,
   onlyAtAuction: true,
