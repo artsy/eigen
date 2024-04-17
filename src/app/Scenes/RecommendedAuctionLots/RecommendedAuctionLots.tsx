@@ -10,79 +10,37 @@ import {
   Spacer,
 } from "@artsy/palette-mobile"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
-import { NewWorksForYouArtworksQR } from "app/Scenes/NewWorksForYou/Components/NewWorksForYouArtworks"
+import {
+  NewWorksForYouArtworksQR,
+  PAGE_SIZE,
+} from "app/Scenes/NewWorksForYou/Components/NewWorksForYouArtworks"
+import { ICON_SIZE } from "app/Scenes/NewWorksForYou/NewWorksForYou"
 import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
-import { useExperimentVariant } from "app/utils/experiments/hooks"
-import { useDevToggle } from "app/utils/hooks/useDevToggle"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
 import { MotiPressable } from "moti/interactions"
-import { useEffect } from "react"
 import { LayoutAnimation } from "react-native"
 import { isTablet } from "react-native-device-info"
 
-export const SCREEN_TITLE = "New Works for You"
-export const RECOMMENDATION_MODEL_EXPERIMENT_NAME = "eigen-new-works-for-you-recommendations-model"
-export const DEFAULT_RECS_MODEL_VERSION = "C"
+export const SCREEN_TITLE = "Auction Lots for You"
 
-export interface NewWorksForYouScreenProps {
-  maxWorksPerArtist: number
-  version: string
-}
-
-interface NewWorksForYouQueryRendererProps {
-  utm_medium?: string
-  maxWorksPerArtist?: number
-  version?: string
-}
-export const ICON_SIZE = 26
-
-export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererProps> = ({
-  utm_medium,
-  maxWorksPerArtist,
-  version: versionProp,
-}) => {
-  const enableNewWorksForYouFeed = useFeatureFlag("AREnableNewWorksForYouScreenFeed")
-  const forceShowNewWorksForYouFeed = useDevToggle("DTForceShowNewWorksForYouScreenFeed")
-
-  const experiment = useExperimentVariant("onyx_new_works_for_you_feed")
-
-  const isReferredFromEmail = utm_medium === "email"
-
-  // Use the version specified in the URL or no version if the screen is opened from the email.
-  const version =
-    isReferredFromEmail && versionProp ? versionProp?.toUpperCase() : DEFAULT_RECS_MODEL_VERSION
-
+export const RecommendedAuctionLotsQueryRenderer: React.FC = () => {
   const defaultViewOption = GlobalStore.useAppState((state) => state.userPrefs.defaultViewOption)
-
   const setDefaultViewOption = GlobalStore.actions.userPrefs.setDefaultViewOption
 
-  useEffect(() => {
-    experiment.trackExperiment({
-      context_owner_type: OwnerType.newWorksForYou,
-    })
-  }, [])
-
-  const showToggleViewOptionIcon =
-    !isTablet() &&
-    enableNewWorksForYouFeed &&
-    experiment.enabled &&
-    (experiment.variant === "experiment" || forceShowNewWorksForYouFeed)
-  console.log(maxWorksPerArtist, "maxWorksPerArtist")
   return (
     <ProvideScreenTrackingWithCohesionSchema
-      info={screen({ context_screen_owner_type: OwnerType.newWorksForYou })}
+      info={screen({ context_screen_owner_type: OwnerType.lotsForYou })}
     >
       <Screen>
         <Screen.AnimatedHeader
           onBack={goBack}
           title={SCREEN_TITLE}
           rightElements={
-            showToggleViewOptionIcon ? (
+            !isTablet() ? (
               <MotiPressable
                 onPress={() => {
                   setDefaultViewOption(defaultViewOption === "list" ? "grid" : "list")
@@ -100,18 +58,23 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
         />
         <Screen.StickySubHeader title={SCREEN_TITLE} />
         <Screen.Body fullwidth>
-          <NewWorksForYouArtworksQR maxWorksPerArtist={maxWorksPerArtist} version={version} />
+          <NewWorksForYouArtworksQR onlyAtAuction />
         </Screen.Body>
       </Screen>
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 
-export const NewWorksForYouPlaceholder: React.FC<{ defaultViewOption?: ViewOption }> = ({
+export const recommendedAuctionLotsDefaultVariables = () => ({
+  count: PAGE_SIZE,
+  includeBackfill: true,
+  onlyAtAuction: true,
+})
+
+export const RecommendedAuctionLotsPlaceholder: React.FC<{ defaultViewOption?: ViewOption }> = ({
   defaultViewOption,
 }) => {
   const storeViewOption = GlobalStore.useAppState((state) => state.userPrefs.defaultViewOption)
-  const enableNewWorksForYouFeed = useFeatureFlag("AREnableNewWorksForYouScreenFeed")
   const viewOption = defaultViewOption ?? storeViewOption
 
   return (
@@ -126,7 +89,7 @@ export const NewWorksForYouPlaceholder: React.FC<{ defaultViewOption?: ViewOptio
         </Flex>
       </Flex>
       <Spacer y={2} />
-      {viewOption === "grid" || !enableNewWorksForYouFeed ? (
+      {viewOption === "grid" ? (
         <PlaceholderGrid />
       ) : (
         <Flex width="100%" px={2}>
