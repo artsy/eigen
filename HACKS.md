@@ -340,18 +340,6 @@ When we upgrade to Reanimated 3.4.0
 
 Fixes some issues on Android when Reanimated stops. https://github.com/software-mansion/react-native-reanimated/issues/4626
 
-## Fork in podfile Expecta+Snapshots
-
-#### When can we remove this:
-
-When this PR is released in a new pod version: https://github.com/dblock/ios-snapshot-test-case-expecta/pull/48
-And we update to the new version.
-
-#### Explanation/Context:
-
-In order to update other testing dependencies like Specta to version 2 we needed to update this dependency to support version 2.
-Once the pod officially supports version 2 we no longer need the fork.
-
 ## Patch-package for @react-navigation/native
 
 #### When we can remove this:

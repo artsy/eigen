@@ -56,10 +56,11 @@ describe("PartnerOfferCreatedNotification", () => {
       await flushPromiseQueue()
 
       expect(screen.getByText("Offers")).toBeTruthy()
-      expect(screen.getByText("Limited Time Offer")).toBeTruthy()
+      expect(screen.getByText("Limited-Time Offer")).toBeTruthy()
       expect(screen.getByText(/Expires in/i)).toBeTruthy()
       expect(screen.getByText("$405,000")).toBeTruthy()
       expect(screen.getByText(/List price:\s*\$450,000\s*/)).toBeTruthy()
+      expect(screen.getByText('"This is a note from the gallery"')).toBeTruthy()
     })
   })
 
@@ -78,7 +79,7 @@ describe("PartnerOfferCreatedNotification", () => {
       await flushPromiseQueue()
 
       expect(screen.getByText("Offers")).toBeTruthy()
-      expect(screen.getByText("Limited Time Offer")).toBeTruthy()
+      expect(screen.getByText("Limited-Time Offer")).toBeTruthy()
       expect(
         screen.getByText("This offer has expired. Please make a new offer or contact the gallery")
       ).toBeTruthy()
@@ -129,7 +130,7 @@ describe("PartnerOfferCreatedNotification", () => {
       await flushPromiseQueue()
 
       expect(screen.getByText("Offers")).toBeTruthy()
-      expect(screen.getByText("Limited Time Offer")).toBeTruthy()
+      expect(screen.getByText("Limited-Time Offer")).toBeTruthy()
       expect(screen.getByText(/Expires in/i)).toBeTruthy()
       expect(screen.getByText("$405,000")).toBeTruthy()
       expect(screen.getByText(/Not publicly listed/i)).toBeTruthy()
@@ -182,6 +183,7 @@ const availableNotification = {
       priceWithDiscount: {
         display: "$405,000",
       },
+      note: "This is a note from the gallery",
     },
   },
   artworksConnection: {

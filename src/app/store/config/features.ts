@@ -53,7 +53,7 @@ export const features = {
     showInDevMenu: true,
   },
   AREnableEditorialNews: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable news app in the home screen",
     echoFlagKey: "AREnableEditorialNews",
     showInDevMenu: true,
@@ -228,7 +228,7 @@ export const features = {
   },
   AREnableArtworkListOfferability: {
     description: "Enable Parnter Offer v1.5, edit sharing artwork list with partners for offers",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableArtworkListOfferability",
   },
@@ -252,7 +252,7 @@ export const features = {
   },
   AREnableNewTermsAndConditions: {
     description: "Enable new terms and conditions",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableNewTermsAndConditions",
   },
@@ -260,6 +260,12 @@ export const features = {
     description: "Enable Context Menu on artwork cards on new for you rail",
     readyForRelease: false,
     showInDevMenu: true,
+  },
+  AREnablePartnerOfferV1Improvements: {
+    description: "Enable partner offer v1 improvements",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnablePartnerOfferV1Improvements",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 

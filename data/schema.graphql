@@ -1633,6 +1633,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     # State of the returned auction results (can be past, upcoming, or all)
     state: AuctionResultsState
   ): AuctionResultConnection
+  awards: String
 
   # In applicable contexts, this is what the artist (as a suggestion) is based on.
   basedOn: Artist
@@ -1667,7 +1668,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
-  criticallyAcclaimed: Boolean
+  criticallyAcclaimed: Boolean!
   currentEvent: CurrentEvent
   deathday: String
   disablePriceContext: Boolean
@@ -2374,6 +2375,7 @@ type Artwork implements Node & Searchable & Sellable {
   depth: String
   description(format: Format): String
   dimensions: dimensions
+  displayArtistBio: Boolean
   displayLabel: String
   displayPriceRange: Boolean
 
@@ -12345,6 +12347,13 @@ type Me implements Node {
     first: Int
     last: Int
   ): ArtworkConnection
+  recommendedArtworks(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+  ): ArtworkConnection
   saleRegistrationsConnection(
     after: String
     auctionState: AuctionState
@@ -12458,6 +12467,8 @@ type Me implements Node {
     # UserInterest InterestType to select. 'Artist' or 'Gene' type
     interestType: UserInterestInterestType
     last: Int
+    page: Int
+    size: Int
   ): UserInterestConnection
 
   # A list of lots a user is watching.
@@ -13546,6 +13557,7 @@ type Notification implements Node {
   message: String!
   notificationType: NotificationTypesEnum!
   objectsCount: Int!
+  previewImages(size: Int): [Image!]!
   publishedAt(
     # pass `RELATIVE` to display the human-friendly date (e.g. "Today", "Yesterday", "5 days ago")
     format: String
@@ -14600,6 +14612,7 @@ type PartnerOfferToCollector implements Node {
   # A type-specific ID.
   internalID: ID!
   isAvailable: Boolean
+  note: String
   partnerId: String
   priceWithDiscount: Money
 }
@@ -16304,7 +16317,7 @@ type Query {
   # Content for a specific page or view
   staticContent(
     # The slug or id for the view
-    id: String!
+    id: String
   ): StaticContent
 
   # Get a Submission
@@ -18129,6 +18142,16 @@ enum sort {
   DESC
 }
 
+type SpecialistBio {
+  bio: String
+  email: String
+  firstName: String
+  image: Image
+  jobTitle: String
+  name: String
+  specialty: String
+}
+
 type StartIdentityVerificationFailure {
   mutationError: GravityMutationError
 }
@@ -18169,6 +18192,9 @@ type StaticContent {
 
   # A slug ID.
   slug: ID!
+
+  # A list of specialists
+  specialistBios: [SpecialistBio]
 }
 
 enum SubGroupInputStatus {
@@ -18552,10 +18578,12 @@ type UpdateArtistFailure {
 
 input UpdateArtistMutationInput {
   alternateNames: [String!]
+  awards: String
   birthday: String
   blurb: String
   clientMutationId: String
   coverArtworkId: String
+  criticallyAcclaimed: Boolean
   deathday: String
   displayName: String
   first: String
@@ -18570,6 +18598,7 @@ input UpdateArtistMutationInput {
   public: Boolean
   targetSupplyPriority: ArtistTargetSupplyPriority
   targetSupplyType: ArtistTargetSupplyType
+  vanguardYear: String
 }
 
 type UpdateArtistMutationPayload {
@@ -18645,6 +18674,7 @@ input updateCollectionInput {
   # The internal ID of the collection
   id: String!
   name: String!
+  shareableWithPartners: Boolean
 }
 
 type updateCollectionPayload {
@@ -21005,7 +21035,7 @@ type Viewer {
   # Content for a specific page or view
   staticContent(
     # The slug or id for the view
-    id: String!
+    id: String
   ): StaticContent
 
   # Fields related to internal systems.

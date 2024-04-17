@@ -30,16 +30,17 @@ export const FeatureFlags: React.FC<{}> = () => {
     <Flex mx={2}>
       <Expandable label="Feature Flags" expanded={false}>
         <Spacer y={1} />
-        <Flex mb={1} flexDirection="row" flex={1}>
-          <Flex flex={8}>
+
+        <Flex mb={1} flexDirection="row" alignItems="center">
+          <Flex flex={1} mr={1}>
             <SearchInput onChangeText={setFeatureFlagQuery} placeholder="Search feature flags" />
           </Flex>
-          <Flex flex={3} justifyContent="center" pr={2}>
-            <Pill onPress={toggleFeatureFlagDirection}>
-              {isFeatureFlagOrderReversed ? "Sort ↓" : "Sort ↑"}
-            </Pill>
-          </Flex>
+
+          <Pill onPress={toggleFeatureFlagDirection}>
+            {isFeatureFlagOrderReversed ? "Sort ↓" : "Sort ↑"}
+          </Pill>
         </Flex>
+
         <Flex mx={-2}>
           {isFeatureFlagOrderReversed ? filteredAndMappedKeys.reverse() : filteredAndMappedKeys}
           <DevMenuButtonItem

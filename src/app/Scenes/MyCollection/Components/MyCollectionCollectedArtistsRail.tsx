@@ -160,7 +160,7 @@ export const Artist: React.FC<{
 
 const collectedArtistsPaginationFragment = graphql`
   fragment MyCollectionCollectedArtistsRail_me on Me
-  @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" })
+  @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, after: { type: "String" })
   @refetchable(queryName: "MyCollectionCollectedArtistsRail_myCollectionInfoRefetch") {
     userInterestsConnection(
       first: $count

@@ -80,6 +80,7 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
               endAt: item?.partnerOffer?.endAt || "",
               isAvailable: item?.partnerOffer?.isAvailable || false,
               targetHref: targetHref,
+              note: item?.partnerOffer?.note || "",
             }}
             showArtworkCommercialButtons
           />
@@ -99,6 +100,7 @@ export const PartnerOfferCreatedNotificationFragment = graphql`
         expiresAt
         available
         partnerOffer {
+          note
           endAt
           isAvailable
           priceWithDiscount {

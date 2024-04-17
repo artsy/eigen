@@ -123,7 +123,11 @@ export const AutosuggestSearchResult: React.FC<{
         onPress={() => onPress()}
         testID={`autosuggest-search-result-${result.displayLabel}`}
       >
-        <Flex height={IMAGE_SIZE} flexDirection="row" alignItems="center">
+        <Flex
+          height={secondaryLabel ? IMAGE_SIZE + 12 : IMAGE_SIZE}
+          flexDirection="row"
+          alignItems="center"
+        >
           <SearchResultImage
             imageURL={result.imageUrl}
             initials={initials}

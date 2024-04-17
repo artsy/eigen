@@ -1,6 +1,6 @@
 import { Flex, Spacer, Text, useScreenDimensions, useTheme } from "@artsy/palette-mobile"
 import { ArtistAboutShows_artist$data } from "__generated__/ArtistAboutShows_artist.graphql"
-import { ArtistAboutShow } from "app/Components/Artist/ArtistAbout/ArtistAboutShow"
+import { ShowItem } from "app/Components/ShowItem"
 import { extractNodes } from "app/utils/extractNodes"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -25,7 +25,7 @@ const ArtistAboutShows: React.FC<Props> = ({ artist }) => {
       </Text>
       <FlatList
         data={shows}
-        renderItem={({ item }) => <ArtistAboutShow show={item} />}
+        renderItem={({ item }) => <ShowItem show={item} />}
         ItemSeparatorComponent={() => <Spacer x={2} />}
         keyExtractor={(show) => show.internalID}
         showsHorizontalScrollIndicator={false}
@@ -46,7 +46,7 @@ export const ArtistAboutShowsFragmentContainer = createFragmentContainer(ArtistA
         edges {
           node {
             internalID
-            ...ArtistAboutShow_show
+            ...ShowItem_show
           }
         }
       }
