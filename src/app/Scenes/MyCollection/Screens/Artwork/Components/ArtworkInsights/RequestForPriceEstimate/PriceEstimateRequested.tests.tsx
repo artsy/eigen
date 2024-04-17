@@ -7,7 +7,7 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
-describe("RequestForPriceEstimateBanner", () => {
+describe("PriceEstimateRequested", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <QueryRenderer<PriceEstimateRequestedTestsQuery>
