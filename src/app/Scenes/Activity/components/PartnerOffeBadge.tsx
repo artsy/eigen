@@ -8,7 +8,13 @@ interface PartnerOfferBadgeProps {
 
 export const PartnerOfferBadge: React.FC<PartnerOfferBadgeProps> = ({ notificationType }) => {
   return (
-    <Text variant="xs" fontWeight="bold" color="blue100">
+    <Text
+      variant="xs"
+      color="blue100"
+      backgroundColor="blue10"
+      style={{ alignSelf: "flex-start" }}
+      px={0.5}
+    >
       {getNotificationTypeBadge(notificationType)}
     </Text>
   )
