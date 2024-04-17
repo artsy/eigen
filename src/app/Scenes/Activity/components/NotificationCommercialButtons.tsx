@@ -76,7 +76,7 @@ const CommercialButtons: React.FC<{
 
   return (
     <Flex mx={2} gap={space(1)}>
-      {!!hasEnded && (
+      {!!hasEnded && !enablePartnerOfferV1Improvements && (
         <>
           <MakeOfferButtonFragmentContainer
             artwork={artworkData as MakeOfferButton_artwork$key}
@@ -88,6 +88,18 @@ const CommercialButtons: React.FC<{
             variant="outline"
           />
         </>
+      )}
+
+      {!!hasEnded && !!enablePartnerOfferV1Improvements && (
+        <Button
+          onPress={() => {
+            navigate(`/artwork/${artworkID}?expired_offer=true`)
+          }}
+          block
+          accessibilityLabel="View Work"
+        >
+          View Work
+        </Button>
       )}
 
       {!hasEnded && !noLongerAvailable && !enablePartnerOfferV1Improvements && (
