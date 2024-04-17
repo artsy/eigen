@@ -6,9 +6,10 @@ import {
   useScreenDimensions,
   Flex,
   Image,
+  BoxProps,
 } from "@artsy/palette-mobile"
 import { CardTag, CardTagProps } from "./CardTag"
-export interface SmallCardProps {
+export interface SmallCardProps extends BoxProps {
   images: string[]
   title?: string
   subtitle?: string
