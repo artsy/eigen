@@ -35,7 +35,7 @@ export const RecommendedAuctionLotsQueryRenderer: React.FC = () => {
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
-      info={screen({ context_screen_owner_type: OwnerType.lotsByArtistsYouFollow })}
+      info={screen({ context_screen_owner_type: OwnerType.lotsForYou })}
     >
       <Screen>
         <Screen.AnimatedHeader
