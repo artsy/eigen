@@ -14,6 +14,7 @@ import {
   NewWorksForYouArtworksQR,
   PAGE_SIZE,
 } from "app/Scenes/NewWorksForYou/Components/NewWorksForYouArtworks"
+import { ICON_SIZE } from "app/Scenes/NewWorksForYou/NewWorksForYou"
 import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
@@ -25,8 +26,6 @@ import { LayoutAnimation } from "react-native"
 import { isTablet } from "react-native-device-info"
 
 export const SCREEN_TITLE = "Auction Lots for You"
-
-const ICON_SIZE = 26
 
 export const RecommendedAuctionLotsQueryRenderer: React.FC = () => {
   const defaultVariables = recommendedAuctionLotsDefaultVariables()

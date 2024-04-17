@@ -64,31 +64,29 @@ export const RecommendedAuctionLotsRail: React.FC<
   }
 
   return (
-    <Flex>
-      <View ref={railRef}>
-        <Flex pl={2} pr={2}>
-          <SectionTitle
-            title={title}
-            onPress={() => {
-              trackEvent(tracks.tappedHeader())
-              navigate("/auctions/lots-for-you-ending-soon")
-            }}
-          />
-        </Flex>
-        <LargeArtworkRail
-          {...trackingProps}
-          artworks={artworks}
-          onPress={handleOnArtworkPress}
-          showSaveIcon
-          onMorePress={() => {
-            trackEvent(tracks.tappedMoreCard())
+    <View ref={railRef}>
+      <Flex pl={2} pr={2}>
+        <SectionTitle
+          title={title}
+          onPress={() => {
+            trackEvent(tracks.tappedHeader())
             navigate("/auctions/lots-for-you-ending-soon")
           }}
-          onViewableItemsChanged={onViewableItemsChanged}
-          viewabilityConfig={viewabilityConfig}
         />
-      </View>
-    </Flex>
+      </Flex>
+      <LargeArtworkRail
+        {...trackingProps}
+        artworks={artworks}
+        onPress={handleOnArtworkPress}
+        showSaveIcon
+        onMorePress={() => {
+          trackEvent(tracks.tappedMoreCard())
+          navigate("/auctions/lots-for-you-ending-soon")
+        }}
+        onViewableItemsChanged={onViewableItemsChanged}
+        viewabilityConfig={viewabilityConfig}
+      />
+    </View>
   )
 })
 

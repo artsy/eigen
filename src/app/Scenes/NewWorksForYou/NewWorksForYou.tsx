@@ -39,7 +39,7 @@ interface NewWorksForYouQueryRendererProps {
   maxWorksPerArtist?: number
   version?: string
 }
-const ICON_SIZE = 26
+export const ICON_SIZE = 26
 
 export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererProps> = ({
   utm_medium,
