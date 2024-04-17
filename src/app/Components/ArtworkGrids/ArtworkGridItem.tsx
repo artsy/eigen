@@ -225,7 +225,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
     !!priceOfferMessage.priceWithDiscountMessage
 
   const handleSupress = async (item: DissapearableArtwork) => {
-    console.log("[Debug] before disappear")
     await item._disappearable?.disappear()
   }
 
