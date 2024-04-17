@@ -14,26 +14,27 @@ export const ProgressiveOnboardingOfferSettings: React.FC = ({ children }) => {
   } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
   const { dismiss, setIsReady } = GlobalStore.actions.progressiveOnboarding
   const isFocused = useIsFocused()
-  const isPartnerOfferEnabled = useFeatureFlag("AREnablePartnerOffer")
+  const isArtworkListOfferabilityEnabled = useFeatureFlag("AREnableArtworkListOfferability")
 
   const isDisplayable =
-    isPartnerOfferEnabled &&
+    isArtworkListOfferabilityEnabled &&
     isReady &&
     !isDismissed("offer-settings").status &&
     !!isDismissed("signal-interest").status &&
     isFocused &&
     isInView
-  const { isActive, clearActivePopover } = useSetActivePopover(isDisplayable)
+
+  const { clearActivePopover } = useSetActivePopover(isDisplayable)
 
   const handleDismiss = () => {
     setIsReady(false)
     dismiss("offer-settings")
   }
 
-  if (isDisplayable && isActive) {
+  if (isInView) {
     return (
       <Popover
-        visible
+        visible={!!isDisplayable}
         onDismiss={handleDismiss}
         onPressOutside={handleDismiss}
         onCloseComplete={clearActivePopover}
@@ -45,13 +46,9 @@ export const ProgressiveOnboardingOfferSettings: React.FC = ({ children }) => {
           </Text>
         }
       >
-        <Flex pointerEvents="none">{children}</Flex>
+        <Flex>{children}</Flex>
       </Popover>
     )
-  }
-
-  if (isInView) {
-    return <>{children}</>
   }
 
   return <ElementInView onVisible={() => setIsInView(true)}>{children}</ElementInView>
