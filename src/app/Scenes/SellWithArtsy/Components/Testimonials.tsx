@@ -42,7 +42,7 @@ export const Testimonials: React.FC = () => {
   }
 
   if (!testimonials) {
-    return <LoadingSkeleton />
+    return null
   }
 
   return (
