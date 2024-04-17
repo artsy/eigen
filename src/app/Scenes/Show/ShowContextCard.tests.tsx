@@ -6,6 +6,7 @@ import { extractText } from "app/utils/tests/extractText"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { TouchableOpacity } from "react-native"
+import FastImage from "react-native-fast-image"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -79,6 +80,7 @@ describe("ShowContextCard", () => {
       const renderedImages = wrapper.root
         .findAllByType(OpaqueImageView)
         .map((img) => img.props.imageURL)
+
       expect(renderedImages).toContain("http://test.artsy.net/fair-logo.jpg")
       expect(renderedImages).toContain("http://test.artsy.net/fair-main.jpg")
     })
@@ -153,8 +155,8 @@ describe("ShowContextCard", () => {
       expect(text).toMatch("New York, London")
 
       const renderedImages = wrapper.root
-        .findAllByType(OpaqueImageView)
-        .map((img) => img.props.imageURL)
+        .findAllByType(FastImage)
+        .map((img) => img.props.source.uri)
       expect(renderedImages).toContain("http://test.artsy.net/artwork-1.jpg")
       expect(renderedImages).toContain("http://test.artsy.net/artwork-2.jpg")
       expect(renderedImages).toContain("http://test.artsy.net/artwork-3.jpg")

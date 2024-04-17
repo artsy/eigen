@@ -1,7 +1,6 @@
-import { Spacer, Box, BoxProps, useSpace, Text } from "@artsy/palette-mobile"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { Spacer, Box, useSpace, Text, Flex, BoxProps } from "@artsy/palette-mobile"
+import FastImage from "react-native-fast-image"
 import { CardTag, CardTagProps } from "./CardTag"
-
 export interface SmallCardProps extends BoxProps {
   images: string[]
   title?: string
@@ -14,8 +13,10 @@ export interface SmallCardProps extends BoxProps {
  * one tall or two square images on the right, and text for title and subtitle
  * at the bottom.
  */
+// TODO: Fix palette image to accept aspectRatio only and respect flex props and use it here
 export const SmallCard: React.FC<SmallCardProps> = ({ images, title, subtitle, tag, ...rest }) => {
   const space = useSpace()
+
   return (
     <Box {...rest}>
       <Box
@@ -27,24 +28,25 @@ export const SmallCard: React.FC<SmallCardProps> = ({ images, title, subtitle, t
           aspectRatio: 1.5 / 1.0,
         }}
       >
-        <Box flex={2} bg="black10">
-          <OpaqueImageView imageURL={images[0]} style={{ flex: 1 }} />
-        </Box>
+        <Flex flex={2} bg="black10" my="auto" mr={2}>
+          <FastImage source={{ uri: images[0] }} style={{ flex: 1, aspectRatio: 1 }} />
+        </Flex>
 
         <Spacer x="2px" />
 
-        <Box flex={1}>
-          {images.length < 2 && <Box flex={1} bg="black10" />}
-
-          {!!images[1] && <OpaqueImageView imageURL={images[1]} style={{ flex: 1 }} />}
+        <Flex flex={1} my="auto" alignItems="center">
+          {images.length < 2 && <Flex flex={1} />}
+          {!!images[1] && (
+            <FastImage source={{ uri: images[1] }} style={{ flex: 1, aspectRatio: 1 }} />
+          )}
 
           {!!images[2] && (
             <>
               <Spacer y="2px" />
-              <OpaqueImageView imageURL={images[2]} style={{ flex: 1 }} />
+              <FastImage source={{ uri: images[2] }} style={{ flex: 1, aspectRatio: 1 }} />
             </>
           )}
-        </Box>
+        </Flex>
       </Box>
 
       {!!title && (
