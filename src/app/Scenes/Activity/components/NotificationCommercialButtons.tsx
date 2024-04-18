@@ -72,11 +72,11 @@ const CommercialButtons: React.FC<{
 
   const { hasEnded } = getTimer(partnerOffer?.endAt || "")
   const noLongerAvailable = !partnerOffer?.isAvailable
-  const enablePartnerOfferV1Improvements = useFeatureFlag("AREnablePartnerOfferV1Improvements")
+  const enablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
 
   return (
     <Flex mx={2} gap={space(1)}>
-      {!!hasEnded && !enablePartnerOfferV1Improvements && (
+      {!!hasEnded && !enablePartnerOfferOnArtworkScreen && (
         <>
           <MakeOfferButtonFragmentContainer
             artwork={artworkData as MakeOfferButton_artwork$key}
@@ -90,7 +90,7 @@ const CommercialButtons: React.FC<{
         </>
       )}
 
-      {!!hasEnded && !!enablePartnerOfferV1Improvements && (
+      {!!hasEnded && !!enablePartnerOfferOnArtworkScreen && (
         <Button
           onPress={() => {
             navigate(`/artwork/${artworkID}?expired_offer=true`)
@@ -102,7 +102,7 @@ const CommercialButtons: React.FC<{
         </Button>
       )}
 
-      {!hasEnded && !noLongerAvailable && !enablePartnerOfferV1Improvements && (
+      {!hasEnded && !noLongerAvailable && !enablePartnerOfferOnArtworkScreen && (
         <BuyNowButton
           artwork={artworkData as BuyNowButton_artwork$key}
           partnerOffer={partnerOffer}
@@ -111,7 +111,7 @@ const CommercialButtons: React.FC<{
         />
       )}
 
-      {!hasEnded && !noLongerAvailable && !!enablePartnerOfferV1Improvements && (
+      {!hasEnded && !noLongerAvailable && !!enablePartnerOfferOnArtworkScreen && (
         <RowContainer>
           <Button
             onPress={() => {
