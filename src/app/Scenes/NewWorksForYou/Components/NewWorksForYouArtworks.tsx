@@ -70,7 +70,7 @@ export const newWorksForYouArtworksFragment = graphql`
       maxWorksPerArtist: $maxWorksPerArtist
       version: $version
       onlyAtAuction: $onlyAtAuction
-    ) @connection(key: "NewWorksForYou_artworks") {
+    ) @connection(key: "NewWorksForYou_artworks", filters: []) {
       totalCount
       edges {
         node {
