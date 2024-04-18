@@ -10,17 +10,17 @@
     "@jridgewell/gen-mapping" "^0.3.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@artsy/cohesion@4.170.0":
-  version "4.170.0"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.170.0.tgz#0b1743811eecf335ddb74c6fbb1084101f069255"
-  integrity sha512-b693cNN+lTNuAuERb00kEt9wi/avfITk+K8iCPDUT2z2kFMIRCk+tC27Qfjri2aLrotJjs+GsjAflYoGq9Agaw==
+"@artsy/cohesion@4.171.0":
+  version "4.171.0"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.171.0.tgz#8cbe075f53d11e6f2924cfe0c719eb22329398f9"
+  integrity sha512-oK9l0bzCh9wsxGguLzRTpmyI9iV/jKxmxZ4r+oU+Cr8U6wQvfEJtIqzURHxBRBTXdlOlz1LNnYQ6Rg636fz3ag==
   dependencies:
     core-js "3"
 
-"@artsy/palette-mobile@13.1.27":
-  version "13.1.27"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-13.1.27.tgz#c73eec20685189260decc3ccdad92961adb33357"
-  integrity sha512-fcOzyWcCr/Z1rkhmQKqMdG9j9ZpMzNkS5UI96jb72r6zzXJ+2jB9hzRB1xbAIIIzfmGKpyEbmLO0yuRY8tSXQw==
+"@artsy/palette-mobile@13.1.29":
+  version "13.1.29"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-13.1.29.tgz#b4ec9ce56c26c5ae4b9bc9f5740078462e3bbd2f"
+  integrity sha512-sm7xpvXMOwu63t4wjFWmHOAitpM17nr4/bWpfjGLkVyMUlItp0vAzK/MSkjy/jN2PwQikgEk0I1NsnjcxTnGvg==
   dependencies:
     "@artsy/palette-tokens" "^5.0.0"
     "@shopify/flash-list" "^1.5.0"
