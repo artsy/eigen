@@ -25,8 +25,6 @@ export const ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE = 60
 const ACTIVITY_RAIL_ITEM_WIDTH = 240
 
 export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
-  const enableNavigateToASingleNotification = useFeatureFlag("AREnableSingleActivityPanelScreen")
-  const enableNewActivityPanelManagement = useFeatureFlag("AREnableNewActivityPanelManagement")
   const enableBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
   const markAsRead = useMarkNotificationAsRead()
@@ -38,61 +36,13 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
 
     markAsRead(item)
 
-    navigateToActivityItem(item, enableNavigateToASingleNotification)
+    navigateToActivityItem(item)
   }
 
   const image = item.previewImages[0]
 
   const isPartnerOffer = item.notificationType === "PARTNER_OFFER_CREATED"
   const isEditorial = item.notificationType === "ARTICLE_FEATURED_ARTIST"
-
-  if (!enableNewActivityPanelManagement) {
-    return (
-      <TouchableOpacity activeOpacity={0.65} onPress={handlePress}>
-        <Flex flexDirection="row" width={ACTIVITY_RAIL_ITEM_WIDTH} overflowX="hidden">
-          <Flex
-            mr={1}
-            accessibilityLabel="Activity Artwork Image"
-            width={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
-            height={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
-          >
-            {!!image.url && (
-              <Image
-                src={image.url}
-                width={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
-                height={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
-                blurhash={enableBlurhash ? image.blurhash : undefined}
-              />
-            )}
-          </Flex>
-
-          <Flex flex={1} overflow="hidden">
-            <Flex flexDirection="row">
-              <ActivityItemTypeLabel notificationType={item.notificationType} />
-
-              {item.notificationType !== "PARTNER_OFFER_CREATED" && (
-                <Text variant="xs">{item.publishedAt}</Text>
-              )}
-            </Flex>
-
-            <Text variant="sm-display" fontWeight="bold" ellipsizeMode="tail" numberOfLines={1}>
-              {item.title}
-            </Text>
-
-            {item.notificationType !== "PARTNER_OFFER_CREATED" && (
-              <Text variant="sm-display" ellipsizeMode="tail" numberOfLines={1}>
-                {item.message}
-              </Text>
-            )}
-
-            {shouldDisplayExpiresInTimer(item.notificationType, item.item) && (
-              <ExpiresInTimer item={item.item} />
-            )}
-          </Flex>
-        </Flex>
-      </TouchableOpacity>
-    )
-  }
 
   return (
     <TouchableOpacity activeOpacity={0.65} onPress={handlePress}>
@@ -127,14 +77,9 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
           <Flex flexDirection="row" mt="1px">
             <ActivityItemTypeLabel notificationType={item.notificationType} />
 
-            {item.notificationType !== "PARTNER_OFFER_CREATED" &&
-              (enableNewActivityPanelManagement ? (
-                <Text variant="xs">{item.publishedAt}</Text>
-              ) : (
-                <Text variant="xs" color="black60">
-                  {item.publishedAt}
-                </Text>
-              ))}
+            {item.notificationType !== "PARTNER_OFFER_CREATED" && (
+              <Text variant="xs">{item.publishedAt}</Text>
+            )}
 
             {shouldDisplayExpiresInTimer(item.notificationType, item.item) && (
               <ExpiresInTimer item={item.item} />

@@ -9,15 +9,11 @@ import { last } from "lodash"
 import { parse as parseQueryString } from "query-string"
 
 export const navigateToActivityItem = (
-  item: ActivityItem_notification$data | ActivityRailItem_item$data,
-  enableNavigateToASingleNotification: boolean
+  item: ActivityItem_notification$data | ActivityRailItem_item$data
 ) => {
   const { internalID, targetHref, notificationType } = item
 
-  if (
-    enableNavigateToASingleNotification &&
-    SUPPORTED_NOTIFICATION_TYPES.includes(notificationType)
-  ) {
+  if (SUPPORTED_NOTIFICATION_TYPES.includes(notificationType)) {
     return navigate(`/notification/${internalID}`)
   }
 

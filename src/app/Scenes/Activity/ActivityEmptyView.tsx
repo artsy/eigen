@@ -1,6 +1,5 @@
 import { Flex, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ScrollView } from "react-native-gesture-handler"
 import { NotificationType } from "./types"
 
@@ -66,11 +65,10 @@ const entityByType: Record<
 
 export const ActivityEmptyView: React.FC<ActivityEmptyViewProps> = ({ type, refreshControl }) => {
   const entity = entityByType[type]
-  const enableNewActivityPanelManagement = useFeatureFlag("AREnableNewActivityPanelManagement")
 
   if (!entity) return <></>
 
-  if (enableNewActivityPanelManagement && type !== "offers") {
+  if (type !== "offers") {
     return (
       <ScrollView contentContainerStyle={{ height: 500 }} refreshControl={refreshControl}>
         <Flex mx={4} accessibilityLabel="Activities are empty" pt={4}>

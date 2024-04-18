@@ -42,7 +42,7 @@ import { CityGuideView } from "./NativeModules/CityGuideView"
 import { LiveAuctionView } from "./NativeModules/LiveAuctionView"
 import { Providers } from "./Providers"
 import { About } from "./Scenes/About/About"
-import { Activity } from "./Scenes/Activity/Activity"
+import { ActivityScreen } from "./Scenes/Activity/ActivityScreen"
 import { ArticlesScreen, ArticlesScreenQuery } from "./Scenes/Articles/Articles"
 import { ArtistQueryRenderer, ArtistScreenQuery } from "./Scenes/Artist/Artist"
 import { ArtistArticlesQueryRenderer } from "./Scenes/ArtistArticles/ArtistArticles"
@@ -331,7 +331,7 @@ const artQuizScreenOptions = {
 export type AppModule = keyof typeof modules
 
 export const modules = defineModules({
-  Activity: reactModule(Activity, {
+  Activity: reactModule(ActivityScreen, {
     fullBleed: true,
     hidesBackButton: true,
     hidesBottomTabs: true,
