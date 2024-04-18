@@ -11,7 +11,7 @@ export const useDislikeArtwork = () => {
 }
 
 const dislikeArtworkUpdater = (store: RecordSourceSelectorProxy<{}>, data: {}) => {
-  const artworkID = (data as any).dislikeArtwork?.artwork?.internalID
+  const artworkID = (data as any).dislikeArtwork?.artwork?.id
 
   if (!artworkID) return
 
@@ -20,20 +20,30 @@ const dislikeArtworkUpdater = (store: RecordSourceSelectorProxy<{}>, data: {}) =
 
   if (!viewer) return
 
-  const artworksConnection = ConnectionHandler.getConnection(
+  const newWorksForYouRailConnection = ConnectionHandler.getConnection(
     viewer,
     "NewWorksForYou_artworksForUser"
   )
 
-  if (!artworksConnection) return
+  if (newWorksForYouRailConnection) {
+    ConnectionHandler.deleteNode(newWorksForYouRailConnection, artworkID)
+  }
 
-  ConnectionHandler.deleteNode(artworksConnection, artworkID)
+  const newWorksForYouScreenConnection = ConnectionHandler.getConnection(
+    viewer,
+    "NewWorksForYou_artworks"
+  )
+
+  if (newWorksForYouScreenConnection) {
+    ConnectionHandler.deleteNode(newWorksForYouScreenConnection, artworkID)
+  }
 }
 
 const DislikeArtworkMutation = graphql`
   mutation useDislikeArtworkMutation($artworkID: String!) {
     dislikeArtwork(input: { artworkID: $artworkID, remove: false }) {
       artwork {
+        id
         internalID
       }
     }

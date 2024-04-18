@@ -70,7 +70,7 @@ export const newWorksForYouArtworksFragment = graphql`
       includeBackfill: true
       maxWorksPerArtist: $maxWorksPerArtist
       version: $version
-    ) @connection(key: "NewWorksForYou_artworks") {
+    ) @connection(key: "NewWorksForYou_artworks", filters: []) {
       totalCount
       edges {
         node {
@@ -99,10 +99,16 @@ export const newWorksForYouArtworksQuery = graphql`
 
 export const NewWorksForYouArtworksQR: React.FC<NewWorksForYouScreenProps> = withSuspense(
   ({ version, maxWorksPerArtist }) => {
-    const data = useLazyLoadQuery<NewWorksForYouArtworksQuery>(newWorksForYouArtworksQuery, {
-      version,
-      maxWorksPerArtist,
-    })
+    const data = useLazyLoadQuery<NewWorksForYouArtworksQuery>(
+      newWorksForYouArtworksQuery,
+      {
+        version,
+        maxWorksPerArtist,
+      },
+      {
+        fetchPolicy: "store-and-network",
+      }
+    )
 
     // This won't happen because the query would fail thanks to the @principalField
     // Adding it here to make TS happy
