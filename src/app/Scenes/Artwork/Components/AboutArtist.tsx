@@ -1,4 +1,4 @@
-import { Spacer, Flex, Box, Text, Join } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box, Text, Join, Screen } from "@artsy/palette-mobile"
 import { AboutArtist_artwork$data } from "__generated__/AboutArtist_artwork.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
 import { ReadMore } from "app/Components/ReadMore"
@@ -15,18 +15,26 @@ export const AboutArtist: React.FC<AboutArtistProps> = ({ artwork }) => {
 
   const hasSingleArtist = artists && artists.length === 1
 
-  const text =
+  const biographyBlurb =
     hasSingleArtist && artists[0]?.biographyBlurb?.text ? artists[0]?.biographyBlurb?.text : null
+
+  const partnerBiographyBlurb = artwork.artist?.partnerBiographyBlurb?.text
+
+  const text = partnerBiographyBlurb ?? biographyBlurb
+
   const textLimit = truncatedTextLimit()
 
   if (!artists.length) {
     return null
   }
 
+  const backgroundColor = artwork.isUnlisted ? "black100" : "white100"
+  const textColor = artwork.isUnlisted ? "white100" : "black100"
+
   return (
-    <>
+    <Screen.FullWidthItem p={2} backgroundColor={backgroundColor}>
       <Flex alignItems="flex-start">
-        <Text variant="md" mb={2}>
+        <Text variant="md" mb={2} color={textColor}>
           {hasSingleArtist ? "About the artist" : "About the artists"}
         </Text>
         <Join separator={<Spacer y={1} />}>
@@ -37,6 +45,7 @@ export const AboutArtist: React.FC<AboutArtistProps> = ({ artwork }) => {
                   key={artist.id}
                   artist={artist}
                   contextModule={Schema.ContextModules.AboutTheArtist}
+                  theme={artwork.isUnlisted ? "dark" : "light"}
                 />
               )
           )}
@@ -52,10 +61,11 @@ export const AboutArtist: React.FC<AboutArtistProps> = ({ artwork }) => {
             trackingFlow={Schema.Flow.AboutTheArtist}
             textVariant="sm"
             linkTextVariant="sm-display"
+            color={textColor}
           />
         </Box>
       )}
-    </>
+    </Screen.FullWidthItem>
   )
 }
 
@@ -67,8 +77,15 @@ export const AboutArtistFragmentContainer = createFragmentContainer(AboutArtist,
         biographyBlurb {
           text
         }
+
         ...ArtistListItem_artist
       }
+      artist {
+        partnerBiographyBlurb: biographyBlurb(partnerBio: true) {
+          text
+        }
+      }
+      isUnlisted
     }
   `,
 })

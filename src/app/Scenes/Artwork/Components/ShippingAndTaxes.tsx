@@ -18,10 +18,14 @@ const ShippingAndTaxes: React.FC<ShippingAndTaxesProps> = ({ artwork }) => {
 
   return (
     <Box>
-      <Text variant="md">Shipping and taxes</Text>
-      <Spacer y={1} />
+      {!artwork.isUnlisted && (
+        <>
+          <Text variant="md">Shipping and taxes</Text>
+          <Spacer y={1} />
+        </>
+      )}
 
-      {!!taxInfo && (
+      {!!taxInfo && !artwork.isUnlisted && (
         <Text variant="sm" color="black60">
           {taxInfo.displayText}{" "}
           <LinkText onPress={handleLearnMorePress}>{taxInfo.moreInfo.displayText}</LinkText>
@@ -52,6 +56,7 @@ const ShippingAndTaxes: React.FC<ShippingAndTaxesProps> = ({ artwork }) => {
 export const ShippingAndTaxesFragmentContainer = createFragmentContainer(ShippingAndTaxes, {
   artwork: graphql`
     fragment ShippingAndTaxes_artwork on Artwork {
+      isUnlisted
       shippingOrigin
       shippingInfo
       priceIncludesTaxDisplay

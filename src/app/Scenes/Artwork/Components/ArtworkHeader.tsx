@@ -18,7 +18,6 @@ import { ArtworkActionsFragmentContainer as ArtworkActions } from "./ArtworkActi
 import { ArtworkTombstoneFragmentContainer as ArtworkTombstone } from "./ArtworkTombstone"
 import { ImageCarouselFragmentContainer } from "./ImageCarousel/ImageCarousel"
 import { InstagramStoryViewShot } from "./InstagramStoryViewShot"
-import { UnlistedArtworksBanner } from "./UnlistedArtworksBanner"
 
 interface ArtworkHeaderProps {
   artwork: ArtworkHeader_artwork$data
@@ -53,11 +52,6 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
   return (
     <>
       <Box>
-        {!!(artwork.visibilityLevel === VisibilityLevels.UNLISTED) && (
-          <Flex mb={2} mx={-2}>
-            <UnlistedArtworksBanner partnerName={artwork.partner?.name} />
-          </Flex>
-        )}
         {!!artworkOfferUnavailable && (
           <Flex mb={1}>
             <UnavailableOfferMessage />
