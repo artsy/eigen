@@ -1,6 +1,6 @@
 import { ActionType } from "@artsy/cohesion"
 import { ClickedActivityPanelNotificationItem } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
-import { Flex, Image, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Image, Text } from "@artsy/palette-mobile"
 import { ActivityItem_notification$key } from "__generated__/ActivityItem_notification.graphql"
 import {
   ExpiresInTimer,
@@ -23,7 +23,6 @@ interface ActivityItemProps {
 }
 
 const UNREAD_INDICATOR_SIZE = 8
-const ARTWORK_IMAGE_SIZE = 55
 const NEW_ARTWORK_IMAGE_SIZE = 60
 
 export const ActivityItem: React.FC<ActivityItemProps> = memo(
