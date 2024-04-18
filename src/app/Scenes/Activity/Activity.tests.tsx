@@ -2,7 +2,7 @@ import { screen } from "@testing-library/react-native"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Suspense } from "react"
-import { Activity } from "./Activity"
+import { Activity } from "./ActivityScreen"
 
 describe("Activity", () => {
   const { renderWithRelay } = setupTestWrapper({

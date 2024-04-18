@@ -151,11 +151,6 @@ export const features = {
     readyForRelease: true,
     echoFlagKey: "AREnableLatestActivityRail",
   },
-  AREnableSingleActivityPanelScreen: {
-    description: "Enable Single Activity Panel screen",
-    readyForRelease: true,
-    echoFlagKey: "AREnableSingleActivityPanelScreen",
-  },
   AREnableAlertsFilters: {
     description: "Enable filters in alerts screen",
     readyForRelease: true,
@@ -213,12 +208,6 @@ export const features = {
     description: 'Enable artist series selection on "More Filters" screen',
     readyForRelease: true,
     echoFlagKey: "AREnableAlertsFiltersArtistSeriesFiltering",
-  },
-  AREnableNewActivityPanelManagement: {
-    description: "Enable new activity panel management",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableNewActivityPanelManagement",
   },
   AREnableArtworksFeedView: {
     description: "Enable artworks feed view",
