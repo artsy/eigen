@@ -256,11 +256,11 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableNewTermsAndConditions",
   },
-  AREnablePartnerOfferV1Improvements: {
-    description: "Enable partner offer v1 improvements",
+  AREnablePartnerOfferOnArtworkScreen: {
+    description: "Enable partner offer on artwork screen",
     readyForRelease: false,
     showInDevMenu: true,
-    echoFlagKey: "AREnablePartnerOfferV1Improvements",
+    echoFlagKey: "AREnablePartnerOfferOnArtworkScreen",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 
