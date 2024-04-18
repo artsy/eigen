@@ -75,6 +75,8 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
           )}
         </Flex>
         <Touchable
+          aria-label="Open settings"
+          accessibilityRole="button"
           haptic
           hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
           onPress={() =>
@@ -177,5 +179,6 @@ const myProfileHeaderQuery = graphql`
 export const MyProfileHeaderQueryRenderer = withSuspense(() => {
   const data = useLazyLoadQuery<MyProfileHeaderQuery>(myProfileHeaderQuery, {})
 
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return <MyProfileHeader me={data.me!} />
 }, MyProfileHeaderPlaceholder)
