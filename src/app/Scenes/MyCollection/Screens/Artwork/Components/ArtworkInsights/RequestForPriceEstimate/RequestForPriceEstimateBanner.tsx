@@ -1,24 +1,30 @@
 import { ActionType, ContextModule, OwnerType, TappedRequestPriceEstimate } from "@artsy/cohesion"
-import { CheckCircleIcon, Flex, Box, Text, Separator, Button } from "@artsy/palette-mobile"
+import { Box, Text, Separator, Button, Spacer } from "@artsy/palette-mobile"
 import { RequestForPriceEstimateBanner_artwork$key } from "__generated__/RequestForPriceEstimateBanner_artwork.graphql"
 import { RequestForPriceEstimateBanner_marketPriceInsights$key } from "__generated__/RequestForPriceEstimateBanner_marketPriceInsights.graphql"
 import { RequestForPriceEstimateBanner_me$key } from "__generated__/RequestForPriceEstimateBanner_me.graphql"
 import { Toast } from "app/Components/Toast/Toast"
-import { GlobalStore } from "app/store/GlobalStore"
+import { usePriceEstimateRequested } from "app/Scenes/MyCollection/Screens/Artwork/Components/ArtworkInsights/RequestForPriceEstimate/usePriceEstimateRequested"
 import { navigate } from "app/system/navigation/navigate"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
+
 interface RequestForPriceEstimateProps {
   artwork: RequestForPriceEstimateBanner_artwork$key
   marketPriceInsights: RequestForPriceEstimateBanner_marketPriceInsights$key | null | undefined
   me: RequestForPriceEstimateBanner_me$key | null | undefined
+  contextModule: "insights" | "about" | "oldAbout"
 }
+
 export const RequestForPriceEstimateBanner: React.FC<RequestForPriceEstimateProps> = ({
+  contextModule,
   ...otherProps
 }) => {
   const { trackEvent } = useTracking()
 
   const artwork = useFragment(artworkFragment, otherProps.artwork)
+  const priceEstimateRequested = usePriceEstimateRequested(artwork)
+
   const marketPriceInsights = useFragment(
     marketPriceInsightsFragment,
     otherProps.marketPriceInsights
@@ -26,34 +32,12 @@ export const RequestForPriceEstimateBanner: React.FC<RequestForPriceEstimateProp
 
   const me = useFragment(meFragment, otherProps.me)
 
-  const localRequestedPriceEstimates = GlobalStore.useAppState(
-    (state) => state.requestedPriceEstimates.requestedPriceEstimates
-  )
-
-  const priceEstimateRequested =
-    artwork.hasPriceEstimateRequest || !!localRequestedPriceEstimates[artwork.internalID]
-
-  if (priceEstimateRequested) {
-    return (
-      <Box>
-        <Flex alignItems="center" flexDirection="row">
-          <CheckCircleIcon />
-          <Text variant="sm" ml={0.5} textAlign="center">
-            Price Estimate Request Sent
-          </Text>
-        </Flex>
-
-        <Separator mt={2} mb={4} borderColor="black10" />
-      </Box>
-    )
-  }
-
-  if (!artwork.isPriceEstimateRequestable) {
-    return null
-  }
+  if (priceEstimateRequested) return null
+  if (!artwork.isPriceEstimateRequestable) return null
 
   return (
     <Box>
+      <Separator mt={2} mb={2} borderColor="black10" />
       <Text variant="sm" testID="request-price-estimate-banner-title">
         Get a Free Price Estimate
       </Text>
@@ -91,17 +75,17 @@ export const RequestForPriceEstimateBanner: React.FC<RequestForPriceEstimateProp
           })
         }}
         block
-        variant="fillDark"
+        variant="outline"
       >
         Request a Price Estimate
       </Button>
 
-      <Separator mt={2} mb={4} borderColor="black10" />
+      {contextModule === "about" && <Spacer y={2} />}
     </Box>
   )
 }
 
-const artworkFragment = graphql`
+export const artworkFragment = graphql`
   fragment RequestForPriceEstimateBanner_artwork on Artwork {
     internalID
     slug
