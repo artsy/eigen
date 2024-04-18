@@ -1933,6 +1933,7 @@ type ArtistCounts {
     label: String
   ): FormattedNumber
   hasMakeOfferArtworks: Boolean
+  myCollectedArtworks: Int!
   partnerShows(
     # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
