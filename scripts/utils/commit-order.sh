@@ -4,9 +4,6 @@
 ### Useful when trying to cherry-pick many commits to minimize conflicts
 ### Save the commit hashes (each on its own line) to a file 'commits.txt' in the app directory and run the script
 
-# Define the main branch name
-main_branch="main"
-
 # File containing the commit hashes
 commit_file="commits.txt"
 
@@ -19,7 +16,7 @@ temp_file=$(mktemp)
 # Save to temp_file
 while IFS= read -r commit_hash || [[ -n $commit_hash ]]; do
     # Retrieve the commit date for the given hash in ISO 8601 format
-    commit_date=$(git log -1 --format="%ci" ${commit_hash} ${main_branch})
+    commit_date=$(git log -1 --format="%ci" ${commit_hash})
     if [ -n "$commit_date" ]; then
         echo "${commit_date} ${commit_hash}" >> ${temp_file}
     else
