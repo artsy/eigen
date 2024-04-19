@@ -2,7 +2,7 @@ import {
   Box,
   Button,
   Flex,
-  Input2,
+  Input,
   LinkText,
   SimpleMessage,
   Spacer,
@@ -62,7 +62,7 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
     validateForm,
   } = useFormikContext<OnboardingLoginWithOTPValuesSchema>()
 
-  const otpInputRef = useRef<Input2>(null)
+  const otpInputRef = useRef<Input>(null)
   const [recoveryCodeMode, setRecoveryCodeMode] = useState(false)
 
   return (
@@ -79,7 +79,7 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
           <Text variant="lg-display">Authentication Code</Text>
           <Box>
             <Spacer y={6} />
-            <Input2
+            <Input
               ref={otpInputRef}
               autoCapitalize="none"
               autoCorrect={false}

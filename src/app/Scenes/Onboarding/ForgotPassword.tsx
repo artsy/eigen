@@ -1,4 +1,4 @@
-import { Input2 } from "@artsy/palette-mobile"
+import { Input } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { GlobalStore } from "app/store/GlobalStore"
 import { FormikProvider, useFormik } from "formik"
@@ -17,7 +17,7 @@ export interface ForgotPasswordValuesSchema {
 export type ForgotPasswordProps = StackScreenProps<OnboardingNavigationStack, "OnboardingLogin">
 export interface ForgotPasswordFormProps extends ForgotPasswordProps {
   requestedPasswordReset: boolean
-  inputRef?: React.Ref<Input2>
+  inputRef?: React.Ref<Input>
 }
 
 const initialValues: ForgotPasswordValuesSchema = { email: "" }
@@ -25,7 +25,7 @@ const initialValues: ForgotPasswordValuesSchema = { email: "" }
 export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ navigation, route }) => {
   const [requestedPasswordReset, setRequestedPasswordReset] = useState(false)
 
-  const inputRef = useRef<Input2>(null)
+  const inputRef = useRef<Input>(null)
 
   const formik = useFormik<ForgotPasswordValuesSchema>({
     enableReinitialize: true,

@@ -2,7 +2,7 @@ import {
   Box,
   Checkbox,
   Flex,
-  Input2,
+  Input,
   Join,
   Separator,
   Spacer,
@@ -307,7 +307,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
             setAddMessageYCoordinate(nativeEvent.layout.y)
           }}
         >
-          <Input2
+          <Input
             multiline
             placeholder="Add a custom note..."
             title="Add message"

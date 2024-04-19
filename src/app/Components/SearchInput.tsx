@@ -1,16 +1,16 @@
-import { Input2, Input2Props, Input2Ref } from "@artsy/palette-mobile"
+import { Input, InputProps, InputRef } from "@artsy/palette-mobile"
 import SearchIcon from "app/Components/Icons/SearchIcon"
 import { forwardRef, useImperativeHandle, useRef } from "react"
 
-export type SearchInputProps = Input2Props
+export type SearchInputProps = InputProps
 
-export const SearchInput = forwardRef<Input2Ref, SearchInputProps>(
+export const SearchInput = forwardRef<InputRef, SearchInputProps>(
   ({ onChangeText, onClear, ...props }, ref) => {
-    const inputRef = useRef<Input2Ref>(null)
-    useImperativeHandle(ref, () => inputRef.current as Input2Ref)
+    const inputRef = useRef<InputRef>(null)
+    useImperativeHandle(ref, () => inputRef.current as InputRef)
 
     return (
-      <Input2
+      <Input
         ref={inputRef}
         testID="search-input"
         icon={<SearchIcon width={18} height={18} />}

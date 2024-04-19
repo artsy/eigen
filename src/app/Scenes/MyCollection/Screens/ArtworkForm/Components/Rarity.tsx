@@ -1,4 +1,4 @@
-import { Flex, Text, Input2 } from "@artsy/palette-mobile"
+import { Flex, Text, Input } from "@artsy/palette-mobile"
 import { INPUT_HEIGHT } from "app/Components/Input"
 import { Select } from "app/Components/Select"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
@@ -36,7 +36,7 @@ export const Rarity: React.FC = () => {
         <Flex flexDirection="row" mt={2} alignItems="flex-end">
           <Flex flex={1}>
             <Flex>
-              <Input2
+              <Input
                 accessibilityLabel="Edition number input"
                 title="Edition number"
                 keyboardType="decimal-pad"
@@ -51,7 +51,7 @@ export const Rarity: React.FC = () => {
           </Flex>
           <Flex flex={1}>
             <Flex>
-              <Input2
+              <Input
                 title="Edition size"
                 keyboardType="decimal-pad"
                 onChangeText={formik.handleChange("editionSize")}

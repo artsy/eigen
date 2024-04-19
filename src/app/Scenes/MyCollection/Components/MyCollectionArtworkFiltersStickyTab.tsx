@@ -1,8 +1,8 @@
 import {
   FilterIcon,
   Flex,
-  INPUT_HEIGHT,
-  Input2,
+  INPUT_MIN_HEIGHT,
+  Input,
   Text,
   TouchableHighlightColor,
   bullet,
@@ -38,7 +38,7 @@ export const MyCollectionArtworkFilters: React.FC<FiltersProps> = (props) => {
   return (
     <Flex backgroundColor="white100" pb={1} px={2}>
       <Flex width={screenWidth - 2 * space(2) - FILTER_ICON_WIDTH}>
-        <Input2
+        <Input
           testID="MyCollectionSearchBarInput"
           icon={<SearchIcon width={18} height={18} />}
           placeholder="Search Your Artworks"
@@ -57,7 +57,7 @@ export const MyCollectionArtworkFilters: React.FC<FiltersProps> = (props) => {
         alignItems="flex-end"
         justifyContent="center"
         position="absolute"
-        height={INPUT_HEIGHT}
+        height={INPUT_MIN_HEIGHT}
       >
         <TouchableHighlightColor
           haptic

@@ -4,7 +4,7 @@ import {
   Button,
   CheckIcon,
   Flex,
-  Input2,
+  Input,
   Spacer,
   Text,
   Touchable,
@@ -103,7 +103,7 @@ export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => 
   return (
     <SearchContext.Provider value={searchProviderValues}>
       <Box>
-        <Input2
+        <Input
           placeholder="Search for artists on Artsy"
           icon={<SearchIcon width={18} height={18} />}
           onChangeText={setQuery}

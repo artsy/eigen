@@ -4,8 +4,8 @@ import {
   Flex,
   Join,
   Spacer,
-  Input2,
-  Input2Ref,
+  Input,
+  InputRef,
 } from "@artsy/palette-mobile"
 import { RouteProp, useIsFocused, useNavigation, useRoute } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
@@ -40,10 +40,10 @@ export const AddMyCollectionArtist: React.FC = () => {
   const [showAbandonModal, setShowAbandonModal] = useState(false)
 
   const scrollViewRef = useRef<ScrollView>(null)
-  const nameInputRef = useRef<Input2Ref>(null)
-  const nationalityInputRef = useRef<Input2Ref>(null)
-  const birthYearInputRef = useRef<Input2Ref>(null)
-  const deathYearInputRef = useRef<Input2Ref>(null)
+  const nameInputRef = useRef<InputRef>(null)
+  const nationalityInputRef = useRef<InputRef>(null)
+  const birthYearInputRef = useRef<InputRef>(null)
+  const deathYearInputRef = useRef<InputRef>(null)
 
   const isFocused = useIsFocused()
 
@@ -115,7 +115,7 @@ export const AddMyCollectionArtist: React.FC = () => {
         >
           <Flex p={2}>
             <Join separator={<Spacer y={2} />}>
-              <Input2
+              <Input
                 accessibilityLabel="Artist Name"
                 autoCorrect={false}
                 error={errors.name}
@@ -130,7 +130,7 @@ export const AddMyCollectionArtist: React.FC = () => {
                 value={values.name}
                 testID="artist-input"
               />
-              <Input2
+              <Input
                 accessibilityLabel="Nationality"
                 autoCorrect={false}
                 error={errors.nationality}
@@ -147,7 +147,7 @@ export const AddMyCollectionArtist: React.FC = () => {
               <Flex flexDirection="row" flex={2}>
                 <Join separator={<Spacer x={4} />}>
                   <Flex flex={1}>
-                    <Input2
+                    <Input
                       accessibilityLabel="Birth Year"
                       autoCorrect={false}
                       error={errors.birthYear}
@@ -163,7 +163,7 @@ export const AddMyCollectionArtist: React.FC = () => {
                     />
                   </Flex>
                   <Flex flex={1}>
-                    <Input2
+                    <Input
                       accessibilityLabel="Death Year"
                       autoCorrect={false}
                       error={errors.deathYear}

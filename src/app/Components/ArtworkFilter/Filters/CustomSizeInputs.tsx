@@ -1,4 +1,4 @@
-import { Box, Flex, Input2, Join, Spacer, Text } from "@artsy/palette-mobile"
+import { Box, Flex, Input, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
 import React, { useState } from "react"
 import { Numeric, Range } from "./helpers"
@@ -56,7 +56,7 @@ export const CustomSizeInputs: React.FC<CustomSizeInputsProps> = ({
       <Flex flexDirection="row">
         <Join separator={<Spacer x={2} />}>
           <Flex flex={1}>
-            <Input2
+            <Input
               title="Min"
               keyboardType="number-pad"
               onChangeText={handleInputChange("min")}
@@ -66,7 +66,7 @@ export const CustomSizeInputs: React.FC<CustomSizeInputsProps> = ({
             />
           </Flex>
           <Flex flex={1}>
-            <Input2
+            <Input
               title="Max"
               keyboardType="number-pad"
               onChangeText={handleInputChange("max")}

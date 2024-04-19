@@ -1,4 +1,4 @@
-import { Button, Flex, Input2, Spacer } from "@artsy/palette-mobile"
+import { Button, Flex, Input, Spacer } from "@artsy/palette-mobile"
 import { Expandable } from "app/Components/Expandable"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { useState } from "react"
@@ -12,7 +12,7 @@ export const NavigateTo: React.FC<{}> = () => {
         <Spacer y={1} />
         <Flex flexDirection="row" justifyContent="space-between">
           <Flex width="70%">
-            <Input2
+            <Input
               placeholder="Url to navigate to"
               onChangeText={(text) => setUrl(text)}
               autoCapitalize="none"

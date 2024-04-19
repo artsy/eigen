@@ -1,4 +1,4 @@
-import { Input2 } from "@artsy/palette-mobile"
+import { Input } from "@artsy/palette-mobile"
 import { MyProfilePaymentNewCreditCardSaveCardMutation } from "__generated__/MyProfilePaymentNewCreditCardSaveCardMutation.graphql"
 import { CountrySelect } from "app/Components/CountrySelect"
 import { InputTitle } from "app/Components/Input"
@@ -85,11 +85,11 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
 
   const paymentInfoRef = useRef<any>(null)
 
-  const addressLine1Ref = useRef<Input2>(null)
-  const addressLine2Ref = useRef<Input2>(null)
-  const cityRef = useRef<Input2>(null)
-  const postalCodeRef = useRef<Input2>(null)
-  const stateRef = useRef<Input2>(null)
+  const addressLine1Ref = useRef<Input>(null)
+  const addressLine2Ref = useRef<Input>(null)
+  const cityRef = useRef<Input>(null)
+  const postalCodeRef = useRef<Input>(null)
+  const stateRef = useRef<Input>(null)
   const countryRef = useRef<Select<any>>(null)
 
   // focus top field on mount
@@ -160,14 +160,14 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
           />
         </>
 
-        <Input2
+        <Input
           title="Name on card"
           placeholder="Full name"
           onChangeText={actions.fields.fullName.setValue}
           returnKeyType="next"
           onSubmitEditing={() => addressLine1Ref.current?.focus()}
         />
-        <Input2
+        <Input
           ref={addressLine1Ref}
           title="Address line 1"
           placeholder="Add street address"
@@ -175,7 +175,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
           returnKeyType="next"
           onSubmitEditing={() => addressLine2Ref.current?.focus()}
         />
-        <Input2
+        <Input
           ref={addressLine2Ref}
           title="Address line 2"
           optional
@@ -184,21 +184,21 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
           returnKeyType="next"
           onSubmitEditing={() => cityRef.current?.focus()}
         />
-        <Input2
+        <Input
           ref={cityRef}
           title="City"
           onChangeText={actions.fields.city.setValue}
           returnKeyType="next"
           onSubmitEditing={() => postalCodeRef.current?.focus()}
         />
-        <Input2
+        <Input
           ref={postalCodeRef}
           title="Postal Code"
           onChangeText={actions.fields.postCode.setValue}
           returnKeyType="next"
           onSubmitEditing={() => stateRef.current?.focus()}
         />
-        <Input2
+        <Input
           ref={stateRef}
           title="State, province, or region"
           onChangeText={actions.fields.state.setValue}

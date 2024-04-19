@@ -1,4 +1,4 @@
-import { Flex, Input2, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, Input, Text, Touchable } from "@artsy/palette-mobile"
 import SearchIcon from "app/Components/Icons/SearchIcon"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import React, { useState } from "react"
@@ -26,7 +26,7 @@ export const ArtworkAutosuggest: React.FC<ArtworkAutosuggestProps> = ({
 
   return (
     <>
-      <Input2
+      <Input
         placeholder="Search artworks"
         icon={<SearchIcon width={18} height={18} />}
         onChangeText={(value) => {

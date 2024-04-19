@@ -6,7 +6,7 @@ import {
   Box,
   Text,
   Button,
-  Input2,
+  Input,
 } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { MyAccountDeleteAccountQuery } from "__generated__/MyAccountDeleteAccountQuery.graphql"
@@ -72,7 +72,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
             </Text>
           </Flex>
           <Spacer y={4} />
-          <Input2
+          <Input
             multiline
             placeholder="Please share with us why you are leaving"
             onChangeText={setExplanation}
@@ -86,7 +86,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
           <Spacer y={2} />
           {!!hasPassword && (
             <>
-              <Input2
+              <Input
                 secureTextEntry
                 placeholder="Enter your password to continue"
                 onChangeText={setPassword}

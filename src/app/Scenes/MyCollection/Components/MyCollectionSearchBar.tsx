@@ -1,4 +1,4 @@
-import { Flex, INPUT_HEIGHT, Input2, Text, useSpace, useTheme } from "@artsy/palette-mobile"
+import { Flex, INPUT_MIN_HEIGHT, Input, Text, useSpace, useTheme } from "@artsy/palette-mobile"
 import { GridViewIcon } from "app/Components/Icons/GridViewIcon"
 import { ListViewIcon } from "app/Components/Icons/ListViewIcon"
 import SearchIcon from "app/Components/Icons/SearchIcon"
@@ -63,10 +63,10 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
   }, [value])
 
   return (
-    <Flex height={INPUT_HEIGHT} justifyContent="center">
+    <Flex height={INPUT_MIN_HEIGHT} justifyContent="center">
       {isFocused ? (
         <Flex flexDirection="row" alignItems="center">
-          <Input2
+          <Input
             testID="MyCollectionSearchBarInput"
             placeholder="Search by Artist, Artwork or Keyword"
             onChangeText={setValue}
