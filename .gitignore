@@ -87,6 +87,9 @@ tsc_raw.log
 data/complete.queryMap.json
 data/PreHeatedGraphQLCache/*
 
+# script inputs
+commits.txt
+
 # native code hash
 file_hashes.txt
 native-hash.txt
