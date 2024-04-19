@@ -6,7 +6,7 @@ import {
   CheckCircleFillIcon,
   CheckCircleIcon,
   Flex,
-  Input2,
+  Input,
   Join,
   Message,
   Spacer,
@@ -79,11 +79,11 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
 
   const { showActionSheetWithOptions } = useActionSheet()
 
-  const nameInputRef = useRef<Input2>(null)
+  const nameInputRef = useRef<Input>(null)
   const bioInputRef = useRef<TextInput>(null)
-  const relevantPositionsInputRef = useRef<Input2>(null)
-  const professionInputRef = useRef<Input2>(null)
-  const locationInputRef = useRef<Input2>(null)
+  const relevantPositionsInputRef = useRef<Input>(null)
+  const professionInputRef = useRef<Input>(null)
+  const locationInputRef = useRef<Input>(null)
 
   const [refreshKey, setRefreshKey] = useState(0)
   const [loading, setLoading] = useState<boolean>(false)
@@ -258,7 +258,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
           </Flex>
           <Flex m={2}>
             <Join separator={<Spacer y={2} />}>
-              <Input2
+              <Input
                 ref={nameInputRef}
                 title="Full name"
                 onChangeText={handleChange("name")}
@@ -293,7 +293,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
                 }}
               />
 
-              <Input2
+              <Input
                 ref={professionInputRef}
                 title="Profession"
                 onChangeText={handleChange("profession")}
@@ -307,7 +307,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
                 }}
               />
 
-              <Input2
+              <Input
                 ref={relevantPositionsInputRef}
                 title="Other Relevant Positions"
                 onChangeText={handleChange("otherRelevantPositions")}
@@ -321,7 +321,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
                 }}
               />
 
-              <Input2
+              <Input
                 ref={bioInputRef}
                 title="About"
                 onChangeText={(text) => {

@@ -1,4 +1,4 @@
-import { Spacer, Box, Text, LinkText, Button, Input2 } from "@artsy/palette-mobile"
+import { Spacer, Box, Text, LinkText, Button, Input } from "@artsy/palette-mobile"
 import { PhoneInput } from "app/Components/Input/PhoneInput"
 import { navigate } from "app/system/navigation/navigate"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
@@ -20,7 +20,7 @@ export const RequestForPriceEstimateForm = () => {
             <Text variant="lg-display" mb={2}>
               Let us know how to reach you
             </Text>
-            <Input2
+            <Input
               testID="request-price-estimate-name-input"
               title="Name"
               autoCapitalize="words"
@@ -41,7 +41,7 @@ export const RequestForPriceEstimateForm = () => {
               value={values.requesterName}
               error={errors.requesterName}
             />
-            <Input2
+            <Input
               testID="request-price-estimate-email-input"
               title="Email"
               autoCapitalize="none"

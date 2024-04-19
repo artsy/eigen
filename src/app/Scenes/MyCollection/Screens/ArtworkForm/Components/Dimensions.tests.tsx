@@ -1,4 +1,4 @@
-import { Input2 } from "@artsy/palette-mobile"
+import { Input } from "@artsy/palette-mobile"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { useFormikContext } from "formik"
 import { Dimensions } from "./Dimensions"
@@ -23,7 +23,7 @@ describe("Dimensions", () => {
   it("displays correct dimensions", () => {
     const view = renderWithWrappersLEGACY(<Dimensions />)
     // eslint-disable-next-line testing-library/await-async-queries
-    const inputs = view.root.findAllByType(Input2)
+    const inputs = view.root.findAllByType(Input)
     expect(inputs[0].props.value).toBe("20")
     expect(inputs[1].props.value).toBe("30")
     expect(inputs[2].props.value).toBe("40")

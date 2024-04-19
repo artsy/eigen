@@ -1,4 +1,4 @@
-import { Input2, useColor } from "@artsy/palette-mobile"
+import { Input, useColor } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { useFormikContext } from "formik"
 import { Platform } from "react-native"
@@ -28,7 +28,7 @@ export const OnboardingCreateAccountEmail: React.FC<OnboardingCreateAccountEmail
       onBackButtonPress={route.params.navigateToWelcomeScreen}
       title="Sign Up with Email"
     >
-      <Input2
+      <Input
         autoCapitalize="none"
         autoComplete="email"
         enableClearButton

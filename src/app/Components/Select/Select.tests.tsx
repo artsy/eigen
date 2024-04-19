@@ -1,4 +1,4 @@
-import { Input2, Text, Touchable } from "@artsy/palette-mobile"
+import { Input, Text, Touchable } from "@artsy/palette-mobile"
 import { extractText } from "app/utils/tests/extractText"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
@@ -87,7 +87,7 @@ it("filters on search", async () => {
   await flushPromiseQueue()
 
   // eslint-disable-next-line testing-library/await-async-queries
-  const input = view.root.findAllByType(Input2)[0]
+  const input = view.root.findAllByType(Input)[0]
 
   input.props.onChangeText("Option 2")
 

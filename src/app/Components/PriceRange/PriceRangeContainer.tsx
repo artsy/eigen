@@ -1,4 +1,4 @@
-import { Flex, Histogram, HistogramBarEntity, Input2, Spacer } from "@artsy/palette-mobile"
+import { Flex, Histogram, HistogramBarEntity, Input, Spacer } from "@artsy/palette-mobile"
 import { parsePriceRange } from "app/Components/ArtworkFilter/Filters/helpers"
 import { RecentPriceRanges } from "app/Components/ArtworkFilter/RecentPriceRanges"
 import { PriceRangeSlider } from "app/Components/PriceRange/PriceRangeSlider"
@@ -123,7 +123,7 @@ export const PriceRangeContainer: React.FC<PriceRangeContainerProps> = ({
 
       <Flex flexDirection="row" mx={2} justifyContent="space-around">
         <Flex flex={1} pr={1}>
-          <Input2
+          <Input
             title="Min"
             fixedRightPlaceholder="$USD"
             enableClearButton
@@ -135,7 +135,7 @@ export const PriceRangeContainer: React.FC<PriceRangeContainerProps> = ({
           />
         </Flex>
         <Flex flex={1} pl={1}>
-          <Input2
+          <Input
             title="Max"
             fixedRightPlaceholder="$USD"
             enableClearButton

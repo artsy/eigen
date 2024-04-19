@@ -1,4 +1,4 @@
-import { Text, Spacer, Flex, useColor, Button, Input2 } from "@artsy/palette-mobile"
+import { Text, Spacer, Flex, useColor, Button, Input } from "@artsy/palette-mobile"
 import { BackButton } from "app/system/navigation/BackButton"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { useScreenDimensions } from "app/utils/hooks"
@@ -34,7 +34,7 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
             {!!requestedPasswordReset ? (
               <Text color="blue100">Password reset link sent. Please check your email.</Text>
             ) : (
-              <Input2
+              <Input
                 ref={inputRef}
                 autoCapitalize="none"
                 autoComplete="email"

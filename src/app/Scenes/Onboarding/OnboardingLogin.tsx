@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Input2, Spacer, Text, Touchable, useColor } from "@artsy/palette-mobile"
+import { Box, Button, Flex, Input, Spacer, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { showBlockedAuthError } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -48,8 +48,8 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
     setErrors,
   } = useFormikContext<OnboardingLoginValuesSchema>()
 
-  const passwordInputRef = useRef<Input2>(null)
-  const emailInputRef = useRef<Input2>(null)
+  const passwordInputRef = useRef<Input>(null)
+  const emailInputRef = useRef<Input>(null)
 
   /**
    * When we land on OnboardingLogin from the OnboardingCreateAccount
@@ -89,7 +89,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
           <Text variant="lg-display">Log In</Text>
           <Spacer y={6} />
           <Box>
-            <Input2
+            <Input
               ref={emailInputRef}
               autoCapitalize="none"
               autoComplete="email"
@@ -118,7 +118,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
               testID="email-address"
             />
             <Spacer y={2} />
-            <Input2
+            <Input
               autoCapitalize="none"
               autoComplete="password"
               autoCorrect={false}

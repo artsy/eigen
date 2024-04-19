@@ -1,5 +1,4 @@
-import { Input2, Input2Props, Input2Ref } from "@artsy/palette-mobile"
-import { InputRef } from "app/Components/Input/Input"
+import { Input, InputProps, InputRef } from "@artsy/palette-mobile"
 import { SelectModal } from "app/Components/Select/Components/SelectModal"
 import { SelectProps } from "app/Components/Select/Select"
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
@@ -26,7 +25,7 @@ export const INTERNALSelectAndInputCombinationBase = forwardRef<
     shouldDisplayLocalError?: boolean
     validate?: () => void
     displayForSelect?: string
-  } & Omit<Input2Props, "onChange" | "onChangeText" | "renderLeftHandSection"> &
+  } & Omit<InputProps, "onChange" | "onChangeText" | "renderLeftHandSection"> &
     TypeForSelect
 >(
   (
@@ -51,8 +50,8 @@ export const INTERNALSelectAndInputCombinationBase = forwardRef<
   ) => {
     const [showModal, setShowModal] = useState(false)
     const [innerValue, setInnerValue] = useState(value)
-    const innerRef = useRef<Input2Ref>(null)
-    useImperativeHandle(ref, () => innerRef.current as Input2Ref)
+    const innerRef = useRef<InputRef>(null)
+    useImperativeHandle(ref, () => innerRef.current as InputRef)
 
     const isFirstRun = useRef(true)
 
@@ -89,7 +88,7 @@ export const INTERNALSelectAndInputCombinationBase = forwardRef<
             onModalFinishedClosingForSelect?.()
           }}
         />
-        <Input2
+        <Input
           {...rest}
           ref={innerRef}
           value={formatInputValue ? formatInputValue(innerValue) : value}

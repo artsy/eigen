@@ -1,4 +1,4 @@
-import { Input2, Text } from "@artsy/palette-mobile"
+import { Input, Text } from "@artsy/palette-mobile"
 import { screen } from "@testing-library/react-native"
 import { SelectModal } from "app/Components/Select/Components/SelectModal"
 import { extractText } from "app/utils/tests/extractText"
@@ -54,9 +54,9 @@ describe.skip("PhoneInput", () => {
     )
 
     // eslint-disable-next-line testing-library/await-async-queries
-    expect(root.findAllByType(Input2)).toHaveLength(1)
+    expect(root.findAllByType(Input)).toHaveLength(1)
     // eslint-disable-next-line testing-library/await-async-queries
-    expect(extractText(root.findByType(Input2))).toBe("🇬🇧+447825 577664")
+    expect(extractText(root.findByType(Input))).toBe("🇬🇧+447825 577664")
   })
 
   it("shows custom error message, when error is controlled and phone number is invalid", () => {
@@ -75,7 +75,7 @@ describe.skip("PhoneInput", () => {
 
     act(() => {
       // eslint-disable-next-line testing-library/await-async-queries
-      root.findByType(Input2).props.onChangeText("")
+      root.findByType(Input).props.onChangeText("")
     })
 
     // eslint-disable-next-line testing-library/await-async-queries
@@ -96,7 +96,7 @@ describe.skip("PhoneInput", () => {
 
     act(() => {
       // eslint-disable-next-line testing-library/await-async-queries
-      root.findByType(Input2).props.onChangeText("")
+      root.findByType(Input).props.onChangeText("")
     })
 
     // eslint-disable-next-line testing-library/await-async-queries
@@ -132,7 +132,7 @@ describe.skip("PhoneInput", () => {
 
     act(() => {
       // eslint-disable-next-line testing-library/await-async-queries
-      root.findByType(Input2).props.onChangeText("999")
+      root.findByType(Input).props.onChangeText("999")
     })
     expect(onChange).toHaveBeenCalledWith("+44 999")
     expect(onChangeText).toHaveBeenCalledWith("+44 999")

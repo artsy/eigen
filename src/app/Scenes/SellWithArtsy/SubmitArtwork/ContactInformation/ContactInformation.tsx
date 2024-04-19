@@ -1,4 +1,4 @@
-import { Flex, Input2, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Input, Spacer, Text } from "@artsy/palette-mobile"
 import { ContactInformationQueryRendererQuery } from "__generated__/ContactInformationQueryRendererQuery.graphql"
 import { ContactInformation_me$data } from "__generated__/ContactInformation_me.graphql"
 import { CTAButton } from "app/Components/Button/CTAButton"
@@ -39,7 +39,7 @@ export const ContactInformation: React.FC<{
             We will only use these details to contact you regarding your submission.
           </Text>
           <Spacer y={2} />
-          <Input2
+          <Input
             title="Name"
             placeholder="Your full name"
             onChangeText={handleChange("userName")}
@@ -51,7 +51,7 @@ export const ContactInformation: React.FC<{
             testID="name-input"
           />
           <Spacer y={2} />
-          <Input2
+          <Input
             title="Email"
             placeholder="Your email address"
             keyboardType="email-address"

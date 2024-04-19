@@ -1,7 +1,7 @@
-import { Input2Props } from "@artsy/palette-mobile"
+import { InputProps } from "@artsy/palette-mobile"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
 
-interface CreateNewArtworkListInputProps extends Input2Props {
+interface CreateNewArtworkListInputProps extends InputProps {
   value: string
   maxLength: number
 }

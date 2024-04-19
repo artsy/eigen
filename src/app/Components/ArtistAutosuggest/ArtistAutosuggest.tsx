@@ -1,4 +1,4 @@
-import { Box, Input2 } from "@artsy/palette-mobile"
+import { Box, Input } from "@artsy/palette-mobile"
 import SearchIcon from "app/Components/Icons/SearchIcon"
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/validation"
@@ -49,7 +49,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
 
   return (
     <SearchContext.Provider value={searchProviderValues}>
-      <Input2
+      <Input
         title={title || undefined}
         placeholder={placeholder}
         icon={<SearchIcon width={18} height={18} />}

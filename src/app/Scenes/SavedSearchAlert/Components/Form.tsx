@@ -3,7 +3,7 @@ import {
   Box,
   Button,
   Flex,
-  Input2,
+  Input,
   Join,
   Pill,
   Spacer,
@@ -150,7 +150,7 @@ export const Form: React.FC<FormProps> = ({
 
             <Spacer y={1} />
 
-            <Input2
+            <Input
               placeholder="For example, a specific request such as ‘figurative painting’ or ‘David Hockney iPad drawings.’"
               value={values.details}
               onChangeText={handleChange("details")}
