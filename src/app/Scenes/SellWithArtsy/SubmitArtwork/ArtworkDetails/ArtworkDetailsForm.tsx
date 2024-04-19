@@ -2,7 +2,7 @@ import {
   Box,
   BulletedItem,
   Flex,
-  Input2,
+  Input,
   InputTitle,
   RadioButton,
   Spacer,
@@ -47,7 +47,7 @@ export const ArtworkDetailsForm: React.FC = () => {
     <>
       <ArtistAutosuggest />
       <StandardSpace />
-      <Input2
+      <Input
         title="Title"
         placeholder="Add title or write 'Unknown'"
         testID="Submission_TitleInput"
@@ -56,7 +56,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         accessibilityLabel="Title"
       />
       <StandardSpace />
-      <Input2
+      <Input
         title="Year"
         placeholder="YYYY"
         keyboardType="number-pad"
@@ -74,7 +74,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         value={values.category}
       />
       <StandardSpace />
-      <Input2
+      <Input
         title="Materials"
         placeholder="Oil on canvas, mixed media, lithograph.."
         testID="Submission_MaterialsInput"
@@ -118,7 +118,7 @@ export const ArtworkDetailsForm: React.FC = () => {
           <Spacer y={2} />
           <Flex flexDirection="row" justifyContent="space-between">
             <Box width="48%" mr={1}>
-              <Input2
+              <Input
                 title="Edition Number"
                 keyboardType="decimal-pad"
                 testID="Submission_EditionNumberInput"
@@ -128,7 +128,7 @@ export const ArtworkDetailsForm: React.FC = () => {
               />
             </Box>
             <Box width="48%">
-              <Input2
+              <Input
                 title="Edition Size"
                 keyboardType="decimal-pad"
                 testID="Submission_EditionSizeInput"
@@ -159,7 +159,7 @@ export const ArtworkDetailsForm: React.FC = () => {
       <Spacer y={2} />
       <Flex flexDirection="row" justifyContent="space-between">
         <Box width="31%" mr={1}>
-          <Input2
+          <Input
             title={`Height (${values.dimensionsMetric})`}
             keyboardType="decimal-pad"
             testID="Submission_HeightInput"
@@ -169,7 +169,7 @@ export const ArtworkDetailsForm: React.FC = () => {
           />
         </Box>
         <Box width="31%" mr={1}>
-          <Input2
+          <Input
             title={`Width (${values.dimensionsMetric})`}
             keyboardType="decimal-pad"
             testID="Submission_WidthInput"
@@ -179,7 +179,7 @@ export const ArtworkDetailsForm: React.FC = () => {
           />
         </Box>
         <Box width="31%">
-          <Input2
+          <Input
             title={`Depth (${values.dimensionsMetric})`}
             optional
             keyboardType="decimal-pad"
@@ -192,7 +192,7 @@ export const ArtworkDetailsForm: React.FC = () => {
       </Flex>
       <StandardSpace />
 
-      <Input2
+      <Input
         title="Provenance"
         onHintPress={() => setIsProvenanceInfoModalVisible(true)}
         placeholder="Describe how you acquired the artwork"

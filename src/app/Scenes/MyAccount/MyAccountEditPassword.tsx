@@ -1,4 +1,4 @@
-import { Flex, Input2, Separator } from "@artsy/palette-mobile"
+import { Flex, Input, Separator } from "@artsy/palette-mobile"
 import { Stack } from "app/Components/Stack"
 import { getCurrentEmissionState, GlobalStore, unsafe__getEnvironment } from "app/store/GlobalStore"
 import React, { useEffect, useState } from "react"
@@ -94,7 +94,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
       contentContainerStyle={{ paddingHorizontal: 0 }}
     >
       <Flex mx={2}>
-        <Input2
+        <Input
           autoComplete="password"
           autoFocus
           onChangeText={setCurrentPassword}
@@ -110,7 +110,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
         <Text>
           Password must include at least one uppercase letter, one lowercase letter, and one number.
         </Text>
-        <Input2
+        <Input
           // TODO: Look into this with design
 
           onChangeText={setNewPassword}
@@ -120,7 +120,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
           value={newPassword}
           error={receivedErrorNew}
         />
-        <Input2
+        <Input
           onChangeText={setPasswordConfirmation}
           secureTextEntry
           enableClearButton

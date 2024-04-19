@@ -1,4 +1,4 @@
-import { Box, Button, Input2, LinkText, Spacer, Text } from "@artsy/palette-mobile"
+import { Box, Button, Input, LinkText, Spacer, Text } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { PhoneInput } from "app/Components/Input/PhoneInput"
 import { navigate } from "app/system/navigation/navigate"
@@ -35,10 +35,10 @@ export const ConsignmentInquiryForm: React.FC<{
   }, [canPopScreen, dirty, navigation])
 
   const scrollViewRef = useRef<ScrollView>(null)
-  const nameInputRef = useRef<Input2>(null)
-  const emailInputRef = useRef<Input2>(null)
-  const phoneInputRef = useRef<Input2>(null)
-  const messageInputRef = useRef<Input2>(null)
+  const nameInputRef = useRef<Input>(null)
+  const emailInputRef = useRef<Input>(null)
+  const phoneInputRef = useRef<Input>(null)
+  const messageInputRef = useRef<Input>(null)
 
   const jumpToNextField = (currentField: "name" | "email" | "phone" | "message") => {
     switch (currentField) {
@@ -83,7 +83,7 @@ export const ConsignmentInquiryForm: React.FC<{
           <Text variant="lg-display" mb={2}>
             {!!recipientName ? `Contact ${recipientName}` : "Contact a specialist"}
           </Text>
-          <Input2
+          <Input
             accessibilityLabel="Name"
             autoCapitalize="words"
             autoCorrect={false}
@@ -101,7 +101,7 @@ export const ConsignmentInquiryForm: React.FC<{
             value={values.name}
           />
           <Spacer y={2} />
-          <Input2
+          <Input
             accessibilityLabel="Email address"
             autoCapitalize="none"
             autoCorrect={false}
@@ -137,7 +137,7 @@ export const ConsignmentInquiryForm: React.FC<{
             value={values.phoneNumber}
           />
           <Spacer y={6} />
-          <Input2
+          <Input
             accessibilityLabel="Message to the Artsy Specialist"
             blurOnSubmit={false}
             error={errors.message}

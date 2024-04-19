@@ -1,6 +1,6 @@
 import {
   Flex,
-  Input2Props,
+  InputProps,
   Spacer,
   Text,
   Touchable,
@@ -31,7 +31,7 @@ export const MoneyInput = forwardRef<
     onChange?: (value: { currency?: string; amount?: string }) => void
     onModalFinishedClosing?: () => void
     shouldDisplayLocalError?: boolean
-  } & Omit<Input2Props, "onChange" | "onChangeText">
+  } & Omit<InputProps, "onChange" | "onChangeText">
 >(
   (
     {

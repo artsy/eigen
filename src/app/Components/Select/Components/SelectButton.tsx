@@ -2,7 +2,6 @@ import {
   Flex,
   HORIZONTAL_PADDING,
   INPUT_BORDER_RADIUS,
-  INPUT_HEIGHT,
   INPUT_MIN_HEIGHT,
   INPUT_VARIANTS,
   InputState,
@@ -49,7 +48,7 @@ export const SelectButton: React.FC<{
 
   const variant: InputVariant = getInputVariant({
     hasError: !!hasError,
-    editable: !disabled,
+    disabled: !!disabled,
   })
 
   const animatedState = useSharedValue<InputState>(
@@ -73,7 +72,7 @@ export const SelectButton: React.FC<{
       color: withTiming(INPUT_VARIANTS[variant][animatedState.value].labelColor),
       top: withTiming(
         hasSelectedValue
-          ? -((INPUT_HEIGHT + parseInt(THEME.textVariants["sm-display"].fontSize, 10) / 2) / 2)
+          ? -((INPUT_MIN_HEIGHT + parseInt(THEME.textVariants["sm-display"].fontSize, 10) / 2) / 2)
           : 0
       ),
       fontSize: withTiming(

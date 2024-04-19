@@ -1,4 +1,4 @@
-import { Input2, Text } from "@artsy/palette-mobile"
+import { Input, Text } from "@artsy/palette-mobile"
 import { screen, waitFor } from "@testing-library/react-native"
 import { SelectModal } from "app/Components/Select/Components/SelectModal"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -26,7 +26,7 @@ describe("MoneyInput", () => {
   })
   it("renders an input with the amount pre-filled", () => {
     renderWithWrappers(<MoneyInput initialValues={{ amount: "2000" }} onChange={onChange} />)
-    const inputs = screen.UNSAFE_getAllByType(Input2)
+    const inputs = screen.UNSAFE_getAllByType(Input)
     expect(inputs).toHaveLength(1)
     expect(inputs[0].props.value).toBe("2,000")
   })
@@ -39,7 +39,7 @@ describe("MoneyInput", () => {
         onChange={onChange}
       />
     )
-    const input = screen.UNSAFE_getAllByType(Input2)[0]
+    const input = screen.UNSAFE_getAllByType(Input)[0]
 
     input.props.onChangeText("200---")
     input.parent?.props.validate()
@@ -56,7 +56,7 @@ describe("MoneyInput", () => {
         format={false}
       />
     )
-    const input = screen.UNSAFE_getAllByType(Input2)[0]
+    const input = screen.UNSAFE_getAllByType(Input)[0]
 
     await waitFor(() => {
       // if formatting is enabled "200---" will be automatically corrected
@@ -71,7 +71,7 @@ describe("MoneyInput", () => {
     renderWithWrappers(<MoneyInput onChange={onChange} />)
     expect(onChange).not.toHaveBeenCalled()
 
-    const input = screen.UNSAFE_getAllByType(Input2)[0]
+    const input = screen.UNSAFE_getAllByType(Input)[0]
     const select = screen.UNSAFE_getAllByType(SelectModal)[0]
 
     act(() => {

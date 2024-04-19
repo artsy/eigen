@@ -1,4 +1,4 @@
-import { Input2 } from "@artsy/palette-mobile"
+import { Input } from "@artsy/palette-mobile"
 import { fireEvent, screen } from "@testing-library/react-native"
 import {
   ArtworkFiltersState,
@@ -26,13 +26,13 @@ jest.mock("lodash/debounce", () => jest.fn())
 describe("CustomPriceInput", () => {
   it("renders without error", () => {
     renderWithWrappers(
-      <Input2 value={DEFAULT_RANGE} onChange={jest.fn()} {...getEssentialProps()} />
+      <Input value={DEFAULT_RANGE} onChange={jest.fn()} {...getEssentialProps()} />
     )
   })
 
   it("renders the min value", () => {
     renderWithWrappers(
-      <Input2
+      <Input
         testID="price-min-input"
         value={{ min: 444, max: 99999 }}
         onChange={jest.fn()}
@@ -45,7 +45,7 @@ describe("CustomPriceInput", () => {
 
   it("renders the max value", () => {
     renderWithWrappers(
-      <Input2
+      <Input
         testID="price-max-input"
         value={{ min: 444, max: 99999 }}
         onChange={jest.fn()}
@@ -59,7 +59,7 @@ describe("CustomPriceInput", () => {
   it("calls onChange with the min when it is updated", () => {
     const handleChange = jest.fn()
     renderWithWrappers(
-      <Input2
+      <Input
         testID="price-min-input"
         value={DEFAULT_RANGE}
         onChangeText={handleChange}
@@ -75,7 +75,7 @@ describe("CustomPriceInput", () => {
   it("calls onChange with the max when it is updated", () => {
     const handleChange = jest.fn()
     renderWithWrappers(
-      <Input2
+      <Input
         testID="price-max-input"
         value={DEFAULT_RANGE}
         onChangeText={handleChange}

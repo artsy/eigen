@@ -1,4 +1,4 @@
-import { Input2, useColor } from "@artsy/palette-mobile"
+import { Input, useColor } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { useFormikContext } from "formik"
 import {
@@ -24,7 +24,7 @@ export const OnboardingCreateAccountPassword: React.FC<OnboardingCreateAccountPa
       title="Create a Password"
       caption="Password must be at least 8 characters and include a lowercase letter, uppercase letter, and digit."
     >
-      <Input2
+      <Input
         autoCapitalize="none"
         autoComplete="password"
         title="Password"

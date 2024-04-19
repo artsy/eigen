@@ -3,7 +3,7 @@ import {
   Box,
   Button,
   Flex,
-  Input2,
+  Input,
   Join,
   Message,
   Separator,
@@ -313,7 +313,7 @@ export const MyCollectionArtworkFormMain: React.FC<
           <Flex p={2}>
             <Join separator={<Spacer y={2} />}>
               <ArtistField />
-              <Input2
+              <Input
                 title="Title"
                 onChangeText={formik.handleChange("title")}
                 onBlur={formik.handleBlur("title")}
@@ -327,7 +327,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                 options={artworkMediumCategories}
                 handleChange={handleCategory}
               />
-              <Input2
+              <Input
                 title="Year"
                 keyboardType="number-pad"
                 placeholder="Year created"
@@ -337,7 +337,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                 accessibilityLabel="Year"
                 value={formikValues.date}
               />
-              <Input2
+              <Input
                 title="Materials"
                 placeholder="Oil on canvas, mixed media, lithograph.."
                 onChangeText={formik.handleChange("medium")}
@@ -366,7 +366,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                 shouldDisplayLocalError={false}
                 title="Price Paid"
               />
-              <Input2
+              <Input
                 multiline
                 title="Provenance"
                 maxLength={500}
@@ -377,7 +377,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                 onChangeText={formik.handleChange("provenance")}
                 testID="ProvenanceInput"
               />
-              <Input2
+              <Input
                 title="Location"
                 placeholder="Enter city where artwork is located"
                 onChangeText={formik.handleChange("artworkLocation")}
@@ -386,7 +386,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                 accessibilityLabel="Enter city where the artwork is located"
                 value={formikValues.artworkLocation}
               />
-              <Input2
+              <Input
                 multiline
                 maxLength={500}
                 showLimit
@@ -471,7 +471,7 @@ const ArtistField: React.FC = () => {
     return <ArtistCustomArtist artist={formik.values.customArtist} />
   } else
     return (
-      <Input2
+      <Input
         title="Artist"
         placeholder="Artist"
         onChangeText={formik.handleChange("artistDisplayName")}
