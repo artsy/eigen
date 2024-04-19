@@ -47,7 +47,6 @@ const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me$data }> = ({ me }
         enableClearButton
         value={phone}
         onChangeText={setPhone}
-        disableOnChangeOptimisation
         autoFocus
         error={receivedError}
       />

@@ -130,7 +130,6 @@ export const PriceRangeContainer: React.FC<PriceRangeContainerProps> = ({
             keyboardType="number-pad"
             value={getInputValue(minValue)}
             onChangeText={handleTextChange(0)}
-            disableOnChangeOptimisation
             testID="price-min-input"
             accessibilityLabel="Minimum Price Range Input"
           />
@@ -143,7 +142,6 @@ export const PriceRangeContainer: React.FC<PriceRangeContainerProps> = ({
             keyboardType="number-pad"
             value={getInputValue(maxValue)}
             onChangeText={handleTextChange(1)}
-            disableOnChangeOptimisation
             testID="price-max-input"
             accessibilityLabel="Maximum Price Range Input"
           />
