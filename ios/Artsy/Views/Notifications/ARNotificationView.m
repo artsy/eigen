@@ -8,6 +8,7 @@
 
 @interface ARNotificationView ()
 @property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, assign) CGFloat topSafeArea;
 @property (nonatomic, copy) void (^responseBlock)(void);
 @property (nonatomic, strong) UIView *parentView;
 @property (nonatomic, assign) NSTimeInterval hideInterval;
@@ -26,16 +27,18 @@ static NSMutableArray *notificationQueue = nil; // Global notification queue
 
 - (id)initWithFrame:(CGRect)frame
 {
-    return [self initWithFrame:frame andResponseBlock:nil];
+    return [self initWithFrame:frame topSafeArea:0 andResponseBlock:nil];
 }
 
-- (id)initWithFrame:(CGRect)frame andResponseBlock:(void (^)(void))response
+- (id)initWithFrame:(CGRect)frame topSafeArea:(CGFloat)topSafeArea andResponseBlock:(void (^)(void))response
 {
     self = [super initWithFrame:frame];
     if (self) {
         self.hidden = YES;
 
         _responseBlock = response;
+
+        _topSafeArea = topSafeArea;
 
         UIView *backgroundView = [[UIView alloc] init];
         backgroundView.backgroundColor = [UIColor blackColor];
@@ -49,7 +52,11 @@ static NSMutableArray *notificationQueue = nil; // Global notification queue
         self.titleLabel.numberOfLines = 0;
         self.titleLabel.backgroundColor = [UIColor clearColor];
         [self addSubview:self.titleLabel];
-        [self.titleLabel alignTop:@"30" leading:@"20" bottom:@"-10" trailing:@"-20" toView:self];
+        NSInteger defaultTopMargin = 30;
+        NSInteger adjustedTopMargin = topSafeArea > 0 ? topSafeArea : defaultTopMargin;
+        NSString *topConstraint = [NSString stringWithFormat:@"%ld", (long)adjustedTopMargin];
+
+        [self.titleLabel alignTop:topConstraint leading:@"20" bottom:@"-10" trailing:@"-20" toView:self];
 
         ARSeparatorView *separator = [[ARSeparatorView alloc] init];
         [self addSubview:separator];
@@ -88,9 +95,10 @@ static NSMutableArray *notificationQueue = nil; // Global notification queue
 + (ARNotificationView *)showNoticeInView:(UIView *)view title:(NSString *)title time:(CGFloat)time response:(void (^)(void))response
 
 {
-    CGFloat panelHeight = [ARNotificationView estimatedTextSizeForTitle:title inView:view];
-    ARNotificationView *noticeView = [[self alloc] initWithFrame:CGRectMake(0, -panelHeight, view.bounds.size.width, 0) andResponseBlock:response];
-    
+    CGFloat topSafeArea = view.safeAreaInsets.top;
+    CGFloat panelHeight = [ARNotificationView estimatedTextSizeForTitle:title inView:view] + topSafeArea;
+    ARNotificationView *noticeView = [[self alloc] initWithFrame:CGRectMake(0, -panelHeight, view.bounds.size.width, 0) topSafeArea:topSafeArea andResponseBlock:response];
+
     noticeView.titleLabel.text = title;
     noticeView.parentView = view;
     noticeView.hideInterval = time;
@@ -119,7 +127,7 @@ static NSMutableArray *notificationQueue = nil; // Global notification queue
         options:UIViewAnimationOptionCurveEaseInOut
         animations:^{
             self.hidden = NO;
-            CGFloat panelHeight = [ARNotificationView estimatedTextSizeForTitle:self.titleLabel.text inView: self.parentView];
+            CGFloat panelHeight = [ARNotificationView estimatedTextSizeForTitle:self.titleLabel.text inView: self.parentView] + self.topSafeArea;
             self.frame = CGRectMake(0, 0, CGRectGetWidth(self.frame), panelHeight);
         }
         completion:^(BOOL finished) {
@@ -139,7 +147,7 @@ static NSMutableArray *notificationQueue = nil; // Global notification queue
         delay:0.0
         options:UIViewAnimationOptionCurveEaseInOut
         animations:^{
-            CGFloat panelHeight = [ARNotificationView estimatedTextSizeForTitle:self.titleLabel.text inView: self.parentView];
+            CGFloat panelHeight = [ARNotificationView estimatedTextSizeForTitle:self.titleLabel.text inView: self.parentView] + self.topSafeArea;
             self.frame = CGRectMake(0, -panelHeight, self.frame.size.width, 1);
         }
         completion:^(BOOL finished) {
