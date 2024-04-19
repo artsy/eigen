@@ -16,7 +16,7 @@ export interface SelectProps<ValueType> {
   options: Array<SelectOption<ValueType>>
   value: ValueType | null | undefined
   placeholder?: string
-  title: string
+  title?: string
   optional?: boolean
   required?: boolean
   subTitle?: string

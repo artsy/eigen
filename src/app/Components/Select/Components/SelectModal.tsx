@@ -17,7 +17,7 @@ import { FlatList, TouchableOpacity } from "react-native"
 export const SelectModal: React.FC<{
   options: Array<SelectOption<unknown>>
   value: unknown | null
-  title: string
+  title?: string
   enableSearch?: boolean
   visible: boolean
   maxHeight?: number
