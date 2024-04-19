@@ -8,7 +8,7 @@ import { ColorsSwatch } from "app/Components/ArtworkFilter/Filters/ColorsSwatch"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { useSearchCriteriaAttributes } from "app/Scenes/SavedSearchAlert/helpers"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import useDebounce from "react-use/lib/useDebounce"
 
 export const SavedSearchFilterColor = () => {
@@ -19,6 +19,10 @@ export const SavedSearchFilterColor = () => {
   const setAttribute = SavedSearchStore.useStoreActions((actions) => actions.setAttributeAction)
 
   const [selectedColors, setSelectedColors] = useState(selectedStoreColors || [])
+
+  useEffect(() => {
+    selectedStoreColors ? setSelectedColors(selectedStoreColors) : setSelectedColors([])
+  }, [selectedStoreColors])
 
   useDebounce(
     () => {
