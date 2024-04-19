@@ -14,8 +14,7 @@
 - (void)show;
 @end
 
-const CGFloat panelHeight = 80;
-const CGFloat longTextPanelHeight = 120;
+const CGFloat defaultPanelHeight = 80;
 const CGFloat panelMargin = 20;
 
 static NSMutableArray *notificationQueue = nil; // Global notification queue
@@ -61,7 +60,23 @@ static NSMutableArray *notificationQueue = nil; // Global notification queue
     return self;
 }
 
+
 #pragma mark - Show
+
++ (CGFloat)estimatedTextSizeForTitle:(NSString *)title inView:(UIView *)view {
+    UIFont *font = [UIFont serifFontWithSize:16];
+    CGFloat maxWidth = view.bounds.size.width - panelMargin;
+    NSDictionary *attributes = @{NSFontAttributeName: font};
+
+    CGRect textRect = [title boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX)
+                                          options:(NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading)
+                                       attributes:attributes
+                                          context:nil];
+
+    CGFloat dynamicHeight = ceil(textRect.size.height) + panelMargin * 2;
+    CGFloat panelHeight = MAX(dynamicHeight, defaultPanelHeight);
+    return panelHeight;
+}
 
 + (ARNotificationView *)showNoticeInView:(UIView *)view title:(NSString *)title response:(void (^)(void))response
 {
@@ -73,6 +88,7 @@ static NSMutableArray *notificationQueue = nil; // Global notification queue
 + (ARNotificationView *)showNoticeInView:(UIView *)view title:(NSString *)title time:(CGFloat)time response:(void (^)(void))response
 
 {
+    CGFloat panelHeight = [ARNotificationView estimatedTextSizeForTitle:title inView:view];
     ARNotificationView *noticeView = [[self alloc] initWithFrame:CGRectMake(0, -panelHeight, view.bounds.size.width, 0) andResponseBlock:response];
     
     noticeView.titleLabel.text = title;
@@ -103,6 +119,7 @@ static NSMutableArray *notificationQueue = nil; // Global notification queue
         options:UIViewAnimationOptionCurveEaseInOut
         animations:^{
             self.hidden = NO;
+            CGFloat panelHeight = [ARNotificationView estimatedTextSizeForTitle:self.titleLabel.text inView: self.parentView];
             self.frame = CGRectMake(0, 0, CGRectGetWidth(self.frame), panelHeight);
         }
         completion:^(BOOL finished) {
@@ -122,6 +139,7 @@ static NSMutableArray *notificationQueue = nil; // Global notification queue
         delay:0.0
         options:UIViewAnimationOptionCurveEaseInOut
         animations:^{
+            CGFloat panelHeight = [ARNotificationView estimatedTextSizeForTitle:self.titleLabel.text inView: self.parentView];
             self.frame = CGRectMake(0, -panelHeight, self.frame.size.width, 1);
         }
         completion:^(BOOL finished) {
