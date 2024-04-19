@@ -321,7 +321,6 @@ export const MyCollectionArtworkFormMain: React.FC<
                 required
                 accessibilityLabel="Title"
                 value={formikValues.title}
-                disableOnChangeOptimisation
               />
               <CategoryPicker<string>
                 value={formikValues.category}
@@ -337,7 +336,6 @@ export const MyCollectionArtworkFormMain: React.FC<
                 testID="DateInput"
                 accessibilityLabel="Year"
                 value={formikValues.date}
-                disableOnChangeOptimisation
               />
               <Input2
                 title="Materials"
@@ -347,7 +345,6 @@ export const MyCollectionArtworkFormMain: React.FC<
                 testID="MaterialsInput"
                 accessibilityLabel="Materials"
                 value={formikValues.medium}
-                disableOnChangeOptimisation
               />
               <Rarity />
               <Dimensions />
@@ -355,7 +352,6 @@ export const MyCollectionArtworkFormMain: React.FC<
                 accessibilityLabel="Price paid"
                 currencyTextVariant="xs"
                 format
-                disableOnChangeOptimisation
                 initialValues={{
                   currency: initialCurrency as Currency,
                   amount: formikValues.pricePaidDollars,
@@ -380,7 +376,6 @@ export const MyCollectionArtworkFormMain: React.FC<
                 accessibilityLabel="Describe how you acquired the artwork"
                 onChangeText={formik.handleChange("provenance")}
                 testID="ProvenanceInput"
-                disableOnChangeOptimisation
               />
               <Input2
                 title="Location"
@@ -390,7 +385,6 @@ export const MyCollectionArtworkFormMain: React.FC<
                 testID="LocationInput"
                 accessibilityLabel="Enter city where the artwork is located"
                 value={formikValues.artworkLocation}
-                disableOnChangeOptimisation
               />
               <Input2
                 multiline
@@ -402,7 +396,6 @@ export const MyCollectionArtworkFormMain: React.FC<
                 testID="NotesInput"
                 accessibilityLabel="Notes"
                 value={formikValues.confidentialNotes}
-                disableOnChangeOptimisation
               />
             </Join>
           </Flex>
