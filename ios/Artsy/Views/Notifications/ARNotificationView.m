@@ -15,7 +15,6 @@
 - (void)show;
 @end
 
-const CGFloat defaultPanelHeight = 80;
 const CGFloat panelMargin = 20;
 
 static NSMutableArray *notificationQueue = nil; // Global notification queue
@@ -80,8 +79,7 @@ static NSMutableArray *notificationQueue = nil; // Global notification queue
                                        attributes:attributes
                                           context:nil];
 
-    CGFloat dynamicHeight = ceil(textRect.size.height) + panelMargin * 2;
-    CGFloat panelHeight = MAX(dynamicHeight, defaultPanelHeight);
+    CGFloat panelHeight = ceil(textRect.size.height) + panelMargin;
     return panelHeight;
 }
 
