@@ -1,6 +1,6 @@
 import { Color, Flex, Stopwatch, Text } from "@artsy/palette-mobile"
 import { ArtworkPrice_me$data } from "__generated__/ArtworkPrice_me.graphql"
-import { formattedTimeLeftInArtworkScreen } from "app/Scenes/Artwork/utils/formattedTimeLeft"
+import { formattedTimeLeftForPartnerOffer } from "app/Scenes/Artwork/utils/formattedTimeLeftForPartnerOffer"
 import { getTimer } from "app/utils/getTimer"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { FC, useEffect, useRef, useState } from "react"
@@ -21,6 +21,8 @@ export const ExpiresInTimer: FC<ExpiresInTimerProps> = ({ item }) => {
   const intervalId = useRef<ReturnType<typeof setInterval> | null>(null)
   const [time, setTime] = useState(getTimer(expiresAt)["time"])
   const [hasEnded, setHasEnded] = useState(getTimer(expiresAt)["hasEnded"])
+
+  const { timerCopy, textColor } = formattedTimeLeftForPartnerOffer(time)
 
   useEffect(() => {
     intervalId.current = setInterval(() => {
@@ -46,8 +48,6 @@ export const ExpiresInTimer: FC<ExpiresInTimerProps> = ({ item }) => {
       </Flex>
     )
   }
-
-  const { timerCopy, textColor } = formattedTimeLeftInArtworkScreen(time)
 
   return (
     <Flex flexDirection="row" alignItems="center">

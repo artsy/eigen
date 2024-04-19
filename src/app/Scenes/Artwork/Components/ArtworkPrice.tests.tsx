@@ -19,15 +19,11 @@ interface TestProps {
 describe("ArtworkPrice", () => {
   const { renderWithRelay } = setupTestWrapper<ArtworkPrice_Test_Query, TestProps>({
     Component: ({ artwork, me, initialData }) => {
-      if (artwork && me) {
-        return (
-          <ArtworkStoreProvider runtimeModel={{ ...artworkModel, ...initialData }}>
-            <ArtworkPrice artwork={artwork} me={me} />
-          </ArtworkStoreProvider>
-        )
-      }
-
-      return null
+      return (
+        <ArtworkStoreProvider runtimeModel={{ ...artworkModel, ...initialData }}>
+          <ArtworkPrice artwork={artwork!} me={me!} />
+        </ArtworkStoreProvider>
+      )
     },
     query: graphql`
       query ArtworkPrice_Test_Query {

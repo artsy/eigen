@@ -1,6 +1,6 @@
 import { formattedTimeLeft } from "app/Scenes/Activity/utils/formattedTimeLeft"
 
-export const formattedTimeLeftInArtworkScreen = (time: {
+export const formattedTimeLeftForPartnerOffer = (time: {
   days: string
   hours: string
   minutes: string

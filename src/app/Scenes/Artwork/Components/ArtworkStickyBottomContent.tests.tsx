@@ -18,13 +18,11 @@ interface TestProps {
 describe("ArtworkStickyBottomContent", () => {
   const { renderWithRelay } = setupTestWrapper<ArtworkStickyBottomContent_Test_Query, TestProps>({
     Component: ({ artwork, me, initialData }) => {
-      if (artwork && me) {
-        return (
-          <ArtworkStoreProvider runtimeModel={{ ...artworkModel, ...initialData }}>
-            <ArtworkStickyBottomContent artwork={artwork} me={me} />
-          </ArtworkStoreProvider>
-        )
-      }
+      return (
+        <ArtworkStoreProvider runtimeModel={{ ...artworkModel, ...initialData }}>
+          <ArtworkStickyBottomContent artwork={artwork!} me={me!} />
+        </ArtworkStoreProvider>
+      )
 
       return null
     },
