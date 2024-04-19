@@ -111,8 +111,6 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
           Password must include at least one uppercase letter, one lowercase letter, and one number.
         </Text>
         <Input
-          // TODO: Look into this with design
-
           onChangeText={setNewPassword}
           secureTextEntry
           enableClearButton
