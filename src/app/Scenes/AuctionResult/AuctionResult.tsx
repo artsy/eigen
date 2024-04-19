@@ -9,6 +9,7 @@ import {
   useSpace,
   useTheme,
   Separator,
+  BackButton,
 } from "@artsy/palette-mobile"
 import { addBreadcrumb } from "@sentry/react-native"
 import { AuctionResultQuery } from "__generated__/AuctionResultQuery.graphql"
@@ -19,7 +20,6 @@ import {
 } from "__generated__/AuctionResult_auctionResult.graphql"
 import { ratioColor } from "app/Components/AuctionResult/AuctionResultMidEstimate"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { QAInfoPanel } from "app/utils/QAInfo"
 import { useScreenDimensions } from "app/utils/hooks"
@@ -49,6 +49,7 @@ export const AuctionResult: React.FC<Props> = (props) => {
   const auctionResult = useFragment(auctionResultFragment, props.auctionResult)
 
   const { theme } = useTheme()
+  const space = useSpace()
 
   const tracking = useTracking()
 
@@ -223,14 +224,18 @@ export const AuctionResult: React.FC<Props> = (props) => {
 
   return (
     <ProvideScreenTrackingWithCohesionSchema info={tracks.screen(auctionResult.internalID)}>
-      <FancyModalHeader hideBottomDivider onLeftButtonPress={goBack}>
-        <Flex flex={1} pl={6} pr={4} pt={0.5} flexDirection="row">
-          <Text variant="sm" numberOfLines={1} style={{ flexShrink: 1 }}>
-            {auctionResult.title}
-          </Text>
-          {!!auctionResult.dateText && <Text variant="sm">, {auctionResult.dateText}</Text>}
+      <Flex flexDirection="row" alignItems="center" height={44} px={2}>
+        <Flex pr={2} alignItems="center">
+          <BackButton
+            onPress={goBack}
+            hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
+          />
         </Flex>
-      </FancyModalHeader>
+        <Text variant="sm" numberOfLines={1} style={{ flexShrink: 1 }}>
+          {auctionResult.title}
+        </Text>
+        {!!auctionResult.dateText && <Text variant="sm">, {auctionResult.dateText}</Text>}
+      </Flex>
       <ScrollView>
         <Join separator={<Spacer y={2} />}>
           {!!auctionResult?.images?.larger && (
