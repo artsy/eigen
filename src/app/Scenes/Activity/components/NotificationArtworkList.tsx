@@ -47,6 +47,7 @@ export const NotificationArtworkList: FC<NotificationArtworkListProps> = (props)
         contextScreen={OwnerType.activity}
         hasMore={false}
         onScroll={scrollHandler}
+        partnerOffer={partnerOffer}
         priceOfferMessage={priceOfferMessage}
         style={{ paddingBottom: 120 }}
       />
