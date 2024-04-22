@@ -115,7 +115,7 @@ const CommercialButtons: React.FC<{
         <RowContainer>
           <Button
             onPress={() => {
-              navigate(`/artwork/${artworkID}?partner_offer_id=${partnerOffer?.id}`)
+              navigate(`/artwork/${artworkID}`, { passProps: { partnerOfferId: partnerOffer?.id } })
             }}
             variant="outline"
             accessibilityLabel="View Work"
