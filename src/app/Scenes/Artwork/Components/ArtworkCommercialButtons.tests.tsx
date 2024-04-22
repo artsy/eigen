@@ -32,7 +32,7 @@ describe("ArtworkCommercialButtons", () => {
         >
           <ArtworkStoreProvider>
             <ArtworkCommercialButtons
-              partnerOfferToCollector={partnerOffer}
+              partnerOffer={partnerOffer}
               artwork={props.artwork!}
               me={props.me!}
             />
@@ -51,7 +51,7 @@ describe("ArtworkCommercialButtons", () => {
           partnerOffersConnection(artworkID: "artworkID") {
             edges {
               node {
-                ...ArtworkCommercialButtons_partnerOfferToCollector
+                ...ArtworkCommercialButtons_partnerOffer
               }
             }
           }

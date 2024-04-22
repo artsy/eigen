@@ -38,7 +38,7 @@ describe("ArtworkPrice", () => {
           partnerOffersConnection(first: 1) {
             edges {
               node {
-                ...ArtworkPrice_partnerOfferToCollector
+                ...ArtworkPrice_partnerOffer
               }
             }
           }

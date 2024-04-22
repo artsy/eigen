@@ -646,7 +646,7 @@ export const ArtworkContainer = createRefetchContainer(
           edges {
             node {
               internalID
-              ...ArtworkStickyBottomContent_partnerOfferToCollector
+              ...ArtworkStickyBottomContent_partnerOffer
               ...ArtworkPartnerOfferNote_partnerOfferToCollector
             }
           }

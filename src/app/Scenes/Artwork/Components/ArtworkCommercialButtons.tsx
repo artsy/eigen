@@ -1,7 +1,7 @@
 import { Spacer, Flex, Join } from "@artsy/palette-mobile"
 import { ArtworkCommercialButtons_artwork$key } from "__generated__/ArtworkCommercialButtons_artwork.graphql"
 import { ArtworkCommercialButtons_me$key } from "__generated__/ArtworkCommercialButtons_me.graphql"
-import { ArtworkCommercialButtons_partnerOfferToCollector$key } from "__generated__/ArtworkCommercialButtons_partnerOfferToCollector.graphql"
+import { ArtworkCommercialButtons_partnerOffer$key } from "__generated__/ArtworkCommercialButtons_partnerOffer.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtworkStore } from "app/Scenes/Artwork/ArtworkStore"
 import { BuyNowButton } from "app/Scenes/Artwork/Components/CommercialButtons/BuyNowButton"
@@ -14,7 +14,7 @@ import { BidButtonFragmentContainer } from "./CommercialButtons/BidButton"
 interface ArtworkCommercialButtonsProps {
   artwork: ArtworkCommercialButtons_artwork$key
   me: ArtworkCommercialButtons_me$key
-  partnerOfferToCollector: ArtworkCommercialButtons_partnerOfferToCollector$key
+  partnerOffer: ArtworkCommercialButtons_partnerOffer$key
 }
 
 const RowContainer: React.FC = ({ children }) => {
@@ -31,12 +31,12 @@ const RowContainer: React.FC = ({ children }) => {
 
 export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> = ({
   artwork,
-  partnerOfferToCollector,
+  partnerOffer,
   me,
 }) => {
   const artworkData = useFragment(artworkFragment, artwork)
   const meData = useFragment(meFragment, me)
-  const partnerOfferData = useFragment(partnerOfferFragment, partnerOfferToCollector)
+  const partnerOfferData = useFragment(partnerOfferFragment, partnerOffer)
   const selectedEditionId = ArtworkStore.useStoreState((state) => state.selectedEditionId)
   const auctionState = ArtworkStore.useStoreState((state) => state.auctionState)
   const isBiddableInAuction = artworkData.isInAuction && artworkData.sale
@@ -156,7 +156,7 @@ const meFragment = graphql`
 `
 
 const partnerOfferFragment = graphql`
-  fragment ArtworkCommercialButtons_partnerOfferToCollector on PartnerOfferToCollector {
+  fragment ArtworkCommercialButtons_partnerOffer on PartnerOfferToCollector {
     internalID
   }
 `

@@ -41,7 +41,7 @@ describe("ArtworkStickyBottomContent", () => {
           partnerOffersConnection(artworkID: "artworkID", first: 1) {
             edges {
               node {
-                ...ArtworkStickyBottomContent_partnerOfferToCollector
+                ...ArtworkStickyBottomContent_partnerOffer
               }
             }
           }
