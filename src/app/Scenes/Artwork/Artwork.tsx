@@ -620,8 +620,15 @@ export const ArtworkContainer = createRefetchContainer(
       }
     `,
     me: graphql`
-      fragment Artwork_me on Me {
+      fragment Artwork_me on Me @argumentDefinitions(artworkID: { type: "String!" }) {
         ...ArtworkStickyBottomContent_me
+        partnerOffersConnection(artworkID: $artworkID, first: 1) {
+          edges {
+            node {
+              internalID
+            }
+          }
+        }
       }
     `,
   },
@@ -642,7 +649,7 @@ export const ArtworkScreenQuery = graphql`
       ...Artwork_artworkAboveTheFold
     }
     me {
-      ...Artwork_me
+      ...Artwork_me @arguments(artworkID: $artworkID)
     }
   }
 `
