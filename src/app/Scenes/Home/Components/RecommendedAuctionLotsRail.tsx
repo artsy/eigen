@@ -2,6 +2,7 @@ import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
 import { RecommendedAuctionLotsRail_artworkConnection$key } from "__generated__/RecommendedAuctionLotsRail_artworkConnection.graphql"
 import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
+import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { RailScrollProps } from "app/Scenes/Home/Components/types"
 import { useItemsImpressionsTracking } from "app/Scenes/Home/Components/useImpressionsTracking"
@@ -21,16 +22,21 @@ interface RecommendedAuctionLotsRailProps extends ArtworkActionTrackingProps {
   title: string
   artworkConnection: RecommendedAuctionLotsRail_artworkConnection$key
   isRailVisible: boolean
+  size: "small" | "large"
 }
 
 export const RecommendedAuctionLotsRail: React.FC<
   RecommendedAuctionLotsRailProps & RailScrollProps
-> = memo(({ title, artworkConnection, isRailVisible, scrollRef, ...restProps }) => {
+> = memo(({ title, artworkConnection, isRailVisible, scrollRef, size, ...restProps }) => {
   const { trackEvent } = useTracking()
 
   const trackingProps = extractArtworkActionTrackingProps(restProps)
 
-  const { artworksForUser } = useFragment(artworksFragment, artworkConnection)
+  const { artworksForUser } = useFragment(
+    size === "large" ? largeArtworksFragment : smallArtworksFragment,
+    artworkConnection
+  )
+  // const { artworksForUser } = useFragment(smallArtworksFragment, artworkConnection)
 
   const railRef = useRef<View>(null)
   const listRef = useRef<FlatList<any>>(null)
@@ -74,24 +80,40 @@ export const RecommendedAuctionLotsRail: React.FC<
           }}
         />
       </Flex>
-      <LargeArtworkRail
-        {...trackingProps}
-        artworks={artworks}
-        onPress={handleOnArtworkPress}
-        showSaveIcon
-        onMorePress={() => {
-          trackEvent(tracks.tappedMoreCard())
-          navigate("/auctions/lots-for-you-ending-soon")
-        }}
-        onViewableItemsChanged={onViewableItemsChanged}
-        viewabilityConfig={viewabilityConfig}
-      />
+
+      {size == "large" ? (
+        <LargeArtworkRail
+          {...trackingProps}
+          artworks={artworks}
+          onPress={handleOnArtworkPress}
+          showSaveIcon
+          onMorePress={() => {
+            trackEvent(tracks.tappedMoreCard())
+            navigate("/auctions/lots-for-you-ending-soon")
+          }}
+          onViewableItemsChanged={onViewableItemsChanged}
+          viewabilityConfig={viewabilityConfig}
+        />
+      ) : (
+        <SmallArtworkRail
+          {...trackingProps}
+          artworks={artworks as RecommendedAuctionLotsRail_smallArtworkConnection$data}
+          onPress={handleOnArtworkPress}
+          showSaveIcon
+          onMorePress={() => {
+            trackEvent(tracks.tappedMoreCard())
+            navigate("/auctions/lots-for-you-ending-soon")
+          }}
+          onViewableItemsChanged={onViewableItemsChanged}
+          viewabilityConfig={viewabilityConfig}
+        />
+      )}
     </View>
   )
 })
 
-const artworksFragment = graphql`
-  fragment RecommendedAuctionLotsRail_artworkConnection on Viewer {
+const largeArtworksFragment = graphql`
+  fragment RecommendedAuctionLotsRail_largeArtworkConnection on Viewer {
     artworksForUser(includeBackfill: true, first: 10, onlyAtAuction: true) {
       edges {
         node {
@@ -99,6 +121,21 @@ const artworksFragment = graphql`
           internalID
           slug
           ...LargeArtworkRail_artworks
+        }
+      }
+    }
+  }
+`
+
+const smallArtworksFragment = graphql`
+  fragment RecommendedAuctionLotsRail_smallArtworkConnection on Viewer {
+    artworksForUser(includeBackfill: true, first: 10, onlyAtAuction: true) {
+      edges {
+        node {
+          title
+          internalID
+          slug
+          ...SmallArtworkRail_artworks
         }
       }
     }

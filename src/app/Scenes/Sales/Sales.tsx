@@ -1,9 +1,9 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, Spinner } from "@artsy/palette-mobile"
 import { SalesQuery } from "__generated__/SalesQuery.graphql"
-import { LotsByFollowedArtistsRailContainer } from "app/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { Stack } from "app/Components/Stack"
+import { RecommendedAuctionLotsRail } from "app/Scenes/Home/Components/RecommendedAuctionLotsRail"
 import { goBack } from "app/system/navigation/navigate"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -25,8 +25,8 @@ export const SalesScreenQuery = graphql`
     upcomingAuctions: viewer {
       ...UpcomingAuctions_viewer
     }
-    me {
-      ...LotsByFollowedArtistsRail_me
+    RecommendedAuctionLotsRail: viewer {
+      ...RecommendedAuctionLotsRail_artworkConnection
     }
   }
 `
@@ -81,10 +81,15 @@ export const Sales: React.FC = () => {
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
       >
         <Stack py={2} spacing={4}>
-          {!!data.me && (
-            <LotsByFollowedArtistsRailContainer title="Lots by Artists You Follow" me={data.me} />
+          {!!data.RecommendedAuctionLotsRail && (
+            <RecommendedAuctionLotsRail
+              title="Auction Lots for You"
+              artworkConnection={data.RecommendedAuctionLotsRail}
+              isRailVisible={true}
+              scrollRef={null}
+              size="small"
+            />
           )}
-
           <CurrentlyRunningAuctions
             sales={data.currentlyRunningAuctions}
             setRefetchPropOnParent={setCurrentAuctionsRefreshProp}

@@ -306,6 +306,7 @@ const Home = memo((props: HomeProps) => {
               isRailVisible={visibleRails.has(item.title)}
               scrollRef={scrollRefs.current[index]}
               title={item.title}
+              size="large"
             />
           )
 

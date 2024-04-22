@@ -1,4 +1,4 @@
-import { act, screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { act, screen, waitFor } from "@testing-library/react-native"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { CurrentlyRunningAuctions } from "./CurrentlyRunningAuctions"
 import { SalesScreen } from "./Sales"
@@ -15,7 +15,7 @@ describe("Sales", () => {
   it("renders without Errors", async () => {
     renderWithRelay()
 
-    await waitForElementToBeRemoved(() => screen.getByTestId("SalePlaceholder"))
+    await waitFor(() => expect(screen.queryByTestId("SalePlaceholder")).toBeNull())
 
     expect(screen.getByTestId("Sales-Screen-ScrollView")).toBeDefined()
   })
@@ -23,7 +23,7 @@ describe("Sales", () => {
   it("renders the ZeroState when there are no sales", async () => {
     renderWithRelay()
 
-    await waitForElementToBeRemoved(() => screen.getByTestId("SalePlaceholder"))
+    await waitFor(() => expect(screen.queryByTestId("SalePlaceholder")).toBeNull())
 
     const CurrentAuction = screen.UNSAFE_getAllByType(CurrentlyRunningAuctions)[0]
     const UpcomingAuction = screen.UNSAFE_getAllByType(UpcomingAuctions)[0]
@@ -33,13 +33,13 @@ describe("Sales", () => {
       UpcomingAuction.props.setSalesCountOnParent(0)
     })
 
-    await waitFor(() => expect(screen.getByTestId("Sales-Zero-State-Container")).toBeDefined())
+    await screen.findByTestId("Sales-Zero-State-Container")
   })
 
   it("Can refresh current and upcoming auctions", async () => {
     renderWithRelay()
 
-    await waitForElementToBeRemoved(() => screen.getByTestId("SalePlaceholder"))
+    await waitFor(() => expect(screen.queryByTestId("SalePlaceholder")).toBeNull())
 
     const CurrentAuction = screen.UNSAFE_getAllByType(CurrentlyRunningAuctions)[0]
     const UpcomingAuction = screen.UNSAFE_getAllByType(UpcomingAuctions)[0]
