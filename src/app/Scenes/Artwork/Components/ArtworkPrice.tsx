@@ -22,10 +22,10 @@ export const ArtworkPrice: React.FC<ArtworkPriceProps> = ({ artwork, me, ...flex
   const editionSets = artworkData.editionSets ?? []
   let message = null
 
-  const AREnablePartnerOfferV1Improvements = useFeatureFlag("AREnablePartnerOfferV1Improvements")
+  const AREnablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
 
   const partnerOffer =
-    (!!AREnablePartnerOfferV1Improvements &&
+    (!!AREnablePartnerOfferOnArtworkScreen &&
       meData.partnerOffersConnection &&
       extractNodes(meData.partnerOffersConnection)[0]) ||
     null

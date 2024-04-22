@@ -79,7 +79,7 @@ describe("ArtworkPrice", () => {
 
   describe("Partner Offer", () => {
     beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnablePartnerOfferV1Improvements: true })
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnablePartnerOfferOnArtworkScreen: true })
     })
 
     it("should NOT render if there is not partner offers", () => {
