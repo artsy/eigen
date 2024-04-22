@@ -179,7 +179,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
   })
 
   const { hasEnded } = getTimer(partnerOffer?.endAt || "")
-  const noLongerAvailable = !partnerOffer?.isAvailable
   const enablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
 
   const handleTap = () => {
@@ -189,15 +188,14 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
     addArtworkToRecentSearches()
     trackArtworkTap()
-    let artworkLink = artwork.href as string
-    if (partnerOffer) {
-      if (!!hasEnded && !enablePartnerOfferOnArtworkScreen) {
-        artworkLink = artworkLink + "?expired_offer=true"
-      } else if (!hasEnded && !noLongerAvailable && !!enablePartnerOfferOnArtworkScreen) {
-        artworkLink = artworkLink + "?partner_offer_id=" + partnerOffer?.id
+
+    if (artwork.href) {
+      if (partnerOffer && !!hasEnded && !enablePartnerOfferOnArtworkScreen) {
+        navigate?.(artwork.href, { passProps: { artworkOfferExpired: true } })
+      } else {
+        navigate?.(artwork.href)
       }
     }
-    navigate?.(artworkLink)
   }
 
   const trackArtworkTap = () => {
