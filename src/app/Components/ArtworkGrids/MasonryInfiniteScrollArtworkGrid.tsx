@@ -101,7 +101,6 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
         // No paddings are needed for single column grids
         paddingHorizontal: rest.numColumns === 1 ? 0 : space(2),
         paddingBottom: artworks.length === 1 ? 0 : space(6),
-        // paddingBottom: space(6),
       }}
       data={artworks}
       keyExtractor={(item) => item.id}
