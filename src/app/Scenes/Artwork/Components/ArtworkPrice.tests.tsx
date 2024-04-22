@@ -7,6 +7,7 @@ import {
   artworkModel,
 } from "app/Scenes/Artwork/ArtworkStore"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { extractNodes } from "app/utils/extractNodes"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { DateTime } from "luxon"
 import { graphql } from "react-relay"
@@ -21,7 +22,10 @@ describe("ArtworkPrice", () => {
     Component: ({ artwork, me, initialData }) => {
       return (
         <ArtworkStoreProvider runtimeModel={{ ...artworkModel, ...initialData }}>
-          <ArtworkPrice artwork={artwork!} me={me!} />
+          <ArtworkPrice
+            artwork={artwork!}
+            partnerOffer={extractNodes(me!.partnerOffersConnection)[0]}
+          />
         </ArtworkStoreProvider>
       )
     },
@@ -31,7 +35,13 @@ describe("ArtworkPrice", () => {
           ...ArtworkPrice_artwork
         }
         me {
-          ...ArtworkPrice_me @arguments(artworkID: "artworkID")
+          partnerOffersConnection(first: 1) {
+            edges {
+              node {
+                ...ArtworkPrice_partnerOfferToCollector
+              }
+            }
+          }
         }
       }
     `,

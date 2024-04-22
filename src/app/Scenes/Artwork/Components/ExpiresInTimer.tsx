@@ -1,14 +1,13 @@
 import { Color, Flex, Stopwatch, Text } from "@artsy/palette-mobile"
-import { ArtworkPrice_me$data } from "__generated__/ArtworkPrice_me.graphql"
+import { ArtworkPrice_partnerOfferToCollector$data } from "__generated__/ArtworkPrice_partnerOfferToCollector.graphql"
 import { formattedTimeLeftForPartnerOffer } from "app/Scenes/Artwork/utils/formattedTimeLeftForPartnerOffer"
 import { getTimer } from "app/utils/getTimer"
-import { ExtractNodeType } from "app/utils/relayHelpers"
 import { FC, useEffect, useRef, useState } from "react"
 
 const INTERVAL = 1000
 
 interface ExpiresInTimerProps {
-  item: ExtractNodeType<ArtworkPrice_me$data["partnerOffersConnection"]>
+  item: Pick<ArtworkPrice_partnerOfferToCollector$data, "endAt">
 }
 
 const WatchIcon: FC<{ fill?: Color }> = ({ fill = "red100" }) => {

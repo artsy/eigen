@@ -6,6 +6,7 @@ import {
   ArtworkStoreProvider,
   artworkModel,
 } from "app/Scenes/Artwork/ArtworkStore"
+import { extractNodes } from "app/utils/extractNodes"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { DateTime } from "luxon"
 import { graphql } from "react-relay"
@@ -20,7 +21,11 @@ describe("ArtworkStickyBottomContent", () => {
     Component: ({ artwork, me, initialData }) => {
       return (
         <ArtworkStoreProvider runtimeModel={{ ...artworkModel, ...initialData }}>
-          <ArtworkStickyBottomContent artwork={artwork!} me={me!} />
+          <ArtworkStickyBottomContent
+            artwork={artwork!}
+            me={me!}
+            partnerOffer={extractNodes(me!.partnerOffersConnection)[0]}
+          />
         </ArtworkStoreProvider>
       )
 
@@ -32,7 +37,14 @@ describe("ArtworkStickyBottomContent", () => {
           ...ArtworkStickyBottomContent_artwork
         }
         me {
-          ...ArtworkStickyBottomContent_me @arguments(artworkID: "artworkID")
+          ...ArtworkStickyBottomContent_me
+          partnerOffersConnection(artworkID: "artworkID", first: 1) {
+            edges {
+              node {
+                ...ArtworkStickyBottomContent_partnerOfferToCollector
+              }
+            }
+          }
         }
       }
     `,
