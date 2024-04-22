@@ -74,9 +74,11 @@ const CommercialButtons: React.FC<{
   const noLongerAvailable = !partnerOffer?.isAvailable
   const enablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
 
-  return (
-    <Flex mx={2} gap={space(1)}>
-      {!!hasEnded && !enablePartnerOfferOnArtworkScreen && (
+  let renderComponent = null
+
+  if (!!hasEnded) {
+    if (!enablePartnerOfferOnArtworkScreen) {
+      renderComponent = (
         <>
           <MakeOfferButtonFragmentContainer
             artwork={artworkData as MakeOfferButton_artwork$key}
@@ -88,9 +90,9 @@ const CommercialButtons: React.FC<{
             variant="outline"
           />
         </>
-      )}
-
-      {!!hasEnded && !!enablePartnerOfferOnArtworkScreen && (
+      )
+    } else {
+      renderComponent = (
         <Button
           onPress={() => {
             navigate(`/artwork/${artworkID}`, { passProps: { artworkOfferExpired: true } })
@@ -100,18 +102,20 @@ const CommercialButtons: React.FC<{
         >
           View Work
         </Button>
-      )}
-
-      {!hasEnded && !noLongerAvailable && !enablePartnerOfferOnArtworkScreen && (
+      )
+    }
+  } else if (!noLongerAvailable) {
+    if (!enablePartnerOfferOnArtworkScreen) {
+      renderComponent = (
         <BuyNowButton
           artwork={artworkData as BuyNowButton_artwork$key}
           partnerOffer={partnerOffer}
           editionSetID={null}
           buttonText="Continue to Purchase"
         />
-      )}
-
-      {!hasEnded && !noLongerAvailable && !!enablePartnerOfferOnArtworkScreen && (
+      )
+    } else {
+      renderComponent = (
         <RowContainer>
           <Button
             onPress={() => {
@@ -130,20 +134,26 @@ const CommercialButtons: React.FC<{
             buttonText="Purchase"
           />
         </RowContainer>
-      )}
+      )
+    }
+  } else if (!!noLongerAvailable) {
+    renderComponent = (
+      <>
+        <Button block variant="outline" onPress={() => setShowCreateArtworkAlertModal(true)}>
+          Create Alert
+        </Button>
+        <CreateArtworkAlertModal
+          artwork={artwork as CreateArtworkAlertModal_artwork$key}
+          onClose={() => setShowCreateArtworkAlertModal(false)}
+          visible={showCreateArtworkAlertModal}
+        />
+      </>
+    )
+  }
 
-      {!!noLongerAvailable && (
-        <>
-          <Button block variant="outline" onPress={() => setShowCreateArtworkAlertModal(true)}>
-            Create Alert
-          </Button>
-          <CreateArtworkAlertModal
-            artwork={artwork as CreateArtworkAlertModal_artwork$key}
-            onClose={() => setShowCreateArtworkAlertModal(false)}
-            visible={showCreateArtworkAlertModal}
-          />
-        </>
-      )}
+  return (
+    <Flex mx={2} gap={space(1)}>
+      {renderComponent}
     </Flex>
   )
 }
