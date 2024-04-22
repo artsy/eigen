@@ -56,4 +56,42 @@ describe("Sales", () => {
     expect(upcomingAuctionsRefreshMock).toHaveBeenCalledTimes(1)
     expect(currentAuctionsRefreshMock).toHaveBeenCalledTimes(1)
   })
+
+  it("renders RecommendedAuctionLotsRail", async () => {
+    renderWithRelay({
+      Query: () => viewer,
+    })
+    await waitFor(() => expect(screen.queryByTestId("SalePlaceholder")).toBeNull())
+
+    expect(screen.getByText("Auction Lots for You")).toBeDefined()
+  })
 })
+
+const artwork = {
+  slug: "artwork-one-slug",
+  id: "artwork-one-id",
+  image: {
+    aspectRatio: 1.27,
+    url: "https://d32dm0rphc51dk.cloudfront.net/ZRMpZo7ikbEdx3yqBNlDVA/large.jpg",
+  },
+  title: "Sunflower Seeds Exhibition",
+  date: "2010",
+  saleMessage: "US$1,750",
+  internalID: "artwork-one-internalID",
+  artistNames: "Ai Weiwei",
+  href: "/artwork/ai-weiwei-sunflower-seeds-exhibition",
+  sale: null,
+  saleArtwork: null,
+  partner: {
+    name: "West Chelsea Contemporary",
+  },
+}
+
+const viewer = {
+  artworksForUser: {
+    includeBackfill: true,
+    first: 10,
+    onlyAtAuction: true,
+    edges: [{ node: artwork }],
+  },
+}
