@@ -28,6 +28,7 @@ import { PartnerOfferContainer } from "app/Scenes/PartnerOffer/PartnerOfferConta
 import { PriceDatabase } from "app/Scenes/PriceDatabase/PriceDatabase"
 import { RecentlyViewedScreenQuery } from "app/Scenes/RecentlyViewed/Components/RecentlyViewedArtworks"
 import { RecentlyViewedScreen } from "app/Scenes/RecentlyViewed/RecentlyViewed"
+import { SavedArtworks } from "app/Scenes/SavedArtworks/SavedArtworks"
 import { AlertArtworks } from "app/Scenes/SavedSearchAlert/AlertArtworks"
 import { SearchScreen, SearchScreenQuery } from "app/Scenes/Search/Search"
 import { SimilarToRecentlyViewedScreen } from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
@@ -633,6 +634,10 @@ export const modules = defineModules({
     SellWithArtsyHomeScreenQuery,
   ]),
   SalesNotRootTabView: reactModule(SellWithArtsy),
+  SavedArtworks: reactModule(SavedArtworks, {
+    fullBleed: true,
+    hidesBackButton: true,
+  }),
   SavedSearchAlertsList: reactModule(SavedSearchAlertsListQueryRenderer, {
     fullBleed: true,
     hidesBackButton: true,
