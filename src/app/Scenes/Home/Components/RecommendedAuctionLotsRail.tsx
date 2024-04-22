@@ -5,7 +5,6 @@ import {
   RecommendedAuctionLotsRail_smallArtworkConnection$data,
   RecommendedAuctionLotsRail_smallArtworkConnection$key,
 } from "__generated__/RecommendedAuctionLotsRail_smallArtworkConnection.graphql"
-import { SmallArtworkRail_artworks$key } from "__generated__/SmallArtworkRail_artworks.graphql"
 import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
@@ -77,6 +76,8 @@ export const RecommendedAuctionLotsRail: React.FC<
     navigate(artwork.href)
   }
 
+  const AuctionLotsRail = size == "large" ? LargeArtworkRail : SmallArtworkRail
+
   return (
     <View ref={railRef}>
       <Flex pl={2} pr={2}>
@@ -88,34 +89,18 @@ export const RecommendedAuctionLotsRail: React.FC<
           }}
         />
       </Flex>
-
-      {size == "large" ? (
-        <LargeArtworkRail
-          {...trackingProps}
-          artworks={artworks as any}
-          onPress={handleOnArtworkPress}
-          showSaveIcon
-          onMorePress={() => {
-            trackEvent(tracks.tappedMoreCard())
-            navigate("/auctions/lots-for-you-ending-soon")
-          }}
-          onViewableItemsChanged={onViewableItemsChanged}
-          viewabilityConfig={viewabilityConfig}
-        />
-      ) : (
-        <SmallArtworkRail
-          {...trackingProps}
-          artworks={artworks as SmallArtworkRail_artworks$key}
-          onPress={handleOnArtworkPress}
-          showSaveIcon
-          onMorePress={() => {
-            trackEvent(tracks.tappedMoreCard())
-            navigate("/auctions/lots-for-you-ending-soon")
-          }}
-          onViewableItemsChanged={onViewableItemsChanged}
-          viewabilityConfig={viewabilityConfig}
-        />
-      )}
+      <AuctionLotsRail
+        {...trackingProps}
+        artworks={artworks as any}
+        onPress={handleOnArtworkPress}
+        showSaveIcon
+        onMorePress={() => {
+          trackEvent(tracks.tappedMoreCard())
+          navigate("/auctions/lots-for-you-ending-soon")
+        }}
+        onViewableItemsChanged={onViewableItemsChanged}
+        viewabilityConfig={viewabilityConfig}
+      />
     </View>
   )
 })
