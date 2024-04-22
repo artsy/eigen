@@ -93,7 +93,7 @@ const CommercialButtons: React.FC<{
       {!!hasEnded && !!enablePartnerOfferOnArtworkScreen && (
         <Button
           onPress={() => {
-            navigate(`/artwork/${artworkID}, passProps: { artworkOfferExpired: true })
+            navigate(`/artwork/${artworkID}`, { passProps: { artworkOfferExpired: true } })
           }}
           block
           accessibilityLabel="View Work"
