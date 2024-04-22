@@ -7,7 +7,7 @@ export interface Time {
   seconds: string
 }
 
-interface Timer {
+export interface Timer {
   hasEnded: boolean
   time: Time
   hasStarted: boolean
