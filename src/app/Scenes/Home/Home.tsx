@@ -550,7 +550,7 @@ export const HomeFragmentContainer = memo(
       `,
       recommendedAuctionLots: graphql`
         fragment Home_recommendedAuctionLots on Viewer {
-          ...RecommendedAuctionLotsRail_artworkConnection
+          ...RecommendedAuctionLotsRail_largeArtworkConnection
         }
       `,
     },

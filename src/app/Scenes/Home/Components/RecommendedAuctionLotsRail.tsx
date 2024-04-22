@@ -1,6 +1,11 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
-import { RecommendedAuctionLotsRail_artworkConnection$key } from "__generated__/RecommendedAuctionLotsRail_artworkConnection.graphql"
+import { RecommendedAuctionLotsRail_largeArtworkConnection$key } from "__generated__/RecommendedAuctionLotsRail_largeArtworkConnection.graphql"
+import {
+  RecommendedAuctionLotsRail_smallArtworkConnection$data,
+  RecommendedAuctionLotsRail_smallArtworkConnection$key,
+} from "__generated__/RecommendedAuctionLotsRail_smallArtworkConnection.graphql"
+import { SmallArtworkRail_artworks$key } from "__generated__/SmallArtworkRail_artworks.graphql"
 import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
@@ -20,7 +25,11 @@ import { useTracking } from "react-tracking"
 
 interface RecommendedAuctionLotsRailProps extends ArtworkActionTrackingProps {
   title: string
-  artworkConnection: RecommendedAuctionLotsRail_artworkConnection$key
+  artworkConnection:
+    | RecommendedAuctionLotsRail_smallArtworkConnection$key
+    | RecommendedAuctionLotsRail_largeArtworkConnection$key
+    | null
+    | undefined
   isRailVisible: boolean
   size: "small" | "large"
 }
@@ -35,8 +44,7 @@ export const RecommendedAuctionLotsRail: React.FC<
   const { artworksForUser } = useFragment(
     size === "large" ? largeArtworksFragment : smallArtworksFragment,
     artworkConnection
-  )
-  // const { artworksForUser } = useFragment(smallArtworksFragment, artworkConnection)
+  ) as RecommendedAuctionLotsRail_smallArtworkConnection$data
 
   const railRef = useRef<View>(null)
   const listRef = useRef<FlatList<any>>(null)
@@ -84,7 +92,7 @@ export const RecommendedAuctionLotsRail: React.FC<
       {size == "large" ? (
         <LargeArtworkRail
           {...trackingProps}
-          artworks={artworks}
+          artworks={artworks as any}
           onPress={handleOnArtworkPress}
           showSaveIcon
           onMorePress={() => {
@@ -97,7 +105,7 @@ export const RecommendedAuctionLotsRail: React.FC<
       ) : (
         <SmallArtworkRail
           {...trackingProps}
-          artworks={artworks as RecommendedAuctionLotsRail_smallArtworkConnection$data}
+          artworks={artworks as SmallArtworkRail_artworks$key}
           onPress={handleOnArtworkPress}
           showSaveIcon
           onMorePress={() => {

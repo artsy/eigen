@@ -25,8 +25,8 @@ export const SalesScreenQuery = graphql`
     upcomingAuctions: viewer {
       ...UpcomingAuctions_viewer
     }
-    RecommendedAuctionLotsRail: viewer {
-      ...RecommendedAuctionLotsRail_artworkConnection
+    recommendedAuctionLots: viewer {
+      ...RecommendedAuctionLotsRail_smallArtworkConnection
     }
   }
 `
@@ -81,15 +81,13 @@ export const Sales: React.FC = () => {
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
       >
         <Stack py={2} spacing={4}>
-          {!!data.RecommendedAuctionLotsRail && (
-            <RecommendedAuctionLotsRail
-              title="Auction Lots for You"
-              artworkConnection={data.RecommendedAuctionLotsRail}
-              isRailVisible={true}
-              scrollRef={null}
-              size="small"
-            />
-          )}
+          <RecommendedAuctionLotsRail
+            title="Auction Lots for You"
+            artworkConnection={data.recommendedAuctionLots}
+            isRailVisible={true}
+            scrollRef={null}
+            size="small"
+          />
           <CurrentlyRunningAuctions
             sales={data.currentlyRunningAuctions}
             setRefetchPropOnParent={setCurrentAuctionsRefreshProp}
