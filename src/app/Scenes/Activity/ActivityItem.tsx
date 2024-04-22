@@ -59,7 +59,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = memo(
               <Flex flexDirection={showAsRow ? "row" : "column"}>
                 <Flex flexDirection="row" alignItems="center">
                   {item.previewImages.map((image) => {
-                    if (!image.url) return null
+                    if (!image?.url) return null
 
                     return (
                       <Flex

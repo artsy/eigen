@@ -53,7 +53,7 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
           width={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
           height={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
         >
-          {!!image.url && (
+          {!!image?.url && (
             <Image
               src={image.url}
               width={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
