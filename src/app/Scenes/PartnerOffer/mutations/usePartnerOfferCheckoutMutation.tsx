@@ -6,24 +6,25 @@ import {
 } from "__generated__/usePartnerOfferCheckoutMutation.graphql"
 import { graphql, useMutation } from "react-relay"
 
-export const usePartnerOfferMutation = (
-  onMutationComplete?: (response: usePartnerOfferCheckoutMutation$data) => void
-) => {
+export const usePartnerOfferMutation = () => {
   const [commit] = useMutation<usePartnerOfferCheckoutMutation>(PartnerOfferCheckoutMutation)
 
   const commitMutation = (input: CommerceCreatePartnerOfferOrderInput) => {
-    commit({
-      variables: { input },
-      onCompleted(response) {
-        onMutationComplete?.(response)
-      },
-      onError(err) {
-        if (__DEV__) {
-          console.error(err)
-        } else {
-          captureMessage(`usePartnerOfferMutation: ${JSON.stringify(err)}`)
-        }
-      },
+    return new Promise<usePartnerOfferCheckoutMutation$data>((resolve, reject) => {
+      commit({
+        variables: { input },
+        onCompleted(response) {
+          resolve(response)
+        },
+        onError(err) {
+          if (__DEV__) {
+            console.error(err)
+          } else {
+            captureMessage(`usePartnerOfferMutation: ${JSON.stringify(err)}`)
+            reject(err)
+          }
+        },
+      })
     })
   }
 

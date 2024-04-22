@@ -20,8 +20,8 @@ interface ArtworkStickyBottomContentProps {
 
 export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProps> = ({
   artwork,
-  me,
   partnerOffer,
+  me,
 }) => {
   const { safeAreaInsets } = useScreenDimensions()
   const artworkData = useFragment(artworkFragment, artwork)
@@ -77,7 +77,11 @@ export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProp
       <Separator />
       <Box px={2} py={1}>
         <ArtworkPrice artwork={artworkData} partnerOffer={partnerOfferData} mb={1} />
-        <ArtworkCommercialButtons artwork={artworkData} me={meData} />
+        <ArtworkCommercialButtons
+          artwork={artworkData}
+          partnerOfferToCollector={partnerOfferData}
+          me={meData}
+        />
       </Box>
     </Box>
   )
@@ -104,6 +108,8 @@ const meFragment = graphql`
 
 const partnerOfferFragment = graphql`
   fragment ArtworkStickyBottomContent_partnerOfferToCollector on PartnerOfferToCollector {
+    internalID
     ...ArtworkPrice_partnerOfferToCollector
+    ...ArtworkCommercialButtons_partnerOfferToCollector
   }
 `

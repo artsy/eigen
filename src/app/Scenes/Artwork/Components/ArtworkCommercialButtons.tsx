@@ -1,18 +1,20 @@
 import { Spacer, Flex, Join } from "@artsy/palette-mobile"
 import { ArtworkCommercialButtons_artwork$key } from "__generated__/ArtworkCommercialButtons_artwork.graphql"
 import { ArtworkCommercialButtons_me$key } from "__generated__/ArtworkCommercialButtons_me.graphql"
+import { ArtworkCommercialButtons_partnerOfferToCollector$key } from "__generated__/ArtworkCommercialButtons_partnerOfferToCollector.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtworkStore } from "app/Scenes/Artwork/ArtworkStore"
+import { BuyNowButton } from "app/Scenes/Artwork/Components/CommercialButtons/BuyNowButton"
+import { InquiryButtonsFragmentContainer } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryButtons"
+import { MakeOfferButtonFragmentContainer } from "app/Scenes/Artwork/Components/CommercialButtons/MakeOfferButton"
 import { Children } from "react"
 import { useFragment, graphql } from "react-relay"
 import { BidButtonFragmentContainer } from "./CommercialButtons/BidButton"
-import { BuyNowButton } from "./CommercialButtons/BuyNowButton"
-import { InquiryButtonsFragmentContainer } from "./CommercialButtons/InquiryButtons"
-import { MakeOfferButtonFragmentContainer } from "./CommercialButtons/MakeOfferButton"
 
 interface ArtworkCommercialButtonsProps {
   artwork: ArtworkCommercialButtons_artwork$key
   me: ArtworkCommercialButtons_me$key
+  partnerOfferToCollector: ArtworkCommercialButtons_partnerOfferToCollector$key
 }
 
 const RowContainer: React.FC = ({ children }) => {
@@ -29,10 +31,12 @@ const RowContainer: React.FC = ({ children }) => {
 
 export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> = ({
   artwork,
+  partnerOfferToCollector,
   me,
 }) => {
   const artworkData = useFragment(artworkFragment, artwork)
   const meData = useFragment(meFragment, me)
+  const partnerOfferData = useFragment(partnerOfferFragment, partnerOfferToCollector)
   const selectedEditionId = ArtworkStore.useStoreState((state) => state.selectedEditionId)
   const auctionState = ArtworkStore.useStoreState((state) => state.auctionState)
   const isBiddableInAuction = artworkData.isInAuction && artworkData.sale
@@ -57,7 +61,12 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
             auctionState={auctionState as AuctionTimerState}
             variant="outline"
           />
-          <BuyNowButton artwork={artworkData} editionSetID={selectedEditionId} renderSaleMessage />
+          <BuyNowButton
+            partnerOffer={partnerOfferData}
+            artwork={artworkData}
+            editionSetID={selectedEditionId}
+            renderSaleMessage
+          />
         </RowContainer>
       )
     }
@@ -79,13 +88,23 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
           editionSetID={selectedEditionId}
           variant="outline"
         />
-        <BuyNowButton artwork={artworkData} editionSetID={selectedEditionId} />
+        <BuyNowButton
+          partnerOffer={partnerOfferData}
+          artwork={artworkData}
+          editionSetID={selectedEditionId}
+        />
       </RowContainer>
     )
   }
 
   if (artworkData.isAcquireable) {
-    return <BuyNowButton artwork={artworkData} editionSetID={selectedEditionId} />
+    return (
+      <BuyNowButton
+        partnerOffer={partnerOfferData}
+        artwork={artworkData}
+        editionSetID={selectedEditionId}
+      />
+    )
   }
 
   if (artworkData.isInquireable && artworkData.isOfferable) {
@@ -133,5 +152,11 @@ const artworkFragment = graphql`
 const meFragment = graphql`
   fragment ArtworkCommercialButtons_me on Me {
     ...BidButton_me
+  }
+`
+
+const partnerOfferFragment = graphql`
+  fragment ArtworkCommercialButtons_partnerOfferToCollector on PartnerOfferToCollector {
+    internalID
   }
 `

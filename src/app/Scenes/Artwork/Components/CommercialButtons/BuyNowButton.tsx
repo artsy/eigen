@@ -1,19 +1,26 @@
 import { ActionType, ContextModule, OwnerType, TappedBuyNow } from "@artsy/cohesion"
 import { ButtonProps, Button } from "@artsy/palette-mobile"
-import { BuyNowButtonOrderMutation } from "__generated__/BuyNowButtonOrderMutation.graphql"
+
 import { BuyNowButton_artwork$key } from "__generated__/BuyNowButton_artwork.graphql"
-import { PartnerOffer } from "app/Scenes/Activity/components/NotificationArtworkList"
+import { Toast } from "app/Components/Toast/Toast"
+import { useCreateOrder } from "app/Scenes/Artwork/hooks/useCreateOrder"
+import { usePartnerOfferMutation } from "app/Scenes/PartnerOffer/mutations/usePartnerOfferCheckoutMutation"
 import { navigate } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { promptForReview } from "app/utils/promptForReview"
 import { useSetWebViewCallback } from "app/utils/useWebViewEvent"
 import { useState } from "react"
 import { Alert } from "react-native"
-import { commitMutation, graphql, useFragment, useRelayEnvironment } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
+
+interface PartnerOffer {
+  internalID: string
+}
 
 export interface BuyNowButtonProps {
   artwork: BuyNowButton_artwork$key
-  partnerOffer?: PartnerOffer
+  partnerOffer?: PartnerOffer | null
   variant?: ButtonProps["variant"]
   // EditionSetID is passed down from the edition selected by the user
   editionSetID: string | null
@@ -29,8 +36,8 @@ export const BuyNowButton = ({
   renderSaleMessage,
   buttonText,
 }: BuyNowButtonProps) => {
-  const env = useRelayEnvironment()
   const [isCommittingCreateOrderMutation, setIsCommittingCreateOrderMutation] = useState(false)
+  const AREnablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
 
   const { saleMessage, internalID, slug } = useFragment(artworkFragment, artwork)
   const { trackEvent } = useTracking()
@@ -46,68 +53,96 @@ export const BuyNowButton = ({
     }, 3000)
   })
 
-  const handleCreateOrder = () => {
-    trackEvent(tracks.tappedBuyNow(slug, internalID))
+  const partnerOfferMutation = usePartnerOfferMutation()
 
-    if (partnerOffer?.targetHref) {
-      navigate(partnerOffer.targetHref)
-      return
+  const createOrderMutation = useCreateOrder()
+
+  const createOrderFromPartnerOffer = async (partnerOffer: { internalID: string }) => {
+    setIsCommittingCreateOrderMutation(true)
+    try {
+      const response = await partnerOfferMutation.commitMutation({
+        partnerOfferId: partnerOffer.internalID,
+      })
+      const orderOrError = response.commerceCreatePartnerOfferOrder?.orderOrError
+      if (orderOrError?.error) {
+        const { code: errorCode, data: artwork } = orderOrError.error
+        const artworkId = JSON.parse(artwork?.toString() ?? "{}")?.artwork_id
+
+        if (errorCode === "expired_partner_offer") {
+          navigate(`/artwork/${artworkId}`, {
+            replaceActiveScreen: true,
+            passProps: { artworkOfferExpired: true },
+          })
+
+          return
+        }
+
+        if (errorCode === "not_acquireable") {
+          navigate(`/artwork/${artworkId}`, {
+            replaceActiveScreen: true,
+            passProps: { artworkOfferUnavailable: true },
+          })
+
+          return
+        } else {
+          Toast.show("An error occurred.", "bottom")
+        }
+      } else if (orderOrError?.order) {
+        navigate(`/orders/${orderOrError.order?.internalID}`)
+
+        return
+      }
+    } finally {
+      setIsCommittingCreateOrderMutation(false)
     }
+  }
+
+  const createOrder = async () => {
+    setIsCommittingCreateOrderMutation(true)
+    try {
+      const response = await createOrderMutation.commitMutation({
+        artworkId: internalID,
+        editionSetId: editionSetID,
+      })
+      const orderOrError = response.commerceCreateOrderWithArtwork?.orderOrError
+      if (!orderOrError) {
+        onMutationError(new Error("handleCreateOrder: no orderOrError"))
+        return
+      }
+      if (orderOrError.__typename === "CommerceOrderWithMutationFailure") {
+        onMutationError(orderOrError.error as any)
+      } else if (orderOrError.__typename === "CommerceOrderWithMutationSuccess") {
+        navigate(`/orders/${orderOrError.order.internalID}`, {
+          passProps: { title: "Purchase" },
+        })
+      }
+    } catch (e) {
+      onMutationError(e as Error)
+    } finally {
+      setIsCommittingCreateOrderMutation(false)
+    }
+  }
+
+  const handleCreateOrder = async () => {
+    trackEvent(tracks.tappedBuyNow(slug, internalID))
 
     if (isCommittingCreateOrderMutation) {
       return
     }
 
     setIsCommittingCreateOrderMutation(true)
-    commitMutation<BuyNowButtonOrderMutation>(env, {
-      mutation: graphql`
-        mutation BuyNowButtonOrderMutation($input: CommerceCreateOrderWithArtworkInput!) {
-          commerceCreateOrderWithArtwork(input: $input) {
-            orderOrError {
-              __typename
-              ... on CommerceOrderWithMutationSuccess {
-                order {
-                  internalID
-                  mode
-                }
-              }
-              ... on CommerceOrderWithMutationFailure {
-                error {
-                  type
-                  code
-                  data
-                }
-              }
-            }
-          }
-        }
-      `,
-      variables: {
-        input: {
-          artworkId: internalID,
-          editionSetId: editionSetID,
-        },
-      },
-      onCompleted: (data) => {
-        console.warn({ data })
-        setIsCommittingCreateOrderMutation(false)
-        const {
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          commerceCreateOrderWithArtwork: { orderOrError },
-        } = data
-        if (orderOrError.__typename === "CommerceOrderWithMutationFailure") {
-          onMutationError(orderOrError.error)
-        } else if (orderOrError.__typename === "CommerceOrderWithMutationSuccess") {
-          navigate(`/orders/${orderOrError.order.internalID}`, {
-            passProps: { title: "Purchase" },
-          })
-        }
-      },
-      onError: (error) => {
-        setIsCommittingCreateOrderMutation(false)
-        onMutationError(error)
-      },
-    })
+
+    try {
+      if (AREnablePartnerOfferOnArtworkScreen && partnerOffer) {
+        await createOrderFromPartnerOffer(partnerOffer)
+      } else {
+        await createOrder()
+      }
+    } catch (e) {
+      onMutationError(e as Error)
+    } finally {
+      setIsCommittingCreateOrderMutation(false)
+    }
   }
 
   const onMutationError = (error: Error) => {

@@ -77,6 +77,7 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
               priceWithDiscountMessage: item?.partnerOffer?.priceWithDiscount?.display || "",
             }}
             partnerOffer={{
+              internalID: item?.partnerOffer?.internalID || "",
               endAt: item?.partnerOffer?.endAt || "",
               isAvailable: item?.partnerOffer?.isAvailable || false,
               targetHref: targetHref,
@@ -101,6 +102,7 @@ export const PartnerOfferCreatedNotificationFragment = graphql`
         expiresAt
         available
         partnerOffer {
+          internalID
           note
           internalID
           endAt

@@ -11,6 +11,7 @@ import { useFragment, graphql } from "react-relay"
 
 export interface PartnerOffer {
   id: string
+  internalID: string
   endAt: string
   isAvailable: boolean
   targetHref: string

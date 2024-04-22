@@ -3,29 +3,43 @@ import { ArtworkCommercialButtons_Test_Query } from "__generated__/ArtworkCommer
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtworkStoreProvider } from "app/Scenes/Artwork/ArtworkStore"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { ArtworkInquiryContextState } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
+import { extractNodes } from "app/utils/extractNodes"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { ArtworkCommercialButtons } from "./ArtworkCommercialButtons"
 
+beforeEach(() => {
+  __globalStoreTestUtils__?.injectFeatureFlags({ AREnablePartnerOfferOnArtworkScreen: true })
+})
+
 describe("ArtworkCommercialButtons", () => {
   const { renderWithRelay } = setupTestWrapper<ArtworkCommercialButtons_Test_Query>({
-    Component: (props) => (
-      <ArtworkInquiryContext.Provider
-        value={{
-          state,
-          dispatch: jest.fn(),
-        }}
-      >
-        <ArtworkStoreProvider>
-          <ArtworkCommercialButtons artwork={props.artwork!} me={props.me!} />
-        </ArtworkStoreProvider>
-      </ArtworkInquiryContext.Provider>
-    ),
+    Component: (props) => {
+      const partnerOffer = extractNodes(props.me!.partnerOffersConnection)[0]
+
+      return (
+        <ArtworkInquiryContext.Provider
+          value={{
+            state,
+            dispatch: jest.fn(),
+          }}
+        >
+          <ArtworkStoreProvider>
+            <ArtworkCommercialButtons
+              partnerOfferToCollector={partnerOffer}
+              artwork={props.artwork!}
+              me={props.me!}
+            />
+          </ArtworkStoreProvider>
+        </ArtworkInquiryContext.Provider>
+      )
+    },
     query: graphql`
       query ArtworkCommercialButtons_Test_Query {
         artwork(id: "artworkID") {
@@ -34,6 +48,13 @@ describe("ArtworkCommercialButtons", () => {
 
         me {
           ...ArtworkCommercialButtons_me
+          partnerOffersConnection(artworkID: "artworkID") {
+            edges {
+              node {
+                ...ArtworkCommercialButtons_partnerOfferToCollector
+              }
+            }
+          }
         }
       }
     `,
@@ -186,7 +207,7 @@ describe("ArtworkCommercialButtons", () => {
   })
 
   describe("commits", () => {
-    it("the Purchase mutation", async () => {
+    it("the Partner Offer mutation when a partner offer is present", async () => {
       const artwork = {
         ...ArtworkFixture,
         isAcquireable: true,
@@ -194,14 +215,33 @@ describe("ArtworkCommercialButtons", () => {
         isInquireable: false,
       }
 
-      const { env } = renderWithRelay({
+      const meWithPartnerOffer = {
+        ...meFixture,
+        partnerOffersConnection: {
+          edges: [
+            {
+              node: {
+                internalID: "partnerOfferID",
+                // End 1 minute in the future
+                endAt: new Date(Date.now() + 60 * 1000).toISOString(),
+              },
+            },
+          ],
+        },
+      }
+
+      const { mockResolveLastOperation, env } = renderWithRelay({
         Artwork: () => artwork,
-        Me: () => meFixture,
+        Me: () => meWithPartnerOffer,
       })
 
       fireEvent.press(screen.getByText("Purchase"))
 
-      resolveMostRecentRelayOperation(env, {
+      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+        "usePartnerOfferCheckoutMutation"
+      )
+
+      mockResolveLastOperation({
         CommerceOrderWithMutationSuccess: () => ({
           order: {
             internalID: "buyNowID",
@@ -210,6 +250,40 @@ describe("ArtworkCommercialButtons", () => {
         }),
       })
 
+      await flushPromiseQueue()
+
+      expect(navigate).toHaveBeenCalledWith("/orders/buyNowID")
+    })
+
+    it("the Purchase mutation", async () => {
+      const artwork = {
+        ...ArtworkFixture,
+        isAcquireable: true,
+        isOfferable: true,
+        isInquireable: false,
+      }
+
+      const { mockResolveLastOperation, env } = renderWithRelay({
+        Artwork: () => artwork,
+        Me: () => meFixture,
+      })
+
+      fireEvent.press(screen.getByText("Purchase"))
+
+      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+        "useCreateOrderMutation"
+      )
+
+      mockResolveLastOperation({
+        CommerceOrderWithMutationSuccess: () => ({
+          order: {
+            internalID: "buyNowID",
+            mode: "BUY",
+          },
+        }),
+      })
+
+      await flushPromiseQueue()
       expect(navigate).toHaveBeenCalledWith("/orders/buyNowID", {
         passProps: {
           title: "Purchase",
@@ -225,14 +299,14 @@ describe("ArtworkCommercialButtons", () => {
         isInquireable: false,
       }
 
-      const { env } = renderWithRelay({
+      const { mockResolveLastOperation } = renderWithRelay({
         Artwork: () => artwork,
         Me: () => meFixture,
       })
 
       fireEvent.press(screen.getByText("Make an Offer"))
 
-      resolveMostRecentRelayOperation(env, {
+      mockResolveLastOperation({
         CommerceOrderWithMutationSuccess: () => ({
           order: {
             internalID: "makeOfferID",
@@ -323,4 +397,5 @@ const state: ArtworkInquiryContextState = {
 const meFixture = {
   id: "id",
   isIdentityVerified: true,
+  partnerOffersConnection: { edges: [] },
 }
