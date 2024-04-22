@@ -23,6 +23,7 @@ import {
   AuctionWebsocketChannelInfo,
   AuctionWebsocketContextProvider,
 } from "app/utils/Websockets/auctions/AuctionSocketContext"
+import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -437,7 +438,11 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
       />
 
       {!!(artworkAboveTheFold && me) && (
-        <ArtworkStickyBottomContent artwork={artworkAboveTheFold} me={me} />
+        <ArtworkStickyBottomContent
+          artwork={artworkAboveTheFold}
+          me={me}
+          partnerOffer={extractNodes(me.partnerOffersConnection)[0]}
+        />
       )}
 
       <QAInfo />
@@ -626,6 +631,7 @@ export const ArtworkContainer = createRefetchContainer(
           edges {
             node {
               internalID
+              ...ArtworkStickyBottomContent_partnerOfferToCollector
             }
           }
         }
