@@ -141,6 +141,62 @@ async function handleFacebookSignUp(
   }
 }
 
+async function handleFacebookSignIn(
+  actions: Actions<AuthModel>,
+  accessToken: string,
+  options: {
+    onSignIn?: () => void
+    signInOrUp: "signIn" | "signUp"
+  },
+  resolve: (value: AuthPromiseResolveType | PromiseLike<AuthPromiseResolveType>) => void,
+  reject: (reason?: any) => void
+) {
+  try {
+    const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
+      path: `/oauth2/access_token`,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: {
+        oauth_provider: "facebook",
+        oauth_token: accessToken,
+        client_id: clientKey,
+        client_secret: clientSecret,
+        grant_type: "oauth_token",
+        scope: "offline_access",
+      },
+    })
+
+    if (resultGravityAccessToken.status === 201) {
+      const { access_token: userAccessToken } = await resultGravityAccessToken.json()
+      const { email } = await actions.getUser({ accessToken: userAccessToken })
+
+      const resultGravitySignIn = await actions.signIn({
+        oauthProvider: "facebook",
+        email,
+        accessToken: accessToken,
+        onSignIn: options.onSignIn,
+      })
+
+      if (resultGravitySignIn) {
+        resolve({ success: true })
+      } else {
+        throw new AuthError("Could not log in")
+      }
+    } else {
+      if (resultGravityAccessToken.status === 403) {
+        throw new AuthError("Attempt blocked")
+      } else {
+        const res = await resultGravityAccessToken.json()
+        showError(res, reject, "facebook")
+      }
+    }
+  } catch (error) {
+    reject(error)
+  }
+}
+
 export const showBlockedAuthError = (mode: "sign in" | "sign up") => {
   const messagePrefix = mode === "sign in" ? "Sign in" : "Sign up"
   const innerMessage = mode === "sign in" ? "signing in" : "signing up"
@@ -596,15 +652,6 @@ export const getAuthModel = (): AuthModel => ({
           return
         }
 
-        // We need to do something like this eventually
-        // if (Platform.OS === "ios") {
-        //   // perform limited login
-        //   const limitedLoginTokenJWT =
-        //     !isCancelled && (await AuthenticationToken.getAuthenticationTokenIOS())
-        // } else {
-        //   // perform classic login as before
-        // }
-
         const accessToken = !isCancelled && (await AccessToken.getCurrentAccessToken())
 
         if (!accessToken) {
@@ -628,52 +675,18 @@ export const getAuthModel = (): AuthModel => ({
           }
 
           if (options.signInOrUp === "signUp") {
-            handleFacebookSignUp(actions, result, accessToken.accessToken, options, resolve, reject)
+            handleFacebookSignUp(
+              actions,
+              { email: result.email as string, name: result.name as string },
+              accessToken.accessToken,
+              options,
+              resolve,
+              reject
+            )
           }
 
           if (options.signInOrUp === "signIn") {
-            // we need to get X-ACCESS-TOKEN before actual sign in
-            const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
-              path: `/oauth2/access_token`,
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: {
-                oauth_provider: "facebook",
-                oauth_token: accessToken.accessToken,
-                client_id: clientKey,
-                client_secret: clientSecret,
-                grant_type: "oauth_token",
-                scope: "offline_access",
-              },
-            })
-
-            if (resultGravityAccessToken.status === 201) {
-              const { access_token: userAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
-              const { email } = await actions.getUser({ accessToken: userAccessToken })
-              const resultGravitySignIn = await actions.signIn({
-                oauthProvider: "facebook",
-                email,
-                accessToken: accessToken.accessToken,
-                onSignIn: options.onSignIn,
-              })
-
-              if (resultGravitySignIn) {
-                resolve({ success: true })
-                return
-              } else {
-                reject(new AuthError("Could not log in"))
-                return
-              }
-            } else {
-              if (resultGravityAccessToken.status === 403) {
-                reject(new AuthError("Attempt blocked"))
-              } else {
-                const res = await resultGravityAccessToken.json()
-                showError(res, reject, "facebook")
-              }
-            }
+            handleFacebookSignIn(actions, accessToken.accessToken, options, resolve, reject)
           }
         }
 
