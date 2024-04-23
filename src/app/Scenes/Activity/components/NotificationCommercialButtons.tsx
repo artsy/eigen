@@ -119,7 +119,9 @@ export const CommercialButtons: React.FC<{
         <RowContainer>
           <Button
             onPress={() => {
-              navigate(`/artwork/${artworkID}`, { passProps: { partnerOfferId: partnerOffer?.id } })
+              navigate(`/artwork/${artworkID}`, {
+                passProps: { partnerOfferId: partnerOffer?.internalID },
+              })
             }}
             variant="outline"
             accessibilityLabel="View Work"

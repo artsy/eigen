@@ -1,7 +1,7 @@
 import { Box, Separator } from "@artsy/palette-mobile"
 import { ArtworkStickyBottomContent_artwork$key } from "__generated__/ArtworkStickyBottomContent_artwork.graphql"
 import { ArtworkStickyBottomContent_me$key } from "__generated__/ArtworkStickyBottomContent_me.graphql"
-import { ArtworkStickyBottomContent_partnerOfferToCollector$key } from "__generated__/ArtworkStickyBottomContent_partnerOfferToCollector.graphql"
+import { ArtworkStickyBottomContent_partnerOffer$key } from "__generated__/ArtworkStickyBottomContent_partnerOffer.graphql"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtworkStore } from "app/Scenes/Artwork/ArtworkStore"
@@ -15,7 +15,7 @@ import { ArtworkPrice } from "./ArtworkPrice"
 interface ArtworkStickyBottomContentProps {
   artwork: ArtworkStickyBottomContent_artwork$key
   me: ArtworkStickyBottomContent_me$key
-  partnerOffer: ArtworkStickyBottomContent_partnerOfferToCollector$key
+  partnerOffer: ArtworkStickyBottomContent_partnerOffer$key
 }
 
 export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProps> = ({
@@ -77,7 +77,11 @@ export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProp
       <Separator />
       <Box px={2} py={1}>
         <ArtworkPrice artwork={artworkData} partnerOffer={partnerOfferData} mb={1} />
-        <ArtworkCommercialButtons artwork={artworkData} me={meData} />
+        <ArtworkCommercialButtons
+          artwork={artworkData}
+          partnerOffer={partnerOfferData}
+          me={meData}
+        />
       </Box>
     </Box>
   )
@@ -103,7 +107,9 @@ const meFragment = graphql`
 `
 
 const partnerOfferFragment = graphql`
-  fragment ArtworkStickyBottomContent_partnerOfferToCollector on PartnerOfferToCollector {
-    ...ArtworkPrice_partnerOfferToCollector
+  fragment ArtworkStickyBottomContent_partnerOffer on PartnerOfferToCollector {
+    internalID
+    ...ArtworkPrice_partnerOffer
+    ...ArtworkCommercialButtons_partnerOffer
   }
 `

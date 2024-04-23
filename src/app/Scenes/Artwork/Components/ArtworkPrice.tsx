@@ -1,6 +1,6 @@
 import { Box, Flex, FlexProps, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkPrice_artwork$key } from "__generated__/ArtworkPrice_artwork.graphql"
-import { ArtworkPrice_partnerOfferToCollector$key } from "__generated__/ArtworkPrice_partnerOfferToCollector.graphql"
+import { ArtworkPrice_partnerOffer$key } from "__generated__/ArtworkPrice_partnerOffer.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtworkStore } from "app/Scenes/Artwork/ArtworkStore"
 import { ExpiresInTimer } from "app/Scenes/Artwork/Components/ExpiresInTimer"
@@ -10,7 +10,7 @@ import { ArtworkAuctionBidInfo } from "./ArtworkAuctionBidInfo"
 
 interface ArtworkPriceProps extends FlexProps {
   artwork: ArtworkPrice_artwork$key
-  partnerOffer: ArtworkPrice_partnerOfferToCollector$key
+  partnerOffer: ArtworkPrice_partnerOffer$key
 }
 
 export const ArtworkPrice: React.FC<ArtworkPriceProps> = ({
@@ -108,7 +108,7 @@ const artworkPriceFragment = graphql`
 `
 
 const partnerOfferPriceFragment = graphql`
-  fragment ArtworkPrice_partnerOfferToCollector on PartnerOfferToCollector {
+  fragment ArtworkPrice_partnerOffer on PartnerOfferToCollector {
     endAt
     isAvailable
     priceWithDiscount {
