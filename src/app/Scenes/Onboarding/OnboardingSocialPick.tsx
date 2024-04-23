@@ -39,11 +39,11 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
   }, [])
 
   const handleErrorWithAlternativeProviders = (meta: AuthPromiseRejectType["meta"]) => {
-    const titleizedProvider = capitalize(meta?.provider ?? "")
-
     if (!meta) {
       return
     }
+
+    const titleizedProvider = capitalize(meta.provider)
 
     const {
       email,
