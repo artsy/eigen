@@ -269,3 +269,38 @@ export async function handleClassicFacebookAuth(
     return
   }
 }
+
+export async function handleLimitedFacebookAuth(
+  actions: Actions<AuthModel>,
+  isCancelled: boolean,
+  clientId: string,
+  clientSecret: string,
+  options:
+    | {
+        signInOrUp: "signIn"
+        onSignIn?: (() => void) | undefined
+      }
+    | {
+        signInOrUp: "signUp"
+        agreedToReceiveEmails: boolean
+      },
+  resolve: (value: AuthPromiseResolveType | PromiseLike<AuthPromiseResolveType>) => void,
+  reject: (reason?: any) => void
+) {
+  try {
+    // Check if the login operation was cancelled
+    if (isCancelled) {
+      reject(new AuthError("Login was cancelled by the user"))
+      return
+    }
+
+    // Reject immediately as per the current request for a skeleton function
+    reject(new AuthError("Limited Facebook login is not yet implemented"))
+  } catch (error) {
+    if (error instanceof Error) {
+      reject(new AuthError("Error preparing for limited Facebook login", error.message))
+    } else {
+      reject(new AuthError("An unexpected error occurred in limited Facebook login"))
+    }
+  }
+}

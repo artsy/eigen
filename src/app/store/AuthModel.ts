@@ -5,7 +5,12 @@ import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import * as Sentry from "@sentry/react-native"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import * as RelayCache from "app/system/relay/RelayCache"
-import { handleClassicFacebookAuth, handleSignUpError, showError } from "app/utils/auth/authHelpers"
+import {
+  handleClassicFacebookAuth,
+  handleLimitedFacebookAuth,
+  handleSignUpError,
+  showError,
+} from "app/utils/auth/authHelpers"
 import { updateExperimentsContext } from "app/utils/experiments/helpers"
 import { isArtsyEmail } from "app/utils/general"
 import { SegmentTrackingProvider } from "app/utils/track/SegmentTrackingProvider"
@@ -471,15 +476,27 @@ export const getAuthModel = (): AuthModel => ({
           return
         }
 
-        handleClassicFacebookAuth(
-          actions,
-          isCancelled,
-          clientKey as string,
-          clientSecret as string,
-          options,
-          resolve,
-          reject
-        )
+        if (Platform.OS === "ios") {
+          handleLimitedFacebookAuth(
+            actions,
+            isCancelled,
+            clientKey as string,
+            clientSecret as string,
+            options,
+            resolve,
+            reject
+          )
+        } else {
+          handleClassicFacebookAuth(
+            actions,
+            isCancelled,
+            clientKey as string,
+            clientSecret as string,
+            options,
+            resolve,
+            reject
+          )
+        }
       } catch (e) {
         if (e instanceof Error) {
           if (e.message === "User logged in as different Facebook user.") {
