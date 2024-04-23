@@ -104,6 +104,12 @@ export const features = {
     readyForRelease: true,
     echoFlagKey: "AREnableNewAuctionsRailCard",
   },
+  AREnableNewCollectorSettings: {
+    description: "Enable New Collector Settings",
+    readyForRelease: false,
+    echoFlagKey: "AREnableNewCollectorSettings",
+    showInDevMenu: true,
+  },
   AREnableMyCollectionCollectedArtists: {
     description: "Enable Collected Artists in My Collection",
     readyForRelease: true,

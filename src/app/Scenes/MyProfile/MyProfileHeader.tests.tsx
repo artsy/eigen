@@ -1,58 +1,24 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { MyProfileHeaderTestsQuery } from "__generated__/MyProfileHeaderTestsQuery.graphql"
 import { MyProfileHeader } from "app/Scenes/MyProfile/MyProfileHeader"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { QueryRenderer, graphql } from "react-relay"
-import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 
 describe("MyProfileHeader", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  const TestRenderer: React.FC = () => {
-    return (
-      <QueryRenderer<MyProfileHeaderTestsQuery>
-        environment={mockEnvironment}
-        query={graphql`
-          query MyProfileHeaderTestsQuery @relay_test_operation {
-            me {
-              ...MyProfileHeader_me
-            }
-          }
-        `}
-        variables={{}}
-        render={({ props }) => {
-          if (props?.me) {
-            return <MyProfileHeader me={props.me} />
-          }
-          return null
-        }}
-      />
-    )
-  }
-
-  const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
-
-    act(() => {
-      resolveMostRecentRelayOperation(mockEnvironment, mockResolvers)
-    })
-    return tree
-  }
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+  const { renderWithRelay } = setupTestWrapper({
+    Component: MyProfileHeader,
+    query: graphql`
+      query MyProfileHeaderTestQuery @relay_test_operation {
+        me {
+          ...MyProfileHeader_me
+        }
+      }
+    `,
   })
 
-  afterEach(() => {
-    jest.clearAllMocks()
-  })
-
-  // Header tests
   it("Header Settings onPress navigates to my profile edit", () => {
-    getWrapper()
+    renderWithRelay()
     const profileImage = screen.getByTestId("profile-image")
 
     expect(profileImage).toBeTruthy()
@@ -64,7 +30,7 @@ describe("MyProfileHeader", () => {
   })
 
   it("Header shows the right text", async () => {
-    getWrapper({
+    renderWithRelay({
       Me: () => ({
         name: "My Name",
         createdAt: new Date().toISOString(),
@@ -74,16 +40,15 @@ describe("MyProfileHeader", () => {
         },
       }),
     })
-
     const year = new Date().getFullYear()
 
-    expect(screen.queryByText("My Name")).toBeTruthy()
-    expect(screen.queryByText(`Member since ${year}`)).toBeTruthy()
-    expect(screen.queryByText("My Bio")).toBeTruthy()
+    expect(screen.getByText("My Name")).toBeOnTheScreen()
+    expect(screen.getByText(`Member since ${year}`)).toBeOnTheScreen()
+    expect(screen.getByText("My Bio")).toBeOnTheScreen()
   })
 
   it("renders Collector Profile info", async () => {
-    getWrapper({
+    renderWithRelay({
       Me: () => ({
         name: "Princess",
         createdAt: new Date("12/12/12").toISOString(),
@@ -96,8 +61,51 @@ describe("MyProfileHeader", () => {
       }),
     })
 
-    expect(screen.queryByText("Guardian of the Galaxy")).toBeTruthy()
-    expect(screen.queryByText("Atlantis")).toBeTruthy()
-    expect(screen.queryByText("Marvel Universe")).toBeTruthy()
+    expect(screen.getByText("Guardian of the Galaxy")).toBeOnTheScreen()
+    expect(screen.getByText("Atlantis")).toBeOnTheScreen()
+    expect(screen.getByText("Marvel Universe")).toBeOnTheScreen()
+  })
+
+  describe("new settings screen", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewCollectorSettings: true })
+    })
+
+    it("renders new settings screen", async () => {
+      renderWithRelay({
+        Me: () => ({
+          name: "Collector Collectorson",
+          location: {
+            display: "The Shire, Farthing",
+          },
+          counts: {
+            followedArtists: 1,
+            savedArtworks: 2,
+            savedSearches: 3,
+          },
+        }),
+      })
+
+      expect(screen.getByText("The Shire, Farthing")).toBeOnTheScreen()
+      expect(screen.getByText("1")).toBeOnTheScreen()
+      expect(screen.getByText("Follow")).toBeOnTheScreen()
+      expect(screen.getByText("2")).toBeOnTheScreen()
+      expect(screen.getByText("Saves")).toBeOnTheScreen()
+      expect(screen.getByText("3")).toBeOnTheScreen()
+      expect(screen.getByText("Alerts")).toBeOnTheScreen()
+    })
+
+    it("navigates to the other screens from the links", () => {
+      renderWithRelay()
+
+      fireEvent.press(screen.getByText("Follows"))
+      expect(navigate).toHaveBeenLastCalledWith("favorites")
+
+      fireEvent.press(screen.getByText("Saves"))
+      expect(navigate).toHaveBeenLastCalledWith("settings/saves")
+
+      fireEvent.press(screen.getByText("Alerts"))
+      expect(navigate).toHaveBeenLastCalledWith("settings/alerts")
+    })
   })
 })
