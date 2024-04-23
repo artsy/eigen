@@ -1,12 +1,12 @@
 import { Box, Flex, Text, useColor } from "@artsy/palette-mobile"
 import { ArtworkPartnerOfferNote_artwork$key } from "__generated__/ArtworkPartnerOfferNote_artwork.graphql"
-import { ArtworkPartnerOfferNote_partnerOfferToCollector$key } from "__generated__/ArtworkPartnerOfferNote_partnerOfferToCollector.graphql"
+import { ArtworkPartnerOfferNote_partnerOffer$key } from "__generated__/ArtworkPartnerOfferNote_partnerOffer.graphql"
 import { ImageBackground } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
 interface ArtworkPartnerOfferNoteProps {
   artwork: ArtworkPartnerOfferNote_artwork$key
-  partnerOffer: ArtworkPartnerOfferNote_partnerOfferToCollector$key
+  partnerOffer: ArtworkPartnerOfferNote_partnerOffer$key
 }
 
 export const ArtworkPartnerOfferNote: React.FC<ArtworkPartnerOfferNoteProps> = ({
@@ -68,7 +68,7 @@ const artworkFragment = graphql`
 `
 
 const partnerOfferFragment = graphql`
-  fragment ArtworkPartnerOfferNote_partnerOfferToCollector on PartnerOfferToCollector {
+  fragment ArtworkPartnerOfferNote_partnerOffer on PartnerOfferToCollector {
     note
   }
 `

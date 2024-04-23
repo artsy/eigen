@@ -22,7 +22,7 @@ describe("ArtworkPartnerOfferNote", () => {
           partnerOffersConnection(artworkID: "test-artwork", first: 1) {
             edges {
               node {
-                ...ArtworkPartnerOfferNote_partnerOfferToCollector
+                ...ArtworkPartnerOfferNote_partnerOffer
               }
             }
           }
