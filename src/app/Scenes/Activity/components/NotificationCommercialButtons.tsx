@@ -56,7 +56,7 @@ const RowContainer: React.FC = ({ children }) => {
   )
 }
 
-const CommercialButtons: React.FC<{
+export const CommercialButtons: React.FC<{
   artwork:
     | NotificationCommercialButtons_artwork$key
     | CreateArtworkAlertModal_artwork$key
