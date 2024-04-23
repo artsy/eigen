@@ -134,6 +134,40 @@ export async function handleFacebookClassicSignUp(
   }
 }
 
+export async function handleFacebookLimitedSignUp(
+  actions: Actions<AuthModel>,
+  userDetails: { email: string; name: string },
+  jwt: string,
+  options: { agreedToReceiveEmails: boolean },
+  resolve: (value: AuthPromiseResolveType | PromiseLike<AuthPromiseResolveType>) => void,
+  reject: (reason?: any) => void
+) {
+  try {
+    const resultGravitySignUp = await actions.signUp({
+      email: userDetails.email,
+      name: userDetails.name,
+      jwt: jwt,
+      oauthProvider: "facebook",
+      oauthMode: "jwt",
+      agreedToReceiveEmails: options.agreedToReceiveEmails,
+    })
+
+    if (resultGravitySignUp.success) {
+      resolve({ success: true })
+    } else if (resultGravitySignUp.error === "blocked_attempt") {
+      throw new AuthError("Attempt blocked")
+    } else {
+      throw new AuthError(
+        resultGravitySignUp.message,
+        resultGravitySignUp.error,
+        resultGravitySignUp.meta
+      )
+    }
+  } catch (error) {
+    reject(error)
+  }
+}
+
 export async function handleFacebookClassicSignIn(
   actions: Actions<AuthModel>,
   accessToken: string,
@@ -376,24 +410,21 @@ export async function handleLimitedFacebookAuth(
       return
     }
 
-    // const { email, given_name, family_name, name } = decodedToken as {
-    //   email: string
-    //   given_name: string
-    //   family_name: string
-    //   name: string
-    //   picture: string
-    // }
+    // TODO: Should we parse name? Are there circumstances in which given and family are not populated?
+    const { email, name } = decodedToken as {
+      email: string
+      name: string
+    }
 
     if (options.signInOrUp === "signUp") {
-      // handleFacebookLimitedSignUp(
-      //   actions,
-      //   limitedLoginJWTToken.authenticationToken,
-      //   clientId,
-      //   clientSecret,
-      //   options,
-      //   resolve,
-      //   reject
-      // )
+      handleFacebookLimitedSignUp(
+        actions,
+        { email: email as string, name: name as string },
+        limitedLoginJWTToken.authenticationToken,
+        options,
+        resolve,
+        reject
+      )
     } else if (options.signInOrUp === "signIn") {
       handleFacebookLimitedSignIn(
         actions,
