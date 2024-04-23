@@ -247,7 +247,7 @@ export const features = {
   },
   AREnablePartnerOfferOnArtworkScreen: {
     description: "Enable partner offer on artwork screen",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnablePartnerOfferOnArtworkScreen",
   },
