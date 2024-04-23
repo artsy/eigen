@@ -67,4 +67,15 @@ describe("ArtworkPartnerOfferNote", () => {
     expect(screen.getByText("Note from the gallery")).toBeOnTheScreen()
     expect(screen.getByText("“This is a note”")).toBeOnTheScreen()
   })
+
+  it("does not render anything if there is no partner offer", () => {
+    renderWithRelay({
+      Artwork: () => ({ partner: { profile: { icon: { url: "https://testurl" } } } }),
+      Me: () => ({ partnerOffersConnection: { edges: [] } }),
+    })
+
+    expect(screen.queryByLabelText("Partner icon")).not.toBeOnTheScreen()
+    expect(screen.queryByText("Note from the gallery")).not.toBeOnTheScreen()
+    expect(screen.queryByText("“This is a note”")).not.toBeOnTheScreen()
+  })
 })
