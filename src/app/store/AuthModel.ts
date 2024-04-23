@@ -10,7 +10,7 @@ import { isArtsyEmail } from "app/utils/general"
 import { SegmentTrackingProvider } from "app/utils/track/SegmentTrackingProvider"
 import { postEventToProviders } from "app/utils/track/providers"
 
-import { Action, Computed, StateMapper, Thunk, action, computed, thunk } from "easy-peasy"
+import { Action, Actions, Computed, StateMapper, Thunk, action, computed, thunk } from "easy-peasy"
 import { capitalize } from "lodash"
 import { stringify } from "qs"
 import { Alert, Platform } from "react-native"
@@ -105,6 +105,39 @@ const handleSignUpError = ({
   return {
     message,
     existingProviders,
+  }
+}
+
+async function handleFacebookSignUp(
+  actions: Actions<AuthModel>,
+  userDetails: { email: string; name: string },
+  accessToken: string,
+  options: { agreedToReceiveEmails: boolean },
+  resolve: (value: AuthPromiseResolveType | PromiseLike<AuthPromiseResolveType>) => void,
+  reject: (reason?: any) => void
+) {
+  try {
+    const resultGravitySignUp = await actions.signUp({
+      email: userDetails.email,
+      name: userDetails.name,
+      accessToken: accessToken,
+      oauthProvider: "facebook",
+      agreedToReceiveEmails: options.agreedToReceiveEmails,
+    })
+
+    if (resultGravitySignUp.success) {
+      resolve({ success: true })
+    } else if (resultGravitySignUp.error === "blocked_attempt") {
+      throw new AuthError("Attempt blocked")
+    } else {
+      throw new AuthError(
+        resultGravitySignUp.message,
+        resultGravitySignUp.error,
+        resultGravitySignUp.meta
+      )
+    }
+  } catch (error) {
+    reject(error)
   }
 }
 
@@ -562,7 +595,18 @@ export const getAuthModel = (): AuthModel => ({
           )
           return
         }
+
+        // We need to do something like this eventually
+        // if (Platform.OS === "ios") {
+        //   // perform limited login
+        //   const limitedLoginTokenJWT =
+        //     !isCancelled && (await AuthenticationToken.getAuthenticationTokenIOS())
+        // } else {
+        //   // perform classic login as before
+        // }
+
         const accessToken = !isCancelled && (await AccessToken.getCurrentAccessToken())
+
         if (!accessToken) {
           reject(new AuthError("Could not log in"))
           return
@@ -584,29 +628,7 @@ export const getAuthModel = (): AuthModel => ({
           }
 
           if (options.signInOrUp === "signUp") {
-            const resultGravitySignUp = await actions.signUp({
-              email: result.email as string,
-              name: result.name as string,
-              accessToken: accessToken.accessToken,
-              oauthProvider: "facebook",
-              agreedToReceiveEmails: options.agreedToReceiveEmails,
-            })
-
-            if (resultGravitySignUp.success) {
-              resolve({ success: true })
-              return
-            } else if (resultGravitySignUp.error === "blocked_attempt") {
-              reject(new AuthError("Attempt blocked"))
-            } else {
-              reject(
-                new AuthError(
-                  resultGravitySignUp.message,
-                  resultGravitySignUp.error,
-                  resultGravitySignUp.meta
-                )
-              )
-              return
-            }
+            handleFacebookSignUp(actions, result, accessToken.accessToken, options, resolve, reject)
           }
 
           if (options.signInOrUp === "signIn") {
