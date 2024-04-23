@@ -197,6 +197,73 @@ async function handleFacebookSignIn(
   }
 }
 
+async function handleClassicFacebookAuth(
+  actions: Actions<AuthModel>,
+  isCancelled: boolean,
+  options: {
+    signInOrUp: "signIn" | "signUp"
+    agreedToReceiveEmails?: boolean
+    onSignIn?: () => void
+  },
+  resolve: (value: AuthPromiseResolveType | PromiseLike<AuthPromiseResolveType>) => void,
+  reject: (reason?: any) => void
+) {
+  try {
+    const accessToken = !isCancelled && (await AccessToken.getCurrentAccessToken())
+
+    if (!accessToken) {
+      reject(new AuthError("Could not log in"))
+      return
+    }
+
+    const responseFacebookInfoCallback = async (error: any | null, result: any | null) => {
+      if (error) {
+        reject(new AuthError("Error fetching Facebook data", error))
+        return
+      }
+
+      if (!result || !result.email) {
+        reject(
+          new AuthError(
+            "There is no email associated with your Facebook account. Please log in using your email and password instead."
+          )
+        )
+        return
+      }
+
+      if (options.signInOrUp === "signUp") {
+        handleFacebookSignUp(
+          actions,
+          { email: result.email as string, name: result.name as string },
+          accessToken.accessToken,
+          options,
+          resolve,
+          reject
+        )
+      } else if (options.signInOrUp === "signIn") {
+        handleFacebookSignIn(actions, accessToken.accessToken, options, resolve, reject)
+      }
+    }
+
+    // get info from facebook
+    const infoRequest = new GraphRequest(
+      "/me",
+      {
+        accessToken: accessToken.accessToken,
+        parameters: {
+          fields: {
+            string: "email,name",
+          },
+        },
+      },
+      responseFacebookInfoCallback
+    )
+    new GraphRequestManager().addRequest(infoRequest).start()
+  } catch (error) {
+    reject(new AuthError("Error logging in with Facebook", error.message))
+  }
+}
+
 export const showBlockedAuthError = (mode: "sign in" | "sign up") => {
   const messagePrefix = mode === "sign in" ? "Sign in" : "Sign up"
   const innerMessage = mode === "sign in" ? "signing in" : "signing up"
@@ -652,58 +719,7 @@ export const getAuthModel = (): AuthModel => ({
           return
         }
 
-        const accessToken = !isCancelled && (await AccessToken.getCurrentAccessToken())
-
-        if (!accessToken) {
-          reject(new AuthError("Could not log in"))
-          return
-        }
-
-        const responseFacebookInfoCallback = async (error: any | null, result: any | null) => {
-          if (error) {
-            reject(new AuthError("Error fetching facebook data", error))
-            return
-          }
-
-          if (!result || !result.email) {
-            reject(
-              new AuthError(
-                "There is no email associated with your Facebook account. Please log in using your email and password instead."
-              )
-            )
-            return
-          }
-
-          if (options.signInOrUp === "signUp") {
-            handleFacebookSignUp(
-              actions,
-              { email: result.email as string, name: result.name as string },
-              accessToken.accessToken,
-              options,
-              resolve,
-              reject
-            )
-          }
-
-          if (options.signInOrUp === "signIn") {
-            handleFacebookSignIn(actions, accessToken.accessToken, options, resolve, reject)
-          }
-        }
-
-        // get info from facebook
-        const infoRequest = new GraphRequest(
-          "/me",
-          {
-            accessToken: accessToken.accessToken,
-            parameters: {
-              fields: {
-                string: "email,name",
-              },
-            },
-          },
-          responseFacebookInfoCallback
-        )
-        new GraphRequestManager().addRequest(infoRequest).start()
+        handleClassicFacebookAuth(actions, isCancelled, options, resolve, reject)
       } catch (e) {
         if (e instanceof Error) {
           if (e.message === "User logged in as different Facebook user.") {
