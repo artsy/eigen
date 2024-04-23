@@ -6,17 +6,21 @@ import { Toast } from "app/Components/Toast/Toast"
 import { useCreateOrder } from "app/Scenes/Artwork/hooks/useCreateOrder"
 import { usePartnerOfferMutation } from "app/Scenes/PartnerOffer/mutations/usePartnerOfferCheckoutMutation"
 import { navigate } from "app/system/navigation/navigate"
+import { getTimer } from "app/utils/getTimer"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { promptForReview } from "app/utils/promptForReview"
 import { useSetWebViewCallback } from "app/utils/useWebViewEvent"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface PartnerOffer {
   internalID: string
+  endAt?: string | null
 }
+
+const PARTNER_OFFER_TIMER_INTERVAL = 1000
 
 export interface BuyNowButtonProps {
   artwork: BuyNowButton_artwork$key
@@ -53,6 +57,23 @@ export const BuyNowButton = ({
     }, 3000)
   })
 
+  const [partnerOfferTimer, setPartnerOfferTimer] = useState(
+    partnerOffer?.endAt ? getTimer(partnerOffer.endAt) : null
+  )
+  const intervalId = useRef<number | null>(null)
+
+  useEffect(() => {
+    if (partnerOffer && partnerOffer.endAt) {
+      intervalId.current = setInterval(() => {
+        setPartnerOfferTimer(partnerOffer?.endAt ? getTimer(partnerOffer.endAt) : null)
+      }, PARTNER_OFFER_TIMER_INTERVAL)
+
+      return () => {
+        if (intervalId.current) clearInterval(intervalId.current)
+      }
+    }
+  }, [])
+
   const partnerOfferMutation = usePartnerOfferMutation()
 
   const createOrderMutation = useCreateOrder()
@@ -70,7 +91,6 @@ export const BuyNowButton = ({
 
         if (errorCode === "expired_partner_offer") {
           navigate(`/artwork/${artworkId}`, {
-            replaceActiveScreen: true,
             passProps: { artworkOfferExpired: true },
           })
 
@@ -79,7 +99,6 @@ export const BuyNowButton = ({
 
         if (errorCode === "not_acquireable") {
           navigate(`/artwork/${artworkId}`, {
-            replaceActiveScreen: true,
             passProps: { artworkOfferUnavailable: true },
           })
 
@@ -133,7 +152,7 @@ export const BuyNowButton = ({
     setIsCommittingCreateOrderMutation(true)
 
     try {
-      if (AREnablePartnerOfferOnArtworkScreen && partnerOffer) {
+      if (AREnablePartnerOfferOnArtworkScreen && partnerOffer && !partnerOfferTimer?.hasEnded) {
         await createOrderFromPartnerOffer(partnerOffer)
       } else {
         await createOrder()

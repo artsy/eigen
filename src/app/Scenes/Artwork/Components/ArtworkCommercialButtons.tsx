@@ -158,5 +158,6 @@ const meFragment = graphql`
 const partnerOfferFragment = graphql`
   fragment ArtworkCommercialButtons_partnerOffer on PartnerOfferToCollector {
     internalID
+    endAt
   }
 `
