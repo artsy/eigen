@@ -108,7 +108,7 @@
   },
   "dependencies": {
     "@artsy/cohesion": "4.173.0",
-    "@artsy/palette-mobile": "13.1.31--canary.207.1812.0",
+    "@artsy/palette-mobile": "13.1.31--canary.207.1861.0",
     "@artsy/to-title-case": "1.1.0",
     "@expo/react-native-action-sheet": "4.0.1",
     "@gorhom/bottom-sheet": "4.5.1",
@@ -169,7 +169,6 @@
     "react-native-hyperlink": "0.0.19",
     "react-native-image-crop-picker": "0.40.3",
     "react-native-in-app-review": "4.2.1",
-    "react-native-keyboard-aware-scroll-view": "0.9.5",
     "react-native-keychain": "8.0.0",
     "react-native-linear-gradient": "2.6.2",
     "react-native-localize": "2.0.1",
