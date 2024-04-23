@@ -1,4 +1,4 @@
-import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
 import { RecommendedAuctionLotsRail_largeArtworkConnection$key } from "__generated__/RecommendedAuctionLotsRail_largeArtworkConnection.graphql"
 import {
@@ -31,79 +31,111 @@ interface RecommendedAuctionLotsRailProps extends ArtworkActionTrackingProps {
     | undefined
   isRailVisible: boolean
   size: "small" | "large"
+  contextScreenOwnerType: ScreenOwnerType
 }
 
 export const RecommendedAuctionLotsRail: React.FC<
   RecommendedAuctionLotsRailProps & RailScrollProps
-> = memo(({ title, artworkConnection, isRailVisible, scrollRef, size, ...restProps }) => {
-  const { trackEvent } = useTracking()
-
-  const trackingProps = extractArtworkActionTrackingProps(restProps)
-
-  const { artworksForUser } = useFragment(
-    size === "large" ? largeArtworksFragment : smallArtworksFragment,
-    artworkConnection
-  ) as RecommendedAuctionLotsRail_smallArtworkConnection$data
-
-  const railRef = useRef<View>(null)
-  const listRef = useRef<FlatList<any>>(null)
-
-  const { onViewableItemsChanged, viewabilityConfig } = useItemsImpressionsTracking({
+> = memo(
+  ({
+    title,
+    artworkConnection,
     isRailVisible,
-    contextModule: ContextModule.lotsForYouRail,
-  })
+    scrollRef,
+    size,
+    contextScreenOwnerType,
+    ...restProps
+  }) => {
+    const { trackEvent } = useTracking()
 
-  useImperativeHandle(scrollRef, () => ({
-    scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
-  }))
+    const trackingProps = extractArtworkActionTrackingProps(restProps)
 
-  const artworks = extractNodes(artworksForUser)
+    const { artworksForUser } = useFragment(
+      size === "large" ? largeArtworksFragment : smallArtworksFragment,
+      artworkConnection
+    ) as RecommendedAuctionLotsRail_smallArtworkConnection$data
 
-  if (!artworks.length) {
-    return null
-  }
+    const railRef = useRef<View>(null)
+    const listRef = useRef<FlatList<any>>(null)
 
-  const handleOnArtworkPress = (artwork: any, position: any) => {
-    trackEvent(
-      HomeAnalytics.artworkThumbnailTapEvent(
-        ContextModule.lotsForYouRail,
-        artwork.slug,
-        artwork.internalID,
-        position,
-        "single"
-      )
-    )
-    navigate(artwork.href)
-  }
+    const { onViewableItemsChanged, viewabilityConfig } = useItemsImpressionsTracking({
+      isRailVisible,
+      contextModule: ContextModule.lotsForYouRail,
+    })
 
-  const AuctionLotsRail = size == "large" ? LargeArtworkRail : SmallArtworkRail
+    useImperativeHandle(scrollRef, () => ({
+      scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
+    }))
 
-  return (
-    <View ref={railRef}>
-      <Flex pl={2} pr={2}>
-        <SectionTitle
-          title={title}
-          onPress={() => {
-            trackEvent(tracks.tappedHeader())
+    const artworks = extractNodes(artworksForUser)
+
+    if (!artworks.length) {
+      return null
+    }
+
+    const handleOnArtworkPress = (artwork: any, position: any) => {
+      if (contextScreenOwnerType === OwnerType.home) {
+        trackEvent(
+          HomeAnalytics.artworkThumbnailTapEvent(
+            ContextModule.lotsForYouRail,
+            artwork.slug,
+            artwork.internalID,
+            position,
+            "single"
+          )
+        )
+      }
+
+      navigate(artwork.href)
+    }
+
+    const AuctionLotsRail = size == "large" ? LargeArtworkRail : SmallArtworkRail
+
+    const tracks = {
+      tappedHeader: () => ({
+        action: ActionType.tappedArtworkGroup,
+        context_module: ContextModule.lotsForYouRail,
+        context_screen_owner_type: contextScreenOwnerType,
+        destination_screen_owner_type: OwnerType.lotsForYou,
+        type: "header",
+      }),
+
+      tappedMoreCard: () => ({
+        action: ActionType.tappedArtworkGroup,
+        context_module: ContextModule.lotsForYouRail,
+        context_screen_owner_type: contextScreenOwnerType,
+        destination_screen_owner_type: OwnerType.lotsForYou,
+        type: "viewAll",
+      }),
+    }
+
+    return (
+      <View ref={railRef}>
+        <Flex pl={2} pr={2}>
+          <SectionTitle
+            title={title}
+            onPress={() => {
+              trackEvent(tracks.tappedHeader())
+              navigate("/auctions/lots-for-you-ending-soon")
+            }}
+          />
+        </Flex>
+        <AuctionLotsRail
+          {...trackingProps}
+          artworks={artworks as any}
+          onPress={handleOnArtworkPress}
+          showSaveIcon
+          onMorePress={() => {
+            trackEvent(tracks.tappedMoreCard())
             navigate("/auctions/lots-for-you-ending-soon")
           }}
+          onViewableItemsChanged={onViewableItemsChanged}
+          viewabilityConfig={viewabilityConfig}
         />
-      </Flex>
-      <AuctionLotsRail
-        {...trackingProps}
-        artworks={artworks as any}
-        onPress={handleOnArtworkPress}
-        showSaveIcon
-        onMorePress={() => {
-          trackEvent(tracks.tappedMoreCard())
-          navigate("/auctions/lots-for-you-ending-soon")
-        }}
-        onViewableItemsChanged={onViewableItemsChanged}
-        viewabilityConfig={viewabilityConfig}
-      />
-    </View>
-  )
-})
+      </View>
+    )
+  }
+)
 
 const largeArtworksFragment = graphql`
   fragment RecommendedAuctionLotsRail_largeArtworkConnection on Viewer {
@@ -134,20 +166,3 @@ const smallArtworksFragment = graphql`
     }
   }
 `
-
-const tracks = {
-  tappedHeader: () => ({
-    action: ActionType.tappedArtworkGroup,
-    context_module: ContextModule.lotsForYouRail,
-    context_screen_owner_type: OwnerType.home,
-    destination_screen_owner_type: OwnerType.lotsForYou,
-    type: "header",
-  }),
-  tappedMoreCard: () => ({
-    action: ActionType.tappedArtworkGroup,
-    context_module: ContextModule.lotsForYouRail,
-    context_screen_owner_type: OwnerType.home,
-    destination_screen_owner_type: OwnerType.lotsForYou,
-    type: "viewAll",
-  }),
-}

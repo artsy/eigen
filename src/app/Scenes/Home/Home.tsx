@@ -307,6 +307,7 @@ const Home = memo((props: HomeProps) => {
               scrollRef={scrollRefs.current[index]}
               title={item.title}
               size="large"
+              contextScreenOwnerType={OwnerType.home}
             />
           )
 

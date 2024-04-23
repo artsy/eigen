@@ -87,6 +87,7 @@ export const Sales: React.FC = () => {
             isRailVisible={true}
             scrollRef={null}
             size="small"
+            contextScreenOwnerType={OwnerType.auctions}
           />
           <CurrentlyRunningAuctions
             sales={data.currentlyRunningAuctions}
