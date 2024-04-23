@@ -81,6 +81,7 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
               isAvailable: item?.partnerOffer?.isAvailable || false,
               targetHref: targetHref,
               note: item?.partnerOffer?.note || "",
+              id: item?.partnerOffer?.internalID || "",
             }}
             showArtworkCommercialButtons
           />
@@ -101,6 +102,7 @@ export const PartnerOfferCreatedNotificationFragment = graphql`
         available
         partnerOffer {
           note
+          internalID
           endAt
           isAvailable
           priceWithDiscount {
