@@ -106,6 +106,7 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
           if (acceptedTerms) {
             const res = await GlobalStore.actions.auth.signUp({
               oauthProvider: "email",
+              oauthMode: "email",
               email,
               password,
               name: name.trim(),

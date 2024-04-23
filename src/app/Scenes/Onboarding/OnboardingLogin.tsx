@@ -199,6 +199,7 @@ export const OnboardingLoginWithEmail: React.FC<OnboardingLoginProps> = ({ navig
       validateForm()
       const res = await GlobalStore.actions.auth.signIn({
         oauthProvider: "email",
+        oauthMode: "email",
         email,
         password,
       })

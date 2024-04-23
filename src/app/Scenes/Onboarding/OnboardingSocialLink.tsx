@@ -145,6 +145,7 @@ export const OnboardingSocialLink: React.FC<
       await validateForm()
       const res = await GlobalStore.actions.auth.signIn({
         oauthProvider: "email",
+        oauthMode: "email",
         email,
         password,
         onSignIn: () => onSignIn(providerToBeLinked, tokenForProviderToBeLinked),

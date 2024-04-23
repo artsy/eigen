@@ -93,6 +93,7 @@ describe("AuthModel", () => {
 
       const result = await GlobalStore.actions.auth.signIn({
         oauthProvider: "email",
+        oauthMode: "email",
         email: "user@example.com", // pragma: allowlist secret
         password: "hunter2", // pragma: allowlist secret
       })
@@ -127,6 +128,7 @@ describe("AuthModel", () => {
       })
       await GlobalStore.actions.auth.signIn({
         oauthProvider: "email",
+        oauthMode: "email",
         email: "user@example.com",
         password: "hunter2", // pragma: allowlist secret
       })
@@ -146,6 +148,7 @@ describe("AuthModel", () => {
 
       await GlobalStore.actions.auth.signIn({
         oauthProvider: "email",
+        oauthMode: "email",
         email: "user@example.com",
         password: "hunter2", // pragma: allowlist secret
       })
@@ -165,6 +168,7 @@ describe("AuthModel", () => {
       mockFetchJsonOnce({ error: "bad times" }, 500)
       const result = await GlobalStore.actions.auth.signIn({
         oauthProvider: "email",
+        oauthMode: "email",
         email: "user@example.com",
         password: "hunter2", // pragma: allowlist secret
       })
@@ -185,6 +189,7 @@ describe("AuthModel", () => {
       })
       await GlobalStore.actions.auth.signIn({
         oauthProvider: "email",
+        oauthMode: "email",
         email: "user@example.com",
         password: "hunter2", // pragma: allowlist secret
       })
@@ -205,6 +210,7 @@ describe("AuthModel", () => {
       })
       await GlobalStore.actions.auth.signIn({
         oauthProvider: "email",
+        oauthMode: "email",
         email: "user@example.com",
         password: "hunter2", // pragma: allowlist secret
       })
@@ -216,6 +222,7 @@ describe("AuthModel", () => {
       mockFetchJsonOnce({ id: "my-user-id" })
       await GlobalStore.actions.auth.signIn({
         oauthProvider: "email",
+        oauthMode: "email",
         email: "user@example.com",
         password: "hunter2", // pragma: allowlist secret
       })
@@ -240,6 +247,7 @@ describe("AuthModel", () => {
         })
         await GlobalStore.actions.auth.signIn({
           oauthProvider: "email",
+          oauthMode: "email",
           email: "user@example.com",
           password: "hunter2", // pragma: allowlist secret
         })
@@ -263,6 +271,7 @@ describe("AuthModel", () => {
         })
         await GlobalStore.actions.auth.signIn({
           oauthProvider: "email",
+          oauthMode: "email",
           email: "user@example.com",
           password: "hunter2", // pragma: allowlist secret
         })
@@ -295,6 +304,7 @@ describe("AuthModel", () => {
       })
       const result = await GlobalStore.actions.auth.signUp({
         oauthProvider: "email",
+        oauthMode: "email",
         email: "user@example.com",
         password: "validpassword", // pragma: allowlist secret
         name: "full name",
@@ -316,6 +326,7 @@ describe("AuthModel", () => {
       mockFetchJsonOnce({ error: "bad times" }, 500)
       const result = await GlobalStore.actions.auth.signUp({
         oauthProvider: "email",
+        oauthMode: "email",
         email: "user@example.com",
         password: "validpassword", // pragma: allowlist secret
         name: "full name",

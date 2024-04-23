@@ -42,20 +42,30 @@ type SignInStatus =
 
 interface EmailOAuthParams {
   oauthProvider: "email"
+  oauthMode: "email"
   email: string
   password: string
   otp?: string
 }
 interface FacebookOAuthParams {
   oauthProvider: "facebook"
+  oauthMode: "accessToken"
   accessToken: string
+}
+
+interface FacebookLimitedOAuthParams {
+  oauthProvider: "facebook"
+  oauthMode: "jwt"
+  jwt: string
 }
 interface GoogleOAuthParams {
   oauthProvider: "google"
+  oauthMode: "accessToken"
   accessToken: string
 }
 interface AppleOAuthParams {
   oauthProvider: "apple"
+  oauthMode: "idToken"
   idToken: string
   appleUid: string
 }
@@ -66,7 +76,12 @@ interface SignUpParams {
   agreedToReceiveEmails: boolean
 }
 
-type OAuthParams = EmailOAuthParams | FacebookOAuthParams | GoogleOAuthParams | AppleOAuthParams
+type OAuthParams =
+  | EmailOAuthParams
+  | FacebookOAuthParams
+  | GoogleOAuthParams
+  | AppleOAuthParams
+  | FacebookLimitedOAuthParams
 
 type OnboardingState = "none" | "incomplete" | "complete"
 type OnboardingArtQuizState = "none" | "incomplete" | "complete"
@@ -270,13 +285,13 @@ export const getAuthModel = (): AuthModel => ({
     ).json()
   }),
   signIn: thunk(async (actions, args, store) => {
-    const { oauthProvider, email, onboardingState, onSignIn } = args
+    const { oauthProvider, oauthMode, email, onboardingState, onSignIn } = args
 
     const grantTypeMap = {
-      facebook: "oauth_token",
-      google: "oauth_token",
-      apple: "apple_uid",
+      accessToken: "oauth_token",
+      idToken: "apple_uid",
       email: "credentials",
+      jwt: "jwt",
     }
 
     const result = await actions.gravityUnauthenticatedRequest({
@@ -288,13 +303,13 @@ export const getAuthModel = (): AuthModel => ({
       body: {
         email,
         oauth_provider: oauthProvider,
-        otp_attempt: oauthProvider === "email" ? args?.otp ?? undefined : undefined,
-        password: oauthProvider === "email" ? args.password : undefined,
-        oauth_token:
-          oauthProvider === "facebook" || oauthProvider === "google" ? args.accessToken : undefined,
+        otp_attempt: oauthMode === "email" ? args?.otp ?? undefined : undefined,
+        password: oauthMode === "email" ? args.password : undefined,
+        oauth_token: oauthMode === "accessToken" ? args.accessToken : undefined,
+        jwt: oauthMode === "jwt" ? args.jwt : undefined,
         apple_uid: oauthProvider === "apple" ? args.appleUid : undefined,
-        id_token: oauthProvider === "apple" ? args.idToken : undefined,
-        grant_type: grantTypeMap[oauthProvider],
+        id_token: oauthMode === "idToken" ? args.idToken : undefined,
+        grant_type: grantTypeMap[oauthMode],
         client_id: clientKey,
         client_secret: clientSecret,
         scope: "offline_access",
@@ -365,7 +380,8 @@ export const getAuthModel = (): AuthModel => ({
     }
   }),
   signUp: thunk(async (actions, args) => {
-    const { oauthProvider, email, name, agreedToReceiveEmails } = args
+    const { oauthProvider, oauthMode, email, name, agreedToReceiveEmails } = args
+
     const result = await actions.gravityUnauthenticatedRequest({
       path: `/api/v1/user`,
       method: "POST",
@@ -376,13 +392,11 @@ export const getAuthModel = (): AuthModel => ({
         provider: oauthProvider,
         email,
         name,
-
-        password: oauthProvider === "email" ? args.password : undefined,
-        oauth_token:
-          oauthProvider === "facebook" || oauthProvider === "google" ? args.accessToken : undefined,
+        password: oauthMode === "email" ? args.password : undefined,
+        oauth_token: oauthMode === "accessToken" ? args.accessToken : undefined,
+        jwt: oauthMode === "jwt" ? args.jwt : undefined,
         apple_uid: oauthProvider === "apple" ? args.appleUid : undefined,
-        id_token: oauthProvider === "apple" ? args.idToken : undefined,
-
+        id_token: oauthMode === "idToken" ? args.idToken : undefined,
         agreed_to_receive_emails: agreedToReceiveEmails,
         accepted_terms_of_service: true,
       },
@@ -392,19 +406,29 @@ export const getAuthModel = (): AuthModel => ({
     if (result.status === 201) {
       postEventToProviders(tracks.createdAccount({ signUpMethod: oauthProvider }))
 
-      switch (oauthProvider) {
-        case "facebook":
-        case "google":
+      switch (oauthMode) {
+        case "accessToken":
           await actions.signIn({
             oauthProvider,
+            oauthMode,
             email,
             accessToken: args.accessToken,
             onboardingState: "incomplete",
           })
           break
-        case "apple":
+        case "jwt":
           await actions.signIn({
             oauthProvider,
+            oauthMode,
+            email,
+            jwt: args.jwt,
+            onboardingState: "incomplete",
+          })
+          break
+        case "idToken":
+          await actions.signIn({
+            oauthProvider,
+            oauthMode,
             email,
             idToken: args.idToken,
             appleUid: args.appleUid,
@@ -414,6 +438,7 @@ export const getAuthModel = (): AuthModel => ({
         case "email":
           await actions.signIn({
             oauthProvider,
+            oauthMode,
             email,
             password: args.password,
             onboardingState: "incomplete",
@@ -532,6 +557,7 @@ export const getAuthModel = (): AuthModel => ({
             ? await actions.signUp({
                 email: userInfo.user.email,
                 name: userInfo.user.name,
+                oauthMode: "accessToken",
                 accessToken,
                 oauthProvider: "google",
                 agreedToReceiveEmails: options.agreedToReceiveEmails,
@@ -579,6 +605,7 @@ export const getAuthModel = (): AuthModel => ({
 
             const resultGravitySignIn = await actions.signIn({
               oauthProvider: "google",
+              oauthMode: "accessToken",
               email,
               accessToken,
               onSignIn: options.onSignIn,
@@ -654,6 +681,7 @@ export const getAuthModel = (): AuthModel => ({
           ? await actions.signUp({
               email: userInfo.email,
               name: `${firstName} ${lastName}`.trim(),
+              oauthMode: "idToken",
               appleUid,
               idToken,
               oauthProvider: "apple",
@@ -713,6 +741,7 @@ export const getAuthModel = (): AuthModel => ({
 
           const resultGravitySignIn = await actions.signIn({
             oauthProvider: "apple",
+            oauthMode: "idToken",
             email,
             appleUid,
             idToken,
