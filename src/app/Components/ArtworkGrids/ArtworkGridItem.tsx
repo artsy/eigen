@@ -190,7 +190,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
     trackArtworkTap()
 
     if (artwork.href) {
-      if (partnerOffer && !!hasEnded && !enablePartnerOfferOnArtworkScreen) {
+      if (partnerOffer && !!hasEnded && !!enablePartnerOfferOnArtworkScreen) {
         navigate?.(artwork.href, { passProps: { artworkOfferExpired: true } })
       } else {
         navigate?.(artwork.href)
