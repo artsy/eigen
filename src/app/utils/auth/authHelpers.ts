@@ -1,10 +1,17 @@
 import * as Sentry from "@sentry/react-native"
 import { AuthError } from "app/store/AuthError"
 import { AuthModel, AuthPromiseResolveType, OAuthProvider } from "app/store/AuthModel"
+import "core-js/stable/atob"
 import { Actions } from "easy-peasy"
+import { jwtDecode } from "jwt-decode"
 import { capitalize } from "lodash"
 import { Alert } from "react-native"
-import { AccessToken, GraphRequest, GraphRequestManager } from "react-native-fbsdk-next"
+import {
+  AccessToken,
+  AuthenticationToken,
+  GraphRequest,
+  GraphRequestManager,
+} from "react-native-fbsdk-next"
 
 export const showError = (
   res: any,
@@ -93,7 +100,7 @@ export const handleSignUpError = ({
   }
 }
 
-export async function handleFacebookSignUp(
+export async function handleFacebookClassicSignUp(
   actions: Actions<AuthModel>,
   userDetails: { email: string; name: string },
   accessToken: string,
@@ -107,6 +114,7 @@ export async function handleFacebookSignUp(
       name: userDetails.name,
       accessToken: accessToken,
       oauthProvider: "facebook",
+      oauthMode: "accessToken",
       agreedToReceiveEmails: options.agreedToReceiveEmails,
     })
 
@@ -126,7 +134,7 @@ export async function handleFacebookSignUp(
   }
 }
 
-export async function handleFacebookSignIn(
+export async function handleFacebookClassicSignIn(
   actions: Actions<AuthModel>,
   accessToken: string,
   clientId: string,
@@ -161,8 +169,68 @@ export async function handleFacebookSignIn(
 
       const resultGravitySignIn = await actions.signIn({
         oauthProvider: "facebook",
+        oauthMode: "accessToken",
         email,
         accessToken: accessToken,
+        onSignIn: options.onSignIn,
+      })
+
+      if (resultGravitySignIn) {
+        resolve({ success: true })
+      } else {
+        throw new AuthError("Could not log in")
+      }
+    } else {
+      if (resultGravityAccessToken.status === 403) {
+        throw new AuthError("Attempt blocked")
+      } else {
+        const res = await resultGravityAccessToken.json()
+        showError(res, reject, "facebook")
+      }
+    }
+  } catch (error) {
+    reject(error)
+  }
+}
+
+export async function handleFacebookLimitedSignIn(
+  actions: Actions<AuthModel>,
+  jwtToken: string,
+  clientId: string,
+  clientSecret: string,
+  options: {
+    onSignIn?: () => void
+    signInOrUp: "signIn" | "signUp"
+  },
+  resolve: (value: AuthPromiseResolveType | PromiseLike<AuthPromiseResolveType>) => void,
+  reject: (reason?: any) => void
+) {
+  try {
+    const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
+      path: `/oauth2/access_token`,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: {
+        oauth_provider: "facebook",
+        jwt: jwtToken,
+        client_id: clientId,
+        client_secret: clientSecret,
+        grant_type: "jwt",
+        scope: "offline_access",
+      },
+    })
+
+    if (resultGravityAccessToken.status === 201) {
+      const { access_token: userAccessToken } = await resultGravityAccessToken.json()
+      const { email } = await actions.getUser({ accessToken: userAccessToken })
+
+      const resultGravitySignIn = await actions.signIn({
+        oauthProvider: "facebook",
+        oauthMode: "jwt",
+        email,
+        jwt: jwtToken,
         onSignIn: options.onSignIn,
       })
 
@@ -225,7 +293,7 @@ export async function handleClassicFacebookAuth(
       }
 
       if (options.signInOrUp === "signUp") {
-        handleFacebookSignUp(
+        handleFacebookClassicSignUp(
           actions,
           { email: result.email as string, name: result.name as string },
           accessToken.accessToken,
@@ -234,7 +302,7 @@ export async function handleClassicFacebookAuth(
           reject
         )
       } else if (options.signInOrUp === "signIn") {
-        handleFacebookSignIn(
+        handleFacebookClassicSignIn(
           actions,
           accessToken.accessToken,
           clientId,
@@ -292,6 +360,50 @@ export async function handleLimitedFacebookAuth(
     if (isCancelled) {
       reject(new AuthError("Login was cancelled by the user"))
       return
+    }
+
+    const limitedLoginJWTToken = await AuthenticationToken.getAuthenticationTokenIOS()
+
+    if (!limitedLoginJWTToken || limitedLoginJWTToken == null) {
+      reject(new AuthError("Could not log in"))
+      return
+    }
+
+    const decodedToken = jwtDecode(limitedLoginJWTToken.authenticationToken)
+
+    if (!decodedToken) {
+      reject(new AuthError("Invalid JWT token"))
+      return
+    }
+
+    // const { email, given_name, family_name, name } = decodedToken as {
+    //   email: string
+    //   given_name: string
+    //   family_name: string
+    //   name: string
+    //   picture: string
+    // }
+
+    if (options.signInOrUp === "signUp") {
+      // handleFacebookLimitedSignUp(
+      //   actions,
+      //   limitedLoginJWTToken.authenticationToken,
+      //   clientId,
+      //   clientSecret,
+      //   options,
+      //   resolve,
+      //   reject
+      // )
+    } else if (options.signInOrUp === "signIn") {
+      handleFacebookLimitedSignIn(
+        actions,
+        limitedLoginJWTToken.authenticationToken,
+        clientId,
+        clientSecret,
+        options,
+        resolve,
+        reject
+      )
     }
 
     // Reject immediately as per the current request for a skeleton function
