@@ -14,7 +14,6 @@ export interface PartnerOffer {
   internalID: string
   endAt: string
   isAvailable: boolean
-  targetHref: string
   note?: string
 }
 

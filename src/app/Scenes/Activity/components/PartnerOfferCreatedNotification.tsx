@@ -20,7 +20,7 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
 }) => {
   const notificationData = useFragment(PartnerOfferCreatedNotificationFragment, notification)
 
-  const { headline, item, notificationType, artworksConnection, targetHref } = notificationData
+  const { headline, item, notificationType, artworksConnection } = notificationData
 
   const { hasEnded } = getTimer(item?.partnerOffer?.endAt || "")
   const noLongerAvailable = !item?.partnerOffer?.isAvailable
@@ -80,7 +80,6 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
               internalID: item?.partnerOffer?.internalID || "",
               endAt: item?.partnerOffer?.endAt || "",
               isAvailable: item?.partnerOffer?.isAvailable || false,
-              targetHref: targetHref,
               note: item?.partnerOffer?.note || "",
               id: item?.partnerOffer?.internalID || "",
             }}
