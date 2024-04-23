@@ -29,7 +29,7 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
 
   if (noLongerAvailable) {
     subtitle =
-      "Sorry, this artwork has sold or is no longer available. Please create an alert or contact orders@artsy.net to find similar artworks"
+      "Sorry, this artwork is sold or no longer available. Please create an alert or contact orders@artsy.net to find similar artworks"
   } else if (hasEnded) {
     subtitle = "This offer has expired. Please make a new offer or contact the gallery"
   }
