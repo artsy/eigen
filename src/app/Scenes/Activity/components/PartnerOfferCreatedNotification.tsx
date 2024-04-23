@@ -100,7 +100,6 @@ export const PartnerOfferCreatedNotificationFragment = graphql`
         expiresAt
         available
         partnerOffer {
-          internalID
           note
           internalID
           endAt

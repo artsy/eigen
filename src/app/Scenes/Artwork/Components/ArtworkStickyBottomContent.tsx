@@ -20,8 +20,8 @@ interface ArtworkStickyBottomContentProps {
 
 export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProps> = ({
   artwork,
-  partnerOffer,
   me,
+  partnerOffer,
 }) => {
   const { safeAreaInsets } = useScreenDimensions()
   const artworkData = useFragment(artworkFragment, artwork)
