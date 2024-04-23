@@ -81,7 +81,6 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
               endAt: item?.partnerOffer?.endAt || "",
               isAvailable: item?.partnerOffer?.isAvailable || false,
               note: item?.partnerOffer?.note || "",
-              id: item?.partnerOffer?.internalID || "",
             }}
             showArtworkCommercialButtons
           />
