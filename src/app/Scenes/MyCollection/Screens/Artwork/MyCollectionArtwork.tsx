@@ -104,6 +104,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
               <Tabs.Tab name={Tab.about} label={Tab.about}>
                 <Tabs.Lazy>
                   <MyCollectionArtworkAbout
+                    me={data.me}
                     artwork={artwork}
                     marketPriceInsights={data.marketPriceInsights}
                   />
@@ -114,6 +115,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
             <ScrollView>
               <MyCollectionArtworkHeader artwork={artwork} />
               <MyCollectionArtworkAbout
+                me={data.me}
                 renderWithoutScrollView
                 artwork={artwork}
                 marketPriceInsights={data.marketPriceInsights}
@@ -159,6 +161,7 @@ export const MyCollectionArtworkScreenQuery = graphql`
     }
     me {
       ...MyCollectionArtworkInsights_me
+      ...MyCollectionArtworkAbout_me
     }
   }
 `

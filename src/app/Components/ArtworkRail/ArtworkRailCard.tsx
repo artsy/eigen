@@ -59,6 +59,7 @@ export interface ArtworkRailCardProps extends ArtworkActionTrackingProps {
   metaContainerStyles?: {}
   performanceDisplay?: string
   onPress?: (event: GestureResponderEvent) => void
+  onSupressArtwork?: () => void
   priceRealizedDisplay?: string
   showSaveIcon?: boolean
   size: ArtworkCardSize
@@ -76,6 +77,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   metaContainerStyles,
   performanceDisplay,
   onPress,
+  onSupressArtwork,
   priceRealizedDisplay,
   showSaveIcon = false,
   size,
@@ -185,6 +187,10 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     trackEvent(artworkActionTracks.saveOrUnsaveArtwork(saved, params))
   }
 
+  const supressArtwork = () => {
+    onSupressArtwork?.()
+  }
+
   const { isSaved, saveArtworkToLists } = useSaveArtworkToArtworkLists({
     artworkFragmentRef: artwork,
     onCompleted: onArtworkSavedOrUnSaved,
@@ -203,6 +209,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
         contextModule={contextModule}
         contextScreenOwnerType={contextScreenOwnerType}
         onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
+        onSupressArtwork={supressArtwork}
         artwork={artwork}
         artworkDisplayProps={{
           dark,

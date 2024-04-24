@@ -1,8 +1,7 @@
-import { Flex, Box, Text } from "@artsy/palette-mobile"
+import { Flex, Box, Text, Image, Spacer } from "@artsy/palette-mobile"
 import { ViewingRoomHeader_viewingRoom$data } from "__generated__/ViewingRoomHeader_viewingRoom.graphql"
 import { durationSections } from "app/Components/Countdown"
 import { CountdownTimer, CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { ViewingRoomStatus } from "app/Scenes/ViewingRoom/ViewingRoom"
 import { navigate } from "app/system/navigation/navigate"
 import { Dimensions, TouchableWithoutFeedback, View } from "react-native"
@@ -14,31 +13,11 @@ interface ViewingRoomHeaderProps {
   viewingRoom: ViewingRoomHeader_viewingRoom$data
 }
 
-export const BackgroundImage = styled(OpaqueImageView)<{ height: number; width: number }>`
-  position: absolute;
-  height: 100%;
-  width: 100%;
-`
-
-const CountdownContainer = styled.View`
-  width: 100%;
-  flex-direction: row;
-  align-items: center;
-  height: 20px;
-  justify-content: center;
-`
-
-const PartnerContainer = styled(Flex)`
-  width: 100%;
-  flex-direction: row;
-  justify-content: center;
-`
-
 const Overlay = styled(LinearGradient)`
   width: 100%;
   height: 100%;
   position: absolute;
-  opacity: 0.15;
+  opacity: 0.5;
 `
 
 const CountdownText: React.FC<CountdownTimerProps> = ({ duration }) => {
@@ -97,56 +76,62 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = (props) => {
 
   return (
     <View>
-      <Box style={{ height: imageHeight, width: screenWidth, position: "relative" }}>
-        <BackgroundImage
+      <Box
+        style={{
+          height: imageHeight,
+          width: screenWidth,
+          position: "relative",
+        }}
+      >
+        <Image
           testID="background-image"
-          imageURL={heroImage?.imageURLs?.normalized ?? ""}
+          src={heroImage?.imageURLs?.normalized ?? ""}
           height={imageHeight}
           width={screenWidth}
+          style={{ position: "absolute" }}
         />
         <Overlay colors={["rgba(255, 255, 255, 0)", "rgba(0, 0, 0, 1)"]} />
         <Flex
           flexDirection="row"
           justifyContent="center"
           alignItems="flex-end"
+          position="absolute"
           px={2}
-          height={imageHeight - 60}
+          width={screenWidth}
+          height={imageHeight - 30}
           mb={0.5}
         >
           <Flex alignItems="center" flexDirection="column" flexGrow={1}>
             <Text testID="title" variant="lg-display" textAlign="center" color="white100">
               {title}
             </Text>
+            <Spacer y={1} />
+            <TouchableWithoutFeedback
+              onPress={() => {
+                if (partner?.href) {
+                  navigate(partner.href)
+                }
+              }}
+            >
+              <Flex flexDirection="row" justifyContent="center" alignItems="center">
+                {!!partnerIconImageURL && (
+                  <Box mr={0.5}>
+                    <PartnerIconImage
+                      source={{ uri: partnerIconImageURL, width: 20, height: 20 }}
+                      testID="partner-icon"
+                    />
+                  </Box>
+                )}
+                <Text variant="xs" fontWeight={500} color="white100" testID="partner-name">
+                  {partner?.name}
+                </Text>
+              </Flex>
+            </TouchableWithoutFeedback>
+            <Flex flexDirection="row">
+              <Countdown startAt={startAt as string} endAt={endAt as string} status={status} />
+            </Flex>
           </Flex>
         </Flex>
-        <PartnerContainer>
-          <TouchableWithoutFeedback
-            onPress={() => {
-              if (partner?.href) {
-                navigate(partner.href)
-              }
-            }}
-          >
-            <Flex flexDirection="row" justifyContent="center" alignItems="center" mb={0.5}>
-              {!!partnerIconImageURL && (
-                <Box mr={0.5}>
-                  <PartnerIconImage
-                    source={{ uri: partnerIconImageURL, width: 20, height: 20 }}
-                    testID="partner-icon"
-                  />
-                </Box>
-              )}
-              <Text variant="xs" fontWeight={500} color="white100" testID="partner-name">
-                {partner?.name}
-              </Text>
-            </Flex>
-          </TouchableWithoutFeedback>
-        </PartnerContainer>
-        <CountdownContainer>
-          <Flex alignItems="flex-end" flexDirection="row">
-            <Countdown startAt={startAt as string} endAt={endAt as string} status={status} />
-          </Flex>
-        </CountdownContainer>
       </Box>
     </View>
   )

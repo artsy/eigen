@@ -49,6 +49,7 @@ describe("ProgressiveOnboardingOfferSettings", () => {
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: { sessionState: { isReady: true } },
     })
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworkListOfferability: true })
     wrapper()
 
     expect(screen.getByText("Popover")).toBeOnTheScreen()
@@ -58,6 +59,7 @@ describe("ProgressiveOnboardingOfferSettings", () => {
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: { sessionState: { isReady: true } },
     })
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworkListOfferability: true })
     wrapper()
 
     fireEvent.press(screen.getByText("Popover"))

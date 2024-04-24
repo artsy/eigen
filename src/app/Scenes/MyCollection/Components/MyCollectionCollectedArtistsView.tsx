@@ -7,6 +7,7 @@ import { MyCollectionCollectedArtistItem } from "app/Scenes/MyCollection/Compone
 import { extractEdges } from "app/utils/extractEdges"
 import { useRefreshControl } from "app/utils/refreshHelpers"
 import { stringIncludes } from "app/utils/stringHelpers"
+import { useEffect } from "react"
 import { FlatList } from "react-native"
 import { graphql, usePaginationFragment } from "react-relay"
 
@@ -29,8 +30,15 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
       return
     }
 
-    loadNext(10)
+    loadNext(20)
   }
+
+  // Load all artists when keyword search is used because we cannot filter on the backend
+  useEffect(() => {
+    if (!hasNext || isLoadingNext || !keyword.length) return
+
+    loadNext(100)
+  }, [keyword, data.userInterestsConnection])
 
   const RefreshControl = useRefreshControl(refetch)
 
@@ -59,7 +67,7 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
             if (item?.node) {
               return (
                 <MyCollectionCollectedArtistItem
-                  artist={item.node!}
+                  artist={item.node}
                   key={item.internalID}
                   compact
                   interestId={item.internalID}
@@ -93,7 +101,7 @@ const LoadingIndicator = () => {
 
 const collectedArtistsPaginationFragment = graphql`
   fragment MyCollectionCollectedArtistsView_me on Me
-  @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" })
+  @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, after: { type: "String" })
   @refetchable(queryName: "MyCollectionCollectedArtistsView_myCollectionInfoRefetch") {
     userInterestsConnection(
       first: $count

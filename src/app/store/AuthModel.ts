@@ -1,7 +1,7 @@
 import { ActionType, AuthService, CreatedAccount } from "@artsy/cohesion"
 import { appleAuth } from "@invertase/react-native-apple-authentication"
 import CookieManager from "@react-native-cookies/cookies"
-import { GoogleSignin } from "@react-native-google-signin/google-signin"
+import { GoogleSignin, statusCodes } from "@react-native-google-signin/google-signin"
 import * as Sentry from "@sentry/react-native"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import * as RelayCache from "app/system/relay/RelayCache"
@@ -92,6 +92,7 @@ export interface AuthPromiseResolveType {
 export interface AuthPromiseRejectType {
   error?: string
   message: string
+  code?: string
   meta?: {
     email: string
     provider: OAuthProvider
@@ -627,18 +628,24 @@ export const getAuthModel = (): AuthModel => ({
             }
           }
         }
-      } catch (e) {
+      } catch (e: any) {
+        if (statusCodes.SIGN_IN_CANCELLED === e?.code) {
+          reject(new AuthError(statusCodes.SIGN_IN_CANCELLED))
+          return
+        }
+
         if (e instanceof Error) {
-          if (e.message === "DEVELOPER_ERROR") {
+          if (e?.message === "DEVELOPER_ERROR") {
             reject(
               new AuthError(
                 "Google auth does not work in firebase beta, try again in a playstore beta",
-                e.message
+                e?.message
               )
             )
             return
           }
-          reject(new AuthError("Error logging in with google", e.message))
+
+          reject(new AuthError("Error logging in with google", e?.message))
           return
         }
         reject(new AuthError("Error logging in with google"))

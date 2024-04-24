@@ -9,6 +9,7 @@ import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { cm2in } from "app/utils/conversions"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { useDislikeArtwork } from "app/utils/mutations/useDislikeArtwork"
 import { Schema } from "app/utils/track"
 import { isEmpty } from "lodash"
 import { InteractionManager, Platform } from "react-native"
@@ -36,6 +37,7 @@ export type ArtworkDisplayProps = Pick<
 interface ContextMenuArtworkProps {
   artwork: ArtworkRailCard_artwork$data | ArtworkGridItem_artwork$data
   onCreateAlertActionPress: () => void
+  onSupressArtwork?: () => void
   haptic?: HapticFeedbackTypes | boolean
   artworkDisplayProps?: ArtworkDisplayProps
   contextScreenOwnerType?: ScreenOwnerType
@@ -48,12 +50,17 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   haptic = true,
   artworkDisplayProps,
   onCreateAlertActionPress,
+  onSupressArtwork,
   contextScreenOwnerType,
   contextModule,
 }) => {
   const { trackEvent } = useTracking()
   const { showShareSheet } = useShareSheet()
-  const enableContextMenu = useFeatureFlag("AREnableLongPressOnArtworkCards")
+  const enableContextMenuForRecommendations =
+    useFeatureFlag("AREnableLongPressOnNewForYouRail") && contextModule == "newWorksForYouRail"
+  const enableContextMenu =
+    useFeatureFlag("AREnableLongPressOnArtworkCards") || enableContextMenuForRecommendations
+  const { submitMutation: dislikeArtworkMutation } = useDislikeArtwork()
   const isIOS = Platform.OS === "ios"
   const color = useColor()
 
@@ -64,6 +71,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   const shouldDisplayContextMenu = isIOS && enableContextMenu
   const enableCreateAlerts = !!artwork.artists?.length
   const enableViewInRoom = LegacyNativeModules.ARCocoaConstantsModule.AREnabled && isHangable
+  const enableSupressArtwork = contextModule == "newWorksForYouRail"
 
   const isOpenSale = !isEmpty(sale) && sale?.isAuction && !sale?.isClosed
 
@@ -131,6 +139,19 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
       },
     ]
 
+    if (enableSupressArtwork) {
+      contextMenuActions.push({
+        title: "Not Interested",
+        systemIcon: "eye.slash",
+        onPress: () => {
+          InteractionManager.runAfterInteractions(() => {
+            onSupressArtwork?.()
+            dislikeArtworkMutation({ variables: { artworkID: internalID } })
+          })
+        },
+      })
+    }
+
     if (enableViewInRoom) {
       contextMenuActions.push({
         title: "View in room",
@@ -163,7 +184,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
 
   const handleContextPress: ContextMenuProps["onPress"] = (event) => {
     if (haptic) {
-      trigger(haptic === true ? "impactLight" : haptic)
+      trigger?.(haptic === true ? "impactLight" : haptic)
     }
 
     const onPressToCall = contextActions[event.nativeEvent.index].onPress

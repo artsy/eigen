@@ -88,6 +88,7 @@ const defaultProps: CreateSavedSearchModalProps = {
 
 const mockedMutationResult: SavedSearchAlertMutationResult = {
   id: "savedSearchAlertId",
+  searchCriteriaID: "searchCriteriaID",
 }
 
 const TestWrapper: React.FC = ({ children }) => (
@@ -118,7 +119,7 @@ describe("CreateSavedSearchModal", () => {
     createSavedSearchAlert.props.params.onComplete(mockedMutationResult)
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
-      tracks.toggleSavedSearch(true, OwnerType.artist, "ownerId", "ownerSlug", "savedSearchAlertId")
+      tracks.toggleSavedSearch(true, OwnerType.artist, "ownerId", "ownerSlug", "searchCriteriaID")
     )
   })
 

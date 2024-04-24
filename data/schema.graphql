@@ -1633,6 +1633,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     # State of the returned auction results (can be past, upcoming, or all)
     state: AuctionResultsState
   ): AuctionResultConnection
+  awards: String
 
   # In applicable contexts, this is what the artist (as a suggestion) is based on.
   basedOn: Artist
@@ -1667,7 +1668,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
-  criticallyAcclaimed: Boolean
+  criticallyAcclaimed: Boolean!
   currentEvent: CurrentEvent
   deathday: String
   disablePriceContext: Boolean
@@ -1822,6 +1823,9 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     partnerCategory: [String]
     representedBy: Boolean
   ): PartnerArtistConnection
+
+  # The most recent show for an artist
+  recentShow: String
   related: ArtistRelatedData
   sales(
     isAuction: Boolean
@@ -1929,6 +1933,7 @@ type ArtistCounts {
     label: String
   ): FormattedNumber
   hasMakeOfferArtworks: Boolean
+  myCollectedArtworks: Int!
   partnerShows(
     # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
@@ -4660,6 +4665,9 @@ input CommerceCreateOfferOrderWithArtworkInput {
   # submitted orders on same artwork/edition with same quantity, we will return that
   findActiveOrCreate: Boolean = true
 
+  # PartnerOffer Id
+  partnerOfferId: String
+
   # Number of items in the line item, default is 1
   quantity: Int
 }
@@ -5797,9 +5805,6 @@ type CommerceSellerAcceptOfferPayload {
 input CommerceSellerAcceptProvisionalOfferInput {
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
-
-  # If location was set in the accept offer step
-  locationFilledOnOrder: Boolean
   offerId: ID!
 
   # Shipping info belonging to this specific order. It overrides the defined shipping costs of the artwork.
@@ -5821,9 +5826,6 @@ input CommerceSellerCounterOfferInput {
 
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
-
-  # If location was set in the counter offer step
-  locationFilledOnOrder: Boolean
   note: String
   offerId: ID!
   shippingContact: CommerceShippingContactAttributes
@@ -12346,6 +12348,13 @@ type Me implements Node {
     first: Int
     last: Int
   ): ArtworkConnection
+  recommendedArtworks(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+  ): ArtworkConnection
   saleRegistrationsConnection(
     after: String
     auctionState: AuctionState
@@ -13549,6 +13558,7 @@ type Notification implements Node {
   message: String!
   notificationType: NotificationTypesEnum!
   objectsCount: Int!
+  previewImages(size: Int): [Image!]!
   publishedAt(
     # pass `RELATIVE` to display the human-friendly date (e.g. "Today", "Yesterday", "5 days ago")
     format: String
@@ -14603,6 +14613,7 @@ type PartnerOfferToCollector implements Node {
   # A type-specific ID.
   internalID: ID!
   isAvailable: Boolean
+  note: String
   partnerId: String
   priceWithDiscount: Money
 }
@@ -15470,6 +15481,7 @@ type Query {
   artworksForUser(
     after: String
     before: String
+    excludeDislikedArtworks: Boolean = false
     first: Int
     includeBackfill: Boolean!
     last: Int
@@ -16307,7 +16319,7 @@ type Query {
   # Content for a specific page or view
   staticContent(
     # The slug or id for the view
-    id: String!
+    id: String
   ): StaticContent
 
   # Get a Submission
@@ -18132,6 +18144,16 @@ enum sort {
   DESC
 }
 
+type SpecialistBio {
+  bio: String
+  email: String
+  firstName: String
+  image: Image
+  jobTitle: String
+  name: String
+  specialty: String
+}
+
 type StartIdentityVerificationFailure {
   mutationError: GravityMutationError
 }
@@ -18172,6 +18194,9 @@ type StaticContent {
 
   # A slug ID.
   slug: ID!
+
+  # A list of specialists
+  specialistBios: [SpecialistBio]
 }
 
 enum SubGroupInputStatus {
@@ -18555,10 +18580,12 @@ type UpdateArtistFailure {
 
 input UpdateArtistMutationInput {
   alternateNames: [String!]
+  awards: String
   birthday: String
   blurb: String
   clientMutationId: String
   coverArtworkId: String
+  criticallyAcclaimed: Boolean
   deathday: String
   displayName: String
   first: String
@@ -18571,8 +18598,10 @@ input UpdateArtistMutationInput {
   middle: String
   nationality: String
   public: Boolean
+  recentShow: String
   targetSupplyPriority: ArtistTargetSupplyPriority
   targetSupplyType: ArtistTargetSupplyType
+  vanguardYear: String
 }
 
 type UpdateArtistMutationPayload {
@@ -20351,6 +20380,7 @@ type Viewer {
   artworksForUser(
     after: String
     before: String
+    excludeDislikedArtworks: Boolean = false
     first: Int
     includeBackfill: Boolean!
     last: Int
@@ -21009,7 +21039,7 @@ type Viewer {
   # Content for a specific page or view
   staticContent(
     # The slug or id for the view
-    id: String!
+    id: String
   ): StaticContent
 
   # Fields related to internal systems.

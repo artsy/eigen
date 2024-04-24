@@ -20,7 +20,7 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
 }) => {
   const notificationData = useFragment(PartnerOfferCreatedNotificationFragment, notification)
 
-  const { headline, item, notificationType, artworksConnection, targetHref } = notificationData
+  const { headline, item, notificationType, artworksConnection } = notificationData
 
   const { hasEnded } = getTimer(item?.partnerOffer?.endAt || "")
   const noLongerAvailable = !item?.partnerOffer?.isAvailable
@@ -29,7 +29,7 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
 
   if (noLongerAvailable) {
     subtitle =
-      "Sorry, this artwork has sold or is no longer available. Please create an alert or contact orders@artsy.net to find similar artworks"
+      "Sorry, this artwork is sold or no longer available. Please create an alert or contact orders@artsy.net to find similar artworks"
   } else if (hasEnded) {
     subtitle = "This offer has expired. Please make a new offer or contact the gallery"
   }
@@ -77,9 +77,10 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
               priceWithDiscountMessage: item?.partnerOffer?.priceWithDiscount?.display || "",
             }}
             partnerOffer={{
+              internalID: item?.partnerOffer?.internalID || "",
               endAt: item?.partnerOffer?.endAt || "",
               isAvailable: item?.partnerOffer?.isAvailable || false,
-              targetHref: targetHref,
+              note: item?.partnerOffer?.note || "",
             }}
             showArtworkCommercialButtons
           />
@@ -99,6 +100,8 @@ export const PartnerOfferCreatedNotificationFragment = graphql`
         expiresAt
         available
         partnerOffer {
+          note
+          internalID
           endAt
           isAvailable
           priceWithDiscount {

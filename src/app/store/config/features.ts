@@ -104,6 +104,12 @@ export const features = {
     readyForRelease: true,
     echoFlagKey: "AREnableNewAuctionsRailCard",
   },
+  AREnableNewCollectorSettings: {
+    description: "Enable New Collector Settings",
+    readyForRelease: false,
+    echoFlagKey: "AREnableNewCollectorSettings",
+    showInDevMenu: true,
+  },
   AREnableMyCollectionCollectedArtists: {
     description: "Enable Collected Artists in My Collection",
     readyForRelease: true,
@@ -150,11 +156,6 @@ export const features = {
     description: "Enable Latest Activity Rail",
     readyForRelease: true,
     echoFlagKey: "AREnableLatestActivityRail",
-  },
-  AREnableSingleActivityPanelScreen: {
-    description: "Enable Single Activity Panel screen",
-    readyForRelease: true,
-    echoFlagKey: "AREnableSingleActivityPanelScreen",
   },
   AREnableAlertsFilters: {
     description: "Enable filters in alerts screen",
@@ -214,12 +215,6 @@ export const features = {
     readyForRelease: true,
     echoFlagKey: "AREnableAlertsFiltersArtistSeriesFiltering",
   },
-  AREnableNewActivityPanelManagement: {
-    description: "Enable new activity panel management",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableNewActivityPanelManagement",
-  },
   AREnableArtworksFeedView: {
     description: "Enable artworks feed view",
     readyForRelease: true,
@@ -255,6 +250,17 @@ export const features = {
     readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableNewTermsAndConditions",
+  },
+  AREnableLongPressOnNewForYouRail: {
+    description: "Enable Context Menu on artwork cards on new for you rail",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
+  AREnablePartnerOfferOnArtworkScreen: {
+    description: "Enable partner offer on artwork screen",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnablePartnerOfferOnArtworkScreen",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 

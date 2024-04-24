@@ -107,8 +107,8 @@
     "@babel/plugin-transform-named-capturing-groups-regex": "Needed for compiling android with hermes enabled"
   },
   "dependencies": {
-    "@artsy/cohesion": "4.169.0",
-    "@artsy/palette-mobile": "13.1.26",
+    "@artsy/cohesion": "4.174.0",
+    "@artsy/palette-mobile": "13.2.1",
     "@artsy/to-title-case": "1.1.0",
     "@expo/react-native-action-sheet": "4.0.1",
     "@gorhom/bottom-sheet": "4.5.1",
@@ -218,7 +218,7 @@
     "@octokit/rest": "16.34.0",
     "@react-native/eslint-config": "^0.72.2",
     "@react-native/metro-config": "^0.72.12",
-    "@sentry/cli": "2.26.0",
+    "@sentry/cli": "2.31.0",
     "@testing-library/jest-native": "5.4.3",
     "@testing-library/react-hooks": "8.0.1",
     "@testing-library/react-native": "12.4.5",

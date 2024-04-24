@@ -90,6 +90,7 @@ const CreateNewArtworkListMutation = graphql`
           collection {
             internalID
             name
+            shareableWithPartners
             artworksCount(onlyVisible: true)
           }
         }
