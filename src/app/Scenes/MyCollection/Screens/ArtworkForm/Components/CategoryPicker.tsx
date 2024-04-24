@@ -1,14 +1,18 @@
 import { Select, SelectOption } from "app/Components/Select"
 
 interface ArtworkCategoryPickerProps<T> {
+  error?: string
   handleChange: (v: T) => void
+  onModalFinishedClosing?: () => void
   options: Array<SelectOption<T>>
   required?: boolean
   value: T | null | undefined
 }
 
 export const CategoryPicker = <ValueType,>({
+  error,
   handleChange,
+  onModalFinishedClosing,
   options,
   required = true,
   value,
@@ -23,6 +27,8 @@ export const CategoryPicker = <ValueType,>({
       testID="CategorySelect"
       required={required}
       options={options}
+      error={error}
+      onModalFinishedClosing={onModalFinishedClosing}
     />
   )
 }

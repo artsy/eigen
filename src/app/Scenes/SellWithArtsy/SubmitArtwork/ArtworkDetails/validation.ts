@@ -77,8 +77,8 @@ export const artworkDetailsValidationSchema = Yup.object().shape({
   artistId: Yup.string().required(
     "Please select an artist from the list. Artists who are not  listed cannot be submitted due to limited demand."
   ),
-  title: Yup.string().required().trim(),
-  category: Yup.string().required(),
+  title: Yup.string().required("Title is a required field").trim(),
+  category: Yup.string().required("Please choose a medium from the list."),
 
   // Optional fields
   medium: Yup.string().trim(),

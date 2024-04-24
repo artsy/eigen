@@ -21,6 +21,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
     values: { artist, artistId },
     setFieldValue,
     errors,
+    validateField,
   } = useFormikContext<ArtworkDetailsFormModel>()
   const searchProviderValues = useSearchProviderValues(artist)
 
@@ -53,15 +54,21 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
         title={title || undefined}
         placeholder={placeholder}
         icon={<SearchIcon width={18} height={18} />}
-        onChangeText={onArtistSearchTextChange}
+        onChangeText={(e) => {
+          onArtistSearchTextChange(e)
+        }}
         value={artist}
         autoCorrect={false}
         accessibilityLabel="Artist"
-        onBlur={() => setFocused(false)}
+        onBlur={() => {
+          setFocused(false)
+          validateField("artist")
+          validateField("artistId")
+        }}
         onFocus={() => setFocused(true)}
         enableClearButton
         testID="Submission_ArtistInput"
-        error={!focused && artist && !isArtistSelected ? errors.artistId : undefined}
+        error={!focused && !isArtistSelected ? errors.artistId : undefined}
         required
       />
 

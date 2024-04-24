@@ -34,15 +34,16 @@ export const ArtworkDetails: React.FC<{
         initialValues={artworkDetails}
         onSubmit={handlePress}
         validationSchema={artworkDetailsValidationSchema}
-        validateOnMount
+        // Validate on blur only when injecting existing values from my collection
+        validateOnMount={artworkDetails.myCollectionArtworkID ? true : false}
       >
-        {({ values, isValid }) => {
+        {({ values, isValid, dirty }) => {
           return (
             <>
               <ArtworkDetailsForm />
               <Spacer y={2} />
               <CTAButton
-                disabled={!isValid}
+                disabled={!isValid || !dirty}
                 onPress={() => handlePress(values)}
                 testID="Submission_ArtworkDetails_Button"
               >

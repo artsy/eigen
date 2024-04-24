@@ -26,19 +26,21 @@ export interface SelectOption<ValueType> {
 
 const ROW_HEIGHT = 40
 export interface SelectProps<ValueType> {
-  options: Array<SelectOption<ValueType>>
-  value: ValueType | null
-  placeholder?: string
-  title: string
-  subTitle?: string
   enableSearch?: boolean
-  maxModalHeight?: number
+  error?: string
   hasError?: boolean
-  testID?: string
+  maxModalHeight?: number
+  onModalFinishedClosing?(): void
   onSelectValue(value: ValueType, index: number): void
+  options: Array<SelectOption<ValueType>>
+  placeholder?: string
   renderButton?(args: { selectedValue: ValueType | null; onPress(): void }): JSX.Element
   renderItemLabel?(value: SelectOption<ValueType>): JSX.Element
-  onModalFinishedClosing?(): void
+  showTitleLabel?: boolean
+  subTitle?: string
+  testID?: string
+  title: string
+  value: ValueType | null
 }
 interface State {
   showingModal: boolean
@@ -72,6 +74,7 @@ export class Select<ValueType> extends React.Component<SelectProps<ValueType>, S
       subTitle,
       maxModalHeight,
       hasError,
+      error,
     } = this.props
 
     const selectedItem = options.find((o) => o.value === value)
@@ -89,6 +92,7 @@ export class Select<ValueType> extends React.Component<SelectProps<ValueType>, S
             value={selectedItem?.label}
             onPress={this.open.bind(this)}
             hasError={hasError}
+            error={error}
           />
         )}
         <SelectModal
@@ -116,7 +120,8 @@ const SelectButton: React.FC<{
   hasError?: boolean
   testID?: string
   onPress(): void
-}> = ({ value, placeholder, onPress, title, subTitle, hasError, testID }) => {
+  error?: string
+}> = ({ value, placeholder, onPress, title, subTitle, hasError, testID, error }) => {
   const color = useColor()
   return (
     <Flex>
@@ -151,6 +156,11 @@ const SelectButton: React.FC<{
           <TriangleDown />
         </Flex>
       </TouchableOpacity>
+      {!!error && (
+        <Text color="red100" mt={1} variant="xs" testID="input-error">
+          {error}
+        </Text>
+      )}
     </Flex>
   )
 }

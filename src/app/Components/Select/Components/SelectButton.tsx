@@ -18,6 +18,7 @@ import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-na
 
 export const SelectButton: React.FC<{
   disabled?: boolean
+  error?: string
   hasError?: boolean
   modalVisible: boolean
   onPress(): void
@@ -32,6 +33,7 @@ export const SelectButton: React.FC<{
   value?: React.ReactNode
 }> = ({
   disabled,
+  error,
   hasError,
   modalVisible,
   onPress,
@@ -137,12 +139,18 @@ export const SelectButton: React.FC<{
           </Flex>
         </AnimatedFlex>
       </Touchable>
-      {!!required || !!optional ? (
+      {/* No need to show required if we have an error message */}
+      {(!!required || !!optional) && !error ? (
         <Text color="black60" variant="xs" pl={`${HORIZONTAL_PADDING}px`} mt={0.5}>
           {!!required && "* Required"}
           {!!optional && "* Optional"}
         </Text>
       ) : null}
+      {!!error && (
+        <Text color="red100" mt={1} variant="xs" testID="input-error">
+          {error}
+        </Text>
+      )}
     </>
   )
 }
