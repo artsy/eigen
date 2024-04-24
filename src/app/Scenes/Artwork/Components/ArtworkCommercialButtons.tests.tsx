@@ -74,6 +74,8 @@ describe("ArtworkCommercialButtons", () => {
     })
 
     expect(screen.getByText("Purchase")).toBeTruthy()
+    expect(screen.queryByText("Make an Offer")).toBeFalsy()
+    expect(screen.queryByText("Contact Gallery")).toBeFalsy()
   })
 
   it("renders Purchase button if artwork is only acquireable and with a partner offer", async () => {
@@ -107,7 +109,9 @@ describe("ArtworkCommercialButtons", () => {
       Me: () => meFixture,
     })
 
+    expect(screen.queryByText("Purchase")).toBeFalsy()
     expect(screen.getByText("Make an Offer")).toBeTruthy()
+    expect(screen.queryByText("Contact Gallery")).toBeFalsy()
   })
 
   it("renders Contact Gallery button if artwork is only inquireable", async () => {
@@ -123,6 +127,8 @@ describe("ArtworkCommercialButtons", () => {
       Me: () => meFixture,
     })
 
+    expect(screen.queryByText("Purchase")).toBeFalsy()
+    expect(screen.queryByText("Make an Offer")).toBeFalsy()
     expect(screen.getByText("Contact Gallery")).toBeTruthy()
   })
 
@@ -140,6 +146,7 @@ describe("ArtworkCommercialButtons", () => {
 
     expect(screen.getByText("Purchase")).toBeTruthy()
     expect(screen.getByText("Make an Offer")).toBeTruthy()
+    expect(screen.queryByText("Contact Gallery")).toBeFalsy()
   })
 
   it("renders Purchase and Make an Offer buttons if artwork is only offerable and with a partner offer", async () => {
@@ -193,6 +200,7 @@ describe("ArtworkCommercialButtons", () => {
       }
     )
 
+    expect(screen.queryByText("Purchase")).toBeFalsy()
     expect(screen.getByText("Make an Offer")).toBeTruthy()
     expect(screen.getByText("Contact Gallery")).toBeTruthy()
   })
