@@ -72,14 +72,18 @@ export const artworkDetailsEmptyInitialValues: ArtworkDetailsFormModel = {
 }
 
 export const artworkDetailsValidationSchema = Yup.object().shape({
+  // Required fields
   artist: Yup.string().trim(),
   artistId: Yup.string().required(
     "Please select an artist from the list. Artists who are not  listed cannot be submitted due to limited demand."
   ),
   title: Yup.string().required().trim(),
-  year: Yup.string().required().trim(),
-  medium: Yup.string().required().trim(),
-  attributionClass: Yup.string().required(),
+  category: Yup.string().required(),
+
+  // Optional fields
+  medium: Yup.string().trim(),
+  year: Yup.string().trim(),
+  attributionClass: Yup.string().nullable(),
   editionNumber: Yup.string().when("attributionClass", {
     is: limitedEditionValue,
     then: Yup.string().required().trim(),
@@ -88,11 +92,11 @@ export const artworkDetailsValidationSchema = Yup.object().shape({
     is: limitedEditionValue,
     then: Yup.string().required().trim(),
   }),
-  dimensionsMetric: Yup.string().required(),
-  height: Yup.string().required().trim(),
-  width: Yup.string().required().trim(),
+  dimensionsMetric: Yup.string(),
+  height: Yup.string().trim(),
+  width: Yup.string().trim(),
   depth: Yup.string().trim(),
-  provenance: Yup.string().required().trim(),
+  provenance: Yup.string().trim(),
   state: Yup.string(),
   utmMedium: Yup.string(),
   utmSource: Yup.string(),
