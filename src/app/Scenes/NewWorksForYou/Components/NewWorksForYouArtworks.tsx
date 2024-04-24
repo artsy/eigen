@@ -1,4 +1,4 @@
-import { OwnerType } from "@artsy/cohesion"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, SimpleMessage, Text } from "@artsy/palette-mobile"
 import { NewWorksForYouArtworksQuery } from "__generated__/NewWorksForYouArtworksQuery.graphql"
 import { NewWorksForYouArtworks_viewer$key } from "__generated__/NewWorksForYouArtworks_viewer.graphql"
@@ -34,6 +34,7 @@ export const NewWorksForYouArtworks: React.FC<NewWorksForYouProps> = ({ viewer }
         numColumns={numColumns}
         disableAutoLayout
         pageSize={PAGE_SIZE}
+        contextModule={ContextModule.newWorksForYouRail}
         contextScreenOwnerType={OwnerType.newWorksForYou}
         contextScreen={OwnerType.newWorksForYou}
         ListEmptyComponent={
@@ -69,7 +70,8 @@ export const newWorksForYouArtworksFragment = graphql`
       maxWorksPerArtist: $maxWorksPerArtist
       version: $version
       onlyAtAuction: $onlyAtAuction
-    ) @connection(key: "NewWorksForYou_artworks") {
+      excludeDislikedArtworks: true
+    ) @connection(key: "NewWorksForYou_artworks", filters: []) {
       totalCount
       edges {
         node {
@@ -112,11 +114,17 @@ interface NewWorksForYouArtworksQRProps {
 
 export const NewWorksForYouArtworksQR: React.FC<NewWorksForYouArtworksQRProps> = withSuspense(
   ({ version, onlyAtAuction = false, maxWorksPerArtist = 3 }) => {
-    const data = useLazyLoadQuery<NewWorksForYouArtworksQuery>(newWorksForYouArtworksQuery, {
-      version,
-      maxWorksPerArtist,
-      onlyAtAuction,
-    })
+    const data = useLazyLoadQuery<NewWorksForYouArtworksQuery>(
+      newWorksForYouArtworksQuery,
+      {
+        version,
+        maxWorksPerArtist,
+        onlyAtAuction,
+      },
+      {
+        fetchPolicy: "store-and-network",
+      }
+    )
 
     // This won't happen because the query would fail thanks to the @principalField
     // Adding it here to make TS happy

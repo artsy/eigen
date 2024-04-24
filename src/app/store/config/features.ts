@@ -251,6 +251,11 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableNewTermsAndConditions",
   },
+  AREnableLongPressOnNewForYouRail: {
+    description: "Enable Context Menu on artwork cards on new for you rail",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
   AREnablePartnerOfferOnArtworkScreen: {
     description: "Enable partner offer on artwork screen",
     readyForRelease: false,

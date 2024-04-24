@@ -1,4 +1,4 @@
-import { ScreenOwnerType } from "@artsy/cohesion"
+import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import { useSpace } from "@artsy/palette-mobile"
 import { MasonryFlashList, MasonryFlashListProps } from "@shopify/flash-list"
 import { PriceOfferMessage } from "app/Components/ArtworkGrids/ArtworkGridItem"
@@ -24,6 +24,7 @@ type MasonryFlashListOmittedProps = Omit<
 interface MasonryInfiniteScrollArtworkGridProps extends MasonryFlashListOmittedProps {
   animated?: boolean
   artworks: MasonryArtworkItem[]
+  contextModule?: ContextModule
   contextScreen?: ScreenOwnerType
   contextScreenOwnerId?: string
   contextScreenOwnerSlug?: string
@@ -45,6 +46,7 @@ interface MasonryInfiniteScrollArtworkGridProps extends MasonryFlashListOmittedP
 export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArtworkGridProps> = ({
   animated = false,
   artworks,
+  contextModule,
   contextScreen,
   contextScreenOwnerId,
   contextScreenOwnerSlug,
@@ -75,6 +77,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       index={index}
       item={item}
       columnIndex={columnIndex}
+      contextModule={contextModule}
       contextScreenOwnerType={contextScreenOwnerType}
       contextScreen={contextScreen}
       contextScreenOwnerId={contextScreenOwnerId}

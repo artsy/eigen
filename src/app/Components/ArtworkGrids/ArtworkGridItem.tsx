@@ -21,6 +21,7 @@ import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilter
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { DurationProvider } from "app/Components/Countdown"
+import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
 import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
 import { PartnerOffer } from "app/Scenes/Activity/components/NotificationArtworkList"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -236,9 +237,14 @@ export const Artwork: React.FC<ArtworkProps> = ({
     !!priceOfferMessage.priceListedMessage &&
     !!priceOfferMessage.priceWithDiscountMessage
 
+  const handleSupress = async (item: DissapearableArtwork) => {
+    await item._disappearable?.disappear()
+  }
+
   return (
-    <>
+    <Disappearable ref={(ref) => ((artwork as any)._disappearable = ref)}>
       <ContextMenuArtwork
+        onSupressArtwork={() => handleSupress(artwork as any)}
         contextModule={contextModule}
         contextScreenOwnerType={contextScreenOwnerType}
         onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
@@ -405,7 +411,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
         onClose={() => setShowCreateArtworkAlertModal(false)}
         visible={showCreateArtworkAlertModal}
       />
-    </>
+    </Disappearable>
   )
 }
 
