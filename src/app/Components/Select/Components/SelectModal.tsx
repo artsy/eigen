@@ -17,7 +17,7 @@ import { FlatList, TouchableOpacity } from "react-native"
 export const SelectModal: React.FC<{
   options: Array<SelectOption<unknown>>
   value: unknown | null
-  title?: string
+  title?: string | undefined
   enableSearch?: boolean
   visible: boolean
   maxHeight?: number
@@ -126,9 +126,12 @@ export const SelectModal: React.FC<{
     >
       <Flex p={2} pb="15px" flexDirection="row" alignItems="center" flexGrow={0}>
         <Flex flex={1} />
-        <Flex flex={2} alignItems="center">
-          <Text>{title}</Text>
-        </Flex>
+        {!!title && (
+          <Flex flex={2} alignItems="center">
+            <Text>{title}</Text>
+          </Flex>
+        )}
+
         <TouchableOpacity
           onPress={onDismiss}
           testID="select-close-button"

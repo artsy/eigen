@@ -1,4 +1,4 @@
-import { fireEvent, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { ModalStack } from "app/system/navigation/ModalStack"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
@@ -50,7 +50,7 @@ describe("Artist", () => {
   )
 
   it("returns an empty state if artist has no artworks", async () => {
-    const { getByText } = renderWithHookWrappersTL(<TestWrapper />)
+    renderWithHookWrappersTL(<TestWrapper />)
     const emptyTitle = "Get notified when new works are available"
     const emptyMessage =
       "There are currently no works for sale for this artist. Create an alert, and we’ll let you know when new works are added."
@@ -65,12 +65,12 @@ describe("Artist", () => {
       },
     })
 
-    expect(getByText(emptyTitle)).toBeTruthy()
-    expect(getByText(emptyMessage)).toBeTruthy()
+    expect(screen.getByText(emptyTitle)).toBeTruthy()
+    expect(screen.getByText(emptyMessage)).toBeTruthy()
   })
 
   it("should render all tabs", async () => {
-    const { queryByText } = renderWithHookWrappersTL(<TestWrapper />)
+    renderWithHookWrappersTL(<TestWrapper />)
 
     mockMostRecentOperation("ArtistAboveTheFoldQuery")
     mockMostRecentOperation("ArtistBelowTheFoldQuery", {
@@ -82,11 +82,9 @@ describe("Artist", () => {
 
     await flushPromiseQueue()
 
-    waitFor(() => {
-      expect(queryByText("Artworks")).toBeTruthy()
-      expect(queryByText("Auction Results")).toBeTruthy()
-      expect(queryByText("About")).toBeTruthy()
-    })
+    expect(screen.getByText("Artworks")).toBeTruthy()
+    expect(screen.getByText("Insights")).toBeTruthy()
+    expect(screen.getByText("Overview")).toBeTruthy()
   })
 
   it("tracks a page view", async () => {
@@ -106,7 +104,7 @@ describe("Artist", () => {
   })
 
   it("displays follow button for artist with formatted follow count", () => {
-    const { getByText } = renderWithHookWrappersTL(<TestWrapper />)
+    renderWithHookWrappersTL(<TestWrapper />)
 
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
@@ -119,12 +117,12 @@ describe("Artist", () => {
       },
     })
 
-    expect(getByText(/Following/)).toBeTruthy()
-    expect(getByText("22.0K")).toBeTruthy()
+    expect(screen.getByText(/Following/)).toBeTruthy()
+    expect(screen.getByText("22.0K")).toBeTruthy()
   })
 
   it("tracks follow change on follow button click", async () => {
-    const { getByText } = renderWithHookWrappersTL(<TestWrapper />)
+    renderWithHookWrappersTL(<TestWrapper />)
 
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
@@ -134,21 +132,16 @@ describe("Artist", () => {
       },
     })
 
-    expect(getByText("Follow")).toBeTruthy()
-    fireEvent.press(getByText("Follow"))
+    expect(screen.getByText("Follow")).toBeTruthy()
+    fireEvent.press(screen.getByText("Follow"))
 
     await flushPromiseQueue()
 
-    // Wait until the follow mutation has been triggered - this comes after a debounce
-    waitFor(() => {
-      expect(postEventToProviders).toHaveBeenCalledTimes(2)
-      expect(postEventToProviders).toHaveBeenCalledWith({
-        action_name: "artistFollow",
-        action_type: "tap",
-        owner_id: '<mock-value-for-field-"internalID">',
-        owner_slug: '<mock-value-for-field-"slug">',
-        owner_type: "Artist",
-      })
+    expect(postEventToProviders).toHaveBeenCalledWith({
+      context_screen: "Artist",
+      context_screen_owner_id: '<mock-value-for-field-"internalID">',
+      context_screen_owner_slug: '<mock-value-for-field-"slug">',
+      context_screen_owner_type: "Artist",
     })
   })
 })
