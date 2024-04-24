@@ -37,6 +37,7 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
   const artworkData = useFragment(artworkFragment, artwork)
   const meData = useFragment(meFragment, me)
   const partnerOfferData = useFragment(partnerOfferFragment, partnerOffer)
+  const isPartnerOffered = !!partnerOfferData
   const selectedEditionId = ArtworkStore.useStoreState((state) => state.selectedEditionId)
   const auctionState = ArtworkStore.useStoreState((state) => state.auctionState)
   const isBiddableInAuction = artworkData.isInAuction && artworkData.sale
@@ -108,6 +109,19 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
   }
 
   if (artworkData.isInquireable && artworkData.isOfferable) {
+    if (isPartnerOffered) {
+      return (
+        <RowContainer>
+          <InquiryButtonsFragmentContainer artwork={artworkData} variant="outline" block />
+          <BuyNowButton
+            partnerOffer={partnerOfferData}
+            artwork={artworkData}
+            editionSetID={selectedEditionId}
+          />
+        </RowContainer>
+      )
+    }
+
     return (
       <RowContainer>
         <InquiryButtonsFragmentContainer artwork={artworkData} variant="outline" block />
@@ -117,6 +131,23 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
   }
 
   if (artworkData.isOfferable) {
+    if (isPartnerOffered) {
+      return (
+        <RowContainer>
+          <MakeOfferButtonFragmentContainer
+            artwork={artworkData}
+            editionSetID={selectedEditionId}
+            variant="outline"
+          />
+          <BuyNowButton
+            partnerOffer={partnerOfferData}
+            artwork={artworkData}
+            editionSetID={selectedEditionId}
+          />
+        </RowContainer>
+      )
+    }
+
     return (
       <MakeOfferButtonFragmentContainer artwork={artworkData} editionSetID={selectedEditionId} />
     )
