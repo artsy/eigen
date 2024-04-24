@@ -28,6 +28,7 @@ import { PartnerOfferContainer } from "app/Scenes/PartnerOffer/PartnerOfferConta
 import { PriceDatabase } from "app/Scenes/PriceDatabase/PriceDatabase"
 import { RecentlyViewedScreenQuery } from "app/Scenes/RecentlyViewed/Components/RecentlyViewedArtworks"
 import { RecentlyViewedScreen } from "app/Scenes/RecentlyViewed/RecentlyViewed"
+import { SavedArtworks } from "app/Scenes/SavedArtworks/SavedArtworks"
 import { AlertArtworks } from "app/Scenes/SavedSearchAlert/AlertArtworks"
 import { SearchScreen, SearchScreenQuery } from "app/Scenes/Search/Search"
 import { SimilarToRecentlyViewedScreen } from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
@@ -42,7 +43,7 @@ import { CityGuideView } from "./NativeModules/CityGuideView"
 import { LiveAuctionView } from "./NativeModules/LiveAuctionView"
 import { Providers } from "./Providers"
 import { About } from "./Scenes/About/About"
-import { Activity } from "./Scenes/Activity/Activity"
+import { ActivityScreen } from "./Scenes/Activity/ActivityScreen"
 import { ArticlesScreen, ArticlesScreenQuery } from "./Scenes/Articles/Articles"
 import { ArtistQueryRenderer, ArtistScreenQuery } from "./Scenes/Artist/Artist"
 import { ArtistArticlesQueryRenderer } from "./Scenes/ArtistArticles/ArtistArticles"
@@ -331,7 +332,7 @@ const artQuizScreenOptions = {
 export type AppModule = keyof typeof modules
 
 export const modules = defineModules({
-  Activity: reactModule(Activity, {
+  Activity: reactModule(ActivityScreen, {
     fullBleed: true,
     hidesBackButton: true,
     hidesBottomTabs: true,
@@ -633,6 +634,10 @@ export const modules = defineModules({
     SellWithArtsyHomeScreenQuery,
   ]),
   SalesNotRootTabView: reactModule(SellWithArtsy),
+  SavedArtworks: reactModule(SavedArtworks, {
+    fullBleed: true,
+    hidesBackButton: true,
+  }),
   SavedSearchAlertsList: reactModule(SavedSearchAlertsListQueryRenderer, {
     fullBleed: true,
     hidesBackButton: true,

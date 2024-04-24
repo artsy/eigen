@@ -23,9 +23,11 @@ import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwor
 import { DurationProvider } from "app/Components/Countdown"
 import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
 import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
+import { PartnerOffer } from "app/Scenes/Activity/components/NotificationArtworkList"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
+import { getTimer } from "app/utils/getTimer"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
@@ -40,6 +42,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { LotCloseInfo } from "./LotCloseInfo"
 import { LotProgressBar } from "./LotProgressBar"
+
 const SAVE_ICON_SIZE = 22
 
 export type PriceOfferMessage = { priceListedMessage: string; priceWithDiscountMessage: string }
@@ -63,6 +66,7 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   /** Overrides onPress and prevents the default behaviour. */
   onPress?: (artworkID: string) => void
   partnerNameTextStyle?: TextProps
+  partnerOffer?: PartnerOffer
   priceOfferMessage?: PriceOfferMessage
   saleInfoTextStyle?: TextProps
   /** Show the lot number (Lot 213) */
@@ -95,6 +99,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   lotLabelTextStyle,
   onPress,
   partnerNameTextStyle,
+  partnerOffer,
   priceOfferMessage,
   saleInfoTextStyle,
   showLotLabel = false,
@@ -174,6 +179,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
     onCompleted: onArtworkSavedOrUnSaved,
   })
 
+  const { hasEnded } = getTimer(partnerOffer?.endAt || "")
+  const enablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
+
   const handleTap = () => {
     if (onPress) {
       return onPress(artwork.slug)
@@ -181,8 +189,13 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
     addArtworkToRecentSearches()
     trackArtworkTap()
+
     if (artwork.href) {
-      navigate?.(artwork.href)
+      if (partnerOffer && !!hasEnded && !!enablePartnerOfferOnArtworkScreen) {
+        navigate?.(artwork.href, { passProps: { artworkOfferExpired: true } })
+      } else {
+        navigate?.(artwork.href)
+      }
     }
   }
 

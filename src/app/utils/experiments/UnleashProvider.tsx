@@ -14,9 +14,9 @@ export const UnleashContext = createContext<UnleashContext>({ lastUpdate: null }
 export function UnleashProvider({ children }: { children?: React.ReactNode }) {
   const [lastUpdate, setLastUpdate] = useState<UnleashContext["lastUpdate"]>(null)
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
+  const userId = GlobalStore.useAppState((store) => store?.auth?.userID)
 
   const { unleashEnv } = useUnleashEnvironment()
-  const userId = GlobalStore.useAppState((store) => store.auth.userID)
 
   useEffect(() => {
     if (isHydrated) {

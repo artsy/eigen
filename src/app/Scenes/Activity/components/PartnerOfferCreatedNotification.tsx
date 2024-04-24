@@ -20,7 +20,7 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
 }) => {
   const notificationData = useFragment(PartnerOfferCreatedNotificationFragment, notification)
 
-  const { headline, item, notificationType, artworksConnection, targetHref } = notificationData
+  const { headline, item, notificationType, artworksConnection } = notificationData
 
   const { hasEnded } = getTimer(item?.partnerOffer?.endAt || "")
   const noLongerAvailable = !item?.partnerOffer?.isAvailable
@@ -77,9 +77,9 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
               priceWithDiscountMessage: item?.partnerOffer?.priceWithDiscount?.display || "",
             }}
             partnerOffer={{
+              internalID: item?.partnerOffer?.internalID || "",
               endAt: item?.partnerOffer?.endAt || "",
               isAvailable: item?.partnerOffer?.isAvailable || false,
-              targetHref: targetHref,
               note: item?.partnerOffer?.note || "",
             }}
             showArtworkCommercialButtons
@@ -101,6 +101,7 @@ export const PartnerOfferCreatedNotificationFragment = graphql`
         available
         partnerOffer {
           note
+          internalID
           endAt
           isAvailable
           priceWithDiscount {

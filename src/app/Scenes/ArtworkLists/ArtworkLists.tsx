@@ -1,4 +1,12 @@
-import { Flex, Spacer, Spinner, Tabs, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import {
+  Flex,
+  Screen,
+  Spacer,
+  Spinner,
+  Tabs,
+  useScreenDimensions,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { ArtworkListsQuery } from "__generated__/ArtworkListsQuery.graphql"
 import { ArtworkLists_collectionsConnection$key } from "__generated__/ArtworkLists_collectionsConnection.graphql"
 import { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
@@ -28,7 +36,11 @@ import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
  */
 const PAGE_SIZE = isTablet() ? 23 : 11
 
-export const ArtworkLists = () => {
+interface ArtworkListsProps {
+  isTab?: boolean
+}
+
+export const ArtworkLists: React.FC<ArtworkListsProps> = ({ isTab = true }) => {
   const space = useSpace()
   const artworkListsColCount = useArtworkListsColCount()
   const [refreshing, setRefreshing] = useState(false)
@@ -90,10 +102,26 @@ export const ArtworkLists = () => {
     })
   )
 
+  if (isTab) {
+    return (
+      <Tabs.FlatList
+        contentContainerStyle={{ padding: space(2) }}
+        style={{ paddingTop: space(2) }}
+        data={artworkSections}
+        renderItem={({ item }) => item.content}
+        numColumns={artworkListsColCount}
+        keyExtractor={(item) => item.key}
+        onEndReached={handleLoadMore}
+        ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer x={2} />}
+        ListHeaderComponent={isPartnerOfferEnabled ? <SavesTabHeader /> : null}
+        refreshControl={<RefreshControl onRefresh={handleRefresh} refreshing={refreshing} />}
+      />
+    )
+  }
+
   return (
-    <Tabs.FlatList
+    <Screen.FlatList
       contentContainerStyle={{ padding: space(2) }}
-      style={{ paddingTop: space(2) }}
       data={artworkSections}
       renderItem={({ item }) => item.content}
       numColumns={artworkListsColCount}

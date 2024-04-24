@@ -1,10 +1,10 @@
 import { Flex, Pill } from "@artsy/palette-mobile"
-import { NewActivityHeaderQuery } from "__generated__/NewActivityHeaderQuery.graphql"
+import { ActivityHeaderQuery } from "__generated__/ActivityHeaderQuery.graphql"
 import { ActivityScreenStore } from "app/Scenes/Activity/ActivityScreenStore"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
-export const NewActivityHeader: React.FC = () => {
-  const data = useLazyLoadQuery<NewActivityHeaderQuery>(query, {})
+export const ActivityHeader: React.FC = () => {
+  const data = useLazyLoadQuery<ActivityHeaderQuery>(query, {})
 
   const type = ActivityScreenStore.useStoreState((state) => state.type)
   const setType = ActivityScreenStore.useStoreActions((actions) => actions.setType)
@@ -49,7 +49,7 @@ export const NewActivityHeader: React.FC = () => {
 }
 
 const query = graphql`
-  query NewActivityHeaderQuery {
+  query ActivityHeaderQuery {
     viewer {
       partnerOfferNotifications: notificationsConnection(
         first: 1

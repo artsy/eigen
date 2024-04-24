@@ -18,28 +18,32 @@ export const OrderDetailsHeader: React.FC<Props> = ({ info }) => {
   const isPickupOrder = requestedFulfillment?.__typename === "CommercePickup"
 
   return (
-    <Flex flexDirection="row">
-      <Flex flexDirection="column" mr={2}>
-        <Text style={{ width: 112 }} variant="sm" mb={1}>
+    <Flex>
+      <Flex flexDirection="row" justifyContent="space-between">
+        <Text variant="sm" mb={1}>
           Order Date
         </Text>
-        <Text style={{ width: 112 }} variant="sm" mb={1}>
-          Order Number
-        </Text>
-        <Text style={{ width: 112 }} variant="sm" mb={1}>
-          Status
-        </Text>
-        <Text style={{ width: 112 }} variant="sm">
-          Fulfillment
-        </Text>
-      </Flex>
-      <Flex flexDirection="column">
+
         <Text testID="date" color="black60" variant="sm" mb={1}>
           {DateTime.fromISO(createdAt).toLocaleString(DateTime.DATE_MED)}
         </Text>
+      </Flex>
+
+      <Flex flexDirection="row" justifyContent="space-between">
+        <Text variant="sm" mb={1}>
+          Order Number
+        </Text>
+
         <Text testID="code" color="black60" variant="sm" mb={1}>
           {code}
         </Text>
+      </Flex>
+
+      <Flex flexDirection="row" justifyContent="space-between">
+        <Text variant="sm" mb={1}>
+          Status
+        </Text>
+
         <Text
           testID="status"
           color="black60"
@@ -49,6 +53,13 @@ export const OrderDetailsHeader: React.FC<Props> = ({ info }) => {
         >
           {orderStatus}
         </Text>
+      </Flex>
+
+      <Flex flexDirection="row" justifyContent="space-between">
+        <Text variant="sm" mb={1}>
+          Fulfillment
+        </Text>
+
         <Text testID="fulfillment" color="black60" variant="sm">
           {!isPickupOrder ? "Delivery" : "Pickup"}
         </Text>

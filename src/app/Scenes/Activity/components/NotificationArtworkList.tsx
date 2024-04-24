@@ -10,9 +10,9 @@ import { ImageBackground } from "react-native"
 import { useFragment, graphql } from "react-relay"
 
 export interface PartnerOffer {
+  internalID: string
   endAt: string
   isAvailable: boolean
-  targetHref: string
   note?: string
 }
 
@@ -46,6 +46,7 @@ export const NotificationArtworkList: FC<NotificationArtworkListProps> = (props)
         contextScreen={OwnerType.activity}
         hasMore={false}
         onScroll={scrollHandler}
+        partnerOffer={partnerOffer}
         priceOfferMessage={priceOfferMessage}
         style={{ paddingBottom: 120 }}
       />

@@ -1,41 +1,30 @@
-import { Flex, LazyFlatlist, Screen, Separator, Spinner, Tabs } from "@artsy/palette-mobile"
-import { ActivityList_me$key } from "__generated__/ActivityList_me.graphql"
+import { Flex, LazyFlatlist, Screen, Separator, Spinner } from "@artsy/palette-mobile"
 import { ActivityList_viewer$key } from "__generated__/ActivityList_viewer.graphql"
-
 import {
   shouldDisplayNotification,
   Notification,
 } from "app/Scenes/Activity/utils/shouldDisplayNotification"
-import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { useState } from "react"
 import { RefreshControl } from "react-native"
-import { graphql, useFragment, usePaginationFragment } from "react-relay"
+import { graphql, usePaginationFragment } from "react-relay"
 import { ActivityEmptyView } from "./ActivityEmptyView"
 import { ActivityItem } from "./ActivityItem"
-import { ActivityMarkAllAsReadSection } from "./ActivityMarkAllAsReadSection"
 import { NotificationType } from "./types"
 
 interface ActivityListProps {
   viewer: ActivityList_viewer$key | null | undefined
-  me: ActivityList_me$key | null | undefined
   type: NotificationType
 }
 
-export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) => {
-  const enableNewActivityPanelManagement = unsafe_getFeatureFlag(
-    "AREnableNewActivityPanelManagement"
-  )
-
+export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type }) => {
   const [refreshing, setRefreshing] = useState(false)
 
   const { data, hasNext, isLoadingNext, loadNext, refetch } = usePaginationFragment(
     notificationsConnectionFragment,
     viewer
   )
-  const meData = useFragment(meFragment, me)
 
-  const hasUnreadNotifications = (meData?.unreadNotificationsCount ?? 0) > 0
   const notificationsNodes = extractNodes(data?.notificationsConnection)
 
   const notifications = notificationsNodes.filter((notification) =>
@@ -63,8 +52,6 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
     )
   }
 
-  const FlatlistComponent = enableNewActivityPanelManagement ? Screen.FlatList : Tabs.FlatList
-
   type NotificationT = (typeof notifications)[0]
 
   const keyExtractor = (item: NotificationT) => {
@@ -75,33 +62,17 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
     <LazyFlatlist<NotificationT> keyExtractor={keyExtractor}>
       {(props) => {
         return (
-          <FlatlistComponent
-            ListHeaderComponent={
-              enableNewActivityPanelManagement ? null : (
-                <Flex py={1}>
-                  <ActivityMarkAllAsReadSection
-                    hasUnreadNotifications={hasUnreadNotifications}
-                    px={2}
-                    mb={1}
-                  />
-                  <Separator />
-                </Flex>
-              )
-            }
+          <Screen.FlatList
             data={notifications}
             scrollEnabled={notifications.length > 1}
             onViewableItemsChanged={props.onViewableItemsChanged}
             viewabilityConfig={props.viewabilityConfig}
             keyExtractor={keyExtractor}
-            ItemSeparatorComponent={() =>
-              enableNewActivityPanelManagement ? (
-                <Flex mx={-2}>
-                  <Separator borderColor="black5" />
-                </Flex>
-              ) : (
-                <Separator />
-              )
-            }
+            ItemSeparatorComponent={() => (
+              <Flex mx={-2}>
+                <Separator borderColor="black5" />
+              </Flex>
+            )}
             onEndReached={handleLoadMore}
             renderItem={({ item }) => {
               return <ActivityItem notification={item} isVisible={props.hasSeenItem(item)} />
@@ -130,6 +101,7 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
                 alignItems="center"
                 justifyContent="center"
                 my={2}
+                mb={2}
                 style={{ opacity: isLoadingNext && hasNext ? 1 : 0 }}
               >
                 <Spinner />
@@ -176,11 +148,5 @@ const notificationsConnectionFragment = graphql`
         }
       }
     }
-  }
-`
-
-const meFragment = graphql`
-  fragment ActivityList_me on Me {
-    unreadNotificationsCount
   }
 `

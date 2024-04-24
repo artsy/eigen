@@ -4,6 +4,7 @@ import { MasonryFlashList, MasonryFlashListProps } from "@shopify/flash-list"
 import { PriceOfferMessage } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { MasonryArtworkGridItem } from "app/Components/ArtworkGrids/MasonryArtworkGridItem"
 import { PAGE_SIZE } from "app/Components/constants"
+import { PartnerOffer } from "app/Scenes/Activity/components/NotificationArtworkList"
 import {
   ESTIMATED_MASONRY_ITEM_SIZE,
   MasonryArtworkItem,
@@ -32,6 +33,7 @@ interface MasonryInfiniteScrollArtworkGridProps extends MasonryFlashListOmittedP
   isLoading?: boolean
   loadMore?: (pageSize: number) => void
   pageSize?: number
+  partnerOffer?: PartnerOffer
   priceOfferMessage?: PriceOfferMessage
 }
 
@@ -55,6 +57,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   ListHeaderComponent,
   loadMore,
   pageSize = PAGE_SIZE,
+  partnerOffer,
   priceOfferMessage,
   refreshControl,
   ...rest
@@ -85,8 +88,9 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
         // we need to add padding to the artwork meta to make sure its readable
         paddingHorizontal: rest.numColumns !== 1 ? 0 : space(2),
         // Extra space between items for one column artwork grids
-        paddingBottom: rest.numColumns !== 1 ? 0 : space(4),
+        paddingBottom: rest.numColumns !== 1 ? 0 : artworks.length === 1 ? space(2) : space(4),
       }}
+      partnerOffer={partnerOffer}
       priceOfferMessage={priceOfferMessage}
     />
   )
@@ -99,7 +103,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       contentContainerStyle={{
         // No paddings are needed for single column grids
         paddingHorizontal: rest.numColumns === 1 ? 0 : space(2),
-        paddingBottom: space(6),
+        paddingBottom: artworks.length === 1 ? 0 : space(6),
       }}
       data={artworks}
       keyExtractor={(item) => item.id}

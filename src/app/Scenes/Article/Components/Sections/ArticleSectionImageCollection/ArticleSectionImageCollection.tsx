@@ -1,4 +1,4 @@
-import { Flex, Spacer } from "@artsy/palette-mobile"
+import { Flex, Spacer, useScreenDimensions } from "@artsy/palette-mobile"
 import { ArticleSectionImageCollection_section$key } from "__generated__/ArticleSectionImageCollection_section.graphql"
 import { PaginationDots } from "app/Components/PaginationDots"
 import { ArticleSectionImageCollectionCaption } from "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionImageCollectionCaption"
@@ -14,6 +14,7 @@ interface ArticleSectionImageCollectionProps {
 export const ArticleSectionImageCollection: React.FC<ArticleSectionImageCollectionProps> = ({
   section,
 }) => {
+  const { width } = useScreenDimensions()
   const [currentPageIndex, setCurrentPageIndex] = useState(0)
   const data = useFragment(ArticleSectionImageCollectionQuery, section)
 
@@ -41,7 +42,12 @@ export const ArticleSectionImageCollection: React.FC<ArticleSectionImageCollecti
         pagingEnabled
         renderItem={({ item, index }) => {
           return (
-            <Flex key={`ImageCollection-${index}`} flexDirection="column" justifyContent="center">
+            <Flex
+              width={width}
+              key={`ImageCollection-${index}`}
+              flexDirection="column"
+              justifyContent="center"
+            >
               <ArticleSectionImageCollectionImage figure={item} />
               <Flex px={2} py={1}>
                 <ArticleSectionImageCollectionCaption figure={item} />

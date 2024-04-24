@@ -11,6 +11,7 @@ import { AuctionTimerState, currentTimerState } from "app/Components/Bidding/Com
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { ArtworkAuctionCreateAlertHeader } from "app/Scenes/Artwork/ArtworkAuctionCreateAlertHeader"
 import { ArtworkErrorScreen } from "app/Scenes/Artwork/Components/ArtworkError"
+import { ArtworkPartnerOfferNote } from "app/Scenes/Artwork/Components/ArtworkPartnerOfferNote"
 import { ArtworkScreenHeader } from "app/Scenes/Artwork/Components/ArtworkScreenHeader"
 import { OfferSubmittedModal } from "app/Scenes/Inbox/Components/Conversations/OfferSubmittedModal"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -23,6 +24,7 @@ import {
   AuctionWebsocketChannelInfo,
   AuctionWebsocketContextProvider,
 } from "app/utils/Websockets/auctions/AuctionSocketContext"
+import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -94,7 +96,10 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
   const { contextGrids, artistSeriesConnection, artist, context } = artworkBelowTheFold || {}
   const auctionTimerState = ArtworkStore.useStoreState((state) => state.auctionState)
 
+  const partnerOffer = extractNodes(me?.partnerOffersConnection)[0]
+
   const enableAuctionHeaderAlertCTA = useFeatureFlag("AREnableAuctionHeaderAlertCTA")
+  const enablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
 
   const shouldRenderPartner = () => {
     const { sale, partner } = artworkBelowTheFold ?? {}
@@ -262,6 +267,16 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
         sections.push({
           key: "selectEditionSet",
           element: <ArtworkEditionSetInformation artwork={artworkAboveTheFold} />,
+          excludeSeparator: true,
+        })
+      }
+
+      if (!!enablePartnerOfferOnArtworkScreen) {
+        sections.push({
+          key: "partnerOfferNote",
+          element: (
+            <ArtworkPartnerOfferNote artwork={artworkAboveTheFold} partnerOffer={partnerOffer} />
+          ),
           excludeSeparator: true,
         })
       }
@@ -437,7 +452,11 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
       />
 
       {!!(artworkAboveTheFold && me) && (
-        <ArtworkStickyBottomContent artwork={artworkAboveTheFold} me={me} />
+        <ArtworkStickyBottomContent
+          artwork={artworkAboveTheFold}
+          me={me}
+          partnerOffer={extractNodes(me.partnerOffersConnection)[0]}
+        />
       )}
 
       <QAInfo />
@@ -528,6 +547,7 @@ export const ArtworkContainer = createRefetchContainer(
         ...ArtworkStickyBottomContent_artwork
         ...ArtworkDetails_artwork
         ...ArtworkEditionSetInformation_artwork
+        ...ArtworkPartnerOfferNote_artwork
         slug
         internalID
         isAcquireable
@@ -620,8 +640,17 @@ export const ArtworkContainer = createRefetchContainer(
       }
     `,
     me: graphql`
-      fragment Artwork_me on Me {
+      fragment Artwork_me on Me @argumentDefinitions(artworkID: { type: "String!" }) {
         ...ArtworkStickyBottomContent_me
+        partnerOffersConnection(artworkID: $artworkID, first: 1) {
+          edges {
+            node {
+              internalID
+              ...ArtworkStickyBottomContent_partnerOffer
+              ...ArtworkPartnerOfferNote_partnerOffer
+            }
+          }
+        }
       }
     `,
   },
@@ -642,7 +671,7 @@ export const ArtworkScreenQuery = graphql`
       ...Artwork_artworkAboveTheFold
     }
     me {
-      ...Artwork_me
+      ...Artwork_me @arguments(artworkID: $artworkID)
     }
   }
 `

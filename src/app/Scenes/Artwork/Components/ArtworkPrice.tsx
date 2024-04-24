@@ -1,20 +1,31 @@
-import { Flex, FlexProps, Text } from "@artsy/palette-mobile"
+import { Box, Flex, FlexProps, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkPrice_artwork$key } from "__generated__/ArtworkPrice_artwork.graphql"
+import { ArtworkPrice_partnerOffer$key } from "__generated__/ArtworkPrice_partnerOffer.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtworkStore } from "app/Scenes/Artwork/ArtworkStore"
-import { useFragment, graphql } from "react-relay"
+import { ExpiresInTimer } from "app/Scenes/Artwork/Components/ExpiresInTimer"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { graphql, useFragment } from "react-relay"
 import { ArtworkAuctionBidInfo } from "./ArtworkAuctionBidInfo"
 
 interface ArtworkPriceProps extends FlexProps {
   artwork: ArtworkPrice_artwork$key
+  partnerOffer: ArtworkPrice_partnerOffer$key
 }
 
-export const ArtworkPrice: React.FC<ArtworkPriceProps> = ({ artwork, ...flexProps }) => {
-  const data = useFragment(artworkPriceFragment, artwork)
+export const ArtworkPrice: React.FC<ArtworkPriceProps> = ({
+  artwork,
+  partnerOffer,
+  ...flexProps
+}) => {
+  const artworkData = useFragment(artworkPriceFragment, artwork)
+  const partnerOfferData = useFragment(partnerOfferPriceFragment, partnerOffer)
   const selectedEditionId = ArtworkStore.useStoreState((state) => state.selectedEditionId)
   const auctionState = ArtworkStore.useStoreState((state) => state.auctionState)
-  const editionSets = data.editionSets ?? []
+  const editionSets = artworkData.editionSets ?? []
   let message = null
+
+  const AREnablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
 
   const getEditionSetMessage = () => {
     const selectedEdition = editionSets.find((editionSet) => {
@@ -24,37 +35,54 @@ export const ArtworkPrice: React.FC<ArtworkPriceProps> = ({ artwork, ...flexProp
     return selectedEdition?.saleMessage
   }
 
-  const renderShippingAndTaxesInfo = () => {
-    if (!data.isEligibleForOnPlatformTransaction || data.isInAuction || data.isPriceHidden) {
-      return null
-    }
-
-    return (
-      <Text variant="xs" color="black60">
-        excl. Shipping and Taxes
-      </Text>
-    )
-  }
-
-  if (data.isInAuction) {
+  if (artworkData.isInAuction) {
     if (auctionState === AuctionTimerState.LIVE_INTEGRATION_ONGOING) {
       return null
     }
 
-    return <ArtworkAuctionBidInfo artwork={data} {...flexProps} />
+    return <ArtworkAuctionBidInfo artwork={artworkData} {...flexProps} />
   }
 
   if (editionSets.length > 1) {
     message = getEditionSetMessage()
   } else {
-    message = data.saleMessage
+    message = artworkData.saleMessage
+  }
+
+  if (!!AREnablePartnerOfferOnArtworkScreen && !!partnerOfferData && partnerOfferData.isAvailable) {
+    const listPrice = artworkData.isPriceHidden ? "Not publicly listed" : message
+
+    return (
+      <Flex {...flexProps}>
+        <Flex flexDirection="row">
+          <Box borderRadius={3} backgroundColor="blue10" px={0.5} pb="2px">
+            <Text variant="xs" color="blue100">
+              Limited-Time Offer
+            </Text>
+          </Box>
+
+          <Spacer x={1} />
+
+          <ExpiresInTimer item={partnerOfferData} />
+        </Flex>
+
+        <Flex flexDirection="row" flexWrap="wrap" mt={1} alignItems="flex-end">
+          <Text variant="lg-display" mr={1}>
+            {partnerOfferData.priceWithDiscount?.display}
+          </Text>
+
+          <Text variant="xs" color="black60">
+            (List Price: {listPrice})
+          </Text>
+        </Flex>
+      </Flex>
+    )
   }
 
   if (message) {
     return (
       <Flex {...flexProps}>
         <Text variant="lg-display">{message}</Text>
-        {renderShippingAndTaxesInfo()}
       </Flex>
     )
   }
@@ -67,7 +95,6 @@ const artworkPriceFragment = graphql`
     saleMessage
     availability
     isInAuction
-    isEligibleForOnPlatformTransaction
     isPriceHidden
     taxInfo {
       displayText
@@ -77,5 +104,15 @@ const artworkPriceFragment = graphql`
       saleMessage
     }
     ...ArtworkAuctionBidInfo_artwork
+  }
+`
+
+const partnerOfferPriceFragment = graphql`
+  fragment ArtworkPrice_partnerOffer on PartnerOfferToCollector {
+    endAt
+    isAvailable
+    priceWithDiscount {
+      display
+    }
   }
 `

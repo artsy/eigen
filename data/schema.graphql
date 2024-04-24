@@ -1933,6 +1933,7 @@ type ArtistCounts {
     label: String
   ): FormattedNumber
   hasMakeOfferArtworks: Boolean
+  myCollectedArtworks: Int!
   partnerShows(
     # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
@@ -4664,6 +4665,9 @@ input CommerceCreateOfferOrderWithArtworkInput {
   # submitted orders on same artwork/edition with same quantity, we will return that
   findActiveOrCreate: Boolean = true
 
+  # PartnerOffer Id
+  partnerOfferId: String
+
   # Number of items in the line item, default is 1
   quantity: Int
 }
@@ -5801,9 +5805,6 @@ type CommerceSellerAcceptOfferPayload {
 input CommerceSellerAcceptProvisionalOfferInput {
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
-
-  # If location was set in the accept offer step
-  locationFilledOnOrder: Boolean
   offerId: ID!
 
   # Shipping info belonging to this specific order. It overrides the defined shipping costs of the artwork.
@@ -5825,9 +5826,6 @@ input CommerceSellerCounterOfferInput {
 
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
-
-  # If location was set in the counter offer step
-  locationFilledOnOrder: Boolean
   note: String
   offerId: ID!
   shippingContact: CommerceShippingContactAttributes
@@ -15483,6 +15481,7 @@ type Query {
   artworksForUser(
     after: String
     before: String
+    excludeDislikedArtworks: Boolean = false
     first: Int
     includeBackfill: Boolean!
     last: Int
@@ -20381,6 +20380,7 @@ type Viewer {
   artworksForUser(
     after: String
     before: String
+    excludeDislikedArtworks: Boolean = false
     first: Int
     includeBackfill: Boolean!
     last: Int

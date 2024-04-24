@@ -10,6 +10,7 @@ import {
 } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { MyProfileHeaderQueryRenderer } from "app/Scenes/MyProfile/MyProfileHeader"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -30,6 +31,7 @@ interface MyProfileTabProps {
 }
 
 export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<Props> = ({ initialTab }) => {
+  const newCollectorSettings = useFeatureFlag("AREnableNewCollectorSettings")
   const { isDismissed } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
   const viewKind = MyCollectionTabsStore.useStoreState((state) => state.viewKind)
   const { showVisualClue } = useVisualClue()
@@ -61,6 +63,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<Props> = ({ init
           <Tabs
             initialTabName={initialTab}
             renderHeader={() => <MyProfileHeaderQueryRenderer />}
+            headerHeight={500}
             indicators={indicators}
             onTabPress={(tabName) => {
               if (tabName === Tab.insights) {
@@ -84,11 +87,13 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<Props> = ({ init
                 <MyCollectionInsightsQR />
               </Tabs.Lazy>
             </Tabs.Tab>
-            <Tabs.Tab name={Tab.savedWorks} label={Tab.savedWorks}>
-              <Tabs.Lazy>
-                <ArtworkListsQR />
-              </Tabs.Lazy>
-            </Tabs.Tab>
+            {!newCollectorSettings ? (
+              <Tabs.Tab name={Tab.savedWorks} label={Tab.savedWorks}>
+                <Tabs.Lazy>
+                  <ArtworkListsQR />
+                </Tabs.Lazy>
+              </Tabs.Tab>
+            ) : null}
           </Tabs>
         </Screen.Body>
       </Screen>

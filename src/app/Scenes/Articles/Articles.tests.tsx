@@ -10,11 +10,26 @@ describe("Articles", () => {
   it("renders articles", async () => {
     renderWithRelay({
       Query: () => ({
-        articlesConnection: mockArticlesConnection,
+        articlesConnection: {
+          edges: [
+            {
+              node: {
+                byline: "Sebastián Meltz-Collazo",
+                thumbnailTitle: "The Galleries Championing Artists from the Caribbean Region",
+              },
+            },
+            {
+              node: {
+                byline: "Artsy Editorial",
+                thumbnailTitle: "5 Artists on Our Radar This June",
+              },
+            },
+          ],
+        },
       }),
     })
 
-    await waitForElementToBeRemoved(() => screen.getByTestId("articles-screen-placeholder"))
+    await waitForElementToBeRemoved(() => screen.queryByTestId("articles-screen-placeholder"))
 
     expect(screen.getByText("Sebastián Meltz-Collazo")).toBeTruthy()
     expect(
@@ -23,20 +38,3 @@ describe("Articles", () => {
     expect(screen.getByText("5 Artists on Our Radar This June")).toBeTruthy()
   })
 })
-
-const mockArticlesConnection = {
-  edges: [
-    {
-      node: {
-        byline: "Sebastián Meltz-Collazo",
-        thumbnailTitle: "The Galleries Championing Artists from the Caribbean Region",
-      },
-    },
-    {
-      node: {
-        byline: "Artsy Editorial",
-        thumbnailTitle: "5 Artists on Our Radar This June",
-      },
-    },
-  ],
-}

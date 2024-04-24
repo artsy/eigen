@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import { ArtworkPrice_Test_Query } from "__generated__/ArtworkPrice_Test_Query.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import {
@@ -5,182 +6,144 @@ import {
   ArtworkStoreProvider,
   artworkModel,
 } from "app/Scenes/Artwork/ArtworkStore"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
-import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { graphql, useLazyLoadQuery } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { extractNodes } from "app/utils/extractNodes"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { DateTime } from "luxon"
+import { graphql } from "react-relay"
 import { ArtworkPrice } from "./ArtworkPrice"
 
-interface TestRendererProps {
+interface TestProps {
   initialData?: Partial<ArtworkStoreModel>
 }
 
 describe("ArtworkPrice", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
-  const TestRenderer = (props?: TestRendererProps) => {
-    const data = useLazyLoadQuery<ArtworkPrice_Test_Query>(
-      graphql`
-        query ArtworkPrice_Test_Query {
-          artwork(id: "artworkID") {
-            ...ArtworkPrice_artwork
-          }
-        }
-      `,
-      {}
-    )
-
-    if (data.artwork) {
+  const { renderWithRelay } = setupTestWrapper<ArtworkPrice_Test_Query, TestProps>({
+    Component: ({ artwork, me, initialData }) => {
       return (
-        <ArtworkStoreProvider
-          runtimeModel={{
-            ...artworkModel,
-            ...props?.initialData,
-          }}
-        >
-          <ArtworkPrice artwork={data.artwork} />
+        <ArtworkStoreProvider runtimeModel={{ ...artworkModel, ...initialData }}>
+          <ArtworkPrice
+            artwork={artwork!}
+            partnerOffer={extractNodes(me!.partnerOffersConnection)[0]}
+          />
         </ArtworkStoreProvider>
       )
-    }
-
-    return null
-  }
+    },
+    query: graphql`
+      query ArtworkPrice_Test_Query {
+        artwork(id: "artworkID") {
+          ...ArtworkPrice_artwork
+        }
+        me {
+          partnerOffersConnection(first: 1) {
+            edges {
+              node {
+                ...ArtworkPrice_partnerOffer
+              }
+            }
+          }
+        }
+      }
+    `,
+  })
 
   describe("Auction bid info", () => {
-    it("should be displayed", async () => {
-      const { getByLabelText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    it("should be displayed", () => {
+      renderWithRelay({ Artwork: () => ({ isInAuction: true }) })
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Artwork: () => ({
-          isInAuction: true,
-        }),
-      })
-      await flushPromiseQueue()
-
-      expect(getByLabelText("Auction Bid Info")).toBeTruthy()
+      expect(screen.getByLabelText("Auction Bid Info")).toBeOnTheScreen()
     })
 
-    it("should NOT be displayed for live sale in progress", async () => {
-      const { queryByLabelText } = renderWithHookWrappersTL(
-        <TestRenderer initialData={{ auctionState: AuctionTimerState.LIVE_INTEGRATION_ONGOING }} />,
-        mockEnvironment
+    it("should NOT be displayed for live sale in progress", () => {
+      renderWithRelay(
+        { Artwork: () => ({ isInAuction: true }) },
+        { initialData: { auctionState: AuctionTimerState.LIVE_INTEGRATION_ONGOING } }
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Artwork: () => ({
-          isInAuction: true,
-        }),
-      })
-      await flushPromiseQueue()
-
-      expect(queryByLabelText("Auction Bid Info")).toBeNull()
+      expect(screen.queryByLabelText("Auction Bid Info")).not.toBeOnTheScreen()
     })
   })
 
-  describe("Exclude shipping and taxes label", () => {
-    it("should NOT be displayed", async () => {
-      const { queryByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
+  it("should render the sale message of the selected edition set", () => {
+    renderWithRelay(
+      {
         Artwork: () => ({
-          isEligibleForOnPlatformTransaction: false,
           isInAuction: false,
-          isPriceHidden: false,
+          editionSets: [
+            { internalID: "edition-set-one", saleMessage: "$1000" },
+            { internalID: "edition-set-two", saleMessage: "$2000" },
+          ],
         }),
-      })
-      await flushPromiseQueue()
-
-      expect(queryByText("excl. Shipping and Taxes")).toBeNull()
-    })
-
-    it("should NOT be displayed when artworks is in auction", async () => {
-      const { queryByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Artwork: () => ({
-          isEligibleForOnPlatformTransaction: true,
-          isInAuction: true,
-          isPriceHidden: false,
-        }),
-      })
-      await flushPromiseQueue()
-
-      expect(queryByText("excl. Shipping and Taxes")).toBeNull()
-    })
-
-    it("should NOT be displayed when price is hidden for artwork", async () => {
-      const { queryByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Artwork: () => ({
-          isEligibleForOnPlatformTransaction: true,
-          isInAuction: false,
-          isPriceHidden: true,
-        }),
-      })
-      await flushPromiseQueue()
-
-      expect(queryByText("excl. Shipping and Taxes")).toBeNull()
-    })
-
-    it("should be displayed when artworks is eligible for on-platform transaction", async () => {
-      const { queryByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Artwork: () => ({
-          isEligibleForOnPlatformTransaction: true,
-          isInAuction: false,
-          isPriceHidden: false,
-        }),
-      })
-      await flushPromiseQueue()
-
-      expect(queryByText("excl. Shipping and Taxes")).toBeTruthy()
-    })
-  })
-
-  it("should render the sale message of the selected edition set", async () => {
-    const { queryByText } = renderWithHookWrappersTL(
-      <TestRenderer initialData={{ selectedEditionId: "edition-set-one" }} />,
-      mockEnvironment
+      },
+      { initialData: { selectedEditionId: "edition-set-one" } }
     )
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Artwork: () => ({
-        isInAuction: false,
-        editionSets: [
-          {
-            internalID: "edition-set-one",
-            saleMessage: "$1000",
-          },
-          {
-            internalID: "edition-set-two",
-            saleMessage: "$2000",
-          },
-        ],
-      }),
-    })
-    await flushPromiseQueue()
-
-    expect(queryByText("$1000")).toBeTruthy()
+    expect(screen.getByText("$1000")).toBeOnTheScreen()
   })
 
-  it("should render the sale message", async () => {
-    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+  it("should render the sale message", () => {
+    renderWithRelay({ Artwork: () => ({ isInAuction: false, saleMessage: "$1000" }) })
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Artwork: () => ({
-        isInAuction: false,
-        saleMessage: "$1000",
-      }),
+    expect(screen.getByText("$1000")).toBeOnTheScreen()
+  })
+
+  describe("Partner Offer", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnablePartnerOfferOnArtworkScreen: true })
     })
-    await flushPromiseQueue()
 
-    expect(getByText("$1000")).toBeTruthy()
+    it("should NOT render if there is not partner offers", () => {
+      renderWithRelay({
+        Artwork: () => ({ isInAuction: false }),
+        Me: () => ({ partnerOffersConnection: { edges: [] } }),
+      })
+
+      expect(screen.queryByText("Limited-Time Offer")).not.toBeOnTheScreen()
+    })
+
+    it("should NOT render if the partner offer is not available", () => {
+      renderWithRelay({
+        Artwork: () => ({ isInAuction: false }),
+        Me: () => ({ partnerOffersConnection: { edges: [{ node: unavailablePartnerOffer }] } }),
+      })
+
+      expect(screen.queryByText("Limited-Time Offer")).not.toBeOnTheScreen()
+    })
+
+    describe("when a Partner Offer is available", () => {
+      it("should render the partner offer details", () => {
+        renderWithRelay({
+          Artwork: () => ({ isInAuction: false, isPriceHidden: false, saleMessage: "US$500" }),
+          Me: () => ({ partnerOffersConnection: { edges: [{ node: testPartnerOffer }] } }),
+        })
+
+        expect(screen.getByText("Limited-Time Offer")).toBeOnTheScreen()
+        expect(screen.getByText("$350")).toBeOnTheScreen()
+        expect(screen.getByText("(List Price: US$500)")).toBeOnTheScreen()
+      })
+
+      it("should render 'Not publicly listed' if the artwork price is hidden", () => {
+        renderWithRelay({
+          Artwork: () => ({ isInAuction: false, isPriceHidden: true }),
+          Me: () => ({ partnerOffersConnection: { edges: [{ node: testPartnerOffer }] } }),
+        })
+
+        expect(screen.getByText("(List Price: Not publicly listed)")).toBeOnTheScreen()
+      })
+    })
   })
 })
+
+const testPartnerOffer = {
+  endAt: DateTime.now().toUTC().plus({ days: 3 }).toISO(),
+  internalID: "partner-offer-id",
+  isAvailable: true,
+  priceWithDiscount: {
+    display: "$350",
+  },
+}
+
+const unavailablePartnerOffer = {
+  ...testPartnerOffer,
+  isAvailable: false,
+}
