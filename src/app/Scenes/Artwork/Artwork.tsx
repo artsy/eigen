@@ -72,6 +72,8 @@ interface ArtworkProps {
   tracking?: TrackingProp
   artworkOfferUnavailable?: boolean
   artworkOfferExpired?: boolean
+  // this prop is expected to come from the deep link url params if present
+  partner_offer_id?: string
 }
 
 export const Artwork: React.FC<ArtworkProps> = (props) => {
@@ -100,6 +102,15 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
 
   const enableAuctionHeaderAlertCTA = useFeatureFlag("AREnableAuctionHeaderAlertCTA")
   const enablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
+
+  const expectedPartnerOfferId = !!props.partner_offer_id && enablePartnerOfferOnArtworkScreen
+
+  const partnerOfferUnavailable = expectedPartnerOfferId && !artworkAboveTheFold?.isPurchasable
+  const partnerOfferExpired =
+    expectedPartnerOfferId &&
+    // checking for unavailability to avoid showing double banners
+    !partnerOfferUnavailable &&
+    (!partnerOffer || partnerOffer.internalID !== props.partner_offer_id)
 
   const shouldRenderPartner = () => {
     const { sale, partner } = artworkBelowTheFold ?? {}
@@ -252,8 +263,8 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
         element: (
           <ArtworkHeader
             artwork={artworkAboveTheFold}
-            artworkOfferUnavailable={artworkOfferUnavailable}
-            artworkOfferExpired={artworkOfferExpired}
+            artworkOfferUnavailable={artworkOfferUnavailable || partnerOfferUnavailable}
+            artworkOfferExpired={artworkOfferExpired || partnerOfferExpired}
             refetchArtwork={() =>
               relay.refetch({ artworkID: internalID }, null, () => null, { force: true })
             }
@@ -555,6 +566,7 @@ export const ArtworkContainer = createRefetchContainer(
         isBiddable
         isInquireable
         isInAuction
+        isPurchasable
         availability
         sale {
           internalID
