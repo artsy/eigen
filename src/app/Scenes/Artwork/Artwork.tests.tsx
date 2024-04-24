@@ -1,10 +1,16 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
+import { ArtworkConsignments } from "app/Scenes/Artwork/Components/ArtworkConsignments"
 import { ArtworkDetails } from "app/Scenes/Artwork/Components/ArtworkDetails"
 import { ArtworkHistory } from "app/Scenes/Artwork/Components/ArtworkHistory"
+import { ArtworkPrice } from "app/Scenes/Artwork/Components/ArtworkPrice"
 import { ArtworkScreenHeader } from "app/Scenes/Artwork/Components/ArtworkScreenHeader"
 import { ArtworkStickyBottomContent } from "app/Scenes/Artwork/Components/ArtworkStickyBottomContent"
 import { ImageCarousel } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
+import { PartnerCard } from "app/Scenes/Artwork/Components/PartnerCard"
+import { PrivateArtworkExclusiveAccess } from "app/Scenes/Artwork/Components/PrivateArtwork/PrivateArtworkExclusiveAccess"
+import { PrivateArtworkMetadata } from "app/Scenes/Artwork/Components/PrivateArtwork/PrivateArtworkMetadata"
+import { ShippingAndTaxesFragmentContainer } from "app/Scenes/Artwork/Components/ShippingAndTaxes"
 import {
   ArtworkFromLiveAuctionRegistrationClosed,
   RegisteredBidder,
@@ -922,8 +928,8 @@ describe("Artwork", () => {
     })
   })
 
-  describe("Private Artworks", () => {
-    it.skip("renders all content after the full query has been resolved", async () => {
+  describe("Unlisted Private Artworks", () => {
+    it("renders correct components for unlisted private artworks", async () => {
       renderWithWrappers(<TestRenderer />)
 
       // ArtworkAboveTheFoldQuery
@@ -938,16 +944,38 @@ describe("Artwork", () => {
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isUnlisted: true,
+          isForSale: true,
+          isInAuction: false,
+          partner: {
+            type: "foo",
+          },
+          sale: {
+            isBenefit: false,
+            isGalleryAuction: false,
+          },
         }),
       })
 
       await flushPromiseQueue()
 
+      // Hidden in unlisted private artworks
+      expect(screen.UNSAFE_queryByType(ArtworkHistory)).toBeNull()
+      expect(screen.UNSAFE_queryByType(OtherWorksFragmentContainer)).toBeNull()
+      expect(screen.UNSAFE_queryByType(ArtworksInSeriesRail)).toBeNull()
+      expect(screen.UNSAFE_queryByType(ArtistSeriesMoreSeries)).toBeNull()
+      expect(screen.UNSAFE_queryByType(ArtworkConsignments)).toBeNull()
+
+      // Displayed in unlisted private artworks
       expect(screen.UNSAFE_queryByType(ArtworkScreenHeader)).toBeOnTheScreen()
       expect(screen.UNSAFE_queryByType(ImageCarousel)).toBeOnTheScreen()
       expect(screen.UNSAFE_queryByType(ArtworkDetails)).toBeOnTheScreen()
-      expect(screen.UNSAFE_queryByType(ActivityIndicator)).toBeNull()
-      expect(screen.UNSAFE_queryByType(ArtworkHistory)).toBeOnTheScreen()
+      expect(screen.UNSAFE_queryByType(ArtworkPrice)).toBeOnTheScreen()
+      expect(screen.UNSAFE_queryByType(ShippingAndTaxesFragmentContainer)).toBeOnTheScreen()
+      expect(screen.UNSAFE_queryByType(PrivateArtworkExclusiveAccess)).toBeOnTheScreen()
+      expect(screen.UNSAFE_queryByType(PartnerCard)).toBeOnTheScreen()
+      expect(screen.UNSAFE_queryByType(PrivateArtworkMetadata)).toBeOnTheScreen()
+
+      expect(screen.getByText("Read More")).toBeOnTheScreen()
     })
   })
 })
