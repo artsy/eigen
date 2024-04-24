@@ -921,4 +921,33 @@ describe("Artwork", () => {
       expect(screen.queryByText(/Consign with Artsy/)).toBeNull()
     })
   })
+
+  describe("Private Artworks", () => {
+    it.skip("renders all content after the full query has been resolved", async () => {
+      renderWithWrappers(<TestRenderer />)
+
+      // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
+        Artwork: () => ({
+          isUnlisted: true,
+        }),
+      })
+      // ArtworkMarkAsRecentlyViewedQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkBelowTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
+        Artwork: () => ({
+          isUnlisted: true,
+        }),
+      })
+
+      await flushPromiseQueue()
+
+      expect(screen.UNSAFE_queryByType(ArtworkScreenHeader)).toBeOnTheScreen()
+      expect(screen.UNSAFE_queryByType(ImageCarousel)).toBeOnTheScreen()
+      expect(screen.UNSAFE_queryByType(ArtworkDetails)).toBeOnTheScreen()
+      expect(screen.UNSAFE_queryByType(ActivityIndicator)).toBeNull()
+      expect(screen.UNSAFE_queryByType(ArtworkHistory)).toBeOnTheScreen()
+    })
+  })
 })

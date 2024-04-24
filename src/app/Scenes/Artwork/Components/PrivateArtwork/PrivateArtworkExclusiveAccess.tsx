@@ -16,6 +16,9 @@ export const PrivateArtworkExclusiveAccess: React.FC<PrivateArtworkExclusiveAcce
       fragment PrivateArtworkExclusiveAccess_artwork on Artwork {
         partner {
           name
+          profile {
+            isPubliclyVisible
+          }
           slug
         }
         isUnlisted
@@ -47,7 +50,11 @@ export const PrivateArtworkExclusiveAccess: React.FC<PrivateArtworkExclusiveAcce
           Exclusive access.{" "}
         </Text>
         This work was privately shared by{" "}
-        <LinkText onPress={handleLinkPress}>{data.partner?.name}</LinkText>
+        {data.partner?.profile?.isPubliclyVisible ? (
+          <LinkText onPress={handleLinkPress}>{data.partner?.name}</LinkText>
+        ) : (
+          <>{data.partner?.name}</>
+        )}
       </Text>
     </Flex>
   )
