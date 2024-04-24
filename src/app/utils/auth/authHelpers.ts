@@ -410,7 +410,6 @@ export async function handleLimitedFacebookAuth(
       return
     }
 
-    // TODO: Should we parse name? Are there circumstances in which given and family are not populated?
     const { email, name } = decodedToken as {
       email: string
       name: string
@@ -436,9 +435,6 @@ export async function handleLimitedFacebookAuth(
         reject
       )
     }
-
-    // Reject immediately as per the current request for a skeleton function
-    reject(new AuthError("Limited Facebook login is not yet implemented"))
   } catch (error) {
     if (error instanceof Error) {
       reject(new AuthError("Error preparing for limited Facebook login", error.message))
