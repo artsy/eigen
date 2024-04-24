@@ -44,7 +44,6 @@ const DislikeArtworkMutation = graphql`
     dislikeArtwork(input: { artworkID: $artworkID, remove: false }) {
       artwork {
         id
-        internalID
       }
     }
   }
