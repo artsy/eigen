@@ -56,6 +56,13 @@ export const ArtworkDetailsForm: React.FC = () => {
         accessibilityLabel="Title"
       />
       <StandardSpace />
+      <CategoryPicker<AcceptableCategoryValue | null>
+        handleChange={(category) => setFieldValue("category", category)}
+        options={categories}
+        required
+        value={values.category}
+      />
+      <StandardSpace />
       <Input
         title="Year"
         placeholder="YYYY"
@@ -67,13 +74,7 @@ export const ArtworkDetailsForm: React.FC = () => {
       />
       <StandardSpace />
       <Spacer y={2} />
-      <CategoryPicker<AcceptableCategoryValue | null>
-        handleChange={(category) => setFieldValue("category", category)}
-        options={categories}
-        required={false}
-        value={values.category}
-      />
-      <StandardSpace />
+
       <Input
         title="Materials"
         placeholder={[
