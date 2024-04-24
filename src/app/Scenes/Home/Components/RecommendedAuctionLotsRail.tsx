@@ -1,11 +1,15 @@
-import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
-import { RecommendedAuctionLotsRail_artworkConnection$key } from "__generated__/RecommendedAuctionLotsRail_artworkConnection.graphql"
+import { RecommendedAuctionLotsRail_largeArtworkConnection$key } from "__generated__/RecommendedAuctionLotsRail_largeArtworkConnection.graphql"
+import {
+  RecommendedAuctionLotsRail_smallArtworkConnection$data,
+  RecommendedAuctionLotsRail_smallArtworkConnection$key,
+} from "__generated__/RecommendedAuctionLotsRail_smallArtworkConnection.graphql"
 import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
+import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { RailScrollProps } from "app/Scenes/Home/Components/types"
 import { useItemsImpressionsTracking } from "app/Scenes/Home/Components/useImpressionsTracking"
-import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import {
@@ -19,79 +23,99 @@ import { useTracking } from "react-tracking"
 
 interface RecommendedAuctionLotsRailProps extends ArtworkActionTrackingProps {
   title: string
-  artworkConnection: RecommendedAuctionLotsRail_artworkConnection$key
+  artworkConnection:
+    | RecommendedAuctionLotsRail_smallArtworkConnection$key
+    | RecommendedAuctionLotsRail_largeArtworkConnection$key
+    | null
+    | undefined
   isRailVisible: boolean
+  size: "small" | "large"
 }
 
 export const RecommendedAuctionLotsRail: React.FC<
   RecommendedAuctionLotsRailProps & RailScrollProps
-> = memo(({ title, artworkConnection, isRailVisible, scrollRef, ...restProps }) => {
-  const { trackEvent } = useTracking()
-
-  const trackingProps = extractArtworkActionTrackingProps(restProps)
-
-  const { artworksForUser } = useFragment(artworksFragment, artworkConnection)
-
-  const railRef = useRef<View>(null)
-  const listRef = useRef<FlatList<any>>(null)
-
-  const { onViewableItemsChanged, viewabilityConfig } = useItemsImpressionsTracking({
+> = memo(
+  ({
+    title,
+    artworkConnection,
     isRailVisible,
-    contextModule: ContextModule.lotsForYouRail,
-  })
+    scrollRef,
+    size,
+    contextScreenOwnerType,
+    ...restProps
+  }) => {
+    const { trackEvent } = useTracking()
 
-  useImperativeHandle(scrollRef, () => ({
-    scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
-  }))
+    const trackingProps = extractArtworkActionTrackingProps(restProps)
 
-  const artworks = extractNodes(artworksForUser)
+    const { artworksForUser } = useFragment(
+      size === "large" ? largeArtworksFragment : smallArtworksFragment,
+      artworkConnection
+    ) as RecommendedAuctionLotsRail_smallArtworkConnection$data
 
-  if (!artworks.length) {
-    return null
-  }
+    const railRef = useRef<View>(null)
+    const listRef = useRef<FlatList<any>>(null)
 
-  const handleOnArtworkPress = (artwork: any, position: any) => {
-    trackEvent(
-      HomeAnalytics.artworkThumbnailTapEvent(
+    const { onViewableItemsChanged, viewabilityConfig } = useItemsImpressionsTracking({
+      isRailVisible,
+      contextModule: ContextModule.lotsForYouRail,
+    })
+
+    useImperativeHandle(scrollRef, () => ({
+      scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
+    }))
+
+    const artworks = extractNodes(artworksForUser)
+
+    if (!artworks.length) {
+      return null
+    }
+
+    const handleOnArtworkPress = (artwork: any, position: any) => {
+      tracks.tappedArtwork(
+        contextScreenOwnerType,
         ContextModule.lotsForYouRail,
         artwork.slug,
         artwork.internalID,
         position,
         "single"
       )
-    )
-    navigate(artwork.href)
-  }
+      navigate(artwork.href)
+    }
 
-  return (
-    <View ref={railRef}>
-      <Flex pl={2} pr={2}>
-        <SectionTitle
-          title={title}
-          onPress={() => {
-            trackEvent(tracks.tappedHeader())
+    const AuctionLotsRail = size == "large" ? LargeArtworkRail : SmallArtworkRail
+
+    return (
+      <View ref={railRef}>
+        <Flex pl={2} pr={2}>
+          <SectionTitle
+            title={title}
+            onPress={() => {
+              trackEvent(tracks.tappedHeader(contextScreenOwnerType))
+              navigate("/auctions/lots-for-you-ending-soon")
+              console.log(contextScreenOwnerType)
+            }}
+          />
+        </Flex>
+        <AuctionLotsRail
+          {...trackingProps}
+          artworks={artworks as any}
+          onPress={handleOnArtworkPress}
+          showSaveIcon
+          onMorePress={() => {
+            trackEvent(tracks.tappedMoreCard(contextScreenOwnerType))
             navigate("/auctions/lots-for-you-ending-soon")
           }}
+          onViewableItemsChanged={onViewableItemsChanged}
+          viewabilityConfig={viewabilityConfig}
         />
-      </Flex>
-      <LargeArtworkRail
-        {...trackingProps}
-        artworks={artworks}
-        onPress={handleOnArtworkPress}
-        showSaveIcon
-        onMorePress={() => {
-          trackEvent(tracks.tappedMoreCard())
-          navigate("/auctions/lots-for-you-ending-soon")
-        }}
-        onViewableItemsChanged={onViewableItemsChanged}
-        viewabilityConfig={viewabilityConfig}
-      />
-    </View>
-  )
-})
+      </View>
+    )
+  }
+)
 
-const artworksFragment = graphql`
-  fragment RecommendedAuctionLotsRail_artworkConnection on Viewer {
+const largeArtworksFragment = graphql`
+  fragment RecommendedAuctionLotsRail_largeArtworkConnection on Viewer {
     artworksForUser(includeBackfill: true, first: 10, onlyAtAuction: true) {
       edges {
         node {
@@ -105,19 +129,53 @@ const artworksFragment = graphql`
   }
 `
 
+const smallArtworksFragment = graphql`
+  fragment RecommendedAuctionLotsRail_smallArtworkConnection on Viewer {
+    artworksForUser(includeBackfill: true, first: 10, onlyAtAuction: true) {
+      edges {
+        node {
+          title
+          internalID
+          slug
+          ...SmallArtworkRail_artworks
+        }
+      }
+    }
+  }
+`
+
 const tracks = {
-  tappedHeader: () => ({
+  tappedHeader: (contextScreenOwnerType: ScreenOwnerType | undefined) => ({
     action: ActionType.tappedArtworkGroup,
     context_module: ContextModule.lotsForYouRail,
-    context_screen_owner_type: OwnerType.home,
+    context_screen_owner_type: contextScreenOwnerType,
     destination_screen_owner_type: OwnerType.lotsForYou,
     type: "header",
   }),
-  tappedMoreCard: () => ({
+
+  tappedMoreCard: (contextScreenOwnerType: ScreenOwnerType | undefined) => ({
     action: ActionType.tappedArtworkGroup,
     context_module: ContextModule.lotsForYouRail,
-    context_screen_owner_type: OwnerType.home,
+    context_screen_owner_type: contextScreenOwnerType,
     destination_screen_owner_type: OwnerType.lotsForYou,
     type: "viewAll",
+  }),
+
+  tappedArtwork: (
+    contextScreenOwnerType: ScreenOwnerType | undefined,
+    contextModule: ContextModule,
+    slug: string,
+    id: string,
+    index?: number,
+    moduleHeight?: "single" | "double"
+  ) => ({
+    contextScreenOwnerType: contextScreenOwnerType,
+    destinationScreenOwnerType: OwnerType.artwork,
+    destinationScreenOwnerSlug: slug,
+    destinationScreenOwnerId: id,
+    contextModule,
+    horizontalSlidePosition: index,
+    moduleHeight: moduleHeight ?? "double",
+    type: "thumbnail",
   }),
 }
