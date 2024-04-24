@@ -10,7 +10,6 @@ import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { RailScrollProps } from "app/Scenes/Home/Components/types"
 import { useItemsImpressionsTracking } from "app/Scenes/Home/Components/useImpressionsTracking"
-import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import {
@@ -31,7 +30,6 @@ interface RecommendedAuctionLotsRailProps extends ArtworkActionTrackingProps {
     | undefined
   isRailVisible: boolean
   size: "small" | "large"
-  contextScreenOwnerType: ScreenOwnerType
 }
 
 export const RecommendedAuctionLotsRail: React.FC<
@@ -74,40 +72,18 @@ export const RecommendedAuctionLotsRail: React.FC<
     }
 
     const handleOnArtworkPress = (artwork: any, position: any) => {
-      if (contextScreenOwnerType === OwnerType.home) {
-        trackEvent(
-          HomeAnalytics.artworkThumbnailTapEvent(
-            ContextModule.lotsForYouRail,
-            artwork.slug,
-            artwork.internalID,
-            position,
-            "single"
-          )
-        )
-      }
-
+      tracks.tappedArtwork(
+        contextScreenOwnerType,
+        ContextModule.lotsForYouRail,
+        artwork.slug,
+        artwork.internalID,
+        position,
+        "single"
+      )
       navigate(artwork.href)
     }
 
     const AuctionLotsRail = size == "large" ? LargeArtworkRail : SmallArtworkRail
-
-    const tracks = {
-      tappedHeader: () => ({
-        action: ActionType.tappedArtworkGroup,
-        context_module: ContextModule.lotsForYouRail,
-        context_screen_owner_type: contextScreenOwnerType,
-        destination_screen_owner_type: OwnerType.lotsForYou,
-        type: "header",
-      }),
-
-      tappedMoreCard: () => ({
-        action: ActionType.tappedArtworkGroup,
-        context_module: ContextModule.lotsForYouRail,
-        context_screen_owner_type: contextScreenOwnerType,
-        destination_screen_owner_type: OwnerType.lotsForYou,
-        type: "viewAll",
-      }),
-    }
 
     return (
       <View ref={railRef}>
@@ -115,8 +91,9 @@ export const RecommendedAuctionLotsRail: React.FC<
           <SectionTitle
             title={title}
             onPress={() => {
-              trackEvent(tracks.tappedHeader())
+              trackEvent(tracks.tappedHeader(contextScreenOwnerType))
               navigate("/auctions/lots-for-you-ending-soon")
+              console.log(contextScreenOwnerType)
             }}
           />
         </Flex>
@@ -126,7 +103,7 @@ export const RecommendedAuctionLotsRail: React.FC<
           onPress={handleOnArtworkPress}
           showSaveIcon
           onMorePress={() => {
-            trackEvent(tracks.tappedMoreCard())
+            trackEvent(tracks.tappedMoreCard(contextScreenOwnerType))
             navigate("/auctions/lots-for-you-ending-soon")
           }}
           onViewableItemsChanged={onViewableItemsChanged}
@@ -166,3 +143,39 @@ const smallArtworksFragment = graphql`
     }
   }
 `
+
+const tracks = {
+  tappedHeader: (contextScreenOwnerType: ScreenOwnerType | undefined) => ({
+    action: ActionType.tappedArtworkGroup,
+    context_module: ContextModule.lotsForYouRail,
+    context_screen_owner_type: contextScreenOwnerType,
+    destination_screen_owner_type: OwnerType.lotsForYou,
+    type: "header",
+  }),
+
+  tappedMoreCard: (contextScreenOwnerType: ScreenOwnerType | undefined) => ({
+    action: ActionType.tappedArtworkGroup,
+    context_module: ContextModule.lotsForYouRail,
+    context_screen_owner_type: contextScreenOwnerType,
+    destination_screen_owner_type: OwnerType.lotsForYou,
+    type: "viewAll",
+  }),
+
+  tappedArtwork: (
+    contextScreenOwnerType: ScreenOwnerType | undefined,
+    contextModule: ContextModule,
+    slug: string,
+    id: string,
+    index?: number,
+    moduleHeight?: "single" | "double"
+  ) => ({
+    contextScreenOwnerType: contextScreenOwnerType,
+    destinationScreenOwnerType: OwnerType.artwork,
+    destinationScreenOwnerSlug: slug,
+    destinationScreenOwnerId: id,
+    contextModule,
+    horizontalSlidePosition: index,
+    moduleHeight: moduleHeight ?? "double",
+    type: "thumbnail",
+  }),
+}
