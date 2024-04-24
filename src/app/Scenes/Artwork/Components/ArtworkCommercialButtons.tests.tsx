@@ -60,6 +60,82 @@ describe("ArtworkCommercialButtons", () => {
     `,
   })
 
+  describe("with partner offer on artwork screen feature flag turned off", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnablePartnerOfferOnArtworkScreen: false })
+    })
+
+    it("renders Purchase button if artwork is only acquireable and with a partner offer", async () => {
+      const artwork = {
+        ...ArtworkFixture,
+        isAcquireable: true,
+        isOfferable: false,
+        isInquireable: false,
+      }
+
+      renderWithRelay({
+        Artwork: () => artwork,
+        Me: () => meWithPartnerOfferFixture,
+      })
+
+      expect(screen.getByText("Purchase")).toBeTruthy()
+      expect(screen.queryByText("Make an Offer")).toBeFalsy()
+      expect(screen.queryByText("Contact Gallery")).toBeFalsy()
+    })
+
+    it("renders Make an Offer button if artwork is only offerable and with a partner offer", async () => {
+      const artwork = {
+        ...ArtworkFixture,
+        isAcquireable: false,
+        isOfferable: true,
+        isInquireable: false,
+      }
+      renderWithRelay({
+        Artwork: () => artwork,
+        Me: () => meWithPartnerOfferFixture,
+      })
+
+      expect(screen.queryByText("Purchase")).toBeFalsy()
+      expect(screen.getByText("Make an Offer")).toBeTruthy()
+      expect(screen.queryByText("Contact Gallery")).toBeFalsy()
+    })
+
+    it("renders Purchase and Make an Offer buttons if artwork is offerable and acquireable and with a partner offer", async () => {
+      const artwork = {
+        ...ArtworkFixture,
+        isAcquireable: true,
+        isOfferable: true,
+        isInquireable: false,
+      }
+      renderWithRelay({
+        Artwork: () => artwork,
+        Me: () => meWithPartnerOfferFixture,
+      })
+
+      expect(screen.getByText("Purchase")).toBeTruthy()
+      expect(screen.getByText("Make an Offer")).toBeTruthy()
+      expect(screen.queryByText("Contact Gallery")).toBeFalsy()
+    })
+
+    it("renders Make an Offer and Contact Gallery buttons if artwork is offerable and inquireable and with a partner offer", async () => {
+      const artwork = {
+        ...ArtworkFixture,
+        isAcquireable: false,
+        isOfferable: true,
+        isInquireable: true,
+      }
+
+      renderWithRelay({
+        Artwork: () => artwork,
+        Me: () => meWithPartnerOfferFixture,
+      })
+
+      expect(screen.queryByText("Purchase")).toBeFalsy()
+      expect(screen.getByText("Make an Offer")).toBeTruthy()
+      expect(screen.getByText("Contact Gallery")).toBeTruthy()
+    })
+  })
+
   it("renders Purchase button if artwork is only acquireable", async () => {
     const artwork = {
       ...ArtworkFixture,
