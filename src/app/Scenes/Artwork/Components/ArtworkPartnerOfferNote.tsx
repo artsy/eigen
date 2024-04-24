@@ -20,8 +20,9 @@ export const ArtworkPartnerOfferNote: React.FC<ArtworkPartnerOfferNoteProps> = (
 
   const note = partnerOfferData?.note
   const partnerIcon = artworkData.partner?.profile?.icon?.url
+  const noLongerAvailable = !partnerOfferData?.isAvailable
 
-  if (!note) {
+  if (!!noLongerAvailable || !note) {
     return null
   }
 
@@ -70,5 +71,6 @@ const artworkFragment = graphql`
 const partnerOfferFragment = graphql`
   fragment ArtworkPartnerOfferNote_partnerOffer on PartnerOfferToCollector {
     note
+    isAvailable
   }
 `

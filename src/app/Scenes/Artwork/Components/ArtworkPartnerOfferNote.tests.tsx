@@ -37,7 +37,9 @@ describe("ArtworkPartnerOfferNote", () => {
         partner: { profile: { icon: { url: "https://testurl" } } },
       }),
       Me: () => ({
-        partnerOffersConnection: { edges: [{ node: { note: "This is a note" } }] },
+        partnerOffersConnection: {
+          edges: [{ node: { note: "This is a note", isAvailable: true } }],
+        },
       }),
     })
 
@@ -49,7 +51,9 @@ describe("ArtworkPartnerOfferNote", () => {
   it("does not render anything if there is no note", () => {
     renderWithRelay({
       Artwork: () => ({ partner: { profile: { icon: { url: "https://testurl" } } } }),
-      Me: () => ({ partnerOffersConnection: { edges: [{ node: { note: null } }] } }),
+      Me: () => ({
+        partnerOffersConnection: { edges: [{ node: { note: null, isAvailable: true } }] },
+      }),
     })
 
     expect(screen.queryByLabelText("Partner icon")).not.toBeOnTheScreen()
@@ -60,7 +64,11 @@ describe("ArtworkPartnerOfferNote", () => {
   it("does not render the partner icon if there is none", () => {
     renderWithRelay({
       Artwork: () => ({ partner: { profile: null } }),
-      Me: () => ({ partnerOffersConnection: { edges: [{ node: { note: "This is a note" } }] } }),
+      Me: () => ({
+        partnerOffersConnection: {
+          edges: [{ node: { note: "This is a note", isAvailable: true } }],
+        },
+      }),
     })
 
     expect(screen.queryByLabelText("Partner icon")).not.toBeOnTheScreen()
@@ -72,6 +80,21 @@ describe("ArtworkPartnerOfferNote", () => {
     renderWithRelay({
       Artwork: () => ({ partner: { profile: { icon: { url: "https://testurl" } } } }),
       Me: () => ({ partnerOffersConnection: { edges: [] } }),
+    })
+
+    expect(screen.queryByLabelText("Partner icon")).not.toBeOnTheScreen()
+    expect(screen.queryByText("Note from the gallery")).not.toBeOnTheScreen()
+    expect(screen.queryByText("“This is a note”")).not.toBeOnTheScreen()
+  })
+
+  it("does not render anything if partner offer is not available", () => {
+    renderWithRelay({
+      Artwork: () => ({ partner: { profile: { icon: { url: "https://testurl" } } } }),
+      Me: () => ({
+        partnerOffersConnection: {
+          edges: [{ node: { note: "This is a note", isAvailable: false } }],
+        },
+      }),
     })
 
     expect(screen.queryByLabelText("Partner icon")).not.toBeOnTheScreen()
