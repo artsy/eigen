@@ -84,7 +84,10 @@ export const AlertNotification: FC<AlertNotificationProps> = ({ notification }) 
 
         <Spacer y={0.5} />
 
-        <NotificationArtworkList artworksConnection={artworksConnection} />
+        <NotificationArtworkList
+          alertID={alert.internalID}
+          artworksConnection={artworksConnection}
+        />
 
         <Flex mx={2} mt={1} mb={2}>
           <Button

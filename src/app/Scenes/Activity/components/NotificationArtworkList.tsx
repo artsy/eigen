@@ -21,6 +21,7 @@ interface NotificationArtworkListProps {
   priceOfferMessage?: PriceOfferMessage
   showArtworkCommercialButtons?: boolean
   partnerOffer?: PartnerOffer
+  alertID?: string
 }
 
 export const NotificationArtworkList: FC<NotificationArtworkListProps> = (props) => {
@@ -54,6 +55,7 @@ export const NotificationArtworkList: FC<NotificationArtworkListProps> = (props)
         <CommercialButtonsQueryRenderer
           artworkID={artworks[0].internalID}
           partnerOffer={partnerOffer}
+          alertID={props.alertID}
         />
       )}
       {!!note && (

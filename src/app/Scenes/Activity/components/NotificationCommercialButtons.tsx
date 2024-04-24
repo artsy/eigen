@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType, TappedViewWork } from "@artsy/cohesion"
 import { Button, Flex, useSpace, Join, Spacer } from "@artsy/palette-mobile"
 import { BuyNowButton_artwork$key } from "__generated__/BuyNowButton_artwork.graphql"
 import { CreateArtworkAlertModal_artwork$key } from "__generated__/CreateArtworkAlertModal_artwork.graphql"
@@ -17,11 +18,13 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useState, Children } from "react"
 import { QueryRenderer, graphql, useFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 
 export const CommercialButtonsQueryRenderer: React.FC<{
   artworkID: string
+  alertID?: string
   partnerOffer?: PartnerOffer
-}> = ({ artworkID, partnerOffer }) => {
+}> = ({ artworkID, partnerOffer, alertID }) => {
   return (
     <QueryRenderer<NotificationCommercialButtonsQuery>
       environment={getRelayEnvironment()}
@@ -37,7 +40,7 @@ export const CommercialButtonsQueryRenderer: React.FC<{
       variables={{ artworkID }}
       render={renderWithPlaceholder({
         Container: CommercialButtons,
-        initialProps: { partnerOffer, artworkID },
+        initialProps: { partnerOffer, artworkID, alertID },
         renderPlaceholder: () => <></>,
       })}
     />
@@ -65,7 +68,8 @@ export const CommercialButtons: React.FC<{
     | InquiryButtons_artwork$key
   partnerOffer?: PartnerOffer
   artworkID: string
-}> = ({ artwork, partnerOffer, artworkID }) => {
+  alertID?: string
+}> = ({ artwork, partnerOffer, artworkID, alertID }) => {
   const artworkData = useFragment(artworkFragment, artwork)
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
   const space = useSpace()
@@ -73,6 +77,7 @@ export const CommercialButtons: React.FC<{
   const { hasEnded } = getTimer(partnerOffer?.endAt || "")
   const noLongerAvailable = !partnerOffer?.isAvailable
   const enablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
+  const tracking = useTracking()
 
   let renderComponent = null
 
@@ -119,6 +124,7 @@ export const CommercialButtons: React.FC<{
         <RowContainer>
           <Button
             onPress={() => {
+              tracking.trackEvent(tracks.tappedViewWork(artworkID, alertID || ""))
               navigate(`/artwork/${artworkID}`, {
                 passProps: { partnerOfferId: partnerOffer?.internalID },
               })
@@ -168,3 +174,13 @@ const artworkFragment = graphql`
     ...CreateArtworkAlertModal_artwork
   }
 `
+const tracks = {
+  tappedViewWork: (artworkID: string, alertID: string): TappedViewWork => ({
+    action: ActionType.tappedViewWork,
+    context_module: ContextModule.notification,
+    context_screen_owner_type: OwnerType.notification,
+    context_screen_owner_id: alertID,
+    artwork_id: artworkID,
+    notification_type: "",
+  }),
+}
