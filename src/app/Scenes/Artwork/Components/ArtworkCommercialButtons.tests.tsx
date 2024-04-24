@@ -92,6 +92,22 @@ describe("ArtworkCommercialButtons", () => {
     expect(screen.getByText("Make an Offer")).toBeTruthy()
   })
 
+  it("renders Contact Gallery button if artwork is only inquireable", async () => {
+    const artwork = {
+      ...ArtworkFixture,
+      isAcquireable: false,
+      isOfferable: false,
+      isInquireable: true,
+    }
+
+    renderWithRelay({
+      Artwork: () => artwork,
+      Me: () => meFixture,
+    })
+
+    expect(screen.getByText("Contact Gallery")).toBeTruthy()
+  })
+
   it("renders Purchase and Make an Offer buttons if artwork is offerable and acquireable", async () => {
     const artwork = {
       ...ArtworkFixture,
