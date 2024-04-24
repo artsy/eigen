@@ -141,6 +141,7 @@ const tracks = {
     context_owner_id: artwork.internalID,
     context_owner_slug: artwork.slug,
     impulse_conversation_id: id,
+    flow: "",
   }),
 }
 

@@ -1815,6 +1815,9 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     # The number of PartnerArtists to return
     size: Int
   ): [PartnerArtist]
+
+  # The Partner's provided biography for the artist
+  partnerBiographyBlurb(format: Format): partnerBiographyBlurb
   partnersConnection(
     after: String
     before: String
@@ -14284,6 +14287,10 @@ type PartnerArtworkGrid implements ArtworkContextGrid {
   ctaHref: String
   ctaTitle: String
   title: String
+}
+
+type partnerBiographyBlurb {
+  text: String
 }
 
 type PartnerCategory {

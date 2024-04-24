@@ -52,7 +52,7 @@ export const AboutArtist: React.FC<AboutArtistProps> = ({ artwork }) => {
         </Join>
       </Flex>
       {!!hasSingleArtist && !!text && (
-        <Box mt={2}>
+        <Box mt={2} mb={artwork.isUnlisted ? 1 : 0}>
           <ReadMore
             content={text}
             contextModule={Schema.ContextModules.ArtistBiography}
@@ -81,7 +81,7 @@ export const AboutArtistFragmentContainer = createFragmentContainer(AboutArtist,
         ...ArtistListItem_artist
       }
       artist {
-        partnerBiographyBlurb: biographyBlurb(partnerBio: true) {
+        partnerBiographyBlurb {
           text
         }
       }

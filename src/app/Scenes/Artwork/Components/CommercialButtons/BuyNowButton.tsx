@@ -214,5 +214,6 @@ const tracks = {
     context_owner_type: OwnerType.artwork,
     context_owner_id: internalID,
     context_owner_slug: slug,
+    flow: "",
   }),
 }

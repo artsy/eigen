@@ -90,11 +90,19 @@ describe("Artwork", () => {
     renderWithWrappers(<TestRenderer />)
 
     // ArtworkAboveTheFoldQuery
-    resolveMostRecentRelayOperation(environment)
+    resolveMostRecentRelayOperation(environment, {
+      Artwork: () => ({
+        isUnlisted: false,
+      }),
+    })
     // ArtworkMarkAsRecentlyViewedQuery
     resolveMostRecentRelayOperation(environment)
     // ArtworkBelowTheFoldQuery
-    resolveMostRecentRelayOperation(environment)
+    resolveMostRecentRelayOperation(environment, {
+      Artwork: () => ({
+        isUnlisted: false,
+      }),
+    })
 
     await flushPromiseQueue()
 
@@ -110,13 +118,18 @@ describe("Artwork", () => {
       renderWithWrappers(<TestRenderer />)
 
       // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment)
+      resolveMostRecentRelayOperation(environment, {
+        Artwork: () => ({
+          isUnlisted: false,
+        }),
+      })
       // ArtworkMarkAsRecentlyViewedQuery
       resolveMostRecentRelayOperation(environment)
       // ArtworkBelowTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
         Artwork() {
           return {
+            isUnlisted: false,
             artist: {
               biographyBlurb: null,
               artistSeriesConnection: {
@@ -148,6 +161,7 @@ describe("Artwork", () => {
       // ArtworkBelowTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
+          isUnlisted: false,
           artist: {
             artistSeriesConnection: {
               totalCount: 0,
@@ -177,6 +191,7 @@ describe("Artwork", () => {
       resolveMostRecentRelayOperation(environment, {
         Artwork() {
           return {
+            isUnlisted: false,
             internalID: "artwork123",
           }
         },
@@ -187,6 +202,7 @@ describe("Artwork", () => {
       resolveMostRecentRelayOperation(environment, {
         Artwork() {
           return {
+            isUnlisted: false,
             slug: "my-cool-artwork",
             internalID: "artwork123",
             isEligibleForArtsyGuarantee: false,
@@ -424,6 +440,7 @@ describe("Artwork", () => {
       // ArtworkBelowTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
+          isUnlisted: false,
           partner: {
             type: "Gallery",
             isInquireable: true,
@@ -452,6 +469,7 @@ describe("Artwork", () => {
       // ArtworkBelowTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
+          isUnlisted: false,
           partner: {
             type: "Gallery",
             isInquireable: false,
@@ -480,6 +498,7 @@ describe("Artwork", () => {
       // ArtworkBelowTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
+          isUnlisted: false,
           isInAuction: false,
           isForSale: true,
         }),
@@ -499,6 +518,7 @@ describe("Artwork", () => {
       // ArtworkBelowTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
+          isUnlisted: false,
           isForSale: false,
         }),
       })
@@ -512,6 +532,7 @@ describe("Artwork", () => {
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
+          isUnlisted: false,
           isInAuction: true,
         }),
       })
@@ -520,6 +541,7 @@ describe("Artwork", () => {
       // ArtworkBelowTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
+          isUnlisted: false,
           isForSale: false,
         }),
       })
@@ -535,13 +557,18 @@ describe("Artwork", () => {
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
+          isUnlisted: false,
           isEligibleForArtsyGuarantee: true,
         }),
       })
       // ArtworkMarkAsRecentlyViewedQuery
       resolveMostRecentRelayOperation(environment)
       // ArtworkBelowTheFoldQuery
-      resolveMostRecentRelayOperation(environment)
+      resolveMostRecentRelayOperation(environment, {
+        Artwork: () => ({
+          isUnlisted: false,
+        }),
+      })
 
       await flushPromiseQueue()
 
@@ -560,6 +587,7 @@ describe("Artwork", () => {
       // ArtworkBelowTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
+          isUnlisted: false,
           isEligibleForArtsyGuarantee: false,
         }),
       })
@@ -583,6 +611,7 @@ describe("Artwork", () => {
       // ArtworkBelowTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
+          isUnlisted: false,
           isForSale: false,
           context: {
             isAuction: false,
@@ -602,6 +631,7 @@ describe("Artwork", () => {
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
+          isUnlisted: false,
           slug: "/whatever",
         }),
       })
@@ -610,6 +640,7 @@ describe("Artwork", () => {
       // ArtworkBelowTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
+          isUnlisted: false,
           exhibitionHistory: null,
           provenance: null,
           literature: null,
@@ -639,6 +670,7 @@ describe("Artwork", () => {
       // ArtworkBelowTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
+          isUnlisted: false,
           description: null,
           additionalInformation: null,
         }),
@@ -659,6 +691,7 @@ describe("Artwork", () => {
       // ArtworkBelowTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
+          isUnlisted: false,
           description: "Artwork Description",
         }),
       })
@@ -680,6 +713,7 @@ describe("Artwork", () => {
       // ArtworkBelowTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
+          isUnlisted: false,
           provenance: null,
           exhibitionHistory: null,
           literature: null,
@@ -703,6 +737,7 @@ describe("Artwork", () => {
       // ArtworkBelowTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
+          isUnlisted: false,
           provenance: "Text",
           exhibitionHistory: "Text",
           literature: "Text",
@@ -728,6 +763,7 @@ describe("Artwork", () => {
       // ArtworkBelowTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
+          isUnlisted: false,
           artist: null,
         }),
       })
@@ -747,6 +783,7 @@ describe("Artwork", () => {
       // ArtworkBelowTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
+          isUnlisted: false,
           artist: {
             biographyBlurb: {
               text: "Artist Text",
@@ -772,6 +809,7 @@ describe("Artwork", () => {
       // ArtworkBelowTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
+          isUnlisted: false,
           contextGrids: [
             {
               title: "Grid Name",
@@ -798,6 +836,7 @@ describe("Artwork", () => {
       // ArtworkBelowTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
+          isUnlisted: false,
           // skip about the artist section
           artist: null,
           contextGrids: [
@@ -834,6 +873,7 @@ describe("Artwork", () => {
       // ArtworkBelowTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
+          isUnlisted: false,
           isForSale: true,
           artists: [
             {
@@ -854,6 +894,7 @@ describe("Artwork", () => {
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
+          isUnlisted: false,
           isAcquireable: false,
           isOfferable: false,
           isInAuction: false,
@@ -865,6 +906,7 @@ describe("Artwork", () => {
       // ArtworkBelowTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
+          isUnlisted: false,
           isForSale: false,
           artists: [
             {
