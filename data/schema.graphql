@@ -4665,6 +4665,9 @@ input CommerceCreateOfferOrderWithArtworkInput {
   # submitted orders on same artwork/edition with same quantity, we will return that
   findActiveOrCreate: Boolean = true
 
+  # PartnerOffer Id
+  partnerOfferId: String
+
   # Number of items in the line item, default is 1
   quantity: Int
 }
@@ -5802,9 +5805,6 @@ type CommerceSellerAcceptOfferPayload {
 input CommerceSellerAcceptProvisionalOfferInput {
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
-
-  # If location was set in the accept offer step
-  locationFilledOnOrder: Boolean
   offerId: ID!
 
   # Shipping info belonging to this specific order. It overrides the defined shipping costs of the artwork.
@@ -5826,9 +5826,6 @@ input CommerceSellerCounterOfferInput {
 
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
-
-  # If location was set in the counter offer step
-  locationFilledOnOrder: Boolean
   note: String
   offerId: ID!
   shippingContact: CommerceShippingContactAttributes
