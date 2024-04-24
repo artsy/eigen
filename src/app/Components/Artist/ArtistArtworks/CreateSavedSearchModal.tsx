@@ -57,11 +57,13 @@ export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (pr
   const handleComplete = (result: SavedSearchAlertMutationResult) => {
     const { owner } = entity
 
-    if (!result.id) {
+    if (!result.searchCriteriaID) {
       return
     }
 
-    tracking.trackEvent(tracks.toggleSavedSearch(true, owner.type, owner.id, owner.slug, result.id))
+    tracking.trackEvent(
+      tracks.toggleSavedSearch(true, owner.type, owner.id, owner.slug, result.searchCriteriaID)
+    )
   }
 
   const params: CreateSavedSearchAlertParams = {
