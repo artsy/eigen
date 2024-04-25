@@ -80,7 +80,7 @@ lane :ship_beta_ios do
   )
 
   upload_sentry_artifacts(
-    sentry_release_name:,
+    sentry_release_name: sentry_release_name,
     dist_version: bundle_version,
     platform: 'ios'
   )
@@ -96,8 +96,8 @@ lane :ship_beta_ios do
   }
 
   pilot(
-    api_key:,
-    beta_app_review_info:,
+    api_key: api_key,
+    beta_app_review_info: beta_app_review_info,
     changelog: beta_readme,
     itc_provider: 'ArtsyInc',
     distribute_external: true,
@@ -132,9 +132,9 @@ lane :promote_beta_ios do
   UI.success("Let's deliver beta #{next_app_store_version} (#{build_number}) with build number #{build_number}.")
 
   deliver(
-    api_key:,
+    api_key: api_key,
     app_version: $APP_JSON['version'],
-    build_number:,
+    build_number: build_number,
     submit_for_review: true,
     automatic_release: true,
     phased_release: true
@@ -179,7 +179,7 @@ lane :create_next_app_version do |options|
 
   puts "Let's create a new app version #{next_version}."
   deliver(
-    api_key:,
+    api_key: api_key,
     app_version: next_version,
     skip_metadata: true,
     automatic_release: false,
@@ -198,7 +198,7 @@ lane :ship_beta_android do |options|
   sh('yarn relay')
 
   is_android_beta = deployment_target == 'firebase'
-  flag_android_beta(is_android_beta:)
+  flag_android_beta(is_android_beta: is_android_beta)
 
   vname, vcode = set_build_version_android
   set_git_properties_android
@@ -217,12 +217,12 @@ lane :ship_beta_android do |options|
   sh("yarn react-native build-android --mode=release --extra-params='--no-daemon --max-workers 2'")
 
   upload_sentry_artifacts(
-    sentry_release_name:,
+    sentry_release_name: sentry_release_name,
     dist_version: "#{vcode}",
     platform: 'android'
   )
 
-  deploy_android_beta(deployment_target:)
+  deploy_android_beta(deployment_target: deployment_target)
 end
 
 def deploy_android_beta(deployment_target:)
@@ -369,10 +369,10 @@ lane :deploy_to_codepush do |options|
   appcenter_codepush_release_react(
     api_token: ENV['APP_CENTER_API_TOKEN'],
     owner_name: 'mobile-artsy',
-    app_name:,
+    app_name: app_name,
     description: "'#{description}'",
     deployment: deployment_name,
-    sourcemap_output:,
+    sourcemap_output: sourcemap_output,
     output_dir: './build',
     mandatory: false,
     no_duplicate_release_error: true,
@@ -385,12 +385,12 @@ lane :deploy_to_codepush do |options|
   org_slug = 'artsynet'
 
   upload_sentry_sourcemaps(
-    sentry_cli_path:,
-    org_slug:,
-    project_slug:,
+    sentry_cli_path: sentry_cli_path,
+    org_slug: org_slug,
+    project_slug: project_slug,
     sentry_release_name: release_name,
     dist: dist_version,
-    bundle_path:,
+    bundle_path: bundle_path,
     sourcemap_path: sourcemap_output
   )
 
@@ -448,7 +448,7 @@ error do |lane, exception|
   end
 
   if is_ci
-    notify_beta_failed(exception:)
+    notify_beta_failed(exception: exception)
   else
     UI.error("Beta failed to deploy! #{exception.message}")
   end
