@@ -1,35 +1,64 @@
-import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
-import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
-import { createMockEnvironment } from "relay-test-utils"
-import { AboutArtist } from "./AboutArtist"
+import { screen } from "@testing-library/react-native"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
+import { AboutArtistFragmentContainer } from "./AboutArtist"
 
 describe("AboutArtist", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+  const { renderWithRelay } = setupTestWrapper({
+    Component: AboutArtistFragmentContainer,
+    query: graphql`
+      query AboutArtist_Test_Query {
+        artwork(id: "example") {
+          ...AboutArtist_artwork
+        }
+      }
+    `,
   })
 
   it("renders about artist correctly for one artist", () => {
-    const { queryByText } = renderWithHookWrappersTL(
-      <AboutArtist artwork={ArtworkFixture as any} />,
-      mockEnvironment
-    )
+    renderWithRelay({
+      Artist: () => ({
+        name: "Abbas Kiarostami",
+      }),
+    })
 
-    expect(queryByText("About the artist")).toBeTruthy()
-    expect(queryByText("Abbas Kiarostami")).toBeTruthy()
+    expect(screen.getByText("About the artist")).toBeTruthy()
+    expect(screen.getByText("Abbas Kiarostami")).toBeTruthy()
   })
 
   it("renders about artist correctly for more than one artists", () => {
-    const artworkMultipleArtists = {
-      ...ArtworkFixture,
-      artists: ArtworkFixture.artists.concat(ArtworkFixture.artists),
-    }
-    const { queryAllByText, queryByText } = renderWithHookWrappersTL(
-      <AboutArtist artwork={artworkMultipleArtists as any} />
-    )
+    renderWithRelay({
+      Artist: () => ({
+        name: "Abbas Kiarostami",
+      }),
+      Artwork: () => ({
+        artists: [
+          {
+            biographyBlurb: {
+              text: "Biography of Abbas Kiarostami",
+            },
+          },
+          {
+            biographyBlurb: {
+              text: "Biography of Abbas Kiarostami",
+            },
+          },
+        ],
+      }),
+    })
 
-    expect(queryByText("About the artists")).toBeTruthy()
-    expect(queryAllByText("Abbas Kiarostami")).toHaveLength(2)
+    expect(screen.getByText("About the artists")).toBeTruthy()
+    expect(screen.queryAllByText("Abbas Kiarostami")).toHaveLength(2)
+  })
+
+  it("does not render anything if unlisted is false and displayArtistBio is false", () => {
+    renderWithRelay({
+      Artwork: () => ({
+        isUnlisted: true,
+        displayArtistBio: false,
+      }),
+    })
+
+    expect(screen.queryByText("About the artist")).not.toBeOnTheScreen()
   })
 })
