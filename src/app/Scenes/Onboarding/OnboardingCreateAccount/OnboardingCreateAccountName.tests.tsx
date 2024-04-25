@@ -58,7 +58,7 @@ describe("OnboardingCreateAccountName", () => {
   describe("Form", () => {
     it("renders the right name from the formik context", () => {
       renderWithWrappers(<Test />)
-      const nameInput = screen.getByPlaceholderText("First and last name")
+      const nameInput = screen.getByTestId("nameInput")
 
       expect(nameInput).toHaveTextContent("")
 
@@ -69,7 +69,7 @@ describe("OnboardingCreateAccountName", () => {
 
     it("does not submit when the user did not accept the terms and conditions", async () => {
       renderWithWrappers(<Test />)
-      const nameInput = screen.getByPlaceholderText("First and last name")
+      const nameInput = screen.getByTestId("nameInput")
 
       fireEvent.changeText(nameInput, "Andy warhol")
       fireEvent(nameInput, "submitEditing")
@@ -80,7 +80,7 @@ describe("OnboardingCreateAccountName", () => {
 
     it("submits when the user did accepts the terms and conditions", async () => {
       renderWithWrappers(<Test name="Andy warhol" acceptedTerms />)
-      const nameInput = screen.getByPlaceholderText("First and last name")
+      const nameInput = screen.getByTestId("nameInput")
 
       fireEvent(nameInput, "submitEditing")
 

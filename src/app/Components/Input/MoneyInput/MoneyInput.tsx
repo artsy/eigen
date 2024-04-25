@@ -1,10 +1,18 @@
-import { Spacer, TriangleDown, Flex, useColor, Text, Touchable } from "@artsy/palette-mobile"
+import {
+  Flex,
+  InputProps,
+  Spacer,
+  Text,
+  Touchable,
+  TriangleDown,
+  useColor,
+} from "@artsy/palette-mobile"
 import { TextVariant } from "@artsy/palette-tokens/dist/typography/v3"
 import {
   INTERNALSelectAndInputCombinationBase,
   ValuePayload,
 } from "app/Components/Input/INTERNALSelectAndInputCombinationBase"
-import { InputProps, InputRef, computeBorderColor } from "app/Components/Input/Input"
+import { InputRef, computeBorderColor } from "app/Components/Input/Input"
 import {
   concatDigitsAndCents,
   deformatMoney,

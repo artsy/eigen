@@ -1,11 +1,10 @@
-import { AddIcon, Box, Button, Flex, Spacer, Text, Touchable } from "@artsy/palette-mobile"
+import { AddIcon, Box, Button, Flex, Input, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { ArtistAutosuggestQuery } from "__generated__/ArtistAutosuggestQuery.graphql"
 import {
   AutosuggestResult,
   AutosuggestResults,
 } from "app/Components/AutosuggestResults/AutosuggestResults"
 import SearchIcon from "app/Components/Icons/SearchIcon"
-import { Input } from "app/Components/Input"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { filterArtistsByKeyword } from "app/Scenes/MyCollection/utils/filterArtistsByKeyword"
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"

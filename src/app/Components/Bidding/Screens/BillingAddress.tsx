@@ -1,10 +1,9 @@
-import { Flex, Text, Button } from "@artsy/palette-mobile"
+import { Flex, Text, Button, InputRef, Input } from "@artsy/palette-mobile"
 import { findCountryNameByCountryCode } from "app/Components/Bidding/Utils/findCountryNameByCountryCode"
 import { validateAddressFieldsPresence } from "app/Components/Bidding/Validators/validateAddressFieldsPresence"
 import { Address } from "app/Components/Bidding/types"
 import { CountrySelect } from "app/Components/CountrySelect"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { Input } from "app/Components/Input"
 import { Stack } from "app/Components/Stack"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
@@ -31,26 +30,26 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
 }) => {
   const scrollViewRef = useRef<ScrollView>(null)
 
-  const fullNameRef = useRef<Input>(null)
-  const addressLine1Ref = useRef<Input>(null)
-  const addressLine2Ref = useRef<Input>(null)
-  const cityRef = useRef<Input>(null)
-  const stateRef = useRef<Input>(null)
-  const postalCodeRef = useRef<Input>(null)
-  const phoneRef = useRef<Input>(null)
+  const fullNameRef = useRef<InputRef>(null)
+  const addressLine1Ref = useRef<InputRef>(null)
+  const addressLine2Ref = useRef<InputRef>(null)
+  const cityRef = useRef<InputRef>(null)
+  const stateRef = useRef<InputRef>(null)
+  const postalCodeRef = useRef<InputRef>(null)
+  const phoneRef = useRef<InputRef>(null)
 
   const [address, setAddress] = useState<Address>({
-    fullName: "",
-    addressLine1: "",
-    addressLine2: "",
-    city: "",
-    state: "",
+    fullName: billingAddress?.fullName || "",
+    addressLine1: billingAddress?.addressLine1 || "",
+    addressLine2: billingAddress?.addressLine2 || "",
+    city: billingAddress?.city || "",
+    state: billingAddress?.state || "",
     country: {
-      longName: "",
-      shortName: "",
+      longName: billingAddress?.country.longName || "",
+      shortName: billingAddress?.country.shortName || "",
     },
-    postalCode: "",
-    phoneNumber: "",
+    postalCode: billingAddress?.postalCode || "",
+    phoneNumber: billingAddress?.phoneNumber || "",
   })
 
   const [addressFieldsWithError, setAddressFieldsWithError] = useState<string[]>([])
@@ -58,13 +57,6 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
   // focus on the initial input on mount
   useEffect(() => {
     fullNameRef.current?.focus()
-  }, [])
-
-  // set billing address, if passed as prop
-  useEffect(() => {
-    if (billingAddress) {
-      setAddress(billingAddress)
-    }
   }, [])
 
   // fired on each input change -> updates the relevant field in local state

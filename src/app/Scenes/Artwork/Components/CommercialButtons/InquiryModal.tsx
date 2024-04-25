@@ -1,9 +1,18 @@
-import { Spacer, Flex, Box, useTheme, Text, Separator, Join, Checkbox } from "@artsy/palette-mobile"
+import {
+  Box,
+  Checkbox,
+  Flex,
+  Input,
+  Join,
+  Separator,
+  Spacer,
+  Text,
+  useTheme,
+} from "@artsy/palette-mobile"
 import { InquiryModal_artwork$data } from "__generated__/InquiryModal_artwork.graphql"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import ChevronIcon from "app/Components/Icons/ChevronIcon"
-import { Input } from "app/Components/Input"
 import { AUTOMATED_MESSAGES } from "app/Scenes/Artwork/Components/CommercialButtons/constants"
 import { SubmitInquiryRequest } from "app/Scenes/Artwork/Components/Mutation/SubmitInquiryRequest"
 import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
@@ -13,7 +22,7 @@ import { LocationWithDetails } from "app/utils/googleMaps"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react"
 import { LayoutAnimation, ScrollView, TouchableOpacity } from "react-native"
-import { createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { RelayProp, createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { CollapsibleArtworkDetailsFragmentContainer } from "./CollapsibleArtworkDetails"
@@ -306,6 +315,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
             onChangeText={setMessage}
             onFocus={scrollToInput}
             style={{ justifyContent: "flex-start" }}
+            testID="add-message-input"
           />
         </Box>
       </ScrollView>

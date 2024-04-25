@@ -1,8 +1,7 @@
-import { Flex, INPUT_HEIGHT, Text, useSpace, useTheme } from "@artsy/palette-mobile"
+import { Flex, INPUT_MIN_HEIGHT, Input, Text, useSpace, useTheme } from "@artsy/palette-mobile"
 import { GridViewIcon } from "app/Components/Icons/GridViewIcon"
 import { ListViewIcon } from "app/Components/Icons/ListViewIcon"
 import SearchIcon from "app/Components/Icons/SearchIcon"
-import { Input } from "app/Components/Input"
 import { useAnimatedValue } from "app/Scenes/Artwork/Components/ImageCarousel/useAnimatedValue"
 import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -64,7 +63,7 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
   }, [value])
 
   return (
-    <Flex height={INPUT_HEIGHT} justifyContent="center">
+    <Flex height={INPUT_MIN_HEIGHT} justifyContent="center">
       {isFocused ? (
         <Flex flexDirection="row" alignItems="center">
           <Input
@@ -81,7 +80,6 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
             ref={inputRef}
             value={value}
             returnKeyType="done"
-            fontSize={14}
             autoCorrect={false}
           />
 

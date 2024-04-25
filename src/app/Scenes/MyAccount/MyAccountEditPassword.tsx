@@ -1,9 +1,8 @@
-import { Flex, Separator } from "@artsy/palette-mobile"
-import { Input } from "app/Components/Input"
+import { Flex, Input, Separator } from "@artsy/palette-mobile"
 import { Stack } from "app/Components/Stack"
 import { getCurrentEmissionState, GlobalStore, unsafe__getEnvironment } from "app/store/GlobalStore"
 import React, { useEffect, useState } from "react"
-import { Alert } from "react-native"
+import { Alert, Text } from "react-native"
 import {
   MyAccountFieldEditScreen,
   MyAccountFieldEditScreenProps,
@@ -99,7 +98,6 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
           autoComplete="password"
           autoFocus
           onChangeText={setCurrentPassword}
-          placeholder="Current password"
           secureTextEntry
           enableClearButton
           title="Current password"
@@ -109,10 +107,11 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
       </Flex>
       <Separator mb={2} mt={4} />
       <Stack mx={2}>
+        <Text>
+          Password must include at least one uppercase letter, one lowercase letter, and one number.
+        </Text>
         <Input
-          description="Must include at least one uppercase letter, one lowercase letter, and one number."
           onChangeText={setNewPassword}
-          placeholder="New password"
           secureTextEntry
           enableClearButton
           title="New password"
@@ -121,7 +120,6 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
         />
         <Input
           onChangeText={setPasswordConfirmation}
-          placeholder="Confirm new password"
           secureTextEntry
           enableClearButton
           title="Confirm new password"

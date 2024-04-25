@@ -1,7 +1,7 @@
-import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useFormikContext } from "formik"
-import { Rarity } from "./Rarity"
+import { Rarity } from "./RarityLegacy"
 
 jest.mock("formik")
 
@@ -24,20 +24,18 @@ describe("Rarity", () => {
 
     fireEvent.press(screen.getByTestId("rarity-select"))
 
-    await waitFor(() => screen.getByText("Limited Edition"))
+    screen.getByText("Limited Edition")
 
     fireEvent.press(screen.getByText("Limited Edition"))
 
-    await waitFor(() => screen.getByLabelText("Edition number input"))
+    screen.getByLabelText("Edition number input")
   })
 
   it("displays the modal with all classification types", async () => {
     renderWithWrappers(<Rarity />)
 
-    fireEvent.press(screen.getByText("What is this?"))
-
-    await waitFor(() => screen.getByText("Classifications"))
-
+    fireEvent.press(screen.getByText("What's this?"))
+    screen.getByText("Classifications")
 
     expect(screen.getByText("Unique")).toBeTruthy()
     // there are two of these because even though the modal is open,

@@ -1,11 +1,12 @@
+import { Input } from "@artsy/palette-mobile"
 import { MyProfilePaymentNewCreditCardSaveCardMutation } from "__generated__/MyProfilePaymentNewCreditCardSaveCardMutation.graphql"
 import { CountrySelect } from "app/Components/CountrySelect"
-import { Input, InputTitle } from "app/Components/Input"
+import { InputTitle } from "app/Components/Input"
 import { Select } from "app/Components/Select/SelectV2"
 import { Stack } from "app/Components/Stack"
 import { MyAccountFieldEditScreen } from "app/Scenes/MyAccount/Components/MyAccountFieldEditScreen"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { Action, action, computed, Computed, useLocalStore } from "easy-peasy"
+import { Action, Computed, action, computed, useLocalStore } from "easy-peasy"
 import React, { useEffect, useRef } from "react"
 import { LiteCreditCardInput } from "react-native-credit-card-input"
 import { commitMutation, graphql } from "react-relay"
@@ -186,7 +187,6 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
         <Input
           ref={cityRef}
           title="City"
-          placeholder="Add city"
           onChangeText={actions.fields.city.setValue}
           returnKeyType="next"
           onSubmitEditing={() => postalCodeRef.current?.focus()}
@@ -194,7 +194,6 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
         <Input
           ref={postalCodeRef}
           title="Postal Code"
-          placeholder="Add postal code"
           onChangeText={actions.fields.postCode.setValue}
           returnKeyType="next"
           onSubmitEditing={() => stateRef.current?.focus()}
@@ -202,7 +201,6 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
         <Input
           ref={stateRef}
           title="State, province, or region"
-          placeholder="Add state, province, or region"
           onChangeText={actions.fields.state.setValue}
           onSubmitEditing={() => {
             stateRef.current?.blur()

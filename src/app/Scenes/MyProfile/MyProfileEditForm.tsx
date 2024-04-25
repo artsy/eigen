@@ -1,17 +1,18 @@
 import { ActionType, ContextModule, EditedUserProfile, OwnerType } from "@artsy/cohesion"
 import {
   Avatar,
-  Spacer,
-  CheckCircleIcon,
-  CheckCircleFillIcon,
-  Flex,
   Box,
-  useColor,
-  Text,
+  Button,
+  CheckCircleFillIcon,
+  CheckCircleIcon,
+  Flex,
+  Input,
   Join,
   Message,
+  Spacer,
+  Text,
   Touchable,
-  Button,
+  useColor,
 } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { useNavigation } from "@react-navigation/native"
@@ -20,8 +21,7 @@ import { MyProfileEditFormQuery } from "__generated__/MyProfileEditFormQuery.gra
 import { MyProfileEditForm_me$key } from "__generated__/MyProfileEditForm_me.graphql"
 import { Image } from "app/Components/Bidding/Elements/Image"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { Input } from "app/Components/Input"
-import { buildLocationDisplay, LocationAutocomplete } from "app/Components/LocationAutocomplete"
+import { LocationAutocomplete, buildLocationDisplay } from "app/Components/LocationAutocomplete"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
 import { navigate } from "app/system/navigation/navigate"
@@ -35,7 +35,7 @@ import { useHasBeenTrue } from "app/utils/useHasBeenTrue"
 import { useFormik } from "formik"
 import React, { Suspense, useEffect, useRef, useState } from "react"
 import { InteractionManager, ScrollView, TextInput } from "react-native"
-import { useLazyLoadQuery, useRefetchableFragment, graphql } from "react-relay"
+import { graphql, useLazyLoadQuery, useRefetchableFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import * as Yup from "yup"
 import { useHandleEmailVerification, useHandleIDVerification } from "./useHandleVerification"
@@ -265,7 +265,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
                 onBlur={() => validateForm()}
                 error={errors.name}
                 returnKeyType="next"
-                defaultValue={values.name}
+                value={values.name}
                 onSubmitEditing={() => {
                   locationInputRef.current?.focus()
                 }}
@@ -300,7 +300,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
                 onBlur={() => validateForm()}
                 error={errors.name}
                 returnKeyType="next"
-                defaultValue={values.profession}
+                value={values.profession}
                 placeholder="Profession or job title"
                 onSubmitEditing={() => {
                   relevantPositionsInputRef.current?.focus()
@@ -314,7 +314,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
                 onBlur={() => validateForm()}
                 error={errors.name}
                 returnKeyType="next"
-                defaultValue={values.otherRelevantPositions}
+                value={values.otherRelevantPositions}
                 placeholder="Memberships, institutions, positions"
                 onSubmitEditing={() => {
                   bioInputRef.current?.focus()
@@ -332,7 +332,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
                 maxLength={150}
                 multiline
                 showLimit
-                defaultValue={values.bio}
+                value={values.bio}
                 placeholder="Add a brief bio, so galleries know which artists or genres you collect"
               />
 
