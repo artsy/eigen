@@ -45,7 +45,9 @@ export const PartnerOfferContainer: React.FC<{ partnerOfferID: string }> = ({ pa
         // we need to go back to the home screen before navigating to the orders screen
         // to prevent the user from closing the modal and navigating back to the this screen
         goBack()
-        navigate(`/orders/${orderOrError.order?.internalID}`)
+        navigate(`/orders/${orderOrError.order?.internalID}`, {
+          passProps: { title: "Purchase" },
+        })
 
         return
       } else {

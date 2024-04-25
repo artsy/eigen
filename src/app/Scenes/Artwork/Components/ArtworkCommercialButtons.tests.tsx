@@ -422,7 +422,11 @@ describe("ArtworkCommercialButtons", () => {
 
       await flushPromiseQueue()
 
-      expect(navigate).toHaveBeenCalledWith("/orders/buyNowID")
+      expect(navigate).toHaveBeenCalledWith("/orders/buyNowID", {
+        passProps: {
+          title: "Purchase",
+        },
+      })
     })
 
     it("the Purchase mutation", async () => {
