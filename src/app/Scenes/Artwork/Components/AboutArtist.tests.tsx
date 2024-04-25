@@ -56,9 +56,16 @@ describe("AboutArtist", () => {
       Artwork: () => ({
         isUnlisted: true,
         displayArtistBio: false,
+        artists: [
+          {
+            biographyBlurb: {
+              text: "Biography of Abbas Kiarostami",
+            },
+          },
+        ],
       }),
     })
 
-    expect(screen.queryByText("About the artist")).not.toBeOnTheScreen()
+    expect(screen.queryByText("Biography of Abbas Kiarostami")).not.toBeOnTheScreen()
   })
 })
