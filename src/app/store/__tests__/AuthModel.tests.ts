@@ -5,6 +5,7 @@ import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { AuthError } from "app/store/AuthError"
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { mockPostEventToProviders } from "app/utils/tests/globallyMockedStuff"
+import { Platform } from "react-native"
 import { AccessToken, GraphRequest, LoginManager } from "react-native-fbsdk-next"
 import Keychain from "react-native-keychain"
 
@@ -370,116 +371,124 @@ describe("AuthModel", () => {
       expect(result).toMatchObject(expectedError)
     })
 
-    it("throws an error if user don't have an email", async () => {
-      ;(GraphRequest as jest.Mock).mockImplementation((_route, _config, callback) => {
-        callback(undefined, { name: "name from facebook" })
+    describe("Classic login - Android", () => {
+      beforeEach(() => {
+        Platform.OS = "android"
       })
 
-      const result = await GlobalStore.actions.auth
-        .authFacebook({ signInOrUp: "signUp", agreedToReceiveEmails: true })
-        .catch((e) => e)
-      const expectedError = new AuthError(
-        "There is no email associated with your Facebook account. Please log in using your email and password instead."
-      )
-      expect(result).toMatchObject(expectedError)
-    })
+      it("throws an error if user doesn't have an email", async () => {
+        ;(GraphRequest as jest.Mock).mockImplementation((_route, _config, callback) => {
+          callback(undefined, { name: "name from facebook" })
+        })
 
-    it("fetches access token from facebook", async () => {
-      GlobalStore.actions.auth.signUp = jest.fn(() => ({ success: true })) as any
-
-      await GlobalStore.actions.auth.authFacebook({
-        signInOrUp: "signUp",
-        agreedToReceiveEmails: true,
+        const result = await GlobalStore.actions.auth
+          .authFacebook({ signInOrUp: "signUp", agreedToReceiveEmails: true })
+          .catch((e) => e)
+        const expectedError = new AuthError(
+          "There is no email associated with your Facebook account. Please log in using your email and password instead."
+        )
+        expect(result).toMatchObject(expectedError)
       })
 
-      expect(AccessToken.getCurrentAccessToken).toHaveBeenCalled()
-    })
+      it("fetches access token from facebook", async () => {
+        GlobalStore.actions.auth.signUp = jest.fn(() => ({ success: true })) as any
 
-    it("throws an error if fetching data from facebook fails", async () => {
-      const error: any = "fetching fb data error"
+        await GlobalStore.actions.auth.authFacebook({
+          signInOrUp: "signUp",
+          agreedToReceiveEmails: true,
+        })
 
-      ;(GraphRequest as jest.Mock).mockImplementation((_route, _config, callback) => {
-        callback(error, undefined)
+        expect(AccessToken.getCurrentAccessToken).toHaveBeenCalled()
       })
 
-      const result = await GlobalStore.actions.auth
-        .authFacebook({ signInOrUp: "signUp", agreedToReceiveEmails: true })
-        .catch((e) => e)
-      const expectedError = new AuthError("Error fetching facebook data", error.toString())
-      expect(result).toMatchObject(expectedError)
-    })
+      it("throws an error if fetching data from facebook fails", async () => {
+        const error: any = "fetching fb data error"
 
-    it("fetches profile info from facebook and signs up", async () => {
-      GlobalStore.actions.auth.signUp = jest.fn(() => ({ success: true })) as any
+        ;(GraphRequest as jest.Mock).mockImplementation((_route, _config, callback) => {
+          callback(error, undefined)
+        })
 
-      await GlobalStore.actions.auth.authFacebook({
-        signInOrUp: "signUp",
-        agreedToReceiveEmails: true,
+        const result = await GlobalStore.actions.auth
+          .authFacebook({ signInOrUp: "signUp", agreedToReceiveEmails: true })
+          .catch((e) => e)
+        const expectedError = new AuthError("Error fetching Facebook data", error.toString())
+        expect(result).toMatchObject(expectedError)
       })
 
-      expect(GlobalStore.actions.auth.signUp).toHaveBeenCalledWith({
-        email: "emailFromFacebook@email.com",
-        name: "name from facebook",
-        accessToken: "facebook-token",
-        oauthProvider: "facebook",
-        agreedToReceiveEmails: true,
+      it("fetches profile info from facebook and signs up", async () => {
+        GlobalStore.actions.auth.signUp = jest.fn(() => ({ success: true })) as any
+
+        await GlobalStore.actions.auth.authFacebook({
+          signInOrUp: "signUp",
+          agreedToReceiveEmails: true,
+        })
+
+        expect(GlobalStore.actions.auth.signUp).toHaveBeenCalledWith({
+          email: "emailFromFacebook@email.com",
+          name: "name from facebook",
+          accessToken: "facebook-token",
+          oauthProvider: "facebook",
+          oauthMode: "accessToken",
+          agreedToReceiveEmails: true,
+        })
       })
-    })
 
-    it("throws an error if sign up fails", async () => {
-      GlobalStore.actions.auth.signUp = jest.fn(() => ({
-        success: false,
-        message: "Could not sign up",
-      })) as any
+      it("throws an error if sign up fails", async () => {
+        GlobalStore.actions.auth.signUp = jest.fn(() => ({
+          success: false,
+          message: "Could not sign up",
+        })) as any
 
-      const result = await GlobalStore.actions.auth
-        .authFacebook({ signInOrUp: "signUp", agreedToReceiveEmails: true })
-        .catch((e) => e)
-      const expectedError = new AuthError("Could not sign up")
-      expect(result).toMatchObject(expectedError)
-    })
-
-    it("fetches profile info from facebook and signs in", async () => {
-      mockFetchJsonOnce({ access_token: "x-access-token" }, 201)
-      mockFetchJsonOnce({ email: "emailFromArtsy@mail.com" })
-      GlobalStore.actions.auth.signIn = jest.fn(() => true) as any
-
-      await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signIn" })
-
-      expect(GlobalStore.actions.auth.signIn).toHaveBeenCalledWith({
-        email: "emailFromArtsy@mail.com",
-        accessToken: "facebook-token",
-        oauthProvider: "facebook",
+        const result = await GlobalStore.actions.auth
+          .authFacebook({ signInOrUp: "signUp", agreedToReceiveEmails: true })
+          .catch((e) => e)
+        const expectedError = new AuthError("Could not sign up")
+        expect(result).toMatchObject(expectedError)
       })
-    })
 
-    it("tracks the login event for social auth", async () => {
-      mockFetchJsonOnce({ access_token: "x-access-token" }, 201)
-      mockFetchJsonOnce({ email: "emailFromArtsy@mail.com" })
-      mockFetchJsonOnce({ access_token: "x-access-token" }, 201)
-      mockFetchJsonOnce({ id: "my-user-id" })
+      it("fetches profile info from facebook and signs in", async () => {
+        mockFetchJsonOnce({ access_token: "x-access-token" }, 201)
+        mockFetchJsonOnce({ email: "emailFromArtsy@mail.com" })
+        GlobalStore.actions.auth.signIn = jest.fn(() => true) as any
 
-      await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signIn" })
+        await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signIn" })
 
-      expect(mockPostEventToProviders).toHaveBeenCalledTimes(1)
-      expect(mockPostEventToProviders.mock.calls[0]).toMatchInlineSnapshot(`
-        [
-          {
-            "action": "successfullyLoggedIn",
-            "service": "facebook",
-          },
-        ]
-      `)
-    })
+        expect(GlobalStore.actions.auth.signIn).toHaveBeenCalledWith({
+          email: "emailFromArtsy@mail.com",
+          accessToken: "facebook-token",
+          oauthMode: "accessToken",
+          oauthProvider: "facebook",
+        })
+      })
 
-    it("throws an error if getting X-ACCESS-TOKEN fails", async () => {
-      mockFetchJsonOnce({ error_description: "getting X-ACCESS-TOKEN error" })
+      it("tracks the login event for social auth", async () => {
+        mockFetchJsonOnce({ access_token: "x-access-token" }, 201)
+        mockFetchJsonOnce({ email: "emailFromArtsy@mail.com" })
+        mockFetchJsonOnce({ access_token: "x-access-token" }, 201)
+        mockFetchJsonOnce({ id: "my-user-id" })
 
-      const result = await GlobalStore.actions.auth
-        .authFacebook({ signInOrUp: "signIn" })
-        .catch((e) => e)
-      const expectedError = new AuthError("Login attempt failed")
-      expect(result).toMatchObject(expectedError)
+        await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signIn" })
+
+        expect(mockPostEventToProviders).toHaveBeenCalledTimes(1)
+        expect(mockPostEventToProviders.mock.calls[0]).toMatchInlineSnapshot(`
+          [
+            {
+              "action": "successfullyLoggedIn",
+              "service": "facebook",
+            },
+          ]
+        `)
+      })
+
+      it("throws an error if getting X-ACCESS-TOKEN fails", async () => {
+        mockFetchJsonOnce({ error_description: "getting X-ACCESS-TOKEN error" })
+
+        const result = await GlobalStore.actions.auth
+          .authFacebook({ signInOrUp: "signIn" })
+          .catch((e) => e)
+        const expectedError = new AuthError("Login attempt failed")
+        expect(result).toMatchObject(expectedError)
+      })
     })
   })
 
@@ -521,6 +530,7 @@ describe("AuthModel", () => {
         name: "name from google",
         accessToken: "google-token",
         oauthProvider: "google",
+        oauthMode: "accessToken",
         agreedToReceiveEmails: false,
       })
     })
@@ -548,6 +558,7 @@ describe("AuthModel", () => {
       expect(GlobalStore.actions.auth.signIn).toHaveBeenCalledWith({
         email: "emailFromArtsy@mail.com",
         accessToken: "google-token",
+        oauthMode: "accessToken",
         oauthProvider: "google",
       })
     })
@@ -617,6 +628,7 @@ describe("AuthModel", () => {
         appleUid: "appleUID",
         idToken: "apple-id-token",
         oauthProvider: "apple",
+        oauthMode: "idToken",
         agreedToReceiveEmails: true,
       })
     })
@@ -637,6 +649,7 @@ describe("AuthModel", () => {
         email: "emailFromArtsy@mail.com",
         appleUid: "appleUID",
         idToken: "apple-id-token",
+        oauthMode: "idToken",
         oauthProvider: "apple",
         onSignIn: undefined,
       })
@@ -705,6 +718,7 @@ describe("AuthModel", () => {
     })
 
     it("clears user data", async () => {
+      Platform.OS = "ios"
       expect(LegacyNativeModules.ArtsyNativeModule.clearUserData).not.toHaveBeenCalled()
       await GlobalStore.actions.auth.signOut()
       expect(LegacyNativeModules.ArtsyNativeModule.clearUserData).toHaveBeenCalledTimes(1)
