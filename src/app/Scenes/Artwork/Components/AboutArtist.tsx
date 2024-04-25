@@ -11,6 +11,11 @@ interface AboutArtistProps {
 }
 
 export const AboutArtist: React.FC<AboutArtistProps> = ({ artwork }) => {
+  // Possibly hide the artist bio if the artwork is unlisted and the artist bio is not displayed
+  if (artwork.isUnlisted && !artwork.displayArtistBio) {
+    return null
+  }
+
   const artists = artwork.artists || []
 
   const hasSingleArtist = artists && artists.length === 1
@@ -72,6 +77,7 @@ export const AboutArtist: React.FC<AboutArtistProps> = ({ artwork }) => {
 export const AboutArtistFragmentContainer = createFragmentContainer(AboutArtist, {
   artwork: graphql`
     fragment AboutArtist_artwork on Artwork {
+      displayArtistBio
       artists {
         id
         biographyBlurb {
