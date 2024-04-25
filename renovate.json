@@ -1,8 +1,8 @@
 {
-  "extends": ["@artsy:app", ":automergePatch", "helpers:pinGitHubActionDigests"],
+  "extends": ["@artsy:app", "helpers:pinGitHubActionDigests"],
   "assignees": ["gkartalis", "brainbicycle"],
   "reviewers": ["gkartalis", "brianbicycle"],
-  "mergeCriteria": {
-    "mergeOnlyWhenPassing": true
+  "patch": {
+    "automerge": true
   }
 }
