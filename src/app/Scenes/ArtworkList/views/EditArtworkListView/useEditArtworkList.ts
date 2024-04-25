@@ -50,6 +50,7 @@ const EditArtworkListMutation = graphql`
           artworkList: collection {
             internalID
             name
+            shareableWithPartners
           }
         }
         ... on UpdateCollectionFailure {

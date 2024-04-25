@@ -1,17 +1,25 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Box, Flex, Separator, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import {
+  Box,
+  Flex,
+  Separator,
+  SkeletonBox,
+  SkeletonText,
+  useScreenDimensions,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { ArtworkListQuery, CollectionArtworkSorts } from "__generated__/ArtworkListQuery.graphql"
 import { ArtworkList_artworksConnection$key } from "__generated__/ArtworkList_artworksConnection.graphql"
 import { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import { ArtworkListProvider } from "app/Components/ArtworkLists/ArtworkListContext"
-import { SortOption, SortByModal } from "app/Components/SortByModal/SortByModal"
+import { SortByModal, SortOption } from "app/Components/SortByModal/SortByModal"
 import { PAGE_SIZE } from "app/Components/constants"
 import { ArtworkListArtworksGridHeader } from "app/Scenes/ArtworkList/ArtworkListArtworksGridHeader"
 import { ArtworkListEmptyState } from "app/Scenes/ArtworkList/ArtworkListEmptyState"
 import { ArtworkListHeader } from "app/Scenes/ArtworkList/ArtworkListHeader"
 import { extractNodes } from "app/utils/extractNodes"
-import { PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
+import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useRefreshControl } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -98,6 +106,7 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
             <ArtworkListArtworksGridHeader
               title={artworkList?.name ?? ""}
               artworksCount={artworksCount}
+              shareableWithPartners={artworkList?.shareableWithPartners ?? false}
               onSortButtonPress={openSortModal}
             />
           </Box>
@@ -145,6 +154,7 @@ const artworkListFragment = graphql`
       internalID
       name
       default
+      shareableWithPartners
 
       artworks: artworksConnection(first: $count, after: $after, sort: $sort)
         @connection(key: "ArtworkList_artworks") {
@@ -183,16 +193,19 @@ export const ArtworkListScreen: FC<ArtworkListScreenProps> = (props) => {
 const ArtworkListPlaceholder = () => {
   const screen = useScreenDimensions()
   const space = useSpace()
+
   return (
     <ProvidePlaceholderContext>
       <ArtworkListHeader me={null} />
 
       <Flex px={2}>
-        <PlaceholderText height={20} width={200} marginVertical={space(2)} />
+        <SkeletonText mb={2} variant="lg">
+          Saved Artworks
+        </SkeletonText>
         <Separator borderColor="black10" mt={1} mb={2} />
         <Flex justifyContent="space-between" flexDirection="row" mb={2}>
-          <PlaceholderText width={120} height={22} />
-          <PlaceholderText width={80} height={22} />
+          <SkeletonText variant="xs">3 Artworks</SkeletonText>
+          <SkeletonBox width={80} height={22} />
         </Flex>
         <GenericGridPlaceholder width={screen.width - space(4)} />
       </Flex>

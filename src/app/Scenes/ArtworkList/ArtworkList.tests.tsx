@@ -1,40 +1,45 @@
-import { screen } from "@testing-library/react-native"
-import { ArtworkList } from "app/Scenes/ArtworkList/ArtworkList"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
-import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { createMockEnvironment } from "relay-test-utils"
+import { Text } from "@artsy/palette-mobile"
+import { fireEvent, screen } from "@testing-library/react-native"
+import { ArtworkList_Test_Query } from "__generated__/ArtworkList_Test_Query.graphql"
+import { ArtworkListScreen } from "app/Scenes/ArtworkList/ArtworkList"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 
 const CONTEXTUAL_MENU_LABEL = "Contextual Menu Button"
 
-describe("ArtworkList", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+jest.mock("@artsy/palette-mobile", () => ({
+  ...jest.requireActual("@artsy/palette-mobile"),
+  Popover: (props: any) => <MockedPopover {...props} />,
+}))
 
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+describe("ArtworkList", () => {
+  const { renderWithRelay } = setupTestWrapper<ArtworkList_Test_Query>({
+    Component: (props) => {
+      return <ArtworkListScreen {...(props as any)} />
+    },
+    query: graphql`
+      query ArtworkList_Test_Query {
+        me {
+          ...ArtworkList_artworksConnection @arguments(listID: "id", count: 10)
+        }
+      }
+    `,
   })
 
   it("renders ArtworkList", async () => {
-    renderWithHookWrappersTL(<ArtworkList listID="some-id" />, mockEnvironment)
+    const { mockResolveLastOperation } = renderWithRelay()
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Me: () => me,
-    })
-
-    await flushPromiseQueue()
+    mockResolveLastOperation({ Me: () => me })
 
     expect(screen.getByText("Saved Artworks")).toBeOnTheScreen()
     expect(screen.getByText("2 Artworks")).toBeOnTheScreen()
   })
 
   it("displays the artworks", async () => {
-    renderWithHookWrappersTL(<ArtworkList listID="some-id" />, mockEnvironment)
+    const { mockResolveLastOperation } = renderWithRelay()
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Me: () => me,
-    })
-
-    await flushPromiseQueue()
+    mockResolveLastOperation({ Me: () => me })
 
     expect(screen.getByText("Artwork Title 1")).toBeOnTheScreen()
     expect(screen.getByText("Artwork Title 2")).toBeOnTheScreen()
@@ -42,53 +47,101 @@ describe("ArtworkList", () => {
 
   describe("Contextual menu button", () => {
     it("should NOT be displayed for default artwork list", async () => {
-      renderWithHookWrappersTL(<ArtworkList listID="some-id" />, mockEnvironment)
+      const { mockResolveLastOperation } = renderWithRelay()
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Me: () => me,
-      })
-
-      await flushPromiseQueue()
+      mockResolveLastOperation({ Me: () => me })
 
       expect(screen.queryByLabelText(CONTEXTUAL_MENU_LABEL)).not.toBeOnTheScreen()
     })
 
-    describe("custom artwork list", () => {
-      it("should be displayed", async () => {
-        renderWithHookWrappersTL(<ArtworkList listID="some-id" />, mockEnvironment)
+    it("should be displayed custom artwork list", async () => {
+      const { mockResolveLastOperation } = renderWithRelay()
 
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          Me: () => ({
-            ...me,
-            artworkList: customArtworkList,
-          }),
-        })
+      mockResolveLastOperation({ Me: () => ({ ...me, artworkList: customArtworkList }) })
 
-        await flushPromiseQueue()
+      expect(screen.getByLabelText(CONTEXTUAL_MENU_LABEL)).toBeOnTheScreen()
+    })
 
-        expect(screen.getByLabelText(CONTEXTUAL_MENU_LABEL)).toBeOnTheScreen()
+    it("should be displayed for custom artwork list empty state", async () => {
+      const { mockResolveLastOperation } = renderWithRelay()
+
+      mockResolveLastOperation({
+        Me: () => ({
+          ...me,
+          artworkList: {
+            ...customArtworkList,
+            artworks: { ...customArtworkList.artworks, totalCount: 0 },
+          },
+        }),
       })
 
-      it("should be displayed for empty state", async () => {
-        renderWithHookWrappersTL(<ArtworkList listID="some-id" />, mockEnvironment)
+      expect(screen.getByLabelText(CONTEXTUAL_MENU_LABEL)).toBeOnTheScreen()
+    })
+  })
 
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          Me: () => ({
-            ...me,
-            artworkList: {
-              ...customArtworkList,
-              artworks: {
-                ...customArtworkList.artworks,
-                totalCount: 0,
-              },
-            },
-          }),
-        })
+  describe("Artwork list shareability with partners", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworkListOfferability: true })
+    })
 
-        await flushPromiseQueue()
+    it("should display the EyeClosedIcon if not shareable with partners", async () => {
+      const { mockResolveLastOperation } = renderWithRelay()
 
-        expect(screen.getByLabelText(CONTEXTUAL_MENU_LABEL)).toBeOnTheScreen()
+      mockResolveLastOperation({
+        Me: () => ({ artworkList: { ...defaultArtworkList, shareableWithPartners: false } }),
       })
+
+      expect(screen.getByLabelText("EyeClosedIcon")).toBeOnTheScreen()
+    })
+
+    it("should NOT display the EyeClosedIcon if shareable with partners", async () => {
+      const { mockResolveLastOperation } = renderWithRelay()
+
+      mockResolveLastOperation({
+        Me: () => ({ artworkList: { ...defaultArtworkList, shareableWithPartners: true } }),
+      })
+
+      expect(screen.queryByLabelText("EyeClosedIcon")).not.toBeOnTheScreen()
+    })
+
+    it("should display the Popover when user clicks the EyeClosedIcon", async () => {
+      const { mockResolveLastOperation } = renderWithRelay()
+
+      mockResolveLastOperation({
+        Me: () => ({ artworkList: { ...defaultArtworkList, shareableWithPartners: false } }),
+      })
+
+      fireEvent.press(screen.getByLabelText("EyeClosedIcon"))
+
+      expect(
+        screen.getByText(
+          "Artworks in this list are only visible to you and not eligible to receive offers."
+        )
+      ).toBeOnTheScreen()
+    })
+
+    it("should dismiss the Popover when the user clicks the EyeClosedIcon", async () => {
+      const { mockResolveLastOperation } = renderWithRelay()
+
+      mockResolveLastOperation({
+        Me: () => ({ artworkList: { ...defaultArtworkList, shareableWithPartners: false } }),
+      })
+
+      fireEvent.press(screen.getByLabelText("EyeClosedIcon"))
+
+      expect(
+        screen.getByText(
+          "Artworks in this list are only visible to you and not eligible to receive offers."
+        )
+      ).toBeOnTheScreen()
+
+      fireEvent.press(screen.getByLabelText("EyeClosedIcon"))
+
+      expect(
+        screen.queryByText(
+          "Artworks in this list are only visible to you and not eligible to receive offers."
+        )
+      ).not.toBeOnTheScreen()
     })
   })
 })
@@ -127,4 +180,19 @@ const customArtworkList = {
 
 const me = {
   artworkList: defaultArtworkList,
+}
+
+const MockedPopover: React.FC<any> = ({ children, onDismiss, visible, title }) => {
+  if (!visible) {
+    return <>{children}</>
+  }
+
+  return (
+    <>
+      <Text onPress={onDismiss}>
+        <>{title}</>
+        <>{children}</>
+      </Text>
+    </>
+  )
 }

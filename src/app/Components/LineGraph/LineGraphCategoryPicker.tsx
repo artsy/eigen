@@ -56,9 +56,9 @@ export const LineGraphCategoryPicker: React.FC<LineGraphCategoryPickerProps> = m
         }
         let left = 20
         for (let i = 0; i < selectedIndex; i++) {
-          left += categoryLayouts[i]!.width
+          left += categoryLayouts[i]?.width ?? 0
         }
-        const center = left + categoryLayouts[selectedIndex]!.width / 2
+        const center = left + (categoryLayouts[selectedIndex]?.width ?? 0) / 2
         const scrollLeft = center - screenWidth / 2
         scrollViewRef.current?.scrollTo({ x: scrollLeft })
       }

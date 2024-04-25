@@ -1,6 +1,5 @@
-import { Flex, useColor } from "@artsy/palette-mobile"
+import { Flex, Input, useColor } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
-import { Input } from "app/Components/Input"
 import { useFormikContext } from "formik"
 import React, { useState } from "react"
 import { Keyboard } from "react-native"
@@ -36,6 +35,7 @@ export const OnboardingCreateAccountName: React.FC<OnboardingCreateAccountNamePr
         autoComplete="name"
         autoCorrect={false}
         autoFocus
+        title="Full Name"
         onChangeText={(text) => {
           if (errors.name) {
             setErrors({
@@ -59,7 +59,6 @@ export const OnboardingCreateAccountName: React.FC<OnboardingCreateAccountNamePr
         placeholderTextColor={color("black30")}
         returnKeyType="done"
         maxLength={128}
-        value={values.name}
         error={errors.name}
         testID="nameInput"
       />

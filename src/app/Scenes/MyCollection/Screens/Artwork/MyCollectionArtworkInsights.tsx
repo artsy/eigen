@@ -2,6 +2,7 @@ import { Flex, Tabs } from "@artsy/palette-mobile"
 import { MyCollectionArtworkInsights_artwork$key } from "__generated__/MyCollectionArtworkInsights_artwork.graphql"
 import { MyCollectionArtworkInsights_marketPriceInsights$key } from "__generated__/MyCollectionArtworkInsights_marketPriceInsights.graphql"
 import { MyCollectionArtworkInsights_me$key } from "__generated__/MyCollectionArtworkInsights_me.graphql"
+import { PriceEstimateRequested } from "app/Scenes/MyCollection/Screens/Artwork/Components/ArtworkInsights/RequestForPriceEstimate/PriceEstimateRequested"
 import { useFragment, graphql } from "react-relay"
 import { MyCollectionArtworkArtistAuctionResults } from "./Components/ArtworkInsights/MyCollectionArtworkArtistAuctionResults"
 import { MyCollectionArtworkArtistMarket } from "./Components/ArtworkInsights/MyCollectionArtworkArtistMarket"
@@ -42,11 +43,9 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
           </>
         )}
 
-        <RequestForPriceEstimateBanner
-          me={me}
-          artwork={artwork}
-          marketPriceInsights={marketPriceInsights}
-        />
+        <PriceEstimateRequested me={me} artwork={artwork} />
+
+        {!!isP1Artist && <MyCollectionWhySell artwork={artwork} contextModule="insights" />}
 
         {!!artwork.marketPriceInsights && (
           <MyCollectionArtworkArtistMarket
@@ -59,7 +58,12 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
 
         <MyCollectionArtworkArtistAuctionResults artwork={artwork} />
 
-        {!!isP1Artist && <MyCollectionWhySell artwork={artwork} contextModule="insights" />}
+        <RequestForPriceEstimateBanner
+          me={me}
+          artwork={artwork}
+          marketPriceInsights={marketPriceInsights}
+          contextModule="insights"
+        />
       </Flex>
     </Tabs.ScrollView>
   )

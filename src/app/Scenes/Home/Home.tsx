@@ -19,15 +19,17 @@ import { Home_homePageBelow$data } from "__generated__/Home_homePageBelow.graphq
 import { Home_meAbove$data } from "__generated__/Home_meAbove.graphql"
 import { Home_meBelow$data } from "__generated__/Home_meBelow.graphql"
 import { Home_newWorksForYou$data } from "__generated__/Home_newWorksForYou.graphql"
+import { Home_news$data } from "__generated__/Home_news.graphql"
 import { Home_notificationsConnection$data } from "__generated__/Home_notificationsConnection.graphql"
+import { Home_recommendedAuctionLots$data } from "__generated__/Home_recommendedAuctionLots.graphql"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { LargeArtworkRailPlaceholder } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { ArtistRailFragmentContainer } from "app/Components/Home/ArtistRails/ArtistRail"
 import { RecommendedArtistsRailFragmentContainer } from "app/Components/Home/ArtistRails/RecommendedArtistsRail"
-import { LotsByFollowedArtistsRailContainer } from "app/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail"
 import { useDismissSavedArtwork } from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
 import { useEnableProgressiveOnboarding } from "app/Components/ProgressiveOnboarding/useEnableProgressiveOnboarding"
+import { ArticlesCards } from "app/Scenes/Articles/News/ArticlesCards"
 import { ActivityIndicator } from "app/Scenes/Home/Components/ActivityIndicator"
 import { ActivityRail } from "app/Scenes/Home/Components/ActivityRail"
 import { ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE } from "app/Scenes/Home/Components/ActivityRailItem"
@@ -87,6 +89,7 @@ import { isTablet } from "react-native-device-info"
 import { Environment, RelayRefetchProp, createRefetchContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { HeroUnitsRail } from "./Components/HeroUnitsRail"
+import { RecommendedAuctionLotsRail } from "./Components/RecommendedAuctionLotsRail"
 import HomeAnalytics from "./homeAnalytics"
 import { useHomeModules } from "./useHomeModules"
 
@@ -105,6 +108,7 @@ export interface HomeModule extends ArtworkActionTrackingProps {
 }
 
 export interface HomeProps extends ViewProps {
+  news: Home_news$data | null | undefined
   articlesConnection: Home_articlesConnection$data | null | undefined
   featured: Home_featured$data | null | undefined
   homePageAbove: Home_homePageAbove$data | null | undefined
@@ -117,6 +121,7 @@ export interface HomeProps extends ViewProps {
   relay: RelayRefetchProp
   emergingPicks: Home_emergingPicks$data | null | undefined
   heroUnits: Home_heroUnits$data | null | undefined
+  recommendedAuctionLots: Home_recommendedAuctionLots$data | null | undefined
 }
 
 const Home = memo((props: HomeProps) => {
@@ -163,7 +168,6 @@ const Home = memo((props: HomeProps) => {
 
   const enableRailViewsTracking = useFeatureFlag("ARImpressionsTrackingHomeRailViews")
   const enableItemViewsTracking = useFeatureFlag("ARImpressionsTrackingHomeItemViews")
-  const enableNewSaleArtworkTileRailCard = useFeatureFlag("AREnableNewAuctionsRailCard")
   const enableShowsForYouLocation = useFeatureFlag("AREnableShowsForYouLocation")
   // Needed to support percentage rollout of the experiment
   const enableRailViewsTrackingExperiment = useExperimentVariant(
@@ -294,14 +298,19 @@ const Home = memo((props: HomeProps) => {
           return <GalleriesForYouBanner />
         case "activity":
           return <ActivityRail title={item.title} notificationsConnection={item.data} />
-        case "lotsByFollowedArtists":
+        case "recommendedAuctionLots":
           return (
-            <LotsByFollowedArtistsRailContainer
+            <RecommendedAuctionLotsRail
+              {...trackingProps}
+              artworkConnection={item.data}
+              isRailVisible={visibleRails.has(item.title)}
+              scrollRef={scrollRefs.current[index]}
               title={item.title}
-              me={item.data}
-              cardSize={enableNewSaleArtworkTileRailCard ? "large" : "small"}
+              size="large"
+              contextScreenOwnerType={OwnerType.home}
             />
           )
+
         case "newWorksForYou":
           return (
             <NewWorksForYouRail
@@ -312,6 +321,8 @@ const Home = memo((props: HomeProps) => {
               title={item.title}
             />
           )
+        case "news":
+          return <ArticlesCards viewer={item.data} />
         case "recommended-artists":
           return (
             <RecommendedArtistsRailFragmentContainer
@@ -464,19 +475,6 @@ export const HomeFragmentContainer = memo(
             savedArtworks
           }
           ...EmailConfirmationBanner_me
-          lotsByFollowedArtistsConnectionCount: lotsByFollowedArtistsConnection(
-            first: 1
-            includeArtworksByFollowedArtists: true
-            isAuction: true
-            liveSale: true
-          ) {
-            edges {
-              node {
-                id
-              }
-            }
-          }
-          ...LotsByFollowedArtistsRail_me
         }
       `,
       meBelow: graphql`
@@ -517,10 +515,14 @@ export const HomeFragmentContainer = memo(
           }
         }
       `,
-
       articlesConnection: graphql`
         fragment Home_articlesConnection on ArticleConnection {
           ...ArticlesRail_articlesConnection
+        }
+      `,
+      news: graphql`
+        fragment Home_news on Viewer {
+          ...ArticlesCards_viewer
         }
       `,
       featured: graphql`
@@ -545,6 +547,11 @@ export const HomeFragmentContainer = memo(
         fragment Home_emergingPicks on MarketingCollection {
           ...MarketingCollectionRail_marketingCollection
             @arguments(input: { sort: "-decayed_merch" })
+        }
+      `,
+      recommendedAuctionLots: graphql`
+        fragment Home_recommendedAuctionLots on Viewer {
+          ...RecommendedAuctionLotsRail_largeArtworkConnection
         }
       `,
     },
@@ -572,11 +579,17 @@ export const HomeFragmentContainer = memo(
         articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, featured: true) @optionalField {
           ...Home_articlesConnection
         }
+        news: viewer @optionalField {
+          ...Home_news
+        }
         newWorksForYou: viewer {
           ...Home_newWorksForYou
         }
         emergingPicks: marketingCollection(slug: "curators-picks-emerging") @optionalField {
           ...Home_emergingPicks
+        }
+        recommendedAuctionLots: viewer {
+          ...Home_recommendedAuctionLots
         }
       }
     `
@@ -798,6 +811,12 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
             articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, featured: true) @optionalField {
               ...Home_articlesConnection
             }
+            news: viewer @optionalField {
+              ...Home_news
+            }
+            recommendedAuctionLots: viewer @optionalField {
+              ...Home_recommendedAuctionLots
+            }
           }
         `,
         variables: {},
@@ -811,6 +830,7 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
           return (
             <HomeFragmentContainer
               articlesConnection={below?.articlesConnection ?? null}
+              news={below?.news ?? null}
               emergingPicks={below?.emergingPicks ?? null}
               featured={below ? below.featured : null}
               homePageAbove={above.homePage}
@@ -821,6 +841,7 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
               meBelow={below ? below.me : null}
               loading={!below}
               heroUnits={above ? above.viewer : null}
+              recommendedAuctionLots={below?.recommendedAuctionLots ?? null}
             />
           )
         },

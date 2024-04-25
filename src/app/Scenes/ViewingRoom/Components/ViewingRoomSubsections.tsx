@@ -1,6 +1,5 @@
-import { Box, Text } from "@artsy/palette-mobile"
+import { Box, Image, Text, useScreenDimensions } from "@artsy/palette-mobile"
 import { ViewingRoomSubsections_viewingRoom$data } from "__generated__/ViewingRoomSubsections_viewingRoom.graphql"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface ViewingRoomSubsectionProps {
@@ -9,6 +8,11 @@ interface ViewingRoomSubsectionProps {
 
 export const ViewingRoomSubsections: React.FC<ViewingRoomSubsectionProps> = (props) => {
   const subsections = props.viewingRoom.subsections
+  const { width: screenWidth } = useScreenDimensions()
+
+  const calculateImageHeight = (imageWidth: number, imageHeight: number, screenWidth: number) => {
+    return (imageHeight / imageWidth) * screenWidth
+  }
 
   return (
     <>
@@ -35,9 +39,14 @@ export const ViewingRoomSubsections: React.FC<ViewingRoomSubsectionProps> = (pro
               </Box>
             )}
             {!!shouldDisplayImage && (
-              <OpaqueImageView
-                imageURL={subsection.image.imageURLs.normalized}
-                aspectRatio={subsection.image.width / subsection.image.height}
+              <Image
+                src={subsection.image.imageURLs.normalized}
+                width={screenWidth}
+                height={calculateImageHeight(
+                  subsection.image.width,
+                  subsection.image.height,
+                  screenWidth
+                )}
               />
             )}
             {!!subsection.caption && (

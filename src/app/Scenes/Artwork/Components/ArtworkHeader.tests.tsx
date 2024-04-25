@@ -3,10 +3,9 @@ import { ArtworkHeaderTestsQuery } from "__generated__/ArtworkHeaderTestsQuery.g
 import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
-import { ArtworkHeaderFragmentContainer, VisibilityLevels } from "./ArtworkHeader"
+import { ArtworkHeaderFragmentContainer } from "./ArtworkHeader"
 import { ArtworkTombstone } from "./ArtworkTombstone"
 import { ImageCarousel } from "./ImageCarousel/ImageCarousel"
-import { UnlistedArtworksBanner } from "./UnlistedArtworksBanner"
 
 jest.mock("react-native-view-shot", () => ({}))
 
@@ -39,38 +38,5 @@ describe("ArtworkHeader", () => {
 
     // image carousel component
     expect(screen.UNSAFE_queryAllByType(ImageCarousel)).toHaveLength(1)
-  })
-
-  describe("when artwork is unlisted", () => {
-    it("renders private listing banner component", () => {
-      renderWithRelay({
-        Artwork: () => ({
-          visibilityLevel: VisibilityLevels.UNLISTED,
-        }),
-      })
-      expect(screen.UNSAFE_queryAllByType(UnlistedArtworksBanner).length).toEqual(1)
-    })
-  })
-
-  describe("when artwork is listed", () => {
-    it("does not render private listing banner component", () => {
-      renderWithRelay({
-        Artwork: () => ({
-          visibilityLevel: VisibilityLevels.LISTED,
-        }),
-      })
-      expect(screen.UNSAFE_queryAllByType(UnlistedArtworksBanner).length).toEqual(0)
-    })
-  })
-
-  describe("when artwork visibility is null", () => {
-    it("does not render private listing banner component", () => {
-      renderWithRelay({
-        Artwork: () => ({
-          visibilityLevel: null,
-        }),
-      })
-      expect(screen.UNSAFE_queryAllByType(UnlistedArtworksBanner).length).toEqual(0)
-    })
   })
 })

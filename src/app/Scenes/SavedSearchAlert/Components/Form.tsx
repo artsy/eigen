@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Flex,
+  Input,
   Join,
   Pill,
   Spacer,
@@ -12,7 +13,6 @@ import {
 } from "@artsy/palette-mobile"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
-import { Input } from "app/Components/Input"
 import { SavedSearchSuggestedFiltersQueryRenderer } from "app/Scenes/SavedSearchAlert/Components/SavedSearchSuggestedFilters"
 import {
   SavedSearchAlertFormValues,
@@ -88,7 +88,8 @@ export const Form: React.FC<FormProps> = ({
     })
   }
 
-  const isArtistPill = (pill: SavedSearchPill) => pill.paramName === SearchCriteria.artistID
+  const isArtistPill = (pill: SavedSearchPill) =>
+    pill.paramName === SearchCriteria.artistID || pill.paramName === SearchCriteria.artistIDs
 
   return (
     <>
@@ -157,6 +158,7 @@ export const Form: React.FC<FormProps> = ({
               error={errors.details}
               multiline
               maxLength={700}
+              showLimit
               testID="alert-input-details"
             />
           </Flex>

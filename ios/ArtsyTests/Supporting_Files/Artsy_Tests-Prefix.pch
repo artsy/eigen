@@ -4,7 +4,7 @@
     #import <Foundation/Foundation.h>
     #import <Specta/Specta.h>
     #import <Expecta/Expecta.h>
-    #import <Expecta+Snapshots/EXPMatchers+FBSnapshotTest.h>
+    #import <Expecta+Snapshots-umbrella.h>
     #import <OHHTTPStubs/OHHTTPStubs.h>
     #import <OCMock/OCMock.h>
     #import <Forgeries/ForgeriesTraitCollections.h>

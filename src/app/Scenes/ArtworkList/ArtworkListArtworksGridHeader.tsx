@@ -6,17 +6,20 @@ import { FC } from "react"
 interface ArtworkListArtworksGridHeaderProps {
   title: string
   artworksCount: number
+  shareableWithPartners: boolean
   onSortButtonPress: () => void
 }
 
 export const ArtworkListArtworksGridHeader: FC<ArtworkListArtworksGridHeaderProps> = ({
   title,
   artworksCount,
+  shareableWithPartners,
   onSortButtonPress,
 }) => {
   return (
     <Flex>
-      <ArtworkListTitle title={title} />
+      <ArtworkListTitle title={title} shareableWithPartners={shareableWithPartners} />
+
       <Separator borderColor="black10" mt={1} />
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
         <Text ml={2} variant="xs" color="black60">

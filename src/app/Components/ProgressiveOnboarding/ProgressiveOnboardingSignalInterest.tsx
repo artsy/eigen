@@ -22,17 +22,18 @@ export const ProgressiveOnboardingSignalInterest: React.FC = ({ children }) => {
     !isDismissed("signal-interest").status &&
     isFocused &&
     isInView
-  const { isActive, clearActivePopover } = useSetActivePopover(isDisplayable)
+
+  const { clearActivePopover } = useSetActivePopover(isDisplayable)
 
   const handleDismiss = () => {
     setIsReady(false)
     dismiss("signal-interest")
   }
 
-  if (isDisplayable && isActive) {
+  if (isInView) {
     return (
       <Popover
-        visible
+        visible={!!isDisplayable}
         onDismiss={handleDismiss}
         onPressOutside={handleDismiss}
         onCloseComplete={clearActivePopover}
@@ -43,13 +44,9 @@ export const ProgressiveOnboardingSignalInterest: React.FC = ({ children }) => {
           </Text>
         }
       >
-        <Flex pointerEvents="none">{children}</Flex>
+        <Flex>{children}</Flex>
       </Popover>
     )
-  }
-
-  if (isInView) {
-    return <>{children}</>
   }
 
   return <ElementInView onVisible={() => setIsInView(true)}>{children}</ElementInView>

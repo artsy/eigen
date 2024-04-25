@@ -1,21 +1,14 @@
-import { Spacer, Flex, Box, Text, LinkText, Separator, Join, Button } from "@artsy/palette-mobile"
+import { Spacer, Box, Text, LinkText, Join, Button } from "@artsy/palette-mobile"
+import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"
 import { navigate } from "app/system/navigation/navigate"
 import React from "react"
 import { View } from "react-native"
 
-export class PrivacyRequest extends React.Component {
-  render() {
-    return (
+export const PrivacyRequest: React.FC = () => {
+  return (
+    <PageWithSimpleHeader title="Personal Data Request">
       <View style={{ flex: 1 }}>
-        <Box mb={1} mt={2}>
-          <Flex alignItems="center">
-            <Text variant="sm-display" weight="medium">
-              Personal data request
-            </Text>
-          </Flex>
-        </Box>
-        <Separator />
         <Spacer y={1} />
         <Box mx={2}>
           <Join separator={<Spacer y={2} />}>
@@ -50,6 +43,6 @@ export class PrivacyRequest extends React.Component {
           </Join>
         </Box>
       </View>
-    )
-  }
+    </PageWithSimpleHeader>
+  )
 }

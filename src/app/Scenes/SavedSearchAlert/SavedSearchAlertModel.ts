@@ -1,4 +1,3 @@
-import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   SavedSearchEntity,
   SearchCriteria,
@@ -19,7 +18,6 @@ export interface SavedSearchAlertMutationResult {
 
 // Navigation
 export interface CreateSavedSearchAlertParams {
-  aggregations: Aggregations
   attributes: SearchCriteriaAttributes
   entity: SavedSearchEntity
   currentArtworkID?: string

@@ -8,11 +8,18 @@ import { graphql, useFragment } from "react-relay"
 import { ArtworkDetailsRow } from "./ArtworkDetailsRow"
 import { RequestConditionReportQueryRenderer } from "./RequestConditionReport"
 
+// Number of items to display when read more is visible
+const COLLAPSED_COUNT = 4
+
 interface ArtworkDetailsProps {
   artwork: ArtworkDetails_artwork$key
+  showReadMore?: boolean
 }
 
-export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ artwork }) => {
+export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({
+  artwork,
+  showReadMore = false,
+}) => {
   const artworkData = useFragment(artworkDetailsFragment, artwork)
   const preferredMetric = GlobalStore.useAppState((state) => state.userPrefs.metric)
 
@@ -92,7 +99,11 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ artwork }) => {
     },
   ]
 
-  const displayItems = listItems.filter((item) => !!item.value)
+  const allDisplayItems = listItems.filter((item) => !!item.value)
+
+  const [isCollapsed, setIsCollapsed] = React.useState(showReadMore && allDisplayItems.length > 3)
+
+  const displayItems = isCollapsed ? allDisplayItems.slice(0, COLLAPSED_COUNT) : allDisplayItems
 
   if (!displayItems.length) {
     return null
@@ -104,6 +115,19 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ artwork }) => {
         {displayItems.map((item, index) => (
           <ArtworkDetailsRow key={`${item.title}-${index}`} title={item.title} value={item.value} />
         ))}
+
+        {!!isCollapsed && (
+          <Text
+            mt={1}
+            variant="sm"
+            color="black100"
+            textAlign="center"
+            underline
+            onPress={() => setIsCollapsed(false)}
+          >
+            Read More
+          </Text>
+        )}
       </Join>
     </Box>
   )

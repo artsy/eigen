@@ -56,7 +56,6 @@ const savedSearchEntity: SavedSearchEntity = {
 }
 
 const defaultParams: CreateSavedSearchAlertParams = {
-  aggregations: [],
   attributes: {
     attributionClass: ["open edition"],
     atAuction: true,
@@ -65,6 +64,15 @@ const defaultParams: CreateSavedSearchAlertParams = {
   onComplete: jest.fn(),
   onClosePress: jest.fn(),
 }
+
+jest.mock("app/Scenes/SavedSearchAlert/useSavedSearchPills", () => {
+  return {
+    useSavedSearchPills: () => [
+      { label: "Open Edition", paramName: "attributionClass", value: "open-edition" },
+      { label: "Bid", paramName: "atAuction", value: "bid" },
+    ],
+  }
+})
 
 describe("CreateSavedSearchAlert", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

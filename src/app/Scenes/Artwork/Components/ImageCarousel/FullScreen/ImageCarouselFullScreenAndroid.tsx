@@ -74,6 +74,8 @@ export const ImageCarouselFullScreenAndroid = () => {
       hardwareAccelerated
       supportedOrientations={["landscape", "portrait"]}
       statusBarTranslucent
+      // 👇 responsible for closing the modal on android back button press
+      onRequestClose={onClose}
     >
       <GestureHandlerRootView style={{ flex: 1, backgroundColor: "white" }}>
         <ZoomFlatList<ImageCarouselMedia>

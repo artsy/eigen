@@ -4,9 +4,11 @@ import {
   Button,
   CheckIcon,
   Flex,
+  Input,
   Spacer,
   Text,
   Touchable,
+  nbsp,
 } from "@artsy/palette-mobile"
 import { ArtistAutosuggestQuery } from "__generated__/ArtistAutosuggestQuery.graphql"
 import {
@@ -14,7 +16,6 @@ import {
   AutosuggestResults,
 } from "app/Components/AutosuggestResults/AutosuggestResults"
 import SearchIcon from "app/Components/Icons/SearchIcon"
-import { Input } from "app/Components/Input"
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { MyCollectionAddCollectedArtistsStore } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsStore"
 import { filterArtistsByKeyword } from "app/Scenes/MyCollection/utils/filterArtistsByKeyword"
@@ -118,13 +119,17 @@ export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => 
               entities={["ARTIST"]}
               showResultType={false}
               showQuickNavigationButtons={false}
-              onResultPress={(result) => addOrRemoveArtist(result.internalID!)}
+              onResultPress={(result) => {
+                if (result.internalID) {
+                  addOrRemoveArtist(result.internalID)
+                }
+              }}
               HeaderComponent={HeaderComponent}
               numColumns={isTablet() ? 5 : 2}
               CustomListItemComponent={(props) => (
                 <CollectedArtistListItem
                   {...props}
-                  disabled={oldCollectedArtistsIds.includes(props.item.internalID!)}
+                  disabled={oldCollectedArtistsIds.includes(props.item.internalID || "")}
                 />
               )}
               ListEmptyComponent={() => (
@@ -210,7 +215,7 @@ const CollectedArtistListItem: React.FC<{
 }> = ({ disabled = false, highlight, item: artist }) => {
   const artistIds = MyCollectionAddCollectedArtistsStore.useStoreState((state) => state.artistIds)
 
-  const [isSelected, setIsSelected] = useState(artistIds.includes(artist.internalID!))
+  const [isSelected, setIsSelected] = useState(artistIds.includes(artist.internalID || ""))
 
   const addOrRemoveArtist = MyCollectionAddCollectedArtistsStore.useStoreActions(
     (actions) => actions.addOrRemoveArtist
@@ -219,7 +224,9 @@ const CollectedArtistListItem: React.FC<{
   const handlePress = () => {
     LayoutAnimation.configureNext({ ...LayoutAnimation.Presets.linear, duration: 200 })
     setIsSelected(!isSelected)
-    addOrRemoveArtist(artist.internalID!)
+    if (artist.internalID) {
+      addOrRemoveArtist(artist.internalID)
+    }
   }
 
   return (
@@ -244,7 +251,8 @@ const CollectedArtistListItem: React.FC<{
         <Spacer y={0.5} />
 
         <ResultWithHighlight
-          displayLabel={artist.displayLabel!}
+          secondaryLabel={artist.formattedNationalityAndBirthday || nbsp}
+          displayLabel={artist.displayLabel || ""}
           numberOfLines={2}
           highlight={highlight}
           textAlign="center"

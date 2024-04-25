@@ -1,6 +1,5 @@
-import { Spacer, Flex, Box, useColor, Text, Touchable, Button } from "@artsy/palette-mobile"
+import { Box, Button, Flex, Input, Spacer, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
-import { Input } from "app/Components/Input"
 import { showBlockedAuthError } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { BackButton } from "app/system/navigation/BackButton"
@@ -107,10 +106,8 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
               }}
               onBlur={() => validateForm()}
               blurOnSubmit={false} // This is needed to avoid UI jump when the user submits
-              placeholder="Email address"
               placeholderTextColor={color("black30")}
               title="Email"
-              value={values.email}
               returnKeyType="next"
               spellCheck={false}
               autoCorrect={false}
@@ -144,7 +141,6 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
                 }
               }}
               onBlur={() => validateForm()}
-              placeholder="Password"
               placeholderTextColor={color("black30")}
               ref={passwordInputRef}
               secureTextEntry
@@ -153,7 +149,6 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
               // We need to to set textContentType to password here
               // enable autofill of login details from the device keychain.
               textContentType="password"
-              value={values.password}
               error={errors.password}
               testID="password"
             />

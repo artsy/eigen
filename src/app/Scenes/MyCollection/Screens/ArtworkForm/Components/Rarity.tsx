@@ -1,13 +1,10 @@
-import { Flex, Text, Separator } from "@artsy/palette-mobile"
-import { FancyModal } from "app/Components/FancyModal/FancyModal"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { Input, INPUT_HEIGHT, InputTitle } from "app/Components/Input"
+import { Flex, Text, Input } from "@artsy/palette-mobile"
+import { INPUT_HEIGHT } from "app/Components/Input"
 import { Select } from "app/Components/Select"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
 import React, { useState } from "react"
-
-type AttributionClassType = "LIMITED_EDITION" | "OPEN_EDITION" | "UNIQUE" | "UNKNOWN_EDITION"
+import { AttributionClassType, RarityInfoModal } from "./RarityLegacy"
 
 export const Rarity: React.FC = () => {
   const { formik } = useArtworkForm()
@@ -30,7 +27,7 @@ export const Rarity: React.FC = () => {
         enableSearch={false}
         title="Rarity"
         placeholder="Select"
-        tooltipText="What is this?"
+        tooltipText="What's this?"
         onTooltipPress={() => setRarityInfoModalVisible(true)}
         options={artworkRarityClassifications}
         testID="rarity-select"
@@ -71,28 +68,5 @@ export const Rarity: React.FC = () => {
         onDismiss={() => setRarityInfoModalVisible(false)}
       />
     </>
-  )
-}
-
-const RarityInfoModal: React.FC<{
-  title: string
-  visible: boolean
-  onDismiss(): any
-}> = ({ title, visible, onDismiss }) => {
-  return (
-    <FancyModal visible={visible} onBackgroundPressed={onDismiss} testID="RarityInfoModal">
-      <FancyModalHeader onLeftButtonPress={onDismiss} useXButton>
-        {title}
-      </FancyModalHeader>
-      <Separator />
-      <Flex m={2}>
-        {artworkRarityClassifications.map((classification) => (
-          <Flex mb={2} key={classification.label}>
-            <InputTitle>{classification.label}</InputTitle>
-            <Text>{classification.description}</Text>
-          </Flex>
-        ))}
-      </Flex>
-    </FancyModal>
   )
 }

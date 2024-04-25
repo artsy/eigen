@@ -1,8 +1,9 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { articlesQueryVariables } from "app/Scenes/Articles/Articles"
+import { newsArticlesQueryVariables } from "app/Scenes/Articles/News/News"
 import { isOnboardingVisible } from "app/Scenes/Home/Components/HomeFeedOnboardingRail"
 import { HomeModule, HomeProps } from "app/Scenes/Home/Home"
-import { lotsByArtistsYouFollowDefaultVariables } from "app/Scenes/LotsByArtistsYouFollow/LotsByArtistsYouFollow"
+import { recommendedAuctionLotsDefaultVariables } from "app/Scenes/RecommendedAuctionLots/RecommendedAuctionLots"
 import { isConnectionEmpty } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { isEmpty } from "lodash"
@@ -15,6 +16,7 @@ export const useHomeModules = (props: HomeProps) => {
   const enableCuratorsPickRail = useFeatureFlag("AREnableCuratorsPickRail")
   const enableDoMoreOnArtsyRail = useFeatureFlag("AREnableDoMoreOnArtsyRail")
   const enableMeetYourNewAdvisoryRail = useFeatureFlag("AREnableMeetYourNewAdvisorRail")
+  const enableEditorialNews = useFeatureFlag("AREnableEditorialNews")
 
   return useMemo(() => {
     const allModules: Array<HomeModule> = [
@@ -56,14 +58,13 @@ export const useHomeModules = (props: HomeProps) => {
         type: "artwork",
       },
       {
-        contextModule: ContextModule.auctionLotsEndingSoonRail,
-        data: props.meAbove,
-        isEmpty: !props.meAbove?.lotsByFollowedArtistsConnectionCount?.edges?.length,
-        key: "lotsByFollowedArtistsRail",
-        prefetchUrl: "/auctions/lots-for-you-ending-soon",
-        prefetchVariables: lotsByArtistsYouFollowDefaultVariables(),
-        title: "Auction Lots for You Ending Soon",
-        type: "lotsByFollowedArtists",
+        contextModule: ContextModule.lotsForYouRail,
+        data: props.recommendedAuctionLots,
+        isEmpty: isEmpty(props.recommendedAuctionLots),
+        key: "recommendedAuctionsRail",
+        prefetchVariables: recommendedAuctionLotsDefaultVariables(),
+        title: "Auction Lots for You",
+        type: "recommendedAuctionLots",
       },
       {
         contextModule: ContextModule.auctionRail,
@@ -112,6 +113,17 @@ export const useHomeModules = (props: HomeProps) => {
         prefetchVariables: articlesQueryVariables,
         title: "Artsy Editorial",
         type: "articles",
+      },
+      {
+        contextModule: ContextModule.articleRail,
+        data: props.news,
+        hidden: !enableEditorialNews,
+        isEmpty: isEmpty(props.news),
+        key: "newsCard",
+        prefetchUrl: "/news",
+        prefetchVariables: newsArticlesQueryVariables,
+        title: "News",
+        type: "news",
       },
       {
         data: props.homePageBelow?.onboardingModule,
@@ -251,6 +263,7 @@ export const useHomeModules = (props: HomeProps) => {
     props.featured,
     props.notificationsConnection,
     props.homePageBelow?.fairsModule,
+    props.recommendedAuctionLots,
     enableCuratorsPickRail,
     enableDoMoreOnArtsyRail,
     enableMeetYourNewAdvisoryRail,

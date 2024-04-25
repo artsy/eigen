@@ -9,6 +9,7 @@ export enum ResultAction {
   SavedToDefaultArtworkList,
   RemovedFromDefaultArtworkList,
   ModifiedArtworkLists,
+  ModifiedArtworkListsOfferSettings,
 }
 
 export interface ArtworkEntity {
@@ -22,12 +23,17 @@ export interface ArtworkEntity {
 
 export type SaveResult = {
   action: ResultAction
-  artwork: ArtworkEntity
+  artwork?: ArtworkEntity
 }
 
 export enum ArtworkListMode {
   AddingArtworkList = "addingArtworkLists",
   RemovingArtworkList = "removingArtworkLists",
+}
+
+export enum ArtworkListOfferSettingsMode {
+  SharingArtworkLists = "sharingArtworkLists",
+  KeepingArtworkListsPrivate = "keepingArtworkListsPrivate",
 }
 
 export interface ArtworkListEntity {
@@ -38,12 +44,15 @@ export interface ArtworkListEntity {
 export type ArtworkListState = {
   selectArtworkListsViewVisible: boolean
   createNewArtworkListViewVisible: boolean
+  artworkListOfferSettingsViewVisible: boolean
   artwork: ArtworkEntity | null
   artworkListID: string | null
   recentlyAddedArtworkList: RecentlyAddedArtworkList | null
   selectedTotalCount: number
   addingArtworkLists: ArtworkListEntity[]
   removingArtworkLists: ArtworkListEntity[]
+  sharingArtworkLists: ArtworkListEntity[]
+  keepingArtworkListsPrivate: ArtworkListEntity[]
   hasUnsavedChanges: boolean
   toastBottomPadding: number | null
 }
@@ -66,12 +75,19 @@ export type ArtworkListAction =
     }
   | { type: "SET_SELECTED_TOTAL_COUNT"; payload: number }
   | { type: "SET_UNSAVED_CHANGES"; payload: boolean }
+  | { type: "SET_OFFER_SETTINGS_VIEW_VISIBLE"; payload: boolean }
+  | {
+      type: "SHARE_OR_KEEP_ARTWORK_LIST_PRIVATE"
+      payload: { mode: ArtworkListOfferSettingsMode; artworkList: ArtworkListEntity }
+    }
 
 export interface ArtworkListsContextState {
   state: ArtworkListState
   artworkListId?: string
   addingArtworkListIDs: string[]
   removingArtworkListIDs: string[]
+  keepArtworkListPrivateIDs: string[]
+  shareArtworkListIDs: string[]
   dispatch: Dispatch<ArtworkListAction>
   reset: () => void
   onSave: (result: SaveResult) => void

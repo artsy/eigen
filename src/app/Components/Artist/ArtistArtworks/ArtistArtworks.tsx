@@ -195,7 +195,6 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         />
 
         <CreateSavedSearchModal
-          aggregations={(artist.aggregations?.aggregations as Aggregations) || []}
           attributes={attributes}
           closeModal={() => setIsCreateAlertModalVisible(false)}
           entity={savedSearchEntity}
@@ -307,7 +306,6 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         shouldShowCreateAlertButton
       />
       <CreateSavedSearchModal
-        aggregations={(artist.aggregations?.aggregations as Aggregations) || []}
         attributes={attributes}
         closeModal={() => setIsCreateAlertModalVisible(false)}
         entity={savedSearchEntity}

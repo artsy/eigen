@@ -340,19 +340,9 @@ When we upgrade to Reanimated 3.4.0
 
 Fixes some issues on Android when Reanimated stops. https://github.com/software-mansion/react-native-reanimated/issues/4626
 
-## Pod patch for NimbleSnapshots type failure
+## Patch-package for @react-navigation/native
 
-#### When can we remove this:
-
-When this PR is release in a new pod version: https://github.com/ashfurrow/Nimble-Snapshots/pull/268
-And we update to the new version.
-
-#### Explanation/Context:
-
-Test compilations started failing in Xcode 15 due to a type conflict:
-https://github.com/ashfurrow/Nimble-Snapshots/pull/268
-
-# Patch-package for @react-navigation/native
+#### When we can remove this:
 
 When we upgrade to 6.0.14 or higher, should do shortly but requires fixing a fair few type issues.
 
@@ -373,3 +363,42 @@ https://github.com/react-native-device-info/react-native-device-info/issues/1622
 Apples has started requiring apps and 3rd party libraries declare in a privacy manifest why they use some apis, and only certain reasons are allowed.
 Device info uses disk space apis that are not justified by these reasons currently.
 https://developer.apple.com/documentation/bundleresources/privacy_manifest_files/describing_use_of_required_reason_api?language=objc
+
+## Git link in podfile for SwiftyJSON
+
+#### When we can remove this:
+
+When this issue is resolved and version 5.0.2 or above is published on Cocoapods.
+https://github.com/SwiftyJSON/SwiftyJSON/issues/1154
+
+#### Explanation/Context
+
+Apples has started requiring apps and certain 3rd party libraries declare in a privacy manifest why they use some apis, SwiftyJSON is one of them. The
+privacy manifest has been added in 5.0.2 but the version has not been published to cocoapods.
+
+## Patch-package for react-native-fast-image
+
+#### When we can remove this:
+
+When the library uses the latest SDWebImage that includes privacy manifests, a version >= 5.19
+https://github.com/DylanVann/react-native-fast-image/issues/1031
+
+####
+
+Apples has started requiring apps and certain 3rd party libraries declare in a privacy manifest why they use some apis. SDWebImage is one of those,
+SDWebImage has been updated to include a privacy manifest but the wrapper we use, react-native-fast-image, has not.
+https://developer.apple.com/documentation/bundleresources/privacy_manifest_files/describing_use_of_required_reason_api?language=objc
+
+## Modular headers for firebase deps in Podfile
+
+#### When we can remove this
+
+When we stop using flipper or this issue is resolved: https://github.com/invertase/react-native-firebase/issues/6425
+
+#### Explanation/Context
+
+The latest versions of react-native-firebase require using static frameworks, and unfortunately this breaks flipper.
+https://rnfirebase.io/#altering-cocoapods-to-use-frameworks
+The author of react-native-firebase basically said that people should just remove flipper since it is no longer going to be supported by
+react native in the future but a bit tough to pull off that bandaid so soon. If flipper does end up supporting this config: 1. remove the entries in the podfile
+that have `:modular_headers => true` and add the static frameworks line from the docs above.

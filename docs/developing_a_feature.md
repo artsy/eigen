@@ -116,7 +116,9 @@ To enable your feature on a physical or virtual device
   - Log in to the app (eg your artsy email)
   - Enable Developer mode by going to Profile > About and tapping "Version" 7 times.
   - See a notification "Developer mode enabled"
-  - Now if you press `command + control + z` you should see the Dev Menu
+  - Open the Dev Menu
+    - iOS: Do the shake gesture or press `command + control + z`
+    - Android: Tap the same area of the screen several times
 
 - Toggle the feature flag to "Yes".
 

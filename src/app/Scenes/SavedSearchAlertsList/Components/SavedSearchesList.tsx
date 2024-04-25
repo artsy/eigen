@@ -61,6 +61,10 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
     }
   }, [])
 
+  useEffect(() => {
+    setItems(extractNodes(me.alertsConnection).map((node) => ({ ...node, isSwipingActive: false })))
+  }, [me.alertsConnection])
+
   if (refreshMode === "delete") {
     return (
       <ProvidePlaceholderContext>

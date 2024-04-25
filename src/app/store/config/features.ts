@@ -52,6 +52,12 @@ export const features = {
     echoFlagKey: "AREnableArticleSlideShow",
     showInDevMenu: true,
   },
+  AREnableEditorialNews: {
+    readyForRelease: true,
+    description: "Enable news app in the home screen",
+    echoFlagKey: "AREnableEditorialNews",
+    showInDevMenu: true,
+  },
   // TODO: need to refresh it before releasing to avoid leaking the feature in not ready releases, marked as ready since 15 months ago
   AREnableArtworksConnectionForAuction: {
     readyForRelease: true,
@@ -97,6 +103,12 @@ export const features = {
     description: "Enable New Auctions Home Rail Card",
     readyForRelease: true,
     echoFlagKey: "AREnableNewAuctionsRailCard",
+  },
+  AREnableNewCollectorSettings: {
+    description: "Enable New Collector Settings",
+    readyForRelease: false,
+    echoFlagKey: "AREnableNewCollectorSettings",
+    showInDevMenu: true,
   },
   AREnableMyCollectionCollectedArtists: {
     description: "Enable Collected Artists in My Collection",
@@ -144,11 +156,6 @@ export const features = {
     description: "Enable Latest Activity Rail",
     readyForRelease: true,
     echoFlagKey: "AREnableLatestActivityRail",
-  },
-  AREnableSingleActivityPanelScreen: {
-    description: "Enable Single Activity Panel screen",
-    readyForRelease: true,
-    echoFlagKey: "AREnableSingleActivityPanelScreen",
   },
   AREnableAlertsFilters: {
     description: "Enable filters in alerts screen",
@@ -208,12 +215,6 @@ export const features = {
     readyForRelease: true,
     echoFlagKey: "AREnableAlertsFiltersArtistSeriesFiltering",
   },
-  AREnableNewActivityPanelManagement: {
-    description: "Enable new activity panel management",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableNewActivityPanelManagement",
-  },
   AREnableArtworksFeedView: {
     description: "Enable artworks feed view",
     readyForRelease: true,
@@ -222,7 +223,7 @@ export const features = {
   },
   AREnableArtworkListOfferability: {
     description: "Enable Parnter Offer v1.5, edit sharing artwork list with partners for offers",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableArtworkListOfferability",
   },
@@ -243,6 +244,23 @@ export const features = {
     readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableAlertBottomSheet",
+  },
+  AREnableNewTermsAndConditions: {
+    description: "Enable new terms and conditions",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableNewTermsAndConditions",
+  },
+  AREnableLongPressOnNewForYouRail: {
+    description: "Enable Context Menu on artwork cards on new for you rail",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
+  AREnablePartnerOfferOnArtworkScreen: {
+    description: "Enable partner offer on artwork screen",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnablePartnerOfferOnArtworkScreen",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 

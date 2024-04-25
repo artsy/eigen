@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Flex,
+  Input,
   Join,
   Message,
   Separator,
@@ -17,7 +18,6 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { captureMessage } from "@sentry/react-native"
 import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { Input } from "app/Components/Input"
 import { MoneyInput } from "app/Components/Input/MoneyInput"
 import { ScreenMargin } from "app/Scenes/MyCollection/Components/ScreenMargin"
 import { ArrowDetails } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArrowDetails"
@@ -315,7 +315,6 @@ export const MyCollectionArtworkFormMain: React.FC<
               <ArtistField />
               <Input
                 title="Title"
-                placeholder="Title"
                 onChangeText={formik.handleChange("title")}
                 onBlur={formik.handleBlur("title")}
                 testID="TitleInput"
@@ -340,7 +339,7 @@ export const MyCollectionArtworkFormMain: React.FC<
               />
               <Input
                 title="Materials"
-                placeholder="Materials"
+                placeholder="Oil on canvas, mixed media, lithograph.."
                 onChangeText={formik.handleChange("medium")}
                 onBlur={formik.handleBlur("medium")}
                 testID="MaterialsInput"
@@ -371,6 +370,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                 multiline
                 title="Provenance"
                 maxLength={500}
+                showLimit
                 placeholder="Describe how you acquired the artwork"
                 value={formikValues.provenance}
                 accessibilityLabel="Describe how you acquired the artwork"
@@ -389,6 +389,7 @@ export const MyCollectionArtworkFormMain: React.FC<
               <Input
                 multiline
                 maxLength={500}
+                showLimit
                 title="Notes"
                 onChangeText={formik.handleChange("confidentialNotes")}
                 onBlur={formik.handleBlur("confidentialNotes")}

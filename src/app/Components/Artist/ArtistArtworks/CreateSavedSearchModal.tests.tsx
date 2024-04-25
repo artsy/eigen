@@ -38,6 +38,12 @@ jest.mock("../../../Scenes/SavedSearchAlert/mutations/createSavedSearchAlert", (
     }),
 }))
 
+jest.mock("app/Scenes/SavedSearchAlert/useSavedSearchPills", () => {
+  return {
+    useSavedSearchPills: () => [],
+  }
+})
+
 const mockNavigate = jest.fn()
 jest.mock("@react-navigation/native", () => {
   const actualNav = jest.requireActual("@react-navigation/native")
@@ -77,12 +83,12 @@ const defaultProps: CreateSavedSearchModalProps = {
   visible: true,
   entity: savedSearchEntity,
   attributes,
-  aggregations: [],
   closeModal: jest.fn,
 }
 
 const mockedMutationResult: SavedSearchAlertMutationResult = {
   id: "savedSearchAlertId",
+  searchCriteriaID: "searchCriteriaID",
 }
 
 const TestWrapper: React.FC = ({ children }) => (
@@ -90,7 +96,6 @@ const TestWrapper: React.FC = ({ children }) => (
     runtimeModel={{
       ...savedSearchModel,
       attributes,
-      aggregations: [],
       entity: savedSearchEntity,
     }}
   >
@@ -114,7 +119,7 @@ describe("CreateSavedSearchModal", () => {
     createSavedSearchAlert.props.params.onComplete(mockedMutationResult)
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
-      tracks.toggleSavedSearch(true, OwnerType.artist, "ownerId", "ownerSlug", "savedSearchAlertId")
+      tracks.toggleSavedSearch(true, OwnerType.artist, "ownerId", "ownerSlug", "searchCriteriaID")
     )
   })
 

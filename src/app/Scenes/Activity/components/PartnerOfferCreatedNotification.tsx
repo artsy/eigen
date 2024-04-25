@@ -1,4 +1,5 @@
 import { DEFAULT_HIT_SLOP, Flex, Screen, Spacer, Text, Touchable } from "@artsy/palette-mobile"
+import { PartnerOfferCreatedNotification_notification$key } from "__generated__/PartnerOfferCreatedNotification_notification.graphql"
 import {
   ExpiresInTimer,
   shouldDisplayExpiresInTimer,
@@ -6,11 +7,12 @@ import {
 import { NotificationArtworkList } from "app/Scenes/Activity/components/NotificationArtworkList"
 import { PartnerOfferBadge } from "app/Scenes/Activity/components/PartnerOffeBadge"
 import { goBack, navigate } from "app/system/navigation/navigate"
+import { extractNodes } from "app/utils/extractNodes"
 import { getTimer } from "app/utils/getTimer"
 import { graphql, useFragment } from "react-relay"
 
 interface PartnerOfferCreatedNotificationProps {
-  notification: any
+  notification: PartnerOfferCreatedNotification_notification$key
 }
 
 export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotificationProps> = ({
@@ -18,16 +20,16 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
 }) => {
   const notificationData = useFragment(PartnerOfferCreatedNotificationFragment, notification)
 
-  const { headline, item, notificationType, artworksConnection, targetHref } = notificationData
+  const { headline, item, notificationType, artworksConnection } = notificationData
 
-  const { hasEnded } = getTimer(item.partnerOffer.endAt || "")
-  const noLongerAvailable = !item.partnerOffer.isAvailable
+  const { hasEnded } = getTimer(item?.partnerOffer?.endAt || "")
+  const noLongerAvailable = !item?.partnerOffer?.isAvailable
 
   let subtitle = "Review the offer on your saved artwork"
 
   if (noLongerAvailable) {
     subtitle =
-      "Sorry, this artwork has sold or is no longer available. Please create an alert or contact orders@artsy.net to find similar artworks"
+      "Sorry, this artwork is sold or no longer available. Please create an alert or contact orders@artsy.net to find similar artworks"
   } else if (hasEnded) {
     subtitle = "This offer has expired. Please make a new offer or contact the gallery"
   }
@@ -70,13 +72,15 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
           <NotificationArtworkList
             artworksConnection={artworksConnection}
             priceOfferMessage={{
-              priceListedMessage: item.partnerOffer.priceListedMessage,
-              priceWithDiscountMessage: item.partnerOffer.priceWithDiscountMessage,
+              priceListedMessage:
+                extractNodes(artworksConnection)[0]?.price || "Not publicly listed",
+              priceWithDiscountMessage: item?.partnerOffer?.priceWithDiscount?.display || "",
             }}
             partnerOffer={{
-              endAt: item.partnerOffer.endAt,
-              isAvailable: item.partnerOffer.isAvailable,
-              targetHref: targetHref,
+              internalID: item?.partnerOffer?.internalID || "",
+              endAt: item?.partnerOffer?.endAt || "",
+              isAvailable: item?.partnerOffer?.isAvailable || false,
+              note: item?.partnerOffer?.note || "",
             }}
             showArtworkCommercialButtons
           />
@@ -96,15 +100,23 @@ export const PartnerOfferCreatedNotificationFragment = graphql`
         expiresAt
         available
         partnerOffer {
+          note
+          internalID
           endAt
           isAvailable
-          priceListedMessage
-          priceWithDiscountMessage
+          priceWithDiscount {
+            display
+          }
         }
       }
     }
     artworksConnection(first: 10) {
       ...NotificationArtworkList_artworksConnection
+      edges {
+        node {
+          price
+        }
+      }
     }
   }
 `

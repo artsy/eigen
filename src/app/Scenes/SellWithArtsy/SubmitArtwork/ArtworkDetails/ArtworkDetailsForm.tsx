@@ -1,8 +1,16 @@
-import { BulletedItem, Spacer, Flex, Box, Text, RadioButton } from "@artsy/palette-mobile"
+import {
+  Box,
+  BulletedItem,
+  Flex,
+  Input,
+  InputTitle,
+  RadioButton,
+  Spacer,
+  Text,
+} from "@artsy/palette-mobile"
 import { ArtistAutosuggest } from "app/Components/ArtistAutosuggest/ArtistAutosuggest"
 import { LinkButton } from "app/Components/Button/LinkButton"
-import { Input, InputTitle } from "app/Components/Input"
-import { buildLocationDisplay, LocationAutocomplete } from "app/Components/LocationAutocomplete"
+import { LocationAutocomplete, buildLocationDisplay } from "app/Components/LocationAutocomplete"
 import { Select, SelectOption } from "app/Components/Select"
 import { CategoryPicker } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/CategoryPicker"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -12,13 +20,13 @@ import { useFormikContext } from "formik"
 import React, { useEffect, useRef, useState } from "react"
 import { InfoModal } from "./InfoModal/InfoModal"
 import {
-  acceptableCategoriesForSubmission,
   AcceptableCategoryValue,
+  acceptableCategoriesForSubmission,
 } from "./utils/acceptableCategoriesForSubmission"
 import { limitedEditionValue, rarityOptions } from "./utils/rarityOptions"
 import { ArtworkDetailsFormModel } from "./validation"
 
-const StandardSpace = () => <Spacer y={4} />
+const StandardSpace = () => <Spacer y={2} />
 
 export const ArtworkDetailsForm: React.FC = () => {
   const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
@@ -58,6 +66,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         accessibilityLabel="Year"
       />
       <StandardSpace />
+      <Spacer y={2} />
       <CategoryPicker<AcceptableCategoryValue | null>
         handleChange={(category) => setFieldValue("category", category)}
         options={categories}
@@ -76,6 +85,7 @@ export const ArtworkDetailsForm: React.FC = () => {
       <StandardSpace />
       <Select
         onSelectValue={(e) => setFieldValue("attributionClass", e)}
+        onTooltipPress={() => setIsRarityInfoModalVisible(true)}
         value={values.attributionClass}
         enableSearch={false}
         title="Rarity"
@@ -85,7 +95,7 @@ export const ArtworkDetailsForm: React.FC = () => {
             color="black60"
             onPress={() => setIsRarityInfoModalVisible(true)}
           >
-            What is this?
+            What's this?
           </LinkButton>
         }
         placeholder="Select a classification"
@@ -150,7 +160,7 @@ export const ArtworkDetailsForm: React.FC = () => {
       <Flex flexDirection="row" justifyContent="space-between">
         <Box width="31%" mr={1}>
           <Input
-            title="Height"
+            title={`Height (${values.dimensionsMetric})`}
             keyboardType="decimal-pad"
             testID="Submission_HeightInput"
             value={values.height}
@@ -160,7 +170,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         </Box>
         <Box width="31%" mr={1}>
           <Input
-            title="Width"
+            title={`Width (${values.dimensionsMetric})`}
             keyboardType="decimal-pad"
             testID="Submission_WidthInput"
             value={values.width}
@@ -170,7 +180,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         </Box>
         <Box width="31%">
           <Input
-            title="Depth"
+            title={`Depth (${values.dimensionsMetric})`}
             optional
             keyboardType="decimal-pad"
             testID="Submission_DepthInput"
@@ -181,17 +191,10 @@ export const ArtworkDetailsForm: React.FC = () => {
         </Box>
       </Flex>
       <StandardSpace />
-      <Flex flexDirection="row" justifyContent="space-between">
-        <InputTitle>Provenance</InputTitle>
-        <LinkButton
-          variant="xs"
-          color="black60"
-          onPress={() => setIsProvenanceInfoModalVisible(true)}
-        >
-          What is this?
-        </LinkButton>
-      </Flex>
+
       <Input
+        title="Provenance"
+        onHintPress={() => setIsProvenanceInfoModalVisible(true)}
         placeholder="Describe how you acquired the artwork"
         testID="Submission_ProvenanceInput"
         value={values.provenance}

@@ -1,6 +1,7 @@
 import { Flex, Text, Touchable, Checkbox } from "@artsy/palette-mobile"
 import { ParamListBase } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 
 interface TermsOfServiceCheckboxProps {
   checked: boolean
@@ -15,6 +16,8 @@ export const TermsOfServiceCheckbox: React.FC<TermsOfServiceCheckboxProps> = ({
   error,
   navigation,
 }) => {
+  const showNewDisclaimer = useFeatureFlag("AREnableNewTermsAndConditions")
+
   return (
     <Touchable haptic onPress={() => setChecked(!checked)}>
       <Flex flexDirection="row" alignItems="flex-start">
@@ -32,36 +35,59 @@ export const TermsOfServiceCheckbox: React.FC<TermsOfServiceCheckboxProps> = ({
               checked,
             },
           }}
+          testID="termsCheckbox"
         >
-          <Text variant="xs">
-            By checking this box, you consent to our{" "}
-            <Text
-              onPress={() => navigation.navigate("OnboardingWebView", { url: "/terms" })}
-              variant="xs"
-              style={{ textDecorationLine: "underline" }}
-            >
-              Terms of Use
+          {showNewDisclaimer ? (
+            <Text variant="xs" testID="disclaimer">
+              I accept Artsy's{" "}
+              <Text
+                onPress={() => navigation.navigate("OnboardingWebView", { url: "/terms" })}
+                variant="xs"
+                style={{ textDecorationLine: "underline" }}
+              >
+                General Terms and Conditions of Sale
+              </Text>{" "}
+              and{" "}
+              <Text
+                onPress={() => navigation.navigate("OnboardingWebView", { url: "/privacy" })}
+                variant="xs"
+                style={{ textDecorationLine: "underline" }}
+              >
+                Privacy Policy
+              </Text>
+              .
             </Text>
-            ,{" "}
-            <Text
-              onPress={() => navigation.navigate("OnboardingWebView", { url: "/privacy" })}
-              variant="xs"
-              style={{ textDecorationLine: "underline" }}
-            >
-              Privacy Policy
+          ) : (
+            <Text variant="xs" testID="disclaimer">
+              By checking this box, you consent to our{" "}
+              <Text
+                onPress={() => navigation.navigate("OnboardingWebView", { url: "/terms" })}
+                variant="xs"
+                style={{ textDecorationLine: "underline" }}
+              >
+                Terms of Use
+              </Text>
+              ,{" "}
+              <Text
+                onPress={() => navigation.navigate("OnboardingWebView", { url: "/privacy" })}
+                variant="xs"
+                style={{ textDecorationLine: "underline" }}
+              >
+                Privacy Policy
+              </Text>
+              , and{" "}
+              <Text
+                onPress={() =>
+                  navigation.navigate("OnboardingWebView", { url: "/conditions-of-sale" })
+                }
+                variant="xs"
+                style={{ textDecorationLine: "underline" }}
+              >
+                Conditions of Sale
+              </Text>
+              .
             </Text>
-            , and{" "}
-            <Text
-              onPress={() =>
-                navigation.navigate("OnboardingWebView", { url: "/conditions-of-sale" })
-              }
-              variant="xs"
-              style={{ textDecorationLine: "underline" }}
-            >
-              Conditions of Sale
-            </Text>
-            .
-          </Text>
+          )}
         </Checkbox>
       </Flex>
     </Touchable>

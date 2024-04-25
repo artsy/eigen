@@ -35,7 +35,7 @@ describe("ViewingRoomHeader", () => {
 
       return result
     })
-    expect(tree.root.findByProps({ testID: "background-image" }).props.imageURL).toBe("Foo")
+    expect(tree.root.findByProps({ testID: "background-image" }).props.src).toBe("Foo")
   })
   it("renders a title", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)

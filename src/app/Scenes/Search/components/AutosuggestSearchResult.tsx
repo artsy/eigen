@@ -110,7 +110,12 @@ export const AutosuggestSearchResult: React.FC<{
 
   const resultType = getResultType(result)
 
-  const initials = result.__typename === "Artist" ? result.initials : undefined
+  let initials, secondaryLabel
+
+  if (result.__typename === "Artist") {
+    initials = result.initials
+    secondaryLabel = result.formattedNationalityAndBirthday || undefined
+  }
 
   return (
     <>
@@ -118,7 +123,11 @@ export const AutosuggestSearchResult: React.FC<{
         onPress={() => onPress()}
         testID={`autosuggest-search-result-${result.displayLabel}`}
       >
-        <Flex height={IMAGE_SIZE} flexDirection="row" alignItems="center">
+        <Flex
+          height={secondaryLabel ? IMAGE_SIZE + 12 : IMAGE_SIZE}
+          flexDirection="row"
+          alignItems="center"
+        >
           <SearchResultImage
             imageURL={result.imageUrl}
             initials={initials}
@@ -128,7 +137,11 @@ export const AutosuggestSearchResult: React.FC<{
           <Spacer x={1} />
 
           <Flex flex={1}>
-            <ResultWithHighlight displayLabel={result.displayLabel ?? ""} highlight={highlight} />
+            <ResultWithHighlight
+              displayLabel={result.displayLabel ?? ""}
+              secondaryLabel={secondaryLabel}
+              highlight={highlight}
+            />
 
             {!!showResultType && !!resultType && (
               <Text variant="xs" color="black60">

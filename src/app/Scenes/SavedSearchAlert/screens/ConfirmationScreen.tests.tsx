@@ -1,6 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
 import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
-import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   SavedSearchEntity,
   SearchCriteriaAttributes,
@@ -36,12 +35,21 @@ jest.mock("@react-navigation/native", () => {
   }
 })
 
+jest.mock("app/Scenes/SavedSearchAlert/useSavedSearchPills", () => {
+  return {
+    useSavedSearchPills: () => [
+      { label: "David Hockney", paramName: "artistIDs", value: "david-hockney" },
+      { label: "Unique", paramName: "attributionClass", value: "unique" },
+      { label: "Painting", paramName: "additionalGeneIDs", value: "painting" },
+    ],
+  }
+})
+
 const TestWrapper: React.FC = ({ children }) => (
   <SavedSearchStoreProvider
     runtimeModel={{
       ...savedSearchModel,
       attributes,
-      aggregations,
       entity,
     }}
   >
@@ -181,13 +189,6 @@ const attributes: SearchCriteriaAttributes = {
   attributionClass: ["unique"],
   additionalGeneIDs: ["painting"],
 }
-
-const aggregations: Aggregations = [
-  {
-    slice: "MEDIUM",
-    counts: [{ name: "Painting", value: "painting", count: 42 }],
-  },
-]
 
 const entity: SavedSearchEntity = {
   artists: [

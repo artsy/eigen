@@ -2,6 +2,7 @@ import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ArtworkListsContextTestQuery } from "__generated__/ArtworkListsContextTestQuery.graphql"
 import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { ArtworkEntity } from "app/Components/ArtworkLists/types"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -13,6 +14,7 @@ describe("ArtworkListsProvider", () => {
       <ArtworkListsProvider
         artwork={props?.artwork ?? artworkEntity}
         selectArtworkListsViewVisible={props?.selectArtworkListsViewVisible ?? true}
+        artworkListOfferSettingsViewVisible={props?.artworkListOfferSettingsViewVisible ?? false}
         {...props}
       />
     ),
@@ -325,6 +327,73 @@ describe("ArtworkListsProvider", () => {
       })
     })
   })
+
+  describe("Update artwork list offers settings", () => {
+    const renderOfferSettings = (mockResolvers?: any, props?: any) => {
+      return renderWithRelay(mockResolvers, {
+        artworkListOfferSettingsViewVisible: true,
+        selectArtworkListsViewVisible: false,
+        ...props,
+      })
+    }
+
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworkListOfferability: true })
+    })
+
+    it("should not be displayed by default", () => {
+      renderOfferSettings({}, { artwork: null, artworkListOfferSettingsViewVisible: false })
+
+      expect(screen.queryByText("Offer Settings")).not.toBeOnTheScreen()
+    })
+
+    it("should display the artwork lists", async () => {
+      const { mockResolveLastOperation } = renderOfferSettings()
+
+      await waitFor(() =>
+        mockResolveLastOperation({ Me: () => ({ savedArtworksArtworkList, customArtworkLists }) })
+      )
+
+      expect(screen.getByText("Offer Settings")).toBeOnTheScreen()
+
+      expect(screen.getByText("Saved Artworks")).toBeOnTheScreen()
+      expect(screen.getByText("Custom Artwork List 1")).toBeOnTheScreen()
+      expect(screen.getByText("Custom Artwork List 2")).toBeOnTheScreen()
+
+      expect(screen.getByLabelText("EyeClosedIcon")).toBeOnTheScreen()
+    })
+
+    describe("Share/unshare artwork lists", () => {
+      it("all artwork lists should be unshared", async () => {
+        const { mockResolveLastOperation } = renderOfferSettings()
+
+        await waitFor(() =>
+          mockResolveLastOperation({ Me: () => ({ savedArtworksArtworkList, customArtworkLists }) })
+        )
+
+        expect(screen.getAllByLabelText("EyeClosedIcon").length).toEqual(1)
+
+        // SavedArtworks and Custom Artwork List 1 are shared
+        // Custom Artwork List 2 is not shared
+        const [savedArtworks, custom1, custom2] = screen.getAllByRole("switch")
+
+        // Unshare all
+        fireEvent(savedArtworks, "valueChange", true)
+        fireEvent(custom1, "valueChange", true)
+
+        await waitFor(() => {
+          expect(screen.getAllByLabelText("EyeClosedIcon").length).toEqual(3)
+        })
+
+        // Share again
+        fireEvent(savedArtworks, "valueChange", false)
+        fireEvent(custom1, "valueChange", false)
+        fireEvent(custom2, "valueChange", true)
+
+        expect(screen.queryAllByLabelText("EyeClosedIcon").length).toEqual(0)
+      })
+    })
+  })
 })
 
 const savedArtworksArtworkList = {
@@ -332,6 +401,7 @@ const savedArtworksArtworkList = {
   name: "Saved Artworks",
   isSavedArtwork: false,
   artworksCount: 5,
+  shareableWithPartners: true,
 }
 
 const customArtworkListOne = {
@@ -339,6 +409,7 @@ const customArtworkListOne = {
   name: "Custom Artwork List 1",
   isSavedArtwork: false,
   artworksCount: 1,
+  shareableWithPartners: true,
 }
 
 const customArtworkListTwo = {
@@ -346,6 +417,7 @@ const customArtworkListTwo = {
   name: "Custom Artwork List 2",
   isSavedArtwork: false,
   artworksCount: 2,
+  shareableWithPartners: false,
 }
 
 const customArtworkLists = {
@@ -384,6 +456,7 @@ const preselectedCustomArtworkLists = {
         name: "Custom Artwork List 3",
         isSavedArtwork: false,
         artworksCount: 3,
+        shareableWithPartners: false,
       },
     },
   ],

@@ -1,5 +1,5 @@
 import { Text, LinkText, Checkbox, Button } from "@artsy/palette-mobile"
-import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { Registration_me$data } from "__generated__/Registration_me.graphql"
 import { Registration_sale$data } from "__generated__/Registration_sale.graphql"
 import { BidInfoRow } from "app/Components/Bidding/Components/BidInfoRow"
@@ -10,6 +10,8 @@ import {
 import { Address } from "app/Components/Bidding/types"
 import { Modal } from "app/Components/Modal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import * as navigation from "app/system/navigation/navigate"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { TouchableWithoutFeedback } from "react-native"
 import relay from "react-relay"
@@ -395,7 +397,7 @@ describe("when pressing register button", () => {
     fireEvent.press(screen.getByTestId("register-button"))
 
     // Wait for the error modal to be displayed
-    await waitFor(() => screen.getByText("Your card's security code is incorrect."))
+    await screen.findByText("Your card's security code is incorrect.")
     expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", true)
 
     // press the dismiss modal button
@@ -433,10 +435,8 @@ describe("when pressing register button", () => {
     fireEvent.press(screen.getByTestId("register-button"))
 
     // Wait for the error modal to be displayed
-    await waitFor(() =>
-      screen.getByText(
-        "There was a problem processing your information. Check your payment details and try again."
-      )
+    await screen.findByText(
+      "There was a problem processing your information. Check your payment details and try again."
     )
     expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", true)
 
@@ -473,10 +473,8 @@ describe("when pressing register button", () => {
     fireEvent.press(screen.getByTestId("register-button"))
 
     // Wait for the error modal to be displayed
-    await waitFor(() =>
-      screen.getByText(
-        "There was a problem processing your information. Check your payment details and try again."
-      )
+    await screen.findByText(
+      "There was a problem processing your information. Check your payment details and try again."
     )
     expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", true)
 
@@ -639,6 +637,58 @@ describe("when pressing register button", () => {
 
     expect(nextStep.component).toEqual(RegistrationResult)
     expect(nextStep.passProps.status).toEqual(RegistrationStatus.RegistrationStatusComplete)
+  })
+})
+
+it("shows a checkbox for agreeing to the conditions of sale", () => {
+  renderWithWrappers(<Registration {...initialPropsForUserWithCreditCardAndPhone} />)
+
+  expect(
+    screen.getByText(
+      "I agree to the Conditions of Sale. I understand that all bids are binding and may not be retracted."
+    )
+  ).toBeOnTheScreen()
+})
+
+it("navigates to the conditions of sale when the user taps the link", () => {
+  jest.mock("app/system/navigation/navigate", () => ({
+    ...jest.requireActual("app/system/navigation/navigate"),
+    navigate: jest.fn(),
+  }))
+
+  renderWithWrappers(<Registration {...initialPropsForUserWithCreditCardAndPhone} />)
+
+  fireEvent.press(screen.getByText("Conditions of Sale"))
+
+  expect(navigation.navigate).toHaveBeenCalledWith("/conditions-of-sale")
+})
+
+describe("when AREnableNewTermsAndConditions is enabled", () => {
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewTermsAndConditions: true })
+  })
+
+  it("shows a checkbox for agreeing to the conditions of sale", () => {
+    renderWithWrappers(<Registration {...initialPropsForUserWithCreditCardAndPhone} />)
+
+    expect(
+      screen.getByText(
+        "I agree to Artsy's General Terms and Conditions of Sale. I understand that all bids are binding and may not be retracted."
+      )
+    ).toBeOnTheScreen()
+  })
+
+  it("navigates to the terms when the user taps the link", () => {
+    jest.mock("app/system/navigation/navigate", () => ({
+      ...jest.requireActual("app/system/navigation/navigate"),
+      navigate: jest.fn(),
+    }))
+
+    renderWithWrappers(<Registration {...initialPropsForUserWithCreditCardAndPhone} />)
+
+    fireEvent.press(screen.getByText("General Terms and Conditions of Sale"))
+
+    expect(navigation.navigate).toHaveBeenCalledWith("/terms")
   })
 })
 

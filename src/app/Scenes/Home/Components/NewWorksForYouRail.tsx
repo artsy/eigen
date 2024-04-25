@@ -26,7 +26,6 @@ interface NewWorksForYouRailProps extends ArtworkActionTrackingProps {
 export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = memo(
   ({ title, artworkConnection, isRailVisible, scrollRef, ...restProps }) => {
     const { trackEvent } = useTracking()
-
     const trackingProps = extractArtworkActionTrackingProps(restProps)
 
     const { artworksForUser } = useFragment(artworksFragment, artworkConnection)
@@ -94,7 +93,13 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
 
 const artworksFragment = graphql`
   fragment NewWorksForYouRail_artworkConnection on Viewer {
-    artworksForUser(maxWorksPerArtist: 3, includeBackfill: true, first: 40, version: $version) {
+    artworksForUser(
+      maxWorksPerArtist: 3
+      includeBackfill: true
+      first: 40
+      version: $version
+      excludeDislikedArtworks: true
+    ) @connection(key: "NewWorksForYou_artworksForUser", filters: []) {
       edges {
         node {
           title

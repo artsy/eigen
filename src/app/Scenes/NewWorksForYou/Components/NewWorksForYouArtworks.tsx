@@ -1,19 +1,17 @@
-import { OwnerType } from "@artsy/cohesion"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, SimpleMessage, Text } from "@artsy/palette-mobile"
 import { NewWorksForYouArtworksQuery } from "__generated__/NewWorksForYouArtworksQuery.graphql"
 import { NewWorksForYouArtworks_viewer$key } from "__generated__/NewWorksForYouArtworks_viewer.graphql"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
-import {
-  NewWorksForYouPlaceholder,
-  NewWorksForYouScreenProps,
-  PAGE_SIZE,
-} from "app/Scenes/NewWorksForYou/NewWorksForYou"
+import { NewWorksForYouPlaceholder } from "app/Scenes/NewWorksForYou/NewWorksForYou"
 import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
 import { pluralize } from "app/utils/pluralize"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
+
+export const PAGE_SIZE = 100
 
 interface NewWorksForYouProps {
   viewer: NewWorksForYouArtworks_viewer$key
@@ -36,6 +34,7 @@ export const NewWorksForYouArtworks: React.FC<NewWorksForYouProps> = ({ viewer }
         numColumns={numColumns}
         disableAutoLayout
         pageSize={PAGE_SIZE}
+        contextModule={ContextModule.newWorksForYouRail}
         contextScreenOwnerType={OwnerType.newWorksForYou}
         contextScreen={OwnerType.newWorksForYou}
         ListEmptyComponent={
@@ -62,6 +61,7 @@ export const newWorksForYouArtworksFragment = graphql`
     cursor: { type: "String" }
     version: { type: "String" }
     maxWorksPerArtist: { type: "Int" }
+    onlyAtAuction: { type: "Boolean" }
   ) {
     artworks: artworksForUser(
       after: $cursor
@@ -69,7 +69,9 @@ export const newWorksForYouArtworksFragment = graphql`
       includeBackfill: true
       maxWorksPerArtist: $maxWorksPerArtist
       version: $version
-    ) @connection(key: "NewWorksForYou_artworks") {
+      onlyAtAuction: $onlyAtAuction
+      excludeDislikedArtworks: true
+    ) @connection(key: "NewWorksForYou_artworks", filters: []) {
       totalCount
       edges {
         node {
@@ -88,20 +90,41 @@ export const newWorksForYouArtworksFragment = graphql`
 `
 
 export const newWorksForYouArtworksQuery = graphql`
-  query NewWorksForYouArtworksQuery($version: String, $maxWorksPerArtist: Int) {
+  query NewWorksForYouArtworksQuery(
+    $version: String
+    $maxWorksPerArtist: Int
+    $onlyAtAuction: Boolean = false
+  ) {
     viewer @principalField {
       ...NewWorksForYouArtworks_viewer
-        @arguments(version: $version, maxWorksPerArtist: $maxWorksPerArtist)
+        @arguments(
+          version: $version
+          maxWorksPerArtist: $maxWorksPerArtist
+          onlyAtAuction: $onlyAtAuction
+        )
     }
   }
 `
 
-export const NewWorksForYouArtworksQR: React.FC<NewWorksForYouScreenProps> = withSuspense(
-  ({ version, maxWorksPerArtist }) => {
-    const data = useLazyLoadQuery<NewWorksForYouArtworksQuery>(newWorksForYouArtworksQuery, {
-      version,
-      maxWorksPerArtist,
-    })
+interface NewWorksForYouArtworksQRProps {
+  maxWorksPerArtist?: number
+  version?: string
+  onlyAtAuction?: boolean
+}
+
+export const NewWorksForYouArtworksQR: React.FC<NewWorksForYouArtworksQRProps> = withSuspense(
+  ({ version, onlyAtAuction = false, maxWorksPerArtist = 3 }) => {
+    const data = useLazyLoadQuery<NewWorksForYouArtworksQuery>(
+      newWorksForYouArtworksQuery,
+      {
+        version,
+        maxWorksPerArtist,
+        onlyAtAuction,
+      },
+      {
+        fetchPolicy: "store-and-network",
+      }
+    )
 
     // This won't happen because the query would fail thanks to the @principalField
     // Adding it here to make TS happy

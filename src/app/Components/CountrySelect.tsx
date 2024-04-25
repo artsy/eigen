@@ -1,4 +1,5 @@
 import { Select, SelectOption } from "app/Components/Select"
+import { Select as SelectV2 } from "app/Components/Select/SelectV2"
 
 // This data was copied over from force & the populations (searchImportance) was extracted mostly from this
 // wikipedia article https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_population
@@ -679,7 +680,7 @@ export const COUNTRY_SELECT_OPTIONS: Array<SelectOption<string>> = [
 
 export const CountrySelect: React.ComponentType<
   Omit<
-    React.ComponentPropsWithRef<typeof Select>,
+    React.ComponentPropsWithRef<typeof SelectV2>,
     "options" | "placeholder" | "title" | "enableSearch"
   >
 > = (props) => (

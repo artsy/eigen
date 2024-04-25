@@ -1,6 +1,5 @@
-import { Spacer, Box, Text, LinkText, Button } from "@artsy/palette-mobile"
+import { Box, Button, Input, LinkText, Spacer, Text } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
-import { Input } from "app/Components/Input"
 import { PhoneInput } from "app/Components/Input/PhoneInput"
 import { navigate } from "app/system/navigation/navigate"
 import { useScreenDimensions } from "app/utils/hooks"
@@ -96,7 +95,6 @@ export const ConsignmentInquiryForm: React.FC<{
             onSubmitEditing={() => jumpToNextField("name")}
             placeholder="First and last name"
             ref={nameInputRef}
-            required
             returnKeyType="next"
             testID="swa-inquiry-name-input"
             title="Name"
@@ -116,7 +114,6 @@ export const ConsignmentInquiryForm: React.FC<{
             onSubmitEditing={() => jumpToNextField("email")}
             placeholder="Email address"
             ref={emailInputRef}
-            required
             returnKeyType="next"
             spellCheck={false}
             testID="swa-inquiry-email-input"
@@ -134,11 +131,12 @@ export const ConsignmentInquiryForm: React.FC<{
             setValidation={() => null}
             shouldDisplayLocalError={false}
             style={{ flex: 1 }}
+            optional
             testID="swa-inquiry-phone-input"
             title="Phone number"
             value={values.phoneNumber}
           />
-          <Spacer y={4} />
+          <Spacer y={6} />
           <Input
             accessibilityLabel="Message to the Artsy Specialist"
             blurOnSubmit={false}

@@ -23,7 +23,10 @@ export const ArtworkListEmptyState = ({ me, refreshControl }: ArtworkListEmptySt
       <ArtworkListHeader me={data} />
 
       <ScrollView style={{ flex: 1 }} refreshControl={refreshControl}>
-        <ArtworkListTitle title={artworkList?.name ?? ""} />
+        <ArtworkListTitle
+          title={artworkList?.name ?? ""}
+          shareableWithPartners={artworkList?.shareableWithPartners ?? false}
+        />
 
         <Separator borderColor="black10" mt={1} />
 
@@ -54,6 +57,7 @@ const artworkListEmptyStateFragment = graphql`
       default
       name
       internalID
+      shareableWithPartners
     }
     ...ArtworkListHeader_me @arguments(listID: $listID)
   }
