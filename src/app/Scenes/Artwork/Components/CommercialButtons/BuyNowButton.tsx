@@ -107,7 +107,9 @@ export const BuyNowButton = ({
           Toast.show("An error occurred.", "bottom")
         }
       } else if (orderOrError?.order) {
-        navigate(`/orders/${orderOrError.order?.internalID}`)
+        navigate(`/orders/${orderOrError.order?.internalID}`, {
+          passProps: { title: "Purchase" },
+        })
 
         return
       }

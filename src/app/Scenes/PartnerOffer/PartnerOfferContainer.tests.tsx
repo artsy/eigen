@@ -88,7 +88,11 @@ describe(PartnerOfferContainer, () => {
           expect.objectContaining({ variables: { input: { partnerOfferId: "1234" } } })
         )
         expect(goBack).toHaveBeenCalledOnce()
-        expect(navigate).toHaveBeenCalledWith("/orders/order-id")
+        expect(navigate).toHaveBeenCalledWith("/orders/order-id", {
+          passProps: {
+            title: "Purchase",
+          },
+        })
       })
     })
 
