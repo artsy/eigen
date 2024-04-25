@@ -98,8 +98,25 @@ export const artworkDetailsValidationSchema = Yup.object().shape({
   utmSource: Yup.string(),
   utmTerm: Yup.string(),
   location: Yup.object().shape({
-    city: Yup.string().required().trim(),
+    city: Yup.string().trim(),
     state: Yup.string(),
     country: Yup.string(),
   }),
+})
+
+export interface ContactInformationFormModel {
+  userName: string
+  userEmail: string
+  userPhone: string | undefined
+}
+
+export const contactInformationValidationSchema = Yup.object().shape({
+  userName: Yup.string()
+    .required()
+    .test(
+      "userName",
+      "Please enter your full name.",
+      (name) => typeof name === "string" && name.length > 1
+    ),
+  userEmail: Yup.string().required().email("Please enter a valid email address."),
 })

@@ -3,8 +3,10 @@ import {
   CreateSubmissionMutationInput,
 } from "__generated__/createConsignSubmissionMutation.graphql"
 import { UpdateSubmissionMutationInput } from "__generated__/updateConsignSubmissionMutation.graphql"
-import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/validation"
-import { ContactInformationFormModel as SWASubmissionContactInformationFormModel } from "app/Scenes/SellWithArtsy/SubmitArtwork/ContactInformation/validation"
+import {
+  ArtworkDetailsFormModel,
+  ContactInformationFormModel as SWASubmissionContactInformationFormModel,
+} from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/validation"
 import {
   createConsignSubmission,
   updateConsignSubmission,

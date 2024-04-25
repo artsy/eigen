@@ -36,19 +36,21 @@ export const ArtworkDetails: React.FC<{
         validationSchema={artworkDetailsValidationSchema}
         validateOnMount
       >
-        {({ values, isValid }) => (
-          <>
-            <ArtworkDetailsForm />
-            <Spacer y={2} />
-            <CTAButton
-              disabled={!isValid}
-              onPress={() => handlePress(values)}
-              testID="Submission_ArtworkDetails_Button"
-            >
-              {isLastStep ? "Submit Artwork" : "Save & Continue"}
-            </CTAButton>
-          </>
-        )}
+        {({ values, isValid }) => {
+          return (
+            <>
+              <ArtworkDetailsForm />
+              <Spacer y={2} />
+              <CTAButton
+                disabled={!isValid}
+                onPress={() => handlePress(values)}
+                testID="Submission_ArtworkDetails_Button"
+              >
+                {isLastStep ? "Submit Artwork" : "Save & Continue"}
+              </CTAButton>
+            </>
+          )
+        }}
       </Formik>
     </Flex>
   )
