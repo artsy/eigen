@@ -403,16 +403,22 @@ export async function handleLimitedFacebookAuth(
       return
     }
 
-    const decodedToken = jwtDecode(limitedLoginJWTToken.authenticationToken)
+    const decodedToken = jwtDecode(limitedLoginJWTToken.authenticationToken) as any
 
     if (!decodedToken) {
       reject(new AuthError("Invalid JWT token"))
       return
     }
 
-    const { email, name } = decodedToken as {
-      email: string
-      name: string
+    const { email, name } = decodedToken
+
+    if (!email || !name) {
+      reject(
+        new AuthError(
+          "There is no email or name associated with your Facebook account. Please log in using your email and password instead."
+        )
+      )
+      return
     }
 
     if (options.signInOrUp === "signUp") {
