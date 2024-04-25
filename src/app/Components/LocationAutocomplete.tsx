@@ -1,10 +1,9 @@
-import { MapPinIcon, Flex, Text, Touchable } from "@artsy/palette-mobile"
-import { Input, InputProps } from "app/Components/Input"
+import { Flex, Input, InputProps, MapPinIcon, Text, Touchable } from "@artsy/palette-mobile"
 import {
-  getLocationDetails,
-  getLocationPredictions,
   LocationWithDetails,
   SimpleLocation,
+  getLocationDetails,
+  getLocationPredictions,
 } from "app/utils/googleMaps"
 import { useScreenDimensions } from "app/utils/hooks"
 import React, { useEffect, useRef, useState } from "react"

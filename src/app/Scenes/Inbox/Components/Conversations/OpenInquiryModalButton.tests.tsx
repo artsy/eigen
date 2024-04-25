@@ -23,6 +23,7 @@ const tappedPurchaseEvent = {
   context_owner_slug: "slug-1",
   context_owner_type: "conversation",
   impulse_conversation_id: "123",
+  flow: "",
 }
 
 describe("OpenInquiryModalButtonTestQueryRenderer", () => {

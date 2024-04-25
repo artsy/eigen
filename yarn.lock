@@ -10,17 +10,17 @@
     "@jridgewell/gen-mapping" "^0.3.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@artsy/cohesion@4.174.0":
-  version "4.174.0"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.174.0.tgz#49880154bd681fc0dfb87843fee492df06a57936"
-  integrity sha512-XmdVC409TmrEU1199x0yBTyxXUTzZwSbJCC4oL3ojq5n7aTCTSKVqfPuRlHbOB0rhJq5zky6L0GTwBvS+ctJiA==
+"@artsy/cohesion@4.175.0":
+  version "4.175.0"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.175.0.tgz#d672aea0d2e9b6d594c1ee3e8d9dd019f806e628"
+  integrity sha512-IS0HIr2AqdZqBbvypt+PKypDYpZnxvzXgrxbchZWuzZLsvHg93eCLDSxDAzKlBj+LcGCBJzULu4UPI/l8o+a1Q==
   dependencies:
     core-js "3"
 
-"@artsy/palette-mobile@13.2.1":
-  version "13.2.1"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-13.2.1.tgz#279f47422a36ed18056f47de13cd0b7f56c4e04d"
-  integrity sha512-X5Hc5fO5eN5/o2fjHJGW+HwBm16lg5Q7PHINp6NhCV9cMpeVbwt66U1FWr2JpVF5F0SzRZ0dSk/suySRCHOiyw==
+"@artsy/palette-mobile@13.2.2":
+  version "13.2.2"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-13.2.2.tgz#b9a69949675e2a7c681bfe155619501dca047015"
+  integrity sha512-jLZ9pvgl62KZHLRrLBo842O3dN8M8jOLTKfNDLca1xQBajZUlecB9Vz44igQX5yOGm05q1AEI42C/Nzz5V796g==
   dependencies:
     "@artsy/palette-tokens" "^5.0.0"
     "@shopify/flash-list" "^1.5.0"
@@ -2463,10 +2463,10 @@
     node-fetch "^2.6.7"
     universal-user-agent "^6.0.0"
 
-"@octokit/rest@16.34.0":
-  version "16.34.0"
-  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-16.34.0.tgz#8703e46d7e9f6aec24a7e591b073f325ca13f6e2"
-  integrity sha512-EBe5qMQQOZRuezahWCXCnSe0J6tAqrW2hrEH9U8esXzKor1+HUDf8jgImaZf5lkTyWCQA296x9kAH5c0pxEgVQ==
+"@octokit/rest@16.34.1":
+  version "16.34.1"
+  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-16.34.1.tgz#e28b5a573ca2f15bb002f90bc010020845ed9c01"
+  integrity sha512-JUoS12cdktf1fv86rgrjC/RvYLuL+o7p57W7zX1x7ANFJ7OvdV8emvUNkFlcidEaOkYrxK3SoWgQFt3FhNmabA==
   dependencies:
     "@octokit/request" "^5.2.0"
     "@octokit/request-error" "^1.0.2"

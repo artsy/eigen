@@ -12,9 +12,14 @@ interface PartnerCardProps {
   artwork: PartnerCard_artwork$data
   relay: RelayProp
   shouldShowQuestions?: boolean
+  onlyShowQuestions?: boolean
 }
 
-export const PartnerCard: React.FC<PartnerCardProps> = ({ artwork, shouldShowQuestions }) => {
+export const PartnerCard: React.FC<PartnerCardProps> = ({
+  artwork,
+  shouldShowQuestions,
+  onlyShowQuestions,
+}) => {
   const handleTap = (href: string) => navigateToPartner(href)
 
   const partner = artwork.partner
@@ -42,6 +47,10 @@ export const PartnerCard: React.FC<PartnerCardProps> = ({ artwork, shouldShowQue
     partner.type === "Institutional Seller"
 
   const partnerTypeDisplayText = partner.type === "Gallery" ? partner.type : "Institution"
+
+  if (onlyShowQuestions) {
+    return <Questions artwork={artwork} />
+  }
 
   return (
     <Flex>

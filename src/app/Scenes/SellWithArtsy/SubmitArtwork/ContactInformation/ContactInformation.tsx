@@ -1,14 +1,13 @@
-import { Spacer, Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Input, Spacer, Text } from "@artsy/palette-mobile"
 import { ContactInformationQueryRendererQuery } from "__generated__/ContactInformationQueryRendererQuery.graphql"
 import { ContactInformation_me$data } from "__generated__/ContactInformation_me.graphql"
 import { CTAButton } from "app/Components/Button/CTAButton"
-import { Input } from "app/Components/Input"
 import { PhoneInput } from "app/Components/Input/PhoneInput/PhoneInput"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { Formik } from "formik"
 import { noop } from "lodash"
 import React, { useState } from "react"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { QueryRenderer, createFragmentContainer, graphql } from "react-relay"
 import { ContactInformationFormModel, contactInformationValidationSchema } from "./validation"
 
 export const ContactInformation: React.FC<{
@@ -39,7 +38,7 @@ export const ContactInformation: React.FC<{
           <Text color="black60">
             We will only use these details to contact you regarding your submission.
           </Text>
-          <Spacer y={4} />
+          <Spacer y={2} />
           <Input
             title="Name"
             placeholder="Your full name"
@@ -49,8 +48,9 @@ export const ContactInformation: React.FC<{
             onBlur={() => setIsNameInputFocused(false)}
             onFocus={() => setIsNameInputFocused(true)}
             error={!isNameInputFocused && values.userName && errors.userName ? errors.userName : ""}
+            testID="name-input"
           />
-          <Spacer y={4} />
+          <Spacer y={2} />
           <Input
             title="Email"
             placeholder="Your email address"
@@ -63,8 +63,9 @@ export const ContactInformation: React.FC<{
             error={
               !isEmailInputFocused && values.userEmail && errors.userEmail ? errors.userEmail : ""
             }
+            testID="email-input"
           />
-          <Spacer y={4} />
+          <Spacer y={2} />
           <PhoneInput
             title="Phone number"
             placeholder="(000) 000-0000"
@@ -73,6 +74,7 @@ export const ContactInformation: React.FC<{
             setValidation={noop}
             accessibilityLabel="Phone number"
             shouldDisplayLocalError={false}
+            testID="phone-input"
           />
           <Spacer y={6} />
           <CTAButton

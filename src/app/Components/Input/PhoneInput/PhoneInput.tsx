@@ -1,9 +1,17 @@
-import { Spacer, TriangleDown, Flex, useColor, Text, Touchable } from "@artsy/palette-mobile"
+import {
+  Flex,
+  InputProps,
+  Spacer,
+  Text,
+  Touchable,
+  TriangleDown,
+  useColor,
+} from "@artsy/palette-mobile"
 import {
   INTERNALSelectAndInputCombinationBase,
   ValuePayload,
 } from "app/Components/Input/INTERNALSelectAndInputCombinationBase"
-import { InputProps, InputRef } from "app/Components/Input/Input"
+import { InputRef } from "app/Components/Input/Input"
 import { SelectOption } from "app/Components/Select"
 import * as glibphone from "google-libphonenumber"
 import replace from "lodash/replace"
@@ -85,6 +93,7 @@ export const PhoneInput = forwardRef<
         select: { value: code },
         input: { value: phone },
       } = selectAndInputValue
+
       const newDialCode = countryIndex[code].dialCode ?? dialCode
       const fullPhoneNumber = newDialCode ? `+${newDialCode} ${phone}` : phone
 
@@ -99,8 +108,10 @@ export const PhoneInput = forwardRef<
       setPhoneNumber(formattedPhoneNumber.replace(/\D+$/, ""))
     }
 
+    const selectedCountry = countries.find((c) => c.iso2 === countryISO2Code)
+
     return (
-      <Flex style={{ height: 50 }}>
+      <Flex>
         <INTERNALSelectAndInputCombinationBase
           // Props for Input
           {...rest}
@@ -117,6 +128,9 @@ export const PhoneInput = forwardRef<
           optionsForSelect={countryOptions}
           enableSearchForSelect
           valueForSelect={countryCode}
+          selectDisplayLabel={
+            selectedCountry ? `${selectedCountry.flag}  +${selectedCountry.dialCode}` : ""
+          }
           maxModalHeightForSelect={maxModalHeight}
           onModalFinishedClosingForSelect={onModalFinishedClosing}
           onSelectValueForSelect={(newCountryCode) => {

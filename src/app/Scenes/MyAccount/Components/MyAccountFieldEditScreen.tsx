@@ -24,7 +24,7 @@ export type AlertArgs = [
   title: string,
   message?: string,
   buttons?: AlertButton[],
-  options?: AlertOptions
+  options?: AlertOptions,
 ]
 
 export interface MyAccountFieldEditScreenProps {

@@ -1,9 +1,16 @@
-import { ArtsyKeyboardAvoidingView, Button, Flex, Join, Spacer } from "@artsy/palette-mobile"
+import {
+  ArtsyKeyboardAvoidingView,
+  Button,
+  Flex,
+  Join,
+  Spacer,
+  Input,
+  InputRef,
+} from "@artsy/palette-mobile"
 import { RouteProp, useIsFocused, useNavigation, useRoute } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { Input } from "app/Components/Input"
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { useFormik } from "formik"
 import React, { useEffect, useRef, useState } from "react"
@@ -33,10 +40,10 @@ export const AddMyCollectionArtist: React.FC = () => {
   const [showAbandonModal, setShowAbandonModal] = useState(false)
 
   const scrollViewRef = useRef<ScrollView>(null)
-  const nameInputRef = useRef<Input>(null)
-  const nationalityInputRef = useRef<Input>(null)
-  const birthYearInputRef = useRef<Input>(null)
-  const deathYearInputRef = useRef<Input>(null)
+  const nameInputRef = useRef<InputRef>(null)
+  const nationalityInputRef = useRef<InputRef>(null)
+  const birthYearInputRef = useRef<InputRef>(null)
+  const deathYearInputRef = useRef<InputRef>(null)
 
   const isFocused = useIsFocused()
 
@@ -116,12 +123,12 @@ export const AddMyCollectionArtist: React.FC = () => {
                 onChange={() => handleChange}
                 onChangeText={(text) => handleOnChangeText("name", text)}
                 onSubmitEditing={() => nationalityInputRef.current?.focus()}
-                placeholder="Artist Name"
                 ref={nameInputRef}
                 required
                 returnKeyType="next"
                 title="Artist Name"
                 value={values.name}
+                testID="artist-input"
               />
               <Input
                 accessibilityLabel="Nationality"
@@ -131,11 +138,11 @@ export const AddMyCollectionArtist: React.FC = () => {
                 onChange={() => handleChange}
                 onChangeText={(text) => handleOnChangeText("nationality", text)}
                 onSubmitEditing={() => birthYearInputRef.current?.focus()}
-                placeholder="Nationality"
                 ref={nationalityInputRef}
                 returnKeyType="next"
                 title="Nationality"
                 value={values.nationality}
+                testID="nationality-input"
               />
               <Flex flexDirection="row" flex={2}>
                 <Join separator={<Spacer x={4} />}>
@@ -149,10 +156,10 @@ export const AddMyCollectionArtist: React.FC = () => {
                       onBlur={() => validateField("birthYear")}
                       onChange={() => handleChange}
                       onChangeText={(text) => handleOnChangeText("birthYear", text)}
-                      placeholder="Birth Year"
                       ref={birthYearInputRef}
                       title="Birth Year"
                       value={values.birthYear}
+                      testID="birth-year-input"
                     />
                   </Flex>
                   <Flex flex={1}>
@@ -165,10 +172,10 @@ export const AddMyCollectionArtist: React.FC = () => {
                       onBlur={() => validateField("deathYear")}
                       onChange={() => handleChange}
                       onChangeText={(text) => handleOnChangeText("deathYear", text)}
-                      placeholder="Death Year"
                       ref={deathYearInputRef}
                       title="Death Year"
                       value={values.deathYear}
+                      testID="death-year-input"
                     />
                   </Flex>
                 </Join>

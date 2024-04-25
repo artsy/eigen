@@ -1,15 +1,15 @@
 import {
-  Spacer,
-  Flex,
   Box,
-  useColor,
-  Text,
+  Button,
+  Flex,
+  Input,
   LinkText,
   SimpleMessage,
-  Button,
+  Spacer,
+  Text,
+  useColor,
 } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
-import { Input } from "app/Components/Input"
 import { GlobalStore } from "app/store/GlobalStore"
 import { BackButton } from "app/system/navigation/BackButton"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
@@ -98,7 +98,7 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
                 recoveryCodeMode ? "Enter a recovery code" : "Enter an authentication code"
               }
               placeholderTextColor={color("black30")}
-              title={recoveryCodeMode ? "Recovery code" : "Authentication code"}
+              title={recoveryCodeMode ? "Recovery code" : undefined}
               returnKeyType="done"
               value={values.otp}
               error={errors.otp}

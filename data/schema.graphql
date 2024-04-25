@@ -1815,6 +1815,9 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     # The number of PartnerArtists to return
     size: Int
   ): [PartnerArtist]
+
+  # The Partner's provided biography for the artist
+  partnerBiographyBlurb(format: Format): partnerBiographyBlurb
   partnersConnection(
     after: String
     before: String
@@ -4118,6 +4121,12 @@ type CollectorProfileType implements Node {
 
   # User ID of the collector profile's owner
   ownerID: ID!
+
+  # Holds information about the engagement a collector profile has with a given partner
+  partnerEngagement(
+    # The ID of the partner to check for engagement
+    partnerID: ID!
+  ): PartnerEngagement
   privacy: String
   profession: String
   professionalBuyerAppliedAt(
@@ -11245,6 +11254,12 @@ type InquirerCollectorProfile {
 
   # User ID of the collector profile's owner
   ownerID: ID!
+
+  # Holds information about the engagement a collector profile has with a given partner
+  partnerEngagement(
+    # The ID of the partner to check for engagement
+    partnerID: ID!
+  ): PartnerEngagement
   privacy: String
   profession: String
   professionalBuyerAppliedAt(
@@ -14286,6 +14301,10 @@ type PartnerArtworkGrid implements ArtworkContextGrid {
   title: String
 }
 
+type partnerBiographyBlurb {
+  text: String
+}
+
 type PartnerCategory {
   cached: Int
   categoryType: PartnerCategoryType
@@ -14471,6 +14490,21 @@ type PartnerEdge {
 
   # The item at the end of the edge
   node: Partner
+}
+
+type PartnerEngagement {
+  counts: PartnerEngagementCounts
+}
+
+# Counts relating to a collector's interest in the gallery program
+type PartnerEngagementCounts {
+  alerts: Int!
+  artworkInquiries(
+    # When present, returns the inquiry count for the artist (across partners).
+    artistID: String
+  ): Int!
+  followedArtists: Int!
+  savedArtworks: Int!
 }
 
 type PartnerInquiryRequest {
@@ -18776,6 +18810,12 @@ type UpdateCollectorProfilePayload {
 
   # User ID of the collector profile's owner
   ownerID: ID!
+
+  # Holds information about the engagement a collector profile has with a given partner
+  partnerEngagement(
+    # The ID of the partner to check for engagement
+    partnerID: ID!
+  ): PartnerEngagement
   privacy: String
   profession: String
   professionalBuyerAppliedAt(

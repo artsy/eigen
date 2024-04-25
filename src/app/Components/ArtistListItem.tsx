@@ -31,6 +31,7 @@ interface Props {
   showFollowButton?: boolean
   uploadsCount?: number | null
   withFeedback?: boolean
+  theme?: "dark" | "light"
 }
 
 export const formatTombstoneText = (
@@ -67,6 +68,7 @@ const ArtistListItem: React.FC<Props> = ({
   showFollowButton = true,
   uploadsCount,
   withFeedback = false,
+  theme = "light",
 }) => {
   const { is_followed, initials, image, href, name, nationality, birthday, deathday } = artist
 
@@ -101,13 +103,16 @@ const ArtistListItem: React.FC<Props> = ({
       return (
         <Flex>
           {!!tombstoneText && (
-            <Text variant="xs" color="black60" numberOfLines={1}>
+            <Text variant="xs" color={theme === "light" ? "black60" : "white100"} numberOfLines={1}>
               {tombstoneText}
             </Text>
           )}
 
           {Number.isInteger(uploadsCount) && (
-            <Text variant="xs" color={uploadsCount === 0 ? "black60" : "black100"}>
+            <Text
+              variant="xs"
+              color={theme === "light" ? (uploadsCount === 0 ? "black60" : "black100") : "white100"}
+            >
               {uploadsCount} {pluralize("artwork", uploadsCount || 0)} uploaded
             </Text>
           )}
@@ -152,6 +157,7 @@ const ArtistListItem: React.FC<Props> = ({
                 avatarSize={avatarSize}
                 RightButton={RightButton}
                 displayPrivateIcon={isPrivate}
+                theme={theme}
               />
             </Flex>
             {!!showFollowButton && (

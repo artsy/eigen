@@ -107,7 +107,9 @@ export const BuyNowButton = ({
           Toast.show("An error occurred.", "bottom")
         }
       } else if (orderOrError?.order) {
-        navigate(`/orders/${orderOrError.order?.internalID}`)
+        navigate(`/orders/${orderOrError.order?.internalID}`, {
+          passProps: { title: "Purchase" },
+        })
 
         return
       }
@@ -214,5 +216,6 @@ const tracks = {
     context_owner_type: OwnerType.artwork,
     context_owner_id: internalID,
     context_owner_slug: slug,
+    flow: "",
   }),
 }

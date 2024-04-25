@@ -1,6 +1,5 @@
-import { Box, Flex, InputProps, Text, computeBorderColor, useColor } from "@artsy/palette-mobile"
+import { InputProps } from "@artsy/palette-mobile"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
-import { RemainingCharactersLabel } from "./RemainingCharactersLabel"
 
 interface CreateNewArtworkListInputProps extends InputProps {
   value: string
@@ -8,22 +7,5 @@ interface CreateNewArtworkListInputProps extends InputProps {
 }
 
 export const CreateNewArtworkListInput = ({ error, ...rest }: CreateNewArtworkListInputProps) => {
-  const color = useColor()
-  const borderColor = color(computeBorderColor({ error: !!error }))
-
-  return (
-    <Box>
-      <BottomSheetInput {...rest} style={{ borderColor: borderColor }} />
-
-      <Flex height={25} justifyContent="center" mt={1}>
-        {!!error ? (
-          <Text variant="xs" color="red100">
-            {error}
-          </Text>
-        ) : (
-          <RemainingCharactersLabel currentLength={rest.value.length} maxLength={rest.maxLength} />
-        )}
-      </Flex>
-    </Box>
-  )
+  return <BottomSheetInput {...rest} error={error} showLimit maxLength={rest.maxLength} />
 }
