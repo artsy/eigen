@@ -70,11 +70,7 @@ export const SelectButton: React.FC<{
       backgroundColor: "white",
       paddingHorizontal: withTiming(hasSelectedValue ? 5 : 0),
       color: withTiming(INPUT_VARIANTS[variant][animatedState.value].labelColor),
-      top: withTiming(
-        hasSelectedValue
-          ? -((INPUT_MIN_HEIGHT + parseInt(THEME.textVariants["sm-display"].fontSize, 10) / 2) / 2)
-          : 0
-      ),
+      top: withTiming(hasSelectedValue ? -INPUT_MIN_HEIGHT / 2 : 0),
       fontSize: withTiming(
         hasSelectedValue
           ? parseInt(THEME.textVariants["xs"].fontSize, 10)
