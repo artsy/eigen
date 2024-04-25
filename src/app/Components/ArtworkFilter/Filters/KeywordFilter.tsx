@@ -1,15 +1,14 @@
 import { ActionType, ContextModule } from "@artsy/cohesion"
 import { Input } from "@artsy/palette-mobile"
 import {
-  filterArtworksParams,
   FilterParamName,
+  filterArtworksParams,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import SearchIcon from "app/Components/Icons/SearchIcon"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { debounce, throttle } from "lodash"
 import React, { useEffect, useMemo, useRef, useState } from "react"
-import { Platform } from "react-native"
 import { useTracking } from "react-tracking"
 import usePrevious from "react-use/lib/usePrevious"
 
@@ -81,11 +80,7 @@ export const KeywordFilter: React.FC<KeywordFilterProps> = ({
     return () => handleChangeText.cancel()
   }, [])
 
-  // Truncate placeholder for Android to prevent new line.
-  const placeholder =
-    Platform.OS === "android" && loading
-      ? "Search by artwork title, series..."
-      : "Search by artwork title, series, or description"
+  const placeholder = "Search by artwork title, series..."
 
   return (
     <Input
