@@ -22,9 +22,8 @@ import { useTracking } from "react-tracking"
 
 export const CommercialButtonsQueryRenderer: React.FC<{
   artworkID: string
-  alertID?: string
   partnerOffer?: PartnerOffer
-}> = ({ artworkID, partnerOffer, alertID }) => {
+}> = ({ artworkID, partnerOffer }) => {
   return (
     <QueryRenderer<NotificationCommercialButtonsQuery>
       environment={getRelayEnvironment()}
@@ -40,7 +39,7 @@ export const CommercialButtonsQueryRenderer: React.FC<{
       variables={{ artworkID }}
       render={renderWithPlaceholder({
         Container: CommercialButtons,
-        initialProps: { partnerOffer, artworkID, alertID },
+        initialProps: { partnerOffer, artworkID },
         renderPlaceholder: () => <></>,
       })}
     />
@@ -68,8 +67,7 @@ export const CommercialButtons: React.FC<{
     | InquiryButtons_artwork$key
   partnerOffer?: PartnerOffer
   artworkID: string
-  alertID?: string
-}> = ({ artwork, partnerOffer, artworkID, alertID }) => {
+}> = ({ artwork, partnerOffer, artworkID }) => {
   const artworkData = useFragment(artworkFragment, artwork)
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
   const space = useSpace()
@@ -100,6 +98,8 @@ export const CommercialButtons: React.FC<{
       renderComponent = (
         <Button
           onPress={() => {
+            tracking.trackEvent(tracks.tappedViewWork(artworkID, partnerOffer?.internalID || ""))
+
             navigate(`/artwork/${artworkID}`, { passProps: { artworkOfferExpired: true } })
           }}
           block
@@ -117,6 +117,7 @@ export const CommercialButtons: React.FC<{
           partnerOffer={partnerOffer}
           editionSetID={null}
           buttonText="Continue to Purchase"
+          source="notification"
         />
       )
     } else {
@@ -124,7 +125,8 @@ export const CommercialButtons: React.FC<{
         <RowContainer>
           <Button
             onPress={() => {
-              tracking.trackEvent(tracks.tappedViewWork(artworkID, alertID || ""))
+              tracking.trackEvent(tracks.tappedViewWork(artworkID, partnerOffer.internalID))
+
               navigate(`/artwork/${artworkID}`, {
                 passProps: { partnerOfferId: partnerOffer?.internalID },
               })
@@ -135,11 +137,13 @@ export const CommercialButtons: React.FC<{
           >
             View Work
           </Button>
+
           <BuyNowButton
             artwork={artworkData as BuyNowButton_artwork$key}
             partnerOffer={partnerOffer}
             editionSetID={null}
             buttonText="Purchase"
+            source="notification"
           />
         </RowContainer>
       )
@@ -150,6 +154,7 @@ export const CommercialButtons: React.FC<{
         <Button block variant="outline" onPress={() => setShowCreateArtworkAlertModal(true)}>
           Create Alert
         </Button>
+
         <CreateArtworkAlertModal
           artwork={artwork as CreateArtworkAlertModal_artwork$key}
           onClose={() => setShowCreateArtworkAlertModal(false)}
@@ -174,13 +179,14 @@ const artworkFragment = graphql`
     ...CreateArtworkAlertModal_artwork
   }
 `
+
 const tracks = {
-  tappedViewWork: (artworkID: string, alertID: string): TappedViewWork => ({
+  tappedViewWork: (artworkID: string, partnerOfferId: string): TappedViewWork => ({
     action: ActionType.tappedViewWork,
     context_module: ContextModule.notification,
     context_screen_owner_type: OwnerType.notification,
-    context_screen_owner_id: alertID,
+    context_screen_owner_id: partnerOfferId,
     artwork_id: artworkID,
-    notification_type: "",
+    notification_type: "offers",
   }),
 }
