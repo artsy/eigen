@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Button, Flex, Separator, Spacer, useColor } from "@artsy/palette-mobile"
+import { Button, Flex, Separator, Spacer, Text, useColor } from "@artsy/palette-mobile"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { MenuItem } from "app/Components/MenuItem"
 import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"
@@ -15,6 +15,7 @@ interface MyProfileSettingsProps {
 
 export const MyProfileSettings: React.FC<MyProfileSettingsProps> = ({ onSuccess }) => {
   const darkModeSupport = useFeatureFlag("ARDarkModeSupport")
+  const newCollectorSettings = useFeatureFlag("AREnableNewCollectorSettings")
 
   const color = useColor()
   const tracking = useTracking()
@@ -25,6 +26,9 @@ export const MyProfileSettings: React.FC<MyProfileSettingsProps> = ({ onSuccess 
       <FancyModalHeader hideBottomDivider>Account</FancyModalHeader>
 
       <ScrollView>
+        <Text variant="xs" color="black60" px={2}>
+          Settings
+        </Text>
         <Spacer y={2} />
         <MenuItem
           title="Edit Profile"
@@ -39,46 +43,94 @@ export const MyProfileSettings: React.FC<MyProfileSettingsProps> = ({ onSuccess 
         <Separator my={1} borderColor={separatorColor} />
         <MenuItem title="Account Settings" onPress={() => navigate("my-account")} />
         <Separator my={1} borderColor={separatorColor} />
-        <MenuItem title="Alerts" onPress={() => navigate("settings/alerts")} />
-        <Separator my={1} borderColor={separatorColor} />
-        <MenuItem title="Follows" onPress={() => navigate("favorites")} />
-        <Separator my={1} borderColor={separatorColor} />
-        <MenuItem title="Order History" onPress={() => navigate("/orders")} />
-        <Separator my={1} borderColor={separatorColor} />
-        <MenuItem
-          title="Recently Viewed"
-          onPress={() => {
-            tracking.trackEvent(tracks.trackMenuTap("my-profile/recently-viewed"))
-            navigate("recently-viewed")
-          }}
-        />
-        <Separator my={1} borderColor={separatorColor} />
-        <MenuItem title="Payment" onPress={() => navigate("my-profile/payment")} />
-        <Separator my={1} borderColor={separatorColor} />
-        {!!darkModeSupport && (
+        {!newCollectorSettings ? (
           <>
-            <MenuItem title="Dark Mode" onPress={() => navigate("settings/dark-mode")} />
+            <MenuItem title="Alerts" onPress={() => navigate("settings/alerts")} />
+            <Separator my={1} borderColor={separatorColor} />
+            <MenuItem title="Follows" onPress={() => navigate("favorites")} />
+            <Separator my={1} borderColor={separatorColor} />
+            <MenuItem title="Order History" onPress={() => navigate("/orders")} />
+            <Separator my={1} borderColor={separatorColor} />
+            <MenuItem
+              title="Recently Viewed"
+              onPress={() => {
+                tracking.trackEvent(tracks.trackMenuTap("my-profile/recently-viewed"))
+                navigate("recently-viewed")
+              }}
+            />
+            <Separator my={1} borderColor={separatorColor} />
+            <MenuItem title="Payment" onPress={() => navigate("my-profile/payment")} />
+            <Separator my={1} borderColor={separatorColor} />
+            {!!darkModeSupport && (
+              <>
+                <MenuItem title="Dark Mode" onPress={() => navigate("settings/dark-mode")} />
+                <Separator my={1} borderColor={separatorColor} />
+              </>
+            )}
+
+            <MenuItem
+              title="Push Notifications"
+              onPress={() => navigate("my-profile/push-notifications")}
+            />
+            <Separator my={1} borderColor={separatorColor} />
+
+            <MenuItem
+              title="Send Feedback"
+              onPress={() =>
+                presentEmailComposer("support@artsy.net", "Feedback from the Artsy app")
+              }
+            />
+            <Separator my={1} borderColor={separatorColor} />
+
+            <MenuItem title="Personal Data Request" onPress={() => navigate("privacy-request")} />
+            <Separator my={1} borderColor={separatorColor} />
+
+            <MenuItem title="About" onPress={() => navigate("about")} />
+            <Separator my={1} borderColor={separatorColor} />
+          </>
+        ) : (
+          <>
+            <MenuItem title="Payment" onPress={() => navigate("my-profile/payment")} />
+            <Separator my={1} borderColor={separatorColor} />
+
+            <MenuItem
+              title="Push Notifications"
+              onPress={() => navigate("my-profile/push-notifications")}
+            />
+            <Separator my={1} borderColor={separatorColor} />
+
+            <MenuItem
+              title="Send Feedback"
+              onPress={() =>
+                presentEmailComposer("support@artsy.net", "Feedback from the Artsy app")
+              }
+            />
+            <Separator my={1} borderColor={separatorColor} />
+
+            <MenuItem title="Personal Data Request" onPress={() => navigate("privacy-request")} />
+            <Separator my={1} borderColor={separatorColor} />
+
+            <MenuItem
+              title="Recently Viewed"
+              onPress={() => {
+                tracking.trackEvent(tracks.trackMenuTap("my-profile/recently-viewed"))
+                navigate("recently-viewed")
+              }}
+            />
+            <Separator my={1} borderColor={separatorColor} />
+
+            <MenuItem title="About" onPress={() => navigate("about")} />
+            <Separator my={1} borderColor={separatorColor} />
+
+            <Spacer y={2} />
+            <Text variant="xs" color="black60" px={2}>
+              Transactions
+            </Text>
+
+            <MenuItem title="Order History" onPress={() => navigate("/orders")} />
             <Separator my={1} borderColor={separatorColor} />
           </>
         )}
-
-        <MenuItem
-          title="Push Notifications"
-          onPress={() => navigate("my-profile/push-notifications")}
-        />
-        <Separator my={1} borderColor={separatorColor} />
-
-        <MenuItem
-          title="Send Feedback"
-          onPress={() => presentEmailComposer("support@artsy.net", "Feedback from the Artsy app")}
-        />
-        <Separator my={1} borderColor={separatorColor} />
-
-        <MenuItem title="Personal Data Request" onPress={() => navigate("privacy-request")} />
-        <Separator my={1} borderColor={separatorColor} />
-
-        <MenuItem title="About" onPress={() => navigate("about")} />
-        <Separator my={1} borderColor={separatorColor} />
 
         <Flex flexDirection="row" alignItems="center" justifyContent="center" py="7.5px" px={2}>
           <Button variant="fillDark" haptic onPress={confirmLogout} block>
