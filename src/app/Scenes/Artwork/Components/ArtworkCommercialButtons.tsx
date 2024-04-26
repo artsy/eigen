@@ -90,6 +90,7 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
           artwork={artworkData}
           editionSetID={selectedEditionId}
           variant="outline"
+          partnerOffer={partnerOfferData}
         />
         <BuyNowButton
           partnerOffer={partnerOfferData}
@@ -140,6 +141,7 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
             artwork={artworkData}
             editionSetID={selectedEditionId}
             variant="outline"
+            partnerOffer={partnerOfferData}
           />
           <BuyNowButton
             partnerOffer={partnerOfferData}
