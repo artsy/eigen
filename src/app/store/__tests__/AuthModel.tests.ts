@@ -369,7 +369,10 @@ describe("AuthModel", () => {
         .authFacebook({ signInOrUp: "signUp", agreedToReceiveEmails: true })
         .catch((e) => e)
 
-      expect(LoginManager.logInWithPermissions).toHaveBeenCalledWith(["public_profile", "email"])
+      expect(LoginManager.logInWithPermissions).toHaveBeenCalledWith(
+        ["public_profile", "email"],
+        "limited"
+      )
       const expectedError = new AuthError(
         "Please allow the use of email to continue.",
         "Email Permission Declined"
