@@ -1,6 +1,11 @@
-import { ActionType, ContextModule, OwnerType, TappedBuyNow } from "@artsy/cohesion"
+import {
+  ActionType,
+  ContextModule,
+  OwnerType,
+  ScreenOwnerType,
+  TappedBuyNow,
+} from "@artsy/cohesion"
 import { ButtonProps, Button } from "@artsy/palette-mobile"
-
 import { BuyNowButton_artwork$key } from "__generated__/BuyNowButton_artwork.graphql"
 import { Toast } from "app/Components/Toast/Toast"
 import { useCreateOrder } from "app/Scenes/Artwork/hooks/useCreateOrder"
@@ -30,6 +35,8 @@ export interface BuyNowButtonProps {
   editionSetID: string | null
   renderSaleMessage?: boolean
   buttonText?: string
+  // Source is used to track where the button was tapped from, by default it's in the artwork screen
+  source?: "notification" | (string & {})
 }
 
 export const BuyNowButton = ({
@@ -39,6 +46,7 @@ export const BuyNowButton = ({
   editionSetID,
   renderSaleMessage,
   buttonText,
+  source,
 }: BuyNowButtonProps) => {
   const [isCommittingCreateOrderMutation, setIsCommittingCreateOrderMutation] = useState(false)
   const AREnablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
@@ -145,8 +153,6 @@ export const BuyNowButton = ({
   }
 
   const handleCreateOrder = async () => {
-    trackEvent(tracks.tappedBuyNow(slug, internalID))
-
     if (isCommittingCreateOrderMutation) {
       return
     }
@@ -155,8 +161,19 @@ export const BuyNowButton = ({
 
     try {
       if (AREnablePartnerOfferOnArtworkScreen && partnerOffer && !partnerOfferTimer?.hasEnded) {
+        trackEvent(
+          tracks.tappedBuyNow(
+            slug,
+            internalID,
+            source === "notification" ? OwnerType.notification : OwnerType.artwork,
+            "Partner offer"
+          )
+        )
+
         await createOrderFromPartnerOffer(partnerOffer)
       } else {
+        trackEvent(tracks.tappedBuyNow(slug, internalID, OwnerType.artwork, "Buy now"))
+
         await createOrder()
       }
     } catch (e) {
@@ -211,11 +228,16 @@ const artworkFragment = graphql`
 `
 
 const tracks = {
-  tappedBuyNow: (slug: string, internalID: string): TappedBuyNow => ({
+  tappedBuyNow: (
+    slug: string,
+    internalID: string,
+    context_owner_type: ScreenOwnerType,
+    flow: string
+  ): TappedBuyNow => ({
     action: ActionType.tappedBuyNow,
-    context_owner_type: OwnerType.artwork,
+    context_owner_type: context_owner_type,
     context_owner_id: internalID,
     context_owner_slug: slug,
-    flow: "",
+    flow: flow,
   }),
 }
