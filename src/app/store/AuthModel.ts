@@ -21,7 +21,7 @@ import { stringify } from "qs"
 import { Platform } from "react-native"
 import ReactAppboy from "react-native-appboy-sdk"
 import Config from "react-native-config"
-import { LoginManager } from "react-native-fbsdk-next"
+import { LoginManager, LoginTracking } from "react-native-fbsdk-next"
 import Keychain from "react-native-keychain"
 import SiftReactNative from "sift-react-native"
 import { AuthError } from "./AuthError"
@@ -490,10 +490,15 @@ export const getAuthModel = (): AuthModel => ({
     // eslint-disable-next-line no-async-promise-executor
     return await new Promise<AuthPromiseResolveType>(async (resolve, reject) => {
       try {
-        const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions([
-          "public_profile",
-          "email",
-        ])
+        let loginTrackingIOS: LoginTracking | undefined
+        if (Platform.OS === "ios") {
+          loginTrackingIOS = "limited"
+        }
+
+        const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions(
+          ["public_profile", "email"],
+          loginTrackingIOS
+        )
 
         if (declinedPermissions?.includes("email")) {
           reject(
