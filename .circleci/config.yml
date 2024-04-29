@@ -5,6 +5,7 @@ orbs:
   queue: eddiewebb/queue@2.2.1
   horizon: artsy/release@0.0.1
   macos: circleci/macos@2.4.1
+  android: circleci/android@2.5.0
 
 commands:
   await-previous-builds:
@@ -119,6 +120,8 @@ commands:
       - restore_cache:
           keys:
             - v10-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+      - android/change-java-version:
+          java-version: 11
       - run:
           name: Quit early if possible
           command: |
@@ -405,7 +408,7 @@ jobs:
 
   build-test-app-android:
     docker:
-      - image: cimg/android:2024.04.1-node
+      - image: cimg/android:2024.01.1-node
     resource_class: large
     steps:
       - prep-android-env
