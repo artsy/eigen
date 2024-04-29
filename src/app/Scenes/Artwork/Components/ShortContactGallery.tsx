@@ -19,7 +19,6 @@ export const ShortContactGallery: React.FC<ShortContactGalleryProps> = (props) =
   return (
     <Flex flexDirection="row" flexWrap="wrap" justifyContent="space-between" alignItems="center">
       <TouchableWithoutFeedback
-        style={{ flex: 0, backgroundColor: "red" }}
         onPress={() => {
           if (props.partnerHref) {
             navigateToPartner(props.partnerHref)
@@ -29,7 +28,7 @@ export const ShortContactGallery: React.FC<ShortContactGalleryProps> = (props) =
         <EntityHeader
           name={props.partnerName ?? ""}
           meta={props.locationNames ?? ""}
-          style={{ backgroundColor: "blue", flex: 1 }}
+          style={{ flex: 1 }}
         />
       </TouchableWithoutFeedback>
       <InquiryButtonsFragmentContainer
