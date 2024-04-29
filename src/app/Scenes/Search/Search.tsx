@@ -11,7 +11,7 @@ import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { Schema } from "app/utils/track"
 import { throttle } from "lodash"
 import { Suspense, useEffect, useMemo, useRef, useState } from "react"
-import { Platform, ScrollView } from "react-native"
+import { Dimensions, Platform, ScrollView } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -27,7 +27,10 @@ import { SEARCH_PILLS, SEARCH_THROTTLE_INTERVAL, TOP_PILL } from "./constants"
 import { getContextModuleByPillName } from "./helpers"
 import { PillType } from "./types"
 
-const SEARCH_INPUT_PLACEHOLDER = "Search artists, artworks, galleries, etc"
+const SEARCH_INPUT_PLACEHOLDER =
+  Dimensions.get("screen").width - 150 > 250
+    ? "Search artists, artworks, galleries, etc"
+    : "Search artists, artworks,  etc"
 
 export const searchQueryDefaultVariables: SearchQuery$variables = {
   term: "",
