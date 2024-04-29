@@ -1,10 +1,13 @@
 import { tappedCollectedArtwork } from "@artsy/cohesion"
-import { Flex, Box, Text } from "@artsy/palette-mobile"
+import { Flex, Box, Text, Popover } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { MyCollectionArtworkGridItem_artwork$data } from "__generated__/MyCollectionArtworkGridItem_artwork.graphql"
 import { DEFAULT_SECTION_MARGIN } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import HighDemandIcon from "app/Components/Icons/HighDemandIcon"
+import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { MyCollectionImageView } from "app/Scenes/MyCollection/Components/MyCollectionImageView"
+import { GlobalStore } from "app/store/GlobalStore"
+import { PROGRESSIVE_ONBOARDING_MY_COLLECTION_SELL_THIS_WORK } from "app/store/ProgressiveOnboardingModel"
 import { navigate } from "app/system/navigation/navigate"
 import { useLocalImage } from "app/utils/LocalImageStore"
 import { useScreenDimensions } from "app/utils/hooks"
@@ -17,9 +20,13 @@ import styled from "styled-components/native"
 
 interface MyCollectionArtworkGridItemProps {
   artwork: MyCollectionArtworkGridItem_artwork$data
+  displayToolTip?: boolean
 }
 
-const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = ({ artwork }) => {
+const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = ({
+  artwork,
+  displayToolTip,
+}) => {
   const { trackEvent } = useTracking()
   const displayImage = artwork.images?.find((i: any) => i?.isDefault) || artwork.images?.[0]
   const { width } = useScreenDimensions()
@@ -50,6 +57,13 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
 
   const showHighDemandIcon = isP1Artist && isHighDemand
 
+  const { dismiss } = GlobalStore.actions.progressiveOnboarding
+  const { isActive, clearActivePopover } = useSetActivePopover(!!displayToolTip)
+
+  const handleDismissPopover = () => {
+    dismiss(PROGRESSIVE_ONBOARDING_MY_COLLECTION_SELL_THIS_WORK)
+  }
+
   return (
     <TouchElement
       accessibilityLabel="Go to artwork details"
@@ -69,35 +83,59 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
         }
       }}
     >
-      <View>
-        <MyCollectionImageView
-          imageWidth={imageWidth}
-          imageURL={(localImage?.path || displayImage?.url) ?? undefined}
-          aspectRatio={localImage?.aspectRatio || image?.aspectRatio}
-          artworkSlug={slug}
-          artworkSubmissionId={submissionId}
-          useRawURL={!!localImage}
-          blurhash={showBlurhash ? image?.blurhash : undefined}
-        />
-        <Box maxWidth={width} mt={1} style={{ flex: 1 }}>
-          <Text lineHeight="18px" weight="regular" variant="xs" numberOfLines={2}>
-            {artistNames}
-            {!!showHighDemandIcon && (
-              <Flex testID="test-high-demand-icon">
-                <HighDemandIcon style={{ marginLeft: 2, marginBottom: -2 }} />
-              </Flex>
-            )}
+      <Popover
+        visible={!!displayToolTip && isActive}
+        onDismiss={handleDismissPopover}
+        onPressOutside={handleDismissPopover}
+        onCloseComplete={clearActivePopover}
+        placement="top"
+        title={
+          <Text variant="xs" color="white100" fontWeight="500">
+            Interested in Selling This Work?
           </Text>
-          {!!title ? (
-            <Text lineHeight="18px" variant="xs" weight="regular" numberOfLines={1} color="black60">
-              <Text lineHeight="18px" variant="xs" weight="regular" italic>
-                {title}
-              </Text>
-              {date ? `, ${date}` : ""}
+        }
+        content={
+          <Text variant="xs" color="white100">
+            Let our experts find the best sales option for you.
+          </Text>
+        }
+      >
+        <View>
+          <MyCollectionImageView
+            imageWidth={imageWidth}
+            imageURL={(localImage?.path || displayImage?.url) ?? undefined}
+            aspectRatio={localImage?.aspectRatio || image?.aspectRatio}
+            artworkSlug={slug}
+            artworkSubmissionId={submissionId}
+            useRawURL={!!localImage}
+            blurhash={showBlurhash ? image?.blurhash : undefined}
+          />
+          <Box maxWidth={width} mt={1} style={{ flex: 1 }}>
+            <Text lineHeight="18px" weight="regular" variant="xs" numberOfLines={2}>
+              {artistNames}
+              {!!showHighDemandIcon && (
+                <Flex testID="test-high-demand-icon">
+                  <HighDemandIcon style={{ marginLeft: 2, marginBottom: -2 }} />
+                </Flex>
+              )}
             </Text>
-          ) : null}
-        </Box>
-      </View>
+            {!!title ? (
+              <Text
+                lineHeight="18px"
+                variant="xs"
+                weight="regular"
+                numberOfLines={1}
+                color="black60"
+              >
+                <Text lineHeight="18px" variant="xs" weight="regular" italic>
+                  {title}
+                </Text>
+                {date ? `, ${date}` : ""}
+              </Text>
+            ) : null}
+          </Box>
+        </View>
+      </Popover>
     </TouchElement>
   )
 }

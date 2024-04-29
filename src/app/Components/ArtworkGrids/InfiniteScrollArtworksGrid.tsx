@@ -12,8 +12,11 @@ import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__genera
 import ParentAwareScrollView from "app/Components/ParentAwareScrollView"
 import { PAGE_SIZE } from "app/Components/constants"
 import { MyCollectionArtworkGridItemFragmentContainer } from "app/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkGridItem"
+import { GlobalStore } from "app/store/GlobalStore"
+import { PROGRESSIVE_ONBOARDING_MY_COLLECTION_SELL_THIS_WORK } from "app/store/ProgressiveOnboardingModel"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
 import React, { useState } from "react"
@@ -200,6 +203,11 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
 }) => {
   const artworks = extractNodes(connection)
 
+  const enableMyCollectionSellOnboarding = useFeatureFlag(
+    "AREnableMyCollectionInterestedInSellingTooltip"
+  )
+  const { isDismissed } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
+
   const getSectionDimension = (gridWidth: number | null | undefined) => {
     // Setting the dimension to 1 for tests to avoid adjusting the screen width
     if (__TEST__) {
@@ -292,6 +300,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
     }
 
     const artworks = extractNodes(connection)
+
     const sectionedArtworks = getSectionedArtworks()
     const sections: JSX.Element[] = []
     const columnCount = sectionCount ?? 0
@@ -314,6 +323,15 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
         const aspectRatio = artwork.image?.aspectRatio ?? 1
         const imgWidth = sectionDimension
         const imgHeight = imgWidth / aspectRatio
+
+        // Display "Interested in Selling?" tooltip if the first artwork is from a P1 artist in the list
+        const displayToolTip =
+          enableMyCollectionSellOnboarding &&
+          isMyCollection &&
+          !isDismissed(PROGRESSIVE_ONBOARDING_MY_COLLECTION_SELL_THIS_WORK).status &&
+          itemIndex === 0 &&
+          !!artwork.artist?.targetSupply?.priority
+
         artworkComponents.push(
           <ItemComponent
             contextScreenOwnerType={contextScreenOwnerType}
@@ -331,6 +349,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
             {...itemComponentProps}
             height={imgHeight}
             {...componentSpecificProps}
+            displayToolTip={displayToolTip}
           />
         )
         // Setting a marginBottom on the artwork component didn’t work, so using a spacer view instead.
@@ -475,6 +494,11 @@ export const InfiniteScrollArtworksGridContainer = createFragmentContainer(
               aspectRatio
               blurhash
             }
+            artist {
+              targetSupply {
+                priority
+              }
+            }
             ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
             ...MyCollectionArtworkGridItem_artwork
               @skip(if: $skipMyCollection)
@@ -510,6 +534,9 @@ export const InfiniteScrollMyCollectionArtworksGridContainer = createFragmentCon
             artistNames
             medium
             artist {
+              targetSupply {
+                priority
+              }
               internalID
               name
             }

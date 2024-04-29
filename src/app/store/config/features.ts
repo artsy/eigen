@@ -257,6 +257,11 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnablePartnerOfferOnArtworkScreen",
   },
+  AREnableMyCollectionInterestedInSellingTooltip: {
+    description: "Enable My Collection 'Interested in Selling?' tooltip",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
