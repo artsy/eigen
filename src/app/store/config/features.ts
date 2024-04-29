@@ -259,8 +259,9 @@ export const features = {
   },
   AREnableMyCollectionInterestedInSellingTooltip: {
     description: "Enable My Collection 'Interested in Selling?' tooltip",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableMyCollectionInterestedInSellingTooltip",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 
