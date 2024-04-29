@@ -3,12 +3,9 @@ import { statusCodes } from "@react-native-google-signin/google-signin"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { captureMessage } from "@sentry/react-native"
 import LoadingModal from "app/Components/Modals/LoadingModal"
-import {
-  AuthPromiseRejectType,
-  AuthPromiseResolveType,
-  showBlockedAuthError,
-} from "app/store/AuthModel"
+import { AuthPromiseRejectType, AuthPromiseResolveType } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
+import { showBlockedAuthError } from "app/utils/auth/authHelpers"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { osMajorVersion } from "app/utils/platformUtil"
 import { capitalize } from "lodash"
@@ -43,7 +40,12 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
   }, [])
 
   const handleErrorWithAlternativeProviders = (meta: AuthPromiseRejectType["meta"]) => {
-    const titleizedProvider = capitalize(meta?.provider ?? "")
+    if (!meta) {
+      return
+    }
+
+    const titleizedProvider = capitalize(meta.provider)
+
     const {
       email,
       name,
@@ -52,8 +54,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
       oauthToken,
       idToken,
       appleUid,
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    } = meta!
+    } = meta
     const navParams: Omit<
       OnboardingNavigationStack["OnboardingSocialLink"],
       "tokenForProviderToBeLinked"

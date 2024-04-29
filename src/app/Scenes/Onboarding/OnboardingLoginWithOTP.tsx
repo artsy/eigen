@@ -158,6 +158,7 @@ export const OnboardingLoginWithOTP: React.FC<OnboardingLoginWithOTPProps> = ({
       validateForm()
       const res = await GlobalStore.actions.auth.signIn({
         oauthProvider: "email",
+        oauthMode: "email",
         email,
         password,
         otp: otp.trim(),

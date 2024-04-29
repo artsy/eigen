@@ -182,12 +182,19 @@ jest.mock("react-native-fbsdk-next", () => ({
   AccessToken: {
     getCurrentAccessToken: jest.fn(),
   },
+  AuthenticationToken: {
+    getAuthenticationTokenIOS: jest.fn(),
+  },
   GraphRequest: jest.fn(),
   GraphRequestManager: jest.fn(() => ({
     addRequest: jest.fn(() => ({
       start: jest.fn(),
     })),
   })),
+}))
+
+jest.mock("jwt-decode", () => ({
+  jwtDecode: jest.fn(),
 }))
 
 jest.mock("@react-native-google-signin/google-signin", () => ({

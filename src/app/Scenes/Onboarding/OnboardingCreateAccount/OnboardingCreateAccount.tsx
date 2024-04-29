@@ -4,10 +4,10 @@ import { createStackNavigator, StackScreenProps, TransitionPresets } from "@reac
 import { OnboardingNavigationStack } from "app/Scenes/Onboarding/Onboarding"
 import { OnboardingSocialPick } from "app/Scenes/Onboarding/OnboardingSocialPick"
 import { OnboardingWebView, OnboardingWebViewRoute } from "app/Scenes/Onboarding/OnboardingWebView"
-import { showBlockedAuthError } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { BackButton } from "app/system/navigation/BackButton"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
+import { showBlockedAuthError } from "app/utils/auth/authHelpers"
 import { useScreenDimensions } from "app/utils/hooks"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import React, { useEffect, useRef, useState } from "react"
@@ -106,6 +106,7 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
           if (acceptedTerms) {
             const res = await GlobalStore.actions.auth.signUp({
               oauthProvider: "email",
+              oauthMode: "email",
               email,
               password,
               name: name.trim(),
