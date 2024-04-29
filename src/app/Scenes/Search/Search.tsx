@@ -27,10 +27,12 @@ import { SEARCH_PILLS, SEARCH_THROTTLE_INTERVAL, TOP_PILL } from "./constants"
 import { getContextModuleByPillName } from "./helpers"
 import { PillType } from "./types"
 
+// This is a workaround for the placeholder text not truncated on android
+// See https://github.com/facebook/react-native/issues/29663
 const SEARCH_INPUT_PLACEHOLDER =
-  Dimensions.get("screen").width - 150 > 250
-    ? "Search artists, artworks, galleries, etc"
-    : "Search artists, artworks,  etc"
+  Platform.OS === "android" && Dimensions.get("screen").width - 150 < 250
+    ? "Search artists, artworks,  etc"
+    : "Search artists, artworks, galleries, etc"
 
 export const searchQueryDefaultVariables: SearchQuery$variables = {
   term: "",
