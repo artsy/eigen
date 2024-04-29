@@ -36,7 +36,7 @@ rm -rf data/complete.queryMap.json
 rm -rf .cache
 rm -rf "$TMPDIR"/metro*
 rm -rf src/__generated__/*.graphql.ts
-
+yarn local-palette-dev:stop
 
 
 echo 'Clear build artefacts (╯ರ ~ ರ）╯︵ ┻━┻'
