@@ -192,6 +192,7 @@ const Specialist: React.FC<SpecialistProps> = ({ specialist, onInquiryPress }) =
         <Button
           size="small"
           variant="outlineLight"
+          testID="MeetTheSpecialists-contact-CTA"
           onPress={() => {
             onInquiryPress(
               tracks.consignmentInquiryTapped(buttonText),

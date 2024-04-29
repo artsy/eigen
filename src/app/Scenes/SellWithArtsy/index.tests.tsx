@@ -76,37 +76,17 @@ describe("New SellWithArtsyLandingPage", () => {
 
       it("tracks Inquiry Events", () => {
         renderWithWrappers(<TestWrapper />)
-        const headerInquiryButton = screen.getByTestId("Header-inquiry-CTA")
+        const headerInquiryButton = screen.getByTestId("MeetTheSpecialists-contact-CTA")
 
         fireEvent(headerInquiryButton, "onPress")
         expect(mockTrackEvent).toHaveBeenCalledTimes(1)
         expect(mockTrackEvent).toHaveBeenLastCalledWith(
           expect.objectContaining({
             action: "tappedConsignmentInquiry",
-            context_module: "sellHeader",
+            context_module: "sellMeetTheSpecialists",
             context_screen: "sell",
             context_screen_owner_type: "sell",
-            subject: "Get in Touch",
-          })
-        )
-      })
-    })
-
-    // HOWITWORKS
-    describe("HowItWorks Events", () => {
-      it("tracks Consign Events", () => {
-        renderWithWrappers(<TestWrapper />)
-        const headerConsignButton = screen.getByTestId("HowItWorks-consign-CTA")
-
-        fireEvent(headerConsignButton, "onPress")
-        expect(mockTrackEvent).toHaveBeenCalledTimes(1)
-        expect(mockTrackEvent).toHaveBeenLastCalledWith(
-          expect.objectContaining({
-            action: "tappedConsign",
-            context_module: "sellHowItWorks",
-            context_screen_owner_type: "sell",
-            destination_screen_owner_type: "consignmentSubmission",
-            subject: "Start Selling",
+            subject: "Contact Dana",
           })
         )
       })

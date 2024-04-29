@@ -1,11 +1,4 @@
-import {
-  ActionType,
-  ContextModule,
-  OwnerType,
-  tappedConsign,
-  TappedConsignArgs,
-  TappedConsignmentInquiry,
-} from "@artsy/cohesion"
+import { tappedConsign, TappedConsignArgs, TappedConsignmentInquiry } from "@artsy/cohesion"
 import { Flex, Join, LegacyScreen, Spacer } from "@artsy/palette-mobile"
 import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
 import { SellWithArtsyHome_me$data } from "__generated__/SellWithArtsyHome_me.graphql"
@@ -15,6 +8,7 @@ import { FAQSWA } from "app/Scenes/SellWithArtsy/Components/FAQSWA"
 import { Highlights } from "app/Scenes/SellWithArtsy/Components/Highlights"
 import { MeetTheSpecialists } from "app/Scenes/SellWithArtsy/Components/MeetTheSpecialists"
 import { SpeakToTheTeam } from "app/Scenes/SellWithArtsy/Components/SpeakToTheTeam"
+import { StickySWAHeader } from "app/Scenes/SellWithArtsy/Components/StickySWAHeader"
 import { Testimonials } from "app/Scenes/SellWithArtsy/Components/Testimonials"
 import { WaysWeSell } from "app/Scenes/SellWithArtsy/Components/WaysWeSell"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -32,7 +26,6 @@ import { Footer } from "./Components/Footer"
 import { Header } from "./Components/Header"
 import { HowItWorks } from "./Components/HowItWorks"
 import { SellWithArtsyRecentlySold } from "./Components/SellWithArtsyRecentlySold"
-import { StickySWAHeader } from "app/Scenes/SellWithArtsy/Components/StickySWAHeader"
 
 interface SellWithArtsyHomeProps {
   recentlySoldArtworks?: SellWithArtsyHome_recentlySoldArtworksTypeConnection$data
@@ -184,19 +177,4 @@ export const SellWithArtsyHomeQueryRenderer: React.FC<SellWithArtsyHomeQueryRend
       })}
     />
   )
-}
-
-const tracks = {
-  consignArgs: (subject: string): TappedConsignArgs => ({
-    contextModule: ContextModule.sellHeader,
-    contextScreenOwnerType: OwnerType.sell,
-    subject,
-  }),
-  consignmentInquiryTapped: (): TappedConsignmentInquiry => ({
-    action: ActionType.tappedConsignmentInquiry,
-    context_module: ContextModule.sellHeader,
-    context_screen: OwnerType.sell,
-    context_screen_owner_type: OwnerType.sell,
-    subject: "Get in Touch",
-  }),
 }
