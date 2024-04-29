@@ -1,4 +1,11 @@
-import { tappedConsign, TappedConsignArgs, TappedConsignmentInquiry } from "@artsy/cohesion"
+import {
+  ActionType,
+  ContextModule,
+  OwnerType,
+  tappedConsign,
+  TappedConsignArgs,
+  TappedConsignmentInquiry,
+} from "@artsy/cohesion"
 import { Flex, Join, LegacyScreen, Spacer } from "@artsy/palette-mobile"
 import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
 import { SellWithArtsyHome_me$data } from "__generated__/SellWithArtsyHome_me.graphql"
@@ -25,6 +32,7 @@ import { Footer } from "./Components/Footer"
 import { Header } from "./Components/Header"
 import { HowItWorks } from "./Components/HowItWorks"
 import { SellWithArtsyRecentlySold } from "./Components/SellWithArtsyRecentlySold"
+import { StickySWAHeader } from "app/Scenes/SellWithArtsy/Components/StickySWAHeader"
 
 interface SellWithArtsyHomeProps {
   recentlySoldArtworks?: SellWithArtsyHome_recentlySoldArtworksTypeConnection$data
@@ -97,15 +105,15 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
       >
         <ScrollView showsVerticalScrollIndicator={false} ref={scrollViewRef}>
           <Join separator={<Spacer y={6} />}>
-            <Header onConsignPress={handleConsignPress} onInquiryPress={handleInquiryPress} />
+            <Header />
 
             <Highlights />
 
             <WaysWeSell />
 
-            <HowItWorks onConsignPress={handleConsignPress} />
+            <HowItWorks />
 
-            <SpeakToTheTeam onInquiryPress={handleInquiryPress} />
+            <FAQSWA />
 
             <MeetTheSpecialists onInquiryPress={handleInquiryPress} />
 
@@ -117,13 +125,15 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
 
             <Testimonials />
 
-            <FAQSWA />
+            <SpeakToTheTeam onInquiryPress={handleInquiryPress} />
 
-            <Footer onConsignPress={handleConsignPress} />
+            <Footer />
           </Join>
 
-          <Spacer y={4} />
+          <Spacer y={2} />
         </ScrollView>
+
+        <StickySWAHeader onConsignPress={handleConsignPress} onInquiryPress={handleInquiryPress} />
       </Flex>
     </LegacyScreen.Background>
   )
@@ -174,4 +184,19 @@ export const SellWithArtsyHomeQueryRenderer: React.FC<SellWithArtsyHomeQueryRend
       })}
     />
   )
+}
+
+const tracks = {
+  consignArgs: (subject: string): TappedConsignArgs => ({
+    contextModule: ContextModule.sellHeader,
+    contextScreenOwnerType: OwnerType.sell,
+    subject,
+  }),
+  consignmentInquiryTapped: (): TappedConsignmentInquiry => ({
+    action: ActionType.tappedConsignmentInquiry,
+    context_module: ContextModule.sellHeader,
+    context_screen: OwnerType.sell,
+    context_screen_owner_type: OwnerType.sell,
+    subject: "Get in Touch",
+  }),
 }
