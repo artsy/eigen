@@ -1,7 +1,7 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, SimpleMessage, Text } from "@artsy/palette-mobile"
-import { NewWorksForYouArtworksQuery } from "__generated__/NewWorksForYouArtworksQuery.graphql"
-import { NewWorksForYouArtworks_viewer$key } from "__generated__/NewWorksForYouArtworks_viewer.graphql"
+import { WorksForYouArtworksQuery } from "__generated__/WorksForYouArtworksQuery.graphql"
+import { WorksForYouArtworks_viewer$key } from "__generated__/WorksForYouArtworks_viewer.graphql"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import { NewWorksForYouPlaceholder } from "app/Scenes/NewWorksForYou/NewWorksForYou"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -14,10 +14,10 @@ import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 export const PAGE_SIZE = 100
 
 interface NewWorksForYouProps {
-  viewer: NewWorksForYouArtworks_viewer$key
+  viewer: WorksForYouArtworks_viewer$key
 }
 
-export const NewWorksForYouArtworks: React.FC<NewWorksForYouProps> = ({ viewer }) => {
+export const WorksForYouArtworks: React.FC<NewWorksForYouProps> = ({ viewer }) => {
   const defaultViewOption = GlobalStore.useAppState((state) => state.userPrefs.defaultViewOption)
 
   const { data } = usePaginationFragment(newWorksForYouArtworksFragment, viewer)
@@ -54,8 +54,8 @@ export const NewWorksForYouArtworks: React.FC<NewWorksForYouProps> = ({ viewer }
 }
 
 export const newWorksForYouArtworksFragment = graphql`
-  fragment NewWorksForYouArtworks_viewer on Viewer
-  @refetchable(queryName: "NewWorksForYouArtworks_viewerRefetch")
+  fragment WorksForYouArtworks_viewer on Viewer
+  @refetchable(queryName: "WorksForYouArtworks_viewerRefetch")
   @argumentDefinitions(
     count: { type: "Int", defaultValue: 100 }
     cursor: { type: "String" }
@@ -90,13 +90,13 @@ export const newWorksForYouArtworksFragment = graphql`
 `
 
 export const newWorksForYouArtworksQuery = graphql`
-  query NewWorksForYouArtworksQuery(
+  query WorksForYouArtworksQuery(
     $version: String
     $maxWorksPerArtist: Int
     $onlyAtAuction: Boolean = false
   ) {
     viewer @principalField {
-      ...NewWorksForYouArtworks_viewer
+      ...WorksForYouArtworks_viewer
         @arguments(
           version: $version
           maxWorksPerArtist: $maxWorksPerArtist
@@ -106,15 +106,15 @@ export const newWorksForYouArtworksQuery = graphql`
   }
 `
 
-interface NewWorksForYouArtworksQRProps {
+interface WorksForYouArtworksQRProps {
   maxWorksPerArtist?: number
   version?: string
   onlyAtAuction?: boolean
 }
 
-export const NewWorksForYouArtworksQR: React.FC<NewWorksForYouArtworksQRProps> = withSuspense(
+export const WorksForYouArtworksQR: React.FC<WorksForYouArtworksQRProps> = withSuspense(
   ({ version, onlyAtAuction = false, maxWorksPerArtist = 3 }) => {
-    const data = useLazyLoadQuery<NewWorksForYouArtworksQuery>(
+    const data = useLazyLoadQuery<WorksForYouArtworksQuery>(
       newWorksForYouArtworksQuery,
       {
         version,
@@ -122,7 +122,8 @@ export const NewWorksForYouArtworksQR: React.FC<NewWorksForYouArtworksQRProps> =
         onlyAtAuction,
       },
       {
-        fetchPolicy: "store-and-network",
+        // This is necessary to avoid displaying cached because this component is used in more than one place and Relay returns data from another screen before the new data is loaded.
+        fetchPolicy: "network-only",
       }
     )
 
@@ -132,7 +133,7 @@ export const NewWorksForYouArtworksQR: React.FC<NewWorksForYouArtworksQRProps> =
       return <Text>Something went wrong.</Text>
     }
 
-    return <NewWorksForYouArtworks viewer={data.viewer} />
+    return <WorksForYouArtworks viewer={data.viewer} />
   },
   () => <NewWorksForYouPlaceholder defaultViewOption="grid" />
 )
