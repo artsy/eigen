@@ -1,5 +1,6 @@
 import { Spacer, Flex, Text, EntityHeader } from "@artsy/palette-mobile"
 import { PartnerCard_artwork$data } from "__generated__/PartnerCard_artwork.graphql"
+import { ShortContactGallery } from "app/Scenes/Artwork/Components/ShortContactGallery"
 import { navigateToPartner } from "app/system/navigation/navigate"
 import { limitWithCount } from "app/utils/limitWithCount"
 import { compact } from "lodash"
@@ -12,13 +13,13 @@ interface PartnerCardProps {
   artwork: PartnerCard_artwork$data
   relay: RelayProp
   shouldShowQuestions?: boolean
-  onlyShowQuestions?: boolean
+  showShortContactGallery?: boolean
 }
 
 export const PartnerCard: React.FC<PartnerCardProps> = ({
   artwork,
   shouldShowQuestions,
-  onlyShowQuestions,
+  showShortContactGallery,
 }) => {
   const handleTap = (href: string) => navigateToPartner(href)
 
@@ -48,8 +49,16 @@ export const PartnerCard: React.FC<PartnerCardProps> = ({
 
   const partnerTypeDisplayText = partner.type === "Gallery" ? partner.type : "Institution"
 
-  if (onlyShowQuestions) {
-    return <Questions artwork={artwork} />
+  if (showShortContactGallery) {
+    return (
+      <ShortContactGallery
+        artwork={artwork}
+        showPartnerType={showPartnerType}
+        partnerName={partner.name}
+        partnerHref={partner.href ?? undefined}
+        locationNames={locationNames}
+      />
+    )
   }
 
   return (
@@ -84,6 +93,7 @@ export const PartnerCardFragmentContainer = createFragmentContainer(PartnerCard,
   artwork: graphql`
     fragment PartnerCard_artwork on Artwork {
       ...Questions_artwork
+      ...ShortContactGallery_artwork
       sale {
         isBenefit
         isGalleryAuction

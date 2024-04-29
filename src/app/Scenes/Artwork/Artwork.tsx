@@ -367,7 +367,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
           element: (
             <PartnerCard
               artwork={artworkBelowTheFold}
-              onlyShowQuestions={
+              showShortContactGallery={
                 !!artworkAboveTheFold?.isUnlisted && !!artworkBelowTheFold.partner?.isInquireable
               }
             />
@@ -455,7 +455,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
           <PartnerCard
             shouldShowQuestions={!!artworkBelowTheFold.partner?.isInquireable}
             artwork={artworkBelowTheFold}
-            onlyShowQuestions={
+            showShortContactGallery={
               !!artworkAboveTheFold?.isUnlisted && !!artworkBelowTheFold.partner?.isInquireable
             }
           />
