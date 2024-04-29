@@ -606,7 +606,7 @@ PODS:
   - react-native-appboy-sdk (1.35.1):
     - Appboy-iOS-SDK (~> 4.4.2)
     - React
-  - react-native-blob-util (0.19.2):
+  - react-native-blob-util (0.19.9):
     - React-Core
   - react-native-blurhash (1.1.11):
     - React-Core
@@ -1468,7 +1468,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 8e291ed0ab371314de269001d6b9b25db6aabf42
   React-logger: d4010de0b0564e63637ad08373bc73b5d919974b
   react-native-appboy-sdk: e4e36787766637d5c60da264b66f4389ed479867
-  react-native-blob-util: c74e4ce87c76d244761c68623df78bf0d1638271
+  react-native-blob-util: 18b510205c080a453574a7d2344d64673d0ad9af
   react-native-blurhash: a59e6bf8117a0304488ed576abd440f4b0777a8c
   react-native-config: bcafda5b4c51491ee1b0e1d0c4e3905bc7b56c1b
   react-native-context-menu-view: 4cd5ecaabd2cbb420018b3242ca1eef5efa0a629

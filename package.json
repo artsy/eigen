@@ -153,7 +153,7 @@
     "react-fps": "1.0.6",
     "react-native": "0.72.12",
     "react-native-appboy-sdk": "1.35.1",
-    "react-native-blob-util": "0.19.2",
+    "react-native-blob-util": "0.19.9",
     "react-native-blurhash": "1.1.11",
     "react-native-bootsplash": "3.2.0",
     "react-native-code-push": "8.1.0",
