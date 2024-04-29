@@ -3,6 +3,7 @@ import { PrivateArtworkExclusiveAccess_artwork$key } from "__generated__/Private
 import { navigate } from "app/system/navigation/navigate"
 import React from "react"
 import { graphql, useFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface PrivateArtworkExclusiveAccessProps {
   artwork: PrivateArtworkExclusiveAccess_artwork$key
@@ -28,11 +29,14 @@ export const PrivateArtworkExclusiveAccess: React.FC<PrivateArtworkExclusiveAcce
     artwork
   )
 
+  const tracking = useTracking()
+
   if (!data.isUnlisted) {
     return null
   }
 
   const handleLinkPress = () => {
+    tracking.trackEvent(tracks.tappedGalleryName())
     navigate(`/partner/${data.partner?.slug}`)
   }
 
@@ -58,4 +62,13 @@ export const PrivateArtworkExclusiveAccess: React.FC<PrivateArtworkExclusiveAcce
       </Text>
     </Flex>
   )
+}
+
+const tracks = {
+  tappedGalleryName: () => ({
+    context_module: "artworkDetails",
+    subject: "Gallery Name",
+    type: "Link",
+    flow: "Exclusive access",
+  }),
 }

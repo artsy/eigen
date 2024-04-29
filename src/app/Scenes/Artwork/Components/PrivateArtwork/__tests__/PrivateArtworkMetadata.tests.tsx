@@ -1,6 +1,7 @@
-import { screen } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { PrivateArtworkMetadataQuery } from "__generated__/PrivateArtworkMetadataQuery.graphql"
 import { PrivateArtworkMetadata } from "app/Scenes/Artwork/Components/PrivateArtwork/PrivateArtworkMetadata"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -93,5 +94,61 @@ describe("PrivateArtworkMetadata", () => {
       },
     })
     expect(screen.queryByText("Test Exhibition History Details")).not.toBeTruthy()
+  })
+
+  it("tracks condition expand press", async () => {
+    renderWithRelay({
+      Artwork: () => {
+        return {
+          conditionDescription: {
+            details: "Test Condition Description Details",
+          },
+        }
+      },
+    })
+
+    fireEvent.press(screen.getAllByTestId("expandableAccordion")[0])
+    expect(mockTrackEvent).toBeCalledWith({
+      context_module: "aboutTheWork",
+      context_owner_type: "artwork",
+      expand: true,
+      subject: "Condition",
+    })
+  })
+
+  it("tracks provenance expand press", async () => {
+    renderWithRelay({
+      Artwork: () => {
+        return {
+          provenance: "Test Provenance Details",
+        }
+      },
+    })
+
+    fireEvent.press(screen.getAllByTestId("expandableAccordion")[1])
+    expect(mockTrackEvent).toBeCalledWith({
+      context_module: "aboutTheWork",
+      context_owner_type: "artwork",
+      expand: false,
+      subject: "Provenance",
+    })
+  })
+
+  it("tracks provenance expand press", async () => {
+    renderWithRelay({
+      Artwork: () => {
+        return {
+          exhibitionHistory: "Test Exhibition History Details",
+        }
+      },
+    })
+
+    fireEvent.press(screen.getAllByTestId("expandableAccordion")[2])
+    expect(mockTrackEvent).toBeCalledWith({
+      context_module: "aboutTheWork",
+      context_owner_type: "artwork",
+      expand: false,
+      subject: "Exhibition History",
+    })
   })
 })

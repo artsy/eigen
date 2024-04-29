@@ -7,6 +7,7 @@ interface ExpandableProps {
   label?: string
   expanded?: boolean
   children: React.ReactNode
+  trackingFunction?: () => void
 }
 
 /**
@@ -17,21 +18,26 @@ export const Expandable: React.FC<ExpandableProps> = ({
   children,
   expanded: propExpanded,
   label,
+  trackingFunction,
 }) => {
   const [expanded, setExpanded] = useState(propExpanded)
 
   const handleToggle = () => {
     setExpanded((prev) => !prev)
+    if (trackingFunction) {
+      trackingFunction()
+    }
   }
 
   return (
     <Flex borderTopWidth={1} py={1} accessibilityHint="Toggles the accordion" maxWidth={MAX_WIDTH}>
       <Touchable
-        onPress={handleToggle}
+        onPress={() => handleToggle()}
         accessibilityRole="togglebutton"
         accessibilityLabel={label}
         accessibilityState={{ expanded }}
         hitSlop={{ top: 10, bottom: 10 }}
+        testID="expandableAccordion"
       >
         <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
           <Text variant="sm">{label}</Text>
