@@ -367,7 +367,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
           element: (
             <PartnerCard
               artwork={artworkBelowTheFold}
-              onlyShowQuestions={
+              showShortContactGallery={
                 !!artworkAboveTheFold?.isUnlisted && !!artworkBelowTheFold.partner?.isInquireable
               }
             />
@@ -455,7 +455,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
           <PartnerCard
             shouldShowQuestions={!!artworkBelowTheFold.partner?.isInquireable}
             artwork={artworkBelowTheFold}
-            onlyShowQuestions={
+            showShortContactGallery={
               !!artworkAboveTheFold?.isUnlisted && !!artworkBelowTheFold.partner?.isInquireable
             }
           />
@@ -608,6 +608,7 @@ const ArtworkProvidersContainer: React.FC<ArtworkProps> = (props) => {
     inquireable: artworkAboveTheFold?.isInquireable,
     offerable: artworkAboveTheFold?.isOfferable,
     biddable: artworkAboveTheFold?.isBiddable,
+    visibility_level: artworkAboveTheFold?.visibilityLevel,
   }
 
   const socketChannelInfo: AuctionWebsocketChannelInfo = {
@@ -663,6 +664,7 @@ export const ArtworkContainer = createRefetchContainer(
         isPurchasable
         isUnlisted
         availability
+        visibilityLevel
         sale {
           internalID
           isClosed

@@ -18185,7 +18185,6 @@ type SpecialistBio {
   image: Image
   jobTitle: String
   name: String
-  specialty: String
 }
 
 type StartIdentityVerificationFailure {
