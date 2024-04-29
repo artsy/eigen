@@ -122,13 +122,13 @@ commands:
             - v10-test-success-{{ checksum "../workspace/.manifests/android_native" }}
       - android/change-java-version:
           java-version: 11
-      - run:
-          name: Quit early if possible
-          command: |
-            if test $CIRCLE_BRANCH != beta-android && ls build-success.log
-            then
-              circleci step halt
-            fi
+      # - run:
+      #     name: Quit early if possible
+      #     command: |
+      #       if test $CIRCLE_BRANCH != beta-android && ls build-success.log
+      #       then
+      #         circleci step halt
+      #       fi
       - run:
           name: Clear project dir
           command: |
@@ -408,7 +408,7 @@ jobs:
 
   build-test-app-android:
     docker:
-      - image: cimg/android:2024.04.1-node
+      - image: cimg/android:2024.01.1-node
     resource_class: large
     steps:
       - prep-android-env
