@@ -71,7 +71,7 @@ static NSMutableArray *notificationQueue = nil; // Global notification queue
 
 + (CGFloat)estimatedTextSizeForTitle:(NSString *)title inView:(UIView *)view {
     UIFont *font = [UIFont serifFontWithSize:16];
-    CGFloat maxWidth = view.bounds.size.width - panelMargin;
+    CGFloat maxWidth = view.bounds.size.width - (panelMargin * 2);
     NSDictionary *attributes = @{NSFontAttributeName: font};
 
     CGRect textRect = [title boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX)
