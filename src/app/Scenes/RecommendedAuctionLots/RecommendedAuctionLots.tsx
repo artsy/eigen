@@ -10,10 +10,7 @@ import {
   Spacer,
 } from "@artsy/palette-mobile"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
-import {
-  NewWorksForYouArtworksQR,
-  PAGE_SIZE,
-} from "app/Scenes/NewWorksForYou/Components/NewWorksForYouArtworks"
+import { WorksForYouArtworksQR, PAGE_SIZE } from "app/Components/WorksForYouArtworks"
 import { ICON_SIZE } from "app/Scenes/NewWorksForYou/NewWorksForYou"
 import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -58,7 +55,7 @@ export const RecommendedAuctionLotsQueryRenderer: React.FC = () => {
         />
         <Screen.StickySubHeader title={SCREEN_TITLE} />
         <Screen.Body fullwidth>
-          <NewWorksForYouArtworksQR onlyAtAuction />
+          <WorksForYouArtworksQR onlyAtAuction />
         </Screen.Body>
       </Screen>
     </ProvideScreenTrackingWithCohesionSchema>
