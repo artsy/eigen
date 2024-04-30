@@ -7,16 +7,18 @@ import { ArtworkFormScreen } from "app/Scenes/SellWithArtsy/ArtworkForm/Submissi
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/validation"
 import { useFormikContext } from "formik"
 
-export const SubmissionArtworkFormArtworkDetails: React.FC<
+export const ArtworkFormCompleteYourSubmission: React.FC<
   StackScreenProps<ArtworkFormScreen, "ArtworkFormTitle">
 > = ({ navigation }) => {
   const formik = useFormikContext<ArtworkDetailsFormModel>()
 
-  const handleBackPress = () => {
+  const handleSavePress = () => {
     navigation.navigate("ArtworkFormPhotos")
   }
 
-  const handleSavePress = () => {}
+  const handleBackPress = () => {
+    navigation.navigate("ArtworkFormArtist")
+  }
 
   return (
     <>
@@ -29,13 +31,11 @@ export const SubmissionArtworkFormArtworkDetails: React.FC<
 
         <Spacer y={2} />
 
-        <Text>{formik.values.artist}</Text>
-
         <Text variant="lg" mb={2}>
-          Artwork Details
+          Add artwork title
         </Text>
 
-        <Input placeholder="Year" onChangeText={formik.handleChange("year")} />
+        <Input placeholder="Artwork Title" onChangeText={formik.handleChange("title")} />
 
         <Spacer y={2} />
 

@@ -18,7 +18,9 @@ export type SubmissionInput = CreateSubmissionMutationInput | UpdateSubmissionMu
 const DEFAULT_SOURCE = "APP_INBOUND"
 
 export const createOrUpdateSubmission = async (
-  values: ArtworkDetailsFormModel & SWASubmissionContactInformationFormModel,
+  values:
+    | ArtworkDetailsFormModel
+    | (ArtworkDetailsFormModel & SWASubmissionContactInformationFormModel),
   submissionId: string
 ) => {
   const isRarityLimitedEdition = values.attributionClass === limitedEditionValue
@@ -47,9 +49,9 @@ export const createOrUpdateSubmission = async (
     height: values.height,
     width: values.width,
     dimensionsMetric: values.dimensionsMetric,
-    userEmail: values.userEmail,
-    userName: values.userName,
-    userPhone: values.userPhone,
+    // userEmail: values.userEmail,
+    // userName: values.userName,
+    // userPhone: values.userPhone,
     year: values.year,
     provenance: values.provenance,
     title: values.title,
