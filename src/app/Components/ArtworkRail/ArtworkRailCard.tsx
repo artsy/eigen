@@ -33,7 +33,7 @@ import { useTracking } from "react-tracking"
 import { LARGE_RAIL_IMAGE_WIDTH } from "./LargeArtworkRail"
 import { SMALL_RAIL_IMAGE_WIDTH } from "./SmallArtworkRail"
 
-export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = 70
+export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = 90
 const SAVE_ICON_SIZE = 26
 
 export const ARTWORK_RAIL_CARD_IMAGE_HEIGHT = {
@@ -92,7 +92,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const artwork = useFragment(artworkFragment, restProps.artwork)
   const { width: screenWidth } = useScreenDimensions()
 
-  const { artistNames, date, image, partner, title, sale, saleArtwork } = artwork
+  const { artistNames, date, image, partner, title, sale, saleArtwork, isUnlisted } = artwork
 
   const saleMessage = defaultSaleMessageOrBidInfo({ artwork, isSmallTile: true })
 
@@ -318,6 +318,18 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                     fontWeight="bold"
                   >
                     {saleMessage}
+                  </Text>
+                )}
+
+                {!!isUnlisted && (
+                  <Text
+                    lineHeight="20px"
+                    variant="xs"
+                    color={primaryTextColor}
+                    numberOfLines={1}
+                    fontWeight="bold"
+                  >
+                    Exclusive Access
                   </Text>
                 )}
               </Flex>
@@ -549,6 +561,7 @@ const artworkFragment = graphql`
       }
       aspectRatio
     }
+    isUnlisted
     sale {
       isAuction
       isClosed
