@@ -1,46 +1,47 @@
-import { Button, Input, Spacer, Text } from "@artsy/palette-mobile"
+import { Button, Screen, Spacer, Text } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { ScreenMargin } from "app/Scenes/MyCollection/Components/ScreenMargin"
 import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
+import { SubmissionNavigationControls } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionNavigationControls"
 import { ArtworkFormScreen } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmissionArtworkForm"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/validation"
 import { useFormikContext } from "formik"
 
-export const SubmissionArtworkFormTitle: React.FC<
+export const SubmissionArtworkFormPhotos: React.FC<
   StackScreenProps<ArtworkFormScreen, "ArtworkFormTitle">
 > = ({ navigation }) => {
   const formik = useFormikContext<ArtworkDetailsFormModel>()
 
   const handleSavePress = () => {
-    navigation.navigate("ArtworkFormPhotos")
+    navigation.navigate("ArtworkFormArtworkDetails")
   }
 
   const handleBackPress = () => {
-    navigation.navigate("ArtworkFormArtist")
+    navigation.navigate("ArtworkFormTitle")
   }
 
   return (
-    <>
-      <FancyModalHeader onLeftButtonPress={handleBackPress} hideBottomDivider></FancyModalHeader>
+    <Screen>
+      <Screen.Header onBack={handleBackPress} />
 
-      <ScreenMargin>
+      <Screen.Body>
         {!!formik.values.artistSearchResult && (
           <ArtistSearchResult result={formik.values.artistSearchResult} />
         )}
 
+        <Text>{formik.values.title}</Text>
+
         <Spacer y={2} />
 
         <Text variant="lg" mb={2}>
-          Add artwork title
+          Upload photos of your artwork
         </Text>
+      </Screen.Body>
 
-        <Input placeholder="Artwork Title" onChangeText={formik.handleChange("title")} />
-
-        <Spacer y={2} />
-
-        <Button onPress={handleSavePress}>Save and Continue</Button>
-      </ScreenMargin>
-    </>
+      <Screen.BottomView>
+        <SubmissionNavigationControls onBackPress={handleBackPress} onNextPress={handleSavePress} />
+      </Screen.BottomView>
+    </Screen>
   )
 }

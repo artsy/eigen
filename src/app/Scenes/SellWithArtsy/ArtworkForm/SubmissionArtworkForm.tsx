@@ -1,10 +1,12 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { validateArtworkSchema } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/artworkSchema"
-import { SubmissionArtworkFormArtist } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmissionArtworkFormArtist"
-import { SubmissionArtworkFormArtworkDetails } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmissionArtworkFormArtworkDetails"
-import { SubmissionArtworkFormPhotos } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmissionArtworkFormPhotos"
-import { SubmissionArtworkFormTitle } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmissionArtworkFormTitle"
+import { ArtworkFormCompleteYourSubmission } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/ArtworkFormCompleteYourSubmission"
+import { SubmissionArtworkFormArtist } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionArtworkFormArtist"
+import { SubmissionArtworkFormArtworkDetails } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionArtworkFormArtworkDetails"
+import { SubmissionArtworkFormPhotos } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionArtworkFormPhotos"
+import { SubmissionArtworkFormTitle } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionArtworkFormTitle"
+import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import {
   ArtworkDetailsFormModel,
   artworkDetailsEmptyInitialValues,
@@ -20,12 +22,32 @@ export type ArtworkFormScreen = {
   AddPhotos: undefined
 }
 
+export const STEPS = [
+  "ArtworkFormArtist",
+  "ArtworkFormTitle",
+  "ArtworkFormPhotos",
+  "ArtworkFormArtworkDetails",
+  "ArtworkFormCompleteYourSubmission",
+]
+
 interface SubmissionArtworkFormProps {}
 
 export const SubmissionArtworkForm: React.FC<SubmissionArtworkFormProps> = ({}) => {
-  const handleSubmit = () => {}
-
   const initialValues = artworkDetailsEmptyInitialValues as any
+
+  const handleSubmit = (values: ArtworkDetailsFormModel) => {
+    console.log("HANDLE SUBMIT")
+    createOrUpdateSubmission(values, "")
+
+    if (formik.values.submissionId) {
+      // updateSubmissionMutation()
+    }
+    // const submissionID = createSubmissionMutation()
+
+    // formik.setFieldValue("submissionId", submissionID)
+    // TODO: Submit or update submission
+    // TODO: Later: Submit or update My Collection artwork?
+  }
 
   const formik = useFormik<ArtworkDetailsFormModel>({
     enableReinitialize: true,
@@ -55,6 +77,11 @@ export const SubmissionArtworkForm: React.FC<SubmissionArtworkFormProps> = ({}) 
           <Stack.Screen
             name="ArtworkFormArtworkDetails"
             component={SubmissionArtworkFormArtworkDetails}
+          />
+
+          <Stack.Screen
+            name="ArtworkFormCompleteYourSubmission"
+            component={ArtworkFormCompleteYourSubmission}
           />
         </Stack.Navigator>
       </FormikProvider>

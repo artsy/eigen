@@ -6,10 +6,9 @@ import {
   ConsignmentAttributionClass,
   ConsignmentSubmissionStateAggregation,
 } from "__generated__/updateConsignSubmissionMutation.graphql"
-import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import * as Yup from "yup"
-import { limitedEditionValue } from "./utils/rarityOptions"
 import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
+import { limitedEditionValue } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/rarityOptions"
 
 export interface Location {
   city: string
@@ -20,7 +19,6 @@ export interface Location {
 }
 
 export interface ArtworkDetailsFormModel {
-  submissionId: string | null
   artist: string
   artistId: string
   artistSearchResult: AutosuggestResult | null
@@ -46,7 +44,6 @@ export interface ArtworkDetailsFormModel {
 }
 
 export const artworkDetailsEmptyInitialValues: ArtworkDetailsFormModel = {
-  submissionId: null,
   artist: "",
   artistId: "",
   artistSearchResult: null,
@@ -78,18 +75,14 @@ export const artworkDetailsEmptyInitialValues: ArtworkDetailsFormModel = {
 }
 
 export const artworkDetailsValidationSchema = Yup.object().shape({
-  // Required fields
   artist: Yup.string().trim(),
   artistId: Yup.string().required(
     "Please select an artist from the list. Artists who are not  listed cannot be submitted due to limited demand."
   ),
-  title: Yup.string().required("Title is a required field").trim(),
-  category: Yup.string().required("Please choose a medium from the list."),
-
-  // Optional fields
-  medium: Yup.string().trim(),
-  year: Yup.string().trim(),
-  attributionClass: Yup.string().nullable(),
+  title: Yup.string().required().trim(),
+  year: Yup.string().required().trim(),
+  medium: Yup.string().required().trim(),
+  attributionClass: Yup.string().required(),
   editionNumber: Yup.string().when("attributionClass", {
     is: limitedEditionValue,
     then: Yup.string().required().trim(),
@@ -98,44 +91,18 @@ export const artworkDetailsValidationSchema = Yup.object().shape({
     is: limitedEditionValue,
     then: Yup.string().required().trim(),
   }),
-  dimensionsMetric:
-    !__TEST__ && unsafe_getFeatureFlag("ARSWAMakeAllDimensionsOptional")
-      ? Yup.string()
-      : Yup.string().required(),
-  height:
-    !__TEST__ && unsafe_getFeatureFlag("ARSWAMakeAllDimensionsOptional")
-      ? Yup.string().trim()
-      : Yup.string().required().trim(),
-  width:
-    !__TEST__ && unsafe_getFeatureFlag("ARSWAMakeAllDimensionsOptional")
-      ? Yup.string().trim()
-      : Yup.string().required().trim(),
+  dimensionsMetric: Yup.string().required(),
+  height: Yup.string().required().trim(),
+  width: Yup.string().required().trim(),
   depth: Yup.string().trim(),
-  provenance: Yup.string().trim(),
+  provenance: Yup.string().required().trim(),
   state: Yup.string(),
   utmMedium: Yup.string(),
   utmSource: Yup.string(),
   utmTerm: Yup.string(),
   location: Yup.object().shape({
-    city: Yup.string().trim(),
+    city: Yup.string().required().trim(),
     state: Yup.string(),
     country: Yup.string(),
   }),
-})
-
-export interface ContactInformationFormModel {
-  userName: string
-  userEmail: string
-  userPhone: string | undefined
-}
-
-export const contactInformationValidationSchema = Yup.object().shape({
-  userName: Yup.string()
-    .required()
-    .test(
-      "userName",
-      "Please enter your full name.",
-      (name) => typeof name === "string" && name.length > 1
-    ),
-  userEmail: Yup.string().required().email("Please enter a valid email address."),
 })

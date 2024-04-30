@@ -138,7 +138,7 @@ import {
   ViewingRoomsListScreen,
   viewingRoomsListScreenQuery,
 } from "./Scenes/ViewingRoom/ViewingRoomsList"
-import { GlobalStore } from "./store/GlobalStore"
+import { GlobalStore, unsafe_getFeatureFlag } from "./store/GlobalStore"
 import { propsStore } from "./store/PropsStore"
 import { DevMenu } from "./system/devTools/DevMenu/DevMenu"
 import { Schema, addTrackingProvider, screenTrack } from "./utils/track"
@@ -147,6 +147,7 @@ import {
   SEGMENT_TRACKING_PROVIDER,
   SegmentTrackingProvider,
 } from "./utils/track/SegmentTrackingProvider"
+import { SubmissionArtworkForm } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmissionArtworkForm"
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
@@ -649,7 +650,15 @@ export const modules = defineModules({
     hidesBackButton: true,
     fullBleed: true,
   }),
-  SubmitArtwork: reactModule(SubmitArtwork, { hidesBackButton: true, hidesBottomTabs: true }),
+  SubmitArtwork: unsafe_getFeatureFlag("AREnableNewSubmissionFlow")
+    ? reactModule(SubmissionArtworkForm, {
+        fullBleed: true,
+        hidesBackButton: true,
+        hidesBottomTabs: true,
+        alwaysPresentModally: true,
+        modalPresentationStyle: "fullScreen",
+      })
+    : reactModule(SubmitArtwork, { hidesBackButton: true, hidesBottomTabs: true }),
   Tag: reactModule(TagQueryRenderer, { hidesBackButton: true, fullBleed: true }),
   UnlistedArtworksFAQScreen: reactModule(UnlistedArtworksFAQScreen),
   VanityURLEntity: reactModule(VanityURLEntityRenderer, { fullBleed: true }),

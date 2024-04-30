@@ -40,8 +40,11 @@ import { createOrUpdateSubmission } from "./ArtworkDetails/utils/createOrUpdateS
 import { ArtworkDetailsFormModel, ContactInformationFormModel } from "./ArtworkDetails/validation"
 import { ArtworkSubmittedScreen } from "./ArtworkSubmitted"
 import { UploadPhotos } from "./UploadPhotos/UploadPhotos"
+<<<<<<< HEAD
 
 const SUBMIT_ARTWORK_NAVIGATION_STACK_STATE_KEY = "SUBMIT_ARTWORK_NAVIGATION_STACK_STATE_KEY"
+=======
+>>>>>>> 7f6b2868c7 (wip)
 
 export enum STEPS {
   ArtworkDetails = "ArtworkDetails",

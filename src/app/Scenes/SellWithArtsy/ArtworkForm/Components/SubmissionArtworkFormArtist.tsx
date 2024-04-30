@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Screen, Spacer } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
 import { AutosuggestResultsPlaceholder } from "app/Components/AutosuggestResults/AutosuggestResultsPlaceholder"
@@ -20,6 +20,7 @@ export const SubmissionArtworkFormArtist: React.FC<
 
   const handleResultPress = async (result: AutosuggestResult) => {
     formik.setFieldValue("artist", result.displayLabel)
+    formik.setFieldValue("artistId", result.internalID)
     formik.setFieldValue("artistSearchResult", result)
 
     navigation.navigate("ArtworkFormTitle")
@@ -31,10 +32,10 @@ export const SubmissionArtworkFormArtist: React.FC<
   }
 
   return (
-    <>
-      <FancyModalHeader hideBottomDivider onLeftButtonPress={handleBackPress}></FancyModalHeader>
+    <Screen>
+      <Screen.Header onBack={handleBackPress} />
 
-      <ScreenMargin>
+      <Screen.Body>
         <Text variant="lg" mb={2}>
           Add artist name
         </Text>
@@ -42,8 +43,8 @@ export const SubmissionArtworkFormArtist: React.FC<
         <Suspense fallback={<Placeholder />}>
           <ArtistAutosuggest onResultPress={handleResultPress} onSkipPress={handleSkipPress} />
         </Suspense>
-      </ScreenMargin>
-    </>
+      </Screen.Body>
+    </Screen>
   )
 }
 
