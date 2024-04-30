@@ -9,6 +9,9 @@ import React from "react"
 import { Alert } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
+interface PartnerOffer {
+  internalID: string
+}
 export interface MakeOfferButtonProps {
   artwork: MakeOfferButton_artwork$data
   relay: RelayProp
@@ -16,6 +19,7 @@ export interface MakeOfferButtonProps {
   editionSetID: string | null
   variant?: ButtonProps["variant"]
   buttonText?: string
+  partnerOffer?: PartnerOffer
 }
 
 export interface State {
@@ -64,7 +68,7 @@ export class MakeOfferButton extends React.Component<MakeOfferButtonProps, State
     })
   )
   handleCreateOfferOrder() {
-    const { relay, artwork, editionSetID } = this.props
+    const { relay, artwork, editionSetID, partnerOffer } = this.props
     const { isCommittingCreateOfferOrderMutation } = this.state
     const { internalID } = artwork
 
@@ -103,6 +107,7 @@ export class MakeOfferButton extends React.Component<MakeOfferButtonProps, State
             input: {
               artworkId: internalID,
               editionSetId: editionSetID,
+              partnerOfferId: partnerOffer?.internalID,
             },
           },
           onCompleted: (data) => {
