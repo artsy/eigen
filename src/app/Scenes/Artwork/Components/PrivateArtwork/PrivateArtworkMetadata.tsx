@@ -33,14 +33,6 @@ export const PrivateArtworkMetadata: React.FC<PrivateArtworkMetadataProps> = ({ 
     !data.conditionDescription?.details && !data.privateProvenance && data.privateExhibitionHistory
   )
 
-  console.log("isFirstItemExpanded", isFirstItemExpanded)
-  console.log("isSecondItemExpanded", isSecondItemExpanded)
-  console.log("isThirdItemExpanded", isThirdItemExpanded)
-
-  console.log("cond disc", !!data.conditionDescription?.details)
-  console.log("provenance", !!data.privateProvenance)
-  console.log("ex hist", !!data.privateExhibitionHistory)
-
   return (
     <>
       {!!data.conditionDescription?.details && (
