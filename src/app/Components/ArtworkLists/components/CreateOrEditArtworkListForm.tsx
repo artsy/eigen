@@ -72,6 +72,7 @@ export const CreateOrEditArtworkListForm: FC<CreateOrEditArtworkListFormProps> =
               maxLength={MAX_NAME_LENGTH}
               onBlur={formik.handleBlur("name")}
               onChangeText={formik.handleChange("name")}
+              required
             />
 
             {!!AREnableArtworkListOfferability && (
