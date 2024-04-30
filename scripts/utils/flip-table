@@ -30,13 +30,19 @@ if ! rm -rf ~/Library/Developer/Xcode/DerivedData; then
 	rm -rf ~/Library/Developer/Xcode/DerivedData
 fi
 
+echo 'Reset yalc linked packages'
+if command -v yalc &> /dev/null
+then
+	yalc remove @artsy/palette-mobile
+fi
+
 echo 'Clear relay, relay query map, jest, and metro caches (┛◉Д◉)┛彡┻━┻'
 rm -rf "$TMPDIR"/RelayFindGraphQLTags-*
 rm -rf data/complete.queryMap.json
 rm -rf .cache
 rm -rf "$TMPDIR"/metro*
 rm -rf src/__generated__/*.graphql.ts
-yarn local-palette-dev:stop
+
 
 
 echo 'Clear build artefacts (╯ರ ~ ರ）╯︵ ┻━┻'
