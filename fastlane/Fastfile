@@ -448,9 +448,9 @@ lane :latest_betas do
   android_build_number = google_play_track_version_codes(
       track: 'alpha'
   ).first
-  puts "Parent version: #{parent_version_name}"
-  puts "iOS latest beta version: #{ios_build_number}"
-  puts "Android latest beta version: #{android_build_number}"
+  puts "Parent latest version: #{parent_version_name}"
+  puts "iOS latest version: #{ios_build_number}"
+  puts "Android latest version: #{android_build_number}"
 end
 
 error do |lane, exception|
