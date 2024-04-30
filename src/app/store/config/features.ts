@@ -269,6 +269,11 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "ARSWAMakeAllDimensionsOptional",
   },
+  AREnableNewSubmissionFlow: {
+    description: "Enable new submission flow",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {

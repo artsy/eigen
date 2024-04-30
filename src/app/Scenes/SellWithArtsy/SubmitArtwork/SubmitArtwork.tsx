@@ -15,6 +15,7 @@ import { captureMessage } from "@sentry/react-native"
 import { ErrorView } from "app/Components/ErrorView/ErrorView"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { SubmissionArtworkForm } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmissionArtworkForm"
 import { fetchUserContactInformation } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/fetchUserContactInformation"
 import {
   artworkDetailsCompletedEvent,
@@ -26,6 +27,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { useReloadedDevNavigationState } from "app/system/navigation/useReloadedDevNavigationState"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -333,9 +335,14 @@ export const SubmitArtwork = () => {
   const { isReady, initialState, saveSession } = useReloadedDevNavigationState(
     SUBMIT_ARTWORK_NAVIGATION_STACK_STATE_KEY
   )
+  const enableNewSubmissionFlow = useFeatureFlag("AREnableNewSubmissionFlow")
 
   if (!isReady) {
     return null
+  }
+
+  if (enableNewSubmissionFlow) {
+    return <SubmissionArtworkForm />
   }
 
   return (

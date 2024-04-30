@@ -9,6 +9,7 @@ import {
 import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import * as Yup from "yup"
 import { limitedEditionValue } from "./utils/rarityOptions"
+import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
 
 export interface Location {
   city: string
@@ -21,6 +22,7 @@ export interface Location {
 export interface ArtworkDetailsFormModel {
   artist: string
   artistId: string
+  artistSearchResult: AutosuggestResult | null
   attributionClass: ConsignmentAttributionClass | null
   category: Exclude<ConsignmentSubmissionCategoryAggregation, "%future added value"> | null
   depth: string
@@ -45,6 +47,7 @@ export interface ArtworkDetailsFormModel {
 export const artworkDetailsEmptyInitialValues: ArtworkDetailsFormModel = {
   artist: "",
   artistId: "",
+  artistSearchResult: null,
   attributionClass: null,
   category: null,
   depth: "",
