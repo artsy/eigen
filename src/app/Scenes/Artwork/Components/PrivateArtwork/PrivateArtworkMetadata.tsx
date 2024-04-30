@@ -14,7 +14,7 @@ export const PrivateArtworkMetadata: React.FC<PrivateArtworkMetadataProps> = ({ 
         conditionDescription {
           details
         }
-        provenance(format: HTML)
+        privateProvenance: provenance(format: HTML)
         privateExhibitionHistory: exhibitionHistory(format: HTML)
       }
     `,

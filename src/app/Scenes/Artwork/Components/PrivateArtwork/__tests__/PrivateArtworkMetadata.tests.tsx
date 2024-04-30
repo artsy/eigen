@@ -52,7 +52,7 @@ describe("PrivateArtworkMetadata", () => {
           conditionDescription: {
             details: null,
           },
-          provenance: "Test Provenance Details",
+          privateProvenance: "Test Provenance Details",
         }
       },
     })
@@ -63,7 +63,7 @@ describe("PrivateArtworkMetadata", () => {
     renderWithRelay({
       Artwork: () => {
         return {
-          provenance: null,
+          privateProvenance: null,
         }
       },
     })
@@ -77,8 +77,8 @@ describe("PrivateArtworkMetadata", () => {
           conditionDescription: {
             details: null,
           },
-          provenance: null,
-          exhibitionHistory: "Test Exhibition History Details",
+          privateProvenance: null,
+          privateExhibitionHistory: "Test Exhibition History Details",
         }
       },
     })
@@ -89,7 +89,7 @@ describe("PrivateArtworkMetadata", () => {
     renderWithRelay({
       Artwork: () => {
         return {
-          exhibitionHistory: null,
+          privateExhibitionHistory: null,
         }
       },
     })
@@ -120,7 +120,7 @@ describe("PrivateArtworkMetadata", () => {
     renderWithRelay({
       Artwork: () => {
         return {
-          provenance: "Test Provenance Details",
+          privateProvenance: "Test Provenance Details",
         }
       },
     })
@@ -134,11 +134,11 @@ describe("PrivateArtworkMetadata", () => {
     })
   })
 
-  it("tracks provenance expand press", async () => {
+  it("tracks exhibition history expand press", async () => {
     renderWithRelay({
       Artwork: () => {
         return {
-          exhibitionHistory: "Test Exhibition History Details",
+          privateExhibitionHistory: "Test Exhibition History Details",
         }
       },
     })
