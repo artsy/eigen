@@ -30,7 +30,7 @@ if ! rm -rf ~/Library/Developer/Xcode/DerivedData; then
 	rm -rf ~/Library/Developer/Xcode/DerivedData
 fi
 
-echo 'Reset yalc linked packages'
+echo 'Reset yalc linked packages (ﾉಠдಠ)ﾉ︵┻━┻'
 if command -v yalc &> /dev/null
 then
 	yalc remove @artsy/palette-mobile
