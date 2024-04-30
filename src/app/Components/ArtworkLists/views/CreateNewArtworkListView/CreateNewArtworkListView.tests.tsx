@@ -160,7 +160,7 @@ describe("CreateNewArtworkListView", () => {
 
     // Known issue with react native testing library
     // context: https://github.com/callstack/react-native-testing-library/issues/1239
-    it.skip("when user has reached the allowed limit", async () => {
+    it.skip("when user has reached the allowed limit", () => {
       renderWithRelay()
 
       const longText = "a".repeat(100)
