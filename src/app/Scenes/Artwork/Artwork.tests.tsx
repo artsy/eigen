@@ -978,7 +978,7 @@ describe("Artwork", () => {
       expect(screen.getByText("Read More")).toBeOnTheScreen()
     })
 
-    fit("tracks partner name taps", async () => {
+    it("tracks partner name taps", async () => {
       renderWithWrappers(<TestRenderer />)
 
       // ArtworkAboveTheFoldQuery
