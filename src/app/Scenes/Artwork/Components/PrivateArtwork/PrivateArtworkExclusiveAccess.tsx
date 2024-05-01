@@ -55,7 +55,9 @@ export const PrivateArtworkExclusiveAccess: React.FC<PrivateArtworkExclusiveAcce
         </Text>
         This work was privately shared by{" "}
         {data.partner?.profile?.isPubliclyVisible ? (
-          <LinkText onPress={handleLinkPress}>{data.partner?.name}</LinkText>
+          <LinkText testID="test-partner-button" onPress={handleLinkPress}>
+            {data.partner?.name}
+          </LinkText>
         ) : (
           <>{data.partner?.name}</>
         )}

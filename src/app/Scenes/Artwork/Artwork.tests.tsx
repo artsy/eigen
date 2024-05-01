@@ -1008,7 +1008,7 @@ describe("Artwork", () => {
 
       await flushPromiseQueue()
 
-      fireEvent.press(screen.getByText("Test Partner"))
+      fireEvent.press(screen.getByTestId("test-partner-button"))
 
       expect(mockTrackEvent).toBeCalledWith({
         context_module: "artworkDetails",
