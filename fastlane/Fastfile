@@ -439,6 +439,20 @@ def set_codepush_release_values(deployment_name, platform)
   [release_name, date_str, latest_version]
 end
 
+lane :latest_betas do
+  api_key = generate_app_store_connect_api_key
+  parent_version_name = $APP_JSON['version']
+  ios_build_number = latest_testflight_build_number(
+    api_key: api_key
+  )
+  android_build_number = google_play_track_version_codes(
+      track: 'alpha'
+  ).first
+  puts "Parent latest version: #{parent_version_name}"
+  puts "iOS latest version: #{ios_build_number}"
+  puts "Android latest version: #{android_build_number}"
+end
+
 error do |lane, exception|
   return unless BETA_LANES.include?(lane)
 
