@@ -2,6 +2,7 @@ import { PrivateArtworkMetadata_artwork$key } from "__generated__/PrivateArtwork
 import { Expandable } from "app/Components/Expandable"
 import { HTML } from "app/Components/HTML"
 import { graphql, useFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 interface PrivateArtworkMetadataProps {
   artwork: PrivateArtworkMetadata_artwork$key
 }
@@ -20,6 +21,8 @@ export const PrivateArtworkMetadata: React.FC<PrivateArtworkMetadataProps> = ({ 
     artwork
   )
 
+  const tracking = useTracking()
+
   const isFirstItemExpanded = Boolean(data.conditionDescription?.details)
 
   const isSecondItemExpanded = Boolean(
@@ -34,7 +37,13 @@ export const PrivateArtworkMetadata: React.FC<PrivateArtworkMetadataProps> = ({ 
     <>
       {!!data.conditionDescription?.details && (
         <>
-          <Expandable label="Condition" expanded={isFirstItemExpanded}>
+          <Expandable
+            trackingFunction={() => {
+              tracking.trackEvent(tracks.tappedConditionExpand(isFirstItemExpanded))
+            }}
+            label="Condition"
+            expanded={isFirstItemExpanded}
+          >
             <HTML html={data.conditionDescription?.details} variant="sm" />
           </Expandable>
         </>
@@ -42,17 +51,50 @@ export const PrivateArtworkMetadata: React.FC<PrivateArtworkMetadataProps> = ({ 
 
       {!!data.privateProvenance && (
         <>
-          <Expandable label="Provenance" expanded={isSecondItemExpanded}>
+          <Expandable
+            trackingFunction={() => {
+              tracking.trackEvent(tracks.tappedProvenanceExpand(isSecondItemExpanded))
+            }}
+            label="Provenance"
+            expanded={isSecondItemExpanded}
+          >
             <HTML variant="sm" html={data.privateProvenance} />
           </Expandable>
         </>
       )}
 
       {!!data.privateExhibitionHistory && (
-        <Expandable label="Exhibition History" expanded={isThirdItemExpanded}>
+        <Expandable
+          trackingFunction={() => {
+            tracking.trackEvent(tracks.tappedExhibitionHistoryExpand(isThirdItemExpanded))
+          }}
+          label="Exhibition History"
+          expanded={isThirdItemExpanded}
+        >
           <HTML variant="sm" html={data.privateExhibitionHistory} />
         </Expandable>
       )}
     </>
   )
+}
+
+const tracks = {
+  tappedConditionExpand: (isExpanded: boolean) => ({
+    context_module: "aboutTheWork",
+    context_owner_type: "artwork",
+    expand: isExpanded,
+    subject: "Condition",
+  }),
+  tappedProvenanceExpand: (isExpanded: boolean) => ({
+    context_module: "aboutTheWork",
+    context_owner_type: "artwork",
+    expand: isExpanded,
+    subject: "Provenance",
+  }),
+  tappedExhibitionHistoryExpand: (isExpanded: boolean) => ({
+    context_module: "aboutTheWork",
+    context_owner_type: "artwork",
+    expand: isExpanded,
+    subject: "Exhibition History",
+  }),
 }

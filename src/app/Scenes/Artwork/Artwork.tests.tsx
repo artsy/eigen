@@ -977,5 +977,45 @@ describe("Artwork", () => {
 
       expect(screen.getByText("Read More")).toBeOnTheScreen()
     })
+
+    it("tracks partner name taps", async () => {
+      renderWithWrappers(<TestRenderer />)
+
+      // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
+        Artwork: () => ({
+          isUnlisted: true,
+        }),
+      })
+      // ArtworkMarkAsRecentlyViewedQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkBelowTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
+        Artwork: () => ({
+          isUnlisted: true,
+          isForSale: true,
+          isInAuction: false,
+          partner: {
+            name: "Test Partner",
+            type: "foo",
+          },
+          sale: {
+            isBenefit: false,
+            isGalleryAuction: false,
+          },
+        }),
+      })
+
+      await flushPromiseQueue()
+
+      fireEvent.press(screen.getByText("Test Partner"))
+
+      expect(mockTrackEvent).toBeCalledWith({
+        context_module: "artworkDetails",
+        subject: "Gallery Name",
+        type: "Link",
+        flow: "Exclusive access",
+      })
+    })
   })
 })
