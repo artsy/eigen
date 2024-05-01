@@ -1,10 +1,9 @@
-import { Flex, Text, Touchable, useColor } from "@artsy/palette-mobile"
+import { Flex, Image, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import {
   ArtworkPreview_artwork$data,
   ArtworkPreview_artwork$key,
 } from "__generated__/ArtworkPreview_artwork.graphql"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import { graphql, useFragment } from "react-relay"
@@ -67,9 +66,10 @@ export const ArtworkPreview: React.FC<ArtworkPreviewProps> = ({ artwork, onSelec
       <Container>
         {!!artworkImage && (
           <ImageContainer>
-            <OpaqueImageView
+            <Image
+              src={artworkImage.url ?? ""}
               aspectRatio={artworkImage.aspectRatio}
-              imageURL={artworkImage.url}
+              width={250}
               blurhash={showBlurhash ? artworkImage.blurhash : undefined}
             />
           </ImageContainer>
