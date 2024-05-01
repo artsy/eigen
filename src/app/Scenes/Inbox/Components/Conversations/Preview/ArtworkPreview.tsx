@@ -62,12 +62,16 @@ export const ArtworkPreview: React.FC<ArtworkPreviewProps> = ({ artwork, onSelec
     trackEvent(tracks.tapAttachmentSelected(artworkData))
   }
 
+  console.log("in here!!!")
+  console.log(artworkImage?.aspectRatio)
   return (
     <Touchable underlayColor={color("black10")} onPress={attachmentSelected}>
       <Container>
         {!!artworkImage && (
           <ImageContainer>
             <OpaqueImageView
+              height={122}
+              width={122}
               aspectRatio={artworkImage.aspectRatio}
               imageURL={artworkImage.url}
               blurhash={showBlurhash ? artworkImage.blurhash : undefined}
