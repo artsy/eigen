@@ -10,6 +10,7 @@ import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsCo
 import { AuctionTimerState, currentTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { ArtworkAuctionCreateAlertHeader } from "app/Scenes/Artwork/ArtworkAuctionCreateAlertHeader"
+import { ArtworkDimensionsClassificationAndAuthenticityFragmentContainer } from "app/Scenes/Artwork/Components/ArtworkDimensionsClassificationAndAuthenticity/ArtworkDimensionsClassificationAndAuthenticity"
 import { ArtworkErrorScreen } from "app/Scenes/Artwork/Components/ArtworkError"
 import { ArtworkPartnerOfferNote } from "app/Scenes/Artwork/Components/ArtworkPartnerOfferNote"
 import { ArtworkPrice } from "app/Scenes/Artwork/Components/ArtworkPrice"
@@ -290,6 +291,16 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
           />
         ),
         excludePadding: true,
+        excludeSeparator: true,
+      })
+
+      sections.push({
+        key: "dimensionsClassificationAndAuthenticity",
+        element: (
+          <ArtworkDimensionsClassificationAndAuthenticityFragmentContainer
+            artwork={artworkAboveTheFold}
+          />
+        ),
         excludeSeparator: true,
       })
 
@@ -654,6 +665,7 @@ export const ArtworkContainer = createRefetchContainer(
         ...ArtworkEditionSetInformation_artwork
         ...ArtworkPartnerOfferNote_artwork
         ...ArtworkPrice_artwork
+        ...ArtworkDimensionsClassificationAndAuthenticity_artwork
         slug
         internalID
         isAcquireable
