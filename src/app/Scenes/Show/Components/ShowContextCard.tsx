@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex, Box, BoxProps, Text } from "@artsy/palette-mobile"
+import { Flex, Box, BoxProps, Text, useScreenDimensions } from "@artsy/palette-mobile"
 import { ShowContextCard_show$data } from "__generated__/ShowContextCard_show.graphql"
 import { SmallCard } from "app/Components/Cards"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
@@ -93,13 +93,14 @@ const ContextCard: React.FC<ContextCardProps> = ({
   onPress,
   ...rest
 }) => {
+  const { width } = useScreenDimensions()
   const hasMultipleImages = imageUrls.length > 1
 
   const imageElement = hasMultipleImages ? (
     <SmallCard images={imageUrls} /> // 3-up image layout
   ) : (
     <Flex width="100%" borderRadius={4} overflow="hidden">
-      <OpaqueImageView style={{ width: "100%" }} aspectRatio={1.5} imageURL={imageUrls[0]} />
+      <OpaqueImageView width={width} aspectRatio={1.5} imageURL={imageUrls[0]} />
     </Flex>
   )
 
