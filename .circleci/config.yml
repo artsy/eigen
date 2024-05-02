@@ -473,15 +473,6 @@ workflows:
 
       - build-test-js
 
-      - horizon/block:
-          context: horizon
-          project_id: 37
-          filters:
-            branches:
-              only:
-                - beta-ios
-                - beta-android
-
       - build-test-app-ios:
           filters:
             branches:
@@ -491,7 +482,6 @@ workflows:
             - test-js
             - check-code
             - build-test-js
-            - horizon/block
 
       - build-test-app-android:
           filters:
@@ -502,7 +492,6 @@ workflows:
             - test-js
             - check-code
             - build-test-js
-            - horizon/block
 
       - update-metaphysics:
           filters:
