@@ -369,10 +369,8 @@ export const ImageZoomView =
                 noAnimation
                 imageURL={image.resized?.src || image.url}
                 useRawURL
-                style={{
-                  width: imageFittedWithinScreen.width,
-                  height: imageFittedWithinScreen.height,
-                }}
+                width={imageFittedWithinScreen.width}
+                height={imageFittedWithinScreen.height}
               />
             </Animated.View>
           </TouchableWithoutFeedback>
