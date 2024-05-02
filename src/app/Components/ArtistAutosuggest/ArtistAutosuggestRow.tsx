@@ -21,9 +21,9 @@ export const ArtistAutosuggestRow: React.FC<Props> = ({ result, highlight, onRes
       <Flex height={IMAGE_SIZE} flexDirection="row" alignItems="center">
         <OpaqueImageView
           imageURL={result.imageUrl}
+          width={IMAGE_SIZE}
+          height={IMAGE_SIZE}
           style={{
-            width: IMAGE_SIZE,
-            height: IMAGE_SIZE,
             overflow: "hidden",
           }}
         />
