@@ -68,7 +68,7 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
         <Flex flexDirection="row" alignItems="center">
           <Input
             testID="MyCollectionSearchBarInput"
-            placeholder="Search by Artist, Artwork or Keyword"
+            placeholder={["Search by Artist, Artwork or Keyword", "Search by keyword", "Search"]}
             onChangeText={setValue}
             onFocus={onFocus}
             onBlur={() => {
