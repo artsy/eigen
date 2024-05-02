@@ -24,7 +24,6 @@ type WithWidth = {
 type WithHeightAndWidth = {
   height: number
   width: number
-  aspectRatio?: never
 }
 
 type DimensionProps = AspectRatioProps & (WithHeight | WithWidth | WithHeightAndWidth)
