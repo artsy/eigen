@@ -32,7 +32,7 @@ export const SellWithArtsyRecentlySold: React.FC<SellWithArtsyRecentlySoldProps>
   return (
     <Flex>
       <Text px={2} variant="lg-display">
-        Sold Recently on Artsy
+        Previously sold on Artsy
       </Text>
 
       <Spacer y={2} />

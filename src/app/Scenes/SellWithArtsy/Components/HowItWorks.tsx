@@ -1,5 +1,4 @@
-import { ContextModule, OwnerType, TappedConsignArgs } from "@artsy/cohesion"
-import { Spacer, Flex, Text, Join, Button } from "@artsy/palette-mobile"
+import { Spacer, Flex, Text, Join } from "@artsy/palette-mobile"
 
 const STEPS = [
   {
@@ -20,11 +19,7 @@ const STEPS = [
   },
 ]
 
-export const HowItWorks: React.FC<{
-  onConsignPress: (tappedConsignArgs: TappedConsignArgs) => void
-}> = ({ onConsignPress }) => {
-  const buttonText = "Start Selling"
-
+export const HowItWorks: React.FC = () => {
   return (
     <Flex mx={2}>
       <Text variant="lg-display">How it works</Text>
@@ -38,25 +33,7 @@ export const HowItWorks: React.FC<{
             <Text variant="xs">{step.text}</Text>
           </Flex>
         ))}
-        <Spacer y={2} />
-        <Button
-          testID="HowItWorks-consign-CTA"
-          block
-          onPress={() => {
-            onConsignPress(tracks.consignArgs(buttonText))
-          }}
-        >
-          {buttonText}
-        </Button>
       </Join>
     </Flex>
   )
-}
-
-const tracks = {
-  consignArgs: (subject: string): TappedConsignArgs => ({
-    contextModule: ContextModule.sellHowItWorks,
-    contextScreenOwnerType: OwnerType.sell,
-    subject,
-  }),
 }

@@ -8,6 +8,7 @@ import { FAQSWA } from "app/Scenes/SellWithArtsy/Components/FAQSWA"
 import { Highlights } from "app/Scenes/SellWithArtsy/Components/Highlights"
 import { MeetTheSpecialists } from "app/Scenes/SellWithArtsy/Components/MeetTheSpecialists"
 import { SpeakToTheTeam } from "app/Scenes/SellWithArtsy/Components/SpeakToTheTeam"
+import { StickySWAHeader } from "app/Scenes/SellWithArtsy/Components/StickySWAHeader"
 import { Testimonials } from "app/Scenes/SellWithArtsy/Components/Testimonials"
 import { WaysWeSell } from "app/Scenes/SellWithArtsy/Components/WaysWeSell"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -97,15 +98,15 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
       >
         <ScrollView showsVerticalScrollIndicator={false} ref={scrollViewRef}>
           <Join separator={<Spacer y={6} />}>
-            <Header onConsignPress={handleConsignPress} onInquiryPress={handleInquiryPress} />
+            <Header />
 
             <Highlights />
 
             <WaysWeSell />
 
-            <HowItWorks onConsignPress={handleConsignPress} />
+            <HowItWorks />
 
-            <SpeakToTheTeam onInquiryPress={handleInquiryPress} />
+            <FAQSWA />
 
             <MeetTheSpecialists onInquiryPress={handleInquiryPress} />
 
@@ -117,13 +118,15 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
 
             <Testimonials />
 
-            <FAQSWA />
+            <SpeakToTheTeam onInquiryPress={handleInquiryPress} />
 
-            <Footer onConsignPress={handleConsignPress} />
+            <Footer />
           </Join>
 
-          <Spacer y={4} />
+          <Spacer y={2} />
         </ScrollView>
+
+        <StickySWAHeader onConsignPress={handleConsignPress} onInquiryPress={handleInquiryPress} />
       </Flex>
     </LegacyScreen.Background>
   )
