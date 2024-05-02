@@ -8,6 +8,14 @@ import { Animated, ColorValue, PixelRatio, StyleSheet, View } from "react-native
 import FastImage, { ImageStyle } from "react-native-fast-image"
 
 type AspectRatioProps = {
+  /**
+   * An aspect ratio created with: width / height.
+   *
+   * When specified:
+   * - The view will be sized in such a way that it maintains the aspect ratio of the image.
+   * - The imageURL will be modified so that it resizes the image to the exact size at which the view has been laid out,
+   *   thus never fetching more data than absolutely necessary.
+   */
   aspectRatio?: number
 }
 
@@ -27,19 +35,6 @@ type WithHeightAndWidth = {
 }
 
 type DimensionProps = AspectRatioProps & (WithHeight | WithWidth | WithHeightAndWidth)
-
-// width?: number
-// height?: number
-
-// /**
-//  * An aspect ratio created with: width / height.
-//  *
-//  * When specified:
-//  * - The view will be sized in such a way that it maintains the aspect ratio of the image.
-//  * - The imageURL will be modified so that it resizes the image to the exact size at which the view has been laid out,
-//  *   thus never fetching more data than absolutely necessary.
-//  */
-// aspectRatio?: number
 
 interface ImageRestProps {
   /** The URL from where to fetch the image. */
