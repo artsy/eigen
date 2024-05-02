@@ -179,7 +179,11 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
           ref={addressLine2Ref}
           title="Address line 2"
           optional
-          placeholder="Add apt, floor, suite, etc."
+          placeholder={[
+            "Add your apt, floor, suite, etc.",
+            "Add your apt, floor, etc.",
+            "Add your apt, etc.",
+          ]}
           onChangeText={actions.fields.addressLine2.setValue}
           returnKeyType="next"
           onSubmitEditing={() => cityRef.current?.focus()}

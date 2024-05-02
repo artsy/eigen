@@ -141,7 +141,11 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
             ref={addressLine2Ref}
             title="Address line 2"
             optional
-            placeholder="Add your apt, floor, suite, etc."
+            placeholder={[
+              "Add your apt, floor, suite, etc.",
+              "Add your apt, floor, etc.",
+              "Add your apt, etc.",
+            ]}
             textContentType="streetAddressLine2"
             returnKeyType="next"
             enableClearButton
