@@ -41,7 +41,7 @@ export const WorksForYouArtworks: React.FC<NewWorksForYouProps> = ({ viewer }) =
           <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
         }
         ListHeaderComponent={() => (
-          <Text variant="xs" pt={2} px={2}>
+          <Text variant="xs" pt={2} px={numColumns === 1 ? 2 : 0}>
             {artworks.length} {pluralize("Artwork", artworks.length)}
           </Text>
         )}
@@ -135,5 +135,5 @@ export const WorksForYouArtworksQR: React.FC<WorksForYouArtworksQRProps> = withS
 
     return <WorksForYouArtworks viewer={data.viewer} />
   },
-  () => <NewWorksForYouPlaceholder defaultViewOption="grid" />
+  () => <NewWorksForYouPlaceholder />
 )

@@ -188,12 +188,7 @@ export const features = {
     readyForRelease: true,
     echoFlagKey: "AREnablePartnerOffersNotificationSwitch",
   },
-  AREnableNewWorksForYouScreenFeed: {
-    description: "Enable new works for you screen feed",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableNewWorksForYouScreenFeed",
-  },
+
   AREnablePartnerOffer: {
     description: "Enable partner offer content in the app",
     readyForRelease: true,
@@ -331,9 +326,6 @@ export const devToggles: { [key: string]: DevToggleDescriptor } = {
   },
   DTEnableNewImageLabel: {
     description: "Show a label on new OpaqueImageView",
-  },
-  DTForceShowNewWorksForYouScreenFeed: {
-    description: "Force show new works for you feed",
   },
 }
 

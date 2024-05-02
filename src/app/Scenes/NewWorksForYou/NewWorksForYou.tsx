@@ -14,16 +14,11 @@ import { WorksForYouArtworksQR } from "app/Components/WorksForYouArtworks"
 import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
-import { useExperimentVariant } from "app/utils/experiments/hooks"
-import { useDevToggle } from "app/utils/hooks/useDevToggle"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
 import { MotiPressable } from "moti/interactions"
-import { useEffect } from "react"
 import { LayoutAnimation } from "react-native"
-import { isTablet } from "react-native-device-info"
 
 export const SCREEN_TITLE = "New Works for You"
 export const RECOMMENDATION_MODEL_EXPERIMENT_NAME = "eigen-new-works-for-you-recommendations-model"
@@ -46,11 +41,6 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
   maxWorksPerArtist,
   version: versionProp,
 }) => {
-  const enableNewWorksForYouFeed = useFeatureFlag("AREnableNewWorksForYouScreenFeed")
-  const forceShowNewWorksForYouFeed = useDevToggle("DTForceShowNewWorksForYouScreenFeed")
-
-  const experiment = useExperimentVariant("onyx_new_works_for_you_feed")
-
   const isReferredFromEmail = utm_medium === "email"
 
   // Use the version specified in the URL or no version if the screen is opened from the email.
@@ -61,18 +51,6 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
 
   const setDefaultViewOption = GlobalStore.actions.userPrefs.setDefaultViewOption
 
-  useEffect(() => {
-    experiment.trackExperiment({
-      context_owner_type: OwnerType.newWorksForYou,
-    })
-  }, [])
-
-  const showToggleViewOptionIcon =
-    !isTablet() &&
-    enableNewWorksForYouFeed &&
-    experiment.enabled &&
-    (experiment.variant === "experiment" || forceShowNewWorksForYouFeed)
-  console.log(maxWorksPerArtist, "maxWorksPerArtist")
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.newWorksForYou })}
@@ -82,20 +60,18 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
           onBack={goBack}
           title={SCREEN_TITLE}
           rightElements={
-            showToggleViewOptionIcon ? (
-              <MotiPressable
-                onPress={() => {
-                  setDefaultViewOption(defaultViewOption === "list" ? "grid" : "list")
-                  LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-                }}
-              >
-                {defaultViewOption === "grid" ? (
-                  <FullWidthIcon height={ICON_SIZE} width={ICON_SIZE} top="2px" />
-                ) : (
-                  <GridIcon height={ICON_SIZE} width={ICON_SIZE} top="2px" />
-                )}
-              </MotiPressable>
-            ) : undefined
+            <MotiPressable
+              onPress={() => {
+                setDefaultViewOption(defaultViewOption === "list" ? "grid" : "list")
+                LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+              }}
+            >
+              {defaultViewOption === "grid" ? (
+                <FullWidthIcon height={ICON_SIZE} width={ICON_SIZE} top="2px" />
+              ) : (
+                <GridIcon height={ICON_SIZE} width={ICON_SIZE} top="2px" />
+              )}
+            </MotiPressable>
           }
         />
         <Screen.StickySubHeader title={SCREEN_TITLE} />
@@ -111,7 +87,6 @@ export const NewWorksForYouPlaceholder: React.FC<{ defaultViewOption?: ViewOptio
   defaultViewOption,
 }) => {
   const storeViewOption = GlobalStore.useAppState((state) => state.userPrefs.defaultViewOption)
-  const enableNewWorksForYouFeed = useFeatureFlag("AREnableNewWorksForYouScreenFeed")
   const viewOption = defaultViewOption ?? storeViewOption
 
   return (
@@ -126,7 +101,7 @@ export const NewWorksForYouPlaceholder: React.FC<{ defaultViewOption?: ViewOptio
         </Flex>
       </Flex>
       <Spacer y={2} />
-      {viewOption === "grid" || !enableNewWorksForYouFeed ? (
+      {viewOption === "grid" ? (
         <PlaceholderGrid />
       ) : (
         <Flex width="100%" px={2}>
