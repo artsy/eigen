@@ -124,7 +124,7 @@ export function getCurrentEmissionState() {
     authenticationToken: state?.auth.userAccessToken || "",
     launchCount: ArtsyNativeModule.launchCount,
     userAgent,
-    userID: state?.auth.userID!,
+    userID: state?.auth.userID || "",
     userEmail: "user@example.com", // not used on android
   }
   return data
@@ -145,6 +145,7 @@ export function unsafe__getSelectedTab(): BottomTabType {
     return "home"
   } else {
     const { index, routes } = tabState
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return routes[index!].name as BottomTabType
   }
 }

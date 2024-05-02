@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkConsignments_artwork_TestQuery } from "__generated__/ArtworkConsignments_artwork_TestQuery.graphql"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { ModalStack } from "app/system/navigation/ModalStack"
@@ -51,35 +51,35 @@ describe("ArtworkConsignments", () => {
   }
 
   it("redirects to /sales when consignments link is clicked from outside of sell tab", async () => {
-    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => artwork,
     })
     await flushPromiseQueue()
 
-    fireEvent.press(getByText(/Consign with Artsy/))
+    fireEvent.press(screen.getByText(/Consign with Artsy/))
 
     expect(navigate).toHaveBeenCalledWith("/sales")
   })
 
   it("redirects to /collections/my-collection/marketing-landing when consignments link is clicked from within sell tab", async () => {
     ;(useSelectedTab as any).mockImplementation(() => "sell")
-    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => artwork,
     })
     await flushPromiseQueue()
 
-    fireEvent.press(getByText(/Consign with Artsy/))
+    fireEvent.press(screen.getByText(/Consign with Artsy/))
 
     expect(navigate).toHaveBeenCalledWith("/collections/my-collection/marketing-landing")
   })
 
   describe("link text", () => {
     it("shows plural form for an artwork with more than 1 consignable artist", async () => {
-      const { queryByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+      renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => ({
@@ -89,23 +89,22 @@ describe("ArtworkConsignments", () => {
       })
       await flushPromiseQueue()
 
-      expect(queryByText(/Want to sell a work by these artists?/)).toBeTruthy()
+      expect(screen.getByText(/Want to sell a work by these artists?/)).toBeTruthy()
     })
 
     it("shows single form for an artwork with one artist", async () => {
-      const { queryByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+      renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => artwork,
       })
       await flushPromiseQueue()
 
-      expect(queryByText(/Want to sell a work by Santa?/)).toBeTruthy()
+      expect(screen.getByText(/Want to sell a work by Santa?/)).toBeTruthy()
     })
 
     it("shows artist's name placeholder when artist doesn't have name", async () => {
-      const { queryByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
-
+      renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => ({
           ...artwork,
@@ -119,7 +118,7 @@ describe("ArtworkConsignments", () => {
       })
       await flushPromiseQueue()
 
-      expect(queryByText(/Want to sell a work by this artist?/)).toBeTruthy()
+      expect(screen.getByText(/Want to sell a work by this artist?/)).toBeTruthy()
     })
   })
 })

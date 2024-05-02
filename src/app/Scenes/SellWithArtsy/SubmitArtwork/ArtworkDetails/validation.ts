@@ -93,15 +93,18 @@ export const artworkDetailsValidationSchema = Yup.object().shape({
     is: limitedEditionValue,
     then: Yup.string().required().trim(),
   }),
-  dimensionsMetric: unsafe_getFeatureFlag("ARSWAMakeAllDimensionsOptional")
-    ? Yup.string()
-    : Yup.string().required(),
-  height: unsafe_getFeatureFlag("ARSWAMakeAllDimensionsOptional")
-    ? Yup.string().trim()
-    : Yup.string().required().trim(),
-  width: unsafe_getFeatureFlag("ARSWAMakeAllDimensionsOptional")
-    ? Yup.string().trim()
-    : Yup.string().required().trim(),
+  dimensionsMetric:
+    !__TEST__ && unsafe_getFeatureFlag("ARSWAMakeAllDimensionsOptional")
+      ? Yup.string()
+      : Yup.string().required(),
+  height:
+    !__TEST__ && unsafe_getFeatureFlag("ARSWAMakeAllDimensionsOptional")
+      ? Yup.string().trim()
+      : Yup.string().required().trim(),
+  width:
+    !__TEST__ && unsafe_getFeatureFlag("ARSWAMakeAllDimensionsOptional")
+      ? Yup.string().trim()
+      : Yup.string().required().trim(),
   depth: Yup.string().trim(),
   provenance: Yup.string().trim(),
   state: Yup.string(),
