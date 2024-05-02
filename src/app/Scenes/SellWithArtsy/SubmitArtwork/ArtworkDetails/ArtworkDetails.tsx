@@ -40,7 +40,9 @@ export const ArtworkDetails: React.FC<{
           return (
             <>
               <ArtworkDetailsForm />
+
               <Spacer y={2} />
+
               <CTAButton
                 disabled={!isValid}
                 onPress={() => handlePress(values)}
