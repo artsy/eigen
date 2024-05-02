@@ -202,7 +202,7 @@ export const OpaqueImageView: React.FC<ImageRestProps & DimensionProps> = ({
       <Image
         src={props.imageURL}
         geminiResizeMode={aspectRatio ? "fit" : "fill"}
-        performResize={props.useRawURL}
+        performResize={!props.useRawURL}
         height={fIHeight}
         width={fIWidth}
         blurhash={showBlurhash ? props.blurhash : null}
