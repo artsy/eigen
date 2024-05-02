@@ -76,7 +76,11 @@ export const ArtworkDetailsForm: React.FC = () => {
       <StandardSpace />
       <Input
         title="Materials"
-        placeholder="Oil on canvas, mixed media, lithograph.."
+        placeholder={[
+          "Oil on canvas, mixed media, lithograph, etc.",
+          "Oil on canvas, mixed media, etc.",
+          "Oil on canvas, etc.",
+        ]}
         testID="Submission_MaterialsInput"
         value={values.medium}
         onChangeText={(e) => setFieldValue("medium", e)}
