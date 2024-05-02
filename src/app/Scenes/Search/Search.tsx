@@ -27,7 +27,12 @@ import { SEARCH_PILLS, SEARCH_THROTTLE_INTERVAL, TOP_PILL } from "./constants"
 import { getContextModuleByPillName } from "./helpers"
 import { PillType } from "./types"
 
-const SEARCH_INPUT_PLACEHOLDER = "Search artists, artworks, galleries, etc"
+const SEARCH_INPUT_PLACEHOLDER = [
+  "Search artists, artworks, galleries, etc",
+  "Search artists, artworks, etc",
+  "Search artworks, etc",
+  "Search",
+]
 
 export const searchQueryDefaultVariables: SearchQuery$variables = {
   term: "",
