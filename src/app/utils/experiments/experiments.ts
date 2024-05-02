@@ -21,6 +21,10 @@ export const experiments = {
     fallbackEnabled: false,
     description: "Allow tracking impression for home screen rails",
   },
+  "onyx_swa-dimensions-are-optional": {
+    fallbackEnabled: false,
+    description: "Dimensions are optional in SWA submit flow",
+  },
 } satisfies { [key: string]: ExperimentDescriptor }
 
 export type EXPERIMENT_NAME = keyof typeof experiments
