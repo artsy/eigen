@@ -8,6 +8,7 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
     var informationView : ARInformationView?
     var informationViewBottomConstraint : NSLayoutConstraint?
     var resetButton : UIButton?
+    var messageLabel: UILabel!
 
     var cursor = FocusSquare()
 
@@ -68,6 +69,7 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
         sceneView.addGestureRecognizer(tapGesture)
 
         setupUI()
+        setupMessageLabel()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -111,17 +113,19 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
         let artwork = VirtualArtwork(config: config)
 
         DispatchQueue.main.async {
-            self.placeVirtualArtwork(artwork)
-            self.artwork = artwork
+            let success = self.placeVirtualArtwork(artwork)
+            if success {
+                self.artwork = artwork
 
-            if  let informationView = self.informationView, informationView.currentState().stateTag == "positionArtwork"
-            {
-                self.informationView?.next()
+                if  let informationView = self.informationView, informationView.currentState().stateTag == "positionArtwork"
+                {
+                    self.informationView?.next()
+                }
             }
         }
     }
 
-    func placeVirtualArtwork(_ artwork: VirtualArtwork) {
+    func placeVirtualArtwork(_ artwork: VirtualArtwork) -> Bool {
         if
             let query = self.sceneView.getRaycastQuery(for: .vertical),
             let result = sceneView.castRay(for: query).first
@@ -134,14 +138,19 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
         }
 
         guard cursor.state != .initializing, let query = artwork.raycastQuery else {
-            print("CANNOT PLACE OBJECT\nTry moving left or right.")
-            return
+            if cursor.state == .initializing {
+                showMessage("Waiting to find a surface")
+            } else if artwork.raycastQuery == nil {
+                showMessage("Please point to a vertical surface")
+            }
+            return false
         }
 
         let trackedRaycast = createTrackedRaycastAndSet3DPosition(of: artwork, from: query, withInitialResult: artwork.mostRecentInitialPlacementResult)
 
         artwork.raycast = trackedRaycast
         artwork.isHidden = false
+        return true
     }
 
     func createTrackedRaycastAndSet3DPosition(of artwork: VirtualArtwork, from query: ARRaycastQuery, withInitialResult initialResult: ARRaycastResult? = nil) -> ARTrackedRaycast? {
@@ -246,6 +255,34 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
         self.informationViewBottomConstraint = informationView.alignBottomEdge(withView: view, predicate: "0")
         self.informationViewBottomConstraint?.constant = 40
         self.informationView = informationView
+    }
+
+    func setupMessageLabel() {
+        self.messageLabel = UILabel()
+
+        let padding : CGFloat = 20
+        let height : CGFloat  = 50
+        let yStart : CGFloat = (view.bounds.height / 2) - (height / 2)
+        self.messageLabel.font = UIFont.displayMediumSansSerifFont(withSize: 14)
+        self.messageLabel.frame = CGRect(x: padding, y: yStart, width: view.bounds.width - (padding * 2), height: height)
+        self.messageLabel.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+        self.messageLabel.textColor = .white
+        self.messageLabel.textAlignment = .center
+        self.messageLabel.layer.cornerRadius = 10
+        self.messageLabel.clipsToBounds = true
+        self.messageLabel.alpha = 0
+        view.addSubview(messageLabel)
+    }
+
+    func showMessage(_ message: String) {
+        messageLabel.text = message
+        UIView.animate(withDuration: 0.5, animations: {
+            self.messageLabel.alpha = 1
+        }) { _ in
+            UIView.animate(withDuration: 0.5, delay: 2.5, options: [], animations: {
+                self.messageLabel.alpha = 0
+            }, completion: nil)
+        }
     }
 
     private func presentInformationalInterface(animated: Bool) {
