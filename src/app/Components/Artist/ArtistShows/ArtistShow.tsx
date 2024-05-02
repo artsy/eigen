@@ -14,13 +14,14 @@ interface Props {
   show: ArtistShow_show$key
   styles?: {
     container?: ViewStyle
-    image?: ViewStyle
     metadata?: ViewStyle
+    imageMargin?: ViewStyle
   }
+  imageDimensions: { width: number; height: number }
   index: number
 }
 
-export const ArtistShow: React.FC<Props> = ({ styles, show, index }) => {
+export const ArtistShow: React.FC<Props> = ({ styles, show, index, imageDimensions }) => {
   const tracking = useTracking()
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
   const data = useFragment(query, show)
@@ -40,11 +41,15 @@ export const ArtistShow: React.FC<Props> = ({ styles, show, index }) => {
   return (
     <Touchable onPress={handleTap} haptic>
       <View style={[styles?.container]}>
-        <OpaqueImageView
-          imageURL={imageURL}
-          blurhash={showBlurhash ? image?.blurhash : undefined}
-          style={[styles?.image as any, { overflow: "hidden", borderRadius: 2, flex: 0 }]}
-        />
+        <View style={[styles?.imageMargin]}>
+          <OpaqueImageView
+            imageURL={imageURL}
+            width={imageDimensions.width}
+            height={imageDimensions.height}
+            blurhash={showBlurhash ? image?.blurhash : undefined}
+            style={[{ overflow: "hidden", borderRadius: 2, flex: 0 }]}
+          />
+        </View>
         {/* this wrapper required to make numberOfLines work when parent is a row */}
         <View style={{ flex: 1 }}>
           <Metadata show={data} style={!!styles && styles.metadata} />

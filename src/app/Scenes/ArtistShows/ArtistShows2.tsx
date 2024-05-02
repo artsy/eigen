@@ -52,13 +52,20 @@ const ArtistShows2: React.FC<Props> = ({ artist, relay }) => {
     })
   }
 
+  const imageDimensions = { height: 82, width: 82 }
+
   return (
     <>
       <Animated.FlatList
         data={pastShows}
         ListHeaderComponent={() => header}
         renderItem={({ item, index }) => (
-          <ArtistShow show={item} styles={showStyles} index={index} />
+          <ArtistShow
+            show={item}
+            styles={showStyles}
+            imageDimensions={imageDimensions}
+            index={index}
+          />
         )}
         keyExtractor={({ id }) => id}
         onEndReachedThreshold={0.2}
@@ -84,14 +91,12 @@ const showStyles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  image: {
-    width: 82,
-    height: 82,
+  imageMargin: {
     marginRight: 15,
   },
 }) as {
   container: ViewStyle
-  image: ViewStyle
+  imageMargin: ViewStyle
 }
 
 export const ArtistShows2PaginationContainer = createPaginationContainer(
