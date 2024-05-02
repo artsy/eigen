@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { RelatedArtists_artists$data } from "__generated__/RelatedArtists_artists.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { Stack } from "app/Components/Stack"
@@ -71,6 +72,7 @@ class RelatedArtists extends React.Component<Props, State> {
             </Stack>
           ))}
         </Stack>
+        <Spacer y={2} />
       </View>
     )
   }
