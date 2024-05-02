@@ -7,11 +7,6 @@ import { useContext, useEffect, useState } from "react"
 import { UnleashContext } from "./UnleashProvider"
 import { getUnleashClient } from "./unleashClient"
 
-export const __unsafe__getExperimentFlag = (name: EXPERIMENT_NAME): boolean | undefined => {
-  const client = getUnleashClient()
-  return client?.isEnabled(name)
-}
-
 export function useExperimentFlag(name: EXPERIMENT_NAME) {
   const client = getUnleashClient()
   const [enabled, setEnabled] = useState(client.isEnabled(name))

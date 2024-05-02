@@ -263,6 +263,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableMyCollectionInterestedInSellingTooltip",
   },
+  ARSWAMakeAllDimensionsOptional: {
+    description: "Make all dimensions optional in SWA submit flow",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "ARSWAMakeAllDimensionsOptional",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {

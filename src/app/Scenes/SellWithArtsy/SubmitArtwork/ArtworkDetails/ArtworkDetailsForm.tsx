@@ -15,8 +15,8 @@ import { Select, SelectOption } from "app/Components/Select"
 import { CategoryPicker } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/CategoryPicker"
 import { GlobalStore } from "app/store/GlobalStore"
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
-import { useExperimentFlag } from "app/utils/experiments/hooks"
 import { LocationWithDetails } from "app/utils/googleMaps"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useFormikContext } from "formik"
 import React, { useEffect, useRef, useState } from "react"
 import { InfoModal } from "./InfoModal/InfoModal"
@@ -33,7 +33,7 @@ export const ArtworkDetailsForm: React.FC = () => {
   const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
   const [isRarityInfoModalVisible, setIsRarityInfoModalVisible] = useState(false)
   const [isProvenanceInfoModalVisible, setIsProvenanceInfoModalVisible] = useState(false)
-  const optionalDimensions = useExperimentFlag("onyx_swa-dimensions-are-optional")
+  const optionalDimensions = useFeatureFlag("ARSWAMakeAllDimensionsOptional")
 
   useEffect(() => {
     if (values) {

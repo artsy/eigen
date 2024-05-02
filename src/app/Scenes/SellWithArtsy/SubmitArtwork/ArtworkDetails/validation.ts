@@ -6,7 +6,7 @@ import {
   ConsignmentAttributionClass,
   ConsignmentSubmissionStateAggregation,
 } from "__generated__/updateConsignSubmissionMutation.graphql"
-import { __unsafe__getExperimentFlag } from "app/utils/experiments/hooks"
+import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import * as Yup from "yup"
 import { limitedEditionValue } from "./utils/rarityOptions"
 
@@ -93,13 +93,13 @@ export const artworkDetailsValidationSchema = Yup.object().shape({
     is: limitedEditionValue,
     then: Yup.string().required().trim(),
   }),
-  dimensionsMetric: __unsafe__getExperimentFlag("onyx_swa-dimensions-are-optional")
+  dimensionsMetric: unsafe_getFeatureFlag("ARSWAMakeAllDimensionsOptional")
     ? Yup.string()
     : Yup.string().required(),
-  height: __unsafe__getExperimentFlag("onyx_swa-dimensions-are-optional")
+  height: unsafe_getFeatureFlag("ARSWAMakeAllDimensionsOptional")
     ? Yup.string().trim()
     : Yup.string().required().trim(),
-  width: __unsafe__getExperimentFlag("onyx_swa-dimensions-are-optional")
+  width: unsafe_getFeatureFlag("ARSWAMakeAllDimensionsOptional")
     ? Yup.string().trim()
     : Yup.string().required().trim(),
   depth: Yup.string().trim(),
