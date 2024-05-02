@@ -1,5 +1,4 @@
-import { Spacer, Flex, useTheme, Text } from "@artsy/palette-mobile"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { Spacer, Flex, useTheme, Text, useScreenDimensions, Image } from "@artsy/palette-mobile"
 import { View } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 
@@ -18,17 +17,28 @@ export interface LargeCardProps {
  */
 export const LargeCard: React.FC<LargeCardProps> = ({ image, title, subtitle, tag }) => {
   const { color, space } = useTheme()
+
+  const { width } = useScreenDimensions()
+  const cardHeight = 400
+
   return (
-    <View style={{ width: "100%", aspectRatio: 1.0 / 1.33, flexDirection: "row" }}>
+    <View
+      style={{
+        width: width,
+        height: cardHeight,
+        aspectRatio: 1.0 / 1.33,
+        flexDirection: "row",
+      }}
+    >
       <Flex flex={2} backgroundColor="black10">
-        <OpaqueImageView imageURL={image} style={{ flex: 1 }} />
+        <Image src={image} width={width} height={400} />
       </Flex>
       <LinearGradient
         colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 1)"]}
         style={{
           position: "absolute",
-          width: "100%",
-          height: "100%",
+          width: width,
+          height: cardHeight,
           opacity: 0.15,
         }}
       />
