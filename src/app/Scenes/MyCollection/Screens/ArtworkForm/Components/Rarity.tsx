@@ -39,7 +39,6 @@ export const Rarity: React.FC = () => {
               <Input
                 accessibilityLabel="Edition number input"
                 title="Edition number"
-                keyboardType="decimal-pad"
                 onChangeText={formik.handleChange("editionNumber")}
                 onBlur={formik.handleBlur("editionNumber")}
                 value={formik.values.editionNumber}
@@ -53,7 +52,6 @@ export const Rarity: React.FC = () => {
             <Flex>
               <Input
                 title="Edition size"
-                keyboardType="decimal-pad"
                 onChangeText={formik.handleChange("editionSize")}
                 onBlur={formik.handleBlur("editionSize")}
                 value={formik.values.editionSize}

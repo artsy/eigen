@@ -125,7 +125,6 @@ export const ArtworkDetailsForm: React.FC = () => {
             <Box width="48%" mr={1}>
               <Input
                 title="Edition Number"
-                keyboardType="decimal-pad"
                 testID="Submission_EditionNumberInput"
                 value={values.editionNumber}
                 onChangeText={(e) => setFieldValue("editionNumber", e)}
@@ -135,7 +134,6 @@ export const ArtworkDetailsForm: React.FC = () => {
             <Box width="48%">
               <Input
                 title="Edition Size"
-                keyboardType="decimal-pad"
                 testID="Submission_EditionSizeInput"
                 value={values.editionSizeFormatted}
                 onChangeText={(e) => setFieldValue("editionSizeFormatted", e)}
