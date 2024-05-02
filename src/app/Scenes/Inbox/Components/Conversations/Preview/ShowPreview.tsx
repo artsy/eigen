@@ -1,7 +1,6 @@
-import { Flex, ClassTheme, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, ClassTheme, Text, Touchable, Image } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ShowPreview_show$data } from "__generated__/ShowPreview_show.graphql"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Schema, Track, track as _track } from "app/utils/track"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -66,11 +65,10 @@ export class ShowPreview extends React.Component<Props> {
           >
             <Container>
               <ImageContainer>
-                <OpaqueImageView
-                  imageURL={show.coverImage?.url}
-                  blurhash={show.coverImage?.blurhash}
-                  style={{ flex: 1 }}
+                <Image
+                  src={show.coverImage?.url ?? ""}
                   aspectRatio={show.coverImage?.aspectRatio}
+                  width={250}
                 />
               </ImageContainer>
               <TextContainer>
