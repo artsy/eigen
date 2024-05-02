@@ -100,6 +100,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         }
         placeholder="Select a classification"
         options={rarityOptions}
+        testID="Submission_RaritySelect"
       />
       <InfoModal
         title="Classifications"

@@ -12,21 +12,28 @@ interface Props {
   onResultPress: (result: AutosuggestResult) => void
 }
 
-export const ArtistAutosuggestRow: React.FC<Props> = ({ result, highlight, onResultPress }) => (
-  <TouchableWithoutFeedback onPress={() => onResultPress(result)}>
-    <Flex height={IMAGE_SIZE} flexDirection="row" alignItems="center">
-      <OpaqueImageView
-        imageURL={result.imageUrl}
-        style={{
-          width: IMAGE_SIZE,
-          height: IMAGE_SIZE,
-          overflow: "hidden",
-        }}
-      />
-      <Spacer x={1} />
-      <Flex flex={1}>
-        <ResultWithHighlight displayLabel={result.displayLabel!} highlight={highlight} />
+export const ArtistAutosuggestRow: React.FC<Props> = ({ result, highlight, onResultPress }) => {
+  return (
+    <TouchableWithoutFeedback
+      onPress={() => onResultPress(result)}
+      testID={`artist-suggestion-${result.internalID}`}
+    >
+      <Flex height={IMAGE_SIZE} flexDirection="row" alignItems="center">
+        <OpaqueImageView
+          imageURL={result.imageUrl}
+          style={{
+            width: IMAGE_SIZE,
+            height: IMAGE_SIZE,
+            overflow: "hidden",
+          }}
+        />
+        <Spacer x={1} />
+        <Flex flex={1}>
+          {!!result.displayLabel && (
+            <ResultWithHighlight displayLabel={result.displayLabel} highlight={highlight} />
+          )}
+        </Flex>
       </Flex>
-    </Flex>
-  </TouchableWithoutFeedback>
-)
+    </TouchableWithoutFeedback>
+  )
+}
