@@ -1,11 +1,12 @@
 import { NavigationContainer, Route } from "@react-navigation/native"
 import {
   CardStyleInterpolators,
-  createStackNavigator,
   StackCardStyleInterpolator,
+  createStackNavigator,
 } from "@react-navigation/stack"
 import { addBreadcrumb } from "@sentry/react-native"
 import { AppModule, modules } from "app/AppRegistry"
+import { LoadingSpinner } from "app/Components/Modals/LoadingModal"
 import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -13,7 +14,10 @@ import { logNavigation } from "app/utils/loggers"
 import { Platform } from "react-native"
 import SiftReactNative from "sift-react-native"
 import { NavStack } from "./NavStack"
-import { useReloadedDevNavigationState } from "./useReloadedDevNavigationState"
+import {
+  NAV_STATE_STORAGE_KEY,
+  useReloadedDevNavigationState,
+} from "./useReloadedDevNavigationState"
 
 const Stack = createStackNavigator()
 
@@ -24,7 +28,8 @@ const Stack = createStackNavigator()
  * transitions etc.
  */
 export const ModalStack: React.FC = ({ children }) => {
-  const initialState = useReloadedDevNavigationState("main_modal_stack", __unsafe_mainModalStackRef)
+  const { isReady, initialState, saveSession } =
+    useReloadedDevNavigationState(NAV_STATE_STORAGE_KEY)
   const { setSessionState: setNavigationReady } = GlobalStore.actions
 
   // Code for Sift tracking; needs to be manually fired on Android
@@ -33,6 +38,10 @@ export const ModalStack: React.FC = ({ children }) => {
     "AREnableAdditionalSiftAndroidTracking"
   )
   const trackSiftAndroid = Platform.OS === "android" && enableAdditionalSiftAndroidTracking
+
+  if (!isReady) {
+    return <LoadingSpinner />
+  }
 
   return (
     <NavigationContainer
@@ -47,7 +56,9 @@ export const ModalStack: React.FC = ({ children }) => {
           SiftReactNative.upload()
         }
       }}
-      onStateChange={() => {
+      onStateChange={(state) => {
+        saveSession(state)
+
         const currentRoute = __unsafe_mainModalStackRef.current?.getCurrentRoute()
 
         if (currentRoute) {
