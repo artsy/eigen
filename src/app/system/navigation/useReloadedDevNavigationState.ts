@@ -3,9 +3,12 @@ import { NavigationState } from "@react-navigation/native"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useEffect, useState } from "react"
 
-export const NAV_STATE_STORAGE_KEY = "ARDevNavState-v2"
 export const PREVIOUS_LAUNCH_COUNT_KEY = "previous-launch-count-key"
 
+/*
+ * This hook is used to reload the navigation state in development mode.
+ * It will save the navigation state to AsyncStorage and reload it when the app is reloaded.
+ */
 export const useReloadedDevNavigationState = (key: string) => {
   const [isReady, setIsReady] = useState(__DEV__ ? false : true)
   const launchCount = GlobalStore.useAppState((state) => state.native.sessionState.launchCount)
@@ -49,7 +52,7 @@ export const useReloadedDevNavigationState = (key: string) => {
   }
 
   return {
-    // Double checking that this is only true in dev
+    // Double checking that this can only be false in dev
     isReady: isReady || !__DEV__,
     initialState,
     saveSession,

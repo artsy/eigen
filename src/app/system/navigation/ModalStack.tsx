@@ -14,13 +14,11 @@ import { logNavigation } from "app/utils/loggers"
 import { Platform } from "react-native"
 import SiftReactNative from "sift-react-native"
 import { NavStack } from "./NavStack"
-import {
-  NAV_STATE_STORAGE_KEY,
-  useReloadedDevNavigationState,
-} from "./useReloadedDevNavigationState"
+import { useReloadedDevNavigationState } from "./useReloadedDevNavigationState"
 
 const Stack = createStackNavigator()
 
+const MODAL_NAVIGATION_STACK_STATE_KEY = "MODAL_NAVIGATION_STACK_STATE_KEY"
 /**
  * ModalStack is the root navigation stack in the app. The root screen in this stack is
  * the main app (with bottom tabs, etc), and then whenever we present a modal it gets
@@ -28,8 +26,9 @@ const Stack = createStackNavigator()
  * transitions etc.
  */
 export const ModalStack: React.FC = ({ children }) => {
-  const { isReady, initialState, saveSession } =
-    useReloadedDevNavigationState(NAV_STATE_STORAGE_KEY)
+  const { isReady, initialState, saveSession } = useReloadedDevNavigationState(
+    MODAL_NAVIGATION_STACK_STATE_KEY
+  )
   const { setSessionState: setNavigationReady } = GlobalStore.actions
 
   // Code for Sift tracking; needs to be manually fired on Android
