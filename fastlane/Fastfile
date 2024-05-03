@@ -225,6 +225,8 @@ lane :ship_beta_android do |options|
     platform: 'android'
   )
 
+  s3_upload_android_build(app_version: vcode, app_path: "../android/app/build/outputs/bundle/release/app-release.aab")
+
   deploy_android_beta(deployment_target: deployment_target)
 end
 
