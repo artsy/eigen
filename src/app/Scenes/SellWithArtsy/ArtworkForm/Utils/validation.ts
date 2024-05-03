@@ -9,6 +9,7 @@ import {
 import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
 import { getCurrentRoute } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmissionArtworkForm"
 import { limitedEditionValue } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/rarityOptions"
+import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
 import * as Yup from "yup"
 
 export const getCurrentValidationSchema = () => {
@@ -36,7 +37,18 @@ const artworkFormTitleSchema = Yup.object().shape({
   title: Yup.string().required().trim(),
 })
 
-const artworkFormPhotosSchema = Yup.object().shape({})
+const artworkFormPhotosSchema = Yup.object().shape({
+  // TODO: Activated validation
+  // photos: Yup.array()
+  //   .min(__TEST__ ? 0 : 1)
+  //   .of(
+  //     Yup.object().shape({
+  //       id: Yup.string().required(),
+  //       geminiToken: Yup.string().required(),
+  //       path: Yup.string().required(),
+  //     })
+  //   ),
+})
 
 const artworkDetailsValidationSchema = Yup.object().shape({
   category: Yup.string().required(),
@@ -62,7 +74,8 @@ export interface Location {
 }
 
 export interface ArtworkDetailsFormModel {
-  artist: string
+  submissionId: string | null
+  artist: string | null
   artistId: string
   artistSearchResult: AutosuggestResult | null
   attributionClass: ConsignmentAttributionClass | null
@@ -84,9 +97,14 @@ export interface ArtworkDetailsFormModel {
   width: string
   title: string
   year: string
+
+  // Photos
+  photos: Photo[]
+  initialPhotos?: Photo[]
 }
 
 export const artworkDetailsEmptyInitialValues: ArtworkDetailsFormModel = {
+  submissionId: null,
   artist: "",
   artistId: "",
   artistSearchResult: null,
@@ -115,6 +133,10 @@ export const artworkDetailsEmptyInitialValues: ArtworkDetailsFormModel = {
   width: "",
   title: "",
   year: "",
+
+  // Photos
+  photos: [],
+  initialPhotos: [],
 }
 
 // export const artworkDetailsValidationSchema = Yup.object().shape({

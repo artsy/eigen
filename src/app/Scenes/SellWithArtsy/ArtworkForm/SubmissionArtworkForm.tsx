@@ -9,15 +9,18 @@ import {
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/ArtworkFormStore"
 import { SubmissionArtworkFormArtist } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionArtworkFormArtist"
 import { SubmissionArtworkFormArtworkDetails } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionArtworkFormArtworkDetails"
+import { SubmissionArtworkDimensions } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionArtworkFormDimensions"
 import { SubmissionArtworkFormPhotos } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionArtworkFormPhotos"
+import { SubmissionArtworkFormProgressBar } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionArtworkFormProgressBar"
+import { SubmissionArtworkFormProvenance } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionArtworkFormProvenance"
 import { SubmissionArtworkFormTitle } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionArtworkFormTitle"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
-import { getCurrentValidationSchema } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
-import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import {
   ArtworkDetailsFormModel,
   artworkDetailsEmptyInitialValues,
-} from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/validation"
+  getCurrentValidationSchema,
+} from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { FormikProvider, useFormik } from "formik"
 import { useEffect } from "react"
 
@@ -27,6 +30,8 @@ export type ArtworkFormScreen = {
   ArtworkFormPhotos: undefined
   ArtworkFormArtworkDetails: undefined
   AddPhotos: undefined
+  ArtworkFormDimensions: undefined
+  ArtworkFormProvenance: undefined
   ArtworkFormCompleteYourSubmission: undefined
 }
 
@@ -37,8 +42,10 @@ export const ARTWORK_FORM_STEPS: ArtworkFormStep[] = [
   "ArtworkFormTitle",
   "ArtworkFormPhotos",
   "ArtworkFormArtworkDetails",
+  "ArtworkFormDimensions",
+  "ArtworkFormProvenance",
   "ArtworkFormCompleteYourSubmission",
-] as const
+]
 
 export const SubmissionArtworkForm: React.FC = ({}) => {
   return (
@@ -80,6 +87,8 @@ const SubmissionArtworkFormContent: React.FC = ({}) => {
         <Screen.Header onBack={handleBackPress} />
 
         <Screen.Body>
+          <SubmissionArtworkFormProgressBar />
+
           <Flex flex={1}>
             <NavigationContainer independent ref={__unsafe__SubmissionArtworkFormNavigationRef}>
               <Stack.Navigator
@@ -99,6 +108,16 @@ const SubmissionArtworkFormContent: React.FC = ({}) => {
                 <Stack.Screen
                   name="ArtworkFormArtworkDetails"
                   component={SubmissionArtworkFormArtworkDetails}
+                />
+
+                <Stack.Screen
+                  name="ArtworkFormDimensions"
+                  component={SubmissionArtworkDimensions}
+                />
+
+                <Stack.Screen
+                  name="ArtworkFormProvenance"
+                  component={SubmissionArtworkFormProvenance}
                 />
 
                 <Stack.Screen

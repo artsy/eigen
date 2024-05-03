@@ -1,6 +1,7 @@
 import * as Yup from "yup"
 
 export interface PhotosFormModel {
+  submissionId?: string
   photos: Photo[]
   initialPhotos?: Photo[]
 }
