@@ -6,9 +6,52 @@ import {
   ConsignmentAttributionClass,
   ConsignmentSubmissionStateAggregation,
 } from "__generated__/updateConsignSubmissionMutation.graphql"
-import * as Yup from "yup"
 import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
+import { getCurrentRoute } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmissionArtworkForm"
 import { limitedEditionValue } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/rarityOptions"
+import * as Yup from "yup"
+
+export const getCurrentValidationSchema = () => {
+  const currentStep = getCurrentRoute()
+
+  switch (currentStep) {
+    case "ArtworkFormArtist":
+      return artistFormSchema
+    case "ArtworkFormTitle":
+      return artworkFormTitleSchema
+    case "ArtworkFormPhotos":
+      return artworkFormPhotosSchema
+    case "ArtworkFormArtworkDetails":
+      return artworkDetailsValidationSchema
+    default:
+      return Yup.object()
+  }
+}
+
+const artistFormSchema = Yup.object().shape({
+  artist: Yup.string().required().trim(),
+})
+
+const artworkFormTitleSchema = Yup.object().shape({
+  title: Yup.string().required().trim(),
+})
+
+const artworkFormPhotosSchema = Yup.object().shape({})
+
+const artworkDetailsValidationSchema = Yup.object().shape({
+  category: Yup.string().required(),
+  attributionClass: Yup.string().nullable(),
+  editionNumber: Yup.string().when("attributionClass", {
+    is: limitedEditionValue,
+    then: Yup.string().required().trim(),
+  }),
+  editionSizeFormatted: Yup.string().when("attributionClass", {
+    is: limitedEditionValue,
+    then: Yup.string().required().trim(),
+  }),
+  medium: Yup.string(),
+  year: Yup.string(),
+})
 
 export interface Location {
   city: string
@@ -74,35 +117,35 @@ export const artworkDetailsEmptyInitialValues: ArtworkDetailsFormModel = {
   year: "",
 }
 
-export const artworkDetailsValidationSchema = Yup.object().shape({
-  artist: Yup.string().trim(),
-  artistId: Yup.string().required(
-    "Please select an artist from the list. Artists who are not  listed cannot be submitted due to limited demand."
-  ),
-  title: Yup.string().required().trim(),
-  year: Yup.string().required().trim(),
-  medium: Yup.string().required().trim(),
-  attributionClass: Yup.string().required(),
-  editionNumber: Yup.string().when("attributionClass", {
-    is: limitedEditionValue,
-    then: Yup.string().required().trim(),
-  }),
-  editionSizeFormatted: Yup.string().when("attributionClass", {
-    is: limitedEditionValue,
-    then: Yup.string().required().trim(),
-  }),
-  dimensionsMetric: Yup.string().required(),
-  height: Yup.string().required().trim(),
-  width: Yup.string().required().trim(),
-  depth: Yup.string().trim(),
-  provenance: Yup.string().required().trim(),
-  state: Yup.string(),
-  utmMedium: Yup.string(),
-  utmSource: Yup.string(),
-  utmTerm: Yup.string(),
-  location: Yup.object().shape({
-    city: Yup.string().required().trim(),
-    state: Yup.string(),
-    country: Yup.string(),
-  }),
-})
+// export const artworkDetailsValidationSchema = Yup.object().shape({
+//   artist: Yup.string().trim(),
+//   artistId: Yup.string().required(
+//     "Please select an artist from the list. Artists who are not  listed cannot be submitted due to limited demand."
+//   ),
+//   title: Yup.string().required().trim(),
+//   year: Yup.string().required().trim(),
+//   medium: Yup.string().required().trim(),
+//   attributionClass: Yup.string().required(),
+//   editionNumber: Yup.string().when("attributionClass", {
+//     is: limitedEditionValue,
+//     then: Yup.string().required().trim(),
+//   }),
+//   editionSizeFormatted: Yup.string().when("attributionClass", {
+//     is: limitedEditionValue,
+//     then: Yup.string().required().trim(),
+//   }),
+//   dimensionsMetric: Yup.string().required(),
+//   height: Yup.string().required().trim(),
+//   width: Yup.string().required().trim(),
+//   depth: Yup.string().trim(),
+//   provenance: Yup.string().required().trim(),
+//   state: Yup.string(),
+//   utmMedium: Yup.string(),
+//   utmSource: Yup.string(),
+//   utmTerm: Yup.string(),
+//   location: Yup.object().shape({
+//     city: Yup.string().required().trim(),
+//     state: Yup.string(),
+//     country: Yup.string(),
+//   }),
+// })

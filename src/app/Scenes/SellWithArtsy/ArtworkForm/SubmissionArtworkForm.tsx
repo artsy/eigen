@@ -1,23 +1,25 @@
-import { Flex, Screen, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, Screen } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { validateArtworkSchema } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/artworkSchema"
 import { ArtworkFormCompleteYourSubmission } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/ArtworkFormCompleteYourSubmission"
+import {
+  ArtworkFormStore,
+  ArtworkFormStoreProvider,
+} from "app/Scenes/SellWithArtsy/ArtworkForm/Components/ArtworkFormStore"
 import { SubmissionArtworkFormArtist } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionArtworkFormArtist"
 import { SubmissionArtworkFormArtworkDetails } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionArtworkFormArtworkDetails"
 import { SubmissionArtworkFormPhotos } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionArtworkFormPhotos"
 import { SubmissionArtworkFormTitle } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionArtworkFormTitle"
-import {
-  navigateToNextStep,
-  navigateToPreviousStep,
-} from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
+import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
+import { getCurrentValidationSchema } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import {
   ArtworkDetailsFormModel,
   artworkDetailsEmptyInitialValues,
-  artworkDetailsValidationSchema,
 } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/validation"
-import { useFormik, FormikProvider } from "formik"
+import { FormikProvider, useFormik } from "formik"
+import { useEffect } from "react"
 
 export type ArtworkFormScreen = {
   ArtworkFormArtist: undefined
@@ -28,30 +30,31 @@ export type ArtworkFormScreen = {
   ArtworkFormCompleteYourSubmission: undefined
 }
 
-export const STEPS = [
+export type ArtworkFormStep = keyof ArtworkFormScreen
+
+export const ARTWORK_FORM_STEPS: ArtworkFormStep[] = [
   "ArtworkFormArtist",
   "ArtworkFormTitle",
   "ArtworkFormPhotos",
   "ArtworkFormArtworkDetails",
   "ArtworkFormCompleteYourSubmission",
-]
+] as const
 
-interface SubmissionArtworkFormProps {}
+export const SubmissionArtworkForm: React.FC = ({}) => {
+  return (
+    <ArtworkFormStoreProvider>
+      <SubmissionArtworkFormContent />
+    </ArtworkFormStoreProvider>
+  )
+}
 
-export const SubmissionArtworkForm: React.FC<SubmissionArtworkFormProps> = ({}) => {
+const SubmissionArtworkFormContent: React.FC = ({}) => {
+  const currentStep = ArtworkFormStore.useStoreState((state) => state.currentStep)
   const initialValues = artworkDetailsEmptyInitialValues as any
+  const { navigateToPreviousStep } = useSubmissionContext()
 
   const handleSubmit = (values: ArtworkDetailsFormModel) => {
     createOrUpdateSubmission(values, "")
-
-    if (formik.values.submissionId) {
-      // updateSubmissionMutation()
-    }
-    // const submissionID = createSubmissionMutation()
-
-    // formik.setFieldValue("submissionId", submissionID)
-    // TODO: Submit or update submission
-    // TODO: Later: Submit or update My Collection artwork?
   }
 
   const formik = useFormik<ArtworkDetailsFormModel>({
@@ -59,36 +62,26 @@ export const SubmissionArtworkForm: React.FC<SubmissionArtworkFormProps> = ({}) 
     initialValues: initialValues,
     initialErrors: validateArtworkSchema(initialValues),
     onSubmit: handleSubmit,
-    validationSchema: artworkDetailsValidationSchema,
+    validationSchema: getCurrentValidationSchema,
   })
-
-  // Wrapper component which includes
-  // - Navigation elements: progress bar, back/next controls
-  // - Submission preview: built up as a collector goes through the flow
-  // - The active step and its contents
 
   const handleBackPress = () => {
     navigateToPreviousStep()
   }
-  const handleSavePress = () => {
-    navigateToNextStep()
-  }
+
+  // Revalidate form on step change because the validation schema changes and it does not happen automatically
+  useEffect(() => {
+    formik.validateForm()
+  }, [currentStep])
 
   return (
-    <Screen>
-      <Screen.Header
-        onBack={handleBackPress}
-        rightElements={
-          <Touchable onPress={handleSavePress}>
-            <Text>Next</Text>
-          </Touchable>
-        }
-      />
+    <FormikProvider value={formik}>
+      <Screen>
+        <Screen.Header onBack={handleBackPress} />
 
-      <Screen.Body>
-        <Flex flex={1}>
-          <NavigationContainer independent ref={__unsafe__SubmissionArtworkFormNavigationRef}>
-            <FormikProvider value={formik}>
+        <Screen.Body>
+          <Flex flex={1}>
+            <NavigationContainer independent ref={__unsafe__SubmissionArtworkFormNavigationRef}>
               <Stack.Navigator
                 // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
                 detachInactiveScreens={false}
@@ -113,11 +106,11 @@ export const SubmissionArtworkForm: React.FC<SubmissionArtworkFormProps> = ({}) 
                   component={ArtworkFormCompleteYourSubmission}
                 />
               </Stack.Navigator>
-            </FormikProvider>
-          </NavigationContainer>
-        </Flex>
-      </Screen.Body>
-    </Screen>
+            </NavigationContainer>
+          </Flex>
+        </Screen.Body>
+      </Screen>
+    </FormikProvider>
   )
 }
 
