@@ -62,6 +62,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
         enableClearButton
         testID="Submission_ArtistInput"
         error={!focused && artist && !isArtistSelected ? errors.artistId : undefined}
+        required
       />
 
       {!!focused && !isArtistSelected && artist?.length > 2 && (

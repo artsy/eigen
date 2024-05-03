@@ -16,6 +16,7 @@ import { CategoryPicker } from "app/Scenes/MyCollection/Screens/ArtworkForm/Comp
 import { GlobalStore } from "app/store/GlobalStore"
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
 import { LocationWithDetails } from "app/utils/googleMaps"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useFormikContext } from "formik"
 import React, { useEffect, useRef, useState } from "react"
 import { InfoModal } from "./InfoModal/InfoModal"
@@ -32,6 +33,7 @@ export const ArtworkDetailsForm: React.FC = () => {
   const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
   const [isRarityInfoModalVisible, setIsRarityInfoModalVisible] = useState(false)
   const [isProvenanceInfoModalVisible, setIsProvenanceInfoModalVisible] = useState(false)
+  const optionalDimensions = useFeatureFlag("ARSWAMakeAllDimensionsOptional")
 
   useEffect(() => {
     if (values) {
@@ -46,7 +48,7 @@ export const ArtworkDetailsForm: React.FC = () => {
   return (
     <>
       <ArtistAutosuggest />
-      <StandardSpace />
+
       <Input
         title="Title"
         placeholder="Add title or write 'Unknown'"
@@ -54,8 +56,19 @@ export const ArtworkDetailsForm: React.FC = () => {
         value={values.title}
         onChangeText={(e) => setFieldValue("title", e)}
         accessibilityLabel="Title"
+        required
       />
+
       <StandardSpace />
+      <Spacer y={2} />
+
+      <CategoryPicker<AcceptableCategoryValue>
+        handleChange={(category) => setFieldValue("category", category)}
+        options={categories}
+        required
+        value={values.category}
+      />
+
       <Input
         title="Year"
         placeholder="YYYY"
@@ -66,14 +79,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         accessibilityLabel="Year"
       />
       <StandardSpace />
-      <Spacer y={2} />
-      <CategoryPicker<AcceptableCategoryValue | null>
-        handleChange={(category) => setFieldValue("category", category)}
-        options={categories}
-        required={false}
-        value={values.category}
-      />
-      <StandardSpace />
+
       <Input
         title="Materials"
         placeholder={[
@@ -159,7 +165,7 @@ export const ArtworkDetailsForm: React.FC = () => {
           onPress={() => setFieldValue("dimensionsMetric", "cm")}
         />
       </Flex>
-      <Spacer y={2} />
+
       <Flex flexDirection="row" justifyContent="space-between">
         <Box width="31%" mr={1}>
           <Input
@@ -169,6 +175,7 @@ export const ArtworkDetailsForm: React.FC = () => {
             value={values.height}
             onChangeText={(e) => setFieldValue("height", e)}
             accessibilityLabel="Height"
+            required={!optionalDimensions}
           />
         </Box>
         <Box width="31%" mr={1}>
@@ -179,12 +186,12 @@ export const ArtworkDetailsForm: React.FC = () => {
             value={values.width}
             onChangeText={(e) => setFieldValue("width", e)}
             accessibilityLabel="Width"
+            required={!optionalDimensions}
           />
         </Box>
         <Box width="31%">
           <Input
             title={`Depth (${values.dimensionsMetric})`}
-            optional
             keyboardType="decimal-pad"
             testID="Submission_DepthInput"
             value={values.depth}
