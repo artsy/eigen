@@ -9,13 +9,16 @@ import { createFragmentContainer, graphql } from "react-relay"
 interface Props {
   artist: RelatedArtist_artist$data
   imageSize: {
+    height: number
     width: number
   }
 }
 
 class RelatedArtist extends Component<Props> {
   handleTap() {
-    navigate(this.props.artist.href!)
+    if (this.props.artist.href) {
+      navigate(this.props.artist.href)
+    }
   }
 
   render() {
@@ -25,7 +28,9 @@ class RelatedArtist extends Component<Props> {
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
         <View style={{ width: this.props.imageSize.width }}>
           <ImageView
-            style={[this.props.imageSize, { overflow: "hidden", borderRadius: 2 }]}
+            height={this.props.imageSize.height}
+            width={this.props.imageSize.width}
+            style={[{ overflow: "hidden", borderRadius: 2 }]}
             imageURL={artist.coverArtwork?.image?.url}
           />
           <Spacer y={1} />

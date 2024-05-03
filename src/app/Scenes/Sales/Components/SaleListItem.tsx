@@ -44,13 +44,7 @@ export const SaleListItem: React.FC<Props> = (props) => {
             overflow="hidden"
             mb={0.5}
           >
-            <OpaqueImageView
-              style={{
-                width: containerWidth,
-                height: containerWidth,
-              }}
-              imageURL={image.url}
-            />
+            <OpaqueImageView width={containerWidth} height={containerWidth} imageURL={image.url} />
           </Flex>
         )}
         <Text variant="sm" numberOfLines={2} weight="medium">
