@@ -15,29 +15,32 @@ import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/
 import { CategoryPicker } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/CategoryPicker"
 import { ArtworkFormScreen } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmissionArtworkForm"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
+import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { InfoModal } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/InfoModal/InfoModal"
 import {
   AcceptableCategoryValue,
   acceptableCategoriesForSubmission,
 } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/acceptableCategoriesForSubmission"
+import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import {
   limitedEditionValue,
   rarityOptions,
 } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/rarityOptions"
-import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/validation"
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
 import { useFormikContext } from "formik"
 import { useRef, useState } from "react"
 
 export const SubmissionArtworkFormArtworkDetails: React.FC<
-  StackScreenProps<ArtworkFormScreen, "ArtworkFormTitle">
+  StackScreenProps<ArtworkFormScreen, "ArtworkFormArtworkDetails">
 > = ({}) => {
   const [isRarityInfoModalVisible, setIsRarityInfoModalVisible] = useState(false)
-  const { handleChange, isValid, setFieldValue, values, validateForm, errors } =
+  const { handleChange, isValid, setFieldValue, values } =
     useFormikContext<ArtworkDetailsFormModel>()
   const { navigateToNextStep } = useSubmissionContext()
 
-  const handleNextPress = () => {
+  const handleNextPress = async () => {
+    await createOrUpdateSubmission(values, values.submissionId)
+
     navigateToNextStep()
   }
 
@@ -52,7 +55,7 @@ export const SubmissionArtworkFormArtworkDetails: React.FC<
       <Spacer y={2} />
 
       <Text variant="lg" mb={2}>
-        Artwork Details
+        Artwork details
       </Text>
 
       <Join separator={<Spacer y={2} />}>
@@ -132,7 +135,7 @@ export const SubmissionArtworkFormArtworkDetails: React.FC<
             keyboardType="number-pad"
             testID="Submission_YearInput"
             value={values.year}
-            onChangeText={handleChange("year")}
+            onChangeText={(e) => setFieldValue("year", e)}
             accessibilityLabel="Year"
           />
         </Flex>

@@ -5,7 +5,8 @@ import { AutosuggestResultsPlaceholder } from "app/Components/AutosuggestResults
 import { ArtistAutosuggest } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistAutosuggest"
 import { ArtworkFormScreen } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmissionArtworkForm"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
-import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/validation"
+import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useFormikContext } from "formik"
 import { Suspense } from "react"
@@ -21,6 +22,22 @@ export const SubmissionArtworkFormArtist: React.FC<
     formik.setFieldValue("artist", result.displayLabel)
     formik.setFieldValue("artistId", result.internalID)
     formik.setFieldValue("artistSearchResult", result)
+
+    if (!result.internalID) {
+      console.error("Artist ID not found")
+      return
+    }
+
+    const updatedValues = {
+      artistId: result.internalID,
+      artist: result.displayLabel,
+      artistSearchResult: result,
+    }
+
+    // TODO: Not use `createOrUpdateSubmission` from old submission flow
+    const submissionId = await createOrUpdateSubmission(updatedValues, formik.values.submissionId)
+
+    formik.setFieldValue("submissionId", submissionId)
 
     navigateToNextStep()
   }

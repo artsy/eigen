@@ -26,6 +26,8 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
 }) => {
   const { values, setFieldValue } = useFormikContext<PhotosFormModel>()
   const { submission } = GlobalStore.useAppState((state) => state.artworkSubmission)
+  const submissionId = submission.submissionId || values.submissionId
+
   const { showActionSheetWithOptions } = useActionSheet()
   const [progress, setProgress] = useState<Record<string, number | undefined>>({})
   const { trackEvent } = useTracking()
@@ -37,6 +39,11 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
 
   // add selected photos to gemini and submission
   const addPhotosToSubmission = async (photos: Photo[]) => {
+    if (!submissionId) {
+      console.error("Submission ID not found")
+      return null
+    }
+
     const processedPhotos: Photo[] = []
 
     // set each to-be-uploaded photo's loading status
@@ -48,7 +55,7 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
         // upload & size the photo, and add it to processed photos
         const uploadedPhoto = await addPhotoToConsignment({
           asset: photo,
-          submissionID: submission.submissionId,
+          submissionID: submissionId,
           updateProgress: (newProgress) => {
             setProgress((prevState) => {
               const newState = { ...prevState, [photo.path]: newProgress }
@@ -92,9 +99,7 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
     GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
       photos: allPhotos,
     })
-    GlobalStore.actions.artworkSubmission.submission.setSubmissionIdForMyCollection(
-      submission.submissionId
-    )
+    GlobalStore.actions.artworkSubmission.submission.setSubmissionIdForMyCollection(submissionId)
     GlobalStore.actions.artworkSubmission.submission.setPhotos({
       photos: allPhotos,
     })
@@ -105,13 +110,18 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
   // show Native action sheet and get photos from user's phone
   const handleAddPhotoPress = async () => {
     const photos = await showPhotoActionSheet(showActionSheetWithOptions, true)
-    if (photos?.length && submission?.submissionId) {
+    if (photos?.length && submissionId) {
       addPhotosToSubmission(photos)
     }
   }
 
   // remove photo from submission and Formik values
   const handlePhotoDelete = async (photo: Photo) => {
+    if (!submissionId) {
+      console.error("Submission ID not found")
+      return null
+    }
+
     try {
       const filteredPhotos = values.photos.filter((p: Photo) => p.id !== photo.id)
 
@@ -120,9 +130,7 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
         photos: filteredPhotos,
       })
 
-      GlobalStore.actions.artworkSubmission.submission.setSubmissionIdForMyCollection(
-        submission.submissionId
-      )
+      GlobalStore.actions.artworkSubmission.submission.setSubmissionIdForMyCollection(submissionId)
 
       GlobalStore.actions.artworkSubmission.submission.setPhotos({
         photos: filteredPhotos,

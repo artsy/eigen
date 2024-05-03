@@ -81,11 +81,7 @@ export const MyCollectionArtworkFormArtist: React.FC<
       </FancyModalHeader>
       <ScreenMargin>
         <Suspense fallback={<Placeholder />}>
-          <ArtistAutosuggest
-            onResultPress={handleResultPress}
-            onSkipPress={handleSkipPress}
-            enableCollectedArtists
-          />
+          <ArtistAutosuggest onResultPress={handleResultPress} onSkipPress={handleSkipPress} />
         </Suspense>
       </ScreenMargin>
     </>

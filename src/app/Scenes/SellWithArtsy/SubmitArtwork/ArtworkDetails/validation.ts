@@ -6,10 +6,10 @@ import {
   ConsignmentAttributionClass,
   ConsignmentSubmissionStateAggregation,
 } from "__generated__/updateConsignSubmissionMutation.graphql"
+import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
 import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import * as Yup from "yup"
 import { limitedEditionValue } from "./utils/rarityOptions"
-import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
 
 export interface Location {
   city: string
@@ -20,10 +20,10 @@ export interface Location {
 }
 
 export interface ArtworkDetailsFormModel {
-  submissionId: string | null
+  submissionId?: string | null
   artist: string
   artistId: string
-  artistSearchResult: AutosuggestResult | null
+  artistSearchResult?: AutosuggestResult | null
   attributionClass: ConsignmentAttributionClass | null
   category: Exclude<ConsignmentSubmissionCategoryAggregation, "%future added value"> | null
   depth: string
