@@ -10,12 +10,14 @@ export const PREVIOUS_LAUNCH_COUNT_KEY = "previous-launch-count-key"
  * It will save the navigation state to AsyncStorage and reload it when the app is reloaded.
  */
 export const useReloadedDevNavigationState = (key: string) => {
-  const [isReady, setIsReady] = useState(__DEV__ ? false : true)
+  // We don't want to reload the navigation state in production or test
+  const SKIP_RELOAD = !__DEV__ || __TEST__
+  const [isReady, setIsReady] = useState(SKIP_RELOAD ? true : false)
   const launchCount = GlobalStore.useAppState((state) => state.native.sessionState.launchCount)
   const [initialState, setInitialState] = useState()
 
   useEffect(() => {
-    if (!__DEV__) {
+    if (SKIP_RELOAD) {
       return
     }
 
@@ -46,14 +48,14 @@ export const useReloadedDevNavigationState = (key: string) => {
   }, [isReady])
 
   const saveSession = (state: NavigationState | undefined) => {
-    if (__DEV__) {
+    if (!SKIP_RELOAD) {
       AsyncStorage.setItem(key, JSON.stringify(state))
     }
   }
 
   return {
-    // Double checking that this can only be false in dev
-    isReady: isReady || !__DEV__,
+    // Double checking that this can only be false in dev and test
+    isReady: isReady || SKIP_RELOAD,
     initialState,
     saveSession,
   }
