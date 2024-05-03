@@ -1,6 +1,8 @@
+import { LinkText, Spacer } from "@artsy/palette-mobile"
 import { PrivateArtworkMetadata_artwork$key } from "__generated__/PrivateArtworkMetadata_artwork.graphql"
 import { Expandable } from "app/Components/Expandable"
 import { HTML } from "app/Components/HTML"
+import { navigate } from "app/system/navigation/navigate"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 interface PrivateArtworkMetadataProps {
@@ -14,8 +16,8 @@ export const PrivateArtworkMetadata: React.FC<PrivateArtworkMetadataProps> = ({ 
         conditionDescription {
           details
         }
-        privateProvenance: provenance(format: HTML)
-        privateExhibitionHistory: exhibitionHistory(format: HTML)
+        privateProvenance: provenance(format: MARKDOWN)
+        privateExhibitionHistory: exhibitionHistory(format: MARKDOWN)
       }
     `,
     artwork
@@ -44,7 +46,19 @@ export const PrivateArtworkMetadata: React.FC<PrivateArtworkMetadataProps> = ({ 
             label="Condition"
             expanded={isFirstItemExpanded}
           >
+            <Spacer y={2} />
             <HTML html={data.conditionDescription?.details} variant="sm" />
+            <Spacer y={1} />
+            <LinkText
+              variant="xs"
+              color="black60"
+              onPress={() =>
+                navigate(`https://help.artsy.net/s/article/Artsy-Condition-Definitions`)
+              }
+            >
+              Learn more
+            </LinkText>
+            <Spacer y={1} />
           </Expandable>
         </>
       )}
@@ -58,7 +72,9 @@ export const PrivateArtworkMetadata: React.FC<PrivateArtworkMetadataProps> = ({ 
             label="Provenance"
             expanded={isSecondItemExpanded}
           >
+            <Spacer y={2} />
             <HTML variant="sm" html={data.privateProvenance} />
+            <Spacer y={1} />
           </Expandable>
         </>
       )}
@@ -71,7 +87,9 @@ export const PrivateArtworkMetadata: React.FC<PrivateArtworkMetadataProps> = ({ 
           label="Exhibition History"
           expanded={isThirdItemExpanded}
         >
+          <Spacer y={2} />
           <HTML variant="sm" html={data.privateExhibitionHistory} />
+          <Spacer y={1} />
         </Expandable>
       )}
     </>
