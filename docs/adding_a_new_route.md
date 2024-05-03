@@ -179,6 +179,7 @@ export const MyScreenNavigationStack = () => {
       onStateChange={(state) => {
         saveSession(state)
       }}
+      initialState={initialState}
     >
       {...}
     </NavigationContainer>

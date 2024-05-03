@@ -651,6 +651,14 @@ jest.mock("app/utils/track/providers.tsx", () => ({
   _addTrackingProvider: jest.fn(),
 }))
 
+jest.mock("app/system/navigation/useReloadedDevNavigationState", () => ({
+  useReloadedDevNavigationState: jest.fn(() => ({
+    isReady: true,
+    initialState: undefined,
+    saveSession: jest.fn(),
+  })),
+}))
+
 jest.mock("@gorhom/bottom-sheet", () => ({
   __esModule: true,
   ...require("@gorhom/bottom-sheet/mock"),
