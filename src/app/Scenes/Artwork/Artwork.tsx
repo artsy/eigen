@@ -13,7 +13,6 @@ import { ArtworkAuctionCreateAlertHeader } from "app/Scenes/Artwork/ArtworkAucti
 import { ArtworkDimensionsClassificationAndAuthenticityFragmentContainer } from "app/Scenes/Artwork/Components/ArtworkDimensionsClassificationAndAuthenticity/ArtworkDimensionsClassificationAndAuthenticity"
 import { ArtworkErrorScreen } from "app/Scenes/Artwork/Components/ArtworkError"
 import { ArtworkPartnerOfferNote } from "app/Scenes/Artwork/Components/ArtworkPartnerOfferNote"
-import { ArtworkPrice } from "app/Scenes/Artwork/Components/ArtworkPrice"
 import { ArtworkScreenHeader } from "app/Scenes/Artwork/Components/ArtworkScreenHeader"
 import { PrivateArtworkExclusiveAccess } from "app/Scenes/Artwork/Components/PrivateArtwork/PrivateArtworkExclusiveAccess"
 import { PrivateArtworkMetadata } from "app/Scenes/Artwork/Components/PrivateArtwork/PrivateArtworkMetadata"
@@ -337,13 +336,6 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
         const hasEditionSets = (artworkAboveTheFold.editionSets ?? []).length > 1
 
         if (!!(artworkBelowTheFold?.isForSale && !isInAuction)) {
-          sections.push({
-            key: "price",
-            element: <ArtworkPrice artwork={artworkAboveTheFold} partnerOffer={partnerOffer} />,
-            excludeSeparator: true,
-            excludeVerticalMargin: hasEditionSets ? false : true,
-          })
-
           if (hasEditionSets) {
             sections.push({
               key: "selectEditionSet",
