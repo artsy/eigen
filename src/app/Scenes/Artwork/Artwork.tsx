@@ -361,6 +361,11 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
         excludeSeparator: true,
       })
 
+      sections.push({
+        key: "artsyGuarantee",
+        element: <ArtsyGuarantee />,
+      })
+
       if (shouldRenderPartner()) {
         sections.push({
           key: "partnerCard",
