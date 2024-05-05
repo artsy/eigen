@@ -1,4 +1,7 @@
+import { fireEvent, screen } from "@testing-library/react-native"
 import { ShippingAndTaxesTestQuery } from "__generated__/ShippingAndTaxesTestQuery.graphql"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
@@ -36,23 +39,46 @@ describe("ShippingAndTaxes", () => {
   }
 
   it("should render all information", () => {
-    const { queryByText } = renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(env, {
       Artwork: () => artwork,
     })
 
     // Tax info
-    expect(queryByText("Tax Info")).toBeDefined()
-    expect(queryByText("Link Button")).toBeDefined()
+    expect(screen.getByText(/Tax Info/)).toBeDefined()
+    expect(screen.getByText(/Link Button/)).toBeDefined()
 
-    expect(queryByText("City, State, Country")).toBeDefined()
-    expect(queryByText("Shipping: Calculated in checkout")).toBeDefined()
-    expect(queryByText("VAT included in price")).toBeDefined()
+    expect(screen.getByText(/City, State, Country/)).toBeDefined()
+    expect(screen.getByText(/Shipping: Calculated in checkout/)).toBeDefined()
+    expect(screen.getByText(/VAT included in price/)).toBeDefined()
+  })
+
+  describe("Analytics", () => {
+    it("tracks event", async () => {
+      renderWithWrappers(<TestRenderer />)
+
+      resolveMostRecentRelayOperation(env, {
+        Artwork: () => artwork,
+      })
+      const link = screen.getByText(/Link Button/)
+
+      fireEvent.press(link)
+      await flushPromiseQueue()
+
+      expect(mockTrackEvent).toHaveBeenCalled()
+      expect(mockTrackEvent).toHaveBeenCalledWith({
+        action: "tappedLearnMore",
+        context_module: "artworkDetails",
+        subject: "Learn more",
+        type: "Link",
+        flow: "Shipping",
+      })
+    })
   })
 
   it("should NOT render shipping information if it is not available", () => {
-    const { queryByText } = renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(env, {
       Artwork: () => ({
@@ -64,12 +90,12 @@ describe("ShippingAndTaxes", () => {
     })
 
     // Tax info
-    expect(queryByText("Tax Info")).toBeNull()
-    expect(queryByText("Link Button")).toBeNull()
+    expect(screen.queryByText("Tax Info")).toBeNull()
+    expect(screen.queryByText("Link Button")).toBeNull()
 
-    expect(queryByText("City, State, Country")).toBeNull()
-    expect(queryByText("Shipping: Calculated in checkout")).toBeNull()
-    expect(queryByText("VAT included in price")).toBeNull()
+    expect(screen.queryByText("City, State, Country")).toBeNull()
+    expect(screen.queryByText("Shipping: Calculated in checkout")).toBeNull()
+    expect(screen.queryByText("VAT included in price")).toBeNull()
   })
 })
 
