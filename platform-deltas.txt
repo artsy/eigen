@@ -2,16 +2,13 @@ This is a running document of UX, DX/code deltas between Android and iOS we find
 
 The major exceptions are supporting platform specific features or if we have to sacrifice DX for UX. Meaning if we can provide a better UX by having a fork in the code base or writing platform specific code we should choose UX over DX, but we have a lot of places in the code base where we could consolidate without sacrificing UX.
 
-DX: 
+DX:
 
 Push Notifications:
 - on iOS these are handled via custom native modules and code on native side, we also have an extension for supporting rich push notifications, on Android we use an npm package, react-native-push-notification, and cofigure using a hook on login. Can we use the same library on iOS?
 
 
 UX:
-
-ImageViews (native on iOS, rn image view on Android):
-- on iOS we use a native component AROpaqueImageView which handles things like caching for us, on Android we just use Image from react-native, can we use react-native-fast-image on both platforms? 
 
 View In Room (iOS only):
 - we support viewing artworks on walls, this is all native iOS code that has not been ported to Android
