@@ -23,7 +23,7 @@ export const PrivateArtworkMetadata: React.FC<PrivateArtworkMetadataProps> = ({ 
     artwork
   )
 
-  const tracking = useTracking()
+  const { trackEvent } = useTracking()
 
   const isFirstItemExpanded = Boolean(data.conditionDescription?.details)
 
@@ -41,7 +41,7 @@ export const PrivateArtworkMetadata: React.FC<PrivateArtworkMetadataProps> = ({ 
         <>
           <Expandable
             trackingFunction={() => {
-              tracking.trackEvent(tracks.tappedConditionExpand(isFirstItemExpanded))
+              trackEvent(tracks.toggledMetadataAccordion("Condition", isFirstItemExpanded))
             }}
             label="Condition"
             expanded={isFirstItemExpanded}
@@ -55,7 +55,7 @@ export const PrivateArtworkMetadata: React.FC<PrivateArtworkMetadataProps> = ({ 
         <>
           <Expandable
             trackingFunction={() => {
-              tracking.trackEvent(tracks.tappedProvenanceExpand(isSecondItemExpanded))
+              trackEvent(tracks.toggledMetadataAccordion("Provenance", isSecondItemExpanded))
             }}
             label="Provenance"
             expanded={isSecondItemExpanded}
@@ -68,7 +68,7 @@ export const PrivateArtworkMetadata: React.FC<PrivateArtworkMetadataProps> = ({ 
       {!!data.privateExhibitionHistory && (
         <Expandable
           trackingFunction={() => {
-            tracking.trackEvent(tracks.tappedExhibitionHistoryExpand(isThirdItemExpanded))
+            trackEvent(tracks.toggledMetadataAccordion("Exhibition History", isThirdItemExpanded))
           }}
           label="Exhibition History"
           expanded={isThirdItemExpanded}
@@ -81,25 +81,11 @@ export const PrivateArtworkMetadata: React.FC<PrivateArtworkMetadataProps> = ({ 
 }
 
 const tracks = {
-  tappedConditionExpand: (expand: boolean): ToggledAccordion => ({
+  toggledMetadataAccordion: (subject: string, expand: boolean): ToggledAccordion => ({
     action: ActionType.toggledAccordion,
     context_module: ContextModule.aboutTheWork,
     context_owner_type: OwnerType.artwork,
     expand: expand,
-    subject: "Condition",
-  }),
-  tappedProvenanceExpand: (expand: boolean): ToggledAccordion => ({
-    action: ActionType.toggledAccordion,
-    context_module: ContextModule.aboutTheWork,
-    context_owner_type: OwnerType.artwork,
-    expand: expand,
-    subject: "Provenance",
-  }),
-  tappedExhibitionHistoryExpand: (expand: boolean): ToggledAccordion => ({
-    action: ActionType.toggledAccordion,
-    context_module: ContextModule.aboutTheWork,
-    context_owner_type: OwnerType.artwork,
-    expand: expand,
-    subject: "Exhibition History",
+    subject: subject,
   }),
 }
