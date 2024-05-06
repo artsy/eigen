@@ -238,6 +238,6 @@ const tracks = {
     context_owner_type: context_owner_type,
     context_owner_id: internalID,
     context_owner_slug: slug,
-    flow: flow,
+    flow: flow as "Buy now" | "Partner offer" | undefined,
   }),
 }
