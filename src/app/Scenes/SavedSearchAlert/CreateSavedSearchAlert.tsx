@@ -1,16 +1,17 @@
 import { ArtsyKeyboardAvoidingView, Box } from "@artsy/palette-mobile"
 import { NavigationContainer } from "@react-navigation/native"
-import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
+import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import {
-  savedSearchModel,
   SavedSearchStoreProvider,
+  savedSearchModel,
 } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { CreateSavedSearchAlertContentQueryRenderer } from "app/Scenes/SavedSearchAlert/containers/CreateSavedSearchContentContainer"
 import { localizeHeightAndWidthAttributes } from "app/Scenes/SavedSearchAlert/helpers"
 import { AlertPriceRangeScreenQueryRenderer } from "app/Scenes/SavedSearchAlert/screens/AlertPriceRangeScreen"
 import { ConfirmationScreen } from "app/Scenes/SavedSearchAlert/screens/ConfirmationScreen"
 import { SavedSearchFilterScreen } from "app/Scenes/SavedSearchAlert/screens/SavedSearchFilterScreen"
+import { useReloadedDevNavigationState } from "app/system/navigation/useReloadedDevNavigationState"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import {
   CreateSavedSearchAlertNavigationStack,
@@ -20,10 +21,21 @@ import { EmailPreferencesScreen } from "./screens/EmailPreferencesScreen"
 
 const Stack = createStackNavigator<CreateSavedSearchAlertNavigationStack>()
 
+const CREATE_SAVED_ARTWORK_NAVIGATION_STACK_STATE_KEY =
+  "CREATE_SAVED_ARTWORK_NAVIGATION_STACK_STATE_KEY"
+
 export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (props) => {
   const { visible, params } = props
   const { attributes, entity, currentArtworkID, sizeMetric } = params
   const { localizedUnit } = useLocalizedUnit()
+
+  const { isReady, initialState, saveSession } = useReloadedDevNavigationState(
+    CREATE_SAVED_ARTWORK_NAVIGATION_STACK_STATE_KEY
+  )
+
+  if (!isReady) {
+    return null
+  }
 
   return (
     <ArtsyKeyboardAvoidingView>
@@ -40,7 +52,13 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
           unit: sizeMetric || localizedUnit,
         }}
       >
-        <NavigationContainer independent>
+        <NavigationContainer
+          independent
+          initialState={initialState}
+          onStateChange={(state) => {
+            saveSession(state)
+          }}
+        >
           <FancyModal visible={visible} fullScreen>
             <Box flex={1}>
               <Stack.Navigator

@@ -22,6 +22,7 @@ import { AlertPriceRangeScreenQueryRenderer } from "app/Scenes/SavedSearchAlert/
 import { EmailPreferencesScreen } from "app/Scenes/SavedSearchAlert/screens/EmailPreferencesScreen"
 import { SavedSearchFilterScreen } from "app/Scenes/SavedSearchAlert/screens/SavedSearchFilterScreen"
 import { GoBackProps, goBack, navigationEvents } from "app/system/navigation/navigate"
+import { useReloadedDevNavigationState } from "app/system/navigation/useReloadedDevNavigationState"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -46,9 +47,16 @@ interface EditSavedSearchAlertProps {
 
 const Stack = createStackNavigator<EditSavedSearchAlertNavigationStack>()
 
+const EDIT_SAVED_ARTWORK_NAVIGATION_STACK_STATE_KEY =
+  "EDIT_SAVED_ARTWORK_NAVIGATION_STACK_STATE_KEY"
+
 export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props) => {
   const { me, viewer, artists, savedSearchAlertId, relay } = props
   const { localizedUnit } = useLocalizedUnit()
+
+  const { isReady, initialState, saveSession } = useReloadedDevNavigationState(
+    EDIT_SAVED_ARTWORK_NAVIGATION_STACK_STATE_KEY
+  )
 
   const { settings, ...attributes } = me?.alert ?? {}
   const isCustomAlertsNotificationsEnabled = viewer.notificationPreferences.some((preference) => {
@@ -96,6 +104,10 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
     }
   }, [])
 
+  if (!isReady) {
+    return null
+  }
+
   const params: EditSavedSearchAlertParams = {
     userAlertSettings: settings,
     savedSearchAlertId,
@@ -127,7 +139,13 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
             unit: localizedUnit,
           }}
         >
-          <NavigationContainer independent>
+          <NavigationContainer
+            independent
+            initialState={initialState}
+            onStateChange={(state) => {
+              saveSession(state)
+            }}
+          >
             <Stack.Navigator
               // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
               detachInactiveScreens={false}

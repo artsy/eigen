@@ -24,6 +24,7 @@ import {
 } from "app/Scenes/SellWithArtsy/utils/TrackingEvent"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
+import { useReloadedDevNavigationState } from "app/system/navigation/useReloadedDevNavigationState"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
@@ -37,6 +38,8 @@ import { createOrUpdateSubmission } from "./ArtworkDetails/utils/createOrUpdateS
 import { ArtworkDetailsFormModel, ContactInformationFormModel } from "./ArtworkDetails/validation"
 import { ArtworkSubmittedScreen } from "./ArtworkSubmitted"
 import { UploadPhotos } from "./UploadPhotos/UploadPhotos"
+
+const SUBMIT_ARTWORK_NAVIGATION_STACK_STATE_KEY = "SUBMIT_ARTWORK_NAVIGATION_STACK_STATE_KEY"
 
 export enum STEPS {
   ArtworkDetails = "ArtworkDetails",
@@ -318,8 +321,22 @@ export type SubmitArtworkOverviewNavigationStack = {
 const StackNavigator = createStackNavigator<SubmitArtworkOverviewNavigationStack>()
 
 export const SubmitArtwork = () => {
+  const { isReady, initialState, saveSession } = useReloadedDevNavigationState(
+    SUBMIT_ARTWORK_NAVIGATION_STACK_STATE_KEY
+  )
+
+  if (!isReady) {
+    return null
+  }
+
   return (
-    <NavigationContainer independent>
+    <NavigationContainer
+      independent
+      initialState={initialState}
+      onStateChange={(state) => {
+        saveSession(state)
+      }}
+    >
       <StackNavigator.Navigator
         detachInactiveScreens={false}
         screenOptions={{
