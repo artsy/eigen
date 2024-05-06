@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+# Create a universal APK for Android
+# select an uploaded aab and create a universal APK
+
+bundle exec fastlane create_android_apk
