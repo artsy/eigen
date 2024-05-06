@@ -30,7 +30,8 @@ import { ArtworkDetailsFormModel } from "./validation"
 const StandardSpace = () => <Spacer y={2} />
 
 export const ArtworkDetailsForm: React.FC = () => {
-  const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
+  const { values, setFieldValue, handleChange, errors, validateField } =
+    useFormikContext<ArtworkDetailsFormModel>()
   const [isRarityInfoModalVisible, setIsRarityInfoModalVisible] = useState(false)
   const [isProvenanceInfoModalVisible, setIsProvenanceInfoModalVisible] = useState(false)
   const optionalDimensions = useFeatureFlag("ARSWAMakeAllDimensionsOptional")
@@ -54,9 +55,13 @@ export const ArtworkDetailsForm: React.FC = () => {
         placeholder="Add title or write 'Unknown'"
         testID="Submission_TitleInput"
         value={values.title}
-        onChangeText={(e) => setFieldValue("title", e)}
+        onChangeText={(text) => {
+          handleChange("title")(text)
+        }}
+        onBlur={() => validateField("title")}
         accessibilityLabel="Title"
         required
+        error={errors.title}
       />
 
       <StandardSpace />
