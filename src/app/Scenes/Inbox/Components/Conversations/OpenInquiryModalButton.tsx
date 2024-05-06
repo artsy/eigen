@@ -22,7 +22,7 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({
     artwork
   const isAcquireableFromInquiry = isAcquireable
   const isOfferableConversationalBuyNow = isOfferable
-  const isEditionSet = !!isEdition && editionSets?.length! > 1
+  const isEditionSet = !!isEdition && (editionSets?.length ?? 0) > 1
 
   return (
     <>
@@ -141,7 +141,7 @@ const tracks = {
     context_owner_id: artwork.internalID,
     context_owner_slug: artwork.slug,
     impulse_conversation_id: id,
-    flow: "",
+    flow: undefined,
   }),
 }
 

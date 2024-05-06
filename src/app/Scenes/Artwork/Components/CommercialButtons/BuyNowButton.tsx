@@ -232,7 +232,7 @@ const tracks = {
     slug: string,
     internalID: string,
     context_owner_type: ScreenOwnerType,
-    flow: string
+    flow: any
   ): TappedBuyNow => ({
     action: ActionType.tappedBuyNow,
     context_owner_type: context_owner_type,
