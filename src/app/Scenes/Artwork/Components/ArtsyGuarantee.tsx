@@ -1,4 +1,4 @@
-import { ActionType } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType, TappedLearnMore } from "@artsy/cohesion"
 import {
   Spacer,
   VerifiedIcon,
@@ -24,10 +24,10 @@ export const ArtsyGuarantee: React.FC = () => {
   }
 
   const handleLearnMorePress = () => {
-    const payload = {
+    const payload: TappedLearnMore = {
       action: ActionType.tappedLearnMore,
-      context_module: "artworkDetails",
-      type: "Link",
+      context_module: ContextModule.artworkDetails,
+      context_screen_owner_type: OwnerType.artwork,
       subject: "Learn more",
       flow: "Artsy Guarantee",
     }
