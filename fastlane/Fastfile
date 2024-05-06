@@ -272,13 +272,25 @@ lane :promote_beta_android do
   tag_and_push(tag: "android-#{vname}-#{vcode}-submission")
 end
 
+lane :create_android_apk do
+  selected_version_code = select_android_build(select_message: 'select')
+  aab_path = './android/app/build/outputs/bundle/release/app-release.aab'
+  bundletool(
+    aab_path: aab_path,
+    apk_output_path: selected_version_code + '.apk',
+    verbose: true
+  )
+end
+
 lane :s3_upload_android_build do |options|
   app_version = options[:app_version]
   app_path = options[:app_path]
   sh('aws s3 cp ' + app_path + ' ' + S3_ANDROID_BUILDS_PATH + app_version.to_s + '.aab')
 end
 
-lane :select_android_build do
+lane :select_android_build do |options|
+  select_message = options[:select_message] || 'release'
+
   s3_files_output = sh('aws s3 ls ' + S3_ANDROID_BUILDS_PATH)
 
   aab_filename_regex = /\d+\.aab/
@@ -292,12 +304,9 @@ lane :select_android_build do
 
   UI.header 'Last 20 Android builds'
 
-  selected_build = UI.select('Which build would you like to release?: ', builds)
-
-  selected_version_code = UI.select('Which build would you like to release?: ', version_codes)
-
-  if UI.confirm("Are you sure you would like to release '#{selected_build}'?")
-    UI.success 'Continuing the release!'
+  selected_build = UI.select('Which build would you like to ' + select_message + '?: ', builds)
+  if UI.confirm("Are you sure you would like to " + select_message + " #{selected_build}?")
+    UI.success 'Continuing!'
   else
     UI.user_error!('Stopping the train!')
   end
