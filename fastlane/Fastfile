@@ -31,6 +31,9 @@ GIT_COMMIT_HASH = `git log -n1 --format='%H'`.chomp
 GIT_COMMIT_DATE_STR = DateTime.parse(`git log -n1 --format='%ci'`.chomp).iso8601
 GIT_REMOTE_ORIGIN_URL = `git config --get remote.origin.url`.chomp
 
+S3_PATH = 's3://artsy-citadel/eigen'
+S3_ANDROID_BUILDS_PATH = S3_PATH + '/builds/android/'
+
 import 'utility_fastlane.rb'
 import 'sentry_fastlane.rb'
 
@@ -222,6 +225,8 @@ lane :ship_beta_android do |options|
     platform: 'android'
   )
 
+  s3_upload_android_build(app_version: vcode, app_path: "../android/app/build/outputs/bundle/release/app-release.aab")
+
   deploy_android_beta(deployment_target: deployment_target)
 end
 
@@ -270,11 +275,11 @@ end
 lane :s3_upload_android_build do |options|
   app_version = options[:app_version]
   app_path = options[:app_path]
-  sh('aws s3 cp ' + app_path + ' s3://artsy-citadel/dev/eigen/builds/android/' + app_version.to_s + '.aab')
+  sh('aws s3 cp ' + app_path + ' ' + S3_ANDROID_BUILDS_PATH + app_version.to_s + '.aab')
 end
 
 lane :select_android_build do
-  s3_files_output = sh('aws s3 ls s3://artsy-citadel/dev/eigen/builds/android/')
+  s3_files_output = sh('aws s3 ls ' + S3_ANDROID_BUILDS_PATH)
 
   aab_filename_regex = /\d+\.aab/
   matches = s3_files_output.scan(aab_filename_regex)
@@ -299,7 +304,7 @@ lane :select_android_build do
 
   # download the selected build to the typical build output directory
   output_app_path = '../android/app/build/outputs/bundle/release/app-release.aab'
-  sh('aws s3 cp s3://artsy-citadel/dev/eigen/builds/android/' + selected_build + ' ' + output_app_path)
+  sh('aws s3 cp ' + S3_ANDROID_BUILDS_PATH + selected_build + ' ' + output_app_path)
 
   # return the selected version num
   selected_build.scan(/\d+/).first
