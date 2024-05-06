@@ -1,6 +1,7 @@
 import { parse } from "url"
 import { AppModule } from "app/AppRegistry"
 import { ArtsyWebViewConfig } from "app/Components/ArtsyWebView"
+import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { RouteMatcher } from "app/system/navigation/RouteMatcher"
 import { compact } from "lodash"
@@ -110,7 +111,66 @@ function decodeUrl(url: string): string {
   return url
 }
 
-function getDomainMap(): Record<string, RouteMatcher[] | null> {
+type ModuleMap = {
+  [key in AppModule]: {
+    route: string
+    params: string[]
+  }
+}
+
+export function getModuleMap(): ModuleMap {
+  const domainMap = getDomainMap()
+  const artsyDotNetRoutes = domainMap["artsy.net"]
+
+  const moduleMap = {} as ModuleMap
+
+  if (artsyDotNetRoutes) {
+    artsyDotNetRoutes.forEach((moduleDescriptor) => {
+      if (
+        moduleDescriptor["module"] !== "ModalWebView" &&
+        moduleDescriptor["module"] !== "ReactWebView"
+      ) {
+        moduleMap[moduleDescriptor["module"]] = {
+          route: moduleDescriptor["route"],
+          params: moduleDescriptor["parts"]
+            .filter((part) => part.type === "variable")
+            .map((part) => (part as any).name),
+        }
+      }
+    })
+  }
+
+  return moduleMap
+}
+
+// Helper method that returns the current URL
+export const getCurrentURL = () => {
+  const moduleMap = getModuleMap()
+  const moduleDescriptor = __unsafe_mainModalStackRef.current?.getCurrentRoute()?.params as any
+
+  const { webURL } = unsafe__getEnvironment()
+
+  const currentModuleName = moduleDescriptor?.moduleName as AppModule | undefined
+  if (!currentModuleName) {
+    return
+  }
+
+  const currentModuleProps = moduleDescriptor.props
+
+  const currentModule = moduleMap[currentModuleName]
+
+  let { route: path } = currentModule
+
+  if (currentModuleProps) {
+    Object.entries(currentModuleProps).map(([key, value]) => {
+      path = path.replace(`:${key}`, value as string)
+    })
+  }
+
+  return encodeURI(`${webURL}${path}`)
+}
+
+export function getDomainMap(): Record<string, RouteMatcher[] | null> {
   const liveDotArtsyDotNet: RouteMatcher[] = compact([
     Platform.OS === "ios"
       ? addRoute("/*", "LiveAuction", (params) => ({ slug: params["*"] }))
@@ -148,8 +208,10 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
 
     // Routes `/artist/:artistID/*` and `"/:profile_id_ignored/artist/:artistID"`
     // MUST go together The following two
-    addRoute("/artist/:artistID/*", "Artist"),
+    // Make sure to keep profile_id_ignored before the artist to avoid breaking the artist route
     addRoute("/:profile_id_ignored/artist/:artistID", "Artist"), // For artists in a gallery context, like https://www.artsy.net/spruth-magers/artist/astrid-klein . Until we have a native // version of the gallery profile/context, we will use the normal native artist view instead of showing a web view.
+    addRoute("/artist/:artistID/*", "Artist"),
+    addRoute("/artist/:artistID", "Artist"),
 
     addRoute("/artwork-certificate-of-authenticity", "ArtworkCertificateAuthenticity"),
     addRoute("/artwork-classifications", "ArtworkAttributionClassFAQ"),
