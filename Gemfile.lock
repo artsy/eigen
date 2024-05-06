@@ -171,6 +171,7 @@ GEM
       xcpretty (~> 0.3.0)
       xcpretty-travis-formatter (>= 0.0.3, < 2.0.0)
     fastlane-plugin-appcenter (2.1.1)
+    fastlane-plugin-bundletool (1.0.9)
     fastlane-plugin-firebase_app_distribution (0.7.4)
       google-apis-firebaseappdistribution_v1 (~> 0.3.0)
     fastlane-plugin-sentry (1.16.0)
@@ -310,6 +311,7 @@ DEPENDENCIES
   down
   fastlane (= 2.220.0)
   fastlane-plugin-appcenter
+  fastlane-plugin-bundletool
   fastlane-plugin-firebase_app_distribution
   fastlane-plugin-sentry
   json
