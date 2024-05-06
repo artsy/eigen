@@ -1,3 +1,5 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { ToggledAccordion } from "@artsy/cohesion/dist/Schema/Events/UserExperienceInteractions"
 import { PrivateArtworkMetadata_artwork$key } from "__generated__/PrivateArtworkMetadata_artwork.graphql"
 import { Expandable } from "app/Components/Expandable"
 import { HTML } from "app/Components/HTML"
@@ -21,7 +23,7 @@ export const PrivateArtworkMetadata: React.FC<PrivateArtworkMetadataProps> = ({ 
     artwork
   )
 
-  const tracking = useTracking()
+  const { trackEvent } = useTracking()
 
   const isFirstItemExpanded = Boolean(data.conditionDescription?.details)
 
@@ -38,8 +40,8 @@ export const PrivateArtworkMetadata: React.FC<PrivateArtworkMetadataProps> = ({ 
       {!!data.conditionDescription?.details && (
         <>
           <Expandable
-            trackingFunction={() => {
-              tracking.trackEvent(tracks.tappedConditionExpand(isFirstItemExpanded))
+            onTrack={() => {
+              trackEvent(tracks.toggledMetadataAccordion("Condition", isFirstItemExpanded))
             }}
             label="Condition"
             expanded={isFirstItemExpanded}
@@ -52,8 +54,8 @@ export const PrivateArtworkMetadata: React.FC<PrivateArtworkMetadataProps> = ({ 
       {!!data.privateProvenance && (
         <>
           <Expandable
-            trackingFunction={() => {
-              tracking.trackEvent(tracks.tappedProvenanceExpand(isSecondItemExpanded))
+            onTrack={() => {
+              trackEvent(tracks.toggledMetadataAccordion("Provenance", isSecondItemExpanded))
             }}
             label="Provenance"
             expanded={isSecondItemExpanded}
@@ -65,8 +67,8 @@ export const PrivateArtworkMetadata: React.FC<PrivateArtworkMetadataProps> = ({ 
 
       {!!data.privateExhibitionHistory && (
         <Expandable
-          trackingFunction={() => {
-            tracking.trackEvent(tracks.tappedExhibitionHistoryExpand(isThirdItemExpanded))
+          onTrack={() => {
+            trackEvent(tracks.toggledMetadataAccordion("Exhibition History", isThirdItemExpanded))
           }}
           label="Exhibition History"
           expanded={isThirdItemExpanded}
@@ -79,22 +81,11 @@ export const PrivateArtworkMetadata: React.FC<PrivateArtworkMetadataProps> = ({ 
 }
 
 const tracks = {
-  tappedConditionExpand: (isExpanded: boolean) => ({
-    context_module: "aboutTheWork",
-    context_owner_type: "artwork",
-    expand: isExpanded,
-    subject: "Condition",
-  }),
-  tappedProvenanceExpand: (isExpanded: boolean) => ({
-    context_module: "aboutTheWork",
-    context_owner_type: "artwork",
-    expand: isExpanded,
-    subject: "Provenance",
-  }),
-  tappedExhibitionHistoryExpand: (isExpanded: boolean) => ({
-    context_module: "aboutTheWork",
-    context_owner_type: "artwork",
-    expand: isExpanded,
-    subject: "Exhibition History",
+  toggledMetadataAccordion: (subject: string, expand: boolean): ToggledAccordion => ({
+    action: ActionType.toggledAccordion,
+    context_module: ContextModule.aboutTheWork,
+    context_owner_type: OwnerType.artwork,
+    expand: expand,
+    subject: subject,
   }),
 }

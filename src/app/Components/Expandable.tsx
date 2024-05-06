@@ -7,7 +7,7 @@ interface ExpandableProps {
   label?: string
   expanded?: boolean
   children: React.ReactNode
-  trackingFunction?: () => void
+  onTrack?: () => void
 }
 
 /**
@@ -18,14 +18,14 @@ export const Expandable: React.FC<ExpandableProps> = ({
   children,
   expanded: propExpanded,
   label,
-  trackingFunction,
+  onTrack,
 }) => {
   const [expanded, setExpanded] = useState(propExpanded)
 
   const handleToggle = () => {
     setExpanded((prev) => !prev)
-    if (trackingFunction) {
-      trackingFunction()
+    if (onTrack) {
+      onTrack()
     }
   }
 
