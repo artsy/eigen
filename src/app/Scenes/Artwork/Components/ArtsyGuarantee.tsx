@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType, TappedLearnMore } from "@artsy/cohesion"
 import {
   Spacer,
   VerifiedIcon,
@@ -11,12 +12,28 @@ import {
   Join,
 } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
+import { useTracking } from "react-tracking"
 
 export const ArtsyGuarantee: React.FC = () => {
+  const { trackEvent } = useTracking()
+
   const iconProps: IconProps = {
     height: 24,
     width: 24,
     mr: 1,
+  }
+
+  const handleLearnMorePress = () => {
+    const payload: TappedLearnMore = {
+      action: ActionType.tappedLearnMore,
+      context_module: ContextModule.artworkDetails,
+      context_screen_owner_type: OwnerType.artwork,
+      subject: "Learn more",
+      flow: "Artsy Guarantee",
+    }
+
+    trackEvent(payload)
+    navigate("https://www.artsy.net/buyer-guarantee")
   }
 
   return (
@@ -63,7 +80,7 @@ export const ArtsyGuarantee: React.FC = () => {
           accessibilityRole="link"
           accessibilityHint="Redirects to Artsy Guarantee page"
           accessibilityLabel="Learn more about the Artsy Guarantee"
-          onPress={() => navigate("https://www.artsy.net/buyer-guarantee")}
+          onPress={() => handleLearnMorePress()}
           variant="xs"
           color="black60"
         >

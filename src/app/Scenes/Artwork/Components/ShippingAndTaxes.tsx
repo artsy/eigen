@@ -1,4 +1,4 @@
-import { ActionType } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType, TappedLearnMore } from "@artsy/cohesion"
 import { Spacer, Box, Text, LinkText } from "@artsy/palette-mobile"
 import { ShippingAndTaxes_artwork$data } from "__generated__/ShippingAndTaxes_artwork.graphql"
 import { navigate } from "app/system/navigation/navigate"
@@ -15,10 +15,10 @@ const ShippingAndTaxes: React.FC<ShippingAndTaxesProps> = ({ artwork }) => {
 
   const handleLearnMorePress = () => {
     if (!!taxInfo?.moreInfo?.url) {
-      const payload = {
+      const payload: TappedLearnMore = {
         action: ActionType.tappedLearnMore,
-        context_module: "artworkDetails",
-        type: "Link",
+        context_module: ContextModule.artworkDetails,
+        context_screen_owner_type: OwnerType.artwork,
         subject: "Learn more",
         flow: "Shipping",
       }
