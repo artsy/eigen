@@ -109,6 +109,7 @@ describe("PrivateArtworkMetadata", () => {
 
     fireEvent.press(screen.getAllByTestId("expandableAccordion")[0])
     expect(mockTrackEvent).toBeCalledWith({
+      action: "toggledAccordion",
       context_module: "aboutTheWork",
       context_owner_type: "artwork",
       expand: true,
@@ -127,6 +128,7 @@ describe("PrivateArtworkMetadata", () => {
 
     fireEvent.press(screen.getAllByTestId("expandableAccordion")[1])
     expect(mockTrackEvent).toBeCalledWith({
+      action: "toggledAccordion",
       context_module: "aboutTheWork",
       context_owner_type: "artwork",
       expand: false,
@@ -145,6 +147,7 @@ describe("PrivateArtworkMetadata", () => {
 
     fireEvent.press(screen.getAllByTestId("expandableAccordion")[2])
     expect(mockTrackEvent).toBeCalledWith({
+      action: "toggledAccordion",
       context_module: "aboutTheWork",
       context_owner_type: "artwork",
       expand: false,

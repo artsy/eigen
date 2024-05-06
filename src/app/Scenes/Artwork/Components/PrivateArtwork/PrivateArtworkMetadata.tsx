@@ -1,3 +1,5 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { ToggledAccordion } from "@artsy/cohesion/dist/Schema/Events/UserExperienceInteractions"
 import { PrivateArtworkMetadata_artwork$key } from "__generated__/PrivateArtworkMetadata_artwork.graphql"
 import { Expandable } from "app/Components/Expandable"
 import { HTML } from "app/Components/HTML"
@@ -79,22 +81,25 @@ export const PrivateArtworkMetadata: React.FC<PrivateArtworkMetadataProps> = ({ 
 }
 
 const tracks = {
-  tappedConditionExpand: (isExpanded: boolean) => ({
-    context_module: "aboutTheWork",
-    context_owner_type: "artwork",
-    expand: isExpanded,
+  tappedConditionExpand: (expand: boolean): ToggledAccordion => ({
+    action: ActionType.toggledAccordion,
+    context_module: ContextModule.aboutTheWork,
+    context_owner_type: OwnerType.artwork,
+    expand: expand,
     subject: "Condition",
   }),
-  tappedProvenanceExpand: (isExpanded: boolean) => ({
-    context_module: "aboutTheWork",
-    context_owner_type: "artwork",
-    expand: isExpanded,
+  tappedProvenanceExpand: (expand: boolean): ToggledAccordion => ({
+    action: ActionType.toggledAccordion,
+    context_module: ContextModule.aboutTheWork,
+    context_owner_type: OwnerType.artwork,
+    expand: expand,
     subject: "Provenance",
   }),
-  tappedExhibitionHistoryExpand: (isExpanded: boolean) => ({
-    context_module: "aboutTheWork",
-    context_owner_type: "artwork",
-    expand: isExpanded,
+  tappedExhibitionHistoryExpand: (expand: boolean): ToggledAccordion => ({
+    action: ActionType.toggledAccordion,
+    context_module: ContextModule.aboutTheWork,
+    context_owner_type: OwnerType.artwork,
+    expand: expand,
     subject: "Exhibition History",
   }),
 }
