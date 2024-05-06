@@ -26,6 +26,8 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
   const { trackEvent } = useTracking()
 
   const hasImages = artwork?.figures?.length > 0
+  const displaySubmissionStateSection =
+    consignmentSubmission?.state && consignmentSubmission?.state !== "DRAFT"
 
   return (
     <Join separator={<Spacer y={1} />}>
@@ -71,9 +73,9 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
         </Text>
       </Flex>
 
-      {!!consignmentSubmission?.displayText && (
+      {!!displaySubmissionStateSection && (
         <Flex px={2} mt={2}>
-          <MyCollectionArtworkSubmissionStatus displayText={consignmentSubmission?.displayText} />
+          <MyCollectionArtworkSubmissionStatus artwork={artwork} />
         </Flex>
       )}
 
@@ -98,9 +100,10 @@ const myCollectionArtworkHeaderFragment = graphql`
     slug
     title
     consignmentSubmission {
-      displayText
+      state
     }
     submissionId
+    ...MyCollectionArtworkSubmissionStatus_submissionState
   }
 `
 
