@@ -23,7 +23,7 @@ const tappedPurchaseEvent = {
   context_owner_slug: "slug-1",
   context_owner_type: "conversation",
   impulse_conversation_id: "123",
-  flow: "",
+  flow: undefined,
 }
 
 describe("OpenInquiryModalButtonTestQueryRenderer", () => {
@@ -51,9 +51,9 @@ describe("OpenInquiryModalButtonTestQueryRenderer", () => {
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const renderer = renderWithWrappers(<TestRenderer />)
+    const view = renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, mockResolvers)
-    return renderer
+    return view
   }
 
   it("renders Purchase and Make Offer CTAs", () => {
@@ -192,12 +192,12 @@ describe("OpenInquiryModalButtonTestQueryRenderer", () => {
 
   describe("Artsy guarantee message ad link", () => {
     it("display the correct message and button", () => {
-      const { queryByText } = getWrapper({
+      const { getByText } = getWrapper({
         Artwork: () => ({ internalID: "fancy-art", isOfferableFromInquiry: true }),
       })
 
-      expect(queryByText("The Artsy Guarantee")).toBeDefined()
-      expect(queryByText("Make an Offer")).toBeDefined()
+      expect(getByText("The Artsy Guarantee")).toBeDefined()
+      expect(getByText("Make an Offer")).toBeDefined()
     })
 
     it("navigates to the buyer guarantee page when tapped", () => {
