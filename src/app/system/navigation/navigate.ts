@@ -10,7 +10,6 @@ import { propsStore } from "app/store/PropsStore"
 import { postEventToProviders } from "app/utils/track/providers"
 import { visualize } from "app/utils/visualizer"
 import { InteractionManager, Linking, Platform } from "react-native"
-import { saveDevNavigationStateSelectedTab } from "./useReloadedDevNavigationState"
 
 export interface ViewDescriptor extends ViewOptions {
   type: "react" | "native"
@@ -178,7 +177,6 @@ export function switchTab(tab: BottomTabType, props?: object) {
   }
   GlobalStore.actions.bottomTabs.setSelectedTab(tab)
   LegacyNativeModules.ARScreenPresenterModule.switchTab(tab)
-  saveDevNavigationStateSelectedTab(tab)
 }
 
 const tracks = {

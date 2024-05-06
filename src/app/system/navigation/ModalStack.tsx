@@ -1,11 +1,12 @@
 import { NavigationContainer, Route } from "@react-navigation/native"
 import {
   CardStyleInterpolators,
-  createStackNavigator,
   StackCardStyleInterpolator,
+  createStackNavigator,
 } from "@react-navigation/stack"
 import { addBreadcrumb } from "@sentry/react-native"
 import { AppModule, modules } from "app/AppRegistry"
+import { LoadingSpinner } from "app/Components/Modals/LoadingModal"
 import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -17,6 +18,7 @@ import { useReloadedDevNavigationState } from "./useReloadedDevNavigationState"
 
 const Stack = createStackNavigator()
 
+const MODAL_NAVIGATION_STACK_STATE_KEY = "MODAL_NAVIGATION_STACK_STATE_KEY"
 /**
  * ModalStack is the root navigation stack in the app. The root screen in this stack is
  * the main app (with bottom tabs, etc), and then whenever we present a modal it gets
@@ -24,7 +26,9 @@ const Stack = createStackNavigator()
  * transitions etc.
  */
 export const ModalStack: React.FC = ({ children }) => {
-  const initialState = useReloadedDevNavigationState("main_modal_stack", __unsafe_mainModalStackRef)
+  const { isReady, initialState, saveSession } = useReloadedDevNavigationState(
+    MODAL_NAVIGATION_STACK_STATE_KEY
+  )
   const { setSessionState: setNavigationReady } = GlobalStore.actions
 
   // Code for Sift tracking; needs to be manually fired on Android
@@ -33,6 +37,10 @@ export const ModalStack: React.FC = ({ children }) => {
     "AREnableAdditionalSiftAndroidTracking"
   )
   const trackSiftAndroid = Platform.OS === "android" && enableAdditionalSiftAndroidTracking
+
+  if (!isReady) {
+    return <LoadingSpinner />
+  }
 
   return (
     <NavigationContainer
@@ -47,7 +55,9 @@ export const ModalStack: React.FC = ({ children }) => {
           SiftReactNative.upload()
         }
       }}
-      onStateChange={() => {
+      onStateChange={(state) => {
+        saveSession(state)
+
         const currentRoute = __unsafe_mainModalStackRef.current?.getCurrentRoute()
 
         if (currentRoute) {
