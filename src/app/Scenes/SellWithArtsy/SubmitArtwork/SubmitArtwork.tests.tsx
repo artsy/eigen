@@ -149,6 +149,8 @@ describe(SubmitArtwork, () => {
 
       fireEvent.press(saveAndContinueButton)
 
+      await flushPromiseQueue()
+
       expect(createConsignSubmissionMock).toHaveBeenLastCalledWith(
         expect.objectContaining({ state: "DRAFT" })
       )
@@ -162,6 +164,8 @@ describe(SubmitArtwork, () => {
       const saveAndContinueButton = screen.getByTestId("Submission_ArtworkDetails_Button")
 
       fireEvent.press(saveAndContinueButton)
+
+      await flushPromiseQueue()
 
       expect(createConsignSubmissionMock).toHaveBeenLastCalledWith(
         expect.objectContaining({ state: "DRAFT" })
@@ -187,6 +191,8 @@ describe(SubmitArtwork, () => {
       const saveAndContinueButton = screen.getByTestId("Submission_ArtworkDetails_Button")
 
       fireEvent.press(saveAndContinueButton)
+
+      await flushPromiseQueue()
 
       expect(createConsignSubmissionMock).toHaveBeenLastCalledWith(
         expect.objectContaining({ state: "DRAFT" })

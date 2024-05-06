@@ -49,15 +49,9 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
     setFocused(false)
   }
 
-  console.log({
-    error: errors.artistId,
-    showError: !focused && !isArtistSelected,
-    focused,
-    isArtistSelected,
-  })
   return (
     <SearchContext.Provider value={searchProviderValues}>
-      <AnimateHeight>
+      <AnimateHeight initialHeight={140}>
         <Input
           title={title || undefined}
           placeholder={placeholder}

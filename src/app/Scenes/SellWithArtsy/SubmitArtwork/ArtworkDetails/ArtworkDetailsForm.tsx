@@ -65,7 +65,6 @@ export const ArtworkDetailsForm: React.FC = () => {
       />
 
       <StandardSpace />
-      <Spacer y={2} />
 
       <CategoryPicker<AcceptableCategoryValue>
         handleChange={(category) => {
