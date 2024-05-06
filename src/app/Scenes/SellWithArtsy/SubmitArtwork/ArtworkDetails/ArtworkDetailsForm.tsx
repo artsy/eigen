@@ -68,10 +68,14 @@ export const ArtworkDetailsForm: React.FC = () => {
       <Spacer y={2} />
 
       <CategoryPicker<AcceptableCategoryValue>
-        handleChange={(category) => setFieldValue("category", category)}
+        handleChange={(category) => {
+          setFieldValue("category", category)
+        }}
         options={categories}
         required
         value={values.category}
+        error={errors.category ? "Medium is a required field" : undefined}
+        onModalFinishedClosing={() => validateField("category")}
       />
 
       <Input

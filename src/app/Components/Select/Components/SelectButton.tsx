@@ -30,6 +30,7 @@ export const SelectButton: React.FC<{
   title?: string
   tooltipText?: string | JSX.Element
   value?: React.ReactNode
+  error?: string
 }> = ({
   disabled,
   hasError,
@@ -43,11 +44,12 @@ export const SelectButton: React.FC<{
   title,
   tooltipText,
   value,
+  error,
 }) => {
   const space = useSpace()
 
   const variant: InputVariant = getInputVariant({
-    hasError: !!hasError,
+    hasError: !!hasError || !!error,
     disabled: !!disabled,
   })
 
@@ -137,12 +139,24 @@ export const SelectButton: React.FC<{
           </Flex>
         </AnimatedFlex>
       </Touchable>
-      {!!required || !!optional ? (
+      {/* No need to show required if we have an error message */}
+      {(!!required || !!optional) && !error ? (
         <Text color="black60" variant="xs" pl={`${HORIZONTAL_PADDING}px`} mt={0.5}>
           {!!required && "* Required"}
           {!!optional && "* Optional"}
         </Text>
       ) : null}
+      {!!error && (
+        <Text
+          color="red100"
+          pl={`${HORIZONTAL_PADDING}px`}
+          mt={0.5}
+          variant="xs"
+          testID="input-error"
+        >
+          {error}
+        </Text>
+      )}
     </>
   )
 }
