@@ -41,8 +41,8 @@ describe("ArtsyGuarantee", () => {
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedLearnMore",
       context_module: "artworkDetails",
+      context_screen_owner_type: "artwork",
       subject: "Learn more",
-      type: "Link",
       flow: "Artsy Guarantee",
     })
   })
