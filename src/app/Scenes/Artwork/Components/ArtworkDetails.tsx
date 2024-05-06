@@ -2,9 +2,11 @@ import { Spacer, Flex, Box, Text, Join } from "@artsy/palette-mobile"
 import { ArtworkDetails_artwork$key } from "__generated__/ArtworkDetails_artwork.graphql"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
+import { Schema } from "app/utils/track"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { graphql, useFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 import { ArtworkDetailsRow } from "./ArtworkDetailsRow"
 import { RequestConditionReportQueryRenderer } from "./RequestConditionReport"
 
@@ -105,6 +107,19 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({
 
   const displayItems = isCollapsed ? allDisplayItems.slice(0, COLLAPSED_COUNT) : allDisplayItems
 
+  const { trackEvent } = useTracking()
+
+  const handleReadMoreTap = () => {
+    const properties = {
+      action_type: Schema.ActionTypes.Tap,
+      context_module: "artworkDetails",
+      subject: "Read more",
+      type: "Link",
+    }
+    trackEvent(properties)
+    setIsCollapsed(false)
+  }
+
   if (!displayItems.length) {
     return null
   }
@@ -123,7 +138,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({
             color="black100"
             textAlign="center"
             underline
-            onPress={() => setIsCollapsed(false)}
+            onPress={() => handleReadMoreTap()}
           >
             Read More
           </Text>
