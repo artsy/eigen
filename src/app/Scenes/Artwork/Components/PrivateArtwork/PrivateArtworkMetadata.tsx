@@ -40,7 +40,7 @@ export const PrivateArtworkMetadata: React.FC<PrivateArtworkMetadataProps> = ({ 
       {!!data.conditionDescription?.details && (
         <>
           <Expandable
-            trackingFunction={() => {
+            onTrack={() => {
               trackEvent(tracks.toggledMetadataAccordion("Condition", isFirstItemExpanded))
             }}
             label="Condition"
@@ -54,7 +54,7 @@ export const PrivateArtworkMetadata: React.FC<PrivateArtworkMetadataProps> = ({ 
       {!!data.privateProvenance && (
         <>
           <Expandable
-            trackingFunction={() => {
+            onTrack={() => {
               trackEvent(tracks.toggledMetadataAccordion("Provenance", isSecondItemExpanded))
             }}
             label="Provenance"
@@ -67,7 +67,7 @@ export const PrivateArtworkMetadata: React.FC<PrivateArtworkMetadataProps> = ({ 
 
       {!!data.privateExhibitionHistory && (
         <Expandable
-          trackingFunction={() => {
+          onTrack={() => {
             trackEvent(tracks.toggledMetadataAccordion("Exhibition History", isThirdItemExpanded))
           }}
           label="Exhibition History"
