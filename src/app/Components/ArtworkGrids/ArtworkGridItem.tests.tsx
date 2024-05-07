@@ -314,6 +314,18 @@ describe("ArtworkGridItem", () => {
       expect(screen.queryByTestId("filled-heart-icon")).toBeNull()
     })
   })
+
+  describe("unlisted artworks", () => {
+    it("shows exclusive access", async () => {
+      renderWithRelay({
+        Artwork: () => ({
+          isUnlisted: true,
+        }),
+      })
+
+      expect(screen.getByText("Exclusive Access")).toBeTruthy()
+    })
+  })
 })
 
 const artwork = {
@@ -327,6 +339,7 @@ const artwork = {
     cascadingEndTimeIntervalMinutes: null,
   },
   isSaved: false,
+  isUnlisted: false,
   saleArtwork: null,
   image: {
     url: "artsy.net/image-url",
