@@ -12,16 +12,20 @@ import { IMAGE_SIZE } from "app/Scenes/Search/components/SearchResultImage"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { sortBy } from "lodash"
-import { useLazyLoadQuery, graphql } from "react-relay"
+import { graphql, useLazyLoadQuery } from "react-relay"
 
 interface ArtistAutosuggestProps {
   onResultPress: (result: AutosuggestResult) => void
   onSkipPress?: (artistDisplayName: string) => void
+  disableCustomArtistCreation?: boolean
+  onlyP1Artists?: boolean
 }
 
 export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
   onResultPress,
   onSkipPress,
+  disableCustomArtistCreation,
+  onlyP1Artists = false,
 }) => {
   const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
 
@@ -36,9 +40,17 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
     { fetchPolicy: "network-only" }
   )
 
-  const collectedArtists = extractNodes(queryData.me?.userInterestsConnection).filter(
-    (node) => node.__typename === "Artist"
-  )
+  const collectedArtists = extractNodes(queryData.me?.userInterestsConnection).filter((node) => {
+    if (node.__typename === "Artist") {
+      if (onlyP1Artists) {
+        return node.targetSupply?.isP1
+      }
+      return true
+    }
+
+    return false
+  })
+
   const filteredCollecteArtists = sortBy(
     filterArtistsByKeyword(
       collectedArtists as Array<{ displayLabel: string | null }>,
@@ -91,11 +103,11 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
               showResultType={false}
               showQuickNavigationButtons={false}
               onResultPress={onResultPress}
-              HeaderComponent={HeaderComponent}
+              HeaderComponent={!disableCustomArtistCreation ? HeaderComponent : undefined}
               ListHeaderComponent={() =>
                 onlyShowCollectedArtists ? (
                   <Text mb={2} mt={2}>
-                    Artists in My Collection
+                    {onlyP1Artists ? "Eligible" : ""} Artists in My Collection
                   </Text>
                 ) : (
                   <Spacer y={2} />
@@ -104,19 +116,25 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
               ListEmptyComponent={() => (
                 <Flex width="100%" my={2}>
                   <Text>We didn't find "{trimmedQuery}" on Artsy.</Text>
-                  <Text>You can add their name in the artwork details.</Text>
-                  <Button
-                    variant="outline"
-                    onPress={() => onSkipPress?.(trimmedQuery)}
-                    mt={4}
-                    block
-                  >
-                    Add Artist
-                  </Button>
+                  {!disableCustomArtistCreation && (
+                    <>
+                      <Text>You can add their name in the artwork details.</Text>
+                      <Button
+                        variant="outline"
+                        onPress={() => onSkipPress?.(trimmedQuery)}
+                        mt={4}
+                        block
+                      >
+                        Add Artist
+                      </Button>
+                    </>
+                  )}
                 </Flex>
               )}
               ListFooterComponent={() =>
-                !onlyShowCollectedArtists && !!enableCollectedArtists ? (
+                !disableCustomArtistCreation &&
+                !onlyShowCollectedArtists &&
+                !!enableCollectedArtists ? (
                   <Touchable
                     accessibilityLabel="Create New Artist"
                     haptic

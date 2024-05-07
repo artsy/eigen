@@ -31,6 +31,7 @@ import { RecentlyViewedScreen } from "app/Scenes/RecentlyViewed/RecentlyViewed"
 import { SavedArtworks } from "app/Scenes/SavedArtworks/SavedArtworks"
 import { AlertArtworks } from "app/Scenes/SavedSearchAlert/AlertArtworks"
 import { SearchScreen, SearchScreenQuery } from "app/Scenes/Search/Search"
+import { SubmissionArtworkForm } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmissionArtworkForm"
 import { SimilarToRecentlyViewedScreen } from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
 import { ArtsyKeyboardAvoidingViewContext } from "app/utils/ArtsyKeyboardAvoidingView"
 import { SafeAreaInsets, useScreenDimensions } from "app/utils/hooks"
@@ -147,7 +148,6 @@ import {
   SEGMENT_TRACKING_PROVIDER,
   SegmentTrackingProvider,
 } from "./utils/track/SegmentTrackingProvider"
-import { SubmissionArtworkForm } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmissionArtworkForm"
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
