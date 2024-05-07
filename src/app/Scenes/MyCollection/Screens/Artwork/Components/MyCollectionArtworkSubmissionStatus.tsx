@@ -1,34 +1,31 @@
 import { Flex, Box, Text, Touchable } from "@artsy/palette-mobile"
-import { toTitleCase } from "@artsy/to-title-case"
+import { MyCollectionArtworkSubmissionStatus_submissionState$key } from "__generated__/MyCollectionArtworkSubmissionStatus_submissionState.graphql"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { ArtworkSubmissionStatusFAQ } from "app/Scenes/MyCollection/Screens/Artwork/ArtworkSubmissionStatusFAQ"
 import { useState } from "react"
+import { useFragment, graphql } from "react-relay"
 
-// TODO:- We are using displayText for Statuses for now. Consider changing the logic when proper statuses are made available on Metaphysics.
-// See https://artsyproduct.atlassian.net/browse/SWA-217
-export const STATUSES: { [key: string]: { color: string; text: string } } = {
-  "submission in progress": { color: "yellow150", text: "In Progress" },
-  "submission evaluated": { color: "orange150", text: "Evaluation Complete" },
-  sold: { color: "black100", text: "Artwork Sold" },
+interface MyCollectionArtworkSubmissionStatusProps {
+  artwork: MyCollectionArtworkSubmissionStatus_submissionState$key
 }
 
-export const MyCollectionArtworkSubmissionStatus: React.FC<{ displayText?: string }> = ({
-  displayText,
-}) => {
+export const MyCollectionArtworkSubmissionStatus: React.FC<
+  MyCollectionArtworkSubmissionStatusProps
+> = ({ artwork }) => {
   const [isSubmissionStatusModalVisible, setIsSubmissionStatusModalVisible] =
     useState<boolean>(false)
 
-  const wasSubmitted = Boolean(displayText)
-  if (!wasSubmitted) {
-    return null
-  }
+  const { consignmentSubmission } = useFragment(submissionStateFragment, artwork)
+  if (!consignmentSubmission) return null
 
-  const approvedDisplayText = STATUSES[(displayText as string).toLowerCase()]?.text
+  const { state, stateLabel } = consignmentSubmission
+  if (!state) return null
+  if (state === "DRAFT") return null
 
-  if (!Boolean(approvedDisplayText)) {
-    return null
-  }
+  let stateLabelColor = "yellow150"
+  if (["APPROVED", "REJECTED", "CLOSED", "PUBLISHED"].includes(state)) stateLabelColor = "orange150"
+
   return (
     <Box testID="MyCollectionArtworkSubmissionStatus-Container">
       <Flex>
@@ -50,14 +47,19 @@ export const MyCollectionArtworkSubmissionStatus: React.FC<{ displayText?: strin
             </Text>
           </Touchable>
         </Flex>
-        <Text
-          lineHeight="16px"
-          mt={1}
-          color={STATUSES[(displayText as string).toLowerCase()]?.color ?? "black100"}
-        >
-          {toTitleCase(approvedDisplayText)}
+        <Text lineHeight="16px" mt={1} color={stateLabelColor}>
+          {stateLabel}
         </Text>
       </Flex>
     </Box>
   )
 }
+
+const submissionStateFragment = graphql`
+  fragment MyCollectionArtworkSubmissionStatus_submissionState on Artwork {
+    consignmentSubmission {
+      state
+      stateLabel
+    }
+  }
+`
