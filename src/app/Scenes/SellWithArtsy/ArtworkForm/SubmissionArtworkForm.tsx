@@ -14,7 +14,7 @@ import { SubmissionArtworkFormPhotos } from "app/Scenes/SellWithArtsy/ArtworkFor
 import { SubmissionArtworkFormProgressBar } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionArtworkFormProgressBar"
 import { SubmissionArtworkFormProvenance } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionArtworkFormProvenance"
 import { SubmissionArtworkFormTitle } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionArtworkFormTitle"
-import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
+import { SubmissionNavigationControls } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionNavigationControls"
 import {
   ArtworkDetailsFormModel,
   artworkDetailsEmptyInitialValues,
@@ -64,7 +64,6 @@ const SubmissionArtworkFormContent: React.FC = ({}) => {
     ARTWORK_SUBMISSION_NAVIGATION_STACK_STATE_KEY
   )
   const initialValues = artworkDetailsEmptyInitialValues as any
-  const { navigateToPreviousStep } = useSubmissionContext()
 
   const handleSubmit = (values: ArtworkDetailsFormModel) => {
     createOrUpdateSubmission(values, "")
@@ -78,10 +77,6 @@ const SubmissionArtworkFormContent: React.FC = ({}) => {
     validationSchema: getCurrentValidationSchema,
   })
 
-  const handleBackPress = () => {
-    navigateToPreviousStep()
-  }
-
   // Revalidate form on step change because the validation schema changes and it does not happen automatically
   useEffect(() => {
     formik.validateForm()
@@ -94,8 +89,7 @@ const SubmissionArtworkFormContent: React.FC = ({}) => {
   return (
     <FormikProvider value={formik}>
       <Screen>
-        <Screen.Header onBack={handleBackPress} />
-
+        <SubmissionNavigationControls />
         <Screen.Body>
           <SubmissionArtworkFormProgressBar />
 
