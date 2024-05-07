@@ -1,4 +1,4 @@
-import { Button, Flex, Input, Spacer, Text } from "@artsy/palette-mobile"
+import { Button, CheckCircleFillIcon, Flex, Input, Spacer, Text } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
 import { ArtworkFormScreen } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmissionArtworkForm"
@@ -25,7 +25,12 @@ export const SubmissionArtworkFormTitle: React.FC<
 
   return (
     <Flex>
-      {!!values.artistSearchResult && <ArtistSearchResult result={values.artistSearchResult} />}
+      {!!values.artistSearchResult && (
+        <ArtistSearchResult
+          result={values.artistSearchResult}
+          icon={<CheckCircleFillIcon fill="green100" ml={0.5} height={18} width={18} />}
+        />
+      )}
 
       <Spacer y={2} />
 
@@ -33,7 +38,7 @@ export const SubmissionArtworkFormTitle: React.FC<
         Add artwork title
       </Text>
 
-      <Input placeholder="Artwork Title" onChangeText={handleChange("title")} />
+      <Input placeholder="Artwork Title" onChangeText={handleChange("title")} autoFocus />
 
       <Spacer y={2} />
 
