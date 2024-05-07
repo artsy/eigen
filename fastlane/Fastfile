@@ -207,15 +207,13 @@ lane :create_next_version_if_needed do
   edit_version_ready = edit_version && edit_version.app_store_state == 'PREPARE_FOR_SUBMISSION'
   live_version_ready = live_version && live_version.app_store_state == 'READY_FOR_SALE'
   if live_version_ready and !edit_version_ready then
-    UI.error("There is a live version that is ready for sale, but there is no editable version we should create one!")
+    UI.info("There is a live version that is ready for sale, but there is no editable version")
     next_version = increment_version_number(live_version.version_string)
+    UI.info("Creating new version #{next_version}")
     update_version_string(version: next_version)
-  else
-    # TODO: don't do in this case
-    next_version = increment_version_number(live_version.version_string)
-    UI.success("Creating new version #{next_version}")
-    update_version_string(version: next_version)
+    prepare_version_update_pr(commit_message: "chore: prepare for next release")
     app.create_app_store_version(platform: "iOS", version_string: next_version)
+  else
     UI.success("There is an editable version in 'Prepare for Submission' status.")
   end
 end

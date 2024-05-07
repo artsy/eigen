@@ -96,12 +96,12 @@ lane :prepare_version_update_pr do |options|
   # Create the new branch in remote and push changes
   sh "git push origin HEAD:refs/heads/#{version_change_branch}"
 
-  # Create pull request
   create_pull_request(
     api_token: ENV["CHANGELOG_GITHUB_TOKEN_KEY"],
     repo: "artsy/eigen",
     title: commit_message,
     head: version_change_branch,
+    assignee: "artsy/mobile-platform",
     base: "main",
     body: "This PR updates the app version to prepare for next release."
   )
