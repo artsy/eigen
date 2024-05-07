@@ -389,7 +389,6 @@ lane :flag_android_beta do |options|
   write_contents_to_file($APP_JSON_PATH, JSON.pretty_generate($APP_JSON))
 end
 
-
 # Codepush
 
 lane :deploy_to_codepush do |options|
