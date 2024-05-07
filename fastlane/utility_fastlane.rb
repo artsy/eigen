@@ -84,7 +84,7 @@ lane :prepare_version_update_pr do |options|
   commit_message = options[:commit_message]
 
   sh "git add ."
-  sh "git commit -m '#{commit_message} --no-verify'"
+  sh "git commit -m '#{commit_message}'"
 
   sh "git remote add http https://github.com/artsy/eigen.git || true"  # '|| true' to ignore errors if remote already exists
 
