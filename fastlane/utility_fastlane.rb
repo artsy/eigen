@@ -1,8 +1,8 @@
 # Utility functions
 
 desc "Updates the version string in app.json"
-lane :update_version_string do
-  new_version = prompt(text: "What is the new human-readable release version?")
+lane :update_version_string do |options|
+  new_version = options[:version] || prompt(text: "What is the new human-readable release version?")
   $APP_JSON['version'] = new_version
   write_contents_to_file($APP_JSON_PATH, JSON.pretty_generate($APP_JSON))
 end
@@ -74,8 +74,37 @@ lane :tag_and_push do |options|
   tag = options[:tag]
   `git tag -d "#{tag}"`
   add_git_tag tag: tag
-  `git remote add http https://github.com/artsy/eigen.git`
+  `git remote add http https://github.com/artsy/eigen.git || true`
   `git push http #{tag} -f`
+end
+
+lane :test_version_update_pr do
+  update_version_string(version: '8.40.0')
+  prepare_version_update_pr(commit_message: "chore: prepare for next release")
+end
+
+desc "Prepares a new branch with version changes, pushes it, and creates a PR"
+lane :prepare_version_update_pr do |options|
+  version_change_branch = "version-update-#{Time.now.strftime('%Y%m%d%H%M%S')}"
+  commit_message = options[:commit_message]
+
+  sh "git add ."
+  sh "git commit -m '#{commit_message} --no-verify'"
+
+  sh "git remote add http https://github.com/artsy/eigen.git || true"  # '|| true' to ignore errors if remote already exists
+
+  # Create the new branch in remote and push changes
+  sh "git push origin HEAD:refs/heads/#{version_change_branch}"
+
+  # Create pull request
+  create_pull_request(
+    api_token: ENV["CHANGELOG_GITHUB_TOKEN_KEY"],
+    repo: "artsy/eigen",
+    title: commit_message,
+    head: version_change_branch,
+    base: "main",
+    body: "This PR updates the app version to prepare for next release."
+  )
 end
 
 lane :check_flags do
