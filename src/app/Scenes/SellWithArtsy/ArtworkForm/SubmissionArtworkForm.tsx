@@ -21,6 +21,7 @@ import {
   getCurrentValidationSchema,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
+import { useReloadedDevNavigationState } from "app/system/navigation/useReloadedDevNavigationState"
 import { FormikProvider, useFormik } from "formik"
 import { useEffect } from "react"
 
@@ -54,9 +55,14 @@ export const SubmissionArtworkForm: React.FC = ({}) => {
     </ArtworkFormStoreProvider>
   )
 }
+const ARTWORK_SUBMISSION_NAVIGATION_STACK_STATE_KEY =
+  "ARTWORK_SUBMISSION_NAVIGATION_STACK_STATE_KEY"
 
 const SubmissionArtworkFormContent: React.FC = ({}) => {
   const currentStep = ArtworkFormStore.useStoreState((state) => state.currentStep)
+  const { isReady, initialState, saveSession } = useReloadedDevNavigationState(
+    ARTWORK_SUBMISSION_NAVIGATION_STACK_STATE_KEY
+  )
   const initialValues = artworkDetailsEmptyInitialValues as any
   const { navigateToPreviousStep } = useSubmissionContext()
 
@@ -81,6 +87,10 @@ const SubmissionArtworkFormContent: React.FC = ({}) => {
     formik.validateForm()
   }, [currentStep])
 
+  if (!isReady) {
+    return null
+  }
+
   return (
     <FormikProvider value={formik}>
       <Screen>
@@ -90,7 +100,14 @@ const SubmissionArtworkFormContent: React.FC = ({}) => {
           <SubmissionArtworkFormProgressBar />
 
           <Flex flex={1}>
-            <NavigationContainer independent ref={__unsafe__SubmissionArtworkFormNavigationRef}>
+            <NavigationContainer
+              independent
+              initialState={initialState}
+              ref={__unsafe__SubmissionArtworkFormNavigationRef}
+              onStateChange={(state) => {
+                saveSession(state)
+              }}
+            >
               <Stack.Navigator
                 // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
                 detachInactiveScreens={false}
