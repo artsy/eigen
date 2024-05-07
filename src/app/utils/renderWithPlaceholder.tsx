@@ -1,3 +1,4 @@
+import { NetworkFailureView } from "app/Components/ErrorViews/NetworkFailureView/NetworkFailureView"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { NotFoundFailureView } from "app/Components/NotFoundFailureView"
 import { getErrorHttpStatusCodes } from "app/Components/RetryErrorBoundary"
@@ -59,6 +60,11 @@ export function renderWithPlaceholder<Props>({
 
       if (isNotFoundError && showNotFoundView) {
         return <NotFoundFailureView error={error} />
+      }
+
+      const isNetworkError = error.message === "Network request failed"
+      if (isNetworkError) {
+        return <NetworkFailureView error={error} onRetry={retry ?? undefined} />
       }
 
       if (renderFallback) {

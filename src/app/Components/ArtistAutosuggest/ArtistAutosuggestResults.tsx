@@ -10,7 +10,7 @@ import {
 import { captureMessage } from "@sentry/react-native"
 import { ArtistAutosuggestResultsQuery } from "__generated__/ArtistAutosuggestResultsQuery.graphql"
 import { ArtistAutosuggestResults_results$data } from "__generated__/ArtistAutosuggestResults_results.graphql"
-import { ErrorView } from "app/Components/ErrorView/ErrorView"
+import { ErrorView } from "app/Components/ErrorViews/ErrorView/ErrorView"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import {
   ProvidePlaceholderContext,

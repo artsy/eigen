@@ -1,3 +1,4 @@
+import { NetworkFailureView } from "app/Components/ErrorViews/NetworkFailureView/NetworkFailureView"
 import React, { Component } from "react"
 import { LoadFailureView } from "./LoadFailureView"
 import { NotFoundFailureView } from "./NotFoundFailureView"
@@ -12,21 +13,21 @@ interface RetryErrorBoundaryProps {
   children: React.ReactNode
 }
 interface RetryErrorBoundaryState {
-  error: Error | null
+  error?: Error
 }
 
 export class RetryErrorBoundary extends Component<
   RetryErrorBoundaryProps,
   RetryErrorBoundaryState
 > {
-  static getDerivedStateFromError(error: Error | null): RetryErrorBoundaryState {
+  static getDerivedStateFromError(error?: Error): RetryErrorBoundaryState {
     return { error }
   }
 
-  state = { error: null }
+  state: RetryErrorBoundaryState = { error: undefined }
 
   _retry = () => {
-    this.setState({ error: null })
+    this.setState({ error: undefined })
   }
 
   render() {
@@ -50,6 +51,11 @@ export class RetryErrorBoundary extends Component<
             error={error}
           />
         )
+      }
+
+      const isNetworkError = error.message === "Network request failed"
+      if (isNetworkError) {
+        return <NetworkFailureView error={error} onRetry={this._retry} />
       }
 
       return <LoadFailureView error={error} onRetry={this._retry} />
