@@ -101,7 +101,7 @@ lane :prepare_version_update_pr do |options|
     repo: "artsy/eigen",
     title: commit_message,
     head: version_change_branch,
-    assignee: "artsy/mobile-platform",
+    assignees: ["artsy/mobile-platform"],
     base: "main",
     body: "This PR updates the app version to prepare for next release."
   )
