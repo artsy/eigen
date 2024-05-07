@@ -35,6 +35,8 @@ export const SubmissionArtworkFormArtist: React.FC<
     }
 
     // TODO: Not use `createOrUpdateSubmission` from old submission flow
+    // TODO: Does it make sense to create a new submission here?
+    // We might end up with a lot of submissions that are never completed
     const submissionId = await createOrUpdateSubmission(updatedValues, formik.values.submissionId)
 
     formik.setFieldValue("submissionId", submissionId)
@@ -49,7 +51,11 @@ export const SubmissionArtworkFormArtist: React.FC<
       </Text>
 
       <Suspense fallback={<Placeholder />}>
-        <ArtistAutosuggest onResultPress={handleResultPress} />
+        <ArtistAutosuggest
+          onResultPress={handleResultPress}
+          disableCustomArtistCreation
+          onlyP1Artists
+        />
       </Suspense>
     </Flex>
   )
