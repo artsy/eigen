@@ -10,7 +10,8 @@ import { ArtworkDetailsFormModel, artworkDetailsValidationSchema } from "./valid
 export const ArtworkDetails: React.FC<{
   handlePress: (formValues: ArtworkDetailsFormModel) => void
   isLastStep: boolean
-}> = ({ handlePress, isLastStep }) => {
+  scrollToTop?: () => void
+}> = ({ handlePress, isLastStep, scrollToTop }) => {
   const { artworkDetails } = GlobalStore.useAppState((state) => state.artworkSubmission.submission)
 
   return (
@@ -34,16 +35,25 @@ export const ArtworkDetails: React.FC<{
         initialValues={artworkDetails}
         onSubmit={handlePress}
         validationSchema={artworkDetailsValidationSchema}
-        validateOnMount
+        // Validate on blur only when injecting existing values from my collection
+        validateOnMount={artworkDetails.myCollectionArtworkID ? true : false}
       >
-        {({ values, isValid }) => {
+        {({ values, isValid, dirty, validateForm }) => {
           return (
             <>
               <ArtworkDetailsForm />
               <Spacer y={2} />
               <CTAButton
-                disabled={!isValid}
-                onPress={() => handlePress(values)}
+                disabled={!isValid && dirty}
+                onPress={() => {
+                  validateForm().then((errors) => {
+                    if (Object.keys(errors).length === 0) {
+                      handlePress(values)
+                    } else {
+                      scrollToTop?.()
+                    }
+                  })
+                }}
                 testID="Submission_ArtworkDetails_Button"
               >
                 {isLastStep ? "Submit Artwork" : "Save & Continue"}

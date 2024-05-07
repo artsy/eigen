@@ -38,7 +38,7 @@ const mockEnvironment = getMockRelayEnvironment()
 describe("ArtworkDetails", () => {
   const TestRenderer = ({ isLastStep = false }: { isLastStep?: boolean }) => (
     <RelayEnvironmentProvider environment={mockEnvironment}>
-      <ArtworkDetails handlePress={jest.fn()} isLastStep={isLastStep} />
+      <ArtworkDetails handlePress={jest.fn()} isLastStep={isLastStep} scrollToTop={jest.fn()} />
     </RelayEnvironmentProvider>
   )
 
@@ -127,20 +127,19 @@ describe("ArtworkDetails", () => {
 
       await flushPromiseQueue()
 
-      // title missing
-      fireEvent.changeText(inputs.title, "")
-      expect(SaveButton.props.disabled).toBe(true)
+      // All fields missing
+      expect(SaveButton.props.disabled).toBe(false)
 
-      // year missing
-      fireEvent.changeText(inputs.year, "")
+      // only title available
       fireEvent.changeText(inputs.title, "someTitle")
+      await flushPromiseQueue()
+
       expect(SaveButton.props.disabled).toBe(true)
 
       // material missing
       fireEvent.changeText(inputs.material, "")
       fireEvent.changeText(inputs.year, "1999")
       expect(SaveButton.props.disabled).toBe(true)
-
       // height missing
       fireEvent.changeText(inputs.height, "")
       fireEvent.changeText(inputs.material, "oil on c")

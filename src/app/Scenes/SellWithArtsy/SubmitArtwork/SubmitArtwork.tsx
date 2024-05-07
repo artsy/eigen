@@ -83,6 +83,8 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
   const [userPhone, setUserPhone] = useState("")
   const [userName, setUserName] = useState("")
 
+  const scrollViewRef = useRef<ScrollView>(null)
+
   useEffect(() => {
     fetchUserContactInformation().then((me) => {
       if (me.email) {
@@ -181,7 +183,15 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
           ...staticValues,
           title: "Artwork Details",
           contextModule: ContextModule.artworkDetails,
-          Content: <ArtworkDetails handlePress={handlePress} isLastStep={isLastStep} />,
+          Content: (
+            <ArtworkDetails
+              handlePress={handlePress}
+              isLastStep={isLastStep}
+              scrollToTop={() => {
+                scrollViewRef.current?.scrollTo({ y: 0 })
+              }}
+            />
+          ),
         }
       case STEPS.UploadPhotos:
         return {
@@ -194,7 +204,6 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
   })
 
   const stepsRefs = useRef<CollapsibleMenuItem[]>(new Array(items.length).fill(null)).current
-  const scrollViewRef = useRef<ScrollView>(null)
 
   const expandCollapsibleMenuContent = (indexToExpand: number) => {
     setActiveStep(indexToExpand)

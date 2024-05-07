@@ -30,7 +30,8 @@ import { ArtworkDetailsFormModel } from "./validation"
 const StandardSpace = () => <Spacer y={2} />
 
 export const ArtworkDetailsForm: React.FC = () => {
-  const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
+  const { values, setFieldValue, handleChange, errors, validateField } =
+    useFormikContext<ArtworkDetailsFormModel>()
   const [isRarityInfoModalVisible, setIsRarityInfoModalVisible] = useState(false)
   const [isProvenanceInfoModalVisible, setIsProvenanceInfoModalVisible] = useState(false)
   const optionalDimensions = useFeatureFlag("ARSWAMakeAllDimensionsOptional")
@@ -54,19 +55,26 @@ export const ArtworkDetailsForm: React.FC = () => {
         placeholder="Add title or write 'Unknown'"
         testID="Submission_TitleInput"
         value={values.title}
-        onChangeText={(e) => setFieldValue("title", e)}
+        onChangeText={(text) => {
+          handleChange("title")(text)
+        }}
+        onBlur={() => validateField("title")}
         accessibilityLabel="Title"
         required
+        error={errors.title}
       />
 
       <StandardSpace />
-      <Spacer y={2} />
 
       <CategoryPicker<AcceptableCategoryValue>
-        handleChange={(category) => setFieldValue("category", category)}
+        handleChange={(category) => {
+          setFieldValue("category", category)
+        }}
         options={categories}
         required
         value={values.category}
+        error={errors.category ? "Medium is a required field" : undefined}
+        onModalFinishedClosing={() => validateField("category")}
       />
 
       <Input
