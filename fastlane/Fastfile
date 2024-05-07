@@ -176,23 +176,6 @@ lane :set_git_properties_ios do
   set_info_plist_value(path: absolute_path, key: 'GITRemoteOriginURL', value: GIT_REMOTE_ORIGIN_URL)
 end
 
-desc 'Create a new version in app store connect'
-lane :create_next_app_version do |options|
-  api_key = generate_app_store_connect_api_key
-
-  next_version = options[:next_version_code]
-
-  puts "Let's create a new app version #{next_version}."
-  deliver(
-    api_key: api_key,
-    app_version: next_version,
-    skip_metadata: true,
-    automatic_release: false,
-    phased_release: false,
-    submit_for_review: false
-  )
-end
-
 desc 'Create a new version in app store connect if one does not exist'
 lane :create_next_version_if_needed do
   api_token = generate_spaceship_token
@@ -207,13 +190,23 @@ lane :create_next_version_if_needed do
   live_version_ready = live_version && live_version.app_store_state == 'READY_FOR_SALE'
   if live_version_ready and !edit_version_ready then
     UI.info("There is a live version that is ready for sale, but there is no editable version")
-    next_version = increment_version_number(live_version.version_string)
     UI.info("Creating new version #{next_version}")
+    next_version = increment_version_number(live_version.version_string)
     update_version_string(version: next_version)
     prepare_version_update_pr(commit_message: "chore: prepare for next release")
     app.create_app_store_version(platform: "iOS", version_string: next_version)
   else
-    UI.success("There is an editable version in 'Prepare for Submission' status.")
+    if (edit_version_ready) then
+      UI.success("There is an editable version ready for betas.")
+    else
+      message = <<~MSG
+      :x: :iphone:
+      New app version could not be created.
+      Create a new version in app store connect to keep shipping betas.
+      https://appstoreconnect.apple.com/apps/703796080
+    MSG
+      slack(message: message, default_payloads: [], link_names: true)
+    end
   end
 end
 
@@ -477,20 +470,6 @@ def set_codepush_release_values(deployment_name, platform)
   $APP_JSON['codePushDist'] = date_str
   write_contents_to_file($APP_JSON_PATH, JSON.pretty_generate($APP_JSON))
   [release_name, date_str, latest_version]
-end
-
-lane :latest_betas do
-  api_key = generate_app_store_connect_api_key
-  parent_version_name = $APP_JSON['version']
-  ios_build_number = latest_testflight_build_number(
-    api_key: api_key
-  )
-  android_build_number = google_play_track_version_codes(
-      track: 'alpha'
-  ).first
-  puts "Parent latest version: #{parent_version_name}"
-  puts "iOS latest version: #{ios_build_number}"
-  puts "Android latest version: #{android_build_number}"
 end
 
 error do |lane, exception|

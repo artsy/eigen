@@ -102,6 +102,20 @@ lane :prepare_version_update_pr do |options|
   )
 end
 
+lane :latest_betas do
+  api_key = generate_app_store_connect_api_key
+  parent_version_name = $APP_JSON['version']
+  ios_build_number = latest_testflight_build_number(
+    api_key: api_key
+  )
+  android_build_number = google_play_track_version_codes(
+      track: 'alpha'
+  ).first
+  puts "Parent latest version: #{parent_version_name}"
+  puts "iOS latest version: #{ios_build_number}"
+  puts "Android latest version: #{android_build_number}"
+end
+
 lane :check_flags do
   sh('yarn check-flags')
   flag_file = File.read('./flags.json')
