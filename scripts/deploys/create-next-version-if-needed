@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+# Checks if an app edit version is needed and creates one if so
+bundle exec fastlane create_next_version_if_needed

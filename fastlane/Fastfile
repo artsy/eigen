@@ -196,7 +196,6 @@ end
 desc 'Create a new version in app store connect if one does not exist'
 lane :create_next_version_if_needed do
   api_token = generate_spaceship_token
-
   Spaceship::ConnectAPI.token = api_token
 
   app = Spaceship::ConnectAPI::App.find(BUNDLE_ID)
@@ -216,13 +215,6 @@ lane :create_next_version_if_needed do
   else
     UI.success("There is an editable version in 'Prepare for Submission' status.")
   end
-end
-
-def increment_version_number(current_version)
-  UI.success("Got live version #{current_version}")
-  major, minor, patch = current_version.split('.').map(&:to_i)
-  new_minor = minor + 1
-  "#{major}.#{new_minor}.#{patch}"
 end
 
 # Android Lanes

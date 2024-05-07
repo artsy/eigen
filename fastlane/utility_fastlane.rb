@@ -78,11 +78,6 @@ lane :tag_and_push do |options|
   `git push http #{tag} -f`
 end
 
-lane :test_version_update_pr do
-  update_version_string(version: '8.40.0')
-  prepare_version_update_pr(commit_message: "chore: prepare for next release")
-end
-
 desc "Prepares a new branch with version changes, pushes it, and creates a PR"
 lane :prepare_version_update_pr do |options|
   version_change_branch = "version-update-#{Time.now.strftime('%Y%m%d%H%M%S')}"
@@ -101,7 +96,7 @@ lane :prepare_version_update_pr do |options|
     repo: "artsy/eigen",
     title: commit_message,
     head: version_change_branch,
-    assignees: ["mobile-platform", "brainbicycle"],
+    assignees: ["brainbicycle", "gkartalis"],
     base: "main",
     body: "This PR updates the app version to prepare for next release."
   )
@@ -150,6 +145,12 @@ def generate_spaceship_token
     is_key_content_base64: true,
     in_house: false
   )
+end
+
+def increment_version_number(current_version)
+  major, minor, patch = current_version.split('.').map(&:to_i)
+  new_minor = minor + 1
+  "#{major}.#{new_minor}.#{patch}"
 end
 
 def format_build_number(build_number)
