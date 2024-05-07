@@ -29,9 +29,7 @@ export const SubmissionArtworkFormPhotos: React.FC<
 
       <Spacer y={2} />
 
-      <Text variant="lg" mb={2}>
-        Upload photos of your artwork
-      </Text>
+      <Text variant="lg">Upload photos of your artwork</Text>
 
       <Spacer y={2} />
 
@@ -39,8 +37,6 @@ export const SubmissionArtworkFormPhotos: React.FC<
         Add more photos to help speed up your submission and increase your chances of selling. Tips
         for taking photos
       </Text>
-
-      <Spacer y={2} />
 
       <UploadPhotosForm isAnyPhotoLoading={isAnyPhotoLoading} />
 

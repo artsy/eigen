@@ -13,6 +13,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { useFormikContext } from "formik"
 import React, { useEffect, useState } from "react"
+import { LayoutAnimation } from "react-native"
 import { useTracking } from "react-tracking"
 import { addPhotoToConsignment } from "./utils/addPhotoToConsignment"
 import {
@@ -48,6 +49,8 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
 
     // set each to-be-uploaded photo's loading status
     photos.forEach((p: Photo) => (p.loading = true))
+    // Animate the appearance of newly added photos
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     setFieldValue("photos", [...values.photos, ...photos])
 
     for (const photo of photos) {
