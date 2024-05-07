@@ -5,7 +5,7 @@ import { ARTWORK_FORM_STEPS } from "app/Scenes/SellWithArtsy/ArtworkForm/Submiss
 export const SubmissionArtworkFormProgressBar: React.FC = ({}) => {
   const currentStep = ArtworkFormStore.useStoreState((state) => state.currentStep)
 
-  const progress = (ARTWORK_FORM_STEPS.indexOf(currentStep) + 1) / ARTWORK_FORM_STEPS.length
+  const progress = ARTWORK_FORM_STEPS.indexOf(currentStep) / ARTWORK_FORM_STEPS.length
 
   return <ProgressBar progress={progress * 100} />
 }
