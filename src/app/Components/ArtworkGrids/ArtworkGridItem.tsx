@@ -389,6 +389,12 @@ export const Artwork: React.FC<ArtworkProps> = ({
                     {saleInfo}
                   </Text>
                 )}
+
+                {!!artwork.isUnlisted && (
+                  <Text lineHeight="18px" variant="xs" numberOfLines={1} fontWeight="bold">
+                    Exclusive Access
+                  </Text>
+                )}
               </Flex>
               {!hideSaveIcon && (
                 <Flex>
@@ -528,6 +534,7 @@ export default createFragmentContainer(Artwork, {
       isInquireable
       isOfferable
       isSaved
+      isUnlisted
       artistNames
       href
       sale {

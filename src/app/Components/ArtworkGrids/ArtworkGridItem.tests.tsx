@@ -314,6 +314,16 @@ describe("ArtworkGridItem", () => {
       expect(screen.queryByTestId("filled-heart-icon")).toBeNull()
     })
   })
+
+  describe("unlisted artworks", () => {
+    it("shows exclusive access", async () => {
+      renderWithRelay({
+        Artwork: () => artwork,
+      })
+
+      expect(screen.getByText("Exclusive Access")).toBeTruthy()
+    })
+  })
 })
 
 const artwork = {
