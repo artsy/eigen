@@ -10,6 +10,17 @@ it("renders with an artwork without throwing an error", () => {
   )
 })
 
+it("renders with an unlisted artwork without throwing an error", () => {
+  const unlistedArtworkConversation = {
+    ...artworkConversation,
+    items: [{ ...artwork, isUnlisted: true }],
+  }
+
+  renderWithWrappersLEGACY(
+    <ConversationSnippet conversation={unlistedArtworkConversation as any} onSelected={undefined} />
+  )
+})
+
 it("renders with a show without throwing an error", () => {
   renderWithWrappersLEGACY(
     <ConversationSnippet conversation={showConversation as any} onSelected={undefined} />
@@ -24,6 +35,7 @@ const artwork = {
   image: {
     url: "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg",
   },
+  isUnlisted: false,
 }
 
 const show = {
