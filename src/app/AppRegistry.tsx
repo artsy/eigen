@@ -655,7 +655,6 @@ export const modules = defineModules({
         fullBleed: true,
         hidesBackButton: true,
         hidesBottomTabs: true,
-        alwaysPresentModally: true,
         modalPresentationStyle: "fullScreen",
       })
     : reactModule(SubmitArtwork, { hidesBackButton: true, hidesBottomTabs: true }),
