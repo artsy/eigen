@@ -18,12 +18,16 @@ export const SubmissionNavigationControls: React.FC<{}> = () => {
   }
 
   if (!currentStep || currentStep === "SubmitArtworkStartFlow") {
-    return <BackButton showX style={{ left: space(2), top: space(1), zIndex: 100 }} />
+    return (
+      <Flex backgroundColor="white100" py={1}>
+        <BackButton showX style={{ left: space(2), zIndex: 100, overflow: "visible" }} />
+      </Flex>
+    )
   }
 
   return (
     <>
-      <Flex flexDirection="row" justifyContent="space-between">
+      <Flex flexDirection="row" justifyContent="space-between" backgroundColor="white100">
         <Flex flexDirection="row" alignItems="center">
           <BackButton onPress={goBack} style={{ left: space(2), bottom: 2 }} />
           <Button variant="text" onPress={handleBackPress}>
