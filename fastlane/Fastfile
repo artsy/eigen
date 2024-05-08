@@ -189,7 +189,7 @@ lane :create_next_version_if_needed do
   edit_version_ready = edit_version && edit_version.app_store_state == 'PREPARE_FOR_SUBMISSION'
   live_version_ready = live_version && live_version.app_store_state == 'READY_FOR_SALE'
   if live_version_ready and !edit_version_ready then
-    UI.message("There is a live version that is ready for sale, but there is no editable version")
+    UI.message("There is a live app version but there is no editable version")
     next_version = increment_version_number(live_version.version_string)
     UI.message("Creating new version #{next_version}")
     update_version_string(version: next_version)
@@ -209,7 +209,9 @@ lane :create_next_version_if_needed do
       message = <<~MSG
       :x: :iphone:
       New app version could not be created.
-      Create a new version in app store connect to keep shipping betas.
+      Possible reasons: The app was rejected, or the app is not in a state to be edited.
+      Check app store connect for specific details.
+      Once resolved, create a new version in app store connect to keep shipping betas.
       https://appstoreconnect.apple.com/apps/703796080
     MSG
       slack(message: message, default_payloads: [], link_names: true)
