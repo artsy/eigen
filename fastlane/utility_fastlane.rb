@@ -115,7 +115,7 @@ lane :prepare_version_update_pr do |options|
     head: version_change_branch,
     assignees: ["brainbicycle", "gkartalis"],
     base: "main",
-    body: "This PR updates the app version to prepare for next release."
+    body: "This PR updates the app version to prepare for next release. #nochangelog"
   )
 
   pr_url

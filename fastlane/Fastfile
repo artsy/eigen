@@ -212,7 +212,7 @@ lane :create_next_version_if_needed do
       Possible reasons: The app was rejected, or the app is not in a state to be edited.
       Check app store connect for specific details.
       Once resolved, create a new version in app store connect to keep shipping betas.
-      https://appstoreconnect.apple.com/apps/703796080
+      https://appstoreconnect.apple.com/apps/703796080/appstore
     MSG
       slack(message: message, default_payloads: [], link_names: true)
     end
