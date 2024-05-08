@@ -196,7 +196,7 @@ lane :create_next_version_if_needed do
     create_next_app_version(next_version_code:  next_version)
     pr_url = prepare_version_update_pr(commit_message: "chore: prepare for next release")
     message = <<~MSG
-    :x: :iphone:
+    :pr-open: :iphone:
     It's time to update the app version number!
     Merge this pr to keep shipping betas:
     #{pr_url}
