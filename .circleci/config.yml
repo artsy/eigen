@@ -188,7 +188,6 @@ jobs:
       - generate-checksums
       - setup-awscli
       - setup-env-file
-      - install-node
       - install-gems
       - run:
           name: Create next version if needed
