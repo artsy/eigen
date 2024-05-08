@@ -185,7 +185,12 @@ jobs:
 
     steps:
       - checkout
+      - generate-checksums
+      - setup-awscli
+      - setup-env-file
+      - install-node
       - install-gems
+      - setup-awscli
       - run:
           name: Create next version if needed
           command: ./scripts/deploys/create-next-version-if-needed
