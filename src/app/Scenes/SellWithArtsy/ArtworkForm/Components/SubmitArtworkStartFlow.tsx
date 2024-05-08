@@ -42,7 +42,7 @@ export const SubmitArtworkStartFlow: React.FC = () => {
   return (
     <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
       <ScrollView>
-        <Text variant="lg" mt={4} mb={2}>
+        <Text variant="lg" mb={4}>
           It’s easy to sell on Artsy 123
         </Text>
         <Flex>
