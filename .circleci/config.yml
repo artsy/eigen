@@ -176,10 +176,12 @@ jobs:
       - run: ./scripts/detect-secrets/secrets-check-all
 
   test-version-updates:
-    executor:
-      name: node/default
-      tag: "20.9.0"
-    resource_class: small
+    environment:
+      BUNDLE_PATH: .vendor
+
+    macos:
+      xcode: 15.1
+      resource_class: macos.m1.small.gen1
 
     steps:
       - checkout
