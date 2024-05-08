@@ -193,7 +193,8 @@ lane :create_next_version_if_needed do
     next_version = increment_version_number(live_version.version_string)
     UI.message("Creating new version #{next_version}")
     update_version_string(version: next_version)
-    app.create_app_store_version(platform: "iOS", version_string: next_version)
+    create_next_app_version(next_version_code:  next_version)
+    # app.create_app_store_version(platform: "iOS", version_string: next_version)
     pr_url = prepare_version_update_pr(commit_message: "chore: prepare for next release")
   #   message = <<~MSG
   #   :x: :iphone:

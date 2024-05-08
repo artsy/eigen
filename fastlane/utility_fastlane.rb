@@ -78,6 +78,23 @@ lane :tag_and_push do |options|
   `git push http #{tag} -f`
 end
 
+desc 'Create a new version in app store connect'
+lane :create_next_app_version do |options|
+  api_key = generate_app_store_connect_api_key
+
+  next_version = options[:next_version_code]
+  UI.message("Let's create a new app version #{next_version}.")
+
+  deliver(
+    api_key: api_key,
+    app_version: next_version,
+    skip_metadata: true,
+    automatic_release: false,
+    phased_release: false,
+    submit_for_review: false
+  )
+end
+
 desc "Prepares a new branch with version changes, pushes it, and creates a PR"
 lane :prepare_version_update_pr do |options|
   version_change_branch = "version-update-#{Time.now.strftime('%Y%m%d%H%M%S')}"
