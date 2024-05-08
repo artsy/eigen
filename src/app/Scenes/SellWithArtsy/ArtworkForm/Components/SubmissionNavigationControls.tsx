@@ -1,47 +1,39 @@
-import { BackButton, Button, Flex, useSpace } from "@artsy/palette-mobile"
+import { Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { ArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/ArtworkFormStore"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
-import { goBack } from "app/system/navigation/navigate"
+import { useIsKeyboardVisible } from "app/utils/hooks/useIsKeyboardVisible"
+import { MotiView } from "moti"
 
 export const SubmissionNavigationControls: React.FC<{}> = () => {
-  const { navigateToNextStep, navigateToPreviousStep } = useSubmissionContext()
+  const { navigateToNextStep } = useSubmissionContext()
   const currentStep = ArtworkFormStore.useStoreState((state) => state.currentStep)
+  const isKeyboardVisible = useIsKeyboardVisible(true)
 
-  const space = useSpace()
-
-  const handleBackPress = () => {
-    navigateToPreviousStep()
-  }
-
-  const handleNextPress = () => {
+  const handleSaveAndExitPress = () => {
     navigateToNextStep()
   }
 
   if (!currentStep || currentStep === "SubmitArtworkStartFlow") {
-    return (
-      <Flex backgroundColor="white100" py={1}>
-        <BackButton
-          showX
-          style={{ left: space(2), zIndex: 100, overflow: "visible" }}
-          onPress={handleBackPress}
-        />
-      </Flex>
-    )
+    return null
   }
 
   return (
-    <>
-      <Flex flexDirection="row" justifyContent="space-between" backgroundColor="white100">
-        <Flex flexDirection="row" alignItems="center">
-          <BackButton onPress={goBack} style={{ left: space(2), bottom: 2 }} />
-          <Button variant="text" onPress={handleBackPress}>
-            Back
-          </Button>
+    <MotiView
+      animate={{
+        height: isKeyboardVisible ? 0 : 30,
+      }}
+      transition={{
+        type: "timing",
+        duration: 200,
+      }}
+    >
+      <Flex flexDirection="row" mx={2} justifyContent="space-between">
+        <Flex style={{ flexGrow: 1, alignItems: "flex-end" }}>
+          <Touchable onPress={handleSaveAndExitPress}>
+            <Text>Save & Exit</Text>
+          </Touchable>
         </Flex>
-        <Button variant="text" onPress={handleNextPress}>
-          Save & Exit
-        </Button>
       </Flex>
-    </>
+    </MotiView>
   )
 }

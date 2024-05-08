@@ -1,5 +1,7 @@
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { useIsKeyboardFloating } from "app/utils/hooks/useIsKeyboardFloating"
+import { useIsKeyboardVisible } from "app/utils/hooks/useIsKeyboardVisible"
+import { MotiView } from "moti"
 import React, { useContext } from "react"
 import {
   Dimensions,
@@ -13,6 +15,7 @@ import {
   View,
   ViewProps,
 } from "react-native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 interface State {
   bottom: number
@@ -182,4 +185,25 @@ class KeyboardAvoidingView extends React.Component<
       </View>
     )
   }
+}
+
+export const ArtsyKeyboardSafeBottom: React.FC<{}> = ({ children }) => {
+  const { bottom: bottomInset } = useSafeAreaInsets()
+  const isKeyboardVisible = useIsKeyboardVisible(true)
+
+  const bottom = bottomInset + (isKeyboardVisible ? 32 : 0)
+
+  return (
+    <MotiView
+      style={{
+        backgroundColor: "white",
+        bottom,
+      }}
+      animate={{
+        bottom,
+      }}
+    >
+      {children}
+    </MotiView>
+  )
 }
