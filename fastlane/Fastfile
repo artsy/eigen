@@ -193,8 +193,15 @@ lane :create_next_version_if_needed do
     UI.info("Creating new version #{next_version}")
     next_version = increment_version_number(live_version.version_string)
     update_version_string(version: next_version)
-    prepare_version_update_pr(commit_message: "chore: prepare for next release")
     app.create_app_store_version(platform: "iOS", version_string: next_version)
+    pr_url = prepare_version_update_pr(commit_message: "chore: prepare for next release")
+    message = <<~MSG
+    :x: :iphone:
+    It's time to update the app version number!
+    Merge this pr to keep shipping betas:
+    #{pr_url}
+  MSG
+    slack(message: message, default_payloads: [], link_names: true)
   else
     if (edit_version_ready) then
       UI.success("There is an editable version ready for betas.")
