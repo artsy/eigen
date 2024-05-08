@@ -175,6 +175,21 @@ jobs:
       - checkout
       - run: ./scripts/detect-secrets/secrets-check-all
 
+  test-version-updates:
+    executor:
+      name: node/default
+      tag: "20.9.0"
+    resource_class: small
+
+    steps:
+      - checkout
+      - run:
+          name: Create next version if needed
+          command: ./scripts/deploys/create-next-version-if-needed
+      - run:
+          name: Deploy betas
+          command: ./scripts/deploys/deploy-beta-both
+
   deploy-nightly-beta:
     executor:
       name: node/default
@@ -446,6 +461,14 @@ workflows:
                 - main
     jobs:
       - deploy-nightly-beta
+
+  test-version-updates:
+    jobs:
+      - test-version-updates:
+        filters:
+          branches:
+            ignore:
+              - main
 
   flag-check:
     triggers:
