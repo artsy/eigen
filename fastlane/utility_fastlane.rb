@@ -100,7 +100,7 @@ lane :prepare_version_update_pr do |options|
   version_change_branch = "version-update-#{Time.now.strftime('%Y%m%d%H%M%S')}"
   commit_message = options[:commit_message]
 
-  sh "git add ."
+  sh "git add -A"
   sh "git commit -m '#{commit_message}'"
 
   sh "git remote add http https://github.com/artsy/eigen.git || true"  # '|| true' to ignore errors if remote already exists
