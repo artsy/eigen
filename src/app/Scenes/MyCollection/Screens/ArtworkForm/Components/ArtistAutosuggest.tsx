@@ -93,6 +93,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
           enableClearButton
           autoFocus={typeof jest === "undefined"}
           autoCorrect={false}
+          spellCheck={false}
         />
         {showResults ? (
           <Box height="100%" pb={6}>
