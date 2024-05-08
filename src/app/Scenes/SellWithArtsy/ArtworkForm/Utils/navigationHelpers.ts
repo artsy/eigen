@@ -7,6 +7,8 @@ import {
 import { goBack } from "app/system/navigation/navigate"
 
 export const STEPS: (keyof ArtworkFormScreen)[] = [
+  "SubmitArtworkStartFlow",
+  "SelectArtworkFromMyCollection",
   "ArtworkFormArtist",
   "ArtworkFormTitle",
   "ArtworkFormPhotos",
@@ -17,9 +19,9 @@ export const STEPS: (keyof ArtworkFormScreen)[] = [
 export const useSubmissionContext = () => {
   const setCurrentStep = ArtworkFormStore.useStoreActions((actions) => actions.setCurrentStep)
 
-  function navigateToNextStep() {
+  function navigateToNextStep(step?: keyof ArtworkFormScreen) {
     const currentStepId = getCurrentRoute()
-    const nextStepId = STEPS[STEPS.indexOf(currentStepId as any) + 1]
+    const nextStepId = step || STEPS[STEPS.indexOf(currentStepId as any) + 1]
 
     if (!nextStepId) {
       console.error("No next step found")

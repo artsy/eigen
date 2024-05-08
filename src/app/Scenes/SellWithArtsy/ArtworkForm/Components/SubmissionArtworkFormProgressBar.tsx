@@ -7,5 +7,9 @@ export const SubmissionArtworkFormProgressBar: React.FC = ({}) => {
 
   const progress = ARTWORK_FORM_STEPS.indexOf(currentStep) / ARTWORK_FORM_STEPS.length
 
+  if (!currentStep || currentStep === "SubmitArtworkStartFlow") {
+    return null
+  }
+
   return <ProgressBar progress={progress * 100} />
 }

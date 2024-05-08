@@ -1,9 +1,12 @@
 import { BackButton, Button, Flex, useSpace } from "@artsy/palette-mobile"
+import { ArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/ArtworkFormStore"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { goBack } from "app/system/navigation/navigate"
 
 export const SubmissionNavigationControls: React.FC<{}> = () => {
   const { navigateToNextStep, navigateToPreviousStep } = useSubmissionContext()
+  const currentStep = ArtworkFormStore.useStoreState((state) => state.currentStep)
+
   const space = useSpace()
 
   const handleBackPress = () => {
@@ -12,6 +15,10 @@ export const SubmissionNavigationControls: React.FC<{}> = () => {
 
   const handleNextPress = () => {
     navigateToNextStep()
+  }
+
+  if (!currentStep || currentStep === "SubmitArtworkStartFlow") {
+    return <BackButton showX style={{ left: space(2), top: space(1), zIndex: 100 }} />
   }
 
   return (
