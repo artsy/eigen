@@ -1,8 +1,7 @@
-import { Button, Spacer, Text } from "@artsy/palette-mobile"
+import { Spacer, Text } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
 import { ArtworkFormScreen } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmissionArtworkForm"
-import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { UploadPhotosForm } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/UploadPhotosForm"
 import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
@@ -12,14 +11,7 @@ import { ScrollView } from "react-native"
 export const SubmissionArtworkFormPhotos: React.FC<
   StackScreenProps<ArtworkFormScreen, "ArtworkFormTitle">
 > = ({}) => {
-  const { navigateToNextStep } = useSubmissionContext()
-  const { isValid, values } = useFormikContext<ArtworkDetailsFormModel>()
-
-  const handleNextPress = () => {
-    // TODO: Add photos to submission
-
-    navigateToNextStep()
-  }
+  const { values } = useFormikContext<ArtworkDetailsFormModel>()
 
   const isAnyPhotoLoading = values.photos.some((photo: Photo) => photo.loading)
 
@@ -39,12 +31,6 @@ export const SubmissionArtworkFormPhotos: React.FC<
       </Text>
 
       <UploadPhotosForm isAnyPhotoLoading={isAnyPhotoLoading} />
-
-      <Spacer y={2} />
-
-      <Button onPress={handleNextPress} block disabled={!isValid}>
-        Save and Continue
-      </Button>
     </ScrollView>
   )
 }
