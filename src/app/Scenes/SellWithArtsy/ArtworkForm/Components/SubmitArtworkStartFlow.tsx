@@ -1,5 +1,6 @@
 import { Button, Flex, SkeletonBox, Spacer, Text } from "@artsy/palette-mobile"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
+import { ScrollView } from "react-native"
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 
 const SECTIONS = [
@@ -40,30 +41,32 @@ export const SubmitArtworkStartFlow: React.FC = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
-      <Text variant="lg" mt={4} mb={2}>
-        It’s easy to sell on Artsy 123
-      </Text>
-      <Flex>
-        {SECTIONS.map((section, index) => (
-          <Flex key={index} my={1} flexDirection="row">
-            <Text variant="sm-display" fontWeight={500} style={{ width: 30 }}>
-              {index}.
-            </Text>
-            <Flex flex={1}>
-              <Text variant="sm-display" fontWeight={500}>
-                {section.title}
+      <ScrollView>
+        <Text variant="lg" mt={4} mb={2}>
+          It’s easy to sell on Artsy 123
+        </Text>
+        <Flex>
+          {SECTIONS.map((section, index) => (
+            <Flex key={index} my={1} flexDirection="row">
+              <Text variant="sm-display" fontWeight={500} style={{ width: 30 }}>
+                {index}.
               </Text>
-              <Text color="black60" variant="xs">
-                {section.description}
-              </Text>
+              <Flex flex={1}>
+                <Text variant="sm-display" fontWeight={500}>
+                  {section.title}
+                </Text>
+                <Text color="black60" variant="xs">
+                  {section.description}
+                </Text>
+              </Flex>
+              <Spacer x={1} />
+              <SkeletonBox backgroundColor="black30" height={80} width={80} />
             </Flex>
-            <Spacer x={1} />
-            <SkeletonBox backgroundColor="black30" height={80} width={80} />
-          </Flex>
-        ))}
-      </Flex>
+          ))}
+        </Flex>
+      </ScrollView>
 
-      <Flex position="absolute" bottom={bottomInset}>
+      <Flex position="absolute" bottom={bottomInset} backgroundColor="white100" pt={1}>
         <Button onPress={handleStartNewSubmission} block>
           Start a New Submission
         </Button>
