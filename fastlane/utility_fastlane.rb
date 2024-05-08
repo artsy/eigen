@@ -78,6 +78,21 @@ lane :tag_and_push do |options|
   `git push http #{tag} -f`
 end
 
+lane :test_pr_url do |options|
+  update_version_string(version: "8.40.0")
+  pr_url = prepare_version_update_pr(commit_message: "chore: prepare for next release")
+  message = <<~MSG
+  :x: :iphone:
+  It's time to update the app version number!
+  Merge this pr to keep shipping betas:
+  #{pr_url}
+MSG
+  UI.success(message)
+  #slack(message: message, default_payloads: [], link_names: true)
+
+end
+
+
 desc "Prepares a new branch with version changes, pushes it, and creates a PR"
 lane :prepare_version_update_pr do |options|
   version_change_branch = "version-update-#{Time.now.strftime('%Y%m%d%H%M%S')}"
@@ -91,7 +106,7 @@ lane :prepare_version_update_pr do |options|
   # Create the new branch in remote and push changes
   sh "git push origin HEAD:refs/heads/#{version_change_branch}"
 
-  create_pull_request(
+  pr_url = create_pull_request(
     api_token: ENV["CHANGELOG_GITHUB_TOKEN_KEY"],
     repo: "artsy/eigen",
     title: commit_message,
@@ -100,6 +115,8 @@ lane :prepare_version_update_pr do |options|
     base: "main",
     body: "This PR updates the app version to prepare for next release."
   )
+
+  pr_url
 end
 
 lane :latest_betas do
