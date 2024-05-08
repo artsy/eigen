@@ -37,16 +37,13 @@ export const useSubmissionContext = () => {
     if (getCurrentRoute() === STEPS[0]) {
       return goBack()
     }
-
-    const currentStepId = getCurrentRoute()
-
-    const previousStepId = STEPS[STEPS.indexOf(currentStepId as any) - 1]
+    // Order is important here to make sure getCurrentRoute returns the correct value
+    __unsafe__SubmissionArtworkFormNavigationRef.current?.goBack?.()
+    const previousStepId = getCurrentRoute()
 
     if (previousStepId) {
       setCurrentStep(previousStepId)
     }
-
-    __unsafe__SubmissionArtworkFormNavigationRef.current?.goBack?.()
   }
 
   return {
