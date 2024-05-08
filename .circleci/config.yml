@@ -183,6 +183,7 @@ jobs:
 
     steps:
       - checkout
+      - install-gems
       - run:
           name: Create next version if needed
           command: ./scripts/deploys/create-next-version-if-needed
