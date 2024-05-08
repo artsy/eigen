@@ -8,11 +8,11 @@ import {
   ArtworkFormStoreProvider,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/ArtworkFormStore"
 import { SelectArtworkFromMyCollection } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SelectArtworkFromMyCollection"
+import { SubmissionArtworkBottomNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionArtworkBottomNavigation"
 import { SubmissionArtworkFormArtist } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionArtworkFormArtist"
 import { SubmissionArtworkFormArtworkDetails } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionArtworkFormArtworkDetails"
 import { SubmissionArtworkDimensions } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionArtworkFormDimensions"
 import { SubmissionArtworkFormPhotos } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionArtworkFormPhotos"
-import { SubmissionArtworkFormProgressBar } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionArtworkFormProgressBar"
 import { SubmissionArtworkFormProvenance } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionArtworkFormProvenance"
 import { SubmissionArtworkFormTitle } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionArtworkFormTitle"
 import { SubmissionNavigationControls } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionNavigationControls"
@@ -23,6 +23,7 @@ import {
   getCurrentValidationSchema,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
+import { ArtsyKeyboardSafeBottom } from "app/utils/ArtsyKeyboardAvoidingView"
 import { FormikProvider, useFormik } from "formik"
 import { useEffect } from "react"
 
@@ -88,8 +89,6 @@ const SubmissionArtworkFormContent: React.FC = ({}) => {
       <Screen>
         <SubmissionNavigationControls />
         <Screen.Body>
-          <SubmissionArtworkFormProgressBar />
-
           <Flex flex={1}>
             <NavigationContainer independent ref={__unsafe__SubmissionArtworkFormNavigationRef}>
               <Stack.Navigator
@@ -98,6 +97,7 @@ const SubmissionArtworkFormContent: React.FC = ({}) => {
                 screenOptions={{
                   headerShown: false,
                   cardStyle: { backgroundColor: "white" },
+                  keyboardHandlingEnabled: false,
                 }}
               >
                 <Stack.Screen name="SubmitArtworkStartFlow" component={SubmitArtworkStartFlow} />
@@ -135,6 +135,9 @@ const SubmissionArtworkFormContent: React.FC = ({}) => {
               </Stack.Navigator>
             </NavigationContainer>
           </Flex>
+          <ArtsyKeyboardSafeBottom>
+            <SubmissionArtworkBottomNavigation />
+          </ArtsyKeyboardSafeBottom>
         </Screen.Body>
       </Screen>
     </FormikProvider>

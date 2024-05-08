@@ -1,5 +1,6 @@
-import { Button, Flex, SkeletonBox, Spacer, Text } from "@artsy/palette-mobile"
+import { BackButton, Button, Flex, SkeletonBox, Spacer, Text } from "@artsy/palette-mobile"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
+import { goBack } from "app/system/navigation/navigate"
 import { ScrollView } from "react-native"
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 
@@ -41,6 +42,10 @@ export const SubmitArtworkStartFlow: React.FC = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
+      <Flex py={1} flexDirection="row">
+        <BackButton showX style={{ zIndex: 100, overflow: "visible" }} onPress={goBack} />
+      </Flex>
+
       <ScrollView>
         <Text variant="lg" mb={4}>
           It’s easy to sell on Artsy 123

@@ -16,6 +16,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { useScreenDimensions } from "app/utils/hooks"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useSwitchStatusBarStyle } from "app/utils/useStatusBarStyle"
 import { useEffect } from "react"
@@ -44,10 +45,18 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
   useSwitchStatusBarStyle(onFocusStatusBarStyle, onBlurStatusBarStyle)
 
   const { height: screenHeight, safeAreaInsets } = useScreenDimensions()
+  const enableNewSubmissionFlow = useFeatureFlag("AREnableNewSubmissionFlow")
+
   const tracking = useTracking()
 
   const handleConsignPress = (tappedConsignArgs: TappedConsignArgs) => {
     tracking.trackEvent(tappedConsign(tappedConsignArgs))
+
+    if (enableNewSubmissionFlow) {
+      navigate("/sell/submissions/new")
+      return
+    }
+
     GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
       photos: [],
     })
@@ -77,6 +86,10 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
   }
 
   useEffect(() => {
+    if (enableNewSubmissionFlow) {
+      return
+    }
+
     return () => {
       GlobalStore.actions.artworkSubmission.submission.resetSessionState()
       GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
