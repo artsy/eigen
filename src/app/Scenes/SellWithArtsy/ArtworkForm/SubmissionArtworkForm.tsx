@@ -7,6 +7,7 @@ import {
   ArtworkFormStore,
   ArtworkFormStoreProvider,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/ArtworkFormStore"
+import { SelectArtworkFromMyCollection } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SelectArtworkFromMyCollection"
 import { SubmissionArtworkFormArtist } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionArtworkFormArtist"
 import { SubmissionArtworkFormArtworkDetails } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionArtworkFormArtworkDetails"
 import { SubmissionArtworkDimensions } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionArtworkFormDimensions"
@@ -15,17 +16,19 @@ import { SubmissionArtworkFormProgressBar } from "app/Scenes/SellWithArtsy/Artwo
 import { SubmissionArtworkFormProvenance } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionArtworkFormProvenance"
 import { SubmissionArtworkFormTitle } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionArtworkFormTitle"
 import { SubmissionNavigationControls } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionNavigationControls"
+import { SubmitArtworkStartFlow } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkStartFlow"
 import {
   ArtworkDetailsFormModel,
   artworkDetailsEmptyInitialValues,
   getCurrentValidationSchema,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
-import { useReloadedDevNavigationState } from "app/system/navigation/useReloadedDevNavigationState"
 import { FormikProvider, useFormik } from "formik"
 import { useEffect } from "react"
 
 export type ArtworkFormScreen = {
+  SubmitArtworkStartFlow: undefined
+  SelectArtworkFromMyCollection: undefined
   ArtworkFormArtist: undefined
   ArtworkFormTitle: undefined
   ArtworkFormPhotos: undefined
@@ -39,6 +42,8 @@ export type ArtworkFormScreen = {
 export type ArtworkFormStep = keyof ArtworkFormScreen
 
 export const ARTWORK_FORM_STEPS: ArtworkFormStep[] = [
+  "SubmitArtworkStartFlow",
+  "SelectArtworkFromMyCollection",
   "ArtworkFormArtist",
   "ArtworkFormTitle",
   "ArtworkFormPhotos",
@@ -55,14 +60,10 @@ export const SubmissionArtworkForm: React.FC = ({}) => {
     </ArtworkFormStoreProvider>
   )
 }
-const ARTWORK_SUBMISSION_NAVIGATION_STACK_STATE_KEY =
-  "ARTWORK_SUBMISSION_NAVIGATION_STACK_STATE_KEY"
 
 const SubmissionArtworkFormContent: React.FC = ({}) => {
   const currentStep = ArtworkFormStore.useStoreState((state) => state.currentStep)
-  const { isReady, initialState, saveSession } = useReloadedDevNavigationState(
-    ARTWORK_SUBMISSION_NAVIGATION_STACK_STATE_KEY
-  )
+
   const initialValues = artworkDetailsEmptyInitialValues as any
 
   const handleSubmit = (values: ArtworkDetailsFormModel) => {
@@ -82,10 +83,6 @@ const SubmissionArtworkFormContent: React.FC = ({}) => {
     formik.validateForm()
   }, [currentStep])
 
-  if (!isReady) {
-    return null
-  }
-
   return (
     <FormikProvider value={formik}>
       <Screen>
@@ -94,14 +91,7 @@ const SubmissionArtworkFormContent: React.FC = ({}) => {
           <SubmissionArtworkFormProgressBar />
 
           <Flex flex={1}>
-            <NavigationContainer
-              independent
-              initialState={initialState}
-              ref={__unsafe__SubmissionArtworkFormNavigationRef}
-              onStateChange={(state) => {
-                saveSession(state)
-              }}
-            >
+            <NavigationContainer independent ref={__unsafe__SubmissionArtworkFormNavigationRef}>
               <Stack.Navigator
                 // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
                 detachInactiveScreens={false}
@@ -110,6 +100,13 @@ const SubmissionArtworkFormContent: React.FC = ({}) => {
                   cardStyle: { backgroundColor: "white" },
                 }}
               >
+                <Stack.Screen name="SubmitArtworkStartFlow" component={SubmitArtworkStartFlow} />
+
+                <Stack.Screen
+                  name="SelectArtworkFromMyCollection"
+                  component={SelectArtworkFromMyCollection}
+                />
+
                 <Stack.Screen name="ArtworkFormArtist" component={SubmissionArtworkFormArtist} />
 
                 <Stack.Screen name="ArtworkFormTitle" component={SubmissionArtworkFormTitle} />
