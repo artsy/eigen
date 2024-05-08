@@ -4,7 +4,10 @@ import {
   __unsafe__SubmissionArtworkFormNavigationRef,
   getCurrentRoute,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmissionArtworkForm"
+import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
+import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/validation"
 import { goBack } from "app/system/navigation/navigate"
+import { useFormikContext } from "formik"
 
 export const STEPS: (keyof ArtworkFormScreen)[] = [
   "SubmitArtworkStartFlow",
@@ -18,8 +21,9 @@ export const STEPS: (keyof ArtworkFormScreen)[] = [
 
 export const useSubmissionContext = () => {
   const setCurrentStep = ArtworkFormStore.useStoreActions((actions) => actions.setCurrentStep)
+  const { values } = useFormikContext<ArtworkDetailsFormModel>()
 
-  function navigateToNextStep(step?: keyof ArtworkFormScreen) {
+  const navigateToNextStep = async (step?: keyof ArtworkFormScreen) => {
     const currentStepId = getCurrentRoute()
     const nextStepId = step || STEPS[STEPS.indexOf(currentStepId as any) + 1]
 
@@ -28,12 +32,15 @@ export const useSubmissionContext = () => {
       return
     }
 
-    setCurrentStep(nextStepId)
+    if (values.submissionId) {
+      await createOrUpdateSubmission(values, values.submissionId)
+    }
 
+    setCurrentStep(nextStepId)
     __unsafe__SubmissionArtworkFormNavigationRef.current?.navigate?.(nextStepId)
   }
 
-  function navigateToPreviousStep() {
+  const navigateToPreviousStep = () => {
     if (getCurrentRoute() === STEPS[0]) {
       return goBack()
     }
