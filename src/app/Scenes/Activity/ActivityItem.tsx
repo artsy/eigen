@@ -92,7 +92,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = memo(
                   )}
                 </Flex>
 
-                <Flex>
+                <Flex style={{ flex: 1 }}>
                   {!!isPartnerOffer && (
                     <PartnerOfferBadge notificationType={item.notificationType} />
                   )}
