@@ -2516,6 +2516,14 @@ type Artwork implements Node & Searchable & Sellable {
 
   # Artwork is marked as "unlisted" (or private) by the partner
   isUnlisted: Boolean!
+  lastOfferableActivityAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
   lastSavedAt(
     format: String
 
@@ -2590,6 +2598,9 @@ type Artwork implements Node & Searchable & Sellable {
   # spreadsheet data.
   realizedPrice: String
   realizedToEstimate: String
+
+  # Count of abandoned orders, in the last 30 days.
+  recentAbandonedOrdersCount: Int
 
   # Count of collected artworks, in saves collections, in the last 30 days
   recentSavesCount: Int
