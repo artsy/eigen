@@ -68,7 +68,7 @@ export const SubmissionArtworkBottomNavigation: React.FC<{}> = () => {
   }
 
   return (
-    <Flex borderTopWidth={1} borderTopColor="black10" pt={1} width={screenWidth} alignSelf="center">
+    <Flex borderTopWidth={1} borderTopColor="black10" py={1} width={screenWidth} alignSelf="center">
       <Flex px={2}>
         <SubmissionArtworkFormProgressBar />
         <Flex flexDirection="row" justifyContent="space-between" backgroundColor="white100">

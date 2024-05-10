@@ -1,4 +1,14 @@
-import { Box, Flex, Input, InputTitle, Join, LinkButton, Spacer, Text } from "@artsy/palette-mobile"
+import {
+  Box,
+  Checkbox,
+  Flex,
+  Input,
+  InputTitle,
+  Join,
+  LinkButton,
+  Spacer,
+  Text,
+} from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { Select, SelectOption } from "app/Components/Select"
 import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
@@ -23,6 +33,9 @@ export const SubmissionArtworkFormArtworkDetails: React.FC<
   StackScreenProps<ArtworkFormScreen, "ArtworkFormArtworkDetails">
 > = ({}) => {
   const [isRarityInfoModalVisible, setIsRarityInfoModalVisible] = useState(false)
+  const [isYearUnknown, setIsYearUnknown] = useState(false)
+  const [oldTypedYear, setOldTypedYear] = useState("")
+
   const { handleChange, setFieldValue, values } = useFormikContext<ArtworkDetailsFormModel>()
 
   const categories = useRef<Array<SelectOption<AcceptableCategoryValue>>>(
@@ -118,6 +131,26 @@ export const SubmissionArtworkFormArtworkDetails: React.FC<
             value={values.year}
             onChangeText={(e) => setFieldValue("year", e)}
             accessibilityLabel="Year"
+            disabled={isYearUnknown}
+          />
+          <Spacer y={2} />
+
+          <Checkbox
+            checked={isYearUnknown}
+            onPress={() => {
+              // Save the old typed year to restore it if the user unchecks the checkbox
+              if (!isYearUnknown) {
+                setOldTypedYear(values.year)
+                setIsYearUnknown(true)
+                setFieldValue("year", undefined)
+              } else {
+                setFieldValue("year", oldTypedYear)
+                setIsYearUnknown(false)
+              }
+            }}
+            text="I don't know"
+            // TODO: Add support of checkbox colors
+            // color="black60"
           />
         </Flex>
 
@@ -137,5 +170,6 @@ export const SubmissionArtworkFormArtworkDetails: React.FC<
         </Flex>
       </Join>
     </ScrollView>
+    // </KeyboardAvoidingView>
   )
 }

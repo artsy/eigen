@@ -652,10 +652,8 @@ export const modules = defineModules({
   }),
   SubmitArtwork: unsafe_getFeatureFlag("AREnableNewSubmissionFlow")
     ? reactModule(SubmissionArtworkForm, {
-        fullBleed: true,
         hidesBackButton: true,
         hidesBottomTabs: true,
-        modalPresentationStyle: "fullScreen",
       })
     : reactModule(SubmitArtwork, { hidesBackButton: true, hidesBottomTabs: true }),
   Tag: reactModule(TagQueryRenderer, { hidesBackButton: true, fullBleed: true }),

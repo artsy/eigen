@@ -5,7 +5,7 @@ import {
   TappedConsignArgs,
   TappedConsignmentInquiry,
 } from "@artsy/cohesion"
-import { Flex, Text, Button, Spacer, LinkText, useScreenDimensions } from "@artsy/palette-mobile"
+import { Button, Flex, LinkText, Spacer, Text, useScreenDimensions } from "@artsy/palette-mobile"
 import { Platform } from "react-native"
 
 interface StickySWAHeaderProps {

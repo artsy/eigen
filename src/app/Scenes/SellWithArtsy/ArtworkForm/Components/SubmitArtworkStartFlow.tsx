@@ -2,7 +2,7 @@ import { BackButton, Button, Flex, SkeletonBox, Spacer, Text } from "@artsy/pale
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { goBack } from "app/system/navigation/navigate"
 import { ScrollView } from "react-native"
-import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 const SECTIONS = [
   {
@@ -41,7 +41,7 @@ export const SubmitArtworkStartFlow: React.FC = () => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
+    <Flex flex={1}>
       <Flex py={1} flexDirection="row">
         <BackButton showX style={{ zIndex: 100, overflow: "visible" }} onPress={goBack} />
       </Flex>
@@ -79,6 +79,6 @@ export const SubmitArtworkStartFlow: React.FC = () => {
           Start from My Collection
         </Button>
       </Flex>
-    </SafeAreaView>
+    </Flex>
   )
 }

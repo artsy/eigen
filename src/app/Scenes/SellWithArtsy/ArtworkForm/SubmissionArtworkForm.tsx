@@ -1,4 +1,4 @@
-import { Flex, Screen } from "@artsy/palette-mobile"
+import { Flex, useSpace } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { validateArtworkSchema } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/artworkSchema"
@@ -23,9 +23,11 @@ import {
   getCurrentValidationSchema,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
-import { ArtsyKeyboardSafeBottom } from "app/utils/ArtsyKeyboardAvoidingView"
+import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
+import { useIsKeyboardVisible } from "app/utils/hooks/useIsKeyboardVisible"
 import { FormikProvider, useFormik } from "formik"
 import { useEffect } from "react"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 export type ArtworkFormScreen = {
   SubmitArtworkStartFlow: undefined
@@ -64,6 +66,9 @@ export const SubmissionArtworkForm: React.FC = ({}) => {
 
 const SubmissionArtworkFormContent: React.FC = ({}) => {
   const currentStep = ArtworkFormStore.useStoreState((state) => state.currentStep)
+  const space = useSpace()
+  const { bottom: bottomInset } = useSafeAreaInsets()
+  const isKeyboardVisible = useIsKeyboardVisible(true)
 
   const initialValues = artworkDetailsEmptyInitialValues as any
 
@@ -86,60 +91,59 @@ const SubmissionArtworkFormContent: React.FC = ({}) => {
 
   return (
     <FormikProvider value={formik}>
-      <Screen>
-        <SubmissionNavigationControls />
-        <Screen.Body>
-          <Flex flex={1}>
-            <NavigationContainer independent ref={__unsafe__SubmissionArtworkFormNavigationRef}>
-              <Stack.Navigator
-                // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
-                detachInactiveScreens={false}
-                screenOptions={{
-                  headerShown: false,
-                  cardStyle: { backgroundColor: "white" },
-                  keyboardHandlingEnabled: false,
-                }}
-              >
-                <Stack.Screen name="SubmitArtworkStartFlow" component={SubmitArtworkStartFlow} />
+      <SubmissionNavigationControls />
+      <ArtsyKeyboardAvoidingView>
+        <Flex
+          flex={1}
+          style={{
+            paddingBottom: isKeyboardVisible ? 0 : bottomInset,
+            paddingHorizontal: space(2),
+          }}
+        >
+          <NavigationContainer independent ref={__unsafe__SubmissionArtworkFormNavigationRef}>
+            <Stack.Navigator
+              // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
+              detachInactiveScreens={false}
+              screenOptions={{
+                headerShown: false,
+                cardStyle: { backgroundColor: "white" },
+                keyboardHandlingEnabled: false,
+              }}
+            >
+              <Stack.Screen name="SubmitArtworkStartFlow" component={SubmitArtworkStartFlow} />
 
-                <Stack.Screen
-                  name="SelectArtworkFromMyCollection"
-                  component={SelectArtworkFromMyCollection}
-                />
+              <Stack.Screen
+                name="SelectArtworkFromMyCollection"
+                component={SelectArtworkFromMyCollection}
+              />
 
-                <Stack.Screen name="ArtworkFormArtist" component={SubmissionArtworkFormArtist} />
+              <Stack.Screen name="ArtworkFormArtist" component={SubmissionArtworkFormArtist} />
 
-                <Stack.Screen name="ArtworkFormTitle" component={SubmissionArtworkFormTitle} />
+              <Stack.Screen name="ArtworkFormTitle" component={SubmissionArtworkFormTitle} />
 
-                <Stack.Screen name="ArtworkFormPhotos" component={SubmissionArtworkFormPhotos} />
+              <Stack.Screen name="ArtworkFormPhotos" component={SubmissionArtworkFormPhotos} />
 
-                <Stack.Screen
-                  name="ArtworkFormArtworkDetails"
-                  component={SubmissionArtworkFormArtworkDetails}
-                />
+              <Stack.Screen
+                name="ArtworkFormArtworkDetails"
+                component={SubmissionArtworkFormArtworkDetails}
+              />
 
-                <Stack.Screen
-                  name="ArtworkFormDimensions"
-                  component={SubmissionArtworkDimensions}
-                />
+              <Stack.Screen name="ArtworkFormDimensions" component={SubmissionArtworkDimensions} />
 
-                <Stack.Screen
-                  name="ArtworkFormProvenance"
-                  component={SubmissionArtworkFormProvenance}
-                />
+              <Stack.Screen
+                name="ArtworkFormProvenance"
+                component={SubmissionArtworkFormProvenance}
+              />
 
-                <Stack.Screen
-                  name="ArtworkFormCompleteYourSubmission"
-                  component={ArtworkFormCompleteYourSubmission}
-                />
-              </Stack.Navigator>
-            </NavigationContainer>
-          </Flex>
-          <ArtsyKeyboardSafeBottom>
+              <Stack.Screen
+                name="ArtworkFormCompleteYourSubmission"
+                component={ArtworkFormCompleteYourSubmission}
+              />
+            </Stack.Navigator>
             <SubmissionArtworkBottomNavigation />
-          </ArtsyKeyboardSafeBottom>
-        </Screen.Body>
-      </Screen>
+          </NavigationContainer>
+        </Flex>
+      </ArtsyKeyboardAvoidingView>
     </FormikProvider>
   )
 }
