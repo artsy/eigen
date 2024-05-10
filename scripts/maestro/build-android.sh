@@ -44,7 +44,6 @@ cd android/app/build/outputs/apk/release
 
 echo "Uploading the Android build to maestro server"
 
-# directory = /Users/georgioskartalis/Artsy/android/app/build/outputs/apk/release/app-release.apk
 curl https://api.copilot.mobile.dev/v2/project/$MAESTRO_ANDROID_PROJECT_ID/build \
     -F "file=@$PWD/app-release.apk" \
     -F "tags=nightly" \

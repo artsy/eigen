@@ -18,7 +18,6 @@ zip -r Artsy.zip Artsy.app
 
 echo "Uploading the iOS build to maestro server"
 
-# directory = /Users/georgioskartalis/Artsy/ios/build/Build/Products/Store-iphonesimulator/Artsy.zip
 curl https://api.copilot.mobile.dev/v2/project/$MAESTRO_IOS_PROJECT_ID/build \
     -F "file=@$PWD/Artsy.zip" \
     -F "tags=nightly" \
