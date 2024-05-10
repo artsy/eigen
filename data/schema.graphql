@@ -14570,6 +14570,7 @@ type PartnerOffer implements Node {
   priceWithDiscount: Money
   priceWithDiscountMessage: String
     @deprecated(reason: "This field is deprecated. Use 'priceWithDiscount' instead.")
+  source: PartnerOfferSourceEnum
   userIds: [String]
 }
 
@@ -14618,6 +14619,11 @@ enum PartnerOfferSorts {
   END_AT_DESC
 }
 
+enum PartnerOfferSourceEnum {
+  ABANDONED_ORDER
+  SAVE
+}
+
 type PartnerOfferToCollector implements Node {
   artworkId: String
   createdAt(
@@ -14646,6 +14652,7 @@ type PartnerOfferToCollector implements Node {
   note: String
   partnerId: String
   priceWithDiscount: Money
+  source: PartnerOfferSourceEnum
 }
 
 # A connection to a list of items.
