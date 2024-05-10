@@ -10,7 +10,10 @@ CI=1 yarn pod-install
 # Generate the iOS build file
 yarn maestro:ios:release:build
 
-# Open the folder where the build file is located
-open ios/build/Build/Products/Store-iphonesimulator
+# Navigate to the directory containing the build
+cd ios/build/Build/Products/Store-iphonesimulator
+
+# Zip the build directory
+zip -r Artsy.zip Artsy.app
 
 # Please discard the diff that will be generated afterwards (Podfile.lock)

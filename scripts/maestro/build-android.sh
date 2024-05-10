@@ -29,7 +29,4 @@ yarn maestro:android:release:build
 # correctly. You can ignore the error and continue with the script.
 yarn maestro:android:release:install
 
-# Open the folder where the build file is located
-open android/app/build/outputs/apk/release
-
 # Please discard the diff that will be generated afterwards (app.json)
