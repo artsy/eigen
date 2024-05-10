@@ -8,6 +8,7 @@ import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/validation"
 import { goBack } from "app/system/navigation/navigate"
 import { useFormikContext } from "formik"
+import { Alert } from "react-native"
 
 export const STEPS: (keyof ArtworkFormScreen)[] = [
   "SubmitArtworkStartFlow",
@@ -21,25 +22,33 @@ export const STEPS: (keyof ArtworkFormScreen)[] = [
 
 export const useSubmissionContext = () => {
   const setCurrentStep = ArtworkFormStore.useStoreActions((actions) => actions.setCurrentStep)
+  const setIsLoading = ArtworkFormStore.useStoreActions((actions) => actions.setIsLoading)
+
   const { values } = useFormikContext<ArtworkDetailsFormModel>()
 
   const navigateToNextStep = async (step?: keyof ArtworkFormScreen) => {
-    const currentStepId = getCurrentRoute()
-    const nextStepId = step || STEPS[STEPS.indexOf(currentStepId as any) + 1]
+    try {
+      setIsLoading(true)
+      const currentStepId = getCurrentRoute()
+      const nextStepId = step || STEPS[STEPS.indexOf(currentStepId as any) + 1]
 
-    if (!nextStepId) {
-      console.error("No next step found")
-      return
+      if (!nextStepId) {
+        console.error("No next step found")
+        return
+      }
+
+      if (values.submissionId) {
+        await createOrUpdateSubmission(values, values.submissionId)
+      }
+
+      setCurrentStep(nextStepId)
+      __unsafe__SubmissionArtworkFormNavigationRef.current?.navigate?.(nextStepId)
+    } catch (error) {
+      console.error("Error navigating to next step", error)
+      Alert.alert("Could not navigate to next step")
+    } finally {
+      setIsLoading(false)
     }
-
-    if (values.submissionId) {
-      // TODO: Intentionally not awaiting here to avoid blocking the UI
-      // We should consider adding a loading state to the UI
-      createOrUpdateSubmission(values, values.submissionId)
-    }
-
-    setCurrentStep(nextStepId)
-    __unsafe__SubmissionArtworkFormNavigationRef.current?.navigate?.(nextStepId)
   }
 
   const navigateToPreviousStep = () => {
