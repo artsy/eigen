@@ -12,7 +12,7 @@ export const SubmissionArtworkBottomNavigation: React.FC<{}> = () => {
   const { navigateToNextStep, navigateToPreviousStep } = useSubmissionContext()
   const { isValid } = useFormikContext<ArtworkDetailsFormModel>()
 
-  const currentStep = ArtworkFormStore.useStoreState((state) => state.currentStep)
+  const { currentStep, isLoading } = ArtworkFormStore.useStoreState((state) => state)
   const { width: screenWidth } = useScreenDimensions()
 
   const handleBackPress = () => {
@@ -77,7 +77,7 @@ export const SubmissionArtworkBottomNavigation: React.FC<{}> = () => {
               <Text underline>Back</Text>
             </Touchable>
           </Flex>
-          <Button onPress={handleNextPress} disabled={!isValid}>
+          <Button onPress={handleNextPress} disabled={!isValid || isLoading} loading={isLoading}>
             Continue
           </Button>
         </Flex>
