@@ -33,7 +33,9 @@ export const useSubmissionContext = () => {
     }
 
     if (values.submissionId) {
-      await createOrUpdateSubmission(values, values.submissionId)
+      // TODO: Intentionally not awaiting here to avoid blocking the UI
+      // We should consider adding a loading state to the UI
+      createOrUpdateSubmission(values, values.submissionId)
     }
 
     setCurrentStep(nextStepId)

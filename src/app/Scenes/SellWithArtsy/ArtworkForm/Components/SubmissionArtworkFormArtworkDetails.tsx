@@ -1,27 +1,15 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Input,
-  InputTitle,
-  Join,
-  LinkButton,
-  Spacer,
-  Text,
-} from "@artsy/palette-mobile"
+import { Box, Flex, Input, InputTitle, Join, LinkButton, Spacer, Text } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { Select, SelectOption } from "app/Components/Select"
 import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
 import { CategoryPicker } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/CategoryPicker"
 import { ArtworkFormScreen } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmissionArtworkForm"
-import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { InfoModal } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/InfoModal/InfoModal"
 import {
   AcceptableCategoryValue,
   acceptableCategoriesForSubmission,
 } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/acceptableCategoriesForSubmission"
-import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import {
   limitedEditionValue,
   rarityOptions,
@@ -29,27 +17,20 @@ import {
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
 import { useFormikContext } from "formik"
 import { useRef, useState } from "react"
+import { ScrollView } from "react-native"
 
 export const SubmissionArtworkFormArtworkDetails: React.FC<
   StackScreenProps<ArtworkFormScreen, "ArtworkFormArtworkDetails">
 > = ({}) => {
   const [isRarityInfoModalVisible, setIsRarityInfoModalVisible] = useState(false)
-  const { handleChange, isValid, setFieldValue, values } =
-    useFormikContext<ArtworkDetailsFormModel>()
-  const { navigateToNextStep } = useSubmissionContext()
-
-  const handleNextPress = async () => {
-    await createOrUpdateSubmission(values, values.submissionId)
-
-    navigateToNextStep()
-  }
+  const { handleChange, setFieldValue, values } = useFormikContext<ArtworkDetailsFormModel>()
 
   const categories = useRef<Array<SelectOption<AcceptableCategoryValue>>>(
     acceptableCategoriesForSubmission()
   ).current
 
   return (
-    <Flex>
+    <ScrollView>
       {!!values.artistSearchResult && <ArtistSearchResult result={values.artistSearchResult} />}
 
       <Spacer y={2} />
@@ -155,12 +136,6 @@ export const SubmissionArtworkFormArtworkDetails: React.FC<
           />
         </Flex>
       </Join>
-
-      <Spacer y={2} />
-
-      <Button onPress={handleNextPress} block disabled={!isValid}>
-        Save and Continue
-      </Button>
-    </Flex>
+    </ScrollView>
   )
 }
