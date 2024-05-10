@@ -13,7 +13,11 @@ export const SubmissionNavigationControls: React.FC<{}> = () => {
     navigateToNextStep()
   }
 
-  if (!currentStep || currentStep === "SubmitArtworkStartFlow") {
+  if (
+    !currentStep ||
+    currentStep === "SubmitArtworkStartFlow" ||
+    currentStep === "ArtworkFormCompleteYourSubmission"
+  ) {
     return null
   }
 
