@@ -21,6 +21,17 @@ fi
 # removes codepushhash to avoid conflicts
 rm -rf android/app/build/generated/assets/createBundleReleaseJsAndAssets/CodePushHash
 
+directory="android/app/build/outputs/apk/release"
+
+# Check if the directory exists if not create it
+if [ ! -d "$directory" ]; then
+    echo "Directory does not exist. Creating..."
+    mkdir -p "$directory"
+    echo "Directory created successfully."
+else
+    echo "Directory already exists."
+fi
+
 # Generate the android aab build file
 yarn maestro:android:release:build
 
@@ -28,5 +39,15 @@ yarn maestro:android:release:build
 # This step will probably fail if you don't have an android emulator open but it is going to generate the apk file
 # correctly. You can ignore the error and continue with the script.
 yarn maestro:android:release:install
+
+cd android/app/build/outputs/apk/release
+
+echo "Uploading the Android build to maestro server"
+
+# directory = /Users/georgioskartalis/Artsy/android/app/build/outputs/apk/release/app-release.apk
+curl https://api.copilot.mobile.dev/v2/project/$MAESTRO_ANDROID_PROJECT_ID/build \
+    -F "file=@$PWD/app-release.apk" \
+    -F "tags=nightly" \
+    -H "Authorization: Bearer $MAESTRO_COPILOT_API_KEY"
 
 # Please discard the diff that will be generated afterwards (app.json)
