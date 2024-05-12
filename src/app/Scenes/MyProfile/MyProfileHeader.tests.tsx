@@ -1,4 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native"
+import { MyProfileHeaderTestQuery } from "__generated__/MyProfileHeaderTestQuery.graphql"
 import { MyProfileHeader } from "app/Scenes/MyProfile/MyProfileHeader"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
@@ -6,8 +7,8 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
 describe("MyProfileHeader", () => {
-  const { renderWithRelay } = setupTestWrapper({
-    Component: MyProfileHeader,
+  const { renderWithRelay } = setupTestWrapper<MyProfileHeaderTestQuery>({
+    Component: ({ me }) => <MyProfileHeader data={me as any} />,
     query: graphql`
       query MyProfileHeaderTestQuery @relay_test_operation {
         me {
