@@ -1,10 +1,8 @@
 import { Flex, Spacer, Text } from "@artsy/palette-mobile"
-import { StackScreenProps } from "@react-navigation/stack"
 import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
 import { AutosuggestResultsPlaceholder } from "app/Components/AutosuggestResults/AutosuggestResultsPlaceholder"
 import { ArtistAutosuggest } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistAutosuggest"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
-import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
@@ -12,9 +10,7 @@ import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/
 import { useFormikContext } from "formik"
 import { Suspense } from "react"
 
-export const SubmitArtworkSelectArtist: React.FC<
-  StackScreenProps<SubmitArtworkStackNavigation, "SelectArtist">
-> = ({}) => {
+export const SubmitArtworkSelectArtist = () => {
   const { navigateToNextStep } = useSubmissionContext()
   const setIsLoading = SubmitArtworkFormStore.useStoreActions((actions) => actions.setIsLoading)
 
@@ -42,10 +38,8 @@ export const SubmitArtworkSelectArtist: React.FC<
       // TODO: Does it make sense to create a new submission here?
       // We might end up with a lot of submissions that are never completed
       const submissionId = await createOrUpdateSubmission(updatedValues, formik.values.submissionId)
-      // Wait for 5 seconds
-      await new Promise((resolve) => setTimeout(resolve, 5000))
       formik.setFieldValue("submissionId", submissionId)
-      await navigateToNextStep()
+      navigateToNextStep()
     } catch (error) {
       console.error("Error creating submission", error)
     } finally {

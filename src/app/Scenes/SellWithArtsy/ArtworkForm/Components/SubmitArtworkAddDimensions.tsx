@@ -1,15 +1,11 @@
 import { Box, Button, Flex, Input, Join, RadioButton, Spacer, Text } from "@artsy/palette-mobile"
-import { StackScreenProps } from "@react-navigation/stack"
 import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
-import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { useFormikContext } from "formik"
 
-export const SubmitArtworkAddDimensions: React.FC<
-  StackScreenProps<SubmitArtworkStackNavigation, "AddDimensions">
-> = ({}) => {
+export const SubmitArtworkAddDimensions = () => {
   const { isValid, setFieldValue, values } = useFormikContext<ArtworkDetailsFormModel>()
   const { navigateToNextStep } = useSubmissionContext()
 

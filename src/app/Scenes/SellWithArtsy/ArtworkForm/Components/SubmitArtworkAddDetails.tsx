@@ -9,11 +9,9 @@ import {
   Spacer,
   Text,
 } from "@artsy/palette-mobile"
-import { StackScreenProps } from "@react-navigation/stack"
 import { Select, SelectOption } from "app/Components/Select"
 import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
 import { CategoryPicker } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/CategoryPicker"
-import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { InfoModal } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/InfoModal/InfoModal"
 import {
@@ -29,9 +27,7 @@ import { useFormikContext } from "formik"
 import { useRef, useState } from "react"
 import { ScrollView } from "react-native"
 
-export const SubmitArtworkAddDetails: React.FC<
-  StackScreenProps<SubmitArtworkStackNavigation, "AddDetails">
-> = ({}) => {
+export const SubmitArtworkAddDetails = () => {
   const [isRarityInfoModalVisible, setIsRarityInfoModalVisible] = useState(false)
   const [isYearUnknown, setIsYearUnknown] = useState(false)
   const [oldTypedYear, setOldTypedYear] = useState("")
