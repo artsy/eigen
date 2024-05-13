@@ -43,7 +43,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
   const collectedArtists = extractNodes(queryData.me?.userInterestsConnection).filter((node) => {
     if (node.__typename === "Artist") {
       if (onlyP1Artists) {
-        return node.targetSupply?.isP1
+        return node.targetSupply?.priority === "TRUE"
       }
       return true
     }
@@ -188,6 +188,7 @@ const ArtistAutosuggestScreenQuery = graphql`
               }
               targetSupply {
                 isP1
+                priority
               }
               displayLabel
               formattedNationalityAndBirthday
