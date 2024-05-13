@@ -330,7 +330,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
           isMyCollection &&
           !isDismissed(PROGRESSIVE_ONBOARDING_MY_COLLECTION_SELL_THIS_WORK).status &&
           itemIndex === 0 &&
-          !!artwork.artist?.targetSupply?.priority
+          artwork.artist?.targetSupply?.priority === "TRUE"
 
         artworkComponents.push(
           <ItemComponent
