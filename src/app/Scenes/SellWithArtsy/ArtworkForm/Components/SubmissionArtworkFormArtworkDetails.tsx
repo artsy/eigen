@@ -142,7 +142,7 @@ export const SubmissionArtworkFormArtworkDetails: React.FC<
               if (!isYearUnknown) {
                 setOldTypedYear(values.year)
                 setIsYearUnknown(true)
-                setFieldValue("year", undefined)
+                setFieldValue("year", "")
               } else {
                 setFieldValue("year", oldTypedYear)
                 setIsYearUnknown(false)
