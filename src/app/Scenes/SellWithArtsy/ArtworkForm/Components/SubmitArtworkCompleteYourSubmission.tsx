@@ -1,11 +1,7 @@
 import { Message, Spacer, Text } from "@artsy/palette-mobile"
-import { StackScreenProps } from "@react-navigation/stack"
-import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { Alert, ScrollView } from "react-native"
 
-export const SubmitArtworkCompleteYourSubmission: React.FC<
-  StackScreenProps<SubmitArtworkStackNavigation, "CompleteYourSubmission">
-> = () => {
+export const SubmitArtworkCompleteYourSubmission = () => {
   return (
     <ScrollView>
       <Text variant="lg" mt={4} mb={2}>
