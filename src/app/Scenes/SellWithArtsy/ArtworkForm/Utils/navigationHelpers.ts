@@ -1,36 +1,30 @@
-import { ArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/ArtworkFormStore"
+import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import {
-  ArtworkFormScreen,
   __unsafe__SubmissionArtworkFormNavigationRef,
   getCurrentRoute,
-} from "app/Scenes/SellWithArtsy/ArtworkForm/SubmissionArtworkForm"
+} from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
+import {
+  ARTWORK_FORM_STEPS,
+  SubmitArtworkScreen,
+} from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/validation"
 import { goBack } from "app/system/navigation/navigate"
 import { useFormikContext } from "formik"
 import { Alert } from "react-native"
 
-export const STEPS: (keyof ArtworkFormScreen)[] = [
-  "SubmitArtworkStartFlow",
-  "SelectArtworkFromMyCollection",
-  "ArtworkFormArtist",
-  "ArtworkFormTitle",
-  "ArtworkFormPhotos",
-  "ArtworkFormArtworkDetails",
-  "ArtworkFormCompleteYourSubmission",
-]
-
 export const useSubmissionContext = () => {
-  const setCurrentStep = ArtworkFormStore.useStoreActions((actions) => actions.setCurrentStep)
-  const setIsLoading = ArtworkFormStore.useStoreActions((actions) => actions.setIsLoading)
+  const setCurrentStep = SubmitArtworkFormStore.useStoreActions((actions) => actions.setCurrentStep)
+  const setIsLoading = SubmitArtworkFormStore.useStoreActions((actions) => actions.setIsLoading)
 
   const { values } = useFormikContext<ArtworkDetailsFormModel>()
 
-  const navigateToNextStep = async (step?: keyof ArtworkFormScreen) => {
+  const navigateToNextStep = async (step?: SubmitArtworkScreen) => {
     try {
       setIsLoading(true)
       const currentStepId = getCurrentRoute()
-      const nextStepId = step || STEPS[STEPS.indexOf(currentStepId as any) + 1]
+      const nextStepId =
+        step || ARTWORK_FORM_STEPS[ARTWORK_FORM_STEPS.indexOf(currentStepId as any) + 1]
 
       if (!nextStepId) {
         console.error("No next step found")
@@ -52,7 +46,7 @@ export const useSubmissionContext = () => {
   }
 
   const navigateToPreviousStep = () => {
-    if (getCurrentRoute() === STEPS[0]) {
+    if (getCurrentRoute() === ARTWORK_FORM_STEPS[0]) {
       return goBack()
     }
     // Order is important here to make sure getCurrentRoute returns the correct value

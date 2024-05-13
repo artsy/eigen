@@ -1,7 +1,7 @@
 import { BulletedItem, Button, Flex, Input, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
-import { ArtworkFormScreen } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmissionArtworkForm"
+import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { InfoModal } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/InfoModal/InfoModal"
@@ -9,8 +9,8 @@ import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork
 import { useFormikContext } from "formik"
 import { useState } from "react"
 
-export const SubmissionArtworkFormProvenance: React.FC<
-  StackScreenProps<ArtworkFormScreen, "ArtworkFormProvenance">
+export const SubmitArtworkAddProvenance: React.FC<
+  StackScreenProps<SubmitArtworkStackNavigation, "AddProvenance">
 > = ({}) => {
   const [isProvenanceInfoModalVisible, setIsProvenanceInfoModalVisible] = useState(false)
   const { isValid, setFieldValue, values } = useFormikContext<ArtworkDetailsFormModel>()

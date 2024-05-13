@@ -15,7 +15,7 @@ import { captureMessage } from "@sentry/react-native"
 import { ErrorView } from "app/Components/ErrorView/ErrorView"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { SubmissionArtworkForm } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmissionArtworkForm"
+import { SubmitArtworkForm } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { fetchUserContactInformation } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/fetchUserContactInformation"
 import {
   artworkDetailsCompletedEvent,
@@ -337,7 +337,7 @@ export const SubmitArtwork = () => {
   }
 
   if (enableNewSubmissionFlow) {
-    return <SubmissionArtworkForm />
+    return <SubmitArtworkForm />
   }
 
   return (

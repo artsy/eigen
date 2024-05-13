@@ -1,6 +1,6 @@
 import { Button, Flex, Spacer, Text, Touchable, useScreenDimensions } from "@artsy/palette-mobile"
-import { ArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/ArtworkFormStore"
-import { SubmissionArtworkFormProgressBar } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmissionArtworkFormProgressBar"
+import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
+import { SubmitArtworkProgressBar } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkProgressBar"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/validation"
 import { navigate } from "app/system/navigation/navigate"
@@ -8,11 +8,11 @@ import { useFormikContext } from "formik"
 import { useEffect } from "react"
 import { LayoutAnimation } from "react-native"
 
-export const SubmissionArtworkBottomNavigation: React.FC<{}> = () => {
+export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
   const { navigateToNextStep, navigateToPreviousStep } = useSubmissionContext()
   const { isValid } = useFormikContext<ArtworkDetailsFormModel>()
 
-  const { currentStep, isLoading } = ArtworkFormStore.useStoreState((state) => state)
+  const { currentStep, isLoading } = SubmitArtworkFormStore.useStoreState((state) => state)
   const { width: screenWidth } = useScreenDimensions()
 
   const handleBackPress = () => {
@@ -27,11 +27,11 @@ export const SubmissionArtworkBottomNavigation: React.FC<{}> = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
   }, [currentStep])
 
-  if (!currentStep || currentStep === "SubmitArtworkStartFlow") {
+  if (!currentStep || currentStep === "StartFlow") {
     return null
   }
 
-  if (currentStep === "ArtworkFormCompleteYourSubmission") {
+  if (currentStep === "CompleteYourSubmission") {
     return (
       <Flex
         borderTopWidth={1}
@@ -41,7 +41,7 @@ export const SubmissionArtworkBottomNavigation: React.FC<{}> = () => {
         alignSelf="center"
       >
         <Flex px={2}>
-          <SubmissionArtworkFormProgressBar />
+          <SubmitArtworkProgressBar />
 
           <Spacer y={1} />
 
@@ -70,7 +70,7 @@ export const SubmissionArtworkBottomNavigation: React.FC<{}> = () => {
   return (
     <Flex borderTopWidth={1} borderTopColor="black10" py={1} width={screenWidth} alignSelf="center">
       <Flex px={2}>
-        <SubmissionArtworkFormProgressBar />
+        <SubmitArtworkProgressBar />
         <Flex flexDirection="row" justifyContent="space-between" backgroundColor="white100">
           <Flex flexDirection="row" alignItems="center">
             <Touchable onPress={handleBackPress}>

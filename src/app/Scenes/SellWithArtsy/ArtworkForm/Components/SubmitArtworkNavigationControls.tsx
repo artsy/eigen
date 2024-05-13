@@ -1,23 +1,19 @@
 import { Flex, Text, Touchable } from "@artsy/palette-mobile"
-import { ArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/ArtworkFormStore"
+import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { useIsKeyboardVisible } from "app/utils/hooks/useIsKeyboardVisible"
 import { MotiView } from "moti"
 
-export const SubmissionNavigationControls: React.FC<{}> = () => {
+export const SubmitArtworkNavigationControls: React.FC<{}> = () => {
   const { navigateToNextStep } = useSubmissionContext()
-  const currentStep = ArtworkFormStore.useStoreState((state) => state.currentStep)
+  const currentStep = SubmitArtworkFormStore.useStoreState((state) => state.currentStep)
   const isKeyboardVisible = useIsKeyboardVisible(true)
 
   const handleSaveAndExitPress = () => {
     navigateToNextStep()
   }
 
-  if (
-    !currentStep ||
-    currentStep === "SubmitArtworkStartFlow" ||
-    currentStep === "ArtworkFormCompleteYourSubmission"
-  ) {
+  if (!currentStep || currentStep === "StartFlow" || currentStep === "CompleteYourSubmission") {
     return null
   }
 

@@ -33,7 +33,7 @@ export const SubmitArtworkStartFlow: React.FC = () => {
   const { bottom: bottomInset } = useSafeAreaInsets()
 
   const handleStartNewSubmission = () => {
-    navigateToNextStep("ArtworkFormArtist")
+    navigateToNextStep("SelectArtist")
   }
 
   const handleStartFromMyCollection = () => {

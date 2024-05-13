@@ -3,8 +3,8 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
 import { AutosuggestResultsPlaceholder } from "app/Components/AutosuggestResults/AutosuggestResultsPlaceholder"
 import { ArtistAutosuggest } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistAutosuggest"
-import { ArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/ArtworkFormStore"
-import { ArtworkFormScreen } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmissionArtworkForm"
+import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
+import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
@@ -12,11 +12,11 @@ import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/
 import { useFormikContext } from "formik"
 import { Suspense } from "react"
 
-export const SubmissionArtworkFormArtist: React.FC<
-  StackScreenProps<ArtworkFormScreen, "ArtworkFormArtist">
+export const SubmitArtworkSelectArtist: React.FC<
+  StackScreenProps<SubmitArtworkStackNavigation, "SelectArtist">
 > = ({}) => {
   const { navigateToNextStep } = useSubmissionContext()
-  const setIsLoading = ArtworkFormStore.useStoreActions((actions) => actions.setIsLoading)
+  const setIsLoading = SubmitArtworkFormStore.useStoreActions((actions) => actions.setIsLoading)
 
   const formik = useFormikContext<ArtworkDetailsFormModel>()
 

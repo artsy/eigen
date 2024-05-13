@@ -5,8 +5,8 @@ import {
   useScreenDimensions,
   useSpace,
 } from "@artsy/palette-mobile"
-import { ArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/ArtworkFormStore"
-import { ARTWORK_FORM_STEPS } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmissionArtworkForm"
+import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
+import { ARTWORK_FORM_STEPS } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
 
 const STEPS_WITHOUT_INPUT = ["SubmitArtworkStartFlow"]
 
@@ -17,8 +17,8 @@ const STEPS_WITH_INPUT = ARTWORK_FORM_STEPS.filter(
 const ICON_WIDTH = 18
 
 const PROGRESS_BAR_HEIGHT = 22
-export const SubmissionArtworkFormProgressBar: React.FC = ({}) => {
-  const currentStep = ArtworkFormStore.useStoreState((state) => state.currentStep)
+export const SubmitArtworkProgressBar: React.FC = ({}) => {
+  const currentStep = SubmitArtworkFormStore.useStoreState((state) => state.currentStep)
   const { width: screenWidth } = useScreenDimensions()
   const space = useSpace()
 
@@ -29,7 +29,7 @@ export const SubmissionArtworkFormProgressBar: React.FC = ({}) => {
     return <Flex height={PROGRESS_BAR_HEIGHT} />
   }
 
-  const hasCompletedForm = currentStep === "ArtworkFormCompleteYourSubmission"
+  const hasCompletedForm = currentStep === "CompleteYourSubmission"
   const checkIconWidth = ICON_WIDTH + space(0.5)
   return (
     <Flex height={PROGRESS_BAR_HEIGHT}>
@@ -48,7 +48,7 @@ export const SubmissionArtworkFormProgressBar: React.FC = ({}) => {
           trackColor={hasCompletedForm ? "green100" : "blue100"}
         />
       </Flex>
-      {currentStep === "ArtworkFormCompleteYourSubmission" && (
+      {currentStep === "CompleteYourSubmission" && (
         <Flex
           position="absolute"
           alignSelf="flex-end"

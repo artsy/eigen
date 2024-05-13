@@ -1,15 +1,15 @@
 import { Spacer, Text } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
-import { ArtworkFormScreen } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmissionArtworkForm"
+import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { UploadPhotosForm } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/UploadPhotosForm"
 import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
 import { useFormikContext } from "formik"
 import { ScrollView } from "react-native"
 
-export const SubmissionArtworkFormPhotos: React.FC<
-  StackScreenProps<ArtworkFormScreen, "ArtworkFormTitle">
+export const SubmitArtworkAddPhotos: React.FC<
+  StackScreenProps<SubmitArtworkStackNavigation, "AddPhotos">
 > = ({}) => {
   const { values } = useFormikContext<ArtworkDetailsFormModel>()
 

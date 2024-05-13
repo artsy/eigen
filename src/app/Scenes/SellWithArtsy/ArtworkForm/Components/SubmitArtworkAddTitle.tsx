@@ -1,12 +1,12 @@
 import { CheckCircleFillIcon, Flex, Input, Spacer, Text } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
-import { ArtworkFormScreen } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmissionArtworkForm"
+import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { useFormikContext } from "formik"
 
-export const SubmissionArtworkFormTitle: React.FC<
-  StackScreenProps<ArtworkFormScreen, "ArtworkFormTitle">
+export const SubmitArtworkAddTitle: React.FC<
+  StackScreenProps<SubmitArtworkStackNavigation, "AddTitle">
 > = ({}) => {
   const { handleChange, values } = useFormikContext<ArtworkDetailsFormModel>()
 
