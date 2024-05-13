@@ -131,7 +131,6 @@ export const MyProfileSettings: React.FC<MyProfileSettingsProps> = ({ onSuccess 
             <Separator my={1} borderColor={separatorColor} />
           </>
         )}
-
         <Flex flexDirection="row" alignItems="center" justifyContent="center" py="7.5px" px={2}>
           <Button variant="fillDark" haptic onPress={confirmLogout} block>
             Log Out
