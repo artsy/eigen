@@ -26,9 +26,11 @@ export const MyProfileSettings: React.FC<MyProfileSettingsProps> = ({ onSuccess 
       <FancyModalHeader hideBottomDivider>Account</FancyModalHeader>
 
       <ScrollView>
-        <Text variant="xs" color="black60" px={2}>
-          Settings
-        </Text>
+        {!!newCollectorSettings && (
+          <Text variant="xs" color="black60" px={2}>
+            Settings
+          </Text>
+        )}
         <Spacer y={2} />
         <MenuItem
           title="Edit Profile"
@@ -131,6 +133,7 @@ export const MyProfileSettings: React.FC<MyProfileSettingsProps> = ({ onSuccess 
             <Separator my={1} borderColor={separatorColor} />
           </>
         )}
+
         <Flex flexDirection="row" alignItems="center" justifyContent="center" py="7.5px" px={2}>
           <Button variant="fillDark" haptic onPress={confirmLogout} block>
             Log Out
