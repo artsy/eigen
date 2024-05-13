@@ -8,7 +8,7 @@ import { graphql } from "react-relay"
 
 describe("MyProfileHeader", () => {
   const { renderWithRelay } = setupTestWrapper<MyProfileHeaderTestQuery>({
-    Component: ({ me }) => <MyProfileHeader data={me as any} />,
+    Component: ({ me }) => <MyProfileHeader meProp={me!} />,
     query: graphql`
       query MyProfileHeaderTestQuery @relay_test_operation {
         me {
