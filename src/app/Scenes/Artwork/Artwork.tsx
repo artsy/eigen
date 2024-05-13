@@ -301,7 +301,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
         })
       }
 
-      if (!!enablePartnerOfferOnArtworkScreen) {
+      if (!!enablePartnerOfferOnArtworkScreen && !!partnerOffer?.note) {
         sections.push({
           key: "partnerOfferNote",
           element: (
@@ -762,6 +762,7 @@ export const ArtworkContainer = createRefetchContainer(
           edges {
             node {
               internalID
+              note
               ...ArtworkStickyBottomContent_partnerOffer
               ...ArtworkPartnerOfferNote_partnerOffer
               ...ArtworkPrice_partnerOffer
