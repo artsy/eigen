@@ -360,20 +360,20 @@ jobs:
             - v11-test-success-{{ checksum "../workspace/.manifests/native_code" }}
       # we can quit the macos build early if there were no native code changes
       # and we're not on the beta branch
-      # - run:
-      #     name: Quit early if possible
-      #     command: |
-      #       if test $CIRCLE_BRANCH != beta-ios && ls xcode_test_raw.log
-      #       then
-      #         circleci step halt
-      #       fi
-      # - run:
-      #     name: Quit early if Draft PR
-      #     command: |
-      #       if $(curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/artsy/eigen/pulls/${CIRCLE_PULL_REQUEST##*/} | jq ".draft")
-      #       then
-      #         circleci step halt
-      #       fi
+      - run:
+          name: Quit early if possible
+          command: |
+            if test $CIRCLE_BRANCH != beta-ios && ls xcode_test_raw.log
+            then
+              circleci step halt
+            fi
+      - run:
+          name: Quit early if Draft PR
+          command: |
+            if $(curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/artsy/eigen/pulls/${CIRCLE_PULL_REQUEST##*/} | jq ".draft")
+            then
+              circleci step halt
+            fi
       - run:
           name: Clear project dir
           command: |
@@ -398,9 +398,6 @@ jobs:
       - run:
           name: Run tests if native code has changed
           command: ls xcode_test_raw.log || ./scripts/ci/ci-test-ios
-      - run:
-          name: Upload builds to Maestro App Quality Copilot
-          command: ./scripts/maestro/build-ios.sh
       - save_cache:
           key: v11-test-success-{{ checksum ".manifests/native_code" }}
           paths:
@@ -433,6 +430,9 @@ jobs:
       - run:
           name: Save success file
           command: echo yes > 'build-success.log'
+      - run:
+          name: Upload builds to Maestro App Quality Copilot
+          command: ./scripts/maestro/build-android.sh
 
       - store_artifacts:
           path: android/app/build/reports
