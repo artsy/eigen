@@ -398,6 +398,9 @@ jobs:
       - run:
           name: Run tests if native code has changed
           command: ls xcode_test_raw.log || ./scripts/ci/ci-test-ios
+      - run:
+          name: Upload builds to Maestro App Quality Copilot
+          command: ./scripts/maestro/build-ios.sh
       - save_cache:
           key: v11-test-success-{{ checksum ".manifests/native_code" }}
           paths:
