@@ -26,9 +26,11 @@ export const MyProfileSettings: React.FC<MyProfileSettingsProps> = ({ onSuccess 
       <FancyModalHeader hideBottomDivider>Account</FancyModalHeader>
 
       <ScrollView>
-        <Text variant="xs" color="black60" px={2}>
-          Settings
-        </Text>
+        {!!newCollectorSettings && (
+          <Text variant="xs" color="black60" px={2}>
+            Settings
+          </Text>
+        )}
         <Spacer y={2} />
         <MenuItem
           title="Edit Profile"
