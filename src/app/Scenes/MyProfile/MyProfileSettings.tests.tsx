@@ -1,82 +1,73 @@
+import { screen } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Platform } from "react-native"
 import { MyProfileSettings } from "./MyProfileSettings"
 
 jest.mock("./LoggedInUserInfo")
 
 describe(MyProfileSettings, () => {
-  const getWrapper = () => {
-    const tree = renderWithWrappersLEGACY(<MyProfileSettings />)
-    return tree
-  }
-
-  it("renders without throwing an error", () => {
-    getWrapper()
-  })
-
   it("renders push notifications on iOS", () => {
     Platform.OS = "ios"
-    const tree = getWrapper()
-    expect(extractText(tree.root)).toContain("Push Notifications")
+    renderWithWrappers(<MyProfileSettings />)
+    expect(screen.getByText("Push Notifications")).toBeOnTheScreen()
   })
 
   it("renders push notifications on Android", () => {
     Platform.OS = "android"
-    const tree = getWrapper()
-    expect(extractText(tree.root)).toContain("Push Notifications")
+    renderWithWrappers(<MyProfileSettings />)
+    expect(screen.getByText("Push Notifications")).toBeOnTheScreen()
   })
 
   it("renders Edit Profile", () => {
-    const tree = getWrapper()
-    expect(extractText(tree.root)).toContain("Edit Profile")
+    renderWithWrappers(<MyProfileSettings />)
+    expect(screen.getByText("Edit Profile")).toBeOnTheScreen()
   })
 
   it("renders Account Settings", () => {
-    const tree = getWrapper()
-    expect(extractText(tree.root)).toContain("Account Settings")
+    renderWithWrappers(<MyProfileSettings />)
+    expect(screen.getByText("Account Settings")).toBeOnTheScreen()
   })
 
   it("renders Alerts", () => {
-    const tree = getWrapper()
-    expect(extractText(tree.root)).toContain("Alerts")
+    renderWithWrappers(<MyProfileSettings />)
+    expect(screen.getByText("Alerts")).toBeOnTheScreen()
   })
 
   it("renders Follows", () => {
-    const tree = getWrapper()
-    expect(extractText(tree.root)).toContain("Follows")
+    renderWithWrappers(<MyProfileSettings />)
+    expect(screen.getByText("Follows")).toBeOnTheScreen()
   })
 
   it("renders Payment", () => {
-    const tree = getWrapper()
-    expect(extractText(tree.root)).toContain("Payment")
+    renderWithWrappers(<MyProfileSettings />)
+    expect(screen.getByText("Payment")).toBeOnTheScreen()
   })
 
   it("renders Send Feedback", () => {
-    const tree = getWrapper()
-    expect(extractText(tree.root)).toContain("Send Feedback")
+    renderWithWrappers(<MyProfileSettings />)
+    expect(screen.getByText("Send Feedback")).toBeOnTheScreen()
   })
 
   it("renders Personal Data Request", () => {
-    const tree = getWrapper()
-    expect(extractText(tree.root)).toContain("Personal Data Request")
+    renderWithWrappers(<MyProfileSettings />)
+    expect(screen.getByText("Personal Data Request")).toBeOnTheScreen()
   })
 
   it("renders About", () => {
-    const tree = getWrapper()
-    expect(extractText(tree.root)).toContain("About")
+    renderWithWrappers(<MyProfileSettings />)
+    expect(screen.getByText("About")).toBeOnTheScreen()
   })
 
   it("renders Dark Mode when the ARDarkModeSupport flag is enabled", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ ARDarkModeSupport: true })
 
-    const tree = getWrapper()
-    expect(extractText(tree.root)).toContain("Dark Mode")
+    renderWithWrappers(<MyProfileSettings />)
+    expect(screen.getByText("Dark Mode")).toBeOnTheScreen()
   })
 
   it("renders Order history", () => {
-    const tree = getWrapper()
-    expect(extractText(tree.root)).toContain("Order History")
+    renderWithWrappers(<MyProfileSettings />)
+    expect(screen.getByText("Order History")).toBeOnTheScreen()
   })
 })
