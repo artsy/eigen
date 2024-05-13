@@ -35,9 +35,9 @@ import { normalizeMyProfileBio } from "./utils"
 
 const ICON_SIZE = 14
 
-export const MyProfileHeader: React.FC<{ data: MyProfileHeader_me$key }> = ({ data }) => {
+export const MyProfileHeader: React.FC<{ meProp: MyProfileHeader_me$key }> = ({ meProp }) => {
   const { fetchKey, refetch } = useRefetch()
-  const me = useFragment<MyProfileHeader_me$key>(myProfileHeaderFragment, data)
+  const me = useFragment<MyProfileHeader_me$key>(myProfileHeaderFragment, meProp)
 
   const localImage = useLocalImageStorage("profile", undefined, undefined, fetchKey)
   const userProfileImagePath = localImage?.path || me?.icon?.url
@@ -402,5 +402,5 @@ export const MyProfileHeaderQueryRenderer = withSuspense(() => {
   )
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  return <MyProfileHeader data={data.me!} />
+  return <MyProfileHeader meProp={data.me!} />
 }, MyProfileHeaderPlaceholder)
