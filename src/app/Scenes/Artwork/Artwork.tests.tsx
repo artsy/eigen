@@ -611,7 +611,9 @@ describe("Artwork", () => {
       renderWithWrappers(<TestRenderer />)
 
       // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment)
+      resolveMostRecentRelayOperation(environment, {
+        Me: () => ({ partnerOffersConnection: { edges: [] } }),
+      })
       // ArtworkMarkAsRecentlyViewedQuery
       resolveMostRecentRelayOperation(environment)
       // ArtworkBelowTheFoldQuery
@@ -836,7 +838,9 @@ describe("Artwork", () => {
       renderWithWrappers(<TestRenderer />)
 
       // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment)
+      resolveMostRecentRelayOperation(environment, {
+        Me: () => ({ partnerOffersConnection: { edges: [] } }),
+      })
       // ArtworkMarkAsRecentlyViewedQuery
       resolveMostRecentRelayOperation(environment)
       // ArtworkBelowTheFoldQuery
@@ -934,9 +938,8 @@ describe("Artwork", () => {
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
-        Artwork: () => ({
-          isUnlisted: true,
-        }),
+        Artwork: () => ({ isUnlisted: true }),
+        Me: () => ({ partnerOffersConnection: { edges: [] } }),
       })
       // ArtworkMarkAsRecentlyViewedQuery
       resolveMostRecentRelayOperation(environment)
