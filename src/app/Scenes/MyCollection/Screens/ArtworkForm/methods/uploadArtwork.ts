@@ -18,6 +18,7 @@ export const saveOrUpdateArtwork = async (
   const {
     photos,
     artistSearchResult,
+    collectorLocation,
     customArtist,
     pricePaidDollars,
     pricePaidCurrency,
@@ -66,6 +67,7 @@ export const saveOrUpdateArtwork = async (
       artworkLocation: others.artworkLocation,
       attributionClass: others.attributionClass || undefined,
       category: others.category,
+      collectorLocation,
       date: others.date,
       depth: others.depth,
       editionNumber: others.editionNumber,
@@ -113,6 +115,7 @@ export const saveOrUpdateArtwork = async (
         artworkLocation: others.artworkLocation,
         attributionClass: others.attributionClass || undefined,
         category: others.category,
+        collectorLocation: collectorLocation || undefined,
         date: others.date,
         depth: others.depth,
         editionNumber: others.editionNumber,

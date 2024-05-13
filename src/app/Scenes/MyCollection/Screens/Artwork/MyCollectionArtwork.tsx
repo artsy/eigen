@@ -232,6 +232,12 @@ export const ArtworkMetaProps = graphql`
     }
     artistNames
     category
+    collectorLocation {
+      city
+      state
+      country
+      countryCode
+    }
     confidentialNotes
     # needed to show the banner inside the edit artwork view
     # TODO: move logic to the edit artwork view https://artsyproduct.atlassian.net/browse/CX-2846
