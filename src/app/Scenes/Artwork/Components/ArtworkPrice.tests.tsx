@@ -74,6 +74,7 @@ describe("ArtworkPrice", () => {
             { internalID: "edition-set-two", saleMessage: "$2000" },
           ],
         }),
+        Me: () => ({ partnerOffersConnection: { edges: [] } }),
       },
       { initialData: { selectedEditionId: "edition-set-one" } }
     )
@@ -82,7 +83,10 @@ describe("ArtworkPrice", () => {
   })
 
   it("should render the sale message", () => {
-    renderWithRelay({ Artwork: () => ({ isInAuction: false, saleMessage: "$1000" }) })
+    renderWithRelay({
+      Artwork: () => ({ isInAuction: false, saleMessage: "$1000" }),
+      Me: () => ({ partnerOffersConnection: { edges: [] } }),
+    })
 
     expect(screen.getByText("$1000")).toBeOnTheScreen()
   })
