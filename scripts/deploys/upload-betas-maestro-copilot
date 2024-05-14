@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+./scripts/maestro/build-ios.sh
+./scripts/maestro/build-android.sh
