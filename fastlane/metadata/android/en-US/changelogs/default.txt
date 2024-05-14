@@ -1,5 +1,7 @@
-This update includes a number of improvements and bug fixes.
+This update includes a number of improvements and bug fixes, such as:
 
-- Improved image loaders across the app
+-  Improvement to the sales flow
+-  Artwork screen enhancements
+-  Conversations image loading fix
 
 Have feedback? Email us at support@artsy.net
