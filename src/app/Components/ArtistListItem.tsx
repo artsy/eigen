@@ -1,4 +1,12 @@
-import { AvatarSize, ClassTheme, EntityHeader, Flex, FollowButton, Text, Touchable } from "@artsy/palette-mobile"
+import {
+  AvatarSize,
+  ClassTheme,
+  EntityHeader,
+  Flex,
+  FollowButton,
+  Text,
+  Touchable,
+} from "@artsy/palette-mobile"
 import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItemFollowArtistMutation.graphql"
 import { ArtistListItem_artist$data } from "__generated__/ArtistListItem_artist.graphql"
 import { navigate } from "app/system/navigation/navigate"
