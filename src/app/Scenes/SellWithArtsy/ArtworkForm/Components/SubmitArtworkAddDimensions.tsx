@@ -1,19 +1,22 @@
-import { Box, Button, Flex, Input, Join, RadioButton, Spacer, Text } from "@artsy/palette-mobile"
+import { Box, Flex, Input, Join, RadioButton, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
-import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
-import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { useFormikContext } from "formik"
+import { useState } from "react"
+import { useDebounce } from "react-use"
 
 export const SubmitArtworkAddDimensions = () => {
-  const { isValid, setFieldValue, values } = useFormikContext<ArtworkDetailsFormModel>()
-  const { navigateToNextStep } = useSubmissionContext()
+  const { setFieldValue, values } = useFormikContext<ArtworkDetailsFormModel>()
+  const [dimensionMetric, setDimensionMetric] = useState(values.dimensionsMetric)
 
-  const handleNextPress = async () => {
-    await createOrUpdateSubmission(values, values.submissionId)
-
-    navigateToNextStep()
-  }
+  // Debounce the metric change to improve the radio buttons UX
+  useDebounce(
+    () => {
+      setFieldValue("dimensionsMetric", dimensionMetric)
+    },
+    500,
+    [dimensionMetric]
+  )
 
   return (
     <Flex>
@@ -30,20 +33,24 @@ export const SubmitArtworkAddDimensions = () => {
           <RadioButton
             mr={2}
             text="in"
-            selected={values.dimensionsMetric === "in"}
-            onPress={() => setFieldValue("dimensionsMetric", "in")}
+            selected={dimensionMetric === "in"}
+            onPress={() => {
+              setDimensionMetric("in")
+            }}
           />
           <RadioButton
             text="cm"
-            selected={values.dimensionsMetric === "cm"}
-            onPress={() => setFieldValue("dimensionsMetric", "cm")}
+            selected={dimensionMetric === "cm"}
+            onPress={() => {
+              setDimensionMetric("cm")
+            }}
           />
         </Flex>
 
         <Flex flexDirection="row" justifyContent="space-between">
           <Box width="31%" mr={1}>
             <Input
-              title={`Height (${values.dimensionsMetric})`}
+              title={`Height (${dimensionMetric})`}
               keyboardType="decimal-pad"
               testID="Submission_HeightInput"
               value={values.height}
@@ -53,7 +60,7 @@ export const SubmitArtworkAddDimensions = () => {
           </Box>
           <Box width="31%" mr={1}>
             <Input
-              title={`Width (${values.dimensionsMetric})`}
+              title={`Width (${dimensionMetric})`}
               keyboardType="decimal-pad"
               testID="Submission_WidthInput"
               value={values.width}
@@ -63,7 +70,7 @@ export const SubmitArtworkAddDimensions = () => {
           </Box>
           <Box width="31%">
             <Input
-              title={`Depth (${values.dimensionsMetric})`}
+              title={`Depth (${dimensionMetric})`}
               optional
               keyboardType="decimal-pad"
               testID="Submission_DepthInput"
@@ -74,12 +81,6 @@ export const SubmitArtworkAddDimensions = () => {
           </Box>
         </Flex>
       </Join>
-
-      <Spacer y={2} />
-
-      <Button onPress={handleNextPress} block disabled={!isValid}>
-        Save and Continue
-      </Button>
     </Flex>
   )
 }
