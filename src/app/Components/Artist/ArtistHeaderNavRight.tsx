@@ -1,8 +1,7 @@
-import { Flex, NAVBAR_HEIGHT, ShareIcon } from "@artsy/palette-mobile"
+import { Flex, FollowButton, NAVBAR_HEIGHT, ShareIcon } from "@artsy/palette-mobile"
 import { useScreenScrollContext } from "@artsy/palette-mobile/dist/elements/Screen/ScreenScrollContext"
 import { ArtistHeaderNavRight_artist$key } from "__generated__/ArtistHeaderNavRight_artist.graphql"
 import { useFollowArtist } from "app/Components/Artist/useFollowArtist"
-import { FollowButton } from "app/Components/Button/FollowButton"
 import { useState } from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -21,6 +20,7 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
   const data = useFragment(fragment, artist)
   const [isFollowed, setIsFollowed] = useState(!!data?.isFollowed)
 
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const { handleFollowToggle } = useFollowArtist(data!)
 
   useDebounce(
@@ -45,6 +45,7 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
         <FollowButton
           haptic
           isFollowed={isFollowed}
+          longestText="Following 999.9k"
           followCount={data?.counts.follows}
           onPress={() => setIsFollowed(!isFollowed)}
           ml={1}

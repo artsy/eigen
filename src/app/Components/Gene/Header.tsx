@@ -1,7 +1,6 @@
-import { Box } from "@artsy/palette-mobile"
+import { Box, FollowButton } from "@artsy/palette-mobile"
 import { HeaderFollowGeneMutation } from "__generated__/HeaderFollowGeneMutation.graphql"
 import { Header_gene$data } from "__generated__/Header_gene.graphql"
-import { FollowButton } from "app/Components/Button/FollowButton"
 import { Schema, Track, track as _track } from "app/utils/track"
 import React from "react"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"

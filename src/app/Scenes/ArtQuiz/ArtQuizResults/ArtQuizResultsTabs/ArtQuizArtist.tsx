@@ -1,11 +1,10 @@
-import { Spacer, Flex, Text } from "@artsy/palette-mobile"
+import { Flex, FollowButton, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtQuizArtistFollowArtistMutation } from "__generated__/ArtQuizArtistFollowArtistMutation.graphql"
 import {
   ArtQuizArtist_artist$data,
   ArtQuizArtist_artist$key,
 } from "__generated__/ArtQuizArtist_artist.graphql"
 import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
-import { FollowButton } from "app/Components/Button/FollowButton"
 import { ReadMore } from "app/Components/ReadMore"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"

@@ -1,7 +1,6 @@
-import { AvatarSize, ClassTheme, EntityHeader, Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { AvatarSize, ClassTheme, EntityHeader, Flex, FollowButton, Text, Touchable } from "@artsy/palette-mobile"
 import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItemFollowArtistMutation.graphql"
 import { ArtistListItem_artist$data } from "__generated__/ArtistListItem_artist.graphql"
-import { FollowButton } from "app/Components/Button/FollowButton"
 import { navigate } from "app/system/navigation/navigate"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { pluralize } from "app/utils/pluralize"
