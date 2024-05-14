@@ -13,10 +13,10 @@ import {
   SubmitArtworkFormStore,
   SubmitArtworkFormStoreProvider,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
-import { SubmitArtworkNavigationControls } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkNavigationControls"
 import { SubmitArtworkSelectArtist } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkSelectArtist"
 import { SubmitArtworkSelectArtworkMyCollectionArtwork } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkSelectArtworkMyCollectionArtwork"
 import { SubmitArtworkStartFlow } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkStartFlow"
+import { SubmitArtworkTopNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkTopNavigation"
 import {
   ArtworkDetailsFormModel,
   artworkDetailsEmptyInitialValues,
@@ -76,11 +76,11 @@ const SubmitArtworkFormContent: React.FC = ({}) => {
 
   return (
     <FormikProvider value={formik}>
-      <SubmitArtworkNavigationControls />
       <ArtsyKeyboardAvoidingView>
+        <SubmitArtworkTopNavigation />
         <Flex
-          flex={1}
           style={{
+            flex: 1,
             paddingBottom: isKeyboardVisible ? 0 : bottomInset,
             paddingHorizontal: space(2),
           }}
@@ -119,8 +119,8 @@ const SubmitArtworkFormContent: React.FC = ({}) => {
                 component={SubmitArtworkCompleteYourSubmission}
               />
             </Stack.Navigator>
-            <SubmitArtworkBottomNavigation />
           </NavigationContainer>
+          <SubmitArtworkBottomNavigation />
         </Flex>
       </ArtsyKeyboardAvoidingView>
     </FormikProvider>

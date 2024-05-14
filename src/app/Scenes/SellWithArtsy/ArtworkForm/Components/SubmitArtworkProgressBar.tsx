@@ -31,6 +31,7 @@ export const SubmitArtworkProgressBar: React.FC = ({}) => {
 
   const hasCompletedForm = currentStep === "CompleteYourSubmission"
   const checkIconWidth = ICON_WIDTH + space(0.5)
+
   return (
     <Flex height={PROGRESS_BAR_HEIGHT}>
       <Flex
@@ -48,7 +49,7 @@ export const SubmitArtworkProgressBar: React.FC = ({}) => {
           trackColor={hasCompletedForm ? "green100" : "blue100"}
         />
       </Flex>
-      {currentStep === "CompleteYourSubmission" && (
+      {!!hasCompletedForm && (
         <Flex
           position="absolute"
           alignSelf="flex-end"
