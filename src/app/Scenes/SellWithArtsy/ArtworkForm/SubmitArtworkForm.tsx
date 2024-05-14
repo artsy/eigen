@@ -14,7 +14,7 @@ import {
   SubmitArtworkFormStoreProvider,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { SubmitArtworkSelectArtist } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkSelectArtist"
-import { SubmitArtworkSelectArtworkMyCollectionArtwork } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkSelectArtworkMyCollectionArtwork"
+import { SelectArtworkMyCollectionArtwork } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkSelectArtworkMyCollectionArtwork"
 import { SubmitArtworkStartFlow } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkStartFlow"
 import { SubmitArtworkTopNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkTopNavigation"
 import {
@@ -31,7 +31,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 export type SubmitArtworkStackNavigation = {
   StartFlow: undefined
-  SubmitArtworkSelectArtworkMyCollectionArtwork: undefined
+  SelectArtworkMyCollectionArtwork: undefined
   SelectArtist: undefined
   AddTitle: undefined
   AddPhotos: undefined
@@ -99,8 +99,8 @@ const SubmitArtworkFormContent: React.FC = ({}) => {
               <Stack.Screen name="StartFlow" component={SubmitArtworkStartFlow} />
 
               <Stack.Screen
-                name="SubmitArtworkSelectArtworkMyCollectionArtwork"
-                component={SubmitArtworkSelectArtworkMyCollectionArtwork}
+                name="SelectArtworkMyCollectionArtwork"
+                component={SelectArtworkMyCollectionArtwork}
               />
 
               <Stack.Screen name="SelectArtist" component={SubmitArtworkSelectArtist} />
