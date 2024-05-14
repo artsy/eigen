@@ -1,7 +1,17 @@
 import { Message, Spacer, Text } from "@artsy/palette-mobile"
-import { Alert, ScrollView } from "react-native"
+import { useEffect } from "react"
+import { Alert, BackHandler, ScrollView } from "react-native"
 
 export const SubmitArtworkCompleteYourSubmission = () => {
+  // Do not allow the user to go back when pressing the back button on Android
+  useEffect(() => {
+    const subscription = BackHandler.addEventListener("hardwareBackPress", () => {
+      return true
+    })
+
+    return () => subscription.remove()
+  }, [])
+
   return (
     <ScrollView>
       <Text variant="lg" mt={4} mb={2}>

@@ -93,6 +93,7 @@ const SubmitArtworkFormContent: React.FC = ({}) => {
                 headerShown: false,
                 cardStyle: { backgroundColor: "white" },
                 keyboardHandlingEnabled: false,
+                gestureEnabled: false,
               }}
             >
               <Stack.Screen name="StartFlow" component={SubmitArtworkStartFlow} />
@@ -117,6 +118,8 @@ const SubmitArtworkFormContent: React.FC = ({}) => {
               <Stack.Screen
                 name="CompleteYourSubmission"
                 component={SubmitArtworkCompleteYourSubmission}
+                // Do not allow the user to go back to the previous screen
+                options={{ gestureEnabled: false }}
               />
             </Stack.Navigator>
           </NavigationContainer>
