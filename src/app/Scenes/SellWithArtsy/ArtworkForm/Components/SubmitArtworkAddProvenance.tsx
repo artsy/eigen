@@ -1,22 +1,13 @@
-import { BulletedItem, Button, Flex, Input, Join, Spacer, Text } from "@artsy/palette-mobile"
+import { BulletedItem, Flex, Input, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
-import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { InfoModal } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/InfoModal/InfoModal"
-import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { useFormikContext } from "formik"
 import { useState } from "react"
 
 export const SubmitArtworkAddProvenance = () => {
   const [isProvenanceInfoModalVisible, setIsProvenanceInfoModalVisible] = useState(false)
-  const { isValid, setFieldValue, values } = useFormikContext<ArtworkDetailsFormModel>()
-  const { navigateToNextStep } = useSubmissionContext()
-
-  const handleNextPress = async () => {
-    await createOrUpdateSubmission(values, values.submissionId)
-
-    navigateToNextStep()
-  }
+  const { setFieldValue, values } = useFormikContext<ArtworkDetailsFormModel>()
 
   return (
     <Flex>
@@ -44,12 +35,6 @@ export const SubmitArtworkAddProvenance = () => {
           multiline
         />
       </Join>
-
-      <Spacer y={2} />
-
-      <Button onPress={handleNextPress} block disabled={!isValid}>
-        Save and Continue
-      </Button>
 
       <InfoModal
         title="Artwork Provenance"
