@@ -6,25 +6,61 @@ import {
   useSpace,
 } from "@artsy/palette-mobile"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
-import { ARTWORK_FORM_STEPS } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
+import { __unsafe__SubmissionArtworkFormNavigationRef } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
+import {
+  ARTWORK_FORM_STEPS,
+  SubmitArtworkScreen,
+} from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
+import { useCallback, useMemo } from "react"
 
-const STEPS_WITHOUT_INPUT = ["SubmitArtworkStartFlow"]
+// Steps that should not be counted in the progress bar
+const NON_COUNTABLE_STEPS: SubmitArtworkScreen[] = ["StartFlow"]
 
-const STEPS_WITH_INPUT = ARTWORK_FORM_STEPS.filter(
-  (step) => STEPS_WITHOUT_INPUT.indexOf(step) === -1
+// Steps that should be counted in the progress bar
+const COUNTABLE_STEPS = ARTWORK_FORM_STEPS.filter(
+  (step) => NON_COUNTABLE_STEPS.indexOf(step) === -1
 )
 
 const ICON_WIDTH = 18
 
 const PROGRESS_BAR_HEIGHT = 22
+
 export const SubmitArtworkProgressBar: React.FC = ({}) => {
   const currentStep = SubmitArtworkFormStore.useStoreState((state) => state.currentStep)
   const { width: screenWidth } = useScreenDimensions()
+
+  const hasStartedFlowFromMyCollection = useMemo(() => {
+    const routes = (
+      __unsafe__SubmissionArtworkFormNavigationRef.current?.getState()?.routes || []
+    ).map((route) => route.name)
+
+    // This is required in case the reference value comes later than the first render
+    if (currentStep === "SelectArtworkMyCollectionArtwork") {
+      return true
+    }
+
+    if (routes && routes.includes("SelectArtworkMyCollectionArtwork")) {
+      return true
+    }
+
+    return false
+  }, [currentStep])
+
   const space = useSpace()
 
-  const progress = ARTWORK_FORM_STEPS.indexOf(currentStep) / STEPS_WITH_INPUT.length
+  // Returns the total steps based on whether the flow has started from My Collection or not
+  // This is required for accurate progress bar calculation
+  const getTotalSteps = useCallback(() => {
+    return hasStartedFlowFromMyCollection
+      ? COUNTABLE_STEPS
+      : COUNTABLE_STEPS.filter((step) => step !== "SelectArtworkMyCollectionArtwork")
+  }, [hasStartedFlowFromMyCollection])
 
-  if (!currentStep || STEPS_WITHOUT_INPUT.includes(currentStep)) {
+  const totalSteps = getTotalSteps()
+
+  const progress = (totalSteps.indexOf(currentStep) + 1) / totalSteps.length
+
+  if (!currentStep || currentStep === "StartFlow") {
     // Returning a Flex with the same height as the progress bar to keep the layout consistent
     return <Flex height={PROGRESS_BAR_HEIGHT} />
   }

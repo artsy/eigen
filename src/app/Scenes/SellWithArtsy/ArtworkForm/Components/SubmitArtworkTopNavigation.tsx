@@ -4,6 +4,8 @@ import { SubmitArtworkProgressBar } from "app/Scenes/SellWithArtsy/ArtworkForm/C
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { useIsKeyboardVisible } from "app/utils/hooks/useIsKeyboardVisible"
 import { MotiView } from "moti"
+import { useEffect } from "react"
+import { LayoutAnimation } from "react-native"
 
 export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
   const { navigateToNextStep } = useSubmissionContext()
@@ -14,29 +16,38 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
     navigateToNextStep()
   }
 
-  if (!currentStep || currentStep === "StartFlow" || currentStep === "CompleteYourSubmission") {
+  useEffect(() => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+  }, [currentStep])
+
+  if (!currentStep || currentStep === "StartFlow") {
     return null
   }
 
+  const hasCompletedForm = currentStep === "CompleteYourSubmission"
+
   return (
     <Flex mx={2}>
-      <MotiView
-        animate={{
-          height: isKeyboardVisible ? 0 : 30,
-        }}
-        transition={{
-          type: "timing",
-          duration: 200,
-        }}
-      >
-        <Flex flexDirection="row" justifyContent="space-between">
-          <Flex style={{ flexGrow: 1, alignItems: "flex-end" }}>
-            <Touchable onPress={handleSaveAndExitPress}>
-              <Text>Save & Exit</Text>
-            </Touchable>
+      {!hasCompletedForm && (
+        <MotiView
+          animate={{
+            height: isKeyboardVisible ? 0 : 30,
+          }}
+          transition={{
+            type: "timing",
+            duration: 200,
+          }}
+        >
+          <Flex flexDirection="row" justifyContent="space-between">
+            <Flex style={{ flexGrow: 1, alignItems: "flex-end" }}>
+              <Touchable onPress={handleSaveAndExitPress}>
+                <Text>Save & Exit</Text>
+              </Touchable>
+            </Flex>
           </Flex>
-        </Flex>
-      </MotiView>
+        </MotiView>
+      )}
+
       <SubmitArtworkProgressBar />
     </Flex>
   )
