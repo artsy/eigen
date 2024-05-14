@@ -464,7 +464,7 @@ export const modules = defineModules({
   Conversation: reactModule(Conversation, { onlyShowInTabName: "inbox" }),
   ConversationDetails: reactModule(ConversationDetailsQueryRenderer),
   DarkModeSettings: reactModule(DarkModeSettings),
-  DevMenu: reactModule(DevMenu, { fullBleed: true, hidesBottomTabs: true, hidesBackButton: true }),
+  DevMenu: reactModule(DevMenu, { hidesBottomTabs: true, hidesBackButton: true }),
   EditSavedSearchAlert: reactModule(EditSavedSearchAlertQueryRenderer, {
     hidesBackButton: true,
     hidesBottomTabs: true,

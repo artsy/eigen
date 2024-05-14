@@ -1,4 +1,4 @@
-import { Flex, Join, Screen, Spacer, Text, useSpace } from "@artsy/palette-mobile"
+import { Flex, Join, Spacer, Text, useSpace } from "@artsy/palette-mobile"
 
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -12,9 +12,8 @@ import { NavButtons } from "app/system/devTools/DevMenu/Components/NavButtons"
 import { NavigateTo } from "app/system/devTools/DevMenu/Components/NavigateTo"
 import { goBack } from "app/system/navigation/navigate"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
-import { NativeModules, Platform, ScrollView } from "react-native"
+import { NativeModules, ScrollView } from "react-native"
 import DeviceInfo from "react-native-device-info"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
   const userEmail = GlobalStore.useAppState((s) => s.auth.userEmail)
@@ -27,13 +26,9 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
 
   useBackHandler(handleBackButton)
 
-  const { top: topInset } = useSafeAreaInsets()
-
-  const androidTopInset = Platform.OS === "android" ? topInset : 0
-
   return (
-    <Screen>
-      <Flex flexDirection="row" justifyContent="space-between" mt={`${androidTopInset}px`}>
+    <Flex flex={1}>
+      <Flex flexDirection="row" justifyContent="space-between">
         <Text variant="lg-display" pb={2} px={2}>
           Dev Settings
         </Text>
@@ -70,6 +65,6 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
           <DevTools />
         </Join>
       </ScrollView>
-    </Screen>
+    </Flex>
   )
 }
