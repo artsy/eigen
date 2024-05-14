@@ -430,9 +430,6 @@ jobs:
       - run:
           name: Save success file
           command: echo yes > 'build-success.log'
-      - run:
-          name: Upload builds to Maestro App Quality Copilot
-          command: ./scripts/maestro/build-android.sh
 
       - store_artifacts:
           path: android/app/build/reports
