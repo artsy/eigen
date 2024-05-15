@@ -3,7 +3,7 @@ import { SubmitArtworkAddProvenance } from "app/Scenes/SellWithArtsy/ArtworkForm
 import { renderWithSubmitArtworkWrapper } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/testWrappers"
 
 describe("SubmitArtworkAddProvenance", () => {
-  it("shows and updates properly the provenance", async () => {
+  it("shows and updates properly the provenance", () => {
     renderWithSubmitArtworkWrapper({
       component: <SubmitArtworkAddProvenance />,
     })

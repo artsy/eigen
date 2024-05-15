@@ -3,7 +3,7 @@ import { SubmitArtworkAddTitle } from "app/Scenes/SellWithArtsy/ArtworkForm/Comp
 import { renderWithSubmitArtworkWrapper } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/testWrappers"
 
 describe("SubmitArtworkAddTitle", () => {
-  it("shows the artwork input title", async () => {
+  it("shows the artwork input title", () => {
     renderWithSubmitArtworkWrapper({
       component: <SubmitArtworkAddTitle />,
     })

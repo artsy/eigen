@@ -3,7 +3,7 @@ import { SubmitArtworkAddDimensions } from "app/Scenes/SellWithArtsy/ArtworkForm
 import { renderWithSubmitArtworkWrapper } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/testWrappers"
 
 describe("SubmitArtworkAddDimensions", () => {
-  it("shows and updates properly the dimensions inputs", async () => {
+  it("shows and updates properly the dimensions inputs", () => {
     renderWithSubmitArtworkWrapper({
       component: <SubmitArtworkAddDimensions />,
     })
