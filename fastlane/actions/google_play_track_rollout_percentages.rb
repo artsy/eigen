@@ -1,3 +1,4 @@
+# See `Custom lane google_play_track_rollout_percentages in fastlane dir` in HACKS.md
 module Fastlane
   module Actions
     class GooglePlayTrackRolloutPercentagesAction < Action

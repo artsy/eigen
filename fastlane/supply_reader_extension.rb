@@ -1,5 +1,7 @@
 # supply_reader_extension.rb
 
+# See `Custom lane google_play_track_rollout_percentages in fastlane dir` in HACKS.md
+
 require 'supply'
 
 module Supply
