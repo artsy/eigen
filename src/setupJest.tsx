@@ -696,3 +696,15 @@ jest.mock("@react-native-community/geolocation", () => ({
   setRNConfiguration: jest.fn(),
   stopObserving: jest.fn(),
 }))
+
+// Enable all feature flags by default
+
+jest.mock("app/store/GlobalStore", () => ({
+  ...jest.requireActual("app/store/GlobalStore"),
+  unsafe_getFeatureFlag: jest.fn().mockReturnValue(true),
+}))
+
+jest.mock("app/utils/hooks/useFeatureFlag", () => ({
+  ...jest.requireActual("app/utils/hooks/useFeatureFlag"),
+  useFeatureFlag: jest.fn().mockReturnValue(true),
+}))

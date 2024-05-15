@@ -36,7 +36,8 @@ export const getEchoModel = (): EchoModel => ({
     state.state = echoJson
   }),
   fetchRemoteEcho: thunk(async (actions) => {
-    const disableRemoteFetch = unsafe_getDevToggle("DTDisableEchoRemoteFetch")
+    // Disable when dev toggle is enabled or when running tests
+    const disableRemoteFetch = unsafe_getDevToggle("DTDisableEchoRemoteFetch") || __TEST__
     if (disableRemoteFetch) {
       return
     }
