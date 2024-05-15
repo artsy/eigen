@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+# Update the rollout percentage if necessary (ie it is not yet at 100%)
+bundle exec fastlane update_rollout_if_necessary

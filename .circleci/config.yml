@@ -193,8 +193,12 @@ jobs:
           name: Create next version if needed
           command: ./scripts/deploys/create-next-version-if-needed
       - run:
+          name: Update rollout if needed
+          command: ./scripts/deploys/update-android-rollout-if-needed
+      - run:
           name: Deploy betas
           command: ./scripts/deploys/deploy-beta-both
+
       - run:
           name: Upload builds to Maestro App Quality Copilot
           command: ./scripts/deploys/upload-betas-maestro-copilot
