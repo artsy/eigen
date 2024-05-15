@@ -20,9 +20,7 @@ export interface ArtworkSubmissionModel {
   submissionIdForMyCollection: string
   setSubmissionId: Action<ArtworkSubmissionModel, string>
   artworkDetails: ArtworkDetailsFormModel
-  dirtyArtworkDetailsValues: ArtworkDetailsFormModel
   setArtworkDetailsForm: Action<ArtworkSubmissionModel, ArtworkDetailsFormModel>
-  setDirtyArtworkDetailsValues: Action<ArtworkSubmissionModel, ArtworkDetailsFormModel>
   initializeArtworkDetailsForm: Action<ArtworkSubmissionModel, Partial<ArtworkDetailsFormModel>>
   initializePhotos: Action<ArtworkSubmissionModel, Photo[]>
   photos: PhotosFormModel
@@ -43,7 +41,6 @@ export const getSubmissionModel = (): SubmissionModel => ({
     submissionId: "",
     submissionIdForMyCollection: "",
     artworkDetails: artworkDetailsEmptyInitialValues,
-    dirtyArtworkDetailsValues: artworkDetailsEmptyInitialValues,
     photos: photosEmptyInitialValues,
     photosForMyCollection: photosEmptyInitialValues,
     setPhotosForMyCollection: action((state, photos) => {
@@ -63,9 +60,6 @@ export const getSubmissionModel = (): SubmissionModel => ({
     }),
     setArtworkDetailsForm: action((state, form) => {
       state.artworkDetails = form
-    }),
-    setDirtyArtworkDetailsValues: action((state, form) => {
-      state.dirtyArtworkDetailsValues = form
     }),
     initializeArtworkDetailsForm: action((state, form) => {
       state.artworkDetails = { ...state.artworkDetails, ...form }

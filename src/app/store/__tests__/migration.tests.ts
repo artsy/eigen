@@ -1,5 +1,6 @@
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { DEFAULT_VIEW_OPTION } from "app/Scenes/Search/UserPrefsModel"
+import { artworkDetailsEmptyInitialValues } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/validation"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { CURRENT_APP_VERSION, migrate, Versions } from "app/store/migration"
 import { sanitize } from "app/store/persistence"
@@ -990,6 +991,30 @@ describe("App version Versions.AddProgressiveOnboardingModel", () => {
 
       expect(migratedState.artsyPrefs.experiments.localPayloadOverrides).toEqual({})
       expect(migratedState.artsyPrefs.experiments.localPayloadOverrides).toEqual({})
+    })
+  })
+
+  describe("App version Versions.DeleteDirtyArtworkDetails", () => {
+    const migrationToTest = Versions.DeleteDirtyArtworkDetails
+
+    it("removes dirtyArtworkDetailsValues object", () => {
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      expect(previousState.artworkSubmission.submission.dirtyArtworkDetailsValues).toEqual(
+        artworkDetailsEmptyInitialValues
+      )
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(migratedState.artworkSubmission.submission.dirtyArtworkDetailsValues).toEqual(
+        undefined
+      )
     })
   })
 })

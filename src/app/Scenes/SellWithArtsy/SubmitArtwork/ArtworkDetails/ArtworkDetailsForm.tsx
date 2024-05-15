@@ -13,12 +13,11 @@ import { LinkButton } from "app/Components/Button/LinkButton"
 import { LocationAutocomplete, buildLocationDisplay } from "app/Components/LocationAutocomplete"
 import { Select, SelectOption } from "app/Components/Select"
 import { CategoryPicker } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/CategoryPicker"
-import { GlobalStore } from "app/store/GlobalStore"
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
 import { LocationWithDetails } from "app/utils/googleMaps"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useFormikContext } from "formik"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useRef, useState } from "react"
 import { InfoModal } from "./InfoModal/InfoModal"
 import {
   AcceptableCategoryValue,
@@ -36,12 +35,6 @@ export const ArtworkDetailsForm: React.FC = () => {
   const [isProvenanceInfoModalVisible, setIsProvenanceInfoModalVisible] = useState(false)
   const optionalDimensions = useFeatureFlag("ARSWAMakeAllDimensionsOptional")
 
-  useEffect(() => {
-    if (values) {
-      GlobalStore.actions.artworkSubmission.submission.setDirtyArtworkDetailsValues(values)
-    }
-  }, [values])
-
   const categories = useRef<Array<SelectOption<AcceptableCategoryValue>>>(
     acceptableCategoriesForSubmission()
   ).current
@@ -56,6 +49,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         testID="Submission_TitleInput"
         value={values.title}
         onChangeText={(text) => {
+          validateField("title")
           handleChange("title")(text)
         }}
         onBlur={() => validateField("title")}
@@ -68,6 +62,7 @@ export const ArtworkDetailsForm: React.FC = () => {
 
       <CategoryPicker<AcceptableCategoryValue>
         handleChange={(category) => {
+          validateField("category")
           setFieldValue("category", category)
         }}
         options={categories}
