@@ -6,34 +6,15 @@ import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Com
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
-import { fetchUserContactInformation } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/fetchUserContactInformation"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useFormikContext } from "formik"
-import { Suspense, useEffect } from "react"
+import { Suspense } from "react"
 
 export const SubmitArtworkSelectArtist = () => {
   const { navigateToNextStep } = useSubmissionContext()
   const setIsLoading = SubmitArtworkFormStore.useStoreActions((actions) => actions.setIsLoading)
 
   const formik = useFormikContext<ArtworkDetailsFormModel>()
-
-  useEffect(() => {
-    fetchUserContactInformation()
-      .then((me) => {
-        if (me.email) {
-          formik.setFieldValue("userEmail", me.email)
-        }
-        if (me.phoneNumber?.isValid && me.phoneNumber?.originalNumber) {
-          formik.setFieldValue("userPhone", me.phoneNumber.originalNumber)
-        }
-        if (me.name) {
-          formik.setFieldValue("userName", me.name)
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching user contact information", error)
-      })
-  }, [])
 
   const handleResultPress = async (result: AutosuggestResult) => {
     setIsLoading(true)
@@ -76,11 +57,7 @@ export const SubmitArtworkSelectArtist = () => {
       </Text>
 
       <Suspense fallback={<Placeholder />}>
-        <ArtistAutosuggest
-          onResultPress={handleResultPress}
-          disableCustomArtistCreation
-          onlyP1Artists
-        />
+        <ArtistAutosuggest onResultPress={handleResultPress} disableCustomArtists onlyP1Artists />
       </Suspense>
     </Flex>
   )

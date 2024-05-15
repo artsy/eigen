@@ -22,6 +22,7 @@ import {
   getCurrentValidationSchema,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
+import { fetchUserContactInformation } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/fetchUserContactInformation"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { useIsKeyboardVisible } from "app/utils/hooks/useIsKeyboardVisible"
 import { FormikProvider, useFormik } from "formik"
@@ -66,6 +67,24 @@ const SubmitArtworkFormContent: React.FC = ({}) => {
     onSubmit: handleSubmit,
     validationSchema: getCurrentValidationSchema,
   })
+
+  useEffect(() => {
+    fetchUserContactInformation()
+      .then((me) => {
+        if (me.email) {
+          formik.setFieldValue("userEmail", me.email)
+        }
+        if (me.phoneNumber?.isValid && me.phoneNumber?.originalNumber) {
+          formik.setFieldValue("userPhone", me.phoneNumber.originalNumber)
+        }
+        if (me.name) {
+          formik.setFieldValue("userName", me.name)
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching user contact information", error)
+      })
+  }, [])
 
   // Revalidate form on step change because the validation schema changes and it does not happen automatically
   useEffect(() => {

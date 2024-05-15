@@ -17,14 +17,14 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 interface ArtistAutosuggestProps {
   onResultPress: (result: AutosuggestResult) => void
   onSkipPress?: (artistDisplayName: string) => void
-  disableCustomArtistCreation?: boolean
+  disableCustomArtists?: boolean
   onlyP1Artists?: boolean
 }
 
 export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
   onResultPress,
   onSkipPress,
-  disableCustomArtistCreation,
+  disableCustomArtists,
   onlyP1Artists = false,
 }) => {
   const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
@@ -40,16 +40,16 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
     { fetchPolicy: "network-only" }
   )
 
-  const collectedArtists = extractNodes(queryData.me?.userInterestsConnection).filter((node) => {
-    if (node.__typename === "Artist") {
-      if (onlyP1Artists) {
-        return node.targetSupply?.priority === "TRUE"
-      }
-      return true
-    }
+  let collectedArtists = extractNodes(queryData.me?.userInterestsConnection).filter(
+    (node) => node.__typename === "Artist"
+  )
 
-    return false
-  })
+  if (onlyP1Artists) {
+    collectedArtists = collectedArtists.filter(
+      // This is always true, it's just to make TypeScript happy
+      (node) => node.__typename === "Artist" && node.targetSupply?.priority === "TRUE"
+    )
+  }
 
   const filteredCollecteArtists = sortBy(
     filterArtistsByKeyword(
@@ -104,7 +104,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
               showResultType={false}
               showQuickNavigationButtons={false}
               onResultPress={onResultPress}
-              HeaderComponent={!disableCustomArtistCreation ? HeaderComponent : undefined}
+              HeaderComponent={!disableCustomArtists ? HeaderComponent : undefined}
               ListHeaderComponent={() =>
                 onlyShowCollectedArtists ? (
                   <Text mb={2} mt={2}>
@@ -117,7 +117,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
               ListEmptyComponent={() => (
                 <Flex width="100%" my={2}>
                   <Text>We didn't find "{trimmedQuery}" on Artsy.</Text>
-                  {!disableCustomArtistCreation && (
+                  {!disableCustomArtists && (
                     <>
                       <Text>You can add their name in the artwork details.</Text>
                       <Button
@@ -133,9 +133,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
                 </Flex>
               )}
               ListFooterComponent={() =>
-                !disableCustomArtistCreation &&
-                !onlyShowCollectedArtists &&
-                !!enableCollectedArtists ? (
+                !disableCustomArtists && !onlyShowCollectedArtists && !!enableCollectedArtists ? (
                   <Touchable
                     accessibilityLabel="Create New Artist"
                     haptic
@@ -187,7 +185,6 @@ const ArtistAutosuggestScreenQuery = graphql`
                 artworks
               }
               targetSupply {
-                isP1
                 priority
               }
               displayLabel

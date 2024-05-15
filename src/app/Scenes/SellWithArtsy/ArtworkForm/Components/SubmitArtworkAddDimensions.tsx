@@ -1,14 +1,4 @@
-import {
-  Box,
-  Flex,
-  Input,
-  Join,
-  RadioButton,
-  Spacer,
-  Text,
-  useScreenDimensions,
-  useSpace,
-} from "@artsy/palette-mobile"
+import { Box, Flex, Input, Join, RadioButton, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { useFormikContext } from "formik"
@@ -18,8 +8,6 @@ import { useDebounce } from "react-use"
 export const SubmitArtworkAddDimensions = () => {
   const { setFieldValue, values } = useFormikContext<ArtworkDetailsFormModel>()
   const [dimensionMetric, setDimensionMetric] = useState(values.dimensionsMetric)
-  const space = useSpace()
-  const { width: screenWidth } = useScreenDimensions()
 
   const widthRef = useRef<Input>(null)
   const depthRef = useRef<Input>(null)
@@ -32,11 +20,6 @@ export const SubmitArtworkAddDimensions = () => {
     500,
     [dimensionMetric]
   )
-
-  // Doing some calculations to determine a good width for the input fields to make sure
-  // it doesn't look too cramped in small devices
-  const isBigScreen = screenWidth >= 375
-  const inputWidth = isBigScreen ? 110 : screenWidth / 2 - 2 * space(2)
 
   return (
     <Flex>
@@ -68,7 +51,7 @@ export const SubmitArtworkAddDimensions = () => {
         </Flex>
 
         <Flex flexDirection="row" justifyContent="space-between" flexWrap="wrap">
-          <Box width={inputWidth}>
+          <Box width="31%">
             <Input
               title={`Height (${dimensionMetric})`}
               keyboardType="decimal-pad"
@@ -82,7 +65,7 @@ export const SubmitArtworkAddDimensions = () => {
               returnKeyLabel="Next"
             />
           </Box>
-          <Box width={inputWidth}>
+          <Box width="31%">
             <Input
               title={`Width (${dimensionMetric})`}
               keyboardType="decimal-pad"
@@ -97,7 +80,7 @@ export const SubmitArtworkAddDimensions = () => {
               returnKeyLabel="Next"
             />
           </Box>
-          <Box width={inputWidth}>
+          <Box width="31%">
             <Input
               title={`Depth (${dimensionMetric})`}
               keyboardType="decimal-pad"

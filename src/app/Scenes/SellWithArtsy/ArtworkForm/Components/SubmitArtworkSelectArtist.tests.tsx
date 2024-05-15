@@ -19,17 +19,6 @@ jest.mock(
   })
 )
 
-jest.mock(
-  "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/fetchUserContactInformation",
-  () => ({
-    fetchUserContactInformation: jest.fn().mockResolvedValue({
-      name: "User",
-      email: "user@mail.com",
-      phoneNumber: { isValid: true, originalNumber: "+49 1753627282" },
-    }),
-  })
-)
-
 describe("SubmitArtworkSelectArtist", () => {
   it("Navigates to the next step after tapping an artwork", async () => {
     const { renderWithRelay } = setupWithSubmitArtworkTestWrappers({

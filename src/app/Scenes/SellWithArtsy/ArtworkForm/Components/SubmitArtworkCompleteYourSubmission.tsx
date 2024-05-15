@@ -27,28 +27,23 @@ export const SubmitArtworkCompleteYourSubmission = () => {
 
       <Spacer y={2} />
 
-      <Message
-        title="Next steps"
-        // TODO: Add this support to the palette Message component
-        // @ts-expect-error
-        text={
-          <Text variant="xs" color="black60">
-            If accepted, we will ask for additional details to lorem ipsum dolor. To help speed up
-            your submission, you can{" "}
-            <Text
-              variant="xs"
-              color="black60"
-              underline
-              onPress={() => {
-                Alert.alert("Fill out the additional information")
-              }}
-            >
-              fill out the additional information
-            </Text>{" "}
-            now.
-          </Text>
-        }
-      />
+      <Message title="Next steps">
+        <Text variant="xs" color="black60">
+          If accepted, we will ask for additional details to lorem ipsum dolor. To help speed up
+          your submission, you can{" "}
+          <Text
+            variant="xs"
+            color="black60"
+            underline
+            onPress={() => {
+              Alert.alert("Fill out the additional information")
+            }}
+          >
+            fill out the additional information
+          </Text>{" "}
+          now.
+        </Text>
+      </Message>
     </ScrollView>
   )
 }
