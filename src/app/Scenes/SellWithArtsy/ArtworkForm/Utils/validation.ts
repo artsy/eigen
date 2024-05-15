@@ -24,7 +24,16 @@ export const getCurrentValidationSchema = () => {
       return artworkFormPhotosSchema
     case "AddDetails":
       return artworkDetailsValidationSchema
+    case "AddProvenance":
+      return provenanceSchema
+    case "AddDimensions":
+      return dimensionsSchema
+
     default:
+      // Make sure the devs are warned when they forget to add a validation schema
+      if (currentStep && currentStep !== "StartFlow") {
+        console.warn(`No validation schema found for step: ${currentStep}`)
+      }
       return Yup.object()
   }
 }
@@ -38,16 +47,26 @@ const artworkFormTitleSchema = Yup.object().shape({
 })
 
 const artworkFormPhotosSchema = Yup.object().shape({
-  // TODO: Activated validation
-  // photos: Yup.array()
-  //   .min(__TEST__ ? 0 : 1)
-  //   .of(
-  //     Yup.object().shape({
-  //       id: Yup.string().required(),
-  //       geminiToken: Yup.string().required(),
-  //       path: Yup.string().required(),
-  //     })
-  //   ),
+  photos: Yup.array()
+    .min(__TEST__ ? 0 : 1)
+    .of(
+      Yup.object().shape({
+        id: Yup.string().required(),
+        geminiToken: Yup.string().required(),
+        path: Yup.string().required(),
+      })
+    ),
+})
+
+const dimensionsSchema = Yup.object().shape({
+  depth: Yup.string().trim(),
+  height: Yup.string().required().trim(),
+  width: Yup.string().required().trim(),
+  dimensionsMetric: Yup.string().required(),
+})
+
+const provenanceSchema = Yup.object().shape({
+  provenance: Yup.string().required().trim(),
 })
 
 const artworkDetailsValidationSchema = Yup.object().shape({
