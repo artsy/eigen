@@ -1,8 +1,6 @@
-import { BackButton, Button, Flex, SkeletonBox, Spacer, Text } from "@artsy/palette-mobile"
-import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
+import { BackButton, Flex, SkeletonBox, Spacer, Text } from "@artsy/palette-mobile"
 import { goBack } from "app/system/navigation/navigate"
 import { ScrollView } from "react-native"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 const SECTIONS = [
   {
@@ -28,18 +26,6 @@ const SECTIONS = [
   },
 ]
 export const SubmitArtworkStartFlow: React.FC = () => {
-  const { navigateToNextStep } = useSubmissionContext()
-
-  const { bottom: bottomInset } = useSafeAreaInsets()
-
-  const handleStartNewSubmission = () => {
-    navigateToNextStep("SelectArtist")
-  }
-
-  const handleStartFromMyCollection = () => {
-    navigateToNextStep()
-  }
-
   return (
     <Flex flex={1}>
       <Flex py={1} flexDirection="row">
@@ -70,15 +56,6 @@ export const SubmitArtworkStartFlow: React.FC = () => {
           ))}
         </Flex>
       </ScrollView>
-
-      <Flex position="absolute" bottom={bottomInset} backgroundColor="white100" pt={1}>
-        <Button onPress={handleStartNewSubmission} block>
-          Start a New Submission
-        </Button>
-        <Button onPress={handleStartFromMyCollection} block mt={2} variant="outline">
-          Start from My Collection
-        </Button>
-      </Flex>
     </Flex>
   )
 }

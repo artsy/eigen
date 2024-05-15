@@ -1,7 +1,6 @@
 import { Flex, useSpace } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
-import { validateArtworkSchema } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/artworkSchema"
 import { SubmitArtworkAddDetails } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddDetails"
 import { SubmitArtworkAddDimensions } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddDimensions"
 import { SubmitArtworkAddPhotos } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddPhotos"
@@ -64,7 +63,6 @@ const SubmitArtworkFormContent: React.FC = ({}) => {
   const formik = useFormik<ArtworkDetailsFormModel>({
     enableReinitialize: true,
     initialValues: initialValues,
-    initialErrors: validateArtworkSchema(initialValues),
     onSubmit: handleSubmit,
     validationSchema: getCurrentValidationSchema,
   })

@@ -26,8 +26,33 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
   }, [currentStep])
 
-  if (!currentStep || currentStep === "StartFlow") {
+  if (!currentStep) {
     return null
+  }
+
+  if (currentStep === "StartFlow") {
+    return (
+      <Flex borderTopWidth={1} borderTopColor="black10" py={2} alignSelf="center" mx={-2} px={2}>
+        <Button
+          onPress={() => {
+            navigateToNextStep("SelectArtist")
+          }}
+          block
+        >
+          Start a New Submission
+        </Button>
+        <Button
+          onPress={() => {
+            navigateToNextStep()
+          }}
+          block
+          mt={2}
+          variant="outline"
+        >
+          Start from My Collection
+        </Button>
+      </Flex>
+    )
   }
 
   if (currentStep === "CompleteYourSubmission") {

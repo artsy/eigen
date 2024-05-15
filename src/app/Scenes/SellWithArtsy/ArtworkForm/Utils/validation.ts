@@ -7,13 +7,16 @@ import {
   ConsignmentSubmissionStateAggregation,
 } from "__generated__/updateConsignSubmissionMutation.graphql"
 import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
-import { getCurrentRoute } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
+import {
+  SubmitArtworkStackNavigation,
+  getCurrentRoute,
+} from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { limitedEditionValue } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/rarityOptions"
 import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
 import * as Yup from "yup"
 
-export const getCurrentValidationSchema = () => {
-  const currentStep = getCurrentRoute()
+export const getCurrentValidationSchema = (_injectedStep?: keyof SubmitArtworkStackNavigation) => {
+  const currentStep = _injectedStep || getCurrentRoute()
 
   switch (currentStep) {
     case "SelectArtist":
