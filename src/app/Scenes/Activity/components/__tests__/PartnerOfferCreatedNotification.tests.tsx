@@ -60,6 +60,7 @@ describe("PartnerOfferCreatedNotification", () => {
         expect(screen.getByText("$405,000")).toBeOnTheScreen()
         expect(screen.getByText(/List price:\s*\$450,000\s*/)).toBeOnTheScreen()
         expect(screen.getByText('"This is a note from the gallery"')).toBeOnTheScreen()
+        expect(screen.getByText("Review the offer before it expires")).toBeOnTheScreen()
         expect(screen.queryByText("Review the offer on your saved artwork")).not.toBeOnTheScreen()
         expect(screen.queryByText("Manage Saves")).not.toBeOnTheScreen()
       })
