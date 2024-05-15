@@ -40,7 +40,7 @@ export const ArtworkDetails: React.FC<{
         validateOnBlur
         // react-native-testing-library does not trigger the validation on change
         // so we need to force it to validate on change in tests to make sure the validation works
-        validateOnChange={__TEST__ ? true : true}
+        validateOnChange={__TEST__ ? true : false}
       >
         {({ values, isValid, dirty, validateForm }) => {
           return (
