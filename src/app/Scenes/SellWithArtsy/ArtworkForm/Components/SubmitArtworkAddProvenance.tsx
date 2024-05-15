@@ -26,6 +26,7 @@ export const SubmitArtworkAddProvenance = () => {
         </Text>
 
         <Input
+          title="Provenance"
           onHintPress={() => setIsProvenanceInfoModalVisible(true)}
           placeholder="Describe how you acquired the artwork"
           testID="Submission_ProvenanceInput"
