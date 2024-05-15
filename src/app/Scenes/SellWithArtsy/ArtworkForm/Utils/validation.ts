@@ -13,6 +13,7 @@ import {
 } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { limitedEditionValue } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/rarityOptions"
 import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
+import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import * as Yup from "yup"
 
 export const getCurrentValidationSchema = (_injectedStep?: keyof SubmitArtworkStackNavigation) => {
@@ -62,14 +63,22 @@ const artworkFormPhotosSchema = Yup.object().shape({
 })
 
 const dimensionsSchema = Yup.object().shape({
-  depth: Yup.string().trim(),
-  height: Yup.string().required().trim(),
-  width: Yup.string().required().trim(),
-  dimensionsMetric: Yup.string().required(),
+  depth: unsafe_getFeatureFlag("ARSWAMakeAllDimensionsOptional")
+    ? Yup.string().trim()
+    : Yup.string().required().trim(),
+  height: unsafe_getFeatureFlag("ARSWAMakeAllDimensionsOptional")
+    ? Yup.string().trim()
+    : Yup.string().required().trim(),
+  width: unsafe_getFeatureFlag("ARSWAMakeAllDimensionsOptional")
+    ? Yup.string().trim()
+    : Yup.string().required().trim(),
+  dimensionsMetric: unsafe_getFeatureFlag("ARSWAMakeAllDimensionsOptional")
+    ? Yup.string().trim()
+    : Yup.string().required().trim(),
 })
 
 const provenanceSchema = Yup.object().shape({
-  provenance: Yup.string().required().trim(),
+  provenance: Yup.string().trim(),
 })
 
 const artworkDetailsValidationSchema = Yup.object().shape({
