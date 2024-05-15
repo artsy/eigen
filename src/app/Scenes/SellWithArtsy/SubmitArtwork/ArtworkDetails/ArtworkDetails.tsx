@@ -37,6 +37,10 @@ export const ArtworkDetails: React.FC<{
         validationSchema={artworkDetailsValidationSchema}
         // Validate on blur only when injecting existing values from my collection
         validateOnMount={artworkDetails.myCollectionArtworkID ? true : false}
+        validateOnBlur
+        // react-native-testing-library does not trigger the validation on change
+        // so we need to force it to validate on change in tests to make sure the validation works
+        validateOnChange={__TEST__ ? true : true}
       >
         {({ values, isValid, dirty, validateForm }) => {
           return (
