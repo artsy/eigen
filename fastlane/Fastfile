@@ -416,7 +416,12 @@ lane :update_rollout_if_necessary do
         skip_upload_screenshots: true,
         skip_upload_aab: true
       )
-      UI.message("Updated rollout to #{next_fraction * 100}% for release #{latest_release[:name]}")
+      message = <<~MSG
+      :android-2: :chart_with_upwards_trend:
+      Android rollout updated!
+      Updated from #{current_fraction * 100}% to #{next_fraction * 100}%.
+    MSG
+      slack(message: message, default_payloads: [], link_names: true)
     else
       UI.message("Current rollout is already at the maximum configured percentage or not part of the strategy.")
     end
@@ -431,8 +436,6 @@ lane :deploy_to_codepush do |options|
   platform = options[:platform]
   deployment_name = options[:deployment_name]
   description = options[:description]
-
-  puts "Got platform #{platform}"
 
   # important! this must match the release version specified
   # in Eigen in order for sourcemaps to work correctly
