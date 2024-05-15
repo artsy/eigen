@@ -461,9 +461,6 @@ jobs:
       - run-relay-compiler
       - update-echo
       - generate-query-map
-      # these will be moved to nightly - added for testing purposes
-      - build-maestro-nightly-ios
-      - build-maestro-nightly-android
       - run:
           name: Check generated folder
           command: |
@@ -630,6 +627,10 @@ workflows:
           <<: *only-prs
 
       - build-test-js
+
+      # these will be moved to nightly - added for testing purposes
+      - build-maestro-nightly-ios
+      - build-maestro-nightly-android
 
       - horizon/block:
           context: horizon
