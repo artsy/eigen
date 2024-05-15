@@ -29,7 +29,6 @@ import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { isEqual } from "lodash"
 import React, { useEffect, useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
@@ -72,11 +71,9 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
   const { showActionSheetWithOptions } = useActionSheet()
   const { safeAreaInsets } = useScreenDimensions()
 
-  const {
-    submissionId: submissionID,
-    artworkDetails,
-    dirtyArtworkDetailsValues,
-  } = GlobalStore.useAppState((store) => store.artworkSubmission.submission)
+  const { submissionId: submissionID, artworkDetails } = GlobalStore.useAppState(
+    (store) => store.artworkSubmission.submission
+  )
 
   const { userID } = GlobalStore.useAppState((state) => state.auth)
   const [userEmail, setUserEmail] = useState("")
@@ -234,13 +231,11 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
   }
 
   const handleBackPress = async () => {
-    const isFormDirty = !isEqual(artworkDetailsFromValuesRef.current, dirtyArtworkDetailsValues)
-
     /*
     action sheet is displayed only on 1st screen (Artwork Details)
     since form data is saved on the server and a draft submission is created  after the first step
     */
-    if (activeStep === 0 && isFormDirty) {
+    if (activeStep === 0) {
       const leaveSubmission = await new Promise((resolve) =>
         showActionSheetWithOptions(
           {
