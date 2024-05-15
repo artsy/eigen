@@ -6,6 +6,9 @@ require 'fileutils'
 require 'json'
 require 'dotenv'
 
+
+require_relative 'supply_reader_extension'
+
 Dotenv.load('../.env.releases')
 
 skip_docs
