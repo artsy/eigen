@@ -85,7 +85,7 @@ Test that the fix is working as intended and do some basic QA to make sure the a
 If QA goes well run the script to promote the bundle to production.
 Make sure to monitor the app as it rolls out to users.
 
-`./scripts/codepush/promote-release-to-prod.sh <rollout_percentage>`
+`./scripts/codepush/promote-to-prod.sh <rollout_percentage>`
 
 For example if you wanted to rollout to 50% of users you would pass `50` for rollout_percentage. If it is critical to get the fix out fast
 you can pass `100` otherwise it is suggested you pass `50` and monitor before updating to 100%.
