@@ -5,7 +5,7 @@ import { ShareSheetProvider } from "app/Components/ShareSheet/ShareSheetContext"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvideScreenDimensions } from "app/utils/hooks/useScreenDimensions"
-import { Component, Suspense } from "react"
+import { Suspense } from "react"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { RelayEnvironmentProvider } from "react-relay"
@@ -17,7 +17,6 @@ import { GlobalStore, GlobalStoreProvider } from "./store/GlobalStore"
 import { GravityWebsocketContextProvider } from "./utils/Websockets/GravityWebsocketContext"
 import { combineProviders } from "./utils/combineProviders"
 import { UnleashProvider } from "./utils/experiments/UnleashProvider"
-import { track } from "./utils/track"
 
 export const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   combineProviders(
@@ -93,11 +92,8 @@ const SuspenseProvider = (props: { children?: React.ReactNode }) => (
 // react-track has no provider, we make one using the decorator and a class wrapper
 const TrackingProvider = (props: { children?: React.ReactNode }) => <PureWrapper {...props} />
 
-@track()
-class PureWrapper extends Component {
-  render() {
-    return this.props.children
-  }
+const PureWrapper: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
+  return <>{children}</>
 }
 
 // theme with dark mode support
