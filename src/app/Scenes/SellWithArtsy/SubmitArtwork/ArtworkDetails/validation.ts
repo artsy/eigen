@@ -6,7 +6,6 @@ import {
   ConsignmentAttributionClass,
   ConsignmentSubmissionStateAggregation,
 } from "__generated__/updateConsignSubmissionMutation.graphql"
-import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
 import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import * as Yup from "yup"
 import { limitedEditionValue } from "./utils/rarityOptions"
@@ -20,10 +19,8 @@ export interface Location {
 }
 
 export interface ArtworkDetailsFormModel {
-  submissionId?: string | null
   artist: string
   artistId: string
-  artistSearchResult?: AutosuggestResult | null
   attributionClass: ConsignmentAttributionClass | null
   category: Exclude<ConsignmentSubmissionCategoryAggregation, "%future added value"> | null
   depth: string
@@ -46,10 +43,8 @@ export interface ArtworkDetailsFormModel {
 }
 
 export const artworkDetailsEmptyInitialValues: ArtworkDetailsFormModel = {
-  submissionId: null,
   artist: "",
   artistId: "",
-  artistSearchResult: null,
   attributionClass: null,
   category: null,
   depth: "",

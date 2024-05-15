@@ -132,6 +132,11 @@ export interface ArtworkDetailsFormModel {
   // Photos
   photos: Photo[]
   initialPhotos?: Photo[]
+
+  // Contact information
+  userName: string
+  userEmail: string
+  userPhone: string
 }
 
 export const artworkDetailsEmptyInitialValues: ArtworkDetailsFormModel = {
@@ -168,6 +173,11 @@ export const artworkDetailsEmptyInitialValues: ArtworkDetailsFormModel = {
   // Photos
   photos: [],
   initialPhotos: [],
+
+  // Contact information
+  userName: "",
+  userEmail: "",
+  userPhone: "",
 }
 
 // export const artworkDetailsValidationSchema = Yup.object().shape({

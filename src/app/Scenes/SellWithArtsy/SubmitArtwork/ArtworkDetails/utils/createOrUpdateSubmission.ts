@@ -20,7 +20,7 @@ const DEFAULT_SOURCE = "APP_INBOUND"
 
 export const createOrUpdateSubmission = async (
   values:
-    | Partial<NewArtworkDetailsFormModel>
+    | (Partial<NewArtworkDetailsFormModel> & Partial<SWASubmissionContactInformationFormModel>)
     | (ArtworkDetailsFormModel & SWASubmissionContactInformationFormModel),
   submissionId: string | null
 ) => {
@@ -50,9 +50,9 @@ export const createOrUpdateSubmission = async (
     height: values.height,
     width: values.width,
     dimensionsMetric: values.dimensionsMetric,
-    // userEmail: values.userEmail,
-    // userName: values.userName,
-    // userPhone: values.userPhone,
+    userEmail: values.userEmail,
+    userName: values.userName,
+    userPhone: values.userPhone,
     year: values.year,
     provenance: values.provenance,
     title: values.title,
