@@ -391,6 +391,37 @@ lane :flag_android_beta do |options|
   write_contents_to_file($APP_JSON_PATH, JSON.pretty_generate($APP_JSON))
 end
 
+desc 'Update the rollout percentage for the latest release in the play store'
+lane :update_rollout_if_necessary do
+  rollout_strategy = [0.1, 0.2, 0.5, 1.0]
+  rollout_percentages = google_play_track_rollout_percentages(track: 'production')
+  latest_release = rollout_percentages.first
+
+  if latest_release && latest_release[:user_fraction]
+    current_fraction = latest_release[:user_fraction]
+    next_index = rollout_strategy.find_index(current_fraction) + 1
+
+    if next_index && next_index < rollout_strategy.length
+      next_fraction = rollout_strategy[next_index]
+      supply(
+        track: 'production',
+        rollout: next_fraction.to_s,
+        skip_upload_apk: true,
+        skip_upload_metadata: true,
+        skip_upload_changelogs: true,
+        skip_upload_images: true,
+        skip_upload_screenshots: true,
+        skip_upload_aab: true
+      )
+      UI.message("Updated rollout to #{next_fraction * 100}% for release #{latest_release[:name]}")
+    else
+      UI.message("Current rollout is already at the maximum configured percentage or not part of the strategy.")
+    end
+  else
+    UI.message("No active release found or release does not have a rollout fraction.")
+  end
+end
+
 # Codepush
 
 lane :deploy_to_codepush do |options|
