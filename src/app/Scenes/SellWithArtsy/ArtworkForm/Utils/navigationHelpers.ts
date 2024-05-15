@@ -63,23 +63,3 @@ export const useSubmissionContext = () => {
     navigateToPreviousStep,
   }
 }
-
-// export function navigateToNextStep() {
-//   const currentStepId = getCurrentRoute()
-//   const nextStepId = STEPS[STEPS.indexOf(currentStepId as any) + 1]
-
-//   if (!nextStepId) {
-//     console.error("No next step found")
-//     return
-//   }
-
-//   __unsafe__SubmissionArtworkFormNavigationRef.current?.navigate?.(nextStepId)
-// }
-
-// export function navigateToPreviousStep() {
-//   if (getCurrentRoute() === STEPS[0]) {
-//     return goBack()
-//   }
-
-//   __unsafe__SubmissionArtworkFormNavigationRef.current?.goBack?.()
-// }
