@@ -195,6 +195,103 @@ jobs:
       - checkout
       - run: ./scripts/detect-secrets/secrets-check-all
 
+  build-maestro-nightly-android:
+    docker:
+      - image: cimg/android:2024.01.1-node
+    resource_class: large
+    steps:
+      - prep-android-env
+      - await-previous-builds:
+          branch: beta-android
+      - run:
+          name: Save success file
+          command: echo yes > 'build-success.log'
+
+      - store_artifacts:
+          path: android/app/build/reports
+          prefix: android-build
+
+      - save_cache:
+          key: v10-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+          paths:
+            - build-success.log
+      - run:
+          name: Upload Android build to Maestro App Quality Copilot
+          command: ./scripts/maestro/build-android.sh
+
+  build-maestro-nightly-ios:
+    environment:
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
+
+    macos:
+      xcode: 15.1
+      resource_class: macos.m1.medium.gen1
+
+    steps:
+      - attach_workspace:
+          at: ../workspace
+      - restore_cache:
+          keys:
+            - v11-test-success-{{ checksum "../workspace/.manifests/native_code" }}
+      # we can quit the macos build early if there were no native code changes
+      # and we're not on the beta branch
+      - run:
+          name: Quit early if possible
+          command: |
+            if test $CIRCLE_BRANCH != beta-ios && ls xcode_test_raw.log
+            then
+              circleci step halt
+            fi
+      - run:
+          name: Quit early if Draft PR
+          command: |
+            if $(curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/artsy/eigen/pulls/${CIRCLE_PULL_REQUEST##*/} | jq ".draft")
+            then
+              circleci step halt
+            fi
+      - run:
+          name: Clear project dir
+          command: |
+            rm -rf  /Users/distiller/project/*
+      - checkout
+      - attach_workspace:
+          at: .
+      - install-node
+      - setup-awscli
+      - setup-env-file
+      - install-node-modules
+      - run-relay-compiler
+      - update-echo
+      - install-gems
+      - install-cocoapods
+      - macos/preboot-simulator:
+          version: "17.2"
+          platform: "iOS"
+          device: "iPhone 15 Pro"
+      - macos/install-rosetta
+      - run:
+          name: Run tests if native code has changed
+          command: ls xcode_test_raw.log || ./scripts/ci/ci-test-ios
+      - save_cache:
+          key: v11-test-success-{{ checksum ".manifests/native_code" }}
+          paths:
+            - xcode_test_raw.log
+
+      - store_artifacts:
+          path: xcode_build_raw.log
+          prefix: build
+
+      - store_artifacts:
+          path: xcode_test_raw.log
+          prefix: tests
+
+      - await-previous-builds:
+          branch: beta-ios
+      - run:
+          name: Deploy if beta
+          no_output_timeout: 20m
+          command: ./scripts/maestro/build-ios.sh
+
   deploy-nightly-beta:
     environment:
       BUNDLE_PATH: .vendor
@@ -215,9 +312,6 @@ jobs:
       - run:
           name: Deploy betas
           command: ./scripts/deploys/deploy-beta-both
-      - run:
-          name: Upload builds to Maestro App Quality Copilot
-          command: ./scripts/deploys/upload-betas-maestro-copilot
 
   check-and-deploy:
     environment:
@@ -367,6 +461,9 @@ jobs:
       - run-relay-compiler
       - update-echo
       - generate-query-map
+      # these will be moved to nightly - added for testing purposes
+      - build-maestro-nightly-ios
+      - build-maestro-nightly-android
       - run:
           name: Check generated folder
           command: |
