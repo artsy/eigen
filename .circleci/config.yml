@@ -7,6 +7,26 @@ orbs:
   macos: circleci/macos@2.5.1
   android: circleci/android@2.5.0
 
+only-main-or-release-or-build-me: &only-main-or-release-or-build-me
+  filters:
+    branches:
+      only:
+        - main
+        - /.*release$/
+        - /.*build-me$/
+        - /.*hotfix$/
+        - /.*beta-$/
+
+only-prs: &only-prs
+  filters:
+    branches:
+      ignore:
+        - main
+        - /.*release$/
+        - /.*build-me$/
+        - /.*hotfix$/
+        - /.*beta-$/
+
 commands:
   await-previous-builds:
     parameters:
@@ -235,6 +255,28 @@ jobs:
           command: |
             echo "Triggering CodePush deployment..."
             ./scripts/codepush/deploy-to-codepush.sh Staging
+
+  test-js-pr:
+    parallelism: 8
+    executor:
+      name: node/default
+      tag: "20.9.0"
+    resource_class: large
+    steps:
+      - checkout
+      - install-node-modules
+      - run-relay-compiler
+      - run:
+          name: Run Jest For Updated Files and Scenes Only
+          command: ./scripts/ci/ci-test-js-pr
+          no_output_timeout: 3600s
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
+            JEST_JUNIT_UNIQUE_OUTPUT_NAME: true
+      - store_artifacts:
+          path: ./reports/junit/
+      - store_test_results:
+          path: ./reports/junit/
 
   test-js:
     parallelism: 8
@@ -484,7 +526,11 @@ workflows:
               only:
                 - main
 
-      - test-js
+      - test-js:
+          <<: *only-main-or-release-or-build-me
+
+      - test-js-pr:
+          <<: *only-prs
 
       - build-test-js
 
