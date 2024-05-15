@@ -24,8 +24,11 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
 
   const { hasEnded } = getTimer(item?.partnerOffer?.endAt || "")
   const noLongerAvailable = !item?.partnerOffer?.isAvailable
+  const isOfferFromSaves = item?.partnerOffer?.source === "SAVE"
 
-  let subtitle = "Review the offer on your saved artwork"
+  let subtitle = isOfferFromSaves
+    ? "Review the offer on your saved artwork"
+    : "Review the offer before it expires"
 
   if (noLongerAvailable) {
     subtitle =
@@ -44,9 +47,11 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
         onBack={goBack}
         title="Offers"
         rightElements={
-          <Touchable haptic="impactLight" onPress={handleManageSaves} hitSlop={DEFAULT_HIT_SLOP}>
-            <Text variant="xs">Manage Saves</Text>
-          </Touchable>
+          isOfferFromSaves ? (
+            <Touchable haptic="impactLight" onPress={handleManageSaves} hitSlop={DEFAULT_HIT_SLOP}>
+              <Text variant="xs">Manage Saves</Text>
+            </Touchable>
+          ) : null
         }
       />
       <Screen.Body fullwidth scroll>
@@ -107,6 +112,7 @@ export const PartnerOfferCreatedNotificationFragment = graphql`
           priceWithDiscount {
             display
           }
+          source
         }
       }
     }
