@@ -198,7 +198,6 @@ jobs:
       - run:
           name: Deploy betas
           command: ./scripts/deploys/deploy-beta-both
-
       - run:
           name: Upload builds to Maestro App Quality Copilot
           command: ./scripts/deploys/upload-betas-maestro-copilot
