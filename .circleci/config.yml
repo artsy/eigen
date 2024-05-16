@@ -230,9 +230,6 @@ jobs:
     steps:
       - attach_workspace:
           at: ../workspace
-      - restore_cache:
-          keys:
-            - v11-test-success-{{ checksum "../workspace/.manifests/native_code" }}
       - run:
           name: Download fonts from s3
           command: ./scripts/setup/download-fonts
