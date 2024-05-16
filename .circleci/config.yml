@@ -528,9 +528,13 @@ workflows:
 
       - test-js:
           <<: *only-main-or-release-or-build-me
+          requires:
+            - check-code
 
       - test-js-pr:
           <<: *only-prs
+          requires:
+            - check-code
 
       - build-test-js
 
@@ -549,7 +553,6 @@ workflows:
               ignore:
                 - beta-android
           requires:
-            - test-js
             - check-code
             - build-test-js
             - horizon/block
@@ -560,7 +563,6 @@ workflows:
               ignore:
                 - beta-ios
           requires:
-            - test-js
             - check-code
             - build-test-js
             - horizon/block
