@@ -175,6 +175,24 @@ jobs:
       - checkout
       - run: ./scripts/detect-secrets/secrets-check-all
 
+  run-nightly-tasks:
+    environment:
+      BUNDLE_PATH: .vendor
+
+    macos:
+      xcode: 15.1
+      resource_class: macos.m1.medium.gen1
+
+    steps:
+      - checkout
+      - generate-checksums
+      - setup-awscli
+      - setup-env-file
+      - install-gems
+      - run:
+          name: Update rollout if needed
+          command: ./scripts/deploys/update-android-rollout-if-needed
+
   deploy-nightly-beta:
     environment:
       BUNDLE_PATH: .vendor
@@ -195,9 +213,6 @@ jobs:
       - run:
           name: Deploy betas
           command: ./scripts/deploys/deploy-beta-both
-      - run:
-          name: Upload builds to Maestro App Quality Copilot
-          command: ./scripts/deploys/upload-betas-maestro-copilot
 
   check-and-deploy:
     environment:
@@ -455,6 +470,7 @@ workflows:
                 - main
     jobs:
       - deploy-nightly-beta
+      - run-nightly-tasks
 
   flag-check:
     triggers:

@@ -402,3 +402,14 @@ https://rnfirebase.io/#altering-cocoapods-to-use-frameworks
 The author of react-native-firebase basically said that people should just remove flipper since it is no longer going to be supported by
 react native in the future but a bit tough to pull off that bandaid so soon. If flipper does end up supporting this config: 1. remove the entries in the podfile
 that have `:modular_headers => true` and add the static frameworks line from the docs above.
+
+## Custom lane google_play_track_rollout_percentages in fastlane dir
+
+#### When we can remove this:
+
+When this pr is accepted upstream or another way to fetch this data is supported by fastlane:
+https://github.com/fastlane/fastlane/pull/22029
+
+####
+
+This info is needed to automate our android rollout but not currently supported by fastlane.
