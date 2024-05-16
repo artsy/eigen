@@ -282,22 +282,38 @@ end
 
 desc 'Promote a play store android beta to production'
 lane :promote_beta_android do
-  selected_version_code = select_android_build
+   # android versions are listed most recent first, limit to 20
+   version_codes = google_play_track_version_codes(
+     track: "alpha",
+   ).first(20)
 
-  vname, vcode = set_build_version_android
+   UI.header "Last 20 Android builds"
 
-  supply(
-    track: 'production',
-    rollout: '0.1',
-    aab: './android/app/build/outputs/bundle/release/app-release.aab',
-    skip_upload_apk: true,
-    skip_upload_metadata: true,
-    skip_upload_changelogs: true,
-    skip_upload_images: true,
-    skip_upload_screenshots: true
-  )
+   selected_version_code = UI.select("Which build would you like to release?: ", version_codes)
 
-  tag_and_push(tag: "android-#{vname}-#{vcode}-submission")
+   if UI.confirm("Are you sure you would like to release '#{selected_version_code}'?")
+     UI.success "Continuing the release!"
+   else
+     UI.user_error!("Stopping the train!")
+   end
+
+   supply(
+     track: 'alpha',
+     version_code: selected_version_code,
+     track_promote_to: 'production',
+     rollout: '0.1',
+     skip_upload_metadata: true,
+     skip_upload_changelogs: true,
+     skip_upload_images: true,
+     skip_upload_screenshots: true,
+   )
+
+   version, build_number = set_build_version_android(version_code: selected_version_code)
+   tag_and_push(tag: "android-#{version}-#{selected_version_code}-submission")
+
+   sentry_slack_android(build_number: build_number, version: version)
+
+   UI.success('All done!')
 end
 
 lane :create_android_apk do
