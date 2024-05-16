@@ -96,7 +96,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
         }
         content={
           <Text variant="xs" color="white100">
-            Let our experts find the best sales option for you.
+            Submit for sale and let our experts find the best selling option for you.
           </Text>
         }
       >
