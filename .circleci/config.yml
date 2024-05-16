@@ -195,29 +195,25 @@ jobs:
       - checkout
       - run: ./scripts/detect-secrets/secrets-check-all
 
-  # build-maestro-nightly-android:
-  #   docker:
-  #     - image: cimg/android:2024.01.1-node
-  #   resource_class: large
-  #   steps:
-  #     - prep-android-env
-  #     - await-previous-builds:
-  #         branch: beta-android
-  #     - run:
-  #         name: Save success file
-  #         command: echo yes > 'build-success.log'
+  build-maestro-nightly-android:
+    docker:
+      - image: cimg/android:2024.01.1-node
+    resource_class: large
+    steps:
+      - prep-android-env
+      - await-previous-builds:
+          branch: beta-android
+      - run:
+          name: Save success file
+          command: echo yes > 'build-success.log'
 
-  #     - store_artifacts:
-  #         path: android/app/build/reports
-  #         prefix: android-build
+      - store_artifacts:
+          path: android/app/build/reports
+          prefix: android-build
 
-  #     - save_cache:
-  #         key: v10-test-success-{{ checksum "../workspace/.manifests/android_native" }}
-  #         paths:
-  #           - build-success.log
-  #     - run:
-  #         name: Upload Android build to Maestro App Quality Copilot
-  #         command: ./scripts/maestro/build-android.sh
+      - run:
+          name: Upload Android build to Maestro App Quality Copilot
+          command: ./scripts/maestro/build-android.sh
 
   build-maestro-nightly-ios:
     environment:
@@ -255,7 +251,7 @@ jobs:
       - await-previous-builds:
           branch: beta-ios
       - run:
-          name: Upload Android build to Maestro App Quality Copilot
+          name: Upload iOS build to Maestro App Quality Copilot
           no_output_timeout: 20m
           command: ./scripts/maestro/build-ios.sh
 
@@ -596,8 +592,8 @@ workflows:
       - build-test-js
 
       # these will be moved to nightly - added for testing purposes
-      - build-maestro-nightly-ios
-      # - build-maestro-nightly-android
+      # - build-maestro-nightly-ios
+      - build-maestro-nightly-android
 
       - horizon/block:
           context: horizon
