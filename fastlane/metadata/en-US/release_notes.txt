@@ -1,7 +1,7 @@
 This update includes a number of improvements and bug fixes, such as:
 
--  Improvement to the sales flow
--  Artwork screen enhancements
--  Conversations image loading fix
+- Improvement to the sales flow
+- Artwork screen improvements
+- Conversations image loading fix
 
 Have feedback? Email us at support@artsy.net
