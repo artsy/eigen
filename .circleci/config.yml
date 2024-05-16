@@ -229,13 +229,7 @@ jobs:
 
     steps:
       - attach_workspace:
-          at: .
-      - run:
-          name: Download fonts from s3
-          command: ./scripts/setup/download-fonts
-      - run:
-          name: Download ios assets
-          command: ./scripts/setup/download-assets-ios
+          at: ../workspace
       - run:
           name: Clear project dir
           command: |
@@ -243,6 +237,12 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
+      - run:
+          name: Download fonts from s3
+          command: ./scripts/setup/download-fonts
+      - run:
+          name: Download ios assets
+          command: ./scripts/setup/download-assets-ios
       - install-node
       - setup-awscli
       - setup-env-file
