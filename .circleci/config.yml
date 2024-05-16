@@ -192,9 +192,6 @@ jobs:
       - run:
           name: Update rollout if needed
           command: ./scripts/deploys/update-android-rollout-if-needed
-      - run:
-          name: Upload builds to Maestro App Quality Copilot
-          command: ./scripts/deploys/upload-betas-maestro-copilot
 
   deploy-nightly-beta:
     environment:
