@@ -228,6 +228,8 @@ jobs:
       resource_class: macos.m1.medium.gen1
 
     steps:
+      - attach_workspace:
+          at: .
       - run:
           name: Download fonts from s3
           command: ./scripts/setup/download-fonts
