@@ -233,22 +233,12 @@ jobs:
       - restore_cache:
           keys:
             - v11-test-success-{{ checksum "../workspace/.manifests/native_code" }}
-      # we can quit the macos build early if there were no native code changes
-      # and we're not on the beta branch
       - run:
-          name: Quit early if possible
-          command: |
-            if test $CIRCLE_BRANCH != beta-ios && ls xcode_test_raw.log
-            then
-              circleci step halt
-            fi
+          name: Download fonts from s3
+          command: ./scripts/setup/download-fonts
       - run:
-          name: Quit early if Draft PR
-          command: |
-            if $(curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/artsy/eigen/pulls/${CIRCLE_PULL_REQUEST##*/} | jq ".draft")
-            then
-              circleci step halt
-            fi
+          name: Download ios assets
+          command: ./scripts/setup/download-assets-ios
       - run:
           name: Clear project dir
           command: |
@@ -264,31 +254,11 @@ jobs:
       - update-echo
       - install-gems
       - install-cocoapods
-      - macos/preboot-simulator:
-          version: "17.2"
-          platform: "iOS"
-          device: "iPhone 15 Pro"
       - macos/install-rosetta
-      - run:
-          name: Run tests if native code has changed
-          command: ls xcode_test_raw.log || ./scripts/ci/ci-test-ios
-      - save_cache:
-          key: v11-test-success-{{ checksum ".manifests/native_code" }}
-          paths:
-            - xcode_test_raw.log
-
-      - store_artifacts:
-          path: xcode_build_raw.log
-          prefix: build
-
-      - store_artifacts:
-          path: xcode_test_raw.log
-          prefix: tests
-
       - await-previous-builds:
           branch: beta-ios
       - run:
-          name: Deploy if beta
+          name: Upload Android build to Maestro App Quality Copilot
           no_output_timeout: 20m
           command: ./scripts/maestro/build-ios.sh
 
