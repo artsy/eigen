@@ -3,6 +3,7 @@ import {
   CreateSubmissionMutationInput,
 } from "__generated__/createConsignSubmissionMutation.graphql"
 import { UpdateSubmissionMutationInput } from "__generated__/updateConsignSubmissionMutation.graphql"
+import { ArtworkDetailsFormModel as NewArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import {
   ArtworkDetailsFormModel,
   ContactInformationFormModel as SWASubmissionContactInformationFormModel,
@@ -18,8 +19,10 @@ export type SubmissionInput = CreateSubmissionMutationInput | UpdateSubmissionMu
 const DEFAULT_SOURCE = "APP_INBOUND"
 
 export const createOrUpdateSubmission = async (
-  values: ArtworkDetailsFormModel & SWASubmissionContactInformationFormModel,
-  submissionId: string
+  values:
+    | (Partial<NewArtworkDetailsFormModel> & Partial<SWASubmissionContactInformationFormModel>)
+    | (ArtworkDetailsFormModel & SWASubmissionContactInformationFormModel),
+  submissionId: string | null
 ) => {
   const isRarityLimitedEdition = values.attributionClass === limitedEditionValue
   type NewType = ConsignmentAttributionClass

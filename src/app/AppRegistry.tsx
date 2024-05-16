@@ -31,6 +31,7 @@ import { RecentlyViewedScreen } from "app/Scenes/RecentlyViewed/RecentlyViewed"
 import { SavedArtworks } from "app/Scenes/SavedArtworks/SavedArtworks"
 import { AlertArtworks } from "app/Scenes/SavedSearchAlert/AlertArtworks"
 import { SearchScreen, SearchScreenQuery } from "app/Scenes/Search/Search"
+import { SubmitArtworkForm } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { SimilarToRecentlyViewedScreen } from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
 import { ArtsyKeyboardAvoidingViewContext } from "app/utils/ArtsyKeyboardAvoidingView"
 import { SafeAreaInsets, useScreenDimensions } from "app/utils/hooks"
@@ -138,7 +139,7 @@ import {
   ViewingRoomsListScreen,
   viewingRoomsListScreenQuery,
 } from "./Scenes/ViewingRoom/ViewingRoomsList"
-import { GlobalStore } from "./store/GlobalStore"
+import { GlobalStore, unsafe_getFeatureFlag } from "./store/GlobalStore"
 import { propsStore } from "./store/PropsStore"
 import { DevMenu } from "./system/devTools/DevMenu/DevMenu"
 import { Schema, addTrackingProvider, screenTrack } from "./utils/track"
@@ -463,7 +464,7 @@ export const modules = defineModules({
   Conversation: reactModule(Conversation, { onlyShowInTabName: "inbox" }),
   ConversationDetails: reactModule(ConversationDetailsQueryRenderer),
   DarkModeSettings: reactModule(DarkModeSettings),
-  DevMenu: reactModule(DevMenu, { fullBleed: true, hidesBottomTabs: true, hidesBackButton: true }),
+  DevMenu: reactModule(DevMenu, { hidesBottomTabs: true, hidesBackButton: true }),
   EditSavedSearchAlert: reactModule(EditSavedSearchAlertQueryRenderer, {
     hidesBackButton: true,
     hidesBottomTabs: true,
@@ -649,7 +650,12 @@ export const modules = defineModules({
     hidesBackButton: true,
     fullBleed: true,
   }),
-  SubmitArtwork: reactModule(SubmitArtwork, { hidesBackButton: true, hidesBottomTabs: true }),
+  SubmitArtwork: unsafe_getFeatureFlag("AREnableNewSubmissionFlow")
+    ? reactModule(SubmitArtworkForm, {
+        hidesBackButton: true,
+        hidesBottomTabs: true,
+      })
+    : reactModule(SubmitArtwork, { hidesBackButton: true, hidesBottomTabs: true }),
   Tag: reactModule(TagQueryRenderer, { hidesBackButton: true, fullBleed: true }),
   UnlistedArtworksFAQScreen: reactModule(UnlistedArtworksFAQScreen),
   VanityURLEntity: reactModule(VanityURLEntityRenderer, { fullBleed: true }),
