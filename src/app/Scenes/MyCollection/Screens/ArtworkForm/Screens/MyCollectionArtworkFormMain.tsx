@@ -378,7 +378,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                 testID="ProvenanceInput"
               />
               <Input
-                title="Location"
+                title="City"
                 placeholder="Enter city where artwork is located"
                 onChangeText={formik.handleChange("artworkLocation")}
                 onBlur={formik.handleBlur("artworkLocation")}
