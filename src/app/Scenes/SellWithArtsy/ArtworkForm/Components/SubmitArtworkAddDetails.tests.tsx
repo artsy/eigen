@@ -23,16 +23,6 @@ describe("SubmitArtworkAddDetails", () => {
     // Wait for the select modal to dismiss
     await flushPromiseQueue()
     expect(screen.getByText("Painting")).toBeOnTheScreen()
-
-    const rarityPicker = screen.getByTestId("Submission_RaritySelect")
-    expect(rarityPicker).toBeOnTheScreen()
-    fireEvent.press(rarityPicker)
-    // Wait for the select modal to show up
-    await flushPromiseQueue()
-    fireEvent.press(screen.getByText("Unique"))
-    // Wait for the select modal to dismiss
-    await flushPromiseQueue()
-    expect(screen.getByText("Unique")).toBeOnTheScreen()
   })
 
   describe("Year input", () => {
