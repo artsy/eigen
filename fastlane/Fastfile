@@ -6,8 +6,9 @@ require 'fileutils'
 require 'json'
 require 'dotenv'
 
-
-require_relative 'supply_reader_extension'
+require_relative 'monkey_patches/supply_reader_extension'
+require_relative 'monkey_patches/supply_custom_promote_config'
+require_relative 'monkey_patches/supply_custom_promote'
 
 Dotenv.load('../.env.releases')
 
@@ -285,22 +286,24 @@ end
 
 desc 'Promote a play store android beta to production'
 lane :promote_beta_android do
-  selected_version_code = select_android_build
-
-  vname, vcode = set_build_version_android
+  selected_version_code = select_android_build(skip_download: true)
 
   supply(
-    track: 'production',
+    track: 'alpha',
+    use_custom_promotion_logic: true,
+    version_code: selected_version_code,
+    track_promote_to: 'production',
     rollout: '0.1',
-    aab: './android/app/build/outputs/bundle/release/app-release.aab',
-    skip_upload_apk: true,
     skip_upload_metadata: true,
     skip_upload_changelogs: true,
     skip_upload_images: true,
-    skip_upload_screenshots: true
+    skip_upload_screenshots: true,
+    skip_release_verification: true
   )
 
+  vname, vcode = set_build_version_android(version_code: selected_version_code)
   tag_and_push(tag: "android-#{vname}-#{vcode}-submission")
+  sentry_slack_android(build_number: vcode, version: vname)
 end
 
 lane :create_android_apk do
@@ -321,6 +324,7 @@ end
 
 lane :select_android_build do |options|
   select_message = options[:select_message] || 'release'
+  skip_download = options[:skip_download] || false
 
   s3_files_output = sh('aws s3 ls ' + S3_ANDROID_BUILDS_PATH)
 
@@ -336,15 +340,17 @@ lane :select_android_build do |options|
   UI.header 'Last 20 Android builds'
 
   selected_build = UI.select('Which build would you like to ' + select_message + '?: ', builds)
-  if UI.confirm("Are you sure you would like to " + select_message + " #{selected_build}?")
-    UI.success 'Continuing!'
-  else
-    UI.user_error!('Stopping the train!')
-  end
+  # if UI.confirm("Are you sure you would like to " + select_message + " #{selected_build}?")
+  #   UI.success 'Continuing!'
+  # else
+  #   UI.user_error!('Stopping the train!')
+  # end
 
-  # download the selected build to the typical build output directory
-  output_app_path = '../android/app/build/outputs/bundle/release/app-release.aab'
-  sh('aws s3 cp ' + S3_ANDROID_BUILDS_PATH + selected_build + ' ' + output_app_path)
+  if !skip_download
+    # download the selected build to the typical build output directory
+    output_app_path = '../android/app/build/outputs/bundle/release/app-release.aab'
+    sh('aws s3 cp ' + S3_ANDROID_BUILDS_PATH + selected_build + ' ' + output_app_path)
+  end
 
   # return the selected version num
   selected_build.scan(/\d+/).first
