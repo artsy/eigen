@@ -190,6 +190,9 @@ jobs:
       - setup-env-file
       - install-gems
       - run:
+          name: Download android assets
+          command: ./scripts/setup/download-assets-android
+      - run:
           name: Update rollout if needed
           command: ./scripts/deploys/update-android-rollout-if-needed
 
