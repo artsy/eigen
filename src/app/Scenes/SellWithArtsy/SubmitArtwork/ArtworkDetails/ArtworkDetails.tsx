@@ -4,6 +4,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { Formik } from "formik"
 import React, { useState } from "react"
+import { Alert } from "react-native"
 import { ArtworkDetailsForm } from "./ArtworkDetailsForm"
 import { ArtworkDetailsFormModel, artworkDetailsValidationSchema } from "./validation"
 
@@ -60,6 +61,9 @@ export const ArtworkDetails: React.FC<{
                     } else {
                       scrollToTop?.()
                     }
+                  } catch (error) {
+                    console.error(error)
+                    Alert.alert("Could not save artwork details. Please try again.")
                   } finally {
                     setIsLoading(false)
                   }

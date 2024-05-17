@@ -9,6 +9,7 @@ import {
 import { GlobalStore } from "app/store/GlobalStore"
 import { Formik } from "formik"
 import { useRef, useState } from "react"
+import { Alert } from "react-native"
 import { UploadPhotosForm } from "./UploadPhotosForm"
 import { isSizeLimitExceeded } from "./utils/calculatePhotoSize"
 
@@ -63,6 +64,9 @@ export const UploadPhotos = ({
                   try {
                     setIsLoading(true)
                     await handlePress({})
+                  } catch (error) {
+                    console.error(error)
+                    Alert.alert("Could not save artwork details. Please try again.")
                   } finally {
                     setIsLoading(false)
                   }
