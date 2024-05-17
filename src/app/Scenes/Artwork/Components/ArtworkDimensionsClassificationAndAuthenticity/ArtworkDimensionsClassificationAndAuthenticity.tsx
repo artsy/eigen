@@ -1,4 +1,4 @@
-import { Box, Text } from "@artsy/palette-mobile"
+import { Box, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkDimensionsClassificationAndAuthenticity_artwork$data } from "__generated__/ArtworkDimensionsClassificationAndAuthenticity_artwork.graphql"
 import { ArtworkAuthenticityCertificateFragmentContainer } from "app/Scenes/Artwork/Components/ArtworkDimensionsClassificationAndAuthenticity/ArtworkAuthenticityCertificate"
 import { ArtworkClassificationFragmentContainer } from "app/Scenes/Artwork/Components/ArtworkDimensionsClassificationAndAuthenticity/ArtworkClassification"
@@ -26,19 +26,20 @@ const ArtworkDimensionsClassificationAndAuthenticity: React.FC<
 
   return (
     <Box>
-      <Text color="black60" variant="xs">
+      <Spacer y={2} />
+      <Text color="black60" variant="sm">
         {medium}
       </Text>
       {!!dimensionsPresent(dimensions) && (editionSets?.length ?? 0) < 2 && (
-        <Text color="black60" variant="xs">{`${dimensions?.in} | ${dimensions?.cm}`}</Text>
+        <Text color="black60" variant="sm">{`${dimensions?.in} | ${dimensions?.cm}`}</Text>
       )}
       {!!getFrameString(framed?.details) && (
-        <Text color="black60" variant="xs">
+        <Text color="black60" variant="sm">
           {getFrameString(framed?.details)}
         </Text>
       )}
       {!!editionOf && (
-        <Text color="black60" variant="xs">
+        <Text color="black60" variant="sm">
           {editionOf}
         </Text>
       )}
@@ -48,6 +49,7 @@ const ArtworkDimensionsClassificationAndAuthenticity: React.FC<
 
       {/* authenticity */}
       <ArtworkAuthenticityCertificateFragmentContainer artwork={artwork} />
+      <Spacer y={2} />
     </Box>
   )
 }

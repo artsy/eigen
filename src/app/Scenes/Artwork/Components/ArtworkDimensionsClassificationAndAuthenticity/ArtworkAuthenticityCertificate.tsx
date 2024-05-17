@@ -26,11 +26,11 @@ export const ArtworkAuthenticityCertificate: React.FC<ArtworkAuthenticityCertifi
         alignContent="center"
       >
         <CertificateIcon mr={0.5} fill="black60" />
-        <Text color="black60" variant="xs">
+        <Text color="black60" variant="sm">
           Includes a{" "}
           <LinkText
             color="black60"
-            variant="xs"
+            variant="sm"
             onPress={() => navigate(`/artwork-certificate-of-authenticity`)}
           >
             Certificate of Authenticity

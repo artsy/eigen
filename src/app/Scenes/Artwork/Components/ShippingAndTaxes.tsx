@@ -38,27 +38,29 @@ const ShippingAndTaxes: React.FC<ShippingAndTaxesProps> = ({ artwork }) => {
       )}
 
       {!!shippingOrigin && (
-        <Text variant="sm" color="black60">
+        <Text variant="sm" color="black60" mb={0.5}>
           Ships from {shippingOrigin}
         </Text>
       )}
 
       {!!shippingInfo && (
-        <Text variant="sm" color="black60">
+        <Text variant="xs" color="black60">
           {shippingInfo}
         </Text>
       )}
 
       {!!priceIncludesTaxDisplay && (
-        <Text variant="sm" color="black60">
+        <Text variant="xs" color="black60">
           {priceIncludesTaxDisplay}
         </Text>
       )}
 
       {!!taxInfo && (
-        <Text variant="sm" color="black60">
+        <Text variant="xs" color="black60">
           {taxInfo.displayText}{" "}
-          <LinkText onPress={handleLearnMorePress}>{taxInfo.moreInfo.displayText}</LinkText>
+          <LinkText variant="xs" onPress={handleLearnMorePress}>
+            {taxInfo.moreInfo.displayText}
+          </LinkText>
         </Text>
       )}
     </Box>

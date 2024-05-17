@@ -291,6 +291,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
         ),
         excludePadding: true,
         excludeSeparator: true,
+        excludeVerticalMargin: true,
       })
 
       sections.push({
@@ -301,9 +302,14 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
           />
         ),
         excludeSeparator: true,
+        excludeVerticalMargin: true,
       })
 
-      if (!artworkAboveTheFold.isUnlisted && (artworkAboveTheFold.editionSets ?? []).length > 1) {
+      if (
+        artworkBelowTheFold?.isForSale &&
+        !isInAuction &&
+        (artworkAboveTheFold.editionSets ?? []).length > 1
+      ) {
         sections.push({
           key: "selectEditionSet",
           element: <ArtworkEditionSetInformation artwork={artworkAboveTheFold} />,
@@ -330,21 +336,11 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
           />
         ),
         excludeSeparator: !!artworkAboveTheFold.isUnlisted,
+        excludeVerticalMargin: true,
       })
 
       if (artworkAboveTheFold.isUnlisted) {
-        const hasEditionSets = (artworkAboveTheFold.editionSets ?? []).length > 1
-
         if (!!(artworkBelowTheFold?.isForSale && !isInAuction)) {
-          if (hasEditionSets) {
-            sections.push({
-              key: "selectEditionSet",
-              element: <ArtworkEditionSetInformation artwork={artworkAboveTheFold} />,
-              excludeSeparator: true,
-              excludeVerticalMargin: true,
-            })
-          }
-
           sections.push({
             key: "shippingAndTaxes",
             element: (

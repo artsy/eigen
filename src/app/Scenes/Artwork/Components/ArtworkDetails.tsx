@@ -28,15 +28,11 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({
       title: "Medium",
       value: artworkData?.mediumType?.name && (
         <TouchableWithoutFeedback onPress={() => navigate(`/artwork/${artworkData.slug}/medium`)}>
-          <Text variant="sm" color="black100" style={{ textDecorationLine: "underline" }}>
+          <Text variant="xs" color="black100" style={{ textDecorationLine: "underline" }}>
             {artworkData?.mediumType?.name}
           </Text>
         </TouchableWithoutFeedback>
       ),
-    },
-    {
-      title: "Materials",
-      value: artworkData?.medium,
     },
     {
       title: "Edition",
@@ -104,7 +100,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({
         {!!isCollapsed && (
           <Text
             mt={1}
-            variant="sm"
+            variant="xs"
             color="black100"
             textAlign="center"
             underline
