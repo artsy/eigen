@@ -1,6 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { SubmitArtworkBottomNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkBottomNavigation"
 import { renderWithSubmitArtworkWrapper } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/testWrappers"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 
 const mockNavigateToNextStep = jest.fn()
@@ -31,6 +32,9 @@ describe("SubmitArtworkBottomNavigation", () => {
     })
 
     it("Shows a functional Start from My Collection button", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        AREnableSubmitMyCollectionArtworkInSubmitFlow: true,
+      })
       renderWithSubmitArtworkWrapper({
         component: <SubmitArtworkBottomNavigation />,
         props: { currentStep: "StartFlow" },

@@ -274,6 +274,11 @@ export const features = {
     readyForRelease: false,
     showInDevMenu: true,
   },
+  AREnableSubmitMyCollectionArtworkInSubmitFlow: {
+    description: "Enable Start Submission from My Collection in submit artwork flow",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
