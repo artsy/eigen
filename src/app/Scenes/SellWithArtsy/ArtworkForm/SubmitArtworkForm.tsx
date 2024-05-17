@@ -113,8 +113,6 @@ const SubmitArtworkFormContent: React.FC = ({}) => {
                 gestureEnabled: false,
               }}
             >
-              <Stack.Screen name="AddDimensions" component={SubmitArtworkAddDimensions} />
-
               <Stack.Screen name="StartFlow" component={SubmitArtworkStartFlow} />
 
               <Stack.Screen
@@ -129,6 +127,8 @@ const SubmitArtworkFormContent: React.FC = ({}) => {
               <Stack.Screen name="AddPhotos" component={SubmitArtworkAddPhotos} />
 
               <Stack.Screen name="AddDetails" component={SubmitArtworkAddDetails} />
+
+              <Stack.Screen name="AddDimensions" component={SubmitArtworkAddDimensions} />
 
               <Stack.Screen name="AddProvenance" component={SubmitArtworkAddProvenance} />
 
