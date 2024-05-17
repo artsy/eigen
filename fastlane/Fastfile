@@ -470,7 +470,8 @@ lane :deploy_to_codepush do |options|
     sentry_release_name: release_name,
     dist: dist_version,
     bundle_path: bundle_path,
-    sourcemap_path: sourcemap_output
+    sourcemap_path: sourcemap_output,
+    silence_failures: true # we ship codepush releases every commit to main, failures are noisy
   )
 
   tag_and_push(tag: release_name)
