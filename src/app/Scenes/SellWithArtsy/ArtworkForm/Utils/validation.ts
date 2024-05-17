@@ -11,7 +11,6 @@ import {
   SubmitArtworkStackNavigation,
   getCurrentRoute,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
-import { limitedEditionValue } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/rarityOptions"
 import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
 import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import * as Yup from "yup"
@@ -83,15 +82,6 @@ const provenanceSchema = Yup.object().shape({
 
 const artworkDetailsValidationSchema = Yup.object().shape({
   category: Yup.string().required(),
-  attributionClass: Yup.string().nullable(),
-  editionNumber: Yup.string().when("attributionClass", {
-    is: limitedEditionValue,
-    then: Yup.string().required().trim(),
-  }),
-  editionSizeFormatted: Yup.string().when("attributionClass", {
-    is: limitedEditionValue,
-    then: Yup.string().required().trim(),
-  }),
   medium: Yup.string(),
   year: Yup.string(),
 })
