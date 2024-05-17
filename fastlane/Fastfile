@@ -340,11 +340,11 @@ lane :select_android_build do |options|
   UI.header 'Last 20 Android builds'
 
   selected_build = UI.select('Which build would you like to ' + select_message + '?: ', builds)
-  # if UI.confirm("Are you sure you would like to " + select_message + " #{selected_build}?")
-  #   UI.success 'Continuing!'
-  # else
-  #   UI.user_error!('Stopping the train!')
-  # end
+  if UI.confirm("Are you sure you would like to " + select_message + " #{selected_build}?")
+    UI.success 'Continuing!'
+  else
+    UI.user_error!('Stopping the train!')
+  end
 
   if !skip_download
     # download the selected build to the typical build output directory
