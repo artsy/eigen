@@ -218,7 +218,7 @@
     "@octokit/rest": "16.34.1",
     "@react-native/eslint-config": "^0.72.2",
     "@react-native/metro-config": "^0.72.12",
-    "@sentry/cli": "2.31.0",
+    "@sentry/cli": "2.31.2",
     "@testing-library/jest-native": "5.4.3",
     "@testing-library/react-hooks": "8.0.1",
     "@testing-library/react-native": "12.4.5",
