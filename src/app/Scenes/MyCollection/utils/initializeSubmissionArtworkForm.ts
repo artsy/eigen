@@ -1,5 +1,4 @@
 import { MyCollectionWhySell_artwork$data } from "__generated__/MyCollectionWhySell_artwork.graphql"
-import { ConsignmentSubmissionSource } from "__generated__/createConsignSubmissionMutation.graphql"
 import {
   ACCEPTABLE_CATEGORY_VALUES_MAP,
   AcceptableCategoryValue,
@@ -29,7 +28,7 @@ export const initializeNewSubmissionArtworkForm = (artwork: MyCollectionWhySell_
     width: artwork.width ?? "",
     depth: artwork.depth ?? "",
     provenance: artwork.provenance ?? "",
-    source: "MY_COLLECTION" as ConsignmentSubmissionSource | null,
+    source: "MY_COLLECTION" as const,
     myCollectionArtworkID: artwork.internalID,
     initialPhotos: artwork.images?.map((image) => ({
       path: image?.url?.replace(":version", "large") ?? "",
