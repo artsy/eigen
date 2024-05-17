@@ -177,7 +177,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/collection/:collectionID", "Collection"),
     addRoute("/collection/:collectionID/artists", "FullFeaturedArtistList"),
     addRoute("/collections/my-collection/marketing-landing", "SellNotRootTabView"),
-    addRoute("/consign/submission", "SubmitArtwork"),
     addRoute("/conversation/:conversationID", "Conversation"),
     addRoute("/conversation/:conversationID/details", "ConversationDetails"),
     addRoute("/dev-menu", "DevMenu"),

@@ -862,16 +862,6 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  it("routes to SubmitArtwork", () => {
-    expect(matchRoute("/consign/submission")).toMatchInlineSnapshot(`
-      {
-        "module": "SubmitArtwork",
-        "params": {},
-        "type": "match",
-      }
-    `)
-  })
-
   it("routes to Sell", () => {
     expect(matchRoute("/collections/my-collection/marketing-landing")).toMatchInlineSnapshot(`
       {
