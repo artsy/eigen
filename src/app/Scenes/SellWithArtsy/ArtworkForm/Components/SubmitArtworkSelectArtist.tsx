@@ -38,8 +38,6 @@ export const SubmitArtworkSelectArtist = () => {
     }
 
     try {
-      // TODO: Does it make sense to create a new submission here?
-      // We might end up with a lot of submissions that are never completed
       const submissionId = await createOrUpdateSubmission(updatedValues, formik.values.submissionId)
       formik.setFieldValue("submissionId", submissionId)
       navigateToNextStep()

@@ -16,27 +16,36 @@ import { Alert } from "react-native"
 export const useSubmissionContext = () => {
   const setCurrentStep = SubmitArtworkFormStore.useStoreActions((actions) => actions.setCurrentStep)
   const setIsLoading = SubmitArtworkFormStore.useStoreActions((actions) => actions.setIsLoading)
+  const { currentStep } = SubmitArtworkFormStore.useStoreState((state) => state)
 
-  const { values } = useFormikContext<ArtworkDetailsFormModel>()
+  const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
 
   const navigateToNextStep = async (step?: SubmitArtworkScreen) => {
     try {
       setIsLoading(true)
-      const currentStepId = getCurrentRoute()
-      const nextStepId =
-        step || ARTWORK_FORM_STEPS[ARTWORK_FORM_STEPS.indexOf(currentStepId as any) + 1]
+      const nextStep =
+        step || ARTWORK_FORM_STEPS[ARTWORK_FORM_STEPS.indexOf(currentStep as any) + 1]
 
-      if (!nextStepId) {
+      if (!nextStep) {
         console.error("No next step found")
         return
       }
 
-      if (values.submissionId) {
-        await createOrUpdateSubmission(values, values.submissionId)
+      const submissionId = await createOrUpdateSubmission(
+        {
+          ...values,
+          state: (currentStep === "AddProvenance"
+            ? "SUBMITTED"
+            : undefined) as ArtworkDetailsFormModel["state"],
+        },
+        values.submissionId
+      )
+      if (!values.submissionId && submissionId) {
+        setFieldValue("submissionId", submissionId)
       }
 
-      setCurrentStep(nextStepId)
-      __unsafe__SubmissionArtworkFormNavigationRef.current?.navigate?.(nextStepId)
+      setCurrentStep(nextStep)
+      __unsafe__SubmissionArtworkFormNavigationRef.current?.navigate?.(nextStep)
     } catch (error) {
       console.error("Error navigating to next step", error)
       Alert.alert("Could not navigate to next step")
@@ -46,7 +55,7 @@ export const useSubmissionContext = () => {
   }
 
   const navigateToPreviousStep = () => {
-    if (getCurrentRoute() === ARTWORK_FORM_STEPS[0]) {
+    if (!__unsafe__SubmissionArtworkFormNavigationRef.current?.canGoBack()) {
       return goBack()
     }
     // Order is important here to make sure getCurrentRoute returns the correct value
