@@ -22,7 +22,7 @@ fi
 # removes codepushhash to avoid conflicts
 rm -rf android/app/build/generated/assets/createBundleReleaseJsAndAssets/CodePushHash
 
-./gradlew clean
+cd android && ./gradlew clean && cd ..
 
 directory="android/app/build/outputs/apk/release"
 
