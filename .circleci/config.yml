@@ -507,6 +507,8 @@ workflows:
 
       - build-test-js
 
+      - run-nightly-tasks
+
       - horizon/block:
           context: horizon
           project_id: 37
