@@ -1,10 +1,17 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Spacer, Flex, Text, Separator, Button } from "@artsy/palette-mobile"
+import { Button, Flex, Separator, Spacer, Text } from "@artsy/palette-mobile"
 import { MyCollectionWhySell_artwork$key } from "__generated__/MyCollectionWhySell_artwork.graphql"
-import { initializeSubmissionArtworkForm } from "app/Scenes/MyCollection/utils/initializeSubmissionArtworkForm"
+import {
+  initializeNewSubmissionArtworkForm,
+  initializeSubmissionArtworkForm,
+} from "app/Scenes/MyCollection/utils/initializeSubmissionArtworkForm"
+import { SubmitArtworkScreen } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
+import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/validation"
+import { SubmitArtworkProps } from "app/Scenes/SellWithArtsy/SubmitArtwork/SubmitArtwork"
 import { navigate } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
-import { useFragment, graphql } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface MyCollectionWhySellProps {
@@ -16,6 +23,7 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
   const { contextModule } = props
   const { trackEvent } = useTracking()
   const artwork = useFragment(artworkFragment, props.artwork)
+  const enableNewSubmissionFlow = useFeatureFlag("AREnableNewSubmissionFlow")
 
   const submissionId = artwork.submissionId
 
@@ -59,8 +67,20 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
                 "Submit This Artwork to Sell"
               )
             )
-            initializeSubmissionArtworkForm(artwork)
-            navigate("/sell/submissions/new")
+            if (enableNewSubmissionFlow) {
+              const initialValues: Partial<ArtworkDetailsFormModel> =
+                initializeNewSubmissionArtworkForm(artwork)
+              const initialStep: SubmitArtworkScreen = "SelectArtist"
+
+              const passProps: SubmitArtworkProps = {
+                initialValues,
+                initialStep,
+              }
+              navigate("/sell/submissions/new", { passProps })
+            } else {
+              initializeSubmissionArtworkForm(artwork)
+              navigate("/sell/submissions/new")
+            }
           }}
           testID="submitArtworkToSellButton"
         >
