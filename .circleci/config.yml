@@ -210,7 +210,7 @@ jobs:
       - store_artifacts:
           path: android/app/build/reports
           prefix: android-build
-
+      - checkout
       - run:
           name: Upload Android build to Maestro App Quality Copilot
           command: ./scripts/maestro/build-android.sh
