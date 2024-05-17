@@ -53,7 +53,7 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
   }
 
   return (
-    <Flex {...rest} px={2}>
+    <Flex {...rest}>
       <Flex mb="15px" flexDirection="row" justifyContent="space-between" alignItems="center">
         <Text variant={headerVariant} testID="header">
           {artistSeriesHeader}
