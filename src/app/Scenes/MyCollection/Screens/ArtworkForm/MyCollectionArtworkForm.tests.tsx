@@ -56,6 +56,7 @@ describe("MyCollectionArtworkForm", () => {
       expect(screen.getByTestId("MaterialsInput").props.value).toBe("Screen print")
       expect(screen.getByTestId("WidthInput").props.value).toBe("30")
       expect(screen.getByTestId("HeightInput").props.value).toBe("20")
+      expect(screen.getByTestId("autocomplete-location-input")).toBeTruthy()
       expect(screen.getByTestId("DepthInput").props.value).toBe("40")
       expect(screen.getByText("1 photo added")).toBeTruthy()
     })
@@ -419,6 +420,9 @@ describe("MyCollectionArtworkForm", () => {
             internalID: "some-internal-id",
           },
           category: "oil on oil",
+          collectorLocation: {
+            city: "some-city",
+          },
           confidentialNotes: "some-notes",
           medium: "photography",
           pricePaidDollars: "$100",
@@ -463,6 +467,12 @@ describe("MyCollectionArtworkForm", () => {
                     targetSupply: {
                       isP1: false,
                     },
+                  },
+                  collectorLocation: {
+                    city: "some-city",
+                    state: "some-state",
+                    country: "some-country",
+                    countryCode: "some-country-code",
                   },
                   confidentialNotes: "some-notes",
                   consignmentSubmission: {
@@ -723,6 +733,13 @@ const mockArtwork = {
   artistNames: "Banksy",
   category: "Print",
   confidentialNotes: "some-notes",
+  collectorLocation: {
+    city: "Busytown",
+    country: "USA",
+    postalCode: "12345",
+    state: "CA",
+    stateCode: "CA",
+  },
   pricePaid: null,
   date: "2007",
   depth: "40",

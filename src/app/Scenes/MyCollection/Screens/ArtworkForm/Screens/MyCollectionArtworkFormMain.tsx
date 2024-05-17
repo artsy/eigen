@@ -314,26 +314,27 @@ export const MyCollectionArtworkFormMain: React.FC<
 
           <Flex p={2}>
             <Join separator={<Spacer y={2} />}>
+              {/* TODO: Remove old location input and move autocomplete down  */}
+
               <LocationAutocomplete
-                title="Location Auto-Suggest"
+                allowCustomLocation
+                title="Location"
+                testID="LocationInput"
                 placeholder="Enter city where artwork is located"
-                displayLocation={
-                  buildLocationDisplay(formikValues.collectorLocation) ||
-                  formikValues.artworkLocation
-                }
+                displayLocation={buildLocationDisplay(formikValues.collectorLocation)}
                 onChange={(location: LocationWithDetails) => {
-                  console.log({ location })
                   formik.setFieldValue("collectorLocation", {
-                    city: "Foooo",
-                    state: "",
-                    country: "",
-                    countryCode: "",
+                    city: location.city,
+                    state: location.state,
+                    country: location.country,
+                    countryCode: location.countryCode,
                   })
                 }}
+                accessibilityLabel="Enter city where the artwork is located"
               />
 
               <Input
-                title="Location Input"
+                title="Location"
                 placeholder="Enter city where artwork is located"
                 onChangeText={formik.handleChange("artworkLocation")}
                 onBlur={formik.handleBlur("artworkLocation")}
@@ -343,6 +344,7 @@ export const MyCollectionArtworkFormMain: React.FC<
               />
 
               <ArtistField />
+
               <Input
                 title="Title"
                 onChangeText={formik.handleChange("title")}
@@ -352,11 +354,13 @@ export const MyCollectionArtworkFormMain: React.FC<
                 accessibilityLabel="Title"
                 value={formikValues.title}
               />
+
               <CategoryPicker<string>
                 value={formikValues.category}
                 options={artworkMediumCategories}
                 handleChange={handleCategory}
               />
+
               <Input
                 title="Year"
                 keyboardType="number-pad"
@@ -367,6 +371,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                 accessibilityLabel="Year"
                 value={formikValues.date}
               />
+
               <Input
                 title="Materials"
                 placeholder="Oil on canvas, mixed media, lithograph.."
@@ -376,8 +381,11 @@ export const MyCollectionArtworkFormMain: React.FC<
                 accessibilityLabel="Materials"
                 value={formikValues.medium}
               />
+
               <Rarity />
+
               <Dimensions />
+
               <MoneyInput
                 accessibilityLabel="Price paid"
                 currencyTextVariant="xs"
@@ -396,6 +404,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                 shouldDisplayLocalError={false}
                 title="Price Paid"
               />
+
               <Input
                 multiline
                 title="Provenance"
@@ -407,7 +416,8 @@ export const MyCollectionArtworkFormMain: React.FC<
                 onChangeText={formik.handleChange("provenance")}
                 testID="ProvenanceInput"
               />
-              <Input
+
+              {/* <Input
                 title="Location"
                 placeholder="Enter city where artwork is located"
                 onChangeText={formik.handleChange("artworkLocation")}
@@ -415,7 +425,8 @@ export const MyCollectionArtworkFormMain: React.FC<
                 testID="LocationInput"
                 accessibilityLabel="Enter city where the artwork is located"
                 value={formikValues.artworkLocation}
-              />
+              /> */}
+
               <Input
                 multiline
                 maxLength={500}
