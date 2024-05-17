@@ -18,8 +18,11 @@ else
     exit 1
 fi
 
+
 # removes codepushhash to avoid conflicts
 rm -rf android/app/build/generated/assets/createBundleReleaseJsAndAssets/CodePushHash
+
+./gradlew clean
 
 directory="android/app/build/outputs/apk/release"
 
@@ -44,13 +47,9 @@ cd android/app/build/outputs/apk/release
 
 echo "Uploading the Android build to maestro server"
 
-ls
-
-echo $PWD
-
-# curl https://api.copilot.mobile.dev/v2/project/$MAESTRO_ANDROID_PROJECT_ID/build \
-#     -F "file=@$PWD/app-release.apk" \
-#     -F "tags=nightly" \
-#     -H "Authorization: Bearer $MAESTRO_COPILOT_API_KEY"
+curl https://api.copilot.mobile.dev/v2/project/$MAESTRO_ANDROID_PROJECT_ID/build \
+    -F "file=@$PWD/app-release.apk" \
+    -F "tags=nightly" \
+    -H "Authorization: Bearer $MAESTRO_COPILOT_API_KEY"
 
 # Please discard the diff that will be generated afterwards (app.json)
