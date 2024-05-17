@@ -60,7 +60,7 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
               )
             )
             initializeSubmissionArtworkForm(artwork)
-            navigate("/collections/my-collection/artworks/new/submissions/new")
+            navigate("/sell/submissions/new")
           }}
           testID="submitArtworkToSellButton"
         >
