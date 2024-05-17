@@ -1,4 +1,4 @@
-import { BulletedItem, Spacer, Flex } from "@artsy/palette-mobile"
+import { BulletedItem, Flex, Spacer } from "@artsy/palette-mobile"
 import { CTAButton } from "app/Components/Button/CTAButton"
 import { useBottomTabBarHeight } from "app/Scenes/BottomTabs/useBottomTabBarHeight"
 import {
@@ -8,7 +8,8 @@ import {
 } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Formik } from "formik"
-import { useRef } from "react"
+import { useRef, useState } from "react"
+import { Alert } from "react-native"
 import { UploadPhotosForm } from "./UploadPhotosForm"
 import { isSizeLimitExceeded } from "./utils/calculatePhotoSize"
 
@@ -16,9 +17,10 @@ export const UploadPhotos = ({
   handlePress,
   isLastStep,
 }: {
-  handlePress: ({}) => void
+  handlePress: ({}) => Promise<void>
   isLastStep: boolean
 }) => {
+  const [isLoading, setIsLoading] = useState(false)
   const { submission } = GlobalStore.useAppState((state) => state.artworkSubmission)
   const initialSubmissionPhotos = useRef(submission.photos).current
   const bottomTabBarHeight = useBottomTabBarHeight()
@@ -54,8 +56,21 @@ export const UploadPhotos = ({
               <UploadPhotosForm isAnyPhotoLoading={isAnyPhotoLoading} />
               <Spacer y={2} />
               <CTAButton
-                disabled={!isValid || isAnyPhotoLoading || isSizeLimitExceeded(values.photos)}
-                onPress={() => submitUploadPhotosStep()}
+                disabled={
+                  !isValid || isAnyPhotoLoading || isSizeLimitExceeded(values.photos) || isLoading
+                }
+                loading={isLoading}
+                onPress={async () => {
+                  try {
+                    setIsLoading(true)
+                    await handlePress({})
+                  } catch (error) {
+                    console.error(error)
+                    Alert.alert("Could not save artwork details. Please try again.")
+                  } finally {
+                    setIsLoading(false)
+                  }
+                }}
                 testID="Submission_Save_Photos_Button"
               >
                 {!!isAnyPhotoLoading

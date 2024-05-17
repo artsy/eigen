@@ -49,7 +49,9 @@ export const ArtworkDetailsForm: React.FC = () => {
         testID="Submission_TitleInput"
         value={values.title}
         onChangeText={(text) => {
-          validateField("title")
+          if (errors.title) {
+            validateField("title")
+          }
           handleChange("title")(text)
         }}
         onBlur={() => validateField("title")}
@@ -62,7 +64,9 @@ export const ArtworkDetailsForm: React.FC = () => {
 
       <CategoryPicker<AcceptableCategoryValue>
         handleChange={(category) => {
-          validateField("category")
+          if (errors.category) {
+            validateField("category")
+          }
           setFieldValue("category", category)
         }}
         options={categories}
