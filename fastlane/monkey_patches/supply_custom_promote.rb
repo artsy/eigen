@@ -3,7 +3,7 @@ module Supply
     alias_method :original_promote_track, :promote_track
 
     def promote_track
-      if Supply.config[:use_custom_promotion_logic]
+      if Supply.config[:skip_release_verification]
         custom_promote_track
       else
         original_promote_track

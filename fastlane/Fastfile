@@ -290,15 +290,14 @@ lane :promote_beta_android do
 
   supply(
     track: 'alpha',
-    use_custom_promotion_logic: true,
+    skip_release_verification: true,
     version_code: selected_version_code,
     track_promote_to: 'production',
     rollout: '0.1',
     skip_upload_metadata: true,
     skip_upload_changelogs: true,
     skip_upload_images: true,
-    skip_upload_screenshots: true,
-    skip_release_verification: true
+    skip_upload_screenshots: true
   )
 
   vname, vcode = set_build_version_android(version_code: selected_version_code)
