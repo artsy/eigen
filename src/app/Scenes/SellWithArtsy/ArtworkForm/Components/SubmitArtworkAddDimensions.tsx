@@ -59,6 +59,7 @@ export const SubmitArtworkAddDimensions = () => {
             testID="Submission_HeightInput"
             value={values.height}
             onChangeText={(e) => setFieldValue("height", e)}
+            fixedRightPlaceholder={dimensionMetric}
             accessibilityLabel="Height"
             onSubmitEditing={() => {
               widthRef.current?.focus()
@@ -74,6 +75,7 @@ export const SubmitArtworkAddDimensions = () => {
             testID="Submission_WidthInput"
             value={values.width}
             onChangeText={(e) => setFieldValue("width", e)}
+            fixedRightPlaceholder={dimensionMetric}
             accessibilityLabel="Width"
             ref={widthRef}
             onSubmitEditing={() => {
@@ -90,6 +92,7 @@ export const SubmitArtworkAddDimensions = () => {
           testID="Submission_DepthInput"
           value={values.depth}
           onChangeText={(e) => setFieldValue("depth", e)}
+          fixedRightPlaceholder={dimensionMetric}
           accessibilityLabel="Depth"
           ref={depthRef}
         />
