@@ -28,7 +28,7 @@ describe("SubmitArtworkBottomNavigation", () => {
 
       fireEvent(startSubmissionButton, "onPress")
 
-      expect(mockNavigateToNextStep).toHaveBeenCalledWith("SelectArtist")
+      expect(mockNavigateToNextStep).toHaveBeenCalledWith({ step: "SelectArtist" })
     })
 
     it("Shows a functional Start from My Collection button", () => {

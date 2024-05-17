@@ -37,7 +37,9 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
       <Flex borderTopWidth={1} borderTopColor="black10" py={2} alignSelf="center" mx={-2} px={2}>
         <Button
           onPress={() => {
-            navigateToNextStep("SelectArtist")
+            navigateToNextStep({
+              step: "SelectArtist",
+            })
           }}
           block
         >

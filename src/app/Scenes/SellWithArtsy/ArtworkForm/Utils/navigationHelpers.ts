@@ -20,28 +20,32 @@ export const useSubmissionContext = () => {
 
   const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
 
-  const navigateToNextStep = async (step?: SubmitArtworkScreen) => {
+  const navigateToNextStep = async (props?: {
+    step?: SubmitArtworkScreen
+    skipMutation?: boolean
+  }) => {
     try {
       setIsLoading(true)
       const nextStep =
-        step || ARTWORK_FORM_STEPS[ARTWORK_FORM_STEPS.indexOf(currentStep as any) + 1]
+        props?.step || ARTWORK_FORM_STEPS[ARTWORK_FORM_STEPS.indexOf(currentStep as any) + 1]
 
       if (!nextStep) {
         console.error("No next step found")
         return
       }
 
-      const submissionId = await createOrUpdateSubmission(
-        {
-          ...values,
-          state: (currentStep === "AddProvenance"
-            ? "SUBMITTED"
-            : undefined) as ArtworkDetailsFormModel["state"],
-        },
-        values.submissionId
-      )
-      if (!values.submissionId && submissionId) {
-        setFieldValue("submissionId", submissionId)
+      const newValues = {
+        ...values,
+        state: (currentStep === "AddProvenance"
+          ? "SUBMITTED"
+          : undefined) as ArtworkDetailsFormModel["state"],
+      }
+
+      if (!props?.skipMutation) {
+        const submissionId = await createOrUpdateSubmission(newValues, values.submissionId)
+        if (!values.submissionId && submissionId) {
+          setFieldValue("submissionId", submissionId)
+        }
       }
 
       setCurrentStep(nextStep)

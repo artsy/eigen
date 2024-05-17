@@ -58,6 +58,7 @@ export const SubmitArtworkForm: React.FC<SubmitArtworkProps> = (props) => {
 
 const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
   initialValues: injectedValuesProp,
+  initialStep,
 }) => {
   const currentStep = SubmitArtworkFormStore.useStoreState((state) => state.currentStep)
   const space = useSpace()
@@ -124,8 +125,7 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
                 keyboardHandlingEnabled: false,
                 gestureEnabled: false,
               }}
-              // Skip the start flow screen when user starts the flow from my collection
-              initialRouteName={formik.values.myCollectionArtworkID ? "SelectArtist" : "StartFlow"}
+              initialRouteName={initialStep}
             >
               <Stack.Screen name="StartFlow" component={SubmitArtworkStartFlow} />
 
