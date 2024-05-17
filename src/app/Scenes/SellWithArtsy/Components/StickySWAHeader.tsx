@@ -5,8 +5,7 @@ import {
   TappedConsignArgs,
   TappedConsignmentInquiry,
 } from "@artsy/cohesion"
-import { Button, Flex, LinkText, Spacer, Text, useScreenDimensions } from "@artsy/palette-mobile"
-import { Platform } from "react-native"
+import { Button, Flex, LinkText, Spacer, Text } from "@artsy/palette-mobile"
 
 interface StickySWAHeaderProps {
   onConsignPress: (tappedConsignArgs: TappedConsignArgs) => void
@@ -17,8 +16,6 @@ export const StickySWAHeader: React.FC<StickySWAHeaderProps> = ({
   onConsignPress,
   onInquiryPress,
 }) => {
-  const { bottom } = useScreenDimensions().safeAreaInsets
-
   const handleSubmitPress = (subject: string) => {
     onConsignPress(tracks.consignArgs(subject))
   }
@@ -29,13 +26,7 @@ export const StickySWAHeader: React.FC<StickySWAHeaderProps> = ({
 
   return (
     <>
-      <Flex
-        p={2}
-        mb={`${bottom}px`}
-        pb={Platform.OS === "android" ? 2 : 0}
-        borderTopWidth={1}
-        borderTopColor="black10"
-      >
+      <Flex p={2} borderTopWidth={1} borderTopColor="black10">
         <Button
           testID="header-consign-CTA"
           block
@@ -49,7 +40,7 @@ export const StickySWAHeader: React.FC<StickySWAHeaderProps> = ({
 
         <Spacer y={1} />
 
-        <Text variant="xs" mb={1}>
+        <Text variant="xs">
           Not sure what you’re looking for?{" "}
           <LinkText testID="StickySWAHeader-inquiry-CTA" onPress={handleInquiryPress}>
             <Text variant="xs">Speak to an advisor</Text>
