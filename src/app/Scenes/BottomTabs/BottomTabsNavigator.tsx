@@ -42,7 +42,7 @@ export const BottomTabsNavigator = () => {
       <Tab.Screen
         name="sell"
         component={TabContent}
-        initialParams={{ tabName: "sell", rootModuleName: "Sales" }}
+        initialParams={{ tabName: "sell", rootModuleName: "Sell" }}
       />
       <Tab.Screen
         name="profile"

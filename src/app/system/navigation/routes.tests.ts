@@ -15,10 +15,10 @@ describe("artsy.net routes", () => {
     expect(matchRoute("https://staging.artsy.net/")).toEqual(expected)
   })
 
-  it("routes to Sales", () => {
-    expect(matchRoute("/sales")).toMatchInlineSnapshot(`
+  it("routes to Sell", () => {
+    expect(matchRoute("/sell")).toMatchInlineSnapshot(`
       {
-        "module": "Sales",
+        "module": "Sell",
         "params": {},
         "type": "match",
       }
@@ -872,10 +872,10 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  it("routes to Sales", () => {
+  it("routes to Sell", () => {
     expect(matchRoute("/collections/my-collection/marketing-landing")).toMatchInlineSnapshot(`
       {
-        "module": "SalesNotRootTabView",
+        "module": "SellNotRootTabView",
         "params": {},
         "type": "match",
       }

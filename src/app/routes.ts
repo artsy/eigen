@@ -177,7 +177,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/collection/:collectionID", "Collection"),
     addRoute("/collection/:collectionID/artists", "FullFeaturedArtistList"),
     addRoute("/collections/my-collection/artworks/new/submissions/new", "SubmitArtwork"), // TODO: Follow-up about below route names
-    addRoute("/collections/my-collection/marketing-landing", "SalesNotRootTabView"),
+    addRoute("/collections/my-collection/marketing-landing", "SellNotRootTabView"),
     addRoute("/consign/submission", "SubmitArtwork"),
     addRoute("/conversation/:conversationID", "Conversation"),
     addRoute("/conversation/:conversationID/details", "ConversationDetails"),
@@ -247,7 +247,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/privacy-request", "PrivacyRequest"),
     addRoute("/purchase/:artworkID", "PurchaseModal"),
     addRoute("/recently-viewed", "RecentlyViewed"),
-    addRoute("/sales", "Sales"),
+    addRoute("/sell", "Sell"),
     addRoute("/search", "Search"),
     addRoute("/sell/inquiry", "ConsignmentInquiry"),
     addRoute("/sell/submissions/new", "SubmitArtwork"),
