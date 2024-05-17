@@ -61,7 +61,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
       photos: [],
     })
     GlobalStore.actions.artworkSubmission.submission.setSubmissionIdForMyCollection("")
-    const route = "/collections/my-collection/artworks/new/submissions/new"
+    const route = "/sell/submissions/new"
     navigate(route)
   }
 

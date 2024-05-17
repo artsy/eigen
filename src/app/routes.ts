@@ -176,7 +176,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/city/:citySlug/:section", "CitySectionList"),
     addRoute("/collection/:collectionID", "Collection"),
     addRoute("/collection/:collectionID/artists", "FullFeaturedArtistList"),
-    addRoute("/collections/my-collection/artworks/new/submissions/new", "SubmitArtwork"), // TODO: Follow-up about below route names
     addRoute("/collections/my-collection/marketing-landing", "SellNotRootTabView"),
     addRoute("/consign/submission", "SubmitArtwork"),
     addRoute("/conversation/:conversationID", "Conversation"),
