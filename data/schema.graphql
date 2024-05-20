@@ -1809,6 +1809,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
 
   # The Partner's provided biography for the artist
   partnerBiographyBlurb(format: Format): partnerBiographyBlurb
+    @deprecated(reason: "This field is deprecated. No longer in use")
   partnersConnection(
     after: String
     before: String
