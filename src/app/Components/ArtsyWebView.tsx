@@ -14,7 +14,7 @@ import { useWebViewCallback } from "app/utils/useWebViewEvent"
 import { debounce } from "lodash"
 import { parse as parseQueryString } from "query-string"
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
-import { View } from "react-native"
+import { Platform, View } from "react-native"
 import { Edge, SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 import Share from "react-native-share"
 import WebView, { WebViewNavigation, WebViewProps } from "react-native-webview"
@@ -180,7 +180,7 @@ export const ArtsyWebView = forwardRef<
     ref
   ) => {
     const innerRef = useRef<WebViewWithShareTitleUrl>(null)
-    useImperativeHandle(ref, () => innerRef.current!)
+    useImperativeHandle(ref, () => innerRef.current as WebViewWithShareTitleUrl)
     const userAgent = getCurrentEmissionState().userAgent
     const { callWebViewEventCallback } = useWebViewCallback()
 
@@ -221,10 +221,14 @@ export const ArtsyWebView = forwardRef<
         result.type === "match" &&
         ["ReactWebView", "ModalWebView", "VanityURLEntity"].includes(result.module)
       ) {
-        innerRef.current!.shareTitleUrl = targetURL
+        if (innerRef.current) {
+          innerRef.current.shareTitleUrl = targetURL
+        }
         return
       } else {
-        const needToGoBack = result.type !== "external_url"
+        const needToGoBack =
+          result.type !== "external_url" ||
+          (result.type === "external_url" && Platform.OS === "android")
         stopLoading(needToGoBack)
       }
 
@@ -327,7 +331,7 @@ class CookieRequestAttempt {
     try {
       const res = await fetch(this.url, {
         method: "HEAD",
-        headers: { "X-Access-Token": this.accessToken! },
+        headers: { "X-Access-Token": this.accessToken },
       })
       if (this.invalidated) {
         return
