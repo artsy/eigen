@@ -18,6 +18,7 @@ else
     exit 1
 fi
 
+yarn jetifier
 
 # removes codepushhash to avoid conflicts
 rm -rf android/app/build/generated/assets/createBundleReleaseJsAndAssets/CodePushHash
