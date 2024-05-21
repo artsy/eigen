@@ -7478,6 +7478,7 @@ type ConversationConnection {
 
   # Information to aid in pagination.
   pageInfo: PageInfo!
+  totalCount: Int
   totalUnreadCount: Int
 }
 
