@@ -4,7 +4,6 @@ import { createStackNavigator } from "@react-navigation/stack"
 import { SubmitArtworkAddDetails } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddDetails"
 import { SubmitArtworkAddDimensions } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddDimensions"
 import { SubmitArtworkAddPhotos } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddPhotos"
-import { SubmitArtworkAddProvenance } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddProvenance"
 import { SubmitArtworkAddTitle } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddTitle"
 import { SubmitArtworkBottomNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkBottomNavigation"
 import { SubmitArtworkCompleteYourSubmission } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkCompleteYourSubmission"
@@ -12,6 +11,7 @@ import {
   SubmitArtworkFormStore,
   SubmitArtworkFormStoreProvider,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
+import { SubmitArtworkPurchaseHistory } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkPurchaseHistory"
 import { SubmitArtworkSelectArtist } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkSelectArtist"
 import { SelectArtworkMyCollectionArtwork } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkSelectArtworkMyCollectionArtwork"
 import { SubmitArtworkStartFlow } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkStartFlow"
@@ -39,7 +39,7 @@ export type SubmitArtworkStackNavigation = {
   AddPhotos: undefined
   AddDetails: undefined
   AddDimensions: undefined
-  AddProvenance: undefined
+  PurchaseHistory: undefined
   CompleteYourSubmission: undefined
 }
 
@@ -126,7 +126,7 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
                 keyboardHandlingEnabled: false,
                 gestureEnabled: false,
               }}
-              initialRouteName={initialStep}
+              initialRouteName="PurchaseHistory"
             >
               <Stack.Screen name="StartFlow" component={SubmitArtworkStartFlow} />
 
@@ -145,7 +145,7 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
 
               <Stack.Screen name="AddDimensions" component={SubmitArtworkAddDimensions} />
 
-              <Stack.Screen name="AddProvenance" component={SubmitArtworkAddProvenance} />
+              <Stack.Screen name="PurchaseHistory" component={SubmitArtworkPurchaseHistory} />
 
               <Stack.Screen
                 name="CompleteYourSubmission"

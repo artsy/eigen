@@ -27,7 +27,7 @@ export const getCurrentValidationSchema = (_injectedStep?: keyof SubmitArtworkSt
       return artworkFormPhotosSchema
     case "AddDetails":
       return artworkDetailsValidationSchema
-    case "AddProvenance":
+    case "PurchaseHistory":
       return provenanceSchema
     case "AddDimensions":
       return dimensionsSchema

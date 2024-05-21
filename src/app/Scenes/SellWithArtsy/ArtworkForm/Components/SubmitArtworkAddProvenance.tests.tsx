@@ -1,11 +1,11 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { SubmitArtworkAddProvenance } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddProvenance"
+import { SubmitArtworkPurchaseHistory } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkPurchaseHistory"
 import { renderWithSubmitArtworkWrapper } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/testWrappers"
 
-describe("SubmitArtworkAddProvenance", () => {
+describe("SubmitArtworkPurchaseHistory", () => {
   it("shows and updates properly the provenance", () => {
     renderWithSubmitArtworkWrapper({
-      component: <SubmitArtworkAddProvenance />,
+      component: <SubmitArtworkPurchaseHistory />,
     })
 
     const input = screen.getByTestId("Submission_ProvenanceInput")

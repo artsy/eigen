@@ -5,7 +5,7 @@ import { InfoModal } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails
 import { useFormikContext } from "formik"
 import { useState } from "react"
 
-export const SubmitArtworkAddProvenance = () => {
+export const SubmitArtworkPurchaseHistory = () => {
   const [isProvenanceInfoModalVisible, setIsProvenanceInfoModalVisible] = useState(false)
   const { setFieldValue, values } = useFormikContext<ArtworkDetailsFormModel>()
 
