@@ -522,8 +522,6 @@ jobs:
       - install-gems
       - install-cocoapods
       - macos/install-rosetta
-      - await-previous-builds:
-          branch: beta-ios
       - run:
           name: Upload iOS build to Maestro App Quality Copilot
           no_output_timeout: 20m
