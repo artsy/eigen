@@ -1,22 +1,27 @@
-import { BulletedItem, Flex, Input, Join, Spacer, Text } from "@artsy/palette-mobile"
-import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
+import { Flex, Join, RadioButton, Spacer, Text } from "@artsy/palette-mobile"
+import { Select } from "app/Components/Select"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
-import { InfoModal } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/InfoModal/InfoModal"
 import { useFormikContext } from "formik"
-import { useState } from "react"
+
+export const PROVENANCE_LIST = [
+  "Purchased directly from gallery",
+  "Purchased directly from artist",
+  "Purchased at auction",
+  "Gift from the artist",
+  "Other",
+  "I don’t know",
+].map((provenance) => ({
+  value: provenance,
+  label: provenance,
+}))
 
 export const SubmitArtworkPurchaseHistory = () => {
-  const [isProvenanceInfoModalVisible, setIsProvenanceInfoModalVisible] = useState(false)
   const { setFieldValue, values } = useFormikContext<ArtworkDetailsFormModel>()
 
   return (
     <Flex>
-      {!!values.artistSearchResult && <ArtistSearchResult result={values.artistSearchResult} />}
-
-      <Spacer y={2} />
-
       <Text variant="lg" mb={2}>
-        Provenance
+        Purchase history
       </Text>
 
       <Join separator={<Spacer y={2} />}>
@@ -25,35 +30,41 @@ export const SubmitArtworkPurchaseHistory = () => {
           documentation you have that proves your artwork’s provenance:
         </Text>
 
-        <Input
-          title="Provenance"
-          onHintPress={() => setIsProvenanceInfoModalVisible(true)}
-          placeholder="Describe how you acquired the artwork"
-          testID="Submission_ProvenanceInput"
-          value={values.provenance}
-          onChangeText={(e) => setFieldValue("provenance", e)}
-          multiline
-        />
+        <Flex>
+          <Text mb={2}>Where did you purchase the work?</Text>
+          <Select
+            options={PROVENANCE_LIST}
+            title="Purchase information"
+            testID="PurchaseInformation_Select"
+            // onSelect={(e) => setFieldValue("provenance", e)}
+            onSelectValue={(value) => {
+              setFieldValue("provenance", value)
+            }}
+            value={values.provenance}
+          />
+        </Flex>
+
+        <Flex>
+          <Text>Is the work signed?</Text>
+          <Flex flexDirection="row" mt={2}>
+            <RadioButton
+              mr={2}
+              text="Yes"
+              selected={values.signature === true}
+              onPress={() => {
+                setFieldValue("signature", true)
+              }}
+            />
+            <RadioButton
+              text="No"
+              selected={values.signature === false}
+              onPress={() => {
+                setFieldValue("signature", false)
+              }}
+            />
+          </Flex>
+        </Flex>
       </Join>
-
-      <InfoModal
-        title="Artwork Provenance"
-        visible={isProvenanceInfoModalVisible}
-        onDismiss={() => setIsProvenanceInfoModalVisible(false)}
-      >
-        <Flex mb={4}>
-          <Text>
-            Provenance is the documented history of an artwork’s ownership and authenticity. Please
-            list any documentation you have that proves your artwork’s provenance, such as:
-          </Text>
-        </Flex>
-
-        <Flex flexDirection="column">
-          <BulletedItem color="black">Invoices from previous owners</BulletedItem>
-          <BulletedItem color="black">Certificates of authenticity</BulletedItem>
-          <BulletedItem color="black">Gallery exhibition catalogues</BulletedItem>
-        </Flex>
-      </InfoModal>
     </Flex>
   )
 }

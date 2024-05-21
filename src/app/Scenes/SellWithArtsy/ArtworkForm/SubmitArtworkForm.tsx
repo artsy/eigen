@@ -126,7 +126,7 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
                 keyboardHandlingEnabled: false,
                 gestureEnabled: false,
               }}
-              initialRouteName="PurchaseHistory"
+              initialRouteName={initialStep}
             >
               <Stack.Screen name="StartFlow" component={SubmitArtworkStartFlow} />
 
