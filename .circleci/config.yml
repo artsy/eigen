@@ -468,15 +468,6 @@ jobs:
 
     steps:
       - prep-android-env
-      - await-previous-builds:
-          branch: beta-android
-      - run:
-          name: Save success file
-          command: echo yes > 'build-success.log'
-
-      - store_artifacts:
-          path: android/app/build/reports
-          prefix: android-build
       - checkout
       - generate-query-map
       - run:
