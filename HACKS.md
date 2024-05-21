@@ -403,7 +403,7 @@ The author of react-native-firebase basically said that people should just remov
 react native in the future but a bit tough to pull off that bandaid so soon. If flipper does end up supporting this config: 1. remove the entries in the podfile
 that have `:modular_headers => true` and add the static frameworks line from the docs above.
 
-## Custom lane google_play_track_rollout_percentages in fastlane dir
+## Custom lane google_play_track_rollout_percentages in fastlane dir + associated monkey patches in Fastfile
 
 #### When we can remove this:
 
@@ -413,3 +413,16 @@ https://github.com/fastlane/fastlane/pull/22029
 ####
 
 This info is needed to automate our android rollout but not currently supported by fastlane.
+
+## Custom supply command and associated patches in fastlane dir and Fastfile
+
+#### When we can remove this:
+
+When this pr is accepted upstream or another way to promote historical builds is supported by fastlane:
+https://github.com/fastlane/fastlane/pull/22025
+
+####
+
+We want to be able to promote past android builds to prod because we are creating betas often and a release candidate may not be
+the latest. The developer APIs for google play only return the latest release and fastlane verifies that a release exists before allowing
+promotion. We added custom logic to work around this.
