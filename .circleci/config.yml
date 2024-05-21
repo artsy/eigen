@@ -211,6 +211,13 @@ jobs:
           path: android/app/build/reports
           prefix: android-build
       - checkout
+      - generate-query-map
+      - run:
+          name: Download fonts from s3
+          command: ./scripts/setup/download-fonts
+      - run:
+          name: Download android assets
+          command: ./scripts/setup/download-assets-android
       - run:
           name: Upload Android build to Maestro App Quality Copilot
           command: ./scripts/maestro/build-android.sh
