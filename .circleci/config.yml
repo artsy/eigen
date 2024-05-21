@@ -461,6 +461,63 @@ jobs:
           name: Deploy if beta - play store and firebase
           command: ./scripts/deploys/deploy-if-beta-branch-android BOTH
 
+  build-maestro-nightly-android:
+    docker:
+      - image: cimg/android:2024.01.1-node
+    resource_class: large
+
+    steps:
+      - prep-android-env
+      - checkout
+      - generate-query-map
+      - run:
+          name: Download fonts from s3
+          command: ./scripts/setup/download-fonts
+      - run:
+          name: Download android assets
+          command: ./scripts/setup/download-assets-android
+      - run:
+          name: Upload Android build to Maestro App Quality Copilot
+          command: ./scripts/maestro/build-android.sh
+
+  build-maestro-nightly-ios:
+    environment:
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
+
+    macos:
+      xcode: 15.1
+      resource_class: macos.m1.medium.gen1
+
+    steps:
+      - attach_workspace:
+          at: ../workspace
+      - run:
+          name: Clear project dir
+          command: |
+            rm -rf  /Users/distiller/project/*
+      - checkout
+      - attach_workspace:
+          at: .
+      - install-node
+      - setup-awscli
+      - setup-env-file
+      - run:
+          name: Download fonts from s3
+          command: ./scripts/setup/download-fonts
+      - run:
+          name: Download ios assets
+          command: ./scripts/setup/download-assets-ios
+      - install-node-modules
+      - run-relay-compiler
+      - update-echo
+      - install-gems
+      - install-cocoapods
+      - macos/install-rosetta
+      - run:
+          name: Upload iOS build to Maestro App Quality Copilot
+          no_output_timeout: 20m
+          command: ./scripts/maestro/build-ios.sh
+
 workflows:
   version: 2
   nightly:
@@ -474,6 +531,8 @@ workflows:
     jobs:
       - deploy-nightly-beta
       - run-nightly-tasks
+      - build-maestro-nightly-ios
+      - build-maestro-nightly-android
 
   flag-check:
     triggers:
