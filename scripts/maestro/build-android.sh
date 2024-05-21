@@ -39,6 +39,9 @@ fi
 # Generate the android aab build file
 yarn maestro:android:release:build
 
+
+# removes codepushhash to avoid conflicts
+rm -rf android/app/build/generated/assets/createBundleReleaseJsAndAssets/CodePushHash
 # Generate the android apk build file
 # This step will probably fail if you don't have an android emulator open but it is going to generate the apk file
 # correctly. You can ignore the error and continue with the script.
