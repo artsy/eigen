@@ -631,10 +631,10 @@ export const modules = defineModules({
     hidesBackButton: true,
     fullBleed: true,
   }),
-  Sales: reactModule(SellWithArtsy, { isRootViewForTabName: "sell", fullBleed: true }, [
+  Sell: reactModule(SellWithArtsy, { isRootViewForTabName: "sell", fullBleed: true }, [
     SellWithArtsyHomeScreenQuery,
   ]),
-  SalesNotRootTabView: reactModule(SellWithArtsy),
+  SellNotRootTabView: reactModule(SellWithArtsy),
   SavedArtworks: reactModule(SavedArtworks, {
     fullBleed: true,
     hidesBackButton: true,

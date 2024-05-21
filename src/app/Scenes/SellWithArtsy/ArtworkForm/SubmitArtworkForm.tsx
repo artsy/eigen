@@ -16,6 +16,7 @@ import { SubmitArtworkSelectArtist } from "app/Scenes/SellWithArtsy/ArtworkForm/
 import { SelectArtworkMyCollectionArtwork } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkSelectArtworkMyCollectionArtwork"
 import { SubmitArtworkStartFlow } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkStartFlow"
 import { SubmitArtworkTopNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkTopNavigation"
+import { SubmitArtworkScreen } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
 import {
   ArtworkDetailsFormModel,
   artworkDetailsEmptyInitialValues,
@@ -23,6 +24,7 @@ import {
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { fetchUserContactInformation } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/fetchUserContactInformation"
+import { SubmitArtworkProps } from "app/Scenes/SellWithArtsy/SubmitArtwork/SubmitArtwork"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { useIsKeyboardVisible } from "app/utils/hooks/useIsKeyboardVisible"
 import { FormikProvider, useFormik } from "formik"
@@ -41,21 +43,33 @@ export type SubmitArtworkStackNavigation = {
   CompleteYourSubmission: undefined
 }
 
-export const SubmitArtworkForm: React.FC = ({}) => {
+export const SubmitArtworkForm: React.FC<SubmitArtworkProps> = (props) => {
+  const initialScreen: SubmitArtworkScreen = props.initialStep || "StartFlow"
+
   return (
-    <SubmitArtworkFormStoreProvider>
-      <SubmitArtworkFormContent />
+    <SubmitArtworkFormStoreProvider
+      runtimeModel={{
+        currentStep: initialScreen,
+      }}
+    >
+      <SubmitArtworkFormContent initialValues={props.initialValues} initialStep={initialScreen} />
     </SubmitArtworkFormStoreProvider>
   )
 }
 
-const SubmitArtworkFormContent: React.FC = ({}) => {
+const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
+  initialValues: injectedValuesProp,
+  initialStep,
+}) => {
   const currentStep = SubmitArtworkFormStore.useStoreState((state) => state.currentStep)
   const space = useSpace()
   const { bottom: bottomInset } = useSafeAreaInsets()
   const isKeyboardVisible = useIsKeyboardVisible(true)
 
-  const initialValues = artworkDetailsEmptyInitialValues as any
+  const initialValues = {
+    ...artworkDetailsEmptyInitialValues,
+    ...injectedValuesProp,
+  }
 
   const handleSubmit = (values: ArtworkDetailsFormModel) => {
     createOrUpdateSubmission(values, "")
@@ -112,6 +126,7 @@ const SubmitArtworkFormContent: React.FC = ({}) => {
                 keyboardHandlingEnabled: false,
                 gestureEnabled: false,
               }}
+              initialRouteName={initialStep}
             >
               <Stack.Screen name="StartFlow" component={SubmitArtworkStartFlow} />
 

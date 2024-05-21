@@ -39,6 +39,7 @@ import { createOrUpdateSubmission } from "./ArtworkDetails/utils/createOrUpdateS
 import { ArtworkDetailsFormModel, ContactInformationFormModel } from "./ArtworkDetails/validation"
 import { ArtworkSubmittedScreen } from "./ArtworkSubmitted"
 import { UploadPhotos } from "./UploadPhotos/UploadPhotos"
+import type { SubmitArtworkScreen as SubmitArtworkScreenT } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
 
 const SUBMIT_ARTWORK_NAVIGATION_STACK_STATE_KEY = "SUBMIT_ARTWORK_NAVIGATION_STACK_STATE_KEY"
 
@@ -326,7 +327,12 @@ export type SubmitArtworkOverviewNavigationStack = {
 
 const StackNavigator = createStackNavigator<SubmitArtworkOverviewNavigationStack>()
 
-export const SubmitArtwork = () => {
+export interface SubmitArtworkProps {
+  initialValues: Partial<ArtworkDetailsFormModel>
+  initialStep: SubmitArtworkScreenT
+}
+
+export const SubmitArtwork: React.FC<SubmitArtworkProps> = (props) => {
   const { isReady, initialState, saveSession } = useReloadedDevNavigationState(
     SUBMIT_ARTWORK_NAVIGATION_STACK_STATE_KEY
   )
@@ -337,7 +343,7 @@ export const SubmitArtwork = () => {
   }
 
   if (enableNewSubmissionFlow) {
-    return <SubmitArtworkForm />
+    return <SubmitArtworkForm {...props} />
   }
 
   return (

@@ -1,28 +1,25 @@
-import { BackButton, Flex, SkeletonBox, Spacer, Text } from "@artsy/palette-mobile"
+import { BackButton, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { goBack } from "app/system/navigation/navigate"
-import { ScrollView } from "react-native"
+import { Image, ScrollView } from "react-native"
 
 const SECTIONS = [
   {
-    title: "Add your artwork lorem ipsum",
-    description: "Start by adding the artist name or selecting an artwork from My Collection",
-    image: null,
-  },
-  {
-    title: "Add key information",
-    description: "Add information such as dimensions, provenance, rarity and materials",
-    image: null,
+    title: "Tell us about your work",
+    description:
+      "Start by adding an artist from our list of high demand artists. Include information such as year, medium, dimensions and materials.",
+    image: require("images/submit_artwork_tell_us_about_your_work.webp"),
   },
   {
     title: "Upload artwork images",
-    description: "High quality and multiple images can improve your chances of selling",
-    image: null,
+    description:
+      "Improve your chances of selling by including photographs of the front, back, frame, signature and other details.",
+    image: require("images/submit_artwork_upload_artwork_image.webp"),
   },
   {
     title: "Complete submission",
     description:
-      "Your work(s) will be submitted to an Artsy advisor who will assess whether your work is eligible and will help guide you on next steps.",
-    image: null,
+      "Your work will be submitted to an Artsy advisor who will assess whether your work is eligible and help guide you on next steps.",
+    image: require("images/submit_artwork_complete_submission.webp"),
   },
 ]
 export const SubmitArtworkStartFlow: React.FC = () => {
@@ -38,9 +35,9 @@ export const SubmitArtworkStartFlow: React.FC = () => {
         </Text>
         <Flex>
           {SECTIONS.map((section, index) => (
-            <Flex key={index} my={1} flexDirection="row">
-              <Text variant="sm-display" fontWeight={500} style={{ width: 30 }}>
-                {index}.
+            <Flex key={index} my={2} flexDirection="row">
+              <Text variant="sm-display" fontWeight={500} style={{ width: 25 }}>
+                {index + 1}
               </Text>
               <Flex flex={1}>
                 <Text variant="sm-display" fontWeight={500}>
@@ -51,7 +48,7 @@ export const SubmitArtworkStartFlow: React.FC = () => {
                 </Text>
               </Flex>
               <Spacer x={1} />
-              <SkeletonBox backgroundColor="black30" height={80} width={80} />
+              <Image source={section.image} />
             </Flex>
           ))}
         </Flex>

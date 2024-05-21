@@ -69,8 +69,6 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
           onFocus={() => setFocused(true)}
           enableClearButton
           onClear={() => {
-            setFocused(false)
-            validateField("artistId")
             setIsArtistSelected(false)
           }}
           testID="Submission_ArtistInput"

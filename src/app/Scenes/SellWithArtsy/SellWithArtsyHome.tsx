@@ -1,5 +1,5 @@
 import { tappedConsign, TappedConsignArgs, TappedConsignmentInquiry } from "@artsy/cohesion"
-import { Flex, Join, LegacyScreen, Spacer } from "@artsy/palette-mobile"
+import { Join, Screen, Spacer } from "@artsy/palette-mobile"
 import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
 import { SellWithArtsyHome_me$data } from "__generated__/SellWithArtsyHome_me.graphql"
 import { SellWithArtsyHome_recentlySoldArtworksTypeConnection$data } from "__generated__/SellWithArtsyHome_recentlySoldArtworksTypeConnection.graphql"
@@ -15,7 +15,6 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
-import { useScreenDimensions } from "app/utils/hooks"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useSwitchStatusBarStyle } from "app/utils/useStatusBarStyle"
@@ -44,7 +43,6 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
 
   useSwitchStatusBarStyle(onFocusStatusBarStyle, onBlurStatusBarStyle)
 
-  const { height: screenHeight, safeAreaInsets } = useScreenDimensions()
   const enableNewSubmissionFlow = useFeatureFlag("AREnableNewSubmissionFlow")
 
   const tracking = useTracking()
@@ -61,7 +59,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
       photos: [],
     })
     GlobalStore.actions.artworkSubmission.submission.setSubmissionIdForMyCollection("")
-    const route = "/collections/my-collection/artworks/new/submissions/new"
+    const route = "/sell/submissions/new"
     navigate(route)
   }
 
@@ -100,15 +98,8 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
   }, [])
 
   return (
-    <LegacyScreen.Background>
-      <Flex
-        flex={1}
-        justifyContent="center"
-        alignItems="center"
-        minHeight={screenHeight}
-        style={{ paddingTop: safeAreaInsets.top }}
-        pb={6}
-      >
+    <Screen>
+      <Screen.Body fullwidth>
         <ScrollView showsVerticalScrollIndicator={false} ref={scrollViewRef}>
           <Join separator={<Spacer y={6} />}>
             <Header />
@@ -140,8 +131,8 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
         </ScrollView>
 
         <StickySWAHeader onConsignPress={handleConsignPress} onInquiryPress={handleInquiryPress} />
-      </Flex>
-    </LegacyScreen.Background>
+      </Screen.Body>
+    </Screen>
   )
 }
 

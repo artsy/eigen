@@ -3,15 +3,17 @@ import { CTAButton } from "app/Components/Button/CTAButton"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { Formik } from "formik"
-import React from "react"
+import React, { useState } from "react"
+import { Alert } from "react-native"
 import { ArtworkDetailsForm } from "./ArtworkDetailsForm"
 import { ArtworkDetailsFormModel, artworkDetailsValidationSchema } from "./validation"
 
 export const ArtworkDetails: React.FC<{
-  handlePress: (formValues: ArtworkDetailsFormModel) => void
+  handlePress: (formValues: ArtworkDetailsFormModel) => Promise<void>
   isLastStep: boolean
   scrollToTop?: () => void
 }> = ({ handlePress, isLastStep, scrollToTop }) => {
+  const [isLoading, setIsLoading] = useState(false)
   const { artworkDetails } = GlobalStore.useAppState((state) => state.artworkSubmission.submission)
 
   return (
@@ -48,15 +50,23 @@ export const ArtworkDetails: React.FC<{
               <ArtworkDetailsForm />
               <Spacer y={2} />
               <CTAButton
-                disabled={!isValid && dirty}
-                onPress={() => {
-                  validateForm().then((errors) => {
+                disabled={(!isValid && dirty) || isLoading}
+                loading={isLoading}
+                onPress={async () => {
+                  try {
+                    setIsLoading(true)
+                    const errors = await validateForm()
                     if (Object.keys(errors).length === 0) {
-                      handlePress(values)
+                      await handlePress(values)
                     } else {
                       scrollToTop?.()
                     }
-                  })
+                  } catch (error) {
+                    console.error(error)
+                    Alert.alert("Could not save artwork details. Please try again.")
+                  } finally {
+                    setIsLoading(false)
+                  }
                 }}
                 testID="Submission_ArtworkDetails_Button"
               >

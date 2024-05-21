@@ -1,8 +1,9 @@
 import { Button, Flex, Spacer, Text, Touchable, useScreenDimensions } from "@artsy/palette-mobile"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
-import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/validation"
+import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { navigate } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useFormikContext } from "formik"
 import { useEffect } from "react"
 import { LayoutAnimation } from "react-native"
@@ -10,6 +11,7 @@ import { LayoutAnimation } from "react-native"
 export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
   const { navigateToNextStep, navigateToPreviousStep } = useSubmissionContext()
   const { isValid } = useFormikContext<ArtworkDetailsFormModel>()
+  const showStartFromMyCollection = useFeatureFlag("AREnableSubmitMyCollectionArtworkInSubmitFlow")
 
   const { currentStep, isLoading } = SubmitArtworkFormStore.useStoreState((state) => state)
   const { width: screenWidth } = useScreenDimensions()
@@ -35,22 +37,26 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
       <Flex borderTopWidth={1} borderTopColor="black10" py={2} alignSelf="center" mx={-2} px={2}>
         <Button
           onPress={() => {
-            navigateToNextStep("SelectArtist")
+            navigateToNextStep({
+              step: "SelectArtist",
+            })
           }}
           block
         >
           Start a New Submission
         </Button>
-        <Button
-          onPress={() => {
-            navigateToNextStep()
-          }}
-          block
-          mt={2}
-          variant="outline"
-        >
-          Start from My Collection
-        </Button>
+        {!!showStartFromMyCollection && (
+          <Button
+            onPress={() => {
+              navigateToNextStep()
+            }}
+            block
+            mt={2}
+            variant="outline"
+          >
+            Start from My Collection
+          </Button>
+        )}
       </Flex>
     )
   }
