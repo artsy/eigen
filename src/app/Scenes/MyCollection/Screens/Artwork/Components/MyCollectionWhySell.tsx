@@ -112,7 +112,12 @@ const artworkFragment = graphql`
     width
     depth
     provenance
-    artworkLocation
+    collectorLocation {
+      city
+      state
+      country
+      countryCode
+    }
     submissionId
   }
 `

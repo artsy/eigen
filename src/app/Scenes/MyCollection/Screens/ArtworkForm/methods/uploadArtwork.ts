@@ -8,7 +8,7 @@ import { myCollectionCreateArtwork } from "app/Scenes/MyCollection/mutations/myC
 import { myCollectionUpdateArtwork } from "app/Scenes/MyCollection/mutations/myCollectionUpdateArtwork"
 import { deletedPhotos } from "app/Scenes/MyCollection/utils/deletedPhotos"
 import { storeLocalImage } from "app/utils/LocalImageStore"
-import { reverse } from "lodash"
+import { compact, reverse } from "lodash"
 
 export const saveOrUpdateArtwork = async (
   values: ArtworkFormValues,
@@ -58,13 +58,12 @@ export const saveOrUpdateArtwork = async (
         throw new Error("Artist creation failed.")
       }
 
-      artistIds = [artistResponse.createArtist?.artistOrError?.artist?.internalID!]
+      artistIds = compact([artistResponse.createArtist?.artistOrError?.artist?.internalID])
     }
 
     const response = await myCollectionCreateArtwork({
       artistIds,
       artists: artistsData,
-      artworkLocation: others.artworkLocation,
       attributionClass: others.attributionClass || undefined,
       category: others.category,
       collectorLocation,
@@ -92,12 +91,12 @@ export const saveOrUpdateArtwork = async (
       newPhotos.map(async (image, index) => {
         const imageID = artwork?.images?.[index]?.internalID
 
-        if (!imageID) return
+        if (!imageID || !image.path) return
 
         await storeLocalImage(imageID, {
-          path: image.path!,
-          width: image.width!,
-          height: image.height!,
+          path: image.path,
+          width: image.width,
+          height: image.height,
         })
       })
     )
@@ -112,7 +111,6 @@ export const saveOrUpdateArtwork = async (
       const response = await myCollectionUpdateArtwork({
         artistIds: artistSearchResult?.internalID ? [artistSearchResult?.internalID] : [],
         artworkId: props.artwork.internalID,
-        artworkLocation: others.artworkLocation,
         attributionClass: others.attributionClass || undefined,
         category: others.category,
         collectorLocation: collectorLocation || undefined,
@@ -143,12 +141,12 @@ export const saveOrUpdateArtwork = async (
         reverse([...newPhotos]).map(async (image, index) => {
           const imageID = reversedImages[index]?.internalID
 
-          if (!imageID) return
+          if (!imageID || !image.path) return
 
           await storeLocalImage(imageID, {
-            path: image.path!,
-            width: image.width!,
-            height: image.height!,
+            path: image.path,
+            width: image.width,
+            height: image.height,
           })
         })
       )

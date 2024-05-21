@@ -274,7 +274,11 @@ export const ArtworkMetaProps = graphql`
     isEdition
     medium
     metric
-    artworkLocation
+    collectorLocation {
+      city
+      state
+      country
+    }
     provenance
     slug
     title

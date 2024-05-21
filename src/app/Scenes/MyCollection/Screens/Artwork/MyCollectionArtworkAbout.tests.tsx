@@ -198,7 +198,7 @@ const artworkDataAvailable = {
       shortDescription: "Unique work",
     },
     editionOf: null,
-    artworkLocation: "Berlin",
+    collectorLocation: { city: "Berlin" },
     pricePaid: {
       display: "$12,000",
     },
@@ -229,7 +229,7 @@ const artworkDataNotAvailable = {
     },
     attributionClass: null,
     editionOf: null,
-    artworkLocation: "",
+    collectorLocation: null,
     pricePaid: null,
   },
 }

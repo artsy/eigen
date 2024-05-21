@@ -29,7 +29,6 @@ export interface ArtworkFormValues {
   artistDisplayName?: string
   artistIds: string[]
   artistSearchResult: AutosuggestResult | null
-  artworkLocation: string | undefined
   attributionClass: ArtworkAttributionClassType | undefined
   collectorLocation: Location | null | undefined
   category: string // this refers to "materials" in UI
@@ -57,7 +56,6 @@ export const initialFormValues: ArtworkFormValues = {
   artistDisplayName: undefined,
   artistIds: [],
   artistSearchResult: null,
-  artworkLocation: undefined,
   attributionClass: undefined,
   category: "",
   collectorLocation: null,
@@ -220,7 +218,6 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       photos: artwork.images,
       title: artwork.title,
       width: artwork.width,
-      artworkLocation: artwork.artworkLocation,
       collectorLocation: artwork.collectorLocation,
       provenance: artwork.provenance,
     }

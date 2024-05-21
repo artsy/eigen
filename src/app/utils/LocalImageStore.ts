@@ -8,8 +8,8 @@ const DEFAULT_IMAGE_VERSION = "large"
 
 export interface LocalImage {
   path: string
-  width: number
-  height: number
+  width?: number
+  height?: number
   aspectRatio?: number
   expires?: string
 }
@@ -135,7 +135,7 @@ const prepareImage = (image: LocalImage, expires: string) => {
     path: image.path,
     height: image.height,
     width: image.width,
-    aspectRatio: image.width / (image.height || 1),
+    aspectRatio: (image.width || 1) / (image.height || 1),
   }
 
   return JSON.stringify(imageToStore)

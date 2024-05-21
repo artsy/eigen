@@ -333,16 +333,6 @@ export const MyCollectionArtworkFormMain: React.FC<
                 accessibilityLabel="Enter city where the artwork is located"
               />
 
-              <Input
-                title="Location"
-                placeholder="Enter city where artwork is located"
-                onChangeText={formik.handleChange("artworkLocation")}
-                onBlur={formik.handleBlur("artworkLocation")}
-                testID="LocationInput"
-                accessibilityLabel="Enter city where the artwork is located"
-                value={formikValues.artworkLocation}
-              />
-
               <ArtistField />
 
               <Input

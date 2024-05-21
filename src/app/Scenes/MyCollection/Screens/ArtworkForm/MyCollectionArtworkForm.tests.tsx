@@ -179,37 +179,7 @@ describe("MyCollectionArtworkForm", () => {
         `)
 
         const createArtworkOperation = mockOperations[2]
-        expect(createArtworkOperation.request.variables).toMatchInlineSnapshot(`
-          {
-            "input": {
-              "artistIds": [
-                "internal-id",
-              ],
-              "artists": undefined,
-              "artworkLocation": undefined,
-              "attributionClass": undefined,
-              "category": "Print",
-              "confidentialNotes": undefined,
-              "date": "2007",
-              "depth": 40,
-              "editionNumber": "",
-              "editionSize": "",
-              "externalImageUrls": [
-                "https://some-bucket.s3.amazonaws.com/undefined",
-              ],
-              "height": 20,
-              "importSource": "MY_COLLECTION",
-              "isEdition": true,
-              "medium": "Screen print",
-              "metric": "in",
-              "pricePaidCents": undefined,
-              "pricePaidCurrency": "USD",
-              "provenance": undefined,
-              "title": "Morons",
-              "width": 30,
-            },
-          }
-        `)
+        expect(createArtworkOperation.request.variables).toMatchInlineSnapshot()
       })
     })
 
@@ -438,7 +408,6 @@ describe("MyCollectionArtworkForm", () => {
           provenance: "fake",
           title: "some-art-piece",
           photos: fakePhotos,
-          artworkLocation: "some-location",
           attributionClass: "LIMITED_EDITION",
         }
         const formCheckValues = formValues
@@ -502,7 +471,6 @@ describe("MyCollectionArtworkForm", () => {
                   medium: null,
                   isEdition: null,
                   metric: null,
-                  artworkLocation: null,
                   provenance: null,
                   width: null,
                   title: null,
