@@ -100,6 +100,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({
         {!!isCollapsed && (
           <Text
             mt={1}
+            ml={1}
             variant="xs"
             color="black100"
             textAlign="center"
