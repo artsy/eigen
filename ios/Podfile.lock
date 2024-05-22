@@ -47,7 +47,7 @@ PODS:
     - AppCenter/Core (= 5.0.3)
   - Base64 (1.1.2)
   - boost (1.76.0)
-  - braze-react-native-sdk (2.0.0):
+  - braze-react-native-sdk (2.0.1):
     - BrazeKit (~> 5.9.1)
     - BrazeLocation (~> 5.9.1)
     - BrazeUI (~> 5.9.1)
@@ -1390,7 +1390,7 @@ SPEC CHECKSUMS:
   AppCenterReactNativeShared: 01df23849b1c3c6eb8c4049f54322635650e98f0
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost: 7dcd2de282d72e344012f7d6564d024930a6a440
-  braze-react-native-sdk: 5ef8156f0bb5d6c0783e4cfc10118e8fda2c3bbb
+  braze-react-native-sdk: fde05eb5f01efa0291de5aad88574434df80f30d
   BrazeKit: 7c8ab19c996bb6447d44a242c14778ad48c9e020
   BrazeLocation: ba8da78df3221b627c56c4b2ad20df2e0795dfb4
   BrazeUI: 39d905f9ded70b6ab9d8ab08d6cfdbbfed4cc282
