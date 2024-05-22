@@ -69,7 +69,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({
 
   const allDisplayItems = listItems.filter((item) => !!item.value)
 
-  const [isCollapsed, setIsCollapsed] = React.useState(showReadMore && allDisplayItems.length > 3)
+  const [isCollapsed, setIsCollapsed] = React.useState(showReadMore && allDisplayItems.length > 4)
 
   const displayItems = isCollapsed ? allDisplayItems.slice(0, COLLAPSED_COUNT) : allDisplayItems
 
