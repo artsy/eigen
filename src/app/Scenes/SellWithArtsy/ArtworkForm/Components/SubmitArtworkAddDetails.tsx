@@ -22,8 +22,6 @@ export const SubmitArtworkAddDetails = () => {
 
   return (
     <ScrollView>
-      <Spacer y={2} />
-
       <Text variant="lg" mb={2}>
         Artwork details
       </Text>
@@ -81,6 +79,5 @@ export const SubmitArtworkAddDetails = () => {
         />
       </Join>
     </ScrollView>
-    // </KeyboardAvoidingView>
   )
 }

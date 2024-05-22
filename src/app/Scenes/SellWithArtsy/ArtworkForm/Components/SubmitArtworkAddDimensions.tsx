@@ -1,5 +1,4 @@
 import { Box, Flex, Input, RadioButton, Spacer, Text } from "@artsy/palette-mobile"
-import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { useFormikContext } from "formik"
 import { useRef, useState } from "react"
@@ -23,10 +22,6 @@ export const SubmitArtworkAddDimensions = () => {
 
   return (
     <Flex>
-      {!!values.artistSearchResult && <ArtistSearchResult result={values.artistSearchResult} />}
-
-      <Spacer y={2} />
-
       <Text variant="lg" mb={2}>
         Artwork dimensions
       </Text>

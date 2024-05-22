@@ -48,8 +48,8 @@ export const useSubmissionContext = () => {
         }
       }
 
-      setCurrentStep(nextStep)
       __unsafe__SubmissionArtworkFormNavigationRef.current?.navigate?.(nextStep)
+      setCurrentStep(nextStep)
     } catch (error) {
       console.error("Error navigating to next step", error)
       Alert.alert("Could not navigate to next step")
