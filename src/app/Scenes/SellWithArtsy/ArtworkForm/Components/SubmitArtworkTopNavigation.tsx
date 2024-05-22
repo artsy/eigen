@@ -1,6 +1,5 @@
 import { Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
-import { SubmitArtworkProgressBar } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkProgressBar"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { goBack } from "app/system/navigation/navigate"
 import { useIsKeyboardVisible } from "app/utils/hooks/useIsKeyboardVisible"
@@ -49,8 +48,6 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
           </Flex>
         </Flex>
       </MotiView>
-
-      <SubmitArtworkProgressBar />
     </Flex>
   )
 }

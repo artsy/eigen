@@ -1,5 +1,6 @@
 import { Button, Flex, Spacer, Text, Touchable, useScreenDimensions } from "@artsy/palette-mobile"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
+import { SubmitArtworkProgressBar } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkProgressBar"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { navigate } from "app/system/navigation/navigate"
@@ -66,10 +67,14 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
       <Flex
         borderTopWidth={1}
         borderTopColor="black10"
-        py={2}
+        pb={2}
         width={screenWidth}
         alignSelf="center"
       >
+        <Flex mx={2} my={1}>
+          <SubmitArtworkProgressBar />
+        </Flex>
+
         <Flex px={2}>
           <Spacer y={1} />
 
@@ -96,7 +101,11 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
   }
 
   return (
-    <Flex borderTopWidth={1} borderTopColor="black10" py={2} width={screenWidth} alignSelf="center">
+    <Flex borderTopWidth={1} borderTopColor="black10" pb={2} width={screenWidth} alignSelf="center">
+      <Flex mx={2} my={1}>
+        <SubmitArtworkProgressBar />
+      </Flex>
+
       <Flex px={2}>
         <Flex flexDirection="row" justifyContent="space-between" backgroundColor="white100">
           <Flex flexDirection="row" alignItems="center">
