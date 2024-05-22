@@ -116,7 +116,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
 
         {showResults ? (
           <Box height="100%" pb={6}>
-            {trimmedQuery === "" && !!Hint && isValidElement(Hint) ? Hint : null}
+            {trimmedQuery === "" && isValidElement(Hint) && Hint}
 
             <AutosuggestResults
               query={trimmedQuery}

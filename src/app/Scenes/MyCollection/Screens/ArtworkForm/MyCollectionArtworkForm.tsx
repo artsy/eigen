@@ -110,10 +110,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
         }),
       ])
 
-      const artistId =
-        values.artistIds && values.artistIds.length
-          ? values.artistIds[0]
-          : values.artistSearchResult?.internalID
+      const artistId = values.artistIds?.[0] || values.artistSearchResult?.internalID
 
       // Adding tracking after a successfully adding an artwork
       if (mode === "add" && artistId) {
