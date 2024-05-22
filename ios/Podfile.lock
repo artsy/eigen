@@ -47,6 +47,16 @@ PODS:
     - AppCenter/Core (= 5.0.3)
   - Base64 (1.1.2)
   - boost (1.76.0)
+  - braze-react-native-sdk (2.0.0):
+    - BrazeKit (~> 5.9.1)
+    - BrazeLocation (~> 5.9.1)
+    - BrazeUI (~> 5.9.1)
+    - React-Core
+  - BrazeKit (5.9.1)
+  - BrazeLocation (5.9.1):
+    - BrazeKit (= 5.9.1)
+  - BrazeUI (5.9.1):
+    - BrazeKit (= 5.9.1)
   - BVLinearGradient (2.6.2):
     - React-Core
   - CocoaAsyncSocket (7.6.5)
@@ -917,6 +927,7 @@ DEPENDENCIES:
   - AFNetworking/NSURLSession (= 2.7.0)
   - appcenter-core (from `../node_modules/appcenter`)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
+  - "braze-react-native-sdk (from `../node_modules/@braze/react-native-sdk`)"
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - CocoaLumberjack (= 3.7.2)
   - CodePush (from `../node_modules/react-native-code-push`)
@@ -1079,6 +1090,9 @@ SPEC REPOS:
     - AppCenter
     - AppCenterReactNativeShared
     - Base64
+    - BrazeKit
+    - BrazeLocation
+    - BrazeUI
     - CocoaAsyncSocket
     - CocoaLumberjack
     - CwlCatchException
@@ -1164,6 +1178,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/appcenter"
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
+  braze-react-native-sdk:
+    :path: "../node_modules/@braze/react-native-sdk"
   BVLinearGradient:
     :path: "../node_modules/react-native-linear-gradient"
   CodePush:
@@ -1374,6 +1390,10 @@ SPEC CHECKSUMS:
   AppCenterReactNativeShared: 01df23849b1c3c6eb8c4049f54322635650e98f0
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost: 7dcd2de282d72e344012f7d6564d024930a6a440
+  braze-react-native-sdk: 5ef8156f0bb5d6c0783e4cfc10118e8fda2c3bbb
+  BrazeKit: 7c8ab19c996bb6447d44a242c14778ad48c9e020
+  BrazeLocation: ba8da78df3221b627c56c4b2ad20df2e0795dfb4
+  BrazeUI: 39d905f9ded70b6ab9d8ab08d6cfdbbfed4cc282
   BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
