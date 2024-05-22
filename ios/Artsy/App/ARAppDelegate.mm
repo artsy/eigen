@@ -2,7 +2,8 @@
 #import <SafariServices/SafariServices.h>
 #import <FBSDKCoreKit/FBSDKCoreKit-Swift.h>
 #import <Firebase.h>
-#import <Appboy.h>
+#import <BrazeKit/BrazeKit-Swift.h>
+#import "BrazeReactBridge.h"
 #import "BrazeReactUtils.h"
 #import <Analytics/SEGAnalytics.h>
 #import <Segment-Appboy/SEGAppboyIntegrationFactory.h>
@@ -159,12 +160,10 @@ static ARAppDelegate *_sharedInstance = nil;
     }
 
     NSString *brazeSDKEndPoint = @"sdk.iad-06.braze.com";
-    NSMutableDictionary *appboyOptions = [NSMutableDictionary dictionary];
-    appboyOptions[ABKEndpointKey] = brazeSDKEndPoint;
-    [Appboy startWithApiKey:brazeAppKey
-              inApplication:application
-          withLaunchOptions:launchOptions
-          withAppboyOptions:appboyOptions];
+    BRZConfiguration *brazeConfiguration = [[BRZConfiguration alloc] initWithApiKey:brazeAppKey endpoint:brazeSDKEndPoint];
+    brazeConfiguration.logger.level = BRZLoggerLevelInfo;
+    Braze *braze = [BrazeReactBridge initBraze:brazeConfiguration];
+    [ARAppDelegate setBraze:braze];
 
     NSString *segmentWriteKey = [ReactNativeConfig envFor:@"SEGMENT_STAGING_WRITE_KEY_IOS"];
     if (![ARAppStatus isDev]) {
@@ -193,7 +192,7 @@ static ARAppDelegate *_sharedInstance = nil;
 
     NSString *currentUserId = [[[ARUserManager sharedManager] currentUser] userID];
     if (currentUserId) {
-        [[Appboy sharedInstance] changeUser: currentUserId];
+        [[ARAppDelegate braze] changeUser: currentUserId];
     }
 }
 
@@ -290,6 +289,18 @@ static ARAppDelegate *_sharedInstance = nil;
         [[AREmission sharedInstance] notificationsManagerModule],
         [ARCocoaConstantsModule new],
     ];
+}
+
+#pragma mark - AppDelegate.braze
+
+static Braze *_braze = nil;
+
++ (Braze *)braze {
+  return _braze;
+}
+
++ (void)setBraze:(Braze *)braze {
+  _braze = braze;
 }
 
 @end
