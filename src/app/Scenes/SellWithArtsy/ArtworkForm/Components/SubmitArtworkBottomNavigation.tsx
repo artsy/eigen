@@ -2,7 +2,7 @@ import { Button, Flex, Spacer, Text, Touchable, useScreenDimensions } from "@art
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
-import { navigate } from "app/system/navigation/navigate"
+import { goBack, navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useFormikContext } from "formik"
 import { useEffect } from "react"
@@ -89,6 +89,46 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
             variant="outline"
           >
             Submit Another Artwork
+          </Button>
+        </Flex>
+      </Flex>
+    )
+  }
+
+  if (currentStep === "ArtistRejected") {
+    return (
+      <Flex
+        borderTopWidth={1}
+        borderTopColor="black10"
+        py={2}
+        width={screenWidth}
+        alignSelf="center"
+      >
+        <Flex px={2}>
+          <Spacer y={1} />
+
+          <Button
+            block
+            onPress={() => {
+              goBack()
+              navigate("/my-collection/artworks/new", {
+                showInTabName: "profile",
+              })
+            }}
+          >
+            Add to My Collection
+          </Button>
+
+          <Spacer y={2} />
+
+          <Button
+            block
+            onPress={() => {
+              handleBackPress()
+            }}
+            variant="outline"
+          >
+            Add Another Artist
           </Button>
         </Flex>
       </Flex>

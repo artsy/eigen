@@ -14,7 +14,7 @@ import {
 import { useCallback, useMemo } from "react"
 
 // Steps that should not be counted in the progress bar
-const NON_COUNTABLE_STEPS: SubmitArtworkScreen[] = ["StartFlow"]
+const NON_COUNTABLE_STEPS: SubmitArtworkScreen[] = ["StartFlow", "ArtistRejected"]
 
 // Steps that should be counted in the progress bar
 const COUNTABLE_STEPS = ARTWORK_FORM_STEPS.filter(
@@ -60,7 +60,7 @@ export const SubmitArtworkProgressBar: React.FC = ({}) => {
 
   const progress = (totalSteps.indexOf(currentStep) + 1) / totalSteps.length
 
-  if (!currentStep || currentStep === "StartFlow") {
+  if (!currentStep || NON_COUNTABLE_STEPS.includes(currentStep)) {
     // Returning a Flex with the same height as the progress bar to keep the layout consistent
     return <Flex height={PROGRESS_BAR_HEIGHT} />
   }

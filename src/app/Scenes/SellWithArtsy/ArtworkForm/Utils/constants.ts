@@ -12,4 +12,5 @@ export const ARTWORK_FORM_STEPS: SubmitArtworkScreen[] = [
   "AddDimensions",
   "AddProvenance",
   "CompleteYourSubmission",
+  "ArtistRejected",
 ]

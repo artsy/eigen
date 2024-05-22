@@ -79,7 +79,38 @@ describe("SubmitArtworkBottomNavigation", () => {
     })
   })
 
-  describe("When the current step is neither start flow nor complete your submission", () => {
+  describe("When the current step is artist rejected", () => {
+    it("Shows a functional Add to My Collection button", () => {
+      renderWithSubmitArtworkWrapper({
+        component: <SubmitArtworkBottomNavigation />,
+        props: { currentStep: "ArtistRejected" },
+      })
+
+      const addToMyCollectionButton = screen.getByText("Add to My Collection")
+      expect(addToMyCollectionButton).toBeOnTheScreen()
+
+      fireEvent(addToMyCollectionButton, "onPress")
+      expect(navigate).toHaveBeenCalledWith("/my-collection/artworks/new", {
+        showInTabName: "profile",
+      })
+    })
+
+    it("Shows a functional Add Another Artist button", () => {
+      renderWithSubmitArtworkWrapper({
+        component: <SubmitArtworkBottomNavigation />,
+        props: { currentStep: "ArtistRejected" },
+      })
+
+      const addAnotherArtistButton = screen.getByText("Add Another Artist")
+      expect(addAnotherArtistButton).toBeOnTheScreen()
+
+      fireEvent(addAnotherArtistButton, "onPress")
+
+      expect(mockNavigateToPreviousStep).toHaveBeenCalled()
+    })
+  })
+
+  describe("When the current step is neither start flow nor complete your submission nor artist rejected", () => {
     it("Shows a functional continue button", async () => {
       renderWithSubmitArtworkWrapper({
         component: <SubmitArtworkBottomNavigation />,

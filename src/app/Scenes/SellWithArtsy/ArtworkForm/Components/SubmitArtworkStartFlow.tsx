@@ -1,5 +1,4 @@
-import { BackButton, Flex, Spacer, Text } from "@artsy/palette-mobile"
-import { goBack } from "app/system/navigation/navigate"
+import { Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { Image, ScrollView } from "react-native"
 
 const SECTIONS = [
@@ -25,10 +24,6 @@ const SECTIONS = [
 export const SubmitArtworkStartFlow: React.FC = () => {
   return (
     <Flex flex={1}>
-      <Flex py={1} flexDirection="row">
-        <BackButton showX style={{ zIndex: 100, overflow: "visible" }} onPress={goBack} />
-      </Flex>
-
       <ScrollView>
         <Text variant="lg" mb={4}>
           It’s easy to sell on Artsy 123

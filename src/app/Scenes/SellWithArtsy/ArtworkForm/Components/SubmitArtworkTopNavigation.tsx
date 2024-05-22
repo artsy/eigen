@@ -1,4 +1,4 @@
-import { Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { BackButton, Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { SubmitArtworkProgressBar } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkProgressBar"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
@@ -26,10 +26,17 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
   }, [currentStep])
 
-  if (!currentStep || currentStep === "StartFlow") {
+  if (!currentStep) {
     return null
   }
 
+  if (["StartFlow", "ArtistRejected"].includes(currentStep)) {
+    return (
+      <Flex py={1} px={2} flexDirection="row">
+        <BackButton showX style={{ zIndex: 100, overflow: "visible" }} onPress={goBack} />
+      </Flex>
+    )
+  }
   return (
     <Flex mx={2}>
       <MotiView
