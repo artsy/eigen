@@ -20,7 +20,7 @@ import styled from "styled-components/native"
 
 interface MyCollectionArtworkGridItemProps {
   artwork: MyCollectionArtworkGridItem_artwork$data
-  displayToolTip?: boolean
+  displayToolTip?: boolean | null | undefined
 }
 
 const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = ({

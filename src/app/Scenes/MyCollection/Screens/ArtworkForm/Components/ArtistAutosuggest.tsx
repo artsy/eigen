@@ -59,7 +59,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
   if (onlyP1Artists) {
     collectedArtists = collectedArtists.filter(
       // This is always true, it's just to make TypeScript happy
-      (node) => node.__typename === "Artist" && node.targetSupply?.priority === "TRUE"
+      (node) => node.__typename === "Artist" && node.targetSupply?.isTargetSupply
     )
   }
 
@@ -202,11 +202,12 @@ const ArtistAutosuggestScreenQuery = graphql`
           node {
             ... on Artist {
               __typename
+
               counts {
                 artworks
               }
               targetSupply {
-                priority
+                isTargetSupply
               }
               displayLabel
               formattedNationalityAndBirthday

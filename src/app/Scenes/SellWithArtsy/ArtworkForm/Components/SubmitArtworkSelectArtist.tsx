@@ -34,8 +34,7 @@ export const SubmitArtworkSelectArtist = () => {
     }
 
     const artist = result as ArtistAutoSuggestNode
-    const isTargetSupply =
-      artist.__typename === "Artist" && artist.targetSupply?.priority === "TRUE"
+    const isTargetSupply = artist.__typename === "Artist" && artist.targetSupply?.isTargetSupply
 
     if (!isTargetSupply) {
       Keyboard.dismiss()
@@ -82,7 +81,7 @@ export const SubmitArtworkSelectArtist = () => {
           disableCustomArtists
           onlyP1Artists
           Hint={
-            <Text variant="xs" color="black60" pt={1}>
+            <Text variant="xs" color="black60" py={1}>
               Currently, artists can not sell their own work on Artsy.{"\n"}
               <Text
                 underline
