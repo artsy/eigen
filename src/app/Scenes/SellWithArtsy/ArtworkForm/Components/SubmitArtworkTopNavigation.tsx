@@ -49,11 +49,17 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
         }}
       >
         <Flex flexDirection="row" justifyContent="space-between">
-          <Flex style={{ flexGrow: 1, alignItems: "flex-end" }}>
-            <Touchable onPress={handleSaveAndExitPress}>
-              <Text>{!hasCompletedForm ? "Save & " : ""}Exit</Text>
-            </Touchable>
-          </Flex>
+          {currentStep === "SelectArtist" && (
+            <BackButton showX style={{ zIndex: 100, overflow: "visible" }} onPress={goBack} />
+          )}
+
+          {currentStep !== "SelectArtist" && (
+            <Flex style={{ flexGrow: 1, alignItems: "flex-end" }}>
+              <Touchable onPress={handleSaveAndExitPress}>
+                <Text>{!hasCompletedForm ? "Save & " : ""}Exit</Text>
+              </Touchable>
+            </Flex>
+          )}
         </Flex>
       </MotiView>
 

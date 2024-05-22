@@ -1,11 +1,10 @@
-import { Touchable } from "@artsy/palette-mobile"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
 import { GlobalStore, GlobalStoreProvider } from "app/store/GlobalStore"
 import { EntityType, navigate, navigateToEntity, SlugType } from "app/system/navigation/navigate"
 import { CatchErrors } from "app/utils/CatchErrors"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { Pressable } from "react-native"
+import { Pressable, TouchableOpacity } from "react-native"
 import { act } from "react-test-renderer"
 import { AutosuggestSearchResult } from "./AutosuggestSearchResult"
 
@@ -87,7 +86,7 @@ describe(AutosuggestSearchResult, () => {
   it("blurs the input and navigates to the correct page when tapped", async () => {
     renderWithWrappers(<TestWrapper result={result} />)
     expect(navigate).not.toHaveBeenCalled()
-    screen.UNSAFE_getByType(Touchable).props.onPress()
+    screen.UNSAFE_getByType(TouchableOpacity).props.onPress()
     await new Promise((r) => setTimeout(r, 50))
     expect(inputBlurMock).toHaveBeenCalled()
     expect(navigate).toHaveBeenCalledWith(`${result.href}`)
@@ -112,7 +111,7 @@ describe(AutosuggestSearchResult, () => {
     expect(navigate).not.toHaveBeenCalled()
     expect(recentSearchesArray).toHaveLength(0)
     act(() => {
-      screen.UNSAFE_getByType(Touchable).props.onPress()
+      screen.UNSAFE_getByType(TouchableOpacity).props.onPress()
     })
     await new Promise((r) => setTimeout(r, 50))
     expect(recentSearchesArray).toHaveLength(1)
@@ -123,7 +122,7 @@ describe(AutosuggestSearchResult, () => {
     expect(navigate).not.toHaveBeenCalled()
     expect(recentSearchesArray).toHaveLength(0)
     act(() => {
-      screen.UNSAFE_getByType(Touchable).props.onPress()
+      screen.UNSAFE_getByType(TouchableOpacity).props.onPress()
     })
     await new Promise((r) => setTimeout(r, 50))
     expect(recentSearchesArray).toHaveLength(0)
@@ -137,7 +136,7 @@ describe(AutosuggestSearchResult, () => {
   it(`allows for custom touch handlers on search result items`, () => {
     const spy = jest.fn()
     renderWithWrappers(<TestWrapper result={result} onResultPress={spy} />)
-    screen.UNSAFE_getByType(Touchable).props.onPress()
+    screen.UNSAFE_getByType(TouchableOpacity).props.onPress()
     expect(spy).toHaveBeenCalled()
   })
 
@@ -155,7 +154,7 @@ describe(AutosuggestSearchResult, () => {
       />
     )
     act(() => {
-      screen.UNSAFE_getByType(Touchable).props.onPress()
+      screen.UNSAFE_getByType(TouchableOpacity).props.onPress()
     })
     await new Promise((r) => setTimeout(r, 50))
     expect(navigateToEntity).toHaveBeenCalledWith(

@@ -1,4 +1,4 @@
-import { CheckCircleFillIcon, Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { InfoModal } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/InfoModal/InfoModal"
@@ -10,37 +10,34 @@ export const SubmitArtworkArtistRejected: React.FC<{}> = () => {
   const { values } = useFormikContext<ArtworkDetailsFormModel>()
   const [isEligibilityModalVisible, setIsEligibilityModalVisible] = useState(false)
   return (
-    <Flex>
-      {!!values.artistSearchResult && (
-        <ArtistSearchResult
-          result={values.artistSearchResult}
-          icon={<CheckCircleFillIcon fill="green100" ml={0.5} height={18} width={18} />}
-        />
-      )}
+    <Flex flex={1}>
+      <ScrollView>
+        {!!values.artistSearchResult && <ArtistSearchResult result={values.artistSearchResult} />}
 
-      <Spacer y={2} />
+        <Spacer y={2} />
 
-      <Text variant="lg">This artist isn't currently eligible to sell on our platform</Text>
+        <Text variant="lg">This artist isn't currently eligible to sell on our platform</Text>
 
-      <Spacer y={2} />
+        <Spacer y={2} />
 
-      <Text variant="sm">
-        Try again with another artist or add your artwork to My Collection, your personal space to
-        manage your collection, track demand for your artwork and see updates about the artist.
-        {"\n"}
-        {"\n"}If you'd like to know more, you can
-        <Text
-          underline
-          onPress={() => {
-            setIsEligibilityModalVisible(true)
-          }}
-        >
-          read about what our specialists are looking for
+        <Text variant="sm">
+          Try again with another artist or add your artwork to My Collection, your personal space to
+          manage your collection, track demand for your artwork and see updates about the artist.
+          {"\n"}
+          {"\n"}If you'd like to know more, you can{" "}
+          <Text
+            underline
+            onPress={() => {
+              setIsEligibilityModalVisible(true)
+            }}
+          >
+            read about what our specialists are looking for
+          </Text>
+          . {"\n"}
+          {"\n"}After adding to My Collection, an Artsy Advisor will be in touch if there is an
+          opportunity to sell your work in the future.
         </Text>
-        . {"\n"}
-        {"\n"}After adding to My Collection, an Artsy Advisor will be in touch if there is an
-        opportunity to sell your work in the future.
-      </Text>
+      </ScrollView>
       <InfoModal
         visible={isEligibilityModalVisible}
         title="Eligible artist criteria"

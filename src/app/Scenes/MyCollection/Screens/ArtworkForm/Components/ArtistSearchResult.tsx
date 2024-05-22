@@ -3,8 +3,7 @@ import { AutosuggestResult } from "app/Components/AutosuggestResults/Autosuggest
 
 export const ArtistSearchResult: React.FC<{
   result: AutosuggestResult
-  icon?: React.ReactElement
-}> = ({ result, icon }) => {
+}> = ({ result }) => {
   return (
     <Flex flexDirection="row" alignItems="center">
       <Avatar
@@ -14,12 +13,9 @@ export const ArtistSearchResult: React.FC<{
       />
       <Spacer x={1} />
       <Flex flex={1} flexDirection="column" justifyContent="center">
-        <Flex flexDirection="row" alignItems="center" height={30}>
-          <Text variant="sm-display" ellipsizeMode="tail" numberOfLines={1} lineHeight="18px">
-            {result.displayLabel}
-          </Text>
-          {icon}
-        </Flex>
+        <Text variant="sm-display" ellipsizeMode="tail" numberOfLines={1}>
+          {result.displayLabel}
+        </Text>
         {!!result.formattedNationalityAndBirthday && (
           <Text variant="xs" numberOfLines={1} color="black60" ellipsizeMode="tail">
             {result.formattedNationalityAndBirthday}
