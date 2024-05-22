@@ -3,7 +3,7 @@
 #import <FBSDKCoreKit/FBSDKCoreKit-Swift.h>
 #import <Firebase.h>
 #import <Appboy.h>
-#import "AppboyReactUtils.h"
+#import "BrazeReactUtils.h"
 #import <Analytics/SEGAnalytics.h>
 #import <Segment-Appboy/SEGAppboyIntegrationFactory.h>
 #import <CodePush/CodePush.h>
@@ -177,7 +177,7 @@ static ARAppDelegate *_sharedInstance = nil;
     configuration.trackDeepLinks = YES;
     [SEGAnalytics setupWithConfiguration:configuration];
     [[SEGAppboyIntegrationFactory instance] saveLaunchOptions:launchOptions];
-    [[AppboyReactUtils sharedInstance] populateInitialUrlFromLaunchOptions:launchOptions];
+    [[BrazeReactUtils sharedInstance] populateInitialUrlFromLaunchOptions:launchOptions];
 }
 
 - (void)registerNewSessionOpened
