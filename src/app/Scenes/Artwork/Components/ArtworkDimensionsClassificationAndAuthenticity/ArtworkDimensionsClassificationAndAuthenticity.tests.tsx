@@ -32,7 +32,7 @@ describe("ArtworkDimensionsClassificationAndAuthenticity", () => {
     expect(screen.getByText("Unique work")).toBeTruthy()
   })
 
-  it("clicking rarity opens modal", () => {
+  it("navigates to artwork classifications when tapped", () => {
     renderWithRelay({
       Artwork: () => ({ attributionClass: { shortArrayDescription: ["", "Unique work"] } }),
     })
@@ -49,7 +49,7 @@ describe("ArtworkDimensionsClassificationAndAuthenticity", () => {
     expect(screen.getByText("Certificate of Authenticity")).toBeTruthy()
   })
 
-  it("clicking authenticity opens modal", () => {
+  it("navigates to artwork certificate of authenticity when tapped", () => {
     renderWithRelay({
       Artwork: () => ({ hasCertificateOfAuthenticity: true, isBiddable: false }),
     })
