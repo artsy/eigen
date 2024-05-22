@@ -5,6 +5,7 @@ import { SubmitArtworkAddDetails } from "app/Scenes/SellWithArtsy/ArtworkForm/Co
 import { SubmitArtworkAddDimensions } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddDimensions"
 import { SubmitArtworkAddPhotos } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddPhotos"
 import { SubmitArtworkAddTitle } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddTitle"
+import { SubmitArtworkArtistRejected } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkArtistRejected"
 import { SubmitArtworkBottomNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkBottomNavigation"
 import { SubmitArtworkCompleteYourSubmission } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkCompleteYourSubmission"
 import {
@@ -41,6 +42,7 @@ export type SubmitArtworkStackNavigation = {
   AddDimensions: undefined
   PurchaseHistory: undefined
   CompleteYourSubmission: undefined
+  ArtistRejected: undefined
 }
 
 export const SubmitArtworkForm: React.FC<SubmitArtworkProps> = (props) => {
@@ -136,6 +138,15 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
               />
 
               <Stack.Screen name="SelectArtist" component={SubmitArtworkSelectArtist} />
+              <Stack.Screen
+                name="ArtistRejected"
+                component={SubmitArtworkArtistRejected}
+                options={{
+                  // We want to make it easy for users to go back to the previous screen
+                  // And to submit a new artist
+                  gestureEnabled: true,
+                }}
+              />
 
               <Stack.Screen name="AddTitle" component={SubmitArtworkAddTitle} />
 

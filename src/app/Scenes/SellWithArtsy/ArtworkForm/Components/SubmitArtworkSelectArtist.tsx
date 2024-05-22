@@ -1,14 +1,19 @@
 import { Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
 import { AutosuggestResultsPlaceholder } from "app/Components/AutosuggestResults/AutosuggestResultsPlaceholder"
-import { ArtistAutosuggest } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistAutosuggest"
+import {
+  ArtistAutoSuggestNode,
+  ArtistAutosuggest,
+} from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistAutosuggest"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
+import { navigate } from "app/system/navigation/navigate"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useFormikContext } from "formik"
 import { Suspense } from "react"
+import { Keyboard } from "react-native"
 
 export const SubmitArtworkSelectArtist = () => {
   const { navigateToNextStep } = useSubmissionContext()
@@ -25,6 +30,19 @@ export const SubmitArtworkSelectArtist = () => {
 
     if (!result.internalID) {
       console.error("Artist ID not found")
+      return
+    }
+
+    const artist = result as ArtistAutoSuggestNode
+    const isTargetSupply = artist.__typename === "Artist" && artist.targetSupply?.isTargetSupply
+
+    if (!isTargetSupply) {
+      Keyboard.dismiss()
+      navigateToNextStep({
+        step: "ArtistRejected",
+        skipMutation: true,
+      })
+      setIsLoading(false)
       return
     }
 
@@ -52,13 +70,37 @@ export const SubmitArtworkSelectArtist = () => {
   }
 
   return (
-    <Flex>
+    <Flex pb={6}>
       <Text variant="lg" mb={2}>
         Add artist name
       </Text>
 
       <Suspense fallback={<Placeholder />}>
-        <ArtistAutosuggest onResultPress={handleResultPress} disableCustomArtists onlyP1Artists />
+        <ArtistAutosuggest
+          onResultPress={handleResultPress}
+          disableCustomArtists
+          onlyP1Artists
+          Hint={
+            <Text variant="xs" color="black60" py={1}>
+              Currently, artists can not sell their own work on Artsy.{"\n"}
+              <Text
+                underline
+                variant="xs"
+                color="black60"
+                style={{
+                  zIndex: 1000,
+                }}
+                onPress={() => {
+                  navigate(
+                    "https://support.artsy.net/s/article/Im-an-artist-Can-I-submit-my-own-work-to-sell"
+                  )
+                }}
+              >
+                Learn more.
+              </Text>
+            </Text>
+          }
+        />
       </Suspense>
     </Flex>
   )

@@ -98,7 +98,7 @@ const userInterestsConnectionFixtures = {
         imageUrl: "",
         slug: "",
         targetSupply: {
-          priority: "TRUE",
+          isTargetSupply: true,
         },
       },
     },
@@ -115,7 +115,7 @@ const userInterestsConnectionFixtures = {
         imageUrl: "",
         slug: "",
         targetSupply: {
-          priority: "TRUE",
+          isTargetSupply: true,
         },
       },
     },
@@ -133,7 +133,7 @@ const userInterestsConnectionFixtures = {
         imageUrl: "",
         slug: "",
         targetSupply: {
-          priority: "FALSE",
+          isTargetSupply: false,
         },
       },
     },

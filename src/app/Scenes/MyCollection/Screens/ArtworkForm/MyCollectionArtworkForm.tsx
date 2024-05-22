@@ -16,7 +16,7 @@ import { saveOrUpdateArtwork } from "app/Scenes/MyCollection/Screens/ArtworkForm
 import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { GlobalStore } from "app/store/GlobalStore"
-import { dismissModal, goBack, popToRoot } from "app/system/navigation/navigate"
+import { dismissModal, goBack, popToRoot, switchTab } from "app/system/navigation/navigate"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { refreshMyCollection, refreshMyCollectionInsights } from "app/utils/refreshHelpers"
@@ -67,7 +67,6 @@ const navContainerRef = { current: null as NavigationContainerRef<any> | null }
 
 export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (props) => {
   const enableShowError = useDevToggle("DTShowErrorInLoadFailureView")
-
   const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
   const { trackEvent } = useTracking()
   const { formValues, dirtyFormCheckValues } = GlobalStore.useAppState(
@@ -111,13 +110,12 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
         }),
       ])
 
+      const artistId = values.artistIds?.[0] || values.artistSearchResult?.internalID
+
       // Adding tracking after a successfully adding an artwork
-      if (mode === "add") {
+      if (mode === "add" && artistId) {
         trackEvent(
-          tracks.saveCollectedArtwork(
-            values.artistIds[0],
-            values.artistSearchResult?.targetSupply?.isP1
-          )
+          tracks.saveCollectedArtwork(artistId, values.artistSearchResult?.targetSupply?.isP1)
         )
       }
 
@@ -129,6 +127,9 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
       refreshMyCollectionInsights({})
 
       dismissModal()
+
+      switchTab("profile")
+
       if (mode === "add") {
         popToRoot()
       } else {

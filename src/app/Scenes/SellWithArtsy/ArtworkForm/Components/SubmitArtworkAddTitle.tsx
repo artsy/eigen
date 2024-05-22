@@ -1,4 +1,4 @@
-import { CheckCircleFillIcon, Flex, Input, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Input, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { useFormikContext } from "formik"
@@ -8,12 +8,7 @@ export const SubmitArtworkAddTitle = () => {
 
   return (
     <Flex>
-      {!!values.artistSearchResult && (
-        <ArtistSearchResult
-          result={values.artistSearchResult}
-          icon={<CheckCircleFillIcon fill="green100" ml={0.5} height={18} width={18} />}
-        />
-      )}
+      {!!values.artistSearchResult && <ArtistSearchResult result={values.artistSearchResult} />}
 
       <Spacer y={2} />
 

@@ -330,7 +330,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
           isMyCollection &&
           !isDismissed(PROGRESSIVE_ONBOARDING_MY_COLLECTION_SELL_THIS_WORK).status &&
           itemIndex === 0 &&
-          artwork.artist?.targetSupply?.priority === "TRUE" &&
+          artwork.artist?.targetSupply?.isTargetSupply &&
           !(artwork as any).consignmentSubmission
 
         artworkComponents.push(
@@ -497,7 +497,7 @@ export const InfiniteScrollArtworksGridContainer = createFragmentContainer(
             }
             artist {
               targetSupply {
-                priority
+                isTargetSupply
               }
             }
             ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
@@ -539,7 +539,7 @@ export const InfiniteScrollMyCollectionArtworksGridContainer = createFragmentCon
             medium
             artist {
               targetSupply {
-                priority
+                isTargetSupply
               }
               internalID
               name

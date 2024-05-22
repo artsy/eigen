@@ -100,6 +100,45 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
     )
   }
 
+  if (currentStep === "ArtistRejected") {
+    return (
+      <Flex
+        borderTopWidth={1}
+        borderTopColor="black10"
+        py={2}
+        width={screenWidth}
+        alignSelf="center"
+      >
+        <Flex px={2}>
+          <Spacer y={1} />
+
+          <Button
+            block
+            onPress={() => {
+              navigate("/my-collection/artworks/new", {
+                showInTabName: "profile",
+              })
+            }}
+          >
+            Add to My Collection
+          </Button>
+
+          <Spacer y={2} />
+
+          <Button
+            block
+            onPress={() => {
+              handleBackPress()
+            }}
+            variant="outline"
+          >
+            Add Another Artist
+          </Button>
+        </Flex>
+      </Flex>
+    )
+  }
+
   return (
     <Flex borderTopWidth={1} borderTopColor="black10" pb={2} width={screenWidth} alignSelf="center">
       <Flex mx={2} my={1}>
