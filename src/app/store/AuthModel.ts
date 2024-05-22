@@ -1,5 +1,5 @@
 import { ActionType, AuthService, CreatedAccount } from "@artsy/cohesion"
-import { changeUser } from "@braze/react-native-sdk"
+import Braze from "@braze/react-native-sdk"
 import { appleAuth } from "@invertase/react-native-apple-authentication"
 import CookieManager from "@react-native-cookies/cookies"
 import { GoogleSignin, statusCodes } from "@react-native-google-signin/google-signin"
@@ -786,7 +786,7 @@ export const getAuthModel = (): AuthModel => ({
 
     if (userId) {
       Sentry.setUser({ id: userId })
-      changeUser(userId)
+      Braze.changeUser(userId)
       SiftReactNative.setUserId(userId)
       // This is here becuase Sift's RN wrapper does not currently automatically collect or
       // upload events for Android devices. If they update the package, we can remove it.
