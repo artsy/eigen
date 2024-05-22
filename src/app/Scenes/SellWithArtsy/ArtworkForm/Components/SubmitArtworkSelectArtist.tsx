@@ -13,6 +13,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useFormikContext } from "formik"
 import { Suspense } from "react"
+import { Keyboard } from "react-native"
 
 export const SubmitArtworkSelectArtist = () => {
   const { navigateToNextStep } = useSubmissionContext()
@@ -37,6 +38,7 @@ export const SubmitArtworkSelectArtist = () => {
       artist.__typename === "Artist" && artist.targetSupply?.priority === "TRUE"
 
     if (!isTargetSupply) {
+      Keyboard.dismiss()
       navigateToNextStep({
         step: "ArtistRejected",
         skipMutation: true,
@@ -69,7 +71,7 @@ export const SubmitArtworkSelectArtist = () => {
   }
 
   return (
-    <Flex>
+    <Flex pb={6}>
       <Text variant="lg" mb={2}>
         Add artist name
       </Text>
@@ -86,6 +88,9 @@ export const SubmitArtworkSelectArtist = () => {
                 underline
                 variant="xs"
                 color="black60"
+                style={{
+                  zIndex: 1000,
+                }}
                 onPress={() => {
                   navigate(
                     "https://support.artsy.net/s/article/Im-an-artist-Can-I-submit-my-own-work-to-sell"

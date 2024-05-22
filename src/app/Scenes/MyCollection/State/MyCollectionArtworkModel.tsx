@@ -20,7 +20,7 @@ export interface Image {
 export interface ArtworkFormValues {
   artist: string
   artistDisplayName?: string
-  artistIds: string[]
+  artistIds: string[] | undefined
   artistSearchResult: AutosuggestResult | null
   artworkLocation: string | undefined
   attributionClass: ArtworkAttributionClassType | undefined

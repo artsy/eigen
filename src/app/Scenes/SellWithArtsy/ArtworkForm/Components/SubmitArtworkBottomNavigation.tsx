@@ -2,7 +2,7 @@ import { Button, Flex, Spacer, Text, Touchable, useScreenDimensions } from "@art
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
-import { goBack, navigate } from "app/system/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useFormikContext } from "formik"
 import { useEffect } from "react"
@@ -110,7 +110,6 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
           <Button
             block
             onPress={() => {
-              goBack()
               navigate("/my-collection/artworks/new", {
                 showInTabName: "profile",
               })
