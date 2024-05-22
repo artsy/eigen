@@ -13,7 +13,7 @@ let analytics: Analytics.Client
 export const SegmentTrackingProvider: TrackingProvider = {
   setup: () => {
     analytics = require("@segment/analytics-react-native").default
-    const Braze = require("@segment/analytics-react-native-appboy").default
+    const Braze = require("@segment/analytics-react-native-plugin-braze").default
 
     analytics
       .setup(
