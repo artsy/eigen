@@ -27,7 +27,7 @@ export const getCurrentValidationSchema = (_injectedStep?: keyof SubmitArtworkSt
       return artworkFormPhotosSchema
     case "AddDetails":
       return artworkDetailsValidationSchema
-    case "AddProvenance":
+    case "PurchaseHistory":
       return provenanceSchema
     case "AddDimensions":
       return dimensionsSchema
@@ -78,6 +78,7 @@ const dimensionsSchema = Yup.object().shape({
 
 const provenanceSchema = Yup.object().shape({
   provenance: Yup.string().trim(),
+  signature: Yup.boolean().nullable(),
 })
 
 const artworkDetailsValidationSchema = Yup.object().shape({
@@ -110,6 +111,7 @@ export interface ArtworkDetailsFormModel {
   medium: string
   myCollectionArtworkID: string | null
   provenance: string
+  signature?: boolean | null | undefined
   source: ConsignmentSubmissionSource | null
   state?: ConsignmentSubmissionStateAggregation
   utmMedium?: string
@@ -151,6 +153,7 @@ export const artworkDetailsEmptyInitialValues: ArtworkDetailsFormModel = {
   medium: "",
   myCollectionArtworkID: null,
   provenance: "",
+  signature: null,
   source: null,
   state: "DRAFT",
   utmMedium: "",

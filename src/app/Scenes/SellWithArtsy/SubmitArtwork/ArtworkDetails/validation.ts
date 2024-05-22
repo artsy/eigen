@@ -32,6 +32,7 @@ export interface ArtworkDetailsFormModel {
   medium: string
   myCollectionArtworkID: string | null
   provenance: string
+  signature?: boolean | null | undefined
   source: ConsignmentSubmissionSource | null
   state?: ConsignmentSubmissionStateAggregation
   utmMedium?: string
