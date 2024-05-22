@@ -479,6 +479,10 @@ jobs:
       - run:
           name: Upload Android build to Maestro App Quality Copilot
           command: ./scripts/maestro/build-android.sh
+      - run:
+          name: Run the nightly-android test suite
+          no_output_timeout: 20m
+          command: ./scripts/maestro/run-android-nightly.sh
 
   build-maestro-nightly-ios:
     environment:
@@ -517,6 +521,10 @@ jobs:
           name: Upload iOS build to Maestro App Quality Copilot
           no_output_timeout: 20m
           command: ./scripts/maestro/build-ios.sh
+      - run:
+          name: Run the nightly-ios test suite
+          no_output_timeout: 20m
+          command: ./scripts/maestro/run-ios-nightly.sh
 
 workflows:
   version: 2
