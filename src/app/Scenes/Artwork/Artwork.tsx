@@ -14,6 +14,7 @@ import { ArtworkDimensionsClassificationAndAuthenticityFragmentContainer } from 
 import { ArtworkErrorScreen } from "app/Scenes/Artwork/Components/ArtworkError"
 import { ArtworkPartnerOfferNote } from "app/Scenes/Artwork/Components/ArtworkPartnerOfferNote"
 import { ArtworkScreenHeader } from "app/Scenes/Artwork/Components/ArtworkScreenHeader"
+import { AbreviatedArtsyGuarantee } from "app/Scenes/Artwork/Components/PrivateArtwork/AbreviatedArtsyGuarantee"
 import { PrivateArtworkExclusiveAccess } from "app/Scenes/Artwork/Components/PrivateArtwork/PrivateArtworkExclusiveAccess"
 import { PrivateArtworkMetadata } from "app/Scenes/Artwork/Components/PrivateArtwork/PrivateArtworkMetadata"
 import { OfferSubmittedModal } from "app/Scenes/Inbox/Components/Conversations/OfferSubmittedModal"
@@ -362,7 +363,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
 
       sections.push({
         key: "artsyGuarantee",
-        element: <ArtsyGuarantee />,
+        element: <AbreviatedArtsyGuarantee />,
       })
 
       if (shouldRenderPartner()) {
