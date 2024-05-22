@@ -361,10 +361,12 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
         excludeSeparator: true,
       })
 
-      sections.push({
-        key: "artsyGuarantee",
-        element: <AbreviatedArtsyGuarantee />,
-      })
+      if (!!artworkBelowTheFold?.isEligibleForArtsyGuarantee) {
+        sections.push({
+          key: "artsyGuarantee",
+          element: <AbreviatedArtsyGuarantee />,
+        })
+      }
 
       if (shouldRenderPartner()) {
         sections.push({

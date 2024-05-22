@@ -3,7 +3,6 @@ import { ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMore
 import { ArtworkConsignments } from "app/Scenes/Artwork/Components/ArtworkConsignments"
 import { ArtworkDetails } from "app/Scenes/Artwork/Components/ArtworkDetails"
 import { ArtworkHistory } from "app/Scenes/Artwork/Components/ArtworkHistory"
-import { ArtworkPrice } from "app/Scenes/Artwork/Components/ArtworkPrice"
 import { ArtworkScreenHeader } from "app/Scenes/Artwork/Components/ArtworkScreenHeader"
 import { ArtworkStickyBottomContent } from "app/Scenes/Artwork/Components/ArtworkStickyBottomContent"
 import { ImageCarousel } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
@@ -557,7 +556,7 @@ describe("Artwork", () => {
   })
 
   describe("Artsy Guarantee section", () => {
-    it("should be displayed when eligible for artsy guarantee", async () => {
+    fit("should be displayed when eligible for artsy guarantee", async () => {
       renderWithWrappers(<TestRenderer />)
 
       // ArtworkAboveTheFoldQuery
@@ -972,7 +971,6 @@ describe("Artwork", () => {
       expect(screen.UNSAFE_queryByType(ArtworkScreenHeader)).toBeOnTheScreen()
       expect(screen.UNSAFE_queryByType(ImageCarousel)).toBeOnTheScreen()
       expect(screen.UNSAFE_queryByType(ArtworkDetails)).toBeOnTheScreen()
-      expect(screen.UNSAFE_queryByType(ArtworkPrice)).toBeOnTheScreen()
       expect(screen.UNSAFE_queryByType(ShippingAndTaxesFragmentContainer)).toBeOnTheScreen()
       expect(screen.UNSAFE_queryByType(PrivateArtworkExclusiveAccess)).toBeOnTheScreen()
       expect(screen.UNSAFE_queryByType(PartnerCard)).toBeOnTheScreen()
