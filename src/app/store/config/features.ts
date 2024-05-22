@@ -272,8 +272,9 @@ export const features = {
   },
   AREnableNewSubmissionFlow: {
     description: "Enable new submission flow",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableNewSubmissionFlow",
   },
   AREnableSubmitMyCollectionArtworkInSubmitFlow: {
     description: "Enable Start Submission from My Collection in submit artwork flow",
@@ -282,8 +283,9 @@ export const features = {
   },
   AREnableSaveAndContinueSubmission: {
     description: "Enable save and continue submission flow",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableSaveAndContinueSubmission",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 
