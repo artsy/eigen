@@ -61,6 +61,7 @@ export const SubmitArtworkProgressBar: React.FC = ({}) => {
       <Flex>
         <ProgressBar
           progress={progress * 100}
+          height={4}
           animationDuration={300}
           trackColor={hasCompletedForm ? "green100" : "blue100"}
         />
