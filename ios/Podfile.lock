@@ -603,9 +603,6 @@ PODS:
   - React-jsinspector (0.72.12)
   - React-logger (0.72.12):
     - glog
-  - react-native-appboy-sdk (1.35.1):
-    - Appboy-iOS-SDK (~> 4.4.2)
-    - React
   - react-native-blob-util (0.19.9):
     - React-Core
   - react-native-blurhash (1.1.11):
@@ -999,7 +996,6 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
-  - react-native-appboy-sdk (from `../node_modules/react-native-appboy-sdk`)
   - react-native-blob-util (from `../node_modules/react-native-blob-util`)
   - react-native-blurhash (from `../node_modules/react-native-blurhash`)
   - react-native-config (from `../node_modules/react-native-config`)
@@ -1223,8 +1219,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   React-logger:
     :path: "../node_modules/react-native/ReactCommon/logger"
-  react-native-appboy-sdk:
-    :path: "../node_modules/react-native-appboy-sdk"
   react-native-blob-util:
     :path: "../node_modules/react-native-blob-util"
   react-native-blurhash:
@@ -1467,7 +1461,6 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 95bdf0ab46024ca9849e08739b6abd8fe489cd33
   React-jsinspector: 8e291ed0ab371314de269001d6b9b25db6aabf42
   React-logger: d4010de0b0564e63637ad08373bc73b5d919974b
-  react-native-appboy-sdk: e4e36787766637d5c60da264b66f4389ed479867
   react-native-blob-util: 18b510205c080a453574a7d2344d64673d0ad9af
   react-native-blurhash: a59e6bf8117a0304488ed576abd440f4b0777a8c
   react-native-config: bcafda5b4c51491ee1b0e1d0c4e3905bc7b56c1b
