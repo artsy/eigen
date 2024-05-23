@@ -280,6 +280,11 @@ export const features = {
     readyForRelease: false,
     showInDevMenu: true,
   },
+  AREnableSaveAndContinueSubmission: {
+    description: "Enable save and continue submission flow",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
