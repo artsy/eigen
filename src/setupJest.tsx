@@ -382,8 +382,7 @@ jest.mock("@segment/analytics-react-native", () => ({
 
 jest.mock("@segment/analytics-react-native-appboy", () => ({}))
 
-jest.mock("react-native-appboy-sdk", () => ({
-  ReactAppboy: jest.fn(),
+jest.mock("@braze/react-native-sdk", () => ({
   changeUser: jest.fn(),
 }))
 
