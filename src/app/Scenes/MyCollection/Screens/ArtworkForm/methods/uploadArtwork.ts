@@ -18,7 +18,6 @@ export const saveOrUpdateArtwork = async (
   const {
     photos,
     artistSearchResult,
-    collectorLocation,
     customArtist,
     pricePaidDollars,
     pricePaidCurrency,
@@ -37,6 +36,13 @@ export const saveOrUpdateArtwork = async (
   if (values.attributionClass !== "LIMITED_EDITION") {
     others.editionNumber = ""
     others.editionSize = ""
+  }
+
+  const collectorLocation = {
+    city: others.collectorLocation?.city || null,
+    state: others.collectorLocation?.state || null,
+    country: others.collectorLocation?.country || null,
+    countryCode: others.collectorLocation?.countryCode || null,
   }
 
   if (props.mode === "add") {
