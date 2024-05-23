@@ -20,8 +20,6 @@ describe("SubmitArtworkPurchaseHistory", () => {
     await flushPromiseQueue()
 
     fireEvent.press(screen.getByText(PROVENANCE_LIST[0].label))
-    // Wait for the select modal to dismiss
-    await flushPromiseQueue()
-    expect(screen.getByText(PROVENANCE_LIST[0].label)).toBeOnTheScreen()
+    expect(screen.getAllByText(PROVENANCE_LIST[0].label)).toHaveLength(2)
   })
 })
