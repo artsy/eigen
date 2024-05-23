@@ -9,6 +9,7 @@ import {
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
+import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { useFormikContext } from "formik"
 import { Alert } from "react-native"
@@ -46,6 +47,11 @@ export const useSubmissionContext = () => {
         if (!values.submissionId && submissionId) {
           setFieldValue("submissionId", submissionId)
         }
+      }
+
+      if (newValues.state === "SUBMITTED") {
+        // Reset saved draft if submission is successful
+        GlobalStore.actions.myCollection.setDraft(null)
       }
 
       __unsafe__SubmissionArtworkFormNavigationRef.current?.navigate?.(nextStep)

@@ -330,6 +330,7 @@ const StackNavigator = createStackNavigator<SubmitArtworkOverviewNavigationStack
 export interface SubmitArtworkProps {
   initialValues: Partial<ArtworkDetailsFormModel>
   initialStep: SubmitArtworkScreenT
+  navigationState?: string
 }
 
 export const SubmitArtwork: React.FC<SubmitArtworkProps> = (props) => {
