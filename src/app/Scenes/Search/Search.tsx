@@ -19,6 +19,7 @@ import styled from "styled-components/native"
 import { CuratedCollections } from "./CuratedCollections"
 import { RecentSearches } from "./RecentSearches"
 import { SearchContext, useSearchProviderValues } from "./SearchContext"
+import { SearchResults } from "./SearchResults"
 import { TrendingArtists } from "./TrendingArtists"
 import { CityGuideCTA } from "./components/CityGuideCTA"
 import { SearchPlaceholder } from "./components/placeholders/SearchPlaceholder"
@@ -60,6 +61,11 @@ export const Search: React.FC = () => {
     // Focus input and open keyboard on bottom nav Search tab double-tab
     searchProviderValues.inputRef.current?.focus()
   })
+
+  // TODO: to be removed on ES results PR
+  const handleRetry = () => {
+    setSearchQuery((prevState) => prevState)
+  }
 
   const handlePillPress = (pill: PillType) => {
     const contextModule = getContextModuleByPillName(selectedPill.displayName)
@@ -142,6 +148,12 @@ export const Search: React.FC = () => {
                   isLoading={isLoading}
                 />
               </Box>
+              <SearchResults
+                selectedPill={selectedPill}
+                query={searchQuery}
+                // TODO: to be removed on ES results PR
+                onRetry={handleRetry}
+              />
             </>
           ) : (
             <Scrollable ref={scrollableRef}>
