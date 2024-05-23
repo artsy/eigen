@@ -2921,6 +2921,11 @@
     color "^4.2.3"
     warn-once "^0.1.0"
 
+"@segment/analytics-react-native-appboy@1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@segment/analytics-react-native-appboy/-/analytics-react-native-appboy-1.5.0.tgz#0aa635710cf6d8198990f9cf5d27112af1f9ed82"
+  integrity sha512-de4NCfopobxziH/sDmGEsZ7VWevNObkFMtDsqhmrbYrjRMs4LGJ/GWo2TX0GhzYqPJurBrNPIoiQlrTaX7rIfg==
+
 "@segment/analytics-react-native@1.5.2":
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/@segment/analytics-react-native/-/analytics-react-native-1.5.2.tgz#1540cef83a83a6001fc249605ccf28f596edf791"
