@@ -248,8 +248,9 @@ export const features = {
   },
   AREnableLongPressOnNewForYouRail: {
     description: "Enable Context Menu on artwork cards on new for you rail",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableLongPressOnNewForYouRail",
   },
   AREnablePartnerOfferOnArtworkScreen: {
     description: "Enable partner offer on artwork screen",
