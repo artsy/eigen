@@ -314,25 +314,6 @@ export const MyCollectionArtworkFormMain: React.FC<
 
           <Flex p={2}>
             <Join separator={<Spacer y={2} />}>
-              {/* TODO: Remove old location input and move autocomplete down  */}
-
-              <LocationAutocomplete
-                allowCustomLocation
-                title="Location"
-                testID="LocationInput"
-                placeholder="Enter city where artwork is located"
-                displayLocation={buildLocationDisplay(formikValues.collectorLocation)}
-                onChange={(location: LocationWithDetails) => {
-                  formik.setFieldValue("collectorLocation", {
-                    city: location.city,
-                    state: location.state,
-                    country: location.country,
-                    countryCode: location.countryCode,
-                  })
-                }}
-                accessibilityLabel="Enter city where the artwork is located"
-              />
-
               <ArtistField />
 
               <Input
@@ -407,15 +388,22 @@ export const MyCollectionArtworkFormMain: React.FC<
                 testID="ProvenanceInput"
               />
 
-              {/* <Input
+              <LocationAutocomplete
+                allowCustomLocation
                 title="Location"
-                placeholder="Enter city where artwork is located"
-                onChangeText={formik.handleChange("artworkLocation")}
-                onBlur={formik.handleBlur("artworkLocation")}
                 testID="LocationInput"
+                placeholder="Enter city where artwork is located"
+                displayLocation={buildLocationDisplay(formikValues.collectorLocation)}
+                onChange={(location: LocationWithDetails) => {
+                  formik.setFieldValue("collectorLocation", {
+                    city: location.city,
+                    state: location.state,
+                    country: location.country,
+                    countryCode: location.countryCode,
+                  })
+                }}
                 accessibilityLabel="Enter city where the artwork is located"
-                value={formikValues.artworkLocation}
-              /> */}
+              />
 
               <Input
                 multiline

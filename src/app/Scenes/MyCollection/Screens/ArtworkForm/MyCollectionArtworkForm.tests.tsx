@@ -188,7 +188,12 @@ describe("MyCollectionArtworkForm", () => {
               "artists": undefined,
               "attributionClass": undefined,
               "category": "Print",
-              "collectorLocation": null,
+              "collectorLocation": {
+                "city": null,
+                "country": null,
+                "countryCode": null,
+                "state": null,
+              },
               "confidentialNotes": undefined,
               "date": "2007",
               "depth": 40,
