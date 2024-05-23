@@ -28,6 +28,16 @@ There was a case where echo returns 401 when a user asks for the latest echo opt
 
 After a few months we should be safe to return to the old name if we want. If we decide to do that, we should make sure to remove the old file that might have been sitting on users' phones.
 
+## @segment+analytics-react-native-appboy patch
+
+### When can we remove this:
+
+When we upgrade to a version of `@segment/analytics-react-native` that includes an updated kotlin version compatible with the version of kotlin we need for React Native.
+
+### Explanation/Context:
+
+When updating to rn-0.69.10 we had to patch this due to kotlin version missmatch.
+
 ## react-native patch
 
 ### react-native prop-types patch
