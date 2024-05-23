@@ -69,8 +69,8 @@ public class MainActivity extends ReactActivity {
     RNPushNotification.IntentHandlers.add(new RNPushNotification.RNIntentHandler() {
       @Override
       public void onNewIntent(Intent intent) {
-        // If your provider requires some parsing on the intent before the data can be
-        // used, add that code here. Otherwise leave empty.
+        super.onNewIntent(intent);
+        setIntent(intent);
       }
 
       @Nullable
