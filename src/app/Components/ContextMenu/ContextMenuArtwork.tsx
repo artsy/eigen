@@ -106,18 +106,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   }
 
   const getContextMenuActions = () => {
-    let saveTitle = isSaved ? "Remove from saved" : "Save"
-    if (isOpenSale) {
-      saveTitle = "Watch Lot"
-    }
     const contextMenuActions: ContextAction[] = [
-      {
-        title: saveTitle,
-        systemIcon: isSaved ? "heart.fill" : "heart",
-        onPress: () => {
-          saveArtworkToLists()
-        },
-      },
       {
         title: "Share",
         systemIcon: "square.and.arrow.up",
@@ -139,15 +128,17 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
       },
     ]
 
-    if (enableSupressArtwork) {
-      contextMenuActions.push({
-        title: "Not Interested",
-        systemIcon: "eye.slash",
+    if (!enableSupressArtwork) {
+      let saveTitle = isSaved ? "Remove from saved" : "Save"
+      if (isOpenSale) {
+        saveTitle = "Watch Lot"
+      }
+
+      contextMenuActions.unshift({
+        title: saveTitle,
+        systemIcon: isSaved ? "heart.fill" : "heart",
         onPress: () => {
-          InteractionManager.runAfterInteractions(() => {
-            onSupressArtwork?.()
-            dislikeArtworkMutation({ variables: { artworkID: internalID } })
-          })
+          saveArtworkToLists()
         },
       })
     }
@@ -159,6 +150,19 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
         onPress: () => {
           InteractionManager.runAfterInteractions(() => {
             openViewInRoom()
+          })
+        },
+      })
+    }
+
+    if (enableSupressArtwork) {
+      contextMenuActions.push({
+        title: "Hide",
+        systemIcon: "eye.slash",
+        onPress: () => {
+          InteractionManager.runAfterInteractions(() => {
+            onSupressArtwork?.()
+            dislikeArtworkMutation({ variables: { artworkID: internalID } })
           })
         },
       })
