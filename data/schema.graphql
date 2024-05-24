@@ -6840,6 +6840,7 @@ type ConsignmentSubmission {
   rejectionReason: String
   saleState: String
   signature: Boolean
+  source: ConsignmentSubmissionSource
 
   # If this artwork exists in Gravity, its ID
   sourceArtworkID: String
