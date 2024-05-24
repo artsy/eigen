@@ -1,5 +1,13 @@
 import { tappedConsign, TappedConsignArgs, TappedConsignmentInquiry } from "@artsy/cohesion"
-import { Join, Screen, Spacer } from "@artsy/palette-mobile"
+import {
+  Flex,
+  Join,
+  Screen,
+  Skeleton,
+  SkeletonBox,
+  SkeletonText,
+  Spacer,
+} from "@artsy/palette-mobile"
 import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
 import { SellWithArtsyHome_me$data } from "__generated__/SellWithArtsyHome_me.graphql"
 import { SellWithArtsyHome_recentlySoldArtworksTypeConnection$data } from "__generated__/SellWithArtsyHome_recentlySoldArtworksTypeConnection.graphql"
@@ -177,8 +185,32 @@ export const SellWithArtsyHomeQueryRenderer: React.FC<SellWithArtsyHomeQueryRend
       query={SellWithArtsyHomeScreenQuery}
       render={renderWithPlaceholder({
         Container: SellWithArtsyHomeContainer,
-        renderPlaceholder: () => <SellWithArtsyHome recentlySoldArtworks={undefined} />,
+        renderPlaceholder: () => <SellWithArtsyHomePlaceholder />,
       })}
     />
+  )
+}
+
+const SellWithArtsyHomePlaceholder: React.FC = () => {
+  return (
+    <Skeleton>
+      <SkeletonBox
+        style={{
+          width: "100%",
+          height: 400,
+        }}
+      />
+
+      <Flex mx={2} mt={2}>
+        <SkeletonText variant="xl" mb={1}>
+          Sell art from your collection
+        </SkeletonText>
+
+        <SkeletonText variant="xs">
+          With our global reach and art market expertise, our specialists will find the best sales
+          option for your work.
+        </SkeletonText>
+      </Flex>
+    </Skeleton>
   )
 }
