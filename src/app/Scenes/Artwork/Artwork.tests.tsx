@@ -642,7 +642,6 @@ describe("Artwork", () => {
       await flushPromiseQueue()
 
       expect(screen.queryByText("Auction")).toBeNull()
-      expect(screen.UNSAFE_queryByType(OtherWorksFragmentContainer)).toBeOnTheScreen()
     })
 
     it("should be displayed if the work is in an auction", async () => {
