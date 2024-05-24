@@ -1,7 +1,7 @@
-import { Flex, useSpace } from "@artsy/palette-mobile"
+import { Flex, Text, useSpace } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
-import { NavigationRoute } from "@sentry/react-native/dist/js/tracing/reactnavigation"
+import { SubmitArtworkFormQuery } from "__generated__/SubmitArtworkFormQuery.graphql"
 import { SubmitArtworkAddDetails } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddDetails"
 import { SubmitArtworkAddDimensions } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddDimensions"
 import { SubmitArtworkAddPhotos } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddPhotos"
@@ -22,6 +22,7 @@ import {
   ARTWORK_FORM_STEPS,
   SubmitArtworkScreen,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
+import { getInitialSubmissionValues } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/getInitialSubmissionValues"
 import {
   ArtworkDetailsFormModel,
   artworkDetailsEmptyInitialValues,
@@ -32,9 +33,11 @@ import { fetchUserContactInformation } from "app/Scenes/SellWithArtsy/SubmitArtw
 import { SubmitArtworkProps } from "app/Scenes/SellWithArtsy/SubmitArtwork/SubmitArtwork"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { useIsKeyboardVisible } from "app/utils/hooks/useIsKeyboardVisible"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { FormikProvider, useFormik } from "formik"
-import { useEffect, useRef } from "react"
+import { useEffect } from "react"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { graphql, useLazyLoadQuery } from "react-relay"
 
 export type SubmitArtworkStackNavigation = {
   StartFlow: undefined
@@ -48,6 +51,34 @@ export type SubmitArtworkStackNavigation = {
   CompleteYourSubmission: undefined
   ArtistRejected: undefined
 }
+
+export const SubmitArtworkFormEdit: React.FC<SubmitArtworkProps> = withSuspense((props) => {
+  const data = useLazyLoadQuery<SubmitArtworkFormQuery>(
+    submitArtworkFormQuery,
+    {
+      id: props.submissionID,
+    },
+    { fetchPolicy: "store-and-network" }
+  )
+
+  // TODO: Better error handling
+  if (!data?.submission) {
+    return (
+      <Flex flex={1} alignItems="center" justifyContent="center">
+        <Text variant="sm-display">Submission not found</Text>
+      </Flex>
+    )
+  }
+
+  return (
+    <SubmitArtworkForm
+      submissionID={props.submissionID}
+      initialValues={getInitialSubmissionValues(data.submission)}
+      initialStep={props.initialStep}
+      navigationState={props.navigationState}
+    />
+  )
+})
 
 export const SubmitArtworkForm: React.FC<SubmitArtworkProps> = (props) => {
   const initialScreen: SubmitArtworkScreen = props.initialStep || "StartFlow"
@@ -67,17 +98,56 @@ export const SubmitArtworkForm: React.FC<SubmitArtworkProps> = (props) => {
   )
 }
 
+const submitArtworkFormQuery = graphql`
+  query SubmitArtworkFormQuery($id: ID) {
+    submission(id: $id) {
+      id
+      externalId
+      artist {
+        internalID
+        name
+      }
+      category
+      locationCity
+      locationCountry
+      locationState
+      locationPostalCode
+      locationCountryCode
+      year
+      title
+      signature
+      medium
+      attributionClass
+      editionNumber
+      editionSize
+      height
+      width
+      depth
+      dimensionsMetric
+      provenance
+      userId
+      userEmail
+      userName
+      userPhone
+      source
+      sourceArtworkID
+      assets {
+        id
+        imageUrls
+        geminiToken
+        size
+        filename
+      }
+    }
+  }
+`
+
 const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
   initialValues: injectedValuesProp,
   initialStep,
-  navigationState = undefined,
 }) => {
   const currentStep = SubmitArtworkFormStore.useStoreState((state) => state.currentStep)
   const space = useSpace()
-
-  const navigationStateRef = useRef(
-    navigationState && isValidJsonString(navigationState) ? JSON.parse(navigationState) : undefined
-  )
 
   const { bottom: bottomInset } = useSafeAreaInsets()
   const isKeyboardVisible = useIsKeyboardVisible(true)
@@ -135,7 +205,7 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
           <NavigationContainer
             independent
             ref={__unsafe__SubmissionArtworkFormNavigationRef}
-            initialState={getInitialNavigationState(navigationStateRef)}
+            initialState={getInitialNavigationState(initialStep)}
           >
             <Stack.Navigator
               // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
@@ -203,37 +273,16 @@ export const getCurrentRoute = () =>
     | keyof SubmitArtworkStackNavigation
     | undefined
 
-const isValidJsonString = (str: string) => {
-  try {
-    JSON.parse(str)
-  } catch (e) {
-    return false
-  }
-  return true
-}
-
-// Helper function to get the initial navigation state from the injected navigation state
-// Because the injected navigation state might contain invalid routes or an invalid index
-// We need to filter them out and inject and a partial state
-// See: https://reactnavigation.org/docs/navigation-state/#partial-state-objects
-// This can only happen if we changed the order of the screen or renamed them
-// Hopefully, this will never happen once the feature becomes mature
-const getInitialNavigationState = (navigationStateRef: React.MutableRefObject<any>) => {
-  const oldRoutesCount = navigationStateRef.current?.routes.length
-  const validRoutesCount: SubmitArtworkScreen[] = navigationStateRef.current?.routes.filter(
-    (route: NavigationRoute) => {
-      // Ideally, the type here is SubmitArtworkScreen
-      // But we might change a screen name in the futrue and that might break the continue submission flow
-      // Because react-navigation won't know what is the active route
-      // This is why we need to validate the injected routes
-      // @ts-expect-error
-      return ARTWORK_FORM_STEPS.includes(route.name)
+const getInitialNavigationState = (initialStep: SubmitArtworkScreen) => {
+  if (ARTWORK_FORM_STEPS.includes(initialStep)) {
+    return {
+      routes: ARTWORK_FORM_STEPS.slice(0, ARTWORK_FORM_STEPS.indexOf(initialStep) + 1).map(
+        (routeName) => ({
+          name: routeName,
+        })
+      ),
     }
-  ).length
-
-  if (validRoutesCount !== oldRoutesCount) {
-    return undefined
   }
 
-  return navigationStateRef.current
+  return undefined
 }

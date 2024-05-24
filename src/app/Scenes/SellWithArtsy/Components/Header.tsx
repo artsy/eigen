@@ -12,7 +12,7 @@ export const Header: React.FC = () => {
   const enableSaveAndContinue = useFeatureFlag("AREnableSaveAndContinueSubmission")
   const { draft } = GlobalStore.useAppState((state) => state.myCollection)
 
-  const showContinueSubmission = !!enableSaveAndContinue && !!draft?.values
+  const showContinueSubmission = !!enableSaveAndContinue && !!draft?.submissionID
   return (
     <Flex>
       <Image
@@ -28,13 +28,9 @@ export const Header: React.FC = () => {
           <Touchable
             style={{ paddingHorizontal: space(2), flex: 1 }}
             onPress={() => {
-              navigate("/sell/submissions/new", {
-                passProps: {
-                  initialValues: draft.values,
-                  initialStep: draft.currentStep,
-                  navigationState: draft.navigationState,
-                },
-              })
+              navigate(
+                `/sell/submissions/${draft.submissionID}/edit?initialStep=${draft.currentStep}`
+              )
             }}
             onLongPress={() => {
               Alert.alert(
