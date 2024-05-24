@@ -84,7 +84,12 @@ const provenanceSchema = Yup.object().shape({
 const artworkDetailsValidationSchema = Yup.object().shape({
   category: Yup.string().required(),
   medium: Yup.string(),
-  year: Yup.string(),
+  year: Yup.string().when("isYearUnknown", {
+    is: false,
+    then: Yup.string().required(),
+    otherwise: Yup.string(),
+  }),
+  isYearUnknown: Yup.boolean(),
 })
 
 export interface Location {
@@ -107,6 +112,7 @@ export interface ArtworkDetailsFormModel {
   editionNumber: string
   editionSizeFormatted: string
   height: string
+  isYearUnknown: boolean
   location: Location
   medium: string
   myCollectionArtworkID: string | null
@@ -143,6 +149,7 @@ export const artworkDetailsEmptyInitialValues: ArtworkDetailsFormModel = {
   editionNumber: "",
   editionSizeFormatted: "",
   height: "",
+  isYearUnknown: false,
   location: {
     city: "",
     state: "",

@@ -11,10 +11,10 @@ import { useRef, useState } from "react"
 import { ScrollView } from "react-native"
 
 export const SubmitArtworkAddDetails = () => {
-  const [isYearUnknown, setIsYearUnknown] = useState(false)
   const [oldTypedYear, setOldTypedYear] = useState("")
 
-  const { handleChange, setFieldValue, values } = useFormikContext<ArtworkDetailsFormModel>()
+  const { handleChange, setFieldValue, values, setValues } =
+    useFormikContext<ArtworkDetailsFormModel>()
 
   const categories = useRef<Array<SelectOption<AcceptableCategoryValue>>>(
     acceptableCategoriesForSubmission()
@@ -27,7 +27,7 @@ export const SubmitArtworkAddDetails = () => {
       </Text>
 
       <Join separator={<Spacer y={2} />}>
-        <Flex>
+        <Flex mb={2}>
           <Input
             title="Year"
             placeholder="YYYY"
@@ -36,26 +36,34 @@ export const SubmitArtworkAddDetails = () => {
             value={values.year}
             onChangeText={(e) => setFieldValue("year", e)}
             accessibilityLabel="Year"
-            disabled={isYearUnknown}
+            disabled={values.isYearUnknown}
             style={{ width: "50%" }}
+            required
           />
-          <Spacer y={2} />
+          <Spacer y={1} />
 
           <Checkbox
-            checked={isYearUnknown}
+            checked={values.isYearUnknown}
             onPress={() => {
               // Save the old typed year to restore it if the user unchecks the checkbox
-              if (!isYearUnknown) {
+              if (!values.isYearUnknown) {
                 setOldTypedYear(values.year)
-                setIsYearUnknown(true)
-                setFieldValue("year", "")
+                setValues({
+                  ...values,
+                  year: "",
+                  isYearUnknown: true,
+                })
               } else {
-                setFieldValue("year", oldTypedYear)
-                setIsYearUnknown(false)
+                setValues({
+                  ...values,
+                  year: oldTypedYear,
+                  isYearUnknown: false,
+                })
               }
             }}
-            text="I don't know"
+            text={<Text color="black60">I don't know</Text>}
           />
+          <Spacer y={1} />
         </Flex>
 
         <CategoryPicker<AcceptableCategoryValue | null>
