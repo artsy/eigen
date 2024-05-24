@@ -37,7 +37,7 @@ export const useSubmissionContext = () => {
 
       const newValues = {
         ...values,
-        state: (currentStep === "PurchaseHistory"
+        state: (currentStep === "AddDimensions"
           ? "SUBMITTED"
           : undefined) as ArtworkDetailsFormModel["state"],
       }
