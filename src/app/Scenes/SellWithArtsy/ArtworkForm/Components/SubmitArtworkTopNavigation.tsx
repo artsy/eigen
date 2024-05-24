@@ -3,15 +3,14 @@ import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Com
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
-import { useIsKeyboardVisible } from "app/utils/hooks/useIsKeyboardVisible"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useFormikContext } from "formik"
-import { MotiView } from "moti"
 import { useEffect } from "react"
 import { LayoutAnimation } from "react-native"
 
 export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
+  const enableSaveAndExit = useFeatureFlag("AREnableSaveAndContinueSubmission")
   const currentStep = SubmitArtworkFormStore.useStoreState((state) => state.currentStep)
-  const isKeyboardVisible = useIsKeyboardVisible(true)
   const hasCompletedForm = currentStep === "CompleteYourSubmission"
 
   const { values } = useFormikContext<ArtworkDetailsFormModel>()
@@ -50,30 +49,20 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
     )
   }
   return (
-    <Flex mx={2}>
-      <MotiView
-        animate={{
-          height: isKeyboardVisible ? 0 : 30,
-        }}
-        transition={{
-          type: "timing",
-          duration: 200,
-        }}
-      >
-        <Flex flexDirection="row" justifyContent="space-between">
-          {currentStep === "SelectArtist" && (
-            <BackButton showX style={{ zIndex: 100, overflow: "visible" }} onPress={goBack} />
-          )}
+    <Flex mx={2} height={40}>
+      <Flex flexDirection="row" justifyContent="space-between">
+        {currentStep === "SelectArtist" && (
+          <BackButton showX style={{ zIndex: 100, overflow: "visible" }} onPress={goBack} />
+        )}
 
-          {currentStep !== "SelectArtist" && (
-            <Flex style={{ flexGrow: 1, alignItems: "flex-end" }}>
-              <Touchable onPress={handleSaveAndExitPress}>
-                <Text>{!hasCompletedForm ? "Save & " : ""}Exit</Text>
-              </Touchable>
-            </Flex>
-          )}
-        </Flex>
-      </MotiView>
+        {currentStep !== "SelectArtist" && !!enableSaveAndExit && (
+          <Flex style={{ flexGrow: 1, alignItems: "flex-end" }}>
+            <Touchable onPress={handleSaveAndExitPress}>
+              <Text>{!hasCompletedForm ? "Save & " : ""}Exit</Text>
+            </Touchable>
+          </Flex>
+        )}
+      </Flex>
     </Flex>
   )
 }

@@ -36,14 +36,14 @@ export const SubmitArtworkAddDetails = () => {
             value={values.year}
             onChangeText={(e) => setFieldValue("year", e)}
             accessibilityLabel="Year"
-            disabled={values.isYearUnknown}
+            disabled={!!values.isYearUnknown}
             style={{ width: "50%" }}
             required
           />
           <Spacer y={1} />
 
           <Checkbox
-            checked={values.isYearUnknown}
+            checked={!!values.isYearUnknown}
             onPress={() => {
               // Save the old typed year to restore it if the user unchecks the checkbox
               if (!values.isYearUnknown) {

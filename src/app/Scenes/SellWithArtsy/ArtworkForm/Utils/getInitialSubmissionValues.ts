@@ -4,6 +4,7 @@ import {
 } from "__generated__/SubmitArtworkFormEditQuery.graphql"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { acceptableCategoriesForSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/acceptableCategoriesForSubmission"
+
 export const getInitialSubmissionValues = (
   values: NonNullable<SubmitArtworkFormEditQuery$data["submission"]>
 ): ArtworkDetailsFormModel => {
@@ -29,6 +30,7 @@ export const getInitialSubmissionValues = (
     editionNumber: values.editionNumber ?? "",
     editionSizeFormatted: values.editionSize ?? "",
     height: values.height ?? "",
+    isYearUnknown: null,
     width: values.width ?? "",
     depth: values.depth ?? "",
     dimensionsMetric: values.dimensionsMetric ?? "in",

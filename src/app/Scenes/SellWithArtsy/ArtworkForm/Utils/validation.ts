@@ -112,7 +112,7 @@ export interface ArtworkDetailsFormModel {
   editionNumber: string
   editionSizeFormatted: string
   height: string
-  isYearUnknown: boolean
+  isYearUnknown: boolean | null
   location: Location
   medium: string
   myCollectionArtworkID: string | null
