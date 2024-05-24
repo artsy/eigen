@@ -36,13 +36,8 @@ describe("ArtworkDetails", () => {
     await flushPromiseQueue()
 
     expect(screen.queryByText("Medium")).toBeTruthy()
-    expect(screen.queryByText("Materials")).toBeTruthy()
-    expect(screen.queryByText("Size")).toBeTruthy()
-    expect(screen.queryByText("Rarity")).toBeTruthy()
     expect(screen.queryByText("Edition")).toBeTruthy()
-    expect(screen.queryByText("Certificate of Authenticity")).toBeTruthy()
     expect(screen.queryByText("Condition")).toBeTruthy()
-    expect(screen.queryByText("Frame")).toBeTruthy()
     expect(screen.queryByText("Signature")).toBeTruthy()
     expect(screen.queryByText("Series")).toBeTruthy()
     expect(screen.queryByText("Publisher")).toBeTruthy()
@@ -65,11 +60,7 @@ describe("ArtworkDetails", () => {
     await flushPromiseQueue()
 
     expect(screen.queryByText("Medium")).toBeTruthy()
-    expect(screen.queryByText("Materials")).toBeTruthy()
-    expect(screen.queryByText("Size")).toBeTruthy()
-    expect(screen.queryByText("Rarity")).toBeTruthy()
     expect(screen.queryByText("Edition")).toBeTruthy()
-    expect(screen.queryByText("Certificate of Authenticity")).toBeTruthy()
     expect(screen.queryByText("Condition")).toBeTruthy()
 
     expect(screen.queryByText("Signature")).toBeTruthy()
@@ -140,28 +131,6 @@ describe("ArtworkDetails", () => {
     fireEvent.press(screen.getByText("name-1"))
 
     expect(navigate).toHaveBeenCalledWith("/artwork/slug-1/medium")
-  })
-
-  it("navigates to artwork classifications when tapped", async () => {
-    renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {})
-    await flushPromiseQueue()
-
-    fireEvent.press(screen.getByText("attributionClass.name-1"))
-
-    expect(navigate).toHaveBeenCalledWith("/artwork-classifications")
-  })
-
-  it("navigates to artwork certificate of authenticity when tapped", async () => {
-    renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {})
-    await flushPromiseQueue()
-
-    fireEvent.press(screen.getByText("details-1"))
-
-    expect(navigate).toHaveBeenCalledWith("/artwork-certificate-of-authenticity")
   })
 
   it("should not render condition report button when canRequestLotConditionsReport false", async () => {

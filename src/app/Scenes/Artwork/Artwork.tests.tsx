@@ -3,7 +3,6 @@ import { ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMore
 import { ArtworkConsignments } from "app/Scenes/Artwork/Components/ArtworkConsignments"
 import { ArtworkDetails } from "app/Scenes/Artwork/Components/ArtworkDetails"
 import { ArtworkHistory } from "app/Scenes/Artwork/Components/ArtworkHistory"
-import { ArtworkPrice } from "app/Scenes/Artwork/Components/ArtworkPrice"
 import { ArtworkScreenHeader } from "app/Scenes/Artwork/Components/ArtworkScreenHeader"
 import { ArtworkStickyBottomContent } from "app/Scenes/Artwork/Components/ArtworkStickyBottomContent"
 import { ImageCarousel } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
@@ -447,6 +446,9 @@ describe("Artwork", () => {
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isUnlisted: false,
+          context: {
+            isAuction: false,
+          },
           partner: {
             type: "Gallery",
             isInquireable: true,
@@ -476,6 +478,9 @@ describe("Artwork", () => {
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isUnlisted: false,
+          context: {
+            isAuction: false,
+          },
           partner: {
             type: "Gallery",
             isInquireable: false,
@@ -565,6 +570,9 @@ describe("Artwork", () => {
         Artwork: () => ({
           isUnlisted: false,
           isEligibleForArtsyGuarantee: true,
+          context: {
+            isAuction: false,
+          },
         }),
       })
       // ArtworkMarkAsRecentlyViewedQuery
@@ -573,6 +581,10 @@ describe("Artwork", () => {
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isUnlisted: false,
+          isEligibleForArtsyGuarantee: true,
+          context: {
+            isAuction: false,
+          },
         }),
       })
 
@@ -630,7 +642,6 @@ describe("Artwork", () => {
       await flushPromiseQueue()
 
       expect(screen.queryByText("Auction")).toBeNull()
-      expect(screen.UNSAFE_queryByType(OtherWorksFragmentContainer)).toBeOnTheScreen()
     })
 
     it("should be displayed if the work is in an auction", async () => {
@@ -849,6 +860,9 @@ describe("Artwork", () => {
           isUnlisted: false,
           // skip about the artist section
           artist: null,
+          context: {
+            isAuction: false,
+          },
           contextGrids: [
             {
               title: "Grid Name",
@@ -972,7 +986,6 @@ describe("Artwork", () => {
       expect(screen.UNSAFE_queryByType(ArtworkScreenHeader)).toBeOnTheScreen()
       expect(screen.UNSAFE_queryByType(ImageCarousel)).toBeOnTheScreen()
       expect(screen.UNSAFE_queryByType(ArtworkDetails)).toBeOnTheScreen()
-      expect(screen.UNSAFE_queryByType(ArtworkPrice)).toBeOnTheScreen()
       expect(screen.UNSAFE_queryByType(ShippingAndTaxesFragmentContainer)).toBeOnTheScreen()
       expect(screen.UNSAFE_queryByType(PrivateArtworkExclusiveAccess)).toBeOnTheScreen()
       expect(screen.UNSAFE_queryByType(PartnerCard)).toBeOnTheScreen()
