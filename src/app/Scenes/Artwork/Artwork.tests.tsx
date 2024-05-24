@@ -446,6 +446,9 @@ describe("Artwork", () => {
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isUnlisted: false,
+          context: {
+            isAuction: false,
+          },
           partner: {
             type: "Gallery",
             isInquireable: true,
@@ -475,6 +478,9 @@ describe("Artwork", () => {
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isUnlisted: false,
+          context: {
+            isAuction: false,
+          },
           partner: {
             type: "Gallery",
             isInquireable: false,
@@ -556,7 +562,7 @@ describe("Artwork", () => {
   })
 
   describe("Artsy Guarantee section", () => {
-    fit("should be displayed when eligible for artsy guarantee", async () => {
+    it("should be displayed when eligible for artsy guarantee", async () => {
       renderWithWrappers(<TestRenderer />)
 
       // ArtworkAboveTheFoldQuery
@@ -564,6 +570,9 @@ describe("Artwork", () => {
         Artwork: () => ({
           isUnlisted: false,
           isEligibleForArtsyGuarantee: true,
+          context: {
+            isAuction: false,
+          },
         }),
       })
       // ArtworkMarkAsRecentlyViewedQuery
@@ -572,6 +581,10 @@ describe("Artwork", () => {
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isUnlisted: false,
+          isEligibleForArtsyGuarantee: true,
+          context: {
+            isAuction: false,
+          },
         }),
       })
 
@@ -848,6 +861,9 @@ describe("Artwork", () => {
           isUnlisted: false,
           // skip about the artist section
           artist: null,
+          context: {
+            isAuction: false,
+          },
           contextGrids: [
             {
               title: "Grid Name",
