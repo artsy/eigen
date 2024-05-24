@@ -26,11 +26,11 @@ export const SubmitArtworkStartFlow: React.FC = () => {
     <Flex flex={1}>
       <ScrollView>
         <Text variant="lg" mb={4}>
-          It’s easy to sell on Artsy 123
+          It’s easy to sell on Artsy
         </Text>
         <Flex>
           {SECTIONS.map((section, index) => (
-            <Flex key={index} my={2} flexDirection="row">
+            <Flex key={index} my={2} flexDirection="row" alignItems="flex-start">
               <Text variant="sm-display" fontWeight={500} style={{ width: 25 }}>
                 {index + 1}
               </Text>
