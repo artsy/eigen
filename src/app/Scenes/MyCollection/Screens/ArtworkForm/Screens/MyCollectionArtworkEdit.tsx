@@ -29,6 +29,12 @@ export const myCollectionArtworkEditQuery = graphql`
       attributionClass {
         name
       }
+      collectorLocation {
+        city
+        state
+        country
+        countryCode
+      }
       id
       internalID
       images(includeAll: true) {
@@ -41,7 +47,6 @@ export const myCollectionArtworkEditQuery = graphql`
       isEdition
       medium
       metric
-      artworkLocation
       provenance
       slug
       title
@@ -55,6 +60,6 @@ export const MyCollectionArtworkEditQueryRenderer = withSuspense(
       artworkId: artworkID,
     })
 
-    return <MyCollectionArtworkFormScreen artwork={data.artwork!} mode="edit" />
+    return <MyCollectionArtworkFormScreen artwork={data.artwork} mode="edit" />
   }
 )

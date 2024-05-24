@@ -1,6 +1,7 @@
 import { Flex } from "@artsy/palette-mobile"
 import { MyCollectionArtworkAboutWork_artwork$key } from "__generated__/MyCollectionArtworkAboutWork_artwork.graphql"
 import { MyCollectionArtworkAboutWork_marketPriceInsights$key } from "__generated__/MyCollectionArtworkAboutWork_marketPriceInsights.graphql"
+import { buildLocationDisplay } from "app/Components/LocationAutocomplete"
 import { Field, MetaDataField } from "app/Scenes/MyCollection/Screens/Artwork/Components/Field"
 import { formatCentsToDollars } from "app/Scenes/MyCollection/utils/formatCentsToDollars"
 import { capitalize } from "lodash"
@@ -29,7 +30,7 @@ export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWork
     attributionClass,
     editionOf,
     dimensions,
-    artworkLocation,
+    collectorLocation,
     date,
     provenance,
     metric,
@@ -49,11 +50,11 @@ export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWork
   return (
     <Flex mb={4}>
       <Field label="Estimate Range" value={estimatePrice} />
-      <MetaDataField label="Medium" value={capitalize(category!)} />
-      <MetaDataField label="Materials" value={capitalize(medium!)} />
+      <MetaDataField label="Medium" value={capitalize(category || "")} />
+      <MetaDataField label="Materials" value={capitalize(medium || "")} />
       <MetaDataField label="Rarity" value={rarityText} />
       <MetaDataField label="Dimensions" value={metric === "in" ? dimensions?.in : dimensions?.cm} />
-      <MetaDataField label="Location" value={artworkLocation} />
+      <MetaDataField label="Location" value={buildLocationDisplay(collectorLocation)} />
       <MetaDataField label="Year created" value={date} />
       <MetaDataField label="Provenance" value={provenance} />
       <MetaDataField label="Price Paid" value={pricePaid?.display} />
@@ -80,7 +81,12 @@ const artworkFragment = graphql`
       shortDescription
     }
     editionOf
-    artworkLocation
+    collectorLocation {
+      city
+      state
+      country
+      countryCode
+    }
     pricePaid {
       display
     }

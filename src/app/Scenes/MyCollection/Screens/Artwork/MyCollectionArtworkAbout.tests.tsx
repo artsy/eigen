@@ -49,7 +49,7 @@ describe("MyCollectionArtworkAbout", () => {
       expect(screen.getByText("Unique work")).toBeTruthy()
       expect(screen.getByText("Dimensions")).toBeTruthy()
       expect(screen.getByText("Location")).toBeTruthy()
-      expect(screen.getByText("Berlin")).toBeTruthy()
+      expect(screen.getByText("Berlin, Germany")).toBeTruthy()
       expect(screen.getByText("39 2/5 × 40 9/10 in")).toBeTruthy()
       expect(screen.getByText("Year created")).toBeTruthy()
       expect(screen.getByText("2007")).toBeTruthy()
@@ -78,7 +78,7 @@ describe("MyCollectionArtworkAbout", () => {
       expect(screen.getByText("Part of a limited edition set\nEdition 3/10")).toBeTruthy()
       expect(screen.getByText("Dimensions")).toBeTruthy()
       expect(screen.getByText("Location")).toBeTruthy()
-      expect(screen.getByText("Berlin")).toBeTruthy()
+      expect(screen.getByText("Berlin, Germany")).toBeTruthy()
       expect(screen.getByText("39 2/5 × 40 9/10 in")).toBeTruthy()
       expect(screen.getByText("Year created")).toBeTruthy()
       expect(screen.getByText("2007")).toBeTruthy()
@@ -198,7 +198,7 @@ const artworkDataAvailable = {
       shortDescription: "Unique work",
     },
     editionOf: null,
-    artworkLocation: "Berlin",
+    collectorLocation: { city: "Berlin", state: null, country: "Germany" },
     pricePaid: {
       display: "$12,000",
     },
@@ -229,7 +229,7 @@ const artworkDataNotAvailable = {
     },
     attributionClass: null,
     editionOf: null,
-    artworkLocation: "",
+    collectorLocation: null,
     pricePaid: null,
   },
 }

@@ -19,6 +19,7 @@ import { captureMessage } from "@sentry/react-native"
 import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { MoneyInput } from "app/Components/Input/MoneyInput"
+import { LocationAutocomplete, buildLocationDisplay } from "app/Components/LocationAutocomplete"
 import { ScreenMargin } from "app/Scenes/MyCollection/Components/ScreenMargin"
 import { ArrowDetails } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArrowDetails"
 import { ArtistCustomArtist } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistCustomArtist"
@@ -37,6 +38,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { dismissModal, goBack, popToRoot } from "app/system/navigation/navigate"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
+import { LocationWithDetails } from "app/utils/googleMaps"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
@@ -313,6 +315,7 @@ export const MyCollectionArtworkFormMain: React.FC<
           <Flex p={2}>
             <Join separator={<Spacer y={2} />}>
               <ArtistField />
+
               <Input
                 title="Title"
                 onChangeText={formik.handleChange("title")}
@@ -322,11 +325,13 @@ export const MyCollectionArtworkFormMain: React.FC<
                 accessibilityLabel="Title"
                 value={formikValues.title}
               />
+
               <CategoryPicker<string>
                 value={formikValues.category}
                 options={artworkMediumCategories}
                 handleChange={handleCategory}
               />
+
               <Input
                 title="Year"
                 keyboardType="number-pad"
@@ -337,6 +342,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                 accessibilityLabel="Year"
                 value={formikValues.date}
               />
+
               <Input
                 title="Materials"
                 placeholder="Oil on canvas, mixed media, lithograph.."
@@ -346,8 +352,11 @@ export const MyCollectionArtworkFormMain: React.FC<
                 accessibilityLabel="Materials"
                 value={formikValues.medium}
               />
+
               <Rarity />
+
               <Dimensions />
+
               <MoneyInput
                 accessibilityLabel="Price paid"
                 currencyTextVariant="xs"
@@ -366,6 +375,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                 shouldDisplayLocalError={false}
                 title="Price Paid"
               />
+
               <Input
                 multiline
                 title="Provenance"
@@ -377,15 +387,24 @@ export const MyCollectionArtworkFormMain: React.FC<
                 onChangeText={formik.handleChange("provenance")}
                 testID="ProvenanceInput"
               />
-              <Input
+
+              <LocationAutocomplete
+                allowCustomLocation
                 title="Location"
-                placeholder="Enter city where artwork is located"
-                onChangeText={formik.handleChange("artworkLocation")}
-                onBlur={formik.handleBlur("artworkLocation")}
                 testID="LocationInput"
+                placeholder="Enter city where artwork is located"
+                displayLocation={buildLocationDisplay(formikValues.collectorLocation)}
+                onChange={(location: LocationWithDetails) => {
+                  formik.setFieldValue("collectorLocation", {
+                    city: location.city,
+                    state: location.state,
+                    country: location.country,
+                    countryCode: location.countryCode,
+                  })
+                }}
                 accessibilityLabel="Enter city where the artwork is located"
-                value={formikValues.artworkLocation}
               />
+
               <Input
                 multiline
                 maxLength={500}
