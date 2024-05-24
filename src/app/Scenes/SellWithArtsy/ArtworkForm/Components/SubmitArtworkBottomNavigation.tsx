@@ -11,13 +11,11 @@ import { LayoutAnimation } from "react-native"
 
 export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
   const { navigateToNextStep, navigateToPreviousStep } = useSubmissionContext()
-  const { isValid, errors } = useFormikContext<ArtworkDetailsFormModel>()
+  const { isValid } = useFormikContext<ArtworkDetailsFormModel>()
   const showStartFromMyCollection = useFeatureFlag("AREnableSubmitMyCollectionArtworkInSubmitFlow")
 
   const { currentStep, isLoading } = SubmitArtworkFormStore.useStoreState((state) => state)
   const { width: screenWidth } = useScreenDimensions()
-
-  console.log({ errors })
 
   const handleBackPress = () => {
     navigateToPreviousStep()
