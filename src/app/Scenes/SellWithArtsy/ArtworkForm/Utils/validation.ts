@@ -54,8 +54,8 @@ const artworkFormPhotosSchema = Yup.object().shape({
     .min(__TEST__ ? 0 : 1)
     .of(
       Yup.object().shape({
-        id: Yup.string().required(),
-        geminiToken: Yup.string().required(),
+        id: Yup.string(),
+        geminiToken: Yup.string(),
         path: Yup.string().required(),
       })
     ),
@@ -97,7 +97,7 @@ export interface Location {
 
 export interface ArtworkDetailsFormModel {
   submissionId: string | null
-  artist: string | null
+  artist: string
   artistId: string
   artistSearchResult: AutosuggestResult | null
   attributionClass: ConsignmentAttributionClass | null

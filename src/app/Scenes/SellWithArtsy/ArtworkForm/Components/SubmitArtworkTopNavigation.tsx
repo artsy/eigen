@@ -1,6 +1,5 @@
 import { BackButton, Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
-import { __unsafe__SubmissionArtworkFormNavigationRef } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
@@ -26,13 +25,12 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
       return goBack()
     }
 
-    GlobalStore.actions.myCollection.setDraft({
-      values: values,
-      currentStep,
-      navigationState: JSON.stringify(
-        __unsafe__SubmissionArtworkFormNavigationRef.current?.getState()
-      ),
-    })
+    if (values.submissionId) {
+      GlobalStore.actions.myCollection.setDraft({
+        submissionID: values.submissionId,
+        currentStep,
+      })
+    }
     goBack()
   }
 
