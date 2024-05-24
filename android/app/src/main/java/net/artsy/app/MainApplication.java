@@ -100,7 +100,7 @@ public class MainApplication extends Application implements ReactApplication {
       }
       final String token = task.getResult();
       Log.i(TAG, "TOKEN firebase messaging token " + token);
-      Braze.getInstance(applicationContext).registerAppboyPushMessages(token);
+      Braze.getInstance(applicationContext).setRegisteredPushToken(token);
     });
 
     ReactNativeFlipper.initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
