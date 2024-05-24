@@ -31,7 +31,7 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
   }, [currentStep])
 
-  if (!currentStep) {
+  if (!currentStep || currentStep === "SelectArtist") {
     return null
   }
 
