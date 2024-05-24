@@ -20603,6 +20603,28 @@ type Viewer {
     # Term used for searching collector profiles
     term: String
   ): CollectorProfileTypeConnection
+  commerceOrders(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+    buyerId: String
+    buyerType: String
+
+    # Returns the first _n_ elements from the list.
+    first: Int
+    impulseConversationId: String
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+    mode: CommerceOrderModeEnum
+    sellerId: String
+    sellerType: String
+    sort: CommerceOrderConnectionSortEnum
+    state: CommerceOrderStateEnum
+    states: [CommerceOrderStateEnum!]
+  ): CommerceOrderConnectionWithTotalCount
 
   # A conversation, usually between a user and a partner
   conversation(
