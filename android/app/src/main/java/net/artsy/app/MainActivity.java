@@ -73,7 +73,6 @@ public class MainActivity extends ReactActivity {
         // used, add that code here. Otherwise leave empty.
       }
 
-
       @Nullable
       @Override
       public Bundle getBundleFromIntent(Intent intent) {
