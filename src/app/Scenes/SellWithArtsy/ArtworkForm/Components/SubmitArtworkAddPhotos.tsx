@@ -3,11 +3,15 @@ import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Ut
 import { UploadPhotosForm } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/UploadPhotosForm"
 import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
 import { useFormikContext } from "formik"
-import { ScrollView } from "react-native"
+import { useEffect } from "react"
+import { Keyboard, ScrollView } from "react-native"
 
 export const SubmitArtworkAddPhotos = () => {
   const { values } = useFormikContext<ArtworkDetailsFormModel>()
 
+  useEffect(() => {
+    Keyboard.dismiss()
+  }, [])
   const isAnyPhotoLoading = values.photos.some((photo: Photo) => photo.loading)
 
   return (

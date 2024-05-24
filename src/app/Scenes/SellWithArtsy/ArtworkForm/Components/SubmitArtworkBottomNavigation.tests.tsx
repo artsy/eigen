@@ -2,7 +2,7 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { SubmitArtworkBottomNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkBottomNavigation"
 import { renderWithSubmitArtworkWrapper } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/testWrappers"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { navigate } from "app/system/navigation/navigate"
+import { navigate, switchTab } from "app/system/navigation/navigate"
 
 const mockNavigateToNextStep = jest.fn()
 const mockNavigateToPreviousStep = jest.fn()
@@ -50,16 +50,19 @@ describe("SubmitArtworkBottomNavigation", () => {
   })
 
   describe("When the current step is Complete your submission", () => {
-    it("Shows a functional View or Edit Submission button", () => {
+    it("Shows a functional Submit Another Work button", () => {
       renderWithSubmitArtworkWrapper({
         component: <SubmitArtworkBottomNavigation />,
         props: { currentStep: "CompleteYourSubmission" },
       })
 
-      const viewOrEditSubmissionButton = screen.getByText("View or Edit Submission")
-      expect(viewOrEditSubmissionButton).toBeOnTheScreen()
+      const submitAnotherWork = screen.getByText("Submit Another Work")
+      expect(submitAnotherWork).toBeOnTheScreen()
 
-      // TODO: Update this test when the feature is implemented
+      fireEvent(submitAnotherWork, "onPress")
+      expect(navigate).toHaveBeenCalledWith("/sell/submissions/new", {
+        replaceActiveScreen: true,
+      })
     })
 
     it("Shows a functional Submit Another Artwork button", () => {
@@ -68,14 +71,11 @@ describe("SubmitArtworkBottomNavigation", () => {
         props: { currentStep: "CompleteYourSubmission" },
       })
 
-      const submitAnotherArtworkButton = screen.getByText("Submit Another Artwork")
-      expect(submitAnotherArtworkButton).toBeOnTheScreen()
+      const viewArtworkInMyCollection = screen.getByText("View Artwork In My Collection")
+      expect(viewArtworkInMyCollection).toBeOnTheScreen()
 
-      fireEvent(submitAnotherArtworkButton, "onPress")
-
-      expect(navigate).toHaveBeenCalledWith("/sell/submissions/new", {
-        replaceActiveScreen: true,
-      })
+      fireEvent(viewArtworkInMyCollection, "onPress")
+      expect(switchTab).toHaveBeenCalledWith("profile")
     })
   })
 

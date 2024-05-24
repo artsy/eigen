@@ -3,7 +3,7 @@ import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Com
 import { SubmitArtworkProgressBar } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkProgressBar"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
-import { navigate } from "app/system/navigation/navigate"
+import { navigate, popToRoot, switchTab } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useFormikContext } from "formik"
 import { useEffect } from "react"
@@ -78,12 +78,6 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
         <Flex px={2}>
           <Spacer y={1} />
 
-          <Button block onPress={() => {}}>
-            View or Edit Submission
-          </Button>
-
-          <Spacer y={2} />
-
           <Button
             block
             onPress={() => {
@@ -91,9 +85,23 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
                 replaceActiveScreen: true,
               })
             }}
+          >
+            Submit Another Work
+          </Button>
+
+          <Spacer y={2} />
+
+          <Button
+            block
+            onPress={() => {
+              switchTab("profile")
+              requestAnimationFrame(() => {
+                popToRoot()
+              })
+            }}
             variant="outline"
           >
-            Submit Another Artwork
+            View Artwork In My Collection
           </Button>
         </Flex>
       </Flex>
