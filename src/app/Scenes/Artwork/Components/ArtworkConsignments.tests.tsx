@@ -2,8 +2,7 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkConsignments_artwork_TestQuery } from "__generated__/ArtworkConsignments_artwork_TestQuery.graphql"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { ModalStack } from "app/system/navigation/ModalStack"
-import { navigate } from "app/system/navigation/navigate"
-import { useSelectedTab } from "app/utils/hooks/useSelectedTab"
+import { switchTab } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
@@ -45,7 +44,7 @@ describe("ArtworkConsignments", () => {
     return null
   }
 
-  it("redirects to /sales when consignments link is clicked from outside of sell tab", async () => {
+  it("redirects to sell tab", async () => {
     renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
@@ -55,21 +54,7 @@ describe("ArtworkConsignments", () => {
 
     fireEvent.press(screen.getByText(/Consign with Artsy/))
 
-    expect(navigate).toHaveBeenCalledWith("/sales")
-  })
-
-  it("redirects to /collections/my-collection/marketing-landing when consignments link is clicked from within sell tab", async () => {
-    ;(useSelectedTab as any).mockImplementation(() => "sell")
-    renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Artwork: () => artwork,
-    })
-    await flushPromiseQueue()
-
-    fireEvent.press(screen.getByText(/Consign with Artsy/))
-
-    expect(navigate).toHaveBeenCalledWith("/collections/my-collection/marketing-landing")
+    expect(switchTab).toHaveBeenCalledWith("sell")
   })
 
   describe("link text", () => {
