@@ -80,6 +80,7 @@ export const SubmitArtworkSelectArtist = () => {
           onResultPress={handleResultPress}
           disableCustomArtists
           onlyP1Artists
+          hideCollectedArtists
           Hint={
             <Text variant="xs" color="black60" py={1}>
               Currently, artists can not sell their own work on Artsy.{"\n"}
