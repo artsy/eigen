@@ -18,6 +18,10 @@ export interface Location {
   zipCode?: string
 }
 
+/**
+ * @deprecated
+ * Please use ArtworkDetailsFormModel from app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation.ts
+ */
 export interface ArtworkDetailsFormModel {
   artist: string
   artistId: string

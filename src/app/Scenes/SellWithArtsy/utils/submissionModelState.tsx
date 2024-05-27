@@ -33,10 +33,16 @@ export interface ArtworkSubmissionModel {
 }
 
 export interface SubmissionModel {
+  draft: {
+    submissionID: string
+    currentStep: string
+  } | null
   submission: ArtworkSubmissionModel
+  setDraft: Action<this, this["draft"]>
 }
 
 export const getSubmissionModel = (): SubmissionModel => ({
+  draft: null,
   submission: {
     submissionId: "",
     submissionIdForMyCollection: "",
@@ -78,4 +84,7 @@ export const getSubmissionModel = (): SubmissionModel => ({
       state.photos = photosEmptyInitialValues
     }),
   },
+  setDraft: action((state, payload) => {
+    state.draft = payload
+  }),
 })

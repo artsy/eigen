@@ -48,7 +48,7 @@ export const SubmitArtworkSelectArtist = () => {
 
     const updatedValues = {
       artistId: result.internalID,
-      artist: result.displayLabel,
+      artist: result.displayLabel || "",
       artistSearchResult: result,
       userPhone: formik.values.userPhone,
       userEmail: formik.values.userEmail,

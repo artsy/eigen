@@ -1,24 +1,37 @@
 import { BackButton, Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
-import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
+import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { useIsKeyboardVisible } from "app/utils/hooks/useIsKeyboardVisible"
+import { useFormikContext } from "formik"
 import { MotiView } from "moti"
 import { useEffect } from "react"
 import { LayoutAnimation } from "react-native"
 
 export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
-  const { navigateToNextStep } = useSubmissionContext()
   const currentStep = SubmitArtworkFormStore.useStoreState((state) => state.currentStep)
   const isKeyboardVisible = useIsKeyboardVisible(true)
   const hasCompletedForm = currentStep === "CompleteYourSubmission"
 
+  const { values } = useFormikContext<ArtworkDetailsFormModel>()
+
   const handleSaveAndExitPress = () => {
     if (hasCompletedForm) {
+      // Reset form if user is on the last step
+      // This is to ensure that the user can start a new submission
+      // This is not required but is a nice to have as a second layer of protection
+      GlobalStore.actions.artworkSubmission.setDraft(null)
       return goBack()
     }
 
-    navigateToNextStep()
+    if (values.submissionId) {
+      GlobalStore.actions.artworkSubmission.setDraft({
+        submissionID: values.submissionId,
+        currentStep,
+      })
+    }
+    goBack()
   }
 
   useEffect(() => {

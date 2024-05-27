@@ -18,6 +18,7 @@ import { SelectArtworkMyCollectionArtwork } from "app/Scenes/SellWithArtsy/Artwo
 import { SubmitArtworkStartFlow } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkStartFlow"
 import { SubmitArtworkTopNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkTopNavigation"
 import { SubmitArtworkScreen } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
+import { getInitialNavigationState } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/getInitialNavigationState"
 import {
   ArtworkDetailsFormModel,
   artworkDetailsEmptyInitialValues,
@@ -54,7 +55,11 @@ export const SubmitArtworkForm: React.FC<SubmitArtworkProps> = (props) => {
         currentStep: initialScreen,
       }}
     >
-      <SubmitArtworkFormContent initialValues={props.initialValues} initialStep={initialScreen} />
+      <SubmitArtworkFormContent
+        initialValues={props.initialValues}
+        initialStep={initialScreen}
+        navigationState={props.navigationState}
+      />
     </SubmitArtworkFormStoreProvider>
   )
 }
@@ -65,6 +70,7 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
 }) => {
   const currentStep = SubmitArtworkFormStore.useStoreState((state) => state.currentStep)
   const space = useSpace()
+
   const { bottom: bottomInset } = useSafeAreaInsets()
   const isKeyboardVisible = useIsKeyboardVisible(true)
 
@@ -118,7 +124,11 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
             paddingHorizontal: space(2),
           }}
         >
-          <NavigationContainer independent ref={__unsafe__SubmissionArtworkFormNavigationRef}>
+          <NavigationContainer
+            independent
+            ref={__unsafe__SubmissionArtworkFormNavigationRef}
+            initialState={getInitialNavigationState(initialStep)}
+          >
             <Stack.Navigator
               // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
               detachInactiveScreens={false}
