@@ -1,4 +1,4 @@
-import { Flex, useSpace } from "@artsy/palette-mobile"
+import { Flex } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { SubmitArtworkAddDetails } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddDetails"
@@ -69,8 +69,6 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
   initialStep,
 }) => {
   const currentStep = SubmitArtworkFormStore.useStoreState((state) => state.currentStep)
-  const space = useSpace()
-
   const { bottom: bottomInset } = useSafeAreaInsets()
   const isKeyboardVisible = useIsKeyboardVisible(true)
 
@@ -121,7 +119,6 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
           style={{
             flex: 1,
             paddingBottom: isKeyboardVisible ? 0 : bottomInset,
-            paddingHorizontal: space(2),
           }}
         >
           <NavigationContainer

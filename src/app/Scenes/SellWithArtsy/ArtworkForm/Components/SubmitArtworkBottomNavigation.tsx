@@ -3,7 +3,7 @@ import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Com
 import { SubmitArtworkProgressBar } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkProgressBar"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
-import { navigate } from "app/system/navigation/navigate"
+import { navigate, popToRoot, switchTab } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useFormikContext } from "formik"
 import { useEffect } from "react"
@@ -29,13 +29,13 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
   }, [currentStep])
 
-  if (!currentStep) {
+  if (!currentStep || currentStep === "SelectArtist") {
     return null
   }
 
   if (currentStep === "StartFlow") {
     return (
-      <Flex borderTopWidth={1} borderTopColor="black10" py={2} alignSelf="center" mx={-2} px={2}>
+      <Flex borderTopWidth={1} borderTopColor="black10" py={2} alignSelf="center" px={2}>
         <Button
           onPress={() => {
             navigateToNextStep({
@@ -78,12 +78,6 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
         <Flex px={2}>
           <Spacer y={1} />
 
-          <Button block onPress={() => {}}>
-            View or Edit Submission
-          </Button>
-
-          <Spacer y={2} />
-
           <Button
             block
             onPress={() => {
@@ -91,9 +85,23 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
                 replaceActiveScreen: true,
               })
             }}
+          >
+            Submit Another Work
+          </Button>
+
+          <Spacer y={2} />
+
+          <Button
+            block
+            onPress={() => {
+              switchTab("profile")
+              requestAnimationFrame(() => {
+                popToRoot()
+              })
+            }}
             variant="outline"
           >
-            Submit Another Artwork
+            View Artwork In My Collection
           </Button>
         </Flex>
       </Flex>
@@ -102,13 +110,7 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
 
   if (currentStep === "ArtistRejected") {
     return (
-      <Flex
-        borderTopWidth={1}
-        borderTopColor="black10"
-        py={2}
-        width={screenWidth}
-        alignSelf="center"
-      >
+      <Flex borderTopWidth={1} borderTopColor="black10" py={2} alignSelf="center">
         <Flex px={2}>
           <Spacer y={1} />
 
@@ -140,7 +142,7 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
   }
 
   return (
-    <Flex borderTopWidth={1} borderTopColor="black10" pb={2} width={screenWidth} alignSelf="center">
+    <Flex borderTopWidth={1} borderTopColor="black10" pb={2} width="100%" alignSelf="center">
       <Flex mx={2} my={1}>
         <SubmitArtworkProgressBar />
       </Flex>

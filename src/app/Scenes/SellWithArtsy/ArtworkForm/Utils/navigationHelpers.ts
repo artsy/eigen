@@ -27,6 +27,7 @@ export const useSubmissionContext = () => {
   }) => {
     try {
       setIsLoading(true)
+
       const nextStep =
         props?.step || ARTWORK_FORM_STEPS[ARTWORK_FORM_STEPS.indexOf(currentStep as any) + 1]
 
@@ -37,7 +38,7 @@ export const useSubmissionContext = () => {
 
       const newValues = {
         ...values,
-        state: (currentStep === "PurchaseHistory"
+        state: (currentStep === "AddDimensions"
           ? "SUBMITTED"
           : undefined) as ArtworkDetailsFormModel["state"],
       }
