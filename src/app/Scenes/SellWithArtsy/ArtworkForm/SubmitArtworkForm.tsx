@@ -1,6 +1,6 @@
 import { Flex } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
-import { createStackNavigator } from "@react-navigation/stack"
+import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import { SubmitArtworkAddDetails } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddDetails"
 import { SubmitArtworkAddDimensions } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddDimensions"
 import { SubmitArtworkAddPhotos } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddPhotos"
@@ -134,6 +134,21 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
                 cardStyle: { backgroundColor: "white" },
                 keyboardHandlingEnabled: false,
                 gestureEnabled: false,
+                ...TransitionPresets.SlideFromRightIOS,
+                cardStyleInterpolator: ({ current, layouts }) => {
+                  return {
+                    cardStyle: {
+                      transform: [
+                        {
+                          translateX: current.progress.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [layouts.screen.width, 0],
+                          }),
+                        },
+                      ],
+                    },
+                  }
+                },
               }}
               initialRouteName={initialStep}
             >
