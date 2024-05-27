@@ -35,7 +35,7 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
 
   if (currentStep === "StartFlow") {
     return (
-      <Flex borderTopWidth={1} borderTopColor="black10" py={2} alignSelf="center" mx={-2} px={2}>
+      <Flex borderTopWidth={1} borderTopColor="black10" py={2} alignSelf="center" px={2}>
         <Button
           onPress={() => {
             navigateToNextStep({
@@ -110,13 +110,7 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
 
   if (currentStep === "ArtistRejected") {
     return (
-      <Flex
-        borderTopWidth={1}
-        borderTopColor="black10"
-        py={2}
-        width={screenWidth}
-        alignSelf="center"
-      >
+      <Flex borderTopWidth={1} borderTopColor="black10" py={2} alignSelf="center">
         <Flex px={2}>
           <Spacer y={1} />
 
@@ -148,7 +142,7 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
   }
 
   return (
-    <Flex borderTopWidth={1} borderTopColor="black10" pb={2} width={screenWidth} alignSelf="center">
+    <Flex borderTopWidth={1} borderTopColor="black10" pb={2} width="100%" alignSelf="center">
       <Flex mx={2} my={1}>
         <SubmitArtworkProgressBar />
       </Flex>

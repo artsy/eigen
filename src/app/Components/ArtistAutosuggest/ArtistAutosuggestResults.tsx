@@ -169,6 +169,7 @@ const ArtistAutosuggestResultsContainer = createPaginationContainer(
                   auctionLots
                 }
                 targetSupply {
+                  isP1
                   isTargetSupply
                   isP1
                 }

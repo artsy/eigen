@@ -1,4 +1,12 @@
-import { CheckCircleFillIcon, Flex, Message, Spacer, Text, useSpace } from "@artsy/palette-mobile"
+import {
+  CheckCircleFillIcon,
+  Flex,
+  Message,
+  Screen,
+  Spacer,
+  Text,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { useEffect } from "react"
 import { BackHandler, Platform, ScrollView } from "react-native"
 
@@ -16,36 +24,38 @@ export const SubmitArtworkCompleteYourSubmission = () => {
   }, [])
 
   return (
-    <ScrollView>
-      <Flex>
-        <Flex mb={2} flexDirection="row">
-          <Flex flex={1} pr={1}>
-            <Text variant="lg-display">Thank you for submitting your artwork</Text>
+    <Screen.Body>
+      <ScrollView>
+        <Flex>
+          <Flex mb={2} flexDirection="row">
+            <Flex flex={1} pr={1}>
+              <Text variant="lg-display">Thank you for submitting your artwork</Text>
+            </Flex>
+            <CheckCircleFillIcon
+              height={ICON_WIDTH}
+              width={ICON_WIDTH}
+              fill="green100"
+              // Add top margin for iOS to align with the text
+              top={Platform.OS === "ios" ? space(0.5) : 0}
+            />
           </Flex>
-          <CheckCircleFillIcon
-            height={ICON_WIDTH}
-            width={ICON_WIDTH}
-            fill="green100"
-            // Add top margin for iOS to align with the text
-            top={Platform.OS === "ios" ? space(0.5) : 0}
-          />
         </Flex>
-      </Flex>
 
-      <Spacer y={2} />
+        <Spacer y={2} />
 
-      <Text variant="xs">
-        We will email you within 3-5 days to confirm if your artwork has been accepted or not. In
-        the meantime your submission will appear in the feature, My Collection.
-      </Text>
+        <Text variant="xs">
+          We will email you within 3-5 days to confirm if your artwork has been accepted or not. In
+          the meantime your submission will appear in the feature, My Collection.
+        </Text>
 
-      <Spacer y={2} />
+        <Spacer y={2} />
 
-      <Message
-        title="Next steps"
-        variant="success"
-        text="If your submission is accepted, we will ask for additional details to lorem ipsum dolor."
-      ></Message>
-    </ScrollView>
+        <Message
+          title="Next steps"
+          variant="success"
+          text="If your submission is accepted, we will ask for additional details to lorem ipsum dolor."
+        ></Message>
+      </ScrollView>
+    </Screen.Body>
   )
 }
