@@ -53,7 +53,7 @@ export const SubmitArtworkCompleteYourSubmission = () => {
         <Message
           title="Next steps"
           variant="success"
-          text="If your submission is accepted, we will ask for additional details to lorem ipsum dolor."
+          text="If your submission is accepted, we will ask for additional details"
         ></Message>
       </ScrollView>
     </Screen.Body>
