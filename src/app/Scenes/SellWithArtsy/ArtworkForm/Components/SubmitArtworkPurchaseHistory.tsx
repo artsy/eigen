@@ -37,7 +37,6 @@ export const SubmitArtworkPurchaseHistory = () => {
               options={PROVENANCE_LIST}
               title="Purchase information"
               testID="PurchaseInformation_Select"
-              // onSelect={(e) => setFieldValue("provenance", e)}
               onSelectValue={(value) => {
                 setFieldValue("provenance", value)
               }}

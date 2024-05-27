@@ -17,7 +17,6 @@ import { Alert } from "react-native"
 export const useSubmissionContext = () => {
   const setCurrentStep = SubmitArtworkFormStore.useStoreActions((actions) => actions.setCurrentStep)
   const setIsLoading = SubmitArtworkFormStore.useStoreActions((actions) => actions.setIsLoading)
-  const { isLoading } = SubmitArtworkFormStore.useStoreState((state) => state)
   const { currentStep } = SubmitArtworkFormStore.useStoreState((state) => state)
 
   const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
@@ -27,9 +26,7 @@ export const useSubmissionContext = () => {
     skipMutation?: boolean
   }) => {
     try {
-      if (!isLoading) {
-        setIsLoading(true)
-      }
+      setIsLoading(true)
 
       const nextStep =
         props?.step || ARTWORK_FORM_STEPS[ARTWORK_FORM_STEPS.indexOf(currentStep as any) + 1]
