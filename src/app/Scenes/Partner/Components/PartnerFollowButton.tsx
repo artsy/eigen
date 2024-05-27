@@ -92,14 +92,15 @@ export class PartnerFollowButton extends React.Component<Props, State> {
     const { partner } = this.props
     const hasFollows = partner.profile?.counts?.follows >= 500
     return (
-      <>
-        <FollowButton
-          haptic
-          isFollowed={!!partner.profile?.isFollowed}
-          onPress={this.handleFollowPartner.bind(this)}
-          {...(hasFollows && { followCount: partner.profile?.counts?.follows })}
-        />
-      </>
+      <FollowButton
+        haptic
+        isFollowed={!!partner.profile?.isFollowed}
+        onPress={this.handleFollowPartner.bind(this)}
+        {...(hasFollows && {
+          followCount: partner.profile?.counts?.follows,
+          longestText: "Following 999.9k",
+        })}
+      />
     )
   }
 }
