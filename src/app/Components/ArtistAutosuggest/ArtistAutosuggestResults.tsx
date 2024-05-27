@@ -171,7 +171,6 @@ const ArtistAutosuggestResultsContainer = createPaginationContainer(
                 targetSupply {
                   isP1
                   isTargetSupply
-                  isP1
                 }
               }
             }
