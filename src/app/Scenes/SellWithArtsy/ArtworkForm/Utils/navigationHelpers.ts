@@ -51,7 +51,7 @@ export const useSubmissionContext = () => {
 
       if (newValues.state === "SUBMITTED") {
         // Reset saved draft if submission is successful
-        GlobalStore.actions.myCollection.setDraft(null)
+        GlobalStore.actions.artworkSubmission.setDraft(null)
       }
 
       __unsafe__SubmissionArtworkFormNavigationRef.current?.navigate?.(nextStep)

@@ -21,12 +21,12 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
       // Reset form if user is on the last step
       // This is to ensure that the user can start a new submission
       // This is not required but is a nice to have as a second layer of protection
-      GlobalStore.actions.myCollection.setDraft(null)
+      GlobalStore.actions.artworkSubmission.setDraft(null)
       return goBack()
     }
 
     if (values.submissionId) {
-      GlobalStore.actions.myCollection.setDraft({
+      GlobalStore.actions.artworkSubmission.setDraft({
         submissionID: values.submissionId,
         currentStep,
       })

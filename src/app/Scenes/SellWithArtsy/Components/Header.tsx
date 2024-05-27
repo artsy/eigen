@@ -10,9 +10,10 @@ export const Header: React.FC = () => {
   const { width } = useScreenDimensions()
   const space = useSpace()
   const enableSaveAndContinue = useFeatureFlag("AREnableSaveAndContinueSubmission")
-  const { draft } = GlobalStore.useAppState((state) => state.myCollection)
+  const { draft } = GlobalStore.useAppState((state) => state.artworkSubmission)
 
   const showContinueSubmission = !!enableSaveAndContinue && !!draft?.submissionID
+
   return (
     <Flex>
       <Image
@@ -44,7 +45,7 @@ export const Header: React.FC = () => {
                   {
                     text: "Disard Draft",
                     onPress: () => {
-                      GlobalStore.actions.myCollection.setDraft(null)
+                      GlobalStore.actions.artworkSubmission.setDraft(null)
                       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
                     },
                     style: "destructive",

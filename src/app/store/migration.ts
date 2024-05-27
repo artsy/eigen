@@ -55,10 +55,10 @@ export const Versions = {
   RenameDefaultViewOption: 42,
   AddExperimentsOverrides: 43,
   DeleteDirtyArtworkDetails: 44,
-  AddMyCollectionDraft: 45,
+  AddSubmissionDraft: 45,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddMyCollectionDraft
+export const CURRENT_APP_VERSION = Versions.AddSubmissionDraft
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -321,8 +321,8 @@ export const artsyAppMigrations: Migrations = {
   [Versions.DeleteDirtyArtworkDetails]: (state) => {
     delete state.artworkSubmission.submission.dirtyArtworkDetailsValues
   },
-  [Versions.AddMyCollectionDraft]: (state) => {
-    state.myCollection.draft = null
+  [Versions.AddSubmissionDraft]: (state) => {
+    state.artworkSubmission.draft = null
   },
 }
 

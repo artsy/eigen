@@ -1,7 +1,6 @@
-import { Flex, Text, useSpace } from "@artsy/palette-mobile"
+import { Flex, useSpace } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
-import { SubmitArtworkFormQuery } from "__generated__/SubmitArtworkFormQuery.graphql"
 import { SubmitArtworkAddDetails } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddDetails"
 import { SubmitArtworkAddDimensions } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddDimensions"
 import { SubmitArtworkAddPhotos } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddPhotos"
@@ -18,11 +17,8 @@ import { SubmitArtworkSelectArtist } from "app/Scenes/SellWithArtsy/ArtworkForm/
 import { SelectArtworkMyCollectionArtwork } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkSelectArtworkMyCollectionArtwork"
 import { SubmitArtworkStartFlow } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkStartFlow"
 import { SubmitArtworkTopNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkTopNavigation"
-import {
-  ARTWORK_FORM_STEPS,
-  SubmitArtworkScreen,
-} from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
-import { getInitialSubmissionValues } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/getInitialSubmissionValues"
+import { SubmitArtworkScreen } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
+import { getInitialNavigationState } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/getInitialNavigationState"
 import {
   ArtworkDetailsFormModel,
   artworkDetailsEmptyInitialValues,
@@ -33,11 +29,9 @@ import { fetchUserContactInformation } from "app/Scenes/SellWithArtsy/SubmitArtw
 import { SubmitArtworkProps } from "app/Scenes/SellWithArtsy/SubmitArtwork/SubmitArtwork"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { useIsKeyboardVisible } from "app/utils/hooks/useIsKeyboardVisible"
-import { withSuspense } from "app/utils/hooks/withSuspense"
 import { FormikProvider, useFormik } from "formik"
 import { useEffect } from "react"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { graphql, useLazyLoadQuery } from "react-relay"
 
 export type SubmitArtworkStackNavigation = {
   StartFlow: undefined
@@ -51,34 +45,6 @@ export type SubmitArtworkStackNavigation = {
   CompleteYourSubmission: undefined
   ArtistRejected: undefined
 }
-
-export const SubmitArtworkFormEdit: React.FC<SubmitArtworkProps> = withSuspense((props) => {
-  const data = useLazyLoadQuery<SubmitArtworkFormQuery>(
-    submitArtworkFormQuery,
-    {
-      id: props.submissionID,
-    },
-    { fetchPolicy: "store-and-network" }
-  )
-
-  // TODO: Better error handling
-  if (!data?.submission) {
-    return (
-      <Flex flex={1} alignItems="center" justifyContent="center">
-        <Text variant="sm-display">Submission not found</Text>
-      </Flex>
-    )
-  }
-
-  return (
-    <SubmitArtworkForm
-      submissionID={props.submissionID}
-      initialValues={getInitialSubmissionValues(data.submission)}
-      initialStep={props.initialStep}
-      navigationState={props.navigationState}
-    />
-  )
-})
 
 export const SubmitArtworkForm: React.FC<SubmitArtworkProps> = (props) => {
   const initialScreen: SubmitArtworkScreen = props.initialStep || "StartFlow"
@@ -97,50 +63,6 @@ export const SubmitArtworkForm: React.FC<SubmitArtworkProps> = (props) => {
     </SubmitArtworkFormStoreProvider>
   )
 }
-
-const submitArtworkFormQuery = graphql`
-  query SubmitArtworkFormQuery($id: ID) {
-    submission(id: $id) {
-      id
-      externalId
-      artist {
-        internalID
-        name
-      }
-      category
-      locationCity
-      locationCountry
-      locationState
-      locationPostalCode
-      locationCountryCode
-      year
-      title
-      signature
-      medium
-      attributionClass
-      editionNumber
-      editionSize
-      height
-      width
-      depth
-      dimensionsMetric
-      provenance
-      userId
-      userEmail
-      userName
-      userPhone
-      source
-      sourceArtworkID
-      assets {
-        id
-        imageUrls
-        geminiToken
-        size
-        filename
-      }
-    }
-  }
-`
 
 const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
   initialValues: injectedValuesProp,
@@ -272,17 +194,3 @@ export const getCurrentRoute = () =>
   __unsafe__SubmissionArtworkFormNavigationRef.current?.getCurrentRoute()?.name as
     | keyof SubmitArtworkStackNavigation
     | undefined
-
-const getInitialNavigationState = (initialStep: SubmitArtworkScreen) => {
-  if (ARTWORK_FORM_STEPS.includes(initialStep)) {
-    return {
-      routes: ARTWORK_FORM_STEPS.slice(0, ARTWORK_FORM_STEPS.indexOf(initialStep) + 1).map(
-        (routeName) => ({
-          name: routeName,
-        })
-      ),
-    }
-  }
-
-  return undefined
-}

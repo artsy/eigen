@@ -1,11 +1,11 @@
 import {
   ConsignmentAttributionClass,
-  SubmitArtworkFormQuery$data,
-} from "__generated__/SubmitArtworkFormQuery.graphql"
+  SubmitArtworkFormEditQuery$data,
+} from "__generated__/SubmitArtworkFormEditQuery.graphql"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { acceptableCategoriesForSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/acceptableCategoriesForSubmission"
 export const getInitialSubmissionValues = (
-  values: NonNullable<SubmitArtworkFormQuery$data["submission"]>
+  values: NonNullable<SubmitArtworkFormEditQuery$data["submission"]>
 ): ArtworkDetailsFormModel => {
   const initialPhotos = values.assets?.map((asset) => asset?.imageUrls) ?? []
 

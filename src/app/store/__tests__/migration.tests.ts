@@ -1018,8 +1018,8 @@ describe("App version Versions.AddProgressiveOnboardingModel", () => {
     })
   })
 
-  describe("App version Versions.AddMyCollectionDraft", () => {
-    const migrationToTest = Versions.AddMyCollectionDraft
+  describe("App version Versions.AddSubmissionDraft", () => {
+    const migrationToTest = Versions.AddSubmissionDraft
 
     it("adds submission to my collection artwork", () => {
       const previousState = migrate({
@@ -1027,14 +1027,14 @@ describe("App version Versions.AddProgressiveOnboardingModel", () => {
         toVersion: migrationToTest - 1,
       }) as any
 
-      expect(previousState.myCollection.draft).not.toBeDefined()
+      expect(previousState.artworkSubmission.draft).not.toBeDefined()
 
       const migratedState = migrate({
         state: previousState,
         toVersion: migrationToTest,
       }) as any
 
-      expect(migratedState.myCollection.draft).toEqual(null)
+      expect(migratedState.artworkSubmission.draft).toEqual(null)
     })
   })
 })
