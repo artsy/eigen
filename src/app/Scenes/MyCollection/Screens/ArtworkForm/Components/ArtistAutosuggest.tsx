@@ -28,6 +28,7 @@ interface ArtistAutosuggestProps {
   disableCustomArtists?: boolean
   hideCollectedArtists?: boolean
   Hint?: ReactElement
+  loading?: boolean
   onlyP1Artists?: boolean
   onResultPress: (result: AutosuggestResult) => void
   onSkipPress?: (artistDisplayName: string) => void
@@ -37,6 +38,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
   disableCustomArtists,
   hideCollectedArtists = false,
   Hint,
+  loading = false,
   onlyP1Artists = false,
   onResultPress,
   onSkipPress,
@@ -116,6 +118,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
           autoFocus={typeof jest === "undefined"}
           autoCorrect={false}
           spellCheck={false}
+          loading={loading}
         />
         {trimmedQuery === "" && isValidElement(Hint) && Hint}
         {showResults ? (

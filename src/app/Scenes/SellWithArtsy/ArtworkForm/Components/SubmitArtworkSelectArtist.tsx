@@ -18,15 +18,19 @@ import { Keyboard } from "react-native"
 export const SubmitArtworkSelectArtist = () => {
   const { navigateToNextStep } = useSubmissionContext()
   const setIsLoading = SubmitArtworkFormStore.useStoreActions((actions) => actions.setIsLoading)
+  const { isLoading } = SubmitArtworkFormStore.useStoreState((state) => state)
 
   const formik = useFormikContext<ArtworkDetailsFormModel>()
 
   const handleResultPress = async (result: AutosuggestResult) => {
     setIsLoading(true)
 
-    formik.setFieldValue("artistSearchResult", result)
-    formik.setFieldValue("artist", result.displayLabel)
-    formik.setFieldValue("artistId", result.internalID)
+    formik.setValues({
+      ...formik.values,
+      artistSearchResult: result,
+      artist: result.displayLabel || "",
+      artistId: result.internalID || "",
+    })
 
     if (!result.internalID) {
       console.error("Artist ID not found")
@@ -56,12 +60,12 @@ export const SubmitArtworkSelectArtist = () => {
     }
 
     try {
-      const submissionId = await createOrUpdateSubmission(updatedValues, formik.values.submissionId)
-      formik.setFieldValue("submissionId", submissionId)
       navigateToNextStep({
         step: "AddTitle",
         skipMutation: true,
       })
+      const submissionId = await createOrUpdateSubmission(updatedValues, formik.values.submissionId)
+      formik.setFieldValue("submissionId", submissionId)
     } catch (error) {
       console.error("Error creating submission", error)
     } finally {
@@ -80,6 +84,7 @@ export const SubmitArtworkSelectArtist = () => {
           onResultPress={handleResultPress}
           disableCustomArtists
           onlyP1Artists
+          loading={isLoading}
           hideCollectedArtists
           Hint={
             <Text variant="xs" color="black60" py={1}>
