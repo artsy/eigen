@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useFormikContext } from "formik"
 import { UploadPhotosForm } from "./UploadPhotosForm"
@@ -27,20 +27,18 @@ describe("UploadPhotosForm", () => {
   afterEach(() => jest.clearAllMocks())
 
   it("renders correct explanation messages", () => {
-    const { getByText } = renderWithWrappers(<UploadPhotosForm />)
-    expect(getByText("Add Files Here")).toBeTruthy()
-    expect(getByText("Files Supported: JPG, PNG, HEIC")).toBeTruthy()
-    expect(getByText("Total Maximum Size: 30MB")).toBeTruthy()
+    renderWithWrappers(<UploadPhotosForm />)
+    expect(screen.getByText("Add Photos")).toBeTruthy()
   })
 
   it("renders Add Photos button", () => {
-    const { getByTestId } = renderWithWrappers(<UploadPhotosForm />)
-    expect(getByTestId("Submission_Add_Photos_Button")).toBeTruthy()
+    renderWithWrappers(<UploadPhotosForm />)
+    expect(screen.getByTestId("Submission_Add_Photos_Button")).toBeTruthy()
   })
 
   it("when Add Photos pressed, opens up native action sheet for user to select photos", async () => {
-    const { getByTestId } = renderWithWrappers(<UploadPhotosForm />)
-    const AddPhotoButton = getByTestId("Submission_Add_Photos_Button")
+    renderWithWrappers(<UploadPhotosForm />)
+    const AddPhotoButton = screen.getByTestId("Submission_Add_Photos_Button")
     fireEvent.press(AddPhotoButton)
     expect(mockShowActionSheetWithOptionsMock).toHaveBeenCalled()
   })
