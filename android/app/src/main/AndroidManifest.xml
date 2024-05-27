@@ -126,7 +126,7 @@
                 <data android:pathPrefix="/partner-offer" />
                 <data android:pathPrefix="/price-database" />
                 <data android:pathPrefix="/privacy-request" />
-                <data android:pathPrefix="/sales" />
+                <data android:pathPrefix="/sell" />
                 <data android:pathPrefix="/search" />
                 <data android:pathPrefix="/settings" />
                 <data android:pathPrefix="/show" />

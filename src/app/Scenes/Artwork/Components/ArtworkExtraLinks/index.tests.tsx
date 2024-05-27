@@ -3,8 +3,7 @@ import { ArtworkExtraLinks_artwork$data } from "__generated__/ArtworkExtraLinks_
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { ModalStack } from "app/system/navigation/ModalStack"
-import { navigate } from "app/system/navigation/navigate"
-import { useSelectedTab } from "app/utils/hooks/useSelectedTab"
+import { switchTab } from "app/system/navigation/navigate"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -28,7 +27,7 @@ const getWrapper = ({
   )
 
 describe("ArtworkExtraLinks", () => {
-  it("redirects to /sales when consignments link is clicked from outside of sell tab", () => {
+  it("redirects to sell tab", () => {
     const artwork = {
       ...ArtworkFixture,
       isForSale: true,
@@ -45,27 +44,7 @@ describe("ArtworkExtraLinks", () => {
     expect(screen.getByText(/Want to sell a work by Santa?/)).toBeTruthy()
     expect(screen.getByText(/Consign with Artsy/)).toBeTruthy()
     fireEvent.press(screen.getByText(/Consign with Artsy/))
-    expect(navigate).toHaveBeenCalledWith("/sales")
-  })
-
-  it("redirects to /collections/my-collection/marketing-landing when consignments link is clicked from within sell tab", () => {
-    const artwork = {
-      ...ArtworkFixture,
-      isForSale: true,
-      artists: [
-        {
-          name: "Santa",
-          isConsignable: true,
-        },
-      ],
-    }
-
-    ;(useSelectedTab as any).mockImplementation(() => "sell")
-
-    getWrapper({ artwork })
-
-    fireEvent.press(screen.getByText(/Consign with Artsy/))
-    expect(navigate).toHaveBeenCalledWith("/collections/my-collection/marketing-landing")
+    expect(switchTab).toHaveBeenCalledWith("sell")
   })
 
   describe("for an artwork with more than 1 consignable artist", () => {

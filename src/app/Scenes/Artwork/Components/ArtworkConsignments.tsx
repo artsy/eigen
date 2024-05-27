@@ -1,7 +1,6 @@
-import { Text, LinkText } from "@artsy/palette-mobile"
+import { LinkText, Text } from "@artsy/palette-mobile"
 import { ArtworkConsignments_artwork$key } from "__generated__/ArtworkConsignments_artwork.graphql"
-import { navigate } from "app/system/navigation/navigate"
-import { useSelectedTab } from "app/utils/hooks/useSelectedTab"
+import { switchTab } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -11,7 +10,6 @@ interface ArtworkConsignmentsProps {
 }
 
 export const ArtworkConsignments: React.FC<ArtworkConsignmentsProps> = ({ artwork }) => {
-  const isSellTab = useSelectedTab() === "sell"
   const tracking = useTracking()
   const data = useFragment(artworkConsignmentsFragment, artwork)
   const artists = data.artists ?? []
@@ -26,8 +24,7 @@ export const ArtworkConsignments: React.FC<ArtworkConsignmentsProps> = ({ artwor
       // TODO: Update context module
       context_module: Schema.ContextModules.ArtworkExtraLinks,
     })
-
-    navigate(isSellTab ? "/collections/my-collection/marketing-landing" : "/sales")
+    switchTab("sell")
   }
 
   if (!artists.length) {
