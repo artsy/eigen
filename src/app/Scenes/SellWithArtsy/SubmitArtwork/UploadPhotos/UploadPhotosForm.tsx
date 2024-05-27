@@ -1,9 +1,9 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
 import { UploadSizeLimitExceeded } from "@artsy/cohesion/dist/Schema/Events/UploadSizeLimitExceeded"
-import { Spacer, Flex, Text, Button } from "@artsy/palette-mobile"
+import { AddIcon, Flex, ImageIcon, Spacer, Text, useSpace } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { captureMessage } from "@sentry/react-native"
-import { PhotoRow } from "app/Components/PhotoRow/PhotoRow"
+import { PhotoItem } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/UploadPhotosPhotoItem"
 import {
   Photo,
   PhotosFormModel,
@@ -13,7 +13,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { useFormikContext } from "formik"
 import React, { useEffect, useState } from "react"
-import { LayoutAnimation } from "react-native"
+import { LayoutAnimation, TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"
 import { addPhotoToConsignment } from "./utils/addPhotoToConsignment"
 import {
@@ -22,9 +22,13 @@ import {
   isSizeLimitExceeded,
 } from "./utils/calculatePhotoSize"
 
+export const IMAGE_SIZE = 110
+export const ICON_SIZE = 18
+
 export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
   isAnyPhotoLoading,
 }) => {
+  const space = useSpace()
   const { values, setFieldValue } = useFormikContext<PhotosFormModel>()
   const { submission } = GlobalStore.useAppState((state) => state.artworkSubmission)
   const submissionId = submission.submissionId || values.submissionId
@@ -148,44 +152,67 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
     }
   }
 
-  return (
-    <>
-      <Flex style={{ borderColor: "lightgray", borderWidth: 1 }} mt={4} mb={2} p={2} pt={4} pb={4}>
-        <Text variant="lg-display" color="black100" marginBottom={1}>
-          Add Files Here
-        </Text>
-        <Text variant="sm-display" color="black60" marginBottom={1}>
-          Files Supported: JPG, PNG, HEIC
-        </Text>
-        <Text variant="sm-display" color="black60" marginBottom={4}>
-          Total Maximum Size: 30MB
-        </Text>
-        <Button
-          disabled={isAnyPhotoLoading || isSizeLimitExceeded(values.photos)}
-          onPress={handleAddPhotoPress}
-          variant="outline"
-          size="large"
-          block
-          testID="Submission_Add_Photos_Button"
-        >
-          Add Photo
-        </Button>
-        <Spacer y={1} />
-      </Flex>
+  const numberOfPlaceholders = Math.max(3 - values.photos.length, 0)
 
-      {values.photos.map((photo: Photo, idx: number) => (
-        <PhotoRow
-          key={idx}
-          photo={photo}
-          hideDeleteButton={isAnyPhotoLoading}
-          onPhotoDelete={handlePhotoDelete}
-          progress={progress[photo.path] ?? 0}
-        />
+  return (
+    <Flex flexDirection="row" flexWrap="wrap" gap={space(1)}>
+      {values.photos.map((photo: Photo, idx: number) => {
+        return (
+          <PhotoItem
+            key={idx}
+            photo={photo}
+            onPhotoDelete={handlePhotoDelete}
+            progress={progress[photo.path] ?? 0}
+          />
+        )
+      })}
+
+      {Array.from({ length: numberOfPlaceholders }).map((_, idx) => (
+        <PlaceholderImage key={idx} />
       ))}
-    </>
+
+      <TouchableOpacity
+        onPress={handleAddPhotoPress}
+        testID="Submission_Add_Photos_Button"
+        disabled={isAnyPhotoLoading || isSizeLimitExceeded(values.photos)}
+      >
+        <Flex
+          borderWidth={1}
+          borderStyle="dashed"
+          borderColor="blue100"
+          height={IMAGE_SIZE}
+          width={IMAGE_SIZE}
+          justifyContent="center"
+          alignItems="center"
+          mt={1}
+        >
+          <AddIcon height={24} width={24} fill="blue100" />
+          <Spacer y={0.5} />
+          <Text variant="xs" color="blue100">
+            Add Photos
+          </Text>
+        </Flex>
+      </TouchableOpacity>
+    </Flex>
   )
 }
 
+const PlaceholderImage: React.FC = () => {
+  return (
+    <Flex
+      borderWidth={1}
+      borderStyle="dashed"
+      borderColor="black30"
+      height={IMAGE_SIZE}
+      width={IMAGE_SIZE}
+      justifyContent="center"
+      alignItems="center"
+      mt={1}
+    >
+      <ImageIcon height={ICON_SIZE} width={ICON_SIZE} fill="black60" />
+    </Flex>
+  )
+}
 export const tracks = {
   hasExceededUploadSize: (
     uploadSizeInBytes: number,

@@ -1,5 +1,4 @@
-import { Spacer, Text } from "@artsy/palette-mobile"
-import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
+import { Join, Message, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { UploadPhotosForm } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/UploadPhotosForm"
 import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
@@ -13,20 +12,22 @@ export const SubmitArtworkAddPhotos = () => {
 
   return (
     <ScrollView contentContainerStyle={{ paddingBottom: 80 }} showsVerticalScrollIndicator={false}>
-      {!!values.artistSearchResult && <ArtistSearchResult result={values.artistSearchResult} />}
+      <Join separator={<Spacer y={2} />}>
+        <Text variant="lg-display">Upload photos of your artwork</Text>
 
-      <Spacer y={2} />
+        <Text color="black60" variant="xs">
+          Make your work stand out and get your submission evaluated faster by uploading
+          high-quality photos of the work's front and back.
+        </Text>
 
-      <Text variant="lg">Upload photos of your artwork</Text>
+        <Message
+          title="Increase your chance of selling"
+          text="Make sure to include images of the back, corners, frame and any other details if you can. "
+          variant="success"
+        />
 
-      <Spacer y={2} />
-
-      <Text color="black60" variant="xs">
-        Add more photos to help speed up your submission and increase your chances of selling. Tips
-        for taking photos
-      </Text>
-
-      <UploadPhotosForm isAnyPhotoLoading={isAnyPhotoLoading} />
+        <UploadPhotosForm isAnyPhotoLoading={isAnyPhotoLoading} />
+      </Join>
     </ScrollView>
   )
 }
