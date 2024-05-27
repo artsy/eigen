@@ -655,11 +655,17 @@ export const modules = defineModules({
     ? reactModule(SubmitArtworkForm, {
         hidesBackButton: true,
         hidesBottomTabs: true,
+        screenOptions: {
+          gestureEnabled: false,
+        },
       })
     : reactModule(SubmitArtwork, { hidesBackButton: true, hidesBottomTabs: true }),
   SubmitArtworkEdit: reactModule(SubmitArtworkFormEdit, {
     hidesBackButton: true,
     hidesBottomTabs: true,
+    screenOptions: {
+      gestureEnabled: false,
+    },
   }),
   Tag: reactModule(TagQueryRenderer, { hidesBackButton: true, fullBleed: true }),
   UnlistedArtworksFAQScreen: reactModule(UnlistedArtworksFAQScreen),
