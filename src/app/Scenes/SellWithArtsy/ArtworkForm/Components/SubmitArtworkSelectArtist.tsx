@@ -13,7 +13,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useFormikContext } from "formik"
 import { Suspense } from "react"
-import { Keyboard } from "react-native"
+import { Keyboard, TouchableOpacity } from "react-native"
 
 export const SubmitArtworkSelectArtist = () => {
   const { navigateToNextStep } = useSubmissionContext()
@@ -88,24 +88,28 @@ export const SubmitArtworkSelectArtist = () => {
             loading={isLoading}
             hideCollectedArtists
             Hint={
-              <Text variant="xs" color="black60" py={1}>
-                Currently, artists can not sell their own work on Artsy.{"\n"}
-                <Text
-                  underline
-                  variant="xs"
-                  color="black60"
-                  style={{
-                    zIndex: 1000,
-                  }}
-                  onPress={() => {
-                    navigate(
-                      "https://support.artsy.net/s/article/Im-an-artist-Can-I-submit-my-own-work-to-sell"
-                    )
-                  }}
-                >
-                  Learn more.
+              <Flex py={1}>
+                <Text variant="xs" color="black60">
+                  Currently, artists can not sell their own work on Artsy.
                 </Text>
-              </Text>
+                <TouchableOpacity>
+                  <Text
+                    underline
+                    variant="xs"
+                    color="black60"
+                    style={{
+                      zIndex: 1000,
+                    }}
+                    onPress={() => {
+                      navigate(
+                        "https://support.artsy.net/s/article/Im-an-artist-Can-I-submit-my-own-work-to-sell"
+                      )
+                    }}
+                  >
+                    Learn more.
+                  </Text>
+                </TouchableOpacity>
+              </Flex>
             }
           />
         </Suspense>
