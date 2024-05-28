@@ -3,6 +3,7 @@ import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Com
 import { SubmitArtworkProgressBar } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkProgressBar"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
 import { navigate, popToRoot, switchTab } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useFormikContext } from "formik"
@@ -11,7 +12,8 @@ import { LayoutAnimation } from "react-native"
 
 export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
   const { navigateToNextStep, navigateToPreviousStep } = useSubmissionContext()
-  const { isValid } = useFormikContext<ArtworkDetailsFormModel>()
+  const { isValid, values } = useFormikContext<ArtworkDetailsFormModel>()
+  const isUploadingPhotos = values.photos.some((photo: Photo) => photo.loading)
   const showStartFromMyCollection = useFeatureFlag("AREnableSubmitMyCollectionArtworkInSubmitFlow")
 
   const { currentStep, isLoading } = SubmitArtworkFormStore.useStoreState((state) => state)
@@ -154,7 +156,11 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
               <Text underline>Back</Text>
             </Touchable>
           </Flex>
-          <Button onPress={handleNextPress} disabled={!isValid || isLoading} loading={isLoading}>
+          <Button
+            onPress={handleNextPress}
+            disabled={!isValid || isLoading || isUploadingPhotos}
+            loading={isLoading || isUploadingPhotos}
+          >
             Continue
           </Button>
         </Flex>
