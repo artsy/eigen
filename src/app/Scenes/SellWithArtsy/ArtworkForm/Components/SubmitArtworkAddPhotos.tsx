@@ -1,8 +1,12 @@
 import { Flex, Join, Message, Spacer, Text } from "@artsy/palette-mobile"
+import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { UploadPhotosForm } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/UploadPhotosForm"
+import { useFormikContext } from "formik"
 import { ScrollView } from "react-native"
 
 export const SubmitArtworkAddPhotos = () => {
+  const { values } = useFormikContext<ArtworkDetailsFormModel>()
+
   return (
     <Flex px={2}>
       <ScrollView
@@ -17,11 +21,13 @@ export const SubmitArtworkAddPhotos = () => {
             high-quality photos of the work's front and back.
           </Text>
 
-          <Message
-            title="Increase your chance of selling"
-            text="Make sure to include images of the back, corners, frame and any other details if you can. "
-            variant="success"
-          />
+          {(values.photos.length === 1 || values.photos.length === 2) && (
+            <Message
+              title="Increase your chance of selling"
+              text="Make sure to include images of the back, corners, frame and any other details if you can. "
+              variant="success"
+            />
+          )}
 
           <UploadPhotosForm />
         </Join>

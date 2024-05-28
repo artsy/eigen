@@ -14,6 +14,9 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
   const { navigateToNextStep, navigateToPreviousStep } = useSubmissionContext()
   const { isValid, values } = useFormikContext<ArtworkDetailsFormModel>()
   const isUploadingPhotos = values.photos.some((photo: Photo) => photo.loading)
+  const allPhotosAreValid = values.photos.every(
+    (photo: Photo) => !photo.error && !photo.errorMessage
+  )
   const showStartFromMyCollection = useFeatureFlag("AREnableSubmitMyCollectionArtworkInSubmitFlow")
 
   const { currentStep, isLoading } = SubmitArtworkFormStore.useStoreState((state) => state)
@@ -158,7 +161,7 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
           </Flex>
           <Button
             onPress={handleNextPress}
-            disabled={!isValid || isLoading || isUploadingPhotos}
+            disabled={!isValid || isLoading || isUploadingPhotos || !allPhotosAreValid}
             loading={isLoading || isUploadingPhotos}
           >
             Continue
