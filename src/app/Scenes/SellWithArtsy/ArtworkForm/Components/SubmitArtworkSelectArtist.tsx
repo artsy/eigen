@@ -51,6 +51,7 @@ export const SubmitArtworkSelectArtist = () => {
     }
 
     const updatedValues = {
+      ...formik.values,
       artistId: result.internalID,
       artist: result.displayLabel || "",
       artistSearchResult: result,
