@@ -1,12 +1,4 @@
-import {
-  CheckCircleFillIcon,
-  Flex,
-  Message,
-  Screen,
-  Spacer,
-  Text,
-  useSpace,
-} from "@artsy/palette-mobile"
+import { CheckCircleFillIcon, Flex, Message, Spacer, Text, useSpace } from "@artsy/palette-mobile"
 import { useEffect } from "react"
 import { BackHandler, Platform, ScrollView } from "react-native"
 
@@ -24,7 +16,7 @@ export const SubmitArtworkCompleteYourSubmission = () => {
   }, [])
 
   return (
-    <Screen.Body>
+    <Flex px={2}>
       <ScrollView>
         <Flex>
           <Flex mb={2} flexDirection="row">
@@ -56,6 +48,6 @@ export const SubmitArtworkCompleteYourSubmission = () => {
           text="If your submission is accepted, we will ask for additional details"
         ></Message>
       </ScrollView>
-    </Screen.Body>
+    </Flex>
   )
 }

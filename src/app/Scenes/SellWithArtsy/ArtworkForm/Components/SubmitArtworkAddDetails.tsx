@@ -1,4 +1,4 @@
-import { Checkbox, Flex, Input, Join, Screen, Spacer, Text } from "@artsy/palette-mobile"
+import { Checkbox, Flex, Input, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { SelectOption } from "app/Components/Select"
 import { CategoryPicker } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/CategoryPicker"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
@@ -21,7 +21,7 @@ export const SubmitArtworkAddDetails = () => {
   ).current
 
   return (
-    <Screen.Body>
+    <Flex px={2}>
       <ScrollView>
         <Text variant="lg" mb={2}>
           Artwork details
@@ -88,6 +88,6 @@ export const SubmitArtworkAddDetails = () => {
           />
         </Join>
       </ScrollView>
-    </Screen.Body>
+    </Flex>
   )
 }

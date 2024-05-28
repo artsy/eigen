@@ -1,4 +1,4 @@
-import { Box, Flex, Input, RadioButton, Screen, Spacer, Text } from "@artsy/palette-mobile"
+import { Box, Flex, Input, RadioButton, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { useFormikContext } from "formik"
 import { useRef, useState } from "react"
@@ -21,79 +21,77 @@ export const SubmitArtworkAddDimensions = () => {
   )
 
   return (
-    <Screen.Body>
-      <Flex>
-        <Text variant="lg" mb={2}>
-          Artwork dimensions
-        </Text>
+    <Flex px={2}>
+      <Text variant="lg" mb={2}>
+        Artwork dimensions
+      </Text>
 
-        <Flex flexDirection="row">
-          <RadioButton
-            mr={2}
-            text="in"
-            selected={dimensionMetric === "in"}
-            onPress={() => {
-              setDimensionMetric("in")
-            }}
-          />
-          <RadioButton
-            text="cm"
-            selected={dimensionMetric === "cm"}
-            onPress={() => {
-              setDimensionMetric("cm")
-            }}
-          />
-        </Flex>
+      <Flex flexDirection="row">
+        <RadioButton
+          mr={2}
+          text="in"
+          selected={dimensionMetric === "in"}
+          onPress={() => {
+            setDimensionMetric("in")
+          }}
+        />
+        <RadioButton
+          text="cm"
+          selected={dimensionMetric === "cm"}
+          onPress={() => {
+            setDimensionMetric("cm")
+          }}
+        />
+      </Flex>
 
-        <Spacer y={1} />
+      <Spacer y={1} />
 
-        <Flex flexDirection="row" justifyContent="space-between">
-          <Box flex={1}>
-            <Input
-              title="Height"
-              keyboardType="decimal-pad"
-              testID="Submission_HeightInput"
-              value={values.height}
-              onChangeText={(e) => setFieldValue("height", e)}
-              fixedRightPlaceholder={dimensionMetric}
-              accessibilityLabel="Height"
-              onSubmitEditing={() => {
-                widthRef.current?.focus()
-              }}
-              returnKeyLabel="Next"
-            />
-          </Box>
-          <Spacer x={2} />
-          <Box flex={1}>
-            <Input
-              title="Width"
-              keyboardType="decimal-pad"
-              testID="Submission_WidthInput"
-              value={values.width}
-              onChangeText={(e) => setFieldValue("width", e)}
-              fixedRightPlaceholder={dimensionMetric}
-              accessibilityLabel="Width"
-              ref={widthRef}
-              onSubmitEditing={() => {
-                depthRef.current?.focus()
-              }}
-              returnKeyLabel="Next"
-            />
-          </Box>
-        </Flex>
-        <Box width="50%" pr={1}>
+      <Flex flexDirection="row" justifyContent="space-between">
+        <Box flex={1}>
           <Input
-            title="Depth"
+            title="Height"
             keyboardType="decimal-pad"
-            testID="Submission_DepthInput"
-            value={values.depth}
-            onChangeText={(e) => setFieldValue("depth", e)}
+            testID="Submission_HeightInput"
+            value={values.height}
+            onChangeText={(e) => setFieldValue("height", e)}
             fixedRightPlaceholder={dimensionMetric}
-            accessibilityLabel="Depth"
-            ref={depthRef}
+            accessibilityLabel="Height"
+            onSubmitEditing={() => {
+              widthRef.current?.focus()
+            }}
+            returnKeyLabel="Next"
+          />
+        </Box>
+        <Spacer x={2} />
+        <Box flex={1}>
+          <Input
+            title="Width"
+            keyboardType="decimal-pad"
+            testID="Submission_WidthInput"
+            value={values.width}
+            onChangeText={(e) => setFieldValue("width", e)}
+            fixedRightPlaceholder={dimensionMetric}
+            accessibilityLabel="Width"
+            ref={widthRef}
+            onSubmitEditing={() => {
+              depthRef.current?.focus()
+            }}
+            returnKeyLabel="Next"
           />
         </Box>
       </Flex>
-    </Screen.Body>
+      <Box width="50%" pr={1}>
+        <Input
+          title="Depth"
+          keyboardType="decimal-pad"
+          testID="Submission_DepthInput"
+          value={values.depth}
+          onChangeText={(e) => setFieldValue("depth", e)}
+          fixedRightPlaceholder={dimensionMetric}
+          accessibilityLabel="Depth"
+          ref={depthRef}
+        />
+      </Box>
+    </Flex>
   )
 }
