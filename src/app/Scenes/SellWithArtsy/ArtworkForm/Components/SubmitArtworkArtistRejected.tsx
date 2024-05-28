@@ -46,13 +46,13 @@ export const SubmitArtworkArtistRejected: React.FC<{}> = () => {
       >
         <ScrollView>
           <Text>
-            {"  "}We are currently accepting unique and limited-edition works of art by modern,
+            We are currently accepting unique and limited-edition works of art by modern,
             contemporary, and emerging artists who have collector demand on Artsy. Our in-house
             experts cover Post-War and Contemporary Art, Prints and Multiples, Street Art and
             Photographs.{"\n"}
             {"\n"}
-            {"  "}Our experts assess a number of factors to determine whether your work qualifies
-            for our program, including the following:{"\n"}
+            Our experts assess a number of factors to determine whether your work qualifies for our
+            program, including the following:{"\n"}
             {"\n"}
             {"    "}• Market data like the number, recency, and value of auction results for works
             by the artist.{"\n"}
