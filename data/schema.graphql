@@ -14063,6 +14063,9 @@ type Partner implements Node {
     # properties on an artwork, when true or not present fetch artwork :short properties
     shallow: Boolean
     sort: ArtworkSorts
+
+    # Return artworks according to visibility levels. Defaults to ['listed'].
+    visibilityLevels: [Visibility]
   ): ArtworkConnection
   artworksSearchConnection(
     after: String
