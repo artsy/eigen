@@ -6,7 +6,7 @@ import { goBack } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useFormikContext } from "formik"
 import { useEffect } from "react"
-import { LayoutAnimation } from "react-native"
+import { Alert, LayoutAnimation } from "react-native"
 
 export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
   const enableSaveAndExit = useFeatureFlag("AREnableSaveAndContinueSubmission")
@@ -16,6 +16,31 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
   const { values } = useFormikContext<ArtworkDetailsFormModel>()
 
   const handleSaveAndExitPress = () => {
+    if (!enableSaveAndExit) {
+      if (hasCompletedForm) {
+        goBack()
+        return
+      }
+
+      Alert.alert(
+        "Are you sure you want to exit?",
+        "Your artwork will not be submitted.",
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+          {
+            text: "Yes",
+            onPress: () => goBack(),
+            style: "destructive",
+          },
+        ],
+        { cancelable: true }
+      )
+      return
+    }
+
     if (hasCompletedForm) {
       // Reset form if user is on the last step
       // This is to ensure that the user can start a new submission
@@ -55,10 +80,10 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
           <BackButton showX style={{ zIndex: 100, overflow: "visible" }} onPress={goBack} />
         )}
 
-        {currentStep !== "SelectArtist" && !!enableSaveAndExit && (
+        {currentStep !== "SelectArtist" && (
           <Flex style={{ flexGrow: 1, alignItems: "flex-end" }}>
             <Touchable onPress={handleSaveAndExitPress}>
-              <Text>{!hasCompletedForm ? "Save & " : ""}Exit</Text>
+              <Text>{!hasCompletedForm && !!enableSaveAndExit ? "Save & " : ""}Exit</Text>
             </Touchable>
           </Flex>
         )}
