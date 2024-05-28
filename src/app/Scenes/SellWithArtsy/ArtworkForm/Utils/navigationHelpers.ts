@@ -54,7 +54,7 @@ export const useSubmissionContext = () => {
       if (newValues.state === "SUBMITTED") {
         // Reset saved draft if submission is successful
         GlobalStore.actions.artworkSubmission.setDraft(null)
-        // Update MyCollection artwork if the process initiated from a my collection artwork
+        // Refetch associated My Collection artwork to display the updated submission status on the artwork screen.
         if (newValues.myCollectionArtworkID) {
           await updateMyCollectionArtwork({
             artworkID: newValues.myCollectionArtworkID,
