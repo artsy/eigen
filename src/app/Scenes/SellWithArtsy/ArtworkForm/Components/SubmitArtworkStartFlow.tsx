@@ -1,4 +1,4 @@
-import { Flex, Screen, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { Image, ScrollView } from "react-native"
 
 const SECTIONS = [
@@ -23,33 +23,31 @@ const SECTIONS = [
 ]
 export const SubmitArtworkStartFlow: React.FC = () => {
   return (
-    <Screen.Body>
-      <Flex flex={1}>
-        <ScrollView>
-          <Text variant="lg" mb={4}>
-            It’s easy to sell on Artsy
-          </Text>
-          <Flex>
-            {SECTIONS.map((section, index) => (
-              <Flex key={index} my={2} flexDirection="row" alignItems="flex-start">
-                <Text variant="sm-display" fontWeight={500} style={{ width: 25 }}>
-                  {index + 1}
+    <Flex flex={1} px={2}>
+      <ScrollView>
+        <Text variant="lg" mb={4}>
+          It’s easy to sell on Artsy
+        </Text>
+        <Flex>
+          {SECTIONS.map((section, index) => (
+            <Flex key={index} my={2} flexDirection="row" alignItems="flex-start">
+              <Text variant="sm-display" fontWeight={500} style={{ width: 25 }}>
+                {index + 1}
+              </Text>
+              <Flex flex={1}>
+                <Text variant="sm-display" fontWeight={500}>
+                  {section.title}
                 </Text>
-                <Flex flex={1}>
-                  <Text variant="sm-display" fontWeight={500}>
-                    {section.title}
-                  </Text>
-                  <Text color="black60" variant="xs">
-                    {section.description}
-                  </Text>
-                </Flex>
-                <Spacer x={1} />
-                <Image source={section.image} />
+                <Text color="black60" variant="xs">
+                  {section.description}
+                </Text>
               </Flex>
-            ))}
-          </Flex>
-        </ScrollView>
-      </Flex>
-    </Screen.Body>
+              <Spacer x={1} />
+              <Image source={section.image} />
+            </Flex>
+          ))}
+        </Flex>
+      </ScrollView>
+    </Flex>
   )
 }

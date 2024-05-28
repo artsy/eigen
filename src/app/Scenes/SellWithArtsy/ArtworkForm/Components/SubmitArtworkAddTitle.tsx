@@ -1,4 +1,4 @@
-import { Flex, Input, Screen, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Input, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { useFormikContext } from "formik"
@@ -7,7 +7,7 @@ export const SubmitArtworkAddTitle = () => {
   const { handleChange, values } = useFormikContext<ArtworkDetailsFormModel>()
 
   return (
-    <Screen.Body>
+    <Flex px={2}>
       <Flex>
         {!!values.artistSearchResult && <ArtistSearchResult result={values.artistSearchResult} />}
 
@@ -32,6 +32,6 @@ export const SubmitArtworkAddTitle = () => {
           Add ‘Unknown’ if unsure
         </Text>
       </Flex>
-    </Screen.Body>
+    </Flex>
   )
 }

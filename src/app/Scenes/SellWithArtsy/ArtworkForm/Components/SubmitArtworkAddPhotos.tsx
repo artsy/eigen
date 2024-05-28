@@ -1,4 +1,4 @@
-import { Join, Message, Screen, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Join, Message, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { UploadPhotosForm } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/UploadPhotosForm"
 import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
@@ -15,7 +15,7 @@ export const SubmitArtworkAddPhotos = () => {
   const isAnyPhotoLoading = values.photos.some((photo: Photo) => photo.loading)
 
   return (
-    <Screen.Body>
+    <Flex px={2}>
       <ScrollView
         contentContainerStyle={{ paddingBottom: 80 }}
         showsVerticalScrollIndicator={false}
@@ -37,6 +37,6 @@ export const SubmitArtworkAddPhotos = () => {
           <UploadPhotosForm isAnyPhotoLoading={isAnyPhotoLoading} />
         </Join>
       </ScrollView>
-    </Screen.Body>
+    </Flex>
   )
 }

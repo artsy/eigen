@@ -1,4 +1,4 @@
-import { Flex, Screen, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
 import { AutosuggestResultsPlaceholder } from "app/Components/AutosuggestResults/AutosuggestResultsPlaceholder"
 import {
@@ -74,7 +74,7 @@ export const SubmitArtworkSelectArtist = () => {
   }
 
   return (
-    <Screen.Body>
+    <Flex px={2}>
       <Flex pb={6}>
         <Text variant="lg" mb={2}>
           Add artist name
@@ -114,7 +114,7 @@ export const SubmitArtworkSelectArtist = () => {
           />
         </Suspense>
       </Flex>
-    </Screen.Body>
+    </Flex>
   )
 }
 
