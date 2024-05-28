@@ -13,7 +13,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useFormikContext } from "formik"
 import { Suspense } from "react"
-import { Keyboard, TouchableOpacity } from "react-native"
+import { TouchableOpacity } from "react-native"
 
 export const SubmitArtworkSelectArtist = () => {
   const { navigateToNextStep } = useSubmissionContext()
@@ -41,7 +41,6 @@ export const SubmitArtworkSelectArtist = () => {
     const isTargetSupply = artist.__typename === "Artist" && artist.targetSupply?.isTargetSupply
 
     if (!isTargetSupply) {
-      Keyboard.dismiss()
       navigateToNextStep({
         step: "ArtistRejected",
         skipMutation: true,

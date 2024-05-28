@@ -31,6 +31,7 @@ import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { useIsKeyboardVisible } from "app/utils/hooks/useIsKeyboardVisible"
 import { FormikProvider, useFormik } from "formik"
 import { useEffect } from "react"
+import { Keyboard } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 export type SubmitArtworkStackNavigation = {
@@ -109,6 +110,7 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
   // Revalidate form on step change because the validation schema changes and it does not happen automatically
   useEffect(() => {
     formik.validateForm()
+    Keyboard.dismiss()
   }, [currentStep])
 
   return (
