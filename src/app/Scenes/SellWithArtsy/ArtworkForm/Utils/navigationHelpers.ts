@@ -7,6 +7,7 @@ import {
   ARTWORK_FORM_STEPS,
   SubmitArtworkScreen,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
+import { updateMyCollectionArtwork } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/updateMyCollectionArtwork"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -53,6 +54,12 @@ export const useSubmissionContext = () => {
       if (newValues.state === "SUBMITTED") {
         // Reset saved draft if submission is successful
         GlobalStore.actions.artworkSubmission.setDraft(null)
+        // Refetch associated My Collection artwork to display the updated submission status on the artwork screen.
+        if (newValues.myCollectionArtworkID) {
+          await updateMyCollectionArtwork({
+            artworkID: newValues.myCollectionArtworkID,
+          })
+        }
       }
 
       __unsafe__SubmissionArtworkFormNavigationRef.current?.navigate?.(nextStep)
