@@ -2645,6 +2645,7 @@ type Artwork implements Node & Searchable & Sellable {
   show(active: Boolean, atAFair: Boolean, sort: ShowSorts): Show
   shows(active: Boolean, atAFair: Boolean, size: Int, sort: ShowSorts): [Show]
   signature(format: Format): String
+  signatureDetails: String
   signatureInfo: ArtworkInfoRow
 
   # size bucket assigned to an artwork based on its dimensions
@@ -2970,6 +2971,26 @@ type ArtworksCollectionsBatchUpdateSuccess {
   addedToCollections: [Collection]
   counts: ArtworksCollectionsBatchUpdateCounts
   removedFromCollections: [Collection]
+}
+
+enum ArtworkSignatureTypeEnum {
+  # The artwork is hand signed by the artist
+  HAND_SIGNED_BY_ARTIST
+
+  # The artwork is not signed
+  NOT_SIGNED
+
+  # The artwork has another type of signature
+  OTHER
+
+  # The artwork is signed in the plate
+  SIGNED_IN_PLATE
+
+  # The artwork is stamped by the artist's estate
+  STAMPED_BY_ARTIST_ESTATE
+
+  # The artwork has a sticker label
+  STICKER_LABEL
 }
 
 enum ArtworkSizes {
@@ -13516,6 +13537,8 @@ input MyCollectionCreateArtworkInput {
   pricePaidCents: Long
   pricePaidCurrency: String
   provenance: String
+  signatureDetails: String
+  signatureTypes: [ArtworkSignatureTypeEnum]
   submissionId: String
   title: String!
   width: String
@@ -13601,6 +13624,8 @@ input MyCollectionUpdateArtworkInput {
   pricePaidCents: Long
   pricePaidCurrency: String
   provenance: String
+  signatureDetails: String
+  signatureTypes: [ArtworkSignatureTypeEnum]
   submissionId: String
   title: String
   width: String
