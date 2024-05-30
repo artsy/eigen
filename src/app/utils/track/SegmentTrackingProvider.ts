@@ -13,7 +13,9 @@ let analytics: Analytics.Client
 export const SegmentTrackingProvider: TrackingProvider = {
   setup: () => {
     analytics = require("@segment/analytics-react-native").default
-    const Braze = require("@segment/analytics-react-native-appboy").default
+
+    // TODO: Add Braze integration
+    // const Braze = require("@segment/analytics-react-native-appboy").default
 
     analytics
       .setup(
@@ -27,7 +29,7 @@ export const SegmentTrackingProvider: TrackingProvider = {
           default: "",
         }),
         {
-          using: [Braze],
+          using: [], // [Braze],
         }
       )
       .then(() => console.log("Analytics is ready"))

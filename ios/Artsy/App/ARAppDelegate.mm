@@ -6,7 +6,6 @@
 #import "BrazeReactBridge.h"
 #import "BrazeReactUtils.h"
 #import <Analytics/SEGAnalytics.h>
-#import <Segment-Appboy/SEGAppboyIntegrationFactory.h>
 #import <CodePush/CodePush.h>
 #import <AppCenterReactNative.h>
 
@@ -175,7 +174,8 @@ static ARAppDelegate *_sharedInstance = nil;
     configuration.trackPushNotifications = YES;
     configuration.trackDeepLinks = YES;
     [SEGAnalytics setupWithConfiguration:configuration];
-    [[SEGAppboyIntegrationFactory instance] saveLaunchOptions:launchOptions];
+    // TODO: Something
+    // [[SEGAppboyIntegrationFactory instance] saveLaunchOptions:launchOptions];
     [[BrazeReactUtils sharedInstance] populateInitialUrlFromLaunchOptions:launchOptions];
 }
 

@@ -142,9 +142,6 @@ target 'Artsy' do
   pod 'GoogleUtilities', :modular_headers => true
   pod 'nanopb', :modular_headers => true
 
-  # Analytics
-  pod 'Segment-Appboy'
-
   # Swift pods 🎉
   pod 'Then', '2.3.0'
   pod 'Interstellar/Core', git: 'https://github.com/artsy/Interstellar.git', branch: 'observable-unsubscribe'
