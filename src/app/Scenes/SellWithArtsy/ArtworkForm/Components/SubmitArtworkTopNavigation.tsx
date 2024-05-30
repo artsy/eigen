@@ -1,6 +1,7 @@
 import { BackButton, Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -15,7 +16,7 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
 
   const { values } = useFormikContext<ArtworkDetailsFormModel>()
 
-  const handleSaveAndExitPress = () => {
+  const handleSaveAndExitPress = async () => {
     if (!enableSaveAndExit) {
       if (hasCompletedForm) {
         goBack()
@@ -49,12 +50,21 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
       return goBack()
     }
 
-    if (values.submissionId) {
-      GlobalStore.actions.artworkSubmission.setDraft({
-        submissionID: values.submissionId,
-        currentStep,
-      })
+    try {
+      const submissionId = await createOrUpdateSubmission(values, values.submissionId)
+
+      if (submissionId) {
+        GlobalStore.actions.artworkSubmission.setDraft({
+          submissionID: submissionId,
+          currentStep,
+        })
+      }
+    } catch (error) {
+      console.error("Something went wrong. The submission could not be saved.", error)
+
+      Alert.alert("Something went wrong. The submission could not be saved.")
     }
+
     goBack()
   }
 
