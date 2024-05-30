@@ -10,7 +10,7 @@ import { ArtworkDetailsRow } from "./ArtworkDetailsRow"
 import { RequestConditionReportQueryRenderer } from "./RequestConditionReport"
 
 // Number of items to display when read more is visible
-const COLLAPSED_COUNT = 4
+const COLLAPSED_COUNT = 3
 
 interface ArtworkDetailsProps {
   artwork: ArtworkDetails_artwork$key
@@ -35,10 +35,6 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({
       ),
     },
     {
-      title: "Edition",
-      value: (artworkData.editionSets ?? []).length < 2 ? artworkData.editionOf : null,
-    },
-    {
       title: "Condition",
       value: artworkData?.canRequestLotConditionsReport ? (
         //  this is here to reset the margin that lives in the RequestConditionReport component
@@ -56,6 +52,14 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({
       value: artworkData?.signatureInfo?.details,
     },
     {
+      title: "Certificate of Authenticity",
+      value: artworkData?.certificateOfAuthenticity?.details && (
+        <Text variant="xs" color="black100">
+          {artworkData?.certificateOfAuthenticity?.details}
+        </Text>
+      ),
+    },
+    {
       title: "Series",
       value: artworkData?.series,
     },
@@ -69,7 +73,9 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({
 
   const allDisplayItems = listItems.filter((item) => !!item.value)
 
-  const [isCollapsed, setIsCollapsed] = React.useState(showReadMore && allDisplayItems.length > 4)
+  const [isCollapsed, setIsCollapsed] = React.useState(
+    showReadMore && allDisplayItems.length > COLLAPSED_COUNT
+  )
 
   const displayItems = isCollapsed ? allDisplayItems.slice(0, COLLAPSED_COUNT) : allDisplayItems
 

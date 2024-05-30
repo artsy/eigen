@@ -306,6 +306,18 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
         excludeVerticalMargin: true,
       })
 
+      sections.push({
+        key: "artworkDetails",
+        element: (
+          <ArtworkDetails
+            artwork={artworkAboveTheFold}
+            showReadMore={artworkAboveTheFold.isUnlisted}
+          />
+        ),
+        excludeSeparator:
+          !!artworkAboveTheFold.isUnlisted || (artworkAboveTheFold.editionSets ?? []).length > 1,
+      })
+
       if (
         artworkBelowTheFold?.isForSale &&
         !isInAuction &&
@@ -327,18 +339,6 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
           excludeSeparator: true,
         })
       }
-
-      sections.push({
-        key: "artworkDetails",
-        element: (
-          <ArtworkDetails
-            artwork={artworkAboveTheFold}
-            showReadMore={artworkAboveTheFold.isUnlisted}
-          />
-        ),
-        excludeSeparator: !!artworkAboveTheFold.isUnlisted,
-        excludeVerticalMargin: true,
-      })
 
       if (artworkAboveTheFold.isUnlisted) {
         if (!!(artworkBelowTheFold?.isForSale && !isInAuction)) {
