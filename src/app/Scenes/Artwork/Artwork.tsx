@@ -327,6 +327,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
           key: "selectEditionSet",
           element: <ArtworkEditionSetInformation artwork={artworkAboveTheFold} />,
           excludeSeparator: true,
+          excludeVerticalMargin: !!artworkAboveTheFold.isUnlisted,
         })
       }
 
