@@ -12,7 +12,7 @@ export const SubmitArtworkFormEdit: React.FC<SubmitArtworkProps> = withSuspense(
     {
       id: props.submissionID,
     },
-    { fetchPolicy: "network-only" }
+    { fetchPolicy: "store-and-network" }
   )
 
   if (!data?.submission) {
