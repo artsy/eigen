@@ -53,7 +53,7 @@ export const useSubmissionContext = () => {
           }
         } catch (error) {
           console.error("Error creating or updating submission", error)
-          Alert.alert("Could not create or update submission")
+          Alert.alert("Something went wrong. The submission could not be updated.")
           return
         }
       }
