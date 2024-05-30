@@ -66,7 +66,16 @@ module Supply
         release.user_fraction = nil
       end
 
-      track_to.releases << release
+      if track_to
+        # Its okay to set releases to an array containing the newest release
+        # Google Play will keep previous releases there this release is a partial rollout
+        track_to.releases = [release]
+      else
+        track_to = AndroidPublisher::Track.new(
+          track: Supply.config[:track_promote_to],
+          releases: [release]
+        )
+      end
 
       client.update_track(Supply.config[:track_promote_to], track_to)
     end
