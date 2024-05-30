@@ -128,7 +128,6 @@ export const ConsignmentInquiryForm: React.FC<{
             onSubmitEditing={() => jumpToNextField("phone")}
             placeholder="(000) 000-0000"
             ref={phoneInputRef}
-            setValidation={() => null}
             shouldDisplayLocalError={false}
             style={{ flex: 1 }}
             optional

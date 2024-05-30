@@ -22,6 +22,8 @@ export const useSubmissionContext = () => {
 
   const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
 
+  const isLastStep = currentStep === ARTWORK_FORM_STEPS[ARTWORK_FORM_STEPS.length - 1]
+
   const navigateToNextStep = async (props?: {
     step?: SubmitArtworkScreen
     skipMutation?: boolean
@@ -39,15 +41,20 @@ export const useSubmissionContext = () => {
 
       const newValues = {
         ...values,
-        state: (currentStep === "AddDimensions"
-          ? "SUBMITTED"
-          : undefined) as ArtworkDetailsFormModel["state"],
+        state: (isLastStep ? "SUBMITTED" : undefined) as ArtworkDetailsFormModel["state"],
       }
 
       if (!props?.skipMutation) {
-        const submissionId = await createOrUpdateSubmission(newValues, values.submissionId)
-        if (!values.submissionId && submissionId) {
-          setFieldValue("submissionId", submissionId)
+        try {
+          const submissionId = await createOrUpdateSubmission(newValues, values.submissionId)
+
+          if (!values.submissionId && submissionId) {
+            setFieldValue("submissionId", submissionId)
+          }
+        } catch (error) {
+          console.error("Error creating or updating submission", error)
+          Alert.alert("Could not create or update submission")
+          return
         }
       }
 
@@ -85,8 +92,5 @@ export const useSubmissionContext = () => {
     }
   }
 
-  return {
-    navigateToNextStep,
-    navigateToPreviousStep,
-  }
+  return { isLastStep, navigateToNextStep, navigateToPreviousStep }
 }

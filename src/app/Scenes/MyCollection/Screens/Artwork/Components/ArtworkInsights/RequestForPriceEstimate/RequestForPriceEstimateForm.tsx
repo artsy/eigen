@@ -1,4 +1,4 @@
-import { Spacer, Box, Text, LinkText, Button, Input } from "@artsy/palette-mobile"
+import { Box, Button, Input, LinkText, Spacer, Text } from "@artsy/palette-mobile"
 import { PhoneInput } from "app/Components/Input/PhoneInput"
 import { navigate } from "app/system/navigation/navigate"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
@@ -73,7 +73,6 @@ export const RequestForPriceEstimateForm = () => {
               placeholder="(000) 000-0000"
               onChangeText={handleChange("requesterPhoneNumber")}
               value={values.requesterPhoneNumber}
-              setValidation={() => null}
               accessibilityLabel="Phone number"
               shouldDisplayLocalError={false}
             />

@@ -23,7 +23,7 @@ import { formatPhoneNumber } from "./formatPhoneNumber"
 export const PhoneInput = forwardRef<
   InputRef,
   {
-    setValidation: (value: boolean) => void
+    setValidation?: (value: boolean) => void
     onChange?: (value: string) => void
     onModalFinishedClosing?: () => void
     maxModalHeight?: number
@@ -70,7 +70,7 @@ export const PhoneInput = forwardRef<
 
     const handleValidation = () => {
       const isValid = isValidNumber(phoneNumber, countryISO2Code)
-      setValidation(isValid)
+      setValidation?.(isValid)
 
       if (shouldDisplayLocalError) {
         setValidationErrorMessage(isValid ? "" : "Please enter a valid phone number.")

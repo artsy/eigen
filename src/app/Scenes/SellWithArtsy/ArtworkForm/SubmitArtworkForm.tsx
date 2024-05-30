@@ -3,6 +3,7 @@ import { NavigationContainer, NavigationContainerRef } from "@react-navigation/n
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import { SubmitArtworkAddDetails } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddDetails"
 import { SubmitArtworkAddDimensions } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddDimensions"
+import { SubmitArtworkAddPhoneNumber } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddPhoneNumber"
 import { SubmitArtworkAddPhotos } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddPhotos"
 import { SubmitArtworkAddTitle } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddTitle"
 import { SubmitArtworkArtistRejected } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkArtistRejected"
@@ -42,6 +43,7 @@ export type SubmitArtworkStackNavigation = {
   AddPhotos: undefined
   AddDetails: undefined
   AddDimensions: undefined
+  AddPhoneNumber: undefined
   PurchaseHistory: undefined
   CompleteYourSubmission: undefined
   ArtistRejected: undefined
@@ -161,6 +163,7 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
                 component={SelectArtworkMyCollectionArtwork}
               />
 
+              <Stack.Screen name="AddPhoneNumber" component={SubmitArtworkAddPhoneNumber} />
               <Stack.Screen name="SelectArtist" component={SubmitArtworkSelectArtist} />
               <Stack.Screen
                 name="ArtistRejected"
