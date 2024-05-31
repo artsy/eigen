@@ -45,7 +45,6 @@ export const useConfig = ({ basis, onDone }: UseConfig) => {
     const nextItem = workflowEngine.current.next()
     if (nextItem) {
       setCurrent(nextItem)
-      workflowEngine.current.next()
     }
   }
 
