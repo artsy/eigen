@@ -97,19 +97,31 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
 
   const FlashlistComponent = animated ? AnimatedMasonryFlashList : MasonryFlashList
 
+  const hasArtworks = artworks.length > 0
+
+  const getAdjustedNumColumns = () => {
+    if (hasArtworks) {
+      return rest.numColumns ?? NUM_COLUMNS_MASONRY
+    }
+    // WARNING: if the masonry is empty we need to have numColumns=1 to avoid a crash
+    // that happens only when we dynamically change the number of columns see more here:
+    // https://github.com/artsy/eigen/pull/10319
+    return 1
+  }
+
   return (
     <FlashlistComponent
       keyboardShouldPersistTaps="handled"
       contentContainerStyle={{
         // No paddings are needed for single column grids
-        paddingHorizontal: rest.numColumns === 1 ? 0 : space(2),
+        paddingHorizontal: getAdjustedNumColumns() === 1 ? 0 : space(2),
         paddingBottom: artworks.length === 1 ? 0 : space(6),
       }}
       data={artworks}
       keyExtractor={(item) => item.id}
       onEndReached={onEndReached}
       onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
-      numColumns={rest.numColumns ?? NUM_COLUMNS_MASONRY}
+      numColumns={getAdjustedNumColumns()}
       estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
       ListHeaderComponent={shouldDisplayHeader ? ListHeaderComponent : null}
       ListEmptyComponent={ListEmptyComponent}
