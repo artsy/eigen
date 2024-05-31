@@ -8,10 +8,10 @@ import {
   SkeletonText,
   Spacer,
 } from "@artsy/palette-mobile"
+import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
 import { SellWithArtsyHome_me$data } from "__generated__/SellWithArtsyHome_me.graphql"
 import { SellWithArtsyHome_recentlySoldArtworksTypeConnection$data } from "__generated__/SellWithArtsyHome_recentlySoldArtworksTypeConnection.graphql"
 import { SellWithArtsyHome_submission$data } from "__generated__/SellWithArtsyHome_submission.graphql"
-import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
 import { CollectorsNetwork } from "app/Scenes/SellWithArtsy/Components/CollectorsNetwork"
 import { FAQSWA } from "app/Scenes/SellWithArtsy/Components/FAQSWA"
 import { Highlights } from "app/Scenes/SellWithArtsy/Components/Highlights"
@@ -113,7 +113,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
       <Screen.Body fullwidth>
         <ScrollView showsVerticalScrollIndicator={false} ref={scrollViewRef}>
           <Join separator={<Spacer y={6} />}>
-            <Header submission={submission} />
+            <Header submission={submission || null} />
 
             <Highlights />
 

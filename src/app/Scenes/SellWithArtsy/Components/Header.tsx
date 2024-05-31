@@ -17,7 +17,7 @@ import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 
 interface HeaderProps {
-  submission?: Header_submission$key
+  submission: Header_submission$key | null
 }
 
 export const Header: React.FC<HeaderProps> = (props) => {
