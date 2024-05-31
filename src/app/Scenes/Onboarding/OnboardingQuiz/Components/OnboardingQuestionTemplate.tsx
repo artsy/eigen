@@ -14,6 +14,7 @@ import {
   State,
   useOnboardingContext,
 } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
+import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import React, { FC, useCallback, useState } from "react"
 import { LayoutAnimation } from "react-native"
 import { AnimatedFadingPill, FADE_OUT_PILL_ANIMATION_DURATION } from "./AnimatedFadingPill"
@@ -86,6 +87,16 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
       setShowPillTick(false)
     }, [])
   )
+
+  const androidHardwareBackButtonHandler = () => {
+    handleBack()
+
+    return true
+  }
+
+  // This is the hook that is used to override the back button behavior on Android
+  // if we don't call this hook, the back button will crash the app
+  useBackHandler(androidHardwareBackButtonHandler)
 
   const isDisabled = isNextBtnDisabled || !state[stateKey] || state[stateKey]?.length === 0
 
