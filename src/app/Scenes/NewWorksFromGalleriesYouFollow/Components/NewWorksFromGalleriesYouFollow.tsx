@@ -28,7 +28,7 @@ export const NewWorksFromGalleriesYouFollow: React.FC = () => {
 
   const artworks = extractNodes(data?.newWorksFromGalleriesYouFollowConnection)
   const RefreshControl = useRefreshControl(refetch)
-
+  const hasArtworks = artworks.length > 0
   const numOfColumns = defaultViewOption === "grid" ? NUM_COLUMNS_MASONRY : 1
 
   return (
@@ -45,7 +45,7 @@ export const NewWorksFromGalleriesYouFollow: React.FC = () => {
       loadMore={() => loadNext(PAGE_SIZE)}
       isLoading={isLoadingNext}
       onScroll={scrollHandler}
-      numColumns={numOfColumns}
+      numColumns={hasArtworks ? numOfColumns : 1}
     />
   )
 }

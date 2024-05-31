@@ -27,6 +27,7 @@ export const RecentlyViewedArtworks: React.FC = () => {
   >(artworkConnectionFragment, queryData.me)
 
   const artworks = extractNodes(data?.recentlyViewedArtworksConnection)
+  const hasArtworks = artworks.length > 0
   const RefreshControl = useRefreshControl(refetch)
 
   const numOfColumns = defaultViewOption === "grid" ? NUM_COLUMNS_MASONRY : 1
@@ -44,7 +45,7 @@ export const RecentlyViewedArtworks: React.FC = () => {
       hasMore={hasNext}
       loadMore={(pageSize) => loadNext(pageSize)}
       isLoading={isLoadingNext}
-      numColumns={numOfColumns}
+      numColumns={hasArtworks ? numOfColumns : 1}
       onScroll={scrollHandler}
     />
   )
