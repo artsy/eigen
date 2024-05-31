@@ -119,7 +119,7 @@
     "@react-native-clipboard/clipboard": "1.7.0",
     "@react-native-community/datetimepicker": "6.1.4",
     "@react-native-community/geolocation": "3.0.6",
-    "@react-native-community/netinfo": "9.3.11",
+    "@react-native-community/netinfo": "11.3.2",
     "@react-native-cookies/cookies": "6.0.11",
     "@react-native-google-signin/google-signin": "11.0.1",
     "@react-native-mapbox-gl/maps": "8.5.0",
