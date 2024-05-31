@@ -2,7 +2,7 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { createMockEnvironment } from "relay-test-utils"
-import { SellWithArtsyHomeQueryRenderer } from "./SellWithArtsyHome"
+import { SellWithArtsyHome } from "./SellWithArtsyHome"
 
 jest.mock("../../utils/useStatusBarStyle", () => {
   return {
@@ -52,12 +52,12 @@ describe("New SellWithArtsyLandingPage", () => {
     })
 
     const TestWrapper = () => {
-      return <SellWithArtsyHomeQueryRenderer environment={mockEnvironment} />
+      return <SellWithArtsyHome />
     }
 
     // HEADER
     describe("Header Events", () => {
-      it("tracks Consign Events", () => {
+      it("tracks Consign Events", async () => {
         renderWithWrappers(<TestWrapper />)
         const headerConsignButton = screen.getByTestId("header-consign-CTA")
 
