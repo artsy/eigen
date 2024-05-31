@@ -28,7 +28,6 @@ export const NewWorksFromGalleriesYouFollow: React.FC = () => {
 
   const artworks = extractNodes(data?.newWorksFromGalleriesYouFollowConnection)
   const RefreshControl = useRefreshControl(refetch)
-  const hasArtworks = artworks.length > 0
   const numOfColumns = defaultViewOption === "grid" ? NUM_COLUMNS_MASONRY : 1
 
   return (
@@ -45,10 +44,7 @@ export const NewWorksFromGalleriesYouFollow: React.FC = () => {
       loadMore={() => loadNext(PAGE_SIZE)}
       isLoading={isLoadingNext}
       onScroll={scrollHandler}
-      // WARNING: if the masonry is empty we need to have numColumns=1 to avoid a crash
-      // that happens only when we dynamically change the number of columns see more here:
-      // https://github.com/artsy/eigen/pull/10319
-      numColumns={hasArtworks ? numOfColumns : 1}
+      numColumns={numOfColumns}
     />
   )
 }

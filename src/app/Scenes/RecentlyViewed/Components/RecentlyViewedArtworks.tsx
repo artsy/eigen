@@ -27,7 +27,6 @@ export const RecentlyViewedArtworks: React.FC = () => {
   >(artworkConnectionFragment, queryData.me)
 
   const artworks = extractNodes(data?.recentlyViewedArtworksConnection)
-  const hasArtworks = artworks.length > 0
   const RefreshControl = useRefreshControl(refetch)
 
   const numOfColumns = defaultViewOption === "grid" ? NUM_COLUMNS_MASONRY : 1
@@ -45,10 +44,7 @@ export const RecentlyViewedArtworks: React.FC = () => {
       hasMore={hasNext}
       loadMore={(pageSize) => loadNext(pageSize)}
       isLoading={isLoadingNext}
-      // WARNING: if the masonry is empty we need to have numColumns=1 to avoid a crash
-      // that happens only when we dynamically change the number of columns see more here:
-      // https://github.com/artsy/eigen/pull/10319
-      numColumns={hasArtworks ? numOfColumns : 1}
+      numColumns={numOfColumns}
       onScroll={scrollHandler}
     />
   )
