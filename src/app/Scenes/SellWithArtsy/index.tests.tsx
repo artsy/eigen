@@ -1,7 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { createMockEnvironment } from "relay-test-utils"
 import { SellWithArtsyHome } from "./SellWithArtsyHome"
 
 jest.mock("../../utils/useStatusBarStyle", () => {
@@ -45,12 +44,6 @@ jest.mock("./utils/useSWALandingPageData", () => {
 
 describe("New SellWithArtsyLandingPage", () => {
   describe("Tracking", () => {
-    let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-    beforeEach(() => {
-      mockEnvironment = createMockEnvironment()
-    })
-
     const TestWrapper = () => {
       return <SellWithArtsyHome />
     }
