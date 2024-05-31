@@ -109,7 +109,6 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
         cursor: { type: "String" }
         input: { type: "FilterArtworksInput" }
       ) {
-        isDepartment
         slug
         id
         collectionArtworks: artworksConnection(
