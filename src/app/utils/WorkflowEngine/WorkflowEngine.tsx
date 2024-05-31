@@ -17,26 +17,29 @@ export class WorkflowEngine {
     this.conditions = conditions
   }
 
-  current(): string {
+  current(): string | undefined {
     const current = this.workflow[this.index]
 
     if (typeof current === "string") {
       return current
     }
 
-    const [key, outcomes] = this.split(current)
-    const rest = this.workflow.slice(this.index + 1)
-    const decision = this.decide(key)
-    const workflow = [...(outcomes[String(decision)] ?? []), ...(rest ?? [])]
+    if (typeof current === "object") {
+      const [key, outcomes] = this.split(current)
+      const rest = this.workflow.slice(this.index + 1)
+      const decision = this.decide(key)
+      const workflow = [...(outcomes[String(decision)] ?? []), ...(rest ?? [])]
 
-    this.workflow = workflow
-    this.index = 0
+      this.workflow = workflow
+      this.index = 0
 
-    return this.current()
+      return this.current()
+    } else {
+      return undefined
+    }
   }
 
   split(leaf: Workflow[number]) {
-    console.log(leaf)
     return [Object.keys(leaf)[0], Object.values(leaf)[0]]
   }
 
@@ -61,8 +64,8 @@ export class WorkflowEngine {
   }
 
   // TODO: implement case for 0 index && current === "object" (Branch)
-  back(): string {
-    let current: string
+  back(): string | undefined {
+    let current: string | undefined
 
     if (this.index === 0) {
       current = this.workflow[0] as string
