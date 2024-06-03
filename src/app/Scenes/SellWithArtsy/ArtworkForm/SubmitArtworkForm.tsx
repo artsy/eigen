@@ -3,6 +3,7 @@ import { NavigationContainer, NavigationContainerRef } from "@react-navigation/n
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import { SubmitArtworkAddDetails } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddDetails"
 import { SubmitArtworkAddDimensions } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddDimensions"
+import { SubmitArtworkAddPhoneNumber } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddPhoneNumber"
 import { SubmitArtworkAddPhotos } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddPhotos"
 import { SubmitArtworkAddTitle } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddTitle"
 import { SubmitArtworkArtistRejected } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkArtistRejected"
@@ -177,6 +178,8 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
               <Stack.Screen name="AddDimensions" component={SubmitArtworkAddDimensions} />
 
               <Stack.Screen name="PurchaseHistory" component={SubmitArtworkPurchaseHistory} />
+
+              <Stack.Screen name="AddPhoneNumber" component={SubmitArtworkAddPhoneNumber} />
 
               <Stack.Screen
                 name="CompleteYourSubmission"
