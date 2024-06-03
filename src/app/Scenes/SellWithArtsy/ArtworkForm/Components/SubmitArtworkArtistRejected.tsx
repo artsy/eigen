@@ -1,4 +1,4 @@
-import { Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { BulletedItem, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { InfoModal } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/InfoModal/InfoModal"
@@ -31,7 +31,16 @@ export const SubmitArtworkArtistRejected: React.FC<{}> = () => {
               setIsEligibilityModalVisible(true)
             }}
           >
-            read about what our specialists are looking for
+            contact an advisor
+          </Text>{" "}
+          or read about{" "}
+          <Text
+            underline
+            onPress={() => {
+              setIsEligibilityModalVisible(true)
+            }}
+          >
+            what our advisors are looking for
           </Text>
           . {"\n"}
           {"\n"}After adding to My Collection, an Artsy Advisor will be in touch if there is an
@@ -47,20 +56,21 @@ export const SubmitArtworkArtistRejected: React.FC<{}> = () => {
         <ScrollView>
           <Text>
             We are currently accepting unique and limited-edition works of art by modern,
-            contemporary, and emerging artists who have collector demand on Artsy. Our in-house
-            experts cover Post-War and Contemporary Art, Prints and Multiples, Street Art and
-            Photographs.{"\n"}
+            contemporary, and emerging artists who have collector demand on Artsy.
             {"\n"}
             Our experts assess a number of factors to determine whether your work qualifies for our
             program, including the following:{"\n"}
-            {"\n"}
-            {"    "}• Market data like the number, recency, and value of auction results for works
-            by the artist.{"\n"}
-            {"    "}• Authenticity and provenance information.{"\n"}
-            {"    "}• Artwork details you provide, including images (front, back, signature),
-            unframed dimensions, and additional documentation.{"\n"}
-            {"    "}• The price you’re looking for.
           </Text>
+          <BulletedItem color="black100">
+            Market data like the number, recency, and value of auction results for works by the
+            artist.
+          </BulletedItem>
+          <BulletedItem color="black100">Authenticity and provenance information.</BulletedItem>
+          <BulletedItem color="black100">
+            Artwork details you provide, including images (front, back, signature), unframed
+            dimensions, and additional documentation.
+          </BulletedItem>
+          <BulletedItem color="black100">The price you’re looking for.</BulletedItem>
         </ScrollView>
       </InfoModal>
     </Flex>
