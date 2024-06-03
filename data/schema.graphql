@@ -2417,7 +2417,11 @@ type Artwork implements Node & Searchable & Sellable {
 
   # Formatted artwork metadata, including artist, title, date and partner; e.g., 'Andy Warhol, Truck, 1980, Westward Gallery'.
   formattedMetadata: String
-  framed: ArtworkInfoRow
+  framed: ArtworkInfoRow @deprecated(reason: "Consider using isFramed field (boolean) instead")
+  framedDepth: String
+  framedHeight: String
+  framedMetric: String
+  framedWidth: String
 
   # Returns true when artwork has a certificate of authenticity
   hasCertificateOfAuthenticity: Boolean
@@ -2493,6 +2497,7 @@ type Artwork implements Node & Searchable & Sellable {
   isEligibleToCreateAlert: Boolean!
   isEmbeddableVideo: Boolean
   isForSale: Boolean
+  isFramed: Boolean
   isHangable: Boolean
 
   # Is this artwork part of an auction?
@@ -4223,8 +4228,11 @@ type CollectorProfileType implements Node {
   savedArtworksCount: Int!
   selfReportedPurchases: String
 
-  # A partner-specific sentence describing the collector.
-  summarySentence(partnerID: String!): String!
+  # An artwork-specific paragraph describing the collector.
+  summaryParagraph(
+    # This can be specified, and is injected in a conversation context for convenience.
+    artworkID: String
+  ): String
   totalBidsCount: Int!
   userInterests: [UserInterest]!
     @deprecated(reason: "Use \"owner#interestsConnection\" field instead.")
@@ -11388,8 +11396,11 @@ type InquirerCollectorProfile {
   savedArtworksCount: Int!
   selfReportedPurchases: String
 
-  # A partner-specific sentence describing the collector.
-  summarySentence(partnerID: String!): String!
+  # An artwork-specific paragraph describing the collector.
+  summaryParagraph(
+    # This can be specified, and is injected in a conversation context for convenience.
+    artworkID: String
+  ): String
   totalBidsCount: Int!
   userInterests: [UserInterest]!
     @deprecated(reason: "Use \"owner#interestsConnection\" field instead.")
@@ -13509,6 +13520,7 @@ type MyCollectionConnection {
 }
 
 input MyCollectionCreateArtworkInput {
+  additionalInformation: String
   artistIds: [String]
   artists: [MyCollectionArtistInput]
   artworkLocation: String
@@ -13518,6 +13530,7 @@ input MyCollectionCreateArtworkInput {
 
   # The given location of the user as structured data
   collectorLocation: EditableLocation
+  conditionDescription: String
   confidentialNotes: String
   costCurrencyCode: String
   costMajor: Int
@@ -13527,9 +13540,14 @@ input MyCollectionCreateArtworkInput {
   editionNumber: String
   editionSize: String
   externalImageUrls: [String]
+  framedDepth: String
+  framedHeight: String
+  framedMetric: String
+  framedWidth: String
   height: String
   importSource: ArtworkImportSource
   isEdition: Boolean
+  isFramed: Boolean
   medium: String
   metric: String
 
@@ -13599,6 +13617,7 @@ type MyCollectionInfo {
 }
 
 input MyCollectionUpdateArtworkInput {
+  additionalInformation: String
   artistIds: [String]
   artworkId: String!
   artworkLocation: String
@@ -13608,6 +13627,7 @@ input MyCollectionUpdateArtworkInput {
 
   # The given location of the user as structured data
   collectorLocation: EditableLocation
+  conditionDescription: String
   confidentialNotes: String
   costCurrencyCode: String
   costMajor: Int
@@ -13617,8 +13637,13 @@ input MyCollectionUpdateArtworkInput {
   editionNumber: String
   editionSize: String
   externalImageUrls: [String]
+  framedDepth: String
+  framedHeight: String
+  framedMetric: String
+  framedWidth: String
   height: String
   isEdition: Boolean
+  isFramed: Boolean
   medium: String
   metric: String
   pricePaidCents: Long
@@ -18995,8 +19020,11 @@ type UpdateCollectorProfilePayload {
   savedArtworksCount: Int!
   selfReportedPurchases: String
 
-  # A partner-specific sentence describing the collector.
-  summarySentence(partnerID: String!): String!
+  # An artwork-specific paragraph describing the collector.
+  summaryParagraph(
+    # This can be specified, and is injected in a conversation context for convenience.
+    artworkID: String
+  ): String
   totalBidsCount: Int!
   userInterests: [UserInterest]!
     @deprecated(reason: "Use \"owner#interestsConnection\" field instead.")
