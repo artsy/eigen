@@ -23,7 +23,7 @@ describe("SubmitArtworkBottomNavigation", () => {
         props: { currentStep: "StartFlow" },
       })
 
-      const startSubmissionButton = screen.getByText("Start a New Submission")
+      const startSubmissionButton = screen.getByText("Start New Submission")
       expect(startSubmissionButton).toBeOnTheScreen()
 
       fireEvent(startSubmissionButton, "onPress")
