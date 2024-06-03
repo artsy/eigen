@@ -52,8 +52,8 @@ export const Header: React.FC<HeaderProps> = (props) => {
               }}
             >
               <Flex py={1} flexDirection="column">
-                <Text variant="xs" mb={1}>
-                  Continue submission:
+                <Text color="black60" variant="xs" mb={1}>
+                  Finish previous submission:
                 </Text>
 
                 <EntityHeader
@@ -61,10 +61,11 @@ export const Header: React.FC<HeaderProps> = (props) => {
                   meta={submission?.title || "Untitled"}
                   imageUrl={artist?.imageUrl || ""}
                   RightButton={<ArrowRightIcon />}
-                  backgroundColor="black5"
                   px={2}
                   py={1}
-                  borderRadius={10}
+                  borderWidth={1}
+                  borderColor="black10"
+                  borderRadius={5}
                 />
 
                 <Flex alignSelf="center">
