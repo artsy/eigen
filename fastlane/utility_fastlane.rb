@@ -133,6 +133,21 @@ lane :latest_betas do
   puts "Parent latest version: #{parent_version_name}"
   puts "iOS latest version: #{ios_build_number}"
   puts "Android latest version: #{android_build_number}"
+
+
+  formatted_ios_build_number = format_build_number(ios_build_number.to_s)
+  formatted_android_build_number = android_build_number.to_s
+
+  ios_tag = "ios-#{parent_version_name}-#{formatted_ios_build_number}"
+  android_tag = "android-#{parent_version_name}-#{formatted_android_build_number}"
+
+  puts "[INFO] Parent latest version: #{parent_version_name}"
+  puts "[INFO] iOS latest version: #{ios_build_number} (tag: #{ios_tag})"
+  puts "[INFO] Android latest version: #{android_build_number} (tag: #{android_tag})"
+
+  puts "[INFO] If you are creating a release candidate branch:"
+  puts "[INFO] git checkout #{ios_tag}"
+  puts "[INFO] git checkout -b #{parent_version_name}-release-candidate"
 end
 
 lane :check_flags do
