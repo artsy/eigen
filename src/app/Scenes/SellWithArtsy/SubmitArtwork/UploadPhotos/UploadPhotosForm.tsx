@@ -168,7 +168,9 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
       })}
 
       {Array.from({ length: numberOfPlaceholders }).map((_, idx) => (
-        <PlaceholderImage key={idx} />
+        <TouchableOpacity onPress={handleAddPhotoPress} key={idx}>
+          <PlaceholderImage />
+        </TouchableOpacity>
       ))}
 
       <TouchableOpacity
