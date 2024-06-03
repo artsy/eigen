@@ -42,14 +42,20 @@ export const useConfig = ({ basis, onDone }: UseConfig) => {
       return
     }
 
-    setCurrent(workflowEngine.current.next())
+    const nextItem = workflowEngine.current.next()
+    if (nextItem) {
+      setCurrent(nextItem)
+    }
   }
 
   const back = () => {
     // > 1 accounts for the welcome screen, which has no place in the data object structure
     // this is done here so as to leave the workflow engine in a neutral, reusable state
     if (workflowEngine.current.position() > 1) {
-      setCurrent(workflowEngine.current.back())
+      const previous = workflowEngine.current.back()
+      if (previous) {
+        setCurrent(previous)
+      }
     }
   }
 

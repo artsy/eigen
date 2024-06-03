@@ -63,7 +63,7 @@ const reducer = (onReset: () => void) => (state: State, action: OnboardingContex
 }
 
 const OnboardingContext = createContext<{
-  current: string
+  current: string | undefined
   dispatch: React.Dispatch<OnboardingContextAction>
   progress: number
   state: State
