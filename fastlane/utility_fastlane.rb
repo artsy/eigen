@@ -130,10 +130,6 @@ lane :latest_betas do
   android_build_number = google_play_track_version_codes(
       track: 'alpha'
   ).first
-  puts "Parent latest version: #{parent_version_name}"
-  puts "iOS latest version: #{ios_build_number}"
-  puts "Android latest version: #{android_build_number}"
-
 
   formatted_ios_build_number = format_build_number(ios_build_number.to_s)
   formatted_android_build_number = android_build_number.to_s
