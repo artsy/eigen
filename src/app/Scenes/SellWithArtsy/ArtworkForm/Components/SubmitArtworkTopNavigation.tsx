@@ -1,5 +1,6 @@
 import { BackButton, Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
+import { SubmitArtworkProgressBar } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkProgressBar"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -98,7 +99,7 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
   }
 
   return (
-    <Flex mx={2} height={40}>
+    <Flex mx={2} height={40} mb={2}>
       <Flex flexDirection="row" justifyContent="space-between">
         {currentStep === "SelectArtist" && (
           <BackButton
@@ -112,13 +113,15 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
         )}
 
         {currentStep !== "SelectArtist" && (
-          <Flex style={{ flexGrow: 1, alignItems: "flex-end" }}>
+          <Flex style={{ flexGrow: 1, alignItems: "flex-end" }} mb={0.5}>
             <Touchable onPress={handleSaveAndExitPress}>
               <Text>{!hasCompletedForm && !!enableSaveAndExit ? "Save & " : ""}Exit</Text>
             </Touchable>
           </Flex>
         )}
       </Flex>
+
+      <SubmitArtworkProgressBar />
     </Flex>
   )
 }
