@@ -1,18 +1,34 @@
-import { ArrowRightIcon, Flex, Spacer, Text, Touchable, useSpace } from "@artsy/palette-mobile"
+import {
+  ArrowRightIcon,
+  Box,
+  EntityHeader,
+  Flex,
+  Spacer,
+  Text,
+  Touchable,
+} from "@artsy/palette-mobile"
+import { Header_submission$key } from "__generated__/Header_submission.graphql"
+import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubmitArtworkTracking"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useScreenDimensions } from "app/utils/hooks"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { Alert, Image, LayoutAnimation } from "react-native"
+import { Image } from "react-native"
 import { isTablet } from "react-native-device-info"
+import { graphql, useFragment } from "react-relay"
 
-export const Header: React.FC = () => {
-  const { width } = useScreenDimensions()
-  const space = useSpace()
-  const enableSaveAndContinue = useFeatureFlag("AREnableSaveAndContinueSubmission")
+interface HeaderProps {
+  submission: Header_submission$key | null
+}
+
+export const Header: React.FC<HeaderProps> = (props) => {
   const { draft } = GlobalStore.useAppState((state) => state.artworkSubmission)
+  const { width } = useScreenDimensions()
 
-  const showContinueSubmission = !!enableSaveAndContinue && !!draft?.submissionID
+  const submission = useFragment(FRAGMENT, props.submission)
+
+  const artist = submission?.artist
+
+  const { trackTappedContinueSubmission } = useSubmitArtworkTracking()
 
   return (
     <Flex>
@@ -22,54 +38,48 @@ export const Header: React.FC = () => {
         resizeMode={isTablet() ? "contain" : "cover"}
       />
 
-      {!!showContinueSubmission && (
-        <>
-          <Spacer y={2} />
-
-          <Touchable
-            style={{ paddingHorizontal: space(2), flex: 1 }}
-            onPress={() => {
-              navigate(
-                `/sell/submissions/${draft.submissionID}/edit?initialStep=${draft.currentStep}`
-              )
-            }}
-            onLongPress={() => {
-              Alert.alert(
-                "Discard draft",
-                "Are you sure you want to discard your draft? This action cannot be undone.",
-                [
-                  {
-                    text: "Cancel",
-                    style: "cancel",
-                  },
-                  {
-                    text: "Disard Draft",
-                    onPress: () => {
-                      GlobalStore.actions.artworkSubmission.setDraft(null)
-                      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-                    },
-                    style: "destructive",
-                  },
-                ]
-              )
-            }}
-          >
-            <Flex backgroundColor="blue100" px={2} py={1} flex={1} flexDirection="row">
-              <Text variant="sm-display" color="white" style={{ flex: 1 }}>
-                Continue previous submission
-              </Text>
-              <ArrowRightIcon fill="white100" height={18} width={18} />
-            </Flex>
-          </Touchable>
-        </>
-      )}
-
-      <Spacer y={showContinueSubmission ? 1 : 2} />
+      <Spacer y={2} />
 
       <Flex mx={2}>
+        {!!draft && !!submission && (
+          <Box mb={2}>
+            <Touchable
+              onPress={() => {
+                trackTappedContinueSubmission(draft.currentStep)
+                navigate(
+                  `/sell/submissions/${draft.submissionID}/edit?initialStep=${draft.currentStep}`
+                )
+              }}
+            >
+              <Flex py={1} flexDirection="column">
+                <Text color="black60" variant="xs" mb={1}>
+                  Finish previous submission:
+                </Text>
+
+                <EntityHeader
+                  name={artist?.name || "Unknown artist"}
+                  meta={submission?.title || "Untitled"}
+                  imageUrl={artist?.imageUrl || ""}
+                  RightButton={<ArrowRightIcon />}
+                  px={2}
+                  py={1}
+                  borderWidth={1}
+                  borderColor="black10"
+                  borderRadius={5}
+                />
+
+                <Flex alignSelf="center">
+                  <ArrowRightIcon fill="white100" height={18} width={18} />
+                </Flex>
+              </Flex>
+            </Touchable>
+          </Box>
+        )}
+
         <Text variant="xl" mb={1}>
           Sell art from your collection
         </Text>
+
         <Text variant="xs">
           With our global reach and art market expertise, our specialists will find the best sales
           option for your work.
@@ -78,3 +88,13 @@ export const Header: React.FC = () => {
     </Flex>
   )
 }
+
+const FRAGMENT = graphql`
+  fragment Header_submission on ConsignmentSubmission {
+    title
+    artist {
+      name
+      imageUrl
+    }
+  }
+`

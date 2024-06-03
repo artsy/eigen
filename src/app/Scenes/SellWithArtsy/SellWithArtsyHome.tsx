@@ -11,6 +11,7 @@ import {
 import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
 import { SellWithArtsyHome_me$data } from "__generated__/SellWithArtsyHome_me.graphql"
 import { SellWithArtsyHome_recentlySoldArtworksTypeConnection$data } from "__generated__/SellWithArtsyHome_recentlySoldArtworksTypeConnection.graphql"
+import { SellWithArtsyHome_submission$data } from "__generated__/SellWithArtsyHome_submission.graphql"
 import { CollectorsNetwork } from "app/Scenes/SellWithArtsy/Components/CollectorsNetwork"
 import { FAQSWA } from "app/Scenes/SellWithArtsy/Components/FAQSWA"
 import { Highlights } from "app/Scenes/SellWithArtsy/Components/Highlights"
@@ -38,11 +39,13 @@ import { SellWithArtsyRecentlySold } from "./Components/SellWithArtsyRecentlySol
 interface SellWithArtsyHomeProps {
   recentlySoldArtworks?: SellWithArtsyHome_recentlySoldArtworksTypeConnection$data
   me?: SellWithArtsyHome_me$data
+  submission?: SellWithArtsyHome_submission$data
 }
 
 export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
   recentlySoldArtworks,
   me,
+  submission,
 }) => {
   const onFocusStatusBarStyle: StatusBarStyle = "dark-content"
   const onBlurStatusBarStyle: StatusBarStyle = "dark-content"
@@ -110,7 +113,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
       <Screen.Body fullwidth>
         <ScrollView showsVerticalScrollIndicator={false} ref={scrollViewRef}>
           <Join separator={<Spacer y={6} />}>
-            <Header />
+            <Header submission={submission || null} />
 
             <Highlights />
 
@@ -158,6 +161,11 @@ const SellWithArtsyHomeContainer = createFragmentContainer(SellWithArtsyHome, {
       phone
     }
   `,
+  submission: graphql`
+    fragment SellWithArtsyHome_submission on ConsignmentSubmission {
+      ...Header_submission
+    }
+  `,
 })
 
 interface SellWithArtsyHomeQueryRendererProps {
@@ -165,12 +173,15 @@ interface SellWithArtsyHomeQueryRendererProps {
 }
 
 export const SellWithArtsyHomeScreenQuery = graphql`
-  query SellWithArtsyHomeQuery {
+  query SellWithArtsyHomeQuery($submissionID: ID, $includeSubmission: Boolean = false) {
     recentlySoldArtworks {
       ...SellWithArtsyHome_recentlySoldArtworksTypeConnection
     }
     me {
       ...SellWithArtsyHome_me
+    }
+    submission(id: $submissionID) @include(if: $includeSubmission) {
+      ...SellWithArtsyHome_submission
     }
   }
 `
@@ -178,10 +189,14 @@ export const SellWithArtsyHomeScreenQuery = graphql`
 export const SellWithArtsyHomeQueryRenderer: React.FC<SellWithArtsyHomeQueryRendererProps> = ({
   environment,
 }) => {
+  const { draft } = GlobalStore.useAppState((state) => state.artworkSubmission)
+
+  const submissionID = draft?.submissionID
+
   return (
     <QueryRenderer<SellWithArtsyHomeQuery>
       environment={environment || getRelayEnvironment()}
-      variables={{}}
+      variables={{ submissionID: submissionID, includeSubmission: !!submissionID }}
       query={SellWithArtsyHomeScreenQuery}
       render={renderWithPlaceholder({
         Container: SellWithArtsyHomeContainer,
