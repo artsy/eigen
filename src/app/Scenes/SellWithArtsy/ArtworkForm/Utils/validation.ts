@@ -155,7 +155,7 @@ export const artworkDetailsEmptyInitialValues: ArtworkDetailsFormModel = {
   medium: "",
   myCollectionArtworkID: null,
   provenance: "",
-  signature: false,
+  signature: null,
   source: null,
   state: "DRAFT",
   utmMedium: "",
