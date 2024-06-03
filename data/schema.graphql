@@ -2083,6 +2083,7 @@ type ArtistPartnerEdge {
   # A type-specific ID.
   internalID: ID!
   isDisplayOnPartnerProfile: Boolean
+  isHiddenInPresentationMode: Boolean
   isUseDefaultBiography: Boolean
 
   # The item at the end of the edge
@@ -14350,6 +14351,7 @@ type PartnerArtist {
   # A type-specific ID.
   internalID: ID!
   isDisplayOnPartnerProfile: Boolean
+  isHiddenInPresentationMode: Boolean
   isUseDefaultBiography: Boolean
   partner: Partner
   representedBy: Boolean
@@ -14436,6 +14438,7 @@ type PartnerArtistEdge {
   # A type-specific ID.
   internalID: ID!
   isDisplayOnPartnerProfile: Boolean
+  isHiddenInPresentationMode: Boolean
   isUseDefaultBiography: Boolean
 
   # The item at the end of the edge
