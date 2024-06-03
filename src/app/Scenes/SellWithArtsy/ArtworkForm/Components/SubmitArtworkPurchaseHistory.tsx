@@ -21,17 +21,11 @@ export const SubmitArtworkPurchaseHistory = () => {
   return (
     <Flex px={2}>
       <Text variant="lg" mb={2}>
-        Purchase history
+        Where did you purchase the artwork?
       </Text>
 
       <Join separator={<Spacer y={2} />}>
-        <Text variant="xs" color="black60">
-          The documented history of an artwork’s ownership and authenticity. Please add any
-          documentation you have that proves your artwork’s provenance:
-        </Text>
-
         <Flex>
-          <Text mb={2}>Where did you purchase the work?</Text>
           <Select
             options={PROVENANCE_LIST}
             title="Purchase information"
