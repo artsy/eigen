@@ -1,14 +1,22 @@
 import { BulletedItem, Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { SubmitArtworkArtistRejectedQuery } from "__generated__/SubmitArtworkArtistRejectedQuery.graphql"
+import { SubmitArtworkArtistRejected_me$data } from "__generated__/SubmitArtworkArtistRejected_me.graphql"
 import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { InfoModal } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/InfoModal/InfoModal"
+import { navigate } from "app/system/navigation/navigate"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useFormikContext } from "formik"
 import { useState } from "react"
 import { ScrollView } from "react-native"
+import { QueryRenderer, createFragmentContainer, graphql } from "react-relay"
 
-export const SubmitArtworkArtistRejected: React.FC<{}> = () => {
+const SubmitArtworkArtistRejected: React.FC<{ me: SubmitArtworkArtistRejected_me$data | null }> = ({
+  me,
+}) => {
   const { values } = useFormikContext<ArtworkDetailsFormModel>()
   const [isEligibilityModalVisible, setIsEligibilityModalVisible] = useState(false)
+
   return (
     <Flex flex={1} px={2}>
       <ScrollView>
@@ -28,7 +36,14 @@ export const SubmitArtworkArtistRejected: React.FC<{}> = () => {
           <Text
             underline
             onPress={() => {
-              setIsEligibilityModalVisible(true)
+              navigate("/sell/inquiry", {
+                passProps: {
+                  email: me?.email ?? "",
+                  name: me?.name ?? "",
+                  phone: me?.phone ?? "",
+                  userId: me?.internalID ?? undefined,
+                },
+              })
             }}
           >
             contact an advisor
@@ -74,5 +89,38 @@ export const SubmitArtworkArtistRejected: React.FC<{}> = () => {
         </ScrollView>
       </InfoModal>
     </Flex>
+  )
+}
+
+export const SubmitArtworkArtistRejectedContainer = createFragmentContainer(
+  SubmitArtworkArtistRejected,
+  {
+    me: graphql`
+      fragment SubmitArtworkArtistRejected_me on Me {
+        internalID
+        email
+        name
+        phone
+      }
+    `,
+  }
+)
+
+export const SubmitArtworkArtistRejectedQueryRenderer: React.FC<{}> = () => {
+  return (
+    <QueryRenderer<SubmitArtworkArtistRejectedQuery>
+      environment={getRelayEnvironment()}
+      query={graphql`
+        query SubmitArtworkArtistRejectedQuery {
+          me {
+            ...SubmitArtworkArtistRejected_me
+          }
+        }
+      `}
+      render={({ props }) => {
+        return <SubmitArtworkArtistRejectedContainer me={props?.me ?? null} />
+      }}
+      variables={{}}
+    />
   )
 }
