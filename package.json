@@ -157,6 +157,7 @@
     "react-native-blurhash": "1.1.11",
     "react-native-bootsplash": "3.2.0",
     "react-native-code-push": "8.1.0",
+    "react-native-collapsible-tab-view": "7.0.1",
     "react-native-config": "https://github.com/artsy/react-native-config.git#v1.4.12-artsy",
     "react-native-context-menu-view": "git+https://github.com/artsy/react-native-context-menu-view.git#v1.10.10-artsy",
     "react-native-credit-card-input": "0.4.1",

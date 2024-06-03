@@ -11779,6 +11779,13 @@ react-native-collapsible-tab-view@6.2.1:
   dependencies:
     use-deep-compare "^1.1.0"
 
+react-native-collapsible-tab-view@7.0.1:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-collapsible-tab-view/-/react-native-collapsible-tab-view-7.0.1.tgz#8a62439bf65f99e627358dbaf6eac3dc95589fd2"
+  integrity sha512-vAYG8vnu59fnnaqd59Vr1kNZ+VViMVnGvfoBB0SGgp0PXsMgBSax+9AavM/DZUjSpycfkA7teZx9XtYdt2ytSA==
+  dependencies:
+    use-deep-compare "^1.1.0"
+
 "react-native-config@https://github.com/artsy/react-native-config.git#v1.4.12-artsy":
   version "1.4.11"
   resolved "https://github.com/artsy/react-native-config.git#278cbdc5f71d792f30c7474b0a0a5caab5c95551"
