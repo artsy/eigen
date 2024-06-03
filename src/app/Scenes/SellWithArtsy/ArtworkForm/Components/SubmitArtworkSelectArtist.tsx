@@ -45,6 +45,7 @@ export const SubmitArtworkSelectArtist = () => {
         step: "ArtistRejected",
         skipMutation: true,
       })
+
       setIsLoading(false)
       return
     }
@@ -61,10 +62,11 @@ export const SubmitArtworkSelectArtist = () => {
 
     try {
       navigateToNextStep({
-        step: "AddTitle",
         skipMutation: true,
       })
+
       const submissionId = await createOrUpdateSubmission(updatedValues, formik.values.submissionId)
+
       formik.setFieldValue("submissionId", submissionId)
     } catch (error) {
       console.error("Error creating submission", error)

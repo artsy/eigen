@@ -31,12 +31,7 @@ export const getCurrentValidationSchema = (_injectedStep?: keyof SubmitArtworkSt
       return provenanceSchema
     case "AddDimensions":
       return dimensionsSchema
-
     default:
-      // Make sure the devs are warned when they forget to add a validation schema
-      if (currentStep && currentStep !== "StartFlow") {
-        console.warn(`No validation schema found for step: ${currentStep}`)
-      }
       return Yup.object()
   }
 }
