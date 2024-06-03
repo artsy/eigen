@@ -3,7 +3,6 @@ import { NavigationContainer, NavigationContainerRef } from "@react-navigation/n
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import { SubmitArtworkAddDetails } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddDetails"
 import { SubmitArtworkAddDimensions } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddDimensions"
-import { SubmitArtworkAddPhoneNumber } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddPhoneNumber"
 import { SubmitArtworkAddPhotos } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddPhotos"
 import { SubmitArtworkAddTitle } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddTitle"
 import { SubmitArtworkArtistRejected } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkArtistRejected"
@@ -25,7 +24,6 @@ import {
   artworkDetailsEmptyInitialValues,
   getCurrentValidationSchema,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
-import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { fetchUserContactInformation } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/fetchUserContactInformation"
 import { SubmitArtworkProps } from "app/Scenes/SellWithArtsy/SubmitArtwork/SubmitArtwork"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
@@ -80,14 +78,10 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
     ...injectedValuesProp,
   }
 
-  const handleSubmit = (values: ArtworkDetailsFormModel) => {
-    createOrUpdateSubmission(values, "")
-  }
-
   const formik = useFormik<ArtworkDetailsFormModel>({
     enableReinitialize: true,
     initialValues: initialValues,
-    onSubmit: handleSubmit,
+    onSubmit: () => {},
     validationSchema: getCurrentValidationSchema,
   })
 
@@ -163,7 +157,6 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
                 component={SelectArtworkMyCollectionArtwork}
               />
 
-              <Stack.Screen name="AddPhoneNumber" component={SubmitArtworkAddPhoneNumber} />
               <Stack.Screen name="SelectArtist" component={SubmitArtworkSelectArtist} />
               <Stack.Screen
                 name="ArtistRejected"

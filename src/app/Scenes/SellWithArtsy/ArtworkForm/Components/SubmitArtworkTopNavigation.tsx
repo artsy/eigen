@@ -74,18 +74,6 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
   }, [currentStep])
 
-  useEffect(() => {
-    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
-      if (backPressed) {
-        goBack()
-      }
-    })
-
-    return () => {
-      hideSubscription.remove()
-    }
-  }, [backPressed])
-
   if (!currentStep) {
     return null
   }
@@ -107,7 +95,7 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
             style={{ zIndex: 100, overflow: "visible" }}
             onPress={() => {
               Keyboard.dismiss()
-              setBackPressed(true)
+              goBack()
             }}
           />
         )}
