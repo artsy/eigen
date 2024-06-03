@@ -7,14 +7,13 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useFormikContext } from "formik"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { Alert, Keyboard, LayoutAnimation } from "react-native"
 
 export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
   const enableSaveAndExit = useFeatureFlag("AREnableSaveAndContinueSubmission")
   const currentStep = SubmitArtworkFormStore.useStoreState((state) => state.currentStep)
   const hasCompletedForm = currentStep === "CompleteYourSubmission"
-  const [backPressed, setBackPressed] = useState(false)
 
   const { values } = useFormikContext<ArtworkDetailsFormModel>()
 
