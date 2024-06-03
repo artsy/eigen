@@ -130,7 +130,7 @@
     "@segment/analytics-react-native": "1.5.2",
     "@segment/analytics-react-native-appboy": "1.5.0",
     "@sentry/react-native": "5.20.0",
-    "@shopify/flash-list": "^1.5.0",
+    "@shopify/flash-list": "1.6.4",
     "@styled-system/theme-get": "5.1.2",
     "autosuggest-highlight": "3.1.1",
     "deprecated-react-native-prop-types": "4.1.0",
