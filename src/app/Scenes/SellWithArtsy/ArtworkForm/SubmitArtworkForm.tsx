@@ -6,7 +6,7 @@ import { SubmitArtworkAddDimensions } from "app/Scenes/SellWithArtsy/ArtworkForm
 import { SubmitArtworkAddPhoneNumber } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddPhoneNumber"
 import { SubmitArtworkAddPhotos } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddPhotos"
 import { SubmitArtworkAddTitle } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddTitle"
-import { SubmitArtworkArtistRejectedQueryRenderer } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkArtistRejected"
+import { SubmitArtworkArtistRejected } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkArtistRejected"
 import { SubmitArtworkBottomNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkBottomNavigation"
 import { SubmitArtworkCompleteYourSubmission } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkCompleteYourSubmission"
 import {
@@ -167,7 +167,7 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
               <Stack.Screen name="SelectArtist" component={SubmitArtworkSelectArtist} />
               <Stack.Screen
                 name="ArtistRejected"
-                component={SubmitArtworkArtistRejectedQueryRenderer}
+                component={SubmitArtworkArtistRejected}
                 options={{
                   // We want to make it easy for users to go back to the previous screen
                   // And to submit a new artist
