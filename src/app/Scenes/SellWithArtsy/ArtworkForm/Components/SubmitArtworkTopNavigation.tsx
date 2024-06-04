@@ -7,18 +7,19 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useFormikContext } from "formik"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { Alert, Keyboard, LayoutAnimation } from "react-native"
 
 export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
   const enableSaveAndExit = useFeatureFlag("AREnableSaveAndContinueSubmission")
   const currentStep = SubmitArtworkFormStore.useStoreState((state) => state.currentStep)
   const hasCompletedForm = currentStep === "CompleteYourSubmission"
-  const [backPressed, setBackPressed] = useState(false)
 
   const { values } = useFormikContext<ArtworkDetailsFormModel>()
 
   const handleSaveAndExitPress = async () => {
+    Keyboard.dismiss()
+
     if (!enableSaveAndExit) {
       if (hasCompletedForm) {
         goBack()
@@ -74,18 +75,6 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
   }, [currentStep])
 
-  useEffect(() => {
-    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
-      if (backPressed) {
-        goBack()
-      }
-    })
-
-    return () => {
-      hideSubscription.remove()
-    }
-  }, [backPressed])
-
   if (!currentStep) {
     return null
   }
@@ -105,9 +94,11 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
           <BackButton
             showX
             style={{ zIndex: 100, overflow: "visible" }}
-            onPress={() => {
-              Keyboard.dismiss()
-              setBackPressed(true)
+            onPress={async () => {
+              await Keyboard.dismiss()
+              setTimeout(() => {
+                goBack()
+              }, 100)
             }}
           />
         )}
