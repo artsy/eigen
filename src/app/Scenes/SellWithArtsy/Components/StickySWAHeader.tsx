@@ -25,29 +25,27 @@ export const StickySWAHeader: React.FC<StickySWAHeaderProps> = ({
   }
 
   return (
-    <>
-      <Flex p={2} borderTopWidth={1} borderTopColor="black10">
-        <Button
-          testID="header-consign-CTA"
-          block
-          onPress={() => {
-            handleSubmitPress("Start Selling")
-          }}
-          variant="fillDark"
-        >
-          Start Selling
-        </Button>
+    <Flex p={2} borderTopWidth={1} borderTopColor="black10">
+      <Button
+        testID="header-consign-CTA"
+        block
+        onPress={() => {
+          handleSubmitPress("Start Selling")
+        }}
+        variant="fillDark"
+      >
+        Start Selling
+      </Button>
 
-        <Spacer y={1} />
+      <Spacer y={1} />
 
-        <Text variant="xs">
-          Not sure what you’re looking for?{" "}
-          <LinkText testID="StickySWAHeader-inquiry-CTA" onPress={handleInquiryPress}>
-            <Text variant="xs">Speak to an advisor</Text>
-          </LinkText>
-        </Text>
-      </Flex>
-    </>
+      <Text variant="xs">
+        Not sure what you’re looking for?{" "}
+        <LinkText testID="StickySWAHeader-inquiry-CTA" onPress={handleInquiryPress}>
+          <Text variant="xs">Speak to an advisor</Text>
+        </LinkText>
+      </Text>
+    </Flex>
   )
 }
 
