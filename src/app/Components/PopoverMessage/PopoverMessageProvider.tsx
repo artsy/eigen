@@ -22,7 +22,7 @@ export const PopoverMessageProvider: React.FC = ({ children }) => {
   const [popoverMessage, setPopoverMessage] = useState<PopoverMessageItem | null>(null)
   const showingPopoverMessage = useRef<boolean>(false)
   const lastStartedAt = useRef<number | null>(null)
-  const timer = useRef<number | null>(null)
+  const timer = useRef<NodeJS.Timeout | null>(null)
   const [opacityAnim] = useState(new Animated.Value(0))
   const [translateYAnim] = useState(new Animated.Value(0))
 
