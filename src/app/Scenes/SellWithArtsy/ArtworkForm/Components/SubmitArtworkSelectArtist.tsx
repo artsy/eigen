@@ -63,7 +63,6 @@ export const SubmitArtworkSelectArtist = () => {
     try {
       navigateToNextStep({
         skipMutation: true,
-        step: "AddTitle",
       })
 
       const submissionId = await createOrUpdateSubmission(updatedValues, formik.values.submissionId)
