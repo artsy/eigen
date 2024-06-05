@@ -454,7 +454,7 @@ lane :deploy_to_codepush do |options|
     api_token: ENV['APP_CENTER_API_TOKEN'],
     owner_name: 'mobile-artsy',
     app_name: app_name,
-    description: "'#{description}' version:'#{release_version}'",
+    description: "#{description} version:#{release_version}",
     deployment: deployment_name,
     sourcemap_output: sourcemap_output,
     output_dir: './build',
