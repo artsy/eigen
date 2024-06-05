@@ -1,5 +1,6 @@
 import { Button, Flex, Spacer, Text, Touchable, useScreenDimensions } from "@artsy/palette-mobile"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
+import { LAST_STEP } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
@@ -141,6 +142,8 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
     )
   }
 
+  const isLastStep = currentStep === LAST_STEP
+
   return (
     <Flex borderTopWidth={1} borderTopColor="black10" py={2} width="100%" alignSelf="center">
       <Flex px={2}>
@@ -155,7 +158,7 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
             disabled={!isValid || isLoading || isUploadingPhotos || !allPhotosAreValid}
             loading={isLoading || isUploadingPhotos}
           >
-            Continue
+            {isLastStep ? "Submit Artwork" : "Continue"}
           </Button>
         </Flex>
       </Flex>

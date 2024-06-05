@@ -15,3 +15,5 @@ export const ARTWORK_FORM_STEPS: SubmitArtworkScreen[] = [
   "ArtistRejected",
   "SelectArtworkMyCollectionArtwork",
 ]
+
+export const LAST_STEP: SubmitArtworkScreen = "AddPhoneNumber"
