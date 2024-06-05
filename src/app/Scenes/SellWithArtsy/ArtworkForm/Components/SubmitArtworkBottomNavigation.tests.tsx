@@ -61,7 +61,7 @@ describe("SubmitArtworkBottomNavigation", () => {
 
       fireEvent(submitAnotherWork, "onPress")
       expect(navigate).toHaveBeenCalledWith("/sell/submissions/new", {
-        replaceActiveScreen: true,
+        replaceActiveModal: true,
       })
     })
 
