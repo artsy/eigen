@@ -88,8 +88,8 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
   }
 
   return (
-    <Flex mx={2} height={40} mb={2}>
-      <Flex flexDirection="row" justifyContent="space-between">
+    <Flex mx={2} mb={2}>
+      <Flex height={30} flexDirection="row" justifyContent="space-between">
         {currentStep === "SelectArtist" && (
           <BackButton
             showX
