@@ -1,6 +1,8 @@
 import { fireEvent, screen } from "@testing-library/react-native"
+import { SellWithArtsyHomeTestQuery } from "__generated__/SellWithArtsyHomeTestQuery.graphql"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { SellWithArtsyHome } from "./SellWithArtsyHome"
 
 jest.mock("../../utils/useStatusBarStyle", () => {
@@ -42,16 +44,40 @@ jest.mock("./utils/useSWALandingPageData", () => {
   }
 })
 
-describe("New SellWithArtsyLandingPage", () => {
-  describe("Tracking", () => {
-    const TestWrapper = () => {
-      return <SellWithArtsyHome />
-    }
+describe("SellWithArtsyHome", () => {
+  const { renderWithRelay } = setupTestWrapper<SellWithArtsyHomeTestQuery>({
+    Component: (props) => {
+      if (props?.me) {
+        return <SellWithArtsyHome />
+      }
 
+      return null
+    },
+    variables: { submissionID: "1234", includeSubmission: false },
+    query: graphql`
+      query SellWithArtsyHomeTestQuery($submissionID: ID, $includeSubmission: Boolean = false)
+      @relay_test_operation {
+        recentlySoldArtworks {
+          ...SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection
+        }
+        me {
+          internalID
+          name
+          email
+          phone
+        }
+        submission(id: $submissionID) @include(if: $includeSubmission) {
+          ...Header_submission
+        }
+      }
+    `,
+  })
+
+  describe("Tracking", () => {
     // HEADER
     describe("Header Events", () => {
       it("tracks Consign Events", async () => {
-        renderWithWrappers(<TestWrapper />)
+        renderWithRelay({})
         const headerConsignButton = screen.getByTestId("header-consign-CTA")
 
         fireEvent(headerConsignButton, "onPress")
@@ -68,7 +94,7 @@ describe("New SellWithArtsyLandingPage", () => {
       })
 
       it("tracks Inquiry Events", () => {
-        renderWithWrappers(<TestWrapper />)
+        renderWithRelay({})
         const headerInquiryButton = screen.getByTestId("MeetTheSpecialists-contact-CTA")
 
         fireEvent(headerInquiryButton, "onPress")
@@ -88,7 +114,7 @@ describe("New SellWithArtsyLandingPage", () => {
     // MEETTHESPECIALISTS
     describe("MeetTheSpecialists Events", () => {
       it("tracks Inquiry Events", () => {
-        renderWithWrappers(<TestWrapper />)
+        renderWithRelay({})
         const headerConsignButton = screen.getByTestId("MeetTheSpecialists-inquiry-CTA")
 
         fireEvent(headerConsignButton, "onPress")
@@ -108,7 +134,7 @@ describe("New SellWithArtsyLandingPage", () => {
     // SPEAKTOTHETEAM
     describe("SpeakToTheTeam Events", () => {
       it("tracks Inquiry Events", () => {
-        renderWithWrappers(<TestWrapper />)
+        renderWithRelay({})
         const headerConsignButton = screen.getByTestId("SpeakToTheTeam-inquiry-CTA")
 
         fireEvent(headerConsignButton, "onPress")
