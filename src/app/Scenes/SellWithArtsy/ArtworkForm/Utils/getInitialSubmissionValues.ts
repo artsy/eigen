@@ -30,7 +30,7 @@ export const getInitialSubmissionValues = (
     editionNumber: values.editionNumber ?? "",
     editionSizeFormatted: values.editionSize ?? "",
     height: values.height ?? "",
-    isYearUnknown: null,
+    isYearUnknown: values.year ? false : true,
     width: values.width ?? "",
     depth: values.depth ?? "",
     dimensionsMetric: values.dimensionsMetric ?? "in",

@@ -39,6 +39,7 @@ export const SubmitArtworkAddDetails = () => {
               accessibilityLabel="Year"
               disabled={!!values.isYearUnknown}
               style={{ width: "50%" }}
+              autoFocus
             />
             <Spacer y={1} />
 
