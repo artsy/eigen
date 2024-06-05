@@ -184,43 +184,6 @@ export const SellWithArtsyHomeQueryRenderer: React.FC = () => {
   )
 }
 
-// export const SellWithArtsyHomeQueryRenderer: React.FC<SellWithArtsyHomeQueryRendererProps> = ({
-//   environment,
-// }) => {
-//   const { draft } = GlobalStore.useAppState((state) => state.artworkSubmission)
-
-//   const submissionID = draft?.submissionID
-
-//   const [refreshKey, setRefreshKey] = useState(0)
-
-//   useEffect(() => {
-//     RefreshEvents.addListener(SELL_SCREEN_REFRESH_KEY, handleRefreshEvent)
-//     return () => {
-//       RefreshEvents.removeListener(SELL_SCREEN_REFRESH_KEY, handleRefreshEvent)
-//     }
-//   }, [])
-
-//   const handleRefreshEvent = () => {
-//     setRefreshKey(refreshKey + 1)
-//   }
-
-//   console.log({ refreshKey })
-
-//   return (
-//     <QueryRenderer<SellWithArtsyHomeQuery>
-//       key={refreshKey}
-//       environment={environment || getRelayEnvironment()}
-//       variables={{ submissionID: submissionID, includeSubmission: !!submissionID }}
-//       query={SellWithArtsyHomeScreenQuery}
-//       cacheConfig={{ force: true, fetchPolicy: "network-only" }}
-//       render={renderWithPlaceholder({
-//         Container: SellWithArtsyHomeContainer,
-//         renderPlaceholder: () => <SellWithArtsyHomePlaceholder />,
-//       })}
-//     />
-//   )
-// }
-
 const SellWithArtsyHomePlaceholder: React.FC = () => {
   return (
     <Skeleton>
