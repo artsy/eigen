@@ -18,7 +18,7 @@ export const SubmitArtworkAddDetails = () => {
   ).current
 
   return (
-    <Flex px={2}>
+    <Flex px={2} flex={1}>
       <ScrollView>
         <Text variant="lg-display" mb={2}>
           Artwork details
@@ -35,6 +35,7 @@ export const SubmitArtworkAddDetails = () => {
               onChangeText={(e) => setFieldValue("year", e)}
               accessibilityLabel="Year"
               style={{ width: "50%" }}
+              autoFocus
             />
           </Flex>
 
