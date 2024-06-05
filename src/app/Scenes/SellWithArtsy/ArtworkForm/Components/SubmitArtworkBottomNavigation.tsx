@@ -48,7 +48,7 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
           }}
           block
         >
-          Start a New Submission
+          Start New Submission
         </Button>
         {!!showStartFromMyCollection && (
           <Button

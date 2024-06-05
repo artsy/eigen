@@ -1,14 +1,24 @@
-import { Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { BulletedItem, Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { SubmitArtworkArtistRejectedQuery } from "__generated__/SubmitArtworkArtistRejectedQuery.graphql"
 import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { InfoModal } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/InfoModal/InfoModal"
+import { navigate } from "app/system/navigation/navigate"
 import { useFormikContext } from "formik"
 import { useState } from "react"
 import { ScrollView } from "react-native"
+import { graphql, useLazyLoadQuery } from "react-relay"
 
 export const SubmitArtworkArtistRejected: React.FC<{}> = () => {
   const { values } = useFormikContext<ArtworkDetailsFormModel>()
   const [isEligibilityModalVisible, setIsEligibilityModalVisible] = useState(false)
+
+  const meData = useLazyLoadQuery<SubmitArtworkArtistRejectedQuery>(
+    SubmitArtworkArtistRejectedStepQuery,
+    {}
+  )
+  const me = meData.me ?? null
+
   return (
     <Flex flex={1} px={2}>
       <ScrollView>
@@ -28,10 +38,26 @@ export const SubmitArtworkArtistRejected: React.FC<{}> = () => {
           <Text
             underline
             onPress={() => {
+              navigate("/sell/inquiry", {
+                passProps: {
+                  email: me?.email ?? "",
+                  name: me?.name ?? "",
+                  phone: me?.phone ?? "",
+                  userId: me?.internalID ?? undefined,
+                },
+              })
+            }}
+          >
+            contact an advisor
+          </Text>{" "}
+          or read about{" "}
+          <Text
+            underline
+            onPress={() => {
               setIsEligibilityModalVisible(true)
             }}
           >
-            read about what our specialists are looking for
+            what our advisors are looking for
           </Text>
           . {"\n"}
           {"\n"}After adding to My Collection, an Artsy Advisor will be in touch if there is an
@@ -47,22 +73,34 @@ export const SubmitArtworkArtistRejected: React.FC<{}> = () => {
         <ScrollView>
           <Text>
             We are currently accepting unique and limited-edition works of art by modern,
-            contemporary, and emerging artists who have collector demand on Artsy. Our in-house
-            experts cover Post-War and Contemporary Art, Prints and Multiples, Street Art and
-            Photographs.{"\n"}
+            contemporary, and emerging artists who have collector demand on Artsy.
             {"\n"}
-            Our experts assess a number of factors to determine whether your work qualifies for our
-            program, including the following:{"\n"}
-            {"\n"}
-            {"    "}• Market data like the number, recency, and value of auction results for works
-            by the artist.{"\n"}
-            {"    "}• Authenticity and provenance information.{"\n"}
-            {"    "}• Artwork details you provide, including images (front, back, signature),
-            unframed dimensions, and additional documentation.{"\n"}
-            {"    "}• The price you’re looking for.
+            {"\n"} Our experts assess a number of factors to determine whether your work qualifies
+            for our program, including the following:{"\n"}
           </Text>
+          <BulletedItem color="black100">
+            Market data like the number, recency, and value of auction results for works by the
+            artist.
+          </BulletedItem>
+          <BulletedItem color="black100">Authenticity and provenance information.</BulletedItem>
+          <BulletedItem color="black100">
+            Artwork details you provide, including images (front, back, signature), unframed
+            dimensions, and additional documentation.
+          </BulletedItem>
+          <BulletedItem color="black100">The price you’re looking for.</BulletedItem>
         </ScrollView>
       </InfoModal>
     </Flex>
   )
 }
+
+export const SubmitArtworkArtistRejectedStepQuery = graphql`
+  query SubmitArtworkArtistRejectedQuery {
+    me {
+      internalID
+      email
+      name
+      phone
+    }
+  }
+`

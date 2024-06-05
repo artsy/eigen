@@ -5,19 +5,19 @@ const SECTIONS = [
   {
     title: "Tell us about your work",
     description:
-      "Start by adding an artist from our list of high demand artists. Include information such as year, medium, dimensions and materials.",
+      "Start by adding an artist from our list of approved artists. Include information such as year, medium, dimensions and materials.",
     image: require("images/submit_artwork_tell_us_about_your_work.webp"),
   },
   {
     title: "Upload artwork images",
     description:
-      "Improve your chances of selling by including photographs of the front, back, frame, signature and other details.",
+      "Improve your chances of selling by providing clear images of the front, back, frame, signature and other details.",
     image: require("images/submit_artwork_upload_artwork_image.webp"),
   },
   {
     title: "Complete submission",
     description:
-      "Your work will be submitted to an Artsy advisor who will assess whether your work is eligible and help guide you on next steps.",
+      "Your artwork will be reviewed by an Artsy Advisor who will assess whether your work is eligible and help guide you on next steps.",
     image: require("images/submit_artwork_complete_submission.webp"),
   },
 ]
