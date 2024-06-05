@@ -91,14 +91,19 @@ const shouldDisplayPrepromptAlert = () => {
 
   if (settings) {
     const { pushNotificationDialogLastSeenTimestamp } = settings
-    // we don't want to ask too often
-    // currently, we make sure at least a week has passed by since you last saw the dialog
-    const pushNotificationDialogLastSeenDate = new Date(pushNotificationDialogLastSeenTimestamp)
-    const currentDate = new Date()
-    const timePassed = currentDate.getTime() - pushNotificationDialogLastSeenDate.getTime()
-    return timePassed >= ONE_WEEK_MS
+
+    if (pushNotificationDialogLastSeenTimestamp !== null) {
+      // we don't want to ask too often
+      // currently, we make sure at least a week has passed by since you last saw the dialog
+      const pushNotificationDialogLastSeenDate = new Date(pushNotificationDialogLastSeenTimestamp)
+      const currentDate = new Date()
+      const timePassed = currentDate.getTime() - pushNotificationDialogLastSeenDate.getTime()
+      return timePassed >= ONE_WEEK_MS
+    } else {
+      // if you've never seen one before, we'll show you ;)
+      return true
+    }
   } else {
-    // if you've never seen one before, we'll show you ;)
     return true
   }
 }
