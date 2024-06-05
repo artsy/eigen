@@ -122,7 +122,7 @@ export const SellWithArtsyHome: React.FC = () => {
 
   return (
     <Screen>
-      <Screen.Body fullwidth>
+      <Screen.Body fullwidth disableKeyboardAvoidance>
         <ScrollView showsVerticalScrollIndicator={false} ref={scrollViewRef}>
           <Join separator={<Spacer y={6} />}>
             <Header submission={submission || null} />

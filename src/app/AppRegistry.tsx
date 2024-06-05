@@ -654,7 +654,8 @@ export const modules = defineModules({
   SubmitArtwork: unsafe_getFeatureFlag("AREnableNewSubmissionFlow")
     ? reactModule(SubmitArtworkForm, {
         hidesBackButton: true,
-        hidesBottomTabs: true,
+        alwaysPresentModally: true,
+        modalPresentationStyle: "fullScreen",
         screenOptions: {
           gestureEnabled: false,
         },
@@ -662,7 +663,8 @@ export const modules = defineModules({
     : reactModule(SubmitArtwork, { hidesBackButton: true, hidesBottomTabs: true }),
   SubmitArtworkEdit: reactModule(SubmitArtworkFormEdit, {
     hidesBackButton: true,
-    hidesBottomTabs: true,
+    alwaysPresentModally: true,
+    modalPresentationStyle: "fullScreen",
     screenOptions: {
       gestureEnabled: false,
     },

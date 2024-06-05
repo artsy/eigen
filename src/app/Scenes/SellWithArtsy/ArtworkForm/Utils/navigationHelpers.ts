@@ -31,8 +31,9 @@ export const useSubmissionContext = () => {
     try {
       setIsLoading(true)
 
+      const currentStepId = getCurrentRoute()
       const nextStep =
-        props?.step || ARTWORK_FORM_STEPS[ARTWORK_FORM_STEPS.indexOf(currentStep as any) + 1]
+        props?.step || ARTWORK_FORM_STEPS[ARTWORK_FORM_STEPS.indexOf(currentStepId as any) + 1]
 
       if (!nextStep) {
         console.error("No next step found")
