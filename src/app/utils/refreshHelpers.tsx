@@ -10,6 +10,7 @@ export const FAVORITE_ARTWORKS_REFRESH_KEY = "refreshFavoriteArtworks"
 export const MY_COLLECTION_REFRESH_KEY = "refreshMyCollection"
 export const MY_COLLECTION_INSIGHTS_REFRESH_KEY = "refreshMyCollectionInsights"
 export const SAVED_ALERT_REFRESH_KEY = "refreshSavedAlerts"
+export const SELL_SCREEN_REFRESH_KEY = "refreshSellScreen"
 
 export const refreshSavedAlerts = () => {
   RefreshEvents.emit(SAVED_ALERT_REFRESH_KEY)
@@ -29,6 +30,10 @@ export const refreshMyCollectionInsights = ({ collectionHasArtworksWithoutInsigh
 
 export const refreshFavoriteArtworks = () => {
   RefreshEvents.emit(FAVORITE_ARTWORKS_REFRESH_KEY)
+}
+
+export const refreshSellScreen = () => {
+  RefreshEvents.emit(SELL_SCREEN_REFRESH_KEY)
 }
 
 interface RefreshArgs extends Record<string, any> {

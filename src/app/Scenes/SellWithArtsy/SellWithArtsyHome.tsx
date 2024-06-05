@@ -9,9 +9,6 @@ import {
   Spacer,
 } from "@artsy/palette-mobile"
 import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
-import { SellWithArtsyHome_me$data } from "__generated__/SellWithArtsyHome_me.graphql"
-import { SellWithArtsyHome_recentlySoldArtworksTypeConnection$data } from "__generated__/SellWithArtsyHome_recentlySoldArtworksTypeConnection.graphql"
-import { SellWithArtsyHome_submission$data } from "__generated__/SellWithArtsyHome_submission.graphql"
 import { CollectorsNetwork } from "app/Scenes/SellWithArtsy/Components/CollectorsNetwork"
 import { FAQSWA } from "app/Scenes/SellWithArtsy/Components/FAQSWA"
 import { Highlights } from "app/Scenes/SellWithArtsy/Components/Highlights"
@@ -22,31 +19,46 @@ import { Testimonials } from "app/Scenes/SellWithArtsy/Components/Testimonials"
 import { WaysWeSell } from "app/Scenes/SellWithArtsy/Components/WaysWeSell"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
+import { RefreshEvents, SELL_SCREEN_REFRESH_KEY } from "app/utils/refreshHelpers"
 import { useSwitchStatusBarStyle } from "app/utils/useStatusBarStyle"
-import { useEffect } from "react"
+import { Suspense, useEffect, useReducer } from "react"
 import { ScrollView, StatusBarStyle } from "react-native"
-import { createFragmentContainer, Environment, graphql, QueryRenderer } from "react-relay"
+import { graphql, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 import { Footer } from "./Components/Footer"
 import { Header } from "./Components/Header"
 import { HowItWorks } from "./Components/HowItWorks"
 import { SellWithArtsyRecentlySold } from "./Components/SellWithArtsyRecentlySold"
 
-interface SellWithArtsyHomeProps {
-  recentlySoldArtworks?: SellWithArtsyHome_recentlySoldArtworksTypeConnection$data
-  me?: SellWithArtsyHome_me$data
-  submission?: SellWithArtsyHome_submission$data
-}
+export const SellWithArtsyHome: React.FC = () => {
+  const { draft } = GlobalStore.useAppState((state) => state.artworkSubmission)
 
-export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
-  recentlySoldArtworks,
-  me,
-  submission,
-}) => {
+  const submissionID = draft?.submissionID
+
+  const [fetchKey, increaseFetchKey] = useReducer((state) => state + 1, 0)
+
+  useEffect(() => {
+    RefreshEvents.addListener(SELL_SCREEN_REFRESH_KEY, handleRefreshEvent)
+    return () => {
+      RefreshEvents.removeListener(SELL_SCREEN_REFRESH_KEY, handleRefreshEvent)
+    }
+  }, [])
+
+  const handleRefreshEvent = () => {
+    increaseFetchKey()
+  }
+
+  const { recentlySoldArtworks, me, submission } = useLazyLoadQuery<SellWithArtsyHomeQuery>(
+    SellWithArtsyHomeScreenQuery,
+    { submissionID: submissionID, includeSubmission: !!submissionID },
+    {
+      fetchPolicy: "store-and-network",
+      fetchKey: fetchKey ?? 0,
+    }
+  )
+
   const onFocusStatusBarStyle: StatusBarStyle = "dark-content"
   const onBlurStatusBarStyle: StatusBarStyle = "dark-content"
 
@@ -147,62 +159,28 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
   )
 }
 
-const SellWithArtsyHomeContainer = createFragmentContainer(SellWithArtsyHome, {
-  recentlySoldArtworks: graphql`
-    fragment SellWithArtsyHome_recentlySoldArtworksTypeConnection on RecentlySoldArtworkTypeConnection {
+export const SellWithArtsyHomeScreenQuery = graphql`
+  query SellWithArtsyHomeQuery($submissionID: ID, $includeSubmission: Boolean = false) {
+    recentlySoldArtworks {
       ...SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection
     }
-  `,
-  me: graphql`
-    fragment SellWithArtsyHome_me on Me {
+    me {
       internalID
       name
       email
       phone
     }
-  `,
-  submission: graphql`
-    fragment SellWithArtsyHome_submission on ConsignmentSubmission {
-      ...Header_submission
-    }
-  `,
-})
-
-interface SellWithArtsyHomeQueryRendererProps {
-  environment?: Environment
-}
-
-export const SellWithArtsyHomeScreenQuery = graphql`
-  query SellWithArtsyHomeQuery($submissionID: ID, $includeSubmission: Boolean = false) {
-    recentlySoldArtworks {
-      ...SellWithArtsyHome_recentlySoldArtworksTypeConnection
-    }
-    me {
-      ...SellWithArtsyHome_me
-    }
     submission(id: $submissionID) @include(if: $includeSubmission) {
-      ...SellWithArtsyHome_submission
+      ...Header_submission
     }
   }
 `
 
-export const SellWithArtsyHomeQueryRenderer: React.FC<SellWithArtsyHomeQueryRendererProps> = ({
-  environment,
-}) => {
-  const { draft } = GlobalStore.useAppState((state) => state.artworkSubmission)
-
-  const submissionID = draft?.submissionID
-
+export const SellWithArtsyHomeQueryRenderer: React.FC = () => {
   return (
-    <QueryRenderer<SellWithArtsyHomeQuery>
-      environment={environment || getRelayEnvironment()}
-      variables={{ submissionID: submissionID, includeSubmission: !!submissionID }}
-      query={SellWithArtsyHomeScreenQuery}
-      render={renderWithPlaceholder({
-        Container: SellWithArtsyHomeContainer,
-        renderPlaceholder: () => <SellWithArtsyHomePlaceholder />,
-      })}
-    />
+    <Suspense fallback={<SellWithArtsyHomePlaceholder />}>
+      <SellWithArtsyHome />
+    </Suspense>
   )
 }
 
