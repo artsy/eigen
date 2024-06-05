@@ -1,4 +1,7 @@
+import { OwnerType } from "@artsy/cohesion"
 import { Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import { Image, ScrollView } from "react-native"
 
 const SECTIONS = [
@@ -23,32 +26,36 @@ const SECTIONS = [
 ]
 export const SubmitArtworkStartFlow: React.FC = () => {
   return (
-    <Flex flex={1} px={2}>
-      <ScrollView>
-        <Text variant="lg-display" mb={4}>
-          It’s easy to sell on Artsy
-        </Text>
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({ context_screen_owner_type: OwnerType.artworkFormStartFlow })}
+    >
+      <Flex flex={1} px={2}>
+        <ScrollView>
+          <Text variant="lg-display" mb={4}>
+            It’s easy to sell on Artsy
+          </Text>
 
-        <Flex>
-          {SECTIONS.map((section, index) => (
-            <Flex key={index} my={2} flexDirection="row" alignItems="flex-start">
-              <Text variant="sm-display" fontWeight={500} style={{ width: 25 }}>
-                {index + 1}
-              </Text>
-              <Flex flex={1}>
-                <Text variant="sm-display" fontWeight={500}>
-                  {section.title}
+          <Flex>
+            {SECTIONS.map((section, index) => (
+              <Flex key={index} my={2} flexDirection="row" alignItems="flex-start">
+                <Text variant="sm-display" fontWeight={500} style={{ width: 25 }}>
+                  {index + 1}
                 </Text>
-                <Text color="black60" variant="xs">
-                  {section.description}
-                </Text>
+                <Flex flex={1}>
+                  <Text variant="sm-display" fontWeight={500}>
+                    {section.title}
+                  </Text>
+                  <Text color="black60" variant="xs">
+                    {section.description}
+                  </Text>
+                </Flex>
+                <Spacer x={1} />
+                <Image source={section.image} />
               </Flex>
-              <Spacer x={1} />
-              <Image source={section.image} />
-            </Flex>
-          ))}
-        </Flex>
-      </ScrollView>
-    </Flex>
+            ))}
+          </Flex>
+        </ScrollView>
+      </Flex>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }

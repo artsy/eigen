@@ -11,7 +11,13 @@ import { useEffect } from "react"
 import { LayoutAnimation } from "react-native"
 
 export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
+  const {
+    trackTappedSubmissionBack,
+    trackTappedSubmitAnotherWork,
+    trackTappedViewArtworkInMyCollection,
+  } = useSubmitArtworkTracking()
   const { navigateToNextStep, navigateToPreviousStep, isFinalStep } = useSubmissionContext()
+
   const { trackTappedNewSubmission, trackTappedStartMyCollection } = useSubmitArtworkTracking()
 
   const { isValid, values } = useFormikContext<ArtworkDetailsFormModel>()
@@ -88,6 +94,7 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
           <Button
             block
             onPress={() => {
+              trackTappedSubmitAnotherWork(values.submissionId)
               navigate("/sell/submissions/new", {
                 replaceActiveModal: true,
               })
@@ -99,6 +106,7 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
           <Button
             block
             onPress={() => {
+              trackTappedViewArtworkInMyCollection(values.submissionId)
               switchTab("profile")
               dismissModal()
               requestAnimationFrame(() => {
