@@ -6,6 +6,7 @@ import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { refreshSellScreen } from "app/utils/refreshHelpers"
 import { useFormikContext } from "formik"
 import { useEffect } from "react"
 import { Alert, Keyboard, LayoutAnimation } from "react-native"
@@ -62,6 +63,8 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
           currentStep,
         })
       }
+
+      refreshSellScreen()
     } catch (error) {
       console.error("Something went wrong. The submission could not be saved.", error)
 
@@ -90,7 +93,7 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
   return (
     <Flex mx={2} height={40} mb={2}>
       <Flex flexDirection="row" justifyContent="space-between">
-        {currentStep === "SelectArtist" && (
+        {currentStep === "SelectArtist" ? (
           <BackButton
             showX
             style={{ zIndex: 100, overflow: "visible" }}
@@ -101,9 +104,7 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
               }, 100)
             }}
           />
-        )}
-
-        {currentStep !== "SelectArtist" && (
+        ) : (
           <Flex style={{ flexGrow: 1, alignItems: "flex-end" }} mb={0.5}>
             <Touchable onPress={handleSaveAndExitPress}>
               <Text>{!hasCompletedForm && !!enableSaveAndExit ? "Save & " : ""}Exit</Text>
