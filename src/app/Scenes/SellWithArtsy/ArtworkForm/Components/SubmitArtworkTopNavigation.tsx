@@ -11,6 +11,8 @@ import { useFormikContext } from "formik"
 import { useEffect } from "react"
 import { Alert, Keyboard, LayoutAnimation } from "react-native"
 
+const HEADER_HEIGHT = 50
+
 export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
   const enableSaveAndExit = useFeatureFlag("AREnableSaveAndContinueSubmission")
   const currentStep = SubmitArtworkFormStore.useStoreState((state) => state.currentStep)
@@ -82,17 +84,49 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
     return null
   }
 
+  const showXButton = ["StartFlow", "ArtistRejected", "SelectArtist"].includes(currentStep)
+  const showProgressBar = !["StartFlow", "ArtistRejected"].includes(currentStep)
+  const showSaveAndExit = !["StartFlow", "ArtistRejected", "SelectArtist"].includes(currentStep)
+
+  return (
+    <Flex mx={2} mb={1} height={HEADER_HEIGHT}>
+      <Flex flexDirection="row" justifyContent="space-between" height={30} mb={1}>
+        {!!showXButton && (
+          <BackButton showX style={{ zIndex: 100, overflow: "visible" }} onPress={goBack} />
+        )}
+        {!!showSaveAndExit && (
+          <Flex style={{ flexGrow: 1, alignItems: "flex-end" }} mb={0.5}>
+            <Touchable onPress={handleSaveAndExitPress}>
+              <Text>{!hasCompletedForm && !!enableSaveAndExit ? "Save & " : ""}Exit</Text>
+            </Touchable>
+          </Flex>
+        )}
+      </Flex>
+      {}
+      {!!showProgressBar && <SubmitArtworkProgressBar />}
+    </Flex>
+  )
+
   if (["StartFlow", "ArtistRejected"].includes(currentStep)) {
     return (
-      <Flex py={1} px={2} flexDirection="row">
-        <BackButton showX style={{ zIndex: 100, overflow: "visible" }} onPress={goBack} />
+      <Flex px={2} flexDirection="row" height={HEADER_HEIGHT}>
+        {!!showXButton && (
+          <BackButton showX style={{ zIndex: 100, overflow: "visible" }} onPress={goBack} />
+        )}
+        {currentStep !== "SelectArtist" && (
+          <Flex style={{ flexGrow: 1, alignItems: "flex-end" }} mb={0.5}>
+            <Touchable onPress={handleSaveAndExitPress}>
+              <Text>{!hasCompletedForm && !!enableSaveAndExit ? "Save & " : ""}Exit</Text>
+            </Touchable>
+          </Flex>
+        )}
       </Flex>
     )
   }
 
   return (
-    <Flex mx={2} height={40} mb={2}>
-      <Flex flexDirection="row" justifyContent="space-between">
+    <Flex mx={2} height={HEADER_HEIGHT}>
+      <Flex flexDirection="row" justifyContent="space-between" height={30} mb={1}>
         {currentStep === "SelectArtist" && (
           <BackButton
             showX

@@ -9,13 +9,13 @@ export const SubmitArtworkAddTitle = () => {
   return (
     <Flex px={2}>
       <Flex>
-        {!!values.artistSearchResult && <ArtistSearchResult result={values.artistSearchResult} />}
+        <Text variant="lg-display">Add artwork title</Text>
 
         <Spacer y={2} />
 
-        <Text variant="lg-display" mb={2}>
-          Add artwork title
-        </Text>
+        {!!values.artistSearchResult && <ArtistSearchResult result={values.artistSearchResult} />}
+
+        <Spacer y={2} />
 
         <Input
           placeholder="Artwork Title"
