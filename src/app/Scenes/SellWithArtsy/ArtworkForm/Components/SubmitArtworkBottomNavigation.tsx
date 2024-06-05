@@ -2,6 +2,7 @@ import { Button, Flex, Spacer, Text, Touchable, useScreenDimensions } from "@art
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubmitArtworkTracking"
 import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
 import { dismissModal, navigate, popToRoot, switchTab } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -11,7 +12,10 @@ import { LayoutAnimation } from "react-native"
 
 export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
   const { navigateToNextStep, navigateToPreviousStep, isFinalStep } = useSubmissionContext()
+  const { trackTappedNewSubmission, trackTappedStartMyCollection } = useSubmitArtworkTracking()
+
   const { isValid, values } = useFormikContext<ArtworkDetailsFormModel>()
+
   const isUploadingPhotos = values.photos.some((photo: Photo) => photo.loading)
   const allPhotosAreValid = values.photos.every(
     (photo: Photo) => !photo.error && !photo.errorMessage
@@ -22,6 +26,7 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
   const { width: screenWidth } = useScreenDimensions()
 
   const handleBackPress = () => {
+    trackTappedSubmissionBack(values.submissionId, currentStep)
     navigateToPreviousStep()
   }
 
@@ -42,6 +47,7 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
       <Flex borderTopWidth={1} borderTopColor="black10" py={2} alignSelf="center" px={2}>
         <Button
           onPress={() => {
+            trackTappedNewSubmission()
             navigateToNextStep({
               step: "SelectArtist",
             })
@@ -53,6 +59,8 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
         {!!showStartFromMyCollection && (
           <Button
             onPress={() => {
+              trackTappedStartMyCollection()
+              // TODO: Navigate to My Collection artworks screen
               navigateToNextStep()
             }}
             block
