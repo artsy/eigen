@@ -10,7 +10,7 @@ export const SubmitArtworkAddPhoneNumber = () => {
   return (
     <Flex px={2}>
       <ScrollView>
-        <Text variant="lg" mb={2}>
+        <Text variant="lg-display" mb={2}>
           Add phone number
         </Text>
 

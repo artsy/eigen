@@ -23,7 +23,7 @@ export const SubmitArtworkAddDetails = () => {
   return (
     <Flex px={2}>
       <ScrollView>
-        <Text variant="lg" mb={2}>
+        <Text variant="lg-display" mb={2}>
           Artwork details
         </Text>
 

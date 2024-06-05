@@ -20,7 +20,7 @@ export const SubmitArtworkPurchaseHistory = () => {
 
   return (
     <Flex px={2}>
-      <Text variant="lg" mb={2}>
+      <Text variant="lg-display" mb={2}>
         Where did you purchase the artwork?
       </Text>
 

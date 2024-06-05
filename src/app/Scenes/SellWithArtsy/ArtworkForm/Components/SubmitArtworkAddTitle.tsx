@@ -13,7 +13,7 @@ export const SubmitArtworkAddTitle = () => {
 
         <Spacer y={2} />
 
-        <Text variant="lg" mb={2}>
+        <Text variant="lg-display" mb={2}>
           Add artwork title
         </Text>
 
