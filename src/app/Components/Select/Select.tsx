@@ -113,6 +113,7 @@ export const Select = <ValueType,>({
       <SelectModal
         visible={showingModal}
         title={title}
+        testID={`modal-${testID}`}
         enableSearch={enableSearch}
         value={value}
         options={options}

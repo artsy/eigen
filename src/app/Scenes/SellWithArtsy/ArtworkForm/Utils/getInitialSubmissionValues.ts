@@ -30,8 +30,6 @@ export const getInitialSubmissionValues = (
     editionNumber: values.editionNumber ?? "",
     editionSizeFormatted: values.editionSize ?? "",
     height: values.height ?? "",
-    // Because we only use `isYearUnknown` for validating the form, we need to set this dependent on the value of `year`
-    isYearUnknown: ["", null, undefined].includes(values.year),
     width: values.width ?? "",
     depth: values.depth ?? "",
     dimensionsMetric: values.dimensionsMetric ?? "in",
