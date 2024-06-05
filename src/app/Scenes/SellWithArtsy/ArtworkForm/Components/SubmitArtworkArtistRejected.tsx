@@ -26,9 +26,9 @@ export const SubmitArtworkArtistRejected: React.FC<{}> = () => {
 
         <Spacer y={2} />
 
-        <Text variant="lg">This artist isn't currently eligible to sell on our platform</Text>
-
-        <Spacer y={2} />
+        <Text variant="lg-display" mb={2}>
+          This artist isn't currently eligible to sell on our platform
+        </Text>
 
         <Text variant="sm">
           Try again with another artist or add your artwork to My Collection, your personal space to

@@ -25,9 +25,10 @@ export const SubmitArtworkStartFlow: React.FC = () => {
   return (
     <Flex flex={1} px={2}>
       <ScrollView>
-        <Text variant="lg" mb={4}>
+        <Text variant="lg-display" mb={4}>
           It’s easy to sell on Artsy
         </Text>
+
         <Flex>
           {SECTIONS.map((section, index) => (
             <Flex key={index} my={2} flexDirection="row" alignItems="flex-start">
