@@ -1,5 +1,5 @@
-import { SegmentClient } from "@segment/analytics-react-native"
-// import Braze from "@segment/analytics-react-native-appboy"
+import { SegmentClient, createClient } from "@segment/analytics-react-native"
+import { BrazePlugin } from "@segment/analytics-react-native-plugin-braze"
 import { addBreadcrumb } from "@sentry/react-native"
 import { visualize } from "app/utils/visualizer"
 import { Platform } from "react-native"
@@ -13,8 +13,6 @@ const visualizeDevToggle = "DTShowAnalyticsVisualiser"
 let analytics: SegmentClient
 export const SegmentTrackingProvider: TrackingProvider = {
   setup: () => {
-    const { createClient } = require("@segment/analytics-react-native")
-
     // prettier-ignore
     const writeKey = Platform.select({
       ios: __DEV__
@@ -32,6 +30,7 @@ export const SegmentTrackingProvider: TrackingProvider = {
     }
 
     analytics = createClient({ writeKey: writeKey })
+    analytics.add({ plugin: new BrazePlugin() })
   },
 
   identify: (userId, traits) => {
