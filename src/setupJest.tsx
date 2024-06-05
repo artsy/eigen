@@ -380,7 +380,7 @@ jest.mock("@segment/analytics-react-native", () => ({
   reset: () => null,
 }))
 
-jest.mock("@segment/analytics-react-native-appboy", () => ({}))
+jest.mock("@segment/analytics-react-native-plugin-braze", () => ({}))
 
 jest.mock("@braze/react-native-sdk", () => ({
   changeUser: jest.fn(),
