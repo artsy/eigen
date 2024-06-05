@@ -104,6 +104,9 @@ export const ModalStack: React.FC = ({ children }) => {
             headerShown: false,
             cardStyle: { backgroundColor: "white" },
             cardStyleInterpolator,
+            gestureEnabled:
+              (rootModuleName && modules[rootModuleName].options.screenOptions?.gestureEnabled) ??
+              true,
           }
         }}
       >
