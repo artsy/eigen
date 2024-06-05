@@ -77,20 +77,17 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
       >
         <Flex px={2}>
           <Spacer y={1} />
-
           <Button
             block
             onPress={() => {
               navigate("/sell/submissions/new", {
-                replaceActiveScreen: true,
+                replaceActiveModal: true,
               })
             }}
           >
             Submit Another Work
           </Button>
-
-          <Spacer y={2} />
-
+          <Spacer y={2} />r
           <Button
             block
             onPress={() => {
