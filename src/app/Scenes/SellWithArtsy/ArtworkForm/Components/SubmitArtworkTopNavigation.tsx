@@ -93,7 +93,7 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
   return (
     <Flex mx={2} height={40} mb={2}>
       <Flex flexDirection="row" justifyContent="space-between">
-        {currentStep === "SelectArtist" ? (
+        {currentStep === "SelectArtist" && (
           <BackButton
             showX
             style={{ zIndex: 100, overflow: "visible" }}
@@ -104,7 +104,9 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
               }, 100)
             }}
           />
-        ) : (
+        )}
+
+        {currentStep !== "SelectArtist" && (
           <Flex style={{ flexGrow: 1, alignItems: "flex-end" }} mb={0.5}>
             <Touchable onPress={handleSaveAndExitPress}>
               <Text>{!hasCompletedForm && !!enableSaveAndExit ? "Save & " : ""}Exit</Text>
