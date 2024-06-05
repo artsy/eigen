@@ -42,7 +42,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
 
       <Flex mx={2}>
         {!!draft && !!submission && (
-          <Box mb={2}>
+          <Box mb={0.5}>
             <Touchable
               onPress={() => {
                 trackTappedContinueSubmission(draft.currentStep)
@@ -67,10 +67,6 @@ export const Header: React.FC<HeaderProps> = (props) => {
                   borderColor="black10"
                   borderRadius={5}
                 />
-
-                <Flex alignSelf="center">
-                  <ArrowRightIcon fill="white100" height={18} width={18} />
-                </Flex>
               </Flex>
             </Touchable>
           </Box>
