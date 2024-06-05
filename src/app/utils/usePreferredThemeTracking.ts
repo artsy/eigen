@@ -7,7 +7,7 @@ import { AnalyticsConstants } from "./track/constants"
 export const usePreferredThemeTracking = () => {
   const colorScheme = useColorScheme()
   useEffect(() => {
-    SegmentTrackingProvider.identify?.(null, {
+    SegmentTrackingProvider.identify?.(undefined, {
       [AnalyticsConstants.UserInterfaceStyle.key]: (() => {
         switch (colorScheme) {
           case "light":

@@ -73,7 +73,7 @@ export const requestSystemPermissions = async () => {
     })
     LegacyNativeModules.ARTemporaryAPIModule.markUserPermissionStatus(true)
     SegmentTrackingProvider.identify
-      ? SegmentTrackingProvider.identify(null, { "has enabled notifications": 1 })
+      ? SegmentTrackingProvider.identify(undefined, { "has enabled notifications": 1 })
       : (() => undefined)()
   } else {
     postEventToProviders({
@@ -87,9 +87,10 @@ export const requestSystemPermissions = async () => {
 
 const ONE_WEEK_MS = 1000 * 60 * 60 * 24 * 7 // One week in milliseconds
 const shouldDisplayPrepromptAlert = () => {
-  const { pushNotificationDialogLastSeenTimestamp } = unsafe_getPushPromptSettings()!
+  const settings = unsafe_getPushPromptSettings()
 
-  if (pushNotificationDialogLastSeenTimestamp) {
+  if (settings) {
+    const { pushNotificationDialogLastSeenTimestamp } = settings
     // we don't want to ask too often
     // currently, we make sure at least a week has passed by since you last saw the dialog
     const pushNotificationDialogLastSeenDate = new Date(pushNotificationDialogLastSeenTimestamp)

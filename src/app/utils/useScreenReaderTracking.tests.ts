@@ -13,9 +13,10 @@ describe("useScreenReaderTracking", () => {
 
     await waitFor(() => {
       expect(SegmentTrackingProvider.identify).toHaveBeenCalledTimes(1)
-      expect(SegmentTrackingProvider.identify).toHaveBeenCalledWith(null, {
-        "screen reader status": "enabled",
-      })
+    })
+
+    expect(SegmentTrackingProvider.identify).toHaveBeenCalledWith(undefined, {
+      "screen reader status": "enabled",
     })
   })
 })

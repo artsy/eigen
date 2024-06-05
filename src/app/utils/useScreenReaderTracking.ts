@@ -8,7 +8,7 @@ export const useScreenReaderTracking = () => {
   useEffect(() => {
     const getScreenReaderStatus = async () => {
       const isEnabled = await AccessibilityInfo.isScreenReaderEnabled()
-      SegmentTrackingProvider.identify?.(null, {
+      SegmentTrackingProvider.identify?.(undefined, {
         [AnalyticsConstants.ScreenReaderStatus.key]: (() => {
           return isEnabled
             ? AnalyticsConstants.ScreenReaderStatus.value.Enabled
