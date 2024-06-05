@@ -136,7 +136,6 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
               screenOptions={{
                 headerShown: false,
                 cardStyle: { backgroundColor: "white" },
-                keyboardHandlingEnabled: false,
                 gestureEnabled: false,
                 ...TransitionPresets.SlideFromRightIOS,
                 cardStyleInterpolator: ({ current, layouts }) => {
