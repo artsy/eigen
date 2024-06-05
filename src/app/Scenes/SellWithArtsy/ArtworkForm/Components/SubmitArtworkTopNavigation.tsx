@@ -100,7 +100,6 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
           </Flex>
         )}
       </Flex>
-      {}
       {!!showProgressBar && <SubmitArtworkProgressBar />}
     </Flex>
   )
