@@ -1,4 +1,4 @@
-import { Checkbox, Flex, Input, Join, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Input, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { SelectOption } from "app/Components/Select"
 import { CategoryPicker } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/CategoryPicker"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
@@ -7,21 +7,18 @@ import {
   acceptableCategoriesForSubmission,
 } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/acceptableCategoriesForSubmission"
 import { useFormikContext } from "formik"
-import { useRef, useState } from "react"
+import { useRef } from "react"
 import { ScrollView } from "react-native"
 
 export const SubmitArtworkAddDetails = () => {
-  const [oldTypedYear, setOldTypedYear] = useState("")
-
-  const { handleChange, setFieldValue, values, setValues } =
-    useFormikContext<ArtworkDetailsFormModel>()
+  const { handleChange, setFieldValue, values } = useFormikContext<ArtworkDetailsFormModel>()
 
   const categories = useRef<Array<SelectOption<AcceptableCategoryValue>>>(
     acceptableCategoriesForSubmission()
   ).current
 
   return (
-    <Flex px={2}>
+    <Flex px={2} flex={1}>
       <ScrollView>
         <Text variant="lg-display" mb={2}>
           Artwork details
@@ -37,33 +34,9 @@ export const SubmitArtworkAddDetails = () => {
               value={values.year}
               onChangeText={(e) => setFieldValue("year", e)}
               accessibilityLabel="Year"
-              disabled={!!values.isYearUnknown}
               style={{ width: "50%" }}
+              autoFocus
             />
-            <Spacer y={1} />
-
-            <Checkbox
-              checked={!!values.isYearUnknown}
-              onPress={() => {
-                // Save the old typed year to restore it if the user unchecks the checkbox
-                if (!values.isYearUnknown) {
-                  setOldTypedYear(values.year)
-                  setValues({
-                    ...values,
-                    year: "",
-                    isYearUnknown: true,
-                  })
-                } else {
-                  setValues({
-                    ...values,
-                    year: oldTypedYear,
-                    isYearUnknown: false,
-                  })
-                }
-              }}
-              text={<Text color="black60">I don't know</Text>}
-            />
-            <Spacer y={1} />
           </Flex>
 
           <CategoryPicker<AcceptableCategoryValue | null>

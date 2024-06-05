@@ -15,49 +15,14 @@ describe("SubmitArtworkAddDetails", () => {
     expect(yearInput.props.value).toBe("2024")
 
     const mediumPicker = screen.getByTestId("CategorySelect")
-    expect(mediumPicker).toBeOnTheScreen()
     fireEvent.press(mediumPicker)
     // Wait for the select modal to show up
     await flushPromiseQueue()
     fireEvent.press(screen.getByText("Painting"))
-    // Wait for the select modal to dismiss
-    await flushPromiseQueue()
-    expect(screen.getByText("Painting")).toBeOnTheScreen()
-  })
 
-  describe("Year input", () => {
-    it("Hides input when the user taps on I don't know", async () => {
-      renderWithSubmitArtworkWrapper({
-        component: <SubmitArtworkAddDetails />,
-      })
-
-      const yearInput = screen.getByTestId("Submission_YearInput")
-      fireEvent.changeText(yearInput, "2024")
-      expect(yearInput.props.value).toBe("2024")
-
-      const iDontKnowButton = screen.getByText("I don't know")
-      fireEvent.press(iDontKnowButton)
-      await flushPromiseQueue()
-      expect(yearInput.props.value).toBe("")
-    })
-
-    it("Injects the previous value after deselecting I don't know", async () => {
-      renderWithSubmitArtworkWrapper({
-        component: <SubmitArtworkAddDetails />,
-      })
-
-      const yearInput = screen.getByTestId("Submission_YearInput")
-      fireEvent.changeText(yearInput, "2024")
-      expect(yearInput.props.value).toBe("2024")
-
-      const iDontKnowButton = screen.getByText("I don't know")
-      fireEvent.press(iDontKnowButton)
-      await flushPromiseQueue()
-      expect(yearInput.props.value).toBe("")
-
-      fireEvent.press(iDontKnowButton)
-      await flushPromiseQueue()
-      expect(yearInput.props.value).toBe("2024")
-    })
+    const materialsInput = screen.getByTestId("Submission_MaterialsInput")
+    expect(materialsInput).toBeOnTheScreen()
+    fireEvent.changeText(materialsInput, "Whatever")
+    expect(materialsInput.props.value).toBe("Whatever")
   })
 })
