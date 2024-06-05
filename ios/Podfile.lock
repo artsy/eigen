@@ -15,7 +15,6 @@ PODS:
   - AFNetworking/Reachability (2.7.0)
   - AFNetworking/Security (2.7.0)
   - AFNetworking/Serialization (2.7.0)
-  - Analytics (4.1.8)
   - AppAuth (1.7.3):
     - AppAuth/Core (= 1.7.3)
     - AppAuth/ExternalUserAgent (= 1.7.3)
@@ -776,9 +775,6 @@ PODS:
     - React-logger (= 0.72.12)
     - React-perflogger (= 0.72.12)
   - RecaptchaInterop (100.0.0)
-  - RNAnalytics (1.5.2):
-    - Analytics
-    - React-Core
   - RNAppleAuthentication (2.1.5):
     - React-Core
   - RNBootSplash (3.2.0):
@@ -866,6 +862,9 @@ PODS:
   - SDWebImageWebPCoder (0.8.5):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
+  - segment-analytics-react-native (2.16.1):
+    - React-Core
+    - sovran-react-native
   - Sentry/HybridSDK (8.21.0):
     - SentryPrivate (= 8.21.0)
   - SentryPrivate (8.21.0)
@@ -874,6 +873,8 @@ PODS:
     - React
     - Sift
   - SocketRocket (0.6.1)
+  - sovran-react-native (1.0.4):
+    - React-Core
   - Specta (2.0.0)
   - SSZipArchive (2.2.3)
   - Starscream (4.0.8)
@@ -1015,7 +1016,6 @@ DEPENDENCIES:
   - React-runtimescheduler (from `../node_modules/react-native/ReactCommon/react/renderer/runtimescheduler`)
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
-  - "RNAnalytics (from `../node_modules/@segment/analytics-react-native`)"
   - "RNAppleAuthentication (from `../node_modules/@invertase/react-native-apple-authentication`)"
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
@@ -1037,7 +1037,9 @@ DEPENDENCIES:
   - RNShare (from `../node_modules/react-native-share`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - SDWebImage (= 5.19.1)
+  - "segment-analytics-react-native (from `../node_modules/@segment/analytics-react-native`)"
   - sift-react-native (from `../node_modules/sift-react-native`)
+  - "sovran-react-native (from `../node_modules/@segment/sovran-react-native`)"
   - Specta (~> 2.0)
   - Starscream (= 4.0.8)
   - SwiftyJSON (from `https://github.com/SwiftyJSON/SwiftyJSON/`, commit `af76cf3ef710b6ca5f8c05f3a31307d44a3c5828`)
@@ -1054,7 +1056,6 @@ SPEC REPOS:
   trunk:
     - AFNetworkActivityLogger
     - AFNetworking
-    - Analytics
     - AppAuth
     - AppCenter
     - AppCenterReactNativeShared
@@ -1275,8 +1276,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/react/utils"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
-  RNAnalytics:
-    :path: "../node_modules/@segment/analytics-react-native"
   RNAppleAuthentication:
     :path: "../node_modules/@invertase/react-native-apple-authentication"
   RNBootSplash:
@@ -1317,8 +1316,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-share"
   RNSVG:
     :path: "../node_modules/react-native-svg"
+  segment-analytics-react-native:
+    :path: "../node_modules/@segment/analytics-react-native"
   sift-react-native:
     :path: "../node_modules/sift-react-native"
+  sovran-react-native:
+    :path: "../node_modules/@segment/sovran-react-native"
   SwiftyJSON:
     :commit: af76cf3ef710b6ca5f8c05f3a31307d44a3c5828
     :git: https://github.com/SwiftyJSON/SwiftyJSON/
@@ -1348,7 +1351,6 @@ SPEC CHECKSUMS:
   Aerodramus: a22de7451c8fc85ae5d974f5d6a656f59046fffc
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 9d57de7506959955d82fb5274ee4bec86b930e52
-  Analytics: 9655e0e1c71ea98107cfcb2b14891168acc6c6c9
   AppAuth: a13994980c1ec792f7e2e665acd4d4aa6be43240
   AppCenter: a4070ec3d4418b5539067a51f57155012e486ebd
   appcenter-core: e192ea8b373bebd3e44998882b43311078bd7dda
@@ -1483,7 +1485,6 @@ SPEC CHECKSUMS:
   React-utils: 9a24cb88f950d1020ee55bddacbc8c16a611e2dc
   ReactCommon: 76843a9bb140596351ac2786257ac9fe60cafabb
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
-  RNAnalytics: fcf308eeac6d34a74c158ec74d733c877f26fb96
   RNAppleAuthentication: 63c2127ace11985b94f852fc480eb84145653712
   RNBootSplash: 24175aa28fe203b10c48dc34e78d946fd33c77af
   RNCAsyncStorage: c913ede1fa163a71cea118ed4670bbaaa4b511bb
@@ -1506,11 +1507,13 @@ SPEC CHECKSUMS:
   RNSVG: ba3e7232f45e34b7b47e74472386cf4e1a676d0a
   SDWebImage: 40b0b4053e36c660a764958bff99eed16610acbb
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
+  segment-analytics-react-native: 13d4ba325add2b2ed796ee58531e3b4cacfe692f
   Sentry: ebc12276bd17613a114ab359074096b6b3725203
   SentryPrivate: d651efb234cf385ec9a1cdd3eff94b5e78a0e0fe
   Sift: 7c27188ba3533c0a1be541d7efb68384e17e544c
   sift-react-native: 9ed8bc21788e3233399eaf196425246442aa7dee
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
+  sovran-react-native: 791f2f726b4d57ece59676eda58d6da9dc95ad4e
   Specta: b79d84043684b35ffdc2680df578dc318ec2efc2
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Starscream: 19b5533ddb925208db698f0ac508a100b884a1b9
