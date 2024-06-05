@@ -1,7 +1,7 @@
 import { Separator, Join } from "@artsy/palette-mobile"
 import { ArtworkEditionSets_artwork$data } from "__generated__/ArtworkEditionSets_artwork.graphql"
 import { compact } from "lodash"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ArtworkEditionSetItemFragmentContainer as ArtworkEditionSetItem } from "./ArtworkEditionSetItem"
 
@@ -12,8 +12,18 @@ interface ArtworkEditionSetsProps {
 
 const ArtworkEditionSets: React.FC<ArtworkEditionSetsProps> = ({ artwork, onSelectEdition }) => {
   const editionSets = compact(artwork.editionSets ?? [])
-  const firstEditionId = editionSets[0]?.internalID ?? null
-  const [selectedEditionId, setSelectedEditionId] = useState(firstEditionId)
+
+  const firstAvailableEcommerceEditionSet = useCallback(() => {
+    const { editionSets } = artwork
+    if (!editionSets || editionSets.length === 0) {
+      return undefined
+    }
+
+    return editionSets?.find((editionSet) => editionSet?.isAcquireable || editionSet?.isOfferable)
+      ?.internalID
+  }, [artwork])
+
+  const [selectedEditionId, setSelectedEditionId] = useState(firstAvailableEcommerceEditionSet())
 
   const handleSelectEdition = (editionId: string) => {
     setSelectedEditionId(editionId)
@@ -34,6 +44,8 @@ const ArtworkEditionSets: React.FC<ArtworkEditionSetsProps> = ({ artwork, onSele
     <Join separator={<Separator />}>
       {editionSets.map((edition) => {
         const isSelected = edition.internalID === selectedEditionId
+        const editionEcommerceAvailable =
+          edition.isAcquireable || edition.isOfferable || artwork.isInquireable
 
         return (
           <ArtworkEditionSetItem
@@ -41,6 +53,7 @@ const ArtworkEditionSets: React.FC<ArtworkEditionSetsProps> = ({ artwork, onSele
             item={edition}
             isSelected={isSelected}
             onPress={handleSelectEdition}
+            disabled={!editionEcommerceAvailable}
           />
         )
       })}
@@ -54,8 +67,11 @@ export const ArtworkEditionSetsFragmentContainer = createFragmentContainer(Artwo
       editionSets {
         id
         internalID
+        isAcquireable
+        isOfferable
         ...ArtworkEditionSetItem_item
       }
+      isInquireable
     }
   `,
 })
