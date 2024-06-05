@@ -9,7 +9,7 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { refreshSellScreen } from "app/utils/refreshHelpers"
 import { useFormikContext } from "formik"
 import { useEffect } from "react"
-import { Alert, LayoutAnimation } from "react-native"
+import { Alert, Keyboard, LayoutAnimation } from "react-native"
 
 const HEADER_HEIGHT = 50
 
@@ -21,6 +21,7 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
   const { values } = useFormikContext<ArtworkDetailsFormModel>()
 
   const handleSaveAndExitPress = async () => {
+    Keyboard.dismiss()
     if (!enableSaveAndExit) {
       if (hasCompletedForm) {
         goBack()
