@@ -165,15 +165,7 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
 
               <Stack.Screen name="AddPhoneNumber" component={SubmitArtworkAddPhoneNumber} />
               <Stack.Screen name="SelectArtist" component={SubmitArtworkSelectArtist} />
-              <Stack.Screen
-                name="ArtistRejected"
-                component={SubmitArtworkArtistRejected}
-                options={{
-                  // We want to make it easy for users to go back to the previous screen
-                  // And to submit a new artist
-                  gestureEnabled: true,
-                }}
-              />
+              <Stack.Screen name="ArtistRejected" component={SubmitArtworkArtistRejected} />
 
               <Stack.Screen name="AddTitle" component={SubmitArtworkAddTitle} />
 
