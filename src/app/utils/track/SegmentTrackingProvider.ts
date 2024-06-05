@@ -1,4 +1,5 @@
 import { Analytics } from "@segment/analytics-react-native"
+// import Braze from "@segment/analytics-react-native-appboy"
 import { addBreadcrumb } from "@sentry/react-native"
 import { visualize } from "app/utils/visualizer"
 import { Platform } from "react-native"
@@ -13,25 +14,17 @@ let analytics: Analytics.Client
 export const SegmentTrackingProvider: TrackingProvider = {
   setup: () => {
     analytics = require("@segment/analytics-react-native").default
-
-    // TODO: Add Braze integration
-    // const Braze = require("@segment/analytics-react-native-appboy").default
-
+    const segmentWriteKey = Platform.select({
+      ios: __DEV__ ? Config.SEGMENT_STAGING_WRITE_KEY_IOS : Config.SEGMENT_PRODUCTION_WRITE_KEY_IOS,
+      android: __DEV__
+        ? Config.SEGMENT_STAGING_WRITE_KEY_ANDROID
+        : Config.SEGMENT_PRODUCTION_WRITE_KEY_ANDROID,
+      default: "",
+    })
     analytics
-      .setup(
-        Platform.select({
-          ios: __DEV__
-            ? Config.SEGMENT_STAGING_WRITE_KEY_IOS
-            : Config.SEGMENT_PRODUCTION_WRITE_KEY_IOS,
-          android: __DEV__
-            ? Config.SEGMENT_STAGING_WRITE_KEY_ANDROID
-            : Config.SEGMENT_PRODUCTION_WRITE_KEY_ANDROID,
-          default: "",
-        }),
-        {
-          using: [], // [Braze],
-        }
-      )
+      .setup(segmentWriteKey, {
+        using: [], // [Braze], TODO: Something
+      })
       .then(() => console.log("Analytics is ready"))
       .catch((err) => console.error("Something went wrong", err))
   },
