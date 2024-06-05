@@ -498,7 +498,11 @@ lane :promote_codepush do |options|
 
   submission_tag = sh("./scripts/codepush/get-submission-tag.sh")
 
+if submission_tag && !submission_tag.empty?
   tag_and_push(tag: submission_tag)
+else
+  UI.warn("Submission tag could not be added! Please add one yourself so we can find the release code!")
+end
 
   # Promote to prod with rollout percentage, make it mandatory
   sh("appcenter codepush promote -a #{androidAppName} -s #{sourceDeployment} -d #{targetDeployment} -r #{rolloutPercentage} --mandatory")
