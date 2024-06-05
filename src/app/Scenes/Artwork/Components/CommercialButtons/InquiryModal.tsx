@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Checkbox,
   Flex,
   Input,
@@ -7,6 +8,7 @@ import {
   Separator,
   Spacer,
   Text,
+  useScreenDimensions,
   useTheme,
 } from "@artsy/palette-mobile"
 import { InquiryModal_artwork$data } from "__generated__/InquiryModal_artwork.graphql"
@@ -21,7 +23,7 @@ import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { LocationWithDetails } from "app/utils/googleMaps"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react"
-import { LayoutAnimation, ScrollView, TouchableOpacity } from "react-native"
+import { LayoutAnimation, Platform, ScrollView, TouchableOpacity } from "react-native"
 import { RelayProp, createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -70,6 +72,7 @@ const InquiryQuestionOption: React.FC<{
     }
   }
 
+  // TODO: this causes a warning message in the simulator when the modal is opened
   React.useLayoutEffect(maybeRegisterAnimation, [questionSelected])
 
   const setSelection = () => {
@@ -162,6 +165,9 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
   const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
   const [mutationError, setMutationError] = useState(false)
   const [loading, setLoading] = useState(false)
+
+  const { bottom } = useScreenDimensions().safeAreaInsets
+
   const selectShippingLocation = (locationDetails: LocationWithDetails) =>
     dispatch({ type: "selectShippingLocation", payload: locationDetails })
   const setMessage = useCallback(
@@ -318,7 +324,24 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
             testID="add-message-input"
           />
         </Box>
+        <Box mx={2} mb={4}>
+          <Text variant="xs" color="black60" textAlign="center">
+            By clicking send, we will share your profile with Arcadia Contemporary. Update your
+            profile at any time in Settings.
+          </Text>
+          <Button width={100} block size="large">
+            Send
+          </Button>
+        </Box>
       </ScrollView>
+
+      <Flex
+        p={2}
+        mb={`${bottom}px`}
+        pb={Platform.OS === "android" ? 2 : 0}
+        borderTopWidth={1}
+        borderTopColor="black10"
+      ></Flex>
       <ShippingModal
         toggleVisibility={() => setShippingModalVisibility(!shippingModalVisibility)}
         modalIsVisible={shippingModalVisibility}
