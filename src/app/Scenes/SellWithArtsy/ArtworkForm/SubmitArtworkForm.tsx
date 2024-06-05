@@ -136,19 +136,44 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
               screenOptions={{
                 headerShown: false,
                 cardStyle: { backgroundColor: "white" },
-                gestureEnabled: false,
-                ...TransitionPresets.SlideFromRightIOS,
-                cardStyleInterpolator: ({ current, layouts }) => {
+                transitionSpec: {
+                  open: {
+                    animation: "timing",
+                    config: {
+                      duration: 300,
+                    },
+                  },
+                  close: {
+                    animation: "timing",
+                    config: {
+                      duration: 300,
+                    },
+                  },
+                },
+                cardStyleInterpolator: ({ current, next }) => {
+                  const opacity = current.progress.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [0, 1],
+                  })
+
+                  const nextOpacity = next
+                    ? next.progress.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [1, 0.2], // Lower the opacity of the exiting screen
+                      })
+                    : 1
+
                   return {
                     cardStyle: {
-                      transform: [
-                        {
-                          translateX: current.progress.interpolate({
-                            inputRange: [0, 1],
-                            outputRange: [layouts.screen.width, 0],
-                          }),
-                        },
-                      ],
+                      opacity: next ? nextOpacity : opacity,
+                      backgroundColor: "white",
+                    },
+                    overlayStyle: {
+                      opacity: current.progress.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [0, 0.5],
+                      }),
+                      backgroundColor: "white",
                     },
                   }
                 },
