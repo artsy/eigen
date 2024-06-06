@@ -18,7 +18,8 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
   } = useSubmitArtworkTracking()
   const { navigateToNextStep, navigateToPreviousStep, isFinalStep } = useSubmissionContext()
 
-  const { trackTappedNewSubmission, trackTappedStartMyCollection } = useSubmitArtworkTracking()
+  const { trackTappedNewSubmission, trackTappedStartMyCollection, trackConsignmentSubmitted } =
+    useSubmitArtworkTracking()
 
   const { isValid, values } = useFormikContext<ArtworkDetailsFormModel>()
 
@@ -37,6 +38,10 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
   }
 
   const handleNextPress = () => {
+    if (isFinalStep) {
+      trackConsignmentSubmitted(values.submissionId)
+    }
+
     navigateToNextStep()
   }
 

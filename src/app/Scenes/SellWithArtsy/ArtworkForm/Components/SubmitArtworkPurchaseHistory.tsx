@@ -34,7 +34,7 @@ export const SubmitArtworkPurchaseHistory = () => {
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
-      info={screen({ context_screen_owner_type: OwnerType.submissionStepAddPurchaseHistory })}
+      info={screen({ context_screen_owner_type: OwnerType.submitArtworkStepPurchaseHistory })}
     >
       <Flex px={2} flex={1}>
         <ScrollView>

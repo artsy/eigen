@@ -14,7 +14,7 @@ export const SubmitArtworkAddPhoneNumber = () => {
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
-      info={screen({ context_screen_owner_type: OwnerType.submissionStepAddPhoneNumber })}
+      info={screen({ context_screen_owner_type: OwnerType.submitArtworkStepAddPhoneNumber })}
     >
       <Flex px={2}>
         <ScrollView>

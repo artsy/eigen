@@ -1,6 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { SubmitArtworkScreen } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
-import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { useTracking } from "react-tracking"
 
 export const useSubmitArtworkTracking = () => {
@@ -58,20 +57,13 @@ export const useSubmitArtworkTracking = () => {
     })
   }
 
-  const trackConsignmentSubmitted = (
-    submission_id: string | null,
-    user_email: string,
-    user_id: string,
-    values: ArtworkDetailsFormModel
-  ) => {
+  const trackConsignmentSubmitted = (submission_id: string | null) => {
     trackEvent({
       action: "consignmentSubmitted",
       context_module: ContextModule.sell,
       context_owner_type: getOwnerType("CompleteYourSubmission"),
       submission_id,
-      user_email,
-      user_id,
-      fieldsProvided: values,
+      fieldsProvided: [],
     })
   }
 
@@ -108,26 +100,26 @@ export const useSubmitArtworkTracking = () => {
 const getOwnerType = (currentStep: SubmitArtworkScreen): OwnerType => {
   switch (currentStep) {
     case "StartFlow":
-      return OwnerType.submissionStepStart
+      return OwnerType.submitArtworkStepStart
     case "SelectArtist":
-      return OwnerType.submissionStepSelectArtist
+      return OwnerType.submitArtworkStepSelectArtist
     case "AddTitle":
-      return OwnerType.submissionStepAddTitle
+      return OwnerType.submitArtworkStepAddTitle
     case "AddPhotos":
-      return OwnerType.submissionStepAddPhotos
+      return OwnerType.submitArtworkStepAddPhotos
     case "AddDetails":
-      return OwnerType.submissionStepAddDetails
+      return OwnerType.submitArtworkStepAddDetails
     case "PurchaseHistory":
-      return OwnerType.submissionStepPurchaseHistory
+      return OwnerType.submitArtworkStepPurchaseHistory
     case "AddDimensions":
-      return OwnerType.submissionStepAddDimensions
+      return OwnerType.submitArtworkStepAddDimensions
     case "AddPhoneNumber":
-      return OwnerType.submissionStepAddPhoneNumber
+      return OwnerType.submitArtworkStepAddPhoneNumber
     case "CompleteYourSubmission":
-      return OwnerType.submissionStepCompleteYourSubmission
+      return OwnerType.submitArtworkStepCompleteYourSubmission
     case "ArtistRejected":
-      return OwnerType.submissionStepArtistRejected
+      return OwnerType.submitArtworkStepArtistRejected
     case "SelectArtworkMyCollectionArtwork":
-      return OwnerType.submissionStepSelectArtworkMyCollectionArtwork
+      return OwnerType.submitArtworkStepSelectArtworkMyCollectionArtwork
   }
 }

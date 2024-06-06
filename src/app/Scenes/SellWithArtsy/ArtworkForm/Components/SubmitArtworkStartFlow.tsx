@@ -27,7 +27,7 @@ const SECTIONS = [
 export const SubmitArtworkStartFlow: React.FC = () => {
   return (
     <ProvideScreenTrackingWithCohesionSchema
-      info={screen({ context_screen_owner_type: OwnerType.submissionStepStartFlow })}
+      info={screen({ context_screen_owner_type: OwnerType.submitArtworkStepStart })}
     >
       <Flex flex={1} px={2}>
         <ScrollView>
