@@ -34,8 +34,6 @@ export const SubmitArtworkCompleteYourSubmission = () => {
           title="What happens next?"
           variant="success"
           text="If your artwork is accepted, we will guide you in selecting the best selling option. Additional information may be requested."
-          titleStyle={{ variant: "sm" }}
-          bodyTextStyle={{ variant: "sm" }}
         />
       </ScrollView>
     </Flex>
