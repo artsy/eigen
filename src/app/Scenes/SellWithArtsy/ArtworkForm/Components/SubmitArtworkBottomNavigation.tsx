@@ -82,6 +82,7 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
             block
             onPress={() => {
               navigate("/sell/submissions/new", {
+                modal: true,
                 replaceActiveModal: true,
               })
             }}
