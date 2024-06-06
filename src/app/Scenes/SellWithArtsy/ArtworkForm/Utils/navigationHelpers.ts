@@ -83,7 +83,26 @@ export const useSubmissionContext = () => {
 
   const navigateToPreviousStep = () => {
     if (!__unsafe__SubmissionArtworkFormNavigationRef.current?.canGoBack()) {
-      return goBack()
+      Alert.alert(
+        "Are you sure you want to go back?",
+        "You will lose any unsaved changes.",
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+            isPreferred: true,
+          },
+          {
+            text: "Exit",
+            onPress: () => {
+              goBack()
+            },
+            style: "destructive",
+          },
+        ],
+        { cancelable: true }
+      )
+      return
     }
     // Order is important here to make sure getCurrentRoute returns the correct value
     __unsafe__SubmissionArtworkFormNavigationRef.current?.goBack?.()

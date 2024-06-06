@@ -332,6 +332,7 @@ export interface SubmitArtworkProps {
   initialStep: SubmitArtworkScreenT
   navigationState?: string
   submissionID?: string
+  hasStartedFlowFromMyCollection?: boolean
 }
 
 export const SubmitArtwork: React.FC<SubmitArtworkProps> = (props) => {
