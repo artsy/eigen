@@ -1,16 +1,18 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex, Join, Message, Spacer, Text } from "@artsy/palette-mobile"
-import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
+import { TipsForTakingPhotos } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkTipsForTakingPhotos"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { InfoModal } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/InfoModal/InfoModal"
 import { UploadPhotosForm } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/UploadPhotosForm"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { useFormikContext } from "formik"
+import { useState } from "react"
 import { ScrollView } from "react-native"
 
 export const SubmitArtworkAddPhotos = () => {
   const { values } = useFormikContext<ArtworkDetailsFormModel>()
-  const { navigateToNextStep } = useSubmissionContext()
+  const [isModalVisible, setIsModalVisible] = useState(false)
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -36,10 +38,7 @@ export const SubmitArtworkAddPhotos = () => {
               underline
               color="black60"
               onPress={() => {
-                navigateToNextStep({
-                  step: "TipsForTakingPhotos",
-                  skipMutation: true,
-                })
+                setIsModalVisible(true)
               }}
             >
               Tips for taking photos
@@ -56,6 +55,14 @@ export const SubmitArtworkAddPhotos = () => {
             <UploadPhotosForm />
           </Join>
         </ScrollView>
+        <InfoModal
+          visible={isModalVisible}
+          onDismiss={() => setIsModalVisible(false)}
+          buttonVariant="outline"
+          containerStyle={{ margin: 0 }}
+        >
+          <TipsForTakingPhotos onDismiss={() => setIsModalVisible(false)} />
+        </InfoModal>
       </Flex>
     </ProvideScreenTrackingWithCohesionSchema>
   )

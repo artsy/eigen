@@ -18,7 +18,6 @@ import { SubmitArtworkSelectArtist } from "app/Scenes/SellWithArtsy/ArtworkForm/
 import { SelectArtworkMyCollectionArtwork } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkSelectArtworkMyCollectionArtwork"
 import { SubmitArtworkStartFlow } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkStartFlow"
 import { SubmitArtworkTopNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkTopNavigation"
-import { TipsForTakingPhotos } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/TipsForTakingPhotos"
 import { SubmitArtworkScreen } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
 import { getInitialNavigationState } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/getInitialNavigationState"
 import {
@@ -42,7 +41,6 @@ export type SubmitArtworkStackNavigation = {
   SelectArtist: undefined
   AddTitle: undefined
   AddPhotos: undefined
-  TipsForTakingPhotos: undefined
   AddDetails: undefined
   AddDimensions: undefined
   AddPhoneNumber: undefined
@@ -207,7 +205,6 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
               <Stack.Screen name="AddTitle" component={SubmitArtworkAddTitle} />
 
               <Stack.Screen name="AddPhotos" component={SubmitArtworkAddPhotos} />
-              <Stack.Screen name="TipsForTakingPhotos" component={TipsForTakingPhotos} />
 
               <Stack.Screen name="AddDetails" component={SubmitArtworkAddDetails} />
 
