@@ -1,4 +1,4 @@
-import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { SubmitArtworkScreen } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
 import { useTracking } from "react-tracking"
 
@@ -85,6 +85,17 @@ export const useSubmitArtworkTracking = () => {
     })
   }
 
+  const trackTappedContactAdvisor = (userId: string | undefined, userEmail: string | undefined) => {
+    trackEvent({
+      action: ActionType.tappedConsignmentInquiry,
+      context_module: ContextModule.sell,
+      context_owner_type: getOwnerType("ArtistRejected"),
+      label: "contact an advisor",
+      user_id: userId,
+      user_email: userEmail,
+    })
+  }
+
   return {
     trackTappedContinueSubmission,
     trackTappedNewSubmission,
@@ -94,6 +105,7 @@ export const useSubmitArtworkTracking = () => {
     trackConsignmentSubmitted,
     trackTappedSubmitAnotherWork,
     trackTappedViewArtworkInMyCollection,
+    trackTappedContactAdvisor,
   }
 }
 

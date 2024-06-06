@@ -3,6 +3,7 @@ import { BulletedItem, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { SubmitArtworkArtistRejectedQuery } from "__generated__/SubmitArtworkArtistRejectedQuery.graphql"
 import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubmitArtworkTracking"
 import { InfoModal } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/InfoModal/InfoModal"
 import { navigate } from "app/system/navigation/navigate"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
@@ -13,6 +14,7 @@ import { ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 export const SubmitArtworkArtistRejected: React.FC<{}> = () => {
+  const { trackTappedContactAdvisor } = useSubmitArtworkTracking()
   const { values } = useFormikContext<ArtworkDetailsFormModel>()
   const [isEligibilityModalVisible, setIsEligibilityModalVisible] = useState(false)
 
@@ -50,6 +52,7 @@ export const SubmitArtworkArtistRejected: React.FC<{}> = () => {
             <Text
               underline
               onPress={() => {
+                trackTappedContactAdvisor(me?.internalID, me?.email)
                 navigate("/sell/inquiry", {
                   passProps: {
                     email: me?.email ?? "",
