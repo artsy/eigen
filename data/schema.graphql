@@ -4079,8 +4079,15 @@ type Collection {
     after: String
     before: String
     first: Int
+    forSale: Boolean
     last: Int
     page: Int
+
+    # In USD Dollars
+    priceMax: Int
+
+    # In USD Dollars
+    priceMin: Int
     sort: CollectionArtworkSorts
   ): ArtworkConnection
 
