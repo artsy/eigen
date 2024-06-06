@@ -1,11 +1,8 @@
-import { CheckCircleFillIcon, Flex, Message, Spacer, Text, useSpace } from "@artsy/palette-mobile"
+import { Flex, Message, Spacer, Text } from "@artsy/palette-mobile"
 import { useEffect } from "react"
-import { BackHandler, Platform, ScrollView } from "react-native"
-
-const ICON_WIDTH = 28
+import { BackHandler, ScrollView } from "react-native"
 
 export const SubmitArtworkCompleteYourSubmission = () => {
-  const space = useSpace()
   // Do not allow the user to go back when pressing the back button on Android
   useEffect(() => {
     const subscription = BackHandler.addEventListener("hardwareBackPress", () => {
@@ -23,14 +20,6 @@ export const SubmitArtworkCompleteYourSubmission = () => {
             <Flex flex={1} pr={1}>
               <Text variant="lg-display">Thank you for submitting your artwork</Text>
             </Flex>
-
-            <CheckCircleFillIcon
-              height={ICON_WIDTH}
-              width={ICON_WIDTH}
-              fill="green100"
-              // Add top margin for iOS to align with the text
-              top={Platform.OS === "ios" ? space(0.5) : 0}
-            />
           </Flex>
         </Flex>
 
@@ -42,10 +31,10 @@ export const SubmitArtworkCompleteYourSubmission = () => {
         <Spacer y={2} />
 
         <Message
-          title="Next steps"
+          title="What happens next?"
           variant="success"
-          text="If your submission is accepted, we will ask for additional details"
-        ></Message>
+          text="If your artwork is accepted, we will guide you in selecting the best selling option. Additional information may be requested."
+        />
       </ScrollView>
     </Flex>
   )
