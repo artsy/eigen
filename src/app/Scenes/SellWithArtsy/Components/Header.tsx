@@ -21,14 +21,13 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = (props) => {
+  const { trackTappedContinueSubmission } = useSubmitArtworkTracking()
   const { draft } = GlobalStore.useAppState((state) => state.artworkSubmission)
   const { width } = useScreenDimensions()
 
   const submission = useFragment(FRAGMENT, props.submission)
 
   const artist = submission?.artist
-
-  const { trackTappedContinueSubmission } = useSubmitArtworkTracking()
 
   return (
     <Flex>
@@ -45,7 +44,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
           <Box mb={0.5}>
             <Touchable
               onPress={() => {
-                trackTappedContinueSubmission(draft.currentStep)
+                trackTappedContinueSubmission(draft.submissionID, draft.currentStep)
                 navigate(
                   `/sell/submissions/${draft.submissionID}/edit?initialStep=${draft.currentStep}`
                 )

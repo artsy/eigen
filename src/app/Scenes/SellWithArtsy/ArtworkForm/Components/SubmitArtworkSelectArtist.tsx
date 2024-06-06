@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
 import { AutosuggestResultsPlaceholder } from "app/Components/AutosuggestResults/AutosuggestResultsPlaceholder"
@@ -11,6 +12,8 @@ import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Ut
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { navigate } from "app/system/navigation/navigate"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import { useFormikContext } from "formik"
 import { Suspense } from "react"
 import { TouchableOpacity } from "react-native"
@@ -76,48 +79,52 @@ export const SubmitArtworkSelectArtist = () => {
   }
 
   return (
-    <Flex px={2}>
-      <Flex pb={6}>
-        <Text variant="lg" mb={2}>
-          Add artist name
-        </Text>
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({ context_screen_owner_type: OwnerType.submitArtworkStepSelectArtist })}
+    >
+      <Flex px={2}>
+        <Flex pb={6}>
+          <Text variant="lg" mb={2}>
+            Add artist name
+          </Text>
 
-        <Suspense fallback={<Placeholder />}>
-          <ArtistAutosuggest
-            onResultPress={handleResultPress}
-            disableCustomArtists
-            onlyP1Artists
-            loading={isLoading}
-            hideCollectedArtists
-            autoFocus={currentStep === "SelectArtist"}
-            Hint={
-              <Flex py={1}>
-                <Text variant="xs" color="black60">
-                  Currently, artists can not sell their own work on Artsy.
-                </Text>
-                <TouchableOpacity>
-                  <Text
-                    underline
-                    variant="xs"
-                    color="black60"
-                    style={{
-                      zIndex: 1000,
-                    }}
-                    onPress={() => {
-                      navigate(
-                        "https://support.artsy.net/s/article/Im-an-artist-Can-I-submit-my-own-work-to-sell"
-                      )
-                    }}
-                  >
-                    Learn more.
+          <Suspense fallback={<Placeholder />}>
+            <ArtistAutosuggest
+              onResultPress={handleResultPress}
+              disableCustomArtists
+              onlyP1Artists
+              loading={isLoading}
+              hideCollectedArtists
+              autoFocus={currentStep === "SelectArtist"}
+              Hint={
+                <Flex py={1}>
+                  <Text variant="xs" color="black60">
+                    Currently, artists can not sell their own work on Artsy.
                   </Text>
-                </TouchableOpacity>
-              </Flex>
-            }
-          />
-        </Suspense>
+                  <TouchableOpacity>
+                    <Text
+                      underline
+                      variant="xs"
+                      color="black60"
+                      style={{
+                        zIndex: 1000,
+                      }}
+                      onPress={() => {
+                        navigate(
+                          "https://support.artsy.net/s/article/Im-an-artist-Can-I-submit-my-own-work-to-sell"
+                        )
+                      }}
+                    >
+                      Learn more.
+                    </Text>
+                  </TouchableOpacity>
+                </Flex>
+              }
+            />
+          </Suspense>
+        </Flex>
       </Flex>
-    </Flex>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 
