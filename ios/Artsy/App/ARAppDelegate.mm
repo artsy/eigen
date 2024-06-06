@@ -5,7 +5,7 @@
 #import <BrazeKit/BrazeKit-Swift.h>
 #import "BrazeReactBridge.h"
 #import "BrazeReactUtils.h"
-#import <Analytics/SEGAnalytics.h>
+
 #import <CodePush/CodePush.h>
 #import <AppCenterReactNative.h>
 
@@ -15,6 +15,7 @@
 #import "ARAppNotificationsDelegate.h"
 #import "ARUserManager.h"
 #import "ARFonts.h"
+#import <Analytics/SEGAnalytics.h>
 #import "ARAnalyticsConstants.h"
 #import "User.h"
 

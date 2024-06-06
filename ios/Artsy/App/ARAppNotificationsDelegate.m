@@ -6,6 +6,7 @@
 #import "ARAppDelegate.h"
 #import "ARAppConstants.h"
 #import "ARAnalyticsConstants.h"
+#import <Analytics/SEGAnalytics.h>
 #import "UIApplicationStateEnum.h"
 #import "ARNotificationView.h"
 #import "ARSerifNavigationViewController.h"

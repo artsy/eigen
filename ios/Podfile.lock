@@ -15,6 +15,7 @@ PODS:
   - AFNetworking/Reachability (2.7.0)
   - AFNetworking/Security (2.7.0)
   - AFNetworking/Serialization (2.7.0)
+  - Analytics (4.1.8)
   - AppAuth (1.7.3):
     - AppAuth/Core (= 1.7.3)
     - AppAuth/ExternalUserAgent (= 1.7.3)
@@ -898,6 +899,7 @@ DEPENDENCIES:
   - AFNetworkActivityLogger
   - AFNetworking/NSURLConnection (= 2.7.0)
   - AFNetworking/NSURLSession (= 2.7.0)
+  - Analytics (= 4.1.8)
   - appcenter-core (from `../node_modules/appcenter`)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - "braze-react-native-sdk (from `../node_modules/@braze/react-native-sdk`)"
@@ -1056,6 +1058,7 @@ SPEC REPOS:
   trunk:
     - AFNetworkActivityLogger
     - AFNetworking
+    - Analytics
     - AppAuth
     - AppCenter
     - AppCenterReactNativeShared
@@ -1351,6 +1354,7 @@ SPEC CHECKSUMS:
   Aerodramus: a22de7451c8fc85ae5d974f5d6a656f59046fffc
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 9d57de7506959955d82fb5274ee4bec86b930e52
+  Analytics: 9655e0e1c71ea98107cfcb2b14891168acc6c6c9
   AppAuth: a13994980c1ec792f7e2e665acd4d4aa6be43240
   AppCenter: a4070ec3d4418b5539067a51f57155012e486ebd
   appcenter-core: e192ea8b373bebd3e44998882b43311078bd7dda
@@ -1528,6 +1532,6 @@ SPEC CHECKSUMS:
   Yoga: 87e59f6d458e5061d2421086c5de994b3f7cd151
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 8ae61491b77eca946b78283a8fc486f44a8c9a72
+PODFILE CHECKSUM: de289a77a457496201845919bee5839726759337
 
 COCOAPODS: 1.14.3
