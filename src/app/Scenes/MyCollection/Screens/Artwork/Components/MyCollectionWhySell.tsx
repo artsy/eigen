@@ -70,11 +70,12 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
             if (enableNewSubmissionFlow) {
               const initialValues: Partial<ArtworkDetailsFormModel> =
                 initializeNewSubmissionArtworkForm(artwork)
-              const initialStep: SubmitArtworkScreen = "SelectArtist"
+              const initialStep: SubmitArtworkScreen = "AddTitle"
 
               const passProps: SubmitArtworkProps = {
                 initialValues,
                 initialStep,
+                hasStartedFlowFromMyCollection: true,
               }
               navigate("/sell/submissions/new", { passProps })
             } else {

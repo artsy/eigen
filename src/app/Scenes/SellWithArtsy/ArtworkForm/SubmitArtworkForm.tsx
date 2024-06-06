@@ -62,6 +62,7 @@ export const SubmitArtworkForm: React.FC<SubmitArtworkProps> = (props) => {
         initialValues={props.initialValues}
         initialStep={initialScreen}
         navigationState={props.navigationState}
+        hasStartedFlowFromMyCollection={props.hasStartedFlowFromMyCollection}
       />
     </SubmitArtworkFormStoreProvider>
   )
@@ -70,6 +71,7 @@ export const SubmitArtworkForm: React.FC<SubmitArtworkProps> = (props) => {
 const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
   initialValues: injectedValuesProp,
   initialStep,
+  hasStartedFlowFromMyCollection,
 }) => {
   const currentStep = SubmitArtworkFormStore.useStoreState((state) => state.currentStep)
   const { bottom: bottomInset } = useSafeAreaInsets()
@@ -128,7 +130,12 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
           <NavigationContainer
             independent
             ref={__unsafe__SubmissionArtworkFormNavigationRef}
-            initialState={getInitialNavigationState(initialStep)}
+            initialState={getInitialNavigationState(
+              initialStep,
+              // If the user started the flow from my collection
+              // We don't want them to be able to go back to the start flow and select artist screens
+              hasStartedFlowFromMyCollection ? ["StartFlow", "SelectArtist"] : []
+            )}
           >
             <Stack.Navigator
               // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
@@ -180,15 +187,19 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
               }}
               initialRouteName={initialStep}
             >
-              <Stack.Screen name="StartFlow" component={SubmitArtworkStartFlow} />
+              {!hasStartedFlowFromMyCollection && (
+                <Stack.Screen name="StartFlow" component={SubmitArtworkStartFlow} />
+              )}
 
               <Stack.Screen
                 name="SelectArtworkMyCollectionArtwork"
                 component={SelectArtworkMyCollectionArtwork}
               />
 
-              <Stack.Screen name="AddPhoneNumber" component={SubmitArtworkAddPhoneNumber} />
-              <Stack.Screen name="SelectArtist" component={SubmitArtworkSelectArtist} />
+              {!hasStartedFlowFromMyCollection && (
+                <Stack.Screen name="SelectArtist" component={SubmitArtworkSelectArtist} />
+              )}
+
               <Stack.Screen name="ArtistRejected" component={SubmitArtworkArtistRejected} />
 
               <Stack.Screen name="AddTitle" component={SubmitArtworkAddTitle} />
@@ -200,6 +211,8 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
               <Stack.Screen name="AddDimensions" component={SubmitArtworkAddDimensions} />
 
               <Stack.Screen name="PurchaseHistory" component={SubmitArtworkPurchaseHistory} />
+
+              <Stack.Screen name="AddPhoneNumber" component={SubmitArtworkAddPhoneNumber} />
 
               <Stack.Screen
                 name="CompleteYourSubmission"
