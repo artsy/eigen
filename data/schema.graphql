@@ -4504,6 +4504,7 @@ type CommerceBuyOrder implements CommerceOrder {
     timezone: String
   ): String
   lastTransactionFailed: Boolean
+  lastTransactionFailureCode: String
   lineItems(
     # Returns the elements in the list that come after the specified cursor.
     after: String
@@ -5276,6 +5277,7 @@ type CommerceOfferOrder implements CommerceOrder {
     timezone: String
   ): String
   lastTransactionFailed: Boolean
+  lastTransactionFailureCode: String
   lineItems(
     # Returns the elements in the list that come after the specified cursor.
     after: String
@@ -5509,6 +5511,7 @@ interface CommerceOrder {
     timezone: String
   ): String
   lastTransactionFailed: Boolean
+  lastTransactionFailureCode: String
   lineItems(
     # Returns the elements in the list that come after the specified cursor.
     after: String
@@ -15761,6 +15764,27 @@ type Query {
     # Term used for searching collector profiles
     term: String
   ): CollectorProfileTypeConnection
+
+  # Find list of abandoned orders
+  commerceAbandonedOrders(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+    artworkId: ID!
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+
+    # Ignored for the time being, future iterations will support this.
+    excludeFailedPayments: Boolean
+
+    # Returns the first _n_ elements from the list.
+    first: Int
+    from: CommerceDateTime!
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+    sellerId: String!
+  ): CommerceOrderConnectionWithTotalCount
 
   # Find balance of an account associated with a setup intent
   commerceBankAccountBalance(bankAccountId: ID, setupIntentId: ID): CommerceBankAccountBalance
