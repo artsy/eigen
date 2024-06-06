@@ -1,6 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { MyCollectionWhySellTestsQuery } from "__generated__/MyCollectionWhySellTestsQuery.graphql"
-import { GlobalStore } from "app/store/GlobalStore"
+import { GlobalStore, __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -51,6 +51,9 @@ describe("MyCollectionWhySell", () => {
     // P1 related tests
     describe("Artwork without submission", () => {
       describe("Navigation", () => {
+        beforeEach(() => {
+          __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewSubmissionFlow: false })
+        })
         it("navigates to the sale form when Submit for Sale is pressed", () => {
           renderWithWrappers(<TestRenderer contextModule="insights" />)
 
@@ -62,6 +65,7 @@ describe("MyCollectionWhySell", () => {
           fireEvent.press(button)
           expect(navigate).toBeCalledWith("/sell/submissions/new")
         })
+
         it("navigates to the explanatory page when learn more is press", () => {
           renderWithWrappers(<TestRenderer contextModule="insights" />)
 
@@ -141,6 +145,9 @@ describe("MyCollectionWhySell", () => {
     })
 
     describe("Behavior", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewSubmissionFlow: false })
+      })
       it("initializes the submission form", async () => {
         renderWithWrappers(<TestRenderer contextModule="oldAbout" />)
         resolveData({
