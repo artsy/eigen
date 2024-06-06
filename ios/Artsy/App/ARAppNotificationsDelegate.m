@@ -109,11 +109,6 @@
         return;
     }
 
-    // TODO: Something for sure
-//    if ([Appboy sharedInstance] == nil) {
-//        [[SEGAppboyIntegrationFactory instance] saveRemoteNotification:userInfo];
-//    }
-
     [self applicationDidReceiveRemoteNotification:userInfo inApplicationState:application.applicationState];
 
     handler(UIBackgroundFetchResultNoData);

@@ -175,16 +175,10 @@ static ARAppDelegate *_sharedInstance = nil;
     configuration.trackPushNotifications = YES;
     configuration.trackDeepLinks = YES;
     [SEGAnalytics setupWithConfiguration:configuration];
-    // TODO: Something
-    // [[SEGAppboyIntegrationFactory instance] saveLaunchOptions:launchOptions];
     [[BrazeReactUtils sharedInstance] populateInitialUrlFromLaunchOptions:launchOptions];
 }
 
-- (void)registerNewSessionOpened
-{
-    // TODO: Customise APPBOY Sessions
-    // A session is started when you call [[Appboy sharedInstance] startWithApiKey:inApplication:withLaunchOptions:withAppboyOptions]
-}
+- (void)registerNewSessionOpened {}
 
 // This happens every time we come _back_ to the app from the background
 - (void)applicationWillEnterForeground:(UIApplication *)application
