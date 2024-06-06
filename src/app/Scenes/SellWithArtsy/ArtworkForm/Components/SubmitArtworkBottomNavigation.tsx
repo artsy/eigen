@@ -10,8 +10,11 @@ import { useEffect } from "react"
 import { LayoutAnimation } from "react-native"
 
 export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
-  const { navigateToNextStep, navigateToPreviousStep, isFinalStep } = useSubmissionContext()
-  const { isValid, values } = useFormikContext<ArtworkDetailsFormModel>()
+  const { navigateToNextStep, navigateToPreviousStep, isFinalStep, isValid } =
+    useSubmissionContext()
+
+  const { values } = useFormikContext<ArtworkDetailsFormModel>()
+
   const isUploadingPhotos = values.photos.some((photo: Photo) => photo.loading)
   const allPhotosAreValid = values.photos.every(
     (photo: Photo) => !photo.error && !photo.errorMessage
