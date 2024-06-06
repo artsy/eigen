@@ -1,6 +1,7 @@
 import { BackButton, Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { SubmitArtworkProgressBar } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkProgressBar"
+import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubmitArtworkTracking"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
@@ -18,6 +19,8 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
   const { trackTappedSubmissionSaveExit } = useSubmitArtworkTracking()
   const enableSaveAndExit = useFeatureFlag("AREnableSaveAndContinueSubmission")
   const currentStep = SubmitArtworkFormStore.useStoreState((state) => state.currentStep)
+  const { navigateToPreviousStep } = useSubmissionContext()
+
   const hasCompletedForm = currentStep === "CompleteYourSubmission"
 
   const { values } = useFormikContext<ArtworkDetailsFormModel>()
@@ -87,15 +90,35 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
     return null
   }
 
-  const showXButton = ["StartFlow", "ArtistRejected", "SelectArtist"].includes(currentStep)
-  const showProgressBar = !["StartFlow", "ArtistRejected"].includes(currentStep)
-  const showSaveAndExit = !["StartFlow", "ArtistRejected", "SelectArtist"].includes(currentStep)
+  const showXButton = [
+    "StartFlow",
+    "ArtistRejected",
+    "SelectArtist",
+    "TipsForTakingPhotos",
+  ].includes(currentStep)
+  const showProgressBar = !["StartFlow", "ArtistRejected", "TipsForTakingPhotos"].includes(
+    currentStep
+  )
+  const showSaveAndExit = ![
+    "StartFlow",
+    "ArtistRejected",
+    "SelectArtist",
+    "TipsForTakingPhotos",
+  ].includes(currentStep)
+
+  const handleBackPress = () => {
+    navigateToPreviousStep()
+  }
 
   return (
     <Flex mx={2} mb={2} height={HEADER_HEIGHT}>
       <Flex flexDirection="row" justifyContent="space-between" height={30} mb={1}>
         {!!showXButton && (
-          <BackButton showX style={{ zIndex: 100, overflow: "visible" }} onPress={goBack} />
+          <BackButton
+            showX
+            style={{ zIndex: 100, overflow: "visible" }}
+            onPress={() => handleBackPress()}
+          />
         )}
         {!!showSaveAndExit && (
           <Flex style={{ flexGrow: 1, alignItems: "flex-end" }}>
