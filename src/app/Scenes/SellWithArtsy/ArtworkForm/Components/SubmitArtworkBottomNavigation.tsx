@@ -16,12 +16,12 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
     trackTappedSubmitAnotherWork,
     trackTappedViewArtworkInMyCollection,
   } = useSubmitArtworkTracking()
-  const { navigateToNextStep, navigateToPreviousStep, isFinalStep } = useSubmissionContext()
+  const { navigateToNextStep, navigateToPreviousStep, isFinalStep, isValid } =
+    useSubmissionContext()
+  const { values } = useFormikContext<ArtworkDetailsFormModel>()
 
   const { trackTappedNewSubmission, trackTappedStartMyCollection, trackConsignmentSubmitted } =
     useSubmitArtworkTracking()
-
-  const { isValid, values } = useFormikContext<ArtworkDetailsFormModel>()
 
   const isUploadingPhotos = values.photos.some((photo: Photo) => photo.loading)
   const allPhotosAreValid = values.photos.every(
