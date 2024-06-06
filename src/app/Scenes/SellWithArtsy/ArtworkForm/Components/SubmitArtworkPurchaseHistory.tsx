@@ -2,6 +2,7 @@ import { Flex, Join, RadioButton, Spacer, Text } from "@artsy/palette-mobile"
 import { Select } from "app/Components/Select"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { useFormikContext } from "formik"
+import { useEffect, useState } from "react"
 
 export const PROVENANCE_LIST = [
   "Purchased directly from gallery",
@@ -17,6 +18,13 @@ export const PROVENANCE_LIST = [
 
 export const SubmitArtworkPurchaseHistory = () => {
   const { setFieldValue, values } = useFormikContext<ArtworkDetailsFormModel>()
+  const [isSigned, setIsSigned] = useState(values.signature)
+
+  useEffect(() => {
+    if (isSigned === null || isSigned === undefined) {
+      setFieldValue("signature", isSigned)
+    }
+  }, [isSigned, setFieldValue])
 
   return (
     <Flex px={2}>
@@ -43,16 +51,16 @@ export const SubmitArtworkPurchaseHistory = () => {
             <RadioButton
               mr={2}
               text="Yes"
-              selected={values.signature === true}
+              selected={isSigned === true}
               onPress={() => {
-                setFieldValue("signature", true)
+                setIsSigned(true)
               }}
             />
             <RadioButton
               text="No"
-              selected={values.signature === false}
+              selected={isSigned === false}
               onPress={() => {
-                setFieldValue("signature", false)
+                setIsSigned(false)
               }}
             />
           </Flex>
