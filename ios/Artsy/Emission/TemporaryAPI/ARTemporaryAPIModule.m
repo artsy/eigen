@@ -1,8 +1,6 @@
 #import "ARTemporaryAPIModule.h"
 #import <UserNotifications/UserNotifications.h>
 #import "AREmission.h"
-#import <BrazeKit/BrazeKit-Swift.h>
-#import "ARAppDelegate.h"
 
 @implementation ARTemporaryAPIModule
 
