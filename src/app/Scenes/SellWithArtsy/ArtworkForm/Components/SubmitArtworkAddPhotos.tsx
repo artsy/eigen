@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex, Join, Message, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Join, LinkButton, Message, Spacer, Text } from "@artsy/palette-mobile"
 import { TipsForTakingPhotos } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkTipsForTakingPhotos"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { InfoModal } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/InfoModal/InfoModal"
@@ -34,15 +34,15 @@ export const SubmitArtworkAddPhotos = () => {
               high-quality photos of the work's front and back.
             </Text>
 
-            <Text
-              underline
+            <LinkButton
               color="black60"
+              variant="xs"
               onPress={() => {
                 setIsModalVisible(true)
               }}
             >
               Tips for taking photos
-            </Text>
+            </LinkButton>
 
             {(values.photos.length === 1 || values.photos.length === 2) && (
               <Message
