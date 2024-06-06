@@ -89,6 +89,7 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
     initialValues: initialValues,
     onSubmit: handleSubmit,
     validationSchema: getCurrentValidationSchema,
+    validateOnChange: false,
   })
 
   useEffect(() => {
