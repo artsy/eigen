@@ -107,7 +107,7 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
   ].includes(currentStep)
 
   const handleBackPress = () => {
-    navigateToPreviousStep()
+    currentStep === "TipsForTakingPhotos" ? navigateToPreviousStep() : goBack()
   }
 
   return (
