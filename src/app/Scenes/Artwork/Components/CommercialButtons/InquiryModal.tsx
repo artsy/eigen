@@ -1,14 +1,13 @@
 import {
   Box,
-  Button,
   Checkbox,
   Flex,
+  InfoCircleIcon,
   Input,
   Join,
   Separator,
   Spacer,
   Text,
-  useScreenDimensions,
   useTheme,
 } from "@artsy/palette-mobile"
 import { InquiryModal_artwork$data } from "__generated__/InquiryModal_artwork.graphql"
@@ -17,13 +16,14 @@ import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import ChevronIcon from "app/Components/Icons/ChevronIcon"
 import { AUTOMATED_MESSAGES } from "app/Scenes/Artwork/Components/CommercialButtons/constants"
 import { SubmitInquiryRequest } from "app/Scenes/Artwork/Components/Mutation/SubmitInquiryRequest"
+import { navigate } from "app/system/navigation/navigate"
 import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryQuestionIDs } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { LocationWithDetails } from "app/utils/googleMaps"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react"
-import { LayoutAnimation, Platform, ScrollView, TouchableOpacity } from "react-native"
+import { LayoutAnimation, ScrollView, TouchableOpacity } from "react-native"
 import { RelayProp, createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -72,7 +72,6 @@ const InquiryQuestionOption: React.FC<{
     }
   }
 
-  // TODO: this causes a warning message in the simulator when the modal is opened
   React.useLayoutEffect(maybeRegisterAnimation, [questionSelected])
 
   const setSelection = () => {
@@ -157,6 +156,7 @@ const InquiryQuestionOption: React.FC<{
 export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props }) => {
   const { toggleVisibility, modalIsVisible, relay, onMutationSuccessful } = props
   const questions = artwork?.inquiryQuestions
+  const partnerName = artwork?.partner?.name
   const scrollViewRef = useRef<ScrollView>(null)
   const tracking = useTracking()
   const [addMessageYCoordinate, setAddMessageYCoordinate] = useState<number>(0)
@@ -165,8 +165,6 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
   const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
   const [mutationError, setMutationError] = useState(false)
   const [loading, setLoading] = useState(false)
-
-  const { bottom } = useScreenDimensions().safeAreaInsets
 
   const selectShippingLocation = (locationDetails: LocationWithDetails) =>
     dispatch({ type: "selectShippingLocation", payload: locationDetails })
@@ -254,6 +252,11 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
     )
   }
 
+  const handleSettingsPress = () => {
+    navigate("my-profile/edit")
+    resetAndExit()
+  }
+
   return (
     <FancyModal
       visible={modalIsVisible}
@@ -287,61 +290,59 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
       )}
       <ScrollView ref={scrollViewRef}>
         <CollapsibleArtworkDetailsFragmentContainer artwork={artwork} />
-        <Box m={2}>
-          <Text variant="sm">What information are you looking for?</Text>
-          {questions?.map((inquiryQuestion) => {
-            if (!inquiryQuestion) {
-              return false
-            }
-            const { internalID: id, question } = inquiryQuestion
-            return id === InquiryQuestionIDs.Shipping ? (
-              <InquiryQuestionOption
-                key={id}
-                id={id}
-                question={question}
-                setShippingModalVisibility={setShippingModalVisibility}
-              />
-            ) : (
-              <InquiryQuestionOption key={id} id={id} question={question} />
-            )
-          })}
-        </Box>
-        <Box
-          mx={2}
-          mb={4}
-          onLayout={({ nativeEvent }) => {
-            setAddMessageYCoordinate(nativeEvent.layout.y)
-          }}
-        >
-          <Input
-            multiline
-            placeholder="Add a custom note..."
-            title="Add message"
-            value={state.message ? state.message : ""}
-            onChangeText={setMessage}
-            onFocus={scrollToInput}
-            style={{ justifyContent: "flex-start" }}
-            testID="add-message-input"
-          />
-        </Box>
-        <Box mx={2} mb={4}>
-          <Text variant="xs" color="black60" textAlign="center">
-            By clicking send, we will share your profile with Arcadia Contemporary. Update your
-            profile at any time in Settings.
-          </Text>
-          <Button width={100} block size="large">
-            Send
-          </Button>
+        <Box px={2}>
+          <Box my={2}>
+            <Text variant="sm">What information are you looking for?</Text>
+            {questions?.map((inquiryQuestion) => {
+              if (!inquiryQuestion) {
+                return false
+              }
+              const { internalID: id, question } = inquiryQuestion
+              return id === InquiryQuestionIDs.Shipping ? (
+                <InquiryQuestionOption
+                  key={id}
+                  id={id}
+                  question={question}
+                  setShippingModalVisibility={setShippingModalVisibility}
+                />
+              ) : (
+                <InquiryQuestionOption key={id} id={id} question={question} />
+              )
+            })}
+          </Box>
+          <Box
+            mb={4}
+            onLayout={({ nativeEvent }) => {
+              setAddMessageYCoordinate(nativeEvent.layout.y)
+            }}
+          >
+            <Input
+              multiline
+              placeholder="Add a custom note..."
+              title="Add message"
+              value={state.message ? state.message : ""}
+              onChangeText={setMessage}
+              onFocus={scrollToInput}
+              style={{ justifyContent: "flex-start" }}
+              testID="add-message-input"
+            />
+          </Box>
+          <Box flexDirection="row">
+            <InfoCircleIcon mr={0.5} style={{ marginTop: 2 }} />
+            <Box flex={1}>
+              <Text variant="xs" color="black60">
+                By clicking send, we will share your profile with {partnerName}. Update your profile
+                at any time in{" "}
+                <Text variant="xs" onPress={handleSettingsPress}>
+                  Settings
+                </Text>
+                .
+              </Text>
+            </Box>
+          </Box>
         </Box>
       </ScrollView>
 
-      <Flex
-        p={2}
-        mb={`${bottom}px`}
-        pb={Platform.OS === "android" ? 2 : 0}
-        borderTopWidth={1}
-        borderTopColor="black10"
-      ></Flex>
       <ShippingModal
         toggleVisibility={() => setShippingModalVisibility(!shippingModalVisibility)}
         modalIsVisible={shippingModalVisibility}
@@ -361,6 +362,9 @@ export const InquiryModalFragmentContainer = createFragmentContainer(InquiryModa
       inquiryQuestions {
         internalID
         question
+      }
+      partner {
+        name
       }
     }
   `,
