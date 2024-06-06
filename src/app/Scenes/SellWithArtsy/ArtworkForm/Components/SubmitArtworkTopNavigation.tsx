@@ -88,7 +88,7 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
   const showSaveAndExit = !["StartFlow", "ArtistRejected", "SelectArtist"].includes(currentStep)
 
   return (
-    <Flex mx={2} mb={1} height={HEADER_HEIGHT}>
+    <Flex mx={2} mb={2} height={HEADER_HEIGHT}>
       <Flex flexDirection="row" justifyContent="space-between" height={30} mb={1}>
         {!!showXButton && (
           <BackButton showX style={{ zIndex: 100, overflow: "visible" }} onPress={goBack} />
