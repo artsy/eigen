@@ -24,7 +24,10 @@ export const SubmitArtworkArtistRejected: React.FC<{}> = () => {
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
-      info={screen({ context_screen_owner_type: OwnerType.submitArtworkStepArtistRejected })}
+      info={screen({
+        context_screen_owner_type: OwnerType.submitArtworkStepArtistRejected,
+        context_screen_owner_id: values.artistId || undefined,
+      })}
     >
       <Flex flex={1} px={2}>
         <ScrollView>
