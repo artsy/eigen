@@ -4,16 +4,25 @@ import {
 } from "__generated__/SubmitArtworkFormEditQuery.graphql"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { acceptableCategoriesForSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/acceptableCategoriesForSubmission"
+import { compact } from "lodash"
 
 export const getInitialSubmissionValues = (
   values: NonNullable<SubmitArtworkFormEditQuery$data["submission"]>
 ): ArtworkDetailsFormModel => {
-  const initialPhotos = values.assets?.map((asset) => asset?.imageUrls) ?? []
+  const photos =
+    values.assets?.map((asset) => {
+      const path = (Object.values(asset?.imageUrls || {})?.[0] as string) ?? ""
 
-  const allVersions = Object.values(initialPhotos).filter(
-    (image) => Object.values(image).length >= 1
-  )
-  const largestImages = allVersions.map((image) => Object.values(image)[0] as string)
+      if (!path) {
+        return null
+      }
+
+      return {
+        path: (Object.values(asset?.imageUrls || {})?.[0] as string) ?? "",
+        id: asset?.id ?? "",
+        geminiToken: asset?.geminiToken ?? "",
+      }
+    }) ?? []
 
   const categories = acceptableCategoriesForSubmission()
 
@@ -48,8 +57,6 @@ export const getInitialSubmissionValues = (
     artistSearchResult: null,
     source: values.source ?? null,
     myCollectionArtworkID: values.sourceArtworkID ?? null,
-    photos: largestImages.map((imageUrl: string) => ({
-      path: imageUrl || "",
-    })),
+    photos: compact(photos),
   }
 }
