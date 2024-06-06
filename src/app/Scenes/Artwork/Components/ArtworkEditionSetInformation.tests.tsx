@@ -1,5 +1,5 @@
 import { Text } from "@artsy/palette-mobile"
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkEditionSetInformation_Test_Query } from "__generated__/ArtworkEditionSetInformation_Test_Query.graphql"
 import { ArtworkStore, ArtworkStoreProvider, artworkModel } from "app/Scenes/Artwork/ArtworkStore"
 import { extractText } from "app/utils/tests/extractText"
@@ -16,21 +16,17 @@ describe("ArtworkEditionSetInformation", () => {
 
   const { renderWithRelay } = setupTestWrapper<ArtworkEditionSetInformation_Test_Query>({
     Component: (props) => {
-      if (props?.artwork) {
-        return (
-          <ArtworkStoreProvider
-            runtimeModel={{
-              ...artworkModel,
-              selectedEditionId: artwork.editionSets[0].internalID,
-            }}
-          >
-            <ArtworkEditionSetInformation artwork={props.artwork} />
-            <ArtworkStoreDebug />
-          </ArtworkStoreProvider>
-        )
-      }
-
-      return null
+      return (
+        <ArtworkStoreProvider
+          runtimeModel={{
+            ...artworkModel,
+            selectedEditionId: artwork.editionSets[0].internalID,
+          }}
+        >
+          <ArtworkEditionSetInformation artwork={props.artwork!} />
+          <ArtworkStoreDebug />
+        </ArtworkStoreProvider>
+      )
     },
     query: graphql`
       query ArtworkEditionSetInformation_Test_Query @relay_test_operation {
@@ -42,21 +38,17 @@ describe("ArtworkEditionSetInformation", () => {
   })
 
   it("the sale message for the selected edition set should NOT be rendered", () => {
-    const { queryByLabelText } = renderWithRelay({
-      Artwork: () => artwork,
-    })
+    renderWithRelay({ Artwork: () => artwork })
 
-    expect(queryByLabelText("Selected edition set")).toBeNull()
+    expect(screen.queryByLabelText("Selected edition set")).not.toBeOnTheScreen()
   })
 
   it("should keep the selected edtion set id in artwork store", () => {
-    const { getByText, getByTestId } = renderWithRelay({
-      Artwork: () => artwork,
-    })
+    renderWithRelay({ Artwork: () => artwork })
 
-    fireEvent.press(getByText("Edition Set Two"))
+    fireEvent.press(screen.getByText("Edition Set Two"))
 
-    const artworkStateRaw = extractText(getByTestId("debug"))
+    const artworkStateRaw = extractText(screen.getByTestId("debug"))
     const artworkState = JSON.parse(artworkStateRaw)
 
     expect(artworkState.selectedEditionId).toBe("edition-set-two")
@@ -69,11 +61,15 @@ const artwork = {
       internalID: "edition-set-one",
       editionOf: "Edition Set One",
       saleMessage: "$1000",
+      isAcquireable: true,
+      isOfferable: true,
     },
     {
       internalID: "edition-set-two",
       editionOf: "Edition Set Two",
       saleMessage: "$2000",
+      isAcquireable: true,
+      isOfferable: true,
     },
   ],
 }
