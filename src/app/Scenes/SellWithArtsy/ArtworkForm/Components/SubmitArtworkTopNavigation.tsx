@@ -88,13 +88,13 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
   const showSaveAndExit = !["StartFlow", "ArtistRejected", "SelectArtist"].includes(currentStep)
 
   return (
-    <Flex mx={2} mb={1} height={HEADER_HEIGHT}>
+    <Flex mx={2} mb={2} height={HEADER_HEIGHT}>
       <Flex flexDirection="row" justifyContent="space-between" height={30} mb={1}>
         {!!showXButton && (
           <BackButton showX style={{ zIndex: 100, overflow: "visible" }} onPress={goBack} />
         )}
         {!!showSaveAndExit && (
-          <Flex style={{ flexGrow: 1, alignItems: "flex-end" }} mb={0.5}>
+          <Flex style={{ flexGrow: 1, alignItems: "flex-end" }}>
             <Touchable onPress={handleSaveAndExitPress}>
               <Text>{!hasCompletedForm && !!enableSaveAndExit ? "Save & " : ""}Exit</Text>
             </Touchable>
