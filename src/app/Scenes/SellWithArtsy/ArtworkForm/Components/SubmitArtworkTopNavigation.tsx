@@ -91,11 +91,19 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
   const showProgressBar = !["StartFlow", "ArtistRejected"].includes(currentStep)
   const showSaveAndExit = !["StartFlow", "ArtistRejected", "SelectArtist"].includes(currentStep)
 
+  const handleBackPress = () => {
+    goBack()
+  }
+
   return (
     <Flex mx={2} mb={2} height={HEADER_HEIGHT}>
       <Flex flexDirection="row" justifyContent="space-between" height={30} mb={1}>
         {!!showXButton && (
-          <BackButton showX style={{ zIndex: 100, overflow: "visible" }} onPress={goBack} />
+          <BackButton
+            showX
+            style={{ zIndex: 100, overflow: "visible" }}
+            onPress={() => handleBackPress()}
+          />
         )}
         {!!showSaveAndExit && (
           <Flex style={{ flexGrow: 1, alignItems: "flex-end" }}>

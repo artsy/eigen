@@ -1,14 +1,18 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex, Join, Message, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Join, LinkButton, Message, Spacer, Text } from "@artsy/palette-mobile"
+import { TipsForTakingPhotos } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkTipsForTakingPhotos"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { InfoModal } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/InfoModal/InfoModal"
 import { UploadPhotosForm } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/UploadPhotosForm"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { useFormikContext } from "formik"
+import { useState } from "react"
 import { ScrollView } from "react-native"
 
 export const SubmitArtworkAddPhotos = () => {
   const { values } = useFormikContext<ArtworkDetailsFormModel>()
+  const [isModalVisible, setIsModalVisible] = useState(false)
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -30,6 +34,16 @@ export const SubmitArtworkAddPhotos = () => {
               high-quality photos of the work's front and back.
             </Text>
 
+            <LinkButton
+              color="black60"
+              variant="xs"
+              onPress={() => {
+                setIsModalVisible(true)
+              }}
+            >
+              Tips for taking photos
+            </LinkButton>
+
             {(values.photos.length === 1 || values.photos.length === 2) && (
               <Message
                 title="Increase your chance of selling"
@@ -41,6 +55,14 @@ export const SubmitArtworkAddPhotos = () => {
             <UploadPhotosForm />
           </Join>
         </ScrollView>
+        <InfoModal
+          visible={isModalVisible}
+          onDismiss={() => setIsModalVisible(false)}
+          buttonVariant="outline"
+          containerStyle={{ margin: 0 }}
+        >
+          <TipsForTakingPhotos onDismiss={() => setIsModalVisible(false)} />
+        </InfoModal>
       </Flex>
     </ProvideScreenTrackingWithCohesionSchema>
   )
