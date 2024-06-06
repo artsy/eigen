@@ -21,7 +21,6 @@ export const SubmitArtworkAddDetails = () => {
 
   return (
     <Flex px={2} flex={1}>
-      s
       <ScrollView>
         <Text variant="lg-display" mb={2}>
           Artwork details
