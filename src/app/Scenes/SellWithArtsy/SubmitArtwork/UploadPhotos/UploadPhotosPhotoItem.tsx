@@ -16,17 +16,17 @@ import { Photo as TPhoto } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPh
 import { Image } from "react-native"
 
 interface PhotoProps {
-  photo: TPhoto
   hideDeleteButton?: boolean
   onPhotoDelete: (arg: TPhoto) => void
+  photo: TPhoto
   progress: number
 }
 
 export const PhotoItem = ({
-  photo,
-  progress,
   hideDeleteButton = false,
   onPhotoDelete,
+  photo,
+  progress,
 }: PhotoProps) => {
   const space = useSpace()
 
@@ -66,16 +66,20 @@ export const PhotoItem = ({
 
   return (
     <Flex height={IMAGE_SIZE} width={IMAGE_SIZE} mt={1} justifyContent="flex-end">
-      <Image
-        style={{
-          height: IMAGE_SIZE,
-          width: IMAGE_SIZE,
-          position: "absolute",
-        }}
-        resizeMode="cover"
-        source={{ uri: photo.path }}
-        testID="Submission_Image"
-      />
+      {photo.path ? (
+        <Image
+          style={{
+            height: IMAGE_SIZE,
+            width: IMAGE_SIZE,
+            position: "absolute",
+          }}
+          resizeMode="cover"
+          source={{ uri: photo.path }}
+          testID="Submission_Image"
+        />
+      ) : (
+        <SkeletonBox height={IMAGE_SIZE} width={IMAGE_SIZE}></SkeletonBox>
+      )}
       {!hideDeleteButton && (
         <Flex
           height={ICON_SIZE}
@@ -91,7 +95,16 @@ export const PhotoItem = ({
           hitSlop={{ top: space(0.5), right: space(0.5), bottom: space(0.5), left: space(0.5) }}
           testID="Submission_Delete_Photo_Button"
         >
-          <Touchable onPress={() => onPhotoDelete(photo)} haptic="impactHeavy">
+          <Touchable
+            onPress={() => onPhotoDelete(photo)}
+            haptic="impactHeavy"
+            hitSlop={{
+              top: 5,
+              right: 5,
+              bottom: 5,
+              left: 5,
+            }}
+          >
             <CloseIcon height={16} width={16} fill="white100" />
           </Touchable>
         </Flex>

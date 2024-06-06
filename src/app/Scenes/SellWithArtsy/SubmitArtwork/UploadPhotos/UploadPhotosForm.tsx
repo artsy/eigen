@@ -10,6 +10,7 @@ import {
 } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
 import { removeAssetFromSubmission } from "app/Scenes/SellWithArtsy/mutations/removeAssetFromConsignmentSubmissionMutation"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { useFormikContext } from "formik"
 import React, { useEffect, useState } from "react"
@@ -29,6 +30,8 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
   isAnyPhotoLoading,
 }) => {
   const space = useSpace()
+  const enableNewSubmissionFlow = useFeatureFlag("AREnableNewSubmissionFlow")
+
   const { values, setFieldValue } = useFormikContext<PhotosFormModel>()
   const { submission } = GlobalStore.useAppState((state) => state.artworkSubmission)
   const submissionId = submission.submissionId || values.submissionId
@@ -60,59 +63,62 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     setFieldValue("photos", [...values.photos, ...photos])
 
-    for (const photo of photos) {
-      try {
-        // upload & size the photo, and add it to processed photos
-        const uploadedPhoto = await addPhotoToConsignment({
-          asset: photo,
-          submissionID: submissionId,
-          updateProgress: (newProgress) => {
-            setProgress((prevState) => {
-              const newState = { ...prevState, [photo.path]: newProgress }
-              return newState
-            })
-          },
-        })
-        if (uploadedPhoto?.id) {
-          const sizedPhoto = calculateSinglePhotoSize(uploadedPhoto)
+    await Promise.all(
+      photos.map(async (photo) => {
+        try {
+          // upload & size the photo, and add it to processed photos
+          const uploadedPhoto = await addPhotoToConsignment({
+            asset: photo,
+            submissionID: submissionId,
+            updateProgress: (newProgress) => {
+              setProgress((prevState) => {
+                const newState = { ...prevState, [photo.path]: newProgress }
+                return newState
+              })
+            },
+          })
+          if (uploadedPhoto?.id) {
+            const sizedPhoto = calculateSinglePhotoSize(uploadedPhoto)
 
-          const availablePhotos = [...values.photos, ...processedPhotos, sizedPhoto]
-          const isTotalSizeLimitExceeded = isSizeLimitExceeded(availablePhotos)
-          // when total size limit exceeded, set photo's err state and stop the upload loop
-          if (isTotalSizeLimitExceeded) {
-            sizedPhoto.error = true
-            sizedPhoto.errorMessage =
-              "File exceeds the total size limit. Please delete photos or upload smaller file sizes."
+            const availablePhotos = [...values.photos, ...processedPhotos, sizedPhoto]
+            const isTotalSizeLimitExceeded = isSizeLimitExceeded(availablePhotos)
+            // when total size limit exceeded, set photo's err state and stop the upload loop
+            if (isTotalSizeLimitExceeded) {
+              sizedPhoto.error = true
+              sizedPhoto.errorMessage =
+                "File exceeds the total size limit. Please delete photos or upload smaller file sizes."
+              processedPhotos.push(sizedPhoto)
+
+              trackEvent(
+                tracks.hasExceededUploadSize(getPhotosSize(availablePhotos), availablePhotos.length)
+              )
+            }
             processedPhotos.push(sizedPhoto)
-
-            trackEvent(
-              tracks.hasExceededUploadSize(getPhotosSize(availablePhotos), availablePhotos.length)
-            )
-            break
           }
-          processedPhotos.push(sizedPhoto)
+        } catch (error) {
+          // set photo's error state and set it to processed photos
+          photo.error = true
+          photo.errorMessage = "Photo could not be uploaded"
+          processedPhotos.push(photo)
+          captureMessage(JSON.stringify(error))
+        } finally {
+          photo.loading = false
         }
-      } catch (error) {
-        // set photo's error state and set it to processed photos
-        photo.error = true
-        photo.errorMessage = "Photo could not be uploaded"
-        processedPhotos.push(photo)
-        captureMessage(JSON.stringify(error))
-      } finally {
-        photo.loading = false
-      }
-    }
+      })
+    )
 
     const allPhotos = [...values.photos, ...processedPhotos]
 
-    // set photos for my collection, and submission flow state and Formik
-    GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
-      photos: allPhotos,
-    })
-    GlobalStore.actions.artworkSubmission.submission.setSubmissionIdForMyCollection(submissionId)
-    GlobalStore.actions.artworkSubmission.submission.setPhotos({
-      photos: allPhotos,
-    })
+    if (!enableNewSubmissionFlow) {
+      // set photos for my collection, and submission flow state and Formik
+      GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
+        photos: allPhotos,
+      })
+      GlobalStore.actions.artworkSubmission.submission.setSubmissionIdForMyCollection(submissionId)
+      GlobalStore.actions.artworkSubmission.submission.setPhotos({
+        photos: allPhotos,
+      })
+    }
 
     setFieldValue("photos", allPhotos)
   }
@@ -131,20 +137,24 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
       console.error("Submission ID not found")
       return null
     }
-
     try {
       const filteredPhotos = values.photos.filter((p: Photo) => p.id !== photo.id)
 
-      // set photos for my collection, and submission flow state and Formik
-      GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
-        photos: filteredPhotos,
-      })
+      if (!enableNewSubmissionFlow) {
+        // set photos for my collection, and submission flow state and Formik
+        GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
+          photos: filteredPhotos,
+        })
 
-      GlobalStore.actions.artworkSubmission.submission.setSubmissionIdForMyCollection(submissionId)
+        GlobalStore.actions.artworkSubmission.submission.setSubmissionIdForMyCollection(
+          submissionId
+        )
 
-      GlobalStore.actions.artworkSubmission.submission.setPhotos({
-        photos: filteredPhotos,
-      })
+        GlobalStore.actions.artworkSubmission.submission.setPhotos({
+          photos: filteredPhotos,
+        })
+      }
+
       setFieldValue("photos", filteredPhotos)
 
       await removeAssetFromSubmission({ assetID: photo.id })
