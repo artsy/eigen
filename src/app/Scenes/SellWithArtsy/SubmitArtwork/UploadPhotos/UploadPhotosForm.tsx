@@ -175,7 +175,6 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
             key={idx}
             photo={photo}
             onPhotoDelete={handlePhotoDelete}
-            onPress={handleAddPhotoPress}
             progress={progress[photo.path] ?? 0}
           />
         )

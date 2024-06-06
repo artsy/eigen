@@ -13,12 +13,11 @@ import {
   IMAGE_SIZE,
 } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/UploadPhotosForm"
 import { Photo as TPhoto } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
-import { Image, TouchableWithoutFeedback } from "react-native"
+import { Image } from "react-native"
 
 interface PhotoProps {
   hideDeleteButton?: boolean
   onPhotoDelete: (arg: TPhoto) => void
-  onPress?: () => void
   photo: TPhoto
   progress: number
 }
@@ -26,7 +25,6 @@ interface PhotoProps {
 export const PhotoItem = ({
   hideDeleteButton = false,
   onPhotoDelete,
-  onPress,
   photo,
   progress,
 }: PhotoProps) => {
@@ -68,26 +66,20 @@ export const PhotoItem = ({
 
   return (
     <Flex height={IMAGE_SIZE} width={IMAGE_SIZE} mt={1} justifyContent="flex-end">
-      <TouchableWithoutFeedback
-        onPress={() => {
-          onPress?.()
-        }}
-      >
-        {photo.path ? (
-          <Image
-            style={{
-              height: IMAGE_SIZE,
-              width: IMAGE_SIZE,
-              position: "absolute",
-            }}
-            resizeMode="cover"
-            source={{ uri: photo.path }}
-            testID="Submission_Image"
-          />
-        ) : (
-          <SkeletonBox height={IMAGE_SIZE} width={IMAGE_SIZE}></SkeletonBox>
-        )}
-      </TouchableWithoutFeedback>
+      {photo.path ? (
+        <Image
+          style={{
+            height: IMAGE_SIZE,
+            width: IMAGE_SIZE,
+            position: "absolute",
+          }}
+          resizeMode="cover"
+          source={{ uri: photo.path }}
+          testID="Submission_Image"
+        />
+      ) : (
+        <SkeletonBox height={IMAGE_SIZE} width={IMAGE_SIZE}></SkeletonBox>
+      )}
       {!hideDeleteButton && (
         <Flex
           height={ICON_SIZE}
