@@ -10,7 +10,7 @@ import { useEffect } from "react"
 import { LayoutAnimation } from "react-native"
 
 export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
-  const { navigateToNextStep, navigateToPreviousStep, isLastStep } = useSubmissionContext()
+  const { navigateToNextStep, navigateToPreviousStep, isFinalStep } = useSubmissionContext()
   const { isValid, values } = useFormikContext<ArtworkDetailsFormModel>()
   const isUploadingPhotos = values.photos.some((photo: Photo) => photo.loading)
   const allPhotosAreValid = values.photos.every(
@@ -153,7 +153,7 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
             disabled={!isValid || isLoading || isUploadingPhotos || !allPhotosAreValid}
             loading={isLoading || isUploadingPhotos}
           >
-            {isLastStep ? "Submit Artwork" : "Continue"}
+            {isFinalStep ? "Submit Artwork" : "Continue"}
           </Button>
         </Flex>
       </Flex>
