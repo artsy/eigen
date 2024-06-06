@@ -94,5 +94,5 @@ export const useSubmissionContext = () => {
     }
   }
 
-  return { isFinalStep, navigateToNextStep, navigateToPreviousStep }
+  return { currentStep, isFinalStep, navigateToNextStep, navigateToPreviousStep }
 }

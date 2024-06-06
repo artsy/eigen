@@ -1,10 +1,12 @@
 import { Flex, Input, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
+import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { useFormikContext } from "formik"
 
 export const SubmitArtworkAddTitle = () => {
   const { handleChange, values } = useFormikContext<ArtworkDetailsFormModel>()
+  const { currentStep } = useSubmissionContext()
 
   return (
     <Flex px={2}>
@@ -21,7 +23,8 @@ export const SubmitArtworkAddTitle = () => {
           placeholder="Artwork Title"
           onChangeText={handleChange("title")}
           value={values.title}
-          autoFocus
+          // Only focus on the input and toggle the keyboard if this step is visible to the user.
+          autoFocus={currentStep === "AddTitle"}
           spellCheck={false}
           autoCorrect={false}
         />

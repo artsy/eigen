@@ -18,7 +18,7 @@ import { TouchableOpacity } from "react-native"
 export const SubmitArtworkSelectArtist = () => {
   const { navigateToNextStep } = useSubmissionContext()
   const setIsLoading = SubmitArtworkFormStore.useStoreActions((actions) => actions.setIsLoading)
-  const { isLoading } = SubmitArtworkFormStore.useStoreState((state) => state)
+  const { isLoading, currentStep } = SubmitArtworkFormStore.useStoreState((state) => state)
 
   const formik = useFormikContext<ArtworkDetailsFormModel>()
 
@@ -89,6 +89,7 @@ export const SubmitArtworkSelectArtist = () => {
             onlyP1Artists
             loading={isLoading}
             hideCollectedArtists
+            autoFocus={currentStep === "SelectArtist"}
             Hint={
               <Flex py={1}>
                 <Text variant="xs" color="black60">

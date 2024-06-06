@@ -1,6 +1,7 @@
 import { Flex, Input, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { SelectOption } from "app/Components/Select"
 import { CategoryPicker } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/CategoryPicker"
+import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import {
   AcceptableCategoryValue,
@@ -12,6 +13,7 @@ import { ScrollView } from "react-native"
 
 export const SubmitArtworkAddDetails = () => {
   const { handleChange, setFieldValue, values } = useFormikContext<ArtworkDetailsFormModel>()
+  const { currentStep } = useSubmissionContext()
 
   const categories = useRef<Array<SelectOption<AcceptableCategoryValue>>>(
     acceptableCategoriesForSubmission()
@@ -35,7 +37,8 @@ export const SubmitArtworkAddDetails = () => {
               onChangeText={(e) => setFieldValue("year", e)}
               accessibilityLabel="Year"
               style={{ width: "50%" }}
-              autoFocus
+              // Only focus on the input and toggle the keyboard if this step is visible to the user.
+              autoFocus={currentStep === "AddDetails"}
             />
           </Flex>
 

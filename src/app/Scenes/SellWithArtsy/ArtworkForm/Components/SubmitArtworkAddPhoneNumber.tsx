@@ -1,11 +1,13 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { PhoneInput } from "app/Components/Input/PhoneInput"
+import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { useFormikContext } from "formik"
 import { ScrollView } from "react-native"
 
 export const SubmitArtworkAddPhoneNumber = () => {
   const { handleChange, values } = useFormikContext<ArtworkDetailsFormModel>()
+  const { currentStep } = useSubmissionContext()
 
   return (
     <Flex px={2}>
@@ -26,6 +28,8 @@ export const SubmitArtworkAddPhoneNumber = () => {
           accessibilityLabel="Phone number"
           shouldDisplayLocalError={false}
           testID="phone-input"
+          // Only focus on the input and toggle the keyboard if this step is visible to the user.
+          autoFocus={currentStep === "AddPhoneNumber"}
         />
       </ScrollView>
     </Flex>
