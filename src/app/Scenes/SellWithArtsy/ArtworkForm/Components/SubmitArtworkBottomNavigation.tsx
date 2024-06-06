@@ -117,6 +117,7 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
             onPress={() => {
               navigate("/my-collection/artworks/new", {
                 showInTabName: "profile",
+                replaceActiveModal: true,
               })
             }}
           >

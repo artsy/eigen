@@ -92,6 +92,7 @@ describe("SubmitArtworkBottomNavigation", () => {
       fireEvent(addToMyCollectionButton, "onPress")
       expect(navigate).toHaveBeenCalledWith("/my-collection/artworks/new", {
         showInTabName: "profile",
+        replaceActiveModal: true,
       })
     })
 
