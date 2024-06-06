@@ -73,7 +73,7 @@ const dimensionsSchema = Yup.object().shape({
 
 const provenanceSchema = Yup.object().shape({
   provenance: Yup.string().trim(),
-  signature: Yup.boolean().nullable(),
+  signature: Yup.boolean().nullable().required(),
 })
 
 const artworkDetailsValidationSchema = Yup.object().shape({
