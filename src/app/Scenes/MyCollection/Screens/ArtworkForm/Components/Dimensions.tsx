@@ -28,17 +28,17 @@ export const Dimensions: React.FC = () => {
       <Spacer y={1} />
       <Flex flexDirection="row">
         <RadioButton
-          onPress={() => handleMetricChange("cm")}
-          selected={localMetric === "cm"}
-          text="cm"
+          onPress={() => handleMetricChange("in")}
+          selected={localMetric === "in"}
+          text="in"
         />
 
         <Spacer x={4} />
 
         <RadioButton
-          onPress={() => handleMetricChange("in")}
-          selected={localMetric === "in"}
-          text="in"
+          onPress={() => handleMetricChange("cm")}
+          selected={localMetric === "cm"}
+          text="cm"
         />
       </Flex>
       <Spacer y={1} />
