@@ -21,7 +21,7 @@ export const SubmitArtworkPurchaseHistory = () => {
   const [isSigned, setIsSigned] = useState(values.signature)
 
   useEffect(() => {
-    if (isSigned === null || isSigned === undefined) {
+    if (isSigned !== null && isSigned !== undefined) {
       setFieldValue("signature", isSigned)
     }
   }, [isSigned, setFieldValue])
