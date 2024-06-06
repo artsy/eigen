@@ -8,7 +8,7 @@ export const SubmitArtworkAddPhotos = () => {
   const { values } = useFormikContext<ArtworkDetailsFormModel>()
 
   return (
-    <Flex px={2}>
+    <Flex px={2} flex={1}>
       <ScrollView
         contentContainerStyle={{ paddingBottom: 80 }}
         showsVerticalScrollIndicator={false}

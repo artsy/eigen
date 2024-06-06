@@ -4,6 +4,7 @@ import {
   getCurrentRoute,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import {
+  ARTWORK_FORM_FINAL_STEP,
   ARTWORK_FORM_STEPS,
   SubmitArtworkScreen,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
@@ -22,7 +23,7 @@ export const useSubmissionContext = () => {
 
   const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
 
-  const isLastStep = currentStep === ARTWORK_FORM_STEPS[ARTWORK_FORM_STEPS.length - 1]
+  const isFinalStep = currentStep === ARTWORK_FORM_FINAL_STEP
 
   const navigateToNextStep = async (props?: {
     step?: SubmitArtworkScreen
@@ -31,8 +32,9 @@ export const useSubmissionContext = () => {
     try {
       setIsLoading(true)
 
+      const currentStepId = getCurrentRoute()
       const nextStep =
-        props?.step || ARTWORK_FORM_STEPS[ARTWORK_FORM_STEPS.indexOf(currentStep as any) + 1]
+        props?.step || ARTWORK_FORM_STEPS[ARTWORK_FORM_STEPS.indexOf(currentStepId as any) + 1]
 
       if (!nextStep) {
         console.error("No next step found")
@@ -41,7 +43,7 @@ export const useSubmissionContext = () => {
 
       const newValues = {
         ...values,
-        state: (isLastStep ? "SUBMITTED" : undefined) as ArtworkDetailsFormModel["state"],
+        state: (isFinalStep ? "SUBMITTED" : "DRAFT") as ArtworkDetailsFormModel["state"],
       }
 
       if (!props?.skipMutation) {
@@ -92,5 +94,5 @@ export const useSubmissionContext = () => {
     }
   }
 
-  return { isLastStep, navigateToNextStep, navigateToPreviousStep }
+  return { isFinalStep, navigateToNextStep, navigateToPreviousStep }
 }

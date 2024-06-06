@@ -23,9 +23,9 @@ export const SubmitArtworkCompleteYourSubmission = () => {
           </Flex>
         </Flex>
 
-        <Text>
+        <Text variant="xs">
           An Artsy Advisor will email you within 3-5 days to review your submission and discuss next
-          steps. In the meantime your submission will appear in the feature, My Collection.
+          steps. In the meantime you can view your submission in My Collection.
         </Text>
 
         <Spacer y={2} />

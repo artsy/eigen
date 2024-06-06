@@ -22,13 +22,15 @@ export const SubmitArtworkArtistRejected: React.FC<{}> = () => {
   return (
     <Flex flex={1} px={2}>
       <ScrollView>
-        {!!values.artistSearchResult && <ArtistSearchResult result={values.artistSearchResult} />}
+        <Text variant="lg-display">
+          This artist isn't currently eligible to sell on our platform
+        </Text>
 
         <Spacer y={2} />
 
-        <Text variant="lg-display" mb={2}>
-          This artist isn't currently eligible to sell on our platform
-        </Text>
+        {!!values.artistSearchResult && <ArtistSearchResult result={values.artistSearchResult} />}
+
+        <Spacer y={2} />
 
         <Text variant="sm">
           Try again with another artist or add your artwork to My Collection, your personal space to

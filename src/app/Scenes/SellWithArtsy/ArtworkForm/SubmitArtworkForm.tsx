@@ -1,6 +1,6 @@
 import { Flex } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
-import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
+import { createStackNavigator } from "@react-navigation/stack"
 import { SubmitArtworkAddDetails } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddDetails"
 import { SubmitArtworkAddDimensions } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddDimensions"
 import { SubmitArtworkAddPhoneNumber } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddPhoneNumber"
@@ -136,20 +136,44 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
               screenOptions={{
                 headerShown: false,
                 cardStyle: { backgroundColor: "white" },
-                keyboardHandlingEnabled: false,
-                gestureEnabled: false,
-                ...TransitionPresets.SlideFromRightIOS,
-                cardStyleInterpolator: ({ current, layouts }) => {
+                transitionSpec: {
+                  open: {
+                    animation: "timing",
+                    config: {
+                      duration: 300,
+                    },
+                  },
+                  close: {
+                    animation: "timing",
+                    config: {
+                      duration: 300,
+                    },
+                  },
+                },
+                cardStyleInterpolator: ({ current, next }) => {
+                  const opacity = current.progress.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [0, 1],
+                  })
+
+                  const nextOpacity = next
+                    ? next.progress.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [1, 0.2], // Lower the opacity of the exiting screen
+                      })
+                    : 1
+
                   return {
                     cardStyle: {
-                      transform: [
-                        {
-                          translateX: current.progress.interpolate({
-                            inputRange: [0, 1],
-                            outputRange: [layouts.screen.width, 0],
-                          }),
-                        },
-                      ],
+                      opacity: next ? nextOpacity : opacity,
+                      backgroundColor: "white",
+                    },
+                    overlayStyle: {
+                      opacity: current.progress.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [0, 0.5],
+                      }),
+                      backgroundColor: "white",
                     },
                   }
                 },
@@ -165,15 +189,7 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
 
               <Stack.Screen name="AddPhoneNumber" component={SubmitArtworkAddPhoneNumber} />
               <Stack.Screen name="SelectArtist" component={SubmitArtworkSelectArtist} />
-              <Stack.Screen
-                name="ArtistRejected"
-                component={SubmitArtworkArtistRejected}
-                options={{
-                  // We want to make it easy for users to go back to the previous screen
-                  // And to submit a new artist
-                  gestureEnabled: true,
-                }}
-              />
+              <Stack.Screen name="ArtistRejected" component={SubmitArtworkArtistRejected} />
 
               <Stack.Screen name="AddTitle" component={SubmitArtworkAddTitle} />
 

@@ -2336,6 +2336,7 @@ type Artwork implements Node & Searchable & Sellable {
 
   # Returns the display label and detail when artwork has a certificate of authenticity
   certificateOfAuthenticity: ArtworkInfoRow
+  certificateOfAuthenticityDetails: CertificateOfAuthenticityDetails
   collectingInstitution: String
   collectionsConnection(
     after: String
@@ -3980,6 +3981,11 @@ type CausalityLotState {
   sellingPrice: Money
   sellingPriceCents: Int
   soldStatus: String
+}
+
+type CertificateOfAuthenticityDetails {
+  coaByAuthenticatingBody: Boolean
+  coaByGallery: Boolean
 }
 
 type Channel {
@@ -13528,6 +13534,8 @@ input MyCollectionCreateArtworkInput {
   attributionClass: ArtworkAttributionClassType
   category: String
   clientMutationId: String
+  coaByAuthenticatingBody: Boolean
+  coaByGallery: Boolean
 
   # The given location of the user as structured data
   collectorLocation: EditableLocation
@@ -13545,6 +13553,7 @@ input MyCollectionCreateArtworkInput {
   framedHeight: String
   framedMetric: String
   framedWidth: String
+  hasCertificateOfAuthenticity: Boolean
   height: String
   importSource: ArtworkImportSource
   isEdition: Boolean
@@ -13625,6 +13634,8 @@ input MyCollectionUpdateArtworkInput {
   attributionClass: ArtworkAttributionClassType
   category: String
   clientMutationId: String
+  coaByAuthenticatingBody: Boolean
+  coaByGallery: Boolean
 
   # The given location of the user as structured data
   collectorLocation: EditableLocation
@@ -13642,6 +13653,7 @@ input MyCollectionUpdateArtworkInput {
   framedHeight: String
   framedMetric: String
   framedWidth: String
+  hasCertificateOfAuthenticity: Boolean
   height: String
   isEdition: Boolean
   isFramed: Boolean
@@ -15676,6 +15688,7 @@ type Query {
   artworksForUser(
     after: String
     before: String
+    excludeArtworkIds: [String] = []
     excludeDislikedArtworks: Boolean = false
     first: Int
     includeBackfill: Boolean!
@@ -20612,6 +20625,7 @@ type Viewer {
   artworksForUser(
     after: String
     before: String
+    excludeArtworkIds: [String] = []
     excludeDislikedArtworks: Boolean = false
     first: Int
     includeBackfill: Boolean!

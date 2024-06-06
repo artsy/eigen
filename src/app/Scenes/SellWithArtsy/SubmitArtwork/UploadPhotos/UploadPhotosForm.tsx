@@ -38,7 +38,10 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
   const { trackEvent } = useTracking()
 
   useEffect(() => {
-    // add initial photos when a My Collection artwork gets submitted
+    // To avoid adding duplicate photos when the component is remounted and the effect is called more than once.
+    if (values.photos?.length) return
+
+    // Adding initial photos when a My Collection artwork gets submitted
     addPhotosToSubmission(values.initialPhotos || [])
   }, [])
 

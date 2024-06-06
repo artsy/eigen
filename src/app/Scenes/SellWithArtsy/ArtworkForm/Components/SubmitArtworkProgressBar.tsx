@@ -65,6 +65,8 @@ export const SubmitArtworkProgressBar: React.FC = ({}) => {
           height={4}
           animationDuration={300}
           trackColor={hasCompletedForm ? "green100" : "blue100"}
+          style={{ marginVertical: 0 }}
+          backgroundColor="black5"
         />
         {!!hasCompletedForm && (
           <CheckCircleFillIcon height={ICON_SIZE} width={ICON_SIZE} fill="green100" />
