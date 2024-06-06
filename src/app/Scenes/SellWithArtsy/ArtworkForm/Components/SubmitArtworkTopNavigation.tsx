@@ -94,7 +94,7 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
           <BackButton showX style={{ zIndex: 100, overflow: "visible" }} onPress={goBack} />
         )}
         {!!showSaveAndExit && (
-          <Flex style={{ flexGrow: 1, alignItems: "flex-end" }} mb={0.5}>
+          <Flex style={{ flexGrow: 1, alignItems: "flex-end" }}>
             <Touchable onPress={handleSaveAndExitPress}>
               <Text>{!hasCompletedForm && !!enableSaveAndExit ? "Save & " : ""}Exit</Text>
             </Touchable>

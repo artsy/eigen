@@ -15,7 +15,8 @@ const COUNTABLE_STEPS = ARTWORK_FORM_STEPS.filter(
   (step) => NON_COUNTABLE_STEPS.indexOf(step) === -1
 )
 
-const PROGRESS_BAR_HEIGHT = 22
+const PROGRESS_BAR_CONTAINER_HEIGHT = 22
+const PROGRESS_BAR_HEIGHT = 4
 const ICON_SIZE = 22
 
 export const SubmitArtworkProgressBar: React.FC = ({}) => {
@@ -52,22 +53,30 @@ export const SubmitArtworkProgressBar: React.FC = ({}) => {
 
   if (!currentStep || NON_COUNTABLE_STEPS.includes(currentStep)) {
     // Returning a Flex with the same height as the progress bar to keep the layout consistent
-    return <Flex height={PROGRESS_BAR_HEIGHT} />
+    return <Flex height={PROGRESS_BAR_CONTAINER_HEIGHT} />
   }
 
   const hasCompletedForm = currentStep === "CompleteYourSubmission"
 
   return (
-    <Flex height={PROGRESS_BAR_HEIGHT} mr={2}>
-      <Flex flexDirection="row">
+    <Flex
+      height={PROGRESS_BAR_CONTAINER_HEIGHT}
+      flexDirection="row"
+      justifyContent="center"
+      mt={0.5}
+    >
+      <Flex flex={1}>
         <ProgressBar
           progress={progress * 100}
-          height={4}
+          height={PROGRESS_BAR_HEIGHT}
           animationDuration={300}
           trackColor={hasCompletedForm ? "green100" : "blue100"}
           style={{ marginVertical: 0 }}
           backgroundColor="black5"
+          progressBarStyle={{ borderRadius: PROGRESS_BAR_HEIGHT / 2 }}
         />
+      </Flex>
+      <Flex height={PROGRESS_BAR_HEIGHT} justifyContent="center" pl={0.5}>
         {!!hasCompletedForm && (
           <CheckCircleFillIcon height={ICON_SIZE} width={ICON_SIZE} fill="green100" />
         )}
