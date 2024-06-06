@@ -1,10 +1,12 @@
 import { Flex, Input, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
+import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { useFormikContext } from "formik"
 
 export const SubmitArtworkAddTitle = () => {
   const { handleChange, values } = useFormikContext<ArtworkDetailsFormModel>()
+  const { currentStep } = SubmitArtworkFormStore.useStoreState((state) => state)
 
   return (
     <Flex px={2}>
@@ -21,7 +23,7 @@ export const SubmitArtworkAddTitle = () => {
           placeholder="Artwork Title"
           onChangeText={handleChange("title")}
           value={values.title}
-          autoFocus
+          autoFocus={currentStep === "AddTitle"}
           spellCheck={false}
           autoCorrect={false}
         />

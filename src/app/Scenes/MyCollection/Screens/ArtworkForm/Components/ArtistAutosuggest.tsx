@@ -32,6 +32,7 @@ interface ArtistAutosuggestProps {
   onlyP1Artists?: boolean
   onResultPress: (result: AutosuggestResult) => void
   onSkipPress?: (artistDisplayName: string) => void
+  autoFocus?: boolean
 }
 
 export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
@@ -42,6 +43,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
   onlyP1Artists = false,
   onResultPress,
   onSkipPress,
+  autoFocus = typeof jest === "undefined",
 }) => {
   const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
 
@@ -115,7 +117,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
           onBlur={formik.handleBlur("artist")}
           value={formik.values.artist}
           enableClearButton
-          autoFocus={typeof jest === "undefined"}
+          autoFocus={autoFocus}
           autoCorrect={false}
           spellCheck={false}
           loading={loading}

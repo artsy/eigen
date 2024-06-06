@@ -26,6 +26,7 @@ export const SubmitArtworkAddPhoneNumber = () => {
           accessibilityLabel="Phone number"
           shouldDisplayLocalError={false}
           testID="phone-input"
+          autoFocus
         />
       </ScrollView>
     </Flex>
