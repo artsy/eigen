@@ -45,6 +45,8 @@ export const SubmitArtworkPurchaseHistory = () => {
             Where did you purchase the artwork?
           </Text>
 
+          <Spacer y={2} />
+
           <Join separator={<Spacer y={2} />}>
             <Flex>
               <Select
