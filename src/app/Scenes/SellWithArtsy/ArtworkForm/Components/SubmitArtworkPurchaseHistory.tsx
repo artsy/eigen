@@ -51,6 +51,9 @@ export const SubmitArtworkPurchaseHistory = () => {
             <RadioButton
               mr={2}
               text="Yes"
+              textVariant="sm-display"
+              accessibilityState={{ checked: !!isSigned }}
+              accessibilityLabel="Work is signed"
               selected={isSigned === true}
               onPress={() => {
                 setIsSigned(true)
@@ -58,6 +61,9 @@ export const SubmitArtworkPurchaseHistory = () => {
             />
             <RadioButton
               text="No"
+              textVariant="sm-display"
+              accessibilityState={{ checked: !!isSigned }}
+              accessibilityLabel="Work is not signed"
               selected={isSigned === false}
               onPress={() => {
                 setIsSigned(false)
