@@ -161,6 +161,22 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
     )
   }
 
+  if (currentStep === "TipsForTakingPhotos") {
+    return (
+      <Flex px={2} py={2}>
+        <Button
+          block
+          onPress={() => {
+            handleBackPress()
+          }}
+          variant="outline"
+        >
+          Close
+        </Button>
+      </Flex>
+    )
+  }
+
   return (
     <Flex borderTopWidth={1} borderTopColor="black10" py={2} width="100%" alignSelf="center">
       <Flex px={2}>

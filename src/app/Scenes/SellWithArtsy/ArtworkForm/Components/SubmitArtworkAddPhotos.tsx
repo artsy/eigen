@@ -1,5 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex, Join, Message, Spacer, Text } from "@artsy/palette-mobile"
+import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { UploadPhotosForm } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/UploadPhotosForm"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
@@ -9,6 +10,7 @@ import { ScrollView } from "react-native"
 
 export const SubmitArtworkAddPhotos = () => {
   const { values } = useFormikContext<ArtworkDetailsFormModel>()
+  const { navigateToNextStep } = useSubmissionContext()
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -28,6 +30,19 @@ export const SubmitArtworkAddPhotos = () => {
             <Text color="black60" variant="xs">
               Make your work stand out and get your submission evaluated faster by uploading
               high-quality photos of the work's front and back.
+            </Text>
+
+            <Text
+              underline
+              color="black60"
+              onPress={() => {
+                navigateToNextStep({
+                  step: "TipsForTakingPhotos",
+                  skipMutation: true,
+                })
+              }}
+            >
+              Tips for taking photos
             </Text>
 
             {(values.photos.length === 1 || values.photos.length === 2) && (

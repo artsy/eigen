@@ -9,6 +9,7 @@ export const ARTWORK_FORM_STEPS: SubmitArtworkScreen[] = [
   "SelectArtist",
   "AddTitle",
   "AddPhotos",
+  "TipsForTakingPhotos",
   "AddDetails",
   "PurchaseHistory",
   "AddDimensions",
