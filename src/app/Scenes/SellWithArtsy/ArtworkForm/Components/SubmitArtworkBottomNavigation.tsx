@@ -3,14 +3,14 @@ import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Com
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
-import { navigate, popToRoot, switchTab } from "app/system/navigation/navigate"
+import { dismissModal, navigate, popToRoot, switchTab } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useFormikContext } from "formik"
 import { useEffect } from "react"
 import { LayoutAnimation } from "react-native"
 
 export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
-  const { navigateToNextStep, navigateToPreviousStep } = useSubmissionContext()
+  const { navigateToNextStep, navigateToPreviousStep, isFinalStep } = useSubmissionContext()
   const { isValid, values } = useFormikContext<ArtworkDetailsFormModel>()
   const isUploadingPhotos = values.photos.some((photo: Photo) => photo.loading)
   const allPhotosAreValid = values.photos.every(
@@ -77,24 +77,22 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
       >
         <Flex px={2}>
           <Spacer y={1} />
-
           <Button
             block
             onPress={() => {
               navigate("/sell/submissions/new", {
-                replaceActiveScreen: true,
+                replaceActiveModal: true,
               })
             }}
           >
             Submit Another Work
           </Button>
-
           <Spacer y={2} />
-
           <Button
             block
             onPress={() => {
               switchTab("profile")
+              dismissModal()
               requestAnimationFrame(() => {
                 popToRoot()
               })
@@ -155,7 +153,7 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
             disabled={!isValid || isLoading || isUploadingPhotos || !allPhotosAreValid}
             loading={isLoading || isUploadingPhotos}
           >
-            Continue
+            {isFinalStep ? "Submit Artwork" : "Continue"}
           </Button>
         </Flex>
       </Flex>
