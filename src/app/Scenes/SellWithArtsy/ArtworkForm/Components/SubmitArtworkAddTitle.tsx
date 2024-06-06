@@ -13,7 +13,7 @@ export const SubmitArtworkAddTitle = () => {
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
-      info={screen({ context_screen_owner_type: OwnerType.artworkFormAddTitle })}
+      info={screen({ context_screen_owner_type: OwnerType.submissionStepAddTitle })}
     >
       <Flex px={2}>
         <Flex>

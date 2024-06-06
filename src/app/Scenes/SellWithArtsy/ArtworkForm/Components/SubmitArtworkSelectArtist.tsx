@@ -80,7 +80,7 @@ export const SubmitArtworkSelectArtist = () => {
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
-      info={screen({ context_screen_owner_type: OwnerType.artworkFormSelectArtist })}
+      info={screen({ context_screen_owner_type: OwnerType.submissionStepSelectArtist })}
     >
       <Flex px={2}>
         <Flex pb={6}>

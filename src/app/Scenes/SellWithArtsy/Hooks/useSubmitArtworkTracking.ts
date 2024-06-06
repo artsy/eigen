@@ -108,26 +108,26 @@ export const useSubmitArtworkTracking = () => {
 const getOwnerType = (currentStep: SubmitArtworkScreen): OwnerType => {
   switch (currentStep) {
     case "StartFlow":
-      return OwnerType.artworkFormStart
+      return OwnerType.submissionStepStart
     case "SelectArtist":
-      return OwnerType.artworkFormSelectArtist
+      return OwnerType.submissionStepSelectArtist
     case "AddTitle":
-      return OwnerType.artworkFormAddTitle
+      return OwnerType.submissionStepAddTitle
     case "AddPhotos":
-      return OwnerType.artworkFormAddPhotos
+      return OwnerType.submissionStepAddPhotos
     case "AddDetails":
-      return OwnerType.artworkFormAddDetails
+      return OwnerType.submissionStepAddDetails
     case "PurchaseHistory":
-      return OwnerType.artworkFormPurchaseHistory
+      return OwnerType.submissionStepPurchaseHistory
     case "AddDimensions":
-      return OwnerType.artworkFormAddDimensions
+      return OwnerType.submissionStepAddDimensions
     case "AddPhoneNumber":
-      return OwnerType.artworkFormAddPhoneNumber
+      return OwnerType.submissionStepAddPhoneNumber
     case "CompleteYourSubmission":
-      return OwnerType.artworkFormCompleteYourSubmission
+      return OwnerType.submissionStepCompleteYourSubmission
     case "ArtistRejected":
-      return OwnerType.artworkFormArtistRejected
+      return OwnerType.submissionStepArtistRejected
     case "SelectArtworkMyCollectionArtwork":
-      return OwnerType.artworkFormSelectArtworkMyCollectionArtwork
+      return OwnerType.submissionStepSelectArtworkMyCollectionArtwork
   }
 }

@@ -25,7 +25,7 @@ export const SubmitArtworkAddDimensions = () => {
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
-      info={screen({ context_screen_owner_type: OwnerType.artworkFormAddDimensions })}
+      info={screen({ context_screen_owner_type: OwnerType.submissionStepAddDimensions })}
     >
       <Flex px={2}>
         <Text variant="lg-display" mb={2}>
