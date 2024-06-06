@@ -52,7 +52,7 @@ export const SubmitArtworkArtistRejected: React.FC<{}> = () => {
             <Text
               underline
               onPress={() => {
-                trackTappedContactAdvisor(me?.internalID, me?.email)
+                trackTappedContactAdvisor(me?.internalID, me?.email || undefined)
                 navigate("/sell/inquiry", {
                   passProps: {
                     email: me?.email ?? "",
