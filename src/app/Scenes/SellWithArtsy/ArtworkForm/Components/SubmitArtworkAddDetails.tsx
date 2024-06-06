@@ -24,7 +24,10 @@ export const SubmitArtworkAddDetails = () => {
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
-      info={screen({ context_screen_owner_type: OwnerType.submitArtworkStepAddDetails })}
+      info={screen({
+        context_screen_owner_type: OwnerType.submitArtworkStepAddDetails,
+        context_screen_owner_id: values.submissionId || undefined,
+      })}
     >
       <Flex px={2} flex={1}>
         <ScrollView>
