@@ -13,6 +13,7 @@ import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Ut
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
+import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { useFormikContext } from "formik"
 import { Alert } from "react-native"
 
@@ -69,6 +70,8 @@ export const useSubmissionContext = () => {
             artworkID: newValues.myCollectionArtworkID,
           })
         }
+
+        refreshMyCollection()
       }
 
       __unsafe__SubmissionArtworkFormNavigationRef.current?.navigate?.(nextStep)
