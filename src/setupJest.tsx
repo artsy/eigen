@@ -438,7 +438,6 @@ function getNativeModules(): OurNativeModules {
     },
     ARTemporaryAPIModule: {
       fetchNotificationPermissions: jest.fn(),
-      markUserPermissionStatus: jest.fn(),
       markNotificationsRead: jest.fn(),
       setApplicationIconBadgeNumber: jest.fn(),
       getUserEmail: jest.fn(),
@@ -507,7 +506,6 @@ jest.mock("app/NativeModules/LegacyNativeModules", () => ({
     },
     ARTemporaryAPIModule: {
       fetchNotificationPermissions: jest.fn(),
-      markUserPermissionStatus: jest.fn(),
       markNotificationsRead: jest.fn(),
       setApplicationIconBadgeNumber: jest.fn(),
       getUserEmail: jest.fn(),

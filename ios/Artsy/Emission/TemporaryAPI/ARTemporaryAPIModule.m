@@ -1,16 +1,12 @@
 #import "ARTemporaryAPIModule.h"
 #import <UserNotifications/UserNotifications.h>
 #import "AREmission.h"
+#import <BrazeKit/BrazeKit-Swift.h>
+#import "ARAppDelegate.h"
 
 @implementation ARTemporaryAPIModule
 
 RCT_EXPORT_MODULE();
-
-RCT_EXPORT_METHOD(markUserPermissionStatus:(BOOL)granted)
-{
-    // TODO: Something
-    // [[Appboy sharedInstance] pushAuthorizationFromUserNotificationCenter:granted];
-}
 
 RCT_EXPORT_METHOD(fetchNotificationPermissions:(RCTResponseSenderBlock)callback)
 {
