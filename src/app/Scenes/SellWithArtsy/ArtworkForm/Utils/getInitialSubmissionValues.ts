@@ -13,12 +13,8 @@ export const getInitialSubmissionValues = (
     values.assets?.map((asset) => {
       const path = (Object.values(asset?.imageUrls || {})?.[0] as string) ?? ""
 
-      if (!path) {
-        return null
-      }
-
       return {
-        path: (Object.values(asset?.imageUrls || {})?.[0] as string) ?? "",
+        path,
         id: asset?.id ?? "",
         geminiToken: asset?.geminiToken ?? "",
       }

@@ -73,16 +73,20 @@ export const PhotoItem = ({
           onPress?.()
         }}
       >
-        <Image
-          style={{
-            height: IMAGE_SIZE,
-            width: IMAGE_SIZE,
-            position: "absolute",
-          }}
-          resizeMode="cover"
-          source={{ uri: photo.path }}
-          testID="Submission_Image"
-        />
+        {photo.path ? (
+          <Image
+            style={{
+              height: IMAGE_SIZE,
+              width: IMAGE_SIZE,
+              position: "absolute",
+            }}
+            resizeMode="cover"
+            source={{ uri: photo.path }}
+            testID="Submission_Image"
+          />
+        ) : (
+          <SkeletonBox height={IMAGE_SIZE} width={IMAGE_SIZE}></SkeletonBox>
+        )}
       </TouchableWithoutFeedback>
       {!hideDeleteButton && (
         <Flex

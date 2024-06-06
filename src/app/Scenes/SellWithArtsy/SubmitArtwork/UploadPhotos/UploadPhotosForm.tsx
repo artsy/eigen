@@ -103,48 +103,6 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
         }
       })
     )
-    // for (const photo of photos) {
-    //   try {
-    //     // upload & size the photo, and add it to processed photos
-    //     const uploadedPhoto = await addPhotoToConsignment({
-    //       asset: photo,
-    //       submissionID: submissionId,
-    //       updateProgress: (newProgress) => {
-    //         setProgress((prevState) => {
-    //           const newState = { ...prevState, [photo.path]: newProgress }
-    //           return newState
-    //         })
-    //       },
-    //     })
-    //     if (uploadedPhoto?.id) {
-    //       const sizedPhoto = calculateSinglePhotoSize(uploadedPhoto)
-
-    //       const availablePhotos = [...values.photos, ...processedPhotos, sizedPhoto]
-    //       const isTotalSizeLimitExceeded = isSizeLimitExceeded(availablePhotos)
-    //       // when total size limit exceeded, set photo's err state and stop the upload loop
-    //       if (isTotalSizeLimitExceeded) {
-    //         sizedPhoto.error = true
-    //         sizedPhoto.errorMessage =
-    //           "File exceeds the total size limit. Please delete photos or upload smaller file sizes."
-    //         processedPhotos.push(sizedPhoto)
-
-    //         trackEvent(
-    //           tracks.hasExceededUploadSize(getPhotosSize(availablePhotos), availablePhotos.length)
-    //         )
-    //         break
-    //       }
-    //       processedPhotos.push(sizedPhoto)
-    //     }
-    //   } catch (error) {
-    //     // set photo's error state and set it to processed photos
-    //     photo.error = true
-    //     photo.errorMessage = "Photo could not be uploaded"
-    //     processedPhotos.push(photo)
-    //     captureMessage(JSON.stringify(error))
-    //   } finally {
-    //     photo.loading = false
-    //   }
-    // }
 
     const allPhotos = [...values.photos, ...processedPhotos]
 
