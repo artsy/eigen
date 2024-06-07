@@ -18,7 +18,6 @@ import replace from "lodash/replace"
 import { forwardRef, useEffect, useRef, useState } from "react"
 import { cleanUserPhoneNumber } from "./cleanUserPhoneNumber"
 import { countries, countryIndex } from "./countries"
-import { formatPhoneNumber } from "./formatPhoneNumber"
 
 export const PhoneInput = forwardRef<
   InputRef,
@@ -46,13 +45,7 @@ export const PhoneInput = forwardRef<
     const color = useColor()
     const initialValues = cleanUserPhoneNumber(value ?? "")
     const [countryCode, setCountryCode] = useState<string>(initialValues.countryCode)
-    const [phoneNumber, setPhoneNumber] = useState(
-      formatPhoneNumber({
-        current: initialValues.phoneNumber,
-        previous: initialValues.phoneNumber,
-        countryCode,
-      })
-    )
+    const [phoneNumber, setPhoneNumber] = useState(initialValues.phoneNumber)
     const [validationErrorMessage, setValidationErrorMessage] = useState("")
     const dialCode = countryIndex[countryCode].dialCode
     const countryISO2Code = countryIndex[countryCode].iso2
@@ -99,13 +92,7 @@ export const PhoneInput = forwardRef<
 
       const cleanPhoneNumber = cleanUserPhoneNumber(fullPhoneNumber ?? "")
 
-      const formattedPhoneNumber = formatPhoneNumber({
-        current: cleanPhoneNumber.phoneNumber,
-        previous: initialValues.phoneNumber,
-        countryCode: cleanPhoneNumber.countryCode,
-      })
-
-      setPhoneNumber(formattedPhoneNumber.replace(/\D+$/, ""))
+      setPhoneNumber(cleanPhoneNumber.phoneNumber)
     }
 
     const selectedCountry = countries.find((c) => c.iso2 === countryISO2Code)
@@ -117,7 +104,6 @@ export const PhoneInput = forwardRef<
           {...rest}
           ref={ref}
           value={phoneNumber}
-          placeholder={countryIndex[countryCode]?.mask?.replace(/9/g, "0")}
           placeholderTextColor={color("black30")}
           keyboardType="phone-pad"
           onValueChange={onValueChange}
@@ -135,13 +121,7 @@ export const PhoneInput = forwardRef<
           onModalFinishedClosingForSelect={onModalFinishedClosing}
           onSelectValueForSelect={(newCountryCode) => {
             setCountryCode(newCountryCode)
-            setPhoneNumber(
-              formatPhoneNumber({
-                current: phoneNumber,
-                previous: phoneNumber,
-                countryCode: newCountryCode,
-              })
-            )
+            setPhoneNumber(phoneNumber)
           }}
           titleForSelect="Country code"
           renderButtonForSelect={({ selectedValue, onPress }) => {
