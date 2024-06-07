@@ -2,11 +2,8 @@ import { useColor } from "@artsy/palette-mobile"
 import Svg, { Path } from "react-native-svg"
 import { BottomTabType } from "./BottomTabType"
 
-export const ICON_WIDTH = 56
-export const ICON_HEIGHT = 52
-
-// need to bring the icons up a smidge because of the way they were exported
-const yOffset = 2
+export const ICON_WIDTH = 53
+export const ICON_HEIGHT = 49
 
 export const BottomTabsIcon: React.FC<{ tab: BottomTabType; state: "active" | "inactive" }> = ({
   tab,
@@ -18,7 +15,7 @@ export const BottomTabsIcon: React.FC<{ tab: BottomTabType; state: "active" | "i
     <Svg
       width={ICON_WIDTH}
       height={ICON_HEIGHT}
-      viewBox={`0 ${yOffset} ${ICON_WIDTH} ${ICON_HEIGHT + yOffset}`}
+      viewBox={`0 0 ${ICON_WIDTH} ${ICON_HEIGHT}`}
       fill={state === "active" ? color("appBackground") : color("appForeground")}
     >
       {ICONS[tab][state]}

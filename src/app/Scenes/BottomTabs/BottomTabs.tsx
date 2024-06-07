@@ -7,10 +7,11 @@ import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { useEffect } from "react"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import useInterval from "react-use/lib/useInterval"
-import { BottomTabsButton } from "./BottomTabsButton"
+import { BOTTOM_TABS_TEXT_HEIGHT, BottomTabsButton } from "./BottomTabsButton"
 import { ICON_HEIGHT } from "./BottomTabsIcon"
 
 export const FETCH_NOTIFICATIONS_INFO_INTERVAL = 60 * 1000 // every 60 seconds
+export const BOTTOM_TABS_HEIGHT = ICON_HEIGHT + BOTTOM_TABS_TEXT_HEIGHT
 
 export const BottomTabs: React.FC<BottomTabBarProps> = (props) => {
   const { color } = useTheme()
@@ -48,7 +49,7 @@ export const BottomTabs: React.FC<BottomTabBarProps> = (props) => {
           borderColor: isStaging ? color("devpurple") : color("black10"),
         }}
       />
-      <Flex flexDirection="row" height={ICON_HEIGHT} px={1}>
+      <Flex flexDirection="row" height={BOTTOM_TABS_HEIGHT} px={1}>
         <BottomTabsButton tab="home" forceDisplayVisualClue={hasUnseenNotifications} />
         <BottomTabsButton tab="search" />
         <BottomTabsButton tab="inbox" badgeCount={unreadConversationsCount} />

@@ -1,5 +1,5 @@
 import { tappedTabBar } from "@artsy/cohesion"
-import { useColor, Text, PopIn, VisualClueDot } from "@artsy/palette-mobile"
+import { useColor, Text, PopIn, VisualClueDot, Flex } from "@artsy/palette-mobile"
 import { ProgressiveOnboardingFindSavedArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingFindSavedArtwork"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { unsafe__getSelectedTab } from "app/store/GlobalStore"
@@ -21,6 +21,8 @@ export interface BottomTabsButtonProps {
   visualClue?: VisualClueName
   forceDisplayVisualClue?: boolean
 }
+
+export const BOTTOM_TABS_TEXT_HEIGHT = 13
 
 export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
   tab,
@@ -84,21 +86,28 @@ export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
     >
       <View style={{ flex: 1 }}>
         <ProgressiveOnboardingFindSavedArtwork tab={tab}>
-          <IconWrapper>
-            <BottomTabsIcon tab={tab} state="inactive" />
-          </IconWrapper>
-          <IconWrapper>
-            <Animated.View
-              style={{
-                opacity: activeProgress,
-                backgroundColor: "white",
-                width: ICON_WIDTH,
-                height: ICON_HEIGHT,
-              }}
-            >
-              <BottomTabsIcon tab={tab} state="active" />
-            </Animated.View>
-          </IconWrapper>
+          <Flex flex={1} alignItems="center">
+            <Flex flex={1}>
+              <IconWrapper>
+                <BottomTabsIcon tab={tab} state="inactive" />
+              </IconWrapper>
+              <IconWrapper>
+                <Animated.View
+                  style={{
+                    opacity: activeProgress,
+                    backgroundColor: "white",
+                    width: ICON_WIDTH,
+                    height: ICON_HEIGHT,
+                  }}
+                >
+                  <BottomTabsIcon tab={tab} state="active" />
+                </Animated.View>
+              </IconWrapper>
+            </Flex>
+            <Flex height={BOTTOM_TABS_TEXT_HEIGHT}>
+              <Text variant="xxs">{bottomTabsConfig[tab].name}</Text>
+            </Flex>
+          </Flex>
         </ProgressiveOnboardingFindSavedArtwork>
 
         {!!badgeCount && (
