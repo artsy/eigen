@@ -15,7 +15,7 @@ export const BottomTabsIcon: React.FC<{ tab: BottomTabType; state: "active" | "i
     <Svg
       width={ICON_WIDTH}
       height={ICON_HEIGHT}
-      viewBox={`0 0 ${ICON_WIDTH} ${ICON_HEIGHT}`}
+      viewBox={`1 0 ${ICON_WIDTH} ${ICON_HEIGHT}`}
       fill={state === "active" ? color("appBackground") : color("appForeground")}
     >
       {ICONS[tab][state]}
