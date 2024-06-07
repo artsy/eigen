@@ -21,7 +21,7 @@ We have a script for converting the pngs that we drop in the `/images` directory
 After that run the script after you cd to `eigen`
 
 ```bash
-sudo ./scripts/convert-png-images-to-webp.sh
+sudo ./scripts/utils/convert-png-images-to-webp.sh
 ```
 
 And that's it! 🎉 🎉
