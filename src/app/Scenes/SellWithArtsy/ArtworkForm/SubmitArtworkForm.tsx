@@ -1,4 +1,4 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { SubmitArtworkAddDetails } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddDetails"
@@ -29,6 +29,7 @@ import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork
 import { fetchUserContactInformation } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/fetchUserContactInformation"
 import { SubmitArtworkProps } from "app/Scenes/SellWithArtsy/SubmitArtwork/SubmitArtwork"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
+import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useIsKeyboardVisible } from "app/utils/hooks/useIsKeyboardVisible"
 import { FormikProvider, useFormik } from "formik"
 import { useEffect } from "react"
@@ -76,6 +77,7 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
   const currentStep = SubmitArtworkFormStore.useStoreState((state) => state.currentStep)
   const { bottom: bottomInset } = useSafeAreaInsets()
   const isKeyboardVisible = useIsKeyboardVisible(true)
+  const showDevHelpers = useDevToggle("DTShowSubmissionDevHelpers")
 
   const initialValues = {
     ...artworkDetailsEmptyInitialValues,
@@ -223,6 +225,16 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
               />
             </Stack.Navigator>
           </NavigationContainer>
+          {!!showDevHelpers && (
+            <Flex alignItems="center" borderWidth={1} borderColor="devpurple">
+              <Text color="black60" variant="xs">
+                currentStep: {currentStep}
+              </Text>
+              <Text color="black60" variant="xs">
+                getCurrentRoute: {getCurrentRoute()}
+              </Text>
+            </Flex>
+          )}
           <SubmitArtworkBottomNavigation />
         </Flex>
       </ArtsyKeyboardAvoidingView>

@@ -16,7 +16,7 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
     trackTappedSubmitAnotherWork,
     trackTappedViewArtworkInMyCollection,
   } = useSubmitArtworkTracking()
-  const { navigateToNextStep, navigateToPreviousStep, isFinalStep, isValid } =
+  const { navigateToNextStep, navigateToPreviousStep, isFinalStep, isValid, currentStep } =
     useSubmissionContext()
   const { values } = useFormikContext<ArtworkDetailsFormModel>()
 
@@ -29,7 +29,7 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
   )
   const showStartFromMyCollection = useFeatureFlag("AREnableSubmitMyCollectionArtworkInSubmitFlow")
 
-  const { currentStep, isLoading } = SubmitArtworkFormStore.useStoreState((state) => state)
+  const { isLoading } = SubmitArtworkFormStore.useStoreState((state) => state)
   const { width: screenWidth } = useScreenDimensions()
 
   const handleBackPress = () => {
@@ -100,8 +100,8 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
             block
             onPress={() => {
               trackTappedSubmitAnotherWork(values.submissionId)
-              navigate("/sell/submissions/new", {
-                replaceActiveModal: true,
+              dismissModal(() => {
+                navigate("/sell/submissions/new")
               })
             }}
           >
