@@ -12,7 +12,7 @@ import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubm
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useScreenDimensions } from "app/utils/hooks"
-import { Image } from "react-native"
+import { Alert, Image } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 
@@ -49,8 +49,27 @@ export const Header: React.FC<HeaderProps> = (props) => {
                   `/sell/submissions/${draft.submissionID}/edit?initialStep=${draft.currentStep}`
                 )
               }}
+              onLongPress={() => {
+                Alert.alert(
+                  "Are you sure you want to delete this draft?",
+                  "This action cannot be undone.",
+                  [
+                    {
+                      text: "Cancel",
+                      style: "cancel",
+                    },
+                    {
+                      text: "Delete",
+                      onPress: () => {
+                        GlobalStore.actions.artworkSubmission.setDraft(null)
+                      },
+                      style: "destructive",
+                    },
+                  ]
+                )
+              }}
             >
-              <Flex py={1} flexDirection="column">
+              <Flex pb={1} flexDirection="column">
                 <Text color="black60" variant="xs" mb={1}>
                   Finish previous submission:
                 </Text>
