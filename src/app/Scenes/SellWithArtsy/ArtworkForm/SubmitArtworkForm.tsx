@@ -1,4 +1,4 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, useScreenDimensions } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { SubmitArtworkAddDetails } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddDetails"
@@ -33,6 +33,7 @@ import { useIsKeyboardVisible } from "app/utils/hooks/useIsKeyboardVisible"
 import { FormikProvider, useFormik } from "formik"
 import { useEffect } from "react"
 import { Keyboard } from "react-native"
+import { isTablet as getIsTablet } from "react-native-device-info"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 export type SubmitArtworkStackNavigation = {
@@ -118,6 +119,9 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
     Keyboard.dismiss()
   }, [currentStep])
 
+  const isTablet = getIsTablet()
+  const { width: screenWidth } = useScreenDimensions()
+
   return (
     <FormikProvider value={formik}>
       <ArtsyKeyboardAvoidingView>
@@ -128,101 +132,112 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
             paddingBottom: isKeyboardVisible ? 0 : bottomInset,
           }}
         >
-          <NavigationContainer
-            independent
-            ref={__unsafe__SubmissionArtworkFormNavigationRef}
-            initialState={getInitialNavigationState(
-              initialStep,
-              // If the user started the flow from my collection
-              // We don't want them to be able to go back to the start flow and select artist screens
-              hasStartedFlowFromMyCollection ? ["StartFlow", "SelectArtist"] : []
-            )}
-          >
-            <Stack.Navigator
-              // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
-              detachInactiveScreens={false}
-              screenOptions={{
-                headerShown: false,
-                cardStyle: { backgroundColor: "white" },
-                transitionSpec: {
-                  open: {
-                    animation: "timing",
-                    config: {
-                      duration: 300,
-                    },
-                  },
-                  close: {
-                    animation: "timing",
-                    config: {
-                      duration: 300,
-                    },
-                  },
-                },
-                cardStyleInterpolator: ({ current, next }) => {
-                  const opacity = current.progress.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [0, 1],
-                  })
-
-                  const nextOpacity = next
-                    ? next.progress.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [1, 0.2], // Lower the opacity of the exiting screen
-                      })
-                    : 1
-
-                  return {
-                    cardStyle: {
-                      opacity: next ? nextOpacity : opacity,
-                      backgroundColor: "white",
-                    },
-                    overlayStyle: {
-                      opacity: current.progress.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [0, 0.5],
-                      }),
-                      backgroundColor: "white",
-                    },
-                  }
-                },
-              }}
-              initialRouteName={initialStep}
+          <Flex flex={1}>
+            <NavigationContainer
+              independent
+              ref={__unsafe__SubmissionArtworkFormNavigationRef}
+              initialState={getInitialNavigationState(
+                initialStep,
+                // If the user started the flow from my collection
+                // We don't want them to be able to go back to the start flow and select artist screens
+                hasStartedFlowFromMyCollection ? ["StartFlow", "SelectArtist"] : []
+              )}
             >
-              {!hasStartedFlowFromMyCollection && (
-                <Stack.Screen name="StartFlow" component={SubmitArtworkStartFlow} />
-              )}
+              <Stack.Navigator
+                // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
+                detachInactiveScreens={false}
+                screenOptions={{
+                  headerShown: false,
+                  cardStyle: {
+                    backgroundColor: "white",
+                    ...(isTablet
+                      ? {
+                          paddingTop: 20,
+                          width: isTablet ? Math.min(800, screenWidth) : undefined,
+                          alignSelf: "center",
+                        }
+                      : {}),
+                  },
+                  transitionSpec: {
+                    open: {
+                      animation: "timing",
+                      config: {
+                        duration: 300,
+                      },
+                    },
+                    close: {
+                      animation: "timing",
+                      config: {
+                        duration: 300,
+                      },
+                    },
+                  },
+                  cardStyleInterpolator: ({ current, next }) => {
+                    const opacity = current.progress.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [0, 1],
+                    })
 
-              <Stack.Screen
-                name="SelectArtworkMyCollectionArtwork"
-                component={SelectArtworkMyCollectionArtwork}
-              />
+                    const nextOpacity = next
+                      ? next.progress.interpolate({
+                          inputRange: [0, 1],
+                          outputRange: [1, 0.2], // Lower the opacity of the exiting screen
+                        })
+                      : 1
 
-              {!hasStartedFlowFromMyCollection && (
-                <Stack.Screen name="SelectArtist" component={SubmitArtworkSelectArtist} />
-              )}
+                    return {
+                      cardStyle: {
+                        opacity: next ? nextOpacity : opacity,
+                        backgroundColor: "white",
+                      },
+                      overlayStyle: {
+                        opacity: current.progress.interpolate({
+                          inputRange: [0, 1],
+                          outputRange: [0, 0.5],
+                        }),
+                        backgroundColor: "white",
+                      },
+                    }
+                  },
+                }}
+                initialRouteName={initialStep}
+              >
+                {!hasStartedFlowFromMyCollection && (
+                  <Stack.Screen name="StartFlow" component={SubmitArtworkStartFlow} />
+                )}
 
-              <Stack.Screen name="ArtistRejected" component={SubmitArtworkArtistRejected} />
+                <Stack.Screen
+                  name="SelectArtworkMyCollectionArtwork"
+                  component={SelectArtworkMyCollectionArtwork}
+                />
 
-              <Stack.Screen name="AddTitle" component={SubmitArtworkAddTitle} />
+                {!hasStartedFlowFromMyCollection && (
+                  <Stack.Screen name="SelectArtist" component={SubmitArtworkSelectArtist} />
+                )}
 
-              <Stack.Screen name="AddPhotos" component={SubmitArtworkAddPhotos} />
+                <Stack.Screen name="ArtistRejected" component={SubmitArtworkArtistRejected} />
 
-              <Stack.Screen name="AddDetails" component={SubmitArtworkAddDetails} />
+                <Stack.Screen name="AddTitle" component={SubmitArtworkAddTitle} />
 
-              <Stack.Screen name="AddDimensions" component={SubmitArtworkAddDimensions} />
+                <Stack.Screen name="AddPhotos" component={SubmitArtworkAddPhotos} />
 
-              <Stack.Screen name="PurchaseHistory" component={SubmitArtworkPurchaseHistory} />
+                <Stack.Screen name="AddDetails" component={SubmitArtworkAddDetails} />
 
-              <Stack.Screen name="AddPhoneNumber" component={SubmitArtworkAddPhoneNumber} />
+                <Stack.Screen name="AddDimensions" component={SubmitArtworkAddDimensions} />
 
-              <Stack.Screen
-                name="CompleteYourSubmission"
-                component={SubmitArtworkCompleteYourSubmission}
-                // Do not allow the user to go back to the previous screen
-                options={{ gestureEnabled: false }}
-              />
-            </Stack.Navigator>
-          </NavigationContainer>
+                <Stack.Screen name="PurchaseHistory" component={SubmitArtworkPurchaseHistory} />
+
+                <Stack.Screen name="AddPhoneNumber" component={SubmitArtworkAddPhoneNumber} />
+
+                <Stack.Screen
+                  name="CompleteYourSubmission"
+                  component={SubmitArtworkCompleteYourSubmission}
+                  // Do not allow the user to go back to the previous screen
+                  options={{ gestureEnabled: false }}
+                />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </Flex>
           <SubmitArtworkBottomNavigation />
         </Flex>
       </ArtsyKeyboardAvoidingView>
