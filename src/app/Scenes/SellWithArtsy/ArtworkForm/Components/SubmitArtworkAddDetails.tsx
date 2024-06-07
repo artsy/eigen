@@ -30,7 +30,7 @@ export const SubmitArtworkAddDetails = () => {
       })}
     >
       <Flex px={2} flex={1}>
-        <ScrollView>
+        <ScrollView keyboardShouldPersistTaps="handled">
           <Text variant="lg-display" mb={2}>
             Artwork details
           </Text>
