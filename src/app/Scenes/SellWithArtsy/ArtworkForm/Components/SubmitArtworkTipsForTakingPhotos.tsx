@@ -19,20 +19,24 @@ export const TipsForTakingPhotos: React.FC<{ onDismiss: () => void }> = ({ onDis
             >
               <Join separator={<Spacer x={1} />}>
                 <Image
-                  source={require("images/photo-takingtips-example-01-01.webp")}
+                  source={require("images/photo-taking-tips-example-01-01.webp")}
                   resizeMode="contain"
                 />
                 <Image
-                  source={require("images/photo-takingtips-example-01-02.webp")}
+                  source={require("images/photo-taking-tips-example-01-02.webp")}
                   resizeMode="contain"
                 />
                 <Image
-                  source={require("images/photo-takingtips-example-01-03.webp")}
+                  source={require("images/photo-taking-tips-example-01-03.webp")}
+                  resizeMode="contain"
+                />
+                <Image
+                  source={require("images/photo-taking-tips-example-01-04.webp")}
                   resizeMode="contain"
                 />
               </Join>
             </ScrollView>
-            <Spacer y={0.5} />
+            <Spacer y={1} />
             <Text variant="sm-display" px={2}>
               Upload high-quality photos of the artwork’s front and back using natural light and a
               neutral backdrop. Shoot from various angles.
@@ -46,20 +50,24 @@ export const TipsForTakingPhotos: React.FC<{ onDismiss: () => void }> = ({ onDis
             >
               <Join separator={<Spacer x={1} />}>
                 <Image
-                  source={require("images/photo-takingtips-example-02-01.webp")}
+                  source={require("images/photo-taking-tips-example-02-01.webp")}
                   resizeMode="contain"
                 />
                 <Image
-                  source={require("images/photo-takingtips-example-02-02.webp")}
+                  source={require("images/photo-taking-tips-example-02-02.webp")}
                   resizeMode="contain"
                 />
                 <Image
-                  source={require("images/photo-takingtips-example-02-03.webp")}
+                  source={require("images/photo-taking-tips-example-02-03.webp")}
+                  resizeMode="contain"
+                />
+                <Image
+                  source={require("images/photo-taking-tips-example-02-04.webp")}
                   resizeMode="contain"
                 />
               </Join>
             </ScrollView>
-            <Spacer y={0.5} />
+            <Spacer y={1} />
             <Text variant="sm-display" px={2}>
               Include signatures, edition numbers or close-ups of details to give confidence to
               buyers.
@@ -73,20 +81,24 @@ export const TipsForTakingPhotos: React.FC<{ onDismiss: () => void }> = ({ onDis
             >
               <Join separator={<Spacer x={1} />}>
                 <Image
-                  source={require("images/photo-takingtips-example-03-01.webp")}
+                  source={require("images/photo-taking-tips-example-03-01.webp")}
                   resizeMode="contain"
                 />
                 <Image
-                  source={require("images/photo-takingtips-example-03-02.webp")}
+                  source={require("images/photo-taking-tips-example-03-02.webp")}
                   resizeMode="contain"
                 />
                 <Image
-                  source={require("images/photo-takingtips-example-03-03.webp")}
+                  source={require("images/photo-taking-tips-example-03-03.webp")}
+                  resizeMode="contain"
+                />
+                <Image
+                  source={require("images/photo-taking-tips-example-03-04.webp")}
                   resizeMode="contain"
                 />
               </Join>
             </ScrollView>
-            <Spacer y={0.5} />
+            <Spacer y={1} />
             <Text variant="sm-display" px={2}>
               Include framed images or display the artwork in real-life settings to help buyers
               visualize how it will look in their own spaces.
