@@ -104,6 +104,7 @@ export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
                 </Animated.View>
               </IconWrapper>
             </Flex>
+
             <Flex height={BOTTOM_TABS_TEXT_HEIGHT}>
               <Text variant="xxs">{bottomTabsConfig[tab].name}</Text>
             </Flex>
