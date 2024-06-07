@@ -84,6 +84,7 @@ export const SubmitArtworkArtistRejected: React.FC<{}> = () => {
           title="Eligible artist criteria"
           onDismiss={() => setIsEligibilityModalVisible(false)}
           buttonVariant="outline"
+          fullScreen
         >
           <ScrollView>
             <Text>

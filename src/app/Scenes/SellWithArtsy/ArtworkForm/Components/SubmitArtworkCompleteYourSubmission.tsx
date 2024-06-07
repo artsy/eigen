@@ -13,7 +13,7 @@ export const SubmitArtworkCompleteYourSubmission = () => {
   }, [])
 
   return (
-    <Flex px={2}>
+    <Flex px={2} flex={1}>
       <ScrollView>
         <Flex>
           <Flex mb={2} flexDirection="row">

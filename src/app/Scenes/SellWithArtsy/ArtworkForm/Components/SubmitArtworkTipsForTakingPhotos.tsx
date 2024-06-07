@@ -94,7 +94,7 @@ export const TipsForTakingPhotos: React.FC<{ onDismiss: () => void }> = ({ onDis
           </>
         </Join>
 
-        <Flex p={2}>
+        <Flex p={2} mt={2}>
           <Button block haptic onPress={onDismiss} variant="outline">
             Close
           </Button>

@@ -9,6 +9,7 @@ interface Props {
   onDismiss: () => void
   title?: string
   visible: boolean
+  fullScreen?: boolean
 }
 
 export const InfoModal: React.FC<Props> = ({
@@ -18,11 +19,12 @@ export const InfoModal: React.FC<Props> = ({
   onDismiss,
   title,
   visible,
+  fullScreen = false,
 }) => {
   const space = useSpace()
   return (
-    <FancyModal visible={visible} onBackgroundPressed={onDismiss}>
-      <FancyModalHeader onRightButtonPress={onDismiss} hideBottomDivider rightCloseButton>
+    <FancyModal visible={visible} onBackgroundPressed={onDismiss} fullScreen={fullScreen}>
+      <FancyModalHeader onLeftButtonPress={onDismiss} hideBottomDivider useXButton>
         {!!title && <Text fontSize={24}>{title}</Text>}
       </FancyModalHeader>
 
