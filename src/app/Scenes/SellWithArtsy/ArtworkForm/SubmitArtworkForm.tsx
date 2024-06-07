@@ -50,7 +50,7 @@ export type SubmitArtworkStackNavigation = {
 }
 
 export const SubmitArtworkForm: React.FC<SubmitArtworkProps> = (props) => {
-  const initialScreen: SubmitArtworkScreen = props.initialStep || "StartFlow"
+  const initialScreen: SubmitArtworkScreen = props.initialStep || "AddPhotos"
 
   return (
     <SubmitArtworkFormStoreProvider
