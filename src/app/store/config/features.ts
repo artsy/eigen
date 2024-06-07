@@ -357,6 +357,12 @@ export const devToggles: { [key: string]: DevToggleDescriptor } = {
   DTEnableNewImageLabel: {
     description: "Show a label on new OpaqueImageView",
   },
+  DTSkipSubmissionCreate: {
+    description: "Skip submission creation",
+  },
+  DTShowSubmissionDevHelpers: {
+    description: "Show dev helpers in submission flow",
+  },
 }
 
 export const isDevToggle = (name: FeatureName | DevToggleName): name is DevToggleName => {

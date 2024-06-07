@@ -81,12 +81,15 @@ export const SubmitArtworkArtistRejected: React.FC<{}> = () => {
         </ScrollView>
         <InfoModal
           visible={isEligibilityModalVisible}
-          title="Eligible artist criteria"
           onDismiss={() => setIsEligibilityModalVisible(false)}
           buttonVariant="outline"
           fullScreen
         >
           <ScrollView>
+            <Text variant="lg-display">Eligible artist criteria</Text>
+
+            <Spacer y={2} />
+
             <Text>
               We are currently accepting unique and limited-edition works of art by modern,
               contemporary, and emerging artists who have collector demand on Artsy.
