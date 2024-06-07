@@ -11,6 +11,7 @@ import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { navigate } from "app/system/navigation/navigate"
+import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -22,6 +23,8 @@ export const SubmitArtworkSelectArtist = () => {
   const { navigateToNextStep } = useSubmissionContext()
   const setIsLoading = SubmitArtworkFormStore.useStoreActions((actions) => actions.setIsLoading)
   const { isLoading, currentStep } = SubmitArtworkFormStore.useStoreState((state) => state)
+
+  const skipSubmissionCreation = useDevToggle("DTSkipSubmissionCreate")
 
   const formik = useFormikContext<ArtworkDetailsFormModel>()
 
@@ -68,9 +71,13 @@ export const SubmitArtworkSelectArtist = () => {
         skipMutation: true,
       })
 
-      const submissionId = await createOrUpdateSubmission(updatedValues, formik.values.submissionId)
-
-      formik.setFieldValue("submissionId", submissionId)
+      if (!skipSubmissionCreation) {
+        const submissionId = await createOrUpdateSubmission(
+          updatedValues,
+          formik.values.submissionId
+        )
+        formik.setFieldValue("submissionId", submissionId)
+      }
     } catch (error) {
       console.error("Error creating submission", error)
     } finally {

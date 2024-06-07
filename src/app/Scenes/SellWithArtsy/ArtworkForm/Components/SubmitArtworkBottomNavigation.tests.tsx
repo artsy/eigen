@@ -2,7 +2,7 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { SubmitArtworkBottomNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkBottomNavigation"
 import { renderWithSubmitArtworkWrapper } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/testWrappers"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { navigate, switchTab } from "app/system/navigation/navigate"
+import { dismissModal, navigate, switchTab } from "app/system/navigation/navigate"
 
 const mockNavigateToNextStep = jest.fn()
 const mockNavigateToPreviousStep = jest.fn()
@@ -60,9 +60,7 @@ describe("SubmitArtworkBottomNavigation", () => {
       expect(submitAnotherWork).toBeOnTheScreen()
 
       fireEvent(submitAnotherWork, "onPress")
-      expect(navigate).toHaveBeenCalledWith("/sell/submissions/new", {
-        replaceActiveModal: true,
-      })
+      expect(dismissModal).toHaveBeenCalled()
     })
 
     it("Shows a functional Submit Another Artwork button", () => {
