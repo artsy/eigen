@@ -1,5 +1,5 @@
 import { tappedTabBar } from "@artsy/cohesion"
-import { useColor, Text, PopIn, VisualClueDot, Flex } from "@artsy/palette-mobile"
+import { Flex, PopIn, Text, VisualClueDot, useColor } from "@artsy/palette-mobile"
 import { ProgressiveOnboardingFindSavedArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingFindSavedArtwork"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { unsafe__getSelectedTab } from "app/store/GlobalStore"
@@ -87,7 +87,7 @@ export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
       <View style={{ flex: 1 }}>
         <ProgressiveOnboardingFindSavedArtwork tab={tab}>
           <Flex flex={1} alignItems="center">
-            <Flex flex={1}>
+            <Flex flex={1} height={ICON_HEIGHT}>
               <IconWrapper>
                 <BottomTabsIcon tab={tab} state="inactive" />
               </IconWrapper>
@@ -105,7 +105,7 @@ export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
               </IconWrapper>
             </Flex>
 
-            <Flex height={BOTTOM_TABS_TEXT_HEIGHT}>
+            <Flex height={BOTTOM_TABS_TEXT_HEIGHT} width="100%" alignItems="center">
               <Text variant="xxs">{bottomTabsConfig[tab].name}</Text>
             </Flex>
           </Flex>
