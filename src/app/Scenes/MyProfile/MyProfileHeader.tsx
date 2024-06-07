@@ -20,6 +20,8 @@ import {
   SkeletonBox,
   Skeleton,
   SkeletonText,
+  Button,
+  Image,
 } from "@artsy/palette-mobile"
 import { MyProfileHeaderQuery } from "__generated__/MyProfileHeaderQuery.graphql"
 import { MyProfileHeader_me$key } from "__generated__/MyProfileHeader_me.graphql"
@@ -29,13 +31,17 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { useRefetch } from "app/utils/relayHelpers"
-import { Image, TouchableOpacity } from "react-native"
+import { Image as RNImage, TouchableOpacity } from "react-native"
 import { useFragment, useLazyLoadQuery, graphql } from "react-relay"
 import { normalizeMyProfileBio } from "./utils"
 
 const ICON_SIZE = 14
 
-export const MyProfileHeader: React.FC<{ meProp: MyProfileHeader_me$key }> = ({ meProp }) => {
+interface MyProfileHeaderProps {
+  meProp: MyProfileHeader_me$key
+}
+
+export const MyProfileHeader: React.FC<MyProfileHeaderProps> = ({ meProp }) => {
   const { fetchKey, refetch } = useRefetch()
   const me = useFragment<MyProfileHeader_me$key>(myProfileHeaderFragment, meProp)
 
@@ -77,7 +83,7 @@ export const MyProfileHeader: React.FC<{ meProp: MyProfileHeader_me$key }> = ({ 
               {!!userProfileImagePath ? (
                 <Avatar src={userProfileImagePath} size="xs" />
               ) : (
-                <Image source={require("images/profile_placeholder_avatar.webp")} />
+                <RNImage source={require("images/profile_placeholder_avatar.webp")} />
               )}
             </TouchableOpacity>
           </Box>
@@ -176,7 +182,7 @@ export const MyProfileHeader: React.FC<{ meProp: MyProfileHeader_me$key }> = ({ 
       <Flex height={70} width={70} borderRadius={35} backgroundColor={color("black10")}>
         <TouchableOpacity
           onPress={() => {
-            navigate("/my-profile/edit", {
+            navigate("", {
               passProps: {
                 onSuccess: () => {
                   refetch()
@@ -193,8 +199,10 @@ export const MyProfileHeader: React.FC<{ meProp: MyProfileHeader_me$key }> = ({ 
             alignItems: "center",
           }}
         >
-          {!!userProfileImagePath ? (
-            <Avatar src={userProfileImagePath} size="xs" />
+          {!!me?.icon?.url ? (
+            <Flex overflow="hidden" borderRadius={35}>
+              <Image src={me.icon.url} height={70} width={70} />
+            </Flex>
           ) : (
             <PersonIcon width={24} height={24} />
           )}
@@ -207,6 +215,7 @@ export const MyProfileHeader: React.FC<{ meProp: MyProfileHeader_me$key }> = ({ 
           <Text variant="md" color={color("black100")}>
             {me.name}
           </Text>
+
           {!!me.collectorProfile.confirmedBuyerAt && <VerifiedPersonIcon />}
           {!!me.isIdentityVerified && <ShieldFilledIcon />}
         </Flex>
@@ -218,6 +227,21 @@ export const MyProfileHeader: React.FC<{ meProp: MyProfileHeader_me$key }> = ({ 
               {me.location.display}
             </Text>
           </Flex>
+        )}
+
+        {!me.collectorProfile.confirmedBuyerAt && (
+          <>
+            <Spacer y={2} />
+            <Flex alignItems="center">
+              <Button
+                variant="outline"
+                size="small"
+                onPress={() => navigate("/complete-my-profile")}
+              >
+                Complete My Profile
+              </Button>
+            </Flex>
+          </>
         )}
       </Flex>
 
@@ -377,6 +401,7 @@ const myProfileHeaderFragment = graphql`
     }
     collectorProfile @required(action: NONE) {
       confirmedBuyerAt
+      isProfileComplete
     }
   }
 `
@@ -389,7 +414,7 @@ const myProfileHeaderQuery = graphql`
   }
 `
 
-export const MyProfileHeaderQueryRenderer = withSuspense(() => {
+export const MyProfileHeaderQueryRenderer = withSuspense((props) => {
   const data = useLazyLoadQuery<MyProfileHeaderQuery>(
     myProfileHeaderQuery,
     {},
@@ -402,5 +427,5 @@ export const MyProfileHeaderQueryRenderer = withSuspense(() => {
   )
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  return <MyProfileHeader meProp={data.me!} />
+  return <MyProfileHeader meProp={data.me!} {...props} />
 }, MyProfileHeaderPlaceholder)
