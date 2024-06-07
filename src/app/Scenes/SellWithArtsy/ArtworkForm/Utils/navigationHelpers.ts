@@ -1,3 +1,4 @@
+import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import {
   __unsafe__SubmissionArtworkFormNavigationRef,
@@ -76,14 +77,22 @@ export const useSubmissionContext = () => {
       if (newValues.state === "SUBMITTED") {
         // Reset saved draft if submission is successful
         GlobalStore.actions.artworkSubmission.setDraft(null)
+
+        // Refresh my collection in order to show the new added artwork
+        refreshMyCollection()
+
         // Refetch associated My Collection artwork to display the updated submission status on the artwork screen.
         if (newValues.myCollectionArtworkID) {
           await updateMyCollectionArtwork({
             artworkID: newValues.myCollectionArtworkID,
           })
         }
-
-        refreshMyCollection()
+        // Save the phone number to the user's profile if the user has opted to do so.
+        if (newValues.savePhoneNumberToProfile) {
+          await updateMyUserProfile({
+            phone: newValues.userPhone,
+          })
+        }
       }
 
       __unsafe__SubmissionArtworkFormNavigationRef.current?.navigate?.(nextStep)

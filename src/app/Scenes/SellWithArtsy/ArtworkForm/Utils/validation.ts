@@ -124,6 +124,8 @@ export interface ArtworkDetailsFormModel {
   userName: string
   userEmail: string
   userPhone: string
+
+  savePhoneNumberToProfile?: boolean
 }
 
 export const artworkDetailsEmptyInitialValues: ArtworkDetailsFormModel = {
@@ -166,4 +168,5 @@ export const artworkDetailsEmptyInitialValues: ArtworkDetailsFormModel = {
   userName: "",
   userEmail: "",
   userPhone: "",
+  savePhoneNumberToProfile: true,
 }

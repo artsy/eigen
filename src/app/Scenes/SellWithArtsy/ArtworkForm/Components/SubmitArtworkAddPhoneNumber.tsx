@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Checkbox, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { PhoneInput } from "app/Components/Input/PhoneInput"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
@@ -9,7 +9,7 @@ import { useFormikContext } from "formik"
 import { ScrollView } from "react-native"
 
 export const SubmitArtworkAddPhoneNumber = () => {
-  const { handleChange, values } = useFormikContext<ArtworkDetailsFormModel>()
+  const { handleChange, values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
   const { currentStep } = useSubmissionContext()
 
   return (
@@ -39,6 +39,19 @@ export const SubmitArtworkAddPhoneNumber = () => {
             testID="phone-input"
             // Only focus on the input and toggle the keyboard if this step is visible to the user.
             autoFocus={currentStep === "AddPhoneNumber"}
+          />
+
+          <Spacer y={2} />
+
+          <Checkbox
+            checked={values.savePhoneNumberToProfile}
+            text="Save this number to my profile"
+            accessibilityHint="Save the number to your user profile for easy access later."
+            accessibilityState={{ checked: values.savePhoneNumberToProfile }}
+            subtitle="Check this option to save the number to your user profile for easy access later."
+            onPress={() => {
+              setFieldValue("savePhoneNumberToProfile", !values.savePhoneNumberToProfile)
+            }}
           />
         </ScrollView>
       </Flex>
