@@ -9,12 +9,16 @@ import {
   SubmitArtworkScreen,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
 import { updateMyCollectionArtwork } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/updateMyCollectionArtwork"
-import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import {
+  ArtworkDetailsFormModel,
+  getCurrentValidationSchema,
+} from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { useFormikContext } from "formik"
+import { useMemo } from "react"
 import { Alert } from "react-native"
 
 export const useSubmissionContext = () => {
@@ -23,6 +27,14 @@ export const useSubmissionContext = () => {
   const { currentStep } = SubmitArtworkFormStore.useStoreState((state) => state)
 
   const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
+
+  const validationSchema = useMemo(() => {
+    return getCurrentValidationSchema(currentStep)
+  }, [currentStep])
+
+  const isValid = useMemo(() => {
+    return validationSchema.isValidSync(values)
+  }, [currentStep, values])
 
   const isFinalStep = currentStep === ARTWORK_FORM_FINAL_STEP
 
@@ -116,5 +128,5 @@ export const useSubmissionContext = () => {
     }
   }
 
-  return { currentStep, isFinalStep, navigateToNextStep, navigateToPreviousStep }
+  return { isValid, currentStep, isFinalStep, navigateToNextStep, navigateToPreviousStep }
 }

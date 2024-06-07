@@ -6,6 +6,7 @@ import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Ut
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { useFormikContext } from "formik"
+import { ScrollView } from "react-native"
 
 export const SubmitArtworkAddTitle = () => {
   const { handleChange, values } = useFormikContext<ArtworkDetailsFormModel>()
@@ -18,32 +19,36 @@ export const SubmitArtworkAddTitle = () => {
         context_screen_owner_id: values.submissionId || undefined,
       })}
     >
-      <Flex px={2}>
-        <Flex>
-          <Text variant="lg-display">Add artwork title</Text>
+      <Flex px={2} flex={1}>
+        <ScrollView>
+          <Flex>
+            <Text variant="lg-display">Add artwork title</Text>
 
-          <Spacer y={2} />
+            <Spacer y={2} />
 
-          {!!values.artistSearchResult && <ArtistSearchResult result={values.artistSearchResult} />}
+            {!!values.artistSearchResult && (
+              <ArtistSearchResult result={values.artistSearchResult} />
+            )}
 
-          <Spacer y={2} />
+            <Spacer y={2} />
 
-          <Input
-            placeholder="Artwork Title"
-            onChangeText={handleChange("title")}
-            value={values.title}
-            // Only focus on the input and toggle the keyboard if this step is visible to the user.
-            autoFocus={currentStep === "AddTitle"}
-            spellCheck={false}
-            autoCorrect={false}
-          />
+            <Input
+              placeholder="Artwork Title"
+              onChangeText={handleChange("title")}
+              value={values.title}
+              // Only focus on the input and toggle the keyboard if this step is visible to the user.
+              autoFocus={currentStep === "AddTitle"}
+              spellCheck={false}
+              autoCorrect={false}
+            />
 
-          <Spacer y={2} />
+            <Spacer y={2} />
 
-          <Text color="black60" variant="xs">
-            Add ‘Unknown’ if unsure
-          </Text>
-        </Flex>
+            <Text color="black60" variant="xs">
+              Add ‘Unknown’ if unsure
+            </Text>
+          </Flex>
+        </ScrollView>
       </Flex>
     </ProvideScreenTrackingWithCohesionSchema>
   )
