@@ -20,6 +20,7 @@ import {
   SkeletonBox,
   Skeleton,
   SkeletonText,
+  Button,
 } from "@artsy/palette-mobile"
 import { MyProfileHeaderQuery } from "__generated__/MyProfileHeaderQuery.graphql"
 import { MyProfileHeader_me$key } from "__generated__/MyProfileHeader_me.graphql"
@@ -35,7 +36,11 @@ import { normalizeMyProfileBio } from "./utils"
 
 const ICON_SIZE = 14
 
-export const MyProfileHeader: React.FC<{ meProp: MyProfileHeader_me$key }> = ({ meProp }) => {
+interface MyProfileHeaderProps {
+  meProp: MyProfileHeader_me$key
+}
+
+export const MyProfileHeader: React.FC<MyProfileHeaderProps> = ({ meProp }) => {
   const { fetchKey, refetch } = useRefetch()
   const me = useFragment<MyProfileHeader_me$key>(myProfileHeaderFragment, meProp)
 
@@ -176,7 +181,7 @@ export const MyProfileHeader: React.FC<{ meProp: MyProfileHeader_me$key }> = ({ 
       <Flex height={70} width={70} borderRadius={35} backgroundColor={color("black10")}>
         <TouchableOpacity
           onPress={() => {
-            navigate("/my-profile/edit", {
+            navigate("", {
               passProps: {
                 onSuccess: () => {
                   refetch()
@@ -207,6 +212,7 @@ export const MyProfileHeader: React.FC<{ meProp: MyProfileHeader_me$key }> = ({ 
           <Text variant="md" color={color("black100")}>
             {me.name}
           </Text>
+
           {!!me.collectorProfile.confirmedBuyerAt && <VerifiedPersonIcon />}
           {!!me.isIdentityVerified && <ShieldFilledIcon />}
         </Flex>
@@ -218,6 +224,21 @@ export const MyProfileHeader: React.FC<{ meProp: MyProfileHeader_me$key }> = ({ 
               {me.location.display}
             </Text>
           </Flex>
+        )}
+
+        {!me.collectorProfile.confirmedBuyerAt && (
+          <>
+            <Spacer y={2} />
+            <Flex>
+              <Button
+                variant="outline"
+                size="small"
+                onPress={() => navigate("/complete-my-profile")}
+              >
+                Complete My Profile
+              </Button>
+            </Flex>
+          </>
         )}
       </Flex>
 
@@ -377,6 +398,7 @@ const myProfileHeaderFragment = graphql`
     }
     collectorProfile @required(action: NONE) {
       confirmedBuyerAt
+      isProfileComplete
     }
   }
 `
@@ -389,7 +411,7 @@ const myProfileHeaderQuery = graphql`
   }
 `
 
-export const MyProfileHeaderQueryRenderer = withSuspense(() => {
+export const MyProfileHeaderQueryRenderer = withSuspense((props) => {
   const data = useLazyLoadQuery<MyProfileHeaderQuery>(
     myProfileHeaderQuery,
     {},
@@ -402,5 +424,5 @@ export const MyProfileHeaderQueryRenderer = withSuspense(() => {
   )
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  return <MyProfileHeader meProp={data.me!} />
+  return <MyProfileHeader meProp={data.me!} {...props} />
 }, MyProfileHeaderPlaceholder)

@@ -23,6 +23,7 @@ import { AddMyCollectionArtist } from "app/Scenes/MyCollection/Screens/Artist/Ad
 import { MyCollectionArtworkEditQueryRenderer } from "app/Scenes/MyCollection/Screens/ArtworkForm/Screens/MyCollectionArtworkEdit"
 import { MyCollectionCollectedArtistsPrivacyQueryRenderer } from "app/Scenes/MyCollection/Screens/CollectedArtistsPrivacy/MyCollectionCollectedArtistsPrivacy"
 import { MyCollectionAddCollectedArtistsScreen } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtists"
+import { CompleteMyProfile } from "app/Scenes/MyProfile/CompleteMyProfile"
 import { NewWorksFromGalleriesYouFollowScreen } from "app/Scenes/NewWorksFromGalleriesYouFollow/NewWorksFromGalleriesYouFollow"
 import { PartnerOfferContainer } from "app/Scenes/PartnerOffer/PartnerOfferContainer"
 import { PriceDatabase } from "app/Scenes/PriceDatabase/PriceDatabase"
@@ -558,6 +559,11 @@ export const modules = defineModules({
     },
     [MyCollectionScreenQuery]
   ),
+  CompleteMyProfile: reactModule(CompleteMyProfile, {
+    fullBleed: true,
+    hidesBackButton: true,
+    hidesBottomTabs: true,
+  }),
   MyProfileEditForm: reactModule(MyProfileEditFormScreen),
   MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
   MyProfileSettings: reactModule(MyProfileSettings),
