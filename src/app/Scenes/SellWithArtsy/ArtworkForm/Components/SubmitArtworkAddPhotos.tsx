@@ -60,6 +60,7 @@ export const SubmitArtworkAddPhotos = () => {
           onDismiss={() => setIsModalVisible(false)}
           buttonVariant="outline"
           containerStyle={{ margin: 0 }}
+          fullScreen
         >
           <TipsForTakingPhotos onDismiss={() => setIsModalVisible(false)} />
         </InfoModal>
