@@ -14,7 +14,7 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { useFormikContext } from "formik"
 import React, { useEffect, useState } from "react"
-import { LayoutAnimation, TouchableOpacity } from "react-native"
+import { Dimensions, LayoutAnimation, TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"
 import { addPhotoToConsignment } from "./utils/addPhotoToConsignment"
 import {
@@ -23,7 +23,8 @@ import {
   isSizeLimitExceeded,
 } from "./utils/calculatePhotoSize"
 
-export const IMAGE_SIZE = 110
+const { width: screenWidth } = Dimensions.get("screen")
+export const IMAGE_SIZE = screenWidth > 380 ? 110 : (screenWidth - 60) / 3
 export const ICON_SIZE = 18
 
 export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
