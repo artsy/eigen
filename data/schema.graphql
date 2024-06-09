@@ -14090,6 +14090,9 @@ type Partner implements Node {
     displayOnPartnerProfile: Boolean
     first: Int
     hasPublishedArtworks: Boolean
+
+    # Include additional fields on artists, requires authentication
+    includeAllFields: Boolean
     last: Int
     representedBy: Boolean
     sort: ArtistSorts
@@ -14411,6 +14414,11 @@ type PartnerArtistCounts {
     label: String
   ): FormattedNumber
   managedArtworks(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+  unlistedArtworks(
     # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
