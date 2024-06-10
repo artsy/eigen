@@ -57,4 +57,20 @@ describe("ArtworkDimensionsClassificationAndAuthenticity", () => {
     fireEvent.press(screen.getByText("Certificate of Authenticity"))
     expect(navigate).toHaveBeenCalledWith(`/artwork-certificate-of-authenticity`)
   })
+
+  it("renders 'Frame not included' when there is no frame", () => {
+    renderWithRelay({
+      Artwork: () => ({ framed: { details: "not included" } }),
+    })
+
+    expect(screen.getByText("Frame not included")).toBeTruthy()
+  })
+
+  it("renders 'Frame included' when the frame is included", () => {
+    renderWithRelay({
+      Artwork: () => ({ framed: { details: "Included" } }),
+    })
+
+    expect(screen.getByText("Frame included")).toBeTruthy()
+  })
 })

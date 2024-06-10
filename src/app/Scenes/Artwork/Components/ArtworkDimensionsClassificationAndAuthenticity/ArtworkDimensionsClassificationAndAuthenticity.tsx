@@ -18,7 +18,7 @@ const ArtworkDimensionsClassificationAndAuthenticity: React.FC<
 
   const getFrameString = (frameDetails?: string | null) => {
     if (frameDetails !== "Included") {
-      return
+      return "Frame not included"
     }
 
     return `Frame ${frameDetails.toLowerCase()}`
