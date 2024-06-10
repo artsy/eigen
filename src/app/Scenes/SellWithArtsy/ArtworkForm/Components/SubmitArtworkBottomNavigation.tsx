@@ -1,5 +1,6 @@
 import { Button, Flex, Spacer, Text, Touchable, useSpace } from "@artsy/palette-mobile"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
+import { fetchSubmissionInformation } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/fetchSubmissionInformation"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubmitArtworkTracking"
@@ -9,7 +10,7 @@ import { dismissModal, navigate, popToRoot, switchTab } from "app/system/navigat
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useIsKeyboardVisible } from "app/utils/hooks/useIsKeyboardVisible"
 import { useFormikContext } from "formik"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { LayoutAnimation } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
@@ -22,6 +23,7 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
   const { navigateToNextStep, navigateToPreviousStep, isFinalStep, isValid } =
     useSubmissionContext()
   const { values } = useFormikContext<ArtworkDetailsFormModel>()
+  const [loadingMyCollectionArtwork, setLoadingMyCollectionArtwork] = useState(false)
 
   const { trackTappedNewSubmission, trackTappedStartMyCollection, trackConsignmentSubmitted } =
     useSubmitArtworkTracking()
@@ -113,13 +115,35 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
           <Spacer y={2} />
           <Button
             block
-            onPress={() => {
-              trackTappedViewArtworkInMyCollection(values.submissionId)
-              switchTab("profile")
-              dismissModal()
-              requestAnimationFrame(() => {
-                popToRoot()
-              })
+            loading={loadingMyCollectionArtwork}
+            onPress={async () => {
+              try {
+                setLoadingMyCollectionArtwork(true)
+                trackTappedViewArtworkInMyCollection(values.submissionId)
+                switchTab("profile")
+                if (values.submissionId) {
+                  // Wait for gemini to finish processing for 2 seconds
+                  // Which is under Gemini P99 processing times in prod
+                  await setTimeout(() => {}, 2000)
+                  const response = await fetchSubmissionInformation(values.submissionId)
+
+                  const myCollectionArtworkID = response?.submission?.myCollectionArtworkID
+                  if (myCollectionArtworkID) {
+                    dismissModal()
+                    requestAnimationFrame(() => {
+                      if (myCollectionArtworkID) {
+                        navigate(`/my-collection/artwork/${myCollectionArtworkID}`)
+                      } else {
+                        popToRoot()
+                      }
+                    })
+                  }
+                }
+              } catch (error) {
+                console.error("Error fetching submission information", error)
+              } finally {
+                setLoadingMyCollectionArtwork(false)
+              }
             }}
             variant="outline"
           >
