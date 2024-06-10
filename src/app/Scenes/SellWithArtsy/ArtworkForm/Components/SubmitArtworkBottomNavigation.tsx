@@ -4,6 +4,7 @@ import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubmitArtworkTracking"
 import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
+import { GlobalStore } from "app/store/GlobalStore"
 import { dismissModal, navigate, popToRoot, switchTab } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useFormikContext } from "formik"
@@ -136,6 +137,11 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
           <Button
             block
             onPress={() => {
+              GlobalStore.actions.myCollection.artwork.setFormValues({
+                artist: values.artist,
+                artistSearchResult: values.artistSearchResult,
+              })
+
               navigate("/my-collection/artworks/new", {
                 showInTabName: "profile",
                 replaceActiveModal: true,
