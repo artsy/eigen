@@ -13425,6 +13425,9 @@ type Mutation {
   # Updates a page.
   updatePage(input: UpdatePageMutationInput!): UpdatePageMutationPayload
 
+  # Updates a partner artist.
+  updatePartnerShow(input: UpdatePartnerShowMutationInput!): UpdatePartnerShowMutationPayload
+
   # Update a quiz artwork interacted_with flag
   updateQuiz(input: updateQuizMutationInput!): updateQuizMutationPayload
 
@@ -19511,6 +19514,36 @@ union UpdatePageResponseOrError = UpdatePageFailure | UpdatePageSuccess
 
 type UpdatePageSuccess {
   page: Page
+}
+
+type UpdatePartnerShowFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdatePartnerShowMutationInput {
+  clientMutationId: String
+
+  # Is
+  featured: Boolean
+
+  # The id of the partner to update.
+  partnerId: String!
+
+  # The id of the artist to update.
+  showId: String!
+}
+
+type UpdatePartnerShowMutationPayload {
+  clientMutationId: String
+
+  # On success: the updated partner. On error: the error that occurred.
+  showOrError: UpdatePartnerShowResponseOrError
+}
+
+union UpdatePartnerShowResponseOrError = UpdatePartnerShowFailure | UpdatePartnerShowSuccess
+
+type UpdatePartnerShowSuccess {
+  show: Show
 }
 
 input updateQuizMutationInput {
