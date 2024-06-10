@@ -6882,6 +6882,8 @@ type ConsignmentSubmission {
   locationState: String
   medium: String
   minimumPriceDollars: Int
+  myCollectionArtwork: Artwork
+  myCollectionArtworkID: String
   offers(gravityPartnerId: ID!): [ConsignmentOffer!]!
   primaryImage: ConsignmentSubmissionCategoryAsset
   provenance: String
