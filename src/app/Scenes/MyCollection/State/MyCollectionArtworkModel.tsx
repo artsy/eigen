@@ -3,6 +3,7 @@ import { ArtworkAttributionClassType } from "__generated__/myCollectionCreateArt
 import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
 import { MyCollectionCustomArtistSchema } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
 import { GlobalStoreModel } from "app/store/GlobalStoreModel"
+import { assignDeep } from "app/store/persistence"
 import { getAttributionClassValueByName } from "app/utils/artworkRarityClassifications"
 import { Action, action, thunk, Thunk } from "easy-peasy"
 import { pick, uniqBy } from "lodash"
@@ -84,7 +85,7 @@ export interface MyCollectionArtworkModel {
     formValues: ArtworkFormValues
     artworkErrorOccurred: boolean
   }
-  setFormValues: Action<MyCollectionArtworkModel, ArtworkFormValues>
+  setFormValues: Action<MyCollectionArtworkModel, Partial<ArtworkFormValues>>
   updateFormValues: Action<MyCollectionArtworkModel, Partial<ArtworkFormValues>>
   setDirtyFormCheckValues: Action<MyCollectionArtworkModel, ArtworkFormValues>
   resetForm: Action<MyCollectionArtworkModel>
@@ -120,7 +121,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
   },
 
   setFormValues: action((state, input) => {
-    state.sessionState.formValues = input
+    assignDeep(state.sessionState.formValues, input)
   }),
 
   updateFormValues: action((state, input) => {
