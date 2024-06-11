@@ -2079,6 +2079,8 @@ type ArtistPartnerEdge {
 
   # A globally unique ID.
   id: ID!
+  image: Image
+  imageUrl: String
 
   # A type-specific ID.
   internalID: ID!
@@ -14377,6 +14379,8 @@ type PartnerArtist {
 
   # A globally unique ID.
   id: ID!
+  image: Image
+  imageUrl: String
 
   # A type-specific ID.
   internalID: ID!
@@ -14469,6 +14473,8 @@ type PartnerArtistEdge {
 
   # A globally unique ID.
   id: ID!
+  image: Image
+  imageUrl: String
 
   # A type-specific ID.
   internalID: ID!
