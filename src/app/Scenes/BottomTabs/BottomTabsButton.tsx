@@ -22,7 +22,7 @@ export interface BottomTabsButtonProps {
   forceDisplayVisualClue?: boolean
 }
 
-export const BOTTOM_TABS_TEXT_HEIGHT = 13
+export const BOTTOM_TABS_TEXT_HEIGHT = 15
 
 export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
   tab,
@@ -105,7 +105,12 @@ export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
               </IconWrapper>
             </Flex>
 
-            <Flex height={BOTTOM_TABS_TEXT_HEIGHT} width="100%" alignItems="center">
+            <Flex
+              height={BOTTOM_TABS_TEXT_HEIGHT}
+              width="100%"
+              alignItems="center"
+              justifyContent="center"
+            >
               <Text variant="xxs">{bottomTabsConfig[tab].name}</Text>
             </Flex>
           </Flex>
