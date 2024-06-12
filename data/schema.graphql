@@ -12384,6 +12384,9 @@ type Me implements Node {
     # Exclude artworks that have been purchased on Artsy and automatically added to the collection.
     excludePurchasedArtworks: Boolean = false
     first: Int
+
+    # Show only artworks from target supply artists
+    includeOnlyTargetSupply: Boolean = false
     last: Int
     page: Int
     size: Int
