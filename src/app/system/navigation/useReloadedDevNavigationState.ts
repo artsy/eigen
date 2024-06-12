@@ -1,80 +1,60 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { NavigationContainerRef } from "@react-navigation/native"
-import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
-import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
-import { useEffect } from "react"
+import { NavigationState } from "@react-navigation/native"
+import { GlobalStore } from "app/store/GlobalStore"
+import { useEffect, useState } from "react"
 
-const NAV_STATE_STORAGE_KEY = "ARDevNavState"
+export const PREVIOUS_LAUNCH_COUNT_KEY = "previous-launch-count-key"
 
-interface NavStateCache {
-  launchCount: number
-  stackStates: {
-    [stackID: string]: any
-  }
-  selectedTab: BottomTabType
-}
-
-let reloadedCache: NavStateCache | null = null
-
-const currentCache: NavStateCache = {
-  launchCount: ArtsyNativeModule.launchCount,
-  stackStates: {},
-  selectedTab: "home",
-}
-
-// On dev mode, if the app restarted because of a bundle reload/fast refresh,
-// We want to rehydrate the navigation state
-export async function loadDevNavigationStateCache(
-  switchTabAction: (tabName: BottomTabType) => void
-) {
-  if (!__DEV__) {
-    return
-  }
-  const json = await AsyncStorage.getItem(NAV_STATE_STORAGE_KEY)
-  if (json) {
-    try {
-      const parsedCache = JSON.parse(json)
-      // only reinstate the navigation state cache for bundle reloads, not for app reboots
-      if (parsedCache?.launchCount === currentCache.launchCount) {
-        switchTabAction(parsedCache.selectedTab)
-        reloadedCache = parsedCache
-      }
-    } catch (e) {
-      console.error("coudln't parse reloaded dev navigation state", e)
-    }
-  }
-}
-
-// We want the navigation stack state to persist across dev reloads
-// So whenever we find out it changed, we save it
-export function useReloadedDevNavigationState(
-  stackID: string | undefined,
-  ref: React.RefObject<NavigationContainerRef<any>>
-) {
-  if (!__DEV__ || !stackID) {
-    return
-  }
+/*
+ * This hook is used to reload the navigation state in development mode.
+ * It will save the navigation state to AsyncStorage and reload it when the app is reloaded.
+ */
+export const useReloadedDevNavigationState = (key: string) => {
+  const [isReady, setIsReady] = useState(__DEV__ ? false : true)
+  const launchCount = GlobalStore.useAppState((state) => state.native.sessionState.launchCount)
+  const [initialState, setInitialState] = useState()
 
   useEffect(() => {
-    const unlisten = ref.current?.addListener("state", (e) => {
-      currentCache.stackStates[stackID] = e.data.state
-      AsyncStorage.setItem(NAV_STATE_STORAGE_KEY, JSON.stringify(currentCache))
-    })
-    return () => {
-      unlisten?.()
+    if (!__DEV__) {
+      return
     }
-  }, [])
 
-  return reloadedCache?.stackStates[stackID]
-}
+    const restoreState = async () => {
+      try {
+        const previousSessionState = await AsyncStorage.getItem(key)
+        const previousLaunchCount = await AsyncStorage.getItem(PREVIOUS_LAUNCH_COUNT_KEY)
+        const state = previousSessionState ? JSON.parse(previousSessionState) : undefined
 
-// We want the selected tab state to persist across dev reloads
-// So we save it whenever the user switches tabs
-export async function saveDevNavigationStateSelectedTab(selectedTab: BottomTabType) {
-  if (!__DEV__) {
-    return
+        // If the state is undefined, we don't want to set it
+        if (
+          state !== undefined &&
+          // only reinstate state cache for bundle reloads, not for app starts/restarts
+          previousLaunchCount === launchCount.toString()
+        ) {
+          setInitialState(state)
+        }
+      } finally {
+        setIsReady(true)
+        // Save the current launch count for the next time
+        AsyncStorage.setItem(PREVIOUS_LAUNCH_COUNT_KEY, launchCount.toString())
+      }
+    }
+
+    if (!isReady) {
+      restoreState()
+    }
+  }, [isReady])
+
+  const saveSession = (state: NavigationState | undefined) => {
+    if (__DEV__) {
+      AsyncStorage.setItem(key, JSON.stringify(state))
+    }
   }
 
-  currentCache.selectedTab = selectedTab
-  AsyncStorage.setItem(NAV_STATE_STORAGE_KEY, JSON.stringify(currentCache))
+  return {
+    // Double checking that this can only be false in dev and test
+    isReady: isReady || !__DEV__,
+    initialState,
+    saveSession,
+  }
 }

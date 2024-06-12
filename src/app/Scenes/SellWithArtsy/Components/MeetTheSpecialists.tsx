@@ -1,18 +1,16 @@
 import { ActionType, ContextModule, OwnerType, TappedConsignmentInquiry } from "@artsy/cohesion"
-import { Flex, Spacer, Text, useColor, useSpace, Button, Pill } from "@artsy/palette-mobile"
+import { Flex, Spacer, Text, useColor, useSpace, Button } from "@artsy/palette-mobile"
 import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
 import { ReadMore } from "app/Components/ReadMore"
 import {
   SpecialistsData,
-  Specialty,
   useSWALandingPageData,
 } from "app/Scenes/SellWithArtsy/utils/useSWALandingPageData"
 import { AnimateHeight } from "app/utils/animations/AnimateHeight"
 import { PlaceholderBox, PlaceholderButton, PlaceholderText } from "app/utils/placeholders"
-import { uniqBy } from "lodash"
 import { MotiView } from "moti"
 import { useState } from "react"
-import { FlatList, ImageBackground, ScrollView } from "react-native"
+import { FlatList, ImageBackground } from "react-native"
 import { isTablet } from "react-native-device-info"
 import LinearGradient from "react-native-linear-gradient"
 import { Easing } from "react-native-reanimated"
@@ -28,8 +26,6 @@ export const MeetTheSpecialists: React.FC<{
 }> = ({ onInquiryPress }) => {
   const space = useSpace()
 
-  const [specialityFilter, setSpecialityFilter] = useState<Specialty | null>(null)
-
   const {
     data: { specialists },
     loading,
@@ -43,24 +39,6 @@ export const MeetTheSpecialists: React.FC<{
     return null
   }
 
-  const pillLabels = uniqBy(
-    specialists.map((specialist) => {
-      // derives the labels from specialists type.
-      let titleText = specialist.specialty.replace(/([A-Z])/g, " $1")
-      titleText = titleText.replace(/ And /g, " & ")
-      const title = titleText.charAt(0).toUpperCase() + titleText.slice(1)
-      return {
-        type: specialist.specialty,
-        title,
-      }
-    }),
-    "title"
-  )
-
-  const specialistsToDisplay = specialityFilter
-    ? specialists.filter((i) => i.specialty === specialityFilter)
-    : specialists
-
   return (
     <Flex>
       <Text variant="lg-display" mx={2} mb={1}>
@@ -69,31 +47,12 @@ export const MeetTheSpecialists: React.FC<{
       <Text variant="xs" mb={2} mx={2}>
         Our specialists span today’s most popular collecting categories.
       </Text>
-      <ScrollView
-        contentContainerStyle={{ marginHorizontal: space(2) }}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-      >
-        {pillLabels.map((pill) => (
-          <Pill
-            key={pill.title}
-            selected={specialityFilter === pill.type}
-            onPress={() => {
-              setSpecialityFilter(specialityFilter === pill.type ? null : pill.type)
-            }}
-            mr={1}
-          >
-            {pill.title}
-          </Pill>
-        ))}
-        <Spacer x={2} />
-      </ScrollView>
       <Spacer y={2} />
       <FlatList
         contentContainerStyle={{ marginLeft: space(2) }}
         horizontal
         showsHorizontalScrollIndicator={false}
-        data={specialistsToDisplay}
+        data={specialists}
         renderItem={({ item }) => {
           return <Specialist specialist={item} onInquiryPress={onInquiryPress} />
         }}
@@ -192,6 +151,7 @@ const Specialist: React.FC<SpecialistProps> = ({ specialist, onInquiryPress }) =
         <Button
           size="small"
           variant="outlineLight"
+          testID="MeetTheSpecialists-contact-CTA"
           onPress={() => {
             onInquiryPress(
               tracks.consignmentInquiryTapped(buttonText),

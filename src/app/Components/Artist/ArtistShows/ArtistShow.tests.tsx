@@ -9,7 +9,7 @@ import { ArtistShow } from "./ArtistShow"
 describe("ArtistShow", () => {
   const { renderWithRelay } = setupTestWrapper<ArtistShowTestsQuery>({
     Component: ({ show }) => {
-      return <ArtistShow show={show!} index={0} />
+      return <ArtistShow show={show!} imageDimensions={{ width: 82, height: 82 }} index={0} />
     },
     query: graphql`
       query ArtistShowTestsQuery @relay_test_operation {

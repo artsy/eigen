@@ -1,4 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { screen } from "@testing-library/react-native"
 import { STEPS, SubmitSWAArtworkFlow } from "app/Scenes/SellWithArtsy/SubmitArtwork/SubmitArtwork"
 import { GlobalStore } from "app/store/GlobalStore"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -8,6 +9,14 @@ import { RelayEnvironmentProvider } from "react-relay"
 import { useTracking } from "react-tracking"
 import { MockPayloadGenerator, createMockEnvironment } from "relay-test-utils"
 import { UploadPhotos } from "./UploadPhotos"
+
+jest.mock("../ArtworkDetails/utils/fetchUserContactInformation", () => ({
+  fetchUserContactInformation: jest.fn().mockResolvedValue({
+    name: "User",
+    email: "user@mail.com",
+    phoneNumber: { isValid: true, originalNumber: "+49 1753627282" },
+  }),
+}))
 
 describe("UploadPhotos", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -23,21 +32,23 @@ describe("UploadPhotos", () => {
   })
 
   it("renders correct explanation for upload photos form", () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     expect(
-      getByText(
+      screen.getByText(
         "To evaluate your submission faster, please upload high-quality photos of the work's front and back."
       )
     ).toBeTruthy()
 
     expect(
-      getByText("If possible, include photos of any signatures or certificates of authenticity.")
+      screen.getByText(
+        "If possible, include photos of any signatures or certificates of authenticity."
+      )
     ).toBeTruthy()
   })
 
   it("renders Save and Continue button", () => {
-    const { getByTestId } = renderWithWrappers(<TestRenderer />)
-    expect(getByTestId("Submission_Save_Photos_Button")).toBeTruthy()
+    renderWithWrappers(<TestRenderer />)
+    expect(screen.getByTestId("Submission_Save_Photos_Button")).toBeTruthy()
   })
 
   describe("analytics", () => {
@@ -75,6 +86,9 @@ describe("UploadPhotos", () => {
       const { UNSAFE_getByProps } = renderWithWrappers(
         <SubmitSWAArtworkFlow navigation={jest.fn() as any} stepsInOrder={[STEPS.UploadPhotos]} />
       )
+
+      await flushPromiseQueue()
+
       const SaveButton = UNSAFE_getByProps({
         testID: "Submission_Save_Photos_Button",
       })

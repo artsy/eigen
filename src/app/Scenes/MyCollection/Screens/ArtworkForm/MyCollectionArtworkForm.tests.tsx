@@ -10,7 +10,7 @@ import {
   getGeminiCredentialsForEnvironment,
   uploadFileToS3,
 } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/uploadFileToS3"
-import { GlobalStore } from "app/store/GlobalStore"
+import { GlobalStore, __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import * as LocalImageStore from "app/utils/LocalImageStore"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
@@ -56,6 +56,7 @@ describe("MyCollectionArtworkForm", () => {
       expect(screen.getByTestId("MaterialsInput").props.value).toBe("Screen print")
       expect(screen.getByTestId("WidthInput").props.value).toBe("30")
       expect(screen.getByTestId("HeightInput").props.value).toBe("20")
+      expect(screen.getByTestId("autocomplete-location-input")).toBeTruthy()
       expect(screen.getByTestId("DepthInput").props.value).toBe("40")
       expect(screen.getByText("1 photo added")).toBeTruthy()
     })
@@ -67,6 +68,10 @@ describe("MyCollectionArtworkForm", () => {
     })
 
     describe("when selecting an already existing artwork", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewSubmissionFlow: false })
+      })
+
       it("populates the form with the data from the artwork", async () => {
         const assetCredentials = {
           signature: "some-signature",
@@ -185,9 +190,14 @@ describe("MyCollectionArtworkForm", () => {
                 "internal-id",
               ],
               "artists": undefined,
-              "artworkLocation": undefined,
               "attributionClass": undefined,
               "category": "Print",
+              "collectorLocation": {
+                "city": null,
+                "country": null,
+                "countryCode": null,
+                "state": null,
+              },
               "confidentialNotes": undefined,
               "date": "2007",
               "depth": 40,
@@ -419,6 +429,9 @@ describe("MyCollectionArtworkForm", () => {
             internalID: "some-internal-id",
           },
           category: "oil on oil",
+          collectorLocation: {
+            city: "some-city",
+          },
           confidentialNotes: "some-notes",
           medium: "photography",
           pricePaidDollars: "$100",
@@ -434,7 +447,6 @@ describe("MyCollectionArtworkForm", () => {
           provenance: "fake",
           title: "some-art-piece",
           photos: fakePhotos,
-          artworkLocation: "some-location",
           attributionClass: "LIMITED_EDITION",
         }
         const formCheckValues = formValues
@@ -464,6 +476,12 @@ describe("MyCollectionArtworkForm", () => {
                       isP1: false,
                     },
                   },
+                  collectorLocation: {
+                    city: "some-city",
+                    state: "some-state",
+                    country: "some-country",
+                    countryCode: "some-country-code",
+                  },
                   confidentialNotes: "some-notes",
                   consignmentSubmission: {
                     displayText: "In progress",
@@ -492,7 +510,6 @@ describe("MyCollectionArtworkForm", () => {
                   medium: null,
                   isEdition: null,
                   metric: null,
-                  artworkLocation: null,
                   provenance: null,
                   width: null,
                   title: null,
@@ -723,6 +740,13 @@ const mockArtwork = {
   artistNames: "Banksy",
   category: "Print",
   confidentialNotes: "some-notes",
+  collectorLocation: {
+    city: "Busytown",
+    country: "USA",
+    postalCode: "12345",
+    state: "CA",
+    stateCode: "CA",
+  },
   pricePaid: null,
   date: "2007",
   depth: "40",

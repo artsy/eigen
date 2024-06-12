@@ -28,7 +28,6 @@ export const NewWorksFromGalleriesYouFollow: React.FC = () => {
 
   const artworks = extractNodes(data?.newWorksFromGalleriesYouFollowConnection)
   const RefreshControl = useRefreshControl(refetch)
-
   const numOfColumns = defaultViewOption === "grid" ? NUM_COLUMNS_MASONRY : 1
 
   return (

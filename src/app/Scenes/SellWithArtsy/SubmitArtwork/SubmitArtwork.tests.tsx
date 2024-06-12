@@ -1,5 +1,5 @@
 import { ActionType } from "@artsy/cohesion"
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import {
   createConsignSubmission,
   updateConsignSubmission,
@@ -32,17 +32,17 @@ describe(SubmitArtwork, () => {
 
   describe("Steps CTA Buttons", () => {
     it('Displays "Save & Continue" if Accordion Step is not the last and "Submit Artwork" if last', () => {
-      const { queryByText: queryByText1 } = renderWithWrappers(
+      renderWithWrappers(
         <SubmitSWAArtworkFlow
           navigation={jest.fn() as any}
-          stepsInOrder={[STEPS.ArtworkDetails, STEPS.ContactInformation]}
+          stepsInOrder={[STEPS.ArtworkDetails, STEPS.UploadPhotos]}
         />
       )
 
-      expect(queryByText1("Save & Continue")).toBeTruthy()
-      expect(queryByText1("Submit Artwork")).toBeFalsy()
+      expect(screen.getByText("Save & Continue")).toBeTruthy()
+      expect(screen.queryByText("Submit Artwork")).toBeFalsy()
 
-      const { queryByText: queryByText2 } = renderWithWrappers(
+      renderWithWrappers(
         <SubmitSWAArtworkFlow
           navigation={jest.fn() as any}
           // when a step is the last
@@ -50,10 +50,90 @@ describe(SubmitArtwork, () => {
         />
       )
 
-      expect(queryByText2("Save & Continue")).toBeFalsy()
-      expect(queryByText2("Submit Artwork")).toBeTruthy()
+      expect(screen.queryByText("Save & Continue")).toBeFalsy()
+      expect(screen.getByText("Submit Artwork")).toBeTruthy()
     })
   })
+
+  const fillStep1 = async () => {
+    renderWithWrappers(
+      <SubmitSWAArtworkFlow
+        navigation={jest.fn() as any}
+        stepsInOrder={[STEPS.ArtworkDetails, STEPS.UploadPhotos]}
+      />
+    )
+
+    await flushPromiseQueue()
+
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Me: () => ({
+          name: "User",
+          email: "user@user.com",
+          phoneNumber: { isValid: true, originalNumber: "+49 1753627282" },
+        }),
+      })
+    )
+
+    await flushPromiseQueue()
+
+    const inputs = {
+      artist: screen.getByTestId("Submission_ArtistInput"),
+      title: screen.getByTestId("Submission_TitleInput"),
+      year: screen.getByTestId("Submission_YearInput"),
+      material: screen.getByTestId("Submission_MaterialsInput"),
+      height: screen.getByTestId("Submission_HeightInput"),
+      width: screen.getByTestId("Submission_WidthInput"),
+      depth: screen.getByTestId("Submission_DepthInput"),
+      provenance: screen.getByTestId("Submission_ProvenanceInput"),
+    }
+
+    await flushPromiseQueue()
+
+    fireEvent.changeText(inputs.artist, "Banksy")
+
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        SearchableConnection() {
+          return {
+            edges: [
+              {
+                node: {
+                  internalID: "banksy-internal-id",
+                  displayLabel: "Banksy",
+                  imageUrl: "banksy-image-url",
+                },
+              },
+            ],
+          }
+        },
+      })
+    )
+
+    await flushPromiseQueue()
+    fireEvent.press(screen.getByTestId("artist-suggestion-banksy-internal-id"))
+
+    fireEvent.changeText(inputs.title, "someTitle")
+
+    fireEvent.changeText(inputs.year, "1999")
+
+    fireEvent.press(screen.getByTestId("CategorySelect"))
+    await flushPromiseQueue()
+    fireEvent.press(screen.getByText("Painting"))
+
+    fireEvent.press(screen.getByTestId("Submission_RaritySelect"))
+    await flushPromiseQueue()
+    fireEvent.press(screen.getByText("Unique"))
+
+    fireEvent.changeText(inputs.material, "oil on c")
+
+    fireEvent.changeText(inputs.height, "123")
+
+    fireEvent.changeText(inputs.width, "123")
+
+    fireEvent.changeText(inputs.provenance, "friends")
+    fireEvent.changeText(inputs.depth, "123")
+  }
 
   describe("Submission Flow", () => {
     afterEach(() => {
@@ -61,29 +141,13 @@ describe(SubmitArtwork, () => {
     })
 
     it('state is "DRAFT" if Step that is NOT the last step', async () => {
-      const { getByTestId } = renderWithWrappers(
-        <SubmitSWAArtworkFlow
-          navigation={jest.fn() as any}
-          stepsInOrder={[STEPS.ContactInformation, STEPS.UploadPhotos, STEPS.ArtworkDetails]}
-        />
-      )
+      await fillStep1()
 
       await flushPromiseQueue()
 
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, {
-          Me: () => ({
-            name: "User",
-            email: "user@user.com",
-            phoneNumber: { isValid: true, originalNumber: "+49 1753627282" },
-          }),
-        })
-      )
+      const saveAndContinueButton = screen.getByTestId("Submission_ArtworkDetails_Button")
 
-      await flushPromiseQueue()
-
-      const contactInfoCTA = getByTestId("Submission_ContactInformation_Button")
-      fireEvent.press(contactInfoCTA)
+      fireEvent.press(saveAndContinueButton)
 
       await flushPromiseQueue()
 
@@ -93,33 +157,24 @@ describe(SubmitArtwork, () => {
     })
 
     it('state is "SUBMITTED if Step is the last step', async () => {
-      const { getByTestId } = renderWithWrappers(
-        <SubmitSWAArtworkFlow
-          navigation={jest.fn() as any}
-          stepsInOrder={[STEPS.ContactInformation]}
-        />
-      )
+      await fillStep1()
 
       await flushPromiseQueue()
 
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, {
-          Me: () => ({
-            name: "User",
-            email: "user@user.com",
-            phoneNumber: { isValid: true, originalNumber: "+49 1753627282" },
-          }),
-        })
-      )
+      const saveAndContinueButton = screen.getByTestId("Submission_ArtworkDetails_Button")
 
-      await flushPromiseQueue()
-
-      const contactInfoCTA = getByTestId("Submission_ContactInformation_Button")
-      fireEvent.press(contactInfoCTA)
+      fireEvent.press(saveAndContinueButton)
 
       await flushPromiseQueue()
 
       expect(createConsignSubmissionMock).toHaveBeenLastCalledWith(
+        expect.objectContaining({ state: "DRAFT" })
+      )
+      await flushPromiseQueue()
+
+      fireEvent.press(screen.getByTestId("Submission_Save_Photos_Button"))
+
+      expect(updateConsignSubmissionMock).toHaveBeenLastCalledWith(
         expect.objectContaining({ state: "SUBMITTED" })
       )
     })
@@ -129,30 +184,26 @@ describe(SubmitArtwork, () => {
       createConsignSubmissionMock.mockResolvedValue("54321")
       updateConsignSubmissionMock.mockResolvedValue("54321")
 
-      const { getByTestId } = renderWithWrappers(
-        <SubmitSWAArtworkFlow
-          navigation={jest.fn() as any}
-          stepsInOrder={[STEPS.ContactInformation]}
-        />
-      )
+      await fillStep1()
 
       await flushPromiseQueue()
 
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, {
-          Me: () => ({
-            name: "User",
-            email: "user@user.com",
-            phoneNumber: { isValid: true, originalNumber: "+49 1753627282" },
-          }),
-        })
-      )
+      const saveAndContinueButton = screen.getByTestId("Submission_ArtworkDetails_Button")
+
+      fireEvent.press(saveAndContinueButton)
 
       await flushPromiseQueue()
 
-      const contactInfoCTA = getByTestId("Submission_ContactInformation_Button")
-      fireEvent.press(contactInfoCTA)
+      expect(createConsignSubmissionMock).toHaveBeenLastCalledWith(
+        expect.objectContaining({ state: "DRAFT" })
+      )
+      await flushPromiseQueue()
 
+      fireEvent.press(screen.getByTestId("Submission_Save_Photos_Button"))
+
+      expect(updateConsignSubmissionMock).toHaveBeenLastCalledWith(
+        expect.objectContaining({ state: "SUBMITTED" })
+      )
       await flushPromiseQueue()
 
       expect(trackEvent).toHaveBeenCalledWith(
@@ -167,31 +218,13 @@ describe(SubmitArtwork, () => {
       createConsignSubmissionMock.mockResolvedValue("54321")
       updateConsignSubmissionMock.mockResolvedValue("54321")
 
-      const { getByTestId } = renderWithWrappers(
-        <SubmitSWAArtworkFlow
-          navigation={jest.fn() as any}
-          stepsInOrder={[STEPS.ContactInformation, STEPS.UploadPhotos]}
-        />
-      )
+      await fillStep1()
 
       await flushPromiseQueue()
 
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, {
-          Me: () => ({
-            name: "User",
-            email: "user@user.com",
-            phoneNumber: { isValid: true, originalNumber: "+49 1753627282" },
-          }),
-        })
-      )
+      const saveAndContinueButton = screen.getByTestId("Submission_ArtworkDetails_Button")
 
-      await flushPromiseQueue()
-
-      const contactInfoCTA = getByTestId("Submission_ContactInformation_Button")
-      fireEvent.press(contactInfoCTA)
-
-      await flushPromiseQueue()
+      fireEvent.press(saveAndContinueButton)
 
       expect(createConsignSubmissionMock).toHaveBeenCalledWith(
         expect.objectContaining({ state: "DRAFT" })
@@ -222,30 +255,24 @@ describe(SubmitArtwork, () => {
         myCollectionArtworkID: "my-collection-artwork-id",
       })
 
-      const { getByTestId } = renderWithWrappers(
-        <SubmitSWAArtworkFlow
-          navigation={jest.fn() as any}
-          stepsInOrder={[STEPS.ContactInformation]}
-        />
-      )
+      await fillStep1()
 
       await flushPromiseQueue()
 
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, {
-          Me: () => ({
-            name: "User",
-            email: "user@user.com",
-            phoneNumber: { isValid: true, originalNumber: "+49 1753627282" },
-          }),
-        })
-      )
+      const saveAndContinueButton = screen.getByTestId("Submission_ArtworkDetails_Button")
 
+      fireEvent.press(saveAndContinueButton)
+
+      expect(createConsignSubmissionMock).toHaveBeenLastCalledWith(
+        expect.objectContaining({ state: "DRAFT" })
+      )
       await flushPromiseQueue()
 
-      const contactInfoCTA = getByTestId("Submission_ContactInformation_Button")
-      fireEvent.press(contactInfoCTA)
+      fireEvent.press(screen.getByTestId("Submission_Save_Photos_Button"))
 
+      expect(updateConsignSubmissionMock).toHaveBeenLastCalledWith(
+        expect.objectContaining({ state: "SUBMITTED" })
+      )
       await flushPromiseQueue()
 
       expect(addClueSpy).not.toHaveBeenCalled()
@@ -256,30 +283,24 @@ describe(SubmitArtwork, () => {
         myCollectionArtworkID: null,
       })
 
-      const { getByTestId } = renderWithWrappers(
-        <SubmitSWAArtworkFlow
-          navigation={jest.fn() as any}
-          stepsInOrder={[STEPS.ContactInformation]}
-        />
-      )
+      await fillStep1()
 
       await flushPromiseQueue()
 
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, {
-          Me: () => ({
-            name: "User",
-            email: "user@user.com",
-            phoneNumber: { isValid: true, originalNumber: "+49 1753627282" },
-          }),
-        })
-      )
+      const saveAndContinueButton = screen.getByTestId("Submission_ArtworkDetails_Button")
 
+      fireEvent.press(saveAndContinueButton)
+
+      expect(createConsignSubmissionMock).toHaveBeenLastCalledWith(
+        expect.objectContaining({ state: "DRAFT" })
+      )
       await flushPromiseQueue()
 
-      const contactInfoCTA = getByTestId("Submission_ContactInformation_Button")
-      fireEvent.press(contactInfoCTA)
+      fireEvent.press(screen.getByTestId("Submission_Save_Photos_Button"))
 
+      expect(updateConsignSubmissionMock).toHaveBeenLastCalledWith(
+        expect.objectContaining({ state: "SUBMITTED" })
+      )
       await flushPromiseQueue()
 
       expect(addClueSpy).toHaveBeenCalledWith("ArtworkSubmissionMessage")

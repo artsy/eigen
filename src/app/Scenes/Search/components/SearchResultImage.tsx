@@ -26,10 +26,8 @@ export const SearchResultImage: React.FC<{
         testID={testID}
         useRawURL={resultType === "Article"}
         imageURL={imageURL}
-        style={{
-          width: IMAGE_SIZE,
-          height: IMAGE_SIZE,
-        }}
+        height={IMAGE_SIZE}
+        width={IMAGE_SIZE}
       />
     </Flex>
   )

@@ -1,8 +1,7 @@
 import { Text } from "@artsy/palette-mobile"
 import { ArtworkExtraLinks_artwork$data } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
-import { navigate } from "app/system/navigation/navigate"
-import { useSelectedTab } from "app/utils/hooks/useSelectedTab"
+import { switchTab } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -32,7 +31,6 @@ export const ArtworkExtraLinks: React.FC<ArtworkExtraLinksProps> = ({ artwork, a
 }
 
 const ConsignmentsLink: React.FC<{ artistName: string }> = ({ artistName }) => {
-  const isSellTab = useSelectedTab() === "sell"
   const tracking = useTracking()
 
   return (
@@ -48,7 +46,7 @@ const ConsignmentsLink: React.FC<{ artistName: string }> = ({ artistName }) => {
               action_type: Schema.ActionTypes.Tap,
               context_module: Schema.ContextModules.ArtworkExtraLinks,
             })
-            navigate(isSellTab ? "/collections/my-collection/marketing-landing" : "/sales")
+            switchTab("sell")
           }}
         >
           Consign with Artsy

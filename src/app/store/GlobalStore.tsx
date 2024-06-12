@@ -2,8 +2,6 @@ import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterM
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { DevToggleName, FeatureName, features } from "app/store/config/features"
-import { switchTab } from "app/system/navigation/navigate"
-import { loadDevNavigationStateCache } from "app/system/navigation/useReloadedDevNavigationState"
 import { logAction } from "app/utils/loggers"
 import { Actions, createStore, createTypedHooks, StoreProvider } from "easy-peasy"
 import { Platform } from "react-native"
@@ -52,7 +50,6 @@ function createGlobalStore() {
 
   if (!__TEST__) {
     unpersist().then(async (state) => {
-      await loadDevNavigationStateCache(switchTab)
       store.getActions().rehydrate(state)
     })
   }
@@ -124,7 +121,7 @@ export function getCurrentEmissionState() {
     authenticationToken: state?.auth.userAccessToken || "",
     launchCount: ArtsyNativeModule.launchCount,
     userAgent,
-    userID: state?.auth.userID!,
+    userID: state?.auth.userID || "",
     userEmail: "user@example.com", // not used on android
   }
   return data
@@ -145,6 +142,7 @@ export function unsafe__getSelectedTab(): BottomTabType {
     return "home"
   } else {
     const { index, routes } = tabState
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return routes[index!].name as BottomTabType
   }
 }

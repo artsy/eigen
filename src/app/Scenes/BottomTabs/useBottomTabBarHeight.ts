@@ -1,10 +1,10 @@
+import { BOTTOM_TABS_HEIGHT } from "app/Scenes/BottomTabs/BottomTabs"
 import { useScreenDimensions } from "app/utils/hooks"
-import { ICON_HEIGHT } from "./BottomTabsIcon"
 
 const BOTTOM_TAB_SEPARATOR_HEIGHT = 1
 
 export const useBottomTabBarHeight = () => {
   const { safeAreaInsets } = useScreenDimensions()
 
-  return ICON_HEIGHT + safeAreaInsets.bottom + BOTTOM_TAB_SEPARATOR_HEIGHT
+  return BOTTOM_TABS_HEIGHT + safeAreaInsets.bottom + BOTTOM_TAB_SEPARATOR_HEIGHT
 }

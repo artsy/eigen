@@ -156,3 +156,33 @@ const MyScreenFirstPage: React.FC<MyScreenFirstPageProps> = ({navigation, route}
   ...
 }
 ```
+
+**Note** When using an independent navigation container, the state persistsence breaks between sessions and you need to handle it manually. See the example below
+
+```typescript
+import { useReloadedDevNavigationState } from "app/system/navigation/useReloadedDevNavigationState"
+import { LoadingSpinner } from "app/Components/Modals/LoadingModal"
+
+const MY_SCREEN_NAVIGATION_STACK_STATE_KEY = "MY_SCREEN_NAVIGATION_STACK_STATE_KEY"
+
+export const MyScreenNavigationStack = () => {
+  const { isReady, initialState, saveSession } =
+    useReloadedDevNavigationState(MY_SCREEN_NAVIGATION_STACK_STATE_KEY)
+
+  if (!isReady) {
+    return <LoadingSpinner />
+  }
+
+  return (
+    <NavigationContainer
+      independent
+      onStateChange={(state) => {
+        saveSession(state)
+      }}
+      initialState={initialState}
+    >
+      {...}
+    </NavigationContainer>
+  )
+}
+```

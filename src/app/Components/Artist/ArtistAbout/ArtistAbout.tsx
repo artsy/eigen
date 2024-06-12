@@ -52,6 +52,7 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
             {!!hasInsights && <ArtistCareerHighlights artist={artist} />}
             {!!hasArtistSeries && (
               <ArtistSeriesMoreSeriesFragmentContainer
+                px={2}
                 contextScreenOwnerId={artist.internalID}
                 contextScreenOwnerSlug={artist.slug}
                 contextScreenOwnerType={OwnerType.artist}

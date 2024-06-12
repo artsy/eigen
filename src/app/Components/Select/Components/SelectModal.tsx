@@ -25,6 +25,7 @@ export const SelectModal: React.FC<{
   onSelectValue(value: unknown, index: number): any
   renderItemLabel?(value: SelectOption<unknown>): JSX.Element
   onModalFinishedClosing?(): void
+  testID?: string
 }> = ({
   options,
   value,
@@ -36,6 +37,7 @@ export const SelectModal: React.FC<{
   onSelectValue,
   renderItemLabel,
   onModalFinishedClosing,
+  testID,
 }) => {
   const color = useColor()
 
@@ -123,6 +125,7 @@ export const SelectModal: React.FC<{
       onBackgroundPressed={onDismiss}
       maxHeight={maxHeight}
       onModalFinishedClosing={onModalFinishedClosing}
+      testID={testID}
     >
       <Flex p={2} pb="15px" flexDirection="row" alignItems="center" flexGrow={0}>
         <Flex flex={1} />

@@ -10,10 +10,11 @@ import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsCo
 import { AuctionTimerState, currentTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { ArtworkAuctionCreateAlertHeader } from "app/Scenes/Artwork/ArtworkAuctionCreateAlertHeader"
+import { ArtworkDimensionsClassificationAndAuthenticityFragmentContainer } from "app/Scenes/Artwork/Components/ArtworkDimensionsClassificationAndAuthenticity/ArtworkDimensionsClassificationAndAuthenticity"
 import { ArtworkErrorScreen } from "app/Scenes/Artwork/Components/ArtworkError"
 import { ArtworkPartnerOfferNote } from "app/Scenes/Artwork/Components/ArtworkPartnerOfferNote"
-import { ArtworkPrice } from "app/Scenes/Artwork/Components/ArtworkPrice"
 import { ArtworkScreenHeader } from "app/Scenes/Artwork/Components/ArtworkScreenHeader"
+import { AbreviatedArtsyGuarantee } from "app/Scenes/Artwork/Components/PrivateArtwork/AbreviatedArtsyGuarantee"
 import { PrivateArtworkExclusiveAccess } from "app/Scenes/Artwork/Components/PrivateArtwork/PrivateArtworkExclusiveAccess"
 import { PrivateArtworkMetadata } from "app/Scenes/Artwork/Components/PrivateArtwork/PrivateArtworkMetadata"
 import { OfferSubmittedModal } from "app/Scenes/Inbox/Components/Conversations/OfferSubmittedModal"
@@ -291,25 +292,19 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
         ),
         excludePadding: true,
         excludeSeparator: true,
+        excludeVerticalMargin: true,
       })
 
-      if (!artworkAboveTheFold.isUnlisted && (artworkAboveTheFold.editionSets ?? []).length > 1) {
-        sections.push({
-          key: "selectEditionSet",
-          element: <ArtworkEditionSetInformation artwork={artworkAboveTheFold} />,
-          excludeSeparator: true,
-        })
-      }
-
-      if (!!enablePartnerOfferOnArtworkScreen) {
-        sections.push({
-          key: "partnerOfferNote",
-          element: (
-            <ArtworkPartnerOfferNote artwork={artworkAboveTheFold} partnerOffer={partnerOffer} />
-          ),
-          excludeSeparator: true,
-        })
-      }
+      sections.push({
+        key: "dimensionsClassificationAndAuthenticity",
+        element: (
+          <ArtworkDimensionsClassificationAndAuthenticityFragmentContainer
+            artwork={artworkAboveTheFold}
+          />
+        ),
+        excludeSeparator: true,
+        excludeVerticalMargin: true,
+      })
 
       sections.push({
         key: "artworkDetails",
@@ -319,29 +314,35 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
             showReadMore={artworkAboveTheFold.isUnlisted}
           />
         ),
-        excludeSeparator: !!artworkAboveTheFold.isUnlisted,
+        excludeSeparator:
+          !!artworkAboveTheFold.isUnlisted || (artworkAboveTheFold.editionSets ?? []).length > 1,
       })
 
+      if (
+        artworkBelowTheFold?.isForSale &&
+        !isInAuction &&
+        (artworkAboveTheFold.editionSets ?? []).length > 1
+      ) {
+        sections.push({
+          key: "selectEditionSet",
+          element: <ArtworkEditionSetInformation artwork={artworkAboveTheFold} />,
+          excludeSeparator: true,
+          excludeVerticalMargin: !!artworkAboveTheFold.isUnlisted,
+        })
+      }
+
+      if (!!enablePartnerOfferOnArtworkScreen && !!partnerOffer?.note) {
+        sections.push({
+          key: "partnerOfferNote",
+          element: (
+            <ArtworkPartnerOfferNote artwork={artworkAboveTheFold} partnerOffer={partnerOffer} />
+          ),
+          excludeSeparator: true,
+        })
+      }
+
       if (artworkAboveTheFold.isUnlisted) {
-        const hasEditionSets = (artworkAboveTheFold.editionSets ?? []).length > 1
-
         if (!!(artworkBelowTheFold?.isForSale && !isInAuction)) {
-          sections.push({
-            key: "price",
-            element: <ArtworkPrice artwork={artworkAboveTheFold} partnerOffer={partnerOffer} />,
-            excludeSeparator: true,
-            excludeVerticalMargin: hasEditionSets ? false : true,
-          })
-
-          if (hasEditionSets) {
-            sections.push({
-              key: "selectEditionSet",
-              element: <ArtworkEditionSetInformation artwork={artworkAboveTheFold} />,
-              excludeSeparator: true,
-              excludeVerticalMargin: true,
-            })
-          }
-
           sections.push({
             key: "shippingAndTaxes",
             element: (
@@ -361,13 +362,20 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
         excludeSeparator: true,
       })
 
+      if (!!artworkBelowTheFold?.isEligibleForArtsyGuarantee) {
+        sections.push({
+          key: "abreviatedArtsyGuarantee",
+          element: <AbreviatedArtsyGuarantee />,
+        })
+      }
+
       if (shouldRenderPartner()) {
         sections.push({
           key: "partnerCard",
           element: (
             <PartnerCard
               artwork={artworkBelowTheFold}
-              onlyShowQuestions={
+              showShortContactGallery={
                 !!artworkAboveTheFold?.isUnlisted && !!artworkBelowTheFold.partner?.isInquireable
               }
             />
@@ -455,7 +463,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
           <PartnerCard
             shouldShowQuestions={!!artworkBelowTheFold.partner?.isInquireable}
             artwork={artworkBelowTheFold}
-            onlyShowQuestions={
+            showShortContactGallery={
               !!artworkAboveTheFold?.isUnlisted && !!artworkBelowTheFold.partner?.isInquireable
             }
           />
@@ -608,6 +616,7 @@ const ArtworkProvidersContainer: React.FC<ArtworkProps> = (props) => {
     inquireable: artworkAboveTheFold?.isInquireable,
     offerable: artworkAboveTheFold?.isOfferable,
     biddable: artworkAboveTheFold?.isBiddable,
+    visibility_level: artworkAboveTheFold?.visibilityLevel,
   }
 
   const socketChannelInfo: AuctionWebsocketChannelInfo = {
@@ -653,6 +662,7 @@ export const ArtworkContainer = createRefetchContainer(
         ...ArtworkEditionSetInformation_artwork
         ...ArtworkPartnerOfferNote_artwork
         ...ArtworkPrice_artwork
+        ...ArtworkDimensionsClassificationAndAuthenticity_artwork
         slug
         internalID
         isAcquireable
@@ -663,6 +673,7 @@ export const ArtworkContainer = createRefetchContainer(
         isPurchasable
         isUnlisted
         availability
+        visibilityLevel
         sale {
           internalID
           isClosed
@@ -755,6 +766,7 @@ export const ArtworkContainer = createRefetchContainer(
           edges {
             node {
               internalID
+              note
               ...ArtworkStickyBottomContent_partnerOffer
               ...ArtworkPartnerOfferNote_partnerOffer
               ...ArtworkPrice_partnerOffer

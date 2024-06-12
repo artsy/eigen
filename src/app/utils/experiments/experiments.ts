@@ -21,11 +21,6 @@ export const experiments = {
     fallbackEnabled: false,
     description: "Allow tracking impression for home screen rails",
   },
-  onyx_new_works_for_you_feed: {
-    fallbackEnabled: false,
-    description: "Onyx experiment for new works for you feed vs grid",
-    payloadSuggestions: ["gridAndList", "gridOnly"],
-  },
 } satisfies { [key: string]: ExperimentDescriptor }
 
 export type EXPERIMENT_NAME = keyof typeof experiments

@@ -1,6 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { fireEvent } from "@testing-library/react-native"
-import { ContactInformationFormModel } from "app/Scenes/SellWithArtsy/SubmitArtwork/ContactInformation/validation"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { STEPS, SubmitSWAArtworkFlow } from "app/Scenes/SellWithArtsy/SubmitArtwork/SubmitArtwork"
 import {
   createConsignSubmission,
@@ -15,7 +14,7 @@ import { useTracking } from "react-tracking"
 import { ArtworkDetails } from "./ArtworkDetails"
 import { createOrUpdateSubmission } from "./utils/createOrUpdateSubmission"
 import { mockFormValues } from "./utils/testUtils"
-import { ArtworkDetailsFormModel } from "./validation"
+import { ArtworkDetailsFormModel, ContactInformationFormModel } from "./validation"
 
 jest.mock("../../mutations/createConsignSubmissionMutation", () => ({
   createConsignSubmission: jest.fn().mockResolvedValue("12345"),
@@ -23,35 +22,45 @@ jest.mock("../../mutations/createConsignSubmissionMutation", () => ({
 jest.mock("../../mutations/updateConsignSubmissionMutation", () => ({
   updateConsignSubmission: jest.fn().mockResolvedValue("54321"),
 }))
+jest.mock("./utils/fetchUserContactInformation", () => ({
+  fetchUserContactInformation: jest.fn().mockResolvedValue({
+    name: "User",
+    email: "user@mail.com",
+    phoneNumber: { isValid: true, originalNumber: "+49 1753627282" },
+  }),
+}))
 
 const createConsignSubmissionMock = createConsignSubmission as jest.Mock
 const updateConsignSubmissionMock = updateConsignSubmission as jest.Mock
+
 const mockEnvironment = getMockRelayEnvironment()
 
 describe("ArtworkDetails", () => {
   const TestRenderer = ({ isLastStep = false }: { isLastStep?: boolean }) => (
     <RelayEnvironmentProvider environment={mockEnvironment}>
-      <ArtworkDetails handlePress={jest.fn()} isLastStep={isLastStep} />
+      <ArtworkDetails handlePress={jest.fn()} isLastStep={isLastStep} scrollToTop={jest.fn()} />
     </RelayEnvironmentProvider>
   )
 
   afterEach(() => jest.clearAllMocks())
 
   it("renders correct explanation for form fields", () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-    expect(getByText(/Currently, artists can not sell their own work on Artsy./)).toBeTruthy()
-    expect(getByText("Learn more.")).toBeTruthy()
-    expect(getByText("All fields are required to submit an artwork.")).toBeTruthy()
+    renderWithWrappers(<TestRenderer />)
+    expect(
+      screen.getByText(/Currently, artists can not sell their own work on Artsy./)
+    ).toBeTruthy()
+    expect(screen.getByText("Learn more.")).toBeTruthy()
+    expect(screen.getByText("All fields are required to submit an artwork.")).toBeTruthy()
   })
 
   it("renders numeric-pad for year and decimal-pad for dimension inputs", async () => {
-    const { getByTestId } = renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     const inputs = {
-      year: getByTestId("Submission_YearInput"),
-      height: getByTestId("Submission_HeightInput"),
-      width: getByTestId("Submission_WidthInput"),
-      depth: getByTestId("Submission_DepthInput"),
+      year: screen.getByTestId("Submission_YearInput"),
+      height: screen.getByTestId("Submission_HeightInput"),
+      width: screen.getByTestId("Submission_WidthInput"),
+      depth: screen.getByTestId("Submission_DepthInput"),
     }
 
     await flushPromiseQueue()
@@ -86,52 +95,51 @@ describe("ArtworkDetails", () => {
     })
 
     it("corrently rendered", () => {
-      const { getByTestId } = renderWithWrappers(<TestRenderer />)
-      expect(getByTestId("Submission_ArtworkDetails_Button")).toBeTruthy()
+      renderWithWrappers(<TestRenderer />)
+      expect(screen.getByTestId("Submission_ArtworkDetails_Button")).toBeTruthy()
     })
 
     it("still corrently rendered when location is set", () => {
-      const { getByTestId } = renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
-      const locationInput = getByTestId("autocomplete-location-input")
+      const locationInput = screen.getByTestId("autocomplete-location-input")
       fireEvent.changeText(locationInput, "Berlin, Germany")
 
-      expect(getByTestId("Submission_ArtworkDetails_Button")).toBeTruthy()
+      expect(screen.getByTestId("Submission_ArtworkDetails_Button")).toBeTruthy()
     })
 
     it("disabled when a required field is missing", async () => {
-      const { getByTestId, UNSAFE_getByProps } = renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
-      const SaveButton = UNSAFE_getByProps({
+      const SaveButton = screen.UNSAFE_getByProps({
         testID: "Submission_ArtworkDetails_Button",
       })
 
       const inputs = {
-        title: getByTestId("Submission_TitleInput"),
-        year: getByTestId("Submission_YearInput"),
-        material: getByTestId("Submission_MaterialsInput"),
-        height: getByTestId("Submission_HeightInput"),
-        width: getByTestId("Submission_WidthInput"),
-        depth: getByTestId("Submission_DepthInput"),
-        provenance: getByTestId("Submission_ProvenanceInput"),
+        title: screen.getByTestId("Submission_TitleInput"),
+        year: screen.getByTestId("Submission_YearInput"),
+        material: screen.getByTestId("Submission_MaterialsInput"),
+        height: screen.getByTestId("Submission_HeightInput"),
+        width: screen.getByTestId("Submission_WidthInput"),
+        depth: screen.getByTestId("Submission_DepthInput"),
+        provenance: screen.getByTestId("Submission_ProvenanceInput"),
       }
 
       await flushPromiseQueue()
 
-      // title missing
-      fireEvent.changeText(inputs.title, "")
-      expect(SaveButton.props.disabled).toBe(true)
+      // All fields missing
+      expect(SaveButton.props.disabled).toBe(false)
 
-      // year missing
-      fireEvent.changeText(inputs.year, "")
+      // only title available
       fireEvent.changeText(inputs.title, "someTitle")
+      await flushPromiseQueue()
+
       expect(SaveButton.props.disabled).toBe(true)
 
       // material missing
       fireEvent.changeText(inputs.material, "")
       fireEvent.changeText(inputs.year, "1999")
       expect(SaveButton.props.disabled).toBe(true)
-
       // height missing
       fireEvent.changeText(inputs.height, "")
       fireEvent.changeText(inputs.material, "oil on c")
@@ -182,6 +190,7 @@ describe("ArtworkDetails", () => {
         testID: "Submission_ArtworkDetails_Button",
       })
 
+      await flushPromiseQueue()
       SaveButton.props.onPress()
       await flushPromiseQueue()
 
@@ -201,6 +210,8 @@ describe("ArtworkDetails", () => {
       const { UNSAFE_getByProps } = renderWithWrappers(
         <SubmitSWAArtworkFlow navigation={jest.fn() as any} stepsInOrder={[STEPS.ArtworkDetails]} />
       )
+
+      await flushPromiseQueue()
       const SaveButton = UNSAFE_getByProps({
         testID: "Submission_ArtworkDetails_Button",
       })

@@ -1,6 +1,5 @@
-import { CloseIcon, Flex, Text, Touchable, useColor } from "@artsy/palette-mobile"
+import { CloseIcon, Flex, FollowButton, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { ArtistCard_artist$data } from "__generated__/ArtistCard_artist.graphql"
-import { FollowButton } from "app/Components/Button/FollowButton"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 
 import { navigate } from "app/system/navigation/navigate"

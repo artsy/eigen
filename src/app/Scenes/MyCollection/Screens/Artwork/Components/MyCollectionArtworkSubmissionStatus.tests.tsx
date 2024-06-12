@@ -1,30 +1,72 @@
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { screen } from "@testing-library/react-native"
+import { MyCollectionArtworkSubmissionStatusTestQuery } from "__generated__/MyCollectionArtworkSubmissionStatusTestQuery.graphql"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { MyCollectionArtworkSubmissionStatus } from "./MyCollectionArtworkSubmissionStatus"
 
 describe("MyCollectionArtworkSubmissionStatus", () => {
-  const getWrapper = (displayText?: string) => {
-    return renderWithWrappers(<MyCollectionArtworkSubmissionStatus displayText={displayText} />)
-  }
-
-  it("Displays nothing when displayText is not passed", () => {
-    const tree = getWrapper()
-    expect(tree.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).toBe(null)
+  const { renderWithRelay } = setupTestWrapper<MyCollectionArtworkSubmissionStatusTestQuery>({
+    Component: (props) => <MyCollectionArtworkSubmissionStatus artwork={props.artwork!} />,
+    query: graphql`
+      query MyCollectionArtworkSubmissionStatusTestQuery @relay_test_operation {
+        artwork(id: "artwork-id") {
+          ...MyCollectionArtworkSubmissionStatus_submissionState
+        }
+      }
+    `,
   })
 
-  it("Returns null if the display text is not one of expected status", () => {
-    const tree = getWrapper("this is not a status text")
-    expect(tree.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).toBe(null)
+  it("Displays nothing when there is no submission", () => {
+    renderWithRelay({
+      Artwork: () => {
+        return {
+          consignmentSubmission: null,
+        }
+      },
+    })
+    expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).toBe(null)
+  })
+
+  it("Displays nothing if state is DRAFT", () => {
+    renderWithRelay({
+      Artwork: () => {
+        return {
+          consignmentSubmission: {
+            state: "DRAFT",
+          },
+        }
+      },
+    })
+    expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).toBe(null)
   })
 
   it("display Submission status and In Progress when submission is in progress", () => {
-    const tree = getWrapper("Submission in progress")
-    expect(tree.getByText("Submission Status")).toBeDefined()
-    expect(tree.getByText("In Progress")).toBeDefined()
+    renderWithRelay({
+      Artwork: () => {
+        return {
+          consignmentSubmission: {
+            state: "SUBMITTED",
+            stateLabel: "In Progress",
+          },
+        }
+      },
+    })
+    expect(screen.getByText("Submission Status")).toBeDefined()
+    expect(screen.getByText("In Progress")).toBeDefined()
   })
 
   it("display Submission status and Evaluation Complete when submission has been evaluated", () => {
-    const tree = getWrapper("Submission evaluated")
-    expect(tree.getByText("Submission Status")).toBeDefined()
-    expect(tree.getByText("Evaluation Complete")).toBeDefined()
+    renderWithRelay({
+      Artwork: () => {
+        return {
+          consignmentSubmission: {
+            state: "REJECTED",
+            stateLabel: "Evaluation Complete",
+          },
+        }
+      },
+    })
+    expect(screen.getByText("Submission Status")).toBeDefined()
+    expect(screen.getByText("Evaluation Complete")).toBeDefined()
   })
 })

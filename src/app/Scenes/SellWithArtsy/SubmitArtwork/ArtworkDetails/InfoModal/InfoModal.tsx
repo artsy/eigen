@@ -1,24 +1,37 @@
-import { Spacer, Flex, Text, Button } from "@artsy/palette-mobile"
+import { Spacer, Flex, Text, Button, ButtonProps, useSpace } from "@artsy/palette-mobile"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { ViewStyle } from "react-native"
 
 interface Props {
-  title: string
-  visible: boolean
+  buttonVariant?: ButtonProps["variant"]
+  containerStyle?: ViewStyle
   onDismiss: () => void
+  title?: string
+  visible: boolean
+  fullScreen?: boolean
 }
 
-export const InfoModal: React.FC<Props> = ({ title, visible, onDismiss, children }) => {
+export const InfoModal: React.FC<Props> = ({
+  buttonVariant,
+  children,
+  containerStyle,
+  onDismiss,
+  title,
+  visible,
+  fullScreen = false,
+}) => {
+  const space = useSpace()
   return (
-    <FancyModal visible={visible} onBackgroundPressed={onDismiss}>
-      <FancyModalHeader onRightButtonPress={onDismiss} hideBottomDivider rightCloseButton>
-        <Text fontSize={24}>{title}</Text>
+    <FancyModal visible={visible} onBackgroundPressed={onDismiss} fullScreen={fullScreen}>
+      <FancyModalHeader onLeftButtonPress={onDismiss} hideBottomDivider useXButton>
+        {!!title && <Text fontSize={24}>{title}</Text>}
       </FancyModalHeader>
 
-      <Flex m={2}>{children}</Flex>
+      <Flex style={[{ margin: space(2) }, containerStyle]}>{children}</Flex>
       <Spacer y={2} />
-      <Flex justifyContent="center" alignSelf="center" width="90%">
-        <Button block haptic onPress={onDismiss}>
+      <Flex justifyContent="center" alignSelf="center" px={2}>
+        <Button block haptic onPress={onDismiss} variant={buttonVariant}>
           Close
         </Button>
       </Flex>

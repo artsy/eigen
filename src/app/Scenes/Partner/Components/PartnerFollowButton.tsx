@@ -1,7 +1,6 @@
-import { ButtonProps } from "@artsy/palette-mobile"
+import { ButtonProps, FollowButton } from "@artsy/palette-mobile"
 import { PartnerFollowButtonFollowMutation } from "__generated__/PartnerFollowButtonFollowMutation.graphql"
 import { PartnerFollowButton_partner$data } from "__generated__/PartnerFollowButton_partner.graphql"
-import { FollowButton } from "app/Components/Button/FollowButton"
 import { Schema, Track, track as _track } from "app/utils/track"
 import React from "react"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -32,6 +31,7 @@ export class PartnerFollowButton extends React.Component<Props, State> {
     const { slug: partnerSlug, profile } = partner
     // We can only follow partners who have a profile, so we can assume if the follow
     // button is rendered, then we do have a profile.
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const { isFollowed: partnerFollowed, internalID: profileID, counts } = profile!
 
     this.setState(
@@ -67,7 +67,7 @@ export class PartnerFollowButton extends React.Component<Props, State> {
           optimisticResponse: {
             followProfile: {
               profile: {
-                id: profile!.id,
+                id: profile?.id,
                 internalID: profileID,
                 slug: partnerSlug,
                 isFollowed: !partnerFollowed,
@@ -92,14 +92,15 @@ export class PartnerFollowButton extends React.Component<Props, State> {
     const { partner } = this.props
     const hasFollows = partner.profile?.counts?.follows >= 500
     return (
-      <>
-        <FollowButton
-          haptic
-          isFollowed={!!partner.profile?.isFollowed}
-          onPress={this.handleFollowPartner.bind(this)}
-          {...(hasFollows && { followCount: partner.profile?.counts?.follows })}
-        />
-      </>
+      <FollowButton
+        haptic
+        isFollowed={!!partner.profile?.isFollowed}
+        onPress={this.handleFollowPartner.bind(this)}
+        {...(hasFollows && {
+          followCount: partner.profile?.counts?.follows,
+          longestText: "Following 999.9k",
+        })}
+      />
     )
   }
 }

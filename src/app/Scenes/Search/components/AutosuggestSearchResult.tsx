@@ -7,6 +7,7 @@ import {
   Pill,
   Text,
   Touchable,
+  ArrowRightIcon,
 } from "@artsy/palette-mobile"
 import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
@@ -20,6 +21,7 @@ import {
 } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
 import { useContext } from "react"
+import { TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"
 import { ResultWithHighlight } from "./ResultWithHighlight"
 import { IMAGE_SIZE, SearchResultImage } from "./SearchResultImage"
@@ -119,55 +121,63 @@ export const AutosuggestSearchResult: React.FC<{
 
   return (
     <>
-      <Touchable
+      <TouchableOpacity
         onPress={() => onPress()}
         testID={`autosuggest-search-result-${result.displayLabel}`}
+        style={{ flexDirection: "row", alignItems: "center" }}
       >
-        <Flex
-          height={secondaryLabel ? IMAGE_SIZE + 12 : IMAGE_SIZE}
-          flexDirection="row"
-          alignItems="center"
-        >
-          <SearchResultImage
-            imageURL={result.imageUrl}
-            initials={initials}
-            resultType={resultType}
-          />
-
-          <Spacer x={1} />
-
-          <Flex flex={1}>
-            <ResultWithHighlight
-              displayLabel={result.displayLabel ?? ""}
-              secondaryLabel={secondaryLabel}
-              highlight={highlight}
+        <Flex flex={1}>
+          <Flex
+            height={secondaryLabel ? IMAGE_SIZE + 12 : IMAGE_SIZE}
+            flexDirection="row"
+            alignItems="center"
+          >
+            <SearchResultImage
+              imageURL={result.imageUrl}
+              initials={initials}
+              resultType={resultType}
             />
 
-            {!!showResultType && !!resultType && (
-              <Text variant="xs" color="black60">
-                {resultType}
-              </Text>
+            <Spacer x={1} />
+
+            <Flex flex={1}>
+              <ResultWithHighlight
+                displayLabel={result.displayLabel ?? ""}
+                secondaryLabel={secondaryLabel}
+                highlight={highlight}
+              />
+
+              {!!showResultType && !!resultType && (
+                <Text variant="xs" color="black60">
+                  {resultType}
+                </Text>
+              )}
+            </Flex>
+
+            {!!onDelete && (
+              <Touchable
+                accessibilityLabel="Remove recent search item"
+                onPress={onDelete}
+                hitSlop={{
+                  bottom: 20,
+                  top: 20,
+                  left: 10,
+                  right: 20,
+                }}
+              >
+                <Flex pl={1}>
+                  <CloseIcon fill="black60" />
+                </Flex>
+              </Touchable>
             )}
           </Flex>
-
-          {!!onDelete && (
-            <Touchable
-              accessibilityLabel="Remove recent search item"
-              onPress={onDelete}
-              hitSlop={{
-                bottom: 20,
-                top: 20,
-                left: 10,
-                right: 20,
-              }}
-            >
-              <Flex pl={1}>
-                <CloseIcon fill="black60" />
-              </Flex>
-            </Touchable>
-          )}
         </Flex>
-      </Touchable>
+        {!onDelete && (
+          <Flex pl={1}>
+            <ArrowRightIcon height={18} width={18} />
+          </Flex>
+        )}
+      </TouchableOpacity>
 
       {!!showNavigationButtons && (
         <>

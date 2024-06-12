@@ -3,6 +3,7 @@ import { ArtworkAttributionClassType } from "__generated__/myCollectionCreateArt
 import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
 import { MyCollectionCustomArtistSchema } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
 import { GlobalStoreModel } from "app/store/GlobalStoreModel"
+import { assignDeep } from "app/store/persistence"
 import { getAttributionClassValueByName } from "app/utils/artworkRarityClassifications"
 import { Action, action, thunk, Thunk } from "easy-peasy"
 import { pick, uniqBy } from "lodash"
@@ -17,13 +18,20 @@ export interface Image {
   imageVersions?: string[]
 }
 
+export interface Location {
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  countryCode?: string | null
+}
+
 export interface ArtworkFormValues {
   artist: string
   artistDisplayName?: string
-  artistIds: string[]
+  artistIds: string[] | undefined
   artistSearchResult: AutosuggestResult | null
-  artworkLocation: string | undefined
   attributionClass: ArtworkAttributionClassType | undefined
+  collectorLocation: Location | null | undefined
   category: string // this refers to "materials" in UI
   confidentialNotes: string | undefined
   customArtist: MyCollectionCustomArtistSchema | null
@@ -49,9 +57,9 @@ export const initialFormValues: ArtworkFormValues = {
   artistDisplayName: undefined,
   artistIds: [],
   artistSearchResult: null,
-  artworkLocation: undefined,
   attributionClass: undefined,
   category: "",
+  collectorLocation: null,
   confidentialNotes: undefined,
   customArtist: null,
   date: undefined,
@@ -77,7 +85,7 @@ export interface MyCollectionArtworkModel {
     formValues: ArtworkFormValues
     artworkErrorOccurred: boolean
   }
-  setFormValues: Action<MyCollectionArtworkModel, ArtworkFormValues>
+  setFormValues: Action<MyCollectionArtworkModel, Partial<ArtworkFormValues>>
   updateFormValues: Action<MyCollectionArtworkModel, Partial<ArtworkFormValues>>
   setDirtyFormCheckValues: Action<MyCollectionArtworkModel, ArtworkFormValues>
   resetForm: Action<MyCollectionArtworkModel>
@@ -113,7 +121,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
   },
 
   setFormValues: action((state, input) => {
-    state.sessionState.formValues = input
+    assignDeep(state.sessionState.formValues, input)
   }),
 
   updateFormValues: action((state, input) => {
@@ -187,14 +195,14 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
 
     const attributionClass = getAttributionClassValueByName(artwork?.attributionClass?.name)
 
-    const editProps: any /* FIXME: any */ = {
+    const editProps = {
       artistSearchResult: {
         internalID: artwork?.artist?.internalID,
         displayLabel: artwork?.artistNames,
         imageUrl: artwork?.images?.[0]?.imageURL?.replace(":version", "square"),
         formattedNationalityAndBirthday: artwork?.artist?.formattedNationalityAndBirthday,
         initials: artwork?.artist?.initials,
-      },
+      } as AutosuggestResult,
       attributionClass,
       category: artwork.category,
       confidentialNotes: artwork.confidentialNotes,
@@ -211,14 +219,16 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       photos: artwork.images,
       title: artwork.title,
       width: artwork.width,
-      artworkLocation: artwork.artworkLocation,
+      collectorLocation: artwork.collectorLocation,
       provenance: artwork.provenance,
     }
 
+    // @ts-expect-error TODO: Fix this
     actions.setFormValues(editProps)
 
     // Baseline to check if we can cancel edit without showing
     // iOS action sheet confirmation
+    // @ts-expect-error TODO: Fix this
     actions.setDirtyFormCheckValues(editProps)
   }),
 }

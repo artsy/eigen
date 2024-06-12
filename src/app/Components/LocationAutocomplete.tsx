@@ -35,6 +35,7 @@ export const LocationAutocomplete: React.FC<LocationAutocompleteProps> = ({
   placeholder,
   initialLocation,
   onChange,
+  onFocus,
   displayLocation = "",
   floating,
   FooterComponent,
@@ -121,7 +122,10 @@ export const LocationAutocomplete: React.FC<LocationAutocompleteProps> = ({
         title={title}
         placeholder={placeholder}
         onChangeText={setQuery}
-        onFocus={reset}
+        onFocus={(e) => {
+          onFocus?.(e)
+          reset()
+        }}
         onBlur={handleBlur}
         value={selectedLocation ? selectedLocation.name : query}
       />

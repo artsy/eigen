@@ -23,8 +23,6 @@
 		1A4B97C9283CDD5A00878EAE /* ARNotificationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97B0283CDD5900878EAE /* ARNotificationsManager.m */; };
 		1A4B97CB283CDD5A00878EAE /* ARCity+GeospatialAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97B5283CDD5900878EAE /* ARCity+GeospatialAdditions.m */; };
 		1A4B97CC283CDD5A00878EAE /* ARCity.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97B6283CDD5900878EAE /* ARCity.m */; };
-		1A4B97CD283CDD5A00878EAE /* AROpaqueImageViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97B9283CDD5900878EAE /* AROpaqueImageViewManager.m */; };
-		1A4B97CE283CDD5A00878EAE /* AROpaqueImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97BA283CDD5900878EAE /* AROpaqueImageView.m */; };
 		1A4E5119283F91BA0008EF35 /* Artsy+UILabels.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E50FB283F91B90008EF35 /* Artsy+UILabels.m */; };
 		1A4E511A283F91BA0008EF35 /* UIView+ARDrawing.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E50FC283F91B90008EF35 /* UIView+ARDrawing.m */; };
 		1A4E511B283F91BA0008EF35 /* ARSpinner.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E5104283F91B90008EF35 /* ARSpinner.m */; };
@@ -594,10 +592,6 @@
 		1A4B97B4283CDD5900878EAE /* ARCity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCity.h; sourceTree = "<group>"; };
 		1A4B97B5283CDD5900878EAE /* ARCity+GeospatialAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARCity+GeospatialAdditions.m"; sourceTree = "<group>"; };
 		1A4B97B6283CDD5900878EAE /* ARCity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCity.m; sourceTree = "<group>"; };
-		1A4B97B8283CDD5900878EAE /* AROpaqueImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROpaqueImageView.h; sourceTree = "<group>"; };
-		1A4B97B9283CDD5900878EAE /* AROpaqueImageViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROpaqueImageViewManager.m; sourceTree = "<group>"; };
-		1A4B97BA283CDD5900878EAE /* AROpaqueImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROpaqueImageView.m; sourceTree = "<group>"; };
-		1A4B97BB283CDD5900878EAE /* AROpaqueImageViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROpaqueImageViewManager.h; sourceTree = "<group>"; };
 		1A4E50FB283F91B90008EF35 /* Artsy+UILabels.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Artsy+UILabels.m"; sourceTree = "<group>"; };
 		1A4E50FC283F91B90008EF35 /* UIView+ARDrawing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ARDrawing.m"; sourceTree = "<group>"; };
 		1A4E50FD283F91B90008EF35 /* Artsy+UILabels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Artsy+UILabels.h"; sourceTree = "<group>"; };
@@ -968,7 +962,7 @@
 		CB762B362911A5E100881194 /* ar_vir_opening_frame.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ar_vir_opening_frame.jpg; sourceTree = "<group>"; };
 		CBA7CF22282BF6310025AEA5 /* Artsy_Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Artsy_Tests-Info.plist"; sourceTree = "<group>"; };
 		CBD794D62BBB5622003B3CB5 /* StarscreamExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarscreamExtensions.swift; sourceTree = "<group>"; };
-		CBD794DA2BBC40A4003B3CB5 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = file; name = PrivacyInfo.xcprivacy; path = Artsy/App_Resources/PrivacyInfo.xcprivacy; sourceTree = SOURCE_ROOT; };
+		CBD794DA2BBC40A4003B3CB5 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Artsy/App_Resources/PrivacyInfo.xcprivacy; sourceTree = SOURCE_ROOT; };
 		CBE2946129E4C19000AA77DD /* VirtualArtwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualArtwork.swift; sourceTree = "<group>"; };
 		CBE3210827D9615000395A93 /* OldAdminView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OldAdminView.swift; sourceTree = "<group>"; };
 		CBE3210927D9615000395A93 /* ARTCityGuideViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTCityGuideViewManager.m; sourceTree = "<group>"; };
@@ -1451,7 +1445,6 @@
 				1A4B979E283CDD5900878EAE /* ViewControllers */,
 				1A4B97AB283CDD5900878EAE /* EigenCommunications */,
 				1A4B97B2283CDD5900878EAE /* Data */,
-				1A4B97B7283CDD5900878EAE /* OpaqueImageViewComponent */,
 			);
 			path = Emission;
 			sourceTree = "<group>";
@@ -1521,17 +1514,6 @@
 				1A4B97B6283CDD5900878EAE /* ARCity.m */,
 			);
 			path = Data;
-			sourceTree = "<group>";
-		};
-		1A4B97B7283CDD5900878EAE /* OpaqueImageViewComponent */ = {
-			isa = PBXGroup;
-			children = (
-				1A4B97B8283CDD5900878EAE /* AROpaqueImageView.h */,
-				1A4B97B9283CDD5900878EAE /* AROpaqueImageViewManager.m */,
-				1A4B97BA283CDD5900878EAE /* AROpaqueImageView.m */,
-				1A4B97BB283CDD5900878EAE /* AROpaqueImageViewManager.h */,
-			);
-			path = OpaqueImageViewComponent;
 			sourceTree = "<group>";
 		};
 		1A4E50F9283F91B90008EF35 /* ArtsyUILabels */ = {
@@ -3929,7 +3911,6 @@
 				1A4B97CB283CDD5A00878EAE /* ARCity+GeospatialAdditions.m in Sources */,
 				CBE326D527E275A300395A93 /* RefinementOptionsViewController+Private.swift in Sources */,
 				CBE326BD27E275A300395A93 /* LiveAuctionBidHistoryViewController.swift in Sources */,
-				1A4B97CE283CDD5A00878EAE /* AROpaqueImageView.m in Sources */,
 				CBE3267627E275A300395A93 /* NSAttributedString+Additions.swift in Sources */,
 				1A4E5124283F91BA0008EF35 /* ARButtonSubclasses.m in Sources */,
 				CBE326ED27E275A300395A93 /* SCNArtworkNode.m in Sources */,
@@ -4039,7 +4020,6 @@
 				CBE3279027E275A400395A93 /* Gene.m in Sources */,
 				CBE3276F27E275A400395A93 /* LiveAuctionSocketCommunicator.swift in Sources */,
 				CBE3270F27E275A300395A93 /* SaleAuctionStatus.swift in Sources */,
-				1A4B97CD283CDD5A00878EAE /* AROpaqueImageViewManager.m in Sources */,
 				1A4B97C4283CDD5A00878EAE /* ARCityComponentViewController.m in Sources */,
 				CBE3269E27E275A300395A93 /* AROptions.m in Sources */,
 				CBE3211E27D9615000395A93 /* ARTLiveAuctionViewManager.m in Sources */,

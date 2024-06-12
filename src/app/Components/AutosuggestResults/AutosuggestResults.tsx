@@ -282,6 +282,7 @@ const AutosuggestResultsContainer = createPaginationContainer(
                 }
                 targetSupply {
                   isP1
+                  isTargetSupply
                 }
                 formattedNationalityAndBirthday
                 internalID

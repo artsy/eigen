@@ -1,52 +1,54 @@
-import { OwnerType, ContextModule } from "@artsy/cohesion"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import {
+  Box,
   CollapsibleMenuItem,
-  Text,
-  Separator,
   Join,
   Screen,
+  Separator,
+  Text,
   useScreenDimensions,
-  Box,
 } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { NavigationContainer } from "@react-navigation/native"
-import { createStackNavigator, StackScreenProps } from "@react-navigation/stack"
+import { StackScreenProps, createStackNavigator } from "@react-navigation/stack"
 import { captureMessage } from "@sentry/react-native"
 import { ErrorView } from "app/Components/ErrorView/ErrorView"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { SubmitArtworkForm } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
+import { fetchUserContactInformation } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/fetchUserContactInformation"
 import {
   artworkDetailsCompletedEvent,
   consignmentSubmittedEvent,
-  contactInformationCompletedEvent,
   toggledAccordionEvent,
   uploadPhotosCompletedEvent,
 } from "app/Scenes/SellWithArtsy/utils/TrackingEvent"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
+import { useReloadedDevNavigationState } from "app/system/navigation/useReloadedDevNavigationState"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { isEqual } from "lodash"
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
 import { ArtworkDetails } from "./ArtworkDetails/ArtworkDetails"
 import { createOrUpdateSubmission } from "./ArtworkDetails/utils/createOrUpdateSubmission"
-import { ArtworkDetailsFormModel } from "./ArtworkDetails/validation"
+import { ArtworkDetailsFormModel, ContactInformationFormModel } from "./ArtworkDetails/validation"
 import { ArtworkSubmittedScreen } from "./ArtworkSubmitted"
-import { ContactInformationQueryRenderer } from "./ContactInformation/ContactInformation"
-import { ContactInformationFormModel } from "./ContactInformation/validation"
 import { UploadPhotos } from "./UploadPhotos/UploadPhotos"
+import type { SubmitArtworkScreen as SubmitArtworkScreenT } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
+
+const SUBMIT_ARTWORK_NAVIGATION_STACK_STATE_KEY = "SUBMIT_ARTWORK_NAVIGATION_STACK_STATE_KEY"
 
 export enum STEPS {
   ArtworkDetails = "ArtworkDetails",
   UploadPhotos = "UploadPhotos",
-  ContactInformation = "ContactInformation",
 }
 
-const STEPS_IN_ORDER: STEPS[] = [STEPS.ContactInformation, STEPS.ArtworkDetails, STEPS.UploadPhotos]
+const STEPS_IN_ORDER: STEPS[] = [STEPS.ArtworkDetails, STEPS.UploadPhotos]
 
 type SubmitArtworkScreenNavigationProps = StackScreenProps<
   SubmitArtworkOverviewNavigationStack,
@@ -72,17 +74,30 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
   const { showActionSheetWithOptions } = useActionSheet()
   const { safeAreaInsets } = useScreenDimensions()
 
-  const {
-    submissionId: submissionID,
-    artworkDetails,
-    dirtyArtworkDetailsValues,
-  } = GlobalStore.useAppState((store) => store.artworkSubmission.submission)
+  const { submissionId: submissionID, artworkDetails } = GlobalStore.useAppState(
+    (store) => store.artworkSubmission.submission
+  )
 
-  const { userID, userEmail } = GlobalStore.useAppState((state) => state.auth)
+  const { userID } = GlobalStore.useAppState((state) => state.auth)
+  const [userEmail, setUserEmail] = useState("")
+  const [userPhone, setUserPhone] = useState("")
+  const [userName, setUserName] = useState("")
 
-  // By default the userEmail is the user's email, but they can change that email in the form,
-  // and when they do we want to continue the tracking with the new email
-  const [desiredEmail, setDesiredEmail] = useState(userEmail)
+  const scrollViewRef = useRef<ScrollView>(null)
+
+  useEffect(() => {
+    fetchUserContactInformation().then((me) => {
+      if (me.email) {
+        setUserEmail(me.email)
+      }
+      if (me.phoneNumber?.isValid && me.phoneNumber?.originalNumber) {
+        setUserPhone(me.phoneNumber?.originalNumber)
+      }
+      if (me.name) {
+        setUserName(me.name)
+      }
+    })
+  }, [])
 
   const [activeStep, setActiveStep] = useState(0)
 
@@ -102,8 +117,6 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
       trackEvent(artworkDetailsCompletedEvent(id, email, userID))
     } else if (step === STEPS.UploadPhotos) {
       trackEvent(uploadPhotosCompletedEvent(id, email, userID))
-    } else if (step === STEPS.ContactInformation) {
-      trackEvent(contactInformationCompletedEvent(id, email, userID))
     }
   }
 
@@ -112,19 +125,24 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
   ) => {
     const isLastStep = activeStep === stepsInOrder.length - 1
 
+    const contactInformation = {
+      userName,
+      userEmail,
+      userPhone,
+    }
+
     const values = {
+      ...contactInformation,
       ...artworkDetails,
       ...formValues,
       state: (isLastStep ? "SUBMITTED" : undefined) as ArtworkDetailsFormModel["state"],
     } as ArtworkDetailsFormModel & ContactInformationFormModel
 
-    const email = values.userEmail ? values.userEmail : desiredEmail
-
     try {
       const id = await createOrUpdateSubmission(values, submissionID)
 
       if (id) {
-        track(id, email)
+        track(id, userEmail)
 
         if (isLastStep) {
           refreshMyCollection()
@@ -152,9 +170,6 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
       return
     }
 
-    if (email && email !== desiredEmail) {
-      setDesiredEmail(email)
-    }
     expandCollapsibleMenuContent(activeStep + 1)
     setActiveStep(activeStep + 1)
   }
@@ -168,7 +183,15 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
           ...staticValues,
           title: "Artwork Details",
           contextModule: ContextModule.artworkDetails,
-          Content: <ArtworkDetails handlePress={handlePress} isLastStep={isLastStep} />,
+          Content: (
+            <ArtworkDetails
+              handlePress={handlePress}
+              isLastStep={isLastStep}
+              scrollToTop={() => {
+                scrollViewRef.current?.scrollTo({ y: 0 })
+              }}
+            />
+          ),
         }
       case STEPS.UploadPhotos:
         return {
@@ -177,20 +200,10 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
           contextModule: ContextModule.uploadPhotos,
           Content: <UploadPhotos handlePress={handlePress} isLastStep={isLastStep} />,
         }
-      case STEPS.ContactInformation:
-        return {
-          ...staticValues,
-          title: "Contact Information",
-          contextModule: ContextModule.contactInformation,
-          Content: (
-            <ContactInformationQueryRenderer handlePress={handlePress} isLastStep={isLastStep} />
-          ),
-        }
     }
   })
 
   const stepsRefs = useRef<CollapsibleMenuItem[]>(new Array(items.length).fill(null)).current
-  const scrollViewRef = useRef<ScrollView>(null)
 
   const expandCollapsibleMenuContent = (indexToExpand: number) => {
     setActiveStep(indexToExpand)
@@ -204,13 +217,16 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
 
     if (indexToCollapse >= 0) {
       stepsRefs[indexToCollapse].collapse(() => {
-        setTimeout(() => {
-          if (indexToExpand > 0) {
-            stepsRefs[indexToExpand - 1].completed()
-          }
+        setTimeout(
+          () => {
+            if (indexToExpand > 0) {
+              stepsRefs[indexToExpand - 1].completed()
+            }
 
-          stepsRefs[indexToExpand].expand(() => scrollToStep())
-        }, 100)
+            stepsRefs[indexToExpand].expand(() => scrollToStep())
+          },
+          __TEST__ ? 0 : 100
+        )
       })
     } else {
       stepsRefs[indexToExpand].expand(() => scrollToStep())
@@ -218,13 +234,11 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
   }
 
   const handleBackPress = async () => {
-    const isFormDirty = !isEqual(artworkDetailsFromValuesRef.current, dirtyArtworkDetailsValues)
-
     /*
     action sheet is displayed only on 1st screen (Artwork Details)
     since form data is saved on the server and a draft submission is created  after the first step
     */
-    if (activeStep === 0 && isFormDirty) {
+    if (activeStep === 0) {
       const leaveSubmission = await new Promise((resolve) =>
         showActionSheetWithOptions(
           {
@@ -313,9 +327,36 @@ export type SubmitArtworkOverviewNavigationStack = {
 
 const StackNavigator = createStackNavigator<SubmitArtworkOverviewNavigationStack>()
 
-export const SubmitArtwork = () => {
+export interface SubmitArtworkProps {
+  initialValues: Partial<ArtworkDetailsFormModel>
+  initialStep: SubmitArtworkScreenT
+  navigationState?: string
+  submissionID?: string
+  hasStartedFlowFromMyCollection?: boolean
+}
+
+export const SubmitArtwork: React.FC<SubmitArtworkProps> = (props) => {
+  const { isReady, initialState, saveSession } = useReloadedDevNavigationState(
+    SUBMIT_ARTWORK_NAVIGATION_STACK_STATE_KEY
+  )
+  const enableNewSubmissionFlow = useFeatureFlag("AREnableNewSubmissionFlow")
+
+  if (!isReady) {
+    return null
+  }
+
+  if (enableNewSubmissionFlow) {
+    return <SubmitArtworkForm {...props} />
+  }
+
   return (
-    <NavigationContainer independent>
+    <NavigationContainer
+      independent
+      initialState={initialState}
+      onStateChange={(state) => {
+        saveSession(state)
+      }}
+    >
       <StackNavigator.Navigator
         detachInactiveScreens={false}
         screenOptions={{

@@ -3,14 +3,17 @@ import { CTAButton } from "app/Components/Button/CTAButton"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { Formik } from "formik"
-import React from "react"
+import React, { useState } from "react"
+import { Alert } from "react-native"
 import { ArtworkDetailsForm } from "./ArtworkDetailsForm"
 import { ArtworkDetailsFormModel, artworkDetailsValidationSchema } from "./validation"
 
 export const ArtworkDetails: React.FC<{
-  handlePress: (formValues: ArtworkDetailsFormModel) => void
+  handlePress: (formValues: ArtworkDetailsFormModel) => Promise<void>
   isLastStep: boolean
-}> = ({ handlePress, isLastStep }) => {
+  scrollToTop?: () => void
+}> = ({ handlePress, isLastStep, scrollToTop }) => {
+  const [isLoading, setIsLoading] = useState(false)
   const { artworkDetails } = GlobalStore.useAppState((state) => state.artworkSubmission.submission)
 
   return (
@@ -34,21 +37,44 @@ export const ArtworkDetails: React.FC<{
         initialValues={artworkDetails}
         onSubmit={handlePress}
         validationSchema={artworkDetailsValidationSchema}
-        validateOnMount
+        // Validate on blur only when injecting existing values from my collection
+        validateOnMount={artworkDetails.myCollectionArtworkID ? true : false}
+        validateOnBlur
+        // react-native-testing-library does not trigger the validation on change
+        // so we need to force it to validate on change in tests to make sure the validation works
+        validateOnChange={__TEST__ ? true : false}
       >
-        {({ values, isValid }) => (
-          <>
-            <ArtworkDetailsForm />
-            <Spacer y={2} />
-            <CTAButton
-              disabled={!isValid}
-              onPress={() => handlePress(values)}
-              testID="Submission_ArtworkDetails_Button"
-            >
-              {isLastStep ? "Submit Artwork" : "Save & Continue"}
-            </CTAButton>
-          </>
-        )}
+        {({ values, isValid, dirty, validateForm }) => {
+          return (
+            <>
+              <ArtworkDetailsForm />
+              <Spacer y={2} />
+              <CTAButton
+                disabled={(!isValid && dirty) || isLoading}
+                loading={isLoading}
+                onPress={async () => {
+                  try {
+                    setIsLoading(true)
+                    const errors = await validateForm()
+                    if (Object.keys(errors).length === 0) {
+                      await handlePress(values)
+                    } else {
+                      scrollToTop?.()
+                    }
+                  } catch (error) {
+                    console.error(error)
+                    Alert.alert("Could not save artwork details. Please try again.")
+                  } finally {
+                    setIsLoading(false)
+                  }
+                }}
+                testID="Submission_ArtworkDetails_Button"
+              >
+                {isLastStep ? "Submit Artwork" : "Save & Continue"}
+              </CTAButton>
+            </>
+          )
+        }}
       </Formik>
     </Flex>
   )

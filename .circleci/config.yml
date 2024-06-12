@@ -4,7 +4,8 @@ orbs:
   node: circleci/node@5.2.0
   queue: eddiewebb/queue@2.2.1
   horizon: artsy/release@0.0.1
-  macos: circleci/macos@2.4.1
+  macos: circleci/macos@2.5.1
+  android: circleci/android@2.5.0
 
 commands:
   await-previous-builds:
@@ -119,6 +120,8 @@ commands:
       - restore_cache:
           keys:
             - v10-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+      - android/change-java-version:
+          java-version: 11
       - run:
           name: Quit early if possible
           command: |
@@ -172,14 +175,44 @@ jobs:
       - checkout
       - run: ./scripts/detect-secrets/secrets-check-all
 
-  deploy-nightly-beta:
-    executor:
-      name: node/default
-      tag: "20.9.0"
-    resource_class: small
+  run-nightly-tasks:
+    environment:
+      BUNDLE_PATH: .vendor
+
+    macos:
+      xcode: 15.1
+      resource_class: macos.m1.medium.gen1
 
     steps:
       - checkout
+      - generate-checksums
+      - setup-awscli
+      - setup-env-file
+      - install-gems
+      - run:
+          name: Download android assets
+          command: ./scripts/setup/download-assets-android
+      - run:
+          name: Update rollout if needed
+          command: ./scripts/deploys/update-android-rollout-if-needed
+
+  deploy-nightly-beta:
+    environment:
+      BUNDLE_PATH: .vendor
+
+    macos:
+      xcode: 15.1
+      resource_class: macos.m1.medium.gen1
+
+    steps:
+      - checkout
+      - generate-checksums
+      - setup-awscli
+      - setup-env-file
+      - install-gems
+      - run:
+          name: Create next version if needed
+          command: ./scripts/deploys/create-next-version-if-needed
       - run:
           name: Deploy betas
           command: ./scripts/deploys/deploy-beta-both
@@ -428,6 +461,71 @@ jobs:
           name: Deploy if beta - play store and firebase
           command: ./scripts/deploys/deploy-if-beta-branch-android BOTH
 
+  build-maestro-nightly-android:
+    docker:
+      - image: cimg/android:2024.01.1-node
+    resource_class: large
+
+    steps:
+      - prep-android-env
+      - checkout
+      - generate-query-map
+      - run:
+          name: Download fonts from s3
+          command: ./scripts/setup/download-fonts
+      - run:
+          name: Download android assets
+          command: ./scripts/setup/download-assets-android
+      - run:
+          name: Upload Android build to Maestro App Quality Copilot
+          command: ./scripts/maestro/build-android.sh
+      - run:
+          name: Run the nightly-android test suite
+          no_output_timeout: 20m
+          command: ./scripts/maestro/run-android-nightly.sh
+
+  build-maestro-nightly-ios:
+    environment:
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
+
+    macos:
+      xcode: 15.1
+      resource_class: macos.m1.medium.gen1
+
+    steps:
+      - attach_workspace:
+          at: ../workspace
+      - run:
+          name: Clear project dir
+          command: |
+            rm -rf  /Users/distiller/project/*
+      - checkout
+      - attach_workspace:
+          at: .
+      - install-node
+      - setup-awscli
+      - setup-env-file
+      - run:
+          name: Download fonts from s3
+          command: ./scripts/setup/download-fonts
+      - run:
+          name: Download ios assets
+          command: ./scripts/setup/download-assets-ios
+      - install-node-modules
+      - run-relay-compiler
+      - update-echo
+      - install-gems
+      - install-cocoapods
+      - macos/install-rosetta
+      - run:
+          name: Upload iOS build to Maestro App Quality Copilot
+          no_output_timeout: 20m
+          command: ./scripts/maestro/build-ios.sh
+      - run:
+          name: Run the nightly-ios test suite
+          no_output_timeout: 20m
+          command: ./scripts/maestro/run-ios-nightly.sh
+
 workflows:
   version: 2
   nightly:
@@ -440,6 +538,9 @@ workflows:
                 - main
     jobs:
       - deploy-nightly-beta
+      - run-nightly-tasks
+      - build-maestro-nightly-ios
+      - build-maestro-nightly-android
 
   flag-check:
     triggers:

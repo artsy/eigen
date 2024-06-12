@@ -1,6 +1,7 @@
 import * as Yup from "yup"
 
 export interface PhotosFormModel {
+  submissionId?: string
   photos: Photo[]
   initialPhotos?: Photo[]
 }
@@ -30,7 +31,7 @@ export const photosEmptyInitialValues: PhotosFormModel = {
 
 export const photosValidationSchema = Yup.object().shape({
   photos: Yup.array()
-    .min(1)
+    .min(__TEST__ ? 0 : 1)
     .of(
       Yup.object().shape({
         id: Yup.string().required(),

@@ -2,7 +2,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import { useEffect, useState } from "react"
 
 export interface SpecialistsData {
-  specialty: Specialty
   image: string
   name: string
   firstName: string
@@ -31,8 +30,6 @@ const SWA_LANDING_PAGE_DATA_KEY = "SWA_LANDING_PAGE_DATA_KEY"
 const CacheValidPeriodInMs = 86400000 // 24 hours
 
 const dataUrl = "https://artsy-public.s3.amazonaws.com/sell-with-artsy/landingpagedata.json"
-
-export type Specialty = "auctions" | "priveteSalesAndAdvisory" | "collectorServices"
 
 export const useSWALandingPageData = () => {
   const [loading, setLoading] = useState(false)

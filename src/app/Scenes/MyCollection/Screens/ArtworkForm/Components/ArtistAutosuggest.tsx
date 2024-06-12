@@ -1,5 +1,8 @@
 import { AddIcon, Box, Button, Flex, Input, Spacer, Text, Touchable } from "@artsy/palette-mobile"
-import { ArtistAutosuggestQuery } from "__generated__/ArtistAutosuggestQuery.graphql"
+import {
+  ArtistAutosuggestQuery,
+  ArtistAutosuggestQuery$data,
+} from "__generated__/ArtistAutosuggestQuery.graphql"
 import {
   AutosuggestResult,
   AutosuggestResults,
@@ -11,17 +14,36 @@ import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/Search
 import { IMAGE_SIZE } from "app/Scenes/Search/components/SearchResultImage"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { sortBy } from "lodash"
-import { useLazyLoadQuery, graphql } from "react-relay"
+import { ReactElement, isValidElement } from "react"
+import { graphql, useLazyLoadQuery } from "react-relay"
 
+export type ArtistAutoSuggestNode = NonNullable<
+  ExtractNodeType<
+    NonNullable<NonNullable<ArtistAutosuggestQuery$data["me"]>["userInterestsConnection"]>
+  >
+>
 interface ArtistAutosuggestProps {
+  disableCustomArtists?: boolean
+  hideCollectedArtists?: boolean
+  Hint?: ReactElement
+  loading?: boolean
+  onlyP1Artists?: boolean
   onResultPress: (result: AutosuggestResult) => void
   onSkipPress?: (artistDisplayName: string) => void
+  autoFocus?: boolean
 }
 
 export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
+  disableCustomArtists,
+  hideCollectedArtists = false,
+  Hint,
+  loading = false,
+  onlyP1Artists = false,
   onResultPress,
   onSkipPress,
+  autoFocus = typeof jest === "undefined",
 }) => {
   const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
 
@@ -36,9 +58,19 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
     { fetchPolicy: "network-only" }
   )
 
-  const collectedArtists = extractNodes(queryData.me?.userInterestsConnection).filter(
-    (node) => node.__typename === "Artist"
-  )
+  let collectedArtists = !hideCollectedArtists
+    ? extractNodes(queryData.me?.userInterestsConnection).filter(
+        (node) => node.__typename === "Artist"
+      )
+    : []
+
+  if (onlyP1Artists) {
+    collectedArtists = collectedArtists.filter(
+      // This is always true, it's just to make TypeScript happy
+      (node) => node.__typename === "Artist" && node.targetSupply?.isTargetSupply
+    )
+  }
+
   const filteredCollecteArtists = sortBy(
     filterArtistsByKeyword(
       collectedArtists as Array<{ displayLabel: string | null }>,
@@ -50,24 +82,30 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
   const showResults = filteredCollecteArtists.length || trimmedQuery.length > 2
   const onlyShowCollectedArtists = filteredCollecteArtists.length && trimmedQuery.length < 2
 
-  const HeaderComponent = () => (
-    <>
-      <Flex flexDirection="row" mt={1} mb={2}>
-        <Text variant="xs" color="black60">
-          Can't find the artist?{" "}
-        </Text>
-        <Touchable
-          onPress={() => onSkipPress?.(trimmedQuery)}
-          testID="my-collection-artwork-form-artist-skip-button"
-          hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
-        >
-          <Text variant="xs" color="black60" underline>
-            Add their name.
+  const HeaderComponent = () => {
+    if (disableCustomArtists) {
+      return null
+    }
+
+    return (
+      <>
+        <Flex flexDirection="row" mt={1} mb={2}>
+          <Text variant="xs" color="black60">
+            Can't find the artist?{" "}
           </Text>
-        </Touchable>
-      </Flex>
-    </>
-  )
+          <Touchable
+            onPress={() => onSkipPress?.(trimmedQuery)}
+            testID="my-collection-artwork-form-artist-skip-button"
+            hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
+          >
+            <Text variant="xs" color="black60" underline>
+              Add their name.
+            </Text>
+          </Touchable>
+        </Flex>
+      </>
+    )
+  }
 
   return (
     <SearchContext.Provider value={searchProviderValues}>
@@ -79,9 +117,12 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
           onBlur={formik.handleBlur("artist")}
           value={formik.values.artist}
           enableClearButton
-          autoFocus={typeof jest === "undefined"}
+          autoFocus={autoFocus}
           autoCorrect={false}
+          spellCheck={false}
+          loading={loading}
         />
+        {trimmedQuery === "" && isValidElement(Hint) && Hint}
         {showResults ? (
           <Box height="100%" pb={6}>
             <AutosuggestResults
@@ -91,11 +132,11 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
               showResultType={false}
               showQuickNavigationButtons={false}
               onResultPress={onResultPress}
-              HeaderComponent={HeaderComponent}
+              HeaderComponent={!disableCustomArtists ? HeaderComponent : undefined}
               ListHeaderComponent={() =>
                 onlyShowCollectedArtists ? (
                   <Text mb={2} mt={2}>
-                    Artists in My Collection
+                    {onlyP1Artists ? "Eligible" : ""} Artists in My Collection
                   </Text>
                 ) : (
                   <Spacer y={2} />
@@ -104,19 +145,23 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
               ListEmptyComponent={() => (
                 <Flex width="100%" my={2}>
                   <Text>We didn't find "{trimmedQuery}" on Artsy.</Text>
-                  <Text>You can add their name in the artwork details.</Text>
-                  <Button
-                    variant="outline"
-                    onPress={() => onSkipPress?.(trimmedQuery)}
-                    mt={4}
-                    block
-                  >
-                    Add Artist
-                  </Button>
+                  {!disableCustomArtists && (
+                    <>
+                      <Text>You can add their name in the artwork details.</Text>
+                      <Button
+                        variant="outline"
+                        onPress={() => onSkipPress?.(trimmedQuery)}
+                        mt={4}
+                        block
+                      >
+                        Add Artist
+                      </Button>
+                    </>
+                  )}
                 </Flex>
               )}
               ListFooterComponent={() =>
-                !onlyShowCollectedArtists && !!enableCollectedArtists ? (
+                !disableCustomArtists && !onlyShowCollectedArtists && !!enableCollectedArtists ? (
                   <Touchable
                     accessibilityLabel="Create New Artist"
                     haptic
@@ -164,11 +209,12 @@ const ArtistAutosuggestScreenQuery = graphql`
           node {
             ... on Artist {
               __typename
+
               counts {
                 artworks
               }
               targetSupply {
-                isP1
+                isTargetSupply
               }
               displayLabel
               formattedNationalityAndBirthday

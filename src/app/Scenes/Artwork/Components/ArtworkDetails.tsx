@@ -1,15 +1,16 @@
 import { Spacer, Flex, Box, Text, Join } from "@artsy/palette-mobile"
 import { ArtworkDetails_artwork$key } from "__generated__/ArtworkDetails_artwork.graphql"
-import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
+import { Schema } from "app/utils/track"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { graphql, useFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 import { ArtworkDetailsRow } from "./ArtworkDetailsRow"
 import { RequestConditionReportQueryRenderer } from "./RequestConditionReport"
 
 // Number of items to display when read more is visible
-const COLLAPSED_COUNT = 4
+const COLLAPSED_COUNT = 3
 
 interface ArtworkDetailsProps {
   artwork: ArtworkDetails_artwork$key
@@ -21,47 +22,14 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({
   showReadMore = false,
 }) => {
   const artworkData = useFragment(artworkDetailsFragment, artwork)
-  const preferredMetric = GlobalStore.useAppState((state) => state.userPrefs.metric)
 
   const listItems = [
     {
       title: "Medium",
       value: artworkData?.mediumType?.name && (
         <TouchableWithoutFeedback onPress={() => navigate(`/artwork/${artworkData.slug}/medium`)}>
-          <Text variant="sm" color="black100" style={{ textDecorationLine: "underline" }}>
+          <Text variant="xs" color="black100" style={{ textDecorationLine: "underline" }}>
             {artworkData?.mediumType?.name}
-          </Text>
-        </TouchableWithoutFeedback>
-      ),
-    },
-    {
-      title: "Materials",
-      value: artworkData?.medium,
-    },
-    {
-      title: "Size",
-      value: preferredMetric === "cm" ? artworkData?.dimensions?.cm : artworkData?.dimensions?.in,
-    },
-    {
-      title: "Rarity",
-      value: artworkData?.attributionClass?.name && (
-        <TouchableWithoutFeedback onPress={() => navigate(`/artwork-classifications`)}>
-          <Text variant="sm" color="black100" style={{ textDecorationLine: "underline" }}>
-            {artworkData?.attributionClass?.name}
-          </Text>
-        </TouchableWithoutFeedback>
-      ),
-    },
-    {
-      title: "Edition",
-      value: (artworkData.editionSets ?? []).length < 2 ? artworkData.editionOf : null,
-    },
-    {
-      title: "Certificate of Authenticity",
-      value: artworkData?.certificateOfAuthenticity?.details && (
-        <TouchableWithoutFeedback onPress={() => navigate(`/artwork-certificate-of-authenticity`)}>
-          <Text variant="sm" color="black100" style={{ textDecorationLine: "underline" }}>
-            {artworkData?.certificateOfAuthenticity?.details}
           </Text>
         </TouchableWithoutFeedback>
       ),
@@ -80,12 +48,16 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({
       ),
     },
     {
-      title: "Frame",
-      value: artworkData?.framed?.details,
-    },
-    {
       title: "Signature",
       value: artworkData?.signatureInfo?.details,
+    },
+    {
+      title: "Certificate of Authenticity",
+      value: artworkData?.certificateOfAuthenticity?.details && (
+        <Text variant="xs" color="black100">
+          {artworkData?.certificateOfAuthenticity?.details}
+        </Text>
+      ),
     },
     {
       title: "Series",
@@ -101,9 +73,24 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({
 
   const allDisplayItems = listItems.filter((item) => !!item.value)
 
-  const [isCollapsed, setIsCollapsed] = React.useState(showReadMore && allDisplayItems.length > 3)
+  const [isCollapsed, setIsCollapsed] = React.useState(
+    showReadMore && allDisplayItems.length > COLLAPSED_COUNT
+  )
 
   const displayItems = isCollapsed ? allDisplayItems.slice(0, COLLAPSED_COUNT) : allDisplayItems
+
+  const { trackEvent } = useTracking()
+
+  const handleReadMoreTap = () => {
+    const properties = {
+      action_type: Schema.ActionTypes.Tap,
+      context_module: "artworkDetails",
+      subject: "Read more",
+      type: "Link",
+    }
+    trackEvent(properties)
+    setIsCollapsed(false)
+  }
 
   if (!displayItems.length) {
     return null
@@ -119,11 +106,12 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({
         {!!isCollapsed && (
           <Text
             mt={1}
-            variant="sm"
+            ml={1}
+            variant="xs"
             color="black100"
             textAlign="center"
             underline
-            onPress={() => setIsCollapsed(false)}
+            onPress={() => handleReadMoreTap()}
           >
             Read More
           </Text>

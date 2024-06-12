@@ -2,6 +2,7 @@ import { Box, Input } from "@artsy/palette-mobile"
 import SearchIcon from "app/Components/Icons/SearchIcon"
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/validation"
+import { AnimateHeight } from "app/utils/animations/AnimateHeight"
 import { useFormikContext } from "formik"
 import React, { useEffect, useState } from "react"
 import { ArtistAutosuggestResult, ArtistAutosuggestResults } from "./ArtistAutosuggestResults"
@@ -21,6 +22,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
     values: { artist, artistId },
     setFieldValue,
     errors,
+    validateField,
   } = useFormikContext<ArtworkDetailsFormModel>()
   const searchProviderValues = useSearchProviderValues(artist)
 
@@ -49,19 +51,31 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
 
   return (
     <SearchContext.Provider value={searchProviderValues}>
-      <Input
-        title={title || undefined}
-        placeholder={placeholder}
-        icon={<SearchIcon width={18} height={18} />}
-        onChangeText={onArtistSearchTextChange}
-        value={artist}
-        accessibilityLabel="Artist"
-        onBlur={() => setFocused(false)}
-        onFocus={() => setFocused(true)}
-        enableClearButton
-        testID="Submission_ArtistInput"
-        error={!focused && artist && !isArtistSelected ? errors.artistId : undefined}
-      />
+      <AnimateHeight initialHeight={140}>
+        <Input
+          title={title || undefined}
+          placeholder={placeholder}
+          icon={<SearchIcon width={18} height={18} />}
+          onChangeText={(e) => {
+            onArtistSearchTextChange(e)
+          }}
+          value={artist}
+          autoCorrect={false}
+          accessibilityLabel="Artist"
+          onBlur={() => {
+            setFocused(false)
+            validateField("artistId")
+          }}
+          onFocus={() => setFocused(true)}
+          enableClearButton
+          onClear={() => {
+            setIsArtistSelected(false)
+          }}
+          testID="Submission_ArtistInput"
+          error={!focused && !isArtistSelected ? errors.artistId : undefined}
+          required
+        />
+      </AnimateHeight>
 
       {!!focused && !isArtistSelected && artist?.length > 2 && (
         <Box height={200}>

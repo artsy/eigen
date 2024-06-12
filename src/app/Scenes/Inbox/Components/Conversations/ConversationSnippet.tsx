@@ -72,9 +72,11 @@ export class ConversationSnippet extends React.Component<Props> {
 
     let imageURL: string | null | undefined
     let blurhash: string | null | undefined
+    let exclusiveAccess = false
     if (item?.__typename === "Artwork") {
       imageURL = item.image?.url
       blurhash = item.image?.blurhash
+      exclusiveAccess = item.isUnlisted
     } else if (item?.__typename === "Show") {
       imageURL = item.coverImage?.url
     }
@@ -119,6 +121,11 @@ export class ConversationSnippet extends React.Component<Props> {
                       </Text>
                     </Flex>
                   </Flex>
+                  {!!exclusiveAccess && (
+                    <Text variant="sm" numberOfLines={1} mr="5px" color="black">
+                      Exclusive Access
+                    </Text>
+                  )}
                   {!!conversationText && (
                     <Text
                       variant="sm"
@@ -161,6 +168,7 @@ export default createFragmentContainer(ConversationSnippet, {
               url
               blurhash
             }
+            isUnlisted
           }
           ... on Show {
             fair {

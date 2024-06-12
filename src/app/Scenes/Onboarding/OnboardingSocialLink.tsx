@@ -144,6 +144,7 @@ export const OnboardingSocialLink: React.FC<
       await validateForm()
       const res = await GlobalStore.actions.auth.signIn({
         oauthProvider: "email",
+        oauthMode: "email",
         email,
         password,
         onSignIn: () => onSignIn(providerToBeLinked, tokenForProviderToBeLinked),
@@ -197,7 +198,13 @@ export const OnboardingSocialLink: React.FC<
               testID="artsySocialLinkPasswordInput"
             />
             <Spacer y={1} />
-            <Touchable onPress={() => navigation.replace("ForgotPassword")}>
+            <Touchable
+              onPress={() => {
+                if (navigation?.replace) {
+                  navigation.replace("ForgotPassword")
+                }
+              }}
+            >
               <Text variant="sm" color="black60" style={{ textDecorationLine: "underline" }}>
                 Forgot password?
               </Text>

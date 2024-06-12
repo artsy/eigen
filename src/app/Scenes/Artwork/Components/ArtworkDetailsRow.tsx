@@ -26,7 +26,7 @@ export const ArtworkDetailsRow: React.FC<ArtworkDetailsRowProps> = ({
   return (
     <Flex flexDirection="row" key={key}>
       <Box flex={1} maxWidth={128}>
-        <Text variant="sm" color="black60">
+        <Text variant="xs" color="black60">
           {title}
         </Text>
       </Box>
@@ -42,7 +42,7 @@ export const ArtworkDetailsRow: React.FC<ArtworkDetailsRowProps> = ({
             maxChars={truncatedTextLimit()}
             trackingFlow={tracking?.readMore?.flow}
             contextModule={tracking?.readMore?.contextModule}
-            textVariant="sm"
+            textVariant="xs"
           />
         )}
       </Box>

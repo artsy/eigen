@@ -44,6 +44,7 @@ export const consignmentSubmittedEvent: SubmissionEvent<ConsignmentSubmitted> = 
   action: ActionType.consignmentSubmitted,
   context_owner_type: OwnerType.consignmentFlow,
   context_module: ContextModule.contactInformation,
+  fieldsProvided: [],
   ...eventPayload(...rest),
 })
 

@@ -35,17 +35,16 @@ import { normalizeMyProfileBio } from "./utils"
 
 const ICON_SIZE = 14
 
-export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props) => {
-  const newCollectorSettings = useFeatureFlag("AREnableNewCollectorSettings")
-  const space = useSpace()
+export const MyProfileHeader: React.FC<{ meProp: MyProfileHeader_me$key }> = ({ meProp }) => {
   const { fetchKey, refetch } = useRefetch()
-  const me = useFragment(myProfileHeaderFragment, props.me)
-
-  const color = useColor()
+  const me = useFragment<MyProfileHeader_me$key>(myProfileHeaderFragment, meProp)
 
   const localImage = useLocalImageStorage("profile", undefined, undefined, fetchKey)
-
   const userProfileImagePath = localImage?.path || me?.icon?.url
+
+  const newCollectorSettings = useFeatureFlag("AREnableNewCollectorSettings")
+  const space = useSpace()
+  const color = useColor()
 
   if (!me) {
     return null
@@ -272,32 +271,6 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
   )
 }
 
-const myProfileHeaderFragment = graphql`
-  fragment MyProfileHeader_me on Me
-  @refetchable(queryName: "MyProfileHeaderMyProfileHeaderFragmentRefetchQuery") {
-    name
-    bio
-    location {
-      display
-    }
-    otherRelevantPositions
-    profession
-    icon {
-      url(version: "thumbnail")
-    }
-    createdAt
-    isIdentityVerified
-    counts @required(action: NONE) {
-      followedArtists
-      savedArtworks
-      savedSearches
-    }
-    collectorProfile @required(action: NONE) {
-      confirmedBuyerAt
-    }
-  }
-`
-
 const MyProfileHeaderPlaceholder: React.FC<{}> = () => {
   const newCollectorSettings = useFeatureFlag("AREnableNewCollectorSettings")
   const space = useSpace()
@@ -383,6 +356,31 @@ const MyProfileHeaderPlaceholder: React.FC<{}> = () => {
   )
 }
 
+const myProfileHeaderFragment = graphql`
+  fragment MyProfileHeader_me on Me {
+    name
+    bio
+    location {
+      display
+    }
+    otherRelevantPositions
+    profession
+    icon {
+      url(version: "thumbnail")
+    }
+    createdAt
+    isIdentityVerified
+    counts @required(action: NONE) {
+      followedArtists
+      savedArtworks
+      savedSearches
+    }
+    collectorProfile @required(action: NONE) {
+      confirmedBuyerAt
+    }
+  }
+`
+
 const myProfileHeaderQuery = graphql`
   query MyProfileHeaderQuery {
     me {
@@ -392,8 +390,17 @@ const myProfileHeaderQuery = graphql`
 `
 
 export const MyProfileHeaderQueryRenderer = withSuspense(() => {
-  const data = useLazyLoadQuery<MyProfileHeaderQuery>(myProfileHeaderQuery, {})
+  const data = useLazyLoadQuery<MyProfileHeaderQuery>(
+    myProfileHeaderQuery,
+    {},
+    {
+      fetchPolicy: "network-only",
+      networkCacheConfig: {
+        force: true,
+      },
+    }
+  )
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  return <MyProfileHeader me={data.me!} />
+  return <MyProfileHeader meProp={data.me!} />
 }, MyProfileHeaderPlaceholder)

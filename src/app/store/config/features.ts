@@ -188,12 +188,7 @@ export const features = {
     readyForRelease: true,
     echoFlagKey: "AREnablePartnerOffersNotificationSwitch",
   },
-  AREnableNewWorksForYouScreenFeed: {
-    description: "Enable new works for you screen feed",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableNewWorksForYouScreenFeed",
-  },
+
   AREnablePartnerOffer: {
     description: "Enable partner offer content in the app",
     readyForRelease: true,
@@ -253,14 +248,44 @@ export const features = {
   },
   AREnableLongPressOnNewForYouRail: {
     description: "Enable Context Menu on artwork cards on new for you rail",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableLongPressOnNewForYouRail",
   },
   AREnablePartnerOfferOnArtworkScreen: {
     description: "Enable partner offer on artwork screen",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnablePartnerOfferOnArtworkScreen",
+  },
+  AREnableMyCollectionInterestedInSellingTooltip: {
+    description: "Enable My Collection 'Interested in Selling?' tooltip",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableMyCollectionInterestedInSellingTooltip",
+  },
+  ARSWAMakeAllDimensionsOptional: {
+    description: "Make all dimensions optional in SWA submit flow",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "ARSWAMakeAllDimensionsOptional",
+  },
+  AREnableNewSubmissionFlow: {
+    description: "Enable new submission flow",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableNewSubmissionFlow",
+  },
+  AREnableSubmitMyCollectionArtworkInSubmitFlow: {
+    description: "Enable Start Submission from My Collection in submit artwork flow",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
+  AREnableSaveAndContinueSubmission: {
+    description: "Enable save and continue submission flow",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableSaveAndContinueSubmission",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 
@@ -332,8 +357,11 @@ export const devToggles: { [key: string]: DevToggleDescriptor } = {
   DTEnableNewImageLabel: {
     description: "Show a label on new OpaqueImageView",
   },
-  DTForceShowNewWorksForYouScreenFeed: {
-    description: "Force show new works for you feed",
+  DTSkipSubmissionCreate: {
+    description: "Skip submission creation",
+  },
+  DTShowSubmissionDevHelpers: {
+    description: "Show dev helpers in submission flow",
   },
 }
 

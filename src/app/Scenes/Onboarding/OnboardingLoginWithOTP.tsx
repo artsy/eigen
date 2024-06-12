@@ -84,6 +84,7 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
               autoCapitalize="none"
               autoCorrect={false}
               autoFocus
+              autoComplete="one-time-code"
               keyboardType={recoveryCodeMode ? "ascii-capable" : "number-pad"}
               onChangeText={(text) => {
                 // Hide error when the user starts to type again
@@ -158,6 +159,7 @@ export const OnboardingLoginWithOTP: React.FC<OnboardingLoginWithOTPProps> = ({
       validateForm()
       const res = await GlobalStore.actions.auth.signIn({
         oauthProvider: "email",
+        oauthMode: "email",
         email,
         password,
         otp: otp.trim(),

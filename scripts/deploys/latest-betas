@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Get latest betas uploaded to TestFlight and Play Store
+# Requires running yarn setup:releases to work
+bundle exec fastlane latest_betas | grep "\[INFO\]" | sed 's/\[INFO\] //'

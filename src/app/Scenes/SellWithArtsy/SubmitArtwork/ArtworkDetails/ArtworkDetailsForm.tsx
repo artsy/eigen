@@ -13,11 +13,11 @@ import { LinkButton } from "app/Components/Button/LinkButton"
 import { LocationAutocomplete, buildLocationDisplay } from "app/Components/LocationAutocomplete"
 import { Select, SelectOption } from "app/Components/Select"
 import { CategoryPicker } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/CategoryPicker"
-import { GlobalStore } from "app/store/GlobalStore"
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
 import { LocationWithDetails } from "app/utils/googleMaps"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useFormikContext } from "formik"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useRef, useState } from "react"
 import { InfoModal } from "./InfoModal/InfoModal"
 import {
   AcceptableCategoryValue,
@@ -29,15 +29,11 @@ import { ArtworkDetailsFormModel } from "./validation"
 const StandardSpace = () => <Spacer y={2} />
 
 export const ArtworkDetailsForm: React.FC = () => {
-  const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
+  const { values, setFieldValue, handleChange, errors, validateField } =
+    useFormikContext<ArtworkDetailsFormModel>()
   const [isRarityInfoModalVisible, setIsRarityInfoModalVisible] = useState(false)
   const [isProvenanceInfoModalVisible, setIsProvenanceInfoModalVisible] = useState(false)
-
-  useEffect(() => {
-    if (values) {
-      GlobalStore.actions.artworkSubmission.submission.setDirtyArtworkDetailsValues(values)
-    }
-  }, [values])
+  const optionalDimensions = useFeatureFlag("ARSWAMakeAllDimensionsOptional")
 
   const categories = useRef<Array<SelectOption<AcceptableCategoryValue>>>(
     acceptableCategoriesForSubmission()
@@ -46,16 +42,40 @@ export const ArtworkDetailsForm: React.FC = () => {
   return (
     <>
       <ArtistAutosuggest />
-      <StandardSpace />
+
       <Input
         title="Title"
         placeholder="Add title or write 'Unknown'"
         testID="Submission_TitleInput"
         value={values.title}
-        onChangeText={(e) => setFieldValue("title", e)}
+        onChangeText={(text) => {
+          if (errors.title) {
+            validateField("title")
+          }
+          handleChange("title")(text)
+        }}
+        onBlur={() => validateField("title")}
         accessibilityLabel="Title"
+        required
+        error={errors.title}
       />
+
       <StandardSpace />
+
+      <CategoryPicker<AcceptableCategoryValue>
+        handleChange={(category) => {
+          if (errors.category) {
+            validateField("category")
+          }
+          setFieldValue("category", category)
+        }}
+        options={categories}
+        required
+        value={values.category}
+        error={errors.category ? "Medium is a required field" : undefined}
+        onModalFinishedClosing={() => validateField("category")}
+      />
+
       <Input
         title="Year"
         placeholder="YYYY"
@@ -66,17 +86,14 @@ export const ArtworkDetailsForm: React.FC = () => {
         accessibilityLabel="Year"
       />
       <StandardSpace />
-      <Spacer y={2} />
-      <CategoryPicker<AcceptableCategoryValue | null>
-        handleChange={(category) => setFieldValue("category", category)}
-        options={categories}
-        required={false}
-        value={values.category}
-      />
-      <StandardSpace />
+
       <Input
         title="Materials"
-        placeholder="Oil on canvas, mixed media, lithograph.."
+        placeholder={[
+          "Oil on canvas, mixed media, lithograph, etc.",
+          "Oil on canvas, mixed media, etc.",
+          "Oil on canvas, etc.",
+        ]}
         testID="Submission_MaterialsInput"
         value={values.medium}
         onChangeText={(e) => setFieldValue("medium", e)}
@@ -100,6 +117,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         }
         placeholder="Select a classification"
         options={rarityOptions}
+        testID="Submission_RaritySelect"
       />
       <InfoModal
         title="Classifications"
@@ -120,7 +138,6 @@ export const ArtworkDetailsForm: React.FC = () => {
             <Box width="48%" mr={1}>
               <Input
                 title="Edition Number"
-                keyboardType="decimal-pad"
                 testID="Submission_EditionNumberInput"
                 value={values.editionNumber}
                 onChangeText={(e) => setFieldValue("editionNumber", e)}
@@ -130,7 +147,6 @@ export const ArtworkDetailsForm: React.FC = () => {
             <Box width="48%">
               <Input
                 title="Edition Size"
-                keyboardType="decimal-pad"
                 testID="Submission_EditionSizeInput"
                 value={values.editionSizeFormatted}
                 onChangeText={(e) => setFieldValue("editionSizeFormatted", e)}
@@ -156,7 +172,7 @@ export const ArtworkDetailsForm: React.FC = () => {
           onPress={() => setFieldValue("dimensionsMetric", "cm")}
         />
       </Flex>
-      <Spacer y={2} />
+
       <Flex flexDirection="row" justifyContent="space-between">
         <Box width="31%" mr={1}>
           <Input
@@ -166,6 +182,7 @@ export const ArtworkDetailsForm: React.FC = () => {
             value={values.height}
             onChangeText={(e) => setFieldValue("height", e)}
             accessibilityLabel="Height"
+            required={!optionalDimensions}
           />
         </Box>
         <Box width="31%" mr={1}>
@@ -176,12 +193,12 @@ export const ArtworkDetailsForm: React.FC = () => {
             value={values.width}
             onChangeText={(e) => setFieldValue("width", e)}
             accessibilityLabel="Width"
+            required={!optionalDimensions}
           />
         </Box>
         <Box width="31%">
           <Input
             title={`Depth (${values.dimensionsMetric})`}
-            optional
             keyboardType="decimal-pad"
             testID="Submission_DepthInput"
             value={values.depth}

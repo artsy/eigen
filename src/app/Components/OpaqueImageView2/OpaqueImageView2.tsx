@@ -7,7 +7,36 @@ import React, { useCallback, useRef, useState } from "react"
 import { Animated, ColorValue, PixelRatio, StyleSheet, View } from "react-native"
 import FastImage, { ImageStyle } from "react-native-fast-image"
 
-interface Props {
+type AspectRatioProps = {
+  /**
+   * An aspect ratio created with: width / height.
+   *
+   * When specified:
+   * - The view will be sized in such a way that it maintains the aspect ratio of the image.
+   * - The imageURL will be modified so that it resizes the image to the exact size at which the view has been laid out,
+   *   thus never fetching more data than absolutely necessary.
+   */
+  aspectRatio?: number
+}
+
+type WithHeight = {
+  height: number
+  width?: never
+}
+
+type WithWidth = {
+  width: number
+  height?: never
+}
+
+type WithHeightAndWidth = {
+  height: number
+  width: number
+}
+
+type DimensionProps = AspectRatioProps & (WithHeight | WithWidth | WithHeightAndWidth)
+
+interface ImageRestProps {
   /** The URL from where to fetch the image. */
   imageURL?: string | null
 
@@ -29,19 +58,6 @@ interface Props {
 
   /** The background color for the image view */
   placeholderBackgroundColor?: ColorValue
-
-  width?: number
-  height?: number
-
-  /**
-   * An aspect ratio created with: width / height.
-   *
-   * When specified:
-   * - The view will be sized in such a way that it maintains the aspect ratio of the image.
-   * - The imageURL will be modified so that it resizes the image to the exact size at which the view has been laid out,
-   *   thus never fetching more data than absolutely necessary.
-   */
-  aspectRatio?: number
 
   /** A callback that is called once the image is loaded. */
   onLoad?: () => void
@@ -86,7 +102,10 @@ const useComponentSize = () => {
  * @deprecated
  * Use `Image` from palette instead.
  */
-export const OpaqueImageView: React.FC<Props> = ({ aspectRatio, ...props }) => {
+export const OpaqueImageView: React.FC<ImageRestProps & DimensionProps> = ({
+  aspectRatio,
+  ...props
+}) => {
   const usePaletteImage = useFeatureFlag("ARUsePaletteImage")
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
@@ -178,7 +197,7 @@ export const OpaqueImageView: React.FC<Props> = ({ aspectRatio, ...props }) => {
       <Image
         src={props.imageURL}
         geminiResizeMode={aspectRatio ? "fit" : "fill"}
-        performResize={props.useRawURL}
+        performResize={!props.useRawURL}
         height={fIHeight}
         width={fIWidth}
         blurhash={showBlurhash ? props.blurhash : null}

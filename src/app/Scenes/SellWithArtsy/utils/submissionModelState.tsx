@@ -20,9 +20,7 @@ export interface ArtworkSubmissionModel {
   submissionIdForMyCollection: string
   setSubmissionId: Action<ArtworkSubmissionModel, string>
   artworkDetails: ArtworkDetailsFormModel
-  dirtyArtworkDetailsValues: ArtworkDetailsFormModel
   setArtworkDetailsForm: Action<ArtworkSubmissionModel, ArtworkDetailsFormModel>
-  setDirtyArtworkDetailsValues: Action<ArtworkSubmissionModel, ArtworkDetailsFormModel>
   initializeArtworkDetailsForm: Action<ArtworkSubmissionModel, Partial<ArtworkDetailsFormModel>>
   initializePhotos: Action<ArtworkSubmissionModel, Photo[]>
   photos: PhotosFormModel
@@ -35,15 +33,20 @@ export interface ArtworkSubmissionModel {
 }
 
 export interface SubmissionModel {
+  draft: {
+    submissionID: string
+    currentStep: string
+  } | null
   submission: ArtworkSubmissionModel
+  setDraft: Action<this, this["draft"]>
 }
 
 export const getSubmissionModel = (): SubmissionModel => ({
+  draft: null,
   submission: {
     submissionId: "",
     submissionIdForMyCollection: "",
     artworkDetails: artworkDetailsEmptyInitialValues,
-    dirtyArtworkDetailsValues: artworkDetailsEmptyInitialValues,
     photos: photosEmptyInitialValues,
     photosForMyCollection: photosEmptyInitialValues,
     setPhotosForMyCollection: action((state, photos) => {
@@ -64,9 +67,6 @@ export const getSubmissionModel = (): SubmissionModel => ({
     setArtworkDetailsForm: action((state, form) => {
       state.artworkDetails = form
     }),
-    setDirtyArtworkDetailsValues: action((state, form) => {
-      state.dirtyArtworkDetailsValues = form
-    }),
     initializeArtworkDetailsForm: action((state, form) => {
       state.artworkDetails = { ...state.artworkDetails, ...form }
     }),
@@ -84,4 +84,7 @@ export const getSubmissionModel = (): SubmissionModel => ({
       state.photos = photosEmptyInitialValues
     }),
   },
+  setDraft: action((state, payload) => {
+    state.draft = payload
+  }),
 })

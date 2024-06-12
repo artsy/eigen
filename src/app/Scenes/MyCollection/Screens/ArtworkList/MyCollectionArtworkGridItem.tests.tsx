@@ -41,11 +41,11 @@ describe("MyCollectionArtworkGridItem", () => {
       }),
     })
 
-    expect(screen.queryByLabelText("Go to artwork details")).toBeOnTheScreen()
-    expect(screen.queryByTestId("Fallback")).toBeOnTheScreen()
+    expect(screen.getByLabelText("Go to artwork details")).toBeOnTheScreen()
+    expect(screen.getByTestId("Fallback")).toBeOnTheScreen()
 
-    expect(screen.queryByText("artistNames")).toBeOnTheScreen()
-    expect(screen.queryByText("title")).toBeOnTheScreen()
+    expect(screen.getByText("artistNames")).toBeOnTheScreen()
+    expect(screen.getByText("title")).toBeOnTheScreen()
   })
 
   it("navigates to artwork detail on tap", () => {
@@ -95,7 +95,7 @@ describe("MyCollectionArtworkGridItem", () => {
       }),
     })
 
-    expect(screen.queryByTestId("Fallback")).toBeOnTheScreen()
+    expect(screen.getByTestId("Fallback")).toBeOnTheScreen()
   })
 
   it("renders the high demand icon if artist is P1 and demand rank is over 9", () => {

@@ -69,6 +69,7 @@ lane :upload_sentry_sourcemaps do |options|
   dist = options[:dist]
   bundle_path = options[:bundle_path]
   sourcemap_path = options[:sourcemap_path]
+  silence_failures = options[:silence_failures]
 
   begin
     sentry_upload_sourcemap(
@@ -84,7 +85,9 @@ lane :upload_sentry_sourcemaps do |options|
     puts "Uploaded source js and js.map for #{project_slug}"
   rescue StandardError => e
     message = 'Uploading the JS bundle and/or sourcemap to Sentry failed. This sometimes happens when shipping many builds to Sentry.'
-    handle_error(e, message)
+    if !silence_failures
+      handle_error(e, message)
+    end
   end
 end
 

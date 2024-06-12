@@ -13,23 +13,24 @@ export interface SelectOption<ValueType> {
 
 export interface SelectProps<ValueType> {
   disabled?: boolean
-  options: Array<SelectOption<ValueType>>
-  value: ValueType | null | undefined
-  placeholder?: string
-  title?: string
-  optional?: boolean
-  required?: boolean
-  subTitle?: string
   enableSearch?: boolean
-  maxModalHeight?: number
+  error?: string
   hasError?: boolean
-  tooltipText?: string | JSX.Element
-  testID?: string
+  maxModalHeight?: number
+  onModalFinishedClosing?(): void
   onSelectValue(value: ValueType, index: number): void
+  onTooltipPress?(): void
+  optional?: boolean
+  options: Array<SelectOption<ValueType>>
+  placeholder?: string
   renderButton?(args: { selectedValue: ValueType | null; onPress(): void }): JSX.Element
   renderItemLabel?(value: SelectOption<ValueType>): JSX.Element
-  onTooltipPress?(): void
-  onModalFinishedClosing?(): void
+  required?: boolean
+  subTitle?: string
+  testID?: string
+  title?: string
+  tooltipText?: string | JSX.Element
+  value: ValueType | null | undefined
 }
 
 export const Select = <ValueType,>({
@@ -51,6 +52,7 @@ export const Select = <ValueType,>({
   renderItemLabel,
   onModalFinishedClosing,
   testID,
+  error,
 }: SelectProps<ValueType>) => {
   const [showingModal, setShowingModal] = useState(false)
 
@@ -103,13 +105,15 @@ export const Select = <ValueType,>({
           onTooltipPress={onTooltipPress}
           optional={optional}
           required={required}
-          hasError={hasError}
+          hasError={hasError || !!error}
           modalVisible={showingModal}
+          error={error}
         />
       )}
       <SelectModal
         visible={showingModal}
         title={title}
+        testID={`modal-${testID}`}
         enableSearch={enableSearch}
         value={value}
         options={options}

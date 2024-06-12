@@ -59,10 +59,8 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
           <View testID="sale-header-hero">
             <OpaqueImageView
               imageURL={sale.coverImage.url}
-              style={{
-                width: Dimensions.get("window").width,
-                height: COVER_IMAGE_HEIGHT,
-              }}
+              width={Dimensions.get("window").width}
+              height={COVER_IMAGE_HEIGHT}
             />
             {!!sale.endAt && !!moment().isAfter(sale.endAt) && !cascadingEndTimeFeatureEnabled && (
               <Flex

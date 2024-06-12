@@ -1,6 +1,6 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { MyCollectionWhySellTestsQuery } from "__generated__/MyCollectionWhySellTestsQuery.graphql"
-import { GlobalStore } from "app/store/GlobalStore"
+import { GlobalStore, __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -51,24 +51,28 @@ describe("MyCollectionWhySell", () => {
     // P1 related tests
     describe("Artwork without submission", () => {
       describe("Navigation", () => {
+        beforeEach(() => {
+          __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewSubmissionFlow: false })
+        })
         it("navigates to the sale form when Submit for Sale is pressed", () => {
-          const { getByTestId } = renderWithWrappers(<TestRenderer contextModule="insights" />)
+          renderWithWrappers(<TestRenderer contextModule="insights" />)
 
           resolveData({
             Artwork: () => artworkWithoutSubmission,
           })
-          const button = getByTestId("submitArtworkToSellButton")
+          const button = screen.getByTestId("submitArtworkToSellButton")
 
           fireEvent.press(button)
-          expect(navigate).toBeCalledWith("/collections/my-collection/artworks/new/submissions/new")
+          expect(navigate).toBeCalledWith("/sell/submissions/new")
         })
+
         it("navigates to the explanatory page when learn more is press", () => {
-          const { getByTestId } = renderWithWrappers(<TestRenderer contextModule="insights" />)
+          renderWithWrappers(<TestRenderer contextModule="insights" />)
 
           resolveData({
             Artwork: () => artworkWithoutSubmission,
           })
-          const button = getByTestId("learnMoreLink")
+          const button = screen.getByTestId("learnMoreLink")
           fireEvent.press(button)
           expect(navigate).toBeCalledWith("/selling-with-artsy")
         })
@@ -76,11 +80,11 @@ describe("MyCollectionWhySell", () => {
 
       describe("Analytics", () => {
         it("tracks events, oldAbout section", async () => {
-          const { getByTestId } = renderWithWrappers(<TestRenderer contextModule="oldAbout" />)
+          renderWithWrappers(<TestRenderer contextModule="oldAbout" />)
           resolveData({
             Artwork: () => artworkWithoutSubmission,
           })
-          const button = getByTestId("submitArtworkToSellButton")
+          const button = screen.getByTestId("submitArtworkToSellButton")
 
           fireEvent.press(button)
           await flushPromiseQueue()
@@ -97,11 +101,11 @@ describe("MyCollectionWhySell", () => {
         })
 
         it("tracks events, about tab", async () => {
-          const { getByTestId } = renderWithWrappers(<TestRenderer contextModule="about" />)
+          renderWithWrappers(<TestRenderer contextModule="about" />)
           resolveData({
             Artwork: () => artworkWithoutSubmission,
           })
-          const button = getByTestId("submitArtworkToSellButton")
+          const button = screen.getByTestId("submitArtworkToSellButton")
           fireEvent.press(button)
           await flushPromiseQueue()
           expect(mockTrackEvent).toHaveBeenCalled()
@@ -118,11 +122,11 @@ describe("MyCollectionWhySell", () => {
         })
 
         it("tracks events, insights tab", async () => {
-          const { getByTestId } = renderWithWrappers(<TestRenderer contextModule="insights" />)
+          renderWithWrappers(<TestRenderer contextModule="insights" />)
           resolveData({
             Artwork: () => artworkWithoutSubmission,
           })
-          const button = getByTestId("submitArtworkToSellButton")
+          const button = screen.getByTestId("submitArtworkToSellButton")
           fireEvent.press(button)
           await flushPromiseQueue()
           expect(mockTrackEvent).toHaveBeenCalled()
@@ -141,12 +145,15 @@ describe("MyCollectionWhySell", () => {
     })
 
     describe("Behavior", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewSubmissionFlow: false })
+      })
       it("initializes the submission form", async () => {
-        const { getByTestId } = renderWithWrappers(<TestRenderer contextModule="oldAbout" />)
+        renderWithWrappers(<TestRenderer contextModule="oldAbout" />)
         resolveData({
           Artwork: () => artworkWithoutSubmission,
         })
-        const button = getByTestId("submitArtworkToSellButton")
+        const button = screen.getByTestId("submitArtworkToSellButton")
 
         fireEvent.press(button)
 
@@ -173,30 +180,28 @@ describe("MyCollectionWhySell", () => {
           myCollectionArtworkID: "someInternalId",
         })
 
-        expect(navigate).toHaveBeenCalledWith(
-          "/collections/my-collection/artworks/new/submissions/new"
-        )
+        expect(navigate).toHaveBeenCalledWith("/sell/submissions/new")
       })
     })
   })
 
   describe("not P1 ", () => {
     it("doesn't render the form if not P1", () => {
-      const { queryAllByTestId } = renderWithWrappers(<TestRenderer contextModule="oldAbout" />)
+      renderWithWrappers(<TestRenderer contextModule="oldAbout" />)
       resolveData({
         Artwork: () => notP1Artist,
       })
-      const button = queryAllByTestId("submitArtworkToSellButton")
+      const button = screen.queryAllByTestId("submitArtworkToSellButton")
       expect(button).toHaveLength(0)
     })
   })
   describe("Artwork without submission ", () => {
     it("doesn't render the form if submission exists", () => {
-      const { queryAllByTestId } = renderWithWrappers(<TestRenderer contextModule="oldAbout" />)
+      renderWithWrappers(<TestRenderer contextModule="oldAbout" />)
       resolveData({
         Artwork: () => artworkWithSubmission,
       })
-      const button = queryAllByTestId("submitArtworkToSellButton")
+      const button = screen.queryAllByTestId("submitArtworkToSellButton")
       expect(button).toHaveLength(0)
     })
   })

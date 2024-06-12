@@ -182,12 +182,19 @@ jest.mock("react-native-fbsdk-next", () => ({
   AccessToken: {
     getCurrentAccessToken: jest.fn(),
   },
+  AuthenticationToken: {
+    getAuthenticationTokenIOS: jest.fn(),
+  },
   GraphRequest: jest.fn(),
   GraphRequestManager: jest.fn(() => ({
     addRequest: jest.fn(() => ({
       start: jest.fn(),
     })),
   })),
+}))
+
+jest.mock("jwt-decode", () => ({
+  jwtDecode: jest.fn(),
 }))
 
 jest.mock("@react-native-google-signin/google-signin", () => ({
@@ -560,7 +567,6 @@ beforeEach(() => {
 })
 
 const mockedModule = (path: string, mockModuleName: string) => jest.mock(path, () => mockModuleName)
-mockedModule("./app/Components/OpaqueImageView/OpaqueImageView.tsx", "AROpaqueImageView")
 mockedModule("./app/Components/Gene/Header.tsx", "Header")
 
 jest.mock("app/utils/track/providers", () => ({
@@ -642,6 +648,14 @@ jest.mock("app/utils/track/SegmentTrackingProvider", () => ({
 jest.mock("app/utils/track/providers.tsx", () => ({
   postEventToProviders: jest.fn(),
   _addTrackingProvider: jest.fn(),
+}))
+
+jest.mock("app/system/navigation/useReloadedDevNavigationState", () => ({
+  useReloadedDevNavigationState: jest.fn(() => ({
+    isReady: true,
+    initialState: undefined,
+    saveSession: jest.fn(),
+  })),
 }))
 
 jest.mock("@gorhom/bottom-sheet", () => ({

@@ -5,7 +5,7 @@ export const mockFormValues: ArtworkDetailsFormModel = {
   artist: "Caspar David Friedrich",
   artistId: "200",
   attributionClass: limitedEditionValue,
-  category: null,
+  category: "PAINTING",
   depth: "2",
   dimensionsMetric: "in",
   editionNumber: "1",

@@ -54,9 +54,11 @@ export const Versions = {
   AddNewWorksForYouViewOptionState: 41,
   RenameDefaultViewOption: 42,
   AddExperimentsOverrides: 43,
+  DeleteDirtyArtworkDetails: 44,
+  AddSubmissionDraft: 45,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddExperimentsOverrides
+export const CURRENT_APP_VERSION = Versions.AddSubmissionDraft
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -315,6 +317,12 @@ export const artsyAppMigrations: Migrations = {
   [Versions.AddExperimentsOverrides]: (state) => {
     state.artsyPrefs.experiments.localVariantOverrides = {}
     state.artsyPrefs.experiments.localPayloadOverrides = {}
+  },
+  [Versions.DeleteDirtyArtworkDetails]: (state) => {
+    delete state.artworkSubmission.submission.dirtyArtworkDetailsValues
+  },
+  [Versions.AddSubmissionDraft]: (state) => {
+    state.artworkSubmission.draft = null
   },
 }
 

@@ -168,6 +168,10 @@ const ArtistAutosuggestResultsContainer = createPaginationContainer(
                   artworks
                   auctionLots
                 }
+                targetSupply {
+                  isP1
+                  isTargetSupply
+                }
               }
             }
           }

@@ -11,11 +11,6 @@ interface AboutArtistProps {
 }
 
 export const AboutArtist: React.FC<AboutArtistProps> = ({ artwork }) => {
-  // Possibly hide the artist bio if the artwork is unlisted and the artist bio is not displayed
-  if (artwork.isUnlisted && !artwork.displayArtistBio) {
-    return null
-  }
-
   const artists = artwork.artists || []
 
   const hasSingleArtist = artists && artists.length === 1
@@ -23,9 +18,7 @@ export const AboutArtist: React.FC<AboutArtistProps> = ({ artwork }) => {
   const biographyBlurb =
     hasSingleArtist && artists[0]?.biographyBlurb?.text ? artists[0]?.biographyBlurb?.text : null
 
-  const partnerBiographyBlurb = artwork.artist?.partnerBiographyBlurb?.text
-
-  const text = partnerBiographyBlurb ?? biographyBlurb
+  const text = biographyBlurb
 
   const textLimit = truncatedTextLimit()
 
@@ -56,7 +49,7 @@ export const AboutArtist: React.FC<AboutArtistProps> = ({ artwork }) => {
           )}
         </Join>
       </Flex>
-      {!!hasSingleArtist && !!text && (
+      {!!hasSingleArtist && !!text && !!artwork.displayArtistBio && (
         <Box mt={2} mb={artwork.isUnlisted ? 1 : 0}>
           <ReadMore
             content={text}

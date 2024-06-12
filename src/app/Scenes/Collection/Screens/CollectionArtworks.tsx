@@ -32,7 +32,6 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({
   })
 
   const tracking = useTracking()
-  const { isDepartment } = collection
   const artworks = get(collection, (p) => p.collectionArtworks)
   const artworksTotal = artworks?.counts?.total
   const initialArtworksTotal = useRef(artworksTotal)
@@ -83,7 +82,7 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({
   }
 
   return artworks ? (
-    <ArtworkGridWrapper isDepartment={isDepartment}>
+    <ArtworkGridWrapper>
       <InfiniteScrollArtworksGrid
         connection={artworks}
         loadMore={relay.loadMore}
@@ -96,8 +95,7 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({
   ) : null
 }
 
-const ArtworkGridWrapper = styled(Box)<{ isDepartment: boolean }>`
-  margin-top: ${(p: any /* STRICTNESS_MIGRATION */) => (p.isDepartment ? "0px" : "-50px")};
+const ArtworkGridWrapper = styled(Box)`
   padding-bottom: 50px;
 `
 
@@ -111,7 +109,6 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
         cursor: { type: "String" }
         input: { type: "FilterArtworksInput" }
       ) {
-        isDepartment
         slug
         id
         collectionArtworks: artworksConnection(

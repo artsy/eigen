@@ -227,7 +227,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
         <Message
           variant="info"
           title="Complete your profile and make a great impression"
-          text="Galleries are more likely to respond to collectors with complete profiles and a brief bio."
+          text="The information you provide here will be shared when you contact a gallery or make an offer."
           showCloseButton
         />
       )}

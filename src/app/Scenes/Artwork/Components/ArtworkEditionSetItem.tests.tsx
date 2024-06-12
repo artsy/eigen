@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkEditionSetItem_Test_Query } from "__generated__/ArtworkEditionSetItem_Test_Query.graphql"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -10,20 +10,16 @@ describe("ArtworkEditionSetItem", () => {
 
   const { renderWithRelay } = setupTestWrapper<ArtworkEditionSetItem_Test_Query>({
     Component: (props) => {
-      const editionSets = props?.artwork?.editionSets ?? []
-      const firstEditionSet = editionSets[0]
+      const firstEditionSet = props.artwork!.editionSets![0]!
 
-      if (firstEditionSet) {
-        return (
-          <ArtworkEditionSetItem
-            item={firstEditionSet}
-            isSelected={false}
-            onPress={onSelectEditionMock}
-          />
-        )
-      }
-
-      return null
+      return (
+        <ArtworkEditionSetItem
+          item={firstEditionSet}
+          isSelected={false}
+          onPress={onSelectEditionMock}
+          {...props}
+        />
+      )
     },
     query: graphql`
       query ArtworkEditionSetItem_Test_Query {
@@ -36,71 +32,66 @@ describe("ArtworkEditionSetItem", () => {
     `,
   })
 
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
   describe("Dimensions", () => {
     it("display dimension in inches when if it is selected as the preferred metric", () => {
-      __globalStoreTestUtils__?.injectState({
-        userPrefs: {
-          metric: "in",
-        },
-      })
+      __globalStoreTestUtils__?.injectState({ userPrefs: { metric: "in" } })
 
-      const { queryByText } = renderWithRelay({
-        Artwork: () => artwork,
-      })
+      renderWithRelay({ Artwork: () => artwork })
 
-      expect(queryByText("15 x 15 cm")).toBeNull()
-      expect(queryByText("10 x 10 in")).toBeTruthy()
+      expect(screen.getByText("10 x 10 in")).toBeOnTheScreen()
+      expect(screen.queryByText("15 x 15 cm")).not.toBeOnTheScreen()
     })
 
     it("display dimension in centimeters when if it is selected as the preferred metric", () => {
-      __globalStoreTestUtils__?.injectState({
-        userPrefs: {
-          metric: "cm",
-        },
-      })
+      __globalStoreTestUtils__?.injectState({ userPrefs: { metric: "cm" } })
 
-      const { queryByText } = renderWithRelay({
+      renderWithRelay({
         Artwork: () => artwork,
       })
 
-      expect(queryByText("10 x 10 in")).toBeNull()
-      expect(queryByText("15 x 15 cm")).toBeTruthy()
+      expect(screen.getByText("15 x 15 cm")).toBeOnTheScreen()
+      expect(screen.queryByText("10 x 10 in")).not.toBeOnTheScreen()
     })
 
     it("display the first available dimension", () => {
-      __globalStoreTestUtils__?.injectState({
-        userPrefs: {
-          metric: "cm",
-        },
-      })
+      __globalStoreTestUtils__?.injectState({ userPrefs: { metric: "cm" } })
 
-      const { queryByText } = renderWithRelay({
+      renderWithRelay({
         Artwork: () => ({
           editionSets: [
             {
               ...editionSet,
-              dimensions: {
-                ...editionSet.dimensions,
-                cm: null,
-              },
+              dimensions: { ...editionSet.dimensions, cm: null },
             },
           ],
         }),
       })
 
-      expect(queryByText("15 x 15 cm")).toBeNull()
-      expect(queryByText("10 x 10 in")).toBeTruthy()
+      expect(screen.getByText("10 x 10 in")).toBeOnTheScreen()
+      expect(screen.queryByText("15 x 15 cm")).not.toBeOnTheScreen()
     })
   })
 
-  it("should call `onPress` handler with the selected edition set id", () => {
-    const { getByText } = renderWithRelay({
-      Artwork: () => artwork,
+  describe("OnPress", () => {
+    it("should call `onPress` handler with the selected edition set id", () => {
+      renderWithRelay({ Artwork: () => artwork })
+
+      fireEvent.press(screen.getByText("Edition Set One"))
+
+      expect(onSelectEditionMock).toBeCalledWith("edition-set-one")
     })
 
-    fireEvent.press(getByText("Edition Set One"))
+    it("should not call `onPress` handler when is disabled", () => {
+      renderWithRelay({ Artwork: () => artwork }, { disabled: true })
 
-    expect(onSelectEditionMock).toBeCalledWith("edition-set-one")
+      fireEvent.press(screen.getByText("Edition Set One"))
+
+      expect(onSelectEditionMock).not.toBeCalledWith("edition-set-one")
+    })
   })
 })
 

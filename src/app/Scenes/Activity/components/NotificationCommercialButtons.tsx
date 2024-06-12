@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType, TappedViewWork } from "@artsy/cohesion"
 import { Button, Flex, useSpace, Join, Spacer } from "@artsy/palette-mobile"
 import { BuyNowButton_artwork$key } from "__generated__/BuyNowButton_artwork.graphql"
 import { CreateArtworkAlertModal_artwork$key } from "__generated__/CreateArtworkAlertModal_artwork.graphql"
@@ -17,6 +18,7 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useState, Children } from "react"
 import { QueryRenderer, graphql, useFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 
 export const CommercialButtonsQueryRenderer: React.FC<{
   artworkID: string
@@ -73,6 +75,7 @@ export const CommercialButtons: React.FC<{
   const { hasEnded } = getTimer(partnerOffer?.endAt || "")
   const noLongerAvailable = !partnerOffer?.isAvailable
   const enablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
+  const tracking = useTracking()
 
   let renderComponent = null
 
@@ -95,6 +98,8 @@ export const CommercialButtons: React.FC<{
       renderComponent = (
         <Button
           onPress={() => {
+            tracking.trackEvent(tracks.tappedViewWork(artworkID, partnerOffer?.internalID || ""))
+
             navigate(`/artwork/${artworkID}`, { passProps: { artworkOfferExpired: true } })
           }}
           block
@@ -112,6 +117,7 @@ export const CommercialButtons: React.FC<{
           partnerOffer={partnerOffer}
           editionSetID={null}
           buttonText="Continue to Purchase"
+          source="notification"
         />
       )
     } else {
@@ -119,6 +125,8 @@ export const CommercialButtons: React.FC<{
         <RowContainer>
           <Button
             onPress={() => {
+              tracking.trackEvent(tracks.tappedViewWork(artworkID, partnerOffer.internalID))
+
               navigate(`/artwork/${artworkID}`, {
                 passProps: { partnerOfferId: partnerOffer?.internalID },
               })
@@ -129,11 +137,13 @@ export const CommercialButtons: React.FC<{
           >
             View Work
           </Button>
+
           <BuyNowButton
             artwork={artworkData as BuyNowButton_artwork$key}
             partnerOffer={partnerOffer}
             editionSetID={null}
             buttonText="Purchase"
+            source="notification"
           />
         </RowContainer>
       )
@@ -144,6 +154,7 @@ export const CommercialButtons: React.FC<{
         <Button block variant="outline" onPress={() => setShowCreateArtworkAlertModal(true)}>
           Create Alert
         </Button>
+
         <CreateArtworkAlertModal
           artwork={artwork as CreateArtworkAlertModal_artwork$key}
           onClose={() => setShowCreateArtworkAlertModal(false)}
@@ -168,3 +179,14 @@ const artworkFragment = graphql`
     ...CreateArtworkAlertModal_artwork
   }
 `
+
+const tracks = {
+  tappedViewWork: (artworkID: string, partnerOfferId: string): TappedViewWork => ({
+    action: ActionType.tappedViewWork,
+    context_module: ContextModule.notification,
+    context_screen_owner_type: OwnerType.notification,
+    context_screen_owner_id: partnerOfferId,
+    artwork_id: artworkID,
+    notification_type: "offers",
+  }),
+}

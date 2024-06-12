@@ -8,12 +8,14 @@ interface ArtworkEditionSetItemProps {
   item: ArtworkEditionSetItem_item$data
   isSelected: boolean
   onPress: (id: string) => void
+  disabled?: boolean
 }
 
 const ArtworkEditionSetItem: React.FC<ArtworkEditionSetItemProps> = ({
   item,
   isSelected,
   onPress,
+  disabled,
 }) => {
   const preferredMetric = GlobalStore.useAppState((state) => state.userPrefs.metric)
   const { dimensions, editionOf, saleMessage } = item
@@ -38,9 +40,9 @@ const ArtworkEditionSetItem: React.FC<ArtworkEditionSetItemProps> = ({
   const metric = getMetricLabel()
 
   return (
-    <TouchableWithoutFeedback onPress={handlePress}>
+    <TouchableWithoutFeedback onPress={handlePress} disabled={disabled}>
       <Flex flexDirection="row" justifyContent="flex-start" py={2}>
-        <RadioButton selected={isSelected} onPress={handlePress} />
+        <RadioButton selected={isSelected} onPress={handlePress} disabled={disabled} />
 
         <Spacer x={1} />
 
