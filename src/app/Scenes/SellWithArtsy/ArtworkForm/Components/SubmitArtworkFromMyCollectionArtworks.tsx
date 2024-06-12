@@ -147,7 +147,7 @@ const artworkConnectionFragment = graphql`
   fragment SubmitArtworkFromMyCollectionArtworks_me on Me
   @refetchable(queryName: "SubmitArtworkFromMyCollectionArtworks_meRefetch")
   @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" }) {
-    myCollectionConnection(first: $count, after: $after)
+    myCollectionConnection(first: $count, after: $after, includeOnlyTargetSupply: true)
       @connection(key: "SubmitArtworkFromMyCollectionArtworks_myCollectionConnection") {
       edges {
         cursor
