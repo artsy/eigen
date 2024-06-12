@@ -3,11 +3,16 @@ import { LocationWithDetails } from "app/utils/googleMaps"
 import { Dispatch } from "react"
 
 export type ArtworkInquiryActions =
-  | SelectInquiryType
   | SelectLocation
   | SelectInquiryQuestion
   | SetMessage
   | ResetForm
+  | OpenInquiryDialog
+  | CloseInquiryDialog
+  | OpenShippingQuestionDialog
+  | CloseShippingQuestionDialog
+  | OpenInquirySuccessNotification
+  | CloseInquirySuccessNotification
 
 export interface ArtworkInquiryContextProps {
   state: ArtworkInquiryContextState
@@ -15,21 +20,16 @@ export interface ArtworkInquiryContextProps {
 }
 
 export interface ArtworkInquiryContextState {
-  readonly inquiryType: InquiryTypes | null
   readonly shippingLocation: LocationWithDetails | null
   readonly inquiryQuestions: InquiryQuestionInput[]
-  readonly message: string | null
+  readonly message: string | undefined
+  readonly isInquiryDialogOpen: boolean
+  readonly isShippingQuestionDialogOpen: boolean
+  readonly isInquirySuccessNotificationOpen: boolean
 }
-
-export type InquiryTypes = "Inquire on price" | "Contact Gallery" | "Inquire to purchase"
 
 interface ResetForm {
   type: "resetForm"
-  payload: null
-}
-interface SelectInquiryType {
-  type: "selectInquiryType"
-  payload: InquiryTypes
 }
 
 interface SelectLocation {
@@ -47,10 +47,28 @@ interface SelectInquiryQuestion {
   payload: InquiryQuestionInput & { isChecked: boolean }
 }
 
-export enum InquiryOptions {
-  RequestPrice = "Inquire on price",
-  ContactGallery = "Contact Gallery",
-  InquireToPurchase = "Inquire to purchase",
+interface OpenInquiryDialog {
+  type: "openInquiryDialog"
+}
+
+interface CloseInquiryDialog {
+  type: "closeInquiryDialog"
+}
+
+interface OpenShippingQuestionDialog {
+  type: "openShippingQuestionDialog"
+}
+
+interface CloseShippingQuestionDialog {
+  type: "closeShippingQuestionDialog"
+}
+
+interface OpenInquirySuccessNotification {
+  type: "openInquirySuccessNotification"
+}
+
+interface CloseInquirySuccessNotification {
+  type: "closeInquirySuccessNotification"
 }
 
 /**

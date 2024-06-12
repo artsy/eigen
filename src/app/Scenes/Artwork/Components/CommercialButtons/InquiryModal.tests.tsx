@@ -4,19 +4,21 @@ import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquirySt
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import React from "react"
 import { graphql } from "react-relay"
-import { InquiryModalFragmentContainer } from "./InquiryModal"
+import { InquiryDrawerFragmentContainer } from "./InquiryDrawer"
 
-const toggleVisibility = jest.fn()
-const onMutationSuccessful = jest.fn()
+// TODO: update this test suite for InquiryDrawer
+
 const mockDispatch = jest.fn()
 
 const initialState = {
   shippingLocation: null,
   inquiryType: null,
-  message: null,
+  message: undefined,
   inquiryQuestions: [],
+  isInquiryDialogOpen: false,
+  isShippingQuestionDialogOpen: false,
+  isInquirySuccessNotificationOpen: false,
 }
 
 const { renderWithRelay } = setupTestWrapper<InquiryModalTestsQuery>({
@@ -33,30 +35,14 @@ const { renderWithRelay } = setupTestWrapper<InquiryModalTestsQuery>({
   query: graphql`
     query InquiryModalTestsQuery @relay_test_operation {
       artwork(id: "pumpkins") {
-        ...InquiryModal_artwork
+        ...InquiryDrawer_artwork
       }
     }
   `,
 })
 
-// An app shell that holds modal visibility properties
 const FakeApp = (props: InquiryModalTestsQuery["response"]) => {
-  const [modalIsVisible, setModalIsVisible] = React.useState(true)
-  toggleVisibility.mockImplementation(() => setModalIsVisible(!modalIsVisible))
-  const modalProps = {
-    modalIsVisible,
-    toggleVisibility,
-    onMutationSuccessful,
-  }
-
-  return (
-    <InquiryModalFragmentContainer
-      artwork={props!.artwork!}
-      modalIsVisible={modalProps.modalIsVisible}
-      toggleVisibility={modalProps.toggleVisibility}
-      onMutationSuccessful={modalProps.onMutationSuccessful}
-    />
-  )
+  return <InquiryDrawerFragmentContainer artwork={props!.artwork!} />
 }
 
 describe("<InquiryModal />", () => {

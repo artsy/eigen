@@ -2,24 +2,27 @@ import { reducer } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import {
   ArtworkInquiryActions,
   ArtworkInquiryContextState,
-  InquiryOptions,
 } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
 
 let inquiryState: ArtworkInquiryContextState
 let inquiryAction: ArtworkInquiryActions
 
+/**
+ * TODO: Update these tests to match the changes in ArtworkInquiryStore and ArtworkInquiryType.
+ *
+ * Specifically, the tests should reflect that we only use the Contact Gallery inquiry type so the
+ * other types were removed.
+ */
+
 describe("selectInquiryType", () => {
   it("updates the global state when payload is Request Price", () => {
     inquiryState = {
       shippingLocation: null,
-      inquiryType: null,
       inquiryQuestions: [],
-      message: null,
-    }
-
-    inquiryAction = {
-      type: "selectInquiryType",
-      payload: InquiryOptions.RequestPrice,
+      message: undefined,
+      isInquiryDialogOpen: false,
+      isShippingQuestionDialogOpen: false,
+      isInquirySuccessNotificationOpen: false,
     }
 
     const r = reducer(inquiryState, inquiryAction)
@@ -35,14 +38,11 @@ describe("selectInquiryType", () => {
   it("updates the global state when payload is Contact gallery", () => {
     inquiryState = {
       shippingLocation: null,
-      inquiryType: null,
       inquiryQuestions: [],
-      message: null,
-    }
-
-    inquiryAction = {
-      type: "selectInquiryType",
-      payload: InquiryOptions.ContactGallery,
+      message: undefined,
+      isInquiryDialogOpen: false,
+      isShippingQuestionDialogOpen: false,
+      isInquirySuccessNotificationOpen: false,
     }
 
     const r = reducer(inquiryState, inquiryAction)
@@ -58,14 +58,11 @@ describe("selectInquiryType", () => {
   it("updates the global state when payload is Inquire to purchase", () => {
     inquiryState = {
       shippingLocation: null,
-      inquiryType: null,
       inquiryQuestions: [],
-      message: null,
-    }
-
-    inquiryAction = {
-      type: "selectInquiryType",
-      payload: InquiryOptions.InquireToPurchase,
+      message: undefined,
+      isInquiryDialogOpen: false,
+      isShippingQuestionDialogOpen: false,
+      isInquirySuccessNotificationOpen: false,
     }
 
     const r = reducer(inquiryState, inquiryAction)
@@ -86,9 +83,11 @@ describe("selectInquiryQuestion", () => {
   it("when a question is checked it pushes that question into the inquiryQuestions array", () => {
     inquiryState = {
       shippingLocation: null,
-      inquiryType: null,
       inquiryQuestions: [],
-      message: null,
+      message: undefined,
+      isInquiryDialogOpen: false,
+      isShippingQuestionDialogOpen: false,
+      isInquirySuccessNotificationOpen: false,
     }
 
     inquiryAction = {
@@ -113,7 +112,6 @@ describe("selectInquiryQuestion", () => {
   it("when a question is deselected it gets removed from the inquiryQuestions array", () => {
     inquiryState = {
       shippingLocation: null,
-      inquiryType: "Inquire to purchase",
       inquiryQuestions: [
         {
           questionID: "shipping_quote",
@@ -124,7 +122,10 @@ describe("selectInquiryQuestion", () => {
           details: null,
         },
       ],
-      message: null,
+      message: undefined,
+      isInquiryDialogOpen: false,
+      isShippingQuestionDialogOpen: false,
+      isInquirySuccessNotificationOpen: false,
     }
 
     inquiryAction = {

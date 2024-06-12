@@ -5,18 +5,17 @@ import {
 import { ArtworkInquiryContextState } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { Environment, commitMutation, graphql } from "react-relay"
 
-export const SubmitInquiryRequest = (
+export const submitInquiryRequest = (
   environment: Environment,
   inquireable: any,
   inquiryState: ArtworkInquiryContextState,
   setMutationSuccessful: (arg0: boolean) => void,
-  setMutationError: (arg0: boolean) => void,
-  trackError: () => void
+  setMutationError: (arg0: boolean) => void
 ) => {
   const formattedQuestions = inquiryState.inquiryQuestions.map((q: InquiryQuestionInput) => {
     if (q.questionID === "shipping_quote" && inquiryState.shippingLocation) {
       const { city, coordinates, country, postalCode, state, stateCode } =
-        inquiryState.shippingLocation
+        inquiryState.shippingLocation || {}
       const locationInput = {
         city,
         coordinates,
@@ -34,7 +33,6 @@ export const SubmitInquiryRequest = (
 
   return commitMutation<SubmitInquiryRequestMutation>(environment, {
     onError: () => {
-      trackError()
       setMutationError(true)
     },
     onCompleted: () => {

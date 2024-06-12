@@ -1,41 +1,38 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { navigate } from "app/system/navigation/navigate"
+import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { useScreenDimensions } from "app/utils/hooks"
-import React, { useEffect } from "react"
+import React, { useContext, useEffect } from "react"
 import { Animated, Modal, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 
-interface InquirySuccessNotificationProps {
-  modalVisible: boolean
-  toggleNotification: (state: boolean) => void
-}
+export const InquirySuccessNotification: React.FC = () => {
+  const { state, dispatch } = useContext(ArtworkInquiryContext)
 
-// TODO: Replace by usePopoverMessage when the floating back button is removed from the design
-// See https://artsy.slack.com/archives/C02BAQ5K7/p1623332112279700
-export const InquirySuccessNotification: React.FC<InquirySuccessNotificationProps> = ({
-  modalVisible,
-  toggleNotification,
-}) => {
-  let delayNotification: NodeJS.Timeout | any
-  const navigateToConversation = () => {
-    toggleNotification(false)
+  useEffect(() => {
+    if (state.isInquirySuccessNotificationOpen) {
+      const closeIn2s = setTimeout(() => {
+        dispatch({ type: "closeInquirySuccessNotification" })
+      }, 2000)
+
+      return () => clearTimeout(closeIn2s)
+    }
+  }, [state.isInquirySuccessNotificationOpen])
+
+  const handleRequestClose = () => {
+    dispatch({ type: "closeInquirySuccessNotification" })
+  }
+
+  const handlePress = () => {
+    dispatch({ type: "closeInquirySuccessNotification" })
     navigate("inbox")
   }
 
-  useEffect(() => {
-    delayNotification = setTimeout(() => {
-      toggleNotification(false)
-    }, 2000)
-    return () => {
-      clearTimeout(delayNotification)
-    }
-  }, [modalVisible])
-
   return (
     <Modal
-      visible={modalVisible}
-      onRequestClose={() => toggleNotification(false)}
+      visible={state.isInquirySuccessNotificationOpen}
+      onRequestClose={handleRequestClose}
       animationType="fade"
       transparent
     >
@@ -59,7 +56,7 @@ export const InquirySuccessNotification: React.FC<InquirySuccessNotificationProp
             shadowRadius: 5.0,
           }}
         >
-          <TouchableOpacity onPress={navigateToConversation}>
+          <TouchableOpacity onPress={handlePress}>
             <Flex p={1} style={{ backgroundColor: "white" }}>
               <Flex flexDirection="row" justifyContent="space-between">
                 <Text color="green100" variant="sm">

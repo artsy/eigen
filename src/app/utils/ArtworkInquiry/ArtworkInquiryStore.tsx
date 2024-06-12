@@ -3,16 +3,16 @@ import {
   ArtworkInquiryActions,
   ArtworkInquiryContextProps,
   ArtworkInquiryContextState,
-  InquiryOptions,
-  InquiryQuestionIDs,
 } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { createContext, Reducer, useReducer } from "react"
 
 const initialArtworkInquiryState: ArtworkInquiryContextState = {
   shippingLocation: null,
-  inquiryType: null,
   inquiryQuestions: [],
-  message: null,
+  message: undefined,
+  isInquiryDialogOpen: false,
+  isShippingQuestionDialogOpen: false,
+  isInquirySuccessNotificationOpen: false,
 }
 
 export const reducer = (
@@ -21,23 +21,17 @@ export const reducer = (
 ): ArtworkInquiryContextState => {
   switch (action.type) {
     case "resetForm":
-      return initialArtworkInquiryState
-    case "selectInquiryType":
       return {
         ...inquiryState,
-        inquiryType: action.payload,
-        inquiryQuestions:
-          action.payload === InquiryOptions.RequestPrice
-            ? [{ questionID: InquiryQuestionIDs.PriceAndAvailability }]
-            : inquiryState.inquiryQuestions,
+        shippingLocation: initialArtworkInquiryState.shippingLocation,
+        inquiryQuestions: initialArtworkInquiryState.inquiryQuestions,
+        message: initialArtworkInquiryState.message,
       }
-
     case "selectShippingLocation":
       return {
         ...inquiryState,
         shippingLocation: action.payload,
       }
-
     case "selectInquiryQuestion": {
       const { isChecked, ...payloadQuestion } = action.payload
       const { inquiryQuestions = [] } = inquiryState
@@ -55,6 +49,44 @@ export const reducer = (
         ...inquiryState,
         message: action.payload,
       }
+    case "openInquiryDialog": {
+      return {
+        ...inquiryState,
+        isInquiryDialogOpen: true,
+      }
+    }
+    case "closeInquiryDialog": {
+      return {
+        ...inquiryState,
+        isInquiryDialogOpen: false,
+      }
+    }
+    case "openShippingQuestionDialog": {
+      return {
+        ...inquiryState,
+        isInquiryDialogOpen: false,
+        isShippingQuestionDialogOpen: true,
+      }
+    }
+    case "closeShippingQuestionDialog": {
+      return {
+        ...inquiryState,
+        isInquiryDialogOpen: true,
+        isShippingQuestionDialogOpen: false,
+      }
+    }
+    case "openInquirySuccessNotification": {
+      return {
+        ...inquiryState,
+        isInquirySuccessNotificationOpen: true,
+      }
+    }
+    case "closeInquirySuccessNotification": {
+      return {
+        ...inquiryState,
+        isInquirySuccessNotificationOpen: false,
+      }
+    }
   }
 }
 

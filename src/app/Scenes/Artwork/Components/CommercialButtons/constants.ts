@@ -1,4 +1,8 @@
-export const AUTOMATED_MESSAGES = [
+export const getRandomAutomatedMessage = () => {
+  return AUTOMATED_MESSAGES[Math.floor(Math.random() * AUTOMATED_MESSAGES.length)]
+}
+
+const AUTOMATED_MESSAGES = [
   "Hi, I’m interested in purchasing this work. Could you please provide more information about the piece?",
   "Hello, I'm interested in this artwork. Could you provide more details about it?",
   "Hi, I came across this piece and would love to learn more about it. Can you provide additional information?",

@@ -2,55 +2,37 @@ import { ActionType, OwnerType, TappedContactGallery } from "@artsy/cohesion"
 import { ButtonProps, Button } from "@artsy/palette-mobile"
 import { InquiryButtons_artwork$data } from "__generated__/InquiryButtons_artwork.graphql"
 import { InquirySuccessNotification } from "app/Scenes/Artwork/Components/CommercialButtons/InquirySuccessNotification"
+import { getRandomAutomatedMessage } from "app/Scenes/Artwork/Components/CommercialButtons/constants"
 import {
   ArtworkInquiryContext,
   ArtworkInquiryStateProvider,
 } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
-import { InquiryTypes, InquiryOptions } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
-import React, { useContext, useState } from "react"
+import React, { useContext } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { InquiryModalFragmentContainer } from "./InquiryModal"
+import { InquiryDrawerFragmentContainer } from "./InquiryDrawer"
 export type InquiryButtonsProps = Omit<ButtonProps, "children"> & {
   artwork: InquiryButtons_artwork$data
 }
 
 const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, ...rest }) => {
-  const [modalVisibility, setModalVisibility] = useState(false)
   const { trackEvent } = useTracking()
-  const [notificationVisibility, setNotificationVisibility] = useState(false)
   const { dispatch } = useContext(ArtworkInquiryContext)
-  const dispatchAction = (buttonText: string) => {
-    dispatch({
-      type: "selectInquiryType",
-      payload: buttonText as InquiryTypes,
-    })
 
-    setModalVisibility(true)
+  const handlePress = () => {
+    trackEvent(tracks.trackTappedContactGallery(artwork.slug, artwork.internalID))
+    dispatch({ type: "resetForm" })
+    dispatch({ type: "setMessage", payload: getRandomAutomatedMessage() })
+    dispatch({ type: "openInquiryDialog" })
   }
 
   return (
     <>
-      <InquirySuccessNotification
-        modalVisible={notificationVisibility}
-        toggleNotification={(state: boolean) => setNotificationVisibility(state)}
-      />
-      <Button
-        onPress={() => {
-          trackEvent(tracks.trackTappedContactGallery(artwork.slug, artwork.internalID))
-          dispatchAction(InquiryOptions.ContactGallery)
-        }}
-        haptic
-        {...rest}
-      >
-        {InquiryOptions.ContactGallery}
+      <InquirySuccessNotification />
+      <Button onPress={handlePress} haptic {...rest}>
+        Contact Gallery
       </Button>
-      <InquiryModalFragmentContainer
-        artwork={artwork}
-        modalIsVisible={modalVisibility}
-        toggleVisibility={() => setModalVisibility(!modalVisibility)}
-        onMutationSuccessful={(state: boolean) => setNotificationVisibility(state)}
-      />
+      <InquiryDrawerFragmentContainer artwork={artwork} />
     </>
   )
 }
@@ -86,7 +68,7 @@ export const InquiryButtonsFragmentContainer = createFragmentContainer(InquiryBu
       artist {
         name
       }
-      ...InquiryModal_artwork
+      ...InquiryDrawer_artwork
     }
   `,
 })
