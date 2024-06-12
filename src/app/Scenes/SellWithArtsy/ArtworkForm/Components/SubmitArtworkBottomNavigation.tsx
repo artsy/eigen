@@ -1,4 +1,4 @@
-import { Button, Flex, Spacer, Text, Touchable, useScreenDimensions } from "@artsy/palette-mobile"
+import { Button, Flex, Spacer, Text, Touchable, useSpace } from "@artsy/palette-mobile"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
@@ -7,9 +7,11 @@ import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/valid
 import { GlobalStore } from "app/store/GlobalStore"
 import { dismissModal, navigate, popToRoot, switchTab } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { useIsKeyboardVisible } from "app/utils/hooks/useIsKeyboardVisible"
 import { useFormikContext } from "formik"
 import { useEffect } from "react"
 import { LayoutAnimation } from "react-native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
   const {
@@ -31,7 +33,6 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
   const showStartFromMyCollection = useFeatureFlag("AREnableSubmitMyCollectionArtworkInSubmitFlow")
 
   const { isLoading, currentStep } = SubmitArtworkFormStore.useStoreState((state) => state)
-  const { width: screenWidth } = useScreenDimensions()
 
   const handleBackPress = () => {
     trackTappedSubmissionBack(values.submissionId, currentStep)
@@ -50,18 +51,23 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
   }, [currentStep])
 
-  if (!currentStep || currentStep === "SelectArtist") {
+  if (
+    !currentStep ||
+    currentStep === "SelectArtist" ||
+    currentStep === "SubmitArtworkFromMyCollection"
+  ) {
     return null
   }
 
   if (currentStep === "StartFlow") {
     return (
-      <Flex borderTopWidth={1} borderTopColor="black10" py={2} alignSelf="center" px={2}>
+      <Wrapper>
         <Button
           onPress={() => {
             trackTappedNewSubmission()
             navigateToNextStep({
               step: "SelectArtist",
+              skipMutation: true,
             })
           }}
           block
@@ -72,8 +78,10 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
           <Button
             onPress={() => {
               trackTappedStartMyCollection()
-              // TODO: Navigate to My Collection artworks screen
-              navigateToNextStep()
+              navigateToNextStep({
+                skipMutation: true,
+                step: "SubmitArtworkFromMyCollection",
+              })
             }}
             block
             mt={2}
@@ -82,19 +90,13 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
             Start from My Collection
           </Button>
         )}
-      </Flex>
+      </Wrapper>
     )
   }
 
   if (currentStep === "CompleteYourSubmission") {
     return (
-      <Flex
-        borderTopWidth={1}
-        borderTopColor="black10"
-        py={2}
-        width={screenWidth}
-        alignSelf="center"
-      >
+      <Wrapper>
         <Flex px={2}>
           <Spacer y={1} />
           <Button
@@ -124,13 +126,13 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
             View Artwork In My Collection
           </Button>
         </Flex>
-      </Flex>
+      </Wrapper>
     )
   }
 
   if (currentStep === "ArtistRejected") {
     return (
-      <Flex borderTopWidth={1} borderTopColor="black10" py={2} alignSelf="center">
+      <Wrapper>
         <Flex px={2}>
           <Spacer y={1} />
 
@@ -163,28 +165,48 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
             Add Another Artist
           </Button>
         </Flex>
-      </Flex>
+      </Wrapper>
     )
   }
 
   return (
-    <Flex borderTopWidth={1} borderTopColor="black10" py={2} width="100%" alignSelf="center">
-      <Flex px={2}>
-        <Flex flexDirection="row" justifyContent="space-between" backgroundColor="white100">
-          <Flex flexDirection="row" alignItems="center">
-            <Touchable onPress={handleBackPress}>
-              <Text underline>Back</Text>
-            </Touchable>
-          </Flex>
-          <Button
-            onPress={handleNextPress}
-            disabled={!isValid || isLoading || isUploadingPhotos || !allPhotosAreValid}
-            loading={isLoading || isUploadingPhotos}
-          >
-            {isFinalStep ? "Submit Artwork" : "Continue"}
-          </Button>
+    <Wrapper>
+      <Flex flexDirection="row" justifyContent="space-between" backgroundColor="white100">
+        <Flex flexDirection="row" alignItems="center">
+          <Touchable onPress={handleBackPress}>
+            <Text underline>Back</Text>
+          </Touchable>
         </Flex>
+        <Button
+          onPress={handleNextPress}
+          disabled={!isValid || isLoading || isUploadingPhotos || !allPhotosAreValid}
+          loading={isLoading || isUploadingPhotos}
+        >
+          {isFinalStep ? "Submit Artwork" : "Continue"}
+        </Button>
       </Flex>
+    </Wrapper>
+  )
+}
+
+const Wrapper: React.FC<{}> = ({ children }) => {
+  const isKeyboardVisible = useIsKeyboardVisible(true)
+  const { bottom: bottomInset } = useSafeAreaInsets()
+  const space = useSpace()
+
+  return (
+    <Flex
+      borderTopWidth={1}
+      borderTopColor="black10"
+      width="100%"
+      px={2}
+      pt={2}
+      alignSelf="center"
+      style={{
+        paddingBottom: isKeyboardVisible ? space(2) : space(2) + bottomInset,
+      }}
+    >
+      {children}
     </Flex>
   )
 }

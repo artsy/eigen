@@ -30,8 +30,11 @@ interface MasonryInfiniteScrollArtworkGridProps extends MasonryFlashListOmittedP
   contextScreenOwnerSlug?: string
   contextScreenOwnerType?: ScreenOwnerType
   hasMore?: boolean
+  hideSaleInfo?: boolean
+  hideSaveIcon?: boolean
   isLoading?: boolean
   loadMore?: (pageSize: number) => void
+  onPress?: (artworkID: string) => void
   pageSize?: number
   partnerOffer?: PartnerOffer
   priceOfferMessage?: PriceOfferMessage
@@ -52,10 +55,13 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   contextScreenOwnerSlug,
   contextScreenOwnerType,
   hasMore,
+  hideSaleInfo,
+  hideSaveIcon,
   isLoading,
   ListEmptyComponent,
   ListHeaderComponent,
   loadMore,
+  onPress,
   pageSize = PAGE_SIZE,
   partnerOffer,
   priceOfferMessage,
@@ -92,6 +98,9 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       }}
       partnerOffer={partnerOffer}
       priceOfferMessage={priceOfferMessage}
+      onPress={onPress}
+      hideSaleInfo={hideSaleInfo}
+      hideSaveIcon={hideSaveIcon}
     />
   )
 

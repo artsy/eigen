@@ -87,9 +87,19 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
     return null
   }
 
-  const showXButton = ["StartFlow", "ArtistRejected", "SelectArtist"].includes(currentStep)
+  const showXButton = [
+    "StartFlow",
+    "ArtistRejected",
+    "SelectArtist",
+    "SubmitArtworkFromMyCollection",
+  ].includes(currentStep)
   const showProgressBar = !["StartFlow", "ArtistRejected"].includes(currentStep)
-  const showSaveAndExit = !["StartFlow", "ArtistRejected", "SelectArtist"].includes(currentStep)
+  const showSaveAndExit = ![
+    "StartFlow",
+    "ArtistRejected",
+    "SelectArtist",
+    "SubmitArtworkFromMyCollection",
+  ].includes(currentStep)
 
   const handleBackPress = () => {
     goBack()

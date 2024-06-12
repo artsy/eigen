@@ -6,6 +6,7 @@ export const ARTWORK_FORM_FINAL_STEP = "AddPhoneNumber"
 
 export const ARTWORK_FORM_STEPS: SubmitArtworkScreen[] = [
   "StartFlow",
+  "SubmitArtworkFromMyCollection",
   "SelectArtist",
   "AddTitle",
   "AddPhotos",
@@ -15,5 +16,4 @@ export const ARTWORK_FORM_STEPS: SubmitArtworkScreen[] = [
   "AddPhoneNumber",
   "CompleteYourSubmission",
   "ArtistRejected",
-  "SelectArtworkMyCollectionArtwork",
 ]

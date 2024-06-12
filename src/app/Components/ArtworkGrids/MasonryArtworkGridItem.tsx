@@ -1,5 +1,6 @@
 import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import { Flex, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import ArtworkGridItem, { PriceOfferMessage } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { PartnerOffer } from "app/Scenes/Activity/components/NotificationArtworkList"
 import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
@@ -19,31 +20,35 @@ interface Artwork {
 }
 
 interface MasonryArtworkGridItemProps {
-  item: Artwork
-  index: number
+  artworkMetaStyle?: ViewProps["style"]
   columnIndex: number
   contextModule?: ContextModule
-  contextScreenOwnerType?: ScreenOwnerType
   contextScreen?: ScreenOwnerType
   contextScreenOwnerId?: string
   contextScreenOwnerSlug?: string
+  contextScreenOwnerType?: ScreenOwnerType
+  index: number
+  item: Artwork
   numColumns?: number
-  artworkMetaStyle?: ViewProps["style"]
+  onPress?: (artworkID: string, artwork?: ArtworkGridItem_artwork$data) => void
   partnerOffer?: PartnerOffer
   priceOfferMessage?: PriceOfferMessage
+  hideSaveIcon?: boolean
+  hideSaleInfo?: boolean
 }
 
 export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
-  item,
-  index,
+  artworkMetaStyle = {},
   columnIndex,
   contextModule,
-  contextScreenOwnerType,
+  contextScreen,
   contextScreenOwnerId,
   contextScreenOwnerSlug,
-  contextScreen,
+  contextScreenOwnerType,
+  index,
+  item,
   numColumns = NUM_COLUMNS_MASONRY,
-  artworkMetaStyle = {},
+  onPress,
   partnerOffer,
   priceOfferMessage,
   ...rest
@@ -71,6 +76,7 @@ export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
         artworkMetaStyle={artworkMetaStyle}
         partnerOffer={partnerOffer}
         priceOfferMessage={priceOfferMessage}
+        onPress={onPress}
       />
     </Flex>
   )
