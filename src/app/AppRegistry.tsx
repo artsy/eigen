@@ -458,6 +458,7 @@ export const modules = defineModules({
   CitySectionList: reactModule(CitySectionListQueryRenderer),
   Collection: reactModule(CollectionQueryRenderer, { fullBleed: true }),
   ConsignmentInquiry: reactModule(ConsignmentInquiryScreen, {
+    hidesBottomTabs: true,
     screenOptions: {
       gestureEnabled: false,
     },
