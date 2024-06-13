@@ -11,6 +11,7 @@ import {
   SubmitArtworkStackNavigation,
   getCurrentRoute,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
+import { Location } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/validation"
 import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
 import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import * as Yup from "yup"
@@ -82,14 +83,6 @@ const artworkDetailsValidationSchema = Yup.object().shape({
   year: Yup.string(),
 })
 
-export interface Location {
-  city: string
-  state: string
-  country: string
-  countryCode: string
-  zipCode?: string
-}
-
 export interface ArtworkDetailsFormModel {
   submissionId: string | null
   artist: string
@@ -102,7 +95,7 @@ export interface ArtworkDetailsFormModel {
   editionNumber: string
   editionSizeFormatted: string
   height: string
-  location: Location
+  location: Location | null
   medium: string
   myCollectionArtworkID: string | null
   provenance: string
