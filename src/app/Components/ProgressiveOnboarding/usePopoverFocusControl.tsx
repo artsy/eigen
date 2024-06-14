@@ -10,7 +10,6 @@ export const usePopoverFocusControl = (isDisplayable: boolean) => {
   // This is to make sure that the popover is not displayed when the screen is not focused
   useEffect(() => {
     const blurListener = navigation.addListener("blur", () => {
-      console.warn("BLUR LISTENER CALLED")
       setIsPopoverVisible(false)
     })
 
@@ -19,7 +18,6 @@ export const usePopoverFocusControl = (isDisplayable: boolean) => {
 
   useEffect(() => {
     const focusListener = navigation.addListener("focus", () => {
-      console.warn("focus LISTENER CALLED")
       setIsPopoverVisible(true)
     })
 
