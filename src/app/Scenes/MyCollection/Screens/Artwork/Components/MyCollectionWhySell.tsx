@@ -123,6 +123,12 @@ const artworkFragment = graphql`
     attributionClass {
       name
     }
+    collectorLocation {
+      city
+      country
+      state
+      postalCode
+    }
     images(includeAll: true) {
       url: imageURL
     }

@@ -11,10 +11,10 @@ import * as Yup from "yup"
 import { limitedEditionValue } from "./utils/rarityOptions"
 
 export interface Location {
-  city: string
-  state: string
-  country: string
-  countryCode: string
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  countryCode?: string | null
   zipCode?: string
 }
 
@@ -32,7 +32,7 @@ export interface ArtworkDetailsFormModel {
   editionNumber: string
   editionSizeFormatted: string
   height: string
-  location: Location
+  location: Location | null
   medium: string
   myCollectionArtworkID: string | null
   provenance: string

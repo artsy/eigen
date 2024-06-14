@@ -16,6 +16,7 @@ export const initializeNewSubmissionArtworkForm = (artwork: MyCollectionWhySell_
   return {
     artist: artwork.artist?.name ?? "",
     artistId: artwork.artist?.internalID ?? "",
+    location: artwork.collectorLocation ?? null,
     title: artwork.title ?? "",
     year: artwork.date ?? "",
     medium: artwork.medium ?? "",

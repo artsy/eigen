@@ -91,7 +91,7 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
 
   const formik = useFormik<ArtworkDetailsFormModel>({
     enableReinitialize: true,
-    initialValues: initialValues,
+    initialValues,
     onSubmit: handleSubmit,
     validationSchema: getCurrentValidationSchema,
     validateOnChange: false,
