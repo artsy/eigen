@@ -1,6 +1,6 @@
 import { Flex, Popover, Text } from "@artsy/palette-mobile"
 import { ProgressiveOnboardingSaveArtwork_Query } from "__generated__/ProgressiveOnboardingSaveArtwork_Query.graphql"
-import { usePopoverFocusControl } from "app/Components/ProgressiveOnboarding/useIsSurfaceFocused"
+import { usePopoverFocusControl } from "app/Components/ProgressiveOnboarding/usePopoverFocusControl"
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { GlobalStore } from "app/store/GlobalStore"
 import { ElementInView } from "app/utils/ElementInView"
