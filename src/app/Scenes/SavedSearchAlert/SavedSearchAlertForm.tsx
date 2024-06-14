@@ -80,6 +80,8 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false)
   const [shouldShowEmailSubscriptionWarning, setShouldShowEmailSubscriptionWarning] =
     useState(!userAllowsEmails)
+  const [visibleErrorDialog, setVisibleErrorDialog] = useState<boolean>(false)
+
   const navigation =
     useNavigation<NavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">>()
 
@@ -189,6 +191,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
 
       onComplete?.(result)
     } catch (error) {
+      setVisibleErrorDialog(true)
       console.error(error)
     } finally {
       formik.setSubmitting(false)
@@ -214,6 +217,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       refreshSavedAlerts()
       onComplete?.(result)
     } catch (error) {
+      setVisibleErrorDialog(true)
       console.error(error)
     } finally {
       formik.setSubmitting(false)
@@ -326,6 +330,17 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
           }}
         />
       )}
+      <Dialog
+        isVisible={visibleErrorDialog}
+        title="Something went wrong"
+        detail="Please, check your changes and try again later"
+        primaryCta={{
+          text: "Ok",
+          onPress: () => {
+            setVisibleErrorDialog(false)
+          },
+        }}
+      />
     </FormikProvider>
   )
 }
