@@ -1,6 +1,5 @@
 import { Flex, Popover, Text } from "@artsy/palette-mobile"
 import { ProgressiveOnboardingSaveArtwork_Query } from "__generated__/ProgressiveOnboardingSaveArtwork_Query.graphql"
-import { usePopoverFocusControl } from "app/Components/ProgressiveOnboarding/usePopoverFocusControl"
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { GlobalStore } from "app/store/GlobalStore"
 import { ElementInView } from "app/utils/ElementInView"
@@ -21,11 +20,7 @@ export const ProgressiveOnboardingSaveArtwork: React.FC = ({ children }) => {
   const isDismissed = _isDismissed("save-artwork").status
   const isDisplayable = isReady && !isDismissed && savedArtworks === 0 && isInView
 
-  const { isPopoverVisible } = usePopoverFocusControl(isDisplayable)
-
-  const shouldPopoverBeDisplayed = isDisplayable && isPopoverVisible
-
-  const { isActive, clearActivePopover } = useSetActivePopover(shouldPopoverBeDisplayed)
+  const { isActive, clearActivePopover } = useSetActivePopover(isDisplayable)
   const isPartnerOfferEnabled = useFeatureFlag("AREnablePartnerOffer")
 
   const handleDismiss = () => {
@@ -34,7 +29,7 @@ export const ProgressiveOnboardingSaveArtwork: React.FC = ({ children }) => {
   }
 
   // all conditions met we show the popover
-  if (shouldPopoverBeDisplayed && isActive) {
+  if (isDisplayable && isActive) {
     const content = (
       <Text color="white100">
         {isPartnerOfferEnabled
