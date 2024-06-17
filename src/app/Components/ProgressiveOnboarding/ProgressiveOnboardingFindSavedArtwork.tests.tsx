@@ -13,6 +13,21 @@ jest.mock("@artsy/palette-mobile", () => ({
   Popover: (props: any) => <MockedPopover {...props} />,
 }))
 
+const mockAddListener = jest.fn((event, callback) => {
+  if (event === "focus" || event === "blur") {
+    callback()
+  }
+  return jest.fn() // return a function to mimic the unsubscribe function
+})
+
+jest.mock("@react-navigation/native", () => ({
+  useNavigation: () => ({
+    addListener: mockAddListener,
+    navigate: jest.fn(),
+  }),
+  useIsFocused: () => jest.fn(),
+}))
+
 describe("ProgressiveOnboardingFindSavedArtwork", () => {
   const wrapper = (tab: "profile" | "home") =>
     render(

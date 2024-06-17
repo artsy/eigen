@@ -19,6 +19,7 @@ export const ProgressiveOnboardingSaveArtwork: React.FC = ({ children }) => {
   const savedArtworks = data?.me.counts.savedArtworks
   const isDismissed = _isDismissed("save-artwork").status
   const isDisplayable = isReady && !isDismissed && savedArtworks === 0 && isInView
+
   const { isActive, clearActivePopover } = useSetActivePopover(isDisplayable)
   const isPartnerOfferEnabled = useFeatureFlag("AREnablePartnerOffer")
 

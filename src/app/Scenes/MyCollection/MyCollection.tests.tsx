@@ -1,4 +1,4 @@
-import { fireEvent, RenderResult, screen } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { MyCollectionTestsQuery } from "__generated__/MyCollectionTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
@@ -16,7 +16,21 @@ import { MyCollectionContainer } from "./MyCollection"
 
 jest.mock("@react-navigation/native", () => {
   const actualNav = jest.requireActual("@react-navigation/native")
-  return { ...actualNav, useIsFocused: () => true }
+  return {
+    ...actualNav,
+    useNavigation: () => ({
+      addListener: mockAddListener,
+      navigate: jest.fn(),
+    }),
+    useIsFocused: () => true,
+  }
+})
+
+const mockAddListener = jest.fn((event, callback) => {
+  if (event === "focus" || event === "blur") {
+    callback()
+  }
+  return jest.fn() // return a function to mimic the unsubscribe function
 })
 
 describe("MyCollection", () => {
@@ -49,10 +63,8 @@ describe("MyCollection", () => {
   })
 
   describe("collection is empty", () => {
-    let tree: RenderResult
-
-    beforeEach(() => {
-      tree = renderWithRelay({
+    it("shows zerostate", () => {
+      renderWithRelay({
         Me: () => ({
           myCollectionConnection: {
             edges: [],
@@ -66,18 +78,31 @@ describe("MyCollection", () => {
           },
         }),
       })
-    })
 
-    it("shows zerostate", () => {
-      expect(tree.getByText("Know Your Collection Better")).toBeTruthy()
+      expect(screen.getByText("Know Your Collection Better")).toBeTruthy()
       expect(
-        tree.getByText("Manage your collection online and get free market insights.")
+        screen.getByText("Manage your collection online and get free market insights.")
       ).toBeTruthy()
     })
 
     it("navigates to MyCollectionArtworkForm when Add Artwork is pressed when collected artists ff is disabled", async () => {
+      renderWithRelay({
+        Me: () => ({
+          myCollectionConnection: {
+            edges: [],
+          },
+          myCollectionInfo: {
+            includesPurchasedArtworks: true,
+            artworksCount: 0,
+          },
+          userInterestsConnection: {
+            totalCount: 0,
+          },
+        }),
+      })
+
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionCollectedArtists: false })
-      const addArtworkButton = tree.UNSAFE_getByProps({ testID: "add-artwork-button-zero-state" })
+      const addArtworkButton = screen.UNSAFE_getByProps({ testID: "add-artwork-button-zero-state" })
       addArtworkButton.props.onPress()
 
       expect(navigate).toHaveBeenCalledWith(
@@ -89,7 +114,21 @@ describe("MyCollection", () => {
     })
 
     it("tracks analytics event when Add Artwork is pressed", () => {
-      const addArtworkButton = tree.UNSAFE_getByProps({ testID: "add-artwork-button-zero-state" })
+      renderWithRelay({
+        Me: () => ({
+          myCollectionConnection: {
+            edges: [],
+          },
+          myCollectionInfo: {
+            includesPurchasedArtworks: true,
+            artworksCount: 0,
+          },
+          userInterestsConnection: {
+            totalCount: 0,
+          },
+        }),
+      })
+      const addArtworkButton = screen.UNSAFE_getByProps({ testID: "add-artwork-button-zero-state" })
       addArtworkButton.props.onPress()
 
       expect(mockTrackEvent).toHaveBeenCalledTimes(1)
@@ -107,12 +146,12 @@ describe("MyCollection", () => {
   })
 
   describe("collection contains some artists and no artworks", () => {
-    let tree: RenderResult
-
     beforeEach(() => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionCollectedArtists: true })
+    })
 
-      tree = renderWithRelay({
+    it("shows collected artists rail", () => {
+      renderWithRelay({
         Me: () => ({
           myCollectionConnection: { edges: [] },
           myCollectionInfo: {
@@ -124,23 +163,47 @@ describe("MyCollection", () => {
           },
         }),
       })
-    })
 
-    it("shows collected artists rail", () => {
-      expect(tree.getByTestId("my-collection-collected-artists-rail")).toBeTruthy()
+      expect(screen.getByTestId("my-collection-collected-artists-rail")).toBeTruthy()
     })
 
     it("shows zero artworks state", () => {
-      expect(tree.getByText("Add your artworks")).toBeTruthy()
+      renderWithRelay({
+        Me: () => ({
+          myCollectionConnection: { edges: [] },
+          myCollectionInfo: {
+            includesPurchasedArtworks: true,
+            artworksCount: 0,
+          },
+          userInterestsConnection: {
+            totalCount: 1,
+          },
+        }),
+      })
+
+      expect(screen.getByText("Add your artworks")).toBeTruthy()
       expect(
-        tree.getByText(
+        screen.getByText(
           "Access price and market insights and build an online record of your collection."
         )
       ).toBeTruthy()
     })
 
     it("navigates to MyCollectionArtworkForm when Add Artwork is pressed", () => {
-      const addArtworkButton = tree.UNSAFE_getByProps({
+      renderWithRelay({
+        Me: () => ({
+          myCollectionConnection: { edges: [] },
+          myCollectionInfo: {
+            includesPurchasedArtworks: true,
+            artworksCount: 0,
+          },
+          userInterestsConnection: {
+            totalCount: 1,
+          },
+        }),
+      })
+
+      const addArtworkButton = screen.UNSAFE_getByProps({
         testID: "add-artwork-button-zero-artworks-state",
       })
       addArtworkButton.props.onPress()
@@ -154,7 +217,20 @@ describe("MyCollection", () => {
     })
 
     it("tracks analytics event when Add Artwork is pressed", () => {
-      const addArtworkButton = tree.UNSAFE_getByProps({
+      renderWithRelay({
+        Me: () => ({
+          myCollectionConnection: { edges: [] },
+          myCollectionInfo: {
+            includesPurchasedArtworks: true,
+            artworksCount: 0,
+          },
+          userInterestsConnection: {
+            totalCount: 1,
+          },
+        }),
+      })
+
+      const addArtworkButton = screen.UNSAFE_getByProps({
         testID: "add-artwork-button-zero-artworks-state",
       })
 
@@ -176,8 +252,8 @@ describe("MyCollection", () => {
 
   describe("collection is not empty", () => {
     it("renders without throwing an error", () => {
-      const tree = renderWithRelay()
-      expect(tree.UNSAFE_getByType(InfiniteScrollMyCollectionArtworksGridContainer)).toBeDefined()
+      renderWithRelay()
+      expect(screen.UNSAFE_getByType(InfiniteScrollMyCollectionArtworksGridContainer)).toBeDefined()
     })
   })
 

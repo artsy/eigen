@@ -15,6 +15,23 @@ jest.mock("@artsy/palette-mobile", () => ({
   Popover: (props: any) => <MockedPopover {...props} />,
 }))
 
+const mockUseIsFocusedMock = jest.fn()
+
+const mockAddListener = jest.fn((event, callback) => {
+  if (event === "focus" || event === "blur") {
+    callback()
+  }
+  return jest.fn() // return a function to mimic the unsubscribe function
+})
+
+jest.mock("@react-navigation/native", () => ({
+  useNavigation: () => ({
+    addListener: mockAddListener,
+    navigate: jest.fn(),
+  }),
+  useIsFocused: () => mockUseIsFocusedMock(),
+}))
+
 describe("ProgressiveOnboardingSaveArtwork", () => {
   const { renderWithRelay } = setupTestWrapper({
     Component: () => (
@@ -31,6 +48,10 @@ describe("ProgressiveOnboardingSaveArtwork", () => {
         }
       }
     `,
+  })
+
+  afterEach(() => {
+    mockAddListener.mockClear()
   })
 
   it("renders", () => {
@@ -62,6 +83,25 @@ describe("ProgressiveOnboardingSaveArtwork", () => {
   it("does not show the popover given isReady false", () => {
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: { sessionState: { isReady: false } },
+    })
+
+    renderWithRelay({ MeCounts: () => ({ savedArtworks: 1 }) })
+    expect(screen.getByText("Test Children")).toBeOnTheScreen()
+    expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
+  })
+
+  it("does not show the popover when screen is not focused", () => {
+    __globalStoreTestUtils__?.injectState({
+      progressiveOnboarding: {
+        sessionState: { isReady: true },
+      },
+    })
+
+    mockAddListener.mockImplementationOnce((event, callback) => {
+      if (event === "blur") {
+        callback()
+      }
+      return jest.fn() // return a function to mimic the unsubscribe function
     })
 
     renderWithRelay({ MeCounts: () => ({ savedArtworks: 1 }) })
