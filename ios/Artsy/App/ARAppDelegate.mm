@@ -6,6 +6,8 @@
 #import "BrazeReactBridge.h"
 #import "BrazeReactUtils.h"
 
+@import BrazeUI;
+
 #import <CodePush/CodePush.h>
 #import <AppCenterReactNative.h>
 
@@ -164,6 +166,10 @@ static ARAppDelegate *_sharedInstance = nil;
     brazeConfiguration.logger.level = BRZLoggerLevelInfo;
     Braze *braze = [BrazeReactBridge initBraze:brazeConfiguration];
     [ARAppDelegate setBraze:braze];
+
+
+    BrazeInAppMessageUI *inAppMessageUI = [[BrazeInAppMessageUI alloc] init];
+    braze.inAppMessagePresenter = inAppMessageUI;
 
     NSString *segmentWriteKey = [ReactNativeConfig envFor:@"SEGMENT_STAGING_WRITE_KEY_IOS"];
     if (![ARAppStatus isDev]) {
