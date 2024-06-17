@@ -1,9 +1,13 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Button, Flex, LinkText, Spacer, Text } from "@artsy/palette-mobile"
 import { SubmitArtworkFromMyCollectionArtworksQuery } from "__generated__/SubmitArtworkFromMyCollectionArtworksQuery.graphql"
-import { SubmitArtworkFromMyCollectionArtworks_me$key } from "__generated__/SubmitArtworkFromMyCollectionArtworks_me.graphql"
+import {
+  SubmitArtworkFromMyCollectionArtworks_me$data,
+  SubmitArtworkFromMyCollectionArtworks_me$key,
+} from "__generated__/SubmitArtworkFromMyCollectionArtworks_me.graphql"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import LoadingModal from "app/Components/Modals/LoadingModal"
+import { useToast } from "app/Components/Toast/toastHook"
 import { PAGE_SIZE } from "app/Components/constants"
 import { fetchArtworkInformation } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/fetchArtworkInformation"
 import { getInitialSubmissionFormValuesFromArtwork } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/getInitialSubmissionValuesFromArtwork"
@@ -12,14 +16,20 @@ import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Ut
 import { dismissModal, switchTab } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useRefreshControl } from "app/utils/refreshHelpers"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { useFormikContext } from "formik"
 import { useState } from "react"
 import { Alert } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
+type ArtworkGridItem = ExtractNodeType<
+  NonNullable<SubmitArtworkFromMyCollectionArtworks_me$data>["myCollectionConnection"]
+>
+
 export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
   const { navigateToNextStep } = useSubmissionContext()
   const [isLoading, setIsLoading] = useState(false)
+  const { show: showToast } = useToast()
 
   const queryData = useLazyLoadQuery<SubmitArtworkFromMyCollectionArtworksQuery>(
     submitArtworkFromMyCollectionQuery,
@@ -69,8 +79,7 @@ export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
   if (!artworks.length) {
     return (
       <Flex px={2}>
-        <HeaderComponent />
-
+        <SubmitArtworkFromMyCollectionHeader />
         <Spacer y={4} />
         <Text>
           You have no artworks in{" "}
@@ -115,14 +124,21 @@ export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
         hideSaleInfo
         hideSaveIcon
         refreshControl={RefreshControl}
-        ListHeaderComponent={HeaderComponent}
+        isItemDisabled={(artwork) => {
+          if ((artwork as ArtworkGridItem).submissionId) return true
+          return false
+        }}
+        onDisabledPress={() => {
+          showToast("You have already submitted this artwork.", "bottom")
+        }}
+        ListHeaderComponent={SubmitArtworkFromMyCollectionHeader}
       />
       <LoadingModal isVisible={isLoading} dark />
     </Flex>
   )
 }
 
-const HeaderComponent: React.FC = () => {
+export const SubmitArtworkFromMyCollectionHeader: React.FC = () => {
   return (
     <>
       <Text variant="lg">Select artwork from My Collection</Text>
@@ -147,13 +163,18 @@ const artworkConnectionFragment = graphql`
   fragment SubmitArtworkFromMyCollectionArtworks_me on Me
   @refetchable(queryName: "SubmitArtworkFromMyCollectionArtworks_meRefetch")
   @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" }) {
-    myCollectionConnection(first: $count, after: $after, includeOnlyTargetSupply: true)
-      @connection(key: "SubmitArtworkFromMyCollectionArtworks_myCollectionConnection") {
+    myCollectionConnection(
+      first: $count
+      after: $after
+      includeOnlyTargetSupply: true
+      sort: CREATED_AT_DESC
+    ) @connection(key: "SubmitArtworkFromMyCollectionArtworks_myCollectionConnection") {
       edges {
         cursor
         node {
           id
           slug
+          submissionId
           image(includeAll: false) {
             aspectRatio
             blurhash

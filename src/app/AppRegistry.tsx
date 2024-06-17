@@ -657,6 +657,7 @@ export const modules = defineModules({
         hidesBackButton: true,
         alwaysPresentModally: true,
         modalPresentationStyle: "fullScreen",
+        hidesBottomTabs: true,
         screenOptions: {
           gestureEnabled: false,
         },
@@ -666,6 +667,7 @@ export const modules = defineModules({
     hidesBackButton: true,
     alwaysPresentModally: true,
     modalPresentationStyle: "fullScreen",
+    hidesBottomTabs: true,
     screenOptions: {
       gestureEnabled: false,
     },

@@ -27,10 +27,12 @@ interface MasonryArtworkGridItemProps {
   contextScreenOwnerId?: string
   contextScreenOwnerSlug?: string
   contextScreenOwnerType?: ScreenOwnerType
+  disabled?: boolean
   index: number
   item: Artwork
   numColumns?: number
   onPress?: (artworkID: string, artwork?: ArtworkGridItem_artwork$data) => void
+  onDisabledPress?: (artwork: Artwork) => void
   partnerOffer?: PartnerOffer
   priceOfferMessage?: PriceOfferMessage
   hideSaveIcon?: boolean
@@ -45,9 +47,11 @@ export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
   contextScreenOwnerId,
   contextScreenOwnerSlug,
   contextScreenOwnerType,
+  disabled,
   index,
   item,
   numColumns = NUM_COLUMNS_MASONRY,
+  onDisabledPress,
   onPress,
   partnerOffer,
   priceOfferMessage,
@@ -65,18 +69,20 @@ export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
     <Flex pl={columnIndex === 0 ? 0 : 1} pr={numColumns - (columnIndex + 1) === 0 ? 0 : 1} mt={2}>
       <ArtworkGridItem
         {...rest}
-        itemIndex={index}
+        artwork={item}
+        artworkMetaStyle={artworkMetaStyle}
         contextModule={contextModule}
-        contextScreenOwnerType={contextScreenOwnerType}
+        contextScreen={contextScreen}
         contextScreenOwnerId={contextScreenOwnerId}
         contextScreenOwnerSlug={contextScreenOwnerSlug}
-        contextScreen={contextScreen}
-        artwork={item}
+        contextScreenOwnerType={contextScreenOwnerType}
+        disabled={disabled}
         height={imgHeight}
-        artworkMetaStyle={artworkMetaStyle}
+        itemIndex={index}
+        onDisabledPress={() => onDisabledPress?.(item)}
+        onPress={onPress}
         partnerOffer={partnerOffer}
         priceOfferMessage={priceOfferMessage}
-        onPress={onPress}
       />
     </Flex>
   )

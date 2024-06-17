@@ -60,11 +60,13 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   hideSaveIcon?: boolean
   /** Hide urgency tags (3 Days left, 1 hour left) */
   hideUrgencyTags?: boolean
+  disabled?: boolean
   /** Pass Tap to override generic ing, used for home tracking in rails */
   itemIndex?: number
   lotLabelTextStyle?: TextProps
   /** Overrides onPress and prevents the default behaviour. */
   onPress?: (artworkID: string) => void
+  onDisabledPress?: (artwork: ArtworkGridItem_artwork$data) => void
   partnerNameTextStyle?: TextProps
   partnerOffer?: PartnerOffer
   priceOfferMessage?: PriceOfferMessage
@@ -95,8 +97,10 @@ export const Artwork: React.FC<ArtworkProps> = ({
   hideSaleInfo = false,
   hideSaveIcon = false,
   hideUrgencyTags = false,
+  disabled = false,
   itemIndex,
   lotLabelTextStyle,
+  onDisabledPress,
   onPress,
   partnerNameTextStyle,
   partnerOffer,
@@ -183,6 +187,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const enablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
 
   const handleTap = () => {
+    if (disabled) {
+      return onDisabledPress?.(artwork)
+    }
     if (onPress) {
       return onPress(artwork.slug)
     }
@@ -268,6 +275,17 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   blurhash={showBlurhash ? artwork.image.blurhash : undefined}
                   resizeMode="contain"
                 />
+                {!!disabled && (
+                  <Flex
+                    position="absolute"
+                    height={height}
+                    width={Number(height) * (artwork.image.aspectRatio ?? 1)}
+                    backgroundColor="white100"
+                    opacity={0.8}
+                    zIndex={1000}
+                  />
+                )}
+
                 {Boolean(
                   !hideUrgencyTags &&
                     urgencyTag &&

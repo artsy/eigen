@@ -32,8 +32,10 @@ interface MasonryInfiniteScrollArtworkGridProps extends MasonryFlashListOmittedP
   hasMore?: boolean
   hideSaleInfo?: boolean
   hideSaveIcon?: boolean
+  isItemDisabled?: (item: MasonryArtworkItem) => boolean
   isLoading?: boolean
   loadMore?: (pageSize: number) => void
+  onDisabledPress?: (item: MasonryArtworkItem) => void
   onPress?: (artworkID: string) => void
   pageSize?: number
   partnerOffer?: PartnerOffer
@@ -57,10 +59,12 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   hasMore,
   hideSaleInfo,
   hideSaveIcon,
+  isItemDisabled,
   isLoading,
   ListEmptyComponent,
   ListHeaderComponent,
   loadMore,
+  onDisabledPress,
   onPress,
   pageSize = PAGE_SIZE,
   partnerOffer,
@@ -88,6 +92,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       contextScreen={contextScreen}
       contextScreenOwnerId={contextScreenOwnerId}
       contextScreenOwnerSlug={contextScreenOwnerSlug}
+      disabled={isItemDisabled?.(item)}
       numColumns={rest.numColumns}
       artworkMetaStyle={{
         // Since the grid is full width,
@@ -99,6 +104,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       partnerOffer={partnerOffer}
       priceOfferMessage={priceOfferMessage}
       onPress={onPress}
+      onDisabledPress={onDisabledPress}
       hideSaleInfo={hideSaleInfo}
       hideSaveIcon={hideSaveIcon}
     />
