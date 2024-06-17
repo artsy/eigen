@@ -2,6 +2,23 @@ import { renderHook, waitFor } from "@testing-library/react-native"
 import { GlobalStoreProvider, __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { useSetActivePopover } from "./useSetActivePopover"
 
+const mockUseIsFocusedMock = jest.fn()
+
+const mockAddListener = jest.fn((event, callback) => {
+  if (event === "focus" || event === "blur") {
+    callback()
+  }
+  return jest.fn() // return a function to mimic the unsubscribe function
+})
+
+jest.mock("@react-navigation/native", () => ({
+  useNavigation: () => ({
+    addListener: mockAddListener,
+    navigate: jest.fn(),
+  }),
+  useIsFocused: () => mockUseIsFocusedMock(),
+}))
+
 describe("useSetActivePopver", () => {
   const wrapper = ({ children }: any) => <GlobalStoreProvider>{children}</GlobalStoreProvider>
 

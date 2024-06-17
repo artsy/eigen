@@ -15,7 +15,19 @@ jest.mock("@artsy/palette-mobile", () => ({
 }))
 
 const mockUseIsFocusedMock = jest.fn()
+
+const mockAddListener = jest.fn((event, callback) => {
+  if (event === "focus" || event === "blur") {
+    callback()
+  }
+  return jest.fn() // return a function to mimic the unsubscribe function
+})
+
 jest.mock("@react-navigation/native", () => ({
+  useNavigation: () => ({
+    addListener: mockAddListener,
+    navigate: jest.fn(),
+  }),
   useIsFocused: () => mockUseIsFocusedMock(),
 }))
 

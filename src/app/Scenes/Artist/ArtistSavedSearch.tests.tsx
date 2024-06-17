@@ -10,13 +10,26 @@ import { ArtistQueryRenderer } from "./Artist"
 jest.unmock("react-tracking")
 
 const mockUseIsFocusedMock = jest.fn()
+
+const mockAddListener = jest.fn((event, callback) => {
+  if (event === "focus" || event === "blur") {
+    callback()
+  }
+  return jest.fn() // return a function to mimic the unsubscribe function
+})
+
 jest.mock("@react-navigation/native", () => {
   const actualNav = jest.requireActual("@react-navigation/native")
+
   return {
     ...actualNav,
     useRoute: () => {
       return {}
     },
+    useNavigation: () => ({
+      addListener: mockAddListener,
+      navigate: jest.fn(),
+    }),
     useIsFocused: () => mockUseIsFocusedMock(),
   }
 })
