@@ -15,6 +15,7 @@ import {
   useOnboardingContext,
 } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
+import { debounce } from "lodash"
 import React, { FC, useCallback, useState } from "react"
 import { LayoutAnimation } from "react-native"
 import { AnimatedFadingPill, FADE_OUT_PILL_ANIMATION_DURATION } from "./AnimatedFadingPill"
@@ -100,9 +101,11 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
 
   const isDisabled = isNextBtnDisabled || !state[stateKey] || state[stateKey]?.length === 0
 
+  const debouncedHandleSkip = debounce(onDone, 1000)
+
   return (
     <LegacyScreen>
-      <LegacyScreen.Header onBack={handleBack} onSkip={onDone} />
+      <LegacyScreen.Header onBack={handleBack} onSkip={debouncedHandleSkip} />
       <LegacyScreen.Body>
         <Box pt={2}>
           <ProgressBar progress={progress} />
