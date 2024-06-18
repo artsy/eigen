@@ -1,13 +1,5 @@
 import { tappedConsign, TappedConsignArgs, TappedConsignmentInquiry } from "@artsy/cohesion"
-import {
-  Flex,
-  Join,
-  Screen,
-  Skeleton,
-  SkeletonBox,
-  SkeletonText,
-  Spacer,
-} from "@artsy/palette-mobile"
+import { Flex, Screen, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
 import { CollectorsNetwork } from "app/Scenes/SellWithArtsy/Components/CollectorsNetwork"
 import { FAQSWA } from "app/Scenes/SellWithArtsy/Components/FAQSWA"
@@ -23,8 +15,9 @@ import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { RefreshEvents, SELL_SCREEN_REFRESH_KEY } from "app/utils/refreshHelpers"
 import { useSwitchStatusBarStyle } from "app/utils/useStatusBarStyle"
+import { compact } from "lodash"
 import { Suspense, useEffect, useReducer } from "react"
-import { ScrollView, StatusBarStyle } from "react-native"
+import { StatusBarStyle } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 import { Footer } from "./Components/Footer"
@@ -120,41 +113,65 @@ export const SellWithArtsyHome: React.FC = () => {
     }
   }, [])
 
+  const data = compact([
+    {
+      key: "header",
+      content: <Header submission={submission || null} />,
+    },
+    {
+      key: "highlights",
+      content: <Highlights />,
+    },
+    {
+      key: "ways-we-sell",
+      content: <WaysWeSell />,
+    },
+    {
+      key: "how-it-works",
+      content: <HowItWorks />,
+    },
+    {
+      key: "faq-swa",
+      content: <FAQSWA />,
+    },
+    {
+      key: "meet-the-specialists",
+      content: <MeetTheSpecialists onInquiryPress={handleInquiryPress} />,
+    },
+    {
+      key: "collectors-network",
+      content: <CollectorsNetwork />,
+    },
+    !!recentlySoldArtworks && {
+      key: "recently-sold-artworks",
+      content: <SellWithArtsyRecentlySold recentlySoldArtworks={recentlySoldArtworks} />,
+    },
+    {
+      key: "testimonials",
+      content: <Testimonials />,
+    },
+    {
+      key: "speak-to-the-team",
+      content: <SpeakToTheTeam onInquiryPress={handleInquiryPress} />,
+    },
+    {
+      key: "footer",
+      content: <Footer />,
+    },
+  ])
+
   return (
     <Screen>
-      <Screen.Body fullwidth disableKeyboardAvoidance>
-        <ScrollView showsVerticalScrollIndicator={false} ref={scrollViewRef}>
-          <Join separator={<Spacer y={6} />}>
-            <Header submission={submission || null} />
+      <Screen.FlatList
+        data={data}
+        keyExtractor={(item) => item.key}
+        renderItem={({ item }) => item.content}
+        ItemSeparatorComponent={() => <Spacer y={6} />}
+        showsVerticalScrollIndicator={false}
+        innerRef={scrollViewRef}
+      />
 
-            <Highlights />
-
-            <WaysWeSell />
-
-            <HowItWorks />
-
-            <FAQSWA />
-
-            <MeetTheSpecialists onInquiryPress={handleInquiryPress} />
-
-            <CollectorsNetwork />
-
-            {!!recentlySoldArtworks && (
-              <SellWithArtsyRecentlySold recentlySoldArtworks={recentlySoldArtworks} />
-            )}
-
-            <Testimonials />
-
-            <SpeakToTheTeam onInquiryPress={handleInquiryPress} />
-
-            <Footer />
-          </Join>
-
-          <Spacer y={2} />
-        </ScrollView>
-
-        <StickySWAHeader onConsignPress={handleConsignPress} onInquiryPress={handleInquiryPress} />
-      </Screen.Body>
+      <StickySWAHeader onConsignPress={handleConsignPress} onInquiryPress={handleInquiryPress} />
     </Screen>
   )
 }
