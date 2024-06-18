@@ -104,7 +104,8 @@
   "dependenciesComments": {
     "react-native": "Try running `npx @rnx-kit/align-deps --requirements react-native@0.66.5` when upgrading to a version, here 0.66.5",
     "deprecated-react-native-prop-types": "Needed for patching react-native and react-native-credit-card-input due to rn removing the proptypes from their repo",
-    "@babel/plugin-transform-named-capturing-groups-regex": "Needed for compiling android with hermes enabled"
+    "@babel/plugin-transform-named-capturing-groups-regex": "Needed for compiling android with hermes enabled",
+    "braces": "in the resolutions - needed to resolve a security dependency issue - need to remove this when the issue is resolved and packages are updated"
   },
   "dependencies": {
     "@artsy/cohesion": "4.189.0",
@@ -329,7 +330,8 @@
     "@types/react": "17.0.39",
     "@types/relay-runtime": "14.1.3",
     "@types/react-relay": "14.1.3",
-    "react-devtools-core": "4.28.4"
+    "react-devtools-core": "4.28.4",
+    "braces": "^3.0.3"
   },
   "pull-lock": {
     "ios/Podfile.lock": "echo \"🚨 New Podfile.lock detected!, you might need to run yarn install:all\" 🚨",
