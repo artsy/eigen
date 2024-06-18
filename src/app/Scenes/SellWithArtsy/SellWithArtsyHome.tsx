@@ -1,5 +1,5 @@
 import { tappedConsign, TappedConsignArgs, TappedConsignmentInquiry } from "@artsy/cohesion"
-import { Flex, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
+import { Flex, Screen, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
 import { CollectorsNetwork } from "app/Scenes/SellWithArtsy/Components/CollectorsNetwork"
 import { FAQSWA } from "app/Scenes/SellWithArtsy/Components/FAQSWA"
@@ -17,7 +17,7 @@ import { RefreshEvents, SELL_SCREEN_REFRESH_KEY } from "app/utils/refreshHelpers
 import { useSwitchStatusBarStyle } from "app/utils/useStatusBarStyle"
 import { compact } from "lodash"
 import { Suspense, useEffect, useReducer } from "react"
-import { FlatList, StatusBarStyle } from "react-native"
+import { StatusBarStyle } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 import { Footer } from "./Components/Footer"
@@ -161,18 +161,18 @@ export const SellWithArtsyHome: React.FC = () => {
   ])
 
   return (
-    <Flex flex={1}>
-      <FlatList
+    <Screen>
+      <Screen.FlatList
         data={data}
         keyExtractor={(item) => item.key}
         renderItem={({ item }) => item.content}
         ItemSeparatorComponent={() => <Spacer y={6} />}
         showsVerticalScrollIndicator={false}
-        ref={scrollViewRef}
+        innerRef={scrollViewRef}
       />
 
       <StickySWAHeader onConsignPress={handleConsignPress} onInquiryPress={handleInquiryPress} />
-    </Flex>
+    </Screen>
   )
 }
 
