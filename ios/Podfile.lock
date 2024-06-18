@@ -30,7 +30,7 @@ PODS:
     - AppCenter/Core (= 5.0.3)
   - Base64 (1.1.2)
   - boost (1.76.0)
-  - braze-react-native-sdk (2.0.1):
+  - braze-react-native-sdk (2.0.2):
     - BrazeKit (~> 5.9.1)
     - BrazeLocation (~> 5.9.1)
     - BrazeUI (~> 5.9.1)
@@ -863,7 +863,7 @@ PODS:
   - SDWebImageWebPCoder (0.8.5):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
-  - segment-analytics-react-native (2.16.1):
+  - segment-analytics-react-native (2.19.0):
     - React-Core
     - sovran-react-native
   - Sentry/HybridSDK (8.21.0):
@@ -874,7 +874,7 @@ PODS:
     - React
     - Sift
   - SocketRocket (0.6.1)
-  - sovran-react-native (1.0.4):
+  - sovran-react-native (1.1.1):
     - React-Core
   - Specta (2.0.0)
   - SSZipArchive (2.2.3)
@@ -1361,7 +1361,7 @@ SPEC CHECKSUMS:
   AppCenterReactNativeShared: 01df23849b1c3c6eb8c4049f54322635650e98f0
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost: 7dcd2de282d72e344012f7d6564d024930a6a440
-  braze-react-native-sdk: fde05eb5f01efa0291de5aad88574434df80f30d
+  braze-react-native-sdk: c61760392f8554a6835d9cff34952e53c45f8ae6
   BrazeKit: 7c8ab19c996bb6447d44a242c14778ad48c9e020
   BrazeLocation: ba8da78df3221b627c56c4b2ad20df2e0795dfb4
   BrazeUI: 39d905f9ded70b6ab9d8ab08d6cfdbbfed4cc282
@@ -1511,13 +1511,13 @@ SPEC CHECKSUMS:
   RNSVG: ba3e7232f45e34b7b47e74472386cf4e1a676d0a
   SDWebImage: 40b0b4053e36c660a764958bff99eed16610acbb
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
-  segment-analytics-react-native: 13d4ba325add2b2ed796ee58531e3b4cacfe692f
+  segment-analytics-react-native: 4e01effb976a73378c687bf37af954e6e95f3970
   Sentry: ebc12276bd17613a114ab359074096b6b3725203
   SentryPrivate: d651efb234cf385ec9a1cdd3eff94b5e78a0e0fe
   Sift: 7c27188ba3533c0a1be541d7efb68384e17e544c
   sift-react-native: 9ed8bc21788e3233399eaf196425246442aa7dee
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
-  sovran-react-native: 791f2f726b4d57ece59676eda58d6da9dc95ad4e
+  sovran-react-native: e6a9c963a8a6b9ebc3563394c39c30f33ab1453f
   Specta: b79d84043684b35ffdc2680df578dc318ec2efc2
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Starscream: 19b5533ddb925208db698f0ac508a100b884a1b9

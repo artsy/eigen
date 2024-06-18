@@ -1289,10 +1289,15 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@braze/react-native-sdk@2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@braze/react-native-sdk/-/react-native-sdk-2.0.1.tgz#1fcbd0dd63484d512d7d18a5d85eff7d7df28f75"
-  integrity sha512-2+hN2Rz8knFUUWrLbCyta9Yivmy0uY+1KLx/OxXqeJpjIeHkrvMInGE1sn8KXrHzD4x6qNWEWVEPwbNPjSqgjA==
+"@braze/react-native-sdk@2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@braze/react-native-sdk/-/react-native-sdk-2.0.2.tgz#6d0576dd6c69c9ddd77de3b8f43a67c8235613b8"
+  integrity sha512-rY1GQdlFfxmYpJhMMw5c0arbyWZG4K8dbV7mEZTC8uxB+vWnwyULy4uuHejbtM3p/AF2vF9wbnlyZhzVQYY1vw==
+
+"@braze/react-native-sdk@^2.0.2":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@braze/react-native-sdk/-/react-native-sdk-2.1.0.tgz#f9957fea6cf1fc6fdf25bcef8fd832d23d285d57"
+  integrity sha512-02qm4goNYvhNL9ILLqmbEB8TWIRo+vxtcURCGK8B5rRRMSeG97ai4gk+ZaQb77lmFYNZp8+bD3UatUfn1UnQZQ==
 
 "@egjs/hammerjs@^2.0.17":
   version "2.0.17"
@@ -2921,32 +2926,24 @@
     color "^4.2.3"
     warn-once "^0.1.0"
 
-"@segment/analytics-react-native-plugin-braze@0.6.1":
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/@segment/analytics-react-native-plugin-braze/-/analytics-react-native-plugin-braze-0.6.1.tgz#f4c8a85852b50470a398e2b0330c6ed3d3b0e27c"
-  integrity sha512-jyksibkSHlE5CMoYc/Rs3N9m2cMjsryVz/HiZyuVZ0k+073w6ooZ3tWtwStsZHPiILCLEtLDLfM8j6NemBs3/g==
-
-"@segment/analytics-react-native@2.16.1":
-  version "2.16.1"
-  resolved "https://registry.yarnpkg.com/@segment/analytics-react-native/-/analytics-react-native-2.16.1.tgz#450627265fd1f0e8818a69c8899bace8a0571133"
-  integrity sha512-SLuDqdcMjC/vDoC2pOXHQ/H7/oNs84DWk0M47v4jgNum6KOLF/Y21Hplwd8Y7CgLFGfHltkie7JNwiWOHdnN4g==
+"@segment/analytics-react-native-plugin-braze@0.5.2":
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/@segment/analytics-react-native-plugin-braze/-/analytics-react-native-plugin-braze-0.5.2.tgz#d8a651b43d22c56c07495bc2922723fbdd313e7e"
+  integrity sha512-uITFAKxlxxiftOW7/JwA/w2x7aXYgsz/YxFEA3KxhW18Kh8TZVJsD/QhHBdSM7DGkXidG6DhRbqDU85CJNWliw==
   dependencies:
-    "@segment/sovran-react-native" "^1"
+    "@braze/react-native-sdk" "^2.0.2"
+
+"@segment/analytics-react-native@2.19.0":
+  version "2.19.0"
+  resolved "https://registry.yarnpkg.com/@segment/analytics-react-native/-/analytics-react-native-2.19.0.tgz#24de5c5ff961a2120c5eac18af1d8b50b8eec479"
+  integrity sha512-QoA7R/+cJslR/wGILJfxMFx9akQF9FVvttP3OQ4u1a++z1elChAA5oK6T46lGoT3n24h4YaIlMF+sx9hPagz0Q==
+  dependencies:
     "@segment/tsub" "^2"
-    deepmerge "^4.2.2"
-    js-base64 "^3.7.2"
-    uuid "^9.0.0"
+    deepmerge "^4.3.1"
+    js-base64 "^3.7.5"
+    uuid "^9.0.1"
 
-"@segment/sovran-react-native@1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@segment/sovran-react-native/-/sovran-react-native-1.0.4.tgz#862c9c01c15f5ea81a77012c6e720ebd56153ccc"
-  integrity sha512-oeIjspLOX9V+YmM7arZ+OXCyjooKdurnyVji+sj8OVkw+tUcXtvy+m9oC8E4yqazR/tghWCYE+tCriNx4jsVTw==
-  dependencies:
-    ansi-regex "5.0.1"
-    deepmerge "^4.2.2"
-    shell-quote "1.8.0"
-
-"@segment/sovran-react-native@^1":
+"@segment/sovran-react-native@1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@segment/sovran-react-native/-/sovran-react-native-1.1.1.tgz#55869c5624a297d012a5cef237109c3731f89e0a"
   integrity sha512-zaMOWz4kjbC+oBRAaw1B3cfserKMk8OBhUTB/oQ/8Thl+zTCQ36zj75dlNm2N00eWJ7p2FZAEEu2uSdLZ2lRKQ==
@@ -6798,7 +6795,7 @@ deepmerge@^4.2.2:
   resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-4.2.2.tgz#44d2ea3679b8f4d4ffba33f03d865fc1e7bf4955"
   integrity sha512-FJ3UgI4gIl+PHZm53knsuSFpE+nESMr7M4v9QcgB7S63Kj/6WqMiFQJpBBYz1Pt+66bZpP3Q7Lye0Oo9MPKEdg==
 
-deepmerge@^4.3.0:
+deepmerge@^4.3.0, deepmerge@^4.3.1:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-4.3.1.tgz#44b5f2147cd3b00d4b56137685966f26fd25dd4a"
   integrity sha512-3sUqbMEc77XqpdNO7FRyRog+eW3ph+GYCbj+rK+uYyRMuwsVy0rMiVtPn+QJlKFvWP/1PYpapqYn0Me2knFn+A==
@@ -10280,7 +10277,7 @@ jpeg-js@0.4.2:
   resolved "https://registry.yarnpkg.com/jpeg-js/-/jpeg-js-0.4.2.tgz#8b345b1ae4abde64c2da2fe67ea216a114ac279d"
   integrity sha512-+az2gi/hvex7eLTMTlbRLOhH6P6WFdk2ITI8HJsaH2VqYO0I594zXSYEP+tf4FW+8Cy68ScDXoAsQdyQanv3sw==
 
-js-base64@^3.7.2:
+js-base64@^3.7.5:
   version "3.7.7"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-3.7.7.tgz#e51b84bf78fbf5702b9541e2cb7bfcb893b43e79"
   integrity sha512-7rCnleh0z2CkXhH67J8K1Ytz0b2Y+yxTPL+/KOJoa20hfnVQ/3/T6W/KflYI4bRHRagNeXeU2bkNGI3v1oS/lw==
@@ -15040,7 +15037,7 @@ uuid@^8.3.2:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
-uuid@^9.0.0, uuid@^9.0.1:
+uuid@^9.0.1:
   version "9.0.1"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-9.0.1.tgz#e188d4c8853cc722220392c424cd637f32293f30"
   integrity sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==
