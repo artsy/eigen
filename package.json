@@ -104,7 +104,8 @@
   "dependenciesComments": {
     "react-native": "Try running `npx @rnx-kit/align-deps --requirements react-native@0.66.5` when upgrading to a version, here 0.66.5",
     "deprecated-react-native-prop-types": "Needed for patching react-native and react-native-credit-card-input due to rn removing the proptypes from their repo",
-    "@babel/plugin-transform-named-capturing-groups-regex": "Needed for compiling android with hermes enabled"
+    "@babel/plugin-transform-named-capturing-groups-regex": "Needed for compiling android with hermes enabled",
+    "braces": "in the resolutions - needed to resolve a security dependency issue - need to remove this when the issue is resolved and packages are updated"
   },
   "dependencies": {
     "@artsy/cohesion": "4.189.0",
