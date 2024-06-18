@@ -30,16 +30,16 @@ PODS:
     - AppCenter/Core (= 5.0.3)
   - Base64 (1.1.2)
   - boost (1.76.0)
-  - braze-react-native-sdk (2.0.2):
-    - BrazeKit (~> 5.9.1)
-    - BrazeLocation (~> 5.9.1)
-    - BrazeUI (~> 5.9.1)
+  - braze-react-native-sdk (5.2.0):
+    - BrazeKit (~> 6.3.1)
+    - BrazeLocation (~> 6.3.1)
+    - BrazeUI (~> 6.3.1)
     - React-Core
-  - BrazeKit (5.9.1)
-  - BrazeLocation (5.9.1):
-    - BrazeKit (= 5.9.1)
-  - BrazeUI (5.9.1):
-    - BrazeKit (= 5.9.1)
+  - BrazeKit (6.3.1)
+  - BrazeLocation (6.3.1):
+    - BrazeKit (= 6.3.1)
+  - BrazeUI (6.3.1):
+    - BrazeKit (= 6.3.1)
   - BVLinearGradient (2.6.2):
     - React-Core
   - CocoaAsyncSocket (7.6.5)
@@ -1361,10 +1361,10 @@ SPEC CHECKSUMS:
   AppCenterReactNativeShared: 01df23849b1c3c6eb8c4049f54322635650e98f0
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost: 7dcd2de282d72e344012f7d6564d024930a6a440
-  braze-react-native-sdk: c61760392f8554a6835d9cff34952e53c45f8ae6
-  BrazeKit: 7c8ab19c996bb6447d44a242c14778ad48c9e020
-  BrazeLocation: ba8da78df3221b627c56c4b2ad20df2e0795dfb4
-  BrazeUI: 39d905f9ded70b6ab9d8ab08d6cfdbbfed4cc282
+  braze-react-native-sdk: 6d2819d23432b4b345b31264a7a4a0430c8da5e5
+  BrazeKit: da969530d445eb2d107f5ec27d44d5eb21f1d3e9
+  BrazeLocation: 7227adcea4913d4291efba7ef30cbc59b54c7de4
+  BrazeUI: 2fc3a9d1e65e3c4390a7d2844378d45b158441db
   BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da

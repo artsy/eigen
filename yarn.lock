@@ -1289,15 +1289,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@braze/react-native-sdk@2.0.2":
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/@braze/react-native-sdk/-/react-native-sdk-2.0.2.tgz#6d0576dd6c69c9ddd77de3b8f43a67c8235613b8"
-  integrity sha512-rY1GQdlFfxmYpJhMMw5c0arbyWZG4K8dbV7mEZTC8uxB+vWnwyULy4uuHejbtM3p/AF2vF9wbnlyZhzVQYY1vw==
-
-"@braze/react-native-sdk@^2.0.2":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@braze/react-native-sdk/-/react-native-sdk-2.1.0.tgz#f9957fea6cf1fc6fdf25bcef8fd832d23d285d57"
-  integrity sha512-02qm4goNYvhNL9ILLqmbEB8TWIRo+vxtcURCGK8B5rRRMSeG97ai4gk+ZaQb77lmFYNZp8+bD3UatUfn1UnQZQ==
+"@braze/react-native-sdk@5.2.0":
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/@braze/react-native-sdk/-/react-native-sdk-5.2.0.tgz#26036f854bcc9caa69f47da34a69e065f53f0a09"
+  integrity sha512-WLXvAaO6476smK0RfbeRrNLTpZrsCjc+daF8PLAJzngjJLDPELSFTpTeWj7OAUf6Q+AlZE7JcX97yHbG4lF+6w==
 
 "@egjs/hammerjs@^2.0.17":
   version "2.0.17"
@@ -2926,12 +2921,10 @@
     color "^4.2.3"
     warn-once "^0.1.0"
 
-"@segment/analytics-react-native-plugin-braze@0.5.2":
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/@segment/analytics-react-native-plugin-braze/-/analytics-react-native-plugin-braze-0.5.2.tgz#d8a651b43d22c56c07495bc2922723fbdd313e7e"
-  integrity sha512-uITFAKxlxxiftOW7/JwA/w2x7aXYgsz/YxFEA3KxhW18Kh8TZVJsD/QhHBdSM7DGkXidG6DhRbqDU85CJNWliw==
-  dependencies:
-    "@braze/react-native-sdk" "^2.0.2"
+"@segment/analytics-react-native-plugin-braze@0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@segment/analytics-react-native-plugin-braze/-/analytics-react-native-plugin-braze-0.6.1.tgz#f4c8a85852b50470a398e2b0330c6ed3d3b0e27c"
+  integrity sha512-jyksibkSHlE5CMoYc/Rs3N9m2cMjsryVz/HiZyuVZ0k+073w6ooZ3tWtwStsZHPiILCLEtLDLfM8j6NemBs3/g==
 
 "@segment/analytics-react-native@2.19.0":
   version "2.19.0"
