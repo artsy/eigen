@@ -617,6 +617,7 @@ const ArtworkProvidersContainer: React.FC<ArtworkProps> = (props) => {
     offerable: artworkAboveTheFold?.isOfferable,
     biddable: artworkAboveTheFold?.isBiddable,
     visibility_level: artworkAboveTheFold?.visibilityLevel,
+    price_display: artworkAboveTheFold?.saleMessage,
   }
 
   const socketChannelInfo: AuctionWebsocketChannelInfo = {
@@ -680,6 +681,7 @@ export const ArtworkContainer = createRefetchContainer(
           isPreview
           liveStartAt
         }
+        saleMessage
         saleArtwork {
           internalID
         }
