@@ -55,28 +55,28 @@ export const DevTools: React.FC<{}> = () => {
               return <DevToggleItem key={devToggleKey} toggleKey={devToggleKey} />
             })}
 
-          <MenuItem
-            title="Migration version"
-            rightView={
-              <Flex flexDirection="row" alignItems="center">
-                <Button
-                  title="-"
-                  onPress={() => GlobalStore.actions._setVersion(migrationVersion - 1)}
-                />
-                <Text>{migrationVersion}</Text>
-                <Button
-                  title="+"
-                  onPress={() => GlobalStore.actions._setVersion(migrationVersion + 1)}
-                />
-              </Flex>
-            }
-          />
           <DevMenuButtonItem
             title="Open Art Quiz"
             onPress={() => {
               dismissModal(() => navigate("/art-quiz"))
             }}
           />
+          <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+            <Flex>
+              <MenuItem title="Migration version" />
+            </Flex>
+            <Flex flexDirection="row" alignItems="center" pr={2}>
+              <Button
+                title="-"
+                onPress={() => GlobalStore.actions._setVersion(migrationVersion - 1)}
+              />
+              <Text>{migrationVersion}</Text>
+              <Button
+                title="+"
+                onPress={() => GlobalStore.actions._setVersion(migrationVersion + 1)}
+              />
+            </Flex>
+          </Flex>
           <DevMenuButtonItem
             title={`Migration name: "${
               (Object.entries(Versions).find(([_, v]) => v === migrationVersion) ?? ["N/A"])[0]
