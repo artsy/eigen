@@ -1,11 +1,11 @@
 import {
-  Spacer,
-  useTheme,
   ArtsyLogoWhiteIcon,
-  Flex,
-  Text,
   Button,
+  Flex,
   LegacyScreen,
+  Spacer,
+  Text,
+  useTheme,
 } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import {
@@ -13,22 +13,12 @@ import {
   DEFAULT_NAVIGATION_BAR_COLOR,
 } from "app/NativeModules/ArtsyNativeModule"
 import { useScreenDimensions } from "app/utils/hooks"
-import backgroundImage from "images/WelcomeImage.webp"
-import { MotiView } from "moti"
+import { MotiImage, MotiView } from "moti"
 import { useEffect } from "react"
-import { Dimensions, Image, Platform } from "react-native"
-import LinearGradient from "react-native-linear-gradient"
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withSequence,
-  withTiming,
-} from "react-native-reanimated"
+import { Dimensions, Platform } from "react-native"
 import { OnboardingNavigationStack } from "./Onboarding"
 
 type OnboardingWelcomeProps = StackScreenProps<OnboardingNavigationStack, "OnboardingWelcome">
-
-const imgProps = Image.resolveAssetSource(backgroundImage)
 
 export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation }) => {
   const { space } = useTheme()
@@ -37,27 +27,6 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
   // We need the entire screen height here because the background image should fill
   // the entire screen including drawing below the navigation bar
   const { height: screenHeight } = Dimensions.get("screen")
-
-  // background sliding
-  const translateX = useSharedValue(0)
-  const slideAnim = useAnimatedStyle(() => {
-    "worklet"
-    return { transform: [{ translateX: translateX.value }] }
-  })
-  useEffect(() => {
-    // We want to animate the background only when the device width is smaller than the scaled image width
-    const imgScale = imgProps.height / screenHeight
-    const imgWidth = imgProps.width * imgScale
-    // animate the background only when the device width is smaller than the scaled image width
-    if (screenWidth < imgWidth) {
-      const rightMarginFirstStop = 120
-      const rightMarginSecondStop = 320
-      translateX.value = withSequence(
-        withTiming(-(imgWidth - screenWidth - rightMarginFirstStop), { duration: 40000 }),
-        withTiming(-(imgWidth - screenWidth - rightMarginSecondStop), { duration: 10000 })
-      )
-    }
-  }, [])
 
   useEffect(() => {
     if (Platform.OS === "ios") {
@@ -88,31 +57,13 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
   return (
     <LegacyScreen>
       <LegacyScreen.Background>
-        <Animated.View
-          style={[
-            {
-              alignItems: "flex-end",
-              position: "absolute",
-            },
-            slideAnim,
-          ]}
-        >
-          <Image
-            source={require("images/WelcomeImage.webp")}
-            resizeMode="cover"
-            style={{ height: screenHeight }}
-          />
-        </Animated.View>
-
-        <LinearGradient
-          colors={["rgba(0, 0, 0, 0)", `rgba(0, 0, 0, 0.75)`]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 0, y: 1 }}
-          style={{
-            position: "absolute",
-            width: "100%",
-            height: screenHeight,
-          }}
+        <MotiImage
+          source={require("images/WelcomeImage.webp")}
+          resizeMode="cover"
+          style={{ height: screenHeight, width: screenWidth, alignSelf: "center" }}
+          from={{ scale: 1 }}
+          animate={{ scale: 1.2 }}
+          transition={{ type: "timing", duration: 10000 }}
         />
       </LegacyScreen.Background>
 
@@ -150,7 +101,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
 
           <Spacer y={2} />
 
-          <Flex flexDirection="row">
+          <Flex flexDirection="row" mb={6}>
             <Flex flex={1}>
               <Button
                 variant="fillLight"
@@ -177,14 +128,6 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
               </Button>
             </Flex>
           </Flex>
-
-          <Text textAlign="center" color="black30" mt={4}>
-            Faith Ringgold{" "}
-            <Text fontStyle="italic" color="black30">
-              Groovin' High, 1996
-            </Text>
-            .
-          </Text>
 
           <LegacyScreen.SafeBottomPadding />
         </MotiView>
