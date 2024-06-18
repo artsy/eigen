@@ -63,7 +63,7 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
     const { tracking } = this.props
 
     return (
-      <Box pb={1}>
+      <Box>
         <Flex justifyContent="space-between" pb="15px" flexDirection="row">
           <Text variant="sm-display">{headlineLabel}</Text>
           {artists.length > artistCount && (

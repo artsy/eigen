@@ -139,7 +139,7 @@ export const ShareSheet = () => {
     }
 
     let base64Data = ""
-    if (data.type !== "sale") {
+    if (data.type !== "sale" && data.type !== "default") {
       base64Data = await getImageBase64(currentImageUrl)
     }
 
@@ -170,7 +170,7 @@ export const ShareSheet = () => {
         Share
       </FancyModalHeader>
       <ScrollView>
-        {data.type !== "sale" && (
+        {data.type !== "sale" && data.type !== "default" && (
           <InstagramStoryViewShot
             shotRef={shotRef}
             href={currentImageUrl}

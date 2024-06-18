@@ -1,11 +1,12 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Spacer, Box, SimpleMessage } from "@artsy/palette-mobile"
+import { Spacer, Box, SimpleMessage, Text, Flex } from "@artsy/palette-mobile"
 import { CollectionArtworks_collection$data } from "__generated__/CollectionArtworks_collection.graphql"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { get } from "app/utils/get"
+import { pluralize } from "app/utils/pluralize"
 import { Schema } from "app/utils/track"
 import React, { useEffect, useRef } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -83,6 +84,11 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({
 
   return artworks ? (
     <ArtworkGridWrapper>
+      <Flex mb={2}>
+        <Text variant="xs" weight="medium">
+          {artworksTotal} {pluralize("Artwork", artworksTotal)}:
+        </Text>
+      </Flex>
       <InfiniteScrollArtworksGrid
         connection={artworks}
         loadMore={relay.loadMore}

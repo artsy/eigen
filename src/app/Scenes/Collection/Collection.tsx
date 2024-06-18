@@ -1,15 +1,18 @@
-import { Box, Flex, Spacer } from "@artsy/palette-mobile"
+import { Box, Flex, Screen, ShareIcon, Spacer } from "@artsy/palette-mobile"
 import { CollectionQuery } from "__generated__/CollectionQuery.graphql"
 import { Collection_collection$data } from "__generated__/Collection_collection.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { CollectionArtworksFilterFragmentContainer as CollectionArtworksFilter } from "app/Scenes/Collection/Components/CollectionArtworksFilter"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "app/Scenes/Collection/Screens/CollectionArtworks"
 import { CollectionHeaderContainer as CollectionHeader } from "app/Scenes/Collection/Screens/CollectionHeader"
+import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
+import { compact } from "lodash"
 import { useRef } from "react"
-import { Animated, FlatList } from "react-native"
+import { FlatList, TouchableOpacity } from "react-native"
 import { QueryRenderer, createFragmentContainer, graphql } from "react-relay"
 import { CollectionsHubRailsContainer as CollectionHubsRails } from "./Components/CollectionHubsRails/index"
 import { CollectionFeaturedArtistsContainer as CollectionFeaturedArtists } from "./Components/FeaturedArtists"
@@ -21,8 +24,9 @@ interface CollectionProps {
 export const Collection: React.FC<CollectionProps> = (props) => {
   const { collection } = props
   const flatListRef = useRef<FlatList>(null)
+  const { showShareSheet } = useShareSheet()
+
   const { slug, id, linkedCollections, isDepartment } = collection
-  const filterComponentAnimationValue = new Animated.Value(0)
 
   const trackingInfo: Schema.PageView = {
     context_screen: Schema.PageNames.Collection,
@@ -31,17 +35,55 @@ export const Collection: React.FC<CollectionProps> = (props) => {
     context_screen_owner_type: Schema.OwnerEntityTypes.Collection,
   }
 
-  let sections = ["collectionHubsRails", "collectionArtworksFilter", "collectionArtworks"]
-
-  // Show the Featured artists section only when showFeaturedArtists is true
-  if (collection.showFeaturedArtists) {
-    sections = ["collectionFeaturedArtists", ...sections]
+  const handleSharePress = () => {
+    const href = `/collection/${collection.slug}`
+    showShareSheet({
+      type: "default",
+      internalID: collection.id,
+      slug: collection.slug,
+      title: collection.title,
+      href,
+    })
   }
 
+  const data = compact([
+    collection.showFeaturedArtists
+      ? {
+          key: "collectionFeaturedArtists",
+          content: (
+            <Box px={2}>
+              <CollectionFeaturedArtists collection={collection} />
+            </Box>
+          ),
+        }
+      : null,
+    isDepartment
+      ? {
+          key: "collectionHubsRails",
+          content: <CollectionHubsRails linkedCollections={linkedCollections} {...props} />,
+        }
+      : null,
+    {
+      key: "collectionArtworksFilter",
+      content: (
+        <Flex mb={-2}>
+          <CollectionArtworksFilter collection={collection} />
+        </Flex>
+      ),
+    },
+    {
+      key: "collectionArtworks",
+      content: (
+        <Box px={2}>
+          <CollectionArtworks collection={collection} scrollToTop={() => scrollToTop()} />
+        </Box>
+      ),
+    },
+  ])
+
   // Small hack that takes into account the list header component when looking for the index
-  const stickySectionIndex = ["ListHeaderComponent", ...sections].findIndex(
-    (section) => section === "collectionArtworksFilter"
-  )
+  const stickySectionIndex =
+    data.findIndex((section) => section.key === "collectionArtworksFilter") + 1
 
   const scrollToTop = () => {
     flatListRef?.current?.scrollToIndex({ animated: false, index: isDepartment ? 1 : 0 })
@@ -49,55 +91,36 @@ export const Collection: React.FC<CollectionProps> = (props) => {
 
   return (
     <ProvideScreenTracking info={trackingInfo}>
-      <ArtworkFiltersStoreProvider>
-        <Flex flex={1}>
-          <Animated.FlatList
-            ref={flatListRef}
-            onScroll={Animated.event(
-              [{ nativeEvent: { contentOffset: { y: filterComponentAnimationValue } } }],
-              {
-                useNativeDriver: true,
-              }
-            )}
-            keyExtractor={(_item, index) => String(index)}
-            data={sections}
-            ListHeaderComponent={<CollectionHeader collection={collection} />}
-            ItemSeparatorComponent={() => <Spacer y={2} />}
-            stickyHeaderIndices={[stickySectionIndex]}
-            keyboardShouldPersistTaps="handled"
-            renderItem={({ item }): null | any => {
-              switch (item) {
-                case "collectionFeaturedArtists":
-                  return (
-                    <Box px={2}>
-                      <CollectionFeaturedArtists collection={collection} />
-                    </Box>
-                  )
-                case "collectionHubsRails":
-                  return isDepartment ? (
-                    <CollectionHubsRails linkedCollections={linkedCollections} {...props} />
-                  ) : null
-                case "collectionArtworksFilter":
-                  return (
-                    <CollectionArtworksFilter
-                      collection={collection}
-                      animationValue={filterComponentAnimationValue}
-                    />
-                  )
-                case "collectionArtworks":
-                  return (
-                    <Box px={2}>
-                      <CollectionArtworks
-                        collection={collection}
-                        scrollToTop={() => scrollToTop()}
-                      />
-                    </Box>
-                  )
-              }
-            }}
-          />
-        </Flex>
-      </ArtworkFiltersStoreProvider>
+      <Screen>
+        <Screen.AnimatedHeader
+          title="African Artists"
+          onBack={goBack}
+          rightElements={
+            <TouchableOpacity
+              onPress={() => {
+                handleSharePress()
+              }}
+            >
+              <ShareIcon width={24} height={24} />
+            </TouchableOpacity>
+          }
+        />
+        <ArtworkFiltersStoreProvider>
+          <Flex flex={1}>
+            <Screen.FlatList
+              keyExtractor={(_item, index) => String(index)}
+              data={data}
+              ListHeaderComponent={<CollectionHeader collection={collection} />}
+              ItemSeparatorComponent={() => <Spacer y={2} />}
+              stickyHeaderIndices={[stickySectionIndex]}
+              keyboardShouldPersistTaps="handled"
+              renderItem={({ item }) => {
+                return item.content
+              }}
+            />
+          </Flex>
+        </ArtworkFiltersStoreProvider>
+      </Screen>
     </ProvideScreenTracking>
   )
 }
@@ -109,6 +132,7 @@ export const CollectionContainer = createFragmentContainer(Collection, {
       slug
       isDepartment
       showFeaturedArtists
+      title
       ...CollectionHeader_collection
       ...CollectionArtworks_collection @arguments(input: { sort: "-decayed_merch" })
       ...CollectionArtworksFilter_collection

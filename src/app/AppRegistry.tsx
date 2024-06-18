@@ -456,7 +456,7 @@ export const modules = defineModules({
   CityPicker: reactModule(CityPicker, { fullBleed: true, ignoreTabs: true }),
   CitySavedList: reactModule(CitySavedListQueryRenderer),
   CitySectionList: reactModule(CitySectionListQueryRenderer),
-  Collection: reactModule(CollectionQueryRenderer, { fullBleed: true }),
+  Collection: reactModule(CollectionQueryRenderer, { fullBleed: true, hidesBackButton: true }),
   ConsignmentInquiry: reactModule(ConsignmentInquiryScreen, {
     hidesBottomTabs: true,
     screenOptions: {

@@ -5,6 +5,7 @@ import { Animated } from "react-native"
 interface HeaderArtworksFilterWithTotalArtworksProps {
   animationValue?: Animated.Value
   onPress: () => void
+  hideArtworksCount?: boolean
 }
 
 export const HeaderArtworksFilterWithTotalArtworks: React.FC<
