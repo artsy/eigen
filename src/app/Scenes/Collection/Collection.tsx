@@ -2,7 +2,8 @@ import { Box, Flex, Screen, ShareIcon, Spacer } from "@artsy/palette-mobile"
 import { CollectionQuery } from "__generated__/CollectionQuery.graphql"
 import { Collection_collection$data } from "__generated__/Collection_collection.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
+import { getShareURL } from "app/Components/ShareSheet/helpers"
+import { useToast } from "app/Components/Toast/toastHook"
 import { CollectionArtworksFilterFragmentContainer as CollectionArtworksFilter } from "app/Scenes/Collection/Components/CollectionArtworksFilter"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "app/Scenes/Collection/Screens/CollectionArtworks"
 import { CollectionHeaderContainer as CollectionHeader } from "app/Scenes/Collection/Screens/CollectionHeader"
@@ -13,6 +14,7 @@ import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { compact } from "lodash"
 import { useRef } from "react"
 import { FlatList, TouchableOpacity } from "react-native"
+import RNShare from "react-native-share"
 import { QueryRenderer, createFragmentContainer, graphql } from "react-relay"
 import { CollectionsHubRailsContainer as CollectionHubsRails } from "./Components/CollectionHubsRails/index"
 import { CollectionFeaturedArtistsContainer as CollectionFeaturedArtists } from "./Components/FeaturedArtists"
@@ -24,7 +26,7 @@ interface CollectionProps {
 export const Collection: React.FC<CollectionProps> = (props) => {
   const { collection } = props
   const flatListRef = useRef<FlatList>(null)
-  const { showShareSheet } = useShareSheet()
+  const { show: showToast } = useToast()
 
   const { slug, id, linkedCollections, isDepartment } = collection
 
@@ -35,15 +37,20 @@ export const Collection: React.FC<CollectionProps> = (props) => {
     context_screen_owner_type: Schema.OwnerEntityTypes.Collection,
   }
 
-  const handleSharePress = () => {
-    const href = `/collection/${collection.slug}`
-    showShareSheet({
-      type: "default",
-      internalID: collection.id,
-      slug: collection.slug,
-      title: collection.title,
-      href,
-    })
+  const handleSharePress = async () => {
+    try {
+      const url = getShareURL(`/collection/${collection.slug}?utm_content=collection-share`)
+      const message = `View ${collection.title} on Artsy`
+
+      await RNShare.open({
+        title: collection.title,
+        message: message + "\n" + url,
+        failOnCancel: false,
+      })
+      showToast("Copied to Clipboard", "middle", { Icon: ShareIcon })
+    } catch (error) {
+      console.error("Collection.tsx", error)
+    }
   }
 
   const data = compact([
