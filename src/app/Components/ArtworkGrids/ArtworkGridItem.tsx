@@ -505,6 +505,10 @@ export const saleMessageOrBidInfo = ({
     return "Price on request"
   }
 
+  if (artwork.saleMessage === "Inquire about availability") {
+    return ""
+  }
+
   return artwork.saleMessage
 }
 
