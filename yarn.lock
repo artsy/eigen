@@ -11841,10 +11841,10 @@ react-native-image-crop-picker@0.40.3:
   resolved "https://registry.yarnpkg.com/react-native-image-crop-picker/-/react-native-image-crop-picker-0.40.3.tgz#a6b135cd1218a33ad126c1a148ec5a1bd01737ff"
   integrity sha512-45PKcTnsnLS+E36YwoXutllQdRSOuOsMN0IRcAcwsFXOuAQIOtugXlAuGGL28JHKb/ATaSSPvqCSrdG65Jv3GA==
 
-react-native-in-app-review@4.2.1:
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/react-native-in-app-review/-/react-native-in-app-review-4.2.1.tgz#4bc763e0d33f8dae663c054e87832128cd4e6c63"
-  integrity sha512-Bny/ukRhkSSzlsbVpB3vsIuWYuOHBPlxguNwZ0TWK+7IQq8/vTRDf17y1P/4+jMIjBO0WNJCzBxHkXdnlhoTmQ==
+react-native-in-app-review@4.3.3:
+  version "4.3.3"
+  resolved "https://registry.yarnpkg.com/react-native-in-app-review/-/react-native-in-app-review-4.3.3.tgz#61f09f110de18f0a470a9bb55b9f49600390085f"
+  integrity sha512-Q9sXBtK8tCBYFPCGmMgeMlkxXC5e6vAyPZK26OC1oOKUuKUd0QORnryk/qbwnuN4fLshHQN8UKlLgyHLGRuK3A==
 
 react-native-keychain@8.0.0:
   version "8.0.0"
