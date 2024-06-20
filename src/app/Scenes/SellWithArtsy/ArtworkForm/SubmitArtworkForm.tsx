@@ -13,9 +13,9 @@ import {
   SubmitArtworkFormStore,
   SubmitArtworkFormStoreProvider,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
+import { SubmitArtworkFromMyCollection } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFromMyCollection"
 import { SubmitArtworkPurchaseHistory } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkPurchaseHistory"
 import { SubmitArtworkSelectArtist } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkSelectArtist"
-import { SelectArtworkMyCollectionArtwork } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkSelectArtworkMyCollectionArtwork"
 import { SubmitArtworkStartFlow } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkStartFlow"
 import { SubmitArtworkTopNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkTopNavigation"
 import { SubmitArtworkScreen } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
@@ -30,16 +30,14 @@ import { fetchUserContactInformation } from "app/Scenes/SellWithArtsy/SubmitArtw
 import { SubmitArtworkProps } from "app/Scenes/SellWithArtsy/SubmitArtwork/SubmitArtwork"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
-import { useIsKeyboardVisible } from "app/utils/hooks/useIsKeyboardVisible"
 import { FormikProvider, useFormik } from "formik"
 import { useEffect } from "react"
 import { Keyboard } from "react-native"
 import { isTablet as getIsTablet } from "react-native-device-info"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 export type SubmitArtworkStackNavigation = {
   StartFlow: undefined
-  SelectArtworkMyCollectionArtwork: undefined
+  SubmitArtworkFromMyCollection: undefined
   SelectArtist: undefined
   AddTitle: undefined
   AddPhotos: undefined
@@ -76,8 +74,6 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
   hasStartedFlowFromMyCollection,
 }) => {
   const currentStep = SubmitArtworkFormStore.useStoreState((state) => state.currentStep)
-  const { bottom: bottomInset } = useSafeAreaInsets()
-  const isKeyboardVisible = useIsKeyboardVisible(true)
   const showDevHelpers = useDevToggle("DTShowSubmissionDevHelpers")
 
   const initialValues = {
@@ -131,7 +127,6 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
         <Flex
           style={{
             flex: 1,
-            paddingBottom: isKeyboardVisible ? 0 : bottomInset,
           }}
         >
           <Flex flex={1}>
@@ -209,8 +204,8 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
                 )}
 
                 <Stack.Screen
-                  name="SelectArtworkMyCollectionArtwork"
-                  component={SelectArtworkMyCollectionArtwork}
+                  name="SubmitArtworkFromMyCollection"
+                  component={SubmitArtworkFromMyCollection}
                 />
 
                 {!hasStartedFlowFromMyCollection && (

@@ -131,7 +131,7 @@ const getOwnerType = (currentStep: SubmitArtworkScreen): OwnerType => {
       return OwnerType.submitArtworkStepCompleteYourSubmission
     case "ArtistRejected":
       return OwnerType.submitArtworkStepArtistRejected
-    case "SelectArtworkMyCollectionArtwork":
+    case "SubmitArtworkFromMyCollection":
       return OwnerType.submitArtworkStepSelectArtworkMyCollectionArtwork
   }
 }

@@ -28,11 +28,11 @@ export const SubmitArtworkProgressBar: React.FC = ({}) => {
     ).map((route) => route.name)
 
     // This is required in case the reference value comes later than the first render
-    if (currentStep === "SelectArtworkMyCollectionArtwork") {
+    if (currentStep === "SubmitArtworkFromMyCollection") {
       return true
     }
 
-    if (routes && routes.includes("SelectArtworkMyCollectionArtwork")) {
+    if (routes && routes.includes("SubmitArtworkFromMyCollection")) {
       return true
     }
 
@@ -44,7 +44,7 @@ export const SubmitArtworkProgressBar: React.FC = ({}) => {
   const getTotalSteps = useCallback(() => {
     return hasStartedFlowFromMyCollection
       ? COUNTABLE_STEPS
-      : COUNTABLE_STEPS.filter((step) => step !== "SelectArtworkMyCollectionArtwork")
+      : COUNTABLE_STEPS.filter((step) => step !== "SubmitArtworkFromMyCollection")
   }, [hasStartedFlowFromMyCollection])
 
   const totalSteps = getTotalSteps()

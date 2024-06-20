@@ -11,6 +11,8 @@ jest.mock("app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers", () => 
     return {
       navigateToNextStep: mockNavigateToNextStep,
       navigateToPreviousStep: mockNavigateToPreviousStep,
+      isFinalStep: false,
+      isValid: true,
     }
   },
 }))
@@ -28,7 +30,10 @@ describe("SubmitArtworkBottomNavigation", () => {
 
       fireEvent(startSubmissionButton, "onPress")
 
-      expect(mockNavigateToNextStep).toHaveBeenCalledWith({ step: "SelectArtist" })
+      expect(mockNavigateToNextStep).toHaveBeenCalledWith({
+        skipMutation: true,
+        step: "SelectArtist",
+      })
     })
 
     it("Shows a functional Start from My Collection button", () => {
@@ -45,7 +50,10 @@ describe("SubmitArtworkBottomNavigation", () => {
 
       fireEvent(startFromMyCollectionButton, "onPress")
 
-      expect(mockNavigateToNextStep).toHaveBeenCalledWith()
+      expect(mockNavigateToNextStep).toHaveBeenCalledWith({
+        skipMutation: true,
+        step: "SubmitArtworkFromMyCollection",
+      })
     })
   })
 
@@ -109,7 +117,7 @@ describe("SubmitArtworkBottomNavigation", () => {
     })
   })
 
-  describe("When the current step is neither start flow nor complete your submission nor artist rejected", () => {
+  describe("Bottom navigation buttons", () => {
     it("Shows a functional continue button", async () => {
       renderWithSubmitArtworkWrapper({
         component: <SubmitArtworkBottomNavigation />,

@@ -1,12 +1,9 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Button, Flex, Separator, Spacer, Text } from "@artsy/palette-mobile"
 import { MyCollectionWhySell_artwork$key } from "__generated__/MyCollectionWhySell_artwork.graphql"
-import {
-  initializeNewSubmissionArtworkForm,
-  initializeSubmissionArtworkForm,
-} from "app/Scenes/MyCollection/utils/initializeSubmissionArtworkForm"
-import { SubmitArtworkScreen } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
-import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/validation"
+import { initializeSubmissionArtworkForm } from "app/Scenes/MyCollection/utils/initializeSubmissionArtworkForm"
+import { fetchArtworkInformation } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/fetchArtworkInformation"
+import { getInitialSubmissionFormValuesFromArtwork } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/getInitialSubmissionValuesFromArtwork"
 import { SubmitArtworkProps } from "app/Scenes/SellWithArtsy/SubmitArtwork/SubmitArtwork"
 import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -57,7 +54,7 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
           variant="fillDark"
           mb={2}
           block
-          onPress={() => {
+          onPress={async () => {
             trackEvent(
               tracks.tappedSellArtwork(
                 setContextModule,
@@ -68,14 +65,16 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
               )
             )
             if (enableNewSubmissionFlow) {
-              const initialValues: Partial<ArtworkDetailsFormModel> =
-                initializeNewSubmissionArtworkForm(artwork)
-              const initialStep: SubmitArtworkScreen = "AddTitle"
-
               const passProps: SubmitArtworkProps = {
-                initialValues,
-                initialStep,
+                initialValues: {},
+                initialStep: "StartFlow",
                 hasStartedFlowFromMyCollection: true,
+              }
+
+              const artworkData = await fetchArtworkInformation(artwork.internalID)
+              if (artworkData) {
+                passProps.initialValues = getInitialSubmissionFormValuesFromArtwork(artworkData)
+                passProps.initialStep = "AddTitle"
               }
               navigate("/sell/submissions/new", { passProps })
             } else {
