@@ -1,18 +1,17 @@
+import { Flex } from "@artsy/palette-mobile"
 import { CollectionArtworks_collection$data } from "__generated__/CollectionArtworks_collection.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
 import { Schema } from "app/utils/track"
 import React, { useState } from "react"
-import { Animated } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface FilterProps {
   collection: CollectionArtworks_collection$data
-  animationValue: Animated.Value
 }
 
-export const CollectionArtworksFilter: React.FC<FilterProps> = ({ collection, animationValue }) => {
+export const CollectionArtworksFilter: React.FC<FilterProps> = ({ collection }) => {
   const tracking = useTracking()
 
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
@@ -46,8 +45,8 @@ export const CollectionArtworksFilter: React.FC<FilterProps> = ({ collection, an
   }
 
   return (
-    <>
-      <HeaderArtworksFilter animationValue={animationValue} onPress={openFilterArtworksModal} />
+    <Flex borderTopWidth={1} borderColor="black10">
+      <HeaderArtworksFilter onPress={openFilterArtworksModal} hideArtworksCount />
       <ArtworkFilterNavigator
         id={collection.id}
         slug={collection.slug}
@@ -56,7 +55,7 @@ export const CollectionArtworksFilter: React.FC<FilterProps> = ({ collection, an
         closeModal={closeFilterArtworksModal}
         mode={FilterModalMode.Collection}
       />
-    </>
+    </Flex>
   )
 }
 

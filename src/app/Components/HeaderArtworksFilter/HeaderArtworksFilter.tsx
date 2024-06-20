@@ -15,6 +15,7 @@ export interface FilterProps {
   total: number
   animationValue?: Animated.Value
   onPress: () => void
+  hideArtworksCount?: boolean
 }
 
 interface SeparatorWithSmoothOpacityProps {
@@ -59,7 +60,12 @@ export const SeparatorWithSmoothOpacity: React.FC<SeparatorWithSmoothOpacityProp
   )
 }
 
-export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationValue, onPress }) => {
+export const HeaderArtworksFilter: React.FC<FilterProps> = ({
+  animationValue,
+  hideArtworksCount,
+  onPress,
+  total,
+}) => {
   const screenWidth = useScreenDimensions().width
 
   const [onLayoutCalled, setOnLayoutCalled] = useState(false)
@@ -127,27 +133,32 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationVa
         >
           <Flex backgroundColor="white" height={50} px={2} justifyContent="center">
             <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-              <Animated.View
-                style={{
-                  transform: [
-                    {
-                      translateX:
-                        animationValue?.interpolate({
-                          inputRange:
-                            filterPageY > 0
-                              ? [0, filterPageY - ANIM_START, filterPageY]
-                              : [0, 0, 0],
-                          outputRange: filterPageY > 0 ? [0, 0, TRANSLATE_X_VALUE] : [0, 0, 0],
-                          extrapolate: "clamp",
-                        }) ?? 0,
-                    },
-                  ],
-                }}
-              >
-                <Text variant="sm-display" color="black60">
-                  Showing {total} works
-                </Text>
-              </Animated.View>
+              {hideArtworksCount ? (
+                <Flex />
+              ) : (
+                <Animated.View
+                  style={{
+                    transform: [
+                      {
+                        translateX:
+                          animationValue?.interpolate({
+                            inputRange:
+                              filterPageY > 0
+                                ? [0, filterPageY - ANIM_START, filterPageY]
+                                : [0, 0, 0],
+                            outputRange: filterPageY > 0 ? [0, 0, TRANSLATE_X_VALUE] : [0, 0, 0],
+                            extrapolate: "clamp",
+                          }) ?? 0,
+                      },
+                    ],
+                  }}
+                >
+                  <Text variant="sm-display" color="black60">
+                    Showing {total} works
+                  </Text>
+                </Animated.View>
+              )}
+
               <TouchableHighlightColor
                 haptic
                 onPress={onPress}

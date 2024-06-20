@@ -1,4 +1,8 @@
-export type ShareSheetItem = ShareSheetArtworkItem | ShareSheetSaleItem | ShareSheetArtistItem
+export type ShareSheetItem =
+  | ShareSheetArtworkItem
+  | ShareSheetSaleItem
+  | ShareSheetArtistItem
+  | ShareSheetDefaultItem
 
 export type ShareSheetArtworkItem = {
   type: "artwork"
@@ -49,6 +53,24 @@ export type ShareSheetSaleItem = {
   href: string
   title: string
   artists:
+    | ReadonlyArray<
+        | {
+            readonly name: string | null | undefined
+          }
+        | null
+        | undefined
+      >
+    | null
+    | undefined
+}
+
+export type ShareSheetDefaultItem = {
+  type: "default"
+  slug: string
+  internalID: string
+  href: string
+  title: string
+  artists?:
     | ReadonlyArray<
         | {
             readonly name: string | null | undefined

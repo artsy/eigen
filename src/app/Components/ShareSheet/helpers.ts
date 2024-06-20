@@ -37,7 +37,7 @@ export const shareContent = (shareSheetItem: ShareSheetItem) => {
 }
 
 export const getShareImages = (shareSheetItem: ShareSheetItem) => {
-  if (shareSheetItem.type === "sale") {
+  if (shareSheetItem.type === "sale" || shareSheetItem.type === "default") {
     return {
       currentImageUrl: "",
     }
