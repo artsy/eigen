@@ -35,7 +35,6 @@ interface MasonryInfiniteScrollArtworkGridProps extends MasonryFlashListOmittedP
   isItemDisabled?: (item: MasonryArtworkItem) => boolean
   isLoading?: boolean
   loadMore?: (pageSize: number) => void
-  onDisabledPress?: (item: MasonryArtworkItem) => void
   onPress?: (artworkID: string) => void
   pageSize?: number
   partnerOffer?: PartnerOffer
@@ -64,7 +63,6 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   ListEmptyComponent,
   ListHeaderComponent,
   loadMore,
-  onDisabledPress,
   onPress,
   pageSize = PAGE_SIZE,
   partnerOffer,
@@ -104,7 +102,6 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       partnerOffer={partnerOffer}
       priceOfferMessage={priceOfferMessage}
       onPress={onPress}
-      onDisabledPress={onDisabledPress}
       hideSaleInfo={hideSaleInfo}
       hideSaveIcon={hideSaveIcon}
     />

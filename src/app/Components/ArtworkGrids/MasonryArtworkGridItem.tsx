@@ -32,7 +32,6 @@ interface MasonryArtworkGridItemProps {
   item: Artwork
   numColumns?: number
   onPress?: (artworkID: string, artwork?: ArtworkGridItem_artwork$data) => void
-  onDisabledPress?: (artwork: Artwork) => void
   partnerOffer?: PartnerOffer
   priceOfferMessage?: PriceOfferMessage
   hideSaveIcon?: boolean
@@ -51,7 +50,6 @@ export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
   index,
   item,
   numColumns = NUM_COLUMNS_MASONRY,
-  onDisabledPress,
   onPress,
   partnerOffer,
   priceOfferMessage,
@@ -79,7 +77,6 @@ export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
         disabled={disabled}
         height={imgHeight}
         itemIndex={index}
-        onDisabledPress={() => onDisabledPress?.(item)}
         onPress={onPress}
         partnerOffer={partnerOffer}
         priceOfferMessage={priceOfferMessage}

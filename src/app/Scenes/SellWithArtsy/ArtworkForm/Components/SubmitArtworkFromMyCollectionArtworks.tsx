@@ -7,7 +7,6 @@ import {
 } from "__generated__/SubmitArtworkFromMyCollectionArtworks_me.graphql"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import LoadingModal from "app/Components/Modals/LoadingModal"
-import { useToast } from "app/Components/Toast/toastHook"
 import { PAGE_SIZE } from "app/Components/constants"
 import { fetchArtworkInformation } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/fetchArtworkInformation"
 import { getInitialSubmissionFormValuesFromArtwork } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/getInitialSubmissionValuesFromArtwork"
@@ -29,7 +28,6 @@ type ArtworkGridItem = ExtractNodeType<
 export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
   const { navigateToNextStep } = useSubmissionContext()
   const [isLoading, setIsLoading] = useState(false)
-  const { show: showToast } = useToast()
 
   const queryData = useLazyLoadQuery<SubmitArtworkFromMyCollectionArtworksQuery>(
     submitArtworkFromMyCollectionQuery,
@@ -128,9 +126,6 @@ export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
           if ((artwork as ArtworkGridItem).submissionId) return true
           return false
         }}
-        onDisabledPress={() => {
-          showToast("You have already submitted this artwork.", "bottom")
-        }}
         ListHeaderComponent={SubmitArtworkFromMyCollectionHeader}
       />
       <LoadingModal isVisible={isLoading} dark />
@@ -179,7 +174,7 @@ const artworkConnectionFragment = graphql`
             aspectRatio
             blurhash
           }
-          ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
+          ...ArtworkGridItem_artwork @arguments(includeAllImages: false, includeSubmissionId: true)
         }
       }
     }
