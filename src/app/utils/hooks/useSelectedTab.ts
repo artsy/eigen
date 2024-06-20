@@ -4,7 +4,7 @@ import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 export function useSelectedTab(): BottomTabType {
   const tabState = __unsafe_mainModalStackRef.current
     ?.getState()
-    .routes.find((r) => r.state?.type === "tab")?.state
+    ?.routes.find((r) => r.state?.type === "tab")?.state
 
   if (!tabState) {
     return "home"
