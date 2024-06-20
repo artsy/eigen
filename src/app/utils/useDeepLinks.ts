@@ -33,8 +33,8 @@ export function useDeepLinks() {
   const handleDeepLink = async (url: string) => {
     let targetURL
 
-    // If the url is a marketing url, we need to fetch the redirect
-    if (url.includes("click.artsy.net")) {
+    // If the url is a marketing or email-link url, we need to fetch the redirect
+    if (url.includes("click.artsy.net") || url.includes("email-link.artsy.net")) {
       try {
         targetURL = await fetch(url)
       } catch (error) {
