@@ -1,14 +1,18 @@
-import { useNavigationState } from "@react-navigation/native"
+import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 
 export function useSelectedTab(): BottomTabType {
-  const tabState = useNavigationState(
-    (state) => state.routes.find((r) => r.state?.type === "tab")?.state
-  )
+  const tabState = __unsafe_mainModalStackRef.current
+    ?.getState()
+    ?.routes.find((r) => r.state?.type === "tab")?.state
+
   if (!tabState) {
     return "home"
   } else {
     const { index, routes } = tabState
-    return routes[index!].name as BottomTabType
+    if (index === undefined) {
+      return "home"
+    }
+    return routes[index].name as BottomTabType
   }
 }

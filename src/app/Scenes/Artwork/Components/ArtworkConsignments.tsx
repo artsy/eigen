@@ -1,6 +1,7 @@
 import { LinkText, Text } from "@artsy/palette-mobile"
 import { ArtworkConsignments_artwork$key } from "__generated__/ArtworkConsignments_artwork.graphql"
-import { switchTab } from "app/system/navigation/navigate"
+import { popToRoot, switchTab } from "app/system/navigation/navigate"
+import { useSelectedTab } from "app/utils/hooks/useSelectedTab"
 import { Schema } from "app/utils/track"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -17,6 +18,8 @@ export const ArtworkConsignments: React.FC<ArtworkConsignmentsProps> = ({ artwor
   const firstArtistName = artists[0]?.name ?? "this artist"
   const label = consignableArtists.length > 1 ? "these artists" : firstArtistName
 
+  const activeTab = useSelectedTab()
+
   const handleLinkPress = () => {
     tracking.trackEvent({
       action_name: Schema.ActionNames.ConsignWithArtsy,
@@ -24,7 +27,11 @@ export const ArtworkConsignments: React.FC<ArtworkConsignmentsProps> = ({ artwor
       // TODO: Update context module
       context_module: Schema.ContextModules.ArtworkExtraLinks,
     })
-    switchTab("sell")
+    if (activeTab === "sell") {
+      popToRoot()
+    } else {
+      switchTab("sell")
+    }
   }
 
   if (!artists.length) {
