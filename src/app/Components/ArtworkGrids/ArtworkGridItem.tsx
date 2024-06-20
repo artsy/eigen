@@ -501,7 +501,7 @@ export const saleMessageOrBidInfo = ({
     return `${currentBid} (${numberOfBidsString})`
   }
 
-  if (artwork.saleMessage === "Contact For Price") {
+  if (artwork.saleMessage === "Contact for price") {
     return "Price on request"
   }
 

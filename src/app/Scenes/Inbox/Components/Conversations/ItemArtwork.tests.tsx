@@ -28,7 +28,7 @@ describe("ItemArtworkFragmentContainer", () => {
         image: {
           thumbnailUrl: "https://testthumbnail",
         },
-        saleMessage: "Contact For Price",
+        saleMessage: "Contact for price",
       }),
     })
 

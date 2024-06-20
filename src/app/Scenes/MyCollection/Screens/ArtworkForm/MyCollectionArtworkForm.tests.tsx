@@ -634,7 +634,7 @@ const mockArtworkSearchResult = {
             },
             title: "Morons",
             date: "2007",
-            saleMessage: "Contact For Price",
+            saleMessage: "Contact for price",
             internalID: "61897c11ae2e33000dc95088",
             artistNames: "Banksy",
             href: "/artwork/banksy-morons-unsigned-16",
