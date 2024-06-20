@@ -39,7 +39,7 @@ const saleArtworksConnectionEdges = new Array(10).fill({
       id: "artwork-id",
       title: "Best artwork ever",
       date: "2019",
-      saleMessage: "Contact For Price",
+      saleMessage: "Contact for price",
       artistNames: "Banksy",
       href: "/artwork/artwroks-href",
       image: {

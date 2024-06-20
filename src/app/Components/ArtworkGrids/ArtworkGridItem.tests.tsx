@@ -331,7 +331,7 @@ describe("ArtworkGridItem", () => {
 const artwork = {
   title: "Some Kind of Dinosaur",
   date: "2015",
-  saleMessage: "Contact For Price",
+  saleMessage: "Contact for price",
   sale: {
     isAuction: true,
     isClosed: true,
