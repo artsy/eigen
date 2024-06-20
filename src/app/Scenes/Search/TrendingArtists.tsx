@@ -5,7 +5,7 @@ import { TrendingArtists_query$key } from "__generated__/TrendingArtists_query.g
 import { ArtistCardContainer as ArtistCard } from "app/Components/Home/ArtistRails/ArtistCard"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { navigate } from "app/system/navigation/navigate"
+import { useConditionalNavigate } from "app/system/newNavigation/useConditionalNavigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { isTablet } from "react-native-device-info"
 import { usePaginationFragment, graphql } from "react-relay"
@@ -19,6 +19,7 @@ interface TrendingArtistsProps extends BoxProps {
 }
 
 export const TrendingArtists: React.FC<TrendingArtistsProps> = ({ data, ...boxProps }) => {
+  const navigate = useConditionalNavigate()
   const tracking = useTracking()
   const useLargeSizeCard = isTablet()
   const {

@@ -1,11 +1,13 @@
 import { Spacer, Flex, useColor, Text } from "@artsy/palette-mobile"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { navigate } from "app/system/navigation/navigate"
+import { useConditionalNavigate } from "app/system/newNavigation/useConditionalNavigate"
 import { Image, TouchableOpacity } from "react-native"
 
 export const CityGuideCTA: React.FC = () => {
   const cityGuideMapImage = require("images/city-guide-bg.webp")
   const color = useColor()
+  const navigate = useConditionalNavigate()
+
   return (
     <Flex>
       <SectionTitle title="Explore art on view" />

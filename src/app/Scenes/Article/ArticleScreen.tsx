@@ -13,7 +13,7 @@ import { ArticleBody } from "app/Scenes/Article/Components/ArticleBody"
 import { ArticleRelatedArticlesRail } from "app/Scenes/Article/Components/ArticleRelatedArticlesRail"
 import { ArticleShareButton } from "app/Scenes/Article/Components/ArticleShareButton"
 import { ArticleWebViewScreen } from "app/Scenes/Article/Components/ArticleWebViewScreen"
-import { goBack } from "app/system/navigation/navigate"
+import { useConditionalGoBack } from "app/system/newNavigation/useConditionalGoBack"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { Suspense } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -34,6 +34,7 @@ const Article: React.FC<ArticleScreenProps> = (props) => {
   const data = useLazyLoadQuery<ArticleScreenQuery>(articleScreenQuery, {
     slug: props.articleID,
   })
+  const goBack = useConditionalGoBack()
 
   if (!data.article) {
     return null
@@ -102,6 +103,8 @@ export const articleScreenQuery = graphql`
 `
 
 const Placeholder: React.FC = () => {
+  const goBack = useConditionalGoBack()
+
   return (
     <Screen testID="ArticleScreenPlaceholder">
       <Screen.Header rightElements={<ArticleShareButton article={null as any} />} onBack={goBack} />

@@ -251,7 +251,6 @@ export function navigateToPartner(href: string) {
 
 /**
  * Looks up the entity by slug passed in and presents appropriate viewController
- * @param component: ignored, kept for compatibility
  * @param slug: identifier for the entity to be presented
  * @param entity: type of entity we are routing to, this is currently used to determine what loading
  * state to show, either 'fair' or 'partner'

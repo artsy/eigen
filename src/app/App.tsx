@@ -1,4 +1,5 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
+import NewNavMain from "app/Navigation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { codePushOptions } from "app/system/codepush"
 import { AsyncStorageDevtools } from "app/system/devTools/AsyncStorageDevTools"
@@ -55,6 +56,11 @@ addTrackingProvider("console", ConsoleTrackingProvider)
 if (UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true)
 }
+
+// This is dumb but it is too early in lifecycle to use feature flag infrastructure
+// Just use a dummy flag, we don't have the luxury of turning off an on via echo
+// but do get benefit of being able to work piecemeal until release
+export const enableNewNavigation = true
 
 const Main = () => {
   useRageShakeDevMenu()
@@ -146,16 +152,14 @@ const Main = () => {
   )
 }
 
-const InnerApp = () => (
-  <Providers>
-    <AsyncStorageDevtools />
-
-    <DevMenuWrapper>
-      <Main />
-    </DevMenuWrapper>
-
-    <DynamicIslandStagingIndicator />
-  </Providers>
-)
+const InnerApp = () => {
+  return (
+    <Providers>
+      <AsyncStorageDevtools />
+      <DevMenuWrapper>{!!enableNewNavigation ? <NewNavMain /> : <Main />}</DevMenuWrapper>
+      <DynamicIslandStagingIndicator />
+    </Providers>
+  )
+}
 
 export const App = codePush(codePushOptions)(InnerApp)

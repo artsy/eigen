@@ -4,7 +4,7 @@ import { Box, Text, TextProps } from "@artsy/palette-mobile"
 import { CuratedCollectionItem_collection$key } from "__generated__/CuratedCollectionItem_collection.graphql"
 import { CardRailCard, CardRailMetadataContainer } from "app/Components/Home/CardRailCard"
 import { ThreeUpImageLayout } from "app/Components/ThreeUpImageLayout"
-import { navigate } from "app/system/navigation/navigate"
+import { useConditionalNavigate } from "app/system/newNavigation/useConditionalNavigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { compact } from "lodash"
 import { isTablet } from "react-native-device-info"
@@ -20,6 +20,7 @@ export const CuratedCollectionItem: React.FC<CuratedCollectionItemProps> = ({
   collection,
   position,
 }) => {
+  const navigate = useConditionalNavigate()
   const tracking = useTracking()
   const item = useFragment(CuratedCollectionItemFragment, collection)
   const imageURLs = extractNodes(item.artworksConnection, (artwork) => artwork.image?.url)

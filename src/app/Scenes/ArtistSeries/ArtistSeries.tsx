@@ -14,7 +14,7 @@ import { ArtistSeriesArtworksFragmentContainer } from "app/Scenes/ArtistSeries/A
 import { ArtistSeriesHeaderFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesHeader"
 import { ArtistSeriesMetaFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesMeta"
 import { ArtistSeriesMoreSeriesFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { goBack } from "app/system/navigation/navigate"
+import { useConditionalGoBack } from "app/system/newNavigation/useConditionalGoBack"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -35,7 +35,7 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
   const selectedFiltersCount = useSelectedFiltersCount()
   const artworksTotal = ArtworksFiltersStore.useStoreState((state) => state.counts.total) ?? 0
-
+  const goBack = useConditionalGoBack()
   const artist = artistSeries.artist?.[0]
   const artistSeriesTotalCount = artist?.artistSeriesConnection?.totalCount ?? 0
 
