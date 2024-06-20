@@ -201,10 +201,8 @@ const Wrapper: React.FC<{}> = ({ children }) => {
       width="100%"
       px={2}
       pt={2}
+      pb={isKeyboardVisible ? 2 : `${space(2) + bottomInset}px`}
       alignSelf="center"
-      style={{
-        paddingBottom: isKeyboardVisible ? space(2) : space(2) + bottomInset,
-      }}
     >
       {children}
     </Flex>
