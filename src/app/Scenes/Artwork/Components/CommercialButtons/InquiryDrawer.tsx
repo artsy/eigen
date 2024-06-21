@@ -163,6 +163,7 @@ export const InquiryDrawer: React.FC<InquiryDrawerProps> = ({ artwork }) => {
                 title="Add message"
                 defaultValue={state.message}
                 onChangeText={handleMessageChangeText}
+                testID="message-input"
               />
             </Box>
             <Box mt={4} flexDirection="row">
@@ -185,6 +186,7 @@ export const InquiryDrawer: React.FC<InquiryDrawerProps> = ({ artwork }) => {
                 onPress={handleSendButtonPress}
                 disabled={state.inquiryQuestions.length === 0}
                 loading={theInquiryIsBeingSent}
+                testID="send-button"
               >
                 Send
               </Button>

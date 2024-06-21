@@ -9,6 +9,7 @@ import { FC, useCallback, useEffect, useRef } from "react"
 export interface AutomountedBottomSheetModalProps extends BottomSheetModalProps {
   visible: boolean
   closeOnBackdropClick?: boolean
+  testID?: string
 }
 
 export const AutomountedBottomSheetModal: FC<AutomountedBottomSheetModalProps> = ({
