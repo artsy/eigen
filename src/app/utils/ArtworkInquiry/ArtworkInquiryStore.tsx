@@ -6,7 +6,7 @@ import {
 } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { createContext, Reducer, useReducer } from "react"
 
-const initialArtworkInquiryState: ArtworkInquiryContextState = {
+export const initialArtworkInquiryState: ArtworkInquiryContextState = {
   shippingLocation: null,
   inquiryQuestions: [],
   message: undefined,
@@ -64,14 +64,12 @@ export const reducer = (
     case "openShippingQuestionDialog": {
       return {
         ...inquiryState,
-        isInquiryDialogOpen: false,
         isShippingQuestionDialogOpen: true,
       }
     }
     case "closeShippingQuestionDialog": {
       return {
         ...inquiryState,
-        isInquiryDialogOpen: true,
         isShippingQuestionDialogOpen: false,
       }
     }

@@ -4,25 +4,24 @@ import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/Automoun
 import { LocationAutocomplete } from "app/Components/LocationAutocomplete"
 import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { LocationWithDetails } from "app/utils/googleMaps"
-import React, { useCallback, useContext } from "react"
+import React, { useContext } from "react"
 
 export const ShippingQuestionDrawer: React.FC = () => {
   const { state, dispatch } = useContext(ArtworkInquiryContext)
 
-  const dispatchCloseInquiryDialog = useCallback(() => {
-    dispatch({ type: "closeShippingQuestionDialog" })
-  }, [dispatch])
-
   const handleModalDismiss = () => {
-    dispatchCloseInquiryDialog()
+    dispatch({ type: "closeShippingQuestionDialog" })
+    dispatch({ type: "openInquiryDialog" })
   }
 
   const handleApplyButtonPress = () => {
-    dispatchCloseInquiryDialog()
+    dispatch({ type: "closeShippingQuestionDialog" })
+    dispatch({ type: "openInquiryDialog" })
   }
 
   const handleCancelButtonPress = () => {
-    dispatchCloseInquiryDialog()
+    dispatch({ type: "closeShippingQuestionDialog" })
+    dispatch({ type: "openInquiryDialog" })
   }
 
   const handleLocationChange = (locationDetails: LocationWithDetails) => {

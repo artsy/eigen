@@ -3,16 +3,39 @@ import { LocationWithDetails } from "app/utils/googleMaps"
 import { Dispatch } from "react"
 
 export type ArtworkInquiryActions =
-  | SelectLocation
-  | SelectInquiryQuestion
-  | SetMessage
-  | ResetForm
-  | OpenInquiryDialog
-  | CloseInquiryDialog
-  | OpenShippingQuestionDialog
-  | CloseShippingQuestionDialog
-  | OpenInquirySuccessNotification
-  | CloseInquirySuccessNotification
+  | {
+      type: "selectShippingLocation"
+      payload: LocationWithDetails
+    }
+  | {
+      type: "selectInquiryQuestion"
+      payload: InquiryQuestionInput & { isChecked: boolean }
+    }
+  | {
+      type: "setMessage"
+      payload: string
+    }
+  | {
+      type: "resetForm"
+    }
+  | {
+      type: "openInquiryDialog"
+    }
+  | {
+      type: "closeInquiryDialog"
+    }
+  | {
+      type: "openShippingQuestionDialog"
+    }
+  | {
+      type: "closeShippingQuestionDialog"
+    }
+  | {
+      type: "openInquirySuccessNotification"
+    }
+  | {
+      type: "closeInquirySuccessNotification"
+    }
 
 export interface ArtworkInquiryContextProps {
   state: ArtworkInquiryContextState
@@ -26,49 +49,6 @@ export interface ArtworkInquiryContextState {
   readonly isInquiryDialogOpen: boolean
   readonly isShippingQuestionDialogOpen: boolean
   readonly isInquirySuccessNotificationOpen: boolean
-}
-
-interface ResetForm {
-  type: "resetForm"
-}
-
-interface SelectLocation {
-  type: "selectShippingLocation"
-  payload: LocationWithDetails
-}
-
-interface SetMessage {
-  type: "setMessage"
-  payload: string
-}
-
-interface SelectInquiryQuestion {
-  type: "selectInquiryQuestion"
-  payload: InquiryQuestionInput & { isChecked: boolean }
-}
-
-interface OpenInquiryDialog {
-  type: "openInquiryDialog"
-}
-
-interface CloseInquiryDialog {
-  type: "closeInquiryDialog"
-}
-
-interface OpenShippingQuestionDialog {
-  type: "openShippingQuestionDialog"
-}
-
-interface CloseShippingQuestionDialog {
-  type: "closeShippingQuestionDialog"
-}
-
-interface OpenInquirySuccessNotification {
-  type: "openInquirySuccessNotification"
-}
-
-interface CloseInquirySuccessNotification {
-  type: "closeInquirySuccessNotification"
 }
 
 /**
