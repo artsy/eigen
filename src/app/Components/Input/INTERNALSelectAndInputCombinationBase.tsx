@@ -25,7 +25,7 @@ export const INTERNALSelectAndInputCombinationBase = forwardRef<
     shouldDisplayLocalError?: boolean
     validate?: () => void
     displayForSelect?: string
-  } & Omit<InputProps, "onChange" | "onChangeText" | "renderLeftHandSection"> &
+  } & Omit<InputProps, "onChange" | "renderLeftHandSection"> &
     TypeForSelect
 >(
   (
@@ -44,6 +44,7 @@ export const INTERNALSelectAndInputCombinationBase = forwardRef<
       selectDisplayLabel,
       titleForSelect,
       renderItemLabelForSelect,
+      mask,
       ...rest
     },
     ref
@@ -99,6 +100,7 @@ export const INTERNALSelectAndInputCombinationBase = forwardRef<
           onSelectTap={() => {
             setShowModal(true)
           }}
+          mask={mask}
         />
       </>
     )

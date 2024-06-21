@@ -4,7 +4,7 @@ interface CountryData {
   dialCode: string
   areaCodes?: string[]
   flag: string
-  mask: string
+  mask: string | string[]
   internationalPrefixes?: string[]
   trunkPrefix?: string
   priority: number
@@ -17,7 +17,7 @@ export const countries: CountryData[] = [
     dialCode: "93",
     priority: 32225560,
     flag: "🇦🇫",
-    mask: "999 999 9999",
+    mask: "99 999 9999",
   },
   {
     name: "Åland Islands",
@@ -25,7 +25,7 @@ export const countries: CountryData[] = [
     dialCode: "358",
     priority: 29981,
     flag: "🇦🇽",
-    mask: "999 9999999",
+    mask: "999 999 99 99",
   },
   {
     name: "Albania (Shqipëri)",
@@ -33,7 +33,7 @@ export const countries: CountryData[] = [
     dialCode: "355",
     priority: 2845955,
     flag: "🇦🇱",
-    mask: "999 999 9999",
+    mask: "999 999 999",
   },
   {
     name: "Algeria (‫الجزائر‬‎)",
@@ -43,7 +43,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["00"],
     priority: 43000000,
     flag: "🇩🇿",
-    mask: "9999 99 99 99",
+    mask: "99 999 9999",
   },
   {
     name: "American Samoa",
@@ -51,7 +51,7 @@ export const countries: CountryData[] = [
     dialCode: "1684",
     priority: 56700,
     flag: "🇦🇸",
-    mask: "(999) 999-9999",
+    mask: "684 999 9999",
   },
   {
     name: "Andorra",
@@ -75,7 +75,7 @@ export const countries: CountryData[] = [
     dialCode: "1264",
     priority: 14869,
     flag: "🇦🇮",
-    mask: "(999) 999-9999",
+    mask: "264 999 9999",
   },
   {
     name: "Antigua and Barbuda",
@@ -83,7 +83,7 @@ export const countries: CountryData[] = [
     dialCode: "1268",
     priority: 96453,
     flag: "🇦🇬",
-    mask: "(999) 999-9999",
+    mask: "268 999 9999",
   },
   {
     name: "Argentina",
@@ -93,7 +93,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["00"],
     priority: 45376763,
     flag: "🇦🇷",
-    mask: "999 99-9999-9999",
+    mask: "999 999 9999",
   },
   {
     name: "Armenia (Հայաստան)",
@@ -101,7 +101,7 @@ export const countries: CountryData[] = [
     dialCode: "374",
     priority: 2956900,
     flag: "🇦🇲",
-    mask: "999 999999",
+    mask: "99 999 999",
   },
   {
     name: "Aruba",
@@ -119,7 +119,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["0011", "0015", "0014", "0018", "0019"],
     priority: 25756880,
     flag: "🇦🇺",
-    mask: "9999 999 999",
+    mask: "9 9999 9999",
   },
   {
     name: "Austria (Österreich)",
@@ -127,7 +127,7 @@ export const countries: CountryData[] = [
     dialCode: "43",
     priority: 8902600,
     flag: "🇦🇹",
-    mask: "9999 999999",
+    mask: "999 999 9999",
   },
   {
     name: "Azerbaijan (Azərbaycan)",
@@ -135,7 +135,7 @@ export const countries: CountryData[] = [
     dialCode: "994",
     priority: 10067108,
     flag: "🇦🇿",
-    mask: "999 999 99 99",
+    mask: "99 999 99 99",
   },
   {
     name: "Bahamas",
@@ -143,7 +143,7 @@ export const countries: CountryData[] = [
     dialCode: "1242",
     priority: 385340,
     flag: "🇧🇸",
-    mask: "(999) 999-999",
+    mask: "242 999 9999",
   },
   {
     name: "Bahrain (‫البحرين‬‎)",
@@ -161,7 +161,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["00"],
     priority: 168872634,
     flag: "🇧🇩",
-    mask: "99999-999999",
+    mask: "1999 999999",
   },
   {
     name: "Barbados",
@@ -169,7 +169,7 @@ export const countries: CountryData[] = [
     dialCode: "1246",
     priority: 287025,
     flag: "🇧🇧",
-    mask: "(999) 999-9999",
+    mask: "246 999 9999",
   },
   {
     name: "Belarus (Беларусь)",
@@ -177,7 +177,7 @@ export const countries: CountryData[] = [
     dialCode: "375",
     priority: 9397800,
     flag: "🇧🇾",
-    mask: "9 999 999-99-99",
+    mask: "99 999 99 99",
   },
   {
     name: "Belgium (België)",
@@ -187,7 +187,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["00"],
     priority: 11528375,
     flag: "🇧🇪",
-    mask: "9999 99 99 99",
+    mask: "999 999 999",
   },
   {
     name: "Belize",
@@ -195,7 +195,7 @@ export const countries: CountryData[] = [
     dialCode: "501",
     priority: 408487,
     flag: "🇧🇿",
-    mask: "999-9999",
+    mask: "999 9999",
   },
   {
     name: "Benin (Bénin)",
@@ -203,7 +203,7 @@ export const countries: CountryData[] = [
     dialCode: "229",
     priority: 11733059,
     flag: "🇧🇯",
-    mask: "99 99 99 99",
+    mask: "99 99 9999",
   },
   {
     name: "Bermuda",
@@ -211,7 +211,7 @@ export const countries: CountryData[] = [
     dialCode: "1441",
     priority: 64027,
     flag: "🇧🇲",
-    mask: "(999) 999-9999",
+    mask: "441 999 9999",
   },
   {
     name: "Bhutan (འབྲུག)",
@@ -219,7 +219,7 @@ export const countries: CountryData[] = [
     dialCode: "975",
     priority: 741672,
     flag: "🇧🇹",
-    mask: "99 99 99 99",
+    mask: ["17 999 999", "77 999 999", "9 999 999"],
   },
   {
     name: "Bolivia",
@@ -227,7 +227,7 @@ export const countries: CountryData[] = [
     dialCode: "591",
     priority: 11469896,
     flag: "🇧🇴",
-    mask: "99999999",
+    mask: "9 999 9999",
   },
   {
     name: "Bosnia and Herzegovina (Босна и Херцеговина)",
@@ -235,7 +235,7 @@ export const countries: CountryData[] = [
     dialCode: "387",
     priority: 3301000,
     flag: "🇧🇦",
-    mask: "999 999 999",
+    mask: ["99 9999", "99 99999"],
   },
   {
     name: "Botswana",
@@ -253,7 +253,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["0015", "0021", "0031", "0041"],
     priority: 211729470,
     flag: "🇧🇷",
-    mask: "(99) 99999 9999",
+    mask: ["99 9999 9999", "99 99999 9999"],
   },
   {
     name: "British Indian Ocean Territory",
@@ -261,7 +261,7 @@ export const countries: CountryData[] = [
     dialCode: "246",
     priority: 0,
     flag: "🇮🇴",
-    mask: "(999) 999-9999",
+    mask: "999 9999",
   },
   {
     name: "British Virgin Islands",
@@ -269,7 +269,7 @@ export const countries: CountryData[] = [
     dialCode: "1284",
     priority: 104578,
     flag: "🇻🇬",
-    mask: "999-999-9999",
+    mask: "284 999 9999",
   },
   {
     name: "Brunei",
@@ -293,7 +293,7 @@ export const countries: CountryData[] = [
     dialCode: "226",
     priority: 21510181,
     flag: "🇧🇫",
-    mask: "99 99 99 99",
+    mask: "99 99 9999",
   },
   {
     name: "Burundi (Uburundi)",
@@ -301,7 +301,7 @@ export const countries: CountryData[] = [
     dialCode: "257",
     priority: 10953317,
     flag: "🇧🇮",
-    mask: "99 99 99 99",
+    mask: "99 99 9999",
   },
   {
     name: "Cambodia (កម្ពុជា)",
@@ -309,7 +309,7 @@ export const countries: CountryData[] = [
     dialCode: "855",
     priority: 15288489,
     flag: "🇰🇭",
-    mask: "999 999 999",
+    mask: "99 999 999",
   },
   {
     name: "Cameroon (Cameroun)",
@@ -317,7 +317,7 @@ export const countries: CountryData[] = [
     dialCode: "237",
     priority: 26545864,
     flag: "🇨🇲",
-    mask: "9 99 99 99 99",
+    mask: "9999 9999",
   },
   {
     name: "Canada",
@@ -371,7 +371,7 @@ export const countries: CountryData[] = [
       "905",
     ],
     flag: "🇨🇦",
-    mask: "(999) 999-9999",
+    mask: "999 999 9999",
   },
   {
     name: "Cape Verde (Kabu Verdi)",
@@ -395,7 +395,7 @@ export const countries: CountryData[] = [
     dialCode: "1345",
     priority: 65813,
     flag: "🇰🇾",
-    mask: "999 9999",
+    mask: "345 999 9999",
   },
   {
     name: "Central African Republic (République centrafricaine)",
@@ -403,7 +403,7 @@ export const countries: CountryData[] = [
     dialCode: "236",
     priority: 5496011,
     flag: "🇨🇫",
-    mask: "99 99 99 99",
+    mask: "99 99 9999",
   },
   {
     name: "Chad (Tchad)",
@@ -419,7 +419,7 @@ export const countries: CountryData[] = [
     dialCode: "56",
     priority: 19458310,
     flag: "🇨🇱",
-    mask: "(9) 9999 9999",
+    mask: "9 9999 9999",
   },
   {
     name: "China (中国)",
@@ -429,7 +429,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["00"],
     priority: 1403322440,
     flag: "🇨🇳",
-    mask: "999 9999 9999",
+    mask: ["999 9999 999", "999 9999 9999", "99 99999 99999"],
   },
   {
     name: "Christmas Island",
@@ -437,7 +437,7 @@ export const countries: CountryData[] = [
     dialCode: "61",
     priority: 1955,
     flag: "🇨🇽",
-    mask: "9999 999 999",
+    mask: "9 9999 9999",
   },
   {
     name: "Cocos (Keeling) Islands",
@@ -445,7 +445,7 @@ export const countries: CountryData[] = [
     dialCode: "61",
     priority: 500,
     flag: "🇨🇨",
-    mask: "9999 999 999",
+    mask: "9 9999 9999",
   },
   {
     name: "Colombia",
@@ -455,7 +455,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["005", "007", "009"],
     priority: 50372424,
     flag: "🇨🇴",
-    mask: "999 9999999",
+    mask: "999 999 9999",
   },
   {
     name: "Comoros (‫جزر القمر‬‎)",
@@ -463,7 +463,7 @@ export const countries: CountryData[] = [
     dialCode: "269",
     priority: 873724,
     flag: "🇰🇲",
-    mask: "999 99 99",
+    mask: "99 99999",
   },
   {
     name: "Congo (DRC) (Jamhuri ya Kidemokrasia ya Kongo)",
@@ -473,7 +473,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["00"],
     priority: 89561404,
     flag: "🇨🇩",
-    mask: "99 999 9999",
+    mask: "999 999 999",
   },
   {
     name: "Congo (Republic) (Congo-Brazzaville)",
@@ -481,7 +481,7 @@ export const countries: CountryData[] = [
     dialCode: "242",
     priority: 5518092,
     flag: "🇨🇬",
-    mask: "9999 999 999",
+    mask: "99 99999",
   },
   {
     name: "Cook Islands",
@@ -505,7 +505,7 @@ export const countries: CountryData[] = [
     dialCode: "225",
     priority: 25823071,
     flag: "🇨🇮",
-    mask: "99 99 99 99",
+    mask: "99 999 999",
   },
   {
     name: "Croatia (Hrvatska)",
@@ -513,7 +513,7 @@ export const countries: CountryData[] = [
     dialCode: "385",
     priority: 4076246,
     flag: "🇭🇷",
-    mask: "999 999 9999",
+    mask: "99 999 999",
   },
   {
     name: "Cuba",
@@ -521,7 +521,7 @@ export const countries: CountryData[] = [
     dialCode: "53",
     priority: 11193470,
     flag: "🇨🇺",
-    mask: "99 9999999",
+    mask: "9 999 9999",
   },
   {
     name: "Curaçao",
@@ -537,7 +537,7 @@ export const countries: CountryData[] = [
     dialCode: "357",
     priority: 875900,
     flag: "🇨🇾",
-    mask: "99 999999",
+    mask: "99 999 999",
   },
   {
     name: "Czech Republic (Česká republika)",
@@ -569,7 +569,7 @@ export const countries: CountryData[] = [
     dialCode: "1767",
     priority: 71808,
     flag: "🇩🇲",
-    mask: "(999) 999-9999",
+    mask: "767 999 9999",
   },
   {
     name: "Dominican Republic (República Dominicana)",
@@ -578,7 +578,7 @@ export const countries: CountryData[] = [
     priority: 10448499,
     areaCodes: ["809", "829", "849"],
     flag: "🇩🇴",
-    mask: "999-999-9999",
+    mask: ["809 999 9999", "829 999 9999", "849 999 9999"],
   },
   {
     name: "Ecuador",
@@ -586,7 +586,7 @@ export const countries: CountryData[] = [
     dialCode: "593",
     priority: 17516888,
     flag: "🇪🇨",
-    mask: "999 999 9999",
+    mask: ["9 999 9999", "99 999 9999"],
   },
   {
     name: "Egypt (‫مصر‬‎)",
@@ -596,7 +596,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["00"],
     priority: 100554998,
     flag: "🇪🇬",
-    mask: "9999 999 9999",
+    mask: "999 999 9999",
   },
   {
     name: "El Salvador",
@@ -604,7 +604,7 @@ export const countries: CountryData[] = [
     dialCode: "503",
     priority: 6486201,
     flag: "🇸🇻",
-    mask: "9999 9999",
+    mask: "99 99 9999",
   },
   {
     name: "Equatorial Guinea (Guinea Ecuatorial)",
@@ -612,7 +612,7 @@ export const countries: CountryData[] = [
     dialCode: "240",
     priority: 1454789,
     flag: "🇬🇶",
-    mask: "999 999 999",
+    mask: "99 999 9999",
   },
   {
     name: "Eritrea",
@@ -620,7 +620,7 @@ export const countries: CountryData[] = [
     dialCode: "291",
     priority: 3497117,
     flag: "🇪🇷",
-    mask: "99 999 999",
+    mask: "9 999 999",
   },
   {
     name: "Estonia (Eesti)",
@@ -628,7 +628,7 @@ export const countries: CountryData[] = [
     dialCode: "372",
     priority: 1328976,
     flag: "🇪🇪",
-    mask: "9999 9999",
+    mask: ["999 9999", "9999 9999"],
   },
   {
     name: "Ethiopia",
@@ -638,7 +638,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["00"],
     priority: 98665000,
     flag: "🇪🇹",
-    mask: "999 999 9999",
+    mask: "99 999 9999",
   },
   {
     name: "Falkland Islands (Islas Malvinas)",
@@ -654,7 +654,7 @@ export const countries: CountryData[] = [
     dialCode: "298",
     priority: 52484,
     flag: "🇫🇴",
-    mask: "999999",
+    mask: "999 999",
   },
   {
     name: "Fiji",
@@ -662,7 +662,7 @@ export const countries: CountryData[] = [
     dialCode: "679",
     priority: 884887,
     flag: "🇫🇯",
-    mask: "999 9999",
+    mask: "99 99999",
   },
   {
     name: "Finland (Suomi)",
@@ -670,7 +670,7 @@ export const countries: CountryData[] = [
     dialCode: "358",
     priority: 5498027,
     flag: "🇫🇮",
-    mask: "999 9999999",
+    mask: "999 999 99 99",
   },
   {
     name: "France",
@@ -680,7 +680,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["00"],
     priority: 67067000,
     flag: "🇫🇷",
-    mask: "99 99 99 99 99",
+    mask: "999 999 999",
   },
   {
     name: "French Guiana (Guyane française)",
@@ -688,7 +688,7 @@ export const countries: CountryData[] = [
     dialCode: "594",
     priority: 290691,
     flag: "🇬🇫",
-    mask: "9999 99 99 99",
+    mask: "99999 9999",
   },
   {
     name: "French Polynesia (Polynésie française)",
@@ -696,7 +696,7 @@ export const countries: CountryData[] = [
     dialCode: "689",
     priority: 275918,
     flag: "🇵🇫",
-    mask: "99 99 99 99",
+    mask: "99 99 99",
   },
   {
     name: "Gabon",
@@ -704,7 +704,7 @@ export const countries: CountryData[] = [
     dialCode: "241",
     priority: 2172579,
     flag: "🇬🇦",
-    mask: "99 99 99 99",
+    mask: "9 99 99 99",
   },
   {
     name: "Gambia",
@@ -712,7 +712,7 @@ export const countries: CountryData[] = [
     dialCode: "220",
     priority: 2347706,
     flag: "🇬🇲",
-    mask: "999 9999",
+    mask: "999 99 99",
   },
   {
     name: "Georgia (საქართველო)",
@@ -720,7 +720,7 @@ export const countries: CountryData[] = [
     dialCode: "995",
     priority: 3716858,
     flag: "🇬🇪",
-    mask: "999 99 99 99",
+    mask: "999 999 999",
   },
   {
     name: "Germany (Deutschland)",
@@ -730,7 +730,15 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["00"],
     priority: 83166711,
     flag: "🇩🇪",
-    mask: "99 99999999",
+    mask: [
+      "999 999",
+      "999 9999",
+      "999 99999",
+      "999 999999",
+      "999 9999999",
+      "999 99999999",
+      "9999 99999999",
+    ],
   },
   {
     name: "Ghana (Gaana)",
@@ -738,7 +746,7 @@ export const countries: CountryData[] = [
     dialCode: "233",
     priority: 30280811,
     flag: "🇬🇭",
-    mask: "999 999 9999",
+    mask: "999 999 999",
   },
   {
     name: "Gibraltar",
@@ -746,7 +754,7 @@ export const countries: CountryData[] = [
     dialCode: "350",
     priority: 33691,
     flag: "🇬🇮",
-    mask: "99999999",
+    mask: "999 99999",
   },
   {
     name: "Greece (Ελλάδα)",
@@ -770,7 +778,7 @@ export const countries: CountryData[] = [
     dialCode: "1473",
     priority: 112003,
     flag: "🇬🇩",
-    mask: "(999) 999-9999",
+    mask: "473 999 9999",
   },
   {
     name: "Guadeloupe",
@@ -778,7 +786,7 @@ export const countries: CountryData[] = [
     dialCode: "590",
     priority: 395700,
     flag: "🇬🇵",
-    mask: "9999 99 99 99",
+    mask: "999 999 999",
   },
   {
     name: "Guam",
@@ -786,7 +794,7 @@ export const countries: CountryData[] = [
     dialCode: "1671",
     priority: 172400,
     flag: "🇬🇺",
-    mask: "(999) 999-9999",
+    mask: "671 999 9999",
   },
   {
     name: "Guatemala",
@@ -794,7 +802,7 @@ export const countries: CountryData[] = [
     dialCode: "502",
     priority: 16604026,
     flag: "🇬🇹",
-    mask: "9999 9999",
+    mask: "9 999 9999",
   },
   {
     name: "Guernsey",
@@ -802,7 +810,7 @@ export const countries: CountryData[] = [
     dialCode: "44",
     priority: 63196,
     flag: "🇬🇬",
-    mask: "99999 999999",
+    mask: "9999 999999",
   },
   {
     name: "Guinea (Guinée)",
@@ -810,7 +818,7 @@ export const countries: CountryData[] = [
     dialCode: "224",
     priority: 12218357,
     flag: "🇬🇳",
-    mask: "999 99 99 99",
+    mask: "99 999 999",
   },
   {
     name: "Guinea-Bissau (Guiné Bissau)",
@@ -818,7 +826,7 @@ export const countries: CountryData[] = [
     dialCode: "245",
     priority: 1604528,
     flag: "🇬🇼",
-    mask: "999 999 999",
+    mask: "9 999999",
   },
   {
     name: "Guyana",
@@ -842,7 +850,7 @@ export const countries: CountryData[] = [
     dialCode: "504",
     priority: 9304380,
     flag: "🇭🇳",
-    mask: "9999-9999",
+    mask: "9999 9999",
   },
   {
     name: "Hong Kong (香港)",
@@ -858,7 +866,7 @@ export const countries: CountryData[] = [
     dialCode: "36",
     priority: 9769000,
     flag: "🇭🇺",
-    mask: "(99) 999 9999",
+    mask: "999 999 999",
   },
   {
     name: "Iceland (Ísland)",
@@ -876,7 +884,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["00"],
     priority: 1364120059,
     flag: "🇮🇳",
-    mask: "99999 99999",
+    mask: "9999 999 999",
   },
   {
     name: "Indonesia",
@@ -886,7 +894,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["001", "007", "008", "009"],
     priority: 269603400,
     flag: "🇮🇩",
-    mask: "9999-999-999",
+    mask: ["99 999 99", "99 999 999", "99 999 9999", "899 999 999", "899 999 99 999"],
   },
   {
     name: "Iran (‫ایران‬‎)",
@@ -896,7 +904,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["00"],
     priority: 83573873,
     flag: "🇮🇷",
-    mask: "9999 999 9999",
+    mask: "999 999 9999",
   },
   {
     name: "Iraq (‫العراق‬‎)",
@@ -906,7 +914,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["00"],
     priority: 40150200,
     flag: "🇮🇶",
-    mask: "9999 999 9999",
+    mask: "999 999 9999",
   },
   {
     name: "Ireland",
@@ -914,7 +922,7 @@ export const countries: CountryData[] = [
     dialCode: "353",
     priority: 4921500,
     flag: "🇮🇪",
-    mask: "999 999 9999",
+    mask: "999 999 999",
   },
   {
     name: "Isle of Man",
@@ -922,7 +930,7 @@ export const countries: CountryData[] = [
     dialCode: "44",
     priority: 83314,
     flag: "🇮🇲",
-    mask: "99999 999999",
+    mask: "9999 999999",
   },
   {
     name: "Israel (‫ישראל‬‎)",
@@ -930,7 +938,7 @@ export const countries: CountryData[] = [
     dialCode: "972",
     priority: 9216070,
     flag: "🇮🇱",
-    mask: "999-999-9999",
+    mask: ["9 999 9999", "59 999 9999"],
   },
   {
     name: "Italy (Italia)",
@@ -939,7 +947,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["00"],
     priority: 60238522,
     flag: "🇮🇹",
-    mask: "999 999 9999",
+    mask: "999 9999 999",
   },
   {
     name: "Jamaica",
@@ -947,7 +955,7 @@ export const countries: CountryData[] = [
     dialCode: "1876",
     priority: 2726667,
     flag: "🇯🇲",
-    mask: "(999) 999-9999",
+    mask: "876 999 9999",
   },
   {
     name: "Japan (日本)",
@@ -957,7 +965,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["010"],
     priority: 125930000,
     flag: "🇯🇵",
-    mask: "999-9999-9999",
+    mask: ["999 999 999", "99 9999 9999"],
   },
   {
     name: "Jersey",
@@ -965,7 +973,7 @@ export const countries: CountryData[] = [
     dialCode: "44",
     priority: 106800,
     flag: "🇯🇪",
-    mask: "99999 999999",
+    mask: "9999 9999 999999",
   },
   {
     name: "Jordan (‫الأردن‬‎)",
@@ -973,7 +981,7 @@ export const countries: CountryData[] = [
     dialCode: "962",
     priority: 10713832,
     flag: "🇯🇴",
-    mask: "99 9999 9999",
+    mask: "9 9999 9999",
   },
   {
     name: "Kazakhstan (Казахстан)",
@@ -981,7 +989,7 @@ export const countries: CountryData[] = [
     dialCode: "77",
     priority: 18729296,
     flag: "🇰🇿",
-    mask: "9 (999) 999 9999",
+    mask: ["699 999 99 99", "799 999 99 99"],
   },
   {
     name: "Kenya",
@@ -991,7 +999,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["000"],
     priority: 47564296,
     flag: "🇰🇪",
-    mask: "9999 999999",
+    mask: "999 999999",
   },
   {
     name: "Kiribati",
@@ -999,7 +1007,7 @@ export const countries: CountryData[] = [
     dialCode: "686",
     priority: 120100,
     flag: "🇰🇮",
-    mask: "99999999",
+    mask: "99 999",
   },
   {
     name: "Kuwait (‫الكويت‬‎)",
@@ -1007,7 +1015,7 @@ export const countries: CountryData[] = [
     dialCode: "965",
     priority: 4420110,
     flag: "🇰🇼",
-    mask: "999 99999",
+    mask: "9999 9999",
   },
   {
     name: "Kyrgyzstan (Кыргызстан)",
@@ -1015,7 +1023,7 @@ export const countries: CountryData[] = [
     dialCode: "996",
     priority: 6533500,
     flag: "🇰🇬",
-    mask: "9999 999 999",
+    mask: "999 999 999",
   },
   {
     name: "Laos (ລາວ)",
@@ -1023,7 +1031,7 @@ export const countries: CountryData[] = [
     dialCode: "856",
     priority: 7123205,
     flag: "🇱🇦",
-    mask: "999 99 999 999",
+    mask: ["99 999 999", "2099 999 999"],
   },
   {
     name: "Latvia (Latvija)",
@@ -1039,7 +1047,7 @@ export const countries: CountryData[] = [
     dialCode: "961",
     priority: 6825442,
     flag: "🇱🇧",
-    mask: "99 999 999",
+    mask: ["9 999 999", "99 999 999"],
   },
   {
     name: "Lesotho",
@@ -1047,7 +1055,7 @@ export const countries: CountryData[] = [
     dialCode: "266",
     priority: 2007201,
     flag: "🇱🇸",
-    mask: "9999 9999",
+    mask: "9 999 9999",
   },
   {
     name: "Liberia",
@@ -1055,7 +1063,7 @@ export const countries: CountryData[] = [
     dialCode: "231",
     priority: 4475353,
     flag: "🇱🇷",
-    mask: "999 999 9999",
+    mask: "99 999 999",
   },
   {
     name: "Libya (‫ليبيا‬‎)",
@@ -1063,7 +1071,7 @@ export const countries: CountryData[] = [
     dialCode: "218",
     priority: 6871287,
     flag: "🇱🇾",
-    mask: "999-9999999",
+    mask: ["99 999 999", "21 999 9999"],
   },
   {
     name: "Liechtenstein",
@@ -1071,7 +1079,7 @@ export const countries: CountryData[] = [
     dialCode: "423",
     priority: 38749,
     flag: "🇱🇮",
-    mask: "999 999 999",
+    mask: "999 999 9999",
   },
   {
     name: "Lithuania (Lietuva)",
@@ -1079,7 +1087,7 @@ export const countries: CountryData[] = [
     dialCode: "370",
     priority: 2793353,
     flag: "🇱🇹",
-    mask: "(9-999) 9999",
+    mask: "999 99 999",
   },
   {
     name: "Luxembourg",
@@ -1103,7 +1111,7 @@ export const countries: CountryData[] = [
     dialCode: "389",
     priority: 2077132,
     flag: "🇲🇰",
-    mask: "999 999 999",
+    mask: "99 999 999",
   },
   {
     name: "Madagascar (Madagasikara)",
@@ -1111,7 +1119,7 @@ export const countries: CountryData[] = [
     dialCode: "261",
     priority: 26251309,
     flag: "🇲🇬",
-    mask: "999 99 999 99",
+    mask: "99 99 99999",
   },
   {
     name: "Malawi",
@@ -1119,7 +1127,7 @@ export const countries: CountryData[] = [
     dialCode: "265",
     priority: 19129952,
     flag: "🇲🇼",
-    mask: "9999 99 99 99",
+    mask: ["1 999 999", "9 9999 9999"],
   },
   {
     name: "Malaysia",
@@ -1127,7 +1135,7 @@ export const countries: CountryData[] = [
     dialCode: "60",
     priority: 32826760,
     flag: "🇲🇾",
-    mask: "999-999 9999",
+    mask: ["9 999 999", "99 999 999", "999 999 999", "99 999 9999"],
   },
   {
     name: "Maldives",
@@ -1135,7 +1143,7 @@ export const countries: CountryData[] = [
     dialCode: "960",
     priority: 374775,
     flag: "🇲🇻",
-    mask: "999-9999",
+    mask: "999 9999",
   },
   {
     name: "Mali",
@@ -1143,7 +1151,7 @@ export const countries: CountryData[] = [
     dialCode: "223",
     priority: 20250833,
     flag: "🇲🇱",
-    mask: "99 99 99 99",
+    mask: "99 99 9999",
   },
   {
     name: "Malta",
@@ -1159,7 +1167,7 @@ export const countries: CountryData[] = [
     dialCode: "692",
     priority: 55500,
     flag: "🇲🇭",
-    mask: "999-9999",
+    mask: "999 9999",
   },
   {
     name: "Martinique",
@@ -1167,7 +1175,7 @@ export const countries: CountryData[] = [
     dialCode: "596",
     priority: 30066648,
     flag: "🇲🇶",
-    mask: "9999 99 99 99",
+    mask: "999 99 99 99",
   },
   {
     name: "Mauritania (‫موريتانيا‬‎)",
@@ -1175,7 +1183,7 @@ export const countries: CountryData[] = [
     dialCode: "222",
     priority: 4077347,
     flag: "🇲🇷",
-    mask: "99 99 99 99",
+    mask: "99 99 9999",
   },
   {
     name: "Mauritius (Moris)",
@@ -1183,7 +1191,7 @@ export const countries: CountryData[] = [
     dialCode: "230",
     priority: 1265475,
     flag: "🇲🇺",
-    mask: "9999 9999",
+    mask: "999 9999",
   },
   {
     name: "Mayotte",
@@ -1191,7 +1199,7 @@ export const countries: CountryData[] = [
     dialCode: "262",
     priority: 270372,
     flag: "🇾🇹",
-    mask: "9999 99 99 99",
+    mask: "99999 9999",
   },
   {
     name: "Mexico (México)",
@@ -1201,7 +1209,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["00"],
     priority: 127792286,
     flag: "🇲🇽",
-    mask: "999 999 999 9999",
+    mask: ["99 99 9999", "999 999 9999"],
   },
   {
     name: "Micronesia",
@@ -1217,7 +1225,7 @@ export const countries: CountryData[] = [
     dialCode: "373",
     priority: 2640400,
     flag: "🇲🇩",
-    mask: "9999 99 999",
+    mask: "9999 9999",
   },
   {
     name: "Monaco",
@@ -1225,7 +1233,7 @@ export const countries: CountryData[] = [
     dialCode: "377",
     priority: 38100,
     flag: "🇲🇨",
-    mask: "99 99 99 99 99",
+    mask: ["99 999 999", "999 999 999"],
   },
   {
     name: "Mongolia (Монгол)",
@@ -1233,7 +1241,7 @@ export const countries: CountryData[] = [
     dialCode: "976",
     priority: 3325178,
     flag: "🇲🇳",
-    mask: "9999 9999",
+    mask: "99 99 9999",
   },
   {
     name: "Montenegro (Crna Gora)",
@@ -1241,7 +1249,7 @@ export const countries: CountryData[] = [
     dialCode: "382",
     priority: 622359,
     flag: "🇲🇪",
-    mask: "999 999 999",
+    mask: "99 999 999",
   },
   {
     name: "Montserrat",
@@ -1249,7 +1257,7 @@ export const countries: CountryData[] = [
     dialCode: "1664",
     priority: 4989,
     flag: "🇲🇸",
-    mask: "(999) 999-9999",
+    mask: "664 999 9999",
   },
   {
     name: "Morocco (‫المغرب‬‎)",
@@ -1259,7 +1267,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["00"],
     priority: 35942525,
     flag: "🇲🇦",
-    mask: "9999-999999",
+    mask: "99 9999 999",
   },
   {
     name: "Mozambique (Moçambique)",
@@ -1267,7 +1275,7 @@ export const countries: CountryData[] = [
     dialCode: "258",
     priority: 30066648,
     flag: "🇲🇿",
-    mask: "99 999 9999",
+    mask: "99 999 999",
   },
   {
     name: "Myanmar (Burma)",
@@ -1277,7 +1285,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["00"],
     priority: 54817919,
     flag: "🇲🇲",
-    mask: "99 999 9999",
+    mask: ["999 999", "9 999 999", "99 999 999"],
   },
   {
     name: "Namibia (Namibië)",
@@ -1285,7 +1293,7 @@ export const countries: CountryData[] = [
     dialCode: "264",
     priority: 2458936,
     flag: "🇳🇦",
-    mask: "999 999 99999",
+    mask: "99 999 9999",
   },
   {
     name: "Nauru",
@@ -1301,7 +1309,7 @@ export const countries: CountryData[] = [
     dialCode: "977",
     priority: 29996478,
     flag: "🇳🇵",
-    mask: "999-9999999",
+    mask: "99 999 999",
   },
   {
     name: "Netherlands (Nederland)",
@@ -1311,7 +1319,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["00"],
     priority: 17482181,
     flag: "🇳🇱",
-    mask: "99",
+    mask: "99 999 9999",
   },
   {
     name: "New Caledonia (Nouvelle-Calédonie)",
@@ -1319,7 +1327,7 @@ export const countries: CountryData[] = [
     dialCode: "687",
     priority: 271407,
     flag: "🇳🇨",
-    mask: "99.99.99",
+    mask: "99 9999",
   },
   {
     name: "New Zealand",
@@ -1327,7 +1335,7 @@ export const countries: CountryData[] = [
     dialCode: "64",
     priority: 5008365,
     flag: "🇳🇿",
-    mask: "999 999 9999",
+    mask: ["9 999 999", "999 999 999", "999 999 9999"],
   },
   {
     name: "Nicaragua",
@@ -1343,7 +1351,7 @@ export const countries: CountryData[] = [
     dialCode: "227",
     priority: 22314743,
     flag: "🇳🇪",
-    mask: "99 99 99 99",
+    mask: "99 99 9999",
   },
   {
     name: "Nigeria",
@@ -1353,7 +1361,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["00"],
     priority: 206139587,
     flag: "🇳🇬",
-    mask: "9999 999 9999",
+    mask: ["99 999 99", "99 999 999", "999 999 9999"],
   },
   {
     name: "Niue",
@@ -1361,7 +1369,7 @@ export const countries: CountryData[] = [
     dialCode: "683",
     priority: 1520,
     flag: "🇳🇺",
-    mask: "999 9999",
+    mask: "9999",
   },
   {
     name: "Norfolk Island",
@@ -1369,7 +1377,7 @@ export const countries: CountryData[] = [
     dialCode: "672",
     priority: 2169,
     flag: "🇳🇫",
-    mask: "9 99999",
+    mask: "399 999",
   },
   {
     name: "North Korea (조선 민주주의 인민 공화국)",
@@ -1377,7 +1385,14 @@ export const countries: CountryData[] = [
     dialCode: "850",
     priority: 25450000,
     flag: "🇰🇵",
-    mask: "(9) 99999",
+    mask: [
+      "999 999",
+      "9999 9999",
+      "99 999 999",
+      "999 9999 999",
+      "191 999 9999",
+      "9999 9999999999999",
+    ],
   },
   {
     name: "Northern Mariana Islands",
@@ -1385,7 +1400,7 @@ export const countries: CountryData[] = [
     dialCode: "1670",
     priority: 56200,
     flag: "🇲🇵",
-    mask: "(999) 999-9999",
+    mask: "670 999 9999",
   },
   {
     name: "Norway (Norge)",
@@ -1401,7 +1416,7 @@ export const countries: CountryData[] = [
     dialCode: "968",
     priority: 4645249,
     flag: "🇴🇲",
-    mask: "9999 9999",
+    mask: "99 999 999",
   },
   {
     name: "Pakistan (‫پاکستان‬‎)",
@@ -1411,7 +1426,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["00"],
     priority: 220892331,
     flag: "🇵🇰",
-    mask: "9999 9999999",
+    mask: "999 999 9999",
   },
   {
     name: "Palau",
@@ -1427,7 +1442,7 @@ export const countries: CountryData[] = [
     dialCode: "970",
     priority: 4976684,
     flag: "🇵🇸",
-    mask: "9999 999 999",
+    mask: "99 999 9999",
   },
   {
     name: "Panama (Panamá)",
@@ -1435,7 +1450,7 @@ export const countries: CountryData[] = [
     dialCode: "507",
     priority: 4218808,
     flag: "🇵🇦",
-    mask: "9999-9999",
+    mask: "999 9999",
   },
   {
     name: "Papua New Guinea",
@@ -1443,7 +1458,7 @@ export const countries: CountryData[] = [
     dialCode: "675",
     priority: 8935000,
     flag: "🇵🇬",
-    mask: "9999 9999",
+    mask: "999 99 999",
   },
   {
     name: "Paraguay",
@@ -1451,7 +1466,7 @@ export const countries: CountryData[] = [
     dialCode: "595",
     priority: 7252672,
     flag: "🇵🇾",
-    mask: "9999 999999",
+    mask: "999 999 999",
   },
   {
     name: "Peru (Perú)",
@@ -1469,7 +1484,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["00"],
     priority: 108829500,
     flag: "🇵🇭",
-    mask: "9999 999 9999",
+    mask: "999 999 9999",
   },
   {
     name: "Poland (Polska)",
@@ -1486,7 +1501,7 @@ export const countries: CountryData[] = [
     dialCode: "351",
     priority: 10295909,
     flag: "🇵🇹",
-    mask: "999 999 999",
+    mask: "99 999 9999",
   },
   {
     name: "Puerto Rico",
@@ -1495,7 +1510,7 @@ export const countries: CountryData[] = [
     priority: 3193694,
     areaCodes: ["787", "939"],
     flag: "🇵🇷",
-    mask: "(999) 999-9999",
+    mask: ["787  999 9999", "939  999 9999"],
   },
   {
     name: "Qatar (‫قطر‬‎)",
@@ -1510,7 +1525,7 @@ export const countries: CountryData[] = [
     iso2: "re",
     dialCode: "262",
     priority: 859959,
-    mask: "999 99 99 99",
+    mask: "99999 9999",
     flag: "🇷🇪",
   },
   {
@@ -1519,7 +1534,7 @@ export const countries: CountryData[] = [
     dialCode: "40",
     priority: 19405156,
     flag: "🇷🇴",
-    mask: "9999 999 999",
+    mask: "99 999 9999",
   },
   {
     name: "Russia (Россия)",
@@ -1528,7 +1543,7 @@ export const countries: CountryData[] = [
     trunkPrefix: "8",
     priority: 146748590,
     flag: "🇷🇺",
-    mask: "9 (999) 999-99-99",
+    mask: "999 999 99 99",
   },
   {
     name: "Rwanda",
@@ -1536,7 +1551,7 @@ export const countries: CountryData[] = [
     dialCode: "250",
     priority: 12374397,
     flag: "🇷🇼",
-    mask: "9999 999 999",
+    mask: "999 999 999",
   },
   {
     name: "Saint Barthélemy (Saint-Barthélemy)",
@@ -1544,7 +1559,7 @@ export const countries: CountryData[] = [
     dialCode: "590",
     priority: 1,
     flag: "🇧🇱",
-    mask: "9999 99 99 99",
+    mask: "999 99 99 99",
   },
   {
     name: "Saint Helena",
@@ -1552,7 +1567,7 @@ export const countries: CountryData[] = [
     dialCode: "290",
     priority: 6000,
     flag: "🇸🇭",
-    mask: "99999",
+    mask: "9999",
   },
   {
     name: "Saint Kitts and Nevis",
@@ -1560,7 +1575,7 @@ export const countries: CountryData[] = [
     dialCode: "1869",
     priority: 52823,
     flag: "🇰🇳",
-    mask: "(999) 999-9999",
+    mask: "869 999 9999",
   },
   {
     name: "Saint Lucia",
@@ -1568,7 +1583,7 @@ export const countries: CountryData[] = [
     dialCode: "1758",
     priority: 178696,
     flag: "🇱🇨",
-    mask: "(999) 999-9999",
+    mask: "758 999 9999",
   },
   {
     name: "Saint Martin (Saint-Martin (partie française))",
@@ -1576,7 +1591,7 @@ export const countries: CountryData[] = [
     dialCode: "590",
     priority: 2,
     flag: "🇲🇫",
-    mask: "9999 99 99 99",
+    mask: "999 999 999",
   },
   {
     name: "Saint Pierre and Miquelon (Saint-Pierre-et-Miquelon)",
@@ -1584,7 +1599,7 @@ export const countries: CountryData[] = [
     dialCode: "508",
     priority: 5997,
     flag: "🇵🇲",
-    mask: "999 99 99",
+    mask: "99 9999",
   },
   {
     name: "Saint Vincent and the Grenadines",
@@ -1592,7 +1607,7 @@ export const countries: CountryData[] = [
     dialCode: "1784",
     priority: 110608,
     flag: "🇻🇨",
-    mask: "(999) 999-9999",
+    mask: "784 999 9999",
   },
   {
     name: "Samoa",
@@ -1600,7 +1615,7 @@ export const countries: CountryData[] = [
     dialCode: "685",
     priority: 200874,
     flag: "🇼🇸",
-    mask: "99 99999",
+    mask: "99 9999",
   },
   {
     name: "San Marino",
@@ -1608,7 +1623,7 @@ export const countries: CountryData[] = [
     dialCode: "378",
     priority: 33553,
     flag: "🇸🇲",
-    mask: "99 99 99 99",
+    mask: "9999 999999",
   },
   {
     name: "São Tomé and Príncipe (São Tomé e Príncipe)",
@@ -1616,7 +1631,7 @@ export const countries: CountryData[] = [
     dialCode: "239",
     priority: 210240,
     flag: "🇸🇹",
-    mask: "999 9999",
+    mask: "99 99999",
   },
   {
     name: "Saudi Arabia (‫المملكة العربية السعودية‬‎)",
@@ -1626,7 +1641,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["00"],
     priority: 34218169,
     flag: "🇸🇦",
-    mask: "999 999 9999",
+    mask: ["9 999 9999", "59 9999 9999"],
   },
   {
     name: "Senegal (Sénégal)",
@@ -1634,7 +1649,7 @@ export const countries: CountryData[] = [
     dialCode: "221",
     priority: 16705608,
     flag: "🇸🇳",
-    mask: "99 999 99 99",
+    mask: "99 999 9999",
   },
   {
     name: "Serbia (Србија)",
@@ -1642,7 +1657,7 @@ export const countries: CountryData[] = [
     dialCode: "381",
     priority: 6963764,
     flag: "🇷🇸",
-    mask: "999 9999999",
+    mask: "99 999 9999",
   },
   {
     name: "Seychelles",
@@ -1658,7 +1673,7 @@ export const countries: CountryData[] = [
     dialCode: "232",
     priority: 7901454,
     flag: "🇸🇱",
-    mask: "(999) 999999",
+    mask: "99 999999",
   },
   {
     name: "Singapore",
@@ -1674,7 +1689,7 @@ export const countries: CountryData[] = [
     dialCode: "1721",
     priority: 0,
     flag: "🇸🇽",
-    mask: "999-999-9999",
+    mask: "721 999 9999",
   },
   {
     name: "Slovakia (Slovensko)",
@@ -1682,7 +1697,7 @@ export const countries: CountryData[] = [
     dialCode: "421",
     priority: 5457873,
     flag: "🇸🇰",
-    mask: "9999 999 999",
+    mask: "999 999 999",
   },
   {
     name: "Slovenia (Slovenija)",
@@ -1690,7 +1705,7 @@ export const countries: CountryData[] = [
     dialCode: "386",
     priority: 2095861,
     flag: "🇸🇮",
-    mask: "999 999 999",
+    mask: "99 999 999",
   },
   {
     name: "Solomon Islands",
@@ -1698,7 +1713,7 @@ export const countries: CountryData[] = [
     dialCode: "677",
     priority: 680806,
     flag: "🇸🇧",
-    mask: "99 99999",
+    mask: ["99999", "999 9999"],
   },
   {
     name: "Somalia (Soomaaliya)",
@@ -1706,7 +1721,7 @@ export const countries: CountryData[] = [
     dialCode: "252",
     priority: 15893219,
     flag: "🇸🇴",
-    mask: "9 9999999",
+    mask: ["9 999 999", "99 999 999"],
   },
   {
     name: "South Africa",
@@ -1716,7 +1731,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["00"],
     priority: 58775022,
     flag: "🇿🇦",
-    mask: "999 999 9999",
+    mask: "99 999 9999",
   },
   {
     name: "South Korea (대한민국)",
@@ -1725,7 +1740,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["001", "002", "004", "005", "006", "008"],
     priority: 51780579,
     flag: "🇰🇷",
-    mask: "999-9999-9999",
+    mask: "99 999 9999",
   },
   {
     name: "South Sudan (‫جنوب السودان‬‎)",
@@ -1733,7 +1748,7 @@ export const countries: CountryData[] = [
     dialCode: "211",
     priority: 0,
     flag: "🇸🇸",
-    mask: "9999 999 999",
+    mask: "99 999 9999",
   },
   {
     name: "Spain (España)",
@@ -1742,7 +1757,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["00"],
     priority: 47329981,
     flag: "🇪🇸",
-    mask: "999 99 99 99",
+    mask: "999 999 999",
   },
   {
     name: "Sri Lanka (ශ්‍රී ලංකාව)",
@@ -1750,7 +1765,7 @@ export const countries: CountryData[] = [
     dialCode: "94",
     priority: 21803000,
     flag: "🇱🇰",
-    mask: "999 999 9999",
+    mask: "99 999 9999",
   },
   {
     name: "Sudan (‫السودان‬‎)",
@@ -1760,7 +1775,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["00"],
     priority: 42627655,
     flag: "🇸🇩",
-    mask: "999 999 9999",
+    mask: "99 999 9999",
   },
   {
     name: "Suriname",
@@ -1768,7 +1783,7 @@ export const countries: CountryData[] = [
     dialCode: "597",
     priority: 581372,
     flag: "🇸🇷",
-    mask: "999-9999",
+    mask: ["999 999", "999 9999"],
   },
   {
     name: "Svalbard and Jan Mayen",
@@ -1784,7 +1799,7 @@ export const countries: CountryData[] = [
     dialCode: "268",
     priority: 1093238,
     flag: "🇸🇿",
-    mask: "9999 9999",
+    mask: "99 99 9999",
   },
   {
     name: "Sweden (Sverige)",
@@ -1792,7 +1807,7 @@ export const countries: CountryData[] = [
     dialCode: "46",
     priority: 10345449,
     flag: "🇸🇪",
-    mask: "999-999 99 99",
+    mask: "99 999 9999",
   },
   {
     name: "Switzerland (Schweiz)",
@@ -1800,7 +1815,7 @@ export const countries: CountryData[] = [
     dialCode: "41",
     priority: 8619259,
     flag: "🇨🇭",
-    mask: "999 999 99 99",
+    mask: "99 999 9999",
   },
   {
     name: "Syria (‫سوريا‬‎)",
@@ -1808,7 +1823,7 @@ export const countries: CountryData[] = [
     dialCode: "963",
     priority: 17500657,
     flag: "🇸🇾",
-    mask: "9999 999 999",
+    mask: "99 9999 999",
   },
   {
     name: "Taiwan (台灣)",
@@ -1816,7 +1831,7 @@ export const countries: CountryData[] = [
     dialCode: "886",
     priority: 23596493,
     flag: "🇹🇼",
-    mask: "9999 999 999",
+    mask: ["9999 9999", "9 9999 9999"],
   },
   {
     name: "Tajikistan",
@@ -1824,7 +1839,7 @@ export const countries: CountryData[] = [
     dialCode: "992",
     priority: 9127000,
     flag: "🇹🇯",
-    mask: "999 99 9999",
+    mask: "99 999 9999",
   },
   {
     name: "Tanzania",
@@ -1834,7 +1849,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["000"],
     priority: 57637628,
     flag: "🇹🇿",
-    mask: "9999 999 999",
+    mask: "99 999 9999",
   },
   {
     name: "Thailand (ไทย)",
@@ -1844,7 +1859,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["001", "002", "003", "004", "005", "006", "007", "008", "009"],
     priority: 66523092,
     flag: "🇹🇭",
-    mask: "999 999 9999",
+    mask: ["99 999 999", "99 999 9999"],
   },
   {
     name: "Timor-Leste",
@@ -1852,7 +1867,7 @@ export const countries: CountryData[] = [
     dialCode: "670",
     priority: 1387149,
     flag: "🇹🇱",
-    mask: "9999 9999",
+    mask: ["999 9999", "779 99999", "789 99999"],
   },
   {
     name: "Togo",
@@ -1860,7 +1875,7 @@ export const countries: CountryData[] = [
     dialCode: "228",
     priority: 7538000,
     flag: "🇹🇬",
-    mask: "99 99 99 99",
+    mask: "99 999 999",
   },
   {
     name: "Tokelau",
@@ -1876,7 +1891,7 @@ export const countries: CountryData[] = [
     dialCode: "676",
     priority: 100651,
     flag: "🇹🇴",
-    mask: "999 9999",
+    mask: "99999",
   },
   {
     name: "Trinidad and Tobago",
@@ -1884,7 +1899,7 @@ export const countries: CountryData[] = [
     dialCode: "1868",
     priority: 1363985,
     flag: "🇹🇹",
-    mask: "(999) 999-9999",
+    mask: "868 999 9999",
   },
   {
     name: "Tunisia (‫تونس‬‎)",
@@ -1902,7 +1917,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["00"],
     priority: 83154997,
     flag: "🇹🇷",
-    mask: "(999) 999 9999",
+    mask: "999 999 9999",
   },
   {
     name: "Turkmenistan",
@@ -1910,7 +1925,7 @@ export const countries: CountryData[] = [
     dialCode: "993",
     priority: 6031187,
     flag: "🇹🇲",
-    mask: "9 99 999999",
+    mask: "9 999 9999",
   },
   {
     name: "Turks and Caicos Islands",
@@ -1918,7 +1933,7 @@ export const countries: CountryData[] = [
     dialCode: "1649",
     priority: 42953,
     flag: "🇹🇨",
-    mask: "(999) 999-9999",
+    mask: "249 999 999",
   },
   {
     name: "Tuvalu",
@@ -1926,7 +1941,7 @@ export const countries: CountryData[] = [
     dialCode: "688",
     priority: 10200,
     flag: "🇹🇻",
-    mask: "999999",
+    mask: ["29999", "909999"],
   },
   {
     name: "Uganda",
@@ -1936,7 +1951,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["000"],
     priority: 41590300,
     flag: "🇺🇬",
-    mask: "9999 999999",
+    mask: "999 999 999",
   },
   {
     name: "Ukraine (Україна)",
@@ -1946,7 +1961,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["00"],
     priority: 41806221,
     flag: "🇺🇦",
-    mask: "999 999 9999",
+    mask: "99 999 99 99",
   },
   {
     name: "United Arab Emirates (‫الإمارات العربية المتحدة‬‎)",
@@ -1954,7 +1969,7 @@ export const countries: CountryData[] = [
     dialCode: "971",
     priority: 9890400,
     flag: "🇦🇪",
-    mask: "999 999 9999",
+    mask: ["9 999 9999", "59 999 9999"],
   },
   {
     name: "United Kingdom",
@@ -1964,7 +1979,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["00"],
     priority: 66796807,
     flag: "🇬🇧",
-    mask: "9999 999999",
+    mask: "99 9999 9999",
   },
   {
     name: "United States",
@@ -1974,7 +1989,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["011"],
     priority: 329952186,
     flag: "🇺🇸",
-    mask: "(999) 999-9999",
+    mask: "999 999 9999",
   },
   {
     name: "Uruguay",
@@ -1982,7 +1997,7 @@ export const countries: CountryData[] = [
     dialCode: "598",
     priority: 3530912,
     flag: "🇺🇾",
-    mask: "999 999 999",
+    mask: "9 999 99 99",
   },
   {
     name: "U.S. Virgin Islands",
@@ -1990,7 +2005,7 @@ export const countries: CountryData[] = [
     dialCode: "1340",
     priority: 104578,
     flag: "🇻🇮",
-    mask: "999-999-9999",
+    mask: "340 999 9999",
   },
   {
     name: "Uzbekistan (Oʻzbekiston)",
@@ -2000,7 +2015,7 @@ export const countries: CountryData[] = [
     internationalPrefixes: ["00"],
     priority: 34269199,
     flag: "🇺🇿",
-    mask: "9 99 999 99 99",
+    mask: "99 999 9999",
   },
   {
     name: "Vanuatu",
@@ -2008,7 +2023,7 @@ export const countries: CountryData[] = [
     dialCode: "678",
     priority: 304500,
     flag: "🇻🇺",
-    mask: "999 9999",
+    mask: ["99999", "99 99999"],
   },
   {
     name: "Vatican City (Città del Vaticano)",
@@ -2016,7 +2031,7 @@ export const countries: CountryData[] = [
     dialCode: "39",
     priority: 825,
     flag: "🇻🇦",
-    mask: "99 9999 9999",
+    mask: "06 69899999",
   },
   {
     name: "Venezuela",
@@ -2024,7 +2039,7 @@ export const countries: CountryData[] = [
     dialCode: "58",
     priority: 32219521,
     flag: "🇻🇪",
-    mask: "9999-9999999",
+    mask: "999 999 9999",
   },
   {
     name: "Vietnam (Việt Nam)",
@@ -2033,7 +2048,7 @@ export const countries: CountryData[] = [
     trunkPrefix: "0",
     priority: 96208984,
     flag: "🇻🇳",
-    mask: "999 999 99 99",
+    mask: ["99 9999 999", "999 9999 999"],
   },
   {
     name: "Wallis and Futuna",
@@ -2041,13 +2056,13 @@ export const countries: CountryData[] = [
     dialCode: "681",
     priority: 11700,
     flag: "🇼🇫",
-    mask: "99 99 99",
+    mask: "99 9999",
   },
   {
     name: "Western Sahara (‫الصحراء الغربية‬‎)",
     iso2: "eh",
     flag: "🇪🇭",
-    mask: "999-999999",
+    mask: "999 999999",
     dialCode: "212",
     priority: 582463,
   },
@@ -2057,7 +2072,7 @@ export const countries: CountryData[] = [
     dialCode: "967",
     priority: 29825968,
     flag: "🇾🇪",
-    mask: "999 999 999",
+    mask: ["9 999 999", "99 999 999", "999 999 999"],
   },
   {
     name: "Zambia",
@@ -2065,7 +2080,7 @@ export const countries: CountryData[] = [
     dialCode: "260",
     priority: 17885422,
     flag: "🇿🇲",
-    mask: "999 9999999",
+    mask: "99 999 9999",
   },
   {
     name: "Zimbabwe",
@@ -2073,11 +2088,11 @@ export const countries: CountryData[] = [
     dialCode: "263",
     priority: 15159624,
     flag: "🇿🇼",
-    mask: "999 999 9999",
+    mask: "9 999999",
   },
 ]
 
-type Country = typeof countries[0]
+type Country = (typeof countries)[0]
 
 export const countryIndex: Record<string, Country> = {}
 
