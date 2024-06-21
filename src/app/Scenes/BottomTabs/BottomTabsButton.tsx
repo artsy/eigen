@@ -7,8 +7,7 @@ import { VisualClueName } from "app/store/config/visualClues"
 import { switchTab } from "app/system/navigation/navigate"
 import { useSelectedTab } from "app/utils/hooks/useSelectedTab"
 import { useVisualClue } from "app/utils/hooks/useVisualClue"
-import React, { useEffect, useRef, useState } from "react"
-import { Animated, Easing, TouchableWithoutFeedback, View } from "react-native"
+import { LayoutAnimation, TouchableWithoutFeedback, View } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { BottomTabOption, BottomTabType } from "./BottomTabType"
@@ -32,26 +31,13 @@ export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
 }) => {
   const selectedTab = useSelectedTab()
   const isActive = selectedTab === tab
-  const timeout = useRef<ReturnType<typeof setTimeout>>()
-  const [isBeingPressed, setIsBeingPressed] = useState(false)
-  const showActiveState = isActive || isBeingPressed
-
-  const activeProgress = useRef(new Animated.Value(showActiveState ? 1 : 0)).current
 
   const { showVisualClue } = useVisualClue()
-
-  useEffect(() => {
-    Animated.timing(activeProgress, {
-      toValue: showActiveState ? 1 : 0,
-      useNativeDriver: true,
-      easing: Easing.ease,
-      duration: 100,
-    }).start()
-  }, [showActiveState])
 
   const tracking = useTracking()
 
   const onPress = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     if (tab === unsafe__getSelectedTab()) {
       LegacyNativeModules.ARScreenPresenterModule.popToRootOrScrollToTop(tab)
     } else {
@@ -71,17 +57,7 @@ export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
       accessibilityRole="button"
       accessibilityLabel={`${tab} bottom tab`}
       accessibilityState={{ selected: isActive }}
-      onPressIn={() => {
-        clearTimeout(timeout.current)
-        setIsBeingPressed(true)
-      }}
-      onPressOut={() => {
-        timeout.current = setTimeout(() => {
-          setIsBeingPressed(false)
-        }, 150)
-      }}
       onPress={onPress}
-      onLongPress={onPress}
       style={{ flex: 1 }}
     >
       <View style={{ flex: 1 }}>
@@ -92,16 +68,16 @@ export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
                 <BottomTabsIcon tab={tab} state="inactive" />
               </IconWrapper>
               <IconWrapper>
-                <Animated.View
+                <View
                   style={{
-                    opacity: activeProgress,
+                    opacity: isActive ? 1 : 0,
                     backgroundColor: "white",
                     width: ICON_WIDTH,
                     height: ICON_HEIGHT,
                   }}
                 >
                   <BottomTabsIcon tab={tab} state="active" />
-                </Animated.View>
+                </View>
               </IconWrapper>
             </Flex>
 
