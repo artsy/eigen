@@ -4,7 +4,8 @@ import { setupWithSubmitArtworkTestWrappers } from "app/Scenes/SellWithArtsy/Art
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 
 const mockNavigateToNextStep = jest.fn()
-jest.mock("app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers", () => ({
+
+jest.mock("app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext", () => ({
   useSubmissionContext: () => {
     return {
       navigateToNextStep: mockNavigateToNextStep,

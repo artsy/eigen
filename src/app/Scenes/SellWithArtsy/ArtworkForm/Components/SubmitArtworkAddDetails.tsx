@@ -2,7 +2,7 @@ import { OwnerType } from "@artsy/cohesion"
 import { Flex, Input, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { SelectOption } from "app/Components/Select"
 import { CategoryPicker } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/CategoryPicker"
-import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
+import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import {
   AcceptableCategoryValue,

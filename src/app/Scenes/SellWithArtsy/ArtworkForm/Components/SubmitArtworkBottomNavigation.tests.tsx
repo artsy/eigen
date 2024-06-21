@@ -6,7 +6,8 @@ import { dismissModal, navigate, switchTab } from "app/system/navigation/navigat
 
 const mockNavigateToNextStep = jest.fn()
 const mockNavigateToPreviousStep = jest.fn()
-jest.mock("app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers", () => ({
+
+jest.mock("app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext", () => ({
   useSubmissionContext: () => {
     return {
       navigateToNextStep: mockNavigateToNextStep,
