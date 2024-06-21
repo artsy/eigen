@@ -25,6 +25,7 @@
 		<string>webcredentials:m.artsy.net</string>
 		<string>applinks:wvxa.adj.st</string>
 		<string>applinks:click.artsy.net</string>
+		<string>applinks:email-link.artsy.net</string>
 	</array>
 	<key>com.apple.developer.usernotifications.time-sensitive</key>
 	<true/>
