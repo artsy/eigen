@@ -1,6 +1,6 @@
 import { CheckCircleFillIcon, Flex, ProgressBar } from "@artsy/palette-mobile"
+import { useNavigationState } from "@react-navigation/native"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
-import { __unsafe__SubmissionArtworkFormNavigationRef } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import {
   ARTWORK_FORM_STEPS,
   SubmitArtworkScreen,
@@ -20,19 +20,16 @@ const PROGRESS_BAR_HEIGHT = 4
 const ICON_SIZE = 22
 
 export const SubmitArtworkProgressBar: React.FC = ({}) => {
+  const routeNames = useNavigationState((state) => state.routes).map((route) => route.name)
   const currentStep = SubmitArtworkFormStore.useStoreState((state) => state.currentStep)
 
   const hasStartedFlowFromMyCollection = useMemo(() => {
-    const routes = (
-      __unsafe__SubmissionArtworkFormNavigationRef.current?.getState()?.routes || []
-    ).map((route) => route.name)
-
     // This is required in case the reference value comes later than the first render
     if (currentStep === "SubmitArtworkFromMyCollection") {
       return true
     }
 
-    if (routes && routes.includes("SubmitArtworkFromMyCollection")) {
+    if (routeNames && routeNames.includes("SubmitArtworkFromMyCollection")) {
       return true
     }
 
