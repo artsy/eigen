@@ -26,12 +26,7 @@ export const SubmitArtworkAddTitle = () => {
 
   const handleSubmit = async (values: SubmitArtworkAddTitleModel) => {
     try {
-      await createOrUpdateSubmission(
-        {
-          title: values.title,
-        },
-        allValues.submissionId
-      )
+      await createOrUpdateSubmission(values, allValues.submissionId)
       // This is in order to keep the formik state in sync with the screen state.
       // We can probably remove this later and fetch the title again :shrug:
       setFieldValue("title", values.title)
