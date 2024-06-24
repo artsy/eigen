@@ -1,4 +1,4 @@
-import { NavigationProp, useNavigation, useNavigationState } from "@react-navigation/native"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import {
@@ -24,7 +24,6 @@ export const useSubmissionContext = () => {
   const setIsLoading = SubmitArtworkFormStore.useStoreActions((actions) => actions.setIsLoading)
   const { currentStep } = SubmitArtworkFormStore.useStoreState((state) => state)
 
-  const routes = useNavigationState((state) => state.routes)
   const navigation = useNavigation<NavigationProp<SubmitArtworkStackNavigation>>()
 
   const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
@@ -44,9 +43,16 @@ export const useSubmissionContext = () => {
     skipMutation?: boolean
   }) => {
     try {
+      const currentRoute =
+        navigation.getState().routes[navigation.getState().routes.length - 1].name
+
       setIsLoading(true)
       const nextStep =
-        props?.step || ARTWORK_FORM_STEPS[ARTWORK_FORM_STEPS.indexOf(currentStep as any) + 1]
+        props?.step || ARTWORK_FORM_STEPS[ARTWORK_FORM_STEPS.indexOf(currentRoute as any) + 1]
+
+      if (!nextStep) {
+        throw new Error("No next step")
+      }
 
       const newValues = {
         ...values,
@@ -114,7 +120,8 @@ export const useSubmissionContext = () => {
       return
     }
 
-    const previousRoute = routes[routes.length - 2].name as keyof SubmitArtworkStackNavigation
+    const previousRoute = navigation.getState().routes[navigation.getState().routes.length - 2]
+      .name as keyof SubmitArtworkStackNavigation
 
     if (previousRoute) {
       setCurrentStep(previousRoute)

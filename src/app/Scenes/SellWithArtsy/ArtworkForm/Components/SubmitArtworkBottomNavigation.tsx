@@ -32,7 +32,9 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
   )
   const showStartFromMyCollection = useFeatureFlag("AREnableSubmitMyCollectionArtworkInSubmitFlow")
 
-  const { isLoading, currentStep } = SubmitArtworkFormStore.useStoreState((state) => state)
+  const { isLoading } = SubmitArtworkFormStore.useStoreState((state) => state)
+
+  const { currentStep } = useSubmissionContext()
 
   const handleBackPress = () => {
     trackTappedSubmissionBack(values.submissionId, currentStep)

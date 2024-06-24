@@ -1,10 +1,10 @@
 import { CheckCircleFillIcon, Flex, ProgressBar } from "@artsy/palette-mobile"
 import { useNavigationState } from "@react-navigation/native"
-import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import {
   ARTWORK_FORM_STEPS,
   SubmitArtworkScreen,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
+import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
 import { useCallback, useMemo } from "react"
 
 // Steps that should not be counted in the progress bar
@@ -21,7 +21,7 @@ const ICON_SIZE = 22
 
 export const SubmitArtworkProgressBar: React.FC = ({}) => {
   const routeNames = useNavigationState((state) => state.routes).map((route) => route.name)
-  const currentStep = SubmitArtworkFormStore.useStoreState((state) => state.currentStep)
+  const { currentStep } = useSubmissionContext()
 
   const hasStartedFlowFromMyCollection = useMemo(() => {
     // This is required in case the reference value comes later than the first render
