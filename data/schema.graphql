@@ -4200,6 +4200,14 @@ type CollectorProfileType implements Node {
   isEmailConfirmed: Boolean
   isIdentityVerified: Boolean
   isProfileComplete: Boolean
+  lastUpdatePromptAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
   location: MyLocation
   loyaltyApplicantAt(
     format: String
@@ -4272,6 +4280,10 @@ type CollectorProfileTypeEdge {
 
   # The item at the end of the edge
   node: CollectorProfileType
+}
+
+type CollectorProfileUpdatePromptNotificationItem {
+  collectorProfile: CollectorProfileType!
 }
 
 type CollectorResume {
@@ -11373,6 +11385,14 @@ type InquirerCollectorProfile {
   isEmailConfirmed: Boolean
   isIdentityVerified: Boolean
   isProfileComplete: Boolean
+  lastUpdatePromptAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
   location: MyLocation
   loyaltyApplicantAt(
     format: String
@@ -13802,6 +13822,7 @@ union NotificationItem =
     AlertNotificationItem
   | ArticleFeaturedArtistNotificationItem
   | ArtworkPublishedNotificationItem
+  | CollectorProfileUpdatePromptNotificationItem
   | PartnerOfferCreatedNotificationItem
   | ShowOpenedNotificationItem
   | ViewingRoomPublishedNotificationItem
@@ -18997,6 +19018,9 @@ input UpdateCollectorProfileInput {
   loyaltyApplicant: Boolean
   professionalBuyer: Boolean
 
+  # Since we don't want to ask a collector to update their profile too often, set this to record they've been prompted
+  promptedForUpdate: Boolean
+
   # Free-form text of purchases the collector has indicated.
   selfReportedPurchases: String
 }
@@ -19048,6 +19072,14 @@ type UpdateCollectorProfilePayload {
   isEmailConfirmed: Boolean
   isIdentityVerified: Boolean
   isProfileComplete: Boolean
+  lastUpdatePromptAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
   location: MyLocation
   loyaltyApplicantAt(
     format: String
