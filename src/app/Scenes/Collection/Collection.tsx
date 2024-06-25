@@ -42,7 +42,7 @@ export const Collection: React.FC<CollectionProps> = (props) => {
       const url = getShareURL(`/collection/${collection.slug}?utm_content=collection-share`)
       const message = `View ${collection.title} on Artsy`
 
-      const res = await RNShare.open({
+      await RNShare.open({
         title: collection.title,
         message: message + "\n" + url,
         failOnCancel: true,
