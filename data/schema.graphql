@@ -13069,6 +13069,10 @@ type Mutation {
     input: CommerceUpdateImpulseConversationIdInput!
   ): CommerceUpdateImpulseConversationIdPayload
   confirmPassword(input: ConfirmPasswordInput!): ConfirmPasswordPayload
+  convectionCreateConsignmentSubmission(
+    # Parameters for CreateSubmissionMutation
+    input: CreateSubmissionMutationInput!
+  ): CreateSubmissionMutationPayload
 
   # Create an account request
   createAccountRequest(
