@@ -1,4 +1,5 @@
-import { Analytics } from "@segment/analytics-react-native"
+import { SegmentClient, createClient } from "@segment/analytics-react-native"
+import { BrazePlugin } from "@segment/analytics-react-native-plugin-braze"
 import { addBreadcrumb } from "@sentry/react-native"
 import { visualize } from "app/utils/visualizer"
 import { Platform } from "react-native"
@@ -9,29 +10,27 @@ export const SEGMENT_TRACKING_PROVIDER = "SEGMENT_TRACKING_PROVIDER"
 
 const visualizeDevToggle = "DTShowAnalyticsVisualiser"
 
-let analytics: Analytics.Client
+let analytics: SegmentClient
 export const SegmentTrackingProvider: TrackingProvider = {
   setup: () => {
-    analytics = require("@segment/analytics-react-native").default
-    const Braze = require("@segment/analytics-react-native-appboy").default
+    // prettier-ignore
+    const writeKey = Platform.select({
+      ios: __DEV__
+        ? Config.SEGMENT_STAGING_WRITE_KEY_IOS
+        : Config.SEGMENT_PRODUCTION_WRITE_KEY_IOS,
+      android: __DEV__
+        ? Config.SEGMENT_STAGING_WRITE_KEY_ANDROID
+        : Config.SEGMENT_PRODUCTION_WRITE_KEY_ANDROID,
+      default: "",
+    })
 
-    analytics
-      .setup(
-        Platform.select({
-          ios: __DEV__
-            ? Config.SEGMENT_STAGING_WRITE_KEY_IOS
-            : Config.SEGMENT_PRODUCTION_WRITE_KEY_IOS,
-          android: __DEV__
-            ? Config.SEGMENT_STAGING_WRITE_KEY_ANDROID
-            : Config.SEGMENT_PRODUCTION_WRITE_KEY_ANDROID,
-          default: "",
-        }),
-        {
-          using: [Braze],
-        }
-      )
-      .then(() => console.log("Analytics is ready"))
-      .catch((err) => console.error("Something went wrong", err))
+    if (!writeKey || writeKey === "") {
+      console.warn("[initializeSegment]: Error: No Segment write key provided, skipping setup")
+      return null
+    }
+
+    analytics = createClient({ writeKey: writeKey })
+    analytics.add({ plugin: new BrazePlugin() })
   },
 
   identify: (userId, traits) => {

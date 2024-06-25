@@ -2,12 +2,11 @@
 
 #import "ArtsyAPI+Notifications.h"
 #import "ArtsyAPI+DeviceTokens.h"
-#import <Analytics/SEGAnalytics.h>
-#import <Segment-Appboy/SEGAppboyIntegrationFactory.h>
 
 #import "ARAppDelegate.h"
 #import "ARAppConstants.h"
 #import "ARAnalyticsConstants.h"
+#import <Analytics/SEGAnalytics.h>
 #import "UIApplicationStateEnum.h"
 #import "ARNotificationView.h"
 #import "ARSerifNavigationViewController.h"
@@ -16,11 +15,11 @@
 #import "User.h"
 #import "AROptions.h"
 #import "ARDispatchManager.h"
-
 #import "AREmission.h"
 #import "ARNotificationsManager.h"
 #import <UserNotifications/UserNotifications.h>
-#import "Appboy-iOS-SDK/AppboyKit.h"
+#import <BrazeKit/BrazeKit-Swift.h>
+
 
 @implementation ARAppNotificationsDelegate
 
@@ -79,7 +78,7 @@
     // Save device token for dev settings and to prevent excess calls to gravity if tokens don't change
     [[NSUserDefaults standardUserDefaults] setValue:deviceToken forKey:ARAPNSDeviceTokenKey];
 
-    [[Appboy sharedInstance] registerDeviceToken:deviceTokenData];
+    [[[ARAppDelegate braze] notifications] registerDeviceToken:deviceTokenData];
 
 // We only record device tokens on the Artsy service in case of Beta or App Store builds.
 #ifndef DEBUG
@@ -105,12 +104,9 @@
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))handler;
 {
 
-    [[Appboy sharedInstance] registerApplication:application
-                    didReceiveRemoteNotification:userInfo
-                          fetchCompletionHandler:handler];
-
-    if ([Appboy sharedInstance] == nil) {
-        [[SEGAppboyIntegrationFactory instance] saveRemoteNotification:userInfo];
+    bool handled = [[[ARAppDelegate braze] notifications] handleBackgroundNotificationWithUserInfo:userInfo fetchCompletionHandler:handler];
+    if (handled) {
+        return;
     }
 
     [self applicationDidReceiveRemoteNotification:userInfo inApplicationState:application.applicationState];

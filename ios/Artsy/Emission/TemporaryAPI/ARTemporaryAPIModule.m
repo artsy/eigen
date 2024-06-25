@@ -1,17 +1,10 @@
 #import "ARTemporaryAPIModule.h"
 #import <UserNotifications/UserNotifications.h>
 #import "AREmission.h"
-#import <Appboy.h>
-
 
 @implementation ARTemporaryAPIModule
 
 RCT_EXPORT_MODULE();
-
-RCT_EXPORT_METHOD(markUserPermissionStatus:(BOOL)granted)
-{
-    [[Appboy sharedInstance] pushAuthorizationFromUserNotificationCenter:granted];
-}
 
 RCT_EXPORT_METHOD(fetchNotificationPermissions:(RCTResponseSenderBlock)callback)
 {

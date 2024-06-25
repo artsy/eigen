@@ -38,7 +38,7 @@ export type InfoType =
 
 export interface TrackingProvider {
   setup?: () => void
-  identify?: (userId: string | null, traits?: { [key: string]: any }) => void
+  identify?: (userId?: string, traits?: { [key: string]: any }) => void
   postEvent: (info: InfoType) => void
 }
 

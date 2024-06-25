@@ -1,4 +1,5 @@
 import { ActionType, AuthService, CreatedAccount } from "@artsy/cohesion"
+import Braze from "@braze/react-native-sdk"
 import { appleAuth } from "@invertase/react-native-apple-authentication"
 import CookieManager from "@react-native-cookies/cookies"
 import { GoogleSignin, statusCodes } from "@react-native-google-signin/google-signin"
@@ -19,7 +20,6 @@ import { postEventToProviders } from "app/utils/track/providers"
 import { Action, Computed, StateMapper, Thunk, action, computed, thunk } from "easy-peasy"
 import { stringify } from "qs"
 import { Platform } from "react-native"
-import ReactAppboy from "react-native-appboy-sdk"
 import Config from "react-native-config"
 import { LoginManager, LoginTracking } from "react-native-fbsdk-next"
 import Keychain from "react-native-keychain"
@@ -786,7 +786,7 @@ export const getAuthModel = (): AuthModel => ({
 
     if (userId) {
       Sentry.setUser({ id: userId })
-      ReactAppboy.changeUser(userId)
+      Braze.changeUser(userId)
       SiftReactNative.setUserId(userId)
       // This is here becuase Sift's RN wrapper does not currently automatically collect or
       // upload events for Android devices. If they update the package, we can remove it.
@@ -814,7 +814,7 @@ export const getAuthModel = (): AuthModel => ({
 
     GlobalStore.actions.artsyPrefs.pushPromptLogic.setPushPermissionsRequestedThisSession(false)
     SiftReactNative.unsetUserId()
-    SegmentTrackingProvider.identify?.(null, { is_temporary_user: 1 })
+    SegmentTrackingProvider.identify?.(undefined, { is_temporary_user: 1 })
     updateExperimentsContext({ userId: undefined })
 
     await Promise.all([

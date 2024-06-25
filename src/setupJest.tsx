@@ -380,10 +380,9 @@ jest.mock("@segment/analytics-react-native", () => ({
   reset: () => null,
 }))
 
-jest.mock("@segment/analytics-react-native-appboy", () => ({}))
+jest.mock("@segment/analytics-react-native-plugin-braze", () => ({}))
 
-jest.mock("react-native-appboy-sdk", () => ({
-  ReactAppboy: jest.fn(),
+jest.mock("@braze/react-native-sdk", () => ({
   changeUser: jest.fn(),
 }))
 
@@ -439,7 +438,6 @@ function getNativeModules(): OurNativeModules {
     },
     ARTemporaryAPIModule: {
       fetchNotificationPermissions: jest.fn(),
-      markUserPermissionStatus: jest.fn(),
       markNotificationsRead: jest.fn(),
       setApplicationIconBadgeNumber: jest.fn(),
       getUserEmail: jest.fn(),
@@ -508,7 +506,6 @@ jest.mock("app/NativeModules/LegacyNativeModules", () => ({
     },
     ARTemporaryAPIModule: {
       fetchNotificationPermissions: jest.fn(),
-      markUserPermissionStatus: jest.fn(),
       markNotificationsRead: jest.fn(),
       setApplicationIconBadgeNumber: jest.fn(),
       getUserEmail: jest.fn(),

@@ -1,5 +1,6 @@
 #import <JSDecoupledAppDelegate/JSDecoupledAppDelegate.h>
 #import <RCTAppDelegate.h>
+#import <BrazeKit/BrazeKit-Swift.h>
 #import <UserNotifications/UNUserNotificationCenter.h>
 
 @class ARWindow, ArtsyEcho;
@@ -13,6 +14,7 @@
 @interface ARAppDelegate : RCTAppDelegate <JSApplicationStateDelegate>
 
 + (ARAppDelegate *)sharedInstance;
++ (Braze *)braze;
 
 @property (strong, nonatomic) ARWindow *window;
 @property (strong, nonatomic) UIViewController *viewController;

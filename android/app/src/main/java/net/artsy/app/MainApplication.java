@@ -14,7 +14,8 @@ import android.content.Context;
 import android.util.Log;
 import com.braze.Braze;
 import com.braze.support.BrazeLogger;
-import com.appboy.AppboyLifecycleCallbackListener;
+
+import com.braze.BrazeActivityLifecycleCallbackListener;
 import com.segment.analytics.Analytics;
 import net.artsy.app.utils.ReactNativeConfigUtils;
 import io.sentry.react.RNSentryPackage;
@@ -99,11 +100,11 @@ public class MainApplication extends Application implements ReactApplication {
       }
       final String token = task.getResult();
       Log.i(TAG, "TOKEN firebase messaging token " + token);
-      Braze.getInstance(applicationContext).registerAppboyPushMessages(token);
+      Braze.getInstance(applicationContext).setRegisteredPushToken(token);
     });
 
     ReactNativeFlipper.initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
 
-    registerActivityLifecycleCallbacks(new AppboyLifecycleCallbackListener());
+    registerActivityLifecycleCallbacks(new BrazeActivityLifecycleCallbackListener());
   }
 }

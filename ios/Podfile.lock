@@ -22,23 +22,6 @@ PODS:
   - AppAuth/Core (1.7.3)
   - AppAuth/ExternalUserAgent (1.7.3):
     - AppAuth/Core
-  - Appboy-iOS-SDK (4.4.4):
-    - Appboy-iOS-SDK/UI (= 4.4.4)
-  - Appboy-iOS-SDK/ContentCards (4.4.4):
-    - Appboy-iOS-SDK/Core
-    - SDWebImage (< 6, >= 5.8.2)
-  - Appboy-iOS-SDK/Core (4.4.4)
-  - Appboy-iOS-SDK/InAppMessage (4.4.4):
-    - Appboy-iOS-SDK/Core
-    - SDWebImage (< 6, >= 5.8.2)
-  - Appboy-iOS-SDK/NewsFeed (4.4.4):
-    - Appboy-iOS-SDK/Core
-    - SDWebImage (< 6, >= 5.8.2)
-  - Appboy-iOS-SDK/UI (4.4.4):
-    - Appboy-iOS-SDK/ContentCards
-    - Appboy-iOS-SDK/Core
-    - Appboy-iOS-SDK/InAppMessage
-    - Appboy-iOS-SDK/NewsFeed
   - appcenter-core (5.0.0):
     - AppCenterReactNativeShared (~> 5.0)
     - React-Core
@@ -47,6 +30,16 @@ PODS:
     - AppCenter/Core (= 5.0.3)
   - Base64 (1.1.2)
   - boost (1.76.0)
+  - braze-react-native-sdk (5.2.0):
+    - BrazeKit (~> 6.3.1)
+    - BrazeLocation (~> 6.3.1)
+    - BrazeUI (~> 6.3.1)
+    - React-Core
+  - BrazeKit (6.3.1)
+  - BrazeLocation (6.3.1):
+    - BrazeKit (= 6.3.1)
+  - BrazeUI (6.3.1):
+    - BrazeKit (= 6.3.1)
   - BVLinearGradient (2.6.2):
     - React-Core
   - CocoaAsyncSocket (7.6.5)
@@ -603,9 +596,6 @@ PODS:
   - React-jsinspector (0.72.12)
   - React-logger (0.72.12):
     - glog
-  - react-native-appboy-sdk (1.35.1):
-    - Appboy-iOS-SDK (~> 4.4.2)
-    - React
   - react-native-blob-util (0.19.9):
     - React-Core
   - react-native-blurhash (1.1.11):
@@ -786,14 +776,6 @@ PODS:
     - React-logger (= 0.72.12)
     - React-perflogger (= 0.72.12)
   - RecaptchaInterop (100.0.0)
-  - RNAnalytics (1.5.2):
-    - Analytics
-    - React-Core
-  - RNAnalyticsIntegration-Appboy (1.5.0):
-    - Analytics
-    - React-Core
-    - RNAnalytics
-    - Segment-Appboy
   - RNAppleAuthentication (2.1.5):
     - React-Core
   - RNBootSplash (3.2.0):
@@ -881,12 +863,9 @@ PODS:
   - SDWebImageWebPCoder (0.8.5):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
-  - Segment-Appboy (4.5.0):
-    - Analytics
-    - Segment-Appboy/Full-SDK (= 4.5.0)
-  - Segment-Appboy/Full-SDK (4.5.0):
-    - Analytics
-    - Appboy-iOS-SDK (~> 4.4.1)
+  - segment-analytics-react-native (2.19.0):
+    - React-Core
+    - sovran-react-native
   - Sentry/HybridSDK (8.21.0):
     - SentryPrivate (= 8.21.0)
   - SentryPrivate (8.21.0)
@@ -895,6 +874,8 @@ PODS:
     - React
     - Sift
   - SocketRocket (0.6.1)
+  - sovran-react-native (1.1.1):
+    - React-Core
   - Specta (2.0.0)
   - SSZipArchive (2.2.3)
   - Starscream (4.0.8)
@@ -918,8 +899,10 @@ DEPENDENCIES:
   - AFNetworkActivityLogger
   - AFNetworking/NSURLConnection (= 2.7.0)
   - AFNetworking/NSURLSession (= 2.7.0)
+  - Analytics (= 4.1.8)
   - appcenter-core (from `../node_modules/appcenter`)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
+  - "braze-react-native-sdk (from `../node_modules/@braze/react-native-sdk`)"
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - CocoaLumberjack (= 3.7.2)
   - CodePush (from `../node_modules/react-native-code-push`)
@@ -999,7 +982,6 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
-  - react-native-appboy-sdk (from `../node_modules/react-native-appboy-sdk`)
   - react-native-blob-util (from `../node_modules/react-native-blob-util`)
   - react-native-blurhash (from `../node_modules/react-native-blurhash`)
   - react-native-config (from `../node_modules/react-native-config`)
@@ -1036,8 +1018,6 @@ DEPENDENCIES:
   - React-runtimescheduler (from `../node_modules/react-native/ReactCommon/react/renderer/runtimescheduler`)
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
-  - "RNAnalytics (from `../node_modules/@segment/analytics-react-native`)"
-  - "RNAnalyticsIntegration-Appboy (from `../node_modules/@segment/analytics-react-native-appboy`)"
   - "RNAppleAuthentication (from `../node_modules/@invertase/react-native-apple-authentication`)"
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
@@ -1059,8 +1039,9 @@ DEPENDENCIES:
   - RNShare (from `../node_modules/react-native-share`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - SDWebImage (= 5.19.1)
-  - Segment-Appboy
+  - "segment-analytics-react-native (from `../node_modules/@segment/analytics-react-native`)"
   - sift-react-native (from `../node_modules/sift-react-native`)
+  - "sovran-react-native (from `../node_modules/@segment/sovran-react-native`)"
   - Specta (~> 2.0)
   - Starscream (= 4.0.8)
   - SwiftyJSON (from `https://github.com/SwiftyJSON/SwiftyJSON/`, commit `af76cf3ef710b6ca5f8c05f3a31307d44a3c5828`)
@@ -1079,10 +1060,12 @@ SPEC REPOS:
     - AFNetworking
     - Analytics
     - AppAuth
-    - Appboy-iOS-SDK
     - AppCenter
     - AppCenterReactNativeShared
     - Base64
+    - BrazeKit
+    - BrazeLocation
+    - BrazeUI
     - CocoaAsyncSocket
     - CocoaLumberjack
     - CwlCatchException
@@ -1147,7 +1130,6 @@ SPEC REPOS:
     - RecaptchaInterop
     - SDWebImage
     - SDWebImageWebPCoder
-    - Segment-Appboy
     - Sentry
     - SentryPrivate
     - Sift
@@ -1168,6 +1150,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/appcenter"
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
+  braze-react-native-sdk:
+    :path: "../node_modules/@braze/react-native-sdk"
   BVLinearGradient:
     :path: "../node_modules/react-native-linear-gradient"
   CodePush:
@@ -1223,8 +1207,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   React-logger:
     :path: "../node_modules/react-native/ReactCommon/logger"
-  react-native-appboy-sdk:
-    :path: "../node_modules/react-native-appboy-sdk"
   react-native-blob-util:
     :path: "../node_modules/react-native-blob-util"
   react-native-blurhash:
@@ -1297,10 +1279,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/react/utils"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
-  RNAnalytics:
-    :path: "../node_modules/@segment/analytics-react-native"
-  RNAnalyticsIntegration-Appboy:
-    :path: "../node_modules/@segment/analytics-react-native-appboy"
   RNAppleAuthentication:
     :path: "../node_modules/@invertase/react-native-apple-authentication"
   RNBootSplash:
@@ -1341,8 +1319,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-share"
   RNSVG:
     :path: "../node_modules/react-native-svg"
+  segment-analytics-react-native:
+    :path: "../node_modules/@segment/analytics-react-native"
   sift-react-native:
     :path: "../node_modules/sift-react-native"
+  sovran-react-native:
+    :path: "../node_modules/@segment/sovran-react-native"
   SwiftyJSON:
     :commit: af76cf3ef710b6ca5f8c05f3a31307d44a3c5828
     :git: https://github.com/SwiftyJSON/SwiftyJSON/
@@ -1374,12 +1356,15 @@ SPEC CHECKSUMS:
   AFNetworking: 9d57de7506959955d82fb5274ee4bec86b930e52
   Analytics: 9655e0e1c71ea98107cfcb2b14891168acc6c6c9
   AppAuth: a13994980c1ec792f7e2e665acd4d4aa6be43240
-  Appboy-iOS-SDK: b05b957ab645d0a9a43d3f35195ad69202b89edc
   AppCenter: a4070ec3d4418b5539067a51f57155012e486ebd
   appcenter-core: e192ea8b373bebd3e44998882b43311078bd7dda
   AppCenterReactNativeShared: 01df23849b1c3c6eb8c4049f54322635650e98f0
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost: 7dcd2de282d72e344012f7d6564d024930a6a440
+  braze-react-native-sdk: 6d2819d23432b4b345b31264a7a4a0430c8da5e5
+  BrazeKit: da969530d445eb2d107f5ec27d44d5eb21f1d3e9
+  BrazeLocation: 7227adcea4913d4291efba7ef30cbc59b54c7de4
+  BrazeUI: 2fc3a9d1e65e3c4390a7d2844378d45b158441db
   BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
@@ -1467,7 +1452,6 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 95bdf0ab46024ca9849e08739b6abd8fe489cd33
   React-jsinspector: 8e291ed0ab371314de269001d6b9b25db6aabf42
   React-logger: d4010de0b0564e63637ad08373bc73b5d919974b
-  react-native-appboy-sdk: e4e36787766637d5c60da264b66f4389ed479867
   react-native-blob-util: 18b510205c080a453574a7d2344d64673d0ad9af
   react-native-blurhash: a59e6bf8117a0304488ed576abd440f4b0777a8c
   react-native-config: bcafda5b4c51491ee1b0e1d0c4e3905bc7b56c1b
@@ -1505,8 +1489,6 @@ SPEC CHECKSUMS:
   React-utils: 9a24cb88f950d1020ee55bddacbc8c16a611e2dc
   ReactCommon: 76843a9bb140596351ac2786257ac9fe60cafabb
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
-  RNAnalytics: fcf308eeac6d34a74c158ec74d733c877f26fb96
-  RNAnalyticsIntegration-Appboy: 6940f54ff28e6be80f1e3b78c996b1f0945b4113
   RNAppleAuthentication: 63c2127ace11985b94f852fc480eb84145653712
   RNBootSplash: 24175aa28fe203b10c48dc34e78d946fd33c77af
   RNCAsyncStorage: c913ede1fa163a71cea118ed4670bbaaa4b511bb
@@ -1529,12 +1511,13 @@ SPEC CHECKSUMS:
   RNSVG: ba3e7232f45e34b7b47e74472386cf4e1a676d0a
   SDWebImage: 40b0b4053e36c660a764958bff99eed16610acbb
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
-  Segment-Appboy: 3ccf7ffd34701e11029e1d013e57eae0756a8eb1
+  segment-analytics-react-native: 4e01effb976a73378c687bf37af954e6e95f3970
   Sentry: ebc12276bd17613a114ab359074096b6b3725203
   SentryPrivate: d651efb234cf385ec9a1cdd3eff94b5e78a0e0fe
   Sift: 7c27188ba3533c0a1be541d7efb68384e17e544c
   sift-react-native: 9ed8bc21788e3233399eaf196425246442aa7dee
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
+  sovran-react-native: e6a9c963a8a6b9ebc3563394c39c30f33ab1453f
   Specta: b79d84043684b35ffdc2680df578dc318ec2efc2
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Starscream: 19b5533ddb925208db698f0ac508a100b884a1b9
@@ -1549,6 +1532,6 @@ SPEC CHECKSUMS:
   Yoga: 87e59f6d458e5061d2421086c5de994b3f7cd151
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 5692a82aae086bb5c68f7181faa1760979de637c
+PODFILE CHECKSUM: de289a77a457496201845919bee5839726759337
 
 COCOAPODS: 1.14.3

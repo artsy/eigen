@@ -1,4 +1,3 @@
-import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { GlobalStore, unsafe_getPushPromptSettings } from "app/store/GlobalStore"
 import {
   PushAuthorizationStatus,
@@ -71,31 +70,35 @@ export const requestSystemPermissions = async () => {
       action: "push notifications requested",
       granted: true,
     })
-    LegacyNativeModules.ARTemporaryAPIModule.markUserPermissionStatus(true)
     SegmentTrackingProvider.identify
-      ? SegmentTrackingProvider.identify(null, { "has enabled notifications": 1 })
+      ? SegmentTrackingProvider.identify(undefined, { "has enabled notifications": 1 })
       : (() => undefined)()
   } else {
     postEventToProviders({
       action: "push notifications requested",
       granted: false,
     })
-    LegacyNativeModules.ARTemporaryAPIModule.markUserPermissionStatus(false)
     GlobalStore.actions.artsyPrefs.pushPromptLogic.setPushNotificationSystemDialogRejected(true)
   }
 }
 
 const ONE_WEEK_MS = 1000 * 60 * 60 * 24 * 7 // One week in milliseconds
 const shouldDisplayPrepromptAlert = () => {
-  const { pushNotificationDialogLastSeenTimestamp } = unsafe_getPushPromptSettings()!
+  const settings = unsafe_getPushPromptSettings()
 
-  if (pushNotificationDialogLastSeenTimestamp) {
-    // we don't want to ask too often
-    // currently, we make sure at least a week has passed by since you last saw the dialog
-    const pushNotificationDialogLastSeenDate = new Date(pushNotificationDialogLastSeenTimestamp)
-    const currentDate = new Date()
-    const timePassed = currentDate.getTime() - pushNotificationDialogLastSeenDate.getTime()
-    return timePassed >= ONE_WEEK_MS
+  if (settings) {
+    const { pushNotificationDialogLastSeenTimestamp } = settings
+    if (pushNotificationDialogLastSeenTimestamp) {
+      // we don't want to ask too often
+      // currently, we make sure at least a week has passed by since you last saw the dialog
+      const pushNotificationDialogLastSeenDate = new Date(pushNotificationDialogLastSeenTimestamp)
+      const currentDate = new Date()
+      const timePassed = currentDate.getTime() - pushNotificationDialogLastSeenDate.getTime()
+      return timePassed >= ONE_WEEK_MS
+    } else {
+      // if you've never seen one before, we'll show you ;)
+      return true
+    }
   } else {
     // if you've never seen one before, we'll show you ;)
     return true
