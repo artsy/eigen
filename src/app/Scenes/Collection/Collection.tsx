@@ -42,14 +42,16 @@ export const Collection: React.FC<CollectionProps> = (props) => {
       const url = getShareURL(`/collection/${collection.slug}?utm_content=collection-share`)
       const message = `View ${collection.title} on Artsy`
 
-      await RNShare.open({
+      const res = await RNShare.open({
         title: collection.title,
         message: message + "\n" + url,
-        failOnCancel: false,
+        failOnCancel: true,
       })
       showToast("Copied to Clipboard", "middle", { Icon: ShareIcon })
     } catch (error) {
-      console.error("Collection.tsx", error)
+      if (typeof error === "string" && error.includes("User did not share")) {
+        console.error("Collection.tsx", error)
+      }
     }
   }
 
