@@ -45,11 +45,13 @@ export const Collection: React.FC<CollectionProps> = (props) => {
       await RNShare.open({
         title: collection.title,
         message: message + "\n" + url,
-        failOnCancel: false,
+        failOnCancel: true,
       })
       showToast("Copied to Clipboard", "middle", { Icon: ShareIcon })
     } catch (error) {
-      console.error("Collection.tsx", error)
+      if (typeof error === "string" && error.includes("User did not share")) {
+        console.error("Collection.tsx", error)
+      }
     }
   }
 
