@@ -879,12 +879,8 @@ PODS:
   - Specta (2.0.0)
   - SSZipArchive (2.2.3)
   - Starscream (4.0.8)
-  - Stripe (14.0.2)
   - SwiftyJSON (5.0.2)
   - Then (2.3.0)
-  - tipsi-stripe (7.5.0):
-    - React
-    - Stripe (~> 14.0.0)
   - TOCropViewController (2.6.1)
   - UICKeyChainStore (2.2.1)
   - "UIView+BooleanAnimations (1.0.2)"
@@ -1046,7 +1042,6 @@ DEPENDENCIES:
   - Starscream (= 4.0.8)
   - SwiftyJSON (from `https://github.com/SwiftyJSON/SwiftyJSON/`, commit `af76cf3ef710b6ca5f8c05f3a31307d44a3c5828`)
   - Then (= 2.3.0)
-  - tipsi-stripe (from `../node_modules/tipsi-stripe`)
   - UICKeyChainStore
   - "UIView+BooleanAnimations"
   - "XCTest+OHHTTPStubSuiteCleanUp"
@@ -1137,7 +1132,6 @@ SPEC REPOS:
     - Specta
     - SSZipArchive
     - Starscream
-    - Stripe
     - Then
     - TOCropViewController
     - UICKeyChainStore
@@ -1328,8 +1322,6 @@ EXTERNAL SOURCES:
   SwiftyJSON:
     :commit: af76cf3ef710b6ca5f8c05f3a31307d44a3c5828
     :git: https://github.com/SwiftyJSON/SwiftyJSON/
-  tipsi-stripe:
-    :path: "../node_modules/tipsi-stripe"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -1521,10 +1513,8 @@ SPEC CHECKSUMS:
   Specta: b79d84043684b35ffdc2680df578dc318ec2efc2
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Starscream: 19b5533ddb925208db698f0ac508a100b884a1b9
-  Stripe: 25c07000e7e86ffc53da0e41a5dd1bce30470fe0
   SwiftyJSON: 576fbf26942d5ef414daad8870b1642413ecc00c
   Then: ee21c97b85ff6062b9b0080c9abb1eea46743345
-  tipsi-stripe: 8aaaa6f5e4cfea5c35be3affbb616c4e6cfafa5f
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   UICKeyChainStore: ba3bff2c762b12db1e516f395c837dd25298b05e
   "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97

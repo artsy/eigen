@@ -201,7 +201,6 @@
     "styled-components": "5.3.6",
     "styled-system": "5.1.5",
     "supercluster": "7.1.5",
-    "tipsi-stripe": "https://github.com/artsy/tipsi-stripe.git#fix-infinite-loop",
     "unleash-proxy-client": "3.1.1",
     "url": "0.11.3",
     "victory-native": "36.6.8",
