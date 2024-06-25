@@ -879,6 +879,42 @@ PODS:
   - Specta (2.0.0)
   - SSZipArchive (2.2.3)
   - Starscream (4.0.8)
+  - Stripe (23.27.3):
+    - StripeApplePay (= 23.27.3)
+    - StripeCore (= 23.27.3)
+    - StripePayments (= 23.27.3)
+    - StripePaymentsUI (= 23.27.3)
+    - StripeUICore (= 23.27.3)
+  - stripe-react-native (0.38.0):
+    - React-Core
+    - Stripe (~> 23.27.0)
+    - StripeApplePay (~> 23.27.0)
+    - StripeFinancialConnections (~> 23.27.0)
+    - StripePayments (~> 23.27.0)
+    - StripePaymentSheet (~> 23.27.0)
+    - StripePaymentsUI (~> 23.27.0)
+  - StripeApplePay (23.27.3):
+    - StripeCore (= 23.27.3)
+  - StripeCore (23.27.3)
+  - StripeFinancialConnections (23.27.3):
+    - StripeCore (= 23.27.3)
+    - StripeUICore (= 23.27.3)
+  - StripePayments (23.27.3):
+    - StripeCore (= 23.27.3)
+    - StripePayments/Stripe3DS2 (= 23.27.3)
+  - StripePayments/Stripe3DS2 (23.27.3):
+    - StripeCore (= 23.27.3)
+  - StripePaymentSheet (23.27.3):
+    - StripeApplePay (= 23.27.3)
+    - StripeCore (= 23.27.3)
+    - StripePayments (= 23.27.3)
+    - StripePaymentsUI (= 23.27.3)
+  - StripePaymentsUI (23.27.3):
+    - StripeCore (= 23.27.3)
+    - StripePayments (= 23.27.3)
+    - StripeUICore (= 23.27.3)
+  - StripeUICore (23.27.3):
+    - StripeCore (= 23.27.3)
   - SwiftyJSON (5.0.2)
   - Then (2.3.0)
   - TOCropViewController (2.6.1)
@@ -1040,6 +1076,7 @@ DEPENDENCIES:
   - "sovran-react-native (from `../node_modules/@segment/sovran-react-native`)"
   - Specta (~> 2.0)
   - Starscream (= 4.0.8)
+  - "stripe-react-native (from `../node_modules/@stripe/stripe-react-native`)"
   - SwiftyJSON (from `https://github.com/SwiftyJSON/SwiftyJSON/`, commit `af76cf3ef710b6ca5f8c05f3a31307d44a3c5828`)
   - Then (= 2.3.0)
   - UICKeyChainStore
@@ -1132,6 +1169,14 @@ SPEC REPOS:
     - Specta
     - SSZipArchive
     - Starscream
+    - Stripe
+    - StripeApplePay
+    - StripeCore
+    - StripeFinancialConnections
+    - StripePayments
+    - StripePaymentSheet
+    - StripePaymentsUI
+    - StripeUICore
     - Then
     - TOCropViewController
     - UICKeyChainStore
@@ -1319,6 +1364,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/sift-react-native"
   sovran-react-native:
     :path: "../node_modules/@segment/sovran-react-native"
+  stripe-react-native:
+    :path: "../node_modules/@stripe/stripe-react-native"
   SwiftyJSON:
     :commit: af76cf3ef710b6ca5f8c05f3a31307d44a3c5828
     :git: https://github.com/SwiftyJSON/SwiftyJSON/
@@ -1513,6 +1560,15 @@ SPEC CHECKSUMS:
   Specta: b79d84043684b35ffdc2680df578dc318ec2efc2
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Starscream: 19b5533ddb925208db698f0ac508a100b884a1b9
+  Stripe: 962def3be8d23f21f8d0f390adc21780a7b04ec1
+  stripe-react-native: c89f0b9abbac8a4093695a85ac34cc09f8935d0c
+  StripeApplePay: ac6e43fc0cbf51fe5a4b660dd7342047133d7e33
+  StripeCore: 60f0d5897d31f8413d9147e70c1ade114254fb99
+  StripeFinancialConnections: 378be575f6d1c0696150ffaac40d831335319c1f
+  StripePayments: 984ab574edf022e8338d13426768aa9c9b532d9d
+  StripePaymentSheet: e62a74e7a37482f59b65eb3569ccd4b95b4d561b
+  StripePaymentsUI: a32856677763e09430ab6c16a1b40b94092f1785
+  StripeUICore: cecab385ea96cd1e93afc0aeda8159ab6204d3c3
   SwiftyJSON: 576fbf26942d5ef414daad8870b1642413ecc00c
   Then: ee21c97b85ff6062b9b0080c9abb1eea46743345
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863

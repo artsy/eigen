@@ -4094,6 +4094,11 @@
     "@stdlib/utils-constructor-name" "^0.0.x"
     "@stdlib/utils-global" "^0.0.x"
 
+"@stripe/stripe-react-native@0.38.0":
+  version "0.38.0"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-react-native/-/stripe-react-native-0.38.0.tgz#e91f897b6a50899274ff631027d2b3411e631583"
+  integrity sha512-OK/FdF+2CRgiZEgVpql61Iz5K1x+OOVxP9WyCJeA39Cf7MK9EYSuNugoF+dZqXG4otDkUe1ffKYX2OiBU1qGKQ==
+
 "@styled-system/background@^5.1.2":
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/@styled-system/background/-/background-5.1.2.tgz#75c63d06b497ab372b70186c0bf608d62847a2ba"
