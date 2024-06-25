@@ -96,29 +96,6 @@ Make sure you are on proper node version and then do a
 yarn install
 ```
 
-- Issue with installing `tipsi-stripe`
-
-```
-  [!] CocoaPods could not find compatible versions for pod "tipsi-stripe":
-```
-
-You need to run
-
-```
-bundle exec pod update tipsi-stripe
-```
-
-- Error during `bundle exec pod update tipsi-stripe`
-
-```
-  checking whether the C compiler works... no
-  xcrun: error: SDK "iphoneos" cannot be located
-  xcrun: error: SDK "iphoneos" cannot be located
-  xcrun: error: SDK "iphoneos" cannot be located
-```
-
-You need to go to Xcode -> Preferences -> Locations and select Command Line Tools from the dropdown
-
 - Failed `./scripts/setup/setup-env-for-artsy` with
 
 ```
