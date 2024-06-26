@@ -1,5 +1,10 @@
-import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
+import {
+  __globalStoreTestUtils__,
+  getCurrentEmissionState,
+  GlobalStore,
+} from "app/store/GlobalStore"
 import { CURRENT_APP_VERSION } from "app/store/migration"
+import { pass } from "jest-extended"
 import mockFetch from "jest-fetch-mock"
 
 describe("GlobalStoreModel", () => {
@@ -43,6 +48,20 @@ describe("GlobalStoreModel", () => {
     expect(
       __globalStoreTestUtils__?.getCurrentState().search.recentSearches[0].props.displayLabel
     ).toEqual("Banksy")
+  })
+
+  it("returns expected user agent", () => {
+    const userAgent = getCurrentEmissionState().userAgent
+    if (!userAgent.includes("Artsy-Mobile")) {
+      fail(`
+        !!! The user agent for eigen has changed,
+        this will break things elsewhere.
+        If this is intended updates must be made outside eigen, see here:
+        https://github.com/artsy/gravity/pull/17853
+      `)
+    } else {
+      pass("User agent contains Artsy-Mobile")
+    }
   })
 
   it("can be manipulated", () => {
