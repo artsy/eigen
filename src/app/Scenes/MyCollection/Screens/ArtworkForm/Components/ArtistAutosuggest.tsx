@@ -33,6 +33,7 @@ interface ArtistAutosuggestProps {
   onResultPress: (result: AutosuggestResult) => void
   onSkipPress?: (artistDisplayName: string) => void
   autoFocus?: boolean
+  disableFormik?: boolean
 }
 
 export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
@@ -44,10 +45,11 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
   onResultPress,
   onSkipPress,
   autoFocus = typeof jest === "undefined",
+  disableFormik = false,
 }) => {
   const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
 
-  const { formik } = useArtworkForm()
+  const { formik } = useArtworkForm(disableFormik)
   const { artist: artistQuery } = formik.values
   const trimmedQuery = artistQuery.trimStart()
   const searchProviderValues = useSearchProviderValues(artistQuery)
