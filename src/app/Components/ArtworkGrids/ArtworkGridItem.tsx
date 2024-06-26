@@ -9,7 +9,6 @@ import {
   SkeletonBox,
   SkeletonText,
   Spacer,
-  TagIcon,
   Text,
   TextProps,
   Touchable,
@@ -24,7 +23,6 @@ import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwor
 import { DurationProvider } from "app/Components/Countdown"
 import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
 import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
-import { useToast } from "app/Components/Toast/toastHook"
 import { PartnerOffer } from "app/Scenes/Activity/components/NotificationArtworkList"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
@@ -46,7 +44,6 @@ import { LotCloseInfo } from "./LotCloseInfo"
 import { LotProgressBar } from "./LotProgressBar"
 
 const ICON_SIZE = 22
-const SUBMITTED_ICON_SIZE_PADDING = 10
 
 export type PriceOfferMessage = { priceListedMessage: string; priceWithDiscountMessage: string }
 export interface ArtworkProps extends ArtworkActionTrackingProps {
@@ -63,7 +60,6 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   hideSaveIcon?: boolean
   /** Hide urgency tags (3 Days left, 1 hour left) */
   hideUrgencyTags?: boolean
-  disabled?: boolean
   /** Pass Tap to override generic ing, used for home tracking in rails */
   itemIndex?: number
   lotLabelTextStyle?: TextProps
@@ -99,7 +95,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
   hideSaleInfo = false,
   hideSaveIcon = false,
   hideUrgencyTags = false,
-  disabled = false,
   itemIndex,
   lotLabelTextStyle,
   onPress,
@@ -118,8 +113,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const tracking = useTracking()
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
-
-  const { show: showToast } = useToast()
 
   let filterParams: any = undefined
 
@@ -190,10 +183,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const enablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
 
   const handleTap = () => {
-    if (disabled) {
-      return
-    }
-
     if (onPress) {
       return onPress(artwork.slug)
     }
@@ -263,7 +252,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
       >
         <Touchable
           haptic
-          noFeedback={disabled}
           underlayColor={color("white100")}
           activeOpacity={0.8}
           onPress={handleTap}
@@ -280,46 +268,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   blurhash={showBlurhash ? artwork.image.blurhash : undefined}
                   resizeMode="contain"
                 />
-
-                {!!disabled && (
-                  <Flex
-                    position="absolute"
-                    height={height}
-                    width={Number(height) * (artwork.image.aspectRatio ?? 1)}
-                    backgroundColor="white100"
-                    opacity={0.6}
-                  />
-                )}
-
-                {!!artwork.submissionId && (
-                  <Flex
-                    position="absolute"
-                    height={height}
-                    width={Number(height) * (artwork.image.aspectRatio ?? 1)}
-                    alignItems="flex-end"
-                    pr={0.5}
-                    pt={0.5}
-                  >
-                    <Touchable
-                      onPress={() => {
-                        showToast("This artwork has been submitted", "bottom")
-                      }}
-                    >
-                      <Flex
-                        height={SUBMITTED_ICON_SIZE_PADDING + ICON_SIZE}
-                        width={SUBMITTED_ICON_SIZE_PADDING + ICON_SIZE}
-                        borderRadius={(SUBMITTED_ICON_SIZE_PADDING + ICON_SIZE) / 2}
-                        backgroundColor="white100"
-                        justifyContent="center"
-                        alignItems="center"
-                        borderWidth={1}
-                        borderColor="black10"
-                      >
-                        <TagIcon height={ICON_SIZE} width={ICON_SIZE} />
-                      </Flex>
-                    </Touchable>
-                  </Flex>
-                )}
 
                 {Boolean(
                   !hideUrgencyTags &&
@@ -570,7 +518,6 @@ export default createFragmentContainer(Artwork, {
     fragment ArtworkGridItem_artwork on Artwork
     @argumentDefinitions(
       includeAllImages: { type: "Boolean", defaultValue: false }
-      includeSubmissionId: { type: "Boolean", defaultValue: false }
       width: { type: "Int" }
     ) {
       ...CreateArtworkAlertModal_artwork
@@ -634,7 +581,6 @@ export default createFragmentContainer(Artwork, {
       }
       realizedPrice
       ...useSaveArtworkToArtworkLists_artwork
-      submissionId @include(if: $includeSubmissionId)
     }
   `,
 })

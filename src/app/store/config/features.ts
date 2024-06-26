@@ -280,7 +280,7 @@ export const features = {
     description: "Enable Start Submission from My Collection in submit artwork flow",
     readyForRelease: true,
     showInDevMenu: true,
-    echoFlagKey: "AREnableSubmitMyCollectionArtworkInSubmitFlow",
+    echoFlagKey: "AREnableSubmitMyCollectionArtworkInSubmitFlowNew",
   },
   AREnableSaveAndContinueSubmission: {
     description: "Enable save and continue submission flow",
