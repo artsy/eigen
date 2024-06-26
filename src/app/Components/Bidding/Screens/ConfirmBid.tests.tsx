@@ -1,4 +1,5 @@
 import { Text, LinkText, Checkbox, Button } from "@artsy/palette-mobile"
+import { createToken } from "@stripe/stripe-react-native"
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { BidderPositionQuery$data } from "__generated__/BidderPositionQuery.graphql"
 import { ConfirmBidCreateBidderPositionMutation } from "__generated__/ConfirmBidCreateBidderPositionMutation.graphql"
@@ -24,22 +25,18 @@ import { merge } from "lodash"
 import { TouchableWithoutFeedback } from "react-native"
 import relay from "react-relay"
 import { ReactTestRenderer } from "react-test-renderer"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import stripe from "tipsi-stripe"
 import { BidResultScreen } from "./BidResult"
 import { BillingAddress } from "./BillingAddress"
 import { ConfirmBid, ConfirmBidProps } from "./ConfirmBid"
 import { CreditCardForm } from "./CreditCardForm"
 import { SelectMaxBid } from "./SelectMaxBid"
 
-jest.mock("tipsi-stripe", () => ({
-  setOptions: jest.fn(),
-  paymentRequestWithCardForm: jest.fn(),
-  createTokenWithCard: jest.fn(),
-}))
-
 jest.mock("app/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery", () => ({
   bidderPositionQuery: jest.fn(),
+}))
+
+jest.mock("@stripe/stripe-react-native", () => ({
+  createToken: jest.fn(),
 }))
 
 describe("ConfirmBid", () => {
@@ -746,7 +743,7 @@ describe("ConfirmBid", () => {
         onCompleted!({}, null)
         return { dispose: jest.fn() }
       }) as any
-      stripe.createTokenWithCard.mockImplementationOnce(() => {
+      ;(createToken as jest.Mock).mockImplementationOnce(() => {
         throw new Error("Error tokenizing card")
       })
 
@@ -773,8 +770,7 @@ describe("ConfirmBid", () => {
 
     it("shows the error screen with the correct error message on a createCreditCard mutation failure", async () => {
       renderWithWrappers(<ConfirmBid {...initialPropsForUnqualifiedUser} />)
-
-      stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
+      ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
         onCompleted!(mockRequestResponses.creatingCreditCardError, null)
         return { dispose: jest.fn() }
@@ -802,7 +798,7 @@ describe("ConfirmBid", () => {
       const errors = [{ message: "malformed error" }]
 
       console.error = jest.fn() // Silences component logging.
-      stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
+      ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
         onCompleted!({}, errors)
         return { dispose: jest.fn() }
@@ -823,8 +819,8 @@ describe("ConfirmBid", () => {
 
     it("shows the error screen with the default error message if the creditCardMutation error message is empty", async () => {
       renderWithWrappers(<ConfirmBid {...initialPropsForUnqualifiedUser} />)
+      ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
 
-      stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
         onCompleted!(mockRequestResponses.creatingCreditCardEmptyError, null)
         return { dispose: jest.fn() }
@@ -852,7 +848,7 @@ describe("ConfirmBid", () => {
 
     it("shows the generic error screen on a createCreditCard mutation network failure", () => {
       console.error = jest.fn() // Silences component logging.
-      stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
+      ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
       relay.commitMutation = commitMutationMock((_, { onError }) => {
         onError!(new TypeError("Network request failed"))
         return { dispose: jest.fn() }
@@ -876,7 +872,7 @@ describe("ConfirmBid", () => {
 
     describe("After successful mutations", () => {
       beforeEach(() => {
-        stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
+        ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
         relay.commitMutation = jest
           .fn()
           .mockImplementationOnce((_, { onCompleted }) =>
@@ -1187,15 +1183,17 @@ describe("ConfirmBid", () => {
   }
 
   const stripeToken = {
-    tokenId: "fake-token",
-    created: "1528229731",
-    livemode: 0,
-    card: {
-      brand: "VISA",
-      last4: "4242",
+    token: {
+      id: "fake-token",
+      created: "1528229731",
+      livemode: 0,
+      card: {
+        brand: "VISA",
+        last4: "4242",
+      },
+      bankAccount: null,
+      extra: null,
     },
-    bankAccount: null,
-    extra: null,
   }
 
   const initialProps: ConfirmBidProps = {
