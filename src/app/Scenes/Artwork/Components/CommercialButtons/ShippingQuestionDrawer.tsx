@@ -32,6 +32,9 @@ export const ShippingQuestionDrawer: React.FC = () => {
       visible={state.isShippingQuestionDialogOpen}
       onDismiss={handleModalDismiss}
     >
+      <Text variant="sm-display" textAlign="center">
+        Add Location
+      </Text>
       <Box p={2}>
         <LocationAutocomplete
           title="Location"

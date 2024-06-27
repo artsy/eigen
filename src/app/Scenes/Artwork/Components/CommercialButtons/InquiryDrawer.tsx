@@ -1,4 +1,5 @@
 import { Box, Button, Flex, InfoCircleIcon, Separator, Text } from "@artsy/palette-mobile"
+import { BottomSheetView } from "@gorhom/bottom-sheet"
 import { InquiryDrawer_artwork$data } from "__generated__/InquiryDrawer_artwork.graphql"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
@@ -24,9 +25,11 @@ interface InquiryDrawerProps {
  *
  * [x] Run this on an Android emulator
  * [x] Run this on an iPhone
- *   [ ] The message field is covered by the keyboard
+ *   [x] The message field is covered by the keyboard
+ *     [ ] The sticky submit button is covered by the keyboard
  *   [x] The location options are covered by the keyboard
  *   [x] After selecting a location, the drawer takes up 100% of the screen
+ * [x] Add titles to the drawers
  *
  */
 
@@ -132,6 +135,9 @@ export const InquiryDrawer: React.FC<InquiryDrawerProps> = ({ artwork }) => {
         onDismiss={handleModalDismiss}
         snapPoints={["85%"]}
       >
+        <Text variant="sm-display" textAlign="center">
+          Contact Gallery
+        </Text>
         {!!thereWasAnError && (
           <Flex
             bg="red100"
@@ -179,32 +185,34 @@ export const InquiryDrawer: React.FC<InquiryDrawerProps> = ({ artwork }) => {
             </Box>
           </Box>
         </ScrollView>
-        <Separator />
-        <Box mt={1} flexDirection="row" px={2}>
-          <InfoCircleIcon mr={0.5} style={{ marginTop: 2 }} />
-          <Box flex={1}>
-            <Text variant="xs" color="black60">
-              By clicking send, we will share your profile with {partnerName}. Update your profile
-              at any time in{" "}
-              <Text variant="xs" onPress={handleSettingsLinkPress}>
-                Settings
+        <BottomSheetView>
+          <Separator />
+          <Box mt={1} flexDirection="row" px={2}>
+            <InfoCircleIcon mr={0.5} style={{ marginTop: 2 }} />
+            <Box flex={1}>
+              <Text variant="xs" color="black60">
+                By clicking send, we will share your profile with {partnerName}. Update your profile
+                at any time in{" "}
+                <Text variant="xs" onPress={handleSettingsLinkPress}>
+                  Settings
+                </Text>
+                .
               </Text>
-              .
-            </Text>
+            </Box>
           </Box>
-        </Box>
-        <Box my={2} px={2}>
-          <Button
-            width="100%"
-            block
-            onPress={handleSendButtonPress}
-            disabled={state.inquiryQuestions.length === 0}
-            loading={theInquiryIsBeingSent}
-            testID="send-button"
-          >
-            Send
-          </Button>
-        </Box>
+          <Box my={2} px={2}>
+            <Button
+              width="100%"
+              block
+              onPress={handleSendButtonPress}
+              disabled={state.inquiryQuestions.length === 0}
+              loading={theInquiryIsBeingSent}
+              testID="send-button"
+            >
+              Send
+            </Button>
+          </Box>
+        </BottomSheetView>
       </AutomountedBottomSheetModal>
 
       <ShippingQuestionDrawer />
