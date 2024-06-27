@@ -45,6 +45,7 @@ export const ShippingQuestionDrawer: React.FC = () => {
               quotes.
             </Text>
           )}
+          useBottomSheetInput
         />
         <Box my={4} zIndex={-100}>
           <Button
