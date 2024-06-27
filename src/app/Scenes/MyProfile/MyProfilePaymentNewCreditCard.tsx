@@ -1,4 +1,5 @@
 import { Input } from "@artsy/palette-mobile"
+import { createToken } from "@stripe/stripe-react-native"
 import { MyProfilePaymentNewCreditCardSaveCardMutation } from "__generated__/MyProfilePaymentNewCreditCardSaveCardMutation.graphql"
 import { CountrySelect } from "app/Components/CountrySelect"
 import { InputTitle } from "app/Components/Input"
@@ -10,8 +11,6 @@ import { Action, Computed, action, computed, useLocalStore } from "easy-peasy"
 import React, { useEffect, useRef } from "react"
 import { LiteCreditCardInput } from "react-native-credit-card-input"
 import { commitMutation, graphql } from "react-relay"
-// @ts-ignore
-import stripe from "tipsi-stripe"
 import { __triggerRefresh } from "./MyProfilePayment"
 
 interface CreditCardInputParams {
@@ -106,22 +105,26 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
       title="Add new card"
       onSave={async (dismiss, alert) => {
         try {
-          const stripeResult = await stripe.createTokenWithCard({
+          const stripeResult = await createToken({
             ...state.fields.creditCard.value?.params,
-            name: state.fields.fullName.value,
-            addressLine1: state.fields.addressLine1.value,
-            addressLine2: state.fields.addressLine2.value,
-            addressCity: state.fields.city.value,
-            addressState: state.fields.state.value,
-            addressCountry: state.fields.country.value,
-            addressZip: state.fields.postCode.value,
+            type: "Card",
+            name: state.fields.fullName.value ?? undefined,
+            address: {
+              line1: state.fields.addressLine1.value ?? undefined,
+              line2: state.fields.addressLine2.value ?? undefined,
+              city: state.fields.city.value ?? undefined,
+              state: state.fields.state.value ?? undefined,
+              country: state.fields.country.value ?? undefined,
+              postalCode: state.fields.postCode.value ?? undefined,
+            },
           })
-          if (!stripeResult?.tokenId) {
+          const tokenId = stripeResult.token?.id
+          if (!stripeResult || !stripeResult.error || !tokenId) {
             throw new Error(
-              `Unexpected stripe card tokenization result ${JSON.stringify(stripeResult)}`
+              `Unexpected stripe card tokenization result ${JSON.stringify(stripeResult.error)}`
             )
           }
-          const gravityResult = await saveCreditCard(stripeResult.tokenId)
+          const gravityResult = await saveCreditCard(tokenId)
           if (gravityResult.createCreditCard?.creditCardOrError?.creditCard) {
             await __triggerRefresh?.()
           } else {
