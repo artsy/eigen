@@ -6936,6 +6936,7 @@ type ConsignmentSubmission {
   userId: String!
   userName: String
   userPhone: String
+  userPhoneNumber: PhoneNumberType
   utmMedium: String
   utmSource: String
   utmTerm: String
