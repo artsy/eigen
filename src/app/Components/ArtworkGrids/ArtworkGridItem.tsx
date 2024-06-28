@@ -554,10 +554,6 @@ export const saleMessageOrBidInfo = ({
     return `${currentBid} (${numberOfBidsString})`
   }
 
-  if (artwork.saleMessage === "Contact for price") {
-    return "Price on request"
-  }
-
   if (artwork.saleMessage === "Inquire about availability") {
     return ""
   }
