@@ -15,7 +15,6 @@ export const useHomeModules = (props: HomeProps) => {
   const enableGalleriesForYou = useFeatureFlag("AREnableGalleriesForYou")
   const enableCuratorsPickRail = useFeatureFlag("AREnableCuratorsPickRail")
   const enableDoMoreOnArtsyRail = useFeatureFlag("AREnableDoMoreOnArtsyRail")
-  const enableMeetYourNewAdvisoryRail = useFeatureFlag("AREnableMeetYourNewAdvisorRail")
   const enableEditorialNews = useFeatureFlag("AREnableEditorialNews")
 
   return useMemo(() => {
@@ -75,14 +74,6 @@ export const useHomeModules = (props: HomeProps) => {
         subtitle: "Discover and Bid on Works for You",
         title: "Auctions",
         type: "sales",
-      },
-      {
-        data: true, // displays static data
-        hidden: !enableMeetYourNewAdvisoryRail,
-        isEmpty: false, // cannot be empty
-        key: "meetYourNewAdvisor",
-        title: "Meet your new art advisor",
-        type: "meetYourNewAdvisor",
       },
       // Below-The-Fold Modules
       {
@@ -266,7 +257,6 @@ export const useHomeModules = (props: HomeProps) => {
     props.recommendedAuctionLots,
     enableCuratorsPickRail,
     enableDoMoreOnArtsyRail,
-    enableMeetYourNewAdvisoryRail,
     enableLatestActivityRail,
   ])
 }
