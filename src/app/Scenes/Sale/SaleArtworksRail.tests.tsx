@@ -70,7 +70,7 @@ const saleArtworkNode = {
       url: "artworkImageUrl",
     },
     href: "/artwork/artwroks-href",
-    saleMessage: "Contact for price",
+    saleMessage: "Price on request",
     artistNames: "Banksy",
     slug: "artwork-slug",
     internalID: "Internal-ID",
