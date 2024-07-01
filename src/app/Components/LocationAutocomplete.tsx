@@ -1,4 +1,5 @@
 import { Flex, Input, InputProps, MapPinIcon, Text, Touchable } from "@artsy/palette-mobile"
+import { BottomSheetInput } from "app/Components/BottomSheetInput"
 import {
   LocationWithDetails,
   SimpleLocation,
@@ -16,6 +17,7 @@ interface LocationAutocompleteProps extends Omit<InputProps, "onChange"> {
   allowCustomLocation?: boolean
   inputRef?: React.RefObject<Input>
   showError?: boolean
+  useBottomSheetInput?: boolean
   onChange: (l: LocationWithDetails) => void
   FooterComponent?: () => JSX.Element
 }
@@ -42,6 +44,7 @@ export const LocationAutocomplete: React.FC<LocationAutocompleteProps> = ({
   inputRef,
   allowCustomLocation = false,
   showError,
+  useBottomSheetInput,
   ...restProps
 }) => {
   const [predictions, setPredictions] = useState<SimpleLocation[]>([])
@@ -51,6 +54,8 @@ export const LocationAutocomplete: React.FC<LocationAutocompleteProps> = ({
   const ref = inputRef || innerRef
 
   const selectedLocationQuery = selectedLocation?.name || displayLocation
+
+  const InputComponent = useBottomSheetInput ? BottomSheetInput : Input
 
   useEffect(() => {
     if (selectedLocation) {
@@ -115,7 +120,7 @@ export const LocationAutocomplete: React.FC<LocationAutocompleteProps> = ({
 
   return (
     <Flex>
-      <Input
+      <InputComponent
         {...restProps}
         ref={ref}
         testID="autocomplete-location-input"
