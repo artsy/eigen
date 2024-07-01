@@ -1,5 +1,6 @@
 import { Input } from "@artsy/palette-mobile"
-import { createToken } from "@stripe/stripe-react-native"
+import { CardField, CardFieldInput, useStripe } from "@stripe/stripe-react-native"
+import { CreateCardTokenParams } from "@stripe/stripe-react-native/lib/typescript/src/types/Token"
 import { MyProfilePaymentNewCreditCardSaveCardMutation } from "__generated__/MyProfilePaymentNewCreditCardSaveCardMutation.graphql"
 import { CountrySelect } from "app/Components/CountrySelect"
 import { InputTitle } from "app/Components/Input"
@@ -9,7 +10,7 @@ import { MyAccountFieldEditScreen } from "app/Scenes/MyAccount/Components/MyAcco
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { Action, Computed, action, computed, useLocalStore } from "easy-peasy"
 import React, { useEffect, useRef } from "react"
-import { LiteCreditCardInput } from "react-native-credit-card-input"
+import { StyleSheet } from "react-native"
 import { commitMutation, graphql } from "react-relay"
 import { __triggerRefresh } from "./MyProfilePayment"
 
@@ -63,6 +64,8 @@ interface Store {
 }
 
 export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
+  const { createToken } = useStripe()
+
   const [state, actions] = useLocalStore<Store>(() => ({
     fields: {
       creditCard: emptyFieldState(),
@@ -98,6 +101,22 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
 
   const screenRef = useRef<MyAccountFieldEditScreen>(null)
 
+  const buildTokenParams = (): CreateCardTokenParams => {
+    return {
+      type: "Card",
+      name: state.fields.fullName.value ?? undefined,
+      address: {
+        line1: state.fields.addressLine1.value ?? undefined,
+        line2: state.fields.addressLine2.value ?? undefined,
+        city: state.fields.city.value ?? undefined,
+        state: state.fields.state.value ?? undefined,
+        country: state.fields.country.value ?? undefined,
+        postalCode: state.fields.postCode.value ?? undefined,
+      },
+      currency: "usd", // TODO: get from user
+    }
+  }
+
   return (
     <MyAccountFieldEditScreen
       ref={screenRef}
@@ -105,21 +124,11 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
       title="Add new card"
       onSave={async (dismiss, alert) => {
         try {
-          const stripeResult = await createToken({
-            ...state.fields.creditCard.value?.params,
-            type: "Card",
-            name: state.fields.fullName.value ?? undefined,
-            address: {
-              line1: state.fields.addressLine1.value ?? undefined,
-              line2: state.fields.addressLine2.value ?? undefined,
-              city: state.fields.city.value ?? undefined,
-              state: state.fields.state.value ?? undefined,
-              country: state.fields.country.value ?? undefined,
-              postalCode: state.fields.postCode.value ?? undefined,
-            },
-          })
+          const tokenBody = buildTokenParams()
+          const stripeResult = await createToken(tokenBody)
           const tokenId = stripeResult.token?.id
-          if (!stripeResult || !stripeResult.error || !tokenId) {
+
+          if (!stripeResult || stripeResult.error || !tokenId) {
             throw new Error(
               `Unexpected stripe card tokenization result ${JSON.stringify(stripeResult.error)}`
             )
@@ -147,7 +156,26 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
       <Stack spacing={2}>
         <>
           <InputTitle>Credit Card</InputTitle>
-          <LiteCreditCardInput
+          <CardField
+            autofocus
+            cardStyle={inputStyles}
+            style={styles.cardField}
+            postalCodeEnabled={false}
+            onCardChange={(cardDetails) => {
+              actions.fields.creditCard.setValue({
+                valid: cardDetails.complete,
+                // TODO: Not this
+                params: {
+                  cvc: cardDetails.cvc!,
+                  expMonth: cardDetails.expiryMonth,
+                  expYear: cardDetails.expiryYear,
+                  number: cardDetails.number!,
+                },
+              })
+            }}
+          />
+
+          {/* <LiteCreditCardInput
             ref={paymentInfoRef}
             onChange={(e) => {
               actions.fields.creditCard.setValue({
@@ -160,7 +188,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
                 },
               })
             }}
-          />
+          /> */}
         </>
 
         <Input
@@ -263,4 +291,25 @@ const saveCreditCard = (token: string) => {
       })
     }
   )
+}
+
+// TODO: Update these styles to match ours
+const styles = StyleSheet.create({
+  cardField: {
+    width: "100%",
+    height: 50,
+    // marginVertical: 30,
+  },
+  or: {
+    textAlign: "center",
+    marginTop: 30,
+  },
+})
+
+const inputStyles: CardFieldInput.Styles = {
+  borderWidth: 1,
+  backgroundColor: "#FFFFFF",
+  borderColor: "#000000",
+  fontSize: 14,
+  placeholderColor: "#999999",
 }
