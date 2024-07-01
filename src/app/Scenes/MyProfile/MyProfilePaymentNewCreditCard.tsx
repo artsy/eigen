@@ -9,7 +9,7 @@ import { Stack } from "app/Components/Stack"
 import { MyAccountFieldEditScreen } from "app/Scenes/MyAccount/Components/MyAccountFieldEditScreen"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { Action, Computed, action, computed, useLocalStore } from "easy-peasy"
-import React, { useEffect, useRef } from "react"
+import React, { useRef } from "react"
 import { StyleSheet } from "react-native"
 import { commitMutation, graphql } from "react-relay"
 import { __triggerRefresh } from "./MyProfilePayment"
@@ -85,19 +85,12 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
     }),
   }))
 
-  const paymentInfoRef = useRef<any>(null)
-
   const addressLine1Ref = useRef<Input>(null)
   const addressLine2Ref = useRef<Input>(null)
   const cityRef = useRef<Input>(null)
   const postalCodeRef = useRef<Input>(null)
   const stateRef = useRef<Input>(null)
   const countryRef = useRef<Select<any>>(null)
-
-  // focus top field on mount
-  useEffect(() => {
-    paymentInfoRef.current?.focus()
-  }, [])
 
   const screenRef = useRef<MyAccountFieldEditScreen>(null)
 
@@ -174,21 +167,6 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
               })
             }}
           />
-
-          {/* <LiteCreditCardInput
-            ref={paymentInfoRef}
-            onChange={(e) => {
-              actions.fields.creditCard.setValue({
-                valid: e.valid,
-                params: {
-                  cvc: e.values.cvc,
-                  expMonth: Number(e.values.expiry.split("/")[0]),
-                  expYear: Number(e.values.expiry.split("/")[1]),
-                  number: e.values.number,
-                },
-              })
-            }}
-          /> */}
         </>
 
         <Input
