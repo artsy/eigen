@@ -11,6 +11,7 @@ import {
   useTheme,
 } from "@artsy/palette-mobile"
 import { InquiryModal_artwork$data } from "__generated__/InquiryModal_artwork.graphql"
+import { InquiryModal_me$data } from "__generated__/InquiryModal_me.graphql"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import ChevronIcon from "app/Components/Icons/ChevronIcon"
@@ -39,6 +40,7 @@ interface InquiryModalProps {
   modalIsVisible: boolean
   relay: RelayProp
   onMutationSuccessful: (state: boolean) => void
+  me: InquiryModal_me$data
 }
 
 const ErrorMessageFlex = styled(Flex)`
@@ -153,7 +155,7 @@ const InquiryQuestionOption: React.FC<{
   )
 }
 
-export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props }) => {
+export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, me, ...props }) => {
   const { toggleVisibility, modalIsVisible, relay, onMutationSuccessful } = props
   const questions = artwork?.inquiryQuestions
   const partnerName = artwork?.partner?.name
@@ -214,12 +216,16 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
         owner_slug: artwork.slug,
       })
 
-      const delayNotification = setTimeout(() => {
-        onMutationSuccessful(true)
+      if (userShouldBePromptedToUpdateProfile(me)) {
         setMutationSuccessful(false)
-      }, 500)
-      return () => {
-        clearTimeout(delayNotification)
+        dispatch({ type: "showProfileUpdatePrompt" })
+      } else {
+        const delayNotification = setTimeout(() => {
+          onMutationSuccessful(true)
+        }, 500)
+        return () => {
+          clearTimeout(delayNotification)
+        }
       }
     }
   }, [mutationSuccessful])
@@ -255,6 +261,25 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
   const handleSettingsPress = () => {
     navigate("my-profile/edit")
     resetAndExit()
+  }
+
+  const userShouldBePromptedToUpdateProfile = (me: InquiryModal_me$data) => {
+    const isProfileComplete = !!me.profession && !!me.location?.city
+
+    if (isProfileComplete) {
+      return false
+    }
+
+    const lastTimeUserWasPrompted = me.collectorProfile?.lastUpdatePromptAt
+
+    if (!lastTimeUserWasPrompted) {
+      return true
+    }
+
+    const wasUserPromptedWithinLast30Days =
+      new Date(lastTimeUserWasPrompted).getTime() > Date.now() - 30 * 24 * 60 * 60 * 1000
+
+    return !wasUserPromptedWithinLast30Days
   }
 
   return (
@@ -365,6 +390,17 @@ export const InquiryModalFragmentContainer = createFragmentContainer(InquiryModa
       }
       partner {
         name
+      }
+    }
+  `,
+  me: graphql`
+    fragment InquiryModal_me on Me {
+      location {
+        city
+      }
+      profession
+      collectorProfile {
+        lastUpdatePromptAt
       }
     }
   `,

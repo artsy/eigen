@@ -8,6 +8,8 @@ export type ArtworkInquiryActions =
   | SelectInquiryQuestion
   | SetMessage
   | ResetForm
+  | ShowProfileUpdatePrompt
+  | HideProfileUpdatePrompt
 
 export interface ArtworkInquiryContextProps {
   state: ArtworkInquiryContextState
@@ -19,6 +21,7 @@ export interface ArtworkInquiryContextState {
   readonly shippingLocation: LocationWithDetails | null
   readonly inquiryQuestions: InquiryQuestionInput[]
   readonly message: string | null
+  readonly isProfileUpdatePromptVisible: boolean
 }
 
 export type InquiryTypes = "Inquire on price" | "Contact Gallery" | "Inquire to purchase"
@@ -45,6 +48,14 @@ interface SetMessage {
 interface SelectInquiryQuestion {
   type: "selectInquiryQuestion"
   payload: InquiryQuestionInput & { isChecked: boolean }
+}
+
+interface ShowProfileUpdatePrompt {
+  type: "showProfileUpdatePrompt"
+}
+
+interface HideProfileUpdatePrompt {
+  type: "hideProfileUpdatePrompt"
 }
 
 export enum InquiryOptions {

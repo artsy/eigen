@@ -6,6 +6,7 @@ import { InquiryButtons_artwork$key } from "__generated__/InquiryButtons_artwork
 import { MakeOfferButton_artwork$key } from "__generated__/MakeOfferButton_artwork.graphql"
 import { NotificationCommercialButtonsQuery } from "__generated__/NotificationCommercialButtonsQuery.graphql"
 import { NotificationCommercialButtons_artwork$key } from "__generated__/NotificationCommercialButtons_artwork.graphql"
+import { NotificationCommercialButtons_me$key } from "__generated__/NotificationCommercialButtons_me.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import { PartnerOffer } from "app/Scenes/Activity/components/NotificationArtworkList"
 import { BuyNowButton } from "app/Scenes/Artwork/Components/CommercialButtons/BuyNowButton"
@@ -33,6 +34,9 @@ export const CommercialButtonsQueryRenderer: React.FC<{
             internalID
             ...NotificationCommercialButtons_artwork
             ...CreateArtworkAlertModal_artwork
+          }
+          me {
+            ...NotificationCommercialButtons_me
           }
         }
       `}
@@ -65,10 +69,12 @@ export const CommercialButtons: React.FC<{
     | BuyNowButton_artwork$key
     | MakeOfferButton_artwork$key
     | InquiryButtons_artwork$key
+  me: NotificationCommercialButtons_me$key
   partnerOffer?: PartnerOffer
   artworkID: string
-}> = ({ artwork, partnerOffer, artworkID }) => {
+}> = ({ artwork, partnerOffer, me, artworkID }) => {
   const artworkData = useFragment(artworkFragment, artwork)
+  const meData = useFragment(meFragment, me)
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
   const space = useSpace()
 
@@ -89,6 +95,7 @@ export const CommercialButtons: React.FC<{
           />
           <InquiryButtonsFragmentContainer
             artwork={artworkData as InquiryButtons_artwork$key}
+            me={meData}
             block
             variant="outline"
           />
@@ -177,6 +184,11 @@ const artworkFragment = graphql`
     ...BuyNowButton_artwork
     ...InquiryButtons_artwork
     ...CreateArtworkAlertModal_artwork
+  }
+`
+const meFragment = graphql`
+  fragment NotificationCommercialButtons_me on Me {
+    ...InquiryButtons_me
   }
 `
 

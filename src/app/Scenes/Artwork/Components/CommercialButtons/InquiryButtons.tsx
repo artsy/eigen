@@ -1,7 +1,9 @@
 import { ActionType, OwnerType, TappedContactGallery } from "@artsy/cohesion"
 import { ButtonProps, Button } from "@artsy/palette-mobile"
 import { InquiryButtons_artwork$data } from "__generated__/InquiryButtons_artwork.graphql"
+import { InquiryButtons_me$data } from "__generated__/InquiryButtons_me.graphql"
 import { InquirySuccessNotification } from "app/Scenes/Artwork/Components/CommercialButtons/InquirySuccessNotification"
+import { MyProfileEditModal } from "app/Scenes/MyProfile/MyProfileEditModal"
 import {
   ArtworkInquiryContext,
   ArtworkInquiryStateProvider,
@@ -13,13 +15,14 @@ import { useTracking } from "react-tracking"
 import { InquiryModalFragmentContainer } from "./InquiryModal"
 export type InquiryButtonsProps = Omit<ButtonProps, "children"> & {
   artwork: InquiryButtons_artwork$data
+  me: InquiryButtons_me$data
 }
 
-const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, ...rest }) => {
+const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, me, ...rest }) => {
   const [modalVisibility, setModalVisibility] = useState(false)
   const { trackEvent } = useTracking()
   const [notificationVisibility, setNotificationVisibility] = useState(false)
-  const { dispatch } = useContext(ArtworkInquiryContext)
+  const { state, dispatch } = useContext(ArtworkInquiryContext)
   const dispatchAction = (buttonText: string) => {
     dispatch({
       type: "selectInquiryType",
@@ -47,9 +50,15 @@ const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, ...rest }) => 
       </Button>
       <InquiryModalFragmentContainer
         artwork={artwork}
+        me={me}
         modalIsVisible={modalVisibility}
         toggleVisibility={() => setModalVisibility(!modalVisibility)}
         onMutationSuccessful={(state: boolean) => setNotificationVisibility(state)}
+      />
+      <MyProfileEditModal
+        message={`Inquiry sent! Tell ${artwork.partner?.name || ""} more about yourself.`}
+        onClose={() => dispatch({ type: "hideProfileUpdatePrompt" })}
+        visible={state.isProfileUpdatePromptVisible}
       />
     </>
   )
@@ -86,7 +95,15 @@ export const InquiryButtonsFragmentContainer = createFragmentContainer(InquiryBu
       artist {
         name
       }
+      partner {
+        name
+      }
       ...InquiryModal_artwork
+    }
+  `,
+  me: graphql`
+    fragment InquiryButtons_me on Me {
+      ...InquiryModal_me
     }
   `,
 })

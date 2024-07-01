@@ -586,6 +586,7 @@ const state: ArtworkInquiryContextState = {
   inquiryType: null,
   message: null,
   inquiryQuestions: [],
+  isProfileUpdatePromptVisible: false,
 }
 
 const meFixture = {

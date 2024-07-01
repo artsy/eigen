@@ -32,11 +32,14 @@ describe("InquiryButtons", () => {
   })
 
   const { renderWithRelay } = setupTestWrapper<InquiryButtonsTestsQuery>({
-    Component: ({ artwork }) => <InquiryButtonsFragmentContainer artwork={artwork!} />,
+    Component: ({ artwork, me }) => <InquiryButtonsFragmentContainer artwork={artwork!} me={me} />,
     query: graphql`
       query InquiryButtonsTestsQuery @relay_test_operation {
         artwork(id: "great-artttt") {
           ...InquiryButtons_artwork
+        }
+        me @required(action: NONE) {
+          ...InquiryButtons_me
         }
       }
     `,

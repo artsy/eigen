@@ -15,6 +15,7 @@ describe("selectInquiryType", () => {
       inquiryType: null,
       inquiryQuestions: [],
       message: null,
+      isProfileUpdatePromptVisible: false,
     }
 
     inquiryAction = {
@@ -29,6 +30,7 @@ describe("selectInquiryType", () => {
       inquiryType: "Inquire on price",
       inquiryQuestions: [{ questionID: "price_and_availability" }],
       message: null,
+      isProfileUpdatePromptVisible: false,
     })
   })
 
@@ -38,6 +40,7 @@ describe("selectInquiryType", () => {
       inquiryType: null,
       inquiryQuestions: [],
       message: null,
+      isProfileUpdatePromptVisible: false,
     }
 
     inquiryAction = {
@@ -52,6 +55,7 @@ describe("selectInquiryType", () => {
       inquiryType: "Contact Gallery",
       inquiryQuestions: [],
       message: null,
+      isProfileUpdatePromptVisible: false,
     })
   })
 
@@ -61,6 +65,7 @@ describe("selectInquiryType", () => {
       inquiryType: null,
       inquiryQuestions: [],
       message: null,
+      isProfileUpdatePromptVisible: false,
     }
 
     inquiryAction = {
@@ -75,6 +80,7 @@ describe("selectInquiryType", () => {
       inquiryType: "Inquire to purchase",
       inquiryQuestions: [],
       message: null,
+      isProfileUpdatePromptVisible: false,
     })
   })
 })
@@ -89,6 +95,7 @@ describe("selectInquiryQuestion", () => {
       inquiryType: null,
       inquiryQuestions: [],
       message: null,
+      isProfileUpdatePromptVisible: false,
     }
 
     inquiryAction = {
@@ -107,6 +114,7 @@ describe("selectInquiryQuestion", () => {
       inquiryType: null,
       inquiryQuestions: [{ questionID: "condition_and_provenance", details: null }],
       message: null,
+      isProfileUpdatePromptVisible: false,
     })
   })
 
@@ -125,6 +133,7 @@ describe("selectInquiryQuestion", () => {
         },
       ],
       message: null,
+      isProfileUpdatePromptVisible: false,
     }
 
     inquiryAction = {
@@ -143,6 +152,7 @@ describe("selectInquiryQuestion", () => {
       inquiryType: "Inquire to purchase",
       inquiryQuestions: [{ questionID: "shipping_quote", details: null }],
       message: null,
+      isProfileUpdatePromptVisible: false,
     })
   })
 })

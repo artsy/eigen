@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import { Questions_Test_Query } from "__generated__/Questions_Test_Query.graphql"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -16,18 +17,21 @@ describe("Questions", () => {
           artwork(id: "test-id") {
             ...Questions_artwork
           }
+          me {
+            ...Questions_me
+          }
         }
       `,
       {}
     )
-    return <Questions artwork={data.artwork!} />
+    return <Questions artwork={data.artwork!} me={data.me!} />
   }
 
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   beforeEach(() => (mockEnvironment = createMockEnvironment()))
 
   it("renders", async () => {
-    const { getByText } = renderWithWrappers(
+    renderWithWrappers(
       <RelayEnvironmentProvider environment={mockEnvironment}>
         <Suspense fallback={<Text>SusLoading</Text>}>
           <TestRenderer />
@@ -35,11 +39,11 @@ describe("Questions", () => {
       </RelayEnvironmentProvider>
     )
     resolveMostRecentRelayOperation(mockEnvironment, { Artwork: () => ({}) })
-    expect(getByText("SusLoading")).toBeDefined()
+    expect(screen.getByText("SusLoading")).toBeDefined()
 
     await flushPromiseQueue()
 
-    expect(getByText("Questions about this piece?")).toBeDefined()
-    expect(getByText("Contact Gallery")).toBeDefined()
+    expect(screen.getByText("Questions about this piece?")).toBeDefined()
+    expect(screen.getByText("Contact Gallery")).toBeDefined()
   })
 })

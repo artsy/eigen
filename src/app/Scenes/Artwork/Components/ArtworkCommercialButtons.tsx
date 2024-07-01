@@ -121,7 +121,12 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
     if (hasActivePartnerOffer) {
       return (
         <RowContainer>
-          <InquiryButtonsFragmentContainer artwork={artworkData} variant="outline" block />
+          <InquiryButtonsFragmentContainer
+            artwork={artworkData}
+            me={meData}
+            variant="outline"
+            block
+          />
           <BuyNowButton
             partnerOffer={partnerOfferData}
             artwork={artworkData}
@@ -133,7 +138,12 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
 
     return (
       <RowContainer>
-        <InquiryButtonsFragmentContainer artwork={artworkData} variant="outline" block />
+        <InquiryButtonsFragmentContainer
+          artwork={artworkData}
+          me={meData}
+          variant="outline"
+          block
+        />
         <MakeOfferButtonFragmentContainer artwork={artworkData} editionSetID={selectedEditionId} />
       </RowContainer>
     )
@@ -167,7 +177,12 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
     if (hasActivePartnerOffer) {
       return (
         <RowContainer>
-          <InquiryButtonsFragmentContainer artwork={artworkData} variant="outline" block />
+          <InquiryButtonsFragmentContainer
+            artwork={artworkData}
+            me={meData}
+            variant="outline"
+            block
+          />
           <BuyNowButton
             partnerOffer={partnerOfferData}
             artwork={artworkData}
@@ -177,7 +192,7 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
       )
     }
 
-    return <InquiryButtonsFragmentContainer artwork={artworkData} block />
+    return <InquiryButtonsFragmentContainer artwork={artworkData} me={meData} block />
   }
 
   return null
@@ -206,6 +221,7 @@ const artworkFragment = graphql`
 const meFragment = graphql`
   fragment ArtworkCommercialButtons_me on Me {
     ...BidButton_me
+    ...InquiryButtons_me
   }
 `
 

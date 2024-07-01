@@ -8,11 +8,12 @@ import {
 } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { createContext, Reducer, useReducer } from "react"
 
-const initialArtworkInquiryState: ArtworkInquiryContextState = {
+export const initialArtworkInquiryState: ArtworkInquiryContextState = {
   shippingLocation: null,
   inquiryType: null,
   inquiryQuestions: [],
   message: null,
+  isProfileUpdatePromptVisible: false,
 }
 
 export const reducer = (
@@ -54,6 +55,16 @@ export const reducer = (
       return {
         ...inquiryState,
         message: action.payload,
+      }
+    case "showProfileUpdatePrompt":
+      return {
+        ...inquiryState,
+        isProfileUpdatePromptVisible: true,
+      }
+    case "hideProfileUpdatePrompt":
+      return {
+        ...inquiryState,
+        isProfileUpdatePromptVisible: false,
       }
   }
 }
