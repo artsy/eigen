@@ -1,5 +1,5 @@
-import { Input } from "@artsy/palette-mobile"
-import { CardField, CardFieldInput, useStripe } from "@stripe/stripe-react-native"
+import { INPUT_MIN_HEIGHT, Input, useColor } from "@artsy/palette-mobile"
+import { CardField, useStripe } from "@stripe/stripe-react-native"
 import { CreateCardTokenParams } from "@stripe/stripe-react-native/lib/typescript/src/types/Token"
 import { MyProfilePaymentNewCreditCardSaveCardMutation } from "__generated__/MyProfilePaymentNewCreditCardSaveCardMutation.graphql"
 import { CountrySelect } from "app/Components/CountrySelect"
@@ -10,7 +10,6 @@ import { MyAccountFieldEditScreen } from "app/Scenes/MyAccount/Components/MyAcco
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { Action, Computed, action, computed, useLocalStore } from "easy-peasy"
 import React, { useRef } from "react"
-import { StyleSheet } from "react-native"
 import { commitMutation, graphql } from "react-relay"
 import { __triggerRefresh } from "./MyProfilePayment"
 
@@ -65,6 +64,7 @@ interface Store {
 
 export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
   const { createToken } = useStripe()
+  const color = useColor()
 
   const [state, actions] = useLocalStore<Store>(() => ({
     fields: {
@@ -149,10 +149,21 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
       <Stack spacing={2}>
         <>
           <InputTitle>Credit Card</InputTitle>
+          {/* TODO: can we support animated styles here? */}
           <CardField
             autofocus
-            cardStyle={inputStyles}
-            style={styles.cardField}
+            cardStyle={{
+              borderWidth: 1,
+              backgroundColor: "#FFFFFF",
+              borderColor: color("black30"),
+              fontSize: 14,
+              fontFamily: "Unica77LL-Regular",
+              placeholderColor: color("black60"),
+            }}
+            style={{
+              width: "100%",
+              height: INPUT_MIN_HEIGHT,
+            }}
             postalCodeEnabled={false}
             onCardChange={(cardDetails) => {
               actions.fields.creditCard.setValue({
@@ -269,25 +280,4 @@ const saveCreditCard = (token: string) => {
       })
     }
   )
-}
-
-// TODO: Update these styles to match ours
-const styles = StyleSheet.create({
-  cardField: {
-    width: "100%",
-    height: 50,
-    // marginVertical: 30,
-  },
-  or: {
-    textAlign: "center",
-    marginTop: 30,
-  },
-})
-
-const inputStyles: CardFieldInput.Styles = {
-  borderWidth: 1,
-  backgroundColor: "#FFFFFF",
-  borderColor: "#000000",
-  fontSize: 14,
-  placeholderColor: "#999999",
 }
