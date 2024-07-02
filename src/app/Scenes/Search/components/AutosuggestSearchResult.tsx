@@ -12,13 +12,7 @@ import {
 import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
 import { GlobalStore } from "app/store/GlobalStore"
-import {
-  EntityType,
-  navigate,
-  navigateToEntity,
-  navigateToPartner,
-  SlugType,
-} from "app/system/navigation/navigate"
+import { useConditionalNavigate } from "app/system/newNavigation/useConditionalNavigate"
 import { Schema } from "app/utils/track"
 import { useContext } from "react"
 import { TouchableOpacity } from "react-native"
@@ -74,8 +68,52 @@ export const AutosuggestSearchResult: React.FC<{
   const { inputRef, queryRef } = useContext(SearchContext)
   const { trackEvent } = useTracking()
 
+  const conditionalNav = useConditionalNavigate()
+
   const showNavigationButtons =
     showQuickNavigationButtons && !!result.statuses?.artworks && !!result.statuses?.auctionLots
+
+  /**
+   * For some entities (fairs, partners) we pass along some context
+   * about the entity type to render the correct placeholder/skeleton loader
+   * @param result
+   */
+
+  // TODO: Test that all these types are working as expected, I believe we were
+  // passing hints to render correct skeleton loaders before and think this broke
+  // bring it back
+  const navigateToResult = (result: AutosuggestResult, props?: PassedProps) => {
+    if (!result.href) {
+      return
+    }
+
+    if (result.displayType === "Gallery" || result.displayType === "Institution") {
+      // TODO: handle partner type
+      // navigateToPartner(result.href!)
+      conditionalNav(result.href)
+    } else if (result.displayType === "Fair") {
+      // TODO: handle fair type
+      conditionalNav(result.href)
+      // navigateToEntity(result.href!, EntityType.Fair, SlugType.ProfileID)
+    } else if (result.__typename === "Artist") {
+      switch (props?.initialTab) {
+        case "Insights":
+          conditionalNav(`${result.href}/auction-results`, { passProps: props })
+          break
+        case "Artworks":
+          conditionalNav(`${result.href}/artworks`, {
+            passProps: props,
+          })
+          break
+
+        default:
+          conditionalNav(result.href)
+          break
+      }
+    } else {
+      conditionalNav(result.href)
+    }
+  }
 
   const onPress: HandleResultPress = (passProps) => {
     if (onResultPress) {
@@ -141,11 +179,9 @@ export const AutosuggestSearchResult: React.FC<{
             <Spacer x={1} />
 
             <Flex flex={1}>
-              <ResultWithHighlight
-                displayLabel={result.displayLabel ?? ""}
-                secondaryLabel={secondaryLabel}
-                highlight={highlight}
-              />
+              {!!result.displayLabel && (
+                <ResultWithHighlight displayLabel={result.displayLabel} highlight={highlight} />
+              )}
 
               {!!showResultType && !!resultType && (
                 <Text variant="xs" color="black60">
@@ -198,38 +234,4 @@ export const AutosuggestSearchResult: React.FC<{
       )}
     </>
   )
-}
-
-/**
- * For some entities (fairs, partners) we pass along some context
- * about the entity type to render the correct placeholder/skeleton loader
- * @param result
- */
-function navigateToResult(result: AutosuggestResult, props?: PassedProps) {
-  if (!result.href) {
-    return
-  }
-
-  if (result.displayType === "Gallery" || result.displayType === "Institution") {
-    navigateToPartner(result.href)
-  } else if (result.displayType === "Fair") {
-    navigateToEntity(result.href, EntityType.Fair, SlugType.ProfileID)
-  } else if (result.__typename === "Artist") {
-    switch (props?.initialTab) {
-      case "Insights":
-        navigate(`${result.href}/auction-results`, { passProps: props })
-        break
-      case "Artworks":
-        navigate(`${result.href}/artworks`, {
-          passProps: props,
-        })
-        break
-
-      default:
-        navigate(result.href)
-        break
-    }
-  } else {
-    navigate(result.href)
-  }
 }

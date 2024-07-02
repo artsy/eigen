@@ -158,6 +158,29 @@ LogBox.ignoreLogs([
   ".removeListener(", // this is coming from https://github.com/facebook/react-native/blob/v0.68.0-rc.2/Libraries/AppState/AppState.js and other libs.
 ])
 
+// TODO: Why is it necessary to register these?
+// They are used from native side but does that require explicit registration?
+// Red screen without this
+export function useRegisterNativeModules() {
+  const cityDescriptor = reactModule(CityGuideView, { fullBleed: true, ignoreTabs: true })
+  const cityPickerDescriptor = reactModule(CityPicker, { fullBleed: true, ignoreTabs: true })
+  const mapDescriptor = reactModule(MapContainer, { fullBleed: true, ignoreTabs: true })
+
+  const cityGuideModules = {
+    City: cityDescriptor,
+    CityPicker: cityPickerDescriptor,
+    Map: mapDescriptor,
+  }
+
+  for (const [moduleName, descriptor] of Object.entries(cityGuideModules)) {
+    register(moduleName, descriptor.Component, {
+      fullBleed: descriptor.options.fullBleed,
+      ignoreTabs: descriptor.options.ignoreTabs,
+      moduleName,
+    })
+  }
+}
+
 addTrackingProvider(SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider)
 addTrackingProvider("console", ConsoleTrackingProvider)
 
