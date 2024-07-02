@@ -1,8 +1,9 @@
-import { INPUT_MIN_HEIGHT, Input, useColor } from "@artsy/palette-mobile"
-import { CardField, useStripe } from "@stripe/stripe-react-native"
+import { Input } from "@artsy/palette-mobile"
+import { useStripe } from "@stripe/stripe-react-native"
 import { CreateCardTokenParams } from "@stripe/stripe-react-native/lib/typescript/src/types/Token"
 import { MyProfilePaymentNewCreditCardSaveCardMutation } from "__generated__/MyProfilePaymentNewCreditCardSaveCardMutation.graphql"
 import { CountrySelect } from "app/Components/CountrySelect"
+import { CreditCardField } from "app/Components/CreditCardField/CreditCardField"
 import { InputTitle } from "app/Components/Input"
 import { Select } from "app/Components/Select/SelectV2"
 import { Stack } from "app/Components/Stack"
@@ -64,7 +65,6 @@ interface Store {
 
 export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
   const { createToken } = useStripe()
-  const color = useColor()
 
   const [state, actions] = useLocalStore<Store>(() => ({
     fields: {
@@ -150,21 +150,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
         <>
           <InputTitle>Credit Card</InputTitle>
           {/* TODO: can we support animated styles here? */}
-          <CardField
-            autofocus
-            cardStyle={{
-              borderWidth: 1,
-              backgroundColor: "#FFFFFF",
-              borderColor: color("black30"),
-              fontSize: 14,
-              fontFamily: "Unica77LL-Regular",
-              placeholderColor: color("black60"),
-            }}
-            style={{
-              width: "100%",
-              height: INPUT_MIN_HEIGHT,
-            }}
-            postalCodeEnabled={false}
+          <CreditCardField
             onCardChange={(cardDetails) => {
               actions.fields.creditCard.setValue({
                 valid: cardDetails.complete,
