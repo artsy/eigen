@@ -1,6 +1,6 @@
 import { BackButton, Flex, Text, Touchable } from "@artsy/palette-mobile"
-import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { SubmitArtworkProgressBar } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkProgressBar"
+import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubmitArtworkTracking"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
@@ -17,7 +17,7 @@ const HEADER_HEIGHT = 50
 export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
   const { trackTappedSubmissionSaveExit } = useSubmitArtworkTracking()
   const enableSaveAndExit = useFeatureFlag("AREnableSaveAndContinueSubmission")
-  const currentStep = SubmitArtworkFormStore.useStoreState((state) => state.currentStep)
+  const { currentStep } = useSubmissionContext()
   const hasCompletedForm = currentStep === "CompleteYourSubmission"
 
   const { values } = useFormikContext<ArtworkDetailsFormModel>()

@@ -1,5 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
 import { AutosuggestResultsPlaceholder } from "app/Components/AutosuggestResults/AutosuggestResultsPlaceholder"
 import {
@@ -7,11 +8,11 @@ import {
   ArtistAutosuggest,
 } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistAutosuggest"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
-import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
+import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
+import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { navigate } from "app/system/navigation/navigate"
-import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -20,68 +21,57 @@ import { Suspense } from "react"
 import { TouchableOpacity } from "react-native"
 
 export const SubmitArtworkSelectArtist = () => {
-  const { navigateToNextStep } = useSubmissionContext()
-  const setIsLoading = SubmitArtworkFormStore.useStoreActions((actions) => actions.setIsLoading)
-  const { isLoading, currentStep } = SubmitArtworkFormStore.useStoreState((state) => state)
+  const { currentStep } = useSubmissionContext()
 
-  const skipSubmissionCreation = useDevToggle("DTSkipSubmissionCreate")
+  const setCurrentStep = SubmitArtworkFormStore.useStoreActions((actions) => actions.setCurrentStep)
+  const setIsLoading = SubmitArtworkFormStore.useStoreActions((actions) => actions.setIsLoading)
+  const { isLoading } = SubmitArtworkFormStore.useStoreState((state) => state)
+
+  const navigation = useNavigation<NavigationProp<SubmitArtworkStackNavigation>>()
 
   const formik = useFormikContext<ArtworkDetailsFormModel>()
 
   const handleResultPress = async (result: AutosuggestResult) => {
-    setIsLoading(true)
-
-    formik.setValues({
-      ...formik.values,
-      artistSearchResult: result,
-      artist: result.displayLabel || "",
-      artistId: result.internalID || "",
-    })
-
     if (!result.internalID) {
       console.error("Artist ID not found")
       return
     }
 
-    const artist = result as ArtistAutoSuggestNode
-    const isTargetSupply = artist.__typename === "Artist" && artist.targetSupply?.isTargetSupply
-
-    if (!isTargetSupply) {
-      navigateToNextStep({
-        step: "ArtistRejected",
-        skipMutation: true,
-      })
-
-      setIsLoading(false)
-      return
-    }
-
-    const updatedValues = {
-      ...formik.values,
-      artistId: result.internalID,
-      artist: result.displayLabel || "",
-      artistSearchResult: result,
-      userPhone: formik.values.userPhone,
-      userEmail: formik.values.userEmail,
-      userName: formik.values.userName,
-    }
-
     try {
-      navigateToNextStep({
-        skipMutation: true,
-      })
+      setIsLoading(true)
 
-      if (!skipSubmissionCreation) {
-        const submissionId = await createOrUpdateSubmission(
-          updatedValues,
-          formik.values.submissionId
-        )
-        formik.setFieldValue("submissionId", submissionId)
+      const artist = result as ArtistAutoSuggestNode
+      const isTargetSupply = artist.__typename === "Artist" && artist.targetSupply?.isTargetSupply
+
+      if (!isTargetSupply) {
+        navigation.navigate("ArtistRejected")
+        setIsLoading(false)
+        return
       }
+
+      const updatedValues = {
+        artistId: result.internalID,
+        artist: result.displayLabel || "",
+        artistSearchResult: result,
+      }
+      const newSubmissionId = await createOrUpdateSubmission(
+        updatedValues,
+        formik.values.submissionId
+      )
+
+      if (!formik.values.submissionId || newSubmissionId !== formik.values.submissionId) {
+        formik.setFieldValue("submissionId", newSubmissionId)
+      }
+      formik.setFieldValue("artistSearchResult", updatedValues.artistSearchResult)
+      formik.setFieldValue("artist", updatedValues.artist)
+      formik.setFieldValue("artistId", updatedValues.artistId)
+
+      navigation.navigate("AddTitle")
+      setCurrentStep("AddTitle")
     } catch (error) {
-      console.error("Error creating submission", error)
+      console.error("Failed to set submission artist", error)
     } finally {
-      setIsLoading(false)
+      setIsLoading(true)
     }
   }
 
