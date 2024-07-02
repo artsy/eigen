@@ -4304,6 +4304,7 @@ type CollectorProfileTypeEdge {
 
 type CollectorProfileUpdatePromptNotificationItem {
   collectorProfile: CollectorProfileType!
+  me: Me!
 }
 
 type CollectorResume {
