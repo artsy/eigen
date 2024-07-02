@@ -42,6 +42,7 @@ describe("SubmitArtworkFromMyCollection", () => {
                 id: "my-artwork-id",
                 slug: "my-artwork-slug",
                 title: "My artwork",
+                submissionId: null,
                 artistNames: "Artist Name",
                 image: {
                   url: "https://my-artwork.jpg",

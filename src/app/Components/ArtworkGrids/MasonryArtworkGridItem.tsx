@@ -27,7 +27,6 @@ interface MasonryArtworkGridItemProps {
   contextScreenOwnerId?: string
   contextScreenOwnerSlug?: string
   contextScreenOwnerType?: ScreenOwnerType
-  disabled?: boolean
   index: number
   item: Artwork
   numColumns?: number
@@ -46,7 +45,6 @@ export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
   contextScreenOwnerId,
   contextScreenOwnerSlug,
   contextScreenOwnerType,
-  disabled,
   index,
   item,
   numColumns = NUM_COLUMNS_MASONRY,
@@ -74,7 +72,6 @@ export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
         contextScreenOwnerId={contextScreenOwnerId}
         contextScreenOwnerSlug={contextScreenOwnerSlug}
         contextScreenOwnerType={contextScreenOwnerType}
-        disabled={disabled}
         height={imgHeight}
         itemIndex={index}
         onPress={onPress}
