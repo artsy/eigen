@@ -1,7 +1,7 @@
 import { INPUT_MIN_HEIGHT, useColor } from "@artsy/palette-mobile"
 import { CardField } from "@stripe/stripe-react-native"
 import { Details } from "@stripe/stripe-react-native/lib/typescript/src/types/components/CardFieldInput"
-import { StyleSheet } from "react-native"
+// import { StyleSheet } from "react-native"
 // import Animated, { useSharedValue, useAnimatedStyle, withTiming } from "react-native-reanimated"
 
 interface CreditCardFieldProps {
@@ -29,7 +29,7 @@ export const CreditCardField: React.FC<CreditCardFieldProps> = ({ onCardChange }
   return (
     // <Animated.View style={[styles.cardFieldContainer, animatedStyle]}>
     <CardField
-      // autofocus
+      autofocus
       cardStyle={{
         borderWidth: 1,
         backgroundColor: "#FFFFFF",
@@ -45,7 +45,10 @@ export const CreditCardField: React.FC<CreditCardFieldProps> = ({ onCardChange }
       onCardChange={(cardDetails) => {
         onCardChange?.(cardDetails)
       }}
+      // onFocus={handleFocus}
+      // onBlur={handleBlur}
     />
+    // </Animated.View>
   )
 }
 
