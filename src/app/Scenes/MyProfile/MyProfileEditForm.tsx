@@ -16,14 +16,18 @@ import {
 } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { useNavigation } from "@react-navigation/native"
-import { EditableLocation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
 import { MyProfileEditFormQuery } from "__generated__/MyProfileEditFormQuery.graphql"
 import { MyProfileEditForm_me$key } from "__generated__/MyProfileEditForm_me.graphql"
 import { Image } from "app/Components/Bidding/Elements/Image"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { LocationAutocomplete, buildLocationDisplay } from "app/Components/LocationAutocomplete"
+import { buildLocationDisplay } from "app/Components/LocationAutocomplete"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
+import {
+  UserProfileFields,
+  UserProfileFormikSchema,
+  userProfileYupSchema,
+} from "app/Scenes/MyProfile/Components/UserProfileFields"
 import { navigate } from "app/system/navigation/navigate"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { storeLocalImage, useLocalImageStorage } from "app/utils/LocalImageStore"
@@ -32,7 +36,7 @@ import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { sendEmail } from "app/utils/sendEmail"
 import { useHasBeenTrue } from "app/utils/useHasBeenTrue"
-import { useFormik } from "formik"
+import { FormikProvider, useFormik } from "formik"
 import React, { Suspense, useEffect, useRef, useState } from "react"
 import { InteractionManager, ScrollView, TextInput } from "react-native"
 import { graphql, useLazyLoadQuery, useRefetchableFragment } from "react-relay"
@@ -42,27 +46,19 @@ import { useHandleEmailVerification, useHandleIDVerification } from "./useHandle
 
 const ICON_SIZE = 22
 
-interface EditableLocationProps extends EditableLocation {
-  display: string | null
-}
-interface EditMyProfileValuesSchema {
+interface EditMyProfileValuesSchema extends UserProfileFormikSchema {
   photo: string
-  name: string
-  displayLocation: { display: string | null }
-  location: Partial<EditableLocationProps> | null | undefined
-  profession: string
-  otherRelevantPositions: string
   bio: string
 }
 
-const editMyProfileSchema = Yup.object().shape({
+const editMyProfileSchema = userProfileYupSchema.shape({
   photo: Yup.string(),
-  name: Yup.string().required("Name is required"),
   bio: Yup.string(),
 })
 
 interface MyProfileEditFormProps {
   onSuccess?: () => void
+  foo?: boolean
 }
 
 export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess }) => {
@@ -79,11 +75,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
 
   const { showActionSheetWithOptions } = useActionSheet()
 
-  const nameInputRef = useRef<Input>(null)
   const bioInputRef = useRef<TextInput>(null)
-  const relevantPositionsInputRef = useRef<Input>(null)
-  const professionInputRef = useRef<Input>(null)
-  const locationInputRef = useRef<Input>(null)
 
   const [refreshKey, setRefreshKey] = useState(0)
   const [loading, setLoading] = useState<boolean>(false)
@@ -135,46 +127,47 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
     }
   }
 
-  const { handleSubmit, handleChange, setFieldValue, dirty, values, errors, validateForm } =
-    useFormik<EditMyProfileValuesSchema>({
-      enableReinitialize: true,
-      validateOnChange: true,
-      validateOnBlur: true,
-      initialValues: {
-        name: me?.name ?? "",
-        displayLocation: { display: buildLocationDisplay(me?.location ?? null) },
-        location:
-          {
-            ...me?.location,
-          } ?? undefined,
-        profession: me?.profession ?? "",
-        otherRelevantPositions: me?.otherRelevantPositions ?? "",
-        bio: me?.bio ?? "",
-        photo: localImage?.path || me?.icon?.url || "",
-      },
-      initialErrors: {},
-      onSubmit: async ({ photo, ...otherValues }) => {
-        try {
-          setLoading(true)
-          await Promise.all([
-            updateUserInfo(otherValues),
-            didUpdatePhoto && uploadProfilePhoto(photo),
-          ])
+  const formikBag = useFormik<EditMyProfileValuesSchema>({
+    enableReinitialize: true,
+    validateOnChange: true,
+    validateOnBlur: true,
+    initialValues: {
+      name: me?.name ?? "",
+      displayLocation: { display: buildLocationDisplay(me?.location ?? null) },
+      location:
+        {
+          ...me?.location,
+        } ?? undefined,
+      profession: me?.profession ?? "",
+      otherRelevantPositions: me?.otherRelevantPositions ?? "",
+      bio: me?.bio ?? "",
+      photo: localImage?.path || me?.icon?.url || "",
+    },
+    initialErrors: {},
+    onSubmit: async ({ photo, ...otherValues }) => {
+      try {
+        setLoading(true)
+        await Promise.all([
+          updateUserInfo(otherValues),
+          didUpdatePhoto && uploadProfilePhoto(photo),
+        ])
 
-          trackEvent(tracks.editedUserProfile())
-        } catch (error) {
-          console.error("Failed to update profile", error)
-        } finally {
-          setLoading(false)
-        }
+        trackEvent(tracks.editedUserProfile())
+      } catch (error) {
+        console.error("Failed to update profile", error)
+      } finally {
+        setLoading(false)
+      }
 
-        InteractionManager.runAfterInteractions(() => {
-          onSuccess?.()
-        })
-        navigation.goBack()
-      },
-      validationSchema: editMyProfileSchema,
-    })
+      InteractionManager.runAfterInteractions(() => {
+        onSuccess?.()
+      })
+      navigation.goBack()
+    },
+    validationSchema: editMyProfileSchema,
+  })
+
+  const { values, handleChange, errors, validateForm, dirty, handleSubmit } = formikBag
 
   // We want to keep the "Save" button enabled as soon as the user edits an input
   const touched = useHasBeenTrue(dirty)
@@ -257,97 +250,36 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
             </Touchable>
           </Flex>
           <Flex m={2}>
-            <Join separator={<Spacer y={2} />}>
-              <Input
-                ref={nameInputRef}
-                title="Full name"
-                onChangeText={handleChange("name")}
-                onBlur={() => validateForm()}
-                error={errors.name}
-                returnKeyType="next"
-                value={values.name}
-                onSubmitEditing={() => {
-                  locationInputRef.current?.focus()
-                }}
-              />
-
-              <LocationAutocomplete
-                allowCustomLocation
-                inputRef={locationInputRef}
-                title="Primary location"
-                placeholder="City name"
-                returnKeyType="next"
-                onSubmitEditing={() => {
-                  professionInputRef.current?.focus()
-                }}
-                displayLocation={buildLocationDisplay(values.location)}
-                onChange={({ city, country, postalCode, state, stateCode, coordinates }) => {
-                  setFieldValue("location", {
-                    city: city ?? "",
-                    country: country ?? "",
-                    postalCode: postalCode ?? "",
-                    state: state ?? "",
-                    stateCode: stateCode ?? "",
-                    coordinates,
-                  })
-                }}
-              />
-
-              <Input
-                ref={professionInputRef}
-                title="Profession"
-                onChangeText={handleChange("profession")}
-                onBlur={() => validateForm()}
-                error={errors.name}
-                returnKeyType="next"
-                value={values.profession}
-                placeholder="Profession or job title"
-                onSubmitEditing={() => {
-                  relevantPositionsInputRef.current?.focus()
-                }}
-              />
-
-              <Input
-                ref={relevantPositionsInputRef}
-                title="Other Relevant Positions"
-                onChangeText={handleChange("otherRelevantPositions")}
-                onBlur={() => validateForm()}
-                error={errors.name}
-                returnKeyType="next"
-                value={values.otherRelevantPositions}
-                placeholder="Memberships, institutions, positions"
-                onSubmitEditing={() => {
-                  bioInputRef.current?.focus()
-                }}
-              />
-
-              <Input
-                ref={bioInputRef}
-                title="About"
-                onChangeText={(text) => {
-                  handleChange("bio")(text.trim())
-                }}
-                onBlur={() => validateForm()}
-                error={errors.bio}
-                maxLength={150}
-                multiline
-                showLimit
-                value={values.bio}
-                placeholder="Add a brief bio, so galleries know which artists or genres you collect"
-              />
-
-              <ProfileVerifications
-                isIDVerified={!!me?.isIdentityVerified}
-                canRequestEmailConfirmation={!!me?.canRequestEmailConfirmation}
-                isEmailConfirmed={!!me?.isEmailConfirmed}
-                handleEmailVerification={handleEmailVerification}
-                handleIDVerification={handleIDVerification}
-              />
-
-              <Button flex={1} disabled={!touched} onPress={handleSubmit} mb={2}>
-                Save
-              </Button>
-            </Join>
+            <FormikProvider value={formikBag}>
+              <UserProfileFields />
+            </FormikProvider>
+            <Spacer y={2} />
+            <Input
+              ref={bioInputRef}
+              title="About"
+              onChangeText={(text) => {
+                handleChange("bio")(text.trim())
+              }}
+              onBlur={() => validateForm()}
+              error={errors.bio}
+              maxLength={150}
+              multiline
+              showLimit
+              value={values.bio}
+              placeholder="Add a brief bio, so galleries know which artists or genres you collect"
+            />
+            <Spacer y={2} />
+            <ProfileVerifications
+              isIDVerified={!!me?.isIdentityVerified}
+              canRequestEmailConfirmation={!!me?.canRequestEmailConfirmation}
+              isEmailConfirmed={!!me?.isEmailConfirmed}
+              handleEmailVerification={handleEmailVerification}
+              handleIDVerification={handleIDVerification}
+            />
+            <Spacer y={2} />
+            <Button flex={1} disabled={!touched} onPress={handleSubmit} mb={2}>
+              Save
+            </Button>
           </Flex>
         </Join>
       </ScrollView>

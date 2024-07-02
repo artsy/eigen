@@ -2,6 +2,7 @@ import { ActionType, OwnerType, TappedContactGallery } from "@artsy/cohesion"
 import { ButtonProps, Button } from "@artsy/palette-mobile"
 import { InquiryButtons_artwork$data } from "__generated__/InquiryButtons_artwork.graphql"
 import { InquirySuccessNotification } from "app/Scenes/Artwork/Components/CommercialButtons/InquirySuccessNotification"
+import { MyProfileEditModal } from "app/Scenes/MyProfile/MyProfileEditModal"
 import {
   ArtworkInquiryContext,
   ArtworkInquiryStateProvider,
@@ -51,6 +52,8 @@ const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, ...rest }) => 
         toggleVisibility={() => setModalVisibility(!modalVisibility)}
         onMutationSuccessful={(state: boolean) => setNotificationVisibility(state)}
       />
+      {/* TODO: this is for screenshots only, remove when done */}
+      <MyProfileEditModal source="inquiry" onClose={() => console.log("closed")} />
     </>
   )
 }
