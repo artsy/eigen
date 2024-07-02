@@ -71,7 +71,7 @@ describe("SaleArtworkTileRailCard", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer useCustomSaleMessage />)
 
     resolveMostRecentRelayOperation(mockEnvironment, mockProps)
-    expect(extractText(tree.root)).toContain("Bidding closed")
+    expect(extractText(tree.root)).toContain("(14 bids)")
   })
 
   it("renders square image when useSquareAspectRatio is set to true ", () => {
@@ -111,7 +111,7 @@ const mockProps = {
     lotLabel: "66002",
     sale: {
       isAuction: true,
-      isClosed: true,
+      isClosed: false,
       displayTimelyAt: null,
     },
   }),

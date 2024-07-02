@@ -532,13 +532,8 @@ export const saleMessageOrBidInfo = ({
   }
 
   // Auction specs are available at https://artsyproduct.atlassian.net/browse/MX-482
-  if (sale?.isAuction) {
-    // The auction is closed
-    if (sale.isClosed) {
-      return "Bidding closed"
-    }
-
-    // The auction is open
+  // The auction is open
+  if (sale?.isAuction && !sale.isClosed) {
     const bidderPositions = saleArtwork?.counts?.bidderPositions
     const currentBid = saleArtwork?.currentBid?.display
     // If there are no current bids we show the starting price with an indication that it's a new bid
