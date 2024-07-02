@@ -86,8 +86,11 @@ export const useSubmissionContext = () => {
               artworkID: newValues.myCollectionArtworkID,
             })
           }
-
-          refreshMyCollection()
+          // Only refresh my collection after 2 seconds,
+          // this is in order to make sure that the images are done processing
+          setTimeout(() => {
+            refreshMyCollection()
+          }, 2000)
         }
       }
 

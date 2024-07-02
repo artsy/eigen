@@ -41,6 +41,8 @@ export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
 
   const artworks = extractNodes(data?.myCollectionConnection)
 
+  const nonSubmittedArtworks = artworks.filter((artwork) => !artwork.submissionId)
+
   const RefreshControl = useRefreshControl(refetch)
 
   const { setValues, values } = useFormikContext<ArtworkDetailsFormModel>()
@@ -74,7 +76,7 @@ export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
     }
   }
 
-  if (!artworks.length) {
+  if (!nonSubmittedArtworks.length) {
     return (
       <Flex px={2}>
         <SubmitArtworkFromMyCollectionHeader />
@@ -111,7 +113,7 @@ export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
   return (
     <Flex flex={1}>
       <MasonryInfiniteScrollArtworkGrid
-        artworks={artworks}
+        artworks={nonSubmittedArtworks}
         contextScreenOwnerType={OwnerType.submitArtworkStepSelectArtworkMyCollectionArtwork}
         contextScreen={OwnerType.submitArtworkStepSelectArtworkMyCollectionArtwork}
         loadMore={(pageSize) => loadNext(pageSize)}
