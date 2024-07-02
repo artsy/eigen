@@ -533,6 +533,19 @@ export const HomeFragmentContainer = memo(
       newWorksForYou: graphql`
         fragment Home_newWorksForYou on Viewer {
           ...NewWorksForYouRail_artworkConnection
+          artworksConnection: artworksForUser(
+            maxWorksPerArtist: 3
+            includeBackfill: true
+            first: 40
+            version: $version
+            excludeDislikedArtworks: true
+          ) {
+            edges {
+              node {
+                internalID
+              }
+            }
+          }
         }
       `,
       heroUnits: graphql`
