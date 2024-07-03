@@ -19,6 +19,12 @@ export const ChangesSummary = () => {
   const { goBack, saveAndExit, isLoading } = useCompleteProfile()
   const { progressState, progressStateWithoutUndefined, steps } = useCompleteMyProfileContext()
 
+  const handleAddArtistsToMyCollection = () => {
+    if (!isLoading) {
+      navigate(`my-collection/collected-artists/new`)
+    }
+  }
+
   const completedStepsLength = Object.values(progressStateWithoutUndefined).length
   const isCompleted = completedStepsLength === steps.length - 1
   const hasLocation = !!progressState.location
@@ -164,12 +170,7 @@ export const ChangesSummary = () => {
 
           <Spacer y={2} />
 
-          <Button
-            onPress={() => navigate(`my-collection/collected-artists/new`, {})}
-            flex={1}
-            variant="outline"
-            loading={isLoading}
-          >
+          <Button onPress={handleAddArtistsToMyCollection} flex={1} variant="outline">
             Add Artists to My Collection
           </Button>
         </Flex>

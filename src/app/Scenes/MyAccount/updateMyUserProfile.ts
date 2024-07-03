@@ -22,7 +22,6 @@ export const updateMyUserProfile = async (
               phone
               profession
               otherRelevantPositions
-              bio
               icon {
                 internalID
                 imageURL
