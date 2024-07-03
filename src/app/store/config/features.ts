@@ -89,11 +89,6 @@ export const features = {
     readyForRelease: true,
     echoFlagKey: "AREnableDoMoreOnArtsyRail",
   },
-  AREnableMeetYourNewAdvisorRail: {
-    description: "Enable Meet your New Advisor Rail",
-    readyForRelease: true,
-    echoFlagKey: "AREnableMeetYourNewAdvisorRail",
-  },
   AREnableArtworksLists: {
     readyForRelease: true,
     description: "Enable Artwork Lists",

@@ -108,8 +108,8 @@
     "braces": "in the resolutions - needed to resolve a security dependency issue - need to remove this when the issue is resolved and packages are updated"
   },
   "dependencies": {
-    "@artsy/cohesion": "4.189.0",
-    "@artsy/palette-mobile": "13.2.17",
+    "@artsy/cohesion": "4.190.0",
+    "@artsy/palette-mobile": "13.2.21",
     "@artsy/to-title-case": "1.1.0",
     "@braze/react-native-sdk": "5.2.0",
     "@expo/react-native-action-sheet": "4.0.1",
@@ -136,7 +136,7 @@
     "@shopify/flash-list": "1.6.4",
     "@stripe/stripe-react-native": "0.38.0",
     "@styled-system/theme-get": "5.1.2",
-    "autosuggest-highlight": "3.1.1",
+    "autosuggest-highlight": "3.3.4",
     "deprecated-react-native-prop-types": "4.1.0",
     "easy-peasy": "6.0.0",
     "events": "3.3.0",
@@ -225,7 +225,7 @@
     "@testing-library/react-native": "12.4.5",
     "@tsconfig/react-native": "^3.0.0",
     "@types/argparse": "2.0.10",
-    "@types/autosuggest-highlight": "3.1.1",
+    "@types/autosuggest-highlight": "3.2.3",
     "@types/chalk": "2.2.0",
     "@types/dedent": "0.7.0",
     "@types/google-libphonenumber": "7.4.26",

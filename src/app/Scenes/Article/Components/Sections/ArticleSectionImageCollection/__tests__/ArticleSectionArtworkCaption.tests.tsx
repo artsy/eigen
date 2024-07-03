@@ -25,7 +25,7 @@ describe("ArticleSectionArtworkCaption", () => {
     expect(screen.getByText("Test Artwork, 2023")).toBeOnTheScreen()
     expect(screen.getByText("Test Partner")).toBeOnTheScreen()
     expect(screen.getByText("Test Artist")).toBeOnTheScreen()
-    expect(screen.getByText("Contact for price")).toBeOnTheScreen()
+    expect(screen.getByText("Price on request")).toBeOnTheScreen()
   })
 
   it("navigates", async () => {
@@ -51,5 +51,5 @@ const artwork = {
   },
   date: "2023",
   artists: [{ name: "Test Artist", href: "artist-href" }],
-  saleMessage: "Contact for price",
+  saleMessage: "Price on request",
 }

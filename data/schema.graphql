@@ -2362,6 +2362,7 @@ type Artwork implements Node & Searchable & Sellable {
     first: Int
     last: Int
   ): AuctionResultConnection
+  condition: ArtworkCondition
   conditionDescription: ArtworkInfoRow
 
   # Notes by a partner or MyCollection user on the artwork, can only be accessed by partner or the user that owns the artwork
@@ -2718,6 +2719,19 @@ enum ArtworkAttributionClassType {
   UNKNOWN_EDITION
 }
 
+type ArtworkCondition {
+  description: String
+  displayText: String
+  value: String
+}
+
+enum ArtworkConditionEnumType {
+  EXCELLENT
+  FAIR
+  GOOD
+  VERY_GOOD
+}
+
 # A connection to a list of items.
 type ArtworkConnection implements ArtworkConnectionInterface {
   # A list of edges.
@@ -2749,6 +2763,26 @@ type ArtworkConsignmentSubmission {
 
   # Submission state label visible to the user.
   stateLabel: String
+}
+
+# A connection to a list of items.
+type ArtworkConsignmentSubmissionConnection {
+  # A list of edges.
+  edges: [ArtworkConsignmentSubmissionEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type ArtworkConsignmentSubmissionEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: ArtworkConsignmentSubmission
 }
 
 enum ArtworkConsignmentSubmissionState {
@@ -4284,6 +4318,7 @@ type CollectorProfileTypeEdge {
 
 type CollectorProfileUpdatePromptNotificationItem {
   collectorProfile: CollectorProfileType!
+  me: Me!
 }
 
 type CollectorResume {
@@ -6916,6 +6951,7 @@ type ConsignmentSubmission {
   userId: String!
   userName: String
   userPhone: String
+  userPhoneNumber: PhoneNumberType
   utmMedium: String
   utmSource: String
   utmTerm: String
@@ -12618,6 +12654,15 @@ type Me implements Node {
     first: Int
     last: Int
   ): ArtworkConnection
+
+  # A list of the current user’s submissions
+  submissionsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    states: [ArtworkConsignmentSubmissionState]
+  ): ArtworkConsignmentSubmissionConnection
   type: String
 
   # The count of conversations with unread messages.
@@ -13583,6 +13628,7 @@ input MyCollectionCreateArtworkInput {
 
   # The given location of the user as structured data
   collectorLocation: EditableLocation
+  condition: ArtworkConditionEnumType
   conditionDescription: String
   confidentialNotes: String
   costCurrencyCode: String
@@ -13683,6 +13729,7 @@ input MyCollectionUpdateArtworkInput {
 
   # The given location of the user as structured data
   collectorLocation: EditableLocation
+  condition: ArtworkConditionEnumType
   conditionDescription: String
   confidentialNotes: String
   costCurrencyCode: String
@@ -18434,12 +18481,12 @@ enum sort {
 }
 
 type SpecialistBio {
-  bio: String
-  email: String
-  firstName: String
-  image: Image
-  jobTitle: String
-  name: String
+  bio: String!
+  email: String!
+  firstName: String!
+  image: Image!
+  jobTitle: String!
+  name: String!
 }
 
 type StartIdentityVerificationFailure {
@@ -18484,7 +18531,7 @@ type StaticContent {
   slug: ID!
 
   # A list of specialists
-  specialistBios: [SpecialistBio]
+  specialistBios: [SpecialistBio!]
 }
 
 enum SubGroupInputStatus {

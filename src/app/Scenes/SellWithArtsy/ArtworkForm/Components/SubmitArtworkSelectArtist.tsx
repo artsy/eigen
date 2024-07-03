@@ -100,6 +100,7 @@ export const SubmitArtworkSelectArtist = () => {
               onResultPress={handleResultPress}
               disableCustomArtists
               onlyP1Artists
+              disableFormik
               loading={isLoading}
               hideCollectedArtists
               autoFocus={currentStep === "SelectArtist"}
