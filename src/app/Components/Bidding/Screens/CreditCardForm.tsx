@@ -23,30 +23,11 @@ interface CreditCardFormState {
 }
 
 export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFormState> {
-  private paymentInfo: React.RefObject<any>
-
   constructor(props: CreditCardFormProps) {
     super(props)
 
     this.paymentInfo = (React as any).createRef()
     this.state = { valid: null, params: { ...this.props.params }, isLoading: false, isError: false }
-  }
-
-  // TODO: This is what we have to solve for default values I believe
-  componentDidMount() {
-    if (this.paymentInfo.current) {
-      this.paymentInfo.current.focus()
-      if (this.props.params) {
-        this.paymentInfo.current.setValues({
-          cvc: this.props.params.cvc,
-          expiry:
-            this.props.params.expMonth.toString().padStart(2, "0") +
-            "/" +
-            this.props.params.expYear.toString().padStart(2, "0"),
-          number: this.props.params.number,
-        })
-      }
-    }
   }
 
   tokenizeCardAndSubmit = async () => {
