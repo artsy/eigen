@@ -182,7 +182,7 @@ export const MyProfileHeader: React.FC<MyProfileHeaderProps> = ({ meProp }) => {
       <Flex height={70} width={70} borderRadius={35} backgroundColor={color("black10")}>
         <TouchableOpacity
           onPress={() => {
-            navigate("", {
+            navigate("/my-profile/edit", {
               passProps: {
                 onSuccess: () => {
                   refetch()

@@ -38,9 +38,7 @@ const fragment = graphql`
   }
 `
 
-type Loading = "loading"
-
-export type StepsResult = Loading | Routes[]
+export type StepsResult = "loading" | Routes[]
 
 const getSteps = (data?: useCompleteMyProfileSteps_collectorProfile$data | null): StepsResult => {
   if (!data?.collectorProfile) {

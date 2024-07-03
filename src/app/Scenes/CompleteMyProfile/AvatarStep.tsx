@@ -27,7 +27,7 @@ import { FC, useState } from "react"
 export const AvatarStep = () => {
   const { goNext, isCurrentRouteDirty, setField, field } = useCompleteProfile<State["iconUrl"]>()
 
-  const handleOnImageSelect = async ({
+  const handleOnImageSelect = ({
     localPath,
     geminiUrl,
   }: {
