@@ -36,7 +36,7 @@ export const useHomeModules = (props: HomeProps) => {
         contextScreen: "home",
         contextScreenOwnerType: OwnerType.home,
         data: props.newWorksForYou,
-        isEmpty: isEmpty(props.newWorksForYou),
+        isEmpty: !props.newWorksForYou?.artworksConnection?.edges?.length,
         key: "newWorksForYouRail",
         title: "New Works for You",
         type: "newWorksForYou",
