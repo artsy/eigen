@@ -102,7 +102,7 @@ export const Collection: React.FC<CollectionProps> = (props) => {
     <ProvideScreenTracking info={trackingInfo}>
       <Screen>
         <Screen.AnimatedHeader
-          title="African Artists"
+          title={collection.title}
           onBack={goBack}
           rightElements={
             <TouchableOpacity
