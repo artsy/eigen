@@ -4,10 +4,6 @@ import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { CreditCardForm } from "./CreditCardForm"
 
-jest.mock("@stripe/stripe-react-native", () => ({
-  createToken: jest.fn(),
-}))
-
 const onSubmitMock = jest.fn()
 
 const originalConsoleError = console.error
@@ -70,6 +66,7 @@ it("is enabled while the form is valid", () => {
   jest.useFakeTimers({
     legacyFakeTimers: true,
   })
+
   const wrappedComponent = renderWithWrappersLEGACY(
     <CreditCardForm
       onSubmit={onSubmitMock}
