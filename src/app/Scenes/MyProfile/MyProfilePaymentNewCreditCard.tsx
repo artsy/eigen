@@ -149,7 +149,6 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
       <Stack spacing={2}>
         <>
           <InputTitle>Credit Card</InputTitle>
-          {/* TODO: can we support animated styles here? */}
           <CreditCardField
             onCardChange={(cardDetails) => {
               actions.fields.creditCard.setValue({

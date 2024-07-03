@@ -103,7 +103,7 @@
   ],
   "dependenciesComments": {
     "react-native": "Try running `npx @rnx-kit/align-deps --requirements react-native@0.66.5` when upgrading to a version, here 0.66.5",
-    "deprecated-react-native-prop-types": "Needed for patching react-native and react-native-credit-card-input due to rn removing the proptypes from their repo",
+    "deprecated-react-native-prop-types": "Needed for patching react-native due to rn removing the proptypes from their repo",
     "@babel/plugin-transform-named-capturing-groups-regex": "Needed for compiling android with hermes enabled",
     "braces": "in the resolutions - needed to resolve a security dependency issue - need to remove this when the issue is resolved and packages are updated"
   },
@@ -162,7 +162,6 @@
     "react-native-code-push": "8.1.0",
     "react-native-config": "https://github.com/artsy/react-native-config.git#v1.4.12-artsy",
     "react-native-context-menu-view": "git+https://github.com/artsy/react-native-context-menu-view.git#v1.10.10-artsy",
-    "react-native-credit-card-input": "0.4.1",
     "react-native-dev-menu-android": "1.0.10",
     "react-native-device-info": "10.3.0",
     "react-native-fast-image": "8.6.3",
