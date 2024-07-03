@@ -6,7 +6,7 @@ import { BottomAlignedButtonWrapper } from "app/Components/Buttons/BottomAligned
 import { CreditCardField } from "app/Components/CreditCardField/CreditCardField"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
-import React, { Component } from "react"
+import { Component } from "react"
 import { ScrollView, View } from "react-native"
 
 interface CreditCardFormProps {
