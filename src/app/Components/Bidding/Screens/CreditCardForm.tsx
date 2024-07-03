@@ -33,6 +33,7 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
     this.state = { valid: null, params: { ...this.props.params }, isLoading: false, isError: false }
   }
 
+  // TODO: This is what we have to solve for default values I believe
   componentDidMount() {
     if (this.paymentInfo.current) {
       this.paymentInfo.current.focus()
