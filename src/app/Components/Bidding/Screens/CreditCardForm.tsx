@@ -3,6 +3,7 @@ import { createToken, Token } from "@stripe/stripe-react-native"
 import { Container } from "app/Components/Bidding/Components/Containers"
 import { PaymentCardTextFieldParams } from "app/Components/Bidding/types"
 import { BottomAlignedButtonWrapper } from "app/Components/Buttons/BottomAlignedButtonWrapper"
+import { CreditCardField } from "app/Components/CreditCardField/CreditCardField"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import React, { Component } from "react"
@@ -102,16 +103,16 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
                 <Text variant="sm" mb={2}>
                   Card Information
                 </Text>
-                <LiteCreditCardInput
-                  ref={this.paymentInfo}
-                  onChange={({ valid, values }) => {
+                <CreditCardField
+                  onCardChange={(cardDetails) => {
+                    // TODO: Double check safety of this
                     this.setState({
-                      valid,
+                      valid: cardDetails.complete,
                       params: {
-                        cvc: values.cvc,
-                        expMonth: Number(values.expiry.split("/")[0]),
-                        expYear: Number(values.expiry.split("/")[1]),
-                        number: values.number,
+                        cvc: cardDetails.cvc,
+                        expMonth: cardDetails.expiryMonth,
+                        expYear: cardDetails.expiryYear,
+                        number: cardDetails.number,
                       },
                     })
                   }}
