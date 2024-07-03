@@ -134,7 +134,7 @@
     "@segment/sovran-react-native": "1.1.1",
     "@sentry/react-native": "5.20.0",
     "@shopify/flash-list": "1.6.4",
-    "@stripe/stripe-react-native": "0.38.0",
+    "@stripe/stripe-react-native": "0.38.1",
     "@styled-system/theme-get": "5.1.2",
     "autosuggest-highlight": "3.3.4",
     "deprecated-react-native-prop-types": "4.1.0",
