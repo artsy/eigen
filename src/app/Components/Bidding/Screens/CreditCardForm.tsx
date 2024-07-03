@@ -8,7 +8,6 @@ import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import React, { Component } from "react"
 import { ScrollView, View } from "react-native"
-import { LiteCreditCardInput } from "react-native-credit-card-input"
 
 interface CreditCardFormProps {
   navigator: NavigatorIOS
@@ -24,7 +23,7 @@ interface CreditCardFormState {
 }
 
 export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFormState> {
-  private paymentInfo: React.RefObject<LiteCreditCardInput>
+  private paymentInfo: React.RefObject<any>
 
   constructor(props: CreditCardFormProps) {
     super(props)
