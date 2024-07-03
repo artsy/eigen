@@ -25,8 +25,6 @@ interface CreditCardFormState {
 export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFormState> {
   constructor(props: CreditCardFormProps) {
     super(props)
-
-    this.paymentInfo = (React as any).createRef()
     this.state = { valid: null, params: { ...this.props.params }, isLoading: false, isError: false }
   }
 
