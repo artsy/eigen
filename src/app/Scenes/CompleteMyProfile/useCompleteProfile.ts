@@ -17,8 +17,7 @@ import { useEffect, useState } from "react"
 
 export const useCompleteProfile = <T extends State[keyof State]>() => {
   const [field, setField] = useState<T>()
-  const { steps, setProgressState, progressState, progressStateWithoutUndefined } =
-    useCompleteMyProfileContext()
+  const { steps, setProgressState, progressState } = useCompleteMyProfileContext()
   const { navigate, goBack: _goBack, canGoBack } = useNavigation<CompleteMyProfileNavigationStack>()
   const { name } = useRoute<RouteProp<CompleteMyProfileNavigationRoutes, Routes>>()
   const [updateProfile, isLoading] = useUpdateMyProfile()
@@ -71,11 +70,12 @@ export const useCompleteProfile = <T extends State[keyof State]>() => {
     }
 
     const fieldKeyValue = routeField ? { [routeField]: field } : {}
-    const input = filterMutationInputFields({
-      // order matters, first the context state then the hook field state
-      ...progressStateWithoutUndefined,
+    const input: StateNormalizedForMutation = {
+      location: progressState.location,
+      profession: progressState.profession,
+      iconUrl: progressState.iconUrl?.geminiUrl,
       ...fieldKeyValue,
-    })
+    }
 
     // navigates to my-profile if no changes
     if (Object.values(input).length === 0) {
@@ -122,18 +122,3 @@ export const useCompleteProfile = <T extends State[keyof State]>() => {
 }
 
 type StateNormalizedForMutation = Pick<State, "location" | "profession"> & { iconUrl?: string }
-
-const filterMutationInputFields = (progressState: State): StateNormalizedForMutation => {
-  return Object.keys(progressState).reduce((acc, key) => {
-    // iconUrl state is an object with localPath and geminiUrl, needs more handling than the other fields
-    if (key === "iconUrl") {
-      return { ...acc, iconUrl: progressState["iconUrl"]?.geminiUrl }
-    }
-    // filter out the isIdentityVerified field for the mutation
-    if (key !== "isIdentityVerified") {
-      return { ...acc, [key]: progressState[key as keyof State] }
-    }
-
-    return acc
-  }, {})
-}
