@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Button, Flex, LinkText, Spacer, Text } from "@artsy/palette-mobile"
+import { Button, Flex, LinkText, Message, Spacer, Text } from "@artsy/palette-mobile"
 import { SubmitArtworkFromMyCollectionArtworksQuery } from "__generated__/SubmitArtworkFromMyCollectionArtworksQuery.graphql"
 import { SubmitArtworkFromMyCollectionArtworks_me$key } from "__generated__/SubmitArtworkFromMyCollectionArtworks_me.graphql"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
@@ -72,20 +72,23 @@ export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
     return (
       <Flex px={2}>
         <SubmitArtworkFromMyCollectionHeader />
-        <Spacer y={4} />
-        <Text>
-          You have no eligible artworks in{" "}
-          <LinkText
-            onPress={() => {
-              dismissModal()
-              switchTab("profile")
-            }}
-          >
-            My Collection.
-          </LinkText>{" "}
-        </Text>
+        <Spacer y={2} />
+        <Message title="">
+          <Text variant="xs" color="black60">
+            You have no eligible works in{" "}
+            <LinkText
+              variant="xs"
+              onPress={() => {
+                dismissModal()
+                switchTab("profile")
+              }}
+            >
+              My Collection.{"\n"}
+            </LinkText>{" "}
+          </Text>
+        </Message>
 
-        <Spacer y={4} />
+        <Spacer y={2} />
 
         <Button
           block
@@ -96,7 +99,7 @@ export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
             })
           }}
         >
-          Add details manually
+          Add Details Manually
         </Button>
       </Flex>
     )
@@ -126,7 +129,8 @@ export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
 export const SubmitArtworkFromMyCollectionHeader: React.FC = () => {
   return (
     <>
-      <Text variant="lg">Select artwork from My Collection</Text>
+      <Text variant="lg-display">Select artwork from My Collection</Text>
+      <Spacer y={2} />
       <Text color="black60" variant="xs">
         You will only see eligible artworks. Artworks that have already been submitted won't be
         shown.
