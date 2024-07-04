@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Button, Flex, LinkText, Spacer, Text } from "@artsy/palette-mobile"
+import { Button, Flex, LinkText, Message, Spacer, Text } from "@artsy/palette-mobile"
 import { SubmitArtworkFromMyCollectionArtworksQuery } from "__generated__/SubmitArtworkFromMyCollectionArtworksQuery.graphql"
 import { SubmitArtworkFromMyCollectionArtworks_me$key } from "__generated__/SubmitArtworkFromMyCollectionArtworks_me.graphql"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
@@ -73,17 +73,20 @@ export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
       <Flex px={2}>
         <SubmitArtworkFromMyCollectionHeader />
         <Spacer y={4} />
-        <Text>
-          You have no eligible artworks in{" "}
-          <LinkText
-            onPress={() => {
-              dismissModal()
-              switchTab("profile")
-            }}
-          >
-            My Collection.
-          </LinkText>{" "}
-        </Text>
+        <Message title="">
+          <Text variant="sm-display" color="black60">
+            You have no eligible works in{" "}
+            <LinkText
+              variant="sm-display"
+              onPress={() => {
+                dismissModal()
+                switchTab("profile")
+              }}
+            >
+              My Collection.{"\n"}
+            </LinkText>{" "}
+          </Text>
+        </Message>
 
         <Spacer y={4} />
 
@@ -126,8 +129,8 @@ export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
 export const SubmitArtworkFromMyCollectionHeader: React.FC = () => {
   return (
     <>
-      <Text variant="lg">Select artwork from My Collection</Text>
-      <Text color="black60" variant="xs">
+      <Text variant="lg-display">Select artwork from My Collection</Text>
+      <Text color="black60" variant="xs" mt={1}>
         You will only see eligible artworks. Artworks that have already been submitted won't be
         shown.
       </Text>
