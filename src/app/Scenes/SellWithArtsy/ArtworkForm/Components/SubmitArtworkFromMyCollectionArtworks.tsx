@@ -1,10 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Button, Flex, LinkText, Spacer, Text } from "@artsy/palette-mobile"
 import { SubmitArtworkFromMyCollectionArtworksQuery } from "__generated__/SubmitArtworkFromMyCollectionArtworksQuery.graphql"
-import {
-  SubmitArtworkFromMyCollectionArtworks_me$data,
-  SubmitArtworkFromMyCollectionArtworks_me$key,
-} from "__generated__/SubmitArtworkFromMyCollectionArtworks_me.graphql"
+import { SubmitArtworkFromMyCollectionArtworks_me$key } from "__generated__/SubmitArtworkFromMyCollectionArtworks_me.graphql"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { PAGE_SIZE } from "app/Components/constants"
@@ -15,15 +12,10 @@ import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Ut
 import { dismissModal, switchTab } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useRefreshControl } from "app/utils/refreshHelpers"
-import { ExtractNodeType } from "app/utils/relayHelpers"
 import { useFormikContext } from "formik"
 import { useState } from "react"
 import { Alert } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
-
-type ArtworkGridItem = ExtractNodeType<
-  NonNullable<SubmitArtworkFromMyCollectionArtworks_me$data>["myCollectionConnection"]
->
 
 export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
   const { navigateToNextStep } = useSubmissionContext()
@@ -40,6 +32,8 @@ export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
   >(artworkConnectionFragment, queryData.me)
 
   const artworks = extractNodes(data?.myCollectionConnection)
+
+  const nonSubmittedArtworks = artworks.filter((artwork) => !artwork.submissionId)
 
   const RefreshControl = useRefreshControl(refetch)
 
@@ -74,13 +68,13 @@ export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
     }
   }
 
-  if (!artworks.length) {
+  if (!nonSubmittedArtworks.length) {
     return (
       <Flex px={2}>
         <SubmitArtworkFromMyCollectionHeader />
         <Spacer y={4} />
         <Text>
-          You have no artworks in{" "}
+          You have no eligible artworks in{" "}
           <LinkText
             onPress={() => {
               dismissModal()
@@ -111,7 +105,7 @@ export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
   return (
     <Flex flex={1}>
       <MasonryInfiniteScrollArtworkGrid
-        artworks={artworks}
+        artworks={nonSubmittedArtworks}
         contextScreenOwnerType={OwnerType.submitArtworkStepSelectArtworkMyCollectionArtwork}
         contextScreen={OwnerType.submitArtworkStepSelectArtworkMyCollectionArtwork}
         loadMore={(pageSize) => loadNext(pageSize)}
@@ -122,10 +116,6 @@ export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
         hideSaleInfo
         hideSaveIcon
         refreshControl={RefreshControl}
-        isItemDisabled={(artwork) => {
-          if ((artwork as ArtworkGridItem).submissionId) return true
-          return false
-        }}
         ListHeaderComponent={SubmitArtworkFromMyCollectionHeader}
       />
       <LoadingModal isVisible={isLoading} dark />
@@ -138,7 +128,8 @@ export const SubmitArtworkFromMyCollectionHeader: React.FC = () => {
     <>
       <Text variant="lg">Select artwork from My Collection</Text>
       <Text color="black60" variant="xs">
-        You will only see eligible artworks from your Collection
+        You will only see eligible artworks. Artworks that have already been submitted won't be
+        shown.
       </Text>
     </>
   )
@@ -174,7 +165,7 @@ const artworkConnectionFragment = graphql`
             aspectRatio
             blurhash
           }
-          ...ArtworkGridItem_artwork @arguments(includeAllImages: false, includeSubmissionId: true)
+          ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
         }
       }
     }
