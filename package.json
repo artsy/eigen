@@ -312,6 +312,7 @@
     "react-native-flipper-relay-devtools": "1.0.3",
     "react-relay-network-modern": "6.2.2",
     "react-test-renderer": "18.1.0",
+    "reactotron-react-native": "5.1.7",
     "recursive-readdir-sync": "1.0.6",
     "redux-flipper": "2.0.2",
     "redux-logger": "3.0.6",
