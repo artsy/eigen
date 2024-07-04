@@ -72,12 +72,12 @@ export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
     return (
       <Flex px={2}>
         <SubmitArtworkFromMyCollectionHeader />
-        <Spacer y={4} />
+        <Spacer y={2} />
         <Message title="">
-          <Text variant="sm-display" color="black60">
+          <Text variant="xs" color="black60">
             You have no eligible works in{" "}
             <LinkText
-              variant="sm-display"
+              variant="xs"
               onPress={() => {
                 dismissModal()
                 switchTab("profile")
@@ -88,7 +88,7 @@ export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
           </Text>
         </Message>
 
-        <Spacer y={4} />
+        <Spacer y={2} />
 
         <Button
           block
@@ -99,7 +99,7 @@ export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
             })
           }}
         >
-          Add details manually
+          Add Details Manually
         </Button>
       </Flex>
     )
@@ -130,7 +130,8 @@ export const SubmitArtworkFromMyCollectionHeader: React.FC = () => {
   return (
     <>
       <Text variant="lg-display">Select artwork from My Collection</Text>
-      <Text color="black60" variant="xs" mt={1}>
+      <Spacer y={2} />
+      <Text color="black60" variant="xs">
         You will only see eligible artworks. Artworks that have already been submitted won't be
         shown.
       </Text>
