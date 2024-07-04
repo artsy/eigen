@@ -47,6 +47,11 @@ if (__DEV__) {
   NativeModules.DevSettings.setIsShakeToShowDevMenuEnabled(false)
 }
 
+if (__DEV__) {
+  // include reactotron only on dev
+  require("../../ReactotronConfig.js")
+}
+
 setupFlipper()
 
 addTrackingProvider(SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider)
