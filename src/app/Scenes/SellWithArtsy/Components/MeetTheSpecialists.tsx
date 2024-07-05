@@ -1,19 +1,19 @@
 import { ActionType, ContextModule, OwnerType, TappedConsignmentInquiry } from "@artsy/cohesion"
 import { Flex, Spacer, Text, useColor, useSpace, Button } from "@artsy/palette-mobile"
+import { MeetTheSpecialistsQuery } from "__generated__/MeetTheSpecialistsQuery.graphql"
+import { MeetTheSpecialists_staticContent$key } from "__generated__/MeetTheSpecialists_staticContent.graphql"
 import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
 import { ReadMore } from "app/Components/ReadMore"
-import {
-  SpecialistsData,
-  useSWALandingPageData,
-} from "app/Scenes/SellWithArtsy/utils/useSWALandingPageData"
+import { SpecialistsData } from "app/Scenes/SellWithArtsy/utils/useSWALandingPageData"
 import { AnimateHeight } from "app/utils/animations/AnimateHeight"
 import { PlaceholderBox, PlaceholderButton, PlaceholderText } from "app/utils/placeholders"
 import { MotiView } from "moti"
-import { useState } from "react"
+import { Suspense, useState } from "react"
 import { FlatList, ImageBackground } from "react-native"
 import { isTablet } from "react-native-device-info"
 import LinearGradient from "react-native-linear-gradient"
 import { Easing } from "react-native-reanimated"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 type InqueryPress = (
   trackingargs?: TappedConsignmentInquiry,
@@ -21,21 +21,44 @@ type InqueryPress = (
   recipientName?: string
 ) => void
 
-export const MeetTheSpecialists: React.FC<{
-  onInquiryPress: InqueryPress
-}> = ({ onInquiryPress }) => {
-  const space = useSpace()
+const MeetTheSpecialistsContent: React.FC<{ onInquiryPress: InqueryPress }> = ({
+  onInquiryPress,
+}) => {
+  const specialistsData = useLazyLoadQuery<MeetTheSpecialistsQuery>(SpecialistsQuery, {})
 
-  const {
-    data: { specialists },
-    loading,
-  } = useSWALandingPageData()
-
-  if (loading) {
-    return <LoadingSkeleton />
+  if (!specialistsData.staticContent) {
+    return null
   }
 
-  if (!specialists) {
+  return (
+    <MeetTheSpecialistsList
+      staticContent={specialistsData.staticContent}
+      onInquiryPress={onInquiryPress}
+    />
+  )
+}
+
+export const MeetTheSpecialists: React.FC<{ onInquiryPress: InqueryPress }> = ({
+  onInquiryPress,
+}) => {
+  return (
+    <Suspense fallback={<LoadingSkeleton />}>
+      <MeetTheSpecialistsContent onInquiryPress={onInquiryPress} />
+    </Suspense>
+  )
+}
+
+const MeetTheSpecialistsList: React.FC<{
+  staticContent: MeetTheSpecialists_staticContent$key
+  onInquiryPress: InqueryPress
+}> = ({ onInquiryPress, staticContent }) => {
+  const space = useSpace()
+
+  const specialists = useFragment(specialistFragment, staticContent)
+  console.log("[LOGD] specialists", specialists)
+
+  const specialistBios = specialists?.specialistBios
+  if (!specialistBios) {
     return null
   }
 
@@ -52,7 +75,7 @@ export const MeetTheSpecialists: React.FC<{
         contentContainerStyle={{ marginLeft: space(2) }}
         horizontal
         showsHorizontalScrollIndicator={false}
-        data={specialists}
+        data={specialistBios}
         renderItem={({ item }) => {
           return <Specialist specialist={item} onInquiryPress={onInquiryPress} />
         }}
@@ -98,7 +121,7 @@ const Specialist: React.FC<SpecialistProps> = ({ specialist, onInquiryPress }) =
 
   return (
     <ImageBackground
-      source={{ uri: specialist.image }}
+      source={{ uri: specialist.image.imageURL || "" }}
       resizeMode="cover"
       style={{
         width: imgWidth,
@@ -213,3 +236,26 @@ const LoadingSkeleton = () => {
     </Flex>
   )
 }
+
+const specialistFragment = graphql`
+  fragment MeetTheSpecialists_staticContent on StaticContent {
+    specialistBios {
+      name
+      firstName
+      jobTitle
+      bio
+      email
+      image {
+        imageURL
+      }
+    }
+  }
+`
+
+const SpecialistsQuery = graphql`
+  query MeetTheSpecialistsQuery {
+    staticContent {
+      ...MeetTheSpecialists_staticContent
+    }
+  }
+`
