@@ -11903,6 +11903,8 @@ type MarketingCollection {
   category: String!
   createdAt: ISO8601DateTime!
   credit: String
+
+  # HTML description, derived from the markdown description
   description: String
   descriptionMarkdown: String
   featuredArtistExclusionIds: [String!]!
@@ -12901,7 +12903,10 @@ type Money {
 union MoneyOrErrorUnion = Error
 
 type Mutation {
-  acceptPartnerAgreement(input: AcceptPartnerAgreementInput!): AcceptPartnerAgreementPayload
+  acceptPartnerAgreement(
+    # Parameters for AcceptPartnerAgreement
+    input: AcceptPartnerAgreementInput!
+  ): AcceptPartnerAgreementPayload
   addAssetsToConsignmentSubmission(
     # Parameters for AddAssetsToConsignmentSubmission
     input: AddAssetsToConsignmentSubmissionInput!
@@ -12942,7 +12947,10 @@ type Mutation {
   bulkUpdatePartnerArtworks(
     input: BulkUpdatePartnerArtworksMutationInput!
   ): BulkUpdatePartnerArtworksMutationPayload
-  captureHold(input: CaptureHoldInput!): CaptureHoldPayload
+  captureHold(
+    # Parameters for CaptureHold
+    input: CaptureHoldInput!
+  ): CaptureHoldPayload
 
   # Creates a pending offer on an pending order.
   commerceAddInitialOfferToOrder(
@@ -13113,7 +13121,10 @@ type Mutation {
     # Parameters for UpdateImpulseConversationId
     input: CommerceUpdateImpulseConversationIdInput!
   ): CommerceUpdateImpulseConversationIdPayload
-  confirmPassword(input: ConfirmPasswordInput!): ConfirmPasswordPayload
+  confirmPassword(
+    # Parameters for ConfirmPassword
+    input: ConfirmPasswordInput!
+  ): ConfirmPasswordPayload
   convectionCreateConsignmentSubmission(
     # Parameters for CreateSubmissionMutation
     input: CreateSubmissionMutationInput!
@@ -13127,16 +13138,24 @@ type Mutation {
   # Create an alert
   createAlert(input: createAlertInput!): createAlertPayload
   createAndSendBackupSecondFactor(
+    # Parameters for CreateAndSendBackupSecondFactor
     input: CreateAndSendBackupSecondFactorInput!
   ): CreateAndSendBackupSecondFactorPayload
-  createAppSecondFactor(input: CreateAppSecondFactorInput!): CreateAppSecondFactorPayload
+  createAppSecondFactor(
+    # Parameters for CreateAppSecondFactor
+    input: CreateAppSecondFactorInput!
+  ): CreateAppSecondFactorPayload
 
   # Create an artist
   createArtist(input: CreateArtistMutationInput!): CreateArtistMutationPayload
   createBackupSecondFactors(
+    # Parameters for CreateBackupSecondFactors
     input: CreateBackupSecondFactorsInput!
   ): CreateBackupSecondFactorsPayload
-  createBankDebitSetup(input: CreateBankDebitSetupInput!): CreateBankDebitSetupPayload
+  createBankDebitSetup(
+    # Parameters for CreateBankDebitSetup
+    input: CreateBankDebitSetupInput!
+  ): CreateBankDebitSetupPayload
 
   # Create a bidder
   createBidder(input: CreateBidderInput!): CreateBidderPayload
@@ -13188,7 +13207,10 @@ type Mutation {
   createIdentityVerificationOverride(
     input: CreateIdentityVerificationOverrideMutationInput!
   ): CreateIdentityVerificationOverrideMutationPayload
-  createImage(input: CreateImageInput!): CreateImagePayload
+  createImage(
+    # Parameters for CreateImage
+    input: CreateImageInput!
+  ): CreateImagePayload
   createInquiryOfferOrder(
     input: CommerceCreateInquiryOfferOrderWithArtworkInput!
   ): CommerceCreateInquiryOfferOrderWithArtworkPayload
@@ -13209,9 +13231,18 @@ type Mutation {
 
   # Creates a static Markdown-backed sale agreement.
   createSaleAgreement(input: CreateSaleAgreementMutationInput!): CreateSaleAgreementMutationPayload
-  createSavedSearch(input: CreateSavedSearchInput!): CreateSavedSearchPayload
-  createSmsSecondFactor(input: CreateSmsSecondFactorInput!): CreateSmsSecondFactorPayload
-  createUserAddress(input: CreateUserAddressInput!): CreateUserAddressPayload
+  createSavedSearch(
+    # Parameters for CreateSavedSearch
+    input: CreateSavedSearchInput!
+  ): CreateSavedSearchPayload
+  createSmsSecondFactor(
+    # Parameters for CreateSmsSecondFactor
+    input: CreateSmsSecondFactorInput!
+  ): CreateSmsSecondFactorPayload
+  createUserAddress(
+    # Parameters for CreateUserAddress
+    input: CreateUserAddressInput!
+  ): CreateUserAddressPayload
 
   # Create a admin note for the user
   createUserAdminNote(input: createUserAdminNoteMutationInput!): createUserAdminNoteMutationPayload
@@ -13236,7 +13267,10 @@ type Mutation {
   createVerifiedRepresentative(
     input: CreateVerifiedRepresentativeInput!
   ): CreateVerifiedRepresentativePayload
-  createViewingRoom(input: CreateViewingRoomInput!): CreateViewingRoomPayload
+  createViewingRoom(
+    # Parameters for CreateViewingRoom
+    input: CreateViewingRoomInput!
+  ): CreateViewingRoomPayload
 
   # Deletes an alert
   deleteAlert(input: deleteAlertInput!): deleteAlertPayload
@@ -13290,7 +13324,10 @@ type Mutation {
 
   # Delete a User
   deleteUser(input: DeleteUserInput!): DeleteUserPayload
-  deleteUserAddress(input: DeleteUserAddressInput!): DeleteUserAddressPayload
+  deleteUserAddress(
+    # Parameters for DeleteUserAddress
+    input: DeleteUserAddressInput!
+  ): DeleteUserAddressPayload
 
   # delete an admin note for the user
   deleteUserAdminNote(input: deleteUserAdminNoteMutationInput!): deleteUserAdminNoteMutationPayload
@@ -13313,14 +13350,29 @@ type Mutation {
   deleteVerifiedRepresentative(
     input: DeleteVerifiedRepresentativeMutationInput!
   ): DeleteVerifiedRepresentativeMutationPayload
-  deleteViewingRoom(input: DeleteViewingRoomInput!): DeleteViewingRoomPayload
-  deliverSecondFactor(input: DeliverSecondFactorInput!): DeliverSecondFactorPayload
-  disableSavedSearch(input: DisableSavedSearchInput!): DisableSavedSearchPayload
-  disableSecondFactor(input: DisableSecondFactorInput!): DisableSecondFactorPayload
+  deleteViewingRoom(
+    # Parameters for DeleteViewingRoom
+    input: DeleteViewingRoomInput!
+  ): DeleteViewingRoomPayload
+  deliverSecondFactor(
+    # Parameters for DeliverSecondFactor
+    input: DeliverSecondFactorInput!
+  ): DeliverSecondFactorPayload
+  disableSavedSearch(
+    # Parameters for DisableSavedSearch
+    input: DisableSavedSearchInput!
+  ): DisableSavedSearchPayload
+  disableSecondFactor(
+    # Parameters for DisableSecondFactor
+    input: DisableSecondFactorInput!
+  ): DisableSecondFactorPayload
 
   # Add (or remove) an artwork to (from) a users dislikes.
   dislikeArtwork(input: DislikeArtworkInput!): DislikeArtworkPayload
-  enableSecondFactor(input: EnableSecondFactorInput!): EnableSecondFactorPayload
+  enableSecondFactor(
+    # Parameters for EnableSecondFactor
+    input: EnableSecondFactorInput!
+  ): EnableSecondFactorPayload
 
   # Mark sale as ended.
   endSale(input: EndSaleInput!): EndSalePayload
@@ -13336,7 +13388,10 @@ type Mutation {
 
   # Follow (or unfollow) a show
   followShow(input: FollowShowInput!): FollowShowPayload
-  holdInventory(input: HoldInventoryInput!): HoldInventoryPayload
+  holdInventory(
+    # Parameters for HoldInventory
+    input: HoldInventoryInput!
+  ): HoldInventoryPayload
 
   # Links a 3rd party account
   linkAuthentication(input: LinkAuthenticationMutationInput!): LinkAuthenticationMutationPayload
@@ -13369,13 +13424,22 @@ type Mutation {
   myCollectionUpdateArtwork(
     input: MyCollectionUpdateArtworkInput!
   ): MyCollectionUpdateArtworkPayload
-  publishViewingRoom(input: PublishViewingRoomInput!): PublishViewingRoomPayload
-  recordArtworkView(input: RecordArtworkViewInput!): RecordArtworkViewPayload
+  publishViewingRoom(
+    # Parameters for PublishViewingRoom
+    input: PublishViewingRoomInput!
+  ): PublishViewingRoomPayload
+  recordArtworkView(
+    # Parameters for RecordArtworkView
+    input: RecordArtworkViewInput!
+  ): RecordArtworkViewPayload
   removeAssetFromConsignmentSubmission(
     # Parameters for RemoveAssetFromConsignmentSubmission
     input: RemoveAssetFromConsignmentSubmissionInput!
   ): RemoveAssetFromConsignmentSubmissionPayload
-  requestConditionReport(input: RequestConditionReportInput!): RequestConditionReportPayload
+  requestConditionReport(
+    # Parameters for RequestConditionReport
+    input: RequestConditionReportInput!
+  ): RequestConditionReportPayload
 
   # Attach an gemini asset to a consignment submission
   requestCredentialsForAssetUpload(
@@ -13420,7 +13484,10 @@ type Mutation {
   submitOfferOrderWithConversation(
     input: CommerceSubmitOrderWithOfferInput!
   ): CommerceSubmitOrderWithOfferPayload
-  transferMyCollection(input: TransferMyCollectionInput!): TransferMyCollectionPayload
+  transferMyCollection(
+    # Parameters for TransferMyCollection
+    input: TransferMyCollectionInput!
+  ): TransferMyCollectionPayload
 
   # Triggers a campaign send.
   triggerCampaign(input: TriggerCampaignInput!): TriggerCampaignPayload
@@ -13429,11 +13496,17 @@ type Mutation {
   unlinkAuthentication(
     input: UnlinkAuthenticationMutationInput!
   ): UnlinkAuthenticationMutationPayload
-  unpublishViewingRoom(input: UnpublishViewingRoomInput!): UnpublishViewingRoomPayload
+  unpublishViewingRoom(
+    # Parameters for UnpublishViewingRoom
+    input: UnpublishViewingRoomInput!
+  ): UnpublishViewingRoomPayload
 
   # Create an alert
   updateAlert(input: updateAlertInput!): updateAlertPayload
-  updateAppSecondFactor(input: UpdateAppSecondFactorInput!): UpdateAppSecondFactorPayload
+  updateAppSecondFactor(
+    # Parameters for UpdateAppSecondFactor
+    input: UpdateAppSecondFactorInput!
+  ): UpdateAppSecondFactorPayload
 
   # Update the artist
   updateArtist(input: UpdateArtistMutationInput!): UpdateArtistMutationPayload
@@ -13509,13 +13582,25 @@ type Mutation {
 
   # Updates a saleAgreement.
   updateSaleAgreement(input: UpdateSaleAgreementMutationInput!): UpdateSaleAgreementMutationPayload
-  updateSavedSearch(input: UpdateSavedSearchInput!): UpdateSavedSearchPayload
-  updateSmsSecondFactor(input: UpdateSmsSecondFactorInput!): UpdateSmsSecondFactorPayload
+  updateSavedSearch(
+    # Parameters for UpdateSavedSearch
+    input: UpdateSavedSearchInput!
+  ): UpdateSavedSearchPayload
+  updateSmsSecondFactor(
+    # Parameters for UpdateSmsSecondFactor
+    input: UpdateSmsSecondFactorInput!
+  ): UpdateSmsSecondFactorPayload
 
   # Update the user
   updateUser(input: UpdateUserMutationInput!): UpdateUserMutationPayload
-  updateUserAddress(input: UpdateUserAddressInput!): UpdateUserAddressPayload
-  updateUserDefaultAddress(input: UpdateUserDefaultAddressInput!): UpdateUserDefaultAddressPayload
+  updateUserAddress(
+    # Parameters for UpdateUserAddress
+    input: UpdateUserAddressInput!
+  ): UpdateUserAddressPayload
+  updateUserDefaultAddress(
+    # Parameters for UpdateUserDefaultAddress
+    input: UpdateUserDefaultAddressInput!
+  ): UpdateUserDefaultAddressPayload
 
   # Updates a UserInterest on the logged in User's CollectorProfile.
   updateUserInterest(input: UpdateUserInterestMutationInput!): UpdateUserInterestMutationPayload
@@ -13527,11 +13612,16 @@ type Mutation {
   updateUserSaleProfile(
     input: UpdateUserSaleProfileMutationInput!
   ): UpdateUserSaleProfileMutationPayload
-  updateViewingRoom(input: UpdateViewingRoomInput!): UpdateViewingRoomPayload
+  updateViewingRoom(
+    # Parameters for UpdateViewingRoom
+    input: UpdateViewingRoomInput!
+  ): UpdateViewingRoomPayload
   updateViewingRoomArtworks(
+    # Parameters for UpdateViewingRoomArtworks
     input: UpdateViewingRoomArtworksInput!
   ): UpdateViewingRoomArtworksPayload
   updateViewingRoomSubsections(
+    # Parameters for UpdateViewingRoomSubsections
     input: UpdateViewingRoomSubsectionsInput!
   ): UpdateViewingRoomSubsectionsPayload
 }
@@ -14792,17 +14882,6 @@ type PartnerInquiryRequest {
   internalID: ID!
   questions: [InquiryQuestion]
   shippingLocation: Location
-}
-
-# A location
-type PartnerLocation {
-  address: String
-  address2: String
-  city: String
-  country: String
-  id: ID!
-  postalCode: String
-  state: String
 }
 
 type PartnerMeta {
