@@ -19563,6 +19563,9 @@ input UpdateMyProfileInput {
   # Profession.
   profession: String
 
+  # Since we don't want to ask a collector to update their profile too often, set this to record they've been prompted
+  promptedForUpdate: Boolean
+
   # This user should receive lot opening notifications
   receiveLotOpeningSoonNotification: Boolean
 
