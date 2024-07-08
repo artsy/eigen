@@ -3,6 +3,11 @@ import { Header } from "app/Scenes/CompleteMyProfile/Header"
 import * as useCompleteProfile from "app/Scenes/CompleteMyProfile/useCompleteProfile"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
+jest.mock("@react-navigation/native", () => ({
+  useNavigation: jest.fn(),
+  useRoute: () => ({ name: "LocationStep" }),
+}))
+
 describe("Header", () => {
   const mockSaveAndExit = jest.fn()
 

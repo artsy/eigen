@@ -1,10 +1,10 @@
 import { CompleteMyProfileProviderQuery } from "__generated__/CompleteMyProfileProviderQuery.graphql"
+import { EditableLocation } from "__generated__/useUpdateMyProfileMutation.graphql"
 import { Routes } from "app/Scenes/CompleteMyProfile/CompleteMyProfile"
 import {
   StepsResult,
   useCompleteMyProfileSteps,
 } from "app/Scenes/CompleteMyProfile/useCompleteMyProfileSteps"
-import { LocationWithDetails } from "app/utils/googleMaps"
 import React, { Dispatch, createContext, useContext, useMemo, useReducer } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
@@ -82,7 +82,7 @@ const query = graphql`
 
 export type State = {
   profession?: string
-  location?: Partial<LocationWithDetails>
+  location?: Partial<EditableLocation>
   iconUrl?: { localPath: string; geminiUrl: string }
   isIdentityVerified?: boolean
 }

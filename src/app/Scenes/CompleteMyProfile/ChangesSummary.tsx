@@ -1,11 +1,9 @@
 import {
   Button,
   Flex,
-  ProgressBar,
   Screen,
   Spacer,
   Text,
-  Touchable,
   useSpace,
   CheckCircleFillIcon,
   CheckCircleIcon,
@@ -16,7 +14,7 @@ import { navigate } from "app/system/navigation/navigate"
 
 export const ChangesSummary = () => {
   const space = useSpace()
-  const { goBack, saveAndExit, isLoading } = useCompleteProfile()
+  const { saveAndExit, isLoading } = useCompleteProfile()
   const { progressState, progressStateWithoutUndefined, steps } = useCompleteMyProfileContext()
 
   const handleAddArtistsToMyCollection = () => {
@@ -35,30 +33,6 @@ export const ChangesSummary = () => {
   return (
     <Screen>
       <Screen.Body>
-        <Flex py={1}>
-          <Touchable onPress={goBack}>
-            <Text variant="xs">Back</Text>
-          </Touchable>
-        </Flex>
-
-        <Flex flexDirection="row" alignItems="center" gap={space(1)}>
-          <ProgressBar
-            height={4}
-            trackColor="green100"
-            progress={(completedStepsLength / (steps.length - 1)) * 100}
-            style={{ flex: 1, borderRadius: 4 }}
-            progressBarStyle={{ borderRadius: 4 }}
-          />
-
-          <Flex>
-            {isCompleted ? (
-              <CheckCircleFillIcon fill="green100" />
-            ) : (
-              <CheckCircleIcon fill="black60" />
-            )}
-          </Flex>
-        </Flex>
-
         <Flex py={2} gap={space(2)}>
           <Text variant="lg-display">
             {isCompleted ? "Thank you for completing your profile." : "You’re almost there!"}

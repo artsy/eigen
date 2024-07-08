@@ -1,6 +1,7 @@
 import { Button, Flex, Touchable, Text } from "@artsy/palette-mobile"
 import { useCompleteProfile } from "app/Scenes/CompleteMyProfile/useCompleteProfile"
 import { FC } from "react"
+import { Platform } from "react-native"
 
 interface FooterProps {
   isFormDirty: boolean
@@ -11,7 +12,7 @@ export const Footer: FC<FooterProps> = ({ isFormDirty, onGoNext }) => {
   const { goBack, isLoading } = useCompleteProfile()
 
   return (
-    <Flex flexShrink={1} flexGrow={1} px={1} pt={2} pb={6} justifyContent="flex-end">
+    <Flex pt={2} pb={Platform.OS === "ios" ? 4 : 2} justifyContent="flex-end">
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
         <Touchable onPress={goBack}>
           <Text underline>Back</Text>

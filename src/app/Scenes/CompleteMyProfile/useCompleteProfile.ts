@@ -1,4 +1,5 @@
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
+import { UpdateMyProfileInput } from "__generated__/useUpdateMyProfileMutation.graphql"
 import { useToast } from "app/Components/Toast/toastHook"
 import {
   CompleteMyProfileNavigationRoutes,
@@ -13,11 +14,12 @@ import {
 import { getNextRoute } from "app/Scenes/CompleteMyProfile/useCompleteMyProfileSteps"
 import { useUpdateMyProfile } from "app/Scenes/CompleteMyProfile/useUpdateMyProfile"
 import { navigate as artsyNavigate } from "app/system/navigation/navigate"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 export const useCompleteProfile = <T extends State[keyof State]>() => {
   const [field, setField] = useState<T>()
-  const { steps, setProgressState, progressState } = useCompleteMyProfileContext()
+  const { steps, setProgressState, progressState, progressStateWithoutUndefined } =
+    useCompleteMyProfileContext()
   const { navigate, goBack: _goBack, canGoBack } = useNavigation<CompleteMyProfileNavigationStack>()
   const { name } = useRoute<RouteProp<CompleteMyProfileNavigationRoutes, Routes>>()
   const [updateProfile, isLoading] = useUpdateMyProfile()
@@ -50,7 +52,10 @@ export const useCompleteProfile = <T extends State[keyof State]>() => {
   }
 
   const currentStep = steps.indexOf(name) + 1
-  const progress = (currentStep / (steps.length - 1)) * 100
+  const progress = useMemo(
+    () => (currentStep / (steps.length - 1)) * 100,
+    [currentStep, steps.length]
+  )
 
   const goBack = () => {
     if (isLoading) {
@@ -70,12 +75,11 @@ export const useCompleteProfile = <T extends State[keyof State]>() => {
     }
 
     const fieldKeyValue = routeField ? { [routeField]: field } : {}
-    const input: StateNormalizedForMutation = {
-      location: progressState.location,
-      profession: progressState.profession,
-      iconUrl: progressState.iconUrl?.geminiUrl,
+    const input = filterMutationInputFields({
+      // order matters, first the context state then the hook field state
+      ...progressStateWithoutUndefined,
       ...fieldKeyValue,
-    }
+    })
 
     // navigates to my-profile if no changes
     if (Object.values(input).length === 0) {
@@ -121,4 +125,19 @@ export const useCompleteProfile = <T extends State[keyof State]>() => {
   }
 }
 
-type StateNormalizedForMutation = Pick<State, "location" | "profession"> & { iconUrl?: string }
+type StateNormalizedForMutation = Pick<UpdateMyProfileInput, "location" | "profession" | "iconUrl">
+
+const filterMutationInputFields = (progressState: State): StateNormalizedForMutation => {
+  return Object.keys(progressState).reduce((acc, key) => {
+    // iconUrl state is an object with localPath and geminiUrl, needs more handling than the other fields
+    if (key === "iconUrl") {
+      return { ...acc, iconUrl: progressState["iconUrl"]?.geminiUrl }
+    }
+    // filter out the isIdentityVerified field for the mutation
+    if (key !== "isIdentityVerified") {
+      return { ...acc, [key]: progressState[key as keyof State] }
+    }
+
+    return acc
+  }, {})
+}

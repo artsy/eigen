@@ -6,6 +6,7 @@ import {
   CompleteMyProfileProvider,
   useCompleteMyProfileContext,
 } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
+import { Header } from "app/Scenes/CompleteMyProfile/Header"
 import { IdentityVerificationStep } from "app/Scenes/CompleteMyProfile/IdentityVerificationStep"
 import { LocationStep } from "app/Scenes/CompleteMyProfile/LocationStep"
 import { ProfessionStep } from "app/Scenes/CompleteMyProfile/ProfessionStep"
@@ -35,7 +36,15 @@ const CompleteMyProfileNavigator = () => {
 
   return (
     <NavigationContainer independent>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: true,
+          header: () => <Header />,
+          headerMode: "float",
+          cardStyle: { backgroundColor: "gray" },
+          headerBackgroundContainerStyle: { backgroundColor: "yellowS" },
+        }}
+      >
         {/* Only renders the relevant screens */}
         {!!steps?.includes("LocationStep") && (
           <Stack.Screen name="LocationStep" component={LocationStep} />

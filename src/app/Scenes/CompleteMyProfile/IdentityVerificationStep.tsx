@@ -1,7 +1,6 @@
 import { Text, Screen, Button, Spacer, Flex, useSpace, CheckIcon } from "@artsy/palette-mobile"
 import { useCompleteMyProfileContext } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
 import { Footer } from "app/Scenes/CompleteMyProfile/Footer"
-import { Header } from "app/Scenes/CompleteMyProfile/Header"
 import { useCompleteProfile } from "app/Scenes/CompleteMyProfile/useCompleteProfile"
 import { useHandleIDVerification } from "app/Scenes/MyProfile/useHandleVerification"
 import { navigate } from "app/system/navigation/navigate"
@@ -21,10 +20,6 @@ export const IdentityVerificationStep = () => {
     <Screen>
       <Screen.Body>
         <Flex flexGrow={100}>
-          <Header />
-
-          <Spacer y={2} />
-
           <Text variant="lg-display">Verify your ID</Text>
 
           <Spacer y={1} />

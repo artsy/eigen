@@ -170,7 +170,6 @@ describe("useCompleteProfile", () => {
 
     act(() => {
       result.current.setField(location)
-      // update the hook by updating the useRoute hook simulating a navigation
     })
 
     await waitFor(() => expect(result.current.field).toBe(location))
@@ -202,6 +201,74 @@ describe("useCompleteProfile", () => {
           input: {
             location,
             profession: "Sales Rep",
+          },
+        },
+      })
+    )
+  })
+
+  it("should save and exit when submitting all the 4 steps data", async () => {
+    const location = { city: "TestCity", state: "TestState" }
+    const { result, rerender } = renderHook(() => useCompleteProfile(), { wrapper })
+    await mockOperationAndWaitForUpdate(result)
+
+    act(() => {
+      result.current.setField(location)
+    })
+
+    await waitFor(() => expect(result.current.field).toBe(location))
+
+    act(() => {
+      result.current.goNext()
+      useRouteMock.mockReturnValue({ name: "ProfessionStep" })
+    })
+
+    await (() => expect(result.current.nextRoute).toBe("AvatarStep"))
+    rerender()
+
+    act(() => {
+      result.current.setField("Sales Rep")
+    })
+
+    await waitFor(() => expect(result.current.field).toBe("Sales Rep"))
+
+    act(() => {
+      result.current.goNext()
+      useRouteMock.mockReturnValue({ name: "AvatarStep" })
+    })
+
+    await (() => expect(result.current.nextRoute).toBe("isIdentityVerifiedStep"))
+    rerender()
+
+    act(() => {
+      result.current.setField({ localPath: "localPath", geminiUrl: "geminiUrl" })
+    })
+
+    act(() => {
+      result.current.goNext()
+      useRouteMock.mockReturnValue({ name: "IdentityVerificationStep" })
+    })
+
+    await (() => expect(result.current.nextRoute).toBe("ChangesSummary"))
+    rerender()
+
+    act(() => {
+      result.current.setField(true)
+    })
+
+    await waitFor(() => expect(result.current.field).toBe(true))
+
+    act(() => {
+      result.current.saveAndExit()
+    })
+
+    expect(commitMutationMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        variables: {
+          input: {
+            iconUrl: "geminiUrl",
+            profession: "Sales Rep",
+            location,
           },
         },
       })

@@ -1,13 +1,14 @@
-import { Text, Screen, Spacer } from "@artsy/palette-mobile"
+import { Text, Screen, Spacer, Flex } from "@artsy/palette-mobile"
+import { EditableLocation } from "__generated__/useUpdateMyProfileMutation.graphql"
 import { LocationAutocomplete, buildLocationDisplay } from "app/Components/LocationAutocomplete"
 import { Footer } from "app/Scenes/CompleteMyProfile/Footer"
-import { Header } from "app/Scenes/CompleteMyProfile/Header"
 import { useCompleteProfile } from "app/Scenes/CompleteMyProfile/useCompleteProfile"
 import { LocationWithDetails } from "app/utils/googleMaps"
+import { KeyboardAvoidingView } from "react-native"
 
 export const LocationStep = () => {
   const { goNext, isCurrentRouteDirty, field, setField } =
-    useCompleteProfile<Partial<LocationWithDetails>>()
+    useCompleteProfile<Partial<EditableLocation>>()
 
   const handleOnChange = ({
     city,
@@ -23,7 +24,7 @@ export const LocationStep = () => {
       postalCode: postalCode ?? "",
       state: state ?? "",
       stateCode: stateCode ?? "",
-      coordinates,
+      coordinates: coordinates?.map((c) => parseInt(c, 10)),
     })
   }
 
@@ -32,35 +33,37 @@ export const LocationStep = () => {
   }
 
   return (
-    <Screen>
-      <Screen.Body>
-        <Header />
+    <Screen safeArea={false}>
+      <Screen.Body pt={2}>
+        <KeyboardAvoidingView behavior="padding">
+          <Flex justifyContent="space-between" height="100%">
+            <Flex>
+              <Text variant="lg-display">Add your primary location</Text>
 
-        <Spacer y={2} />
+              <Spacer y={1} />
 
-        <Text variant="lg-display">Add your primary location</Text>
+              <Text color="black60">
+                Receive recommendations for local galleries, shows, and offers on artworks.
+              </Text>
 
-        <Spacer y={1} />
+              <Spacer y={2} />
 
-        <Text color="black60">
-          Receive recommendations for local galleries, shows, and offers on artworks.
-        </Text>
+              <LocationAutocomplete
+                allowCustomLocation
+                aria-label="Enter your primary location"
+                autoFocus
+                title="Primary location"
+                placeholder="Primary location"
+                displayLocation={buildLocationDisplay(field)}
+                onChange={handleOnChange}
+                enableClearButton
+                onClear={handleOnClear}
+              />
+            </Flex>
 
-        <Spacer y={2} />
-
-        <LocationAutocomplete
-          allowCustomLocation
-          aria-label="Enter your primary location"
-          autoFocus
-          title="Primary location"
-          placeholder="Primary location"
-          displayLocation={buildLocationDisplay(field)}
-          onChange={handleOnChange}
-          enableClearButton
-          onClear={handleOnClear}
-        />
-
-        <Footer isFormDirty={isCurrentRouteDirty} onGoNext={goNext} />
+            <Footer isFormDirty={isCurrentRouteDirty} onGoNext={goNext} />
+          </Flex>
+        </KeyboardAvoidingView>
       </Screen.Body>
     </Screen>
   )

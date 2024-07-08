@@ -18,7 +18,6 @@ import {
   useCompleteMyProfileContext,
 } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
 import { Footer } from "app/Scenes/CompleteMyProfile/Footer"
-import { Header } from "app/Scenes/CompleteMyProfile/Header"
 import { useCompleteProfile } from "app/Scenes/CompleteMyProfile/useCompleteProfile"
 import { getConvertedImageUrlFromS3 } from "app/utils/getConvertedImageUrlFromS3"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
@@ -40,23 +39,23 @@ export const AvatarStep = () => {
   return (
     <Screen>
       <Screen.Body>
-        <Header />
+        <Flex justifyContent="space-between" height="100%">
+          <Flex>
+            <Text variant="lg">Add a profile image</Text>
 
-        <Spacer y={2} />
+            <Spacer y={1} />
 
-        <Text variant="lg">Add a profile image</Text>
+            <Text color="black60">
+              Make your profile more engaging and help foster trust with galleries on Artsy.
+            </Text>
 
-        <Spacer y={1} />
+            <Spacer y={2} />
 
-        <Text color="black60">
-          Make your profile more engaging and help foster trust with galleries on Artsy.
-        </Text>
+            <ImageSelector onImageSelect={handleOnImageSelect} src={field} />
+          </Flex>
 
-        <Spacer y={2} />
-
-        <ImageSelector onImageSelect={handleOnImageSelect} src={field} />
-
-        <Footer isFormDirty={isCurrentRouteDirty} onGoNext={goNext} />
+          <Footer isFormDirty={isCurrentRouteDirty} onGoNext={goNext} />
+        </Flex>
       </Screen.Body>
     </Screen>
   )
