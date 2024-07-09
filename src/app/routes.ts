@@ -219,6 +219,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
       "/my-collection/collected-artists/privacy-settings",
       "MyCollectionCollectedArtistsPrivacy"
     ),
+    addRoute("/complete-my-profile", "CompleteMyProfile"),
     addRoute("/my-profile", "MyProfile"),
     addRoute("/my-profile/edit", "MyProfileEditForm"),
     addRoute("/my-profile/payment", "MyProfilePayment"),

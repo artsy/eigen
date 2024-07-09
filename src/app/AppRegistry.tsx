@@ -17,6 +17,7 @@ import { NewsScreen, NewsScreenQuery } from "app/Scenes/Articles/News/News"
 import { BrowseSimilarWorksQueryRenderer } from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorks"
 import { ArtworkListScreen } from "app/Scenes/ArtworkList/ArtworkList"
 import { ArtworkRecommendationsScreen } from "app/Scenes/ArtworkRecommendations/ArtworkRecommendations"
+import { CompleteMyProfile } from "app/Scenes/CompleteMyProfile/CompleteMyProfile"
 import { GalleriesForYouScreen } from "app/Scenes/GalleriesForYou/GalleriesForYouScreen"
 import { HomeContainer } from "app/Scenes/Home/HomeContainer"
 import { AddMyCollectionArtist } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
@@ -559,6 +560,11 @@ export const modules = defineModules({
     },
     [MyCollectionScreenQuery]
   ),
+  CompleteMyProfile: reactModule(CompleteMyProfile, {
+    fullBleed: true,
+    hidesBackButton: true,
+    hidesBottomTabs: true,
+  }),
   MyProfileEditForm: reactModule(MyProfileEditFormScreen),
   MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
   MyProfileSettings: reactModule(MyProfileSettings),

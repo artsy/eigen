@@ -34,7 +34,7 @@ import { sendEmail } from "app/utils/sendEmail"
 import { useHasBeenTrue } from "app/utils/useHasBeenTrue"
 import { useFormik } from "formik"
 import React, { Suspense, useEffect, useRef, useState } from "react"
-import { InteractionManager, ScrollView, TextInput } from "react-native"
+import { InteractionManager, ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery, useRefetchableFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import * as Yup from "yup"
@@ -52,13 +52,11 @@ interface EditMyProfileValuesSchema {
   location: Partial<EditableLocationProps> | null | undefined
   profession: string
   otherRelevantPositions: string
-  bio: string
 }
 
 const editMyProfileSchema = Yup.object().shape({
   photo: Yup.string(),
   name: Yup.string().required("Name is required"),
-  bio: Yup.string(),
 })
 
 interface MyProfileEditFormProps {
@@ -80,7 +78,6 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
   const { showActionSheetWithOptions } = useActionSheet()
 
   const nameInputRef = useRef<Input>(null)
-  const bioInputRef = useRef<TextInput>(null)
   const relevantPositionsInputRef = useRef<Input>(null)
   const professionInputRef = useRef<Input>(null)
   const locationInputRef = useRef<Input>(null)
@@ -116,7 +113,6 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
     location,
     profession,
     otherRelevantPositions,
-    bio,
   }: Partial<EditMyProfileValuesSchema>) => {
     const updatedLocation = { ...location }
     delete updatedLocation.display
@@ -125,7 +121,6 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
       ...(location ? { location: updatedLocation } : {}),
       profession,
       otherRelevantPositions,
-      bio,
     }
 
     try {
@@ -149,7 +144,6 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
           } ?? undefined,
         profession: me?.profession ?? "",
         otherRelevantPositions: me?.otherRelevantPositions ?? "",
-        bio: me?.bio ?? "",
         photo: localImage?.path || me?.icon?.url || "",
       },
       initialErrors: {},
@@ -316,24 +310,6 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
                 returnKeyType="next"
                 value={values.otherRelevantPositions}
                 placeholder="Memberships, institutions, positions"
-                onSubmitEditing={() => {
-                  bioInputRef.current?.focus()
-                }}
-              />
-
-              <Input
-                ref={bioInputRef}
-                title="About"
-                onChangeText={(text) => {
-                  handleChange("bio")(text.trim())
-                }}
-                onBlur={() => validateForm()}
-                error={errors.bio}
-                maxLength={150}
-                multiline
-                showLimit
-                value={values.bio}
-                placeholder="Add a brief bio, so galleries know which artists or genres you collect"
               />
 
               <ProfileVerifications
@@ -367,7 +343,6 @@ const meFragment = graphql`
     name
     profession
     otherRelevantPositions
-    bio
     internalID
     location {
       display
