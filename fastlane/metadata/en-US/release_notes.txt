@@ -1,3 +1,5 @@
 This update includes a number of improvements and bug fixes.
 
+ - You can now easily submit artworks in my collection from within the sell tab.
+
 Have feedback? Email us at support@artsy.net
