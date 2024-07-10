@@ -1,6 +1,10 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex, Join, LinkButton, Message, Spacer, Text } from "@artsy/palette-mobile"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { TipsForTakingPhotos } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkTipsForTakingPhotos"
+import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
+import { useNavigationListeners } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useNavigationListeners"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { InfoModal } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/InfoModal/InfoModal"
 import { UploadPhotosForm } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/UploadPhotosForm"
@@ -13,6 +17,15 @@ import { ScrollView } from "react-native"
 export const SubmitArtworkAddPhotos = () => {
   const { values } = useFormikContext<ArtworkDetailsFormModel>()
   const [isModalVisible, setIsModalVisible] = useState(false)
+  const setCurrentStep = SubmitArtworkFormStore.useStoreActions((actions) => actions.setCurrentStep)
+  const navigation = useNavigation<NavigationProp<SubmitArtworkStackNavigation, "AddPhotos">>()
+
+  useNavigationListeners({
+    onNextStep: () => {
+      setCurrentStep("AddDetails")
+      navigation.navigate("AddDetails")
+    },
+  })
 
   return (
     <ProvideScreenTrackingWithCohesionSchema

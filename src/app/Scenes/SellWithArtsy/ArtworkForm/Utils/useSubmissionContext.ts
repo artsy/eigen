@@ -1,32 +1,33 @@
+import EventEmitter from "events"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import {
+  SubmitArtworkStackNavigation,
   __unsafe__SubmissionArtworkFormNavigationRef,
   getCurrentRoute,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
-import {
-  ARTWORK_FORM_FINAL_STEP,
-  ARTWORK_FORM_STEPS,
-  SubmitArtworkScreen,
-} from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
-import { updateMyCollectionArtwork } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/updateMyCollectionArtwork"
+import { ARTWORK_FORM_FINAL_STEP } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
 import {
   ArtworkDetailsFormModel,
   getCurrentValidationSchema,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
-import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
-import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
-import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { useFormikContext } from "formik"
 import { useMemo } from "react"
 import { Alert } from "react-native"
 
+export const SubmitArtworkFormEvents = new EventEmitter()
+SubmitArtworkFormEvents.setMaxListeners(20)
+
+export const NAVIGATE_TO_NEXT_STEP_EVENT = "NAVIGATE_TO_NEXT_STEP_EVENT"
+export const NAVIGATE_TO_PREVIOUS_STEP_EVENT = "NAVIGATE_TO_PREVIOUS_STEP_EVENT"
+
 export const useSubmissionContext = () => {
   const setCurrentStep = SubmitArtworkFormStore.useStoreActions((actions) => actions.setCurrentStep)
-  const setIsLoading = SubmitArtworkFormStore.useStoreActions((actions) => actions.setIsLoading)
   const { currentStep, isLoading } = SubmitArtworkFormStore.useStoreState((state) => state)
+  const navigation = useNavigation<NavigationProp<SubmitArtworkStackNavigation>>()
 
-  const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
+  const { values } = useFormikContext<ArtworkDetailsFormModel>()
 
   const validationSchema = useMemo(() => {
     return getCurrentValidationSchema(currentStep)
@@ -38,66 +39,15 @@ export const useSubmissionContext = () => {
 
   const isFinalStep = currentStep === ARTWORK_FORM_FINAL_STEP
 
-  const navigateToNextStep = async (props?: {
-    step?: SubmitArtworkScreen
-    skipMutation?: boolean
-  }) => {
-    try {
-      setIsLoading(true)
-
-      const currentStepId = getCurrentRoute()
-      const nextStep =
-        props?.step || ARTWORK_FORM_STEPS[ARTWORK_FORM_STEPS.indexOf(currentStepId as any) + 1]
-
-      if (!nextStep) {
-        console.error("No next step found")
-        return
-      }
-
-      const newValues = {
-        ...values,
-        state: (isFinalStep ? "SUBMITTED" : "DRAFT") as ArtworkDetailsFormModel["state"],
-      }
-
-      if (!props?.skipMutation) {
-        try {
-          const submissionId = await createOrUpdateSubmission(newValues, values.submissionId)
-
-          if (!values.submissionId && submissionId) {
-            setFieldValue("submissionId", submissionId)
-          }
-        } catch (error) {
-          console.error("Error creating or updating submission", error)
-          Alert.alert("Something went wrong. The submission could not be updated.")
-          return
-        }
-      }
-
-      if (newValues.state === "SUBMITTED") {
-        // Reset saved draft if submission is successful
-        GlobalStore.actions.artworkSubmission.setDraft(null)
-        // Refetch associated My Collection artwork to display the updated submission status on the artwork screen.
-        if (newValues.myCollectionArtworkID) {
-          await updateMyCollectionArtwork({
-            artworkID: newValues.myCollectionArtworkID,
-          })
-        }
-
-        refreshMyCollection()
-      }
-
-      __unsafe__SubmissionArtworkFormNavigationRef.current?.navigate?.(nextStep)
-      setCurrentStep(nextStep)
-    } catch (error) {
-      console.error("Error navigating to next step", error)
-      Alert.alert("Could not navigate to next step")
-    } finally {
-      setIsLoading(false)
-    }
+  const navigateToNextStep = async () => {
+    SubmitArtworkFormEvents.emit(NAVIGATE_TO_NEXT_STEP_EVENT)
   }
 
   const navigateToPreviousStep = () => {
-    if (!__unsafe__SubmissionArtworkFormNavigationRef.current?.canGoBack()) {
+    SubmitArtworkFormEvents.emit(NAVIGATE_TO_PREVIOUS_STEP_EVENT)
+
+    // TODO: Fix this with proper mocking of the ref
+    if (!__unsafe__SubmissionArtworkFormNavigationRef.current?.canGoBack() && !__TEST__) {
       Alert.alert(
         "Are you sure you want to go back?",
         "You will lose any unsaved changes.",
@@ -120,7 +70,7 @@ export const useSubmissionContext = () => {
       return
     }
     // Order is important here to make sure getCurrentRoute returns the correct value
-    __unsafe__SubmissionArtworkFormNavigationRef.current?.goBack?.()
+    navigation.goBack?.()
     const previousStepId = getCurrentRoute()
 
     if (previousStepId) {

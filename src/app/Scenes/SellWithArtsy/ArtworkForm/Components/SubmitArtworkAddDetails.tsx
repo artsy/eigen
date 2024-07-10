@@ -1,13 +1,19 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex, Input, Join, Spacer, Text } from "@artsy/palette-mobile"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { SelectOption } from "app/Components/Select"
+import { useToast } from "app/Components/Toast/toastHook"
 import { CategoryPicker } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/CategoryPicker"
+import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
+import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
+import { useNavigationListeners } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useNavigationListeners"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import {
   AcceptableCategoryValue,
   acceptableCategoriesForSubmission,
 } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/acceptableCategoriesForSubmission"
+import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { useFormikContext } from "formik"
@@ -17,6 +23,35 @@ import { ScrollView } from "react-native"
 export const SubmitArtworkAddDetails = () => {
   const { handleChange, setFieldValue, values } = useFormikContext<ArtworkDetailsFormModel>()
   const { currentStep } = useSubmissionContext()
+
+  const { show: showToast } = useToast()
+  const setIsLoading = SubmitArtworkFormStore.useStoreActions((actions) => actions.setIsLoading)
+  const setCurrentStep = SubmitArtworkFormStore.useStoreActions((actions) => actions.setCurrentStep)
+  const navigation = useNavigation<NavigationProp<SubmitArtworkStackNavigation, "AddDetails">>()
+
+  useNavigationListeners({
+    onNextStep: async () => {
+      try {
+        setIsLoading(true)
+        await createOrUpdateSubmission(
+          {
+            year: values.year,
+            category: values.category,
+            medium: values.medium,
+          },
+          values.submissionId
+        )
+
+        navigation.navigate("PurchaseHistory")
+        setCurrentStep("PurchaseHistory")
+      } catch (error) {
+        console.error("Error setting title", error)
+        showToast("Something went wrong. The submission could not be updated.", "bottom")
+      } finally {
+        setIsLoading(false)
+      }
+    },
+  })
 
   const categories = useRef<Array<SelectOption<AcceptableCategoryValue>>>(
     acceptableCategoriesForSubmission()

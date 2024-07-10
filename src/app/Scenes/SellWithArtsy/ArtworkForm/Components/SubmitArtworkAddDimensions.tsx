@@ -1,6 +1,12 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Box, Flex, Input, RadioButton, Spacer, Text } from "@artsy/palette-mobile"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { useToast } from "app/Components/Toast/toastHook"
+import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
+import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
+import { useNavigationListeners } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useNavigationListeners"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { useFormikContext } from "formik"
@@ -14,6 +20,40 @@ export const SubmitArtworkAddDimensions = () => {
 
   const widthRef = useRef<Input>(null)
   const depthRef = useRef<Input>(null)
+
+  const { show: showToast } = useToast()
+
+  const setIsLoading = SubmitArtworkFormStore.useStoreActions((actions) => actions.setIsLoading)
+  const setCurrentStep = SubmitArtworkFormStore.useStoreActions((actions) => actions.setCurrentStep)
+  const navigation = useNavigation<NavigationProp<SubmitArtworkStackNavigation, "AddDimensions">>()
+
+  useNavigationListeners({
+    onNextStep: async () => {
+      try {
+        setIsLoading(true)
+        20
+        await createOrUpdateSubmission(
+          {
+            dimensionsMetric: dimensionMetric,
+            width: values.width,
+            height: values.height,
+            depth: values.depth,
+          },
+          values.submissionId
+        )
+
+        navigation.navigate("AddPhoneNumber")
+        setCurrentStep("AddPhoneNumber")
+      } catch (error) {
+        console.error("Error setting dimensions", error)
+        showToast("Could not save your submission, please try again.", "bottom", {
+          backgroundColor: "red100",
+        })
+      } finally {
+        setIsLoading(false)
+      }
+    },
+  })
 
   // Debounce the metric change to improve the radio buttons UX
   useDebounce(

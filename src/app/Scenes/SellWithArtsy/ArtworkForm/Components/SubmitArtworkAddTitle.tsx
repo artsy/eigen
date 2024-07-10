@@ -1,8 +1,14 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex, Input, Spacer, Text } from "@artsy/palette-mobile"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { useToast } from "app/Components/Toast/toastHook"
 import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
+import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
+import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
+import { useNavigationListeners } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useNavigationListeners"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { useFormikContext } from "formik"
@@ -10,7 +16,40 @@ import { ScrollView } from "react-native"
 
 export const SubmitArtworkAddTitle = () => {
   const { handleChange, values } = useFormikContext<ArtworkDetailsFormModel>()
+
+  const { show: showToast } = useToast()
+
   const { currentStep } = useSubmissionContext()
+
+  const setIsLoading = SubmitArtworkFormStore.useStoreActions((actions) => actions.setIsLoading)
+  const setCurrentStep = SubmitArtworkFormStore.useStoreActions((actions) => actions.setCurrentStep)
+
+  const navigation = useNavigation<NavigationProp<SubmitArtworkStackNavigation, "AddTitle">>()
+
+  useNavigationListeners({
+    onNextStep: async () => {
+      try {
+        setIsLoading(true)
+
+        await createOrUpdateSubmission(
+          {
+            title: values.title,
+          },
+          values.submissionId
+        )
+
+        navigation.navigate("AddPhotos")
+        setCurrentStep("AddPhotos")
+      } catch (error) {
+        console.error("Error setting title", error)
+        showToast("Could not save your submission, please try again.", "bottom", {
+          backgroundColor: "red100",
+        })
+      } finally {
+        setIsLoading(false)
+      }
+    },
+  })
 
   return (
     <ProvideScreenTrackingWithCohesionSchema

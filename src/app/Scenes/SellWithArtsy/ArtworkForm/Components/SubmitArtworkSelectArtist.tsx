@@ -1,5 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
 import { AutosuggestResultsPlaceholder } from "app/Components/AutosuggestResults/AutosuggestResultsPlaceholder"
 import {
@@ -7,6 +8,7 @@ import {
   ArtistAutosuggest,
 } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistAutosuggest"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
+import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
@@ -19,8 +21,12 @@ import { Suspense } from "react"
 import { TouchableOpacity } from "react-native"
 
 export const SubmitArtworkSelectArtist = () => {
-  const { navigateToNextStep, isLoading, currentStep } = useSubmissionContext()
+  const { isLoading, currentStep } = useSubmissionContext()
+
   const setIsLoading = SubmitArtworkFormStore.useStoreActions((actions) => actions.setIsLoading)
+  const setCurrentStep = SubmitArtworkFormStore.useStoreActions((actions) => actions.setCurrentStep)
+
+  const navigation = useNavigation<NavigationProp<SubmitArtworkStackNavigation, "SelectArtist">>()
 
   const formik = useFormikContext<ArtworkDetailsFormModel>()
 
@@ -43,10 +49,8 @@ export const SubmitArtworkSelectArtist = () => {
     const isTargetSupply = artist.__typename === "Artist" && artist.targetSupply?.isTargetSupply
 
     if (!isTargetSupply) {
-      navigateToNextStep({
-        step: "ArtistRejected",
-        skipMutation: true,
-      })
+      navigation.navigate("ArtistRejected")
+      setCurrentStep("ArtistRejected")
 
       setIsLoading(false)
       return
@@ -63,12 +67,11 @@ export const SubmitArtworkSelectArtist = () => {
     }
 
     try {
-      navigateToNextStep({
-        skipMutation: true,
-      })
-
       const submissionId = await createOrUpdateSubmission(updatedValues, formik.values.submissionId)
       formik.setFieldValue("submissionId", submissionId)
+
+      navigation.navigate("AddTitle")
+      setCurrentStep("AddTitle")
     } catch (error) {
       console.error("Error creating submission", error)
     } finally {
