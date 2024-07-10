@@ -1,4 +1,4 @@
-import { Flex, Text, useScreenDimensions } from "@artsy/palette-mobile"
+import { Flex, useScreenDimensions } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { SubmitArtworkAddDetails } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddDetails"
@@ -29,7 +29,6 @@ import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork
 import { fetchUserContactInformation } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/fetchUserContactInformation"
 import { SubmitArtworkProps } from "app/Scenes/SellWithArtsy/SubmitArtwork/SubmitArtwork"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
-import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { FormikProvider, useFormik } from "formik"
 import { useEffect } from "react"
 import { Keyboard } from "react-native"
@@ -74,7 +73,6 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
   hasStartedFlowFromMyCollection,
 }) => {
   const currentStep = SubmitArtworkFormStore.useStoreState((state) => state.currentStep)
-  const showDevHelpers = useDevToggle("DTShowSubmissionDevHelpers")
 
   const initialValues = {
     ...artworkDetailsEmptyInitialValues,
@@ -233,16 +231,7 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
                 />
               </Stack.Navigator>
             </NavigationContainer>
-            {!!showDevHelpers && (
-              <Flex alignItems="center" borderWidth={1} borderColor="devpurple">
-                <Text color="black60" variant="xs">
-                  currentStep: {currentStep}
-                </Text>
-                <Text color="black60" variant="xs">
-                  getCurrentRoute: {getCurrentRoute()}
-                </Text>
-              </Flex>
-            )}
+
             <SubmitArtworkBottomNavigation />
           </Flex>
         </Flex>

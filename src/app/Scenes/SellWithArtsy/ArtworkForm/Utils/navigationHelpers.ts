@@ -16,7 +16,6 @@ import {
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
-import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { useFormikContext } from "formik"
 import { useMemo } from "react"
@@ -26,8 +25,6 @@ export const useSubmissionContext = () => {
   const setCurrentStep = SubmitArtworkFormStore.useStoreActions((actions) => actions.setCurrentStep)
   const setIsLoading = SubmitArtworkFormStore.useStoreActions((actions) => actions.setIsLoading)
   const { currentStep } = SubmitArtworkFormStore.useStoreState((state) => state)
-
-  const skipSubmissionCreation = useDevToggle("DTSkipSubmissionCreate")
 
   const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
 
@@ -62,33 +59,31 @@ export const useSubmissionContext = () => {
         state: (isFinalStep ? "SUBMITTED" : "DRAFT") as ArtworkDetailsFormModel["state"],
       }
 
-      if (!skipSubmissionCreation) {
-        if (!props?.skipMutation) {
-          try {
-            const submissionId = await createOrUpdateSubmission(newValues, values.submissionId)
+      if (!props?.skipMutation) {
+        try {
+          const submissionId = await createOrUpdateSubmission(newValues, values.submissionId)
 
-            if (!values.submissionId && submissionId) {
-              setFieldValue("submissionId", submissionId)
-            }
-          } catch (error) {
-            console.error("Error creating or updating submission", error)
-            Alert.alert("Something went wrong. The submission could not be updated.")
-            return
+          if (!values.submissionId && submissionId) {
+            setFieldValue("submissionId", submissionId)
           }
+        } catch (error) {
+          console.error("Error creating or updating submission", error)
+          Alert.alert("Something went wrong. The submission could not be updated.")
+          return
+        }
+      }
+
+      if (newValues.state === "SUBMITTED") {
+        // Reset saved draft if submission is successful
+        GlobalStore.actions.artworkSubmission.setDraft(null)
+        // Refetch associated My Collection artwork to display the updated submission status on the artwork screen.
+        if (newValues.myCollectionArtworkID) {
+          await updateMyCollectionArtwork({
+            artworkID: newValues.myCollectionArtworkID,
+          })
         }
 
-        if (newValues.state === "SUBMITTED") {
-          // Reset saved draft if submission is successful
-          GlobalStore.actions.artworkSubmission.setDraft(null)
-          // Refetch associated My Collection artwork to display the updated submission status on the artwork screen.
-          if (newValues.myCollectionArtworkID) {
-            await updateMyCollectionArtwork({
-              artworkID: newValues.myCollectionArtworkID,
-            })
-          }
-
-          refreshMyCollection()
-        }
+        refreshMyCollection()
       }
 
       __unsafe__SubmissionArtworkFormNavigationRef.current?.navigate?.(nextStep)
@@ -134,7 +129,7 @@ export const useSubmissionContext = () => {
   }
 
   return {
-    isValid: isValid || skipSubmissionCreation,
+    isValid,
     currentStep,
     isFinalStep,
     navigateToNextStep,
