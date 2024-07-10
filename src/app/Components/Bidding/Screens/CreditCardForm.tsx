@@ -84,14 +84,12 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
                 </Text>
                 <CreditCardField
                   onCardChange={(cardDetails) => {
-                    // TODO: Double check safety of this
                     this.setState({
                       valid: cardDetails.complete,
                       params: {
-                        cvc: cardDetails.cvc,
                         expMonth: cardDetails.expiryMonth,
                         expYear: cardDetails.expiryYear,
-                        number: cardDetails.number,
+                        last4: cardDetails.last4,
                       },
                     })
                   }}

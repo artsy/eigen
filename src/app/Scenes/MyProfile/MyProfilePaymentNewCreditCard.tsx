@@ -15,10 +15,9 @@ import { commitMutation, graphql } from "react-relay"
 import { __triggerRefresh } from "./MyProfilePayment"
 
 interface CreditCardInputParams {
-  cvc: string
   expMonth: number
   expYear: number
-  number: string
+  last4: string
 }
 
 interface FormField<Type = string> {
@@ -153,12 +152,10 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
             onCardChange={(cardDetails) => {
               actions.fields.creditCard.setValue({
                 valid: cardDetails.complete,
-                // TODO: Not this
                 params: {
-                  cvc: cardDetails.cvc!,
                   expMonth: cardDetails.expiryMonth,
                   expYear: cardDetails.expiryYear,
-                  number: cardDetails.number!,
+                  last4: cardDetails.last4,
                 },
               })
             }}

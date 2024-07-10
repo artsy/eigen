@@ -1,4 +1,4 @@
-import { INPUT_MIN_HEIGHT, useColor } from "@artsy/palette-mobile"
+import { INPUT_MIN_HEIGHT, useColor, useTextStyleForPalette } from "@artsy/palette-mobile"
 import { CardField } from "@stripe/stripe-react-native"
 import { Details } from "@stripe/stripe-react-native/lib/typescript/src/types/components/CardFieldInput"
 import { MotiView } from "moti"
@@ -12,6 +12,8 @@ interface CreditCardFieldProps {
 export const CreditCardField: React.FC<CreditCardFieldProps> = ({ onCardChange }) => {
   const color = useColor()
   const [isFocused, setIsFocused] = useState(false)
+
+  const textStyle = useTextStyleForPalette("sm")
 
   return (
     <MotiView
@@ -33,10 +35,10 @@ export const CreditCardField: React.FC<CreditCardFieldProps> = ({ onCardChange }
       <CardField
         autofocus
         cardStyle={{
-          borderWidth: 0,
-          backgroundColor: "#FFFFFF",
-          fontSize: 14,
-          fontFamily: "Unica77LL-Regular",
+          borderWidth: 0, // avoid repeat border
+          backgroundColor: color("white100"),
+          fontSize: textStyle.fontSize,
+          fontFamily: textStyle.fontFamily,
           placeholderColor: color("black60"),
         }}
         style={{
