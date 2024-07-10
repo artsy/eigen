@@ -42,8 +42,27 @@ export const SubmitArtworkAddPhoneNumber = () => {
           values.submissionId
         )
 
-        navigation.navigate("CompleteYourSubmission")
-        setCurrentStep("CompleteYourSubmission")
+        if (values.state === "APPROVED") {
+          await createOrUpdateSubmission(
+            {
+              userPhone: values.userPhone,
+            },
+            values.submissionId
+          )
+          // If the submission is approved, navigate straight to the tier 2 steps
+          navigation.navigate("ShippingLocation")
+          setCurrentStep("ShippingLocation")
+        } else {
+          await createOrUpdateSubmission(
+            {
+              userPhone: values.userPhone,
+              state: "SUBMITTED",
+            },
+            values.submissionId
+          )
+          navigation.navigate("CompleteYourSubmission")
+          setCurrentStep("CompleteYourSubmission")
+        }
 
         // Reset saved draft if submission is successful
         GlobalStore.actions.artworkSubmission.setDraft(null)

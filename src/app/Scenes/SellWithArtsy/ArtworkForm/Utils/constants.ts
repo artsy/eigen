@@ -2,10 +2,10 @@ import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkFo
 
 export type SubmitArtworkScreen = keyof SubmitArtworkStackNavigation
 
-export const ARTWORK_FORM_FINAL_STEP = "AddPhoneNumber"
+export const ARTWORK_FORM_TIER_1_FINAL_STEP = "AddPhoneNumber"
+export const ARTWORK_FORM_TIER_2_FINAL_STEP = "Condition"
 
-export const ARTWORK_FORM_STEPS: SubmitArtworkScreen[] = [
-  "StartFlow",
+const TIER_1_STEPS: SubmitArtworkScreen[] = [
   "SubmitArtworkFromMyCollection",
   "SelectArtist",
   "AddTitle",
@@ -14,6 +14,26 @@ export const ARTWORK_FORM_STEPS: SubmitArtworkScreen[] = [
   "PurchaseHistory",
   "AddDimensions",
   "AddPhoneNumber",
+]
+
+export const SUBMIT_ARTWORK_DRAFT_SUBMISSION_STEPS: SubmitArtworkScreen[] = [
+  "StartFlow",
+  ...TIER_1_STEPS,
+  "CompleteYourSubmission",
+  "ArtistRejected",
+]
+
+const TIER_2_STEPS: SubmitArtworkScreen[] = [
+  "ShippingLocation",
+  "FrameInformation",
+  "AdditionalDocuments",
+  "Condition",
+]
+
+export const SUBMIT_ARTWORK_APPROVED_SUBMISSION_STEPS: SubmitArtworkScreen[] = [
+  "StartFlow",
+  ...TIER_1_STEPS,
+  ...TIER_2_STEPS,
   "CompleteYourSubmission",
   "ArtistRejected",
 ]

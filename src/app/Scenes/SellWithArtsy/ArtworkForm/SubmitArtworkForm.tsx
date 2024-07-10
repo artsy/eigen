@@ -6,19 +6,27 @@ import { SubmitArtworkAddDimensions } from "app/Scenes/SellWithArtsy/ArtworkForm
 import { SubmitArtworkAddPhoneNumber } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddPhoneNumber"
 import { SubmitArtworkAddPhotos } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddPhotos"
 import { SubmitArtworkAddTitle } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddTitle"
+import { SubmitArtworkAdditionalDocuments } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAdditionalDocuments"
 import { SubmitArtworkArtistRejected } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkArtistRejected"
 import { SubmitArtworkBottomNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkBottomNavigation"
 import { SubmitArtworkCompleteYourSubmission } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkCompleteYourSubmission"
+import { SubmitArtworkCondition } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkCondition"
 import {
   SubmitArtworkFormStore,
   SubmitArtworkFormStoreProvider,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
+import { SubmitArtworkFrameInformation } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFrameInformation"
 import { SubmitArtworkFromMyCollection } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFromMyCollection"
 import { SubmitArtworkPurchaseHistory } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkPurchaseHistory"
 import { SubmitArtworkSelectArtist } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkSelectArtist"
+import { SubmitArtworkShippingLocation } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkShippingLocation"
 import { SubmitArtworkStartFlow } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkStartFlow"
 import { SubmitArtworkTopNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkTopNavigation"
-import { SubmitArtworkScreen } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
+import {
+  SUBMIT_ARTWORK_APPROVED_SUBMISSION_STEPS,
+  SUBMIT_ARTWORK_DRAFT_SUBMISSION_STEPS,
+  SubmitArtworkScreen,
+} from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
 import { getInitialNavigationState } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/getInitialNavigationState"
 import {
   ArtworkDetailsFormModel,
@@ -36,6 +44,10 @@ import { isTablet as getIsTablet } from "react-native-device-info"
 
 export type SubmitArtworkStackNavigation = {
   StartFlow: undefined
+  CompleteYourSubmission: undefined
+  ArtistRejected: undefined
+
+  // Tier 1 Steps
   SubmitArtworkFromMyCollection: undefined
   SelectArtist: undefined
   AddTitle: undefined
@@ -44,8 +56,12 @@ export type SubmitArtworkStackNavigation = {
   AddDimensions: undefined
   AddPhoneNumber: undefined
   PurchaseHistory: undefined
-  CompleteYourSubmission: undefined
-  ArtistRejected: undefined
+
+  // Tier 2 Steps
+  ShippingLocation: undefined
+  FrameInformation: undefined
+  AdditionalDocuments: undefined
+  Condition: undefined
 }
 
 export const SubmitArtworkForm: React.FC<SubmitArtworkProps> = (props) => {
@@ -124,12 +140,18 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
         <NavigationContainer
           independent
           ref={__unsafe__SubmissionArtworkFormNavigationRef}
-          initialState={getInitialNavigationState(
+          initialState={getInitialNavigationState({
             initialStep,
             // If the user started the flow from my collection
             // We don't want them to be able to go back to the start flow and select artist screens
-            hasStartedFlowFromMyCollection ? ["StartFlow", "SelectArtist"] : []
-          )}
+            skipSteps: hasStartedFlowFromMyCollection
+              ? ["StartFlow", "SelectArtist", "SubmitArtworkFromMyCollection"]
+              : [],
+            steps:
+              formik.values.state === "APPROVED"
+                ? SUBMIT_ARTWORK_APPROVED_SUBMISSION_STEPS
+                : SUBMIT_ARTWORK_DRAFT_SUBMISSION_STEPS,
+          })}
         >
           <Stack.Navigator
             // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
@@ -217,6 +239,24 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
 
             <Stack.Screen name="AddPhoneNumber" component={SubmitArtworkAddPhoneNumber} />
 
+            {formik.values.state === "APPROVED" && (
+              <Stack.Screen name="ShippingLocation" component={SubmitArtworkShippingLocation} />
+            )}
+
+            {formik.values.state === "APPROVED" && (
+              <Stack.Screen name="FrameInformation" component={SubmitArtworkFrameInformation} />
+            )}
+
+            {formik.values.state === "APPROVED" && (
+              <Stack.Screen
+                name="AdditionalDocuments"
+                component={SubmitArtworkAdditionalDocuments}
+              />
+            )}
+
+            {formik.values.state === "APPROVED" && (
+              <Stack.Screen name="Condition" component={SubmitArtworkCondition} />
+            )}
             <Stack.Screen
               name="CompleteYourSubmission"
               component={SubmitArtworkCompleteYourSubmission}

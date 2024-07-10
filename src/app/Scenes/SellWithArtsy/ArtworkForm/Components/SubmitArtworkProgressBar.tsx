@@ -2,16 +2,23 @@ import { CheckCircleFillIcon, Flex, ProgressBar } from "@artsy/palette-mobile"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { __unsafe__SubmissionArtworkFormNavigationRef } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import {
-  ARTWORK_FORM_STEPS,
+  SUBMIT_ARTWORK_APPROVED_SUBMISSION_STEPS,
+  SUBMIT_ARTWORK_DRAFT_SUBMISSION_STEPS,
   SubmitArtworkScreen,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
+import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { useFormikContext } from "formik"
 import { useCallback, useMemo } from "react"
 
 // Steps that should not be counted in the progress bar
 const NON_COUNTABLE_STEPS: SubmitArtworkScreen[] = ["StartFlow", "ArtistRejected"]
 
 // Steps that should be counted in the progress bar
-const COUNTABLE_STEPS = ARTWORK_FORM_STEPS.filter(
+const DRAFT_SUBMISSION_COUNTABLE_STEPS = SUBMIT_ARTWORK_DRAFT_SUBMISSION_STEPS.filter(
+  (step) => NON_COUNTABLE_STEPS.indexOf(step) === -1
+)
+
+const APPROVED_SUBMISSION_COUNTABLE_STEPS = SUBMIT_ARTWORK_APPROVED_SUBMISSION_STEPS.filter(
   (step) => NON_COUNTABLE_STEPS.indexOf(step) === -1
 )
 
@@ -21,6 +28,7 @@ const ICON_SIZE = 22
 
 export const SubmitArtworkProgressBar: React.FC = ({}) => {
   const currentStep = SubmitArtworkFormStore.useStoreState((state) => state.currentStep)
+  const { values } = useFormikContext<ArtworkDetailsFormModel>()
 
   const hasStartedFlowFromMyCollection = useMemo(() => {
     const routes = (
@@ -42,9 +50,14 @@ export const SubmitArtworkProgressBar: React.FC = ({}) => {
   // Returns the total steps based on whether the flow has started from My Collection or not
   // This is required for accurate progress bar calculation
   const getTotalSteps = useCallback(() => {
+    const allSteps =
+      values.state === "APPROVED"
+        ? APPROVED_SUBMISSION_COUNTABLE_STEPS
+        : DRAFT_SUBMISSION_COUNTABLE_STEPS
+
     return hasStartedFlowFromMyCollection
-      ? COUNTABLE_STEPS
-      : COUNTABLE_STEPS.filter((step) => step !== "SubmitArtworkFromMyCollection")
+      ? allSteps
+      : allSteps.filter((step) => step !== "SubmitArtworkFromMyCollection")
   }, [hasStartedFlowFromMyCollection])
 
   const totalSteps = getTotalSteps()

@@ -6,7 +6,10 @@ import {
   __unsafe__SubmissionArtworkFormNavigationRef,
   getCurrentRoute,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
-import { ARTWORK_FORM_FINAL_STEP } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
+import {
+  ARTWORK_FORM_TIER_1_FINAL_STEP,
+  ARTWORK_FORM_TIER_2_FINAL_STEP,
+} from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
 import {
   ArtworkDetailsFormModel,
   getCurrentValidationSchema,
@@ -37,7 +40,10 @@ export const useSubmissionContext = () => {
     return validationSchema.isValidSync(values)
   }, [currentStep, values])
 
-  const isFinalStep = currentStep === ARTWORK_FORM_FINAL_STEP
+  const isFinalStep =
+    values.state === "DRAFT"
+      ? currentStep === ARTWORK_FORM_TIER_1_FINAL_STEP
+      : currentStep === ARTWORK_FORM_TIER_2_FINAL_STEP
 
   const navigateToNextStep = async () => {
     SubmitArtworkFormEvents.emit(NAVIGATE_TO_NEXT_STEP_EVENT)

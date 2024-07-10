@@ -38,7 +38,7 @@ export interface ArtworkDetailsFormModel {
   provenance: string
   signature?: boolean | null | undefined
   source: ConsignmentSubmissionSource | null
-  state?: ConsignmentSubmissionStateAggregation
+  state?: ConsignmentSubmissionStateAggregation | null
   utmMedium?: string
   utmSource?: string
   utmTerm?: string

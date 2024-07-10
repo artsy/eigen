@@ -1,5 +1,5 @@
 import {
-  ARTWORK_FORM_STEPS,
+  SUBMIT_ARTWORK_DRAFT_SUBMISSION_STEPS,
   SubmitArtworkScreen,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
 import { Action, State, action, createContextStore } from "easy-peasy"
@@ -14,7 +14,7 @@ export interface SubmitArtworkFormStoreModel {
 export type SubmitArtworkFormStoreModelState = State<SubmitArtworkFormStoreModel>
 
 export const SubmitArtworkFormStoreModel: SubmitArtworkFormStoreModel = {
-  currentStep: ARTWORK_FORM_STEPS[0],
+  currentStep: SUBMIT_ARTWORK_DRAFT_SUBMISSION_STEPS[0],
   isLoading: false,
   setCurrentStep: action((state, payload) => {
     state.currentStep = payload

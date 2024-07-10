@@ -85,7 +85,7 @@ export const SubmitArtworkSelectArtist = () => {
     >
       <Flex px={2}>
         <Flex pb={6}>
-          <Text variant="lg" mb={2}>
+          <Text variant="lg-display" mb={2}>
             Add artist name
           </Text>
 

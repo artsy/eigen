@@ -52,6 +52,7 @@ export const getInitialSubmissionValues = (
     submissionId: values.id,
     artistSearchResult: null,
     source: values.source ?? null,
+    state: values.state ?? null,
     myCollectionArtworkID: values.sourceArtworkID ?? null,
     photos: compact(photos),
   }
