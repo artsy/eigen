@@ -105,7 +105,6 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
         country: state.fields.country.value ?? undefined,
         postalCode: state.fields.postCode.value ?? undefined,
       },
-      currency: "usd", // TODO: get from user
     }
   }
 
