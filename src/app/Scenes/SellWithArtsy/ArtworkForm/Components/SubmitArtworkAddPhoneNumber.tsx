@@ -1,7 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex, Text } from "@artsy/palette-mobile"
 import { PhoneInput } from "app/Components/Input/PhoneInput"
-import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
+import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
