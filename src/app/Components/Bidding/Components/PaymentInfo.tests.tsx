@@ -55,9 +55,8 @@ const billingAddress = {
   postalCode: "10013",
 }
 
-// TODO: Does this token format need updating?
 const creditCardToken = {
-  tokenId: "fake-token",
+  id: "fake-token",
   created: "1528229731",
   livemode: 0,
   card: {
