@@ -1,21 +1,30 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { SubmitArtworkBottomNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkBottomNavigation"
 import { renderWithSubmitArtworkWrapper } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/testWrappers"
+import {
+  NAVIGATE_TO_NEXT_STEP_EVENT,
+  NAVIGATE_TO_PREVIOUS_STEP_EVENT,
+  SubmitArtworkFormEvents,
+} from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { dismissModal, navigate, switchTab } from "app/system/navigation/navigate"
 
-const mockNavigateToNextStep = jest.fn()
-const mockNavigateToPreviousStep = jest.fn()
-jest.mock("app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers", () => ({
-  useSubmissionContext: () => {
-    return {
-      navigateToNextStep: mockNavigateToNextStep,
-      navigateToPreviousStep: mockNavigateToPreviousStep,
-      isFinalStep: false,
-      isValid: true,
-    }
-  },
-}))
+const mockNavigate = jest.fn()
+const mockGoBack = jest.fn()
+
+jest.mock("@react-navigation/native", () => {
+  const actualNav = jest.requireActual("@react-navigation/native")
+  return {
+    ...actualNav,
+    useNavigation: () => {
+      return {
+        navigate: mockNavigate,
+        addListener: jest.fn(),
+        goBack: mockGoBack,
+      }
+    },
+  }
+})
 
 describe("SubmitArtworkBottomNavigation", () => {
   describe("When the current step is StartFlow", () => {
@@ -30,10 +39,7 @@ describe("SubmitArtworkBottomNavigation", () => {
 
       fireEvent(startSubmissionButton, "onPress")
 
-      expect(mockNavigateToNextStep).toHaveBeenCalledWith({
-        skipMutation: true,
-        step: "SelectArtist",
-      })
+      expect(mockNavigate).toHaveBeenCalledWith("SelectArtist")
     })
 
     it("Shows a functional Start from My Collection button", () => {
@@ -50,10 +56,7 @@ describe("SubmitArtworkBottomNavigation", () => {
 
       fireEvent(startFromMyCollectionButton, "onPress")
 
-      expect(mockNavigateToNextStep).toHaveBeenCalledWith({
-        skipMutation: true,
-        step: "SubmitArtworkFromMyCollection",
-      })
+      expect(mockNavigate).toHaveBeenCalledWith("SubmitArtworkFromMyCollection")
     })
   })
 
@@ -113,7 +116,7 @@ describe("SubmitArtworkBottomNavigation", () => {
 
       fireEvent(addAnotherArtistButton, "onPress")
 
-      expect(mockNavigateToPreviousStep).toHaveBeenCalled()
+      expect(mockGoBack).toHaveBeenCalled()
     })
   })
 
@@ -128,9 +131,10 @@ describe("SubmitArtworkBottomNavigation", () => {
       const continueButton = screen.getByText("Continue")
       expect(continueButton).toBeOnTheScreen()
 
+      const emit = jest.spyOn(SubmitArtworkFormEvents, "emit")
       fireEvent(continueButton, "onPress")
 
-      expect(mockNavigateToNextStep).toHaveBeenCalledWith()
+      expect(emit).toHaveBeenCalledWith(NAVIGATE_TO_NEXT_STEP_EVENT)
     })
 
     it("Shows a functional back button", () => {
@@ -143,9 +147,10 @@ describe("SubmitArtworkBottomNavigation", () => {
       const backButton = screen.getByText("Back")
       expect(backButton).toBeOnTheScreen()
 
+      const emit = jest.spyOn(SubmitArtworkFormEvents, "emit")
       fireEvent(backButton, "onPress")
 
-      expect(mockNavigateToPreviousStep).toHaveBeenCalledWith()
+      expect(emit).toHaveBeenCalledWith(NAVIGATE_TO_PREVIOUS_STEP_EVENT)
     })
   })
 })

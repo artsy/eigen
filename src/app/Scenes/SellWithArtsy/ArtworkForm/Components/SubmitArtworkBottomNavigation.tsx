@@ -1,6 +1,8 @@
 import { Button, Flex, Spacer, Text, Touchable, useSpace } from "@artsy/palette-mobile"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
-import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
+import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
+import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubmitArtworkTracking"
 import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
@@ -19,9 +21,18 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
     trackTappedSubmitAnotherWork,
     trackTappedViewArtworkInMyCollection,
   } = useSubmitArtworkTracking()
-  const { navigateToNextStep, navigateToPreviousStep, isFinalStep, isValid } =
-    useSubmissionContext()
+  const {
+    navigateToNextStep,
+    navigateToPreviousStep,
+    isFinalStep,
+    isValid,
+    currentStep,
+    isLoading,
+  } = useSubmissionContext()
   const { values } = useFormikContext<ArtworkDetailsFormModel>()
+  const navigation = useNavigation<NavigationProp<SubmitArtworkStackNavigation>>()
+
+  const setCurrentStep = SubmitArtworkFormStore.useStoreActions((actions) => actions.setCurrentStep)
 
   const { trackTappedNewSubmission, trackTappedStartMyCollection, trackConsignmentSubmitted } =
     useSubmitArtworkTracking()
@@ -31,8 +42,6 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
     (photo: Photo) => !photo.error && !photo.errorMessage
   )
   const showStartFromMyCollection = useFeatureFlag("AREnableSubmitMyCollectionArtworkInSubmitFlow")
-
-  const { isLoading, currentStep } = SubmitArtworkFormStore.useStoreState((state) => state)
 
   const handleBackPress = () => {
     trackTappedSubmissionBack(values.submissionId, currentStep)
@@ -65,10 +74,8 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
         <Button
           onPress={() => {
             trackTappedNewSubmission()
-            navigateToNextStep({
-              step: "SelectArtist",
-              skipMutation: true,
-            })
+            navigation.navigate("SelectArtist")
+            setCurrentStep("SelectArtist")
           }}
           block
         >
@@ -78,10 +85,8 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
           <Button
             onPress={() => {
               trackTappedStartMyCollection()
-              navigateToNextStep({
-                skipMutation: true,
-                step: "SubmitArtworkFromMyCollection",
-              })
+              navigation.navigate("SubmitArtworkFromMyCollection")
+              setCurrentStep("SubmitArtworkFromMyCollection")
             }}
             block
             mt={2}

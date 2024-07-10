@@ -2,7 +2,6 @@ import { OwnerType } from "@artsy/cohesion"
 import { Flex, Input, Spacer, Text } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { useToast } from "app/Components/Toast/toastHook"
-import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { useNavigationListeners } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useNavigationListeners"
@@ -14,7 +13,7 @@ import { screen } from "app/utils/track/helpers"
 import { useFormikContext } from "formik"
 import { ScrollView } from "react-native"
 
-export const SubmitArtworkAddTitle = () => {
+export const SubmitArtworkNewScreenTemplate = () => {
   const { handleChange, values } = useFormikContext<ArtworkDetailsFormModel>()
 
   const { show: showToast } = useToast()
@@ -24,7 +23,9 @@ export const SubmitArtworkAddTitle = () => {
   const setIsLoading = SubmitArtworkFormStore.useStoreActions((actions) => actions.setIsLoading)
   const setCurrentStep = SubmitArtworkFormStore.useStoreActions((actions) => actions.setCurrentStep)
 
-  const navigation = useNavigation<NavigationProp<SubmitArtworkStackNavigation, "AddTitle">>()
+  // TODO: Replace with the correct screen name
+  // @ts-expect-error
+  const navigation = useNavigation<NavigationProp<SubmitArtworkStackNavigation, "ScreenName">>()
 
   useNavigationListeners({
     onNextStep: async () => {
@@ -33,13 +34,17 @@ export const SubmitArtworkAddTitle = () => {
 
         await createOrUpdateSubmission(
           {
-            title: values.title,
+            // values you want to update
           },
           values.submissionId
         )
 
-        navigation.navigate("AddPhotos")
-        setCurrentStep("AddPhotos")
+        // TODO: Replace with the correct next screen name
+        // @ts-expect-error
+        navigation.navigate("NextScreenName")
+        // TODO: Replace with the correct next screen name
+        // @ts-expect-error
+        setCurrentStep("NextScreenName")
       } catch (error) {
         console.error("Error setting title", error)
         showToast("Could not save your submission, please try again.", "bottom", {
@@ -54,38 +59,33 @@ export const SubmitArtworkAddTitle = () => {
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({
-        context_screen_owner_type: OwnerType.submitArtworkStepAddTitle,
+        // TODO: Replace with the correct context screen owner type
+        // @ts-expect-error
+        context_screen_owner_type: OwnerType.newScreenTitle,
         context_screen_owner_id: values.submissionId || undefined,
       })}
     >
       <Flex px={2} flex={1}>
         <ScrollView>
           <Flex>
-            <Text variant="lg-display">Add artwork title</Text>
-
-            <Spacer y={2} />
-
-            {!!values.artistSearchResult && (
-              <ArtistSearchResult result={values.artistSearchResult} />
-            )}
+            <Text variant="lg-display">New Screen Title</Text>
 
             <Spacer y={2} />
 
             <Input
-              placeholder="Artwork Title"
-              onChangeText={handleChange("title")}
-              value={values.title}
+              placeholder="My new field"
+              // TODO: Replace with the correct field name
+              onChangeText={handleChange("new field")}
+              // TODO: Replace with the correct field name
+              // @ts-expect-error
+              value={values.newField}
               // Only focus on the input and toggle the keyboard if this step is visible to the user.
-              autoFocus={currentStep === "AddTitle"}
+              // TODO: Replace with the correct field name
+              // @ts-expect-error
+              autoFocus={currentStep === "NewScreenTitle"}
               spellCheck={false}
               autoCorrect={false}
             />
-
-            <Spacer y={2} />
-
-            <Text color="black60" variant="xs">
-              Add ‘Unknown’ if unsure
-            </Text>
           </Flex>
         </ScrollView>
       </Flex>
