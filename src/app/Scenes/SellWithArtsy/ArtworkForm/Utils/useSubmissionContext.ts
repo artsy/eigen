@@ -24,7 +24,7 @@ import { Alert } from "react-native"
 export const useSubmissionContext = () => {
   const setCurrentStep = SubmitArtworkFormStore.useStoreActions((actions) => actions.setCurrentStep)
   const setIsLoading = SubmitArtworkFormStore.useStoreActions((actions) => actions.setIsLoading)
-  const { currentStep } = SubmitArtworkFormStore.useStoreState((state) => state)
+  const { currentStep, isLoading } = SubmitArtworkFormStore.useStoreState((state) => state)
 
   const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
 
@@ -130,6 +130,7 @@ export const useSubmissionContext = () => {
 
   return {
     isValid,
+    isLoading,
     currentStep,
     isFinalStep,
     navigateToNextStep,

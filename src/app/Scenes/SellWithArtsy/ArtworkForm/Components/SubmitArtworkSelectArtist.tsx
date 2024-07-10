@@ -19,9 +19,8 @@ import { Suspense } from "react"
 import { TouchableOpacity } from "react-native"
 
 export const SubmitArtworkSelectArtist = () => {
-  const { navigateToNextStep } = useSubmissionContext()
+  const { navigateToNextStep, isLoading, currentStep } = useSubmissionContext()
   const setIsLoading = SubmitArtworkFormStore.useStoreActions((actions) => actions.setIsLoading)
-  const { isLoading, currentStep } = SubmitArtworkFormStore.useStoreState((state) => state)
 
   const formik = useFormikContext<ArtworkDetailsFormModel>()
 

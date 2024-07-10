@@ -1,5 +1,4 @@
 import { Button, Flex, Spacer, Text, Touchable, useSpace } from "@artsy/palette-mobile"
-import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubmitArtworkTracking"
@@ -19,8 +18,14 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
     trackTappedSubmitAnotherWork,
     trackTappedViewArtworkInMyCollection,
   } = useSubmitArtworkTracking()
-  const { navigateToNextStep, navigateToPreviousStep, isFinalStep, isValid } =
-    useSubmissionContext()
+  const {
+    navigateToNextStep,
+    navigateToPreviousStep,
+    isFinalStep,
+    isValid,
+    currentStep,
+    isLoading,
+  } = useSubmissionContext()
   const { values } = useFormikContext<ArtworkDetailsFormModel>()
 
   const { trackTappedNewSubmission, trackTappedStartMyCollection, trackConsignmentSubmitted } =
@@ -31,8 +36,6 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
     (photo: Photo) => !photo.error && !photo.errorMessage
   )
   const showStartFromMyCollection = useFeatureFlag("AREnableSubmitMyCollectionArtworkInSubmitFlow")
-
-  const { isLoading, currentStep } = SubmitArtworkFormStore.useStoreState((state) => state)
 
   const handleBackPress = () => {
     trackTappedSubmissionBack(values.submissionId, currentStep)
