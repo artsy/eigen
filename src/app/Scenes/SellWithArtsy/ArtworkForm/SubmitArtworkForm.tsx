@@ -123,7 +123,6 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
   return (
     <FormikProvider value={formik}>
       <ArtsyKeyboardAvoidingView>
-        <SubmitArtworkTopNavigation />
         <Flex
           style={{
             flex: 1,
@@ -144,7 +143,7 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
                 // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
                 detachInactiveScreens={false}
                 screenOptions={{
-                  headerShown: false,
+                  header: () => <SubmitArtworkTopNavigation />,
                   cardStyle: {
                     backgroundColor: "white",
                     ...(isTablet
