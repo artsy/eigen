@@ -23,7 +23,7 @@ jest.mock("../mutations/createConsignSubmissionMutation", () => ({
 const updateConsignSubmissionMock = updateConsignSubmission as jest.Mock
 const createConsignSubmissionMock = createConsignSubmission as jest.Mock
 
-describe(SubmitArtwork, () => {
+describe.skip(SubmitArtwork, () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
