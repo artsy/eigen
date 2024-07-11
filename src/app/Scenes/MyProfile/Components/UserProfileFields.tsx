@@ -1,4 +1,4 @@
-import { Input, Spacer } from "@artsy/palette-mobile"
+import { Flex, Input, useSpace } from "@artsy/palette-mobile"
 import { EditableLocation } from "__generated__/updateMyUserProfileMutation.graphql"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
 import { LocationAutocomplete, buildLocationDisplay } from "app/Components/LocationAutocomplete"
@@ -24,12 +24,12 @@ export const userProfileYupSchema = Yup.object().shape({
 
 interface UserProfileFieldsProps {
   nextInputRef?: React.RefObject<Input>
-  useBottomSheetInputs?: boolean
+  bottomSheetInput?: boolean
 }
 
 export const UserProfileFields: React.FC<UserProfileFieldsProps> = ({
   nextInputRef,
-  useBottomSheetInputs,
+  bottomSheetInput,
 }) => {
   const formikBag = useFormikContext<UserProfileFormikSchema>()
   const { values, setFieldValue, handleChange, errors, validateForm } = formikBag
@@ -39,10 +39,12 @@ export const UserProfileFields: React.FC<UserProfileFieldsProps> = ({
   const professionInputRef = useRef<Input>(null)
   const relevantPositionsInputRef = useRef<Input>(null)
 
-  const InputComponent = useBottomSheetInputs ? BottomSheetInput : Input
+  const space = useSpace()
+
+  const InputComponent = bottomSheetInput ? BottomSheetInput : Input
 
   return (
-    <>
+    <Flex gap={space(2)}>
       <InputComponent
         ref={nameInputRef}
         title="Full name"
@@ -55,7 +57,6 @@ export const UserProfileFields: React.FC<UserProfileFieldsProps> = ({
           locationInputRef.current?.focus()
         }}
       />
-      <Spacer y={2} />
       <LocationAutocomplete
         allowCustomLocation
         enableClearButton
@@ -77,9 +78,8 @@ export const UserProfileFields: React.FC<UserProfileFieldsProps> = ({
             coordinates,
           })
         }}
-        useBottomSheetInput={useBottomSheetInputs}
+        bottomSheetInput={bottomSheetInput}
       />
-      <Spacer y={2} />
       <InputComponent
         ref={professionInputRef}
         title="Profession"
@@ -93,7 +93,6 @@ export const UserProfileFields: React.FC<UserProfileFieldsProps> = ({
           relevantPositionsInputRef.current?.focus()
         }}
       />
-      <Spacer y={2} />
       <InputComponent
         ref={relevantPositionsInputRef}
         title="Other Relevant Positions"
@@ -109,6 +108,6 @@ export const UserProfileFields: React.FC<UserProfileFieldsProps> = ({
             }
           : {})}
       />
-    </>
+    </Flex>
   )
 }

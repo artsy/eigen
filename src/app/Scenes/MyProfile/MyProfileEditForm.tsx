@@ -12,6 +12,7 @@ import {
   Text,
   Touchable,
   useColor,
+  useSpace,
 } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { useNavigation } from "@react-navigation/native"
@@ -67,6 +68,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
   )
 
   const color = useColor()
+  const space = useSpace()
   const navigation = useNavigation()
 
   const { showActionSheetWithOptions } = useActionSheet()
@@ -240,24 +242,22 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
               <Text style={{ textDecorationLine: "underline" }}>Choose an Image</Text>
             </Touchable>
           </Flex>
-          <Flex m={2}>
-            <Join separator={<Spacer y={2} />}>
-              <FormikProvider value={formikBag}>
-                <UserProfileFields />
-              </FormikProvider>
+          <Flex m={2} gap={space(2)}>
+            <FormikProvider value={formikBag}>
+              <UserProfileFields />
+            </FormikProvider>
 
-              <ProfileVerifications
-                isIDVerified={!!me?.isIdentityVerified}
-                canRequestEmailConfirmation={!!me?.canRequestEmailConfirmation}
-                isEmailConfirmed={!!me?.isEmailConfirmed}
-                handleEmailVerification={handleEmailVerification}
-                handleIDVerification={handleIDVerification}
-              />
+            <ProfileVerifications
+              isIDVerified={!!me?.isIdentityVerified}
+              canRequestEmailConfirmation={!!me?.canRequestEmailConfirmation}
+              isEmailConfirmed={!!me?.isEmailConfirmed}
+              handleEmailVerification={handleEmailVerification}
+              handleIDVerification={handleIDVerification}
+            />
 
-              <Button flex={1} disabled={!touched} onPress={handleSubmit} mb={2}>
-                Save
-              </Button>
-            </Join>
+            <Button flex={1} disabled={!touched} onPress={handleSubmit} mb={2}>
+              Save
+            </Button>
           </Flex>
         </Join>
       </ScrollView>

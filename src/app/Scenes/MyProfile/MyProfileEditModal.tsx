@@ -79,37 +79,13 @@ const MyProfileEditModalContent: React.FC<MyProfileEditModalContentProps> = ({
   message,
   onClose,
 }) => {
-  const data = useFragment(
-    graphql`
-      fragment MyProfileEditModal_me on Me {
-        name
-        location {
-          city
-          state
-          country
-        }
-        profession
-        otherRelevantPositions
-      }
-    `,
-    me
-  )
+  const data = useFragment(meFragmentQuery, me)
 
   const [loading, setLoading] = useState<boolean>(false)
   const { trackEvent } = useTracking()
 
   // TODO: what am I suposed to do with inProgress?
   const [commit, _inProgress] = useUpdateUserProfileFields()
-
-  // TODO: update cohesion and pass a better context_screen and context_screen_owner_type
-  const tracks = {
-    editedUserProfile: (): EditedUserProfile => ({
-      action: ActionType.editedUserProfile,
-      context_screen: ContextModule.collectorProfile,
-      context_screen_owner_type: OwnerType.editProfile,
-      platform: "mobile",
-    }),
-  }
 
   const formikBag = useFormik<UserProfileFormikSchema>({
     enableReinitialize: true,
@@ -161,7 +137,7 @@ const MyProfileEditModalContent: React.FC<MyProfileEditModalContentProps> = ({
     <Box p={2} testID="my-profile-edit-modal-content">
       <Text>{message}</Text>
       <FormikProvider value={formikBag}>
-        <UserProfileFields useBottomSheetInputs />
+        <UserProfileFields bottomSheetInput />
         <Button block mt={2} onPress={handleSubmit} disabled={!isValid} loading={loading}>
           Save and Continue
         </Button>
@@ -201,4 +177,27 @@ const MyProfileEditModalSkeleton = () => {
       </Box>
     </Skeleton>
   )
+}
+
+const meFragmentQuery = graphql`
+  fragment MyProfileEditModal_me on Me {
+    name
+    location {
+      city
+      state
+      country
+    }
+    profession
+    otherRelevantPositions
+  }
+`
+
+// TODO: update cohesion and pass a better context_screen and context_screen_owner_type
+const tracks = {
+  editedUserProfile: (): EditedUserProfile => ({
+    action: ActionType.editedUserProfile,
+    context_screen: ContextModule.collectorProfile,
+    context_screen_owner_type: OwnerType.editProfile,
+    platform: "mobile",
+  }),
 }

@@ -19,7 +19,7 @@ interface LocationAutocompleteProps extends Omit<InputProps, "onChange"> {
   showError?: boolean
   onChange: (l: LocationWithDetails) => void
   FooterComponent?: () => JSX.Element
-  useBottomSheetInput?: boolean
+  bottomSheetInput?: boolean
 }
 
 /**
@@ -44,7 +44,7 @@ export const LocationAutocomplete: React.FC<LocationAutocompleteProps> = ({
   inputRef,
   allowCustomLocation = false,
   showError,
-  useBottomSheetInput,
+  bottomSheetInput,
   ...restProps
 }) => {
   const [predictions, setPredictions] = useState<SimpleLocation[]>([])
@@ -55,7 +55,7 @@ export const LocationAutocomplete: React.FC<LocationAutocompleteProps> = ({
 
   const selectedLocationQuery = selectedLocation?.name || displayLocation
 
-  const InputComponent = useBottomSheetInput ? BottomSheetInput : Input
+  const InputComponent = bottomSheetInput ? BottomSheetInput : Input
 
   useEffect(() => {
     if (selectedLocation) {
