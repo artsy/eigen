@@ -265,12 +265,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "ARSWAMakeAllDimensionsOptional",
   },
-  AREnableNewSubmissionFlow: {
-    description: "Enable new submission flow",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableNewSubmissionFlow",
-  },
   AREnableSubmitMyCollectionArtworkInSubmitFlow: {
     description: "Enable Start Submission from My Collection in submit artwork flow",
     readyForRelease: true,
