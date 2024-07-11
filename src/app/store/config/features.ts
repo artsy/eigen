@@ -277,12 +277,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableSubmitMyCollectionArtworkInSubmitFlowNew",
   },
-  AREnableSaveAndContinueSubmission: {
-    description: "Enable save and continue submission flow",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableSaveAndContinueSubmission",
-  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
