@@ -265,24 +265,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "ARSWAMakeAllDimensionsOptional",
   },
-  AREnableNewSubmissionFlow: {
-    description: "Enable new submission flow",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableNewSubmissionFlow",
-  },
-  AREnableSubmitMyCollectionArtworkInSubmitFlow: {
-    description: "Enable Start Submission from My Collection in submit artwork flow",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableSubmitMyCollectionArtworkInSubmitFlowNew",
-  },
-  AREnableSaveAndContinueSubmission: {
-    description: "Enable save and continue submission flow",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableSaveAndContinueSubmission",
-  },
   AREnableSubmitArtworkTier2Information: {
     description: "Enable submit artwork tier 2 information",
     readyForRelease: false,

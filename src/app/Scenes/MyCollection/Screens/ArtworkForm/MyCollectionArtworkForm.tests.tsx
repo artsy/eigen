@@ -10,7 +10,7 @@ import {
   getGeminiCredentialsForEnvironment,
   uploadFileToS3,
 } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/uploadFileToS3"
-import { GlobalStore, __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import * as LocalImageStore from "app/utils/LocalImageStore"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
@@ -68,10 +68,6 @@ describe("MyCollectionArtworkForm", () => {
     })
 
     describe("when selecting an already existing artwork", () => {
-      beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewSubmissionFlow: false })
-      })
-
       it("populates the form with the data from the artwork", async () => {
         const assetCredentials = {
           signature: "some-signature",

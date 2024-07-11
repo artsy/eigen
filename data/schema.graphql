@@ -14216,6 +14216,14 @@ type PartialArtwork {
 }
 
 type Partner implements Node {
+  alertsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+    size: Int
+  ): PartnerAlertsConnection
   alertsSummaryArtistsConnection(
     activeInventory: Boolean
     after: String
@@ -14530,6 +14538,46 @@ type PartnerAgreement {
 # A partner agreement or errors object
 union PartnerAgreementOrErrorsUnion = Errors | PartnerAgreement
 
+# A connection to a list of items.
+type PartnerAlertsConnection {
+  # A list of edges.
+  edges: [PartnerAlertsEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type PartnerAlertsEdge {
+  artistId: String
+  collectorProfilesConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    totalCount: Boolean
+  ): PartnerCollectorProfilesConnection
+
+  # A cursor for use in pagination
+  cursor: String!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID.
+  internalID: ID!
+  matchedAt: String
+
+  # The item at the end of the edge
+  node: Alert
+  partnerId: String
+  score: String
+  searchCriteriaId: String
+  userIds: [String]
+}
+
 type PartnerArtist {
   artist: Artist
   artworksConnection(
@@ -14739,6 +14787,26 @@ enum PartnerClassification {
   INSTITUTIONAL_SELLER
   PRIVATE_COLLECTOR
   PRIVATE_DEALER
+}
+
+# A connection to a list of items.
+type PartnerCollectorProfilesConnection {
+  # A list of edges.
+  edges: [PartnerCollectorProfilesEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type PartnerCollectorProfilesEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: CollectorProfileType
 }
 
 # A connection to a list of items.

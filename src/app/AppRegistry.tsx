@@ -128,7 +128,6 @@ import { EditSavedSearchAlertQueryRenderer } from "./Scenes/SavedSearchAlert/Edi
 import { SavedSearchAlertsListQueryRenderer } from "./Scenes/SavedSearchAlertsList/SavedSearchAlertsList"
 import { ConsignmentInquiryScreen } from "./Scenes/SellWithArtsy/ConsignmentInquiry/ConsignmentInquiryScreen"
 import { SellWithArtsyHomeScreenQuery } from "./Scenes/SellWithArtsy/SellWithArtsyHome"
-import { SubmitArtwork } from "./Scenes/SellWithArtsy/SubmitArtwork/SubmitArtwork"
 import { SellWithArtsy } from "./Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils"
 import { ShowMoreInfoQueryRenderer } from "./Scenes/Show/Screens/ShowMoreInfo"
 import { ShowQueryRenderer } from "./Scenes/Show/Show"
@@ -141,7 +140,7 @@ import {
   ViewingRoomsListScreen,
   viewingRoomsListScreenQuery,
 } from "./Scenes/ViewingRoom/ViewingRoomsList"
-import { GlobalStore, unsafe_getFeatureFlag } from "./store/GlobalStore"
+import { GlobalStore } from "./store/GlobalStore"
 import { propsStore } from "./store/PropsStore"
 import { DevMenu } from "./system/devTools/DevMenu/DevMenu"
 import { Schema, addTrackingProvider, screenTrack } from "./utils/track"
@@ -658,17 +657,15 @@ export const modules = defineModules({
     hidesBackButton: true,
     fullBleed: true,
   }),
-  SubmitArtwork: unsafe_getFeatureFlag("AREnableNewSubmissionFlow")
-    ? reactModule(SubmitArtworkForm, {
-        hidesBackButton: true,
-        alwaysPresentModally: true,
-        modalPresentationStyle: "fullScreen",
-        hidesBottomTabs: true,
-        screenOptions: {
-          gestureEnabled: false,
-        },
-      })
-    : reactModule(SubmitArtwork, { hidesBackButton: true, hidesBottomTabs: true }),
+  SubmitArtwork: reactModule(SubmitArtworkForm, {
+    hidesBackButton: true,
+    alwaysPresentModally: true,
+    modalPresentationStyle: "fullScreen",
+    hidesBottomTabs: true,
+    screenOptions: {
+      gestureEnabled: false,
+    },
+  }),
   SubmitArtworkEdit: reactModule(SubmitArtworkFormEdit, {
     hidesBackButton: true,
     alwaysPresentModally: true,
