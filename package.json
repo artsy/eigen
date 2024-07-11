@@ -12,7 +12,7 @@
   ],
   "main": "index-common.js",
   "scripts": {
-    "android": "yarn jetifier && react-native run-android",
+    "android": "react-native run-android",
     "bundle:android": "yarn bundle:android:js && yarn bundle:android:hermes && yarn bundle:android:sourcemap",
     "bundle:android:js": "./scripts/hermes/hermes-android-bundle.sh",
     "bundle:android:sourcemap": "./scripts/hermes/hermes-android-sourcemap.sh",
