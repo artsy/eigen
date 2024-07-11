@@ -151,7 +151,7 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
             initialStep,
             // If the user started the flow from my collection
             // We don't want them to be able to go back to the start flow and select artist screens
-            skipSteps: hasStartedFlowFromMyCollection
+            skippedSteps: hasStartedFlowFromMyCollection
               ? ["StartFlow", "SelectArtist", "SubmitArtworkFromMyCollection"]
               : [],
             steps:
@@ -246,6 +246,13 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
 
             <Stack.Screen name="AddPhoneNumber" component={SubmitArtworkAddPhoneNumber} />
 
+            <Stack.Screen
+              name="CompleteYourSubmission"
+              component={SubmitArtworkCompleteYourSubmission}
+              // Do not allow the user to go back to the previous screen
+              options={{ gestureEnabled: false }}
+            />
+
             {formik.values.state === "APPROVED" && (
               <>
                 <Stack.Screen name="ShippingLocation" component={SubmitArtworkShippingLocation} />
@@ -257,27 +264,6 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
                 <Stack.Screen name="Condition" component={SubmitArtworkCondition} />
               </>
             )}
-
-            {/* {formik.values.state === "APPROVED" && (
-              <Stack.Screen name="FrameInformation" component={SubmitArtworkFrameInformation} />
-            )}
-
-            {formik.values.state === "APPROVED" && (
-              <Stack.Screen
-                name="AdditionalDocuments"
-                component={SubmitArtworkAdditionalDocuments}
-              />
-            )}
-
-            {formik.values.state === "APPROVED" && (
-              <Stack.Screen name="Condition" component={SubmitArtworkCondition} />
-            )} */}
-            <Stack.Screen
-              name="CompleteYourSubmission"
-              component={SubmitArtworkCompleteYourSubmission}
-              // Do not allow the user to go back to the previous screen
-              options={{ gestureEnabled: false }}
-            />
           </Stack.Navigator>
           <SubmitArtworkBottomNavigation />
         </NavigationContainer>

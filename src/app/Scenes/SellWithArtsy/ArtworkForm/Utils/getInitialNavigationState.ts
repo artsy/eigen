@@ -2,14 +2,14 @@ import { SubmitArtworkScreen } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/
 
 export const getInitialNavigationState = ({
   initialStep,
-  skipSteps,
+  skippedSteps,
   steps,
 }: {
   initialStep: SubmitArtworkScreen
-  skipSteps: SubmitArtworkScreen[]
+  skippedSteps: SubmitArtworkScreen[]
   steps: SubmitArtworkScreen[]
 }) => {
-  const availableSteps = steps.filter((step) => !skipSteps.includes(step))
+  const availableSteps = steps.filter((step) => !skippedSteps.includes(step))
 
   if (availableSteps.includes(initialStep)) {
     return {
