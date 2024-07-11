@@ -27,7 +27,6 @@ import {
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { fetchUserContactInformation } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/fetchUserContactInformation"
-import { SubmitArtworkProps } from "app/Scenes/SellWithArtsy/SubmitArtwork/SubmitArtwork"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { FormikProvider, useFormik } from "formik"
 import { useEffect } from "react"
@@ -46,6 +45,14 @@ export type SubmitArtworkStackNavigation = {
   PurchaseHistory: undefined
   CompleteYourSubmission: undefined
   ArtistRejected: undefined
+}
+
+export interface SubmitArtworkProps {
+  initialValues: Partial<ArtworkDetailsFormModel>
+  initialStep: SubmitArtworkScreen
+  navigationState?: string
+  submissionID?: string
+  hasStartedFlowFromMyCollection?: boolean
 }
 
 export const SubmitArtworkForm: React.FC<SubmitArtworkProps> = (props) => {

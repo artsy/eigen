@@ -1,8 +1,10 @@
 import { SubmitArtworkFormEditQuery } from "__generated__/SubmitArtworkFormEditQuery.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
-import { SubmitArtworkForm } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
+import {
+  SubmitArtworkForm,
+  SubmitArtworkProps,
+} from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { getInitialSubmissionValues } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/getInitialSubmissionValues"
-import { SubmitArtworkProps } from "app/Scenes/SellWithArtsy/SubmitArtwork/SubmitArtwork"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
