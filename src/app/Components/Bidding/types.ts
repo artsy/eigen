@@ -73,8 +73,8 @@ export interface BidderPositionResult {
 // values from the Tipsi PaymentCardTextField component
 export interface PaymentCardTextFieldParams {
   last4: string
-  expMonth: string | number
-  expYear: string | number
+  expiryMonth: string | number
+  expiryYear: string | number
   name?: string
   addressLine1?: string
   addressLine2?: string

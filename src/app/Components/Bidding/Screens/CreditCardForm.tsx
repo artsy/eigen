@@ -54,6 +54,7 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
     const buttonComponent = (
       <Box m={1}>
         <Button
+          testID="add-credit-card-button"
           disabled={!this.state.valid}
           loading={this.state.isLoading}
           block
@@ -87,15 +88,15 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
                     this.setState({
                       valid: cardDetails.complete,
                       params: {
-                        expMonth: cardDetails.expiryMonth,
-                        expYear: cardDetails.expiryYear,
+                        expiryMonth: cardDetails.expiryMonth,
+                        expiryYear: cardDetails.expiryYear,
                         last4: cardDetails.last4,
                       },
                     })
                   }}
                 />
                 {!!this.state.isError && (
-                  <Text variant="xs" mt={4} color="red100">
+                  <Text testID="error-message" variant="xs" mt={4} color="red100">
                     {errorText}
                   </Text>
                 )}

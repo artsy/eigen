@@ -34,6 +34,7 @@ export const CreditCardField: React.FC<CreditCardFieldProps> = ({ onCardChange }
     >
       <CardField
         autofocus
+        testID="credit-card-field"
         cardStyle={{
           borderWidth: 0, // avoid repeat border
           backgroundColor: color("white100"),
