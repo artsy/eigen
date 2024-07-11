@@ -14218,6 +14218,7 @@ type PartialArtwork {
 type Partner implements Node {
   alertsConnection(
     after: String
+    artistID: String
     before: String
     first: Int
     last: Int
@@ -14551,7 +14552,7 @@ type PartnerAlertsConnection {
 
 # An edge in a connection.
 type PartnerAlertsEdge {
-  artistId: String
+  artistID: String
   collectorProfilesConnection(
     after: String
     before: String
@@ -14572,10 +14573,10 @@ type PartnerAlertsEdge {
 
   # The item at the end of the edge
   node: Alert
-  partnerId: String
+  partnerID: String
   score: String
-  searchCriteriaId: String
-  userIds: [String]
+  searchCriteriaID: String
+  userIDs: [String]
 }
 
 type PartnerArtist {
