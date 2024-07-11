@@ -1,5 +1,6 @@
 import { Flex, Box, Text, LinkText, Checkbox, Button } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
+import { Token, createToken } from "@stripe/stripe-react-native"
 import {
   RegistrationCreateBidderMutation,
   RegistrationCreateBidderMutation$data,
@@ -11,7 +12,7 @@ import { Registration_me$data } from "__generated__/Registration_me.graphql"
 import { Registration_sale$data } from "__generated__/Registration_sale.graphql"
 import { PaymentInfo } from "app/Components/Bidding/Components/PaymentInfo"
 import { PhoneInfo } from "app/Components/Bidding/Components/PhoneInfo"
-import { Address, PaymentCardTextFieldParams, StripeToken } from "app/Components/Bidding/types"
+import { Address, PaymentCardTextFieldParams } from "app/Components/Bidding/types"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Modal } from "app/Components/Modal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
@@ -34,8 +35,6 @@ import {
   RelayProp,
 } from "react-relay"
 import { PayloadError } from "relay-runtime"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import stripe from "tipsi-stripe"
 import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"
 
 export interface RegistrationProps extends ViewProps {
@@ -49,7 +48,7 @@ interface RegistrationState {
   billingAddress?: Address
   phoneNumber?: string
   creditCardFormParams?: PaymentCardTextFieldParams
-  creditCardToken?: StripeToken
+  creditCardToken?: Token.Result
   conditionsOfSaleChecked: boolean
   isLoading: boolean
   missingInformation: "payment" | "phone" | null
@@ -124,7 +123,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     navigate("/conditions-of-sale")
   }
 
-  onCreditCardAdded(token: StripeToken, params: PaymentCardTextFieldParams) {
+  onCreditCardAdded(token: Token.Result, params: PaymentCardTextFieldParams) {
     this.setState({ creditCardToken: token, creditCardFormParams: params })
   }
 
@@ -180,7 +179,10 @@ export class Registration extends React.Component<RegistrationProps, Registratio
       await this.updatePhoneNumber(this.state.billingAddress!.phoneNumber)
 
       const token = await this.createTokenFromAddress()
-      await this.createCreditCard(token)
+      if (token.error) {
+        throw new Error(`[Stripe]: error creating the token: ${JSON.stringify(token.error)}`)
+      }
+      await this.createCreditCard(token.token)
 
       await this.createBidder()
     } catch (e) {
@@ -233,19 +235,22 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   async createTokenFromAddress() {
     const { billingAddress, creditCardFormParams } = this.state
 
-    return stripe.createTokenWithCard({
+    return createToken({
       ...creditCardFormParams,
-      name: billingAddress!.fullName,
-      addressLine1: billingAddress!.addressLine1,
-      addressLine2: billingAddress!.addressLine2,
-      addressCity: billingAddress!.city,
-      addressState: billingAddress!.state,
-      addressZip: billingAddress!.postalCode,
-      addressCountry: billingAddress!.country.shortName,
+      type: "Card",
+      name: billingAddress?.fullName,
+      address: {
+        line1: billingAddress?.addressLine1,
+        line2: billingAddress?.addressLine2,
+        city: billingAddress?.city,
+        state: billingAddress?.state,
+        postalCode: billingAddress?.postalCode,
+        country: billingAddress?.country.shortName,
+      },
     })
   }
 
-  async createCreditCard(token: any) {
+  async createCreditCard(token: Token.Result) {
     return new Promise<void>((done) => {
       commitMutation<RegistrationCreateCreditCardMutation>(this.props.relay.environment, {
         onCompleted: (data, errors) => {
@@ -287,7 +292,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
             }
           }
         `,
-        variables: { input: { token: token.tokenId } },
+        variables: { input: { token: token.id } },
       })
     })
   }

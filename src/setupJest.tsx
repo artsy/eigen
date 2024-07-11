@@ -2,6 +2,8 @@ import { format } from "util"
 import mockAsyncStorage from "@react-native-async-storage/async-storage/jest/async-storage-mock"
 // @ts-expect-error
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js"
+// @ts-expect-error
+import mockStripe from "@stripe/stripe-react-native/jest/mock.js"
 import "@testing-library/jest-native/extend-expect"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
@@ -104,11 +106,7 @@ jest.mock("react-tracking")
 ;(track as jest.Mock).mockImplementation(() => (x: any) => x)
 ;(useTracking as jest.Mock).mockImplementation(() => ({ trackEvent: mockTrackEvent }))
 
-jest.mock("tipsi-stripe", () => ({
-  setOptions: jest.fn(),
-  paymentRequestWithCardForm: jest.fn(),
-  createTokenWithCard: jest.fn(),
-}))
+jest.mock("@stripe/stripe-react-native", () => mockStripe)
 
 jest.mock("sift-react-native", () => ({
   unsetUserId: jest.fn(),

@@ -1,4 +1,5 @@
 import { Text, LinkText, Checkbox, Button } from "@artsy/palette-mobile"
+import { createToken } from "@stripe/stripe-react-native"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { Registration_me$data } from "__generated__/Registration_me.graphql"
 import { Registration_sale$data } from "__generated__/Registration_sale.graphql"
@@ -15,14 +16,16 @@ import * as navigation from "app/system/navigation/navigate"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { TouchableWithoutFeedback } from "react-native"
 import relay from "react-relay"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import stripe from "tipsi-stripe"
 import { BillingAddress } from "./BillingAddress"
 import { CreditCardForm } from "./CreditCardForm"
 import { Registration } from "./Registration"
 
 const commitMutationMock = (fn?: typeof relay.commitMutation) =>
   jest.fn<typeof relay.commitMutation, Parameters<typeof relay.commitMutation>>(fn as any)
+
+jest.mock("@stripe/stripe-react-native", () => ({
+  createToken: jest.fn(),
+}))
 
 let nextStep: any
 const mockNavigator = { push: (route: any) => (nextStep = route), pop: () => null }
@@ -166,8 +169,7 @@ describe("when pressing register button", () => {
         onCompleted?.(mockRequestResponses.qualifiedBidder, null)
         return null
       }) as any
-
-    stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
+    ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
 
     const component = renderWithWrappersLEGACY(
       <Registration {...initialPropsForUserWithoutCreditCardOrPhone} />
@@ -269,8 +271,7 @@ describe("when pressing register button", () => {
       .mockImplementationOnce((_, { onCompleted }) =>
         onCompleted(mockRequestResponses.updateMyUserProfile)
       )
-
-    stripe.createTokenWithCard.mockImplementation(() => {
+    ;(createToken as jest.Mock).mockImplementation(() => {
       throw new Error("Error tokenizing card")
     })
     console.error = jest.fn() // Silences component logging.
@@ -373,8 +374,8 @@ describe("when pressing register button", () => {
 
   it("displays an error message on a creditCardMutation failure", async () => {
     renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCardOrPhone} />)
-
-    stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
+    console.error = jest.fn() // Silences component logging.
+    ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
     relay.commitMutation = commitMutationMock()
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       .mockImplementationOnce((_, { onCompleted }) => {
@@ -411,7 +412,9 @@ describe("when pressing register button", () => {
     renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCardOrPhone} />)
 
     const errors = [{ message: "malformed error" }]
-    stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
+
+    console.error = jest.fn() // Silences component logging.
+    ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
 
     relay.commitMutation = commitMutationMock()
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -449,8 +452,8 @@ describe("when pressing register button", () => {
 
   it("displays an error message on a createCreditCard mutation network failure", async () => {
     renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCardOrPhone} />)
-
-    stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
+    console.error = jest.fn() // Silences component logging.
+    ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
     relay.commitMutation = commitMutationMock()
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       .mockImplementationOnce((_, { onCompleted }) => {
@@ -707,15 +710,17 @@ const billingAddress: Partial<Address> = {
 }
 
 const stripeToken = {
-  tokenId: "fake-token",
-  created: "1528229731",
-  livemode: 0,
-  card: {
-    brand: "VISA",
-    last4: "4242",
+  token: {
+    id: "fake-token",
+    created: "1528229731",
+    livemode: 0,
+    card: {
+      brand: "VISA",
+      last4: "4242",
+    },
+    bankAccount: null,
+    extra: null,
   },
-  bankAccount: null,
-  extra: null,
 }
 
 const sale: Partial<Registration_sale$data> = {

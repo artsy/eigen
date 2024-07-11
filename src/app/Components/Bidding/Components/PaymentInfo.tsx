@@ -1,8 +1,10 @@
 import { bullet } from "@artsy/palette-mobile"
+import { Token } from "@stripe/stripe-react-native"
+import { Card } from "@stripe/stripe-react-native/lib/typescript/src/types/Token"
 import { FlexProps } from "app/Components/Bidding/Elements/Flex"
 import { BillingAddress } from "app/Components/Bidding/Screens/BillingAddress"
 import { CreditCardForm } from "app/Components/Bidding/Screens/CreditCardForm"
-import { Address, PaymentCardTextFieldParams, StripeToken } from "app/Components/Bidding/types"
+import { Address, PaymentCardTextFieldParams } from "app/Components/Bidding/types"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import React from "react"
 import { View } from "react-native"
@@ -12,11 +14,11 @@ import { Divider } from "./Divider"
 
 interface PaymentInfoProps extends FlexProps {
   navigator?: NavigatorIOS
-  onCreditCardAdded: (t: StripeToken, p: PaymentCardTextFieldParams) => void
+  onCreditCardAdded: (t: Token.Result, p: PaymentCardTextFieldParams) => void
   onBillingAddressAdded: (values: Address) => void
   billingAddress?: Address | null
   creditCardFormParams?: PaymentCardTextFieldParams | null
-  creditCardToken?: StripeToken | null
+  creditCardToken?: Token.Result | null
 }
 
 export class PaymentInfo extends React.Component<PaymentInfoProps> {
@@ -29,7 +31,7 @@ export class PaymentInfo extends React.Component<PaymentInfoProps> {
       component: CreditCardForm,
       title: "",
       passProps: {
-        onSubmit: (token: StripeToken, params: PaymentCardTextFieldParams) =>
+        onSubmit: (token: Token.Result, params: PaymentCardTextFieldParams) =>
           this.onCreditCardAdded(token, params),
         params: this.props.creditCardFormParams,
         navigator: this.props.navigator,
@@ -49,7 +51,7 @@ export class PaymentInfo extends React.Component<PaymentInfoProps> {
     })
   }
 
-  onCreditCardAdded(token: StripeToken, params: PaymentCardTextFieldParams) {
+  onCreditCardAdded(token: Token.Result, params: PaymentCardTextFieldParams) {
     this.props.onCreditCardAdded(token, params)
   }
 
@@ -66,7 +68,7 @@ export class PaymentInfo extends React.Component<PaymentInfoProps> {
 
         <BidInfoRow
           label="Credit card"
-          value={token ? this.formatCard(token) : ""}
+          value={token?.card ? this.formatCard(token.card) : ""}
           onPress={() => this.presentCreditCardForm()}
         />
 
@@ -85,8 +87,8 @@ export class PaymentInfo extends React.Component<PaymentInfoProps> {
     )
   }
 
-  private formatCard(token: StripeToken) {
-    return `${token.card.brand} ${bullet}${bullet}${bullet}${bullet} ${token.card.last4}`
+  private formatCard(card: Card) {
+    return `${card.brand} ${bullet}${bullet}${bullet}${bullet} ${card.last4}`
   }
 
   private formatAddress(address: Address) {

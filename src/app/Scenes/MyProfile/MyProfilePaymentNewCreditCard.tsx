@@ -1,24 +1,23 @@
 import { Input } from "@artsy/palette-mobile"
+import { useStripe } from "@stripe/stripe-react-native"
+import { CreateCardTokenParams } from "@stripe/stripe-react-native/lib/typescript/src/types/Token"
 import { MyProfilePaymentNewCreditCardSaveCardMutation } from "__generated__/MyProfilePaymentNewCreditCardSaveCardMutation.graphql"
 import { CountrySelect } from "app/Components/CountrySelect"
+import { CreditCardField } from "app/Components/CreditCardField/CreditCardField"
 import { InputTitle } from "app/Components/Input"
 import { Select } from "app/Components/Select/SelectV2"
 import { Stack } from "app/Components/Stack"
 import { MyAccountFieldEditScreen } from "app/Scenes/MyAccount/Components/MyAccountFieldEditScreen"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { Action, Computed, action, computed, useLocalStore } from "easy-peasy"
-import React, { useEffect, useRef } from "react"
-import { LiteCreditCardInput } from "react-native-credit-card-input"
+import React, { useRef } from "react"
 import { commitMutation, graphql } from "react-relay"
-// @ts-ignore
-import stripe from "tipsi-stripe"
 import { __triggerRefresh } from "./MyProfilePayment"
 
 interface CreditCardInputParams {
-  cvc: string
   expMonth: number
   expYear: number
-  number: string
+  last4: string
 }
 
 interface FormField<Type = string> {
@@ -64,6 +63,8 @@ interface Store {
 }
 
 export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
+  const { createToken } = useStripe()
+
   const [state, actions] = useLocalStore<Store>(() => ({
     fields: {
       creditCard: emptyFieldState(),
@@ -83,8 +84,6 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
     }),
   }))
 
-  const paymentInfoRef = useRef<any>(null)
-
   const addressLine1Ref = useRef<Input>(null)
   const addressLine2Ref = useRef<Input>(null)
   const cityRef = useRef<Input>(null)
@@ -92,12 +91,22 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
   const stateRef = useRef<Input>(null)
   const countryRef = useRef<Select<any>>(null)
 
-  // focus top field on mount
-  useEffect(() => {
-    paymentInfoRef.current?.focus()
-  }, [])
-
   const screenRef = useRef<MyAccountFieldEditScreen>(null)
+
+  const buildTokenParams = (): CreateCardTokenParams => {
+    return {
+      type: "Card",
+      name: state.fields.fullName.value ?? undefined,
+      address: {
+        line1: state.fields.addressLine1.value ?? undefined,
+        line2: state.fields.addressLine2.value ?? undefined,
+        city: state.fields.city.value ?? undefined,
+        state: state.fields.state.value ?? undefined,
+        country: state.fields.country.value ?? undefined,
+        postalCode: state.fields.postCode.value ?? undefined,
+      },
+    }
+  }
 
   return (
     <MyAccountFieldEditScreen
@@ -106,22 +115,16 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
       title="Add new card"
       onSave={async (dismiss, alert) => {
         try {
-          const stripeResult = await stripe.createTokenWithCard({
-            ...state.fields.creditCard.value?.params,
-            name: state.fields.fullName.value,
-            addressLine1: state.fields.addressLine1.value,
-            addressLine2: state.fields.addressLine2.value,
-            addressCity: state.fields.city.value,
-            addressState: state.fields.state.value,
-            addressCountry: state.fields.country.value,
-            addressZip: state.fields.postCode.value,
-          })
-          if (!stripeResult?.tokenId) {
+          const tokenBody = buildTokenParams()
+          const stripeResult = await createToken(tokenBody)
+          const tokenId = stripeResult.token?.id
+
+          if (!stripeResult || stripeResult.error || !tokenId) {
             throw new Error(
-              `Unexpected stripe card tokenization result ${JSON.stringify(stripeResult)}`
+              `Unexpected stripe card tokenization result ${JSON.stringify(stripeResult.error)}`
             )
           }
-          const gravityResult = await saveCreditCard(stripeResult.tokenId)
+          const gravityResult = await saveCreditCard(tokenId)
           if (gravityResult.createCreditCard?.creditCardOrError?.creditCard) {
             await __triggerRefresh?.()
           } else {
@@ -144,16 +147,14 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
       <Stack spacing={2}>
         <>
           <InputTitle>Credit Card</InputTitle>
-          <LiteCreditCardInput
-            ref={paymentInfoRef}
-            onChange={(e) => {
+          <CreditCardField
+            onCardChange={(cardDetails) => {
               actions.fields.creditCard.setValue({
-                valid: e.valid,
+                valid: cardDetails.complete,
                 params: {
-                  cvc: e.values.cvc,
-                  expMonth: Number(e.values.expiry.split("/")[0]),
-                  expYear: Number(e.values.expiry.split("/")[1]),
-                  number: e.values.number,
+                  expMonth: cardDetails.expiryMonth,
+                  expYear: cardDetails.expiryYear,
+                  last4: cardDetails.last4,
                 },
               })
             }}

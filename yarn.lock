@@ -4094,6 +4094,11 @@
     "@stdlib/utils-constructor-name" "^0.0.x"
     "@stdlib/utils-global" "^0.0.x"
 
+"@stripe/stripe-react-native@0.36.0":
+  version "0.36.0"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-react-native/-/stripe-react-native-0.36.0.tgz#280861d92bd510aaee770a25dabd3c568e02a945"
+  integrity sha512-l14V50crusdPRbDERVdtCAuG83HhsYVCwytftnzWzkkXW0tdY/7qvvC/EPulBENhbI+g0cwEN3J9u8jRG/vUQw==
+
 "@styled-system/background@^5.1.2":
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/@styled-system/background/-/background-5.1.2.tgz#75c63d06b497ab372b70186c0bf608d62847a2ba"
@@ -5981,14 +5986,6 @@ caniuse-lite@^1.0.30001565:
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001576.tgz#893be772cf8ee6056d6c1e2d07df365b9ec0a5c4"
   integrity sha512-ff5BdakGe2P3SQsMsiqmt1Lc8221NR1VzHj5jXN5vBny9A6fpze94HiVV/n7XRosOlsShJcvMv5mdnpjOGCEgg==
 
-card-validator@^3.0.0:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/card-validator/-/card-validator-3.0.1.tgz#dcc2fabd6a1cd21f361b2536423a72de99a0894f"
-  integrity sha1-3ML6vWoc0h82GyU2Qjpy3pmgiU8=
-  dependencies:
-    credit-card-type "^5.0.0"
-    lodash "3.10.1"
-
 chalk@*, chalk@^4.0.0, chalk@^4.1.0, chalk@^4.1.1, chalk@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-4.1.2.tgz#aac4e2b7734a740867aeb16bf02aad556a1e7a01"
@@ -6404,11 +6401,6 @@ cosmiconfig@^6.0.0:
     parse-json "^5.0.0"
     path-type "^4.0.0"
     yaml "^1.7.2"
-
-credit-card-type@^5.0.0:
-  version "5.0.4"
-  resolved "https://registry.yarnpkg.com/credit-card-type/-/credit-card-type-5.0.4.tgz#2dd9df280411ce2bb91ed95ac31e814605717aed"
-  integrity sha1-LdnfKAQRziu5Htlawx6BRgVxeu0=
 
 cross-fetch@^3.0.4, cross-fetch@^3.1.5:
   version "3.1.6"
@@ -10202,11 +10194,6 @@ jest@29.3.1:
     import-local "^3.0.2"
     jest-cli "^29.3.1"
 
-jetifier@1.6.6:
-  version "1.6.6"
-  resolved "https://registry.yarnpkg.com/jetifier/-/jetifier-1.6.6.tgz#fec8bff76121444c12dc38d2dad6767c421dab68"
-  integrity sha512-JNAkmPeB/GS2tCRqUzRPsTOHpGDah7xP18vGJfIjZC+W2sxEHbxgJxetIjIqhjQ3yYbYNEELkM/spKLtwoOSUQ==
-
 jimp@^0.16.1:
   version "0.16.1"
   resolved "https://registry.yarnpkg.com/jimp/-/jimp-0.16.1.tgz#192f851a30e5ca11112a3d0aa53137659a78ca7a"
@@ -10654,11 +10641,6 @@ lodash-es@^4.17.11, lodash-es@^4.17.21:
   resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
   integrity sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==
 
-lodash.compact@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/lodash.compact/-/lodash.compact-3.0.1.tgz#540ce3837745975807471e16b4a2ba21e7256ca5"
-  integrity sha1-VAzjg3dFl1gHRx4WtKK6IeclbKU=
-
 lodash.debounce@4.0.8, lodash.debounce@^4.0.8:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
@@ -10668,11 +10650,6 @@ lodash.deburr@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/lodash.deburr/-/lodash.deburr-4.1.0.tgz#ddb1bbb3ef07458c0177ba07de14422cb033ff9b"
   integrity sha1-3bG7s+8HRYwBd7oH3hRCLLAz/5s=
-
-lodash.every@^4.6.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/lodash.every/-/lodash.every-4.6.0.tgz#eb89984bebc4364279bb3aefbbd1ca19bfa6c6a7"
-  integrity sha1-64mYS+vENkJ5uzrvu9HKGb+mxqc=
 
 lodash.find@^4.6.0:
   version "4.6.0"
@@ -10719,11 +10696,6 @@ lodash.merge@^4.6.2:
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
   integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
 
-lodash.pick@^4.4.0:
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/lodash.pick/-/lodash.pick-4.4.0.tgz#52f05610fff9ded422611441ed1fc123a03001b3"
-  integrity sha1-UvBWEP/53tQiYRRB7R/BI6AwAbM=
-
 lodash.set@^4.3.2:
   version "4.3.2"
   resolved "https://registry.yarnpkg.com/lodash.set/-/lodash.set-4.3.2.tgz#d8757b1da807dde24816b0d6a84bea1a76230b23"
@@ -10743,16 +10715,6 @@ lodash.upperfirst@^4.3.1:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/lodash.upperfirst/-/lodash.upperfirst-4.3.1.tgz#1365edf431480481ef0d1c68957a5ed99d49f7ce"
   integrity sha1-E2Xt9DFIBIHvDRxolXpe2Z1J984=
-
-lodash.values@^4.3.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/lodash.values/-/lodash.values-4.3.0.tgz#a3a6c2b0ebecc5c2cba1c17e6e620fe81b53d347"
-  integrity sha1-o6bCsOvsxcLLocF+bmIP6BtT00c=
-
-lodash@3.10.1:
-  version "3.10.1"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
-  integrity sha1-W/Rejkm6QYnhfUgnid/RW9FAt7Y=
 
 lodash@4.17.21, lodash@^4.17.11, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.17.4:
   version "4.17.21"
@@ -12370,7 +12332,7 @@ prompts@^2.0.1, prompts@^2.4.0:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@*, prop-types@15.8.1, prop-types@^15.5.10, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.7.2, prop-types@^15.8.1:
+prop-types@*, prop-types@15.8.1, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.7.2, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -12642,19 +12604,6 @@ react-native-collapsible-tab-view@^7.0.1:
   version "1.10.0"
   resolved "git+https://github.com/artsy/react-native-context-menu-view.git#e5a6bf3abba774936cac9ae2988704f0d7443c14"
 
-react-native-credit-card-input@0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/react-native-credit-card-input/-/react-native-credit-card-input-0.4.1.tgz#e62dd1a9beeab6787e5373ba23b93831cbf5f3de"
-  integrity sha512-4+AZLLD5Z7ZTBnbH2aQFSXE2O8bypJu7Fi9EnKvZvSASRgwIkViueswh/Lp5LRi+i/TlXqWEERo+qnTTVntCjg==
-  dependencies:
-    card-validator "^3.0.0"
-    lodash.compact "^3.0.1"
-    lodash.every "^4.6.0"
-    lodash.pick "^4.4.0"
-    lodash.values "^4.3.0"
-    prop-types "^15.6.0"
-    react-native-flip-card "^3.4.1"
-
 react-native-dev-menu-android@1.0.10:
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/react-native-dev-menu-android/-/react-native-dev-menu-android-1.0.10.tgz#3261ed0a026b061631c176bce97a7ff347d91019"
@@ -12674,13 +12623,6 @@ react-native-fbsdk-next@13.0.0:
   version "13.0.0"
   resolved "https://registry.yarnpkg.com/react-native-fbsdk-next/-/react-native-fbsdk-next-13.0.0.tgz#d44d29352c2677626479dcd333b7a1671f04a1dc"
   integrity sha512-Bfe2xFbtBPyX3aCgxb+NBGH9pLvb0NnlUnALkmkIU2++imdJN+aUpXRpMGyGm+OqApAEcELNBytYh9W3anR58g==
-
-react-native-flip-card@^3.4.1:
-  version "3.5.6"
-  resolved "https://registry.yarnpkg.com/react-native-flip-card/-/react-native-flip-card-3.5.6.tgz#de26f0285aa6f8ee10bb4b696c60c6fb43bb580f"
-  integrity sha512-lqsjl4vF5DyHD7mjBJpyBoaLKVxalzoKfCosE63QF+TaCF9MKdJrxmGFQj/i64GDiMJqeS/5sNDcICUXtgFsVA==
-  dependencies:
-    prop-types "^15.5.10"
 
 react-native-flipper-performance-plugin@0.4.0:
   version "0.4.0"
@@ -14088,16 +14030,7 @@ string-natural-compare@^3.0.1:
   resolved "https://registry.yarnpkg.com/string-natural-compare/-/string-natural-compare-3.0.1.tgz#7a42d58474454963759e8e8b7ae63d71c1e7fdf4"
   integrity sha512-n3sPwynL1nwKi3WJ6AIsClwBMa0zTi54fn2oLU6ndfTSIO05xaznjSf15PcBZU6FNWbmN5Q6cxT4V5hGvB4taw==
 
-"string-width-cjs@npm:string-width@^4.2.0":
-  version "4.2.3"
-  resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
-  integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
-  dependencies:
-    emoji-regex "^8.0.0"
-    is-fullwidth-code-point "^3.0.0"
-    strip-ansi "^6.0.1"
-
-string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
+"string-width-cjs@npm:string-width@^4.2.0", string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
   integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
@@ -14211,7 +14144,7 @@ stringify-entities@^3.1.0:
     character-entities-legacy "^1.0.0"
     xtend "^4.0.0"
 
-"strip-ansi-cjs@npm:strip-ansi@^6.0.1":
+"strip-ansi-cjs@npm:strip-ansi@^6.0.1", strip-ansi@^6.0.0, strip-ansi@^6.0.1:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
   integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
@@ -14224,13 +14157,6 @@ strip-ansi@^5.0.0, strip-ansi@^5.2.0:
   integrity sha512-DuRs1gKbBqsMKIZlrffwlug8MHkcnpjs5VPmL1PAh+mA30U0DTotfDZ0d2UUsXpPmPmMMJ6W773MaA3J+lbiWA==
   dependencies:
     ansi-regex "^4.1.0"
-
-strip-ansi@^6.0.0, strip-ansi@^6.0.1:
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
-  integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
-  dependencies:
-    ansi-regex "^5.0.1"
 
 strip-ansi@^7.0.1:
   version "7.0.1"
@@ -14532,10 +14458,6 @@ tinycolor2@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/tinycolor2/-/tinycolor2-1.4.1.tgz#f4fad333447bc0b07d4dc8e9209d8f39a8ac77e8"
   integrity sha1-9PrTM0R7wLB9TcjpIJ2POaisd+g=
-
-"tipsi-stripe@https://github.com/artsy/tipsi-stripe.git#fix-infinite-loop":
-  version "7.5.0"
-  resolved "https://github.com/artsy/tipsi-stripe.git#aeb742baf1a8329ba371d9c94c7650104a112807"
 
 tmp@0.2.1:
   version "0.2.1"
@@ -15594,7 +15516,7 @@ word-wrap@^1.2.3, word-wrap@~1.2.3:
   resolved "https://registry.yarnpkg.com/word-wrap/-/word-wrap-1.2.4.tgz#cb4b50ec9aca570abd1f52f33cd45b6c61739a9f"
   integrity sha512-2V81OA4ugVo5pRo46hAoD2ivUJx8jXmWXfUkY4KFNw0hEptvN0QfH3K4nHiwzGeKl5rFKedV48QVoqYavy4YpA==
 
-"wrap-ansi-cjs@npm:wrap-ansi@^7.0.0":
+"wrap-ansi-cjs@npm:wrap-ansi@^7.0.0", wrap-ansi@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
   integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==
@@ -15607,15 +15529,6 @@ wrap-ansi@^6.2.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-6.2.0.tgz#e9393ba07102e6c91a3b221478f0257cd2856e53"
   integrity sha512-r6lPcBGxZXlIcymEu7InxDMhdW0KDxpLgoFLcguasxCaJ/SOIZwINatK9KY/tf+ZrlywOKU0UDj3ATXUBfxJXA==
-  dependencies:
-    ansi-styles "^4.0.0"
-    string-width "^4.1.0"
-    strip-ansi "^6.0.0"
-
-wrap-ansi@^7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
-  integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==
   dependencies:
     ansi-styles "^4.0.0"
     string-width "^4.1.0"

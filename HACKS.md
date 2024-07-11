@@ -60,16 +60,6 @@ When we upgrade our deps to a version of react-native that includes removal of d
 
 When updating to rn-0.69.10 we had to patch this due to deprecation of PropTypes. For this reason we also installed `deprecated-react-native-prop-types` to avoid errors and we patched the `react-native` package to use the deprecated PropTypes coming from the `deprecated-react-native-prop-types` package.
 
-## react-native-credit-card-input
-
-#### When can we remove this:
-
-When we upgrade our deps to a version of react-native that includes removal of deprecated PropTypes.
-
-#### Explanation/Context:
-
-When updating to rn-0.69.10 we had to patch this due to deprecation of PropTypes. For this reason we also installed `deprecated-react-native-prop-types` to avoid errors and we patched the `react-native` package to use the deprecated PropTypes coming from the `deprecated-react-native-prop-types` package.
-
 ## react-native-image-crop-picker getRootVC patch
 
 #### When can we remove this:
@@ -162,22 +152,6 @@ There are two hacks here:
 
 - We hack the output of the compiler to provide clickable links for error messages. Relay assumes that you put your `__generated__` folder in the root of your project, but we put it in `src`.
 - We make sure that files which do not change are not overwritten. This prevents excessive reloading by metro.
-
-## react-native-credit-card-input
-
-#### When can we remove this:
-
-We can remove these hacks once we switch to Stripe's forthcoming official react-native library.
-
-#### Explanation/Context:
-
-These are fairly superficial styling hacks for
-
-- focused/error border states
-- shrinking the icon size to work nicely with our inputs
-- aligning inner inputs nicely
-- icon animation to work properly on android
-- palette v3 colors
 
 # android Input placeholder measuring hack
 

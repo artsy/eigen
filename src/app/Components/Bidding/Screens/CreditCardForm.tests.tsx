@@ -1,140 +1,216 @@
-import { Text, Button } from "@artsy/palette-mobile"
+import { createToken } from "@stripe/stripe-react-native"
+import { Details } from "@stripe/stripe-react-native/lib/typescript/src/types/components/CardFieldInput"
+import { fireEvent } from "@testing-library/react-native"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-// @ts-expect-error
-import stripe from "tipsi-stripe"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { CreditCardForm } from "./CreditCardForm"
-
-jest.mock("tipsi-stripe", () => ({
-  setOptions: jest.fn(),
-  PaymentCardTextField: () => "PaymentCardTextField",
-  createTokenWithCard: jest.fn(),
-}))
-
-const onSubmitMock = jest.fn()
-
-const originalConsoleError = console.error
-
-afterEach(() => {
-  console.error = originalConsoleError
-})
-
-it("renders without throwing an error", () => {
-  renderWithWrappersLEGACY(
-    <CreditCardForm navigator={{ push: () => null } as any} onSubmit={onSubmitMock} />
-  )
-})
-
-it("calls the onSubmit() callback with valid credit card when ADD CREDIT CARD is tapped", async () => {
-  stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
-  const wrappedComponent = renderWithWrappersLEGACY(
-    <CreditCardForm
-      onSubmit={onSubmitMock}
-      navigator={
-        {
-          pop: () => null,
-        } as any
-      }
-    />
-  )
-
-  const component = wrappedComponent.root.findByType(CreditCardForm)
-  component.instance.setState({ valid: true, params: creditCard })
-  component.findByType(Button).props.onPress()
-
-  await flushPromiseQueue()
-
-  expect(onSubmitMock).toHaveBeenCalledWith(stripeToken, creditCard)
-})
-
-it("is disabled while the form is invalid", () => {
-  stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
-  jest.useFakeTimers({
-    legacyFakeTimers: true,
-  })
-  const wrappedComponent = renderWithWrappersLEGACY(
-    <CreditCardForm
-      onSubmit={onSubmitMock}
-      navigator={
-        {
-          pop: () => null,
-        } as any
-      }
-    />
-  )
-
-  const component = wrappedComponent.root.findByType(CreditCardForm)
-  component.instance.setState({ valid: false, params: creditCard })
-  expect(component.findByType(Button).props.disabled).toEqual(true)
-})
-
-it("is enabled while the form is valid", () => {
-  stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
-  jest.useFakeTimers({
-    legacyFakeTimers: true,
-  })
-  const wrappedComponent = renderWithWrappersLEGACY(
-    <CreditCardForm
-      onSubmit={onSubmitMock}
-      navigator={
-        {
-          pop: () => null,
-        } as any
-      }
-    />
-  )
-
-  const component = wrappedComponent.root.findByType(CreditCardForm)
-  component.instance.setState({ valid: true, params: creditCard })
-  expect(component.findByType(Button).props.disabled).toEqual(false)
-})
-
-it("shows an error when stripe's API returns an error", () => {
-  console.error = jest.fn()
-
-  stripe.createTokenWithCard = jest.fn()
-  stripe.createTokenWithCard.mockImplementationOnce(() => {
-    throw new Error("Error tokenizing card")
-  })
-  jest.useFakeTimers({
-    legacyFakeTimers: true,
-  })
-  const wrappedComponent = renderWithWrappersLEGACY(
-    <CreditCardForm
-      onSubmit={onSubmitMock}
-      navigator={
-        {
-          pop: () => null,
-        } as any
-      }
-    />
-  )
-
-  const component = wrappedComponent.root.findByType(CreditCardForm)
-  component.instance.setState({ valid: true, params: creditCard })
-  component.findByType(Button).props.onPress()
-
-  // jest.runAllTicks()
-  expect(component.findAllByType(Text)[2].props.children).toEqual(
-    "There was an error. Please try again."
-  )
-})
 
 const creditCard = {
   number: "4242424242424242",
-  expMonth: "04",
-  expYear: "20",
+  expiryMonth: 4,
+  expiryYear: 20,
   cvc: "314",
+  last4: "4242",
 }
 
-const stripeToken = {
-  tokenId: "fake-token",
-  created: "1528229731",
-  livemode: 0,
-  card: {
-    brand: "VISA",
-    last4: "4242",
-  },
-  bankAccount: null,
-  extra: null,
-}
+jest.mock("@stripe/stripe-react-native", () => {
+  const { TextInput } = require("react-native")
+  return {
+    CardField: ({
+      onCardChange,
+      testID,
+    }: {
+      onCardChange: (card: Details) => void
+      testID: string
+    }) => (
+      <TextInput
+        testID={testID}
+        onChangeText={(text: string) => {
+          const validCard = text === "4242424242424242"
+          onCardChange({
+            complete: validCard,
+            ...creditCard,
+            validCVC: "Valid" as any,
+            validExpiryDate: "Valid" as any,
+            validNumber: "Valid" as any,
+            brand: "Visa",
+          })
+        }}
+      />
+    ),
+    createToken: jest.fn(),
+  }
+})
+
+describe("CreditCardForm", () => {
+  const stripeToken = {
+    token: {
+      id: "fake-token",
+      created: "1528229731",
+      livemode: 0,
+      card: {
+        brand: "VISA",
+        last4: "4242",
+      },
+      bankAccount: null,
+      extra: null,
+    },
+  }
+
+  const originalConsoleError = console.error
+
+  afterEach(() => {
+    console.error = originalConsoleError
+    jest.clearAllMocks()
+    jest.resetAllMocks()
+  })
+
+  it("renders without throwing an error", () => {
+    const onSubmitMock = jest.fn()
+
+    renderWithWrappers(
+      <CreditCardForm navigator={{ push: () => null } as any} onSubmit={onSubmitMock} />
+    )
+  })
+
+  it("calls the onSubmit() callback with valid credit card when ADD CREDIT CARD is tapped", async () => {
+    const onSubmitMock = jest.fn()
+
+    ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
+
+    const { getByTestId } = renderWithWrappers(
+      <CreditCardForm
+        onSubmit={onSubmitMock}
+        navigator={
+          {
+            pop: () => null,
+          } as any
+        }
+      />
+    )
+
+    const creditCardField = getByTestId("credit-card-field")
+    fireEvent.changeText(creditCardField, creditCard.number)
+
+    const addButton = getByTestId("add-credit-card-button")
+
+    fireEvent.press(addButton)
+
+    await flushPromiseQueue()
+
+    expect(onSubmitMock).toHaveBeenCalledWith(stripeToken.token, {
+      expiryMonth: creditCard.expiryMonth,
+      expiryYear: creditCard.expiryYear,
+      last4: creditCard.last4,
+    })
+  })
+
+  it("is does not call onSubmit while the form is invalid", async () => {
+    const onSubmitMock = jest.fn()
+
+    ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
+
+    const { getByTestId } = renderWithWrappers(
+      <CreditCardForm
+        onSubmit={onSubmitMock}
+        navigator={
+          {
+            pop: () => null,
+          } as any
+        }
+      />
+    )
+
+    const creditCardField = getByTestId("credit-card-field")
+    fireEvent.changeText(creditCardField, "4242") // incomplete number
+
+    await flushPromiseQueue()
+
+    const addButton = getByTestId("add-credit-card-button")
+
+    fireEvent.press(addButton)
+
+    expect(onSubmitMock).not.toHaveBeenCalled()
+  })
+
+  it("is is disabled while the form is invalid", async () => {
+    const onSubmitMock = jest.fn()
+
+    ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
+
+    const { getByTestId } = renderWithWrappers(
+      <CreditCardForm
+        onSubmit={onSubmitMock}
+        navigator={
+          {
+            pop: () => null,
+          } as any
+        }
+      />
+    )
+
+    const creditCardField = getByTestId("credit-card-field")
+    fireEvent.changeText(creditCardField, "4242") // incomplete number
+
+    await flushPromiseQueue()
+
+    const addButton = getByTestId("add-credit-card-button")
+
+    expect(addButton.props.accessibilityState.disabled).toEqual(true)
+  })
+
+  it("is enabled while the form is valid", async () => {
+    const onSubmitMock = jest.fn()
+
+    ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
+
+    const { getByTestId } = renderWithWrappers(
+      <CreditCardForm
+        onSubmit={onSubmitMock}
+        navigator={
+          {
+            pop: () => null,
+          } as any
+        }
+      />
+    )
+
+    const creditCardField = getByTestId("credit-card-field")
+    fireEvent.changeText(creditCardField, creditCard.number)
+
+    await flushPromiseQueue()
+
+    const addButton = getByTestId("add-credit-card-button")
+
+    expect(addButton.props.accessibilityState.disabled).toEqual(false)
+  })
+
+  it("shows an error when stripe's API returns an error", async () => {
+    const onSubmitMock = jest.fn()
+
+    console.error = jest.fn()
+    ;(createToken as jest.Mock).mockResolvedValueOnce({ error: "error" })
+
+    const { getByTestId } = renderWithWrappers(
+      <CreditCardForm
+        onSubmit={onSubmitMock}
+        navigator={
+          {
+            pop: () => null,
+          } as any
+        }
+      />
+    )
+
+    const creditCardField = getByTestId("credit-card-field")
+    fireEvent.changeText(creditCardField, creditCard.number)
+
+    const addButton = getByTestId("add-credit-card-button")
+    fireEvent.press(addButton)
+
+    await flushPromiseQueue()
+
+    const errorMessage = getByTestId("error-message")
+    expect(errorMessage.props.children).toEqual("There was an error. Please try again.")
+  })
+})
