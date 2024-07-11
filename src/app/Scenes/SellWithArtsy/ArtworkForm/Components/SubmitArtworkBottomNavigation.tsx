@@ -8,7 +8,6 @@ import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubm
 import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { dismissModal, navigate, popToRoot, switchTab } from "app/system/navigation/navigate"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useIsKeyboardVisible } from "app/utils/hooks/useIsKeyboardVisible"
 import { useFormikContext } from "formik"
 import { useEffect } from "react"
@@ -41,7 +40,6 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
   const allPhotosAreValid = values.photos.every(
     (photo: Photo) => !photo.error && !photo.errorMessage
   )
-  const showStartFromMyCollection = useFeatureFlag("AREnableSubmitMyCollectionArtworkInSubmitFlow")
 
   const handleBackPress = () => {
     trackTappedSubmissionBack(values.submissionId, currentStep)
@@ -81,20 +79,18 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
         >
           Start New Submission
         </Button>
-        {!!showStartFromMyCollection && (
-          <Button
-            onPress={() => {
-              trackTappedStartMyCollection()
-              navigation.navigate("SubmitArtworkFromMyCollection")
-              setCurrentStep("SubmitArtworkFromMyCollection")
-            }}
-            block
-            mt={2}
-            variant="outline"
-          >
-            Start from My Collection
-          </Button>
-        )}
+        <Button
+          onPress={() => {
+            trackTappedStartMyCollection()
+            navigation.navigate("SubmitArtworkFromMyCollection")
+            setCurrentStep("SubmitArtworkFromMyCollection")
+          }}
+          block
+          mt={2}
+          variant="outline"
+        >
+          Start from My Collection
+        </Button>
       </Wrapper>
     )
   }

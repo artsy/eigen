@@ -265,12 +265,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "ARSWAMakeAllDimensionsOptional",
   },
-  AREnableSubmitMyCollectionArtworkInSubmitFlow: {
-    description: "Enable Start Submission from My Collection in submit artwork flow",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableSubmitMyCollectionArtworkInSubmitFlowNew",
-  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
