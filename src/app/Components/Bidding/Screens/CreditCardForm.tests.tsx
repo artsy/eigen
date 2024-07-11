@@ -26,28 +26,15 @@ jest.mock("@stripe/stripe-react-native", () => {
       <TextInput
         testID={testID}
         onChangeText={(text: string) => {
-          if (text === "4242424242424242") {
-            // valid card
-            onCardChange({
-              complete: true,
-              ...creditCard,
-              validCVC: "Valid" as any,
-              validExpiryDate: "Valid" as any,
-              validNumber: "Valid" as any,
-              brand: "Visa",
-            })
-          } else {
-            console.log("Invalid card")
-            // invalid card
-            onCardChange({
-              complete: false,
-              ...creditCard,
-              validCVC: "Valid" as any,
-              validExpiryDate: "Valid" as any,
-              validNumber: "Valid" as any,
-              brand: "Visa",
-            })
-          }
+          const validCard = text === "4242424242424242"
+          onCardChange({
+            complete: validCard,
+            ...creditCard,
+            validCVC: "Valid" as any,
+            validExpiryDate: "Valid" as any,
+            validNumber: "Valid" as any,
+            brand: "Visa",
+          })
         }}
       />
     ),
