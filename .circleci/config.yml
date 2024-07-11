@@ -119,7 +119,7 @@ commands:
           at: ../workspace
       - restore_cache:
           keys:
-            - v11-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+            - v12-test-success-{{ checksum "../workspace/.manifests/android_native" }}
       - android/change-java-version:
           java-version: 11
       - run:
@@ -148,7 +148,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v5-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
+            - v6-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
       - generate-query-map
       - run:
           name: Download fonts from s3
@@ -160,7 +160,7 @@ commands:
           name: Build App
           command: ./scripts/ci/ci-android
       - save_cache:
-          key: v5-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
+          key: v6-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
           paths:
             - android/build
             - android/app/build
@@ -454,7 +454,7 @@ jobs:
           prefix: android-build
 
       - save_cache:
-          key: v11-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+          key: v12-test-success-{{ checksum "../workspace/.manifests/android_native" }}
           paths:
             - build-success.log
       - run:
