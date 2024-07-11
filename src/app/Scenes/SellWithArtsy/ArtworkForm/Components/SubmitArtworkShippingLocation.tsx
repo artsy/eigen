@@ -27,12 +27,7 @@ export const SubmitArtworkShippingLocation = () => {
       try {
         setIsLoading(true)
 
-        // await createOrUpdateSubmission(
-        //   {
-        //     // values you want to update
-        //   },
-        //   values.submissionId
-        // )
+        // Make API call to update submission
 
         navigation.navigate("FrameInformation")
         setCurrentStep("FrameInformation")

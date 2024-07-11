@@ -34,46 +34,28 @@ export const SubmitArtworkAddPhoneNumber = () => {
       try {
         setIsLoading(true)
 
-        await createOrUpdateSubmission(
-          {
-            userPhone: values.userPhone,
-            state: "SUBMITTED",
-          },
-          values.submissionId
-        )
+        const nextStep = values.state === "DRAFT" ? "ShippingLocation" : "CompleteYourSubmission"
+        const newValues = {
+          userPhone: values.userPhone,
+          state: values.state === "DRAFT" ? "SUBMITTED" : undefined,
+        } as const
 
-        if (values.state === "APPROVED") {
-          await createOrUpdateSubmission(
-            {
-              userPhone: values.userPhone,
-            },
-            values.submissionId
-          )
-          // If the submission is approved, navigate straight to the tier 2 steps
-          navigation.navigate("ShippingLocation")
-          setCurrentStep("ShippingLocation")
-        } else {
-          await createOrUpdateSubmission(
-            {
-              userPhone: values.userPhone,
-              state: "SUBMITTED",
-            },
-            values.submissionId
-          )
-          navigation.navigate("CompleteYourSubmission")
-          setCurrentStep("CompleteYourSubmission")
+        await createOrUpdateSubmission(newValues, values.submissionId)
+
+        navigation.navigate(nextStep)
+        setCurrentStep(nextStep)
+
+        if (nextStep === "CompleteYourSubmission") {
+          // Reset saved draft if submission is successful
+          GlobalStore.actions.artworkSubmission.setDraft(null)
+          // Refetch associated My Collection artwork to display the updated submission status on the artwork screen.
+          if (values.myCollectionArtworkID) {
+            await updateMyCollectionArtwork({
+              artworkID: values.myCollectionArtworkID,
+            })
+          }
+          refreshMyCollection()
         }
-
-        // Reset saved draft if submission is successful
-        GlobalStore.actions.artworkSubmission.setDraft(null)
-        // Refetch associated My Collection artwork to display the updated submission status on the artwork screen.
-        if (values.myCollectionArtworkID) {
-          await updateMyCollectionArtwork({
-            artworkID: values.myCollectionArtworkID,
-          })
-        }
-
-        refreshMyCollection()
       } catch (error) {
         console.error("Error setting title", error)
         showToast("Could not save your submission, please try again.", "bottom", {

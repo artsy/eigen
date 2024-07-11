@@ -26,12 +26,7 @@ export const SubmitArtworkCondition = () => {
       try {
         setIsLoading(true)
 
-        // await createOrUpdateSubmission(
-        //   {
-        //     // values you want to update
-        //   },
-        //   values.submissionId
-        // )
+        // Make API call to update submission
 
         navigation.navigate("CompleteYourSubmission")
         setCurrentStep("CompleteYourSubmission")

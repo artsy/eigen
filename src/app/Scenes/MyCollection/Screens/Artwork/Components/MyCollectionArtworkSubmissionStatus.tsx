@@ -73,7 +73,7 @@ export const MyCollectionArtworkSubmissionStatus: React.FC<
                   initialValues: {},
                 }
 
-                navigate(`/sell/submissions/${submissionId}/edit?initialStep=AddTitle`, {
+                navigate(`/sell/submissions/${submissionId}/edit`, {
                   passProps,
                 })
               }}

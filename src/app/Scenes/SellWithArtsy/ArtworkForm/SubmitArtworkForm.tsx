@@ -247,10 +247,18 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
             <Stack.Screen name="AddPhoneNumber" component={SubmitArtworkAddPhoneNumber} />
 
             {formik.values.state === "APPROVED" && (
-              <Stack.Screen name="ShippingLocation" component={SubmitArtworkShippingLocation} />
+              <>
+                <Stack.Screen name="ShippingLocation" component={SubmitArtworkShippingLocation} />
+                <Stack.Screen name="FrameInformation" component={SubmitArtworkFrameInformation} />
+                <Stack.Screen
+                  name="AdditionalDocuments"
+                  component={SubmitArtworkAdditionalDocuments}
+                />
+                <Stack.Screen name="Condition" component={SubmitArtworkCondition} />
+              </>
             )}
 
-            {formik.values.state === "APPROVED" && (
+            {/* {formik.values.state === "APPROVED" && (
               <Stack.Screen name="FrameInformation" component={SubmitArtworkFrameInformation} />
             )}
 
@@ -263,7 +271,7 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
 
             {formik.values.state === "APPROVED" && (
               <Stack.Screen name="Condition" component={SubmitArtworkCondition} />
-            )}
+            )} */}
             <Stack.Screen
               name="CompleteYourSubmission"
               component={SubmitArtworkCompleteYourSubmission}
