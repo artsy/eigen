@@ -105,7 +105,6 @@ export const CreditCardField: React.FC<CreditCardFieldProps> = ({ onCardChange }
           postalCodeEnabled={false}
           onCardChange={(cardDetails) => {
             setCardDetails(cardDetails)
-            console.log(cardDetails)
             onCardChange?.(cardDetails)
           }}
           onFocus={() => setIsFocused(true)}
