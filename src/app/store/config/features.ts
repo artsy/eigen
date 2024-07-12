@@ -265,6 +265,11 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "ARSWAMakeAllDimensionsOptional",
   },
+  AREnableSubmitArtworkTier2Information: {
+    description: "Enable submit artwork tier 2 information",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {

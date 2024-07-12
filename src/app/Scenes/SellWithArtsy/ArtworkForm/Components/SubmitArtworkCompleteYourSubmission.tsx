@@ -1,8 +1,11 @@
 import { Flex, Message, Spacer, Text } from "@artsy/palette-mobile"
+import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { useFormikContext } from "formik"
 import { useEffect } from "react"
 import { BackHandler, ScrollView } from "react-native"
 
 export const SubmitArtworkCompleteYourSubmission = () => {
+  const { values } = useFormikContext<ArtworkDetailsFormModel>()
   // Do not allow the user to go back when pressing the back button on Android
   useEffect(() => {
     const subscription = BackHandler.addEventListener("hardwareBackPress", () => {
@@ -11,6 +14,28 @@ export const SubmitArtworkCompleteYourSubmission = () => {
 
     return () => subscription.remove()
   }, [])
+
+  if (values.state === "APPROVED") {
+    return (
+      <Flex px={2} flex={1}>
+        <ScrollView>
+          <Flex>
+            <Flex mb={2} flexDirection="row">
+              <Flex flex={1} pr={1}>
+                <Text variant="lg-display">Thank you for listing your artwork</Text>
+              </Flex>
+            </Flex>
+          </Flex>
+
+          <Text variant="xs">Lorem ipsum dolor sit amet</Text>
+
+          <Spacer y={2} />
+
+          <Message title="What happens next?" variant="success" text="Lorem ipsum dolor sit amet" />
+        </ScrollView>
+      </Flex>
+    )
+  }
 
   return (
     <Flex px={2} flex={1}>

@@ -34,27 +34,28 @@ export const SubmitArtworkAddPhoneNumber = () => {
       try {
         setIsLoading(true)
 
-        await createOrUpdateSubmission(
-          {
-            userPhone: values.userPhone,
-            state: "SUBMITTED",
-          },
-          values.submissionId
-        )
+        const nextStep = values.state === "DRAFT" ? "ShippingLocation" : "CompleteYourSubmission"
+        const newValues = {
+          userPhone: values.userPhone,
+          state: values.state === "DRAFT" ? "SUBMITTED" : undefined,
+        } as const
 
-        navigation.navigate("CompleteYourSubmission")
-        setCurrentStep("CompleteYourSubmission")
+        await createOrUpdateSubmission(newValues, values.submissionId)
 
-        // Reset saved draft if submission is successful
-        GlobalStore.actions.artworkSubmission.setDraft(null)
-        // Refetch associated My Collection artwork to display the updated submission status on the artwork screen.
-        if (values.myCollectionArtworkID) {
-          await updateMyCollectionArtwork({
-            artworkID: values.myCollectionArtworkID,
-          })
+        navigation.navigate(nextStep)
+        setCurrentStep(nextStep)
+
+        if (nextStep === "CompleteYourSubmission") {
+          // Reset saved draft if submission is successful
+          GlobalStore.actions.artworkSubmission.setDraft(null)
+          // Refetch associated My Collection artwork to display the updated submission status on the artwork screen.
+          if (values.myCollectionArtworkID) {
+            await updateMyCollectionArtwork({
+              artworkID: values.myCollectionArtworkID,
+            })
+          }
+          refreshMyCollection()
         }
-
-        refreshMyCollection()
       } catch (error) {
         console.error("Error setting title", error)
         showToast("Could not save your submission, please try again.", "bottom", {

@@ -47,7 +47,7 @@ export const createOrUpdateSubmission = async (
     medium: values.medium,
     provenance: values.provenance,
     signature: values.signature,
-    state: values.state || "DRAFT",
+    state: values.state,
     title: values.title,
     userEmail: values.userEmail,
     userName: values.userName,

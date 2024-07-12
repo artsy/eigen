@@ -27,6 +27,7 @@ export const SubmitArtworkFormEdit: React.FC<SubmitArtworkProps> = withSuspense(
       initialValues={getInitialSubmissionValues(data.submission)}
       initialStep={props.initialStep}
       navigationState={props.navigationState}
+      hasStartedFlowFromMyCollection={props.hasStartedFlowFromMyCollection}
     />
   )
 })
@@ -63,6 +64,7 @@ const submitArtworkFormEditQuery = graphql`
       userName
       userPhone
       source
+      state
       sourceArtworkID
       assets {
         id
