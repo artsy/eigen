@@ -23,14 +23,10 @@ export const userProfileYupSchema = Yup.object().shape({
 })
 
 interface UserProfileFieldsProps {
-  nextInputRef?: React.RefObject<Input>
   bottomSheetInput?: boolean
 }
 
-export const UserProfileFields: React.FC<UserProfileFieldsProps> = ({
-  nextInputRef,
-  bottomSheetInput,
-}) => {
+export const UserProfileFields: React.FC<UserProfileFieldsProps> = ({ bottomSheetInput }) => {
   const formikBag = useFormikContext<UserProfileFormikSchema>()
   const { values, setFieldValue, handleChange, errors, validateForm } = formikBag
 
@@ -50,6 +46,7 @@ export const UserProfileFields: React.FC<UserProfileFieldsProps> = ({
         title="Full name"
         onChangeText={handleChange("name")}
         onBlur={() => validateForm()}
+        blurOnSubmit={false}
         error={errors.name}
         returnKeyType="next"
         value={values.name}
@@ -65,6 +62,7 @@ export const UserProfileFields: React.FC<UserProfileFieldsProps> = ({
           title="Primary location"
           placeholder="City name"
           returnKeyType="next"
+          blurOnSubmit={false}
           onSubmitEditing={() => {
             professionInputRef.current?.focus()
           }}
@@ -87,7 +85,8 @@ export const UserProfileFields: React.FC<UserProfileFieldsProps> = ({
         title="Profession"
         onChangeText={handleChange("profession")}
         onBlur={() => validateForm()}
-        error={errors.name}
+        blurOnSubmit={false}
+        error={errors.profession}
         returnKeyType="next"
         value={values.profession}
         placeholder="Profession or job title"
@@ -100,15 +99,10 @@ export const UserProfileFields: React.FC<UserProfileFieldsProps> = ({
         title="Other Relevant Positions"
         onChangeText={handleChange("otherRelevantPositions")}
         onBlur={() => validateForm()}
-        error={errors.name}
+        error={errors.otherRelevantPositions}
         value={values.otherRelevantPositions}
         placeholder="Memberships, institutions, positions"
-        {...(nextInputRef
-          ? {
-              returnKeyType: "next",
-              onSubmitEditing: () => nextInputRef.current?.focus(),
-            }
-          : {})}
+        returnKeyType="done"
       />
     </Flex>
   )

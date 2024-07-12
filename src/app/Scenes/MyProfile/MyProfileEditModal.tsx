@@ -43,9 +43,17 @@ export const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
   onClose,
   visible,
 }) => {
+  /**
+   * TODO: On Android
+   *
+   * 1. The modal glitches during autocompletion
+   * 2. The submit button doesn't work after selecting a location
+   * 3. The primary location field title is behind the outline
+   */
+
   return (
     <AutomountedBottomSheetModal visible={visible} enableDynamicSizing>
-      <BottomSheetScrollView>
+      <BottomSheetScrollView keyboardShouldPersistTaps="always">
         <MyProfileEditModalWithSuspense onClose={onClose} message={message} />
       </BottomSheetScrollView>
     </AutomountedBottomSheetModal>
