@@ -1,10 +1,9 @@
-import { Input } from "@artsy/palette-mobile"
+import { Input, Spacer } from "@artsy/palette-mobile"
 import { useStripe } from "@stripe/stripe-react-native"
 import { CreateCardTokenParams } from "@stripe/stripe-react-native/lib/typescript/src/types/Token"
 import { MyProfilePaymentNewCreditCardSaveCardMutation } from "__generated__/MyProfilePaymentNewCreditCardSaveCardMutation.graphql"
 import { CountrySelect } from "app/Components/CountrySelect"
 import { CreditCardField } from "app/Components/CreditCardField/CreditCardField"
-import { InputTitle } from "app/Components/Input"
 import { Select } from "app/Components/Select/SelectV2"
 import { Stack } from "app/Components/Stack"
 import { MyAccountFieldEditScreen } from "app/Scenes/MyAccount/Components/MyAccountFieldEditScreen"
@@ -146,7 +145,6 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
     >
       <Stack spacing={2}>
         <>
-          <InputTitle>Credit Card</InputTitle>
           <CreditCardField
             onCardChange={(cardDetails) => {
               actions.fields.creditCard.setValue({
@@ -203,6 +201,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
           returnKeyType="next"
           onSubmitEditing={() => stateRef.current?.focus()}
         />
+
         <Input
           ref={stateRef}
           title="State, province, or region"
@@ -216,6 +215,9 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
           }}
           returnKeyType="next"
         />
+
+        <Spacer y={2} />
+
         <CountrySelect
           ref={countryRef}
           onSelectValue={actions.fields.country.setValue}
