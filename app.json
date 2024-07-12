@@ -2,6 +2,6 @@
   "appName": "eigen",
   "version": "8.44.0",
   "isAndroidBeta": false,
-  "codePushReleaseName": "none",
-  "codePushDist": "none"
+  "codePushReleaseName": "codepush-canary-android-8.44.0-2024.07.12.13",
+  "codePushDist": "2024.07.12.13"
 }
