@@ -1,4 +1,4 @@
-import { Flex, Box, Text, LinkText, Checkbox, Button } from "@artsy/palette-mobile"
+import { Box, Button, Checkbox, Flex, LinkText, Text } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
 import { Token, createToken } from "@stripe/stripe-react-native"
 import {
@@ -17,7 +17,7 @@ import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Modal } from "app/Components/Modal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
-import { dismissModal, navigate } from "app/system/navigation/navigate"
+import { dismissModal } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { bidderNeedsIdentityVerification } from "app/utils/auction/bidderNeedsIdentityVerification"
@@ -26,13 +26,13 @@ import { saleTime } from "app/utils/saleTime"
 import { Schema, screenTrack } from "app/utils/track"
 import { get, isEmpty } from "lodash"
 import React from "react"
-import { ScrollView, View, ViewProps } from "react-native"
+import { Alert, Linking, ScrollView, View, ViewProps } from "react-native"
 import {
+  QueryRenderer,
+  RelayProp,
   commitMutation,
   createFragmentContainer,
   graphql,
-  QueryRenderer,
-  RelayProp,
 } from "react-relay"
 import { PayloadError } from "relay-runtime"
 import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"
@@ -57,7 +57,7 @@ interface RegistrationState {
 }
 
 const Hint: React.FC = ({ children }) => (
-  <Text variant="xs" fontSize={12} mb={4}>
+  <Text variant="sm-display" mb={4} color="black60">
     {children}
   </Text>
 )
@@ -116,11 +116,11 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   }
 
   onPressGeneralTermsAndConditionsOfSale = () => {
-    navigate("/terms")
+    Linking.openURL("https://www.artsy.net/terms")
   }
 
   onPressConditionsOfSale = () => {
-    navigate("/conditions-of-sale")
+    Linking.openURL("https://www.artsy.net/conditions-of-sale")
   }
 
   onCreditCardAdded(token: Token.Result, params: PaymentCardTextFieldParams) {
@@ -159,7 +159,9 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   async setupPhoneNumberAndBidder() {
     try {
       const { phoneNumber } = this.state
-      await this.updatePhoneNumber(phoneNumber!)
+      if (phoneNumber) {
+        await this.updatePhoneNumber(phoneNumber)
+      }
       await this.createBidder()
     } catch (e) {
       if (__DEV__) {
@@ -176,7 +178,9 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   /** Run through the full flow setting up the user account and making a bid  */
   async setupAddressCardAndBidder() {
     try {
-      await this.updatePhoneNumber(this.state.billingAddress!.phoneNumber)
+      if (this.state.billingAddress?.phoneNumber) {
+        await this.updatePhoneNumber(this.state.billingAddress.phoneNumber)
+      }
 
       const token = await this.createTokenFromAddress()
       if (token.error) {
@@ -377,7 +381,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 
     if (missingInformation === "payment") {
       return (
-        <Flex flex={1} py={2}>
+        <Flex py={2}>
           <PaymentInfo
             navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
             onCreditCardAdded={this.onCreditCardAdded.bind(this)}
@@ -423,20 +427,20 @@ export class Registration extends React.Component<RegistrationProps, Registratio
         contentContainerStyle={{ flexGrow: 1, justifyContent: "space-between" }}
         keyboardDismissMode="on-drag"
       >
-        <Box p={2} pt="25px" flex={1}>
-          <Text fontSize={16} variant="xs" mb={2}>
+        <Box p={2}>
+          <Text variant="lg-display" mb={2}>
             {sale.name}
           </Text>
 
           {saleTimeDetails.absolute !== null && (
-            <Text fontSize={12} variant="sm-display" color="black60">
+            <Text variant="sm-display" color="black60">
               {saleTimeDetails.absolute}
             </Text>
           )}
         </Box>
 
         {this.renderRequiredInfoForm()}
-        <Flex px={2} flex={1}>
+        <Flex px={2}>
           {this.renderRequiredInfoHint()}
           {
             // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -467,7 +471,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
           />
           <Checkbox mb={4} onPress={() => this.conditionsOfSalePressed()} disabled={isLoading}>
             {showNewDisclaimer ? (
-              <Text variant="xs" fontSize="2">
+              <Text variant="sm-display">
                 I agree to Artsy's{" "}
                 <LinkText
                   onPress={isLoading ? undefined : this.onPressGeneralTermsAndConditionsOfSale}
@@ -477,9 +481,12 @@ export class Registration extends React.Component<RegistrationProps, Registratio
                 . I understand that all bids are binding and may not be retracted.
               </Text>
             ) : (
-              <Text variant="xs" fontSize="2">
+              <Text variant="sm-display">
                 I agree to the{" "}
-                <LinkText onPress={isLoading ? undefined : this.onPressConditionsOfSale}>
+                <LinkText
+                  onPress={isLoading ? undefined : this.onPressConditionsOfSale}
+                  variant="sm-display"
+                >
                   Conditions of Sale
                 </LinkText>
                 . I understand that all bids are binding and may not be retracted.
@@ -488,13 +495,12 @@ export class Registration extends React.Component<RegistrationProps, Registratio
           </Checkbox>
         </Flex>
 
-        <Box m={4}>
+        <Box p={2} mb={2}>
           <Button
             testID="register-button"
             onPress={this.canCreateBidder() ? this.register.bind(this) : null}
             loading={isLoading}
             block
-            width={100}
             disabled={!this.canCreateBidder()}
           >
             Complete registration
@@ -538,7 +544,23 @@ export const RegistrationQueryRenderer: React.FC<{ saleID: string; navigator: Na
 }) => {
   return (
     <View style={{ flex: 1 }}>
-      <FancyModalHeader onLeftButtonPress={() => dismissModal()} useXButton>
+      <FancyModalHeader
+        onLeftButtonPress={() => {
+          Alert.alert("Are you sure you want to leave?", "", [
+            {
+              text: "Cancel",
+              style: "cancel",
+              onPress: () => null,
+            },
+            {
+              text: "Leave",
+              style: "destructive",
+              onPress: () => dismissModal(),
+            },
+          ])
+        }}
+        useXButton
+      >
         Register to bid
       </FancyModalHeader>
       <QueryRenderer<RegistrationQuery>
