@@ -1,4 +1,4 @@
-import { Box, Text, Button } from "@artsy/palette-mobile"
+import { Box, Text, Button, Spacer } from "@artsy/palette-mobile"
 import { createToken, Token } from "@stripe/stripe-react-native"
 import { Container } from "app/Components/Bidding/Components/Containers"
 import { PaymentCardTextFieldParams } from "app/Components/Bidding/types"
@@ -52,7 +52,7 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
 
   render() {
     const buttonComponent = (
-      <Box m={1}>
+      <Box p={2} mb={2}>
         <Button
           testID="add-credit-card-button"
           disabled={!this.state.valid}
@@ -79,10 +79,7 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
         <ScrollView scrollEnabled={false}>
           <Container m={0}>
             <View>
-              <Box m={1}>
-                <Text variant="sm" mb={2}>
-                  Card Information
-                </Text>
+              <Box m={2}>
                 <CreditCardField
                   onCardChange={(cardDetails) => {
                     this.setState({
@@ -100,8 +97,12 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
                     {errorText}
                   </Text>
                 )}
-                <Text variant="sm" mt="6" color="black60" textAlign="center">
+
+                <Spacer y={2} />
+
+                <Text variant="sm" color="black60">
                   Registration is free.
+                  {"\n"}
                   {"\n"}A valid credit card is required in order to bid. Please enter your credit
                   card information below. The name on your Artsy account must match the name on the
                   card.
