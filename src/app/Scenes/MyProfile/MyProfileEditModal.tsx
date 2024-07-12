@@ -48,7 +48,9 @@ export const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
    *
    * 1. The modal glitches during autocompletion
    * 2. The submit button doesn't work after selecting a location
+   *   - This also happens on the settings screen (on the main branch)
    * 3. The primary location field title is behind the outline
+   *   - This does not happen in the settings screen (on the feature branch)
    */
 
   return (
