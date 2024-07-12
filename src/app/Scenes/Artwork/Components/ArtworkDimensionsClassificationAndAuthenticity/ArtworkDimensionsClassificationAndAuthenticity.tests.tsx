@@ -66,6 +66,17 @@ describe("ArtworkDimensionsClassificationAndAuthenticity", () => {
     expect(screen.getByText("Frame not included")).toBeTruthy()
   })
 
+  it("does not render a frame string when artwork is not unlisted", () => {
+    renderWithRelay({
+      Artwork: () => ({
+        framed: { details: "not included" },
+        isUnlisted: false,
+      }),
+    })
+
+    expect(screen.queryByText("Frame not included")).toBeFalsy()
+  })
+
   it("renders 'Frame included' when the frame is included", () => {
     renderWithRelay({
       Artwork: () => ({ framed: { details: "Included" } }),
