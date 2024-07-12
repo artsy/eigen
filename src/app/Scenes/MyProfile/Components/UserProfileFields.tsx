@@ -57,29 +57,31 @@ export const UserProfileFields: React.FC<UserProfileFieldsProps> = ({
           locationInputRef.current?.focus()
         }}
       />
-      <LocationAutocomplete
-        allowCustomLocation
-        enableClearButton
-        inputRef={locationInputRef}
-        title="Primary location"
-        placeholder="City name"
-        returnKeyType="next"
-        onSubmitEditing={() => {
-          professionInputRef.current?.focus()
-        }}
-        displayLocation={buildLocationDisplay(values.location)}
-        onChange={({ city, country, postalCode, state, stateCode, coordinates }) => {
-          setFieldValue("location", {
-            city: city ?? "",
-            country: country ?? "",
-            postalCode: postalCode ?? "",
-            state: state ?? "",
-            stateCode: stateCode ?? "",
-            coordinates,
-          })
-        }}
-        bottomSheetInput={bottomSheetInput}
-      />
+      <Flex>
+        <LocationAutocomplete
+          allowCustomLocation
+          enableClearButton
+          inputRef={locationInputRef}
+          title="Primary location"
+          placeholder="City name"
+          returnKeyType="next"
+          onSubmitEditing={() => {
+            professionInputRef.current?.focus()
+          }}
+          displayLocation={buildLocationDisplay(values.location)}
+          onChange={({ city, country, postalCode, state, stateCode, coordinates }) => {
+            setFieldValue("location", {
+              city: city ?? "",
+              country: country ?? "",
+              postalCode: postalCode ?? "",
+              state: state ?? "",
+              stateCode: stateCode ?? "",
+              coordinates,
+            })
+          }}
+          bottomSheetInput={bottomSheetInput}
+        />
+      </Flex>
       <InputComponent
         ref={professionInputRef}
         title="Profession"
