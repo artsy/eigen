@@ -11,14 +11,18 @@ interface ArtworkDimensionsClassificationAndAuthenticityProps {
 const ArtworkDimensionsClassificationAndAuthenticity: React.FC<
   ArtworkDimensionsClassificationAndAuthenticityProps
 > = ({ artwork }) => {
-  const { medium, dimensions, framed, editionOf, editionSets } = artwork
+  const { medium, dimensions, framed, editionOf, editionSets, isUnlisted } = artwork
 
   const dimensionsPresent = (dimensions: any) =>
     /\d/.test(dimensions?.in) || /\d/.test(dimensions?.cm)
 
-  const getFrameString = (frameDetails?: string | null) => {
+  const getFrameString = (frameDetails?: string | null, isUnlisted?: boolean) => {
     if (frameDetails !== "Included") {
-      return "Frame not included"
+      if (isUnlisted) {
+        return "Frame not included"
+      } else {
+        return
+      }
     }
 
     return `Frame ${frameDetails.toLowerCase()}`
@@ -33,9 +37,9 @@ const ArtworkDimensionsClassificationAndAuthenticity: React.FC<
       {!!dimensionsPresent(dimensions) && (editionSets?.length ?? 0) < 2 && (
         <Text color="black60" variant="sm">{`${dimensions?.in} | ${dimensions?.cm}`}</Text>
       )}
-      {!!getFrameString(framed?.details) && (
+      {!!getFrameString(framed?.details, isUnlisted) && (
         <Text color="black60" variant="sm">
-          {getFrameString(framed?.details)}
+          {getFrameString(framed?.details, isUnlisted)}
         </Text>
       )}
       {!!editionOf && (
@@ -68,6 +72,7 @@ export const ArtworkDimensionsClassificationAndAuthenticityFragmentContainer =
         }
         editionOf
         isEdition
+        isUnlisted
         editionSets {
           internalID
         }
