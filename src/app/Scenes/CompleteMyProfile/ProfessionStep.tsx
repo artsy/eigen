@@ -1,9 +1,10 @@
 import { Text, Screen, Spacer, Input, Flex } from "@artsy/palette-mobile"
 import { Footer } from "app/Scenes/CompleteMyProfile/Footer"
-import { useCompleteProfile } from "app/Scenes/CompleteMyProfile/useCompleteProfile"
+import { useCompleteProfile } from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
+import { FC } from "react"
 import { KeyboardAvoidingView } from "react-native"
 
-export const ProfessionStep = () => {
+export const ProfessionStep: FC = () => {
   const { goNext, isCurrentRouteDirty, field, setField } = useCompleteProfile<string>()
 
   const handleOnChange = (text: string) => {

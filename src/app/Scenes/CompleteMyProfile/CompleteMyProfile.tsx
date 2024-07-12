@@ -2,15 +2,14 @@ import { NavigationContainer, NavigationProp } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { AvatarStep } from "app/Scenes/CompleteMyProfile/AvatarStep"
 import { ChangesSummary } from "app/Scenes/CompleteMyProfile/ChangesSummary"
-import {
-  CompleteMyProfileProvider,
-  useCompleteMyProfileContext,
-} from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
+import { CompleteMyProfileStore } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
 import { Header } from "app/Scenes/CompleteMyProfile/Header"
 import { IdentityVerificationStep } from "app/Scenes/CompleteMyProfile/IdentityVerificationStep"
 import { LocationStep } from "app/Scenes/CompleteMyProfile/LocationStep"
 import { ProfessionStep } from "app/Scenes/CompleteMyProfile/ProfessionStep"
+import { useCompleteMyProfileSteps } from "app/Scenes/CompleteMyProfile/hooks/useCompleteMyProfileSteps"
 import { LocationWithDetails } from "app/utils/googleMaps"
+import { FC, useEffect } from "react"
 
 export type CompleteMyProfileNavigationStack = NavigationProp<CompleteMyProfileNavigationRoutes>
 
@@ -31,8 +30,22 @@ export type NavigationPayloadField = {
 
 const Stack = createStackNavigator()
 
-const CompleteMyProfileNavigator = () => {
-  const { steps } = useCompleteMyProfileContext()
+const CompleteMyProfileNavigator: FC = () => {
+  const { steps: _steps } = useCompleteMyProfileSteps()
+  const setSteps = CompleteMyProfileStore.useStoreActions((actions) => actions.setSteps)
+  const steps = CompleteMyProfileStore.useStoreState((state) => state.steps)
+
+  useEffect(() => {
+    if (steps === "loading" && _steps !== "loading") {
+      setSteps(_steps)
+    }
+  }, [_steps])
+
+  console.log("steps", { steps, _steps })
+
+  if (steps === "loading") {
+    return null
+  }
 
   return (
     <NavigationContainer independent>
@@ -41,8 +54,6 @@ const CompleteMyProfileNavigator = () => {
           headerShown: true,
           header: () => <Header />,
           headerMode: "float",
-          cardStyle: { backgroundColor: "gray" },
-          headerBackgroundContainerStyle: { backgroundColor: "yellowS" },
         }}
       >
         {/* Only renders the relevant screens */}
@@ -70,8 +81,8 @@ const CompleteMyProfileNavigator = () => {
 
 export const CompleteMyProfile = () => {
   return (
-    <CompleteMyProfileProvider>
+    <CompleteMyProfileStore.Provider>
       <CompleteMyProfileNavigator />
-    </CompleteMyProfileProvider>
+    </CompleteMyProfileStore.Provider>
   )
 }

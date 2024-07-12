@@ -8,14 +8,19 @@ import {
   CheckCircleFillIcon,
   CheckCircleIcon,
 } from "@artsy/palette-mobile"
-import { useCompleteMyProfileContext } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
-import { useCompleteProfile } from "app/Scenes/CompleteMyProfile/useCompleteProfile"
+import { CompleteMyProfileStore } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
+import { useCompleteProfile } from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
 import { navigate } from "app/system/navigation/navigate"
+import { FC } from "react"
 
-export const ChangesSummary = () => {
+export const ChangesSummary: FC = () => {
   const space = useSpace()
   const { saveAndExit, isLoading } = useCompleteProfile()
-  const { progressState, progressStateWithoutUndefined, steps } = useCompleteMyProfileContext()
+  const steps = CompleteMyProfileStore.useStoreState((state) => state.steps)
+  const progressState = CompleteMyProfileStore.useStoreState((state) => state.progressState)
+  const progressStateWithoutUndefined = CompleteMyProfileStore.useStoreState(
+    (state) => state.progressStateWithoutUndefined
+  )
 
   const handleAddArtistsToMyCollection = () => {
     if (!isLoading) {

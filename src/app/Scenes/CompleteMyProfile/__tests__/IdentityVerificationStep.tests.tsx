@@ -1,12 +1,10 @@
 import { screen, fireEvent } from "@testing-library/react-native"
 import { IdentityVerificationStep } from "app/Scenes/CompleteMyProfile/IdentityVerificationStep"
-import * as useCompleteProfile from "app/Scenes/CompleteMyProfile/useCompleteProfile"
+import * as useCompleteProfile from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
 import * as useHandleVerification from "app/Scenes/MyProfile/useHandleVerification"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-
-jest.mock("app/Scenes/CompleteMyProfile/CompleteMyProfileProvider", () => ({
-  useCompleteMyProfileContext: () => ({ user }),
-}))
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { Suspense } from "react"
+import { graphql } from "react-relay"
 
 describe("IdentityVerificationStep", () => {
   const mockSetField = jest.fn()
@@ -20,14 +18,30 @@ describe("IdentityVerificationStep", () => {
     setField: mockSetField,
   })
 
+  const { renderWithRelay } = setupTestWrapper({
+    Component: () => (
+      <Suspense fallback={() => "loading"}>
+        <IdentityVerificationStep />
+      </Suspense>
+    ),
+    query: graphql`
+      query IdentityVerificationStepTestsQuery {
+        me {
+          ...IdentityVerificationStep_me
+        }
+      }
+    `,
+  })
+
   afterEach(() => {
     jest.clearAllMocks()
   })
 
-  it("renders", () => {
-    renderWithWrappers(<IdentityVerificationStep />)
+  it("renders", async () => {
+    const { mockResolveLastOperation } = renderWithRelay()
+    mockResolveLastOperation({ Me: () => user })
 
-    expect(screen.getByText("Verify your ID")).toBeOnTheScreen()
+    expect(await screen.findByText("Verify your ID")).toBeOnTheScreen()
     expect(
       screen.getByText(
         "Send an ID verification email and follow the link and instructions to verify your account."
@@ -36,17 +50,18 @@ describe("IdentityVerificationStep", () => {
     expect(screen.getByText("Send verification Email")).toBeOnTheScreen()
   })
 
-  it("calls handleSendVerification on Send verification button press", () => {
+  it("calls handleSendVerification on Send verification button press", async () => {
     const IDVerficationSpy = jest.spyOn(useHandleVerification, "useHandleIDVerification")
-    renderWithWrappers(<IdentityVerificationStep />)
+    const { mockResolveLastOperation } = renderWithRelay()
+    mockResolveLastOperation({ Me: () => user })
 
-    fireEvent.press(screen.getByText("Send verification Email"))
+    fireEvent.press(await screen.findByText("Send verification Email"))
 
     expect(mockSetField).toHaveBeenCalledWith(true)
     expect(IDVerficationSpy).toHaveBeenCalledWith(user.internalID)
   })
 
-  it("renders given email already sent", () => {
+  it("renders given email already sent", async () => {
     useCompleteMyProfileSpy.mockReturnValue({
       goNext: jest.fn(),
       isCurrentRouteDirty: false,
@@ -54,9 +69,10 @@ describe("IdentityVerificationStep", () => {
       setField: mockSetField,
     })
 
-    renderWithWrappers(<IdentityVerificationStep />)
+    const { mockResolveLastOperation } = renderWithRelay()
+    mockResolveLastOperation({ Me: () => user })
 
-    expect(screen.getByText("Email sent")).toBeOnTheScreen()
+    expect(await screen.findByText("Email sent")).toBeOnTheScreen()
     expect(screen.getByText(/test@mail.com/)).toBeOnTheScreen()
   })
 })

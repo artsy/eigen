@@ -13,13 +13,17 @@ import {
   CompleteMyProfileNavigationRoutes,
   Routes,
 } from "app/Scenes/CompleteMyProfile/CompleteMyProfile"
-import { useCompleteMyProfileContext } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
-import { useCompleteProfile } from "app/Scenes/CompleteMyProfile/useCompleteProfile"
+import { CompleteMyProfileStore } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
+import { useCompleteProfile } from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
+import { FC } from "react"
 
-export const Header = () => {
+export const Header: FC = () => {
   const space = useSpace()
   const { progress, currentStep, lastStep, saveAndExit, goBack } = useCompleteProfile()
-  const { steps, progressStateWithoutUndefined } = useCompleteMyProfileContext()
+  const steps = CompleteMyProfileStore.useStoreState((state) => state.steps)
+  const progressStateWithoutUndefined = CompleteMyProfileStore.useStoreState(
+    (state) => state.progressStateWithoutUndefined
+  )
   const { name } = useRoute<RouteProp<CompleteMyProfileNavigationRoutes, Routes>>()
   const { safeAreaInsets } = useScreenDimensions()
 

@@ -1,11 +1,22 @@
 import { screen, fireEvent } from "@testing-library/react-native"
 import { Header } from "app/Scenes/CompleteMyProfile/Header"
-import * as useCompleteProfile from "app/Scenes/CompleteMyProfile/useCompleteProfile"
+import * as useCompleteProfile from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 jest.mock("@react-navigation/native", () => ({
   useNavigation: jest.fn(),
   useRoute: () => ({ name: "LocationStep" }),
+}))
+
+const stateMocked = {
+  steps: ["LocationStep", "ProfessionStep", "AvatarStep"],
+  progressStateWithoutUndefined: {},
+}
+
+jest.mock("app/Scenes/CompleteMyProfile/CompleteMyProfileProvider", () => ({
+  CompleteMyProfileStore: {
+    useStoreState: () => stateMocked,
+  },
 }))
 
 describe("Header", () => {

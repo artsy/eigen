@@ -2,11 +2,12 @@ import { Text, Screen, Spacer, Flex } from "@artsy/palette-mobile"
 import { EditableLocation } from "__generated__/useUpdateMyProfileMutation.graphql"
 import { LocationAutocomplete, buildLocationDisplay } from "app/Components/LocationAutocomplete"
 import { Footer } from "app/Scenes/CompleteMyProfile/Footer"
-import { useCompleteProfile } from "app/Scenes/CompleteMyProfile/useCompleteProfile"
+import { useCompleteProfile } from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
 import { LocationWithDetails } from "app/utils/googleMaps"
+import { FC } from "react"
 import { KeyboardAvoidingView } from "react-native"
 
-export const LocationStep = () => {
+export const LocationStep: FC = () => {
   const { goNext, isCurrentRouteDirty, field, setField } =
     useCompleteProfile<Partial<EditableLocation>>()
 

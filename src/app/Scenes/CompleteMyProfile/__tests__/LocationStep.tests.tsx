@@ -1,6 +1,6 @@
 import { screen, fireEvent, waitFor } from "@testing-library/react-native"
 import { LocationStep } from "app/Scenes/CompleteMyProfile/LocationStep"
-import * as useCompleteProfile from "app/Scenes/CompleteMyProfile/useCompleteProfile"
+import * as useCompleteProfile from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
 import { getLocationDetails, getLocationPredictions } from "app/utils/googleMaps"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 

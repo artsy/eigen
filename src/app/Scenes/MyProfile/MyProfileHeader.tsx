@@ -158,6 +158,8 @@ export const MyProfileHeader: React.FC<MyProfileHeaderProps> = ({ meProp }) => {
   const isProfileComplete =
     !!me.location?.display && !!me.profession && !!me.icon?.url && !!me.isIdentityVerified
 
+  console.log("isProfileComplete", { isProfileComplete, me })
+
   return (
     <Flex justifyContent="center" alignItems="center" gap={space(0.5)} py={1} px={2}>
       <Flex position="absolute" top={space(1)} right={space(2)}>
@@ -232,7 +234,7 @@ export const MyProfileHeader: React.FC<MyProfileHeaderProps> = ({ meProp }) => {
           </Flex>
         )}
 
-        {!!isProfileComplete && (
+        {!isProfileComplete && (
           <>
             <Spacer y={2} />
             <Flex alignItems="center">

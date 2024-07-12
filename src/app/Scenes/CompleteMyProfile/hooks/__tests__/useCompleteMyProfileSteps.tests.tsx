@@ -1,8 +1,6 @@
 import { renderHook } from "@testing-library/react-hooks"
-import { useCompleteMyProfileStepsTestsQuery } from "__generated__/useCompleteMyProfileStepsTestsQuery.graphql"
-import { useCompleteMyProfileSteps } from "app/Scenes/CompleteMyProfile/useCompleteMyProfileSteps"
-import { graphql } from "react-relay"
-import { RelayEnvironmentProvider, useLazyLoadQuery } from "react-relay/hooks"
+import { useCompleteMyProfileSteps } from "app/Scenes/CompleteMyProfile/hooks/useCompleteMyProfileSteps"
+import { RelayEnvironmentProvider } from "react-relay/hooks"
 import { MockPayloadGenerator, createMockEnvironment } from "relay-test-utils"
 
 const env = createMockEnvironment()
@@ -26,12 +24,7 @@ describe("useCompleteMyProfileSteps", () => {
       })
     )
 
-    const { result: wrapperResult } = renderHook(() => useTestWrapper(), { wrapper })
-
-    const { result } = renderHook(
-      () => useCompleteMyProfileSteps({ collectorProfile: wrapperResult.current.data?.me }),
-      { wrapper }
-    )
+    const { result } = renderHook(() => useCompleteMyProfileSteps(), { wrapper })
 
     expect(result.current.steps).toEqual([
       "ProfessionStep",
@@ -53,12 +46,7 @@ describe("useCompleteMyProfileSteps", () => {
       })
     )
 
-    const { result: wrapperResult } = renderHook(() => useTestWrapper(), { wrapper })
-
-    const { result } = renderHook(
-      () => useCompleteMyProfileSteps({ collectorProfile: wrapperResult.current.data?.me }),
-      { wrapper }
-    )
+    const { result } = renderHook(() => useCompleteMyProfileSteps(), { wrapper })
 
     expect(result.current.steps).toEqual(["IdentityVerificationStep", "ChangesSummary"])
     expect(result.current.nextRoute("IdentityVerificationStep")).toBe("ChangesSummary")
@@ -68,17 +56,3 @@ describe("useCompleteMyProfileSteps", () => {
 const wrapper = ({ children }: any) => (
   <RelayEnvironmentProvider environment={env}>{children}</RelayEnvironmentProvider>
 )
-
-const useTestWrapper = () => {
-  const data = useLazyLoadQuery<useCompleteMyProfileStepsTestsQuery>(query, {})
-
-  return { data }
-}
-
-const query = graphql`
-  query useCompleteMyProfileStepsTestsQuery @relay_test_operation {
-    me {
-      ...useCompleteMyProfileSteps_collectorProfile
-    }
-  }
-`
