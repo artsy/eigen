@@ -13,6 +13,7 @@ export const initialArtworkInquiryState: ArtworkInquiryContextState = {
   successNotificationVisible: false,
   collectionPromptVisible: false,
   profilePromptVisible: false,
+  isMyCollectionArtistsPromptVisible: false,
 }
 
 export const artworkInquiryStateReducer = (
@@ -60,6 +61,11 @@ export const artworkInquiryStateReducer = (
       return {
         ...inquiryState,
         profilePromptVisible: action.payload,
+      }
+    case "setMyCollectionArtistsPromptVisible":
+      return {
+        ...inquiryState,
+        isMyCollectionArtistsPromptVisible: action.payload,
       }
   }
 }

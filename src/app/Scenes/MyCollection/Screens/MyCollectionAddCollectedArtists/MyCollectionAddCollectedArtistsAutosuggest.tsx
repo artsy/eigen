@@ -159,7 +159,7 @@ export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => 
 const myCollectionAddCollectedArtistsAutosuggestQuery = graphql`
   query MyCollectionAddCollectedArtistsAutosuggestQuery {
     me {
-      userInterestsConnection(first: 100) {
+      userInterestsConnection(first: 100, interestType: ARTIST) {
         edges {
           node {
             ... on Artist {
