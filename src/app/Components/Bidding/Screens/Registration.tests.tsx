@@ -12,8 +12,9 @@ import { Address } from "app/Components/Bidding/types"
 import { Modal } from "app/Components/Modal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { Linking, TouchableWithoutFeedback } from "react-native"
+import { TouchableWithoutFeedback } from "react-native"
 import relay from "react-relay"
 import { BillingAddress } from "./BillingAddress"
 import { CreditCardForm } from "./CreditCardForm"
@@ -662,8 +663,7 @@ it("navigates to the conditions of sale when the user taps the link", () => {
 
   fireEvent.press(screen.getByText("Conditions of Sale"))
 
-  expect(Linking.openURL).toHaveBeenCalledWith("https://www.artsy.net/conditions-of-sale")
-  // expect(navigation.navigate).toHaveBeenCalledWith("/conditions-of-sale")
+  expect(navigate).toHaveBeenCalledWith("/conditions-of-sale")
 })
 
 describe("when AREnableNewTermsAndConditions is enabled", () => {
@@ -691,7 +691,7 @@ describe("when AREnableNewTermsAndConditions is enabled", () => {
 
     fireEvent.press(screen.getByText("General Terms and Conditions of Sale"))
 
-    expect(Linking.openURL).toHaveBeenCalledWith("https://www.artsy.net/terms")
+    expect(navigate).toHaveBeenCalledWith("/terms")
   })
 })
 

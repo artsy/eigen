@@ -17,7 +17,7 @@ import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Modal } from "app/Components/Modal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
-import { dismissModal } from "app/system/navigation/navigate"
+import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { bidderNeedsIdentityVerification } from "app/utils/auction/bidderNeedsIdentityVerification"
@@ -26,7 +26,7 @@ import { saleTime } from "app/utils/saleTime"
 import { Schema, screenTrack } from "app/utils/track"
 import { get, isEmpty } from "lodash"
 import React from "react"
-import { Alert, Linking, ScrollView, View, ViewProps } from "react-native"
+import { Alert, ScrollView, View, ViewProps } from "react-native"
 import {
   QueryRenderer,
   RelayProp,
@@ -116,11 +116,11 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   }
 
   onPressGeneralTermsAndConditionsOfSale = () => {
-    Linking.openURL("https://www.artsy.net/terms")
+    navigate("/terms")
   }
 
   onPressConditionsOfSale = () => {
-    Linking.openURL("https://www.artsy.net/conditions-of-sale")
+    navigate("/conditions-of-sale")
   }
 
   onCreditCardAdded(token: Token.Result, params: PaymentCardTextFieldParams) {
