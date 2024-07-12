@@ -430,6 +430,10 @@ export const modules = defineModules({
     alwaysPresentModally: true,
     hasOwnModalCloseButton: true,
     fullBleed: true,
+    screenOptions: {
+      // Don't allow the screen to be swiped away by mistake
+      gestureEnabled: false,
+    },
   }),
   AuctionBidArtwork: reactModule(BidFlow, {
     alwaysPresentModally: true,

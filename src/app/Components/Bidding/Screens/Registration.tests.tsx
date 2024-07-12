@@ -1,4 +1,4 @@
-import { Text, LinkText, Checkbox, Button } from "@artsy/palette-mobile"
+import { Button, Checkbox, LinkText, Text } from "@artsy/palette-mobile"
 import { createToken } from "@stripe/stripe-react-native"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { Registration_me$data } from "__generated__/Registration_me.graphql"
@@ -12,7 +12,7 @@ import { Address } from "app/Components/Bidding/types"
 import { Modal } from "app/Components/Modal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import * as navigation from "app/system/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { TouchableWithoutFeedback } from "react-native"
 import relay from "react-relay"
@@ -663,7 +663,7 @@ it("navigates to the conditions of sale when the user taps the link", () => {
 
   fireEvent.press(screen.getByText("Conditions of Sale"))
 
-  expect(navigation.navigate).toHaveBeenCalledWith("/conditions-of-sale")
+  expect(navigate).toHaveBeenCalledWith("/conditions-of-sale")
 })
 
 describe("when AREnableNewTermsAndConditions is enabled", () => {
@@ -691,7 +691,7 @@ describe("when AREnableNewTermsAndConditions is enabled", () => {
 
     fireEvent.press(screen.getByText("General Terms and Conditions of Sale"))
 
-    expect(navigation.navigate).toHaveBeenCalledWith("/terms")
+    expect(navigate).toHaveBeenCalledWith("/terms")
   })
 })
 
