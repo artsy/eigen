@@ -229,7 +229,6 @@ desc 'Ship android beta to play store or firebase'
 lane :ship_beta_android do |options|
   deployment_target = options[:deployment_target] || 'play_store' # default to 'play_store'
 
-  sh('yarn jetifier')
   sh('yarn relay')
 
   is_android_beta = deployment_target == 'firebase'
