@@ -276,6 +276,18 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableCollectorProfilePrompts",
   },
+  AREnablePartnerOfferSignals: {
+    description: "Enable partner offer signals",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnablePartnerOfferSignals",
+  },
+  AREnableAuctionImprovementsSignals: {
+    description: "Enable new auction lot signals",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableAuctionImprovementsSignals",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
