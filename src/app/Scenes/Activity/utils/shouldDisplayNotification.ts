@@ -1,15 +1,20 @@
+import { ActivityList_viewer$data } from "__generated__/ActivityList_viewer.graphql"
 import { isArtworksBasedNotification } from "app/Scenes/Activity/utils/isArtworksBasedNotification"
 
-export interface Notification {
-  notificationType?: string | null
-  artworks?: { totalCount?: number | null } | null
-  item?: {
-    viewingRoomsConnection?: { totalCount?: number | null } | null
-    article?: { internalID?: number | null } | null
-  } | null
-}
+export type NotificationNode = NonNullable<
+  NonNullable<NonNullable<ActivityList_viewer$data["notificationsConnection"]>["edges"]>[0]
+>["node"]
 
-export const shouldDisplayNotification = (notification: Notification) => {
+export const shouldDisplayNotification = (
+  notification:
+    | Pick<NonNullable<NotificationNode>, "notificationType" | "artworks" | "item">
+    | null
+    | undefined
+) => {
+  if (!notification) {
+    return false
+  }
+
   if (isArtworksBasedNotification(notification?.notificationType ?? "")) {
     const artworksCount = notification.artworks?.totalCount ?? 0
     return artworksCount > 0
