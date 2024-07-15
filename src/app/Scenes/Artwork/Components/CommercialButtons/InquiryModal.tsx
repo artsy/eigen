@@ -20,7 +20,6 @@ import { useSubmitInquiryRequest } from "app/Scenes/Artwork/Components/Commercia
 import { navigate } from "app/system/navigation/navigate"
 import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryQuestionIDs } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
-import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { LocationWithDetails } from "app/utils/googleMaps"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react"
@@ -33,10 +32,7 @@ import { ShippingModal } from "./ShippingModal"
 
 interface InquiryModalProps {
   artwork: InquiryModal_artwork$key
-  closeModal?: () => void
-  exitModal?: () => void
   toggleVisibility: () => void
-  navigator?: NavigatorIOS
   modalIsVisible: boolean
   onMutationSuccessful: (state: boolean) => void
 }
