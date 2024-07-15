@@ -41,8 +41,6 @@ const CompleteMyProfileNavigator: FC = () => {
     }
   }, [_steps])
 
-  console.log("steps", { steps, _steps })
-
   if (steps === "loading") {
     return null
   }
