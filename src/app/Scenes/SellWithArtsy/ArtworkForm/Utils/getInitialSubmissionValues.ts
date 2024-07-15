@@ -44,6 +44,11 @@ export const getInitialSubmissionValues = (
       country: values.locationCountry ?? "",
       state: values.locationState ?? "",
       countryCode: values.locationCountryCode ?? "",
+      zipCode: values.locationPostalCode ?? "",
+      // TODO: Implement this
+      // addressLine1: values.locationAddressLine1 ?? "",
+      // TODO: Implement this
+      // addressLine2: values.locationAddressLine2 ?? "",
     },
     signature: values.signature ?? null,
     userEmail: values.userEmail ?? "",

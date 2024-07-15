@@ -43,6 +43,8 @@ export const fetchArtworkInformation = async (artworkID: string) => {
             state
             country
             postalCode
+            address
+            address2
           }
         }
       }
