@@ -11,11 +11,12 @@ import {
   useTheme,
 } from "@artsy/palette-mobile"
 import { InquiryModal_artwork$data } from "__generated__/InquiryModal_artwork.graphql"
+import { InquiryQuestionInput } from "__generated__/useSubmitInquiryRequestMutation.graphql"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import ChevronIcon from "app/Components/Icons/ChevronIcon"
 import { AUTOMATED_MESSAGES } from "app/Scenes/Artwork/Components/CommercialButtons/constants"
-import { SubmitInquiryRequest } from "app/Scenes/Artwork/Components/Mutation/SubmitInquiryRequest"
+import { useSubmitInquiryRequest } from "app/Scenes/Artwork/Components/CommercialButtons/useSubmitInquiryRequest"
 import { navigate } from "app/system/navigation/navigate"
 import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryQuestionIDs } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
@@ -154,7 +155,7 @@ const InquiryQuestionOption: React.FC<{
 }
 
 export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props }) => {
-  const { toggleVisibility, modalIsVisible, relay, onMutationSuccessful } = props
+  const { toggleVisibility, modalIsVisible, onMutationSuccessful } = props
   const questions = artwork?.inquiryQuestions
   const partnerName = artwork?.partner?.name
   const scrollViewRef = useRef<ScrollView>(null)
@@ -173,6 +174,8 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
     [dispatch]
   )
   const [mutationSuccessful, setMutationSuccessful] = useState(false)
+
+  const [commit] = useSubmitInquiryRequest()
 
   const getAutomatedMessages = () => {
     return AUTOMATED_MESSAGES[Math.floor(Math.random() * AUTOMATED_MESSAGES.length)]
@@ -242,14 +245,51 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
       owner_id: artwork.internalID,
       owner_slug: artwork.slug,
     })
-    SubmitInquiryRequest(
-      relay.environment,
-      artwork,
-      state,
-      setMutationSuccessful,
-      setMutationError,
-      handleErrorTracking
-    )
+
+    // SubmitInquiryRequest(
+    //   relay.environment,
+    //   artwork,
+    //   state,
+    //   setMutationSuccessful,
+    //   setMutationError,
+    //   handleErrorTracking
+    // )
+
+    commit({
+      variables: {
+        input: {
+          inquireableID: artwork.internalID,
+          inquireableType: "Artwork",
+          questions: state.inquiryQuestions.map((q: InquiryQuestionInput) => {
+            /**
+             * If the user selected the shipping question and has a location, add the location
+             * details that are stored in the state.
+             */
+            if (q.questionID === "shipping_quote" && state.shippingLocation) {
+              const details = JSON.stringify({
+                city: state.shippingLocation.city,
+                coordinates: state.shippingLocation.coordinates,
+                country: state.shippingLocation.country,
+                postal_code: state.shippingLocation.postalCode,
+                state: state.shippingLocation.state,
+                state_code: state.shippingLocation.stateCode,
+              })
+              return { ...q, details }
+            } else {
+              return q
+            }
+          }),
+          message: state.message?.trim(),
+        },
+      },
+      onError: () => {
+        handleErrorTracking()
+        setMutationError(true)
+      },
+      onCompleted: () => {
+        setMutationSuccessful(true)
+      },
+    })
   }
 
   const handleSettingsPress = () => {
