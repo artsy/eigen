@@ -270,6 +270,12 @@ export const features = {
     readyForRelease: false,
     showInDevMenu: true,
   },
+  AREnableCollectorProfilePrompts: {
+    readyForRelease: false,
+    description: "Enable prompts to update collector profile",
+    showInDevMenu: true,
+    echoFlagKey: "AREnableCollectorProfilePrompts",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
