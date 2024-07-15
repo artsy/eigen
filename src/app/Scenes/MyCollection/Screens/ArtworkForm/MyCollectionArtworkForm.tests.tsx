@@ -469,7 +469,7 @@ describe("MyCollectionArtworkForm", () => {
                     internalID: "some-internal-id",
                     formattedNationalityAndBirthday: "British",
                     targetSupply: {
-                      isP1: false,
+                      isTargetSupply: false,
                     },
                   },
                   collectorLocation: {

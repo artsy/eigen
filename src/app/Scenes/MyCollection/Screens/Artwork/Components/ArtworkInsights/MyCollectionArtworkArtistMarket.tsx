@@ -1,5 +1,13 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
-import { Spacer, IncreaseIcon, DecreaseIcon, Flex, useSpace, Text } from "@artsy/palette-mobile"
+import {
+  Spacer,
+  IncreaseIcon,
+  DecreaseIcon,
+  Flex,
+  useSpace,
+  Text,
+  Separator,
+} from "@artsy/palette-mobile"
 import { MyCollectionArtworkArtistMarket_artwork$key } from "__generated__/MyCollectionArtworkArtistMarket_artwork.graphql"
 import { MyCollectionArtworkArtistMarket_artworkPriceInsights$key } from "__generated__/MyCollectionArtworkArtistMarket_artworkPriceInsights.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
@@ -111,7 +119,7 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
   }
 
   return (
-    <Flex mb={4} justifyContent="space-between">
+    <Flex justifyContent="space-between">
       <InfoButton
         title="Artist Market"
         subTitle="Based on the last 36 months of auction data"
@@ -138,6 +146,8 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
         }}
       >
         <FlatList
+          nestedScrollEnabled
+          scrollEnabled={false}
           data={marketData}
           key={numColumns}
           numColumns={numColumns}
@@ -155,6 +165,7 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
           )}
         />
       </View>
+      <Separator my={4} borderColor="black10" />
     </Flex>
   )
 }

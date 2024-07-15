@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedRequestPriceEstimate } from "@artsy/cohesion"
-import { Box, Text, Separator, Button, Spacer } from "@artsy/palette-mobile"
+import { Box, Button, Separator, Text } from "@artsy/palette-mobile"
 import { RequestForPriceEstimateBanner_artwork$key } from "__generated__/RequestForPriceEstimateBanner_artwork.graphql"
 import { RequestForPriceEstimateBanner_marketPriceInsights$key } from "__generated__/RequestForPriceEstimateBanner_marketPriceInsights.graphql"
 import { RequestForPriceEstimateBanner_me$key } from "__generated__/RequestForPriceEstimateBanner_me.graphql"
@@ -13,11 +13,9 @@ interface RequestForPriceEstimateProps {
   artwork: RequestForPriceEstimateBanner_artwork$key
   marketPriceInsights: RequestForPriceEstimateBanner_marketPriceInsights$key | null | undefined
   me: RequestForPriceEstimateBanner_me$key | null | undefined
-  contextModule: "insights" | "about" | "oldAbout"
 }
 
 export const RequestForPriceEstimateBanner: React.FC<RequestForPriceEstimateProps> = ({
-  contextModule,
   ...otherProps
 }) => {
   const { trackEvent } = useTracking()
@@ -37,7 +35,6 @@ export const RequestForPriceEstimateBanner: React.FC<RequestForPriceEstimateProp
 
   return (
     <Box>
-      <Separator mt={2} mb={2} borderColor="black10" />
       <Text variant="sm" testID="request-price-estimate-banner-title">
         Get a Free Price Estimate
       </Text>
@@ -80,7 +77,7 @@ export const RequestForPriceEstimateBanner: React.FC<RequestForPriceEstimateProp
         Request a Price Estimate
       </Button>
 
-      {contextModule === "about" && <Spacer y={2} />}
+      <Separator my={4} borderColor="black10" />
     </Box>
   )
 }

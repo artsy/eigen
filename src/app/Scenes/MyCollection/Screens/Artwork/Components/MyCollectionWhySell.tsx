@@ -21,7 +21,7 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
 
   const submissionId = artwork.submissionId
 
-  if (submissionId) {
+  if (submissionId || !artwork.artist?.targetSupply?.isTargetSupply) {
     return null
   }
 
@@ -37,7 +37,6 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
 
   return (
     <Flex>
-      {contextModule === "about" && <Separator mb={2} borderColor="black10" />}
       <Text variant="sm-display" testID="SWA-banner-in-MC">
         Interested in Selling This Work?
       </Text>
@@ -93,7 +92,8 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
           </Text>
         </Text>
       </>
-      {contextModule === "insights" && <Separator mt={2} mb={2} borderColor="black10" />}
+
+      <Separator my={4} borderColor="black10" />
     </Flex>
   )
 }
@@ -111,6 +111,9 @@ const artworkFragment = graphql`
     artist {
       internalID
       name
+      targetSupply {
+        isTargetSupply
+      }
     }
     attributionClass {
       name

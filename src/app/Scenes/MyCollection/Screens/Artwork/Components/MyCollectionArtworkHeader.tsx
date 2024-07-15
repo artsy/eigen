@@ -30,18 +30,18 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
     consignmentSubmission?.state && consignmentSubmission?.state !== "DRAFT"
 
   return (
-    <Join separator={<Spacer y={1} />}>
+    <Join separator={<Spacer y={2} />}>
       {hasImages ? (
         <ImageCarouselFragmentContainer
           figures={artwork?.figures}
-          cardHeight={dimensions.height / 3.5}
+          cardHeight={dimensions.height / 2}
           onImagePressed={() => trackEvent(tracks.tappedCollectedArtworkImages(internalID, slug))}
         />
       ) : (
         <Flex
           testID="MyCollectionArtworkHeaderFallback"
           bg={color("black5")}
-          height={dimensions.height / 3.5}
+          height={dimensions.height / 2}
           justifyContent="center"
           mx={2}
         >
@@ -74,13 +74,10 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
       </Flex>
 
       {!!displaySubmissionStateSection && (
-        <Flex px={2} mt={2}>
+        <Flex px={2}>
           <MyCollectionArtworkSubmissionStatus artwork={artwork} />
         </Flex>
       )}
-
-      {/* Extra Bottom Space */}
-      <></>
     </Join>
   )
 }
