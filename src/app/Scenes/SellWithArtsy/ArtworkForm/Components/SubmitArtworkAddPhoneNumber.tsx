@@ -34,7 +34,7 @@ export const SubmitArtworkAddPhoneNumber = () => {
       try {
         setIsLoading(true)
 
-        const nextStep = values.state === "DRAFT" ? "ShippingLocation" : "CompleteYourSubmission"
+        const nextStep = values.state === "DRAFT" ? "CompleteYourSubmission" : "ShippingLocation"
         const newValues = {
           userPhone: values.userPhone,
           state: values.state === "DRAFT" ? "SUBMITTED" : undefined,

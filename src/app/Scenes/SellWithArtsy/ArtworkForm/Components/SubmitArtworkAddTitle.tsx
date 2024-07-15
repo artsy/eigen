@@ -15,7 +15,7 @@ import { useFormikContext } from "formik"
 import { ScrollView } from "react-native"
 
 export const SubmitArtworkAddTitle = () => {
-  const { handleChange, values } = useFormikContext<ArtworkDetailsFormModel>()
+  const { handleChange, values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
 
   const { show: showToast } = useToast()
 
@@ -30,12 +30,20 @@ export const SubmitArtworkAddTitle = () => {
     onNextStep: async () => {
       try {
         setIsLoading(true)
+        let submissionId = values.submissionId
+
+        // If no submission is present, create one
+        // This is the case when the user is submitting an artwork from my collection
+        if (!submissionId) {
+          submissionId = (await createOrUpdateSubmission(values, null)) || null
+          setFieldValue("submissionId", submissionId)
+        }
 
         await createOrUpdateSubmission(
           {
             title: values.title,
           },
-          values.submissionId
+          submissionId
         )
 
         navigation.navigate("AddPhotos")
