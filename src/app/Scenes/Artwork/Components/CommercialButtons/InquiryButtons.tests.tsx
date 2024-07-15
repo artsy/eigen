@@ -9,7 +9,7 @@ import { graphql } from "react-relay"
 
 jest.mock("app/Scenes/Artwork/Components/CommercialButtons/InquiryModal", () => {
   return {
-    InquiryModalFragmentContainer: ({ onMutationSuccessful }: any) => {
+    InquiryModal: ({ onMutationSuccessful }: any) => {
       mockSuccessfulMutation.mockImplementation((mockState) => {
         onMutationSuccessful(mockState)
       })
