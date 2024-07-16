@@ -160,7 +160,7 @@ export const MyCollectionArtworkScreenQuery = graphql`
       annualLotsSold
     }
     me {
-      ...MyCollectionArtworkInsights_me #new
+      ...MyCollectionArtworkInsights_me
     }
   }
 `
