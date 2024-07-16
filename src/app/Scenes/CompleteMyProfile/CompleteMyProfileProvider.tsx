@@ -1,104 +1,46 @@
-import { CompleteMyProfileProviderQuery } from "__generated__/CompleteMyProfileProviderQuery.graphql"
 import { EditableLocation } from "__generated__/useUpdateMyProfileMutation.graphql"
 import { Routes } from "app/Scenes/CompleteMyProfile/CompleteMyProfile"
-import {
-  StepsResult,
-  useCompleteMyProfileSteps,
-} from "app/Scenes/CompleteMyProfile/useCompleteMyProfileSteps"
-import React, { Dispatch, createContext, useContext, useMemo, useReducer } from "react"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { StepsResult } from "app/Scenes/CompleteMyProfile/hooks/useCompleteMyProfileSteps"
+import { Action, Computed, action, computed, createContextStore } from "easy-peasy"
 
-type User = Partial<NonNullable<CompleteMyProfileProviderQuery["response"]>["me"]>
-
-export interface CompleteMyProfileContextProps {
-  steps: StepsResult
-  user: User
-  progressState: State
-  setProgressState: Dispatch<Action>
-  progressStateWithoutUndefined: State
-}
-
-export const CompleteMyProfileContext = createContext<CompleteMyProfileContextProps>({
-  steps: "loading",
-  user: {},
-  progressState: {},
-  setProgressState: () => {},
-  progressStateWithoutUndefined: {},
-})
-
-interface CompleteMyProfileProviderProps {
-  children: React.ReactNode
-}
-
-export const CompleteMyProfileProvider: React.FC<CompleteMyProfileProviderProps> = ({
-  children,
-}) => {
-  const data = useLazyLoadQuery<CompleteMyProfileProviderQuery>(
-    query,
-    {},
-    { fetchPolicy: "store-and-network" }
-  )
-
-  const { steps } = useCompleteMyProfileSteps({ collectorProfile: data?.me })
-  const [progressState, setProgressState] = useReducer(reducer, {})
-
-  const progressStateWithoutUndefined: State = useMemo(
-    () =>
-      Object.entries(progressState)
-        .filter(([_, value]) => !!value)
-        .reduce((obj, [key, value]) => ({ ...obj, [key]: value }), {}),
-    [progressState]
-  )
-
-  return (
-    <CompleteMyProfileContext.Provider
-      value={{
-        steps,
-        user: data?.me ?? {},
-        progressState,
-        setProgressState,
-        progressStateWithoutUndefined,
-      }}
-    >
-      {children}
-    </CompleteMyProfileContext.Provider>
-  )
-}
-
-export const useCompleteMyProfileContext = () => {
-  return useContext(CompleteMyProfileContext)
-}
-
-const query = graphql`
-  query CompleteMyProfileProviderQuery {
-    me @required(action: NONE) {
-      internalID @required(action: NONE)
-      email @required(action: NONE)
-      initials @required(action: NONE)
-      ...useCompleteMyProfileSteps_collectorProfile
-    }
-  }
-`
-
-export type State = {
+export type ProgressState = {
   profession?: string
   location?: Partial<EditableLocation>
   iconUrl?: { localPath: string; geminiUrl: string }
   isIdentityVerified?: boolean
 }
 
-type Action = { type: keyof State; value: State[keyof State] }
+type ActionPayload = { type: keyof ProgressState; value: ProgressState[keyof ProgressState] }
 
-const reducer = (state: State, action: Action) => {
-  return {
-    ...state,
-    [action.type]: action.value,
-  }
-}
-
-export const ROUTE_ACTION_TYPES: Record<Exclude<Routes, "ChangesSummary">, keyof State> = {
+export const ROUTE_ACTION_TYPES: Record<Exclude<Routes, "ChangesSummary">, keyof ProgressState> = {
   LocationStep: "location",
   ProfessionStep: "profession",
   AvatarStep: "iconUrl",
   IdentityVerificationStep: "isIdentityVerified",
 }
+
+export interface CompleteMyProfileStoreModel {
+  steps: StepsResult
+  progressState: ProgressState
+  setSteps: Action<this, StepsResult>
+  setProgressState: Action<this, ActionPayload>
+  progressStateWithoutUndefined: Computed<this, ProgressState>
+}
+
+export const model: CompleteMyProfileStoreModel = {
+  steps: "loading",
+  progressState: {},
+  setSteps: action((state, steps) => {
+    state.steps = steps
+  }),
+  setProgressState: action((state, action) => {
+    state.progressState = { ...state.progressState, [action.type]: action.value }
+  }),
+  progressStateWithoutUndefined: computed((state) => {
+    return Object.entries(state.progressState)
+      .filter(([_, value]) => !!value)
+      .reduce((obj, [key, value]) => ({ ...obj, [key]: value }), {})
+  }),
+}
+
+export const CompleteMyProfileStore = createContextStore(model)

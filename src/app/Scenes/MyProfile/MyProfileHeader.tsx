@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType, TappedCompleteYourProfile } from "@artsy/cohesion"
 import {
   Avatar,
   Box,
@@ -232,14 +233,17 @@ export const MyProfileHeader: React.FC<MyProfileHeaderProps> = ({ meProp }) => {
           </Flex>
         )}
 
-        {!!isProfileComplete && (
+        {!isProfileComplete && (
           <>
             <Spacer y={2} />
             <Flex alignItems="center">
               <Button
                 variant="outline"
                 size="small"
-                onPress={() => navigate("/complete-my-profile")}
+                onPress={() => {
+                  tracks.tappedCompleteMyProfile({ id: me.internalID })
+                  navigate("/complete-my-profile")
+                }}
               >
                 Complete My Profile
               </Button>
@@ -385,6 +389,7 @@ const MyProfileHeaderPlaceholder: React.FC<{}> = () => {
 
 const myProfileHeaderFragment = graphql`
   fragment MyProfileHeader_me on Me {
+    internalID
     name
     bio
     location {
@@ -431,3 +436,13 @@ export const MyProfileHeaderQueryRenderer = withSuspense((props) => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return <MyProfileHeader meProp={data.me!} {...props} />
 }, MyProfileHeaderPlaceholder)
+
+const tracks = {
+  tappedCompleteMyProfile: ({ id }: { id: string }): TappedCompleteYourProfile => ({
+    action: ActionType.tappedCompleteYourProfile,
+    context_module: ContextModule.collectorProfile,
+    context_screen_owner_type: OwnerType.profile,
+    context_screen_owner_id: id,
+    user_id: id,
+  }),
+}

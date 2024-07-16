@@ -1,12 +1,10 @@
 import { screen, fireEvent, waitFor } from "@testing-library/react-native"
 import { AvatarStep } from "app/Scenes/CompleteMyProfile/AvatarStep"
-import * as useCompleteProfile from "app/Scenes/CompleteMyProfile/useCompleteProfile"
+import * as useCompleteProfile from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
 import * as imageUtils from "app/utils/getConvertedImageUrlFromS3"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-
-jest.mock("app/Scenes/CompleteMyProfile/CompleteMyProfileProvider", () => ({
-  useCompleteMyProfileContext: () => ({ user }),
-}))
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { Suspense } from "react"
+import { graphql } from "react-relay"
 
 jest.mock("app/utils/requestPhotos", () => ({
   showPhotoActionSheet: jest.fn(() => Promise.resolve(photos)),
@@ -24,14 +22,31 @@ describe("AvatarStep", () => {
     setField: mockSetField,
   })
 
+  const { renderWithRelay } = setupTestWrapper({
+    Component: () => (
+      <Suspense fallback={() => null}>
+        <AvatarStep />
+      </Suspense>
+    ),
+    query: graphql`
+      query AvatarStepTestsQuery {
+        me {
+          ...ImageSelector_me
+          ...IdentityVerificationStep_me
+        }
+      }
+    `,
+  })
+
   afterEach(() => {
     jest.clearAllMocks()
   })
 
-  it("renders", () => {
-    renderWithWrappers(<AvatarStep />)
+  it("renders", async () => {
+    const { mockResolveLastOperation } = renderWithRelay()
+    mockResolveLastOperation({ Me: () => user })
 
-    expect(screen.getByText("Add a profile image")).toBeOnTheScreen()
+    expect(await screen.findByText("Add a profile image")).toBeOnTheScreen()
     expect(
       screen.getByText(
         "Make your profile more engaging and help foster trust with galleries on Artsy."
@@ -44,16 +59,18 @@ describe("AvatarStep", () => {
   it("sets the image", async () => {
     const spy = jest.spyOn(imageUtils, "getConvertedImageUrlFromS3").mockResolvedValue("geminiUrl")
 
-    renderWithWrappers(<AvatarStep />)
+    const { mockResolveLastOperation } = renderWithRelay()
+    mockResolveLastOperation({ Me: () => user })
 
-    fireEvent.press(screen.getByText("Choose an Image"))
+    const imageButton = await screen.findByText("Choose an Image")
+    fireEvent.press(imageButton)
 
     await waitFor(() => expect(spy).toHaveBeenCalledWith(photos[0].path))
 
     expect(mockSetField).toHaveBeenCalledWith({ localPath: "localPath", geminiUrl: "geminiUrl" })
   })
 
-  it("renders given an image already set", () => {
+  it("renders given an image already set", async () => {
     useCompleteMyProfileSpy.mockReturnValue({
       goNext: jest.fn(),
       isCurrentRouteDirty: false,
@@ -61,9 +78,10 @@ describe("AvatarStep", () => {
       setField: mockSetField,
     })
 
-    renderWithWrappers(<AvatarStep />)
+    const { mockResolveLastOperation } = renderWithRelay()
+    mockResolveLastOperation({ Me: () => user })
 
-    expect(screen.getByText("Change Image")).toBeOnTheScreen()
+    expect(await screen.findByText("Change Image")).toBeOnTheScreen()
   })
 })
 

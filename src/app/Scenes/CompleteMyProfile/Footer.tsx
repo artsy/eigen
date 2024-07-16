@@ -1,5 +1,5 @@
 import { Button, Flex, Touchable, Text } from "@artsy/palette-mobile"
-import { useCompleteProfile } from "app/Scenes/CompleteMyProfile/useCompleteProfile"
+import { useCompleteProfile } from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
 import { FC } from "react"
 import { Platform } from "react-native"
 

@@ -1,6 +1,6 @@
 import { screen, fireEvent } from "@testing-library/react-native"
 import { ProfessionStep } from "app/Scenes/CompleteMyProfile/ProfessionStep"
-import * as useCompleteProfile from "app/Scenes/CompleteMyProfile/useCompleteProfile"
+import * as useCompleteProfile from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("ProfessionStep", () => {

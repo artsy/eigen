@@ -8,18 +8,24 @@ import {
 } from "app/Scenes/CompleteMyProfile/CompleteMyProfile"
 import {
   ROUTE_ACTION_TYPES,
-  State,
-  useCompleteMyProfileContext,
+  ProgressState,
+  CompleteMyProfileStore,
 } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
-import { getNextRoute } from "app/Scenes/CompleteMyProfile/useCompleteMyProfileSteps"
-import { useUpdateMyProfile } from "app/Scenes/CompleteMyProfile/useUpdateMyProfile"
+import { getNextRoute } from "app/Scenes/CompleteMyProfile/hooks/useCompleteMyProfileSteps"
+import { useUpdateMyProfile } from "app/Scenes/CompleteMyProfile/hooks/useUpdateMyProfile"
 import { navigate as artsyNavigate } from "app/system/navigation/navigate"
 import { useEffect, useMemo, useState } from "react"
 
-export const useCompleteProfile = <T extends State[keyof State]>() => {
+export const useCompleteProfile = <T extends ProgressState[keyof ProgressState]>() => {
   const [field, setField] = useState<T>()
-  const { steps, setProgressState, progressState, progressStateWithoutUndefined } =
-    useCompleteMyProfileContext()
+  const steps = CompleteMyProfileStore.useStoreState((state) => state.steps)
+  const progressState = CompleteMyProfileStore.useStoreState((state) => state.progressState)
+  const progressStateWithoutUndefined = CompleteMyProfileStore.useStoreState(
+    (state) => state.progressStateWithoutUndefined
+  )
+  const setProgressState = CompleteMyProfileStore.useStoreActions(
+    (actions) => actions.setProgressState
+  )
   const { navigate, goBack: _goBack, canGoBack } = useNavigation<CompleteMyProfileNavigationStack>()
   const { name } = useRoute<RouteProp<CompleteMyProfileNavigationRoutes, Routes>>()
   const [updateProfile, isLoading] = useUpdateMyProfile()
@@ -127,7 +133,7 @@ export const useCompleteProfile = <T extends State[keyof State]>() => {
 
 type StateNormalizedForMutation = Pick<UpdateMyProfileInput, "location" | "profession" | "iconUrl">
 
-const filterMutationInputFields = (progressState: State): StateNormalizedForMutation => {
+const filterMutationInputFields = (progressState: ProgressState): StateNormalizedForMutation => {
   return Object.keys(progressState).reduce((acc, key) => {
     // iconUrl state is an object with localPath and geminiUrl, needs more handling than the other fields
     if (key === "iconUrl") {
@@ -135,7 +141,7 @@ const filterMutationInputFields = (progressState: State): StateNormalizedForMuta
     }
     // filter out the isIdentityVerified field for the mutation
     if (key !== "isIdentityVerified") {
-      return { ...acc, [key]: progressState[key as keyof State] }
+      return { ...acc, [key]: progressState[key as keyof ProgressState] }
     }
 
     return acc

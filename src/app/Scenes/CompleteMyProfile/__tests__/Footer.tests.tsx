@@ -1,6 +1,6 @@
 import { screen, fireEvent } from "@testing-library/react-native"
 import { Footer } from "app/Scenes/CompleteMyProfile/Footer"
-import * as useCompleteProfile from "app/Scenes/CompleteMyProfile/useCompleteProfile"
+import * as useCompleteProfile from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("Footer", () => {

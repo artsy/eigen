@@ -1,15 +1,19 @@
 import { Text, Screen, Button, Spacer, Flex, useSpace, CheckIcon } from "@artsy/palette-mobile"
-import { useCompleteMyProfileContext } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
+import { IdentityVerificationStep_me$key } from "__generated__/IdentityVerificationStep_me.graphql"
 import { Footer } from "app/Scenes/CompleteMyProfile/Footer"
-import { useCompleteProfile } from "app/Scenes/CompleteMyProfile/useCompleteProfile"
+import { useCompleteMyProfileSteps } from "app/Scenes/CompleteMyProfile/hooks/useCompleteMyProfileSteps"
+import { useCompleteProfile } from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
 import { useHandleIDVerification } from "app/Scenes/MyProfile/useHandleVerification"
 import { navigate } from "app/system/navigation/navigate"
+import { FC } from "react"
+import { graphql, useFragment } from "react-relay"
 
-export const IdentityVerificationStep = () => {
+export const IdentityVerificationStep: FC = () => {
   const space = useSpace()
   const { goNext, isCurrentRouteDirty, field, setField } = useCompleteProfile()
-  const { user } = useCompleteMyProfileContext()
-  const { handleVerification } = useHandleIDVerification(user?.internalID ?? "")
+  const { me } = useCompleteMyProfileSteps()
+  const data = useFragment<IdentityVerificationStep_me$key>(fragment, me)
+  const { handleVerification } = useHandleIDVerification(data?.internalID ?? "")
 
   const handleSendVerification = () => {
     handleVerification()
@@ -54,7 +58,7 @@ export const IdentityVerificationStep = () => {
           {!!field && (
             <Flex flex={1} justifyContent="flex-end">
               <Text color="white100" backgroundColor="green100" py={1} px={2}>
-                ID verification email sent to {user?.email}.
+                ID verification email sent to {data?.email}.
               </Text>
             </Flex>
           )}
@@ -65,3 +69,10 @@ export const IdentityVerificationStep = () => {
     </Screen>
   )
 }
+
+const fragment = graphql`
+  fragment IdentityVerificationStep_me on Me {
+    internalID @required(action: NONE)
+    email @required(action: NONE)
+  }
+`
