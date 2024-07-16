@@ -9,7 +9,7 @@ import { NotificationCommercialButtons_artwork$key } from "__generated__/Notific
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import { PartnerOffer } from "app/Scenes/Activity/components/NotificationArtworkList"
 import { BuyNowButton } from "app/Scenes/Artwork/Components/CommercialButtons/BuyNowButton"
-import { InquiryButtonsFragmentContainer } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryButtons"
+import { InquiryButtons } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryButtons"
 import { MakeOfferButtonFragmentContainer } from "app/Scenes/Artwork/Components/CommercialButtons/MakeOfferButton"
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -87,7 +87,7 @@ export const CommercialButtons: React.FC<{
             artwork={artworkData as MakeOfferButton_artwork$key}
             editionSetID={null}
           />
-          <InquiryButtonsFragmentContainer
+          <InquiryButtons
             artwork={artworkData as InquiryButtons_artwork$key}
             block
             variant="outline"

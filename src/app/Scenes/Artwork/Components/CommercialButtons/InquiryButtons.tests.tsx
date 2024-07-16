@@ -1,6 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { InquiryButtonsTestsQuery } from "__generated__/InquiryButtonsTestsQuery.graphql"
-import { InquiryButtonsFragmentContainer } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryButtons"
+import { InquiryButtons } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryButtons"
 import { InquirySuccessNotification } from "app/Scenes/Artwork/Components/CommercialButtons/InquirySuccessNotification"
 import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -32,7 +32,7 @@ describe("InquiryButtons", () => {
   })
 
   const { renderWithRelay } = setupTestWrapper<InquiryButtonsTestsQuery>({
-    Component: ({ artwork }) => <InquiryButtonsFragmentContainer artwork={artwork!} />,
+    Component: ({ artwork }) => <InquiryButtons artwork={artwork!} />,
     query: graphql`
       query InquiryButtonsTestsQuery @relay_test_operation {
         artwork(id: "great-artttt") {

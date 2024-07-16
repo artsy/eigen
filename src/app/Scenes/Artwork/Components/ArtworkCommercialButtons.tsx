@@ -5,7 +5,7 @@ import { ArtworkCommercialButtons_partnerOffer$key } from "__generated__/Artwork
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtworkStore } from "app/Scenes/Artwork/ArtworkStore"
 import { BuyNowButton } from "app/Scenes/Artwork/Components/CommercialButtons/BuyNowButton"
-import { InquiryButtonsFragmentContainer } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryButtons"
+import { InquiryButtons } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryButtons"
 import { MakeOfferButtonFragmentContainer } from "app/Scenes/Artwork/Components/CommercialButtons/MakeOfferButton"
 import { getTimer } from "app/utils/getTimer"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -121,7 +121,7 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
     if (hasActivePartnerOffer) {
       return (
         <RowContainer>
-          <InquiryButtonsFragmentContainer artwork={artworkData} variant="outline" block />
+          <InquiryButtons artwork={artworkData} variant="outline" block />
           <BuyNowButton
             partnerOffer={partnerOfferData}
             artwork={artworkData}
@@ -133,7 +133,7 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
 
     return (
       <RowContainer>
-        <InquiryButtonsFragmentContainer artwork={artworkData} variant="outline" block />
+        <InquiryButtons artwork={artworkData} variant="outline" block />
         <MakeOfferButtonFragmentContainer artwork={artworkData} editionSetID={selectedEditionId} />
       </RowContainer>
     )
@@ -167,7 +167,7 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
     if (hasActivePartnerOffer) {
       return (
         <RowContainer>
-          <InquiryButtonsFragmentContainer artwork={artworkData} variant="outline" block />
+          <InquiryButtons artwork={artworkData} variant="outline" block />
           <BuyNowButton
             partnerOffer={partnerOfferData}
             artwork={artworkData}
@@ -177,7 +177,7 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
       )
     }
 
-    return <InquiryButtonsFragmentContainer artwork={artworkData} block />
+    return <InquiryButtons artwork={artworkData} block />
   }
 
   return null
