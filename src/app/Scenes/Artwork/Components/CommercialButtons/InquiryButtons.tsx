@@ -3,12 +3,8 @@ import { ButtonProps, Button } from "@artsy/palette-mobile"
 import { InquiryButtons_artwork$data } from "__generated__/InquiryButtons_artwork.graphql"
 import { InquiryModal } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryModal"
 import { InquirySuccessNotification } from "app/Scenes/Artwork/Components/CommercialButtons/InquirySuccessNotification"
-import {
-  ArtworkInquiryContext,
-  ArtworkInquiryStateProvider,
-} from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
-import { InquiryTypes, InquiryOptions } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
-import React, { useContext, useState } from "react"
+import { ArtworkInquiryStateProvider } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
+import React, { useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 export type InquiryButtonsProps = Omit<ButtonProps, "children"> & {
@@ -19,15 +15,6 @@ const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, ...rest }) => 
   const [modalVisibility, setModalVisibility] = useState(false)
   const { trackEvent } = useTracking()
   const [notificationVisibility, setNotificationVisibility] = useState(false)
-  const { dispatch } = useContext(ArtworkInquiryContext)
-  const dispatchAction = (buttonText: string) => {
-    dispatch({
-      type: "selectInquiryType",
-      payload: buttonText as InquiryTypes,
-    })
-
-    setModalVisibility(true)
-  }
 
   return (
     <>
@@ -38,12 +25,12 @@ const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, ...rest }) => 
       <Button
         onPress={() => {
           trackEvent(tracks.trackTappedContactGallery(artwork.slug, artwork.internalID))
-          dispatchAction(InquiryOptions.ContactGallery)
+          setModalVisibility(true)
         }}
         haptic
         {...rest}
       >
-        {InquiryOptions.ContactGallery}
+        Contact Gallery
       </Button>
       <InquiryModal
         artwork={artwork}

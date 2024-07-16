@@ -2,12 +2,7 @@ import { InquiryQuestionInput } from "__generated__/useSubmitInquiryRequestMutat
 import { LocationWithDetails } from "app/utils/googleMaps"
 import { Dispatch } from "react"
 
-export type ArtworkInquiryActions =
-  | SelectInquiryType
-  | SelectLocation
-  | SelectInquiryQuestion
-  | SetMessage
-  | ResetForm
+export type ArtworkInquiryActions = SelectLocation | SelectInquiryQuestion | SetMessage | ResetForm
 
 export interface ArtworkInquiryContextProps {
   state: ArtworkInquiryContextState
@@ -27,10 +22,6 @@ interface ResetForm {
   type: "resetForm"
   payload: null
 }
-interface SelectInquiryType {
-  type: "selectInquiryType"
-  payload: InquiryTypes
-}
 
 interface SelectLocation {
   type: "selectShippingLocation"
@@ -45,12 +36,6 @@ interface SetMessage {
 interface SelectInquiryQuestion {
   type: "selectInquiryQuestion"
   payload: InquiryQuestionInput & { isChecked: boolean }
-}
-
-export enum InquiryOptions {
-  RequestPrice = "Inquire on price",
-  ContactGallery = "Contact Gallery",
-  InquireToPurchase = "Inquire to purchase",
 }
 
 /**
