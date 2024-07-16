@@ -12614,6 +12614,13 @@ react-native-device-info@10.3.0:
   resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-10.3.0.tgz#6bab64d84d3415dd00cc446c73ec5e2e61fddbe7"
   integrity sha512-/ziZN1sA1REbJTv5mQZ4tXggcTvSbct+u5kCaze8BmN//lbxcTvWsU6NQd4IihLt89VkbX+14IGc9sVApSxd/w==
 
+react-native-document-picker@9.3.0:
+  version "9.3.0"
+  resolved "https://registry.yarnpkg.com/react-native-document-picker/-/react-native-document-picker-9.3.0.tgz#4651d354623367d06397fe6dbf4a496f7d92ca6b"
+  integrity sha512-X/j0xKn8cObckpHTNwE/hW9WzBiP6oKx820FYu1Nat43QnnHmmT6uozFgAUDcJfxmZGcEdLlbv0lNhnyRXJyyA==
+  dependencies:
+    invariant "^2.2.4"
+
 react-native-fast-image@8.6.3, react-native-fast-image@^8.6.3:
   version "8.6.3"
   resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-8.6.3.tgz#6edc3f9190092a909d636d93eecbcc54a8822255"
