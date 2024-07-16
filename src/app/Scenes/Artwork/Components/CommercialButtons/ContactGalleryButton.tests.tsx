@@ -1,6 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { InquiryButtonsTestsQuery } from "__generated__/InquiryButtonsTestsQuery.graphql"
-import { InquiryButtons } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryButtons"
+import { ContactGalleryButtonTestsQuery } from "__generated__/ContactGalleryButtonTestsQuery.graphql"
+import { ContactGalleryButton } from "app/Scenes/Artwork/Components/CommercialButtons/ContactGalleryButton"
 import { InquirySuccessNotification } from "app/Scenes/Artwork/Components/CommercialButtons/InquirySuccessNotification"
 import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -20,7 +20,7 @@ jest.mock("app/Scenes/Artwork/Components/CommercialButtons/InquiryModal", () => 
 
 const mockSuccessfulMutation = jest.fn()
 
-describe("InquiryButtons", () => {
+describe("ContactGalleryButton", () => {
   beforeEach(() => {
     jest.useFakeTimers({
       legacyFakeTimers: true,
@@ -31,12 +31,12 @@ describe("InquiryButtons", () => {
     jest.clearAllMocks()
   })
 
-  const { renderWithRelay } = setupTestWrapper<InquiryButtonsTestsQuery>({
-    Component: ({ artwork }) => <InquiryButtons artwork={artwork!} />,
+  const { renderWithRelay } = setupTestWrapper<ContactGalleryButtonTestsQuery>({
+    Component: ({ artwork }) => <ContactGalleryButton artwork={artwork!} />,
     query: graphql`
-      query InquiryButtonsTestsQuery @relay_test_operation {
+      query ContactGalleryButtonTestsQuery @relay_test_operation {
         artwork(id: "great-artttt") {
-          ...InquiryButtons_artwork
+          ...ContactGalleryButton_artwork
         }
       }
     `,
