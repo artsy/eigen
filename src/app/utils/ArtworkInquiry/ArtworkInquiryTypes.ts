@@ -1,4 +1,4 @@
-import { InquiryQuestionInput } from "__generated__/SubmitInquiryRequestMutation.graphql"
+import { InquiryQuestionInput } from "__generated__/useSubmitInquiryRequestMutation.graphql"
 import { LocationWithDetails } from "app/utils/googleMaps"
 import { Dispatch } from "react"
 
