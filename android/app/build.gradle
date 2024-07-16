@@ -1,6 +1,7 @@
 apply plugin: "com.android.application"
 apply plugin: "com.google.gms.google-services"
 apply plugin: "com.facebook.react"
+apply plugin: "org.jetbrains.kotlin.android"
 
 project.ext.envConfigFiles = [
     debug: ".env.shared",
@@ -80,6 +81,7 @@ def enableProguardInReleaseBuilds = false
 android {
     ndkVersion rootProject.ext.ndkVersion
 
+    buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     namespace "net.artsy.app"
