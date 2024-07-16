@@ -152,8 +152,8 @@ export const MyCollectionArtworkScreenQuery = graphql`
       }
     }
     marketPriceInsights(artistId: $artistInternalID, medium: $medium) @optionalField {
-      ...MyCollectionArtworkInsights_marketPriceInsights #new
-      ...MyCollectionArtworkAboutWork_marketPriceInsights #new
+      ...MyCollectionArtworkInsights_marketPriceInsights
+      ...MyCollectionArtworkAboutWork_marketPriceInsights
     }
     _marketPriceInsights: marketPriceInsights(artistId: $artistInternalID, medium: $medium)
       @optionalField {
