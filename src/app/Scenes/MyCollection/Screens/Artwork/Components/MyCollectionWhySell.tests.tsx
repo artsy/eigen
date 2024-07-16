@@ -278,7 +278,7 @@ const artworkWithoutSubmission = {
   internalID: "someInternalId",
   artist: {
     name: "Banksy",
-    targetSupply: { isP1: true },
+    targetSupply: { isTargetSupply: true },
     internalID: "4dd1584de0091e000100207c",
   },
   submissionId: null,
@@ -300,7 +300,7 @@ const notP1Artist = {
   internalID: "someInternalId",
   artist: {
     name: "Daria",
-    targetSupply: { isP1: false },
+    targetSupply: { isTargetSupply: false },
     internalID: "4dd1584de0091e000100207c",
   },
 }

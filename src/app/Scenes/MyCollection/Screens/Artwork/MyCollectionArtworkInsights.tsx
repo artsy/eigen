@@ -1,9 +1,9 @@
-import { Flex, Tabs } from "@artsy/palette-mobile"
+import { Flex } from "@artsy/palette-mobile"
 import { MyCollectionArtworkInsights_artwork$key } from "__generated__/MyCollectionArtworkInsights_artwork.graphql"
 import { MyCollectionArtworkInsights_marketPriceInsights$key } from "__generated__/MyCollectionArtworkInsights_marketPriceInsights.graphql"
 import { MyCollectionArtworkInsights_me$key } from "__generated__/MyCollectionArtworkInsights_me.graphql"
 import { PriceEstimateRequested } from "app/Scenes/MyCollection/Screens/Artwork/Components/ArtworkInsights/RequestForPriceEstimate/PriceEstimateRequested"
-import { useFragment, graphql } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { MyCollectionArtworkArtistAuctionResults } from "./Components/ArtworkInsights/MyCollectionArtworkArtistAuctionResults"
 import { MyCollectionArtworkArtistMarket } from "./Components/ArtworkInsights/MyCollectionArtworkArtistMarket"
 import { MyCollectionArtworkComparableWorks } from "./Components/ArtworkInsights/MyCollectionArtworkComparableWorks"
@@ -29,43 +29,40 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
 
   const me = useFragment(meFragment, restProps.me)
 
-  const isP1Artist = artwork.artist?.targetSupply?.isP1
-
   return (
-    <Tabs.ScrollView>
-      <Flex mb={4} mt={2}>
-        {!!artwork.marketPriceInsights && (
-          <>
-            <MyCollectionArtworkDemandIndex
-              artwork={artwork}
-              marketPriceInsights={artwork.marketPriceInsights}
-            />
-          </>
-        )}
+    <Flex mt={2} px={2}>
+      {!!artwork.marketPriceInsights && (
+        <>
+          <MyCollectionArtworkDemandIndex
+            artwork={artwork}
+            marketPriceInsights={artwork.marketPriceInsights}
+          />
+        </>
+      )}
 
-        <PriceEstimateRequested me={me} artwork={artwork} />
-
-        {!!isP1Artist && <MyCollectionWhySell artwork={artwork} contextModule="insights" />}
-
-        {!!artwork.marketPriceInsights && (
+      {!!artwork.marketPriceInsights && (
+        <>
           <MyCollectionArtworkArtistMarket
             artwork={artwork}
             marketPriceInsights={artwork.marketPriceInsights}
           />
-        )}
+        </>
+      )}
 
-        <MyCollectionArtworkComparableWorks artwork={artwork} />
+      <PriceEstimateRequested me={me} artwork={artwork} />
 
-        <MyCollectionArtworkArtistAuctionResults artwork={artwork} />
+      <RequestForPriceEstimateBanner
+        me={me}
+        artwork={artwork}
+        marketPriceInsights={marketPriceInsights}
+      />
 
-        <RequestForPriceEstimateBanner
-          me={me}
-          artwork={artwork}
-          marketPriceInsights={marketPriceInsights}
-          contextModule="insights"
-        />
-      </Flex>
-    </Tabs.ScrollView>
+      <MyCollectionWhySell artwork={artwork} contextModule="insights" />
+
+      <MyCollectionArtworkComparableWorks artwork={artwork} />
+
+      <MyCollectionArtworkArtistAuctionResults artwork={artwork} />
+    </Flex>
   )
 }
 
@@ -76,7 +73,7 @@ const artworkFragment = graphql`
     internalID
     artist {
       targetSupply {
-        isP1
+        isTargetSupply
       }
     }
     ...RequestForPriceEstimateBanner_artwork

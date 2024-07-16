@@ -1,20 +1,22 @@
 import { ActionType, ContextModule, EditCollectedArtwork, OwnerType } from "@artsy/cohesion"
-import { DEFAULT_HIT_SLOP, Flex, Screen, Tabs, Text } from "@artsy/palette-mobile"
+import { DEFAULT_HIT_SLOP, Flex, Join, Screen, Separator, Text } from "@artsy/palette-mobile"
 import { MyCollectionArtworkQuery } from "__generated__/MyCollectionArtworkQuery.graphql"
 import { LoadingSpinner } from "app/Components/Modals/LoadingModal"
 import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
+import { MyCollectionArtworkAboutWork } from "app/Scenes/MyCollection/Screens/Artwork/Components/ArtworkAbout/MyCollectionArtworkAboutWork"
+import { MyCollectionArtworkArticles } from "app/Scenes/MyCollection/Screens/Artwork/Components/ArtworkAbout/MyCollectionArtworkArticles"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack, navigate, popToRoot } from "app/system/navigation/navigate"
+import { extractNodes } from "app/utils/extractNodes"
 import { getVortexMedium } from "app/utils/marketPriceInsightHelpers"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import React, { Suspense, useCallback } from "react"
-import { ScrollView, TouchableOpacity } from "react-native"
+import { TouchableOpacity } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 import { MyCollectionArtworkHeader } from "./Components/MyCollectionArtworkHeader"
-import { MyCollectionArtworkAbout } from "./MyCollectionArtworkAbout"
 import { MyCollectionArtworkInsights } from "./MyCollectionArtworkInsights"
 
 export enum Tab {
@@ -44,9 +46,6 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
 
   const { artwork } = data
 
-  const comparableWorksCount = data?.artwork?.comparableAuctionResults?.totalCount
-  const auctionResultsCount = data?.artwork?.artist?.auctionResultsConnection?.totalCount
-
   const handleEdit = useCallback(() => {
     if (!artwork) {
       return
@@ -63,12 +62,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
     })
   }, [artwork])
 
-  const shouldShowInsightsTab =
-    !!data?._marketPriceInsights ||
-    (comparableWorksCount ?? 0) > 0 ||
-    (auctionResultsCount ?? 0) > 0
-
-  if (!artwork) {
+  if (!data.artwork) {
     return (
       <Flex flex={1} justifyContent="center" alignItems="center">
         <Text>The requested Artwork is not available</Text>
@@ -76,55 +70,51 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
     )
   }
 
+  const articles = extractNodes(data.artwork.artist?.articles)
+
   return (
-    <>
-      <Screen>
-        <Screen.Body fullwidth>
-          <Screen.Header
-            onBack={goBack}
-            rightElements={
-              <TouchableOpacity onPress={handleEdit} hitSlop={DEFAULT_HIT_SLOP}>
-                <Text>Edit</Text>
-              </TouchableOpacity>
-            }
+    <Screen>
+      <Screen.Header
+        onBack={goBack}
+        rightElements={
+          <TouchableOpacity onPress={handleEdit} hitSlop={DEFAULT_HIT_SLOP}>
+            <Text>Edit</Text>
+          </TouchableOpacity>
+        }
+      />
+      <Screen.ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
+        <Join
+          flatten
+          separator={
+            <Flex m={2}>
+              <Separator borderColor="black10" />
+            </Flex>
+          }
+        >
+          <MyCollectionArtworkHeader artwork={data.artwork} />
+
+          <MyCollectionArtworkAboutWork
+            artwork={data.artwork}
+            marketPriceInsights={data.marketPriceInsights}
           />
-          {!!shouldShowInsightsTab ? (
-            <Tabs renderHeader={() => <MyCollectionArtworkHeader artwork={artwork} />}>
-              {!!shouldShowInsightsTab && (
-                <Tabs.Tab name={Tab.insights} label={Tab.insights}>
-                  <Tabs.Lazy>
-                    <MyCollectionArtworkInsights
-                      artwork={artwork}
-                      marketPriceInsights={data.marketPriceInsights}
-                      me={data.me}
-                    />
-                  </Tabs.Lazy>
-                </Tabs.Tab>
-              )}
-              <Tabs.Tab name={Tab.about} label={Tab.about}>
-                <Tabs.Lazy>
-                  <MyCollectionArtworkAbout
-                    me={data.me}
-                    artwork={artwork}
-                    marketPriceInsights={data.marketPriceInsights}
-                  />
-                </Tabs.Lazy>
-              </Tabs.Tab>
-            </Tabs>
-          ) : (
-            <ScrollView>
-              <MyCollectionArtworkHeader artwork={artwork} />
-              <MyCollectionArtworkAbout
-                me={data.me}
-                renderWithoutScrollView
-                artwork={artwork}
-                marketPriceInsights={data.marketPriceInsights}
-              />
-            </ScrollView>
+
+          <MyCollectionArtworkInsights
+            artwork={data.artwork}
+            marketPriceInsights={data.marketPriceInsights}
+            me={data.me}
+          />
+
+          {articles.length > 0 && (
+            <MyCollectionArtworkArticles
+              artistSlug={data.artwork.artist?.slug}
+              artistNames={data.artwork.artistNames}
+              articles={articles}
+              totalCount={data.artwork.artist?.articles?.totalCount}
+            />
           )}
-        </Screen.Body>
-      </Screen>
-    </>
+        </Join>
+      </Screen.ScrollView>
+    </Screen>
   )
 }
 
@@ -132,18 +122,28 @@ export const MyCollectionArtworkScreenQuery = graphql`
   query MyCollectionArtworkQuery($artworkId: String!, $artistInternalID: ID!, $medium: String!) {
     artwork(id: $artworkId) {
       ...MyCollectionArtwork_sharedProps @relay(mask: false)
-      ...MyCollectionArtworkHeader_artwork
-      ...MyCollectionArtworkInsights_artwork
-      ...MyCollectionArtworkAbout_artwork
+      ...MyCollectionArtworkHeader_artwork #new
+      ...MyCollectionArtworkInsights_artwork #new
+      ...MyCollectionArtworkAboutWork_artwork #new
+      ...MyCollectionWhySell_artwork #new
       comparableAuctionResults(first: 6) @optionalField {
         totalCount
       }
       artist {
         internalID
         initials
+        slug
         formattedNationalityAndBirthday
         auctionResultsConnection(first: 3, sort: DATE_DESC) {
           totalCount
+        }
+        articles: articlesConnection(first: 10, sort: PUBLISHED_AT_DESC) {
+          totalCount
+          edges {
+            node {
+              ...MyCollectionArtworkArticles_article
+            }
+          }
         }
       }
       marketPriceInsights @optionalField {
@@ -153,7 +153,7 @@ export const MyCollectionArtworkScreenQuery = graphql`
     }
     marketPriceInsights(artistId: $artistInternalID, medium: $medium) @optionalField {
       ...MyCollectionArtworkInsights_marketPriceInsights
-      ...MyCollectionArtworkAbout_marketPriceInsights
+      ...MyCollectionArtworkAboutWork_marketPriceInsights
     }
     _marketPriceInsights: marketPriceInsights(artistId: $artistInternalID, medium: $medium)
       @optionalField {
@@ -161,7 +161,6 @@ export const MyCollectionArtworkScreenQuery = graphql`
     }
     me {
       ...MyCollectionArtworkInsights_me
-      ...MyCollectionArtworkAbout_me
     }
   }
 `
@@ -227,7 +226,7 @@ export const ArtworkMetaProps = graphql`
       internalID
       formattedNationalityAndBirthday
       targetSupply {
-        isP1
+        isTargetSupply
       }
     }
     artistNames

@@ -48,7 +48,7 @@ export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWork
   }`
 
   return (
-    <Flex mb={4}>
+    <Flex px={2}>
       <Field label="Estimate Range" value={estimatePrice} />
       <MetaDataField label="Medium" value={capitalize(category || "")} />
       <MetaDataField label="Materials" value={capitalize(medium || "")} />

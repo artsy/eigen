@@ -1,15 +1,10 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
 import { MyCollectionArtworkArtistAuctionResults_artwork$key } from "__generated__/MyCollectionArtworkArtistAuctionResults_artwork.graphql"
-import {
-  AuctionResultListItemFragmentContainer,
-  AuctionResultListSeparator,
-} from "app/Components/Lists/AuctionResultListItem"
+import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { useScreenDimensions } from "app/utils/hooks"
-import { FlatList } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -27,8 +22,6 @@ export const MyCollectionArtworkArtistAuctionResults: React.FC<
   const artist = artwork.artist
   const auctionResults = extractNodes(artist?.auctionResultsConnection)
 
-  const { width } = useScreenDimensions()
-
   if (!auctionResults.length) {
     return null
   }
@@ -45,25 +38,19 @@ export const MyCollectionArtworkArtistAuctionResults: React.FC<
         }}
       />
 
-      <FlatList
-        data={auctionResults}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <>
-            <AuctionResultListItemFragmentContainer
-              auctionResult={item}
-              onPress={() => {
-                if (!!artist?.slug) {
-                  trackEvent(tracks.tappedAuctionResultGroup(artwork?.internalID, artwork?.slug))
-                  navigate(`/artist/${artist.slug}/auction-result/${item.internalID}`)
-                }
-              }}
-            />
-          </>
-        )}
-        ItemSeparatorComponent={AuctionResultListSeparator}
-        style={{ width, left: -20 }}
-      />
+      {auctionResults.map((item) => (
+        <Flex my={1} mx={-2} key={item.internalID}>
+          <AuctionResultListItemFragmentContainer
+            auctionResult={item}
+            onPress={() => {
+              if (!!artist?.slug) {
+                trackEvent(tracks.tappedAuctionResultGroup(artwork?.internalID, artwork?.slug))
+                navigate(`/artist/${artist.slug}/auction-result/${item.internalID}`)
+              }
+            }}
+          />
+        </Flex>
+      ))}
     </Flex>
   )
 }
