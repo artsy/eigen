@@ -11,15 +11,19 @@ import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { useFormikContext } from "formik"
-import { useState } from "react"
+import { useRef } from "react"
 import { ScrollView } from "react-native"
 
 export const SubmitArtworkShippingLocation = () => {
   const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
 
-  const { show: showToast } = useToast()
+  const addressRef = useRef<Input>(null)
+  const address2Ref = useRef<Input>(null)
+  const cityRef = useRef<Input>(null)
+  const postalCodeRef = useRef<Input>(null)
+  const stateRef = useRef<Input>(null)
 
-  const [country, setCountry] = useState<String | null>(null)
+  const { show: showToast } = useToast()
 
   const setIsLoading = SubmitArtworkFormStore.useStoreActions((actions) => actions.setIsLoading)
   const setCurrentStep = SubmitArtworkFormStore.useStoreActions((actions) => actions.setCurrentStep)
@@ -38,11 +42,10 @@ export const SubmitArtworkShippingLocation = () => {
               city: values.location?.city,
               state: values.location?.state,
               country: values.location?.country,
+              countryCode: values.location?.countryCode,
               zipCode: values.location?.zipCode,
-              // TODO: Implement this
-              // addressLine1: values.location?.addressLine1,
-              // TODO: Implement this
-              // addressLine2: values.location?.addressLine2,
+              address: values.location?.address,
+              address2: values.location?.address2,
             },
           },
           values.submissionId
@@ -61,6 +64,7 @@ export const SubmitArtworkShippingLocation = () => {
     },
   })
 
+  console.log(values.location?.countryCode)
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({
@@ -81,28 +85,40 @@ export const SubmitArtworkShippingLocation = () => {
             <CountrySelect
               onSelectValue={(countryCode) => {
                 const newCountry = COUNTRY_SELECT_OPTIONS.find(({ value }) => value === countryCode)
-                  ?.label
 
                 if (newCountry) {
-                  setCountry(newCountry as string)
-                  setFieldValue("location.countryCode", countryCode)
+                  setFieldValue("location.country", newCountry.label)
+                  setFieldValue("location.countryCode", newCountry.value)
                 }
               }}
-              value={country}
+              value={
+                values.location?.countryCode ||
+                COUNTRY_SELECT_OPTIONS.find(({ label }) => label === values.location?.country)
+                  ?.value
+              }
               required
+              testID="country-select"
             />
 
             <Input
               title="Address Line 1"
-              // defaultValue={values.location.addressLine1}
-              onChangeText={(text) => setFieldValue("location.addressLine1", text)}
+              value={values.location?.address}
+              onChangeText={(text) => setFieldValue("location.address", text)}
               required
+              ref={addressRef}
+              onSubmitEditing={() => {
+                address2Ref.current?.focus()
+              }}
             />
 
             <Input
               title="Address Line 2"
-              // defaultValue={values.location.addressLine2}
-              onChangeText={(text) => setFieldValue("location.addressLine2", text)}
+              defaultValue={values.location?.address2}
+              onChangeText={(text) => setFieldValue("location.address2", text)}
+              ref={address2Ref}
+              onSubmitEditing={() => {
+                cityRef.current?.focus()
+              }}
             />
 
             <Input
@@ -110,6 +126,10 @@ export const SubmitArtworkShippingLocation = () => {
               defaultValue={values.location?.city ?? ""}
               onChangeText={(text) => setFieldValue("location.city", text)}
               required
+              ref={cityRef}
+              onSubmitEditing={() => {
+                postalCodeRef.current?.focus()
+              }}
             />
 
             <Input
@@ -117,6 +137,10 @@ export const SubmitArtworkShippingLocation = () => {
               defaultValue={values.location?.zipCode ?? ""}
               onChangeText={(text) => setFieldValue("location.zipCode", text)}
               required
+              ref={postalCodeRef}
+              onSubmitEditing={() => {
+                stateRef.current?.focus()
+              }}
             />
 
             <Input
@@ -124,6 +148,7 @@ export const SubmitArtworkShippingLocation = () => {
               defaultValue={values.location?.state ?? ""}
               onChangeText={(text) => setFieldValue("location.state", text)}
               required
+              ref={stateRef}
             />
           </Join>
         </Flex>

@@ -47,10 +47,8 @@ const submitArtworkFormEditQuery = graphql`
       locationState
       locationPostalCode
       locationCountryCode
-      # TODO: Implement this
-      # locationAddressLine1
-      # TODO: Implement this
-      # locationAddressLine2
+      locationAddress
+      locationAddress2
       year
       title
       signature

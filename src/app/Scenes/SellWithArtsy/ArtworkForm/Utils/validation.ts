@@ -32,10 +32,24 @@ export const getCurrentValidationSchema = (_injectedStep?: keyof SubmitArtworkSt
       return provenanceSchema
     case "AddDimensions":
       return dimensionsSchema
+    case "ShippingLocation":
+      return shippingLocationSchema
     default:
       return Yup.object()
   }
 }
+
+const shippingLocationSchema = Yup.object().shape({
+  location: Yup.object().shape({
+    city: Yup.string().required().trim(),
+    state: Yup.string().required().trim(),
+    country: Yup.string().required().trim(),
+    countryCode: Yup.string().trim(),
+    zipCode: Yup.string().required().trim(),
+    address: Yup.string().required().trim(),
+    address2: Yup.string().trim(),
+  }),
+})
 
 const artistFormSchema = Yup.object().shape({
   artist: Yup.string().required().trim(),
