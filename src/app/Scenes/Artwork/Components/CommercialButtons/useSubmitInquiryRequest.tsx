@@ -5,18 +5,7 @@ export const useSubmitInquiryRequest = () => {
   return useMutation<useSubmitInquiryRequestMutation>(graphql`
     mutation useSubmitInquiryRequestMutation($input: SubmitInquiryRequestMutationInput!) {
       submitInquiryRequestMutation(input: $input) {
-        inquiryRequest {
-          inquireable {
-            __typename
-            ... on Artwork {
-              title
-              artists {
-                name
-                birthday
-              }
-            }
-          }
-        }
+        clientMutationId
       }
     }
   `)
