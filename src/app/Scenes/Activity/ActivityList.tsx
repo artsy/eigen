@@ -1,9 +1,6 @@
 import { Flex, LazyFlatlist, Screen, Separator, Spinner } from "@artsy/palette-mobile"
 import { ActivityList_viewer$key } from "__generated__/ActivityList_viewer.graphql"
-import {
-  shouldDisplayNotification,
-  Notification,
-} from "app/Scenes/Activity/utils/shouldDisplayNotification"
+import { shouldDisplayNotification } from "app/Scenes/Activity/utils/shouldDisplayNotification"
 import { extractNodes } from "app/utils/extractNodes"
 import { useState } from "react"
 import { RefreshControl } from "react-native"
@@ -27,9 +24,7 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type }) => {
 
   const notificationsNodes = extractNodes(data?.notificationsConnection)
 
-  const notifications = notificationsNodes.filter((notification) =>
-    shouldDisplayNotification(notification as Notification)
-  )
+  const notifications = notificationsNodes.filter(shouldDisplayNotification)
 
   const handleLoadMore = () => {
     if (!hasNext || isLoadingNext) {
