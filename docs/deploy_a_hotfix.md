@@ -67,6 +67,22 @@ Otherwise follow the steps in `Codepush release hotfix process`.
 <details>
   <summary>Codepush release hotfix process</summary>
 
+## Check if there is already a hot fix targeting this app version
+
+Ask #practice-mobile if anything has been deployed as a hot fix previously targeting this app version. If so you will want to pull the commits in from this hot fix to your branch to make sure all fixes are present.
+
+## Install dependencies
+
+Since the branch you are on is older than main it is likely some node deps are out of date locally. You will need to update your local deps otherwise the
+deployment to codepush will fail.
+
+`yarn setup:artsy`
+
+`yarn install:all`
+
+> [!IMPORTANT]
+> If the install results in changes to Podfile.lock you must do a Native Release Hotfix, please refer to that section of the docs.
+
 ## Deploy your change to codepush canary deployment
 
 Let `#practice-mobile` know you will be deploying a hotfix and to hold off deploying to codepush or betas.
@@ -128,3 +144,27 @@ Follow the instructions for [deploying to app store](https://github.com/artsy/ei
 Make sure to QA the bug fix changes and run through the QA script before releasing to users.
 
 </details>
+
+## Gotchas and FAQS
+
+**Codepush was deployed but I am still not seeing my app update. What's going on?**
+
+Updates aren't instant in mobile, even with codepush, but users on the latest should get updated over a few days automatically with a codepush rollout. If you want to try to force the update you can make sure you are on the latest version of the app in the app store and then kill and restart your app.
+
+**I want to deploy to codepush and target multiple versions to get more users updated. How do I do that?**
+
+You probably should not, codepush will prioritize the latest mandatory update so releasing multiple will affect roll outs of the others and slow down how fast fixes get to users. Most users will update fairly quickly once a release is rolled out completely so it is best to target the latest and wait in most cases. If something is critical we can talk about options in the #practice-mobile channel. Most things are not critical and remember we do releases every 2 weeks.
+
+**The latest version of the app is still rolling out so many users won't get updated if we target the latest with codepush. What do I do?**
+
+You have a couple options, check metrics for latest release:
+
+**Option 1 - if things look stable**:
+
+- Update the rollout in play store and app store to release the app to all users
+- Send out your codepush update targeting the latest release as usual and users should get updated over the next few days
+
+**Option 2 - if things look unstable**:
+
+- Halt the rollout of the latest release
+- Do a native hotfix release fixing instability and the issue being addressed
