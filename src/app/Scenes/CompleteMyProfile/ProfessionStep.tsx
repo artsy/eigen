@@ -1,45 +1,54 @@
 import { Text, Screen, Spacer, Input, Flex } from "@artsy/palette-mobile"
+import { CompleteMyProfileStore } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
 import { Footer } from "app/Scenes/CompleteMyProfile/Footer"
 import { useCompleteProfile } from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
-import { FC } from "react"
+import { FC, useRef } from "react"
 import { KeyboardAvoidingView } from "react-native"
 
 export const ProfessionStep: FC = () => {
-  const { goNext, isCurrentRouteDirty, field, setField } = useCompleteProfile<string>()
+  const ref = useRef<Input>(null)
+  const { goNext } = useCompleteProfile()
+
+  const profession = CompleteMyProfileStore.useStoreState((state) => state.progressState.profession)
+  const setProgressState = CompleteMyProfileStore.useStoreActions(
+    (actions) => actions.setProgressState
+  )
 
   const handleOnChange = (text: string) => {
-    setField(text)
+    setProgressState({ type: "profession", value: text })
   }
 
   return (
     <Screen safeArea={false}>
-      <Screen.Body pt={2}>
-        <KeyboardAvoidingView behavior="padding">
-          <Flex justifyContent="space-between" height="100%">
-            <Flex>
-              <Text variant="lg-display">Add your profession</Text>
+      <Screen.Body pt={2} fullwidth>
+        <KeyboardAvoidingView
+          behavior="padding"
+          style={{ flex: 1, justifyContent: "space-between" }}
+        >
+          <Flex px={2} onLayout={() => ref.current?.focus()}>
+            <Text variant="lg-display">Add your profession</Text>
 
-              <Spacer y={1} />
+            <Spacer y={1} />
 
-              <Text color="black60">
-                Accelerate conversations with galleries by providing quick insights into your
-                background.
-              </Text>
+            <Text color="black60">
+              Accelerate conversations with galleries by providing quick insights into your
+              background.
+            </Text>
 
-              <Spacer y={2} />
+            <Spacer y={2} />
 
-              <Input
-                aria-label="Profession"
-                placeholder="Profession"
-                title="Profession"
-                autoFocus
-                value={field}
-                onChangeText={handleOnChange}
-              />
-            </Flex>
-
-            <Footer isFormDirty={isCurrentRouteDirty} onGoNext={goNext} />
+            <Input
+              aria-label="Profession"
+              placeholder="Profession"
+              title="Profession"
+              value={profession as string}
+              onChangeText={handleOnChange}
+              // Android keyboard doesn't work so great with autofocus prop, slower devices don't measure 100% right the layout
+              ref={ref}
+            />
           </Flex>
+
+          <Footer isFormDirty={!!profession} onGoNext={goNext} />
         </KeyboardAvoidingView>
       </Screen.Body>
     </Screen>

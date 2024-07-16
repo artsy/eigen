@@ -1,5 +1,6 @@
 import { screen, fireEvent, waitFor } from "@testing-library/react-native"
 import { AvatarStep } from "app/Scenes/CompleteMyProfile/AvatarStep"
+import { CompleteMyProfileStore } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
 import * as useCompleteProfile from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
 import * as imageUtils from "app/utils/getConvertedImageUrlFromS3"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -11,16 +12,16 @@ jest.mock("app/utils/requestPhotos", () => ({
 }))
 
 describe("AvatarStep", () => {
-  const mockSetField = jest.fn()
-
-  const useCompleteMyProfileSpy = (
-    jest.spyOn(useCompleteProfile, "useCompleteProfile") as jest.SpyInstance<any>
-  ).mockReturnValue({
+  const setProgressState = jest.fn()
+  ;(jest.spyOn(useCompleteProfile, "useCompleteProfile") as jest.SpyInstance<any>).mockReturnValue({
     goNext: jest.fn(),
-    isCurrentRouteDirty: false,
-    field: undefined,
-    setField: mockSetField,
   })
+  jest
+    .spyOn(CompleteMyProfileStore, "useStoreActions")
+    .mockImplementation((callback) => callback({ setProgressState } as any))
+  const stateSpy = jest
+    .spyOn(CompleteMyProfileStore, "useStoreState")
+    .mockImplementation((callback) => callback({ progressState: {} } as any))
 
   const { renderWithRelay } = setupTestWrapper({
     Component: () => (
@@ -67,16 +68,18 @@ describe("AvatarStep", () => {
 
     await waitFor(() => expect(spy).toHaveBeenCalledWith(photos[0].path))
 
-    expect(mockSetField).toHaveBeenCalledWith({ localPath: "localPath", geminiUrl: "geminiUrl" })
+    expect(setProgressState).toHaveBeenCalledWith({
+      type: "iconUrl",
+      value: { localPath: "localPath", geminiUrl: "geminiUrl" },
+    })
   })
 
   it("renders given an image already set", async () => {
-    useCompleteMyProfileSpy.mockReturnValue({
-      goNext: jest.fn(),
-      isCurrentRouteDirty: false,
-      field: { localPath: "localPath", geminiUrl: "geminiUrl" },
-      setField: mockSetField,
-    })
+    stateSpy.mockImplementation((callback) =>
+      callback({
+        progressState: { iconUrl: { localPath: "localPath", geminiUrl: "geminiUrl" } },
+      } as any)
+    )
 
     const { mockResolveLastOperation } = renderWithRelay()
     mockResolveLastOperation({ Me: () => user })

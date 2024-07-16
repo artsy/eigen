@@ -205,7 +205,7 @@ export const MyProfileHeader: React.FC<MyProfileHeaderProps> = ({ meProp }) => {
         >
           {!!me?.icon?.url ? (
             <Flex overflow="hidden" borderRadius={35}>
-              <Image src={me.icon.url} height={70} width={70} />
+              <Image src={me.icon.url} height={70} width={70} performResize={false} />
             </Flex>
           ) : (
             <PersonIcon width={24} height={24} />

@@ -1,4 +1,5 @@
 import { screen, fireEvent, waitFor } from "@testing-library/react-native"
+import { CompleteMyProfileStore } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
 import { LocationStep } from "app/Scenes/CompleteMyProfile/LocationStep"
 import * as useCompleteProfile from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
 import { getLocationDetails, getLocationPredictions } from "app/utils/googleMaps"
@@ -10,18 +11,19 @@ jest.mock("app/utils/googleMaps", () => ({
 }))
 
 describe("LocationStep", () => {
-  const mockSetField = jest.fn()
-
-  const useCompleteMyProfileSpy = (
-    jest.spyOn(useCompleteProfile, "useCompleteProfile") as jest.SpyInstance<any>
-  ).mockReturnValue({
+  const setProgressState = jest.fn()
+  ;(jest.spyOn(useCompleteProfile, "useCompleteProfile") as jest.SpyInstance<any>).mockReturnValue({
     goNext: jest.fn(),
-    isCurrentRouteDirty: false,
-    field: "",
-    setField: mockSetField,
   })
+  jest
+    .spyOn(CompleteMyProfileStore, "useStoreActions")
+    .mockImplementation((callback) => callback({ setProgressState } as any))
+  const stateSpy = jest
+    .spyOn(CompleteMyProfileStore, "useStoreState")
+    .mockImplementation((callback) => callback({ progressState: {} } as any))
 
   beforeEach(() => {
+    jest.clearAllMocks()
     ;(getLocationPredictions as jest.Mock).mockResolvedValue(locationPredictions)
     ;(getLocationDetails as jest.Mock).mockResolvedValue(locationDetails)
   })
@@ -42,7 +44,7 @@ describe("LocationStep", () => {
     expect(screen.getByLabelText("Enter your primary location")).toBeOnTheScreen()
   })
 
-  it("calls setField on input change", async () => {
+  it("calls setProgressState on input change", async () => {
     renderWithWrappers(<LocationStep />)
 
     const input = screen.getByLabelText("Enter your primary location")
@@ -54,16 +56,18 @@ describe("LocationStep", () => {
 
     fireEvent.press(screen.getByTestId("autocomplete-location-prediction-a"))
 
-    await waitFor(() => expect(mockSetField).toHaveBeenCalledWith(locationDetails))
+    await waitFor(() =>
+      expect(setProgressState).toHaveBeenCalledWith({
+        type: "location",
+        value: locationDetails,
+      })
+    )
   })
 
   it("shows the input value from field state", () => {
-    useCompleteMyProfileSpy.mockReturnValue({
-      goNext: jest.fn(),
-      isCurrentRouteDirty: false,
-      field: locationDetails,
-      setField: mockSetField,
-    })
+    stateSpy.mockImplementation((callback) =>
+      callback({ progressState: { location: locationDetails } } as any)
+    )
 
     renderWithWrappers(<LocationStep />)
 

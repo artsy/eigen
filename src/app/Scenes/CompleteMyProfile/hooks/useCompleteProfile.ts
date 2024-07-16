@@ -7,53 +7,35 @@ import {
   Routes,
 } from "app/Scenes/CompleteMyProfile/CompleteMyProfile"
 import {
-  ROUTE_ACTION_TYPES,
   ProgressState,
   CompleteMyProfileStore,
 } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
 import { getNextRoute } from "app/Scenes/CompleteMyProfile/hooks/useCompleteMyProfileSteps"
 import { useUpdateMyProfile } from "app/Scenes/CompleteMyProfile/hooks/useUpdateMyProfile"
 import { navigate as artsyNavigate } from "app/system/navigation/navigate"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo } from "react"
 
-export const useCompleteProfile = <T extends ProgressState[keyof ProgressState]>() => {
-  const [field, setField] = useState<T>()
+// Hook responsible for navigating between the steps of the profile completion process
+// and saving the user's progress
+export const useCompleteProfile = () => {
+  const setIsLoading = CompleteMyProfileStore.useStoreActions((actions) => actions.setIsLoading)
+  const isLoading = CompleteMyProfileStore.useStoreState((state) => state.isLoading)
   const steps = CompleteMyProfileStore.useStoreState((state) => state.steps)
   const progressState = CompleteMyProfileStore.useStoreState((state) => state.progressState)
   const progressStateWithoutUndefined = CompleteMyProfileStore.useStoreState(
     (state) => state.progressStateWithoutUndefined
   )
-  const setProgressState = CompleteMyProfileStore.useStoreActions(
-    (actions) => actions.setProgressState
-  )
   const { navigate, goBack: _goBack, canGoBack } = useNavigation<CompleteMyProfileNavigationStack>()
   const { name } = useRoute<RouteProp<CompleteMyProfileNavigationRoutes, Routes>>()
-  const [updateProfile, isLoading] = useUpdateMyProfile()
+  const [updateProfile] = useUpdateMyProfile()
   const { show } = useToast()
 
   const nextRoute = getNextRoute(name, steps)
-
-  const routeField = name !== "ChangesSummary" ? ROUTE_ACTION_TYPES[name] : null
-
-  // pre-populate the field if it exists in the progress state
-  useEffect(() => {
-    if (!field && routeField && progressState[routeField]) {
-      setField(progressState[routeField] as T)
-    }
-  }, [field, routeField, progressState])
 
   const goNext = () => {
     if (nextRoute === "none" || isLoading) {
       return
     }
-
-    if (!!routeField) {
-      setProgressState({
-        type: routeField,
-        value: field,
-      })
-    }
-
     navigate(nextRoute)
   }
 
@@ -80,11 +62,10 @@ export const useCompleteProfile = <T extends ProgressState[keyof ProgressState]>
       return
     }
 
-    const fieldKeyValue = routeField ? { [routeField]: field } : {}
+    setIsLoading(true)
+
     const input = filterMutationInputFields({
-      // order matters, first the context state then the hook field state
       ...progressStateWithoutUndefined,
-      ...fieldKeyValue,
     })
 
     // navigates to my-profile if no changes
@@ -101,19 +82,29 @@ export const useCompleteProfile = <T extends ProgressState[keyof ProgressState]>
         if (errors) {
           show("An error occurred", "bottom")
           console.log("error", errors)
+          setIsLoading(false)
           return
         }
-        // TODO: manually change the me.icon.url in the store given changes in the profile pic
         artsyNavigate("/my-profile")
+      },
+      updater: (store) => {
+        // Gemini takes some time to process the image, so we update the iconUrl in the store manually
+        // to give the user the impression that the image was updated instantly
+        if (input.iconUrl && progressState.iconUrl) {
+          store
+            .getRoot()
+            ?.getLinkedRecord("me")
+            ?.getOrCreateLinkedRecord("icon", "Image")
+            ?.setValue(progressState.iconUrl.localPath, `url(version:"thumbnail")`)
+        }
       },
       onError: (error) => {
         show("An error occurred", "bottom")
         console.log("error", error)
+        setIsLoading(false)
       },
     })
   }
-
-  const isCurrentRouteDirty = !!field
 
   return {
     goBack,
@@ -122,12 +113,8 @@ export const useCompleteProfile = <T extends ProgressState[keyof ProgressState]>
     currentStep,
     lastStep: steps.length - 1,
     saveAndExit,
-    field,
-    setField,
-    isCurrentRouteDirty,
     route: name,
     nextRoute,
-    isLoading,
   }
 }
 

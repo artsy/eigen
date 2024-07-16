@@ -1,21 +1,11 @@
 // useCompleteProfile.test.js
 import { useNavigation, useRoute } from "@react-navigation/native"
 import { renderHook, act } from "@testing-library/react-hooks"
-import { waitFor } from "@testing-library/react-native"
 import { useToast } from "app/Components/Toast/toastHook"
-import {
-  model,
-  CompleteMyProfileStore,
-} from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
+import { CompleteMyProfileStore } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
 import { useCompleteProfile } from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
 import { useUpdateMyProfile } from "app/Scenes/CompleteMyProfile/hooks/useUpdateMyProfile"
 import { navigate as artsyNavigate } from "app/system/navigation/navigate"
-import { createContextStore } from "easy-peasy"
-
-const Store = createContextStore({
-  ...model,
-  steps: ["LocationStep", "AvatarStep", "ChangesSummary"],
-})
 
 jest.mock("@react-navigation/native", () => ({
   useNavigation: jest.fn(),
@@ -38,21 +28,27 @@ jest.mock("app/Scenes/CompleteMyProfile/hooks/useCompleteMyProfileSteps", () => 
   getNextRoute: jest.fn().mockReturnValue("ChangesSummary"),
 }))
 
+const steps = ["LocationStep", "AvatarStep", "ChangesSummary"]
+
 describe("useCompleteProfile", () => {
+  const state = {
+    steps,
+    isLoading: false,
+    progressState: {},
+    progressStateWithoutUndefined: {},
+  }
   const mockNavigate = jest.fn()
   const mockGoBack = jest.fn()
   const mockShow = jest.fn()
+  const setIsLoading = jest.fn()
   const useNavigationMock = useNavigation as jest.Mock
   const useRouteMock = useRoute as jest.Mock
   const commitMutationMock = jest.fn()
   const useUpdateMyProfileMock = useUpdateMyProfile as jest.Mock
   const useToastMock = useToast as jest.Mock
-  jest.spyOn(CompleteMyProfileStore, "useStoreState").mockImplementation(Store.useStoreState as any)
   jest
     .spyOn(CompleteMyProfileStore, "useStoreActions")
-    .mockImplementation(Store.useStoreActions as any)
-
-  const wrapper = ({ children }: any) => <Store.Provider>{children}</Store.Provider>
+    .mockImplementation((callback) => callback({ setIsLoading } as any))
 
   beforeEach(() => {
     useNavigationMock.mockReturnValue({
@@ -69,30 +65,15 @@ describe("useCompleteProfile", () => {
     jest.clearAllMocks()
   })
 
-  it("should initialize field state correctly", async () => {
-    const { result } = renderHook(() => useCompleteProfile(), { wrapper })
-
-    await waitFor(() => expect(result.current.field).toBeUndefined())
-  })
-
-  it("should set field state and navigate to next route on goNext", () => {
-    const { result } = renderHook(() => useCompleteProfile(), { wrapper })
-
-    act(() => {
-      result.current.setField("TestField")
-      result.current.goNext()
-    })
-
-    expect(result.current.field).toBe("TestField")
-    expect(mockNavigate).toHaveBeenCalled()
-  })
-
   it("should not navigate to next route if loading", () => {
     jest
       .spyOn(require("app/Scenes/CompleteMyProfile/hooks/useUpdateMyProfile"), "useUpdateMyProfile")
       .mockReturnValue([jest.fn(), true])
+    jest
+      .spyOn(CompleteMyProfileStore, "useStoreState")
+      .mockImplementation((callback) => callback({ ...state, isLoading: true } as any))
 
-    const { result } = renderHook(() => useCompleteProfile(), { wrapper })
+    const { result } = renderHook(() => useCompleteProfile())
 
     act(() => {
       result.current.goNext()
@@ -102,7 +83,10 @@ describe("useCompleteProfile", () => {
   })
 
   it("should go back to the previous screen on goBack", () => {
-    const { result } = renderHook(() => useCompleteProfile(), { wrapper })
+    jest
+      .spyOn(CompleteMyProfileStore, "useStoreState")
+      .mockImplementation((callback) => callback(state as any))
+    const { result } = renderHook(() => useCompleteProfile())
 
     act(() => {
       result.current.goBack()
@@ -117,8 +101,11 @@ describe("useCompleteProfile", () => {
       goBack: mockGoBack,
       canGoBack: jest.fn().mockReturnValue(false),
     })
+    jest
+      .spyOn(CompleteMyProfileStore, "useStoreState")
+      .mockImplementation((callback) => callback(state as any))
 
-    const { result } = renderHook(() => useCompleteProfile(), { wrapper })
+    const { result } = renderHook(() => useCompleteProfile())
 
     act(() => {
       result.current.goBack()
@@ -129,18 +116,18 @@ describe("useCompleteProfile", () => {
 
   it("should save and exit correctly", () => {
     const location = { city: "TestCity", state: "TestState" }
-    const { result } = renderHook(() => useCompleteProfile(), { wrapper })
-
-    act(() => {
-      result.current.setField(location)
-    })
-
-    expect(result.current.field).toMatchObject(location)
+    jest
+      .spyOn(CompleteMyProfileStore, "useStoreState")
+      .mockImplementation((callback) =>
+        callback({ ...state, progressStateWithoutUndefined: { location } } as any)
+      )
+    const { result } = renderHook(() => useCompleteProfile())
 
     act(() => {
       result.current.saveAndExit()
     })
 
+    expect(setIsLoading).toHaveBeenCalledWith(true)
     expect(commitMutationMock).toHaveBeenCalledWith(
       expect.objectContaining({
         variables: {
@@ -152,98 +139,20 @@ describe("useCompleteProfile", () => {
     )
   })
 
-  it("should save and exit when submitting with a field change but no update to the context yet", async () => {
+  it("should save and exit when submitting all the 4 steps data", () => {
     const location = { city: "TestCity", state: "TestState" }
-    const { result, rerender } = renderHook(() => useCompleteProfile(), { wrapper })
-
-    act(() => {
-      result.current.setField(location)
-    })
-
-    await waitFor(() => expect(result.current.field).toBe(location))
-
-    act(() => {
-      result.current.goNext()
-    })
-
-    act(() => {
-      useRouteMock.mockReturnValue({ name: "ProfessionStep" })
-    })
-
-    await (() => expect(result.current.nextRoute).toBe("AvatarStep"))
-    rerender()
-
-    act(() => {
-      result.current.setField("Sales Rep")
-    })
-
-    await waitFor(() => expect(result.current.field).toBe("Sales Rep"))
-
-    act(() => {
-      result.current.saveAndExit()
-    })
-
-    expect(commitMutationMock).toHaveBeenCalledWith(
-      expect.objectContaining({
-        variables: {
-          input: {
-            location,
-            profession: "Sales Rep",
-          },
-        },
-      })
-    )
-  })
-
-  it("should save and exit when submitting all the 4 steps data", async () => {
-    const location = { city: "TestCity", state: "TestState" }
-    const { result, rerender } = renderHook(() => useCompleteProfile(), { wrapper })
-
-    act(() => {
-      result.current.setField(location)
-    })
-
-    await waitFor(() => expect(result.current.field).toBe(location))
-
-    act(() => {
-      result.current.goNext()
-      useRouteMock.mockReturnValue({ name: "ProfessionStep" })
-    })
-
-    await (() => expect(result.current.nextRoute).toBe("AvatarStep"))
-    rerender()
-
-    act(() => {
-      result.current.setField("Sales Rep")
-    })
-
-    await waitFor(() => expect(result.current.field).toBe("Sales Rep"))
-
-    act(() => {
-      result.current.goNext()
-      useRouteMock.mockReturnValue({ name: "AvatarStep" })
-    })
-
-    await (() => expect(result.current.nextRoute).toBe("isIdentityVerifiedStep"))
-    rerender()
-
-    act(() => {
-      result.current.setField({ localPath: "localPath", geminiUrl: "geminiUrl" })
-    })
-
-    act(() => {
-      result.current.goNext()
-      useRouteMock.mockReturnValue({ name: "IdentityVerificationStep" })
-    })
-
-    await (() => expect(result.current.nextRoute).toBe("ChangesSummary"))
-    rerender()
-
-    act(() => {
-      result.current.setField(true)
-    })
-
-    await waitFor(() => expect(result.current.field).toBe(true))
+    const progressStateWithoutUndefined = {
+      location,
+      profession: "Sales Rep",
+      iconUrl: { localPath: "localPath", geminiUrl: "geminiUrl" },
+      isIdentityVerified: true,
+    }
+    jest
+      .spyOn(CompleteMyProfileStore, "useStoreState")
+      .mockImplementation((callback) =>
+        callback({ ...state, progressStateWithoutUndefined } as any)
+      )
+    const { result } = renderHook(() => useCompleteProfile())
 
     act(() => {
       result.current.saveAndExit()
@@ -263,6 +172,12 @@ describe("useCompleteProfile", () => {
   })
 
   it("should show an error toast on updateProfile error", () => {
+    jest
+      .spyOn(CompleteMyProfileStore, "useStoreState")
+      .mockImplementation((callback) =>
+        callback({ ...state, progressStateWithoutUndefined: { profession: "Typer" } } as any)
+      )
+
     const updateProfileMock = jest.fn().mockImplementation(({ onError }) => {
       onError(new Error("Test error"))
     })
@@ -270,7 +185,7 @@ describe("useCompleteProfile", () => {
       .spyOn(require("app/Scenes/CompleteMyProfile/hooks/useUpdateMyProfile"), "useUpdateMyProfile")
       .mockReturnValue([updateProfileMock, false])
 
-    const { result } = renderHook(() => useCompleteProfile(), { wrapper })
+    const { result } = renderHook(() => useCompleteProfile())
 
     act(() => {
       result.current.saveAndExit()
@@ -280,7 +195,7 @@ describe("useCompleteProfile", () => {
   })
 
   it("should calculate progress correctly", () => {
-    const { result } = renderHook(() => useCompleteProfile(), { wrapper })
+    const { result } = renderHook(() => useCompleteProfile())
 
     expect(result.current.progress).toBe(50)
   })

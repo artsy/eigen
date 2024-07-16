@@ -1,11 +1,11 @@
-import { EditableLocation } from "__generated__/useUpdateMyProfileMutation.graphql"
 import { Routes } from "app/Scenes/CompleteMyProfile/CompleteMyProfile"
 import { StepsResult } from "app/Scenes/CompleteMyProfile/hooks/useCompleteMyProfileSteps"
+import { LocationWithDetails } from "app/utils/googleMaps"
 import { Action, Computed, action, computed, createContextStore } from "easy-peasy"
 
 export type ProgressState = {
   profession?: string
-  location?: Partial<EditableLocation>
+  location?: Partial<LocationWithDetails>
   iconUrl?: { localPath: string; geminiUrl: string }
   isIdentityVerified?: boolean
 }
@@ -22,19 +22,25 @@ export const ROUTE_ACTION_TYPES: Record<Exclude<Routes, "ChangesSummary">, keyof
 export interface CompleteMyProfileStoreModel {
   steps: StepsResult
   progressState: ProgressState
+  isLoading: boolean
   setSteps: Action<this, StepsResult>
   setProgressState: Action<this, ActionPayload>
+  setIsLoading: Action<this, boolean>
   progressStateWithoutUndefined: Computed<this, ProgressState>
 }
 
 export const model: CompleteMyProfileStoreModel = {
   steps: "loading",
+  isLoading: false,
   progressState: {},
   setSteps: action((state, steps) => {
     state.steps = steps
   }),
   setProgressState: action((state, action) => {
     state.progressState = { ...state.progressState, [action.type]: action.value }
+  }),
+  setIsLoading: action((state, isLoading) => {
+    state.isLoading = isLoading
   }),
   progressStateWithoutUndefined: computed((state) => {
     return Object.entries(state.progressState)

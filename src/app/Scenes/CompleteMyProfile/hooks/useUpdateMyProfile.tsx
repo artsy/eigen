@@ -9,6 +9,8 @@ const mutation = graphql`
     updateMyUserProfile(input: $input) {
       me @required(action: NONE) {
         ...MyProfileHeader_me
+        ...MyProfileEditModal_me
+        ...MyProfileEditForm_me
       }
     }
   }

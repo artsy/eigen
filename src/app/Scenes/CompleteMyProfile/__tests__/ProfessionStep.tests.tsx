@@ -1,19 +1,20 @@
 import { screen, fireEvent } from "@testing-library/react-native"
+import { CompleteMyProfileStore } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
 import { ProfessionStep } from "app/Scenes/CompleteMyProfile/ProfessionStep"
 import * as useCompleteProfile from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("ProfessionStep", () => {
-  const mockSetField = jest.fn()
-
-  const useCompleteMyProfileSpy = (
-    jest.spyOn(useCompleteProfile, "useCompleteProfile") as jest.SpyInstance<any>
-  ).mockReturnValue({
+  const setProgressState = jest.fn()
+  ;(jest.spyOn(useCompleteProfile, "useCompleteProfile") as jest.SpyInstance<any>).mockReturnValue({
     goNext: jest.fn(),
-    isCurrentRouteDirty: false,
-    field: undefined,
-    setField: mockSetField,
   })
+  jest
+    .spyOn(CompleteMyProfileStore, "useStoreActions")
+    .mockImplementation((callback) => callback({ setProgressState } as any))
+  const stateSpy = jest
+    .spyOn(CompleteMyProfileStore, "useStoreState")
+    .mockImplementation((callback) => callback({ progressState: {} } as any))
 
   afterEach(() => {
     jest.clearAllMocks()
@@ -37,16 +38,13 @@ describe("ProfessionStep", () => {
     const input = screen.getByLabelText("Profession")
     fireEvent(input, "changeText", "Artist")
 
-    expect(mockSetField).toHaveBeenCalledWith("Artist")
+    expect(setProgressState).toHaveBeenCalledWith({ type: "profession", value: "Artist" })
   })
 
   it("shows the input value from field state", () => {
-    useCompleteMyProfileSpy.mockReturnValue({
-      goNext: jest.fn(),
-      isCurrentRouteDirty: false,
-      field: "Curator",
-      setField: mockSetField,
-    })
+    stateSpy.mockImplementation((callback) =>
+      callback({ progressState: { profession: "Curator" } } as any)
+    )
 
     renderWithWrappers(<ProfessionStep />)
 
