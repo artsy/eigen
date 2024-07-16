@@ -43,9 +43,10 @@ input AddAssetsToConsignmentSubmissionInput {
   clientMutationId: String
   externalSubmissionId: ID
   filename: String
-  geminiTokens: [String!]!
+  geminiTokens: [String!]
   sessionID: String
   size: String
+  sources: UploadSources
   submissionID: ID
 }
 
@@ -65,9 +66,10 @@ input AddAssetToConsignmentSubmissionInput {
   clientMutationId: String
   externalSubmissionId: ID
   filename: String
-  geminiToken: String!
+  geminiToken: String
   sessionID: String
   size: String
+  source: UploadSource
   submissionID: ID
 }
 
@@ -3099,6 +3101,11 @@ type ArtworkVersion implements Node {
 
   # Artwork title
   title: String
+}
+
+enum AssetType {
+  ADDITIONAL_FILE
+  IMAGE
 }
 
 # Fields of an attachment (currently from Radiation)
@@ -6905,7 +6912,7 @@ type ConsignmentSubmission {
   additionalInfo: String
   artist: Artist
   artistId: String!
-  assets: [ConsignmentSubmissionCategoryAsset]
+  assets(assetType: [AssetType!] = []): [ConsignmentSubmissionCategoryAsset]
   attributionClass: ConsignmentAttributionClass
   authenticityCertificate: Boolean
   category: String
@@ -6982,6 +6989,9 @@ type ConsignmentSubmissionCategoryAsset {
   # type of this Asset
   assetType: String!
 
+  # path to document
+  documentPath: String
+
   # original image name
   filename: String
 
@@ -6993,6 +7003,8 @@ type ConsignmentSubmissionCategoryAsset {
 
   # known image urls
   imageUrls: JSON
+  s3Bucket: String
+  s3Path: String
   size: String
   submissionId: ID!
   submissionID: ID
@@ -20072,6 +20084,16 @@ type UpdateViewingRoomSubsectionsPayload {
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
   subsections: [ViewingRoomSubsection!]!
+}
+
+input UploadSource {
+  bucket: String
+  key: String
+}
+
+input UploadSources {
+  buckets: [String!]
+  keys: [String!]
 }
 
 type User implements Node {
