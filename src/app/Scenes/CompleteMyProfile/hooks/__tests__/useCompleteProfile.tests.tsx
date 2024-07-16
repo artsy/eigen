@@ -38,11 +38,6 @@ jest.mock("app/Scenes/CompleteMyProfile/hooks/useCompleteMyProfileSteps", () => 
   getNextRoute: jest.fn().mockReturnValue("ChangesSummary"),
 }))
 
-// jest.mock("app/Scenes/CompleteMyProfile/CompleteMyProfileProvider", () => ({
-//   ...jest.requireActual("app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"),
-//   CompleteMyProfileStore: Store,
-// }))
-
 describe("useCompleteProfile", () => {
   const mockNavigate = jest.fn()
   const mockGoBack = jest.fn()
