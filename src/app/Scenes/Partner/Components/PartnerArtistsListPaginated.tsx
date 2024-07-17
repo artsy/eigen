@@ -1,4 +1,4 @@
-import { Flex, Screen, Spacer } from "@artsy/palette-mobile"
+import { Flex, Screen, Spacer, Text } from "@artsy/palette-mobile"
 import { PartnerArtistsListPaginatedQuery } from "__generated__/PartnerArtistsListPaginatedQuery.graphql"
 import { PartnerArtistsListPaginated_partner$key } from "__generated__/PartnerArtistsListPaginated_partner.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
@@ -28,28 +28,34 @@ export const PartnerArtistsListPaginated: React.FC<PartnerArtistsListPaginatedPr
     loadNext(20)
   }
 
+  // TODO: Should we be using a viewability config here?
   return (
-    <Screen.FlatList
-      data={artists}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item }) => {
-        return <ArtistListItem artist={item} />
-      }}
-      ItemSeparatorComponent={() => <Spacer y={2} />}
-      onEndReached={handleLoadMore}
-      onEndReachedThreshold={1}
-      ListFooterComponent={() => (
-        <Flex
-          alignItems="center"
-          justifyContent="center"
-          p={4}
-          pb={6}
-          style={{ opacity: isLoadingNext && hasNext ? 1 : 0 }}
-        >
-          <ActivityIndicator />
-        </Flex>
-      )}
-    />
+    <>
+      <Text variant="sm-display">Artists ({data.artistsConnection?.totalCount})</Text>
+      <Spacer y={2} />
+      <Screen.FlatList
+        data={artists}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => {
+          return <ArtistListItem artist={item} />
+        }}
+        ItemSeparatorComponent={() => <Spacer y={2} />}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={1}
+        ListFooterComponent={() => (
+          <Flex
+            alignItems="center"
+            justifyContent="center"
+            p={4}
+            pb={6}
+            style={{ opacity: isLoadingNext && hasNext ? 1 : 0 }}
+          >
+            <ActivityIndicator />
+          </Flex>
+        )}
+      />
+      <Spacer y={4} />
+    </>
   )
 }
 
