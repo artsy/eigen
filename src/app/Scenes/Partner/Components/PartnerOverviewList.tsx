@@ -1,6 +1,6 @@
 import { Flex, Spacer, Tabs, Text } from "@artsy/palette-mobile"
-import { PartnerOverviewListPaginatedQuery } from "__generated__/PartnerOverviewListPaginatedQuery.graphql"
-import { PartnerOverviewListPaginated_partner$key } from "__generated__/PartnerOverviewListPaginated_partner.graphql"
+import { PartnerOverviewListArtistsQuery } from "__generated__/PartnerOverviewListArtistsQuery.graphql"
+import { PartnerOverviewListArtists_partner$key } from "__generated__/PartnerOverviewListArtists_partner.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
 import { ReadMore } from "app/Components/ReadMore"
 import { PartnerLocationSection } from "app/Scenes/Partner/Components/PartnerLocationSection"
@@ -11,7 +11,7 @@ import { graphql, usePaginationFragment } from "react-relay"
 interface PartnerOverviewListProps {
   aboutText?: string | null
   displayArtistsSection?: boolean | null
-  partner: PartnerOverviewListPaginated_partner$key
+  partner: PartnerOverviewListArtists_partner$key
 }
 
 export const PartnerOverviewList: React.FC<PartnerOverviewListProps> = ({
@@ -20,9 +20,9 @@ export const PartnerOverviewList: React.FC<PartnerOverviewListProps> = ({
   partner,
 }) => {
   const { data, loadNext, hasNext, isLoadingNext } = usePaginationFragment<
-    PartnerOverviewListPaginatedQuery,
-    PartnerOverviewListPaginated_partner$key
-  >(PartnerOverviewListPaginatedFragment, partner)
+    PartnerOverviewListArtistsQuery,
+    PartnerOverviewListArtists_partner$key
+  >(PartnerOverviewListArtistsFragment, partner)
 
   const artists = extractNodes(data.artistsConnection)
 
@@ -78,10 +78,27 @@ export const PartnerOverviewList: React.FC<PartnerOverviewListProps> = ({
   )
 }
 
-const PartnerOverviewListPaginatedFragment = graphql`
-  fragment PartnerOverviewListPaginated_partner on Partner
+export const PartnerOverviewListBaseFragment = graphql`
+  fragment PartnerOverviewListBase_partner on Partner {
+    cities
+    displayArtistsSection
+    profile {
+      bio
+    }
+    name
+    slug
+    cities
+    locations: locationsConnection(first: 0) {
+      totalCount
+    }
+    ...PartnerLocationSection_partner
+  }
+`
+
+const PartnerOverviewListArtistsFragment = graphql`
+  fragment PartnerOverviewListArtists_partner on Partner
   @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String" })
-  @refetchable(queryName: "PartnerOverviewListPaginatedQuery") {
+  @refetchable(queryName: "PartnerOverviewListArtistsQuery") {
     cities
     displayArtistsSection
     profile {
@@ -98,7 +115,7 @@ const PartnerOverviewListPaginatedFragment = graphql`
       after: $cursor
       displayOnPartnerProfile: true
       representedByOrHasPublishedArtworks: true
-    ) @connection(key: "PartnerOverviewListPaginated_artistsConnection") {
+    ) @connection(key: "PartnerOverviewListArtists_artistsConnection") {
       totalCount
       edges {
         node {
@@ -107,6 +124,5 @@ const PartnerOverviewListPaginatedFragment = graphql`
         }
       }
     }
-    ...PartnerLocationSection_partner
   }
 `

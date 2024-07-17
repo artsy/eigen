@@ -31,12 +31,18 @@ export const PartnerOverviewFragmentContainer = createFragmentContainer(PartnerO
   partner: graphql`
     fragment PartnerOverview_partner on Partner
     @argumentDefinitions(displayArtistsSection: { type: "Boolean", defaultValue: false }) {
-      cities
       displayArtistsSection
       profile {
         bio
       }
-      ...PartnerOverviewListPaginated_partner @include(if: $displayArtistsSection)
+      name
+      slug
+      cities
+      locations: locationsConnection(first: 0) {
+        totalCount
+      }
+      ...PartnerOverviewListBase_partner
+      ...PartnerOverviewListArtists_partner @include(if: $displayArtistsSection)
     }
   `,
 })
