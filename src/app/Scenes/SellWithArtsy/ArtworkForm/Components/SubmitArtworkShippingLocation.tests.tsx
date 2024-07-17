@@ -3,17 +3,12 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { COUNTRY_SELECT_OPTIONS } from "app/Components/CountrySelect"
 import { SubmitArtworkShippingLocation } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkShippingLocation"
 import { renderWithSubmitArtworkWrapper } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/testWrappers"
-import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
-
-jest.mock(
-  "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission",
-  () => ({
-    createOrUpdateSubmission: jest.fn(() => Promise.resolve()),
-  })
-)
+import relay from "react-relay"
 
 const mockNavigate = jest.fn()
+const mockCommitMutation = (fn?: typeof relay.commitMutation) =>
+  jest.fn<typeof relay.commitMutation, Parameters<typeof relay.commitMutation>>(fn as any)
 
 jest.mock("@react-navigation/native", () => ({
   ...jest.requireActual("@react-navigation/native"),
@@ -81,6 +76,20 @@ describe("SubmitArtworkShippingLocation", () => {
   })
 
   it("calls createOrUpdateSubmission and goes to next step when continue is pressed", async () => {
+    relay.commitMutation = mockCommitMutation((_, { onCompleted }) => {
+      onCompleted!(
+        {
+          updateConsignmentSubmission: {
+            consignmentSubmission: {
+              internalID: "submission-id",
+            },
+          },
+        },
+        null
+      )
+      return { dispose: jest.fn() }
+    }) as any
+
     renderWithSubmitArtworkWrapper({
       props: { currentStep: "ShippingLocation" },
       component: <SubmitArtworkShippingLocation />,
@@ -114,20 +123,45 @@ describe("SubmitArtworkShippingLocation", () => {
 
     fireEvent(screen.getByText("Continue"), "onPress")
 
-    expect(createOrUpdateSubmission).toHaveBeenCalledWith(
-      {
-        location: {
-          address: "Street 1",
-          address2: "5th Floor",
-          city: "Friedrichshain",
-          country: "Germany",
-          countryCode: "DE",
-          state: "Berlin",
-          zipCode: "10115",
+    expect(relay.commitMutation).toHaveBeenCalledWith(
+      expect.any(Object),
+      expect.objectContaining({
+        variables: {
+          input: {
+            artistID: undefined,
+            attributionClass: null,
+            category: undefined,
+            depth: undefined,
+            dimensionsMetric: undefined,
+            editionNumber: "",
+            editionSizeFormatted: "",
+            height: undefined,
+            id: "submission-id",
+            locationAddress: "Street 1",
+            locationAddress2: "5th Floor",
+            locationCity: "Friedrichshain",
+            locationCountry: "Germany",
+            locationCountryCode: "DE",
+            locationPostalCode: "10115",
+            locationState: "Berlin",
+            medium: undefined,
+            provenance: undefined,
+            signature: undefined,
+            state: undefined,
+            title: undefined,
+            userEmail: undefined,
+            userName: undefined,
+            userPhone: undefined,
+            utmMedium: undefined,
+            utmSource: undefined,
+            utmTerm: undefined,
+            width: undefined,
+            year: undefined,
+          },
         },
-      },
-      "submission-id"
+      })
     )
+
     await flushPromiseQueue()
 
     expect(mockNavigate).toHaveBeenCalledWith("FrameInformation")
