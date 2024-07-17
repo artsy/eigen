@@ -1,7 +1,7 @@
 import { EnvelopeIcon, Flex, Text } from "@artsy/palette-mobile"
 import { Questions_artwork$key } from "__generated__/Questions_artwork.graphql"
 import { graphql, useFragment } from "react-relay"
-import { InquiryButtonsFragmentContainer } from "./CommercialButtons/InquiryButtons"
+import { ContactGalleryButton } from "./CommercialButtons/ContactGalleryButton"
 
 interface QuestionsProps {
   artwork: Questions_artwork$key
@@ -17,7 +17,7 @@ export const Questions: React.FC<QuestionsProps> = (props) => {
       </Flex>
 
       <Flex flex={1} alignItems="flex-end">
-        <InquiryButtonsFragmentContainer
+        <ContactGalleryButton
           artwork={artworkData}
           variant="outline"
           size="small"
@@ -30,6 +30,6 @@ export const Questions: React.FC<QuestionsProps> = (props) => {
 
 const artworkFragment = graphql`
   fragment Questions_artwork on Artwork {
-    ...InquiryButtons_artwork
+    ...ContactGalleryButton_artwork
   }
 `

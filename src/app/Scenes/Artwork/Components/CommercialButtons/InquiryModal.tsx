@@ -10,34 +10,30 @@ import {
   Text,
   useTheme,
 } from "@artsy/palette-mobile"
-import { InquiryModal_artwork$data } from "__generated__/InquiryModal_artwork.graphql"
+import { InquiryModal_artwork$key } from "__generated__/InquiryModal_artwork.graphql"
+import { InquiryQuestionInput } from "__generated__/useSubmitInquiryRequestMutation.graphql"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import ChevronIcon from "app/Components/Icons/ChevronIcon"
 import { AUTOMATED_MESSAGES } from "app/Scenes/Artwork/Components/CommercialButtons/constants"
-import { SubmitInquiryRequest } from "app/Scenes/Artwork/Components/Mutation/SubmitInquiryRequest"
+import { useSubmitInquiryRequest } from "app/Scenes/Artwork/Components/CommercialButtons/useSubmitInquiryRequest"
 import { navigate } from "app/system/navigation/navigate"
 import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryQuestionIDs } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
-import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { LocationWithDetails } from "app/utils/googleMaps"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react"
 import { LayoutAnimation, ScrollView, TouchableOpacity } from "react-native"
-import { RelayProp, createFragmentContainer, graphql } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { CollapsibleArtworkDetailsFragmentContainer } from "./CollapsibleArtworkDetails"
 import { ShippingModal } from "./ShippingModal"
 
 interface InquiryModalProps {
-  artwork: InquiryModal_artwork$data
-  closeModal?: () => void
-  exitModal?: () => void
+  artwork: InquiryModal_artwork$key
   toggleVisibility: () => void
-  navigator?: NavigatorIOS
   modalIsVisible: boolean
-  relay: RelayProp
   onMutationSuccessful: (state: boolean) => void
 }
 
@@ -154,9 +150,12 @@ const InquiryQuestionOption: React.FC<{
 }
 
 export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props }) => {
-  const { toggleVisibility, modalIsVisible, relay, onMutationSuccessful } = props
-  const questions = artwork?.inquiryQuestions
-  const partnerName = artwork?.partner?.name
+  const { toggleVisibility, modalIsVisible, onMutationSuccessful } = props
+
+  const artworkData = useFragment(artworkFragmentQuery, artwork)
+
+  const questions = artworkData?.inquiryQuestions
+  const partnerName = artworkData?.partner?.name
   const scrollViewRef = useRef<ScrollView>(null)
   const tracking = useTracking()
   const [addMessageYCoordinate, setAddMessageYCoordinate] = useState<number>(0)
@@ -173,6 +172,8 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
     [dispatch]
   )
   const [mutationSuccessful, setMutationSuccessful] = useState(false)
+
+  const [commit] = useSubmitInquiryRequest()
 
   const getAutomatedMessages = () => {
     return AUTOMATED_MESSAGES[Math.floor(Math.random() * AUTOMATED_MESSAGES.length)]
@@ -193,8 +194,8 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
       action_type: Schema.ActionTypes.Fail,
       action_name: Schema.ActionNames.InquirySend,
       owner_type: Schema.OwnerEntityTypes.Artwork,
-      owner_id: artwork.internalID,
-      owner_slug: artwork.slug,
+      owner_id: artworkData.internalID,
+      owner_slug: artworkData.slug,
     })
   }
 
@@ -210,8 +211,8 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
         action_type: Schema.ActionTypes.Success,
         action_name: Schema.ActionNames.InquirySend,
         owner_type: Schema.OwnerEntityTypes.Artwork,
-        owner_id: artwork.internalID,
-        owner_slug: artwork.slug,
+        owner_id: artworkData.internalID,
+        owner_slug: artworkData.slug,
       })
 
       const delayNotification = setTimeout(() => {
@@ -239,17 +240,45 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
       action_type: Schema.ActionTypes.Tap,
       action_name: Schema.ActionNames.InquirySend,
       owner_type: Schema.OwnerEntityTypes.Artwork,
-      owner_id: artwork.internalID,
-      owner_slug: artwork.slug,
+      owner_id: artworkData.internalID,
+      owner_slug: artworkData.slug,
     })
-    SubmitInquiryRequest(
-      relay.environment,
-      artwork,
-      state,
-      setMutationSuccessful,
-      setMutationError,
-      handleErrorTracking
-    )
+
+    commit({
+      variables: {
+        input: {
+          inquireableID: artworkData.internalID,
+          inquireableType: "Artwork",
+          questions: state.inquiryQuestions.map((q: InquiryQuestionInput) => {
+            /**
+             * If the user selected the shipping question and has a location, add the location
+             * details that are stored in the state.
+             */
+            if (q.questionID === "shipping_quote" && state.shippingLocation) {
+              const details = JSON.stringify({
+                city: state.shippingLocation.city,
+                coordinates: state.shippingLocation.coordinates,
+                country: state.shippingLocation.country,
+                postal_code: state.shippingLocation.postalCode,
+                state: state.shippingLocation.state,
+                state_code: state.shippingLocation.stateCode,
+              })
+              return { ...q, details }
+            } else {
+              return q
+            }
+          }),
+          message: state.message?.trim(),
+        },
+      },
+      onError: () => {
+        handleErrorTracking()
+        setMutationError(true)
+      },
+      onCompleted: () => {
+        setMutationSuccessful(true)
+      },
+    })
   }
 
   const handleSettingsPress = () => {
@@ -270,8 +299,8 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
             action_type: Schema.ActionTypes.Tap,
             action_name: Schema.ActionNames.InquiryCancel,
             owner_type: Schema.OwnerEntityTypes.Artwork,
-            owner_id: artwork.internalID,
-            owner_slug: artwork.slug,
+            owner_id: artworkData.internalID,
+            owner_slug: artworkData.slug,
           })
           resetAndExit()
         }}
@@ -289,7 +318,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
         </ErrorMessageFlex>
       )}
       <ScrollView ref={scrollViewRef}>
-        <CollapsibleArtworkDetailsFragmentContainer artwork={artwork} />
+        <CollapsibleArtworkDetailsFragmentContainer artwork={artworkData} />
         <Box px={2}>
           <Box my={2}>
             <Text variant="sm">What information are you looking for?</Text>
@@ -353,19 +382,17 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
   )
 }
 
-export const InquiryModalFragmentContainer = createFragmentContainer(InquiryModal, {
-  artwork: graphql`
-    fragment InquiryModal_artwork on Artwork {
-      ...CollapsibleArtworkDetails_artwork
+const artworkFragmentQuery = graphql`
+  fragment InquiryModal_artwork on Artwork {
+    ...CollapsibleArtworkDetails_artwork
+    internalID
+    slug
+    inquiryQuestions {
       internalID
-      slug
-      inquiryQuestions {
-        internalID
-        question
-      }
-      partner {
-        name
-      }
+      question
     }
-  `,
-})
+    partner {
+      name
+    }
+  }
+`

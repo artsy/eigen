@@ -1,15 +1,15 @@
 import { ActionType, ContextModule, OwnerType, TappedViewWork } from "@artsy/cohesion"
 import { Button, Flex, useSpace, Join, Spacer } from "@artsy/palette-mobile"
 import { BuyNowButton_artwork$key } from "__generated__/BuyNowButton_artwork.graphql"
+import { ContactGalleryButton_artwork$key } from "__generated__/ContactGalleryButton_artwork.graphql"
 import { CreateArtworkAlertModal_artwork$key } from "__generated__/CreateArtworkAlertModal_artwork.graphql"
-import { InquiryButtons_artwork$key } from "__generated__/InquiryButtons_artwork.graphql"
 import { MakeOfferButton_artwork$key } from "__generated__/MakeOfferButton_artwork.graphql"
 import { NotificationCommercialButtonsQuery } from "__generated__/NotificationCommercialButtonsQuery.graphql"
 import { NotificationCommercialButtons_artwork$key } from "__generated__/NotificationCommercialButtons_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import { PartnerOffer } from "app/Scenes/Activity/components/NotificationArtworkList"
 import { BuyNowButton } from "app/Scenes/Artwork/Components/CommercialButtons/BuyNowButton"
-import { InquiryButtonsFragmentContainer } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryButtons"
+import { ContactGalleryButton } from "app/Scenes/Artwork/Components/CommercialButtons/ContactGalleryButton"
 import { MakeOfferButtonFragmentContainer } from "app/Scenes/Artwork/Components/CommercialButtons/MakeOfferButton"
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -64,7 +64,7 @@ export const CommercialButtons: React.FC<{
     | CreateArtworkAlertModal_artwork$key
     | BuyNowButton_artwork$key
     | MakeOfferButton_artwork$key
-    | InquiryButtons_artwork$key
+    | ContactGalleryButton_artwork$key
   partnerOffer?: PartnerOffer
   artworkID: string
 }> = ({ artwork, partnerOffer, artworkID }) => {
@@ -87,8 +87,8 @@ export const CommercialButtons: React.FC<{
             artwork={artworkData as MakeOfferButton_artwork$key}
             editionSetID={null}
           />
-          <InquiryButtonsFragmentContainer
-            artwork={artworkData as InquiryButtons_artwork$key}
+          <ContactGalleryButton
+            artwork={artworkData as ContactGalleryButton_artwork$key}
             block
             variant="outline"
           />
@@ -175,7 +175,7 @@ const artworkFragment = graphql`
   fragment NotificationCommercialButtons_artwork on Artwork {
     ...MakeOfferButton_artwork
     ...BuyNowButton_artwork
-    ...InquiryButtons_artwork
+    ...ContactGalleryButton_artwork
     ...CreateArtworkAlertModal_artwork
   }
 `

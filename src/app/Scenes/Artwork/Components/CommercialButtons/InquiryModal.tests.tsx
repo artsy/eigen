@@ -1,12 +1,12 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { InquiryModalTestsQuery } from "__generated__/InquiryModalTestsQuery.graphql"
+import { InquiryModal } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryModal"
 import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import React from "react"
 import { graphql } from "react-relay"
-import { InquiryModalFragmentContainer } from "./InquiryModal"
 
 const toggleVisibility = jest.fn()
 const onMutationSuccessful = jest.fn()
@@ -50,7 +50,7 @@ const FakeApp = (props: InquiryModalTestsQuery["response"]) => {
   }
 
   return (
-    <InquiryModalFragmentContainer
+    <InquiryModal
       artwork={props!.artwork!}
       modalIsVisible={modalProps.modalIsVisible}
       toggleVisibility={modalProps.toggleVisibility}

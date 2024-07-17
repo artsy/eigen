@@ -1,10 +1,8 @@
-import { InquiryQuestionInput } from "__generated__/SubmitInquiryRequestMutation.graphql"
+import { InquiryQuestionInput } from "__generated__/useSubmitInquiryRequestMutation.graphql"
 import {
   ArtworkInquiryActions,
   ArtworkInquiryContextProps,
   ArtworkInquiryContextState,
-  InquiryOptions,
-  InquiryQuestionIDs,
 } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { createContext, Reducer, useReducer } from "react"
 
@@ -22,15 +20,6 @@ export const reducer = (
   switch (action.type) {
     case "resetForm":
       return initialArtworkInquiryState
-    case "selectInquiryType":
-      return {
-        ...inquiryState,
-        inquiryType: action.payload,
-        inquiryQuestions:
-          action.payload === InquiryOptions.RequestPrice
-            ? [{ questionID: InquiryQuestionIDs.PriceAndAvailability }]
-            : inquiryState.inquiryQuestions,
-      }
 
     case "selectShippingLocation":
       return {

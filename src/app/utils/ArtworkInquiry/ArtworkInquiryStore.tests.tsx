@@ -2,82 +2,10 @@ import { reducer } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import {
   ArtworkInquiryActions,
   ArtworkInquiryContextState,
-  InquiryOptions,
 } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
 
 let inquiryState: ArtworkInquiryContextState
 let inquiryAction: ArtworkInquiryActions
-
-describe("selectInquiryType", () => {
-  it("updates the global state when payload is Request Price", () => {
-    inquiryState = {
-      shippingLocation: null,
-      inquiryType: null,
-      inquiryQuestions: [],
-      message: null,
-    }
-
-    inquiryAction = {
-      type: "selectInquiryType",
-      payload: InquiryOptions.RequestPrice,
-    }
-
-    const r = reducer(inquiryState, inquiryAction)
-
-    expect(r).toEqual({
-      shippingLocation: null,
-      inquiryType: "Inquire on price",
-      inquiryQuestions: [{ questionID: "price_and_availability" }],
-      message: null,
-    })
-  })
-
-  it("updates the global state when payload is Contact gallery", () => {
-    inquiryState = {
-      shippingLocation: null,
-      inquiryType: null,
-      inquiryQuestions: [],
-      message: null,
-    }
-
-    inquiryAction = {
-      type: "selectInquiryType",
-      payload: InquiryOptions.ContactGallery,
-    }
-
-    const r = reducer(inquiryState, inquiryAction)
-
-    expect(r).toEqual({
-      shippingLocation: null,
-      inquiryType: "Contact Gallery",
-      inquiryQuestions: [],
-      message: null,
-    })
-  })
-
-  it("updates the global state when payload is Inquire to purchase", () => {
-    inquiryState = {
-      shippingLocation: null,
-      inquiryType: null,
-      inquiryQuestions: [],
-      message: null,
-    }
-
-    inquiryAction = {
-      type: "selectInquiryType",
-      payload: InquiryOptions.InquireToPurchase,
-    }
-
-    const r = reducer(inquiryState, inquiryAction)
-
-    expect(r).toEqual({
-      shippingLocation: null,
-      inquiryType: "Inquire to purchase",
-      inquiryQuestions: [],
-      message: null,
-    })
-  })
-})
 
 // TODO: Add tests for location reducer
 // describe("selectShippingLocation", () => {})

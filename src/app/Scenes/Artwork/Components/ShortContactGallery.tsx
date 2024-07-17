@@ -3,7 +3,7 @@ import { ShortContactGallery_artwork$key } from "__generated__/ShortContactGalle
 import { navigateToPartner } from "app/system/navigation/navigate"
 import { TouchableWithoutFeedback } from "react-native"
 import { graphql, useFragment } from "react-relay"
-import { InquiryButtonsFragmentContainer } from "./CommercialButtons/InquiryButtons"
+import { ContactGalleryButton } from "./CommercialButtons/ContactGalleryButton"
 
 interface ShortContactGalleryProps {
   artwork: ShortContactGallery_artwork$key
@@ -31,7 +31,7 @@ export const ShortContactGallery: React.FC<ShortContactGalleryProps> = (props) =
           style={{ flex: 1 }}
         />
       </TouchableWithoutFeedback>
-      <InquiryButtonsFragmentContainer
+      <ContactGalleryButton
         artwork={artworkData}
         variant="outline"
         size="small"
@@ -43,6 +43,6 @@ export const ShortContactGallery: React.FC<ShortContactGalleryProps> = (props) =
 
 const artworkFragment = graphql`
   fragment ShortContactGallery_artwork on Artwork {
-    ...InquiryButtons_artwork
+    ...ContactGalleryButton_artwork
   }
 `
