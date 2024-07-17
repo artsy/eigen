@@ -20,7 +20,7 @@ import { ArtworkRecommendationsScreen } from "app/Scenes/ArtworkRecommendations/
 import { CompleteMyProfile } from "app/Scenes/CompleteMyProfile/CompleteMyProfile"
 import { GalleriesForYouScreen } from "app/Scenes/GalleriesForYou/GalleriesForYouScreen"
 import { HomeContainer } from "app/Scenes/Home/HomeContainer"
-import { HomeView } from "app/Scenes/HomeView/HomeView"
+import { HomeViewScreen } from "app/Scenes/HomeView/HomeView"
 import { AddMyCollectionArtist } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
 import { MyCollectionArtworkEditQueryRenderer } from "app/Scenes/MyCollection/Screens/ArtworkForm/Screens/MyCollectionArtworkEdit"
 import { MyCollectionCollectedArtistsPrivacyQueryRenderer } from "app/Scenes/MyCollection/Screens/CollectedArtistsPrivacy/MyCollectionCollectedArtistsPrivacy"
@@ -498,7 +498,7 @@ export const modules = defineModules({
   Home: reactModule(HomeContainer, {
     isRootViewForTabName: "home",
   }),
-  HomeView: reactModule(HomeView, { hidesBackButton: true }),
+  HomeView: reactModule(HomeViewScreen, { hidesBackButton: true }),
   Inbox: reactModule(InboxQueryRenderer, { isRootViewForTabName: "inbox" }, [InboxScreenQuery]),
   Inquiry: reactModule(Inquiry, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   LiveAuction: reactModule(LiveAuctionView, {

@@ -1,15 +1,14 @@
 import { Flex, Screen, Separator, Spacer, Text } from "@artsy/palette-mobile"
+import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
 import { goBack } from "app/system/navigation/navigate"
+import { Suspense } from "react"
+import { graphql, useLazyLoadQuery } from "react-relay"
 
 const SCREEN_TITLE = "HomeView WIP"
 
-const dummyData = Array.from({ length: 10 }).map((_, i) => {
-  return {
-    index: i,
-  }
-})
-
 export const HomeView: React.FC = () => {
+  const queryData = useLazyLoadQuery<HomeViewQuery>(homeViewScreenQuery, {})
+
   return (
     <Screen>
       <Screen.AnimatedHeader onBack={goBack} title={SCREEN_TITLE} />
@@ -21,10 +20,10 @@ export const HomeView: React.FC = () => {
 
       <Screen.Body fullwidth>
         <Screen.FlatList
-          data={dummyData}
-          keyExtractor={(item) => `${item.index}`}
+          data={queryData.homeView.sections}
+          keyExtractor={(item) => `${item.title}`}
           renderItem={({ item }) => {
-            return <Placeholder item={item} />
+            return <Section section={item} />
           }}
           ItemSeparatorComponent={() => <Spacer y={1} />}
         />
@@ -33,13 +32,36 @@ export const HomeView: React.FC = () => {
   )
 }
 
-const Placeholder: React.FC<{ item: any }> = (props) => {
-  const { item } = props
+const Section: React.FC<{ section: any }> = (props) => {
+  const { section } = props
+
   return (
     <Flex bg="black10" alignItems="center">
       <Text color="black60" py={2}>
-        Section {item.index}
+        {section.title}
       </Text>
     </Flex>
   )
 }
+
+export const HomeViewScreen: React.FC = () => (
+  <Suspense
+    fallback={
+      <Flex flex={1} justifyContent="center" alignItems="center">
+        <Text>Loading home view…</Text>
+      </Flex>
+    }
+  >
+    <HomeView />
+  </Suspense>
+)
+
+export const homeViewScreenQuery = graphql`
+  query HomeViewQuery {
+    homeView {
+      sections {
+        title
+      }
+    }
+  }
+`
