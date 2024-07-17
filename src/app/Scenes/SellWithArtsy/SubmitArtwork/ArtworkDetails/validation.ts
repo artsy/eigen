@@ -16,6 +16,8 @@ export interface Location {
   country?: string | null
   countryCode?: string | null
   zipCode?: string
+  address?: string
+  address2?: string
 }
 
 /**

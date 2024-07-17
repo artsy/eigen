@@ -2,12 +2,15 @@ import {
   ConsignmentAttributionClass,
   SubmitArtworkFormEditQuery$data,
 } from "__generated__/SubmitArtworkFormEditQuery.graphql"
+import { COUNTRY_SELECT_OPTIONS } from "app/Components/CountrySelect"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { acceptableCategoriesForSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/acceptableCategoriesForSubmission"
+import { extractNodes } from "app/utils/extractNodes"
 import { compact } from "lodash"
 
 export const getInitialSubmissionValues = (
-  values: NonNullable<SubmitArtworkFormEditQuery$data["submission"]>
+  values: NonNullable<SubmitArtworkFormEditQuery$data["submission"]>,
+  me: SubmitArtworkFormEditQuery$data["me"]
 ): ArtworkDetailsFormModel => {
   const photos =
     values.assets?.map((asset) => {
@@ -21,6 +24,9 @@ export const getInitialSubmissionValues = (
     }) ?? []
 
   const categories = acceptableCategoriesForSubmission()
+
+  const addresses = extractNodes(me?.addressConnection)
+  const defaultAddress = addresses.find((address) => address.isDefault) ?? addresses?.[0]
 
   return {
     artist: values.artist?.name ?? "",
@@ -40,10 +46,16 @@ export const getInitialSubmissionValues = (
     dimensionsMetric: values.dimensionsMetric ?? "in",
     provenance: values.provenance ?? "",
     location: {
-      city: values.locationCity ?? "",
-      country: values.locationCountry ?? "",
-      state: values.locationState ?? "",
-      countryCode: values.locationCountryCode ?? "",
+      city: values.locationCity ?? defaultAddress?.city ?? "",
+      country: values.locationCountry ?? defaultAddress?.country ?? "",
+      state: values.locationState ?? defaultAddress?.region ?? "",
+      countryCode:
+        values.locationCountryCode ??
+        COUNTRY_SELECT_OPTIONS.find(({ label }) => label === defaultAddress?.country)?.value ??
+        "",
+      zipCode: values.locationPostalCode ?? defaultAddress?.postalCode ?? "",
+      address: values.locationAddress ?? defaultAddress?.addressLine1 ?? "",
+      address2: values.locationAddress2 ?? defaultAddress?.addressLine2 ?? "",
     },
     signature: values.signature ?? null,
     userEmail: values.userEmail ?? "",

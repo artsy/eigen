@@ -65,6 +65,8 @@ export const getInitialSubmissionFormValuesFromArtwork = (
       country: artwork?.location?.country || "",
       zipCode: artwork?.location?.postalCode || "",
       countryCode: "",
+      address: artwork?.location?.address || "",
+      address2: artwork?.location?.address2 || "",
     },
     medium: artwork.medium || "",
     myCollectionArtworkID: artwork.internalID,
