@@ -14305,6 +14305,10 @@ type Partner implements Node {
     includeAllFields: Boolean
     last: Int
     representedBy: Boolean
+
+    # Include artists that are represented or have published artworks, should not
+    # be used in conjunction with hasPublishedArtworks or representedBy.
+    representedByOrHasPublishedArtworks: Boolean
     sort: ArtistSorts
   ): ArtistPartnerConnection
   artistsSearchConnection(
