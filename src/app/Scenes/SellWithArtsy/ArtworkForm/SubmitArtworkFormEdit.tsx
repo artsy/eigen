@@ -24,7 +24,7 @@ export const SubmitArtworkFormEdit: React.FC<SubmitArtworkProps> = withSuspense(
   return (
     <SubmitArtworkForm
       submissionID={props.submissionID}
-      initialValues={getInitialSubmissionValues(data.submission)}
+      initialValues={getInitialSubmissionValues(data.submission, data?.me)}
       initialStep={props.initialStep}
       navigationState={props.navigationState}
       hasStartedFlowFromMyCollection={props.hasStartedFlowFromMyCollection}
@@ -74,6 +74,21 @@ const submitArtworkFormEditQuery = graphql`
         geminiToken
         size
         filename
+      }
+    }
+    me {
+      addressConnection {
+        edges {
+          node {
+            addressLine1
+            addressLine2
+            city
+            country
+            isDefault
+            postalCode
+            region
+          }
+        }
       }
     }
   }
