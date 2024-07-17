@@ -84,7 +84,7 @@ const mockedFetchedArtwork: NonNullable<FetchArtworkInformationResult> = {
     country: "Germany",
     postalCode: "12345",
     address: "Berlin",
-    address2: "",
+    address2: "Floor 6",
   },
   medium: "a valid medium",
   provenance: "From the artist",

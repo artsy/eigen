@@ -94,6 +94,7 @@ describe("SubmitArtworkShippingLocation", () => {
           state: "Berlin",
           zipCode: "10115",
         },
+        submissionId: "submission-id",
       },
     })
 
@@ -125,7 +126,7 @@ describe("SubmitArtworkShippingLocation", () => {
           zipCode: "10115",
         },
       },
-      null
+      "submission-id"
     )
     await flushPromiseQueue()
 
