@@ -1,4 +1,5 @@
 import { screen, fireEvent } from "@testing-library/react-native"
+import { CompleteMyProfileStore } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
 import { IdentityVerificationStep } from "app/Scenes/CompleteMyProfile/IdentityVerificationStep"
 import * as useCompleteProfile from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
 import * as useHandleVerification from "app/Scenes/MyProfile/useHandleVerification"
@@ -7,16 +8,16 @@ import { Suspense } from "react"
 import { graphql } from "react-relay"
 
 describe("IdentityVerificationStep", () => {
-  const mockSetField = jest.fn()
-
-  const useCompleteMyProfileSpy = (
-    jest.spyOn(useCompleteProfile, "useCompleteProfile") as jest.SpyInstance<any>
-  ).mockReturnValue({
+  const setProgressState = jest.fn()
+  ;(jest.spyOn(useCompleteProfile, "useCompleteProfile") as jest.SpyInstance<any>).mockReturnValue({
     goNext: jest.fn(),
-    isCurrentRouteDirty: false,
-    field: undefined,
-    setField: mockSetField,
   })
+  jest
+    .spyOn(CompleteMyProfileStore, "useStoreActions")
+    .mockImplementation((callback) => callback({ setProgressState } as any))
+  const stateSpy = jest
+    .spyOn(CompleteMyProfileStore, "useStoreState")
+    .mockImplementation((callback) => callback({ progressState: {} } as any))
 
   const { renderWithRelay } = setupTestWrapper({
     Component: () => (
@@ -57,17 +58,14 @@ describe("IdentityVerificationStep", () => {
 
     fireEvent.press(await screen.findByText("Send verification Email"))
 
-    expect(mockSetField).toHaveBeenCalledWith(true)
+    expect(setProgressState).toHaveBeenCalledWith({ type: "isIdentityVerified", value: true })
     expect(IDVerficationSpy).toHaveBeenCalledWith(user.internalID)
   })
 
   it("renders given email already sent", async () => {
-    useCompleteMyProfileSpy.mockReturnValue({
-      goNext: jest.fn(),
-      isCurrentRouteDirty: false,
-      field: true,
-      setField: mockSetField,
-    })
+    stateSpy.mockImplementation((callback) =>
+      callback({ progressState: { isIdentityVerified: true } } as any)
+    )
 
     const { mockResolveLastOperation } = renderWithRelay()
     mockResolveLastOperation({ Me: () => user })

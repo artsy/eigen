@@ -11,7 +11,8 @@ export const useCompleteMyProfileSteps = () => {
     query,
     {},
     {
-      fetchPolicy: "store-or-network",
+      fetchPolicy: "network-only",
+      networkCacheConfig: { force: true },
     }
   )
 

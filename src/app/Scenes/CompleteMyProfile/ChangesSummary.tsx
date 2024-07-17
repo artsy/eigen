@@ -15,7 +15,8 @@ import { FC } from "react"
 
 export const ChangesSummary: FC = () => {
   const space = useSpace()
-  const { saveAndExit, isLoading } = useCompleteProfile()
+  const { saveAndExit } = useCompleteProfile()
+  const isLoading = CompleteMyProfileStore.useStoreState((state) => state.isLoading)
   const steps = CompleteMyProfileStore.useStoreState((state) => state.steps)
   const progressState = CompleteMyProfileStore.useStoreState((state) => state.progressState)
   const progressStateWithoutUndefined = CompleteMyProfileStore.useStoreState(
@@ -36,8 +37,8 @@ export const ChangesSummary: FC = () => {
   const hasIsIdentityVerified = !!progressState.isIdentityVerified
 
   return (
-    <Screen>
-      <Screen.Body>
+    <Screen safeArea={false}>
+      <Screen.Body pt={2}>
         <Flex py={2} gap={space(2)}>
           <Text variant="lg-display">
             {isCompleted ? "Thank you for completing your profile." : "You’re almost there!"}
