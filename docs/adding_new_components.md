@@ -40,10 +40,10 @@ And add an entry to the `modules` object.
 Then add a route in `routes.tsx`
 
 ```diff
-  new RouteMatcher("/fair/:fairID/info", "FairMoreInfo"),
-+ new RouteMatcher("/my-new-component", "MyNewComponent"),
-  new RouteMatcher("/city/:citySlug/:section", "CitySectionList"),
-  new RouteMatcher("/city-fair/:citySlug", "CityFairList"),
+  addRoute("/fair/:fairID/info", "FairMoreInfo"),
++ addRoute("/my-new-component", "MyNewComponent"),
+  addRoute("/city/:citySlug/:section", "CitySectionList"),
+  addRoute("/city-fair/:citySlug", "CityFairList"),
 ```
 
 Any path parameters you declare in the route (using the `/foo/:paramName/bar` syntax) will be passed as props to your component.
