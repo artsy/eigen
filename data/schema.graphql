@@ -11132,6 +11132,15 @@ type HomePageSalesModule {
   results: [Sale]!
 }
 
+# Experimental schema for new home view
+type HomeView {
+  # Hello, world
+  hello: String!
+
+  # A list of sections on the home view
+  sections: [Section!]!
+}
+
 type IdentityVerification {
   createdAt(
     format: String
@@ -16371,6 +16380,9 @@ type Query {
   # Home screen content
   homePage: HomePage
 
+  # Home view content
+  homeView: HomeView!
+
   # An identity verification that the user has access to
   identityVerification(
     # ID of the IdentityVerification
@@ -18112,6 +18124,12 @@ enum SecondFactorKind {
 
 # A second factor or errors
 union SecondFactorOrErrorsUnion = AppSecondFactor | Errors | SmsSecondFactor
+
+# A generic section in the home view
+type Section {
+  # The title of the section
+  title: String!
+}
 
 # A piece that can be sold
 interface Sellable {
@@ -21265,6 +21283,9 @@ type Viewer {
 
   # Home screen content
   homePage: HomePage
+
+  # Home view content
+  homeView: HomeView!
 
   # An identity verification that the user has access to
   identityVerification(
