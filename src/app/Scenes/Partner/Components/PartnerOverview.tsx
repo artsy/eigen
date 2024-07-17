@@ -1,10 +1,8 @@
-import { Spacer, Tabs } from "@artsy/palette-mobile"
+import { Tabs } from "@artsy/palette-mobile"
 import { PartnerOverview_partner$data } from "__generated__/PartnerOverview_partner.graphql"
-import { ReadMore } from "app/Components/ReadMore"
 import { TabEmptyState } from "app/Components/TabEmptyState"
-import { PartnerArtistsListPaginated } from "app/Scenes/Partner/Components/PartnerArtistsListPaginated"
+import { PartnerOverviewList } from "app/Scenes/Partner/Components/PartnerOverviewList"
 import { createFragmentContainer, graphql } from "react-relay"
-import { PartnerLocationSectionContainer as PartnerLocationSection } from "./PartnerLocationSection"
 
 export const PartnerOverview: React.FC<{
   partner: PartnerOverview_partner$data
@@ -21,19 +19,11 @@ export const PartnerOverview: React.FC<{
   }
 
   return (
-    // TODO: fix warning about VirtualizedLists should never be nested inside plain
-    // ScrollViews with the same orientation, maybe refactor to use Tabsflatlist?
-    <Tabs.ScrollView>
-      <Spacer y={2} />
-      {!!aboutText && (
-        <>
-          <ReadMore content={aboutText} maxChars={300} textVariant="sm" />
-          <Spacer y={2} />
-        </>
-      )}
-      <PartnerLocationSection partner={partner} />
-      {!!displayArtistsSection ? <PartnerArtistsListPaginated partner={partner} /> : null}
-    </Tabs.ScrollView>
+    <PartnerOverviewList
+      partner={partner}
+      aboutText={aboutText}
+      displayArtistsSection={displayArtistsSection}
+    />
   )
 }
 
@@ -46,8 +36,7 @@ export const PartnerOverviewFragmentContainer = createFragmentContainer(PartnerO
       profile {
         bio
       }
-      ...PartnerLocationSection_partner
-      ...PartnerArtistsListPaginated_partner @include(if: $displayArtistsSection)
+      ...PartnerOverviewListPaginated_partner @include(if: $displayArtistsSection)
     }
   `,
 })
