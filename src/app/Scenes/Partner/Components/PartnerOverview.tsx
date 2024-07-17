@@ -2,8 +2,7 @@ import { Spacer, Tabs } from "@artsy/palette-mobile"
 import { PartnerOverview_partner$data } from "__generated__/PartnerOverview_partner.graphql"
 import { ReadMore } from "app/Components/ReadMore"
 import { TabEmptyState } from "app/Components/TabEmptyState"
-
-import { PartnerArtistsList } from "app/Scenes/Partner/Components/PartnerArtistsList"
+import { PartnerArtistsListPaginated } from "app/Scenes/Partner/Components/PartnerArtistsListPaginated"
 import { createFragmentContainer, graphql } from "react-relay"
 import { PartnerLocationSectionContainer as PartnerLocationSection } from "./PartnerLocationSection"
 
@@ -33,7 +32,7 @@ export const PartnerOverview: React.FC<{
         </>
       )}
       <PartnerLocationSection partner={partner} />
-      {!!displayArtistsSection ? <PartnerArtistsList partner={partner} /> : null}
+      {!!displayArtistsSection ? <PartnerArtistsListPaginated partner={partner} /> : null}
     </Tabs.ScrollView>
   )
 }
@@ -48,7 +47,7 @@ export const PartnerOverviewFragmentContainer = createFragmentContainer(PartnerO
         bio
       }
       ...PartnerLocationSection_partner
-      ...PartnerArtistsList_partner @include(if: $displayArtistsSection)
+      ...PartnerArtistsListPaginated_partner @include(if: $displayArtistsSection)
     }
   `,
 })
