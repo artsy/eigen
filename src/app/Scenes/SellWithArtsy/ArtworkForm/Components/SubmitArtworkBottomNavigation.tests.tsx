@@ -29,6 +29,7 @@ describe("SubmitArtworkBottomNavigation", () => {
   describe("When the current step is StartFlow", () => {
     it("Shows a functional Start a New Submission button", () => {
       renderWithSubmitArtworkWrapper({
+        includeBottomNavigation: false,
         component: <SubmitArtworkBottomNavigation />,
         props: { currentStep: "StartFlow" },
       })
@@ -43,6 +44,7 @@ describe("SubmitArtworkBottomNavigation", () => {
 
     it("Shows a functional Start from My Collection button", () => {
       renderWithSubmitArtworkWrapper({
+        includeBottomNavigation: false,
         component: <SubmitArtworkBottomNavigation />,
         props: { currentStep: "StartFlow" },
       })
@@ -59,6 +61,7 @@ describe("SubmitArtworkBottomNavigation", () => {
   describe("When the current step is Complete your submission", () => {
     it("Shows a functional Submit Another Work button", () => {
       renderWithSubmitArtworkWrapper({
+        includeBottomNavigation: false,
         component: <SubmitArtworkBottomNavigation />,
         props: { currentStep: "CompleteYourSubmission" },
       })
@@ -72,6 +75,7 @@ describe("SubmitArtworkBottomNavigation", () => {
 
     it("Shows a functional Submit Another Artwork button", () => {
       renderWithSubmitArtworkWrapper({
+        includeBottomNavigation: false,
         component: <SubmitArtworkBottomNavigation />,
         props: { currentStep: "CompleteYourSubmission" },
       })
@@ -87,6 +91,7 @@ describe("SubmitArtworkBottomNavigation", () => {
   describe("When the current step is artist rejected", () => {
     it("Shows a functional Add to My Collection button", () => {
       renderWithSubmitArtworkWrapper({
+        includeBottomNavigation: false,
         component: <SubmitArtworkBottomNavigation />,
         props: { currentStep: "ArtistRejected" },
       })
@@ -103,6 +108,7 @@ describe("SubmitArtworkBottomNavigation", () => {
 
     it("Shows a functional Add Another Artist button", () => {
       renderWithSubmitArtworkWrapper({
+        includeBottomNavigation: false,
         component: <SubmitArtworkBottomNavigation />,
         props: { currentStep: "ArtistRejected" },
       })
@@ -119,6 +125,7 @@ describe("SubmitArtworkBottomNavigation", () => {
   describe("Bottom navigation buttons", () => {
     it("Shows a functional continue button", async () => {
       renderWithSubmitArtworkWrapper({
+        includeBottomNavigation: false,
         component: <SubmitArtworkBottomNavigation />,
         props: { currentStep: "AddTitle" },
         injectedFormikProps: { title: "Some title" },
@@ -135,6 +142,7 @@ describe("SubmitArtworkBottomNavigation", () => {
 
     it("Shows a functional back button", () => {
       renderWithSubmitArtworkWrapper({
+        includeBottomNavigation: false,
         component: <SubmitArtworkBottomNavigation />,
         props: { currentStep: "AddTitle" },
         injectedFormikProps: { title: "Some title" },

@@ -9,8 +9,6 @@ import { QueryRenderer, graphql } from "react-relay"
 import { MockPayloadGenerator, createMockEnvironment } from "relay-test-utils"
 import { MyCollectionWhySell } from "./MyCollectionWhySell"
 
-// const mockFetchArtworkInformation = jest.fn
-
 jest.mock("app/Scenes/SellWithArtsy/ArtworkForm/Utils/fetchArtworkInformation", () => ({
   fetchArtworkInformation: jest.fn,
 }))

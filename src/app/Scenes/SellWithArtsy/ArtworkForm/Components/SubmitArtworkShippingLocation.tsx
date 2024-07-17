@@ -64,7 +64,6 @@ export const SubmitArtworkShippingLocation = () => {
     },
   })
 
-  console.log(values.location?.countryCode)
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({
@@ -74,7 +73,7 @@ export const SubmitArtworkShippingLocation = () => {
     >
       <ScrollView contentContainerStyle={{ paddingBottom: 50 }}>
         <Flex px={2} flex={1}>
-          <Join separator={<Spacer y={2} />}>
+          <Join separator={<Spacer y={2} />} flatten>
             <Text variant="lg-display">Shipping Location</Text>
 
             <Text color="black60" variant="xs">
@@ -100,56 +99,60 @@ export const SubmitArtworkShippingLocation = () => {
               testID="country-select"
             />
 
-            <Input
-              title="Address Line 1"
-              value={values.location?.address}
-              onChangeText={(text) => setFieldValue("location.address", text)}
-              required
-              ref={addressRef}
-              onSubmitEditing={() => {
-                address2Ref.current?.focus()
-              }}
-            />
+            {!!values.location?.country && (
+              <Join separator={<Spacer y={2} />}>
+                <Input
+                  title="Address Line 1"
+                  value={values.location?.address}
+                  onChangeText={(text) => setFieldValue("location.address", text)}
+                  required
+                  ref={addressRef}
+                  onSubmitEditing={() => {
+                    address2Ref.current?.focus()
+                  }}
+                />
 
-            <Input
-              title="Address Line 2"
-              defaultValue={values.location?.address2}
-              onChangeText={(text) => setFieldValue("location.address2", text)}
-              ref={address2Ref}
-              onSubmitEditing={() => {
-                cityRef.current?.focus()
-              }}
-            />
+                <Input
+                  title="Address Line 2"
+                  defaultValue={values.location?.address2}
+                  onChangeText={(text) => setFieldValue("location.address2", text)}
+                  ref={address2Ref}
+                  onSubmitEditing={() => {
+                    cityRef.current?.focus()
+                  }}
+                />
 
-            <Input
-              title="City"
-              defaultValue={values.location?.city ?? ""}
-              onChangeText={(text) => setFieldValue("location.city", text)}
-              required
-              ref={cityRef}
-              onSubmitEditing={() => {
-                postalCodeRef.current?.focus()
-              }}
-            />
+                <Input
+                  title="City"
+                  defaultValue={values.location?.city ?? ""}
+                  onChangeText={(text) => setFieldValue("location.city", text)}
+                  required
+                  ref={cityRef}
+                  onSubmitEditing={() => {
+                    postalCodeRef.current?.focus()
+                  }}
+                />
 
-            <Input
-              title="Postal Code"
-              defaultValue={values.location?.zipCode ?? ""}
-              onChangeText={(text) => setFieldValue("location.zipCode", text)}
-              required
-              ref={postalCodeRef}
-              onSubmitEditing={() => {
-                stateRef.current?.focus()
-              }}
-            />
+                <Input
+                  title="Postal Code"
+                  defaultValue={values.location?.zipCode ?? ""}
+                  onChangeText={(text) => setFieldValue("location.zipCode", text)}
+                  required
+                  ref={postalCodeRef}
+                  onSubmitEditing={() => {
+                    stateRef.current?.focus()
+                  }}
+                />
 
-            <Input
-              title="State, Province, or Region"
-              defaultValue={values.location?.state ?? ""}
-              onChangeText={(text) => setFieldValue("location.state", text)}
-              required
-              ref={stateRef}
-            />
+                <Input
+                  title="State, Province, or Region"
+                  defaultValue={values.location?.state ?? ""}
+                  onChangeText={(text) => setFieldValue("location.state", text)}
+                  required
+                  ref={stateRef}
+                />
+              </Join>
+            )}
           </Join>
         </Flex>
       </ScrollView>

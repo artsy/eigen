@@ -1,3 +1,4 @@
+import { SubmitArtworkBottomNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkBottomNavigation"
 import {
   SubmitArtworkFormStore,
   SubmitArtworkFormStoreModelState,
@@ -41,14 +42,19 @@ export const renderWithSubmitArtworkWrapper = ({
   component,
   props,
   injectedFormikProps,
+  includeBottomNavigation = true,
 }: {
   component: React.ReactElement
   props?: Partial<SubmitArtworkFormStoreModelState>
   injectedFormikProps?: Partial<ArtworkDetailsFormModel>
+  includeBottomNavigation?: boolean
 }) => {
   return renderWithWrappers(
     <SubmitArtworkFormStoreProvider runtimeModel={props}>
-      <FormikWrapper injectedProps={injectedFormikProps}>{component}</FormikWrapper>
+      <FormikWrapper injectedProps={injectedFormikProps}>
+        {component}
+        {!!includeBottomNavigation && <SubmitArtworkBottomNavigation />}
+      </FormikWrapper>
     </SubmitArtworkFormStoreProvider>
   )
 }
