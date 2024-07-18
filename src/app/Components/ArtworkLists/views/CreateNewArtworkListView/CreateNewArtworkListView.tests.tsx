@@ -172,10 +172,11 @@ describe("CreateNewArtworkListView", () => {
 })
 
 const artworkEntity: ArtworkEntity = {
+  artistNames: "Banksy",
   id: "artwork-id",
+  imageURL: null,
   internalID: "artwork-internal-id",
+  isInAuction: false,
   title: "Artwork Title",
   year: "2023",
-  artistNames: "Banksy",
-  imageURL: null,
 }
