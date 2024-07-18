@@ -169,6 +169,7 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
     if (result.action === ResultAction.SavedToDefaultArtworkList) {
       toast.savedToDefaultArtworkList({
         onToastPress: () => openSelectArtworkListsForArtworkView(result.artwork as ArtworkEntity),
+        isInAuction: !!result.artwork.isInAuction,
       })
       return
     }

@@ -8,7 +8,6 @@ import { createContext, Reducer, useReducer } from "react"
 
 const initialArtworkInquiryState: ArtworkInquiryContextState = {
   shippingLocation: null,
-  inquiryType: null,
   inquiryQuestions: [],
   message: null,
 }

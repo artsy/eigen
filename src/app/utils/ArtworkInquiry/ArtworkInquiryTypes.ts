@@ -10,13 +10,10 @@ export interface ArtworkInquiryContextProps {
 }
 
 export interface ArtworkInquiryContextState {
-  readonly inquiryType: InquiryTypes | null
   readonly shippingLocation: LocationWithDetails | null
   readonly inquiryQuestions: InquiryQuestionInput[]
   readonly message: string | null
 }
-
-export type InquiryTypes = "Inquire on price" | "Contact Gallery" | "Inquire to purchase"
 
 interface ResetForm {
   type: "resetForm"
