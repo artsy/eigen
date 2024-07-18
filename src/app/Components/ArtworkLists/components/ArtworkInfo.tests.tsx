@@ -61,10 +61,11 @@ describe("ArtworkInfo", () => {
 })
 
 const artworkEntity: ArtworkEntity = {
-  id: "artwork-id",
-  internalID: "artwork-internal-id",
   artistNames: "Banksy",
+  id: "artwork-id",
+  imageURL: null,
+  internalID: "artwork-internal-id",
+  isInAuction: false,
   title: "Artwork Title",
   year: "2023",
-  imageURL: null,
 }
