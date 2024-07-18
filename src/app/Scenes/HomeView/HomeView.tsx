@@ -37,8 +37,19 @@ const Section: React.FC<{ section: any }> = (props) => {
 
   return (
     <Flex bg="black10" alignItems="center">
-      <Text color="black60" py={2}>
-        {section.title}
+      <Text color="black60" p={2}>
+        Need to render the{" "}
+        <Text color="black100" fontSize="80%">
+          {section.key}
+        </Text>{" "}
+        section as a{" "}
+        <Text color="blue100" fontSize="80%">
+          {section.component.type}
+        </Text>{" "}
+        component, titled{" "}
+        <Text color="black100" fontWeight="bold">
+          {section.title}
+        </Text>{" "}
       </Text>
     </Flex>
   )
@@ -60,7 +71,13 @@ export const homeViewScreenQuery = graphql`
   query HomeViewQuery {
     homeView {
       sections {
-        title
+        ... on GenericSection {
+          key
+          title
+          component {
+            type
+          }
+        }
       }
     }
   }
