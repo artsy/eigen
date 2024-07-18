@@ -12,6 +12,7 @@ interface Options {
 
 type SavedToDefaultArtworkListOptions = {
   onToastPress: () => void
+  isInAuction: boolean
 }
 
 type MultipleArtworkListsOptions = Options & {
@@ -33,15 +34,16 @@ export const useArtworkListToast = (bottomPadding?: number | null) => {
     })
   }
   const savedToDefaultArtworkList = (options: SavedToDefaultArtworkListOptions) => {
-    const { onToastPress } = options
+    const { onToastPress, isInAuction } = options
 
     showToast("Artwork saved", {
       cta: "Add to a List",
       onPress: onToastPress,
       backgroundColor: "green100",
-      description: isPartnerOfferEnabled
-        ? "Saving an artwork signals interest to galleries."
-        : null,
+      description:
+        isPartnerOfferEnabled && !isInAuction
+          ? "Saving an artwork signals interest to galleries."
+          : null,
     })
   }
 
