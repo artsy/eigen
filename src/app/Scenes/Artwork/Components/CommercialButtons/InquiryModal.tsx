@@ -308,7 +308,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
         rightButtonDisabled={state.inquiryQuestions.length === 0}
         onRightButtonPress={sendInquiry}
       >
-        {state.inquiryType}
+        Contact Gallery
       </FancyModalHeader>
       {!!mutationError && (
         <ErrorMessageFlex bg="red100" py={1} alignItems="center">
