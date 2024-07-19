@@ -5,21 +5,14 @@ import { ArtistListItemContainer as ArtistListItem } from "app/Components/Artist
 import { ReadMore } from "app/Components/ReadMore"
 import { PartnerLocationSection } from "app/Scenes/Partner/Components/PartnerLocationSection"
 import { extractNodes } from "app/utils/extractNodes"
-import { ON_END_REACHED_THRESHOLD_MASONRY } from "app/utils/masonryHelpers"
 import { ActivityIndicator } from "react-native"
 import { graphql, usePaginationFragment } from "react-relay"
-
-const LOAD_BATCH_SIZE = 20
 
 interface PartnerOverviewListProps {
   aboutText?: string | null
   displayArtistsSection?: boolean | null
   partner: PartnerOverviewListArtists_partner$key
 }
-
-type HeaderItem = { type: "header" }
-type ArtistItem = { type: "artist"; id: string }
-type ListItem = HeaderItem | ArtistItem
 
 export const PartnerOverviewList: React.FC<PartnerOverviewListProps> = ({
   aboutText,
@@ -31,52 +24,45 @@ export const PartnerOverviewList: React.FC<PartnerOverviewListProps> = ({
     PartnerOverviewListArtists_partner$key
   >(PartnerOverviewListArtistsFragment, partner)
 
-  const artists = extractNodes(data.artistsConnection).map((artist) => ({
-    ...artist,
-    type: "artist",
-  })) as ArtistItem[]
-
-  const dataWithHeader: ListItem[] = [{ type: "header" }, ...artists]
+  const artists = extractNodes(data.artistsConnection)
 
   const handleLoadMore = () => {
     if (!hasNext || isLoadingNext) {
       return
     }
 
-    loadNext(LOAD_BATCH_SIZE)
+    loadNext(20)
   }
 
-  const renderItem = ({ item }: { item: any }) => {
-    if (item.type === "header") {
-      return (
-        <Flex pt={2}>
-          {!!aboutText && (
-            <>
-              <ReadMore content={aboutText} maxChars={300} textVariant="sm" />
-            </>
-          )}
-          <PartnerLocationSection partner={data as any} />
-          {!!displayArtistsSection && (
-            <>
-              <Text variant="sm">Artists ({data.artistsConnection?.totalCount})</Text>
-            </>
-          )}
-        </Flex>
-      )
-    }
-
-    return <ArtistListItem artist={item} />
-  }
-
+  // TODO: Should we be using a viewability config here?
+  // TODO: fix types in fragment and make display of artists section optional
   return (
-    <Tabs.Masonry
-      data={dataWithHeader}
-      keyExtractor={(item: ListItem) => (item.type === "header" ? "header" : item.id)}
-      estimatedItemSize={90}
+    <Tabs.FlatList
+      data={artists}
+      keyExtractor={(item) => item.id}
+      ListHeaderComponent={() => {
+        return (
+          <>
+            <Spacer y={2} />
+            {!!aboutText && (
+              <>
+                <ReadMore content={aboutText} maxChars={300} textVariant="sm" />
+              </>
+            )}
+            <PartnerLocationSection partner={data as any} />
+            {!!displayArtistsSection && (
+              <>
+                <Text variant="sm">Artists ({data.artistsConnection?.totalCount})</Text>
+                <Spacer y={2} />
+              </>
+            )}
+          </>
+        )
+      }}
       ItemSeparatorComponent={() => <Spacer y={2} />}
-      renderItem={renderItem}
+      renderItem={({ item }) => <ArtistListItem artist={item} />}
       onEndReached={handleLoadMore}
-      onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
+      onEndReachedThreshold={0.5}
       ListFooterComponent={() => (
         <Flex
           alignItems="center"
