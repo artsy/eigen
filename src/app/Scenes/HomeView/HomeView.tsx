@@ -1,6 +1,7 @@
 import { Flex, Screen, Separator, Spacer, Text } from "@artsy/palette-mobile"
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
 import { goBack } from "app/system/navigation/navigate"
+import { extractNodes } from "app/utils/extractNodes"
 import { Suspense } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
@@ -8,6 +9,7 @@ const SCREEN_TITLE = "HomeView WIP"
 
 export const HomeView: React.FC = () => {
   const queryData = useLazyLoadQuery<HomeViewQuery>(homeViewScreenQuery, {})
+  const sections = extractNodes(queryData.homeView.sectionsConnection)
 
   return (
     <Screen>
@@ -20,7 +22,7 @@ export const HomeView: React.FC = () => {
 
       <Screen.Body fullwidth>
         <Screen.FlatList
-          data={queryData.homeView.sections}
+          data={sections}
           keyExtractor={(item) => `${item.title}`}
           renderItem={({ item }) => {
             return <Section section={item} />
@@ -70,12 +72,17 @@ export const HomeViewScreen: React.FC = () => (
 export const homeViewScreenQuery = graphql`
   query HomeViewQuery {
     homeView {
-      sections {
-        ... on GenericSection {
-          key
-          title
-          component {
-            type
+      sectionsConnection(first: 3) {
+        edges {
+          cursor
+          node {
+            ... on GenericSection {
+              key
+              title
+              component {
+                type
+              }
+            }
           }
         }
       }
