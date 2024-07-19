@@ -1,6 +1,7 @@
 import { PAGE_SIZE } from "app/Components/constants"
 import { MutableRefObject, useEffect, useMemo } from "react"
-import { RelayPaginationProp, Variables } from "react-relay"
+import { RefetchFnDynamic, RelayPaginationProp, Variables } from "react-relay"
+import { FragmentType, OperationType } from "relay-runtime"
 import {
   aggregationForFilter,
   filterArtworksParams,
@@ -118,4 +119,72 @@ export const useSelectedFiltersCount = () => {
       ),
     [appliedFilters]
   )
+}
+
+// Relay doesn't export their helper type(KeyType), so we have to redefine it here
+type RelayData = { " $data"?: unknown; " $fragmentSpreads": FragmentType } | null | undefined
+type UseArtworkFiltersOptionsForHooks<T extends RelayData> = Omit<
+  UseArtworkFiltersOptions,
+  "refetchRef" | "relay"
+> & {
+  refetch: RefetchFnDynamic<OperationType, T>
+}
+
+/**
+ * Replaces useArtworkFilters for components using relay hooks
+ */
+export const useArtworkFiltersForHooks = <T extends RelayData>({
+  aggregations,
+  pageSize = PAGE_SIZE,
+  componentPath,
+  refetchVariables,
+  onApply,
+  onRefetch,
+  type = "filter",
+  refetch,
+}: UseArtworkFiltersOptionsForHooks<T>) => {
+  const setAggregationsAction = ArtworksFiltersStore.useStoreActions(
+    (state) => state.setAggregationsAction
+  )
+  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
+  const filterType = ArtworksFiltersStore.useStoreState((state) => state.filterType)
+
+  useEffect(() => {
+    if (!aggregations) {
+      return
+    }
+    setAggregationsAction(aggregations)
+  }, [])
+
+  const _refetch = () => {
+    const filterParams = filterArtworksParams(appliedFilters, filterType)
+    const refetchArgs = refetchVariables ?? {
+      input: prepareFilterArtworksParamsForInput(filterParams),
+    }
+    refetch(
+      {
+        ...refetchArgs,
+        count: pageSize,
+      },
+      {
+        onComplete: (error) => {
+          onRefetch?.(error)
+          if (error) {
+            const errorMessage = componentPath
+              ? `${componentPath} ${type} error: ${error.message}`
+              : error.message
+            throw new Error(errorMessage)
+          }
+        },
+      }
+    )
+  }
+
+  useEffect(() => {
+    if (applyFilters) {
+      _refetch()
+      onApply?.()
+    }
+  }, [appliedFilters])
 }

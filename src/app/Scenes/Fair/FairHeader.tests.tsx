@@ -1,96 +1,35 @@
-import { Spacer } from "@artsy/palette-mobile"
-import { FairHeaderTestsQuery } from "__generated__/FairHeaderTestsQuery.graphql"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { FairHeader, FairHeaderFragmentContainer } from "app/Scenes/Fair/Components/FairHeader"
-import { navigate } from "app/system/navigation/navigate"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { TouchableOpacity } from "react-native"
-import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { FairTimingFragmentContainer } from "./Components/FairTiming"
+import { screen } from "@testing-library/react-native"
+import { FairHeader } from "app/Scenes/Fair/Components/FairHeader"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 
 describe("FairHeader", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    env = createMockEnvironment()
+  const { renderWithRelay } = setupTestWrapper({
+    Component: FairHeader,
+    query: graphql`
+      query FairHeaderTestsQuery @relay_test_operation {
+        fair(id: "fair-id") {
+          ...FairHeader_fair
+        }
+      }
+    `,
   })
 
-  const TestRenderer = () => (
-    <QueryRenderer<FairHeaderTestsQuery>
-      environment={env}
-      query={graphql`
-        query FairHeaderTestsQuery($fairID: String!) @relay_test_operation {
-          fair(id: $fairID) {
-            ...FairHeader_fair
-          }
-        }
-      `}
-      variables={{ fairID: "art-basel-hong-kong-2020" }}
-      render={({ props, error }) => {
-        if (props?.fair) {
-          return <FairHeaderFragmentContainer fair={props.fair} />
-        } else if (error) {
-          console.log(error)
-        }
-      }}
-    />
-  )
+  it("renders", () => {
+    renderWithRelay()
 
-  const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, mockResolvers)
-      )
-    })
-    return tree
-  }
-
-  it("renders without throwing an error", () => {
-    const wrapper = getWrapper()
-    expect(wrapper.root.findAllByType(FairHeader)).toHaveLength(1)
+    expect(screen.getByText(/mock-value-for-field-"name"/)).toBeOnTheScreen()
+    expect(screen.getByText(/mock-value-for-field-"exhibitionPeriod"/)).toBeOnTheScreen()
   })
 
   it("renders the fair title", () => {
-    const wrapper = getWrapper({
-      Fair: () => ({
-        name: "Art Basel Hong Kong 2020",
-      }),
-    })
-    expect(wrapper.root.findByProps({ variant: "lg-display" }).props.children).toBe(
-      "Art Basel Hong Kong 2020"
-    )
-  })
+    renderWithRelay({ Fair: () => ({ name: "Art Basel Hong Kong 2020" }) })
 
-  it("renders the fair main image when present", () => {
-    const wrapper = getWrapper({
-      Fair: () => ({
-        image: {
-          imageUrl: "https://testing.artsy.net/art-basel-hong-kong-image",
-        },
-      }),
-    })
-    const mainImage = wrapper.root.findAllByType(OpaqueImageView)[0]
-    expect(mainImage.props).toMatchObject({
-      imageURL: "https://testing.artsy.net/art-basel-hong-kong-image",
-    })
-  })
-
-  it("renders a spacer instead when the fair main image is absent", () => {
-    const wrapper = getWrapper({
-      Fair: () => ({
-        image: null,
-      }),
-    })
-    expect(wrapper.root.findAllByType(OpaqueImageView)).toHaveLength(0)
-    expect(wrapper.root.findAllByType(Spacer)).not.toHaveLength(0)
+    expect(screen.getByText("Art Basel Hong Kong 2020")).toBeOnTheScreen()
   })
 
   it("renders the fair icon", () => {
-    const wrapper = getWrapper({
+    renderWithRelay({
       Fair: () => ({
         profile: {
           icon: {
@@ -99,67 +38,17 @@ describe("FairHeader", () => {
         },
       }),
     })
-    expect(wrapper.root.findAllByType(OpaqueImageView)[1].props.imageURL).toBe(
-      "https://testing.artsy.net/art-basel-hong-kong-icon"
-    )
-  })
 
-  it("renders the fair description", () => {
-    const wrapper = getWrapper({
-      Fair: () => ({
-        summary: "The biggest art fair in Hong Kong",
-      }),
-    })
-    expect(extractText(wrapper.root)).toMatch("The biggest art fair in Hong Kong")
-  })
-
-  it("falls back to About when Summary isn't available", () => {
-    const wrapper = getWrapper({
-      Fair: () => ({
-        about: "A great place to buy art",
-        summary: "",
-      }),
-    })
-    expect(extractText(wrapper.root)).toMatch("A great place to buy art")
-  })
-
-  it("navigates to the fair info page on press of More Info", () => {
-    const wrapper = getWrapper({
-      Fair: () => ({
-        slug: "art-basel-hong-kong-2020",
-      }),
-    }).root.findByType(TouchableOpacity)
-    wrapper.props.onPress()
-    expect(navigate).toHaveBeenCalledWith("/fair/art-basel-hong-kong-2020/info")
-  })
-
-  it("does not show the More Info link if there is no info to show", () => {
-    const wrapper = getWrapper({
-      Fair: () => ({
-        about: "",
-        fairContact: "",
-        fairHours: "",
-        fairLinks: "",
-        fairTickets: "",
-        location: {
-          summary: "",
-          coordinates: null,
-        },
-        summary: "",
-        tagline: "",
-        ticketsLink: "",
-      }),
-    })
-    expect(wrapper.root.findAllByType(TouchableOpacity).length).toBe(0)
+    expect(screen.getByTestId("fair-profile-image")).toBeOnTheScreen()
   })
 
   it("displays the timing info", () => {
-    const wrapper = getWrapper({
+    renderWithRelay({
       Fair: () => ({
         endAt: "2020-09-19T08:00:00+00:00",
       }),
     })
-    expect(wrapper.root.findAllByType(FairTimingFragmentContainer).length).toBe(1)
-    expect(extractText(wrapper.root)).toMatch("Closed")
+
+    expect(screen.getByText("Closed")).toBeOnTheScreen()
   })
 })

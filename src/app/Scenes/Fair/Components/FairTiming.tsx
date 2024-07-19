@@ -1,4 +1,4 @@
-import { Box, Text } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { FairTiming_fair$data } from "__generated__/FairTiming_fair.graphql"
 import { EventTiming } from "app/Components/EventTiming"
 import { WithCurrentTime } from "app/Components/WithCurrentTime"
@@ -12,7 +12,7 @@ export const FairTiming: React.FC<FairTimingProps> = ({
   fair: { exhibitionPeriod, startAt, endAt },
 }) => {
   return (
-    <Box py={1}>
+    <Flex>
       <Text variant="sm" color="black100">
         {exhibitionPeriod}
       </Text>
@@ -28,7 +28,7 @@ export const FairTiming: React.FC<FairTimingProps> = ({
           }}
         </WithCurrentTime>
       </Text>
-    </Box>
+    </Flex>
   )
 }
 
