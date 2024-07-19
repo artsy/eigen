@@ -2288,9 +2288,15 @@ enum ArtistSorts {
 }
 
 # An artists rail section in the home view
-type ArtistsRailSection implements GenericSection {
+type ArtistsRailSection implements GenericSection & Node {
   # The component that is prescribed for this section
   component: Component
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
 
   # A stable identifier for this section
   key: String!
@@ -3145,9 +3151,15 @@ enum ArtworkSorts {
 }
 
 # An artwork rail section in the home view
-type ArtworksRailSection implements GenericSection {
+type ArtworksRailSection implements GenericSection & Node {
   # The component that is prescribed for this section
   component: Component
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
 
   # A stable identifier for this section
   key: String!
@@ -10974,6 +10986,12 @@ interface GenericSection {
   # The component that is prescribed for this section
   component: Component
 
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
   # A stable identifier for this section
   key: String!
 
@@ -11334,6 +11352,12 @@ type HomePageSalesModule {
 type HomeView {
   # A list of sections on the home view
   sections: [Section!]!
+  sectionsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): SectionConnection
 }
 
 type IdentityVerification {
@@ -18509,6 +18533,26 @@ enum SecondFactorKind {
 union SecondFactorOrErrorsUnion = AppSecondFactor | Errors | SmsSecondFactor
 
 union Section = ArtistsRailSection | ArtworksRailSection
+
+# A connection to a list of items.
+type SectionConnection {
+  # A list of edges.
+  edges: [SectionEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type SectionEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: Section
+}
 
 # A piece that can be sold
 interface Sellable {
