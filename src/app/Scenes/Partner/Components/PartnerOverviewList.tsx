@@ -5,6 +5,7 @@ import { ArtistListItemContainer as ArtistListItem } from "app/Components/Artist
 import { ReadMore } from "app/Components/ReadMore"
 import { PartnerLocationSection } from "app/Scenes/Partner/Components/PartnerLocationSection"
 import { extractNodes } from "app/utils/extractNodes"
+import { useCallback } from "react"
 import { ActivityIndicator } from "react-native"
 import { graphql, usePaginationFragment } from "react-relay"
 
@@ -34,8 +35,8 @@ export const PartnerOverviewList: React.FC<PartnerOverviewListProps> = ({
     loadNext(20)
   }
 
-  // TODO: Should we be using a viewability config here?
-  // TODO: fix types in fragment and make display of artists section optional
+  const renderItem = useCallback(({ item }) => <ArtistListItem artist={item} />, [])
+
   return (
     <Tabs.FlatList
       data={artists}
@@ -61,7 +62,7 @@ export const PartnerOverviewList: React.FC<PartnerOverviewListProps> = ({
         )
       }}
       ItemSeparatorComponent={() => <Spacer y={2} />}
-      renderItem={({ item }) => <ArtistListItem artist={item} />}
+      renderItem={renderItem}
       onEndReached={handleLoadMore}
       onEndReachedThreshold={0.2}
       ListFooterComponent={() => (
