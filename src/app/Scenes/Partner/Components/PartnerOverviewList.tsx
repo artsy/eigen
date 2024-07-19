@@ -40,6 +40,7 @@ export const PartnerOverviewList: React.FC<PartnerOverviewListProps> = ({
     <Tabs.FlatList
       data={artists}
       keyExtractor={(item) => item.id}
+      initialNumToRender={20}
       ListHeaderComponent={() => {
         return (
           <>
@@ -62,7 +63,7 @@ export const PartnerOverviewList: React.FC<PartnerOverviewListProps> = ({
       ItemSeparatorComponent={() => <Spacer y={2} />}
       renderItem={({ item }) => <ArtistListItem artist={item} />}
       onEndReached={handleLoadMore}
-      onEndReachedThreshold={0.5}
+      onEndReachedThreshold={0.2}
       ListFooterComponent={() => (
         <Flex
           alignItems="center"
