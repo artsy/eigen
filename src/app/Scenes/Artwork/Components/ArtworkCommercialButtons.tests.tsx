@@ -5,8 +5,10 @@ import { ArtworkStoreProvider } from "app/Scenes/Artwork/ArtworkStore"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
-import { ArtworkInquiryContextState } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
+import {
+  ArtworkInquiryContext,
+  initialArtworkInquiryState,
+} from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -25,7 +27,7 @@ describe("ArtworkCommercialButtons", () => {
       return (
         <ArtworkInquiryContext.Provider
           value={{
-            state,
+            state: initialArtworkInquiryState,
             dispatch: jest.fn(),
           }}
         >
@@ -580,12 +582,6 @@ describe("ArtworkCommercialButtons", () => {
     })
   })
 })
-
-const state: ArtworkInquiryContextState = {
-  shippingLocation: null,
-  message: null,
-  inquiryQuestions: [],
-}
 
 const meFixture = {
   id: "id",

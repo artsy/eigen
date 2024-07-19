@@ -1,6 +1,8 @@
 import { ActionType, OwnerType, TappedContactGallery } from "@artsy/cohesion"
 import { ButtonProps, Button } from "@artsy/palette-mobile"
 import { ContactGalleryButton_artwork$key } from "__generated__/ContactGalleryButton_artwork.graphql"
+import { ContactGalleryButton_me$key } from "__generated__/ContactGalleryButton_me.graphql"
+import { CompleteProfilePrompt } from "app/Scenes/Artwork/Components/CommercialButtons/CompleteProfilePrompt"
 import { InquiryModal } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryModal"
 import { InquirySuccessNotification } from "app/Scenes/Artwork/Components/CommercialButtons/InquirySuccessNotification"
 import { ArtworkInquiryStateProvider } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
@@ -10,20 +12,22 @@ import { useTracking } from "react-tracking"
 
 type ContactGalleryButtonProps = Omit<ButtonProps, "children"> & {
   artwork: ContactGalleryButton_artwork$key
+  me: ContactGalleryButton_me$key
 }
 
-export const ContactGalleryButton: React.FC<ContactGalleryButtonProps> = ({ artwork, ...rest }) => {
+export const ContactGalleryButton: React.FC<ContactGalleryButtonProps> = ({
+  artwork,
+  me,
+  ...rest
+}) => {
   const artworkData = useFragment(artworkFragment, artwork)
+  const meData = useFragment(meFragment, me)
   const [modalVisibility, setModalVisibility] = useState(false)
   const { trackEvent } = useTracking()
-  const [notificationVisibility, setNotificationVisibility] = useState(false)
 
   return (
     <ArtworkInquiryStateProvider>
-      <InquirySuccessNotification
-        modalVisible={notificationVisibility}
-        toggleNotification={(state: boolean) => setNotificationVisibility(state)}
-      />
+      <InquirySuccessNotification />
       <Button
         onPress={() => {
           trackEvent(tracks.trackTappedContactGallery(artworkData.slug, artworkData.internalID))
@@ -36,10 +40,11 @@ export const ContactGalleryButton: React.FC<ContactGalleryButtonProps> = ({ artw
       </Button>
       <InquiryModal
         artwork={artworkData}
+        me={meData}
         modalIsVisible={modalVisibility}
         toggleVisibility={() => setModalVisibility(!modalVisibility)}
-        onMutationSuccessful={(state: boolean) => setNotificationVisibility(state)}
       />
+      <CompleteProfilePrompt artwork={artworkData} />
     </ArtworkInquiryStateProvider>
   )
 }
@@ -78,5 +83,12 @@ const artworkFragment = graphql`
       name
     }
     ...InquiryModal_artwork
+    ...CompleteProfilePrompt_artwork
+  }
+`
+
+const meFragment = graphql`
+  fragment ContactGalleryButton_me on Me {
+    ...InquiryModal_me
   }
 `

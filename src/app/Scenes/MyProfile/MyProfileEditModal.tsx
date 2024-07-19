@@ -43,6 +43,8 @@ export const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
   onClose,
   visible,
 }) => {
+  console.log("🐢", { visible })
+
   /**
    * TODO: On Android
    *
@@ -54,7 +56,7 @@ export const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
    */
 
   return (
-    <AutomountedBottomSheetModal visible={visible} enableDynamicSizing>
+    <AutomountedBottomSheetModal visible={visible} onDismiss={onClose} enableDynamicSizing>
       <BottomSheetScrollView keyboardShouldPersistTaps="always">
         <MyProfileEditModalWithSuspense onClose={onClose} message={message} />
       </BottomSheetScrollView>
@@ -128,6 +130,7 @@ const MyProfileEditModalContent: React.FC<MyProfileEditModalContentProps> = ({
           },
         },
         onCompleted: () => {
+          console.log("🐇")
           trackEvent(tracks.editedUserProfile())
           setLoading(false)
           onClose()
@@ -148,7 +151,7 @@ const MyProfileEditModalContent: React.FC<MyProfileEditModalContentProps> = ({
       <Text>{message}</Text>
       <FormikProvider value={formikBag}>
         <UserProfileFields bottomSheetInput />
-        <Button block mt={2} onPress={handleSubmit} disabled={!isValid} loading={loading}>
+        <Button block mt={2} mb={4} onPress={handleSubmit} disabled={!isValid} loading={loading}>
           Save and Continue
         </Button>
       </FormikProvider>

@@ -1,14 +1,17 @@
 import { EnvelopeIcon, Flex, Text } from "@artsy/palette-mobile"
 import { Questions_artwork$key } from "__generated__/Questions_artwork.graphql"
+import { Questions_me$key } from "__generated__/Questions_me.graphql"
 import { graphql, useFragment } from "react-relay"
 import { ContactGalleryButton } from "./CommercialButtons/ContactGalleryButton"
 
 interface QuestionsProps {
   artwork: Questions_artwork$key
+  me: Questions_me$key
 }
 
 export const Questions: React.FC<QuestionsProps> = (props) => {
   const artworkData = useFragment(artworkFragment, props.artwork)
+  const meData = useFragment(meFragment, props.me)
 
   return (
     <Flex flexDirection="row" flexWrap="wrap" justifyContent="space-between" alignItems="center">
@@ -19,6 +22,7 @@ export const Questions: React.FC<QuestionsProps> = (props) => {
       <Flex flex={1} alignItems="flex-end">
         <ContactGalleryButton
           artwork={artworkData}
+          me={meData}
           variant="outline"
           size="small"
           icon={<EnvelopeIcon fill="black100" width="16px" height="16px" />}
@@ -31,5 +35,11 @@ export const Questions: React.FC<QuestionsProps> = (props) => {
 const artworkFragment = graphql`
   fragment Questions_artwork on Artwork {
     ...ContactGalleryButton_artwork
+  }
+`
+
+const meFragment = graphql`
+  fragment Questions_me on Me {
+    ...ContactGalleryButton_me
   }
 `

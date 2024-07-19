@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import { PartnerCardTestsQuery } from "__generated__/PartnerCardTestsQuery.graphql"
 import { PartnerCard_artwork$data } from "__generated__/PartnerCard_artwork.graphql"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -6,45 +7,44 @@ import { PartnerCardFragmentContainer } from "./PartnerCard"
 
 describe("PartnerCard", () => {
   const { renderWithRelay } = setupTestWrapper<PartnerCardTestsQuery>({
-    Component: (props) => {
-      if (props?.artwork) {
-        return <PartnerCardFragmentContainer artwork={props.artwork} />
-      }
-
-      return null
+    Component: ({ artwork, me }) => {
+      return <PartnerCardFragmentContainer artwork={artwork} me={me} />
     },
     query: graphql`
       query PartnerCardTestsQuery @relay_test_operation @raw_response_type {
-        artwork(id: "artworkID") {
+        artwork(id: "artworkID") @required(action: NONE) {
           ...PartnerCard_artwork
+        }
+        me @required(action: NONE) {
+          ...PartnerCard_me
         }
       }
     `,
   })
 
   it("renders partner name correctly", () => {
-    const { getByText } = renderWithRelay({
+    renderWithRelay({
       Artwork: () => PartnerCardArtwork,
     })
 
-    expect(getByText("Test Gallery")).toBeTruthy()
+    expect(screen.getByText("Test Gallery")).toBeTruthy()
   })
 
   it("renders partner image", () => {
-    const { queryByLabelText } = renderWithRelay({
+    renderWithRelay({
       Artwork: () => PartnerCardArtwork,
     })
 
-    expect(queryByLabelText("AvatarImage")).toBeOnTheScreen()
-    expect(queryByLabelText("Avatar")).not.toBeOnTheScreen()
+    expect(screen.getByLabelText("AvatarImage")).toBeOnTheScreen()
+    expect(screen.queryByLabelText("Avatar")).not.toBeOnTheScreen()
   })
 
   it("renders partner type", () => {
-    const { getByText } = renderWithRelay({
+    renderWithRelay({
       Artwork: () => PartnerCardArtwork,
     })
 
-    expect(getByText("Gallery")).toBeTruthy()
+    expect(screen.getByText("Gallery")).toBeTruthy()
   })
 
   it("renders partner type correctly for institutional sellers", () => {
@@ -56,11 +56,11 @@ describe("PartnerCard", () => {
       },
     }
 
-    const { getByText } = renderWithRelay({
+    renderWithRelay({
       Artwork: () => PartnerCardArtworkInstitutionalSeller,
     })
 
-    expect(getByText("Institution")).toBeTruthy()
+    expect(screen.getByText("Institution")).toBeTruthy()
   })
 
   it("doesn't render partner type for partners that aren't institutions or galleries", () => {
@@ -71,12 +71,12 @@ describe("PartnerCard", () => {
         type: "Some Other Partner Type",
       },
     }
-    const { queryByText } = renderWithRelay({
+    renderWithRelay({
       Artwork: () => PartnerCardArtworkOtherType,
     })
 
-    expect(queryByText("At institution")).toBeFalsy()
-    expect(queryByText("At gallery")).toBeFalsy()
+    expect(screen.queryByText("At institution")).toBeFalsy()
+    expect(screen.queryByText("At gallery")).toBeFalsy()
   })
 
   it("renders partner initials when no image is present", () => {
@@ -87,21 +87,21 @@ describe("PartnerCard", () => {
         profile: null,
       },
     }
-    const { getByText, queryByLabelText } = renderWithRelay({
+    renderWithRelay({
       Artwork: () => PartnerCardArtworkWithoutImage,
     })
 
-    expect(getByText("TG")).toBeTruthy()
-    expect(queryByLabelText("AvatarImage")).not.toBeOnTheScreen()
-    expect(queryByLabelText("Avatar")).toBeOnTheScreen()
+    expect(screen.getByText("TG")).toBeTruthy()
+    expect(screen.queryByLabelText("AvatarImage")).not.toBeOnTheScreen()
+    expect(screen.getByLabelText("Avatar")).toBeOnTheScreen()
   })
 
   it("truncates partner locations correctly", () => {
-    const { getByText } = renderWithRelay({
+    renderWithRelay({
       Artwork: () => PartnerCardArtwork,
     })
 
-    expect(getByText("Miami, New York, +3 more")).toBeTruthy()
+    expect(screen.getByText("Miami, New York, +3 more")).toBeTruthy()
   })
 
   it("does not render when the partner is an auction house", () => {

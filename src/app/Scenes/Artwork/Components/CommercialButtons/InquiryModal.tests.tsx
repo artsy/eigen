@@ -1,7 +1,10 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { InquiryModalTestsQuery } from "__generated__/InquiryModalTestsQuery.graphql"
 import { InquiryModal } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryModal"
-import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
+import {
+  ArtworkInquiryContext,
+  initialArtworkInquiryState,
+} from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -12,17 +15,11 @@ const toggleVisibility = jest.fn()
 const onMutationSuccessful = jest.fn()
 const mockDispatch = jest.fn()
 
-const initialState = {
-  shippingLocation: null,
-  message: null,
-  inquiryQuestions: [],
-}
-
 const { renderWithRelay } = setupTestWrapper<InquiryModalTestsQuery>({
   Component: (props) => {
     return (
       <ArtworkInquiryContext.Provider
-        value={{ state: initialState, dispatch: mockDispatch }}
+        value={{ state: initialArtworkInquiryState, dispatch: mockDispatch }}
         {...props}
       >
         <FakeApp {...props} />
@@ -33,6 +30,9 @@ const { renderWithRelay } = setupTestWrapper<InquiryModalTestsQuery>({
     query InquiryModalTestsQuery @relay_test_operation {
       artwork(id: "pumpkins") {
         ...InquiryModal_artwork
+      }
+      me {
+        ...InquiryModal_me
       }
     }
   `,
@@ -51,9 +51,9 @@ const FakeApp = (props: InquiryModalTestsQuery["response"]) => {
   return (
     <InquiryModal
       artwork={props!.artwork!}
+      me={props!.me!}
       modalIsVisible={modalProps.modalIsVisible}
       toggleVisibility={modalProps.toggleVisibility}
-      onMutationSuccessful={modalProps.onMutationSuccessful}
     />
   )
 }

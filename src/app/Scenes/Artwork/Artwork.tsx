@@ -69,7 +69,7 @@ import { ShippingAndTaxesFragmentContainer } from "./Components/ShippingAndTaxes
 interface ArtworkProps {
   artworkAboveTheFold: Artwork_artworkAboveTheFold$data | null | undefined
   artworkBelowTheFold: Artwork_artworkBelowTheFold$data | null | undefined
-  me: Artwork_me$data | null | undefined
+  me: Artwork_me$data
   isVisible: boolean
   onLoad: (artworkProps: ArtworkProps) => void
   relay: RelayRefetchProp
@@ -375,6 +375,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
           element: (
             <PartnerCard
               artwork={artworkBelowTheFold}
+              me={me}
               showShortContactGallery={
                 !!artworkAboveTheFold?.isUnlisted && !!artworkBelowTheFold.partner?.isInquireable
               }
@@ -463,6 +464,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
           <PartnerCard
             shouldShowQuestions={!!artworkBelowTheFold.partner?.isInquireable}
             artwork={artworkBelowTheFold}
+            me={me}
             showShortContactGallery={
               !!artworkAboveTheFold?.isUnlisted && !!artworkBelowTheFold.partner?.isInquireable
             }
@@ -764,6 +766,7 @@ export const ArtworkContainer = createRefetchContainer(
     me: graphql`
       fragment Artwork_me on Me @argumentDefinitions(artworkID: { type: "String!" }) {
         ...ArtworkStickyBottomContent_me
+        ...PartnerCard_me
         partnerOffersConnection(artworkID: $artworkID, first: 1) {
           edges {
             node {
@@ -828,7 +831,8 @@ export const ArtworkQueryRenderer: React.FC<ArtworkScreenProps> = ({
         renderComponent: ({ above, below }) => {
           if (
             // Make sure that the artwork exists
-            above.artworkResult?.__typename === "Artwork"
+            above.artworkResult?.__typename === "Artwork" &&
+            above.me
           ) {
             return (
               <ArtworkContainer

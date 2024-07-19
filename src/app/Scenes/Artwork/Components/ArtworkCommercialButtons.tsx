@@ -121,7 +121,7 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
     if (hasActivePartnerOffer) {
       return (
         <RowContainer>
-          <ContactGalleryButton artwork={artworkData} variant="outline" block />
+          <ContactGalleryButton artwork={artworkData} me={meData} variant="outline" block />
           <BuyNowButton
             partnerOffer={partnerOfferData}
             artwork={artworkData}
@@ -133,7 +133,7 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
 
     return (
       <RowContainer>
-        <ContactGalleryButton artwork={artworkData} variant="outline" block />
+        <ContactGalleryButton artwork={artworkData} me={meData} variant="outline" block />
         <MakeOfferButtonFragmentContainer artwork={artworkData} editionSetID={selectedEditionId} />
       </RowContainer>
     )
@@ -167,7 +167,7 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
     if (hasActivePartnerOffer) {
       return (
         <RowContainer>
-          <ContactGalleryButton artwork={artworkData} variant="outline" block />
+          <ContactGalleryButton artwork={artworkData} me={meData} variant="outline" block />
           <BuyNowButton
             partnerOffer={partnerOfferData}
             artwork={artworkData}
@@ -177,7 +177,7 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
       )
     }
 
-    return <ContactGalleryButton artwork={artworkData} block />
+    return <ContactGalleryButton artwork={artworkData} me={meData} block />
   }
 
   return null
@@ -206,6 +206,7 @@ const artworkFragment = graphql`
 const meFragment = graphql`
   fragment ArtworkCommercialButtons_me on Me {
     ...BidButton_me
+    ...ContactGalleryButton_me
   }
 `
 
