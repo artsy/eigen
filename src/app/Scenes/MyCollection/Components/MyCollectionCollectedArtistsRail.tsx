@@ -187,7 +187,7 @@ const artistFragment = graphql`
     name
     initials
     image {
-      url
+      url(version: "small")
     }
   }
 `
