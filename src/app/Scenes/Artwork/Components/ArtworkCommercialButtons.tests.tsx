@@ -583,7 +583,6 @@ describe("ArtworkCommercialButtons", () => {
 
 const state: ArtworkInquiryContextState = {
   shippingLocation: null,
-  inquiryType: null,
   message: null,
   inquiryQuestions: [],
 }

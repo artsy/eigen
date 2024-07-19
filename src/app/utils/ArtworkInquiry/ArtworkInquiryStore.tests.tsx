@@ -14,7 +14,6 @@ describe("selectInquiryQuestion", () => {
   it("when a question is checked it pushes that question into the inquiryQuestions array", () => {
     inquiryState = {
       shippingLocation: null,
-      inquiryType: null,
       inquiryQuestions: [],
       message: null,
     }
@@ -32,7 +31,6 @@ describe("selectInquiryQuestion", () => {
 
     expect(r).toEqual({
       shippingLocation: null,
-      inquiryType: null,
       inquiryQuestions: [{ questionID: "condition_and_provenance", details: null }],
       message: null,
     })
@@ -41,7 +39,6 @@ describe("selectInquiryQuestion", () => {
   it("when a question is deselected it gets removed from the inquiryQuestions array", () => {
     inquiryState = {
       shippingLocation: null,
-      inquiryType: "Inquire to purchase",
       inquiryQuestions: [
         {
           questionID: "shipping_quote",
@@ -68,7 +65,6 @@ describe("selectInquiryQuestion", () => {
 
     expect(r).toEqual({
       shippingLocation: null,
-      inquiryType: "Inquire to purchase",
       inquiryQuestions: [{ questionID: "shipping_quote", details: null }],
       message: null,
     })
