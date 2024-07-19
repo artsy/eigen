@@ -14,7 +14,6 @@ const mockDispatch = jest.fn()
 
 const initialState = {
   shippingLocation: null,
-  inquiryType: null,
   message: null,
   inquiryQuestions: [],
 }

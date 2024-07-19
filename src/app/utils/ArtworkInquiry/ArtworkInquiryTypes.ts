@@ -10,7 +10,6 @@ export interface ArtworkInquiryContextProps {
 }
 
 export interface ArtworkInquiryContextState {
-  readonly inquiryType: InquiryTypes | null
   readonly shippingLocation: LocationWithDetails | null
   readonly inquiryQuestions: InquiryQuestionInput[]
   readonly message: string | null
