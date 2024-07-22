@@ -10,7 +10,7 @@ import {
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
-import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { navigate } from "app/system/navigation/navigate"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
@@ -28,7 +28,7 @@ export const SubmitArtworkSelectArtist = () => {
 
   const navigation = useNavigation<NavigationProp<SubmitArtworkStackNavigation, "SelectArtist">>()
 
-  const formik = useFormikContext<ArtworkDetailsFormModel>()
+  const formik = useFormikContext<SubmissionModel>()
 
   const handleResultPress = async (result: AutosuggestResult) => {
     setIsLoading(true)

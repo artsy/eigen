@@ -5,8 +5,8 @@ import {
   SubmitArtworkFormStoreProvider,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import {
-  ArtworkDetailsFormModel,
-  artworkDetailsEmptyInitialValues,
+  SubmissionModel,
+  submissionModelInitialValues,
   getCurrentValidationSchema,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -14,10 +14,10 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { FormikProvider, useFormik } from "formik"
 
 const FormikWrapper: React.FC<{
-  injectedProps?: Partial<ArtworkDetailsFormModel>
+  injectedProps?: Partial<SubmissionModel>
 }> = ({ children, injectedProps }) => {
   const initialValues = {
-    ...artworkDetailsEmptyInitialValues,
+    ...submissionModelInitialValues,
     ...injectedProps,
   } as any
 
@@ -28,7 +28,7 @@ const FormikWrapper: React.FC<{
   }
   const validationSchema = getCurrentValidationSchema(currentStep)
 
-  const formik = useFormik<ArtworkDetailsFormModel>({
+  const formik = useFormik<SubmissionModel>({
     enableReinitialize: true,
     initialValues: initialValues,
     onSubmit: handleSubmit,
@@ -46,7 +46,7 @@ export const renderWithSubmitArtworkWrapper = ({
 }: {
   component: React.ReactElement
   props?: Partial<SubmitArtworkFormStoreModelState>
-  injectedFormikProps?: Partial<ArtworkDetailsFormModel>
+  injectedFormikProps?: Partial<SubmissionModel>
   includeBottomNavigation?: boolean
 }) => {
   return renderWithWrappers(
@@ -66,7 +66,7 @@ export const setupWithSubmitArtworkTestWrappers = ({
 }: {
   Component: React.ReactElement
   props?: Partial<SubmitArtworkFormStoreModelState>
-  injectedFormikProps?: Partial<ArtworkDetailsFormModel>
+  injectedFormikProps?: Partial<SubmissionModel>
 }) => {
   return setupTestWrapper({
     Component: () => (

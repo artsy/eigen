@@ -1,6 +1,6 @@
 import { ConsignmentAttributionClass } from "__generated__/createConsignSubmissionMutation.graphql"
 import { FetchArtworkInformationResult } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/fetchArtworkInformation"
-import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { acceptableCategoriesForSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/acceptableCategoriesForSubmission"
 import { getAttributionClassValueByName } from "app/utils/artworkRarityClassifications"
 import { compact } from "lodash"
@@ -36,7 +36,7 @@ export const getInitialSubmissionFormValuesFromArtwork = (
   // Although ideally we would set the type as a partial here,
   // that will make us quickly forget to update the type when we add new fields/screens
   // This is a tradeoff between type safety and ease of development
-  const formValues: ArtworkDetailsFormModel = {
+  const formValues: SubmissionModel = {
     submissionId: null,
     artist: artwork.artist?.displayLabel || "",
     artistId: artwork.artist?.internalID || "",
@@ -92,6 +92,15 @@ export const getInitialSubmissionFormValuesFromArtwork = (
     userName: "",
     userEmail: "",
     userPhone: "",
+
+    artwork: {
+      internalID: artwork.internalID,
+      isFramed: artwork.isFramed,
+      framedMetric: artwork.framedMetric,
+      framedWidth: artwork.framedWidth,
+      framedHeight: artwork.framedHeight,
+      framedDepth: artwork.framedDepth,
+    },
   }
 
   return formValues

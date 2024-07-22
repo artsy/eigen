@@ -2,25 +2,21 @@ import { OwnerType } from "@artsy/cohesion"
 import { Box, Flex, Input, RadioButton, Spacer, Text } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { useToast } from "app/Components/Toast/toastHook"
+import { myCollectionUpdateArtwork } from "app/Scenes/MyCollection/mutations/myCollectionUpdateArtwork"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { useNavigationListeners } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useNavigationListeners"
-import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { useFormikContext } from "formik"
-import { useRef, useState } from "react"
+import { useRef } from "react"
 import { LayoutAnimation, ScrollView } from "react-native"
 
 export const SubmitArtworkFrameInformation = () => {
-  const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
+  const { values, setFieldValue, handleChange } = useFormikContext<SubmissionModel>()
 
   const { show: showToast } = useToast()
-
-  const [isFramed, setIsFramed] = useState<Boolean | null>(null)
-  const [height, setHeight] = useState<string | undefined>(undefined)
-  const [width, setWidth] = useState<string | undefined>(undefined)
-  const [depth, setDepth] = useState<string | undefined>(undefined)
 
   const widthRef = useRef<Input>(null)
   const depthRef = useRef<Input>(null)
@@ -36,7 +32,21 @@ export const SubmitArtworkFrameInformation = () => {
       try {
         setIsLoading(true)
 
+        if (!values.artwork.internalID) {
+          throw new Error("Artwork ID is required")
+        }
+
+        const newValues = {
+          artworkId: values.artwork.internalID,
+          framedMetric: values.artwork.isFramed ? values.artwork.framedMetric : null,
+          framedWidth: values.artwork.isFramed ? values.artwork.framedWidth : null,
+          framedHeight: values.artwork.isFramed ? values.artwork.framedHeight : null,
+          framedDepth: values.artwork.isFramed ? values.artwork.framedDepth : null,
+          isFramed: values.artwork.isFramed,
+        }
+
         // Make API call to update submission
+        await myCollectionUpdateArtwork(newValues)
 
         navigation.navigate("AdditionalDocuments")
         setCurrentStep("AdditionalDocuments")
@@ -71,34 +81,38 @@ export const SubmitArtworkFrameInformation = () => {
               <RadioButton
                 mr={4}
                 text="Yes"
-                selected={isFramed === true}
+                selected={values.artwork.isFramed === true}
                 onPress={() => {
                   LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-                  setIsFramed(true)
+                  setFieldValue("artwork.isFramed", true)
                 }}
               />
               <RadioButton
                 text="No"
-                selected={isFramed === false}
+                selected={values.artwork.isFramed === false}
                 onPress={() => {
                   LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-                  setIsFramed(false)
+                  setFieldValue("artwork.isFramed", false)
+                  setFieldValue("artwork.framedMetric", null)
+                  setFieldValue("artwork.framedWidth", null)
+                  setFieldValue("artwork.framedHeight", null)
+                  setFieldValue("artwork.framedDepth", null)
                 }}
               />
             </Flex>
 
-            {isFramed === true && (
+            {values.artwork.isFramed === true && (
               <Flex>
                 <Flex flexDirection="row" justifyContent="space-between">
                   <Box flex={1}>
                     <Input
                       title="Height"
                       keyboardType="decimal-pad"
-                      testID="Submission_HeightInput"
-                      value={height}
-                      onChangeText={setHeight}
-                      fixedRightPlaceholder={values.dimensionsMetric}
-                      accessibilityLabel="Height"
+                      testID="Frame_Height_Input"
+                      value={values.artwork.framedHeight || ""}
+                      onChangeText={handleChange("artwork.framedHeight")}
+                      fixedRightPlaceholder={values.artwork.framedMetric || ""}
+                      accessibilityLabel="Frame Height"
                       onSubmitEditing={() => {
                         widthRef.current?.focus()
                       }}
@@ -110,11 +124,11 @@ export const SubmitArtworkFrameInformation = () => {
                     <Input
                       title="Width"
                       keyboardType="decimal-pad"
-                      testID="Submission_WidthInput"
-                      value={width}
-                      onChangeText={setWidth}
-                      fixedRightPlaceholder={values.dimensionsMetric}
-                      accessibilityLabel="Width"
+                      testID="Frame_WidthI_nput"
+                      value={values.artwork.framedWidth || ""}
+                      onChangeText={handleChange("artwork.framedWidth")}
+                      fixedRightPlaceholder={values.artwork.framedMetric || ""}
+                      accessibilityLabel="Frame Width"
                       ref={widthRef}
                       onSubmitEditing={() => {
                         depthRef.current?.focus()
@@ -127,11 +141,11 @@ export const SubmitArtworkFrameInformation = () => {
                   <Input
                     title="Depth"
                     keyboardType="decimal-pad"
-                    testID="Submission_DepthInput"
-                    value={depth}
-                    onChangeText={setDepth}
-                    fixedRightPlaceholder={values.dimensionsMetric}
-                    accessibilityLabel="Depth"
+                    testID="Frame_DepthI_nput"
+                    value={values.artwork.framedDepth || ""}
+                    onChangeText={handleChange("artwork.framedDepth")}
+                    fixedRightPlaceholder={values.artwork.framedMetric || ""}
+                    accessibilityLabel="Frame Depth"
                     ref={depthRef}
                   />
                 </Box>
@@ -142,16 +156,16 @@ export const SubmitArtworkFrameInformation = () => {
                   <RadioButton
                     mr={2}
                     text="in"
-                    selected={values.dimensionsMetric === "in"}
+                    selected={values.artwork.framedMetric === "in"}
                     onPress={() => {
-                      setFieldValue("dimensionsMetric", "in")
+                      setFieldValue("artwork.framedMetric", "in")
                     }}
                   />
                   <RadioButton
                     text="cm"
-                    selected={values.dimensionsMetric === "cm"}
+                    selected={values.artwork.framedMetric === "cm"}
                     onPress={() => {
-                      setFieldValue("dimensionsMetric", "in")
+                      setFieldValue("artwork.framedMetric", "cm")
                     }}
                   />
                 </Flex>

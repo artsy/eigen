@@ -6,7 +6,7 @@ import { useToast } from "app/Components/Toast/toastHook"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { useNavigationListeners } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useNavigationListeners"
-import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -27,7 +27,7 @@ export const PROVENANCE_LIST = [
 }))
 
 export const SubmitArtworkPurchaseHistory = () => {
-  const { setFieldValue, values } = useFormikContext<ArtworkDetailsFormModel>()
+  const { setFieldValue, values } = useFormikContext<SubmissionModel>()
 
   const [isSigned, setIsSigned] = useState(values.signature)
 

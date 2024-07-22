@@ -1,7 +1,8 @@
 import { BackButton, Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { myCollectionUpdateArtwork } from "app/Scenes/MyCollection/mutations/myCollectionUpdateArtwork"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { SubmitArtworkProgressBar } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkProgressBar"
-import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubmitArtworkTracking"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -18,7 +19,7 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
   const currentStep = SubmitArtworkFormStore.useStoreState((state) => state.currentStep)
   const hasCompletedForm = currentStep === "CompleteYourSubmission"
 
-  const { values } = useFormikContext<ArtworkDetailsFormModel>()
+  const { values } = useFormikContext<SubmissionModel>()
 
   const handleSaveAndExitPress = async () => {
     Keyboard.dismiss()
@@ -35,6 +36,20 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
       trackTappedSubmissionSaveExit(values.submissionId, currentStep)
 
       const submissionId = await createOrUpdateSubmission(values, values.submissionId)
+
+      // If an submission has a my collection artwork, we need to update its values
+      if (values.artwork.internalID) {
+        const newValues = {
+          artworkId: values.artwork.internalID,
+          framedMetric: values.artwork.isFramed ? values.artwork.framedMetric : null,
+          framedWidth: values.artwork.isFramed ? values.artwork.framedWidth : null,
+          framedHeight: values.artwork.isFramed ? values.artwork.framedHeight : null,
+          framedDepth: values.artwork.isFramed ? values.artwork.framedDepth : null,
+          isFramed: values.artwork.isFramed,
+        }
+        // Make API call to update my collection artwork
+        await myCollectionUpdateArtwork(newValues)
+      }
 
       if (submissionId) {
         GlobalStore.actions.artworkSubmission.setDraft({

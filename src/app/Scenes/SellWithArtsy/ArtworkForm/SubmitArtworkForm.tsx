@@ -29,8 +29,8 @@ import {
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
 import { getInitialNavigationState } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/getInitialNavigationState"
 import {
-  ArtworkDetailsFormModel,
-  artworkDetailsEmptyInitialValues,
+  SubmissionModel,
+  submissionModelInitialValues,
   getCurrentValidationSchema,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
@@ -64,7 +64,7 @@ export type SubmitArtworkStackNavigation = {
 }
 
 export interface SubmitArtworkProps {
-  initialValues: Partial<ArtworkDetailsFormModel>
+  initialValues: Partial<SubmissionModel>
   initialStep: SubmitArtworkScreen
   navigationState?: string
   submissionID?: string
@@ -98,15 +98,15 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
   const currentStep = SubmitArtworkFormStore.useStoreState((state) => state.currentStep)
 
   const initialValues = {
-    ...artworkDetailsEmptyInitialValues,
+    ...submissionModelInitialValues,
     ...injectedValuesProp,
   }
 
-  const handleSubmit = (values: ArtworkDetailsFormModel) => {
+  const handleSubmit = (values: SubmissionModel) => {
     createOrUpdateSubmission(values, "")
   }
 
-  const formik = useFormik<ArtworkDetailsFormModel>({
+  const formik = useFormik<SubmissionModel>({
     enableReinitialize: true,
     initialValues,
     onSubmit: handleSubmit,

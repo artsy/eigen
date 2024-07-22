@@ -8,7 +8,7 @@ import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkFo
 import { updateMyCollectionArtwork } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/updateMyCollectionArtwork"
 import { useNavigationListeners } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useNavigationListeners"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
-import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { GlobalStore } from "app/store/GlobalStore"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
@@ -18,7 +18,7 @@ import { useFormikContext } from "formik"
 import { ScrollView } from "react-native"
 
 export const SubmitArtworkAddPhoneNumber = () => {
-  const { handleChange, values } = useFormikContext<ArtworkDetailsFormModel>()
+  const { handleChange, values } = useFormikContext<SubmissionModel>()
 
   const { show: showToast } = useToast()
 
