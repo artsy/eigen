@@ -45,7 +45,7 @@ export const SubmitArtworkFrameInformation = () => {
           isFramed: values.artwork.isFramed,
         }
 
-        // Make API call to update submission
+        // Make API call to update related My Collection artwork
         await myCollectionUpdateArtwork(newValues)
 
         navigation.navigate("AdditionalDocuments")
