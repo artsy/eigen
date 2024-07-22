@@ -76,7 +76,7 @@ export const homeViewScreenQuery = graphql`
         edges {
           cursor
           node {
-            ... on GenericSection {
+            ... on GenericHomeViewSection {
               key
               title
               component {
