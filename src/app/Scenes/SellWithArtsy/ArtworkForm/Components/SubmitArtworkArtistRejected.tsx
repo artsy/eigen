@@ -2,7 +2,7 @@ import { OwnerType } from "@artsy/cohesion"
 import { BulletedItem, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { SubmitArtworkArtistRejectedQuery } from "__generated__/SubmitArtworkArtistRejectedQuery.graphql"
 import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
-import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubmitArtworkTracking"
 import { InfoModal } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/InfoModal/InfoModal"
 import { navigate } from "app/system/navigation/navigate"
@@ -15,7 +15,7 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 
 export const SubmitArtworkArtistRejected: React.FC<{}> = () => {
   const { trackTappedContactAdvisor } = useSubmitArtworkTracking()
-  const { values } = useFormikContext<ArtworkDetailsFormModel>()
+  const { values } = useFormikContext<SubmissionModel>()
   const [isEligibilityModalVisible, setIsEligibilityModalVisible] = useState(false)
 
   const meData = useLazyLoadQuery<SubmitArtworkArtistRejectedQuery>(

@@ -3,7 +3,7 @@ import {
   CreateSubmissionMutationInput,
 } from "__generated__/createConsignSubmissionMutation.graphql"
 import { UpdateSubmissionMutationInput } from "__generated__/updateConsignSubmissionMutation.graphql"
-import { ArtworkDetailsFormModel as NewArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import {
   ArtworkDetailsFormModel,
   ContactInformationFormModel as SWASubmissionContactInformationFormModel,
@@ -20,7 +20,7 @@ const DEFAULT_SOURCE = "APP_INBOUND"
 
 export const createOrUpdateSubmission = async (
   values:
-    | (Partial<NewArtworkDetailsFormModel> & Partial<SWASubmissionContactInformationFormModel>)
+    | (Partial<SubmissionModel> & Partial<SWASubmissionContactInformationFormModel>)
     | (ArtworkDetailsFormModel & SWASubmissionContactInformationFormModel),
   submissionId: string | null
 ) => {

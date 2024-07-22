@@ -3,7 +3,7 @@ import {
   SubmitArtworkFormEditQuery$data,
 } from "__generated__/SubmitArtworkFormEditQuery.graphql"
 import { COUNTRY_SELECT_OPTIONS } from "app/Components/CountrySelect"
-import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { acceptableCategoriesForSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/acceptableCategoriesForSubmission"
 import { extractNodes } from "app/utils/extractNodes"
 import { compact } from "lodash"
@@ -11,7 +11,7 @@ import { compact } from "lodash"
 export const getInitialSubmissionValues = (
   values: NonNullable<SubmitArtworkFormEditQuery$data["submission"]>,
   me: SubmitArtworkFormEditQuery$data["me"]
-): ArtworkDetailsFormModel => {
+): SubmissionModel => {
   const photos =
     values.assets?.map((asset) => {
       const path = (Object.values(asset?.imageUrls || {})?.[0] as string) ?? ""
@@ -27,6 +27,9 @@ export const getInitialSubmissionValues = (
 
   const addresses = extractNodes(me?.addressConnection)
   const defaultAddress = addresses.find((address) => address.isDefault) ?? addresses?.[0]
+
+  console.log("====")
+  console.log(values.myCollectionArtwork)
 
   return {
     artist: values.artist?.name ?? "",
@@ -67,5 +70,13 @@ export const getInitialSubmissionValues = (
     state: values.state ?? null,
     myCollectionArtworkID: values.sourceArtworkID ?? null,
     photos: compact(photos),
+    artwork: {
+      internalID: values.myCollectionArtwork?.internalID ?? null,
+      isFramed: values.myCollectionArtwork?.isFramed ?? null,
+      framedMetric: values.myCollectionArtwork?.framedMetric ?? null,
+      framedWidth: values.myCollectionArtwork?.framedWidth ?? null,
+      framedHeight: values.myCollectionArtwork?.framedHeight ?? null,
+      framedDepth: values.myCollectionArtwork?.framedDepth ?? null,
+    },
   }
 }

@@ -6,7 +6,7 @@ import {
   SUBMIT_ARTWORK_DRAFT_SUBMISSION_STEPS,
   SubmitArtworkScreen,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
-import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { useFormikContext } from "formik"
 import { useCallback, useMemo } from "react"
 
@@ -28,7 +28,7 @@ const ICON_SIZE = 22
 
 export const SubmitArtworkProgressBar: React.FC = ({}) => {
   const currentStep = SubmitArtworkFormStore.useStoreState((state) => state.currentStep)
-  const { values } = useFormikContext<ArtworkDetailsFormModel>()
+  const { values } = useFormikContext<SubmissionModel>()
 
   const hasStartedFlowFromMyCollection = useMemo(() => {
     const routes = (

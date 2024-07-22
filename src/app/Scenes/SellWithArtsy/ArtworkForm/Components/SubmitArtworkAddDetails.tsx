@@ -8,7 +8,7 @@ import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Com
 import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { useNavigationListeners } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useNavigationListeners"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
-import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import {
   AcceptableCategoryValue,
   acceptableCategoriesForSubmission,
@@ -21,7 +21,7 @@ import { useRef } from "react"
 import { ScrollView } from "react-native"
 
 export const SubmitArtworkAddDetails = () => {
-  const { handleChange, setFieldValue, values } = useFormikContext<ArtworkDetailsFormModel>()
+  const { handleChange, setFieldValue, values } = useFormikContext<SubmissionModel>()
   const { currentStep } = useSubmissionContext()
 
   const { show: showToast } = useToast()

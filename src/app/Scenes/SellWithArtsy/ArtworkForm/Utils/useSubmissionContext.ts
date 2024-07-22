@@ -11,7 +11,7 @@ import {
   ARTWORK_FORM_TIER_2_FINAL_STEP,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
 import {
-  ArtworkDetailsFormModel,
+  SubmissionModel,
   getCurrentValidationSchema,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { goBack } from "app/system/navigation/navigate"
@@ -30,7 +30,7 @@ export const useSubmissionContext = () => {
   const { currentStep, isLoading } = SubmitArtworkFormStore.useStoreState((state) => state)
   const navigation = useNavigation<NavigationProp<SubmitArtworkStackNavigation>>()
 
-  const { values } = useFormikContext<ArtworkDetailsFormModel>()
+  const { values } = useFormikContext<SubmissionModel>()
 
   const validationSchema = useMemo(() => {
     return getCurrentValidationSchema(currentStep)

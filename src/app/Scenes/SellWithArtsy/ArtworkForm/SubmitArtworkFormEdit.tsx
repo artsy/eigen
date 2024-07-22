@@ -53,6 +53,14 @@ const submitArtworkFormEditQuery = graphql`
       title
       signature
       medium
+      myCollectionArtwork {
+        internalID
+        isFramed
+        framedMetric
+        framedWidth
+        framedHeight
+        framedDepth
+      }
       attributionClass
       editionNumber
       editionSize

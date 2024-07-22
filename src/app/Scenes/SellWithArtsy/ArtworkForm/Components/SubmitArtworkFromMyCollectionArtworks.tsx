@@ -10,7 +10,7 @@ import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Com
 import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { fetchArtworkInformation } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/fetchArtworkInformation"
 import { getInitialSubmissionFormValuesFromArtwork } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/getInitialSubmissionValuesFromArtwork"
-import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { dismissModal, switchTab } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useRefreshControl } from "app/utils/refreshHelpers"
@@ -42,7 +42,7 @@ export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
 
   const RefreshControl = useRefreshControl(refetch)
 
-  const { setValues, values } = useFormikContext<ArtworkDetailsFormModel>()
+  const { setValues, values } = useFormikContext<SubmissionModel>()
 
   const handlePress = async (artworkID: string) => {
     try {
