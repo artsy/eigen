@@ -155,13 +155,13 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
         if (
           profilePromptIsEnabled &&
           userHasAnEmptyCollection() &&
-          userHasNotBeenPromptedIn30Days()
+          userHasNotBeenPromptedInThirtyDays()
         ) {
           dispatch({ type: "setCollectionPromptVisible", payload: true })
         } else if (
           profilePromptIsEnabled &&
           userHasAnIncompleteProfile() &&
-          userHasNotBeenPromptedIn30Days()
+          userHasNotBeenPromptedInThirtyDays()
         ) {
           dispatch({ type: "setProfilePromptVisible", payload: true })
         } else {
@@ -183,17 +183,21 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
   }
 
   const userHasAnIncompleteProfile = () => {
-    return !!meData.profession && !!meData.location?.city
+    return !meData.profession || !meData.location?.city
   }
 
-  const userHasNotBeenPromptedIn30Days = () => {
+  const userHasNotBeenPromptedInThirtyDays = () => {
     const lastTimeUserWasPrompted = meData.collectorProfile?.lastUpdatePromptAt
 
     if (lastTimeUserWasPrompted == null) {
       return true
     }
 
-    return new Date(lastTimeUserWasPrompted).getTime() > Date.now() - 30 * 24 * 60 * 60
+    const millisecondsSinceLastTimeUserWasPrompted =
+      new Date().getTime() - new Date(lastTimeUserWasPrompted).getTime()
+    const millisecondsInThirtyDays = 30 * 24 * 60 * 60 * 1000
+
+    return millisecondsSinceLastTimeUserWasPrompted > millisecondsInThirtyDays
   }
 
   return (

@@ -8,6 +8,7 @@ export const useUpdateUserProfileFields = () => {
         me {
           ...MyProfileHeader_me
           ...MyProfileEditForm_me
+          ...InquiryModal_me
         }
       }
     }

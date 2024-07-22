@@ -52,9 +52,27 @@ export const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
    * 3. The primary location field title is behind the outline
    *   - This does not happen in the settings screen (on the feature branch)
    */
+  const [commit] = useUpdateUserProfileFields()
+
+  const handleDismiss = () => {
+    commit({
+      variables: {
+        input: {
+          promptedForUpdate: true,
+        },
+      },
+      onCompleted: () => {
+        onClose()
+      },
+      onError: () => {
+        // TODO: display an error message to user
+        console.log("Error updating user profile")
+      },
+    })
+  }
 
   return (
-    <AutomountedBottomSheetModal visible={visible} onDismiss={onClose} enableDynamicSizing>
+    <AutomountedBottomSheetModal visible={visible} onDismiss={handleDismiss} enableDynamicSizing>
       <BottomSheetScrollView keyboardShouldPersistTaps="always">
         <MyProfileEditModalWithSuspense onClose={onClose} message={message} />
       </BottomSheetScrollView>
@@ -94,8 +112,7 @@ const MyProfileEditModalContent: React.FC<MyProfileEditModalContentProps> = ({
   const [loading, setLoading] = useState<boolean>(false)
   const { trackEvent } = useTracking()
 
-  // TODO: what am I suposed to do with inProgress?
-  const [commit, _inProgress] = useUpdateUserProfileFields()
+  const [commit] = useUpdateUserProfileFields()
 
   const formikBag = useFormik<UserProfileFormikSchema>({
     enableReinitialize: true,
@@ -125,6 +142,7 @@ const MyProfileEditModalContent: React.FC<MyProfileEditModalContentProps> = ({
             },
             profession: values.profession,
             otherRelevantPositions: values.otherRelevantPositions,
+            promptedForUpdate: true,
           },
         },
         onCompleted: () => {
