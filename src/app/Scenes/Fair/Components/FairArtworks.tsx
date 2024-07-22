@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex, Spinner, Tabs, useSpace } from "@artsy/palette-mobile"
+import { Flex, Spinner, Tabs, Text, useSpace } from "@artsy/palette-mobile"
 import { MasonryFlashList } from "@shopify/flash-list"
 import { FairArtworks_fair$key } from "__generated__/FairArtworks_fair.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
@@ -21,6 +21,7 @@ import {
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
 } from "app/utils/masonryHelpers"
+import { pluralize } from "app/utils/pluralize"
 import { Schema } from "app/utils/track"
 import React, { useEffect, useState } from "react"
 import { graphql, usePaginationFragment } from "react-relay"
@@ -112,6 +113,7 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
   }
 
   const filteredArtworks = extractNodes(data.fairArtworks)
+  const artworksCount = data.fairArtworks?.counts?.total ?? 0
 
   return (
     <>
@@ -130,10 +132,23 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
             />
           </Flex>
         }
+        // need to pass zIndex: 1 here in order for the SubTabBar to
+        // be visible above list content
+        ListHeaderComponentStyle={{ zIndex: 1 }}
         ListHeaderComponent={
-          <Tabs.SubTabBar>
-            <HeaderArtworksFilterWithTotalArtworks onPress={handleFilterToggle} />
-          </Tabs.SubTabBar>
+          <>
+            <Tabs.SubTabBar>
+              <HeaderArtworksFilterWithTotalArtworks
+                hideArtworksCount={true}
+                onPress={handleFilterToggle}
+              />
+            </Tabs.SubTabBar>
+
+            <Text variant="xs" weight="medium">{`${artworksCount} ${pluralize(
+              "Artwork",
+              artworksCount
+            )}:`}</Text>
+          </>
         }
         ListFooterComponent={
           !!isLoadingNext ? (

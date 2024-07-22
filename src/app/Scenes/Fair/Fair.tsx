@@ -7,10 +7,13 @@ import {
   useScreenDimensions,
   SkeletonText,
   useSpace,
+  ShareIcon,
 } from "@artsy/palette-mobile"
 import { FairQuery } from "__generated__/FairQuery.graphql"
 import { Fair_fair$data, Fair_fair$key } from "__generated__/Fair_fair.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { getShareURL } from "app/Components/ShareSheet/helpers"
+import { useToast } from "app/Components/Toast/toastHook"
 import { FairArtworks } from "app/Scenes/Fair/Components/FairArtworks"
 import { FairExhibitorsFragmentContainer } from "app/Scenes/Fair/Components/FairExhibitors"
 import { FairOverview } from "app/Scenes/Fair/FairOverview"
@@ -18,6 +21,8 @@ import { goBack } from "app/system/navigation/navigate"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { useClientQuery } from "app/utils/useClientQuery"
 import React from "react"
+import { TouchableOpacity } from "react-native"
+import RNShare from "react-native-share"
 import { createFragmentContainer, graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { FairHeader } from "./Components/FairHeader"
@@ -29,9 +34,28 @@ interface FairProps {
 export const Fair: React.FC<FairProps> = ({ fair }) => {
   const data = useFragment(fragment, fair)
   const tracking = useTracking()
+  const toast = useToast()
 
   if (!data) {
     return null
+  }
+
+  const handleSharePress = async () => {
+    try {
+      const url = getShareURL(`/fair/${data.slug}?utm_content=fair-share`)
+      const message = `View ${data.name} on Artsy`
+
+      await RNShare.open({
+        title: data.name || "",
+        message: message + "\n" + url,
+        failOnCancel: true,
+      })
+      toast.show("Copied to Clipboard", "middle", { Icon: ShareIcon })
+    } catch (error) {
+      if (typeof error === "string" && error.includes("User did not share")) {
+        console.error("Collection.tsx", error)
+      }
+    }
   }
 
   const handleTabChange = (tabName: string) => {
@@ -44,6 +68,8 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
         break
     }
   }
+
+  const hasExhibitors = !!data._exhibitors?.totalCount
 
   return (
     <ProvideScreenTracking
@@ -60,7 +86,18 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
         showLargeHeaderText={false}
         BelowTitleHeaderComponent={() => <FairHeader fair={data} />}
         onTabChange={({ tabName }) => handleTabChange(tabName)}
-        headerProps={{ onBack: goBack }}
+        headerProps={{
+          onBack: goBack,
+          rightElements: (
+            <TouchableOpacity
+              onPress={() => {
+                handleSharePress()
+              }}
+            >
+              <ShareIcon width={24} height={24} />
+            </TouchableOpacity>
+          ),
+        }}
       >
         <Tabs.Tab name="Overview" label="Overview">
           <Tabs.Lazy>
@@ -68,11 +105,13 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
           </Tabs.Lazy>
         </Tabs.Tab>
 
-        <Tabs.Tab name="Exhibitors" label="Exhibitors">
-          <Tabs.Lazy>
-            <FairExhibitorsFragmentContainer fair={data} />
-          </Tabs.Lazy>
-        </Tabs.Tab>
+        {!!hasExhibitors ? (
+          <Tabs.Tab name="Exhibitors" label="Exhibitors">
+            <Tabs.Lazy>
+              <FairExhibitorsFragmentContainer fair={data} />
+            </Tabs.Lazy>
+          </Tabs.Tab>
+        ) : null}
 
         <Tabs.Tab name="Artworks" label="Artworks">
           <Tabs.Lazy>
@@ -96,6 +135,10 @@ const fragment = graphql`
     internalID
     slug
     name
+    # Used to figure out if we should render the exhibitors tab
+    _exhibitors: showsConnection(first: 1, sort: FEATURED_ASC) {
+      totalCount
+    }
   }
 `
 
