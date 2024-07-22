@@ -6,6 +6,7 @@ import { CompleteProfilePrompt } from "app/Scenes/Artwork/Components/CommercialB
 import { InquiryModal } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryModal"
 import { InquirySuccessNotification } from "app/Scenes/Artwork/Components/CommercialButtons/InquirySuccessNotification"
 import { ArtworkInquiryStateProvider } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import React, { useState } from "react"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -20,8 +21,11 @@ export const ContactGalleryButton: React.FC<ContactGalleryButtonProps> = ({
   me,
   ...rest
 }) => {
+  const profilePromptIsEnabled = useFeatureFlag("AREnableCollectorProfilePrompts")
+
   const artworkData = useFragment(artworkFragment, artwork)
   const meData = useFragment(meFragment, me)
+
   const [modalVisibility, setModalVisibility] = useState(false)
   const { trackEvent } = useTracking()
 
@@ -44,7 +48,7 @@ export const ContactGalleryButton: React.FC<ContactGalleryButtonProps> = ({
         modalIsVisible={modalVisibility}
         toggleVisibility={() => setModalVisibility(!modalVisibility)}
       />
-      <CompleteProfilePrompt artwork={artworkData} />
+      {!!profilePromptIsEnabled && <CompleteProfilePrompt artwork={artworkData} />}
     </ArtworkInquiryStateProvider>
   )
 }

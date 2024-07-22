@@ -57,7 +57,6 @@ export const reducer = (
         collectionPromptVisible: action.payload,
       }
     case "setProfilePromptVisible":
-      console.log("🦃", action.payload)
       return {
         ...inquiryState,
         profilePromptVisible: action.payload,

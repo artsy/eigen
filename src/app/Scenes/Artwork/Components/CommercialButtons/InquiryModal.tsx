@@ -11,6 +11,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryQuestionIDs } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { LocationWithDetails } from "app/utils/googleMaps"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react"
 import { ScrollView } from "react-native"
@@ -46,6 +47,8 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
   const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
   const [mutationError, setMutationError] = useState(false)
   const [loading, setLoading] = useState(false)
+
+  const profilePromptIsEnabled = useFeatureFlag("AREnableCollectorProfilePrompts")
 
   const selectShippingLocation = (locationDetails: LocationWithDetails) =>
     dispatch({ type: "selectShippingLocation", payload: locationDetails })
@@ -149,9 +152,17 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
           owner_slug: artworkData.slug,
         })
 
-        if (userHasAnEmptyCollection() && userHasNotBeenPromptedIn30Days()) {
+        if (
+          profilePromptIsEnabled &&
+          userHasAnEmptyCollection() &&
+          userHasNotBeenPromptedIn30Days()
+        ) {
           dispatch({ type: "setCollectionPromptVisible", payload: true })
-        } else if (userHasAnIncompleteProfile() && userHasNotBeenPromptedIn30Days()) {
+        } else if (
+          profilePromptIsEnabled &&
+          userHasAnIncompleteProfile() &&
+          userHasNotBeenPromptedIn30Days()
+        ) {
           dispatch({ type: "setProfilePromptVisible", payload: true })
         } else {
           setTimeout(() => {

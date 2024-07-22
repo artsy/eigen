@@ -43,8 +43,6 @@ export const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
   onClose,
   visible,
 }) => {
-  console.log("🐢", { visible })
-
   /**
    * TODO: On Android
    *
@@ -130,7 +128,6 @@ const MyProfileEditModalContent: React.FC<MyProfileEditModalContentProps> = ({
           },
         },
         onCompleted: () => {
-          console.log("🐇")
           trackEvent(tracks.editedUserProfile())
           setLoading(false)
           onClose()
