@@ -2288,9 +2288,9 @@ enum ArtistSorts {
 }
 
 # An artists rail section in the home view
-type ArtistsRailSection implements GenericSection & Node {
+type ArtistsRailSection implements GenericHomeViewSection & Node {
   # The component that is prescribed for this section
-  component: Component
+  component: HomeViewComponent
 
   # A globally unique ID.
   id: ID!
@@ -3151,9 +3151,9 @@ enum ArtworkSorts {
 }
 
 # An artwork rail section in the home view
-type ArtworksRailSection implements GenericSection & Node {
+type ArtworksRailSection implements GenericHomeViewSection & Node {
   # The component that is prescribed for this section
-  component: Component
+  component: HomeViewComponent
 
   # A globally unique ID.
   id: ID!
@@ -6471,21 +6471,6 @@ type CommerceUpdateImpulseConversationIdPayload {
 
 type CommerceUser {
   id: String!
-}
-
-# A component specification
-type Component {
-  # Which component type to render
-  type: ComponentType
-}
-
-# Known component types for use in home view
-enum ComponentType {
-  # A standard rail of artists
-  ARTISTS_RAIL
-
-  # A standard rail of artworks
-  ARTWORKS_RAIL
 }
 
 type ConditionReportRequest {
@@ -10982,9 +10967,9 @@ type GeneMeta {
 }
 
 # Abstract interface shared by every kind of home view section
-interface GenericSection {
+interface GenericHomeViewSection {
   # The component that is prescribed for this section
-  component: Component
+  component: HomeViewComponent
 
   # A globally unique ID.
   id: ID!
@@ -11350,14 +11335,49 @@ type HomePageSalesModule {
 
 # Experimental schema for new home view
 type HomeView {
-  # A list of sections on the home view
-  sections: [Section!]!
   sectionsConnection(
     after: String
     before: String
     first: Int
     last: Int
-  ): SectionConnection
+  ): HomeViewSectionConnection
+}
+
+# A component specification
+type HomeViewComponent {
+  # Which component type to render
+  type: HomeViewComponentType
+}
+
+# Known component types for use in home view
+enum HomeViewComponentType {
+  # A standard rail of artists
+  ARTISTS_RAIL
+
+  # A standard rail of artworks
+  ARTWORKS_RAIL
+}
+
+union HomeViewSection = ArtistsRailSection | ArtworksRailSection
+
+# A connection to a list of items.
+type HomeViewSectionConnection {
+  # A list of edges.
+  edges: [HomeViewSectionEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type HomeViewSectionEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: HomeViewSection
 }
 
 type IdentityVerification {
@@ -18531,28 +18551,6 @@ enum SecondFactorKind {
 
 # A second factor or errors
 union SecondFactorOrErrorsUnion = AppSecondFactor | Errors | SmsSecondFactor
-
-union Section = ArtistsRailSection | ArtworksRailSection
-
-# A connection to a list of items.
-type SectionConnection {
-  # A list of edges.
-  edges: [SectionEdge]
-  pageCursors: PageCursors!
-
-  # Information to aid in pagination.
-  pageInfo: PageInfo!
-  totalCount: Int
-}
-
-# An edge in a connection.
-type SectionEdge {
-  # A cursor for use in pagination
-  cursor: String!
-
-  # The item at the end of the edge
-  node: Section
-}
 
 # A piece that can be sold
 interface Sellable {
