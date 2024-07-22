@@ -476,7 +476,7 @@ export const modules = defineModules({
     hidesBottomTabs: true,
   }),
   Fair: reactModule(FairQueryRenderer, { fullBleed: true, hidesBackButton: true }),
-  FairMoreInfo: reactModule(FairMoreInfoQueryRenderer),
+  FairMoreInfo: reactModule(FairMoreInfoQueryRenderer, { fullBleed: true, hidesBackButton: true }),
   FairArticles: reactModule(FairArticlesQueryRenderer),
   FairAllFollowedArtists: reactModule(FairAllFollowedArtistsQueryRenderer),
   Favorites: reactModule(Favorites, {

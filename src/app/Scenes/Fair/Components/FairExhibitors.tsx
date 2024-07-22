@@ -46,6 +46,7 @@ const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
       renderItem={renderItem}
       keyExtractor={keyExtractor}
       onEndReached={loadMoreExhibitors}
+      nestedScrollEnabled
       ListFooterComponent={
         shouldDisplaySpinner ? (
           <Box p={2}>

@@ -13,8 +13,7 @@ import { defaultRules, renderMarkdown } from "app/utils/renderMarkdown"
 import { sendEmailWithMailTo } from "app/utils/sendEmail"
 import { Schema } from "app/utils/track"
 import React, { useState } from "react"
-import { Text } from "react-native"
-import { TouchableWithoutFeedback } from "react-native-gesture-handler"
+import { LayoutAnimation, Text, TouchableWithoutFeedback } from "react-native"
 import { useTracking } from "react-tracking"
 import { ResponsiveValue } from "styled-system"
 
@@ -123,6 +122,7 @@ export const ReadMore = React.memo(
       },
     }
 
+    // eslint-disable-next-line testing-library/render-result-naming-convention
     const root = renderMarkdown(content, rules)
     // Removes the last empty space in the markdown array
     if (Array.isArray(root)) {
@@ -141,6 +141,7 @@ export const ReadMore = React.memo(
         context_module: contextModule ? contextModule : null,
         flow: trackingFlow ? trackingFlow : null,
       })
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
       setIsExpanded(true)
     }
 
@@ -151,7 +152,11 @@ export const ReadMore = React.memo(
           <LinkText
             mt={0.5}
             mb={1}
-            onPress={() => setIsExpanded(false)}
+            onPress={() => {
+              LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+
+              setIsExpanded(false)
+            }}
             variant={linkTextVariant}
             color={color}
           >

@@ -16,7 +16,12 @@ export const NavigationalTabs: React.FC<TabsProps> = ({ onTabPress, activeTab, t
   const tabWidth = screenWidth / tabs.length
 
   return (
-    <TabBarContainer scrollEnabled activeTabIndex={activeTab} tabLayouts={tabLayouts}>
+    <TabBarContainer
+      // Horizontal scrolling interfers with the vertical scrolling in case there is only one tab
+      scrollEnabled={tabs.length > 1}
+      activeTabIndex={activeTab}
+      tabLayouts={tabLayouts}
+    >
       {tabs.map(({ label }, index) => {
         return (
           <Box minWidth={tabWidth} key={label + index}>
