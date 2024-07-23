@@ -1,20 +1,28 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Input, Spacer, Text } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { captureException } from "@sentry/react-native"
+import { myCollectionUpdateArtworkMutation } from "__generated__/myCollectionUpdateArtworkMutation.graphql"
+import { Select } from "app/Components/Select"
 import { useToast } from "app/Components/Toast/toastHook"
+import { myCollectionUpdateArtwork } from "app/Scenes/MyCollection/mutations/myCollectionUpdateArtwork"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { useNavigationListeners } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useNavigationListeners"
 import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { InfoModal } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/InfoModal/InfoModal"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { useFormikContext } from "formik"
+import { useState } from "react"
 import { ScrollView } from "react-native"
 
 export const SubmitArtworkCondition = () => {
-  const { values } = useFormikContext<SubmissionModel>()
+  const { values, handleChange, setFieldValue } = useFormikContext<SubmissionModel>()
 
   const { show: showToast } = useToast()
+
+  const [isModalVisible, setIsModalVisible] = useState(false)
 
   const setIsLoading = SubmitArtworkFormStore.useStoreActions((actions) => actions.setIsLoading)
   const setCurrentStep = SubmitArtworkFormStore.useStoreActions((actions) => actions.setCurrentStep)
@@ -26,7 +34,23 @@ export const SubmitArtworkCondition = () => {
       try {
         setIsLoading(true)
 
-        // Make API call to update submission
+        if (!values.artwork.internalID) {
+          captureException("Artwork ID is required")
+          showToast("Could not save your submission, please try again.", "bottom", {
+            backgroundColor: "red100",
+          })
+          return
+        }
+
+        // Make API call to update related My Collection artwork
+        const newValues: myCollectionUpdateArtworkMutation["variables"]["input"] = {
+          artworkId: values.artwork.internalID,
+          condition: values.artwork.condition,
+          conditionDescription: values.artwork.conditionDescription,
+        }
+
+        // Make API call to update related My Collection artwork
+        await myCollectionUpdateArtwork(newValues)
 
         navigation.navigate("CompleteYourSubmission")
         setCurrentStep("CompleteYourSubmission")
@@ -61,9 +85,83 @@ export const SubmitArtworkCondition = () => {
             </Text>
 
             <Spacer y={2} />
+
+            <Select
+              testID="ConditionSelect"
+              options={[
+                { label: "Excellent", value: "EXCELLENT" },
+                { label: "Very Good", value: "VERY_GOOD" },
+                { label: "Good", value: "GOOD" },
+                { label: "Fair", value: "FAIR" },
+              ]}
+              value={values.artwork.condition}
+              title="Add Condition"
+              onSelectValue={(value) => {
+                setFieldValue("artwork.condition", value)
+              }}
+              tooltipText="Condition Definitions"
+              onTooltipPress={() => setIsModalVisible(true)}
+            />
+
+            <Spacer y={2} />
+
+            <Input
+              testID="ConditionInput"
+              title="Add Additional Condition Details"
+              optional
+              defaultValue={values.artwork.conditionDescription || ""}
+              multiline
+              onChangeText={handleChange("artwork.conditionDescription")}
+            />
           </Flex>
         </ScrollView>
+        <InfoModal
+          visible={isModalVisible}
+          onDismiss={() => setIsModalVisible(false)}
+          buttonVariant="outline"
+          fullScreen
+        >
+          <ScrollView>
+            <Text variant="lg-display">Condition Definitions</Text>
+
+            <Spacer y={2} />
+
+            {CONDITION_DEFINITIONS.map((definition) => {
+              return (
+                <Flex key={definition.title} mb={2}>
+                  <Text variant="sm-display" fontWeight="bold" mb={0.5}>
+                    {definition.title}:
+                  </Text>
+                  <Text variant="sm-display">{definition.description}</Text>
+                </Flex>
+              )
+            })}
+          </ScrollView>
+        </InfoModal>
       </Flex>
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }
+
+const CONDITION_DEFINITIONS = [
+  {
+    title: "Excellent Condition",
+    description:
+      "No signs of age or wear, undulation associated with hinging. Work may be unsealed in original packaging.",
+  },
+  {
+    title: "Very Good Condition",
+    description:
+      "Overall very good condition, minor signs of wear or age such as light handling creases, scuffing, foxing, discoloration, buckling, and pinholes. Also includes works that have been previously restored.",
+  },
+  {
+    title: "Good Condition",
+    description:
+      "Overall good condition but with noticeable wear or age such as hard creases, scratches, indentations, water damage (associated buckling), foxing, discoloration, attenuation, material loss and tearing. May require the attention of a conservator.",
+  },
+  {
+    title: "Fair Condition",
+    description:
+      "Overall fair condition with significant wear and age that requires the attention of a conservator.",
+  },
+]

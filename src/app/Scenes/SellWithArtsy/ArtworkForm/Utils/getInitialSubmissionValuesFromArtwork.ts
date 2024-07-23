@@ -1,4 +1,5 @@
 import { ConsignmentAttributionClass } from "__generated__/createConsignSubmissionMutation.graphql"
+import { ArtworkConditionEnumType } from "__generated__/myCollectionCreateArtworkMutation.graphql"
 import { FetchArtworkInformationResult } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/fetchArtworkInformation"
 import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { acceptableCategoriesForSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/acceptableCategoriesForSubmission"
@@ -100,6 +101,8 @@ export const getInitialSubmissionFormValuesFromArtwork = (
       framedWidth: artwork.framedWidth,
       framedHeight: artwork.framedHeight,
       framedDepth: artwork.framedDepth,
+      condition: artwork.condition?.value as ArtworkConditionEnumType | null | undefined,
+      conditionDescription: artwork.conditionDescription?.details,
     },
   }
 

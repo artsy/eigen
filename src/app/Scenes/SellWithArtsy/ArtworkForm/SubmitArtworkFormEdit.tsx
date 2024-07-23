@@ -60,6 +60,12 @@ const submitArtworkFormEditQuery = graphql`
         framedWidth
         framedHeight
         framedDepth
+        condition {
+          value
+        }
+        conditionDescription {
+          details
+        }
       }
       attributionClass
       editionNumber
