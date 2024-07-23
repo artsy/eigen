@@ -1,6 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex, Input, Spacer, Text } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { captureException } from "@sentry/react-native"
 import { myCollectionUpdateArtworkMutation } from "__generated__/myCollectionUpdateArtworkMutation.graphql"
 import { Select } from "app/Components/Select"
 import { useToast } from "app/Components/Toast/toastHook"
@@ -34,7 +35,11 @@ export const SubmitArtworkCondition = () => {
         setIsLoading(true)
 
         if (!values.artwork.internalID) {
-          throw new Error("Artwork ID is required")
+          captureException("Artwork ID is required")
+          showToast("Could not save your submission, please try again.", "bottom", {
+            backgroundColor: "red100",
+          })
+          return
         }
 
         // Make API call to update related My Collection artwork
