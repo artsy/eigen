@@ -67,9 +67,9 @@ listenToNativeEvents((event: NativeEvent) => {
   switch (event.type) {
     case "IDENTIFY_TRACKING":
       // Segment should automatically stitch identify calls to existing user even if userid is null
-      SegmentTrackingProvider.identify
-        ? SegmentTrackingProvider.identify(undefined, event.payload)
-        : (() => undefined)()
+      // SegmentTrackingProvider.identify
+      //   ? SegmentTrackingProvider.identify(null, event.payload)
+      //   : (() => undefined)()
       return
     case "EVENT_TRACKING":
       SegmentTrackingProvider.postEvent(event.payload)

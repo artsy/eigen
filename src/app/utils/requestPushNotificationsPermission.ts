@@ -70,9 +70,9 @@ export const requestSystemPermissions = async () => {
       action: "push notifications requested",
       granted: true,
     })
-    SegmentTrackingProvider.identify
-      ? SegmentTrackingProvider.identify(undefined, { "has enabled notifications": 1 })
-      : (() => undefined)()
+    // SegmentTrackingProvider.identify
+    //   ? SegmentTrackingProvider.identify(null, { "has enabled notifications": 1 })
+    //   : (() => undefined)()
   } else {
     postEventToProviders({
       action: "push notifications requested",
