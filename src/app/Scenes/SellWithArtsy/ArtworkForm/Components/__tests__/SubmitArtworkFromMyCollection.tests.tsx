@@ -102,4 +102,10 @@ const mockedFetchedArtwork: NonNullable<FetchArtworkInformationResult> = {
   framedWidth: "20",
   framedHeight: "30",
   framedDepth: "2",
+  condition: {
+    value: "FAIR",
+  },
+  conditionDescription: {
+    details: "Prett fair",
+  },
 }

@@ -2,6 +2,7 @@ import {
   ConsignmentSubmissionCategoryAggregation,
   ConsignmentSubmissionSource,
 } from "__generated__/createConsignSubmissionMutation.graphql"
+import { ArtworkConditionEnumType } from "__generated__/myCollectionCreateArtworkMutation.graphql"
 import {
   ConsignmentAttributionClass,
   ConsignmentSubmissionStateAggregation,
@@ -36,10 +37,22 @@ export const getCurrentValidationSchema = (_injectedStep?: keyof SubmitArtworkSt
       return shippingLocationSchema
     case "FrameInformation":
       return frameInformationSchema
+    case "Condition":
+      return conditionSchema
     default:
       return Yup.object()
   }
 }
+
+const conditionSchema = Yup.object().shape({
+  condition: Yup.string()
+    .oneOf(
+      ["EXCELLENT", "FAIR", "GOOD", "VERY_GOOD"],
+      "Condition must be one of EXCELLENT, FAIR, GOOD, VERY_GOOD"
+    )
+    .nullable(),
+  conditionDescription: Yup.string().trim(),
+})
 
 const frameInformationSchema = Yup.object().shape({
   isFramed: Yup.boolean().nullable(),
@@ -150,6 +163,8 @@ export interface SubmissionModel {
     framedWidth: string | null | undefined
     framedHeight: string | null | undefined
     framedDepth: string | null | undefined
+    condition: ArtworkConditionEnumType | null | undefined
+    conditionDescription: string | null | undefined
   }
 }
 
@@ -202,5 +217,7 @@ export const submissionModelInitialValues: SubmissionModel = {
     framedWidth: null,
     framedHeight: null,
     framedDepth: null,
+    condition: null,
+    conditionDescription: null,
   },
 }

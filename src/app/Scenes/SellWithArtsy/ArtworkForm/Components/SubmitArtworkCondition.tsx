@@ -1,9 +1,10 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex, Input, Spacer, Text } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { ArtworkConditionEnumType } from "__generated__/myCollectionCreateArtworkMutation.graphql"
+import { myCollectionUpdateArtworkMutation } from "__generated__/myCollectionUpdateArtworkMutation.graphql"
 import { Select } from "app/Components/Select"
 import { useToast } from "app/Components/Toast/toastHook"
+import { myCollectionUpdateArtwork } from "app/Scenes/MyCollection/mutations/myCollectionUpdateArtwork"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { useNavigationListeners } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useNavigationListeners"
@@ -16,11 +17,10 @@ import { useState } from "react"
 import { ScrollView } from "react-native"
 
 export const SubmitArtworkCondition = () => {
-  const { values } = useFormikContext<SubmissionModel>()
+  const { values, handleChange, setFieldValue } = useFormikContext<SubmissionModel>()
 
   const { show: showToast } = useToast()
 
-  const [condition, setCondition] = useState<ArtworkConditionEnumType | null>(null)
   const [isModalVisible, setIsModalVisible] = useState(false)
 
   const setIsLoading = SubmitArtworkFormStore.useStoreActions((actions) => actions.setIsLoading)
@@ -33,7 +33,19 @@ export const SubmitArtworkCondition = () => {
       try {
         setIsLoading(true)
 
-        // Make API call to update submission
+        if (!values.artwork.internalID) {
+          throw new Error("Artwork ID is required")
+        }
+
+        // Make API call to update related My Collection artwork
+        const newValues: myCollectionUpdateArtworkMutation["variables"]["input"] = {
+          artworkId: values.artwork.internalID,
+          condition: values.artwork.condition,
+          conditionDescription: values.artwork.conditionDescription,
+        }
+
+        // Make API call to update related My Collection artwork
+        await myCollectionUpdateArtwork(newValues)
 
         navigation.navigate("CompleteYourSubmission")
         setCurrentStep("CompleteYourSubmission")
@@ -77,10 +89,10 @@ export const SubmitArtworkCondition = () => {
                 { label: "Good", value: "GOOD" },
                 { label: "Fair", value: "FAIR" },
               ]}
-              value={condition}
+              value={values.artwork.condition}
               title="Add Condition"
               onSelectValue={(value) => {
-                setCondition(value as ArtworkConditionEnumType)
+                setFieldValue("artwork.condition", value)
               }}
               tooltipText="Condition Definitions"
               onTooltipPress={() => setIsModalVisible(true)}
@@ -92,7 +104,9 @@ export const SubmitArtworkCondition = () => {
               testID="ConditionInput"
               title="Add Additional Condition Details"
               optional
+              defaultValue={values.artwork.conditionDescription || ""}
               multiline
+              onChangeText={handleChange("artwork.conditionDescription")}
             />
           </Flex>
         </ScrollView>

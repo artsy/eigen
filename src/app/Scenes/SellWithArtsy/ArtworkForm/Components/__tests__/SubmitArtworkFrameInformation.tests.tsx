@@ -2,6 +2,7 @@ import { useIsFocused, useNavigation } from "@react-navigation/native"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { SubmitArtworkFrameInformation } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFrameInformation"
 import { renderWithSubmitArtworkWrapper } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/testWrappers"
+import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import relay from "react-relay"
 
@@ -33,6 +34,7 @@ describe("SubmitArtworkFrameInformation", () => {
         component: <SubmitArtworkFrameInformation />,
         injectedFormikProps: {
           artwork: {
+            ...defaultArtworkFixutre,
             internalID: "some-id",
             isFramed: false,
             framedMetric: null,
@@ -71,6 +73,7 @@ describe("SubmitArtworkFrameInformation", () => {
         component: <SubmitArtworkFrameInformation />,
         injectedFormikProps: {
           artwork: {
+            ...defaultArtworkFixutre,
             internalID: "some-id",
             isFramed: null,
             framedMetric: "cm",
@@ -92,11 +95,11 @@ describe("SubmitArtworkFrameInformation", () => {
           variables: {
             input: {
               artworkId: "some-id",
-              framedDepth: null,
+              isFramed: false,
               framedHeight: null,
               framedMetric: null,
               framedWidth: null,
-              isFramed: false,
+              framedDepth: null,
             },
           },
         })
@@ -115,6 +118,7 @@ describe("SubmitArtworkFrameInformation", () => {
         component: <SubmitArtworkFrameInformation />,
         injectedFormikProps: {
           artwork: {
+            ...defaultArtworkFixutre,
             internalID: "some-id",
             isFramed: null,
             framedMetric: "cm",
@@ -158,6 +162,7 @@ describe("SubmitArtworkFrameInformation", () => {
         component: <SubmitArtworkFrameInformation />,
         injectedFormikProps: {
           artwork: {
+            ...defaultArtworkFixutre,
             internalID: "some-id",
             isFramed: null,
             framedMetric: null,
@@ -202,3 +207,14 @@ describe("SubmitArtworkFrameInformation", () => {
     })
   })
 })
+
+const defaultArtworkFixutre: SubmissionModel["artwork"] = {
+  internalID: "some-id",
+  framedDepth: null,
+  framedHeight: null,
+  framedMetric: null,
+  framedWidth: null,
+  isFramed: null,
+  condition: null,
+  conditionDescription: null,
+}

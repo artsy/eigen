@@ -38,10 +38,10 @@ export const SubmitArtworkFrameInformation = () => {
 
         const newValues = {
           artworkId: values.artwork.internalID,
-          framedMetric: values.artwork.isFramed ? values.artwork.framedMetric : null,
-          framedWidth: values.artwork.isFramed ? values.artwork.framedWidth : null,
-          framedHeight: values.artwork.isFramed ? values.artwork.framedHeight : null,
-          framedDepth: values.artwork.isFramed ? values.artwork.framedDepth : null,
+          framedMetric: values.artwork.framedMetric,
+          framedWidth: values.artwork.framedWidth,
+          framedHeight: values.artwork.framedHeight,
+          framedDepth: values.artwork.framedDepth,
           isFramed: values.artwork.isFramed,
         }
 

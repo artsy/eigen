@@ -2,6 +2,7 @@ import {
   ConsignmentAttributionClass,
   SubmitArtworkFormEditQuery$data,
 } from "__generated__/SubmitArtworkFormEditQuery.graphql"
+import { ArtworkConditionEnumType } from "__generated__/myCollectionCreateArtworkMutation.graphql"
 import { COUNTRY_SELECT_OPTIONS } from "app/Components/CountrySelect"
 import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { acceptableCategoriesForSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/acceptableCategoriesForSubmission"
@@ -27,9 +28,6 @@ export const getInitialSubmissionValues = (
 
   const addresses = extractNodes(me?.addressConnection)
   const defaultAddress = addresses.find((address) => address.isDefault) ?? addresses?.[0]
-
-  console.log("====")
-  console.log(values.myCollectionArtwork)
 
   return {
     artist: values.artist?.name ?? "",
@@ -77,6 +75,8 @@ export const getInitialSubmissionValues = (
       framedWidth: values.myCollectionArtwork?.framedWidth ?? null,
       framedHeight: values.myCollectionArtwork?.framedHeight ?? null,
       framedDepth: values.myCollectionArtwork?.framedDepth ?? null,
+      condition: (values.myCollectionArtwork?.condition?.value as ArtworkConditionEnumType) ?? null,
+      conditionDescription: values.myCollectionArtwork?.conditionDescription?.details ?? null,
     },
   }
 }
