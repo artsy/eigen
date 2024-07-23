@@ -4,11 +4,11 @@ import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquirySt
 import { useContext } from "react"
 import { graphql, useFragment } from "react-relay"
 
-interface Props {
+interface CompleteProfilePromptProps {
   artwork: CompleteProfilePrompt_artwork$key
 }
 
-export const CompleteProfilePrompt: React.FC<Props> = ({ artwork }) => {
+export const CompleteProfilePrompt: React.FC<CompleteProfilePromptProps> = ({ artwork }) => {
   const { state, dispatch } = useContext(ArtworkInquiryContext)
   const artworkData = useFragment(artworkFragment, artwork)
 

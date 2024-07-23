@@ -14,11 +14,17 @@ import { InquiryQuestionIDs } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes
 import React, { useContext } from "react"
 import { LayoutAnimation, TouchableOpacity } from "react-native"
 
-export const InquiryQuestionOption: React.FC<{
+interface InquiryQuestionOptionProps {
   id: string
   question: string
   setShippingModalVisibility?: (isVisible: boolean) => void
-}> = ({ id, question, setShippingModalVisibility }) => {
+}
+
+export const InquiryQuestionOption: React.FC<InquiryQuestionOptionProps> = ({
+  id,
+  question,
+  setShippingModalVisibility,
+}) => {
   const { color, space } = useTheme()
   const { state, dispatch } = useContext(ArtworkInquiryContext)
   const isShipping = id === InquiryQuestionIDs.Shipping
