@@ -2288,7 +2288,7 @@ enum ArtistSorts {
 }
 
 # An artists rail section in the home view
-type ArtistsRailSection implements GenericHomeViewSection & Node {
+type ArtistsRailHomeViewSection implements GenericHomeViewSection & Node {
   # The component that is prescribed for this section
   component: HomeViewComponent
 
@@ -3151,7 +3151,7 @@ enum ArtworkSorts {
 }
 
 # An artwork rail section in the home view
-type ArtworksRailSection implements GenericHomeViewSection & Node {
+type ArtworksRailHomeViewSection implements GenericHomeViewSection & Node {
   # The component that is prescribed for this section
   component: HomeViewComponent
 
@@ -11358,7 +11358,7 @@ enum HomeViewComponentType {
   ARTWORKS_RAIL
 }
 
-union HomeViewSection = ArtistsRailSection | ArtworksRailSection
+union HomeViewSection = ArtistsRailHomeViewSection | ArtworksRailHomeViewSection
 
 # A connection to a list of items.
 type HomeViewSectionConnection {
