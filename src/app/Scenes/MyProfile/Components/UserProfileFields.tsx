@@ -77,6 +77,15 @@ export const UserProfileFields: React.FC<UserProfileFieldsProps> = ({ bottomShee
               coordinates,
             })
           }}
+          onClear={() =>
+            setFieldValue("location", {
+              city: "",
+              country: "",
+              postalCode: "",
+              state: "",
+              stateCode: "",
+            })
+          }
           bottomSheetInput={bottomSheetInput}
         />
       </Flex>

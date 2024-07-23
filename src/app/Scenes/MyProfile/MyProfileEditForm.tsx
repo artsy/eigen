@@ -109,7 +109,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
     delete updatedLocation.display
     const payload = {
       name,
-      ...(location ? { location: updatedLocation } : {}),
+      location: updatedLocation,
       profession,
       otherRelevantPositions,
     }
