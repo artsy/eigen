@@ -9,7 +9,7 @@ import {
   FilterArray,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { useArtworkFiltersV2 } from "app/Components/ArtworkFilter/useArtworkFilters"
+import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { HeaderArtworksFilterWithTotalArtworks } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
@@ -64,7 +64,7 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
     artworkAggregations
   )
 
-  useArtworkFiltersV2({
+  useArtworkFilters({
     refetch,
     aggregations: dispatchAggregations,
     componentPath: "Fair/FairArtworks",
@@ -227,7 +227,7 @@ export const FairArtworksWithoutTabs: React.FC<FairArtworksProps> = ({
     artworkAggregations
   )
 
-  useArtworkFiltersV2({
+  useArtworkFilters({
     refetch,
     aggregations: dispatchAggregations,
     componentPath: "Fair/FairArtworks",

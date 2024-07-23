@@ -1,4 +1,4 @@
-import { ChevronIcon, Flex, Tabs, Text, Touchable } from "@artsy/palette-mobile"
+import { ChevronIcon, Flex, Spacer, Tabs, Text, Touchable, useSpace } from "@artsy/palette-mobile"
 import { FairOverview_fair$key } from "__generated__/FairOverview_fair.graphql"
 import { ReadMore } from "app/Components/ReadMore"
 import { FairCollectionsFragmentContainer } from "app/Scenes/Fair/Components/FairCollections"
@@ -16,6 +16,7 @@ interface FairOverviewProps {
 }
 
 export const FairOverview: FC<FairOverviewProps> = ({ fair }) => {
+  const space = useSpace()
   const data = useFragment(fragment, fair)
 
   if (!data) {
@@ -40,35 +41,41 @@ export const FairOverview: FC<FairOverviewProps> = ({ fair }) => {
     !!data.tickets
 
   return (
-    <Tabs.ScrollView style={{ paddingVertical: 20 }}>
-      {!!hasPreviewText && (
-        <ReadMore textStyle="new" content={hasPreviewText} maxChars={truncatedTextLimit()} />
-      )}
-      {!!canShowMoreInfoLink && (
-        <Touchable onPress={() => navigate(`/fair/${data.slug}/info`)}>
-          <Flex pt={2} flexDirection="row" justifyContent="flex-start" alignItems="center">
-            <Text variant="sm">More info</Text>
-            <ChevronIcon mr="-5px" mt="4px" />
-          </Flex>
-        </Touchable>
-      )}
+    <Tabs.ScrollView style={{ paddingTop: space(2) }}>
+      <Flex gap={space(2)}>
+        {!!hasPreviewText && (
+          <ReadMore textStyle="new" content={hasPreviewText} maxChars={truncatedTextLimit()} />
+        )}
+        {!!canShowMoreInfoLink && (
+          <Touchable onPress={() => navigate(`/fair/${data.slug}/info`)}>
+            <Flex pt={2} flexDirection="row" justifyContent="flex-start" alignItems="center">
+              <Text variant="sm">More info</Text>
+              <ChevronIcon mr="-5px" mt="4px" />
+            </Flex>
+          </Touchable>
+        )}
 
-      {!!data.isActive ? (
-        <>
-          {!!hasArticles && <FairEditorialFragmentContainer fair={data} />}
-          {!!hasCollections && <FairCollectionsFragmentContainer fair={data} />}
-          {!!hasFollowedArtistArtworks && <FairFollowedArtistsRailFragmentContainer fair={data} />}
-        </>
-      ) : (
-        <>
-          <FairEmptyStateFragmentContainer fair={data} />
-          {!!hasArticles ? (
-            <FairEditorialFragmentContainer fair={data} />
-          ) : (
+        {!!data.isActive ? (
+          <>
+            {!!hasArticles && <FairEditorialFragmentContainer fair={data} />}
+            {!!hasCollections && <FairCollectionsFragmentContainer fair={data} />}
+            {!!hasFollowedArtistArtworks && (
+              <FairFollowedArtistsRailFragmentContainer fair={data} />
+            )}
+          </>
+        ) : (
+          <>
             <FairEmptyStateFragmentContainer fair={data} />
-          )}
-        </>
-      )}
+            {!!hasArticles ? (
+              <FairEditorialFragmentContainer fair={data} />
+            ) : (
+              <FairEmptyStateFragmentContainer fair={data} />
+            )}
+          </>
+        )}
+      </Flex>
+
+      <Spacer y={4} />
     </Tabs.ScrollView>
   )
 }

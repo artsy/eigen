@@ -36,7 +36,6 @@ export const FairEditorial: React.FC<FairEditorialProps> = ({ fair, ...rest }) =
   return (
     <Box {...rest}>
       <Box
-        mx={2}
         mb={2}
         display="flex"
         flexDirection="row"

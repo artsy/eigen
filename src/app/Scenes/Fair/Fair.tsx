@@ -114,11 +114,9 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
         ) : null}
 
         <Tabs.Tab name="Artworks" label="Artworks">
-          <Tabs.Lazy>
-            <ArtworkFiltersStoreProvider>
-              <FairArtworks fair={data} />
-            </ArtworkFiltersStoreProvider>
-          </Tabs.Lazy>
+          <ArtworkFiltersStoreProvider>
+            <FairArtworks fair={data} />
+          </ArtworkFiltersStoreProvider>
         </Tabs.Tab>
       </Tabs.TabsWithHeader>
     </ProvideScreenTracking>
