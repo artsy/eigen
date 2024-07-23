@@ -22,7 +22,7 @@ export const FairFollowedArtistsRail: React.FC<FairFollowedArtistsRailProps> = (
 
   return (
     <>
-      <Flex px={2}>
+      <Flex>
         <SectionTitle
           title="Works by artists you follow"
           onPress={
@@ -38,10 +38,14 @@ export const FairFollowedArtistsRail: React.FC<FairFollowedArtistsRailProps> = (
       <SmallArtworkRail
         artworks={artworks}
         onPress={(artwork, position) => {
+          if (!artwork.href) {
+            return
+          }
+
           trackEvent(
             tracks.tappedArtwork(fair, artwork?.internalID ?? "", artwork?.slug ?? "", position)
           )
-          navigate(artwork?.href!)
+          navigate(artwork.href)
         }}
       />
     </>

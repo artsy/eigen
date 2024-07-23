@@ -1,6 +1,7 @@
 import { PAGE_SIZE } from "app/Components/constants"
 import { MutableRefObject, useEffect, useMemo } from "react"
-import { RelayPaginationProp, Variables } from "react-relay"
+import { RefetchFnDynamic, RelayPaginationProp, Variables } from "react-relay"
+import { FragmentType, OperationType } from "relay-runtime"
 import {
   aggregationForFilter,
   filterArtworksParams,
@@ -10,7 +11,13 @@ import {
 } from "./ArtworkFilterHelpers"
 import { ArtworksFiltersStore, selectedOptionsUnion } from "./ArtworkFilterStore"
 
-interface UseArtworkFiltersOptions {
+// Relay doesn't export their helper type(KeyType), so we have to redefine it here
+type RelayData = { " $data"?: unknown; " $fragmentSpreads": FragmentType } | null | undefined
+
+type UseArtworkFiltersOptions<T extends RelayData> = {
+  /**
+   * @deprecated use the prop `refetch` that is returned from relay hooks instead of HoC relay prop
+   */
   relay?: RelayPaginationProp
   aggregations?: unknown
   pageSize?: number
@@ -20,9 +27,10 @@ interface UseArtworkFiltersOptions {
   onApply?: () => void
   onRefetch?: (error?: Error | null) => void
   refetchRef?: MutableRefObject<() => void>
+  refetch?: RefetchFnDynamic<OperationType, T>
 }
 
-export const useArtworkFilters = ({
+export const useArtworkFilters = <T extends RelayData>({
   relay,
   aggregations,
   pageSize = PAGE_SIZE,
@@ -32,7 +40,8 @@ export const useArtworkFilters = ({
   onRefetch,
   type = "filter",
   refetchRef,
-}: UseArtworkFiltersOptions) => {
+  refetch,
+}: UseArtworkFiltersOptions<T>) => {
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.setAggregationsAction
   )
@@ -47,10 +56,13 @@ export const useArtworkFilters = ({
     setAggregationsAction(aggregations)
   }, [])
 
-  const refetch = () => {
-    if (relay !== undefined) {
-      const filterParams = filterArtworksParams(appliedFilters, filterType)
+  const _refetch = () => {
+    const filterParams = filterArtworksParams(appliedFilters, filterType)
+    const refetchArgs = refetchVariables ?? {
+      input: prepareFilterArtworksParamsForInput(filterParams),
+    }
 
+    if (!!relay) {
       relay.refetchConnection(
         pageSize,
         (error) => {
@@ -64,18 +76,36 @@ export const useArtworkFilters = ({
             throw new Error(errorMessage)
           }
         },
-        refetchVariables ?? { input: prepareFilterArtworksParamsForInput(filterParams) }
+        refetchArgs
+      )
+      return
+    }
+
+    if (!!refetch) {
+      refetch(
+        { ...refetchArgs, count: pageSize },
+        {
+          onComplete: (error) => {
+            onRefetch?.(error)
+            if (error) {
+              const errorMessage = componentPath
+                ? `${componentPath} ${type} error: ${error.message}`
+                : error.message
+              throw new Error(errorMessage)
+            }
+          },
+        }
       )
     }
   }
 
   if (refetchRef) {
-    refetchRef.current = refetch
+    refetchRef.current = _refetch
   }
 
   useEffect(() => {
     if (applyFilters) {
-      refetch()
+      _refetch()
 
       if (onApply) {
         onApply()

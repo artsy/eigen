@@ -1,57 +1,30 @@
-import { Spacer, ChevronIcon, Flex, Box, Text } from "@artsy/palette-mobile"
-import { FairHeader_fair$data } from "__generated__/FairHeader_fair.graphql"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { ReadMore } from "app/Components/ReadMore"
-import { shouldShowLocationMap } from "app/Scenes/Fair/FairMoreInfo"
-import { navigate } from "app/system/navigation/navigate"
-import { truncatedTextLimit } from "app/utils/hardware"
-import { Dimensions, TouchableOpacity } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import { Spacer, Flex, Text, useScreenDimensions, Image } from "@artsy/palette-mobile"
+import { FairHeader_fair$key } from "__generated__/FairHeader_fair.graphql"
+import { FC } from "react"
+import { graphql, useFragment } from "react-relay"
 import { FairTimingFragmentContainer as FairTiming } from "./FairTiming"
-
 interface FairHeaderProps {
-  fair: FairHeader_fair$data
+  fair: FairHeader_fair$key
 }
 
-export const FairHeader: React.FC<FairHeaderProps> = ({ fair }) => {
-  const {
-    name,
-    slug,
-    about,
-    image,
-    tagline,
-    location,
-    ticketsLink,
-    fairHours,
-    fairLinks,
-    fairContact,
-    summary,
-    fairTickets,
-  } = fair
-  const screenWidth = Dimensions.get("screen").width
-  const profileImageUrl = fair?.profile?.icon?.imageUrl
-  const previewText = summary || about
+export const FairHeader: FC<FairHeaderProps> = ({ fair }) => {
+  const data = useFragment(fragment, fair)
+  const { width } = useScreenDimensions()
 
-  const canShowMoreInfoLink =
-    !!about ||
-    !!tagline ||
-    !!location?.summary ||
-    shouldShowLocationMap(location?.coordinates) ||
-    !!ticketsLink ||
-    !!fairHours ||
-    !!fairLinks ||
-    !!fairContact ||
-    !!summary ||
-    !!fairTickets
+  if (!data) {
+    return null
+  }
+
+  const profileImageUrl = data.profile?.icon?.imageUrl
 
   return (
-    <Box>
-      {!!image ? (
-        <Flex alignItems="center" justifyContent="center" style={{ position: "relative" }}>
-          <OpaqueImageView
-            width={screenWidth}
-            height={screenWidth / image.aspectRatio}
-            imageURL={image.imageUrl}
+    <Flex pointerEvents="none">
+      {!!data.image ? (
+        <Flex alignItems="center" justifyContent="center">
+          <Image
+            width={width}
+            height={width / data.image.aspectRatio}
+            src={data.image.imageUrl ?? ""}
           />
           {!!profileImageUrl && (
             <Flex
@@ -65,72 +38,35 @@ export const FairHeader: React.FC<FairHeaderProps> = ({ fair }) => {
               bottom={0}
               left={2}
             >
-              <OpaqueImageView
-                width={60}
-                height={40}
-                imageURL={profileImageUrl}
-                placeholderBackgroundColor="white"
-              />
+              <Image width={60} height={40} src={profileImageUrl} testID="fair-profile-image" />
             </Flex>
           )}
         </Flex>
       ) : (
-        <SafeTopMargin />
+        <Spacer y={6} />
       )}
-      <Box px={2}>
+      <Flex px={2} pointerEvents="none">
         <Text variant="lg-display" py={2}>
-          {name}
+          {data.name}
         </Text>
-        <FairTiming fair={fair} />
-        {!!previewText && (
-          <ReadMore textStyle="new" content={previewText} maxChars={truncatedTextLimit()} />
-        )}
-        {!!canShowMoreInfoLink && (
-          <TouchableOpacity onPress={() => navigate(`/fair/${slug}/info`)}>
-            <Flex pt={2} flexDirection="row" justifyContent="flex-start" alignItems="center">
-              <Text variant="sm">More info</Text>
-              <ChevronIcon mr="-5px" mt="4px" />
-            </Flex>
-          </TouchableOpacity>
-        )}
-      </Box>
-    </Box>
+        <FairTiming fair={data} />
+      </Flex>
+    </Flex>
   )
 }
 
-const SafeTopMargin = () => <Spacer y={6} />
-
-export const FairHeaderFragmentContainer = createFragmentContainer(FairHeader, {
-  fair: graphql`
-    fragment FairHeader_fair on Fair {
-      about
-      summary
-      name
-      slug
-      profile {
-        icon {
-          imageUrl: url(version: "untouched-png")
-        }
+const fragment = graphql`
+  fragment FairHeader_fair on Fair {
+    name
+    profile {
+      icon {
+        imageUrl: url(version: "untouched-png")
       }
-      image {
-        imageUrl: url(version: "large_rectangle")
-        aspectRatio
-      }
-      # Used to figure out if we should render the More info link
-      tagline
-      location {
-        summary
-        coordinates {
-          lat
-          lng
-        }
-      }
-      ticketsLink
-      fairHours: hours(format: MARKDOWN) # aliased to avoid conflicts in the VanityURLQueryRenderer
-      fairLinks: links(format: MARKDOWN) # aliased to avoid conflicts in the VanityURLQueryRenderer
-      fairTickets: tickets(format: MARKDOWN) # aliased to avoid conflicts in the VanityURLQueryRenderer
-      fairContact: contact(format: MARKDOWN) # aliased to avoid conflicts in the VanityURLQueryRenderer
-      ...FairTiming_fair
     }
-  `,
-})
+    image {
+      imageUrl: url(version: "large_rectangle")
+      aspectRatio
+    }
+    ...FairTiming_fair
+  }
+`
