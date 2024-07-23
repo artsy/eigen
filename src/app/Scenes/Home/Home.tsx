@@ -8,6 +8,7 @@ import {
   SpacingUnitDSValueNumber,
 } from "@artsy/palette-mobile"
 import { useFocusEffect } from "@react-navigation/native"
+import { useAnalytics } from "@segment/analytics-react-native"
 import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { Home_articlesConnection$data } from "__generated__/Home_articlesConnection.graphql"
@@ -73,6 +74,7 @@ import {
   ArtworkActionTrackingProps,
   extractArtworkActionTrackingProps,
 } from "app/utils/track/ArtworkActions"
+import { postEventToProviders } from "app/utils/track/providers"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
 import { times } from "lodash"
 import React, { RefObject, createRef, memo, useCallback, useEffect, useRef, useState } from "react"
@@ -160,6 +162,7 @@ const Home = memo((props: HomeProps) => {
 
   useFocusEffect(
     useCallback(() => {
+      postEventToProviders(HomeAnalytics.homeScreenViewed())
       tracking.trackEvent(HomeAnalytics.homeScreenViewed())
     }, [])
   )
