@@ -23,6 +23,10 @@ interface UseArtworkFiltersOptions {
   refetchRef?: MutableRefObject<() => void>
 }
 
+/**
+ * @deprecated Use useArtworkFiltersV2 instead
+ * and refactor the component to use Relay hooks instead of containers
+ */
 export const useArtworkFilters = ({
   relay,
   aggregations,
@@ -131,9 +135,9 @@ type UseArtworkFiltersOptionsForHooks<T extends RelayData> = Omit<
 }
 
 /**
- * Replaces useArtworkFilters for components using relay hooks
+ * Replaces useArtworkFilters for components using patterns with relay hooks
  */
-export const useArtworkFiltersForHooks = <T extends RelayData>({
+export const useArtworkFiltersV2 = <T extends RelayData>({
   aggregations,
   pageSize = PAGE_SIZE,
   componentPath,

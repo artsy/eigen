@@ -161,8 +161,12 @@ interface FairQueryRendererProps {
 export const FairQueryRenderer: React.FC<FairQueryRendererProps> = ({ fairID }) => {
   const res = useClientQuery<FairQuery>({ query, variables: { fairID } })
 
-  if (!res.data?.fair) {
+  if (res.loading) {
     return <FairPlaceholder />
+  }
+
+  if (!res.data?.fair) {
+    return null
   }
 
   return <Fair fair={res.data.fair} />
