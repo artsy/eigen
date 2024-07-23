@@ -112,6 +112,7 @@
                 <data android:pathPrefix="/galleries-for-you" />
                 <data android:pathPrefix="/gallery" />
                 <data android:pathPrefix="/gene" />
+                <data android:pathPrefix="/home-view" />
                 <data android:pathPrefix="/identity-verification-faq" />
                 <data android:pathPrefix="/inbox" />
                 <data android:pathPrefix="/inquiry" />

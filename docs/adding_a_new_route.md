@@ -25,7 +25,7 @@ Example of situations where **you do need** to add a new route:
 
 #### How to add a global app route
 
-1. Add the new route to `routes.tsx`.
+1. Add the new route to `routes.ts`.
 
    ```typescript
    ...
@@ -58,7 +58,7 @@ Example of situations where **you do need** to add a new route:
         // Hide the close button inside the moda
         hasOwnModalCloseButton?: boolean
         hidesBackButton?: boolean
-        // Sepecify how you want the screen to show up
+        // Specify how you want the screen to show up
         // See https://developer.apple.com/documentation/uikit/uiviewcontroller/1621355-modalpresentationstyle?language=objc
         modalPresentationStyle?: "fullScreen" | "pageSheet" | "formSheet"
         // If this module should only be shown in one particular tab, add it here

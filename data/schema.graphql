@@ -99,7 +99,9 @@ type addOrderedSetItemMutationPayload {
   clientMutationId: String
 }
 
-union addOrderedSetItemResponseOrError = addOrderedSetItemFailure | addOrderedSetItemSuccess
+union addOrderedSetItemResponseOrError =
+    addOrderedSetItemFailure
+  | addOrderedSetItemSuccess
 
 type addOrderedSetItemSuccess {
   set: OrderedSet
@@ -267,7 +269,12 @@ type Alert {
   additionalGeneNames: [String]
   artistIDs: [String]
   artists: [Artist!]!
-  artistsConnection(after: String, before: String, first: Int, last: Int): ArtistConnection!
+  artistsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtistConnection!
   artistSeriesIDs: [String]
 
   # Artworks Elastic Search results
@@ -406,7 +413,12 @@ type AlertEdge {
 
 type AlertNotificationItem {
   alert: Alert
-  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
+  artworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtworkConnection
 }
 
 enum AlertsConnectionSortEnum {
@@ -488,11 +500,13 @@ type AlertsSummaryCounts {
 type Algolia {
   apiKey: String! @deprecated(reason: "Algolia search is no longer supported")
   appID: String! @deprecated(reason: "Algolia search is no longer supported")
-  indices: [AlgoliaIndex!]! @deprecated(reason: "Algolia search is no longer supported")
+  indices: [AlgoliaIndex!]!
+    @deprecated(reason: "Algolia search is no longer supported")
 }
 
 type AlgoliaIndex {
-  displayName: String! @deprecated(reason: "Algolia search is no longer supported")
+  displayName: String!
+    @deprecated(reason: "Algolia search is no longer supported")
   key: String! @deprecated(reason: "Algolia search is no longer supported")
   name: String! @deprecated(reason: "Algolia search is no longer supported")
 }
@@ -829,7 +843,9 @@ type AnalyticsPartnerInquiryStats {
   period: AnalyticsQueryPeriodEnum!
 
   # Partner inquiry count time series
-  timeSeries(cumulative: Boolean = false): [AnalyticsPartnerInquiryCountTimeSeriesStats!]
+  timeSeries(
+    cumulative: Boolean = false
+  ): [AnalyticsPartnerInquiryCountTimeSeriesStats!]
 }
 
 # Sales stats of a partner
@@ -842,7 +858,9 @@ type AnalyticsPartnerSalesStats {
   period: AnalyticsQueryPeriodEnum!
 
   # Partner sales time series
-  timeSeries(cumulative: Boolean = false): [AnalyticsPartnerSalesTimeSeriesStats!]
+  timeSeries(
+    cumulative: Boolean = false
+  ): [AnalyticsPartnerSalesTimeSeriesStats!]
   total(
     decimal: String = "."
     format: String = "%s%v"
@@ -871,11 +889,17 @@ type AnalyticsPartnerSalesTimeSeriesStats {
 # Partner Stats
 type AnalyticsPartnerStats {
   # Time series data on number of artworks published
-  artworkPublished(period: AnalyticsQueryPeriodEnum!): AnalyticsPartnerStatsArtworksPublished
+  artworkPublished(
+    period: AnalyticsQueryPeriodEnum!
+  ): AnalyticsPartnerStatsArtworksPublished
 
   # Time series data on number of artworks published
-  artworksPublished(period: AnalyticsQueryPeriodEnum!): AnalyticsArtworksPublishedStats
-    @deprecated(reason: "Use artworkPublished for refactored time series bucket code")
+  artworksPublished(
+    period: AnalyticsQueryPeriodEnum!
+  ): AnalyticsArtworksPublishedStats
+    @deprecated(
+      reason: "Use artworkPublished for refactored time series bucket code"
+    )
 
   # Audience stats
   audience(period: AnalyticsQueryPeriodEnum!): AnalyticsPartnerAudienceStats
@@ -942,7 +966,8 @@ type AnalyticsPartnerStats {
 
     # Returns the last _n_ elements from the list.
     last: Int
-  ): AnalyticsRankedStatsConnection @deprecated(reason: "Use rankedStats(objectType: ) instead")
+  ): AnalyticsRankedStatsConnection
+    @deprecated(reason: "Use rankedStats(objectType: ) instead")
 
   # Number of unique visitors
   uniqueVisitors(period: AnalyticsQueryPeriodEnum!): Int
@@ -956,7 +981,9 @@ type AnalyticsPartnerStatsArtworksPublished {
   period: AnalyticsQueryPeriodEnum!
 
   # Partner artworks published count time series
-  timeSeries(cumulative: Boolean = false): [AnalyticsPartnerStatsArtworksPublishedTimeSeries!]!
+  timeSeries(
+    cumulative: Boolean = false
+  ): [AnalyticsPartnerStatsArtworksPublishedTimeSeries!]!
   totalCount: Int!
 }
 
@@ -977,7 +1004,9 @@ type AnalyticsPartnerStatsPageviews {
   showViews: Int!
 
   # Pageviews time series
-  timeSeries(cumulative: Boolean = false): [AnalyticsPartnerStatsPageviewsTimeSeries!]
+  timeSeries(
+    cumulative: Boolean = false
+  ): [AnalyticsPartnerStatsPageviewsTimeSeries!]
   totalCount: Int!
   uniqueVisitors: Int!
 }
@@ -1236,7 +1265,8 @@ type Article implements Node {
     size: Int = 12
   ): [Article!]!
   channelID: String @deprecated(reason: "Use `channel` instead")
-  contributingAuthors: [Author] @deprecated(reason: "Use `byline` or `authors` instead")
+  contributingAuthors: [Author]
+    @deprecated(reason: "Use `byline` or `authors` instead")
   description: String
   hero: ArticleHero
   href: String
@@ -1320,7 +1350,12 @@ type ArticleEdge {
 
 type ArticleFeaturedArtistNotificationItem {
   article: Article
-  artistsConnection(after: String, before: String, first: Int, last: Int): ArtistConnection
+  artistsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtistConnection
 }
 
 type ArticleFeatureSection {
@@ -1877,7 +1912,12 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
 }
 
 type ArtistArtworkGrid implements ArtworkContextGrid {
-  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
+  artworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtworkConnection
   ctaHref: String
   ctaTitle: String
   title: String
@@ -1894,7 +1934,9 @@ type ArtistBlurb {
 
   # The partner id of the partner who submitted the featured bio.
   partnerID: String
-    @deprecated(reason: "No longer used as the partner field contains the partner.id")
+    @deprecated(
+      reason: "No longer used as the partner field contains the partner.id"
+    )
   text: String
 }
 
@@ -2245,6 +2287,24 @@ enum ArtistSorts {
   TRENDING_DESC
 }
 
+# An artists rail section in the home view
+type ArtistsRailHomeViewSection implements GenericHomeViewSection & Node {
+  # The component that is prescribed for this section
+  component: HomeViewComponent
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
+  # A stable identifier for this section
+  key: String!
+
+  # A display title for this section
+  title: String!
+}
+
 type ArtistStatuses {
   articles: Boolean
   artists: Boolean
@@ -2302,7 +2362,9 @@ enum ArtistTargetSupplyType {
 type Artwork implements Node & Searchable & Sellable {
   additionalInformation(format: Format): String
   artaShippingEnabled: Boolean
-    @deprecated(reason: "Prefer to use `processWithArtsyShippingDomestic`. [Will be removed in v2]")
+    @deprecated(
+      reason: "Prefer to use `processWithArtsyShippingDomestic`. [Will be removed in v2]"
+    )
   articles(size: Int): [Article]
   artist(
     # Use whatever is in the original response instead of making a request
@@ -2323,7 +2385,8 @@ type Artwork implements Node & Searchable & Sellable {
   artsyShippingInternational: Boolean
 
   # Represents the location of the artwork for "My Collection" artworks
-  artworkLocation: String @deprecated(reason: "Please use `collectorLocation` instead")
+  artworkLocation: String
+    @deprecated(reason: "Please use `collectorLocation` instead")
 
   # Represents the "**classification**" of an artwork, such as _limited edition_
   attributionClass: AttributionClass
@@ -2424,7 +2487,8 @@ type Artwork implements Node & Searchable & Sellable {
 
   # Formatted artwork metadata, including artist, title, date and partner; e.g., 'Andy Warhol, Truck, 1980, Westward Gallery'.
   formattedMetadata: String
-  framed: ArtworkInfoRow @deprecated(reason: "Consider using isFramed field (boolean) instead")
+  framed: ArtworkInfoRow
+    @deprecated(reason: "Consider using isFramed field (boolean) instead")
   framedDepth: String
   framedHeight: String
   framedMetric: String
@@ -2560,7 +2624,12 @@ type Artwork implements Node & Searchable & Sellable {
   ): String
   layer(id: String): ArtworkLayer
   layers: [ArtworkLayer]
-  listedArtworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection!
+  listedArtworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtworkConnection!
   listPrice: ListPrice
   literature(format: Format): String
 
@@ -2653,7 +2722,9 @@ type Artwork implements Node & Searchable & Sellable {
 
   # Is this work available for shipping only within the Continental US?
   shipsToContinentalUSOnly: Boolean
-    @deprecated(reason: "Prefer to use `onlyShipsDomestically`. [Will be removed in v2]")
+    @deprecated(
+      reason: "Prefer to use `onlyShipsDomestically`. [Will be removed in v2]"
+    )
   show(active: Boolean, atAFair: Boolean, sort: ShowSorts): Show
   shows(active: Boolean, atAFair: Boolean, size: Int, sort: ShowSorts): [Show]
   signature(format: Format): String
@@ -2801,7 +2872,12 @@ union ArtworkContext = Fair | Sale | Show
 
 # A specific grid.
 interface ArtworkContextGrid {
-  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
+  artworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtworkConnection
   ctaHref: String
   ctaTitle: String
   title: String
@@ -2878,7 +2954,12 @@ type ArtworkInquiryEdge {
 
 type ArtworkLayer {
   # A connection of artworks from a Layer.
-  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
+  artworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtworkConnection
   cached: Int
   description: String
   href: String
@@ -2921,7 +3002,9 @@ type ArtworkMutationFailure {
   mutationError: GravityMutationError
 }
 
-union ArtworkMutationType = ArtworkMutationDeleteSuccess | ArtworkMutationFailure
+union ArtworkMutationType =
+    ArtworkMutationDeleteSuccess
+  | ArtworkMutationFailure
 
 union ArtworkOrEditionSetType = Artwork | EditionSet
 
@@ -2960,7 +3043,12 @@ type ArtworkPriceInsights {
 
 type ArtworkPublishedNotificationItem {
   artists: [Artist!]!
-  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
+  artworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtworkConnection
 }
 
 union ArtworkResult = Artwork | ArtworkError
@@ -3062,6 +3150,24 @@ enum ArtworkSorts {
   TITLE_DESC
 }
 
+# An artwork rail section in the home view
+type ArtworksRailHomeViewSection implements GenericHomeViewSection & Node {
+  # The component that is prescribed for this section
+  component: HomeViewComponent
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
+  # A stable identifier for this section
+  key: String!
+
+  # A display title for this section
+  title: String!
+}
+
 type ArtworkVersion implements Node {
   # The names for the artists related to this Artwork Version
   artistNames: String
@@ -3149,7 +3255,12 @@ type AttributionClass {
 }
 
 type AuctionArtworkGrid implements ArtworkContextGrid {
-  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
+  artworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtworkConnection
   ctaHref: String
   ctaTitle: String
   title: String
@@ -3753,7 +3864,9 @@ type BankAccountMutationSuccess {
   bankAccountEdge: BankAccountEdge
 }
 
-union BankAccountMutationType = BankAccountMutationFailure | BankAccountMutationSuccess
+union BankAccountMutationType =
+    BankAccountMutationFailure
+  | BankAccountMutationSuccess
 
 enum BankAccountTypes {
   SEPA_DEBIT
@@ -4219,7 +4332,9 @@ type CollectorProfileType implements Node {
   ): String
   email: String
   emailConfirmed: Boolean
-    @deprecated(reason: "emailConfirmed is going to be removed, use isEmailConfirmed instead")
+    @deprecated(
+      reason: "emailConfirmed is going to be removed, use isEmailConfirmed instead"
+    )
   firstNameLastInitial: String
   followedArtistsCount: Int!
   icon: Image
@@ -4227,12 +4342,19 @@ type CollectorProfileType implements Node {
   # A globally unique ID.
   id: ID!
   identityVerified: Boolean
-    @deprecated(reason: "identityVerified is going to be removed, use isIdentityVerified instead")
+    @deprecated(
+      reason: "identityVerified is going to be removed, use isIdentityVerified instead"
+    )
   initials(length: Int = 3): String
   inquiryRequestsCount: Int!
   institutionalAffiliations: String
   intents: [String]
-  interestsConnection(after: String, before: String, first: Int, last: Int): UserInterestConnection
+  interestsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): UserInterestConnection
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
@@ -4343,7 +4465,9 @@ type CollectorResume {
 }
 
 # Represents either an action or a potential failure
-union CommerceActionOrFailureUnion = CommerceOrderRequiresAction | CommerceOrderWithMutationFailure
+union CommerceActionOrFailureUnion =
+    CommerceOrderRequiresAction
+  | CommerceOrderWithMutationFailure
 
 # Autogenerated input type of AddInitialOfferToOrder
 input CommerceAddInitialOfferToOrderInput {
@@ -5763,7 +5887,9 @@ type CommerceOrderEdge {
 }
 
 # Represents either a state change or new offer
-union CommerceOrderEventUnion = CommerceOfferSubmittedEvent | CommerceOrderStateChangedEvent
+union CommerceOrderEventUnion =
+    CommerceOfferSubmittedEvent
+  | CommerceOrderStateChangedEvent
 
 enum CommerceOrderFulfillmentTypeEnum {
   # fulfillment type is: pickup
@@ -5936,7 +6062,10 @@ type CommercePickup {
 }
 
 # Represents either a shipping information or pickup
-union CommerceRequestedFulfillmentUnion = CommercePickup | CommerceShip | CommerceShipArta
+union CommerceRequestedFulfillmentUnion =
+    CommercePickup
+  | CommerceShip
+  | CommerceShipArta
 
 # Autogenerated input type of SelectShippingOption
 input CommerceSelectShippingOptionInput {
@@ -7536,11 +7665,14 @@ type Conversation implements Node {
   fromLastViewedMessageID: String
 
   # The collector profile of the user who initiated the conversation
-  fromProfile: CollectorProfileType @deprecated(reason: "Use `collectorResume` instead")
+  fromProfile: CollectorProfileType
+    @deprecated(reason: "Use `collectorResume` instead")
 
   # The user who initiated the conversation
   fromUser: User
-    @deprecated(reason: "Will be inaccessible to partners in future versions. Prefer fromProfile.")
+    @deprecated(
+      reason: "Will be inaccessible to partners in future versions. Prefer fromProfile."
+    )
 
   # A globally unique ID.
   id: ID!
@@ -7582,8 +7714,13 @@ type Conversation implements Node {
     )
 
   # A connection for all messages in a single conversation
-  messages(after: String, before: String, first: Int, last: Int, sort: sort): MessageConnection
-    @deprecated(reason: "Prefer messagesConnection")
+  messages(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    sort: sort
+  ): MessageConnection @deprecated(reason: "Prefer messagesConnection")
 
   # A connection for all messages and events in a single conversation
   messagesAndConversationEventsConnection(
@@ -7934,7 +8071,9 @@ type createCollectionPayload {
   responseOrError: CreateCollectionResponseOrError
 }
 
-union CreateCollectionResponseOrError = CreateCollectionFailure | CreateCollectionSuccess
+union CreateCollectionResponseOrError =
+    CreateCollectionFailure
+  | CreateCollectionSuccess
 
 type CreateCollectionSuccess {
   collection: Collection
@@ -7978,7 +8117,9 @@ type CreateFeaturedLinkMutationPayload {
   featuredLinkOrError: CreateFeaturedLinkResponseOrError
 }
 
-union CreateFeaturedLinkResponseOrError = CreateFeaturedLinkFailure | CreateFeaturedLinkSuccess
+union CreateFeaturedLinkResponseOrError =
+    CreateFeaturedLinkFailure
+  | CreateFeaturedLinkSuccess
 
 type CreateFeaturedLinkSuccess {
   featuredLink: FeaturedLink
@@ -8061,7 +8202,9 @@ type CreateHeroUnitMutationPayload {
   heroUnitOrError: createHeroUnitResponseOrError
 }
 
-union createHeroUnitResponseOrError = createHeroUnitFailure | createHeroUnitSuccess
+union createHeroUnitResponseOrError =
+    createHeroUnitFailure
+  | createHeroUnitSuccess
 
 type createHeroUnitSuccess {
   heroUnit: HeroUnit
@@ -8186,7 +8329,9 @@ type CreateOrderedSetMutationPayload {
   orderedSetOrError: createOrderedSetResponseOrError
 }
 
-union createOrderedSetResponseOrError = createOrderedSetFailure | createOrderedSetSuccess
+union createOrderedSetResponseOrError =
+    createOrderedSetFailure
+  | createOrderedSetSuccess
 
 type createOrderedSetSuccess {
   set: OrderedSet
@@ -8232,7 +8377,9 @@ type createPartnerOfferMutationPayload {
   partnerOfferOrError: createPartnerOfferResponseOrError
 }
 
-union createPartnerOfferResponseOrError = createPartnerOfferFailure | createPartnerOfferSuccess
+union createPartnerOfferResponseOrError =
+    createPartnerOfferFailure
+  | createPartnerOfferSuccess
 
 type createPartnerOfferSuccess {
   partner: Partner
@@ -8258,7 +8405,9 @@ type CreateSaleAgreementMutationPayload {
   saleAgreementOrError: CreateSaleAgreementResponseOrError
 }
 
-union CreateSaleAgreementResponseOrError = CreateSaleAgreementFailure | CreateSaleAgreementSuccess
+union CreateSaleAgreementResponseOrError =
+    CreateSaleAgreementFailure
+  | CreateSaleAgreementSuccess
 
 type CreateSaleAgreementSuccess {
   saleAgreement: SaleAgreement
@@ -8388,7 +8537,9 @@ type createUserAdminNoteMutationPayload {
   clientMutationId: String
 }
 
-union createUserAdminNoteResponseOrError = createUserAdminNoteFailure | createUserAdminNoteSuccess
+union createUserAdminNoteResponseOrError =
+    createUserAdminNoteFailure
+  | createUserAdminNoteSuccess
 
 type createUserAdminNoteSuccess {
   adminNote: UserAdminNotes
@@ -8645,7 +8796,9 @@ type CreditCardMutationSuccess {
   creditCardEdge: CreditCardEdge
 }
 
-union CreditCardMutationType = CreditCardMutationFailure | CreditCardMutationSuccess
+union CreditCardMutationType =
+    CreditCardMutationFailure
+  | CreditCardMutationSuccess
 
 type CreditCardPayload {
   clientMutationId: String
@@ -8833,7 +8986,9 @@ type deleteCollectionPayload {
   responseOrError: DeleteCollectionResponseOrError
 }
 
-union DeleteCollectionResponseOrError = DeleteCollectionFailure | DeleteCollectionSuccess
+union DeleteCollectionResponseOrError =
+    DeleteCollectionFailure
+  | DeleteCollectionSuccess
 
 type DeleteCollectionSuccess {
   collection: Collection
@@ -8857,7 +9012,9 @@ type DeleteConversationMutationPayload {
   conversationOrError: DeleteConversationResponseOrError
 }
 
-union DeleteConversationResponseOrError = DeleteConversationFailure | DeleteConversationSuccess
+union DeleteConversationResponseOrError =
+    DeleteConversationFailure
+  | DeleteConversationSuccess
 
 type DeleteConversationSuccess {
   conversation: Conversation
@@ -8888,7 +9045,9 @@ type DeleteFeaturedLinkMutationPayload {
   featuredLinkOrError: DeleteFeaturedLinkResponseOrError
 }
 
-union DeleteFeaturedLinkResponseOrError = DeleteFeaturedLinkFailure | DeleteFeaturedLinkSuccess
+union DeleteFeaturedLinkResponseOrError =
+    DeleteFeaturedLinkFailure
+  | DeleteFeaturedLinkSuccess
 
 type DeleteFeaturedLinkSuccess {
   featuredLink: FeaturedLink
@@ -8930,7 +9089,9 @@ type deleteHeroUnitMutationPayload {
   heroUnitOrError: deleteHeroUnitResponseOrError
 }
 
-union deleteHeroUnitResponseOrError = deleteHeroUnitFailure | deleteHeroUnitSuccess
+union deleteHeroUnitResponseOrError =
+    deleteHeroUnitFailure
+  | deleteHeroUnitSuccess
 
 type deleteHeroUnitSuccess {
   heroUnit: HeroUnit
@@ -8978,7 +9139,9 @@ type deleteOrderedSetMutationPayload {
   orderedSetOrError: deleteOrderedSetResponseOrError
 }
 
-union deleteOrderedSetResponseOrError = deleteOrderedSetFailure | deleteOrderedSetSuccess
+union deleteOrderedSetResponseOrError =
+    deleteOrderedSetFailure
+  | deleteOrderedSetSuccess
 
 type deleteOrderedSetSuccess {
   set: OrderedSet
@@ -9035,7 +9198,9 @@ type deleteUserAdminNoteMutationPayload {
   clientMutationId: String
 }
 
-union deleteUserAdminNoteResponseOrError = deleteUserAdminNoteFailure | deleteUserAdminNoteSuccess
+union deleteUserAdminNoteResponseOrError =
+    deleteUserAdminNoteFailure
+  | deleteUserAdminNoteSuccess
 
 type deleteUserAdminNoteSuccess {
   adminNote: UserAdminNotes
@@ -9147,7 +9312,9 @@ type deleteUserRoleMutationPayload {
   userOrError: deleteUserRoleResponseOrError
 }
 
-union deleteUserRoleResponseOrError = deleteUserRoleFailure | deleteUserRoleSuccess
+union deleteUserRoleResponseOrError =
+    deleteUserRoleFailure
+  | deleteUserRoleSuccess
 
 type deleteUserRoleSuccess {
   user: User
@@ -10155,7 +10322,8 @@ type FilterArtworksConnection implements ArtworkConnectionInterface & Node {
   facet: ArtworkFilterFacet
 
   # Artwork results.
-  hits: [Artwork] @deprecated(reason: "Prefer to use `edges`. [Will be removed in v2]")
+  hits: [Artwork]
+    @deprecated(reason: "Prefer to use `edges`. [Will be removed in v2]")
 
   # The ID of the object.
   id: ID!
@@ -10338,7 +10506,12 @@ type FollowArtists {
 
 type FollowedArtistsArtworksGroup implements Node {
   artists: String
-  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
+  artworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtworkConnection
   href: String
 
   # A globally unique ID.
@@ -10547,7 +10720,12 @@ type FollowsAndSaves {
   ): FollowedArtistsArtworksGroupConnection
 
   # A list of the current user’s currently followed fair profiles
-  fairsConnection(after: String, before: String, first: Int, last: Int): FollowedFairConnection
+  fairsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): FollowedFairConnection
 
   # A list of the current user’s currently followed gallery profiles
   galleriesConnection(
@@ -10626,7 +10804,12 @@ type GeminiEntry {
 }
 
 type Gene implements Node & Searchable {
-  artistsConnection(after: String, before: String, first: Int, last: Int): ArtistConnection
+  artistsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtistConnection
   cached: Int
   description(format: Format): String
   displayLabel: String
@@ -10781,6 +10964,24 @@ type GeneFamilyEdge {
 # Meta tags for Gene pages
 type GeneMeta {
   description: String!
+}
+
+# Abstract interface shared by every kind of home view section
+interface GenericHomeViewSection {
+  # The component that is prescribed for this section
+  component: HomeViewComponent
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
+  # A stable identifier for this section
+  key: String!
+
+  # A display title for this section
+  title: String!
 }
 
 type GravityMutationError {
@@ -11132,6 +11333,53 @@ type HomePageSalesModule {
   results: [Sale]!
 }
 
+# Experimental schema for new home view
+type HomeView {
+  sectionsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): HomeViewSectionConnection
+}
+
+# A component specification
+type HomeViewComponent {
+  # Which component type to render
+  type: HomeViewComponentType
+}
+
+# Known component types for use in home view
+enum HomeViewComponentType {
+  # A standard rail of artists
+  ARTISTS_RAIL
+
+  # A standard rail of artworks
+  ARTWORKS_RAIL
+}
+
+union HomeViewSection = ArtistsRailHomeViewSection | ArtworksRailHomeViewSection
+
+# A connection to a list of items.
+type HomeViewSectionConnection {
+  # A list of edges.
+  edges: [HomeViewSectionEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type HomeViewSectionEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: HomeViewSection
+}
+
 type IdentityVerification {
   createdAt(
     format: String
@@ -11424,7 +11672,9 @@ type InquirerCollectorProfile {
   ): String
   email: String
   emailConfirmed: Boolean
-    @deprecated(reason: "emailConfirmed is going to be removed, use isEmailConfirmed instead")
+    @deprecated(
+      reason: "emailConfirmed is going to be removed, use isEmailConfirmed instead"
+    )
   firstNameLastInitial: String
   followedArtistsCount: Int!
 
@@ -11435,12 +11685,19 @@ type InquirerCollectorProfile {
   # A globally unique ID.
   id: ID!
   identityVerified: Boolean
-    @deprecated(reason: "identityVerified is going to be removed, use isIdentityVerified instead")
+    @deprecated(
+      reason: "identityVerified is going to be removed, use isIdentityVerified instead"
+    )
   initials(length: Int = 3): String
   inquiryRequestsCount: Int!
   institutionalAffiliations: String
   intents: [String]
-  interestsConnection(after: String, before: String, first: Int, last: Int): UserInterestConnection
+  interestsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): UserInterestConnection
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
@@ -11963,7 +12220,10 @@ type MarketingCollection {
   # Show artworks rail in header. Defaults to true
   showHeaderArtworksRail: Boolean!
   slug: String!
-  thumbnail: String @deprecated(reason: "If querying via Metaphysics use thumbnailImage instead.")
+  thumbnail: String
+    @deprecated(
+      reason: "If querying via Metaphysics use thumbnailImage instead."
+    )
   thumbnailImage: Image
   title: String!
   updatedAt: ISO8601DateTime!
@@ -12149,7 +12409,12 @@ type MatchEdge {
 }
 
 type Me implements Node {
-  addressConnection(after: String, before: String, first: Int, last: Int): UserAddressConnection
+  addressConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): UserAddressConnection
   alert(id: String!): Alert
   alertsConnection(
     after: String
@@ -12319,7 +12584,12 @@ type Me implements Node {
   ): String
 
   # A list of the current user’s credit cards
-  creditCards(after: String, before: String, first: Int, last: Int): CreditCardConnection
+  creditCards(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): CreditCardConnection
 
   # Currency preference of the user
   currencyPreference: CurrencyPreference!
@@ -12327,7 +12597,9 @@ type Me implements Node {
 
   # User has confirmed their email address
   emailConfirmed: Boolean!
-    @deprecated(reason: "emailConfirmed is going to be removed, use isEmailConfirmed instead")
+    @deprecated(
+      reason: "emailConfirmed is going to be removed, use isEmailConfirmed instead"
+    )
 
   # Frequency of marketing emails.
   emailFrequency: String
@@ -12347,7 +12619,9 @@ type Me implements Node {
     id: String!
   ): IdentityVerification
   identityVerified: Boolean
-    @deprecated(reason: "identityVerified is going to be removed, use isIdentityVerified instead")
+    @deprecated(
+      reason: "identityVerified is going to be removed, use isIdentityVerified instead"
+    )
   initials(length: Int = 3): String
   inquiryIntroduction: String
 
@@ -12409,7 +12683,11 @@ type Me implements Node {
   ): SaleArtworksConnection
 
   # The current user's status relating to bids on artworks
-  lotStanding(artworkID: String, saleArtworkID: String, saleID: String): LotStanding
+  lotStanding(
+    artworkID: String
+    saleArtworkID: String
+    saleID: String
+  ): LotStanding
 
   # A list of the current user's auction standings for given lots
   lotStandings(
@@ -12521,7 +12799,8 @@ type Me implements Node {
   ): CommerceOrderConnectionWithTotalCount
 
   # Collector's position with relevant institutions
-  otherRelevantPosition: String @deprecated(reason: "Use `otherRelevantPositions` instead")
+  otherRelevantPosition: String
+    @deprecated(reason: "Use `otherRelevantPositions` instead")
 
   # Collector's position with relevant institutions
   otherRelevantPositions: String
@@ -12728,7 +13007,12 @@ type Me implements Node {
   ): UserInterestConnection
 
   # A list of lots a user is watching.
-  watchedLotConnection(after: String, before: String, first: Int, last: Int): LotConnection
+  watchedLotConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): LotConnection
 }
 
 type MeCounts {
@@ -12945,7 +13229,9 @@ type Mutation {
   ): AddAssetToConsignmentSubmissionPayload
 
   # adds an item to an ordered set.
-  addOrderedSetItem(input: addOrderedSetItemMutationInput!): addOrderedSetItemMutationPayload
+  addOrderedSetItem(
+    input: addOrderedSetItemMutationInput!
+  ): addOrderedSetItemMutationPayload
 
   # Add a role associated with a user
   addUserRole(input: addUserRoleMutationInput!): addUserRoleMutationPayload
@@ -12955,16 +13241,24 @@ type Mutation {
   ): AddUserToSubmissionMutationPayload
 
   # Creates a new feature flag
-  adminCreateFeatureFlag(input: AdminCreateFeatureFlagInput!): AdminCreateFeatureFlagPayload
+  adminCreateFeatureFlag(
+    input: AdminCreateFeatureFlagInput!
+  ): AdminCreateFeatureFlagPayload
 
   # Deletes a feature flag
-  adminDeleteFeatureFlag(input: AdminDeleteFeatureFlagInput!): AdminDeleteFeatureFlagPayload
+  adminDeleteFeatureFlag(
+    input: AdminDeleteFeatureFlagInput!
+  ): AdminDeleteFeatureFlagPayload
 
   # Toggles a feature flag on or off for a given environment
-  adminToggleFeatureFlag(input: AdminToggleFeatureFlagInput!): AdminToggleFeatureFlagPayload
+  adminToggleFeatureFlag(
+    input: AdminToggleFeatureFlagInput!
+  ): AdminToggleFeatureFlagPayload
 
   # Updates a feature flag
-  adminUpdateFeatureFlag(input: AdminUpdateFeatureFlagInput!): AdminUpdateFeatureFlagPayload
+  adminUpdateFeatureFlag(
+    input: AdminUpdateFeatureFlagInput!
+  ): AdminUpdateFeatureFlagPayload
 
   # Add / remove artworks to / from collections
   artworksCollectionsBatchUpdate(
@@ -13192,7 +13486,9 @@ type Mutation {
   createBidderPosition(input: BidderPositionInput!): BidderPositionPayload
 
   # Creates Artist Career Highlight.
-  createCareerHighlight(input: CreateCareerHighlightInput!): CreateCareerHighlightPayload
+  createCareerHighlight(
+    input: CreateCareerHighlightInput!
+  ): CreateCareerHighlightPayload
 
   # Create a collection
   createCollection(input: createCollectionInput!): createCollectionPayload
@@ -13218,10 +13514,14 @@ type Mutation {
   createCreditCard(input: CreditCardInput!): CreditCardPayload
 
   # Creates a feature.
-  createFeature(input: CreateFeatureMutationInput!): CreateFeatureMutationPayload
+  createFeature(
+    input: CreateFeatureMutationInput!
+  ): CreateFeatureMutationPayload
 
   # Creates a featured link.
-  createFeaturedLink(input: CreateFeaturedLinkMutationInput!): CreateFeaturedLinkMutationPayload
+  createFeaturedLink(
+    input: CreateFeaturedLinkMutationInput!
+  ): CreateFeaturedLinkMutationPayload
 
   # Attach an gemini asset to a consignment submission
   createGeminiEntryForAsset(
@@ -13229,7 +13529,9 @@ type Mutation {
   ): CreateGeminiEntryForAssetPayload
 
   # Creates a hero unit.
-  createHeroUnit(input: CreateHeroUnitMutationInput!): CreateHeroUnitMutationPayload
+  createHeroUnit(
+    input: CreateHeroUnitMutationInput!
+  ): CreateHeroUnitMutationPayload
 
   # Create an identity verification override
   createIdentityVerificationOverride(
@@ -13249,16 +13551,22 @@ type Mutation {
   ): CommerceCreateInquiryOrderWithArtworkPayload
 
   # Creates an ordered set.
-  createOrderedSet(input: CreateOrderedSetMutationInput!): CreateOrderedSetMutationPayload
+  createOrderedSet(
+    input: CreateOrderedSetMutationInput!
+  ): CreateOrderedSetMutationPayload
 
   # Creates a static Markdown-backed page.
   createPage(input: CreatePageMutationInput!): CreatePageMutationPayload
 
   # Create a partner offer for the users
-  createPartnerOffer(input: createPartnerOfferMutationInput!): createPartnerOfferMutationPayload
+  createPartnerOffer(
+    input: createPartnerOfferMutationInput!
+  ): createPartnerOfferMutationPayload
 
   # Creates a static Markdown-backed sale agreement.
-  createSaleAgreement(input: CreateSaleAgreementMutationInput!): CreateSaleAgreementMutationPayload
+  createSaleAgreement(
+    input: CreateSaleAgreementMutationInput!
+  ): CreateSaleAgreementMutationPayload
   createSavedSearch(
     # Parameters for CreateSavedSearch
     input: CreateSavedSearchInput!
@@ -13273,10 +13581,14 @@ type Mutation {
   ): CreateUserAddressPayload
 
   # Create a admin note for the user
-  createUserAdminNote(input: createUserAdminNoteMutationInput!): createUserAdminNoteMutationPayload
+  createUserAdminNote(
+    input: createUserAdminNoteMutationInput!
+  ): createUserAdminNoteMutationPayload
 
   # Creates a UserInterest on the logged in User's CollectorProfile.
-  createUserInterest(input: CreateUserInterestMutationInput!): CreateUserInterestMutationPayload
+  createUserInterest(
+    input: CreateUserInterestMutationInput!
+  ): CreateUserInterestMutationPayload
 
   # Creates a UserInterest for a user.
   createUserInterestForUser(
@@ -13284,7 +13596,9 @@ type Mutation {
   ): CreateUserInterestForUserPayload
 
   # Collect Multiple Artists
-  createUserInterests(input: CreateUserInterestsMutationInput!): CreateUserInterestsMutationPayload
+  createUserInterests(
+    input: CreateUserInterestsMutationInput!
+  ): CreateUserInterestsMutationPayload
 
   # Create a sale profile for a user
   createUserSaleProfile(
@@ -13313,25 +13627,35 @@ type Mutation {
   deleteBankAccount(input: DeleteBankAccountInput!): DeleteBankAccountPayload
 
   # Delete an artist career highlight
-  deleteCareerHighlight(input: DeleteCareerHighlightInput!): DeleteCareerHighlightPayload
+  deleteCareerHighlight(
+    input: DeleteCareerHighlightInput!
+  ): DeleteCareerHighlightPayload
 
   # Delete a collection
   deleteCollection(input: deleteCollectionInput!): deleteCollectionPayload
 
   # Soft-delete a conversation.
-  deleteConversation(input: DeleteConversationMutationInput!): DeleteConversationMutationPayload
+  deleteConversation(
+    input: DeleteConversationMutationInput!
+  ): DeleteConversationMutationPayload
 
   # Remove a credit card
   deleteCreditCard(input: DeleteCreditCardInput!): DeleteCreditCardPayload
 
   # deletes a feature.
-  deleteFeature(input: DeleteFeatureMutationInput!): DeleteFeatureMutationPayload
+  deleteFeature(
+    input: DeleteFeatureMutationInput!
+  ): DeleteFeatureMutationPayload
 
   # deletes a featured link.
-  deleteFeaturedLink(input: DeleteFeaturedLinkMutationInput!): DeleteFeaturedLinkMutationPayload
+  deleteFeaturedLink(
+    input: DeleteFeaturedLinkMutationInput!
+  ): DeleteFeaturedLinkMutationPayload
 
   # deletes a hero unit.
-  deleteHeroUnit(input: deleteHeroUnitMutationInput!): deleteHeroUnitMutationPayload
+  deleteHeroUnit(
+    input: deleteHeroUnitMutationInput!
+  ): deleteHeroUnitMutationPayload
 
   # Delete User Artsy Account
   deleteMyAccountMutation(input: DeleteAccountInput!): DeleteAccountPayload
@@ -13340,7 +13664,9 @@ type Mutation {
   deleteMyUserProfileIcon(input: DeleteUserIconInput!): DeleteUserIconPayload
 
   # deletes an ordered set.
-  deleteOrderedSet(input: deleteOrderedSetMutationInput!): deleteOrderedSetMutationPayload
+  deleteOrderedSet(
+    input: deleteOrderedSetMutationInput!
+  ): deleteOrderedSetMutationPayload
 
   # deletes an item to an ordered set.
   deleteOrderedSetItem(
@@ -13358,10 +13684,14 @@ type Mutation {
   ): DeleteUserAddressPayload
 
   # delete an admin note for the user
-  deleteUserAdminNote(input: deleteUserAdminNoteMutationInput!): deleteUserAdminNoteMutationPayload
+  deleteUserAdminNote(
+    input: deleteUserAdminNoteMutationInput!
+  ): deleteUserAdminNoteMutationPayload
 
   # Deletes a UserInterest on the logged in User's CollectorProfile.
-  deleteUserInterest(input: DeleteUserInterestMutationInput!): DeleteUserInterestMutationPayload
+  deleteUserInterest(
+    input: DeleteUserInterestMutationInput!
+  ): DeleteUserInterestMutationPayload
 
   # Delete a UserInterest.
   deleteUserInterestForUser(
@@ -13369,10 +13699,14 @@ type Mutation {
   ): DeleteUserInterestForUserPayload
 
   # Deletes multiple UserInterests on the logged in User's CollectorProfile.
-  deleteUserInterests(input: DeleteUserInterestsMutationInput!): DeleteUserInterestsMutationPayload
+  deleteUserInterests(
+    input: DeleteUserInterestsMutationInput!
+  ): DeleteUserInterestsMutationPayload
 
   # Delete a role associated with a user
-  deleteUserRole(input: deleteUserRoleMutationInput!): deleteUserRoleMutationPayload
+  deleteUserRole(
+    input: deleteUserRoleMutationInput!
+  ): deleteUserRoleMutationPayload
 
   # Deletes a Verified Representative.
   deleteVerifiedRepresentative(
@@ -13422,7 +13756,9 @@ type Mutation {
   ): HoldInventoryPayload
 
   # Links a 3rd party account
-  linkAuthentication(input: LinkAuthenticationMutationInput!): LinkAuthenticationMutationPayload
+  linkAuthentication(
+    input: LinkAuthenticationMutationInput!
+  ): LinkAuthenticationMutationPayload
 
   # Mark all unread notifications as read
   markAllNotificationsAsRead(
@@ -13430,10 +13766,14 @@ type Mutation {
   ): MarkAllNotificationsAsReadPayload
 
   # Mark an unread notifications as read
-  markNotificationAsRead(input: MarkNotificationAsReadInput!): MarkNotificationAsReadPayload
+  markNotificationAsRead(
+    input: MarkNotificationAsReadInput!
+  ): MarkNotificationAsReadPayload
 
   # Mark notifications as seen
-  markNotificationsAsSeen(input: MarkNotificationsAsSeenInput!): MarkNotificationsAsSeenPayload
+  markNotificationsAsSeen(
+    input: MarkNotificationsAsSeenInput!
+  ): MarkNotificationsAsSeenPayload
 
   # Merge multiple artist records in order to deduplicate artists
   mergeArtists(input: MergeArtistsMutationInput!): MergeArtistsMutationPayload
@@ -13475,7 +13815,9 @@ type Mutation {
   ): RequestCredentialsForAssetUploadPayload
 
   # Request price estimate of an artwork
-  requestPriceEstimate(input: RequestPriceEstimateInput!): RequestPriceEstimatePayload
+  requestPriceEstimate(
+    input: RequestPriceEstimateInput!
+  ): RequestPriceEstimatePayload
 
   # Save (or remove) an artwork to (from) a users default collection.
   saveArtwork(input: SaveArtworkInput!): SaveArtworkPayload
@@ -13540,10 +13882,14 @@ type Mutation {
   updateArtist(input: UpdateArtistMutationInput!): UpdateArtistMutationPayload
 
   # Updates an artwork.
-  updateArtwork(input: UpdateArtworkMutationInput!): UpdateArtworkMutationPayload
+  updateArtwork(
+    input: UpdateArtworkMutationInput!
+  ): UpdateArtworkMutationPayload
 
   # Updates Artist Career Highlight.
-  updateCareerHighlight(input: UpdateCareerHighlightInput!): UpdateCareerHighlightPayload
+  updateCareerHighlight(
+    input: UpdateCareerHighlightInput!
+  ): UpdateCareerHighlightPayload
 
   # Updates the flags on a partner.
   updateCMSLastAccessTimestamp(
@@ -13554,7 +13900,9 @@ type Mutation {
   updateCollection(input: updateCollectionInput!): updateCollectionPayload
 
   # Updating a collector profile (loyalty applicant status).
-  updateCollectorProfile(input: UpdateCollectorProfileInput!): UpdateCollectorProfilePayload
+  updateCollectorProfile(
+    input: UpdateCollectorProfileInput!
+  ): UpdateCollectorProfilePayload
 
   # Updating a collector profile (loyalty applicant status).
   updateCollectorProfileWithID(
@@ -13566,16 +13914,24 @@ type Mutation {
   ): UpdateSubmissionMutationPayload
 
   # Update a conversation.
-  updateConversation(input: UpdateConversationMutationInput!): UpdateConversationMutationPayload
+  updateConversation(
+    input: UpdateConversationMutationInput!
+  ): UpdateConversationMutationPayload
 
   # updates a feature.
-  updateFeature(input: UpdateFeatureMutationInput!): UpdateFeatureMutationPayload
+  updateFeature(
+    input: UpdateFeatureMutationInput!
+  ): UpdateFeatureMutationPayload
 
   # updates a featured link.
-  updateFeaturedLink(input: UpdateFeaturedLinkMutationInput!): UpdateFeaturedLinkMutationPayload
+  updateFeaturedLink(
+    input: UpdateFeaturedLinkMutationInput!
+  ): UpdateFeaturedLinkMutationPayload
 
   # updates a hero unit.
-  updateHeroUnit(input: UpdateHeroUnitMutationInput!): UpdateHeroUnitMutationPayload
+  updateHeroUnit(
+    input: UpdateHeroUnitMutationInput!
+  ): UpdateHeroUnitMutationPayload
 
   # Updates the user's collections in batch.
   updateMeCollectionsMutation(
@@ -13583,10 +13939,14 @@ type Mutation {
   ): updateMeCollectionsMutationPayload
 
   # Update a message.
-  updateMessage(input: UpdateMessageMutationInput!): UpdateMessageMutationPayload
+  updateMessage(
+    input: UpdateMessageMutationInput!
+  ): UpdateMessageMutationPayload
 
   # Updates the logged in user's password
-  updateMyPassword(input: UpdateMyPasswordMutationInput!): UpdateMyPasswordMutationPayload
+  updateMyPassword(
+    input: UpdateMyPasswordMutationInput!
+  ): UpdateMyPasswordMutationPayload
 
   # Update the current logged in user.
   updateMyUserProfile(input: UpdateMyProfileInput!): UpdateMyProfilePayload
@@ -13597,19 +13957,25 @@ type Mutation {
   ): updateNotificationPreferencesMutationPayload
 
   # updates an ordered set.
-  updateOrderedSet(input: UpdateOrderedSetMutationInput!): UpdateOrderedSetMutationPayload
+  updateOrderedSet(
+    input: UpdateOrderedSetMutationInput!
+  ): UpdateOrderedSetMutationPayload
 
   # Updates a page.
   updatePage(input: UpdatePageMutationInput!): UpdatePageMutationPayload
 
   # Updates a partner artist.
-  updatePartnerShow(input: UpdatePartnerShowMutationInput!): UpdatePartnerShowMutationPayload
+  updatePartnerShow(
+    input: UpdatePartnerShowMutationInput!
+  ): UpdatePartnerShowMutationPayload
 
   # Update a quiz artwork interacted_with flag
   updateQuiz(input: updateQuizMutationInput!): updateQuizMutationPayload
 
   # Updates a saleAgreement.
-  updateSaleAgreement(input: UpdateSaleAgreementMutationInput!): UpdateSaleAgreementMutationPayload
+  updateSaleAgreement(
+    input: UpdateSaleAgreementMutationInput!
+  ): UpdateSaleAgreementMutationPayload
   updateSavedSearch(
     # Parameters for UpdateSavedSearch
     input: UpdateSavedSearchInput!
@@ -13631,10 +13997,14 @@ type Mutation {
   ): UpdateUserDefaultAddressPayload
 
   # Updates a UserInterest on the logged in User's CollectorProfile.
-  updateUserInterest(input: UpdateUserInterestMutationInput!): UpdateUserInterestMutationPayload
+  updateUserInterest(
+    input: UpdateUserInterestMutationInput!
+  ): UpdateUserInterestMutationPayload
 
   # Update user interests for multiple artists
-  updateUserInterests(input: UpdateUserInterestsMutationInput!): UpdateUserInterestsMutationPayload
+  updateUserInterests(
+    input: UpdateUserInterestsMutationInput!
+  ): UpdateUserInterestsMutationPayload
 
   # Update the user sale profile
   updateUserSaleProfile(
@@ -13717,7 +14087,8 @@ type MyCollectionConnection {
     page: Int
     size: Int
     sort: ArtistSorts
-  ): ArtistConnection @deprecated(reason: "Please use `me.userInterestsConnection` instead")
+  ): ArtistConnection
+    @deprecated(reason: "Please use `me.userInterestsConnection` instead")
   default: Boolean!
   description: String!
 
@@ -13826,7 +14197,8 @@ type MyCollectionInfo {
     page: Int
     size: Int
     sort: ArtistSorts
-  ): ArtistConnection @deprecated(reason: "Please use `me.userInterestsConnection` instead")
+  ): ArtistConnection
+    @deprecated(reason: "Please use `me.userInterestsConnection` instead")
   default: Boolean!
   description: String!
   includesPurchasedArtworks: Boolean!
@@ -13917,7 +14289,12 @@ interface Node {
 }
 
 type Notification implements Node {
-  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
+  artworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtworkConnection
   createdAt(
     format: String
 
@@ -14070,7 +14447,12 @@ type OrderedSet {
   items: [OrderedSetItem]
 
   # Returns a connection of the items. Only Artwork supported right now.
-  itemsConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
+  itemsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtworkConnection
     @deprecated(reason: "Utilize `orderedItemsConnection` for union type")
   itemType: String
   key: String
@@ -14106,7 +14488,14 @@ type OrderedSetEdge {
   node: OrderedSet
 }
 
-union OrderedSetItem = Artist | Artwork | FeaturedLink | Gene | Profile | Sale | Show
+union OrderedSetItem =
+    Artist
+  | Artwork
+  | FeaturedLink
+  | Gene
+  | Profile
+  | Sale
+  | Show
 
 # A connection to a list of items.
 type OrderedSetItemConnection {
@@ -14455,7 +14844,8 @@ type Partner implements Node {
     tagID: String
     width: String
   ): FilterArtworksConnection
-  fullProfileEligible: Boolean @deprecated(reason: "Prefer displayFullPartnerPage")
+  fullProfileEligible: Boolean
+    @deprecated(reason: "Prefer displayFullPartnerPage")
   hasFairPartnership: Boolean
 
   # The url for a partner. May be `null` if partner is not eligible for page.
@@ -14485,7 +14875,9 @@ type Partner implements Node {
 
   # This field is deprecated and is being used in Eigen release predating the 6.0 release
   locations(size: Int = 25): [Location]
-    @deprecated(reason: "Prefer to use `locationsConnection`. [Will be removed in v2]")
+    @deprecated(
+      reason: "Prefer to use `locationsConnection`. [Will be removed in v2]"
+    )
 
   # A connection of locations from a Partner.
   locationsConnection(
@@ -14737,7 +15129,12 @@ type PartnerArtistEdge {
 }
 
 type PartnerArtworkGrid implements ArtworkContextGrid {
-  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
+  artworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtworkConnection
   ctaHref: String
   ctaTitle: String
   title: String
@@ -15025,7 +15422,9 @@ type PartnerOffer implements Node {
     @deprecated(reason: "This field is deprecated. Use 'priceListed' instead.")
   priceWithDiscount: Money
   priceWithDiscountMessage: String
-    @deprecated(reason: "This field is deprecated. Use 'priceWithDiscount' instead.")
+    @deprecated(
+      reason: "This field is deprecated. Use 'priceWithDiscount' instead."
+    )
   source: PartnerOfferSourceEnum
   userIds: [String]
 }
@@ -15042,7 +15441,12 @@ type PartnerOfferConnection {
 }
 
 type PartnerOfferCreatedNotificationItem {
-  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
+  artworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtworkConnection
 
   # Deprecated. Use `partnerOffer.isAvailable` instead.
   available: Boolean
@@ -15512,7 +15916,8 @@ type Profile {
   bio: String
   cached: Int
   counts: ProfileCounts
-  displayArtistsSection: Boolean @deprecated(reason: "Prefer displayArtistsSection in Partner type")
+  displayArtistsSection: Boolean
+    @deprecated(reason: "Prefer displayArtistsSection in Partner type")
   fullBio: String
   href: String
   icon: Image
@@ -15530,7 +15935,8 @@ type Profile {
   location: String
   name: String
   owner: ProfileOwnerType!
-  profileArtistsLayout: String @deprecated(reason: "Prefer profileArtistsLayout in Partner type")
+  profileArtistsLayout: String
+    @deprecated(reason: "Prefer profileArtistsLayout in Partner type")
 
   # A slug ID.
   slug: ID!
@@ -15634,7 +16040,10 @@ type Query {
   _unused_gravity_partners(ids: [ID!]!): [DoNotUseThisPartner!]
 
   # Find a saved search by ID or criteria
-  _unused_gravity_savedSearch(criteria: SearchCriteriaAttributes, id: ID): SearchCriteria
+  _unused_gravity_savedSearch(
+    criteria: SearchCriteriaAttributes
+    id: ID
+  ): SearchCriteria
 
   # List of user's saved searches
   _unused_gravity_savedSearchesConnection(
@@ -15658,7 +16067,9 @@ type Query {
   ): SearchCriteriaConnection
 
   # List enabled Two-Factor Authentication factors
-  _unused_gravity_secondFactors(kinds: [SecondFactorKind!] = [app, sms, backup]): [SecondFactor!]!
+  _unused_gravity_secondFactors(
+    kinds: [SecondFactorKind!] = [app, sms, backup]
+  ): [SecondFactor!]!
 
   # List of user's saved addresses
   _unused_gravity_userAddressConnection(
@@ -16071,10 +16482,16 @@ type Query {
   ): CommerceOrderConnectionWithTotalCount
 
   # Find balance of an account associated with a setup intent
-  commerceBankAccountBalance(bankAccountId: ID, setupIntentId: ID): CommerceBankAccountBalance
+  commerceBankAccountBalance(
+    bankAccountId: ID
+    setupIntentId: ID
+  ): CommerceBankAccountBalance
 
   # Buyer Activity Data for Collector Resume
-  commerceBuyerActivity(buyerId: String!, sellerId: String): CommerceBuyerActivity
+  commerceBuyerActivity(
+    buyerId: String!
+    sellerId: String
+  ): CommerceBuyerActivity
 
   # Find list of competing orders
   commerceCompetingOrders(
@@ -16205,7 +16622,12 @@ type Query {
   curatedMarketingCollections(size: Int): [MarketingCollection]
 
   # A list of trending artists. Inferred from a manually curated collection of trending artworks.
-  curatedTrendingArtists(after: String, before: String, first: Int, last: Int): ArtistConnection
+  curatedTrendingArtists(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtistConnection
   departments: [Department!]!
 
   # A namespace external partners (provided by Galaxy)
@@ -16336,7 +16758,12 @@ type Query {
   ): Gene
 
   # A list of Gene Families
-  geneFamiliesConnection(after: String, before: String, first: Int, last: Int): GeneFamilyConnection
+  geneFamiliesConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): GeneFamilyConnection
 
   # A list of Genes
   genes(
@@ -16370,6 +16797,9 @@ type Query {
 
   # Home screen content
   homePage: HomePage
+
+  # Home view content
+  homeView: HomeView!
 
   # An identity verification that the user has access to
   identityVerification(
@@ -16461,7 +16891,9 @@ type Query {
   ): Node
 
   # User's notification preferences
-  notificationPreferences(authenticationToken: String): [NotificationPreference!]!
+  notificationPreferences(
+    authenticationToken: String
+  ): [NotificationPreference!]!
 
   # A feed of notifications
   notificationsConnection(
@@ -16559,7 +16991,8 @@ type Query {
     # The slug or ID of the Partner
     partnerID: String!
     size: Int
-  ): PartnerArtistDocumentConnection @deprecated(reason: "Prefer `partner.documentsConnection`")
+  ): PartnerArtistDocumentConnection
+    @deprecated(reason: "Prefer `partner.documentsConnection`")
 
   # A list of Artworks for a partner
   partnerArtworks(
@@ -16640,7 +17073,8 @@ type Query {
     # The slug or ID of the Show
     showID: String!
     size: Int
-  ): PartnerShowDocumentConnection @deprecated(reason: "Prefer `partner.documentsConnection`")
+  ): PartnerShowDocumentConnection
+    @deprecated(reason: "Prefer `partner.documentsConnection`")
 
   # Phone number information
   phoneNumber(phoneNumber: String!, regionCode: String): PhoneNumberType
@@ -17050,7 +17484,12 @@ enum RelatedArtistsKind {
 }
 
 type RelatedArtworkGrid implements ArtworkContextGrid {
-  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
+  artworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtworkConnection
   ctaHref: String
   ctaTitle: String
   title: String
@@ -18218,7 +18657,9 @@ type SendFeedbackMutationSuccess {
   feedback: Feedback
 }
 
-union SendFeedbackMutationType = SendFeedbackMutationFailure | SendFeedbackMutationSuccess
+union SendFeedbackMutationType =
+    SendFeedbackMutationFailure
+  | SendFeedbackMutationSuccess
 
 input SendIdentityVerificationEmailMutationInput {
   clientMutationId: String
@@ -18514,7 +18955,12 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
 }
 
 type ShowArtworkGrid implements ArtworkContextGrid {
-  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
+  artworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtworkConnection
   ctaHref: String
   ctaTitle: String
   title: String
@@ -18607,7 +19053,12 @@ type ShowFollowArtistEdge {
 
 type ShowOpenedNotificationItem {
   partner: Partner
-  showsConnection(after: String, before: String, first: Int, last: Int): ShowConnection
+  showsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ShowConnection
 }
 
 enum ShowSorts {
@@ -18971,7 +19422,9 @@ type TransferMyCollectionSuccess {
 }
 
 # A transfer My Collection success or errors object
-union TransferMyCollectionSuccessOrErrorsUnion = Errors | TransferMyCollectionSuccess
+union TransferMyCollectionSuccessOrErrorsUnion =
+    Errors
+  | TransferMyCollectionSuccess
 
 type TrendingArtists {
   artists: [Artist]
@@ -19226,7 +19679,9 @@ type updateCollectionPayload {
   responseOrError: UpdateCollectionResponseOrError
 }
 
-union UpdateCollectionResponseOrError = UpdateCollectionFailure | UpdateCollectionSuccess
+union UpdateCollectionResponseOrError =
+    UpdateCollectionFailure
+  | UpdateCollectionSuccess
 
 type UpdateCollectionSuccess {
   collection: Collection
@@ -19281,7 +19736,9 @@ type UpdateCollectorProfilePayload {
   ): String
   email: String
   emailConfirmed: Boolean
-    @deprecated(reason: "emailConfirmed is going to be removed, use isEmailConfirmed instead")
+    @deprecated(
+      reason: "emailConfirmed is going to be removed, use isEmailConfirmed instead"
+    )
   firstNameLastInitial: String
   followedArtistsCount: Int!
   icon: Image
@@ -19289,12 +19746,19 @@ type UpdateCollectorProfilePayload {
   # A globally unique ID.
   id: ID!
   identityVerified: Boolean
-    @deprecated(reason: "identityVerified is going to be removed, use isIdentityVerified instead")
+    @deprecated(
+      reason: "identityVerified is going to be removed, use isIdentityVerified instead"
+    )
   initials(length: Int = 3): String
   inquiryRequestsCount: Int!
   institutionalAffiliations: String
   intents: [String]
-  interestsConnection(after: String, before: String, first: Int, last: Int): UserInterestConnection
+  interestsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): UserInterestConnection
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
@@ -19458,7 +19922,9 @@ type UpdateFeaturedLinkMutationPayload {
   featuredLinkOrError: UpdateFeaturedLinkResponseOrError
 }
 
-union UpdateFeaturedLinkResponseOrError = UpdateFeaturedLinkFailure | UpdateFeaturedLinkSuccess
+union UpdateFeaturedLinkResponseOrError =
+    UpdateFeaturedLinkFailure
+  | UpdateFeaturedLinkSuccess
 
 type UpdateFeaturedLinkSuccess {
   featuredLink: FeaturedLink
@@ -19524,7 +19990,9 @@ type UpdateHeroUnitMutationPayload {
   heroUnitOrError: updateHeroUnitResponseOrError
 }
 
-union updateHeroUnitResponseOrError = updateHeroUnitFailure | updateHeroUnitSuccess
+union updateHeroUnitResponseOrError =
+    updateHeroUnitFailure
+  | updateHeroUnitSuccess
 
 type updateHeroUnitSuccess {
   heroUnit: HeroUnit
@@ -19549,7 +20017,9 @@ type updateMeCollectionsMutationPayload {
   meCollectionsOrErrors: [UpdateMeCollectionsResponseOrError!]!
 }
 
-union UpdateMeCollectionsResponseOrError = UpdateMeCollectionsFailure | UpdateMeCollectionsSuccess
+union UpdateMeCollectionsResponseOrError =
+    UpdateMeCollectionsFailure
+  | UpdateMeCollectionsSuccess
 
 type UpdateMeCollectionsSuccess {
   collection: Collection
@@ -19704,7 +20174,9 @@ input UpdateMyProfileInput {
   shareFollows: Boolean
 }
 
-union UpdateMyProfileMutation = UpdateMyProfileMutationFailure | UpdateMyProfileMutationSuccess
+union UpdateMyProfileMutation =
+    UpdateMyProfileMutationFailure
+  | UpdateMyProfileMutationSuccess
 
 type UpdateMyProfileMutationFailure {
   mutationError: GravityMutationError
@@ -19731,7 +20203,9 @@ type updateNotificationPreferencesMutationPayload {
   clientMutationId: String
 
   # User's notification preferences
-  notificationPreferences(authenticationToken: String): [NotificationPreference!]!
+  notificationPreferences(
+    authenticationToken: String
+  ): [NotificationPreference!]!
 }
 
 type UpdateOrderedSetFailure {
@@ -19764,7 +20238,9 @@ type UpdateOrderedSetMutationPayload {
   orderedSetOrError: UpdateOrderedSetResponseOrError
 }
 
-union UpdateOrderedSetResponseOrError = UpdateOrderedSetFailure | UpdateOrderedSetSuccess
+union UpdateOrderedSetResponseOrError =
+    UpdateOrderedSetFailure
+  | UpdateOrderedSetSuccess
 
 type UpdateOrderedSetSuccess {
   feature: Feature
@@ -19820,7 +20296,9 @@ type UpdatePartnerShowMutationPayload {
   showOrError: UpdatePartnerShowResponseOrError
 }
 
-union UpdatePartnerShowResponseOrError = UpdatePartnerShowFailure | UpdatePartnerShowSuccess
+union UpdatePartnerShowResponseOrError =
+    UpdatePartnerShowFailure
+  | UpdatePartnerShowSuccess
 
 type UpdatePartnerShowSuccess {
   show: Show
@@ -19860,7 +20338,9 @@ type UpdateSaleAgreementMutationPayload {
   saleAgreementOrError: UpdateSaleAgreementResponseOrError
 }
 
-union UpdateSaleAgreementResponseOrError = UpdateSaleAgreementFailure | UpdateSaleAgreementSuccess
+union UpdateSaleAgreementResponseOrError =
+    UpdateSaleAgreementFailure
+  | UpdateSaleAgreementSuccess
 
 type UpdateSaleAgreementSuccess {
   saleAgreement: SaleAgreement
@@ -20009,7 +20489,9 @@ type UpdateUserInterestMutationPayload {
 
 union UpdateUserInterestOrError = UpdateUserInterestsFailure | UserInterest
 
-union UpdateUserInterestResponseOrError = UpdateUserInterestFailure | UpdateUserInterestSuccess
+union UpdateUserInterestResponseOrError =
+    UpdateUserInterestFailure
+  | UpdateUserInterestSuccess
 
 type UpdateUserInterestsFailure {
   mutationError: GravityMutationError
@@ -20174,7 +20656,12 @@ type User implements Node {
     first: Int
     last: Int
   ): UserInquiredArtworksConnection
-  interestsConnection(after: String, before: String, first: Int, last: Int): UserInterestConnection
+  interestsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): UserInterestConnection
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
@@ -20267,7 +20754,12 @@ type User implements Node {
 
   # The sale profile of the user.
   saleProfile: UserSaleProfile
-  savedArtworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
+  savedArtworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtworkConnection
 
   # If the user has enabled two-factor authentication on their account
   secondFactorEnabled: Boolean!
@@ -20463,8 +20955,18 @@ type UserEdge {
 }
 
 type UserFollows {
-  artistsConnection(after: String, before: String, first: Int, last: Int): ArtistConnection
-  genesConnection(after: String, before: String, first: Int, last: Int): GeneConnection
+  artistsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtistConnection
+  genesConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): GeneConnection
 }
 
 type UserIconDeleteFailureType {
@@ -20476,7 +20978,9 @@ type UserIconDeleteSuccessType {
   success: Boolean
 }
 
-union UserIconDeletionMutationType = UserIconDeleteFailureType | UserIconDeleteSuccessType
+union UserIconDeletionMutationType =
+    UserIconDeleteFailureType
+  | UserIconDeleteSuccessType
 
 # A connection to a list of items.
 type UserInquiredArtworksConnection {
@@ -21100,7 +21604,12 @@ type Viewer {
   ): CreditCard
 
   # A list of trending artists. Inferred from a manually curated collection of trending artworks.
-  curatedTrendingArtists(after: String, before: String, first: Int, last: Int): ArtistConnection
+  curatedTrendingArtists(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtistConnection
   departments: [Department!]!
 
   # A namespace external partners (provided by Galaxy)
@@ -21231,7 +21740,12 @@ type Viewer {
   ): Gene
 
   # A list of Gene Families
-  geneFamiliesConnection(after: String, before: String, first: Int, last: Int): GeneFamilyConnection
+  geneFamiliesConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): GeneFamilyConnection
 
   # A list of Genes
   genes(
@@ -21265,6 +21779,9 @@ type Viewer {
 
   # Home screen content
   homePage: HomePage
+
+  # Home view content
+  homeView: HomeView!
 
   # An identity verification that the user has access to
   identityVerification(
@@ -21347,7 +21864,9 @@ type Viewer {
   ): Node
 
   # User's notification preferences
-  notificationPreferences(authenticationToken: String): [NotificationPreference!]!
+  notificationPreferences(
+    authenticationToken: String
+  ): [NotificationPreference!]!
 
   # A feed of notifications
   notificationsConnection(
@@ -21414,7 +21933,8 @@ type Viewer {
     # The slug or ID of the Partner
     partnerID: String!
     size: Int
-  ): PartnerArtistDocumentConnection @deprecated(reason: "Prefer `partner.documentsConnection`")
+  ): PartnerArtistDocumentConnection
+    @deprecated(reason: "Prefer `partner.documentsConnection`")
 
   # A list of Artworks for a partner
   partnerArtworks(
@@ -21495,7 +22015,8 @@ type Viewer {
     # The slug or ID of the Show
     showID: String!
     size: Int
-  ): PartnerShowDocumentConnection @deprecated(reason: "Prefer `partner.documentsConnection`")
+  ): PartnerShowDocumentConnection
+    @deprecated(reason: "Prefer `partner.documentsConnection`")
 
   # Phone number information
   phoneNumber(phoneNumber: String!, regionCode: String): PhoneNumberType
@@ -21720,7 +22241,12 @@ type Viewer {
 # An artwork viewing room
 type ViewingRoom {
   artworkIDs: [String!]!
-  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
+  artworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtworkConnection
 
   # Body copy
   body: String
@@ -21743,7 +22269,12 @@ type ViewingRoom {
   # Introductory paragraph
   introStatement: String
   partner: Partner
-  partnerArtworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
+  partnerArtworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtworkConnection
 
   # ID of the partner associated with this viewing room
   partnerID: String!

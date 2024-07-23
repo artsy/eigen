@@ -9,9 +9,9 @@ When adding a new screen to Eigen, make sure to use `Screen` components coming f
 ![screen-with-animated-header](./screenshots/screen-with-header.gif)
 
 ```typescript
-const App = () => {
-  import { Screen } from "@artsy/palette-mobile"
+import { Screen } from "@artsy/palette-mobile"
 
+const App = () => {
   return (
     <Screen>
       <Screen.AnimatedHeader onBack={goBack} title="Activity" />
