@@ -429,7 +429,7 @@ export const modules = defineModules({
   AuctionRegistration: reactModule(RegistrationFlow, {
     alwaysPresentModally: true,
     hasOwnModalCloseButton: true,
-    fullBleed: true,
+    fullBleed: Platform.OS === "ios",
     screenOptions: {
       // Don't allow the screen to be swiped away by mistake
       gestureEnabled: false,
