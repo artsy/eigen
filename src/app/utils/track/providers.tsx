@@ -38,7 +38,6 @@ export type InfoType =
 
 export interface TrackingProvider {
   setup?: () => void
-  name: string
   identify?: (userId: string | null, traits?: { [key: string]: any }) => void
   postEvent: (info: InfoType) => void
 }
@@ -47,13 +46,11 @@ const providers: { [name: string]: TrackingProvider } = {}
 
 export const _addTrackingProvider = (name: string, provider: TrackingProvider) => {
   provider.setup?.()
-  provider.name = name
   providers[name] = provider
 }
 
 export const postEventToProviders = (info: any) => {
   Object.values(providers).forEach((provider) => {
-    console.log("Posting event to provider", provider)
     provider.postEvent(info)
   })
 }
