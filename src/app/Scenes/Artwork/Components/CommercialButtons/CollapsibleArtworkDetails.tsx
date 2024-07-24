@@ -16,7 +16,7 @@ export interface CollapsibleArtworkDetailsProps {
 const artworkDetailItems = (artwork: CollapsibleArtworkDetails_artwork$data) => {
   const items = [
     { title: "Price", value: artwork.saleMessage },
-    { title: "Medium", value: artwork.category },
+    { title: "Medium", value: artwork.mediumType?.name },
     { title: "Manufacturer", value: artwork.manufacturer },
     { title: "Publisher", value: artwork.publisher },
     { title: "Materials", value: artwork.medium },
@@ -26,7 +26,7 @@ const artworkDetailItems = (artwork: CollapsibleArtworkDetails_artwork$data) => 
       value: [artwork.dimensions?.in, artwork.dimensions?.cm].filter((d) => d).join("\n"),
     },
     { title: "Signature", value: artwork.signatureInfo?.details },
-    { title: "Frame", value: artwork.framed?.details },
+    { title: "Frame", value: artwork.isFramed ? "Included" : "Not included" },
     { title: "Certificate of Authenticity", value: artwork.certificateOfAuthenticity?.details },
     { title: "Condition", value: artwork.conditionDescription?.details },
   ]
@@ -106,7 +106,9 @@ export const CollapsibleArtworkDetailsFragmentContainer = createFragmentContaine
         attributionClass {
           name
         }
-        category
+        mediumType {
+          name
+        }
         manufacturer
         publisher
         medium
@@ -116,9 +118,7 @@ export const CollapsibleArtworkDetailsFragmentContainer = createFragmentContaine
         certificateOfAuthenticity {
           details
         }
-        framed {
-          details
-        }
+        isFramed
         dimensions {
           in
           cm
