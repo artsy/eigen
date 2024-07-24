@@ -33,7 +33,7 @@ export const ContactGalleryButton: React.FC<ContactGalleryButtonProps> = ({
       <InquirySuccessNotification />
       <Button
         onPress={() => {
-          trackEvent(tracks.trackTappedContactGallery(artworkData.slug, artworkData.internalID))
+          trackEvent(tracks.trackTappedContactGallery(artworkData.internalID, artworkData.slug))
           setModalVisibility(true)
         }}
         haptic
@@ -53,38 +53,18 @@ export const ContactGalleryButton: React.FC<ContactGalleryButtonProps> = ({
 }
 
 const tracks = {
-  trackTappedContactGallery: (slug: string, internalID: string): TappedContactGallery => ({
+  trackTappedContactGallery: (artworkId: string, artworkSlug: string): TappedContactGallery => ({
     action: ActionType.tappedContactGallery,
     context_owner_type: OwnerType.artwork,
-    context_owner_slug: slug,
-    context_owner_id: internalID,
+    context_owner_id: artworkId,
+    context_owner_slug: artworkSlug,
   }),
 }
 
 const artworkFragment = graphql`
   fragment ContactGalleryButton_artwork on Artwork {
-    image {
-      url
-      width
-      height
-    }
-    slug
     internalID
-    isPriceHidden
-    title
-    date
-    medium
-    dimensions {
-      in
-      cm
-    }
-    editionOf
-    signatureInfo {
-      details
-    }
-    artist {
-      name
-    }
+    slug
     ...InquiryModal_artwork
     ...CompleteProfilePrompt_artwork
   }
