@@ -8,9 +8,13 @@ import { useToast } from "app/Components/Toast/toastHook"
 import { myCollectionUpdateArtwork } from "app/Scenes/MyCollection/mutations/myCollectionUpdateArtwork"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
+import { updateMyCollectionArtwork } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/updateMyCollectionArtwork"
 import { useNavigationListeners } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useNavigationListeners"
 import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { InfoModal } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/InfoModal/InfoModal"
+import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
+import { GlobalStore } from "app/store/GlobalStore"
+import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { useFormikContext } from "formik"
@@ -51,6 +55,24 @@ export const SubmitArtworkCondition = () => {
 
         // Make API call to update related My Collection artwork
         await myCollectionUpdateArtwork(newValues)
+
+        // Update submission state
+        await createOrUpdateSubmission(
+          {
+            state: "RESUBMITTED",
+          },
+          values.submissionId
+        )
+        // Reset saved draft if submission is successful
+        GlobalStore.actions.artworkSubmission.setDraft(null)
+        // Refetch associated My Collection artwork to display the updated submission status on the artwork screen.
+        if (values.myCollectionArtworkID) {
+          await updateMyCollectionArtwork({
+            artworkID: values.myCollectionArtworkID,
+          })
+        }
+
+        refreshMyCollection()
 
         navigation.navigate("CompleteYourSubmission")
         setCurrentStep("CompleteYourSubmission")
