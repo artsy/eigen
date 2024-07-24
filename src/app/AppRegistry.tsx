@@ -144,12 +144,7 @@ import {
 import { GlobalStore } from "./store/GlobalStore"
 import { propsStore } from "./store/PropsStore"
 import { DevMenu } from "./system/devTools/DevMenu/DevMenu"
-import { Schema, addTrackingProvider, screenTrack } from "./utils/track"
-import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
-import {
-  SEGMENT_TRACKING_PROVIDER,
-  SegmentTrackingProvider,
-} from "./utils/track/SegmentTrackingProvider"
+import { Schema, screenTrack } from "./utils/track"
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
@@ -158,9 +153,6 @@ LogBox.ignoreLogs([
 
   ".removeListener(", // this is coming from https://github.com/facebook/react-native/blob/v0.68.0-rc.2/Libraries/AppState/AppState.js and other libs.
 ])
-
-addTrackingProvider(SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider)
-addTrackingProvider("console", ConsoleTrackingProvider)
 
 interface PartnerLocationsProps {
   partnerID: string
