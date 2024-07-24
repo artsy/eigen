@@ -1,5 +1,6 @@
 This update includes a number of improvements and bug fixes.
 
-- Improved image loaders across the app
+- Redesign of Fair screen and performance boost
+- Redesign of My Collection Artworks screen
 
 Have feedback? Email us at support@artsy.net
