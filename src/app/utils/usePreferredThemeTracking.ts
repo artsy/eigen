@@ -7,16 +7,16 @@ import { AnalyticsConstants } from "./track/constants"
 export const usePreferredThemeTracking = () => {
   const colorScheme = useColorScheme()
   useEffect(() => {
-    // SegmentTrackingProvider.identify?.(null, {
-    //   [AnalyticsConstants.UserInterfaceStyle.key]: (() => {
-    //     switch (colorScheme) {
-    //       case "light":
-    //         return AnalyticsConstants.UserInterfaceStyle.value.Light
-    //       case "dark":
-    //         return AnalyticsConstants.UserInterfaceStyle.value.Dark
-    //     }
-    //     return AnalyticsConstants.UserInterfaceStyle.value.Unspecified
-    //   })(),
-    // })
+    SegmentTrackingProvider.identify?.(undefined, {
+      [AnalyticsConstants.UserInterfaceStyle.key]: (() => {
+        switch (colorScheme) {
+          case "light":
+            return AnalyticsConstants.UserInterfaceStyle.value.Light
+          case "dark":
+            return AnalyticsConstants.UserInterfaceStyle.value.Dark
+        }
+        return AnalyticsConstants.UserInterfaceStyle.value.Unspecified
+      })(),
+    })
   }, [])
 }

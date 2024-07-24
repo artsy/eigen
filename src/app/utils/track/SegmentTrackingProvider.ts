@@ -43,8 +43,6 @@ export const SegmentTrackingProvider: TrackingProvider = {
       category: "analytics",
     })
 
-    console.log("trakka: tracking info", info)
-
     // Events bubbled up from ios native
     if ("screen_name" in info) {
       const { screen_name, ...rest } = info
