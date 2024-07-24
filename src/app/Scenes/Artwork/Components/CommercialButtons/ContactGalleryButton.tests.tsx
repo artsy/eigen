@@ -22,7 +22,7 @@ describe("ContactGalleryButton", () => {
           ...ContactGalleryButton_artwork
         }
         me {
-          ...ContactGalleryButton_me
+          ...InquiryModal_me
         }
       }
     `,

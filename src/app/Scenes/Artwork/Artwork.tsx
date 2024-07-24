@@ -765,8 +765,8 @@ export const ArtworkContainer = createRefetchContainer(
     `,
     me: graphql`
       fragment Artwork_me on Me @argumentDefinitions(artworkID: { type: "String!" }) {
-        ...ArtworkStickyBottomContent_me
-        ...PartnerCard_me
+        ...ArtworkCommercialButtons_me
+        ...InquiryModal_me
         partnerOffersConnection(artworkID: $artworkID, first: 1) {
           edges {
             node {

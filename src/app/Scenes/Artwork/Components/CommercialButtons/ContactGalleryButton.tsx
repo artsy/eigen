@@ -1,7 +1,7 @@
 import { ActionType, OwnerType, TappedContactGallery } from "@artsy/cohesion"
 import { ButtonProps, Button } from "@artsy/palette-mobile"
 import { ContactGalleryButton_artwork$key } from "__generated__/ContactGalleryButton_artwork.graphql"
-import { ContactGalleryButton_me$key } from "__generated__/ContactGalleryButton_me.graphql"
+import { InquiryModal_me$key } from "__generated__/InquiryModal_me.graphql"
 import { CompleteProfilePrompt } from "app/Scenes/Artwork/Components/CommercialButtons/CompleteProfilePrompt"
 import { InquiryModal } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryModal"
 import { InquirySuccessNotification } from "app/Scenes/Artwork/Components/CommercialButtons/InquirySuccessNotification"
@@ -13,7 +13,7 @@ import { useTracking } from "react-tracking"
 
 type ContactGalleryButtonProps = Omit<ButtonProps, "children"> & {
   artwork: ContactGalleryButton_artwork$key
-  me: ContactGalleryButton_me$key
+  me: InquiryModal_me$key
 }
 
 export const ContactGalleryButton: React.FC<ContactGalleryButtonProps> = ({
@@ -24,7 +24,6 @@ export const ContactGalleryButton: React.FC<ContactGalleryButtonProps> = ({
   const profilePromptIsEnabled = useFeatureFlag("AREnableCollectorProfilePrompts")
 
   const artworkData = useFragment(artworkFragment, artwork)
-  const meData = useFragment(meFragment, me)
 
   const [modalVisibility, setModalVisibility] = useState(false)
   const { trackEvent } = useTracking()
@@ -44,7 +43,7 @@ export const ContactGalleryButton: React.FC<ContactGalleryButtonProps> = ({
       </Button>
       <InquiryModal
         artwork={artworkData}
-        me={meData}
+        me={me}
         modalIsVisible={modalVisibility}
         toggleVisibility={() => setModalVisibility(!modalVisibility)}
       />
@@ -88,11 +87,5 @@ const artworkFragment = graphql`
     }
     ...InquiryModal_artwork
     ...CompleteProfilePrompt_artwork
-  }
-`
-
-const meFragment = graphql`
-  fragment ContactGalleryButton_me on Me {
-    ...InquiryModal_me
   }
 `

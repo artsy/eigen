@@ -206,7 +206,7 @@ const artworkFragment = graphql`
 const meFragment = graphql`
   fragment ArtworkCommercialButtons_me on Me {
     ...BidButton_me
-    ...ContactGalleryButton_me
+    ...InquiryModal_me
   }
 `
 

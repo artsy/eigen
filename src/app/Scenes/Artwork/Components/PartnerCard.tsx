@@ -1,6 +1,6 @@
 import { Spacer, Flex, Text, EntityHeader } from "@artsy/palette-mobile"
+import { InquiryModal_me$key } from "__generated__/InquiryModal_me.graphql"
 import { PartnerCard_artwork$data } from "__generated__/PartnerCard_artwork.graphql"
-import { PartnerCard_me$data } from "__generated__/PartnerCard_me.graphql"
 import { ShortContactGallery } from "app/Scenes/Artwork/Components/ShortContactGallery"
 import { navigateToPartner } from "app/system/navigation/navigate"
 import { limitWithCount } from "app/utils/limitWithCount"
@@ -12,7 +12,7 @@ import { Questions } from "./Questions"
 
 interface PartnerCardProps {
   artwork: PartnerCard_artwork$data
-  me: PartnerCard_me$data
+  me: InquiryModal_me$key
   relay: RelayProp
   shouldShowQuestions?: boolean
   showShortContactGallery?: boolean
@@ -119,12 +119,6 @@ export const PartnerCardFragmentContainer = createFragmentContainer(PartnerCard,
           }
         }
       }
-    }
-  `,
-  me: graphql`
-    fragment PartnerCard_me on Me {
-      ...Questions_me
-      ...ShortContactGallery_me
     }
   `,
 })

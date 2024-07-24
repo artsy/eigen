@@ -1,7 +1,7 @@
 import { ActionType, ContextModule, OwnerType, TappedViewWork } from "@artsy/cohesion"
 import { Button, Flex, useSpace, Join, Spacer } from "@artsy/palette-mobile"
 import { BuyNowButton_artwork$key } from "__generated__/BuyNowButton_artwork.graphql"
-import { ContactGalleryButton_me$key } from "__generated__/ContactGalleryButton_me.graphql"
+import { InquiryModal_me$key } from "__generated__/InquiryModal_me.graphql"
 import { NotificationCommercialButtonsQuery } from "__generated__/NotificationCommercialButtonsQuery.graphql"
 import { NotificationCommercialButtons_artwork$key } from "__generated__/NotificationCommercialButtons_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
@@ -58,7 +58,7 @@ const RowContainer: React.FC = ({ children }) => {
 
 export const CommercialButtons: React.FC<{
   artwork: NotificationCommercialButtons_artwork$key
-  me: ContactGalleryButton_me$key
+  me: InquiryModal_me$key
   partnerOffer?: PartnerOffer
   artworkID: string
 }> = ({ artwork, me, partnerOffer, artworkID }) => {
