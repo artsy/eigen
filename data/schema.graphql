@@ -14610,6 +14610,9 @@ type Partner implements Node {
     first: Int
     last: Int
     page: Int
+
+    # Return all partner-authenticated locations.
+    private: Boolean
     size: Int
   ): LocationConnection
   meta: PartnerMeta
