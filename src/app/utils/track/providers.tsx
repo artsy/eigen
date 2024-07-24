@@ -51,7 +51,6 @@ export const _addTrackingProvider = (name: string, provider: TrackingProvider) =
 
 export const postEventToProviders = (info: any) => {
   Object.values(providers).forEach((provider) => {
-    console.log("Posting event to provider", provider)
     provider.postEvent(info)
   })
 }
