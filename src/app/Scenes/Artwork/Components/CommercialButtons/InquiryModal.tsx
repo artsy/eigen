@@ -17,7 +17,6 @@ import React, { useCallback, useContext, useEffect, useRef, useState } from "rea
 import { ScrollView } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
-import styled from "styled-components/native"
 import { CollapsibleArtworkDetailsFragmentContainer } from "./CollapsibleArtworkDetails"
 import { ShippingModal } from "./ShippingModal"
 
@@ -37,6 +36,8 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
   const artworkData = useFragment(artworkFragment, artwork)
   const meData = useFragment(meFragment, me)
 
+  const artworkId = artworkData.internalID
+  const artworkSlug = artworkData.slug
   const questions = artworkData?.inquiryQuestions
   const partnerName = artworkData?.partner?.name
   const scrollViewRef = useRef<ScrollView>(null)
@@ -73,16 +74,6 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
     scrollViewRef.current?.scrollTo({ y: addMessageYCoordinate })
   }, [addMessageYCoordinate])
 
-  const handleErrorTracking = () => {
-    tracking.trackEvent({
-      action_type: Schema.ActionTypes.Fail,
-      action_name: Schema.ActionNames.InquirySend,
-      owner_type: Schema.OwnerEntityTypes.Artwork,
-      owner_id: artworkData.internalID,
-      owner_slug: artworkData.slug,
-    })
-  }
-
   useEffect(() => {
     setMessage(getAutomatedMessages())
   }, [setMessage])
@@ -100,18 +91,12 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
 
     setLoading(true)
 
-    tracking.trackEvent({
-      action_type: Schema.ActionTypes.Tap,
-      action_name: Schema.ActionNames.InquirySend,
-      owner_type: Schema.OwnerEntityTypes.Artwork,
-      owner_id: artworkData.internalID,
-      owner_slug: artworkData.slug,
-    })
+    tracking.trackEvent(tracks.attemptedToSendTheInquiry(artworkId, artworkSlug))
 
     commit({
       variables: {
         input: {
-          inquireableID: artworkData.internalID,
+          inquireableID: artworkId,
           inquireableType: "Artwork",
           questions: state.inquiryQuestions.map((q: InquiryQuestionInput) => {
             /**
@@ -136,31 +121,27 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
         },
       },
       onError: () => {
-        handleErrorTracking()
+        tracking.trackEvent(tracks.failedToSendTheInquiry(artworkId, artworkSlug))
+
         setMutationError(true)
       },
       onCompleted: () => {
         setLoading(false)
-
         resetAndExit()
+        tracking.trackEvent(tracks.successfullySentTheInquiry(artworkId, artworkSlug))
 
-        tracking.trackEvent({
-          action_type: Schema.ActionTypes.Success,
-          action_name: Schema.ActionNames.InquirySend,
-          owner_type: Schema.OwnerEntityTypes.Artwork,
-          owner_id: artworkData.internalID,
-          owner_slug: artworkData.slug,
-        })
+        const userHasAnEmptyCollection = false
+        const userHasAnIncompleteProfile = !meData.profession || !meData.location?.city
 
         if (
           profilePromptIsEnabled &&
-          userHasAnEmptyCollection() &&
+          userHasAnEmptyCollection &&
           userHasNotBeenPromptedInThirtyDays()
         ) {
           dispatch({ type: "setCollectionPromptVisible", payload: true })
         } else if (
           profilePromptIsEnabled &&
-          userHasAnIncompleteProfile() &&
+          userHasAnIncompleteProfile &&
           userHasNotBeenPromptedInThirtyDays()
         ) {
           dispatch({ type: "setProfilePromptVisible", payload: true })
@@ -176,14 +157,6 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
   const handleSettingsPress = () => {
     navigate("my-profile/edit")
     resetAndExit()
-  }
-
-  const userHasAnEmptyCollection = () => {
-    return false
-  }
-
-  const userHasAnIncompleteProfile = () => {
-    return !meData.profession || !meData.location?.city
   }
 
   const userHasNotBeenPromptedInThirtyDays = () => {
@@ -209,13 +182,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
       <FancyModalHeader
         leftButtonText="Cancel"
         onLeftButtonPress={() => {
-          tracking.trackEvent({
-            action_type: Schema.ActionTypes.Tap,
-            action_name: Schema.ActionNames.InquiryCancel,
-            owner_type: Schema.OwnerEntityTypes.Artwork,
-            owner_id: artworkData.internalID,
-            owner_slug: artworkData.slug,
-          })
+          tracking.trackEvent(tracks.dismissedTheModal(artworkId, artworkSlug))
           resetAndExit()
         }}
         rightButtonText="Send"
@@ -225,11 +192,19 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
         Contact Gallery
       </FancyModalHeader>
       {!!mutationError && (
-        <ErrorMessageFlex bg="red100" py={1} alignItems="center">
+        <Flex
+          bg="red100"
+          py={1}
+          alignItems="center"
+          position="absolute"
+          top={6}
+          width={1}
+          zIndex={5}
+        >
           <Text variant="xs" color="white">
             Sorry, we were unable to send this message. Please try again.
           </Text>
-        </ErrorMessageFlex>
+        </Flex>
       )}
       <ScrollView ref={scrollViewRef}>
         <CollapsibleArtworkDetailsFragmentContainer artwork={artworkData} />
@@ -296,13 +271,6 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
   )
 }
 
-const ErrorMessageFlex = styled(Flex)`
-  position: absolute;
-  top: 60px;
-  width: 100%;
-  z-index: 5;
-`
-
 const artworkFragment = graphql`
   fragment InquiryModal_artwork on Artwork {
     ...CollapsibleArtworkDetails_artwork
@@ -329,3 +297,34 @@ const meFragment = graphql`
     }
   }
 `
+
+const tracks = {
+  dismissedTheModal: (artworkId: string, artworkSlug: string) => ({
+    action_type: Schema.ActionTypes.Tap,
+    action_name: Schema.ActionNames.InquiryCancel,
+    owner_type: Schema.OwnerEntityTypes.Artwork,
+    owner_id: artworkId,
+    owner_slug: artworkSlug,
+  }),
+  attemptedToSendTheInquiry: (artworkId: string, artworkSlug: string) => ({
+    action_type: Schema.ActionTypes.Tap,
+    action_name: Schema.ActionNames.InquirySend,
+    owner_type: Schema.OwnerEntityTypes.Artwork,
+    owner_id: artworkId,
+    owner_slug: artworkSlug,
+  }),
+  successfullySentTheInquiry: (artworkId: string, artworkSlug: string) => ({
+    action_type: Schema.ActionTypes.Success,
+    action_name: Schema.ActionNames.InquirySend,
+    owner_type: Schema.OwnerEntityTypes.Artwork,
+    owner_id: artworkId,
+    owner_slug: artworkSlug,
+  }),
+  failedToSendTheInquiry: (artworkId: string, artworkSlug: string) => ({
+    action_type: Schema.ActionTypes.Fail,
+    action_name: Schema.ActionNames.InquirySend,
+    owner_type: Schema.OwnerEntityTypes.Artwork,
+    owner_id: artworkId,
+    owner_slug: artworkSlug,
+  }),
+}

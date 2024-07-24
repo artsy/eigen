@@ -28,10 +28,10 @@ const { renderWithRelay } = setupTestWrapper<InquiryModalTestsQuery>({
   },
   query: graphql`
     query InquiryModalTestsQuery @relay_test_operation {
-      artwork(id: "pumpkins") {
+      artwork(id: "pumpkins") @required(action: NONE) {
         ...InquiryModal_artwork
       }
-      me {
+      me @required(action: NONE) {
         ...InquiryModal_me
       }
     }
@@ -50,8 +50,8 @@ const FakeApp = (props: InquiryModalTestsQuery["response"]) => {
 
   return (
     <InquiryModal
-      artwork={props!.artwork!}
-      me={props!.me!}
+      artwork={props!.artwork}
+      me={props!.me}
       modalIsVisible={modalProps.modalIsVisible}
       toggleVisibility={modalProps.toggleVisibility}
     />
