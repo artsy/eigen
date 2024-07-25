@@ -2375,7 +2375,7 @@ type Artwork implements Node & Searchable & Sellable {
   # The location of the artwork in My Collection
   collectorLocation: MyLocation
 
-  # List of collector signals
+  # Collector signals on artwork
   collectorSignals: CollectorSignals
 
   # Comparable auction results
