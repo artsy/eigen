@@ -5,10 +5,7 @@ import { ArtworkStoreProvider } from "app/Scenes/Artwork/ArtworkStore"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import {
-  ArtworkInquiryContext,
-  initialArtworkInquiryState,
-} from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
+import { ArtworkInquiryStateProvider } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -25,12 +22,7 @@ describe("ArtworkCommercialButtons", () => {
       const partnerOffer = extractNodes(props.me!.partnerOffersConnection)[0]
 
       return (
-        <ArtworkInquiryContext.Provider
-          value={{
-            state: initialArtworkInquiryState,
-            dispatch: jest.fn(),
-          }}
-        >
+        <ArtworkInquiryStateProvider>
           <ArtworkStoreProvider>
             <ArtworkCommercialButtons
               partnerOffer={partnerOffer}
@@ -38,7 +30,7 @@ describe("ArtworkCommercialButtons", () => {
               me={props.me!}
             />
           </ArtworkStoreProvider>
-        </ArtworkInquiryContext.Provider>
+        </ArtworkInquiryStateProvider>
       )
     },
     query: graphql`

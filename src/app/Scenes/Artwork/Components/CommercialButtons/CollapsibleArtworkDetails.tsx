@@ -1,7 +1,6 @@
-import { Collapse, Spacer, Flex, Box, Text, Separator, Join } from "@artsy/palette-mobile"
+import { Collapse, Spacer, Flex, Box, Text, Separator, Join, Image } from "@artsy/palette-mobile"
 import { CollapsibleArtworkDetails_artwork$data } from "__generated__/CollapsibleArtworkDetails_artwork.graphql"
 import ChevronIcon from "app/Components/Icons/ChevronIcon"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { ArtworkDetailsRow } from "app/Scenes/Artwork/Components/ArtworkDetailsRow"
 import React, { useState } from "react"
 import { LayoutAnimation, ScrollView, TouchableOpacity } from "react-native"
@@ -53,10 +52,11 @@ export const CollapsibleArtworkDetails: React.FC<CollapsibleArtworkDetailsProps>
       <TouchableOpacity onPress={() => toggleExpanded()} testID="toggle-artwork-details-button">
         <Flex flexDirection="row" padding={2} alignItems="center">
           {!!artwork.image && (
-            <OpaqueImageView
+            <Image
+              accessibilityLabel={`Image of ${artwork.title}`}
               height={40}
               aspectRatio={(artwork.image.width || 1) / (artwork.image.height || 1)}
-              imageURL={artwork.image.url}
+              src={artwork.image?.url || ""}
               width={40}
               style={{ alignSelf: "center" }}
             />

@@ -7,6 +7,7 @@ export type ArtworkInquiryActions =
   | SelectInquiryQuestion
   | SetMessage
   | ResetForm
+  | SetInquiryModalVisible
   | SetSuccessNotificationVisible
   | SetCollectionPromptVisible
   | SetProfilePromptVisible
@@ -20,6 +21,7 @@ export interface ArtworkInquiryContextState {
   readonly shippingLocation: LocationWithDetails | null
   readonly inquiryQuestions: InquiryQuestionInput[]
   readonly message: string | null
+  readonly inquiryModalVisible: boolean
   readonly successNotificationVisible: boolean
   readonly collectionPromptVisible: boolean
   readonly profilePromptVisible: boolean
@@ -43,6 +45,11 @@ interface SetMessage {
 interface SelectInquiryQuestion {
   type: "selectInquiryQuestion"
   payload: InquiryQuestionInput & { isChecked: boolean }
+}
+
+interface SetInquiryModalVisible {
+  type: "setInquiryModalVisible"
+  payload: boolean
 }
 
 interface SetSuccessNotificationVisible {

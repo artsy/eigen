@@ -1,4 +1,7 @@
-import { initialArtworkInquiryState, reducer } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
+import {
+  initialArtworkInquiryState,
+  artworkInquiryStateReducer,
+} from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { ArtworkInquiryActions } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
 
 describe("selectInquiryQuestion", () => {
@@ -12,7 +15,7 @@ describe("selectInquiryQuestion", () => {
       },
     }
 
-    const r = reducer(initialArtworkInquiryState, inquiryAction)
+    const r = artworkInquiryStateReducer(initialArtworkInquiryState, inquiryAction)
 
     expect(r).toEqual({
       ...initialArtworkInquiryState,
@@ -44,7 +47,7 @@ describe("selectInquiryQuestion", () => {
       },
     }
 
-    const r = reducer(modifiedArtworkInquiryState, inquiryAction)
+    const r = artworkInquiryStateReducer(modifiedArtworkInquiryState, inquiryAction)
 
     expect(r).toEqual({
       ...modifiedArtworkInquiryState,

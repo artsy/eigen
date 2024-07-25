@@ -23,16 +23,11 @@ import { ShippingModal } from "./ShippingModal"
 interface InquiryModalProps {
   artwork: InquiryModal_artwork$key
   me: InquiryModal_me$key
-  toggleVisibility: () => void
-  modalIsVisible: boolean
 }
 
-export const InquiryModal: React.FC<InquiryModalProps> = ({
-  artwork,
-  me,
-  toggleVisibility,
-  modalIsVisible,
-}) => {
+export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, me }) => {
+  const { state, dispatch } = useContext(ArtworkInquiryContext)
+
   const artworkData = useFragment(artworkFragment, artwork)
   const meData = useFragment(meFragment, me)
 
@@ -44,7 +39,6 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
   const tracking = useTracking()
   const [addMessageYCoordinate, setAddMessageYCoordinate] = useState<number>(0)
 
-  const { state, dispatch } = useContext(ArtworkInquiryContext)
   const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
   const [mutationError, setMutationError] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -67,7 +61,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
   const resetAndExit = () => {
     dispatch({ type: "resetForm", payload: null })
     setMessage(getAutomatedMessages())
-    toggleVisibility()
+    dispatch({ type: "setInquiryModalVisible", payload: false })
   }
 
   const scrollToInput = useCallback(() => {
@@ -159,6 +153,11 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
     resetAndExit()
   }
 
+  const handleDismiss = () => {
+    tracking.trackEvent(tracks.dismissedTheModal(artworkId, artworkSlug))
+    resetAndExit()
+  }
+
   const userHasNotBeenPromptedInThirtyDays = () => {
     const lastTimeUserWasPrompted = meData.collectorProfile?.lastUpdatePromptAt
 
@@ -173,18 +172,13 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
     return millisecondsSinceLastTimeUserWasPrompted > millisecondsInThirtyDays
   }
 
+  console.log("🦆", state.inquiryQuestions.length)
+
   return (
-    <FancyModal
-      visible={modalIsVisible}
-      onBackgroundPressed={() => resetAndExit()}
-      testID="inquiry-modal"
-    >
+    <FancyModal visible={state.inquiryModalVisible} onBackgroundPressed={handleDismiss}>
       <FancyModalHeader
         leftButtonText="Cancel"
-        onLeftButtonPress={() => {
-          tracking.trackEvent(tracks.dismissedTheModal(artworkId, artworkSlug))
-          resetAndExit()
-        }}
+        onLeftButtonPress={handleDismiss}
         rightButtonText="Send"
         rightButtonDisabled={state.inquiryQuestions.length === 0}
         onRightButtonPress={sendInquiry}

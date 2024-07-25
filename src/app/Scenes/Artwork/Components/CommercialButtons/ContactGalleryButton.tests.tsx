@@ -20,7 +20,7 @@ describe("ContactGalleryButton", () => {
     `,
   })
 
-  it("makes the inquiry modal visible when the contact gallery button is pressed", async () => {
+  it("opens the inquiry modal when the contact gallery button is pressed", async () => {
     renderWithRelay()
 
     fireEvent.press(screen.getByText("Contact Gallery"))

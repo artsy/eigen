@@ -5,9 +5,12 @@ import { InquiryModal_me$key } from "__generated__/InquiryModal_me.graphql"
 import { CompleteProfilePrompt } from "app/Scenes/Artwork/Components/CommercialButtons/CompleteProfilePrompt"
 import { InquiryModal } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryModal"
 import { InquirySuccessNotification } from "app/Scenes/Artwork/Components/CommercialButtons/InquirySuccessNotification"
-import { ArtworkInquiryStateProvider } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
+import {
+  ArtworkInquiryContext,
+  ArtworkInquiryStateProvider,
+} from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import React, { useState } from "react"
+import React from "react"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -25,28 +28,26 @@ export const ContactGalleryButton: React.FC<ContactGalleryButtonProps> = ({
 
   const artworkData = useFragment(artworkFragment, artwork)
 
-  const [modalVisibility, setModalVisibility] = useState(false)
   const { trackEvent } = useTracking()
 
   return (
     <ArtworkInquiryStateProvider>
       <InquirySuccessNotification />
-      <Button
-        onPress={() => {
-          trackEvent(tracks.trackTappedContactGallery(artworkData.internalID, artworkData.slug))
-          setModalVisibility(true)
-        }}
-        haptic
-        {...rest}
-      >
-        Contact Gallery
-      </Button>
-      <InquiryModal
-        artwork={artworkData}
-        me={me}
-        modalIsVisible={modalVisibility}
-        toggleVisibility={() => setModalVisibility(!modalVisibility)}
-      />
+      <ArtworkInquiryContext.Consumer>
+        {({ dispatch }) => (
+          <Button
+            onPress={() => {
+              trackEvent(tracks.trackTappedContactGallery(artworkData.internalID, artworkData.slug))
+              dispatch({ type: "setInquiryModalVisible", payload: true })
+            }}
+            haptic
+            {...rest}
+          >
+            Contact Gallery
+          </Button>
+        )}
+      </ArtworkInquiryContext.Consumer>
+      <InquiryModal artwork={artworkData} me={me} />
       {!!profilePromptIsEnabled && <CompleteProfilePrompt artwork={artworkData} />}
     </ArtworkInquiryStateProvider>
   )

@@ -10,12 +10,13 @@ export const initialArtworkInquiryState: ArtworkInquiryContextState = {
   shippingLocation: null,
   inquiryQuestions: [],
   message: null,
+  inquiryModalVisible: false,
   successNotificationVisible: false,
   collectionPromptVisible: false,
   profilePromptVisible: false,
 }
 
-export const reducer = (
+export const artworkInquiryStateReducer = (
   inquiryState: ArtworkInquiryContextState,
   action: ArtworkInquiryActions
 ): ArtworkInquiryContextState => {
@@ -46,6 +47,11 @@ export const reducer = (
         ...inquiryState,
         message: action.payload,
       }
+    case "setInquiryModalVisible":
+      return {
+        ...inquiryState,
+        inquiryModalVisible: action.payload,
+      }
     case "setSuccessNotificationVisible":
       return {
         ...inquiryState,
@@ -68,9 +74,10 @@ export const ArtworkInquiryContext = createContext<ArtworkInquiryContextProps>(n
 
 export const ArtworkInquiryStateProvider = ({ children }: any) => {
   const [state, dispatch] = useReducer<Reducer<ArtworkInquiryContextState, ArtworkInquiryActions>>(
-    reducer,
+    artworkInquiryStateReducer,
     initialArtworkInquiryState
   )
+
   return (
     <ArtworkInquiryContext.Provider value={{ state, dispatch }}>
       {children}
