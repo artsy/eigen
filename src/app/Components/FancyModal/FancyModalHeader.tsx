@@ -93,6 +93,7 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
                   variant="sm"
                   color={rightButtonDisabled ? "black30" : "black100"}
                   testID={rightButtonTestId}
+                  disabled={rightButtonDisabled}
                 >
                   {rightButtonText}
                 </Text>
