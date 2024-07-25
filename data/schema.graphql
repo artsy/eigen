@@ -2542,6 +2542,7 @@ type Artwork implements Node & Searchable & Sellable {
 
   # Is this artwork part of a current show
   isInShow: Boolean
+  isListed: Boolean!
   isNotForSale: String
 
   # Whether a user can make an offer on a work
