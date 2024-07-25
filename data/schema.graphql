@@ -106,6 +106,12 @@ type addOrderedSetItemSuccess {
   setItem: OrderedSetItem
 }
 
+enum addressType {
+  BUSINESS
+  OTHER
+  TEMPORARY
+}
+
 type addUserRoleFailure {
   mutationError: GravityMutationError
 }
@@ -14611,6 +14617,7 @@ type Partner implements Node {
 
   # A connection of locations from a Partner.
   locationsConnection(
+    addressType: addressType
     after: String
     before: String
     first: Int
