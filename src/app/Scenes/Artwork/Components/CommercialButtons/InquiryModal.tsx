@@ -5,7 +5,7 @@ import { InquiryQuestionInput } from "__generated__/useSubmitInquiryRequestMutat
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { InquiryQuestionOption } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryQuestionOption"
-import { AUTOMATED_MESSAGES } from "app/Scenes/Artwork/Components/CommercialButtons/constants"
+import { randomAutomatedMessage } from "app/Scenes/Artwork/Components/CommercialButtons/constants"
 import { useSubmitInquiryRequest } from "app/Scenes/Artwork/Components/CommercialButtons/useSubmitInquiryRequest"
 import { navigate } from "app/system/navigation/navigate"
 import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
@@ -27,49 +27,22 @@ interface InquiryModalProps {
 
 export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, me }) => {
   const { state, dispatch } = useContext(ArtworkInquiryContext)
+  const profilePromptIsEnabled = useFeatureFlag("AREnableCollectorProfilePrompts")
+  const scrollViewRef = useRef<ScrollView>(null)
+  const [commit] = useSubmitInquiryRequest()
+  const tracking = useTracking()
 
   const artworkData = useFragment(artworkFragment, artwork)
   const meData = useFragment(meFragment, me)
 
-  const artworkId = artworkData.internalID
-  const artworkSlug = artworkData.slug
-  const questions = artworkData?.inquiryQuestions
-  const partnerName = artworkData?.partner?.name
-  const scrollViewRef = useRef<ScrollView>(null)
-  const tracking = useTracking()
+  const [message, setMessage] = useState<string>("")
   const [addMessageYCoordinate, setAddMessageYCoordinate] = useState<number>(0)
-
   const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
   const [mutationError, setMutationError] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const profilePromptIsEnabled = useFeatureFlag("AREnableCollectorProfilePrompts")
-
-  const selectShippingLocation = (locationDetails: LocationWithDetails) =>
-    dispatch({ type: "selectShippingLocation", payload: locationDetails })
-  const setMessage = useCallback(
-    (message: string) => dispatch({ type: "setMessage", payload: message }),
-    [dispatch]
-  )
-
-  const [commit] = useSubmitInquiryRequest()
-
-  const getAutomatedMessages = () => {
-    return AUTOMATED_MESSAGES[Math.floor(Math.random() * AUTOMATED_MESSAGES.length)]
-  }
-
-  const resetAndExit = () => {
-    dispatch({ type: "resetForm", payload: null })
-    setMessage(getAutomatedMessages())
-    dispatch({ type: "setInquiryModalVisible", payload: false })
-  }
-
-  const scrollToInput = useCallback(() => {
-    scrollViewRef.current?.scrollTo({ y: addMessageYCoordinate })
-  }, [addMessageYCoordinate])
-
   useEffect(() => {
-    setMessage(getAutomatedMessages())
+    setMessage(randomAutomatedMessage())
   }, [setMessage])
 
   useEffect(() => {
@@ -77,6 +50,24 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, me }) => {
       setLoading(false)
     }
   }, [mutationError])
+
+  const artworkId = artworkData.internalID
+  const artworkSlug = artworkData.slug
+  const questions = artworkData?.inquiryQuestions
+  const partnerName = artworkData?.partner?.name
+
+  const selectShippingLocation = (locationDetails: LocationWithDetails) =>
+    dispatch({ type: "selectShippingLocation", payload: locationDetails })
+
+  const resetAndExit = () => {
+    setMessage(randomAutomatedMessage())
+    dispatch({ type: "resetForm", payload: null })
+    dispatch({ type: "setInquiryModalVisible", payload: false })
+  }
+
+  const scrollToInput = useCallback(() => {
+    scrollViewRef.current?.scrollTo({ y: addMessageYCoordinate })
+  }, [addMessageYCoordinate])
 
   const sendInquiry = () => {
     if (loading) {
@@ -111,7 +102,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, me }) => {
               return q
             }
           }),
-          message: state.message?.trim(),
+          message: message?.trim(),
         },
       },
       onError: () => {
@@ -172,8 +163,6 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, me }) => {
     return millisecondsSinceLastTimeUserWasPrompted > millisecondsInThirtyDays
   }
 
-  console.log("🦆", state.inquiryQuestions.length)
-
   return (
     <FancyModal visible={state.inquiryModalVisible} onBackgroundPressed={handleDismiss}>
       <FancyModalHeader
@@ -232,11 +221,10 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, me }) => {
               multiline
               placeholder="Add a custom note..."
               title="Add message"
-              value={state.message ? state.message : ""}
+              value={message ? message : ""}
               onChangeText={setMessage}
               onFocus={scrollToInput}
               style={{ justifyContent: "flex-start" }}
-              testID="add-message-input"
             />
           </Box>
           <Box flexDirection="row">

@@ -9,7 +9,6 @@ import { createContext, Reducer, useReducer } from "react"
 export const initialArtworkInquiryState: ArtworkInquiryContextState = {
   shippingLocation: null,
   inquiryQuestions: [],
-  message: null,
   inquiryModalVisible: false,
   successNotificationVisible: false,
   collectionPromptVisible: false,
@@ -42,11 +41,6 @@ export const artworkInquiryStateReducer = (
         inquiryQuestions: newSelection,
       }
     }
-    case "setMessage":
-      return {
-        ...inquiryState,
-        message: action.payload,
-      }
     case "setInquiryModalVisible":
       return {
         ...inquiryState,

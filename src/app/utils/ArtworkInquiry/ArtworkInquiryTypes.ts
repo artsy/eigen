@@ -5,7 +5,6 @@ import { Dispatch } from "react"
 export type ArtworkInquiryActions =
   | SelectLocation
   | SelectInquiryQuestion
-  | SetMessage
   | ResetForm
   | SetInquiryModalVisible
   | SetSuccessNotificationVisible
@@ -20,7 +19,6 @@ export interface ArtworkInquiryContextProps {
 export interface ArtworkInquiryContextState {
   readonly shippingLocation: LocationWithDetails | null
   readonly inquiryQuestions: InquiryQuestionInput[]
-  readonly message: string | null
   readonly inquiryModalVisible: boolean
   readonly successNotificationVisible: boolean
   readonly collectionPromptVisible: boolean
@@ -35,11 +33,6 @@ interface ResetForm {
 interface SelectLocation {
   type: "selectShippingLocation"
   payload: LocationWithDetails
-}
-
-interface SetMessage {
-  type: "setMessage"
-  payload: string
 }
 
 interface SelectInquiryQuestion {
