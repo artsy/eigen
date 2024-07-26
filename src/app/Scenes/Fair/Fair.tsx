@@ -19,11 +19,10 @@ import { FairExhibitorsFragmentContainer } from "app/Scenes/Fair/Components/Fair
 import { FairOverview } from "app/Scenes/Fair/FairOverview"
 import { goBack } from "app/system/navigation/navigate"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { useClientQuery } from "app/utils/useClientQuery"
-import React from "react"
+import React, { Suspense } from "react"
 import { TouchableOpacity } from "react-native"
 import RNShare from "react-native-share"
-import { createFragmentContainer, graphql, useFragment } from "react-relay"
+import { createFragmentContainer, graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 import { FairHeader } from "./Components/FairHeader"
 
@@ -81,6 +80,9 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
       }}
     >
       <Tabs.TabsWithHeader
+        pagerProps={{
+          scrollEnabled: false,
+        }}
         initialTabName="Overview"
         title={`${data.name}`}
         showLargeHeaderText={false}
@@ -156,19 +158,21 @@ interface FairQueryRendererProps {
   fairID: string
 }
 
-export const FairQueryRenderer: React.FC<FairQueryRendererProps> = ({ fairID }) => {
-  const res = useClientQuery<FairQuery>({ query, variables: { fairID } })
+const FairQueryRenderer: React.FC<FairQueryRendererProps> = ({ fairID }) => {
+  const data = useLazyLoadQuery<FairQuery>(query, { fairID })
 
-  if (res.loading) {
-    return <FairPlaceholder />
-  }
-
-  if (!res.data?.fair) {
+  if (!data?.fair) {
     return null
   }
 
-  return <Fair fair={res.data.fair} />
+  return <Fair fair={data.fair} />
 }
+
+export const FairScreen: React.FC<FairQueryRendererProps> = ({ fairID }) => (
+  <Suspense fallback={<FairPlaceholder />}>
+    <FairQueryRenderer fairID={fairID} />
+  </Suspense>
+)
 
 export const FairPlaceholder: React.FC = () => {
   const { safeAreaInsets } = useScreenDimensions()

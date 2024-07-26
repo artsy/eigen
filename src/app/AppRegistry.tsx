@@ -73,7 +73,7 @@ import { CitySavedListQueryRenderer } from "./Scenes/City/CitySavedList"
 import { CitySectionListQueryRenderer } from "./Scenes/City/CitySectionList"
 import { CollectionQueryRenderer } from "./Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
-import { FairQueryRenderer } from "./Scenes/Fair/Fair"
+import { FairScreen } from "./Scenes/Fair/Fair"
 import { FairAllFollowedArtistsQueryRenderer } from "./Scenes/Fair/FairAllFollowedArtists"
 import { FairArticlesQueryRenderer } from "./Scenes/Fair/FairArticles"
 import { FairMoreInfoQueryRenderer } from "./Scenes/Fair/FairMoreInfo"
@@ -467,8 +467,8 @@ export const modules = defineModules({
     hidesBackButton: true,
     hidesBottomTabs: true,
   }),
-  Fair: reactModule(FairQueryRenderer, { fullBleed: true, hidesBackButton: true }),
-  FairMoreInfo: reactModule(FairMoreInfoQueryRenderer),
+  Fair: reactModule(FairScreen, { fullBleed: true, hidesBackButton: true }),
+  FairMoreInfo: reactModule(FairMoreInfoQueryRenderer, { fullBleed: true, hidesBackButton: true }),
   FairArticles: reactModule(FairArticlesQueryRenderer),
   FairAllFollowedArtists: reactModule(FairAllFollowedArtistsQueryRenderer),
   Favorites: reactModule(Favorites, {
