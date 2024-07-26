@@ -7541,6 +7541,7 @@ enum ConsignmentSubmissionStateAggregation {
   HOLD
   PUBLISHED
   REJECTED
+  RESUBMITTED
   SUBMITTED
 }
 
