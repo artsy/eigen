@@ -24,6 +24,7 @@ import { DurationProvider } from "app/Components/Countdown"
 import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
 import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
 import { PartnerOffer } from "app/Scenes/Activity/components/NotificationArtworkList"
+import { formattedTimeLeft } from "app/Scenes/Activity/utils/formattedTimeLeft"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
@@ -113,6 +114,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const tracking = useTracking()
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
+  const AREnablePartnerOfferSignals = useFeatureFlag("AREnablePartnerOfferSignals")
 
   let filterParams: any = undefined
 
@@ -127,6 +129,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const lotEndAt = artwork.saleArtwork?.endAt
   const biddingEndAt = extendedBiddingEndAt ?? lotEndAt
   const lotID = artwork.saleArtwork?.lotID
+  const collectorSignals = artwork.collectorSignals
 
   const { currentBiddingEndAt, lotSaleExtended } = useArtworkBidding({
     lotID,
@@ -221,11 +224,18 @@ export const Artwork: React.FC<ArtworkProps> = ({
     }
   }
 
-  const saleInfo = saleMessageOrBidInfo({ artwork })
+  const saleInfo = saleMessageOrBidInfo({
+    artwork,
+    collectorSignals: AREnablePartnerOfferSignals ? collectorSignals : null,
+  })
 
   const endsAt = artwork.sale?.cascadingEndTimeIntervalMinutes
     ? currentBiddingEndAt
     : artwork.saleArtwork?.endAt || artwork.sale?.endAt
+
+  const partnerOfferEndAt = collectorSignals?.partnerOffer?.endAt
+    ? formattedTimeLeft(getTimer(collectorSignals.partnerOffer.endAt).time).timerCopy
+    : ""
 
   const urgencyTag = getUrgencyTag(endsAt)
 
@@ -236,6 +246,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
     !!priceOfferMessage &&
     !!priceOfferMessage.priceListedMessage &&
     !!priceOfferMessage.priceWithDiscountMessage
+
+  const displayLimitedTimeOfferSignal =
+    !!AREnablePartnerOfferSignals && !!collectorSignals?.partnerOffer?.isAvailable
 
   const handleSupress = async (item: DissapearableArtwork) => {
     await item._disappearable?.disappear()
@@ -313,6 +326,13 @@ export const Artwork: React.FC<ArtworkProps> = ({
               style={artworkMetaStyle}
             >
               <Flex flex={1}>
+                {!!displayLimitedTimeOfferSignal && (
+                  <Box backgroundColor="blue10" px={0.5} alignSelf="flex-start" borderRadius={3}>
+                    <Text lineHeight="20px" variant="xs" color="blue100">
+                      Limited-Time Offer
+                    </Text>
+                  </Box>
+                )}
                 {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
                   <>
                     <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
@@ -388,6 +408,19 @@ export const Artwork: React.FC<ArtworkProps> = ({
                     {...saleInfoTextStyle}
                   >
                     {saleInfo}
+                    {!!displayLimitedTimeOfferSignal && (
+                      <Text
+                        lineHeight="18px"
+                        variant="xs"
+                        weight="regular"
+                        numberOfLines={1}
+                        color="blue100"
+                        {...saleInfoTextStyle}
+                      >
+                        {" "}
+                        Exp. {partnerOfferEndAt}
+                      </Text>
+                    )}
                   </Text>
                 )}
 
@@ -454,6 +487,7 @@ const ArtworkHeartIcon: React.FC<{ isSaved: boolean | null; index?: number }> = 
 export const saleMessageOrBidInfo = ({
   artwork,
   isSmallTile = false,
+  collectorSignals,
 }: {
   artwork: Readonly<{
     sale:
@@ -471,6 +505,16 @@ export const saleMessageOrBidInfo = ({
     realizedPrice: string | null | undefined
   }>
   isSmallTile?: boolean
+  collectorSignals?: Readonly<{
+    partnerOffer:
+      | {
+          isAvailable: boolean | null | undefined
+          priceWithDiscount: { display: string | null | undefined } | null | undefined
+          endAt: string | null | undefined
+        }
+      | null
+      | undefined
+  }> | null
 }): string | null | undefined => {
   const { sale, saleArtwork, realizedPrice } = artwork
 
@@ -495,6 +539,10 @@ export const saleMessageOrBidInfo = ({
     // If there are bids we show the current bid price and the number of bids
     const numberOfBidsString = bidderPositions === 1 ? "1 bid" : `${bidderPositions} bids`
     return `${currentBid} (${numberOfBidsString})`
+  }
+
+  if (collectorSignals?.partnerOffer?.isAvailable) {
+    return collectorSignals.partnerOffer.priceWithDiscount?.display
   }
 
   return artwork.saleMessage
@@ -567,6 +615,15 @@ export default createFragmentContainer(Artwork, {
         }
       }
       realizedPrice
+      collectorSignals {
+        partnerOffer {
+          isAvailable
+          endAt
+          priceWithDiscount {
+            display
+          }
+        }
+      }
       ...useSaveArtworkToArtworkLists_artwork
     }
   `,
