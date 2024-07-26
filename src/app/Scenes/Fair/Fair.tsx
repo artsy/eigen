@@ -81,6 +81,9 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
       }}
     >
       <Tabs.TabsWithHeader
+        pagerProps={{
+          scrollEnabled: false,
+        }}
         initialTabName="Overview"
         title={`${data.name}`}
         showLargeHeaderText={false}
