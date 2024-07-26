@@ -1,10 +1,9 @@
-import { Flex, Box } from "@artsy/palette-mobile"
+import { Flex, Box, Tabs } from "@artsy/palette-mobile"
 import { FairExhibitors_fair$data } from "__generated__/FairExhibitors_fair.graphql"
 import Spinner from "app/Components/Spinner"
 import { FAIR2_EXHIBITORS_PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
 import React, { useCallback } from "react"
-import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { FairExhibitorRailFragmentContainer } from "./FairExhibitorRail"
 
@@ -41,8 +40,11 @@ const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
   const keyExtractor = (item: any) => String(item?.id)
 
   return (
-    <FlatList
+    <Tabs.FlatList
+      // reseting padding to -2 to remove the default padding from the FlatList
+      contentContainerStyle={{ padding: -2 }}
       data={showsWithArtworks}
+      ListHeaderComponent={<Flex my={2} />}
       renderItem={renderItem}
       keyExtractor={keyExtractor}
       onEndReached={loadMoreExhibitors}
