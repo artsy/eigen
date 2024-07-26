@@ -4,7 +4,6 @@ import { ContactGalleryButton_artwork$key } from "__generated__/ContactGalleryBu
 import { InquiryModal_me$key } from "__generated__/InquiryModal_me.graphql"
 import { CompleteProfilePrompt } from "app/Scenes/Artwork/Components/CommercialButtons/CompleteProfilePrompt"
 import { InquiryModal } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryModal"
-import { InquirySuccessNotification } from "app/Scenes/Artwork/Components/CommercialButtons/InquirySuccessNotification"
 import {
   ArtworkInquiryContext,
   ArtworkInquiryStateProvider,
@@ -32,7 +31,6 @@ export const ContactGalleryButton: React.FC<ContactGalleryButtonProps> = ({
 
   return (
     <ArtworkInquiryStateProvider>
-      <InquirySuccessNotification />
       <ArtworkInquiryContext.Consumer>
         {({ dispatch }) => (
           <Button

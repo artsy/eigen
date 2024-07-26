@@ -5,6 +5,7 @@ import { InquiryQuestionInput } from "__generated__/useSubmitInquiryRequestMutat
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { InquiryQuestionOption } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryQuestionOption"
+import { InquirySuccessNotification } from "app/Scenes/Artwork/Components/CommercialButtons/InquirySuccessNotification"
 import { randomAutomatedMessage } from "app/Scenes/Artwork/Components/CommercialButtons/constants"
 import { useSubmitInquiryRequest } from "app/Scenes/Artwork/Components/CommercialButtons/useSubmitInquiryRequest"
 import { navigate } from "app/system/navigation/navigate"
@@ -164,93 +165,95 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, me }) => {
   }
 
   return (
-    <FancyModal visible={state.inquiryModalVisible} onBackgroundPressed={handleDismiss}>
-      <FancyModalHeader
-        leftButtonText="Cancel"
-        onLeftButtonPress={handleDismiss}
-        rightButtonText="Send"
-        rightButtonDisabled={state.inquiryQuestions.length === 0}
-        onRightButtonPress={sendInquiry}
-      >
-        Contact Gallery
-      </FancyModalHeader>
-      {!!mutationError && (
-        <Flex
-          bg="red100"
-          py={1}
-          alignItems="center"
-          position="absolute"
-          top={6}
-          width={1}
-          zIndex={5}
+    <>
+      <FancyModal visible={state.inquiryModalVisible} onBackgroundPressed={handleDismiss}>
+        <FancyModalHeader
+          leftButtonText="Cancel"
+          onLeftButtonPress={handleDismiss}
+          rightButtonText="Send"
+          rightButtonDisabled={state.inquiryQuestions.length === 0}
+          onRightButtonPress={sendInquiry}
         >
-          <Text variant="xs" color="white">
-            Sorry, we were unable to send this message. Please try again.
-          </Text>
-        </Flex>
-      )}
-      <ScrollView ref={scrollViewRef}>
-        <CollapsibleArtworkDetailsFragmentContainer artwork={artworkData} />
-        <Box px={2}>
-          <Box my={2}>
-            <Text variant="sm">What information are you looking for?</Text>
-            {questions?.map((inquiryQuestion) => {
-              if (!inquiryQuestion) {
-                return false
-              }
-              const { internalID: id, question } = inquiryQuestion
-              return id === InquiryQuestionIDs.Shipping ? (
-                <InquiryQuestionOption
-                  key={id}
-                  id={id}
-                  question={question}
-                  setShippingModalVisibility={setShippingModalVisibility}
-                />
-              ) : (
-                <InquiryQuestionOption key={id} id={id} question={question} />
-              )
-            })}
-          </Box>
-          <Box
-            mb={4}
-            onLayout={({ nativeEvent }) => {
-              setAddMessageYCoordinate(nativeEvent.layout.y)
-            }}
+          Contact Gallery
+        </FancyModalHeader>
+        {!!mutationError && (
+          <Flex
+            bg="red100"
+            py={1}
+            alignItems="center"
+            position="absolute"
+            top={6}
+            width={1}
+            zIndex={5}
           >
-            <Input
-              multiline
-              placeholder="Add a custom note..."
-              title="Add message"
-              accessibilityLabel="Add message"
-              value={message ? message : ""}
-              onChangeText={setMessage}
-              onFocus={scrollToInput}
-              style={{ justifyContent: "flex-start" }}
-            />
-          </Box>
-          <Box flexDirection="row">
-            <InfoCircleIcon mr={0.5} style={{ marginTop: 2 }} />
-            <Box flex={1}>
-              <Text variant="xs" color="black60">
-                By clicking send, we will share your profile with {partnerName}. Update your profile
-                at any time in{" "}
-                <Text variant="xs" onPress={handleSettingsPress}>
-                  Settings
+            <Text variant="xs" color="white">
+              Sorry, we were unable to send this message. Please try again.
+            </Text>
+          </Flex>
+        )}
+        <ScrollView ref={scrollViewRef}>
+          <CollapsibleArtworkDetailsFragmentContainer artwork={artworkData} />
+          <Box px={2}>
+            <Box my={2}>
+              <Text variant="sm">What information are you looking for?</Text>
+              {questions?.map((inquiryQuestion) => {
+                if (!inquiryQuestion) {
+                  return false
+                }
+                const { internalID: id, question } = inquiryQuestion
+                return id === InquiryQuestionIDs.Shipping ? (
+                  <InquiryQuestionOption
+                    key={id}
+                    id={id}
+                    question={question}
+                    setShippingModalVisibility={setShippingModalVisibility}
+                  />
+                ) : (
+                  <InquiryQuestionOption key={id} id={id} question={question} />
+                )
+              })}
+            </Box>
+            <Box
+              mb={4}
+              onLayout={({ nativeEvent }) => {
+                setAddMessageYCoordinate(nativeEvent.layout.y)
+              }}
+            >
+              <Input
+                multiline
+                placeholder="Add a custom note..."
+                title="Add message"
+                accessibilityLabel="Add message"
+                value={message ? message : ""}
+                onChangeText={setMessage}
+                onFocus={scrollToInput}
+                style={{ justifyContent: "flex-start" }}
+              />
+            </Box>
+            <Box flexDirection="row">
+              <InfoCircleIcon mr={0.5} style={{ marginTop: 2 }} />
+              <Box flex={1}>
+                <Text variant="xs" color="black60">
+                  By clicking send, we will share your profile with {partnerName}. Update your
+                  profile at any time in{" "}
+                  <Text variant="xs" onPress={handleSettingsPress}>
+                    Settings
+                  </Text>
+                  .
                 </Text>
-                .
-              </Text>
+              </Box>
             </Box>
           </Box>
-        </Box>
-      </ScrollView>
-
-      <ShippingModal
-        toggleVisibility={() => setShippingModalVisibility(!shippingModalVisibility)}
-        modalIsVisible={shippingModalVisibility}
-        setLocation={selectShippingLocation}
-        location={state.shippingLocation}
-      />
-    </FancyModal>
+        </ScrollView>
+        <ShippingModal
+          toggleVisibility={() => setShippingModalVisibility(!shippingModalVisibility)}
+          modalIsVisible={shippingModalVisibility}
+          setLocation={selectShippingLocation}
+          location={state.shippingLocation}
+        />
+      </FancyModal>
+      <InquirySuccessNotification />
+    </>
   )
 }
 

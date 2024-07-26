@@ -34,7 +34,7 @@ describe("InquiryModal", () => {
     expect(screen.getByLabelText("Image of Artwork Title")).toBeVisible()
   })
 
-  it("closes when the 'close' button is pressed", async () => {
+  it("closes when the 'cancel' button is pressed", async () => {
     renderWithRelay()
 
     fireEvent.press(screen.getByText("Cancel"))
@@ -59,7 +59,7 @@ describe("InquiryModal", () => {
     expect(screen.getByText("Question")).toBeVisible()
   })
 
-  it("enables the 'send' button when an inquiry question is selected", () => {
+  it("enables the 'send' button when an inquiry question is selected", async () => {
     renderWithRelay({
       Artwork: () => ({
         inquiryQuestions: [
@@ -75,7 +75,9 @@ describe("InquiryModal", () => {
 
     fireEvent.press(screen.getByText("Question"))
 
-    expect(screen.getByText("Send")).toBeEnabled()
+    await waitFor(() => {
+      expect(screen.getByText("Send")).toBeEnabled()
+    })
   })
 
   it("opens the shipping modal when the 'add your location' field is pressed", async () => {
@@ -109,9 +111,83 @@ describe("InquiryModal", () => {
     expect(AUTOMATED_MESSAGES).toContain(screen.getByLabelText("Add message").props.value)
   })
 
-  test.todo("displays a success message when the inquiry is sent")
-  test.todo("displays an error message when the inquiry fails to send")
-  test.todo("navigates to the inbox route when notifcation is tapped")
+  it("displays a success message when the inquiry is sent", async () => {
+    const mockUseSubmitInquiryRequest = jest
+      .spyOn(
+        require("app/Scenes/Artwork/Components/CommercialButtons/useSubmitInquiryRequest"),
+        "useSubmitInquiryRequest"
+      )
+      .mockImplementation(() => [
+        jest.fn(({ onCompleted }) => {
+          onCompleted()
+        }),
+      ])
+
+    renderWithRelay({
+      Artwork: () => ({
+        inquiryQuestions: [
+          {
+            internalID: "question-id",
+            question: "Question",
+          },
+        ],
+      }),
+    })
+
+    fireEvent.press(screen.getByText("Question"))
+
+    await waitFor(() => {
+      expect(screen.getByText("Send")).toBeEnabled()
+    })
+
+    fireEvent.press(screen.getByText("Send"))
+
+    await waitFor(() => {
+      expect(screen.getByText("Message Sent")).toBeVisible()
+    })
+
+    mockUseSubmitInquiryRequest.mockRestore()
+  })
+
+  it("displays an error message when the inquiry fails to send", async () => {
+    const mockUseSubmitInquiryRequest = jest
+      .spyOn(
+        require("app/Scenes/Artwork/Components/CommercialButtons/useSubmitInquiryRequest"),
+        "useSubmitInquiryRequest"
+      )
+      .mockImplementation(() => [
+        jest.fn(({ onError }) => {
+          onError()
+        }),
+      ])
+
+    renderWithRelay({
+      Artwork: () => ({
+        inquiryQuestions: [
+          {
+            internalID: "question-id",
+            question: "Question",
+          },
+        ],
+      }),
+    })
+
+    fireEvent.press(screen.getByText("Question"))
+
+    await waitFor(() => {
+      expect(screen.getByText("Send")).toBeEnabled()
+    })
+
+    fireEvent.press(screen.getByText("Send"))
+
+    await waitFor(() => {
+      expect(
+        screen.getByText("Sorry, we were unable to send this message. Please try again.")
+      ).toBeVisible()
+    })
+
+    mockUseSubmitInquiryRequest.mockRestore()
+  })
 
   test.todo(
     "displays a profile prompt after the inquiry is sent if the user has not completed their profile"

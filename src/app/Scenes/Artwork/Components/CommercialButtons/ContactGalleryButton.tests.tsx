@@ -6,21 +6,7 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
 describe("ContactGalleryButton", () => {
-  const { renderWithRelay } = setupTestWrapper<ContactGalleryButtonTestsQuery>({
-    Component: ({ artwork, me }) => <ContactGalleryButton artwork={artwork} me={me} />,
-    query: graphql`
-      query ContactGalleryButtonTestsQuery @relay_test_operation {
-        artwork(id: "artwork-id") @required(action: NONE) {
-          ...ContactGalleryButton_artwork
-        }
-        me @required(action: NONE) {
-          ...InquiryModal_me
-        }
-      }
-    `,
-  })
-
-  it("opens the inquiry modal when the contact gallery button is pressed", async () => {
+  it("opens the inquiry modal when the 'contact gallery' button is pressed", async () => {
     renderWithRelay()
 
     fireEvent.press(screen.getByText("Contact Gallery"))
@@ -30,7 +16,7 @@ describe("ContactGalleryButton", () => {
     })
   })
 
-  it("tracks an event when the contact gallery button is pressed", async () => {
+  it("tracks an event when the 'contact gallery' button is pressed", async () => {
     renderWithRelay({
       Artwork: () => ({
         internalID: "artwork-id",
@@ -49,4 +35,18 @@ describe("ContactGalleryButton", () => {
       })
     })
   })
+})
+
+const { renderWithRelay } = setupTestWrapper<ContactGalleryButtonTestsQuery>({
+  Component: ({ artwork, me }) => <ContactGalleryButton artwork={artwork} me={me} />,
+  query: graphql`
+    query ContactGalleryButtonTestsQuery @relay_test_operation {
+      artwork(id: "artwork-id") @required(action: NONE) {
+        ...ContactGalleryButton_artwork
+      }
+      me @required(action: NONE) {
+        ...InquiryModal_me
+      }
+    }
+  `,
 })
