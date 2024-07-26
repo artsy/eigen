@@ -49,7 +49,10 @@ export const CollapsibleArtworkDetails: React.FC<CollapsibleArtworkDetailsProps>
 
   return artwork ? (
     <>
-      <TouchableOpacity onPress={() => toggleExpanded()} testID="toggle-artwork-details-button">
+      <TouchableOpacity
+        accessibilityLabel={isExpanded ? "Hide artwork details" : "Show artwork details"}
+        onPress={() => toggleExpanded()}
+      >
         <Flex flexDirection="row" padding={2} alignItems="center">
           {!!artwork.image && (
             <Image

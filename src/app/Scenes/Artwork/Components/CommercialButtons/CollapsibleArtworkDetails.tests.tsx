@@ -1,82 +1,158 @@
-import { Text } from "@artsy/palette-mobile"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { CollapsibleArtworkDetailsTestsQuery } from "__generated__/CollapsibleArtworkDetailsTestsQuery.graphql"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { ArtworkDetailsRow } from "app/Scenes/Artwork/Components/ArtworkDetailsRow"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { TouchableOpacity } from "react-native"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { CollapsibleArtworkDetailsFragmentContainer } from "./CollapsibleArtworkDetails"
 
 describe("CollapsibleArtworkDetails", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  const TestRenderer = () => (
-    <QueryRenderer<CollapsibleArtworkDetailsTestsQuery>
-      environment={mockEnvironment}
-      query={graphql`
-        query CollapsibleArtworkDetailsTestsQuery @relay_test_operation {
-          artwork(id: "some-slug") {
-            ...CollapsibleArtworkDetails_artwork
-          }
-        }
-      `}
-      variables={{}}
-      render={({ props }) => {
-        if (props?.artwork) {
-          return <CollapsibleArtworkDetailsFragmentContainer artwork={props.artwork} />
-        }
-        return null
-      }}
-    />
-  )
-
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
   })
 
-  const resolveData = (passedProps = {}) => {
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, passedProps)
-    )
-  }
+  it("displays basic artwork details when collapsed", () => {
+    renderWithWrappers(<TestRenderer />)
 
-  it("renders the data if available", () => {
-    const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
-    resolveData()
-    expect(wrapper.root.findAllByType(OpaqueImageView)).toHaveLength(1)
-    // Show artwork details content
-    wrapper.root.findByProps({ testID: "toggle-artwork-details-button" }).props.onPress()
-    expect(wrapper.root.findAllByType(Text)).toHaveLength(24)
-  })
-
-  it("renders artist names", () => {
-    const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
     resolveData({
       Artwork: () => ({
-        artistNames: "Vladimir Petrov, Kristina Kost",
+        title: "Artwork Title",
+        date: "Artwork Date",
+        artistNames: "Artist Names",
       }),
     })
-    expect(extractText(wrapper.root)).toContain("Vladimir Petrov, Kristina Kost")
+
+    expect(screen.getByLabelText("Image of Artwork Title")).toBeVisible()
+    expect(screen.getByText("Artist Names")).toBeVisible()
+    expect(screen.getByText("Artwork Title, Artwork Date")).toBeVisible()
   })
 
-  it("expands component on press", () => {
-    const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
-    resolveData()
-    wrapper.root.findByType(TouchableOpacity).props.onPress()
-    expect(wrapper.root.findAllByType(ArtworkDetailsRow)).toHaveLength(11)
-  })
+  it("displays additonal artwork details when expanded", async () => {
+    renderWithWrappers(<TestRenderer />)
 
-  it("doesn't render what it doesn't have", () => {
-    const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
     resolveData({
       Artwork: () => ({
+        title: "Artwork Title",
+        date: "Artwork Date",
+        artistNames: "Artist Names",
+        saleMessage: "Artwork Sale Message",
+        mediumType: {
+          name: "Artwork Medium Type Name",
+        },
+        manufacturer: "Artwork Manufacturer",
+        publisher: "Artwork Publisher",
+        medium: "Artwork Medium",
+        attributionClass: {
+          name: "Artwork Attribution Class Name",
+        },
+        dimensions: {
+          in: "Artwork Dimensions Inches",
+          cm: "Artwork Dimensions Centimeters",
+        },
         signatureInfo: {
-          details: null,
+          details: "Artwork Signature Info Details",
+        },
+        isFramed: true,
+        certificateOfAuthenticity: {
+          details: "Artwork Certificate Of Authenticity Details",
+        },
+        conditionDescription: {
+          details: "Artwork Condition Description Details",
         },
       }),
     })
-    wrapper.root.findByType(TouchableOpacity).props.onPress()
-    expect(wrapper.root.findAllByType(ArtworkDetailsRow)).toHaveLength(10)
+
+    fireEvent.press(screen.getByLabelText("Show artwork details"))
+
+    await waitFor(() => {
+      expect(screen.getByLabelText("Hide artwork details")).toBeVisible()
+    })
+
+    expect(screen.getByLabelText("Image of Artwork Title")).toBeVisible()
+    expect(screen.getByText("Artist Names")).toBeVisible()
+    expect(screen.getByText("Artwork Title, Artwork Date")).toBeVisible()
+    expect(screen.getByText("Artwork Sale Message")).toBeVisible()
+    expect(screen.getByText("Artwork Medium Type Name")).toBeVisible()
+    expect(screen.getByText("Artwork Manufacturer")).toBeVisible()
+    expect(screen.getByText("Artwork Publisher")).toBeVisible()
+    expect(screen.getByText("Artwork Medium")).toBeVisible()
+    expect(screen.getByText("Artwork Attribution Class Name")).toBeVisible()
+    expect(
+      screen.getByText("Artwork Dimensions Inches\nArtwork Dimensions Centimeters")
+    ).toBeVisible()
+    expect(screen.getByText("Artwork Signature Info Details")).toBeVisible()
+    expect(screen.getByText("Included")).toBeVisible()
+    expect(screen.getByText("Artwork Certificate Of Authenticity Details")).toBeVisible()
+    expect(screen.getByText("Artwork Condition Description Details")).toBeVisible()
+  })
+
+  it("doesn't display missing artwork details when expanded", async () => {
+    renderWithWrappers(<TestRenderer />)
+
+    resolveData({
+      Artwork: () => ({
+        saleMessage: "Artwork Sale Message",
+        manufacturer: null,
+        publisher: null,
+        medium: "Artwork Medium",
+      }),
+    })
+
+    fireEvent.press(screen.getByLabelText("Show artwork details"))
+
+    await waitFor(() => {
+      expect(screen.getByLabelText("Hide artwork details")).toBeVisible()
+    })
+
+    expect(screen.getByText("Price")).toBeVisible()
+    expect(screen.queryByText("Manufacturer")).toBeNull()
+    expect(screen.queryByText("Publisher")).toBeNull()
+    expect(screen.getByText("Materials")).toBeVisible()
+  })
+
+  it("diplays 'not included' when the artwork is not framed", async () => {
+    renderWithWrappers(<TestRenderer />)
+
+    resolveData({
+      Artwork: () => ({
+        isFramed: false,
+      }),
+    })
+
+    fireEvent.press(screen.getByLabelText("Show artwork details"))
+
+    await waitFor(() => {
+      expect(screen.getByLabelText("Hide artwork details")).toBeVisible()
+    })
+
+    expect(screen.getByText("Frame")).toBeVisible()
+    expect(screen.getByText("Not included")).toBeVisible()
   })
 })
+
+let mockEnvironment: ReturnType<typeof createMockEnvironment>
+
+const TestRenderer = () => (
+  <QueryRenderer<CollapsibleArtworkDetailsTestsQuery>
+    environment={mockEnvironment}
+    query={graphql`
+      query CollapsibleArtworkDetailsTestsQuery @relay_test_operation {
+        artwork(id: "some-slug") {
+          ...CollapsibleArtworkDetails_artwork
+        }
+      }
+    `}
+    variables={{}}
+    render={({ props }) => {
+      if (props?.artwork) {
+        return <CollapsibleArtworkDetailsFragmentContainer artwork={props.artwork} />
+      }
+      return null
+    }}
+  />
+)
+
+const resolveData = (passedProps = {}) => {
+  mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+    MockPayloadGenerator.generate(operation, passedProps)
+  )
+}
