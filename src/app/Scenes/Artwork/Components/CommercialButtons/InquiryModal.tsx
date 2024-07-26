@@ -221,6 +221,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, me }) => {
               multiline
               placeholder="Add a custom note..."
               title="Add message"
+              accessibilityLabel="Add message"
               value={message ? message : ""}
               onChangeText={setMessage}
               onFocus={scrollToInput}

@@ -1,6 +1,7 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { InquiryModalTestsQuery } from "__generated__/InquiryModalTestsQuery.graphql"
 import { InquiryModal } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryModal"
+import { AUTOMATED_MESSAGES } from "app/Scenes/Artwork/Components/CommercialButtons/constants"
 import {
   ArtworkInquiryContext,
   initialArtworkInquiryState,
@@ -102,7 +103,11 @@ describe("InquiryModal", () => {
     })
   })
 
-  test.todo("displays a hand-picked message")
+  it("displays a random automated message", () => {
+    renderWithRelay()
+
+    expect(AUTOMATED_MESSAGES).toContain(screen.getByLabelText("Add message").props.value)
+  })
 
   test.todo("displays a success message when the inquiry is sent")
   test.todo("displays an error message when the inquiry fails to send")
