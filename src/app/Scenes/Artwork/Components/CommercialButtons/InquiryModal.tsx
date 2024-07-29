@@ -57,6 +57,14 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, me }) => {
     }
   }, [mutationError])
 
+  const scrollToInput = useCallback(() => {
+    scrollViewRef.current?.scrollTo({ y: addMessageYCoordinate })
+  }, [addMessageYCoordinate])
+
+  if (!artworkData || !meData) {
+    return null
+  }
+
   const artworkId = artworkData.internalID
   const artworkSlug = artworkData.slug
   const questions = artworkData?.inquiryQuestions
@@ -70,10 +78,6 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, me }) => {
     dispatch({ type: "resetForm", payload: null })
     dispatch({ type: "setInquiryModalVisible", payload: false })
   }
-
-  const scrollToInput = useCallback(() => {
-    scrollViewRef.current?.scrollTo({ y: addMessageYCoordinate })
-  }, [addMessageYCoordinate])
 
   const sendInquiry = () => {
     if (loading) {
@@ -276,7 +280,7 @@ const meFragment = graphql`
       city
     }
     profession
-    collectorProfile {
+    collectorProfile @required(action: NONE) {
       lastUpdatePromptAt
     }
   }

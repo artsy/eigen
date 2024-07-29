@@ -82,9 +82,8 @@ export const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
           setLoading(false)
           onClose()
         },
-        onError: () => {
-          // TODO: display an error message to user
-          console.log("Error updating user profile")
+        onError: (error) => {
+          console.error("[MyProfileEditModal] Error updating user profile", error)
           setLoading(false)
         },
       })
@@ -104,9 +103,8 @@ export const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
       onCompleted: () => {
         onClose()
       },
-      onError: () => {
-        // TODO: display an error message to user
-        console.log("Error updating user profile")
+      onError: (error) => {
+        console.error("[MyProfileEditModal] Error updating last prompt timestamp", error)
       },
     })
   }

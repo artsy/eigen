@@ -1,9 +1,11 @@
-type NullableString = string | null | undefined
+import { InquiryModal_me$data } from "__generated__/InquiryModal_me.graphql"
+
+type InquiryModalData = NonNullable<InquiryModal_me$data>
 
 interface userShouldBePromptedToCompleteProfileParams {
-  city: NullableString
-  lastPromptAt: NullableString
-  profession: NullableString
+  city?: NonNullable<InquiryModalData["location"]>["city"]
+  lastPromptAt?: InquiryModalData["collectorProfile"]["lastUpdatePromptAt"]
+  profession?: InquiryModalData["profession"]
 }
 
 export const userShouldBePromptedToCompleteProfile = ({
@@ -16,7 +18,7 @@ export const userShouldBePromptedToCompleteProfile = ({
 }
 
 interface userShouldBePromptedToAddArtistsToCollectionParams {
-  lastPromptAt: NullableString
+  lastPromptAt?: InquiryModalData["collectorProfile"]["lastUpdatePromptAt"]
 }
 
 export const userShouldBePromptedToAddArtistsToCollection = ({
@@ -26,7 +28,9 @@ export const userShouldBePromptedToAddArtistsToCollection = ({
   return userHasAnEmptyCollection && userHasNotBeenPromptedWithinCooldownPeriod(lastPromptAt)
 }
 
-const userHasNotBeenPromptedWithinCooldownPeriod = (lastPromptAt: NullableString) => {
+const userHasNotBeenPromptedWithinCooldownPeriod = (
+  lastPromptAt?: InquiryModalData["collectorProfile"]["lastUpdatePromptAt"]
+) => {
   if (lastPromptAt == null) {
     return true
   }
