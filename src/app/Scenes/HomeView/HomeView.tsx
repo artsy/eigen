@@ -54,7 +54,7 @@ export const homeViewScreenQuery = graphql`
               ...ArtworksRailHomeViewSection_section
             }
 
-            ...NewWorksForYouSection_section
+            ...ArtworksRailHomeViewSection_section
           }
         }
       }
