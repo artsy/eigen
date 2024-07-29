@@ -1,6 +1,6 @@
 import { Flex, Screen, Separator, Spacer, Text } from "@artsy/palette-mobile"
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
-import { NewWorksForYouSection } from "app/Scenes/HomeView/Sections/NewWorksForYouSection"
+import { ArtworksRailHomeViewSection } from "app/Scenes/HomeView/Sections/ArtworksRailHomeViewSection"
 import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Suspense } from "react"
@@ -38,8 +38,11 @@ export const HomeView: React.FC = () => {
 const Section: React.FC<{ section: any }> = (props) => {
   const { section } = props
 
-  if (props.section.key === "NEW_WORKS_FOR_YOU") {
-    return <NewWorksForYouSection section={section} />
+  console.log("[Debug] section.component.")
+
+  // or should we check for __typename? (which is ArtworksRailHomeViewSection)
+  if (section.component.type === "ARTWORKS_RAIL") {
+    return <ArtworksRailHomeViewSection section={section} />
   }
 
   return (
@@ -89,7 +92,7 @@ export const homeViewScreenQuery = graphql`
               }
             }
 
-            ...NewWorksForYouSection_section
+            ...ArtworksRailHomeViewSection_section
           }
         }
       }
