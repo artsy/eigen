@@ -35,13 +35,20 @@ export const PartnerOverviewList: React.FC<PartnerOverviewListProps> = ({
     loadNext(20)
   }
 
-  const renderItem = useCallback(({ item }) => <ArtistListItem artist={item} />, [])
+  const renderItem = useCallback(
+    ({ item }) => (
+      <Flex py={1}>
+        <ArtistListItem artist={item} />
+      </Flex>
+    ),
+    []
+  )
 
   return (
-    <Tabs.FlatList
+    <Tabs.FlashList
+      estimatedItemSize={95}
       data={artists}
       keyExtractor={(item) => item.id}
-      initialNumToRender={20}
       ListHeaderComponent={() => {
         return (
           <>
@@ -61,7 +68,6 @@ export const PartnerOverviewList: React.FC<PartnerOverviewListProps> = ({
           </>
         )
       }}
-      ItemSeparatorComponent={() => <Spacer y={2} />}
       renderItem={renderItem}
       onEndReached={handleLoadMore}
       onEndReachedThreshold={0.2}
