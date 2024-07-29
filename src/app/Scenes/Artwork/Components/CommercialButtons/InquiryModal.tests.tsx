@@ -14,6 +14,7 @@ import {
   InquiryQuestionIDs,
 } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { daysInCooldownPeriod } from "app/utils/collectorPromptHelpers"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Reducer, useReducer } from "react"
 import { graphql } from "react-relay"
@@ -93,12 +94,26 @@ describe("inquiry modal", () => {
     })
   })
 
-  test.todo("tracks an event when the inquiry modal is closed")
+  it("tracks an event when the inquiry modal is closed", async () => {
+    renderWithRelay({
+      Artwork: () => mockArtwork,
+    })
+
+    fireEvent.press(screen.getByText("Cancel"))
+
+    await waitFor(() => {
+      expect(mockTrackEvent).toHaveBeenCalledWith({
+        action_type: "tap",
+        action_name: "inquiryCancel",
+        owner_type: "Artwork",
+        owner_id: "artwork-id",
+        owner_slug: "artwork-slug",
+      })
+    })
+  })
 
   describe("sending the inquiry", () => {
     let mockUseSubmitInquiryRequest: jest.SpyInstance
-
-    test.todo("tracks an event before sending the inquiry")
 
     describe("when the inquiry is successfully sent", () => {
       beforeAll(() => {
@@ -118,7 +133,29 @@ describe("inquiry modal", () => {
         mockUseSubmitInquiryRequest.mockRestore()
       })
 
-      test.todo("tracks an event when the inquiry is successfully sent")
+      it("tracks two events before and after the inquiry is successfully sent", async () => {
+        renderWithRelay({
+          Artwork: () => mockArtwork,
+        })
+
+        fireEvent.press(screen.getByText("Question"))
+
+        await waitFor(() => {
+          expect(screen.getByText("Send")).toBeEnabled()
+        })
+
+        fireEvent.press(screen.getByText("Send"))
+
+        await waitFor(() => {
+          expect(mockTrackEvent).toHaveBeenCalledWith({
+            action_type: "tap",
+            action_name: "inquiryCancel",
+            owner_type: "Artwork",
+            owner_id: "artwork-id",
+            owner_slug: "artwork-slug",
+          })
+        })
+      })
 
       it("displays a success message ", async () => {
         renderWithRelay({
@@ -290,6 +327,8 @@ describe("inquiry modal", () => {
 })
 
 const mockArtwork = {
+  internalID: "artwork-id",
+  slug: "artwork-slug",
   title: "Title",
   date: "Date",
   artistNames: "Artist Name",
