@@ -2,13 +2,11 @@ import { ActionType, OwnerType, TappedContactGallery } from "@artsy/cohesion"
 import { ButtonProps, Button } from "@artsy/palette-mobile"
 import { ContactGalleryButton_artwork$key } from "__generated__/ContactGalleryButton_artwork.graphql"
 import { InquiryModal_me$key } from "__generated__/InquiryModal_me.graphql"
-import { CompleteProfilePrompt } from "app/Scenes/Artwork/Components/CommercialButtons/CompleteProfilePrompt"
 import { InquiryModal } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryModal"
 import {
   ArtworkInquiryContext,
   ArtworkInquiryStateProvider,
 } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import React from "react"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -23,8 +21,6 @@ export const ContactGalleryButton: React.FC<ContactGalleryButtonProps> = ({
   me,
   ...rest
 }) => {
-  const profilePromptIsEnabled = useFeatureFlag("AREnableCollectorProfilePrompts")
-
   const artworkData = useFragment(artworkFragment, artwork)
 
   const { trackEvent } = useTracking()
@@ -46,7 +42,6 @@ export const ContactGalleryButton: React.FC<ContactGalleryButtonProps> = ({
         )}
       </ArtworkInquiryContext.Consumer>
       <InquiryModal artwork={artworkData} me={me} />
-      {!!profilePromptIsEnabled && <CompleteProfilePrompt artwork={artworkData} />}
     </ArtworkInquiryStateProvider>
   )
 }
@@ -65,6 +60,5 @@ const artworkFragment = graphql`
     internalID
     slug
     ...InquiryModal_artwork
-    ...CompleteProfilePrompt_artwork
   }
 `

@@ -2,6 +2,7 @@ import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { InquiryModalTestsQuery } from "__generated__/InquiryModalTestsQuery.graphql"
 import { InquiryModal } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryModal"
 import { AUTOMATED_MESSAGES } from "app/Scenes/Artwork/Components/CommercialButtons/constants"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import {
   ArtworkInquiryContext,
   initialArtworkInquiryState,
@@ -12,77 +13,40 @@ import {
   ArtworkInquiryContextState,
   InquiryQuestionIDs,
 } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
+import { daysInCooldownPeriod } from "app/utils/collectorPromptHelpers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Reducer, useReducer } from "react"
 import { graphql } from "react-relay"
 
-describe("InquiryModal", () => {
+describe("inquiry modal", () => {
   it("displays artwork metadata", () => {
     renderWithRelay({
-      Artwork: () => ({
-        title: "Artwork Title",
-        date: "2021",
-        artistNames: "Artist Name",
-        image: {
-          url: "https://example.com/image.jpg",
-        },
-      }),
+      Artwork: () => mockArtwork,
     })
 
     expect(screen.getByText("Artist Name")).toBeVisible()
-    expect(screen.getByText("Artwork Title, 2021")).toBeVisible()
-    expect(screen.getByLabelText("Image of Artwork Title")).toBeVisible()
-  })
-
-  it("closes when the 'cancel' button is pressed", async () => {
-    renderWithRelay()
-
-    fireEvent.press(screen.getByText("Cancel"))
-
-    await waitFor(() => {
-      expect(screen.queryByText("What information are you looking for?")).toBeNull()
-    })
+    expect(screen.getByText("Title, Date")).toBeVisible()
+    expect(screen.getByLabelText("Image of Title")).toBeVisible()
   })
 
   it("displays inquiry questions", () => {
     renderWithRelay({
-      Artwork: () => ({
-        inquiryQuestions: [
-          {
-            internalID: "question-id",
-            question: "Question",
-          },
-        ],
-      }),
+      Artwork: () => mockArtwork,
     })
 
     expect(screen.getByText("Question")).toBeVisible()
   })
 
-  it("enables the 'send' button when an inquiry question is selected", async () => {
-    renderWithRelay({
-      Artwork: () => ({
-        inquiryQuestions: [
-          {
-            internalID: "question-id",
-            question: "Question",
-          },
-        ],
-      }),
-    })
+  it("displays a random automated message", () => {
+    renderWithRelay()
 
-    expect(screen.getByText("Send")).toBeDisabled()
-
-    fireEvent.press(screen.getByText("Question"))
-
-    await waitFor(() => {
-      expect(screen.getByText("Send")).toBeEnabled()
-    })
+    expect(AUTOMATED_MESSAGES).toContain(screen.getByLabelText("Add message").props.value)
   })
 
   it("opens the shipping modal when the 'add your location' field is pressed", async () => {
     renderWithRelay({
       Artwork: () => ({
+        ...mockArtwork,
         inquiryQuestions: [
           {
             internalID: InquiryQuestionIDs.Shipping,
@@ -105,99 +69,243 @@ describe("InquiryModal", () => {
     })
   })
 
-  it("displays a random automated message", () => {
+  it("enables the 'send' button when an inquiry question is selected", async () => {
+    renderWithRelay({
+      Artwork: () => mockArtwork,
+    })
+
+    expect(screen.getByText("Send")).toBeDisabled()
+
+    fireEvent.press(screen.getByText("Question"))
+
+    await waitFor(() => {
+      expect(screen.getByText("Send")).toBeEnabled()
+    })
+  })
+
+  it("closes when the 'cancel' button is pressed", async () => {
     renderWithRelay()
 
-    expect(AUTOMATED_MESSAGES).toContain(screen.getByLabelText("Add message").props.value)
+    fireEvent.press(screen.getByText("Cancel"))
+
+    await waitFor(() => {
+      expect(screen.queryByText("What information are you looking for?")).toBeNull()
+    })
   })
-
-  it("displays a success message when the inquiry is sent", async () => {
-    const mockUseSubmitInquiryRequest = jest
-      .spyOn(
-        require("app/Scenes/Artwork/Components/CommercialButtons/useSubmitInquiryRequest"),
-        "useSubmitInquiryRequest"
-      )
-      .mockImplementation(() => [
-        jest.fn(({ onCompleted }) => {
-          onCompleted()
-        }),
-      ])
-
-    renderWithRelay({
-      Artwork: () => ({
-        inquiryQuestions: [
-          {
-            internalID: "question-id",
-            question: "Question",
-          },
-        ],
-      }),
-    })
-
-    fireEvent.press(screen.getByText("Question"))
-
-    await waitFor(() => {
-      expect(screen.getByText("Send")).toBeEnabled()
-    })
-
-    fireEvent.press(screen.getByText("Send"))
-
-    await waitFor(() => {
-      expect(screen.getByText("Message Sent")).toBeVisible()
-    })
-
-    mockUseSubmitInquiryRequest.mockRestore()
-  })
-
-  it("displays an error message when the inquiry fails to send", async () => {
-    const mockUseSubmitInquiryRequest = jest
-      .spyOn(
-        require("app/Scenes/Artwork/Components/CommercialButtons/useSubmitInquiryRequest"),
-        "useSubmitInquiryRequest"
-      )
-      .mockImplementation(() => [
-        jest.fn(({ onError }) => {
-          onError()
-        }),
-      ])
-
-    renderWithRelay({
-      Artwork: () => ({
-        inquiryQuestions: [
-          {
-            internalID: "question-id",
-            question: "Question",
-          },
-        ],
-      }),
-    })
-
-    fireEvent.press(screen.getByText("Question"))
-
-    await waitFor(() => {
-      expect(screen.getByText("Send")).toBeEnabled()
-    })
-
-    fireEvent.press(screen.getByText("Send"))
-
-    await waitFor(() => {
-      expect(
-        screen.getByText("Sorry, we were unable to send this message. Please try again.")
-      ).toBeVisible()
-    })
-
-    mockUseSubmitInquiryRequest.mockRestore()
-  })
-
-  test.todo(
-    "displays a profile prompt after the inquiry is sent if the user has not completed their profile"
-  )
 
   test.todo("tracks an event when the inquiry modal is closed")
-  test.todo("tracks an event before sending the inquiry")
-  test.todo("tracks an event when the inquiry is successfully sent")
-  test.todo("tracks an event when the inquiry fails to send")
+
+  describe("sending the inquiry", () => {
+    let mockUseSubmitInquiryRequest: jest.SpyInstance
+
+    test.todo("tracks an event before sending the inquiry")
+
+    describe("when the inquiry is successfully sent", () => {
+      beforeAll(() => {
+        mockUseSubmitInquiryRequest = jest
+          .spyOn(
+            require("app/Scenes/Artwork/Components/CommercialButtons/useSubmitInquiryRequest"),
+            "useSubmitInquiryRequest"
+          )
+          .mockImplementation(() => [
+            jest.fn(({ onCompleted }) => {
+              onCompleted()
+            }),
+          ])
+      })
+
+      afterAll(() => {
+        mockUseSubmitInquiryRequest.mockRestore()
+      })
+
+      test.todo("tracks an event when the inquiry is successfully sent")
+
+      it("displays a success message ", async () => {
+        renderWithRelay({
+          Artwork: () => mockArtwork,
+        })
+
+        fireEvent.press(screen.getByText("Question"))
+
+        await waitFor(() => {
+          expect(screen.getByText("Send")).toBeEnabled()
+        })
+
+        fireEvent.press(screen.getByText("Send"))
+
+        await waitFor(() => {
+          expect(screen.getByText("Message Sent")).toBeVisible()
+        })
+      })
+
+      describe("and the profile prompt feature flag is enabled", () => {
+        beforeEach(() => {
+          __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCollectorProfilePrompts: true })
+        })
+
+        it("displays a profile prompt if the user has not completed their profile and never been prompted", async () => {
+          renderWithRelay({
+            Artwork: () => mockArtwork,
+            Me: () => ({
+              location: {
+                city: null,
+              },
+              profession: null,
+              collectorProfile: {
+                lastUpdatePromptAt: null,
+              },
+            }),
+          })
+
+          expect(
+            screen.queryByText("Inquiry sent! Tell Partner Name more about yourself.")
+          ).toBeNull()
+
+          fireEvent.press(screen.getByText("Question"))
+
+          await waitFor(() => {
+            expect(screen.getByText("Send")).toBeEnabled()
+          })
+
+          fireEvent.press(screen.getByText("Send"))
+
+          await waitFor(() => {
+            expect(
+              screen.getByText("Inquiry sent! Tell Partner Name more about yourself.")
+            ).toBeVisible()
+          })
+        })
+
+        it("displays a profile prompt if the user has not completed their profile and has not been prompted since the cooldown period", async () => {
+          renderWithRelay({
+            Artwork: () => mockArtwork,
+            Me: () => ({
+              location: {
+                city: null,
+              },
+              profession: null,
+              collectorProfile: {
+                lastUpdatePromptAt: new Date(
+                  Date.now() - (daysInCooldownPeriod + 1) * 24 * 60 * 60 * 1000
+                ).toISOString(),
+              },
+            }),
+          })
+
+          expect(
+            screen.queryByText("Inquiry sent! Tell Partner Name more about yourself.")
+          ).toBeNull()
+
+          fireEvent.press(screen.getByText("Question"))
+
+          await waitFor(() => {
+            expect(screen.getByText("Send")).toBeEnabled()
+          })
+
+          fireEvent.press(screen.getByText("Send"))
+
+          await waitFor(() => {
+            expect(
+              screen.getByText("Inquiry sent! Tell Partner Name more about yourself.")
+            ).toBeVisible()
+          })
+        })
+
+        it("does not display a profile prompt if the user has not completed their profile and has been prompted within the cooldown period", async () => {
+          renderWithRelay({
+            Artwork: () => mockArtwork,
+            Me: () => ({
+              location: {
+                city: null,
+              },
+              profession: null,
+              collectorProfile: {
+                lastUpdatePromptAt: new Date(
+                  Date.now() - (daysInCooldownPeriod - 10) * 24 * 60 * 60 * 1000
+                ).toISOString(),
+              },
+            }),
+          })
+
+          fireEvent.press(screen.getByText("Question"))
+
+          await waitFor(() => {
+            expect(screen.getByText("Send")).toBeEnabled()
+          })
+
+          fireEvent.press(screen.getByText("Send"))
+
+          await waitFor(() => {
+            expect(screen.getByText("Message Sent")).toBeVisible()
+          })
+
+          expect(
+            screen.queryByText("Inquiry sent! Tell Partner Name more about yourself.")
+          ).toBeNull()
+        })
+      })
+    })
+
+    describe("when the inquiry fails to send", () => {
+      beforeAll(() => {
+        mockUseSubmitInquiryRequest = jest
+          .spyOn(
+            require("app/Scenes/Artwork/Components/CommercialButtons/useSubmitInquiryRequest"),
+            "useSubmitInquiryRequest"
+          )
+          .mockImplementation(() => [
+            jest.fn(({ onError }) => {
+              onError()
+            }),
+          ])
+      })
+
+      afterAll(() => {
+        mockUseSubmitInquiryRequest.mockRestore()
+      })
+
+      test.todo("tracks an event when the inquiry fails to send")
+
+      it("displays an error message", async () => {
+        renderWithRelay({
+          Artwork: () => mockArtwork,
+        })
+
+        fireEvent.press(screen.getByText("Question"))
+
+        await waitFor(() => {
+          expect(screen.getByText("Send")).toBeEnabled()
+        })
+
+        fireEvent.press(screen.getByText("Send"))
+
+        await waitFor(() => {
+          expect(
+            screen.getByText("Sorry, we were unable to send this message. Please try again.")
+          ).toBeVisible()
+        })
+      })
+    })
+  })
 })
+
+const mockArtwork = {
+  title: "Title",
+  date: "Date",
+  artistNames: "Artist Name",
+  image: {
+    url: "https://example.com/image.jpg",
+  },
+  inquiryQuestions: [
+    {
+      internalID: "question-id",
+      question: "Question",
+    },
+  ],
+  partner: {
+    name: "Partner Name",
+  },
+}
 
 const { renderWithRelay } = setupTestWrapper<InquiryModalTestsQuery>({
   Component: ({ artwork, me }) => (

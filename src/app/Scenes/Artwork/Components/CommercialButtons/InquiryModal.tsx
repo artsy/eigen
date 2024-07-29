@@ -4,6 +4,7 @@ import { InquiryModal_me$key } from "__generated__/InquiryModal_me.graphql"
 import { InquiryQuestionInput } from "__generated__/useSubmitInquiryRequestMutation.graphql"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { CompleteProfilePrompt } from "app/Scenes/Artwork/Components/CommercialButtons/CompleteProfilePrompt"
 import { InquiryQuestionOption } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryQuestionOption"
 import { InquirySuccessNotification } from "app/Scenes/Artwork/Components/CommercialButtons/InquirySuccessNotification"
 import { randomAutomatedMessage } from "app/Scenes/Artwork/Components/CommercialButtons/constants"
@@ -11,6 +12,10 @@ import { useSubmitInquiryRequest } from "app/Scenes/Artwork/Components/Commercia
 import { navigate } from "app/system/navigation/navigate"
 import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryQuestionIDs } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
+import {
+  userShouldBePromptedToAddArtistsToCollection,
+  userShouldBePromptedToCompleteProfile,
+} from "app/utils/collectorPromptHelpers"
 import { LocationWithDetails } from "app/utils/googleMaps"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
@@ -116,26 +121,30 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, me }) => {
         resetAndExit()
         tracking.trackEvent(tracks.successfullySentTheInquiry(artworkId, artworkSlug))
 
-        const userHasAnEmptyCollection = false
-        const userHasAnIncompleteProfile = !meData.profession || !meData.location?.city
+        const lastPromptAt = meData.collectorProfile?.lastUpdatePromptAt
 
         if (
           profilePromptIsEnabled &&
-          userHasAnEmptyCollection &&
-          userHasNotBeenPromptedInThirtyDays()
+          userShouldBePromptedToAddArtistsToCollection({ lastPromptAt })
         ) {
           dispatch({ type: "setCollectionPromptVisible", payload: true })
-        } else if (
+          return
+        }
+
+        const city = meData.location?.city
+        const profession = meData.profession
+
+        if (
           profilePromptIsEnabled &&
-          userHasAnIncompleteProfile &&
-          userHasNotBeenPromptedInThirtyDays()
+          userShouldBePromptedToCompleteProfile({ city, profession, lastPromptAt })
         ) {
           dispatch({ type: "setProfilePromptVisible", payload: true })
-        } else {
-          setTimeout(() => {
-            dispatch({ type: "setSuccessNotificationVisible", payload: true })
-          }, 500)
+          return
         }
+
+        setTimeout(() => {
+          dispatch({ type: "setSuccessNotificationVisible", payload: true })
+        }, 500)
       },
     })
   }
@@ -148,20 +157,6 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, me }) => {
   const handleDismiss = () => {
     tracking.trackEvent(tracks.dismissedTheModal(artworkId, artworkSlug))
     resetAndExit()
-  }
-
-  const userHasNotBeenPromptedInThirtyDays = () => {
-    const lastTimeUserWasPrompted = meData.collectorProfile?.lastUpdatePromptAt
-
-    if (lastTimeUserWasPrompted == null) {
-      return true
-    }
-
-    const millisecondsSinceLastTimeUserWasPrompted =
-      new Date().getTime() - new Date(lastTimeUserWasPrompted).getTime()
-    const millisecondsInThirtyDays = 30 * 24 * 60 * 60 * 1000
-
-    return millisecondsSinceLastTimeUserWasPrompted > millisecondsInThirtyDays
   }
 
   return (
@@ -253,6 +248,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, me }) => {
         />
       </FancyModal>
       <InquirySuccessNotification />
+      {!!profilePromptIsEnabled && <CompleteProfilePrompt artwork={artworkData} me={meData} />}
     </>
   )
 }
@@ -260,6 +256,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, me }) => {
 const artworkFragment = graphql`
   fragment InquiryModal_artwork on Artwork {
     ...CollapsibleArtworkDetails_artwork
+    ...CompleteProfilePrompt_artwork
     internalID
     slug
     inquiryQuestions {
@@ -274,6 +271,7 @@ const artworkFragment = graphql`
 
 const meFragment = graphql`
   fragment InquiryModal_me on Me {
+    ...MyProfileEditModal_me
     location {
       city
     }
