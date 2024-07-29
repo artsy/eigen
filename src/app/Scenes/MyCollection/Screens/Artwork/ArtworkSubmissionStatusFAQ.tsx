@@ -5,10 +5,12 @@ import { sendEmailWithMailTo } from "app/utils/sendEmail"
 export const ArtworkSubmissionStatusFAQ: React.FC<{ closeModal: () => void }> = ({
   closeModal,
 }) => {
-  const article = "https://support.artsy.net/s/article/What-items-do-you-accept"
+  const handleLinkPress = () => {
+    navigate("https://support.artsy.net/s/article/What-items-do-you-accept")
+  }
 
   return (
-    <Flex p={2}>
+    <Flex px={2} pb={2}>
       <Text variant="lg-display" mb={4}>
         Submission Status
       </Text>
@@ -27,13 +29,14 @@ export const ArtworkSubmissionStatusFAQ: React.FC<{ closeModal: () => void }> = 
           </BulletedItem>
         </Join>
       </Flex>
+
       <Text caps variant="xs" mb={2}>
         find out more
       </Text>
       <Flex flexDirection="column" mb={4}>
         <Text mb={1}>
           For more information, see our Collector Help Center article{" "}
-          <Text style={{ textDecorationLine: "underline" }} onPress={() => navigate(article)}>
+          <Text style={{ textDecorationLine: "underline" }} onPress={handleLinkPress}>
             What items do you accept?
           </Text>
         </Text>
