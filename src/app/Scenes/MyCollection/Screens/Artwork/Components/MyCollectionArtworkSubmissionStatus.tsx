@@ -1,4 +1,11 @@
-import { Flex, Box, Text, Touchable, useScreenDimensions } from "@artsy/palette-mobile"
+import {
+  Flex,
+  Box,
+  Text,
+  Touchable,
+  useScreenDimensions,
+  ArrowRightIcon,
+} from "@artsy/palette-mobile"
 import { MyCollectionArtworkSubmissionStatus_submissionState$key } from "__generated__/MyCollectionArtworkSubmissionStatus_submissionState.graphql"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
@@ -82,10 +89,11 @@ export const MyCollectionArtworkSubmissionStatus: React.FC<
 
             {!!consignmentSubmission?.actionLabel && (
               <Touchable onPress={() => setIsSubmissionStatusModalVisible(true)}>
-                <Flex flexDirection="row" alignItems="center">
+                <Flex flexDirection="row" alignItems="center" alignContent="center">
                   <Text variant="sm-display" fontWeight="bold" color="orange100">
-                    {consignmentSubmission?.actionLabel}
+                    {consignmentSubmission?.actionLabel}&nbsp;
                   </Text>
+                  <ArrowRightIcon fill="orange100" height={16} width={16} />
                 </Flex>
               </Touchable>
             )}
