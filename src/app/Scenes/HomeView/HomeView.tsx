@@ -1,5 +1,6 @@
 import { Flex, Screen, Separator, Spacer, Text } from "@artsy/palette-mobile"
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
+import { NewWorksForYouSection } from "app/Scenes/HomeView/Sections/NewWorksForYouSection"
 import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Suspense } from "react"
@@ -12,7 +13,7 @@ export const HomeView: React.FC = () => {
   const sections = extractNodes(queryData.homeView.sectionsConnection)
 
   return (
-    <Screen>
+    <Screen mt={0}>
       <Screen.AnimatedHeader onBack={goBack} title={SCREEN_TITLE} />
 
       <Screen.StickySubHeader
@@ -27,7 +28,7 @@ export const HomeView: React.FC = () => {
           renderItem={({ item }) => {
             return <Section section={item} />
           }}
-          ItemSeparatorComponent={() => <Spacer y={1} />}
+          ItemSeparatorComponent={() => <Spacer y={2} />}
         />
       </Screen.Body>
     </Screen>
@@ -37,8 +38,12 @@ export const HomeView: React.FC = () => {
 const Section: React.FC<{ section: any }> = (props) => {
   const { section } = props
 
+  if (props.section.key === "NEW_WORKS_FOR_YOU") {
+    return <NewWorksForYouSection section={section} />
+  }
+
   return (
-    <Flex bg="black10" alignItems="center">
+    <Flex bg="black5" alignItems="center">
       <Text color="black60" p={2}>
         Need to render the{" "}
         <Text color="black100" fontSize="80%">
@@ -72,7 +77,7 @@ export const HomeViewScreen: React.FC = () => (
 export const homeViewScreenQuery = graphql`
   query HomeViewQuery {
     homeView {
-      sectionsConnection(first: 3) {
+      sectionsConnection(first: 4) {
         edges {
           cursor
           node {
@@ -83,6 +88,8 @@ export const homeViewScreenQuery = graphql`
                 type
               }
             }
+
+            ...NewWorksForYouSection_section
           }
         }
       }
