@@ -1,9 +1,9 @@
-import { Box, BoxProps, Text } from "@artsy/palette-mobile"
+import { Box, BoxProps, FollowButton, Text } from "@artsy/palette-mobile"
 import { ShowHeader_show$data } from "__generated__/ShowHeader_show.graphql"
 import { useEventTiming } from "app/utils/useEventTiming"
 import { DateTime } from "luxon"
 import React, { useEffect, useState } from "react"
-import { createFragmentContainer, graphql } from "react-relay"
+import { createFragmentContainer, graphql, useMutation } from "react-relay"
 
 export interface ShowHeaderProps extends BoxProps {
   show: ShowHeader_show$data
@@ -12,11 +12,31 @@ export interface ShowHeaderProps extends BoxProps {
 export const ShowHeader: React.FC<ShowHeaderProps> = ({ show, ...rest }) => {
   const [currentTime, setCurrentTime] = useState(DateTime.local().toString())
 
+  const [commit, isInFlight] = useMutation(FollowShowMutation)
+
   const { formattedTime } = useEventTiming({
     currentTime,
     startAt: show.startAt ?? undefined,
     endAt: show.endAt ?? undefined,
   })
+
+  const handleFollowShow = () => {
+    commit({
+      variables: {
+        input: {
+          partnerShowID: show?.internalID,
+          unfollow: !!show?.isFollowed,
+        },
+      },
+      // TODO: handle errors? we don't seem to handle elsewhere :(
+      // onError(error) {
+      //   console.error("errors", error)
+      // },
+      // onCompleted() {
+      //   console.log("onCompleted")
+      // },
+    })
+  }
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -27,6 +47,9 @@ export const ShowHeader: React.FC<ShowHeaderProps> = ({ show, ...rest }) => {
       clearInterval(interval)
     }
   }, [])
+
+  // TODO:
+  // - any circumstances we should not show it?
 
   return (
     <Box {...rest}>
@@ -44,6 +67,14 @@ export const ShowHeader: React.FC<ShowHeaderProps> = ({ show, ...rest }) => {
         </Text>
       )}
 
+      <FollowButton
+        haptic
+        isFollowed={!!show.isFollowed ? show.isFollowed : false}
+        onPress={handleFollowShow}
+        loading={isInFlight}
+        disabled={isInFlight}
+      />
+
       {!!show.partner && (
         <Text variant="sm" color="black60" mt={1}>
           {show.partner.name}
@@ -53,9 +84,23 @@ export const ShowHeader: React.FC<ShowHeaderProps> = ({ show, ...rest }) => {
   )
 }
 
+const FollowShowMutation = graphql`
+  mutation ShowHeaderFollowShowMutation($input: FollowShowInput!) {
+    followShow(input: $input) {
+      show {
+        id
+        internalID
+        isFollowed
+      }
+    }
+  }
+`
+
 export const ShowHeaderFragmentContainer = createFragmentContainer(ShowHeader, {
   show: graphql`
     fragment ShowHeader_show on Show {
+      isFollowed
+      internalID
       name
       startAt
       endAt
