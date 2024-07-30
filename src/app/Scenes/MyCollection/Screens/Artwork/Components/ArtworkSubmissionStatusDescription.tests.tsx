@@ -1,6 +1,7 @@
-import { screen } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkSubmissionStatusDescriptionTestsQuery } from "__generated__/ArtworkSubmissionStatusDescriptionTestsQuery.graphql"
 import { ArtworkSubmissionStatusDescription } from "app/Scenes/MyCollection/Screens/Artwork/Components/ArtworkSubmissionStatusDescription"
+import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -13,11 +14,7 @@ describe("ArtworkSubmissionStatusDescription", () => {
     Component: (props) => {
       if (props?.artwork) {
         return (
-          <ArtworkSubmissionStatusDescription
-            artworkData={props.artwork}
-            closeModal={() => {}}
-            visible={true}
-          />
+          <ArtworkSubmissionStatusDescription artworkData={props.artwork} closeModal={() => {}} />
         )
       } else {
         return null
@@ -70,9 +67,19 @@ describe("ArtworkSubmissionStatusDescription", () => {
     })
 
     expect(screen.getByText("Rejected")).toBeTruthy()
-    expect(screen.getByText("Rejected Message")).toBeTruthy()
+
+    // test that the stateHelpMessage is displayed correctly when part of it is coming from the server
+    // and some part is hardcoded
+    expect(screen.getByText("Rejected Message", { exact: false })).toBeTruthy()
+    expect(screen.getByText("Find out more about our", { exact: false })).toBeTruthy()
+
     expect(screen.getByText("Rejected Button Label")).toBeTruthy()
     expect(screen.getByText("Rejected Action Label")).toBeTruthy()
+
+    fireEvent.press(screen.getByText("submission criteria"))
+    expect(navigate).toHaveBeenCalledWith(
+      "https://support.artsy.net/s/article/What-items-do-you-accept"
+    )
   })
 })
 

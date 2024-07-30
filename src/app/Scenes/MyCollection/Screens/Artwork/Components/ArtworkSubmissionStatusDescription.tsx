@@ -1,6 +1,7 @@
-import { Button, Flex, Text } from "@artsy/palette-mobile"
+import { Button, Flex, LinkText, Text } from "@artsy/palette-mobile"
 import { ArtworkSubmissionStatusDescription_artwork$key } from "__generated__/ArtworkSubmissionStatusDescription_artwork.graphql"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
+import { navigate } from "app/system/navigation/navigate"
 import { graphql, useFragment } from "react-relay"
 
 interface ArtworkSubmissionStatusDescriptionProps {
@@ -24,6 +25,10 @@ export const ArtworkSubmissionStatusDescription: React.FC<
 
   const buttonVariant = ["DRAFT", "APPROVED"].includes(state) ? "fillDark" : "outline"
 
+  const handleLinkPress = () => {
+    navigate("https://support.artsy.net/s/article/What-items-do-you-accept")
+  }
+
   return (
     <Flex p={2} testID="ArtworkSubmissionStatusDescription-Container">
       <AutoHeightBottomSheet onDismiss={closeModal} visible={visible}>
@@ -40,9 +45,19 @@ export const ArtworkSubmissionStatusDescription: React.FC<
             </Text>
           )}
 
-          <Text variant="sm-display" mt={1} color="black60">
-            {stateHelpMessage}
-          </Text>
+          {state === "REJECTED" ? (
+            <Text variant="sm-display" mt={1} color="black60">
+              {stateHelpMessage} Find out more about our{" "}
+              <LinkText onPress={handleLinkPress} color="black60">
+                submission criteria
+              </LinkText>
+              .
+            </Text>
+          ) : (
+            <Text variant="sm-display" mt={1} color="black60">
+              {stateHelpMessage}
+            </Text>
+          )}
 
           {(!!buttonLabel || !!isListed) && (
             <Button
