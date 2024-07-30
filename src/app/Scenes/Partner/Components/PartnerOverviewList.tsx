@@ -25,7 +25,7 @@ export const PartnerOverviewList: React.FC<PartnerOverviewListProps> = ({
     PartnerOverviewListArtists_partner$key
   >(PartnerOverviewListArtistsFragment, partner)
 
-  const artists = extractNodes(data.artistsConnection).slice(0)
+  const artists = extractNodes(data.artistsConnection)
 
   const handleLoadMore = () => {
     if (!hasNext || isLoadingNext) {
@@ -44,11 +44,13 @@ export const PartnerOverviewList: React.FC<PartnerOverviewListProps> = ({
     [handleLoadMore]
   )
 
+  const keyExtractor = useCallback((item: any, i: number) => `${i}-${item.id}`, [])
+
   return (
     <Tabs.FlashList
-      estimatedItemSize={95}
+      estimatedItemSize={85}
       data={artists}
-      keyExtractor={(item) => item.id}
+      keyExtractor={keyExtractor}
       ListHeaderComponent={() => {
         return (
           <>
