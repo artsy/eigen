@@ -1,6 +1,7 @@
 import { Button, Flex, LinkText, Text } from "@artsy/palette-mobile"
 import { ArtworkSubmissionStatusDescription_artwork$key } from "__generated__/ArtworkSubmissionStatusDescription_artwork.graphql"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
+import { SubmitArtworkProps } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { navigate } from "app/system/navigation/navigate"
 import { graphql, useFragment } from "react-relay"
 
@@ -17,6 +18,7 @@ export const ArtworkSubmissionStatusDescription: React.FC<
     consignmentSubmission: submissionData,
     isListed,
     submissionId,
+    internalID: artworkInternalID,
   } = useFragment(fragment, artworkData)
 
   if (!submissionData || !submissionId) return null
@@ -27,6 +29,55 @@ export const ArtworkSubmissionStatusDescription: React.FC<
 
   const handleLinkPress = () => {
     navigate("https://support.artsy.net/s/article/What-items-do-you-accept")
+  }
+
+  const stateHelpMessageDisplay = () => {
+    if (isListed) {
+      return <>Your artwork has been successfully listed on Artsy.</>
+    }
+    if (state === "REJECTED") {
+      return (
+        <>
+          {stateHelpMessage} Find out more about our{" "}
+          <LinkText onPress={handleLinkPress} color="black60">
+            submission criteria
+          </LinkText>
+          .
+        </>
+      )
+    } else {
+      return stateHelpMessage
+    }
+  }
+
+  // TODO: fix saving the data after editing the submission
+  const navigateToTheSubmissionFlow = () => {
+    closeModal()
+    if (["DRAFT", "SUBMITTED", "RESUBMITTED", "PUBLISHED"].includes(state)) {
+      const passProps: SubmitArtworkProps = {
+        initialStep: "AddPhotos",
+        hasStartedFlowFromMyCollection: true,
+        initialValues: {},
+      }
+      navigate(`/sell/submissions/${submissionId}/edit`, { passProps })
+    } else if (["APPROVED"].includes(state)) {
+      const passProps: SubmitArtworkProps = {
+        initialStep: "AdditionalDocuments",
+        hasStartedFlowFromMyCollection: true,
+        initialValues: {},
+      }
+      navigate(`/sell/submissions/${submissionId}/edit`, { passProps })
+    } else if (isListed && artworkInternalID) {
+      navigate(`/artwork/${artworkInternalID}`)
+    } else {
+      // Default to AddPhotos step
+      const passProps: SubmitArtworkProps = {
+        initialStep: "AddPhotos",
+        hasStartedFlowFromMyCollection: true,
+        initialValues: {},
+      }
+      navigate(`/sell/submissions/${submissionId}/edit`, { passProps })
+    }
   }
 
   return (
@@ -45,19 +96,9 @@ export const ArtworkSubmissionStatusDescription: React.FC<
             </Text>
           )}
 
-          {state === "REJECTED" ? (
-            <Text variant="sm-display" mt={1} color="black60">
-              {stateHelpMessage} Find out more about our{" "}
-              <LinkText onPress={handleLinkPress} color="black60">
-                submission criteria
-              </LinkText>
-              .
-            </Text>
-          ) : (
-            <Text variant="sm-display" mt={1} color="black60">
-              {stateHelpMessage}
-            </Text>
-          )}
+          <Text variant="sm-display" color="black60">
+            {stateHelpMessageDisplay()}
+          </Text>
 
           {(!!buttonLabel || !!isListed) && (
             <Button
@@ -66,7 +107,7 @@ export const ArtworkSubmissionStatusDescription: React.FC<
               haptic
               variant={buttonVariant}
               onPress={() => {
-                /* TODO: add action */
+                navigateToTheSubmissionFlow()
               }}
             >
               {isListed ? "View Listing" : buttonLabel}
@@ -80,6 +121,7 @@ export const ArtworkSubmissionStatusDescription: React.FC<
 
 const fragment = graphql`
   fragment ArtworkSubmissionStatusDescription_artwork on Artwork {
+    internalID
     submissionId
     consignmentSubmission {
       state

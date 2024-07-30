@@ -14,7 +14,11 @@ describe("ArtworkSubmissionStatusDescription", () => {
     Component: (props) => {
       if (props?.artwork) {
         return (
-          <ArtworkSubmissionStatusDescription artworkData={props.artwork} closeModal={() => {}} />
+          <ArtworkSubmissionStatusDescription
+            artworkData={props.artwork}
+            closeModal={() => {}}
+            visible={true}
+          />
         )
       } else {
         return null

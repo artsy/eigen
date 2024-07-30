@@ -30,15 +30,10 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
   const { trackEvent } = useTracking()
 
   const hasImages = artwork?.figures?.length > 0
-  const displaySubmissionStateSection =
-    consignmentSubmission?.state && consignmentSubmission?.state !== "DRAFT"
-
-  const displaySubmissionStateSectionTier2 =
-    consignmentSubmission?.state && consignmentSubmission?.state !== "REJECTED" // TODO: Add more states to aviod displaying submissions in unsupprted statusess
 
   const displaySubmissionStateSectionInHeader = enableSubmitArtworkTier2Information
-    ? displaySubmissionStateSectionTier2
-    : displaySubmissionStateSection
+    ? consignmentSubmission?.state && consignmentSubmission?.state !== "REJECTED"
+    : consignmentSubmission?.state && consignmentSubmission?.state !== "DRAFT"
 
   return (
     <Join separator={<Spacer y={2} />}>

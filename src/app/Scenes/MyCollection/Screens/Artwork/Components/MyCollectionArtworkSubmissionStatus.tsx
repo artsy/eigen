@@ -31,6 +31,7 @@ export const MyCollectionArtworkSubmissionStatus: React.FC<
   if (!consignmentSubmission || !submissionId) return null
 
   const { state, stateLabel } = consignmentSubmission
+
   if (!state) return null
   if (state === "DRAFT" && !enableSubmitArtworkTier2Information) return null
 
