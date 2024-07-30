@@ -25,7 +25,7 @@ export const PartnerOverviewList: React.FC<PartnerOverviewListProps> = ({
     PartnerOverviewListArtists_partner$key
   >(PartnerOverviewListArtistsFragment, partner)
 
-  const artists = extractNodes(data.artistsConnection)
+  const artists = extractNodes(data.artistsConnection).slice(0)
 
   const handleLoadMore = () => {
     if (!hasNext || isLoadingNext) {
