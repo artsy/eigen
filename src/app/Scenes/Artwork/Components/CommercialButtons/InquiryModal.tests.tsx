@@ -309,7 +309,7 @@ describe("inquiry modal", () => {
         mockUseSubmitInquiryRequest.mockRestore()
       })
 
-      it("tracks an event when the inquiry fails to send", async () => {
+      it("tracks two events before and after the inquiry fails to send", async () => {
         renderWithRelay({
           Artwork: () => mockArtwork,
         })
