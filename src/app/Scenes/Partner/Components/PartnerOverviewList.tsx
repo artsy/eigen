@@ -41,7 +41,7 @@ export const PartnerOverviewList: React.FC<PartnerOverviewListProps> = ({
         <ArtistListItem artist={item} />
       </Flex>
     ),
-    []
+    [handleLoadMore]
   )
 
   return (
@@ -70,7 +70,7 @@ export const PartnerOverviewList: React.FC<PartnerOverviewListProps> = ({
       }}
       renderItem={renderItem}
       onEndReached={handleLoadMore}
-      onEndReachedThreshold={0.2}
+      onEndReachedThreshold={0.3}
       ListFooterComponent={() => (
         <Flex
           alignItems="center"
