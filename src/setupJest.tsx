@@ -658,19 +658,21 @@ jest.mock("@gorhom/bottom-sheet", () => ({
   ...require("@gorhom/bottom-sheet/mock"),
 }))
 
+jest.mock("@shopify/flash-list", () => {
+  const { FlatList } = require("react-native")
+  return {
+    ...jest.requireActual("@shopify/flash-list"),
+    MasonryFlashList: FlatList,
+    FlashList: FlatList,
+  }
+})
+
 jest.mock("react-native-collapsible-tab-view", () => {
   const getMockCollapsibleTabs =
     require("app/utils/tests/getMockCollapsibleTabView").getMockCollapsibleTabs
   return getMockCollapsibleTabs()
 })
 
-jest.mock("@shopify/flash-list", () => {
-  const { FlatList } = require("react-native")
-  return {
-    ...jest.requireActual("@shopify/flash-list"),
-    MasonryFlashList: FlatList,
-  }
-})
 
 jest.mock("prettier", () => ({
   format: jest.fn((content) => content), // just return content as-is for tests
