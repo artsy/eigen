@@ -1,7 +1,7 @@
-import { Spacer, Flex, Text, useScreenDimensions, Image } from "@artsy/palette-mobile"
+import { Spacer, Flex, Text, useScreenDimensions, Image, FollowButton } from "@artsy/palette-mobile"
 import { FairHeader_fair$key } from "__generated__/FairHeader_fair.graphql"
 import { FC } from "react"
-import { graphql, useFragment } from "react-relay"
+import { graphql, useFragment, useMutation } from "react-relay"
 import { FairTimingFragmentContainer as FairTiming } from "./FairTiming"
 interface FairHeaderProps {
   fair: FairHeader_fair$key
@@ -11,16 +11,33 @@ export const FairHeader: FC<FairHeaderProps> = ({ fair }) => {
   const data = useFragment(fragment, fair)
   const { width } = useScreenDimensions()
 
+  const [commit, isInFlight] = useMutation(FollowFairMutation)
+
   if (!data) {
     return null
   }
 
   const profileImageUrl = data.profile?.icon?.imageUrl
 
+  const handleFollowFair = () => {
+    if (!data.profile) {
+      return
+    }
+
+    commit({
+      variables: {
+        input: {
+          profileID: data.profile.internalID,
+          unfollow: data.profile.isFollowed,
+        },
+      },
+    })
+  }
+
   return (
-    <Flex pointerEvents="none">
+    <Flex pointerEvents="box-none">
       {!!data.image ? (
-        <Flex alignItems="center" justifyContent="center">
+        <Flex alignItems="center" justifyContent="center" pointerEvents="none">
           <Image
             width={width}
             height={width / data.image.aspectRatio}
@@ -51,14 +68,39 @@ export const FairHeader: FC<FairHeaderProps> = ({ fair }) => {
         </Text>
         <FairTiming fair={data} />
       </Flex>
+
+      {/* limit width because of pointer events interfering with scroll */}
+      <Flex px={2} pointerEvents="box-none" width={200}>
+        <FollowButton
+          haptic
+          isFollowed={!!data.profile?.isFollowed ? data.profile?.isFollowed : false}
+          onPress={handleFollowFair}
+          loading={isInFlight}
+          disabled={isInFlight}
+        />
+      </Flex>
     </Flex>
   )
 }
+
+const FollowFairMutation = graphql`
+  mutation FairHeaderFollowFairMutation($input: FollowProfileInput!) {
+    followProfile(input: $input) {
+      profile {
+        id
+        internalID
+        isFollowed
+      }
+    }
+  }
+`
 
 const fragment = graphql`
   fragment FairHeader_fair on Fair {
     name
     profile {
+      isFollowed
+      internalID
       icon {
         imageUrl: url(version: "untouched-png")
       }
