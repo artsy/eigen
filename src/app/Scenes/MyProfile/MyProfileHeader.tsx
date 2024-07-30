@@ -242,7 +242,7 @@ export const MyProfileHeader: React.FC<MyProfileHeaderProps> = ({ meProp }) => {
                 size="small"
                 onPress={() => {
                   tracks.tappedCompleteMyProfile({ id: me.internalID })
-                  navigate("/complete-my-profile")
+                  navigate("/complete-my-profile", { passProps: { meKey: me } })
                 }}
               >
                 Complete My Profile
@@ -389,6 +389,8 @@ const MyProfileHeaderPlaceholder: React.FC<{}> = () => {
 
 const myProfileHeaderFragment = graphql`
   fragment MyProfileHeader_me on Me {
+    ...useCompleteMyProfileSteps_me
+
     internalID
     name
     bio
