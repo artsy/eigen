@@ -29,13 +29,12 @@ export const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
   visible,
 }) => {
   /**
-   * TODO: On Android
+   * TODO: I have observed the following issues with this modal in the Android emulator:
    *
-   * 1. The modal glitches during autocompletion
-   * 2. The submit button doesn't work after selecting a location
-   *   - This also happens on the settings screen (on the main branch)
-   * 3. The primary location field title is behind the outline
-   *   - This does not happen in the settings screen (on the feature branch)
+   * 1. The modal flickers during autocompletion
+   * 2. The submit button doesn't respond after selecting a new location
+   * 3. The title of the location field is rendered behind its outline
+   * 4. The modal overlay doesn't disappear after closing the modal
    */
 
   const data = useFragment(meFragmentQuery, me)
