@@ -24,8 +24,8 @@ describe("PartnerEntityHeader", () => {
       }),
     })
 
-    expect(screen.queryByText("Example Partner Name")).toBeTruthy()
-    expect(screen.queryByText("New York, Berlin, +2 more")).toBeTruthy()
-    expect(screen.queryByText("Follow")).toBeTruthy()
+    expect(screen.getByText("Example Partner Name")).toBeOnTheScreen()
+    expect(screen.getByText("New York, Berlin, +2 more")).toBeOnTheScreen()
+    expect(screen.getByText("Follow")).toBeOnTheScreen()
   })
 })
