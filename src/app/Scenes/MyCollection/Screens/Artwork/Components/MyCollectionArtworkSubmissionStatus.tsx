@@ -1,11 +1,4 @@
-import {
-  Flex,
-  Box,
-  Text,
-  Touchable,
-  useScreenDimensions,
-  ArrowRightIcon,
-} from "@artsy/palette-mobile"
+import { Flex, Box, Text, Touchable, ArrowRightIcon } from "@artsy/palette-mobile"
 import { MyCollectionArtworkSubmissionStatus_submissionState$key } from "__generated__/MyCollectionArtworkSubmissionStatus_submissionState.graphql"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
@@ -29,8 +22,6 @@ export const MyCollectionArtworkSubmissionStatus: React.FC<
     "AREnableSubmitArtworkTier2Information"
   )
 
-  const { height: screenHeight } = useScreenDimensions()
-
   const { consignmentSubmission, submissionId, isListed } = useFragment(
     submissionStateFragment,
     artwork
@@ -51,24 +42,11 @@ export const MyCollectionArtworkSubmissionStatus: React.FC<
       <Flex>
         {enableSubmitArtworkTier2Information ? (
           <>
-            <FancyModal
+            <ArtworkSubmissionStatusDescription
               visible={isSubmissionStatusModalVisible}
-              maxHeight={screenHeight / 2}
-              onBackgroundPressed={() => setIsSubmissionStatusModalVisible(false)}
-            >
-              <FancyModalHeader
-                useXButton
-                onRightButtonPress={() => setIsSubmissionStatusModalVisible(false)}
-                rightCloseButton
-              >
-                Submission Status
-              </FancyModalHeader>
-
-              <ArtworkSubmissionStatusDescription
-                artworkData={artworkData}
-                closeModal={() => setIsSubmissionStatusModalVisible(false)}
-              />
-            </FancyModal>
+              artworkData={artworkData}
+              closeModal={() => setIsSubmissionStatusModalVisible(false)}
+            />
 
             <Flex justifyContent="space-between" flexDirection="row">
               <Text variant="xs" color="black100">
@@ -143,38 +121,3 @@ const submissionStateFragment = graphql`
     ...ArtworkSubmissionStatusDescription_artwork
   }
 `
-
-/*
-                 <AutoHeightBottomSheet
-          visible={isSubmissionStatusModalVisible}
-          onDismiss={() => setIsSubmissionStatusModalVisible(false)}
-        >
-          <Flex mx={2} mb={2} mt={1}>
-            <Text variant="sm-display" textAlign="center">
-              Submission Status
-            </Text>
-
-            <Text variant="md" mt={2} color={consignmentSubmission.stateLabelColor}>
-              {isListed ? "Listed" : stateLabel}
-            </Text>
-            {!!consignmentSubmission?.actionLabel && (
-              <Text variant="md" color="orange100">
-                {consignmentSubmission?.actionLabel}
-              </Text>
-            )}
-            <Text variant="sm-display" mt={1} color="black60">
-              {consignmentSubmission.stateHelpMessage}
-            </Text>
-
-            <Button
-              mt={2}
-              block
-              haptic
-              variant={buttonVariant}
-              onPress={() => setIsSubmissionStatusModalVisible(false)}
-            >
-              {isListed ? "View Listing" : consignmentSubmission.buttonLabel}
-            </Button>
-          </Flex>
-        </AutoHeightBottomSheet>
-        */

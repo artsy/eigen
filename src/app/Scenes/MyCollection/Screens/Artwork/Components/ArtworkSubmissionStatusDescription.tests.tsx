@@ -1,5 +1,3 @@
-// ArtworkSubmissionStatusDescription
-
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkSubmissionStatusDescriptionTestsQuery } from "__generated__/ArtworkSubmissionStatusDescriptionTestsQuery.graphql"
 import { ArtworkSubmissionStatusDescription } from "app/Scenes/MyCollection/Screens/Artwork/Components/ArtworkSubmissionStatusDescription"
