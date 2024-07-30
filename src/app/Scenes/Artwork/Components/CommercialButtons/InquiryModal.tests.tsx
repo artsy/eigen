@@ -149,11 +149,19 @@ describe("inquiry modal", () => {
         await waitFor(() => {
           expect(mockTrackEvent).toHaveBeenCalledWith({
             action_type: "tap",
-            action_name: "inquiryCancel",
+            action_name: "inquirySend",
             owner_type: "Artwork",
             owner_id: "artwork-id",
             owner_slug: "artwork-slug",
           })
+        })
+
+        expect(mockTrackEvent).toHaveBeenCalledWith({
+          action_type: "success",
+          action_name: "inquirySend",
+          owner_type: "Artwork",
+          owner_id: "artwork-id",
+          owner_slug: "artwork-slug",
         })
       })
 
@@ -301,7 +309,37 @@ describe("inquiry modal", () => {
         mockUseSubmitInquiryRequest.mockRestore()
       })
 
-      test.todo("tracks an event when the inquiry fails to send")
+      it("tracks an event when the inquiry fails to send", async () => {
+        renderWithRelay({
+          Artwork: () => mockArtwork,
+        })
+
+        fireEvent.press(screen.getByText("Question"))
+
+        await waitFor(() => {
+          expect(screen.getByText("Send")).toBeEnabled()
+        })
+
+        fireEvent.press(screen.getByText("Send"))
+
+        await waitFor(() => {
+          expect(mockTrackEvent).toHaveBeenCalledWith({
+            action_type: "tap",
+            action_name: "inquirySend",
+            owner_type: "Artwork",
+            owner_id: "artwork-id",
+            owner_slug: "artwork-slug",
+          })
+        })
+
+        expect(mockTrackEvent).toHaveBeenCalledWith({
+          action_type: "fail",
+          action_name: "inquirySend",
+          owner_type: "Artwork",
+          owner_id: "artwork-id",
+          owner_slug: "artwork-slug",
+        })
+      })
 
       it("displays an error message", async () => {
         renderWithRelay({
