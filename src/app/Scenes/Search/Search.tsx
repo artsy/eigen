@@ -48,7 +48,7 @@ export const Search: React.FC = () => {
   const isAndroid = Platform.OS === "android"
   const navigation = useNavigation()
 
-  const shouldShowCityGuide = Platform.OS === "ios" && !isTablet()
+  const shouldShowCityGuide = !isTablet()
   const {
     data: queryData,
     refetch,
