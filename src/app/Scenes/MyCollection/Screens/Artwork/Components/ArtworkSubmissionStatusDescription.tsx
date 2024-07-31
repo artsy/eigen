@@ -62,7 +62,7 @@ export const ArtworkSubmissionStatusDescription: React.FC<
       navigate(`/sell/submissions/${submissionId}/edit`, { passProps })
     } else if (["APPROVED"].includes(state)) {
       const passProps: SubmitArtworkProps = {
-        initialStep: "AdditionalDocuments",
+        initialStep: "ShippingLocation",
         hasStartedFlowFromMyCollection: true,
         initialValues: {},
       }

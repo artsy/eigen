@@ -108,7 +108,6 @@ export const SubmitArtworkCondition = () => {
             <Input
               testID="ConditionInput"
               title="Add Additional Condition Details"
-              optional
               defaultValue={values.artwork.conditionDescription || ""}
               multiline
               onChangeText={handleChange("artwork.conditionDescription")}
