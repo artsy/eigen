@@ -248,7 +248,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
     !!priceOfferMessage.priceWithDiscountMessage
 
   const displayLimitedTimeOfferSignal =
-    !!AREnablePartnerOfferSignals && !!collectorSignals?.partnerOffer?.isAvailable
+    AREnablePartnerOfferSignals &&
+    collectorSignals?.partnerOffer?.isAvailable &&
+    !artwork.sale?.isAuction
 
   const handleSupress = async (item: DissapearableArtwork) => {
     await item._disappearable?.disappear()

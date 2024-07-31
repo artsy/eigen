@@ -223,7 +223,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     !!isRecentlySoldArtwork && (size === "large" || size === "extraLarge")
 
   const displayLimitedTimeOfferSignal =
-    !!AREnablePartnerOfferSignals && !!collectorSignals?.partnerOffer?.isAvailable
+    AREnablePartnerOfferSignals && collectorSignals?.partnerOffer?.isAvailable && !sale?.isAuction
 
   return (
     <AnalyticsContextProvider
