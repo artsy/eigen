@@ -50,34 +50,20 @@ export const ArtworkSubmissionStatusDescription: React.FC<
     }
   }
 
-  // TODO: fix saving the data after editing the submission
   const navigateToTheSubmissionFlow = () => {
     closeModal()
-    if (["DRAFT", "SUBMITTED", "RESUBMITTED", "PUBLISHED"].includes(state)) {
-      const passProps: SubmitArtworkProps = {
-        initialStep: "AddPhotos",
-        hasStartedFlowFromMyCollection: true,
-        initialValues: {},
-      }
-      navigate(`/sell/submissions/${submissionId}/edit`, { passProps })
-    } else if (["APPROVED"].includes(state)) {
-      const passProps: SubmitArtworkProps = {
-        initialStep: "ShippingLocation",
-        hasStartedFlowFromMyCollection: true,
-        initialValues: {},
-      }
-      navigate(`/sell/submissions/${submissionId}/edit`, { passProps })
-    } else if (isListed && artworkInternalID) {
+
+    if (isListed && artworkInternalID) {
       navigate(`/artwork/${artworkInternalID}`)
-    } else {
-      // Default to AddPhotos step
-      const passProps: SubmitArtworkProps = {
-        initialStep: "AddPhotos",
-        hasStartedFlowFromMyCollection: true,
-        initialValues: {},
-      }
-      navigate(`/sell/submissions/${submissionId}/edit`, { passProps })
+      return
     }
+
+    const passProps: SubmitArtworkProps = {
+      initialStep: state === "APPROVED" ? "ShippingLocation" : "AddPhotos",
+      hasStartedFlowFromMyCollection: true,
+      initialValues: {},
+    }
+    navigate(`/sell/submissions/${submissionId}/edit`, { passProps })
   }
 
   return (

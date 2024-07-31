@@ -106,7 +106,6 @@ export const getInitialSubmissionFormValuesFromArtwork = (
       conditionDescription: artwork.conditionDescription?.details,
     },
 
-    // TODO: Add additional documents
     additionalDocuments: [],
   }
 

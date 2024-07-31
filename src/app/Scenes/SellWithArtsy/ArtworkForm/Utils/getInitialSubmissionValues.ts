@@ -93,7 +93,10 @@ const getInitialAdditionalDocuments = (
 
   return compact(
     values.map((document) => {
-      if (!document || !document.id) return null
+      if (!document || !document.id) {
+        return null
+      }
+
       return {
         abortUploading: undefined,
         assetId: document?.id,

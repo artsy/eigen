@@ -27,8 +27,7 @@ jest.mock("app/utils/showDocumentsAndPhotosActionSheet", () => ({
   isDocument: () => true,
 }))
 
-// prettier-ignore
-jest.mock("app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/uploadDocumentToS3", () => ({ // pragma: allowlist secret
+jest.mock("app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/uploadDocument", () => ({
   uploadDocument: () => {
     return {
       key: "key",
