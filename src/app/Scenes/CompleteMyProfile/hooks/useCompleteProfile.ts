@@ -11,8 +11,8 @@ import {
   CompleteMyProfileStore,
 } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
 import { getNextRoute } from "app/Scenes/CompleteMyProfile/hooks/useCompleteMyProfileSteps"
-import { useUpdateMyProfile } from "app/Scenes/CompleteMyProfile/hooks/useUpdateMyProfile"
 import { navigate as artsyNavigate } from "app/system/navigation/navigate"
+import { useUpdateMyProfile } from "app/utils/mutations/useUpdateMyProfile"
 import { useMemo } from "react"
 
 // Hook responsible for navigating between the steps of the profile completion process
@@ -75,13 +75,11 @@ export const useCompleteProfile = () => {
     }
 
     updateProfile({
-      variables: {
-        input,
-      },
+      variables: { input },
       onCompleted: (_, errors) => {
         if (errors) {
           show("An error occurred", "bottom")
-          console.log("error", errors)
+          console.error("error", errors)
           setIsLoading(false)
           return
         }
@@ -100,7 +98,7 @@ export const useCompleteProfile = () => {
       },
       onError: (error) => {
         show("An error occurred", "bottom")
-        console.log("error", error)
+        console.error("error", error)
         setIsLoading(false)
       },
     })
