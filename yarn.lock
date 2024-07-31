@@ -17,10 +17,10 @@
   dependencies:
     core-js "3"
 
-"@artsy/palette-mobile@13.2.25":
-  version "13.2.25"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-13.2.25.tgz#3ead604a11ece52900f70ff2c191e82c48cdede3"
-  integrity sha512-Q3P5ATaCRuGY8KxPcs2t9oh934RQcR48a0uC5hk7OpnedPbSUbrmg+8kIHq9iZtcCfHWXPUWsgUnnbXgPTRK9g==
+"@artsy/palette-mobile@13.2.26":
+  version "13.2.26"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-13.2.26.tgz#aa0fcd88a5cc1210d045b20af7c173867c680b08"
+  integrity sha512-/L/msxY1c7vE/URjUwPF+59soJYKj7dVDgDbNf4MLapDVfB/JfvLf+ezFVEZkvcHmqUvDTRLR7SirpfWeO1s7Q==
   dependencies:
     "@artsy/palette-tokens" "^6.0.3"
     "@shopify/flash-list" "^1.6.4"
@@ -31,7 +31,7 @@
     moti "^0.25.3"
     react-nanny "^2.15.0"
     react-native-blurhash "^1.1.11"
-    react-native-collapsible-tab-view "^7.0.1"
+    react-native-collapsible-tab-view "^8.0.0"
     react-native-fast-image "^8.6.3"
     react-native-pager-view "^6.2.0"
     react-native-popover-view "^5.1.7"
@@ -12589,10 +12589,10 @@ react-native-code-push@8.1.0:
     semver "^7.3.5"
     xcode "3.0.1"
 
-react-native-collapsible-tab-view@^7.0.1:
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/react-native-collapsible-tab-view/-/react-native-collapsible-tab-view-7.0.1.tgz#8a62439bf65f99e627358dbaf6eac3dc95589fd2"
-  integrity sha512-vAYG8vnu59fnnaqd59Vr1kNZ+VViMVnGvfoBB0SGgp0PXsMgBSax+9AavM/DZUjSpycfkA7teZx9XtYdt2ytSA==
+react-native-collapsible-tab-view@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-collapsible-tab-view/-/react-native-collapsible-tab-view-8.0.0.tgz#b308e5cf6b94ae57099196b50a87f2d63c894a13"
+  integrity sha512-p3/CfBtCn/7qAllFeBM8KI4cCqqYfE0gzO/bh/oX6ewk2hE7HF0QQpZBGZlLdLJDo1lUXRlTSP2VLAYgky2maw==
   dependencies:
     use-deep-compare "^1.1.0"
 
