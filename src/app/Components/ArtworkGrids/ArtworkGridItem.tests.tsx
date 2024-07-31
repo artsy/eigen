@@ -6,6 +6,7 @@ import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { DateTime } from "luxon"
 import { graphql } from "react-relay"
 import Artwork from "./ArtworkGridItem"
 
@@ -324,6 +325,50 @@ describe("ArtworkGridItem", () => {
       })
 
       expect(screen.getByText("Exclusive Access")).toBeTruthy()
+    })
+  })
+
+  describe("artwork signals", () => {
+    describe("partner offer signal", () => {
+      beforeEach(
+        () => __globalStoreTestUtils__?.injectFeatureFlags({ AREnablePartnerOfferSignals: true })
+      )
+
+      const futureDate = DateTime.fromMillis(Date.now())
+        .plus({ days: 1, hours: 12, minutes: 1 })
+        .toISO()
+
+      const collectorSignals = {
+        partnerOffer: {
+          isAvailable: true,
+          endAt: futureDate,
+          priceWithDiscount: { display: "$2,750" },
+        },
+      }
+
+      it("shows the limited-time offer signal for non-auction artworks", () => {
+        renderWithRelay({
+          Artwork: () => ({
+            ...artwork,
+            sale: { ...artwork.sale, isAuction: false },
+            realizedPrice: null,
+            collectorSignals,
+          }),
+        })
+
+        expect(screen.getByText("Limited-Time Offer")).toBeOnTheScreen()
+        expect(screen.getByText("Exp. 1d 12h")).toBeOnTheScreen()
+      })
+
+      it("doesn't show the limited-time offer signal for auction artworks", () => {
+        renderWithRelay({
+          // artwork is by default an auction
+          Artwork: () => ({ ...artwork, realizedPrice: null, collectorSignals }),
+        })
+
+        expect(screen.queryByText("Limited-Time Offer")).not.toBeOnTheScreen()
+        expect(screen.queryByText("Exp. 1d 12h")).not.toBeOnTheScreen()
+      })
     })
   })
 })
