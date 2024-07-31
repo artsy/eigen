@@ -3,7 +3,6 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkGridItemTestsQuery } from "__generated__/ArtworkGridItemTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { DateTime } from "luxon"
@@ -164,7 +163,7 @@ describe("ArtworkGridItem", () => {
         }),
       })
 
-      expect(screen.queryByText("Some Kind of Dinosaur")).toBeOnTheScreen()
+      expect(screen.getByText("Some Kind of Dinosaur")).toBeOnTheScreen()
     })
   })
 
@@ -180,7 +179,7 @@ describe("ArtworkGridItem", () => {
         }),
       })
 
-      expect(screen.queryByText("Some Kind of Dinosaur")).toBeOnTheScreen()
+      expect(screen.getByText("Some Kind of Dinosaur")).toBeOnTheScreen()
     })
 
     it("renders without throwing an error when an auction is about to open, but not closed or finished", () => {
@@ -201,7 +200,7 @@ describe("ArtworkGridItem", () => {
         }),
       })
 
-      expect(screen.queryByText("$200 (1 bid)")).toBeOnTheScreen()
+      expect(screen.getByText("$200 (1 bid)")).toBeOnTheScreen()
     })
 
     it("does not show the partner name if hidePartner is set to true", () => {
@@ -240,7 +239,7 @@ describe("ArtworkGridItem", () => {
         { hidePartner: false }
       )
 
-      expect(screen.queryByText("partner")).toBeOnTheScreen()
+      expect(screen.getByText("partner")).toBeOnTheScreen()
     })
   })
 
@@ -266,8 +265,8 @@ describe("ArtworkGridItem", () => {
         { showLotLabel: true }
       )
 
-      expect(screen.queryByText("Lot 1")).toBeOnTheScreen()
-      expect(screen.queryByTestId("lot-close-info")).toBeOnTheScreen()
+      expect(screen.getByText("Lot 1")).toBeOnTheScreen()
+      expect(screen.getByTestId("lot-close-info")).toBeOnTheScreen()
     })
 
     it("does not show the LotCloseInfo component when the sale does not have cascading end times", () => {
@@ -287,44 +286,42 @@ describe("ArtworkGridItem", () => {
         {}
       )
 
-      expect(screen.queryByTestId("lot-close-info")).toBeFalsy()
+      expect(screen.queryByTestId("lot-close-info")).not.toBeOnTheScreen()
     })
   })
 
   describe("save artworks", () => {
-    it("favourites works", async () => {
+    it("favourites works", () => {
       renderWithRelay({
         Artwork: () => artwork,
       })
 
-      await flushPromiseQueue()
-
-      expect(screen.queryByTestId("empty-heart-icon")).toBeTruthy()
-      expect(screen.queryByTestId("filled-heart-icon")).toBeNull()
+      expect(screen.getByTestId("empty-heart-icon")).toBeOnTheScreen()
+      expect(screen.queryByTestId("filled-heart-icon")).not.toBeOnTheScreen()
 
       fireEvent.press(screen.getByTestId("save-artwork-icon"))
 
-      expect(screen.queryByTestId("filled-heart-icon")).toBeTruthy()
-      expect(screen.queryByTestId("empty-heart-icon")).toBeNull()
+      expect(screen.getByTestId("filled-heart-icon")).toBeOnTheScreen()
+      expect(screen.queryByTestId("empty-heart-icon")).not.toBeOnTheScreen()
     })
 
     it("is not visible when hideSaveIcon prop is specified", () => {
       renderWithRelay({}, { hideSaveIcon: true })
 
-      expect(screen.queryByTestId("empty-heart-icon")).toBeNull()
-      expect(screen.queryByTestId("filled-heart-icon")).toBeNull()
+      expect(screen.queryByTestId("empty-heart-icon")).not.toBeOnTheScreen()
+      expect(screen.queryByTestId("filled-heart-icon")).not.toBeOnTheScreen()
     })
   })
 
   describe("unlisted artworks", () => {
-    it("shows exclusive access", async () => {
+    it("shows exclusive access", () => {
       renderWithRelay({
         Artwork: () => ({
           isUnlisted: true,
         }),
       })
 
-      expect(screen.getByText("Exclusive Access")).toBeTruthy()
+      expect(screen.getByText("Exclusive Access")).toBeOnTheScreen()
     })
   })
 
