@@ -288,6 +288,11 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableAuctionImprovementsSignals",
   },
+  ARUseNewHomeView: {
+    description: "Use new home view",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
