@@ -30,7 +30,7 @@ export async function showDocumentsAndPhotosActionSheet(
   return new Promise((resolve, reject) => {
     showActionSheet(
       {
-        options: ["Photo Library", "Take Photo", "Documents", "Cancel"],
+        options: ["Documents", "Photo Library", "Take Photo", "Cancel"],
         cancelButtonIndex: 3,
         useModal,
       },
@@ -38,8 +38,18 @@ export async function showDocumentsAndPhotosActionSheet(
         let photos = null
         try {
           if (buttonIndex === 0) {
-            photos = await requestPhotos(allowMultiple)
-            resolve(photos)
+            const results = await RNDocumentPicker.pick({
+              mode: "import",
+              type: [
+                RNDocumentPicker.types.images,
+                RNDocumentPicker.types.pdf,
+                RNDocumentPicker.types.docx,
+                RNDocumentPicker.types.doc,
+              ],
+              allowMultiSelection: true,
+            })
+
+            resolve(results)
           }
           if (buttonIndex === 1) {
             if (Platform.OS === "android") {
@@ -54,19 +64,10 @@ export async function showDocumentsAndPhotosActionSheet(
             photos = [photo]
             resolve(photos)
           }
-          if (buttonIndex === 2) {
-            const results = await RNDocumentPicker.pick({
-              mode: "import",
-              type: [
-                RNDocumentPicker.types.images,
-                RNDocumentPicker.types.pdf,
-                RNDocumentPicker.types.docx,
-                RNDocumentPicker.types.doc,
-              ],
-              allowMultiSelection: true,
-            })
 
-            resolve(results)
+          if (buttonIndex === 2) {
+            photos = await requestPhotos(allowMultiple)
+            resolve(photos)
           }
         } catch (error) {
           reject(error)

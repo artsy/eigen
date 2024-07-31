@@ -253,17 +253,10 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
               options={{ gestureEnabled: false }}
             />
 
-            {formik.values.state === "APPROVED" && (
-              <>
-                <Stack.Screen name="ShippingLocation" component={SubmitArtworkShippingLocation} />
-                <Stack.Screen name="FrameInformation" component={SubmitArtworkFrameInformation} />
-                <Stack.Screen
-                  name="AdditionalDocuments"
-                  component={SubmitArtworkAdditionalDocuments}
-                />
-                <Stack.Screen name="Condition" component={SubmitArtworkCondition} />
-              </>
-            )}
+            <Stack.Screen name="ShippingLocation" component={SubmitArtworkShippingLocation} />
+            <Stack.Screen name="FrameInformation" component={SubmitArtworkFrameInformation} />
+            <Stack.Screen name="AdditionalDocuments" component={SubmitArtworkAdditionalDocuments} />
+            <Stack.Screen name="Condition" component={SubmitArtworkCondition} />
           </Stack.Navigator>
           <SubmitArtworkBottomNavigation />
         </NavigationContainer>

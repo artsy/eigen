@@ -691,3 +691,8 @@ jest.mock("@react-native-community/geolocation", () => ({
   setRNConfiguration: jest.fn(),
   stopObserving: jest.fn(),
 }))
+
+jest.mock("react-native-document-picker", () => ({
+  default: jest.fn(),
+  pick: jest.fn(),
+}))

@@ -7,6 +7,7 @@ import { COUNTRY_SELECT_OPTIONS } from "app/Components/CountrySelect"
 import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { acceptableCategoriesForSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/acceptableCategoriesForSubmission"
 import { extractNodes } from "app/utils/extractNodes"
+import { NormalizedDocument } from "app/utils/normalizeUploadedDocument"
 import { compact } from "lodash"
 
 export const getInitialSubmissionValues = (
@@ -75,8 +76,40 @@ export const getInitialSubmissionValues = (
       framedWidth: values.myCollectionArtwork?.framedWidth ?? null,
       framedHeight: values.myCollectionArtwork?.framedHeight ?? null,
       framedDepth: values.myCollectionArtwork?.framedDepth ?? null,
-      condition: (values.myCollectionArtwork?.condition?.value as ArtworkConditionEnumType) ?? null,
-      conditionDescription: values.myCollectionArtwork?.conditionDescription?.details ?? null,
+      condition:
+        (values.myCollectionArtwork?.condition?.value as ArtworkConditionEnumType) ?? undefined,
+      conditionDescription: values.myCollectionArtwork?.conditionDescription?.details ?? undefined,
     },
+
+    externalId: values.externalId,
+    additionalDocuments: getInitialAdditionalDocuments(values.addtionalAssets),
   }
+}
+
+const getInitialAdditionalDocuments = (
+  values: NonNullable<SubmitArtworkFormEditQuery$data["submission"]>["addtionalAssets"]
+): NormalizedDocument[] => {
+  if (!values) return []
+
+  return compact(
+    values.map((document) => {
+      if (!document || !document.id) return null
+      return {
+        abortUploading: undefined,
+        assetId: document?.id,
+        bucket: document?.s3Bucket,
+        errorMessage: null,
+        externalUrl: document?.documentPath,
+        geminiToken: null,
+        id: document?.id as string,
+        item: null,
+        loading: false,
+        name: document?.filename,
+        progress: null,
+        removed: false,
+        size: document?.size,
+        sourceKey: document?.s3Path,
+      } as NormalizedDocument
+    })
+  )
 }

@@ -5,6 +5,7 @@ import {
   DocumentIcon,
   Flex,
   INPUT_BORDER_RADIUS,
+  ProgressBar,
   Separator,
   Spacer,
   Text,
@@ -14,46 +15,35 @@ import {
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { useToast } from "app/Components/Toast/toastHook"
+import { isImage } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionImageUtil"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { useNavigationListeners } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useNavigationListeners"
 import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { ICON_SIZE } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/UploadPhotosForm"
-import {
-  isDocument,
-  isImage,
-  showDocumentsAndPhotosActionSheet,
-} from "app/utils/showDocumentsAndPhotosActionSheet"
+import { addAssetToConsignment } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/addAssetToConsignment"
+import { uploadDocument } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/uploadDocumentToS3" // pragma: allowlist secret
+import { removeAssetFromSubmission } from "app/Scenes/SellWithArtsy/mutations/removeAssetFromConsignmentSubmissionMutation"
+import { NormalizedDocument, normalizeUploadedDocument } from "app/utils/normalizeUploadedDocument"
+import { showDocumentsAndPhotosActionSheet } from "app/utils/showDocumentsAndPhotosActionSheet"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { useFormikContext } from "formik"
 import { useState } from "react"
 import { Image, LayoutAnimation, Platform, ScrollView } from "react-native"
-import { DocumentPickerResponse } from "react-native-document-picker"
-import { Image as RNPickerImage } from "react-native-image-crop-picker"
-
-type UploadedFile = {
-  error?: string
-} & DocumentPickerResponse
-
-type UploadedImage = {
-  error?: string
-} & RNPickerImage
 
 // 50 MB in bytes
-const FILE_SIZE_LIMIT = 1 * 1024 * 1024
+const FILE_SIZE_LIMIT = 50 * 1024 * 1024
 
 export const SubmitArtworkAdditionalDocuments = () => {
-  const { values } = useFormikContext<SubmissionModel>()
+  const { values, setFieldValue } = useFormikContext<SubmissionModel>()
+  const [progress, setProgress] = useState<Record<string, number | null>>({})
 
   const space = useSpace()
 
   const { showActionSheetWithOptions } = useActionSheet()
 
   const { show: showToast } = useToast()
-
-  const [documents, setDocuments] = useState<UploadedFile[]>([])
-  const [images, setImages] = useState<UploadedImage[]>([])
 
   const setIsLoading = SubmitArtworkFormStore.useStoreActions((actions) => actions.setIsLoading)
   const setCurrentStep = SubmitArtworkFormStore.useStoreActions((actions) => actions.setCurrentStep)
@@ -67,7 +57,6 @@ export const SubmitArtworkAdditionalDocuments = () => {
         setIsLoading(true)
 
         // Make API call to update submission
-
         navigation.navigate("Condition")
         setCurrentStep("Condition")
       } catch (error) {
@@ -81,55 +70,96 @@ export const SubmitArtworkAdditionalDocuments = () => {
     },
   })
 
+  // Uploading a file is a two step process
+  // 1. Upload the file to S3
+  // 2. Associate the file to the consignment submission
+  const addDocumentToSubmission = async (document: NormalizedDocument) => {
+    try {
+      if (document.errorMessage) {
+        return
+      }
+
+      document.loading = true
+
+      // Upload the document to S3
+      const response = await uploadDocument({
+        document,
+        updateProgress: (progress) => {
+          setProgress((previousProgress) => ({
+            ...previousProgress,
+            [document.id]: progress,
+          }))
+        },
+      })
+
+      if (!response?.key) {
+        document.errorMessage = "Failed to upload file"
+        return
+      }
+
+      document.sourceKey = response.key
+
+      // Associate the document to the consignment submission
+      // upload & size the photo, and add it to processed photos
+      // let Convection know that the Gemini asset should be attached to the consignment
+      const res = await addAssetToConsignment({
+        assetType: "additional_file",
+        source: {
+          key: response.key,
+          bucket: document.bucket || response.bucket,
+        },
+        filename: document.name,
+        externalSubmissionId: values.externalId,
+        size: document.size,
+        submissionID: values.submissionId,
+      })
+
+      document.assetId = res.addAssetToConsignmentSubmission?.asset?.id
+    } catch (error) {
+      console.error("Error uploading file", error)
+      showToast("Could not upload file", "bottom", {
+        backgroundColor: "red100",
+      })
+    } finally {
+      document.loading = false
+    }
+  }
+
   const handleUpload = async () => {
     try {
       const results = await showDocumentsAndPhotosActionSheet(showActionSheetWithOptions, true)
-      const imagesResults = results.filter(isImage)
-      const documentsResults = results.filter(isDocument)
 
-      const filteredDocuments = documentsResults
+      const normalizedFiles = results.map((document) => normalizeUploadedDocument(document))
+
+      const filteredDocuments: NormalizedDocument[] = normalizedFiles
         // Remove duplicates
-        .filter(({ uri }) => !documents.find(({ uri: fileUri }) => fileUri === uri))
-        // Remove files that are too large
-        .map((file) => {
-          if (file.size && file.size > FILE_SIZE_LIMIT) {
+        .filter((document) => !values.additionalDocuments.find((doc) => doc.id === document.id))
+        .map((document) => {
+          if (document.size && parseInt(document.size, 10) > FILE_SIZE_LIMIT) {
             return {
-              ...file,
-              error: "File is too large (max. 50 MB)",
+              ...document,
+              errorMessage: "File is too large (max. 50 MB)",
             }
           }
-          return file
-        })
-
-      const filteredImages = imagesResults
-        // Remove duplicates
-        .filter(({ path }) => !images.find(({ path: ImagePath }) => ImagePath === path))
-        // Remove images that are too large
-        .map((image) => {
-          if (image.size && image.size > FILE_SIZE_LIMIT) {
-            return {
-              ...image,
-              error: "Image is too large (max. 50 MB)",
-            }
-          }
-          return image
+          return document
         })
 
       if (filteredDocuments.length > 0) {
         setIsLoading(true)
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-        setDocuments(documents.concat(filteredDocuments))
-      }
-
-      if (filteredImages.length > 0) {
-        setIsLoading(true)
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-        setImages(images.concat(filteredImages))
+        setFieldValue("additionalDocuments", values.additionalDocuments.concat(filteredDocuments))
+        await Promise.all(
+          filteredDocuments
+            .filter((document) => !document.errorMessage)
+            .map((document) => addDocumentToSubmission(document))
+        )
       }
     } catch (error) {
       if (typeof error === "object" && (error as any).code === "DOCUMENT_PICKER_CANCELED") {
         return
       }
+      console.error("Error uploading document", error)
+
       showToast("Could not upload documents, please try again.", "bottom", {
         backgroundColor: "red100",
       })
@@ -139,28 +169,25 @@ export const SubmitArtworkAdditionalDocuments = () => {
   }
 
   // remove image assets from submission
-  const handleImageDelete = async (path: string) => {
+  const handleDelete = async (document: NormalizedDocument) => {
     try {
+      document.removed = true
+      document.abortUploading?.()
+
+      if (document.assetId) {
+        await removeAssetFromSubmission({ assetID: document.assetId })
+      }
+
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-      const filteredImages = images.filter((image) => image.path !== path)
-      setImages(filteredImages)
 
-      // TODO: unlink from submission
+      const filteredFiles = values.additionalDocuments.filter((doc) => doc.id !== document.id)
+
+      setFieldValue("additionalDocuments", filteredFiles)
     } catch (error) {
-      console.error("Failed to delete image", error)
-    }
-  }
-
-  // remove image assets from submission
-  const handleDocumentDelete = async (uri: string) => {
-    try {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-      const filteredDocuments = documents.filter(({ uri: fileUri }) => fileUri !== uri)
-      setDocuments(filteredDocuments)
-
-      // TODO: unlink from submission
-    } catch (error) {
-      console.error("Failed to delete document", error)
+      console.error("Failed to delete", error)
+      showToast("Could not delete file", "bottom", {
+        backgroundColor: "red100",
+      })
     }
   }
 
@@ -195,34 +222,15 @@ export const SubmitArtworkAdditionalDocuments = () => {
             <Separator my={2} borderColor="black10" />
 
             <Flex rowGap={space(2)}>
-              {documents.map(({ uri, name, size, error, type }) => {
+              {values.additionalDocuments.map((document) => {
                 return (
                   <UploadedFile
-                    // progress={progress}
-                    error={error}
-                    key={uri}
-                    name={name}
-                    uri={uri}
+                    key={document.id}
+                    document={document}
+                    progress={progress[document.id]}
                     onRemove={() => {
-                      handleDocumentDelete(uri)
+                      handleDelete(document)
                     }}
-                    size={size}
-                    type={type}
-                  />
-                )
-              })}
-              {images.map(({ path, size, error }) => {
-                return (
-                  <UploadedFile
-                    error={error}
-                    key={path}
-                    name={!error ? "Image added successfully" : "Could not add image"}
-                    uri={path}
-                    onRemove={() => {
-                      handleImageDelete(path)
-                    }}
-                    size={size}
-                    type="image"
                   />
                 )
               })}
@@ -237,68 +245,64 @@ export const SubmitArtworkAdditionalDocuments = () => {
 const CONTAINER_HEIGHT = 60
 
 const UploadedFile: React.FC<{
-  error?: string
-  name: string | null
+  document: NormalizedDocument
   onRemove: () => void
-  progress?: number
-  size: number | null
-  type: string | null
-  uri: string
-}> = ({ error, name, size, onRemove, type, uri }) => {
+  progress?: number | null
+}> = ({ document, onRemove, progress }) => {
   const space = useSpace()
-  const sizeInMb = size ? (size / 1024 / 1024).toFixed(2) : 0
+  const sizeInMb = document.size ? (parseFloat(document.size) / 1024 / 1024).toFixed(2) : 0
 
   return (
-    <Flex
-      flexDirection="row"
-      gap={space(1)}
-      alignItems="center"
-      borderWidth={1}
-      borderColor="black10"
-      borderRadius={INPUT_BORDER_RADIUS}
-      pr={1}
-    >
+    <Flex>
       <Flex
-        height={CONTAINER_HEIGHT}
-        width={CONTAINER_HEIGHT}
-        borderTopLeftRadius={INPUT_BORDER_RADIUS}
-        borderBottomLeftRadius={INPUT_BORDER_RADIUS}
-        backgroundColor="black5"
-        justifyContent="center"
+        flexDirection="row"
+        gap={space(1)}
         alignItems="center"
+        borderWidth={1}
+        borderColor="black10"
+        borderRadius={INPUT_BORDER_RADIUS}
+        pr={1}
       >
-        {type && type.includes("image") ? (
-          <Image
-            source={{ uri }}
-            resizeMode="cover"
-            width={CONTAINER_HEIGHT}
-            height={CONTAINER_HEIGHT}
-          />
-        ) : (
-          <DocumentIcon fill="black100" width={20} height={20} />
-        )}
-      </Flex>
-      <Flex flex={1}>
-        <Text
-          variant="xs"
-          color="black100"
-          numberOfLines={1}
-          // Middle ellipsize is broken on Android :shrug:
-          ellipsizeMode={Platform.OS === "ios" ? "middle" : "tail"}
+        <Flex
+          height={CONTAINER_HEIGHT}
+          width={CONTAINER_HEIGHT}
+          borderTopLeftRadius={INPUT_BORDER_RADIUS}
+          borderBottomLeftRadius={INPUT_BORDER_RADIUS}
+          backgroundColor="black5"
+          justifyContent="center"
+          alignItems="center"
         >
-          {name}
-        </Text>
-        {error ? (
-          <Text variant="xs" color="red100">
-            {error}
+          {isImage(document.item) && document.item.path ? (
+            <Image
+              source={{ uri: document.item.path }}
+              resizeMode="cover"
+              width={CONTAINER_HEIGHT}
+              height={CONTAINER_HEIGHT}
+            />
+          ) : (
+            <DocumentIcon fill="black100" width={20} height={20} />
+          )}
+        </Flex>
+        <Flex flex={1}>
+          <Text
+            variant="xs"
+            color="black100"
+            numberOfLines={1}
+            // Middle ellipsize is broken on Android :shrug:
+            ellipsizeMode={Platform.OS === "ios" ? "middle" : "tail"}
+          >
+            {document.name}
           </Text>
-        ) : (
-          <Text variant="xs" color="black30">
-            {sizeInMb} MB
-          </Text>
-        )}
-      </Flex>
-      {!error && (
+          {document.errorMessage ? (
+            <Text variant="xs" color="red100">
+              {document.errorMessage}
+            </Text>
+          ) : (
+            <Text variant="xs" color="black30">
+              {sizeInMb} MB
+            </Text>
+          )}
+        </Flex>
         <Flex justifySelf="flex-end" ml={0.5}>
           <Touchable
             onPress={onRemove}
@@ -320,6 +324,16 @@ const UploadedFile: React.FC<{
           >
             <CloseIcon height={16} width={16} fill="white100" />
           </Touchable>
+        </Flex>
+      </Flex>
+
+      {!!progress && (
+        <Flex flexDirection="row" alignItems="center" height={2} backgroundColor="red" top={-2}>
+          <ProgressBar
+            height={3}
+            progress={progress * 100}
+            trackColor={progress * 100 === 100 ? "green100" : "blue100"}
+          />
         </Flex>
       )}
     </Flex>

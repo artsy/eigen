@@ -15,6 +15,7 @@ import {
 import { Location } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/validation"
 import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
 import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
+import { NormalizedDocument } from "app/utils/normalizeUploadedDocument"
 import * as Yup from "yup"
 
 export const getCurrentValidationSchema = (_injectedStep?: keyof SubmitArtworkStackNavigation) => {
@@ -39,10 +40,16 @@ export const getCurrentValidationSchema = (_injectedStep?: keyof SubmitArtworkSt
       return frameInformationSchema
     case "Condition":
       return conditionSchema
+    case "AdditionalDocuments":
+      return additionalDocumentsSchema
     default:
       return Yup.object()
   }
 }
+
+const additionalDocumentsSchema = Yup.object().shape({
+  additionalDocuments: Yup.array().min(1),
+})
 
 const conditionSchema = Yup.object().shape({
   condition: Yup.string()
@@ -166,6 +173,9 @@ export interface SubmissionModel {
     condition: ArtworkConditionEnumType | null | undefined
     conditionDescription: string | null | undefined
   }
+
+  externalId: string | null | undefined
+  additionalDocuments: NormalizedDocument[]
 }
 
 export const submissionModelInitialValues: SubmissionModel = {
@@ -220,4 +230,7 @@ export const submissionModelInitialValues: SubmissionModel = {
     condition: null,
     conditionDescription: null,
   },
+
+  externalId: null,
+  additionalDocuments: [],
 }
