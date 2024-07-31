@@ -15,11 +15,11 @@ export const ArtworksRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionPr
   section,
 }) => {
   const data = useFragment(fragment, section)
-  const title = data.title
+  const title = data.component?.title
   const artworks = extractNodes(data.artworksConnection)
   const componentHref = "" // TODO: should be in schema
 
-  if (!artworks) return null
+  if (!artworks || artworks.length === 0) return null
 
   const handleOnArtworkPress = (artwork: any, _position: any) => {
     navigate(artwork.href)
@@ -51,7 +51,9 @@ export const ArtworksRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionPr
 
 const fragment = graphql`
   fragment ArtworksRailHomeViewSection_section on ArtworksRailHomeViewSection {
-    title
+    component {
+      title
+    }
 
     artworksConnection(first: 10) {
       edges {

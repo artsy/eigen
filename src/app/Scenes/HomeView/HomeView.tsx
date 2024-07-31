@@ -1,30 +1,20 @@
-import { Flex, Screen, Separator, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Screen, Spacer, Text } from "@artsy/palette-mobile"
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
-import { ArtworksRailHomeViewSection } from "app/Scenes/HomeView/Sections/ArtworksRailHomeViewSection"
-import { goBack } from "app/system/navigation/navigate"
+import { Section } from "app/Scenes/HomeView/Sections/Section"
 import { extractNodes } from "app/utils/extractNodes"
 import { Suspense } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
-
-const SCREEN_TITLE = "HomeView WIP"
 
 export const HomeView: React.FC = () => {
   const queryData = useLazyLoadQuery<HomeViewQuery>(homeViewScreenQuery, {})
   const sections = extractNodes(queryData.homeView.sectionsConnection)
 
   return (
-    <Screen mt={0}>
-      <Screen.AnimatedHeader onBack={goBack} title={SCREEN_TITLE} />
-
-      <Screen.StickySubHeader
-        title={SCREEN_TITLE}
-        separatorComponent={<Separator borderColor="black5" />}
-      />
-
+    <Screen>
       <Screen.Body fullwidth>
         <Screen.FlatList
           data={sections}
-          keyExtractor={(item) => `${item.title}`}
+          keyExtractor={(item) => `${item.internalID || ""}`}
           renderItem={({ item }) => {
             return <Section section={item} />
           }}
@@ -32,36 +22,6 @@ export const HomeView: React.FC = () => {
         />
       </Screen.Body>
     </Screen>
-  )
-}
-
-const Section: React.FC<{ section: any }> = (props) => {
-  const { section } = props
-
-  console.log("[Debug] section.component.")
-
-  // or should we check for __typename? (which is ArtworksRailHomeViewSection)
-  if (section.component.type === "ARTWORKS_RAIL") {
-    return <ArtworksRailHomeViewSection section={section} />
-  }
-
-  return (
-    <Flex bg="black5" alignItems="center">
-      <Text color="black60" p={2}>
-        Need to render the{" "}
-        <Text color="black100" fontSize="80%">
-          {section.key}
-        </Text>{" "}
-        section as a{" "}
-        <Text color="blue100" fontSize="80%">
-          {section.component.type}
-        </Text>{" "}
-        component, titled{" "}
-        <Text color="black100" fontWeight="bold">
-          {section.title}
-        </Text>{" "}
-      </Text>
-    </Flex>
   )
 }
 
@@ -84,15 +44,15 @@ export const homeViewScreenQuery = graphql`
         edges {
           cursor
           node {
+            __typename
             ... on GenericHomeViewSection {
-              key
-              title
-              component {
-                type
-              }
+              internalID
+              ...GenericHomeViewSection_section
             }
-
-            ...ArtworksRailHomeViewSection_section
+            ... on ArtworksRailHomeViewSection {
+              internalID
+              ...ArtworksRailHomeViewSection_section
+            }
           }
         }
       }
