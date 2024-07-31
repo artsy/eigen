@@ -50,9 +50,7 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
 
       {!!enableSubmitArtworkTier2Information && !!isSubmissionRejected && (
         <>
-          <Flex>
-            <MyCollectionArtworkSubmissionStatus artwork={artwork} />
-          </Flex>
+          <MyCollectionArtworkSubmissionStatus artwork={artwork} />
           <Separator my={4} borderColor="black10" />
         </>
       )}

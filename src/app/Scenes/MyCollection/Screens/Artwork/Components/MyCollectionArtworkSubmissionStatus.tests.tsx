@@ -99,24 +99,23 @@ describe("MyCollectionArtworkSubmissionStatus", () => {
       })
 
       expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).not.toBe(null)
-      expect(screen.getByText("Complete Submission")).toBeDefined()
+      // using queryAllByText here and in the following tests because two components are rendedred:
+      // MyCollectionArtworkSubmissionStatus and ArtworkSubmissionStatusDescription
+      expect(screen.queryAllByText("Complete Submission")).toHaveLength(2)
     })
 
     it("displays submission status in LISTED state when the feature is live", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({
-        AREnableSubmitArtworkTier2Information: true,
-      })
-
       renderWithRelay({
         Artwork: () => {
           return {
             isListed: true,
+            internalID: "artwork-id",
           }
         },
       })
 
       expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).not.toBe(null)
-      expect(screen.getByText("Listed")).toBeDefined()
+      expect(screen.queryAllByText("Listed")).toHaveLength(2)
     })
 
     it("display Submission status in REJECTED state ", () => {
@@ -131,8 +130,8 @@ describe("MyCollectionArtworkSubmissionStatus", () => {
         },
       })
 
-      expect(screen.getByText("Submission Status")).toBeDefined()
-      expect(screen.getByText("Submission Unsuccessful")).toBeDefined()
+      expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).not.toBe(null)
+      expect(screen.queryAllByText("Submission Unsuccessful")).toHaveLength(2)
     })
   })
 })

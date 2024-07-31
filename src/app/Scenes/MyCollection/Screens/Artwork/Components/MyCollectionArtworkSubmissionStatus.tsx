@@ -30,9 +30,10 @@ export const MyCollectionArtworkSubmissionStatus: React.FC<
 
   if (!consignmentSubmission || !submissionId) return null
 
-  const { state, stateLabel } = consignmentSubmission
+  const { state, stateLabel, actionLabel } = consignmentSubmission
 
   if (!state) return null
+  if (!stateLabel && !actionLabel) return null
   if (state === "DRAFT" && !enableSubmitArtworkTier2Information) return null
 
   let stateLabelColor = "yellow150"
@@ -60,17 +61,19 @@ export const MyCollectionArtworkSubmissionStatus: React.FC<
               </Touchable>
             </Flex>
 
-            <Touchable onPress={() => setIsSubmissionStatusModalVisible(true)}>
-              <Text mt={0.5} variant="sm-display" color={consignmentSubmission.stateLabelColor}>
-                {isListed ? "Listed" : stateLabel}
-              </Text>
-            </Touchable>
+            {!!stateLabel && (
+              <Touchable onPress={() => setIsSubmissionStatusModalVisible(true)}>
+                <Text mt={0.5} variant="sm-display" color={consignmentSubmission.stateLabelColor}>
+                  {isListed ? "Listed" : stateLabel}
+                </Text>
+              </Touchable>
+            )}
 
-            {!!consignmentSubmission?.actionLabel && (
+            {!!actionLabel && (
               <Touchable onPress={() => setIsSubmissionStatusModalVisible(true)}>
                 <Flex flexDirection="row" alignItems="center" alignContent="center">
                   <Text variant="sm-display" fontWeight="bold" color="orange100">
-                    {consignmentSubmission?.actionLabel}&nbsp;
+                    {actionLabel}&nbsp;
                   </Text>
                   <ArrowRightIcon fill="orange100" height={16} width={16} />
                 </Flex>

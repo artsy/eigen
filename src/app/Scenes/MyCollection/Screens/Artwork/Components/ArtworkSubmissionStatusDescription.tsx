@@ -15,15 +15,15 @@ export const ArtworkSubmissionStatusDescription: React.FC<
   ArtworkSubmissionStatusDescriptionProps
 > = ({ artworkData, closeModal, visible }) => {
   const {
-    consignmentSubmission: submissionData,
+    consignmentSubmission,
     isListed,
     submissionId,
     internalID: artworkInternalID,
   } = useFragment(fragment, artworkData)
 
-  if (!submissionData || !submissionId) return null
+  if (!consignmentSubmission || !submissionId) return null
 
-  const { stateLabel, actionLabel, stateHelpMessage, state, buttonLabel } = submissionData
+  const { stateLabel, actionLabel, stateHelpMessage, state, buttonLabel } = consignmentSubmission
 
   const buttonVariant = ["DRAFT", "APPROVED"].includes(state) ? "fillDark" : "outline"
 
@@ -81,7 +81,7 @@ export const ArtworkSubmissionStatusDescription: React.FC<
   }
 
   return (
-    <Flex p={2} testID="ArtworkSubmissionStatusDescription-Container">
+    <Flex testID="ArtworkSubmissionStatusDescription-Container">
       <AutoHeightBottomSheet onDismiss={closeModal} visible={visible}>
         <Flex mx={2} mb={2} mt={1}>
           <Text variant="sm-display">Submission Status</Text>
