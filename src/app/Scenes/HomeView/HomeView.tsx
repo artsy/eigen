@@ -53,8 +53,6 @@ export const homeViewScreenQuery = graphql`
               internalID
               ...ArtworksRailHomeViewSection_section
             }
-
-            ...ArtworksRailHomeViewSection_section
           }
         }
       }
