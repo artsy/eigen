@@ -11,7 +11,7 @@ import { MyCollectionAddCollectedArtistsAutosuggest } from "app/Scenes/MyCollect
 import { MyCollectionAddCollectedArtistsStore } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsStore"
 import { createArtist } from "app/Scenes/MyCollection/mutations/createArtist"
 import { createUserInterests } from "app/Scenes/MyCollection/mutations/createUserInterests"
-import { dismissModal, popToRoot } from "app/system/navigation/navigate"
+import { dismissModal, goBack } from "app/system/navigation/navigate"
 import { pluralize } from "app/utils/pluralize"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { Suspense, useState } from "react"
@@ -109,7 +109,7 @@ export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
       refreshMyCollection()
       toast.show("Saved.", "bottom", { backgroundColor: "green100" })
       dismissModal()
-      popToRoot()
+      goBack()
     }
   }
 
