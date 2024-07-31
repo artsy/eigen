@@ -1,18 +1,17 @@
-// useCompleteProfile.test.js
 import { useNavigation, useRoute } from "@react-navigation/native"
 import { renderHook, act } from "@testing-library/react-hooks"
 import { useToast } from "app/Components/Toast/toastHook"
 import { CompleteMyProfileStore } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
 import { useCompleteProfile } from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
-import { useUpdateMyProfile } from "app/Scenes/CompleteMyProfile/hooks/useUpdateMyProfile"
 import { navigate as artsyNavigate } from "app/system/navigation/navigate"
+import { useUpdateMyProfile } from "app/utils/mutations/useUpdateMyProfile"
 
 jest.mock("@react-navigation/native", () => ({
   useNavigation: jest.fn(),
   useRoute: jest.fn(),
 }))
 
-jest.mock("app/Scenes/CompleteMyProfile/hooks/useUpdateMyProfile", () => ({
+jest.mock("app/utils/mutations/useUpdateMyProfile", () => ({
   useUpdateMyProfile: jest.fn(),
 }))
 
@@ -67,7 +66,7 @@ describe("useCompleteProfile", () => {
 
   it("should not navigate to next route if loading", () => {
     jest
-      .spyOn(require("app/Scenes/CompleteMyProfile/hooks/useUpdateMyProfile"), "useUpdateMyProfile")
+      .spyOn(require("app/utils/mutations/useUpdateMyProfile"), "useUpdateMyProfile")
       .mockReturnValue([jest.fn(), true])
     jest
       .spyOn(CompleteMyProfileStore, "useStoreState")
@@ -182,7 +181,7 @@ describe("useCompleteProfile", () => {
       onError(new Error("Test error"))
     })
     jest
-      .spyOn(require("app/Scenes/CompleteMyProfile/hooks/useUpdateMyProfile"), "useUpdateMyProfile")
+      .spyOn(require("app/utils/mutations/useUpdateMyProfile"), "useUpdateMyProfile")
       .mockReturnValue([updateProfileMock, false])
 
     const { result } = renderHook(() => useCompleteProfile())
