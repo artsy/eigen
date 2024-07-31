@@ -3098,6 +3098,8 @@ enum ArtworkSorts {
 
 # An artwork rail section in the home view
 type ArtworksRailHomeViewSection implements GenericHomeViewSection & Node {
+  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
+
   # The component that is prescribed for this section
   component: HomeViewComponent
 
