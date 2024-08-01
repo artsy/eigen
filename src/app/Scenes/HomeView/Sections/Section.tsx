@@ -19,7 +19,9 @@ export const Section: React.FC<{ section: SectionT }> = (props) => {
     case "GenericHomeViewSection":
       return <GenericHomeViewSection section={section} />
     default:
-      // TODO: Better UI / Remove before release
-      return <Text> Unsupported section </Text>
+      if (__DEV__) {
+        return <Text>Non supported section: {section.__typename}</Text>
+      }
+      return null
   }
 }
