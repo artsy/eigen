@@ -1,8 +1,9 @@
-import { Flex, Screen, Text } from "@artsy/palette-mobile"
+import { Screen, Text } from "@artsy/palette-mobile"
 import {
   HomeSectionScreenQuery,
   HomeSectionScreenQuery$data,
 } from "__generated__/HomeSectionScreenQuery.graphql"
+import { ArtworksScreenHomeSectionQR } from "app/Scenes/HomeSection/ArtworksScreenHomeSection"
 import { goBack } from "app/system/navigation/navigate"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -20,10 +21,9 @@ export const HomeSectionScreen: React.FC<HomeSectionScreenProps> = ({ section })
       <Screen.AnimatedHeader onBack={goBack} title={title} />
 
       <Screen.Body fullwidth>
-        <Screen.ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-          <Text variant="lg-display">{title}</Text>
-          <Flex backgroundColor="red10" height={1000} p={2}></Flex>
-        </Screen.ScrollView>
+        {section?.__typename === "ArtworksRailHomeViewSection" && (
+          <ArtworksScreenHomeSectionQR sectionId={section.internalID} />
+        )}
       </Screen.Body>
     </Screen>
   )
@@ -35,6 +35,7 @@ const HOME_SECTION_SCREEN_QUERY = graphql`
       section(id: $id) {
         __typename
         ... on ArtworksRailHomeViewSection {
+          internalID
           component {
             title
           }
