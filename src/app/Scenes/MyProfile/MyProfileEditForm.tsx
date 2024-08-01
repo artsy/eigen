@@ -22,15 +22,14 @@ import { Image } from "app/Components/Bidding/Elements/Image"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { buildLocationDisplay } from "app/Components/LocationAutocomplete"
 import LoadingModal from "app/Components/Modals/LoadingModal"
-import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
 import {
   UserProfileFields,
   UserProfileFormikSchema,
   userProfileYupSchema,
 } from "app/Scenes/MyProfile/Components/UserProfileFields"
+import { useEditProfile } from "app/Scenes/MyProfile/hooks/useEditProfile"
 import { navigate } from "app/system/navigation/navigate"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
-import { storeLocalImage, useLocalImageStorage } from "app/utils/LocalImageStore"
 import { getConvertedImageUrlFromS3 } from "app/utils/getConvertedImageUrlFromS3"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
@@ -61,6 +60,7 @@ interface MyProfileEditFormProps {
 export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess }) => {
   const { trackEvent } = useTracking()
   const data = useLazyLoadQuery<MyProfileEditFormQuery>(MyProfileEditFormScreenQuery, {})
+  const { updateProfile, isLoading, setIsLoading } = useEditProfile()
 
   const [me, refetch] = useRefetchableFragment<MyProfileEditFormQuery, MyProfileEditForm_me$key>(
     meFragment,
@@ -74,8 +74,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
   const { showActionSheetWithOptions } = useActionSheet()
 
   const [refreshKey, setRefreshKey] = useState(0)
-  const [loading, setLoading] = useState<boolean>(false)
-  const [didUpdatePhoto, setDidUpdatePhoto] = useState(false)
+  const [localImagePath, setLocalImagePath] = useState<string>()
 
   const {
     showVerificationBanner: showVerificationBannerForEmail,
@@ -88,12 +87,14 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
     handleVerification: handleIDVerification,
   } = useHandleIDVerification(initiatorID)
 
-  const localImage = useLocalImageStorage("profile", undefined, undefined, refreshKey)
-
   const uploadProfilePhoto = async (photo: string) => {
+    if (!localImagePath) {
+      return
+    }
+
     try {
       const iconUrl = await getConvertedImageUrlFromS3(photo)
-      await updateMyUserProfile({ iconUrl })
+      await updateProfile({ iconUrl }, localImagePath)
     } catch (error) {
       console.error("Failed to upload profile picture", error)
     }
@@ -115,7 +116,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
     }
 
     try {
-      await updateMyUserProfile(payload)
+      await updateProfile(payload)
     } catch (error) {
       console.error(`Failed to update ${Object.keys(payload).join(", ")}`, error)
     }
@@ -134,22 +135,19 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
         } ?? undefined,
       profession: me?.profession ?? "",
       otherRelevantPositions: me?.otherRelevantPositions ?? "",
-      photo: localImage?.path || me?.icon?.url || "",
+      photo: me?.icon?.url || "",
     },
     initialErrors: {},
     onSubmit: async ({ photo, ...otherValues }) => {
       try {
-        setLoading(true)
-        await Promise.all([
-          updateUserInfo(otherValues),
-          didUpdatePhoto && uploadProfilePhoto(photo),
-        ])
+        setIsLoading(true)
+        await Promise.all([updateUserInfo(otherValues), uploadProfilePhoto(photo)])
 
         trackEvent(tracks.editedUserProfile())
       } catch (error) {
         console.error("Failed to update profile", error)
       } finally {
-        setLoading(false)
+        setIsLoading(false)
       }
 
       InteractionManager.runAfterInteractions(() => {
@@ -169,8 +167,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
     showPhotoActionSheet(showActionSheetWithOptions, true, false)
       .then(async (images) => {
         if (images?.length >= 1) {
-          storeLocalImage("profile", images[0])
-          setDidUpdatePhoto(true)
+          setLocalImagePath(images[0].path)
           setRefreshKey(refreshKey + 1)
           handleChange("photo")(images[0].path)
         }
@@ -193,7 +190,6 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
   }, [showVerificationBannerForEmail, showVerificationBannerForID])
 
   const onLeftButtonPressHandler = () => {
-    setDidUpdatePhoto(false)
     navigation.goBack()
   }
 
@@ -231,8 +227,8 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
                 justifyContent="center"
                 alignItems="center"
               >
-                {!!localImage || values.photo ? (
-                  <Avatar src={localImage?.path || values.photo} size="md" />
+                {!!localImagePath || values.photo ? (
+                  <Avatar src={localImagePath || values.photo} size="md" />
                 ) : (
                   <Image source={require("images/profile_placeholder_avatar.webp")} />
                 )}
@@ -267,7 +263,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
       {!!showVerificationBannerForID && (
         <VerificationBanner resultText={`ID verification link sent to ${me?.email ?? ""}.`} />
       )}
-      <LoadingModal isVisible={loading} />
+      <LoadingModal isVisible={isLoading} />
     </>
   )
 }

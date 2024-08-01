@@ -1,3 +1,4 @@
+import { useCompleteMyProfileSteps_me$key } from "__generated__/useCompleteMyProfileSteps_me.graphql"
 import { Routes } from "app/Scenes/CompleteMyProfile/CompleteMyProfile"
 import { StepsResult } from "app/Scenes/CompleteMyProfile/hooks/useCompleteMyProfileSteps"
 import { LocationWithDetails } from "app/utils/googleMaps"
@@ -20,6 +21,7 @@ export const ROUTE_ACTION_TYPES: Record<Exclude<Routes, "ChangesSummary">, keyof
 }
 
 export interface CompleteMyProfileStoreModel {
+  meKey: useCompleteMyProfileSteps_me$key | null
   steps: StepsResult
   progressState: ProgressState
   isLoading: boolean
@@ -31,6 +33,7 @@ export interface CompleteMyProfileStoreModel {
 
 export const model: CompleteMyProfileStoreModel = {
   steps: "loading",
+  meKey: null,
   isLoading: false,
   progressState: {},
   setSteps: action((state, steps) => {
@@ -49,4 +52,9 @@ export const model: CompleteMyProfileStoreModel = {
   }),
 }
 
-export const CompleteMyProfileStore = createContextStore(model)
+export const CompleteMyProfileStore = createContextStore((runtimeModel) => {
+  return {
+    ...model,
+    ...runtimeModel,
+  }
+})

@@ -1,6 +1,8 @@
 import { renderHook } from "@testing-library/react-hooks"
+import { useCompleteMyProfileStepsTestQuery } from "__generated__/useCompleteMyProfileStepsTestQuery.graphql"
+import { CompleteMyProfileStore } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
 import { useCompleteMyProfileSteps } from "app/Scenes/CompleteMyProfile/hooks/useCompleteMyProfileSteps"
-import { RelayEnvironmentProvider } from "react-relay/hooks"
+import { graphql, RelayEnvironmentProvider, useLazyLoadQuery } from "react-relay"
 import { MockPayloadGenerator, createMockEnvironment } from "relay-test-utils"
 
 const env = createMockEnvironment()
@@ -10,7 +12,7 @@ describe("useCompleteMyProfileSteps", () => {
     env.mockClear()
   })
 
-  it("returns the next route and steps", async () => {
+  it("returns the next route and steps", () => {
     env.mock.queueOperationResolver((operation) =>
       MockPayloadGenerator.generate(operation, {
         Me: () => ({
@@ -54,5 +56,26 @@ describe("useCompleteMyProfileSteps", () => {
 })
 
 const wrapper = ({ children }: any) => (
-  <RelayEnvironmentProvider environment={env}>{children}</RelayEnvironmentProvider>
+  <RelayEnvironmentProvider environment={env}>
+    <StoreWrapper>{children}</StoreWrapper>
+  </RelayEnvironmentProvider>
 )
+
+const StoreWrapper = ({ children }: any) => {
+  const data = useLazyLoadQuery<useCompleteMyProfileStepsTestQuery>(
+    graphql`
+      query useCompleteMyProfileStepsTestQuery {
+        me @required(action: NONE) {
+          ...useCompleteMyProfileSteps_me
+        }
+      }
+    `,
+    {}
+  )
+
+  return (
+    <CompleteMyProfileStore.Provider runtimeModel={{ meKey: data?.me }}>
+      {children}
+    </CompleteMyProfileStore.Provider>
+  )
+}

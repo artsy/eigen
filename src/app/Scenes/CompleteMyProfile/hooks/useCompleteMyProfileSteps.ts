@@ -1,20 +1,14 @@
-import {
-  useCompleteMyProfileStepsQuery,
-  useCompleteMyProfileStepsQuery$data,
-} from "__generated__/useCompleteMyProfileStepsQuery.graphql"
+import { useCompleteMyProfileSteps_me$data } from "__generated__/useCompleteMyProfileSteps_me.graphql"
 import { Routes } from "app/Scenes/CompleteMyProfile/CompleteMyProfile"
+import { CompleteMyProfileStore } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
 import { useCallback, useMemo } from "react"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 
 export const useCompleteMyProfileSteps = () => {
-  const data = useLazyLoadQuery<useCompleteMyProfileStepsQuery>(
-    query,
-    {},
-    {
-      fetchPolicy: "network-only",
-      networkCacheConfig: { force: true },
-    }
-  )
+  const meKey = CompleteMyProfileStore.useStoreState((state) => state.meKey)
+  // Fragment reasoning: to keep the store in sync avoiding dealing with updates from lazy load
+  // and keeping the me record consistent and updated from the mutations used by my-profile routes
+  const data = useFragment(fragment, meKey)
 
   const steps = useMemo(() => getSteps(data), [data])
 
@@ -23,40 +17,38 @@ export const useCompleteMyProfileSteps = () => {
   return {
     nextRoute,
     steps,
-    me: data?.me,
+    me: data,
   }
 }
 
-const query = graphql`
-  query useCompleteMyProfileStepsQuery {
-    me @required(action: NONE) {
-      ...ImageSelector_me
-      ...IdentityVerificationStep_me
+const fragment = graphql`
+  fragment useCompleteMyProfileSteps_me on Me {
+    ...ImageSelector_me
+    ...IdentityVerificationStep_me
 
-      collectorProfile @required(action: NONE) {
-        icon {
-          url(version: "thumbnail")
-        }
-        profession
-        location {
-          display
-        }
-        isIdentityVerified
+    collectorProfile @required(action: NONE) {
+      icon {
+        url(version: "thumbnail")
       }
+      profession
+      location {
+        display
+      }
+      isIdentityVerified
     }
   }
 `
 
 export type StepsResult = "loading" | Routes[]
 
-const getSteps = (data?: useCompleteMyProfileStepsQuery$data | null): StepsResult => {
-  if (!data?.me.collectorProfile) {
+const getSteps = (data?: useCompleteMyProfileSteps_me$data | null): StepsResult => {
+  if (!data?.collectorProfile) {
     return "loading"
   }
 
   const {
     collectorProfile: { icon, isIdentityVerified, location, profession },
-  } = data.me
+  } = data
 
   const steps: Routes[] = []
 

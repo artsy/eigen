@@ -1,5 +1,6 @@
 import { NavigationContainer, NavigationProp } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
+import { useCompleteMyProfileSteps_me$key } from "__generated__/useCompleteMyProfileSteps_me.graphql"
 import { AvatarStep } from "app/Scenes/CompleteMyProfile/AvatarStep"
 import { ChangesSummary } from "app/Scenes/CompleteMyProfile/ChangesSummary"
 import { CompleteMyProfileStore } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
@@ -77,9 +78,13 @@ const CompleteMyProfileNavigator: FC = () => {
   )
 }
 
-export const CompleteMyProfile = () => {
+interface CompleteMyProfileProps {
+  meKey: useCompleteMyProfileSteps_me$key
+}
+
+export const CompleteMyProfile: FC<CompleteMyProfileProps> = ({ meKey }) => {
   return (
-    <CompleteMyProfileStore.Provider>
+    <CompleteMyProfileStore.Provider runtimeModel={{ meKey }}>
       <CompleteMyProfileNavigator />
     </CompleteMyProfileStore.Provider>
   )

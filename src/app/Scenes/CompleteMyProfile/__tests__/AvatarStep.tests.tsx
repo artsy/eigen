@@ -1,10 +1,13 @@
 import { screen, fireEvent, waitFor } from "@testing-library/react-native"
+import { AvatarStepTestsQuery } from "__generated__/AvatarStepTestsQuery.graphql"
 import { AvatarStep } from "app/Scenes/CompleteMyProfile/AvatarStep"
-import { CompleteMyProfileStore } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
+import {
+  CompleteMyProfileStore,
+  ProgressState,
+} from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
 import * as useCompleteProfile from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
 import * as imageUtils from "app/utils/getConvertedImageUrlFromS3"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { Suspense } from "react"
 import { graphql } from "react-relay"
 
 jest.mock("app/utils/requestPhotos", () => ({
@@ -19,24 +22,27 @@ describe("AvatarStep", () => {
   jest
     .spyOn(CompleteMyProfileStore, "useStoreActions")
     .mockImplementation((callback) => callback({ setProgressState } as any))
-  const stateSpy = jest
-    .spyOn(CompleteMyProfileStore, "useStoreState")
-    .mockImplementation((callback) => callback({ progressState: {} } as any))
+  let progressState: ProgressState
 
-  const { renderWithRelay } = setupTestWrapper({
-    Component: () => (
-      <Suspense fallback={() => null}>
+  const { renderWithRelay } = setupTestWrapper<AvatarStepTestsQuery>({
+    Component: ({ me }) => (
+      <CompleteMyProfileStore.Provider runtimeModel={{ progressState, meKey: me }}>
         <AvatarStep />
-      </Suspense>
+      </CompleteMyProfileStore.Provider>
     ),
     query: graphql`
       query AvatarStepTestsQuery {
         me {
           ...ImageSelector_me
           ...IdentityVerificationStep_me
+          ...useCompleteMyProfileSteps_me
         }
       }
     `,
+  })
+
+  beforeEach(() => {
+    progressState = {}
   })
 
   afterEach(() => {
@@ -44,8 +50,7 @@ describe("AvatarStep", () => {
   })
 
   it("renders", async () => {
-    const { mockResolveLastOperation } = renderWithRelay()
-    mockResolveLastOperation({ Me: () => user })
+    renderWithRelay({ Me: () => user })
 
     expect(await screen.findByText("Add a profile image")).toBeOnTheScreen()
     expect(
@@ -60,8 +65,7 @@ describe("AvatarStep", () => {
   it("sets the image", async () => {
     const spy = jest.spyOn(imageUtils, "getConvertedImageUrlFromS3").mockResolvedValue("geminiUrl")
 
-    const { mockResolveLastOperation } = renderWithRelay()
-    mockResolveLastOperation({ Me: () => user })
+    renderWithRelay({ Me: () => user })
 
     const imageButton = await screen.findByText("Choose an Image")
     fireEvent.press(imageButton)
@@ -75,14 +79,9 @@ describe("AvatarStep", () => {
   })
 
   it("renders given an image already set", async () => {
-    stateSpy.mockImplementation((callback) =>
-      callback({
-        progressState: { iconUrl: { localPath: "localPath", geminiUrl: "geminiUrl" } },
-      } as any)
-    )
+    progressState = { iconUrl: { localPath: "localPath", geminiUrl: "geminiUrl" } }
 
-    const { mockResolveLastOperation } = renderWithRelay()
-    mockResolveLastOperation({ Me: () => user })
+    renderWithRelay({ Me: () => user })
 
     expect(await screen.findByText("Change Image")).toBeOnTheScreen()
   })

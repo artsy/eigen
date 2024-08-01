@@ -1,10 +1,13 @@
 import { screen, fireEvent } from "@testing-library/react-native"
-import { CompleteMyProfileStore } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
+import { IdentityVerificationStepTestsQuery } from "__generated__/IdentityVerificationStepTestsQuery.graphql"
+import {
+  CompleteMyProfileStore,
+  ProgressState,
+} from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
 import { IdentityVerificationStep } from "app/Scenes/CompleteMyProfile/IdentityVerificationStep"
 import * as useCompleteProfile from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
 import * as useHandleVerification from "app/Scenes/MyProfile/useHandleVerification"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { Suspense } from "react"
 import { graphql } from "react-relay"
 
 describe("IdentityVerificationStep", () => {
@@ -15,23 +18,26 @@ describe("IdentityVerificationStep", () => {
   jest
     .spyOn(CompleteMyProfileStore, "useStoreActions")
     .mockImplementation((callback) => callback({ setProgressState } as any))
-  const stateSpy = jest
-    .spyOn(CompleteMyProfileStore, "useStoreState")
-    .mockImplementation((callback) => callback({ progressState: {} } as any))
+  let progressState: ProgressState
 
-  const { renderWithRelay } = setupTestWrapper({
-    Component: () => (
-      <Suspense fallback={() => "loading"}>
+  const { renderWithRelay } = setupTestWrapper<IdentityVerificationStepTestsQuery>({
+    Component: ({ me }) => (
+      <CompleteMyProfileStore.Provider runtimeModel={{ meKey: me, progressState }}>
         <IdentityVerificationStep />
-      </Suspense>
+      </CompleteMyProfileStore.Provider>
     ),
     query: graphql`
       query IdentityVerificationStepTestsQuery {
         me {
           ...IdentityVerificationStep_me
+          ...useCompleteMyProfileSteps_me
         }
       }
     `,
+  })
+
+  beforeEach(() => {
+    progressState = {}
   })
 
   afterEach(() => {
@@ -39,8 +45,7 @@ describe("IdentityVerificationStep", () => {
   })
 
   it("renders", async () => {
-    const { mockResolveLastOperation } = renderWithRelay()
-    mockResolveLastOperation({ Me: () => user })
+    renderWithRelay({ Me: () => user })
 
     expect(await screen.findByText("Verify your ID")).toBeOnTheScreen()
     expect(
@@ -53,8 +58,7 @@ describe("IdentityVerificationStep", () => {
 
   it("calls handleSendVerification on Send verification button press", async () => {
     const IDVerficationSpy = jest.spyOn(useHandleVerification, "useHandleIDVerification")
-    const { mockResolveLastOperation } = renderWithRelay()
-    mockResolveLastOperation({ Me: () => user })
+    renderWithRelay({ Me: () => user })
 
     fireEvent.press(await screen.findByText("Send verification Email"))
 
@@ -63,12 +67,8 @@ describe("IdentityVerificationStep", () => {
   })
 
   it("renders given email already sent", async () => {
-    stateSpy.mockImplementation((callback) =>
-      callback({ progressState: { isIdentityVerified: true } } as any)
-    )
-
-    const { mockResolveLastOperation } = renderWithRelay()
-    mockResolveLastOperation({ Me: () => user })
+    progressState = { isIdentityVerified: true }
+    renderWithRelay({ Me: () => user })
 
     expect(await screen.findByText("Email sent")).toBeOnTheScreen()
     expect(screen.getByText(/test@mail.com/)).toBeOnTheScreen()
