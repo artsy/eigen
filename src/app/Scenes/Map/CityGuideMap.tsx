@@ -2,15 +2,15 @@ import { Flex, useTheme } from "@artsy/palette-mobile"
 import MapboxGL from "@react-native-mapbox-gl/maps"
 import { CityGuideMapQuery } from "__generated__/CityGuideMapQuery.graphql"
 import { ArtsyMapStyleURL } from "app/Scenes/Map/GlobalMap"
-import { isEqual } from "lodash"
-import React, { useEffect, useRef, useState } from "react"
+import { FilterData } from "app/Scenes/Map/types"
+import { convertCityToGeoJSON } from "app/utils/convertCityToGeoJSON"
+import React, { useEffect, useRef } from "react"
 import { Dimensions } from "react-native"
 import Config from "react-native-config"
 import { graphql, useLazyLoadQuery } from "react-relay"
+import Supercluster from "supercluster"
 
 MapboxGL.setAccessToken(Config.MAPBOX_API_CLIENT_KEY)
-
-type Coordinate = { lat: number; lng: number }
 
 interface CityGuideMapProps {
   citySlug: string
@@ -24,38 +24,47 @@ export const CityGuideMap: React.FC<CityGuideMapProps> = ({ citySlug }) => {
   const mapRef = useRef<MapboxGL.MapView>(null)
   const cameraRef = useRef<MapboxGL.Camera>(null)
 
-  const [centerOfMap, setCenterOfMap] = useState<Coordinate>(NEW_YORK_COORDINATES)
+  const [pinsToRender, setPinsToRender] = React.useState<FilterData | undefined>(undefined)
 
   useEffect(() => {
-    if (!data?.city) {
+    if (!data) {
       return
     }
 
-    /** Update the center coordinate of the map if it has changed */
-    if (
-      !isEqual(data.city.coordinates, centerOfMap) &&
-      data.city.coordinates?.lat &&
-      data.city.coordinates?.lng
-    ) {
-      setCenterOfMap({ lat: data.city.coordinates?.lat, lng: data.city.coordinates?.lng })
+    if (data.city?.shows?.edges?.length) {
+      /** Add an icon field to indicate how each show should be rendered */
+      const showData = data.city.shows.edges.map((edge) => {
+        if (!edge?.node) {
+          return null
+        }
+
+        return {
+          ...edge.node,
+          icon: edge.node.isFollowed ? "pin-saved" : "pin",
+        }
+      })
+
+      /** Get a GeoJSON-formatted list of show locations */
+      const showLocations = convertCityToGeoJSON(showData)
+
+      /** Create a Supercluster instance to cluster show locations */
+      const clusterEngine = new Supercluster({
+        radius: 50,
+        minZoom: Math.floor(MIN_ZOOM_LEVEL),
+        maxZoom: Math.floor(MAX_ZOOM_LEVEL),
+      })
+
+      clusterEngine.load(showLocations.features)
+
+      setPinsToRender({
+        featureCollection: showLocations,
+        filter: "all",
+        clusterEngine,
+      })
     }
   }, [data])
 
   const { color } = useTheme()
-
-  /** TODO: Reintroduce pins for shows (upcoming saved, and current) */
-  /** TODO: Reintroduce pins for fairs */
-  /** TODO: Reintroduce the user location */
-  /** TODO: Reintroduce displaying the show/fair card when a pin is tapped */
-  /** TODO: Reintroduce changing the pin when a show/fair is tapped */
-  /** TODO: Reintroduce zooming into a cluster when tapped */
-  /** TODO: Reintroduce tapping on the user position */
-  /** TODO: Reintroduce the tracking events */
-  /** TODO: Reintroduce the bucketed filters */
-  /** TODO: Reintroduce dispatching a "map:error" when a Relay error occurs */
-  /** TODO: Reintroduce switching cities */
-  /** TODO: Reintroduce zooming in and out */
-  /** TODO: Show a skeleton loader while the map is loading */
 
   return (
     <Flex mb={0.5} flexDirection="column" style={{ backgroundColor: color("black5") }}>
@@ -65,7 +74,7 @@ export const CityGuideMap: React.FC<CityGuideMapProps> = ({ citySlug }) => {
           style={{ width: "100%", height: Dimensions.get("window").height }}
           styleURL={ArtsyMapStyleURL}
           userTrackingMode={MapboxGL.UserTrackingModes.Follow}
-          logoEnabled={!!data.city}
+          logoEnabled={!!data?.city}
           attributionEnabled={false}
           compassEnabled={false}
         >
@@ -75,8 +84,43 @@ export const CityGuideMap: React.FC<CityGuideMapProps> = ({ citySlug }) => {
             zoomLevel={DEFAULT_ZOOM_LEVEL}
             minZoomLevel={MIN_ZOOM_LEVEL}
             maxZoomLevel={MAX_ZOOM_LEVEL}
-            centerCoordinate={[centerOfMap.lng, centerOfMap.lat]}
+            centerCoordinate={[NEW_YORK_COORDINATES.lng, NEW_YORK_COORDINATES.lat]}
           />
+          {!!pinsToRender && (
+            <MapboxGL.Animated.ShapeSource
+              id="shows"
+              shape={pinsToRender.featureCollection}
+              cluster
+              clusterRadius={50}
+            >
+              <MapboxGL.Animated.SymbolLayer
+                id="singleShow"
+                filter={["!", ["has", "point_count"]]}
+                style={{ iconImage: ["get", "icon"], iconSize: 0.8, iconOpacity: 1 }}
+              />
+              <MapboxGL.Animated.SymbolLayer
+                id="pointCount"
+                style={{
+                  textField: "{point_count}",
+                  textSize: 14,
+                  textColor: "white",
+                  textFont: ["Unica77 LL Medium"],
+                  textPitchAlignment: "map",
+                }}
+              />
+              <MapboxGL.Animated.CircleLayer
+                id="clusteredPoints"
+                belowLayerID="pointCount"
+                filter={["has", "point_count"]}
+                style={{
+                  circlePitchAlignment: "map",
+                  circleColor: "black",
+                  circleRadius: ["step", ["get", "point_count"], 15, 5, 20, 30, 30],
+                  circleOpacity: 1,
+                }}
+              />
+            </MapboxGL.Animated.ShapeSource>
+          )}
         </MapboxGL.MapView>
       </Flex>
     </Flex>
@@ -85,10 +129,53 @@ export const CityGuideMap: React.FC<CityGuideMapProps> = ({ citySlug }) => {
 
 const cityGuideMapQuery = graphql`
   query CityGuideMapQuery($citySlug: String!) {
-    city(slug: $citySlug) {
+    city(slug: $citySlug) @required(action: NONE) {
       coordinates {
         lat
         lng
+      }
+      shows: showsConnection(
+        includeStubShows: true
+        status: RUNNING
+        first: 2147483647
+        sort: PARTNER_ASC
+      ) {
+        edges {
+          node {
+            slug
+            internalID
+            id
+            isStubShow
+            name
+            status
+            href
+            isFollowed
+            exhibitionPeriod(format: SHORT)
+            coverImage {
+              url
+            }
+            location {
+              coordinates {
+                lat
+                lng
+              }
+            }
+            type
+            startAt
+            endAt
+            partner {
+              ... on Partner {
+                name
+                type
+                profile {
+                  image {
+                    url(version: "square")
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
