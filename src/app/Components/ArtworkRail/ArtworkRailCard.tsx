@@ -533,6 +533,7 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
 
       {!!urgencyTag && (
         <Flex
+          testID="auction-urgency-tag"
           backgroundColor={color("white100")}
           position="absolute"
           px="5px"
