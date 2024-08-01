@@ -192,6 +192,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/galleries-for-you", "GalleriesForYou"),
     addRoute("/gene/:geneID", "Gene"),
     addRoute("/home-view", "HomeView"),
+    addRoute("/home-view/section/:section", "HomeSectionScreen"),
     addRoute("/inbox", "Inbox"),
     addRoute("/inquiry/:artworkID", "Inquiry"),
     addRoute("/local-discovery", "LocalDiscovery"),
