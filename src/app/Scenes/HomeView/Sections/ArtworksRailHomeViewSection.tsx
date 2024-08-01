@@ -15,11 +15,14 @@ export const ArtworksRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionPr
   section,
 }) => {
   const data = useFragment(fragment, section)
-  const title = data.component?.title
-  const artworks = extractNodes(data.artworksConnection)
-  const componentHref = "" // TODO: should be in schema
 
-  if (!artworks || artworks.length === 0) return null
+  const artworks = extractNodes(data.artworksConnection)
+
+  if (!data.component || !artworks || artworks.length === 0) {
+    return null
+  }
+
+  const { title, href } = data.component
 
   const handleOnArtworkPress = (artwork: any, _position: any) => {
     navigate(artwork.href)
@@ -29,20 +32,13 @@ export const ArtworksRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionPr
     <Flex>
       <View>
         <Flex pl={2} pr={2}>
-          <SectionTitle
-            title={title}
-            onPress={() => {
-              navigate(componentHref)
-            }}
-          />
+          <SectionTitle title={title} {...(href ? { onPress: () => navigate(href) } : {})} />
         </Flex>
         <LargeArtworkRail
           artworks={artworks}
           onPress={handleOnArtworkPress}
           showSaveIcon
-          onMorePress={() => {
-            navigate(componentHref)
-          }}
+          {...(href ? { onMorePress: () => navigate(href) } : {})}
         />
       </View>
     </Flex>
@@ -52,6 +48,7 @@ export const ArtworksRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionPr
 const fragment = graphql`
   fragment ArtworksRailHomeViewSection_section on ArtworksRailHomeViewSection {
     component {
+      href
       title
     }
 

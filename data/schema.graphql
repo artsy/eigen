@@ -10723,6 +10723,9 @@ type HomeView {
 
 # A component specification
 type HomeViewComponent {
+  # A URL to navigate to when clicked
+  href: String
+
   # A display title for this section
   title: String!
 }
