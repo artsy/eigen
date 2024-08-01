@@ -1,5 +1,6 @@
 import { screen } from "@testing-library/react-native"
 import { MyCollectionArtworkSubmissionStatusTestQuery } from "__generated__/MyCollectionArtworkSubmissionStatusTestQuery.graphql"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { MyCollectionArtworkSubmissionStatus } from "./MyCollectionArtworkSubmissionStatus"
@@ -24,10 +25,15 @@ describe("MyCollectionArtworkSubmissionStatus", () => {
         }
       },
     })
+
     expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).toBe(null)
   })
 
   it("Displays nothing if state is DRAFT", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({
+      AREnableSubmitArtworkTier2Information: false,
+    })
+
     renderWithRelay({
       Artwork: () => {
         return {
@@ -37,6 +43,7 @@ describe("MyCollectionArtworkSubmissionStatus", () => {
         }
       },
     })
+
     expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).toBe(null)
   })
 
@@ -51,6 +58,7 @@ describe("MyCollectionArtworkSubmissionStatus", () => {
         }
       },
     })
+
     expect(screen.getByText("Submission Status")).toBeDefined()
     expect(screen.getByText("In Progress")).toBeDefined()
   })
@@ -66,7 +74,64 @@ describe("MyCollectionArtworkSubmissionStatus", () => {
         }
       },
     })
+
     expect(screen.getByText("Submission Status")).toBeDefined()
     expect(screen.getByText("Evaluation Complete")).toBeDefined()
+  })
+
+  describe("AREnableSubmitArtworkTier2Information feature flag is on", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        AREnableSubmitArtworkTier2Information: true,
+      })
+    })
+
+    it("displays submission status even if state is DRAFT when the feature is live", () => {
+      renderWithRelay({
+        Artwork: () => {
+          return {
+            consignmentSubmission: {
+              state: "DRAFT",
+              actionLabel: "Complete Submission",
+            },
+          }
+        },
+      })
+
+      expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).not.toBe(null)
+      // using queryAllByText here and in the following tests because two components are rendedred:
+      // MyCollectionArtworkSubmissionStatus and ArtworkSubmissionStatusDescription
+      expect(screen.queryAllByText("Complete Submission")).toHaveLength(2)
+    })
+
+    it("displays submission status in LISTED state when the feature is live", () => {
+      renderWithRelay({
+        Artwork: () => {
+          return {
+            isListed: true,
+            internalID: "artwork-id",
+          }
+        },
+      })
+
+      expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).not.toBe(null)
+      expect(screen.queryAllByText("Listed")).toHaveLength(2)
+    })
+
+    it("display Submission status in REJECTED state ", () => {
+      renderWithRelay({
+        Artwork: () => {
+          return {
+            consignmentSubmission: {
+              state: "REJECTED",
+              stateLabel: "Submission Unsuccessful",
+            },
+          }
+        },
+      })
+
+      expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).not.toBe(null)
+      expect(screen.queryAllByText("Submission Unsuccessful")).toHaveLength(2)
+    })
   })
 })

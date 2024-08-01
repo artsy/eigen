@@ -4,6 +4,7 @@ import { MyCollectionArtworkHeader_artwork$key } from "__generated__/MyCollectio
 import { ImageCarouselFragmentContainer } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
 import { navigate } from "app/system/navigation/navigate"
 import { useScreenDimensions } from "app/utils/hooks"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { TouchableOpacity } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -16,6 +17,9 @@ interface MyCollectionArtworkHeaderProps {
 }
 
 export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (props) => {
+  const enableSubmitArtworkTier2Information = useFeatureFlag(
+    "AREnableSubmitArtworkTier2Information"
+  )
   const artwork = useFragment(myCollectionArtworkHeaderFragment, props.artwork)
   const { artistNames, date, internalID, title, slug, consignmentSubmission } = artwork
 
@@ -26,8 +30,10 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
   const { trackEvent } = useTracking()
 
   const hasImages = artwork?.figures?.length > 0
-  const displaySubmissionStateSection =
-    consignmentSubmission?.state && consignmentSubmission?.state !== "DRAFT"
+
+  const displaySubmissionStateSectionInHeader = enableSubmitArtworkTier2Information
+    ? consignmentSubmission?.state && consignmentSubmission?.state !== "REJECTED"
+    : consignmentSubmission?.state && consignmentSubmission?.state !== "DRAFT"
 
   return (
     <Join separator={<Spacer y={2} />}>
@@ -73,7 +79,7 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
         </Text>
       </Flex>
 
-      {!!displaySubmissionStateSection && (
+      {!!displaySubmissionStateSectionInHeader && (
         <Flex px={2}>
           <MyCollectionArtworkSubmissionStatus artwork={artwork} />
         </Flex>

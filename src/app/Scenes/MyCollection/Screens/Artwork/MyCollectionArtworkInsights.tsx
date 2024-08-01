@@ -1,8 +1,10 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Separator } from "@artsy/palette-mobile"
 import { MyCollectionArtworkInsights_artwork$key } from "__generated__/MyCollectionArtworkInsights_artwork.graphql"
 import { MyCollectionArtworkInsights_marketPriceInsights$key } from "__generated__/MyCollectionArtworkInsights_marketPriceInsights.graphql"
 import { MyCollectionArtworkInsights_me$key } from "__generated__/MyCollectionArtworkInsights_me.graphql"
 import { PriceEstimateRequested } from "app/Scenes/MyCollection/Screens/Artwork/Components/ArtworkInsights/RequestForPriceEstimate/PriceEstimateRequested"
+import { MyCollectionArtworkSubmissionStatus } from "app/Scenes/MyCollection/Screens/Artwork/Components/MyCollectionArtworkSubmissionStatus"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { graphql, useFragment } from "react-relay"
 import { MyCollectionArtworkArtistAuctionResults } from "./Components/ArtworkInsights/MyCollectionArtworkArtistAuctionResults"
 import { MyCollectionArtworkArtistMarket } from "./Components/ArtworkInsights/MyCollectionArtworkArtistMarket"
@@ -20,6 +22,10 @@ interface MyCollectionArtworkInsightsProps {
 export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsProps> = ({
   ...restProps
 }) => {
+  const enableSubmitArtworkTier2Information = useFeatureFlag(
+    "AREnableSubmitArtworkTier2Information"
+  )
+
   const artwork = useFragment(artworkFragment, restProps.artwork)
 
   const marketPriceInsights = useFragment(
@@ -29,6 +35,8 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
 
   const me = useFragment(meFragment, restProps.me)
 
+  const isSubmissionRejected = artwork?.consignmentSubmission?.state === "REJECTED"
+
   return (
     <Flex mt={2} px={2}>
       {!!artwork.marketPriceInsights && (
@@ -37,6 +45,13 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
             artwork={artwork}
             marketPriceInsights={artwork.marketPriceInsights}
           />
+        </>
+      )}
+
+      {!!enableSubmitArtworkTier2Information && !!isSubmissionRejected && (
+        <>
+          <MyCollectionArtworkSubmissionStatus artwork={artwork} />
+          <Separator my={4} borderColor="black10" />
         </>
       )}
 
@@ -86,6 +101,10 @@ const artworkFragment = graphql`
       ...MyCollectionArtworkArtistMarket_artworkPriceInsights
       ...MyCollectionArtworkDemandIndex_artworkPriceInsights
     }
+    consignmentSubmission {
+      state
+    }
+    ...MyCollectionArtworkSubmissionStatus_submissionState
   }
 `
 
