@@ -253,7 +253,7 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
               options={{ gestureEnabled: false }}
             />
 
-            {formik.values.state === "APPROVED" && (
+            {!!formik.values.state && !["DRAFT", "SUBMITTED"].includes(formik.values.state) && (
               <>
                 <Stack.Screen name="ShippingLocation" component={SubmitArtworkShippingLocation} />
                 <Stack.Screen name="FrameInformation" component={SubmitArtworkFrameInformation} />

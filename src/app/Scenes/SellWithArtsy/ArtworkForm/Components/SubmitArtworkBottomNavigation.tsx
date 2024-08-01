@@ -9,6 +9,7 @@ import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/valid
 import { GlobalStore } from "app/store/GlobalStore"
 import { dismissModal, navigate, popToRoot, switchTab } from "app/system/navigation/navigate"
 import { useIsKeyboardVisible } from "app/utils/hooks/useIsKeyboardVisible"
+import { NormalizedDocument } from "app/utils/normalizeUploadedDocument"
 import { useFormikContext } from "formik"
 import { useEffect } from "react"
 import { LayoutAnimation } from "react-native"
@@ -35,6 +36,13 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
 
   const { trackTappedNewSubmission, trackTappedStartMyCollection, trackConsignmentSubmitted } =
     useSubmitArtworkTracking()
+
+  const isUploadingAdditionalDocuments = values.additionalDocuments.some(
+    (document: NormalizedDocument) => document.loading
+  )
+  const allDocumentsAreValid = values.additionalDocuments.every(
+    (document: NormalizedDocument) => !document.errorMessage
+  )
 
   const isUploadingPhotos = values.photos.some((photo: Photo) => photo.loading)
   const allPhotosAreValid = values.photos.every(
@@ -180,8 +188,14 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
         </Flex>
         <Button
           onPress={handleNextPress}
-          disabled={!isValid || isLoading || isUploadingPhotos || !allPhotosAreValid}
-          loading={isLoading || isUploadingPhotos}
+          disabled={
+            !isValid ||
+            isLoading ||
+            isUploadingPhotos ||
+            !allPhotosAreValid ||
+            !allDocumentsAreValid
+          }
+          loading={isLoading || isUploadingPhotos || isUploadingAdditionalDocuments}
         >
           {isFinalStep ? "Submit Artwork" : "Continue"}
         </Button>

@@ -21,7 +21,7 @@ export const addAssetToConsignment = (input: AddAssetToConsignmentSubmissionInpu
       variables: {
         input: {
           ...input,
-          clientMutationId: Math.random().toString(8),
+          clientMutationId: __TEST__ ? "random-client-mutation-id" : Math.random().toString(8),
         },
       },
       onError: reject,

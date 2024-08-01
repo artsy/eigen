@@ -49,6 +49,7 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
           condition: values.artwork.condition,
           conditionDescription: values.artwork.conditionDescription,
         }
+
         // Make API call to update my collection artwork
         await myCollectionUpdateArtwork(newValues)
       }

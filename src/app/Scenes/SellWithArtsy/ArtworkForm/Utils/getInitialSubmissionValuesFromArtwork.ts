@@ -39,6 +39,7 @@ export const getInitialSubmissionFormValuesFromArtwork = (
   // This is a tradeoff between type safety and ease of development
   const formValues: SubmissionModel = {
     submissionId: null,
+    externalId: null,
     artist: artwork.artist?.displayLabel || "",
     artistId: artwork.artist?.internalID || "",
     artistSearchResult: {
@@ -104,6 +105,8 @@ export const getInitialSubmissionFormValuesFromArtwork = (
       condition: artwork.condition?.value as ArtworkConditionEnumType | null | undefined,
       conditionDescription: artwork.conditionDescription?.details,
     },
+
+    additionalDocuments: [],
   }
 
   return formValues

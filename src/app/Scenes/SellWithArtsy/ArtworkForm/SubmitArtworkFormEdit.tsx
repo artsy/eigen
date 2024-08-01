@@ -89,6 +89,15 @@ const submitArtworkFormEditQuery = graphql`
         size
         filename
       }
+      externalId
+      addtionalAssets: assets(assetType: [ADDITIONAL_FILE]) {
+        id
+        size
+        filename
+        documentPath
+        s3Path
+        s3Bucket
+      }
     }
     me {
       addressConnection {

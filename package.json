@@ -164,6 +164,7 @@
     "react-native-context-menu-view": "git+https://github.com/artsy/react-native-context-menu-view.git#v1.10.10-artsy",
     "react-native-dev-menu-android": "1.0.10",
     "react-native-device-info": "10.3.0",
+    "react-native-document-picker": "9.3.0",
     "react-native-fast-image": "8.6.3",
     "react-native-fbsdk-next": "13.0.0",
     "react-native-gesture-handler": "2.13.1",
@@ -203,6 +204,7 @@
     "supercluster": "7.1.5",
     "unleash-proxy-client": "3.1.1",
     "url": "0.11.3",
+    "uuid": "10.0.0",
     "victory-native": "36.6.8",
     "yup": "0.31.1"
   },
@@ -252,6 +254,7 @@
     "@types/styled-system": "5.1.16",
     "@types/styled-system__theme-get": "5.0.2",
     "@types/supercluster": "5.0.3",
+    "@types/uuid": "10.0.0",
     "@types/yup": "0.29.13",
     "@typescript-eslint/eslint-plugin": "5.57.0",
     "@typescript-eslint/parser": "5.57.0",
