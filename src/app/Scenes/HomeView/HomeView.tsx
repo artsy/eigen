@@ -47,11 +47,11 @@ export const homeViewScreenQuery = graphql`
             __typename
             ... on GenericHomeViewSection {
               internalID
-              ...GenericHomeViewSection_section
+              # ...GenericHomeViewSection_section
             }
             ... on ArtworksRailHomeViewSection {
               internalID
-              ...ArtworksRailHomeViewSection_section
+              # ...ArtworksRailHomeViewSection_section
             }
           }
         }
