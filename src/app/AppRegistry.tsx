@@ -141,7 +141,7 @@ import {
   ViewingRoomsListScreen,
   viewingRoomsListScreenQuery,
 } from "./Scenes/ViewingRoom/ViewingRoomsList"
-import { GlobalStore } from "./store/GlobalStore"
+import { GlobalStore, unsafe_getFeatureFlag } from "./store/GlobalStore"
 import { propsStore } from "./store/PropsStore"
 import { DevMenu } from "./system/devTools/DevMenu/DevMenu"
 import { Schema, screenTrack } from "./utils/track"
@@ -488,7 +488,7 @@ export const modules = defineModules({
     hidesBackButton: true,
   }),
   Home: reactModule(HomeContainer, {
-    isRootViewForTabName: "home",
+    fullBleed: unsafe_getFeatureFlag("ARUseNewHomeView") ? true : false,
   }),
   HomeView: reactModule(HomeViewScreen, { hidesBackButton: true }),
   Inbox: reactModule(InboxQueryRenderer, { isRootViewForTabName: "inbox" }, [InboxScreenQuery]),
