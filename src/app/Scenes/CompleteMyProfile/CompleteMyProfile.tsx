@@ -78,7 +78,11 @@ const CompleteMyProfileNavigator: FC = () => {
   )
 }
 
-export const CompleteMyProfile: FC<{ meKey: useCompleteMyProfileSteps_me$key }> = ({ meKey }) => {
+interface CompleteMyProfileProps {
+  meKey: useCompleteMyProfileSteps_me$key
+}
+
+export const CompleteMyProfile: FC<CompleteMyProfileProps> = ({ meKey }) => {
   return (
     <CompleteMyProfileStore.Provider runtimeModel={{ meKey }}>
       <CompleteMyProfileNavigator />
