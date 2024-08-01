@@ -56,7 +56,6 @@ export const SubmitArtworkAdditionalDocuments = () => {
       try {
         setIsLoading(true)
 
-        // Make API call to update submission
         navigation.navigate("Condition")
         setCurrentStep("Condition")
       } catch (error) {
