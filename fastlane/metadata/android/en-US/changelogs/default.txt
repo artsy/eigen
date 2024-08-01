@@ -1,5 +1,5 @@
 This update includes a number of improvements and bug fixes.
 
-- Improved image loaders across the app
+- Fixes a bug with push notifications not showing correct screen.
 
 Have feedback? Email us at support@artsy.net
