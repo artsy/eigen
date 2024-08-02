@@ -1,8 +1,9 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, SimpleMessage, Text } from "@artsy/palette-mobile"
-import { ArtworksScreenHomeSectionQuery } from "__generated__/ArtworksScreenHomeSectionQuery.graphql"
-import { ArtworksScreenHomeSection_artworksRailHomeViewSection$key } from "__generated__/ArtworksScreenHomeSection_artworksRailHomeViewSection.graphql"
+import { HomeViewSectionScreenArtworksQuery } from "__generated__/HomeViewSectionScreenArtworksQuery.graphql"
+import { HomeViewSectionScreenArtworks_artworksRailHomeViewSection$key } from "__generated__/HomeViewSectionScreenArtworks_artworksRailHomeViewSection.graphql"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
+import { HomeViewSectionScreenArtworksPlaceholder } from "app/Scenes/HomeViewSectionScreen/Artworks/HomeViewSectionScreenArtworksPlaceholder"
 import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
@@ -13,7 +14,7 @@ import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 export const PAGE_SIZE = 100
 
 interface ArtworksScreenHomeSection {
-  section: ArtworksScreenHomeSection_artworksRailHomeViewSection$key
+  section: HomeViewSectionScreenArtworks_artworksRailHomeViewSection$key
   title: string
 }
 
@@ -23,7 +24,7 @@ export const ArtworksScreenHomeSection: React.FC<ArtworksScreenHomeSection> = ({
 }) => {
   const defaultViewOption = GlobalStore.useAppState((state) => state.userPrefs.defaultViewOption)
 
-  const { data } = usePaginationFragment(newArtworksScreenHomeSectionFragment, section)
+  const { data } = usePaginationFragment(artworksFrogment, section)
 
   const { scrollHandler } = Screen.useListenForScreenScroll()
 
@@ -60,8 +61,8 @@ export const ArtworksScreenHomeSection: React.FC<ArtworksScreenHomeSection> = ({
   )
 }
 
-export const newArtworksScreenHomeSectionFragment = graphql`
-  fragment ArtworksScreenHomeSection_artworksRailHomeViewSection on ArtworksRailHomeViewSection
+export const artworksFrogment = graphql`
+  fragment HomeViewSectionScreenArtworks_artworksRailHomeViewSection on ArtworksRailHomeViewSection
   @refetchable(queryName: "ArtworksScreenHomeSection_viewerRefetch")
   @argumentDefinitions(count: { type: "Int", defaultValue: 100 }, cursor: { type: "String" }) {
     artworks: artworksConnection(after: $cursor, first: $count)
@@ -82,8 +83,8 @@ export const newArtworksScreenHomeSectionFragment = graphql`
   }
 `
 
-export const artworksScreenHomeSectionQuery = graphql`
-  query ArtworksScreenHomeSectionQuery($id: String!) {
+export const artworksQuery = graphql`
+  query HomeViewSectionScreenArtworksQuery($id: String!) {
     homeView {
       section(id: $id) {
         __typename
@@ -92,7 +93,7 @@ export const artworksScreenHomeSectionQuery = graphql`
             title
           }
         }
-        ...ArtworksScreenHomeSection_artworksRailHomeViewSection
+        ...HomeViewSectionScreenArtworks_artworksRailHomeViewSection
       }
     }
   }
@@ -102,10 +103,10 @@ interface ArtworksScreenHomeSectionQRProps {
   sectionId: string
 }
 
-export const ArtworksScreenHomeSectionQR: React.FC<ArtworksScreenHomeSectionQRProps> = withSuspense(
-  (props) => {
-    const data = useLazyLoadQuery<ArtworksScreenHomeSectionQuery>(
-      artworksScreenHomeSectionQuery,
+export const HomeViewSectionScreenArtworksQueryRenderer: React.FC<ArtworksScreenHomeSectionQRProps> =
+  withSuspense((props) => {
+    const data = useLazyLoadQuery<HomeViewSectionScreenArtworksQuery>(
+      artworksQuery,
       { id: props.sectionId },
       {
         // This is necessary to avoid displaying cached because this component is used in more than one place and Relay returns data from another screen before the new data is loaded.
@@ -125,6 +126,4 @@ export const ArtworksScreenHomeSectionQR: React.FC<ArtworksScreenHomeSectionQRPr
         title={data.homeView.section.component.title}
       />
     )
-  }
-  // TODO: Add placeholder
-)
+  }, HomeViewSectionScreenArtworksPlaceholder)
