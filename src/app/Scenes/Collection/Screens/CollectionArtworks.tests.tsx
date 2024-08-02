@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import { CollectionArtworksTestsQuery } from "__generated__/CollectionArtworksTestsQuery.graphql"
 import {
   FilterArray,
@@ -5,58 +6,28 @@ import {
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "app/Scenes/Collection/Screens/CollectionArtworks"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 
 describe("CollectionArtworks", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
-  const TestRenderer = () => (
-    <QueryRenderer<CollectionArtworksTestsQuery>
-      environment={env}
-      query={graphql`
-        query CollectionArtworksTestsQuery @relay_test_operation {
-          marketingCollection(slug: "street-art-now") {
-            ...CollectionArtworks_collection
-          }
+  const { renderWithRelay } = setupTestWrapper<CollectionArtworksTestsQuery>({
+    Component: ({ marketingCollection }) => (
+      <ArtworkFiltersStoreProvider>
+        <CollectionArtworks collection={marketingCollection!} />
+      </ArtworkFiltersStoreProvider>
+    ),
+    query: graphql`
+      query CollectionArtworksTestsQuery @relay_test_operation {
+        marketingCollection(slug: "street-art-now") {
+          ...CollectionArtworks_collection
         }
-      `}
-      variables={{}}
-      render={({ props, error }) => {
-        if (props?.marketingCollection) {
-          return (
-            <ArtworkFiltersStoreProvider>
-              <CollectionArtworks collection={props.marketingCollection} scrollToTop={jest.fn()} />
-            </ArtworkFiltersStoreProvider>
-          )
-        } else if (error) {
-          console.error(error)
-        }
-      }}
-    />
-  )
-
-  const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, mockResolvers)
-      )
-    })
-    return tree
-  }
-
-  beforeEach(() => {
-    env = createMockEnvironment()
+      }
+    `,
   })
 
   it("returns zero state component when there are no artworks to display", () => {
-    const tree = getWrapper({
+    renderWithRelay({
       MarketingCollection: () => ({
         collectionArtworks: {
           edges: [],
@@ -65,14 +36,21 @@ describe("CollectionArtworks", () => {
       }),
     })
 
-    expect(extractText(tree.root)).toContain(
-      "There aren’t any works available in the collection at this time."
-    )
+    expect(screen.getByText(/No results found/)).toBeOnTheScreen()
+    expect(screen.getByText(/Please try another search./)).toBeOnTheScreen()
+    expect(screen.getByText(/Clear filters/)).toBeOnTheScreen()
   })
 
   it("returns artworks", () => {
-    const tree = getWrapper()
-    expect(tree.root.findAllByType(InfiniteScrollArtworksGrid)).toHaveLength(1)
+    renderWithRelay({
+      MarketingCollection: () => ({
+        collectionArtworks: {
+          counts: { total: 123 },
+        },
+      }),
+    })
+
+    expect(screen.getByText("Showing 123 works")).toBeOnTheScreen()
   })
 })
 
