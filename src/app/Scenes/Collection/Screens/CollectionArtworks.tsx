@@ -87,6 +87,29 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
     })
   }
 
+  const renderItem = useCallback(({ item, index, columnIndex }) => {
+    const imgAspectRatio = item.image?.aspectRatio ?? 1
+    const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
+    const imgHeight = imgWidth / imgAspectRatio
+
+    return (
+      <Flex
+        pl={columnIndex === 0 ? 0 : 1}
+        pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
+        mt={2}
+      >
+        <ArtworkGridItem
+          itemIndex={index}
+          contextScreenOwnerType={OwnerType.artist}
+          contextScreenOwnerId={collection.id}
+          contextScreenOwnerSlug={collection.slug}
+          artwork={item}
+          height={imgHeight}
+        />
+      </Flex>
+    )
+  }, [])
+
   return (
     <>
       <Tabs.Masonry
@@ -105,28 +128,7 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
           </Box>
         }
         keyExtractor={(item) => item.id}
-        renderItem={({ item, index, columnIndex }) => {
-          const imgAspectRatio = item.image?.aspectRatio ?? 1
-          const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
-          const imgHeight = imgWidth / imgAspectRatio
-
-          return (
-            <Flex
-              pl={columnIndex === 0 ? 0 : 1}
-              pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
-              mt={2}
-            >
-              <ArtworkGridItem
-                itemIndex={index}
-                contextScreenOwnerType={OwnerType.artist}
-                contextScreenOwnerId={collection.id}
-                contextScreenOwnerSlug={collection.slug}
-                artwork={item}
-                height={imgHeight}
-              />
-            </Flex>
-          )
-        }}
+        renderItem={renderItem}
         onEndReached={loadMore}
         onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
         // need to pass zIndex: 1 here in order for the SubTabBar to
