@@ -16,7 +16,7 @@ interface ArtistCardProps {
   onPress?: () => void
 }
 
-const IMAGE_MAX_HEIGHT = 180
+export const IMAGE_MAX_HEIGHT = 180
 
 export const ArtistCard: React.FC<ArtistCardProps> = ({ artist, onDismiss, onFollow, onPress }) => {
   const color = useColor()
