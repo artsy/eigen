@@ -2245,6 +2245,8 @@ enum ArtistTargetSupplyType {
 
 # An artists rail section in the home view
 type ArtistsRailHomeViewSection implements GenericHomeViewSection & Node {
+  artistsConnection(after: String, before: String, first: Int, last: Int): ArtistConnection
+
   # The component that is prescribed for this section
   component: HomeViewComponent
 
