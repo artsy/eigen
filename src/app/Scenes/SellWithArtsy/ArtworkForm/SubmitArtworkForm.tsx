@@ -26,6 +26,7 @@ import {
   SUBMIT_ARTWORK_APPROVED_SUBMISSION_STEPS,
   SUBMIT_ARTWORK_DRAFT_SUBMISSION_STEPS,
   SubmitArtworkScreen,
+  TIER_1_STATES,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
 import { getInitialNavigationState } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/getInitialNavigationState"
 import {
@@ -253,7 +254,7 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
               options={{ gestureEnabled: false }}
             />
 
-            {!!formik.values.state && !["DRAFT", "SUBMITTED"].includes(formik.values.state) && (
+            {!!formik.values.state && !TIER_1_STATES.includes(formik.values.state) && (
               <>
                 <Stack.Screen name="ShippingLocation" component={SubmitArtworkShippingLocation} />
                 <Stack.Screen name="FrameInformation" component={SubmitArtworkFrameInformation} />

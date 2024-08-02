@@ -5,6 +5,7 @@ import {
   SUBMIT_ARTWORK_APPROVED_SUBMISSION_STEPS,
   SUBMIT_ARTWORK_DRAFT_SUBMISSION_STEPS,
   SubmitArtworkScreen,
+  TIER_1_STATES,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
 import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { useFormikContext } from "formik"
@@ -51,7 +52,7 @@ export const SubmitArtworkProgressBar: React.FC = ({}) => {
   // This is required for accurate progress bar calculation
   const getTotalSteps = useCallback(() => {
     const allSteps =
-      values.state === "APPROVED"
+      values.state && !TIER_1_STATES.includes(values.state)
         ? APPROVED_SUBMISSION_COUNTABLE_STEPS
         : DRAFT_SUBMISSION_COUNTABLE_STEPS
 
