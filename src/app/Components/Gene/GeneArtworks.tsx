@@ -72,6 +72,28 @@ export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ ge
     }
   }, [relay.hasMore(), relay.isLoading()])
 
+  const renderItem = useCallback(({ item, columnIndex }) => {
+    const imgAspectRatio = item.image?.aspectRatio ?? 1
+    const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
+    const imgHeight = imgWidth / imgAspectRatio
+
+    return (
+      <Flex
+        pl={columnIndex === 0 ? 0 : 1}
+        pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
+        mt={2}
+      >
+        <ArtworkGridItem
+          contextScreenOwnerType={OwnerType.gene}
+          contextScreenOwnerId={gene.internalID}
+          contextScreenOwnerSlug={gene.slug}
+          artwork={item}
+          height={imgHeight}
+        />
+      </Flex>
+    )
+  }, [])
+
   return (
     <>
       <Tabs.Masonry
@@ -93,27 +115,7 @@ export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ ge
           )
         }
         keyExtractor={(item) => item.id}
-        renderItem={({ item, columnIndex }) => {
-          const imgAspectRatio = item.image?.aspectRatio ?? 1
-          const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
-          const imgHeight = imgWidth / imgAspectRatio
-
-          return (
-            <Flex
-              pl={columnIndex === 0 ? 0 : 1}
-              pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
-              mt={2}
-            >
-              <ArtworkGridItem
-                contextScreenOwnerType={OwnerType.gene}
-                contextScreenOwnerId={gene.internalID}
-                contextScreenOwnerSlug={gene.slug}
-                artwork={item}
-                height={imgHeight}
-              />
-            </Flex>
-          )
-        }}
+        renderItem={renderItem}
         onEndReached={loadMore}
         onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
         ListFooterComponent={
