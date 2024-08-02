@@ -37,3 +37,5 @@ export const SUBMIT_ARTWORK_APPROVED_SUBMISSION_STEPS: SubmitArtworkScreen[] = [
   "CompleteYourSubmission",
   "ArtistRejected",
 ]
+
+export const TIER_1_STATES = ["DRAFT", "SUBMITTED"]

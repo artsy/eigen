@@ -22,16 +22,23 @@ export const SubmitArtworkCompleteYourSubmission = () => {
           <Flex>
             <Flex mb={2} flexDirection="row">
               <Flex flex={1} pr={1}>
-                <Text variant="lg-display">Thank you for listing your artwork</Text>
+                <Text variant="lg-display">Thank you for submitting additional information</Text>
               </Flex>
             </Flex>
           </Flex>
 
-          <Text variant="xs">Lorem ipsum dolor sit amet</Text>
+          <Text variant="xs">
+            This will be used to list, sell and fulfil your work. Additional information may be
+            requested.
+          </Text>
 
           <Spacer y={2} />
 
-          <Message title="What happens next?" variant="success" text="Lorem ipsum dolor sit amet" />
+          <Message
+            title="What happens next?"
+            variant="success"
+            text="An Artsy Advisor will email you within 3-5 days to discuss the next steps. In the meantime you can view your submission in My Collection."
+          />
         </ScrollView>
       </Flex>
     )

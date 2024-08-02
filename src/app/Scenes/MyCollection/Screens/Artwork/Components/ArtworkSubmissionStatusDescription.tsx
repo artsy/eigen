@@ -82,13 +82,13 @@ export const ArtworkSubmissionStatusDescription: React.FC<
             </Text>
           )}
 
-          <Text variant="sm-display" color="black60">
+          <Text variant="sm-display" color="black60" my={2}>
             {stateHelpMessageDisplay()}
           </Text>
 
           {(!!buttonLabel || !!isListed) && (
             <Button
-              mt={2}
+              my={2}
               block
               haptic
               variant={buttonVariant}
