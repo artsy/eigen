@@ -44,7 +44,7 @@ const HOME_SECTION_SCREEN_QUERY = graphql`
 `
 
 interface HomeViewSectionScreenQueryRendererProps {
-  sectionId: string
+  sectionID: string
 }
 
 export const HomeViewSectionScreenQueryRenderer = withSuspense(
@@ -52,7 +52,7 @@ export const HomeViewSectionScreenQueryRenderer = withSuspense(
     const data = useLazyLoadQuery<HomeViewSectionScreenQuery>(
       HOME_SECTION_SCREEN_QUERY,
       {
-        id: props.sectionId,
+        id: props.sectionID,
       },
       {
         // Since we already fetched the __typename in home, we don't need to refetch it again
