@@ -1,8 +1,7 @@
 import { CompleteProfilePrompt_artwork$key } from "__generated__/CompleteProfilePrompt_artwork.graphql"
 import { MyProfileEditModal_me$key } from "__generated__/MyProfileEditModal_me.graphql"
 import { MyProfileEditModal } from "app/Scenes/MyProfile/MyProfileEditModal"
-import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
-import { useContext } from "react"
+import { useArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { graphql, useFragment } from "react-relay"
 
 interface CompleteProfilePromptProps {
@@ -11,7 +10,7 @@ interface CompleteProfilePromptProps {
 }
 
 export const CompleteProfilePrompt: React.FC<CompleteProfilePromptProps> = ({ artwork, me }) => {
-  const { state, dispatch } = useContext(ArtworkInquiryContext)
+  const { state, dispatch } = useArtworkInquiryContext()
   const artworkData = useFragment(artworkFragment, artwork)
 
   return (

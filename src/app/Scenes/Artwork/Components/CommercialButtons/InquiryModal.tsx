@@ -10,7 +10,7 @@ import { InquirySuccessNotification } from "app/Scenes/Artwork/Components/Commer
 import { randomAutomatedMessage } from "app/Scenes/Artwork/Components/CommercialButtons/constants"
 import { useSubmitInquiryRequest } from "app/Scenes/Artwork/Components/CommercialButtons/useSubmitInquiryRequest"
 import { navigate } from "app/system/navigation/navigate"
-import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
+import { useArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryQuestionIDs } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import {
   userShouldBePromptedToAddArtistsToCollection,
@@ -19,7 +19,7 @@ import {
 import { LocationWithDetails } from "app/utils/googleMaps"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
-import React, { useCallback, useContext, useEffect, useRef, useState } from "react"
+import React, { useCallback, useEffect, useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -32,7 +32,7 @@ interface InquiryModalProps {
 }
 
 export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, me }) => {
-  const { state, dispatch } = useContext(ArtworkInquiryContext)
+  const { state, dispatch } = useArtworkInquiryContext()
   const profilePromptIsEnabled = useFeatureFlag("AREnableCollectorProfilePrompts")
   const scrollViewRef = useRef<ScrollView>(null)
   const [commit] = useSubmitInquiryRequest()

@@ -9,9 +9,9 @@ import {
   Text,
   useTheme,
 } from "@artsy/palette-mobile"
-import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
+import { useArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryQuestionIDs } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
-import React, { useContext } from "react"
+import React, { useLayoutEffect } from "react"
 import { LayoutAnimation, TouchableOpacity } from "react-native"
 
 interface InquiryQuestionOptionProps {
@@ -26,7 +26,7 @@ export const InquiryQuestionOption: React.FC<InquiryQuestionOptionProps> = ({
   setShippingModalVisibility,
 }) => {
   const { color, space } = useTheme()
-  const { state, dispatch } = useContext(ArtworkInquiryContext)
+  const { state, dispatch } = useArtworkInquiryContext()
   const isShipping = id === InquiryQuestionIDs.Shipping
 
   const questionSelected = Boolean(
@@ -35,16 +35,14 @@ export const InquiryQuestionOption: React.FC<InquiryQuestionOptionProps> = ({
     })
   )
 
-  const maybeRegisterAnimation = () => {
+  useLayoutEffect(() => {
     if (isShipping) {
       LayoutAnimation.configureNext({
         ...LayoutAnimation.Presets.linear,
         duration: 200,
       })
     }
-  }
-
-  React.useLayoutEffect(maybeRegisterAnimation, [questionSelected])
+  }, [questionSelected])
 
   const setSelection = () => {
     dispatch({
@@ -58,7 +56,7 @@ export const InquiryQuestionOption: React.FC<InquiryQuestionOptionProps> = ({
   }
 
   return (
-    <React.Fragment>
+    <>
       <TouchableOpacity onPress={setSelection}>
         <Flex
           style={{
@@ -121,6 +119,6 @@ export const InquiryQuestionOption: React.FC<InquiryQuestionOptionProps> = ({
           )}
         </Flex>
       </TouchableOpacity>
-    </React.Fragment>
+    </>
   )
 }

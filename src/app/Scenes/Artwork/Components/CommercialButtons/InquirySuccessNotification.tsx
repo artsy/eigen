@@ -1,9 +1,9 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { navigate } from "app/system/navigation/navigate"
-import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
+import { useArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { useScreenDimensions } from "app/utils/hooks"
-import React, { useContext, useEffect } from "react"
+import React, { useEffect } from "react"
 import { Animated, Modal, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 
@@ -11,15 +11,19 @@ import styled from "styled-components/native"
 // See https://artsy.slack.com/archives/C02BAQ5K7/p1623332112279700
 
 export const InquirySuccessNotification: React.FC = () => {
-  const { state, dispatch } = useContext(ArtworkInquiryContext)
+  const { state, dispatch } = useArtworkInquiryContext()
 
   // auto-hide the success notification after 2 seconds
   useEffect(() => {
+    let timeout: number
+
     if (state.successNotificationVisible) {
-      setTimeout(() => {
+      timeout = setTimeout(() => {
         dispatch({ type: "setSuccessNotificationVisible", payload: false })
       }, 2000)
     }
+
+    return () => clearTimeout(timeout)
   }, [state.successNotificationVisible])
 
   const navigateToConversation = () => {
