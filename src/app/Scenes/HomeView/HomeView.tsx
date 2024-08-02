@@ -28,7 +28,7 @@ export const HomeView: React.FC = () => {
             return <Section section={item} />
           }}
           ItemSeparatorComponent={() => <Spacer y={2} />}
-          onEndReached={() => loadNext(1)}
+          onEndReached={() => loadNext(10)}
           ListFooterComponent={
             hasNext ? (
               <Flex width="100%" justifyContent="center" alignItems="center" height={200}>
