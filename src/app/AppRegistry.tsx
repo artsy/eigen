@@ -17,6 +17,7 @@ import { NewsScreen, NewsScreenQuery } from "app/Scenes/Articles/News/News"
 import { BrowseSimilarWorksQueryRenderer } from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorks"
 import { ArtworkListScreen } from "app/Scenes/ArtworkList/ArtworkList"
 import { ArtworkRecommendationsScreen } from "app/Scenes/ArtworkRecommendations/ArtworkRecommendations"
+import { CollectionScreen } from "app/Scenes/Collection/Collection"
 import { CompleteMyProfile } from "app/Scenes/CompleteMyProfile/CompleteMyProfile"
 import { GalleriesForYouScreen } from "app/Scenes/GalleriesForYou/GalleriesForYouScreen"
 import { HomeContainer } from "app/Scenes/Home/HomeContainer"
@@ -72,7 +73,6 @@ import { CityFairListQueryRenderer } from "./Scenes/City/CityFairList"
 import { CityPicker } from "./Scenes/City/CityPicker"
 import { CitySavedListQueryRenderer } from "./Scenes/City/CitySavedList"
 import { CitySectionListQueryRenderer } from "./Scenes/City/CitySectionList"
-import { CollectionQueryRenderer } from "./Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
 import { FairScreen } from "./Scenes/Fair/Fair"
 import { FairAllFollowedArtistsQueryRenderer } from "./Scenes/Fair/FairAllFollowedArtists"
@@ -453,7 +453,7 @@ export const modules = defineModules({
   CityPicker: reactModule(CityPicker, { fullBleed: true, ignoreTabs: true }),
   CitySavedList: reactModule(CitySavedListQueryRenderer),
   CitySectionList: reactModule(CitySectionListQueryRenderer),
-  Collection: reactModule(CollectionQueryRenderer, { fullBleed: true, hidesBackButton: true }),
+  Collection: reactModule(CollectionScreen, { fullBleed: true, hidesBackButton: true }),
   ConsignmentInquiry: reactModule(ConsignmentInquiryScreen, {
     hidesBottomTabs: true,
     screenOptions: {

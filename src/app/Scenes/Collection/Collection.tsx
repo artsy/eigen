@@ -1,34 +1,39 @@
-import { Box, Flex, Screen, ShareIcon, Spacer } from "@artsy/palette-mobile"
+import { ShareIcon, Spinner, Tabs } from "@artsy/palette-mobile"
 import { CollectionQuery } from "__generated__/CollectionQuery.graphql"
-import { Collection_collection$data } from "__generated__/Collection_collection.graphql"
+import { Collection_collection$key } from "__generated__/Collection_collection.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
 import { useToast } from "app/Components/Toast/toastHook"
-import { CollectionArtworksFilterFragmentContainer as CollectionArtworksFilter } from "app/Scenes/Collection/Components/CollectionArtworksFilter"
+import { CollectionOverview } from "app/Scenes/Collection/CollectionOverview"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "app/Scenes/Collection/Screens/CollectionArtworks"
-import { CollectionHeaderContainer as CollectionHeader } from "app/Scenes/Collection/Screens/CollectionHeader"
+import { CollectionHeader } from "app/Scenes/Collection/Screens/CollectionHeader"
 import { goBack } from "app/system/navigation/navigate"
-import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { compact } from "lodash"
-import { useRef } from "react"
-import { FlatList, TouchableOpacity } from "react-native"
+import { Suspense } from "react"
+import { TouchableOpacity } from "react-native"
 import RNShare from "react-native-share"
-import { QueryRenderer, createFragmentContainer, graphql } from "react-relay"
-import { CollectionsHubRailsContainer as CollectionHubsRails } from "./Components/CollectionHubsRails/index"
-import { CollectionFeaturedArtistsContainer as CollectionFeaturedArtists } from "./Components/FeaturedArtists"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
-interface CollectionProps {
-  collection: Collection_collection$data
+interface CollectionScreenProps {
+  collectionID: string
 }
 
-export const Collection: React.FC<CollectionProps> = (props) => {
-  const { collection } = props
-  const flatListRef = useRef<FlatList>(null)
+interface CollectionProps {
+  collection: Collection_collection$key
+}
+
+export const CollectionContent: React.FC<CollectionProps> = ({ collection }) => {
+  const data = useFragment(fragment, collection)
   const { show: showToast } = useToast()
 
-  const { slug, id, linkedCollections, isDepartment } = collection
+  const shouldRenderOverviewTab =
+    !!data?.descriptionMarkdown && !!data?.showFeaturedArtists && !!data?.linkedCollections
+
+  if (!data) {
+    return null
+  }
+
+  const { slug, id, title } = data
 
   const trackingInfo: Schema.PageView = {
     context_screen: Schema.PageNames.Collection,
@@ -39,11 +44,11 @@ export const Collection: React.FC<CollectionProps> = (props) => {
 
   const handleSharePress = async () => {
     try {
-      const url = getShareURL(`/collection/${collection.slug}?utm_content=collection-share`)
-      const message = `View ${collection.title} on Artsy`
+      const url = getShareURL(`/collection/${slug}?utm_content=collection-share`)
+      const message = `View ${title} on Artsy`
 
       await RNShare.open({
-        title: collection.title,
+        title: title,
         message: message + "\n" + url,
         failOnCancel: true,
       })
@@ -55,129 +60,87 @@ export const Collection: React.FC<CollectionProps> = (props) => {
     }
   }
 
-  const data = compact([
-    collection.showFeaturedArtists
-      ? {
-          key: "collectionFeaturedArtists",
-          content: (
-            <Box px={2}>
-              <CollectionFeaturedArtists collection={collection} />
-            </Box>
-          ),
-        }
-      : null,
-    isDepartment
-      ? {
-          key: "collectionHubsRails",
-          content: <CollectionHubsRails linkedCollections={linkedCollections} {...props} />,
-        }
-      : null,
-    {
-      key: "collectionArtworksFilter",
-      content: (
-        <Flex mb={-2}>
-          <CollectionArtworksFilter collection={collection} />
-        </Flex>
-      ),
-    },
-    {
-      key: "collectionArtworks",
-      content: (
-        <Box px={2}>
-          <CollectionArtworks collection={collection} scrollToTop={() => scrollToTop()} />
-        </Box>
-      ),
-    },
-  ])
-
-  // Small hack that takes into account the list header component when looking for the index
-  const stickySectionIndex =
-    data.findIndex((section) => section.key === "collectionArtworksFilter") + 1
-
-  const scrollToTop = () => {
-    flatListRef?.current?.scrollToIndex({ animated: false, index: isDepartment ? 1 : 0 })
-  }
-
   return (
     <ProvideScreenTracking info={trackingInfo}>
-      <Screen>
-        <Screen.AnimatedHeader
-          title={collection.title}
-          onBack={goBack}
-          rightElements={
-            <TouchableOpacity
-              onPress={() => {
-                handleSharePress()
-              }}
-            >
-              <ShareIcon width={24} height={24} />
-            </TouchableOpacity>
-          }
-        />
-        <ArtworkFiltersStoreProvider>
-          <Flex flex={1}>
-            <Screen.FlatList
-              keyExtractor={(_item, index) => String(index)}
-              data={data}
-              ListHeaderComponent={<CollectionHeader collection={collection} />}
-              ItemSeparatorComponent={() => <Spacer y={2} />}
-              stickyHeaderIndices={[stickySectionIndex]}
-              keyboardShouldPersistTaps="handled"
-              renderItem={({ item }) => {
-                return item.content
-              }}
-            />
-          </Flex>
-        </ArtworkFiltersStoreProvider>
-      </Screen>
+      <ArtworkFiltersStoreProvider>
+        <Tabs.TabsWithHeader
+          initialTabName={shouldRenderOverviewTab ? "Overview" : "Artworks"}
+          title={`${title}`}
+          showLargeHeaderText={false}
+          BelowTitleHeaderComponent={() => <CollectionHeader collection={data} />}
+          headerProps={{
+            onBack: goBack,
+            rightElements: (
+              <TouchableOpacity
+                onPress={() => {
+                  handleSharePress()
+                }}
+              >
+                <ShareIcon width={24} height={24} />
+              </TouchableOpacity>
+            ),
+          }}
+        >
+          {!!shouldRenderOverviewTab ? (
+            <Tabs.Tab name="Overview" label="Overview">
+              <Tabs.Lazy>
+                <CollectionOverview collection={data} />
+              </Tabs.Lazy>
+            </Tabs.Tab>
+          ) : null}
+          <Tabs.Tab name="Artworks" label="Artworks">
+            <Tabs.Lazy>
+              <CollectionArtworks collection={data} />
+            </Tabs.Lazy>
+          </Tabs.Tab>
+        </Tabs.TabsWithHeader>
+      </ArtworkFiltersStoreProvider>
     </ProvideScreenTracking>
   )
 }
 
-export const CollectionContainer = createFragmentContainer(Collection, {
-  collection: graphql`
-    fragment Collection_collection on MarketingCollection {
-      id
-      slug
-      isDepartment
-      showFeaturedArtists
-      title
-      ...CollectionHeader_collection
-      ...CollectionArtworks_collection @arguments(input: { sort: "-decayed_merch" })
-      ...CollectionArtworksFilter_collection
-      ...FeaturedArtists_collection
-      ...CollectionHubsRails_collection
+const CollectionQueryRenderer: React.FC<CollectionScreenProps> = ({ collectionID }) => {
+  const data = useLazyLoadQuery<CollectionQuery>(query, { collectionID })
 
-      linkedCollections {
-        ...CollectionHubsRails_linkedCollections
-      }
-    }
-  `,
-})
+  if (!data?.collection) {
+    return null
+  }
 
-interface CollectionQueryRendererProps {
-  collectionID: string
+  return <CollectionContent collection={data?.collection} />
 }
 
-export const CollectionQueryRenderer: React.FC<CollectionQueryRendererProps> = ({
-  collectionID,
-}) => (
-  <QueryRenderer<CollectionQuery>
-    environment={getRelayEnvironment()}
-    query={graphql`
-      query CollectionQuery($collectionID: String!) {
-        collection: marketingCollection(slug: $collectionID) @principalField {
-          ...Collection_collection
-        }
-      }
-    `}
-    variables={{
-      collectionID,
-    }}
-    cacheConfig={{
-      // Bypass Relay cache on retries.
-      force: true,
-    }}
-    render={renderWithLoadProgress(CollectionContainer)}
-  />
-)
+export const CollectionScreen: React.FC<CollectionScreenProps> = ({ collectionID }) => {
+  return (
+    <Suspense fallback={<Spinner />}>
+      <CollectionQueryRenderer collectionID={collectionID} />
+    </Suspense>
+  )
+}
+
+const query = graphql`
+  query CollectionQuery($collectionID: String!) {
+    collection: marketingCollection(slug: $collectionID) @principalField {
+      ...Collection_collection
+    }
+  }
+`
+
+export const fragment = graphql`
+  fragment Collection_collection on MarketingCollection {
+    ...CollectionOverview_collection
+    id
+    slug
+    title
+    isDepartment
+    showFeaturedArtists
+    descriptionMarkdown
+    ...CollectionHeader_collection
+    ...CollectionArtworks_collection @arguments(input: { sort: "-decayed_merch" })
+    ...CollectionArtworksFilter_collection
+    ...FeaturedArtists_collection
+    ...CollectionHubsRails_collection
+    linkedCollections {
+      ...CollectionHubsRails_linkedCollections
+    }
+  }
+`

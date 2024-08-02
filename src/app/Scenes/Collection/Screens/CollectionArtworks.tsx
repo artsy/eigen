@@ -1,29 +1,49 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Spacer, Box, SimpleMessage, Text, Flex } from "@artsy/palette-mobile"
+import { Box, Flex, Tabs, useScreenDimensions, useSpace, Spinner } from "@artsy/palette-mobile"
+import { MasonryFlashListRef } from "@shopify/flash-list"
 import { CollectionArtworks_collection$data } from "__generated__/CollectionArtworks_collection.graphql"
+import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
+import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
-import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { HeaderArtworksFilterWithTotalArtworks } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
+import { extractNodes } from "app/utils/extractNodes"
 import { get } from "app/utils/get"
-import { pluralize } from "app/utils/pluralize"
+import {
+  ESTIMATED_MASONRY_ITEM_SIZE,
+  NUM_COLUMNS_MASONRY,
+  ON_END_REACHED_THRESHOLD_MASONRY,
+} from "app/utils/masonryHelpers"
 import { Schema } from "app/utils/track"
-import React, { useEffect, useRef } from "react"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import styled from "styled-components/native"
 
 interface CollectionArtworksProps {
   collection: CollectionArtworks_collection$data
   relay: RelayPaginationProp
-  scrollToTop: () => void
 }
 
-export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({
-  collection,
-  relay,
-  scrollToTop,
-}) => {
+export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collection, relay }) => {
+  const { width } = useScreenDimensions()
+  const space = useSpace()
+  const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
+
+  const tracking = useTracking()
+  const artworks = get(collection, (p) => p.collectionArtworks)
+  const artworksTotal = artworks?.counts?.total
+
+  const artworksList = useMemo(
+    () => extractNodes(collection.collectionArtworks),
+    [collection.collectionArtworks]
+  )
+  const gridRef = useRef<MasonryFlashListRef<(typeof artworksList)[0]>>(null)
+
+  const scrollToTop = () => {
+    gridRef?.current?.scrollToOffset({ offset: 0, animated: true })
+  }
+
   useArtworkFilters({
     relay,
     aggregations: collection?.collectionArtworks?.aggregations,
@@ -31,11 +51,19 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({
     type: "sort",
     onApply: () => scrollToTop(),
   })
+  const shouldDisplaySpinner = !!artworksList.length && !!relay.isLoading() && !!relay.hasMore()
 
-  const tracking = useTracking()
-  const artworks = get(collection, (p) => p.collectionArtworks)
-  const artworksTotal = artworks?.counts?.total
-  const initialArtworksTotal = useRef(artworksTotal)
+  const handleFilterToggle = () => {
+    setFilterArtworkModalVisible((prev) => {
+      return !prev
+    })
+  }
+
+  const loadMore = useCallback(() => {
+    if (relay.hasMore() && !relay.isLoading()) {
+      relay.loadMore(10)
+    }
+  }, [relay.hasMore(), relay.isLoading()])
 
   const setFiltersCountAction = ArtworksFiltersStore.useStoreActions(
     (action) => action.setFiltersCountAction
@@ -59,51 +87,77 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({
     })
   }
 
-  if (initialArtworksTotal.current === 0) {
-    return (
-      <Box my={1}>
-        <SimpleMessage>
-          There aren’t any works available in the collection at this time.
-        </SimpleMessage>
-      </Box>
-    )
-  }
+  return (
+    <>
+      <Tabs.Masonry
+        data={artworksList}
+        numColumns={NUM_COLUMNS_MASONRY}
+        estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
+        keyboardShouldPersistTaps="handled"
+        innerRef={gridRef}
+        ListEmptyComponent={
+          <Box mb="80px" pt={2}>
+            <FilteredArtworkGridZeroState
+              id={collection.id}
+              slug={collection.slug}
+              trackClear={trackClear}
+            />
+          </Box>
+        }
+        keyExtractor={(item) => item.id}
+        renderItem={({ item, index, columnIndex }) => {
+          const imgAspectRatio = item.image?.aspectRatio ?? 1
+          const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
+          const imgHeight = imgWidth / imgAspectRatio
 
-  if (artworksTotal === 0) {
-    return (
-      <Box mb="80px">
-        <Spacer y={4} />
-        <FilteredArtworkGridZeroState
-          id={collection.id}
-          slug={collection.slug}
-          trackClear={trackClear}
-        />
-      </Box>
-    )
-  }
-
-  return artworks ? (
-    <ArtworkGridWrapper>
-      <Flex mb={2}>
-        <Text variant="xs" weight="medium">
-          {artworksTotal} {pluralize("Artwork", artworksTotal)}:
-        </Text>
-      </Flex>
-      <InfiniteScrollArtworksGrid
-        connection={artworks}
-        loadMore={relay.loadMore}
-        hasMore={relay.hasMore}
-        contextScreenOwnerType={OwnerType.collection}
-        contextScreenOwnerId={collection.id}
-        contextScreenOwnerSlug={collection.slug}
+          return (
+            <Flex
+              pl={columnIndex === 0 ? 0 : 1}
+              pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
+              mt={2}
+            >
+              <ArtworkGridItem
+                itemIndex={index}
+                contextScreenOwnerType={OwnerType.artist}
+                contextScreenOwnerId={collection.id}
+                contextScreenOwnerSlug={collection.slug}
+                artwork={item}
+                height={imgHeight}
+              />
+            </Flex>
+          )
+        }}
+        onEndReached={loadMore}
+        onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
+        // need to pass zIndex: 1 here in order for the SubTabBar to
+        // be visible above list content
+        ListHeaderComponentStyle={{ zIndex: 1 }}
+        ListHeaderComponent={
+          <Tabs.SubTabBar>
+            <HeaderArtworksFilterWithTotalArtworks onPress={handleFilterToggle} />
+          </Tabs.SubTabBar>
+        }
+        ListFooterComponent={
+          !!shouldDisplaySpinner ? (
+            <Flex my={4} flexDirection="row" justifyContent="center">
+              <Spinner />
+            </Flex>
+          ) : null
+        }
       />
-    </ArtworkGridWrapper>
-  ) : null
+      <ArtworkFilterNavigator
+        id={collection.id}
+        slug={collection.slug}
+        visible={!!isFilterArtworksModalVisible}
+        name={collection.title ?? ""}
+        exitModal={handleFilterToggle}
+        closeModal={handleFilterToggle}
+        mode={FilterModalMode.ArtistArtworks}
+        shouldShowCreateAlertButton
+      />
+    </>
+  )
 }
-
-const ArtworkGridWrapper = styled(Box)`
-  padding-bottom: 50px;
-`
 
 export const CollectionArtworksFragmentContainer = createPaginationContainer(
   CollectionArtworks,
@@ -117,6 +171,7 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
       ) {
         slug
         id
+        title
         collectionArtworks: artworksConnection(
           first: $count
           after: $cursor
@@ -148,9 +203,13 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
           edges {
             node {
               id
+              slug
+              image(includeAll: false) {
+                aspectRatio
+              }
+              ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
             }
           }
-          ...InfiniteScrollArtworksGrid_connection
         }
       }
     `,
