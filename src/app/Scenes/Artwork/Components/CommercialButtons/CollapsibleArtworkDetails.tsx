@@ -1,7 +1,6 @@
-import { Collapse, Spacer, Flex, Box, Text, Separator, Join } from "@artsy/palette-mobile"
+import { Collapse, Spacer, Flex, Box, Text, Separator, Join, Image } from "@artsy/palette-mobile"
 import { CollapsibleArtworkDetails_artwork$data } from "__generated__/CollapsibleArtworkDetails_artwork.graphql"
 import ChevronIcon from "app/Components/Icons/ChevronIcon"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { ArtworkDetailsRow } from "app/Scenes/Artwork/Components/ArtworkDetailsRow"
 import React, { useState } from "react"
 import { LayoutAnimation, ScrollView, TouchableOpacity } from "react-native"
@@ -16,7 +15,7 @@ export interface CollapsibleArtworkDetailsProps {
 const artworkDetailItems = (artwork: CollapsibleArtworkDetails_artwork$data) => {
   const items = [
     { title: "Price", value: artwork.saleMessage },
-    { title: "Medium", value: artwork.category },
+    { title: "Medium", value: artwork.mediumType?.name },
     { title: "Manufacturer", value: artwork.manufacturer },
     { title: "Publisher", value: artwork.publisher },
     { title: "Materials", value: artwork.medium },
@@ -26,7 +25,7 @@ const artworkDetailItems = (artwork: CollapsibleArtworkDetails_artwork$data) => 
       value: [artwork.dimensions?.in, artwork.dimensions?.cm].filter((d) => d).join("\n"),
     },
     { title: "Signature", value: artwork.signatureInfo?.details },
-    { title: "Frame", value: artwork.framed?.details },
+    { title: "Frame", value: artwork.isFramed ? "Included" : "Not included" },
     { title: "Certificate of Authenticity", value: artwork.certificateOfAuthenticity?.details },
     { title: "Condition", value: artwork.conditionDescription?.details },
   ]
@@ -50,13 +49,17 @@ export const CollapsibleArtworkDetails: React.FC<CollapsibleArtworkDetailsProps>
 
   return artwork ? (
     <>
-      <TouchableOpacity onPress={() => toggleExpanded()} testID="toggle-artwork-details-button">
+      <TouchableOpacity
+        accessibilityLabel={isExpanded ? "Hide artwork details" : "Show artwork details"}
+        onPress={() => toggleExpanded()}
+      >
         <Flex flexDirection="row" padding={2} alignItems="center">
           {!!artwork.image && (
-            <OpaqueImageView
+            <Image
+              accessibilityLabel={`Image of ${artwork.title}`}
               height={40}
               aspectRatio={(artwork.image.width || 1) / (artwork.image.height || 1)}
-              imageURL={artwork.image.url}
+              src={artwork.image?.url || ""}
               width={40}
               style={{ alignSelf: "center" }}
             />
@@ -106,7 +109,9 @@ export const CollapsibleArtworkDetailsFragmentContainer = createFragmentContaine
         attributionClass {
           name
         }
-        category
+        mediumType {
+          name
+        }
         manufacturer
         publisher
         medium
@@ -116,9 +121,7 @@ export const CollapsibleArtworkDetailsFragmentContainer = createFragmentContaine
         certificateOfAuthenticity {
           details
         }
-        framed {
-          details
-        }
+        isFramed
         dimensions {
           in
           cm

@@ -1,4 +1,5 @@
 import { Spacer, Flex, Text, EntityHeader } from "@artsy/palette-mobile"
+import { InquiryModal_me$key } from "__generated__/InquiryModal_me.graphql"
 import { PartnerCard_artwork$data } from "__generated__/PartnerCard_artwork.graphql"
 import { ShortContactGallery } from "app/Scenes/Artwork/Components/ShortContactGallery"
 import { navigateToPartner } from "app/system/navigation/navigate"
@@ -11,6 +12,7 @@ import { Questions } from "./Questions"
 
 interface PartnerCardProps {
   artwork: PartnerCard_artwork$data
+  me: InquiryModal_me$key
   relay: RelayProp
   shouldShowQuestions?: boolean
   showShortContactGallery?: boolean
@@ -18,6 +20,7 @@ interface PartnerCardProps {
 
 export const PartnerCard: React.FC<PartnerCardProps> = ({
   artwork,
+  me,
   shouldShowQuestions,
   showShortContactGallery,
 }) => {
@@ -53,6 +56,7 @@ export const PartnerCard: React.FC<PartnerCardProps> = ({
     return (
       <ShortContactGallery
         artwork={artwork}
+        me={me}
         showPartnerType={showPartnerType}
         partnerName={partner.name}
         partnerHref={partner.href ?? undefined}
@@ -84,7 +88,7 @@ export const PartnerCard: React.FC<PartnerCardProps> = ({
         />
       </TouchableWithoutFeedback>
       <Spacer y={2} />
-      {!!shouldShowQuestions && <Questions artwork={artwork} />}
+      {!!shouldShowQuestions && <Questions artwork={artwork} me={me} />}
     </Flex>
   )
 }

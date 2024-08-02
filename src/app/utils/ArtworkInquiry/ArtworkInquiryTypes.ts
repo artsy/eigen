@@ -2,7 +2,14 @@ import { InquiryQuestionInput } from "__generated__/useSubmitInquiryRequestMutat
 import { LocationWithDetails } from "app/utils/googleMaps"
 import { Dispatch } from "react"
 
-export type ArtworkInquiryActions = SelectLocation | SelectInquiryQuestion | SetMessage | ResetForm
+export type ArtworkInquiryActions =
+  | SelectLocation
+  | SelectInquiryQuestion
+  | ResetForm
+  | SetInquiryModalVisible
+  | SetSuccessNotificationVisible
+  | SetCollectionPromptVisible
+  | SetProfilePromptVisible
 
 export interface ArtworkInquiryContextProps {
   state: ArtworkInquiryContextState
@@ -12,10 +19,11 @@ export interface ArtworkInquiryContextProps {
 export interface ArtworkInquiryContextState {
   readonly shippingLocation: LocationWithDetails | null
   readonly inquiryQuestions: InquiryQuestionInput[]
-  readonly message: string | null
+  readonly inquiryModalVisible: boolean
+  readonly successNotificationVisible: boolean
+  readonly collectionPromptVisible: boolean
+  readonly profilePromptVisible: boolean
 }
-
-export type InquiryTypes = "Inquire on price" | "Contact Gallery" | "Inquire to purchase"
 
 interface ResetForm {
   type: "resetForm"
@@ -27,14 +35,29 @@ interface SelectLocation {
   payload: LocationWithDetails
 }
 
-interface SetMessage {
-  type: "setMessage"
-  payload: string
-}
-
 interface SelectInquiryQuestion {
   type: "selectInquiryQuestion"
   payload: InquiryQuestionInput & { isChecked: boolean }
+}
+
+interface SetInquiryModalVisible {
+  type: "setInquiryModalVisible"
+  payload: boolean
+}
+
+interface SetSuccessNotificationVisible {
+  type: "setSuccessNotificationVisible"
+  payload: boolean
+}
+
+interface SetCollectionPromptVisible {
+  type: "setCollectionPromptVisible"
+  payload: boolean
+}
+
+interface SetProfilePromptVisible {
+  type: "setProfilePromptVisible"
+  payload: boolean
 }
 
 /**

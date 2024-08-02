@@ -37,7 +37,7 @@ describe("ArtworkStickyBottomContent", () => {
           ...ArtworkStickyBottomContent_artwork
         }
         me {
-          ...ArtworkStickyBottomContent_me
+          ...ArtworkCommercialButtons_me
           partnerOffersConnection(artworkID: "artworkID", first: 1) {
             edges {
               node {

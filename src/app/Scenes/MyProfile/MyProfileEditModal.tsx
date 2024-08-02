@@ -1,15 +1,6 @@
 import { ActionType, ContextModule, EditedUserProfile, OwnerType } from "@artsy/cohesion"
-import {
-  Box,
-  Button,
-  Skeleton,
-  SkeletonBox,
-  SkeletonText,
-  Spacer,
-  Text,
-} from "@artsy/palette-mobile"
+import { Box, Button, Text } from "@artsy/palette-mobile"
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
-import { MyProfileEditModalQuery } from "__generated__/MyProfileEditModalQuery.graphql"
 import { MyProfileEditModal_me$key } from "__generated__/MyProfileEditModal_me.graphql"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { buildLocationDisplay } from "app/Components/LocationAutocomplete"
@@ -19,83 +10,40 @@ import {
   userProfileYupSchema,
 } from "app/Scenes/MyProfile/Components/UserProfileFields"
 import { useUpdateUserProfileFields } from "app/Scenes/MyProfile/useUpdateUserProfileFields"
-import { withSuspense } from "app/utils/hooks/withSuspense"
 import { FormikProvider, useFormik } from "formik"
 import { useState } from "react"
-import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
-interface SharedProps {
+interface MyProfileEditModalProps {
+  me: MyProfileEditModal_me$key
   message: string
   onClose: () => void
-}
-
-interface MyProfileEditModalProps extends SharedProps {
   visible: boolean
 }
 
-interface MyProfileEditModalContentProps extends SharedProps {
-  me: MyProfileEditModal_me$key
-}
-
 export const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
+  me,
   message,
   onClose,
   visible,
 }) => {
   /**
-   * TODO: On Android
+   * TODO: I have observed the following issues with this modal in the Android emulator:
    *
-   * 1. The modal glitches during autocompletion
-   * 2. The submit button doesn't work after selecting a location
-   *   - This also happens on the settings screen (on the main branch)
-   * 3. The primary location field title is behind the outline
-   *   - This does not happen in the settings screen (on the feature branch)
+   * 1. The modal flickers during autocompletion
+   * 2. The submit button doesn't respond after selecting a new location
+   * 3. The title of the location field is rendered behind its outline
+   * 4. The modal overlay doesn't disappear after closing the modal
    */
 
-  return (
-    <AutomountedBottomSheetModal visible={visible} enableDynamicSizing>
-      <BottomSheetScrollView keyboardShouldPersistTaps="always">
-        <MyProfileEditModalWithSuspense onClose={onClose} message={message} />
-      </BottomSheetScrollView>
-    </AutomountedBottomSheetModal>
-  )
-}
-
-const MyProfileEditModalWithSuspense: React.FC<SharedProps> = withSuspense(
-  ({ message, onClose }) => {
-    const data = useLazyLoadQuery<MyProfileEditModalQuery>(
-      graphql`
-        query MyProfileEditModalQuery {
-          me @required(action: NONE) {
-            ...MyProfileEditModal_me
-          }
-        }
-      `,
-      {}
-    )
-
-    if (!data?.me) {
-      return null
-    }
-
-    return <MyProfileEditModalContent me={data.me} onClose={onClose} message={message} />
-  },
-  () => <MyProfileEditModalSkeleton />
-)
-
-const MyProfileEditModalContent: React.FC<MyProfileEditModalContentProps> = ({
-  me,
-  message,
-  onClose,
-}) => {
   const data = useFragment(meFragmentQuery, me)
 
   const [loading, setLoading] = useState<boolean>(false)
+
   const { trackEvent } = useTracking()
 
-  // TODO: what am I suposed to do with inProgress?
-  const [commit, _inProgress] = useUpdateUserProfileFields()
+  const [commit] = useUpdateUserProfileFields()
 
   const formikBag = useFormik<UserProfileFormikSchema>({
     enableReinitialize: true,
@@ -125,6 +73,7 @@ const MyProfileEditModalContent: React.FC<MyProfileEditModalContentProps> = ({
             },
             profession: values.profession,
             otherRelevantPositions: values.otherRelevantPositions,
+            promptedForUpdate: true,
           },
         },
         onCompleted: () => {
@@ -132,9 +81,8 @@ const MyProfileEditModalContent: React.FC<MyProfileEditModalContentProps> = ({
           setLoading(false)
           onClose()
         },
-        onError: () => {
-          // TODO: display an error message to user
-          console.log("Error updating user profile")
+        onError: (error) => {
+          console.error("[MyProfileEditModal] Error updating user profile", error)
           setLoading(false)
         },
       })
@@ -143,49 +91,52 @@ const MyProfileEditModalContent: React.FC<MyProfileEditModalContentProps> = ({
   })
 
   const { handleSubmit, isValid } = formikBag
-  return (
-    <Box p={2} testID="my-profile-edit-modal-content">
-      <Text>{message}</Text>
-      <FormikProvider value={formikBag}>
-        <UserProfileFields bottomSheetInput />
-        <Button block mt={2} onPress={handleSubmit} disabled={!isValid} loading={loading}>
-          Save and Continue
-        </Button>
-      </FormikProvider>
-    </Box>
-  )
-}
 
-const MyProfileEditModalSkeleton = () => {
+  const handleDismiss = () => {
+    commit({
+      variables: {
+        input: {
+          promptedForUpdate: true,
+        },
+      },
+      onCompleted: () => {
+        onClose()
+      },
+      onError: (error) => {
+        console.error("[MyProfileEditModal] Error updating last prompt timestamp", error)
+      },
+    })
+  }
+
   return (
-    <Skeleton>
-      <Box p={2}>
-        <Spacer y={0.5} />
-        <SkeletonText>
-          Tell us a few more details about yourself to complete your profile.
-        </SkeletonText>
-        <Spacer y={2} />
-        <SkeletonBox width="100%" height={60} borderRadius={4}>
-          {/* Full name */}
-        </SkeletonBox>
-        <Spacer y={4} />
-        <SkeletonBox width="100%" height={60} borderRadius={4}>
-          {/* Primary location */}
-        </SkeletonBox>
-        <Spacer y={4} />
-        <SkeletonBox width="100%" height={60} borderRadius={4}>
-          {/* Profession */}
-        </SkeletonBox>
-        <Spacer y={4} />
-        <SkeletonBox width="100%" height={60} borderRadius={4}>
-          {/* Other Relevant Positions */}
-        </SkeletonBox>
-        <Spacer y={2} />
-        <SkeletonBox width="100%" height={50} borderRadius={50}>
-          {/* Save and Continue */}
-        </SkeletonBox>
-      </Box>
-    </Skeleton>
+    <AutomountedBottomSheetModal
+      visible={visible}
+      onDismiss={handleDismiss}
+      enableDynamicSizing
+      style={{
+        // this allows us to test assertions about the visibility of this modal
+        display: visible ? "flex" : "none",
+      }}
+    >
+      <BottomSheetScrollView keyboardShouldPersistTaps="always">
+        <Box p={2}>
+          <Text>{message}</Text>
+          <FormikProvider value={formikBag}>
+            <UserProfileFields bottomSheetInput />
+            <Button
+              block
+              mt={2}
+              mb={4}
+              onPress={handleSubmit}
+              disabled={!isValid}
+              loading={loading}
+            >
+              Save and Continue
+            </Button>
+          </FormikProvider>
+        </Box>
+      </BottomSheetScrollView>
+    </AutomountedBottomSheetModal>
   )
 }
 
