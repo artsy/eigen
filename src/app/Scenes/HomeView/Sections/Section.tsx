@@ -1,11 +1,11 @@
-import { HomeViewQuery$data } from "__generated__/HomeViewQuery.graphql"
+import { HomeViewSectionsConnection_viewer$data } from "__generated__/HomeViewSectionsConnection_viewer.graphql"
 import { ArtworksRailHomeViewSection } from "app/Scenes/HomeView/Sections/ArtworksRailHomeViewSection"
 import { GenericHomeViewSection } from "app/Scenes/HomeView/Sections/GenericHomeViewSection"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { Text } from "react-native-svg"
 
 type SectionsConnection = NonNullable<
-  NonNullable<NonNullable<HomeViewQuery$data>["homeView"]>["sectionsConnection"]
+  HomeViewSectionsConnection_viewer$data["homeView"]["sectionsConnection"]
 >
 
 type SectionT = ExtractNodeType<SectionsConnection>
