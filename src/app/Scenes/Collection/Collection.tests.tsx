@@ -1,9 +1,10 @@
+import { screen } from "@testing-library/react-native"
 import { CollectionTestsQuery } from "__generated__/CollectionTestsQuery.graphql"
+import { CollectionContent } from "app/Scenes/Collection/Collection"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { CollectionContainer } from "./Collection"
 
 describe("Collection", () => {
   let environment: ReturnType<typeof createMockEnvironment>
@@ -20,8 +21,7 @@ describe("Collection", () => {
       variables={{}}
       render={({ props, error }) => {
         if (props) {
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          return <CollectionContainer collection={props.marketingCollection} />
+          return <CollectionContent collection={props.marketingCollection!} />
         } else if (error) {
           console.log(error)
         }
@@ -38,7 +38,7 @@ describe("Collection", () => {
   })
 
   it("should show the Featured artists section when showFeaturedArtists is true", () => {
-    const { queryByText } = renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(environment, {
       MarketingCollection: () => ({
@@ -50,11 +50,11 @@ describe("Collection", () => {
       }),
     })
 
-    expect(queryByText("Featured Artists")).toBeTruthy()
+    expect(screen.getByText("Featured Artists")).toBeTruthy()
   })
 
   it("should hide the Featured artists section when showFeaturedArtists is false", () => {
-    const { queryByText } = renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(environment, {
       MarketingCollection: () => ({
@@ -67,7 +67,7 @@ describe("Collection", () => {
       }),
     })
 
-    expect(queryByText("Featured Artists")).toBeFalsy()
+    expect(screen.queryByText("Featured Artists")).toBeFalsy()
   })
 })
 
