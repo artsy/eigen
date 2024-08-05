@@ -351,7 +351,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                     fontWeight="bold"
                   >
                     {saleMessage}
-
                     {!!displayLimitedTimeOfferSignal && (
                       <Text
                         lineHeight="20px"
@@ -360,7 +359,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                         color="blue100"
                         numberOfLines={1}
                       >
-                        {" "}
+                        {"  "}
                         Exp. {partnerOfferEndAt}
                       </Text>
                     )}

@@ -419,7 +419,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                         color="blue100"
                         {...saleInfoTextStyle}
                       >
-                        {" "}
+                        {"  "}
                         Exp. {partnerOfferEndAt}
                       </Text>
                     )}
