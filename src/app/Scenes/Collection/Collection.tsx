@@ -9,7 +9,7 @@ import { CollectionArtworksFragmentContainer as CollectionArtworks } from "app/S
 import { CollectionHeader } from "app/Scenes/Collection/Screens/CollectionHeader"
 import { goBack } from "app/system/navigation/navigate"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { Suspense } from "react"
+import { Suspense, useCallback } from "react"
 import { TouchableOpacity } from "react-native"
 import RNShare from "react-native-share"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -26,14 +26,19 @@ export const CollectionContent: React.FC<CollectionProps> = ({ collection }) => 
   const data = useFragment(fragment, collection)
   const { show: showToast } = useToast()
 
-  const shouldRenderOverviewTab =
-    !!data?.descriptionMarkdown && !!data?.showFeaturedArtists && !!data?.linkedCollections
+  const renderBelowTheHeaderComponent = useCallback(
+    () => <CollectionHeader collection={data} />,
+    [data]
+  )
 
   if (!data) {
     return null
   }
 
-  const { slug, id, title } = data
+  const { slug, id, title, linkedCollections, showFeaturedArtists, descriptionMarkdown } = data
+
+  const shouldRenderOverviewTab =
+    !!descriptionMarkdown && !!showFeaturedArtists && !!linkedCollections
 
   const trackingInfo: Schema.PageView = {
     context_screen: Schema.PageNames.Collection,
@@ -67,7 +72,7 @@ export const CollectionContent: React.FC<CollectionProps> = ({ collection }) => 
           initialTabName={shouldRenderOverviewTab ? "Overview" : "Artworks"}
           title={`${title}`}
           showLargeHeaderText={false}
-          BelowTitleHeaderComponent={() => <CollectionHeader collection={data} />}
+          BelowTitleHeaderComponent={renderBelowTheHeaderComponent}
           headerProps={{
             onBack: goBack,
             rightElements: (
