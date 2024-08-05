@@ -106,35 +106,33 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
   if (currentStep === "CompleteYourSubmission") {
     return (
       <Wrapper>
-        <Flex px={2}>
-          <Spacer y={1} />
-          <Button
-            block
-            onPress={() => {
-              trackTappedSubmitAnotherWork(values.submissionId)
-              dismissModal(() => {
-                navigate("/sell/submissions/new")
-              })
-            }}
-          >
-            Submit Another Work
-          </Button>
-          <Spacer y={2} />
-          <Button
-            block
-            onPress={() => {
-              trackTappedViewArtworkInMyCollection(values.submissionId)
-              switchTab("profile")
-              dismissModal()
-              requestAnimationFrame(() => {
-                popToRoot()
-              })
-            }}
-            variant="outline"
-          >
-            View Artwork In My Collection
-          </Button>
-        </Flex>
+        <Spacer y={1} />
+        <Button
+          block
+          onPress={() => {
+            trackTappedSubmitAnotherWork(values.submissionId)
+            dismissModal(() => {
+              navigate("/sell/submissions/new")
+            })
+          }}
+        >
+          Submit Another Work
+        </Button>
+        <Spacer y={2} />
+        <Button
+          block
+          onPress={() => {
+            trackTappedViewArtworkInMyCollection(values.submissionId)
+            switchTab("profile")
+            dismissModal()
+            requestAnimationFrame(() => {
+              popToRoot()
+            })
+          }}
+          variant="outline"
+        >
+          View Artwork In My Collection
+        </Button>
       </Wrapper>
     )
   }

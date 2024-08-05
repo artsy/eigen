@@ -4,6 +4,7 @@ import { MyCollectionArtworkGridItem_artwork$data } from "__generated__/MyCollec
 import { DEFAULT_SECTION_MARGIN } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import HighDemandIcon from "app/Components/Icons/HighDemandIcon"
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
+import { ConsignmentSubmissionStatusFragmentContainer } from "app/Scenes/MyCollection/Components/ConsignmentSubmissionStatus"
 import { MyCollectionImageView } from "app/Scenes/MyCollection/Components/MyCollectionImageView"
 import { GlobalStore } from "app/store/GlobalStore"
 import { PROGRESSIVE_ONBOARDING_MY_COLLECTION_SELL_THIS_WORK } from "app/store/ProgressiveOnboardingModel"
@@ -134,6 +135,8 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
                 {date ? `, ${date}` : ""}
               </Text>
             ) : null}
+
+            <ConsignmentSubmissionStatusFragmentContainer artwork={artwork} />
           </Box>
         </View>
       </TouchableHighlight>
@@ -179,6 +182,7 @@ export const MyCollectionArtworkGridItemFragmentContainer = createFragmentContai
         marketPriceInsights {
           demandRank
         }
+        ...ConsignmentSubmissionStatus_artwork
       }
     `,
   }
