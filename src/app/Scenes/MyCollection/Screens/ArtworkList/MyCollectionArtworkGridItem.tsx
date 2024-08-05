@@ -5,6 +5,7 @@ import { DEFAULT_SECTION_MARGIN } from "app/Components/ArtworkGrids/InfiniteScro
 import HighDemandIcon from "app/Components/Icons/HighDemandIcon"
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { MyCollectionImageView } from "app/Scenes/MyCollection/Components/MyCollectionImageView"
+import { SubmissionStatus } from "app/Scenes/MyCollection/Components/SubmissionStatus"
 import { GlobalStore } from "app/store/GlobalStore"
 import { PROGRESSIVE_ONBOARDING_MY_COLLECTION_SELL_THIS_WORK } from "app/store/ProgressiveOnboardingModel"
 import { navigate } from "app/system/navigation/navigate"
@@ -30,6 +31,9 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
   const displayImage = artwork.images?.find((i: any) => i?.isDefault) || artwork.images?.[0]
   const { width } = useScreenDimensions()
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
+  const enableSubmitArtworkTier2Information = useFeatureFlag(
+    "AREnableSubmitArtworkTier2Information"
+  )
 
   const localImage = useLocalImage(displayImage)
 
@@ -44,6 +48,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
     image,
     date,
     submissionId,
+    consignmentSubmission,
   } = artwork
 
   // consistent with how sections are derived in InfiniteScrollArtworksGrid
@@ -54,7 +59,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
   const isP1Artist = artwork.artist?.targetSupply?.isP1
   const isHighDemand = Number((artwork.marketPriceInsights?.demandRank || 0) * 10) >= 9
 
-  const showHighDemandIcon = isP1Artist && isHighDemand
+  const showHighDemandIcon = isP1Artist && isHighDemand && !consignmentSubmission?.internalID
 
   const { dismiss } = GlobalStore.actions.progressiveOnboarding
   const { isActive, clearActivePopover } = useSetActivePopover(!!displayToolTip)
@@ -114,12 +119,14 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
           <Box maxWidth={width} mt={1} style={{ flex: 1 }}>
             <Text lineHeight="18px" weight="regular" variant="xs" numberOfLines={2}>
               {artistNames}
+
               {!!showHighDemandIcon && (
                 <Flex testID="test-high-demand-icon">
                   <HighDemandIcon style={{ marginLeft: 2, marginBottom: -2 }} />
                 </Flex>
               )}
             </Text>
+
             {!!title ? (
               <Text
                 lineHeight="18px"
@@ -134,6 +141,8 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
                 {date ? `, ${date}` : ""}
               </Text>
             ) : null}
+
+            {!!enableSubmitArtworkTier2Information && <SubmissionStatus artwork={artwork} />}
           </Box>
         </View>
       </TouchableHighlight>
@@ -179,6 +188,10 @@ export const MyCollectionArtworkGridItemFragmentContainer = createFragmentContai
         marketPriceInsights {
           demandRank
         }
+        consignmentSubmission {
+          internalID
+        }
+        ...SubmissionStatus_artwork
       }
     `,
   }
