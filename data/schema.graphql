@@ -1820,6 +1820,11 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
   years: String
 }
 
+enum ArtistAlertsSort {
+  SORTABLE_ID_ASC
+  SORTABLE_ID_DESC
+}
+
 type ArtistArtworkGrid implements ArtworkContextGrid {
   artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
   ctaHref: String
@@ -2255,6 +2260,27 @@ type ArtistsRailHomeViewSection implements GenericHomeViewSection & Node {
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+}
+
+# A connection to a list of items.
+type ArtistsWithAlertCountsConnection {
+  # A list of edges.
+  edges: [ArtistsWithAlertCountsEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type ArtistsWithAlertCountsEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: Artist
+  totalAlertCount: Int
 }
 
 type Artwork implements Node & Searchable & Sellable {
@@ -13901,6 +13927,15 @@ type Partner implements Node {
     query: String!
     size: Int = 10
   ): ArtistConnection
+  artistsWithAlertCountsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+    size: Int
+    sort: ArtistAlertsSort
+  ): ArtistsWithAlertCountsConnection
 
   # A connection of artworks from a Partner.
   artworksConnection(
