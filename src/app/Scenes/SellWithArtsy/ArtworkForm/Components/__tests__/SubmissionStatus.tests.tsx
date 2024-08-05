@@ -1,23 +1,23 @@
 import { screen } from "@testing-library/react-native"
-import { ConsignmentSubmissionStatusTestQuery } from "__generated__/ConsignmentSubmissionStatusTestQuery.graphql"
-import { ConsignmentSubmissionStatusFragmentContainer } from "app/Scenes/MyCollection/Components/ConsignmentSubmissionStatus"
+import { SubmissionStatusTestQuery } from "__generated__/SubmissionStatusTestQuery.graphql"
+import { SubmissionStatus } from "app/Scenes/MyCollection/Components/SubmissionStatus"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
 jest.unmock("react-relay")
 
-describe("ConsignmentSubmissionStatus", () => {
-  const { renderWithRelay } = setupTestWrapper<ConsignmentSubmissionStatusTestQuery>({
+describe("SubmissionStatus", () => {
+  const { renderWithRelay } = setupTestWrapper<SubmissionStatusTestQuery>({
     Component: (props) => {
       if (props.artwork) {
-        return <ConsignmentSubmissionStatusFragmentContainer {...(props as any)} />
+        return <SubmissionStatus {...(props as any)} />
       }
       return null
     },
     query: graphql`
-      query ConsignmentSubmissionStatusTestQuery @relay_test_operation {
+      query SubmissionStatusTestQuery @relay_test_operation {
         artwork(id: "artwork-id") {
-          ...ConsignmentSubmissionStatus_artwork
+          ...SubmissionStatus_artwork
         }
       }
     `,

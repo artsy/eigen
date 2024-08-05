@@ -4,8 +4,8 @@ import { MyCollectionArtworkGridItem_artwork$data } from "__generated__/MyCollec
 import { DEFAULT_SECTION_MARGIN } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import HighDemandIcon from "app/Components/Icons/HighDemandIcon"
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
-import { ConsignmentSubmissionStatusFragmentContainer } from "app/Scenes/MyCollection/Components/ConsignmentSubmissionStatus"
 import { MyCollectionImageView } from "app/Scenes/MyCollection/Components/MyCollectionImageView"
+import { SubmissionStatus } from "app/Scenes/MyCollection/Components/SubmissionStatus"
 import { GlobalStore } from "app/store/GlobalStore"
 import { PROGRESSIVE_ONBOARDING_MY_COLLECTION_SELL_THIS_WORK } from "app/store/ProgressiveOnboardingModel"
 import { navigate } from "app/system/navigation/navigate"
@@ -142,9 +142,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
               </Text>
             ) : null}
 
-            {!!enableSubmitArtworkTier2Information && (
-              <ConsignmentSubmissionStatusFragmentContainer artwork={artwork} />
-            )}
+            {!!enableSubmitArtworkTier2Information && <SubmissionStatus artwork={artwork} />}
           </Box>
         </View>
       </TouchableHighlight>
@@ -193,7 +191,7 @@ export const MyCollectionArtworkGridItemFragmentContainer = createFragmentContai
         consignmentSubmission {
           internalID
         }
-        ...ConsignmentSubmissionStatus_artwork
+        ...SubmissionStatus_artwork
       }
     `,
   }
