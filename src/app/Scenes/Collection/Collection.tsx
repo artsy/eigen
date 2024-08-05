@@ -1,4 +1,15 @@
-import { ShareIcon, Spinner, Tabs } from "@artsy/palette-mobile"
+import {
+  Flex,
+  Screen,
+  Separator,
+  ShareIcon,
+  Skeleton,
+  SkeletonBox,
+  SkeletonText,
+  Spacer,
+  Tabs,
+  useScreenDimensions,
+} from "@artsy/palette-mobile"
 import { CollectionQuery } from "__generated__/CollectionQuery.graphql"
 import { Collection_collection$key } from "__generated__/Collection_collection.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -8,6 +19,7 @@ import { CollectionOverview } from "app/Scenes/Collection/CollectionOverview"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "app/Scenes/Collection/Screens/CollectionArtworks"
 import { CollectionHeader } from "app/Scenes/Collection/Screens/CollectionHeader"
 import { goBack } from "app/system/navigation/navigate"
+import { PlaceholderGrid } from "app/utils/placeholderGrid"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { Suspense, useCallback } from "react"
 import { TouchableOpacity } from "react-native"
@@ -116,9 +128,40 @@ const CollectionQueryRenderer: React.FC<CollectionScreenProps> = ({ collectionID
 
 export const CollectionScreen: React.FC<CollectionScreenProps> = ({ collectionID }) => {
   return (
-    <Suspense fallback={<Spinner />}>
+    <Suspense fallback={<CollectionPlaceholder />}>
       <CollectionQueryRenderer collectionID={collectionID} />
     </Suspense>
+  )
+}
+
+const CollectionPlaceholder: React.FC = () => {
+  const { width } = useScreenDimensions()
+
+  return (
+    <Screen>
+      <Screen.Header rightElements={<ShareIcon width={23} height={23} />} />
+      <Screen.Body fullwidth>
+        <Skeleton>
+          <SkeletonBox width={width} height={250} />
+          <Spacer y={2} />
+          <Flex px={2}>
+            <SkeletonText variant="lg">Collection Name</SkeletonText>
+          </Flex>
+
+          <Spacer y={4} />
+
+          {/* Tabs */}
+          <Flex justifyContent="space-around" flexDirection="row" px={2}>
+            <SkeletonText variant="xs">Overview</SkeletonText>
+            <SkeletonText variant="xs">Artworks</SkeletonText>
+          </Flex>
+        </Skeleton>
+
+        <Separator mt={1} mb={4} />
+
+        <PlaceholderGrid />
+      </Screen.Body>
+    </Screen>
   )
 }
 

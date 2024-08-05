@@ -59,7 +59,6 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
     })
   }
 
-  // TODO: check if removing this will affect anything
   const loadMore = () => {
     if (relay.hasMore() && !relay.isLoading()) {
       relay.loadMore(10)
