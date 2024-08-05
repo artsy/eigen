@@ -59,11 +59,12 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
     })
   }
 
-  const loadMore = useCallback(() => {
+  // TODO: check if removing this will affect anything
+  const loadMore = () => {
     if (relay.hasMore() && !relay.isLoading()) {
       relay.loadMore(10)
     }
-  }, [relay.hasMore(), relay.isLoading()])
+  }
 
   const setFiltersCountAction = ArtworksFiltersStore.useStoreActions(
     (action) => action.setFiltersCountAction
