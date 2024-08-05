@@ -1,12 +1,13 @@
 import {
+  Box,
   Flex,
   HeartFillIcon,
   HeartIcon,
-  Text,
-  useColor,
-  Touchable,
-  useScreenDimensions,
   Image,
+  Text,
+  Touchable,
+  useColor,
+  useScreenDimensions,
 } from "@artsy/palette-mobile"
 import {
   ArtworkRailCard_artwork$data,
@@ -17,7 +18,9 @@ import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "app/Compone
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
+import { formattedTimeLeft } from "app/Scenes/Activity/utils/formattedTimeLeft"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
+import { getTimer } from "app/utils/getTimer"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
@@ -92,9 +95,29 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const artwork = useFragment(artworkFragment, restProps.artwork)
   const { width: screenWidth } = useScreenDimensions()
 
-  const { artistNames, date, image, partner, title, sale, saleArtwork, isUnlisted } = artwork
+  const AREnablePartnerOfferSignals = useFeatureFlag("AREnablePartnerOfferSignals")
 
-  const saleMessage = defaultSaleMessageOrBidInfo({ artwork, isSmallTile: true })
+  const {
+    artistNames,
+    date,
+    image,
+    partner,
+    title,
+    sale,
+    saleArtwork,
+    isUnlisted,
+    collectorSignals,
+  } = artwork
+
+  const saleMessage = defaultSaleMessageOrBidInfo({
+    artwork,
+    isSmallTile: true,
+    collectorSignals: AREnablePartnerOfferSignals ? collectorSignals : null,
+  })
+
+  const partnerOfferEndAt = collectorSignals?.partnerOffer?.endAt
+    ? formattedTimeLeft(getTimer(collectorSignals.partnerOffer.endAt).time).timerCopy
+    : ""
 
   const extendedBiddingEndAt = saleArtwork?.extendedBiddingEndAt
   const lotEndAt = saleArtwork?.endAt
@@ -199,6 +222,9 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const displayForRecentlySoldArtwork =
     !!isRecentlySoldArtwork && (size === "large" || size === "extraLarge")
 
+  const displayLimitedTimeOfferSignal =
+    AREnablePartnerOfferSignals && collectorSignals?.partnerOffer?.isAvailable && !sale?.isAuction
+
   return (
     <AnalyticsContextProvider
       contextScreenOwnerId={contextScreenOwnerId}
@@ -255,6 +281,13 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
               justifyContent="space-between"
             >
               <Flex flex={1} backgroundColor={backgroundColor}>
+                {!!displayLimitedTimeOfferSignal && (
+                  <Box backgroundColor="blue10" px={0.5} alignSelf="flex-start" borderRadius={3}>
+                    <Text lineHeight="20px" variant="xs" color="blue100">
+                      Limited-Time Offer
+                    </Text>
+                  </Box>
+                )}
                 {!!lotLabel && (
                   <Text lineHeight="20px" color={secondaryTextColor} numberOfLines={1}>
                     Lot {lotLabel}
@@ -318,6 +351,18 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                     fontWeight="bold"
                   >
                     {saleMessage}
+                    {!!displayLimitedTimeOfferSignal && (
+                      <Text
+                        lineHeight="20px"
+                        variant="xs"
+                        fontWeight="normal"
+                        color="blue100"
+                        numberOfLines={1}
+                      >
+                        {"  "}
+                        Exp. {partnerOfferEndAt}
+                      </Text>
+                    )}
                   </Text>
                 )}
 
@@ -487,6 +532,7 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
 
       {!!urgencyTag && (
         <Flex
+          testID="auction-urgency-tag"
           backgroundColor={color("white100")}
           position="absolute"
           px="5px"
@@ -583,6 +629,15 @@ const artworkFragment = graphql`
     }
     title
     realizedPrice
+    collectorSignals {
+      partnerOffer {
+        isAvailable
+        endAt
+        priceWithDiscount {
+          display
+        }
+      }
+    }
     ...useSaveArtworkToArtworkLists_artwork
   }
 `
