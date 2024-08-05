@@ -8,7 +8,7 @@ const DEFAULT_VIEWABILITY_CONFIG = {
 }
 
 export type PrefetchFlatListProps<ItemType> = {
-  prefetchUrlExtractor?: (item?: ItemType) => string | undefined
+  prefetchUrlExtractor?: (item?: ItemType) => string | undefined | null
   prefetchVariablesExtractor?: (item?: ItemType) => object | undefined
   listRef?: Ref<FlatList<ItemType | any> | any>
 } & FlatListProps<ItemType>

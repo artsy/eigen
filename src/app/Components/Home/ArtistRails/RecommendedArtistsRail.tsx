@@ -85,7 +85,7 @@ export const RecommendedArtistsRail: React.FC<RecommendedArtistsRailProps & Rail
       </Flex>
       <CardRailFlatList<ArtistCard_artist$data>
         listRef={listRef}
-        prefetchUrlExtractor={(item) => item?.href || undefined}
+        prefetchUrlExtractor={(item) => item?.href}
         prefetchVariablesExtractor={defaultArtistVariables}
         data={artists as any}
         keyExtractor={(artist) => artist.id}

@@ -7,7 +7,7 @@ import {
   IMAGE_MAX_HEIGHT as ARTIST_RAIL_IMAGE_MAX_HEIGHT,
   ArtistCardContainer,
 } from "app/Components/Home/ArtistRails/ArtistCard"
-import { CardRailFlatList, INTER_CARD_PADDING } from "app/Components/Home/CardRailFlatList"
+import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
@@ -46,7 +46,7 @@ export const ArtistsRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionPro
         data={artists}
         keyExtractor={(artist) => artist.internalID}
         onEndReached={onEndReached}
-        ItemSeparatorComponent={() => <Spacer x={`${INTER_CARD_PADDING}px`} />}
+        ItemSeparatorComponent={() => <Spacer x={1} />}
         ListFooterComponent={() => {
           if (hasNext && isLoadingNext) {
             return (
