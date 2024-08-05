@@ -9267,6 +9267,9 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
   # The exhibitors with booths in this fair with letter.
   exhibitorsGroupedByName: [FairExhibitorsGroup]
 
+  # Suggested filters for associated artworks
+  featuredKeywords: [String!]!
+
   # Artworks Elastic Search results
   filterArtworksConnection(
     acquireable: Boolean
