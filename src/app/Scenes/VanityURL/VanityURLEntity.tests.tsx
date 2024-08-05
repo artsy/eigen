@@ -14,6 +14,7 @@ jest.mock("./VanityURLPossibleRedirect", () => ({
   VanityURLPossibleRedirect: () => null,
 }))
 
+
 const TestRenderer: React.FC<{
   entity: "fair" | "partner" | "unknown"
   slugType?: "profileID" | "fairID"
@@ -29,16 +30,6 @@ describe("VanityURLEntity", () => {
     env = getMockRelayEnvironment()
   })
 
-  // const {} = setupTestWrapper({
-  //   Component: VanityURLEntity,
-  //   query: graphql`
-  //     query VanityURLEntityQuery($slug: String!) {
-  //       vanityURLEntity(slug: $slug) {
-  //         ...VanityURLEntity_fairOrPartner
-  //       }
-  //     }
-  //   `,
-  // })
 
   it("renders a VanityURLPossibleRedirect when 404", () => {
     if (__renderWithPlaceholderTestUtils__) {
@@ -98,6 +89,7 @@ describe("VanityURLEntity", () => {
       expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
         "VanityURLEntityQuery"
       )
+
       act(() => {
         env.mock.resolveMostRecentOperation((operation) =>
           MockPayloadGenerator.generate(operation, {
@@ -112,6 +104,7 @@ describe("VanityURLEntity", () => {
           })
         )
       })
+
       const partnerComponent = tree.root.findByType(PartnerContainer)
       expect(partnerComponent).toBeDefined()
     })

@@ -11,6 +11,7 @@ export const getMockCollapsibleTabs = () => {
     Tabs: {
       Container: React.View,
       FlatList: React.FlatList,
+      FlashList: React.FlatList,
       Lazy: React.View,
       ScrollView: React.ScrollView,
       Tab: MockedTabs,
