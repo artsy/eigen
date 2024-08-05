@@ -78,30 +78,33 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
     }
   }, [hasMore, isLoading])
 
-  const renderItem = ({ item, index, columnIndex }: masonryRenderItemProps) => (
-    <MasonryArtworkGridItem
-      index={index}
-      item={item}
-      columnIndex={columnIndex}
-      contextModule={contextModule}
-      contextScreenOwnerType={contextScreenOwnerType}
-      contextScreen={contextScreen}
-      contextScreenOwnerId={contextScreenOwnerId}
-      contextScreenOwnerSlug={contextScreenOwnerSlug}
-      numColumns={rest.numColumns}
-      artworkMetaStyle={{
-        // Since the grid is full width,
-        // we need to add padding to the artwork meta to make sure its readable
-        paddingHorizontal: rest.numColumns !== 1 ? 0 : space(2),
-        // Extra space between items for one column artwork grids
-        paddingBottom: rest.numColumns !== 1 ? 0 : artworks.length === 1 ? space(2) : space(4),
-      }}
-      partnerOffer={partnerOffer}
-      priceOfferMessage={priceOfferMessage}
-      onPress={onPress}
-      hideSaleInfo={hideSaleInfo}
-      hideSaveIcon={hideSaveIcon}
-    />
+  const renderItem = useCallback(
+    ({ item, index, columnIndex }: masonryRenderItemProps) => (
+      <MasonryArtworkGridItem
+        index={index}
+        item={item}
+        columnIndex={columnIndex}
+        contextModule={contextModule}
+        contextScreenOwnerType={contextScreenOwnerType}
+        contextScreen={contextScreen}
+        contextScreenOwnerId={contextScreenOwnerId}
+        contextScreenOwnerSlug={contextScreenOwnerSlug}
+        numColumns={rest.numColumns}
+        artworkMetaStyle={{
+          // Since the grid is full width,
+          // we need to add padding to the artwork meta to make sure its readable
+          paddingHorizontal: rest.numColumns !== 1 ? 0 : space(2),
+          // Extra space between items for one column artwork grids
+          paddingBottom: rest.numColumns !== 1 ? 0 : artworks.length === 1 ? space(2) : space(4),
+        }}
+        partnerOffer={partnerOffer}
+        priceOfferMessage={priceOfferMessage}
+        onPress={onPress}
+        hideSaleInfo={hideSaleInfo}
+        hideSaveIcon={hideSaveIcon}
+      />
+    ),
+    []
   )
 
   const FlashlistComponent = animated ? AnimatedMasonryFlashList : MasonryFlashList

@@ -23,7 +23,7 @@ import {
 } from "app/utils/masonryHelpers"
 import { pluralize } from "app/utils/pluralize"
 import { Schema } from "app/utils/track"
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { graphql, usePaginationFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -80,6 +80,29 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
   useEffect(() => {
     setFiltersCountAction({ ...counts, total: artworksTotal })
   }, [artworksTotal])
+
+  const renderItem = useCallback(({ item, index, columnIndex }) => {
+    const imgAspectRatio = item.image?.aspectRatio ?? 1
+    const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
+    const imgHeight = imgWidth / imgAspectRatio
+
+    return (
+      <Flex
+        pl={columnIndex === 0 ? 0 : 1}
+        pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
+        mt={2}
+      >
+        <ArtworkGridItem
+          itemIndex={index}
+          contextScreenOwnerType={OwnerType.fair}
+          contextScreenOwnerId={data.internalID}
+          contextScreenOwnerSlug={data.slug}
+          artwork={item}
+          height={imgHeight}
+        />
+      </Flex>
+    )
+  }, [])
 
   if (!data) {
     return null
@@ -159,28 +182,7 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
         }
         onEndReached={handleOnEndReached}
         onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
-        renderItem={({ item, index, columnIndex }) => {
-          const imgAspectRatio = item.image?.aspectRatio ?? 1
-          const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
-          const imgHeight = imgWidth / imgAspectRatio
-
-          return (
-            <Flex
-              pl={columnIndex === 0 ? 0 : 1}
-              pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
-              mt={2}
-            >
-              <ArtworkGridItem
-                itemIndex={index}
-                contextScreenOwnerType={OwnerType.fair}
-                contextScreenOwnerId={data.internalID}
-                contextScreenOwnerSlug={data.slug}
-                artwork={item}
-                height={imgHeight}
-              />
-            </Flex>
-          )
-        }}
+        renderItem={renderItem}
       />
       <ArtworkFilterNavigator
         visible={isFilterArtworksModalVisible}
