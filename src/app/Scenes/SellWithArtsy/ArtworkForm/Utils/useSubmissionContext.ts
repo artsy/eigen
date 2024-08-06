@@ -9,6 +9,7 @@ import {
 import {
   ARTWORK_FORM_TIER_1_FINAL_STEP,
   ARTWORK_FORM_TIER_2_FINAL_STEP,
+  TIER_1_STATES,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
 import {
   SubmissionModel,
@@ -41,7 +42,7 @@ export const useSubmissionContext = () => {
   }, [currentStep, values])
 
   const isFinalStep =
-    values.state === "DRAFT"
+    values.state && TIER_1_STATES.includes(values.state)
       ? currentStep === ARTWORK_FORM_TIER_1_FINAL_STEP
       : currentStep === ARTWORK_FORM_TIER_2_FINAL_STEP
 

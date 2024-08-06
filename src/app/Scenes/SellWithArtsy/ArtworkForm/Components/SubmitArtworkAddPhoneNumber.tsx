@@ -5,6 +5,7 @@ import { PhoneInput } from "app/Components/Input/PhoneInput"
 import { useToast } from "app/Components/Toast/toastHook"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
+import { TIER_1_STATES } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
 import { updateMyCollectionArtwork } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/updateMyCollectionArtwork"
 import { useNavigationListeners } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useNavigationListeners"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
@@ -34,10 +35,13 @@ export const SubmitArtworkAddPhoneNumber = () => {
       try {
         setIsLoading(true)
 
-        const nextStep = values.state === "DRAFT" ? "CompleteYourSubmission" : "ShippingLocation"
+        const nextStep =
+          values.state && TIER_1_STATES.includes(values.state)
+            ? "CompleteYourSubmission"
+            : "ShippingLocation"
         const newValues = {
           userPhone: values.userPhone,
-          state: values.state === "DRAFT" ? "SUBMITTED" : undefined,
+          state: values.state && TIER_1_STATES.includes(values.state) ? "SUBMITTED" : undefined,
         } as const
 
         await createOrUpdateSubmission(newValues, values.submissionId)

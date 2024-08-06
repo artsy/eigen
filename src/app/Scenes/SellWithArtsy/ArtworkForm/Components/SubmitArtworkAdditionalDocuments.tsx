@@ -5,8 +5,8 @@ import {
   DocumentIcon,
   Flex,
   INPUT_BORDER_RADIUS,
+  Join,
   ProgressBar,
-  Separator,
   Spacer,
   Text,
   Touchable,
@@ -161,37 +161,37 @@ export const SubmitArtworkAdditionalDocuments = () => {
           showsVerticalScrollIndicator={false}
         >
           <Flex>
-            <Text variant="lg-display">Additional documents</Text>
+            <Join separator={<Spacer y={2} />}>
+              <Text variant="lg-display">Additional documents</Text>
 
-            <Spacer y={2} />
+              <Text color="black60" variant="xs">
+                Please add any of the follow if you have them: Proof of purchase, Certificate of
+                Authentication, Fact Sheet, Condition Report
+              </Text>
 
-            <Text color="black60" variant="xs">
-              Please add any of the follow if you have them: Proof of purchase, Certificate of
-              Authentication, Fact Sheet, Condition Report
-            </Text>
+              <Button block variant="outline" onPress={handleUpload}>
+                Add Documents
+              </Button>
 
-            <Spacer y={2} />
+              <Text color="black60" variant="xs">
+                Maximum size: 50 MB.
+              </Text>
 
-            <Button block variant="outline" onPress={handleUpload}>
-              Add Documents
-            </Button>
-
-            <Separator my={2} borderColor="black10" />
-
-            <Flex rowGap={space(2)}>
-              {values.additionalDocuments.map((document) => {
-                return (
-                  <UploadedFile
-                    key={document.id}
-                    document={document}
-                    progress={progress[document.id]}
-                    onRemove={() => {
-                      handleDelete(document)
-                    }}
-                  />
-                )
-              })}
-            </Flex>
+              <Flex rowGap={space(2)}>
+                {values.additionalDocuments.map((document) => {
+                  return (
+                    <UploadedFile
+                      key={document.id}
+                      document={document}
+                      progress={progress[document.id]}
+                      onRemove={() => {
+                        handleDelete(document)
+                      }}
+                    />
+                  )
+                })}
+              </Flex>
+            </Join>
           </Flex>
         </ScrollView>
       </Flex>

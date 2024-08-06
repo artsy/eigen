@@ -52,6 +52,10 @@ export async function showDocumentsAndPhotosActionSheet(
             resolve(results)
           }
           if (buttonIndex === 1) {
+            photos = await requestPhotos(allowMultiple)
+            resolve(photos)
+          }
+          if (buttonIndex === 2) {
             if (Platform.OS === "android") {
               // We attempt to clear the cache due to an ImagePicker bug
               // See Hacks.md for more.
@@ -62,11 +66,6 @@ export async function showDocumentsAndPhotosActionSheet(
               mediaType: "photo",
             })
             photos = [photo]
-            resolve(photos)
-          }
-
-          if (buttonIndex === 2) {
-            photos = await requestPhotos(allowMultiple)
             resolve(photos)
           }
         } catch (error) {
