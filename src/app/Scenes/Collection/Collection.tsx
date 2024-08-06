@@ -50,7 +50,7 @@ export const CollectionContent: React.FC<CollectionProps> = ({ collection }) => 
   const { slug, id, title, linkedCollections, showFeaturedArtists, descriptionMarkdown } = data
 
   const shouldRenderOverviewTab =
-    !!descriptionMarkdown && !!showFeaturedArtists && !!linkedCollections
+    !!descriptionMarkdown || !!showFeaturedArtists || !!linkedCollections
 
   const trackingInfo: Schema.PageView = {
     context_screen: Schema.PageNames.Collection,
