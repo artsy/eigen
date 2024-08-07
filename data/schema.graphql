@@ -11380,6 +11380,7 @@ type Location {
   daySchedules: [DaySchedule]
   display: String
   displayCountry: String
+  euShippingLocation: Boolean
 
   # A globally unique ID.
   id: ID!
