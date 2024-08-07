@@ -2734,6 +2734,7 @@ type ArtworkConsignmentSubmission {
   # Button label visible to the user.
   buttonLabel: String
   displayText: String @deprecated(reason: "Prefer `stateLabel` field.")
+  externalID: String
   inProgress: Boolean
   internalID: String
   isSold: Boolean
