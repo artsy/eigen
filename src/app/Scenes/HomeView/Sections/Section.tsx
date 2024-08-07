@@ -8,6 +8,7 @@ import { ArtworksRailHomeViewSection } from "app/Scenes/HomeView/Sections/Artwor
 import { AuctionResultsRailHomeViewSection } from "app/Scenes/HomeView/Sections/AuctionResultsRailHomeViewSection"
 import { FairsRailHomeViewSection } from "app/Scenes/HomeView/Sections/FairsRailHomeViewSection"
 import { FeaturedCollectionHomeViewSection } from "app/Scenes/HomeView/Sections/FeaturedCollectionHomeViewSection"
+import { GalleriesHomeViewSection } from "app/Scenes/HomeView/Sections/GalleriesHomeViewSection"
 import { GenericHomeViewSection } from "app/Scenes/HomeView/Sections/GenericHomeViewSection"
 import { HeroUnitsRailHomeViewSection } from "app/Scenes/HomeView/Sections/HeroUnitsRailHomeViewSection"
 import { MarketingCollectionsRailHomeViewSection } from "app/Scenes/HomeView/Sections/MarketingCollectionsRailHomeViewSection"
@@ -37,6 +38,8 @@ export const Section: React.FC<{ section: SectionT }> = (props) => {
       return <ActivityRailHomeViewSection section={section} />
     case "ArtworksRailHomeViewSection":
       return <ArtworksRailHomeViewSection section={section} />
+    case "GalleriesHomeViewSection":
+      return <GalleriesHomeViewSection section={section} />
     case "GenericHomeViewSection":
       return <GenericHomeViewSection section={section} />
     case "ArticlesRailHomeViewSection":

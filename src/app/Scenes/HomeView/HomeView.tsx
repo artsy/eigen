@@ -117,6 +117,10 @@ const sectionsFragment = graphql`
               internalID
               ...SalesRailHomeViewSection_section
             }
+            ... on GalleriesHomeViewSection {
+              internalID
+              ...GalleriesHomeViewSection_section
+            }
           }
         }
       }
