@@ -366,6 +366,28 @@ describe("ArtworkGridItem", () => {
         expect(screen.queryByText("Limited-Time Offer")).not.toBeOnTheScreen()
         expect(screen.queryByText("Exp. 1d 12h")).not.toBeOnTheScreen()
       })
+
+      it("doesn't show the limited-time offer signal if priceOfferMessage is present", () => {
+        renderWithRelay(
+          {
+            Artwork: () => ({
+              ...artwork,
+              sale: { ...artwork.sale, isAuction: false },
+              realizedPrice: null,
+              collectorSignals,
+            }),
+          },
+          {
+            priceOfferMessage: {
+              priceListedMessage: "$12,500",
+              priceWithDiscountMessage: "$10,000",
+            },
+          }
+        )
+
+        expect(screen.queryByText("Limited-Time Offer")).not.toBeOnTheScreen()
+        expect(screen.queryByText("Exp. 1d 12h")).not.toBeOnTheScreen()
+      })
     })
   })
 })
