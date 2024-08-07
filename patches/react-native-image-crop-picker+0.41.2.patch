@@ -1,8 +1,8 @@
 diff --git a/node_modules/react-native-image-crop-picker/ios/src/ImageCropPicker.m b/node_modules/react-native-image-crop-picker/ios/src/ImageCropPicker.m
-index 7101410..de44b83 100644
+index 9f20973..9b09ae4 100644
 --- a/node_modules/react-native-image-crop-picker/ios/src/ImageCropPicker.m
 +++ b/node_modules/react-native-image-crop-picker/ios/src/ImageCropPicker.m
-@@ -124,8 +124,19 @@ RCT_EXPORT_MODULE();
+@@ -124,8 +124,19 @@ - (void) setConfiguration:(NSDictionary *)options
      }
  }
  
