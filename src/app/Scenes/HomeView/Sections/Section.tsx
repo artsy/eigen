@@ -1,6 +1,6 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { HomeViewSectionsConnection_viewer$data } from "__generated__/HomeViewSectionsConnection_viewer.graphql"
-import { ArtistsRailHomeViewSection } from "app/Scenes/HomeView/Sections/ArtistsRailHomeViewSection"
+import { ArtistsRailHomeViewSectionPaginationContainer } from "app/Scenes/HomeView/Sections/ArtistsRailHomeViewSection"
 import { ArtworksRailHomeViewSection } from "app/Scenes/HomeView/Sections/ArtworksRailHomeViewSection"
 import { GenericHomeViewSection } from "app/Scenes/HomeView/Sections/GenericHomeViewSection"
 import { ExtractNodeType } from "app/utils/relayHelpers"
@@ -20,7 +20,7 @@ export const Section: React.FC<{ section: SectionT }> = (props) => {
     case "GenericHomeViewSection":
       return <GenericHomeViewSection section={section} />
     case "ArtistsRailHomeViewSection":
-      return <ArtistsRailHomeViewSection section={section} />
+      return <ArtistsRailHomeViewSectionPaginationContainer section={section} />
     default:
       if (__DEV__) {
         return (

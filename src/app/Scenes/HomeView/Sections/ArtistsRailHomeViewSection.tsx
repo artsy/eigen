@@ -1,41 +1,47 @@
 import { Flex, Spacer, Spinner } from "@artsy/palette-mobile"
-import {
-  ArtistsRailHomeViewSection_section$data,
-  ArtistsRailHomeViewSection_section$key,
-} from "__generated__/ArtistsRailHomeViewSection_section.graphql"
+import { ArtistsRailHomeViewSection_section$data } from "__generated__/ArtistsRailHomeViewSection_section.graphql"
 import {
   IMAGE_MAX_HEIGHT as ARTIST_RAIL_IMAGE_MAX_HEIGHT,
   ArtistCardContainer,
 } from "app/Components/Home/ArtistRails/ArtistCard"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
-import { graphql, usePaginationFragment } from "react-relay"
+import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 interface ArtworksRailHomeViewSectionProps {
-  section: ArtistsRailHomeViewSection_section$key
+  section: ArtistsRailHomeViewSection_section$data
+  relay: RelayPaginationProp
 }
 
 type Artist = ExtractNodeType<ArtistsRailHomeViewSection_section$data["artistsConnection"]>
 export const ArtistsRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionProps> = ({
   section,
+  relay,
 }) => {
-  const { data, hasNext, loadNext, isLoadingNext } = usePaginationFragment(artistsFragment, section)
+  const { hasMore, isLoading, loadMore } = relay
 
-  const title = data.component?.title
+  const title = section.component?.title
 
   const onEndReached = () => {
-    if (!!hasNext && !isLoadingNext) {
-      loadNext?.(1)
+    if (!hasMore() && !isLoading()) {
+      return
     }
+
+    loadMore(PAGE_SIZE, (error) => {
+      if (error) {
+        console.error(error.message)
+      }
+    })
   }
 
-  if (data.artistsConnection?.totalCount === 0) {
+  if (section.artistsConnection?.totalCount === 0) {
     return null
   }
 
-  const artists = extractNodes(data.artistsConnection)
+  const artists = extractNodes(section.artistsConnection)
 
   return (
     <Flex>
@@ -48,7 +54,7 @@ export const ArtistsRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionPro
         onEndReached={onEndReached}
         ItemSeparatorComponent={() => <Spacer x={1} />}
         ListFooterComponent={() => {
-          if (hasNext && isLoadingNext) {
+          if (hasMore() && isLoading()) {
             return (
               <Flex
                 width={ARTIST_RAIL_IMAGE_MAX_HEIGHT / 2}
@@ -71,22 +77,56 @@ export const ArtistsRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionPro
   )
 }
 
-export const artistsFragment = graphql`
-  fragment ArtistsRailHomeViewSection_section on ArtistsRailHomeViewSection
-  @refetchable(queryName: "ArtistsRailHomeViewSection_artistsRailHomeViewSectionRefetch")
-  @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
-    component {
-      title
-    }
-    artistsConnection(after: $cursor, first: $count)
-      @connection(key: "ArtistsRailHomeViewSection_artistsConnection") {
-      totalCount
-      edges {
-        node {
-          internalID
-          ...ArtistCard_artist
+export const ArtistsRailHomeViewSectionPaginationContainer = createPaginationContainer(
+  ArtistsRailHomeViewSection,
+  {
+    section: graphql`
+      fragment ArtistsRailHomeViewSection_section on ArtistsRailHomeViewSection
+      @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
+        id
+        internalID
+        component {
+          title
+        }
+        artistsConnection(after: $cursor, first: $count)
+          @connection(key: "ArtistsRailHomeViewSection_artistsConnection") {
+          totalCount
+          edges {
+            node {
+              internalID
+              ...ArtistCard_artist
+            }
+          }
         }
       }
-    }
+    `,
+  },
+  {
+    getConnectionFromProps(props) {
+      return props.section.artistsConnection
+    },
+    getFragmentVariables(prevVars, totalCount) {
+      return {
+        ...prevVars,
+        count: totalCount,
+      }
+    },
+    getVariables(_props, { count, cursor }, fragmentVariables) {
+      return {
+        ...fragmentVariables,
+        id: _props.section.internalID,
+        cursor,
+        count,
+      }
+    },
+    query: graphql`
+      query ArtistsRailHomeViewSectionQuery($cursor: String, $count: Int!, $id: String!) {
+        homeView {
+          section(id: $id) {
+            ...ArtistsRailHomeViewSection_section @arguments(cursor: $cursor, count: $count)
+          }
+        }
+      }
+    `,
   }
-`
+)
