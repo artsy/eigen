@@ -14009,6 +14009,9 @@ type Partner implements Node {
     last: Int
     showID: String
   ): PartnerDocumentConnection
+
+  # Suggested filters for associated artworks
+  featuredKeywords: [String!]!
   featuredShow: Show
 
   # Artworks Elastic Search results
