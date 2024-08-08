@@ -101,7 +101,7 @@ export const features = {
   },
   AREnableNewCollectorSettings: {
     description: "Enable New Collector Settings",
-    readyForRelease: false,
+    readyForRelease: true,
     echoFlagKey: "AREnableNewCollectorSettings",
     showInDevMenu: true,
   },
