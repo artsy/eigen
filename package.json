@@ -268,6 +268,7 @@
     "babel-plugin-module-resolver": "4.1.0",
     "babel-plugin-relay": "14.0.0",
     "babel-plugin-transform-imports": "2.0.0",
+    "babel-plugin-transform-remove-console": "6.9.4",
     "chalk": "2.4.2",
     "concurrently": "7.0.0",
     "danger": "11.2.3",

@@ -1,32 +1,39 @@
 const moduleResolverAlias = require("./alias").babelModuleResolverAlias
 
 module.exports = (api) => {
+  // IMPORTANT: this needs to be before the api.cache.forever()
+  const isProd = api.cache(() => process.env.NODE_ENV === "production")
   api.cache.forever() // don't call this babel config all the time if it hasn't changed.
+
+  const plugins = [
+    "@babel/plugin-transform-named-capturing-groups-regex",
+    "@babel/plugin-transform-flow-strip-types",
+    ["@babel/plugin-proposal-decorators", { version: "legacy" }],
+    ["@babel/plugin-transform-private-methods", { loose: true }], // needed for latest jest, must come after decorators
+    ["@babel/plugin-transform-class-properties", { loose: true }], // must come after decorators
+    [
+      "transform-imports",
+      {
+        lodash: {
+          transform: "lodash/${member}",
+          preventFullImport: true,
+        },
+      },
+    ],
+    "import-graphql", // to enable import syntax for .graphql and .gql files.
+    "relay",
+
+    ["module-resolver", { alias: moduleResolverAlias }],
+    "react-native-reanimated/plugin", // has to be listed last according to the documentation. https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/installation/#babel-plugin
+  ]
+
+  const prodPlugins = [["transform-remove-console", { exclude: ["error"] }], ...plugins]
+
+  const babelPlugins = isProd ? prodPlugins : plugins
 
   return {
     // plugins run first
-    plugins: [
-      "@babel/plugin-transform-named-capturing-groups-regex",
-      "@babel/plugin-transform-flow-strip-types",
-      ["@babel/plugin-proposal-decorators", { version: "legacy" }],
-      ["@babel/plugin-transform-private-methods", { loose: true }], // needed for latest jest, must come after decorators
-      ["@babel/plugin-transform-class-properties", { loose: true }], // must come after decorators
-      [
-        "transform-imports",
-        {
-          lodash: {
-            transform: "lodash/${member}",
-            preventFullImport: true,
-          },
-        },
-      ],
-      "import-graphql", // to enable import syntax for .graphql and .gql files.
-      "relay",
-
-      ["module-resolver", { alias: moduleResolverAlias }],
-      "react-native-reanimated/plugin", // has to be listed last according to the documentation. https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/installation/#babel-plugin
-    ],
-
+    plugins: babelPlugins,
     // presets run after
     presets: [
       [
