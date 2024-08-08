@@ -9,22 +9,24 @@ interface SubmissionStatusProps {
 export const SubmissionStatus: React.FC<SubmissionStatusProps> = ({ artwork }) => {
   const artworkData = useFragment(query, artwork)
 
-  const submission = artworkData.consignmentSubmission
+  const { consignmentSubmission, isListed } = artworkData
 
-  if (!submission) return null
+  if (!consignmentSubmission) return null
+
+  const { stateLabelColor, stateLabel, actionLabel } = consignmentSubmission
 
   return (
     <Flex flexDirection="column">
-      <Text variant="xs" fontWeight="bold" color={submission.stateLabelColor ?? "black100"}>
-        {artworkData.isListed ? "Listed" : submission.stateLabel}
+      <Text variant="xs" fontWeight="bold" color={stateLabelColor ?? "black100"}>
+        {artworkData.isListed ? "Listed" : stateLabel}
       </Text>
 
-      {!!submission.actionLabel && (
-        <Flex flexDirection="row" alignItems="center">
+      {!!actionLabel && !isListed && (
+        <Flex flexDirection="row" alignItems="center" testID="action-label">
           <AlertCircleFillIcon width={16} height={16} fill="orange100" />
 
           <Text variant="xs" fontWeight="bold" color="orange100">
-            &nbsp;{submission.actionLabel}
+            &nbsp;{actionLabel}
           </Text>
         </Flex>
       )}

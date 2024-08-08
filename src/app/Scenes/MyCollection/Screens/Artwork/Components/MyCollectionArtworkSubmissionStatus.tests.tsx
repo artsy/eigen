@@ -86,7 +86,7 @@ describe("MyCollectionArtworkSubmissionStatus", () => {
       })
     })
 
-    it("displays submission status even if state is DRAFT when the feature is live", () => {
+    it("displays submission status even if state is DRAFT", () => {
       renderWithRelay({
         Artwork: () => {
           return {
@@ -104,7 +104,7 @@ describe("MyCollectionArtworkSubmissionStatus", () => {
       expect(screen.queryAllByText("Complete Submission")).toHaveLength(2)
     })
 
-    it("displays submission status in LISTED state when the feature is live", () => {
+    it("displays submission status in LISTED state", () => {
       renderWithRelay({
         Artwork: () => {
           return {
@@ -118,7 +118,24 @@ describe("MyCollectionArtworkSubmissionStatus", () => {
       expect(screen.queryAllByText("Listed")).toHaveLength(2)
     })
 
-    it("display Submission status in REJECTED state ", () => {
+    it("does not display action label in LISTED state", () => {
+      renderWithRelay({
+        Artwork: () => {
+          return {
+            isListed: true,
+            internalID: "artwork-id",
+            consignmentSubmission: {
+              state: "APPROVED",
+              actionLabel: "Complete Listing",
+            },
+          }
+        },
+      })
+
+      expect(screen.queryByTestId("action-label")).toBe(null)
+    })
+
+    it("display Submission status in REJECTED state", () => {
       renderWithRelay({
         Artwork: () => {
           return {
