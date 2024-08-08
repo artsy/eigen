@@ -165,7 +165,7 @@ describe("ArtsyWebViewPage", () => {
     it("on Android", () => {
       Platform.OS = "android"
       const tree = render()
-      const source = webViewProps(tree).source
+      const source = webViewProps(tree).source as any
       expect(source).toHaveProperty("headers")
       expect(source?.headers["User-Agent"]).toBe(
         `Artsy-Mobile android Artsy-Mobile/${appJson().version} Eigen/some-build-number/${
