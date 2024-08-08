@@ -7,6 +7,7 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import mockFetch from "jest-fetch-mock"
 import { debounce } from "lodash"
 import { stringify } from "query-string"
+import { Platform } from "react-native"
 import Share from "react-native-share"
 import WebView, { WebViewProps } from "react-native-webview"
 import { WebViewNavigation } from "react-native-webview/lib/WebViewTypes"
@@ -73,6 +74,7 @@ describe("ArtsyWebViewPage", () => {
   beforeEach(() => {
     jest.clearAllMocks()
     ;(debounce as jest.Mock).mockImplementation((func) => func)
+    Platform.OS = "ios"
   })
 
   const render = (props: Partial<React.ComponentProps<typeof ArtsyWebViewPage>> = {}) =>
@@ -150,13 +152,27 @@ describe("ArtsyWebViewPage", () => {
     })
   })
 
-  it("sets the user agent correctly", () => {
-    const tree = render()
-    expect(webViewProps(tree).applicationNameForUserAgent).toBe(
-      `Artsy-Mobile ios Artsy-Mobile/${appJson().version} Eigen/some-build-number/${
-        appJson().version
-      }`
-    )
+  describe("sets the user agent correctly", () => {
+    it("on iOS", () => {
+      const tree = render()
+      expect(webViewProps(tree).userAgent).toBe(
+        `Artsy-Mobile ios Artsy-Mobile/${appJson().version} Eigen/some-build-number/${
+          appJson().version
+        }`
+      )
+    })
+
+    it("on Android", () => {
+      Platform.OS = "android"
+      const tree = render()
+      const source = webViewProps(tree).source as any
+      expect(source).toHaveProperty("headers")
+      expect(source?.headers["User-Agent"]).toBe(
+        `Artsy-Mobile android Artsy-Mobile/${appJson().version} Eigen/some-build-number/${
+          appJson().version
+        }`
+      )
+    })
   })
 
   it("receives messages from the browser", () => {

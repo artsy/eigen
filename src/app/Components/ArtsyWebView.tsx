@@ -268,9 +268,18 @@ export const ArtsyWebView = forwardRef<
           // on android it works without it
           sharedCookiesEnabled
           decelerationRate="normal"
-          source={{ uri }}
+          source={{
+            uri,
+            // Workaround for user agent breaking back behavior on Android
+            // see: https://github.com/react-native-webview/react-native-webview/pull/3133
+            ...(Platform.OS === "android" && {
+              headers: {
+                "User-Agent": userAgent,
+              },
+            }),
+          }}
           style={{ flex: 1 }}
-          applicationNameForUserAgent={userAgent}
+          userAgent={Platform.OS === "ios" ? userAgent : undefined}
           onMessage={({ nativeEvent }) => {
             const data = nativeEvent.data
             try {
