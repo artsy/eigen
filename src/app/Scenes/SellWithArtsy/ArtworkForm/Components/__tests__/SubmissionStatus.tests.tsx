@@ -51,4 +51,19 @@ describe("SubmissionStatus", () => {
 
     expect(screen.getByText("Listed")).toBeTruthy()
   })
+
+  it("does not display action label when Listed", () => {
+    renderWithRelay({
+      Artwork: () => ({
+        internalID: "artwork-id",
+        isListed: true,
+        consignmentSubmission: {
+          actionLabel: "Complete Listing",
+        },
+      }),
+    })
+
+    expect(screen.getByText("Listed")).toBeTruthy()
+    expect(screen.queryByTestId("action-label")).toBe(null)
+  })
 })

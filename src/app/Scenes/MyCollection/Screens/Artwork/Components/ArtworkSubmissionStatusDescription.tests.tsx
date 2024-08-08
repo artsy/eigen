@@ -63,6 +63,16 @@ describe("ArtworkSubmissionStatusDescription", () => {
       expect(screen.getByText("Listed")).toBeTruthy()
       expect(screen.getByText("View Listing")).toBeTruthy()
     })
+
+    it("when LISTED state do not diaplay submission action label", () => {
+      renderWithRelay({
+        Artwork: () => ({ ...approvedSubmission, isListed: true }),
+      })
+
+      expect(screen.getByText("Listed")).toBeTruthy()
+      expect(screen.getByText("View Listing")).toBeTruthy()
+      expect(screen.queryByTestId("action-label")).toBe(null)
+    })
   })
 
   it("REJECTED state", () => {

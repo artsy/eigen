@@ -76,8 +76,8 @@ export const ArtworkSubmissionStatusDescription: React.FC<
             {isListed ? "Listed" : stateLabel}
           </Text>
 
-          {!!actionLabel && (
-            <Text variant="md" color="orange100">
+          {!!actionLabel && !isListed && (
+            <Text variant="md" color="orange100" testID="action-abel">
               {actionLabel}
             </Text>
           )}
