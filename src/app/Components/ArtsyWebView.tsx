@@ -289,12 +289,6 @@ export const ArtsyWebView = forwardRef<
               console.log("error parsing webview message data", e, data)
             }
           }}
-          injectedJavaScript={`
-            const div = document.createElement('div');
-            div.innerHTML = navigator.userAgent;
-            document.body.appendChild(div);
-            true;
-        `}
           onNavigationStateChange={onNavigationStateChange}
         />
         {!!showDevToggleIndicator && (
