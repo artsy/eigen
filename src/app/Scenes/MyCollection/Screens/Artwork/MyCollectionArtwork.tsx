@@ -140,6 +140,8 @@ export const MyCollectionArtworkScreenQuery = graphql`
       ...MyCollectionArtworkInsights_artwork #new
       ...MyCollectionArtworkAboutWork_artwork #new
       ...MyCollectionWhySell_artwork #new
+      ...MyCollectionArtworkSubmissionStatus_submissionState
+      ...ArtworkSubmissionStatusDescription_artwork
       comparableAuctionResults(first: 6) @optionalField {
         totalCount
       }

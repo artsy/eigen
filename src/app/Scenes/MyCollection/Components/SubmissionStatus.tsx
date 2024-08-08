@@ -42,6 +42,8 @@ const query = graphql`
       stateLabel
       actionLabel
       stateLabelColor
+      stateHelpMessage
+      buttonLabel
     }
   }
 `
