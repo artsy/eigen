@@ -102,8 +102,8 @@ export const SubmitArtworkCondition = () => {
             <Spacer y={2} />
 
             <Text color="black60" variant="xs">
-              Let us know the condition of the piece. Note: the seller is liable for correct
-              description lorem ipsum dolor sit amet
+              Please specify the condition of the piece. Note that the seller is liable for
+              providing an accurate description.
             </Text>
 
             <Spacer y={2} />
