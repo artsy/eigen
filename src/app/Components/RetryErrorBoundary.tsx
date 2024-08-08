@@ -47,6 +47,7 @@ export class RetryErrorBoundary extends Component<
             title={notFoundTitle}
             text={notFoundText}
             backButtonText={notFoundBackButtonText}
+            route={getNotFoundRoute(error)}
             error={error}
           />
         )
@@ -57,6 +58,10 @@ export class RetryErrorBoundary extends Component<
 
     return children
   }
+}
+
+export const getNotFoundRoute = (error: any) => {
+  return error?.res?.json?.errors?.[0]?.extensions?.path || ""
 }
 
 export const getErrorHttpStatusCodes = (error: any) => {
