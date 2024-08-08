@@ -10,9 +10,10 @@ import { goBack, navigate, popToRoot } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { getVortexMedium } from "app/utils/marketPriceInsightHelpers"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
+import { MY_COLLECTION_ARTWORK_REFRESH_KEY, RefreshEvents } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import React, { Suspense, useCallback } from "react"
+import React, { Suspense, useCallback, useEffect, useReducer } from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -32,6 +33,19 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
 }) => {
   const { trackEvent } = useTracking()
 
+  const [fetchKey, increaseFetchKey] = useReducer((state) => state + 1, 0)
+
+  useEffect(() => {
+    RefreshEvents.addListener(MY_COLLECTION_ARTWORK_REFRESH_KEY, handleRefreshEvent)
+    return () => {
+      RefreshEvents.removeListener(MY_COLLECTION_ARTWORK_REFRESH_KEY, handleRefreshEvent)
+    }
+  }, [])
+
+  const handleRefreshEvent = () => {
+    increaseFetchKey()
+  }
+
   const data = useLazyLoadQuery<MyCollectionArtworkQuery>(
     MyCollectionArtworkScreenQuery,
     {
@@ -41,7 +55,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
       // TODO: Fix this logic once we only need category to fetch insights
       medium: getVortexMedium(medium, category),
     },
-    { fetchPolicy: "store-and-network" }
+    { fetchPolicy: "store-and-network", fetchKey: fetchKey ?? 0 }
   )
 
   const { artwork } = data
@@ -126,6 +140,8 @@ export const MyCollectionArtworkScreenQuery = graphql`
       ...MyCollectionArtworkInsights_artwork #new
       ...MyCollectionArtworkAboutWork_artwork #new
       ...MyCollectionWhySell_artwork #new
+      ...MyCollectionArtworkSubmissionStatus_submissionState
+      ...ArtworkSubmissionStatusDescription_artwork
       comparableAuctionResults(first: 6) @optionalField {
         totalCount
       }

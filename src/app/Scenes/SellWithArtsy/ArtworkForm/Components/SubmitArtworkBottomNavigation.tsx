@@ -10,6 +10,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { dismissModal, navigate, popToRoot, switchTab } from "app/system/navigation/navigate"
 import { useIsKeyboardVisible } from "app/utils/hooks/useIsKeyboardVisible"
 import { NormalizedDocument } from "app/utils/normalizeUploadedDocument"
+import { refreshMyCollectionArtwork } from "app/utils/refreshHelpers"
 import { useFormikContext } from "formik"
 import { useEffect } from "react"
 import { LayoutAnimation } from "react-native"
@@ -56,6 +57,7 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
 
   const handleNextPress = () => {
     if (isFinalStep) {
+      refreshMyCollectionArtwork()
       trackConsignmentSubmitted(values.submissionId)
     }
 

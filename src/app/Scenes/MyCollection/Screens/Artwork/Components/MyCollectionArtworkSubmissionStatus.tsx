@@ -119,6 +119,8 @@ const submissionStateFragment = graphql`
       stateLabel
       actionLabel
       stateLabelColor
+      stateHelpMessage
+      buttonLabel
     }
     submissionId
     isListed
