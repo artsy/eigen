@@ -91,7 +91,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
       <Screen.Header
         onBack={goBack}
         rightElements={() =>
-          artwork.consignmentSubmission ? null : (
+          !artwork.consignmentSubmission && (
             <TouchableOpacity onPress={handleEdit} hitSlop={DEFAULT_HIT_SLOP}>
               <Text>Edit</Text>
             </TouchableOpacity>
