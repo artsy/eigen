@@ -48,7 +48,7 @@ export const getCurrentValidationSchema = (_injectedStep?: keyof SubmitArtworkSt
 }
 
 const additionalDocumentsSchema = Yup.object().shape({
-  additionalDocuments: Yup.array().min(1),
+  additionalDocuments: Yup.array().min(0),
 })
 
 const conditionSchema = Yup.object().shape({
