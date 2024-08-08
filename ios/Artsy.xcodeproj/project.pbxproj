@@ -235,7 +235,7 @@
 		CB762B3D2911A5E100881194 /* ARVIRShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = CB762B352911A5E100881194 /* ARVIRShadow.png */; };
 		CB762B3E2911A5E100881194 /* ar_vir_opening_frame.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB762B362911A5E100881194 /* ar_vir_opening_frame.jpg */; };
 		CBA500F32C654F8400DDBCC0 /* ARAppDelegate+DeeplinkTimeout.m in Sources */ = {isa = PBXBuildFile; fileRef = CBA500F22C654F8400DDBCC0 /* ARAppDelegate+DeeplinkTimeout.m */; };
-		CBA500F62C6553FF00DDBCC0 /* ARDeeplinkTimeoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBA500F52C6553FF00DDBCC0 /* ARDeeplinkTimeoutManager.m */; };
+		CBA500F62C6553FF00DDBCC0 /* ARTDeeplinkTimeoutModule.m in Sources */ = {isa = PBXBuildFile; fileRef = CBA500F52C6553FF00DDBCC0 /* ARTDeeplinkTimeoutModule.m */; };
 		CBD794D72BBB5622003B3CB5 /* StarscreamExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD794D62BBB5622003B3CB5 /* StarscreamExtensions.swift */; };
 		CBD794DB2BBC40A4003B3CB5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = CBD794DA2BBC40A4003B3CB5 /* PrivacyInfo.xcprivacy */; };
 		CBE0D12E2C20C8D800DFF17E /* libBrazeUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CBE0D12D2C20C8D800DFF17E /* libBrazeUI.a */; };
@@ -965,8 +965,8 @@
 		CB762B362911A5E100881194 /* ar_vir_opening_frame.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ar_vir_opening_frame.jpg; sourceTree = "<group>"; };
 		CBA500F12C654F8400DDBCC0 /* ARAppDelegate+DeeplinkTimeout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ARAppDelegate+DeeplinkTimeout.h"; sourceTree = "<group>"; };
 		CBA500F22C654F8400DDBCC0 /* ARAppDelegate+DeeplinkTimeout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ARAppDelegate+DeeplinkTimeout.m"; sourceTree = "<group>"; };
-		CBA500F42C6553FF00DDBCC0 /* ARDeeplinkTimeoutManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARDeeplinkTimeoutManager.h; sourceTree = "<group>"; };
-		CBA500F52C6553FF00DDBCC0 /* ARDeeplinkTimeoutManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARDeeplinkTimeoutManager.m; sourceTree = "<group>"; };
+		CBA500F42C6553FF00DDBCC0 /* ARTDeeplinkTimeoutModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARTDeeplinkTimeoutModule.h; sourceTree = "<group>"; };
+		CBA500F52C6553FF00DDBCC0 /* ARTDeeplinkTimeoutModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARTDeeplinkTimeoutModule.m; sourceTree = "<group>"; };
 		CBA7CF22282BF6310025AEA5 /* Artsy_Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Artsy_Tests-Info.plist"; sourceTree = "<group>"; };
 		CBD794D62BBB5622003B3CB5 /* StarscreamExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarscreamExtensions.swift; sourceTree = "<group>"; };
 		CBD794DA2BBC40A4003B3CB5 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Artsy/App_Resources/PrivacyInfo.xcprivacy; sourceTree = SOURCE_ROOT; };
@@ -3072,8 +3072,8 @@
 				CBE3259B27E275A200395A93 /* LiveAuctionView.swift */,
 				CBE3259927E275A200395A93 /* ARTNativeScreenPresenterModule.h */,
 				CBE3259E27E275A200395A93 /* ARTNativeScreenPresenterModule.m */,
-				CBA500F42C6553FF00DDBCC0 /* ARDeeplinkTimeoutManager.h */,
-				CBA500F52C6553FF00DDBCC0 /* ARDeeplinkTimeoutManager.m */,
+				CBA500F42C6553FF00DDBCC0 /* ARTDeeplinkTimeoutModule.h */,
+				CBA500F52C6553FF00DDBCC0 /* ARTDeeplinkTimeoutModule.m */,
 			);
 			path = NativeModules;
 			sourceTree = "<group>";
@@ -3901,7 +3901,7 @@
 				CBE3279627E275A400395A93 /* Fair.m in Sources */,
 				CBE326D827E275A300395A93 /* UIViewController+BlurredStatusView.swift in Sources */,
 				CBE3270427E275A300395A93 /* LiveAuctionCurrentLotCTAPositionManager.swift in Sources */,
-				CBA500F62C6553FF00DDBCC0 /* ARDeeplinkTimeoutManager.m in Sources */,
+				CBA500F62C6553FF00DDBCC0 /* ARTDeeplinkTimeoutModule.m in Sources */,
 				CBE326B827E275A300395A93 /* LiveAuctionSaleViewController.swift in Sources */,
 				CBE326CA27E275A300395A93 /* SaleOnHoldOverlayView.swift in Sources */,
 				CBE3267127E275A300395A93 /* UITableViewController+Animations.swift in Sources */,

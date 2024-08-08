@@ -1,8 +1,8 @@
-#import "ARDeeplinkTimeoutManager.h"
+#import "ARTDeeplinkTimeoutModule.h"
 #import "ARAppDelegate.h"
 #import "ARAppDelegate+DeeplinkTimeout.h"
 
-@implementation ARDeeplinkTimeoutManager
+@implementation ARTDeeplinkTimeoutModule
 
 RCT_EXPORT_MODULE();
 

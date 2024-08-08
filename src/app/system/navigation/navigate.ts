@@ -41,6 +41,8 @@ export interface NavigateOptions {
 let lastInvocation = { url: "", timestamp: 0 }
 
 export async function navigate(url: string, options: NavigateOptions = {}) {
+  LegacyNativeModules.ARTDeeplinkTimeoutModule.invalidateDeeplinkTimeout()
+
   let targetURL = url
 
   addBreadcrumb({
