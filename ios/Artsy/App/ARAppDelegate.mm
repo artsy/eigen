@@ -262,7 +262,7 @@ static ARAppDelegate *_sharedInstance = nil;
             return NO;
         }
     }
-    [self startDeeplinkTimeout];
+    [self startDeeplinkTimeoutWithRoute:url.absoluteString];
     return [RCTLinkingManager application:app openURL:url options:options];
 }
 

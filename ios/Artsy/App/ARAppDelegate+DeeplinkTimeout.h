@@ -2,7 +2,7 @@
 
 @interface ARAppDelegate (DeeplinkTimeout)
 
-- (void)startDeeplinkTimeout;
+- (void)startDeeplinkTimeoutWithRoute:(NSString *)route;
 - (void)invalidateDeeplinkTimeout;
 
 @end

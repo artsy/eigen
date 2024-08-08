@@ -3,7 +3,10 @@
 
 @implementation ARAppDelegate (DeeplinkTimeout)
 
-- (void)startDeeplinkTimeout {
+NSString *deeplinkRoute;
+
+- (void)startDeeplinkTimeoutWithRoute:(NSString *)route {
+    deeplinkRoute = route;
     [self invalidateDeeplinkTimeout];
     [self performSelector:@selector(deeplinkTimeoutExpired) withObject:nil afterDelay:10.0];
 }
@@ -13,7 +16,15 @@
 }
 
 - (void)deeplinkTimeoutExpired {
-    [SentrySDK captureMessage:@"Deeplink timeout: Navigation did not complete in time"];
+    if (deeplinkRoute) {
+        [SentrySDK captureMessage:@"Deeplink timeout: Navigation did not complete in time"];
+        [SentrySDK configureScope:^(SentryScope * _Nonnull scope) {
+            [scope setExtraValue:deeplinkRoute forKey:@"deeplink_route"];
+        }];
+    } else {
+        [SentrySDK captureMessage:@"Deeplink timeout: Navigation did not complete in time"];
+    }
+    deeplinkRoute = nil;
 }
 
 @end

@@ -156,7 +156,7 @@ RCT_EXPORT_MODULE();
 - (void)requestNavigation:(NSString *)route withProps:(NSDictionary *)props
 {
     if (!route) return;
-    [[ARAppDelegate sharedInstance] startDeeplinkTimeout];
+    [[ARAppDelegate sharedInstance] startDeeplinkTimeoutWithRoute:route];
     [self dispatchAfterBootstrap:requestNavigation data:@{@"route": route, @"props": props}];
 }
 
