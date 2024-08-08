@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import { useEffect, useState } from "react"
 
 export interface SpecialistsData {
-  image: string
+  image: { imageURL: string | null | undefined }
   name: string
   firstName: string
   jobTitle: string
