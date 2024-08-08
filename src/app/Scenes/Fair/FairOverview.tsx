@@ -26,10 +26,10 @@ export const FairOverview: FC<FairOverviewProps> = ({ fair }) => {
   const hasArticles = !!data.articlesConnection?.totalCount
   const hasCollections = !!data.marketingCollections.length
   const hasFollowedArtistArtworks = !!data.filterArtworksConnection?.edges?.length
-  const hasPreviewText = data.summary || data.about
+  const previewText = data.summary || data.about
   // TOFIX: Must be a better way to determine if there is more info to show
   const canShowMoreInfoLink =
-    !!data.about ||
+    !!previewText ||
     !!data.tagline ||
     !!data.location?.summary ||
     shouldShowLocationMap(data.location?.coordinates) ||
@@ -37,45 +37,34 @@ export const FairOverview: FC<FairOverviewProps> = ({ fair }) => {
     !!data.hours ||
     !!data.links ||
     !!data.contact ||
-    !!data.summary ||
     !!data.tickets
+  const isEmpty = !previewText && !hasArticles && !hasCollections && !hasFollowedArtistArtworks
 
   return (
     <Tabs.ScrollView style={{ paddingTop: space(2) }}>
-      <Flex gap={space(2)}>
-        {!!hasPreviewText && (
-          <ReadMore textStyle="new" content={hasPreviewText} maxChars={truncatedTextLimit()} />
-        )}
-        {!!canShowMoreInfoLink && (
-          <Touchable onPress={() => navigate(`/fair/${data.slug}/info`)}>
-            <Flex pt={2} flexDirection="row" justifyContent="flex-start" alignItems="center">
-              <Text variant="sm">More info</Text>
-              <ChevronIcon mr="-5px" mt="4px" />
-            </Flex>
-          </Touchable>
-        )}
+      {!isEmpty ? (
+        <Flex gap={space(2)}>
+          {!!previewText && (
+            <ReadMore textStyle="new" content={previewText} maxChars={truncatedTextLimit()} />
+          )}
+          {!!canShowMoreInfoLink && (
+            <Touchable onPress={() => navigate(`/fair/${data.slug}/info`)}>
+              <Flex pt={2} flexDirection="row" justifyContent="flex-start" alignItems="center">
+                <Text variant="sm">More info</Text>
+                <ChevronIcon mr="-5px" mt="4px" />
+              </Flex>
+            </Touchable>
+          )}
 
-        {!!data.isActive ? (
-          <>
-            {!!hasArticles && <FairEditorialFragmentContainer fair={data} />}
-            {!!hasCollections && <FairCollectionsFragmentContainer fair={data} />}
-            {!!hasFollowedArtistArtworks && (
-              <FairFollowedArtistsRailFragmentContainer fair={data} />
-            )}
-          </>
-        ) : (
-          <>
-            <FairEmptyStateFragmentContainer fair={data} />
-            {!!hasArticles ? (
-              <FairEditorialFragmentContainer fair={data} />
-            ) : (
-              <FairEmptyStateFragmentContainer fair={data} />
-            )}
-          </>
-        )}
-      </Flex>
+          {!!hasArticles && <FairEditorialFragmentContainer fair={data} />}
+          {!!hasCollections && <FairCollectionsFragmentContainer fair={data} />}
+          {!!hasFollowedArtistArtworks && <FairFollowedArtistsRailFragmentContainer fair={data} />}
 
-      <Spacer y={4} />
+          <Spacer y={4} />
+        </Flex>
+      ) : (
+        <FairEmptyStateFragmentContainer fair={data} />
+      )}
     </Tabs.ScrollView>
   )
 }
