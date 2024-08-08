@@ -62,7 +62,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
     })
   }, [artwork])
 
-  if (!data.artwork) {
+  if (!artwork) {
     return (
       <Flex flex={1} justifyContent="center" alignItems="center">
         <Text>The requested Artwork is not available</Text>
@@ -70,16 +70,18 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
     )
   }
 
-  const articles = extractNodes(data.artwork.artist?.articles)
+  const articles = extractNodes(artwork.artist?.articles)
 
   return (
     <Screen>
       <Screen.Header
         onBack={goBack}
-        rightElements={
-          <TouchableOpacity onPress={handleEdit} hitSlop={DEFAULT_HIT_SLOP}>
-            <Text>Edit</Text>
-          </TouchableOpacity>
+        rightElements={() =>
+          !artwork.consignmentSubmission && (
+            <TouchableOpacity onPress={handleEdit} hitSlop={DEFAULT_HIT_SLOP}>
+              <Text>Edit</Text>
+            </TouchableOpacity>
+          )
         }
       />
       <Screen.ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
@@ -91,25 +93,25 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
             </Flex>
           }
         >
-          <MyCollectionArtworkHeader artwork={data.artwork} />
+          <MyCollectionArtworkHeader artwork={artwork} />
 
           <MyCollectionArtworkAboutWork
-            artwork={data.artwork}
+            artwork={artwork}
             marketPriceInsights={data.marketPriceInsights}
           />
 
           <MyCollectionArtworkInsights
-            artwork={data.artwork}
+            artwork={artwork}
             marketPriceInsights={data.marketPriceInsights}
             me={data.me}
           />
 
           {articles.length > 0 && (
             <MyCollectionArtworkArticles
-              artistSlug={data.artwork.artist?.slug}
-              artistNames={data.artwork.artistNames}
+              artistSlug={artwork.artist?.slug}
+              artistNames={artwork.artistNames}
               articles={articles}
-              totalCount={data.artwork.artist?.articles?.totalCount}
+              totalCount={artwork.artist?.articles?.totalCount}
             />
           )}
         </Join>
