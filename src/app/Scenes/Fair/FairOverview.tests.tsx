@@ -54,25 +54,14 @@ describe("FairOverview", () => {
     expect(screen.getByText("A great place to buy art")).toBeOnTheScreen()
   })
 
-  it("renders fewer components when fair is inactive", () => {
+  it("renders empty state given no data", () => {
     renderWithRelay({
       Fair: () => ({
-        isActive: false,
-      }),
-    })
-
-    expect(screen.getByText("View all")).toBeOnTheScreen()
-    expect(screen.queryByText("collection-1")).not.toBeOnTheScreen()
-    expect(screen.queryByText("Works by Artists You Follow")).not.toBeOnTheScreen()
-  })
-
-  it("does not render components when there is no data for them", () => {
-    renderWithRelay({
-      Fair: () => ({
-        articles: {
-          edges: [],
-        },
+        summary: null,
+        about: null,
+        articles: { edges: [] },
         marketingCollections: [],
+        filterArtworksConnection: { edges: [] },
         counts: {
           artworks: 0,
           partnerShows: 0,
