@@ -17,6 +17,7 @@ const UpdateMyCollectionArtworkQuery = graphql`
     artwork(id: $artworkId) {
       ...MyCollectionWhySell_artwork
       ...MyCollectionArtworkSubmissionStatus_submissionState
+      ...ArtworkSubmissionStatusDescription_artwork
     }
   }
 `
