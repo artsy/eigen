@@ -14214,7 +14214,8 @@ type PartnerAlertsEdge {
     before: String
     first: Int
     last: Int
-    totalCount: Boolean
+    page: Int
+    size: Int
   ): PartnerCollectorProfilesConnection
 
   # A cursor for use in pagination
