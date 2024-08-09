@@ -17,7 +17,7 @@ export const ArtworksRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionPr
   const data = useFragment(fragment, section)
   const title = data.component?.title
   const artworks = extractNodes(data.artworksConnection)
-  const componentHref = "" // TODO: should be in schema
+  const componentHref = `/home-view/section/${data.internalID}`
 
   if (!artworks || artworks.length === 0) return null
 
@@ -51,6 +51,7 @@ export const ArtworksRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionPr
 
 const fragment = graphql`
   fragment ArtworksRailHomeViewSection_section on ArtworksRailHomeViewSection {
+    internalID
     component {
       title
     }
