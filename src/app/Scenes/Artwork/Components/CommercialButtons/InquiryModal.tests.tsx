@@ -93,7 +93,7 @@ describe("inquiry modal", () => {
     // Wait for the modal to close
     await flushPromiseQueue()
 
-    expect(screen.queryByText("What information are you looking for?")).toBeNull()
+    expect(screen.queryByText("What information are you looking for?")).not.toBeOnTheScreen()
   })
 
   it("tracks an event when the inquiry modal is closed", async () => {
