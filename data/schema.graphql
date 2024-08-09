@@ -16857,6 +16857,9 @@ type Sale implements Node {
   # Duration before lot closes that a late bid would extend the end time.
   extendedBiddingPeriodMinutes: Int
 
+  # Suggested filters for associated artworks
+  featuredKeywords: [String!]!
+
   # A formatted description of when the auction starts or ends or if it has ended
   formattedStartDateTime: String
   href: String
