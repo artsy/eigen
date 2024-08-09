@@ -104,7 +104,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
         hideSaveIcon={hideSaveIcon}
       />
     ),
-    []
+    [rest.numColumns]
   )
 
   const FlashlistComponent = animated ? AnimatedMasonryFlashList : MasonryFlashList
