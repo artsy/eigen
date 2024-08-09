@@ -14,6 +14,7 @@ import {
   InquiryQuestionIDs,
 } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { daysInCooldownPeriod } from "app/utils/collectorPromptHelpers"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Reducer, useReducer } from "react"
@@ -89,9 +90,10 @@ describe("inquiry modal", () => {
 
     fireEvent.press(screen.getByText("Cancel"))
 
-    await waitFor(() => {
-      expect(screen.queryByText("What information are you looking for?")).toBeNull()
-    })
+    // Wait for the modal to close
+    await flushPromiseQueue()
+
+    expect(screen.queryByText("What information are you looking for?")).not.toBeOnTheScreen()
   })
 
   it("tracks an event when the inquiry modal is closed", async () => {
