@@ -96,6 +96,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const { width: screenWidth } = useScreenDimensions()
 
   const AREnablePartnerOfferSignals = useFeatureFlag("AREnablePartnerOfferSignals")
+  const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
 
   const {
     artistNames,
@@ -113,6 +114,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     artwork,
     isSmallTile: true,
     collectorSignals: AREnablePartnerOfferSignals ? collectorSignals : null,
+    auctionSignalsEnabled: AREnableAuctionImprovementsSignals,
   })
 
   const partnerOfferEndAt = collectorSignals?.partnerOffer?.endAt
@@ -224,6 +226,8 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
 
   const displayLimitedTimeOfferSignal =
     AREnablePartnerOfferSignals && collectorSignals?.partnerOffer?.isAvailable && !sale?.isAuction
+
+  const displayAuctionSignal = AREnableAuctionImprovementsSignals && sale?.isAuction
 
   return (
     <AnalyticsContextProvider
@@ -351,6 +355,13 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                     fontWeight="bold"
                   >
                     {saleMessage}
+                    {!!displayAuctionSignal && !!collectorSignals?.bidCount && (
+                      <Text>
+                        {` (${collectorSignals.bidCount} bid${
+                          collectorSignals.bidCount > 1 ? "s" : ""
+                        })`}
+                      </Text>
+                    )}
                     {!!displayLimitedTimeOfferSignal && (
                       <Text
                         lineHeight="20px"
@@ -379,7 +390,12 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                 )}
               </Flex>
               {!!showSaveIcon && (
-                <Flex>
+                <Flex flexDirection="row">
+                  {!!displayAuctionSignal && !!collectorSignals?.lotWatcherCount && (
+                    <Text ml={0.5} lineHeight="18px" variant="xs" numberOfLines={1}>
+                      {collectorSignals.lotWatcherCount}
+                    </Text>
+                  )}
                   <Touchable
                     haptic
                     hitSlop={{ bottom: 5, right: 5, left: 5, top: 5 }}
@@ -637,6 +653,8 @@ const artworkFragment = graphql`
           display
         }
       }
+      lotWatcherCount
+      bidCount
     }
     ...useSaveArtworkToArtworkLists_artwork
   }

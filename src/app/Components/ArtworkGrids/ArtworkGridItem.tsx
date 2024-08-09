@@ -115,6 +115,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
   const AREnablePartnerOfferSignals = useFeatureFlag("AREnablePartnerOfferSignals")
+  const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
 
   let filterParams: any = undefined
 
@@ -130,6 +131,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const biddingEndAt = extendedBiddingEndAt ?? lotEndAt
   const lotID = artwork.saleArtwork?.lotID
   const collectorSignals = artwork.collectorSignals
+  const isAuction = artwork.sale?.isAuction
 
   const { currentBiddingEndAt, lotSaleExtended } = useArtworkBidding({
     lotID,
@@ -235,6 +237,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const saleInfo = saleMessageOrBidInfo({
     artwork,
     collectorSignals: AREnablePartnerOfferSignals ? collectorSignals : null,
+    auctionSignalsEnabled: AREnableAuctionImprovementsSignals,
   })
 
   const endsAt = artwork.sale?.cascadingEndTimeIntervalMinutes
@@ -258,8 +261,10 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const displayLimitedTimeOfferSignal =
     AREnablePartnerOfferSignals &&
     collectorSignals?.partnerOffer?.isAvailable &&
-    !artwork.sale?.isAuction &&
+    !isAuction &&
     !displayPriceOfferMessage
+
+  const displayAuctionSignal = AREnableAuctionImprovementsSignals && isAuction
 
   const handleSupress = async (item: DissapearableArtwork) => {
     await item._disappearable?.disappear()
@@ -294,10 +299,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                 />
 
                 {Boolean(
-                  !hideUrgencyTags &&
-                    urgencyTag &&
-                    artwork?.sale?.isAuction &&
-                    !artwork?.sale?.isClosed
+                  !hideUrgencyTags && urgencyTag && isAuction && !artwork?.sale?.isClosed
                 ) && (
                   <Flex
                     position="absolute"
@@ -419,6 +421,19 @@ export const Artwork: React.FC<ArtworkProps> = ({
                     {...saleInfoTextStyle}
                   >
                     {saleInfo}
+                    {!!displayAuctionSignal && !!collectorSignals?.bidCount && (
+                      <Text
+                        lineHeight="18px"
+                        variant="xs"
+                        weight="regular"
+                        numberOfLines={1}
+                        {...saleInfoTextStyle}
+                      >
+                        {` (${collectorSignals.bidCount} bid${
+                          collectorSignals.bidCount > 1 ? "s" : ""
+                        })`}
+                      </Text>
+                    )}
                     {!!displayLimitedTimeOfferSignal && (
                       <Text
                         lineHeight="18px"
@@ -442,7 +457,12 @@ export const Artwork: React.FC<ArtworkProps> = ({
                 )}
               </Flex>
               {!hideSaveIcon && (
-                <Flex>
+                <Flex flexDirection="row">
+                  {!!displayAuctionSignal && !!collectorSignals?.lotWatcherCount && (
+                    <Text ml={0.5} lineHeight="18px" variant="xs" numberOfLines={1}>
+                      {collectorSignals.lotWatcherCount}
+                    </Text>
+                  )}
                   <Touchable
                     haptic
                     onPress={disableArtworksListPrompt ? handleArtworkSave : saveArtworkToLists}
@@ -499,6 +519,7 @@ export const saleMessageOrBidInfo = ({
   artwork,
   isSmallTile = false,
   collectorSignals,
+  auctionSignalsEnabled,
 }: {
   artwork: Readonly<{
     sale:
@@ -526,6 +547,7 @@ export const saleMessageOrBidInfo = ({
       | null
       | undefined
   }> | null
+  auctionSignalsEnabled?: boolean
 }): string | null | undefined => {
   const { sale, saleArtwork, realizedPrice } = artwork
 
@@ -539,6 +561,11 @@ export const saleMessageOrBidInfo = ({
   if (sale?.isAuction && !sale.isClosed) {
     const bidderPositions = saleArtwork?.counts?.bidderPositions
     const currentBid = saleArtwork?.currentBid?.display
+
+    if (auctionSignalsEnabled) {
+      return currentBid
+    }
+
     // If there are no current bids we show the starting price with an indication that it's a new bid
     if (!bidderPositions) {
       if (isSmallTile) {
@@ -634,6 +661,8 @@ export default createFragmentContainer(Artwork, {
             display
           }
         }
+        lotWatcherCount
+        bidCount
       }
       ...useSaveArtworkToArtworkLists_artwork
     }
