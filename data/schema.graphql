@@ -10756,11 +10756,23 @@ type HomeView {
 
 # A component specification
 type HomeViewComponent {
+  # A background image URL for this section
+  backgroundImageURL: String
+
+  # Text for the CTA button
+  buttonText: String
+
+  # A description for this section
+  description: String
+
   # A display title for this section
   title: String!
 }
 
-union HomeViewSection = ArtistsRailHomeViewSection | ArtworksRailHomeViewSection
+union HomeViewSection =
+    ArtistsRailHomeViewSection
+  | ArtworksRailHomeViewSection
+  | PartnersHomeViewSection
 
 # A connection to a list of items.
 type HomeViewSectionConnection {
@@ -14786,6 +14798,19 @@ enum PartnersAggregation {
 type PartnersAggregationResults {
   counts: [AggregationCount]
   slice: PartnersAggregation
+}
+
+# A section containing a list of galleries
+type PartnersHomeViewSection {
+  # The component that is prescribed for this section
+  component: HomeViewComponent!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  partnersConnection(after: String, before: String, first: Int, last: Int): PartnerConnection!
 }
 
 enum PartnersSortType {
