@@ -1,9 +1,5 @@
-import { requireNativeComponent } from "react-native"
+import { CityGuideMap } from "app/Scenes/Map/CityGuideMap"
 
-const ARTCityGuideView = requireNativeComponent("ARTCityGuideView")
-
-export const CityGuideView: React.FC = () => (
-  <ARTCityGuideView // @ts-ignore
-    style={{ flex: 1 }}
-  />
-)
+export const CityGuideView: React.FC = () => {
+  return <CityGuideMap citySlug="new-york-ny-usa" />
+}
