@@ -1,11 +1,14 @@
 import { Flex, Text, Button, Screen } from "@artsy/palette-mobile"
+import * as Sentry from "@sentry/react-native"
 import { goBack } from "app/system/navigation/navigate"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
+import { useEffect } from "react"
 
 interface NotFoundFailureViewProps {
   error?: Error
   title?: string
   text?: string
+  route?: string
   backButtonText?: string
 }
 
@@ -13,10 +16,20 @@ export const NotFoundFailureView: React.FC<NotFoundFailureViewProps> = ({
   error,
   title,
   text,
+  route,
   backButtonText,
 }) => {
   const isDevToggleEnabled = useDevToggle("DTShowErrorInLoadFailureView")
   const showErrorMessage = __DEV__ || isDevToggleEnabled
+
+  useEffect(() => {
+    if (route) {
+      Sentry.withScope((scope) => {
+        scope.setExtra("route", route)
+        Sentry.captureMessage("Navigation: Not found", "error")
+      })
+    }
+  }, [])
 
   return (
     <Screen>

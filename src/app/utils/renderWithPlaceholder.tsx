@@ -1,6 +1,6 @@
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { NotFoundFailureView } from "app/Components/NotFoundFailureView"
-import { getErrorHttpStatusCodes } from "app/Components/RetryErrorBoundary"
+import { getErrorHttpStatusCodes, getNotFoundRoute } from "app/Components/RetryErrorBoundary"
 import { QueryRenderer } from "react-relay"
 import { ProvidePlaceholderContext } from "./placeholders"
 
@@ -58,7 +58,7 @@ export function renderWithPlaceholder<Props>({
       const isNotFoundError = getErrorHttpStatusCodes(error).includes(404)
 
       if (isNotFoundError && showNotFoundView) {
-        return <NotFoundFailureView error={error} />
+        return <NotFoundFailureView error={error} route={getNotFoundRoute(error)} />
       }
 
       if (renderFallback) {

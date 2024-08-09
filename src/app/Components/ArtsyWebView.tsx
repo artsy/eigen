@@ -1,6 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex, Text } from "@artsy/palette-mobile"
 import { addBreadcrumb } from "@sentry/react-native"
+import * as Sentry from "@sentry/react-native"
 import { BottomTabRoutes } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { matchRoute } from "app/routes"
 import { GlobalStore, getCurrentEmissionState } from "app/store/GlobalStore"
@@ -277,6 +278,15 @@ export const ArtsyWebView = forwardRef<
                 "User-Agent": userAgent,
               },
             }),
+          }}
+          onError={(error) => {
+            // TODO: Validate / ensure this only tracks failures on initial load
+            const { nativeEvent } = error
+            Sentry.withScope((scope) => {
+              scope.setExtra("url", nativeEvent.url)
+              scope.setExtra("description", nativeEvent.description)
+              Sentry.captureMessage("Navigation: WebView failed to load URL", "error")
+            })
           }}
           style={{ flex: 1 }}
           userAgent={Platform.OS === "ios" ? userAgent : undefined}
