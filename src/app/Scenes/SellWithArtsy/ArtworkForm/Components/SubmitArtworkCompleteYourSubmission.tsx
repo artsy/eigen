@@ -37,7 +37,7 @@ export const SubmitArtworkCompleteYourSubmission = () => {
             </Flex>
 
             <Text variant="xs">
-              This will be used to list, sell and fulfil your work. Additional information may be
+              This will be used to list, sell and fulfill your work. Additional information may be
               requested.
             </Text>
 
