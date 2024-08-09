@@ -84,17 +84,15 @@ describe("inquiry modal", () => {
     })
   })
 
-  // TODO: This test is flaky
-  // https://app.circleci.com/pipelines/github/artsy/eigen/57015/workflows/1a8c3d54-9fc9-4f7c-97da-d63a883941e6/jobs/196449/tests
-  // it("closes when the 'cancel' button is pressed", async () => {
-  //   renderWithRelay()
+  it("closes when the 'cancel' button is pressed", async () => {
+    renderWithRelay()
 
-  //   fireEvent.press(screen.getByText("Cancel"))
+    fireEvent.press(screen.getByText("Cancel"))
 
-  //   await waitFor(() => {
-  //     expect(screen.queryByText("What information are you looking for?")).toBeNull()
-  //   })
-  // })
+    await waitFor(() => {
+      expect(screen.queryByText("What information are you looking for?")).toBeNull()
+    })
+  })
 
   it("tracks an event when the inquiry modal is closed", async () => {
     renderWithRelay({
