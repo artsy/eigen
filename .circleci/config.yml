@@ -438,7 +438,7 @@ jobs:
 
   build-test-app-android:
     docker:
-      - image: cimg/android:2024.01.1-node
+      - image: cimg/android:2024.08.1-node
     resource_class: large
     steps:
       - prep-android-env
@@ -463,7 +463,7 @@ jobs:
 
   build-maestro-nightly-android:
     docker:
-      - image: cimg/android:2024.01.1-node
+      - image: cimg/android:2024.08.1-node
     resource_class: large
 
     steps:
