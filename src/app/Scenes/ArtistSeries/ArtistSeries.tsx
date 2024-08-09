@@ -1,29 +1,18 @@
-import { OwnerType } from "@artsy/cohesion"
-import { Spacer, Flex, Box, Text, Separator, Screen } from "@artsy/palette-mobile"
+import { Spacer, Box, Screen, Tabs } from "@artsy/palette-mobile"
 import { ArtistSeriesQuery } from "__generated__/ArtistSeriesQuery.graphql"
 import { ArtistSeries_artistSeries$data } from "__generated__/ArtistSeries_artistSeries.graphql"
-import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
-import {
-  ArtworkFiltersStoreProvider,
-  ArtworksFiltersStore,
-} from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { useSelectedFiltersCount } from "app/Components/ArtworkFilter/useArtworkFilters"
-import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
+import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { ArtistSeriesArtworksFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesArtworks"
 import { ArtistSeriesHeaderFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesHeader"
 import { ArtistSeriesMetaFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesMeta"
-import { ArtistSeriesMoreSeriesFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { ProvideScreenTracking, Schema } from "app/utils/track"
+import { ProvideScreenTracking } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
-import React, { useState } from "react"
-import { ScrollView } from "react-native-gesture-handler"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { useTracking } from "react-tracking"
 
 interface ArtistSeriesProps {
   artistSeries: ArtistSeries_artistSeries$data
@@ -31,41 +20,6 @@ interface ArtistSeriesProps {
 
 export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
   const { artistSeries } = props
-  const tracking = useTracking()
-  const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
-  const selectedFiltersCount = useSelectedFiltersCount()
-  const artworksTotal = ArtworksFiltersStore.useStoreState((state) => state.counts.total) ?? 0
-
-  const artist = artistSeries.artist?.[0]
-  const artistSeriesTotalCount = artist?.artistSeriesConnection?.totalCount ?? 0
-
-  const handleFilterArtworksModal = () => {
-    setFilterArtworkModalVisible(!isFilterArtworksModalVisible)
-  }
-
-  const openFilterArtworksModal = () => {
-    tracking.trackEvent({
-      action_name: "filter",
-      context_screen_owner_type: Schema.OwnerEntityTypes.ArtistSeries,
-      context_screen: Schema.PageNames.ArtistSeriesPage,
-      context_screen_owner_id: artistSeries.internalID,
-      context_screen_owner_slug: artistSeries.slug,
-      action_type: Schema.ActionTypes.Tap,
-    })
-    handleFilterArtworksModal()
-  }
-
-  const closeFilterArtworksModal = () => {
-    tracking.trackEvent({
-      action_name: "closeFilterWindow",
-      context_screen_owner_type: Schema.OwnerEntityTypes.ArtistSeries,
-      context_screen: Schema.PageNames.ArtistSeriesPage,
-      context_screen_owner_id: artistSeries.internalID,
-      context_screen_owner_slug: artistSeries.slug,
-      action_type: Schema.ActionTypes.Tap,
-    })
-    handleFilterArtworksModal()
-  }
 
   return (
     <ProvideScreenTracking
@@ -76,70 +30,39 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
         context_screen_owner_id: artistSeries.internalID,
       }}
     >
-      <Screen>
-        <Screen.Header onBack={goBack} />
-        <ScrollView keyboardShouldPersistTaps="handled" stickyHeaderIndices={[1]}>
-          <>
-            <Flex px={2}>
-              <ArtistSeriesHeaderFragmentContainer artistSeries={artistSeries} />
-              <Spacer y={2} />
-              <ArtistSeriesMetaFragmentContainer artistSeries={artistSeries} />
-            </Flex>
-            <Separator mt={2} />
-          </>
-          {/* sticky ~ START ~ If you are rearanging the contents of the scrollview
-          make sure to adjust the stickyHeaderIndices to reflect which one
-          is the sticky component */}
-          <Flex backgroundColor="white">
-            <ArtworksFilterHeader
-              selectedFiltersCount={selectedFiltersCount}
-              onFilterPress={openFilterArtworksModal}
-            />
-          </Flex>
-
-          {/* sticky ~ END */}
-          <Flex px={2} mt={2}>
-            <Text variant="sm-display" color="black60" mb={2}>
-              Showing {artworksTotal} works
-            </Text>
+      <ArtworkFiltersStoreProvider>
+        <Tabs.TabsWithHeader
+          initialTabName="Artworks"
+          title={artistSeries?.title}
+          showLargeHeaderText={false}
+          BelowTitleHeaderComponent={() => (
+            <ArtistSeriesHeaderFragmentContainer artistSeries={artistSeries} />
+          )}
+          headerProps={{
+            onBack: goBack,
+          }}
+        >
+          <Tabs.Tab name="Artworks" label="Artworks">
             <ArtistSeriesArtworksFragmentContainer artistSeries={artistSeries} />
-            <ArtworkFilterNavigator
-              {...props}
-              visible={isFilterArtworksModalVisible}
-              id={artistSeries.internalID}
-              slug={artistSeries.slug}
-              mode={FilterModalMode.ArtistSeries}
-              exitModal={handleFilterArtworksModal}
-              closeModal={closeFilterArtworksModal}
-            />
-          </Flex>
-          {artistSeriesTotalCount !== 0 ? (
-            <>
-              <Separator mb={1} />
-              <Box pb={2} px={2}>
-                <ArtistSeriesMoreSeriesFragmentContainer
-                  contextScreenOwnerId={artistSeries.internalID}
-                  contextScreenOwnerSlug={artistSeries.slug}
-                  contextScreenOwnerType={OwnerType.artistSeries}
-                  artist={artist}
-                  artistSeriesHeader="More series by this artist"
-                  currentArtistSeriesExcluded
-                />
-              </Box>
-            </>
-          ) : undefined}
-        </ScrollView>
-      </Screen>
+          </Tabs.Tab>
+          <Tabs.Tab name="About" label="About">
+            <Tabs.ScrollView>
+              <ArtistSeriesMetaFragmentContainer artistSeries={artistSeries} />
+            </Tabs.ScrollView>
+          </Tabs.Tab>
+        </Tabs.TabsWithHeader>
+      </ArtworkFiltersStoreProvider>
     </ProvideScreenTracking>
   )
 }
 
+// clean me up / make me pretty update me to be a hook
 export const ArtistSeriesFragmentContainer = createFragmentContainer(ArtistSeries, {
   artistSeries: graphql`
     fragment ArtistSeries_artistSeries on ArtistSeries {
       internalID
       slug
-
+      title
       artistIDs
 
       ...ArtistSeriesHeader_artistSeries
@@ -157,6 +80,7 @@ export const ArtistSeriesFragmentContainer = createFragmentContainer(ArtistSerie
 })
 
 const ArtistSeriesPlaceholder: React.FC<{}> = ({}) => {
+  // TODO: fix me bitte
   return (
     <Screen>
       <Screen.Header />
