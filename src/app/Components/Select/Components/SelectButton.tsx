@@ -90,7 +90,11 @@ export const SelectButton: React.FC<{
             marginBottom: space(0.5),
           }}
         >
-          <Touchable onPress={onTooltipPress} haptic="impactLight">
+          <Touchable
+            onPress={onTooltipPress}
+            haptic="impactLight"
+            hitSlop={{ top: 10, bottom: 10 }}
+          >
             <Text underline variant="xs" color="black60">
               {tooltipText}
             </Text>
