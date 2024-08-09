@@ -1,13 +1,21 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Spacer, Box } from "@artsy/palette-mobile"
+import { Box, Tabs, useScreenDimensions, Flex, useSpace, Spinner } from "@artsy/palette-mobile"
+import { MasonryFlashListRef } from "@shopify/flash-list"
 import { ArtistSeriesArtworks_artistSeries$data } from "__generated__/ArtistSeriesArtworks_artistSeries.graphql"
+import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
+import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
-import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { ARTIST_SERIES_PAGE_SIZE } from "app/Components/constants"
+import { HeaderArtworksFilterWithTotalArtworks } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
+import { extractNodes } from "app/utils/extractNodes"
+import {
+  ESTIMATED_MASONRY_ITEM_SIZE,
+  NUM_COLUMNS_MASONRY,
+  ON_END_REACHED_THRESHOLD_MASONRY,
+} from "app/utils/masonryHelpers"
 import { Schema } from "app/utils/track"
-import React, { useEffect } from "react"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -23,10 +31,18 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({
   relay,
 }) => {
   const tracking = useTracking()
+  const { width } = useScreenDimensions()
+  const space = useSpace()
+  const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
 
   const artworks = artistSeries?.artistSeriesArtworks
   const artworksTotal = artworks?.counts?.total ?? 0
-
+  const artworksList = useMemo(
+    () => extractNodes(artistSeries.artistSeriesArtworks),
+    [artistSeries.artistSeriesArtworks]
+  )
+  const shouldDisplaySpinner = !!artworksList.length && !!relay.isLoading() && !!relay.hasMore()
+  const gridRef = useRef<MasonryFlashListRef<(typeof artworksList)[0]>>(null)
   const setFiltersCountAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.setFiltersCountAction
   )
@@ -45,6 +61,42 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({
     })
   }, [artworksTotal])
 
+  const handleFilterToggle = () => {
+    setFilterArtworkModalVisible((prev) => {
+      return !prev
+    })
+  }
+
+  const openFilterArtworksModal = () => {
+    tracking.trackEvent({
+      action_name: "filter",
+      context_screen_owner_type: Schema.OwnerEntityTypes.ArtistSeries,
+      context_screen: Schema.PageNames.ArtistSeriesPage,
+      context_screen_owner_id: artistSeries.internalID,
+      context_screen_owner_slug: artistSeries.slug,
+      action_type: Schema.ActionTypes.Tap,
+    })
+    handleFilterToggle()
+  }
+
+  const closeFilterArtworksModal = () => {
+    tracking.trackEvent({
+      action_name: "closeFilterWindow",
+      context_screen_owner_type: Schema.OwnerEntityTypes.ArtistSeries,
+      context_screen: Schema.PageNames.ArtistSeriesPage,
+      context_screen_owner_id: artistSeries.internalID,
+      context_screen_owner_slug: artistSeries.slug,
+      action_type: Schema.ActionTypes.Tap,
+    })
+    handleFilterToggle()
+  }
+
+  const loadMore = () => {
+    if (relay.hasMore() && !relay.isLoading()) {
+      relay.loadMore(10)
+    }
+  }
+
   const trackClear = (id: string, slug: string) => {
     tracking.trackEvent({
       action_name: "clearFilters",
@@ -56,33 +108,78 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({
     })
   }
 
-  if (artworksTotal === 0) {
+  const renderItem = useCallback(({ item, index, columnIndex }) => {
+    const imgAspectRatio = item.image?.aspectRatio ?? 1
+    const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
+    const imgHeight = imgWidth / imgAspectRatio
+
     return (
-      <Box>
-        <FilteredArtworkGridZeroState
-          id={artistSeries.internalID}
-          slug={artistSeries.slug}
-          trackClear={trackClear}
-        />
-        <Spacer y={2} />
-      </Box>
-    )
-  } else {
-    return (
-      <Box>
-        <InfiniteScrollArtworksGridContainer
-          connection={artworks}
-          loadMore={relay.loadMore}
-          hasMore={relay.hasMore}
-          autoFetch={false}
-          pageSize={ARTIST_SERIES_PAGE_SIZE}
+      <Flex
+        pl={columnIndex === 0 ? 0 : 1}
+        pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
+        mt={2}
+      >
+        <ArtworkGridItem
+          itemIndex={index}
           contextScreenOwnerType={OwnerType.artistSeries}
           contextScreenOwnerId={artistSeries.internalID}
           contextScreenOwnerSlug={artistSeries.slug}
+          artwork={item}
+          height={imgHeight}
         />
-      </Box>
+      </Flex>
     )
-  }
+  }, [])
+
+  return (
+    <>
+      <Tabs.Masonry
+        data={artworksList}
+        numColumns={NUM_COLUMNS_MASONRY}
+        estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
+        keyboardShouldPersistTaps="handled"
+        innerRef={gridRef}
+        ListEmptyComponent={
+          <Box mb="80px" pt={2}>
+            <FilteredArtworkGridZeroState
+              id={artistSeries.internalID}
+              slug={artistSeries.slug}
+              trackClear={trackClear}
+            />
+          </Box>
+        }
+        keyExtractor={(item) => item.id}
+        renderItem={renderItem}
+        onEndReached={loadMore}
+        onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
+        // need to pass zIndex: 1 here in order for the SubTabBar to
+        // be visible above list content
+        ListHeaderComponentStyle={{ zIndex: 1 }}
+        ListHeaderComponent={
+          <Tabs.SubTabBar>
+            <HeaderArtworksFilterWithTotalArtworks onPress={openFilterArtworksModal} />
+          </Tabs.SubTabBar>
+        }
+        ListFooterComponent={
+          !!shouldDisplaySpinner ? (
+            <Flex my={4} flexDirection="row" justifyContent="center">
+              <Spinner />
+            </Flex>
+          ) : null
+        }
+      />
+      <ArtworkFilterNavigator
+        id={artistSeries.internalID}
+        slug={artistSeries.slug}
+        visible={!!isFilterArtworksModalVisible}
+        name={artistSeries.title ?? ""}
+        exitModal={closeFilterArtworksModal}
+        closeModal={closeFilterArtworksModal}
+        mode={FilterModalMode.ArtistSeries}
+        shouldShowCreateAlertButton
+      />
+    </>
+  )
 }
 
 export const ArtistSeriesArtworksFragmentContainer = createPaginationContainer(
@@ -95,6 +192,7 @@ export const ArtistSeriesArtworksFragmentContainer = createPaginationContainer(
         cursor: { type: "String" }
         input: { type: "FilterArtworksInput" }
       ) {
+        title
         slug
         internalID
         artistSeriesArtworks: filterArtworksConnection(
@@ -124,12 +222,16 @@ export const ArtistSeriesArtworksFragmentContainer = createPaginationContainer(
           edges {
             node {
               id
+              slug
+              image(includeAll: false) {
+                aspectRatio
+              }
+              ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
             }
           }
           counts {
             total
           }
-          ...InfiniteScrollArtworksGrid_connection
         }
       }
     `,
