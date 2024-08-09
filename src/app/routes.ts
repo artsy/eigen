@@ -119,6 +119,8 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
         })),
   ])
 
+  const supportDotArtsyDotNet: RouteMatcher[] = compact([addWebViewRoute("/*")])
+
   const artsyDotNet: RouteMatcher[] = compact([
     addRoute("/", "Home"),
     addRoute("/about", "About"),
@@ -313,6 +315,8 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     "staging.artsy.net": artsyDotNet,
     "artsy.net": artsyDotNet,
     "www.artsy.net": artsyDotNet,
+    "support.artsy.net": supportDotArtsyDotNet,
+    "www.support.artsy.net": supportDotArtsyDotNet,
     [parse(unsafe__getEnvironment().webURL).host ?? "artsy.net"]: artsyDotNet,
   }
 
