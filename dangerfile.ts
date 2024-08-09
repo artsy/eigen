@@ -112,6 +112,12 @@ export const useWebPs = (fileNames: string[]) => {
 export const validatePRChangelog = () => {
   const pr = danger.github.pr
 
+  const isDraft = danger.github.pr.draft
+  if (isDraft) {
+    console.log("Skipping this check because the PR is a draft")
+    return
+  }
+
   const isOpen = pr.state === "open"
   if (!isOpen) {
     console.log("Skipping this check because the PR is not open")
