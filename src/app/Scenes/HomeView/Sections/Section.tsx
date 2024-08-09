@@ -1,8 +1,9 @@
+import { Flex, Text } from "@artsy/palette-mobile"
 import { HomeViewSectionsConnection_viewer$data } from "__generated__/HomeViewSectionsConnection_viewer.graphql"
+import { ArtistsRailHomeViewSectionPaginationContainer } from "app/Scenes/HomeView/Sections/ArtistsRailHomeViewSection"
 import { ArtworksRailHomeViewSection } from "app/Scenes/HomeView/Sections/ArtworksRailHomeViewSection"
 import { GenericHomeViewSection } from "app/Scenes/HomeView/Sections/GenericHomeViewSection"
 import { ExtractNodeType } from "app/utils/relayHelpers"
-import { Text } from "react-native-svg"
 
 type SectionsConnection = NonNullable<
   HomeViewSectionsConnection_viewer$data["homeView"]["sectionsConnection"]
@@ -18,9 +19,16 @@ export const Section: React.FC<{ section: SectionT }> = (props) => {
       return <ArtworksRailHomeViewSection section={section} />
     case "GenericHomeViewSection":
       return <GenericHomeViewSection section={section} />
+    case "ArtistsRailHomeViewSection":
+      return <ArtistsRailHomeViewSectionPaginationContainer section={section} />
     default:
       if (__DEV__) {
-        return <Text>Non supported section: {section.__typename}</Text>
+        return (
+          <Flex p={2} backgroundColor="black10">
+            <Text>Non supported section:</Text>
+            <Text color="devpurple">{section.__typename}</Text>
+          </Flex>
+        )
       }
       return null
   }
