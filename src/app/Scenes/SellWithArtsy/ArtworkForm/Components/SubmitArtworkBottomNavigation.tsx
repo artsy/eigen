@@ -183,7 +183,7 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
     <Wrapper>
       <Flex flexDirection="row" justifyContent="space-between" backgroundColor="white100">
         <Flex flexDirection="row" alignItems="center">
-          {currentStep !== INITIAL_EDIT_STEP && (
+          {!!values.submissionId && currentStep !== INITIAL_EDIT_STEP && (
             <Touchable onPress={handleBackPress}>
               <Text underline>Back</Text>
             </Touchable>
