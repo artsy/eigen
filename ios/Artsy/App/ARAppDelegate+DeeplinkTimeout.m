@@ -16,13 +16,14 @@ NSString *deeplinkRoute;
 }
 
 - (void)deeplinkTimeoutExpired {
+
+    NSError *deeplinkError = [NSError errorWithDomain:@"Deeplink timeout: Navigation did not complete in time" code:418 userInfo:@{ NSLocalizedDescriptionKey:@"Deeplink timeout: Navigation did not complete in time" }];
     if (deeplinkRoute) {
-        [SentrySDK captureMessage:@"Deeplink timeout: Navigation did not complete in time"];
-        [SentrySDK configureScope:^(SentryScope * _Nonnull scope) {
+        [SentrySDK captureError:deeplinkError withScopeBlock:^(SentryScope * _Nonnull scope) {
             [scope setExtraValue:deeplinkRoute forKey:@"deeplink_route"];
         }];
     } else {
-        [SentrySDK captureMessage:@"Deeplink timeout: Navigation did not complete in time"];
+        [SentrySDK captureError:deeplinkError];
     }
     deeplinkRoute = nil;
 }
