@@ -52,10 +52,6 @@ export const HeroUnitsRailHomeViewSection: React.FC<HeroUnitsRailHomeViewSection
 
 const fragment = graphql`
   fragment HeroUnitsRailHomeViewSection_section on HeroUnitsHomeViewSection {
-    component {
-      title
-    }
-
     heroUnitsConnection(first: 10) {
       edges {
         node {
