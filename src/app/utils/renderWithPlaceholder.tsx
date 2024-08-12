@@ -58,7 +58,8 @@ export function renderWithPlaceholder<Props>({
       const isNotFoundError = getErrorHttpStatusCodes(error).includes(404)
 
       if (isNotFoundError && showNotFoundView) {
-        return <NotFoundFailureView error={error} route={getNotFoundRoute(error)} />
+        const route = getNotFoundRoute(error)
+        return <NotFoundFailureView error={error} route={route} />
       }
 
       if (renderFallback) {

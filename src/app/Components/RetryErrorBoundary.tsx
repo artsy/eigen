@@ -42,12 +42,13 @@ export class RetryErrorBoundary extends Component<
       const isNotFoundError = getErrorHttpStatusCodes(error).includes(404)
 
       if (isNotFoundError) {
+        const route = getNotFoundRoute(error)
         return (
           <NotFoundFailureView
             title={notFoundTitle}
             text={notFoundText}
             backButtonText={notFoundBackButtonText}
-            route={getNotFoundRoute(error)}
+            route={route}
             error={error}
           />
         )
@@ -61,7 +62,19 @@ export class RetryErrorBoundary extends Component<
 }
 
 export const getNotFoundRoute = (error: any) => {
-  return error?.res?.json?.errors?.[0]?.extensions?.path || ""
+  if (error.message) {
+    // Attempt to extract the URL from the message
+    const urlMatch = error.message.match(/https?:\/\/[^\s]+/)
+    if (urlMatch) {
+      return urlMatch[0]
+    }
+  }
+
+  // If no URL found, try to extract the path
+  if (error.path) {
+    return error.path
+  }
+  return undefined
 }
 
 export const getErrorHttpStatusCodes = (error: any) => {
