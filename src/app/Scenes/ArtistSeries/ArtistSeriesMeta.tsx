@@ -1,4 +1,4 @@
-import { OwnerType } from "@artsy/cohesion"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Box } from "@artsy/palette-mobile"
 import { ArtistSeriesMeta_artistSeries$data } from "__generated__/ArtistSeriesMeta_artistSeries.graphql"
 import { ReadMore } from "app/Components/ReadMore"
@@ -27,6 +27,7 @@ export const ArtistSeriesMeta: React.FC<ArtistSeriesMetaProps> = ({ artistSeries
         <>
           <Box pb={2}>
             <ArtistSeriesMoreSeriesFragmentContainer
+              contextModule={ContextModule.moreSeriesByThisArtist}
               contextScreenOwnerId={artistSeries.internalID}
               contextScreenOwnerSlug={artistSeries.slug}
               contextScreenOwnerType={OwnerType.artistSeries}
