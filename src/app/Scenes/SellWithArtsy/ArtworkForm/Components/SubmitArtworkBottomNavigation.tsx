@@ -183,6 +183,7 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
     <Wrapper>
       <Flex flexDirection="row" justifyContent="space-between" backgroundColor="white100">
         <Flex flexDirection="row" alignItems="center">
+          {/* Hide the "Back" button in the Title step when editing a submission to disallow updating the artist. */}
           {!!values.submissionId && currentStep !== INITIAL_EDIT_STEP && (
             <Touchable onPress={handleBackPress}>
               <Text underline>Back</Text>
