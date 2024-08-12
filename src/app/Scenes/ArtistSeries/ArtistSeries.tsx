@@ -65,7 +65,6 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
   )
 }
 
-// clean me up / make me pretty update me to be a hook
 export const ArtistSeriesFragmentContainer = createFragmentContainer(ArtistSeries, {
   artistSeries: graphql`
     fragment ArtistSeries_artistSeries on ArtistSeries {
@@ -145,7 +144,6 @@ export const ArtistSeriesQueryRenderer: React.FC<{ artistSeriesID: string }> = (
           artistSeriesID,
         }}
         render={renderWithPlaceholder({
-          // Container: () => <ArtistSeriesPlaceholder />,
           Container: ArtistSeriesFragmentContainer,
           renderPlaceholder: () => <ArtistSeriesPlaceholder />,
         })}
