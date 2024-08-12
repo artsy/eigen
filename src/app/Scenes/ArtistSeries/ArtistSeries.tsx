@@ -1,4 +1,14 @@
-import { Spacer, Box, Screen, Tabs } from "@artsy/palette-mobile"
+import {
+  Spacer,
+  Screen,
+  Tabs,
+  useScreenDimensions,
+  Skeleton,
+  SkeletonBox,
+  Flex,
+  SkeletonText,
+  Separator,
+} from "@artsy/palette-mobile"
 import { ArtistSeriesQuery } from "__generated__/ArtistSeriesQuery.graphql"
 import { ArtistSeries_artistSeries$data } from "__generated__/ArtistSeries_artistSeries.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -8,7 +18,6 @@ import { ArtistSeriesHeaderFragmentContainer } from "app/Scenes/ArtistSeries/Art
 import { ArtistSeriesMetaFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesMeta"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
@@ -79,26 +88,40 @@ export const ArtistSeriesFragmentContainer = createFragmentContainer(ArtistSerie
   `,
 })
 
-const ArtistSeriesPlaceholder: React.FC<{}> = ({}) => {
-  // TODO: fix me bitte
+const ArtistSeriesPlaceholder: React.FC = () => {
+  const { width } = useScreenDimensions()
+
   return (
     <Screen>
       <Screen.Header />
-      <Box>
-        <Box px={2}>
-          {/* Series header image */}
-          <PlaceholderBox height={180} width={180} alignSelf="center" />
+      <Screen.Body fullwidth>
+        <Skeleton>
+          <SkeletonBox width={width} height={250} />
           <Spacer y={2} />
-          {/* Artist Series name */}
-          <PlaceholderText width={220} />
-          {/* Artist series info */}
-          <PlaceholderText width={190} />
-          <PlaceholderText width={190} />
-        </Box>
-        <Spacer y={2} />
-        {/* masonry grid */}
+          <Flex px={2}>
+            <SkeletonText variant="lg">Artist Series Name</SkeletonText>
+          </Flex>
+
+          <Spacer y={2} />
+
+          <Flex px={2} justifyContent="space-between" flexDirection="row">
+            <SkeletonText variant="lg">Artist Name</SkeletonText>
+            <SkeletonBox width={100} height={40} />
+          </Flex>
+
+          <Spacer y={4} />
+
+          {/* Tabs */}
+          <Flex justifyContent="space-around" flexDirection="row" px={2}>
+            <SkeletonText variant="xs">Artworks</SkeletonText>
+            <SkeletonText variant="xs">About</SkeletonText>
+          </Flex>
+        </Skeleton>
+
+        <Separator mt={1} mb={4} />
+
         <PlaceholderGrid />
-      </Box>
+      </Screen.Body>
     </Screen>
   )
 }
@@ -122,6 +145,7 @@ export const ArtistSeriesQueryRenderer: React.FC<{ artistSeriesID: string }> = (
           artistSeriesID,
         }}
         render={renderWithPlaceholder({
+          // Container: () => <ArtistSeriesPlaceholder />,
           Container: ArtistSeriesFragmentContainer,
           renderPlaceholder: () => <ArtistSeriesPlaceholder />,
         })}
