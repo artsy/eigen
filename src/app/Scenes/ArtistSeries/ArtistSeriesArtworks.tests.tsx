@@ -1,76 +1,48 @@
+import { screen } from "@testing-library/react-native"
 import { ArtistSeriesArtworksTestsQuery } from "__generated__/ArtistSeriesArtworksTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
-import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ArtistSeriesArtworksFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesArtworks"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 
 describe("Artist Series Artworks", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    env = createMockEnvironment()
+  const { renderWithRelay } = setupTestWrapper<ArtistSeriesArtworksTestsQuery>({
+    Component: ({ artistSeries }) => (
+      <ArtworkFiltersStoreProvider>
+        <ArtistSeriesArtworksFragmentContainer artistSeries={artistSeries!} />
+      </ArtworkFiltersStoreProvider>
+    ),
+    query: graphql`
+      query ArtistSeriesArtworksTestsQuery @relay_test_operation {
+        artistSeries(id: "pumpkins") {
+          ...ArtistSeriesArtworks_artistSeries
+        }
+      }
+    `,
   })
 
-  const TestRenderer = () => (
-    <QueryRenderer<ArtistSeriesArtworksTestsQuery>
-      environment={env}
-      query={graphql`
-        query ArtistSeriesArtworksTestsQuery @relay_test_operation {
-          artistSeries(id: "pumpkins") {
-            ...ArtistSeriesArtworks_artistSeries
-          }
-        }
-      `}
-      variables={{}}
-      render={({ props, error }) => {
-        if (props?.artistSeries) {
-          return (
-            <ArtworkFiltersStoreProvider>
-              <ArtistSeriesArtworksFragmentContainer artistSeries={props.artistSeries} />
-            </ArtworkFiltersStoreProvider>
-          )
-        } else if (error) {
-          console.log(error)
-        }
-      }}
-    />
-  )
-
-  const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, mockResolvers)
-      )
-    })
-    return tree
-  }
-
   it("renders an artwork grid if artworks", () => {
-    const tree = getWrapper()
-    expect(tree.root.findAllByType(InfiniteScrollArtworksGridContainer)).toHaveLength(1)
+    renderWithRelay({})
+
+    expect(screen.getByTestId("ArtistSeriesArtworksGrid")).toBeOnTheScreen()
+
+    expect(screen.queryByText(/No results found/)).not.toBeOnTheScreen()
   })
 
   it("renders a null component if no artworks", () => {
-    const tree = getWrapper({
+    renderWithRelay({
       ArtistSeries: () => ({
         artistSeriesArtworks: {
           counts: {
             total: 0,
           },
+          edges: null,
         },
       }),
     })
 
-    expect(tree.root.findAllByType(InfiniteScrollArtworksGridContainer)).toHaveLength(0)
-    expect(tree.root.findAllByType(FilteredArtworkGridZeroState)).toHaveLength(1)
-    expect(extractText(tree.root)).toContain(
-      "No results found\nPlease try another search.Clear filters"
-    )
+    expect(screen.getByTestId("ArtistSeriesArtworksGrid")).toBeOnTheScreen()
+
+    expect(screen.getByText(/No results found/)).toBeOnTheScreen()
   })
 })
