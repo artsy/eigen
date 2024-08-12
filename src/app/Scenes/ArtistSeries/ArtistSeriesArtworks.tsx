@@ -134,6 +134,7 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({
   return (
     <>
       <Tabs.Masonry
+        testID="ArtistSeriesArtworksGrid"
         data={artworksList}
         numColumns={NUM_COLUMNS_MASONRY}
         estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
