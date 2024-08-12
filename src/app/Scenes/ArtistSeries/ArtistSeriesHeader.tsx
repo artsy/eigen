@@ -5,20 +5,12 @@ import {
   OwnerType,
   unfollowedArtist,
 } from "@artsy/cohesion"
-import {
-  Box,
-  EntityHeader,
-  Spacer,
-  Text,
-  Touchable,
-  useScreenDimensions,
-} from "@artsy/palette-mobile"
-import { ArtistSeriesHeaderFollowMutation } from "__generated__/ArtistSeriesHeaderFollowMutation.graphql"
+import { Box, Text } from "@artsy/palette-mobile"
 import { ArtistSeriesHeader_artistSeries$data } from "__generated__/ArtistSeriesHeader_artistSeries.graphql"
+import { useArtistHeaderImageDimensions } from "app/Components/Artist/ArtistHeader"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "app/system/navigation/navigate"
-import { TouchableOpacity } from "react-native"
-import { commitMutation, createFragmentContainer, graphql } from "react-relay"
+import { ArtistListItemNew } from "app/Scenes/Onboarding/OnboardingQuiz/Components/ArtistListItem"
+import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface ArtistSeriesHeaderProps {
@@ -30,8 +22,7 @@ type ArtistToFollowOrUnfollow = NonNullable<
   NonNullable<ArtistSeriesHeaderProps["artistSeries"]["artists"]>[0]
 >
 
-export const ArtistSeriesHeader: React.FC<ArtistSeriesHeaderProps> = ({ artistSeries, relay }) => {
-  const { width } = useScreenDimensions()
+export const ArtistSeriesHeader: React.FC<ArtistSeriesHeaderProps> = ({ artistSeries }) => {
   const { trackEvent } = useTracking()
   const { title, image, artists, internalID, slug } = artistSeries
   const artist = artists?.[0]
@@ -53,34 +44,7 @@ export const ArtistSeriesHeader: React.FC<ArtistSeriesHeaderProps> = ({ artistSe
     trackEvent(properties)
   }
 
-  const followOrUnfollowArtist = (followArtist: ArtistToFollowOrUnfollow) => {
-    trackFollowOrUnfollow(followArtist)
-
-    return new Promise<void>((resolve, reject) => {
-      commitMutation<ArtistSeriesHeaderFollowMutation>(relay.environment, {
-        mutation: graphql`
-          mutation ArtistSeriesHeaderFollowMutation($input: FollowArtistInput!) {
-            followArtist(input: $input) {
-              artist {
-                isFollowed
-              }
-            }
-          }
-        `,
-        variables: {
-          input: { artistID: followArtist.internalID, unfollow: followArtist.isFollowed },
-        },
-        onError: reject,
-        onCompleted: (_response, errors) => {
-          if (errors && errors.length > 0) {
-            reject(new Error(JSON.stringify(errors)))
-          } else {
-            resolve()
-          }
-        },
-      })
-    })
-  }
+  const { aspectRatio, width, height } = useArtistHeaderImageDimensions()
 
   return (
     <>
@@ -88,8 +52,9 @@ export const ArtistSeriesHeader: React.FC<ArtistSeriesHeaderProps> = ({ artistSe
         <OpaqueImageView
           testID="ArtistSeriesHeaderImage"
           imageURL={image?.url}
-          width={width / 1.18}
-          aspectRatio={image?.aspectRatio}
+          width={width}
+          aspectRatio={aspectRatio}
+          height={height}
         />
       </Box>
       <Box pointerEvents="none">
@@ -97,35 +62,9 @@ export const ArtistSeriesHeader: React.FC<ArtistSeriesHeaderProps> = ({ artistSe
           {title}
         </Text>
       </Box>
-      {/* // TODO: add artist follow from artist series */}
-      <Box mt={2} ml={2}>
+      <Box mt={2} mx={2}>
         {!!artist && (
-          <TouchableOpacity
-            key={artist.id}
-            onPress={() => {
-              navigate(`/artist/${artist.slug}`)
-            }}
-          >
-            <Spacer y={0.5} />
-            <EntityHeader
-              smallVariant
-              name={artist.name ?? ""}
-              imageUrl={artist.image?.url ?? ""}
-              FollowButton={
-                <Touchable
-                  onPress={() => followOrUnfollowArtist(artist)}
-                  hitSlop={{ top: 20, left: 20, bottom: 20, right: 20 }}
-                  haptic
-                  noFeedback
-                >
-                  <Text variant="sm" style={{ textDecorationLine: "underline" }}>
-                    {artist.isFollowed ? "Following" : "Follow"}
-                  </Text>
-                </Touchable>
-              }
-            />
-            <Spacer y={0.5} />
-          </TouchableOpacity>
+          <ArtistListItemNew artist={artist} onFollow={() => trackFollowOrUnfollow(artist)} />
         )}
       </Box>
     </>
@@ -143,14 +82,12 @@ export const ArtistSeriesHeaderFragmentContainer = createFragmentContainer(Artis
         url(version: "larger")
       }
       artists(size: 1) {
+        ...ArtistListItemNew_artist
         id
         internalID
         name
         slug
         isFollowed
-        image {
-          url
-        }
       }
     }
   `,
