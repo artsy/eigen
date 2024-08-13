@@ -5,7 +5,7 @@ import { HeroUnit } from "app/Scenes/Home/Components/HeroUnitsRail"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
 import { useRef, useState } from "react"
-import { FlatList, ViewabilityConfig } from "react-native"
+import { FlatList, ViewabilityConfig, ViewToken } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
 interface HeroUnitsRailHomeViewSectionProps {
@@ -20,10 +20,13 @@ export const HeroUnitsRailHomeViewSection: React.FC<HeroUnitsRailHomeViewSection
 
   const [currentIndex, setCurrentIndex] = useState(0)
 
-  const onViewableItemsChanged = ({ viewableItems }: any) => {
+  const onViewableItemsChanged = ({ viewableItems }: { viewableItems: ViewToken[] }) => {
     if (viewableItems.length > 0) {
       const index = viewableItems[0].index
-      setCurrentIndex(index)
+
+      if (index) {
+        setCurrentIndex(index)
+      }
     }
   }
 
