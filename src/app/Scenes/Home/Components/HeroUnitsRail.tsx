@@ -23,7 +23,7 @@ const CARD_HEIGHT = 250 * fontScale
 const CARD_IMAGE_WIDTH = 125
 const DESCRIPTION_LINES = fontScale > 1 ? 4 : 3
 
-const HeroUnit: React.FC<HeroUnitProps> = ({ item }) => {
+export const HeroUnit: React.FC<HeroUnitProps> = ({ item }) => {
   const { width: screenWidth } = useScreenDimensions()
   const cardImageWidth = screenWidth > 700 ? screenWidth / 2 : CARD_IMAGE_WIDTH
   const imageSrc = item.image?.imageURL ?? ""

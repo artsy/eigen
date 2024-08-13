@@ -3,6 +3,7 @@ import { HomeViewSectionsConnection_viewer$data } from "__generated__/HomeViewSe
 import { ArtistsRailHomeViewSectionPaginationContainer } from "app/Scenes/HomeView/Sections/ArtistsRailHomeViewSection"
 import { ArtworksRailHomeViewSection } from "app/Scenes/HomeView/Sections/ArtworksRailHomeViewSection"
 import { GenericHomeViewSection } from "app/Scenes/HomeView/Sections/GenericHomeViewSection"
+import { HeroUnitsRailHomeViewSection } from "app/Scenes/HomeView/Sections/HeroUnitsRailHomeViewSection"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 
 type SectionsConnection = NonNullable<
@@ -21,6 +22,8 @@ export const Section: React.FC<{ section: SectionT }> = (props) => {
       return <GenericHomeViewSection section={section} />
     case "ArtistsRailHomeViewSection":
       return <ArtistsRailHomeViewSectionPaginationContainer section={section} />
+    case "HeroUnitsHomeViewSection":
+      return <HeroUnitsRailHomeViewSection section={section} />
     default:
       if (__DEV__) {
         return (
