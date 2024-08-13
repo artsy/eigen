@@ -54,7 +54,10 @@ export const MyCollectionArtworkSubmissionStatus: React.FC<
               <Text variant="xs" color="black100">
                 Submission Status
               </Text>
-              <Touchable onPress={() => setIsSubmissionStatusModalVisible(true)}>
+              <Touchable
+                onPress={() => setIsSubmissionStatusModalVisible(true)}
+                hitSlop={{ top: 10, bottom: 10 }}
+              >
                 <Text style={{ textDecorationLine: "underline" }} variant="xs" color="black60">
                   What's this?
                 </Text>
@@ -96,7 +99,10 @@ export const MyCollectionArtworkSubmissionStatus: React.FC<
               <Text variant="xs" color="black100">
                 Submission Status
               </Text>
-              <Touchable onPress={() => setIsSubmissionStatusModalVisible(true)}>
+              <Touchable
+                onPress={() => setIsSubmissionStatusModalVisible(true)}
+                hitSlop={{ top: 10, bottom: 10 }}
+              >
                 <Text style={{ textDecorationLine: "underline" }} variant="xs" color="black60">
                   What's this?
                 </Text>

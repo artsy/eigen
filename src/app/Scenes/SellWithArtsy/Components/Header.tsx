@@ -8,6 +8,10 @@ import {
   Touchable,
 } from "@artsy/palette-mobile"
 import { Header_submission$key } from "__generated__/Header_submission.graphql"
+import {
+  INITIAL_EDIT_STEP,
+  SubmitArtworkStackNavigation,
+} from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubmitArtworkTracking"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
@@ -29,6 +33,8 @@ export const Header: React.FC<HeaderProps> = (props) => {
 
   const artist = submission?.artist
 
+  const previousStep: keyof SubmitArtworkStackNavigation = draft?.currentStep || INITIAL_EDIT_STEP
+
   return (
     <Flex>
       <Image
@@ -44,10 +50,8 @@ export const Header: React.FC<HeaderProps> = (props) => {
           <Box mb={0.5}>
             <Touchable
               onPress={() => {
-                trackTappedContinueSubmission(draft.submissionID, draft.currentStep)
-                navigate(
-                  `/sell/submissions/${draft.submissionID}/edit?initialStep=${draft.currentStep}`
-                )
+                trackTappedContinueSubmission(draft.submissionID, previousStep)
+                navigate(`/sell/submissions/${draft.submissionID}/edit?initialStep=${previousStep}`)
               }}
               onLongPress={() => {
                 Alert.alert(

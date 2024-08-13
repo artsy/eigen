@@ -37,8 +37,6 @@ export const checkAuthenticationMiddleware = (): Middleware => {
         if (__DEV__) {
           console.error(e)
         }
-        // network problem
-        Alert.alert("Network unavailable", "Please check your connection.")
       }
     }
 

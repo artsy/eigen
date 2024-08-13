@@ -96,6 +96,21 @@ export const useSubmitArtworkTracking = () => {
     })
   }
 
+  const trackTappedEditSubmission = (
+    submission_id: string,
+    buttonLabel: string | null | undefined,
+    submission_state: string
+  ) => {
+    trackEvent({
+      action: "tappedEditSubmission",
+      context_module: ContextModule.sell,
+      context_owner_type: OwnerType.myCollectionArtwork,
+      submission_id,
+      submission_state,
+      subject: buttonLabel,
+    })
+  }
+
   return {
     trackTappedContinueSubmission,
     trackTappedNewSubmission,
@@ -106,6 +121,7 @@ export const useSubmitArtworkTracking = () => {
     trackTappedSubmitAnotherWork,
     trackTappedViewArtworkInMyCollection,
     trackTappedContactAdvisor,
+    trackTappedEditSubmission,
   }
 }
 

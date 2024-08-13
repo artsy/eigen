@@ -140,21 +140,34 @@ describe("SubmitArtworkBottomNavigation", () => {
       expect(emit).toHaveBeenCalledWith(NAVIGATE_TO_NEXT_STEP_EVENT)
     })
 
-    it("Shows a functional back button", () => {
-      renderWithSubmitArtworkWrapper({
-        includeBottomNavigation: false,
-        component: <SubmitArtworkBottomNavigation />,
-        props: { currentStep: "AddTitle" },
-        injectedFormikProps: { title: "Some title" },
+    describe("when the current step is AddTitle", () => {
+      it("does not show a back button", () => {
+        renderWithSubmitArtworkWrapper({
+          includeBottomNavigation: false,
+          component: <SubmitArtworkBottomNavigation />,
+          props: { currentStep: "ArtistRejected" },
+        })
+
+        expect(screen.queryByText("Back")).toBeNull()
       })
+    })
+    describe("when the current step is not AddTitle", () => {
+      it("shows a functional back button", () => {
+        renderWithSubmitArtworkWrapper({
+          includeBottomNavigation: false,
+          component: <SubmitArtworkBottomNavigation />,
+          props: { currentStep: "AddPhotos" },
+          injectedFormikProps: { title: "Some title" },
+        })
 
-      const backButton = screen.getByText("Back")
-      expect(backButton).toBeOnTheScreen()
+        const backButton = screen.getByText("Back")
+        expect(backButton).toBeOnTheScreen()
 
-      const emit = jest.spyOn(SubmitArtworkFormEvents, "emit")
-      fireEvent(backButton, "onPress")
+        const emit = jest.spyOn(SubmitArtworkFormEvents, "emit")
+        fireEvent(backButton, "onPress")
 
-      expect(emit).toHaveBeenCalledWith(NAVIGATE_TO_PREVIOUS_STEP_EVENT)
+        expect(emit).toHaveBeenCalledWith(NAVIGATE_TO_PREVIOUS_STEP_EVENT)
+      })
     })
   })
 })

@@ -18,95 +18,107 @@ describe("MyProfileHeader", () => {
     `,
   })
 
-  it("Header Settings onPress navigates to my profile edit", () => {
-    renderWithRelay()
-    const profileImage = screen.getByTestId("profile-image")
-
-    expect(profileImage).toBeTruthy()
-    fireEvent.press(profileImage)
-    expect(navigate).toHaveBeenCalledTimes(1)
-    expect(navigate).toHaveBeenCalledWith("/my-profile/edit", {
-      passProps: { onSuccess: expect.anything() },
-    })
-  })
-
-  it("Header shows the right text", async () => {
-    renderWithRelay({
-      Me: () => ({
-        name: "My Name",
-        createdAt: new Date().toISOString(),
-        bio: "My Bio",
-        icon: {
-          url: "https://someurll.jpg",
-        },
-      }),
-    })
-    const year = new Date().getFullYear()
-
-    expect(screen.getByText("My Name")).toBeOnTheScreen()
-    expect(screen.getByText(`Member since ${year}`)).toBeOnTheScreen()
-    expect(screen.getByText("My Bio")).toBeOnTheScreen()
-  })
-
-  it("renders Collector Profile info", async () => {
-    renderWithRelay({
-      Me: () => ({
-        name: "Princess",
-        createdAt: new Date("12/12/12").toISOString(),
-        bio: "Richest Collector! 💰",
-        location: {
-          display: "Atlantis",
-        },
-        profession: "Guardian of the Galaxy",
-        otherRelevantPositions: "Marvel Universe",
-      }),
-    })
-
-    expect(screen.getByText("Guardian of the Galaxy")).toBeOnTheScreen()
-    expect(screen.getByText("Atlantis")).toBeOnTheScreen()
-    expect(screen.getByText("Marvel Universe")).toBeOnTheScreen()
-  })
-
-  describe("new settings screen", () => {
+  describe("when AREnableNewCollectorSettings is turned off", () => {
     beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewCollectorSettings: true })
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        AREnableNewCollectorSettings: false,
+      })
     })
 
-    it("renders new settings screen", async () => {
+    it("renders Collector Profile info", async () => {
       renderWithRelay({
         Me: () => ({
-          name: "Collector Collectorson",
+          name: "Princess",
+          createdAt: new Date("12/12/12").toISOString(),
+          bio: "Richest Collector! 💰",
           location: {
-            display: "The Shire, Farthing",
+            display: "Atlantis",
           },
-          counts: {
-            followedArtists: 1,
-            savedArtworks: 2,
-            savedSearches: 3,
-          },
+          profession: "Guardian of the Galaxy",
+          otherRelevantPositions: "Marvel Universe",
         }),
       })
 
-      expect(screen.getByText("The Shire, Farthing")).toBeOnTheScreen()
-      expect(screen.getByText("1")).toBeOnTheScreen()
-      expect(screen.getByText("Follow")).toBeOnTheScreen()
-      expect(screen.getByText("2")).toBeOnTheScreen()
-      expect(screen.getByText("Saves")).toBeOnTheScreen()
-      expect(screen.getByText("3")).toBeOnTheScreen()
-      expect(screen.getByText("Alerts")).toBeOnTheScreen()
+      expect(screen.getByText("Guardian of the Galaxy")).toBeOnTheScreen()
+      expect(screen.getByText("Atlantis")).toBeOnTheScreen()
+      expect(screen.getByText("Marvel Universe")).toBeOnTheScreen()
     })
 
-    it("navigates to the other screens from the links", () => {
+    it("Header shows the right text", async () => {
+      renderWithRelay({
+        Me: () => ({
+          name: "My Name",
+          createdAt: new Date().toISOString(),
+          bio: "My Bio",
+          icon: {
+            url: "https://someurll.jpg",
+          },
+        }),
+      })
+      const year = new Date().getFullYear()
+
+      expect(screen.getByText("My Name")).toBeOnTheScreen()
+      expect(screen.getByText(`Member since ${year}`)).toBeOnTheScreen()
+      expect(screen.getByText("My Bio")).toBeOnTheScreen()
+    })
+  })
+
+  describe("when AREnableNewCollectorSettings is turned on", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        AREnableNewCollectorSettings: true,
+      })
+    })
+
+    it("Header Settings onPress navigates to my profile edit", () => {
       renderWithRelay()
+      const profileImage = screen.getByTestId("profile-image")
 
-      fireEvent.press(screen.getByText("Follows"))
-      expect(navigate).toHaveBeenLastCalledWith("favorites")
+      expect(profileImage).toBeTruthy()
+      fireEvent.press(profileImage)
+      expect(navigate).toHaveBeenCalledTimes(1)
+      expect(navigate).toHaveBeenCalledWith("/my-profile/edit", {
+        passProps: { onSuccess: expect.anything() },
+      })
+    })
 
-      fireEvent.press(screen.getByText("Saves"))
-      expect(navigate).toHaveBeenLastCalledWith("settings/saves")
+    describe("new settings screen", () => {
+      it("renders new settings screen", async () => {
+        renderWithRelay({
+          Me: () => ({
+            name: "Collector Collectorson",
+            location: {
+              display: "The Shire, Farthing",
+            },
+            counts: {
+              followedArtists: 1,
+              savedArtworks: 2,
+              savedSearches: 3,
+            },
+          }),
+        })
 
-      fireEvent.press(screen.getByText("Alerts"))
-      expect(navigate).toHaveBeenLastCalledWith("settings/alerts")
+        expect(screen.getByText("The Shire, Farthing")).toBeOnTheScreen()
+        expect(screen.getByText("1")).toBeOnTheScreen()
+        expect(screen.getByText("Follow")).toBeOnTheScreen()
+        expect(screen.getByText("2")).toBeOnTheScreen()
+        expect(screen.getByText("Saves")).toBeOnTheScreen()
+        expect(screen.getByText("3")).toBeOnTheScreen()
+        expect(screen.getByText("Alerts")).toBeOnTheScreen()
+      })
+
+      it("navigates to the other screens from the links", () => {
+        renderWithRelay()
+
+        fireEvent.press(screen.getByText("Follows"))
+        expect(navigate).toHaveBeenLastCalledWith("favorites")
+
+        fireEvent.press(screen.getByText("Saves"))
+        expect(navigate).toHaveBeenLastCalledWith("settings/saves")
+
+        fireEvent.press(screen.getByText("Alerts"))
+        expect(navigate).toHaveBeenLastCalledWith("settings/alerts")
+      })
     })
   })
 })

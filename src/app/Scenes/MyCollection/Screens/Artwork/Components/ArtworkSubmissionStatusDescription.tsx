@@ -1,7 +1,12 @@
 import { Button, Flex, LinkText, Text } from "@artsy/palette-mobile"
 import { ArtworkSubmissionStatusDescription_artwork$key } from "__generated__/ArtworkSubmissionStatusDescription_artwork.graphql"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
-import { SubmitArtworkProps } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
+import {
+  INITIAL_EDIT_STEP,
+  INITIAL_POST_APPROVAL_STEP,
+  SubmitArtworkProps,
+} from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
+import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubmitArtworkTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { graphql, useFragment } from "react-relay"
 
@@ -20,6 +25,8 @@ export const ArtworkSubmissionStatusDescription: React.FC<
     submissionId,
     internalID: artworkInternalID,
   } = useFragment(fragment, artworkData)
+
+  const { trackTappedEditSubmission } = useSubmitArtworkTracking()
 
   if (!consignmentSubmission || !submissionId) return null
 
@@ -59,12 +66,14 @@ export const ArtworkSubmissionStatusDescription: React.FC<
     }
 
     const passProps: SubmitArtworkProps = {
-      initialStep: state === "APPROVED" ? "ShippingLocation" : "AddPhotos",
+      initialStep: state === "APPROVED" ? INITIAL_POST_APPROVAL_STEP : INITIAL_EDIT_STEP,
       hasStartedFlowFromMyCollection: true,
       initialValues: {},
     }
     navigate(`/sell/submissions/${submissionId}/edit`, { passProps })
   }
+
+  const displayButtonLabel = isListed ? "View Listing" : buttonLabel
 
   return (
     <Flex testID="ArtworkSubmissionStatusDescription-Container">
@@ -93,10 +102,11 @@ export const ArtworkSubmissionStatusDescription: React.FC<
               haptic
               variant={buttonVariant}
               onPress={() => {
+                trackTappedEditSubmission(submissionId, displayButtonLabel, state)
                 navigateToTheSubmissionFlow()
               }}
             >
-              {isListed ? "View Listing" : buttonLabel}
+              {displayButtonLabel}
             </Button>
           )}
         </Flex>

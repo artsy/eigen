@@ -1,5 +1,12 @@
 {
   "extends": ["@artsy:app", ":automergePatch", "helpers:pinGitHubActionDigests"],
+  "packageRules": [
+    {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["cimg/android"],
+      "enabled": false
+    }
+  ],
   "assignees": ["gkartalis", "brainbicycle"],
   "reviewers": ["gkartalis", "brianbicycle"]
 }

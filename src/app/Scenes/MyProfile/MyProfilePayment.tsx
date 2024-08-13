@@ -30,7 +30,7 @@ import {
 
 const NUM_CARDS_TO_FETCH = 100 // stupidly high because most people will have 1 or *maybe* 2
 
-// VERY DIRTY HACK
+// VERY DIRTY HACK!
 // When creating a new card we need to wait for a refresh of this screen before navigating back.
 // At the moment the only way for these screens to communicate is via global state, since we can't
 // transmit react contexts accross screens.

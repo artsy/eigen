@@ -30,9 +30,9 @@ import {
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
 import { getInitialNavigationState } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/getInitialNavigationState"
 import {
+  getCurrentValidationSchema,
   SubmissionModel,
   submissionModelInitialValues,
-  getCurrentValidationSchema,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { fetchUserContactInformation } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/fetchUserContactInformation"
@@ -71,6 +71,9 @@ export interface SubmitArtworkProps {
   submissionID?: string
   hasStartedFlowFromMyCollection?: boolean
 }
+
+export const INITIAL_EDIT_STEP: keyof SubmitArtworkStackNavigation = "AddTitle"
+export const INITIAL_POST_APPROVAL_STEP: keyof SubmitArtworkStackNavigation = "ShippingLocation"
 
 export const SubmitArtworkForm: React.FC<SubmitArtworkProps> = (props) => {
   const initialScreen: SubmitArtworkScreen = props.initialStep || "StartFlow"
