@@ -539,8 +539,8 @@ workflows:
     jobs:
       - deploy-nightly-beta
       - run-nightly-tasks
-      - build-maestro-nightly-ios
-      - build-maestro-nightly-android
+      # - build-maestro-nightly-ios
+      # - build-maestro-nightly-android
 
   flag-check:
     triggers:
