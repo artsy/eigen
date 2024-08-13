@@ -1,7 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Box, Tabs, useScreenDimensions, Flex, useSpace, Spinner } from "@artsy/palette-mobile"
 import { MasonryFlashListRef } from "@shopify/flash-list"
-import { ArtistSeriesArtworks_artistSeries$data } from "__generated__/ArtistSeriesArtworks_artistSeries.graphql"
+import { ArtistSeriesArtworks_artistSeries$key } from "__generated__/ArtistSeriesArtworks_artistSeries.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
@@ -16,39 +16,39 @@ import {
 } from "app/utils/masonryHelpers"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { graphql, usePaginationFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface ArtistSeriesArtworksProps {
-  artistSeries: ArtistSeriesArtworks_artistSeries$data
-  relay: RelayPaginationProp
+  artistSeries: ArtistSeriesArtworks_artistSeries$key
 }
 
-const PAGE_SIZE = 20
+const PAGE_SIZE = 10
 
-export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({
-  artistSeries,
-  relay,
-}) => {
+export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ artistSeries }) => {
+  const { data, isLoadingNext, hasNext, loadNext, refetch } = usePaginationFragment(
+    fragment,
+    artistSeries
+  )
   const tracking = useTracking()
   const { width } = useScreenDimensions()
   const space = useSpace()
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
 
-  const artworks = artistSeries?.artistSeriesArtworks
+  const artworks = data?.artistSeriesArtworks
   const artworksTotal = artworks?.counts?.total ?? 0
   const artworksList = useMemo(
-    () => extractNodes(artistSeries.artistSeriesArtworks),
-    [artistSeries.artistSeriesArtworks]
+    () => extractNodes(data.artistSeriesArtworks),
+    [data.artistSeriesArtworks]
   )
-  const shouldDisplaySpinner = !!artworksList.length && !!relay.isLoading() && !!relay.hasMore()
+  const shouldDisplaySpinner = isLoadingNext && hasNext
   const gridRef = useRef<MasonryFlashListRef<(typeof artworksList)[0]>>(null)
   const setFiltersCountAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.setFiltersCountAction
   )
 
   useArtworkFilters({
-    relay,
+    refetch,
     aggregations: artworks?.aggregations,
     componentPath: "ArtistSeries/ArtistSeriesArtworks",
     pageSize: PAGE_SIZE,
@@ -72,8 +72,8 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({
       action_name: "filter",
       context_screen_owner_type: Schema.OwnerEntityTypes.ArtistSeries,
       context_screen: Schema.PageNames.ArtistSeriesPage,
-      context_screen_owner_id: artistSeries.internalID,
-      context_screen_owner_slug: artistSeries.slug,
+      context_screen_owner_id: data.internalID,
+      context_screen_owner_slug: data.slug,
       action_type: Schema.ActionTypes.Tap,
     })
     handleFilterToggle()
@@ -84,18 +84,24 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({
       action_name: "closeFilterWindow",
       context_screen_owner_type: Schema.OwnerEntityTypes.ArtistSeries,
       context_screen: Schema.PageNames.ArtistSeriesPage,
-      context_screen_owner_id: artistSeries.internalID,
-      context_screen_owner_slug: artistSeries.slug,
+      context_screen_owner_id: data.internalID,
+      context_screen_owner_slug: data.slug,
       action_type: Schema.ActionTypes.Tap,
     })
     handleFilterToggle()
   }
 
   const loadMore = useCallback(() => {
-    if (relay.hasMore() && !relay.isLoading()) {
-      relay.loadMore(10)
+    if (!isLoadingNext && hasNext) {
+      loadNext(PAGE_SIZE, {
+        onComplete: (error) => {
+          if (error) {
+            console.error("ArtistSeriesArtworks.tsx", error.message)
+          }
+        },
+      })
     }
-  }, [relay.hasMore(), relay.isLoading()])
+  }, [isLoadingNext, hasNext])
 
   const trackClear = (id: string, slug: string) => {
     tracking.trackEvent({
@@ -122,8 +128,8 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({
         <ArtworkGridItem
           itemIndex={index}
           contextScreenOwnerType={OwnerType.artistSeries}
-          contextScreenOwnerId={artistSeries.internalID}
-          contextScreenOwnerSlug={artistSeries.slug}
+          contextScreenOwnerId={data.internalID}
+          contextScreenOwnerSlug={data.slug}
           artwork={item}
           height={imgHeight}
         />
@@ -143,13 +149,13 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({
         ListEmptyComponent={
           <Box mb="80px" pt={2}>
             <FilteredArtworkGridZeroState
-              id={artistSeries.internalID}
-              slug={artistSeries.slug}
+              id={data.internalID}
+              slug={data.slug}
               trackClear={trackClear}
             />
           </Box>
         }
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item?.id}
         renderItem={renderItem}
         onEndReached={loadMore}
         onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
@@ -170,10 +176,10 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({
         }
       />
       <ArtworkFilterNavigator
-        id={artistSeries.internalID}
-        slug={artistSeries.slug}
+        id={data.internalID}
+        slug={data.slug}
         visible={!!isFilterArtworksModalVisible}
-        name={artistSeries.title ?? ""}
+        name={data.title ?? ""}
         exitModal={closeFilterArtworksModal}
         closeModal={closeFilterArtworksModal}
         mode={FilterModalMode.ArtistSeries}
@@ -183,92 +189,54 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({
   )
 }
 
-export const ArtistSeriesArtworksFragmentContainer = createPaginationContainer(
-  ArtistSeriesArtworks,
-  {
-    artistSeries: graphql`
-      fragment ArtistSeriesArtworks_artistSeries on ArtistSeries
-      @argumentDefinitions(
-        count: { type: "Int", defaultValue: 20 }
-        cursor: { type: "String" }
-        input: { type: "FilterArtworksInput" }
-      ) {
-        title
-        slug
-        internalID
-        artistSeriesArtworks: filterArtworksConnection(
-          first: $count
-          after: $cursor
-          aggregations: [
-            COLOR
-            DIMENSION_RANGE
-            LOCATION_CITY
-            MAJOR_PERIOD
-            MATERIALS_TERMS
-            MEDIUM
-            PARTNER
-            PRICE_RANGE
-            SIMPLE_PRICE_HISTOGRAM
-          ]
-          input: $input
-        ) @connection(key: "ArtistSeries_artistSeriesArtworks") {
-          aggregations {
-            slice
-            counts {
-              count
-              name
-              value
-            }
-          }
-          edges {
-            node {
-              id
-              slug
-              image(includeAll: false) {
-                aspectRatio
-              }
-              ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
-            }
-          }
-          counts {
-            total
-          }
+const fragment = graphql`
+  fragment ArtistSeriesArtworks_artistSeries on ArtistSeries
+  # @refetchable(queryName: "ArtistSeriesArtworksPaginationQuery")
+  @argumentDefinitions(
+    count: { type: "Int", defaultValue: 20 }
+    cursor: { type: "String" }
+    input: { type: "FilterArtworksInput" }
+  ) {
+    title
+    slug
+    internalID
+    artistSeriesArtworks: filterArtworksConnection(
+      first: $count
+      after: $cursor
+      aggregations: [
+        COLOR
+        DIMENSION_RANGE
+        LOCATION_CITY
+        MAJOR_PERIOD
+        MATERIALS_TERMS
+        MEDIUM
+        PARTNER
+        PRICE_RANGE
+        SIMPLE_PRICE_HISTOGRAM
+      ]
+      input: $input
+    ) @connection(key: "ArtistSeries_artistSeriesArtworks") {
+      aggregations {
+        slice
+        counts {
+          count
+          name
+          value
         }
       }
-    `,
-  },
-  {
-    getConnectionFromProps(props) {
-      return props?.artistSeries.artistSeriesArtworks
-    },
-    getFragmentVariables(previousVariables, count) {
-      // Relay is unable to infer this for this component, I'm not sure why.
-      return {
-        ...previousVariables,
-        count,
+      counts {
+        total
       }
-    },
-    getVariables(props, { count, cursor }, fragmentVariables) {
-      return {
-        props,
-        count,
-        cursor,
-        id: props.artistSeries.slug,
-        input: fragmentVariables.input,
-      }
-    },
-    query: graphql`
-      query ArtistSeriesArtworksInfiniteScrollGridQuery(
-        $id: ID!
-        $count: Int!
-        $cursor: String
-        $input: FilterArtworksInput
-      ) {
-        artistSeries(id: $id) {
-          ...ArtistSeriesArtworks_artistSeries
-            @arguments(count: $count, cursor: $cursor, input: $input)
+      edges {
+        node {
+          id
+          slug
+          image(includeAll: false) {
+            aspectRatio
+          }
+          ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
         }
       }
-    `,
+    }
   }
-)
+`

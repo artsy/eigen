@@ -10,10 +10,10 @@ import {
   Separator,
 } from "@artsy/palette-mobile"
 import { ArtistSeriesQuery } from "__generated__/ArtistSeriesQuery.graphql"
-import { ArtistSeries_artistSeries$data } from "__generated__/ArtistSeries_artistSeries.graphql"
+import { ArtistSeries_artistSeries$key } from "__generated__/ArtistSeries_artistSeries.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
-import { ArtistSeriesArtworksFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesArtworks"
+import { ArtistSeriesArtworks } from "app/Scenes/ArtistSeries/ArtistSeriesArtworks"
 import { ArtistSeriesHeaderFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesHeader"
 import { ArtistSeriesMetaFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesMeta"
 import { goBack } from "app/system/navigation/navigate"
@@ -21,31 +21,31 @@ import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { graphql, QueryRenderer, useFragment } from "react-relay"
 
 interface ArtistSeriesProps {
-  artistSeries: ArtistSeries_artistSeries$data
+  artistSeries: ArtistSeries_artistSeries$key
 }
 
 export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
-  const { artistSeries } = props
+  const data = useFragment(fragment, props.artistSeries)
 
   return (
     <ProvideScreenTracking
       info={{
         context_screen: PageNames.ArtistSeriesPage,
         context_screen_owner_type: OwnerEntityTypes.ArtistSeries,
-        context_screen_owner_slug: artistSeries.slug,
-        context_screen_owner_id: artistSeries.internalID,
+        context_screen_owner_slug: data.slug,
+        context_screen_owner_id: data.internalID,
       }}
     >
       <ArtworkFiltersStoreProvider>
         <Tabs.TabsWithHeader
           initialTabName="Artworks"
-          title={artistSeries?.title}
+          title={data?.title}
           showLargeHeaderText={false}
           BelowTitleHeaderComponent={() => (
-            <ArtistSeriesHeaderFragmentContainer artistSeries={artistSeries} />
+            <ArtistSeriesHeaderFragmentContainer artistSeries={data} />
           )}
           headerProps={{
             onBack: goBack,
@@ -53,13 +53,13 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
         >
           <Tabs.Tab name="Artworks" label="Artworks">
             <Tabs.Lazy>
-              <ArtistSeriesArtworksFragmentContainer artistSeries={artistSeries} />
+              <ArtistSeriesArtworks artistSeries={data} />
             </Tabs.Lazy>
           </Tabs.Tab>
           <Tabs.Tab name="About" label="About">
             <Tabs.Lazy>
               <Tabs.ScrollView>
-                <ArtistSeriesMetaFragmentContainer artistSeries={artistSeries} />
+                <ArtistSeriesMetaFragmentContainer artistSeries={data} />
               </Tabs.ScrollView>
             </Tabs.Lazy>
           </Tabs.Tab>
@@ -69,27 +69,25 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
   )
 }
 
-export const ArtistSeriesFragmentContainer = createFragmentContainer(ArtistSeries, {
-  artistSeries: graphql`
-    fragment ArtistSeries_artistSeries on ArtistSeries {
-      internalID
-      slug
-      title
-      artistIDs
+const fragment = graphql`
+  fragment ArtistSeries_artistSeries on ArtistSeries {
+    internalID
+    slug
+    title
+    artistIDs
 
-      ...ArtistSeriesHeader_artistSeries
-      ...ArtistSeriesMeta_artistSeries
-      ...ArtistSeriesArtworks_artistSeries @arguments(input: { sort: "-decayed_merch" })
+    ...ArtistSeriesHeader_artistSeries
+    ...ArtistSeriesMeta_artistSeries
+    ...ArtistSeriesArtworks_artistSeries @arguments(input: { sort: "-decayed_merch" })
 
-      artist: artists(size: 1) {
-        ...ArtistSeriesMoreSeries_artist
-        artistSeriesConnection(first: 4) {
-          totalCount
-        }
+    artist: artists(size: 1) {
+      ...ArtistSeriesMoreSeries_artist
+      artistSeriesConnection(first: 4) {
+        totalCount
       }
     }
-  `,
-})
+  }
+`
 
 const ArtistSeriesPlaceholder: React.FC = () => {
   const { width } = useScreenDimensions()
@@ -148,7 +146,7 @@ export const ArtistSeriesQueryRenderer: React.FC<{ artistSeriesID: string }> = (
           artistSeriesID,
         }}
         render={renderWithPlaceholder({
-          Container: ArtistSeriesFragmentContainer,
+          Container: ArtistSeries,
           renderPlaceholder: () => <ArtistSeriesPlaceholder />,
         })}
       />

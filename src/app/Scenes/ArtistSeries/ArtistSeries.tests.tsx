@@ -1,7 +1,7 @@
 import { screen } from "@testing-library/react-native"
 import { ArtistSeriesTestsQuery } from "__generated__/ArtistSeriesTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { ArtistSeries, ArtistSeriesFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeries"
+import { ArtistSeries } from "app/Scenes/ArtistSeries/ArtistSeries"
 import { ArtistSeriesArtworks } from "app/Scenes/ArtistSeries/ArtistSeriesArtworks"
 import { ArtistSeriesMeta } from "app/Scenes/ArtistSeries/ArtistSeriesMeta"
 import { ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
@@ -12,7 +12,7 @@ describe("Artist Series", () => {
   const { renderWithRelay } = setupTestWrapper<ArtistSeriesTestsQuery>({
     Component: ({ artistSeries }) => (
       <ArtworkFiltersStoreProvider>
-        <ArtistSeriesFragmentContainer artistSeries={artistSeries!} />
+        <ArtistSeries artistSeries={artistSeries!} />
       </ArtworkFiltersStoreProvider>
     ),
     query: graphql`
