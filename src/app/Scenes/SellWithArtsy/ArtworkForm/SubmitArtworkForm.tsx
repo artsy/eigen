@@ -45,6 +45,7 @@ import { isTablet as getIsTablet } from "react-native-device-info"
 export type SubmitArtworkStackNavigation = {
   StartFlow: undefined
   CompleteYourSubmission: undefined
+  CompleteYourSubmissionPostApproval: undefined
   ArtistRejected: undefined
 
   // Tier 1 Steps

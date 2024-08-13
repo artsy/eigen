@@ -1,4 +1,3 @@
-import { OwnerType } from "@artsy/cohesion"
 import { Flex, Input, Spacer, Text } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { captureException } from "@sentry/react-native"
@@ -10,15 +9,15 @@ import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Com
 import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { updateMyCollectionArtwork } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/updateMyCollectionArtwork"
 import { useNavigationListeners } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useNavigationListeners"
+import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
 import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubmitArtworkTracking"
 import { InfoModal } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/InfoModal/InfoModal"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { GlobalStore } from "app/store/GlobalStore"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
-import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
-import { screen } from "app/utils/track/helpers"
 import { useFormikContext } from "formik"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ScrollView } from "react-native"
 
 export const SubmitArtworkCondition = () => {
@@ -32,6 +31,15 @@ export const SubmitArtworkCondition = () => {
   const setCurrentStep = SubmitArtworkFormStore.useStoreActions((actions) => actions.setCurrentStep)
 
   const navigation = useNavigation<NavigationProp<SubmitArtworkStackNavigation, "Condition">>()
+
+  const { currentStep } = useSubmissionContext()
+  const { trackSubmissionStepScreen } = useSubmitArtworkTracking()
+
+  useEffect(() => {
+    if (currentStep === "Condition") {
+      trackSubmissionStepScreen(currentStep, values.submissionId || undefined)
+    }
+  }, [currentStep])
 
   useNavigationListeners({
     onNextStep: async () => {
@@ -88,79 +96,72 @@ export const SubmitArtworkCondition = () => {
   })
 
   return (
-    <ProvideScreenTrackingWithCohesionSchema
-      info={screen({
-        context_screen_owner_type: OwnerType.submitArtworkStepCondition,
-        context_screen_owner_id: values.submissionId || undefined,
-      })}
-    >
-      <Flex px={2} flex={1}>
+    <Flex px={2} flex={1}>
+      <ScrollView>
+        <Flex>
+          <Text variant="lg-display">Condition</Text>
+
+          <Spacer y={2} />
+
+          <Text color="black60" variant="xs">
+            Please specify the condition of the piece. Note that the seller is liable for providing
+            an accurate description.
+          </Text>
+
+          <Spacer y={2} />
+
+          <Select
+            testID="ConditionSelect"
+            options={[
+              { label: "Excellent", value: "EXCELLENT" },
+              { label: "Very Good", value: "VERY_GOOD" },
+              { label: "Good", value: "GOOD" },
+              { label: "Fair", value: "FAIR" },
+            ]}
+            value={values.artwork.condition}
+            title="Add Condition"
+            onSelectValue={(value) => {
+              setFieldValue("artwork.condition", value)
+            }}
+            tooltipText="Condition Definitions"
+            onTooltipPress={() => setIsModalVisible(true)}
+          />
+
+          <Spacer y={2} />
+
+          <Input
+            testID="ConditionInput"
+            title="Add Additional Condition Details"
+            defaultValue={values.artwork.conditionDescription || ""}
+            multiline
+            onChangeText={handleChange("artwork.conditionDescription")}
+          />
+        </Flex>
+      </ScrollView>
+      <InfoModal
+        visible={isModalVisible}
+        onDismiss={() => setIsModalVisible(false)}
+        buttonVariant="outline"
+        fullScreen
+      >
         <ScrollView>
-          <Flex>
-            <Text variant="lg-display">Condition</Text>
+          <Text variant="lg-display">Condition Definitions</Text>
 
-            <Spacer y={2} />
+          <Spacer y={2} />
 
-            <Text color="black60" variant="xs">
-              Please specify the condition of the piece. Note that the seller is liable for
-              providing an accurate description.
-            </Text>
-
-            <Spacer y={2} />
-
-            <Select
-              testID="ConditionSelect"
-              options={[
-                { label: "Excellent", value: "EXCELLENT" },
-                { label: "Very Good", value: "VERY_GOOD" },
-                { label: "Good", value: "GOOD" },
-                { label: "Fair", value: "FAIR" },
-              ]}
-              value={values.artwork.condition}
-              title="Add Condition"
-              onSelectValue={(value) => {
-                setFieldValue("artwork.condition", value)
-              }}
-              tooltipText="Condition Definitions"
-              onTooltipPress={() => setIsModalVisible(true)}
-            />
-
-            <Spacer y={2} />
-
-            <Input
-              testID="ConditionInput"
-              title="Add Additional Condition Details"
-              defaultValue={values.artwork.conditionDescription || ""}
-              multiline
-              onChangeText={handleChange("artwork.conditionDescription")}
-            />
-          </Flex>
+          {CONDITION_DEFINITIONS.map((definition) => {
+            return (
+              <Flex key={definition.title} mb={2}>
+                <Text variant="sm-display" fontWeight="bold" mb={0.5}>
+                  {definition.title}:
+                </Text>
+                <Text variant="sm-display">{definition.description}</Text>
+              </Flex>
+            )
+          })}
         </ScrollView>
-        <InfoModal
-          visible={isModalVisible}
-          onDismiss={() => setIsModalVisible(false)}
-          buttonVariant="outline"
-          fullScreen
-        >
-          <ScrollView>
-            <Text variant="lg-display">Condition Definitions</Text>
-
-            <Spacer y={2} />
-
-            {CONDITION_DEFINITIONS.map((definition) => {
-              return (
-                <Flex key={definition.title} mb={2}>
-                  <Text variant="sm-display" fontWeight="bold" mb={0.5}>
-                    {definition.title}:
-                  </Text>
-                  <Text variant="sm-display">{definition.description}</Text>
-                </Flex>
-              )
-            })}
-          </ScrollView>
-        </InfoModal>
-      </Flex>
-    </ProvideScreenTrackingWithCohesionSchema>
+      </InfoModal>
+    </Flex>
   )
 }
 

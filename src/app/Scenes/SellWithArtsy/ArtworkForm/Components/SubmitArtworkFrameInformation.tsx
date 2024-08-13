@@ -1,4 +1,3 @@
-import { OwnerType } from "@artsy/cohesion"
 import { Box, Flex, Input, RadioButton, Spacer, Text } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { useToast } from "app/Components/Toast/toastHook"
@@ -6,11 +5,11 @@ import { myCollectionUpdateArtwork } from "app/Scenes/MyCollection/mutations/myC
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { useNavigationListeners } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useNavigationListeners"
+import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
 import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
-import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
-import { screen } from "app/utils/track/helpers"
+import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubmitArtworkTracking"
 import { useFormikContext } from "formik"
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 import { LayoutAnimation, ScrollView } from "react-native"
 
 export const SubmitArtworkFrameInformation = () => {
@@ -26,6 +25,15 @@ export const SubmitArtworkFrameInformation = () => {
 
   const navigation =
     useNavigation<NavigationProp<SubmitArtworkStackNavigation, "FrameInformation">>()
+
+  const { currentStep } = useSubmissionContext()
+  const { trackSubmissionStepScreen } = useSubmitArtworkTracking()
+
+  useEffect(() => {
+    if (currentStep === "FrameInformation") {
+      trackSubmissionStepScreen(currentStep, values.submissionId || undefined)
+    }
+  }, [currentStep])
 
   useNavigationListeners({
     onNextStep: async () => {
@@ -62,118 +70,111 @@ export const SubmitArtworkFrameInformation = () => {
   })
 
   return (
-    <ProvideScreenTrackingWithCohesionSchema
-      info={screen({
-        context_screen_owner_type: OwnerType.submitArtworkStepFrameInformation,
-        context_screen_owner_id: values.submissionId || undefined,
-      })}
-    >
-      <Flex px={2} flex={1}>
-        <ScrollView>
-          <Flex>
-            <Text variant="lg-display">Frame</Text>
+    <Flex px={2} flex={1}>
+      <ScrollView>
+        <Flex>
+          <Text variant="lg-display">Frame</Text>
 
-            <Text variant="sm-display" mt={2}>
-              Is the work framed?
-            </Text>
+          <Text variant="sm-display" mt={2}>
+            Is the work framed?
+          </Text>
 
-            <Flex flexDirection="row" mt={2}>
-              <RadioButton
-                mr={4}
-                text="Yes"
-                selected={values.artwork.isFramed === true}
-                onPress={() => {
-                  LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-                  setFieldValue("artwork.isFramed", true)
-                }}
-              />
-              <RadioButton
-                text="No"
-                selected={values.artwork.isFramed === false}
-                onPress={() => {
-                  LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-                  setFieldValue("artwork.isFramed", false)
-                  setFieldValue("artwork.framedMetric", null)
-                  setFieldValue("artwork.framedWidth", null)
-                  setFieldValue("artwork.framedHeight", null)
-                  setFieldValue("artwork.framedDepth", null)
-                }}
-              />
-            </Flex>
+          <Flex flexDirection="row" mt={2}>
+            <RadioButton
+              mr={4}
+              text="Yes"
+              selected={values.artwork.isFramed === true}
+              onPress={() => {
+                LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+                setFieldValue("artwork.isFramed", true)
+              }}
+            />
+            <RadioButton
+              text="No"
+              selected={values.artwork.isFramed === false}
+              onPress={() => {
+                LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+                setFieldValue("artwork.isFramed", false)
+                setFieldValue("artwork.framedMetric", null)
+                setFieldValue("artwork.framedWidth", null)
+                setFieldValue("artwork.framedHeight", null)
+                setFieldValue("artwork.framedDepth", null)
+              }}
+            />
+          </Flex>
 
-            {values.artwork.isFramed === true && (
-              <Flex>
-                <Flex flexDirection="row" justifyContent="space-between">
-                  <Box flex={1}>
-                    <Input
-                      title="Height"
-                      keyboardType="decimal-pad"
-                      testID="Frame_Height_Input"
-                      value={values.artwork.framedHeight || ""}
-                      onChangeText={handleChange("artwork.framedHeight")}
-                      fixedRightPlaceholder={values.artwork.framedMetric || ""}
-                      accessibilityLabel="Frame Height"
-                      onSubmitEditing={() => {
-                        widthRef.current?.focus()
-                      }}
-                      returnKeyLabel="Next"
-                    />
-                  </Box>
-                  <Spacer x={2} />
-                  <Box flex={1}>
-                    <Input
-                      title="Width"
-                      keyboardType="decimal-pad"
-                      testID="Frame_WidthI_nput"
-                      value={values.artwork.framedWidth || ""}
-                      onChangeText={handleChange("artwork.framedWidth")}
-                      fixedRightPlaceholder={values.artwork.framedMetric || ""}
-                      accessibilityLabel="Frame Width"
-                      ref={widthRef}
-                      onSubmitEditing={() => {
-                        depthRef.current?.focus()
-                      }}
-                      returnKeyLabel="Next"
-                    />
-                  </Box>
-                </Flex>
-                <Box width="50%" pr={1}>
+          {values.artwork.isFramed === true && (
+            <Flex>
+              <Flex flexDirection="row" justifyContent="space-between">
+                <Box flex={1}>
                   <Input
-                    title="Depth"
+                    title="Height"
                     keyboardType="decimal-pad"
-                    testID="Frame_DepthI_nput"
-                    value={values.artwork.framedDepth || ""}
-                    onChangeText={handleChange("artwork.framedDepth")}
+                    testID="Frame_Height_Input"
+                    value={values.artwork.framedHeight || ""}
+                    onChangeText={handleChange("artwork.framedHeight")}
                     fixedRightPlaceholder={values.artwork.framedMetric || ""}
-                    accessibilityLabel="Frame Depth"
-                    ref={depthRef}
+                    accessibilityLabel="Frame Height"
+                    onSubmitEditing={() => {
+                      widthRef.current?.focus()
+                    }}
+                    returnKeyLabel="Next"
                   />
                 </Box>
-
-                <Spacer y={2} />
-
-                <Flex flexDirection="row">
-                  <RadioButton
-                    mr={2}
-                    text="in"
-                    selected={values.artwork.framedMetric === "in"}
-                    onPress={() => {
-                      setFieldValue("artwork.framedMetric", "in")
+                <Spacer x={2} />
+                <Box flex={1}>
+                  <Input
+                    title="Width"
+                    keyboardType="decimal-pad"
+                    testID="Frame_WidthI_nput"
+                    value={values.artwork.framedWidth || ""}
+                    onChangeText={handleChange("artwork.framedWidth")}
+                    fixedRightPlaceholder={values.artwork.framedMetric || ""}
+                    accessibilityLabel="Frame Width"
+                    ref={widthRef}
+                    onSubmitEditing={() => {
+                      depthRef.current?.focus()
                     }}
+                    returnKeyLabel="Next"
                   />
-                  <RadioButton
-                    text="cm"
-                    selected={values.artwork.framedMetric === "cm"}
-                    onPress={() => {
-                      setFieldValue("artwork.framedMetric", "cm")
-                    }}
-                  />
-                </Flex>
+                </Box>
               </Flex>
-            )}
-          </Flex>
-        </ScrollView>
-      </Flex>
-    </ProvideScreenTrackingWithCohesionSchema>
+              <Box width="50%" pr={1}>
+                <Input
+                  title="Depth"
+                  keyboardType="decimal-pad"
+                  testID="Frame_DepthI_nput"
+                  value={values.artwork.framedDepth || ""}
+                  onChangeText={handleChange("artwork.framedDepth")}
+                  fixedRightPlaceholder={values.artwork.framedMetric || ""}
+                  accessibilityLabel="Frame Depth"
+                  ref={depthRef}
+                />
+              </Box>
+
+              <Spacer y={2} />
+
+              <Flex flexDirection="row">
+                <RadioButton
+                  mr={2}
+                  text="in"
+                  selected={values.artwork.framedMetric === "in"}
+                  onPress={() => {
+                    setFieldValue("artwork.framedMetric", "in")
+                  }}
+                />
+                <RadioButton
+                  text="cm"
+                  selected={values.artwork.framedMetric === "cm"}
+                  onPress={() => {
+                    setFieldValue("artwork.framedMetric", "cm")
+                  }}
+                />
+              </Flex>
+            </Flex>
+          )}
+        </Flex>
+      </ScrollView>
+    </Flex>
   )
 }

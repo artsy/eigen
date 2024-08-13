@@ -111,6 +111,28 @@ export const useSubmitArtworkTracking = () => {
     })
   }
 
+  const trackSubmissionStepScreen = (
+    currentStep: SubmitArtworkScreen,
+    submission_id: string | undefined
+  ) => {
+    trackEvent({
+      action: "screen",
+      context_screen_owner_type: getOwnerType(currentStep),
+      context_screen_owner_id: submission_id,
+    })
+  }
+
+  const trackSubmissionFinalStepScreen = (
+    currentStep: "CompleteYourSubmission" | "CompleteYourSubmissionPostApproval",
+    submission_id: string | undefined
+  ) => {
+    trackEvent({
+      action: "screen",
+      context_screen_owner_type: getOwnerType(currentStep),
+      context_screen_owner_id: submission_id,
+    })
+  }
+
   return {
     trackTappedContinueSubmission,
     trackTappedNewSubmission,
@@ -122,6 +144,8 @@ export const useSubmitArtworkTracking = () => {
     trackTappedViewArtworkInMyCollection,
     trackTappedContactAdvisor,
     trackTappedEditSubmission,
+    trackSubmissionStepScreen,
+    trackSubmissionFinalStepScreen,
   }
 }
 
@@ -145,6 +169,8 @@ const getOwnerType = (currentStep: SubmitArtworkScreen): OwnerType => {
       return OwnerType.submitArtworkStepAddPhoneNumber
     case "CompleteYourSubmission":
       return OwnerType.submitArtworkStepCompleteYourSubmission
+    case "CompleteYourSubmissionPostApproval":
+      return OwnerType.submitArtworkStepCompleteYourSubmissionPostApproval
     case "ArtistRejected":
       return OwnerType.submitArtworkStepArtistRejected
     case "ShippingLocation":

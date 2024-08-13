@@ -1,4 +1,3 @@
-import { OwnerType } from "@artsy/cohesion"
 import {
   Button,
   CloseIcon,
@@ -20,16 +19,16 @@ import { isImage } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectio
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { useNavigationListeners } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useNavigationListeners"
+import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
 import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubmitArtworkTracking"
 import { ICON_SIZE } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/UploadPhotosForm"
 import { addDocumentToSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/addDocumentToSubmission" // pragma: allowlist secret
 import { deleteDocument } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/deleteDocument"
 import { NormalizedDocument, normalizeUploadedDocument } from "app/utils/normalizeUploadedDocument"
 import { showDocumentsAndPhotosActionSheet } from "app/utils/showDocumentsAndPhotosActionSheet"
-import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
-import { screen } from "app/utils/track/helpers"
 import { useFormikContext } from "formik"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Image, LayoutAnimation, Platform, ScrollView } from "react-native"
 
 // 50 MB in bytes
@@ -50,6 +49,15 @@ export const SubmitArtworkAdditionalDocuments = () => {
 
   const navigation =
     useNavigation<NavigationProp<SubmitArtworkStackNavigation, "AdditionalDocuments">>()
+
+  const { currentStep } = useSubmissionContext()
+  const { trackSubmissionStepScreen } = useSubmitArtworkTracking()
+
+  useEffect(() => {
+    if (currentStep === "AdditionalDocuments") {
+      trackSubmissionStepScreen(currentStep, values.submissionId || undefined)
+    }
+  }, [currentStep])
 
   useNavigationListeners({
     onNextStep: async () => {
@@ -149,53 +157,46 @@ export const SubmitArtworkAdditionalDocuments = () => {
   }
 
   return (
-    <ProvideScreenTrackingWithCohesionSchema
-      info={screen({
-        context_screen_owner_type: OwnerType.submitArtworkStepAddtionalDocuments,
-        context_screen_owner_id: values.submissionId || undefined,
-      })}
-    >
-      <Flex px={2} flex={1}>
-        <ScrollView
-          contentContainerStyle={{ paddingBottom: 50 }}
-          showsVerticalScrollIndicator={false}
-        >
-          <Flex>
-            <Join separator={<Spacer y={2} />}>
-              <Text variant="lg-display">Additional documents</Text>
+    <Flex px={2} flex={1}>
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: 50 }}
+        showsVerticalScrollIndicator={false}
+      >
+        <Flex>
+          <Join separator={<Spacer y={2} />}>
+            <Text variant="lg-display">Additional documents</Text>
 
-              <Text color="black60" variant="xs">
-                Please add any of the follow if you have them: Proof of purchase, Certificate of
-                Authentication, Fact Sheet, Condition Report
-              </Text>
+            <Text color="black60" variant="xs">
+              Please add any of the follow if you have them: Proof of purchase, Certificate of
+              Authentication, Fact Sheet, Condition Report
+            </Text>
 
-              <Button block variant="outline" onPress={handleUpload}>
-                Add Documents
-              </Button>
+            <Button block variant="outline" onPress={handleUpload}>
+              Add Documents
+            </Button>
 
-              <Text color="black60" variant="xs">
-                Maximum size: 50 MB.
-              </Text>
+            <Text color="black60" variant="xs">
+              Maximum size: 50 MB.
+            </Text>
 
-              <Flex rowGap={space(2)}>
-                {values.additionalDocuments.map((document) => {
-                  return (
-                    <UploadedFile
-                      key={document.id}
-                      document={document}
-                      progress={progress[document.id]}
-                      onRemove={() => {
-                        handleDelete(document)
-                      }}
-                    />
-                  )
-                })}
-              </Flex>
-            </Join>
-          </Flex>
-        </ScrollView>
-      </Flex>
-    </ProvideScreenTrackingWithCohesionSchema>
+            <Flex rowGap={space(2)}>
+              {values.additionalDocuments.map((document) => {
+                return (
+                  <UploadedFile
+                    key={document.id}
+                    document={document}
+                    progress={progress[document.id]}
+                    onRemove={() => {
+                      handleDelete(document)
+                    }}
+                  />
+                )
+              })}
+            </Flex>
+          </Join>
+        </Flex>
+      </ScrollView>
+    </Flex>
   )
 }
 
