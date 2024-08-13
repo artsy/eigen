@@ -17,10 +17,10 @@ NSString *deeplinkRoute;
 
 - (void)deeplinkTimeoutExpired {
 
-    NSError *deeplinkError = [NSError errorWithDomain:@"Deeplink timeout: Navigation did not complete in time" code:418 userInfo:@{ NSLocalizedDescriptionKey:@"Deeplink timeout: Navigation did not complete in time" }];
+    NSError *deeplinkError = [NSError errorWithDomain:@"Navigation: Deeplink did not complete in time" code:418 userInfo:@{ NSLocalizedDescriptionKey:@"Navigation: deeplink did not complete in time" }];
     if (deeplinkRoute) {
         [SentrySDK captureError:deeplinkError withScopeBlock:^(SentryScope * _Nonnull scope) {
-            [scope setExtraValue:deeplinkRoute forKey:@"deeplink_route"];
+            [scope setExtraValue:deeplinkRoute forKey:@"route"];
         }];
     } else {
         [SentrySDK captureError:deeplinkError];

@@ -283,7 +283,7 @@ export const ArtsyWebView = forwardRef<
             const nativeEvent = error.nativeEvent
             if (nativeEvent.statusCode === 404) {
               Sentry.withScope((scope) => {
-                scope.setExtra("url", nativeEvent.url)
+                scope.setExtra("route", nativeEvent.url)
                 scope.setExtra("description", nativeEvent.description)
                 Sentry.captureMessage("Navigation: WebView failed to load URL", "error")
               })
