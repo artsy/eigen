@@ -1,7 +1,10 @@
 import { Button, Flex, Spacer, Text, Touchable, useSpace } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
-import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
+import {
+  INITIAL_EDIT_STEP,
+  SubmitArtworkStackNavigation,
+} from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
 import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubmitArtworkTracking"
@@ -176,13 +179,18 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
     )
   }
 
+  // Hide the "Back" button in the Title step when editing a submission to disallow updating the artist.
+  const displayBackButton = !(values.submissionId && currentStep === INITIAL_EDIT_STEP)
+
   return (
     <Wrapper>
       <Flex flexDirection="row" justifyContent="space-between" backgroundColor="white100">
         <Flex flexDirection="row" alignItems="center">
-          <Touchable onPress={handleBackPress}>
-            <Text underline>Back</Text>
-          </Touchable>
+          {!!displayBackButton && (
+            <Touchable onPress={handleBackPress}>
+              <Text underline>Back</Text>
+            </Touchable>
+          )}
         </Flex>
         <Button
           onPress={handleNextPress}
