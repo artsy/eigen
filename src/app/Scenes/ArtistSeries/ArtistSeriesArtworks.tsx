@@ -91,11 +91,11 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({
     handleFilterToggle()
   }
 
-  const loadMore = () => {
+  const loadMore = useCallback(() => {
     if (relay.hasMore() && !relay.isLoading()) {
       relay.loadMore(10)
     }
-  }
+  }, [relay.hasMore(), relay.isLoading()])
 
   const trackClear = (id: string, slug: string) => {
     tracking.trackEvent({
