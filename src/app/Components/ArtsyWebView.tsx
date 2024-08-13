@@ -279,14 +279,15 @@ export const ArtsyWebView = forwardRef<
               },
             }),
           }}
-          onError={(error) => {
-            // TODO: Validate / ensure this only tracks failures on initial load
-            const { nativeEvent } = error
-            Sentry.withScope((scope) => {
-              scope.setExtra("url", nativeEvent.url)
-              scope.setExtra("description", nativeEvent.description)
-              Sentry.captureMessage("Navigation: WebView failed to load URL", "error")
-            })
+          onHttpError={(error) => {
+            const nativeEvent = error.nativeEvent
+            if (nativeEvent.statusCode === 404) {
+              Sentry.withScope((scope) => {
+                scope.setExtra("url", nativeEvent.url)
+                scope.setExtra("description", nativeEvent.description)
+                Sentry.captureMessage("Navigation: WebView failed to load URL", "error")
+              })
+            }
           }}
           style={{ flex: 1 }}
           userAgent={Platform.OS === "ios" ? userAgent : undefined}
