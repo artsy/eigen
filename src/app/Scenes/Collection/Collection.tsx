@@ -152,11 +152,9 @@ const CollectionPlaceholder: React.FC = () => {
           </Flex>
           <Spacer y={2} />
 
-          {!shouldRenderCollectionImage && (
-            <Box px={2}>
-              <SkeletonBox width={width - 40} height={100} />
-            </Box>
-          )}
+          <Box px={2}>
+            <SkeletonBox width={width - 40} height={100} />
+          </Box>
 
           <Spacer y={4} />
 
