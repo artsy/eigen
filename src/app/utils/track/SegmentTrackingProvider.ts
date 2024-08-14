@@ -15,12 +15,8 @@ export const SegmentTrackingProvider: TrackingProvider = {
   setup: () => {
     // prettier-ignore
     const writeKey = Platform.select({
-      ios: __DEV__
-        ? Config.SEGMENT_STAGING_WRITE_KEY_IOS
-        : Config.SEGMENT_PRODUCTION_WRITE_KEY_IOS,
-      android: __DEV__
-        ? Config.SEGMENT_STAGING_WRITE_KEY_ANDROID
-        : Config.SEGMENT_PRODUCTION_WRITE_KEY_ANDROID,
+      ios: Config.SEGMENT_PRODUCTION_WRITE_KEY_IOS,
+      android: Config.SEGMENT_PRODUCTION_WRITE_KEY_ANDROID,
       default: "",
     })
 
