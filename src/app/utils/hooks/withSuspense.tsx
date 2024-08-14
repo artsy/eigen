@@ -11,15 +11,13 @@ export const withSuspense =
         <Spinner />
       </Flex>
     ),
-    ErrorFallback: React.FC<any> = () => (
-      <Flex flex={1} justifyContent="center" alignItems="center">
-        <Spinner />
-      </Flex>
-    )
+    ErrorFallback?: React.FC<any>
   ) =>
   (props: any) => {
+    const FallbackComponent = ErrorFallback ?? Fallback
+
     return (
-      <ErrorBoundary fallback={<ErrorFallback {...props} />}>
+      <ErrorBoundary fallback={<FallbackComponent {...props} />}>
         <Suspense
           fallback={
             <ProvidePlaceholderContext>
