@@ -6,6 +6,10 @@ import {
 import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import { Alert } from "react-native"
 
+jest.mock("@sentry/react-native", () => ({
+  captureMessage() {},
+}))
+
 jest.mock("react-native", () => {
   return {
     NativeModules: {
