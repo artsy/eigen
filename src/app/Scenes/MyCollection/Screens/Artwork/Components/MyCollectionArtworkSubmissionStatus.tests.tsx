@@ -1,6 +1,7 @@
-import { screen } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { MyCollectionArtworkSubmissionStatusTestQuery } from "__generated__/MyCollectionArtworkSubmissionStatusTestQuery.graphql"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { MyCollectionArtworkSubmissionStatus } from "./MyCollectionArtworkSubmissionStatus"
@@ -149,6 +150,32 @@ describe("MyCollectionArtworkSubmissionStatus", () => {
 
       expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).not.toBe(null)
       expect(screen.queryAllByText("Submission Unsuccessful")).toHaveLength(2)
+    })
+
+    it("navigatess to submission flow ShippingLocation when action label is pressed and Tier 2", () => {
+      renderWithRelay({
+        Artwork: () => {
+          return {
+            isListed: false,
+            internalID: "artwork-id",
+            submissionId: "submission-id",
+            consignmentSubmission: {
+              state: "APPROVED",
+              actionLabel: "Complete Listing",
+            },
+          }
+        },
+      })
+
+      expect(screen.queryAllByText("Complete Listing")).toHaveLength(2)
+      fireEvent.press(screen.getByTestId("action-label"))
+      expect(navigate).toHaveBeenCalledWith("/sell/submissions/submission-id/edit", {
+        passProps: {
+          hasStartedFlowFromMyCollection: true,
+          initialStep: "ShippingLocation",
+          initialValues: {},
+        },
+      })
     })
   })
 })
