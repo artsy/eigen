@@ -293,6 +293,11 @@ export const features = {
     readyForRelease: false,
     showInDevMenu: true,
   },
+  AREnableCollectionsWithoutHeaderImage: {
+    description: "Remove the header image from collections",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
