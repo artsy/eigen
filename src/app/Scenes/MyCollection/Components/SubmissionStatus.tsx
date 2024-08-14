@@ -18,7 +18,7 @@ export const SubmissionStatus: React.FC<SubmissionStatusProps> = ({ artwork }) =
   if (["REJECTED"].includes(state)) return null
 
   return (
-    <Flex flexDirection="column">
+    <Flex flexDirection="column" testID="Submission-status-component">
       <Text variant="xs" fontWeight="bold" color={stateLabelColor ?? "black100"}>
         {artworkData.isListed ? "Listed" : stateLabel}
       </Text>

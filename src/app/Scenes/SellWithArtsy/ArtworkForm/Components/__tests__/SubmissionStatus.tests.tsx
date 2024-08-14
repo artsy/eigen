@@ -66,4 +66,18 @@ describe("SubmissionStatus", () => {
     expect(screen.getByText("Listed")).toBeTruthy()
     expect(screen.queryByTestId("action-label")).toBe(null)
   })
+
+  it("does not display status when rejected", () => {
+    renderWithRelay({
+      Artwork: () => ({
+        internalID: "artwork-id",
+        consignmentSubmission: {
+          state: "REJECTED",
+          actionLabel: "Complete Listing",
+        },
+      }),
+    })
+
+    expect(screen.queryByTestId("Submission-status-component")).toBe(null)
+  })
 })
