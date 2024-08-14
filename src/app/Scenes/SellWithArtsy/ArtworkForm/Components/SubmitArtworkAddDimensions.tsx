@@ -79,13 +79,15 @@ export const SubmitArtworkAddDimensions = () => {
 
           <Flex flexDirection="row">
             <RadioButton
-              mr={2}
               text="in"
               selected={dimensionMetric === "in"}
               onPress={() => {
                 setDimensionMetric("in")
               }}
             />
+
+            <Spacer x={4} />
+
             <RadioButton
               text="cm"
               selected={dimensionMetric === "cm"}

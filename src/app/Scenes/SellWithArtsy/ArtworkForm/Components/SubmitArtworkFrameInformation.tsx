@@ -79,7 +79,6 @@ export const SubmitArtworkFrameInformation = () => {
 
             <Flex flexDirection="row" mt={2}>
               <RadioButton
-                mr={4}
                 text="Yes"
                 selected={values.artwork.isFramed === true}
                 onPress={() => {
@@ -87,6 +86,9 @@ export const SubmitArtworkFrameInformation = () => {
                   setFieldValue("artwork.isFramed", true)
                 }}
               />
+
+              <Spacer x={4} />
+
               <RadioButton
                 text="No"
                 selected={values.artwork.isFramed === false}
@@ -119,7 +121,9 @@ export const SubmitArtworkFrameInformation = () => {
                       returnKeyLabel="Next"
                     />
                   </Box>
+
                   <Spacer x={2} />
+
                   <Box flex={1}>
                     <Input
                       title="Width"
@@ -137,6 +141,7 @@ export const SubmitArtworkFrameInformation = () => {
                     />
                   </Box>
                 </Flex>
+
                 <Box width="50%" pr={1}>
                   <Input
                     title="Depth"
@@ -154,13 +159,15 @@ export const SubmitArtworkFrameInformation = () => {
 
                 <Flex flexDirection="row">
                   <RadioButton
-                    mr={2}
                     text="in"
                     selected={values.artwork.framedMetric === "in"}
                     onPress={() => {
                       setFieldValue("artwork.framedMetric", "in")
                     }}
                   />
+
+                  <Spacer x={4} />
+
                   <RadioButton
                     text="cm"
                     selected={values.artwork.framedMetric === "cm"}
