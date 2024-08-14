@@ -75,7 +75,7 @@ export const MyCollectionArtworkSubmissionStatus: React.FC<
             {!!actionLabel && !isListed && (
               <Touchable onPress={() => setIsSubmissionStatusModalVisible(true)}>
                 <Flex flexDirection="row" alignItems="center" alignContent="center">
-                  <Text variant="sm-display" fontWeight="bold" color="orange100">
+                  <Text variant="sm-display" color="orange100">
                     {actionLabel}&nbsp;
                   </Text>
                   <ArrowRightIcon fill="orange100" height={16} width={16} />
