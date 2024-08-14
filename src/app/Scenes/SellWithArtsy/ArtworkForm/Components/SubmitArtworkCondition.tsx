@@ -155,7 +155,7 @@ export const SubmitArtworkCondition = () => {
                 <Text variant="sm-display" fontWeight="bold" mb={0.5}>
                   {definition.title}:
                 </Text>
-                <Text variant="sm-display">{definition.description}</Text>
+                <Text variant="sm">{definition.description}</Text>
               </Flex>
             )
           })}

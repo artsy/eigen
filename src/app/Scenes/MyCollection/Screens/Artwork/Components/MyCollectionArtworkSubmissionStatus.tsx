@@ -4,6 +4,12 @@ import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { ArtworkSubmissionStatusFAQ } from "app/Scenes/MyCollection/Screens/Artwork/ArtworkSubmissionStatusFAQ"
 import { ArtworkSubmissionStatusDescription } from "app/Scenes/MyCollection/Screens/Artwork/Components/ArtworkSubmissionStatusDescription"
+import {
+  INITIAL_POST_APPROVAL_STEP,
+  SubmitArtworkProps,
+} from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
+import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubmitArtworkTracking"
+import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useState } from "react"
 import { useFragment, graphql } from "react-relay"
@@ -17,6 +23,7 @@ export const MyCollectionArtworkSubmissionStatus: React.FC<
 > = ({ artwork }) => {
   const [isSubmissionStatusModalVisible, setIsSubmissionStatusModalVisible] =
     useState<boolean>(false)
+  const { trackTappedEditSubmission } = useSubmitArtworkTracking()
 
   const enableSubmitArtworkTier2Information = useFeatureFlag(
     "AREnableSubmitArtworkTier2Information"
@@ -26,6 +33,7 @@ export const MyCollectionArtworkSubmissionStatus: React.FC<
     submissionStateFragment,
     artwork
   )
+
   const artworkData = useFragment(submissionStateFragment, artwork)
 
   if (!consignmentSubmission || !submissionId) return null
@@ -38,6 +46,15 @@ export const MyCollectionArtworkSubmissionStatus: React.FC<
 
   let stateLabelColor = "yellow150"
   if (["APPROVED", "REJECTED", "CLOSED", "PUBLISHED"].includes(state)) stateLabelColor = "orange150"
+
+  const navigateToTheSubmissionFlow = () => {
+    const passProps: SubmitArtworkProps = {
+      initialStep: INITIAL_POST_APPROVAL_STEP,
+      hasStartedFlowFromMyCollection: true,
+      initialValues: {},
+    }
+    navigate(`/sell/submissions/${submissionId}/edit`, { passProps })
+  }
 
   return (
     <Box testID="MyCollectionArtworkSubmissionStatus-Container">
@@ -54,7 +71,10 @@ export const MyCollectionArtworkSubmissionStatus: React.FC<
               <Text variant="xs" color="black100">
                 Submission Status
               </Text>
-              <Touchable onPress={() => setIsSubmissionStatusModalVisible(true)}>
+              <Touchable
+                onPress={() => setIsSubmissionStatusModalVisible(true)}
+                hitSlop={{ top: 10, bottom: 10 }}
+              >
                 <Text style={{ textDecorationLine: "underline" }} variant="xs" color="black60">
                   What's this?
                 </Text>
@@ -62,17 +82,21 @@ export const MyCollectionArtworkSubmissionStatus: React.FC<
             </Flex>
 
             {!!stateLabel && (
-              <Touchable onPress={() => setIsSubmissionStatusModalVisible(true)}>
-                <Text mt={0.5} variant="sm-display" color={consignmentSubmission.stateLabelColor}>
-                  {isListed ? "Listed" : stateLabel}
-                </Text>
-              </Touchable>
+              <Text mt={0.5} variant="sm-display" color={consignmentSubmission.stateLabelColor}>
+                {isListed ? "Listed" : stateLabel}
+              </Text>
             )}
 
             {!!actionLabel && !isListed && (
-              <Touchable onPress={() => setIsSubmissionStatusModalVisible(true)}>
+              <Touchable
+                onPress={() => {
+                  trackTappedEditSubmission(submissionId, null, state)
+                  navigateToTheSubmissionFlow()
+                }}
+                testID="action-label"
+              >
                 <Flex flexDirection="row" alignItems="center" alignContent="center">
-                  <Text variant="sm-display" fontWeight="bold" color="orange100">
+                  <Text variant="sm-display" color="orange100">
                     {actionLabel}&nbsp;
                   </Text>
                   <ArrowRightIcon fill="orange100" height={16} width={16} />
@@ -96,7 +120,10 @@ export const MyCollectionArtworkSubmissionStatus: React.FC<
               <Text variant="xs" color="black100">
                 Submission Status
               </Text>
-              <Touchable onPress={() => setIsSubmissionStatusModalVisible(true)}>
+              <Touchable
+                onPress={() => setIsSubmissionStatusModalVisible(true)}
+                hitSlop={{ top: 10, bottom: 10 }}
+              >
                 <Text style={{ textDecorationLine: "underline" }} variant="xs" color="black60">
                   What's this?
                 </Text>
@@ -122,6 +149,7 @@ const submissionStateFragment = graphql`
       stateHelpMessage
       buttonLabel
     }
+    internalID
     submissionId
     isListed
     ...ArtworkSubmissionStatusDescription_artwork

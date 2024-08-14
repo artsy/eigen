@@ -1,4 +1,5 @@
 import {
+  Box,
   Flex,
   Screen,
   Separator,
@@ -19,8 +20,10 @@ import { CollectionOverview } from "app/Scenes/Collection/CollectionOverview"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "app/Scenes/Collection/Screens/CollectionArtworks"
 import { CollectionHeader } from "app/Scenes/Collection/Screens/CollectionHeader"
 import { goBack } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderGrid } from "app/utils/placeholderGrid"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
+import { isEmpty } from "lodash"
 import { Suspense, useCallback } from "react"
 import { TouchableOpacity } from "react-native"
 import RNShare from "react-native-share"
@@ -47,10 +50,9 @@ export const CollectionContent: React.FC<CollectionProps> = ({ collection }) => 
     return null
   }
 
-  const { slug, id, title, linkedCollections, showFeaturedArtists, descriptionMarkdown } = data
+  const { slug, id, title, linkedCollections, showFeaturedArtists } = data
 
-  const shouldRenderOverviewTab =
-    !!descriptionMarkdown || !!showFeaturedArtists || !!linkedCollections
+  const shouldRenderOverviewTab = !!showFeaturedArtists || !isEmpty(linkedCollections)
 
   const trackingInfo: Schema.PageView = {
     context_screen: Schema.PageNames.Collection,
@@ -81,7 +83,7 @@ export const CollectionContent: React.FC<CollectionProps> = ({ collection }) => 
     <ProvideScreenTracking info={trackingInfo}>
       <ArtworkFiltersStoreProvider>
         <Tabs.TabsWithHeader
-          initialTabName={shouldRenderOverviewTab ? "Overview" : "Artworks"}
+          initialTabName="Artworks"
           title={`${title}`}
           showLargeHeaderText={false}
           BelowTitleHeaderComponent={renderBelowTheHeaderComponent}
@@ -98,6 +100,11 @@ export const CollectionContent: React.FC<CollectionProps> = ({ collection }) => 
             ),
           }}
         >
+          <Tabs.Tab name="Artworks" label="Artworks">
+            <Tabs.Lazy>
+              <CollectionArtworks collection={data} />
+            </Tabs.Lazy>
+          </Tabs.Tab>
           {!!shouldRenderOverviewTab ? (
             <Tabs.Tab name="Overview" label="Overview">
               <Tabs.Lazy>
@@ -105,11 +112,6 @@ export const CollectionContent: React.FC<CollectionProps> = ({ collection }) => 
               </Tabs.Lazy>
             </Tabs.Tab>
           ) : null}
-          <Tabs.Tab name="Artworks" label="Artworks">
-            <Tabs.Lazy>
-              <CollectionArtworks collection={data} />
-            </Tabs.Lazy>
-          </Tabs.Tab>
         </Tabs.TabsWithHeader>
       </ArtworkFiltersStoreProvider>
     </ProvideScreenTracking>
@@ -136,24 +138,30 @@ export const CollectionScreen: React.FC<CollectionScreenProps> = ({ collectionID
 
 const CollectionPlaceholder: React.FC = () => {
   const { width } = useScreenDimensions()
+  const shouldRenderCollectionImage = useFeatureFlag("AREnableCollectionsWithoutHeaderImage")
 
   return (
     <Screen>
-      <Screen.Header rightElements={<ShareIcon width={23} height={23} />} />
+      <Screen.Header onBack={goBack} rightElements={<ShareIcon width={23} height={23} />} />
       <Screen.Body fullwidth>
         <Skeleton>
-          <SkeletonBox width={width} height={250} />
+          {!!shouldRenderCollectionImage && <SkeletonBox width={width} height={250} />}
           <Spacer y={2} />
           <Flex px={2}>
             <SkeletonText variant="lg">Collection Name</SkeletonText>
           </Flex>
+          <Spacer y={2} />
+
+          <Box px={2}>
+            <SkeletonBox width={width - 40} height={100} />
+          </Box>
 
           <Spacer y={4} />
 
           {/* Tabs */}
           <Flex justifyContent="space-around" flexDirection="row" px={2}>
-            <SkeletonText variant="xs">Overview</SkeletonText>
             <SkeletonText variant="xs">Artworks</SkeletonText>
+            <SkeletonText variant="xs">Overview</SkeletonText>
           </Flex>
         </Skeleton>
 
@@ -181,7 +189,6 @@ export const fragment = graphql`
     title
     isDepartment
     showFeaturedArtists
-    descriptionMarkdown
     ...CollectionHeader_collection
     ...CollectionArtworks_collection @arguments(input: { sort: "-decayed_merch" })
     ...CollectionArtworksFilter_collection
