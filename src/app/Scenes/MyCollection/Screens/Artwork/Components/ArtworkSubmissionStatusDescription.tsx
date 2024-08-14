@@ -91,7 +91,7 @@ export const ArtworkSubmissionStatusDescription: React.FC<
             </Text>
           )}
 
-          <Text variant="sm-display" color="black60" my={2}>
+          <Text variant="sm" color="black60" my={2}>
             {stateHelpMessageDisplay()}
           </Text>
 
