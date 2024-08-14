@@ -10,25 +10,25 @@ interface MyCollectionArtistsAutosuggestItemProps {
 }
 
 export const MyCollectionArtistsAutosuggestItem: FC<MyCollectionArtistsAutosuggestItemProps> = ({
-  artist,
+  artist: _artist,
 }) => {
   const space = useSpace()
-  const data = useFragment(QUERY, artist)
+  const artist = useFragment(QUERY, _artist)
 
   const artistIds = MyCollectionAddCollectedArtistsStore.useStoreState((state) => state.artistIds)
   const addOrRemoveArtist = MyCollectionAddCollectedArtistsStore.useStoreActions(
     (actions) => actions.addOrRemoveArtist
   )
 
-  if (!data) {
+  if (!artist) {
     return null
   }
 
-  const selected = artistIds.includes(data.internalID)
-  const displayAvatar = !!data.coverArtwork?.image?.url || !!data.initials
+  const selected = artistIds.includes(artist.internalID)
+  const displayAvatar = !!artist.coverArtwork?.image?.url || !!artist.initials
 
   const handleOnPress = () => {
-    addOrRemoveArtist(data.internalID)
+    addOrRemoveArtist(artist.internalID)
   }
 
   return (
@@ -40,13 +40,17 @@ export const MyCollectionArtistsAutosuggestItem: FC<MyCollectionArtistsAutosugge
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
         <Flex flexDirection="row" alignItems="center" gap={space(1)} flexShrink={1}>
           {!!displayAvatar && (
-            <Avatar initials={data.initials} size="xs" src={data.coverArtwork?.image?.url ?? ""} />
+            <Avatar
+              initials={artist.initials}
+              size="xs"
+              src={artist.coverArtwork?.image?.url ?? ""}
+            />
           )}
 
           <Flex flexWrap="wrap">
-            <Text variant="sm-display">{data.name}</Text>
+            <Text variant="sm-display">{artist.name}</Text>
             <Text variant="sm-display" color="black60">
-              {data.formattedNationalityAndBirthday}
+              {artist.formattedNationalityAndBirthday}
             </Text>
           </Flex>
         </Flex>
