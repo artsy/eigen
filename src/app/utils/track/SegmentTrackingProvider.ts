@@ -43,6 +43,11 @@ export const SegmentTrackingProvider: TrackingProvider = {
       category: "analytics",
     })
 
+    if (!analytics.isReady) {
+      visualize("Error!", "Segment is not ready, skipping event", info, visualizeDevToggle)
+      return
+    }
+
     // Events bubbled up from ios native
     if ("screen_name" in info) {
       const { screen_name, ...rest } = info
@@ -89,7 +94,7 @@ export const SegmentTrackingProvider: TrackingProvider = {
     if ("event_name" in info) {
       const { event_name, ...rest } = info
       visualize("Track", event_name, info, visualizeDevToggle)
-      analytics?.track?.(event_name, rest)
+      analytics.track(event_name, rest)
       return
     }
 
