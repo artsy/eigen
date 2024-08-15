@@ -4315,14 +4315,29 @@ type CollectorResume {
 
 # Collector signals available to the artwork
 type CollectorSignals {
-  # Lot bid count
+  # Bid count on lots open for bidding
   bidCount: Int
 
-  # Lot watcher count
+  # Live bidding has started on this lot's auction
+  liveBiddingStarted: Boolean
+
+  # Auction live bidding start time
+  liveStartAt: String
+
+  # Pending auction lot end time for bidding
+  lotClosesAt: String
+
+  # Lot watcher count on lots open for bidding
   lotWatcherCount: Int
+
+  # Auction lot bidding period extended due to last-minute bids
+  onlineBiddingExtended: Boolean
 
   # Partner offer available to collector
   partnerOffer: PartnerOfferToCollector
+
+  # Pending auction registration end time
+  registrationEndsAt: String
 }
 
 # Represents either an action or a potential failure
