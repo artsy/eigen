@@ -122,17 +122,6 @@ export const useSubmitArtworkTracking = () => {
     })
   }
 
-  const trackSubmissionFinalStepScreen = (
-    currentStep: "CompleteYourSubmission" | "CompleteYourSubmissionPostApproval",
-    submission_id: string | undefined
-  ) => {
-    trackEvent({
-      action: "screen",
-      context_screen_owner_type: getOwnerType(currentStep),
-      context_screen_owner_id: submission_id,
-    })
-  }
-
   return {
     trackTappedContinueSubmission,
     trackTappedNewSubmission,
@@ -145,7 +134,6 @@ export const useSubmitArtworkTracking = () => {
     trackTappedContactAdvisor,
     trackTappedEditSubmission,
     trackSubmissionStepScreen,
-    trackSubmissionFinalStepScreen,
   }
 }
 

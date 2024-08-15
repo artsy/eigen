@@ -6,10 +6,9 @@ import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkFo
 import { useNavigationListeners } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useNavigationListeners"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
 import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
-import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubmitArtworkTracking"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { useFormikContext } from "formik"
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { useDebounce } from "react-use"
 
@@ -26,14 +25,9 @@ export const SubmitArtworkAddDimensions = () => {
   const setCurrentStep = SubmitArtworkFormStore.useStoreActions((actions) => actions.setCurrentStep)
   const navigation = useNavigation<NavigationProp<SubmitArtworkStackNavigation, "AddDimensions">>()
 
-  const { currentStep } = useSubmissionContext()
-  const { trackSubmissionStepScreen } = useSubmitArtworkTracking()
+  const { useSubmitArtworkScreenTracking } = useSubmissionContext()
 
-  useEffect(() => {
-    if (currentStep === "AddDimensions") {
-      trackSubmissionStepScreen(currentStep, values.submissionId || undefined)
-    }
-  }, [currentStep])
+  useSubmitArtworkScreenTracking("AddDimensions")
 
   useNavigationListeners({
     onNextStep: async () => {

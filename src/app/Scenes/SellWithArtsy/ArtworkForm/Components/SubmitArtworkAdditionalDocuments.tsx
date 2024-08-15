@@ -21,14 +21,13 @@ import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkFo
 import { useNavigationListeners } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useNavigationListeners"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
 import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
-import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubmitArtworkTracking"
 import { ICON_SIZE } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/UploadPhotosForm"
 import { addDocumentToSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/addDocumentToSubmission" // pragma: allowlist secret
 import { deleteDocument } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/deleteDocument"
 import { NormalizedDocument, normalizeUploadedDocument } from "app/utils/normalizeUploadedDocument"
 import { showDocumentsAndPhotosActionSheet } from "app/utils/showDocumentsAndPhotosActionSheet"
 import { useFormikContext } from "formik"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Image, LayoutAnimation, Platform, ScrollView } from "react-native"
 
 // 50 MB in bytes
@@ -50,14 +49,9 @@ export const SubmitArtworkAdditionalDocuments = () => {
   const navigation =
     useNavigation<NavigationProp<SubmitArtworkStackNavigation, "AdditionalDocuments">>()
 
-  const { currentStep } = useSubmissionContext()
-  const { trackSubmissionStepScreen } = useSubmitArtworkTracking()
+  const { useSubmitArtworkScreenTracking } = useSubmissionContext()
 
-  useEffect(() => {
-    if (currentStep === "AdditionalDocuments") {
-      trackSubmissionStepScreen(currentStep, values.submissionId || undefined)
-    }
-  }, [currentStep])
+  useSubmitArtworkScreenTracking("AdditionalDocuments")
 
   useNavigationListeners({
     onNextStep: async () => {

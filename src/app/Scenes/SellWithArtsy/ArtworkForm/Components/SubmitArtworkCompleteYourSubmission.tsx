@@ -1,7 +1,6 @@
 import { Flex, Message, Spacer, Text } from "@artsy/palette-mobile"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
 import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
-import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubmitArtworkTracking"
 import { useFormikContext } from "formik"
 import { useEffect } from "react"
 import { BackHandler, ScrollView } from "react-native"
@@ -17,19 +16,11 @@ export const SubmitArtworkCompleteYourSubmission = () => {
     return () => subscription.remove()
   }, [])
 
-  const { currentStep } = useSubmissionContext()
-  const { trackSubmissionFinalStepScreen } = useSubmitArtworkTracking()
+  const { useSubmitArtworkScreenTracking } = useSubmissionContext()
 
-  useEffect(() => {
-    if (currentStep === "CompleteYourSubmission") {
-      values.state === "APPROVED"
-        ? trackSubmissionFinalStepScreen(
-            "CompleteYourSubmissionPostApproval",
-            values.submissionId || undefined
-          )
-        : trackSubmissionFinalStepScreen("CompleteYourSubmission", values.submissionId || undefined)
-    }
-  }, [currentStep])
+  useSubmitArtworkScreenTracking(
+    values.state === "APPROVED" ? "CompleteYourSubmissionPostApproval" : "CompleteYourSubmission"
+  )
 
   if (values.state === "APPROVED") {
     return (

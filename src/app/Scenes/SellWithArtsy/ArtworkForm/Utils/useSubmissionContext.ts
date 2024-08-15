@@ -15,9 +15,10 @@ import {
   SubmissionModel,
   getCurrentValidationSchema,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubmitArtworkTracking"
 import { goBack } from "app/system/navigation/navigate"
 import { useFormikContext } from "formik"
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import { Alert } from "react-native"
 
 export const SubmitArtworkFormEvents = new EventEmitter()
@@ -85,6 +86,16 @@ export const useSubmissionContext = () => {
     }
   }
 
+  const { trackSubmissionStepScreen } = useSubmitArtworkTracking()
+
+  const useSubmitArtworkScreenTracking = (step: keyof SubmitArtworkStackNavigation) => {
+    useEffect(() => {
+      if (currentStep === step) {
+        trackSubmissionStepScreen(currentStep, values.submissionId || undefined)
+      }
+    }, [currentStep])
+  }
+
   return {
     isValid,
     isLoading,
@@ -92,5 +103,6 @@ export const useSubmissionContext = () => {
     isFinalStep,
     navigateToNextStep,
     navigateToPreviousStep,
+    useSubmitArtworkScreenTracking,
   }
 }

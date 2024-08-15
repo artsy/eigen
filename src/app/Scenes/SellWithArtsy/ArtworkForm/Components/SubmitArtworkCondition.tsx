@@ -11,13 +11,12 @@ import { updateMyCollectionArtwork } from "app/Scenes/SellWithArtsy/ArtworkForm/
 import { useNavigationListeners } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useNavigationListeners"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
 import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
-import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubmitArtworkTracking"
 import { InfoModal } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/InfoModal/InfoModal"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { GlobalStore } from "app/store/GlobalStore"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { useFormikContext } from "formik"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { ScrollView } from "react-native"
 
 export const SubmitArtworkCondition = () => {
@@ -32,14 +31,9 @@ export const SubmitArtworkCondition = () => {
 
   const navigation = useNavigation<NavigationProp<SubmitArtworkStackNavigation, "Condition">>()
 
-  const { currentStep } = useSubmissionContext()
-  const { trackSubmissionStepScreen } = useSubmitArtworkTracking()
+  const { useSubmitArtworkScreenTracking } = useSubmissionContext()
 
-  useEffect(() => {
-    if (currentStep === "Condition") {
-      trackSubmissionStepScreen(currentStep, values.submissionId || undefined)
-    }
-  }, [currentStep])
+  useSubmitArtworkScreenTracking("Condition")
 
   useNavigationListeners({
     onNextStep: async () => {

@@ -6,11 +6,10 @@ import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkFo
 import { useNavigationListeners } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useNavigationListeners"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
 import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
-import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubmitArtworkTracking"
 import { InfoModal } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/InfoModal/InfoModal"
 import { UploadPhotosForm } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/UploadPhotosForm"
 import { useFormikContext } from "formik"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { ScrollView } from "react-native"
 
 export const SubmitArtworkAddPhotos = () => {
@@ -19,14 +18,9 @@ export const SubmitArtworkAddPhotos = () => {
   const setCurrentStep = SubmitArtworkFormStore.useStoreActions((actions) => actions.setCurrentStep)
   const navigation = useNavigation<NavigationProp<SubmitArtworkStackNavigation, "AddPhotos">>()
 
-  const { currentStep } = useSubmissionContext()
-  const { trackSubmissionStepScreen } = useSubmitArtworkTracking()
+  const { useSubmitArtworkScreenTracking } = useSubmissionContext()
 
-  useEffect(() => {
-    if (currentStep === "AddPhotos") {
-      trackSubmissionStepScreen(currentStep, values.submissionId || undefined)
-    }
-  }, [currentStep])
+  useSubmitArtworkScreenTracking("AddPhotos")
 
   useNavigationListeners({
     onNextStep: () => {

@@ -10,16 +10,15 @@ import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Com
 import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
 import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
-import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubmitArtworkTracking"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { navigate } from "app/system/navigation/navigate"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useFormikContext } from "formik"
-import { Suspense, useEffect } from "react"
+import { Suspense } from "react"
 import { TouchableOpacity } from "react-native"
 
 export const SubmitArtworkSelectArtist = () => {
-  const { isLoading, currentStep } = useSubmissionContext()
+  const { isLoading, currentStep, useSubmitArtworkScreenTracking } = useSubmissionContext()
 
   const setIsLoading = SubmitArtworkFormStore.useStoreActions((actions) => actions.setIsLoading)
   const setCurrentStep = SubmitArtworkFormStore.useStoreActions((actions) => actions.setCurrentStep)
@@ -28,13 +27,7 @@ export const SubmitArtworkSelectArtist = () => {
 
   const formik = useFormikContext<SubmissionModel>()
 
-  const { trackSubmissionStepScreen } = useSubmitArtworkTracking()
-
-  useEffect(() => {
-    if (currentStep === "SelectArtist") {
-      trackSubmissionStepScreen(currentStep, undefined)
-    }
-  }, [currentStep])
+  useSubmitArtworkScreenTracking("SelectArtist")
 
   const handleResultPress = async (result: AutosuggestResult) => {
     setIsLoading(true)

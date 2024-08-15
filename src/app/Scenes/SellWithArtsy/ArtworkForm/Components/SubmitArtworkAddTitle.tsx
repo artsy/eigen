@@ -7,10 +7,8 @@ import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkFo
 import { useNavigationListeners } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useNavigationListeners"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
 import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
-import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubmitArtworkTracking"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { useFormikContext } from "formik"
-import { useEffect } from "react"
 import { ScrollView } from "react-native"
 
 export const SubmitArtworkAddTitle = () => {
@@ -23,14 +21,9 @@ export const SubmitArtworkAddTitle = () => {
 
   const navigation = useNavigation<NavigationProp<SubmitArtworkStackNavigation, "AddTitle">>()
 
-  const { currentStep } = useSubmissionContext()
-  const { trackSubmissionStepScreen } = useSubmitArtworkTracking()
+  const { currentStep, useSubmitArtworkScreenTracking } = useSubmissionContext()
 
-  useEffect(() => {
-    if (currentStep === "AddTitle") {
-      trackSubmissionStepScreen(currentStep, values.submissionId || undefined)
-    }
-  }, [currentStep])
+  useSubmitArtworkScreenTracking("AddTitle")
 
   useNavigationListeners({
     onNextStep: async () => {

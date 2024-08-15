@@ -1,7 +1,5 @@
 import { Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
-import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubmitArtworkTracking"
-import { useEffect } from "react"
 import { Image, ScrollView } from "react-native"
 
 const SECTIONS = [
@@ -25,14 +23,9 @@ const SECTIONS = [
   },
 ]
 export const SubmitArtworkStartFlow: React.FC = () => {
-  const { currentStep } = useSubmissionContext()
-  const { trackSubmissionStepScreen } = useSubmitArtworkTracking()
+  const { useSubmitArtworkScreenTracking } = useSubmissionContext()
 
-  useEffect(() => {
-    if (currentStep === "StartFlow") {
-      trackSubmissionStepScreen(currentStep, undefined)
-    }
-  }, [currentStep])
+  useSubmitArtworkScreenTracking("StartFlow")
 
   return (
     <Flex flex={1} px={2}>

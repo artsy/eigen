@@ -7,12 +7,12 @@ import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubm
 import { InfoModal } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/InfoModal/InfoModal"
 import { navigate } from "app/system/navigation/navigate"
 import { useFormikContext } from "formik"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 export const SubmitArtworkArtistRejected: React.FC<{}> = () => {
-  const { trackTappedContactAdvisor, trackSubmissionStepScreen } = useSubmitArtworkTracking()
+  const { trackTappedContactAdvisor } = useSubmitArtworkTracking()
   const { values } = useFormikContext<SubmissionModel>()
   const [isEligibilityModalVisible, setIsEligibilityModalVisible] = useState(false)
 
@@ -22,13 +22,9 @@ export const SubmitArtworkArtistRejected: React.FC<{}> = () => {
   )
   const me = meData.me ?? null
 
-  const { currentStep } = useSubmissionContext()
+  const { useSubmitArtworkScreenTracking } = useSubmissionContext()
 
-  useEffect(() => {
-    if (currentStep === "ArtistRejected") {
-      trackSubmissionStepScreen(currentStep, values.submissionId || undefined)
-    }
-  }, [currentStep])
+  useSubmitArtworkScreenTracking("ArtistRejected")
 
   return (
     <Flex flex={1} px={2}>

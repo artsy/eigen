@@ -9,12 +9,10 @@ import { updateMyCollectionArtwork } from "app/Scenes/SellWithArtsy/ArtworkForm/
 import { useNavigationListeners } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useNavigationListeners"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
 import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
-import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubmitArtworkTracking"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { GlobalStore } from "app/store/GlobalStore"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { useFormikContext } from "formik"
-import { useEffect } from "react"
 import { ScrollView } from "react-native"
 
 export const SubmitArtworkAddPhoneNumber = () => {
@@ -27,14 +25,9 @@ export const SubmitArtworkAddPhoneNumber = () => {
 
   const navigation = useNavigation<NavigationProp<SubmitArtworkStackNavigation, "AddPhoneNumber">>()
 
-  const { currentStep } = useSubmissionContext()
-  const { trackSubmissionStepScreen } = useSubmitArtworkTracking()
+  const { currentStep, useSubmitArtworkScreenTracking } = useSubmissionContext()
 
-  useEffect(() => {
-    if (currentStep === "AddPhoneNumber") {
-      trackSubmissionStepScreen(currentStep, values.submissionId || undefined)
-    }
-  }, [currentStep])
+  useSubmitArtworkScreenTracking("AddPhoneNumber")
 
   useNavigationListeners({
     onNextStep: async () => {
