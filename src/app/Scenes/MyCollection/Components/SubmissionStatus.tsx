@@ -19,9 +19,11 @@ export const SubmissionStatus: React.FC<SubmissionStatusProps> = ({ artwork }) =
 
   return (
     <Flex flexDirection="column" testID="Submission-status-component">
-      <Text variant="xs" fontWeight="bold" color={stateLabelColor ?? "black100"}>
-        {artworkData.isListed ? "Listed" : stateLabel}
-      </Text>
+      {!!(stateLabel || isListed) && (
+        <Text variant="xs" fontWeight="bold" color={stateLabelColor ?? "black100"}>
+          {artworkData.isListed ? "Listed" : stateLabel}
+        </Text>
+      )}
 
       {!!actionLabel && !isListed && (
         <Flex flexDirection="row" alignItems="center" testID="action-label">

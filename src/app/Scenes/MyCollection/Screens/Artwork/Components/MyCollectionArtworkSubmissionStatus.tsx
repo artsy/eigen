@@ -5,6 +5,7 @@ import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { ArtworkSubmissionStatusFAQ } from "app/Scenes/MyCollection/Screens/Artwork/ArtworkSubmissionStatusFAQ"
 import { ArtworkSubmissionStatusDescription } from "app/Scenes/MyCollection/Screens/Artwork/Components/ArtworkSubmissionStatusDescription"
 import {
+  INITIAL_EDIT_STEP,
   INITIAL_POST_APPROVAL_STEP,
   SubmitArtworkProps,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
@@ -49,10 +50,11 @@ export const MyCollectionArtworkSubmissionStatus: React.FC<
 
   const navigateToTheSubmissionFlow = () => {
     const passProps: SubmitArtworkProps = {
-      initialStep: INITIAL_POST_APPROVAL_STEP,
+      initialStep: state === "APPROVED" ? INITIAL_POST_APPROVAL_STEP : INITIAL_EDIT_STEP,
       hasStartedFlowFromMyCollection: true,
       initialValues: {},
     }
+
     navigate(`/sell/submissions/${submissionId}/edit`, { passProps })
   }
 
