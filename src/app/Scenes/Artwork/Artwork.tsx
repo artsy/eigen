@@ -337,7 +337,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
         })
       }
 
-      if (!!enablePartnerOfferOnArtworkScreen && !!partnerOffer?.note) {
+      if (!!enablePartnerOfferOnArtworkScreen && !!partnerOffer?.isActive && !!partnerOffer?.note) {
         sections.push({
           key: "partnerOfferNote",
           element: (
@@ -575,7 +575,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
         <ArtworkStickyBottomContent
           artwork={artworkAboveTheFold}
           me={me}
-          partnerOffer={extractNodes(me.partnerOffersConnection)[0]}
+          partnerOffer={partnerOffer}
         />
       )}
 

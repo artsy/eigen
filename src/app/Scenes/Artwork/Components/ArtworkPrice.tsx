@@ -49,7 +49,12 @@ export const ArtworkPrice: React.FC<ArtworkPriceProps> = ({
     message = artworkData.saleMessage
   }
 
-  if (!!AREnablePartnerOfferOnArtworkScreen && !!partnerOfferData && partnerOfferData.isAvailable) {
+  if (
+    !!AREnablePartnerOfferOnArtworkScreen &&
+    !!partnerOfferData &&
+    partnerOfferData.isAvailable &&
+    partnerOfferData.isActive
+  ) {
     const listPrice = artworkData.isPriceHidden ? "Not publicly listed" : message
 
     return (
@@ -111,6 +116,7 @@ const partnerOfferPriceFragment = graphql`
   fragment ArtworkPrice_partnerOffer on PartnerOfferToCollector {
     endAt
     isAvailable
+    isActive
     priceWithDiscount {
       display
     }
