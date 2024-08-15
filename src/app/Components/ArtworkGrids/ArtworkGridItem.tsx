@@ -65,7 +65,7 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   itemIndex?: number
   lotLabelTextStyle?: TextProps
   /** Overrides onPress and prevents the default behaviour. */
-  onPress?: (artworkID: string, withPartnerOffer: boolean) => void
+  onPress?: (artworkID: string, artwork?: ArtworkGridItem_artwork$data) => void
   partnerNameTextStyle?: TextProps
   partnerOffer?: PartnerOffer
   priceOfferMessage?: PriceOfferMessage
@@ -187,11 +187,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const handleTap = () => {
     if (onPress) {
-      const partnerOfferAvailable =
-        AREnablePartnerOfferSignals &&
-        collectorSignals?.partnerOffer?.isAvailable &&
-        !artwork.sale?.isAuction
-      return onPress(artwork.slug, !!partnerOfferAvailable)
+      return onPress(artwork.slug, artwork)
     }
 
     addArtworkToRecentSearches()
