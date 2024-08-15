@@ -177,5 +177,31 @@ describe("MyCollectionArtworkSubmissionStatus", () => {
         },
       })
     })
+
+    it("navigatess to submission flow ShippingLocation when action label is pressed and Tier 2", () => {
+      renderWithRelay({
+        Artwork: () => {
+          return {
+            isListed: false,
+            internalID: "artwork-id",
+            submissionId: "submission-id",
+            consignmentSubmission: {
+              state: "DRAFT",
+              actionLabel: "Complete Submission",
+            },
+          }
+        },
+      })
+
+      expect(screen.queryAllByText("Complete Submission")).toHaveLength(2)
+      fireEvent.press(screen.getByTestId("action-label"))
+      expect(navigate).toHaveBeenCalledWith("/sell/submissions/submission-id/edit", {
+        passProps: {
+          hasStartedFlowFromMyCollection: true,
+          initialStep: "AddTitle",
+          initialValues: {},
+        },
+      })
+    })
   })
 })
