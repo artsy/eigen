@@ -1,4 +1,3 @@
-import { OwnerType } from "@artsy/cohesion"
 import { Flex, Join, RadioButton, Spacer, Text } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { Select } from "app/Components/Select"
@@ -6,10 +5,9 @@ import { useToast } from "app/Components/Toast/toastHook"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { useNavigationListeners } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useNavigationListeners"
+import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
 import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
-import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
-import { screen } from "app/utils/track/helpers"
 import { useFormikContext } from "formik"
 import { useEffect, useState } from "react"
 import { ScrollView } from "react-native"
@@ -38,6 +36,10 @@ export const SubmitArtworkPurchaseHistory = () => {
 
   const navigation =
     useNavigation<NavigationProp<SubmitArtworkStackNavigation, "PurchaseHistory">>()
+
+  const { useSubmitArtworkScreenTracking } = useSubmissionContext()
+
+  useSubmitArtworkScreenTracking("PurchaseHistory")
 
   useNavigationListeners({
     onNextStep: async () => {
@@ -74,64 +76,57 @@ export const SubmitArtworkPurchaseHistory = () => {
   }, [isSigned, setFieldValue])
 
   return (
-    <ProvideScreenTrackingWithCohesionSchema
-      info={screen({
-        context_screen_owner_type: OwnerType.submitArtworkStepPurchaseHistory,
-        context_screen_owner_id: values.submissionId || undefined,
-      })}
-    >
-      <Flex px={2} flex={1}>
-        <ScrollView>
-          <Text variant="lg-display" mb={2}>
-            Where did you purchase the artwork?
-          </Text>
+    <Flex px={2} flex={1}>
+      <ScrollView>
+        <Text variant="lg-display" mb={2}>
+          Where did you purchase the artwork?
+        </Text>
 
-          <Spacer y={2} />
+        <Spacer y={2} />
 
-          <Join separator={<Spacer y={2} />}>
-            <Flex>
-              <Select
-                options={PROVENANCE_LIST}
-                title="Purchase information"
-                testID="PurchaseInformation_Select"
-                onSelectValue={(value) => {
-                  setFieldValue("provenance", value)
+        <Join separator={<Spacer y={2} />}>
+          <Flex>
+            <Select
+              options={PROVENANCE_LIST}
+              title="Purchase information"
+              testID="PurchaseInformation_Select"
+              onSelectValue={(value) => {
+                setFieldValue("provenance", value)
+              }}
+              value={values.provenance}
+            />
+          </Flex>
+
+          <Flex>
+            <Text>Is the work signed?</Text>
+            <Flex flexDirection="row" mt={2}>
+              <RadioButton
+                text="Yes"
+                textVariant="sm-display"
+                accessibilityState={{ checked: !!isSigned }}
+                accessibilityLabel="Work is signed"
+                selected={isSigned === true}
+                onPress={() => {
+                  setIsSigned(true)
                 }}
-                value={values.provenance}
+              />
+
+              <Spacer x={4} />
+
+              <RadioButton
+                text="No"
+                textVariant="sm-display"
+                accessibilityState={{ checked: !!isSigned }}
+                accessibilityLabel="Work is not signed"
+                selected={isSigned === false}
+                onPress={() => {
+                  setIsSigned(false)
+                }}
               />
             </Flex>
-
-            <Flex>
-              <Text>Is the work signed?</Text>
-              <Flex flexDirection="row" mt={2}>
-                <RadioButton
-                  text="Yes"
-                  textVariant="sm-display"
-                  accessibilityState={{ checked: !!isSigned }}
-                  accessibilityLabel="Work is signed"
-                  selected={isSigned === true}
-                  onPress={() => {
-                    setIsSigned(true)
-                  }}
-                />
-
-                <Spacer x={4} />
-
-                <RadioButton
-                  text="No"
-                  textVariant="sm-display"
-                  accessibilityState={{ checked: !!isSigned }}
-                  accessibilityLabel="Work is not signed"
-                  selected={isSigned === false}
-                  onPress={() => {
-                    setIsSigned(false)
-                  }}
-                />
-              </Flex>
-            </Flex>
-          </Join>
-        </ScrollView>
-      </Flex>
-    </ProvideScreenTrackingWithCohesionSchema>
+          </Flex>
+        </Join>
+      </ScrollView>
+    </Flex>
   )
 }

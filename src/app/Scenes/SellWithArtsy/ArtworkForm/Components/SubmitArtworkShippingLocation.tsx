@@ -1,4 +1,3 @@
-import { OwnerType } from "@artsy/cohesion"
 import { Flex, Input, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { COUNTRY_SELECT_OPTIONS, CountrySelect } from "app/Components/CountrySelect"
@@ -6,10 +5,9 @@ import { useToast } from "app/Components/Toast/toastHook"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { useNavigationListeners } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useNavigationListeners"
+import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
 import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
-import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
-import { screen } from "app/utils/track/helpers"
 import { useFormikContext } from "formik"
 import { useRef } from "react"
 import { ScrollView } from "react-native"
@@ -30,6 +28,10 @@ export const SubmitArtworkShippingLocation = () => {
 
   const navigation =
     useNavigation<NavigationProp<SubmitArtworkStackNavigation, "ShippingLocation">>()
+
+  const { useSubmitArtworkScreenTracking } = useSubmissionContext()
+
+  useSubmitArtworkScreenTracking("ShippingLocation")
 
   useNavigationListeners({
     onNextStep: async () => {
@@ -65,97 +67,89 @@ export const SubmitArtworkShippingLocation = () => {
   })
 
   return (
-    <ProvideScreenTrackingWithCohesionSchema
-      info={screen({
-        context_screen_owner_type: OwnerType.submitArtworkStepShippingLocation,
-        context_screen_owner_id: values.submissionId || undefined,
-      })}
-    >
-      <ScrollView contentContainerStyle={{ paddingBottom: 50 }}>
-        <Flex px={2} flex={1}>
-          <Join separator={<Spacer y={2} />} flatten>
-            <Text variant="lg-display">Shipping Location</Text>
+    <ScrollView contentContainerStyle={{ paddingBottom: 50 }}>
+      <Flex px={2} flex={1}>
+        <Join separator={<Spacer y={2} />} flatten>
+          <Text variant="lg-display">Shipping Location</Text>
 
-            <Text color="black60" variant="xs">
-              Location is where the artwork ships from. It’s required so we can estimate shipping
-              costs and tax.
-            </Text>
+          <Text color="black60" variant="xs">
+            Location is where the artwork ships from. It’s required so we can estimate shipping
+            costs and tax.
+          </Text>
 
-            <CountrySelect
-              onSelectValue={(countryCode) => {
-                const newCountry = COUNTRY_SELECT_OPTIONS.find(({ value }) => value === countryCode)
+          <CountrySelect
+            onSelectValue={(countryCode) => {
+              const newCountry = COUNTRY_SELECT_OPTIONS.find(({ value }) => value === countryCode)
 
-                if (newCountry) {
-                  setFieldValue("location.country", newCountry.label)
-                  setFieldValue("location.countryCode", newCountry.value)
-                }
-              }}
-              value={
-                values.location?.countryCode ||
-                COUNTRY_SELECT_OPTIONS.find(({ label }) => label === values.location?.country)
-                  ?.value
+              if (newCountry) {
+                setFieldValue("location.country", newCountry.label)
+                setFieldValue("location.countryCode", newCountry.value)
               }
-              required
-              testID="country-select"
-            />
+            }}
+            value={
+              values.location?.countryCode ||
+              COUNTRY_SELECT_OPTIONS.find(({ label }) => label === values.location?.country)?.value
+            }
+            required
+            testID="country-select"
+          />
 
-            {!!values.location?.country && (
-              <Join separator={<Spacer y={2} />}>
-                <Input
-                  title="Address Line 1"
-                  value={values.location?.address}
-                  onChangeText={(text) => setFieldValue("location.address", text)}
-                  required
-                  ref={addressRef}
-                  onSubmitEditing={() => {
-                    address2Ref.current?.focus()
-                  }}
-                />
+          {!!values.location?.country && (
+            <Join separator={<Spacer y={2} />}>
+              <Input
+                title="Address Line 1"
+                value={values.location?.address}
+                onChangeText={(text) => setFieldValue("location.address", text)}
+                required
+                ref={addressRef}
+                onSubmitEditing={() => {
+                  address2Ref.current?.focus()
+                }}
+              />
 
-                <Input
-                  title="Address Line 2"
-                  defaultValue={values.location?.address2}
-                  onChangeText={(text) => setFieldValue("location.address2", text)}
-                  ref={address2Ref}
-                  onSubmitEditing={() => {
-                    cityRef.current?.focus()
-                  }}
-                />
+              <Input
+                title="Address Line 2"
+                defaultValue={values.location?.address2}
+                onChangeText={(text) => setFieldValue("location.address2", text)}
+                ref={address2Ref}
+                onSubmitEditing={() => {
+                  cityRef.current?.focus()
+                }}
+              />
 
-                <Input
-                  title="City"
-                  defaultValue={values.location?.city ?? ""}
-                  onChangeText={(text) => setFieldValue("location.city", text)}
-                  required
-                  ref={cityRef}
-                  onSubmitEditing={() => {
-                    postalCodeRef.current?.focus()
-                  }}
-                />
+              <Input
+                title="City"
+                defaultValue={values.location?.city ?? ""}
+                onChangeText={(text) => setFieldValue("location.city", text)}
+                required
+                ref={cityRef}
+                onSubmitEditing={() => {
+                  postalCodeRef.current?.focus()
+                }}
+              />
 
-                <Input
-                  title="Postal Code"
-                  defaultValue={values.location?.zipCode ?? ""}
-                  onChangeText={(text) => setFieldValue("location.zipCode", text)}
-                  required
-                  ref={postalCodeRef}
-                  onSubmitEditing={() => {
-                    stateRef.current?.focus()
-                  }}
-                />
+              <Input
+                title="Postal Code"
+                defaultValue={values.location?.zipCode ?? ""}
+                onChangeText={(text) => setFieldValue("location.zipCode", text)}
+                required
+                ref={postalCodeRef}
+                onSubmitEditing={() => {
+                  stateRef.current?.focus()
+                }}
+              />
 
-                <Input
-                  title="State, Province, or Region"
-                  defaultValue={values.location?.state ?? ""}
-                  onChangeText={(text) => setFieldValue("location.state", text)}
-                  required
-                  ref={stateRef}
-                />
-              </Join>
-            )}
-          </Join>
-        </Flex>
-      </ScrollView>
-    </ProvideScreenTrackingWithCohesionSchema>
+              <Input
+                title="State, Province, or Region"
+                defaultValue={values.location?.state ?? ""}
+                onChangeText={(text) => setFieldValue("location.state", text)}
+                required
+                ref={stateRef}
+              />
+            </Join>
+          )}
+        </Join>
+      </Flex>
+    </ScrollView>
   )
 }
