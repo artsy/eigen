@@ -75,7 +75,6 @@ export const SubmitArtworkFrameInformation = () => {
 
           <Flex flexDirection="row" mt={2}>
             <RadioButton
-              mr={4}
               text="Yes"
               selected={values.artwork.isFramed === true}
               onPress={() => {
@@ -83,6 +82,9 @@ export const SubmitArtworkFrameInformation = () => {
                 setFieldValue("artwork.isFramed", true)
               }}
             />
+
+            <Spacer x={4} />
+
             <RadioButton
               text="No"
               selected={values.artwork.isFramed === false}

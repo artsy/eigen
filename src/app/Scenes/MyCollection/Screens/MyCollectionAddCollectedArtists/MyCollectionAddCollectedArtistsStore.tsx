@@ -1,5 +1,5 @@
 import { MyCollectionCustomArtistSchema } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
-import { Action, action, createContextStore } from "easy-peasy"
+import { Action, Computed, action, computed, createContextStore } from "easy-peasy"
 import { isEqual } from "lodash"
 
 export interface MyCollectionAddCollectedArtistsStoreModel {
@@ -7,6 +7,7 @@ export interface MyCollectionAddCollectedArtistsStoreModel {
   customArtists: Array<MyCollectionCustomArtistSchema>
   addOrRemoveArtist: Action<this, string>
   addCustomArtist: Action<this, MyCollectionCustomArtistSchema>
+  count: Computed<this, number>
 }
 
 export const MyCollectionAddCollectedArtistsStore =
@@ -31,4 +32,5 @@ export const MyCollectionAddCollectedArtistsStore =
       }
       state.customArtists.push(artist)
     }),
+    count: computed((state) => state.artistIds.length + state.customArtists.length),
   })
