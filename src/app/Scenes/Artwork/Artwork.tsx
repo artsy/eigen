@@ -111,16 +111,16 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
   const expectedPartnerOfferId = !!props.partner_offer_id && enablePartnerOfferOnArtworkScreen
 
   const partnerOfferUnavailable = expectedPartnerOfferId && !artworkAboveTheFold?.isPurchasable
+
+  const partnerOfferExpiredCondition = allowExpiredPartnerOffers
+    ? partnerOffer && partnerOffer.internalID == props.partner_offer_id && !partnerOffer.isActive
+    : !partnerOffer || partnerOffer.internalID !== props.partner_offer_id
+
   const partnerOfferExpired =
     expectedPartnerOfferId &&
     // checking for unavailability to avoid showing double banners
     !partnerOfferUnavailable &&
-    ((!allowExpiredPartnerOffers &&
-      (!partnerOffer || partnerOffer.internalID !== props.partner_offer_id)) ||
-      (allowExpiredPartnerOffers &&
-        partnerOffer &&
-        partnerOffer.internalID == props.partner_offer_id &&
-        !partnerOffer.isActive))
+    partnerOfferExpiredCondition
 
   const shouldRenderPartner = () => {
     const { sale, partner } = artworkBelowTheFold ?? {}
