@@ -241,6 +241,6 @@ const tracks = {
     context_owner_id: internalID,
     context_owner_slug: slug,
     flow: flow,
-    signal_labels: withPartnerOffer ? "Limited-Time Offer" : undefined,
+    signal_label: withPartnerOffer ? "Limited-Time Offer" : undefined,
   }),
 }

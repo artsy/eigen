@@ -127,7 +127,7 @@ describe("ArtworkGridItem", () => {
         position: 0,
         sort: "-decayed_merch",
         type: "thumbnail",
-        signal_labels: "Limited-Time Offer",
+        signal_label: "Limited-Time Offer",
       })
     })
   })

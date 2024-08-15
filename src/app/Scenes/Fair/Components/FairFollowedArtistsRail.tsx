@@ -98,7 +98,7 @@ const tracks = {
     destination_screen_owner_slug: artworkSlug,
     horizontal_slide_position: position,
     type: "thumbnail",
-    signal_labels: withPartnerOffer ? "Limited-Time Offer" : undefined,
+    signal_label: withPartnerOffer ? "Limited-Time Offer" : undefined,
   }),
   tappedViewAll: (fair: FairFollowedArtistsRail_fair$data) => ({
     action: ActionType.tappedArtworkGroup,

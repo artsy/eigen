@@ -236,6 +236,6 @@ const tracks = {
     destination_screen_owner_type: OwnerType.artwork,
     destination_screen_owner_slug: slug,
     type: "thumbnail",
-    signal_labels: withPartnerOffer ? "Limited-Time Offer" : undefined,
+    signal_label: withPartnerOffer ? "Limited-Time Offer" : undefined,
   }),
 }

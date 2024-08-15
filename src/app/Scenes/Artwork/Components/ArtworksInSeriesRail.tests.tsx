@@ -205,7 +205,7 @@ describe("ArtworksInSeriesRail", () => {
       destination_screen_owner_slug: "my-cool-artwork",
       destination_screen_owner_type: "artwork",
       type: "thumbnail",
-      signal_labels: "Limited-Time Offer",
+      signal_label: "Limited-Time Offer",
     })
   })
 })

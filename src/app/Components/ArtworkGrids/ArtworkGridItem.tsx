@@ -233,7 +233,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
         collectorSignals?.partnerOffer?.isAvailable &&
         !artwork.sale?.isAuction
       ) {
-        genericTapEvent.signal_labels = "Limited-Time Offer"
+        genericTapEvent.signal_label = "Limited-Time Offer"
       }
 
       tracking.trackEvent(genericTapEvent)

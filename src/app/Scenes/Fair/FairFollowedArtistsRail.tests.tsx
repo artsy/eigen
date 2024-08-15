@@ -120,7 +120,7 @@ describe("FairFollowedArtistsRail", () => {
       destination_screen_owner_type: "artwork",
       horizontal_slide_position: 0,
       type: "thumbnail",
-      signal_labels: "Limited-Time Offer",
+      signal_label: "Limited-Time Offer",
     })
   })
 

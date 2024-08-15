@@ -67,7 +67,7 @@ const tracks = {
     context_owner_type: OwnerType.artwork,
     context_owner_id: artworkId,
     context_owner_slug: artworkSlug,
-    signal_labels: withPartnerOffer ? "Limited-Time Offer" : undefined,
+    signal_label: withPartnerOffer ? "Limited-Time Offer" : undefined,
   }),
 }
 

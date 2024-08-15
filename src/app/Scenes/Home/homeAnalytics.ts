@@ -205,7 +205,7 @@ export default class HomeAnalytics {
       horizontal_slide_position: index,
       module_height: moduleHeight ?? "double",
       type: "thumbnail",
-      signal_labels: withPartnerOffer ? "Limited-Time Offer" : undefined,
+      signal_label: withPartnerOffer ? "Limited-Time Offer" : undefined,
     }
   }
 
