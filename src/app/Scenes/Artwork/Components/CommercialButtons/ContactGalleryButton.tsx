@@ -7,6 +7,7 @@ import {
   ArtworkInquiryContext,
   ArtworkInquiryStateProvider,
 } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import React from "react"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -22,8 +23,12 @@ export const ContactGalleryButton: React.FC<ContactGalleryButtonProps> = ({
   ...rest
 }) => {
   const artworkData = useFragment(artworkFragment, artwork)
+  const AREnablePartnerOfferSignals = useFeatureFlag("AREnablePartnerOfferSignals")
 
   const { trackEvent } = useTracking()
+
+  const partnerOfferAvailable =
+    AREnablePartnerOfferSignals && !!artworkData.collectorSignals?.partnerOffer?.isAvailable
 
   return (
     <ArtworkInquiryStateProvider>
@@ -31,7 +36,13 @@ export const ContactGalleryButton: React.FC<ContactGalleryButtonProps> = ({
         {({ dispatch }) => (
           <Button
             onPress={() => {
-              trackEvent(tracks.trackTappedContactGallery(artworkData.internalID, artworkData.slug))
+              trackEvent(
+                tracks.trackTappedContactGallery(
+                  artworkData.internalID,
+                  artworkData.slug,
+                  partnerOfferAvailable
+                )
+              )
               dispatch({ type: "setInquiryModalVisible", payload: true })
             }}
             haptic
@@ -47,11 +58,16 @@ export const ContactGalleryButton: React.FC<ContactGalleryButtonProps> = ({
 }
 
 const tracks = {
-  trackTappedContactGallery: (artworkId: string, artworkSlug: string): TappedContactGallery => ({
+  trackTappedContactGallery: (
+    artworkId: string,
+    artworkSlug: string,
+    withPartnerOffer?: boolean
+  ): TappedContactGallery => ({
     action: ActionType.tappedContactGallery,
     context_owner_type: OwnerType.artwork,
     context_owner_id: artworkId,
     context_owner_slug: artworkSlug,
+    signal_labels: withPartnerOffer ? "Limited-Time Offer" : undefined,
   }),
 }
 
@@ -59,6 +75,11 @@ const artworkFragment = graphql`
   fragment ContactGalleryButton_artwork on Artwork {
     internalID
     slug
+    collectorSignals {
+      partnerOffer {
+        isAvailable
+      }
+    }
     ...InquiryModal_artwork
   }
 `

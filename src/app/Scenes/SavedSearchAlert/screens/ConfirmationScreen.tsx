@@ -208,9 +208,9 @@ const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection,
         width={screen.width - space(2)}
         artworks={artworks}
         hideSaveIcon
-        onPress={(slug: string) => {
+        onPress={(slug: string, withPartnerOffer: boolean) => {
           closeModal?.()
-          tracks.tappedArtworkGroup(slug)
+          tracks.tappedArtworkGroup(slug, withPartnerOffer)
           requestAnimationFrame(() => {
             navigate?.(`artwork/${slug}`)
           })
@@ -229,12 +229,13 @@ const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection,
 }
 
 const tracks = {
-  tappedArtworkGroup: (slug: string): TappedArtworkGroup => ({
+  tappedArtworkGroup: (slug: string, withPartnerOffer: boolean): TappedArtworkGroup => ({
     action: ActionType.tappedArtworkGroup,
     context_module: ContextModule.alertConfirmation,
     context_screen_owner_type: OwnerType.alertConfirmation,
     destination_screen_owner_type: OwnerType.artwork,
     destination_screen_owner_slug: slug,
     type: "thumbnail",
+    signal_labels: withPartnerOffer ? "Limited-Time Offer" : undefined,
   }),
 }

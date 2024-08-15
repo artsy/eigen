@@ -36,6 +36,11 @@ const largeArtworksFragment = graphql`
     internalID
     href
     slug
+    collectorSignals {
+      partnerOffer {
+        isAvailable
+      }
+    }
   }
 `
 
