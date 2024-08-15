@@ -156,13 +156,15 @@ export const SubmitArtworkFrameInformation = () => {
 
               <Flex flexDirection="row">
                 <RadioButton
-                  mr={2}
                   text="in"
                   selected={values.artwork.framedMetric === "in"}
                   onPress={() => {
                     setFieldValue("artwork.framedMetric", "in")
                   }}
                 />
+
+                <Spacer x={4} />
+
                 <RadioButton
                   text="cm"
                   selected={values.artwork.framedMetric === "cm"}

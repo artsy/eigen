@@ -107,7 +107,6 @@ export const SubmitArtworkPurchaseHistory = () => {
             <Text>Is the work signed?</Text>
             <Flex flexDirection="row" mt={2}>
               <RadioButton
-                mr={2}
                 text="Yes"
                 textVariant="sm-display"
                 accessibilityState={{ checked: !!isSigned }}
@@ -117,6 +116,9 @@ export const SubmitArtworkPurchaseHistory = () => {
                   setIsSigned(true)
                 }}
               />
+
+              <Spacer x={4} />
+
               <RadioButton
                 text="No"
                 textVariant="sm-display"
