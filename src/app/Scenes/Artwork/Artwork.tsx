@@ -104,6 +104,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
 
   const partnerOffer = extractNodes(me?.partnerOffersConnection)[0]
 
+  const allowExpiredPartnerOffers = useFeatureFlag("AREnableExpiredPartnerOffers")
   const enableAuctionHeaderAlertCTA = useFeatureFlag("AREnableAuctionHeaderAlertCTA")
   const enablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
 
@@ -114,7 +115,12 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
     expectedPartnerOfferId &&
     // checking for unavailability to avoid showing double banners
     !partnerOfferUnavailable &&
-    (!partnerOffer || partnerOffer.internalID !== props.partner_offer_id)
+    ((!allowExpiredPartnerOffers &&
+      (!partnerOffer || partnerOffer.internalID !== props.partner_offer_id)) ||
+      (allowExpiredPartnerOffers &&
+        partnerOffer &&
+        partnerOffer.internalID == props.partner_offer_id &&
+        !partnerOffer.isActive))
 
   const shouldRenderPartner = () => {
     const { sale, partner } = artworkBelowTheFold ?? {}
@@ -772,6 +778,7 @@ export const ArtworkContainer = createRefetchContainer(
             node {
               internalID
               note
+              isActive
               ...ArtworkStickyBottomContent_partnerOffer
               ...ArtworkPartnerOfferNote_partnerOffer
               ...ArtworkPrice_partnerOffer

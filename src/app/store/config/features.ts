@@ -183,11 +183,16 @@ export const features = {
     readyForRelease: true,
     echoFlagKey: "AREnablePartnerOffersNotificationSwitch",
   },
-
   AREnablePartnerOffer: {
     description: "Enable partner offer content in the app",
     readyForRelease: true,
     echoFlagKey: "AREnablePartnerOffer",
+  },
+  AREnableExpiredPartnerOffers: {
+    description: "Enable expired partner offers handling",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableExpiredPartnerOffers",
   },
   AREnableArtistSeriesSuggestions: {
     description: "Enable artist series suggestions",
