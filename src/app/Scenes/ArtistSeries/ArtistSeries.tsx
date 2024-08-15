@@ -13,9 +13,9 @@ import { ArtistSeriesQuery } from "__generated__/ArtistSeriesQuery.graphql"
 import { ArtistSeries_artistSeries$data } from "__generated__/ArtistSeries_artistSeries.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
-import { ArtistSeriesArtworksFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesArtworks"
 import { ArtistSeriesHeaderFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesHeader"
 import { ArtistSeriesMetaFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesMeta"
+import ArtistSeriesNewArtworks from "app/Scenes/ArtistSeries/ArtistSeriesNewArtworks"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -53,7 +53,7 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
         >
           <Tabs.Tab name="Artworks" label="Artworks">
             <Tabs.Lazy>
-              <ArtistSeriesArtworksFragmentContainer artistSeries={artistSeries} />
+              <ArtistSeriesNewArtworks artistSeries={artistSeries} />
             </Tabs.Lazy>
           </Tabs.Tab>
           <Tabs.Tab name="About" label="About">
@@ -79,7 +79,8 @@ export const ArtistSeriesFragmentContainer = createFragmentContainer(ArtistSerie
 
       ...ArtistSeriesHeader_artistSeries
       ...ArtistSeriesMeta_artistSeries
-      ...ArtistSeriesArtworks_artistSeries @arguments(input: { sort: "-decayed_merch" })
+      ...ArtistSeriesNewArtworks_artistSeries @arguments(input: { sort: "-decayed_merch" })
+      # ...ArtistSeriesArtworks_artistSeries @arguments(input: { sort: "-decayed_merch" })
 
       artist: artists(size: 1) {
         ...ArtistSeriesMoreSeries_artist
