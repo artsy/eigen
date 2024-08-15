@@ -283,7 +283,7 @@ export const features = {
   },
   AREnablePartnerOfferSignals: {
     description: "Enable partner offer signals",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnablePartnerOfferSignals",
   },
