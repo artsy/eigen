@@ -300,8 +300,9 @@ export const features = {
   },
   AREnableCollectionsWithoutHeaderImage: {
     description: "Remove the header image from collections",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableCollectionsWithoutHeaderImage",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 
