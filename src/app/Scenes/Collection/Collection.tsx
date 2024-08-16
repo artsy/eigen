@@ -138,14 +138,14 @@ export const CollectionScreen: React.FC<CollectionScreenProps> = ({ collectionID
 
 const CollectionPlaceholder: React.FC = () => {
   const { width } = useScreenDimensions()
-  const shouldRenderCollectionImage = useFeatureFlag("AREnableCollectionsWithoutHeaderImage")
+  const shouldHideHeaderImage = useFeatureFlag("AREnableCollectionsWithoutHeaderImage")
 
   return (
     <Screen>
       <Screen.Header onBack={goBack} rightElements={<ShareIcon width={23} height={23} />} />
       <Screen.Body fullwidth>
         <Skeleton>
-          {!!shouldRenderCollectionImage && <SkeletonBox width={width} height={250} />}
+          {!shouldHideHeaderImage && <SkeletonBox width={width} height={250} />}
           <Spacer y={2} />
           <Flex px={2}>
             <SkeletonText variant="lg">Collection Name</SkeletonText>
