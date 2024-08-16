@@ -166,7 +166,8 @@ export const BuyNowButton = ({
             slug,
             internalID,
             source === "notification" ? OwnerType.notification : OwnerType.artwork,
-            "Partner offer"
+            "Partner offer",
+            true
           )
         )
 
@@ -232,12 +233,14 @@ const tracks = {
     slug: string,
     internalID: string,
     context_owner_type: ScreenOwnerType,
-    flow: any
+    flow: TappedBuyNow["flow"],
+    withPartnerOffer?: boolean
   ): TappedBuyNow => ({
     action: ActionType.tappedBuyNow,
     context_owner_type: context_owner_type,
     context_owner_id: internalID,
     context_owner_slug: slug,
     flow: flow,
+    signal_label: withPartnerOffer ? "Limited-Time Offer" : undefined,
   }),
 }

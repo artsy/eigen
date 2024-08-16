@@ -1,5 +1,6 @@
 import { FairFollowedArtistsRailTestsQuery } from "__generated__/FairFollowedArtistsRailTestsQuery.graphql"
 import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -45,34 +46,31 @@ describe("FairFollowedArtistsRail", () => {
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    const { root } = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)
       )
     })
-    return tree
+    return { root }
   }
 
   it("tracks taps on artworks", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnablePartnerOfferSignals: false })
     const wrapper = getWrapper({
       Fair: () => ({
         internalID: "xyz123",
         slug: "art-basel-hong-kong-2019",
         filterArtworksConnection: {
-          edges: [
-            {
-              node: {
-                internalID: "abc123",
-                slug: "some-artwork",
-              },
-            },
-          ],
+          edges: [{ node: { internalID: "abc123", slug: "some-artwork" } }],
         },
       }),
     })
-    const artwork = wrapper.root.findAllByType(ArtworkRailCard)[0]
-    act(() => artwork.props.onPress())
+
+    const artwork = wrapper.root.findAllByType(ArtworkRailCard)
+
+    act(() => artwork[0].props.onPress())
+
     expect(trackEvent).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
       context_module: "worksByArtistsYouFollowRail",
@@ -87,7 +85,8 @@ describe("FairFollowedArtistsRail", () => {
     })
   })
 
-  it("displays the '>' button if there are 3 or more artworks", () => {
+  it("tracks taps on artworks with partner offers", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnablePartnerOfferSignals: true })
     const wrapper = getWrapper({
       Fair: () => ({
         internalID: "xyz123",
@@ -96,59 +95,73 @@ describe("FairFollowedArtistsRail", () => {
           edges: [
             {
               node: {
-                internalID: "id-1",
-                slug: "some-artwork-1",
-              },
-            },
-            {
-              node: {
-                internalID: "id-2",
-                slug: "some-artwork-2",
-              },
-            },
-            {
-              node: {
-                internalID: "id-3",
-                slug: "some-artwork-3",
-              },
-            },
-            {
-              node: {
-                internalID: "id-4",
-                slug: "some-artwork-4",
+                internalID: "abc123",
+                slug: "some-artwork",
+                collectorSignals: { partnerOffer: { isAvailable: true } },
               },
             },
           ],
         },
       }),
     })
-    expect(wrapper.root.findAllByType(TouchableOpacity).length).toBe(1)
+
+    const artwork = wrapper.root.findAllByType(ArtworkRailCard)
+
+    act(() => artwork[0].props.onPress())
+
+    expect(trackEvent).toHaveBeenCalledWith({
+      action: "tappedArtworkGroup",
+      context_module: "worksByArtistsYouFollowRail",
+      context_screen_owner_id: "xyz123",
+      context_screen_owner_slug: "art-basel-hong-kong-2019",
+      context_screen_owner_type: "fair",
+      destination_screen_owner_id: "abc123",
+      destination_screen_owner_slug: "some-artwork",
+      destination_screen_owner_type: "artwork",
+      horizontal_slide_position: 0,
+      type: "thumbnail",
+      signal_label: "Limited-Time Offer",
+    })
   })
 
-  it("doesn't display the '>' button if there are less than 3 artworks to show", () => {
+  it("displays the '>' button if there are 3 or more artworks", async () => {
     const wrapper = getWrapper({
       Fair: () => ({
         internalID: "xyz123",
         slug: "art-basel-hong-kong-2019",
         filterArtworksConnection: {
           edges: [
-            {
-              node: {
-                internalID: "id-1",
-                slug: "some-artwork-1",
-              },
-            },
-            {
-              node: {
-                internalID: "id-2",
-                slug: "some-artwork-2",
-              },
-            },
+            { node: { internalID: "id-1", slug: "some-artwork-1" } },
+            { node: { internalID: "id-2", slug: "some-artwork-2" } },
+            { node: { internalID: "id-3", slug: "some-artwork-3" } },
+            { node: { internalID: "id-4", slug: "some-artwork-4" } },
           ],
         },
       }),
     })
-    expect(wrapper.root.findAllByType(TouchableOpacity).length).toBe(0)
+
+    const viewAllButton = await wrapper.root.findAllByType(TouchableOpacity)
+
+    expect(viewAllButton.length).toBe(1)
+  })
+
+  it("doesn't display the '>' button if there are less than 3 artworks to show", async () => {
+    const wrapper = getWrapper({
+      Fair: () => ({
+        internalID: "xyz123",
+        slug: "art-basel-hong-kong-2019",
+        filterArtworksConnection: {
+          edges: [
+            { node: { internalID: "id-1", slug: "some-artwork-1" } },
+            { node: { internalID: "id-2", slug: "some-artwork-2" } },
+          ],
+        },
+      }),
+    })
+
+    const viewAllButton = await wrapper.root.findAllByType(TouchableOpacity)
+
+    expect(viewAllButton.length).toBe(0)
   })
 
   it("tracks taps on the rails header", () => {
@@ -158,36 +171,16 @@ describe("FairFollowedArtistsRail", () => {
         slug: "art-basel-hong-kong-2019",
         filterArtworksConnection: {
           edges: [
-            {
-              node: {
-                internalID: "id-1",
-                slug: "some-artwork-1",
-              },
-            },
-            {
-              node: {
-                internalID: "id-2",
-                slug: "some-artwork-2",
-              },
-            },
-            {
-              node: {
-                internalID: "id-3",
-                slug: "some-artwork-3",
-              },
-            },
-            {
-              node: {
-                internalID: "id-4",
-                slug: "some-artwork-4",
-              },
-            },
+            { node: { internalID: "id-1", slug: "some-artwork-1" } },
+            { node: { internalID: "id-2", slug: "some-artwork-2" } },
+            { node: { internalID: "id-3", slug: "some-artwork-3" } },
+            { node: { internalID: "id-4", slug: "some-artwork-4" } },
           ],
         },
       }),
     })
-    const viewAllButton = wrapper.root.findAllByType(TouchableOpacity)[0]
-    act(() => viewAllButton.props.onPress())
+    const viewAllButton = wrapper.root.findAllByType(TouchableOpacity)
+    act(() => viewAllButton[0].props.onPress())
     expect(trackEvent).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
       context_module: "worksByArtistsYouFollowRail",

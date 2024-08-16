@@ -1,6 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworksInSeriesRailTestsQuery } from "__generated__/ArtworksInSeriesRailTestsQuery.graphql"
 import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -138,6 +139,7 @@ describe("ArtworksInSeriesRail", () => {
   })
 
   it("tracks clicks on an individual artwork", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnablePartnerOfferSignals: false })
     renderWithRelay({
       Artwork: () => ({
         internalID: "artwork124",
@@ -155,7 +157,6 @@ describe("ArtworksInSeriesRail", () => {
       }),
     })
 
-    // screen.debug()
     fireEvent.press(screen.getByTestId("artwork-my-cool-artwork"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
@@ -168,6 +169,43 @@ describe("ArtworksInSeriesRail", () => {
       destination_screen_owner_slug: "my-cool-artwork",
       destination_screen_owner_type: "artwork",
       type: "thumbnail",
+    })
+  })
+
+  it("tracks clicks on an individual artwork with a partner offer", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnablePartnerOfferSignals: true })
+
+    renderWithRelay({
+      Artwork: () => ({
+        internalID: "artwork124",
+        slug: "my-cool-artwork",
+        collectorSignals: { partnerOffer: { isAvailable: true } },
+        artistSeriesConnection: {
+          edges: [
+            {
+              node: {
+                slug: "alex-katz-departure-28",
+                id: "abctest",
+              },
+            },
+          ],
+        },
+      }),
+    })
+
+    fireEvent.press(screen.getByTestId("artwork-my-cool-artwork"))
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedArtworkGroup",
+      context_module: "moreFromThisSeries",
+      context_screen_owner_id: "artwork124",
+      context_screen_owner_slug: "my-cool-artwork",
+      context_screen_owner_type: "artwork",
+      destination_screen_owner_id: "artwork124",
+      destination_screen_owner_slug: "my-cool-artwork",
+      destination_screen_owner_type: "artwork",
+      type: "thumbnail",
+      signal_label: "Limited-Time Offer",
     })
   })
 })

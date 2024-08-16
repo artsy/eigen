@@ -1,12 +1,15 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
+import { LargeArtworkRail_artworks$data } from "__generated__/LargeArtworkRail_artworks.graphql"
 import { NewWorksForYouRail_artworkConnection$key } from "__generated__/NewWorksForYouRail_artworkConnection.graphql"
+import { SmallArtworkRail_artworks$data } from "__generated__/SmallArtworkRail_artworks.graphql"
 import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { useItemsImpressionsTracking } from "app/Scenes/Home/Components/useImpressionsTracking"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
   ArtworkActionTrackingProps,
   extractArtworkActionTrackingProps,
@@ -27,6 +30,7 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
   ({ title, artworkConnection, isRailVisible, scrollRef, ...restProps }) => {
     const { trackEvent } = useTracking()
     const trackingProps = extractArtworkActionTrackingProps(restProps)
+    const AREnablePartnerOfferSignals = useFeatureFlag("AREnablePartnerOfferSignals")
 
     const { artworksForUser } = useFragment(artworksFragment, artworkConnection)
 
@@ -48,14 +52,25 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
       return null
     }
 
-    const handleOnArtworkPress = (artwork: any, position: any) => {
+    const handleOnArtworkPress = (
+      artwork: LargeArtworkRail_artworks$data[0] | SmallArtworkRail_artworks$data[0],
+      position: number
+    ) => {
+      if (!artwork.href) {
+        return
+      }
+
+      const partnerOfferAvailable =
+        AREnablePartnerOfferSignals && !!artwork.collectorSignals?.partnerOffer?.isAvailable
+
       trackEvent(
         HomeAnalytics.artworkThumbnailTapEvent(
           ContextModule.newWorksForYouRail,
           artwork.slug,
           artwork.internalID,
           position,
-          "single"
+          "single",
+          partnerOfferAvailable
         )
       )
       navigate(artwork.href)

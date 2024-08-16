@@ -1,4 +1,4 @@
-import { tappedMainArtworkGrid } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType, TappedMainArtworkGrid } from "@artsy/cohesion"
 import {
   Box,
   Flex,
@@ -65,7 +65,7 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   itemIndex?: number
   lotLabelTextStyle?: TextProps
   /** Overrides onPress and prevents the default behaviour. */
-  onPress?: (artworkID: string) => void
+  onPress?: (artworkID: string, artwork?: ArtworkGridItem_artwork$data) => void
   partnerNameTextStyle?: TextProps
   partnerOffer?: PartnerOffer
   priceOfferMessage?: PriceOfferMessage
@@ -187,7 +187,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const handleTap = () => {
     if (onPress) {
-      return onPress(artwork.slug)
+      return onPress(artwork.slug, artwork)
     }
 
     addArtworkToRecentSearches()
@@ -208,18 +208,26 @@ export const Artwork: React.FC<ArtworkProps> = ({
     if (trackTap) {
       trackTap(artwork.slug, itemIndex)
     } else if (contextScreenOwnerType) {
-      const genericTapEvent = tappedMainArtworkGrid({
-        contextScreen,
-        contextScreenOwnerType: contextScreenOwnerType,
-        contextScreenOwnerId,
-        contextScreenOwnerSlug,
-        destinationScreenOwnerId: artwork.internalID,
-        destinationScreenOwnerSlug: artwork.slug,
+      const genericTapEvent: TappedMainArtworkGrid = {
+        action: ActionType.tappedMainArtworkGrid,
+        context_module: ContextModule.artworkGrid,
+        context_screen: contextScreen,
+        context_screen_owner_type: contextScreenOwnerType,
+        context_screen_owner_id: contextScreenOwnerId,
+        context_screen_owner_slug: contextScreenOwnerSlug,
+        destination_screen_owner_type: OwnerType.artwork,
+        destination_screen_owner_id: artwork.internalID,
+        destination_screen_owner_slug: artwork.slug,
         position: itemIndex,
-        // This is always a string; types are incorrect
-        sort: String(filterParams?.sort),
         query: contextScreenQuery,
-      })
+        sort: filterParams?.sort,
+        type: "thumbnail",
+      }
+
+      if (AREnablePartnerOfferSignals && collectorSignals?.partnerOffer?.isAvailable) {
+        genericTapEvent.signal_label = "Limited-Time Offer"
+      }
+
       tracking.trackEvent(genericTapEvent)
     }
   }
