@@ -10,7 +10,7 @@ import {
   ArtworkIcon,
 } from "@artsy/palette-mobile"
 import SearchIcon from "app/Components/Icons/SearchIcon"
-import { switchTab } from "app/system/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { ScrollView } from "react-native"
 
 interface InfoSectionProps {
@@ -77,7 +77,7 @@ export const EmptyMessage: React.FC = () => {
           <InfoSection title={t.match.title} body={t.match.body} icon={<ArtworkIcon />} />
         </Join>
         <Spacer y={4} />
-        <Button block variant="outline" onPress={() => switchTab("home")}>
+        <Button block variant="outline" onPress={() => navigate("/")}>
           {t.button.label}
         </Button>
       </Box>
