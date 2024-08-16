@@ -224,11 +224,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
         type: "thumbnail",
       }
 
-      if (
-        AREnablePartnerOfferSignals &&
-        collectorSignals?.partnerOffer?.isAvailable &&
-        !artwork.sale?.isAuction
-      ) {
+      if (AREnablePartnerOfferSignals && collectorSignals?.partnerOffer?.isAvailable) {
         genericTapEvent.signal_label = "Limited-Time Offer"
       }
 
