@@ -62,7 +62,9 @@ export const ModalStack: React.FC = ({ children }) => {
         const currentRoute = __unsafe_mainModalStackRef.current?.getCurrentRoute()
 
         if (currentRoute) {
-          LegacyNativeModules.ARTDeeplinkTimeoutModule.invalidateDeeplinkTimeout()
+          if (Platform.OS === "ios") {
+            LegacyNativeModules.ARTDeeplinkTimeoutModule.invalidateDeeplinkTimeout()
+          }
 
           const params = currentRoute.params as any
 
