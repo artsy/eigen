@@ -190,7 +190,7 @@ export const features = {
   },
   AREnableExpiredPartnerOffers: {
     description: "Enable expired partner offers handling",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableExpiredPartnerOffers",
   },
