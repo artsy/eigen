@@ -66,11 +66,15 @@ const sectionsFragment = graphql`
             __typename
             ... on GenericHomeViewSection {
               internalID
+              component {
+                type
+              }
               ...GenericHomeViewSection_section
             }
             ... on ArtworksRailHomeViewSection {
               internalID
               ...ArtworksRailHomeViewSection_section
+              ...FeaturedCollectionHomeViewSection_section
             }
             ... on ArtistsRailHomeViewSection {
               internalID
