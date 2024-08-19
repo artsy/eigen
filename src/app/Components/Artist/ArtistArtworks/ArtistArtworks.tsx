@@ -6,7 +6,6 @@ import {
   Flex,
   Message,
   Spacer,
-  Spinner,
   Tabs,
   Text,
   useScreenDimensions,
@@ -31,6 +30,7 @@ import { Props as InfiniteScrollGridProps } from "app/Components/ArtworkGrids/In
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
+  AnimatedMasonryListFooterComponent,
   ESTIMATED_MASONRY_ITEM_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
@@ -57,7 +57,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   ...props
 }) => {
   const [isCreateAlertModalVisible, setIsCreateAlertModalVisible] = useState(false)
-
+  const [isLoading, setIsLoading] = useState(false)
   const { showFilterArtworksModal, closeFilterArtworksModal } = useShowArtworksFilterModal({
     artist,
   })
@@ -133,11 +133,15 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     // TODO: Get the new count of the artist alerts
   }
 
-  const shouldDisplaySpinner = !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
+  const shouldDisplaySpinner =
+    !!isLoading && !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
 
   const loadMore = useCallback(() => {
     if (relay.hasMore() && !relay.isLoading()) {
-      relay.loadMore(10)
+      setIsLoading(true)
+      relay.loadMore(10, () => {
+        setIsLoading(false)
+      })
     }
   }, [relay.hasMore(), relay.isLoading()])
 
@@ -231,27 +235,21 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   }
 
   const ListFooterComponenet = () => {
-    if (shouldDisplaySpinner) {
-      return (
-        <Flex my={4} flexDirection="row" justifyContent="center">
-          <Spinner />
-        </Flex>
-      )
-    }
-
-    if (showCreateAlertAtEndOfList && !relay.hasMore()) {
-      return (
-        <Message
-          title="Get notified when new works are added."
-          containerStyle={{ my: 2 }}
-          IconComponent={() => {
-            return <CreateAlertButton />
-          }}
-          iconPosition="right"
-        />
-      )
-    }
-    return null
+    return (
+      <>
+        {!!showCreateAlertAtEndOfList && !relay.hasMore() && (
+          <Message
+            title="Get notified when new works are added."
+            containerStyle={{ my: 2 }}
+            IconComponent={() => {
+              return <CreateAlertButton />
+            }}
+            iconPosition="right"
+          />
+        )}
+        <AnimatedMasonryListFooterComponent shouldDisplaySpinner={shouldDisplaySpinner} />
+      </>
+    )
   }
 
   return (

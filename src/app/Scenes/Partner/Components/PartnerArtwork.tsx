@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Box, Flex, Spinner, Tabs, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { Box, Flex, Tabs, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { PartnerArtwork_partner$data } from "__generated__/PartnerArtwork_partner.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import {
@@ -12,6 +12,7 @@ import { TabEmptyState } from "app/Components/TabEmptyState"
 import { extractNodes } from "app/utils/extractNodes"
 
 import {
+  AnimatedMasonryListFooterComponent,
   ESTIMATED_MASONRY_ITEM_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
@@ -24,7 +25,7 @@ export const PartnerArtwork: React.FC<{
   relay: RelayPaginationProp
 }> = ({ partner, relay }) => {
   const [isFilterArtworksModalVisible, setIsFilterArtworksModalVisible] = useState(false)
-
+  const [isLoading, setIsLoading] = useState(false)
   const space = useSpace()
   const { width } = useScreenDimensions()
 
@@ -40,11 +41,15 @@ export const PartnerArtwork: React.FC<{
 
   const loadMore = useCallback(() => {
     if (relay.hasMore() && !relay.isLoading()) {
-      relay.loadMore(10)
+      setIsLoading(true)
+      relay.loadMore(10, () => {
+        setIsLoading(false)
+      })
     }
   }, [relay.hasMore(), relay.isLoading()])
 
-  const shouldDisplaySpinner = !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
+  const shouldDisplaySpinner =
+    !!isLoading && !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
 
   const emptyText =
     "There are no matching works from this gallery.\nTry changing your search filters"
@@ -88,11 +93,7 @@ export const PartnerArtwork: React.FC<{
         onEndReached={loadMore}
         onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
         ListFooterComponent={
-          shouldDisplaySpinner ? (
-            <Flex my={4} flexDirection="row" justifyContent="center">
-              <Spinner />
-            </Flex>
-          ) : null
+          <AnimatedMasonryListFooterComponent shouldDisplaySpinner={shouldDisplaySpinner} />
         }
         // need to pass zIndex: 1 here in order for the SubTabBar to
         // be visible above list content

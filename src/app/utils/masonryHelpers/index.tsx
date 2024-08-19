@@ -1,5 +1,5 @@
-import { Flex } from "@artsy/palette-mobile"
-import { ActivityIndicator, Platform } from "react-native"
+import { Flex, Spinner } from "@artsy/palette-mobile"
+import { motify } from "moti"
 import { isTablet } from "react-native-device-info"
 import { FragmentRefs } from "relay-runtime"
 
@@ -32,13 +32,19 @@ interface MasonryListFooterComponentProps {
   shouldDisplaySpinner: boolean
 }
 
-export const MasonryListFooterComponent: React.FC<MasonryListFooterComponentProps> = ({
+const MotiFlex = motify(Flex)()
+
+export const AnimatedMasonryListFooterComponent: React.FC<MasonryListFooterComponentProps> = ({
   shouldDisplaySpinner,
-}) =>
-  shouldDisplaySpinner ? (
-    <Flex width="100%" position="absolute">
-      <Flex mt={2}>
-        <ActivityIndicator color={Platform.OS === "android" ? "black" : undefined} />
-      </Flex>
-    </Flex>
-  ) : null
+}) => {
+  return (
+    <MotiFlex
+      my={4}
+      flexDirection="row"
+      justifyContent="center"
+      from={{ opacity: shouldDisplaySpinner ? 1 : 0 }}
+    >
+      <Spinner />
+    </MotiFlex>
+  )
+}

@@ -6,9 +6,9 @@ import { MasonryArtworkGridItem } from "app/Components/ArtworkGrids/MasonryArtwo
 import { PAGE_SIZE } from "app/Components/constants"
 import { PartnerOffer } from "app/Scenes/Activity/components/NotificationArtworkList"
 import {
+  AnimatedMasonryListFooterComponent,
   ESTIMATED_MASONRY_ITEM_SIZE,
   MasonryArtworkItem,
-  MasonryListFooterComponent,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
   masonryRenderItemProps,
@@ -140,7 +140,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       refreshControl={refreshControl}
       renderItem={renderItem}
       ListFooterComponent={
-        <MasonryListFooterComponent shouldDisplaySpinner={shouldDisplaySpinner} />
+        <AnimatedMasonryListFooterComponent shouldDisplaySpinner={shouldDisplaySpinner} />
       }
       onScroll={rest.onScroll}
     />

@@ -7,7 +7,6 @@ import {
   Flex,
   useSpace,
   useScreenDimensions,
-  Spinner,
 } from "@artsy/palette-mobile"
 import { GeneArtworks_gene$data } from "__generated__/GeneArtworks_gene.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
@@ -18,6 +17,7 @@ import { GeneArtworksFilterHeader } from "app/Components/Gene/GeneArtworksFilter
 import { PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
 import {
+  AnimatedMasonryListFooterComponent,
   ESTIMATED_MASONRY_ITEM_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
@@ -34,11 +34,13 @@ interface GeneArtworksContainerProps {
 
 export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ gene, relay }) => {
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const space = useSpace()
   const tracking = useTracking()
   const { width } = useScreenDimensions()
   const artworks = extractNodes(gene.artworks)
-  const shouldDisplaySpinner = !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
+  const shouldDisplaySpinner =
+    !!isLoading && !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
 
   const artworksTotal = gene.artworks?.counts?.total ?? 0
   const initialArtworksTotal = useRef(artworksTotal)
@@ -68,7 +70,10 @@ export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ ge
 
   const loadMore = useCallback(() => {
     if (relay.hasMore() && !relay.isLoading()) {
-      relay.loadMore(PAGE_SIZE)
+      setIsLoading(true)
+      relay.loadMore(PAGE_SIZE, () => {
+        setIsLoading(false)
+      })
     }
   }, [relay.hasMore(), relay.isLoading()])
 
@@ -119,11 +124,7 @@ export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ ge
         onEndReached={loadMore}
         onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
         ListFooterComponent={
-          shouldDisplaySpinner ? (
-            <Flex my={4} flexDirection="row" justifyContent="center">
-              <Spinner />
-            </Flex>
-          ) : null
+          <AnimatedMasonryListFooterComponent shouldDisplaySpinner={shouldDisplaySpinner} />
         }
         // need to pass zIndex: 1 here in order for the SubTabBar to
         // be visible above list content

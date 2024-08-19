@@ -6,7 +6,6 @@ import {
   Tabs,
   useScreenDimensions,
   Flex,
-  Spinner,
   useSpace,
 } from "@artsy/palette-mobile"
 import { TagArtworks_tag$data } from "__generated__/TagArtworks_tag.graphql"
@@ -19,6 +18,7 @@ import { PAGE_SIZE } from "app/Components/constants"
 import { TagArtworksFilterHeader } from "app/Scenes/Tag/TagArtworksFilterHeader"
 import { extractNodes } from "app/utils/extractNodes"
 import {
+  AnimatedMasonryListFooterComponent,
   ESTIMATED_MASONRY_ITEM_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
@@ -37,11 +37,13 @@ const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay }) => {
   const tracking = useTracking()
   const space = useSpace()
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const { width } = useScreenDimensions()
   const artworksTotal = tag?.artworks?.counts?.total ?? 0
   const initialArtworksTotal = useRef(artworksTotal)
   const artworks = extractNodes(tag?.artworks) ?? []
-  const shouldDisplaySpinner = !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
+  const shouldDisplaySpinner =
+    !!isLoading && !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
 
   const trackClear = () => {
     if (tag?.id && tag?.slug) {
@@ -74,7 +76,10 @@ const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay }) => {
 
   const loadMore = useCallback(() => {
     if (relay.hasMore() && !relay.isLoading()) {
-      relay.loadMore(PAGE_SIZE)
+      setIsLoading(true)
+      relay.loadMore(PAGE_SIZE, () => {
+        setIsLoading(false)
+      })
     }
   }, [relay.hasMore(), relay.isLoading()])
 
@@ -125,11 +130,7 @@ const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay }) => {
         onEndReached={loadMore}
         onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
         ListFooterComponent={
-          shouldDisplaySpinner ? (
-            <Flex my={4} flexDirection="row" justifyContent="center">
-              <Spinner />
-            </Flex>
-          ) : null
+          <AnimatedMasonryListFooterComponent shouldDisplaySpinner={shouldDisplaySpinner} />
         }
         // need to pass zIndex: 1 here in order for the SubTabBar to
         // be visible above list content

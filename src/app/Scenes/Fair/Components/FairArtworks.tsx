@@ -17,6 +17,7 @@ import { FAIR2_ARTWORKS_PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
 import {
+  AnimatedMasonryListFooterComponent,
   ESTIMATED_MASONRY_ITEM_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
@@ -174,11 +175,7 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
           </>
         }
         ListFooterComponent={
-          !!isLoadingNext ? (
-            <Flex my={4} flexDirection="row" justifyContent="center">
-              <Spinner />
-            </Flex>
-          ) : null
+          <AnimatedMasonryListFooterComponent shouldDisplaySpinner={isLoadingNext} />
         }
         onEndReached={handleOnEndReached}
         onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
