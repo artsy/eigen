@@ -11,6 +11,7 @@ import { commitMutation, createFragmentContainer, graphql, RelayProp } from "rea
 
 interface PartnerOffer {
   internalID: string
+  isActive: boolean | null | undefined
 }
 export interface MakeOfferButtonProps {
   artwork: MakeOfferButton_artwork$data
@@ -107,7 +108,7 @@ export class MakeOfferButton extends React.Component<MakeOfferButtonProps, State
             input: {
               artworkId: internalID,
               editionSetId: editionSetID,
-              partnerOfferId: partnerOffer?.internalID,
+              partnerOfferId: partnerOffer?.isActive ? partnerOffer.internalID : null,
             },
           },
           onCompleted: (data) => {
