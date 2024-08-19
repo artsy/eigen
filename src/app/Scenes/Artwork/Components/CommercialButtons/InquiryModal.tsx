@@ -1,25 +1,22 @@
 import { Box, Flex, InfoCircleIcon, Input, Text } from "@artsy/palette-mobile"
 import { InquiryModal_artwork$key } from "__generated__/InquiryModal_artwork.graphql"
-import { InquiryModal_me$key } from "__generated__/InquiryModal_me.graphql"
-import { InquiryQuestionInput } from "__generated__/useSubmitInquiryRequestMutation.graphql"
+import { MyProfileEditModal_me$key } from "__generated__/MyProfileEditModal_me.graphql"
+import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { CompleteProfilePrompt } from "app/Scenes/Artwork/Components/CommercialButtons/CompleteProfilePrompt"
 import { InquiryQuestionOption } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryQuestionOption"
 import { InquirySuccessNotification } from "app/Scenes/Artwork/Components/CommercialButtons/InquirySuccessNotification"
 import { randomAutomatedMessage } from "app/Scenes/Artwork/Components/CommercialButtons/constants"
-import { useSubmitInquiryRequest } from "app/Scenes/Artwork/Components/CommercialButtons/useSubmitInquiryRequest"
+import { useSendInquiry } from "app/Scenes/Artwork/hooks/useSendInquiry"
+import { MyCollectionBottomSheetModalArtistsPrompt } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistsPrompt"
 import { navigate } from "app/system/navigation/navigate"
 import { useArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryQuestionIDs } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
-import {
-  userShouldBePromptedToAddArtistsToCollection,
-  userShouldBePromptedToCompleteProfile,
-} from "app/utils/collectorPromptHelpers"
 import { LocationWithDetails } from "app/utils/googleMaps"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
-import React, { useCallback, useEffect, useRef, useState } from "react"
+import React, { useCallback, useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -28,50 +25,20 @@ import { ShippingModal } from "./ShippingModal"
 
 interface InquiryModalProps {
   artwork: InquiryModal_artwork$key
-  me: InquiryModal_me$key
+  me: MyProfileEditModal_me$key & useSendInquiry_me$key
 }
 
-export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, me }) => {
+export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, me }) => {
   const { state, dispatch } = useArtworkInquiryContext()
   const profilePromptIsEnabled = useFeatureFlag("AREnableCollectorProfilePrompts")
   const scrollViewRef = useRef<ScrollView>(null)
-  const [commit] = useSubmitInquiryRequest()
   const tracking = useTracking()
 
-  const artworkData = useFragment(artworkFragment, artwork)
-  const meData = useFragment(meFragment, me)
+  const artwork = useFragment(artworkFragment, _artwork)
 
-  const [message, setMessage] = useState<string>("")
+  const [message, setMessage] = useState<string>(() => randomAutomatedMessage())
   const [addMessageYCoordinate, setAddMessageYCoordinate] = useState<number>(0)
   const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
-  const [mutationError, setMutationError] = useState(false)
-  const [loading, setLoading] = useState(false)
-
-  useEffect(() => {
-    setMessage(randomAutomatedMessage())
-  }, [setMessage])
-
-  useEffect(() => {
-    if (mutationError) {
-      setLoading(false)
-    }
-  }, [mutationError])
-
-  const scrollToInput = useCallback(() => {
-    scrollViewRef.current?.scrollTo({ y: addMessageYCoordinate })
-  }, [addMessageYCoordinate])
-
-  if (!artworkData || !meData) {
-    return null
-  }
-
-  const artworkId = artworkData.internalID
-  const artworkSlug = artworkData.slug
-  const questions = artworkData?.inquiryQuestions
-  const partnerName = artworkData?.partner?.name
-
-  const selectShippingLocation = (locationDetails: LocationWithDetails) =>
-    dispatch({ type: "selectShippingLocation", payload: locationDetails })
 
   const resetAndExit = () => {
     setMessage(randomAutomatedMessage())
@@ -79,79 +46,22 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, me }) => {
     dispatch({ type: "setInquiryModalVisible", payload: false })
   }
 
-  const sendInquiry = () => {
-    if (loading) {
-      return
-    }
+  const { sendInquiry, error } = useSendInquiry({
+    onCompleted: resetAndExit,
+    artwork,
+    me,
+  })
 
-    setLoading(true)
+  const scrollToInput = useCallback(() => {
+    scrollViewRef.current?.scrollTo({ y: addMessageYCoordinate })
+  }, [addMessageYCoordinate])
 
-    tracking.trackEvent(tracks.attemptedToSendTheInquiry(artworkId, artworkSlug))
-
-    commit({
-      variables: {
-        input: {
-          inquireableID: artworkId,
-          inquireableType: "Artwork",
-          questions: state.inquiryQuestions.map((q: InquiryQuestionInput) => {
-            /**
-             * If the user selected the shipping question and has a location, add the location
-             * details that are stored in the state.
-             */
-            if (q.questionID === "shipping_quote" && state.shippingLocation) {
-              const details = JSON.stringify({
-                city: state.shippingLocation.city,
-                coordinates: state.shippingLocation.coordinates,
-                country: state.shippingLocation.country,
-                postal_code: state.shippingLocation.postalCode,
-                state: state.shippingLocation.state,
-                state_code: state.shippingLocation.stateCode,
-              })
-              return { ...q, details }
-            } else {
-              return q
-            }
-          }),
-          message: message?.trim(),
-        },
-      },
-      onError: () => {
-        tracking.trackEvent(tracks.failedToSendTheInquiry(artworkId, artworkSlug))
-
-        setMutationError(true)
-      },
-      onCompleted: () => {
-        setLoading(false)
-        resetAndExit()
-        tracking.trackEvent(tracks.successfullySentTheInquiry(artworkId, artworkSlug))
-
-        const lastPromptAt = meData.collectorProfile?.lastUpdatePromptAt
-
-        if (
-          profilePromptIsEnabled &&
-          userShouldBePromptedToAddArtistsToCollection({ lastPromptAt })
-        ) {
-          dispatch({ type: "setCollectionPromptVisible", payload: true })
-          return
-        }
-
-        const city = meData.location?.city
-        const profession = meData.profession
-
-        if (
-          profilePromptIsEnabled &&
-          userShouldBePromptedToCompleteProfile({ city, profession, lastPromptAt })
-        ) {
-          dispatch({ type: "setProfilePromptVisible", payload: true })
-          return
-        }
-
-        setTimeout(() => {
-          dispatch({ type: "setSuccessNotificationVisible", payload: true })
-        }, 500)
-      },
-    })
+  if (!artwork) {
+    return null
   }
+
+  const selectShippingLocation = (locationDetails: LocationWithDetails) =>
+    dispatch({ type: "selectShippingLocation", payload: locationDetails })
 
   const handleSettingsPress = () => {
     navigate("my-profile/edit")
@@ -159,8 +69,16 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, me }) => {
   }
 
   const handleDismiss = () => {
-    tracking.trackEvent(tracks.dismissedTheModal(artworkId, artworkSlug))
+    tracking.trackEvent(tracks.dismissedTheModal(artwork.internalID, artwork.slug))
     resetAndExit()
+  }
+
+  const handleProfilePromptDismiss = () => {
+    dispatch({ type: "setProfilePromptVisible", payload: false })
+  }
+
+  const handleCollectionPromptDismiss = () => {
+    dispatch({ type: "setCollectionPromptVisible", payload: false })
   }
 
   return (
@@ -171,11 +89,11 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, me }) => {
           onLeftButtonPress={handleDismiss}
           rightButtonText="Send"
           rightButtonDisabled={state.inquiryQuestions.length === 0}
-          onRightButtonPress={sendInquiry}
+          onRightButtonPress={() => sendInquiry(message)}
         >
           Contact Gallery
         </FancyModalHeader>
-        {!!mutationError && (
+        {!!error && (
           <Flex
             bg="red100"
             py={1}
@@ -191,11 +109,11 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, me }) => {
           </Flex>
         )}
         <ScrollView ref={scrollViewRef}>
-          <CollapsibleArtworkDetailsFragmentContainer artwork={artworkData} />
+          <CollapsibleArtworkDetailsFragmentContainer artwork={artwork} />
           <Box px={2}>
             <Box my={2}>
               <Text variant="sm">What information are you looking for?</Text>
-              {questions?.map((inquiryQuestion) => {
+              {artwork.inquiryQuestions?.map((inquiryQuestion) => {
                 if (!inquiryQuestion) {
                   return false
                 }
@@ -233,8 +151,8 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, me }) => {
               <InfoCircleIcon mr={0.5} style={{ marginTop: 2 }} />
               <Box flex={1}>
                 <Text variant="xs" color="black60">
-                  By clicking send, we will share your profile with {partnerName}. Update your
-                  profile at any time in{" "}
+                  By clicking send, we will share your profile with {artwork.partner?.name}. Update
+                  your profile at any time in{" "}
                   <Text variant="xs" onPress={handleSettingsPress}>
                     Settings
                   </Text>
@@ -252,7 +170,22 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, me }) => {
         />
       </FancyModal>
       <InquirySuccessNotification />
-      {!!profilePromptIsEnabled && <CompleteProfilePrompt artwork={artworkData} me={meData} />}
+
+      {!!profilePromptIsEnabled && (
+        <CompleteProfilePrompt
+          artwork={artwork}
+          me={me}
+          visible={state.profilePromptVisible}
+          onDismiss={handleProfilePromptDismiss}
+        />
+      )}
+      {!!profilePromptIsEnabled && (
+        <MyCollectionBottomSheetModalArtistsPrompt
+          visible={state.collectionPromptVisible}
+          title="Inquiry sent! Tell us about the artists in your collection."
+          onDismiss={handleCollectionPromptDismiss}
+        />
+      )}
     </>
   )
 }
@@ -261,8 +194,10 @@ const artworkFragment = graphql`
   fragment InquiryModal_artwork on Artwork {
     ...CollapsibleArtworkDetails_artwork
     ...CompleteProfilePrompt_artwork
-    internalID
-    slug
+    ...useSendInquiry_artwork
+
+    internalID @required(action: NONE)
+    slug @required(action: NONE)
     inquiryQuestions {
       internalID
       question
@@ -273,44 +208,10 @@ const artworkFragment = graphql`
   }
 `
 
-const meFragment = graphql`
-  fragment InquiryModal_me on Me {
-    ...MyProfileEditModal_me
-    location {
-      city
-    }
-    profession
-    collectorProfile @required(action: NONE) {
-      lastUpdatePromptAt
-    }
-  }
-`
-
 const tracks = {
   dismissedTheModal: (artworkId: string, artworkSlug: string) => ({
     action_type: Schema.ActionTypes.Tap,
     action_name: Schema.ActionNames.InquiryCancel,
-    owner_type: Schema.OwnerEntityTypes.Artwork,
-    owner_id: artworkId,
-    owner_slug: artworkSlug,
-  }),
-  attemptedToSendTheInquiry: (artworkId: string, artworkSlug: string) => ({
-    action_type: Schema.ActionTypes.Tap,
-    action_name: Schema.ActionNames.InquirySend,
-    owner_type: Schema.OwnerEntityTypes.Artwork,
-    owner_id: artworkId,
-    owner_slug: artworkSlug,
-  }),
-  successfullySentTheInquiry: (artworkId: string, artworkSlug: string) => ({
-    action_type: Schema.ActionTypes.Success,
-    action_name: Schema.ActionNames.InquirySend,
-    owner_type: Schema.OwnerEntityTypes.Artwork,
-    owner_id: artworkId,
-    owner_slug: artworkSlug,
-  }),
-  failedToSendTheInquiry: (artworkId: string, artworkSlug: string) => ({
-    action_type: Schema.ActionTypes.Fail,
-    action_name: Schema.ActionNames.InquirySend,
     owner_type: Schema.OwnerEntityTypes.Artwork,
     owner_id: artworkId,
     owner_slug: artworkSlug,

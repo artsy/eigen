@@ -1,6 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { MyCollectionArtistsPromptFooter } from "app/Scenes/MyCollection/Components/MyCollectionArtistsPrompt/MyCollectionArtistsPromptFooter"
 import { MyCollectionAddCollectedArtistsStore } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsStore"
+import * as updateCollectorProfile from "app/utils/mutations/useUpdateCollectorProfile"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 jest.mock(
@@ -12,12 +13,15 @@ jest.mock(
   })
 )
 
+const mockShow = jest.fn()
+jest.mock("app/Components/Toast/toastHook", () => ({
+  useToast: () => ({ show: mockShow }),
+}))
+
 const mockClose = jest.fn()
 jest.mock("@gorhom/bottom-sheet", () => ({
   ...jest.requireActual("@gorhom/bottom-sheet"),
-  useBottomSheet: () => ({
-    close: mockClose,
-  }),
+  useBottomSheet: () => ({ close: mockClose }),
 }))
 
 describe("MyCollectionArtistsPromptFooter", () => {
@@ -59,7 +63,32 @@ describe("MyCollectionArtistsPromptFooter", () => {
     expect(onPress).not.toHaveBeenCalled()
   })
 
-  it("calls close when text is pressed", () => {
+  it("does call close when text is pressed given an error", () => {
+    jest
+      .spyOn(updateCollectorProfile as any, "useUpdateCollectorProfile")
+      .mockImplementation(() => [
+        jest.fn(({ onCompleted }) => {
+          onCompleted({
+            updateCollectorProfile: {
+              collectorProfileOrError: { mutationError: { message: "Error " } },
+            },
+          })
+        }),
+      ])
+    render()
+
+    fireEvent.press(screen.getByText("I haven’t started a collection yet"))
+
+    expect(mockClose).toHaveBeenCalledTimes(0)
+    expect(mockShow).toHaveBeenCalledTimes(1)
+  })
+
+  it("does call close when text is pressed given an error", () => {
+    jest
+      .spyOn(updateCollectorProfile as any, "useUpdateCollectorProfile")
+      .mockImplementation(() => [
+        jest.fn(({ onCompleted }) => onCompleted({ updateCollectorProfile: null })),
+      ])
     render()
 
     fireEvent.press(screen.getByText("I haven’t started a collection yet"))

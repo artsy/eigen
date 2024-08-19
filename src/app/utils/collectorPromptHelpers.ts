@@ -1,45 +1,54 @@
-import { InquiryModal_me$data } from "__generated__/InquiryModal_me.graphql"
+import { useSendInquiry_collectorProfile$data } from "__generated__/useSendInquiry_collectorProfile.graphql"
+import { useSendInquiry_me$data } from "__generated__/useSendInquiry_me.graphql"
 
-type InquiryModalData = NonNullable<InquiryModal_me$data>
+type InquiryModalMe = NonNullable<useSendInquiry_me$data>
+type InquiryModalCollectorProfile = NonNullable<useSendInquiry_collectorProfile$data>
 
 interface userShouldBePromptedToCompleteProfileParams {
-  city?: NonNullable<InquiryModalData["location"]>["city"]
-  lastPromptAt?: InquiryModalData["collectorProfile"]["lastUpdatePromptAt"]
-  profession?: InquiryModalData["profession"]
+  city?: NonNullable<InquiryModalMe["location"]>["city"]
+  lastUpdatePromptAt: InquiryModalCollectorProfile["lastUpdatePromptAt"]
+  profession?: InquiryModalMe["profession"]
 }
 
 export const userShouldBePromptedToCompleteProfile = ({
   city,
-  lastPromptAt,
+  lastUpdatePromptAt,
   profession,
 }: userShouldBePromptedToCompleteProfileParams) => {
   const userHasAnIncompleteProfile = !profession || !city
-  return userHasAnIncompleteProfile && userHasNotBeenPromptedWithinCooldownPeriod(lastPromptAt)
+
+  return (
+    userHasAnIncompleteProfile && userHasNotBeenPromptedWithinCooldownPeriod(lastUpdatePromptAt)
+  )
 }
 
 interface userShouldBePromptedToAddArtistsToCollectionParams {
-  lastPromptAt?: InquiryModalData["collectorProfile"]["lastUpdatePromptAt"]
+  lastUpdatePromptAt: InquiryModalCollectorProfile["lastUpdatePromptAt"]
+  artworksCount: InquiryModalMe["myCollectionInfo"]["artworksCount"]
+  artistsCount: InquiryModalMe["myCollectionInfo"]["artistsCount"]
 }
 
 export const userShouldBePromptedToAddArtistsToCollection = ({
-  lastPromptAt,
+  lastUpdatePromptAt,
+  artworksCount,
+  artistsCount,
 }: userShouldBePromptedToAddArtistsToCollectionParams) => {
-  const userHasAnEmptyCollection = undefined
-  return userHasAnEmptyCollection && userHasNotBeenPromptedWithinCooldownPeriod(lastPromptAt)
+  const userHasAnEmptyCollection = artworksCount === 0 && artistsCount === 0
+  return userHasAnEmptyCollection && userHasNotBeenPromptedWithinCooldownPeriod(lastUpdatePromptAt)
 }
 
 const userHasNotBeenPromptedWithinCooldownPeriod = (
-  lastPromptAt?: InquiryModalData["collectorProfile"]["lastUpdatePromptAt"]
+  lastPromptAt: InquiryModalCollectorProfile["lastUpdatePromptAt"]
 ) => {
-  if (lastPromptAt == null) {
+  if (!lastPromptAt) {
     return true
   }
 
   const millisecondsSinceLastTimeUserWasPrompted =
     new Date().getTime() - new Date(lastPromptAt).getTime()
-  const millisecondsInCooldownPeriod = daysInCooldownPeriod * 24 * 60 * 60 * 1000
+  const millisecondsInCooldownPeriod = DAYS_IN_COOLDOWN_PERIOD * 24 * 60 * 60 * 1000
 
   return millisecondsSinceLastTimeUserWasPrompted > millisecondsInCooldownPeriod
 }
 
-export const daysInCooldownPeriod = 30
+export const DAYS_IN_COOLDOWN_PERIOD = 30

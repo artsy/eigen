@@ -1,6 +1,7 @@
 import { Spacer, Flex, Text, EntityHeader } from "@artsy/palette-mobile"
-import { InquiryModal_me$key } from "__generated__/InquiryModal_me.graphql"
+import { MyProfileEditModal_me$key } from "__generated__/MyProfileEditModal_me.graphql"
 import { PartnerCard_artwork$data } from "__generated__/PartnerCard_artwork.graphql"
+import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
 import { ShortContactGallery } from "app/Scenes/Artwork/Components/ShortContactGallery"
 import { navigateToPartner } from "app/system/navigation/navigate"
 import { limitWithCount } from "app/utils/limitWithCount"
@@ -12,7 +13,7 @@ import { Questions } from "./Questions"
 
 interface PartnerCardProps {
   artwork: PartnerCard_artwork$data
-  me: InquiryModal_me$key
+  me: MyProfileEditModal_me$key & useSendInquiry_me$key
   relay: RelayProp
   shouldShowQuestions?: boolean
   showShortContactGallery?: boolean

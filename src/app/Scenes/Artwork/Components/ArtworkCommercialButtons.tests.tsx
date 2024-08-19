@@ -26,8 +26,8 @@ describe("ArtworkCommercialButtons", () => {
           <ArtworkStoreProvider>
             <ArtworkCommercialButtons
               partnerOffer={partnerOffer}
-              artwork={props.artwork!}
-              me={props.me!}
+              artwork={props.artwork}
+              me={props.me}
             />
           </ArtworkStoreProvider>
         </ArtworkInquiryStateProvider>
@@ -35,12 +35,15 @@ describe("ArtworkCommercialButtons", () => {
     },
     query: graphql`
       query ArtworkCommercialButtons_Test_Query {
-        artwork(id: "artworkID") {
+        artwork(id: "artworkID") @required(action: NONE) {
           ...ArtworkCommercialButtons_artwork
         }
 
-        me {
+        me @required(action: NONE) {
           ...ArtworkCommercialButtons_me
+          ...useSendInquiry_me
+          ...MyProfileEditModal_me
+          ...BidButton_me
           partnerOffersConnection(artworkID: "artworkID") {
             edges {
               node {
