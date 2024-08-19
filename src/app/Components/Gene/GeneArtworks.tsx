@@ -14,11 +14,11 @@ import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilter
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { GeneArtworksFilterHeader } from "app/Components/Gene/GeneArtworksFilterHeader"
-import { PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   AnimatedMasonryListFooterComponent,
   ESTIMATED_MASONRY_ITEM_SIZE,
+  MASONRY_LIST_PAGE_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
 } from "app/utils/masonryHelpers"
@@ -49,6 +49,7 @@ export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ ge
     relay,
     aggregations: gene.artworks?.aggregations,
     componentPath: "Gene/GeneArtworks",
+    pageSize: MASONRY_LIST_PAGE_SIZE,
   })
 
   const trackClear = () => {
@@ -71,7 +72,7 @@ export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ ge
   const loadMore = useCallback(() => {
     if (relay.hasMore() && !relay.isLoading()) {
       setIsLoading(true)
-      relay.loadMore(PAGE_SIZE, () => {
+      relay.loadMore(MASONRY_LIST_PAGE_SIZE, () => {
         setIsLoading(false)
       })
     }

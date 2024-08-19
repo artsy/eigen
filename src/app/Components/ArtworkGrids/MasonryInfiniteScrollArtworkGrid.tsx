@@ -3,11 +3,11 @@ import { useSpace } from "@artsy/palette-mobile"
 import { MasonryFlashList, MasonryFlashListProps } from "@shopify/flash-list"
 import { PriceOfferMessage } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { MasonryArtworkGridItem } from "app/Components/ArtworkGrids/MasonryArtworkGridItem"
-import { PAGE_SIZE } from "app/Components/constants"
 import { PartnerOffer } from "app/Scenes/Activity/components/NotificationArtworkList"
 import {
   AnimatedMasonryListFooterComponent,
   ESTIMATED_MASONRY_ITEM_SIZE,
+  MASONRY_LIST_PAGE_SIZE,
   MasonryArtworkItem,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
@@ -62,7 +62,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   ListHeaderComponent,
   loadMore,
   onPress,
-  pageSize = PAGE_SIZE,
+  pageSize = MASONRY_LIST_PAGE_SIZE,
   partnerOffer,
   priceOfferMessage,
   refreshControl,

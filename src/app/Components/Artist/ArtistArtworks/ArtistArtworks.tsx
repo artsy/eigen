@@ -32,6 +32,7 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
   AnimatedMasonryListFooterComponent,
   ESTIMATED_MASONRY_ITEM_SIZE,
+  MASONRY_LIST_PAGE_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
 } from "app/utils/masonryHelpers"
@@ -75,6 +76,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     relay,
     aggregations: artist.aggregations?.aggregations,
     componentPath: "ArtistArtworks/ArtistArtworks",
+    pageSize: MASONRY_LIST_PAGE_SIZE,
   })
 
   const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions(
@@ -139,7 +141,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   const loadMore = useCallback(() => {
     if (relay.hasMore() && !relay.isLoading()) {
       setIsLoading(true)
-      relay.loadMore(10, () => {
+      relay.loadMore(MASONRY_LIST_PAGE_SIZE, () => {
         setIsLoading(false)
       })
     }

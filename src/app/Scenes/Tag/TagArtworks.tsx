@@ -14,12 +14,12 @@ import { FilterModalMode } from "app/Components/ArtworkFilter/ArtworkFilterOptio
 import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
-import { PAGE_SIZE } from "app/Components/constants"
 import { TagArtworksFilterHeader } from "app/Scenes/Tag/TagArtworksFilterHeader"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   AnimatedMasonryListFooterComponent,
   ESTIMATED_MASONRY_ITEM_SIZE,
+  MASONRY_LIST_PAGE_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
 } from "app/utils/masonryHelpers"
@@ -55,6 +55,7 @@ const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay }) => {
     relay,
     aggregations: tag?.artworks?.aggregations,
     componentPath: "Tag/TagArtworks",
+    pageSize: MASONRY_LIST_PAGE_SIZE,
   })
 
   const handleCloseFilterArtworksModal = () => setFilterArtworkModalVisible(false)
@@ -77,7 +78,7 @@ const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay }) => {
   const loadMore = useCallback(() => {
     if (relay.hasMore() && !relay.isLoading()) {
       setIsLoading(true)
-      relay.loadMore(PAGE_SIZE, () => {
+      relay.loadMore(MASONRY_LIST_PAGE_SIZE, () => {
         setIsLoading(false)
       })
     }

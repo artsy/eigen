@@ -13,6 +13,7 @@ import { get } from "app/utils/get"
 import {
   AnimatedMasonryListFooterComponent,
   ESTIMATED_MASONRY_ITEM_SIZE,
+  MASONRY_LIST_PAGE_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
 } from "app/utils/masonryHelpers"
@@ -50,6 +51,7 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
     relay,
     aggregations: collection?.collectionArtworks?.aggregations,
     componentPath: "Collection/CollectionArtworks",
+    pageSize: MASONRY_LIST_PAGE_SIZE,
     type: "sort",
     onApply: () => scrollToTop(),
   })
@@ -66,7 +68,7 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
   const loadMore = () => {
     if (relay.hasMore() && !relay.isLoading()) {
       setIsLoading(true)
-      relay.loadMore(10, () => {
+      relay.loadMore(MASONRY_LIST_PAGE_SIZE, () => {
         setIsLoading(false)
       })
     }

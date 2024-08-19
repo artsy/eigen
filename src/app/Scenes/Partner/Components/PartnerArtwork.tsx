@@ -14,6 +14,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import {
   AnimatedMasonryListFooterComponent,
   ESTIMATED_MASONRY_ITEM_SIZE,
+  MASONRY_LIST_PAGE_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
 } from "app/utils/masonryHelpers"
@@ -33,7 +34,7 @@ export const PartnerArtwork: React.FC<{
     relay,
     aggregations: partner.artworks?.aggregations,
     componentPath: "PartnerArtwork/PartnerArtwork",
-    pageSize: 30,
+    pageSize: MASONRY_LIST_PAGE_SIZE,
   })
   const appliedFiltersCount = useSelectedFiltersCount()
 
@@ -42,7 +43,7 @@ export const PartnerArtwork: React.FC<{
   const loadMore = useCallback(() => {
     if (relay.hasMore() && !relay.isLoading()) {
       setIsLoading(true)
-      relay.loadMore(10, () => {
+      relay.loadMore(MASONRY_LIST_PAGE_SIZE, () => {
         setIsLoading(false)
       })
     }
