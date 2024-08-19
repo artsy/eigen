@@ -214,6 +214,7 @@ const partnerOfferFragment = graphql`
   fragment ArtworkCommercialButtons_partnerOffer on PartnerOfferToCollector {
     internalID
     isAvailable
+    isActive
     endAt
   }
 `
