@@ -12,12 +12,12 @@ import { TabEmptyState } from "app/Components/TabEmptyState"
 import { extractNodes } from "app/utils/extractNodes"
 
 import {
-  AnimatedMasonryListFooterComponent,
   ESTIMATED_MASONRY_ITEM_SIZE,
   MASONRY_LIST_PAGE_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
 } from "app/utils/masonryHelpers"
+import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 import React, { useCallback, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
@@ -97,7 +97,7 @@ export const PartnerArtwork: React.FC<{
         onEndReached={loadMore}
         onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
         ListFooterComponent={
-          <AnimatedMasonryListFooterComponent shouldDisplaySpinner={shouldDisplaySpinner} />
+          <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
         }
         // need to pass zIndex: 1 here in order for the SubTabBar to
         // be visible above list content

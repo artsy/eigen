@@ -5,7 +5,6 @@ import { PriceOfferMessage } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { MasonryArtworkGridItem } from "app/Components/ArtworkGrids/MasonryArtworkGridItem"
 import { PartnerOffer } from "app/Scenes/Activity/components/NotificationArtworkList"
 import {
-  AnimatedMasonryListFooterComponent,
   ESTIMATED_MASONRY_ITEM_SIZE,
   MASONRY_LIST_PAGE_SIZE,
   MasonryArtworkItem,
@@ -13,6 +12,7 @@ import {
   ON_END_REACHED_THRESHOLD_MASONRY,
   masonryRenderItemProps,
 } from "app/utils/masonryHelpers"
+import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 import { useCallback } from "react"
 import Animated from "react-native-reanimated"
 
@@ -140,7 +140,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       refreshControl={refreshControl}
       renderItem={renderItem}
       ListFooterComponent={
-        <AnimatedMasonryListFooterComponent shouldDisplaySpinner={shouldDisplaySpinner} />
+        <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
       }
       onScroll={rest.onScroll}
     />

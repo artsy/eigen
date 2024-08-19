@@ -17,12 +17,12 @@ import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/Filter
 import { TagArtworksFilterHeader } from "app/Scenes/Tag/TagArtworksFilterHeader"
 import { extractNodes } from "app/utils/extractNodes"
 import {
-  AnimatedMasonryListFooterComponent,
   ESTIMATED_MASONRY_ITEM_SIZE,
   MASONRY_LIST_PAGE_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
 } from "app/utils/masonryHelpers"
+import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useRef, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -134,7 +134,7 @@ const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay }) => {
         onEndReached={loadMore}
         onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
         ListFooterComponent={
-          <AnimatedMasonryListFooterComponent shouldDisplaySpinner={shouldDisplaySpinner} />
+          <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
         }
         // need to pass zIndex: 1 here in order for the SubTabBar to
         // be visible above list content

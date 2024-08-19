@@ -11,12 +11,12 @@ import { HeaderArtworksFilterWithTotalArtworks } from "app/Components/HeaderArtw
 import { extractNodes } from "app/utils/extractNodes"
 import { get } from "app/utils/get"
 import {
-  AnimatedMasonryListFooterComponent,
   ESTIMATED_MASONRY_ITEM_SIZE,
   MASONRY_LIST_PAGE_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
 } from "app/utils/masonryHelpers"
+import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -152,7 +152,7 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
           </Tabs.SubTabBar>
         }
         ListFooterComponent={
-          <AnimatedMasonryListFooterComponent shouldDisplaySpinner={shouldDisplaySpinner} />
+          <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
         }
       />
       <ArtworkFilterNavigator

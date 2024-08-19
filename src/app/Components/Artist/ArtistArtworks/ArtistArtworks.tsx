@@ -30,12 +30,12 @@ import { Props as InfiniteScrollGridProps } from "app/Components/ArtworkGrids/In
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
-  AnimatedMasonryListFooterComponent,
   ESTIMATED_MASONRY_ITEM_SIZE,
   MASONRY_LIST_PAGE_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
 } from "app/utils/masonryHelpers"
+import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
@@ -252,7 +252,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
             iconPosition="right"
           />
         )}
-        <AnimatedMasonryListFooterComponent shouldDisplaySpinner={shouldDisplaySpinner} />
+        <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
       </>
     )
   }

@@ -1,5 +1,3 @@
-import { Flex, Spinner } from "@artsy/palette-mobile"
-import { motify } from "moti"
 import { isTablet } from "react-native-device-info"
 import { FragmentRefs } from "relay-runtime"
 
@@ -28,25 +26,4 @@ export interface MasonryArtworkItem {
     | undefined
   readonly slug: string
   readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">
-}
-
-interface MasonryListFooterComponentProps {
-  shouldDisplaySpinner: boolean
-}
-
-const MotiFlex = motify(Flex)()
-
-export const AnimatedMasonryListFooterComponent: React.FC<MasonryListFooterComponentProps> = ({
-  shouldDisplaySpinner,
-}) => {
-  return (
-    <MotiFlex
-      my={4}
-      flexDirection="row"
-      justifyContent="center"
-      from={{ opacity: shouldDisplaySpinner ? 1 : 0 }}
-    >
-      <Spinner />
-    </MotiFlex>
-  )
 }
