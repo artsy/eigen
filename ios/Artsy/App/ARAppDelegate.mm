@@ -15,6 +15,7 @@
 #import "ARAppDelegate+Emission.h"
 #import "ARAppDelegate+Echo.h"
 #import "ARAppNotificationsDelegate.h"
+#import "ARAppDelegate+DeeplinkTimeout.h"
 #import "ARUserManager.h"
 #import "ARFonts.h"
 #import <Analytics/SEGAnalytics.h>
@@ -261,6 +262,7 @@ static ARAppDelegate *_sharedInstance = nil;
             return NO;
         }
     }
+    [self startDeeplinkTimeoutWithRoute:url.absoluteString];
     return [RCTLinkingManager application:app openURL:url options:options];
 }
 

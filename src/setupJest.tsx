@@ -415,6 +415,10 @@ function getNativeModules(): OurNativeModules {
       presentEmailComposerWithSubject: jest.fn(),
       presentMediaPreviewController: jest.fn(),
     },
+    ARTDeeplinkTimeoutModule: {
+      invalidateDeeplinkTimeout: jest.fn(),
+    },
+
     ARCocoaConstantsModule: {
       UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
       AREnabled: true,
@@ -483,6 +487,9 @@ jest.mock("app/NativeModules/LegacyNativeModules", () => ({
       presentEmailComposerWithBody: jest.fn(),
       presentEmailComposerWithSubject: jest.fn(),
       presentMediaPreviewController: jest.fn(),
+    },
+    ARTDeeplinkTimeoutModule: {
+      invalidateDeeplinkTimeout: jest.fn(),
     },
     ARCocoaConstantsModule: {
       UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
@@ -672,7 +679,6 @@ jest.mock("react-native-collapsible-tab-view", () => {
     require("app/utils/tests/getMockCollapsibleTabView").getMockCollapsibleTabs
   return getMockCollapsibleTabs()
 })
-
 
 jest.mock("prettier", () => ({
   format: jest.fn((content) => content), // just return content as-is for tests

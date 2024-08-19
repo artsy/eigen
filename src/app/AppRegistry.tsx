@@ -488,6 +488,7 @@ export const modules = defineModules({
     hidesBackButton: true,
   }),
   Home: reactModule(HomeContainer, {
+    isRootViewForTabName: "home",
     fullBleed: unsafe_getFeatureFlag("ARUseNewHomeView") ? true : false,
   }),
   HomeView: reactModule(HomeViewScreen, { hidesBackButton: true }),

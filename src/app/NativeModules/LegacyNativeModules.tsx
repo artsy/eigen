@@ -85,6 +85,9 @@ interface LegacyNativeModules {
     popToRootAndScrollToTop(stackID: string): Promise<void>
     updateShouldHideBackButton(shouldHideBackButton: boolean, currentTabStackID: string): void
   }
+  ARTDeeplinkTimeoutModule: {
+    invalidateDeeplinkTimeout(): void
+  }
   AREventsModule: {
     requestAppStoreRating(): void
   }
@@ -104,6 +107,10 @@ const LegacyNativeModulesAndroid = {
     presentMediaPreviewController: () => {
       noop("presentMediaPreviewController not yet supported on android")
     },
+  },
+
+  ARTDeeplinkTimeoutModule: {
+    invalidateDeeplinkTimeout: noop("invalidateTimeout"),
   },
 
   ARCocoaConstantsModule: {
@@ -145,6 +152,7 @@ const LegacyNativeModulesAndroid = {
 
 const LegacyNativeModulesIOS: LegacyNativeModules = {
   ARScreenPresenterModule,
+  ARTDeeplinkTimeoutModule: AllNativeModules.ARTDeeplinkTimeoutModule,
   ARTNativeScreenPresenterModule: AllNativeModules.ARTNativeScreenPresenterModule,
   ARCocoaConstantsModule: AllNativeModules.ARCocoaConstantsModule,
   ArtsyNativeModule: AllNativeModules.ArtsyNativeModule,

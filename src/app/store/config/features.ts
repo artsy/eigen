@@ -183,11 +183,16 @@ export const features = {
     readyForRelease: true,
     echoFlagKey: "AREnablePartnerOffersNotificationSwitch",
   },
-
   AREnablePartnerOffer: {
     description: "Enable partner offer content in the app",
     readyForRelease: true,
     echoFlagKey: "AREnablePartnerOffer",
+  },
+  AREnableExpiredPartnerOffers: {
+    description: "Enable expired partner offers handling",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableExpiredPartnerOffers",
   },
   AREnableArtistSeriesSuggestions: {
     description: "Enable artist series suggestions",
@@ -278,7 +283,7 @@ export const features = {
   },
   AREnablePartnerOfferSignals: {
     description: "Enable partner offer signals",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnablePartnerOfferSignals",
   },
@@ -295,8 +300,9 @@ export const features = {
   },
   AREnableCollectionsWithoutHeaderImage: {
     description: "Remove the header image from collections",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableCollectionsWithoutHeaderImage",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 

@@ -104,17 +104,23 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
 
   const partnerOffer = extractNodes(me?.partnerOffersConnection)[0]
 
+  const allowExpiredPartnerOffers = useFeatureFlag("AREnableExpiredPartnerOffers")
   const enableAuctionHeaderAlertCTA = useFeatureFlag("AREnableAuctionHeaderAlertCTA")
   const enablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
 
   const expectedPartnerOfferId = !!props.partner_offer_id && enablePartnerOfferOnArtworkScreen
 
   const partnerOfferUnavailable = expectedPartnerOfferId && !artworkAboveTheFold?.isPurchasable
+
+  const partnerOfferExpiredCondition = allowExpiredPartnerOffers
+    ? partnerOffer && partnerOffer.internalID == props.partner_offer_id && !partnerOffer.isActive
+    : !partnerOffer || partnerOffer.internalID !== props.partner_offer_id
+
   const partnerOfferExpired =
     expectedPartnerOfferId &&
     // checking for unavailability to avoid showing double banners
     !partnerOfferUnavailable &&
-    (!partnerOffer || partnerOffer.internalID !== props.partner_offer_id)
+    partnerOfferExpiredCondition
 
   const shouldRenderPartner = () => {
     const { sale, partner } = artworkBelowTheFold ?? {}
@@ -331,7 +337,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
         })
       }
 
-      if (!!enablePartnerOfferOnArtworkScreen && !!partnerOffer?.note) {
+      if (!!enablePartnerOfferOnArtworkScreen && !!partnerOffer?.isActive && !!partnerOffer?.note) {
         sections.push({
           key: "partnerOfferNote",
           element: (
@@ -569,7 +575,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
         <ArtworkStickyBottomContent
           artwork={artworkAboveTheFold}
           me={me}
-          partnerOffer={extractNodes(me.partnerOffersConnection)[0]}
+          partnerOffer={partnerOffer}
         />
       )}
 
@@ -772,6 +778,7 @@ export const ArtworkContainer = createRefetchContainer(
             node {
               internalID
               note
+              isActive
               ...ArtworkStickyBottomContent_partnerOffer
               ...ArtworkPartnerOfferNote_partnerOffer
               ...ArtworkPrice_partnerOffer
