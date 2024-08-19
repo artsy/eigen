@@ -140,6 +140,9 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
 
   const loadMore = useCallback(() => {
     if (relay.hasMore() && !relay.isLoading()) {
+      // IMPORTANT: this is a workaround to show the spinner concistently between refetches of pages
+      // and it is not needed for grids that use relay hooks since isLoadingNext works better than the
+      // legacy container API. See FairArtworks.tsx for an example of how to use with relay hooks.
       setIsLoading(true)
       relay.loadMore(MASONRY_LIST_PAGE_SIZE, () => {
         setIsLoading(false)
