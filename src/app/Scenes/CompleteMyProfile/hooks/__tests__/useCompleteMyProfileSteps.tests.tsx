@@ -16,12 +16,10 @@ describe("useCompleteMyProfileSteps", () => {
     env.mock.queueOperationResolver((operation) =>
       MockPayloadGenerator.generate(operation, {
         Me: () => ({
-          collectorProfile: {
-            location: { display: "New York, NY" },
-            profession: null,
-            icon: null,
-            isIdentityVerified: false,
-          },
+          location: { display: "New York, NY" },
+          profession: null,
+          icon: null,
+          isIdentityVerified: false,
         }),
       })
     )
@@ -40,11 +38,7 @@ describe("useCompleteMyProfileSteps", () => {
   it("returns only 2 steps given only 1 field missing", () => {
     env.mock.queueOperationResolver((operation) =>
       MockPayloadGenerator.generate(operation, {
-        Me: () => ({
-          collectorProfile: {
-            isIdentityVerified: false,
-          },
-        }),
+        Me: () => ({ isIdentityVerified: false }),
       })
     )
 
