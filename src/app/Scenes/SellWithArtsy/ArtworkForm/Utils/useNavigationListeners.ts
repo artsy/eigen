@@ -5,7 +5,7 @@ import {
   SubmitArtworkFormEvents,
   useSubmissionContext,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
-import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/validation"
+import { SubmissionModel } from "app/Scenes/SellWithArtsy/utils/submissionModelState"
 import { useFormikContext } from "formik"
 import { useEffect } from "react"
 
@@ -16,7 +16,7 @@ export const useNavigationListeners = ({
   onNextStep: () => void
   onPreviousStep?: () => void
 }) => {
-  const { values } = useFormikContext<ArtworkDetailsFormModel>()
+  const { values } = useFormikContext<SubmissionModel>()
   const { currentStep } = useSubmissionContext()
   const isFocused = useIsFocused()
 
@@ -24,6 +24,7 @@ export const useNavigationListeners = ({
     if (!isFocused) {
       return
     }
+
     SubmitArtworkFormEvents.on(NAVIGATE_TO_NEXT_STEP_EVENT, onNextStep)
 
     return () => {

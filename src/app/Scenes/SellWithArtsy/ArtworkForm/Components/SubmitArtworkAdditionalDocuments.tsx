@@ -26,6 +26,7 @@ import { addDocumentToSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/
 import { deleteDocument } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/deleteDocument"
 import { NormalizedDocument, normalizeUploadedDocument } from "app/utils/normalizeUploadedDocument"
 import { showDocumentsAndPhotosActionSheet } from "app/utils/showDocumentsAndPhotosActionSheet"
+import { wait } from "app/utils/wait"
 import { useFormikContext } from "formik"
 import { useState } from "react"
 import { Image, LayoutAnimation, Platform, ScrollView } from "react-native"
@@ -57,6 +58,9 @@ export const SubmitArtworkAdditionalDocuments = () => {
     onNextStep: async () => {
       try {
         setIsLoading(true)
+
+        // FIXME: We need to wait a few milliseconds to allow the progress bars to animate correctly. I couldn't find out why this is necessary.
+        await wait(100)
 
         navigation.navigate("Condition")
         setCurrentStep("Condition")
