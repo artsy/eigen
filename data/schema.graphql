@@ -14225,6 +14225,16 @@ type Partner implements Node {
   ): LocationConnection
   meta: PartnerMeta
   name: String
+
+  # A connection of search criteria hits from a Partner.
+  partnerAlertHitsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+    size: Int
+  ): PartnerAlertHitsConnection
   partnerPageEligible: Boolean
   partnerType: String
   profile: Profile
@@ -14297,6 +14307,36 @@ type PartnerAgreement {
 
 # A partner agreement or errors object
 union PartnerAgreementOrErrorsUnion = Errors | PartnerAgreement
+
+# A connection to a list of items.
+type PartnerAlertHitsConnection {
+  # A list of edges.
+  edges: [PartnerAlertHitsEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type PartnerAlertHitsEdge {
+  artwork: Artwork
+  createdAt: String
+
+  # A cursor for use in pagination
+  cursor: String!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID.
+  internalID: ID!
+
+  # The item at the end of the edge
+  node: Alert
+  userIDs: [String]
+}
 
 # A connection to a list of items.
 type PartnerAlertsConnection {
