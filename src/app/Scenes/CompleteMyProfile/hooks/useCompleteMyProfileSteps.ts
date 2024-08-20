@@ -26,29 +26,25 @@ const fragment = graphql`
     ...ImageSelector_me
     ...IdentityVerificationStep_me
 
-    collectorProfile @required(action: NONE) {
-      icon {
-        url(version: "thumbnail")
-      }
-      profession
-      location {
-        display
-      }
-      isIdentityVerified
+    icon {
+      url(version: "thumbnail")
     }
+    profession
+    location {
+      display
+    }
+    isIdentityVerified
   }
 `
 
 export type StepsResult = "loading" | Routes[]
 
 const getSteps = (data?: useCompleteMyProfileSteps_me$data | null): StepsResult => {
-  if (!data?.collectorProfile) {
+  if (!data) {
     return "loading"
   }
 
-  const {
-    collectorProfile: { icon, isIdentityVerified, location, profession },
-  } = data
+  const { icon, isIdentityVerified, location, profession } = data
 
   const steps: Routes[] = []
 
