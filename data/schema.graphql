@@ -9601,6 +9601,19 @@ type FairSponsoredContent {
   pressReleaseUrl: String
 }
 
+# Fairs rail section
+type FairsRailHomeViewSection implements GenericHomeViewSection & Node {
+  # The component that is prescribed for this section
+  component: HomeViewComponent
+  fairsConnection(after: String, before: String, first: Int, last: Int): FairConnection!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+}
+
 # A Feature
 type Feature {
   callout(format: Format): String
@@ -10849,6 +10862,7 @@ enum HomeViewComponentBackgroundImageURLVersion {
 union HomeViewSection =
     ArtistsRailHomeViewSection
   | ArtworksRailHomeViewSection
+  | FairsRailHomeViewSection
   | HeroUnitsHomeViewSection
 
 # A connection to a list of items.
