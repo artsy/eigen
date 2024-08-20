@@ -525,12 +525,18 @@ export const modules = defineModules({
     hidesBottomTabs: true,
     alwaysPresentModally: true,
     modalPresentationStyle: "fullScreen",
+    screenOptions: {
+      gestureEnabled: false,
+    },
   }),
   MyCollectionArtworkEdit: reactModule(MyCollectionArtworkEditQueryRenderer, {
     hidesBackButton: true,
     hidesBottomTabs: true,
     alwaysPresentModally: true,
     modalPresentationStyle: "fullScreen",
+    screenOptions: {
+      gestureEnabled: false,
+    },
   }),
   MyCollectionAddCollectedArtists: reactModule(MyCollectionAddCollectedArtistsScreen, {
     screenOptions: {
