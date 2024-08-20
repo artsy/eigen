@@ -1,5 +1,6 @@
 /**
-This function is used to simulate a delay in the app (it needs to be used with await to work).
+  This function is used to simulate a delay in the app.
+  It needs to be used with await to work and waitFor to test it.
    * @param {number} milliseconds - The number of milliseconds to wait.
 
 */

@@ -1,5 +1,5 @@
 import { useIsFocused, useNavigation } from "@react-navigation/native"
-import { fireEvent, screen } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { SubmitArtworkAdditionalDocuments } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAdditionalDocuments"
 import { renderWithSubmitArtworkWrapper } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/testWrappers"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
@@ -49,8 +49,6 @@ jest.mock("@react-navigation/native", () => ({
 describe("SubmitArtworkAdditionalDocuments", () => {
   const useNavigationMock = useNavigation as jest.Mock
   const useIsFocusedMock = useIsFocused as jest.Mock
-
-  afterEach(() => {})
 
   beforeEach(() => {
     useIsFocusedMock.mockReturnValue(() => true)
@@ -115,6 +113,6 @@ describe("SubmitArtworkAdditionalDocuments", () => {
 
     await flushPromiseQueue()
 
-    expect(mockNavigate).toHaveBeenCalledWith("Condition")
+    await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith("Condition"))
   })
 })
