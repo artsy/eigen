@@ -178,7 +178,7 @@ export const MyProfileHeader: React.FC<MyProfileHeaderProps> = ({ meProp }) => {
           }
           style={{ height: "100%" }}
         >
-          <SettingsIcon />
+          <SettingsIcon width={24} height={24} />
         </Touchable>
       </Flex>
 
