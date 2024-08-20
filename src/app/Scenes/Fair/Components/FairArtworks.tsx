@@ -18,9 +18,11 @@ import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
 import {
   ESTIMATED_MASONRY_ITEM_SIZE,
+  MASONRY_LIST_PAGE_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
 } from "app/utils/masonryHelpers"
+import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 import { pluralize } from "app/utils/pluralize"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useState } from "react"
@@ -173,13 +175,7 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
             )}:`}</Text>
           </>
         }
-        ListFooterComponent={
-          !!isLoadingNext ? (
-            <Flex my={4} flexDirection="row" justifyContent="center">
-              <Spinner />
-            </Flex>
-          ) : null
-        }
+        ListFooterComponent={<AnimatedMasonryListFooter shouldDisplaySpinner={isLoadingNext} />}
         onEndReached={handleOnEndReached}
         onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
         renderItem={renderItem}
@@ -233,7 +229,7 @@ export const FairArtworksWithoutTabs: React.FC<FairArtworksProps> = ({
     refetch,
     aggregations: dispatchAggregations,
     componentPath: "Fair/FairArtworks",
-    pageSize: FAIR2_ARTWORKS_PAGE_SIZE,
+    pageSize: MASONRY_LIST_PAGE_SIZE,
   })
 
   useEffect(() => {
@@ -252,7 +248,7 @@ export const FairArtworksWithoutTabs: React.FC<FairArtworksProps> = ({
 
   const handleOnEndReached = () => {
     if (!isLoadingNext && hasNext) {
-      loadNext(FAIR2_ARTWORKS_PAGE_SIZE, {
+      loadNext(MASONRY_LIST_PAGE_SIZE, {
         onComplete: (error) => {
           if (error) {
             console.error("FairArtworks.tsx", error.message)
@@ -345,7 +341,7 @@ const fragment = graphql`
   fragment FairArtworks_fair on Fair
   @refetchable(queryName: "FairArtworksPaginationQuery")
   @argumentDefinitions(
-    count: { type: "Int", defaultValue: 30 }
+    count: { type: "Int", defaultValue: 10 }
     cursor: { type: "String" }
     input: { type: "FilterArtworksInput" }
   ) {

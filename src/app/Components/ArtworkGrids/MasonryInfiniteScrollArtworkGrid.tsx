@@ -3,16 +3,16 @@ import { useSpace } from "@artsy/palette-mobile"
 import { MasonryFlashList, MasonryFlashListProps } from "@shopify/flash-list"
 import { PriceOfferMessage } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { MasonryArtworkGridItem } from "app/Components/ArtworkGrids/MasonryArtworkGridItem"
-import { PAGE_SIZE } from "app/Components/constants"
 import { PartnerOffer } from "app/Scenes/Activity/components/NotificationArtworkList"
 import {
   ESTIMATED_MASONRY_ITEM_SIZE,
+  MASONRY_LIST_PAGE_SIZE,
   MasonryArtworkItem,
-  MasonryListFooterComponent,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
   masonryRenderItemProps,
 } from "app/utils/masonryHelpers"
+import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 import { useCallback } from "react"
 import Animated from "react-native-reanimated"
 
@@ -62,7 +62,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   ListHeaderComponent,
   loadMore,
   onPress,
-  pageSize = PAGE_SIZE,
+  pageSize = MASONRY_LIST_PAGE_SIZE,
   partnerOffer,
   priceOfferMessage,
   refreshControl,
@@ -140,7 +140,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       refreshControl={refreshControl}
       renderItem={renderItem}
       ListFooterComponent={
-        <MasonryListFooterComponent shouldDisplaySpinner={shouldDisplaySpinner} />
+        <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
       }
       onScroll={rest.onScroll}
     />
