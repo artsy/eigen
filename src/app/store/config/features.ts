@@ -272,8 +272,9 @@ export const features = {
   },
   AREnableSubmitArtworkTier2Information: {
     description: "Enable submit artwork tier 2 information",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableSubmitArtworkTier2Information",
   },
   AREnableCollectorProfilePrompts: {
     readyForRelease: false,
