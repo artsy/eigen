@@ -123,8 +123,8 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     navigate("/conditions-of-sale")
   }
 
-  onCreditCardAdded(token: Token.Result, params: PaymentCardTextFieldParams) {
-    this.setState({ creditCardToken: token, creditCardFormParams: params })
+  onCreditCardAdded(token: Token.Result, address: Address) {
+    this.setState({ creditCardToken: token, billingAddress: address })
   }
 
   onBillingAddressAdded(values: Address) {
@@ -182,11 +182,11 @@ export class Registration extends React.Component<RegistrationProps, Registratio
         await this.updatePhoneNumber(this.state.billingAddress.phoneNumber)
       }
 
-      const token = await this.createTokenFromAddress()
-      if (token.error) {
-        throw new Error(`[Stripe]: error creating the token: ${JSON.stringify(token.error)}`)
+      if (!this.state.creditCardToken) {
+        throw new Error("Credit card token not present")
       }
-      await this.createCreditCard(token.token)
+
+      await this.createCreditCard(this.state.creditCardToken)
 
       await this.createBidder()
     } catch (e) {
@@ -385,7 +385,6 @@ export class Registration extends React.Component<RegistrationProps, Registratio
           <PaymentInfo
             navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
             onCreditCardAdded={this.onCreditCardAdded.bind(this)}
-            onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
             billingAddress={this.state.billingAddress}
             creditCardFormParams={this.state.creditCardFormParams}
             creditCardToken={this.state.creditCardToken}
