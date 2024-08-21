@@ -8,11 +8,11 @@ import { CreditCardField } from "app/Components/CreditCardField/CreditCardField"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Select } from "app/Components/Select/SelectV2"
 import { Stack } from "app/Components/Stack"
-import { FormField as Field, FormFields } from "app/Scenes/MyProfile/MyProfilePaymentNewCreditCard"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
-import { action, computed, Computed, useLocalStore } from "easy-peasy"
+import { useFormik } from "formik"
 import { useRef } from "react"
 import { ScrollView } from "react-native"
+import * as Yup from "yup"
 
 interface CreditCardFormProps {
   navigator: NavigatorIOS
@@ -20,35 +20,51 @@ interface CreditCardFormProps {
   onSubmit: (t: Token.Result, a: Address) => void
 }
 
-interface CreditCardFormFields extends Omit<FormFields, "creditCard" | "country"> {
-  creditCard: Field<{
+interface CreditCardFormValues {
+  creditCard: {
     valid: boolean
     params: Partial<PaymentCardTextFieldParams>
-  }>
-  country: Field<Country>
-  phoneNumber: Field
+  }
+  fullName: string
+  addressLine1: string
+  addressLine2: string
+  city: string
+  postalCode: string
+  state: string
+  country: Country
+  phoneNumber: string
+}
+const INITIAL_FORM_VALUES: CreditCardFormValues = {
+  creditCard: {
+    valid: false,
+    params: {
+      expiryMonth: undefined,
+      expiryYear: undefined,
+      last4: undefined,
+    },
+  },
+  fullName: "",
+  addressLine1: "",
+  addressLine2: "",
+  city: "",
+  postalCode: "",
+  state: "",
+  country: { longName: "", shortName: "" },
+  phoneNumber: "",
 }
 
-interface CreditCardStore {
-  fields: CreditCardFormFields
-  allPresent: Computed<CreditCardStore, boolean>
-  loading: Pick<Field<boolean>, "value" | "setValue">
-  error: Pick<Field<boolean>, "value" | "setValue">
-}
-
-const initialFieldState: (value?: any) => Field<any> = (value) => ({
-  value: value ?? null,
-  touched: false,
-  required: true,
-  isPresent: computed((self) => {
-    if (!self.required) {
-      return true
-    } else {
-      return self.value !== null && (typeof self.value !== "string" || !!self.value)
-    }
+const validationSchema = Yup.object().shape({
+  creditCard: Yup.object().shape({
+    valid: Yup.boolean().required("Credit card is required"),
   }),
-  setValue: action((state, payload) => {
-    state.value = payload
+  fullName: Yup.string().required("Name is required"),
+  addressLine1: Yup.string().required("Address is required"),
+  city: Yup.string().required("City is required"),
+  postalCode: Yup.string().required("Postal code is required"),
+  state: Yup.string().required("State is required"),
+  phoneNumber: Yup.string().required("Phone number is required"),
+  country: Yup.object().shape({
+    shortName: Yup.string().required("Country is required"),
   }),
 })
 
@@ -57,29 +73,41 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
   billingAddress,
   navigator,
 }) => {
-  console.log({ billingAddressfromform: billingAddress })
-  const [state, actions] = useLocalStore<CreditCardStore>(() => ({
-    fields: {
-      creditCard: initialFieldState(),
-      fullName: initialFieldState(billingAddress?.fullName),
-      addressLine1: initialFieldState(billingAddress?.addressLine1),
-      addressLine2: { ...initialFieldState(billingAddress?.addressLine2), required: false },
-      city: initialFieldState(billingAddress?.city),
-      postalCode: initialFieldState(billingAddress?.postalCode),
-      state: initialFieldState(billingAddress?.state),
-      country: initialFieldState(billingAddress?.country),
-      phoneNumber: initialFieldState(billingAddress?.phoneNumber),
+  const initialValues: CreditCardFormValues = {
+    ...INITIAL_FORM_VALUES,
+    ...billingAddress,
+  }
+
+  const {
+    values,
+    errors,
+    isSubmitting,
+    isValid,
+    dirty,
+    handleSubmit,
+    handleBlur,
+    handleChange,
+    setFieldValue,
+  } = useFormik({
+    initialValues,
+    validationSchema,
+    validateOnBlur: true,
+    onSubmit: async (values) => {
+      try {
+        const tokenBody = buildTokenParams(values)
+        const token = await createToken(tokenBody)
+
+        if (token.error) {
+          throw new Error(`[Stripe]: error creating the token: ${JSON.stringify(token.error)}`)
+        }
+
+        onSubmit(token.token, buildBillingAddress(values))
+        navigator.pop()
+      } catch (error) {
+        console.error("CreditCardForm.tsx", error)
+      }
     },
-    allPresent: computed((store) => {
-      return Boolean(
-        Object.keys(store.fields).every(
-          (k) => store.fields[k as keyof CreditCardFormFields].isPresent
-        ) && store.fields.creditCard.value?.valid
-      )
-    }),
-    loading: initialFieldState(false),
-    error: initialFieldState(false),
-  }))
+  })
 
   const addressLine1Ref = useRef<Input>(null)
   const addressLine2Ref = useRef<Input>(null)
@@ -89,53 +117,31 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
   const phoneRef = useRef<Input>(null)
   const countryRef = useRef<Select<any>>(null)
 
-  const buildTokenParams = (): CreateCardTokenParams => {
+  const buildTokenParams = (values: CreditCardFormValues): CreateCardTokenParams => {
     return {
       type: "Card",
-      name: state.fields.fullName.value ?? undefined,
+      name: values.fullName ?? undefined,
       address: {
-        line1: state.fields.addressLine1.value ?? undefined,
-        line2: state.fields.addressLine2.value ?? undefined,
-        city: state.fields.city.value ?? undefined,
-        state: state.fields.state.value ?? undefined,
-        country: state.fields.country.value?.shortName ?? undefined,
-        postalCode: state.fields.postalCode.value ?? undefined,
+        line1: values.addressLine1 ?? undefined,
+        line2: values.addressLine2 ?? undefined,
+        city: values.city ?? undefined,
+        state: values.state ?? undefined,
+        country: values.country?.shortName ?? undefined,
+        postalCode: values.postalCode ?? undefined,
       },
     }
   }
 
-  const buildBillingAddress = (): Address => {
+  const buildBillingAddress = (values: CreditCardFormValues): Address => {
     return {
-      fullName: state.fields.fullName.value ?? "",
-      addressLine1: state.fields.addressLine1.value ?? "",
-      addressLine2: state.fields.addressLine2.value ?? "",
-      city: state.fields.city.value ?? "",
-      state: state.fields.state.value ?? "",
-      country: state.fields.country.value ?? { longName: "", shortName: "" },
-      postalCode: state.fields.postalCode.value ?? "",
-      phoneNumber: state.fields.phoneNumber.value ?? "",
-    }
-  }
-
-  const handleSubmit = async () => {
-    actions.loading.setValue(true)
-    actions.error.setValue(false)
-
-    try {
-      const tokenBody = buildTokenParams()
-      const token = await createToken(tokenBody)
-
-      if (!token || token.error || !token.token.id) {
-        throw new Error(`[Stripe]: error creating the token: ${JSON.stringify(token.error)}`)
-      }
-
-      onSubmit(token.token, buildBillingAddress())
-      actions.loading.setValue(false)
-      navigator.pop()
-    } catch (error) {
-      console.error("CreditCardForm.tsx", error)
-      actions.error.setValue(true)
-      actions.loading.setValue(false)
+      fullName: values.fullName ?? "",
+      addressLine1: values.addressLine1 ?? "",
+      addressLine2: values.addressLine2 ?? "",
+      city: values.city ?? "",
+      state: values.state ?? "",
+      country: values.country ?? { longName: "", shortName: "" },
+      postalCode: values.postalCode ?? "",
+      phoneNumber: values.phoneNumber ?? "",
     }
   }
 
@@ -152,7 +158,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
           <>
             <CreditCardField
               onCardChange={(cardDetails) => {
-                actions.fields.creditCard.setValue({
+                setFieldValue("creditCard", {
                   valid: cardDetails.complete,
                   params: {
                     expiryMonth: cardDetails.expiryMonth,
@@ -163,65 +169,77 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
               }}
             />
 
-            {!!state.error.value && (
+            {/* {!!state.error.value && (
               <Text testID="error-message" variant="xs" mt={2} color="red100">
                 There was an error. Please try again.
               </Text>
-            )}
+            )} */}
           </>
 
           <Input
             title="Name on card"
             placeholder="Full name"
-            defaultValue={state.fields.fullName.value ?? ""}
-            onChangeText={actions.fields.fullName.setValue}
+            value={values.fullName}
+            error={errors.fullName}
+            onChangeText={handleChange("fullName")}
+            onBlur={handleBlur("fullName")}
             returnKeyType="next"
             onSubmitEditing={() => addressLine1Ref.current?.focus()}
           />
           <Input
             ref={addressLine1Ref}
             title="Address line 1"
-            defaultValue={state.fields.addressLine1.value ?? ""}
+            value={values.addressLine1}
+            error={errors.addressLine1}
             placeholder="Add street address"
-            onChangeText={actions.fields.addressLine1.setValue}
+            onChangeText={handleChange("addressLine1")}
+            onBlur={handleBlur("addressLine1")}
             returnKeyType="next"
             onSubmitEditing={() => addressLine2Ref.current?.focus()}
           />
           <Input
             ref={addressLine2Ref}
             title="Address line 2"
-            defaultValue={state.fields.addressLine2.value ?? ""}
+            value={values.addressLine2}
+            error={errors.addressLine2}
             optional
             placeholder={[
               "Add your apt, floor, suite, etc.",
               "Add your apt, floor, etc.",
               "Add your apt, etc.",
             ]}
-            onChangeText={actions.fields.addressLine2.setValue}
+            onChangeText={handleChange("addressLine2")}
+            onBlur={handleBlur("addressLine2")}
             returnKeyType="next"
             onSubmitEditing={() => cityRef.current?.focus()}
           />
           <Input
             ref={cityRef}
             title="City"
-            defaultValue={state.fields.city.value ?? ""}
-            onChangeText={actions.fields.city.setValue}
+            value={values.city}
+            error={errors.city}
+            onChangeText={handleChange("city")}
+            onBlur={handleBlur("city")}
             returnKeyType="next"
             onSubmitEditing={() => stateRef.current?.focus()}
           />
           <Input
             ref={stateRef}
             title="State, province, or region"
-            defaultValue={state.fields.state.value ?? ""}
-            onChangeText={actions.fields.state.setValue}
+            value={values.state}
+            error={errors.state}
+            onChangeText={handleChange("state")}
+            onBlur={handleBlur("state")}
             returnKeyType="next"
             onSubmitEditing={() => postalCodeRef.current?.focus()}
           />
           <Input
             ref={postalCodeRef}
             title="Postal Code"
-            defaultValue={state.fields.postalCode.value ?? ""}
-            onChangeText={actions.fields.postalCode.setValue}
+            value={values.postalCode}
+            error={errors.postalCode}
+            onChangeText={handleChange("postalCode")}
+            onBlur={handleBlur("postalCode")}
             returnKeyType="next"
             onSubmitEditing={() => phoneRef.current?.focus()}
           />
@@ -231,8 +249,10 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
             placeholder="Add phone number"
             keyboardType="phone-pad"
             textContentType="telephoneNumber"
-            defaultValue={state.fields.phoneNumber.value ?? ""}
-            onChangeText={actions.fields.phoneNumber.setValue}
+            value={values.phoneNumber}
+            error={errors.phoneNumber}
+            onChangeText={handleChange("phoneNumber")}
+            onBlur={handleBlur("phoneNumber")}
             onSubmitEditing={() => phoneRef.current?.blur()}
           />
 
@@ -241,12 +261,12 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
           <CountrySelect
             ref={countryRef}
             onSelectValue={(countryCode: string) =>
-              actions.fields.country.setValue({
+              setFieldValue("country", {
                 shortName: countryCode,
                 longName: findCountryNameByCountryCode(countryCode) || "",
               })
             }
-            value={state.fields.country.value?.shortName}
+            value={values.country.shortName}
           />
         </Stack>
 
@@ -265,11 +285,11 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
       <Box p={2} mb={2}>
         <Button
           testID="credit-card-form-button"
-          disabled={!state.allPresent}
-          loading={state.loading.value ?? false}
+          disabled={!isValid || dirty}
+          loading={isSubmitting}
           block
           width={100}
-          onPress={state.allPresent ? handleSubmit : undefined}
+          onPress={handleSubmit}
         >
           Save
         </Button>
