@@ -137,7 +137,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   async setupAddressCardAndBidderPosition() {
     try {
       if (!this.state.creditCardToken) {
-        throw new Error("Credit card token not present")
+        throw new Error("[ConfirmBid] Credit card token not present")
       }
 
       await this.updatePhoneNumber()

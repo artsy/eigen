@@ -183,7 +183,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
       }
 
       if (!this.state.creditCardToken) {
-        throw new Error("Credit card token not present")
+        throw new Error("[Registration] Credit card token not present")
       }
 
       await this.createCreditCard(this.state.creditCardToken)
