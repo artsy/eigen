@@ -27,7 +27,7 @@ import { SellWithArtsyRecentlySold } from "./Components/SellWithArtsyRecentlySol
 export const SellWithArtsyHome: React.FC = () => {
   const { draft } = GlobalStore.useAppState((state) => state.artworkSubmission)
 
-  const submissionID = draft?.submissionID
+  const id = draft?.deprecatedSubmissionID ?? draft?.externalID
 
   const [fetchKey, increaseFetchKey] = useReducer((state) => state + 1, 0)
 
@@ -44,7 +44,7 @@ export const SellWithArtsyHome: React.FC = () => {
 
   const { recentlySoldArtworks, me, submission } = useLazyLoadQuery<SellWithArtsyHomeQuery>(
     SellWithArtsyHomeScreenQuery,
-    { submissionID: submissionID, includeSubmission: !!submissionID },
+    { submissionID: id, includeSubmission: !!id },
     {
       fetchPolicy: "store-and-network",
       fetchKey: fetchKey ?? 0,

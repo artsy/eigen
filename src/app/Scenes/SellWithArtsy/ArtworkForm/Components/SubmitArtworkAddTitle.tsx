@@ -29,20 +29,20 @@ export const SubmitArtworkAddTitle = () => {
     onNextStep: async () => {
       try {
         setIsLoading(true)
-        let submissionId = values.submissionId
+        const externalId = values.externalId
 
         // If no submission is present, create one
         // This is the case when the user is submitting an artwork from my collection
-        if (!submissionId) {
-          submissionId = (await createOrUpdateSubmission(values, null)) || null
-          setFieldValue("submissionId", submissionId)
+        if (!externalId) {
+          const response = await createOrUpdateSubmission(values, null)
+          setFieldValue("externalId", response?.externalID || externalId)
         }
 
         await createOrUpdateSubmission(
           {
             title: values.title,
           },
-          submissionId
+          externalId
         )
 
         navigation.navigate("AddPhotos")

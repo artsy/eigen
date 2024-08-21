@@ -33,9 +33,9 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
     }
 
     try {
-      trackTappedSubmissionSaveExit(values.submissionId, currentStep)
+      trackTappedSubmissionSaveExit(values.externalId, currentStep)
 
-      const submissionId = await createOrUpdateSubmission(values, values.submissionId)
+      await createOrUpdateSubmission(values, values.externalId)
 
       // If an submission has a my collection artwork, we need to update its values
       if (values.artwork.internalID) {
@@ -54,9 +54,10 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
         await myCollectionUpdateArtwork(newValues)
       }
 
-      if (submissionId) {
+      if (values.externalId) {
         GlobalStore.actions.artworkSubmission.setDraft({
-          submissionID: submissionId,
+          deprecatedSubmissionID: null,
+          externalID: values.externalId,
           currentStep,
         })
       }

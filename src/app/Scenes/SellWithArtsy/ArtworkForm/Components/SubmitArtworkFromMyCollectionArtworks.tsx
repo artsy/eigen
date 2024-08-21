@@ -53,6 +53,7 @@ export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
         const formValues = {
           ...getInitialSubmissionFormValuesFromArtwork(artwork),
           submissionId: values.submissionId,
+          externalId: values.externalId,
           userName: values.userName,
           userEmail: values.userEmail,
           userPhone: values.userPhone,

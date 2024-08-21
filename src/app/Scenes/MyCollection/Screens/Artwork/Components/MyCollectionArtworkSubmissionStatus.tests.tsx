@@ -39,6 +39,7 @@ describe("MyCollectionArtworkSubmissionStatus", () => {
       Artwork: () => {
         return {
           consignmentSubmission: {
+            externalID: "some-external-id",
             state: "DRAFT",
           },
         }
@@ -53,6 +54,7 @@ describe("MyCollectionArtworkSubmissionStatus", () => {
       Artwork: () => {
         return {
           consignmentSubmission: {
+            externalID: "some-external-id",
             state: "SUBMITTED",
             stateLabel: "In Progress",
           },
@@ -69,6 +71,7 @@ describe("MyCollectionArtworkSubmissionStatus", () => {
       Artwork: () => {
         return {
           consignmentSubmission: {
+            externalID: "some-external-id",
             state: "REJECTED",
             stateLabel: "Evaluation Complete",
           },
@@ -92,6 +95,7 @@ describe("MyCollectionArtworkSubmissionStatus", () => {
         Artwork: () => {
           return {
             consignmentSubmission: {
+              externalID: "some-external-id",
               state: "DRAFT",
               actionLabel: "Complete Submission",
             },
@@ -111,6 +115,9 @@ describe("MyCollectionArtworkSubmissionStatus", () => {
           return {
             isListed: true,
             internalID: "artwork-id",
+            consignmentSubmission: {
+              externalID: "some-external-id",
+            },
           }
         },
       })
@@ -126,6 +133,7 @@ describe("MyCollectionArtworkSubmissionStatus", () => {
             isListed: true,
             internalID: "artwork-id",
             consignmentSubmission: {
+              externalID: "some-external-id",
               state: "APPROVED",
               actionLabel: "Complete Listing",
             },
@@ -141,6 +149,7 @@ describe("MyCollectionArtworkSubmissionStatus", () => {
         Artwork: () => {
           return {
             consignmentSubmission: {
+              externalID: "some-external-id",
               state: "REJECTED",
               stateLabel: "Submission Unsuccessful",
             },
@@ -158,8 +167,8 @@ describe("MyCollectionArtworkSubmissionStatus", () => {
           return {
             isListed: false,
             internalID: "artwork-id",
-            submissionId: "submission-id",
             consignmentSubmission: {
+              externalID: "some-external-id",
               state: "APPROVED",
               actionLabel: "Complete Listing",
             },
@@ -169,7 +178,7 @@ describe("MyCollectionArtworkSubmissionStatus", () => {
 
       expect(screen.queryAllByText("Complete Listing")).toHaveLength(2)
       fireEvent.press(screen.getByTestId("action-label"))
-      expect(navigate).toHaveBeenCalledWith("/sell/submissions/submission-id/edit", {
+      expect(navigate).toHaveBeenCalledWith("/sell/submissions/some-external-id/edit", {
         passProps: {
           hasStartedFlowFromMyCollection: true,
           initialStep: "ShippingLocation",
@@ -184,8 +193,8 @@ describe("MyCollectionArtworkSubmissionStatus", () => {
           return {
             isListed: false,
             internalID: "artwork-id",
-            submissionId: "submission-id",
             consignmentSubmission: {
+              externalID: "some-external-id",
               state: "DRAFT",
               actionLabel: "Complete Submission",
             },
@@ -195,7 +204,7 @@ describe("MyCollectionArtworkSubmissionStatus", () => {
 
       expect(screen.queryAllByText("Complete Submission")).toHaveLength(2)
       fireEvent.press(screen.getByTestId("action-label"))
-      expect(navigate).toHaveBeenCalledWith("/sell/submissions/submission-id/edit", {
+      expect(navigate).toHaveBeenCalledWith("/sell/submissions/some-external-id/edit", {
         passProps: {
           hasStartedFlowFromMyCollection: true,
           initialStep: "AddTitle",

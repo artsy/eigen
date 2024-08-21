@@ -103,8 +103,8 @@ const artworkWithoutSubmission = {
 }
 
 const approvedSubmission = {
-  submissionId: "someId",
   consignmentSubmission: {
+    submissionId: "someId",
     state: "APPROVED",
     stateLabel: "Approved",
     stateHelpMessage: "Approved Message",
@@ -114,8 +114,8 @@ const approvedSubmission = {
 }
 
 const rejectedSubmission = {
-  submissionId: "someId",
   consignmentSubmission: {
+    submissionId: "someId",
     state: "REJECTED",
     stateLabel: "Rejected",
     stateHelpMessage: "Rejected Message",
@@ -125,7 +125,8 @@ const rejectedSubmission = {
 }
 
 const listedSubmission = {
-  submissionId: "someId",
   isListed: true,
-  consignmentSubmission: {},
+  consignmentSubmission: {
+    submissionId: "someId",
+  },
 }

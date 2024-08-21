@@ -39,7 +39,7 @@ export const SubmitArtworkAddDetails = () => {
             category: values.category,
             medium: values.medium,
           },
-          values.submissionId
+          values.externalId
         )
 
         navigation.navigate("PurchaseHistory")

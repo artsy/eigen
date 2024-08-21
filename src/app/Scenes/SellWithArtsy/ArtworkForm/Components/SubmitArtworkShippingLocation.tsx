@@ -50,7 +50,7 @@ export const SubmitArtworkShippingLocation = () => {
               address2: values.location?.address2,
             },
           },
-          values.submissionId
+          values.externalId
         )
 
         navigation.navigate("FrameInformation")

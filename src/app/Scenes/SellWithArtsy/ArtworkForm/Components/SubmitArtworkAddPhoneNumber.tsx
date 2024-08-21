@@ -43,7 +43,7 @@ export const SubmitArtworkAddPhoneNumber = () => {
           state: values.state && TIER_1_STATES.includes(values.state) ? "SUBMITTED" : undefined,
         } as const
 
-        await createOrUpdateSubmission(newValues, values.submissionId)
+        await createOrUpdateSubmission(newValues, values.externalId)
 
         navigation.navigate(nextStep)
         setCurrentStep(nextStep)

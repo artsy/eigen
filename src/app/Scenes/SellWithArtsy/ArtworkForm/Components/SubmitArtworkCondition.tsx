@@ -63,7 +63,7 @@ export const SubmitArtworkCondition = () => {
           {
             state: "RESUBMITTED",
           },
-          values.submissionId
+          values.externalId
         )
         // Reset saved draft if submission is successful
         GlobalStore.actions.artworkSubmission.setDraft(null)

@@ -36,7 +36,7 @@ export const SubmitArtworkNewScreenTemplate = () => {
           {
             // values you want to update
           },
-          values.submissionId
+          values.externalId
         )
 
         // TODO: Replace with the correct next screen name
@@ -62,7 +62,7 @@ export const SubmitArtworkNewScreenTemplate = () => {
         // TODO: Replace with the correct context screen owner type
         // @ts-expect-error
         context_screen_owner_type: OwnerType.newScreenTitle,
-        context_screen_owner_id: values.submissionId || undefined,
+        context_screen_owner_id: values.externalId || undefined,
       })}
     >
       <Flex px={2} flex={1}>

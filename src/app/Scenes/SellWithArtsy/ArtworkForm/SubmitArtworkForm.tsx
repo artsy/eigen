@@ -69,7 +69,7 @@ export interface SubmitArtworkProps {
   initialValues: Partial<SubmissionModel>
   initialStep: SubmitArtworkScreen
   navigationState?: string
-  submissionID?: string
+  externalID?: string
   hasStartedFlowFromMyCollection?: boolean
 }
 

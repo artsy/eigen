@@ -91,7 +91,7 @@ export const useSubmissionContext = () => {
   const useSubmitArtworkScreenTracking = (step: keyof SubmitArtworkStackNavigation) => {
     useEffect(() => {
       if (currentStep === step) {
-        trackSubmissionStepScreen(currentStep, values.submissionId || undefined)
+        trackSubmissionStepScreen(currentStep, values.externalId || undefined)
       }
     }, [currentStep])
   }
