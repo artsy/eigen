@@ -1,4 +1,3 @@
-import { OwnerType } from "@artsy/cohesion"
 import { Flex, Input, Spacer, Text } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { useToast } from "app/Components/Toast/toastHook"
@@ -8,8 +7,6 @@ import { useNavigationListeners } from "app/Scenes/SellWithArtsy/ArtworkForm/Uti
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
 import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
-import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
-import { screen } from "app/utils/track/helpers"
 import { useFormikContext } from "formik"
 import { ScrollView } from "react-native"
 
@@ -57,38 +54,29 @@ export const SubmitArtworkNewScreenTemplate = () => {
   })
 
   return (
-    <ProvideScreenTrackingWithCohesionSchema
-      info={screen({
-        // TODO: Replace with the correct context screen owner type
-        // @ts-expect-error
-        context_screen_owner_type: OwnerType.newScreenTitle,
-        context_screen_owner_id: values.externalId || undefined,
-      })}
-    >
-      <Flex px={2} flex={1}>
-        <ScrollView>
-          <Flex>
-            <Text variant="lg-display">New Screen Title</Text>
+    <Flex px={2} flex={1}>
+      <ScrollView>
+        <Flex>
+          <Text variant="lg-display">New Screen Title</Text>
 
-            <Spacer y={2} />
+          <Spacer y={2} />
 
-            <Input
-              placeholder="My new field"
-              // TODO: Replace with the correct field name
-              onChangeText={handleChange("new field")}
-              // TODO: Replace with the correct field name
-              // @ts-expect-error
-              value={values.newField}
-              // Only focus on the input and toggle the keyboard if this step is visible to the user.
-              // TODO: Replace with the correct field name
-              // @ts-expect-error
-              autoFocus={currentStep === "NewScreenTitle"}
-              spellCheck={false}
-              autoCorrect={false}
-            />
-          </Flex>
-        </ScrollView>
-      </Flex>
-    </ProvideScreenTrackingWithCohesionSchema>
+          <Input
+            placeholder="My new field"
+            // TODO: Replace with the correct field name
+            onChangeText={handleChange("new field")}
+            // TODO: Replace with the correct field name
+            // @ts-expect-error
+            value={values.newField}
+            // Only focus on the input and toggle the keyboard if this step is visible to the user.
+            // TODO: Replace with the correct field name
+            // @ts-expect-error
+            autoFocus={currentStep === "NewScreenTitle"}
+            spellCheck={false}
+            autoCorrect={false}
+          />
+        </Flex>
+      </ScrollView>
+    </Flex>
   )
 }
