@@ -23,21 +23,6 @@ describe("My Collection Artwork", () => {
   })
 
   describe("Edit button", () => {
-    it("should not be visible when consignmentSubmission is not available", () => {
-      renderWithHookWrappersTL(
-        <MyCollectionArtworkScreen
-          artworkId="random-id"
-          artistInternalID="internal-id"
-          medium="medium"
-          category="medium"
-        />,
-        mockEnvironment
-      )
-
-      resolveMostRecentRelayOperation(mockEnvironment)
-      expect(screen.getByText("Edit")).toBeOnTheScreen()
-    })
-
     it("should be visible when consignmentSubmission is available", () => {
       renderWithHookWrappersTL(
         <MyCollectionArtworkScreen
@@ -50,8 +35,29 @@ describe("My Collection Artwork", () => {
       )
 
       resolveMostRecentRelayOperation(mockEnvironment, {
-        ArtworkConsignmentSubmission: () => ({
-          state: "RESUBMITTED",
+        Artwork: () => ({
+          consignmentSubmission: {
+            internalID: "submission-id",
+          },
+        }),
+      })
+      expect(screen.getByText("Edit")).toBeOnTheScreen()
+    })
+
+    it("should be visible when consignmentSubmission is not available", () => {
+      renderWithHookWrappersTL(
+        <MyCollectionArtworkScreen
+          artworkId="random-id"
+          artistInternalID="internal-id"
+          medium="medium"
+          category="medium"
+        />,
+        mockEnvironment
+      )
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => ({
+          consignmentSubmission: null,
         }),
       })
       expect(() => screen.getByText("Edit")).toThrow()

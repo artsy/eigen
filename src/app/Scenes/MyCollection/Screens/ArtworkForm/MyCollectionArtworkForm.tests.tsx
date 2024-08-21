@@ -481,7 +481,7 @@ describe("MyCollectionArtworkForm", () => {
                   confidentialNotes: "some-notes",
                   consignmentSubmission: {
                     displayText: "In progress",
-                    state: "SUBMITTED",
+                    internalID: "submission-id",
                   },
                   dimensions: {
                     in: "23",
