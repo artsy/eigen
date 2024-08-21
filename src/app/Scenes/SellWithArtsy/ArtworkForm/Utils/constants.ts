@@ -20,7 +20,6 @@ export const SUBMIT_ARTWORK_DRAFT_SUBMISSION_STEPS: SubmitArtworkScreen[] = [
   "StartFlow",
   ...TIER_1_STEPS,
   "CompleteYourSubmission",
-  "CompleteYourSubmissionPostApproval",
   "ArtistRejected",
 ]
 
