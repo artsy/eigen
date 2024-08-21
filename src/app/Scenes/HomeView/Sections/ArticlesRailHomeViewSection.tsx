@@ -10,7 +10,7 @@ export const ArticlesRailHomeViewSection: React.FC<ArticlesRailHomeViewSectionPr
   const section = useFragment(sectionFragment, props.section)
   return (
     <ArticlesRailFragmentContainer
-      title={section.component.title}
+      title={section.component?.title ?? ""}
       articlesConnection={section.articlesConnection}
     />
   )
