@@ -165,11 +165,12 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
                 : SUBMIT_ARTWORK_DRAFT_SUBMISSION_STEPS,
           })}
         >
+          <SubmitArtworkTopNavigation />
           <Stack.Navigator
             // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
             detachInactiveScreens={false}
             screenOptions={{
-              header: () => <SubmitArtworkTopNavigation />,
+              headerShown: false,
               cardStyle: {
                 backgroundColor: "white",
                 ...(isTablet
