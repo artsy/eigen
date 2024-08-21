@@ -230,6 +230,7 @@ type Alert {
   additionalGeneNames: [String]
   artistIDs: [String]
   artistSeriesIDs: [String]
+  artistSeriesNames: [String]
   artists: [Artist!]!
   artistsConnection(after: String, before: String, first: Int, last: Int): ArtistConnection!
 
