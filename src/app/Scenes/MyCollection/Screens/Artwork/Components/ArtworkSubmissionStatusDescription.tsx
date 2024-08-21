@@ -27,7 +27,9 @@ export const ArtworkSubmissionStatusDescription: React.FC<
 
   const { trackTappedEditSubmission } = useSubmitArtworkTracking()
 
-  if (!consignmentSubmission || !consignmentSubmission.externalID) return null
+  if (!consignmentSubmission?.externalID) {
+    return null
+  }
 
   const { stateLabel, actionLabel, stateHelpMessage, state, buttonLabel } = consignmentSubmission
 

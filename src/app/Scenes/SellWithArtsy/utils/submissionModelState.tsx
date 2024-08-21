@@ -35,11 +35,7 @@ export interface ArtworkSubmissionModel {
 
 export interface SubmissionModel {
   draft: {
-    // We can remove this in a couple of releases when most users have updated their app
-    // and most draft submissions are using externalID
-    // For now, we keep this for a couple of releases to avoid breaking existing drafts
-    deprecatedSubmissionID?: string | null
-    externalID: string
+    submissionID: string
     currentStep: keyof SubmitArtworkStackNavigation | undefined
   } | null
   submission: ArtworkSubmissionModel

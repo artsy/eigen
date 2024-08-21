@@ -56,10 +56,9 @@ export const Versions = {
   AddExperimentsOverrides: 43,
   DeleteDirtyArtworkDetails: 44,
   AddSubmissionDraft: 45,
-  RenameSubmissionIDInSubmissionDraft: 46,
 }
 
-export const CURRENT_APP_VERSION = Versions.RenameSubmissionIDInSubmissionDraft
+export const CURRENT_APP_VERSION = Versions.AddSubmissionDraft
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -324,13 +323,6 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.AddSubmissionDraft]: (state) => {
     state.artworkSubmission.draft = null
-  },
-  [Versions.RenameSubmissionIDInSubmissionDraft]: (state) => {
-    if (state.artworkSubmission.draft?.submissionID) {
-      state.artworkSubmission.draft.deprecatedSubmissionID =
-        state.artworkSubmission.draft.submissionID
-      delete state.artworkSubmission.draft.submissionID
-    }
   },
 }
 

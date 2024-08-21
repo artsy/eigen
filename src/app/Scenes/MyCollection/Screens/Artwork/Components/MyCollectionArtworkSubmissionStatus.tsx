@@ -34,7 +34,9 @@ export const MyCollectionArtworkSubmissionStatus: React.FC<
 
   const artworkData = useFragment(submissionStateFragment, artwork)
 
-  if (!consignmentSubmission || !consignmentSubmission.externalID) return null
+  if (!consignmentSubmission?.externalID) {
+    return null
+  }
 
   const { state, stateLabel, actionLabel } = consignmentSubmission
 

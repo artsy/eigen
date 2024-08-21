@@ -1037,28 +1037,4 @@ describe("App version Versions.AddProgressiveOnboardingModel", () => {
       expect(migratedState.artworkSubmission.draft).toEqual(null)
     })
   })
-
-  describe("App version Versions.RenameSubmissionIDInSubmissionDraft", () => {
-    it("should rename submissionID to deprecatedSubmissionID if there is a draft present", () => {
-      const migrationToTest = Versions.RenameSubmissionIDInSubmissionDraft
-      const previousState = migrate({
-        state: { version: 0 },
-        toVersion: migrationToTest - 1,
-      }) as any
-
-      previousState.artworkSubmission.draft = {
-        submissionID: "submission-id",
-      }
-
-      expect(previousState.artworkSubmission.draft.submissionID).toEqual("submission-id")
-
-      const migratedState = migrate({
-        state: previousState,
-        toVersion: migrationToTest,
-      }) as any
-
-      expect(migratedState.artworkSubmission.draft.deprecatedSubmissionID).toEqual("submission-id")
-      expect(migratedState.artworkSubmission.draft.submissionID).toEqual(undefined)
-    })
-  })
 })

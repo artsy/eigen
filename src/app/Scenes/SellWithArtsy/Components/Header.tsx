@@ -50,7 +50,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
           <Box mb={0.5}>
             <Touchable
               onPress={() => {
-                const id = draft.deprecatedSubmissionID ?? draft.externalID
+                const id = draft.submissionID
                 trackTappedContinueSubmission(id, previousStep)
                 navigate(`/sell/submissions/${id}/edit?initialStep=${previousStep}`)
               }}

@@ -56,8 +56,7 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
 
       if (values.externalId) {
         GlobalStore.actions.artworkSubmission.setDraft({
-          deprecatedSubmissionID: null,
-          externalID: values.externalId,
+          submissionID: values.externalId,
           currentStep,
         })
       }

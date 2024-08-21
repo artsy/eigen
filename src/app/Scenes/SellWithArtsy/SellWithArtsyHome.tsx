@@ -27,7 +27,7 @@ import { SellWithArtsyRecentlySold } from "./Components/SellWithArtsyRecentlySol
 export const SellWithArtsyHome: React.FC = () => {
   const { draft } = GlobalStore.useAppState((state) => state.artworkSubmission)
 
-  const id = draft?.deprecatedSubmissionID ?? draft?.externalID
+  const id = draft?.submissionID
 
   const [fetchKey, increaseFetchKey] = useReducer((state) => state + 1, 0)
 
