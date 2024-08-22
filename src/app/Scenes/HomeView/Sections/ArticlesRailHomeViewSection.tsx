@@ -9,6 +9,10 @@ interface ArticlesRailHomeViewSectionProps {
 export const ArticlesRailHomeViewSection: React.FC<ArticlesRailHomeViewSectionProps> = (props) => {
   const section = useFragment(sectionFragment, props.section)
 
+  if (!section.articlesConnection) {
+    return null
+  }
+
   return (
     <ArticlesRailFragmentContainer
       title={section.component?.title ?? ""}
