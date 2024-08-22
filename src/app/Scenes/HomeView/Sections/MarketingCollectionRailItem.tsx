@@ -4,6 +4,7 @@ import { MarketingCollectionRailItem_marketingCollection$key } from "__generated
 import { FiveUpImageLayout } from "app/Components/FiveUpImageLayout"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { pluralize } from "app/utils/pluralize"
 import { compact } from "lodash"
 import { FC } from "react"
 import { graphql, useFragment } from "react-relay"
@@ -24,8 +25,9 @@ export const MarketingCollectionRailItem: FC<MarketingCollectionRailItemProps> =
     extractNodes(marketingCollection.artworksConnection, (artwork) => artwork.image?.url)
   )
 
+  const artworksCount = marketingCollection.artworksConnection?.counts?.total || 0
+
   return (
-    // eslint-disable-next-line react/jsx-no-undef
     <CollectionCard
       testID={`collections-rail-card-${marketingCollection.slug}`}
       onPress={
@@ -45,7 +47,10 @@ export const MarketingCollectionRailItem: FC<MarketingCollectionRailItemProps> =
           </Text>
           <Text variant="xs" numberOfLines={1} color="black60">
             {marketingCollection?.artworksConnection?.counts?.total
-              ? `${marketingCollection.artworksConnection.counts.total} works`
+              ? `${marketingCollection.artworksConnection.counts.total} ${pluralize(
+                  "work",
+                  artworksCount
+                )}`
               : ""}
           </Text>
         </Flex>

@@ -1,9 +1,13 @@
 import { Flex } from "@artsy/palette-mobile"
-import { MarketingCollectionsRailHomeViewSection_section$key } from "__generated__/MarketingCollectionsRailHomeViewSection_section.graphql"
+import {
+  MarketingCollectionsRailHomeViewSection_section$data,
+  MarketingCollectionsRailHomeViewSection_section$key,
+} from "__generated__/MarketingCollectionsRailHomeViewSection_section.graphql"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { MarketingCollectionRailItem } from "app/Scenes/HomeView/Sections/MarketingCollectionRailItem"
 import { extractNodes } from "app/utils/extractNodes"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { graphql, useFragment } from "react-relay"
 
 interface MarketingCollectionsRailHomeViewSectionProps {
@@ -27,7 +31,11 @@ export const MarketingCollectionsRailHomeViewSection: React.FC<
         <SectionTitle title={component.title} />
       </Flex>
 
-      <CardRailFlatList<any>
+      <CardRailFlatList<
+        ExtractNodeType<
+          MarketingCollectionsRailHomeViewSection_section$data["marketingCollectionsConnection"]
+        >
+      >
         data={marketingCollections}
         initialNumToRender={3}
         renderItem={({ item }) => {
