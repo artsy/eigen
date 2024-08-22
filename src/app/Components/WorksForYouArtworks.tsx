@@ -9,9 +9,10 @@ import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
 import { pluralize } from "app/utils/pluralize"
+import { useRefreshControl } from "app/utils/refreshHelpers"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
-export const PAGE_SIZE = 100
+export const PAGE_SIZE = 20
 
 interface NewWorksForYouProps {
   viewer: WorksForYouArtworks_viewer$key
@@ -20,8 +21,14 @@ interface NewWorksForYouProps {
 export const WorksForYouArtworks: React.FC<NewWorksForYouProps> = ({ viewer }) => {
   const defaultViewOption = GlobalStore.useAppState((state) => state.userPrefs.defaultViewOption)
 
-  const { data } = usePaginationFragment(newWorksForYouArtworksFragment, viewer)
+  const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment(
+    newWorksForYouArtworksFragment,
+    viewer
+  )
+
   const { scrollHandler } = Screen.useListenForScreenScroll()
+
+  const RefreshControl = useRefreshControl(refetch)
 
   const artworks = extractNodes(data.artworks)
   const numColumns = defaultViewOption === "grid" ? NUM_COLUMNS_MASONRY : 1
@@ -31,6 +38,9 @@ export const WorksForYouArtworks: React.FC<NewWorksForYouProps> = ({ viewer }) =
       <MasonryInfiniteScrollArtworkGrid
         animated
         artworks={artworks}
+        isLoading={isLoadingNext}
+        loadMore={loadNext}
+        hasMore={hasNext}
         numColumns={numColumns}
         disableAutoLayout
         pageSize={PAGE_SIZE}
@@ -45,8 +55,8 @@ export const WorksForYouArtworks: React.FC<NewWorksForYouProps> = ({ viewer }) =
             {artworks.length} {pluralize("Artwork", artworks.length)}
           </Text>
         )}
-        hasMore={false}
         onScroll={scrollHandler}
+        refreshControl={RefreshControl}
         style={{ paddingBottom: 120 }}
       />
     </Flex>
