@@ -1,4 +1,4 @@
-import { NotificationTypesEnum } from "__generated__/ActivityRail_notificationsConnection.graphql"
+import { NotificationTypesEnum } from "__generated__/ActivityRail_viewer.graphql"
 
 export const getNotificationTypeBadge = (notificationType: NotificationTypesEnum) => {
   switch (notificationType) {

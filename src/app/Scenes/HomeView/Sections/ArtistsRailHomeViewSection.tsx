@@ -45,7 +45,7 @@ export const ArtistsRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionPro
 
   return (
     <Flex>
-      <Flex pl={2} pr={2}>
+      <Flex px={2}>
         <SectionTitle title={title} />
       </Flex>
       <CardRailFlatList<Artist>
