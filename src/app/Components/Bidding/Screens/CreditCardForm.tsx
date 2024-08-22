@@ -6,9 +6,11 @@ import {
   Input,
   Spacer,
   Text,
+  useSpace,
 } from "@artsy/palette-mobile"
 import { createToken, Token } from "@stripe/stripe-react-native"
 import { CreateCardTokenParams } from "@stripe/stripe-react-native/lib/typescript/src/types/Token"
+import { Details } from "@stripe/stripe-react-native/lib/typescript/src/types/components/CardFieldInput"
 import {
   CREDIT_CARD_INITIAL_FORM_VALUES,
   CreditCardFormValues,
@@ -36,6 +38,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
   billingAddress,
   navigator,
 }) => {
+  const space = useSpace()
   const initialValues: CreditCardFormValues = {
     ...CREDIT_CARD_INITIAL_FORM_VALUES,
     ...billingAddress,
@@ -75,6 +78,17 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
     },
   })
 
+  const handleOnCardChange = (cardDetails: Details) => {
+    setFieldValue("creditCard", {
+      valid: cardDetails.complete,
+      params: {
+        expiryMonth: cardDetails.expiryMonth,
+        expiryYear: cardDetails.expiryYear,
+        last4: cardDetails.last4,
+      },
+    })
+  }
+
   // Inputs refs
   const addressLine1Ref = useRef<Input>(null)
   const addressLine2Ref = useRef<Input>(null)
@@ -84,57 +98,18 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
   const phoneRef = useRef<Input>(null)
   const countryRef = useRef<Select<any>>(null)
 
-  const buildTokenParams = (values: CreditCardFormValues): CreateCardTokenParams => {
-    return {
-      type: "Card",
-      name: values.fullName ?? undefined,
-      address: {
-        line1: values.addressLine1 ?? undefined,
-        line2: values.addressLine2 ?? undefined,
-        city: values.city ?? undefined,
-        state: values.state ?? undefined,
-        country: values.country?.shortName ?? undefined,
-        postalCode: values.postalCode ?? undefined,
-      },
-    }
-  }
-
-  const buildBillingAddress = (values: CreditCardFormValues): Address => {
-    return {
-      fullName: values.fullName ?? "",
-      addressLine1: values.addressLine1 ?? "",
-      addressLine2: values.addressLine2 ?? "",
-      city: values.city ?? "",
-      state: values.state ?? "",
-      country: values.country ?? { longName: "", shortName: "" },
-      postalCode: values.postalCode ?? "",
-      phoneNumber: values.phoneNumber ?? "",
-    }
-  }
-
   return (
     <ArtsyKeyboardAvoidingView>
       <FancyModalHeader onLeftButtonPress={() => navigator.pop()}>Add Credit Card</FancyModalHeader>
 
       <ScrollView
-        contentContainerStyle={{ padding: 20, paddingBottom: 50 }}
+        contentContainerStyle={{ padding: space(2), paddingBottom: space(4) }}
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
       >
         <Flex gap={1}>
           <>
-            <CreditCardField
-              onCardChange={(cardDetails) => {
-                setFieldValue("creditCard", {
-                  valid: cardDetails.complete,
-                  params: {
-                    expiryMonth: cardDetails.expiryMonth,
-                    expiryYear: cardDetails.expiryYear,
-                    last4: cardDetails.last4,
-                  },
-                })
-              }}
-            />
+            <CreditCardField onCardChange={handleOnCardChange} />
 
             {!!errors.creditCard?.valid && (
               <Text testID="credit-card-error-message" variant="xs" mt={2} color="red100">
@@ -270,4 +245,32 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
       </Box>
     </ArtsyKeyboardAvoidingView>
   )
+}
+
+const buildTokenParams = (values: CreditCardFormValues): CreateCardTokenParams => {
+  return {
+    type: "Card",
+    name: values.fullName ?? undefined,
+    address: {
+      line1: values.addressLine1 ?? undefined,
+      line2: values.addressLine2 ?? undefined,
+      city: values.city ?? undefined,
+      state: values.state ?? undefined,
+      country: values.country?.shortName ?? undefined,
+      postalCode: values.postalCode ?? undefined,
+    },
+  }
+}
+
+const buildBillingAddress = (values: CreditCardFormValues): Address => {
+  return {
+    fullName: values.fullName ?? "",
+    addressLine1: values.addressLine1 ?? "",
+    addressLine2: values.addressLine2 ?? "",
+    city: values.city ?? "",
+    state: values.state ?? "",
+    country: values.country ?? { longName: "", shortName: "" },
+    postalCode: values.postalCode ?? "",
+    phoneNumber: values.phoneNumber ?? "",
+  }
 }
