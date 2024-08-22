@@ -1,4 +1,12 @@
-import { ArtsyKeyboardAvoidingView, Box, Button, Input, Spacer, Text } from "@artsy/palette-mobile"
+import {
+  ArtsyKeyboardAvoidingView,
+  Box,
+  Button,
+  Flex,
+  Input,
+  Spacer,
+  Text,
+} from "@artsy/palette-mobile"
 import { createToken, Token } from "@stripe/stripe-react-native"
 import { CreateCardTokenParams } from "@stripe/stripe-react-native/lib/typescript/src/types/Token"
 import {
@@ -12,7 +20,6 @@ import { CountrySelect } from "app/Components/CountrySelect"
 import { CreditCardField } from "app/Components/CreditCardField/CreditCardField"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Select } from "app/Components/Select/SelectV2"
-import { Stack } from "app/Components/Stack"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { useFormik } from "formik"
 import { useRef } from "react"
@@ -113,7 +120,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
       >
-        <Stack spacing={1}>
+        <Flex gap={1}>
           <>
             <CreditCardField
               onCardChange={(cardDetails) => {
@@ -234,7 +241,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
             }
             value={values.country.shortName}
           />
-        </Stack>
+        </Flex>
 
         <Spacer y={2} />
 
