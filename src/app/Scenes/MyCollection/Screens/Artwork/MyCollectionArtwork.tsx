@@ -87,7 +87,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
 
   const articles = extractNodes(artwork.artist?.articles)
 
-  const isEditable = !!artwork.consignmentSubmission?.internalID
+  const isEditable = !artwork.consignmentSubmission?.internalID
 
   return (
     <Screen>
@@ -199,7 +199,13 @@ export const MyCollectionArtworkScreenQuery = graphql`
 
 const MyCollectionArtworkPlaceholder = () => (
   <ProvidePlaceholderContext>
-    <Flex flexDirection="column" justifyContent="space-between" height="100%" pb="8px">
+    <Flex
+      flexDirection="column"
+      justifyContent="space-between"
+      height="100%"
+      pb="8px"
+      testID="my-collection-artwork-placeholder"
+    >
       <LoadingSpinner />
     </Flex>
   </ProvidePlaceholderContext>
