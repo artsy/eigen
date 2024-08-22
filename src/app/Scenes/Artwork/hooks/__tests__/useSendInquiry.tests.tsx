@@ -116,6 +116,7 @@ describe("useSendInquiry", () => {
           lastUpdatePromptAt: null,
           location: { city: null },
           collectorProfile: { lastUpdatePromptAt: null },
+          myCollectionInfo: { artistsCount: 1, artworksCount: 1 },
         }),
       })
 
@@ -143,10 +144,7 @@ describe("useSendInquiry", () => {
       const loader = await loaderHook({
         Me: () => ({
           collectorProfile: { lastUpdatePromptAt: null },
-          myCollectionInfo: {
-            artistsCount: 0,
-            artworksCount: 0,
-          },
+          myCollectionInfo: { artistsCount: 0, artworksCount: 0 },
         }),
       })
 
@@ -170,14 +168,41 @@ describe("useSendInquiry", () => {
       )
     })
 
+    it("shows profile prompt if the user has no collections, no complete profile and never been prompted", async () => {
+      const loader = await loaderHook({
+        Me: () => ({
+          lastUpdatePromptAt: null,
+          location: { city: null },
+          collectorProfile: { lastUpdatePromptAt: null },
+          myCollectionInfo: { artistsCount: 0, artworksCount: 0 },
+        }),
+      })
+
+      const { result } = renderHook(
+        () =>
+          useSendInquiry({
+            artwork: (loader.current as any).artwork,
+            me: (loader.current as any).me,
+            onCompleted: jest.fn(),
+          }),
+        { wrapper }
+      )
+
+      act(() => result.current.sendInquiry("message"))
+
+      await waitFor(() =>
+        expect(dispatch).toHaveBeenCalledWith({
+          type: "setProfilePromptVisible",
+          payload: true,
+        })
+      )
+    })
+
     it("does not show any prompt given collection and profile are complete and never been prompted", async () => {
       const loader = await loaderHook({
         Me: () => ({
           collectorProfile: { lastUpdatePromptAt: null },
-          myCollectionInfo: {
-            artistsCount: 1,
-            artworksCount: 1,
-          },
+          myCollectionInfo: { artistsCount: 1, artworksCount: 1 },
         }),
       })
 

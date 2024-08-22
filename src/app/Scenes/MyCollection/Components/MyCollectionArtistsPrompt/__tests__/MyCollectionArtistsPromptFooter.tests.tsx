@@ -63,7 +63,7 @@ describe("MyCollectionArtistsPromptFooter", () => {
     expect(onPress).not.toHaveBeenCalled()
   })
 
-  it("does call close when text is pressed given an error", () => {
+  it("does not call close when text is pressed given an error", () => {
     jest
       .spyOn(updateCollectorProfile as any, "useUpdateCollectorProfile")
       .mockImplementation(() => [
