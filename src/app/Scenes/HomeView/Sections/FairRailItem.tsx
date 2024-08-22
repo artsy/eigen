@@ -1,5 +1,5 @@
 import { bullet, Text } from "@artsy/palette-mobile"
-import { FeaturedFairRailItem_fair$key } from "__generated__/FeaturedFairRailItem_fair.graphql"
+import { FairRailItem_fair$key } from "__generated__/FairRailItem_fair.graphql"
 import { CardRailCard, CardRailMetadataContainer } from "app/Components/Home/CardRailCard"
 import { ThreeUpImageLayout } from "app/Components/ThreeUpImageLayout"
 import { navigate } from "app/system/navigation/navigate"
@@ -9,11 +9,11 @@ import { FC } from "react"
 import { View } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
-interface FeaturedFairRailItemProps {
-  fair: FeaturedFairRailItem_fair$key
+interface FairRailItemProps {
+  fair: FairRailItem_fair$key
 }
 
-export const FeaturedFairRailItem: FC<FeaturedFairRailItemProps> = ({ fair: fairFragment }) => {
+export const FairRailItem: FC<FairRailItemProps> = ({ fair: fairFragment }) => {
   const fair = useFragment(fragment, fairFragment)
 
   // Fairs are expected to always have >= 2 artworks and a hero image.
@@ -63,7 +63,7 @@ export const FeaturedFairRailItem: FC<FeaturedFairRailItemProps> = ({ fair: fair
 }
 
 const fragment = graphql`
-  fragment FeaturedFairRailItem_fair on Fair {
+  fragment FairRailItem_fair on Fair {
     internalID
     slug
     profile {

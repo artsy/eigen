@@ -1,18 +1,16 @@
 import { Flex } from "@artsy/palette-mobile"
-import { FeaturedFairsRailHomeViewSection_section$key } from "__generated__/FeaturedFairsRailHomeViewSection_section.graphql"
+import { FairsRailHomeViewSection_section$key } from "__generated__/FairsRailHomeViewSection_section.graphql"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { FeaturedFairRailItem } from "app/Scenes/HomeView/Sections/FeaturedFairRailItem"
+import { FairRailItem } from "app/Scenes/HomeView/Sections/FairRailItem"
 import { extractNodes } from "app/utils/extractNodes"
 import { graphql, useFragment } from "react-relay"
 
-interface FeaturedFairsRailHomeViewSectionProps {
-  section: FeaturedFairsRailHomeViewSection_section$key
+interface FairsRailHomeViewSectionProps {
+  section: FairsRailHomeViewSection_section$key
 }
 
-export const FeaturedFairsRailHomeViewSection: React.FC<FeaturedFairsRailHomeViewSectionProps> = ({
-  section,
-}) => {
+export const FairsRailHomeViewSection: React.FC<FairsRailHomeViewSectionProps> = ({ section }) => {
   const data = useFragment(fragment, section)
   const component = data.component
 
@@ -31,7 +29,7 @@ export const FeaturedFairsRailHomeViewSection: React.FC<FeaturedFairsRailHomeVie
         data={fairs}
         initialNumToRender={3}
         renderItem={({ item }) => {
-          return <FeaturedFairRailItem key={item.internalID} fair={item} />
+          return <FairRailItem key={item.internalID} fair={item} />
         }}
       />
     </Flex>
@@ -39,7 +37,7 @@ export const FeaturedFairsRailHomeViewSection: React.FC<FeaturedFairsRailHomeVie
 }
 
 const fragment = graphql`
-  fragment FeaturedFairsRailHomeViewSection_section on FeaturedFairsHomeViewSection {
+  fragment FairsRailHomeViewSection_section on FairsRailHomeViewSection {
     component {
       title
       description
@@ -49,7 +47,7 @@ const fragment = graphql`
       edges {
         node {
           internalID
-          ...FeaturedFairRailItem_fair
+          ...FairRailItem_fair
         }
       }
     }
