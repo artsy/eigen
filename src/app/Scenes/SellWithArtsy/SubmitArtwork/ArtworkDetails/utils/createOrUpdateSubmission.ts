@@ -27,8 +27,7 @@ export const createOrUpdateSubmission = async (
   const isRarityLimitedEdition = values.attributionClass === limitedEditionValue
   type NewType = ConsignmentAttributionClass
 
-  const attributionClass =
-    (values?.attributionClass?.replace(" ", "_").toUpperCase() as NewType) || null
+  const attributionClass = values?.attributionClass?.replace(" ", "_").toUpperCase() as NewType
 
   const submissionValues: SubmissionInput = {
     artistID: values.artistId,
@@ -36,13 +35,13 @@ export const createOrUpdateSubmission = async (
     category: values.category,
     depth: values.depth,
     dimensionsMetric: values.dimensionsMetric,
-    editionNumber: isRarityLimitedEdition ? values.editionNumber : "",
-    editionSizeFormatted: isRarityLimitedEdition ? values.editionSizeFormatted : "",
+    editionNumber: isRarityLimitedEdition ? values.editionNumber : undefined,
+    editionSizeFormatted: isRarityLimitedEdition ? values.editionSizeFormatted : undefined,
     height: values.height,
     locationCity: values.location?.city,
     locationCountry: values.location?.country,
     locationCountryCode: values.location?.countryCode,
-    locationPostalCode: values.location?.zipCode || null,
+    locationPostalCode: values.location?.zipCode,
     locationState: values.location?.state,
     locationAddress: values.location?.address,
     locationAddress2: values.location?.address2,

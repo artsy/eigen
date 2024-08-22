@@ -129,12 +129,12 @@ describe("SubmitArtworkShippingLocation", () => {
         variables: {
           input: {
             artistID: undefined,
-            attributionClass: null,
+            attributionClass: undefined,
             category: undefined,
             depth: undefined,
             dimensionsMetric: undefined,
-            editionNumber: "",
-            editionSizeFormatted: "",
+            editionNumber: undefined,
+            editionSizeFormatted: undefined,
             height: undefined,
             id: "submission-id",
             locationAddress: "Street 1",
