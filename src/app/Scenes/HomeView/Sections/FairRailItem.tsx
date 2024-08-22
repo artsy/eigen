@@ -1,4 +1,4 @@
-import { bullet, Text } from "@artsy/palette-mobile"
+import { bullet, Flex, Text } from "@artsy/palette-mobile"
 import { FairRailItem_fair$key } from "__generated__/FairRailItem_fair.graphql"
 import { CardRailCard, CardRailMetadataContainer } from "app/Components/Home/CardRailCard"
 import { ThreeUpImageLayout } from "app/Components/ThreeUpImageLayout"
@@ -6,7 +6,6 @@ import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { compact, concat, take } from "lodash"
 import { FC } from "react"
-import { View } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
 interface FairRailItemProps {
@@ -39,7 +38,7 @@ export const FairRailItem: FC<FairRailItemProps> = ({ fair: fairFragment }) => {
         navigate(`/fair/${fair.slug}`)
       }}
     >
-      <View>
+      <Flex>
         <ThreeUpImageLayout imageURLs={artworkImageURLs} />
         <CardRailMetadataContainer>
           <Text numberOfLines={1} lineHeight="20px" variant="sm">
@@ -57,7 +56,7 @@ export const FairRailItem: FC<FairRailItemProps> = ({ fair: fairFragment }) => {
             {Boolean(location) && `  ${bullet}  ${location}`}
           </Text>
         </CardRailMetadataContainer>
-      </View>
+      </Flex>
     </CardRailCard>
   )
 }
