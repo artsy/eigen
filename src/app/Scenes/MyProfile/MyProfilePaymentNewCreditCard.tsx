@@ -19,14 +19,15 @@ interface CreditCardInputParams {
   last4: string
 }
 
-interface FormField<Type = string> {
+export interface FormField<Type = string> {
   value: Type | null
   touched: boolean
   required: boolean
   isPresent: Computed<this, boolean>
   setValue: Action<this, Type>
 }
-const emptyFieldState: () => FormField<any> = () => ({
+
+export const emptyFieldState: () => FormField<any> = () => ({
   value: null,
   touched: false,
   required: true,
@@ -42,7 +43,7 @@ const emptyFieldState: () => FormField<any> = () => ({
   }),
 })
 
-interface FormFields {
+export interface FormFields {
   creditCard: FormField<{
     valid: boolean
     params: CreditCardInputParams
@@ -51,7 +52,7 @@ interface FormFields {
   addressLine1: FormField
   addressLine2: FormField
   city: FormField
-  postCode: FormField
+  postalCode: FormField
   state: FormField
   country: FormField
 }
@@ -71,7 +72,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
       addressLine1: emptyFieldState(),
       addressLine2: { ...emptyFieldState(), required: false },
       city: emptyFieldState(),
-      postCode: emptyFieldState(),
+      postalCode: emptyFieldState(),
       state: emptyFieldState(),
       country: emptyFieldState(),
     },
@@ -102,7 +103,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
         city: state.fields.city.value ?? undefined,
         state: state.fields.state.value ?? undefined,
         country: state.fields.country.value ?? undefined,
-        postalCode: state.fields.postCode.value ?? undefined,
+        postalCode: state.fields.postalCode.value ?? undefined,
       },
     }
   }
@@ -197,7 +198,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
         <Input
           ref={postalCodeRef}
           title="Postal Code"
-          onChangeText={actions.fields.postCode.setValue}
+          onChangeText={actions.fields.postalCode.setValue}
           returnKeyType="next"
           onSubmitEditing={() => stateRef.current?.focus()}
         />

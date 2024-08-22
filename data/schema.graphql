@@ -1471,7 +1471,7 @@ type ArticleUnpublishedArtworkPartner {
 
 # An articles rail section in the home view
 type ArticlesRailHomeViewSection implements GenericHomeViewSection & Node {
-  articlesConnection(after: String, before: String, first: Int, last: Int): ArticleConnection!
+  articlesConnection(after: String, before: String, first: Int, last: Int): ArticleConnection
 
   # The component that is prescribed for this section
   component: HomeViewComponent
@@ -9620,7 +9620,7 @@ type FairSponsoredContent {
 type FairsRailHomeViewSection implements GenericHomeViewSection & Node {
   # The component that is prescribed for this section
   component: HomeViewComponent
-  fairsConnection(after: String, before: String, first: Int, last: Int): FairConnection!
+  fairsConnection(after: String, before: String, first: Int, last: Int): FairConnection
 
   # A globally unique ID.
   id: ID!
@@ -10880,6 +10880,7 @@ union HomeViewSection =
   | ArtworksRailHomeViewSection
   | FairsRailHomeViewSection
   | HeroUnitsHomeViewSection
+  | MarketingCollectionsRailHomeViewSection
 
 # A connection to a list of items.
 type HomeViewSectionConnection {
@@ -11830,6 +11831,26 @@ type MarketingCollectionCategory {
   name: String!
 }
 
+# A connection to a list of items.
+type MarketingCollectionConnection {
+  # A list of edges.
+  edges: [MarketingCollectionEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type MarketingCollectionEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: MarketingCollection
+}
+
 type MarketingCollectionGroup {
   groupType: MarketingCollectionGroupTypeEnum!
   internalID: ID!
@@ -11855,6 +11876,24 @@ type MarketingCollectionQuery {
   internalID: ID
   keyword: String
   tagID: String
+}
+
+# A marketing collections rail section in the home view
+type MarketingCollectionsRailHomeViewSection implements GenericHomeViewSection & Node {
+  # The component that is prescribed for this section
+  component: HomeViewComponent
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  marketingCollectionsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): MarketingCollectionConnection
 }
 
 union Match =

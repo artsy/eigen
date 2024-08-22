@@ -268,11 +268,14 @@ describe("ConfirmBid", () => {
       expect(component.root.findAllByType(BidInfoRow).length).toEqual(1)
     })
 
-    it("shows a checkbox and payment info if the user is not registered and has no cc on file", () => {
-      const component = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
+    it("shows a checkbox and payment info if the user is not registered and has no cc on file", async () => {
+      const { root } = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
 
-      expect(component.root.findAllByType(Checkbox).length).toEqual(1)
-      expect(component.root.findAllByType(BidInfoRow).length).toEqual(3)
+      const checkboxs = await root.findAllByType(Checkbox)
+      const bidInfoRows = await root.findAllByType(BidInfoRow)
+
+      expect(checkboxs.length).toEqual(1)
+      expect(bidInfoRows.length).toEqual(2)
     })
   })
 
@@ -700,15 +703,21 @@ describe("ConfirmBid", () => {
   })
 
   describe("ConfirmBid for unqualified user", () => {
-    const fillOutFormAndSubmit = (component: ReactTestRenderer) => {
+    const fillOutFormAndSubmit = async (component: ReactTestRenderer) => {
+      const confirmBidComponent = await component.root.findByType(ConfirmBid)
       // manually setting state to avoid duplicating tests for skipping UI interaction, but practically better not to do this.
-      component.root.findByType(ConfirmBid).instance.setState({ billingAddress })
-      component.root.findByType(ConfirmBid).instance.setState({ creditCardToken: stripeToken })
-      component.root.findByType(Checkbox).props.onPress()
-      findPlaceBidButton(component).props.onPress()
+      confirmBidComponent.instance.setState({ billingAddress })
+      confirmBidComponent.instance.setState({ creditCardToken: stripeToken.token })
+
+      const checkbox = await component.root.findByType(Checkbox)
+      checkbox.props.onPress()
+
+      const bidButton = await findPlaceBidButton(component)
+      bidButton.props.onPress()
     }
 
-    it("shows the billing address that the user typed in the billing address form", () => {
+    // skipping since we don't have billing address now
+    xit("shows the billing address that the user typed in the billing address form", () => {
       const billingAddressRow = mountConfirmBidComponent(
         initialPropsForUnqualifiedUser
       ).root.findAllByType(TouchableWithoutFeedback)[2]
@@ -794,7 +803,7 @@ describe("ConfirmBid", () => {
       expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", false)
     })
 
-    it("shows the error screen with the default error message if there are unhandled errors from the createCreditCard mutation", () => {
+    it("shows the error screen with the default error message if there are unhandled errors from the createCreditCard mutation", async () => {
       const errors = [{ message: "malformed error" }]
 
       console.error = jest.fn() // Silences component logging.
@@ -806,15 +815,19 @@ describe("ConfirmBid", () => {
 
       const component = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
 
-      fillOutFormAndSubmit(component)
+      await fillOutFormAndSubmit(component)
 
-      expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
+      const modal = await component.root.findByType(Modal)
+      const modalText = await modal.findAllByType(Text)
+      const modalButton = await modal.findByType(Button)
+
+      expect(modalText[1].props.children).toEqual([
         "There was a problem processing your information. Check your payment details and try again.",
       ])
-      component.root.findByType(Modal).findByType(Button).props.onPress()
+      modalButton.props.onPress()
 
       // it dismisses the modal
-      expect(component.root.findByType(Modal).props.visible).toEqual(false)
+      expect(modal.props.visible).toEqual(false)
     })
 
     it("shows the error screen with the default error message if the creditCardMutation error message is empty", async () => {
@@ -846,7 +859,7 @@ describe("ConfirmBid", () => {
       expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", false)
     })
 
-    it("shows the generic error screen on a createCreditCard mutation network failure", () => {
+    it("shows the generic error screen on a createCreditCard mutation network failure", async () => {
       console.error = jest.fn() // Silences component logging.
       ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
       relay.commitMutation = commitMutationMock((_, { onError }) => {
@@ -856,7 +869,7 @@ describe("ConfirmBid", () => {
 
       const component = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
 
-      fillOutFormAndSubmit(component)
+      await fillOutFormAndSubmit(component)
 
       expect(nextStep?.component).toEqual(BidResultScreen)
       expect(nextStep?.passProps).toEqual(
@@ -895,7 +908,9 @@ describe("ConfirmBid", () => {
 
         // UNSAFELY getting the component instance to set state for testing purposes only
         screen.UNSAFE_getByType(ConfirmBid).instance.setState({ billingAddress })
-        screen.UNSAFE_getByType(ConfirmBid).instance.setState({ creditCardToken: stripeToken })
+        screen
+          .UNSAFE_getByType(ConfirmBid)
+          .instance.setState({ creditCardToken: stripeToken.token })
 
         // Check the checkbox and press the Bid button
         fireEvent.press(screen.UNSAFE_getByType(Checkbox))
