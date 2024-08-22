@@ -1,8 +1,13 @@
 import { ArtsyKeyboardAvoidingView, Box, Button, Input, Spacer, Text } from "@artsy/palette-mobile"
 import { createToken, Token } from "@stripe/stripe-react-native"
 import { CreateCardTokenParams } from "@stripe/stripe-react-native/lib/typescript/src/types/Token"
+import {
+  CREDIT_CARD_INITIAL_FORM_VALUES,
+  CreditCardFormValues,
+} from "app/Components/Bidding/Utils/creditCardFormFields"
 import { findCountryNameByCountryCode } from "app/Components/Bidding/Utils/findCountryNameByCountryCode"
-import { Address, Country, PaymentCardTextFieldParams } from "app/Components/Bidding/types"
+import { creditCardFormValidationSchema } from "app/Components/Bidding/Validators/creditCardFormFieldsValidationSchema"
+import { Address } from "app/Components/Bidding/types"
 import { CountrySelect } from "app/Components/CountrySelect"
 import { CreditCardField } from "app/Components/CreditCardField/CreditCardField"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
@@ -12,7 +17,6 @@ import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { useFormik } from "formik"
 import { useRef } from "react"
 import { ScrollView } from "react-native"
-import * as Yup from "yup"
 
 interface CreditCardFormProps {
   navigator: NavigatorIOS
@@ -20,61 +24,13 @@ interface CreditCardFormProps {
   onSubmit: (t: Token.Result, a: Address) => void
 }
 
-interface CreditCardFormValues {
-  creditCard: {
-    valid: boolean
-    params: Partial<PaymentCardTextFieldParams>
-  }
-  fullName: string
-  addressLine1: string
-  addressLine2: string
-  city: string
-  postalCode: string
-  state: string
-  country: Country
-  phoneNumber: string
-}
-const INITIAL_FORM_VALUES: CreditCardFormValues = {
-  creditCard: {
-    valid: false,
-    params: {
-      expiryMonth: undefined,
-      expiryYear: undefined,
-      last4: undefined,
-    },
-  },
-  fullName: "",
-  addressLine1: "",
-  addressLine2: "",
-  city: "",
-  postalCode: "",
-  state: "",
-  country: { longName: "", shortName: "" },
-  phoneNumber: "",
-}
-
-const validationSchema = Yup.object().shape({
-  creditCard: Yup.object().shape({
-    valid: Yup.boolean().required("Credit card is required"),
-  }),
-  fullName: Yup.string().required("Name is required"),
-  addressLine1: Yup.string().required("Address is required"),
-  city: Yup.string().required("City is required"),
-  postalCode: Yup.string().required("Postal code is required"),
-  state: Yup.string().required("State is required"),
-  phoneNumber: Yup.string().required("Phone number is required"),
-  country: Yup.object().shape({
-    shortName: Yup.string().required("Country is required"),
-  }),
-})
-
 export const CreditCardForm: React.FC<CreditCardFormProps> = ({
   onSubmit,
   billingAddress,
   navigator,
 }) => {
   const initialValues: CreditCardFormValues = {
-    ...INITIAL_FORM_VALUES,
+    ...CREDIT_CARD_INITIAL_FORM_VALUES,
     ...billingAddress,
   }
 
@@ -91,7 +47,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
     setErrors,
   } = useFormik({
     initialValues,
-    validationSchema,
+    validationSchema: creditCardFormValidationSchema,
     validateOnBlur: true,
     onSubmit: async (values) => {
       try {
@@ -111,6 +67,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
     },
   })
 
+  // Inputs refs
   const addressLine1Ref = useRef<Input>(null)
   const addressLine2Ref = useRef<Input>(null)
   const cityRef = useRef<Input>(null)
