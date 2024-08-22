@@ -84,6 +84,10 @@ const sectionsFragment = graphql`
               internalID
               ...HeroUnitsRailHomeViewSection_section
             }
+            ... on FairsRailHomeViewSection {
+              internalID
+              ...FairsRailHomeViewSection_section
+            }
           }
         }
       }
