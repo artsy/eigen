@@ -10,7 +10,6 @@ export type ArtworkInquiryActions =
   | SetSuccessNotificationVisible
   | SetCollectionPromptVisible
   | SetProfilePromptVisible
-  | SetMyCollectionArtistsPromptVisible
 
 export interface ArtworkInquiryContextProps {
   state: ArtworkInquiryContextState
@@ -24,7 +23,6 @@ export interface ArtworkInquiryContextState {
   readonly successNotificationVisible: boolean
   readonly collectionPromptVisible: boolean
   readonly profilePromptVisible: boolean
-  readonly isMyCollectionArtistsPromptVisible: boolean
 }
 
 interface ResetForm {
@@ -59,11 +57,6 @@ interface SetCollectionPromptVisible {
 
 interface SetProfilePromptVisible {
   type: "setProfilePromptVisible"
-  payload: boolean
-}
-
-interface SetMyCollectionArtistsPromptVisible {
-  type: "setMyCollectionArtistsPromptVisible"
   payload: boolean
 }
 

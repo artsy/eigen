@@ -2,6 +2,9 @@ import { Box, Separator } from "@artsy/palette-mobile"
 import { ArtworkCommercialButtons_me$key } from "__generated__/ArtworkCommercialButtons_me.graphql"
 import { ArtworkStickyBottomContent_artwork$key } from "__generated__/ArtworkStickyBottomContent_artwork.graphql"
 import { ArtworkStickyBottomContent_partnerOffer$key } from "__generated__/ArtworkStickyBottomContent_partnerOffer.graphql"
+import { BidButton_me$key } from "__generated__/BidButton_me.graphql"
+import { MyProfileEditModal_me$key } from "__generated__/MyProfileEditModal_me.graphql"
+import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtworkStore } from "app/Scenes/Artwork/ArtworkStore"
@@ -14,7 +17,10 @@ import { ArtworkPrice } from "./ArtworkPrice"
 
 interface ArtworkStickyBottomContentProps {
   artwork: ArtworkStickyBottomContent_artwork$key
-  me: ArtworkCommercialButtons_me$key
+  me: ArtworkCommercialButtons_me$key &
+    MyProfileEditModal_me$key &
+    useSendInquiry_me$key &
+    BidButton_me$key
   partnerOffer: ArtworkStickyBottomContent_partnerOffer$key
 }
 

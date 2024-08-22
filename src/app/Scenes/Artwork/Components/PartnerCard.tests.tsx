@@ -16,7 +16,8 @@ describe("PartnerCard", () => {
           ...PartnerCard_artwork
         }
         me @required(action: NONE) {
-          ...InquiryModal_me
+          ...useSendInquiry_me
+          ...MyProfileEditModal_me
         }
       }
     `,
