@@ -136,12 +136,12 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   /** Run through the full flow setting up the user account and making a bid  */
   async setupAddressCardAndBidderPosition() {
     try {
-      await this.updatePhoneNumber()
-      const token = await this.createTokenFromAddress()
-      if (token.error) {
-        throw new Error(`[Stripe]: error creating the token: ${JSON.stringify(token.error)}`)
+      if (!this.state.creditCardToken) {
+        throw new Error("[ConfirmBid] Credit card token not present")
       }
-      await this.createCreditCard(token.token)
+
+      await this.updatePhoneNumber()
+      await this.createCreditCard(this.state.creditCardToken)
       await this.createBidderPosition()
     } catch (error) {
       if (!this.state.errorModalVisible) {
@@ -376,12 +376,8 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     )
   }
 
-  onCreditCardAdded(token: Token.Result, params: PaymentCardTextFieldParams) {
-    this.setState({ creditCardToken: token, creditCardFormParams: params })
-  }
-
-  onBillingAddressAdded(values: Address) {
-    this.setState({ billingAddress: values })
+  onCreditCardAdded(token: Token.Result, address: Address) {
+    this.setState({ creditCardToken: token, billingAddress: address })
   }
 
   presentErrorResult(error: Error | ReadonlyArray<PayloadError> | null | undefined) {
@@ -533,7 +529,6 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                 <PaymentInfo
                   navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
                   onCreditCardAdded={this.onCreditCardAdded.bind(this)}
-                  onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
                   billingAddress={this.state.billingAddress}
                   creditCardFormParams={this.state.creditCardFormParams}
                   creditCardToken={this.state.creditCardToken}
