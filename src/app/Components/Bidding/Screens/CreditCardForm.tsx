@@ -88,6 +88,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
     handleBlur,
     handleChange,
     setFieldValue,
+    setErrors,
   } = useFormik({
     initialValues,
     validationSchema,
@@ -104,6 +105,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
         onSubmit(token.token, buildBillingAddress(values))
         navigator.pop()
       } catch (error) {
+        setErrors({ creditCard: { valid: "There was an error. Please try again." } })
         console.error("CreditCardForm.tsx", error)
       }
     },
@@ -169,14 +171,15 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
               }}
             />
 
-            {/* {!!state.error.value && (
-              <Text testID="error-message" variant="xs" mt={2} color="red100">
-                There was an error. Please try again.
+            {!!errors.creditCard?.valid && (
+              <Text testID="credit-card-error-message" variant="xs" mt={2} color="red100">
+                {errors.creditCard.valid}
               </Text>
-            )} */}
+            )}
           </>
 
           <Input
+            testID="input-full-name"
             title="Name on card"
             placeholder="Full name"
             value={values.fullName}
@@ -187,6 +190,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
             onSubmitEditing={() => addressLine1Ref.current?.focus()}
           />
           <Input
+            testID="input-address-1"
             ref={addressLine1Ref}
             title="Address line 1"
             value={values.addressLine1}
@@ -198,6 +202,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
             onSubmitEditing={() => addressLine2Ref.current?.focus()}
           />
           <Input
+            testID="input-address-2"
             ref={addressLine2Ref}
             title="Address line 2"
             value={values.addressLine2}
@@ -214,6 +219,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
             onSubmitEditing={() => cityRef.current?.focus()}
           />
           <Input
+            testID="input-city"
             ref={cityRef}
             title="City"
             value={values.city}
@@ -224,6 +230,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
             onSubmitEditing={() => stateRef.current?.focus()}
           />
           <Input
+            testID="input-state"
             ref={stateRef}
             title="State, province, or region"
             value={values.state}
@@ -234,6 +241,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
             onSubmitEditing={() => postalCodeRef.current?.focus()}
           />
           <Input
+            testID="input-postal-code"
             ref={postalCodeRef}
             title="Postal Code"
             value={values.postalCode}
@@ -244,6 +252,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
             onSubmitEditing={() => phoneRef.current?.focus()}
           />
           <Input
+            testID="input-phone"
             ref={phoneRef}
             title="Phone"
             placeholder="Add phone number"
@@ -285,7 +294,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
       <Box p={2} mb={2}>
         <Button
           testID="credit-card-form-button"
-          disabled={!isValid || dirty}
+          disabled={!isValid || !dirty}
           loading={isSubmitting}
           block
           width={100}
