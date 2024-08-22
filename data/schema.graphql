@@ -14017,6 +14017,7 @@ type Partner implements Node {
     artistID: String
     before: String
     first: Int
+    id: String
     last: Int
     page: Int
     size: Int
