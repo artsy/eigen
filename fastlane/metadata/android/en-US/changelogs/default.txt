@@ -1,5 +1,7 @@
-This update includes a number of improvements and bug fixes.
+This update includes a number of improvements and bug fixes including:
 
-- Improved image loaders across the app
+- Revamped collector settings screen
+- New way to complete your collector profile
+- New Limited-Time Offer signals on artworks when available
 
 Have feedback? Email us at support@artsy.net
