@@ -47,6 +47,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
   const {
     values,
     errors,
+    touched,
     isSubmitting,
     isValid,
     dirty,
@@ -58,8 +59,6 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
   } = useFormik({
     initialValues,
     validationSchema: creditCardFormValidationSchema,
-    validateOnChange: false,
-    validateOnBlur: false,
     onSubmit: async (values) => {
       try {
         const tokenBody = buildTokenParams(values)
@@ -87,6 +86,18 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
         last4: cardDetails.last4,
       },
     })
+  }
+
+  const showError = (field: keyof CreditCardFormValues): string | undefined => {
+    if (field === "creditCard") {
+      return touched[field] ? errors.creditCard?.valid : undefined
+    }
+
+    if (field == "country") {
+      return touched[field] ? errors[field]?.shortName : undefined
+    }
+
+    return touched[field] ? errors[field] : undefined
   }
 
   // Inputs refs
@@ -123,7 +134,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
             title="Name on card"
             placeholder="Full name"
             value={values.fullName}
-            error={errors.fullName}
+            error={showError("fullName")}
             onChangeText={handleChange("fullName")}
             onBlur={handleBlur("fullName")}
             returnKeyType="next"
@@ -134,7 +145,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
             ref={addressLine1Ref}
             title="Address line 1"
             value={values.addressLine1}
-            error={errors.addressLine1}
+            error={showError("addressLine1")}
             placeholder="Add street address"
             onChangeText={handleChange("addressLine1")}
             onBlur={handleBlur("addressLine1")}
@@ -146,7 +157,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
             ref={addressLine2Ref}
             title="Address line 2"
             value={values.addressLine2}
-            error={errors.addressLine2}
+            error={showError("addressLine2")}
             optional
             placeholder={[
               "Add your apt, floor, suite, etc.",
@@ -163,7 +174,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
             ref={cityRef}
             title="City"
             value={values.city}
-            error={errors.city}
+            error={showError("city")}
             onChangeText={handleChange("city")}
             onBlur={handleBlur("city")}
             returnKeyType="next"
@@ -174,7 +185,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
             ref={stateRef}
             title="State, province, or region"
             value={values.state}
-            error={errors.state}
+            error={showError("state")}
             onChangeText={handleChange("state")}
             onBlur={handleBlur("state")}
             returnKeyType="next"
@@ -185,7 +196,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
             ref={postalCodeRef}
             title="Postal Code"
             value={values.postalCode}
-            error={errors.postalCode}
+            error={showError("postalCode")}
             onChangeText={handleChange("postalCode")}
             onBlur={handleBlur("postalCode")}
             returnKeyType="next"
@@ -199,7 +210,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
             keyboardType="phone-pad"
             textContentType="telephoneNumber"
             value={values.phoneNumber}
-            error={errors.phoneNumber}
+            error={showError("phoneNumber")}
             onChangeText={handleChange("phoneNumber")}
             onBlur={handleBlur("phoneNumber")}
             onSubmitEditing={() => phoneRef.current?.blur()}
@@ -216,7 +227,13 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
               })
             }
             value={values.country.shortName}
+            hasError={!!showError("country")}
           />
+          {!!showError("country") && (
+            <Text variant="xs" mt={1} color="red100">
+              {showError("country")}
+            </Text>
+          )}
         </Flex>
 
         <Spacer y={2} />
