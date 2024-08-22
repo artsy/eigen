@@ -1,5 +1,5 @@
 import {
-  daysInCooldownPeriod,
+  DAYS_IN_COOLDOWN_PERIOD,
   userShouldBePromptedToCompleteProfile,
 } from "app/utils/collectorPromptHelpers"
 
@@ -9,7 +9,7 @@ describe("userShouldBePromptedToCompleteProfile", () => {
       userShouldBePromptedToCompleteProfile({
         city: null,
         profession: "Profession",
-        lastPromptAt: null,
+        lastUpdatePromptAt: null,
       })
     ).toEqual(true)
   })
@@ -19,7 +19,7 @@ describe("userShouldBePromptedToCompleteProfile", () => {
       userShouldBePromptedToCompleteProfile({
         city: null,
         profession: "Profession",
-        lastPromptAt: null,
+        lastUpdatePromptAt: null,
       })
     ).toEqual(true)
   })
@@ -29,8 +29,8 @@ describe("userShouldBePromptedToCompleteProfile", () => {
       userShouldBePromptedToCompleteProfile({
         city: null,
         profession: "Profession",
-        lastPromptAt: new Date(
-          Date.now() - (daysInCooldownPeriod + 1) * 24 * 60 * 60 * 1000
+        lastUpdatePromptAt: new Date(
+          Date.now() - (DAYS_IN_COOLDOWN_PERIOD + 1) * 24 * 60 * 60 * 1000
         ).toISOString(),
       })
     ).toEqual(true)
@@ -41,8 +41,8 @@ describe("userShouldBePromptedToCompleteProfile", () => {
       userShouldBePromptedToCompleteProfile({
         city: null,
         profession: "Profession",
-        lastPromptAt: new Date(
-          Date.now() - (daysInCooldownPeriod + 1) * 24 * 60 * 60 * 1000
+        lastUpdatePromptAt: new Date(
+          Date.now() - (DAYS_IN_COOLDOWN_PERIOD + 1) * 24 * 60 * 60 * 1000
         ).toISOString(),
       })
     ).toEqual(true)
@@ -53,8 +53,8 @@ describe("userShouldBePromptedToCompleteProfile", () => {
       userShouldBePromptedToCompleteProfile({
         city: null,
         profession: "Profession",
-        lastPromptAt: new Date(
-          Date.now() - (daysInCooldownPeriod - 1) * 24 * 60 * 60 * 1000
+        lastUpdatePromptAt: new Date(
+          Date.now() - (DAYS_IN_COOLDOWN_PERIOD - 1) * 24 * 60 * 60 * 1000
         ).toISOString(),
       })
     ).toEqual(false)
@@ -65,8 +65,8 @@ describe("userShouldBePromptedToCompleteProfile", () => {
       userShouldBePromptedToCompleteProfile({
         city: "City",
         profession: null,
-        lastPromptAt: new Date(
-          Date.now() - (daysInCooldownPeriod - 1) * 24 * 60 * 60 * 1000
+        lastUpdatePromptAt: new Date(
+          Date.now() - (DAYS_IN_COOLDOWN_PERIOD - 1) * 24 * 60 * 60 * 1000
         ).toISOString(),
       })
     ).toEqual(false)
@@ -77,7 +77,7 @@ describe("userShouldBePromptedToCompleteProfile", () => {
       userShouldBePromptedToCompleteProfile({
         city: "City",
         profession: "Profession",
-        lastPromptAt: null,
+        lastUpdatePromptAt: null,
       })
     ).toEqual(false)
   })
@@ -87,8 +87,8 @@ describe("userShouldBePromptedToCompleteProfile", () => {
       userShouldBePromptedToCompleteProfile({
         city: "City",
         profession: "Profession",
-        lastPromptAt: new Date(
-          Date.now() - (daysInCooldownPeriod + 1) * 24 * 60 * 60 * 1000
+        lastUpdatePromptAt: new Date(
+          Date.now() - (DAYS_IN_COOLDOWN_PERIOD + 1) * 24 * 60 * 60 * 1000
         ).toISOString(),
       })
     ).toEqual(false)
@@ -99,8 +99,8 @@ describe("userShouldBePromptedToCompleteProfile", () => {
       userShouldBePromptedToCompleteProfile({
         city: "City",
         profession: "Profession",
-        lastPromptAt: new Date(
-          Date.now() - (daysInCooldownPeriod - 1) * 24 * 60 * 60 * 1000
+        lastUpdatePromptAt: new Date(
+          Date.now() - (DAYS_IN_COOLDOWN_PERIOD - 1) * 24 * 60 * 60 * 1000
         ).toISOString(),
       })
     ).toEqual(false)

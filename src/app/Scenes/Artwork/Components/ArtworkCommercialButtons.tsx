@@ -1,7 +1,9 @@
 import { Spacer, Flex, Join } from "@artsy/palette-mobile"
 import { ArtworkCommercialButtons_artwork$key } from "__generated__/ArtworkCommercialButtons_artwork.graphql"
-import { ArtworkCommercialButtons_me$key } from "__generated__/ArtworkCommercialButtons_me.graphql"
 import { ArtworkCommercialButtons_partnerOffer$key } from "__generated__/ArtworkCommercialButtons_partnerOffer.graphql"
+import { BidButton_me$key } from "__generated__/BidButton_me.graphql"
+import { MyProfileEditModal_me$key } from "__generated__/MyProfileEditModal_me.graphql"
+import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtworkStore } from "app/Scenes/Artwork/ArtworkStore"
 import { BuyNowButton } from "app/Scenes/Artwork/Components/CommercialButtons/BuyNowButton"
@@ -15,7 +17,7 @@ import { BidButtonFragmentContainer } from "./CommercialButtons/BidButton"
 
 interface ArtworkCommercialButtonsProps {
   artwork: ArtworkCommercialButtons_artwork$key
-  me: ArtworkCommercialButtons_me$key
+  me: MyProfileEditModal_me$key & useSendInquiry_me$key & BidButton_me$key
   partnerOffer: ArtworkCommercialButtons_partnerOffer$key
 }
 
@@ -206,7 +208,8 @@ const artworkFragment = graphql`
 const meFragment = graphql`
   fragment ArtworkCommercialButtons_me on Me {
     ...BidButton_me
-    ...InquiryModal_me
+    ...useSendInquiry_me
+    ...MyProfileEditModal_me
   }
 `
 
@@ -214,6 +217,7 @@ const partnerOfferFragment = graphql`
   fragment ArtworkCommercialButtons_partnerOffer on PartnerOfferToCollector {
     internalID
     isAvailable
+    isActive
     endAt
   }
 `

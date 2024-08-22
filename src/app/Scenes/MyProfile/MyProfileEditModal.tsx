@@ -18,14 +18,14 @@ import { useTracking } from "react-tracking"
 interface MyProfileEditModalProps {
   me: MyProfileEditModal_me$key
   message: string
-  onClose: () => void
+  onDismiss: () => void
   visible: boolean
 }
 
 export const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
   me,
   message,
-  onClose,
+  onDismiss,
   visible,
 }) => {
   /**
@@ -79,7 +79,7 @@ export const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
         onCompleted: () => {
           trackEvent(tracks.editedUserProfile())
           setLoading(false)
-          onClose()
+          onDismiss()
         },
         onError: (error) => {
           console.error("[MyProfileEditModal] Error updating user profile", error)
@@ -100,7 +100,7 @@ export const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
         },
       },
       onCompleted: () => {
-        onClose()
+        onDismiss()
       },
       onError: (error) => {
         console.error("[MyProfileEditModal] Error updating last prompt timestamp", error)

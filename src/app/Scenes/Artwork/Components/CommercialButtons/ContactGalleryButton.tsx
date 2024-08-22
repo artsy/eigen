@@ -1,7 +1,8 @@
 import { ActionType, OwnerType, TappedContactGallery } from "@artsy/cohesion"
 import { ButtonProps, Button } from "@artsy/palette-mobile"
 import { ContactGalleryButton_artwork$key } from "__generated__/ContactGalleryButton_artwork.graphql"
-import { InquiryModal_me$key } from "__generated__/InquiryModal_me.graphql"
+import { MyProfileEditModal_me$key } from "__generated__/MyProfileEditModal_me.graphql"
+import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
 import { InquiryModal } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryModal"
 import {
   ArtworkInquiryContext,
@@ -14,7 +15,7 @@ import { useTracking } from "react-tracking"
 
 type ContactGalleryButtonProps = Omit<ButtonProps, "children"> & {
   artwork: ContactGalleryButton_artwork$key
-  me: InquiryModal_me$key
+  me: MyProfileEditModal_me$key & useSendInquiry_me$key
 }
 
 export const ContactGalleryButton: React.FC<ContactGalleryButtonProps> = ({

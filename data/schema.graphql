@@ -230,6 +230,7 @@ type Alert {
   additionalGeneNames: [String]
   artistIDs: [String]
   artistSeriesIDs: [String]
+  artistSeriesNames: [String]
   artists: [Artist!]!
   artistsConnection(after: String, before: String, first: Int, last: Int): ArtistConnection!
 
@@ -1468,6 +1469,20 @@ type ArticleUnpublishedArtworkPartner {
   slug: String
 }
 
+# An articles rail section in the home view
+type ArticlesRailHomeViewSection implements GenericHomeViewSection & Node {
+  articlesConnection(after: String, before: String, first: Int, last: Int): ArticleConnection!
+
+  # The component that is prescribed for this section
+  component: HomeViewComponent
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+}
+
 type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Searchable {
   alertsConnection(
     after: String
@@ -2250,7 +2265,7 @@ enum ArtistTargetSupplyType {
 
 # An artists rail section in the home view
 type ArtistsRailHomeViewSection implements GenericHomeViewSection & Node {
-  artistsConnection(after: String, before: String, first: Int, last: Int): ArtistConnection!
+  artistsConnection(after: String, before: String, first: Int, last: Int): ArtistConnection
 
   # The component that is prescribed for this section
   component: HomeViewComponent
@@ -3087,7 +3102,7 @@ type ArtworksCollectionsBatchUpdateSuccess {
 
 # An artwork rail section in the home view
 type ArtworksRailHomeViewSection implements GenericHomeViewSection & Node {
-  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection!
+  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
 
   # The component that is prescribed for this section
   component: HomeViewComponent
@@ -3149,6 +3164,45 @@ type AuctionArtworkGrid implements ArtworkContextGrid {
   ctaHref: String
   ctaTitle: String
   title: String
+}
+
+# Collector signals on a biddable auction lot
+type AuctionCollectorSignals {
+  # Bid count
+  bidCount: Int!
+
+  # Live bidding has started on this lot's auction
+  liveBiddingStarted: Boolean!
+
+  # Auction live bidding start time
+  liveStartAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+
+  # Pending auction lot end time for bidding
+  lotClosesAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+
+  # Lot watcher count
+  lotWatcherCount: Int!
+
+  # Lot bidding period extended due to last-minute bids
+  onlineBiddingExtended: Boolean!
+
+  # Pending auction registration end time
+  registrationEndsAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
 }
 
 # In centimeters.
@@ -4315,29 +4369,31 @@ type CollectorResume {
 
 # Collector signals available to the artwork
 type CollectorSignals {
+  auction: AuctionCollectorSignals
+
   # Bid count on lots open for bidding
-  bidCount: Int
+  bidCount: Int @deprecated(reason: "Use nested field in `auction` instead")
 
   # Live bidding has started on this lot's auction
-  liveBiddingStarted: Boolean
+  liveBiddingStarted: Boolean @deprecated(reason: "Use nested field in `auction` instead")
 
   # Auction live bidding start time
-  liveStartAt: String
+  liveStartAt: String @deprecated(reason: "Use nested field in `auction` instead")
 
   # Pending auction lot end time for bidding
-  lotClosesAt: String
+  lotClosesAt: String @deprecated(reason: "Use nested field in `auction` instead")
 
   # Lot watcher count on lots open for bidding
-  lotWatcherCount: Int
+  lotWatcherCount: Int @deprecated(reason: "Use nested field in `auction` instead")
 
   # Auction lot bidding period extended due to last-minute bids
-  onlineBiddingExtended: Boolean
+  onlineBiddingExtended: Boolean @deprecated(reason: "Use nested field in `auction` instead")
 
   # Partner offer available to collector
   partnerOffer: PartnerOfferToCollector
 
   # Pending auction registration end time
-  registrationEndsAt: String
+  registrationEndsAt: String @deprecated(reason: "Use nested field in `auction` instead")
 }
 
 # Represents either an action or a potential failure
@@ -9560,6 +9616,19 @@ type FairSponsoredContent {
   pressReleaseUrl: String
 }
 
+# Fairs rail section
+type FairsRailHomeViewSection implements GenericHomeViewSection & Node {
+  # The component that is prescribed for this section
+  component: HomeViewComponent
+  fairsConnection(after: String, before: String, first: Int, last: Int): FairConnection!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+}
+
 # A Feature
 type Feature {
   callout(format: Format): String
@@ -10500,7 +10569,7 @@ type HeroUnitLink {
 type HeroUnitsHomeViewSection implements GenericHomeViewSection & Node {
   # The component that is prescribed for this section
   component: HomeViewComponent
-  heroUnitsConnection(after: String, before: String, first: Int, last: Int): HeroUnitConnection!
+  heroUnitsConnection(after: String, before: String, first: Int, last: Int): HeroUnitConnection
 
   # A globally unique ID.
   id: ID!
@@ -10806,8 +10875,10 @@ enum HomeViewComponentBackgroundImageURLVersion {
 }
 
 union HomeViewSection =
-    ArtistsRailHomeViewSection
+    ArticlesRailHomeViewSection
+  | ArtistsRailHomeViewSection
   | ArtworksRailHomeViewSection
+  | FairsRailHomeViewSection
   | HeroUnitsHomeViewSection
 
 # A connection to a list of items.
@@ -14170,6 +14241,16 @@ type Partner implements Node {
   ): LocationConnection
   meta: PartnerMeta
   name: String
+
+  # A connection of search criteria hits from a Partner.
+  partnerAlertHitsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+    size: Int
+  ): PartnerAlertHitsConnection
   partnerPageEligible: Boolean
   partnerType: String
   profile: Profile
@@ -14242,6 +14323,41 @@ type PartnerAgreement {
 
 # A partner agreement or errors object
 union PartnerAgreementOrErrorsUnion = Errors | PartnerAgreement
+
+# A connection to a list of items.
+type PartnerAlertHitsConnection {
+  # A list of edges.
+  edges: [PartnerAlertHitsEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type PartnerAlertHitsEdge {
+  artwork: Artwork
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+
+  # A cursor for use in pagination
+  cursor: String!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID.
+  internalID: ID!
+
+  # The item at the end of the edge
+  node: Alert
+  userIDs: [String]
+}
 
 # A connection to a list of items.
 type PartnerAlertsConnection {

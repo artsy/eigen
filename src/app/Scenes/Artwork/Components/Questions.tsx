@@ -1,12 +1,13 @@
 import { EnvelopeIcon, Flex, Text } from "@artsy/palette-mobile"
-import { InquiryModal_me$key } from "__generated__/InquiryModal_me.graphql"
+import { MyProfileEditModal_me$key } from "__generated__/MyProfileEditModal_me.graphql"
 import { Questions_artwork$key } from "__generated__/Questions_artwork.graphql"
+import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
 import { graphql, useFragment } from "react-relay"
 import { ContactGalleryButton } from "./CommercialButtons/ContactGalleryButton"
 
 interface QuestionsProps {
   artwork: Questions_artwork$key
-  me: InquiryModal_me$key
+  me: MyProfileEditModal_me$key & useSendInquiry_me$key
 }
 
 export const Questions: React.FC<QuestionsProps> = (props) => {

@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Box, Flex, Tabs, useScreenDimensions, useSpace, Spinner } from "@artsy/palette-mobile"
+import { Box, Flex, Tabs, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { MasonryFlashListRef } from "@shopify/flash-list"
 import { CollectionArtworks_collection$data } from "__generated__/CollectionArtworks_collection.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
@@ -12,9 +12,11 @@ import { extractNodes } from "app/utils/extractNodes"
 import { get } from "app/utils/get"
 import {
   ESTIMATED_MASONRY_ITEM_SIZE,
+  MASONRY_LIST_PAGE_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
 } from "app/utils/masonryHelpers"
+import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -29,6 +31,7 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
   const { width } = useScreenDimensions()
   const space = useSpace()
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const tracking = useTracking()
   const artworks = get(collection, (p) => p.collectionArtworks)
@@ -48,10 +51,13 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
     relay,
     aggregations: collection?.collectionArtworks?.aggregations,
     componentPath: "Collection/CollectionArtworks",
+    pageSize: MASONRY_LIST_PAGE_SIZE,
     type: "sort",
     onApply: () => scrollToTop(),
   })
-  const shouldDisplaySpinner = !!artworksList.length && !!relay.isLoading() && !!relay.hasMore()
+
+  const shouldDisplaySpinner =
+    !!isLoading && !!artworksList.length && !!relay.isLoading() && !!relay.hasMore()
 
   const handleFilterToggle = () => {
     setFilterArtworkModalVisible((prev) => {
@@ -61,7 +67,13 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
 
   const loadMore = () => {
     if (relay.hasMore() && !relay.isLoading()) {
-      relay.loadMore(10)
+      // IMPORTANT: this is a workaround to show the spinner concistently between refetches of pages
+      // and it is not needed for grids that use relay hooks since isLoadingNext works better than the
+      // legacy container API. See FairArtworks.tsx for an example of how to use with relay hooks.
+      setIsLoading(true)
+      relay.loadMore(MASONRY_LIST_PAGE_SIZE, () => {
+        setIsLoading(false)
+      })
     }
   }
 
@@ -140,11 +152,7 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
           </Tabs.SubTabBar>
         }
         ListFooterComponent={
-          !!shouldDisplaySpinner ? (
-            <Flex my={4} flexDirection="row" justifyContent="center">
-              <Spinner />
-            </Flex>
-          ) : null
+          <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
         }
       />
       <ArtworkFilterNavigator

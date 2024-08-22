@@ -123,7 +123,7 @@ export const ChangesSummary: FC = () => {
                 <Text
                   variant="sm"
                   style={{ textDecorationLine: "underline" }}
-                  onPress={() => navigate(`my-collection`)}
+                  onPress={handleAddArtistsToMyCollection}
                   suppressHighlighting
                 >{` My Collection`}</Text>
                 .

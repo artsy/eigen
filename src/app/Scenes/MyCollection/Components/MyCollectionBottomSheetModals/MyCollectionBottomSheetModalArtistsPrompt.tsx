@@ -7,13 +7,19 @@ import { Dimensions } from "react-native"
 
 interface MyCollectionBottomSheetModalArtistsPromptProps extends MyCollectionArtistsPromptProps {
   visible: boolean
+  onDismiss: () => void
 }
 
 export const MyCollectionBottomSheetModalArtistsPrompt: React.FC<
   MyCollectionBottomSheetModalArtistsPromptProps
-> = ({ visible, ...rest }) => {
+> = ({ visible, onDismiss, ...rest }) => {
   return (
-    <AutomountedBottomSheetModal visible={visible} snapPoints={SNAP_POINTS} enableOverDrag={false}>
+    <AutomountedBottomSheetModal
+      visible={visible}
+      snapPoints={SNAP_POINTS}
+      enableOverDrag={false}
+      onDismiss={onDismiss}
+    >
       <MyCollectionArtistsPrompt {...rest} />
     </AutomountedBottomSheetModal>
   )

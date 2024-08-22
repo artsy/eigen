@@ -18,7 +18,8 @@ describe("Questions", () => {
             ...Questions_artwork
           }
           me {
-            ...InquiryModal_me
+            ...useSendInquiry_me
+            ...MyProfileEditModal_me
           }
         }
       `,

@@ -87,12 +87,14 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
 
   const articles = extractNodes(artwork.artist?.articles)
 
+  const isEditable = !!artwork.consignmentSubmission?.internalID
+
   return (
     <Screen>
       <Screen.Header
         onBack={goBack}
-        rightElements={() =>
-          !artwork.consignmentSubmission && (
+        rightElements={
+          !!isEditable && (
             <TouchableOpacity onPress={handleEdit} hitSlop={DEFAULT_HIT_SLOP}>
               <Text>Edit</Text>
             </TouchableOpacity>
@@ -271,6 +273,7 @@ export const ArtworkMetaProps = graphql`
     # needed to show the banner inside the edit artwork view
     # TODO: move logic to the edit artwork view https://artsyproduct.atlassian.net/browse/CX-2846
     consignmentSubmission @optionalField {
+      internalID
       displayText
     }
     pricePaid {

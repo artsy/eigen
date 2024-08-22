@@ -6,7 +6,6 @@ import {
   Flex,
   Message,
   Spacer,
-  Spinner,
   Tabs,
   Text,
   useScreenDimensions,
@@ -32,9 +31,11 @@ import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
   ESTIMATED_MASONRY_ITEM_SIZE,
+  MASONRY_LIST_PAGE_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
 } from "app/utils/masonryHelpers"
+import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
@@ -57,7 +58,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   ...props
 }) => {
   const [isCreateAlertModalVisible, setIsCreateAlertModalVisible] = useState(false)
-
+  const [isLoading, setIsLoading] = useState(false)
   const { showFilterArtworksModal, closeFilterArtworksModal } = useShowArtworksFilterModal({
     artist,
   })
@@ -75,6 +76,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     relay,
     aggregations: artist.aggregations?.aggregations,
     componentPath: "ArtistArtworks/ArtistArtworks",
+    pageSize: MASONRY_LIST_PAGE_SIZE,
   })
 
   const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions(
@@ -133,11 +135,18 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     // TODO: Get the new count of the artist alerts
   }
 
-  const shouldDisplaySpinner = !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
+  const shouldDisplaySpinner =
+    !!isLoading && !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
 
   const loadMore = useCallback(() => {
     if (relay.hasMore() && !relay.isLoading()) {
-      relay.loadMore(10)
+      // IMPORTANT: this is a workaround to show the spinner concistently between refetches of pages
+      // and it is not needed for grids that use relay hooks since isLoadingNext works better than the
+      // legacy container API. See FairArtworks.tsx for an example of how to use with relay hooks.
+      setIsLoading(true)
+      relay.loadMore(MASONRY_LIST_PAGE_SIZE, () => {
+        setIsLoading(false)
+      })
     }
   }, [relay.hasMore(), relay.isLoading()])
 
@@ -231,27 +240,21 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   }
 
   const ListFooterComponenet = () => {
-    if (shouldDisplaySpinner) {
-      return (
-        <Flex my={4} flexDirection="row" justifyContent="center">
-          <Spinner />
-        </Flex>
-      )
-    }
-
-    if (showCreateAlertAtEndOfList && !relay.hasMore()) {
-      return (
-        <Message
-          title="Get notified when new works are added."
-          containerStyle={{ my: 2 }}
-          IconComponent={() => {
-            return <CreateAlertButton />
-          }}
-          iconPosition="right"
-        />
-      )
-    }
-    return null
+    return (
+      <>
+        {!!showCreateAlertAtEndOfList && !relay.hasMore() && (
+          <Message
+            title="Get notified when new works are added."
+            containerStyle={{ my: 2 }}
+            IconComponent={() => {
+              return <CreateAlertButton />
+            }}
+            iconPosition="right"
+          />
+        )}
+        <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
+      </>
+    )
   }
 
   return (
