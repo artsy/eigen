@@ -55,7 +55,8 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
   } = useFormik({
     initialValues,
     validationSchema: creditCardFormValidationSchema,
-    validateOnBlur: true,
+    validateOnChange: false,
+    validateOnBlur: false,
     onSubmit: async (values) => {
       try {
         const tokenBody = buildTokenParams(values)
@@ -229,7 +230,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
             onSubmitEditing={() => phoneRef.current?.blur()}
           />
 
-          <Spacer y={1} />
+          <Spacer y={2} />
 
           <CountrySelect
             ref={countryRef}
