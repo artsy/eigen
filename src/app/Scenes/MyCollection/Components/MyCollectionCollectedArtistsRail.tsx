@@ -11,7 +11,6 @@ import {
 import { MyCollectionCollectedArtistsRail_artist$key } from "__generated__/MyCollectionCollectedArtistsRail_artist.graphql"
 import { MyCollectionCollectedArtistsRail_me$key } from "__generated__/MyCollectionCollectedArtistsRail_me.graphql"
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
 import { Animated } from "react-native"
 import { useFragment, usePaginationFragment, graphql } from "react-relay"
@@ -25,7 +24,6 @@ export const ARTIST_CIRCLE_DIAMETER = 100
 export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArtistsRailProps> = ({
   me,
 }) => {
-  const enableCollectedArtistsOnboarding = useFeatureFlag("ARShowCollectedArtistOnboarding")
   const { showVisualClue } = useVisualClue()
   const space = useSpace()
 
@@ -65,7 +63,6 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
             return (
               <ToolTip
                 enabled={
-                  !!enableCollectedArtistsOnboarding &&
                   index === 1 &&
                   showVisualClue("MyCollectionArtistsCollectedOnboardingTooltip1") &&
                   !showVisualClue("MyCollectionArtistsCollectedOnboarding")
@@ -84,8 +81,6 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
                   artist={item.node}
                   interestId={item.internalID}
                   onPress={() => {
-                    if (!enableCollectedArtistsOnboarding) return
-
                     setVisualClueAsSeen("MyCollectionArtistsCollectedOnboardingTooltip1")
                   }}
                 />

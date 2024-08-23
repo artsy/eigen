@@ -13,8 +13,6 @@ export const useHomeModules = (props: HomeProps) => {
   // ⚠️⚠️⚠️ IMPORTANT: remember when adding a feature flag to also add it to the dependency array of the useMemo hook
   const enableLatestActivityRail = useFeatureFlag("AREnableLatestActivityRail")
   const enableGalleriesForYou = useFeatureFlag("AREnableGalleriesForYou")
-  const enableCuratorsPickRail = useFeatureFlag("AREnableCuratorsPickRail")
-  const enableDoMoreOnArtsyRail = useFeatureFlag("AREnableDoMoreOnArtsyRail")
   const enableEditorialNews = useFeatureFlag("AREnableEditorialNews")
 
   return useMemo(() => {
@@ -118,7 +116,7 @@ export const useHomeModules = (props: HomeProps) => {
       },
       {
         data: props.homePageBelow?.onboardingModule,
-        hidden: !props.homePageBelow?.onboardingModule || !enableDoMoreOnArtsyRail,
+        hidden: !props.homePageBelow?.onboardingModule,
         isEmpty: !isOnboardingVisible(props.homePageBelow?._onboardingModule),
         key: "onboardingRail",
         title: "Do More on Artsy",
@@ -129,7 +127,6 @@ export const useHomeModules = (props: HomeProps) => {
         contextScreen: "home",
         contextScreenOwnerType: OwnerType.home,
         data: props.emergingPicks,
-        hidden: !enableCuratorsPickRail,
         isEmpty: isEmpty(props.emergingPicks),
         key: "marketCollectionRail",
         subtitle: "The best work by rising talents on Artsy, available now.",
@@ -255,8 +252,6 @@ export const useHomeModules = (props: HomeProps) => {
     props.notificationsConnection,
     props.homePageBelow?.fairsModule,
     props.recommendedAuctionLots,
-    enableCuratorsPickRail,
-    enableDoMoreOnArtsyRail,
     enableLatestActivityRail,
   ])
 }
