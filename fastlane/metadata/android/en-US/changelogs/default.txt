@@ -1,6 +1,6 @@
 This update includes a number of improvements and bug fixes including:
 
-- Revamped collector settings screen
+- Now your Collector Profile has a new layout to make it easier to change your settings and complete your profile
 - New way to complete your collector profile
 - New Limited-Time Offer signals on artworks when available
 
