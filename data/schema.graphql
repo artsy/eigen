@@ -16728,6 +16728,15 @@ type Query {
   # Verify a given address.
   verifyAddress(input: VerifyAddressInput!): VerifyAddressPayload
 
+  # Verify a given user.
+  verifyUser(
+    # Email address to verify.
+    email: String!
+
+    # Recaptcha token.
+    recaptchaToken: String!
+  ): VerifyUser
+
   # A wildcard used to support complex root queries in Relay
   viewer: Viewer
 
@@ -20330,6 +20339,10 @@ type VerifyAddressType {
   verificationStatus: VerificationStatuses!
 }
 
+type VerifyUser {
+  exists: Boolean!
+}
+
 # An object containing video metadata
 type Video {
   # The height of the video
@@ -21281,6 +21294,15 @@ type Viewer {
 
   # Verify a given address.
   verifyAddress(input: VerifyAddressInput!): VerifyAddressPayload
+
+  # Verify a given user.
+  verifyUser(
+    # Email address to verify.
+    email: String!
+
+    # Recaptcha token.
+    recaptchaToken: String!
+  ): VerifyUser
   viewingRoomsConnection(
     after: String
     first: Int
