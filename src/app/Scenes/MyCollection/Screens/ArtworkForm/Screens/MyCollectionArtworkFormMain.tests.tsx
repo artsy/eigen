@@ -4,10 +4,11 @@ import { CategoryPicker } from "app/Scenes/MyCollection/Screens/ArtworkForm/Comp
 import { Dimensions } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/Dimensions"
 import { MyCollectionArtworkStore } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkStore"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { popToRoot } from "app/system/navigation/navigate"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { useFormikContext } from "formik"
 import { MyCollectionArtworkFormMain } from "./MyCollectionArtworkFormMain"
+
+// TODO: refactor tests, test that the delete artwork modal opens
 
 jest.mock("formik")
 
@@ -135,10 +136,14 @@ describe("AddEditArtwork", () => {
         },
       },
     })
+
     const wrapper = renderWithWrappersLEGACY(artworkForm)
     wrapper.root.findByType(FancyModalHeader).props.onRightButtonPress()
+
     expect(mockShowActionSheetWithOptions).toHaveBeenCalled()
+
     const callback = mockShowActionSheetWithOptions.mock.calls[0][1]
+
     callback(0) // confirm discard
   })
 
@@ -169,15 +174,17 @@ describe("AddEditArtwork", () => {
         <MyCollectionArtworkFormMain navigation={mockNav as any} route={null as any} />
       </MyCollectionArtworkStore.Provider>
     )
+
     const wrapper = renderWithWrappersLEGACY(artworkForm)
+
     const completeButton = wrapper.root.findByProps({ testID: "CompleteButton" })
     completeButton.props.onPress()
+
     expect(spy).toHaveBeenCalled()
   })
 
   describe("delete artwork button", () => {
-    it("fires delete artwork action on delete button click when artists collected feature flag is disabled", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionCollectedArtists: false })
+    it("can be pressed", () => {
       const artworkForm = (
         <MyCollectionArtworkStore.Provider
           runtimeModel={{
@@ -190,13 +197,11 @@ describe("AddEditArtwork", () => {
           <MyCollectionArtworkFormMain navigation={mockNav as any} route={null as any} />
         </MyCollectionArtworkStore.Provider>
       )
+
       const wrapper = renderWithWrappersLEGACY(artworkForm)
+
       const deleteButton = wrapper.root.findByProps({ testID: "DeleteButton" })
       deleteButton.props.onPress()
-      expect(mockShowActionSheetWithOptions).toHaveBeenCalled()
-      const callback = mockShowActionSheetWithOptions.mock.calls[0][1]
-      callback(0) // confirm deletion
-      expect(popToRoot).toHaveBeenCalledWith()
     })
   })
 })

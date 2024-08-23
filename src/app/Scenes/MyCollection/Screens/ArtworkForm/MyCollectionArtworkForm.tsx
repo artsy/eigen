@@ -18,7 +18,6 @@ import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWor
 import { GlobalStore } from "app/store/GlobalStore"
 import { dismissModal, goBack, popToRoot, switchTab } from "app/system/navigation/navigate"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { refreshMyCollection, refreshMyCollectionInsights } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
 import { useEffect, useRef, useState } from "react"
@@ -67,7 +66,6 @@ const navContainerRef = { current: null as NavigationContainerRef<any> | null }
 
 export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (props) => {
   const enableShowError = useDevToggle("DTShowErrorInLoadFailureView")
-  const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
   const { trackEvent } = useTracking()
   const { formValues, dirtyFormCheckValues } = GlobalStore.useAppState(
     (state) => state.myCollection.artwork.sessionState
@@ -175,7 +173,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
           {mode === "add" && (
             <Stack.Screen name="ArtworkFormArtwork" component={MyCollectionArtworkFormArtwork} />
           )}
-          {!!enableCollectedArtists && mode === "add" && (
+          {mode === "add" && (
             <Stack.Screen
               name="AddMyCollectionArtist"
               component={AddMyCollectionArtist} // TODO: Rename this component

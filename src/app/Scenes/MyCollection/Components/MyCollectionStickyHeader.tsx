@@ -1,7 +1,5 @@
-import { ActionType, AddCollectedArtwork, ContextModule, OwnerType } from "@artsy/cohesion"
 import {
   AddIcon,
-  Button,
   CloseIcon,
   Flex,
   Spacer,
@@ -11,7 +9,6 @@ import {
   Pill,
 } from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { MyCollectionArtworkFilters } from "app/Scenes/MyCollection/Components/MyCollectionArtworkFiltersStickyTab"
 import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
 import { HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER } from "app/Scenes/MyCollection/MyCollection"
@@ -32,7 +29,6 @@ import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClu
 import { debounce } from "lodash"
 import { MotiView } from "moti"
 import { useMemo, useRef } from "react"
-import { useTracking } from "react-tracking"
 
 // CONSTANTS
 const PILL_DIAMETER = 30
@@ -57,15 +53,11 @@ export const MyCollectionStickyHeader: React.FC<MyCollectionStickyHeaderProps> =
   const { showVisualClue } = useVisualClue()
 
   const showSubmissionMessage = showVisualClue("ArtworkSubmissionMessage")
-  const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
   const selectedTab = MyCollectionTabsStore.useStoreState((state) => state.selectedTab)
 
   const showArtworkFilters = useMemo(() => {
-    if (!enableCollectedArtists) {
-      return !!hasArtworks
-    }
     return selectedTab === "Artworks"
-  }, [selectedTab, hasArtworks, enableCollectedArtists])
+  }, [selectedTab, hasArtworks])
 
   return (
     <Flex px={2} backgroundColor="white100">
@@ -74,12 +66,12 @@ export const MyCollectionStickyHeader: React.FC<MyCollectionStickyHeaderProps> =
         showSubmissionMessage={showSubmissionMessage}
         hasMarketSignals={hasMarketSignals}
       />
-      {!!enableCollectedArtists && (
-        <Flex>
-          <MainStickyHeader hasArtworks={hasArtworks} />
-        </Flex>
+
+      <MainStickyHeader hasArtworks={hasArtworks} />
+
+      {!!showArtworkFilters && (
+        <MyCollectionArtworkFilters filtersCount={filtersCount} showModal={showModal} />
       )}
-      {!!showArtworkFilters && <Filters filtersCount={filtersCount} showModal={showModal} />}
     </Flex>
   )
 }
@@ -296,46 +288,6 @@ const AnimatedPill: React.FC<{
   )
 }
 
-export interface FiltersProps {
-  filtersCount: number
-  showModal: () => void
-}
-
-const Filters: React.FC<FiltersProps> = (props) => {
-  const { trackEvent } = useTracking()
-
-  const { showModal, filtersCount } = props
-
-  const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
-
-  if (enableCollectedArtists) {
-    return <MyCollectionArtworkFilters {...props} />
-  }
-
-  return (
-    <Flex backgroundColor="white100">
-      <ArtworksFilterHeader selectedFiltersCount={filtersCount} onFilterPress={showModal}>
-        <Button
-          data-test-id="add-artwork-button-non-zero-state"
-          haptic
-          onPress={async () => {
-            navigate("my-collection/artworks/new", {
-              passProps: {
-                source: Tab.collection,
-              },
-            })
-            trackEvent(tracks.addCollectedArtwork())
-          }}
-          size="small"
-          variant="fillDark"
-        >
-          Upload Artwork
-        </Button>
-      </ArtworksFilterHeader>
-    </Flex>
-  )
-}
-
 const Messages: React.FC<{
   hasMarketSignals: boolean
   showNewWorksMessage: boolean
@@ -363,13 +315,4 @@ const Messages: React.FC<{
       />
     </Flex>
   )
-}
-
-const tracks = {
-  addCollectedArtwork: (): AddCollectedArtwork => ({
-    action: ActionType.addCollectedArtwork,
-    context_module: ContextModule.myCollectionHome,
-    context_owner_type: OwnerType.myCollection,
-    platform: "mobile",
-  }),
 }

@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Button, Flex, Separator, Spacer, Tabs } from "@artsy/palette-mobile"
+import { Button, Flex, Separator, SkeletonBox, Spacer, Tabs } from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
 import { MyCollectionFetchAuctionResultsQuery } from "__generated__/MyCollectionFetchAuctionResultsQuery.graphql"
@@ -28,7 +28,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
-import { PlaceholderBox, PlaceholderText, RandomWidthPlaceholderText } from "app/utils/placeholders"
+import { RandomWidthPlaceholderText } from "app/utils/placeholders"
 import {
   MY_COLLECTION_REFRESH_KEY,
   RefreshEvents,
@@ -60,7 +60,6 @@ const MyCollection: React.FC<{
   me: MyCollection_me$data
 }> = ({ relay, me }) => {
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
-  const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
 
   const [hasMarketSignals, setHasMarketSignals] = useState(false)
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
@@ -163,9 +162,7 @@ const MyCollection: React.FC<{
   }
 
   useEffect(() => {
-    const renderMessages = enableCollectedArtists ? hasCollectedArtists : artworks.length
-
-    if (renderMessages) {
+    if (hasCollectedArtists) {
       checkForNewMessages()
     }
   }, [artworks.length, filtersCount])
@@ -175,15 +172,13 @@ const MyCollection: React.FC<{
   }, [artworks])
 
   // User has no artworks and no collected artists
-  if (artworks.length === 0) {
-    // Only check for collected artists count if collected artists feature flag is enabled
-    if (!enableCollectedArtists || !hasCollectedArtists) {
-      return <MyCollectionZeroState />
-    }
+  // Only check for collected artists count if collected artists feature flag is enabled
+  if (artworks.length === 0 && !hasCollectedArtists) {
+    return <MyCollectionZeroState />
   }
 
   // User has no artworks but has manually added collected artists
-  if (artworks.length === 0 && hasCollectedArtists && enableCollectedArtists) {
+  if (artworks.length === 0 && hasCollectedArtists) {
     return (
       <TabsFlatList
         contentContainerStyle={{
@@ -232,9 +227,7 @@ const MyCollection: React.FC<{
         />
       </Tabs.SubTabBar>
       {/* No need to onboard users to managing artists privacy if they have no artists in their collection */}
-      {!!enableCollectedArtists && !!showCollectedArtistsOnboardingModal && (
-        <MyCollectionCollectedArtistsOnboardingModal />
-      )}
+      {!!showCollectedArtistsOnboardingModal && <MyCollectionCollectedArtistsOnboardingModal />}
 
       <ArtworkFilterNavigator
         visible={isFilterModalVisible}
@@ -243,13 +236,14 @@ const MyCollection: React.FC<{
         exitModal={() => setIsFilterModalVisible(false)}
       />
 
-      {(selectedTab === null || selectedTab === "Artists") && enableCollectedArtists ? (
+      {selectedTab === null || selectedTab === "Artists" ? (
         <MyCollectionCollectedArtists me={me} />
       ) : null}
 
-      {selectedTab === null || selectedTab === "Artworks" || !enableCollectedArtists ? (
+      {selectedTab === null || selectedTab === "Artworks" ? (
         <MyCollectionArtworks me={me} relay={relay} />
       ) : null}
+
       {!!showDevAddButton && (
         <Button
           onPress={async () => {
@@ -390,7 +384,6 @@ export const MyCollectionQueryRenderer: React.FC = () => {
 
 export const MyCollectionPlaceholder: React.FC = () => {
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
-  const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
 
   return (
     <TabsFlatList
@@ -399,48 +392,36 @@ export const MyCollectionPlaceholder: React.FC = () => {
         paddingHorizontal: 0,
       }}
     >
-      <Spacer y={1} />
-
-      {/* Sort & Filter  */}
-      {!!enableCollectedArtists ? (
-        <Flex flexDirection="row" px={2} mt={1}>
-          <Spacer y={2} />
-          <PlaceholderBox width={60} height={30} borderRadius={50} marginRight={10} />
-          <PlaceholderBox width={75} height={30} borderRadius={50} />
-        </Flex>
-      ) : (
-        <>
-          <Flex justifyContent="space-between" flexDirection="row" px={2} py={0.5}>
-            <PlaceholderText width={120} height={22} />
-            <PlaceholderText width={90} height={22} borderRadius={11} />
-          </Flex>
-          <Separator />
-        </>
-      )}
       <Spacer y={2} />
 
+      {/* Sort & Filter  */}
+      <Flex flexDirection="row" px={2}>
+        <SkeletonBox width={60} height={30} borderRadius={50} mr={1} />
+        <SkeletonBox width={75} height={30} borderRadius={50} />
+      </Flex>
+
+      <Spacer y={4} />
+
       {/* collected artists rail */}
-      {!!enableCollectedArtists ? (
-        <Flex width="100%" px={2}>
-          <Flex my={0.5} flexDirection="row">
-            {times(4).map((i) => (
-              <Flex key={i} mr={1}>
-                <Flex>
-                  <PlaceholderBox
-                    borderRadius={ARTIST_CIRCLE_DIAMETER / 2}
-                    key={i}
-                    width={ARTIST_CIRCLE_DIAMETER}
-                    height={ARTIST_CIRCLE_DIAMETER}
-                  />
-                </Flex>
-                <Flex mt={1} alignItems="center">
-                  <RandomWidthPlaceholderText minWidth={40} maxWidth={ARTIST_CIRCLE_DIAMETER} />
-                </Flex>
-              </Flex>
-            ))}
+      <Flex width="100%" px={2} flexDirection="row">
+        {times(4).map((i) => (
+          <Flex key={i} mr={1}>
+            <Flex>
+              <SkeletonBox
+                borderRadius={ARTIST_CIRCLE_DIAMETER / 2}
+                key={i}
+                width={ARTIST_CIRCLE_DIAMETER}
+                height={ARTIST_CIRCLE_DIAMETER}
+              />
+            </Flex>
+            <Flex mt={1} alignItems="center">
+              <RandomWidthPlaceholderText minWidth={40} maxWidth={ARTIST_CIRCLE_DIAMETER} />
+            </Flex>
           </Flex>
-        </Flex>
-      ) : null}
+        ))}
+      </Flex>
+
+      <Spacer y={4} />
 
       {/* masonry grid */}
       {viewOption === "grid" ? (
@@ -448,9 +429,9 @@ export const MyCollectionPlaceholder: React.FC = () => {
       ) : (
         <Flex width="100%" px={2}>
           {times(4).map((i) => (
-            <Flex key={i} my={!!enableCollectedArtists ? 1 : 0.5} flexDirection="row">
+            <Flex key={i} my={1} flexDirection="row">
               <Flex>
-                <PlaceholderBox
+                <SkeletonBox
                   key={i}
                   width={ARTWORK_LIST_IMAGE_SIZE}
                   height={ARTWORK_LIST_IMAGE_SIZE}

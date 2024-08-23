@@ -39,7 +39,6 @@ import { dismissModal, goBack, popToRoot } from "app/system/navigation/navigate"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { LocationWithDetails } from "app/utils/googleMaps"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { isEmpty } from "lodash"
@@ -53,8 +52,6 @@ export const MyCollectionArtworkFormMain: React.FC<
   StackScreenProps<ArtworkFormScreen, "ArtworkFormMain">
 > = ({ navigation }) => {
   const { trackEvent } = useTracking()
-
-  const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
 
   const artworkActions = GlobalStore.actions.myCollection.artwork
   const artworkState = GlobalStore.useAppState((state) => state.myCollection.artwork)
@@ -197,32 +194,6 @@ export const MyCollectionArtworkFormMain: React.FC<
   const isSubmission =
     mode === "edit" && artwork ? !!artwork.consignmentSubmission?.displayText : false
 
-  const handleDelete = () => {
-    if (enableCollectedArtists) {
-      setShowDeleteArtistModal(true)
-      return
-    }
-
-    handleDeleteLegacy()
-  }
-
-  const handleDeleteLegacy = () => {
-    showActionSheetWithOptions(
-      {
-        title: "Delete artwork?",
-        options: ["Delete", "Cancel"],
-        destructiveButtonIndex: 0,
-        cancelButtonIndex: 1,
-        useModal: true,
-      },
-      (buttonIndex) => {
-        if (buttonIndex === 0) {
-          deleteArtwork?.()
-        }
-      }
-    )
-  }
-
   // To make the location input auto-suggestion dropdown visible when the keyboard is up,
   // we scroll the y position of the location input to move it to the top of the screen.
   const [locationInputYCoordinate, setLocationInputYCoordinate] = useState<number>(0)
@@ -267,7 +238,7 @@ export const MyCollectionArtworkFormMain: React.FC<
   return (
     <>
       <ArtsyKeyboardAvoidingView>
-        {!!enableCollectedArtists && formikValues.artistSearchResult?.internalID ? (
+        {formikValues.artistSearchResult?.internalID ? (
           <MyCollectionArtworkFormDeleteArtworkModal
             visible={showDeleteArtistModal}
             hideModal={() => setShowDeleteArtistModal(false)}
@@ -467,7 +438,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                   underline
                   color={color("red100")}
                   textAlign="center"
-                  onPress={handleDelete}
+                  onPress={() => setShowDeleteArtistModal(true)}
                   testID="DeleteButton"
                 >
                   Delete artwork
