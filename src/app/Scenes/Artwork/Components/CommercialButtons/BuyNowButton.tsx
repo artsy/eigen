@@ -68,7 +68,7 @@ export const BuyNowButton = ({
   const [partnerOfferTimer, setPartnerOfferTimer] = useState(
     partnerOffer?.endAt ? getTimer(partnerOffer.endAt) : null
   )
-  const intervalId = useRef<number | null>(null)
+  const intervalId = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     if (partnerOffer && partnerOffer.endAt) {

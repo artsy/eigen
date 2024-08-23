@@ -25,6 +25,11 @@
 			</array>
 		</dict>
 	</array>
+	<!-- Do not change NSAllowsArbitraryLoads to true, or you will risk app rejection! -->
+	<key>NSAllowsArbitraryLoads</key>
+	<false/>
+	<key>NSAllowsLocalNetworking</key>
+	<true/>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIdentifier</key>
