@@ -96,6 +96,7 @@ export const CreditCardField: React.FC<CreditCardFieldProps> = ({ onCardChange }
             backgroundColor: color("white100"),
             fontSize: textStyle.fontSize,
             fontFamily: textStyle.fontFamily,
+            textColor: color("black100"),
             placeholderColor: color("black60"),
           }}
           style={{
