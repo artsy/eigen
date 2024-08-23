@@ -6,7 +6,7 @@ import { SeeAllCard } from "app/Scenes/Home/Components/ActivityRail"
 import { ActivityRailItem } from "app/Scenes/Home/Components/ActivityRailItem"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { FlatList } from "react-native-gesture-handler"
+import { FlatList } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
 interface ActivityRailHomeViewSectionProps {
@@ -23,6 +23,10 @@ export const ActivityRailHomeViewSection: React.FC<ActivityRailHomeViewSectionPr
   const notificationsNodes = extractNodes(data?.notificationsConnection)
 
   const notifications = notificationsNodes.filter(shouldDisplayNotification)
+
+  if (!notifications.length) {
+    return null
+  }
 
   return (
     <Flex pt={2}>
@@ -48,8 +52,11 @@ export const ActivityRailHomeViewSection: React.FC<ActivityRailHomeViewSectionPr
         )}
         ItemSeparatorComponent={() => <Spacer x={2} />}
         data={notifications}
+        initialNumToRender={3}
         keyExtractor={(item) => item.internalID}
-        renderItem={({ item }) => <ActivityRailItem item={item} />}
+        renderItem={({ item }) => {
+          return <ActivityRailItem item={item} />
+        }}
       />
     </Flex>
   )
