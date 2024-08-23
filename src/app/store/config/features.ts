@@ -84,11 +84,6 @@ export const features = {
     readyForRelease: true,
     echoFlagKey: "ARImpressionsTrackingHomeItemViews",
   },
-  AREnableDoMoreOnArtsyRail: {
-    description: "Enable Do More on Artsy Rail",
-    readyForRelease: true,
-    echoFlagKey: "AREnableDoMoreOnArtsyRail",
-  },
   AREnableArtworksLists: {
     readyForRelease: true,
     description: "Enable Artwork Lists",

@@ -14,7 +14,6 @@ export const useHomeModules = (props: HomeProps) => {
   const enableLatestActivityRail = useFeatureFlag("AREnableLatestActivityRail")
   const enableGalleriesForYou = useFeatureFlag("AREnableGalleriesForYou")
   const enableCuratorsPickRail = useFeatureFlag("AREnableCuratorsPickRail")
-  const enableDoMoreOnArtsyRail = useFeatureFlag("AREnableDoMoreOnArtsyRail")
   const enableEditorialNews = useFeatureFlag("AREnableEditorialNews")
 
   return useMemo(() => {
@@ -118,7 +117,7 @@ export const useHomeModules = (props: HomeProps) => {
       },
       {
         data: props.homePageBelow?.onboardingModule,
-        hidden: !props.homePageBelow?.onboardingModule || !enableDoMoreOnArtsyRail,
+        hidden: !props.homePageBelow?.onboardingModule,
         isEmpty: !isOnboardingVisible(props.homePageBelow?._onboardingModule),
         key: "onboardingRail",
         title: "Do More on Artsy",
@@ -256,7 +255,6 @@ export const useHomeModules = (props: HomeProps) => {
     props.homePageBelow?.fairsModule,
     props.recommendedAuctionLots,
     enableCuratorsPickRail,
-    enableDoMoreOnArtsyRail,
     enableLatestActivityRail,
   ])
 }
