@@ -9,6 +9,7 @@ import { GenericHomeViewSection } from "app/Scenes/HomeView/Sections/GenericHome
 import { HeroUnitsRailHomeViewSection } from "app/Scenes/HomeView/Sections/HeroUnitsRailHomeViewSection"
 import { MarketingCollectionsRailHomeViewSection } from "app/Scenes/HomeView/Sections/MarketingCollectionsRailHomeViewSection"
 import { ShowsRailHomeViewSection } from "app/Scenes/HomeView/Sections/ShowsRailHomeViewSection"
+import { ViewingRoomsRailHomeViewSection } from "app/Scenes/HomeView/Sections/ViewingRoomsRailHomeViewSection"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 
 type SectionsConnection = NonNullable<
@@ -42,6 +43,8 @@ export const Section: React.FC<{ section: SectionT }> = (props) => {
       return <MarketingCollectionsRailHomeViewSection section={section} />
     case "ShowsRailHomeViewSection":
       return <ShowsRailHomeViewSection section={section} />
+    case "ViewingRoomsRailHomeViewSection":
+      return <ViewingRoomsRailHomeViewSection section={section} />
     default:
       if (__DEV__) {
         return (
