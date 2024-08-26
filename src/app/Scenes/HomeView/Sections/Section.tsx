@@ -3,6 +3,7 @@ import { HomeViewSectionsConnection_viewer$data } from "__generated__/HomeViewSe
 import { ArticlesRailHomeViewSection } from "app/Scenes/HomeView/Sections/ArticlesRailHomeViewSection"
 import { ArtistsRailHomeViewSectionPaginationContainer } from "app/Scenes/HomeView/Sections/ArtistsRailHomeViewSection"
 import { ArtworksRailHomeViewSection } from "app/Scenes/HomeView/Sections/ArtworksRailHomeViewSection"
+import { AuctionResultsRailHomeViewSection } from "app/Scenes/HomeView/Sections/AuctionResultsRailHomeViewSection"
 import { FairsRailHomeViewSection } from "app/Scenes/HomeView/Sections/FairsRailHomeViewSection"
 import { FeaturedCollectionHomeViewSection } from "app/Scenes/HomeView/Sections/FeaturedCollectionHomeViewSection"
 import { GenericHomeViewSection } from "app/Scenes/HomeView/Sections/GenericHomeViewSection"
@@ -34,6 +35,8 @@ export const Section: React.FC<{ section: SectionT }> = (props) => {
       return <ArticlesRailHomeViewSection section={section} />
     case "ArtistsRailHomeViewSection":
       return <ArtistsRailHomeViewSectionPaginationContainer section={section} />
+    case "AuctionResultsRailHomeViewSection":
+      return <AuctionResultsRailHomeViewSection section={section} />
     case "HeroUnitsHomeViewSection":
       return <HeroUnitsRailHomeViewSection section={section} />
     case "FairsRailHomeViewSection":
