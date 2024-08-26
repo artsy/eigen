@@ -1,6 +1,5 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate, switchTab } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -10,18 +9,16 @@ import { FooterButtons } from "./ModalCarouselContainer"
 const mockDismissModal = jest.fn()
 const mockGoToNextPage = jest.fn()
 
-// TODO: refactor the tests
-
 describe(FooterButtons, () => {
   const trackEvent = useTracking().trackEvent
 
   describe("when the active step is not the last one", () => {
     it("the next button is rendered and navigates to the next page", () => {
-      const component = renderWithWrappers(
+      renderWithWrappers(
         <FooterButtons dismissModal={mockDismissModal} goToNextPage={mockGoToNextPage} />
       )
 
-      const nextButton = component.getByText("Next")
+      const nextButton = screen.getByText("Next")
       fireEvent(nextButton, "onPress")
       expect(mockGoToNextPage).toHaveBeenCalled()
     })
@@ -29,11 +26,11 @@ describe(FooterButtons, () => {
 
   describe("when the active step is the last one", () => {
     it("the Add Artwork button is rendered and navigates to the add artwork screen", async () => {
-      const component = renderWithWrappers(
+      renderWithWrappers(
         <FooterButtons isLastStep dismissModal={mockDismissModal} goToNextPage={mockGoToNextPage} />
       )
 
-      const appArtworkButton = component.getByText("Add Artwork")
+      const appArtworkButton = screen.getByText("Add Artwork")
       fireEvent(appArtworkButton, "onPress")
       expect(switchTab).toHaveBeenCalledWith("profile")
       expect(mockDismissModal).toHaveBeenCalled()
@@ -53,11 +50,11 @@ describe(FooterButtons, () => {
     })
 
     it("the Add Artist button is rendered and navigates to the add artist screen", async () => {
-      const component = renderWithWrappers(
+      renderWithWrappers(
         <FooterButtons isLastStep dismissModal={mockDismissModal} goToNextPage={mockGoToNextPage} />
       )
 
-      const addArtistButton = component.getByText("Add Artists")
+      const addArtistButton = screen.getByText("Add Artists")
       fireEvent(addArtistButton, "onPress")
       expect(switchTab).toHaveBeenCalledWith("profile")
       expect(mockDismissModal).toHaveBeenCalled()
