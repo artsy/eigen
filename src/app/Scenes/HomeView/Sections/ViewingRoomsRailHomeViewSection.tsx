@@ -2,7 +2,7 @@ import { Flex } from "@artsy/palette-mobile"
 import { ViewingRoomsRailHomeViewSection_section$key } from "__generated__/ViewingRoomsRailHomeViewSection_section.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import {
-  ViewingRoomsHomeRail,
+  ViewingRoomsHomeRail as LegacyViewingRoomsHomeRail,
   ViewingRoomsRailPlaceholder,
 } from "app/Scenes/ViewingRoom/Components/ViewingRoomsHomeRail"
 import { Suspense } from "react"
@@ -19,7 +19,7 @@ export const ViewingRoomsRailHomeViewSection: React.FC<{
         <SectionTitle title={data.component?.title} />
       </Flex>
       <Suspense fallback={<ViewingRoomsRailPlaceholder />}>
-        <ViewingRoomsHomeRail />
+        <LegacyViewingRoomsHomeRail />
       </Suspense>
     </Flex>
   )
