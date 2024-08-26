@@ -78,6 +78,7 @@ const sectionsFragment = graphql`
             ... on ArticlesRailHomeViewSection {
               internalID
               ...ArticlesRailHomeViewSection_section
+              ...ArticlesCardsHomeViewSection_section
             }
             ... on ArtworksRailHomeViewSection {
               internalID
