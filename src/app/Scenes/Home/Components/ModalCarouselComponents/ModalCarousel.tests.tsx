@@ -28,12 +28,6 @@ describe(FooterButtons, () => {
   })
 
   describe("when the active step is the last one", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({
-        ARShowCollectedArtistOnboarding: true,
-      })
-    })
-
     it("the Add Artwork button is rendered and navigates to the add artwork screen", async () => {
       const component = renderWithWrappers(
         <FooterButtons isLastStep dismissModal={mockDismissModal} goToNextPage={mockGoToNextPage} />

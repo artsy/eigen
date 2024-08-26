@@ -127,11 +127,6 @@ export const features = {
     readyForRelease: true,
     echoFlagKey: "AREnableAdditionalSiftAndroidTracking",
   },
-  ARShowCollectedArtistOnboarding: {
-    description: "Show Collected Artist Onboarding",
-    readyForRelease: true,
-    echoFlagKey: "ARShowCollectedArtistOnboarding",
-  },
   AREnableAuctionHeaderAlertCTA: {
     description: "Enable Auction Header Alert CTA",
     readyForRelease: true,

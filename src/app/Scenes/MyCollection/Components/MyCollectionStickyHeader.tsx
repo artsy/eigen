@@ -1,13 +1,4 @@
-import {
-  AddIcon,
-  CloseIcon,
-  Flex,
-  Spacer,
-  ToolTip,
-  Touchable,
-  useSpace,
-  Pill,
-} from "@artsy/palette-mobile"
+import { AddIcon, CloseIcon, Flex, Spacer, Touchable, useSpace, Pill } from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { MyCollectionArtworkFilters } from "app/Scenes/MyCollection/Components/MyCollectionArtworkFiltersStickyTab"
 import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
@@ -23,7 +14,6 @@ import {
 } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { navigate } from "app/system/navigation/navigate"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useMeasure } from "app/utils/hooks/useMeasure"
 import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
 import { debounce } from "lodash"
@@ -77,9 +67,7 @@ export const MyCollectionStickyHeader: React.FC<MyCollectionStickyHeaderProps> =
 }
 
 export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtworks }) => {
-  const enableCollectedArtistsOnboarding = useFeatureFlag("ARShowCollectedArtistOnboarding")
   const closeIconRef = useRef(null)
-  const { showVisualClue } = useVisualClue()
 
   const selectedTab = MyCollectionTabsStore.useStoreState((state) => state.selectedTab)
 
@@ -149,31 +137,12 @@ export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtwor
           <Touchable
             onPress={() => {
               handleCreateButtonPress()
-
-              if (!enableCollectedArtistsOnboarding) return
-              setVisualClueAsSeen("MyCollectionArtistsCollectedOnboardingTooltip2")
             }}
             haptic
             hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           >
             <AddIcon width={24} height={24} />
           </Touchable>
-          <ToolTip
-            enabled={
-              !!enableCollectedArtistsOnboarding &&
-              showVisualClue("MyCollectionArtistsCollectedOnboardingTooltip2") &&
-              !showVisualClue("MyCollectionArtistsCollectedOnboardingTooltip1") &&
-              !showVisualClue("MyCollectionArtistsCollectedOnboarding")
-            }
-            flowDirection="LEFT"
-            initialToolTipText="Tap to add more artists or artworks"
-            position="BOTTOM"
-            tapToDismiss
-            yOffset={9}
-            xOffset={-17}
-          >
-            <Flex></Flex>
-          </ToolTip>
         </Flex>
       </Flex>
     </>

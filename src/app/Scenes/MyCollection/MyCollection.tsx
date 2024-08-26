@@ -15,7 +15,6 @@ import { useToast } from "app/Components/Toast/toastHook"
 import { PAGE_SIZE } from "app/Components/constants"
 import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
 import { MyCollectionCollectedArtists } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtists"
-import { MyCollectionCollectedArtistsOnboardingModal } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistsOnboardingModal"
 import { ARTIST_CIRCLE_DIAMETER } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistsRail"
 import { MyCollectionStickyHeader } from "app/Scenes/MyCollection/Components/MyCollectionStickyHeader"
 import { MyCollectionZeroState } from "app/Scenes/MyCollection/Components/MyCollectionZeroState"
@@ -26,7 +25,6 @@ import { VisualCluesConstMap } from "app/store/config/visualClues"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
 import { RandomWidthPlaceholderText } from "app/utils/placeholders"
 import {
@@ -39,7 +37,7 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { RefreshControl } from "react-native"
 import {
   QueryRenderer,
@@ -76,14 +74,6 @@ const MyCollection: React.FC<{
   const toast = useToast()
 
   const hasCollectedArtists = (me.userInterestsConnection?.totalCount ?? 0) > 0
-
-  const showCollectedArtistsOnboarding = useFeatureFlag("ARShowCollectedArtistOnboarding")
-
-  const hasCollectedArtistsRef = useRef(hasCollectedArtists).current
-
-  // We are using a ref of the hasCollectedArtists to prevent the modal from showing up as soon as you upload your first artist
-  const showCollectedArtistsOnboardingModal =
-    showCollectedArtistsOnboarding && hasCollectedArtistsRef
 
   const { showVisualClue } = useVisualClue()
   const showMyCollectionCollectedArtistsOnboarding = !!showVisualClue(
@@ -187,8 +177,6 @@ const MyCollection: React.FC<{
         }}
         refreshControl={<RefreshControl onRefresh={refetch} refreshing={isRefreshing} />}
       >
-        {!!showCollectedArtistsOnboardingModal && <MyCollectionCollectedArtistsOnboardingModal />}
-
         <Tabs.SubTabBar>
           <MyCollectionStickyHeader
             filtersCount={filtersCount}
@@ -226,8 +214,6 @@ const MyCollection: React.FC<{
           hasArtworks={artworks.length > 0}
         />
       </Tabs.SubTabBar>
-      {/* No need to onboard users to managing artists privacy if they have no artists in their collection */}
-      {!!showCollectedArtistsOnboardingModal && <MyCollectionCollectedArtistsOnboardingModal />}
 
       <ArtworkFilterNavigator
         visible={isFilterModalVisible}
