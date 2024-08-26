@@ -12,11 +12,9 @@ export const ShowsRailHomeViewSection: React.FC<ShowsRailHomeViewSectionProps> =
   const data = useFragment(fragment, section)
   const component = data.component
 
-  if (!component) return null
-
   return (
     <ShowsRailContainer
-      title={component.title || ""}
+      title={component?.title || ""}
       disableLocation={!enableShowsForYouLocation}
     />
   )
