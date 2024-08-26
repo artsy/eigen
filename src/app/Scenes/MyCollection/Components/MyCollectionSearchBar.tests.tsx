@@ -26,6 +26,7 @@ describe("MyCollectionSearchBar", () => {
   it("changes view option when clicking on view option icon", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({
       AREnableMyCollectionCollectedArtists: false,
+      ARShowCollectedArtistOnboarding: true,
     })
 
     const { queryByTestId } = renderWithStickyTabPage()

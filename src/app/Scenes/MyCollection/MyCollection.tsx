@@ -78,10 +78,13 @@ const MyCollection: React.FC<{
 
   const hasCollectedArtists = (me.userInterestsConnection?.totalCount ?? 0) > 0
 
+  const showCollectedArtistsOnboarding = useFeatureFlag("ARShowCollectedArtistOnboarding")
+
   const hasCollectedArtistsRef = useRef(hasCollectedArtists).current
 
   // We are using a ref of the hasCollectedArtists to prevent the modal from showing up as soon as you upload your first artist
-  const showCollectedArtistsOnboardingModal = hasCollectedArtistsRef
+  const showCollectedArtistsOnboardingModal =
+    showCollectedArtistsOnboarding && hasCollectedArtistsRef
 
   const { showVisualClue } = useVisualClue()
   const showMyCollectionCollectedArtistsOnboarding = !!showVisualClue(

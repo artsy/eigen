@@ -29,6 +29,7 @@ describe(FooterButtons, () => {
     beforeEach(() => {
       __globalStoreTestUtils__?.injectFeatureFlags({
         AREnableMyCollectionCollectedArtists: false,
+        ARShowCollectedArtistOnboarding: true,
       })
     })
 

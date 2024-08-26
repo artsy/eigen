@@ -85,6 +85,7 @@ export const MyCollectionStickyHeader: React.FC<MyCollectionStickyHeaderProps> =
 }
 
 export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtworks }) => {
+  const enableCollectedArtistsOnboarding = useFeatureFlag("ARShowCollectedArtistOnboarding")
   const closeIconRef = useRef(null)
   const { showVisualClue } = useVisualClue()
 
@@ -156,7 +157,7 @@ export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtwor
           <Touchable
             onPress={() => {
               handleCreateButtonPress()
-
+              if (!enableCollectedArtistsOnboarding) return
               setVisualClueAsSeen("MyCollectionArtistsCollectedOnboardingTooltip2")
             }}
             haptic
@@ -166,6 +167,7 @@ export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtwor
           </Touchable>
           <ToolTip
             enabled={
+              !!enableCollectedArtistsOnboarding &&
               showVisualClue("MyCollectionArtistsCollectedOnboardingTooltip2") &&
               !showVisualClue("MyCollectionArtistsCollectedOnboardingTooltip1") &&
               !showVisualClue("MyCollectionArtistsCollectedOnboarding")
