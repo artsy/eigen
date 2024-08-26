@@ -289,7 +289,7 @@ const Home = memo((props: HomeProps) => {
         case "galleriesForYouBanner":
           return <GalleriesForYouBanner />
         case "activity":
-          return <ActivityRail title={item.title} notificationsConnection={item.data} />
+          return <ActivityRail title={item.title} viewer={item.data} />
         case "recommendedAuctionLots":
           return (
             <RecommendedAuctionLotsRail
@@ -490,7 +490,7 @@ export const HomeFragmentContainer = memo(
       `,
       notificationsConnection: graphql`
         fragment Home_notificationsConnection on Viewer {
-          ...ActivityRail_notificationsConnection @arguments(count: 10)
+          ...ActivityRail_viewer @arguments(count: 10)
           notificationsConnection(first: 10) {
             edges {
               node {

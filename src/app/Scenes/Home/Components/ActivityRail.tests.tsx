@@ -9,12 +9,12 @@ import { graphql } from "react-relay"
 describe("ActivityRail", () => {
   const { renderWithRelay } = setupTestWrapper<ActivityRailTestQuery>({
     Component: ({ viewer }) => {
-      return <ActivityRail title="Latest Activity Rail" notificationsConnection={viewer!} />
+      return <ActivityRail title="Latest Activity Rail" viewer={viewer!} />
     },
     query: graphql`
       query ActivityRailTestQuery @relay_test_operation {
         viewer {
-          ...ActivityRail_notificationsConnection
+          ...ActivityRail_viewer
         }
       }
     `,

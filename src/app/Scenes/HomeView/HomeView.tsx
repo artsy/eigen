@@ -71,6 +71,10 @@ const sectionsFragment = graphql`
               }
               ...GenericHomeViewSection_section
             }
+            ... on ActivityRailHomeViewSection {
+              internalID
+              ...ActivityRailHomeViewSection_section
+            }
             ... on ArticlesRailHomeViewSection {
               internalID
               ...ArticlesRailHomeViewSection_section
