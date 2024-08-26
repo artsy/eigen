@@ -10881,6 +10881,7 @@ union HomeViewSection =
   | FairsRailHomeViewSection
   | HeroUnitsHomeViewSection
   | MarketingCollectionsRailHomeViewSection
+  | ShowsRailHomeViewSection
 
 # A connection to a list of items.
 type HomeViewSectionConnection {
@@ -18414,6 +18415,18 @@ enum ShowSorts {
   START_AT_DESC
   UPDATED_AT_ASC
   UPDATED_AT_DESC
+}
+
+# A shows rail section in the home view
+type ShowsRailHomeViewSection implements GenericHomeViewSection & Node {
+  # The component that is prescribed for this section
+  component: HomeViewComponent
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
 }
 
 # SMS Two-Factor Authentication factor
