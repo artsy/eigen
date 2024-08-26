@@ -10882,6 +10882,7 @@ union HomeViewSection =
   | HeroUnitsHomeViewSection
   | MarketingCollectionsRailHomeViewSection
   | ShowsRailHomeViewSection
+  | ViewingRoomsRailHomeViewSection
 
 # A connection to a list of items.
 type HomeViewSectionConnection {
@@ -21510,6 +21511,18 @@ type ViewingRoomsEdge {
 
   # The item at the end of the edge.
   node: ViewingRoom
+}
+
+# A viewing rooms rail section in the home view
+type ViewingRoomsRailHomeViewSection {
+  # The component that is prescribed for this section
+  component: HomeViewComponent
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
 }
 
 enum Visibility {
