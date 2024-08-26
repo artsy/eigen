@@ -52,7 +52,7 @@ export const WorksForYouArtworks: React.FC<NewWorksForYouProps> = ({ viewer }) =
         }
         ListHeaderComponent={() => (
           <Text variant="xs" pt={2} px={numColumns === 1 ? 2 : 0}>
-            {artworks.length} {pluralize("Artwork", artworks.length)}
+            {artworks.length} {pluralize("Artwork", data.artworks?.totalCount ?? 0)}
           </Text>
         )}
         onScroll={scrollHandler}
@@ -67,7 +67,7 @@ export const newWorksForYouArtworksFragment = graphql`
   fragment WorksForYouArtworks_viewer on Viewer
   @refetchable(queryName: "WorksForYouArtworks_viewerRefetch")
   @argumentDefinitions(
-    count: { type: "Int", defaultValue: 100 }
+    count: { type: "Int", defaultValue: 20 }
     cursor: { type: "String" }
     version: { type: "String" }
     maxWorksPerArtist: { type: "Int" }
