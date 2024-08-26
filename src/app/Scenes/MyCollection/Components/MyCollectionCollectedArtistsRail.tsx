@@ -26,7 +26,6 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
   me,
 }) => {
   const enableCollectedArtistsOnboarding = useFeatureFlag("ARShowCollectedArtistOnboarding")
-
   const { showVisualClue } = useVisualClue()
   const space = useSpace()
 
@@ -86,6 +85,7 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
                   interestId={item.internalID}
                   onPress={() => {
                     if (!enableCollectedArtistsOnboarding) return
+
                     setVisualClueAsSeen("MyCollectionArtistsCollectedOnboardingTooltip1")
                   }}
                 />
