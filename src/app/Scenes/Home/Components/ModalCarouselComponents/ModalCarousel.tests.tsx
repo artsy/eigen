@@ -1,6 +1,5 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate, switchTab } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -15,31 +14,24 @@ describe(FooterButtons, () => {
 
   describe("when the active step is not the last one", () => {
     it("the next button is rendered and navigates to the next page", () => {
-      const component = renderWithWrappers(
+      renderWithWrappers(
         <FooterButtons dismissModal={mockDismissModal} goToNextPage={mockGoToNextPage} />
       )
 
-      const nextButton = component.getByText("Next")
+      const nextButton = screen.getByText("Next")
       fireEvent(nextButton, "onPress")
       expect(mockGoToNextPage).toHaveBeenCalled()
     })
   })
 
   describe("when the active step is the last one", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({
-        AREnableMyCollectionCollectedArtists: false,
-        ARShowCollectedArtistOnboarding: true,
-      })
-    })
-
-    it("the Upload Artwork button is rendered and navigates to the upload artwork screen", async () => {
-      const component = renderWithWrappers(
+    it("the Add Artwork button is rendered and navigates to the add artwork screen", async () => {
+      renderWithWrappers(
         <FooterButtons isLastStep dismissModal={mockDismissModal} goToNextPage={mockGoToNextPage} />
       )
 
-      const uploadArtworkButton = component.getByText("Upload Artwork")
-      fireEvent(uploadArtworkButton, "onPress")
+      const appArtworkButton = screen.getByText("Add Artwork")
+      fireEvent(appArtworkButton, "onPress")
       expect(switchTab).toHaveBeenCalledWith("profile")
       expect(mockDismissModal).toHaveBeenCalled()
       await flushPromiseQueue()
@@ -57,19 +49,28 @@ describe(FooterButtons, () => {
       })
     })
 
-    it("the Go button is rendered and navigates to the upload artwork screen", () => {
-      const component = renderWithWrappers(
+    it("the Add Artist button is rendered and navigates to the add artist screen", async () => {
+      renderWithWrappers(
         <FooterButtons isLastStep dismissModal={mockDismissModal} goToNextPage={mockGoToNextPage} />
       )
 
-      const goToMyCollectionButton = component.getByText("Go to My Collection")
-      fireEvent(goToMyCollectionButton, "onPress")
-      expect(mockDismissModal).toHaveBeenCalled()
+      const addArtistButton = screen.getByText("Add Artists")
+      fireEvent(addArtistButton, "onPress")
       expect(switchTab).toHaveBeenCalledWith("profile")
+      expect(mockDismissModal).toHaveBeenCalled()
+      await flushPromiseQueue()
+
+      expect(navigate).toHaveBeenCalledWith("my-collection/artists/new", {
+        passProps: {
+          source: Tab.collection,
+        },
+      })
+
       expect(trackEvent).toHaveBeenCalledWith({
-        action: "visitMyCollection",
-        context_screen_owner_type: "myCollectionOnboarding",
+        action: "addNewArtistName",
         context_module: "myCollectionOnboarding",
+        context_owner_type: "myCollectionOnboarding",
+        platform: "mobile",
       })
     })
   })

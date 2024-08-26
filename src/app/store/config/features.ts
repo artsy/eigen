@@ -85,11 +85,6 @@ export const features = {
     echoFlagKey: "AREnableNewCollectorSettings",
     showInDevMenu: true,
   },
-  AREnableMyCollectionCollectedArtists: {
-    description: "Enable Collected Artists in My Collection",
-    readyForRelease: true,
-    echoFlagKey: "AREnableMyCollectionCollectedArtists",
-  },
   // TODO: need to refresh it, not released yet but marked as ready since 3 months
   AREnableLongPressOnArtworkCards: {
     description: "Enable Context Menu on artwork cards",
@@ -111,11 +106,6 @@ export const features = {
     description: "Send additional events to Sift on Android",
     readyForRelease: true,
     echoFlagKey: "AREnableAdditionalSiftAndroidTracking",
-  },
-  ARShowCollectedArtistOnboarding: {
-    description: "Show Collected Artist Onboarding",
-    readyForRelease: true,
-    echoFlagKey: "ARShowCollectedArtistOnboarding",
   },
   AREnableAuctionHeaderAlertCTA: {
     description: "Enable Auction Header Alert CTA",

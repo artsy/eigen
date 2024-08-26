@@ -6,7 +6,6 @@ import { InfiniteScrollMyCollectionArtworksGridContainer } from "app/Components/
 import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
 import { MyCollectionTabsStoreProvider } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -85,34 +84,6 @@ describe("MyCollection", () => {
       ).toBeTruthy()
     })
 
-    it("navigates to MyCollectionArtworkForm when Add Artwork is pressed when collected artists ff is disabled", async () => {
-      renderWithRelay({
-        Me: () => ({
-          myCollectionConnection: {
-            edges: [],
-          },
-          myCollectionInfo: {
-            includesPurchasedArtworks: true,
-            artworksCount: 0,
-          },
-          userInterestsConnection: {
-            totalCount: 0,
-          },
-        }),
-      })
-
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionCollectedArtists: false })
-      const addArtworkButton = screen.UNSAFE_getByProps({ testID: "add-artwork-button-zero-state" })
-      addArtworkButton.props.onPress()
-
-      expect(navigate).toHaveBeenCalledWith(
-        "my-collection/artworks/new",
-        expect.objectContaining({
-          passProps: { source: Tab.collection },
-        })
-      )
-    })
-
     it("tracks analytics event when Add Artwork is pressed", () => {
       renderWithRelay({
         Me: () => ({
@@ -128,6 +99,7 @@ describe("MyCollection", () => {
           },
         }),
       })
+
       const addArtworkButton = screen.UNSAFE_getByProps({ testID: "add-artwork-button-zero-state" })
       addArtworkButton.props.onPress()
 
@@ -146,10 +118,6 @@ describe("MyCollection", () => {
   })
 
   describe("collection contains some artists and no artworks", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionCollectedArtists: true })
-    })
-
     it("shows collected artists rail", () => {
       renderWithRelay({
         Me: () => ({
@@ -206,6 +174,7 @@ describe("MyCollection", () => {
       const addArtworkButton = screen.UNSAFE_getByProps({
         testID: "add-artwork-button-zero-artworks-state",
       })
+
       addArtworkButton.props.onPress()
 
       expect(navigate).toHaveBeenCalledWith(
