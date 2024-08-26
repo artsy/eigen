@@ -64,35 +64,15 @@ export const features = {
     description: "Use artworksConnection for Auction screen",
     echoFlagKey: "AREnableArtworksConnectionForAuction",
   },
-  AREnableCuratorsPickRail: {
-    description: "Enable Curators Pick Rail",
-    readyForRelease: true,
-    echoFlagKey: "AREnableCuratorsPickRail",
-  },
   ARImpressionsTrackingHomeRailViews: {
     description: "Enable tracking rail views on home screen",
     readyForRelease: true,
     echoFlagKey: "ARImpressionsTrackingHomeRailViews",
   },
-  AREnableSkeletonAnimation: {
-    description: "Enable Skeleton Animation",
-    readyForRelease: true,
-    echoFlagKey: "AREnableSkeletonAnimation",
-  },
   ARImpressionsTrackingHomeItemViews: {
     description: "Enable Tracking Items views on Home Screen",
     readyForRelease: true,
     echoFlagKey: "ARImpressionsTrackingHomeItemViews",
-  },
-  AREnableDoMoreOnArtsyRail: {
-    description: "Enable Do More on Artsy Rail",
-    readyForRelease: true,
-    echoFlagKey: "AREnableDoMoreOnArtsyRail",
-  },
-  AREnableArtworksLists: {
-    readyForRelease: true,
-    description: "Enable Artwork Lists",
-    echoFlagKey: "AREnableArtworksLists",
   },
   AREnableNewAuctionsRailCard: {
     description: "Enable New Auctions Home Rail Card",

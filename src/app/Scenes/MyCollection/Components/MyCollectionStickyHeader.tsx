@@ -157,7 +157,6 @@ export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtwor
           <Touchable
             onPress={() => {
               handleCreateButtonPress()
-
               if (!enableCollectedArtistsOnboarding) return
               setVisualClueAsSeen("MyCollectionArtistsCollectedOnboardingTooltip2")
             }}

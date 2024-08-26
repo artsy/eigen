@@ -41,7 +41,6 @@ import { CollectionsRailFragmentContainer } from "app/Scenes/Home/Components/Col
 import { EmailConfirmationBannerFragmentContainer } from "app/Scenes/Home/Components/EmailConfirmationBanner"
 import { FairsRailFragmentContainer } from "app/Scenes/Home/Components/FairsRail"
 import { GalleriesForYouBanner } from "app/Scenes/Home/Components/GalleriesForYouBanner"
-import { HomeFeedOnboardingRailFragmentContainer } from "app/Scenes/Home/Components/HomeFeedOnboardingRail"
 import { HomeHeader } from "app/Scenes/Home/Components/HomeHeader"
 import { MarketingCollectionRail } from "app/Scenes/Home/Components/MarketingCollectionRail"
 import { NewWorksForYouRail } from "app/Scenes/Home/Components/NewWorksForYouRail"
@@ -228,13 +227,6 @@ const Home = memo((props: HomeProps) => {
               home={props.homePageAbove}
               marketingCollection={item.data}
               marketingCollectionSlug="curators-picks-emerging-app"
-            />
-          )
-        case "homeFeedOnboarding":
-          return (
-            <HomeFeedOnboardingRailFragmentContainer
-              title={item.title}
-              onboardingModule={item.data}
             />
           )
         case "heroUnits":
@@ -459,13 +451,6 @@ export const HomeFragmentContainer = memo(
           }
           marketingCollectionsModule {
             ...CollectionsRail_collectionsModule
-          }
-          _onboardingModule: onboardingModule @optionalField {
-            showMyCollectionCard
-            showSWACard
-          }
-          onboardingModule @optionalField {
-            ...HomeFeedOnboardingRail_onboardingModule
           }
         }
       `,
