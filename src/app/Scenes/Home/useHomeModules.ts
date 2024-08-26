@@ -1,7 +1,6 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { articlesQueryVariables } from "app/Scenes/Articles/Articles"
 import { newsArticlesQueryVariables } from "app/Scenes/Articles/News/News"
-import { isOnboardingVisible } from "app/Scenes/Home/Components/HomeFeedOnboardingRail"
 import { HomeModule, HomeProps } from "app/Scenes/Home/Home"
 import { recommendedAuctionLotsDefaultVariables } from "app/Scenes/RecommendedAuctionLots/RecommendedAuctionLots"
 import { isConnectionEmpty } from "app/utils/extractNodes"
@@ -113,14 +112,6 @@ export const useHomeModules = (props: HomeProps) => {
         prefetchVariables: newsArticlesQueryVariables,
         title: "News",
         type: "news",
-      },
-      {
-        data: props.homePageBelow?.onboardingModule,
-        hidden: !props.homePageBelow?.onboardingModule,
-        isEmpty: !isOnboardingVisible(props.homePageBelow?._onboardingModule),
-        key: "onboardingRail",
-        title: "Do More on Artsy",
-        type: "homeFeedOnboarding",
       },
       {
         contextModule: ContextModule.curatorsPicksEmergingRail,
@@ -239,7 +230,6 @@ export const useHomeModules = (props: HomeProps) => {
     props.homePageAbove?.salesModule,
     props.meBelow,
     props.articlesConnection,
-    props.homePageBelow?.onboardingModule,
     props.emergingPicks,
     props.homePageBelow?.marketingCollectionsModule,
     props.meBelow,
