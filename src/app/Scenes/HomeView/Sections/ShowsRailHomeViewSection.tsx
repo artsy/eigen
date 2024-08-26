@@ -14,7 +14,7 @@ export const ShowsRailHomeViewSection: React.FC<ShowsRailHomeViewSectionProps> =
 
   return (
     <ShowsRailContainer
-      title={component?.title || ""}
+      title={component?.title || "Shows"}
       disableLocation={!enableShowsForYouLocation}
     />
   )
