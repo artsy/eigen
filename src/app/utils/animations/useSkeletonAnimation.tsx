@@ -1,4 +1,3 @@
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useEffect } from "react"
 import {
   interpolate,
@@ -18,23 +17,15 @@ export function useSkeletonAnimation({
   targetOpacityValue = 0.2,
 }: IUseSkeletonAnimationProps) {
   const shared = useSharedValue(0)
-  const enableSkeletonAnimation = useFeatureFlag("AREnableSkeletonAnimation")
 
   useEffect(() => {
-    if (enableSkeletonAnimation) {
-      shared.value = withRepeat(withTiming(1, { duration: speed }), Infinity, true)
-    }
+    shared.value = withRepeat(withTiming(1, { duration: speed }), Infinity, true)
   }, [])
 
   const animatedStyle = useAnimatedStyle(() => {
     "worklet"
-    if (enableSkeletonAnimation) {
-      return {
-        opacity: interpolate(shared.value, [0, 1], [targetOpacityValue, 1]),
-      }
-    }
     return {
-      opacity: 1,
+      opacity: interpolate(shared.value, [0, 1], [targetOpacityValue, 1]),
     }
   })
 

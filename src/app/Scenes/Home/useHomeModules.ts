@@ -1,7 +1,6 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { articlesQueryVariables } from "app/Scenes/Articles/Articles"
 import { newsArticlesQueryVariables } from "app/Scenes/Articles/News/News"
-import { isOnboardingVisible } from "app/Scenes/Home/Components/HomeFeedOnboardingRail"
 import { HomeModule, HomeProps } from "app/Scenes/Home/Home"
 import { recommendedAuctionLotsDefaultVariables } from "app/Scenes/RecommendedAuctionLots/RecommendedAuctionLots"
 import { isConnectionEmpty } from "app/utils/extractNodes"
@@ -13,8 +12,6 @@ export const useHomeModules = (props: HomeProps) => {
   // ⚠️⚠️⚠️ IMPORTANT: remember when adding a feature flag to also add it to the dependency array of the useMemo hook
   const enableLatestActivityRail = useFeatureFlag("AREnableLatestActivityRail")
   const enableGalleriesForYou = useFeatureFlag("AREnableGalleriesForYou")
-  const enableCuratorsPickRail = useFeatureFlag("AREnableCuratorsPickRail")
-  const enableDoMoreOnArtsyRail = useFeatureFlag("AREnableDoMoreOnArtsyRail")
   const enableEditorialNews = useFeatureFlag("AREnableEditorialNews")
 
   return useMemo(() => {
@@ -117,19 +114,10 @@ export const useHomeModules = (props: HomeProps) => {
         type: "news",
       },
       {
-        data: props.homePageBelow?.onboardingModule,
-        hidden: !props.homePageBelow?.onboardingModule || !enableDoMoreOnArtsyRail,
-        isEmpty: !isOnboardingVisible(props.homePageBelow?._onboardingModule),
-        key: "onboardingRail",
-        title: "Do More on Artsy",
-        type: "homeFeedOnboarding",
-      },
-      {
         contextModule: ContextModule.curatorsPicksEmergingRail,
         contextScreen: "home",
         contextScreenOwnerType: OwnerType.home,
         data: props.emergingPicks,
-        hidden: !enableCuratorsPickRail,
         isEmpty: isEmpty(props.emergingPicks),
         key: "marketCollectionRail",
         subtitle: "The best work by rising talents on Artsy, available now.",
@@ -242,7 +230,6 @@ export const useHomeModules = (props: HomeProps) => {
     props.homePageAbove?.salesModule,
     props.meBelow,
     props.articlesConnection,
-    props.homePageBelow?.onboardingModule,
     props.emergingPicks,
     props.homePageBelow?.marketingCollectionsModule,
     props.meBelow,
@@ -255,8 +242,6 @@ export const useHomeModules = (props: HomeProps) => {
     props.notificationsConnection,
     props.homePageBelow?.fairsModule,
     props.recommendedAuctionLots,
-    enableCuratorsPickRail,
-    enableDoMoreOnArtsyRail,
     enableLatestActivityRail,
   ])
 }

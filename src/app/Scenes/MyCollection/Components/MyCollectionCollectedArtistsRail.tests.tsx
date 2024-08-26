@@ -1,52 +1,36 @@
+import { screen } from "@testing-library/react-native"
 import { MyCollectionCollectedArtistsRailTestsQuery } from "__generated__/MyCollectionCollectedArtistsRailTestsQuery.graphql"
 import { MyCollectionCollectedArtistsRail } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistsRail"
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 
 describe("MyCollectionCollectedArtistsRail", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+  const { renderWithRelay } = setupTestWrapper<MyCollectionCollectedArtistsRailTestsQuery>({
+    Component: ({ me }) => {
+      if (!me) {
+        return null
+      }
+      return (
+        <MyCollectionTabsStore.Provider>
+          <MyCollectionCollectedArtistsRail me={me} />
+        </MyCollectionTabsStore.Provider>
+      )
+    },
+    query: graphql`
+      query MyCollectionCollectedArtistsRailTestsQuery @relay_test_operation {
+        me {
+          ...MyCollectionCollectedArtistsRail_me
+        }
+      }
+    `,
   })
 
-  const TestRenderer = () => {
-    return (
-      <MyCollectionTabsStore.Provider>
-        <QueryRenderer<MyCollectionCollectedArtistsRailTestsQuery>
-          environment={mockEnvironment}
-          query={graphql`
-            query MyCollectionCollectedArtistsRailTestsQuery @relay_test_operation {
-              me {
-                ...MyCollectionCollectedArtistsRail_me
-              }
-            }
-          `}
-          render={({ props }) => {
-            if (!props?.me) {
-              return null
-            }
-            return <MyCollectionCollectedArtistsRail me={props.me} />
-          }}
-          variables={{}}
-        />
-      </MyCollectionTabsStore.Provider>
-    )
-  }
-
   it("renders collected artist", async () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Me() {
-        return mockCollectedArtist
-      },
-    })
+    renderWithRelay({ Me: () => mockCollectedArtist })
 
-    await expect(getByText("Rhombie Sandoval")).toBeTruthy()
-    await expect(getByText("Banksy")).toBeTruthy()
+    expect(screen.getByText("Rhombie Sandoval")).toBeOnTheScreen()
+    expect(screen.getByText("Banksy")).toBeOnTheScreen()
   })
 })
 
