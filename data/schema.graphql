@@ -10881,6 +10881,7 @@ union HomeViewSection =
   | FairsRailHomeViewSection
   | HeroUnitsHomeViewSection
   | MarketingCollectionsRailHomeViewSection
+  | ShowsRailHomeViewSection
 
 # A connection to a list of items.
 type HomeViewSectionConnection {
@@ -16728,6 +16729,15 @@ type Query {
   # Verify a given address.
   verifyAddress(input: VerifyAddressInput!): VerifyAddressPayload
 
+  # Verify a given user.
+  verifyUser(
+    # Email address to verify.
+    email: String!
+
+    # Recaptcha token.
+    recaptchaToken: String!
+  ): VerifyUser
+
   # A wildcard used to support complex root queries in Relay
   viewer: Viewer
 
@@ -18405,6 +18415,18 @@ enum ShowSorts {
   START_AT_DESC
   UPDATED_AT_ASC
   UPDATED_AT_DESC
+}
+
+# A shows rail section in the home view
+type ShowsRailHomeViewSection implements GenericHomeViewSection & Node {
+  # The component that is prescribed for this section
+  component: HomeViewComponent
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
 }
 
 # SMS Two-Factor Authentication factor
@@ -20330,6 +20352,10 @@ type VerifyAddressType {
   verificationStatus: VerificationStatuses!
 }
 
+type VerifyUser {
+  exists: Boolean!
+}
+
 # An object containing video metadata
 type Video {
   # The height of the video
@@ -21281,6 +21307,15 @@ type Viewer {
 
   # Verify a given address.
   verifyAddress(input: VerifyAddressInput!): VerifyAddressPayload
+
+  # Verify a given user.
+  verifyUser(
+    # Email address to verify.
+    email: String!
+
+    # Recaptcha token.
+    recaptchaToken: String!
+  ): VerifyUser
   viewingRoomsConnection(
     after: String
     first: Int
