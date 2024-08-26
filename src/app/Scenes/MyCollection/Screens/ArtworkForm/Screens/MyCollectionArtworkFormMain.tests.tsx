@@ -8,8 +8,6 @@ import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { useFormikContext } from "formik"
 import { MyCollectionArtworkFormMain } from "./MyCollectionArtworkFormMain"
 
-// TODO: refactor tests, test that the delete artwork modal opens
-
 jest.mock("formik")
 
 jest.mock("app/Components/FancyModal/FancyModalHeader", () => ({
