@@ -31,6 +31,7 @@ describe("AuctionResultsRailHomeViewSection", () => {
         title: "Latest Auction Results",
       }),
       AuctionResultConnection: () => ({
+        totalCount: 0,
         edges: [],
       }),
     })
