@@ -1,6 +1,7 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { HomeViewSectionsConnection_viewer$data } from "__generated__/HomeViewSectionsConnection_viewer.graphql"
 import { ActivityRailHomeViewSection } from "app/Scenes/HomeView/Sections/ActivityRailHomeViewSection"
+import { ArticlesCardsHomeViewSection } from "app/Scenes/HomeView/Sections/ArticlesCardsHomeViewSection"
 import { ArticlesRailHomeViewSection } from "app/Scenes/HomeView/Sections/ArticlesRailHomeViewSection"
 import { ArtistsRailHomeViewSectionPaginationContainer } from "app/Scenes/HomeView/Sections/ArtistsRailHomeViewSection"
 import { ArtworksRailHomeViewSection } from "app/Scenes/HomeView/Sections/ArtworksRailHomeViewSection"
@@ -25,6 +26,8 @@ export const Section: React.FC<{ section: SectionT }> = (props) => {
   switch (section.component?.type) {
     case "FeaturedCollection":
       return <FeaturedCollectionHomeViewSection section={section} />
+    case "ArticlesCard":
+      return <ArticlesCardsHomeViewSection section={section} />
   }
 
   switch (section.__typename) {
