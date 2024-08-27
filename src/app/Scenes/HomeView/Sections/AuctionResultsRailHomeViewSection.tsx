@@ -17,7 +17,7 @@ export const AuctionResultsRailHomeViewSection: React.FC<AuctionResultsRailHomeV
   const section = useFragment(sectionFragment, props.section)
   const { width: screenWidth } = useScreenDimensions()
 
-  if (!section || !section.auctionResultsConnection?.edges?.length) {
+  if (!section || !section.auctionResultsConnection?.totalCount) {
     return null
   }
 
@@ -45,6 +45,7 @@ export const AuctionResultsRailHomeViewSection: React.FC<AuctionResultsRailHomeV
             width={screenWidth * 0.9}
           />
         )}
+        keyExtractor={(item) => item.internalID}
         ListFooterComponent={
           <BrowseMoreRailCard
             onPress={() => {
@@ -71,7 +72,13 @@ const sectionFragment = graphql`
       }
     }
     auctionResultsConnection(first: 10) {
-      ...AuctionResultsRail_auctionResults @relay(mask: false)
+      totalCount
+      edges {
+        node {
+          internalID
+          ...AuctionResultListItem_auctionResult
+        }
+      }
     }
   }
 `
