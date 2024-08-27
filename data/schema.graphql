@@ -10893,6 +10893,9 @@ type HomeViewComponent {
   # A background image for this section
   backgroundImageURL(version: HomeViewComponentBackgroundImageURLVersion): String
 
+  # Behaviors for the view
+  behaviors: HomeViewComponentBehaviors
+
   # A description for this section
   description: String
 
@@ -10909,6 +10912,19 @@ type HomeViewComponent {
 enum HomeViewComponentBackgroundImageURLVersion {
   NARROW
   WIDE
+}
+
+type HomeViewComponentBehaviors {
+  # Represents the behavior of the view all button
+  viewAll: HomeViewComponentBehaviorsViewAll
+}
+
+type HomeViewComponentBehaviorsViewAll {
+  # Text for the CTA of the view all button
+  buttonText: String!
+
+  # href of the view all button
+  href: String!
 }
 
 union HomeViewSection =

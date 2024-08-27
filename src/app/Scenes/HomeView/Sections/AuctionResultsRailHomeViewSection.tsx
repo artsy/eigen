@@ -47,14 +47,14 @@ export const AuctionResultsRailHomeViewSection: React.FC<AuctionResultsRailHomeV
           />
         )}
         keyExtractor={(item) => item.internalID}
-        {...(section.component?.href
+        {...(section.component?.behaviors?.viewAll?.href
           ? {
               ListFooterComponent: (
                 <BrowseMoreRailCard
                   onPress={() => {
-                    navigate(section.component?.href as string)
+                    navigate(section.component?.behaviors?.viewAll?.href as string)
                   }}
-                  text="Browse All Results"
+                  text={section.component?.behaviors?.viewAll?.buttonText ?? "Browse All Results"}
                 />
               ),
             }
@@ -69,6 +69,12 @@ const sectionFragment = graphql`
     component {
       title
       href
+      behaviors {
+        viewAll {
+          buttonText
+          href
+        }
+      }
     }
     auctionResultsConnection(first: 10) {
       totalCount
