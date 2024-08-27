@@ -37,6 +37,7 @@ import {
   ArtworkActionTrackingProps,
   tracks as artworkActionTracks,
 } from "app/utils/track/ArtworkActions"
+import { DateTime } from "luxon"
 import React, { useRef, useState } from "react"
 import { View, ViewProps } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -237,7 +238,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const saleInfo = saleMessageOrBidInfo({
     artwork,
     collectorSignals: AREnablePartnerOfferSignals ? collectorSignals : null,
-    auctionSignalsEnabled: AREnableAuctionImprovementsSignals,
+    auctionSignals: AREnableAuctionImprovementsSignals ? collectorSignals?.auction : null,
   })
 
   const endsAt = artwork.sale?.cascadingEndTimeIntervalMinutes
@@ -265,6 +266,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
     !displayPriceOfferMessage
 
   const displayAuctionSignal = AREnableAuctionImprovementsSignals && isAuction
+
+  const saleInfoTextColor =
+    displayAuctionSignal && collectorSignals?.auction?.liveBiddingStarted ? "blue100" : "black100"
 
   const handleSupress = async (item: DissapearableArtwork) => {
     await item._disappearable?.disappear()
@@ -299,7 +303,11 @@ export const Artwork: React.FC<ArtworkProps> = ({
                 />
 
                 {Boolean(
-                  !hideUrgencyTags && urgencyTag && isAuction && !artwork?.sale?.isClosed
+                  !hideUrgencyTags &&
+                    urgencyTag &&
+                    isAuction &&
+                    !artwork?.sale?.isClosed &&
+                    !displayAuctionSignal
                 ) && (
                   <Flex
                     position="absolute"
@@ -351,7 +359,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                     <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
                       Lot {artwork.saleArtwork.lotLabel}
                     </Text>
-                    {!!artwork.sale?.cascadingEndTimeIntervalMinutes && (
+                    {!!artwork.sale?.cascadingEndTimeIntervalMinutes && !displayAuctionSignal && (
                       <DurationProvider startAt={endsAt ?? undefined}>
                         <LotCloseInfo
                           duration={null}
@@ -418,22 +426,10 @@ export const Artwork: React.FC<ArtworkProps> = ({
                     variant="xs"
                     weight="medium"
                     numberOfLines={1}
+                    color={saleInfoTextColor}
                     {...saleInfoTextStyle}
                   >
                     {saleInfo}
-                    {!!displayAuctionSignal && !!collectorSignals?.bidCount && (
-                      <Text
-                        lineHeight="18px"
-                        variant="xs"
-                        weight="regular"
-                        numberOfLines={1}
-                        {...saleInfoTextStyle}
-                      >
-                        {` (${collectorSignals.bidCount} bid${
-                          collectorSignals.bidCount > 1 ? "s" : ""
-                        })`}
-                      </Text>
-                    )}
                     {!!displayLimitedTimeOfferSignal && (
                       <Text
                         lineHeight="18px"
@@ -455,12 +451,20 @@ export const Artwork: React.FC<ArtworkProps> = ({
                     Exclusive Access
                   </Text>
                 )}
+
+                {!!displayAuctionSignal && (
+                  <ArtworkAuctionTimer
+                    lotClosesAt={collectorSignals?.auction?.lotClosesAt}
+                    onlineBiddingExtended={collectorSignals?.auction?.onlineBiddingExtended}
+                    registrationEndsAt={collectorSignals?.auction?.registrationEndsAt}
+                  />
+                )}
               </Flex>
               {!hideSaveIcon && (
                 <Flex flexDirection="row">
-                  {!!displayAuctionSignal && !!collectorSignals?.lotWatcherCount && (
+                  {!!displayAuctionSignal && !!collectorSignals?.auction?.lotWatcherCount && (
                     <Text ml={0.5} lineHeight="18px" variant="xs" numberOfLines={1}>
-                      {collectorSignals.lotWatcherCount}
+                      {collectorSignals.auction.lotWatcherCount}
                     </Text>
                   )}
                   <Touchable
@@ -506,6 +510,48 @@ const ArtworkHeartIcon: React.FC<{ isSaved: boolean | null; index?: number }> = 
   return <HeartIcon {...iconProps} />
 }
 
+export const ArtworkAuctionTimer: React.FC<{
+  onlineBiddingExtended?: boolean
+  lotClosesAt?: string | null
+  registrationEndsAt?: string | null
+}> = (props) => {
+  const { onlineBiddingExtended, registrationEndsAt, lotClosesAt } = props
+
+  if (registrationEndsAt) {
+    const formattedRegistrationEndsAt = DateTime.fromISO(registrationEndsAt).toFormat("MMM d")
+
+    return (
+      <Text lineHeight="18px" variant="xs" numberOfLines={1} color="black100">
+        Register by {formattedRegistrationEndsAt}
+      </Text>
+    )
+  }
+
+  const lotEndAt = DateTime.fromISO(lotClosesAt ?? "")
+
+  if (!lotClosesAt || lotEndAt.diffNow().as("days") > 5 || lotEndAt.diffNow().as("seconds") <= 0) {
+    return null
+  }
+
+  const timerColor = lotEndAt.diffNow().as("hours") <= 1 ? "red100" : "blue100"
+  const { time } = getTimer(lotClosesAt)
+  const { timerCopy } = formattedTimeLeft(time)
+
+  if (onlineBiddingExtended) {
+    return (
+      <Text lineHeight="18px" variant="xs" numberOfLines={1} color={timerColor}>
+        Extended. {timerCopy} left to bid
+      </Text>
+    )
+  }
+
+  return (
+    <Text lineHeight="18px" variant="xs" numberOfLines={1} color={timerColor}>
+      {timerCopy} left to bid
+    </Text>
+  )
+}
+
 /**
  * Get sale message or bid info
  * @example
@@ -519,7 +565,7 @@ export const saleMessageOrBidInfo = ({
   artwork,
   isSmallTile = false,
   collectorSignals,
-  auctionSignalsEnabled,
+  auctionSignals,
 }: {
   artwork: Readonly<{
     sale:
@@ -547,7 +593,12 @@ export const saleMessageOrBidInfo = ({
       | null
       | undefined
   }> | null
-  auctionSignalsEnabled?: boolean
+  auctionSignals?: Readonly<{
+    liveBiddingStarted: boolean
+    liveStartAt: string | null | undefined
+    lotClosesAt: string | null | undefined
+    bidCount: number
+  }> | null
 }): string | null | undefined => {
   const { sale, saleArtwork, realizedPrice } = artwork
 
@@ -562,7 +613,22 @@ export const saleMessageOrBidInfo = ({
     const bidderPositions = saleArtwork?.counts?.bidderPositions
     const currentBid = saleArtwork?.currentBid?.display
 
-    if (auctionSignalsEnabled) {
+    if (!!auctionSignals) {
+      const lotEndAt = DateTime.fromISO(auctionSignals.lotClosesAt ?? "")
+      const bidCount = auctionSignals.bidCount
+
+      if (lotEndAt.diffNow().as("seconds") <= 0) {
+        return "Bidding closed"
+      }
+
+      if (auctionSignals.liveBiddingStarted) {
+        return "Bidding live now"
+      }
+
+      if (!!bidCount) {
+        return `${currentBid} (${bidCount} bid${bidCount > 1 ? "s" : ""})`
+      }
+
       return currentBid
     }
 
@@ -661,8 +727,15 @@ export default createFragmentContainer(Artwork, {
             display
           }
         }
-        lotWatcherCount
-        bidCount
+        auction {
+          lotWatcherCount
+          bidCount
+          liveBiddingStarted
+          liveStartAt
+          onlineBiddingExtended
+          registrationEndsAt
+          lotClosesAt
+        }
       }
       ...useSaveArtworkToArtworkLists_artwork
     }

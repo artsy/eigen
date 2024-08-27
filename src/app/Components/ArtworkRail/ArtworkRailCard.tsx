@@ -14,7 +14,10 @@ import {
   ArtworkRailCard_artwork$key,
 } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
-import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "app/Components/ArtworkGrids/ArtworkGridItem"
+import {
+  ArtworkAuctionTimer,
+  saleMessageOrBidInfo as defaultSaleMessageOrBidInfo,
+} from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
@@ -114,7 +117,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     artwork,
     isSmallTile: true,
     collectorSignals: AREnablePartnerOfferSignals ? collectorSignals : null,
-    auctionSignalsEnabled: AREnableAuctionImprovementsSignals,
+    auctionSignals: AREnableAuctionImprovementsSignals ? collectorSignals?.auction : null,
   })
 
   const partnerOfferEndAt = collectorSignals?.partnerOffer?.endAt
@@ -229,6 +232,14 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
 
   const displayAuctionSignal = AREnableAuctionImprovementsSignals && sale?.isAuction
 
+  const saleInfoTextColor =
+    displayAuctionSignal && collectorSignals?.auction?.liveBiddingStarted
+      ? "blue100"
+      : primaryTextColor
+
+  const saleInfoTextWeight =
+    displayAuctionSignal && collectorSignals?.auction?.liveBiddingStarted ? "normal" : "bold"
+
   return (
     <AnalyticsContextProvider
       contextScreenOwnerId={contextScreenOwnerId}
@@ -264,7 +275,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
               containerWidth={containerWidth}
               image={image}
               size={size}
-              urgencyTag={urgencyTag}
+              urgencyTag={!displayAuctionSignal ? urgencyTag : null}
               imageHeightExtra={
                 displayForRecentlySoldArtwork
                   ? getTextHeightByArtworkSize(size) - ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT
@@ -350,18 +361,11 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                   <Text
                     lineHeight="20px"
                     variant="xs"
-                    color={primaryTextColor}
+                    color={saleInfoTextColor}
                     numberOfLines={1}
-                    fontWeight="bold"
+                    fontWeight={saleInfoTextWeight}
                   >
                     {saleMessage}
-                    {!!displayAuctionSignal && !!collectorSignals?.bidCount && (
-                      <Text>
-                        {` (${collectorSignals.bidCount} bid${
-                          collectorSignals.bidCount > 1 ? "s" : ""
-                        })`}
-                      </Text>
-                    )}
                     {!!displayLimitedTimeOfferSignal && (
                       <Text
                         lineHeight="20px"
@@ -388,12 +392,20 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                     Exclusive Access
                   </Text>
                 )}
+
+                {!!displayAuctionSignal && !!collectorSignals?.auction && (
+                  <ArtworkAuctionTimer
+                    lotClosesAt={collectorSignals.auction.lotClosesAt}
+                    onlineBiddingExtended={collectorSignals.auction.onlineBiddingExtended}
+                    registrationEndsAt={collectorSignals.auction.registrationEndsAt}
+                  />
+                )}
               </Flex>
               {!!showSaveIcon && (
                 <Flex flexDirection="row">
-                  {!!displayAuctionSignal && !!collectorSignals?.lotWatcherCount && (
-                    <Text ml={0.5} lineHeight="18px" variant="xs" numberOfLines={1}>
-                      {collectorSignals.lotWatcherCount}
+                  {!!displayAuctionSignal && !!collectorSignals?.auction?.lotWatcherCount && (
+                    <Text ml={0.5} lineHeight="20px" variant="xs" numberOfLines={1}>
+                      {collectorSignals.auction.lotWatcherCount}
                     </Text>
                   )}
                   <Touchable
@@ -653,8 +665,15 @@ const artworkFragment = graphql`
           display
         }
       }
-      lotWatcherCount
-      bidCount
+      auction {
+        lotWatcherCount
+        bidCount
+        liveBiddingStarted
+        liveStartAt
+        onlineBiddingExtended
+        registrationEndsAt
+        lotClosesAt
+      }
     }
     ...useSaveArtworkToArtworkLists_artwork
   }
