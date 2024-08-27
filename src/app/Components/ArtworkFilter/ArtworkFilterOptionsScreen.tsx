@@ -98,7 +98,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
     localFilterOptions
   ).concat(aggregateFilterOptions)
 
-  const sortedFilterOptions = filterOptions // here
+  const sortedFilterOptions = filterOptions
     .sort(getFilterScreenSortByMode(mode, localFilterOptions))
     .filter((filterOption) => filterOption.filterType)
     // Filter out the Artist Series filter if the feature flag is disabled
