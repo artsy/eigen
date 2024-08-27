@@ -1733,6 +1733,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
 
   # A string of the form "Nationality, Birthday (or Birthday-Deathday)"
   formattedNationalityAndBirthday: String
+  foundations: String
   gender: String
 
   # A list of genes associated with an artist
@@ -1767,6 +1768,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
       REVIEWED
       AWARDS
       RESIDENCIES
+      FOUNDATIONS
     ]
   ): [ArtistInsight!]!
 
@@ -2001,6 +2003,7 @@ enum ArtistInsightKind {
   COLLECTED
   CRITICALLY_ACCLAIMED
   CURATORS_PICK_EMERGING
+  FOUNDATIONS
   GAINING_FOLLOWERS
   GROUP_SHOW
   HIGH_AUCTION_RECORD
