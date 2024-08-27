@@ -4414,6 +4414,9 @@ type CollectorSignals {
   # Bid count on lots open for bidding
   bidCount: Int @deprecated(reason: "Use nested field in `auction` instead")
 
+  # Increased interest in the artwork
+  increasedInterest: Boolean!
+
   # Live bidding has started on this lot's auction
   liveBiddingStarted: Boolean @deprecated(reason: "Use nested field in `auction` instead")
 
