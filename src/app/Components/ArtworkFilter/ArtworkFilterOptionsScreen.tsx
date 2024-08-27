@@ -26,7 +26,6 @@ import styled from "styled-components/native"
 import { ArtworkFilterNavigationStack } from "./ArtworkFilterNavigator"
 import { ArtworkFilterOptionCheckboxItem } from "./components/ArtworkFilterOptionCheckboxItem"
 import { ArtworkFilterOptionItem } from "./components/ArtworkFilterOptionItem"
-import { ArtworkFilterViewOptions } from "./components/ArtworkFilterViewOptions"
 import { FilterConfigTypes, FilterDisplayConfig, FilterScreen } from "./types"
 
 export enum FilterModalMode {
@@ -99,7 +98,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
     localFilterOptions
   ).concat(aggregateFilterOptions)
 
-  const sortedFilterOptions = filterOptions
+  const sortedFilterOptions = filterOptions // here
     .sort(getFilterScreenSortByMode(mode, localFilterOptions))
     .filter((filterOption) => filterOption.filterType)
     // Filter out the Artist Series filter if the feature flag is disabled
@@ -167,9 +166,6 @@ export const ArtworkFilterOptionsScreen: React.FC<
           style={{ flexGrow: 1 }}
           renderItem={({ item }) => {
             const selectedFiltersCount = selectedFiltersCounts[item.filterType as FilterParamName]
-            if (item.configType === FilterConfigTypes.FilterScreenViewOptions) {
-              return <ArtworkFilterViewOptions />
-            }
             if (item.configType === FilterConfigTypes.FilterScreenCheckboxItem) {
               return <ArtworkFilterOptionCheckboxItem item={item} />
             }
