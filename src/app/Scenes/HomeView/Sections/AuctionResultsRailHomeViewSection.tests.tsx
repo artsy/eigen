@@ -1,6 +1,7 @@
-import { screen } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { AuctionResultsRailHomeViewSectionTestsQuery } from "__generated__/AuctionResultsRailHomeViewSectionTestsQuery.graphql"
 import { AuctionResultsRailHomeViewSection } from "app/Scenes/HomeView/Sections/AuctionResultsRailHomeViewSection"
+import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -29,6 +30,7 @@ describe("AuctionResultsRailHomeViewSection", () => {
     const { toJSON } = renderWithRelay({
       HomeViewComponent: () => ({
         title: "Latest Auction Results",
+        href: "/auction-results-for-artists-you-follow",
       }),
       AuctionResultConnection: () => ({
         totalCount: 0,
@@ -43,12 +45,7 @@ describe("AuctionResultsRailHomeViewSection", () => {
     renderWithRelay({
       HomeViewComponent: () => ({
         title: "Latest Auction Results",
-        behaviors: {
-          viewAll: {
-            buttonText: "Browse All Results",
-            href: "section/href",
-          },
-        },
+        href: "/auction-results-for-artists-you-follow",
       }),
       AuctionResultConnection: () => ({
         edges: [
@@ -71,5 +68,8 @@ describe("AuctionResultsRailHomeViewSection", () => {
     expect(screen.getByText(/Auction result 2/)).toBeOnTheScreen()
 
     expect(screen.getByText("Browse All Results")).toBeOnTheScreen()
+    fireEvent.press(screen.getByText("Browse All Results"))
+
+    expect(navigate).toHaveBeenCalledWith("/auction-results-for-artists-you-follow")
   })
 })

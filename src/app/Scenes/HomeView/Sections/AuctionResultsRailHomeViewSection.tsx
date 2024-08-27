@@ -3,6 +3,7 @@ import { AuctionResultsRailHomeViewSection_section$key } from "__generated__/Auc
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { FlatList } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -28,9 +29,9 @@ export const AuctionResultsRailHomeViewSection: React.FC<AuctionResultsRailHomeV
       <Flex px={2}>
         <SectionTitle
           title={section.component?.title ?? "Auction Results"}
-          onPress={() => {
-            // TODO: navigate to Auction Results screen using section.component?.href
-          }}
+          {...(section.component?.href
+            ? { onPress: () => navigate(section.component?.href as string) }
+            : {})}
         />
       </Flex>
       <FlatList
@@ -46,14 +47,18 @@ export const AuctionResultsRailHomeViewSection: React.FC<AuctionResultsRailHomeV
           />
         )}
         keyExtractor={(item) => item.internalID}
-        ListFooterComponent={
-          <BrowseMoreRailCard
-            onPress={() => {
-              // TODO: navigate to Auction Results screen using section.component?.behaviors.viewAll.href
-            }}
-            text={section.component?.behaviors?.viewAll?.buttonText ?? "Browse All Results"}
-          />
-        }
+        {...(section.component?.href
+          ? {
+              ListFooterComponent: (
+                <BrowseMoreRailCard
+                  onPress={() => {
+                    navigate(section.component?.href as string)
+                  }}
+                  text="Browse All Results"
+                />
+              ),
+            }
+          : {})}
       />
     </Flex>
   )
@@ -64,12 +69,6 @@ const sectionFragment = graphql`
     component {
       title
       href
-      behaviors {
-        viewAll {
-          buttonText
-          href
-        }
-      }
     }
     auctionResultsConnection(first: 10) {
       totalCount
