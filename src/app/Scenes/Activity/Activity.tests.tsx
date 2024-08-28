@@ -1,5 +1,4 @@
-import { screen } from "@testing-library/react-native"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { screen, waitFor } from "@testing-library/react-native"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Suspense } from "react"
 import { ActivityScreen } from "./ActivityScreen"
@@ -18,10 +17,8 @@ describe("ActivityScreen", () => {
       NotificationConnection: () => notifications,
     })
 
-    await flushPromiseQueue()
-
-    expect(screen.getByText("Notification One")).toBeTruthy()
-    expect(screen.getByText("Notification Two")).toBeTruthy()
+    await screen.findByText("Notification One")
+    expect(screen.getByText("Notification Two")).toBeOnTheScreen()
   })
 
   describe("notification type filter pills", () => {
@@ -33,12 +30,10 @@ describe("ActivityScreen", () => {
         NotificationConnection: () => ({ totalCount: 1 }),
       })
 
-      await flushPromiseQueue()
-
-      expect(screen.getByText("All")).toBeTruthy()
-      expect(screen.getByText("Offers")).toBeTruthy()
-      expect(screen.getByText("Alerts")).toBeTruthy()
-      expect(screen.getByText("Follows")).toBeTruthy()
+      await screen.findByText("All")
+      expect(screen.getByText("Offers")).toBeOnTheScreen()
+      expect(screen.getByText("Alerts")).toBeOnTheScreen()
+      expect(screen.getByText("Follows")).toBeOnTheScreen()
     })
 
     it("does not render 'Offers' filter pill when there are no offers available", async () => {
@@ -49,13 +44,11 @@ describe("ActivityScreen", () => {
         NotificationConnection: () => ({ totalCount: 0 }),
       })
 
-      await flushPromiseQueue()
+      await waitFor(() => expect(screen.queryByText("Offers")).not.toBeOnTheScreen())
 
-      expect(screen.queryByText("Offers")).toBeFalsy()
-
-      expect(screen.getByText("All")).toBeTruthy()
-      expect(screen.getByText("Alerts")).toBeTruthy()
-      expect(screen.getByText("Follows")).toBeTruthy()
+      expect(screen.getByText("All")).toBeOnTheScreen()
+      expect(screen.getByText("Alerts")).toBeOnTheScreen()
+      expect(screen.getByText("Follows")).toBeOnTheScreen()
     })
   })
 
@@ -66,9 +59,7 @@ describe("ActivityScreen", () => {
       }),
     })
 
-    await flushPromiseQueue()
-
-    expect(screen.getByLabelText("Activities are empty")).toBeTruthy()
+    await screen.findByLabelText("Activities are empty")
   })
 
   it("hides notifications with 0 artworks", async () => {
@@ -89,11 +80,9 @@ describe("ActivityScreen", () => {
       }),
     })
 
-    await flushPromiseQueue()
-
-    expect(screen.getByText("Notification One")).toBeTruthy()
-    expect(screen.getByText("Notification Two")).toBeTruthy()
-    expect(screen.queryByText("Notification Three")).toBeNull()
+    await screen.findByText("Notification One")
+    expect(screen.getByText("Notification Two")).toBeOnTheScreen()
+    expect(screen.queryByText("Notification Three")).not.toBeOnTheScreen()
   })
 })
 

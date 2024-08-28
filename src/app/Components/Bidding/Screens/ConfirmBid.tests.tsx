@@ -19,7 +19,6 @@ import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import NavigatorIOS, {
   NavigatorIOSPushArgs,
 } from "app/utils/__legacy_do_not_use__navigator-ios-shim"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { merge } from "lodash"
 import { TouchableWithoutFeedback } from "react-native"
@@ -916,9 +915,7 @@ describe("ConfirmBid", () => {
         fireEvent.press(screen.UNSAFE_getByType(Checkbox))
         fireEvent.press(screen.getByTestId("bid-button"))
 
-        await flushPromiseQueue()
-
-        expect(relay.commitMutation).toHaveBeenCalled()
+        await waitFor(() => expect(relay.commitMutation).toHaveBeenCalled())
         expect(relay.commitMutation).toHaveBeenCalledWith(
           expect.any(Object),
           expect.objectContaining({

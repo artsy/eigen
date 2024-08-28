@@ -1,8 +1,7 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { AlertNotification_Test_Query } from "__generated__/AlertNotification_Test_Query.graphql"
 import { AlertNotification } from "app/Scenes/Activity/components/AlertNotification"
 import { navigate } from "app/system/navigation/navigate"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Suspense } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -44,14 +43,12 @@ describe("AlertNotification", () => {
       }),
     })
 
-    await flushPromiseQueue()
-
-    expect(screen.getByText("Alerts")).toBeTruthy()
-    expect(screen.getByText("2 New Works by Banksy")).toBeTruthy()
-    expect(screen.getByText("Street Art")).toBeTruthy()
-    expect(screen.getByText("Edit")).toBeTruthy()
-    expect(screen.getByText("Edit Alert")).toBeTruthy()
-    expect(screen.getByText("View all works by Banksy")).toBeTruthy()
+    await screen.findByText("Alerts")
+    expect(screen.getByText("2 New Works by Banksy")).toBeOnTheScreen()
+    expect(screen.getByText("Street Art")).toBeOnTheScreen()
+    expect(screen.getByText("Edit")).toBeOnTheScreen()
+    expect(screen.getByText("Edit Alert")).toBeOnTheScreen()
+    expect(screen.getByText("View all works by Banksy")).toBeOnTheScreen()
   })
 
   describe("Edit Alert Button in the header", () => {
@@ -62,15 +59,13 @@ describe("AlertNotification", () => {
         }),
       })
 
-      await flushPromiseQueue()
-
-      const editAlertButton = screen.getByTestId("edit-alert-header-link")
+      const editAlertButton = await screen.findByTestId("edit-alert-header-link")
 
       fireEvent.press(editAlertButton)
 
-      await flushPromiseQueue()
-
-      expect(navigate).toHaveBeenCalledWith("/settings/alerts/internal-alert-id/edit")
+      await waitFor(() =>
+        expect(navigate).toHaveBeenCalledWith("/settings/alerts/internal-alert-id/edit")
+      )
     })
   })
 
@@ -82,15 +77,13 @@ describe("AlertNotification", () => {
         }),
       })
 
-      await flushPromiseQueue()
-
-      const editAlertButton = screen.getByTestId("edit-alert-CTA")
+      const editAlertButton = await screen.findByTestId("edit-alert-CTA")
 
       fireEvent.press(editAlertButton)
 
-      await flushPromiseQueue()
-
-      expect(navigate).toHaveBeenCalledWith("/settings/alerts/internal-alert-id/edit")
+      await waitFor(() =>
+        expect(navigate).toHaveBeenCalledWith("/settings/alerts/internal-alert-id/edit")
+      )
     })
   })
 
@@ -102,15 +95,11 @@ describe("AlertNotification", () => {
         }),
       })
 
-      await flushPromiseQueue()
-
-      const viewAllWorksByLink = screen.getByText("View all works by Banksy")
+      const viewAllWorksByLink = await screen.findByText("View all works by Banksy")
 
       fireEvent.press(viewAllWorksByLink)
 
-      await flushPromiseQueue()
-
-      expect(navigate).toHaveBeenCalledWith("/artist/banksy/works-for-sale")
+      await waitFor(() => expect(navigate).toHaveBeenCalledWith("/artist/banksy/works-for-sale"))
     })
   })
 })
