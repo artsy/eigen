@@ -523,7 +523,7 @@ describe("ArtworkGridItem", () => {
             }),
           })
 
-          expect(screen.getByText("Extended. 59s left to bid")).toBeOnTheScreen()
+          expect(screen.getByText("Extended, 59s left")).toBeOnTheScreen()
         })
       })
 
