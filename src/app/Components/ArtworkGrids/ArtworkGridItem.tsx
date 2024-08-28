@@ -514,14 +514,16 @@ export const ArtworkAuctionTimer: React.FC<{
   onlineBiddingExtended?: boolean
   lotClosesAt?: string | null
   registrationEndsAt?: string | null
+  inRailCard?: boolean
 }> = (props) => {
-  const { onlineBiddingExtended, registrationEndsAt, lotClosesAt } = props
+  const { onlineBiddingExtended, registrationEndsAt, lotClosesAt, inRailCard } = props
+  const lineHeight = inRailCard ? "20px" : "18px"
 
   if (registrationEndsAt && DateTime.fromISO(registrationEndsAt).diffNow().as("seconds") > 0) {
     const formattedRegistrationEndsAt = DateTime.fromISO(registrationEndsAt).toFormat("MMM d")
 
     return (
-      <Text lineHeight="18px" variant="xs" numberOfLines={1} color="black100">
+      <Text lineHeight={lineHeight} variant="xs" numberOfLines={1} color="black100">
         Register by {formattedRegistrationEndsAt}
       </Text>
     )
@@ -539,14 +541,15 @@ export const ArtworkAuctionTimer: React.FC<{
 
   if (onlineBiddingExtended) {
     return (
-      <Text lineHeight="18px" variant="xs" numberOfLines={1} color={timerColor}>
-        Extended. {timerCopy} left to bid
+      <Text lineHeight={lineHeight} variant="xs" numberOfLines={1} color={timerColor}>
+        Extended, {timerCopy} left
+        {inRailCard ? " to bid" : ""}
       </Text>
     )
   }
 
   return (
-    <Text lineHeight="18px" variant="xs" numberOfLines={1} color={timerColor}>
+    <Text lineHeight={lineHeight} variant="xs" numberOfLines={1} color={timerColor}>
       {timerCopy} left to bid
     </Text>
   )

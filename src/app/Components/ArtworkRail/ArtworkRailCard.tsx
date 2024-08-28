@@ -398,6 +398,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                     lotClosesAt={collectorSignals.auction.lotClosesAt}
                     onlineBiddingExtended={collectorSignals.auction.onlineBiddingExtended}
                     registrationEndsAt={collectorSignals.auction.registrationEndsAt}
+                    inRailCard
                   />
                 )}
               </Flex>
