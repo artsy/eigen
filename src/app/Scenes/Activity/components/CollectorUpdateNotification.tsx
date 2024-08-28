@@ -18,7 +18,7 @@ export const CollectorUpdateNotification: FC<CollectorUpdateNotificationProps> =
   notification: _notification,
   item: _item,
 }) => {
-  const [visible, setVisible] = useState(false)
+  const [promptVisible, setPromptVisible] = useState(false)
   const notification = useFragment(NOTIFICATION_FRAGMENT, _notification)
   const item = useFragment(ITEM_FRAGMENT, _item)
 
@@ -27,20 +27,23 @@ export const CollectorUpdateNotification: FC<CollectorUpdateNotificationProps> =
   }
 
   const handleOnDismiss = () => {
-    setVisible(false)
+    setPromptVisible(false)
   }
 
   const itemInfo = getItemInfo(item)
 
   return (
     <>
-      <Touchable onPress={() => setVisible(true)}>
+      <Touchable onPress={() => setPromptVisible(true)}>
         <Flex flex={1} py={2} pr={2}>
-          <Text fontWeight={500}>{itemInfo.title}</Text>
+          <Text variant="sm-display" fontWeight={500}>
+            {itemInfo.title}
+          </Text>
           <Text variant="xs">{itemInfo.body}</Text>
 
-          <Text variant="xs">
-            Artsy Message •<Text variant="xs">{` ${notification.publishedAt}`}</Text>
+          <Text variant="xs" fontWeight={500}>
+            Artsy Message •
+            <Text variant="xs" fontWeight="normal">{` ${notification.publishedAt}`}</Text>
           </Text>
         </Flex>
       </Touchable>
@@ -48,15 +51,11 @@ export const CollectorUpdateNotification: FC<CollectorUpdateNotificationProps> =
       {itemInfo.prompt === "AddArtistsToCollection" ? (
         <MyCollectionBottomSheetModalArtistsPrompt
           title="Tell us about the artists in your collection."
-          visible={visible}
+          visible={promptVisible}
           onDismiss={handleOnDismiss}
         />
       ) : (
-        <CollectorProfilePrompt
-          me={item.me}
-          visible={visible}
-          onDismiss={() => setVisible(false)}
-        />
+        <CollectorProfilePrompt me={item.me} visible={promptVisible} onDismiss={handleOnDismiss} />
       )}
     </>
   )
