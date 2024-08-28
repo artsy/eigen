@@ -23,7 +23,7 @@ describe("formattedTimeLeft", () => {
       textColor: "blue100",
     })
     expect(formattedTimeLeft({ days: "0", hours: "0", minutes: "59", seconds: "59" })).toEqual({
-      timerCopy: "59m 59s",
+      timerCopy: "59m",
       textColor: "orange100",
     })
     expect(formattedTimeLeft({ days: "0", hours: "0", minutes: "1", seconds: "59" })).toEqual({
