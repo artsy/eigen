@@ -110,7 +110,7 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
         {!!showSaveAndExit && (
           <Flex style={{ flexGrow: 1, alignItems: "flex-end" }}>
             <Touchable onPress={handleSaveAndExitPress}>
-              <Text variant="xs">{!hasCompletedForm ? "Save & " : ""}Exit</Text>
+              <Text variant="sm">{!hasCompletedForm ? "Save & " : ""}Exit</Text>
             </Touchable>
           </Flex>
         )}
