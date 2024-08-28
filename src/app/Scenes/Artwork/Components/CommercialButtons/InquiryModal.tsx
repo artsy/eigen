@@ -15,6 +15,7 @@ import { useArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquir
 import { InquiryQuestionIDs } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { LocationWithDetails } from "app/utils/googleMaps"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { useUpdateCollectorProfile } from "app/utils/mutations/useUpdateCollectorProfile"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useRef, useState } from "react"
 import { ScrollView } from "react-native"
@@ -33,6 +34,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
   const profilePromptIsEnabled = useFeatureFlag("AREnableCollectorProfilePrompts")
   const scrollViewRef = useRef<ScrollView>(null)
   const tracking = useTracking()
+  const [commit] = useUpdateCollectorProfile()
 
   const artwork = useFragment(artworkFragment, _artwork)
 
@@ -78,6 +80,25 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
   }
 
   const handleCollectionPromptDismiss = () => {
+    commit({
+      variables: { input: { promptedForUpdate: true } },
+      onCompleted: (res, e) => {
+        const error =
+          res.updateCollectorProfile?.collectorProfileOrError?.mutationError?.message ?? e
+        if (error) {
+          console.error(
+            "[InquiryModal MyCollectionArtistsPromptFooter updateCollectorProfile] error:",
+            error
+          )
+        }
+      },
+      onError: (error) => {
+        console.error(
+          "[InquiryModal MyCollectionArtistsPromptFooter updateCollectorProfile] error:",
+          error
+        )
+      },
+    })
     dispatch({ type: "setCollectionPromptVisible", payload: false })
   }
 

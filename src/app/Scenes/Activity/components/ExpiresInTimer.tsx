@@ -7,6 +7,7 @@ import { FC, useEffect, useRef, useState } from "react"
 const INTERVAL = 1000
 
 interface ExpiresInTimerProps {
+  // TOFIX: this should have it's own relay fragment, no prop drilling with relay data!
   item: ActivityItem_notification$data["item"]
 }
 
@@ -15,7 +16,9 @@ const WatchIcon: FC<{ fill?: string }> = ({ fill = "red100" }) => {
 }
 
 export const ExpiresInTimer: FC<ExpiresInTimerProps> = ({ item }) => {
+  // @ts-ignore: fix ExpiresInTimer fragment data
   const expiresAt = item?.expiresAt ?? ""
+  // @ts-ignore: fix ExpiresInTimer fragment data
   const available = item?.available ?? false
 
   const intervalId = useRef<ReturnType<typeof setInterval> | null>(null)
@@ -77,5 +80,6 @@ export const shouldDisplayExpiresInTimer = (
   notificationType: string,
   item: ActivityItem_notification$data["item"]
 ) => {
+  // @ts-ignore: fix ExpiresInTimer fragment data
   return notificationType === "PARTNER_OFFER_CREATED" && item?.expiresAt
 }

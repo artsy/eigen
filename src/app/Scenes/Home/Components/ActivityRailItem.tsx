@@ -44,6 +44,10 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
   const isPartnerOffer = item.notificationType === "PARTNER_OFFER_CREATED"
   const isEditorial = item.notificationType === "ARTICLE_FEATURED_ARTIST"
 
+  if (item.item?.__typename === "CollectorProfileUpdatePromptNotificationItem") {
+    return null
+  }
+
   return (
     <TouchableOpacity activeOpacity={0.65} onPress={handlePress}>
       <Flex flexDirection="row" width={ACTIVITY_RAIL_ITEM_WIDTH}>
@@ -133,6 +137,10 @@ const ActivityRailItemFragment = graphql`
     targetHref
     isUnread
     item {
+      __typename
+      ... on CollectorProfileUpdatePromptNotificationItem {
+        __typename
+      }
       ... on PartnerOfferCreatedNotificationItem {
         available
         expiresAt

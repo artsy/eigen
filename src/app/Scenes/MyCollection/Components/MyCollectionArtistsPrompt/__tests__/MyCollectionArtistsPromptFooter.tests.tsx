@@ -1,7 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { MyCollectionArtistsPromptFooter } from "app/Scenes/MyCollection/Components/MyCollectionArtistsPrompt/MyCollectionArtistsPromptFooter"
 import { MyCollectionAddCollectedArtistsStore } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsStore"
-import * as updateCollectorProfile from "app/utils/mutations/useUpdateCollectorProfile"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 jest.mock(
@@ -63,32 +62,7 @@ describe("MyCollectionArtistsPromptFooter", () => {
     expect(onPress).not.toHaveBeenCalled()
   })
 
-  it("does not call close when text is pressed given an error", () => {
-    jest
-      .spyOn(updateCollectorProfile as any, "useUpdateCollectorProfile")
-      .mockImplementation(() => [
-        jest.fn(({ onCompleted }) => {
-          onCompleted({
-            updateCollectorProfile: {
-              collectorProfileOrError: { mutationError: { message: "Error " } },
-            },
-          })
-        }),
-      ])
-    render()
-
-    fireEvent.press(screen.getByText("I haven’t started a collection yet"))
-
-    expect(mockClose).toHaveBeenCalledTimes(0)
-    expect(mockShow).toHaveBeenCalledTimes(1)
-  })
-
-  it("does call close when text is pressed given an error", () => {
-    jest
-      .spyOn(updateCollectorProfile as any, "useUpdateCollectorProfile")
-      .mockImplementation(() => [
-        jest.fn(({ onCompleted }) => onCompleted({ updateCollectorProfile: null })),
-      ])
+  it("does call close when text is pressed", () => {
     render()
 
     fireEvent.press(screen.getByText("I haven’t started a collection yet"))

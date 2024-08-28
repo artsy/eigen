@@ -2,6 +2,7 @@ import { ActionType } from "@artsy/cohesion"
 import { ClickedActivityPanelNotificationItem } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
 import { Flex, Image, Text } from "@artsy/palette-mobile"
 import { ActivityItem_notification$key } from "__generated__/ActivityItem_notification.graphql"
+import { CollectorUpdateNotification } from "app/Scenes/Activity/components/CollectorUpdateNotification"
 import {
   ExpiresInTimer,
   shouldDisplayExpiresInTimer,
@@ -26,101 +27,108 @@ const UNREAD_INDICATOR_SIZE = 8
 const NEW_ARTWORK_IMAGE_SIZE = 60
 
 export const ActivityItem: React.FC<ActivityItemProps> = memo(
-  (props) => {
+  ({ isVisible, notification: _notification }) => {
     const enableBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
     const markAsRead = useMarkNotificationAsRead()
     const tracking = useTracking()
-    const item = useFragment(activityItemFragment, props.notification)
-    const artworksCount = item.objectsCount
+    const notification = useFragment(activityItemFragment, _notification)
+    const artworksCount = notification.objectsCount
     const remainingArtworksCount = artworksCount - 4
     const shouldDisplayCounts =
-      isArtworksBasedNotification(item.notificationType) && remainingArtworksCount > 0
-    const isPartnerOffer = item.notificationType === "PARTNER_OFFER_CREATED"
-    const isEditorial = item.notificationType === "ARTICLE_FEATURED_ARTIST"
+      isArtworksBasedNotification(notification.notificationType) && remainingArtworksCount > 0
+    const isPartnerOffer = notification.notificationType === "PARTNER_OFFER_CREATED"
+    const isEditorial = notification.notificationType === "ARTICLE_FEATURED_ARTIST"
 
     const handlePress = () => {
-      tracking.trackEvent(tracks.tappedNotification(item.notificationType))
+      tracking.trackEvent(tracks.tappedNotification(notification.notificationType))
 
-      if (item.isUnread) {
-        markAsRead(item)
+      if (notification.isUnread) {
+        markAsRead(notification)
       }
 
-      navigateToActivityItem(item)
+      navigateToActivityItem(notification)
     }
 
     const showAsRow = isPartnerOffer
 
     return (
       <TouchableOpacity activeOpacity={0.65} onPress={handlePress}>
-        <Flex flexDirection="row" alignItems="center" px={2}>
-          <Flex flex={1} mr={2}>
-            <Flex flexDirection="column" py={2}>
-              <Flex flexDirection={showAsRow ? "row" : "column"}>
-                <Flex flexDirection="row" alignItems="center">
-                  {item.previewImages.map((image) => {
-                    if (!image?.url) return null
+        <Flex flexDirection="row" alignItems="center" justifyContent="space-between" px={2}>
+          {notification.item?.__typename === "CollectorProfileUpdatePromptNotificationItem" ? (
+            <CollectorUpdateNotification notification={notification} item={notification.item} />
+          ) : (
+            <Flex flex={1} pr={2}>
+              <Flex flexDirection="column" py={2}>
+                <Flex flexDirection={showAsRow ? "row" : "column"}>
+                  <Flex flexDirection="row" alignItems="center">
+                    {notification.previewImages.map((image) => {
+                      if (!image?.url) return null
 
-                    return (
-                      <Flex
-                        key={image.url}
-                        mr={1}
-                        mb={1}
-                        accessibilityLabel="Activity Artwork Image"
-                        height={NEW_ARTWORK_IMAGE_SIZE}
-                        width={NEW_ARTWORK_IMAGE_SIZE}
-                      >
-                        <Image
-                          src={image.url}
-                          width={NEW_ARTWORK_IMAGE_SIZE}
+                      return (
+                        <Flex
+                          key={image.url}
+                          mr={1}
+                          mb={1}
+                          accessibilityLabel="Activity Artwork Image"
                           height={NEW_ARTWORK_IMAGE_SIZE}
-                          showLoadingState={!props.isVisible}
-                          blurhash={enableBlurhash ? image.blurhash : undefined}
-                        />
-                      </Flex>
-                    )
-                  })}
+                          width={NEW_ARTWORK_IMAGE_SIZE}
+                        >
+                          <Image
+                            src={image.url}
+                            width={NEW_ARTWORK_IMAGE_SIZE}
+                            height={NEW_ARTWORK_IMAGE_SIZE}
+                            showLoadingState={!isVisible}
+                            blurhash={enableBlurhash ? image.blurhash : undefined}
+                          />
+                        </Flex>
+                      )
+                    })}
 
-                  {!!shouldDisplayCounts && (
-                    <Text
-                      variant="xs"
-                      color="black60"
-                      accessibilityLabel="Remaining artworks count"
-                    >
-                      + {remainingArtworksCount}
-                    </Text>
-                  )}
-                </Flex>
-
-                <Flex style={{ flex: 1 }}>
-                  {!!isPartnerOffer && (
-                    <PartnerOfferBadge notificationType={item.notificationType} />
-                  )}
-
-                  <Text variant="sm-display" fontWeight="bold">
-                    {item.headline}
-                  </Text>
-
-                  {!!isEditorial && <Text variant="xs">{item.message}</Text>}
-
-                  <Flex flexDirection="row" mt="1px">
-                    <ActivityItemTypeLabel notificationType={item.notificationType} />
-                    {!isPartnerOffer && (
-                      <Text variant="xs" mr={0.5}>
-                        {item.publishedAt}
+                    {!!shouldDisplayCounts && (
+                      <Text
+                        variant="xs"
+                        color="black60"
+                        accessibilityLabel="Remaining artworks count"
+                      >
+                        + {remainingArtworksCount}
                       </Text>
                     )}
-                    {shouldDisplayExpiresInTimer(item.notificationType, item.item) && (
-                      <Flex ml="1px">
-                        <ExpiresInTimer item={item.item} />
-                      </Flex>
+                  </Flex>
+
+                  <Flex style={{ flex: 1 }}>
+                    {!!isPartnerOffer && (
+                      <PartnerOfferBadge notificationType={notification.notificationType} />
                     )}
+
+                    <Text variant="sm-display" fontWeight="bold">
+                      {notification.headline}
+                    </Text>
+
+                    {!!isEditorial && <Text variant="xs">{notification.message}</Text>}
+
+                    <Flex flexDirection="row" mt="1px">
+                      <ActivityItemTypeLabel notificationType={notification.notificationType} />
+                      {!isPartnerOffer && (
+                        <Text variant="xs" mr={0.5}>
+                          {notification.publishedAt}
+                        </Text>
+                      )}
+                      {shouldDisplayExpiresInTimer(
+                        notification.notificationType,
+                        notification.item
+                      ) && (
+                        <Flex ml="1px">
+                          <ExpiresInTimer item={notification.item} />
+                        </Flex>
+                      )}
+                    </Flex>
                   </Flex>
                 </Flex>
               </Flex>
             </Flex>
-          </Flex>
-          {!!item.isUnread && (
+          )}
+          {!!notification.isUnread && (
             <Flex
               width={UNREAD_INDICATOR_SIZE}
               height={UNREAD_INDICATOR_SIZE}
@@ -140,6 +148,8 @@ export const ActivityItem: React.FC<ActivityItemProps> = memo(
 
 const activityItemFragment = graphql`
   fragment ActivityItem_notification on Notification {
+    ...CollectorUpdateNotification_notification
+
     internalID
     id
     title
@@ -152,6 +162,11 @@ const activityItemFragment = graphql`
     objectsCount
 
     item {
+      __typename
+      ... on CollectorProfileUpdatePromptNotificationItem {
+        ...CollectorUpdateNotification_item
+        __typename
+      }
       ... on PartnerOfferCreatedNotificationItem {
         available
         expiresAt

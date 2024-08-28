@@ -1,12 +1,12 @@
+import { Box, Flex, Separator, SkeletonBox, Spacer } from "@artsy/palette-mobile"
 import { ActivityContentQuery } from "__generated__/ActivityContentQuery.graphql"
 import { useMarkNotificationsAsSeen } from "app/Scenes/Activity/hooks/useMarkNotificationsAsSeen"
+import { times } from "lodash"
 import { Fragment } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ActivityList } from "./ActivityList"
 import { NotificationType } from "./types"
 import { getNotificationTypes } from "./utils/getNotificationTypes"
-import { Box, Flex, Separator, SkeletonBox, Spacer } from "@artsy/palette-mobile"
-import { times } from "lodash"
 
 interface ActivityProps {
   type: NotificationType
