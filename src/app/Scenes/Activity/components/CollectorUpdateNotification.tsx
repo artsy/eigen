@@ -1,8 +1,5 @@
 import { Flex, Text, Touchable } from "@artsy/palette-mobile"
-import {
-  CollectorUpdateNotification_item$data,
-  CollectorUpdateNotification_item$key,
-} from "__generated__/CollectorUpdateNotification_item.graphql"
+import { CollectorUpdateNotification_item$key } from "__generated__/CollectorUpdateNotification_item.graphql"
 import { CollectorUpdateNotification_notification$key } from "__generated__/CollectorUpdateNotification_notification.graphql"
 import { MyCollectionBottomSheetModalArtistsPrompt } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistsPrompt"
 import { FC, useState } from "react"
@@ -26,11 +23,9 @@ export const CollectorUpdateNotification: FC<CollectorUpdateNotificationProps> =
     return null
   }
 
-  const handleOnDismiss = () => {
-    setPromptVisible(false)
-  }
-
-  const itemInfo = getItemInfo(item)
+  const hasEmptyCollection =
+    item.me.myCollectionInfo.artworksCount === 0 && item.me.myCollectionInfo.artistsCount === 0
+  const itemInfo = hasEmptyCollection ? addArtistsToCollectiontInfo : collectorProfileInfo
 
   return (
     <>
@@ -52,10 +47,14 @@ export const CollectorUpdateNotification: FC<CollectorUpdateNotificationProps> =
         <MyCollectionBottomSheetModalArtistsPrompt
           title="Tell us about the artists in your collection."
           visible={promptVisible}
-          onDismiss={handleOnDismiss}
+          onDismiss={() => setPromptVisible(true)}
         />
       ) : (
-        <CollectorProfilePrompt me={item.me} visible={promptVisible} onDismiss={handleOnDismiss} />
+        <CollectorProfilePrompt
+          me={item.me}
+          visible={promptVisible}
+          onDismiss={() => setPromptVisible(true)}
+        />
       )}
     </>
   )
@@ -87,21 +86,14 @@ const ITEM_FRAGMENT = graphql`
   }
 `
 
-const getItemInfo = (item: NonNullable<CollectorUpdateNotification_item$data>) => {
-  const hasEmptyCollection =
-    item.me.myCollectionInfo.artworksCount === 0 && item.me.myCollectionInfo.artistsCount === 0
+const addArtistsToCollectiontInfo = {
+  title: "Tell us about the artists in your collection.",
+  body: "Show off your collection and make a great impression.",
+  prompt: "AddArtistsToCollection",
+}
 
-  if (hasEmptyCollection) {
-    return {
-      title: "Tell us about the artists in your collection.",
-      body: "Show off your collection and make a great impression.",
-      prompt: "AddArtistsToCollection",
-    }
-  }
-
-  return {
-    title: "Tell us a little bit more about you.",
-    body: "By completing your profile, you’re more likely to receive quick responses from galleries.",
-    prompt: "CollectorProfile",
-  }
+const collectorProfileInfo = {
+  title: "Tell us a little bit more about you.",
+  body: "By completing your profile, you’re more likely to receive quick responses from galleries.",
+  prompt: "CollectorProfile",
 }

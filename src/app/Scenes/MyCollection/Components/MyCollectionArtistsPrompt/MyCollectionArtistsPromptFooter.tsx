@@ -19,11 +19,6 @@ export const MyCollectionArtistsPromptFooter: FC<MyCollectionArtistsPromptFooter
   const { close } = useBottomSheet()
   const count = MyCollectionAddCollectedArtistsStore.useStoreState((state) => state.count)
 
-  const handleOnClose = () => {
-    console.log("handleOnClose")
-    close()
-  }
-
   return (
     <Flex
       position="absolute"
@@ -38,7 +33,7 @@ export const MyCollectionArtistsPromptFooter: FC<MyCollectionArtistsPromptFooter
       <Button disabled={count === 0} flex={1} onPress={onPress} loading={isLoading}>
         Add Selected Artist{count !== 1 ? "s" : ""} • {count}
       </Button>
-      <Touchable onPress={handleOnClose} disabled={!!isLoading}>
+      <Touchable onPress={() => close()} disabled={!!isLoading}>
         <Text underline textAlign="center">
           I haven’t started a collection yet
         </Text>

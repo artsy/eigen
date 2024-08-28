@@ -80,6 +80,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
   }
 
   const handleCollectionPromptDismiss = () => {
+    dispatch({ type: "setCollectionPromptVisible", payload: false })
     commit({
       variables: { input: { promptedForUpdate: true } },
       onCompleted: (res, e) => {
@@ -99,7 +100,6 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
         )
       },
     })
-    dispatch({ type: "setCollectionPromptVisible", payload: false })
   }
 
   return (
