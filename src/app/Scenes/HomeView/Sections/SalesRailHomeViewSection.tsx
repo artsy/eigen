@@ -22,7 +22,9 @@ export const SalesRailHomeViewSection: React.FC<SalesRailHomeViewSectionProps> =
 
   const { width } = useScreenDimensions()
   const isTablet = width > 700
-
+if (sales.length === 0) {
+  return null
+}
   return (
     <Flex>
       <Flex px={2}>
