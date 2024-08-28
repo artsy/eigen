@@ -2,16 +2,10 @@ import { screen } from "@testing-library/react-native"
 import { ArtworkLotTimer_artwork$data } from "__generated__/ArtworkLotTimer_artwork.graphql"
 import { ArtworkStoreProvider } from "app/Scenes/Artwork/ArtworkStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { DateTime } from "luxon"
 import { ArtworkLotTimerWrapper } from "./ArtworkLotTimer"
 
 describe("CommercialInformation buttons and coundtown timer", () => {
-  beforeEach(() => {
-    const dateNow = 1565871720000
-    Date.now = () => dateNow
-  })
-
-  afterEach(() => jest.clearAllMocks())
-
   it("renders Lot label and CountDownTimer when Artwork is in an auction", async () => {
     renderWithWrappers(
       <ArtworkStoreProvider>
@@ -24,8 +18,9 @@ describe("CommercialInformation buttons and coundtown timer", () => {
       </ArtworkStoreProvider>
     )
 
-    expect(screen.queryByText("Lot 123")).toBeTruthy()
-    // expect(screen.queryByLabelText("CountdownTimer")).toBeTruthy()
+    expect(screen.getByText("Lot 123")).toBeOnTheScreen()
+    expect(screen.getByLabelText("CountdownTimer")).toBeOnTheScreen()
+    expect(screen.getByText("31 Watchers")).toBeOnTheScreen()
   })
 
   it("renders CountDownTimer with the sale artwork's end time when Artwork is in a cascading end time auction", () => {
@@ -40,9 +35,9 @@ describe("CommercialInformation buttons and coundtown timer", () => {
       </ArtworkStoreProvider>
     )
 
-    expect(screen.queryByText("Lot 123")).toBeTruthy()
-    // expect(screen.queryByLabelText("CountdownTimer")).toBeTruthy()
-    // expect(screen.queryByText("3d 7h")).toBeTruthy()
+    expect(screen.getByText("Lot 123")).toBeOnTheScreen()
+    expect(screen.getByLabelText("CountdownTimer")).toBeOnTheScreen()
+    expect(screen.getByText("3d 7h")).toBeOnTheScreen()
   })
 
   it("should render bidding closed and no timer if bidding is closed", () => {
@@ -52,10 +47,7 @@ describe("CommercialInformation buttons and coundtown timer", () => {
           artwork={
             {
               ...artwork,
-              saleArtwork: {
-                ...artwork.saleArtwork,
-                endedAt: "2019-08-16T20:20:00+00:00",
-              },
+              saleArtwork: { ...artwork.saleArtwork, endedAt: "2019-08-16T20:20:00+00:00" },
             } as ArtworkLotTimer_artwork$data
           }
           tracking={{ trackEvent: jest.fn() } as any}
@@ -65,8 +57,8 @@ describe("CommercialInformation buttons and coundtown timer", () => {
       </ArtworkStoreProvider>
     )
 
-    expect(screen.queryByText("Lot 123")).toBeTruthy()
-    expect(screen.queryByText("Bidding closed")).toBeTruthy()
+    expect(screen.getByText("Lot 123")).toBeOnTheScreen()
+    expect(screen.getByText("Bidding closed")).toBeOnTheScreen()
     expect(screen.queryByText("CountdownTimer")).toBeNull()
   })
 })
@@ -76,8 +68,8 @@ const artwork: ArtworkLotTimer_artwork$data = {
   isForSale: true,
   sale: {
     cascadingEndTimeIntervalMinutes: 1,
-    startAt: "2019-08-14T19:22:00+00:00",
-    endAt: "2019-08-18T20:20:00+00:00",
+    startAt: DateTime.now().minus({ days: 7, hours: 3, minutes: 30 }).toISO(),
+    endAt: DateTime.now().plus({ days: 3, hours: 7, minutes: 49 }).toISO(),
     extendedBiddingIntervalMinutes: null,
     extendedBiddingPeriodMinutes: null,
     internalID: "internal-id",
@@ -86,7 +78,7 @@ const artwork: ArtworkLotTimer_artwork$data = {
     liveStartAt: null,
   },
   saleArtwork: {
-    endAt: "2019-08-18T20:20:00+00:00",
+    endAt: DateTime.now().plus({ days: 3, hours: 7, minutes: 49 }).toISO(),
     endedAt: null,
     extendedBiddingEndAt: null,
     lotID: "internal-id",
