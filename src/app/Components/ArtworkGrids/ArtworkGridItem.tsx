@@ -517,7 +517,7 @@ export const ArtworkAuctionTimer: React.FC<{
 }> = (props) => {
   const { onlineBiddingExtended, registrationEndsAt, lotClosesAt } = props
 
-  if (registrationEndsAt) {
+  if (registrationEndsAt && DateTime.fromISO(registrationEndsAt).diffNow().as("seconds") > 0) {
     const formattedRegistrationEndsAt = DateTime.fromISO(registrationEndsAt).toFormat("MMM d")
 
     return (

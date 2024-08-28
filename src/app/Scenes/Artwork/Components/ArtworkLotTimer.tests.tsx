@@ -92,5 +92,10 @@ const artwork: ArtworkLotTimer_artwork$data = {
     lotID: "internal-id",
     lotLabel: "123",
   },
+  collectorSignals: {
+    auction: {
+      lotWatcherCount: 31,
+    },
+  },
   " $fragmentType": "ArtworkLotTimer_artwork",
 }
