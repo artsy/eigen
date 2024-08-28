@@ -264,6 +264,7 @@ const notification = {
       url: "artwork-image-four",
     },
   ],
+  item: { __typename: "PartnerOfferCreatedNotificationItem" },
 }
 
 const notificationWithFF = {
@@ -287,4 +288,5 @@ const notificationWithFF = {
       url: "artwork-image-four",
     },
   ],
+  item: { __typename: "PartnerOfferCreatedNotificationItem" },
 }
