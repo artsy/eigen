@@ -10942,6 +10942,7 @@ union HomeViewSection =
   | FairsRailHomeViewSection
   | HeroUnitsHomeViewSection
   | MarketingCollectionsRailHomeViewSection
+  | SalesRailHomeViewSection
   | ShowsRailHomeViewSection
   | ViewingRoomsRailHomeViewSection
 
@@ -17653,6 +17654,19 @@ enum SaleSorts {
   TIMELY_AT_NAME_DESC
   _ID_ASC
   _ID_DESC
+}
+
+# A sales rail section in the home view
+type SalesRailHomeViewSection implements GenericHomeViewSection & Node {
+  # The component that is prescribed for this section
+  component: HomeViewComponent
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  salesConnection(after: String, before: String, first: Int, last: Int): SaleConnection
 }
 
 input SaveArtworkInput {
