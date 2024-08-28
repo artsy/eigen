@@ -20,9 +20,6 @@ export const formattedTimeLeft = (time: {
     copy = `${parsedHours}h ${parsedMinutes}m`
   } else if (parsedDays < 1 && parsedHours >= 1) {
     copy = `${parsedHours}h`
-  } else if (parsedHours < 1 && parsedMinutes >= 1 && parsedSeconds >= 1) {
-    copy = `${parsedMinutes}m ${parsedSeconds}s`
-    textColor = "orange100"
   } else if (parsedHours < 1 && parsedMinutes >= 1) {
     copy = `${parsedMinutes}m`
     textColor = "orange100"

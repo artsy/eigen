@@ -461,9 +461,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
                 )}
               </Flex>
               {!hideSaveIcon && (
-                <Flex flexDirection="row">
+                <Flex flexDirection="row" alignItems="flex-start">
                   {!!displayAuctionSignal && !!collectorSignals?.auction?.lotWatcherCount && (
-                    <Text ml={0.5} lineHeight="18px" variant="xs" numberOfLines={1}>
+                    <Text lineHeight="18px" variant="xs" numberOfLines={1}>
                       {collectorSignals.auction.lotWatcherCount}
                     </Text>
                   )}

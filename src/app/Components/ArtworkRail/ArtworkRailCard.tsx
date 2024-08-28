@@ -402,9 +402,9 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                 )}
               </Flex>
               {!!showSaveIcon && (
-                <Flex flexDirection="row">
+                <Flex flexDirection="row" alignItems="flex-start">
                   {!!displayAuctionSignal && !!collectorSignals?.auction?.lotWatcherCount && (
-                    <Text ml={0.5} lineHeight="20px" variant="xs" numberOfLines={1}>
+                    <Text lineHeight="20px" variant="xs" numberOfLines={1}>
                       {collectorSignals.auction.lotWatcherCount}
                     </Text>
                   )}
