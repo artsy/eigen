@@ -18,6 +18,7 @@ import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artw
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { DurationProvider } from "app/Components/Countdown"
@@ -452,12 +453,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   </Text>
                 )}
 
-                {!!displayAuctionSignal && (
-                  <ArtworkAuctionTimer
-                    lotClosesAt={collectorSignals?.auction?.lotClosesAt}
-                    onlineBiddingExtended={collectorSignals?.auction?.onlineBiddingExtended}
-                    registrationEndsAt={collectorSignals?.auction?.registrationEndsAt}
-                  />
+                {!!displayAuctionSignal && !!collectorSignals && (
+                  <ArtworkAuctionTimer collectorSignals={collectorSignals} />
                 )}
               </Flex>
               {!hideSaveIcon && (
@@ -508,51 +505,6 @@ const ArtworkHeartIcon: React.FC<{ isSaved: boolean | null; index?: number }> = 
     )
   }
   return <HeartIcon {...iconProps} />
-}
-
-export const ArtworkAuctionTimer: React.FC<{
-  onlineBiddingExtended?: boolean
-  lotClosesAt?: string | null
-  registrationEndsAt?: string | null
-  inRailCard?: boolean
-}> = (props) => {
-  const { onlineBiddingExtended, registrationEndsAt, lotClosesAt, inRailCard } = props
-  const lineHeight = inRailCard ? "20px" : "18px"
-
-  if (registrationEndsAt && DateTime.fromISO(registrationEndsAt).diffNow().as("seconds") > 0) {
-    const formattedRegistrationEndsAt = DateTime.fromISO(registrationEndsAt).toFormat("MMM d")
-
-    return (
-      <Text lineHeight={lineHeight} variant="xs" numberOfLines={1} color="black100">
-        Register by {formattedRegistrationEndsAt}
-      </Text>
-    )
-  }
-
-  const lotEndAt = DateTime.fromISO(lotClosesAt ?? "")
-
-  if (!lotClosesAt || lotEndAt.diffNow().as("days") > 5 || lotEndAt.diffNow().as("seconds") <= 0) {
-    return null
-  }
-
-  const timerColor = lotEndAt.diffNow().as("hours") <= 1 ? "red100" : "blue100"
-  const { time } = getTimer(lotClosesAt)
-  const { timerCopy } = formattedTimeLeft(time)
-
-  if (onlineBiddingExtended) {
-    return (
-      <Text lineHeight={lineHeight} variant="xs" numberOfLines={1} color={timerColor}>
-        Extended, {timerCopy} left
-        {inRailCard ? " to bid" : ""}
-      </Text>
-    )
-  }
-
-  return (
-    <Text lineHeight={lineHeight} variant="xs" numberOfLines={1} color={timerColor}>
-      {timerCopy} left to bid
-    </Text>
-  )
 }
 
 /**
@@ -739,6 +691,7 @@ export default createFragmentContainer(Artwork, {
           registrationEndsAt
           lotClosesAt
         }
+        ...ArtworkAuctionTimer_collectorSignals
       }
       ...useSaveArtworkToArtworkLists_artwork
     }

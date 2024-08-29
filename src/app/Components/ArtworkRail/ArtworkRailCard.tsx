@@ -14,10 +14,8 @@ import {
   ArtworkRailCard_artwork$key,
 } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
-import {
-  ArtworkAuctionTimer,
-  saleMessageOrBidInfo as defaultSaleMessageOrBidInfo,
-} from "app/Components/ArtworkGrids/ArtworkGridItem"
+import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
+import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
@@ -393,13 +391,8 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                   </Text>
                 )}
 
-                {!!displayAuctionSignal && !!collectorSignals?.auction && (
-                  <ArtworkAuctionTimer
-                    lotClosesAt={collectorSignals.auction.lotClosesAt}
-                    onlineBiddingExtended={collectorSignals.auction.onlineBiddingExtended}
-                    registrationEndsAt={collectorSignals.auction.registrationEndsAt}
-                    inRailCard
-                  />
+                {!!displayAuctionSignal && !!collectorSignals && (
+                  <ArtworkAuctionTimer collectorSignals={collectorSignals} inRailCard />
                 )}
               </Flex>
               {!!showSaveIcon && (
@@ -675,6 +668,7 @@ const artworkFragment = graphql`
         registrationEndsAt
         lotClosesAt
       }
+      ...ArtworkAuctionTimer_collectorSignals
     }
     ...useSaveArtworkToArtworkLists_artwork
   }
