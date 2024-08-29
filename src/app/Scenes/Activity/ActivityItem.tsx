@@ -39,6 +39,8 @@ export const ActivityItem: React.FC<ActivityItemProps> = memo(
       isArtworksBasedNotification(notification.notificationType) && remainingArtworksCount > 0
     const isPartnerOffer = notification.notificationType === "PARTNER_OFFER_CREATED"
     const isEditorial = notification.notificationType === "ARTICLE_FEATURED_ARTIST"
+    const isCollectorProfileUpdate =
+      notification.item?.__typename === "CollectorProfileUpdatePromptNotificationItem"
 
     const handlePress = () => {
       tracking.trackEvent(tracks.tappedNotification(notification.notificationType))
@@ -47,7 +49,9 @@ export const ActivityItem: React.FC<ActivityItemProps> = memo(
         markAsRead(notification)
       }
 
-      navigateToActivityItem(notification)
+      if (!isCollectorProfileUpdate) {
+        navigateToActivityItem(notification)
+      }
     }
 
     const showAsRow = isPartnerOffer
@@ -55,7 +59,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = memo(
     return (
       <TouchableOpacity activeOpacity={0.65} onPress={handlePress}>
         <Flex flexDirection="row" alignItems="center" justifyContent="space-between" px={2}>
-          {notification.item?.__typename === "CollectorProfileUpdatePromptNotificationItem" ? (
+          {!!isCollectorProfileUpdate ? (
             <CollectorUpdateNotification notification={notification} item={notification.item} />
           ) : (
             <Flex flex={1} pr={2}>
