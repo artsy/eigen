@@ -1787,11 +1787,15 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
   last: String
   location: String
   marketingCollections(
+    after: String
+    before: String
     category: String
+    first: Int
     isFeaturedArtistContent: Boolean
+    last: Int
     size: Int
     slugs: [String!]
-  ): [MarketingCollection]
+  ): [MarketingCollection!]!
   meta(page: ArtistPage = ABOUT): ArtistMeta!
   middle: String
   name: String
@@ -9496,7 +9500,10 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
   links(format: Format): String
   location: Location
   marketingCollectionSlugs: [String]!
-  marketingCollections(size: Int): [MarketingCollection]!
+  marketingCollections(
+    # Number of artworks to return
+    size: Int
+  ): [MarketingCollection]!
   mobileImage: Image
   name: String
   organizer: FairOrganizer
@@ -11796,7 +11803,11 @@ type MarketPriceInsightsEdge {
   node: MarketPriceInsights
 }
 
-type MarketingCollection {
+type MarketingCollection implements Node {
+  artistIds: [String]
+  artworkIds: [String]
+
+  # Artworks Elastic Search results
   artworksConnection(
     acquireable: Boolean
     additionalGeneIDs: [String]
@@ -11826,13 +11837,19 @@ type MarketingCollection {
     input: FilterArtworksInput
     inquireableOnly: Boolean
     keyword: String
+
+    # When true, will only return exact keyword match
     keywordMatchExact: Boolean
     last: Int
     locationCities: [String]
     majorPeriods: [String]
+
+    # When true, will only return `marketable` works (not nude or provocative).
     marketable: Boolean
     marketingCollectionID: String
     materialsTerms: [String]
+
+    # A string from the list of allocations, or * to denote all mediums
     medium: String
     offerable: Boolean
     page: Int
@@ -11844,50 +11861,59 @@ type MarketingCollection {
     priceRange: String
     saleID: ID
     size: Int
+
+    # Filter results by Artwork sizes
     sizes: [ArtworkSizes]
     sort: String
     tagID: String
     width: String
   ): FilterArtworksConnection
   category: String!
-  createdAt: ISO8601DateTime!
-  credit: String
+  createdAt(
+    format: String
 
-  # HTML description, derived from the markdown description
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  credit: String
   description: String
   descriptionMarkdown: String
   featuredArtistExclusionIds: [String!]!
+  geneIds: [String]
   headerImage: String
 
-  # Unique ID for this marketing collection
+  # A globally unique ID.
   id: ID!
 
-  # Unique ID for this marketing collection
+  # A type-specific ID likely used as a database ID.
   internalID: ID!
-
-  # Returns true if this collection has linked collections with members
   isDepartment: Boolean!
   isFeaturedArtistContent: Boolean!
+  keyword: String
+
+  # Linked Collections
   linkedCollections: [MarketingCollectionGroup!]!
   priceGuidance: Float
   query: MarketingCollectionQuery!
 
-  # Returns collections by the same artist if more than 4 exist, otherwise returns collections from the same category
-  relatedCollections(size: Int = 10): [MarketingCollection!]!
-
-  # ID of an artwork with highest merchandis ability
+  # Related Collections
+  relatedCollections(
+    # The number of Related Marketing Collections to return
+    size: Int = 10
+  ): [MarketingCollection!]!
   representativeArtworkID: String
-
-  # Show featured artists section in header. Defaults to true
   showFeaturedArtists: Boolean!
-
-  # Show artworks rail in header. Defaults to true
   showHeaderArtworksRail: Boolean!
   slug: String!
-  thumbnail: String @deprecated(reason: "If querying via Metaphysics use thumbnailImage instead.")
+  thumbnail: String
   thumbnailImage: Image
   title: String!
-  updatedAt: ISO8601DateTime!
+  updatedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
 }
 
 type MarketingCollectionCategory {
@@ -11958,6 +11984,13 @@ type MarketingCollectionsRailHomeViewSection implements GenericHomeViewSection &
     first: Int
     last: Int
   ): MarketingCollectionConnection
+}
+
+enum MarketingCollectionsSorts {
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
 }
 
 union Match =
@@ -16068,6 +16101,8 @@ type Query {
     # The ID of the Credit Card
     id: String!
   ): CreditCard
+
+  # Curated Marketing Collections
   curatedMarketingCollections(size: Int): [MarketingCollection]
 
   # A list of trending artists. Inferred from a manually curated collection of trending artworks.
@@ -16276,19 +16311,29 @@ type Query {
 
   # Get price insights for a market.
   marketPriceInsights(artistId: ID!, medium: String!): MarketPriceInsights
+
+  # Marketing Categories
   marketingCategories: [MarketingCollectionCategory!]!
 
-  # Find a marketing collection by ID or slug
-  marketingCollection(slug: String!): MarketingCollection
+  # Marketing Collection
+  marketingCollection(
+    # The slug or ID of the Marketing Collection
+    slug: String!
+  ): MarketingCollection
 
-  # An array of marketing collections. Defaults to returning all available collections if no args are passed
+  # A list of MarketingCollections
   marketingCollections(
+    after: String
     artistID: String
+    before: String
     category: String
+    first: Int
     isFeaturedArtistContent: Boolean
+    last: Int
     size: Int
-    slugs: [String!]
-  ): [MarketingCollection!]
+    slugs: [String]
+    sort: MarketingCollectionsSorts
+  ): [MarketingCollection!]!
 
   # A Search for Artists
   matchArtist(
@@ -20754,6 +20799,9 @@ type Viewer {
     id: String!
   ): CreditCard
 
+  # Curated Marketing Collections
+  curatedMarketingCollections(size: Int): [MarketingCollection]
+
   # A list of trending artists. Inferred from a manually curated collection of trending artworks.
   curatedTrendingArtists(
     # Returns the items in the list that come after the specified cursor.
@@ -20957,13 +21005,29 @@ type Viewer {
   job(id: ID!): Job!
   jobs: [Job!]!
   markdown(content: String!): MarkdownContent
+
+  # Marketing Categories
+  marketingCategories: [MarketingCollectionCategory!]!
+
+  # Marketing Collection
+  marketingCollection(
+    # The slug or ID of the Marketing Collection
+    slug: String!
+  ): MarketingCollection
+
+  # A list of MarketingCollections
   marketingCollections(
+    after: String
     artistID: String
+    before: String
     category: String
+    first: Int
     isFeaturedArtistContent: Boolean
+    last: Int
     size: Int
-    slugs: [String!]
-  ): [MarketingCollection]
+    slugs: [String]
+    sort: MarketingCollectionsSorts
+  ): [MarketingCollection!]!
 
   # A Search for Artists
   matchArtist(
