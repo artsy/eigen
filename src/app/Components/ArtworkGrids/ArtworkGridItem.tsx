@@ -29,6 +29,7 @@ import { formattedTimeLeft } from "app/Scenes/Activity/utils/formattedTimeLeft"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
+import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { getTimer } from "app/utils/getTimer"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -38,7 +39,6 @@ import {
   ArtworkActionTrackingProps,
   tracks as artworkActionTracks,
 } from "app/utils/track/ArtworkActions"
-import { DateTime } from "luxon"
 import React, { useRef, useState } from "react"
 import { View, ViewProps } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -505,106 +505,6 @@ const ArtworkHeartIcon: React.FC<{ isSaved: boolean | null; index?: number }> = 
     )
   }
   return <HeartIcon {...iconProps} />
-}
-
-/**
- * Get sale message or bid info
- * @example
- * "$1,000 (Starting price)"
- * @example
- * "Bidding closed"
- *  @example
- * "$1,750 (2 bids)"
- */
-export const saleMessageOrBidInfo = ({
-  artwork,
-  isSmallTile = false,
-  collectorSignals,
-  auctionSignals,
-}: {
-  artwork: Readonly<{
-    sale:
-      | { isAuction: boolean | null | undefined; isClosed: boolean | null | undefined }
-      | null
-      | undefined
-    saleArtwork:
-      | {
-          counts: { bidderPositions: number | null | undefined } | null | undefined
-          currentBid: { display: string | null | undefined } | null | undefined
-        }
-      | null
-      | undefined
-    saleMessage: string | null | undefined
-    realizedPrice: string | null | undefined
-  }>
-  isSmallTile?: boolean
-  collectorSignals?: Readonly<{
-    partnerOffer:
-      | {
-          isAvailable: boolean | null | undefined
-          priceWithDiscount: { display: string | null | undefined } | null | undefined
-          endAt: string | null | undefined
-        }
-      | null
-      | undefined
-  }> | null
-  auctionSignals?: Readonly<{
-    liveBiddingStarted: boolean
-    liveStartAt: string | null | undefined
-    lotClosesAt: string | null | undefined
-    bidCount: number
-  }> | null
-}): string | null | undefined => {
-  const { sale, saleArtwork, realizedPrice } = artwork
-
-  // Price which an artwork was sold for.
-  if (realizedPrice) {
-    return `Sold for ${realizedPrice}`
-  }
-
-  // Auction specs are available at https://artsyproduct.atlassian.net/browse/MX-482
-  // The auction is open
-  if (sale?.isAuction && !sale.isClosed) {
-    const bidderPositions = saleArtwork?.counts?.bidderPositions
-    const currentBid = saleArtwork?.currentBid?.display
-
-    if (!!auctionSignals) {
-      const lotEndAt = DateTime.fromISO(auctionSignals.lotClosesAt ?? "")
-      const bidCount = auctionSignals.bidCount
-
-      if (lotEndAt.diffNow().as("seconds") <= 0) {
-        return "Bidding closed"
-      }
-
-      if (auctionSignals.liveBiddingStarted) {
-        return "Bidding live now"
-      }
-
-      if (!!bidCount) {
-        return `${currentBid} (${bidCount} bid${bidCount > 1 ? "s" : ""})`
-      }
-
-      return currentBid
-    }
-
-    // If there are no current bids we show the starting price with an indication that it's a new bid
-    if (!bidderPositions) {
-      if (isSmallTile) {
-        return `${currentBid} (Bid)`
-      }
-      return `${currentBid} (Starting bid)`
-    }
-
-    // If there are bids we show the current bid price and the number of bids
-    const numberOfBidsString = bidderPositions === 1 ? "1 bid" : `${bidderPositions} bids`
-    return `${currentBid} (${numberOfBidsString})`
-  }
-
-  if (collectorSignals?.partnerOffer?.isAvailable) {
-    return collectorSignals.partnerOffer.priceWithDiscount?.display
-  }
-
-  return artwork.saleMessage
 }
 
 export default createFragmentContainer(Artwork, {
