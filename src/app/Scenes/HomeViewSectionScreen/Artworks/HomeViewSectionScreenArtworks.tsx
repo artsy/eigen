@@ -1,6 +1,6 @@
 import { Flex, Screen, SimpleMessage, Text } from "@artsy/palette-mobile"
 import { HomeViewSectionScreenArtworksQuery } from "__generated__/HomeViewSectionScreenArtworksQuery.graphql"
-import { HomeViewSectionScreenArtworks_artworksRailHomeViewSection$key } from "__generated__/HomeViewSectionScreenArtworks_artworksRailHomeViewSection.graphql"
+import { HomeViewSectionScreenArtworks_section$data } from "__generated__/HomeViewSectionScreenArtworks_section.graphql"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import { PAGE_SIZE } from "app/Components/constants"
 import { HomeViewSectionScreenArtworksPlaceholder } from "app/Scenes/HomeViewSectionScreen/Artworks/HomeViewSectionScreenArtworksPlaceholder"
@@ -9,23 +9,31 @@ import { withSuspense } from "app/utils/hooks/withSuspense"
 import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
 import { pluralize } from "app/utils/pluralize"
 import { useRefreshControl } from "app/utils/refreshHelpers"
-import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
+import {
+  createPaginationContainer,
+  graphql,
+  RelayPaginationProp,
+  useLazyLoadQuery,
+} from "react-relay"
 
 interface ArtworksScreenHomeSection {
-  section: HomeViewSectionScreenArtworks_artworksRailHomeViewSection$key
+  section: HomeViewSectionScreenArtworks_section$data
+  relay: RelayPaginationProp
 }
 
-export const ArtworksScreenHomeSection: React.FC<ArtworksScreenHomeSection> = (props) => {
-  const { data, isLoadingNext, loadNext, refetch, hasNext } = usePaginationFragment<
-    HomeViewSectionScreenArtworksQuery,
-    HomeViewSectionScreenArtworks_artworksRailHomeViewSection$key
-  >(artworksFragment, props.section)
-
+export const ArtworksScreenHomeSection: React.FC<ArtworksScreenHomeSection> = ({
+  section,
+  relay,
+}) => {
   const { scrollHandler } = Screen.useListenForScreenScroll()
 
-  const artworks = extractNodes(data?.artworksConnection)
+  const artworks = extractNodes(section?.artworksConnection)
 
-  const RefreshControl = useRefreshControl(refetch)
+  const RefreshControl = useRefreshControl(relay.refetch)
+
+  const isLoading = relay.isLoading()
+  const hasNext = relay.hasMore()
+  const loadMore = relay.loadMore
 
   return (
     <Flex style={{ height: "100%" }}>
@@ -40,18 +48,20 @@ export const ArtworksScreenHomeSection: React.FC<ArtworksScreenHomeSection> = (p
         }
         ListHeaderComponent={() => (
           <Flex>
-            <Text variant="lg-display">{data.component?.title}</Text>
+            <Text variant="lg-display">{section.component?.title}</Text>
             <Text variant="xs" pt={2}>
-              {data.artworksConnection?.totalCount} {pluralize("Artwork", artworks.length)}
+              {section.artworksConnection?.totalCount} {pluralize("Artwork", artworks.length)}
             </Text>
           </Flex>
         )}
         refreshControl={RefreshControl}
         hasMore={hasNext}
         loadMore={() => {
-          loadNext(PAGE_SIZE)
+          loadMore(PAGE_SIZE, (error) => {
+            console.error("Failed to load more", error)
+          })
         }}
-        isLoading={isLoadingNext}
+        isLoading={isLoading}
         onScroll={scrollHandler}
         style={{ paddingBottom: 120 }}
       />
@@ -59,37 +69,62 @@ export const ArtworksScreenHomeSection: React.FC<ArtworksScreenHomeSection> = (p
   )
 }
 
-export const artworksFragment = graphql`
-  fragment HomeViewSectionScreenArtworks_artworksRailHomeViewSection on ArtworksRailHomeViewSection
-  @refetchable(queryName: "ArtworksScreenHomeSection_viewerRefetch")
-  @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
-    component {
-      title
-    }
-    artworksConnection(after: $cursor, first: $count)
-      @connection(key: "ArtworksScreenHomeSection_artworksConnection", filters: []) {
-      totalCount
-      edges {
-        node {
-          id
-          slug
-          href
-          image(includeAll: false) {
-            aspectRatio
-            blurhash
+export const ArtworksListPaginationContainer = createPaginationContainer(
+  ArtworksScreenHomeSection,
+  {
+    section: graphql`
+      fragment HomeViewSectionScreenArtworks_section on ArtworksRailHomeViewSection
+      @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
+        id
+        internalID
+        component {
+          title
+        }
+        artworksConnection(after: $cursor, first: $count)
+          @connection(key: "HomeViewSectionScreenArtworks_artworksConnection") {
+          totalCount
+          edges {
+            node {
+              id
+              slug
+              href
+              image(includeAll: false) {
+                aspectRatio
+                blurhash
+              }
+              ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
+            }
           }
-          ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
         }
       }
-    }
+    `,
+  },
+  {
+    getVariables(_props, { count, cursor }, fragmentVariables) {
+      return {
+        ...fragmentVariables,
+        id: _props.section.internalID,
+        cursor,
+        count,
+      }
+    },
+    query: graphql`
+      query HomeViewSectionScreenArtworksListQuery($cursor: String, $count: Int!, $id: String!) {
+        homeView {
+          section(id: $id) {
+            ...HomeViewSectionScreenArtworks_section @arguments(cursor: $cursor, count: $count)
+          }
+        }
+      }
+    `,
   }
-`
+)
 
 export const artworksQuery = graphql`
   query HomeViewSectionScreenArtworksQuery($id: String!) {
     homeView {
       section(id: $id) @principalField {
-        ...HomeViewSectionScreenArtworks_artworksRailHomeViewSection
+        ...HomeViewSectionScreenArtworks_section
       }
     }
   }
@@ -101,9 +136,15 @@ interface ArtworksScreenHomeSectionQRProps {
 
 export const HomeViewSectionScreenArtworksQueryRenderer: React.FC<ArtworksScreenHomeSectionQRProps> =
   withSuspense((props) => {
-    const data = useLazyLoadQuery<HomeViewSectionScreenArtworksQuery>(artworksQuery, {
-      id: props.sectionId,
-    })
+    const data = useLazyLoadQuery<HomeViewSectionScreenArtworksQuery>(
+      artworksQuery,
+      {
+        id: props.sectionId,
+      },
+      {
+        fetchPolicy: "network-only",
+      }
+    )
 
     // This won't happen because the query would fail thanks to the @principalField
     // Adding it here to make TS happy
@@ -111,5 +152,5 @@ export const HomeViewSectionScreenArtworksQueryRenderer: React.FC<ArtworksScreen
       return <Text>Something went wrong.</Text>
     }
 
-    return <ArtworksScreenHomeSection section={data.homeView.section} />
+    return <ArtworksListPaginationContainer section={data.homeView.section} />
   }, HomeViewSectionScreenArtworksPlaceholder)
