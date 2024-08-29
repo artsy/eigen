@@ -24,7 +24,7 @@ export const CollectorUpdateNotification: FC<CollectorUpdateNotificationProps> =
   }
 
   const hasEmptyCollection =
-    item.me.myCollectionInfo.artworksCount === 0 && item.me.myCollectionInfo.artistsCount === 0
+    item.me.myCollectionInfo.artworksCount === 0 && !item.me.userInterestsConnection?.totalCount
   const itemInfo = hasEmptyCollection ? addArtistsToCollectiontInfo : collectorProfileInfo
 
   return (
@@ -71,17 +71,12 @@ const ITEM_FRAGMENT = graphql`
     me @required(action: NONE) {
       ...MyProfileEditModal_me
 
-      profession
-      location {
-        city
-      }
       myCollectionInfo @required(action: NONE) {
-        artistsCount
         artworksCount
       }
-    }
-    collectorProfile @required(action: NONE) {
-      lastUpdatePromptAt
+      userInterestsConnection(first: 1, interestType: ARTIST) {
+        totalCount
+      }
     }
   }
 `
