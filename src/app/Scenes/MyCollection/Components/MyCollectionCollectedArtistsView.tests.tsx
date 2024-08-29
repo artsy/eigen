@@ -8,16 +8,16 @@ import { graphql } from "react-relay"
 
 describe("MyCollectionCollectedArtistsView", () => {
   const { renderWithRelay } = setupTestWrapper<MyCollectionCollectedArtistsViewTestsQuery>({
-    Component: (props: any) => (
+    Component: ({ me }) => (
       <MyCollectionArtworksKeywordStore.Provider>
         <MyCollectionTabsStoreProvider>
-          <MyCollectionCollectedArtistsView me={props.me} />
+          <MyCollectionCollectedArtistsView me={me} />
         </MyCollectionTabsStoreProvider>
       </MyCollectionArtworksKeywordStore.Provider>
     ),
     query: graphql`
       query MyCollectionCollectedArtistsViewTestsQuery @relay_test_operation {
-        me {
+        me @required(action: NONE) {
           ...MyCollectionCollectedArtistsView_me
         }
       }
