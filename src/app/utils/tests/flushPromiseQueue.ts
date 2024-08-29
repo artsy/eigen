@@ -1,5 +1,6 @@
 /**
  * @deprecated consider instead:
+ *   - await waitFor(() => { ... })
  *   - waiting an element to appear with `await screen.findBy`
  *   - waiting an element to disappear with `await waitForElementToBeRemoved(() => screen.getByTestId("test"))`
  *   - resolving any pending relay operations with `mockMostRecentOperation`
