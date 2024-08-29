@@ -435,6 +435,112 @@ describe("ArtworkGridItem", () => {
         expect(screen.queryByText("Exp. 1d 12h")).not.toBeOnTheScreen()
       })
     })
+
+    describe("auction signals", () => {
+      beforeEach(
+        () =>
+          __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAuctionImprovementsSignals: true })
+      )
+
+      describe("live auction", () => {
+        it("shows the bidding live now signal", () => {
+          renderWithRelay({
+            Artwork: () => ({
+              ...artwork,
+              sale: { ...artwork.sale, isClosed: false },
+              realizedPrice: null,
+              collectorSignals: { auction: { liveBiddingStarted: true } },
+            }),
+          })
+
+          expect(screen.getByText("Bidding live now")).toBeOnTheScreen()
+        })
+
+        it("shows the bidding closed signal", () => {
+          renderWithRelay({
+            Artwork: () => ({
+              ...artwork,
+              sale: { ...artwork.sale, isClosed: false },
+              realizedPrice: null,
+              collectorSignals: {
+                auction: {
+                  lotClosesAt: DateTime.fromMillis(Date.now()).minus({ days: 1 }).toISO(),
+                },
+              },
+            }),
+          })
+
+          expect(screen.getByText("Bidding closed")).toBeOnTheScreen()
+        })
+      })
+
+      describe("bidding timers", () => {
+        it("shows the Register by date", () => {
+          const registerDate = DateTime.fromMillis(Date.now()).plus({ days: 1 })
+
+          renderWithRelay({
+            Artwork: () => ({
+              ...artwork,
+              sale: { ...artwork.sale, isClosed: false },
+              realizedPrice: null,
+              collectorSignals: { auction: { registrationEndsAt: registerDate.toISO() } },
+            }),
+          })
+
+          // Register by Aug 26
+          expect(
+            screen.getByText(`Register by ${registerDate.toFormat("MMM d")}`)
+          ).toBeOnTheScreen()
+        })
+
+        it("shows the time left to bid", () => {
+          renderWithRelay({
+            Artwork: () => ({
+              ...artwork,
+              sale: { ...artwork.sale, isClosed: false },
+              realizedPrice: null,
+              collectorSignals: {
+                auction: { lotClosesAt: DateTime.fromMillis(Date.now()).plus({ days: 1 }).toISO() },
+              },
+            }),
+          })
+
+          expect(screen.getByText("23h 59m left to bid")).toBeOnTheScreen()
+        })
+
+        it("shows the extended left to bid in minutes", () => {
+          renderWithRelay({
+            Artwork: () => ({
+              ...artwork,
+              sale: { ...artwork.sale, isClosed: false },
+              realizedPrice: null,
+              collectorSignals: {
+                auction: {
+                  lotClosesAt: DateTime.fromMillis(Date.now()).plus({ minutes: 1 }).toISO(),
+                  onlineBiddingExtended: true,
+                },
+              },
+            }),
+          })
+
+          expect(screen.getByText("Extended, 59s left")).toBeOnTheScreen()
+        })
+      })
+
+      it("shows number of bids", () => {
+        renderWithRelay({
+          Artwork: () => ({
+            ...artwork,
+            sale: { ...artwork.sale, isClosed: false },
+            saleArtwork: { currentBid: { display: "$3,700" } },
+            realizedPrice: null,
+            collectorSignals: { auction: { bidCount: 7 } },
+          }),
+        })
+
+        expect(screen.getByText("$3,700 (7 bids)")).toBeOnTheScreen()
+      })
+    })
   })
 })
 

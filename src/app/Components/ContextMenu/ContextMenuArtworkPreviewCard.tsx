@@ -1,10 +1,10 @@
 import { Flex, Text, useColor, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { ArtworkRailCard_artwork$data } from "__generated__/ArtworkRailCard_artwork.graphql"
-import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { RecentlySoldCardSection } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { ArtworkDisplayProps } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
+import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { PixelRatio } from "react-native"
@@ -167,7 +167,7 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
 export interface ContextMenuArtworkPreviewCardImageProps {
   image: ArtworkRailCard_artwork$data["image"]
   urgencyTag?: string | null
-  containerWidth?: number | null
+  containerWidth?: number
   isRecentlySoldArtwork?: boolean
   /** imageHeightExtra is an optional padding value you might want to add to image height
    * When using large width like with RecentlySold, image appears cropped
@@ -219,7 +219,7 @@ export const ContextMenuArtworkPreviewCardImage: React.FC<
               ? imageDimensions.height + imageHeightExtra
               : ARTWORK_RAIL_CARD_IMAGE_HEIGHT
           }
-          width={containerWidth!}
+          width={containerWidth}
         />
       </Flex>
       {!!urgencyTag && (

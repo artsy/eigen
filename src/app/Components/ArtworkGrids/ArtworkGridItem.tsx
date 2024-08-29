@@ -18,6 +18,7 @@ import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artw
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { DurationProvider } from "app/Components/Countdown"
@@ -28,6 +29,7 @@ import { formattedTimeLeft } from "app/Scenes/Activity/utils/formattedTimeLeft"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
+import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { getTimer } from "app/utils/getTimer"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -115,6 +117,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
   const AREnablePartnerOfferSignals = useFeatureFlag("AREnablePartnerOfferSignals")
+  const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
 
   let filterParams: any = undefined
 
@@ -130,6 +133,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const biddingEndAt = extendedBiddingEndAt ?? lotEndAt
   const lotID = artwork.saleArtwork?.lotID
   const collectorSignals = artwork.collectorSignals
+  const isAuction = artwork.sale?.isAuction
 
   const { currentBiddingEndAt, lotSaleExtended } = useArtworkBidding({
     lotID,
@@ -235,6 +239,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const saleInfo = saleMessageOrBidInfo({
     artwork,
     collectorSignals: AREnablePartnerOfferSignals ? collectorSignals : null,
+    auctionSignals: AREnableAuctionImprovementsSignals ? collectorSignals?.auction : null,
   })
 
   const endsAt = artwork.sale?.cascadingEndTimeIntervalMinutes
@@ -258,8 +263,13 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const displayLimitedTimeOfferSignal =
     AREnablePartnerOfferSignals &&
     collectorSignals?.partnerOffer?.isAvailable &&
-    !artwork.sale?.isAuction &&
+    !isAuction &&
     !displayPriceOfferMessage
+
+  const displayAuctionSignal = AREnableAuctionImprovementsSignals && isAuction
+
+  const saleInfoTextColor =
+    displayAuctionSignal && collectorSignals?.auction?.liveBiddingStarted ? "blue100" : "black100"
 
   const handleSupress = async (item: DissapearableArtwork) => {
     await item._disappearable?.disappear()
@@ -296,8 +306,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
                 {Boolean(
                   !hideUrgencyTags &&
                     urgencyTag &&
-                    artwork?.sale?.isAuction &&
-                    !artwork?.sale?.isClosed
+                    isAuction &&
+                    !artwork?.sale?.isClosed &&
+                    !displayAuctionSignal
                 ) && (
                   <Flex
                     position="absolute"
@@ -349,7 +360,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                     <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
                       Lot {artwork.saleArtwork.lotLabel}
                     </Text>
-                    {!!artwork.sale?.cascadingEndTimeIntervalMinutes && (
+                    {!!artwork.sale?.cascadingEndTimeIntervalMinutes && !displayAuctionSignal && (
                       <DurationProvider startAt={endsAt ?? undefined}>
                         <LotCloseInfo
                           duration={null}
@@ -416,6 +427,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                     variant="xs"
                     weight="medium"
                     numberOfLines={1}
+                    color={saleInfoTextColor}
                     {...saleInfoTextStyle}
                   >
                     {saleInfo}
@@ -440,9 +452,18 @@ export const Artwork: React.FC<ArtworkProps> = ({
                     Exclusive Access
                   </Text>
                 )}
+
+                {!!displayAuctionSignal && !!collectorSignals && (
+                  <ArtworkAuctionTimer collectorSignals={collectorSignals} />
+                )}
               </Flex>
               {!hideSaveIcon && (
-                <Flex>
+                <Flex flexDirection="row" alignItems="flex-start">
+                  {!!displayAuctionSignal && !!collectorSignals?.auction?.lotWatcherCount && (
+                    <Text lineHeight="18px" variant="xs" numberOfLines={1}>
+                      {collectorSignals.auction.lotWatcherCount}
+                    </Text>
+                  )}
                   <Touchable
                     haptic
                     onPress={disableArtworksListPrompt ? handleArtworkSave : saveArtworkToLists}
@@ -484,79 +505,6 @@ const ArtworkHeartIcon: React.FC<{ isSaved: boolean | null; index?: number }> = 
     )
   }
   return <HeartIcon {...iconProps} />
-}
-
-/**
- * Get sale message or bid info
- * @example
- * "$1,000 (Starting price)"
- * @example
- * "Bidding closed"
- *  @example
- * "$1,750 (2 bids)"
- */
-export const saleMessageOrBidInfo = ({
-  artwork,
-  isSmallTile = false,
-  collectorSignals,
-}: {
-  artwork: Readonly<{
-    sale:
-      | { isAuction: boolean | null | undefined; isClosed: boolean | null | undefined }
-      | null
-      | undefined
-    saleArtwork:
-      | {
-          counts: { bidderPositions: number | null | undefined } | null | undefined
-          currentBid: { display: string | null | undefined } | null | undefined
-        }
-      | null
-      | undefined
-    saleMessage: string | null | undefined
-    realizedPrice: string | null | undefined
-  }>
-  isSmallTile?: boolean
-  collectorSignals?: Readonly<{
-    partnerOffer:
-      | {
-          isAvailable: boolean | null | undefined
-          priceWithDiscount: { display: string | null | undefined } | null | undefined
-          endAt: string | null | undefined
-        }
-      | null
-      | undefined
-  }> | null
-}): string | null | undefined => {
-  const { sale, saleArtwork, realizedPrice } = artwork
-
-  // Price which an artwork was sold for.
-  if (realizedPrice) {
-    return `Sold for ${realizedPrice}`
-  }
-
-  // Auction specs are available at https://artsyproduct.atlassian.net/browse/MX-482
-  // The auction is open
-  if (sale?.isAuction && !sale.isClosed) {
-    const bidderPositions = saleArtwork?.counts?.bidderPositions
-    const currentBid = saleArtwork?.currentBid?.display
-    // If there are no current bids we show the starting price with an indication that it's a new bid
-    if (!bidderPositions) {
-      if (isSmallTile) {
-        return `${currentBid} (Bid)`
-      }
-      return `${currentBid} (Starting bid)`
-    }
-
-    // If there are bids we show the current bid price and the number of bids
-    const numberOfBidsString = bidderPositions === 1 ? "1 bid" : `${bidderPositions} bids`
-    return `${currentBid} (${numberOfBidsString})`
-  }
-
-  if (collectorSignals?.partnerOffer?.isAvailable) {
-    return collectorSignals.partnerOffer.priceWithDiscount?.display
-  }
-
-  return artwork.saleMessage
 }
 
 export default createFragmentContainer(Artwork, {
@@ -634,6 +582,16 @@ export default createFragmentContainer(Artwork, {
             display
           }
         }
+        auction {
+          lotWatcherCount
+          bidCount
+          liveBiddingStarted
+          liveStartAt
+          onlineBiddingExtended
+          registrationEndsAt
+          lotClosesAt
+        }
+        ...ArtworkAuctionTimer_collectorSignals
       }
       ...useSaveArtworkToArtworkLists_artwork
     }
