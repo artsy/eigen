@@ -56,9 +56,10 @@ export const Versions = {
   AddExperimentsOverrides: 43,
   DeleteDirtyArtworkDetails: 44,
   AddSubmissionDraft: 45,
+  DeleteArtworkAndArtistViewOption: 46,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddSubmissionDraft
+export const CURRENT_APP_VERSION = Versions.DeleteArtworkAndArtistViewOption
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -323,6 +324,10 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.AddSubmissionDraft]: (state) => {
     state.artworkSubmission.draft = null
+  },
+  [Versions.DeleteArtworkAndArtistViewOption]: (state) => {
+    delete state.userPrefs.artworkViewOption
+    delete state.userPrefs.artistViewOption
   },
 }
 
