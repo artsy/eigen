@@ -51,7 +51,7 @@ describe("useSendInquiry", () => {
       action_name: "inquirySend",
       owner_type: "Artwork",
       owner_id: '<mock-value-for-field-"internalID">',
-      owner_slug: '<mock-value-for-field-"city">',
+      owner_slug: '<mock-value-for-field-"slug">',
     })
     expect(mockTrackEvent).toHaveBeenNthCalledWith(2, {
       action_type: "success",
@@ -94,7 +94,7 @@ describe("useSendInquiry", () => {
       action_name: "inquirySend",
       owner_type: "Artwork",
       owner_id: '<mock-value-for-field-"internalID">',
-      owner_slug: '<mock-value-for-field-"city">',
+      owner_slug: '<mock-value-for-field-"slug">',
     })
     expect(mockTrackEvent).toHaveBeenNthCalledWith(2, {
       action_type: "fail",
@@ -114,7 +114,7 @@ describe("useSendInquiry", () => {
       const loader = await loaderHook({
         Me: () => ({
           lastUpdatePromptAt: null,
-          location: { city: null },
+          location: { display: null },
           collectorProfile: { lastUpdatePromptAt: null },
           myCollectionInfo: { artistsCount: 1, artworksCount: 1 },
         }),
@@ -144,7 +144,8 @@ describe("useSendInquiry", () => {
       const loader = await loaderHook({
         Me: () => ({
           collectorProfile: { lastUpdatePromptAt: null },
-          myCollectionInfo: { artistsCount: 0, artworksCount: 0 },
+          myCollectionInfo: { artworksCount: 0 },
+          userInterestsConnection: { totalCount: 0 },
         }),
       })
 
@@ -172,7 +173,7 @@ describe("useSendInquiry", () => {
       const loader = await loaderHook({
         Me: () => ({
           lastUpdatePromptAt: null,
-          location: { city: null },
+          location: { display: null },
           collectorProfile: { lastUpdatePromptAt: null },
           myCollectionInfo: { artistsCount: 0, artworksCount: 0 },
         }),

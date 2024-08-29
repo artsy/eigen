@@ -5,17 +5,17 @@ type InquiryModalMe = NonNullable<useSendInquiry_me$data>
 type InquiryModalCollectorProfile = NonNullable<useSendInquiry_collectorProfile$data>
 
 interface userShouldBePromptedToCompleteProfileParams {
-  city?: NonNullable<InquiryModalMe["location"]>["city"]
+  locationDisplay?: NonNullable<InquiryModalMe["location"]>["display"]
   lastUpdatePromptAt: InquiryModalCollectorProfile["lastUpdatePromptAt"]
   profession?: InquiryModalMe["profession"]
 }
 
 export const userShouldBePromptedToCompleteProfile = ({
-  city,
+  locationDisplay,
   lastUpdatePromptAt,
   profession,
 }: userShouldBePromptedToCompleteProfileParams) => {
-  const userHasAnIncompleteProfile = !profession || !city
+  const userHasAnIncompleteProfile = !profession || !locationDisplay
 
   return (
     userHasAnIncompleteProfile && userHasNotBeenPromptedWithinCooldownPeriod(lastUpdatePromptAt)
@@ -25,7 +25,7 @@ export const userShouldBePromptedToCompleteProfile = ({
 interface userShouldBePromptedToAddArtistsToCollectionParams {
   lastUpdatePromptAt: InquiryModalCollectorProfile["lastUpdatePromptAt"]
   artworksCount: InquiryModalMe["myCollectionInfo"]["artworksCount"]
-  artistsCount: InquiryModalMe["myCollectionInfo"]["artistsCount"]
+  artistsCount: NonNullable<InquiryModalMe["userInterestsConnection"]>["totalCount"]
 }
 
 export const userShouldBePromptedToAddArtistsToCollection = ({

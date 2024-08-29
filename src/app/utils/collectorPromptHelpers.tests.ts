@@ -8,9 +8,9 @@ const MOCK_DATE = new Date("2024-08-20T00:00:00Z")
 global.Date.now = jest.fn(() => MOCK_DATE.getTime())
 
 describe("userShouldBePromptedToCompleteProfile", () => {
-  it("should prompt the user when city and profession are missing and cooldown period has passed", () => {
+  it("should prompt the user when location and profession are missing and cooldown period has passed", () => {
     const result = userShouldBePromptedToCompleteProfile({
-      city: undefined,
+      locationDisplay: "",
       profession: undefined,
       lastUpdatePromptAt: "2024-07-01T00:00:00Z",
     })
@@ -18,9 +18,9 @@ describe("userShouldBePromptedToCompleteProfile", () => {
     expect(result).toBe(true)
   })
 
-  it("should not prompt the user when city and profession are missing but cooldown period has not passed", () => {
+  it("should not prompt the user when location and profession are missing but cooldown period has not passed", () => {
     const result = userShouldBePromptedToCompleteProfile({
-      city: undefined,
+      locationDisplay: undefined,
       profession: undefined,
       lastUpdatePromptAt: "2024-08-15T00:00:00Z",
     })
@@ -28,9 +28,9 @@ describe("userShouldBePromptedToCompleteProfile", () => {
     expect(result).toBe(false)
   })
 
-  it("should not prompt the user when city and profession are provided even if cooldown period has passed", () => {
+  it("should not prompt the user when location and profession are provided even if cooldown period has passed", () => {
     const result = userShouldBePromptedToCompleteProfile({
-      city: "New York",
+      locationDisplay: "New York",
       profession: "Artist",
       lastUpdatePromptAt: "2024-07-01T00:00:00Z",
     })
@@ -40,7 +40,7 @@ describe("userShouldBePromptedToCompleteProfile", () => {
 
   it("should prompt the user when profession is missing and cooldown period has passed", () => {
     const result = userShouldBePromptedToCompleteProfile({
-      city: "New York",
+      locationDisplay: "New York",
       profession: undefined,
       lastUpdatePromptAt: "2024-07-01T00:00:00Z",
     })
@@ -50,7 +50,7 @@ describe("userShouldBePromptedToCompleteProfile", () => {
 
   it("should return true when there is no lastUpdatePromptAt date and profile is incomplete", () => {
     const result = userShouldBePromptedToCompleteProfile({
-      city: undefined,
+      locationDisplay: undefined,
       profession: undefined,
       lastUpdatePromptAt: undefined,
     })
@@ -104,7 +104,7 @@ describe("userShouldBePromptedToAddArtistsToCollection", () => {
 describe("userHasNotBeenPromptedWithinCooldownPeriod", () => {
   it("should return true when lastUpdatePromptAt is undefined", () => {
     const result = userShouldBePromptedToCompleteProfile({
-      city: undefined,
+      locationDisplay: undefined,
       profession: undefined,
       lastUpdatePromptAt: undefined,
     })
@@ -114,7 +114,7 @@ describe("userHasNotBeenPromptedWithinCooldownPeriod", () => {
 
   it("should return true when the cooldown period has passed", () => {
     const result = userShouldBePromptedToCompleteProfile({
-      city: undefined,
+      locationDisplay: undefined,
       profession: undefined,
       lastUpdatePromptAt: "2024-07-01T00:00:00Z",
     })
@@ -124,7 +124,7 @@ describe("userHasNotBeenPromptedWithinCooldownPeriod", () => {
 
   it("should return false when the cooldown period has not passed", () => {
     const result = userShouldBePromptedToCompleteProfile({
-      city: undefined,
+      locationDisplay: undefined,
       profession: undefined,
       lastUpdatePromptAt: "2024-08-15T00:00:00Z",
     })

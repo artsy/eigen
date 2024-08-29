@@ -48,9 +48,7 @@ export const useSendInquiry = ({
 
     setIsLoading(true)
 
-    tracking.trackEvent(
-      tracks.attemptedToSendTheInquiry(artwork?.internalID, me.location?.city ?? undefined)
-    )
+    tracking.trackEvent(tracks.attemptedToSendTheInquiry(artwork?.internalID, artwork?.slug))
 
     commit({
       variables: {
@@ -91,8 +89,9 @@ export const useSendInquiry = ({
         tracking.trackEvent(tracks.successfullySentTheInquiry(artwork.internalID, artwork.slug))
 
         const lastUpdatePromptAt = collectorProfile.lastUpdatePromptAt
-        const city = me.location?.city
+        const locationDisplay = me.location?.display
         const profession = me.profession
+        const artworksCount = me.myCollectionInfo.artworksCount
 
         if (!profilePromptIsEnabled) {
           setTimeout(() => {
@@ -101,7 +100,9 @@ export const useSendInquiry = ({
           return
         }
 
-        if (userShouldBePromptedToCompleteProfile({ city, profession, lastUpdatePromptAt })) {
+        if (
+          userShouldBePromptedToCompleteProfile({ locationDisplay, profession, lastUpdatePromptAt })
+        ) {
           dispatch({ type: "setProfilePromptVisible", payload: true })
           return
         }
@@ -109,7 +110,8 @@ export const useSendInquiry = ({
         if (
           userShouldBePromptedToAddArtistsToCollection({
             lastUpdatePromptAt,
-            ...me.myCollectionInfo,
+            artworksCount,
+            artistsCount: me.userInterestsConnection?.totalCount,
           })
         ) {
           dispatch({ type: "setCollectionPromptVisible", payload: true })
@@ -142,15 +144,17 @@ const FRAGMENT_COLLECTOR_PROFILE = graphql`
 const FRAGMENT_ME = graphql`
   fragment useSendInquiry_me on Me {
     location {
-      city
+      display
     }
     profession
     collectorProfile @required(action: NONE) {
       ...useSendInquiry_collectorProfile
     }
     myCollectionInfo @required(action: NONE) {
-      artistsCount
       artworksCount
+    }
+    userInterestsConnection(first: 1, interestType: ARTIST) {
+      totalCount
     }
   }
 `

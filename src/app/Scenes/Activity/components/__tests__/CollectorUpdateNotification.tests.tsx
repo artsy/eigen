@@ -43,7 +43,8 @@ describe("CollectorUpdateNotification", () => {
   it("renders collector profile information", async () => {
     renderWithRelay({
       Me: () => ({
-        profession: null,
+        profession: "Blacksmith",
+        location: { display: "" },
       }),
       CollectorProfileType: () => ({
         lastUpdatePromptAt: "2021-09-01T00:00:00Z",
@@ -57,10 +58,8 @@ describe("CollectorUpdateNotification", () => {
     renderWithRelay({
       Me: () => ({
         profession: null,
-        myCollectionInfo: {
-          artistsCount: 0,
-          artworksCount: 0,
-        },
+        myCollectionInfo: { artworksCount: 0 },
+        userInterestsConnection: { totalCount: 0 },
       }),
       CollectorProfileType: () => ({
         lastUpdatePromptAt: "2021-09-01T00:00:00Z",
