@@ -207,7 +207,9 @@ const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
           <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
             <Text variant="xs" color="black60">
               {!!collectorSignals?.auction?.lotWatcherCount
-                ? `${collectorSignals.auction.lotWatcherCount} Watchers`
+                ? `${collectorSignals.auction.lotWatcherCount} Watcher${
+                    collectorSignals.auction.lotWatcherCount > 1 ? "s" : ""
+                  }`
                 : ""}
             </Text>
 
