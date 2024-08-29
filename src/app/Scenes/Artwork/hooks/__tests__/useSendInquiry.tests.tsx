@@ -193,7 +193,7 @@ describe("useSendInquiry", () => {
 
       await waitFor(() =>
         expect(dispatch).toHaveBeenCalledWith({
-          type: "setProfilePromptVisible",
+          type: "setCollectionPromptVisible",
           payload: true,
         })
       )

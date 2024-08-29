@@ -101,13 +101,6 @@ export const useSendInquiry = ({
         }
 
         if (
-          userShouldBePromptedToCompleteProfile({ locationDisplay, profession, lastUpdatePromptAt })
-        ) {
-          dispatch({ type: "setProfilePromptVisible", payload: true })
-          return
-        }
-
-        if (
           userShouldBePromptedToAddArtistsToCollection({
             lastUpdatePromptAt,
             artworksCount,
@@ -115,6 +108,13 @@ export const useSendInquiry = ({
           })
         ) {
           dispatch({ type: "setCollectionPromptVisible", payload: true })
+          return
+        }
+
+        if (
+          userShouldBePromptedToCompleteProfile({ locationDisplay, profession, lastUpdatePromptAt })
+        ) {
+          dispatch({ type: "setProfilePromptVisible", payload: true })
           return
         }
 
