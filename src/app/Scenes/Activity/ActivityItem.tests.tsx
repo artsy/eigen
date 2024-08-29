@@ -98,6 +98,22 @@ describe("ActivityItem", () => {
     )
   })
 
+  it("does not navigate given a notificationItem of type 'PartnerOfferCreatedNotificationItem'", async () => {
+    renderWithRelay({
+      Notification: () => ({
+        ...notificationWithFF,
+        item: {
+          item: notificationWithFF.item,
+          __typename: "CollectorProfileUpdatePromptNotificationItem",
+        },
+      }),
+    })
+
+    fireEvent.press(await screen.findByText("Tell us a little bit more about you."))
+
+    expect(navigate).not.toHaveBeenCalled()
+  })
+
   it("should NOT call `mark as read` mutation if the notification has already been read", async () => {
     renderWithRelay({
       Notification: () => notificationWithFF,
