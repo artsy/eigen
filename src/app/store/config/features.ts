@@ -247,7 +247,7 @@ export const features = {
     echoFlagKey: "AREnableSubmitArtworkTier2Information",
   },
   AREnableCollectorProfilePrompts: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable prompts to update collector profile",
     showInDevMenu: true,
     echoFlagKey: "AREnableCollectorProfilePrompts",
