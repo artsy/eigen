@@ -78,7 +78,7 @@ export class Inbox extends React.Component<Props, State> {
     this.setState({ activeTab: tabName as Tab })
   }
   render() {
-    const hasActiveBids = (this.props.me.myBids?.active ?? []).length > 0
+    const hasActiveBids = (this.props.me?.myBids?.active ?? []).length > 0
     const initialPageName = hasActiveBids ? "bids" : "inquiries"
 
     return (
