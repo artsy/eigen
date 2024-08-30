@@ -13,6 +13,7 @@ import { DevToggleItem } from "app/system/devTools/DevMenu/Components/DevToggleI
 import { eigenSentryReleaseName } from "app/system/errorReporting/sentrySetup"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { RelayCache } from "app/system/relay/RelayCache"
+import { saveToken } from "app/utils/PushNotification"
 import { useUnleashEnvironment } from "app/utils/experiments/hooks"
 import { capitalize, sortBy } from "lodash"
 import { useState } from "react"
@@ -184,6 +185,31 @@ export const DevTools: React.FC<{}> = () => {
               toast.show("Copied to clipboard", "middle")
             }}
           />
+          <DevMenuButtonItem
+            title="Sync push token to prod"
+            onPress={async () => {
+              let pushToken
+              if (Platform.OS === "ios") {
+                pushToken = await LegacyNativeModules.ArtsyNativeModule.getPushToken()
+              } else {
+                pushToken = await AsyncStorage.getItem("PUSH_NOTIFICATION_TOKEN")
+              }
+              if (pushToken) {
+                const ignoreSameTokenCheck = true
+                const useProd = true
+                const saved = await saveToken(pushToken, ignoreSameTokenCheck, useProd)
+                if (saved) {
+                  toast.show("Push token synced to prod", "middle")
+                } else {
+                  toast.show("Failed to sync push token to prod", "middle")
+                }
+              } else {
+                toast.show("No push token found", "middle")
+                return
+              }
+            }}
+          />
+
           <DevMenuButtonItem
             title="Log out"
             titleColor="red100"

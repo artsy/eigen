@@ -48,7 +48,7 @@ export const savePendingToken = async () => {
   }
 }
 
-export const saveToken = (token: string, ignoreSameTokenCheck = false) => {
+export const saveToken = (token: string, ignoreSameTokenCheck = false, useProd = false) => {
   // eslint-disable-next-line no-async-promise-executor
   return new Promise<boolean>(async (resolve, reject) => {
     const previousToken = await AsyncStorage.getItem(PUSH_NOTIFICATION_TOKEN)
@@ -66,7 +66,7 @@ export const saveToken = (token: string, ignoreSameTokenCheck = false) => {
         const environment = unsafe__getEnvironment()
         const url = environment.gravityURL + "/api/v1/device"
         const name = __TEST__ ? "my-device-name" : DeviceInfo.getDeviceId()
-        const production = environment.env === "production"
+        const production = environment.env === "production" || useProd
         const body = JSON.stringify({
           name,
           token,
