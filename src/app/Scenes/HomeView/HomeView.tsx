@@ -1,10 +1,20 @@
 import { Flex, Screen, Spacer, Spinner, Text } from "@artsy/palette-mobile"
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
-import { HomeViewSectionsConnection_viewer$key } from "__generated__/HomeViewSectionsConnection_viewer.graphql"
+import {
+  HomeViewSectionsConnection_viewer$data,
+  HomeViewSectionsConnection_viewer$key,
+} from "__generated__/HomeViewSectionsConnection_viewer.graphql"
 import { Section } from "app/Scenes/HomeView/Sections/Section"
+import { isSectionEmpty } from "app/Scenes/HomeView/utils/isSectionEmpty"
+import { useRailViewedTracking } from "app/Scenes/HomeView/utils/useRailViewedTracking"
 import { extractNodes } from "app/utils/extractNodes"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { Suspense } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
+
+export type SectionT = ExtractNodeType<
+  HomeViewSectionsConnection_viewer$data["homeView"]["sectionsConnection"]
+>
 
 export const HomeView: React.FC = () => {
   const queryData = useLazyLoadQuery<HomeViewQuery>(homeViewScreenQuery, {
@@ -17,6 +27,11 @@ export const HomeView: React.FC = () => {
   >(sectionsFragment, queryData.viewer)
 
   const sections = extractNodes(data?.homeView.sectionsConnection)
+
+  const { viewabilityConfig, onViewableItemsChanged } = useRailViewedTracking({
+    keyExtractor: (section) => section.internalID,
+    filterSection: isSectionEmpty,
+  })
 
   return (
     <Screen>
@@ -36,6 +51,8 @@ export const HomeView: React.FC = () => {
               </Flex>
             ) : null
           }
+          viewabilityConfig={viewabilityConfig}
+          onViewableItemsChanged={onViewableItemsChanged}
         />
       </Screen.Body>
     </Screen>
@@ -73,36 +90,60 @@ const sectionsFragment = graphql`
             }
             ... on ActivityRailHomeViewSection {
               internalID
+              _notificationsConnection: notificationsConnection {
+                totalCount
+              }
               ...ActivityRailHomeViewSection_section
             }
             ... on ArticlesRailHomeViewSection {
               internalID
+              _articlesRailConnection: articlesConnection {
+                totalCount
+              }
               ...ArticlesRailHomeViewSection_section
               ...ArticlesCardsHomeViewSection_section
             }
             ... on ArtworksRailHomeViewSection {
               internalID
+              _artworksConnection: artworksConnection {
+                totalCount
+              }
               ...ArtworksRailHomeViewSection_section
               ...FeaturedCollectionHomeViewSection_section
             }
             ... on ArtistsRailHomeViewSection {
               internalID
+              _artistsConnection: artistsConnection {
+                totalCount
+              }
               ...ArtistsRailHomeViewSection_section
             }
             ... on AuctionResultsRailHomeViewSection {
               internalID
+              _auctionResultsConnection: auctionResultsConnection {
+                totalCount
+              }
               ...AuctionResultsRailHomeViewSection_section
             }
             ... on HeroUnitsHomeViewSection {
               internalID
+              _heroUnitsConnection: heroUnitsConnection {
+                totalCount
+              }
               ...HeroUnitsRailHomeViewSection_section
             }
             ... on FairsRailHomeViewSection {
               internalID
+              _fairsConnection: fairsConnection {
+                totalCount
+              }
               ...FairsRailHomeViewSection_section
             }
             ... on MarketingCollectionsRailHomeViewSection {
               internalID
+              _marketingCollectionsConnection: marketingCollectionsConnection {
+                totalCount
+              }
               ...MarketingCollectionsRailHomeViewSection_section
             }
             ... on ShowsRailHomeViewSection {
@@ -115,6 +156,9 @@ const sectionsFragment = graphql`
             }
             ... on SalesRailHomeViewSection {
               internalID
+              _salesConnection: salesConnection {
+                totalCount
+              }
               ...SalesRailHomeViewSection_section
             }
           }

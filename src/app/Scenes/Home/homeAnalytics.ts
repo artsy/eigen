@@ -336,7 +336,7 @@ export default class HomeAnalytics {
     positionY,
   }: {
     contextModule: ContextModule
-    positionY: number
+    positionY?: number
   }): RailViewed {
     return {
       action: ActionType.railViewed,

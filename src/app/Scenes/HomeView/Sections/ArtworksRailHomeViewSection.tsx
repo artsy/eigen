@@ -14,7 +14,7 @@ interface ArtworksRailHomeViewSectionProps {
 export const ArtworksRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionProps> = ({
   section,
 }) => {
-  const data = useFragment(fragment, section)
+  const data = useFragment(artworksSectionFragment, section)
   const title = data.component?.title
   const artworks = extractNodes(data.artworksConnection)
   const componentHref = "" // TODO: should be in schema
@@ -49,7 +49,7 @@ export const ArtworksRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionPr
   )
 }
 
-const fragment = graphql`
+export const artworksSectionFragment = graphql`
   fragment ArtworksRailHomeViewSection_section on ArtworksRailHomeViewSection {
     component {
       title
