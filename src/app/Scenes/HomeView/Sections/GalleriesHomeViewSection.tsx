@@ -27,8 +27,10 @@ export const GalleriesHomeViewSection: React.FC<GalleriesHomeViewSectionProps> =
     <Flex>
       <Touchable
         onPress={() => {
-          const href = section.component?.href ?? "/galleries-for-you"
-          navigate(href)
+          const href = section.component?.href
+          if (href) {
+            navigate(href)
+          }
         }}
         haptic="impactLight"
       >
@@ -70,8 +72,10 @@ export const GalleriesHomeViewSection: React.FC<GalleriesHomeViewSectionProps> =
                 variant={hasImage ? "outlineLight" : "fillDark"}
                 size="small"
                 onPress={() => {
-                  const href = section.component?.behaviors?.viewAll?.href ?? "/galleries-for-you"
-                  navigate(href)
+                  const href = section.component?.behaviors?.viewAll?.href
+                  if (href) {
+                    navigate(href)
+                  }
                 }}
               >
                 Explore

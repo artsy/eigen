@@ -8,15 +8,12 @@ import { graphql } from "react-relay"
 describe("GalleriesHomeViewSection", () => {
   const { renderWithRelay } = setupTestWrapper<GalleriesHomeViewSectionTestsQuery>({
     Component: (props) => {
-      if (!props.homeView.section) {
-        return null
-      }
       return <GalleriesHomeViewSection section={props.homeView.section} />
     },
     query: graphql`
       query GalleriesHomeViewSectionTestsQuery @relay_test_operation {
-        homeView {
-          section(id: "home-view-section-galleries-near-you") {
+        homeView @required(action: NONE) {
+          section(id: "home-view-section-galleries-near-you") @required(action: NONE) {
             ... on GalleriesHomeViewSection {
               ...GalleriesHomeViewSection_section
             }
