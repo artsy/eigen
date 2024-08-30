@@ -23,15 +23,15 @@ export const GalleriesHomeViewSection: React.FC<GalleriesHomeViewSectionProps> =
   const hasImage = !!section.component.backgroundImageURL
   const textColor = hasImage ? "white100" : "black100"
 
-  const componenntHref = section.component?.href
+  const componentHref = section.component?.href
   const viewAllHref = section.component?.behaviors?.viewAll?.href
 
   return (
     <Flex>
       <Touchable
         onPress={() => {
-          if (componenntHref) {
-            navigate(componenntHref)
+          if (componentHref) {
+            navigate(componentHref)
           }
         }}
         haptic="impactLight"
