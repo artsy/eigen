@@ -669,4 +669,5 @@ export const ArtworkFixture = {
       ],
     },
   },
+  collectorSignals: null,
 }
