@@ -23,13 +23,15 @@ export const GalleriesHomeViewSection: React.FC<GalleriesHomeViewSectionProps> =
   const hasImage = !!section.component.backgroundImageURL
   const textColor = hasImage ? "white100" : "black100"
 
+  const componenntHref = section.component?.href
+  const viewAllHref = section.component?.behaviors?.viewAll?.href
+
   return (
     <Flex>
       <Touchable
         onPress={() => {
-          const href = section.component?.href
-          if (href) {
-            navigate(href)
+          if (componenntHref) {
+            navigate(componenntHref)
           }
         }}
         haptic="impactLight"
@@ -67,20 +69,19 @@ export const GalleriesHomeViewSection: React.FC<GalleriesHomeViewSectionProps> =
               </Text>
             </Flex>
 
-            <Flex mt={0.5} maxWidth={150}>
-              <Button
-                variant={hasImage ? "outlineLight" : "fillDark"}
-                size="small"
-                onPress={() => {
-                  const href = section.component?.behaviors?.viewAll?.href
-                  if (href) {
-                    navigate(href)
-                  }
-                }}
-              >
-                Explore
-              </Button>
-            </Flex>
+            {!!viewAllHref && (
+              <Flex mt={0.5} maxWidth={150}>
+                <Button
+                  variant={hasImage ? "outlineLight" : "fillDark"}
+                  size="small"
+                  onPress={() => {
+                    navigate(viewAllHref)
+                  }}
+                >
+                  {section.component.behaviors?.viewAll?.buttonText}
+                </Button>
+              </Flex>
+            )}
           </Flex>
         </Flex>
       </Touchable>
