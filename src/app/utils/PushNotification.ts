@@ -48,7 +48,7 @@ export const savePendingToken = async () => {
   }
 }
 
-export const saveToken = (token: string, ignoreSameTokenCheck = false, useProd = false) => {
+export const saveToken = (token: string, ignoreSameTokenCheck = false, overrideProd = false) => {
   // eslint-disable-next-line no-async-promise-executor
   return new Promise<boolean>(async (resolve, reject) => {
     const previousToken = await AsyncStorage.getItem(PUSH_NOTIFICATION_TOKEN)
@@ -64,14 +64,9 @@ export const saveToken = (token: string, ignoreSameTokenCheck = false, useProd =
         reject("Push Notification: No access token")
       } else {
         const environment = unsafe__getEnvironment()
-        let gravityURL = environment.gravityURL
-        if (useProd) {
-          gravityURL = "https://api.artsy.net"
-        }
-        const url = gravityURL + "/api/v1/device"
-        console.warn("url", url)
+        const url = environment.gravityURL + "/api/v1/device"
         const name = __TEST__ ? "my-device-name" : DeviceInfo.getDeviceId()
-        const production = environment.env === "production" || useProd
+        const production = environment.env === "production" || overrideProd
         const body = JSON.stringify({
           name,
           token,

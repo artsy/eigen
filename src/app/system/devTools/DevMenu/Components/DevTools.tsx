@@ -31,6 +31,7 @@ const configurableDevToggleKeys = sortBy(
 export const DevTools: React.FC<{}> = () => {
   const [devToolQuery, setDevToolQuery] = useState("")
   const migrationVersion = GlobalStore.useAppState((s) => s.version)
+  const env = GlobalStore.useAppState((s) => s.devicePrefs.environment.env)
 
   const userID = GlobalStore.useAppState((s) => s.auth.userID)
   const server = GlobalStore.useAppState((s) => s.devicePrefs.environment.strings.webURL).slice(
@@ -188,6 +189,11 @@ export const DevTools: React.FC<{}> = () => {
           <DevMenuButtonItem
             title="Sync push token to prod"
             onPress={async () => {
+              if (env !== "production") {
+                toast.show("Switch to prod environment first", "middle")
+                return
+              }
+
               let pushToken
               if (Platform.OS === "ios") {
                 pushToken = await LegacyNativeModules.ArtsyNativeModule.getPushToken()
@@ -196,11 +202,15 @@ export const DevTools: React.FC<{}> = () => {
               }
               if (pushToken) {
                 const ignoreSameTokenCheck = true
-                const useProd = true
-                const saved = await saveToken(pushToken, ignoreSameTokenCheck, useProd)
-                if (saved) {
-                  toast.show("Push token synced to prod", "middle")
-                } else {
+                const overrideProd = true
+                try {
+                  const saved = await saveToken(pushToken, ignoreSameTokenCheck, overrideProd)
+                  if (saved) {
+                    toast.show("Push token synced to prod", "middle")
+                  } else {
+                    toast.show("Failed to sync push token to prod", "middle")
+                  }
+                } catch (e) {
                   toast.show("Failed to sync push token to prod", "middle")
                 }
               } else {
