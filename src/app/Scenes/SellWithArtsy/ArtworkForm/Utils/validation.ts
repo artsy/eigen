@@ -174,7 +174,7 @@ export interface SubmissionModel {
     conditionDescription: string | null | undefined
   }
 
-  externalId: string | null | undefined
+  externalId: string | null
   additionalDocuments: NormalizedDocument[]
 }
 

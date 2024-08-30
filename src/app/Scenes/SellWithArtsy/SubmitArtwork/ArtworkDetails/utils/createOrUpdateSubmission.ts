@@ -22,7 +22,7 @@ export const createOrUpdateSubmission = async (
   values:
     | (Partial<SubmissionModel> & Partial<SWASubmissionContactInformationFormModel>)
     | (ArtworkDetailsFormModel & SWASubmissionContactInformationFormModel),
-  submissionId: string | null
+  externalID: string | null
 ) => {
   const isRarityLimitedEdition = values.attributionClass === limitedEditionValue
   type NewType = ConsignmentAttributionClass
@@ -60,9 +60,9 @@ export const createOrUpdateSubmission = async (
     year: values.year,
   }
 
-  if (submissionId) {
+  if (externalID) {
     return await updateConsignSubmission({
-      id: submissionId,
+      externalId: externalID,
       ...submissionValues,
     })
   }

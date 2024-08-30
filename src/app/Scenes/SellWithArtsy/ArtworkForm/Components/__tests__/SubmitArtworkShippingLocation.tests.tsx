@@ -81,6 +81,7 @@ describe("SubmitArtworkShippingLocation", () => {
         {
           updateConsignmentSubmission: {
             consignmentSubmission: {
+              externalId: "submission-id",
               internalID: "submission-id",
             },
           },
@@ -104,6 +105,7 @@ describe("SubmitArtworkShippingLocation", () => {
           zipCode: "10115",
         },
         submissionId: "submission-id",
+        externalId: "submission-id",
       },
     })
 
@@ -136,7 +138,7 @@ describe("SubmitArtworkShippingLocation", () => {
             editionNumber: undefined,
             editionSizeFormatted: undefined,
             height: undefined,
-            id: "submission-id",
+            externalId: "submission-id",
             locationAddress: "Street 1",
             locationAddress2: "5th Floor",
             locationCity: "Friedrichshain",

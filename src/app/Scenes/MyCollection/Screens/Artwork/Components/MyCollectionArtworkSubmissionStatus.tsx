@@ -30,14 +30,13 @@ export const MyCollectionArtworkSubmissionStatus: React.FC<
     "AREnableSubmitArtworkTier2Information"
   )
 
-  const { consignmentSubmission, submissionId, isListed } = useFragment(
-    submissionStateFragment,
-    artwork
-  )
+  const { consignmentSubmission, isListed } = useFragment(submissionStateFragment, artwork)
 
   const artworkData = useFragment(submissionStateFragment, artwork)
 
-  if (!consignmentSubmission || !submissionId) return null
+  if (!consignmentSubmission?.externalID) {
+    return null
+  }
 
   const { state, stateLabel, actionLabel } = consignmentSubmission
 
@@ -55,7 +54,7 @@ export const MyCollectionArtworkSubmissionStatus: React.FC<
       initialValues: {},
     }
 
-    navigate(`/sell/submissions/${submissionId}/edit`, { passProps })
+    navigate(`/sell/submissions/${consignmentSubmission.externalID}/edit`, { passProps })
   }
 
   return (
@@ -92,7 +91,9 @@ export const MyCollectionArtworkSubmissionStatus: React.FC<
             {!!actionLabel && !isListed && (
               <Touchable
                 onPress={() => {
-                  trackTappedEditSubmission(submissionId, null, state)
+                  if (consignmentSubmission.externalID) {
+                    trackTappedEditSubmission(consignmentSubmission.externalID, null, state)
+                  }
                   navigateToTheSubmissionFlow()
                 }}
                 testID="action-label"
@@ -144,6 +145,7 @@ export const MyCollectionArtworkSubmissionStatus: React.FC<
 const submissionStateFragment = graphql`
   fragment MyCollectionArtworkSubmissionStatus_submissionState on Artwork {
     consignmentSubmission {
+      externalID
       state
       stateLabel
       actionLabel
@@ -152,7 +154,6 @@ const submissionStateFragment = graphql`
       buttonLabel
     }
     internalID
-    submissionId
     isListed
     ...ArtworkSubmissionStatusDescription_artwork
   }

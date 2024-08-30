@@ -53,13 +53,13 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
   )
 
   const handleBackPress = () => {
-    trackTappedSubmissionBack(values.submissionId, currentStep)
+    trackTappedSubmissionBack(values.externalId, currentStep)
     navigateToPreviousStep()
   }
 
   const handleNextPress = () => {
     if (isFinalStep) {
-      trackConsignmentSubmitted(values.submissionId)
+      trackConsignmentSubmitted(values.externalId)
     }
 
     navigateToNextStep()
@@ -113,7 +113,7 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
         <Button
           block
           onPress={() => {
-            trackTappedSubmitAnotherWork(values.submissionId)
+            trackTappedSubmitAnotherWork(values.externalId)
             dismissModal(() => {
               navigate("/sell/submissions/new")
             })
@@ -125,7 +125,7 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
         <Button
           block
           onPress={() => {
-            trackTappedViewArtworkInMyCollection(values.submissionId)
+            trackTappedViewArtworkInMyCollection(values.externalId)
             switchTab("profile")
             dismissModal()
             requestAnimationFrame(() => {
@@ -180,7 +180,7 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
   }
 
   // Hide the "Back" button in the Title step when editing a submission to disallow updating the artist.
-  const displayBackButton = !(values.submissionId && currentStep === INITIAL_EDIT_STEP)
+  const displayBackButton = !(values.externalId && currentStep === INITIAL_EDIT_STEP)
 
   return (
     <Wrapper>

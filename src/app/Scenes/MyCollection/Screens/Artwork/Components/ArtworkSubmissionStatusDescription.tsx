@@ -22,13 +22,14 @@ export const ArtworkSubmissionStatusDescription: React.FC<
   const {
     consignmentSubmission,
     isListed,
-    submissionId,
     internalID: artworkInternalID,
   } = useFragment(fragment, artworkData)
 
   const { trackTappedEditSubmission } = useSubmitArtworkTracking()
 
-  if (!consignmentSubmission || !submissionId) return null
+  if (!consignmentSubmission?.externalID) {
+    return null
+  }
 
   const { stateLabel, actionLabel, stateHelpMessage, state, buttonLabel } = consignmentSubmission
 
@@ -70,7 +71,7 @@ export const ArtworkSubmissionStatusDescription: React.FC<
       hasStartedFlowFromMyCollection: true,
       initialValues: {},
     }
-    navigate(`/sell/submissions/${submissionId}/edit`, { passProps })
+    navigate(`/sell/submissions/${consignmentSubmission.externalID}/edit`, { passProps })
   }
 
   const displayButtonLabel = isListed ? "View Listing" : buttonLabel
@@ -102,7 +103,13 @@ export const ArtworkSubmissionStatusDescription: React.FC<
               haptic
               variant={buttonVariant}
               onPress={() => {
-                trackTappedEditSubmission(submissionId, displayButtonLabel, state)
+                if (consignmentSubmission.externalID) {
+                  trackTappedEditSubmission(
+                    consignmentSubmission.externalID,
+                    displayButtonLabel,
+                    state
+                  )
+                }
                 navigateToTheSubmissionFlow()
               }}
             >
@@ -118,8 +125,8 @@ export const ArtworkSubmissionStatusDescription: React.FC<
 const fragment = graphql`
   fragment ArtworkSubmissionStatusDescription_artwork on Artwork {
     internalID
-    submissionId
     consignmentSubmission {
+      externalID
       state
       stateLabel
       stateHelpMessage

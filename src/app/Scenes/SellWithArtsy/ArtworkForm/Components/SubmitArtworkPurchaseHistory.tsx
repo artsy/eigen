@@ -51,7 +51,7 @@ export const SubmitArtworkPurchaseHistory = () => {
             provenance: values.provenance,
             signature: values.signature,
           },
-          values.submissionId
+          values.externalId
         )
 
         navigation.navigate("AddDimensions")

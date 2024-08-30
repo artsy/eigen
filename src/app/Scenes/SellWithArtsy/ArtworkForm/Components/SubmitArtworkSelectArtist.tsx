@@ -66,8 +66,10 @@ export const SubmitArtworkSelectArtist = () => {
     }
 
     try {
-      const submissionId = await createOrUpdateSubmission(updatedValues, formik.values.submissionId)
-      formik.setFieldValue("submissionId", submissionId)
+      const response = await createOrUpdateSubmission(updatedValues, formik.values.externalId)
+
+      formik.setFieldValue("submissionId", response?.internalID)
+      formik.setFieldValue("externalId", response?.externalID)
 
       navigation.navigate("AddTitle")
       setCurrentStep("AddTitle")

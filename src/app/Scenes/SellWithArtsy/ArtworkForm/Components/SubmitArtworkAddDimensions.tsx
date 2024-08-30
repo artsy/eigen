@@ -41,7 +41,7 @@ export const SubmitArtworkAddDimensions = () => {
             height: values.height,
             depth: values.depth,
           },
-          values.submissionId
+          values.externalId
         )
 
         navigation.navigate("AddPhoneNumber")

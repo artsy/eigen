@@ -12,7 +12,7 @@ export const SubmitArtworkFormEdit: React.FC<SubmitArtworkProps> = withSuspense(
   const data = useLazyLoadQuery<SubmitArtworkFormEditQuery>(
     submitArtworkFormEditQuery,
     {
-      id: props.submissionID,
+      id: props.externalID,
     },
     { fetchPolicy: "network-only" }
   )
@@ -23,7 +23,7 @@ export const SubmitArtworkFormEdit: React.FC<SubmitArtworkProps> = withSuspense(
 
   return (
     <SubmitArtworkForm
-      submissionID={props.submissionID}
+      externalID={props.externalID}
       initialValues={getInitialSubmissionValues(data.submission, data?.me)}
       initialStep={props.initialStep}
       navigationState={props.navigationState}
