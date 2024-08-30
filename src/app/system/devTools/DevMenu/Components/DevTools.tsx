@@ -30,6 +30,8 @@ const configurableDevToggleKeys = sortBy(
 export const DevTools: React.FC<{}> = () => {
   const [devToolQuery, setDevToolQuery] = useState("")
   const migrationVersion = GlobalStore.useAppState((s) => s.version)
+
+  const userID = GlobalStore.useAppState((s) => s.auth.userID)
   const server = GlobalStore.useAppState((s) => s.devicePrefs.environment.strings.webURL).slice(
     "https://".length
   )
@@ -152,6 +154,17 @@ export const DevTools: React.FC<{}> = () => {
             onPress={() => {
               Clipboard.setString(DeviceInfo.getUniqueIdSync())
               toast.show("Copied to clipboard", "middle")
+            }}
+          />
+          <DevMenuButtonItem
+            title={`User ID: ${userID}`}
+            onPress={() => {
+              if (userID) {
+                Clipboard.setString(userID)
+                toast.show("Copied to clipboard", "middle")
+              } else {
+                toast.show("No user ID found", "middle")
+              }
             }}
           />
           <DevMenuButtonItem
