@@ -176,6 +176,7 @@ describe("useSendInquiry", () => {
           location: { display: null },
           collectorProfile: { lastUpdatePromptAt: null },
           myCollectionInfo: { artistsCount: 0, artworksCount: 0 },
+          userInterestsConnection: { totalCount: 0 },
         }),
       })
 
@@ -193,7 +194,7 @@ describe("useSendInquiry", () => {
 
       await waitFor(() =>
         expect(dispatch).toHaveBeenCalledWith({
-          type: "setProfilePromptVisible",
+          type: "setCollectionPromptVisible",
           payload: true,
         })
       )
