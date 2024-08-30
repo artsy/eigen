@@ -1,8 +1,5 @@
 import { bullet, Flex, Text } from "@artsy/palette-mobile"
-import {
-  FairRailItem_fair$data,
-  FairRailItem_fair$key,
-} from "__generated__/FairRailItem_fair.graphql"
+import { FairRailItem_fair$data } from "__generated__/FairRailItem_fair.graphql"
 import { CardRailCard, CardRailMetadataContainer } from "app/Components/Home/CardRailCard"
 import { ThreeUpImageLayout } from "app/Components/ThreeUpImageLayout"
 import { navigate } from "app/system/navigation/navigate"
@@ -12,7 +9,7 @@ import { FC } from "react"
 import { graphql, useFragment } from "react-relay"
 
 interface FairRailItemProps {
-  fair: FairRailItem_fair$key
+  fair: FairItem_fair$key
   onPress?: (fair: FairRailItem_fair$data) => void
 }
 
@@ -67,7 +64,7 @@ export const FairRailItem: FC<FairRailItemProps> = ({ fair: fairFragment, onPres
 }
 
 const fragment = graphql`
-  fragment FairRailItem_fair on Fair {
+  fragment FairItem_fair on Fair {
     internalID
     slug
     profile {

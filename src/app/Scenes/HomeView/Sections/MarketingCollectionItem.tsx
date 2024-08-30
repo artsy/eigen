@@ -1,5 +1,6 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import themeGet from "@styled-system/theme-get"
+import { MarketingCollectionItem_marketingCollection$key } from "__generated__/MarketingCollectionItem_marketingCollection.graphql"
 import {
   MarketingCollectionRailItem_marketingCollection$data,
   MarketingCollectionRailItem_marketingCollection$key,
@@ -13,12 +14,12 @@ import { FC } from "react"
 import { graphql, useFragment } from "react-relay"
 import styled from "styled-components/native"
 
-interface MarketingCollectionRailItemProps {
-  marketingCollection: MarketingCollectionRailItem_marketingCollection$key
-  onPress?: (marketingCollection: MarketingCollectionRailItem_marketingCollection$data) => void
+interface MarketingCollectionItemProps {
+  marketingCollection: MarketingCollectionItem_marketingCollection$key
+  onPress?: (marketingCollection: MarketingCollectionItem_marketingCollection$data) => void
 }
 
-export const MarketingCollectionRailItem: FC<MarketingCollectionRailItemProps> = ({
+export const MarketingCollectionItem: FC<MarketingCollectionItemProps> = ({
   marketingCollection: marketingCollectionFragment,
   onPress,
 }) => {
@@ -66,7 +67,7 @@ export const MarketingCollectionRailItem: FC<MarketingCollectionRailItemProps> =
 }
 
 const fragment = graphql`
-  fragment MarketingCollectionRailItem_marketingCollection on MarketingCollection {
+  fragment MarketingCollectionItem_marketingCollection on MarketingCollection {
     title
     slug
     artworksConnection(first: 5, sort: "-decayed_merch") {

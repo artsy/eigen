@@ -1,20 +1,21 @@
 import { ContextModule } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
-import { FairsRailHomeViewSection_section$key } from "__generated__/FairsRailHomeViewSection_section.graphql"
+import { FairsHomeViewSection_section$key } from "__generated__/FairsHomeViewSection_section.graphql"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import LegacyHomeAnalytics from "app/Scenes/Home/homeAnalytics"
+import { FairItem } from "app/Scenes/HomeView/Sections/FairItem"
 import { FairRailItem } from "app/Scenes/HomeView/Sections/FairRailItem"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
-interface FairsRailHomeViewSectionProps {
-  section: FairsRailHomeViewSection_section$key
+interface FairsHomeViewSectionProps {
+  section: FairsHomeViewSection_section$key
 }
 
-export const FairsRailHomeViewSection: React.FC<FairsRailHomeViewSectionProps> = ({ section }) => {
+export const FairsHomeViewSection: React.FC<FairsHomeViewSectionProps> = ({ section }) => {
   const tracking = useTracking()
 
   const data = useFragment(fragment, section)
@@ -69,7 +70,7 @@ export const FairsRailHomeViewSection: React.FC<FairsRailHomeViewSectionProps> =
 }
 
 const fragment = graphql`
-  fragment FairsRailHomeViewSection_section on FairsRailHomeViewSection {
+  fragment FairsHomeViewSection_section on FairsHomeViewSection {
     internalID
     component {
       title
@@ -85,7 +86,7 @@ const fragment = graphql`
       edges {
         node {
           internalID
-          ...FairRailItem_fair
+          ...FairItem_fair
         }
       }
     }

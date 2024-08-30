@@ -1,24 +1,22 @@
-import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
-import { ViewingRoomsRailHomeViewSectionTestsQuery } from "__generated__/ViewingRoomsRailHomeViewSectionTestsQuery.graphql"
-import { ViewingRoomsRailHomeViewSection } from "app/Scenes/HomeView/Sections/ViewingRoomsRailHomeViewSection"
-import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { ViewingRoomsHomeViewSection } from "app/Scenes/HomeView/Sections/ViewingRoomsHomeViewSection"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-describe("ViewingRoomsRailHomeViewSection", () => {
-  const { renderWithRelay } = setupTestWrapper<ViewingRoomsRailHomeViewSectionTestsQuery>({
+describe("ViewingRoomsHomeViewSection", () => {
+  const { renderWithRelay } = setupTestWrapper<ViewingRoomsHomeViewSectionTestsQuery>({
     Component: (props) => {
       if (!props.homeView.section) {
         return null
       }
-      return <ViewingRoomsRailHomeViewSection section={props.homeView.section} />
+      return <ViewingRoomsHomeViewSection section={props.homeView.section} />
     },
     query: graphql`
-      query ViewingRoomsRailHomeViewSectionTestsQuery @relay_test_operation {
+      query ViewingRoomsHomeViewSectionTestsQuery @relay_test_operation {
         homeView {
           section(id: "home-view-section-viewing-rooms") {
-            ... on ViewingRoomsRailHomeViewSection {
-              ...ViewingRoomsRailHomeViewSection_section
+            ... on ViewingRoomsHomeViewSection {
+              ...ViewingRoomsHomeViewSection_section
             }
           }
         }

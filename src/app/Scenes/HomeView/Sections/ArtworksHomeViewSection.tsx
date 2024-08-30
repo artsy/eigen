@@ -1,6 +1,6 @@
 import { ContextModule } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
-import { ArtworksRailHomeViewSection_section$key } from "__generated__/ArtworksRailHomeViewSection_section.graphql"
+import { HomeViewSectionArtworks_section$key } from "__generated__/HomeViewSectionArtworks_section.graphql"
 import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import LegacyHomeAnalytics from "app/Scenes/Home/homeAnalytics"
@@ -11,11 +11,11 @@ import { View } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
-interface ArtworksRailHomeViewSectionProps {
-  section: ArtworksRailHomeViewSection_section$key
+interface HomeViewSectionArtworksProps {
+  section: HomeViewSectionArtworks_section$key
 }
 
-export const ArtworksRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionProps> = ({
+export const ArtworksRailHomeViewSection: React.FC<HomeViewSectionArtworksProps> = ({
   section,
 }) => {
   const tracking = useTracking()
@@ -84,7 +84,7 @@ export const ArtworksRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionPr
 }
 
 const fragment = graphql`
-  fragment ArtworksRailHomeViewSection_section on ArtworksRailHomeViewSection {
+  fragment ArtworksRailHomeViewSection_section on HomeViewSectionArtworks {
     __typename
     internalID
     component {

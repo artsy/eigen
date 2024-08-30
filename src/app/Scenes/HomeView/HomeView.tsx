@@ -84,51 +84,51 @@ const sectionsFragment = graphql`
               }
               ...GenericHomeViewSection_section
             }
-            ... on ActivityRailHomeViewSection {
+            ... on ActivityHomeViewSection {
               internalID
-              ...ActivityRailHomeViewSection_section
+              ...ActivityHomeViewSection_section
             }
-            ... on ArticlesRailHomeViewSection {
+            ... on ArticlesHomeViewSection {
               internalID
-              ...ArticlesRailHomeViewSection_section
+              ...ArticlesHomeViewSection_section
               ...ArticlesCardsHomeViewSection_section
             }
-            ... on ArtworksRailHomeViewSection {
+            ... on ArtworksHomeViewSection {
               internalID
-              ...ArtworksRailHomeViewSection_section
+              ...ArtworksHomeViewSection_section
               ...FeaturedCollectionHomeViewSection_section
             }
-            ... on ArtistsRailHomeViewSection {
+            ... on ArtistsHomeViewSection {
               internalID
-              ...ArtistsRailHomeViewSection_section
+              ...ArtistsHomeViewSection_section
             }
-            ... on AuctionResultsRailHomeViewSection {
+            ... on AuctionResultsHomeViewSection {
               internalID
-              ...AuctionResultsRailHomeViewSection_section
+              ...AuctionResultsHomeViewSection_section
             }
             ... on HeroUnitsHomeViewSection {
               internalID
-              ...HeroUnitsRailHomeViewSection_section
+              ...HeroUnitsHomeViewSection_section
             }
-            ... on FairsRailHomeViewSection {
+            ... on FairsHomeViewSection {
               internalID
-              ...FairsRailHomeViewSection_section
+              ...FairsHomeViewSection_section
             }
-            ... on MarketingCollectionsRailHomeViewSection {
+            ... on MarketingCollectionsHomeViewSection {
               internalID
-              ...MarketingCollectionsRailHomeViewSection_section
+              ...MarketingCollectionsHomeViewSection_section
             }
-            ... on ShowsRailHomeViewSection {
+            ... on ShowsHomeViewSection {
               internalID
-              ...ShowsRailHomeViewSection_section
+              ...ShowsHomeViewSection_section
             }
-            ... on ViewingRoomsRailHomeViewSection {
+            ... on ViewingRoomsHomeViewSection {
               internalID
-              ...ViewingRoomsRailHomeViewSection_section
+              ...ViewingRoomsHomeViewSection_section
             }
-            ... on SalesRailHomeViewSection {
+            ... on SalesHomeViewSection {
               internalID
-              ...SalesRailHomeViewSection_section
+              ...SalesHomeViewSection_section
             }
             ... on GalleriesHomeViewSection {
               internalID

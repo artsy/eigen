@@ -1,6 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
-import { ViewingRoomsRailHomeViewSection_section$key } from "__generated__/ViewingRoomsRailHomeViewSection_section.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import {
   ViewingRoomsHomeRail as LegacyViewingRoomsHomeRail,
@@ -10,8 +9,8 @@ import { navigate } from "app/system/navigation/navigate"
 import { Suspense } from "react"
 import { graphql, useFragment } from "react-relay"
 
-export const ViewingRoomsRailHomeViewSection: React.FC<{
-  section: ViewingRoomsRailHomeViewSection_section$key
+export const ViewingRoomsHomeViewSection: React.FC<{
+  section: ViewingRoomsHomeViewSection_section$key
 }> = ({ section }) => {
   const data = useFragment(viewingRoomsFragment, section)
   const componentHref = data.component?.behaviors?.viewAll?.href
@@ -44,7 +43,7 @@ export const ViewingRoomsRailHomeViewSection: React.FC<{
 }
 
 const viewingRoomsFragment = graphql`
-  fragment ViewingRoomsRailHomeViewSection_section on ViewingRoomsRailHomeViewSection {
+  fragment ViewingRoomsHomeViewSection_section on ViewingRoomsHomeViewSection {
     internalID
     component {
       title

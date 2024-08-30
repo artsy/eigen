@@ -62,7 +62,7 @@ const date = () =>
   })
 
 const fragment = graphql`
-  fragment ArticlesCardsHomeViewSection_section on ArticlesRailHomeViewSection {
+  fragment ArticlesCardsHomeViewSection_section on ArticlesHomeViewSection {
     component {
       title
       behaviors {

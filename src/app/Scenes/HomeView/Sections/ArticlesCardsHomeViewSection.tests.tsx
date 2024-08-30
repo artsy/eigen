@@ -16,7 +16,7 @@ describe("ArticlesCardsHomeViewSection", () => {
       query ArticlesCardsHomeViewSectionTestsQuery @relay_test_operation {
         homeView {
           section(id: "home-view-section-latest-activity") {
-            ... on ArticlesRailHomeViewSection {
+            ... on ArticlesHomeViewSection {
               ...ArticlesCardsHomeViewSection_section
             }
           }

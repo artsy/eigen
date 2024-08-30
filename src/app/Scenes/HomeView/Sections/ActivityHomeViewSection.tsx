@@ -1,6 +1,6 @@
 import { ContextModule } from "@artsy/cohesion"
 import { Flex, Spacer } from "@artsy/palette-mobile"
-import { ActivityRailHomeViewSection_section$key } from "__generated__/ActivityRailHomeViewSection_section.graphql"
+import { ActivityHomeViewSection_section$key } from "__generated__/ActivityHomeViewSection_section.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { shouldDisplayNotification } from "app/Scenes/Activity/utils/shouldDisplayNotification"
 import { SeeAllCard } from "app/Scenes/Home/Components/ActivityRail"
@@ -13,13 +13,11 @@ import { FlatList } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
-interface ActivityRailHomeViewSectionProps {
-  section: ActivityRailHomeViewSection_section$key
+interface ActivityHomeViewSectionProps {
+  section: ActivityHomeViewSection_section$key
 }
 
-export const ActivityRailHomeViewSection: React.FC<ActivityRailHomeViewSectionProps> = ({
-  section,
-}) => {
+export const ActivityHomeViewSection: React.FC<ActivityHomeViewSectionProps> = ({ section }) => {
   const tracking = useTracking()
 
   const data = useFragment(sectionFragment, section)
@@ -94,7 +92,7 @@ export const ActivityRailHomeViewSection: React.FC<ActivityRailHomeViewSectionPr
 }
 
 const sectionFragment = graphql`
-  fragment ActivityRailHomeViewSection_section on ActivityRailHomeViewSection {
+  fragment ActivityHomeViewSection_section on ActivityHomeViewSection {
     internalID
     component {
       title

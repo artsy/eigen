@@ -1,12 +1,13 @@
 import { ContextModule } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
 import {
-  MarketingCollectionsRailHomeViewSection_section$data,
-  MarketingCollectionsRailHomeViewSection_section$key,
-} from "__generated__/MarketingCollectionsRailHomeViewSection_section.graphql"
+  MarketingCollectionsHomeViewSection_section$data,
+  MarketingCollectionsHomeViewSection_section$key,
+} from "__generated__/MarketingCollectionsHomeViewSection_section.graphql"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import LegacyHomeAnalytics from "app/Scenes/Home/homeAnalytics"
+import { MarketingCollectionItem } from "app/Scenes/HomeView/Sections/MarketingCollectionItem"
 import { MarketingCollectionRailItem } from "app/Scenes/HomeView/Sections/MarketingCollectionRailItem"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -14,12 +15,12 @@ import { ExtractNodeType } from "app/utils/relayHelpers"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
-interface MarketingCollectionsRailHomeViewSectionProps {
-  section: MarketingCollectionsRailHomeViewSection_section$key
+interface MarketingCollectionsHomeViewSectionProps {
+  section: MarketingCollectionsHomeViewSection_section$key
 }
 
-export const MarketingCollectionsRailHomeViewSection: React.FC<
-  MarketingCollectionsRailHomeViewSectionProps
+export const MarketingCollectionsHomeViewSection: React.FC<
+  MarketingCollectionsHomeViewSectionProps
 > = ({ section }) => {
   const tracking = useTracking()
 
@@ -49,7 +50,7 @@ export const MarketingCollectionsRailHomeViewSection: React.FC<
 
       <CardRailFlatList<
         ExtractNodeType<
-          MarketingCollectionsRailHomeViewSection_section$data["marketingCollectionsConnection"]
+          MarketingCollectionsHomeViewSection_section$data["marketingCollectionsConnection"]
         >
       >
         data={marketingCollections}
@@ -78,7 +79,7 @@ export const MarketingCollectionsRailHomeViewSection: React.FC<
 }
 
 const fragment = graphql`
-  fragment MarketingCollectionsRailHomeViewSection_section on MarketingCollectionsRailHomeViewSection {
+  fragment MarketingCollectionsHomeViewSection_section on MarketingCollectionsHomeViewSection {
     internalID
     component {
       title
@@ -93,7 +94,7 @@ const fragment = graphql`
       edges {
         node {
           internalID
-          ...MarketingCollectionRailItem_marketingCollection
+          ...MarketingCollectionItem_marketingCollection
         }
       }
     }

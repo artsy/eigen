@@ -1,6 +1,6 @@
 import { ContextModule, OwnerType, tappedEntityGroup } from "@artsy/cohesion"
 import { Flex, Spacer, Spinner } from "@artsy/palette-mobile"
-import { ArtistsRailHomeViewSection_section$data } from "__generated__/ArtistsRailHomeViewSection_section.graphql"
+import { ArtistsHomeViewSection_section$data } from "__generated__/ArtistsHomeViewSection_section.graphql"
 import {
   IMAGE_MAX_HEIGHT as ARTIST_RAIL_IMAGE_MAX_HEIGHT,
   ArtistCardContainer,
@@ -14,13 +14,13 @@ import { ExtractNodeType } from "app/utils/relayHelpers"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
-interface ArtworksRailHomeViewSectionProps {
-  section: ArtistsRailHomeViewSection_section$data
+interface ArtworksHomeViewSectionProps {
+  section: ArtistsHomeViewSection_section$data
   relay: RelayPaginationProp
 }
 
-type Artist = ExtractNodeType<ArtistsRailHomeViewSection_section$data["artistsConnection"]>
-export const ArtistsRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionProps> = ({
+type Artist = ExtractNodeType<ArtistsHomeViewSection_section$data["artistsConnection"]>
+export const ArtistsHomeViewSection: React.FC<ArtworksHomeViewSectionProps> = ({
   section,
   relay,
 }) => {
@@ -106,11 +106,11 @@ export const ArtistsRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionPro
   )
 }
 
-export const ArtistsRailHomeViewSectionPaginationContainer = createPaginationContainer(
-  ArtistsRailHomeViewSection,
+export const ArtistsHomeViewSectionPaginationContainer = createPaginationContainer(
+  ArtistsHomeViewSection,
   {
     section: graphql`
-      fragment ArtistsRailHomeViewSection_section on ArtistsRailHomeViewSection
+      fragment ArtistsHomeViewSection_section on ArtistsHomeViewSection
       @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         id
         internalID
@@ -123,7 +123,7 @@ export const ArtistsRailHomeViewSectionPaginationContainer = createPaginationCon
           }
         }
         artistsConnection(after: $cursor, first: $count)
-          @connection(key: "ArtistsRailHomeViewSection_artistsConnection") {
+          @connection(key: "ArtistsHomeViewSection_artistsConnection") {
           totalCount
           edges {
             node {
@@ -155,10 +155,10 @@ export const ArtistsRailHomeViewSectionPaginationContainer = createPaginationCon
       }
     },
     query: graphql`
-      query ArtistsRailHomeViewSectionQuery($cursor: String, $count: Int!, $id: String!) {
+      query ArtistsHomeViewSectionQuery($cursor: String, $count: Int!, $id: String!) {
         homeView {
           section(id: $id) {
-            ...ArtistsRailHomeViewSection_section @arguments(cursor: $cursor, count: $count)
+            ...ArtistsHomeViewSection_section @arguments(cursor: $cursor, count: $count)
           }
         }
       }

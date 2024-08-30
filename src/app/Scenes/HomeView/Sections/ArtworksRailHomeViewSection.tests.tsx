@@ -18,8 +18,8 @@ describe("ArtworksRailHomeViewSection", () => {
       query ArtworksRailHomeViewSectionTestsQuery @relay_test_operation {
         homeView {
           section(id: "home-view-section-new-works-for-you") {
-            ... on ArtworksRailHomeViewSection {
-              ...ArtworksRailHomeViewSection_section
+            ... on ArtworksHomeViewSection {
+              ...ArtworksHomeViewSection_section
             }
           }
         }

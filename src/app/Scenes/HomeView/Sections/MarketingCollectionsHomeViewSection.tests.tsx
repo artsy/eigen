@@ -1,22 +1,22 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { MarketingCollectionsRailHomeViewSectionTestsQuery } from "__generated__/MarketingCollectionsRailHomeViewSectionTestsQuery.graphql"
-import { MarketingCollectionsRailHomeViewSection } from "app/Scenes/HomeView/Sections/MarketingCollectionsRailHomeViewSection"
+import { MarketingCollectionsHomeViewSectionTestsQuery } from "__generated__/MarketingCollectionsHomeViewSectionTestsQuery.graphql"
+import { MarketingCollectionsHomeViewSection } from "app/Scenes/HomeView/Sections/MarketingCollectionsHomeViewSection"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-describe("MarketingCollectionsRailHomeViewSection", () => {
-  const { renderWithRelay } = setupTestWrapper<MarketingCollectionsRailHomeViewSectionTestsQuery>({
+describe("MarketingCollectionsHomeViewSection", () => {
+  const { renderWithRelay } = setupTestWrapper<MarketingCollectionsHomeViewSectionTestsQuery>({
     Component: (props) => {
-      return <MarketingCollectionsRailHomeViewSection section={props.homeView.section} />
+      return <MarketingCollectionsHomeViewSection section={props.homeView.section} />
     },
     query: graphql`
-      query MarketingCollectionsRailHomeViewSectionTestsQuery @relay_test_operation {
+      query MarketingCollectionsHomeViewSectionTestsQuery @relay_test_operation {
         homeView @required(action: NONE) {
           section(id: "home-view-section-latest-auction-results") @required(action: NONE) {
-            ... on MarketingCollectionsRailHomeViewSection {
-              ...MarketingCollectionsRailHomeViewSection_section
+            ... on MarketingCollectionsHomeViewSection {
+              ...MarketingCollectionsHomeViewSection_section
             }
           }
         }
@@ -74,7 +74,7 @@ describe("MarketingCollectionsRailHomeViewSection", () => {
 
   it("navigates and tracks clicks on an individual collection", () => {
     renderWithRelay({
-      MarketingCollectionsRailHomeViewSection: () => ({
+      MarketingCollectionsHomeViewSection: () => ({
         internalID: "home-view-section-latest-auction-results",
         component: {
           title: "Marketing Collections",

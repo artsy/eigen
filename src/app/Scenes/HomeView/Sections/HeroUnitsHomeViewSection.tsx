@@ -6,7 +6,7 @@ import {
   TappedHeroUnitsGroup,
 } from "@artsy/cohesion"
 import { Spacer } from "@artsy/palette-mobile"
-import { HeroUnitsRailHomeViewSection_section$key } from "__generated__/HeroUnitsRailHomeViewSection_section.graphql"
+import { HeroUnitsHomeViewSection_section$key } from "__generated__/HeroUnitsHomeViewSection_section.graphql"
 import { PaginationDots } from "app/Components/PaginationDots"
 import { HeroUnit } from "app/Scenes/Home/Components/HeroUnitsRail"
 import { matchRoute } from "app/routes"
@@ -17,13 +17,11 @@ import { FlatList, ViewabilityConfig, ViewToken } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
-interface HeroUnitsRailHomeViewSectionProps {
-  section: HeroUnitsRailHomeViewSection_section$key
+interface HeroUnitsHomeViewSectionProps {
+  section: HeroUnitsHomeViewSection_section$key
 }
 
-export const HeroUnitsRailHomeViewSection: React.FC<HeroUnitsRailHomeViewSectionProps> = ({
-  section,
-}) => {
+export const HeroUnitsHomeViewSection: React.FC<HeroUnitsHomeViewSectionProps> = ({ section }) => {
   const tracking = useTracking()
 
   const data = useFragment(fragment, section)
@@ -78,7 +76,7 @@ export const HeroUnitsRailHomeViewSection: React.FC<HeroUnitsRailHomeViewSection
 }
 
 const fragment = graphql`
-  fragment HeroUnitsRailHomeViewSection_section on HeroUnitsHomeViewSection {
+  fragment HeroUnitsHomeViewSection_section on HeroUnitsHomeViewSection {
     internalID
     heroUnitsConnection(first: 10) {
       edges {

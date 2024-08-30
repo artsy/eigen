@@ -46,8 +46,8 @@ type AccountRequest {
   notes: String
 }
 
-# An rail to show a list of user activity
-type ActivityRailHomeViewSection implements GenericHomeViewSection & Node {
+# An activity rail to show a list of user activities
+type ActivityHomeViewSection implements GenericHomeViewSection & Node {
   # The component that is prescribed for this section
   component: HomeViewComponent
 
@@ -1487,8 +1487,8 @@ type ArticleUnpublishedArtworkPartner {
   slug: String
 }
 
-# An articles rail section in the home view
-type ArticlesRailHomeViewSection implements GenericHomeViewSection & Node {
+# An articles section in the home view
+type ArticlesHomeViewSection implements GenericHomeViewSection & Node {
   articlesConnection(after: String, before: String, first: Int, last: Int): ArticleConnection
 
   # The component that is prescribed for this section
@@ -2122,16 +2122,20 @@ type ArtistRelatedData {
   ): ArtistConnection
 }
 
-type ArtistSeries implements Node {
+type ArtistSeries {
+  # List of Mongo IDs for associated Artists
   artistIDs: [String!]!
-  artists(page: Int, size: Int): [Artist!]!
+  artists(page: Int, size: Int): [Artist]
+  artworkIDs: [ID!]!
+  artworksConnection(after: String, first: Int): ArtworkConnection
   artworksCount: Int!
+
+  # A formatted string that shows the number of available works or
+  # (as a fallback) the number of works in general.
   artworksCountMessage: String
   description: String
   descriptionFormatted(format: Format): String
   featured: Boolean!
-
-  # Artworks Elastic Search results
   filterArtworksConnection(
     acquireable: Boolean
     additionalGeneIDs: [String]
@@ -2161,19 +2165,13 @@ type ArtistSeries implements Node {
     input: FilterArtworksInput
     inquireableOnly: Boolean
     keyword: String
-
-    # When true, will only return exact keyword match
     keywordMatchExact: Boolean
     last: Int
     locationCities: [String]
     majorPeriods: [String]
-
-    # When true, will only return `marketable` works (not nude or provocative).
     marketable: Boolean
     marketingCollectionID: String
     materialsTerms: [String]
-
-    # A string from the list of allocations, or * to denote all mediums
     medium: String
     offerable: Boolean
     page: Int
@@ -2185,20 +2183,18 @@ type ArtistSeries implements Node {
     priceRange: String
     saleID: ID
     size: Int
-
-    # Filter results by Artwork sizes
     sizes: [ArtworkSizes]
     sort: String
     tagID: String
     width: String
   ): FilterArtworksConnection
   forSaleArtworksCount: Int!
-
-  # A globally unique ID.
-  id: ID!
   image: Image
+  imageHeight: Int
+  imageURL: String
+  imageWidth: Int
 
-  # A type-specific Gravity Mongo Document ID.
+  # Unique ID for this artist series
   internalID: ID!
   published: Boolean!
   representativeArtworkID: ID
@@ -2206,23 +2202,27 @@ type ArtistSeries implements Node {
   title: String!
 }
 
-# A connection to a list of items.
+# The connection type for ArtistSeries.
 type ArtistSeriesConnection {
   # A list of edges.
   edges: [ArtistSeriesEdge]
-  pageCursors: PageCursors!
+
+  # A list of nodes.
+  nodes: [ArtistSeries]
 
   # Information to aid in pagination.
   pageInfo: PageInfo!
+
+  # Total count of matching nodes, before pagination
   totalCount: Int!
 }
 
 # An edge in a connection.
 type ArtistSeriesEdge {
-  # A cursor for use in pagination
+  # A cursor for use in pagination.
   cursor: String!
 
-  # The item at the end of the edge
+  # The item at the end of the edge.
   node: ArtistSeries
 }
 
@@ -2288,8 +2288,8 @@ enum ArtistTargetSupplyType {
   HIGH_HQDLS
 }
 
-# An artists rail section in the home view
-type ArtistsRailHomeViewSection implements GenericHomeViewSection & Node {
+# An artists section in the home view
+type ArtistsHomeViewSection implements GenericHomeViewSection & Node {
   artistsConnection(after: String, before: String, first: Int, last: Int): ArtistConnection
 
   # The component that is prescribed for this section
@@ -3125,8 +3125,8 @@ type ArtworksCollectionsBatchUpdateSuccess {
   removedFromCollections: [Collection]
 }
 
-# An artwork rail section in the home view
-type ArtworksRailHomeViewSection implements GenericHomeViewSection & Node {
+# An artworks section in the home view
+type ArtworksHomeViewSection implements GenericHomeViewSection & Node {
   artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
 
   # The component that is prescribed for this section
@@ -3422,8 +3422,8 @@ type AuctionResultsByArtistsEdge {
   node: AuctionResultsByArtists
 }
 
-# An auction results rail section in the home view
-type AuctionResultsRailHomeViewSection implements GenericHomeViewSection & Node {
+# An auction results section in the home view
+type AuctionResultsHomeViewSection implements GenericHomeViewSection & Node {
   auctionResultsConnection(
     after: String
     before: String
@@ -9642,8 +9642,8 @@ type FairSponsoredContent {
   pressReleaseUrl: String
 }
 
-# Fairs rail section
-type FairsRailHomeViewSection implements GenericHomeViewSection & Node {
+# Fairs section
+type FairsHomeViewSection implements GenericHomeViewSection & Node {
   # The component that is prescribed for this section
   component: HomeViewComponent
   fairsConnection(after: String, before: String, first: Int, last: Int): FairConnection
@@ -10603,7 +10603,7 @@ type HeroUnitLink {
   url: String!
 }
 
-# Hero units rail section
+# A hero units section in the home view
 type HeroUnitsHomeViewSection implements GenericHomeViewSection & Node {
   # The component that is prescribed for this section
   component: HomeViewComponent
@@ -10929,18 +10929,18 @@ type HomeViewComponentBehaviorsViewAll {
 }
 
 union HomeViewSection =
-    ActivityRailHomeViewSection
-  | ArticlesRailHomeViewSection
-  | ArtistsRailHomeViewSection
-  | ArtworksRailHomeViewSection
-  | AuctionResultsRailHomeViewSection
-  | FairsRailHomeViewSection
+    ActivityHomeViewSection
+  | ArticlesHomeViewSection
+  | ArtistsHomeViewSection
+  | ArtworksHomeViewSection
+  | AuctionResultsHomeViewSection
+  | FairsHomeViewSection
   | GalleriesHomeViewSection
   | HeroUnitsHomeViewSection
-  | MarketingCollectionsRailHomeViewSection
-  | SalesRailHomeViewSection
-  | ShowsRailHomeViewSection
-  | ViewingRoomsRailHomeViewSection
+  | MarketingCollectionsHomeViewSection
+  | SalesHomeViewSection
+  | ShowsHomeViewSection
+  | ViewingRoomsHomeViewSection
 
 # A connection to a list of items.
 type HomeViewSectionConnection {
@@ -11958,8 +11958,8 @@ type MarketingCollectionQuery {
   tagID: String
 }
 
-# A marketing collections rail section in the home view
-type MarketingCollectionsRailHomeViewSection implements GenericHomeViewSection & Node {
+# A marketing collections section in the home view
+type MarketingCollectionsHomeViewSection implements GenericHomeViewSection & Node {
   # The component that is prescribed for this section
   component: HomeViewComponent
 
@@ -15656,14 +15656,31 @@ type Query {
     # The slug or ID of the Artist
     id: String!
   ): Artist
+
+  # Find an artist series by ID
   artistSeries(id: ID!): ArtistSeries
+
+  # List all artist series, optionally filtered by artist or artwork
   artistSeriesConnection(
+    # Returns the elements in the list that come after the specified cursor.
     after: String
+
+    # ID of the artist by which to filter results
     artistID: ID
+
+    # ID of the artwork by which to filter results
     artworkID: ID
+
+    # Returns the elements in the list that come before the specified cursor.
     before: String
+
+    # Array of IDs of artist series that should be excluded from results
     excludeIDs: [ID!]
+
+    # Returns the first _n_ elements from the list.
     first: Int
+
+    # Returns the last _n_ elements from the list.
     last: Int
   ): ArtistSeriesConnection
 
@@ -17632,8 +17649,8 @@ enum SaleSorts {
   _ID_DESC
 }
 
-# A sales rail section in the home view
-type SalesRailHomeViewSection implements GenericHomeViewSection & Node {
+# A sales section in the home view
+type SalesHomeViewSection implements GenericHomeViewSection & Node {
   # The component that is prescribed for this section
   component: HomeViewComponent
 
@@ -18329,8 +18346,8 @@ enum ShowSorts {
   UPDATED_AT_DESC
 }
 
-# A shows rail section in the home view
-type ShowsRailHomeViewSection implements GenericHomeViewSection & Node {
+# A shows section in the home view
+type ShowsHomeViewSection implements GenericHomeViewSection & Node {
   # The component that is prescribed for this section
   component: HomeViewComponent
 
@@ -20310,16 +20327,6 @@ type Viewer {
     # The slug or ID of the Artist
     id: String!
   ): Artist
-  artistSeries(id: ID!): ArtistSeries
-  artistSeriesConnection(
-    after: String
-    artistID: ID
-    artworkID: ID
-    before: String
-    excludeIDs: [ID!]
-    first: Int
-    last: Int
-  ): ArtistSeriesConnection
 
   # A list of Artists
   artists(
@@ -21422,8 +21429,8 @@ type ViewingRoomsEdge {
   node: ViewingRoom
 }
 
-# A viewing rooms rail section in the home view
-type ViewingRoomsRailHomeViewSection implements GenericHomeViewSection & Node {
+# A viewing rooms section in the home view
+type ViewingRoomsHomeViewSection implements GenericHomeViewSection & Node {
   # The component that is prescribed for this section
   component: HomeViewComponent
 

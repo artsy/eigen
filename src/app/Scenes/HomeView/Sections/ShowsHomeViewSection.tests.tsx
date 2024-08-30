@@ -1,6 +1,6 @@
 import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
-import { ShowsRailHomeViewSectionTestsQuery } from "__generated__/ShowsRailHomeViewSectionTestsQuery.graphql"
-import { ShowsRailHomeViewSection } from "app/Scenes/HomeView/Sections/ShowsRailHomeViewSection"
+import { ShowsHomeViewSectionTestsQuery } from "__generated__/ShowsHomeViewSectionTestsQuery.graphql"
+import { ShowsHomeViewSection } from "app/Scenes/HomeView/Sections/ShowsHomeViewSection"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -13,20 +13,20 @@ jest.mock("@react-native-community/geolocation", () => ({
   }),
 }))
 
-describe("ShowsRailHomeViewSection", () => {
-  const { renderWithRelay } = setupTestWrapper<ShowsRailHomeViewSectionTestsQuery>({
+describe("ShowsHomeViewSection", () => {
+  const { renderWithRelay } = setupTestWrapper<ShowsHomeViewSectionTestsQuery>({
     Component: (props) => {
       if (!props.homeView.section) {
         return null
       }
-      return <ShowsRailHomeViewSection section={props.homeView.section} />
+      return <ShowsHomeViewSection section={props.homeView.section} />
     },
     query: graphql`
-      query ShowsRailHomeViewSectionTestsQuery @relay_test_operation {
+      query ShowsHomeViewSectionTestsQuery @relay_test_operation {
         homeView {
           section(id: "home-view-section-shows") {
-            ... on ShowsRailHomeViewSection {
-              ...ShowsRailHomeViewSection_section
+            ... on ShowsHomeViewSection {
+              ...ShowsHomeViewSection_section
             }
           }
         }

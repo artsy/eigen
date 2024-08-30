@@ -1,6 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { HeroUnitsRailHomeViewSectionTestsQuery } from "__generated__/HeroUnitsRailHomeViewSectionTestsQuery.graphql"
-import { HeroUnitsRailHomeViewSection } from "app/Scenes/HomeView/Sections/HeroUnitsRailHomeViewSection"
+import { HeroUnitsHomeViewSection } from "app/Scenes/HomeView/Sections/HeroUnitsHomeViewSection"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -9,14 +9,14 @@ import { graphql } from "react-relay"
 describe("HeroUnitsRailHomeViewSection", () => {
   const { renderWithRelay } = setupTestWrapper<HeroUnitsRailHomeViewSectionTestsQuery>({
     Component: (props) => {
-      return <HeroUnitsRailHomeViewSection section={props.homeView.section} />
+      return <HeroUnitsHomeViewSection section={props.homeView.section} />
     },
     query: graphql`
       query HeroUnitsRailHomeViewSectionTestsQuery @relay_test_operation {
         homeView @required(action: NONE) {
           section(id: "home-view-section-hero-units") @required(action: NONE) {
             ... on HeroUnitsHomeViewSection {
-              ...HeroUnitsRailHomeViewSection_section
+              ...HeroUnitsHomeViewSection_section
             }
           }
         }

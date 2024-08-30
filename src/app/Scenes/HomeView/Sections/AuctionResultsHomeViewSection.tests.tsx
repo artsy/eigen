@@ -1,25 +1,25 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { AuctionResultsRailHomeViewSectionTestsQuery } from "__generated__/AuctionResultsRailHomeViewSectionTestsQuery.graphql"
-import { AuctionResultsRailHomeViewSection } from "app/Scenes/HomeView/Sections/AuctionResultsRailHomeViewSection"
+import { AuctionResultsHomeViewSectionTestsQuery } from "__generated__/AuctionResultsHomeViewSectionTestsQuery.graphql"
+import { AuctionResultsHomeViewSection } from "app/Scenes/HomeView/Sections/AuctionResultsHomeViewSection"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-describe("AuctionResultsRailHomeViewSection", () => {
-  const { renderWithRelay } = setupTestWrapper<AuctionResultsRailHomeViewSectionTestsQuery>({
+describe("AuctionResultsHomeViewSection", () => {
+  const { renderWithRelay } = setupTestWrapper<AuctionResultsHomeViewSectionTestsQuery>({
     Component: (props) => {
       if (!props.homeView.section) {
         return null
       }
-      return <AuctionResultsRailHomeViewSection section={props.homeView.section} />
+      return <AuctionResultsHomeViewSection section={props.homeView.section} />
     },
     query: graphql`
-      query AuctionResultsRailHomeViewSectionTestsQuery @relay_test_operation {
+      query AuctionResultsHomeViewSectionTestsQuery @relay_test_operation {
         homeView {
           section(id: "home-view-section-latest-auction-results") {
-            ... on AuctionResultsRailHomeViewSection {
-              ...AuctionResultsRailHomeViewSection_section
+            ... on AuctionResultsHomeViewSection {
+              ...AuctionResultsHomeViewSection_section
             }
           }
         }

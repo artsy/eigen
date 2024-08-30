@@ -1,25 +1,23 @@
-import { fireEvent, screen } from "@testing-library/react-native"
-import { SalesRailHomeViewSectionTestsQuery } from "__generated__/SalesRailHomeViewSectionTestsQuery.graphql"
-import { SalesRailHomeViewSection } from "app/Scenes/HomeView/Sections/SalesRailHomeViewSection"
-import { navigate } from "app/system/navigation/navigate"
-import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { screen } from "@testing-library/react-native"
+import { SalesHomeViewSectionTestsQuery } from "__generated__/SalesHomeViewSectionTestsQuery.graphql"
+import { SalesHomeViewSection } from "app/Scenes/HomeView/Sections/SalesHomeViewSection"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-describe("SalesRailHomeViewSection", () => {
-  const { renderWithRelay } = setupTestWrapper<SalesRailHomeViewSectionTestsQuery>({
+describe("SalesHomeViewSection", () => {
+  const { renderWithRelay } = setupTestWrapper<SalesHomeViewSectionTestsQuery>({
     Component: (props) => {
       if (!props.homeView.section) {
         return null
       }
-      return <SalesRailHomeViewSection section={props.homeView.section} />
+      return <SalesHomeViewSection section={props.homeView.section} />
     },
     query: graphql`
-      query SalesRailHomeViewSectionTestsQuery @relay_test_operation {
+      query SalesHomeViewSectionTestsQuery @relay_test_operation {
         homeView {
           section(id: "home-view-section-auctions") {
-            ... on SalesRailHomeViewSection {
-              ...SalesRailHomeViewSection_section
+            ... on SalesHomeViewSection {
+              ...SalesHomeViewSection_section
             }
           }
         }
@@ -29,7 +27,7 @@ describe("SalesRailHomeViewSection", () => {
 
   it("renders the section properly", async () => {
     renderWithRelay({
-      SalesRailHomeViewSection: () => ({
+      SalesHomeViewSection: () => ({
         component: {
           title: "Auctions",
           behaviors: {

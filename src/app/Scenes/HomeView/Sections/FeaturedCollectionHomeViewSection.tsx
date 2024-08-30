@@ -64,7 +64,7 @@ export const FeaturedCollectionHomeViewSection: React.FC<
 }
 
 const fragment = graphql`
-  fragment FeaturedCollectionHomeViewSection_section on ArtworksRailHomeViewSection {
+  fragment FeaturedCollectionHomeViewSection_section on ArtworksHomeViewSection {
     component {
       title
       description

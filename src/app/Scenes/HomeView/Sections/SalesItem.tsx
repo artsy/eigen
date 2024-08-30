@@ -16,12 +16,12 @@ import { FC } from "react"
 import { View } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
-interface SalesRailItemProps {
+interface SalesItemProps {
   sale: SalesRailItem_sale$key
   onPress?: (sale: SalesRailItem_sale$data) => void
 }
 
-export const SalesRailItem: FC<SalesRailItemProps> = ({ sale: saleProp, onPress }) => {
+export const SalesItem: FC<SalesItemProps> = ({ sale: saleProp, onPress }) => {
   const isArtworksConnectionEnabled = useFeatureFlag("AREnableArtworksConnectionForAuction")
   const sale = useFragment(fragment, saleProp)
 
@@ -72,7 +72,7 @@ export const SalesRailItem: FC<SalesRailItemProps> = ({ sale: saleProp, onPress 
 }
 
 const fragment = graphql`
-  fragment SalesRailItem_sale on Sale {
+  fragment SalesItem_sale on Sale {
     href
     name
     liveURLIfOpen

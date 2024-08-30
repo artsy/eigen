@@ -1,24 +1,23 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { ActivityRailHomeViewSectionTestsQuery } from "__generated__/ActivityRailHomeViewSectionTestsQuery.graphql"
-import { ActivityRailHomeViewSection } from "app/Scenes/HomeView/Sections/ActivityRailHomeViewSection"
+import { ActivityHomeViewSection } from "app/Scenes/HomeView/Sections/ActivityHomeViewSection"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-describe("ActivityRailHomeViewSection", () => {
-  const { renderWithRelay } = setupTestWrapper<ActivityRailHomeViewSectionTestsQuery>({
+describe("ActivityHomeViewSection", () => {
+  const { renderWithRelay } = setupTestWrapper<ActivityHomeViewSectionTestsQuery>({
     Component: (props) => {
       if (!props.homeView.section) {
         return null
       }
-      return <ActivityRailHomeViewSection section={props.homeView.section} />
+      return <ActivityHomeViewSection section={props.homeView.section} />
     },
     query: graphql`
-      query ActivityRailHomeViewSectionTestsQuery @relay_test_operation {
+      query ActivityHomeViewSectionTestsQuery @relay_test_operation {
         homeView {
           section(id: "home-view-section-latest-activity") {
-            ... on ActivityRailHomeViewSection {
-              ...ActivityRailHomeViewSection_section
+            ... on ActivityHomeViewSection {
+              ...ActivityHomeViewSection_section
             }
           }
         }
