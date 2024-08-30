@@ -64,7 +64,12 @@ export const saveToken = (token: string, ignoreSameTokenCheck = false, useProd =
         reject("Push Notification: No access token")
       } else {
         const environment = unsafe__getEnvironment()
-        const url = environment.gravityURL + "/api/v1/device"
+        let gravityURL = environment.gravityURL
+        if (useProd) {
+          gravityURL = "https://api.artsy.net"
+        }
+        const url = gravityURL + "/api/v1/device"
+        console.warn("url", url)
         const name = __TEST__ ? "my-device-name" : DeviceInfo.getDeviceId()
         const production = environment.env === "production" || useProd
         const body = JSON.stringify({
