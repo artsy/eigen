@@ -260,7 +260,7 @@ export const features = {
   },
   AREnableAuctionImprovementsSignals: {
     description: "Enable new auction lot signals",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableAuctionImprovementsSignals",
   },
