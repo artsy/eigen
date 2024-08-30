@@ -8,9 +8,6 @@ import { graphql } from "react-relay"
 describe("MyCollectionCollectedArtistsRail", () => {
   const { renderWithRelay } = setupTestWrapper<MyCollectionCollectedArtistsRailTestsQuery>({
     Component: ({ me }) => {
-      if (!me) {
-        return null
-      }
       return (
         <MyCollectionTabsStore.Provider>
           <MyCollectionCollectedArtistsRail me={me} />
@@ -19,7 +16,7 @@ describe("MyCollectionCollectedArtistsRail", () => {
     },
     query: graphql`
       query MyCollectionCollectedArtistsRailTestsQuery @relay_test_operation {
-        me {
+        me @required(action: NONE) {
           ...MyCollectionCollectedArtistsRail_me
         }
       }

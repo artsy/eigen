@@ -4,7 +4,6 @@ import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilter
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
-import { GlobalStore } from "app/store/GlobalStore"
 import { cleanLocalImages } from "app/utils/LocalImageStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
@@ -12,7 +11,6 @@ import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { useEffect } from "react"
 import { Alert, InteractionManager } from "react-native"
 import { RelayPaginationProp, graphql } from "react-relay"
-import { MyCollectionArtworkList } from "./Components/MyCollectionArtworkList"
 import { MyCollectionArtworkEdge } from "./MyCollection"
 import { myCollectionDeleteArtwork } from "./mutations/myCollectionDeleteArtwork"
 import { localSortAndFilterArtworks } from "./utils/localArtworkSortAndFilter"
@@ -24,8 +22,6 @@ interface MyCollectionArtworksProps {
 
 export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({ me, relay }) => {
   const query = MyCollectionArtworksKeywordStore.useStoreState((state) => state.keyword)
-
-  const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const filterOptions = ArtworksFiltersStore.useStoreState((state) => state.filterOptions)
@@ -96,26 +92,14 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({ me, 
         </Button>
       )}
       {filteredArtworks.length > 0 ? (
-        viewOption === "grid" ? (
-          <InfiniteScrollMyCollectionArtworksGridContainer
-            myCollectionConnection={me.myCollectionConnection}
-            hasMore={relay.hasMore}
-            loadMore={relay.loadMore}
-            localSortAndFilterArtworks={(artworks: MyCollectionArtworkEdge[]) =>
-              localSortAndFilterArtworks(artworks, appliedFiltersState, filterOptions, query)
-            }
-          />
-        ) : (
-          <MyCollectionArtworkList
-            myCollectionConnection={me.myCollectionConnection}
-            hasMore={relay.hasMore}
-            loadMore={relay.loadMore}
-            isLoading={relay.isLoading}
-            localSortAndFilterArtworks={(artworks: MyCollectionArtworkEdge[]) =>
-              localSortAndFilterArtworks(artworks, appliedFiltersState, filterOptions, query)
-            }
-          />
-        )
+        <InfiniteScrollMyCollectionArtworksGridContainer
+          myCollectionConnection={me.myCollectionConnection}
+          hasMore={relay.hasMore}
+          loadMore={relay.loadMore}
+          localSortAndFilterArtworks={(artworks: MyCollectionArtworkEdge[]) =>
+            localSortAndFilterArtworks(artworks, appliedFiltersState, filterOptions, query)
+          }
+        />
       ) : (
         <Flex py={6} px={2}>
           <FilteredArtworkGridZeroState hideClearButton />

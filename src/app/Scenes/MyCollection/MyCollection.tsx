@@ -20,7 +20,6 @@ import { MyCollectionStickyHeader } from "app/Scenes/MyCollection/Components/MyC
 import { MyCollectionZeroState } from "app/Scenes/MyCollection/Components/MyCollectionZeroState"
 import { MyCollectionZeroStateArtworks } from "app/Scenes/MyCollection/Components/MyCollectionZeroStateArtworks"
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
-import { GlobalStore } from "app/store/GlobalStore"
 import { VisualCluesConstMap } from "app/store/config/visualClues"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
@@ -46,7 +45,6 @@ import {
   fetchQuery,
   graphql,
 } from "react-relay"
-import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListItem"
 import { MyCollectionArtworks } from "./MyCollectionArtworks"
 import { useLocalArtworkFilter } from "./utils/localArtworkSortAndFilter"
 import { addRandomMyCollectionArtwork } from "./utils/randomMyCollectionArtwork"
@@ -188,6 +186,7 @@ const MyCollection: React.FC<{
         </Tabs.SubTabBar>
 
         <MyCollectionCollectedArtists me={me} />
+
         {selectedTab === null && (
           <Flex px={2}>
             <Separator mb={4} mt={2} />
@@ -293,7 +292,6 @@ export const MyCollectionContainer = createPaginationContainer(
               }
             }
           }
-          ...MyCollectionArtworkList_myCollectionConnection
           ...InfiniteScrollArtworksGrid_myCollectionConnection @arguments(skipArtworkGridItem: true)
         }
       }
@@ -369,8 +367,6 @@ export const MyCollectionQueryRenderer: React.FC = () => {
 }
 
 export const MyCollectionPlaceholder: React.FC = () => {
-  const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
-
   return (
     <TabsFlatList
       contentContainerStyle={{
@@ -410,28 +406,7 @@ export const MyCollectionPlaceholder: React.FC = () => {
       <Spacer y={4} />
 
       {/* masonry grid */}
-      {viewOption === "grid" ? (
-        <PlaceholderGrid />
-      ) : (
-        <Flex width="100%" px={2}>
-          {times(4).map((i) => (
-            <Flex key={i} my={1} flexDirection="row">
-              <Flex>
-                <SkeletonBox
-                  key={i}
-                  width={ARTWORK_LIST_IMAGE_SIZE}
-                  height={ARTWORK_LIST_IMAGE_SIZE}
-                />
-              </Flex>
-              <Flex pl="15px" flex={1}>
-                <RandomWidthPlaceholderText minWidth={80} maxWidth={120} />
-                <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
-                <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
-              </Flex>
-            </Flex>
-          ))}
-        </Flex>
-      )}
+      <PlaceholderGrid />
     </TabsFlatList>
   )
 }
