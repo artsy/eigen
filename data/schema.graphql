@@ -4418,6 +4418,9 @@ type CollectorSignals {
   # Bid count on lots open for bidding
   bidCount: Int @deprecated(reason: "Use nested field in `auction` instead")
 
+  # Artwork is part of either the Curators' Pick Emerging or Blue Chip collections
+  curatorsPick: Boolean
+
   # Increased interest in the artwork
   increasedInterest: Boolean!
 
@@ -10356,6 +10359,18 @@ type FormattedDaySchedules {
 # The `FormattedNumber` type represents a number that can optionally be returnedas a formatted String. It does not try to coerce the type.
 scalar FormattedNumber
 
+# A section containing a list of galleries
+type GalleriesHomeViewSection implements GenericHomeViewSection & Node {
+  # The component that is prescribed for this section
+  component: HomeViewComponent
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+}
+
 # An entry from gemini
 type GeminiEntry {
   # The token that represents the gemini entry.
@@ -10947,6 +10962,7 @@ union HomeViewSection =
   | ArtworksRailHomeViewSection
   | AuctionResultsRailHomeViewSection
   | FairsRailHomeViewSection
+  | GalleriesHomeViewSection
   | HeroUnitsHomeViewSection
   | MarketingCollectionsRailHomeViewSection
   | SalesRailHomeViewSection
