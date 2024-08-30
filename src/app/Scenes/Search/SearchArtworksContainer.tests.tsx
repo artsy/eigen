@@ -80,7 +80,6 @@ describe("SearchArtworks", () => {
           "destination_screen_owner_type": "artwork",
           "position": 0,
           "query": "keyword",
-          "signal_label": "Limited-Time Offer",
           "sort": "-decayed_merch",
           "type": "thumbnail",
         },
