@@ -2122,20 +2122,16 @@ type ArtistRelatedData {
   ): ArtistConnection
 }
 
-type ArtistSeries {
-  # List of Mongo IDs for associated Artists
+type ArtistSeries implements Node {
   artistIDs: [String!]!
-  artists(page: Int, size: Int): [Artist]
-  artworkIDs: [ID!]!
-  artworksConnection(after: String, first: Int): ArtworkConnection
+  artists(page: Int, size: Int): [Artist!]!
   artworksCount: Int!
-
-  # A formatted string that shows the number of available works or
-  # (as a fallback) the number of works in general.
   artworksCountMessage: String
   description: String
   descriptionFormatted(format: Format): String
   featured: Boolean!
+
+  # Artworks Elastic Search results
   filterArtworksConnection(
     acquireable: Boolean
     additionalGeneIDs: [String]
@@ -2165,13 +2161,19 @@ type ArtistSeries {
     input: FilterArtworksInput
     inquireableOnly: Boolean
     keyword: String
+
+    # When true, will only return exact keyword match
     keywordMatchExact: Boolean
     last: Int
     locationCities: [String]
     majorPeriods: [String]
+
+    # When true, will only return `marketable` works (not nude or provocative).
     marketable: Boolean
     marketingCollectionID: String
     materialsTerms: [String]
+
+    # A string from the list of allocations, or * to denote all mediums
     medium: String
     offerable: Boolean
     page: Int
@@ -2183,18 +2185,20 @@ type ArtistSeries {
     priceRange: String
     saleID: ID
     size: Int
+
+    # Filter results by Artwork sizes
     sizes: [ArtworkSizes]
     sort: String
     tagID: String
     width: String
   ): FilterArtworksConnection
   forSaleArtworksCount: Int!
-  image: Image
-  imageHeight: Int
-  imageURL: String
-  imageWidth: Int
 
-  # Unique ID for this artist series
+  # A globally unique ID.
+  id: ID!
+  image: Image
+
+  # A type-specific Gravity Mongo Document ID.
   internalID: ID!
   published: Boolean!
   representativeArtworkID: ID
@@ -2202,27 +2206,23 @@ type ArtistSeries {
   title: String!
 }
 
-# The connection type for ArtistSeries.
+# A connection to a list of items.
 type ArtistSeriesConnection {
   # A list of edges.
   edges: [ArtistSeriesEdge]
-
-  # A list of nodes.
-  nodes: [ArtistSeries]
+  pageCursors: PageCursors!
 
   # Information to aid in pagination.
   pageInfo: PageInfo!
-
-  # Total count of matching nodes, before pagination
   totalCount: Int!
 }
 
 # An edge in a connection.
 type ArtistSeriesEdge {
-  # A cursor for use in pagination.
+  # A cursor for use in pagination
   cursor: String!
 
-  # The item at the end of the edge.
+  # The item at the end of the edge
   node: ArtistSeries
 }
 
@@ -14376,6 +14376,7 @@ type Partner implements Node {
     private: Boolean
     size: Int
   ): LocationConnection
+  merchantAccount: PartnerMerchantAccount
   meta: PartnerMeta
   name: String
 
@@ -14904,6 +14905,10 @@ type PartnerInquiryRequest {
   internalID: ID!
   questions: [InquiryQuestion]
   shippingLocation: Location
+}
+
+type PartnerMerchantAccount {
+  externalId: String!
 }
 
 type PartnerMeta {
@@ -15708,31 +15713,14 @@ type Query {
     # The slug or ID of the Artist
     id: String!
   ): Artist
-
-  # Find an artist series by ID
   artistSeries(id: ID!): ArtistSeries
-
-  # List all artist series, optionally filtered by artist or artwork
   artistSeriesConnection(
-    # Returns the elements in the list that come after the specified cursor.
     after: String
-
-    # ID of the artist by which to filter results
     artistID: ID
-
-    # ID of the artwork by which to filter results
     artworkID: ID
-
-    # Returns the elements in the list that come before the specified cursor.
     before: String
-
-    # Array of IDs of artist series that should be excluded from results
     excludeIDs: [ID!]
-
-    # Returns the first _n_ elements from the list.
     first: Int
-
-    # Returns the last _n_ elements from the list.
     last: Int
   ): ArtistSeriesConnection
 
@@ -20550,6 +20538,16 @@ type Viewer {
     # The slug or ID of the Artist
     id: String!
   ): Artist
+  artistSeries(id: ID!): ArtistSeries
+  artistSeriesConnection(
+    after: String
+    artistID: ID
+    artworkID: ID
+    before: String
+    excludeIDs: [ID!]
+    first: Int
+    last: Int
+  ): ArtistSeriesConnection
 
   # A list of Artists
   artists(
