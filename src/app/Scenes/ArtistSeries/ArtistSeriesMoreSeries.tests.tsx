@@ -130,6 +130,7 @@ describe("ArtistSeriesMoreSeries", () => {
 
 const ArtistSeriesMoreSeriesNoSeriesFixture: ArtistSeriesMoreSeriesTestsQuery["rawResponse"] = {
   artistSeries: {
+    id: "abc123",
     artist: [
       {
         id: "abc123",
@@ -146,6 +147,7 @@ const ArtistSeriesMoreSeriesNoSeriesFixture: ArtistSeriesMoreSeriesTestsQuery["r
 
 const ArtistSeriesMoreSeriesFixture: ArtistSeriesMoreSeriesTestsQuery["rawResponse"] = {
   artistSeries: {
+    id: "abc123",
     artist: [
       {
         id: "abc123",
@@ -156,6 +158,7 @@ const ArtistSeriesMoreSeriesFixture: ArtistSeriesMoreSeriesTestsQuery["rawRespon
           edges: [
             {
               node: {
+                id: "yayoi-kusama-plums",
                 featured: true,
                 slug: "yayoi-kusama-plums",
                 internalID: "da821a13-92fc-49c2-bbd5-bebb790f7020",
@@ -168,6 +171,7 @@ const ArtistSeriesMoreSeriesFixture: ArtistSeriesMoreSeriesTestsQuery["rawRespon
             },
             {
               node: {
+                id: "yayoi-kusama-apricots",
                 featured: true,
                 slug: "yayoi-kusama-apricots",
                 internalID: "ecfa5731-9d64-4bc2-9f9f-c427a9126064",
@@ -180,6 +184,7 @@ const ArtistSeriesMoreSeriesFixture: ArtistSeriesMoreSeriesTestsQuery["rawRespon
             },
             {
               node: {
+                id: "yayoi-kusama-pumpkins",
                 featured: true,
                 slug: "yayoi-kusama-pumpkins",
                 internalID: "58597ef5-3390-406b-b6d2-d4e308125d0d",
@@ -192,6 +197,7 @@ const ArtistSeriesMoreSeriesFixture: ArtistSeriesMoreSeriesTestsQuery["rawRespon
             },
             {
               node: {
+                id: "yayoi-kusama-apples",
                 featured: true,
                 slug: "yayoi-kusama-apples",
                 internalID: "5856ee51-35eb-4b75-bb12-15a1cd7e012e",
@@ -204,6 +210,7 @@ const ArtistSeriesMoreSeriesFixture: ArtistSeriesMoreSeriesTestsQuery["rawRespon
             },
             {
               node: {
+                id: "yayoi-kusama-dragonfruit",
                 featured: true,
                 slug: "yayoi-kusama-dragonfruit",
                 internalID: "5856ee51-35eb-4b75-bb12-15a1cd18161",
@@ -224,6 +231,7 @@ const ArtistSeriesMoreSeriesFixture: ArtistSeriesMoreSeriesTestsQuery["rawRespon
 const ArtistSeriesMoreSeriesBelowViewAllThresholdFixture: ArtistSeriesMoreSeriesTestsQuery["rawResponse"] =
   {
     artistSeries: {
+      id: "abc123",
       artist: [
         {
           id: "abc123",
@@ -234,6 +242,7 @@ const ArtistSeriesMoreSeriesBelowViewAllThresholdFixture: ArtistSeriesMoreSeries
             edges: [
               {
                 node: {
+                  id: "yayoi-kusama-pumpkins",
                   featured: true,
                   slug: "yayoi-kusama-pumpkins",
                   internalID: "58597ef5-3390-406b-b6d2-d4e308125d0d",
@@ -246,6 +255,7 @@ const ArtistSeriesMoreSeriesBelowViewAllThresholdFixture: ArtistSeriesMoreSeries
               },
               {
                 node: {
+                  id: "yayoi-kusama-apples",
                   featured: true,
                   slug: "yayoi-kusama-apples",
                   internalID: "5856ee51-35eb-4b75-bb12-15a1cd7e012e",
@@ -258,6 +268,7 @@ const ArtistSeriesMoreSeriesBelowViewAllThresholdFixture: ArtistSeriesMoreSeries
               },
               {
                 node: {
+                  id: "yayoi-kusama-dragonfruit",
                   featured: true,
                   slug: "yayoi-kusama-dragonfruit",
                   internalID: "5856ee51-35eb-4b75-bb12-15a1cd18161",
