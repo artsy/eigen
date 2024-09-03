@@ -4418,6 +4418,9 @@ type CollectorSignals {
   # Bid count on lots open for bidding
   bidCount: Int @deprecated(reason: "Use nested field in `auction` instead")
 
+  # Artwork is part of either the Curators' Pick Emerging or Blue Chip collections
+  curatorsPick: Boolean
+
   # Increased interest in the artwork
   increasedInterest: Boolean!
 
