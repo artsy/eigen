@@ -78,11 +78,11 @@ describe("ConfirmBid", () => {
         renderWithWrappers(<ConfirmBid {...initialProps} />)
 
         expect(screen.getByTestId("disclaimer")).toHaveTextContent(
-          "I agree to Artsy's and Christie's Conditions of Sale. I understand that all bids are binding and may not be retracted."
+          "I agree to Artsy's and Christie's General Terms and Conditions of Sale. I understand that all bids are binding and may not be retracted."
         )
       })
 
-      it("navigates to the conditions of sale when the user taps the link", () => {
+      it("navigates to the terms screen when the user taps the link", () => {
         jest.mock("app/system/navigation/navigate", () => ({
           ...jest.requireActual("app/system/navigation/navigate"),
           navigate: jest.fn(),
@@ -90,38 +90,11 @@ describe("ConfirmBid", () => {
 
         renderWithWrappers(<ConfirmBid {...initialProps} />)
 
-        fireEvent.press(screen.getByText("Artsy's and Christie's Conditions of Sale"))
+        fireEvent.press(
+          screen.getByText("Artsy's and Christie's General Terms and Conditions of Sale")
+        )
 
-        expect(navigation.navigate).toHaveBeenCalledWith("/conditions-of-sale")
-      })
-
-      describe("when AREnableNewTermsAndConditions is enabled", () => {
-        beforeEach(() => {
-          __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewTermsAndConditions: true })
-        })
-
-        it("displays a disclaimer", () => {
-          renderWithWrappers(<ConfirmBid {...initialProps} />)
-
-          expect(screen.getByTestId("disclaimer")).toHaveTextContent(
-            "I agree to Artsy's and Christie's General Terms and Conditions of Sale. I understand that all bids are binding and may not be retracted."
-          )
-        })
-
-        it("navigates to the terms screen when the user taps the link", () => {
-          jest.mock("app/system/navigation/navigate", () => ({
-            ...jest.requireActual("app/system/navigation/navigate"),
-            navigate: jest.fn(),
-          }))
-
-          renderWithWrappers(<ConfirmBid {...initialProps} />)
-
-          fireEvent.press(
-            screen.getByText("Artsy's and Christie's General Terms and Conditions of Sale")
-          )
-
-          expect(navigation.navigate).toHaveBeenCalledWith("/terms")
-        })
+        expect(navigation.navigate).toHaveBeenCalledWith("/terms")
       })
     })
 
@@ -136,11 +109,11 @@ describe("ConfirmBid", () => {
         renderWithWrappers(<ConfirmBid {...initialPropsForRegisteredUser} />)
 
         expect(screen.getByTestId("disclaimer")).toHaveTextContent(
-          "I agree to Artsy's and Christie's Conditions of Sale. I understand that all bids are binding and may not be retracted."
+          "I agree to Artsy's and Christie's General Terms and Conditions of Sale. I understand that all bids are binding and may not be retracted."
         )
       })
 
-      it("navigates to the conditions of sale when the user taps the link", () => {
+      it("navigates to the terms when the user taps the link", () => {
         jest.mock("app/system/navigation/navigate", () => ({
           ...jest.requireActual("app/system/navigation/navigate"),
           navigate: jest.fn(),
@@ -148,38 +121,11 @@ describe("ConfirmBid", () => {
 
         renderWithWrappers(<ConfirmBid {...initialPropsForRegisteredUser} />)
 
-        fireEvent.press(screen.getByText("Artsy's and Christie's Conditions of Sale"))
+        fireEvent.press(
+          screen.getByText("Artsy's and Christie's General Terms and Conditions of Sale")
+        )
 
-        expect(navigation.navigate).toHaveBeenCalledWith("/conditions-of-sale")
-      })
-
-      describe("when AREnableNewTermsAndConditions is enabled", () => {
-        beforeEach(() => {
-          __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewTermsAndConditions: true })
-        })
-
-        it("displays a disclaimer", () => {
-          renderWithWrappers(<ConfirmBid {...initialPropsForRegisteredUser} />)
-
-          expect(screen.getByTestId("disclaimer")).toHaveTextContent(
-            "I agree to Artsy's and Christie's General Terms and Conditions of Sale. I understand that all bids are binding and may not be retracted."
-          )
-        })
-
-        it("navigates to the terms when the user taps the link", () => {
-          jest.mock("app/system/navigation/navigate", () => ({
-            ...jest.requireActual("app/system/navigation/navigate"),
-            navigate: jest.fn(),
-          }))
-
-          renderWithWrappers(<ConfirmBid {...initialPropsForRegisteredUser} />)
-
-          fireEvent.press(
-            screen.getByText("Artsy's and Christie's General Terms and Conditions of Sale")
-          )
-
-          expect(navigation.navigate).toHaveBeenCalledWith("/terms")
-        })
+        expect(navigation.navigate).toHaveBeenCalledWith("/terms")
       })
     })
   })

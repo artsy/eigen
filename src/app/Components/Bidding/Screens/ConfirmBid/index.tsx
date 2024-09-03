@@ -19,7 +19,6 @@ import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Modal } from "app/Components/Modal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { partnerName } from "app/Scenes/Artwork/Components/ArtworkExtraLinks/partnerName"
-import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { AuctionWebsocketContextProvider } from "app/utils/Websockets/auctions/AuctionSocketContext"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
@@ -351,10 +350,6 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     navigate("/terms")
   }
 
-  onConditionsOfSaleLinkPressed() {
-    navigate("/conditions-of-sale")
-  }
-
   refreshBidderInfo = () => {
     this.props.relay.refetch(
       // FIXME: Should this be internalID?
@@ -450,8 +445,6 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     const artworkImage = artwork!.image
 
     const websocketEnabled = !!sale?.cascadingEndTimeIntervalMinutes
-
-    const showNewDisclaimer = unsafe_getFeatureFlag("AREnableNewTermsAndConditions")
 
     return (
       <AuctionWebsocketContextProvider
@@ -569,13 +562,10 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                     onPress={
                       isLoading
                         ? undefined
-                        : showNewDisclaimer
-                          ? () => this.onGeneralTermsAndConditionsOfSaleLinkPressed()
-                          : () => this.onConditionsOfSaleLinkPressed()
+                        : () => this.onGeneralTermsAndConditionsOfSaleLinkPressed()
                     }
                   >
-                    {partnerName(sale!)} {showNewDisclaimer ? "General Terms and " : ""}Conditions
-                    of Sale
+                    {partnerName(sale!)} General Terms and Conditions of Sale
                   </LinkText>
                   . I understand that all bids are binding and may not be retracted.
                 </Text>
@@ -589,13 +579,10 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                     onPress={
                       isLoading
                         ? undefined
-                        : showNewDisclaimer
-                          ? () => this.onGeneralTermsAndConditionsOfSaleLinkPressed()
-                          : () => this.onConditionsOfSaleLinkPressed()
+                        : () => this.onGeneralTermsAndConditionsOfSaleLinkPressed()
                     }
                   >
-                    {partnerName(sale!)} {showNewDisclaimer ? "General Terms and " : ""}Conditions
-                    of Sale
+                    {partnerName(sale!)} General Terms and Conditions of Sale
                   </LinkText>
                   . I understand that all bids are binding and may not be retracted.
                 </Text>

@@ -16,7 +16,6 @@ import { Address, PaymentCardTextFieldParams } from "app/Components/Bidding/type
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Modal } from "app/Components/Modal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
@@ -419,8 +418,6 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 
     const saleTimeDetails = saleTime(sale)
 
-    const showNewDisclaimer = unsafe_getFeatureFlag("AREnableNewTermsAndConditions")
-
     return (
       <ScrollView
         contentContainerStyle={{ flexGrow: 1, justifyContent: "space-between" }}
@@ -469,28 +466,15 @@ export class Registration extends React.Component<RegistrationProps, Registratio
             closeModal={this.closeModal.bind(this)}
           />
           <Checkbox mb={4} onPress={() => this.conditionsOfSalePressed()} disabled={isLoading}>
-            {showNewDisclaimer ? (
-              <Text variant="sm-display">
-                I agree to Artsy's{" "}
-                <LinkText
-                  onPress={isLoading ? undefined : this.onPressGeneralTermsAndConditionsOfSale}
-                >
-                  General Terms and Conditions of Sale
-                </LinkText>
-                . I understand that all bids are binding and may not be retracted.
-              </Text>
-            ) : (
-              <Text variant="sm-display">
-                I agree to the{" "}
-                <LinkText
-                  onPress={isLoading ? undefined : this.onPressConditionsOfSale}
-                  variant="sm-display"
-                >
-                  Conditions of Sale
-                </LinkText>
-                . I understand that all bids are binding and may not be retracted.
-              </Text>
-            )}
+            <Text variant="sm-display">
+              I agree to Artsy's{" "}
+              <LinkText
+                onPress={isLoading ? undefined : this.onPressGeneralTermsAndConditionsOfSale}
+              >
+                General Terms and Conditions of Sale
+              </LinkText>
+              . I understand that all bids are binding and may not be retracted.
+            </Text>
           </Checkbox>
         </Flex>
 

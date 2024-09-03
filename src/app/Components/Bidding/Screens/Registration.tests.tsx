@@ -11,7 +11,6 @@ import {
 import { Address } from "app/Components/Bidding/types"
 import { Modal } from "app/Components/Modal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { TouchableWithoutFeedback } from "react-native"
@@ -649,12 +648,12 @@ it("shows a checkbox for agreeing to the conditions of sale", () => {
 
   expect(
     screen.getByText(
-      "I agree to the Conditions of Sale. I understand that all bids are binding and may not be retracted."
+      "I agree to Artsy's General Terms and Conditions of Sale. I understand that all bids are binding and may not be retracted."
     )
   ).toBeOnTheScreen()
 })
 
-it("navigates to the conditions of sale when the user taps the link", () => {
+it("navigates to the terms when the user taps the link", () => {
   jest.mock("app/system/navigation/navigate", () => ({
     ...jest.requireActual("app/system/navigation/navigate"),
     navigate: jest.fn(),
@@ -662,38 +661,9 @@ it("navigates to the conditions of sale when the user taps the link", () => {
 
   renderWithWrappers(<Registration {...initialPropsForUserWithCreditCardAndPhone} />)
 
-  fireEvent.press(screen.getByText("Conditions of Sale"))
+  fireEvent.press(screen.getByText("General Terms and Conditions of Sale"))
 
-  expect(navigate).toHaveBeenCalledWith("/conditions-of-sale")
-})
-
-describe("when AREnableNewTermsAndConditions is enabled", () => {
-  beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewTermsAndConditions: true })
-  })
-
-  it("shows a checkbox for agreeing to the conditions of sale", () => {
-    renderWithWrappers(<Registration {...initialPropsForUserWithCreditCardAndPhone} />)
-
-    expect(
-      screen.getByText(
-        "I agree to Artsy's General Terms and Conditions of Sale. I understand that all bids are binding and may not be retracted."
-      )
-    ).toBeOnTheScreen()
-  })
-
-  it("navigates to the terms when the user taps the link", () => {
-    jest.mock("app/system/navigation/navigate", () => ({
-      ...jest.requireActual("app/system/navigation/navigate"),
-      navigate: jest.fn(),
-    }))
-
-    renderWithWrappers(<Registration {...initialPropsForUserWithCreditCardAndPhone} />)
-
-    fireEvent.press(screen.getByText("General Terms and Conditions of Sale"))
-
-    expect(navigate).toHaveBeenCalledWith("/terms")
-  })
+  expect(navigate).toHaveBeenCalledWith("/terms")
 })
 
 const billingAddress: Partial<Address> = {
