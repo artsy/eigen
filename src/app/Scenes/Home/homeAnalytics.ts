@@ -11,6 +11,10 @@ import {
   tappedEntityGroup,
 } from "@artsy/cohesion"
 import { ArtworkModuleRail_rail$data } from "__generated__/ArtworkModuleRail_rail.graphql"
+import {
+  CollectorSignals,
+  getArtworkSignalTrackingFields,
+} from "app/utils/getArtworkSignalTrackingFields"
 
 type ValidHomeDestination =
   | OwnerType.auctions
@@ -193,7 +197,8 @@ export default class HomeAnalytics {
     id: string,
     index?: number,
     moduleHeight?: "single" | "double",
-    withPartnerOffer?: boolean
+    collectorSignals?: CollectorSignals,
+    auctionSignalsFeatureFlagEnabled?: boolean
   ): TappedArtworkGroup {
     return {
       action: ActionType.tappedArtworkGroup,
@@ -205,7 +210,7 @@ export default class HomeAnalytics {
       horizontal_slide_position: index,
       module_height: moduleHeight ?? "double",
       type: "thumbnail",
-      signal_label: withPartnerOffer ? "Limited-Time Offer" : undefined,
+      ...getArtworkSignalTrackingFields(collectorSignals, auctionSignalsFeatureFlagEnabled),
     }
   }
 

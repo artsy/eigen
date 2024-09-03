@@ -14,6 +14,10 @@ import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { useSavedSearchPills } from "app/Scenes/SavedSearchAlert/useSavedSearchPills"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import {
+  CollectorSignals,
+  getArtworkSignalTrackingFields,
+} from "app/utils/getArtworkSignalTrackingFields"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 import { withSuspense } from "app/utils/hooks/withSuspense"
@@ -167,7 +171,7 @@ const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection,
   const artworks = extractNodes(artworksConnection)
   const total = artworksConnection?.counts?.total
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
-  const AREnablePartnerOfferSignals = useFeatureFlag("AREnablePartnerOfferSignals")
+  const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
 
   const areMoreMatchesAvailable =
     total > NUMBER_OF_ARTWORKS_TO_SHOW && attributes?.artistIDs?.length === 1
@@ -214,10 +218,14 @@ const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection,
         artworks={artworks}
         hideSaveIcon
         onPress={(slug: string, artwork?: ArtworkGridItem_artwork$data) => {
-          const partnerOfferAvailable =
-            AREnablePartnerOfferSignals && !!artwork?.collectorSignals?.partnerOffer?.isAvailable
           closeModal?.()
-          trackEvent(tracks.tappedArtworkGroup(slug, partnerOfferAvailable))
+          trackEvent(
+            tracks.tappedArtworkGroup(
+              slug,
+              artwork?.collectorSignals,
+              AREnableAuctionImprovementsSignals
+            )
+          )
           requestAnimationFrame(() => {
             navigate?.(`artwork/${slug}`)
           })
@@ -236,13 +244,17 @@ const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection,
 }
 
 const tracks = {
-  tappedArtworkGroup: (slug: string, withPartnerOffer: boolean): TappedArtworkGroup => ({
+  tappedArtworkGroup: (
+    slug: string,
+    collectorSignals: CollectorSignals,
+    auctionSignalsFeatureFlagEnabled: boolean
+  ): TappedArtworkGroup => ({
     action: ActionType.tappedArtworkGroup,
     context_module: ContextModule.alertConfirmation,
     context_screen_owner_type: OwnerType.alertConfirmation,
     destination_screen_owner_type: OwnerType.artwork,
     destination_screen_owner_slug: slug,
     type: "thumbnail",
-    signal_label: withPartnerOffer ? "Limited-Time Offer" : undefined,
+    ...getArtworkSignalTrackingFields(collectorSignals, auctionSignalsFeatureFlagEnabled),
   }),
 }
