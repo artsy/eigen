@@ -9,9 +9,9 @@ async function main() {
     await updateRepo({
       repo: { owner: "artsy", repo: "metaphysics" },
       branch: "update-eigen-query-map",
-      title: "Update eigen query map",
+      title: "chore: update eigen query map",
       targetBranch: "main",
-      commitMessage: "Update eigen query map",
+      commitMessage: "chore: update eigen query map",
       body: "Greetings human :robot: this PR was automatically created as part of eigen's deploy process",
       assignees: ["artsyit"],
       labels: ["Merge On Green"],
