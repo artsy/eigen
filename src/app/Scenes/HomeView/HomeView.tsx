@@ -1,10 +1,19 @@
-import { Flex, Screen, Spacer, Spinner, Text } from "@artsy/palette-mobile"
+import {
+  Flex,
+  Screen,
+  Spacer,
+  SpacingUnitDSValueNumber,
+  Spinner,
+  Text,
+} from "@artsy/palette-mobile"
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
 import { HomeViewSectionsConnection_viewer$key } from "__generated__/HomeViewSectionsConnection_viewer.graphql"
 import { Section } from "app/Scenes/HomeView/Sections/Section"
 import { extractNodes } from "app/utils/extractNodes"
 import { Suspense } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
+
+const SECTION_SEPARATOR_HEIGHT: SpacingUnitDSValueNumber = 6
 
 export const HomeView: React.FC = () => {
   const queryData = useLazyLoadQuery<HomeViewQuery>(homeViewScreenQuery, {
@@ -27,7 +36,7 @@ export const HomeView: React.FC = () => {
           renderItem={({ item }) => {
             return <Section section={item} />
           }}
-          ItemSeparatorComponent={() => <Spacer y={2} />}
+          ItemSeparatorComponent={SectionSeparator}
           onEndReached={() => loadNext(10)}
           ListFooterComponent={
             hasNext ? (
@@ -41,6 +50,8 @@ export const HomeView: React.FC = () => {
     </Screen>
   )
 }
+
+const SectionSeparator = () => <Spacer y={SECTION_SEPARATOR_HEIGHT} />
 
 export const HomeViewScreen: React.FC = () => (
   <Suspense
