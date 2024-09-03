@@ -271,7 +271,6 @@ const ArtistSeriesMoreSeriesBelowViewAllThresholdFixture: ArtistSeriesMoreSeries
                 node: {
                   id: "yayoi-kusama-dragonfruit",
                   featured: true,
-                  id: "some-id-3",
                   slug: "yayoi-kusama-dragonfruit",
                   internalID: "5856ee51-35eb-4b75-bb12-15a1cd18161",
                   title: "dragonfruit",
