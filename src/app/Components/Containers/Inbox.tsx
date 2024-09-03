@@ -1,5 +1,5 @@
 import { ActionType } from "@artsy/cohesion"
-import { Spacer, Flex, Separator, Tabs, Skeleton, SkeletonText, Text } from "@artsy/palette-mobile"
+import { Spacer, Flex, Separator, Tabs, Skeleton, SkeletonText } from "@artsy/palette-mobile"
 import { TabsContainer } from "@artsy/palette-mobile/dist/elements/Tabs/TabsContainer"
 import { InboxQuery } from "__generated__/InboxQuery.graphql"
 import { Inbox_me$data } from "__generated__/Inbox_me.graphql"
@@ -11,7 +11,7 @@ import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { track } from "app/utils/track"
 import { ActionNames, ActionTypes } from "app/utils/track/schema"
-import React, { Suspense } from "react"
+import React from "react"
 import { EmitterSubscription } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
@@ -78,7 +78,7 @@ export class Inbox extends React.Component<Props, State> {
     this.setState({ activeTab: tabName as Tab })
   }
   render() {
-    const hasActiveBids = (this.props.me.myBids?.active ?? []).length > 0
+    const hasActiveBids = (this.props.me?.myBids?.active ?? []).length > 0
     const initialPageName = hasActiveBids ? "bids" : "inquiries"
 
     return (
@@ -139,20 +139,18 @@ export const InboxScreenQuery = graphql`
 
 export const InboxQueryRenderer: React.FC<{ isVisible: boolean }> = (props) => {
   return (
-    <Suspense fallback={() => <Text>Loading...</Text>}>
-      <QueryRenderer<InboxQuery>
-        environment={getRelayEnvironment()}
-        query={InboxScreenQuery}
-        variables={{}}
-        render={(...args) =>
-          renderWithPlaceholder({
-            Container: InboxContainer,
-            initialProps: props,
-            renderPlaceholder: () => <InboxPlaceholder />,
-          })(...args)
-        }
-      />
-    </Suspense>
+    <QueryRenderer<InboxQuery>
+      environment={getRelayEnvironment()}
+      query={InboxScreenQuery}
+      variables={{}}
+      render={(...args) =>
+        renderWithPlaceholder({
+          Container: InboxContainer,
+          initialProps: props,
+          renderPlaceholder: () => <InboxPlaceholder />,
+        })(...args)
+      }
+    />
   )
 }
 
