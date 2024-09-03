@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Box, Tabs, useScreenDimensions, Flex, useSpace, Spinner } from "@artsy/palette-mobile"
+import { Box, Tabs, useScreenDimensions, Flex, useSpace } from "@artsy/palette-mobile"
 import { MasonryFlashListRef } from "@shopify/flash-list"
 import { ArtistSeriesArtworks_artistSeries$key } from "__generated__/ArtistSeriesArtworks_artistSeries.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
@@ -14,6 +14,7 @@ import {
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
 } from "app/utils/masonryHelpers"
+import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { graphql, usePaginationFragment } from "react-relay"
@@ -168,11 +169,7 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
           </Tabs.SubTabBar>
         }
         ListFooterComponent={
-          !!shouldDisplaySpinner ? (
-            <Flex my={4} flexDirection="row" justifyContent="center">
-              <Spinner />
-            </Flex>
-          ) : null
+          <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
         }
       />
       <ArtworkFilterNavigator
@@ -191,7 +188,7 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
 
 const fragment = graphql`
   fragment ArtistSeriesArtworks_artistSeries on ArtistSeries
-  # @refetchable(queryName: "ArtistSeriesArtworksPaginationQuery")
+  @refetchable(queryName: "ArtistSeriesArtworksPaginationQuery")
   @argumentDefinitions(
     count: { type: "Int", defaultValue: 20 }
     cursor: { type: "String" }
