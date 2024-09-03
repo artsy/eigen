@@ -57,6 +57,7 @@ describe("ArtworkGridItem", () => {
             title: "Some Kind of Dinosaur",
             slug: "cool-artwork",
             internalID: "abc1234",
+            collectorSignals: null,
           }),
         },
         {
