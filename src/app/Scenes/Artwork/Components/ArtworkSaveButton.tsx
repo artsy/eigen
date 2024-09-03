@@ -1,6 +1,4 @@
 import {
-  BellIcon,
-  BellFillIcon,
   Box,
   Flex,
   HeartFillIcon,
@@ -29,10 +27,10 @@ interface IconProps {
 
 const WatchLotIcon: React.FC<IconProps> = ({ isSaved }) => {
   if (isSaved) {
-    return <BellFillIcon accessibilityLabel="unwatch lot icon" fill="blue100" />
+    return <HeartFillIcon accessibilityLabel="unwatch lot icon" fill="blue100" />
   }
 
-  return <BellIcon accessibilityLabel="watch lot icon" />
+  return <HeartIcon accessibilityLabel="watch lot icon" />
 }
 
 const SaveButtonIcon: React.FC<IconProps> = ({ isSaved }) => {
