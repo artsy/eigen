@@ -4,18 +4,23 @@ import {
   ArtsyLogoWhiteIcon,
   Flex,
   Text,
-  Button,
   LegacyScreen,
+  Input,
+  BackButton,
+  LinkText,
+  Button,
 } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
+
 import {
   ArtsyNativeModule,
   DEFAULT_NAVIGATION_BAR_COLOR,
 } from "app/NativeModules/ArtsyNativeModule"
+import { navigate } from "app/system/navigation/navigate"
 import { useScreenDimensions } from "app/utils/hooks"
 import backgroundImage from "images/WelcomeImage.webp"
-import { MotiView } from "moti"
-import { useEffect } from "react"
+import { AnimatePresence, MotiView } from "moti"
+import { useEffect, useRef, useState } from "react"
 import { Dimensions, Image, Platform } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import Animated, {
@@ -85,6 +90,33 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
     return unsubscribe
   }, [navigation])
 
+  const [userIsAuthenticating, setUserIsAuthenticating] = useState(false)
+
+  const emailInputRef = useRef<Input>(null)
+
+  const handleEmailInputFocus = () => {
+    setUserIsAuthenticating(true)
+
+    // 1. Fade out the artsy logo
+    // 2. Fade out the content
+    // 3. Slide up the auth panel to the top
+    // 4. Increase the height of the auth panel
+    // 5. Fade in the back button and continue button
+    // 6. Fade out the social sign in buttons and other copy
+  }
+
+  const handleBackButtonPress = () => {
+    setUserIsAuthenticating(false)
+    emailInputRef.current?.blur()
+
+    // 1. Fade in the artsy logo
+    // 2. Fade in the content
+    // 3. Slide down the auth panel to the top
+    // 4. Decrease the height of the auth panel
+    // 5. Fade out the back button and continue button
+    // 6. Fade in the social sign in buttons and other copy
+  }
+
   return (
     <LegacyScreen>
       <LegacyScreen.Background>
@@ -117,77 +149,101 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
       </LegacyScreen.Background>
 
       <LegacyScreen.Body>
-        <Spacer y={1} />
-
-        <MotiView
-          style={{ alignItems: "center", width: "100%" }}
-          from={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ type: "timing", duration: 1500 }}
-        >
-          <ArtsyLogoWhiteIcon height={25} width={75} />
-        </MotiView>
-
-        <MotiView
-          style={{
-            flex: 1,
-            paddingTop: space(2),
-            justifyContent: "flex-end",
-          }}
-          from={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ type: "timing", duration: 1500 }}
-        >
-          <Text variant="xl" color="white">
-            Collect Art by the World’s Leading Artists
-          </Text>
-
-          <Spacer y={1} />
-
-          <Text variant="sm" color="white">
-            Build your personalized profile, get market insights, buy and sell art with confidence.
-          </Text>
-
-          <Spacer y={2} />
-
-          <Flex flexDirection="row">
-            <Flex flex={1}>
-              <Button
-                variant="fillLight"
-                block
-                haptic="impactMedium"
-                onPress={() => navigation.navigate("OnboardingCreateAccount")}
-                testID="button-create"
+        <Flex flexDirection="column" height="100%">
+          <AnimatePresence>
+            {!userIsAuthenticating && (
+              <MotiView
+                style={{
+                  alignItems: "center",
+                  paddingTop: 10,
+                  flexGrow: 1,
+                }}
+                from={{ opacity: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ type: "timing", duration: 1500 }}
+                exit={{ scale: 0 }}
               >
-                Sign up
-              </Button>
-            </Flex>
-
-            <Spacer x={2} />
-
-            <Flex flex={1}>
-              <Button
-                variant="outlineLight"
-                block
-                haptic="impactMedium"
-                onPress={() => navigation.navigate("OnboardingLogin")}
-                testID="button-login"
+                <ArtsyLogoWhiteIcon height={25} width={75} />
+              </MotiView>
+            )}
+          </AnimatePresence>
+          <AnimatePresence>
+            {!userIsAuthenticating && (
+              <MotiView
+                from={{ opacity: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ type: "timing", duration: 1500 }}
+                exit={{ scale: 0 }}
               >
-                Log in
+                <Text variant="xl" color="white">
+                  Collect Art by the World’s Leading Artists
+                </Text>
+                <Spacer y={1} />
+                <Text variant="sm" color="white">
+                  Build your personalized profile, get market insights, buy and sell art with
+                  confidence.
+                </Text>
+                <Spacer y={2} />
+              </MotiView>
+            )}
+          </AnimatePresence>
+          <MotiView
+            style={{
+              backgroundColor: "white",
+              borderRadius: 10,
+              padding: 20,
+              gap: 20,
+            }}
+            from={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ type: "timing", duration: 1500 }}
+          >
+            {!!userIsAuthenticating && <BackButton onPress={handleBackButtonPress} />}
+            <Text variant="sm-display">Sign up or log in</Text>
+            <Input
+              ref={emailInputRef}
+              placeholder="Enter your email"
+              onFocus={handleEmailInputFocus}
+            />
+            {!userIsAuthenticating && (
+              <Flex gap={space(1)}>
+                <Text variant="xs" textAlign="center">
+                  Or continue with
+                </Text>
+                <Flex flexDirection="row" justifyContent="space-evenly">
+                  <Flex>
+                    <Image source={require("images/apple.webp")} resizeMode="contain" />
+                  </Flex>
+                  <Flex>
+                    <Image source={require("images/google.webp")} resizeMode="contain" />
+                  </Flex>
+                  <Flex>
+                    <Image source={require("images/facebook.webp")} resizeMode="contain" />
+                  </Flex>
+                </Flex>
+              </Flex>
+            )}
+            {!userIsAuthenticating && (
+              <Flex>
+                <Text variant="xxs" color="black60" textAlign="center">
+                  By tapping Continue with Apple, Facebook, or Google, you agree to Artsy’s{" "}
+                  <LinkText variant="xxs" onPress={() => navigate("/terms")}>
+                    Terms of Use
+                  </LinkText>{" "}
+                  and{" "}
+                  <LinkText variant="xxs" onPress={() => navigate("/privacy")}>
+                    Privacy Policy
+                  </LinkText>
+                </Text>
+              </Flex>
+            )}
+            {!!userIsAuthenticating && (
+              <Button block width={100} onPress={() => {}} disabled>
+                Continue
               </Button>
-            </Flex>
-          </Flex>
-
-          <Text textAlign="center" color="black30" mt={4}>
-            Faith Ringgold{" "}
-            <Text fontStyle="italic" color="black30">
-              Groovin' High, 1996
-            </Text>
-            .
-          </Text>
-
-          <LegacyScreen.SafeBottomPadding />
-        </MotiView>
+            )}
+          </MotiView>
+        </Flex>
       </LegacyScreen.Body>
     </LegacyScreen>
   )
