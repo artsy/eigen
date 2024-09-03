@@ -109,6 +109,7 @@ describe("Artist Series Meta", () => {
 
 const ArtistSeriesFixture: ArtistSeriesMetaTestsQuery["rawResponse"] = {
   artistSeries: {
+    id: "pumpkins",
     internalID: "as1234",
     slug: "cool-artist-series",
     title: "These are the Pumpkins",

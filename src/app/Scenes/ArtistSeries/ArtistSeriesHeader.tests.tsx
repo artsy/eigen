@@ -56,6 +56,7 @@ describe("Artist Series Header", () => {
 
 const ArtistSeriesHeaderFixture: ArtistSeriesHeaderTestsQuery["rawResponse"] = {
   artistSeries: {
+    id: "pumpkins",
     image: {
       url: "https://www.imagesofpumpkins.cloudfront.net/primary/square.jpg",
     },
