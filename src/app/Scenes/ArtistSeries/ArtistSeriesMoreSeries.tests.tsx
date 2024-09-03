@@ -54,7 +54,7 @@ describe("ArtistSeriesMoreSeries", () => {
   )
 
   const getWrapper = (testFixture: any) => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    const { root } = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -63,30 +63,30 @@ describe("ArtistSeriesMoreSeries", () => {
         },
       })
     })
-    return tree
+    return root
   }
 
-  it("renders without throwing an error", () => {
-    const wrapper = getWrapper(ArtistSeriesMoreSeriesFixture)
-    expect(wrapper.root.findAllByType(ArtistSeriesMoreSeries)).toHaveLength(1)
+  it("renders without throwing an error", async () => {
+    const root = getWrapper(ArtistSeriesMoreSeriesFixture)
+    expect(await root.findAllByType(ArtistSeriesMoreSeries)).toHaveLength(1)
   })
 
-  it("renders the correct header text", () => {
-    const wrapper = getWrapper(ArtistSeriesMoreSeriesFixture)
-    expect(wrapper.root.findByProps({ testID: "header" }).props.children).toBe("This is a header")
+  it("renders the correct header text", async () => {
+    const root = getWrapper(ArtistSeriesMoreSeriesFixture)
+    const header = await root.findByProps({ testID: "header" })
+    expect(header.props.children).toBe("This is a header")
   })
 
   describe("with at least one other series related to the artist to show", () => {
-    it("renders the related artist series", () => {
-      const wrapper = getWrapper(ArtistSeriesMoreSeriesFixture)
-      expect(wrapper.root.findAllByType(ArtistSeriesListItem).length).toBe(5)
+    it("renders the related artist series", async () => {
+      const root = getWrapper(ArtistSeriesMoreSeriesFixture)
+      expect(await root.findAllByType(ArtistSeriesListItem)).toHaveLength(5)
     })
 
-    it("tracks an event on click", () => {
-      const wrapper = getWrapper(ArtistSeriesMoreSeriesFixture)
-      const artistSeriesButton = wrapper.root
-        .findAllByType(ArtistSeriesListItem)[0]
-        .findByType(Touchable)
+    it("tracks an event on click", async () => {
+      const root = getWrapper(ArtistSeriesMoreSeriesFixture)
+      const artistSerieListItems = await root.findAllByType(ArtistSeriesListItem)
+      const artistSeriesButton = artistSerieListItems[0].findByType(Touchable)
 
       act(() => artistSeriesButton.props.onPress())
 
@@ -107,23 +107,24 @@ describe("ArtistSeriesMoreSeries", () => {
   })
 
   describe("with no other series related to the artist to show", () => {
-    it("does not render", () => {
-      const wrapper = getWrapper(ArtistSeriesMoreSeriesNoSeriesFixture)
-      expect(wrapper.root.findAllByType(ArtistSeriesListItem).length).toBe(0)
+    it("does not render", async () => {
+      const root = getWrapper(ArtistSeriesMoreSeriesNoSeriesFixture)
+      expect(await root.findAllByType(ArtistSeriesListItem)).toHaveLength(0)
     })
   })
 
   describe("with greater than four series associated with an artist", () => {
-    it("renders a view all button with a total count for all the series associated with the artist", () => {
-      const wrapper = getWrapper(ArtistSeriesMoreSeriesFixture)
-      expect(wrapper.root.findByProps({ testID: "viewAll" }).props.children).toBe("View All (6)")
+    it("renders a view all button with a total count for all the series associated with the artist", async () => {
+      const root = getWrapper(ArtistSeriesMoreSeriesFixture)
+      const viewAllButton = await root.findByProps({ testID: "viewAll" })
+      expect(viewAllButton.props.children).toBe("View All (6)")
     })
   })
 
   describe("with fewer than four series associated with an artist", () => {
-    it("does not render a view all button", () => {
-      const wrapper = getWrapper(ArtistSeriesMoreSeriesBelowViewAllThresholdFixture)
-      expect(wrapper.root.findAllByProps({ testID: "viewAll" })).toHaveLength(0)
+    it("does not render a view all button", async () => {
+      const root = getWrapper(ArtistSeriesMoreSeriesBelowViewAllThresholdFixture)
+      expect(await root.findAllByProps({ testID: "viewAll" })).toHaveLength(0)
     })
   })
 })
@@ -158,7 +159,7 @@ const ArtistSeriesMoreSeriesFixture: ArtistSeriesMoreSeriesTestsQuery["rawRespon
           edges: [
             {
               node: {
-                id: "some-id-1",
+                id: "yayoi-kusama-plums",
                 featured: true,
                 slug: "yayoi-kusama-plums",
                 internalID: "da821a13-92fc-49c2-bbd5-bebb790f7020",
@@ -171,7 +172,7 @@ const ArtistSeriesMoreSeriesFixture: ArtistSeriesMoreSeriesTestsQuery["rawRespon
             },
             {
               node: {
-                id: "some-id-2",
+                id: "yayoi-kusama-apricots",
                 featured: true,
                 slug: "yayoi-kusama-apricots",
                 internalID: "ecfa5731-9d64-4bc2-9f9f-c427a9126064",
@@ -184,7 +185,7 @@ const ArtistSeriesMoreSeriesFixture: ArtistSeriesMoreSeriesTestsQuery["rawRespon
             },
             {
               node: {
-                id: "some-id-3",
+                id: "yayoi-kusama-pumpkins",
                 featured: true,
                 slug: "yayoi-kusama-pumpkins",
                 internalID: "58597ef5-3390-406b-b6d2-d4e308125d0d",
@@ -197,7 +198,7 @@ const ArtistSeriesMoreSeriesFixture: ArtistSeriesMoreSeriesTestsQuery["rawRespon
             },
             {
               node: {
-                id: "some-id-4",
+                id: "yayoi-kusama-apples",
                 featured: true,
                 slug: "yayoi-kusama-apples",
                 internalID: "5856ee51-35eb-4b75-bb12-15a1cd7e012e",
@@ -210,7 +211,7 @@ const ArtistSeriesMoreSeriesFixture: ArtistSeriesMoreSeriesTestsQuery["rawRespon
             },
             {
               node: {
-                id: "some-id-5",
+                id: "yayoi-kusama-dragonfruit",
                 featured: true,
                 slug: "yayoi-kusama-dragonfruit",
                 internalID: "5856ee51-35eb-4b75-bb12-15a1cd18161",
@@ -242,7 +243,7 @@ const ArtistSeriesMoreSeriesBelowViewAllThresholdFixture: ArtistSeriesMoreSeries
             edges: [
               {
                 node: {
-                  id: "some-id-1",
+                  id: "yayoi-kusama-pumpkins",
                   featured: true,
                   slug: "yayoi-kusama-pumpkins",
                   internalID: "58597ef5-3390-406b-b6d2-d4e308125d0d",
@@ -255,7 +256,7 @@ const ArtistSeriesMoreSeriesBelowViewAllThresholdFixture: ArtistSeriesMoreSeries
               },
               {
                 node: {
-                  id: "some-id-2",
+                  id: "yayoi-kusama-apples",
                   featured: true,
                   slug: "yayoi-kusama-apples",
                   internalID: "5856ee51-35eb-4b75-bb12-15a1cd7e012e",
@@ -268,6 +269,7 @@ const ArtistSeriesMoreSeriesBelowViewAllThresholdFixture: ArtistSeriesMoreSeries
               },
               {
                 node: {
+                  id: "yayoi-kusama-dragonfruit",
                   featured: true,
                   id: "some-id-3",
                   slug: "yayoi-kusama-dragonfruit",

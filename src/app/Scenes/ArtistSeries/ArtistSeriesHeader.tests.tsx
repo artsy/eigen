@@ -34,9 +34,9 @@ describe("Artist Series Header", () => {
     />
   )
 
-  it("renders the Artist Series header", () => {
+  it("renders the Artist Series header", async () => {
     const wrapper = () => {
-      const tree = renderWithWrappersLEGACY(<TestRenderer />)
+      const { root } = renderWithWrappersLEGACY(<TestRenderer />)
       act(() => {
         env.mock.resolveMostRecentOperation({
           errors: [],
@@ -45,10 +45,11 @@ describe("Artist Series Header", () => {
           },
         })
       })
-      return tree
+      return root
     }
+    const imageView = await wrapper().findByType(OpaqueImageView)
 
-    expect(wrapper().root.findByType(OpaqueImageView).props.imageURL).toBe(
+    expect(imageView.props.imageURL).toBe(
       "https://www.imagesofpumpkins.cloudfront.net/primary/square.jpg"
     )
   })

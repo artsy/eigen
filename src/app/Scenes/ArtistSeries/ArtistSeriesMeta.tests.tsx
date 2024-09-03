@@ -45,7 +45,7 @@ describe("Artist Series Meta", () => {
   )
 
   const getWrapper = () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    const { root } = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -54,46 +54,45 @@ describe("Artist Series Meta", () => {
         },
       })
     })
-    return tree
+    return root
   }
 
-  it("renders without throwing an error", () => {
-    const wrapper = getWrapper()
-    expect(wrapper.root.findAllByType(ArtistSeriesMeta)).toHaveLength(1)
+  it("renders without throwing an error", async () => {
+    const root = getWrapper()
+    expect(await root.findAllByType(ArtistSeriesMeta)).toHaveLength(1)
   })
 
-  it("renders the Artist Series title", () => {
-    const wrapper = getWrapper()
-    expect(wrapper.root.findByProps({ testID: "title" }).props.children).toBe(
-      "These are the Pumpkins"
-    )
+  it("renders the Artist Series title", async () => {
+    const root = getWrapper()
+    const title = await root.findByProps({ testID: "title" })
+    expect(title.props.children).toBe("These are the Pumpkins")
   })
 
-  it("renders the Artist Series description", () => {
-    const wrapper = getWrapper()
-    expect(wrapper.root.findByProps({ testID: "description" }).props.content).toBe(
-      "A deliciously artistic variety of painted pumpkins."
-    )
+  it("renders the Artist Series description", async () => {
+    const root = getWrapper()
+    const description = await root.findByProps({ testID: "description" })
+    expect(description.props.content).toBe("A deliciously artistic variety of painted pumpkins.")
   })
 
-  it("renders an entity header component with artist's meta data", () => {
-    const wrapper = getWrapper()
-    expect(wrapper.root.findAllByType(EntityHeader)).toHaveLength(1)
-    expect(wrapper.root.findAllByType(EntityHeader)[0].props.name).toBe("Yayoi Kusama")
+  it("renders an entity header component with artist's meta data", async () => {
+    const root = getWrapper()
+    const entityHeaders = await root.findAllByType(EntityHeader)
+    expect(entityHeaders).toHaveLength(1)
+    expect(entityHeaders[0].props.name).toBe("Yayoi Kusama")
   })
 
-  it("navigates user to artist page when entity header artist tapped ", () => {
-    const wrapper = getWrapper().root.findByType(TouchableOpacity)
-    wrapper.props.onPress()
+  it("navigates user to artist page when entity header artist tapped ", async () => {
+    const button = await getWrapper().findByType(TouchableOpacity)
+    button.props.onPress()
     expect(navigate).toHaveBeenCalledWith("/artist/yayoi-kusama")
   })
 
-  it("tracks unfollows", () => {
-    const wrapper = getWrapper()
-    const followButton = wrapper.root
-      .findAllByType(EntityHeader)[0]
-      .findAllByType(TouchableWithoutFeedback)[0]
-    followButton.props.onPress()
+  it("tracks unfollows", async () => {
+    const root = getWrapper()
+    const entityHeaders = await root.findAllByType(EntityHeader)
+    const followButtons = await entityHeaders[0].findAllByType(TouchableWithoutFeedback)
+
+    followButtons[0].props.onPress()
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "unfollowedArtist",
       context_module: "featuredArtists",
@@ -109,7 +108,7 @@ describe("Artist Series Meta", () => {
 
 const ArtistSeriesFixture: ArtistSeriesMetaTestsQuery["rawResponse"] = {
   artistSeries: {
-    id: "pumpkins",
+    id: "bs5678",
     internalID: "as1234",
     slug: "cool-artist-series",
     title: "These are the Pumpkins",
