@@ -62,7 +62,7 @@ describe("FairFollowedArtistsRail", () => {
         internalID: "xyz123",
         slug: "art-basel-hong-kong-2019",
         filterArtworksConnection: {
-          edges: [{ node: { internalID: "abc123", slug: "some-artwork" } }],
+          edges: [{ node: { internalID: "abc123", slug: "some-artwork", collectorSignals: null } }],
         },
       }),
     })
@@ -121,6 +121,49 @@ describe("FairFollowedArtistsRail", () => {
       horizontal_slide_position: 0,
       type: "thumbnail",
       signal_label: "Limited-Time Offer",
+    })
+  })
+
+  it("tracks taps on artworks with auction signals", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAuctionImprovementsSignals: true })
+    const wrapper = getWrapper({
+      Fair: () => ({
+        internalID: "xyz123",
+        slug: "art-basel-hong-kong-2019",
+        filterArtworksConnection: {
+          edges: [
+            {
+              node: {
+                internalID: "abc123",
+                slug: "some-artwork",
+                collectorSignals: {
+                  auction: { bidCount: 7, lotWatcherCount: 49, liveBiddingStarted: true },
+                },
+              },
+            },
+          ],
+        },
+      }),
+    })
+
+    const artwork = wrapper.root.findAllByType(ArtworkRailCard)
+
+    act(() => artwork[0].props.onPress())
+
+    expect(trackEvent).toHaveBeenCalledWith({
+      action: "tappedArtworkGroup",
+      context_module: "worksByArtistsYouFollowRail",
+      context_screen_owner_id: "xyz123",
+      context_screen_owner_slug: "art-basel-hong-kong-2019",
+      context_screen_owner_type: "fair",
+      destination_screen_owner_id: "abc123",
+      destination_screen_owner_slug: "some-artwork",
+      destination_screen_owner_type: "artwork",
+      horizontal_slide_position: 0,
+      type: "thumbnail",
+      signal_label: "Bidding live now",
+      signal_bid_count: 7,
+      signal_lot_watcher_count: 49,
     })
   })
 

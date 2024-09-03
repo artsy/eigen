@@ -131,6 +131,103 @@ describe("ArtworkGridItem", () => {
         signal_label: "Limited-Time Offer",
       })
     })
+
+    describe("with auction signals", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAuctionImprovementsSignals: true })
+      })
+
+      it("sends a tracking event when with time left to bid label", () => {
+        renderWithRelay(
+          {
+            Artwork: () => ({
+              title: "Some Kind of Dinosaur",
+              slug: "cool-artwork",
+              internalID: "abc1234",
+              sale: { isAuction: true },
+              collectorSignals: {
+                partnerOffer: null,
+                auction: {
+                  lotClosesAt: DateTime.fromMillis(Date.now()).plus({ days: 1 }).toISO(),
+                  registrationEndsAt: DateTime.fromMillis(Date.now()).minus({ days: 1 }).toISO(),
+                  bidCount: 7,
+                  lotWatcherCount: 49,
+                },
+              },
+            }),
+          },
+          {
+            contextScreenOwnerType: OwnerType.artist,
+            contextScreenOwnerId: "abc124",
+            contextScreenOwnerSlug: "andy-warhol",
+            itemIndex: 0,
+          }
+        )
+
+        const touchableArtwork = screen.getByTestId("artworkGridItem-Some Kind of Dinosaur")
+        fireEvent.press(touchableArtwork)
+
+        expect(mockTrackEvent).toBeCalledWith({
+          action: "tappedMainArtworkGrid",
+          context_module: "artworkGrid",
+          context_screen_owner_id: "abc124",
+          context_screen_owner_slug: "andy-warhol",
+          context_screen_owner_type: "artist",
+          destination_screen_owner_id: "abc1234",
+          destination_screen_owner_slug: "cool-artwork",
+          destination_screen_owner_type: "artwork",
+          position: 0,
+          sort: "-decayed_merch",
+          type: "thumbnail",
+          signal_bid_count: 7,
+          signal_lot_watcher_count: 49,
+          signal_label: "Time left to bid",
+        })
+      })
+
+      it("sends a tracking event when with live bidding signal", () => {
+        renderWithRelay(
+          {
+            Artwork: () => ({
+              title: "Some Kind of Dinosaur",
+              slug: "cool-artwork",
+              internalID: "abc1234",
+              sale: { isAuction: true },
+              collectorSignals: {
+                partnerOffer: null,
+                auction: { liveBiddingStarted: true, bidCount: 2, lotWatcherCount: 29 },
+              },
+            }),
+          },
+          {
+            contextScreenOwnerType: OwnerType.artist,
+            contextScreenOwnerId: "abc124",
+            contextScreenOwnerSlug: "andy-warhol",
+            itemIndex: 0,
+          }
+        )
+
+        const touchableArtwork = screen.getByTestId("artworkGridItem-Some Kind of Dinosaur")
+        fireEvent.press(touchableArtwork)
+
+        expect(mockTrackEvent).toBeCalledWith({
+          action: "tappedMainArtworkGrid",
+          context_module: "artworkGrid",
+          context_screen_owner_id: "abc124",
+          context_screen_owner_slug: "andy-warhol",
+          context_screen_owner_type: "artist",
+          destination_screen_owner_id: "abc1234",
+          destination_screen_owner_slug: "cool-artwork",
+          destination_screen_owner_type: "artwork",
+          position: 0,
+          sort: "-decayed_merch",
+          type: "thumbnail",
+          signal_bid_count: 2,
+          signal_lot_watcher_count: 29,
+          signal_label: "Bidding live now",
+        })
+      })
+    })
   })
 
   describe("recent searches", () => {
