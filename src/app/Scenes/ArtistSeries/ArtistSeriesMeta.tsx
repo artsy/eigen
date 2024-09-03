@@ -5,11 +5,10 @@ import { ReadMore } from "app/Components/ReadMore"
 import { ArtistSeriesMoreSeriesFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import React, { useRef } from "react"
 import { View } from "react-native"
-import { createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 
 interface ArtistSeriesMetaProps {
   artistSeries: ArtistSeriesMeta_artistSeries$data
-  relay: RelayProp
 }
 
 export const ArtistSeriesMeta: React.FC<ArtistSeriesMetaProps> = ({ artistSeries }) => {
@@ -47,7 +46,6 @@ export const ArtistSeriesMetaFragmentContainer = createFragmentContainer(ArtistS
     fragment ArtistSeriesMeta_artistSeries on ArtistSeries {
       internalID
       slug
-      title
       description
       artist: artists(size: 1) {
         ...ArtistSeriesMoreSeries_artist
