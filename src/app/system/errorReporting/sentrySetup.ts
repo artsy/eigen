@@ -4,6 +4,10 @@ import { Platform } from "react-native"
 import Config from "react-native-config"
 import DeviceInfo from "react-native-device-info"
 
+export const routingInstrumentation = new Sentry.ReactNavigationInstrumentation({
+  enableTimeToInitialDisplay: true,
+})
+
 // important! this must match the release version specified
 // in fastfile in order for sourcemaps/sentry stacktraces to work
 export const eigenSentryReleaseName = () => {
@@ -59,6 +63,8 @@ export function setupSentry(props: SetupSentryProps = {}) {
     autoSessionTracking: true,
     enableWatchdogTerminationTracking: false,
     attachStacktrace: true,
+    tracesSampleRate: 1.0, // TODO: Set this lower before production
+    integrations: [new Sentry.ReactNativeTracing({ routingInstrumentation })],
     ...props,
   })
 }

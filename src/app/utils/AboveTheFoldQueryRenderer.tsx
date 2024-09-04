@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/react-native"
 import React, { useEffect, useMemo, useState } from "react"
 import { QueryRenderer, Environment, GraphQLTaggedNode } from "react-relay"
 import { CacheConfig, FetchPolicy, OperationType } from "relay-runtime"
@@ -6,7 +7,7 @@ import { renderWithPlaceholder } from "./renderWithPlaceholder"
 
 interface AboveTheFoldQueryRendererProps<
   AboveQuery extends OperationType,
-  BelowQuery extends OperationType
+  BelowQuery extends OperationType,
 > {
   environment: Environment | MockEnvironment
   above: {
@@ -50,7 +51,7 @@ interface RenderArgs<Response> {
  */
 export function AboveTheFoldQueryRenderer<
   AboveQuery extends OperationType,
-  BelowQuery extends OperationType
+  BelowQuery extends OperationType,
 >(props: AboveTheFoldQueryRendererProps<AboveQuery, BelowQuery>) {
   const [aboveArgs, setAboveArgs] = useState<null | RenderArgs<AboveQuery["response"]>>(null)
   const [belowArgs, setBelowArgs] = useState<null | RenderArgs<BelowQuery["response"]>>(null)
@@ -67,6 +68,8 @@ export function AboveTheFoldQueryRenderer<
   // we should call render if we have all the data already
   // we should also call render if we are no longer waiting for a debounce
   const shouldCallRender = (aboveArgs?.props && belowArgs?.props) || hasFinishedDebouncing
+
+  const shouldRecordFullDisplay = aboveArgs !== null
 
   const render = useMemo(
     () =>
@@ -99,6 +102,7 @@ export function AboveTheFoldQueryRenderer<
 
   return (
     <>
+      <Sentry.TimeToFullDisplay record={shouldRecordFullDisplay} />
       <QueryRenderer
         environment={props.environment}
         query={props.above.query}
