@@ -24,6 +24,7 @@ import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwor
 import { DurationProvider } from "app/Components/Countdown"
 import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
 import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
+import { HEART_ICON_SIZE } from "app/Components/constants"
 import { PartnerOffer } from "app/Scenes/Activity/components/NotificationArtworkList"
 import { formattedTimeLeft } from "app/Scenes/Activity/utils/formattedTimeLeft"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -46,8 +47,6 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { LotCloseInfo } from "./LotCloseInfo"
 import { LotProgressBar } from "./LotProgressBar"
-
-const ICON_SIZE = 22
 
 export type PriceOfferMessage = { priceListedMessage: string; priceWithDiscountMessage: string }
 export interface ArtworkProps extends ArtworkActionTrackingProps {
@@ -492,7 +491,7 @@ const ArtworkHeartIcon: React.FC<{ isSaved: boolean | null; index?: number }> = 
   isSaved,
   index,
 }) => {
-  const iconProps = { height: ICON_SIZE, width: ICON_SIZE, testID: "empty-heart-icon" }
+  const iconProps = { height: HEART_ICON_SIZE, width: HEART_ICON_SIZE, testID: "empty-heart-icon" }
 
   if (isSaved) {
     return <HeartFillIcon {...iconProps} testID="filled-heart-icon" fill="blue100" />
