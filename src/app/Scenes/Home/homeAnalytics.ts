@@ -112,10 +112,14 @@ export default class HomeAnalytics {
     })
   }
 
-  static activityThumbnailTapEvent(index: number, destinationModule: string): TappedEntityGroup {
+  static activityThumbnailTapEvent(
+    index: number,
+    destinationModule: string,
+    contextModule?: ContextModule
+  ): TappedEntityGroup {
     return {
       action: ActionType.tappedActivityGroup,
-      context_module: ContextModule.activityRail,
+      context_module: contextModule || ContextModule.activityRail,
       context_screen_owner_type: OwnerType.home,
       destination_screen_owner_type: destinationModule.toLowerCase() as TappedEntityDestinationType,
       horizontal_slide_position: index,
