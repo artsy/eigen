@@ -169,7 +169,9 @@ const ArtistListItem: React.FC<Props> = ({
             </Flex>
             {!!showFollowButton && (
               <Flex>
-                <FollowButton haptic isFollowed={!!is_followed} onPress={handleFollowArtist} />
+                <FollowButton haptic isFollowed={!!is_followed} onPress={handleFollowArtist}
+                accessibilityLabel={is_followed ? "Unfollow " + name : "Follow " + name}
+                accessibilityRole="button" />
               </Flex>
             )}
           </Flex>
