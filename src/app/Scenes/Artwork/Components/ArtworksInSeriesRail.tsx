@@ -8,6 +8,10 @@ import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import {
+  CollectorSignals,
+  getArtworkSignalTrackingFields,
+} from "app/utils/getArtworkSignalTrackingFields"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { isEmpty } from "lodash"
 import { graphql, useFragment } from "react-relay"
@@ -19,7 +23,7 @@ interface ArtworksInSeriesRailProps {
 
 export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = (props) => {
   const { trackEvent } = useTracking()
-  const AREnablePartnerOfferSignals = useFeatureFlag("AREnablePartnerOfferSignals")
+  const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
 
   const artwork = useFragment(artworkFragment, props.artwork)
 
@@ -44,9 +48,14 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = (props)
         artworks={artworks}
         onPress={(item) => {
           if (!!item.href) {
-            const partnerOfferAvailable =
-              AREnablePartnerOfferSignals && !!item.collectorSignals?.partnerOffer?.isAvailable
-            trackEvent(tracks.tappedArtwork(artwork, item, partnerOfferAvailable))
+            trackEvent(
+              tracks.tappedArtwork(
+                artwork,
+                item,
+                item.collectorSignals,
+                AREnableAuctionImprovementsSignals
+              )
+            )
             navigate(item.href)
           }
         }}
@@ -97,7 +106,8 @@ const tracks = {
   tappedArtwork: (
     sourceArtwork: ArtworksInSeriesRail_artwork$data,
     destination: { internalID: string; slug: string },
-    withPartnerOffer?: boolean
+    collectorSignals?: CollectorSignals,
+    auctionSignalsFeatureFlagEnabled?: boolean
   ) => ({
     action: ActionType.tappedArtworkGroup,
     context_module: ContextModule.moreFromThisSeries,
@@ -108,6 +118,6 @@ const tracks = {
     destination_screen_owner_id: destination.internalID,
     destination_screen_owner_slug: destination.slug,
     type: "thumbnail",
-    signal_label: withPartnerOffer ? "Limited-Time Offer" : undefined,
+    ...getArtworkSignalTrackingFields(collectorSignals, auctionSignalsFeatureFlagEnabled),
   }),
 }

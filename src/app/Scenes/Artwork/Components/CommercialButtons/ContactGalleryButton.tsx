@@ -8,6 +8,10 @@ import {
   ArtworkInquiryContext,
   ArtworkInquiryStateProvider,
 } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
+import {
+  CollectorSignals,
+  getArtworkSignalTrackingFields,
+} from "app/utils/getArtworkSignalTrackingFields"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import React from "react"
 import { graphql, useFragment } from "react-relay"
@@ -24,12 +28,9 @@ export const ContactGalleryButton: React.FC<ContactGalleryButtonProps> = ({
   ...rest
 }) => {
   const artworkData = useFragment(artworkFragment, artwork)
-  const AREnablePartnerOfferSignals = useFeatureFlag("AREnablePartnerOfferSignals")
+  const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
 
   const { trackEvent } = useTracking()
-
-  const partnerOfferAvailable =
-    AREnablePartnerOfferSignals && !!artworkData.collectorSignals?.partnerOffer?.isAvailable
 
   return (
     <ArtworkInquiryStateProvider>
@@ -41,7 +42,8 @@ export const ContactGalleryButton: React.FC<ContactGalleryButtonProps> = ({
                 tracks.trackTappedContactGallery(
                   artworkData.internalID,
                   artworkData.slug,
-                  partnerOfferAvailable
+                  artworkData.collectorSignals,
+                  AREnableAuctionImprovementsSignals
                 )
               )
               dispatch({ type: "setInquiryModalVisible", payload: true })
@@ -62,13 +64,14 @@ const tracks = {
   trackTappedContactGallery: (
     artworkId: string,
     artworkSlug: string,
-    withPartnerOffer?: boolean
+    collectorSignals: CollectorSignals,
+    auctionSignalsFeatureFlagEnabled?: boolean
   ): TappedContactGallery => ({
     action: ActionType.tappedContactGallery,
     context_owner_type: OwnerType.artwork,
     context_owner_id: artworkId,
     context_owner_slug: artworkSlug,
-    signal_label: withPartnerOffer ? "Limited-Time Offer" : undefined,
+    ...getArtworkSignalTrackingFields(collectorSignals, auctionSignalsFeatureFlagEnabled),
   }),
 }
 
@@ -79,6 +82,13 @@ const artworkFragment = graphql`
     collectorSignals {
       partnerOffer {
         isAvailable
+      }
+      auction {
+        bidCount
+        liveBiddingStarted
+        lotClosesAt
+        lotWatcherCount
+        registrationEndsAt
       }
     }
     ...InquiryModal_artwork

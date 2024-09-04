@@ -73,6 +73,7 @@ describe("FairExhibitors", () => {
               node: {
                 internalID: "artwork1234",
                 slug: "cool-artwork-1",
+                collectorSignals: null,
               },
             },
           ],
@@ -130,6 +131,48 @@ describe("FairExhibitors", () => {
       horizontal_slide_position: 0,
       type: "thumbnail",
       signal_label: "Limited-Time Offer",
+    })
+  })
+
+  it("tracks taps on artworks with auction signals in the rail", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAuctionImprovementsSignals: true })
+    const wrapper = getWrapper({
+      Show: () => ({
+        fair: {
+          internalID: "abc123",
+          slug: "some-fair",
+        },
+        artworksConnection: {
+          edges: [
+            {
+              node: {
+                internalID: "artwork1234",
+                slug: "cool-artwork-1",
+                collectorSignals: {
+                  auction: { bidCount: 7, lotWatcherCount: 49, liveBiddingStarted: true },
+                },
+              },
+            },
+          ],
+        },
+      }),
+    })
+    const artwork = wrapper.root.findAllByType(ArtworkRailCard)
+    act(() => artwork[0].props.onPress())
+    expect(trackEvent).toHaveBeenCalledWith({
+      action: "tappedArtworkGroup",
+      context_module: "galleryBoothRail",
+      context_screen_owner_id: "abc123",
+      context_screen_owner_slug: "some-fair",
+      context_screen_owner_type: "fair",
+      destination_screen_owner_id: "artwork1234",
+      destination_screen_owner_slug: "cool-artwork-1",
+      destination_screen_owner_type: "artwork",
+      horizontal_slide_position: 0,
+      type: "thumbnail",
+      signal_label: "Bidding live now",
+      signal_bid_count: 7,
+      signal_lot_watcher_count: 49,
     })
   })
 

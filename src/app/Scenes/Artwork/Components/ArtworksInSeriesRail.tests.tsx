@@ -144,6 +144,7 @@ describe("ArtworksInSeriesRail", () => {
       Artwork: () => ({
         internalID: "artwork124",
         slug: "my-cool-artwork",
+        collectorSignals: null,
         artistSeriesConnection: {
           edges: [
             {
@@ -206,6 +207,40 @@ describe("ArtworksInSeriesRail", () => {
       destination_screen_owner_type: "artwork",
       type: "thumbnail",
       signal_label: "Limited-Time Offer",
+    })
+  })
+
+  it("tracks clicks on an individual artwork with auction signals", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAuctionImprovementsSignals: true })
+
+    renderWithRelay({
+      Artwork: () => ({
+        internalID: "artwork124",
+        slug: "my-cool-artwork",
+        collectorSignals: {
+          auction: { liveBiddingStarted: true, bidCount: 7, lotWatcherCount: 49 },
+        },
+        artistSeriesConnection: {
+          edges: [{ node: { slug: "alex-katz-departure-28", id: "abctest" } }],
+        },
+      }),
+    })
+
+    fireEvent.press(screen.getByTestId("artwork-my-cool-artwork"))
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedArtworkGroup",
+      context_module: "moreFromThisSeries",
+      context_screen_owner_id: "artwork124",
+      context_screen_owner_slug: "my-cool-artwork",
+      context_screen_owner_type: "artwork",
+      destination_screen_owner_id: "artwork124",
+      destination_screen_owner_slug: "my-cool-artwork",
+      destination_screen_owner_type: "artwork",
+      type: "thumbnail",
+      signal_label: "Bidding live now",
+      signal_bid_count: 7,
+      signal_lot_watcher_count: 49,
     })
   })
 })
