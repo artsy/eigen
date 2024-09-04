@@ -1,5 +1,8 @@
 import { Text } from "@artsy/palette-mobile"
-import { SalesRailItem_sale$key } from "__generated__/SalesRailItem_sale.graphql"
+import {
+  SalesRailItem_sale$data,
+  SalesRailItem_sale$key,
+} from "__generated__/SalesRailItem_sale.graphql"
 import {
   CardRailCard,
   CardRailMetadataContainer as MetadataContainer,
@@ -15,9 +18,10 @@ import { graphql, useFragment } from "react-relay"
 
 interface SalesRailItemProps {
   sale: SalesRailItem_sale$key
+  onPress?: (sale: SalesRailItem_sale$data) => void
 }
 
-export const SalesRailItem: FC<SalesRailItemProps> = ({ sale: saleProp }) => {
+export const SalesRailItem: FC<SalesRailItemProps> = ({ sale: saleProp, onPress }) => {
   const isArtworksConnectionEnabled = useFeatureFlag("AREnableArtworksConnectionForAuction")
   const sale = useFragment(fragment, saleProp)
 
@@ -38,6 +42,8 @@ export const SalesRailItem: FC<SalesRailItemProps> = ({ sale: saleProp }) => {
       key={sale.href}
       onPress={() => {
         const url = sale.liveURLIfOpen ?? sale.href
+
+        onPress?.(sale)
 
         if (url) {
           navigate(url)
@@ -71,6 +77,8 @@ const fragment = graphql`
     name
     liveURLIfOpen
     formattedStartDateTime
+    internalID
+    slug
     saleArtworksConnection(first: 3) {
       edges {
         node {

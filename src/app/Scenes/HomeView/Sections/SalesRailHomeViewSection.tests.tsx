@@ -1,6 +1,8 @@
-import { screen } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { SalesRailHomeViewSectionTestsQuery } from "__generated__/SalesRailHomeViewSectionTestsQuery.graphql"
 import { SalesRailHomeViewSection } from "app/Scenes/HomeView/Sections/SalesRailHomeViewSection"
+import { navigate } from "app/system/navigation/navigate"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -58,5 +60,66 @@ describe("SalesRailHomeViewSection", () => {
     expect(screen.getByText("Browse All Auctions")).toBeOnTheScreen()
     expect(screen.getByText("sale 1")).toBeOnTheScreen()
     expect(screen.getByText("sale 2")).toBeOnTheScreen()
+  })
+
+  it("tracks item presses properly", async () => {
+    renderWithRelay({
+      SalesRailHomeViewSection: () => ({
+        internalID: "home-view-section-sales",
+        component: {
+          title: "Auctions",
+          behaviors: {
+            viewAll: {
+              href: "/auctions",
+              buttonText: "Browse All Auctions",
+            },
+          },
+        },
+        salesConnection: {
+          edges: [
+            {
+              node: {
+                name: "sale 1",
+                href: "/sale-1-href",
+                internalID: "sale-1-id",
+                slug: "sale-1-slug",
+                liveURLIfOpen: null,
+              },
+            },
+            {
+              node: {
+                name: "sale 2",
+                href: "/sale-2-href",
+                internalID: "sale-2-id",
+                slug: "sale-2-slug",
+                liveURLIfOpen: null,
+              },
+            },
+          ],
+        },
+      }),
+    })
+
+    fireEvent.press(screen.getByText("sale 2"))
+
+    expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+        [
+          {
+            "action": "tappedAuctionGroup",
+            "context_module": "home-view-section-sales",
+            "context_screen_owner_id": undefined,
+            "context_screen_owner_slug": undefined,
+            "context_screen_owner_type": "home",
+            "destination_screen_owner_id": "sale-2-id",
+            "destination_screen_owner_slug": "sale-2-slug",
+            "destination_screen_owner_type": "sale",
+            "horizontal_slide_position": 1,
+            "module_height": "double",
+            "type": "thumbnail",
+          },
+        ]
+      `)
+
+    expect(navigate).toHaveBeenCalledWith("/sale-2-href")
   })
 })
