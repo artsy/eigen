@@ -87,9 +87,9 @@ export const Conversations: React.FC<Props> = (props) => {
     }
   }, [isActiveTab])
 
-  const conversations = extractNodes(props.me.conversations)
+  const conversations = extractNodes(props.me?.conversations)
 
-  const unreadCount = props.me.conversations?.totalUnreadCount
+  const unreadCount = props.me?.conversations?.totalUnreadCount
   const unreadCounter = unreadCount ? `(${unreadCount})` : null
 
   return (
