@@ -227,6 +227,7 @@ jest.mock("@sentry/react-native", () => ({
   addBreadcrumb() {},
   withScope() {},
   Severity: "info",
+  ReactNavigationInstrumentation: jest.fn(),
 }))
 
 jest.mock("@react-native-mapbox-gl/maps", () => ({
