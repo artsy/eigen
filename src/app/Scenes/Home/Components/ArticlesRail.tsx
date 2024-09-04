@@ -1,3 +1,4 @@
+import { ContextModule } from "@artsy/cohesion"
 import { Spacer, Flex } from "@artsy/palette-mobile"
 import { ArticlesRail_articlesConnection$data } from "__generated__/ArticlesRail_articlesConnection.graphql"
 import { ArticleCardContainer } from "app/Components/ArticleCard"
@@ -12,11 +13,16 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface ArticlesRailProps {
-  title: string
   articlesConnection: ArticlesRail_articlesConnection$data
+  sectionID?: string
+  title: string
 }
 
-export const ArticlesRail: React.FC<ArticlesRailProps> = ({ title, articlesConnection }) => {
+export const ArticlesRail: React.FC<ArticlesRailProps> = ({
+  articlesConnection,
+  sectionID,
+  title,
+}) => {
   const articles = extractNodes(articlesConnection)
   const tracking = useTracking()
 
@@ -51,7 +57,8 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = ({ title, articlesConne
                 const tapEvent = HomeAnalytics.articleThumbnailTapEvent(
                   item.internalID,
                   item.slug || "",
-                  index
+                  index,
+                  sectionID as ContextModule
                 )
                 tracking.trackEvent(tapEvent)
               }}

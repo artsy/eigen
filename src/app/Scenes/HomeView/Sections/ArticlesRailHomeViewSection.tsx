@@ -17,12 +17,14 @@ export const ArticlesRailHomeViewSection: React.FC<ArticlesRailHomeViewSectionPr
     <ArticlesRailFragmentContainer
       title={section.component?.title ?? ""}
       articlesConnection={section.articlesConnection}
+      sectionID={section.internalID}
     />
   )
 }
 
 const sectionFragment = graphql`
   fragment ArticlesRailHomeViewSection_section on ArticlesRailHomeViewSection {
+    internalID
     component {
       title
     }
