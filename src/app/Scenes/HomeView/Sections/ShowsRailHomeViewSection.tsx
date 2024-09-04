@@ -16,12 +16,14 @@ export const ShowsRailHomeViewSection: React.FC<ShowsRailHomeViewSectionProps> =
     <ShowsRailContainer
       title={component?.title || "Shows"}
       disableLocation={!enableShowsForYouLocation}
+      sectionID={data.internalID}
     />
   )
 }
 
 const fragment = graphql`
   fragment ShowsRailHomeViewSection_section on ShowsRailHomeViewSection {
+    internalID
     component {
       title
     }

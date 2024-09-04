@@ -17,62 +17,72 @@ import { useTracking } from "react-tracking"
 interface ShowsRailProps {
   disableLocation: boolean
   location?: Location | null
+  sectionID?: string
   title: string
 }
 
 // Because we never show more than 2 shows per gallery we need to overfetch, filter out, and then limit the number of shows.
 const NUMBER_OF_SHOWS = 10
 
-export const ShowsRail: React.FC<ShowsRailProps> = memo(({ disableLocation, location, title }) => {
-  const tracking = useTracking()
+export const ShowsRail: React.FC<ShowsRailProps> = memo(
+  ({ disableLocation, location, sectionID, title }) => {
+    const tracking = useTracking()
 
-  const queryVariables = location
-    ? { near: location }
-    : { includeShowsNearIpBasedLocation: !disableLocation && !location }
+    const queryVariables = location
+      ? { near: location }
+      : { includeShowsNearIpBasedLocation: !disableLocation && !location }
 
-  const queryData = useLazyLoadQuery<ShowsRailQuery>(ShowsQuery, queryVariables)
+    const queryData = useLazyLoadQuery<ShowsRailQuery>(ShowsQuery, queryVariables)
 
-  const showsConnection = useFragment<ShowsRail_showsConnection$key>(
-    showsFragment,
-    queryData?.me?.showsConnection
-  )
+    const showsConnection = useFragment<ShowsRail_showsConnection$key>(
+      showsFragment,
+      queryData?.me?.showsConnection
+    )
 
-  const shows = extractNodes(showsConnection)
+    const shows = extractNodes(showsConnection)
 
-  const hasShows = shows?.length
+    const hasShows = shows?.length
 
-  if (!hasShows) {
-    return null
-  }
+    if (!hasShows) {
+      return null
+    }
 
-  return (
-    <Flex>
-      <Flex mx={2}>
-        <SectionTitle title={title} />
-      </Flex>
+    return (
       <Flex>
-        <FlatList
-          horizontal
-          initialNumToRender={2}
-          showsHorizontalScrollIndicator={false}
-          ListHeaderComponent={() => <Spacer x={2} />}
-          ListFooterComponent={() => <Spacer x={2} />}
-          ItemSeparatorComponent={() => <Spacer x={2} />}
-          data={shows.slice(0, NUMBER_OF_SHOWS)}
-          keyExtractor={(item) => `${item.internalID}`}
-          renderItem={({ item, index }) => (
-            <ShowCardContainer
-              show={item}
-              onPress={() => {
-                tracking.trackEvent(tracks.tappedThumbnail(item.internalID, item.slug || "", index))
-              }}
-            />
-          )}
-        />
+        <Flex mx={2}>
+          <SectionTitle title={title} />
+        </Flex>
+        <Flex>
+          <FlatList
+            horizontal
+            initialNumToRender={2}
+            showsHorizontalScrollIndicator={false}
+            ListHeaderComponent={() => <Spacer x={2} />}
+            ListFooterComponent={() => <Spacer x={2} />}
+            ItemSeparatorComponent={() => <Spacer x={2} />}
+            data={shows.slice(0, NUMBER_OF_SHOWS)}
+            keyExtractor={(item) => `${item.internalID}`}
+            renderItem={({ item, index }) => (
+              <ShowCardContainer
+                show={item}
+                onPress={() => {
+                  tracking.trackEvent(
+                    tracks.tappedThumbnail(
+                      item.internalID,
+                      item.slug || "",
+                      index,
+                      sectionID as ContextModule
+                    )
+                  )
+                }}
+              />
+            )}
+          />
+        </Flex>
       </Flex>
-    </Flex>
-  )
-})
+    )
+  }
+)
 
 const ShowsQuery = graphql`
   query ShowsRailQuery($near: Near, $includeShowsNearIpBasedLocation: Boolean) {
@@ -109,9 +119,14 @@ export const tracks = {
     destination_screen_owner_type: OwnerType.show,
     type: "header",
   }),
-  tappedThumbnail: (showID?: string, showSlug?: string, index?: number): TappedShowGroup => ({
+  tappedThumbnail: (
+    showID?: string,
+    showSlug?: string,
+    index?: number,
+    contextModule?: ContextModule
+  ): TappedShowGroup => ({
     action: ActionType.tappedShowGroup,
-    context_module: ContextModule.showsRail,
+    context_module: contextModule || ContextModule.showsRail,
     context_screen_owner_type: OwnerType.home,
     destination_screen_owner_type: OwnerType.show,
     destination_screen_owner_id: showID,
@@ -124,10 +139,12 @@ export const tracks = {
 interface ShowsRailContainerProps {
   title: string
   disableLocation?: boolean
+  sectionID?: string
 }
 
 export const ShowsRailContainer: React.FC<ShowsRailContainerProps> = ({
   disableLocation = false,
+  sectionID,
   ...restProps
 }) => {
   const visualizeLocation = useDevToggle("DTLocationDetectionVisialiser")
@@ -149,7 +166,12 @@ export const ShowsRailContainer: React.FC<ShowsRailContainerProps> = ({
         </Text>
       )}
 
-      <ShowsRail {...restProps} location={location} disableLocation={disableLocation} />
+      <ShowsRail
+        {...restProps}
+        location={location}
+        disableLocation={disableLocation}
+        sectionID={sectionID}
+      />
     </Suspense>
   )
 }
