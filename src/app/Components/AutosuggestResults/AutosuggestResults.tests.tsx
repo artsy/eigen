@@ -112,8 +112,6 @@ const TestWrapper: typeof AutosuggestResults = (props) => (
 
 jest.mock("lodash/throttle", () => (f: any) => f)
 
-jest.mock("@sentry/react-native", () => ({ init() {}, captureMessage() {} }))
-
 // app/Scenes/Search/RecentSearches.tsx
 jest.mock("app/Scenes/Search/RecentSearches", () => {
   const notifyRecentSearch = jest.fn()

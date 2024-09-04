@@ -227,9 +227,9 @@ jest.mock("@sentry/react-native", () => ({
   addBreadcrumb() {},
   withScope() {},
   Severity: "info",
-  ReactNavigationInstrumentation: () => ({
+  ReactNavigationInstrumentation: jest.fn().mockImplementation(() => ({
     registerNavigationContainer: jest.fn(),
-  }),
+  })),
   TimeToFullDisplay: () => null,
 }))
 
