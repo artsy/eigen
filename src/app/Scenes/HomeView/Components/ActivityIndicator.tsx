@@ -19,7 +19,7 @@ export const ActivityIndicator: React.FC<ActivityIndicatorProps> = ({ hasUnseenN
   }
 
   return (
-    <Box position="absolute" right={2} top={0} bottom={0} justifyContent="center">
+    <Box mr={2} justifyContent="center">
       <TouchableOpacity
         accessibilityLabel="Activity"
         onPress={navigateToActivityPanel}
