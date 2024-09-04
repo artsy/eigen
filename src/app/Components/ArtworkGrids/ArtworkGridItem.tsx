@@ -29,6 +29,7 @@ import { formattedTimeLeft } from "app/Scenes/Activity/utils/formattedTimeLeft"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
+import { getArtworkSignalTrackingFields } from "app/utils/getArtworkSignalTrackingFields"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { getTimer } from "app/utils/getTimer"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
@@ -226,10 +227,10 @@ export const Artwork: React.FC<ArtworkProps> = ({
         query: contextScreenQuery,
         sort: filterParams?.sort,
         type: "thumbnail",
-      }
-
-      if (AREnablePartnerOfferSignals && collectorSignals?.partnerOffer?.isAvailable) {
-        genericTapEvent.signal_label = "Limited-Time Offer"
+        ...getArtworkSignalTrackingFields(
+          artwork.collectorSignals,
+          AREnableAuctionImprovementsSignals
+        ),
       }
 
       tracking.trackEvent(genericTapEvent)

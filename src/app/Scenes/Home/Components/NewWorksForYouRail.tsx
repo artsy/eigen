@@ -60,8 +60,7 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
         return
       }
 
-      const partnerOfferAvailable =
-        AREnablePartnerOfferSignals && !!artwork.collectorSignals?.partnerOffer?.isAvailable
+      const collectorSignals = AREnablePartnerOfferSignals ? artwork.collectorSignals : null
 
       trackEvent(
         HomeAnalytics.artworkThumbnailTapEvent(
@@ -70,7 +69,7 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
           artwork.internalID,
           position,
           "single",
-          partnerOfferAvailable
+          collectorSignals
         )
       )
       navigate(artwork.href)

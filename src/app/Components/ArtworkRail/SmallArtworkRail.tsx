@@ -25,6 +25,13 @@ const smallArtworksFragment = graphql`
       partnerOffer {
         isAvailable
       }
+      auction {
+        bidCount
+        liveBiddingStarted
+        lotClosesAt
+        lotWatcherCount
+        registrationEndsAt
+      }
     }
   }
 `
