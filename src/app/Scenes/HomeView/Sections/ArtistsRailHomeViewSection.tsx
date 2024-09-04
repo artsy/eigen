@@ -1,3 +1,4 @@
+import { ContextModule } from "@artsy/cohesion"
 import { Flex, Spacer, Spinner } from "@artsy/palette-mobile"
 import { ArtistsRailHomeViewSection_section$data } from "__generated__/ArtistsRailHomeViewSection_section.graphql"
 import {
@@ -7,9 +8,11 @@ import {
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { PAGE_SIZE } from "app/Components/constants"
+import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface ArtworksRailHomeViewSectionProps {
   section: ArtistsRailHomeViewSection_section$data
@@ -22,6 +25,7 @@ export const ArtistsRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionPro
   relay,
 }) => {
   const { hasMore, isLoading, loadMore } = relay
+  const tracking = useTracking()
 
   const title = section.component?.title
 
@@ -37,7 +41,7 @@ export const ArtistsRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionPro
     })
   }
 
-  if (section.artistsConnection?.totalCount === 0) {
+  if (!section.artistsConnection?.totalCount) {
     return null
   }
 
@@ -69,8 +73,23 @@ export const ArtistsRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionPro
 
           return null
         }}
-        renderItem={({ item: artist }) => {
-          return <ArtistCardContainer artist={artist} showDefaultFollowButton />
+        renderItem={({ item: artist, index }) => {
+          return (
+            <ArtistCardContainer
+              artist={artist}
+              showDefaultFollowButton
+              onPress={() => {
+                tracking.trackEvent(
+                  tracks.tapArtistCard({
+                    artistID: artist.internalID,
+                    artistSlug: artist.slug,
+                    index,
+                    sectionID: section.internalID,
+                  })
+                )
+              }}
+            />
+          )
         }}
       />
     </Flex>
@@ -94,6 +113,7 @@ export const ArtistsRailHomeViewSectionPaginationContainer = createPaginationCon
           edges {
             node {
               internalID
+              slug
               ...ArtistCard_artist
             }
           }
@@ -130,3 +150,24 @@ export const ArtistsRailHomeViewSectionPaginationContainer = createPaginationCon
     `,
   }
 )
+
+export const tracks = {
+  tapArtistCard: ({
+    artistID,
+    artistSlug,
+    index,
+    sectionID,
+  }: {
+    artistID: string
+    artistSlug: string
+    index: number
+    sectionID: string
+  }) =>
+    HomeAnalytics.artistThumbnailTapEvent(
+      "SUGGESTIONS",
+      artistID,
+      artistSlug,
+      index,
+      sectionID as ContextModule
+    ),
+}

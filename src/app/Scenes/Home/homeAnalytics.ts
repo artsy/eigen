@@ -230,10 +230,11 @@ export default class HomeAnalytics {
     key: string | null,
     id: string,
     slug: string,
-    index?: number
+    index?: number,
+    contextModule?: ContextModule
   ): TappedEntityGroup {
     return tappedEntityGroup({
-      contextModule: this.artistRailContextModule(key),
+      contextModule: contextModule || this.artistRailContextModule(key),
       contextScreenOwnerType: OwnerType.home,
       destinationScreenOwnerType: OwnerType.artist,
       destinationScreenOwnerId: id,
