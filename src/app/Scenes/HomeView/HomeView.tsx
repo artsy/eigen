@@ -8,6 +8,7 @@ import {
 } from "@artsy/palette-mobile"
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
 import { HomeViewSectionsConnection_viewer$key } from "__generated__/HomeViewSectionsConnection_viewer.graphql"
+import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
 import { Section } from "app/Scenes/HomeView/Sections/Section"
 import { extractNodes } from "app/utils/extractNodes"
 import { Suspense } from "react"
@@ -28,7 +29,7 @@ export const HomeView: React.FC = () => {
   const sections = extractNodes(data?.homeView.sectionsConnection)
 
   return (
-    <Screen>
+    <Screen safeArea={false}>
       <Screen.Body fullwidth>
         <Screen.FlatList
           data={sections}
@@ -38,6 +39,7 @@ export const HomeView: React.FC = () => {
           }}
           ItemSeparatorComponent={SectionSeparator}
           onEndReached={() => loadNext(10)}
+          ListHeaderComponent={<HomeHeader />}
           ListFooterComponent={
             hasNext ? (
               <Flex width="100%" justifyContent="center" alignItems="center" height={200}>
