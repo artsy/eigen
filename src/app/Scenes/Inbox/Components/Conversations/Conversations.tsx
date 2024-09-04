@@ -16,7 +16,7 @@ import ConversationSnippet from "./ConversationSnippet"
 import { NoMessages } from "./NoMessages"
 
 interface Props {
-  me: Conversations_me$data
+  me?: Conversations_me$data
   relay: RelayPaginationProp
   headerView?: JSX.Element
   onRefresh?: () => any
