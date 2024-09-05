@@ -5,7 +5,6 @@ import {
   Flex,
   Text,
   LegacyScreen,
-  Input,
   LinkText,
   BackButton,
   Button,
@@ -19,6 +18,7 @@ import {
 } from "app/NativeModules/ArtsyNativeModule"
 import { navigate } from "app/system/navigation/navigate"
 import { useScreenDimensions } from "app/utils/hooks"
+import { Field, Formik } from "formik"
 import backgroundImage from "images/WelcomeImage.webp"
 import { MotiView, View } from "moti"
 import { useEffect, useRef, useState } from "react"
@@ -30,6 +30,7 @@ import Animated, {
   withSequence,
   withTiming,
 } from "react-native-reanimated"
+import * as Yup from "yup"
 import { OnboardingNavigationStack } from "./Onboarding"
 
 type OnboardingWelcomeProps = StackScreenProps<OnboardingNavigationStack, "OnboardingWelcome">
@@ -91,45 +92,49 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
     return unsubscribe
   }, [navigation])
 
-  // prevent the logo from fading in when the user navigates back to this screen
-  // TODO: do this more elegantly
+  // prevents the logo from fading-in after the screen initially loads
   const [userHasSeenFadeIn, setUserHasSeenFadeIn] = useState(false)
 
   useEffect(() => {
     setUserHasSeenFadeIn(true)
   }, [])
 
-  const [userIsAuthenticating, setUserIsAuthenticating] = useState(false)
+  // brings the authentication panel to the top of the screen
+  const [userIsEnteringEmail, setUserIsEnteringEmail] = useState(false)
+  const [userIsEnteringPassword, setUserIsEnteringPassword] = useState(false)
 
   const bottomSheetRef = useRef<BottomSheet>(null)
-  const emailInputRef = useRef<Input>(null)
 
   const handleBottomSheetChange = (index: number) => {
     console.log("🦆", "handleBottomSheetChange", index)
   }
 
   const handleEmailInputFocus = () => {
-    setUserIsAuthenticating(true)
-
-    // 1. Fade out the artsy logo
-    // 2. Fade out the content
-    // 3. Slide up the auth panel to the top
-    // 4. Increase the height of the auth panel
-    // 5. Fade in the back button and continue button
-    // 6. Fade out the social sign in buttons and other copy
+    setUserIsEnteringEmail(true)
   }
 
   const handleBackButtonPress = () => {
-    setUserIsAuthenticating(false)
-    emailInputRef.current?.blur()
-
-    // 1. Fade in the artsy logo
-    // 2. Fade in the content
-    // 3. Slide down the auth panel to the top
-    // 4. Decrease the height of the auth panel
-    // 5. Fade out the back button and continue button
-    // 6. Fade in the social sign in buttons and other copy
+    setUserIsEnteringEmail(false)
   }
+
+  const handleContinueButtonPress = () => {
+    setUserIsEnteringEmail(false)
+    setUserIsEnteringPassword(true)
+  }
+
+  const emailValidationSchema = Yup.object().shape({
+    email: Yup.string().email("Invalid email").required("Required"),
+  })
+
+  const passwordValidationSchema = Yup.object().shape({
+    password: Yup.string()
+      .min(8, "Password must be at least 8 characters long")
+      .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
+      .matches(/[a-z]/, "Password must contain at least one lowercase letter")
+      .matches(/[0-9]/, "Password must contain at least one number")
+      .matches(/[\W_]/, "Password must contain at least one special character")
+      .required("Password is required"),
+  })
 
   return (
     <LegacyScreen>
@@ -163,7 +168,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
       </LegacyScreen.Background>
 
       <LegacyScreen.Body>
-        {!userIsAuthenticating && (
+        {!(userIsEnteringEmail || userIsEnteringPassword) && (
           <MotiView
             style={{ flex: 1, alignItems: "center", width: "100%" }}
             from={{ opacity: userHasSeenFadeIn ? 1 : 0 }}
@@ -175,7 +180,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
           </MotiView>
         )}
 
-        {!userIsAuthenticating && (
+        {!(userIsEnteringEmail || userIsEnteringPassword) && (
           <MotiView
             from={{ opacity: userHasSeenFadeIn ? 1 : 0 }}
             animate={{ opacity: 1 }}
@@ -197,58 +202,109 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
             <LegacyScreen.SafeBottomPadding />
           </MotiView>
         )}
+
         <View style={{ flex: 1 }}>
           <BottomSheet
             ref={bottomSheetRef}
             onChange={handleBottomSheetChange}
             snapPoints={["100%"]}
+            detached
+            enableContentPanningGesture={false}
+            handleComponent={null}
           >
             <BottomSheetScrollView>
               <Flex padding={2} gap={space(1)}>
-                {!!userIsAuthenticating && <BackButton onPress={handleBackButtonPress} />}
-                <Text variant="sm-display">Sign up or log in</Text>
-                <BottomSheetInput
-                  ref={emailInputRef}
-                  onFocus={handleEmailInputFocus}
-                  placeholder="Enter your email address"
-                  returnKeyType="done"
-                  title="Email"
-                />
-                {!userIsAuthenticating && (
-                  <Flex gap={space(1)}>
-                    <Text variant="xs" textAlign="center">
-                      Or continue with
-                    </Text>
-                    <Flex flexDirection="row" justifyContent="space-evenly">
-                      <Flex>
-                        <Image source={require("images/apple.webp")} resizeMode="contain" />
-                      </Flex>
-                      <Flex>
-                        <Image source={require("images/google.webp")} resizeMode="contain" />
-                      </Flex>
-                      <Flex>
-                        <Image source={require("images/facebook.webp")} resizeMode="contain" />
-                      </Flex>
-                    </Flex>
-                  </Flex>
-                )}
-                {!userIsAuthenticating && (
-                  <Text variant="xxs" color="black60" textAlign="center">
-                    By tapping Continue with Apple, Facebook, or Google, you agree to Artsy’s{" "}
-                    <LinkText variant="xxs" onPress={() => navigate("/terms")}>
-                      Terms of Use
-                    </LinkText>{" "}
-                    and{" "}
-                    <LinkText variant="xxs" onPress={() => navigate("/privacy")}>
-                      Privacy Policy
-                    </LinkText>
-                  </Text>
-                )}
-                {!!userIsAuthenticating && (
-                  <Button block width={100} onPress={() => {}} disabled>
-                    Continue
-                  </Button>
-                )}
+                <Formik
+                  initialValues={{ email: "", password: "" }}
+                  onSubmit={handleContinueButtonPress}
+                  validationSchema={
+                    !userIsEnteringPassword ? emailValidationSchema : passwordValidationSchema
+                  }
+                  validateOnMount
+                >
+                  {({ handleBlur, handleChange, handleSubmit, isValid, values }) => (
+                    <>
+                      {(!!userIsEnteringEmail || !!userIsEnteringPassword) && (
+                        <BackButton onPress={handleBackButtonPress} />
+                      )}
+                      {!userIsEnteringPassword ? (
+                        <Text variant="sm-display">Sign up or log in</Text>
+                      ) : (
+                        <Text variant="sm-display">Welcome back to Artsy</Text>
+                      )}
+                      {!userIsEnteringPassword ? (
+                        <Field
+                          name="email"
+                          autoCapitalize="none"
+                          autoComplete="email"
+                          keyboardType="email-address"
+                          spellCheck={false}
+                          autoCorrect={false}
+                          component={BottomSheetInput}
+                          onFocus={handleEmailInputFocus}
+                          onBlur={handleBlur("email")}
+                          placeholder="Enter your email address"
+                          returnKeyType="done"
+                          title="Email"
+                          value={values.email}
+                          onChangeText={handleChange("email")}
+                        />
+                      ) : (
+                        <Field
+                          name="password"
+                          autoCapitalize="none"
+                          autoComplete="current-password"
+                          autoCorrect={false}
+                          secureTextEntry={true}
+                          component={BottomSheetInput}
+                          placeholder="Enter your password"
+                          returnKeyType="done"
+                          title="Password"
+                          value={values.password}
+                          onChangeText={handleChange("password")}
+                        />
+                      )}
+                      {!(userIsEnteringEmail || userIsEnteringPassword) && (
+                        <Flex gap={space(1)}>
+                          <Text variant="xs" textAlign="center">
+                            Or continue with
+                          </Text>
+                          <Flex flexDirection="row" justifyContent="space-evenly">
+                            <Flex>
+                              <Image source={require("images/apple.webp")} resizeMode="contain" />
+                            </Flex>
+                            <Flex>
+                              <Image source={require("images/google.webp")} resizeMode="contain" />
+                            </Flex>
+                            <Flex>
+                              <Image
+                                source={require("images/facebook.webp")}
+                                resizeMode="contain"
+                              />
+                            </Flex>
+                          </Flex>
+                        </Flex>
+                      )}
+                      {!(userIsEnteringEmail || userIsEnteringPassword) && (
+                        <Text variant="xxs" color="black60" textAlign="center">
+                          By tapping Continue with Apple, Facebook, or Google, you agree to Artsy’s{" "}
+                          <LinkText variant="xxs" onPress={() => navigate("/terms")}>
+                            Terms of Use
+                          </LinkText>{" "}
+                          and{" "}
+                          <LinkText variant="xxs" onPress={() => navigate("/privacy")}>
+                            Privacy Policy
+                          </LinkText>
+                        </Text>
+                      )}
+                      {(!!userIsEnteringEmail || !!userIsEnteringPassword) && (
+                        <Button block width={100} onPress={handleSubmit} disabled={!isValid}>
+                          Continue
+                        </Button>
+                      )}
+                    </>
+                  )}
+                </Formik>
               </Flex>
             </BottomSheetScrollView>
           </BottomSheet>
