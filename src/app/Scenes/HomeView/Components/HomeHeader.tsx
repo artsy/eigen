@@ -9,11 +9,11 @@ export const HomeHeader: React.FC = () => {
   )
 
   return (
-    <Box mb={1} mt={2}>
-      <Flex flexDirection="row" justifyContent="space-between">
+    <Box py={2}>
+      <Flex flexDirection="row" justifyContent="space-between" px={2}>
         <InfoButton
           titleElement={
-            <Text ml={2} color="blue100" weight="medium">
+            <Text color="blue100" weight="medium">
               Alpha
             </Text>
           }
@@ -37,7 +37,6 @@ export const HomeHeader: React.FC = () => {
         <ArtsyLogoBlackIcon scale={0.75} />
         <ActivityIndicator hasUnseenNotifications={hasUnseenNotifications} />
       </Flex>
-      <Spacer y={1} />
     </Box>
   )
 }
