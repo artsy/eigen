@@ -64,7 +64,12 @@ export function setupSentry(props: SetupSentryProps = {}) {
     enableWatchdogTerminationTracking: false,
     attachStacktrace: true,
     tracesSampleRate: 1.0, // TODO: Set this lower before production
-    integrations: [new Sentry.ReactNativeTracing({ routingInstrumentation })],
+    integrations: [
+      new Sentry.ReactNativeTracing({
+        enableUserInteractionTracing: true,
+        routingInstrumentation,
+      }),
+    ],
     ...props,
   })
 }

@@ -230,6 +230,7 @@ jest.mock("@sentry/react-native", () => ({
   ReactNavigationInstrumentation: jest.fn().mockImplementation(() => ({
     registerNavigationContainer: jest.fn(),
   })),
+  withProfiler: jest.fn().mockImplementation((component) => component),
   TimeToFullDisplay: () => null,
 }))
 
