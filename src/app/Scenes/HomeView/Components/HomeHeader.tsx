@@ -25,8 +25,8 @@ export const HomeHeader: React.FC = () => {
                   <Text variant="sm">Hello! 👋</Text>
                   <Text variant="sm">
                     This is an unreleased version of the app home screen. To switch to the current
-                    production version, disable the feature flag for "Use new home view" in admin
-                    settings.
+                    production version, enable the feature flag for "Prefer legacy home screen" in
+                    admin settings.
                   </Text>
                   <Text variant="sm">
                     Please direct any feedback to the #pdde-art-advisor channel in Slack.
