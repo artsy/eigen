@@ -6,13 +6,12 @@ import {
   Text,
   LegacyScreen,
   Input,
-  LinkText,
   BackButton,
+  LinkText,
   Button,
 } from "@artsy/palette-mobile"
-import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
-import { BottomSheetInput } from "app/Components/BottomSheetInput"
+
 import {
   ArtsyNativeModule,
   DEFAULT_NAVIGATION_BAR_COLOR,
@@ -20,7 +19,7 @@ import {
 import { navigate } from "app/system/navigation/navigate"
 import { useScreenDimensions } from "app/utils/hooks"
 import backgroundImage from "images/WelcomeImage.webp"
-import { MotiView, View } from "moti"
+import { AnimatePresence, MotiView } from "moti"
 import { useEffect, useRef, useState } from "react"
 import { Dimensions, Image, Platform } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
@@ -91,22 +90,9 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
     return unsubscribe
   }, [navigation])
 
-  // prevent the logo from fading in when the user navigates back to this screen
-  // TODO: do this more elegantly
-  const [userHasSeenFadeIn, setUserHasSeenFadeIn] = useState(false)
-
-  useEffect(() => {
-    setUserHasSeenFadeIn(true)
-  }, [])
-
   const [userIsAuthenticating, setUserIsAuthenticating] = useState(false)
 
-  const bottomSheetRef = useRef<BottomSheet>(null)
   const emailInputRef = useRef<Input>(null)
-
-  const handleBottomSheetChange = (index: number) => {
-    console.log("🦆", "handleBottomSheetChange", index)
-  }
 
   const handleEmailInputFocus = () => {
     setUserIsAuthenticating(true)
@@ -163,96 +149,101 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
       </LegacyScreen.Background>
 
       <LegacyScreen.Body>
-        {!userIsAuthenticating && (
+        <Flex flexDirection="column" height="100%">
+          <AnimatePresence>
+            {!userIsAuthenticating && (
+              <MotiView
+                style={{
+                  alignItems: "center",
+                  paddingTop: 10,
+                  flexGrow: 1,
+                }}
+                from={{ opacity: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ type: "timing", duration: 1500 }}
+                exit={{ scale: 0 }}
+              >
+                <ArtsyLogoWhiteIcon height={25} width={75} />
+              </MotiView>
+            )}
+          </AnimatePresence>
+          <AnimatePresence>
+            {!userIsAuthenticating && (
+              <MotiView
+                from={{ opacity: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ type: "timing", duration: 1500 }}
+                exit={{ scale: 0 }}
+              >
+                <Text variant="xl" color="white">
+                  Collect Art by the World’s Leading Artists
+                </Text>
+                <Spacer y={1} />
+                <Text variant="sm" color="white">
+                  Build your personalized profile, get market insights, buy and sell art with
+                  confidence.
+                </Text>
+                <Spacer y={2} />
+              </MotiView>
+            )}
+          </AnimatePresence>
           <MotiView
-            style={{ flex: 1, alignItems: "center", width: "100%" }}
-            from={{ opacity: userHasSeenFadeIn ? 1 : 0 }}
+            style={{
+              backgroundColor: "white",
+              borderRadius: 10,
+              padding: 20,
+              gap: 20,
+            }}
+            from={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ type: "timing", duration: 1500 }}
           >
-            <Spacer y={1} />
-            <ArtsyLogoWhiteIcon height={25} width={75} />
-          </MotiView>
-        )}
-
-        {!userIsAuthenticating && (
-          <MotiView
-            from={{ opacity: userHasSeenFadeIn ? 1 : 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ type: "timing", duration: 1500 }}
-          >
-            <Text variant="xl" color="white">
-              Collect Art by the World’s Leading Artists
-            </Text>
-
-            <Spacer y={1} />
-
-            <Text variant="sm" color="white">
-              Build your personalized profile, get market insights, buy and sell art with
-              confidence.
-            </Text>
-
-            <Spacer y={2} />
-
-            <LegacyScreen.SafeBottomPadding />
-          </MotiView>
-        )}
-        <View style={{ flex: 1 }}>
-          <BottomSheet
-            ref={bottomSheetRef}
-            onChange={handleBottomSheetChange}
-            snapPoints={["100%"]}
-          >
-            <BottomSheetScrollView>
-              <Flex padding={2} gap={space(1)}>
-                {!!userIsAuthenticating && <BackButton onPress={handleBackButtonPress} />}
-                <Text variant="sm-display">Sign up or log in</Text>
-                <BottomSheetInput
-                  ref={emailInputRef}
-                  onFocus={handleEmailInputFocus}
-                  placeholder="Enter your email address"
-                  returnKeyType="done"
-                  title="Email"
-                />
-                {!userIsAuthenticating && (
-                  <Flex gap={space(1)}>
-                    <Text variant="xs" textAlign="center">
-                      Or continue with
-                    </Text>
-                    <Flex flexDirection="row" justifyContent="space-evenly">
-                      <Flex>
-                        <Image source={require("images/apple.webp")} resizeMode="contain" />
-                      </Flex>
-                      <Flex>
-                        <Image source={require("images/google.webp")} resizeMode="contain" />
-                      </Flex>
-                      <Flex>
-                        <Image source={require("images/facebook.webp")} resizeMode="contain" />
-                      </Flex>
-                    </Flex>
+            {!!userIsAuthenticating && <BackButton onPress={handleBackButtonPress} />}
+            <Text variant="sm-display">Sign up or log in</Text>
+            <Input
+              ref={emailInputRef}
+              placeholder="Enter your email"
+              onFocus={handleEmailInputFocus}
+            />
+            {!userIsAuthenticating && (
+              <Flex gap={space(1)}>
+                <Text variant="xs" textAlign="center">
+                  Or continue with
+                </Text>
+                <Flex flexDirection="row" justifyContent="space-evenly">
+                  <Flex>
+                    <Image source={require("images/apple.webp")} resizeMode="contain" />
                   </Flex>
-                )}
-                {!userIsAuthenticating && (
-                  <Text variant="xxs" color="black60" textAlign="center">
-                    By tapping Continue with Apple, Facebook, or Google, you agree to Artsy’s{" "}
-                    <LinkText variant="xxs" onPress={() => navigate("/terms")}>
-                      Terms of Use
-                    </LinkText>{" "}
-                    and{" "}
-                    <LinkText variant="xxs" onPress={() => navigate("/privacy")}>
-                      Privacy Policy
-                    </LinkText>
-                  </Text>
-                )}
-                {!!userIsAuthenticating && (
-                  <Button block width={100} onPress={() => {}} disabled>
-                    Continue
-                  </Button>
-                )}
+                  <Flex>
+                    <Image source={require("images/google.webp")} resizeMode="contain" />
+                  </Flex>
+                  <Flex>
+                    <Image source={require("images/facebook.webp")} resizeMode="contain" />
+                  </Flex>
+                </Flex>
               </Flex>
-            </BottomSheetScrollView>
-          </BottomSheet>
-        </View>
+            )}
+            {!userIsAuthenticating && (
+              <Flex>
+                <Text variant="xxs" color="black60" textAlign="center">
+                  By tapping Continue with Apple, Facebook, or Google, you agree to Artsy’s{" "}
+                  <LinkText variant="xxs" onPress={() => navigate("/terms")}>
+                    Terms of Use
+                  </LinkText>{" "}
+                  and{" "}
+                  <LinkText variant="xxs" onPress={() => navigate("/privacy")}>
+                    Privacy Policy
+                  </LinkText>
+                </Text>
+              </Flex>
+            )}
+            {!!userIsAuthenticating && (
+              <Button block width={100} onPress={() => {}} disabled>
+                Continue
+              </Button>
+            )}
+          </MotiView>
+        </Flex>
       </LegacyScreen.Body>
     </LegacyScreen>
   )
