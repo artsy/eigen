@@ -1,4 +1,5 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
+import * as Sentry from "@sentry/react-native"
 import { GlobalStore } from "app/store/GlobalStore"
 import { codePushOptions } from "app/system/codepush"
 import { AsyncStorageDevtools } from "app/system/devTools/AsyncStorageDevTools"
@@ -163,4 +164,6 @@ const InnerApp = () => (
   </Providers>
 )
 
-export const App = codePush(codePushOptions)(InnerApp)
+const SentryApp = Sentry.wrap(InnerApp)
+
+export const App = codePush(codePushOptions)(SentryApp)
