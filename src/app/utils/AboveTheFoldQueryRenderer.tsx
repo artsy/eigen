@@ -1,5 +1,3 @@
-import * as Sentry from "@sentry/react-native"
-import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
 import React, { useEffect, useMemo, useState } from "react"
 import { QueryRenderer, Environment, GraphQLTaggedNode } from "react-relay"
 import { CacheConfig, FetchPolicy, OperationType } from "relay-runtime"
@@ -99,30 +97,8 @@ export function AboveTheFoldQueryRenderer<
     return () => clearImmediate(immediate)
   }, [])
 
-  const span = Sentry.getActiveSpan()
-  const transaction = Sentry.getCurrentScope()?.getTransaction()
-
-  const activeRoute = __unsafe_mainModalStackRef.current?.getCurrentRoute()
-  console.warn("Sentry: AboveTheFoldQueryRenderer: activeRoute", activeRoute)
-  const shouldRecordFullDisplay = activeRoute?.name === "screen:home" && aboveArgs !== null
-
-  useEffect(() => {
-    if (span) {
-      console.log("Sentry: Active span:", span)
-    }
-  }, [span, transaction])
-
-  if (shouldRecordFullDisplay) {
-    console.warn("Sentry: AboveTheFoldQueryRenderer: recording full display on span", span)
-    console.warn(
-      "Sentry: AboveTheFoldQueryRenderer: recording full display on transaction",
-      transaction
-    )
-  }
-
   return (
     <>
-      <Sentry.TimeToFullDisplay record={shouldRecordFullDisplay} />
       <QueryRenderer
         environment={props.environment}
         query={props.above.query}
