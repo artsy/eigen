@@ -18,6 +18,7 @@ import { PAGE_SIZE } from "app/Components/constants"
 import { ArtworkListArtworksGridHeader } from "app/Scenes/ArtworkList/ArtworkListArtworksGridHeader"
 import { ArtworkListEmptyState } from "app/Scenes/ArtworkList/ArtworkListEmptyState"
 import { ArtworkListHeader } from "app/Scenes/ArtworkList/ArtworkListHeader"
+import { ArtworksGridAOrRailProvider } from "app/utils/ArtworksContext/ArtworksGridAndRailContext"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useRefreshControl } from "app/utils/refreshHelpers"
@@ -96,23 +97,25 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
   return (
     <ArtworkListProvider artworkListID={listID}>
       <ArtworkListHeader me={queryData.me} />
-      <MasonryInfiniteScrollArtworkGrid
-        artworks={artworks}
-        loadMore={(pageSize) => loadNext(pageSize)}
-        hasMore={hasNext}
-        isLoading={isLoadingNext}
-        ListHeaderComponent={
-          <Box mx={-2}>
-            <ArtworkListArtworksGridHeader
-              title={artworkList?.name ?? ""}
-              artworksCount={artworksCount}
-              shareableWithPartners={artworkList?.shareableWithPartners ?? false}
-              onSortButtonPress={openSortModal}
-            />
-          </Box>
-        }
-        refreshControl={RefreshControl}
-      />
+      <ArtworksGridAOrRailProvider currentGridOrRail="SAVES_LIST_GRID">
+        <MasonryInfiniteScrollArtworkGrid
+          artworks={artworks}
+          loadMore={(pageSize) => loadNext(pageSize)}
+          hasMore={hasNext}
+          isLoading={isLoadingNext}
+          ListHeaderComponent={
+            <Box mx={-2}>
+              <ArtworkListArtworksGridHeader
+                title={artworkList?.name ?? ""}
+                artworksCount={artworksCount}
+                shareableWithPartners={artworkList?.shareableWithPartners ?? false}
+                onSortButtonPress={openSortModal}
+              />
+            </Box>
+          }
+          refreshControl={RefreshControl}
+        />
+      </ArtworksGridAOrRailProvider>
       <SortByModal
         visible={sortModalVisible}
         options={SORT_OPTIONS}

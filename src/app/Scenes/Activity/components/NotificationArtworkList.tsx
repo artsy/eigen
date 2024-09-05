@@ -4,6 +4,7 @@ import { NotificationArtworkList_artworksConnection$key } from "__generated__/No
 import { PriceOfferMessage } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import { CommercialButtonsQueryRenderer } from "app/Scenes/Activity/components/NotificationCommercialButtons"
+import { ArtworksGridAOrRailProvider } from "app/utils/ArtworksContext/ArtworksGridAndRailContext"
 import { extractNodes } from "app/utils/extractNodes"
 import { FC } from "react"
 import { ImageBackground } from "react-native"
@@ -37,19 +38,21 @@ export const NotificationArtworkList: FC<NotificationArtworkListProps> = (props)
 
   return (
     <Flex minHeight={400}>
-      <MasonryInfiniteScrollArtworkGrid
-        animated
-        artworks={artworks}
-        numColumns={1}
-        disableAutoLayout
-        contextScreenOwnerType={OwnerType.activity}
-        contextScreen={OwnerType.activity}
-        hasMore={false}
-        onScroll={scrollHandler}
-        partnerOffer={partnerOffer}
-        priceOfferMessage={priceOfferMessage}
-        style={{ paddingBottom: 120 }}
-      />
+      <ArtworksGridAOrRailProvider currentGridOrRail="ACTIVITY_PANEL_ARTWORKS_GRID">
+        <MasonryInfiniteScrollArtworkGrid
+          animated
+          artworks={artworks}
+          numColumns={1}
+          disableAutoLayout
+          contextScreenOwnerType={OwnerType.activity}
+          contextScreen={OwnerType.activity}
+          hasMore={false}
+          onScroll={scrollHandler}
+          partnerOffer={partnerOffer}
+          priceOfferMessage={priceOfferMessage}
+          style={{ paddingBottom: 120 }}
+        />
+      </ArtworksGridAOrRailProvider>
       {!!showArtworkCommercialButtons && (
         <CommercialButtonsQueryRenderer
           artworkID={artworks[0].internalID}

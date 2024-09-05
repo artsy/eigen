@@ -6,6 +6,7 @@ import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/Ma
 import { PAGE_SIZE } from "app/Components/constants"
 import { RecentlyViewedPlaceholder } from "app/Scenes/RecentlyViewed/Components/RecentlyViewedPlaceholder"
 import { GlobalStore } from "app/store/GlobalStore"
+import { ArtworksGridAOrRailProvider } from "app/utils/ArtworksContext/ArtworksGridAndRailContext"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
@@ -32,21 +33,23 @@ export const RecentlyViewedArtworks: React.FC = () => {
   const numOfColumns = defaultViewOption === "grid" ? NUM_COLUMNS_MASONRY : 1
 
   return (
-    <MasonryInfiniteScrollArtworkGrid
-      animated
-      artworks={artworks}
-      contextScreenOwnerType={OwnerType.recentlyViewed}
-      contextScreen={OwnerType.recentlyViewed}
-      ListEmptyComponent={
-        <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
-      }
-      refreshControl={RefreshControl}
-      hasMore={hasNext}
-      loadMore={(pageSize) => loadNext(pageSize)}
-      isLoading={isLoadingNext}
-      numColumns={numOfColumns}
-      onScroll={scrollHandler}
-    />
+    <ArtworksGridAOrRailProvider currentGridOrRail="RECENTLY_VIEWED_GRID">
+      <MasonryInfiniteScrollArtworkGrid
+        animated
+        artworks={artworks}
+        contextScreenOwnerType={OwnerType.recentlyViewed}
+        contextScreen={OwnerType.recentlyViewed}
+        ListEmptyComponent={
+          <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
+        }
+        refreshControl={RefreshControl}
+        hasMore={hasNext}
+        loadMore={(pageSize) => loadNext(pageSize)}
+        isLoading={isLoadingNext}
+        numColumns={numOfColumns}
+        onScroll={scrollHandler}
+      />
+    </ArtworksGridAOrRailProvider>
   )
 }
 

@@ -56,6 +56,7 @@ import { ViewingRoomsHomeMainRail } from "app/Scenes/ViewingRoom/Components/View
 import { GlobalStore } from "app/store/GlobalStore"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
+import { GridAndRailType } from "app/utils/ArtworksContext/ArtworksGridAndRailContext"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -104,6 +105,7 @@ export interface HomeModule extends ArtworkActionTrackingProps {
   subtitle?: string
   title: string
   type: string
+  currentGridOrRail?: GridAndRailType
 }
 
 export interface HomeProps extends ViewProps {

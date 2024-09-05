@@ -37,6 +37,7 @@ export const useHomeModules = (props: HomeProps) => {
         key: "newWorksForYouRail",
         title: "New Works for You",
         type: "newWorksForYou",
+        currentGridOrRail: "NEW_WORKS_FOR_YOU_RAIL",
       },
       {
         data: props.heroUnits?.heroUnitsConnection,
@@ -46,6 +47,7 @@ export const useHomeModules = (props: HomeProps) => {
         title: "",
         type: "heroUnits",
       },
+      // ?
       {
         data: props.homePageAbove?.activeBidsArtworkModule,
         isEmpty: isEmpty(props.homePageAbove?.activeBidsArtworkModule?.results),
@@ -61,6 +63,7 @@ export const useHomeModules = (props: HomeProps) => {
         prefetchVariables: recommendedAuctionLotsDefaultVariables(),
         title: "Auction Lots for You",
         type: "recommendedAuctionLots",
+        currentGridOrRail: "AUCTION_LOTS_FOR_YOU_RAIL",
       },
       {
         contextModule: ContextModule.auctionRail,
@@ -123,6 +126,7 @@ export const useHomeModules = (props: HomeProps) => {
         subtitle: "The best work by rising talents on Artsy, available now.",
         title: "Curators’ Picks: Emerging",
         type: "marketingCollection",
+        currentGridOrRail: "CURATORS_PICKS_EMERGING_ARTISTS_RAIL",
       },
       {
         contextModule: ContextModule.collectionRail,
@@ -133,6 +137,7 @@ export const useHomeModules = (props: HomeProps) => {
         title: "Collections",
         type: "collections",
       },
+      // ?
       {
         contextModule: ContextModule.artworkRecommendationsRail,
         contextScreen: "home",
@@ -143,6 +148,7 @@ export const useHomeModules = (props: HomeProps) => {
         key: "artworkRecommendationsRail",
         type: "artwork-recommendations",
       },
+      // ?
       {
         contextModule: ContextModule.newWorksByGalleriesYouFollowRail,
         contextScreen: "home",
@@ -178,7 +184,9 @@ export const useHomeModules = (props: HomeProps) => {
         key: "recentlyViewedRail",
         title: "Recently Viewed",
         type: "artwork",
+        currentGridOrRail: "RECENTLY_VIEWED_RAIL",
       },
+      // ?
       {
         contextModule: ContextModule.similarToWorksYouViewedRail,
         contextScreen: "home",

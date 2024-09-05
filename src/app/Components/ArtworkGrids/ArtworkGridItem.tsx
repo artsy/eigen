@@ -29,6 +29,7 @@ import { PartnerOffer } from "app/Scenes/Activity/components/NotificationArtwork
 import { formattedTimeLeft } from "app/Scenes/Activity/utils/formattedTimeLeft"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
+import { useArtworksGridOrRailContext } from "app/utils/ArtworksContext/ArtworksGridAndRailContext"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
 import { getArtworkSignalTrackingFields } from "app/utils/getArtworkSignalTrackingFields"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
@@ -114,6 +115,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const itemRef = useRef<any>()
   const color = useColor()
   const tracking = useTracking()
+  // const { shouldShow } = useArtworksGridOrRailContext()
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
   const AREnablePartnerOfferSignals = useFeatureFlag("AREnablePartnerOfferSignals")
