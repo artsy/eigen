@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ArtsyKeyboardAvoidingView } from "@artsy/palette-mobile"
-import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
+import { NavigationContainer } from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import { EditSavedSearchAlertQuery } from "__generated__/EditSavedSearchAlertQuery.graphql"
 import { EditSavedSearchAlert_artists$data } from "__generated__/EditSavedSearchAlert_artists.graphql"
@@ -28,7 +28,7 @@ import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
-import React, { useCallback, useEffect } from "react"
+import React, { useCallback, useEffect, useRef } from "react"
 import { QueryRenderer, RelayRefetchProp, createRefetchContainer, graphql } from "react-relay"
 import { EditSavedSearchFormPlaceholder } from "./Components/EditSavedSearchAlertPlaceholder"
 import { SavedSearchAlertQueryRenderer } from "./SavedSearchAlert"
@@ -47,7 +47,6 @@ interface EditSavedSearchAlertProps {
 }
 
 const Stack = createStackNavigator<EditSavedSearchAlertNavigationStack>()
-const navContainerRef = { current: null as NavigationContainerRef<any> | null }
 
 const EDIT_SAVED_ARTWORK_NAVIGATION_STACK_STATE_KEY =
   "EDIT_SAVED_ARTWORK_NAVIGATION_STACK_STATE_KEY"
@@ -105,6 +104,8 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
       navigationEvents.removeListener("goBack", refetch)
     }
   }, [])
+
+  const navContainerRef = useRef(null)
 
   if (!isReady) {
     return null

@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType, TappedCreateAlert } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
-import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
+import { NavigationContainer } from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
 import {
@@ -36,7 +36,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { routingInstrumentation } from "app/system/errorReporting/sentrySetup"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { ViewProps } from "react-native"
 import { useTracking } from "react-tracking"
 import {
@@ -103,8 +103,6 @@ export type ArtworkFilterNavigationStack = {
 }
 
 const Stack = createStackNavigator<ArtworkFilterNavigationStack>()
-
-const navContainerRef = { current: null as NavigationContainerRef<any> | null }
 
 export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
   const tracking = useTracking()
@@ -312,6 +310,8 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
   useEffect(() => {
     setSelectedMetric(localizedUnit)
   }, [])
+
+  const navContainerRef = useRef(null)
 
   return (
     <NavigationContainer

@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
+import { NavigationContainer } from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import { MediumOptions } from "app/Scenes/PriceDatabase/components/MediumOptions"
 import { PriceDatabaseSearch } from "app/Scenes/PriceDatabase/components/PriceDatabaseSearch"
@@ -13,6 +13,7 @@ import { routingInstrumentation } from "app/system/errorReporting/sentrySetup"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { FormikProvider, useFormik } from "formik"
+import { useRef } from "react"
 
 export type PriceDatabaseNavigationStack = {
   PriceDatabaseSearch: undefined
@@ -21,7 +22,6 @@ export type PriceDatabaseNavigationStack = {
 }
 
 const Stack = createStackNavigator<PriceDatabaseNavigationStack>()
-const navContainerRef = { current: null as NavigationContainerRef<any> | null }
 
 export const PriceDatabase = () => {
   const handleSubmit = () => {}
@@ -33,6 +33,8 @@ export const PriceDatabase = () => {
     validationSchema: () => priceDatabaseValidationSchema,
     validateOnMount: true,
   })
+
+  const navContainerRef = useRef(null)
 
   return (
     <ProvideScreenTrackingWithCohesionSchema

@@ -1,15 +1,16 @@
-import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
+import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { MyCollectionArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { routingInstrumentation } from "app/system/errorReporting/sentrySetup"
+import { useRef } from "react"
 import { MyProfileEditFormScreen } from "./MyProfileEditForm"
 import { MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer } from "./MyProfileHeaderMyCollectionAndSavedWorks"
 
 const Stack = createStackNavigator()
 
-const navContainerRef = { current: null as NavigationContainerRef<any> | null }
-
 export const MyProfile = () => {
+  const navContainerRef = useRef(null)
+
   return (
     <NavigationContainer
       independent

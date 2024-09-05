@@ -1,8 +1,4 @@
-import {
-  NavigationContainer,
-  NavigationContainerRef,
-  NavigationProp,
-} from "@react-navigation/native"
+import { NavigationContainer, NavigationProp } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { useCompleteMyProfileSteps_me$key } from "__generated__/useCompleteMyProfileSteps_me.graphql"
 import { AvatarStep } from "app/Scenes/CompleteMyProfile/AvatarStep"
@@ -15,7 +11,7 @@ import { ProfessionStep } from "app/Scenes/CompleteMyProfile/ProfessionStep"
 import { useCompleteMyProfileSteps } from "app/Scenes/CompleteMyProfile/hooks/useCompleteMyProfileSteps"
 import { routingInstrumentation } from "app/system/errorReporting/sentrySetup"
 import { LocationWithDetails } from "app/utils/googleMaps"
-import { FC, useEffect } from "react"
+import { FC, useEffect, useRef } from "react"
 
 export type CompleteMyProfileNavigationStack = NavigationProp<CompleteMyProfileNavigationRoutes>
 
@@ -35,7 +31,6 @@ export type NavigationPayloadField = {
 }
 
 const Stack = createStackNavigator()
-const navContainerRef = { current: null as NavigationContainerRef<any> | null }
 
 const CompleteMyProfileNavigator: FC = () => {
   const { steps: _steps } = useCompleteMyProfileSteps()
@@ -47,6 +42,8 @@ const CompleteMyProfileNavigator: FC = () => {
       setSteps(_steps)
     }
   }, [_steps])
+
+  const navContainerRef = useRef(null)
 
   if (steps === "loading") {
     return null
