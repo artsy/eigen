@@ -1,4 +1,5 @@
 import * as Sentry from "@sentry/react-native"
+import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
 import React, { useEffect, useMemo, useState } from "react"
 import { QueryRenderer, Environment, GraphQLTaggedNode } from "react-relay"
 import { CacheConfig, FetchPolicy, OperationType } from "relay-runtime"
@@ -69,8 +70,6 @@ export function AboveTheFoldQueryRenderer<
   // we should also call render if we are no longer waiting for a debounce
   const shouldCallRender = (aboveArgs?.props && belowArgs?.props) || hasFinishedDebouncing
 
-  const shouldRecordFullDisplay = aboveArgs !== null
-
   const render = useMemo(
     () =>
       typeof props.render === "function"
@@ -99,6 +98,27 @@ export function AboveTheFoldQueryRenderer<
 
     return () => clearImmediate(immediate)
   }, [])
+
+  const span = Sentry.getActiveSpan()
+  const transaction = Sentry.getCurrentScope()?.getTransaction()
+
+  const activeRoute = __unsafe_mainModalStackRef.current?.getCurrentRoute()
+  console.warn("Sentry: AboveTheFoldQueryRenderer: activeRoute", activeRoute)
+  const shouldRecordFullDisplay = activeRoute?.name === "screen:home" && aboveArgs !== null
+
+  useEffect(() => {
+    if (span) {
+      console.log("Sentry: Active span:", span)
+    }
+  }, [span, transaction])
+
+  if (shouldRecordFullDisplay) {
+    console.warn("Sentry: AboveTheFoldQueryRenderer: recording full display on span", span)
+    console.warn(
+      "Sentry: AboveTheFoldQueryRenderer: recording full display on transaction",
+      transaction
+    )
+  }
 
   return (
     <>
