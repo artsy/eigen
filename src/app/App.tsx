@@ -1,12 +1,12 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import * as Sentry from "@sentry/react-native"
-import { GlobalStore } from "app/store/GlobalStore"
+import { GlobalStore, unsafe__getEnvironment } from "app/store/GlobalStore"
 import { codePushOptions } from "app/system/codepush"
 import { AsyncStorageDevtools } from "app/system/devTools/AsyncStorageDevTools"
 import { DevMenuWrapper } from "app/system/devTools/DevMenu/DevMenuWrapper"
 import { setupFlipper } from "app/system/devTools/flipper"
 import { useRageShakeDevMenu } from "app/system/devTools/useRageShakeDevMenu"
-import { useErrorReporting } from "app/system/errorReporting/hooks"
+import { setupSentry } from "app/system/errorReporting/sentrySetup"
 import { ModalStack } from "app/system/navigation/ModalStack"
 import { usePurgeCacheOnAppUpdate } from "app/system/relay/usePurgeCacheOnAppUpdate"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
@@ -86,7 +86,6 @@ const Main = () => {
 
   const fpsCounter = useDevToggle("DTFPSCounter")
 
-  useErrorReporting()
   useStripeConfig()
   useSiftConfig()
   useWebViewCookies()
@@ -164,6 +163,9 @@ const InnerApp = () => (
   </Providers>
 )
 
+const environment = unsafe__getEnvironment()
+// TODO: Can we allow the old dev override?
+setupSentry({ environment: environment.env, captureExceptionsInSentryOnDev: true })
 const SentryApp = Sentry.wrap(InnerApp)
 
 export const App = codePush(codePushOptions)(SentryApp)
