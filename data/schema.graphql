@@ -4447,6 +4447,9 @@ type CollectorSignals {
 
   # Pending auction registration end time
   registrationEndsAt: String @deprecated(reason: "Use nested field in `auction` instead")
+
+  # Most recent running Show or Fair booth the artwork is currently in, sorted by relevance
+  runningShow: Show
 }
 
 # Represents either an action or a potential failure
