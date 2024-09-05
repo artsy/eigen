@@ -21,7 +21,7 @@ import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwor
 import { HEART_ICON_SIZE } from "app/Components/constants"
 import { formattedTimeLeft } from "app/Scenes/Activity/utils/formattedTimeLeft"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
-import { useArtworksGridOrRailContext } from "app/utils/ArtworksContext/ArtworksGridAndRailContext"
+// import { useArtworksGridOrRailContext } from "app/utils/ArtworksContext/ArtworksGridAndRailContext"
 import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { getTimer } from "app/utils/getTimer"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
