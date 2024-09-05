@@ -19,7 +19,7 @@ import {
 import { navigate } from "app/system/navigation/navigate"
 import { useScreenDimensions } from "app/utils/hooks"
 import backgroundImage from "images/WelcomeImage.webp"
-import { AnimatePresence, MotiView } from "moti"
+import { MotiView } from "moti"
 import { useEffect, useRef, useState } from "react"
 import { Dimensions, Image, Platform } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
@@ -150,43 +150,33 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
 
       <LegacyScreen.Body>
         <Flex flexDirection="column" height="100%">
-          <AnimatePresence>
-            {!userIsAuthenticating && (
-              <MotiView
-                style={{
-                  alignItems: "center",
-                  paddingTop: 10,
-                  flexGrow: 1,
-                }}
-                from={{ opacity: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ type: "timing", duration: 1500 }}
-                exit={{ scale: 0 }}
-              >
-                <ArtsyLogoWhiteIcon height={25} width={75} />
-              </MotiView>
-            )}
-          </AnimatePresence>
-          <AnimatePresence>
-            {!userIsAuthenticating && (
-              <MotiView
-                from={{ opacity: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ type: "timing", duration: 1500 }}
-                exit={{ scale: 0 }}
-              >
-                <Text variant="xl" color="white">
-                  Collect Art by the World’s Leading Artists
-                </Text>
-                <Spacer y={1} />
-                <Text variant="sm" color="white">
-                  Build your personalized profile, get market insights, buy and sell art with
-                  confidence.
-                </Text>
-                <Spacer y={2} />
-              </MotiView>
-            )}
-          </AnimatePresence>
+          <MotiView
+            style={{
+              alignItems: "center",
+              paddingTop: 10,
+              flexGrow: 1,
+            }}
+            from={{ opacity: userIsAuthenticating ? 1 : 0 }}
+            animate={{ opacity: userIsAuthenticating ? 0 : 1 }}
+            transition={{ type: "timing", duration: userIsAuthenticating ? 1000 : 1500 }}
+          >
+            <ArtsyLogoWhiteIcon height={25} width={75} />
+          </MotiView>
+          <MotiView
+            from={{ opacity: userIsAuthenticating ? 1 : 0 }}
+            animate={{ opacity: userIsAuthenticating ? 0 : 1 }}
+            transition={{ type: "timing", duration: 1500 }}
+          >
+            <Text variant="xl" color="white">
+              Collect Art by the World’s Leading Artists
+            </Text>
+            <Spacer y={1} />
+            <Text variant="sm" color="white">
+              Build your personalized profile, get market insights, buy and sell art with
+              confidence.
+            </Text>
+            <Spacer y={2} />
+          </MotiView>
           <MotiView
             style={{
               backgroundColor: "white",
@@ -194,9 +184,12 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
               padding: 20,
               gap: 20,
             }}
-            from={{ opacity: 0 }}
+            from={{ opacity: 0, transform: [{ translateY: userIsAuthenticating ? -500 : 0 }] }}
             animate={{ opacity: 1 }}
-            transition={{ type: "timing", duration: 1500 }}
+            transition={{
+              opacity: { type: "timing", duration: 1500 },
+              transform: { type: "timing", duration: 1000 },
+            }}
           >
             {!!userIsAuthenticating && <BackButton onPress={handleBackButtonPress} />}
             <Text variant="sm-display">Sign up or log in</Text>
