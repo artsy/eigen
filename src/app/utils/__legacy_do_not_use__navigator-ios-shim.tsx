@@ -1,5 +1,6 @@
 import { NavigationContainer, NavigationContainerRef, StackActions } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import { routingInstrumentation } from "app/system/errorReporting/sentrySetup"
 import React from "react"
 import { View } from "react-native"
 
@@ -52,7 +53,13 @@ class NavigatorIOS extends React.Component<{
       navigator: this,
     }
     return (
-      <NavigationContainer ref={(ref) => (this.navigator = ref)} independent>
+      <NavigationContainer
+        ref={(ref) => (this.navigator = ref)}
+        onReady={() => {
+          routingInstrumentation.registerNavigationContainer(this.navigator)
+        }}
+        independent
+      >
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen
             component={ScreenWrapper}

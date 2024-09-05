@@ -1,5 +1,5 @@
 import { ArtsyKeyboardAvoidingView, Box } from "@artsy/palette-mobile"
-import { NavigationContainer } from "@react-navigation/native"
+import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import {
@@ -11,6 +11,7 @@ import { localizeHeightAndWidthAttributes } from "app/Scenes/SavedSearchAlert/he
 import { AlertPriceRangeScreenQueryRenderer } from "app/Scenes/SavedSearchAlert/screens/AlertPriceRangeScreen"
 import { ConfirmationScreen } from "app/Scenes/SavedSearchAlert/screens/ConfirmationScreen"
 import { SavedSearchFilterScreen } from "app/Scenes/SavedSearchAlert/screens/SavedSearchFilterScreen"
+import { routingInstrumentation } from "app/system/errorReporting/sentrySetup"
 import { useReloadedDevNavigationState } from "app/system/navigation/useReloadedDevNavigationState"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import {
@@ -20,6 +21,7 @@ import {
 import { EmailPreferencesScreen } from "./screens/EmailPreferencesScreen"
 
 const Stack = createStackNavigator<CreateSavedSearchAlertNavigationStack>()
+const navContainerRef = { current: null as NavigationContainerRef<any> | null }
 
 const CREATE_SAVED_ARTWORK_NAVIGATION_STACK_STATE_KEY =
   "CREATE_SAVED_ARTWORK_NAVIGATION_STACK_STATE_KEY"
@@ -58,6 +60,10 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
           onStateChange={(state) => {
             saveSession(state)
           }}
+          onReady={() => {
+            routingInstrumentation.registerNavigationContainer(navContainerRef)
+          }}
+          ref={navContainerRef}
         >
           <FancyModal visible={visible} fullScreen>
             <Box flex={1}>

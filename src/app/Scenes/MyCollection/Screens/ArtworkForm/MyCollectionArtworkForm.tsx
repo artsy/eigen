@@ -16,6 +16,7 @@ import { saveOrUpdateArtwork } from "app/Scenes/MyCollection/Screens/ArtworkForm
 import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { GlobalStore } from "app/store/GlobalStore"
+import { routingInstrumentation } from "app/system/errorReporting/sentrySetup"
 import { dismissModal, goBack, popToRoot, switchTab } from "app/system/navigation/navigate"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { refreshMyCollection, refreshMyCollectionInsights } from "app/utils/refreshHelpers"
@@ -157,7 +158,13 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
   const { width, height } = Dimensions.get("screen")
 
   return (
-    <NavigationContainer independent ref={navContainerRef}>
+    <NavigationContainer
+      independent
+      onReady={() => {
+        routingInstrumentation.registerNavigationContainer(navContainerRef)
+      }}
+      ref={navContainerRef}
+    >
       <FormikProvider value={formik}>
         <Stack.Navigator
           // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason

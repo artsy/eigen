@@ -1,4 +1,8 @@
-import { NavigationContainer, NavigationProp } from "@react-navigation/native"
+import {
+  NavigationContainer,
+  NavigationContainerRef,
+  NavigationProp,
+} from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { useCompleteMyProfileSteps_me$key } from "__generated__/useCompleteMyProfileSteps_me.graphql"
 import { AvatarStep } from "app/Scenes/CompleteMyProfile/AvatarStep"
@@ -9,6 +13,7 @@ import { IdentityVerificationStep } from "app/Scenes/CompleteMyProfile/IdentityV
 import { LocationStep } from "app/Scenes/CompleteMyProfile/LocationStep"
 import { ProfessionStep } from "app/Scenes/CompleteMyProfile/ProfessionStep"
 import { useCompleteMyProfileSteps } from "app/Scenes/CompleteMyProfile/hooks/useCompleteMyProfileSteps"
+import { routingInstrumentation } from "app/system/errorReporting/sentrySetup"
 import { LocationWithDetails } from "app/utils/googleMaps"
 import { FC, useEffect } from "react"
 
@@ -30,6 +35,7 @@ export type NavigationPayloadField = {
 }
 
 const Stack = createStackNavigator()
+const navContainerRef = { current: null as NavigationContainerRef<any> | null }
 
 const CompleteMyProfileNavigator: FC = () => {
   const { steps: _steps } = useCompleteMyProfileSteps()
@@ -47,7 +53,13 @@ const CompleteMyProfileNavigator: FC = () => {
   }
 
   return (
-    <NavigationContainer independent>
+    <NavigationContainer
+      independent
+      onReady={() => {
+        routingInstrumentation.registerNavigationContainer(navContainerRef)
+      }}
+      ref={navContainerRef}
+    >
       <Stack.Navigator
         screenOptions={{
           headerShown: true,

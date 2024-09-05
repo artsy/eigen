@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ArtsyKeyboardAvoidingView } from "@artsy/palette-mobile"
-import { NavigationContainer } from "@react-navigation/native"
+import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import { EditSavedSearchAlertQuery } from "__generated__/EditSavedSearchAlertQuery.graphql"
 import { EditSavedSearchAlert_artists$data } from "__generated__/EditSavedSearchAlert_artists.graphql"
@@ -21,6 +21,7 @@ import { localizeHeightAndWidthAttributes } from "app/Scenes/SavedSearchAlert/he
 import { AlertPriceRangeScreenQueryRenderer } from "app/Scenes/SavedSearchAlert/screens/AlertPriceRangeScreen"
 import { EmailPreferencesScreen } from "app/Scenes/SavedSearchAlert/screens/EmailPreferencesScreen"
 import { SavedSearchFilterScreen } from "app/Scenes/SavedSearchAlert/screens/SavedSearchFilterScreen"
+import { routingInstrumentation } from "app/system/errorReporting/sentrySetup"
 import { GoBackProps, goBack, navigationEvents } from "app/system/navigation/navigate"
 import { useReloadedDevNavigationState } from "app/system/navigation/useReloadedDevNavigationState"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -46,6 +47,7 @@ interface EditSavedSearchAlertProps {
 }
 
 const Stack = createStackNavigator<EditSavedSearchAlertNavigationStack>()
+const navContainerRef = { current: null as NavigationContainerRef<any> | null }
 
 const EDIT_SAVED_ARTWORK_NAVIGATION_STACK_STATE_KEY =
   "EDIT_SAVED_ARTWORK_NAVIGATION_STACK_STATE_KEY"
@@ -145,6 +147,10 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
             onStateChange={(state) => {
               saveSession(state)
             }}
+            onReady={() => {
+              routingInstrumentation.registerNavigationContainer(navContainerRef)
+            }}
+            ref={navContainerRef}
           >
             <Stack.Navigator
               // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason

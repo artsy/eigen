@@ -1,9 +1,10 @@
-import { NavigationContainer } from "@react-navigation/native"
+import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
 import { ArtQuizNavigationQuery } from "__generated__/ArtQuizNavigationQuery.graphql"
 import { ArtQuizArtworks } from "app/Scenes/ArtQuiz/ArtQuizArtworks"
 import { ArtQuizLoader } from "app/Scenes/ArtQuiz/ArtQuizLoader"
 import { ArtQuizWelcome } from "app/Scenes/ArtQuiz/ArtQuizWelcome"
+import { routingInstrumentation } from "app/system/errorReporting/sentrySetup"
 import { navigate } from "app/system/navigation/navigate"
 import { Suspense, useEffect } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -14,6 +15,8 @@ export type ArtQuizNavigationStack = {
 }
 
 export const StackNavigator = createStackNavigator<ArtQuizNavigationStack>()
+
+const navContainerRef = { current: null as NavigationContainerRef<any> | null }
 
 const ArtQuizScreen: React.FC = () => {
   const queryResult = useLazyLoadQuery<ArtQuizNavigationQuery>(artQuizNavigationQuery, {}).me?.quiz
@@ -26,7 +29,13 @@ const ArtQuizScreen: React.FC = () => {
   }, [isQuizCompleted])
 
   return (
-    <NavigationContainer independent>
+    <NavigationContainer
+      independent
+      onReady={() => {
+        routingInstrumentation.registerNavigationContainer(navContainerRef)
+      }}
+      ref={navContainerRef}
+    >
       <StackNavigator.Navigator
         screenOptions={{
           ...TransitionPresets.DefaultTransition,

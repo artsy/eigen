@@ -1,7 +1,8 @@
-import { NavigationContainer } from "@react-navigation/native"
+import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
 import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingTracking"
 import { GlobalStore } from "app/store/GlobalStore"
+import { routingInstrumentation } from "app/system/errorReporting/sentrySetup"
 import { OnboardingProvider } from "./Hooks/useOnboardingContext"
 import { useUpdateUserProfile } from "./Hooks/useUpdateUserProfile"
 import { OnboardingArtistsOnTheRise } from "./OnboardingArtistsOnTheRise"
@@ -29,6 +30,7 @@ export type OnboardingNavigationStack = {
 }
 
 const StackNavigator = createStackNavigator<OnboardingNavigationStack>()
+const navContainerRef = { current: null as NavigationContainerRef<any> | null }
 
 export const OnboardingQuiz = () => {
   const { trackCompletedOnboarding } = useOnboardingTracking()
@@ -48,7 +50,13 @@ export const OnboardingQuiz = () => {
 
   return (
     <OnboardingProvider onDone={handleDone}>
-      <NavigationContainer independent>
+      <NavigationContainer
+        independent
+        onReady={() => {
+          routingInstrumentation.registerNavigationContainer(navContainerRef)
+        }}
+        ref={navContainerRef}
+      >
         <StackNavigator.Navigator
           screenOptions={{
             ...TransitionPresets.DefaultTransition,
