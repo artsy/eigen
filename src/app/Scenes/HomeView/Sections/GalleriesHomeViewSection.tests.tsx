@@ -27,13 +27,11 @@ describe("GalleriesHomeViewSection", () => {
     renderWithRelay({
       HomeViewComponent: () => ({
         title: "Galleries Near You",
-        href: "/galleries-for-you",
         backgroundImageURL: "https://url.com/image.jpg",
         description: "Follow these local galleries for updates on artists you love.",
         behaviors: {
           viewAll: {
             href: "/galleries-for-you",
-            buttonText: "Explore",
           },
         },
       }),
