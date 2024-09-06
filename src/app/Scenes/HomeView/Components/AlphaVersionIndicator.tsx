@@ -1,5 +1,6 @@
-import { Box, Join, Spacer, Text } from "@artsy/palette-mobile"
+import { Box, Join, LinkText, Spacer, Text } from "@artsy/palette-mobile"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
+import { Linking } from "react-native"
 
 export const AlphaVersionIndicator: React.FC = () => {
   return (
@@ -14,14 +15,34 @@ export const AlphaVersionIndicator: React.FC = () => {
         <Box py={1}>
           <Join separator={<Spacer y={2} />}>
             <Text variant="sm">Hello! 👋</Text>
+
+            <Text variant="sm">This is an unreleased version of the app home screen.</Text>
+
             <Text variant="sm">
-              This is an unreleased version of the app home screen. To switch to the current
-              production version, enable the feature flag for "Prefer legacy home screen" in admin
-              settings.
+              Please direct any feedback to the <Text fontWeight="bold">#pdde-art-advisor</Text>{" "}
+              channel in Slack, or to the Notion feedback board.
             </Text>
+
+            <LinkText
+              onPress={() =>
+                Linking.openURL("https://www.notion.so/artsy/abc1123548504ae58051405627fb6c9f")
+              }
+            >
+              Visit the Notion feedback board
+            </LinkText>
+
             <Text variant="sm">
-              Please direct any feedback to the #pdde-art-advisor channel in Slack.
+              To switch to the current production version, enable the feature flag for “
+              <Text fontWeight="bold">Prefer legacy home screen</Text>” in the admin settings.
             </Text>
+
+            <LinkText
+              onPress={() =>
+                Linking.openURL("https://www.notion.so/artsy/e9958451ea9d44c6b357aba6505c0abc")
+              }
+            >
+              See more on how to switch back
+            </LinkText>
           </Join>
         </Box>
       }
