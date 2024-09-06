@@ -19,17 +19,24 @@ export const AlphaVersionIndicator: React.FC = () => {
             <Text variant="sm">This is an unreleased version of the app home screen.</Text>
 
             <Text variant="sm">
-              Please direct any feedback to the <Text fontWeight="bold">#pdde-art-advisor</Text>{" "}
-              channel in Slack, or to the Notion feedback board.
+              Please direct any feedback to the{" "}
+              <LinkText
+                fontWeight="bold"
+                onPress={() => Linking.openURL("https://artsy.slack.com/archives/C07ANEV7RNV")}
+              >
+                #pdde-art-advisor
+              </LinkText>{" "}
+              channel in Slack, or to the{" "}
+              <LinkText
+                fontWeight="bold"
+                onPress={() =>
+                  Linking.openURL("https://www.notion.so/artsy/abc1123548504ae58051405627fb6c9f")
+                }
+              >
+                Notion feedback board
+              </LinkText>
+              .
             </Text>
-
-            <LinkText
-              onPress={() =>
-                Linking.openURL("https://www.notion.so/artsy/abc1123548504ae58051405627fb6c9f")
-              }
-            >
-              Visit the Notion feedback board
-            </LinkText>
 
             <Text variant="sm">
               To switch to the current production version, enable the feature flag for “
