@@ -1,5 +1,5 @@
-import { Spacer, ArtsyLogoBlackIcon, Flex, Box, Text, Join } from "@artsy/palette-mobile"
-import { InfoButton } from "app/Components/Buttons/InfoButton"
+import { ArtsyLogoBlackIcon, Flex, Box } from "@artsy/palette-mobile"
+import { AlphaVersionIndicator } from "app/Scenes/HomeView/Components/AlphaVersionIndicator"
 import { GlobalStore } from "app/store/GlobalStore"
 import { ActivityIndicator } from "./ActivityIndicator"
 
@@ -12,29 +12,7 @@ export const HomeHeader: React.FC = () => {
     <Box py={2}>
       <Flex flexDirection="row" px={2} justifyContent="space-between" alignItems="center">
         <Box flex={1}>
-          <InfoButton
-            titleElement={
-              <Text color="blue100" weight="medium">
-                Alpha
-              </Text>
-            }
-            modalTitle="Home View"
-            modalContent={
-              <Box py={1} flex={1}>
-                <Join separator={<Spacer y={0.5} />}>
-                  <Text variant="sm">Hello! 👋</Text>
-                  <Text variant="sm">
-                    This is an unreleased version of the app home screen. To switch to the current
-                    production version, enable the feature flag for "Prefer legacy home screen" in
-                    admin settings.
-                  </Text>
-                  <Text variant="sm">
-                    Please direct any feedback to the #pdde-art-advisor channel in Slack.
-                  </Text>
-                </Join>
-              </Box>
-            }
-          />
+          <AlphaVersionIndicator />
         </Box>
         <Box>
           <ArtsyLogoBlackIcon scale={0.75} />
