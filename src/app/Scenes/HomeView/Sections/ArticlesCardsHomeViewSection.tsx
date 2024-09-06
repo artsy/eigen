@@ -16,6 +16,7 @@ export const ArticlesCardsHomeViewSection: React.FC<ArticlesCardsHomeViewSection
   const articles = extractNodes(data.cardArticlesConnection)
   const title = data.component?.title ?? "News"
   const componentHref = data.component?.behaviors?.viewAll?.href
+  const componentButtonText = data.component?.behaviors?.viewAll?.buttonText
 
   const space = useSpace()
 
@@ -46,7 +47,7 @@ export const ArticlesCardsHomeViewSection: React.FC<ArticlesCardsHomeViewSection
       {!!componentHref && (
         <Touchable onPress={() => navigate(componentHref)}>
           <Flex flexDirection="row" justifyContent="flex-end">
-            <Text variant="sm-display">More in News</Text>
+            <Text variant="sm-display">{componentButtonText}</Text>
           </Flex>
         </Touchable>
       )}
@@ -67,6 +68,7 @@ const fragment = graphql`
       behaviors {
         viewAll {
           href
+          buttonText
         }
       }
     }
