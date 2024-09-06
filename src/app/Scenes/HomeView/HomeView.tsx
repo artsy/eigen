@@ -58,7 +58,7 @@ const SectionSeparator = () => <Spacer y={SECTION_SEPARATOR_HEIGHT} />
 export const HomeViewScreen: React.FC = () => (
   <Suspense
     fallback={
-      <Flex flex={1} justifyContent="center" alignItems="center">
+      <Flex flex={1} justifyContent="center" alignItems="center" testID="new-home-view-skeleton">
         <Text>Loading home view…</Text>
       </Flex>
     }
