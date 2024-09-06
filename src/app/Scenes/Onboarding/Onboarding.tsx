@@ -68,7 +68,7 @@ export const OnboardingWelcomeScreens = () => {
   const userIsDev = GlobalStore.useAppState((s) => s.artsyPrefs.userIsDev.value)
 
   return (
-    <NavigationContainer independent>
+    <NavigationContainer independent ref={__unsafe__onboardingNavigationRef}>
       <StackNavigator.Navigator
         initialRouteName="OnboardingWelcome"
         screenOptions={{

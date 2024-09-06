@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType, SaveCollectedArtwork } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
-import { NavigationContainer } from "@react-navigation/native"
+import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { MyCollectionArtworkEditQuery } from "__generated__/MyCollectionArtworkEditQuery.graphql"
 import { LengthUnitPreference } from "__generated__/UserPrefsModelQuery.graphql"
@@ -61,6 +61,8 @@ export type MyCollectionArtworkFormProps =
       mode: "edit"
       artwork: MyCollectionArtworkEditQuery["response"]["artwork"]
     }
+
+const navContainerRef = { current: null as NavigationContainerRef<any> | null }
 
 export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (props) => {
   const enableShowError = useDevToggle("DTShowErrorInLoadFailureView")
@@ -155,7 +157,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
   const { width, height } = Dimensions.get("screen")
 
   return (
-    <NavigationContainer independent>
+    <NavigationContainer independent ref={navContainerRef}>
       <FormikProvider value={formik}>
         <Stack.Navigator
           // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
