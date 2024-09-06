@@ -69,26 +69,12 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
   }
 
   const openFilterArtworksModal = () => {
-    tracking.trackEvent({
-      action_name: "filter",
-      context_screen_owner_type: Schema.OwnerEntityTypes.ArtistSeries,
-      context_screen: Schema.PageNames.ArtistSeriesPage,
-      context_screen_owner_id: data.internalID,
-      context_screen_owner_slug: data.slug,
-      action_type: Schema.ActionTypes.Tap,
-    })
+    tracking.trackEvent(tracks.openFilterWindow(data.id, data.slug))
     handleFilterToggle()
   }
 
   const closeFilterArtworksModal = () => {
-    tracking.trackEvent({
-      action_name: "closeFilterWindow",
-      context_screen_owner_type: Schema.OwnerEntityTypes.ArtistSeries,
-      context_screen: Schema.PageNames.ArtistSeriesPage,
-      context_screen_owner_id: data.internalID,
-      context_screen_owner_slug: data.slug,
-      action_type: Schema.ActionTypes.Tap,
-    })
+    tracking.trackEvent(tracks.closeFilterWindow(data.id, data.slug))
     handleFilterToggle()
   }
 
@@ -105,14 +91,7 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
   }, [isLoadingNext, hasNext])
 
   const trackClear = (id: string, slug: string) => {
-    tracking.trackEvent({
-      action_name: "clearFilters",
-      context_screen: Schema.ContextModules.ArtworkGrid,
-      context_screen_owner_type: Schema.OwnerEntityTypes.ArtistSeries,
-      context_screen_owner_id: id,
-      context_screen_owner_slug: slug,
-      action_type: Schema.ActionTypes.Tap,
-    })
+    tracking.trackEvent(tracks.clearFilters(id, slug))
   }
 
   const renderItem = useCallback(({ item, index, columnIndex }) => {
@@ -237,3 +216,29 @@ const fragment = graphql`
     }
   }
 `
+const tracks = {
+  clearFilters: (id: string, slug: string) => ({
+    action_name: "clearFilters",
+    context_screen: Schema.ContextModules.ArtworkGrid,
+    context_screen_owner_type: Schema.OwnerEntityTypes.ArtistSeries,
+    context_screen_owner_id: id,
+    context_screen_owner_slug: slug,
+    action_type: Schema.ActionTypes.Tap,
+  }),
+  openFilterWindow: (id: string, slug: string) => ({
+    action_name: "filter",
+    context_screen_owner_type: Schema.OwnerEntityTypes.ArtistSeries,
+    context_screen: Schema.PageNames.ArtistSeriesPage,
+    context_screen_owner_id: id,
+    context_screen_owner_slug: slug,
+    action_type: Schema.ActionTypes.Tap,
+  }),
+  closeFilterWindow: (id: string, slug: string) => ({
+    action_name: "closeFilterWindow",
+    context_screen_owner_type: Schema.OwnerEntityTypes.ArtistSeries,
+    context_screen: Schema.PageNames.ArtistSeriesPage,
+    context_screen_owner_id: id,
+    context_screen_owner_slug: slug,
+    action_type: Schema.ActionTypes.Tap,
+  }),
+}
