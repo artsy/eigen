@@ -21,14 +21,13 @@ import { localizeHeightAndWidthAttributes } from "app/Scenes/SavedSearchAlert/he
 import { AlertPriceRangeScreenQueryRenderer } from "app/Scenes/SavedSearchAlert/screens/AlertPriceRangeScreen"
 import { EmailPreferencesScreen } from "app/Scenes/SavedSearchAlert/screens/EmailPreferencesScreen"
 import { SavedSearchFilterScreen } from "app/Scenes/SavedSearchAlert/screens/SavedSearchFilterScreen"
-import { routingInstrumentation } from "app/system/errorReporting/sentrySetup"
 import { GoBackProps, goBack, navigationEvents } from "app/system/navigation/navigate"
 import { useReloadedDevNavigationState } from "app/system/navigation/useReloadedDevNavigationState"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
-import React, { useCallback, useEffect, useRef } from "react"
+import React, { useCallback, useEffect } from "react"
 import { QueryRenderer, RelayRefetchProp, createRefetchContainer, graphql } from "react-relay"
 import { EditSavedSearchFormPlaceholder } from "./Components/EditSavedSearchAlertPlaceholder"
 import { SavedSearchAlertQueryRenderer } from "./SavedSearchAlert"
@@ -105,8 +104,6 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
     }
   }, [])
 
-  const navContainerRef = useRef(null)
-
   if (!isReady) {
     return null
   }
@@ -148,10 +145,6 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
             onStateChange={(state) => {
               saveSession(state)
             }}
-            onReady={() => {
-              routingInstrumentation.registerNavigationContainer(navContainerRef)
-            }}
-            ref={navContainerRef}
           >
             <Stack.Navigator
               // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason

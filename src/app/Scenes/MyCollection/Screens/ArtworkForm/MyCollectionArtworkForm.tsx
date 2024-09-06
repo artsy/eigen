@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType, SaveCollectedArtwork } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
-import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
+import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { MyCollectionArtworkEditQuery } from "__generated__/MyCollectionArtworkEditQuery.graphql"
 import { LengthUnitPreference } from "__generated__/UserPrefsModelQuery.graphql"
@@ -16,7 +16,6 @@ import { saveOrUpdateArtwork } from "app/Scenes/MyCollection/Screens/ArtworkForm
 import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { GlobalStore } from "app/store/GlobalStore"
-import { routingInstrumentation } from "app/system/errorReporting/sentrySetup"
 import { dismissModal, goBack, popToRoot, switchTab } from "app/system/navigation/navigate"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { refreshMyCollection, refreshMyCollectionInsights } from "app/utils/refreshHelpers"
@@ -62,8 +61,6 @@ export type MyCollectionArtworkFormProps =
       mode: "edit"
       artwork: MyCollectionArtworkEditQuery["response"]["artwork"]
     }
-
-const navContainerRef = { current: null as NavigationContainerRef<any> | null }
 
 export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (props) => {
   const enableShowError = useDevToggle("DTShowErrorInLoadFailureView")
@@ -158,13 +155,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
   const { width, height } = Dimensions.get("screen")
 
   return (
-    <NavigationContainer
-      independent
-      onReady={() => {
-        routingInstrumentation.registerNavigationContainer(navContainerRef)
-      }}
-      ref={navContainerRef}
-    >
+    <NavigationContainer independent>
       <FormikProvider value={formik}>
         <Stack.Navigator
           // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason

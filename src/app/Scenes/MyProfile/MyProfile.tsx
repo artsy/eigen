@@ -1,24 +1,14 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { MyCollectionArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
-import { routingInstrumentation } from "app/system/errorReporting/sentrySetup"
-import { useRef } from "react"
 import { MyProfileEditFormScreen } from "./MyProfileEditForm"
 import { MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer } from "./MyProfileHeaderMyCollectionAndSavedWorks"
 
 const Stack = createStackNavigator()
 
 export const MyProfile = () => {
-  const navContainerRef = useRef(null)
-
   return (
-    <NavigationContainer
-      independent
-      onReady={() => {
-        routingInstrumentation.registerNavigationContainer(navContainerRef)
-      }}
-      ref={navContainerRef}
-    >
+    <NavigationContainer independent>
       <Stack.Navigator
         // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
         detachInactiveScreens={false}

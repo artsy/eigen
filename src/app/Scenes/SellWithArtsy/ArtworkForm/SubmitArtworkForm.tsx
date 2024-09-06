@@ -36,7 +36,6 @@ import {
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { fetchUserContactInformation } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/fetchUserContactInformation"
-import { routingInstrumentation } from "app/system/errorReporting/sentrySetup"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { FormikProvider, useFormik } from "formik"
 import { useEffect } from "react"
@@ -165,11 +164,6 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
                 ? SUBMIT_ARTWORK_APPROVED_SUBMISSION_STEPS
                 : SUBMIT_ARTWORK_DRAFT_SUBMISSION_STEPS,
           })}
-          onReady={() => {
-            routingInstrumentation.registerNavigationContainer(
-              __unsafe__SubmissionArtworkFormNavigationRef
-            )
-          }}
         >
           <SubmitArtworkTopNavigation />
           <Stack.Navigator

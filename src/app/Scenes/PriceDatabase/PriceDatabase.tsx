@@ -9,11 +9,9 @@ import {
   PriceDatabaseSearchInitialValues,
   priceDatabaseValidationSchema,
 } from "app/Scenes/PriceDatabase/validation"
-import { routingInstrumentation } from "app/system/errorReporting/sentrySetup"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { FormikProvider, useFormik } from "formik"
-import { useRef } from "react"
 
 export type PriceDatabaseNavigationStack = {
   PriceDatabaseSearch: undefined
@@ -34,8 +32,6 @@ export const PriceDatabase = () => {
     validateOnMount: true,
   })
 
-  const navContainerRef = useRef(null)
-
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({
@@ -43,13 +39,7 @@ export const PriceDatabase = () => {
       })}
     >
       <FormikProvider value={formik}>
-        <NavigationContainer
-          independent
-          onReady={() => {
-            routingInstrumentation.registerNavigationContainer(navContainerRef)
-          }}
-          ref={navContainerRef}
-        >
+        <NavigationContainer independent>
           <Stack.Navigator
             // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
             detachInactiveScreens={false}

@@ -2,10 +2,9 @@ import { Box, Text, Button } from "@artsy/palette-mobile"
 import { NavigationContainer } from "@react-navigation/native"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { routingInstrumentation } from "app/system/errorReporting/sentrySetup"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { useSetWebViewCallback } from "app/utils/useWebViewEvent"
-import React, { useRef, useState } from "react"
+import React, { useState } from "react"
 
 export const OfferSubmittedModal: React.FC = (props) => {
   const [visible, setVisible] = useState(false)
@@ -29,17 +28,8 @@ export const OfferSubmittedModal: React.FC = (props) => {
     setVisible(false)
   }
 
-  const navContainerRef = useRef(null)
-
   return (
-    <NavigationContainer
-      independent
-      onReady={() => {
-        routingInstrumentation.registerNavigationContainer(navContainerRef)
-      }}
-      ref={navContainerRef}
-      {...props}
-    >
+    <NavigationContainer independent {...props}>
       <FancyModal visible={visible} onBackgroundPressed={onClose}>
         <FancyModalHeader rightCloseButton onRightButtonPress={onClose}>
           Make Offer

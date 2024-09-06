@@ -11,10 +11,8 @@ import { localizeHeightAndWidthAttributes } from "app/Scenes/SavedSearchAlert/he
 import { AlertPriceRangeScreenQueryRenderer } from "app/Scenes/SavedSearchAlert/screens/AlertPriceRangeScreen"
 import { ConfirmationScreen } from "app/Scenes/SavedSearchAlert/screens/ConfirmationScreen"
 import { SavedSearchFilterScreen } from "app/Scenes/SavedSearchAlert/screens/SavedSearchFilterScreen"
-import { routingInstrumentation } from "app/system/errorReporting/sentrySetup"
 import { useReloadedDevNavigationState } from "app/system/navigation/useReloadedDevNavigationState"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
-import { useRef } from "react"
 import {
   CreateSavedSearchAlertNavigationStack,
   CreateSavedSearchAlertProps,
@@ -34,8 +32,6 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
   const { isReady, initialState, saveSession } = useReloadedDevNavigationState(
     CREATE_SAVED_ARTWORK_NAVIGATION_STACK_STATE_KEY
   )
-
-  const navContainerRef = useRef(null)
 
   if (!isReady) {
     return null
@@ -62,10 +58,6 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
           onStateChange={(state) => {
             saveSession(state)
           }}
-          onReady={() => {
-            routingInstrumentation.registerNavigationContainer(navContainerRef)
-          }}
-          ref={navContainerRef}
         >
           <FancyModal visible={visible} fullScreen>
             <Box flex={1}>

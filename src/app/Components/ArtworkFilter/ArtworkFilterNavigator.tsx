@@ -33,10 +33,9 @@ import { WaysToBuyOptionsScreen } from "app/Components/ArtworkFilter/Filters/Way
 import { YearOptionsScreen } from "app/Components/ArtworkFilter/Filters/YearOptions"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { GlobalStore } from "app/store/GlobalStore"
-import { routingInstrumentation } from "app/system/errorReporting/sentrySetup"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { ViewProps } from "react-native"
 import { useTracking } from "react-tracking"
 import {
@@ -311,16 +310,8 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
     setSelectedMetric(localizedUnit)
   }, [])
 
-  const navContainerRef = useRef(null)
-
   return (
-    <NavigationContainer
-      independent
-      onReady={() => {
-        routingInstrumentation.registerNavigationContainer(navContainerRef)
-      }}
-      ref={navContainerRef}
-    >
+    <NavigationContainer independent>
       <FancyModal
         visible={props.visible}
         onBackgroundPressed={handleClosingModal}

@@ -9,9 +9,8 @@ import { IdentityVerificationStep } from "app/Scenes/CompleteMyProfile/IdentityV
 import { LocationStep } from "app/Scenes/CompleteMyProfile/LocationStep"
 import { ProfessionStep } from "app/Scenes/CompleteMyProfile/ProfessionStep"
 import { useCompleteMyProfileSteps } from "app/Scenes/CompleteMyProfile/hooks/useCompleteMyProfileSteps"
-import { routingInstrumentation } from "app/system/errorReporting/sentrySetup"
 import { LocationWithDetails } from "app/utils/googleMaps"
-import { FC, useEffect, useRef } from "react"
+import { FC, useEffect } from "react"
 
 export type CompleteMyProfileNavigationStack = NavigationProp<CompleteMyProfileNavigationRoutes>
 
@@ -43,20 +42,12 @@ const CompleteMyProfileNavigator: FC = () => {
     }
   }, [_steps])
 
-  const navContainerRef = useRef(null)
-
   if (steps === "loading") {
     return null
   }
 
   return (
-    <NavigationContainer
-      independent
-      onReady={() => {
-        routingInstrumentation.registerNavigationContainer(navContainerRef)
-      }}
-      ref={navContainerRef}
-    >
+    <NavigationContainer independent>
       <Stack.Navigator
         screenOptions={{
           headerShown: true,

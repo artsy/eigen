@@ -4,9 +4,8 @@ import { ArtQuizNavigationQuery } from "__generated__/ArtQuizNavigationQuery.gra
 import { ArtQuizArtworks } from "app/Scenes/ArtQuiz/ArtQuizArtworks"
 import { ArtQuizLoader } from "app/Scenes/ArtQuiz/ArtQuizLoader"
 import { ArtQuizWelcome } from "app/Scenes/ArtQuiz/ArtQuizWelcome"
-import { routingInstrumentation } from "app/system/errorReporting/sentrySetup"
 import { navigate } from "app/system/navigation/navigate"
-import { Suspense, useEffect, useRef } from "react"
+import { Suspense, useEffect } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 export type ArtQuizNavigationStack = {
@@ -26,16 +25,8 @@ const ArtQuizScreen: React.FC = () => {
     }
   }, [isQuizCompleted])
 
-  const navContainerRef = useRef(null)
-
   return (
-    <NavigationContainer
-      independent
-      onReady={() => {
-        routingInstrumentation.registerNavigationContainer(navContainerRef)
-      }}
-      ref={navContainerRef}
-    >
+    <NavigationContainer independent>
       <StackNavigator.Navigator
         screenOptions={{
           ...TransitionPresets.DefaultTransition,

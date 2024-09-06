@@ -8,7 +8,6 @@ import { FPSCounter } from "app/Components/FPSCounter"
 import { OAuthProvider } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { DevMenu as DevMenuDefault } from "app/system/devTools/DevMenu/DevMenu"
-import { routingInstrumentation } from "app/system/errorReporting/sentrySetup"
 import { ArtsyKeyboardAvoidingViewContext } from "app/utils/ArtsyKeyboardAvoidingView"
 import { NetworkAwareProvider } from "app/utils/NetworkAwareProvider"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
@@ -69,13 +68,7 @@ export const OnboardingWelcomeScreens = () => {
   const userIsDev = GlobalStore.useAppState((s) => s.artsyPrefs.userIsDev.value)
 
   return (
-    <NavigationContainer
-      independent
-      onReady={() => {
-        routingInstrumentation.registerNavigationContainer(__unsafe__onboardingNavigationRef)
-      }}
-      ref={__unsafe__onboardingNavigationRef}
-    >
+    <NavigationContainer independent>
       <StackNavigator.Navigator
         initialRouteName="OnboardingWelcome"
         screenOptions={{
