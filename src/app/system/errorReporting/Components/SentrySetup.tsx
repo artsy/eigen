@@ -9,7 +9,7 @@ export const SentrySetup = () => {
   const captureExceptions = !__DEV__ ? true : captureExceptionsInSentryOnDev
   useEffect(() => {
     setupSentry({
-      environment: "production",
+      environment,
       captureExceptionsInSentryOnDev: captureExceptions,
     })
   }, [environment, captureExceptionsInSentryOnDev])
