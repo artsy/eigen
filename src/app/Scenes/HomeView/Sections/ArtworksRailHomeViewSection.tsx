@@ -1,11 +1,14 @@
+import { ContextModule } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
 import { ArtworksRailHomeViewSection_section$key } from "__generated__/ArtworksRailHomeViewSection_section.graphql"
 import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
+import LegacyHomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { View } from "react-native"
 import { graphql, useFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface ArtworksRailHomeViewSectionProps {
   section: ArtworksRailHomeViewSection_section$key
@@ -14,14 +17,28 @@ interface ArtworksRailHomeViewSectionProps {
 export const ArtworksRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionProps> = ({
   section,
 }) => {
+  const tracking = useTracking()
+
   const data = useFragment(fragment, section)
   const title = data.component?.title
   const artworks = extractNodes(data.artworksConnection)
   const componentHref = data.component?.behaviors?.viewAll?.href
 
-  if (!artworks || artworks.length === 0) return null
+  if (!artworks || artworks.length === 0) {
+    return null
+  }
 
-  const handleOnArtworkPress = (artwork: any, _position: any) => {
+  const handleOnArtworkPress = (artwork: any, position: number) => {
+    tracking.trackEvent(
+      LegacyHomeAnalytics.artworkThumbnailTapEvent(
+        data.internalID as ContextModule,
+        artwork.slug,
+        artwork.internalID,
+        position,
+        "single"
+      )
+    )
+
     navigate(artwork.href)
   }
 
@@ -59,6 +76,7 @@ export const ArtworksRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionPr
 
 const fragment = graphql`
   fragment ArtworksRailHomeViewSection_section on ArtworksRailHomeViewSection {
+    internalID
     component {
       title
       behaviors {
