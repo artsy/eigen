@@ -1,6 +1,6 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import * as Sentry from "@sentry/react-native"
-import { GlobalStore, unsafe__getEnvironment } from "app/store/GlobalStore"
+import { GlobalStore, unsafe__getEnvironment, unsafe_getDevToggle } from "app/store/GlobalStore"
 import { codePushOptions } from "app/system/codepush"
 import { AsyncStorageDevtools } from "app/system/devTools/AsyncStorageDevTools"
 import { DevMenuWrapper } from "app/system/devTools/DevMenu/DevMenuWrapper"
@@ -54,6 +54,15 @@ if (__DEV__) {
 }
 
 setupFlipper()
+
+// Sentry must be setup early in the app lifecycle to hook into navigation
+const captureExceptionsInSentryOnDev = unsafe_getDevToggle("DTCaptureExceptionsInSentryOnDev")
+const captureExceptions = !__DEV__ ? true : captureExceptionsInSentryOnDev
+const environment = unsafe__getEnvironment()
+setupSentry({
+  environment: environment.env,
+  captureExceptionsInSentryOnDev: captureExceptions,
+})
 
 addTrackingProvider(SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider)
 addTrackingProvider("console", ConsoleTrackingProvider)
@@ -163,9 +172,5 @@ const InnerApp = () => (
   </Providers>
 )
 
-const environment = unsafe__getEnvironment()
-// TODO: Can we allow the old dev override?
-setupSentry({ environment: environment.env, captureExceptionsInSentryOnDev: true })
 const SentryApp = Sentry.wrap(InnerApp)
-
 export const App = codePush(codePushOptions)(SentryApp)
