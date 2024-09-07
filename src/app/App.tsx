@@ -1,12 +1,12 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import * as Sentry from "@sentry/react-native"
-import { GlobalStore, unsafe__getEnvironment, unsafe_getDevToggle } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { codePushOptions } from "app/system/codepush"
 import { AsyncStorageDevtools } from "app/system/devTools/AsyncStorageDevTools"
 import { DevMenuWrapper } from "app/system/devTools/DevMenu/DevMenuWrapper"
 import { setupFlipper } from "app/system/devTools/flipper"
 import { useRageShakeDevMenu } from "app/system/devTools/useRageShakeDevMenu"
-import { setupSentry } from "app/system/errorReporting/sentrySetup"
+import { SentrySetup } from "app/system/errorReporting/Components/SentrySetup"
 import { ModalStack } from "app/system/navigation/ModalStack"
 import { usePurgeCacheOnAppUpdate } from "app/system/relay/usePurgeCacheOnAppUpdate"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
@@ -54,15 +54,6 @@ if (__DEV__) {
 }
 
 setupFlipper()
-
-// Sentry must be setup early in the app lifecycle to hook into navigation
-const captureExceptionsInSentryOnDev = unsafe_getDevToggle("DTCaptureExceptionsInSentryOnDev")
-const captureExceptions = !__DEV__ ? true : captureExceptionsInSentryOnDev
-const environment = unsafe__getEnvironment()
-setupSentry({
-  environment: environment.env,
-  captureExceptionsInSentryOnDev: captureExceptions,
-})
 
 addTrackingProvider(SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider)
 addTrackingProvider("console", ConsoleTrackingProvider)
@@ -163,6 +154,7 @@ const Main = () => {
 const InnerApp = () => (
   <Providers>
     <AsyncStorageDevtools />
+    <SentrySetup />
 
     <DevMenuWrapper>
       <Main />
