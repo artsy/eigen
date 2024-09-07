@@ -1,3 +1,4 @@
+import { ContextModule } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
 import {
   MarketingCollectionsRailHomeViewSection_section$data,
@@ -5,11 +6,13 @@ import {
 } from "__generated__/MarketingCollectionsRailHomeViewSection_section.graphql"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
+import LegacyHomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { MarketingCollectionRailItem } from "app/Scenes/HomeView/Sections/MarketingCollectionRailItem"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { graphql, useFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface MarketingCollectionsRailHomeViewSectionProps {
   section: MarketingCollectionsRailHomeViewSection_section$key
@@ -18,6 +21,8 @@ interface MarketingCollectionsRailHomeViewSectionProps {
 export const MarketingCollectionsRailHomeViewSection: React.FC<
   MarketingCollectionsRailHomeViewSectionProps
 > = ({ section }) => {
+  const tracking = useTracking()
+
   const data = useFragment(fragment, section)
   const component = data.component
   const componentHref = component?.behaviors?.viewAll?.href
@@ -49,8 +54,23 @@ export const MarketingCollectionsRailHomeViewSection: React.FC<
       >
         data={marketingCollections}
         initialNumToRender={3}
-        renderItem={({ item }) => {
-          return <MarketingCollectionRailItem key={item.internalID} marketingCollection={item} />
+        renderItem={({ item, index }) => {
+          return (
+            <MarketingCollectionRailItem
+              key={item.internalID}
+              marketingCollection={item}
+              onPress={(marketCollection) => {
+                const tapEvent = LegacyHomeAnalytics.collectionThumbnailTapEvent(
+                  marketCollection.slug,
+                  index,
+                  data.internalID as ContextModule
+                )
+                if (tapEvent) {
+                  tracking.trackEvent(tapEvent)
+                }
+              }}
+            />
+          )
         }}
       />
     </Flex>
@@ -59,6 +79,7 @@ export const MarketingCollectionsRailHomeViewSection: React.FC<
 
 const fragment = graphql`
   fragment MarketingCollectionsRailHomeViewSection_section on MarketingCollectionsRailHomeViewSection {
+    internalID
     component {
       title
       behaviors {
