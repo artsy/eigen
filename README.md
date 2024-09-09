@@ -48,7 +48,7 @@ MIT License. See [LICENSE](LICENSE).
   <img align="left" src="https://avatars2.githubusercontent.com/u/546231?s=200&v=4"/>
 </a>
 
-This project is the work of engineers at [Artsy][footer_website], the world's
+This project is the work of engineers at [Artsy][footer_website], the world’s
 leading and largest online art marketplace and platform for discovering art.
 One of our core [Engineering Principles][footer_principles] is being [Open
 Source by Default][footer_open] which means we strive to share as many details
