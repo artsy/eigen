@@ -22,7 +22,7 @@ import { CompleteMyProfile } from "app/Scenes/CompleteMyProfile/CompleteMyProfil
 import { GalleriesForYouScreen } from "app/Scenes/GalleriesForYou/GalleriesForYouScreen"
 import { HomeContainer } from "app/Scenes/Home/HomeContainer"
 import { HomeViewScreen } from "app/Scenes/HomeView/HomeView"
-import { HomeViewSectionScreenArtworksQueryRenderer } from "app/Scenes/HomeViewSectionScreenArtworks/HomeViewSectionScreenArtworks"
+import { HomeViewSectionScreenQueryRenderer } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreen"
 import { AddMyCollectionArtist } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
 import { MyCollectionArtworkEditQueryRenderer } from "app/Scenes/MyCollection/Screens/ArtworkForm/Screens/MyCollectionArtworkEdit"
 import { MyCollectionCollectedArtistsPrivacyQueryRenderer } from "app/Scenes/MyCollection/Screens/CollectedArtistsPrivacy/MyCollectionCollectedArtistsPrivacy"
@@ -492,7 +492,7 @@ export const modules = defineModules({
     isRootViewForTabName: "home",
   }),
   HomeView: reactModule(HomeViewScreen, { hidesBackButton: true }),
-  HomeViewSectionArtworksScreen: reactModule(HomeViewSectionScreenArtworksQueryRenderer, {
+  HomeViewSectionScreen: reactModule(HomeViewSectionScreenQueryRenderer, {
     hidesBackButton: true,
     fullBleed: true,
   }),

@@ -4,8 +4,7 @@ import { HomeViewSectionScreenArtworksQuery } from "__generated__/HomeViewSectio
 import { HomeViewSectionScreenArtworks_artworksRailHomeViewSection$key } from "__generated__/HomeViewSectionScreenArtworks_artworksRailHomeViewSection.graphql"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import { PAGE_SIZE } from "app/Components/constants"
-import { HomeViewSectionScreenArtworksPlaceholder } from "app/Scenes/HomeViewSectionScreenArtworks/HomeViewSectionScreenArtworksPlaceholder"
-import { goBack } from "app/system/navigation/navigate"
+import { HomeViewSectionScreenArtworksPlaceholder } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreenArtworksPlaceholder"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
@@ -30,40 +29,34 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
   const { scrollHandler } = Screen.useListenForScreenScroll()
 
   return (
-    <>
-      <Screen.AnimatedHeader onBack={goBack} title={data.component?.title || ""} />
-
-      <Screen.Body fullwidth>
-        <MasonryInfiniteScrollArtworkGrid
-          animated
-          artworks={artworks}
-          numColumns={NUM_COLUMNS_MASONRY}
-          disableAutoLayout
-          pageSize={PAGE_SIZE}
-          ListEmptyComponent={
-            <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
-          }
-          ListHeaderComponent={() => (
-            <Flex>
-              <Text variant="lg-display">{data.component?.title}</Text>
-              <Text variant="xs" pt={2}>
-                {data.artworksConnection?.totalCount} {pluralize("Artwork", artworks.length)}
-              </Text>
-            </Flex>
-          )}
-          refreshControl={RefreshControl}
-          hasMore={hasNext}
-          loadMore={() => {
-            loadNext(PAGE_SIZE)
-          }}
-          isLoading={isLoadingNext}
-          onScroll={scrollHandler}
-          style={{ paddingBottom: 120 }}
-          contextModule={data.internalID as ContextModule}
-          contextScreenOwnerType={data.internalID as ScreenOwnerType}
-        />
-      </Screen.Body>
-    </>
+    <MasonryInfiniteScrollArtworkGrid
+      animated
+      artworks={artworks}
+      numColumns={NUM_COLUMNS_MASONRY}
+      disableAutoLayout
+      pageSize={PAGE_SIZE}
+      ListEmptyComponent={
+        <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
+      }
+      ListHeaderComponent={() => (
+        <Flex>
+          <Text variant="lg-display">{data.component?.title}</Text>
+          <Text variant="xs" pt={2}>
+            {data.artworksConnection?.totalCount} {pluralize("Artwork", artworks.length)}
+          </Text>
+        </Flex>
+      )}
+      refreshControl={RefreshControl}
+      hasMore={hasNext}
+      loadMore={() => {
+        loadNext(PAGE_SIZE)
+      }}
+      isLoading={isLoadingNext}
+      onScroll={scrollHandler}
+      style={{ paddingBottom: 120 }}
+      contextModule={data.internalID as ContextModule}
+      contextScreenOwnerType={data.internalID as ScreenOwnerType}
+    />
   )
 }
 
@@ -119,9 +112,5 @@ export const HomeViewSectionScreenArtworksQueryRenderer: React.FC<ArtworksScreen
       return <Text>Something went wrong.</Text>
     }
 
-    return (
-      <Screen>
-        <HomeViewSectionScreenArtworks section={data.homeView.section} />
-      </Screen>
-    )
+    return <HomeViewSectionScreenArtworks section={data.homeView.section} />
   }, HomeViewSectionScreenArtworksPlaceholder)
