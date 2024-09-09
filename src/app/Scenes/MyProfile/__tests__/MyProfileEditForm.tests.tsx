@@ -16,10 +16,6 @@ jest.mock("@react-navigation/native", () => {
   }
 })
 
-jest.mock("@sentry/react-native", () => ({
-  captureMessage: jest.fn(),
-}))
-
 describe("MyProfileEditForm", () => {
   const { renderWithRelay } = setupTestWrapper<MyProfileEditFormTestsQuery>({
     Component: (props) => {
