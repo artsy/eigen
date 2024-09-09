@@ -1,4 +1,4 @@
-import { Flex, Join, LinkButton, Message, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Join, Message, Spacer, Text } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { TipsForTakingPhotos } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkTipsForTakingPhotos"
@@ -43,15 +43,16 @@ export const SubmitArtworkAddPhotos = () => {
             high-quality photos of the work's front and back.
           </Text>
 
-          <LinkButton
+          <Text
             color="black60"
             variant="xs"
+            underline
             onPress={() => {
               setIsModalVisible(true)
             }}
           >
             Tips for taking photos
-          </LinkButton>
+          </Text>
 
           {(values.photos.length === 1 || values.photos.length === 2) && (
             <Message
