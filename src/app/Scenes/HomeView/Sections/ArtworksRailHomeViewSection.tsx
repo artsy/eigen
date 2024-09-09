@@ -23,7 +23,11 @@ export const ArtworksRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionPr
   const data = useFragment(fragment, section)
   const title = data.component?.title
   const artworks = extractNodes(data.artworksConnection)
+<<<<<<< HEAD
   const componentHref = getSectionHref(data.internalID, data.component?.behaviors?.viewAll?.href)
+=======
+  const componentHref = data.component?.behaviors?.viewAll?.href
+>>>>>>> d26d9aeac0 (chore: use new artwork screen sections)
 
   if (!artworks || artworks.length === 0) {
     return null
