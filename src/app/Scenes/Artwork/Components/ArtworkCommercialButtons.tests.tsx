@@ -512,7 +512,7 @@ describe("ArtworkCommercialButtons", () => {
           ...ArtworkFixture,
           isOfferable: true,
           isInquireable: true,
-          collectorSignals: { partnerOffer: { internalID: "partnerOfferID" } },
+          collectorSignals: { partnerOffer: { internalID: "partnerOfferID" }, auction: null },
         }
 
         renderWithRelay(
@@ -543,7 +543,7 @@ describe("ArtworkCommercialButtons", () => {
           ...ArtworkFixture,
           isOfferable: true,
           isInquireable: true,
-          collectorSignals: { partnerOffer: { internalID: "partnerOfferID" } },
+          collectorSignals: { partnerOffer: { internalID: "partnerOfferID" }, auction: null },
         }
 
         renderWithRelay(

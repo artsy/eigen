@@ -97,7 +97,7 @@ describe("FairFollowedArtistsRail", () => {
               node: {
                 internalID: "abc123",
                 slug: "some-artwork",
-                collectorSignals: { partnerOffer: { isAvailable: true } },
+                collectorSignals: { partnerOffer: { isAvailable: true }, auction: null },
               },
             },
           ],
