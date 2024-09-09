@@ -37,7 +37,7 @@ module.exports = (api) => {
     // presets run after
     presets: [
       [
-        "module:metro-react-native-babel-preset",
+        "module:@react-native/babel-preset",
         { useTransformReactJSXExperimental: true }, // this is so `import React from "react"` is not needed.
       ],
       // TODO: Remove this once we determine if its actually needed. Added during reanimated upgrade.
