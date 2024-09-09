@@ -15,7 +15,6 @@ const MAX_GRAPHQL_INT = 2147483647
 const TTL = 3600 // 1 hour
 const FRESHNESS = moment().add(1, "month").toDate()
 
-// @ts-expect-error
 const queryData = queryMap()[QUERY_NAME]
 
 cities.forEach((city) => {

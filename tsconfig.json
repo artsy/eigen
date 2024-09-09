@@ -12,5 +12,5 @@
     "noUnusedParameters": true, // what it says.
     "skipLibCheck": true // temporary disable typechecking node_modules to use Charts lib. Victory is actively migrating to TS and the types for now are a mess.
   },
-  "include": ["src/**/*.tsx", "src/**/*.ts", "typings/*.d.ts", "scripts/**/*.ts", "scripts/**/*.js"]
+  "include": ["src/**/*.tsx", "src/**/*.ts", "typings/*.d.ts", "scripts/**/*.ts"]
 }
