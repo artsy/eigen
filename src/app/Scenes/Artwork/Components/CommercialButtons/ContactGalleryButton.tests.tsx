@@ -48,7 +48,7 @@ describe("ContactGalleryButton", () => {
       Artwork: () => ({
         internalID: "artwork-id",
         slug: "artwork-slug",
-        collectorSignals: { partnerOffer: { isAvailable: true } },
+        collectorSignals: { partnerOffer: { isAvailable: true }, auction: null },
       }),
     })
 
