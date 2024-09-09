@@ -38,7 +38,7 @@ export const WithCurrentTime: React.FC<WithCurrentTimeProps> = ({
 }) => {
   const [currentTime, setCurrentTime] = useState(getCurrentTimeAsIsoString())
   const [timeOffsetInMilliseconds, setTimeOffsetInMilliseconds] = useState(0)
-  let intervalId: number
+  let intervalId: ReturnType<typeof setTimeout>
 
   function updateCurrentTime() {
     setCurrentTime(getCurrentTimeAsIsoString())

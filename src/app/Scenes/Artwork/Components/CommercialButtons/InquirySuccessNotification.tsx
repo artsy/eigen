@@ -15,7 +15,7 @@ export const InquirySuccessNotification: React.FC = () => {
 
   // auto-hide the success notification after 2 seconds
   useEffect(() => {
-    let timeout: number
+    let timeout: ReturnType<typeof setTimeout>
 
     if (state.successNotificationVisible) {
       timeout = setTimeout(() => {
