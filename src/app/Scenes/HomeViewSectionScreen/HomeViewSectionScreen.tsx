@@ -13,12 +13,11 @@ interface HomeSectionScreenProps {
 }
 
 export const HomeSectionScreenWrapper: React.FC<HomeSectionScreenProps> = ({ section }) => {
-  const title =
-    section?.__typename === "ArtworksRailHomeViewSection" ? section.component?.title : ""
+  const title = section.component?.title
 
   return (
     <Screen>
-      <Screen.AnimatedHeader onBack={goBack} title={title} />
+      <Screen.AnimatedHeader onBack={goBack} title={title || ""} />
 
       <Screen.Body fullwidth>
         <ScreenSection section={section} />
@@ -32,6 +31,11 @@ const HOME_SECTION_SCREEN_QUERY = graphql`
     homeView {
       section(id: $id) {
         __typename
+        ... on GenericHomeViewSection {
+          component {
+            title
+          }
+        }
         ... on ArtworksRailHomeViewSection {
           internalID
           component {

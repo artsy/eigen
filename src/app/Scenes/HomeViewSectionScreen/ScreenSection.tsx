@@ -8,6 +8,10 @@ type ScreenSectionT = NonNullable<HomeViewSectionScreenQuery$data["homeView"]["s
 export const ScreenSection: React.FC<{ section: ScreenSectionT }> = (props) => {
   const { section } = props
 
+  if (!section?.internalID) {
+    throw new Error("Section ID is required")
+  }
+
   switch (section.__typename) {
     case "ArtworksRailHomeViewSection":
       return <HomeViewSectionScreenArtworksQueryRenderer sectionId={section.internalID} />
