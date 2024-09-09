@@ -17,10 +17,10 @@
   dependencies:
     core-js "3"
 
-"@artsy/palette-mobile@13.2.26":
-  version "13.2.26"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-13.2.26.tgz#aa0fcd88a5cc1210d045b20af7c173867c680b08"
-  integrity sha512-/L/msxY1c7vE/URjUwPF+59soJYKj7dVDgDbNf4MLapDVfB/JfvLf+ezFVEZkvcHmqUvDTRLR7SirpfWeO1s7Q==
+"@artsy/palette-mobile@13.2.27":
+  version "13.2.27"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-13.2.27.tgz#9b15dd50ad0210d2d4fa678cecf9a1771ba4b2aa"
+  integrity sha512-7FBeowiI5a0PDlFEyBSrUiuQncB9HWxCFZSrUPfV2E+Bv4ATuEKyWMK3cMmMH8qjoSbRMIsiGz9msaT4dy/J3Q==
   dependencies:
     "@artsy/palette-tokens" "^6.0.3"
     "@shopify/flash-list" "^1.6.4"
@@ -12833,10 +12833,10 @@ react-native-webview@13.6.2:
     escape-string-regexp "2.0.0"
     invariant "2.2.4"
 
-react-native@0.72.12:
-  version "0.72.12"
-  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.72.12.tgz#480440d350530ac9485543f6eb058cd860fc1735"
-  integrity sha512-aQoibDdvylyPZ9qOqpLNpNPz6tU0rScc2yUgFj0VuhPEFB+gsqQW9CkZGSnhuYRkDF0cBqUEEcWiWbH3gR+Pog==
+react-native@0.72.17:
+  version "0.72.17"
+  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.72.17.tgz#54d6de38adf6e56fdde1a6b83ef9b138abae7384"
+  integrity sha512-k3dNe0XqoYCGGWTenbupWSj+ljW3GIfmYS5P4s3if4j0csx2YbenKgH1aJNWLp+UP7ONwfId6G+uBoUJfyMxXg==
   dependencies:
     "@jest/create-cache-key-function" "^29.2.1"
     "@react-native-community/cli" "^11.4.1"

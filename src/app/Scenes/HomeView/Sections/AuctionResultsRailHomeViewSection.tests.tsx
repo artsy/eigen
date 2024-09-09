@@ -30,7 +30,6 @@ describe("AuctionResultsRailHomeViewSection", () => {
     const { toJSON } = renderWithRelay({
       HomeViewComponent: () => ({
         title: "Latest Auction Results",
-        href: "/auction-results-for-artists-you-follow",
       }),
       AuctionResultConnection: () => ({
         totalCount: 0,
@@ -45,10 +44,8 @@ describe("AuctionResultsRailHomeViewSection", () => {
     renderWithRelay({
       HomeViewComponent: () => ({
         title: "Latest Auction Results",
-        href: "/auction-results-for-artists-you-follow-href",
         behaviors: {
           viewAll: {
-            buttonText: "View All",
             href: "/auction-results-for-artists-you-follow-view-all-href",
           },
         },
@@ -73,8 +70,8 @@ describe("AuctionResultsRailHomeViewSection", () => {
     expect(screen.getByText(/Auction result 1/)).toBeOnTheScreen()
     expect(screen.getByText(/Auction result 2/)).toBeOnTheScreen()
 
-    expect(screen.getByText("View All")).toBeOnTheScreen()
-    fireEvent.press(screen.getByText("View All"))
+    expect(screen.getByText("Browse All Results")).toBeOnTheScreen()
+    fireEvent.press(screen.getByText("Browse All Results"))
 
     expect(navigate).toHaveBeenCalledWith("/auction-results-for-artists-you-follow-view-all-href")
   })

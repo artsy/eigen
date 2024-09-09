@@ -15,12 +15,15 @@ export const ArticlesCardsHomeViewSection: React.FC<ArticlesCardsHomeViewSection
   const data = useFragment(fragment, section)
   const articles = extractNodes(data.cardArticlesConnection)
   const title = data.component?.title ?? "News"
-  const viewAllHref = data.component?.href ?? "/news" // TODO: update to use new behaviors
+  const componentHref = data.component?.behaviors?.viewAll?.href
+  const componentButtonText = data.component?.behaviors?.viewAll?.buttonText
 
   const space = useSpace()
 
-  const handleOnPress = (href: string) => {
-    navigate(href)
+  const handleOnPress = () => {
+    if (componentHref) {
+      navigate(componentHref)
+    }
   }
 
   return (
@@ -31,7 +34,7 @@ export const ArticlesCardsHomeViewSection: React.FC<ArticlesCardsHomeViewSection
       </Flex>
       {articles.map((article, index) => (
         <Flex key={index} gap={space(2)}>
-          <Touchable onPress={() => handleOnPress(article.href ?? "")}>
+          <Touchable onPress={handleOnPress}>
             <Flex flexDirection="row" alignItems="center">
               <Text variant="sm-display" numberOfLines={3}>
                 {article.title}
@@ -41,14 +44,13 @@ export const ArticlesCardsHomeViewSection: React.FC<ArticlesCardsHomeViewSection
           {index !== articles.length - 1 && <Separator />}
         </Flex>
       ))}
-      <Touchable onPress={() => navigate(viewAllHref)}>
-        <Flex flexDirection="row" justifyContent="flex-end">
-          <Text variant="sm-display">
-            {/* TODO: get this text from new behavior */}
-            More in News
-          </Text>
-        </Flex>
-      </Touchable>
+      {!!componentHref && (
+        <Touchable onPress={() => navigate(componentHref)}>
+          <Flex flexDirection="row" justifyContent="flex-end">
+            <Text variant="sm-display">{componentButtonText}</Text>
+          </Flex>
+        </Touchable>
+      )}
     </Flex>
   )
 }
@@ -63,7 +65,12 @@ const fragment = graphql`
   fragment ArticlesCardsHomeViewSection_section on ArticlesRailHomeViewSection {
     component {
       title
-      href
+      behaviors {
+        viewAll {
+          href
+          buttonText
+        }
+      }
     }
 
     cardArticlesConnection: articlesConnection(first: 3) {

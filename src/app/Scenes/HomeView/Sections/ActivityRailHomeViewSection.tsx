@@ -18,7 +18,7 @@ export const ActivityRailHomeViewSection: React.FC<ActivityRailHomeViewSectionPr
 }) => {
   const data = useFragment(sectionFragment, section)
   const component = data.component
-  const componentHref = "/notifications" // TODO: this should be in the schema
+  const componentHref = component?.behaviors?.viewAll?.href
 
   const notificationsNodes = extractNodes(data?.notificationsConnection)
 
@@ -33,9 +33,13 @@ export const ActivityRailHomeViewSection: React.FC<ActivityRailHomeViewSectionPr
       <Flex px={2}>
         <SectionTitle
           title={component?.title || "Activity"}
-          onPress={() => {
-            navigate(componentHref)
-          }}
+          onPress={
+            componentHref
+              ? () => {
+                  navigate(componentHref)
+                }
+              : undefined
+          }
         />
       </Flex>
 
@@ -43,13 +47,17 @@ export const ActivityRailHomeViewSection: React.FC<ActivityRailHomeViewSectionPr
         horizontal
         showsHorizontalScrollIndicator={false}
         ListHeaderComponent={() => <Spacer x={2} />}
-        ListFooterComponent={() => (
-          <SeeAllCard
-            onPress={() => {
-              navigate(componentHref)
-            }}
-          />
-        )}
+        ListFooterComponent={
+          componentHref
+            ? () => (
+                <SeeAllCard
+                  onPress={() => {
+                    navigate(componentHref)
+                  }}
+                />
+              )
+            : undefined
+        }
         ItemSeparatorComponent={() => <Spacer x={2} />}
         data={notifications}
         initialNumToRender={3}
@@ -66,6 +74,11 @@ const sectionFragment = graphql`
   fragment ActivityRailHomeViewSection_section on ActivityRailHomeViewSection {
     component {
       title
+      behaviors {
+        viewAll {
+          href
+        }
+      }
     }
     notificationsConnection(first: 10) {
       edges {
