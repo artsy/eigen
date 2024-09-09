@@ -14,6 +14,7 @@ import { WorksForYouArtworksQR } from "app/Components/WorksForYouArtworks"
 import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
+import { ArtworksGridRailContextStore } from "app/utils/ArtworksContext/ArtworksGridRailContext"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
@@ -55,30 +56,34 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.newWorksForYou })}
     >
-      <Screen>
-        <Screen.AnimatedHeader
-          onBack={goBack}
-          title={SCREEN_TITLE}
-          rightElements={
-            <MotiPressable
-              onPress={() => {
-                setDefaultViewOption(defaultViewOption === "list" ? "grid" : "list")
-                LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-              }}
-            >
-              {defaultViewOption === "grid" ? (
-                <FullWidthIcon height={ICON_SIZE} width={ICON_SIZE} top="2px" />
-              ) : (
-                <GridIcon height={ICON_SIZE} width={ICON_SIZE} top="2px" />
-              )}
-            </MotiPressable>
-          }
-        />
-        <Screen.StickySubHeader title={SCREEN_TITLE} />
-        <Screen.Body fullwidth>
-          <WorksForYouArtworksQR maxWorksPerArtist={maxWorksPerArtist} version={version} />
-        </Screen.Body>
-      </Screen>
+      <ArtworksGridRailContextStore.Provider
+        runtimeModel={{ currentGridRail: "NEW_WORKS_FOR_YOU_GRID" }}
+      >
+        <Screen>
+          <Screen.AnimatedHeader
+            onBack={goBack}
+            title={SCREEN_TITLE}
+            rightElements={
+              <MotiPressable
+                onPress={() => {
+                  setDefaultViewOption(defaultViewOption === "list" ? "grid" : "list")
+                  LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+                }}
+              >
+                {defaultViewOption === "grid" ? (
+                  <FullWidthIcon height={ICON_SIZE} width={ICON_SIZE} top="2px" />
+                ) : (
+                  <GridIcon height={ICON_SIZE} width={ICON_SIZE} top="2px" />
+                )}
+              </MotiPressable>
+            }
+          />
+          <Screen.StickySubHeader title={SCREEN_TITLE} />
+          <Screen.Body fullwidth>
+            <WorksForYouArtworksQR maxWorksPerArtist={maxWorksPerArtist} version={version} />
+          </Screen.Body>
+        </Screen>
+      </ArtworksGridRailContextStore.Provider>
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }

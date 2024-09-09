@@ -8,7 +8,7 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { useItemsImpressionsTracking } from "app/Scenes/Home/Components/useImpressionsTracking"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
-import { ArtworksGridRailProvider } from "app/utils/ArtworksContext/ArtworksGridRailContext"
+import { ArtworksGridRailContextStore } from "app/utils/ArtworksContext/ArtworksGridRailContext"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
@@ -88,7 +88,9 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
               }}
             />
           </Flex>
-          <ArtworksGridRailProvider currentGridRail="NEW_WORKS_FOR_YOU_RAIL">
+          <ArtworksGridRailContextStore.Provider
+            runtimeModel={{ currentGridRail: "NEW_WORKS_FOR_YOU_RAIL" }}
+          >
             <LargeArtworkRail
               {...trackingProps}
               artworks={artworks}
@@ -101,7 +103,7 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
               onViewableItemsChanged={onViewableItemsChanged}
               viewabilityConfig={viewabilityConfig}
             />
-          </ArtworksGridRailProvider>
+          </ArtworksGridRailContextStore.Provider>
         </View>
       </Flex>
     )
