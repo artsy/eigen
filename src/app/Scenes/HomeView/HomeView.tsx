@@ -18,7 +18,7 @@ const SECTION_SEPARATOR_HEIGHT: SpacingUnitDSValueNumber = 6
 
 export const HomeView: React.FC = () => {
   const queryData = useLazyLoadQuery<HomeViewQuery>(homeViewScreenQuery, {
-    count: 5,
+    count: 10,
   })
 
   const { data, loadNext, hasNext } = usePaginationFragment<
