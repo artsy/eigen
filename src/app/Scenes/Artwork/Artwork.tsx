@@ -49,6 +49,7 @@ import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutA
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { AboveTheFoldPlaceholder } from "./Components/AboveTheFoldArtworkPlaceholder"
 import { ArtsyGuarantee } from "./Components/ArtsyGuarantee"
+import { ArtworkCollectorSignalsFragmentContainer } from "./Components/ArtworkCollectorSignals"
 import { ArtworkConsignments } from "./Components/ArtworkConsignments"
 import { ArtworkDetails } from "./Components/ArtworkDetails"
 import { ArtworkEditionSetInformationFragmentContainer as ArtworkEditionSetInformation } from "./Components/ArtworkEditionSetInformation"
@@ -297,6 +298,13 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
           />
         ),
         excludePadding: true,
+        excludeSeparator: true,
+        excludeVerticalMargin: true,
+      })
+
+      sections.push({
+        key: "artworkCollectorSignals",
+        element: <ArtworkCollectorSignalsFragmentContainer artwork={artworkAboveTheFold} />,
         excludeSeparator: true,
         excludeVerticalMargin: true,
       })
@@ -672,6 +680,7 @@ export const ArtworkContainer = createRefetchContainer(
         ...ArtworkPartnerOfferNote_artwork
         ...ArtworkPrice_artwork
         ...ArtworkDimensionsClassificationAndAuthenticity_artwork
+        ...ArtworkCollectorSignals_artwork
         slug
         internalID
         isAcquireable
