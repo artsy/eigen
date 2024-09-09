@@ -33,6 +33,11 @@ const HOME_SECTION_SCREEN_QUERY = graphql`
     homeView {
       section(id: $id) {
         __typename
+        ... on GenericHomeViewSection {
+          component {
+            title
+          }
+        }
         ... on ArtworksRailHomeViewSection {
           internalID
           component {
