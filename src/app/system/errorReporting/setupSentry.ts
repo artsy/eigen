@@ -36,15 +36,16 @@ const eigenSentryDist = () => {
 }
 
 interface SetupSentryProps extends Partial<Sentry.ReactNativeOptions> {
-  captureExceptionsInSentryOnDev?: boolean
+  debug?: boolean
 }
-export function setupSentry(props: SetupSentryProps = {}) {
+
+export function setupSentry(props: SetupSentryProps = { debug: false }) {
   const sentryDSN = Config.SENTRY_DSN
   const ossUser = Config.OSS === "true"
 
   // In DEV, enabling this will clober stack traces in errors and logs, obscuring
   // the source of the error. So we disable it in dev mode.
-  if (__DEV__ && !props.captureExceptionsInSentryOnDev) {
+  if (__DEV__ && !props.debug) {
     console.log("[dev] Sentry disabled in dev mode.")
     return
   }
@@ -67,8 +68,8 @@ export function setupSentry(props: SetupSentryProps = {}) {
     autoSessionTracking: true,
     enableWatchdogTerminationTracking: false,
     attachStacktrace: true,
-    tracesSampleRate: 0.1,
-    debug: false,
+    tracesSampleRate: props.debug ? 1.0 : 0.1,
+    debug: props.debug,
     integrations: [
       new Sentry.ReactNativeTracing({
         enableUserInteractionTracing: true,

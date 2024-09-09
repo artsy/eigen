@@ -56,12 +56,11 @@ if (__DEV__) {
 setupFlipper()
 
 // Sentry must be setup early in the app lifecycle to hook into navigation
-const captureExceptionsInSentryOnDev = unsafe_getDevToggle("DTCaptureExceptionsInSentryOnDev")
-const captureExceptions = !__DEV__ ? true : captureExceptionsInSentryOnDev
+const debugSentry = unsafe_getDevToggle("DTDebugSentry")
 const environment = unsafe__getEnvironment()
 setupSentry({
   environment: environment.env,
-  captureExceptionsInSentryOnDev: captureExceptions,
+  debug: debugSentry,
 })
 
 addTrackingProvider(SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider)
