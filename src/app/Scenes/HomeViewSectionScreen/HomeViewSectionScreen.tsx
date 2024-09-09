@@ -4,6 +4,7 @@ import {
   HomeViewSectionScreenQuery$data,
 } from "__generated__/HomeViewSectionScreenQuery.graphql"
 import { HomeViewSectionScreenContent } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreenContent"
+import { HomeViewSectionScreenPlaceholder } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreenPlaceholder"
 import { goBack } from "app/system/navigation/navigate"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -12,7 +13,7 @@ interface HomeSectionScreenProps {
   section: NonNullable<HomeViewSectionScreenQuery$data["homeView"]["section"]>
 }
 
-export const HomeSectionScreenWrapper: React.FC<HomeSectionScreenProps> = ({ section }) => {
+export const HomeViewSectionScreen: React.FC<HomeSectionScreenProps> = ({ section }) => {
   const title =
     section?.__typename === "ArtworksRailHomeViewSection" ? section.component?.title : ""
 
@@ -37,6 +38,7 @@ const HOME_SECTION_SCREEN_QUERY = graphql`
           component {
             title
           }
+          ...HomeViewSectionScreenArtworks_artworksRailHomeViewSection
         }
       }
     }
@@ -45,6 +47,7 @@ const HOME_SECTION_SCREEN_QUERY = graphql`
 
 interface HomeViewSectionScreenQueryRendererProps {
   sectionID: string
+  sectionType: string
 }
 
 export const HomeViewSectionScreenQueryRenderer = withSuspense(
@@ -55,10 +58,7 @@ export const HomeViewSectionScreenQueryRenderer = withSuspense(
         id: props.sectionID,
       },
       {
-        // Since we already fetched the __typename in home, we don't need to refetch it again
-        // This is fine here because we are not querying for the data of the section itself
-        // In case this screen is opened using a deep link, we will fetch it
-        fetchPolicy: "store-or-network",
+        fetchPolicy: "network-only",
       }
     )
 
@@ -66,6 +66,7 @@ export const HomeViewSectionScreenQueryRenderer = withSuspense(
       return <Text>No section found</Text>
     }
 
-    return <HomeSectionScreenWrapper section={data.homeView.section} />
-  }
+    return <HomeViewSectionScreen section={data.homeView.section} />
+  },
+  HomeViewSectionScreenPlaceholder
 )

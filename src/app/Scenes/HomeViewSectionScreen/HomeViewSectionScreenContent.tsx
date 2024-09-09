@@ -1,5 +1,5 @@
 import { HomeViewSectionScreenQuery$data } from "__generated__/HomeViewSectionScreenQuery.graphql"
-import { HomeViewSectionScreenArtworksQueryRenderer } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreenArtworks"
+import { HomeViewSectionScreenArtworks } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreenArtworks"
 
 import { Text } from "react-native-svg"
 
@@ -14,7 +14,7 @@ export const HomeViewSectionScreenContent: React.FC<{ section: HomeViewSectionSc
 
   switch (section.__typename) {
     case "ArtworksRailHomeViewSection":
-      return <HomeViewSectionScreenArtworksQueryRenderer sectionID={section.internalID} />
+      return <HomeViewSectionScreenArtworks section={section} />
 
     default:
       if (__DEV__) {

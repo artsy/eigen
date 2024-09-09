@@ -51,7 +51,11 @@ export const ArtworksRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionPr
             onPress={
               componentHref
                 ? () => {
-                    navigate(componentHref)
+                    navigate(componentHref, {
+                      passProps: {
+                        sectionType: data.__typename,
+                      },
+                    })
                   }
                 : undefined
             }
@@ -64,7 +68,11 @@ export const ArtworksRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionPr
           onMorePress={
             componentHref
               ? () => {
-                  navigate(componentHref)
+                  navigate(componentHref, {
+                    passProps: {
+                      sectionType: data.__typename,
+                    },
+                  })
                 }
               : undefined
           }
@@ -76,6 +84,7 @@ export const ArtworksRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionPr
 
 const fragment = graphql`
   fragment ArtworksRailHomeViewSection_section on ArtworksRailHomeViewSection {
+    __typename
     internalID
     component {
       title

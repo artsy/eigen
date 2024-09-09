@@ -4,13 +4,11 @@ import { HomeViewSectionScreenArtworksQuery } from "__generated__/HomeViewSectio
 import { HomeViewSectionScreenArtworks_artworksRailHomeViewSection$key } from "__generated__/HomeViewSectionScreenArtworks_artworksRailHomeViewSection.graphql"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import { PAGE_SIZE } from "app/Components/constants"
-import { HomeViewSectionScreenArtworksPlaceholder } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreenArtworksPlaceholder"
 import { extractNodes } from "app/utils/extractNodes"
-import { withSuspense } from "app/utils/hooks/withSuspense"
 import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
 import { pluralize } from "app/utils/pluralize"
 import { useRefreshControl } from "app/utils/refreshHelpers"
-import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
+import { graphql, usePaginationFragment } from "react-relay"
 
 interface ArtworksScreenHomeSection {
   section: HomeViewSectionScreenArtworks_artworksRailHomeViewSection$key
@@ -96,21 +94,3 @@ export const artworksQuery = graphql`
     }
   }
 `
-interface ArtworksScreenHomeSectionQRProps {
-  sectionID: string
-}
-
-export const HomeViewSectionScreenArtworksQueryRenderer: React.FC<ArtworksScreenHomeSectionQRProps> =
-  withSuspense((props) => {
-    const data = useLazyLoadQuery<HomeViewSectionScreenArtworksQuery>(artworksQuery, {
-      id: props.sectionID,
-    })
-
-    // This won't happen because the query would fail thanks to the @principalField
-    // Adding it here to make TS happy
-    if (!data.homeView.section) {
-      return <Text>Something went wrong.</Text>
-    }
-
-    return <HomeViewSectionScreenArtworks section={data.homeView.section} />
-  }, HomeViewSectionScreenArtworksPlaceholder)
