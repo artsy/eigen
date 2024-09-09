@@ -14,7 +14,7 @@ import { WorksForYouArtworksQR } from "app/Components/WorksForYouArtworks"
 import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
-import { ArtworksGridRailContextStore } from "app/utils/ArtworksContext/ArtworksGridRailContext"
+import { ArtworksGridRailContextStoreProvider } from "app/utils/ArtworksContext/ArtworksGridRailContext"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
@@ -56,9 +56,7 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.newWorksForYou })}
     >
-      <ArtworksGridRailContextStore.Provider
-        runtimeModel={{ currentGridRail: "NEW_WORKS_FOR_YOU_GRID" }}
-      >
+      <ArtworksGridRailContextStoreProvider currentGridRail="NEW_WORKS_FOR_YOU_GRID">
         <Screen>
           <Screen.AnimatedHeader
             onBack={goBack}
@@ -83,7 +81,7 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
             <WorksForYouArtworksQR maxWorksPerArtist={maxWorksPerArtist} version={version} />
           </Screen.Body>
         </Screen>
-      </ArtworksGridRailContextStore.Provider>
+      </ArtworksGridRailContextStoreProvider>
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }

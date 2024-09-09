@@ -45,6 +45,18 @@ export const ArtworksGridRailContextStore = createContextStore<ArtworksGridRailC
   })
 )
 
+export const ArtworksGridRailContextStoreProvider: React.FC<
+  Partial<ArtworksGridRailContextStoreModel>
+> = ({ children, ...props }) => {
+  return (
+    <ArtworksGridRailContextStore.Provider
+      runtimeModel={props as ArtworksGridRailContextStoreModel}
+    >
+      {children}
+    </ArtworksGridRailContextStore.Provider>
+  )
+}
+
 const GRIDS_AND_RAILS = [
   "NEW_WORKS_FOR_YOU_RAIL",
   "NEW_WORKS_FOR_YOU_GRID",
