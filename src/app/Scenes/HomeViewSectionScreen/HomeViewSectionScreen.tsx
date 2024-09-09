@@ -57,15 +57,9 @@ interface HomeViewSectionScreenQueryRendererProps {
 
 export const HomeViewSectionScreenQueryRenderer = withSuspense(
   (props: HomeViewSectionScreenQueryRendererProps) => {
-    const data = useLazyLoadQuery<HomeViewSectionScreenQuery>(
-      HOME_SECTION_SCREEN_QUERY,
-      {
-        id: props.sectionID,
-      },
-      {
-        fetchPolicy: "network-only",
-      }
-    )
+    const data = useLazyLoadQuery<HomeViewSectionScreenQuery>(HOME_SECTION_SCREEN_QUERY, {
+      id: props.sectionID,
+    })
 
     if (!data.homeView.section) {
       return <Text>No section found</Text>
