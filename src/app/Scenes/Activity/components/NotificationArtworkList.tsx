@@ -4,7 +4,7 @@ import { NotificationArtworkList_artworksConnection$key } from "__generated__/No
 import { PriceOfferMessage } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import { CommercialButtonsQueryRenderer } from "app/Scenes/Activity/components/NotificationCommercialButtons"
-import { ArtworksGridAOrRailProvider } from "app/utils/ArtworksContext/ArtworksGridAndRailContext"
+import { ArtworksGridRailProvider } from "app/utils/ArtworksContext/ArtworksGridRailContext"
 import { extractNodes } from "app/utils/extractNodes"
 import { FC } from "react"
 import { ImageBackground } from "react-native"
@@ -38,7 +38,7 @@ export const NotificationArtworkList: FC<NotificationArtworkListProps> = (props)
 
   return (
     <Flex minHeight={400}>
-      <ArtworksGridAOrRailProvider currentGridOrRail="ACTIVITY_PANEL_ARTWORKS_GRID">
+      <ArtworksGridRailProvider currentGridRail="ACTIVITY_PANEL_ARTWORKS_GRID">
         <MasonryInfiniteScrollArtworkGrid
           animated
           artworks={artworks}
@@ -52,7 +52,7 @@ export const NotificationArtworkList: FC<NotificationArtworkListProps> = (props)
           priceOfferMessage={priceOfferMessage}
           style={{ paddingBottom: 120 }}
         />
-      </ArtworksGridAOrRailProvider>
+      </ArtworksGridRailProvider>
       {!!showArtworkCommercialButtons && (
         <CommercialButtonsQueryRenderer
           artworkID={artworks[0].internalID}

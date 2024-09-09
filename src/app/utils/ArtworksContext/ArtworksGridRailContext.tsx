@@ -1,30 +1,30 @@
 import { createContext, FC, useContext } from "react"
 
-export type GridAndRailType = (typeof GRIDS_AND_RAILS)[number] | ""
+export type GridRailType = (typeof GRIDS_AND_RAILS)[number] | ""
 type ShouldShowType = Record<(typeof SIGNAL_KEYS)[number], boolean>
 
-interface ArtworksGridOrRailContextState {
-  currentGridOrRail: GridAndRailType
+interface ArtworksGridRailContextState {
+  currentGridRail: GridRailType
   shouldShow: ShouldShowType
 }
 
-interface ArtworksGridAndRailProviderProps {
-  currentGridOrRail: GridAndRailType
+interface ArtworksGridRailProviderProps {
+  currentGridRail: GridRailType
 }
 
-const ArtworksGridOrRailContext = createContext<ArtworksGridOrRailContextState>({
-  currentGridOrRail: "",
+const ArtworksGridRailContext = createContext<ArtworksGridRailContextState>({
+  currentGridRail: "",
   shouldShow: {
     LIMITED_TIME_OFFER: false,
   },
 })
 
-export const ArtworksGridAOrRailProvider: FC<ArtworksGridAndRailProviderProps> = ({
+export const ArtworksGridRailProvider: FC<ArtworksGridRailProviderProps> = ({
   children,
-  currentGridOrRail = "",
+  currentGridRail = "",
 }) => {
-  const getShouldRender = (gridOrRail: GridAndRailType): ShouldShowType => {
-    switch (gridOrRail) {
+  const getShouldRender = (gridRail: GridRailType): ShouldShowType => {
+    switch (gridRail) {
       case "NEW_WORKS_FOR_YOU_RAIL":
       case "NEW_WORKS_FOR_YOU_GRID":
       case "CURATORS_PICKS_EMERGING_ARTISTS_RAIL":
@@ -55,16 +55,16 @@ export const ArtworksGridAOrRailProvider: FC<ArtworksGridAndRailProviderProps> =
   }
 
   return (
-    <ArtworksGridOrRailContext.Provider
-      value={{ currentGridOrRail, shouldShow: getShouldRender(currentGridOrRail) }}
+    <ArtworksGridRailContext.Provider
+      value={{ currentGridRail, shouldShow: getShouldRender(currentGridRail) }}
     >
       {children}
-    </ArtworksGridOrRailContext.Provider>
+    </ArtworksGridRailContext.Provider>
   )
 }
 
-export const useArtworksGridOrRailContext = () => {
-  return useContext(ArtworksGridOrRailContext)
+export const useArtworksGridRailContext = () => {
+  return useContext(ArtworksGridRailContext)
 }
 
 const GRIDS_AND_RAILS = [

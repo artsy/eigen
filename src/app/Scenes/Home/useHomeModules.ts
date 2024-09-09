@@ -37,7 +37,7 @@ export const useHomeModules = (props: HomeProps) => {
         key: "newWorksForYouRail",
         title: "New Works for You",
         type: "newWorksForYou",
-        currentGridOrRail: "NEW_WORKS_FOR_YOU_RAIL",
+        currentRail: "NEW_WORKS_FOR_YOU_RAIL",
       },
       {
         data: props.heroUnits?.heroUnitsConnection,
@@ -63,7 +63,7 @@ export const useHomeModules = (props: HomeProps) => {
         prefetchVariables: recommendedAuctionLotsDefaultVariables(),
         title: "Auction Lots for You",
         type: "recommendedAuctionLots",
-        currentGridOrRail: "AUCTION_LOTS_FOR_YOU_RAIL",
+        currentRail: "AUCTION_LOTS_FOR_YOU_RAIL",
       },
       {
         contextModule: ContextModule.auctionRail,
@@ -126,7 +126,7 @@ export const useHomeModules = (props: HomeProps) => {
         subtitle: "The best work by rising talents on Artsy, available now.",
         title: "Curators’ Picks: Emerging",
         type: "marketingCollection",
-        currentGridOrRail: "CURATORS_PICKS_EMERGING_ARTISTS_RAIL",
+        currentRail: "CURATORS_PICKS_EMERGING_ARTISTS_RAIL",
       },
       {
         contextModule: ContextModule.collectionRail,
@@ -184,7 +184,7 @@ export const useHomeModules = (props: HomeProps) => {
         key: "recentlyViewedRail",
         title: "Recently Viewed",
         type: "artwork",
-        currentGridOrRail: "RECENTLY_VIEWED_RAIL",
+        currentRail: "RECENTLY_VIEWED_RAIL",
       },
       // ?
       {

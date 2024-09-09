@@ -6,7 +6,7 @@ import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/Ma
 import { PAGE_SIZE } from "app/Components/constants"
 import { RecentlyViewedPlaceholder } from "app/Scenes/RecentlyViewed/Components/RecentlyViewedPlaceholder"
 import { GlobalStore } from "app/store/GlobalStore"
-import { ArtworksGridAOrRailProvider } from "app/utils/ArtworksContext/ArtworksGridAndRailContext"
+import { ArtworksGridRailProvider } from "app/utils/ArtworksContext/ArtworksGridRailContext"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
@@ -33,7 +33,7 @@ export const RecentlyViewedArtworks: React.FC = () => {
   const numOfColumns = defaultViewOption === "grid" ? NUM_COLUMNS_MASONRY : 1
 
   return (
-    <ArtworksGridAOrRailProvider currentGridOrRail="RECENTLY_VIEWED_GRID">
+    <ArtworksGridRailProvider currentGridRail="RECENTLY_VIEWED_GRID">
       <MasonryInfiniteScrollArtworkGrid
         animated
         artworks={artworks}
@@ -49,7 +49,7 @@ export const RecentlyViewedArtworks: React.FC = () => {
         numColumns={numOfColumns}
         onScroll={scrollHandler}
       />
-    </ArtworksGridAOrRailProvider>
+    </ArtworksGridRailProvider>
   )
 }
 

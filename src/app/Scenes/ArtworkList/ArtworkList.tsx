@@ -18,7 +18,7 @@ import { PAGE_SIZE } from "app/Components/constants"
 import { ArtworkListArtworksGridHeader } from "app/Scenes/ArtworkList/ArtworkListArtworksGridHeader"
 import { ArtworkListEmptyState } from "app/Scenes/ArtworkList/ArtworkListEmptyState"
 import { ArtworkListHeader } from "app/Scenes/ArtworkList/ArtworkListHeader"
-import { ArtworksGridAOrRailProvider } from "app/utils/ArtworksContext/ArtworksGridAndRailContext"
+import { ArtworksGridRailProvider } from "app/utils/ArtworksContext/ArtworksGridRailContext"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useRefreshControl } from "app/utils/refreshHelpers"
@@ -97,7 +97,7 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
   return (
     <ArtworkListProvider artworkListID={listID}>
       <ArtworkListHeader me={queryData.me} />
-      <ArtworksGridAOrRailProvider currentGridOrRail="SAVES_LIST_GRID">
+      <ArtworksGridRailProvider currentGridRail="SAVES_LIST_GRID">
         <MasonryInfiniteScrollArtworkGrid
           artworks={artworks}
           loadMore={(pageSize) => loadNext(pageSize)}
@@ -115,7 +115,7 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
           }
           refreshControl={RefreshControl}
         />
-      </ArtworksGridAOrRailProvider>
+      </ArtworksGridRailProvider>
       <SortByModal
         visible={sortModalVisible}
         options={SORT_OPTIONS}
