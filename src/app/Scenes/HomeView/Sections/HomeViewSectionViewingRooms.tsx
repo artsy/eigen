@@ -1,7 +1,8 @@
-import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { ContextModule } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
 import { HomeViewSectionViewingRooms_section$key } from "__generated__/HomeViewSectionViewingRooms_section.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import {
   ViewingRoomsHomeRail as LegacyViewingRoomsHomeRail,
   ViewingRoomsRailPlaceholder,
@@ -14,6 +15,7 @@ export const HomeViewSectionViewingRooms: React.FC<{
   section: HomeViewSectionViewingRooms_section$key
 }> = ({ section }) => {
   const data = useFragment(viewingRoomsFragment, section)
+  const { tappedViewingRoomGroup } = useHomeViewTracking()
   const componentHref = data.component?.behaviors?.viewAll?.href
 
   return (
@@ -32,10 +34,10 @@ export const HomeViewSectionViewingRooms: React.FC<{
       </Flex>
       <Suspense fallback={<ViewingRoomsRailPlaceholder />}>
         <LegacyViewingRoomsHomeRail
-          trackInfo={{
-            screen: OwnerType.home,
-            ownerType: OwnerType.home,
-            contextModule: data.internalID as ContextModule,
+          onPress={(viewingRoom) => {
+            tappedViewingRoomGroup(viewingRoom, data.internalID as ContextModule)
+
+            navigate(`/viewing-room/${viewingRoom.slug}`)
           }}
         />
       </Suspense>

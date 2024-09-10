@@ -5,9 +5,11 @@ import {
   TappedArtworkGroup,
   TappedEntityDestinationType,
   TappedHeroUnitsGroup,
+  TappedViewingRoomGroup,
 } from "@artsy/cohesion"
 import { LargeArtworkRail_artworks$data } from "__generated__/LargeArtworkRail_artworks.graphql"
 import { SmallArtworkRail_artworks$data } from "__generated__/SmallArtworkRail_artworks.graphql"
+import { ViewingRoomsHomeRail_viewingRoom$data } from "__generated__/ViewingRoomsHomeRail_viewingRoom.graphql"
 import { HeroUnit } from "app/Scenes/Home/Components/HeroUnitsRail"
 import { matchRoute } from "app/routes"
 import { getArtworkSignalTrackingFields } from "app/utils/getArtworkSignalTrackingFields"
@@ -60,6 +62,23 @@ export const useHomeViewTracking = () => {
         destination_screen_owner_id: item.internalID,
         destination_screen_owner_url: item.link.url,
         type: "header",
+      }
+
+      trackEvent(payload)
+    },
+
+    tappedViewingRoomGroup: (
+      viewingRoom: ViewingRoomsHomeRail_viewingRoom$data,
+      contextModule: ContextModule
+    ) => {
+      const payload: TappedViewingRoomGroup = {
+        action: ActionType.tappedViewingRoomGroup,
+        context_module: contextModule,
+        context_screen_owner_type: OwnerType.home,
+        destination_screen_owner_type: OwnerType.viewingRoom,
+        destination_screen_owner_id: viewingRoom.internalID,
+        destination_screen_owner_slug: viewingRoom.slug,
+        type: "thumbnail",
       }
 
       trackEvent(payload)
