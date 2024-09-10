@@ -1,5 +1,8 @@
 import { bullet, Flex, Text } from "@artsy/palette-mobile"
-import { FairRailItem_fair$key } from "__generated__/FairRailItem_fair.graphql"
+import {
+  FairRailItem_fair$data,
+  FairRailItem_fair$key,
+} from "__generated__/FairRailItem_fair.graphql"
 import { CardRailCard, CardRailMetadataContainer } from "app/Components/Home/CardRailCard"
 import { ThreeUpImageLayout } from "app/Components/ThreeUpImageLayout"
 import { navigate } from "app/system/navigation/navigate"
@@ -10,9 +13,10 @@ import { graphql, useFragment } from "react-relay"
 
 interface FairRailItemProps {
   fair: FairRailItem_fair$key
+  onPress?: (fair: FairRailItem_fair$data) => void
 }
 
-export const FairRailItem: FC<FairRailItemProps> = ({ fair: fairFragment }) => {
+export const FairRailItem: FC<FairRailItemProps> = ({ fair: fairFragment, onPress }) => {
   const fair = useFragment(fragment, fairFragment)
 
   // Fairs are expected to always have >= 2 artworks and a hero image.
@@ -35,6 +39,7 @@ export const FairRailItem: FC<FairRailItemProps> = ({ fair: fairFragment }) => {
     <CardRailCard
       key={fair.slug}
       onPress={() => {
+        onPress?.(fair)
         navigate(`/fair/${fair.slug}`)
       }}
     >
