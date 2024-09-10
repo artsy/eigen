@@ -8,13 +8,19 @@ export function useInitialNotification() {
   const [hasHandledInitialNotification, setHasHandledInitialNotification] = useState(false)
 
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
+  const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
 
   const pendingNotification = GlobalStore.useAppState(
     (state) => state.pendingPushNotification.notification
   )
 
   useEffect(() => {
-    if (isLoggedIn && !hasHandledInitialNotification && Platform.OS === "android") {
+    if (
+      isLoggedIn &&
+      isNavigationReady &&
+      !hasHandledInitialNotification &&
+      Platform.OS === "android"
+    ) {
       // initial notification is most recent and should be prioritised
       PushNotification.popInitialNotification((notification) => {
         if (notification) {
@@ -29,5 +35,5 @@ export function useInitialNotification() {
       return
     }
     handlePendingNotification(pendingNotification)
-  }, [isLoggedIn])
+  }, [isLoggedIn, isNavigationReady])
 }
