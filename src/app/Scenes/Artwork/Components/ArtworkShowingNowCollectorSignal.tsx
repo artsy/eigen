@@ -1,14 +1,16 @@
 import { Box, FairIcon, Flex, LinkText, Text } from "@artsy/palette-mobile"
-import { ArtworkCollectorSignals_artwork$data } from "__generated__/ArtworkCollectorSignals_artwork.graphql"
+import { ArtworkShowingNowCollectorSignal_artwork$data } from "__generated__/ArtworkShowingNowCollectorSignal_artwork.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { DateTime } from "luxon"
 import { createFragmentContainer, graphql } from "react-relay"
 
-interface ArtworkCollectorSignalsProps {
-  artwork: ArtworkCollectorSignals_artwork$data
+interface ArtworkShowingNowCollectorSignalProps {
+  artwork: ArtworkShowingNowCollectorSignal_artwork$data
 }
 
-const ArtworkCollectorSignals: React.FC<ArtworkCollectorSignalsProps> = ({ artwork }) => {
+const ArtworkShowingNowCollectorSignal: React.FC<ArtworkShowingNowCollectorSignalProps> = ({
+  artwork,
+}) => {
   const { collectorSignals } = artwork
   const runningShow = collectorSignals?.runningShow
 
@@ -21,9 +23,13 @@ const ArtworkCollectorSignals: React.FC<ArtworkCollectorSignalsProps> = ({ artwo
 
   return (
     <Box mt={4} mb={2}>
-      <Flex testID="artwork-collector-ssignals" flexDirection="row" alignContent="center">
+      <Flex
+        testID="artwork-showing-now-collector-ssignal"
+        flexDirection="row"
+        alignContent="center"
+      >
         <FairIcon mr={0.5} fill="black60" height={25} width={25} />
-        <Flex testID="artwork-collector-ssignals" flexDirection="column" alignContent="left">
+        <Flex flexDirection="column" alignContent="left">
           <Text variant="sm" color="black100">
             Showing now{"  •  "}
             {showStartsAt} - {showEndAt}
@@ -38,11 +44,11 @@ const ArtworkCollectorSignals: React.FC<ArtworkCollectorSignalsProps> = ({ artwo
   )
 }
 
-export const ArtworkCollectorSignalsFragmentContainer = createFragmentContainer(
-  ArtworkCollectorSignals,
+export const ArtworkShowingNowCollectorSignalFragmentContainer = createFragmentContainer(
+  ArtworkShowingNowCollectorSignal,
   {
     artwork: graphql`
-      fragment ArtworkCollectorSignals_artwork on Artwork {
+      fragment ArtworkShowingNowCollectorSignal_artwork on Artwork {
         collectorSignals {
           runningShow {
             endAt

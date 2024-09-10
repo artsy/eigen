@@ -49,13 +49,13 @@ import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutA
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { AboveTheFoldPlaceholder } from "./Components/AboveTheFoldArtworkPlaceholder"
 import { ArtsyGuarantee } from "./Components/ArtsyGuarantee"
-import { ArtworkCollectorSignalsFragmentContainer } from "./Components/ArtworkCollectorSignals"
 import { ArtworkConsignments } from "./Components/ArtworkConsignments"
 import { ArtworkDetails } from "./Components/ArtworkDetails"
 import { ArtworkEditionSetInformationFragmentContainer as ArtworkEditionSetInformation } from "./Components/ArtworkEditionSetInformation"
 import { ArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/ArtworkHeader"
 import { ArtworkHistoryFragmentContainer as ArtworkHistory } from "./Components/ArtworkHistory"
 import { ArtworkLotDetails } from "./Components/ArtworkLotDetails/ArtworkLotDetails"
+import { ArtworkShowingNowCollectorSignalFragmentContainer } from "./Components/ArtworkShowingNowCollectorSignal"
 import { ArtworkStickyBottomContent } from "./Components/ArtworkStickyBottomContent"
 import { ArtworksInSeriesRail } from "./Components/ArtworksInSeriesRail"
 import { BelowTheFoldPlaceholder } from "./Components/BelowTheFoldPlaceholder"
@@ -303,8 +303,10 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
       })
 
       sections.push({
-        key: "artworkCollectorSignals",
-        element: <ArtworkCollectorSignalsFragmentContainer artwork={artworkAboveTheFold} />,
+        key: "artworkShowingNowCollectorSignal",
+        element: (
+          <ArtworkShowingNowCollectorSignalFragmentContainer artwork={artworkAboveTheFold} />
+        ),
         excludeSeparator: true,
         excludeVerticalMargin: true,
       })
@@ -680,7 +682,7 @@ export const ArtworkContainer = createRefetchContainer(
         ...ArtworkPartnerOfferNote_artwork
         ...ArtworkPrice_artwork
         ...ArtworkDimensionsClassificationAndAuthenticity_artwork
-        ...ArtworkCollectorSignals_artwork
+        ...ArtworkShowingNowCollectorSignal_artwork
         slug
         internalID
         isAcquireable
