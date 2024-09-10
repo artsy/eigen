@@ -76,6 +76,7 @@ describe("HeroUnitsRailHomeViewSection", () => {
             },
             {
               node: {
+                internalID: "hero-unit-1-id",
                 title: "Featured Collection",
                 link: {
                   text: "See Collection",
@@ -93,17 +94,13 @@ describe("HeroUnitsRailHomeViewSection", () => {
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
      [
        {
-         "action": undefined,
+         "action": "tappedHeroUnitsGroup",
          "context_module": "home-view-section-hero-units",
-         "context_screen_owner_id": undefined,
-         "context_screen_owner_slug": undefined,
          "context_screen_owner_type": "home",
-         "destination_screen_owner_id": "<HeroUnit-mock-id-3>",
-         "destination_screen_owner_slug": undefined,
+         "destination_screen_owner_id": "hero-unit-1-id",
          "destination_screen_owner_type": "Collection",
-         "horizontal_slide_position": undefined,
-         "module_height": undefined,
-         "type": undefined,
+         "destination_screen_owner_url": "/collection/collection-1",
+         "type": "header",
        },
      ]
   `)

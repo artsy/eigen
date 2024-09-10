@@ -1,8 +1,9 @@
 import {
+  ActionType,
   ContextModule,
   OwnerType,
   TappedEntityDestinationType,
-  TappedEntityGroup,
+  TappedHeroUnitsGroup,
 } from "@artsy/cohesion"
 import { Spacer } from "@artsy/palette-mobile"
 import { HeroUnitsRailHomeViewSection_section$key } from "__generated__/HeroUnitsRailHomeViewSection_section.graphql"
@@ -109,7 +110,7 @@ const tracks = {
     sectionID: string
     heroUnitID: string
     heroUnitURL: string
-  }): TappedEntityGroup => {
+  }): TappedHeroUnitsGroup => {
     let destinationScreenOwnerType = "WebView"
 
     const routeSpecs = matchRoute(heroUnitURL)
@@ -118,12 +119,14 @@ const tracks = {
       destinationScreenOwnerType = routeSpecs.module
     }
 
-    return tappedHeroUnitsGroup({
-      contextModule: sectionID as ContextModule,
-      contextScreenOwnerType: OwnerType.home,
-      destinationScreenOwnerId: heroUnitID,
-      destinationScreenOwnerType: destinationScreenOwnerType as TappedEntityDestinationType,
-      destinationScreenOwnerURL: heroUnitURL,
-    })
+    return {
+      action: ActionType.tappedHeroUnitsGroup,
+      context_module: sectionID as ContextModule,
+      context_screen_owner_type: OwnerType.home,
+      destination_screen_owner_id: heroUnitID,
+      destination_screen_owner_type: destinationScreenOwnerType as TappedEntityDestinationType,
+      destination_screen_owner_url: heroUnitURL,
+      type: "header",
+    }
   },
 }
