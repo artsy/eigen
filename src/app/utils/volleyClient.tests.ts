@@ -9,10 +9,6 @@ jest.mock("lodash/throttle", () => (fn: any, ms: any) => {
   }
 })
 
-jest.mock("@sentry/react-native", () => ({
-  captureMessage: jest.fn(),
-}))
-
 jest.useFakeTimers({
   legacyFakeTimers: true,
 })
