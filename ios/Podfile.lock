@@ -46,7 +46,7 @@ PODS:
   - CocoaLumberjack (3.7.2):
     - CocoaLumberjack/Core (= 3.7.2)
   - CocoaLumberjack/Core (3.7.2)
-  - CodePush (8.1.0):
+  - CodePush (8.3.1):
     - Base64 (~> 1.1)
     - JWT (~> 3.0.0-beta.12)
     - React-Core
@@ -1409,9 +1409,9 @@ PODS:
     - React-Core
   - RNBootSplash (3.2.0):
     - React-Core
-  - RNCAsyncStorage (1.19.3):
+  - RNCAsyncStorage (1.19.8):
     - React-Core
-  - RNCClipboard (1.7.0):
+  - RNCClipboard (1.14.1):
     - React-Core
   - RNDeviceInfo (10.3.0):
     - React-Core
@@ -1421,7 +1421,9 @@ PODS:
     - SDWebImageWebPCoder (~> 0.8.4)
   - RNFlashList (1.6.4):
     - React-Core
-  - RNGestureHandler (2.13.1):
+  - RNGestureHandler (2.19.0):
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
     - React-Core
   - RNGoogleSignin (11.0.1):
     - GoogleSignIn (~> 7.0.0)
@@ -2058,7 +2060,7 @@ SPEC CHECKSUMS:
   BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
-  CodePush: 255d7607f428dcbec39085f81a206b170e01d012
+  CodePush: d892f13c5012e9e2cb36640f4929654b7be21fe5
   CwlCatchException: 51bf8319009a31104ea6f0568730d1ecc25b6454
   CwlCatchExceptionSupport: 1345d6adb01a505933f2bc972dab60dcb9ce3e50
   CwlMachBadInstructionHandler: ea1030428925d9bf340882522af30712fb4bf356
@@ -2191,12 +2193,12 @@ SPEC CHECKSUMS:
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
   RNAppleAuthentication: 63c2127ace11985b94f852fc480eb84145653712
   RNBootSplash: 24175aa28fe203b10c48dc34e78d946fd33c77af
-  RNCAsyncStorage: c913ede1fa163a71cea118ed4670bbaaa4b511bb
-  RNCClipboard: 245417a78ab585e0d4d83926c28907e7b2bc24bd
+  RNCAsyncStorage: 687bb9e85dd3d45b966662440dcfc0cd962347e6
+  RNCClipboard: 0a720adef5ec193aa0e3de24c3977222c7e52a37
   RNDeviceInfo: 4701f0bf2a06b34654745053db0ce4cb0c53ada7
   RNFastImage: bb8cdea994fb18352557876cf345171a995eb57a
   RNFlashList: b521ebdd7f9352673817f1d98e8bdc0c8cf8545b
-  RNGestureHandler: 38aa38413896620338948fbb5c90579a7b1c3fde
+  RNGestureHandler: 75e2ebf4e8ac521f2b3c9afdc048fcbc2e2c9ea4
   RNGoogleSignin: 24d3b3261f78b0fae0aa013f8ab6f8d25e369b0c
   RNImageCropPicker: 771e2ca319d2cf92e04ebf334ece892ee9a6728f
   RNKeychain: 4f63aada75ebafd26f4bc2c670199461eab85d94
