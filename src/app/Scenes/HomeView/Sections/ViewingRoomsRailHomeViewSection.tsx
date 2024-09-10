@@ -1,3 +1,4 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
 import { ViewingRoomsRailHomeViewSection_section$key } from "__generated__/ViewingRoomsRailHomeViewSection_section.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
@@ -30,7 +31,13 @@ export const ViewingRoomsRailHomeViewSection: React.FC<{
         />
       </Flex>
       <Suspense fallback={<ViewingRoomsRailPlaceholder />}>
-        <LegacyViewingRoomsHomeRail />
+        <LegacyViewingRoomsHomeRail
+          trackInfo={{
+            screen: OwnerType.home,
+            ownerType: OwnerType.home,
+            contextModule: data.internalID as ContextModule,
+          }}
+        />
       </Suspense>
     </Flex>
   )
@@ -38,6 +45,7 @@ export const ViewingRoomsRailHomeViewSection: React.FC<{
 
 const viewingRoomsFragment = graphql`
   fragment ViewingRoomsRailHomeViewSection_section on ViewingRoomsRailHomeViewSection {
+    internalID
     component {
       title
       behaviors {

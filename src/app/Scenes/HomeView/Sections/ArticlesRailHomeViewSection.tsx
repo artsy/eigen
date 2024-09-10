@@ -1,3 +1,4 @@
+import { ContextModule } from "@artsy/cohesion"
 import { ArticlesRailHomeViewSection_section$key } from "__generated__/ArticlesRailHomeViewSection_section.graphql"
 import { ArticlesRailFragmentContainer } from "app/Scenes/Home/Components/ArticlesRail"
 import { navigate } from "app/system/navigation/navigate"
@@ -20,6 +21,7 @@ export const ArticlesRailHomeViewSection: React.FC<ArticlesRailHomeViewSectionPr
     <ArticlesRailFragmentContainer
       title={section.component?.title ?? ""}
       articlesConnection={section.articlesConnection}
+      contextModule={section.internalID as ContextModule}
       onSectionTitlePress={
         componentHref
           ? () => {
@@ -33,6 +35,7 @@ export const ArticlesRailHomeViewSection: React.FC<ArticlesRailHomeViewSectionPr
 
 const sectionFragment = graphql`
   fragment ArticlesRailHomeViewSection_section on ArticlesRailHomeViewSection {
+    internalID
     component {
       title
       behaviors {

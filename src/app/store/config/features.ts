@@ -266,8 +266,8 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableAuctionImprovementsSignals",
   },
-  ARUseNewHomeView: {
-    description: "Use new home view",
+  ARPreferLegacyHomeScreen: {
+    description: "Prefer legacy home screen",
     readyForRelease: false,
     showInDevMenu: true,
   },

@@ -18,7 +18,7 @@ const SECTION_SEPARATOR_HEIGHT: SpacingUnitDSValueNumber = 6
 
 export const HomeView: React.FC = () => {
   const queryData = useLazyLoadQuery<HomeViewQuery>(homeViewScreenQuery, {
-    count: 5,
+    count: 10,
   })
 
   const { data, loadNext, hasNext } = usePaginationFragment<
@@ -58,7 +58,7 @@ const SectionSeparator = () => <Spacer y={SECTION_SEPARATOR_HEIGHT} />
 export const HomeViewScreen: React.FC = () => (
   <Suspense
     fallback={
-      <Flex flex={1} justifyContent="center" alignItems="center">
+      <Flex flex={1} justifyContent="center" alignItems="center" testID="new-home-view-skeleton">
         <Text>Loading home view…</Text>
       </Flex>
     }
