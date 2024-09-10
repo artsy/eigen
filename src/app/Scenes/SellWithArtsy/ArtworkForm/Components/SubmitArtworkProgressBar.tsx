@@ -33,7 +33,7 @@ export const SubmitArtworkProgressBar: React.FC = ({}) => {
 
   const hasStartedFlowFromMyCollection = useMemo(() => {
     const routes = (
-      __unsafe__SubmissionArtworkFormNavigationRef.current?.getState()?.routes || []
+      __unsafe__SubmissionArtworkFormNavigationRef?.current?.getState()?.routes || []
     ).map((route) => route.name)
 
     // This is required in case the reference value comes later than the first render

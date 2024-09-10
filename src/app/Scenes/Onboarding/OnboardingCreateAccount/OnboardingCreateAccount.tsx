@@ -70,7 +70,7 @@ export const nameSchema = Yup.object().shape({
 })
 
 export const getCurrentRoute = () =>
-  __unsafe__createAccountNavigationRef.current?.getCurrentRoute()?.name as
+  __unsafe__createAccountNavigationRef?.current?.getCurrentRoute()?.name as
     | keyof OnboardingCreateAccountNavigationStack
     | undefined
 

@@ -51,7 +51,7 @@ export const ModalStack: React.FC = ({ children }) => {
         setNavigationReady({ isNavigationReady: true })
 
         if (trackSiftAndroid) {
-          const initialRouteName = __unsafe_mainModalStackRef.current?.getCurrentRoute()?.name
+          const initialRouteName = __unsafe_mainModalStackRef?.current?.getCurrentRoute()?.name
           SiftReactNative.setPageName(`screen_${initialRouteName}`)
           SiftReactNative.upload()
         }
@@ -59,7 +59,7 @@ export const ModalStack: React.FC = ({ children }) => {
       onStateChange={(state) => {
         saveSession(state)
 
-        const currentRoute = __unsafe_mainModalStackRef.current?.getCurrentRoute()
+        const currentRoute = __unsafe_mainModalStackRef?.current?.getCurrentRoute()
 
         if (currentRoute) {
           if (Platform.OS === "ios") {

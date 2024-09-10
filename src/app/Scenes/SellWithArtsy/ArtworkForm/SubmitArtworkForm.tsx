@@ -286,6 +286,6 @@ export const __unsafe__SubmissionArtworkFormNavigationRef: React.MutableRefObjec
   }
 
 export const getCurrentRoute = () =>
-  __unsafe__SubmissionArtworkFormNavigationRef.current?.getCurrentRoute()?.name as
+  __unsafe__SubmissionArtworkFormNavigationRef?.current?.getCurrentRoute()?.name as
     | keyof SubmitArtworkStackNavigation
     | undefined
