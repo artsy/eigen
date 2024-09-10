@@ -2826,17 +2826,17 @@
   resolved "https://registry.yarnpkg.com/@ptomasroos/react-native-multi-slider/-/react-native-multi-slider-2.2.2.tgz#35a97fb8c355627c6a2ded010b360ac5728b44ad"
   integrity sha512-HWyCnRD3Z3SbHK2FLWYmBBqd1B4iXipeKv1+AK0FoY/CElEDTEixHE8hN60TsqxalPrznn798LE2Q4tHuCiyaA==
 
-"@react-native-async-storage/async-storage@1.19.3":
-  version "1.19.3"
-  resolved "https://registry.yarnpkg.com/@react-native-async-storage/async-storage/-/async-storage-1.19.3.tgz#ad5fe3ed0a82d4624aa4500321c1e09c02daeb46"
-  integrity sha512-CwGfoHCWdPOTPS+2fW6YRE1fFBpT9++ahLEroX5hkgwyoQ+TkmjOaUxixdEIoVua9Pz5EF2pGOIJzqOTMWfBlA==
+"@react-native-async-storage/async-storage@1.19.8":
+  version "1.19.8"
+  resolved "https://registry.yarnpkg.com/@react-native-async-storage/async-storage/-/async-storage-1.19.8.tgz#a29fc4f4aa5c85805f8b3edea84e19f797c59fdd"
+  integrity sha512-O25eaSbmH+LEmOobkpwf43bAGIkqE9YGzfWcirTszI90xk4ItaDWpgJsQx9LeAbeAKzVkn1h+Nq5Bo6I6q2oFA==
   dependencies:
     merge-options "^3.0.4"
 
-"@react-native-clipboard/clipboard@1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@react-native-clipboard/clipboard/-/clipboard-1.7.0.tgz#43320841870b82b2f311f375dd5f178da46e244e"
-  integrity sha512-i5dJgR+wM8Om+hFEB/PqNb65/x5WxpaZG+UjEBX2/gmmIrmAWI72tI9rVL1gjPA9RWNpdpzvp+ioGjpdl7MyWQ==
+"@react-native-clipboard/clipboard@1.14.1":
+  version "1.14.1"
+  resolved "https://registry.yarnpkg.com/@react-native-clipboard/clipboard/-/clipboard-1.14.1.tgz#835f82fc86881a0808a8405f2576617bb5383554"
+  integrity sha512-SM3el0A28SwoeJljVNhF217o0nI4E7RfalLmuRQcT1/7tGcxUjgFa3jyrEndYUct8/uxxK5EUNGUu1YEDqzxqw==
 
 "@react-native-community/cli-clean@12.3.7":
   version "12.3.7"
@@ -6433,10 +6433,10 @@ co@^4.6.0:
   resolved "https://registry.yarnpkg.com/co/-/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
   integrity sha1-bqa989hTrlTMuOR7+gvz+QMfsYQ=
 
-code-push@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/code-push/-/code-push-4.2.0.tgz#58070c7cbc2e2dbbc303e16671c6241f9a60d086"
-  integrity sha512-5z+IhqNllGr1AOV2a53gwLawPCfwvLHSBfejU+QBo0w+1Rh8XS/nfGlyf8YDPdslWrtTleBA6Au8npvF9FyJYA==
+code-push@^4.2.2:
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/code-push/-/code-push-4.2.2.tgz#7f412b686e24adcd1550aced80e6cdeb5339c257"
+  integrity sha512-45pvyF6bhJ5h8tllcE9CkmZaCxT+QvA8hxUpUdUevLAOCWv+Tlw/B8XXC1Q7ai3qyZwkiVbEuq3E8lyGmjMsrQ==
   dependencies:
     appcenter-file-upload-client "0.1.0"
     proxy-agent "^6.3.0"
@@ -12800,12 +12800,12 @@ react-native-bootsplash@3.2.0:
     fs-extra "^9.1.0"
     jimp "^0.16.1"
 
-react-native-code-push@8.1.0:
-  version "8.1.0"
-  resolved "https://registry.yarnpkg.com/react-native-code-push/-/react-native-code-push-8.1.0.tgz#5bf42d749447705ca2d2e6df371b4353ea7afd78"
-  integrity sha512-EJsLeOnRGXTOAQxbL8B7l5XIQqIC++dYYiZneoFYtCiv1t71vrAokniNdk2mL0tKKii8qoIhev0NzRnQAw+FrQ==
+react-native-code-push@8.3.1:
+  version "8.3.1"
+  resolved "https://registry.yarnpkg.com/react-native-code-push/-/react-native-code-push-8.3.1.tgz#f9fa354772ec95759d4d7e2679302df4623e8f1f"
+  integrity sha512-hrVVc7YJTv7ynXBiJd1Y/oj5sc0fXv+m8dXTH6ByBmGy11/yaxxyhDTpr+7JHAlv8Kj5YBPoeliG5FJfnBGZgA==
   dependencies:
-    code-push "^4.2.0"
+    code-push "^4.2.2"
     glob "^7.1.7"
     hoist-non-react-statics "^3.3.2"
     inquirer "^8.1.5"
@@ -12877,15 +12877,14 @@ react-native-flipper@^0.164.0:
   resolved "https://registry.yarnpkg.com/react-native-flipper/-/react-native-flipper-0.164.0.tgz#64f6269a86a13a72e30f53ba9f5281d2073a7697"
   integrity sha512-iJhIe3rqx6okuzBp4AJsTa2b8VRAOGzoLRFx/4HGbaGvu8AurZjz8TTQkhJsRma8dsHN2b6KKZPvGGW3wdWzvA==
 
-react-native-gesture-handler@2.13.1:
-  version "2.13.1"
-  resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-2.13.1.tgz#bad89caacd62c4560b9953b02f85f37ee42d5d4c"
-  integrity sha512-hW454X7sjuiBN+lobqw63pmT3boAmTl5OP6zQLq83iEe4T6PcHZ9lxzgCrebtgmutY8cJfq9rM2dOUVh9WBcww==
+react-native-gesture-handler@2.19.0:
+  version "2.19.0"
+  resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-2.19.0.tgz#16deaefcefe77d6b4b7fa48a82ef52be61ddbb07"
+  integrity sha512-Cc6DnSnn5hhgiuJOtlOJmXkbBBOZkW9UnJJG+DrWPq2jJuNvM4g5qq2plsywhxQj9xT7FyXZwVVblaXabfGZvQ==
   dependencies:
     "@egjs/hammerjs" "^2.0.17"
     hoist-non-react-statics "^3.3.0"
     invariant "^2.2.4"
-    lodash "^4.17.21"
     prop-types "^15.7.2"
 
 react-native-get-random-values@1.11.0:
