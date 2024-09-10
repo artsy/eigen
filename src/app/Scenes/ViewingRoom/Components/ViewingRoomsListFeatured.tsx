@@ -1,3 +1,4 @@
+import { ContextModule } from "@artsy/cohesion"
 import { Spacer, Touchable } from "@artsy/palette-mobile"
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
@@ -112,10 +113,11 @@ export const tracks = {
     vrId: string,
     vrSlug: string,
     screen: string,
-    ownerType: string
+    ownerType: string,
+    contextModule?: ContextModule
   ) => ({
     action: Schema.ActionNames.TappedViewingRoomGroup,
-    context_module: Schema.ContextModules.FeaturedViewingRoomsRail,
+    context_module: contextModule || Schema.ContextModules.FeaturedViewingRoomsRail,
     context_screen: screen,
     context_screen_owner_type: ownerType,
     destination_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,

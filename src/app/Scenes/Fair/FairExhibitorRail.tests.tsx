@@ -110,7 +110,7 @@ describe("FairExhibitors", () => {
               node: {
                 internalID: "artwork1234",
                 slug: "cool-artwork-1",
-                collectorSignals: { partnerOffer: { isAvailable: true } },
+                collectorSignals: { partnerOffer: { isAvailable: true }, auction: null },
               },
             },
           ],

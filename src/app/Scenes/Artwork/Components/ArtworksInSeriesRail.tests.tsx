@@ -180,7 +180,7 @@ describe("ArtworksInSeriesRail", () => {
       Artwork: () => ({
         internalID: "artwork124",
         slug: "my-cool-artwork",
-        collectorSignals: { partnerOffer: { isAvailable: true } },
+        collectorSignals: { partnerOffer: { isAvailable: true }, auction: null },
         artistSeriesConnection: {
           edges: [
             {
