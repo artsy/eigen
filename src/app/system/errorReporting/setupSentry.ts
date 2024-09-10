@@ -84,7 +84,7 @@ export function setupSentry(props: SetupSentryProps = { debug: false }) {
            * To fix it we find the focused route and update the context name to the correct screen name.
            * This should be updated if we change our navigation setup.
            */
-          if (__unsafe_mainModalStackRef.current) {
+          if (__unsafe_mainModalStackRef?.current) {
             const mainNavState = __unsafe_mainModalStackRef.current?.getState()
             const focusedRoute = findFocusedRoute(mainNavState)
             const routeParams = focusedRoute?.params as { moduleName?: string }
