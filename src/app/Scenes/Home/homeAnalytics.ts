@@ -257,9 +257,13 @@ export default class HomeAnalytics {
 
   // Collections events
 
-  static collectionThumbnailTapEvent(slug?: string, index?: number): TappedEntityGroup {
+  static collectionThumbnailTapEvent(
+    slug?: string,
+    index?: number,
+    contextModule?: ContextModule
+  ): TappedEntityGroup {
     return tappedEntityGroup({
-      contextModule: ContextModule.collectionRail,
+      contextModule: contextModule || ContextModule.collectionRail,
       contextScreenOwnerType: OwnerType.home,
       destinationScreenOwnerType: OwnerType.collection,
       destinationScreenOwnerSlug: slug,

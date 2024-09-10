@@ -1,6 +1,9 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import themeGet from "@styled-system/theme-get"
-import { MarketingCollectionRailItem_marketingCollection$key } from "__generated__/MarketingCollectionRailItem_marketingCollection.graphql"
+import {
+  MarketingCollectionRailItem_marketingCollection$data,
+  MarketingCollectionRailItem_marketingCollection$key,
+} from "__generated__/MarketingCollectionRailItem_marketingCollection.graphql"
 import { FiveUpImageLayout } from "app/Components/FiveUpImageLayout"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -12,10 +15,12 @@ import styled from "styled-components/native"
 
 interface MarketingCollectionRailItemProps {
   marketingCollection: MarketingCollectionRailItem_marketingCollection$key
+  onPress?: (marketingCollection: MarketingCollectionRailItem_marketingCollection$data) => void
 }
 
 export const MarketingCollectionRailItem: FC<MarketingCollectionRailItemProps> = ({
   marketingCollection: marketingCollectionFragment,
+  onPress,
 }) => {
   const marketingCollection = useFragment(fragment, marketingCollectionFragment)
 
@@ -33,6 +38,7 @@ export const MarketingCollectionRailItem: FC<MarketingCollectionRailItemProps> =
       onPress={
         marketingCollection?.slug
           ? () => {
+              onPress?.(marketingCollection)
               navigate(`/collection/${marketingCollection.slug}`)
             }
           : undefined
