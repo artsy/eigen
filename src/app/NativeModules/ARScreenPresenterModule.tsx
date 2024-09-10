@@ -36,8 +36,10 @@ type Mutable<T> = T extends object
 
 function updateNavigationState(updater: (draft: Mutable<NavigationState>) => void) {
   const currentState = __unsafe_mainModalStackRef?.current?.getRootState()
-  const nextState = immer(currentState, updater)
-  __unsafe_mainModalStackRef?.current?.resetRoot(nextState)
+  if (currentState) {
+    const nextState = immer(currentState, updater)
+    __unsafe_mainModalStackRef?.current?.resetRoot(nextState)
+  }
 }
 function updateTabStackState(
   tab: BottomTabType,
@@ -61,7 +63,7 @@ function updateTabStackState(
 
 // If the user is looking at a modal, return the nav stack ref for that modal, otherwise return null.
 function getCurrentlyPresentedModalNavStackKey() {
-  const mainModalStackRoutes = __unsafe_mainModalStackRef?.current?.getRootState().routes
+  const mainModalStackRoutes = __unsafe_mainModalStackRef?.current?.getRootState()?.routes
 
   if (!mainModalStackRoutes || mainModalStackRoutes.length <= 1) {
     // the user is not looking at a modal.
