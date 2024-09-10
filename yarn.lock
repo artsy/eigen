@@ -12750,10 +12750,10 @@ react-native-reanimated-zoom@0.3.3:
   resolved "https://registry.yarnpkg.com/react-native-reanimated-zoom/-/react-native-reanimated-zoom-0.3.3.tgz#99161310c398b2d4220e75ce1d9b76eb075bf3f6"
   integrity sha512-naeMV19218OsVOAw7jq45mZGxcSgvcn5xAJlXep27R0IBo/fqpLlLuXKK2nyCXyLzuIPwgqS3O+LUMcTd2L5Gg==
 
-react-native-reanimated@3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-3.3.0.tgz#80f9d58e28fddf62fe4c1bc792337b8ab57936ab"
-  integrity sha512-LzfpPZ1qXBGy5BcUHqw3pBC0qSd22qXS3t8hWSbozXNrBkzMhhOrcILE/nEg/PHpNNp1xvGOW8NwpAMF006roQ==
+react-native-reanimated@3.6.3:
+  version "3.6.3"
+  resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-3.6.3.tgz#859cf2320e37c80e3a21e19db24f82c34d6d3ded"
+  integrity sha512-2KkkPozoIvDbJcHuf8qeyoLROXQxizSi+2CTCkuNVkVZOxxY4B0Omvgq61aOQhSZUh/649x1YHoAaTyGMGDJUw==
   dependencies:
     "@babel/plugin-transform-object-assign" "^7.16.7"
     "@babel/preset-typescript" "^7.16.7"
