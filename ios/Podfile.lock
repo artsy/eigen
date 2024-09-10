@@ -1448,7 +1448,8 @@ PODS:
   - RNReactNativeHapticFeedback (1.13.0):
     - React-Core
   - RNReanimated (3.6.3):
-    - RCT-Folly (= 2021.07.22.00)
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
     - React-Core
     - ReactCommon/turbomodule/core
   - RNScreens (3.29.0):
@@ -2189,8 +2190,8 @@ SPEC CHECKSUMS:
   RNLocalize: 41026b7c14878f1a1b381bc79f668f1fbf841adb
   RNPermissions: 23abdfa77d3cd3700b181a2d47f29939c6878ce6
   RNReactNativeHapticFeedback: b83bfb4b537bdd78eb4f6ffe63c6884f7b049ead
-  RNReanimated: 548e621fe2e12b6bdccbc48ed5e5361d9822c775
-  RNScreens: 8ba3eeb8f5cb9f13662df564e785d64ef7214bf2
+  RNReanimated: f6b02d8f5eaa2830296411d4ec3b8ef5442dd13d
+  RNScreens: 17e2f657f1b09a71ec3c821368a04acbb7ebcb46
   RNSentry: 5381e9284aec59a546e4a7d40e33ad0839b99c1e
   RNShare: 859ff710211285676b0bcedd156c12437ea1d564
   RNSVG: ba3e7232f45e34b7b47e74472386cf4e1a676d0a
