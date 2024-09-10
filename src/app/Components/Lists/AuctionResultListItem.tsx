@@ -18,12 +18,14 @@ import moment from "moment"
 import { useState } from "react"
 import FastImage from "react-native-fast-image"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface Props {
   auctionResult: AuctionResultListItem_auctionResult$data
   first?: boolean
   onPress?: () => void
   showArtistName?: boolean
+  trackingEventPayload?: {}
   width?: number
   withHorizontalPadding?: boolean
 }
@@ -35,9 +37,11 @@ const AuctionResultListItem: React.FC<Props> = ({
   auctionResult,
   onPress,
   showArtistName,
+  trackingEventPayload,
   width,
   withHorizontalPadding = true,
 }) => {
+  const tracking = useTracking()
   const [couldNotLoadImage, setCouldNotLoadImage] = useState(false)
 
   const color = useColor()
@@ -52,6 +56,10 @@ const AuctionResultListItem: React.FC<Props> = ({
     if (onPress) {
       onPress()
       return
+    }
+
+    if (trackingEventPayload) {
+      tracking.trackEvent(trackingEventPayload)
     }
     // For upcoming auction results that are happening in Artsy we want to navigate to the lot page
     if (auctionResult.isUpcoming && auctionResult.isInArtsyAuction && auctionResult.externalURL) {

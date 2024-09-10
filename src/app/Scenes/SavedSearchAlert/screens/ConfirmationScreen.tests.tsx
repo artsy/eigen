@@ -204,7 +204,7 @@ describe(ConfirmationScreen, () => {
               node: {
                 title: "Untitled #1",
                 slug: "untitled",
-                collectorSignals: { partnerOffer: { isAvailable: true } },
+                collectorSignals: { partnerOffer: { isAvailable: true }, auction: null },
               },
             },
           ],
