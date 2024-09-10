@@ -1,6 +1,8 @@
 import { format } from "util"
 import mockAsyncStorage from "@react-native-async-storage/async-storage/jest/async-storage-mock"
 // @ts-expect-error
+import mockClipboard from "@react-native-clipboard/clipboard/jest/clipboard-mock.js"
+// @ts-expect-error
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js"
 // @ts-expect-error
 import mockStripe from "@stripe/stripe-react-native/jest/mock.js"
@@ -15,6 +17,7 @@ import * as matchers from "jest-extended"
 
 import { isPlainObject } from "lodash"
 import { NativeModules } from "react-native"
+import "react-native-gesture-handler/jestSetup"
 // @ts-expect-error
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
 import track, { useTracking } from "react-tracking"
@@ -30,6 +33,8 @@ global.__TEST__ = true
 declare const process: any
 
 expect.extend(matchers)
+
+jest.mock("@react-native-clipboard/clipboard", () => mockClipboard)
 
 function logToError(type: keyof typeof console, args: unknown[], constructorOpt: () => void) {
   const explanation =
