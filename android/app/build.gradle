@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.google.gms.google-services"
 apply plugin: "com.facebook.react"
 apply plugin: "org.jetbrains.kotlin.android"
@@ -82,7 +83,7 @@ android {
     ndkVersion rootProject.ext.ndkVersion
 
     buildToolsVersion rootProject.ext.buildToolsVersion
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdk rootProject.ext.compileSdkVersion
 
     namespace "net.artsy.app"
     defaultConfig {
@@ -146,13 +147,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:21.1.0'
 
     implementation 'commons-io:commons-io:2.8.0'
-
-    debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
-        exclude group:'com.squareup.okhttp3', module:'okhttp'
-    }
-
-    debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}")
+    implementation("com.facebook.react:flipper-integration")
 
     // For WebP support, including animated WebP
     implementation 'com.facebook.fresco:fresco:2.6.0'
