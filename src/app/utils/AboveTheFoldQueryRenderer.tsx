@@ -6,7 +6,7 @@ import { renderWithPlaceholder } from "./renderWithPlaceholder"
 
 interface AboveTheFoldQueryRendererProps<
   AboveQuery extends OperationType,
-  BelowQuery extends OperationType
+  BelowQuery extends OperationType,
 > {
   environment: Environment | MockEnvironment
   above: {
@@ -50,7 +50,7 @@ interface RenderArgs<Response> {
  */
 export function AboveTheFoldQueryRenderer<
   AboveQuery extends OperationType,
-  BelowQuery extends OperationType
+  BelowQuery extends OperationType,
 >(props: AboveTheFoldQueryRendererProps<AboveQuery, BelowQuery>) {
   const [aboveArgs, setAboveArgs] = useState<null | RenderArgs<AboveQuery["response"]>>(null)
   const [belowArgs, setBelowArgs] = useState<null | RenderArgs<BelowQuery["response"]>>(null)
