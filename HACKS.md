@@ -304,6 +304,17 @@ patch.
 This package includes a `setPageName` method on `SiftReactNative`, but no corresponding type.
 I patched it to add the type.
 
+## Patch-package for @braze/react-native-sdk
+
+#### When can we remove this:
+
+When we upgrade @braze/react-native-sdk to version >= 8.3.0.
+
+#### Explanation/Context:
+
+We had to patch Braze in order to proceed with the react native upgrade to 0.73.9. The patch was needed to support kotlin jvm target 17 and
+in order to also make targetCompatibility and sourceCompatibility compatible with the JAVA 17 which is the standard for newer rn versions starting 0.73.
+
 ## Patch-package for @react-navigation/native
 
 #### When we can remove this:
