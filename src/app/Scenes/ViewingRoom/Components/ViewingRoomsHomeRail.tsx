@@ -1,3 +1,4 @@
+import { ContextModule } from "@artsy/cohesion"
 import { Flex, Spacer, Touchable } from "@artsy/palette-mobile"
 import { ViewingRoomsHomeRailQuery } from "__generated__/ViewingRoomsHomeRailQuery.graphql"
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
@@ -73,7 +74,7 @@ export const ViewingRoomsRailPlaceholder = () => (
 )
 
 interface ViewingRoomsHomeRailProps {
-  trackInfo?: { screen: string; ownerType: string }
+  trackInfo?: { screen: string; ownerType: string; contextModule?: ContextModule }
 }
 
 export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({ trackInfo }) => {
@@ -102,7 +103,8 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({ trac
                           item.internalID,
                           item.slug,
                           trackInfo.screen,
-                          trackInfo.ownerType
+                          trackInfo.ownerType,
+                          trackInfo.contextModule
                         )
                       : featuredTracks.tappedFeaturedViewingRoomRailItem(item.internalID, item.slug)
                   )
