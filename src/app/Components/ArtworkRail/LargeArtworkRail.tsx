@@ -36,6 +36,18 @@ const largeArtworksFragment = graphql`
     internalID
     href
     slug
+    collectorSignals {
+      auction {
+        bidCount
+        liveBiddingStarted
+        lotClosesAt
+        lotWatcherCount
+        registrationEndsAt
+      }
+      partnerOffer {
+        isAvailable
+      }
+    }
   }
 `
 

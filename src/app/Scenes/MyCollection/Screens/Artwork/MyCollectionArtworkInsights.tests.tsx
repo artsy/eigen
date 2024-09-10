@@ -1,4 +1,6 @@
+import { screen } from "@testing-library/react-native"
 import { MyCollectionArtworkInsightsTestsQuery } from "__generated__/MyCollectionArtworkInsightsTestsQuery.graphql"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { MyCollectionArtworkInsights } from "./MyCollectionArtworkInsights"
@@ -21,6 +23,10 @@ describe("MyCollectionArtworkInsights", () => {
       query MyCollectionArtworkInsightsTestsQuery @relay_test_operation {
         artwork(id: "some-artwork-id") {
           ...MyCollectionArtworkInsights_artwork
+          ...MyCollectionArtworkSubmissionStatus_submissionState
+          consignmentSubmission {
+            state
+          }
         }
 
         marketPriceInsights(artistId: "some-artist-id", medium: "painting") {
@@ -34,7 +40,7 @@ describe("MyCollectionArtworkInsights", () => {
   })
 
   it("renders without throwing an error", async () => {
-    const { getByText } = renderWithRelay({
+    renderWithRelay({
       Query: () => ({
         artwork: mockArtwork,
         marketPriceInsights: mockMarketPriceInsights,
@@ -43,37 +49,83 @@ describe("MyCollectionArtworkInsights", () => {
 
     // Artwork Artist Market
 
-    expect(await getByText("Artist Market")).toBeTruthy()
-    expect(await getByText("Based on the last 36 months of auction data")).toBeTruthy()
-    expect(await getByText("Annual Value Sold")).toBeTruthy()
-    expect(await getByText("$1k")).toBeTruthy()
-    expect(await getByText("Annual Lots Sold")).toBeTruthy()
-    expect(await getByText("100")).toBeTruthy()
-    expect(await getByText("Sell-through Rate")).toBeTruthy()
-    expect(await getByText("20%")).toBeTruthy()
-    expect(await getByText("Price Over Estimate")).toBeTruthy()
-    expect(await getByText("200%")).toBeTruthy()
-    expect(await getByText("Liquidity")).toBeTruthy()
-    expect(await getByText("High")).toBeTruthy()
+    expect(screen.getByText("Artist Market")).toBeTruthy()
+    expect(screen.getByText("Based on the last 36 months of auction data")).toBeTruthy()
+    expect(screen.getByText("Annual Value Sold")).toBeTruthy()
+    expect(screen.getByText("$1k")).toBeTruthy()
+    expect(screen.getByText("Annual Lots Sold")).toBeTruthy()
+    expect(screen.getByText("100")).toBeTruthy()
+    expect(screen.getByText("Sell-through Rate")).toBeTruthy()
+    expect(screen.getByText("20%")).toBeTruthy()
+    expect(screen.getByText("Price Over Estimate")).toBeTruthy()
+    expect(screen.getByText("200%")).toBeTruthy()
+    expect(screen.getByText("Liquidity")).toBeTruthy()
+    expect(screen.getByText("High")).toBeTruthy()
 
     // Artwork Comparable Works
 
-    expect(await getByText("Comparable Works")).toBeTruthy()
+    expect(screen.getByText("Comparable Works")).toBeTruthy()
+  })
+
+  describe("AREnableSubmitArtworkTier2Information feature flag is on", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        AREnableSubmitArtworkTier2Information: true,
+      })
+    })
+
+    it("renders the submission status when status is REJECTES", async () => {
+      renderWithRelay({
+        Query: () => ({
+          artwork: { ...mockArtwork, consignmentSubmission: { state: "REJECTED" } },
+        }),
+      })
+
+      expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).not.toBe(null)
+    })
+
+    it("does not render the submission status when status is not REJECTES", async () => {
+      renderWithRelay({
+        Query: () => ({
+          artwork: { ...mockArtwork, consignmentSubmission: { state: "APPROVED" } },
+        }),
+      })
+
+      expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).toBe(null)
+    })
+  })
+
+  describe("AREnableSubmitArtworkTier2Information feature flag is off", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        AREnableSubmitArtworkTier2Information: false,
+      })
+    })
+
+    it("does not render the submission status when status is REJECTES ", async () => {
+      renderWithRelay({
+        Query: () => ({
+          artwork: { ...mockArtwork, consignmentSubmission: { state: "REJECTED" } },
+        }),
+      })
+
+      expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).toBe(null)
+    })
   })
 
   describe("Conditional Display of RequestForPriceEstimateBanner", () => {
     it("does not display RequestForPriceEstimateBanner when Artist is not P1", () => {
-      const { queryByTestId } = renderWithRelay({
+      renderWithRelay({
         Query: () => ({
           artwork: mockArtwork,
           marketPriceInsights: mockMarketPriceInsightsForHighDemandIndex,
         }),
       })
-      expect(queryByTestId("request-price-estimate-button")).toBeNull()
+      expect(screen.queryByTestId("request-price-estimate-button")).toBeNull()
     })
 
     it("does not display when artwork is submitted", () => {
-      const { queryByTestId } = renderWithRelay({
+      renderWithRelay({
         Query: () => ({
           artwork: {
             ...mockArtworkForP1Artist,
@@ -83,51 +135,51 @@ describe("MyCollectionArtworkInsights", () => {
         }),
       })
 
-      expect(queryByTestId("request-price-estimate-button")).toBeNull()
+      expect(screen.queryByTestId("request-price-estimate-button")).toBeNull()
     })
   })
 
   describe("display of Submit for Sale section", () => {
     it("renders Submit for Sale section if P1 artist and artwork was not submitted to sale", () => {
-      const { getByText } = renderWithRelay({
+      renderWithRelay({
         Query: () => ({
           artwork: {
             artist: {
               targetSupply: {
-                isP1: true,
+                isTargetSupply: true,
               },
             },
             submissionId: null,
           },
         }),
       })
-      expect(getByText("Interested in Selling This Work?")).toBeTruthy()
+      expect(screen.getByText("Interested in Selling This Work?")).toBeTruthy()
     })
 
     it("does not render Submit for Sale section if not P1 artist", () => {
-      const { getByText } = renderWithRelay({
+      renderWithRelay({
         Query: () => ({
           artwork: {
             artist: {
               targetSupply: {
-                isP1: false,
+                isTargetSupply: false,
               },
             },
           },
         }),
       })
 
-      expect(() => getByText("Interested in Selling This Work?")).toThrow(
+      expect(() => screen.getByText("Interested in Selling This Work?")).toThrow(
         "Unable to find an element with text: Interested in Selling This Work?"
       )
     })
     it("does not render Submit for Sale section if P1 artist and artwork was submited to sale", () => {
-      const { getByText } = renderWithRelay({
+      renderWithRelay({
         Query: () => ({
           artwork: {
             artist: {
               targetSupply: {
-                isP1: true,
+                isTargetSupply: true,
               },
             },
             submissionId: "someId",
@@ -135,7 +187,7 @@ describe("MyCollectionArtworkInsights", () => {
         }),
       })
 
-      expect(() => getByText("Interested in Selling This Work?")).toThrow(
+      expect(() => screen.getByText("Interested in Selling This Work?")).toThrow(
         "Unable to find an element with text: Interested in Selling This Work?"
       )
     })
@@ -163,7 +215,7 @@ const mockArtwork = {
           artist: {
             name: "Takashi Murakami",
             targetSupply: {
-              isP1: false,
+              isTargetSupply: false,
             },
           },
           internalID: "333952",
@@ -212,7 +264,7 @@ const mockArtworkForP1Artist = {
               artist: {
                 name: "Takashi Murakami",
                 targetSupply: {
-                  isP1: true,
+                  isTargetSupply: true,
                 },
               },
             },

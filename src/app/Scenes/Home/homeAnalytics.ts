@@ -5,11 +5,16 @@ import {
   OwnerType,
   RailViewed,
   Screen,
+  TappedArtworkGroup,
   TappedEntityDestinationType,
   TappedEntityGroup,
   tappedEntityGroup,
 } from "@artsy/cohesion"
 import { ArtworkModuleRail_rail$data } from "__generated__/ArtworkModuleRail_rail.graphql"
+import {
+  CollectorSignals,
+  getArtworkSignalTrackingFields,
+} from "app/utils/getArtworkSignalTrackingFields"
 
 type ValidHomeDestination =
   | OwnerType.auctions
@@ -191,18 +196,22 @@ export default class HomeAnalytics {
     slug: string,
     id: string,
     index?: number,
-    moduleHeight?: "single" | "double"
-  ): TappedEntityGroup {
-    return tappedEntityGroup({
-      contextScreenOwnerType: OwnerType.home,
-      destinationScreenOwnerType: OwnerType.artwork,
-      destinationScreenOwnerSlug: slug,
-      destinationScreenOwnerId: id,
-      contextModule,
-      horizontalSlidePosition: index,
-      moduleHeight: moduleHeight ?? "double",
+    moduleHeight?: "single" | "double",
+    collectorSignals?: CollectorSignals,
+    auctionSignalsFeatureFlagEnabled?: boolean
+  ): TappedArtworkGroup {
+    return {
+      action: ActionType.tappedArtworkGroup,
+      context_screen_owner_type: OwnerType.home,
+      destination_screen_owner_type: OwnerType.artwork,
+      destination_screen_owner_slug: slug,
+      destination_screen_owner_id: id,
+      context_module: contextModule,
+      horizontal_slide_position: index,
+      module_height: moduleHeight ?? "double",
       type: "thumbnail",
-    })
+      ...getArtworkSignalTrackingFields(collectorSignals, auctionSignalsFeatureFlagEnabled),
+    }
   }
 
   static artworkThumbnailTapEventFromKey(

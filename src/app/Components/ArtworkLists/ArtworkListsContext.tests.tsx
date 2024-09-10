@@ -473,6 +473,7 @@ const preselectedArtworkLists = {
 const artworkEntity: ArtworkEntity = {
   id: "artwork-id",
   internalID: "artwork-internal-id",
+  isInAuction: false,
   title: "Artwork Title",
   year: "2023",
   artistNames: "Banksy",

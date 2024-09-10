@@ -85,7 +85,7 @@ export const RecommendedArtistsRail: React.FC<RecommendedArtistsRailProps & Rail
       </Flex>
       <CardRailFlatList<ArtistCard_artist$data>
         listRef={listRef}
-        prefetchUrlExtractor={(item) => item?.href!}
+        prefetchUrlExtractor={(item) => item?.href}
         prefetchVariablesExtractor={defaultArtistVariables}
         data={artists as any}
         keyExtractor={(artist) => artist.id}
@@ -180,7 +180,7 @@ export const tracks = {
   }),
 }
 
-const followOrUnfollowArtist = (followArtist: ArtistCard_artist$data) => {
+export const followOrUnfollowArtist = (followArtist: ArtistCard_artist$data) => {
   return new Promise<void>((resolve, reject) => {
     commitMutation<RecommendedArtistsRailFollowMutation>(getRelayEnvironment(), {
       mutation: graphql`

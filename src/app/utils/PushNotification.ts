@@ -232,7 +232,11 @@ export async function configure() {
   PushNotification.configure({
     // (optional) Called when Token is generated (iOS and Android)
     onRegister: (token) => {
-      saveToken(token.token)
+      try {
+        saveToken(token.token)
+      } catch (e) {
+        captureMessage(`Error saving push notification token: ${e}`, "info")
+      }
     },
 
     // (required) Called when a remote is received or opened, or local notification is opened

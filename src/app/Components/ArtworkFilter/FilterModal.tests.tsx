@@ -157,18 +157,16 @@ describe("Filter modal", () => {
       sizeMetric: "cm",
     }
 
-    const { getByText, queryByText } = renderWithWrappers(
-      <MockFilterModalNavigator initialData={injectedState} />
-    )
+    renderWithWrappers(<MockFilterModalNavigator initialData={injectedState} />)
 
-    expect(queryByText("Medium")).toBeFalsy()
-    expect(getByText("Time Period")).toBeTruthy()
+    expect(screen.queryByText("Medium")).toBeFalsy()
+    expect(screen.getByText("Time Period")).toBeTruthy()
   })
 })
 
 describe("Filter modal navigation flow", () => {
   it("allows users to navigate forward to sort screen from filter screen", () => {
-    const { getByText } = renderWithWrappers(
+    renderWithWrappers(
       <ArtworkFiltersStoreProvider>
         <ArtworkFilterOptionsScreen
           {...getEssentialProps({
@@ -179,13 +177,13 @@ describe("Filter modal navigation flow", () => {
     )
 
     // the first row item takes users to the Sort navigation route
-    fireEvent.press(getByText("Sort By"))
+    fireEvent.press(screen.getByText("Sort By"))
 
     expect(mockNavigate).toBeCalledWith("SortOptionsScreen")
   })
 
   it("allows users to navigate forward to medium screen from filter screen", () => {
-    const { getByText } = renderWithWrappers(
+    renderWithWrappers(
       <ArtworkFiltersStoreProvider
         runtimeModel={{
           ...getArtworkFiltersModel(),
@@ -200,15 +198,15 @@ describe("Filter modal navigation flow", () => {
       </ArtworkFiltersStoreProvider>
     )
     // the second row item takes users to the Medium navigation route
-    fireEvent.press(getByText("Medium"))
+    fireEvent.press(screen.getByText("Medium"))
 
     expect(mockNavigate).toBeCalledWith("AdditionalGeneIDsOptionsScreen")
   })
 
   it("allows users to exit filter modal screen when selecting close icon", () => {
-    const { getByLabelText } = renderWithWrappers(<MockFilterModalNavigator />)
+    renderWithWrappers(<MockFilterModalNavigator />)
 
-    fireEvent.press(getByLabelText("Header back button"))
+    fireEvent.press(screen.getByLabelText("Header back button"))
 
     expect(closeModalMock).toHaveBeenCalled()
   })
@@ -231,9 +229,9 @@ describe("Filter modal states", () => {
       sizeMetric: "cm",
     }
 
-    const { getByText } = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
+    renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
 
-    expect(getByText("Sort By • 1")).toBeTruthy()
+    expect(screen.getByText("Sort By • 1")).toBeTruthy()
   })
 
   it("displays the currently selected medium option number on the filter screen", () => {
@@ -258,15 +256,15 @@ describe("Filter modal states", () => {
       sizeMetric: "cm",
     }
 
-    const { getByText } = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
+    renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
 
-    expect(getByText("Medium • 1")).toBeTruthy()
+    expect(screen.getByText("Medium • 1")).toBeTruthy()
   })
 
   it("displays the filter screen apply button correctly when no filters are selected", () => {
-    const { getByText } = renderWithWrappers(<MockFilterModalNavigator />)
+    renderWithWrappers(<MockFilterModalNavigator />)
 
-    expect(getByText("Show Results")).toBeDisabled()
+    expect(screen.getByText("Show Results")).toBeDisabled()
   })
 
   it("displays the filter screen apply button correctly when filters are selected", () => {
@@ -285,19 +283,17 @@ describe("Filter modal states", () => {
       sizeMetric: "cm",
     }
 
-    const { getByText } = renderWithWrappers(
-      <MockFilterModalNavigator initialData={injectedState} />
-    )
+    renderWithWrappers(<MockFilterModalNavigator initialData={injectedState} />)
 
-    expect(getByText("Show Results")).not.toBeDisabled()
+    expect(screen.getByText("Show Results")).not.toBeDisabled()
   })
 
   it("does not display default filters numbers on the Filter modal", () => {
-    const { getByText } = renderWithWrappers(<MockFilterScreen initialState={initialState} />)
+    renderWithWrappers(<MockFilterScreen initialState={initialState} />)
 
-    expect(getByText("Sort By")).toBeTruthy()
-    expect(getByText("Rarity")).toBeTruthy()
-    expect(getByText("Medium")).toBeTruthy()
+    expect(screen.getByText("Sort By")).toBeTruthy()
+    expect(screen.getByText("Rarity")).toBeTruthy()
+    expect(screen.getByText("Medium")).toBeTruthy()
   })
 
   it("displays selected filters on the Filter modal", () => {
@@ -334,14 +330,14 @@ describe("Filter modal states", () => {
       sizeMetric: "cm",
     }
 
-    const { getByText } = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
+    renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
 
-    expect(getByText("Sort By • 1")).toBeTruthy()
-    expect(getByText("Rarity")).toBeTruthy()
-    expect(getByText("Medium • 1")).toBeTruthy()
-    expect(getByText("Price • 1")).toBeTruthy()
-    expect(getByText("Ways to Buy • 1")).toBeTruthy()
-    expect(getByText("Time Period • 2")).toBeTruthy()
+    expect(screen.getByText("Sort By • 1")).toBeTruthy()
+    expect(screen.getByText("Rarity")).toBeTruthy()
+    expect(screen.getByText("Medium • 1")).toBeTruthy()
+    expect(screen.getByText("Price • 1")).toBeTruthy()
+    expect(screen.getByText("Ways to Buy • 1")).toBeTruthy()
+    expect(screen.getByText("Time Period • 2")).toBeTruthy()
   })
 })
 
@@ -370,15 +366,13 @@ describe("Clearing filters", () => {
       sizeMetric: "cm",
     }
 
-    const { getByText, queryByText } = renderWithWrappers(
-      <MockFilterScreen initialState={injectedState} />
-    )
+    renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
 
-    expect(getByText("Sort By • 1")).toBeTruthy()
-    fireEvent.press(getByText("Clear All"))
+    expect(screen.getByText("Sort By • 1")).toBeTruthy()
+    fireEvent.press(screen.getByText("Clear All"))
 
-    expect(getByText("Sort By")).toBeTruthy()
-    expect(queryByText("• 1")).toBeFalsy()
+    expect(screen.getByText("Sort By")).toBeTruthy()
+    expect(screen.queryByText("• 1")).toBeFalsy()
   })
 
   it("exits the modal when clear all button is pressed", () => {
@@ -399,16 +393,14 @@ describe("Clearing filters", () => {
       sizeMetric: "cm",
     }
 
-    const { getByText } = renderWithWrappers(
-      <MockFilterModalNavigator initialData={injectedState} />
-    )
+    renderWithWrappers(<MockFilterModalNavigator initialData={injectedState} />)
 
-    expect(getByText("Show Results")).toBeDisabled()
+    expect(screen.getByText("Show Results")).toBeDisabled()
 
-    fireEvent.press(getByText("Clear All"))
+    fireEvent.press(screen.getByText("Clear All"))
 
-    expect(getByText("Sort By")).toBeTruthy()
-    expect(getByText("Rarity")).toBeTruthy()
+    expect(screen.getByText("Sort By")).toBeTruthy()
+    expect(screen.getByText("Rarity")).toBeTruthy()
   })
 })
 
@@ -440,10 +432,7 @@ describe("Applying filters on Artworks", () => {
                 ...initialData,
               }}
             >
-              <CollectionArtworksFragmentContainer
-                collection={props.marketingCollection}
-                scrollToTop={jest.fn()}
-              />
+              <CollectionArtworksFragmentContainer collection={props.marketingCollection} />
             </ArtworkFiltersStoreProvider>
           )
         } else if (error) {
@@ -537,13 +526,11 @@ describe("Applying filters on Artworks", () => {
       sizeMetric: "cm",
     }
 
-    const { getByText } = renderWithWrappers(
-      <MockFilterModalNavigator initialData={injectedState} />
-    )
+    renderWithWrappers(<MockFilterModalNavigator initialData={injectedState} />)
 
     resolveMostRecentRelayOperation(env)
 
-    fireEvent.press(getByText("Show Results"))
+    fireEvent.press(screen.getByText("Show Results"))
 
     expect(trackEvent).toHaveBeenCalledWith({
       action_type: "commercialFilterParamsChanged",
@@ -571,38 +558,36 @@ describe("Applying filters on Artworks", () => {
 
 describe("AnimatedArtworkFilterButton", () => {
   it("Shows Sort & Filter when no text prop is available", () => {
-    const { getByText } = renderWithWrappers(
+    renderWithWrappers(
       <ArtworkFiltersStoreProvider>
         <AnimatedArtworkFilterButton isVisible onPress={jest.fn()} />
       </ArtworkFiltersStoreProvider>
     )
 
-    expect(getByText("Sort & Filter")).toBeTruthy()
+    expect(screen.getByText("Sort & Filter")).toBeTruthy()
   })
 
   it("Shows text when text prop is available", () => {
-    const { getByText } = renderWithWrappers(
+    renderWithWrappers(
       <ArtworkFiltersStoreProvider>
         <AnimatedArtworkFilterButton text="Filter Text" isVisible onPress={jest.fn()} />
       </ArtworkFiltersStoreProvider>
     )
 
-    expect(getByText("Filter Text")).toBeTruthy()
+    expect(screen.getByText("Filter Text")).toBeTruthy()
   })
 
   describe("Saved Search Flow", () => {
     it('should hide "Create Alert" button by default', () => {
-      const { queryByText } = renderWithWrappers(<MockFilterModalNavigator />)
+      renderWithWrappers(<MockFilterModalNavigator />)
 
-      expect(queryByText("Create Alert")).toBeFalsy()
+      expect(screen.queryByText("Create Alert")).toBeFalsy()
     })
   })
 
   it('should show "Create Alert" button when shouldShowCreateAlertButton prop is passed', () => {
-    const { getByText } = renderWithWrappers(
-      <MockFilterModalNavigator shouldShowCreateAlertButton />
-    )
+    renderWithWrappers(<MockFilterModalNavigator shouldShowCreateAlertButton />)
 
-    expect(getByText("Create Alert")).toBeTruthy()
+    expect(screen.getByText("Create Alert")).toBeTruthy()
   })
 })

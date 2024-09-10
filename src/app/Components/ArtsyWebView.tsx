@@ -1,6 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex, Text } from "@artsy/palette-mobile"
 import { addBreadcrumb } from "@sentry/react-native"
+import * as Sentry from "@sentry/react-native"
 import { BottomTabRoutes } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { matchRoute } from "app/routes"
 import { GlobalStore, getCurrentEmissionState } from "app/store/GlobalStore"
@@ -268,9 +269,28 @@ export const ArtsyWebView = forwardRef<
           // on android it works without it
           sharedCookiesEnabled
           decelerationRate="normal"
-          source={{ uri }}
+          source={{
+            uri,
+            // Workaround for user agent breaking back behavior on Android
+            // see: https://github.com/react-native-webview/react-native-webview/pull/3133
+            ...(Platform.OS === "android" && {
+              headers: {
+                "User-Agent": userAgent,
+              },
+            }),
+          }}
+          onHttpError={(error) => {
+            const nativeEvent = error.nativeEvent
+            if (nativeEvent.statusCode === 404) {
+              Sentry.withScope((scope) => {
+                scope.setExtra("route", nativeEvent.url)
+                scope.setExtra("description", nativeEvent.description)
+                Sentry.captureMessage("Navigation: WebView failed to load URL", "error")
+              })
+            }
+          }}
           style={{ flex: 1 }}
-          applicationNameForUserAgent={userAgent}
+          userAgent={Platform.OS === "ios" ? userAgent : undefined}
           onMessage={({ nativeEvent }) => {
             const data = nativeEvent.data
             try {

@@ -77,6 +77,11 @@ const Mutation = graphql`
       artwork {
         id
         isSaved
+        collectorSignals {
+          auction {
+            lotWatcherCount
+          }
+        }
       }
 
       me {

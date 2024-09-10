@@ -1,69 +1,85 @@
+import { screen } from "@testing-library/react-native"
+import { CollectionHeaderTestsQuery } from "__generated__/CollectionHeaderTestsQuery.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { CollectionFixture } from "app/Scenes/Collection/Components/__fixtures__/CollectionFixture"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { CollectionHeader } from "./CollectionHeader"
 
 describe("collection header", () => {
-  let props: any
-  beforeEach(() => {
-    props = {
-      collection: { ...CollectionFixture },
-    }
+  const { renderWithRelay } = setupTestWrapper<CollectionHeaderTestsQuery>({
+    Component: ({ marketingCollection }) => <CollectionHeader collection={marketingCollection!} />,
+    query: graphql`
+      query CollectionHeaderTestsQuery @relay_test_operation {
+        marketingCollection(slug: "street-art-now") {
+          ...CollectionHeader_collection
+        }
+      }
+    `,
   })
 
-  it("passes the collection header image url to collection header", () => {
-    const { UNSAFE_queryByType, UNSAFE_getByType } = renderWithWrappers(
-      <CollectionHeader {...props} />
-    )
+  describe("when the feature flag is enabled", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        AREnableCollectionsWithoutHeaderImage: true,
+      })
+    })
 
-    expect(UNSAFE_queryByType(OpaqueImageView)).toBeTruthy()
-    expect(UNSAFE_getByType(OpaqueImageView)).toHaveProp(
-      "imageURL",
-      "http://imageuploadedbymarketingteam.jpg"
-    )
+    it("passes the collection header image url to collection header", () => {
+      renderWithRelay({ MarketingCollection: () => CollectionFixture })
+
+      expect(screen.UNSAFE_queryByType(OpaqueImageView)).not.toBeTruthy()
+    })
+
+    it("passes the url of the most marketable artwork in the collection to the collection header when there is no headerImage value present", () => {
+      renderWithRelay({
+        MarketingCollection: () => ({
+          ...CollectionFixture,
+          headerImage: null,
+        }),
+      })
+
+      expect(screen.UNSAFE_queryByType(OpaqueImageView)).not.toBeOnTheScreen()
+    })
+  })
+
+  describe("when the feature flag is disabled", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        AREnableCollectionsWithoutHeaderImage: false,
+      })
+    })
+
+    it("passes the collection header image url to collection header", () => {
+      renderWithRelay({ MarketingCollection: () => CollectionFixture })
+
+      expect(screen.UNSAFE_queryByType(OpaqueImageView)).toBeTruthy()
+      expect(screen.UNSAFE_getByType(OpaqueImageView)).toHaveProp(
+        "imageURL",
+        "http://imageuploadedbymarketingteam.jpg"
+      )
+    })
+
+    it("passes the url of the most marketable artwork in the collection to the collection header when there is no headerImage value present", () => {
+      renderWithRelay({
+        MarketingCollection: () => ({
+          ...CollectionFixture,
+          headerImage: null,
+        }),
+      })
+
+      expect(screen.UNSAFE_queryByType(OpaqueImageView)).toBeOnTheScreen()
+      expect(screen.UNSAFE_getByType(OpaqueImageView)).toHaveProp(
+        "imageURL",
+        "https://defaultmostmarketableartworkincollectionimage.jpg"
+      )
+    })
   })
 
   it("passes the collection header title to collection header", () => {
-    const { queryByText } = renderWithWrappers(<CollectionHeader {...props} />)
+    renderWithRelay({ MarketingCollection: () => CollectionFixture })
 
-    expect(queryByText("Street Art Now")).toBeTruthy()
-  })
-
-  it("passes the url of the most marketable artwork in the collection to the collection header when there is no headerImage value present", () => {
-    props.collection.headerImage = null
-    const { UNSAFE_queryByType, UNSAFE_getByType } = renderWithWrappers(
-      <CollectionHeader {...props} />
-    )
-
-    expect(UNSAFE_queryByType(OpaqueImageView)).toBeTruthy()
-    expect(UNSAFE_getByType(OpaqueImageView)).toHaveProp(
-      "imageURL",
-      "https://defaultmostmarketableartworkincollectionimage.jpg"
-    )
-  })
-
-  it("does not render the Read More component when there is no description", () => {
-    props.collection.descriptionMarkdown = null
-    const { queryByLabelText } = renderWithWrappers(<CollectionHeader {...props} />)
-
-    expect(queryByLabelText("Read more")).toBeNull()
-  })
-
-  it("passes the collection header description to collection header", () => {
-    const { queryByText, queryByLabelText } = renderWithWrappers(<CollectionHeader {...props} />)
-
-    const strArr = [
-      /A beach towel by/,
-      /Yayoi Kusama/,
-      /, a classic print by/,
-      /Alexander Calder/,
-      /, or a piggy bank by/,
-      /Yoshitomo Nara/,
-    ]
-
-    expect(queryByLabelText("Read more")).toBeTruthy()
-    strArr.forEach((str) => {
-      expect(queryByText(str)).toBeTruthy()
-    })
+    expect(screen.getByText("Street Art Now")).toBeOnTheScreen()
   })
 })

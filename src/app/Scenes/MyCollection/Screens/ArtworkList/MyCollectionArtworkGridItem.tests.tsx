@@ -113,9 +113,34 @@ describe("MyCollectionArtworkGridItem", () => {
         marketPriceInsights: {
           demandRank: 0.91,
         },
+        consignmentSubmission: null,
       }),
     })
 
     expect(screen.getByTestId("test-high-demand-icon")).toBeTruthy()
+  })
+
+  it("does not render the high demand icon if artist is P1 and artwork is submitted for sale", () => {
+    renderWithRelay({
+      Artwork: () => ({
+        internalID: "artwork-id",
+        slug: "artwork-slug",
+        artist: {
+          internalID: "artist-id",
+          targetSupply: {
+            isP1: false,
+          },
+        },
+        medium: "artwork medium",
+        marketPriceInsights: {
+          demandRank: 0.91,
+        },
+        consignmentSubmission: {
+          internalID: "submission-id",
+        },
+      }),
+    })
+
+    expect(screen.queryByTestId("test-high-demand-icon")).toBeFalsy()
   })
 })

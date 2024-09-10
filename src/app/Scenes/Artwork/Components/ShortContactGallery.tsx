@@ -1,12 +1,15 @@
 import { EntityHeader, EnvelopeIcon, Flex } from "@artsy/palette-mobile"
+import { MyProfileEditModal_me$key } from "__generated__/MyProfileEditModal_me.graphql"
 import { ShortContactGallery_artwork$key } from "__generated__/ShortContactGallery_artwork.graphql"
+import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
 import { navigateToPartner } from "app/system/navigation/navigate"
 import { TouchableWithoutFeedback } from "react-native"
 import { graphql, useFragment } from "react-relay"
-import { InquiryButtonsFragmentContainer } from "./CommercialButtons/InquiryButtons"
+import { ContactGalleryButton } from "./CommercialButtons/ContactGalleryButton"
 
 interface ShortContactGalleryProps {
   artwork: ShortContactGallery_artwork$key
+  me: MyProfileEditModal_me$key & useSendInquiry_me$key
   partnerHref?: string
   partnerName?: string | null
   locationNames?: string | null
@@ -31,8 +34,9 @@ export const ShortContactGallery: React.FC<ShortContactGalleryProps> = (props) =
           style={{ flex: 1 }}
         />
       </TouchableWithoutFeedback>
-      <InquiryButtonsFragmentContainer
+      <ContactGalleryButton
         artwork={artworkData}
+        me={props.me}
         variant="outline"
         size="small"
         icon={<EnvelopeIcon fill="black100" width="16px" height="16px" />}
@@ -43,6 +47,6 @@ export const ShortContactGallery: React.FC<ShortContactGalleryProps> = (props) =
 
 const artworkFragment = graphql`
   fragment ShortContactGallery_artwork on Artwork {
-    ...InquiryButtons_artwork
+    ...ContactGalleryButton_artwork
   }
 `

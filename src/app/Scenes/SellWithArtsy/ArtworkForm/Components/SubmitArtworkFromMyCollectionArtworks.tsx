@@ -1,14 +1,16 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Button, Flex, LinkText, Message, Spacer, Text } from "@artsy/palette-mobile"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { SubmitArtworkFromMyCollectionArtworksQuery } from "__generated__/SubmitArtworkFromMyCollectionArtworksQuery.graphql"
 import { SubmitArtworkFromMyCollectionArtworks_me$key } from "__generated__/SubmitArtworkFromMyCollectionArtworks_me.graphql"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { PAGE_SIZE } from "app/Components/constants"
+import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
+import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { fetchArtworkInformation } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/fetchArtworkInformation"
 import { getInitialSubmissionFormValuesFromArtwork } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/getInitialSubmissionValuesFromArtwork"
-import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
-import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { dismissModal, switchTab } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useRefreshControl } from "app/utils/refreshHelpers"
@@ -18,7 +20,6 @@ import { Alert } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
-  const { navigateToNextStep } = useSubmissionContext()
   const [isLoading, setIsLoading] = useState(false)
 
   const queryData = useLazyLoadQuery<SubmitArtworkFromMyCollectionArtworksQuery>(
@@ -35,9 +36,13 @@ export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
 
   const nonSubmittedArtworks = artworks.filter((artwork) => !artwork.submissionId)
 
+  const navigation = useNavigation<NavigationProp<SubmitArtworkStackNavigation>>()
+
+  const setCurrentStep = SubmitArtworkFormStore.useStoreActions((actions) => actions.setCurrentStep)
+
   const RefreshControl = useRefreshControl(refetch)
 
-  const { setValues, values } = useFormikContext<ArtworkDetailsFormModel>()
+  const { setValues, values } = useFormikContext<SubmissionModel>()
 
   const handlePress = async (artworkID: string) => {
     try {
@@ -48,15 +53,16 @@ export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
         const formValues = {
           ...getInitialSubmissionFormValuesFromArtwork(artwork),
           submissionId: values.submissionId,
+          externalId: values.externalId,
           userName: values.userName,
           userEmail: values.userEmail,
           userPhone: values.userPhone,
         }
         setValues(formValues)
         setIsLoading(false)
-        navigateToNextStep({
-          step: "AddTitle",
-        })
+
+        navigation.navigate("AddTitle")
+        setCurrentStep("AddTitle")
       }
     } catch (error) {
       Alert.alert(
@@ -93,10 +99,8 @@ export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
         <Button
           block
           onPress={() => {
-            navigateToNextStep({
-              skipMutation: true,
-              step: "AddTitle",
-            })
+            navigation.navigate("AddTitle")
+            setCurrentStep("AddTitle")
           }}
         >
           Add Details Manually

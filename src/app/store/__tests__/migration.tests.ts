@@ -1037,4 +1037,24 @@ describe("App version Versions.AddProgressiveOnboardingModel", () => {
       expect(migratedState.artworkSubmission.draft).toEqual(null)
     })
   })
+
+  describe("App version Versions.DeleteArtworkAndArtistViewOption", () => {
+    const migrationToTest = Versions.DeleteArtworkAndArtistViewOption
+
+    it("removes artworkViewOption and artistViewOption objects", () => {
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(migratedState.artworkSubmission.submission.artworkViewOption).toEqual(undefined)
+
+      expect(migratedState.artworkSubmission.submission.artistViewOption).toEqual(undefined)
+    })
+  })
 })

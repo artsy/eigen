@@ -25,6 +25,7 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
     year: artwork.date,
     artistNames: artwork.artistNames,
     imageURL: artwork.preview?.url ?? null,
+    isInAuction: !!artwork.isInAuction,
   }
   let isSaved = artwork.isSaved
 
@@ -105,6 +106,7 @@ const ArtworkFragment = graphql`
   fragment useSaveArtworkToArtworkLists_artwork on Artwork {
     id
     internalID
+    isInAuction
     isSaved
     slug
     title

@@ -19,6 +19,7 @@ export interface ArtworkEntity {
   year: string | null | undefined
   artistNames: string | null | undefined
   imageURL: string | null | undefined
+  isInAuction: boolean | null | undefined
 }
 
 export type SaveResult = {

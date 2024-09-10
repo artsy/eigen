@@ -106,11 +106,11 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
       </FancyModalHeader>
       <ScrollView
         ref={scrollViewRef}
-        contentContainerStyle={{ padding: 20, paddingBottom: 50 }}
+        contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 50 }}
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
       >
-        <Stack spacing={4}>
+        <Stack spacing={2}>
           <Input
             ref={fullNameRef}
             title="Full name"
@@ -122,6 +122,7 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
             value={address.fullName}
             onChangeText={(e) => handleInputTextChange("fullName", e)}
             testID="input-full-name"
+            onSubmitEditing={() => addressLine1Ref.current?.focus()}
           />
 
           <Input
@@ -135,6 +136,7 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
             value={address.addressLine1}
             onChangeText={(e) => handleInputTextChange("addressLine1", e)}
             testID="input-address-1"
+            onSubmitEditing={() => addressLine2Ref.current?.focus()}
           />
 
           <Input
@@ -152,6 +154,7 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
             value={address.addressLine2}
             onChangeText={(e) => handleInputTextChange("addressLine2", e)}
             testID="input-address-2"
+            onSubmitEditing={() => cityRef.current?.focus()}
           />
 
           <Input
@@ -165,6 +168,7 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
             value={address.city}
             onChangeText={(e) => handleInputTextChange("city", e)}
             testID="input-city"
+            onSubmitEditing={() => stateRef.current?.focus()}
           />
 
           <Input
@@ -178,6 +182,7 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
             value={address.state}
             onChangeText={(e) => handleInputTextChange("state", e)}
             testID="input-state-province-region"
+            onSubmitEditing={() => postalCodeRef.current?.focus()}
           />
 
           <Input
@@ -191,6 +196,7 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
             value={address.postalCode}
             onChangeText={(e) => handleInputTextChange("postalCode", e)}
             testID="input-post-code"
+            onSubmitEditing={() => phoneRef.current?.focus()}
           />
 
           <Input
@@ -212,7 +218,7 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
               const countryError = checkFieldError("country")
 
               return (
-                <Flex mb={4}>
+                <Flex mb={4} mt={2}>
                   <CountrySelect
                     maxModalHeight={height * 0.95}
                     onSelectValue={(value: string) => handleCountrySelection(value)}

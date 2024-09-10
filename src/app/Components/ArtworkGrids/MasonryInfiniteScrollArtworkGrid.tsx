@@ -3,16 +3,16 @@ import { useSpace } from "@artsy/palette-mobile"
 import { MasonryFlashList, MasonryFlashListProps } from "@shopify/flash-list"
 import { PriceOfferMessage } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { MasonryArtworkGridItem } from "app/Components/ArtworkGrids/MasonryArtworkGridItem"
-import { PAGE_SIZE } from "app/Components/constants"
 import { PartnerOffer } from "app/Scenes/Activity/components/NotificationArtworkList"
 import {
   ESTIMATED_MASONRY_ITEM_SIZE,
+  MASONRY_LIST_PAGE_SIZE,
   MasonryArtworkItem,
-  MasonryListFooterComponent,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
   masonryRenderItemProps,
 } from "app/utils/masonryHelpers"
+import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 import { useCallback } from "react"
 import Animated from "react-native-reanimated"
 
@@ -62,7 +62,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   ListHeaderComponent,
   loadMore,
   onPress,
-  pageSize = PAGE_SIZE,
+  pageSize = MASONRY_LIST_PAGE_SIZE,
   partnerOffer,
   priceOfferMessage,
   refreshControl,
@@ -78,30 +78,33 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
     }
   }, [hasMore, isLoading])
 
-  const renderItem = ({ item, index, columnIndex }: masonryRenderItemProps) => (
-    <MasonryArtworkGridItem
-      index={index}
-      item={item}
-      columnIndex={columnIndex}
-      contextModule={contextModule}
-      contextScreenOwnerType={contextScreenOwnerType}
-      contextScreen={contextScreen}
-      contextScreenOwnerId={contextScreenOwnerId}
-      contextScreenOwnerSlug={contextScreenOwnerSlug}
-      numColumns={rest.numColumns}
-      artworkMetaStyle={{
-        // Since the grid is full width,
-        // we need to add padding to the artwork meta to make sure its readable
-        paddingHorizontal: rest.numColumns !== 1 ? 0 : space(2),
-        // Extra space between items for one column artwork grids
-        paddingBottom: rest.numColumns !== 1 ? 0 : artworks.length === 1 ? space(2) : space(4),
-      }}
-      partnerOffer={partnerOffer}
-      priceOfferMessage={priceOfferMessage}
-      onPress={onPress}
-      hideSaleInfo={hideSaleInfo}
-      hideSaveIcon={hideSaveIcon}
-    />
+  const renderItem = useCallback(
+    ({ item, index, columnIndex }: masonryRenderItemProps) => (
+      <MasonryArtworkGridItem
+        index={index}
+        item={item}
+        columnIndex={columnIndex}
+        contextModule={contextModule}
+        contextScreenOwnerType={contextScreenOwnerType}
+        contextScreen={contextScreen}
+        contextScreenOwnerId={contextScreenOwnerId}
+        contextScreenOwnerSlug={contextScreenOwnerSlug}
+        numColumns={rest.numColumns}
+        artworkMetaStyle={{
+          // Since the grid is full width,
+          // we need to add padding to the artwork meta to make sure its readable
+          paddingHorizontal: rest.numColumns !== 1 ? 0 : space(2),
+          // Extra space between items for one column artwork grids
+          paddingBottom: rest.numColumns !== 1 ? 0 : artworks.length === 1 ? space(2) : space(4),
+        }}
+        partnerOffer={partnerOffer}
+        priceOfferMessage={priceOfferMessage}
+        onPress={onPress}
+        hideSaleInfo={hideSaleInfo}
+        hideSaveIcon={hideSaveIcon}
+      />
+    ),
+    [rest.numColumns]
   )
 
   const FlashlistComponent = animated ? AnimatedMasonryFlashList : MasonryFlashList
@@ -137,7 +140,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       refreshControl={refreshControl}
       renderItem={renderItem}
       ListFooterComponent={
-        <MasonryListFooterComponent shouldDisplaySpinner={shouldDisplaySpinner} />
+        <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
       }
       onScroll={rest.onScroll}
     />

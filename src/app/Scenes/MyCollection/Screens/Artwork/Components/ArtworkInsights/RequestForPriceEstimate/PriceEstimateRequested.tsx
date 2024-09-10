@@ -26,8 +26,7 @@ export const PriceEstimateRequested: React.FC<PriceEstimateRequestedProps> = ({
           Price Estimate Request Sent
         </Text>
       </Flex>
-
-      <Separator mt={2} mb={2} borderColor="black10" />
+      <Separator my={4} borderColor="black10" />
     </Box>
   )
 }

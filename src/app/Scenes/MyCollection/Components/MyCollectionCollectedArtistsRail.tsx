@@ -1,18 +1,7 @@
-import {
-  Avatar,
-  Flex,
-  Spacer,
-  Spinner,
-  Text,
-  ToolTip,
-  Touchable,
-  useSpace,
-} from "@artsy/palette-mobile"
+import { Avatar, Flex, Spacer, Spinner, Text, Touchable, useSpace } from "@artsy/palette-mobile"
 import { MyCollectionCollectedArtistsRail_artist$key } from "__generated__/MyCollectionCollectedArtistsRail_artist.graphql"
 import { MyCollectionCollectedArtistsRail_me$key } from "__generated__/MyCollectionCollectedArtistsRail_me.graphql"
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
 import { Animated } from "react-native"
 import { useFragment, usePaginationFragment, graphql } from "react-relay"
 
@@ -25,8 +14,6 @@ export const ARTIST_CIRCLE_DIAMETER = 100
 export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArtistsRailProps> = ({
   me,
 }) => {
-  const enableCollectedArtistsOnboarding = useFeatureFlag("ARShowCollectedArtistOnboarding")
-  const { showVisualClue } = useVisualClue()
   const space = useSpace()
 
   const { data, hasNext, loadNext, isLoadingNext } = usePaginationFragment(
@@ -60,36 +47,10 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
         horizontal
         showsHorizontalScrollIndicator={false}
         data={filteredUserInterests}
-        renderItem={({ item, index }) => {
+        renderItem={({ item }) => {
           if (item?.node && item.internalID && item.node.internalID) {
             return (
-              <ToolTip
-                enabled={
-                  !!enableCollectedArtistsOnboarding &&
-                  index === 1 &&
-                  showVisualClue("MyCollectionArtistsCollectedOnboardingTooltip1") &&
-                  !showVisualClue("MyCollectionArtistsCollectedOnboarding")
-                }
-                initialToolTipText="Tap to review your artist"
-                onPress={() => {
-                  setVisualClueAsSeen("MyCollectionArtistsCollectedOnboardingTooltip1")
-                }}
-                position="BOTTOM"
-                tapToDismiss
-                xOffset={-10}
-                yOffset={15}
-              >
-                <Artist
-                  key={item.node.internalID}
-                  artist={item.node}
-                  interestId={item.internalID}
-                  onPress={() => {
-                    if (!enableCollectedArtistsOnboarding) return
-
-                    setVisualClueAsSeen("MyCollectionArtistsCollectedOnboardingTooltip1")
-                  }}
-                />
-              </ToolTip>
+              <Artist key={item.node.internalID} artist={item.node} interestId={item.internalID} />
             )
           }
           return null
@@ -187,7 +148,7 @@ const artistFragment = graphql`
     name
     initials
     image {
-      url
+      url(version: "small")
     }
   }
 `

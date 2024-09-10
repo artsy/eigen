@@ -7,7 +7,6 @@ import {
   Flex,
   useSpace,
   useScreenDimensions,
-  Spinner,
 } from "@artsy/palette-mobile"
 import { GeneArtworks_gene$data } from "__generated__/GeneArtworks_gene.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
@@ -15,13 +14,14 @@ import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilter
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { GeneArtworksFilterHeader } from "app/Components/Gene/GeneArtworksFilterHeader"
-import { PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   ESTIMATED_MASONRY_ITEM_SIZE,
+  MASONRY_LIST_PAGE_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
 } from "app/utils/masonryHelpers"
+import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useRef, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -34,11 +34,13 @@ interface GeneArtworksContainerProps {
 
 export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ gene, relay }) => {
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const space = useSpace()
   const tracking = useTracking()
   const { width } = useScreenDimensions()
   const artworks = extractNodes(gene.artworks)
-  const shouldDisplaySpinner = !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
+  const shouldDisplaySpinner =
+    !!isLoading && !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
 
   const artworksTotal = gene.artworks?.counts?.total ?? 0
   const initialArtworksTotal = useRef(artworksTotal)
@@ -47,6 +49,7 @@ export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ ge
     relay,
     aggregations: gene.artworks?.aggregations,
     componentPath: "Gene/GeneArtworks",
+    pageSize: MASONRY_LIST_PAGE_SIZE,
   })
 
   const trackClear = () => {
@@ -68,9 +71,37 @@ export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ ge
 
   const loadMore = useCallback(() => {
     if (relay.hasMore() && !relay.isLoading()) {
-      relay.loadMore(PAGE_SIZE)
+      // IMPORTANT: this is a workaround to show the spinner concistently between refetches of pages
+      // and it is not needed for grids that use relay hooks since isLoadingNext works better than the
+      // legacy container API. See FairArtworks.tsx for an example of how to use with relay hooks.
+      setIsLoading(true)
+      relay.loadMore(MASONRY_LIST_PAGE_SIZE, () => {
+        setIsLoading(false)
+      })
     }
   }, [relay.hasMore(), relay.isLoading()])
+
+  const renderItem = useCallback(({ item, columnIndex }) => {
+    const imgAspectRatio = item.image?.aspectRatio ?? 1
+    const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
+    const imgHeight = imgWidth / imgAspectRatio
+
+    return (
+      <Flex
+        pl={columnIndex === 0 ? 0 : 1}
+        pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
+        mt={2}
+      >
+        <ArtworkGridItem
+          contextScreenOwnerType={OwnerType.gene}
+          contextScreenOwnerId={gene.internalID}
+          contextScreenOwnerSlug={gene.slug}
+          artwork={item}
+          height={imgHeight}
+        />
+      </Flex>
+    )
+  }, [])
 
   return (
     <>
@@ -93,35 +124,11 @@ export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ ge
           )
         }
         keyExtractor={(item) => item.id}
-        renderItem={({ item, columnIndex }) => {
-          const imgAspectRatio = item.image?.aspectRatio ?? 1
-          const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
-          const imgHeight = imgWidth / imgAspectRatio
-
-          return (
-            <Flex
-              pl={columnIndex === 0 ? 0 : 1}
-              pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
-              mt={2}
-            >
-              <ArtworkGridItem
-                contextScreenOwnerType={OwnerType.gene}
-                contextScreenOwnerId={gene.internalID}
-                contextScreenOwnerSlug={gene.slug}
-                artwork={item}
-                height={imgHeight}
-              />
-            </Flex>
-          )
-        }}
+        renderItem={renderItem}
         onEndReached={loadMore}
         onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
         ListFooterComponent={
-          shouldDisplaySpinner ? (
-            <Flex my={4} flexDirection="row" justifyContent="center">
-              <Spinner />
-            </Flex>
-          ) : null
+          <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
         }
         // need to pass zIndex: 1 here in order for the SubTabBar to
         // be visible above list content

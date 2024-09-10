@@ -72,23 +72,13 @@ export interface BidderPositionResult {
 
 // values from the Tipsi PaymentCardTextField component
 export interface PaymentCardTextFieldParams {
-  number: string
-  expMonth: string | number
-  expYear: string | number
-  cvc: string
+  last4: string
+  expiryMonth: string | number
+  expiryYear: string | number
   name?: string
   addressLine1?: string
   addressLine2?: string
   addressCity?: string
   addressState?: string
   addressZip?: string
-}
-
-export interface StripeToken {
-  tokenId: string
-  created: number
-  livemode: 1 | 0
-  card: any
-  bankAccount: any
-  extra: any
 }

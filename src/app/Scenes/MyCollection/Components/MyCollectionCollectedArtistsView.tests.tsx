@@ -1,93 +1,40 @@
+import { screen } from "@testing-library/react-native"
 import { MyCollectionCollectedArtistsViewTestsQuery } from "__generated__/MyCollectionCollectedArtistsViewTestsQuery.graphql"
 import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
 import { MyCollectionCollectedArtistsView } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistsView"
 import { MyCollectionTabsStoreProvider } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 
 describe("MyCollectionCollectedArtistsView", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
-  const TestRenderer = () => {
-    return (
+  const { renderWithRelay } = setupTestWrapper<MyCollectionCollectedArtistsViewTestsQuery>({
+    Component: ({ me }) => (
       <MyCollectionArtworksKeywordStore.Provider>
         <MyCollectionTabsStoreProvider>
-          <QueryRenderer<MyCollectionCollectedArtistsViewTestsQuery>
-            environment={mockEnvironment}
-            query={graphql`
-              query MyCollectionCollectedArtistsViewTestsQuery @relay_test_operation {
-                me {
-                  ...MyCollectionCollectedArtistsView_me
-                }
-              }
-            `}
-            render={({ props }) => {
-              if (!props?.me) {
-                return null
-              }
-              return <MyCollectionCollectedArtistsView me={props.me} />
-            }}
-            variables={{}}
-          />
+          <MyCollectionCollectedArtistsView me={me} />
         </MyCollectionTabsStoreProvider>
       </MyCollectionArtworksKeywordStore.Provider>
-    )
-  }
-
-  it("renders collected artist in a list", async () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Me() {
-        return mockUserInterest
-      },
-    })
-
-    __globalStoreTestUtils__?.injectState({
-      userPrefs: { artworkViewOption: "list" },
-    })
-    await expect(__globalStoreTestUtils__?.getCurrentState().userPrefs.artworkViewOption).toEqual(
-      "list"
-    )
-
-    await expect(getByText("Rhombie Sandoval")).toBeTruthy()
-    await expect(getByText("Banksy")).toBeTruthy()
+    ),
+    query: graphql`
+      query MyCollectionCollectedArtistsViewTestsQuery @relay_test_operation {
+        me @required(action: NONE) {
+          ...MyCollectionCollectedArtistsView_me
+        }
+      }
+    `,
   })
 
-  it("renders collected artist in a grid", async () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Me() {
-        return mockUserInterest
-      },
-    })
+  it("renders collected artists", async () => {
+    renderWithRelay({ Me: () => mockUserInterest })
 
-    __globalStoreTestUtils__?.injectState({
-      userPrefs: { artworkViewOption: "grid" },
-    })
-    await expect(__globalStoreTestUtils__?.getCurrentState().userPrefs.artworkViewOption).toEqual(
-      "grid"
-    )
-
-    await expect(getByText("Rhombie Sandoval")).toBeTruthy()
-    await expect(getByText("Banksy")).toBeTruthy()
+    await expect(screen.getByText("Rhombie Sandoval")).toBeTruthy()
+    await expect(screen.getByText("Banksy")).toBeTruthy()
   })
 
   it("renders the privacy lock next to the artist name", async () => {
-    const { getAllByTestId } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Me() {
-        return mockUserInterest
-      },
-    })
+    renderWithRelay({ Me: () => mockUserInterest })
 
-    await expect(getAllByTestId("lock-icon")).toHaveLength(2)
+    await expect(screen.getAllByTestId("lock-icon")).toHaveLength(2)
   })
 })
 

@@ -13,7 +13,6 @@ import {
   SavedSearchStoreProvider,
   savedSearchModel,
 } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -141,11 +140,12 @@ describe("CreateSavedSearchModal", () => {
     expect(screen.getByTestId("save-alert-button")).toBeOnTheScreen()
 
     fireEvent.press(screen.getByTestId("save-alert-button"))
-    await flushPromiseQueue()
 
-    expect(mockNavigate).toHaveBeenCalledWith("ConfirmationScreen", {
-      alertID: "new-alert-4242",
-      searchCriteriaID: "criteria-id",
-    })
+    await waitFor(() =>
+      expect(mockNavigate).toHaveBeenCalledWith("ConfirmationScreen", {
+        alertID: "new-alert-4242",
+        searchCriteriaID: "criteria-id",
+      })
+    )
   })
 })

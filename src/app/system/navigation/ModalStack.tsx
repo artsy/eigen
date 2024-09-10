@@ -8,6 +8,7 @@ import { addBreadcrumb } from "@sentry/react-native"
 import { AppModule, modules } from "app/AppRegistry"
 import { LoadingSpinner } from "app/Components/Modals/LoadingModal"
 import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { logNavigation } from "app/utils/loggers"
@@ -61,6 +62,10 @@ export const ModalStack: React.FC = ({ children }) => {
         const currentRoute = __unsafe_mainModalStackRef.current?.getCurrentRoute()
 
         if (currentRoute) {
+          if (Platform.OS === "ios") {
+            LegacyNativeModules.ARTDeeplinkTimeoutModule.invalidateDeeplinkTimeout()
+          }
+
           const params = currentRoute.params as any
 
           if (__DEV__ && logNavigation) {

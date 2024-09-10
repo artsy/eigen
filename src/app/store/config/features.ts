@@ -64,35 +64,15 @@ export const features = {
     description: "Use artworksConnection for Auction screen",
     echoFlagKey: "AREnableArtworksConnectionForAuction",
   },
-  AREnableCuratorsPickRail: {
-    description: "Enable Curators Pick Rail",
-    readyForRelease: true,
-    echoFlagKey: "AREnableCuratorsPickRail",
-  },
   ARImpressionsTrackingHomeRailViews: {
     description: "Enable tracking rail views on home screen",
     readyForRelease: true,
     echoFlagKey: "ARImpressionsTrackingHomeRailViews",
   },
-  AREnableSkeletonAnimation: {
-    description: "Enable Skeleton Animation",
-    readyForRelease: true,
-    echoFlagKey: "AREnableSkeletonAnimation",
-  },
   ARImpressionsTrackingHomeItemViews: {
     description: "Enable Tracking Items views on Home Screen",
     readyForRelease: true,
     echoFlagKey: "ARImpressionsTrackingHomeItemViews",
-  },
-  AREnableDoMoreOnArtsyRail: {
-    description: "Enable Do More on Artsy Rail",
-    readyForRelease: true,
-    echoFlagKey: "AREnableDoMoreOnArtsyRail",
-  },
-  AREnableArtworksLists: {
-    readyForRelease: true,
-    description: "Enable Artwork Lists",
-    echoFlagKey: "AREnableArtworksLists",
   },
   AREnableNewAuctionsRailCard: {
     description: "Enable New Auctions Home Rail Card",
@@ -101,14 +81,9 @@ export const features = {
   },
   AREnableNewCollectorSettings: {
     description: "Enable New Collector Settings",
-    readyForRelease: false,
+    readyForRelease: true,
     echoFlagKey: "AREnableNewCollectorSettings",
     showInDevMenu: true,
-  },
-  AREnableMyCollectionCollectedArtists: {
-    description: "Enable Collected Artists in My Collection",
-    readyForRelease: true,
-    echoFlagKey: "AREnableMyCollectionCollectedArtists",
   },
   // TODO: need to refresh it, not released yet but marked as ready since 3 months
   AREnableLongPressOnArtworkCards: {
@@ -131,11 +106,6 @@ export const features = {
     description: "Send additional events to Sift on Android",
     readyForRelease: true,
     echoFlagKey: "AREnableAdditionalSiftAndroidTracking",
-  },
-  ARShowCollectedArtistOnboarding: {
-    description: "Show Collected Artist Onboarding",
-    readyForRelease: true,
-    echoFlagKey: "ARShowCollectedArtistOnboarding",
   },
   AREnableAuctionHeaderAlertCTA: {
     description: "Enable Auction Header Alert CTA",
@@ -183,11 +153,16 @@ export const features = {
     readyForRelease: true,
     echoFlagKey: "AREnablePartnerOffersNotificationSwitch",
   },
-
   AREnablePartnerOffer: {
     description: "Enable partner offer content in the app",
     readyForRelease: true,
     echoFlagKey: "AREnablePartnerOffer",
+  },
+  AREnableExpiredPartnerOffers: {
+    description: "Enable expired partner offers handling",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableExpiredPartnerOffers",
   },
   AREnableArtistSeriesSuggestions: {
     description: "Enable artist series suggestions",
@@ -265,23 +240,40 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "ARSWAMakeAllDimensionsOptional",
   },
-  AREnableNewSubmissionFlow: {
-    description: "Enable new submission flow",
+  AREnableSubmitArtworkTier2Information: {
+    description: "Enable submit artwork tier 2 information",
     readyForRelease: true,
     showInDevMenu: true,
-    echoFlagKey: "AREnableNewSubmissionFlow",
+    echoFlagKey: "AREnableSubmitArtworkTier2Information",
   },
-  AREnableSubmitMyCollectionArtworkInSubmitFlow: {
-    description: "Enable Start Submission from My Collection in submit artwork flow",
+  AREnableCollectorProfilePrompts: {
     readyForRelease: true,
+    description: "Enable prompts to update collector profile",
     showInDevMenu: true,
-    echoFlagKey: "AREnableSubmitMyCollectionArtworkInSubmitFlowNew",
+    echoFlagKey: "AREnableCollectorProfilePrompts",
   },
-  AREnableSaveAndContinueSubmission: {
-    description: "Enable save and continue submission flow",
+  AREnablePartnerOfferSignals: {
+    description: "Enable partner offer signals",
     readyForRelease: true,
     showInDevMenu: true,
-    echoFlagKey: "AREnableSaveAndContinueSubmission",
+    echoFlagKey: "AREnablePartnerOfferSignals",
+  },
+  AREnableAuctionImprovementsSignals: {
+    description: "Enable new auction lot signals",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableAuctionImprovementsSignals",
+  },
+  ARPreferLegacyHomeScreen: {
+    description: "Prefer legacy home screen",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
+  AREnableCollectionsWithoutHeaderImage: {
+    description: "Remove the header image from collections",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableCollectionsWithoutHeaderImage",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 
@@ -352,12 +344,6 @@ export const devToggles: { [key: string]: DevToggleDescriptor } = {
   },
   DTEnableNewImageLabel: {
     description: "Show a label on new OpaqueImageView",
-  },
-  DTSkipSubmissionCreate: {
-    description: "Skip submission creation",
-  },
-  DTShowSubmissionDevHelpers: {
-    description: "Show dev helpers in submission flow",
   },
 }
 

@@ -49,7 +49,7 @@ export const ViewingRoomsHomeMainRail: React.FC<ViewingRoomsHomeMainRailProps> =
             trackInfo={{ screen: Schema.PageNames.Home, ownerType: Schema.OwnerEntityTypes.Home }}
           />
         ) : (
-          <Suspense fallback={<Placeholder />}>
+          <Suspense fallback={<ViewingRoomsRailPlaceholder />}>
             <ViewingRoomsHomeRail
               trackInfo={{ screen: Schema.PageNames.Home, ownerType: Schema.OwnerEntityTypes.Home }}
             />
@@ -60,9 +60,9 @@ export const ViewingRoomsHomeMainRail: React.FC<ViewingRoomsHomeMainRailProps> =
   }
 )
 
-const Placeholder = () => (
+export const ViewingRoomsRailPlaceholder = () => (
   <ProvidePlaceholderContext>
-    <Flex ml={2}>
+    <Flex ml={2} testID="viewing-room-rail-placeholder">
       <Flex flexDirection="row">
         {times(4).map((i) => (
           <PlaceholderBox key={i} width={280} height={370} marginRight={15} />

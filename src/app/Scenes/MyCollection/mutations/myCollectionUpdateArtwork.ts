@@ -14,7 +14,6 @@ export function myCollectionUpdateArtwork(
               ... on MyCollectionArtworkMutationSuccess {
                 artwork {
                   ...MyCollectionArtwork_sharedProps @relay(mask: false)
-                  ...MyCollectionArtwork_sharedProps @relay(mask: false)
                 }
               }
               ... on MyCollectionArtworkMutationFailure {

@@ -6,4 +6,3 @@ bundle check || bundle install
 brew bundle
 yarn install
 yarn pod-install
-yarn jetifier

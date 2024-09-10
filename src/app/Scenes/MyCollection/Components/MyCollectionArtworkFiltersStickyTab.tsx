@@ -11,9 +11,13 @@ import {
 } from "@artsy/palette-mobile"
 import SearchIcon from "app/Components/Icons/SearchIcon"
 import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
-import { FiltersProps } from "app/Scenes/MyCollection/Components/MyCollectionStickyHeader"
 import { debounce } from "lodash"
 import { useEffect, useState } from "react"
+
+export interface FiltersProps {
+  filtersCount: number
+  showModal: () => void
+}
 
 const FILTER_ICON_WIDTH = 40
 

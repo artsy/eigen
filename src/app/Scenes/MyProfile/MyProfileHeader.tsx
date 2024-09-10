@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType, TappedCompleteYourProfile } from "@artsy/cohesion"
 import {
   Avatar,
   Box,
@@ -20,6 +21,8 @@ import {
   SkeletonBox,
   Skeleton,
   SkeletonText,
+  Button,
+  Image,
 } from "@artsy/palette-mobile"
 import { MyProfileHeaderQuery } from "__generated__/MyProfileHeaderQuery.graphql"
 import { MyProfileHeader_me$key } from "__generated__/MyProfileHeader_me.graphql"
@@ -29,13 +32,17 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { useRefetch } from "app/utils/relayHelpers"
-import { Image, TouchableOpacity } from "react-native"
+import { Image as RNImage, TouchableOpacity } from "react-native"
 import { useFragment, useLazyLoadQuery, graphql } from "react-relay"
 import { normalizeMyProfileBio } from "./utils"
 
 const ICON_SIZE = 14
 
-export const MyProfileHeader: React.FC<{ meProp: MyProfileHeader_me$key }> = ({ meProp }) => {
+interface MyProfileHeaderProps {
+  meProp: MyProfileHeader_me$key
+}
+
+export const MyProfileHeader: React.FC<MyProfileHeaderProps> = ({ meProp }) => {
   const { fetchKey, refetch } = useRefetch()
   const me = useFragment<MyProfileHeader_me$key>(myProfileHeaderFragment, meProp)
 
@@ -77,7 +84,7 @@ export const MyProfileHeader: React.FC<{ meProp: MyProfileHeader_me$key }> = ({ 
               {!!userProfileImagePath ? (
                 <Avatar src={userProfileImagePath} size="xs" />
               ) : (
-                <Image source={require("images/profile_placeholder_avatar.webp")} />
+                <RNImage source={require("images/profile_placeholder_avatar.webp")} />
               )}
             </TouchableOpacity>
           </Box>
@@ -149,6 +156,9 @@ export const MyProfileHeader: React.FC<{ meProp: MyProfileHeader_me$key }> = ({ 
     )
   }
 
+  const isProfileComplete =
+    !!me.location?.display && !!me.profession && !!me.icon?.url && !!me.isIdentityVerified
+
   return (
     <Flex justifyContent="center" alignItems="center" gap={space(0.5)} py={1} px={2}>
       <Flex position="absolute" top={space(1)} right={space(2)}>
@@ -168,7 +178,7 @@ export const MyProfileHeader: React.FC<{ meProp: MyProfileHeader_me$key }> = ({ 
           }
           style={{ height: "100%" }}
         >
-          <SettingsIcon />
+          <SettingsIcon width={24} height={24} />
         </Touchable>
       </Flex>
 
@@ -193,8 +203,10 @@ export const MyProfileHeader: React.FC<{ meProp: MyProfileHeader_me$key }> = ({ 
             alignItems: "center",
           }}
         >
-          {!!userProfileImagePath ? (
-            <Avatar src={userProfileImagePath} size="xs" />
+          {!!me?.icon?.url ? (
+            <Flex overflow="hidden" borderRadius={35}>
+              <Image src={me.icon.url} height={70} width={70} performResize={false} />
+            </Flex>
           ) : (
             <PersonIcon width={24} height={24} />
           )}
@@ -207,6 +219,7 @@ export const MyProfileHeader: React.FC<{ meProp: MyProfileHeader_me$key }> = ({ 
           <Text variant="md" color={color("black100")}>
             {me.name}
           </Text>
+
           {!!me.collectorProfile.confirmedBuyerAt && <VerifiedPersonIcon />}
           {!!me.isIdentityVerified && <ShieldFilledIcon />}
         </Flex>
@@ -218,6 +231,24 @@ export const MyProfileHeader: React.FC<{ meProp: MyProfileHeader_me$key }> = ({ 
               {me.location.display}
             </Text>
           </Flex>
+        )}
+
+        {!isProfileComplete && (
+          <>
+            <Spacer y={2} />
+            <Flex alignItems="center">
+              <Button
+                variant="outline"
+                size="small"
+                onPress={() => {
+                  tracks.tappedCompleteMyProfile({ id: me.internalID })
+                  navigate("/complete-my-profile", { passProps: { meKey: me } })
+                }}
+              >
+                Complete My Profile
+              </Button>
+            </Flex>
+          </>
         )}
       </Flex>
 
@@ -358,6 +389,9 @@ const MyProfileHeaderPlaceholder: React.FC<{}> = () => {
 
 const myProfileHeaderFragment = graphql`
   fragment MyProfileHeader_me on Me {
+    ...useCompleteMyProfileSteps_me
+
+    internalID
     name
     bio
     location {
@@ -389,7 +423,7 @@ const myProfileHeaderQuery = graphql`
   }
 `
 
-export const MyProfileHeaderQueryRenderer = withSuspense(() => {
+export const MyProfileHeaderQueryRenderer = withSuspense((props) => {
   const data = useLazyLoadQuery<MyProfileHeaderQuery>(
     myProfileHeaderQuery,
     {},
@@ -402,5 +436,15 @@ export const MyProfileHeaderQueryRenderer = withSuspense(() => {
   )
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  return <MyProfileHeader meProp={data.me!} />
+  return <MyProfileHeader meProp={data.me!} {...props} />
 }, MyProfileHeaderPlaceholder)
+
+const tracks = {
+  tappedCompleteMyProfile: ({ id }: { id: string }): TappedCompleteYourProfile => ({
+    action: ActionType.tappedCompleteYourProfile,
+    context_module: ContextModule.collectorProfile,
+    context_screen_owner_type: OwnerType.profile,
+    context_screen_owner_id: id,
+    user_id: id,
+  }),
+}

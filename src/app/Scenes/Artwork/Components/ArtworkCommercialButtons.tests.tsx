@@ -5,11 +5,12 @@ import { ArtworkStoreProvider } from "app/Scenes/Artwork/ArtworkStore"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
-import { ArtworkInquiryContextState } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
+import { ArtworkInquiryStateProvider } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { DateTime } from "luxon"
+import { Suspense } from "react"
 import { graphql } from "react-relay"
 import { ArtworkCommercialButtons } from "./ArtworkCommercialButtons"
 
@@ -23,30 +24,30 @@ describe("ArtworkCommercialButtons", () => {
       const partnerOffer = extractNodes(props.me!.partnerOffersConnection)[0]
 
       return (
-        <ArtworkInquiryContext.Provider
-          value={{
-            state,
-            dispatch: jest.fn(),
-          }}
-        >
+        <ArtworkInquiryStateProvider>
           <ArtworkStoreProvider>
-            <ArtworkCommercialButtons
-              partnerOffer={partnerOffer}
-              artwork={props.artwork!}
-              me={props.me!}
-            />
+            <Suspense fallback={null}>
+              <ArtworkCommercialButtons
+                partnerOffer={partnerOffer}
+                artwork={props.artwork}
+                me={props.me}
+              />
+            </Suspense>
           </ArtworkStoreProvider>
-        </ArtworkInquiryContext.Provider>
+        </ArtworkInquiryStateProvider>
       )
     },
     query: graphql`
       query ArtworkCommercialButtons_Test_Query {
-        artwork(id: "artworkID") {
+        artwork(id: "artworkID") @required(action: NONE) {
           ...ArtworkCommercialButtons_artwork
         }
 
-        me {
+        me @required(action: NONE) {
           ...ArtworkCommercialButtons_me
+          ...useSendInquiry_me
+          ...MyProfileEditModal_me
+          ...BidButton_me
           partnerOffersConnection(artworkID: "artworkID") {
             edges {
               node {
@@ -57,6 +58,10 @@ describe("ArtworkCommercialButtons", () => {
         }
       }
     `,
+  })
+
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCollectorProfilePrompts: true })
   })
 
   it("renders Purchase button if artwork isAcquireable", () => {
@@ -500,6 +505,156 @@ describe("ArtworkCommercialButtons", () => {
         ]
       `)
     })
+
+    describe("with an active partner offer", () => {
+      it("trackEvent called when Contact Gallery pressed given Offerable and Inquireable artwork", () => {
+        const artwork = {
+          ...ArtworkFixture,
+          isOfferable: true,
+          isInquireable: true,
+          collectorSignals: { partnerOffer: { internalID: "partnerOfferID" }, auction: null },
+        }
+
+        renderWithRelay(
+          {
+            Artwork: () => artwork,
+            Me: () => meFixture,
+          },
+          { auctionState: AuctionTimerState.LIVE_INTEGRATION_UPCOMING }
+        )
+
+        fireEvent.press(screen.getByText("Contact Gallery"))
+
+        expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+          [
+            {
+              "action": "tappedContactGallery",
+              "context_owner_id": "5b2b745e9c18db204fc32e11",
+              "context_owner_slug": "andreas-rod-prinzknecht",
+              "context_owner_type": "artwork",
+              "signal_label": "Limited-Time Offer",
+            },
+          ]
+        `)
+      })
+
+      it("trackEvent called when Contact Gallery pressed given Inquireable artwork", () => {
+        const artwork = {
+          ...ArtworkFixture,
+          isOfferable: true,
+          isInquireable: true,
+          collectorSignals: { partnerOffer: { internalID: "partnerOfferID" }, auction: null },
+        }
+
+        renderWithRelay(
+          {
+            Artwork: () => artwork,
+            Me: () => meFixture,
+          },
+          {
+            auctionState: AuctionTimerState.LIVE_INTEGRATION_UPCOMING,
+          }
+        )
+
+        fireEvent.press(screen.getByText("Contact Gallery"))
+
+        expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+          [
+            {
+              "action": "tappedContactGallery",
+              "context_owner_id": "5b2b745e9c18db204fc32e11",
+              "context_owner_slug": "andreas-rod-prinzknecht",
+              "context_owner_type": "artwork",
+              "signal_label": "Limited-Time Offer",
+            },
+          ]
+        `)
+      })
+    })
+
+    describe("with auction signals", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAuctionImprovementsSignals: true })
+      })
+
+      it("trackEvent called when Contact Gallery pressed given Offerable and Inquireable artwork", () => {
+        const artwork = {
+          ...ArtworkFixture,
+          isOfferable: true,
+          isInquireable: true,
+          collectorSignals: {
+            auction: {
+              lotClosesAt: DateTime.fromMillis(Date.now()).plus({ days: 1 }).toISO(),
+              registrationEndsAt: DateTime.fromMillis(Date.now()).minus({ days: 1 }).toISO(),
+              liveBiddingStarted: false,
+              bidCount: 7,
+              lotWatcherCount: 49,
+            },
+          },
+        }
+
+        renderWithRelay(
+          {
+            Artwork: () => artwork,
+            Me: () => meFixture,
+          },
+          { auctionState: AuctionTimerState.LIVE_INTEGRATION_UPCOMING }
+        )
+
+        fireEvent.press(screen.getByText("Contact Gallery"))
+
+        expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+          [
+            {
+              "action": "tappedContactGallery",
+              "context_owner_id": "5b2b745e9c18db204fc32e11",
+              "context_owner_slug": "andreas-rod-prinzknecht",
+              "context_owner_type": "artwork",
+              "signal_bid_count": 7,
+              "signal_label": "Time left to bid",
+              "signal_lot_watcher_count": 49,
+            },
+          ]
+        `)
+      })
+
+      it("trackEvent called when Contact Gallery pressed given Inquireable artwork", () => {
+        const artwork = {
+          ...ArtworkFixture,
+          isOfferable: true,
+          isInquireable: true,
+          collectorSignals: {
+            auction: { liveBiddingStarted: true, bidCount: 3, lotWatcherCount: 29 },
+          },
+        }
+
+        renderWithRelay(
+          {
+            Artwork: () => artwork,
+            Me: () => meFixture,
+          },
+          {
+            auctionState: AuctionTimerState.LIVE_INTEGRATION_UPCOMING,
+          }
+        )
+
+        fireEvent.press(screen.getByText("Contact Gallery"))
+
+        expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+          [
+            {
+              "action": "tappedContactGallery",
+              "context_owner_id": "5b2b745e9c18db204fc32e11",
+              "context_owner_slug": "andreas-rod-prinzknecht",
+              "context_owner_type": "artwork",
+              "signal_bid_count": 3,
+              "signal_label": "Bidding live now",
+              "signal_lot_watcher_count": 29,
+            },
+          ]
+        `)
+      })
+    })
   })
 
   describe("With AREnablePartnerOfferOnArtworkScreen turned off", () => {
@@ -580,13 +735,6 @@ describe("ArtworkCommercialButtons", () => {
     })
   })
 })
-
-const state: ArtworkInquiryContextState = {
-  shippingLocation: null,
-  inquiryType: null,
-  message: null,
-  inquiryQuestions: [],
-}
 
 const meFixture = {
   id: "id",

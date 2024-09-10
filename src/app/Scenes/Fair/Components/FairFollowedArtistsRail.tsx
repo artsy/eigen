@@ -5,6 +5,11 @@ import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import {
+  CollectorSignals,
+  getArtworkSignalTrackingFields,
+} from "app/utils/getArtworkSignalTrackingFields"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -14,6 +19,7 @@ interface FairFollowedArtistsRailProps {
 
 export const FairFollowedArtistsRail: React.FC<FairFollowedArtistsRailProps> = ({ fair }) => {
   const { trackEvent } = useTracking()
+  const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
   const artworks = extractNodes(fair?.filterArtworksConnection)
 
   if (!artworks.length) {
@@ -22,7 +28,7 @@ export const FairFollowedArtistsRail: React.FC<FairFollowedArtistsRailProps> = (
 
   return (
     <>
-      <Flex px={2}>
+      <Flex>
         <SectionTitle
           title="Works by artists you follow"
           onPress={
@@ -38,10 +44,21 @@ export const FairFollowedArtistsRail: React.FC<FairFollowedArtistsRailProps> = (
       <SmallArtworkRail
         artworks={artworks}
         onPress={(artwork, position) => {
+          if (!artwork.href) {
+            return
+          }
+
           trackEvent(
-            tracks.tappedArtwork(fair, artwork?.internalID ?? "", artwork?.slug ?? "", position)
+            tracks.tappedArtwork(
+              fair,
+              artwork?.internalID ?? "",
+              artwork?.slug ?? "",
+              position,
+              artwork.collectorSignals,
+              AREnableAuctionImprovementsSignals
+            )
           )
-          navigate(artwork?.href!)
+          navigate(artwork.href)
         }}
       />
     </>
@@ -72,7 +89,9 @@ const tracks = {
     fair: FairFollowedArtistsRail_fair$data,
     artworkID: string,
     artworkSlug: string,
-    position: number
+    position: number,
+    collectorSignals: CollectorSignals,
+    auctionSignalsFeatureFlagEnabled: boolean
   ) => ({
     action: ActionType.tappedArtworkGroup,
     context_module: ContextModule.worksByArtistsYouFollowRail,
@@ -84,6 +103,7 @@ const tracks = {
     destination_screen_owner_slug: artworkSlug,
     horizontal_slide_position: position,
     type: "thumbnail",
+    ...getArtworkSignalTrackingFields(collectorSignals, auctionSignalsFeatureFlagEnabled),
   }),
   tappedViewAll: (fair: FairFollowedArtistsRail_fair$data) => ({
     action: ActionType.tappedArtworkGroup,

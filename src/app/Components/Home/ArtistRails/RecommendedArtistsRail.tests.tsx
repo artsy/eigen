@@ -1,38 +1,41 @@
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { RecommendedArtistsRail } from "./RecommendedArtistsRail"
-
-let fakeRelay: any
+import { screen } from "@testing-library/react-native"
+import { RecommendedArtistsRailTestsQuery } from "__generated__/RecommendedArtistsRailTestsQuery.graphql"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
+import { RecommendedArtistsRailFragmentContainer } from "./RecommendedArtistsRail"
 
 describe("RecommendedArtistsRail", () => {
-  beforeEach(() => {
-    fakeRelay = {
-      refetch: jest.fn(),
-    }
+  const { renderWithRelay } = setupTestWrapper<RecommendedArtistsRailTestsQuery>({
+    Component: ({ me }) => {
+      if (!me) {
+        return null
+      }
+      return (
+        <RecommendedArtistsRailFragmentContainer
+          me={me}
+          scrollRef={null}
+          title="Recommended Artists"
+        />
+      )
+    },
+    query: graphql`
+      query RecommendedArtistsRailTestsQuery @relay_test_operation {
+        me {
+          ...RecommendedArtistsRail_me
+        }
+      }
+    `,
   })
 
   it("Renders list of recommended artists without throwing an error", async () => {
-    const { queryByText } = renderWithWrappers(
-      <RecommendedArtistsRail
-        scrollRef={null}
-        title="Recommended Artists"
-        relay={fakeRelay as any}
-        me={mockMe as any}
-      />
-    )
+    renderWithRelay({ Me: () => mockMe })
 
-    expect(queryByText("Rhombie Sandoval")).toBeTruthy()
-    expect(queryByText("Mexican-American, b. 1991")).toBeTruthy()
+    expect(screen.getByText("Rhombie Sandoval")).toBeTruthy()
+    expect(screen.getByText("Mexican-American, b. 1991")).toBeTruthy()
   })
 
   it("returns null if there are no artists", async () => {
-    const { toJSON } = renderWithWrappers(
-      <RecommendedArtistsRail
-        scrollRef={null}
-        title="Recommended Artists"
-        relay={fakeRelay as any}
-        me={emptyMe as any}
-      />
-    )
+    const { toJSON } = renderWithRelay({ Me: () => emptyMe })
 
     expect(toJSON()).toBeNull()
   })

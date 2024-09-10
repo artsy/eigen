@@ -1,97 +1,12 @@
-import { reducer } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import {
-  ArtworkInquiryActions,
-  ArtworkInquiryContextState,
-  InquiryOptions,
-} from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
-
-let inquiryState: ArtworkInquiryContextState
-let inquiryAction: ArtworkInquiryActions
-
-describe("selectInquiryType", () => {
-  it("updates the global state when payload is Request Price", () => {
-    inquiryState = {
-      shippingLocation: null,
-      inquiryType: null,
-      inquiryQuestions: [],
-      message: null,
-    }
-
-    inquiryAction = {
-      type: "selectInquiryType",
-      payload: InquiryOptions.RequestPrice,
-    }
-
-    const r = reducer(inquiryState, inquiryAction)
-
-    expect(r).toEqual({
-      shippingLocation: null,
-      inquiryType: "Inquire on price",
-      inquiryQuestions: [{ questionID: "price_and_availability" }],
-      message: null,
-    })
-  })
-
-  it("updates the global state when payload is Contact gallery", () => {
-    inquiryState = {
-      shippingLocation: null,
-      inquiryType: null,
-      inquiryQuestions: [],
-      message: null,
-    }
-
-    inquiryAction = {
-      type: "selectInquiryType",
-      payload: InquiryOptions.ContactGallery,
-    }
-
-    const r = reducer(inquiryState, inquiryAction)
-
-    expect(r).toEqual({
-      shippingLocation: null,
-      inquiryType: "Contact Gallery",
-      inquiryQuestions: [],
-      message: null,
-    })
-  })
-
-  it("updates the global state when payload is Inquire to purchase", () => {
-    inquiryState = {
-      shippingLocation: null,
-      inquiryType: null,
-      inquiryQuestions: [],
-      message: null,
-    }
-
-    inquiryAction = {
-      type: "selectInquiryType",
-      payload: InquiryOptions.InquireToPurchase,
-    }
-
-    const r = reducer(inquiryState, inquiryAction)
-
-    expect(r).toEqual({
-      shippingLocation: null,
-      inquiryType: "Inquire to purchase",
-      inquiryQuestions: [],
-      message: null,
-    })
-  })
-})
-
-// TODO: Add tests for location reducer
-// describe("selectShippingLocation", () => {})
+  initialArtworkInquiryState,
+  artworkInquiryStateReducer,
+} from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
+import { ArtworkInquiryActions } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
 
 describe("selectInquiryQuestion", () => {
   it("when a question is checked it pushes that question into the inquiryQuestions array", () => {
-    inquiryState = {
-      shippingLocation: null,
-      inquiryType: null,
-      inquiryQuestions: [],
-      message: null,
-    }
-
-    inquiryAction = {
+    const inquiryAction: ArtworkInquiryActions = {
       type: "selectInquiryQuestion",
       payload: {
         questionID: "condition_and_provenance",
@@ -100,20 +15,17 @@ describe("selectInquiryQuestion", () => {
       },
     }
 
-    const r = reducer(inquiryState, inquiryAction)
+    const r = artworkInquiryStateReducer(initialArtworkInquiryState, inquiryAction)
 
     expect(r).toEqual({
-      shippingLocation: null,
-      inquiryType: null,
+      ...initialArtworkInquiryState,
       inquiryQuestions: [{ questionID: "condition_and_provenance", details: null }],
-      message: null,
     })
   })
 
   it("when a question is deselected it gets removed from the inquiryQuestions array", () => {
-    inquiryState = {
-      shippingLocation: null,
-      inquiryType: "Inquire to purchase",
+    const modifiedArtworkInquiryState = {
+      ...initialArtworkInquiryState,
       inquiryQuestions: [
         {
           questionID: "shipping_quote",
@@ -124,10 +36,9 @@ describe("selectInquiryQuestion", () => {
           details: null,
         },
       ],
-      message: null,
     }
 
-    inquiryAction = {
+    const inquiryAction: ArtworkInquiryActions = {
       type: "selectInquiryQuestion",
       payload: {
         questionID: "condition_and_provenance",
@@ -136,13 +47,11 @@ describe("selectInquiryQuestion", () => {
       },
     }
 
-    const r = reducer(inquiryState, inquiryAction)
+    const r = artworkInquiryStateReducer(modifiedArtworkInquiryState, inquiryAction)
 
     expect(r).toEqual({
-      shippingLocation: null,
-      inquiryType: "Inquire to purchase",
+      ...modifiedArtworkInquiryState,
       inquiryQuestions: [{ questionID: "shipping_quote", details: null }],
-      message: null,
     })
   })
 })

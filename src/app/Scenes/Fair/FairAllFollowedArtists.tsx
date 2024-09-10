@@ -20,7 +20,7 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import React, { useState } from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { FairArtworksFragmentContainer } from "./Components/FairArtworks"
+import { FairArtworksWithoutTabs } from "./Components/FairArtworks"
 
 interface FairAllFollowedArtistsProps {
   fair: FairAllFollowedArtists_fair$data
@@ -53,7 +53,7 @@ export const FairAllFollowedArtists: React.FC<FairAllFollowedArtistsProps> = ({
         <Separator />
         <Spacer y={2} />
         <Box px="15px">
-          <FairArtworksFragmentContainer
+          <FairArtworksWithoutTabs
             fair={fair}
             initiallyAppliedFilter={initialFilter}
             aggregations={fairForFilters.filterArtworksConnection?.aggregations as Aggregations}

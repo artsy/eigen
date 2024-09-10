@@ -1,13 +1,17 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { MyCollectionWhySellTestsQuery } from "__generated__/MyCollectionWhySellTestsQuery.graphql"
-import { GlobalStore, __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { QueryRenderer, graphql } from "react-relay"
+import { MockPayloadGenerator, createMockEnvironment } from "relay-test-utils"
 import { MyCollectionWhySell } from "./MyCollectionWhySell"
+
+jest.mock("app/Scenes/SellWithArtsy/ArtworkForm/Utils/fetchArtworkInformation", () => ({
+  fetchArtworkInformation: () => Promise.resolve(artworkWithoutSubmission),
+}))
 
 describe("MyCollectionWhySell", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -51,10 +55,7 @@ describe("MyCollectionWhySell", () => {
     // P1 related tests
     describe("Artwork without submission", () => {
       describe("Navigation", () => {
-        beforeEach(() => {
-          __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewSubmissionFlow: false })
-        })
-        it("navigates to the sale form when Submit for Sale is pressed", () => {
+        it("navigates to the sale form when Submit for Sale is pressed", async () => {
           renderWithWrappers(<TestRenderer contextModule="insights" />)
 
           resolveData({
@@ -63,7 +64,72 @@ describe("MyCollectionWhySell", () => {
           const button = screen.getByTestId("submitArtworkToSellButton")
 
           fireEvent.press(button)
-          expect(navigate).toBeCalledWith("/sell/submissions/new")
+
+          await flushPromiseQueue()
+
+          expect(navigate).toBeCalledWith("/sell/submissions/new", {
+            passProps: {
+              hasStartedFlowFromMyCollection: true,
+              initialStep: "AddTitle",
+              initialValues: {
+                artist: "",
+                artistId: "4dd1584de0091e000100207c",
+                artistSearchResult: {
+                  __typename: "Artist",
+                  displayLabel: "",
+                  href: "",
+                  imageUrl: "",
+                  internalID: "4dd1584de0091e000100207c",
+                },
+                artwork: {
+                  framedDepth: undefined,
+                  framedHeight: undefined,
+                  framedMetric: undefined,
+                  framedWidth: undefined,
+                  internalID: "someInternalId",
+                  isFramed: undefined,
+                  condition: undefined,
+                  conditionDescription: undefined,
+                },
+                attributionClass: "UNIQUE",
+                category: undefined,
+                depth: "13",
+                dimensionsMetric: "cm",
+                editionNumber: "11",
+                editionSizeFormatted: "12",
+                height: "12",
+                initialPhotos: [],
+                location: {
+                  address: "",
+                  address2: "",
+                  city: "",
+                  country: "",
+                  countryCode: "",
+                  state: "",
+                  zipCode: "",
+                },
+                medium: "Photography",
+                myCollectionArtworkID: "someInternalId",
+                photos: [],
+                provenance: "The Provenance",
+                signature: null,
+                source: "MY_COLLECTION",
+                state: "DRAFT",
+                submissionId: null,
+                title: "Welcome Mat",
+                userEmail: "",
+                userName: "",
+                userPhone: "",
+                utmMedium: "",
+                utmSource: "",
+                utmTerm: "",
+                width: "13",
+                year: "2019",
+                additionalDocuments: [],
+                externalId: null,
+              },
+            },
+          })
         })
 
         it("navigates to the explanatory page when learn more is press", () => {
@@ -145,9 +211,6 @@ describe("MyCollectionWhySell", () => {
     })
 
     describe("Behavior", () => {
-      beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewSubmissionFlow: false })
-      })
       it("initializes the submission form", async () => {
         renderWithWrappers(<TestRenderer contextModule="oldAbout" />)
         resolveData({
@@ -159,28 +222,69 @@ describe("MyCollectionWhySell", () => {
 
         await flushPromiseQueue()
 
-        expect(
-          GlobalStore.actions.artworkSubmission.submission.initializeArtworkDetailsForm
-        ).toHaveBeenCalledWith({
-          artist: "Banksy",
-          artistId: "4dd1584de0091e000100207c",
-          attributionClass: "UNIQUE",
-          category: null,
-          depth: "13",
-          dimensionsMetric: "cm",
-          editionNumber: "11",
-          editionSizeFormatted: "12",
-          height: "12",
-          medium: "Photography",
-          provenance: "The Provenance",
-          title: "Welcome Mat",
-          width: "13",
-          year: "2019",
-          source: "MY_COLLECTION",
-          myCollectionArtworkID: "someInternalId",
+        expect(navigate).toHaveBeenCalledWith("/sell/submissions/new", {
+          passProps: {
+            hasStartedFlowFromMyCollection: true,
+            initialStep: "AddTitle",
+            initialValues: {
+              artist: "",
+              artistId: "4dd1584de0091e000100207c",
+              artistSearchResult: {
+                __typename: "Artist",
+                displayLabel: "",
+                href: "",
+                imageUrl: "",
+                internalID: "4dd1584de0091e000100207c",
+              },
+              artwork: {
+                framedDepth: undefined,
+                framedHeight: undefined,
+                framedMetric: undefined,
+                framedWidth: undefined,
+                internalID: "someInternalId",
+                isFramed: undefined,
+                condition: undefined,
+                conditionDescription: undefined,
+              },
+              attributionClass: "UNIQUE",
+              category: undefined,
+              depth: "13",
+              dimensionsMetric: "cm",
+              editionNumber: "11",
+              editionSizeFormatted: "12",
+              height: "12",
+              initialPhotos: [],
+              location: {
+                address: "",
+                address2: "",
+                city: "",
+                country: "",
+                countryCode: "",
+                state: "",
+                zipCode: "",
+              },
+              medium: "Photography",
+              myCollectionArtworkID: "someInternalId",
+              photos: [],
+              provenance: "The Provenance",
+              signature: null,
+              source: "MY_COLLECTION",
+              state: "DRAFT",
+              submissionId: null,
+              title: "Welcome Mat",
+              userEmail: "",
+              userName: "",
+              userPhone: "",
+              utmMedium: "",
+              utmSource: "",
+              utmTerm: "",
+              width: "13",
+              year: "2019",
+              additionalDocuments: [],
+              externalId: null,
+            },
+          },
         })
-
-        expect(navigate).toHaveBeenCalledWith("/sell/submissions/new")
       })
     })
   })
@@ -212,7 +316,7 @@ const artworkWithoutSubmission = {
   internalID: "someInternalId",
   artist: {
     name: "Banksy",
-    targetSupply: { isP1: true },
+    targetSupply: { isTargetSupply: true },
     internalID: "4dd1584de0091e000100207c",
   },
   submissionId: null,
@@ -234,7 +338,7 @@ const notP1Artist = {
   internalID: "someInternalId",
   artist: {
     name: "Daria",
-    targetSupply: { isP1: false },
+    targetSupply: { isTargetSupply: false },
     internalID: "4dd1584de0091e000100207c",
   },
 }

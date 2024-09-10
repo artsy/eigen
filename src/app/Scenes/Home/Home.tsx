@@ -41,7 +41,6 @@ import { CollectionsRailFragmentContainer } from "app/Scenes/Home/Components/Col
 import { EmailConfirmationBannerFragmentContainer } from "app/Scenes/Home/Components/EmailConfirmationBanner"
 import { FairsRailFragmentContainer } from "app/Scenes/Home/Components/FairsRail"
 import { GalleriesForYouBanner } from "app/Scenes/Home/Components/GalleriesForYouBanner"
-import { HomeFeedOnboardingRailFragmentContainer } from "app/Scenes/Home/Components/HomeFeedOnboardingRail"
 import { HomeHeader } from "app/Scenes/Home/Components/HomeHeader"
 import { MarketingCollectionRail } from "app/Scenes/Home/Components/MarketingCollectionRail"
 import { NewWorksForYouRail } from "app/Scenes/Home/Components/NewWorksForYouRail"
@@ -230,13 +229,6 @@ const Home = memo((props: HomeProps) => {
               marketingCollectionSlug="curators-picks-emerging-app"
             />
           )
-        case "homeFeedOnboarding":
-          return (
-            <HomeFeedOnboardingRailFragmentContainer
-              title={item.title}
-              onboardingModule={item.data}
-            />
-          )
         case "heroUnits":
           return <HeroUnitsRail heroUnits={item.data} />
         case "articles":
@@ -297,7 +289,7 @@ const Home = memo((props: HomeProps) => {
         case "galleriesForYouBanner":
           return <GalleriesForYouBanner />
         case "activity":
-          return <ActivityRail title={item.title} notificationsConnection={item.data} />
+          return <ActivityRail title={item.title} viewer={item.data} />
         case "recommendedAuctionLots":
           return (
             <RecommendedAuctionLotsRail
@@ -460,13 +452,6 @@ export const HomeFragmentContainer = memo(
           marketingCollectionsModule {
             ...CollectionsRail_collectionsModule
           }
-          _onboardingModule: onboardingModule @optionalField {
-            showMyCollectionCard
-            showSWACard
-          }
-          onboardingModule @optionalField {
-            ...HomeFeedOnboardingRail_onboardingModule
-          }
         }
       `,
       meAbove: graphql`
@@ -505,7 +490,7 @@ export const HomeFragmentContainer = memo(
       `,
       notificationsConnection: graphql`
         fragment Home_notificationsConnection on Viewer {
-          ...ActivityRail_notificationsConnection @arguments(count: 10)
+          ...ActivityRail_viewer @arguments(count: 10)
           notificationsConnection(first: 10) {
             edges {
               node {

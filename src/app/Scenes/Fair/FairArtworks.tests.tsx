@@ -1,75 +1,43 @@
 import { screen } from "@testing-library/react-native"
 import { FairArtworksTestsQuery } from "__generated__/FairArtworksTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { FairArtworksFragmentContainer } from "app/Scenes/Fair/Components/FairArtworks"
-import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { FairArtworks } from "app/Scenes/Fair/Components/FairArtworks"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 
 describe("FairArtworks", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  const TestRenderer = () => (
-    <QueryRenderer<FairArtworksTestsQuery>
-      query={query}
-      environment={mockEnvironment}
-      variables={{
-        fairID: "art-basel-hong-kong-2020",
-      }}
-      render={({ props, error }) => {
-        if (error) {
-          console.log(error)
-          return null
+  const { renderWithRelay } = setupTestWrapper<FairArtworksTestsQuery>({
+    Component: ({ fair }) => (
+      <ArtworkFiltersStoreProvider>
+        <FairArtworks fair={fair} />
+      </ArtworkFiltersStoreProvider>
+    ),
+    query: graphql`
+      query FairArtworksTestsQuery @relay_test_operation {
+        fair(id: "fair-id") @required(action: NONE) {
+          ...FairArtworks_fair
         }
-
-        if (!props?.fair) {
-          return null
-        }
-
-        return (
-          <ArtworkFiltersStoreProvider>
-            <FairArtworksFragmentContainer fair={props.fair} />
-          </ArtworkFiltersStoreProvider>
-        )
-      }}
-    />
-  )
-
-  beforeEach(() => {
-    mockEnvironment = getMockRelayEnvironment()
+      }
+    `,
   })
 
-  it("renders a grid of artworks", async () => {
-    renderWithWrappers(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Fair: () => fair,
+  it("renders", async () => {
+    renderWithRelay({
+      Fair: () => ({
+        fairArtworks: {
+          edges: [{ node: { title: "Artwork Title" } }],
+          counts: {
+            total: 1,
+          },
+        },
+      }),
     })
 
-    await flushPromiseQueue()
-
-    expect(screen.getByText("Artwork Title")).toBeTruthy()
-  })
-
-  it("requests artworks in batches of 30", () => {
-    renderWithWrappers(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Fair: () => fair,
-    })
-
-    const artworksGridContainer = screen.UNSAFE_getByType(InfiniteScrollArtworksGridContainer)
-    expect(artworksGridContainer.props).toMatchObject({ pageSize: 30 })
+    expect(screen.getByText("Artwork Title")).toBeOnTheScreen()
   })
 
   it("renders empty view if there are no artworks", async () => {
-    renderWithWrappers(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    renderWithRelay({
       Fair: () => ({
         fairArtworks: {
           edges: [],
@@ -80,32 +48,6 @@ describe("FairArtworks", () => {
       }),
     })
 
-    await flushPromiseQueue()
-
-    expect(screen.getByText(/No results found/)).toBeTruthy()
+    expect(screen.getByText(/No results found/)).toBeOnTheScreen()
   })
 })
-
-const query = graphql`
-  query FairArtworksTestsQuery($fairID: String!) @relay_test_operation {
-    fair(id: $fairID) {
-      ...FairArtworks_fair
-    }
-  }
-`
-
-const artwork = {
-  slug: "artwork-slug",
-  id: "artwork-id",
-  internalID: "artwork-internalID",
-  title: "Artwork Title",
-}
-
-const fair = {
-  fairArtworks: {
-    edges: [{ node: artwork }],
-    counts: {
-      total: 1,
-    },
-  },
-}

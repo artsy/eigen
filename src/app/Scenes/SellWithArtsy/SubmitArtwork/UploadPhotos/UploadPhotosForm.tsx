@@ -10,7 +10,6 @@ import {
 } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
 import { removeAssetFromSubmission } from "app/Scenes/SellWithArtsy/mutations/removeAssetFromConsignmentSubmissionMutation"
 import { GlobalStore } from "app/store/GlobalStore"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { useFormikContext } from "formik"
 import React, { useEffect, useState } from "react"
@@ -31,7 +30,6 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
   isAnyPhotoLoading,
 }) => {
   const space = useSpace()
-  const enableNewSubmissionFlow = useFeatureFlag("AREnableNewSubmissionFlow")
 
   const { values, setFieldValue } = useFormikContext<PhotosFormModel>()
   const { submission } = GlobalStore.useAppState((state) => state.artworkSubmission)
@@ -110,17 +108,6 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
 
     const allPhotos = [...values.photos, ...processedPhotos]
 
-    if (!enableNewSubmissionFlow) {
-      // set photos for my collection, and submission flow state and Formik
-      GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
-        photos: allPhotos,
-      })
-      GlobalStore.actions.artworkSubmission.submission.setSubmissionIdForMyCollection(submissionId)
-      GlobalStore.actions.artworkSubmission.submission.setPhotos({
-        photos: allPhotos,
-      })
-    }
-
     setFieldValue("photos", allPhotos)
   }
 
@@ -140,21 +127,6 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
     }
     try {
       const filteredPhotos = values.photos.filter((p: Photo) => p.id !== photo.id)
-
-      if (!enableNewSubmissionFlow) {
-        // set photos for my collection, and submission flow state and Formik
-        GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
-          photos: filteredPhotos,
-        })
-
-        GlobalStore.actions.artworkSubmission.submission.setSubmissionIdForMyCollection(
-          submissionId
-        )
-
-        GlobalStore.actions.artworkSubmission.submission.setPhotos({
-          photos: filteredPhotos,
-        })
-      }
 
       setFieldValue("photos", filteredPhotos)
 

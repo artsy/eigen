@@ -1,4 +1,4 @@
-import { BackButton, Flex, Screen, Text, useSpace } from "@artsy/palette-mobile"
+import { BackButton, Flex, Screen, useSpace } from "@artsy/palette-mobile"
 import { ArtworkLists } from "app/Scenes/ArtworkLists/ArtworkLists"
 import { goBack } from "app/system/navigation/navigate"
 
@@ -11,7 +11,6 @@ export const SavedArtworks = () => {
         leftElements={
           <Flex flexDirection="row" alignItems="center" gap={space(1)}>
             <BackButton onPress={goBack} />
-            <Text>Profile</Text>
           </Flex>
         }
         title="Saves"

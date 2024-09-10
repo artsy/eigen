@@ -1,4 +1,5 @@
 import { Text, LinkText, Checkbox, Button } from "@artsy/palette-mobile"
+import { createToken } from "@stripe/stripe-react-native"
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { BidderPositionQuery$data } from "__generated__/BidderPositionQuery.graphql"
 import { ConfirmBidCreateBidderPositionMutation } from "__generated__/ConfirmBidCreateBidderPositionMutation.graphql"
@@ -18,28 +19,23 @@ import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import NavigatorIOS, {
   NavigatorIOSPushArgs,
 } from "app/utils/__legacy_do_not_use__navigator-ios-shim"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { merge } from "lodash"
 import { TouchableWithoutFeedback } from "react-native"
 import relay from "react-relay"
 import { ReactTestRenderer } from "react-test-renderer"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import stripe from "tipsi-stripe"
 import { BidResultScreen } from "./BidResult"
 import { BillingAddress } from "./BillingAddress"
 import { ConfirmBid, ConfirmBidProps } from "./ConfirmBid"
 import { CreditCardForm } from "./CreditCardForm"
 import { SelectMaxBid } from "./SelectMaxBid"
 
-jest.mock("tipsi-stripe", () => ({
-  setOptions: jest.fn(),
-  paymentRequestWithCardForm: jest.fn(),
-  createTokenWithCard: jest.fn(),
-}))
-
 jest.mock("app/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery", () => ({
   bidderPositionQuery: jest.fn(),
+}))
+
+jest.mock("@stripe/stripe-react-native", () => ({
+  createToken: jest.fn(),
 }))
 
 describe("ConfirmBid", () => {
@@ -271,11 +267,14 @@ describe("ConfirmBid", () => {
       expect(component.root.findAllByType(BidInfoRow).length).toEqual(1)
     })
 
-    it("shows a checkbox and payment info if the user is not registered and has no cc on file", () => {
-      const component = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
+    it("shows a checkbox and payment info if the user is not registered and has no cc on file", async () => {
+      const { root } = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
 
-      expect(component.root.findAllByType(Checkbox).length).toEqual(1)
-      expect(component.root.findAllByType(BidInfoRow).length).toEqual(3)
+      const checkboxs = await root.findAllByType(Checkbox)
+      const bidInfoRows = await root.findAllByType(BidInfoRow)
+
+      expect(checkboxs.length).toEqual(1)
+      expect(bidInfoRows.length).toEqual(2)
     })
   })
 
@@ -703,15 +702,21 @@ describe("ConfirmBid", () => {
   })
 
   describe("ConfirmBid for unqualified user", () => {
-    const fillOutFormAndSubmit = (component: ReactTestRenderer) => {
+    const fillOutFormAndSubmit = async (component: ReactTestRenderer) => {
+      const confirmBidComponent = await component.root.findByType(ConfirmBid)
       // manually setting state to avoid duplicating tests for skipping UI interaction, but practically better not to do this.
-      component.root.findByType(ConfirmBid).instance.setState({ billingAddress })
-      component.root.findByType(ConfirmBid).instance.setState({ creditCardToken: stripeToken })
-      component.root.findByType(Checkbox).props.onPress()
-      findPlaceBidButton(component).props.onPress()
+      confirmBidComponent.instance.setState({ billingAddress })
+      confirmBidComponent.instance.setState({ creditCardToken: stripeToken.token })
+
+      const checkbox = await component.root.findByType(Checkbox)
+      checkbox.props.onPress()
+
+      const bidButton = await findPlaceBidButton(component)
+      bidButton.props.onPress()
     }
 
-    it("shows the billing address that the user typed in the billing address form", () => {
+    // skipping since we don't have billing address now
+    xit("shows the billing address that the user typed in the billing address form", () => {
       const billingAddressRow = mountConfirmBidComponent(
         initialPropsForUnqualifiedUser
       ).root.findAllByType(TouchableWithoutFeedback)[2]
@@ -746,7 +751,7 @@ describe("ConfirmBid", () => {
         onCompleted!({}, null)
         return { dispose: jest.fn() }
       }) as any
-      stripe.createTokenWithCard.mockImplementationOnce(() => {
+      ;(createToken as jest.Mock).mockImplementationOnce(() => {
         throw new Error("Error tokenizing card")
       })
 
@@ -773,8 +778,7 @@ describe("ConfirmBid", () => {
 
     it("shows the error screen with the correct error message on a createCreditCard mutation failure", async () => {
       renderWithWrappers(<ConfirmBid {...initialPropsForUnqualifiedUser} />)
-
-      stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
+      ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
         onCompleted!(mockRequestResponses.creatingCreditCardError, null)
         return { dispose: jest.fn() }
@@ -798,11 +802,11 @@ describe("ConfirmBid", () => {
       expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", false)
     })
 
-    it("shows the error screen with the default error message if there are unhandled errors from the createCreditCard mutation", () => {
+    it("shows the error screen with the default error message if there are unhandled errors from the createCreditCard mutation", async () => {
       const errors = [{ message: "malformed error" }]
 
       console.error = jest.fn() // Silences component logging.
-      stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
+      ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
         onCompleted!({}, errors)
         return { dispose: jest.fn() }
@@ -810,21 +814,25 @@ describe("ConfirmBid", () => {
 
       const component = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
 
-      fillOutFormAndSubmit(component)
+      await fillOutFormAndSubmit(component)
 
-      expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
+      const modal = await component.root.findByType(Modal)
+      const modalText = await modal.findAllByType(Text)
+      const modalButton = await modal.findByType(Button)
+
+      expect(modalText[1].props.children).toEqual([
         "There was a problem processing your information. Check your payment details and try again.",
       ])
-      component.root.findByType(Modal).findByType(Button).props.onPress()
+      modalButton.props.onPress()
 
       // it dismisses the modal
-      expect(component.root.findByType(Modal).props.visible).toEqual(false)
+      expect(modal.props.visible).toEqual(false)
     })
 
     it("shows the error screen with the default error message if the creditCardMutation error message is empty", async () => {
       renderWithWrappers(<ConfirmBid {...initialPropsForUnqualifiedUser} />)
+      ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
 
-      stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
         onCompleted!(mockRequestResponses.creatingCreditCardEmptyError, null)
         return { dispose: jest.fn() }
@@ -850,9 +858,9 @@ describe("ConfirmBid", () => {
       expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", false)
     })
 
-    it("shows the generic error screen on a createCreditCard mutation network failure", () => {
+    it("shows the generic error screen on a createCreditCard mutation network failure", async () => {
       console.error = jest.fn() // Silences component logging.
-      stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
+      ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
       relay.commitMutation = commitMutationMock((_, { onError }) => {
         onError!(new TypeError("Network request failed"))
         return { dispose: jest.fn() }
@@ -860,7 +868,7 @@ describe("ConfirmBid", () => {
 
       const component = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
 
-      fillOutFormAndSubmit(component)
+      await fillOutFormAndSubmit(component)
 
       expect(nextStep?.component).toEqual(BidResultScreen)
       expect(nextStep?.passProps).toEqual(
@@ -876,7 +884,7 @@ describe("ConfirmBid", () => {
 
     describe("After successful mutations", () => {
       beforeEach(() => {
-        stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
+        ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
         relay.commitMutation = jest
           .fn()
           .mockImplementationOnce((_, { onCompleted }) =>
@@ -899,15 +907,15 @@ describe("ConfirmBid", () => {
 
         // UNSAFELY getting the component instance to set state for testing purposes only
         screen.UNSAFE_getByType(ConfirmBid).instance.setState({ billingAddress })
-        screen.UNSAFE_getByType(ConfirmBid).instance.setState({ creditCardToken: stripeToken })
+        screen
+          .UNSAFE_getByType(ConfirmBid)
+          .instance.setState({ creditCardToken: stripeToken.token })
 
         // Check the checkbox and press the Bid button
         fireEvent.press(screen.UNSAFE_getByType(Checkbox))
         fireEvent.press(screen.getByTestId("bid-button"))
 
-        await flushPromiseQueue()
-
-        expect(relay.commitMutation).toHaveBeenCalled()
+        await waitFor(() => expect(relay.commitMutation).toHaveBeenCalled())
         expect(relay.commitMutation).toHaveBeenCalledWith(
           expect.any(Object),
           expect.objectContaining({
@@ -1187,15 +1195,17 @@ describe("ConfirmBid", () => {
   }
 
   const stripeToken = {
-    tokenId: "fake-token",
-    created: "1528229731",
-    livemode: 0,
-    card: {
-      brand: "VISA",
-      last4: "4242",
+    token: {
+      id: "fake-token",
+      created: "1528229731",
+      livemode: 0,
+      card: {
+        brand: "VISA",
+        last4: "4242",
+      },
+      bankAccount: null,
+      extra: null,
     },
-    bankAccount: null,
-    extra: null,
   }
 
   const initialProps: ConfirmBidProps = {

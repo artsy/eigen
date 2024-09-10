@@ -17,8 +17,11 @@ import { NewsScreen, NewsScreenQuery } from "app/Scenes/Articles/News/News"
 import { BrowseSimilarWorksQueryRenderer } from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorks"
 import { ArtworkListScreen } from "app/Scenes/ArtworkList/ArtworkList"
 import { ArtworkRecommendationsScreen } from "app/Scenes/ArtworkRecommendations/ArtworkRecommendations"
+import { CollectionScreen } from "app/Scenes/Collection/Collection"
+import { CompleteMyProfile } from "app/Scenes/CompleteMyProfile/CompleteMyProfile"
 import { GalleriesForYouScreen } from "app/Scenes/GalleriesForYou/GalleriesForYouScreen"
 import { HomeContainer } from "app/Scenes/Home/HomeContainer"
+import { HomeViewScreen } from "app/Scenes/HomeView/HomeView"
 import { AddMyCollectionArtist } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
 import { MyCollectionArtworkEditQueryRenderer } from "app/Scenes/MyCollection/Screens/ArtworkForm/Screens/MyCollectionArtworkEdit"
 import { MyCollectionCollectedArtistsPrivacyQueryRenderer } from "app/Scenes/MyCollection/Screens/CollectedArtistsPrivacy/MyCollectionCollectedArtistsPrivacy"
@@ -70,9 +73,8 @@ import { CityFairListQueryRenderer } from "./Scenes/City/CityFairList"
 import { CityPicker } from "./Scenes/City/CityPicker"
 import { CitySavedListQueryRenderer } from "./Scenes/City/CitySavedList"
 import { CitySectionListQueryRenderer } from "./Scenes/City/CitySectionList"
-import { CollectionQueryRenderer } from "./Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
-import { FairQueryRenderer } from "./Scenes/Fair/Fair"
+import { FairScreen } from "./Scenes/Fair/Fair"
 import { FairAllFollowedArtistsQueryRenderer } from "./Scenes/Fair/FairAllFollowedArtists"
 import { FairArticlesQueryRenderer } from "./Scenes/Fair/FairArticles"
 import { FairMoreInfoQueryRenderer } from "./Scenes/Fair/FairMoreInfo"
@@ -127,7 +129,6 @@ import { EditSavedSearchAlertQueryRenderer } from "./Scenes/SavedSearchAlert/Edi
 import { SavedSearchAlertsListQueryRenderer } from "./Scenes/SavedSearchAlertsList/SavedSearchAlertsList"
 import { ConsignmentInquiryScreen } from "./Scenes/SellWithArtsy/ConsignmentInquiry/ConsignmentInquiryScreen"
 import { SellWithArtsyHomeScreenQuery } from "./Scenes/SellWithArtsy/SellWithArtsyHome"
-import { SubmitArtwork } from "./Scenes/SellWithArtsy/SubmitArtwork/SubmitArtwork"
 import { SellWithArtsy } from "./Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils"
 import { ShowMoreInfoQueryRenderer } from "./Scenes/Show/Screens/ShowMoreInfo"
 import { ShowQueryRenderer } from "./Scenes/Show/Show"
@@ -140,15 +141,10 @@ import {
   ViewingRoomsListScreen,
   viewingRoomsListScreenQuery,
 } from "./Scenes/ViewingRoom/ViewingRoomsList"
-import { GlobalStore, unsafe_getFeatureFlag } from "./store/GlobalStore"
+import { GlobalStore } from "./store/GlobalStore"
 import { propsStore } from "./store/PropsStore"
 import { DevMenu } from "./system/devTools/DevMenu/DevMenu"
-import { Schema, addTrackingProvider, screenTrack } from "./utils/track"
-import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
-import {
-  SEGMENT_TRACKING_PROVIDER,
-  SegmentTrackingProvider,
-} from "./utils/track/SegmentTrackingProvider"
+import { Schema, screenTrack } from "./utils/track"
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
@@ -157,9 +153,6 @@ LogBox.ignoreLogs([
 
   ".removeListener(", // this is coming from https://github.com/facebook/react-native/blob/v0.68.0-rc.2/Libraries/AppState/AppState.js and other libs.
 ])
-
-addTrackingProvider(SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider)
-addTrackingProvider("console", ConsoleTrackingProvider)
 
 interface PartnerLocationsProps {
   partnerID: string
@@ -429,7 +422,11 @@ export const modules = defineModules({
   AuctionRegistration: reactModule(RegistrationFlow, {
     alwaysPresentModally: true,
     hasOwnModalCloseButton: true,
-    fullBleed: true,
+    fullBleed: Platform.OS === "ios",
+    screenOptions: {
+      // Don't allow the screen to be swiped away by mistake
+      gestureEnabled: false,
+    },
   }),
   AuctionBidArtwork: reactModule(BidFlow, {
     alwaysPresentModally: true,
@@ -456,7 +453,7 @@ export const modules = defineModules({
   CityPicker: reactModule(CityPicker, { fullBleed: true, ignoreTabs: true }),
   CitySavedList: reactModule(CitySavedListQueryRenderer),
   CitySectionList: reactModule(CitySectionListQueryRenderer),
-  Collection: reactModule(CollectionQueryRenderer, { fullBleed: true, hidesBackButton: true }),
+  Collection: reactModule(CollectionScreen, { fullBleed: true, hidesBackButton: true }),
   ConsignmentInquiry: reactModule(ConsignmentInquiryScreen, {
     hidesBottomTabs: true,
     screenOptions: {
@@ -471,8 +468,8 @@ export const modules = defineModules({
     hidesBackButton: true,
     hidesBottomTabs: true,
   }),
-  Fair: reactModule(FairQueryRenderer, { fullBleed: true, hidesBackButton: true }),
-  FairMoreInfo: reactModule(FairMoreInfoQueryRenderer),
+  Fair: reactModule(FairScreen, { fullBleed: true, hidesBackButton: true }),
+  FairMoreInfo: reactModule(FairMoreInfoQueryRenderer, { fullBleed: true, hidesBackButton: true }),
   FairArticles: reactModule(FairArticlesQueryRenderer),
   FairAllFollowedArtists: reactModule(FairAllFollowedArtistsQueryRenderer),
   Favorites: reactModule(Favorites, {
@@ -493,6 +490,7 @@ export const modules = defineModules({
   Home: reactModule(HomeContainer, {
     isRootViewForTabName: "home",
   }),
+  HomeView: reactModule(HomeViewScreen, { hidesBackButton: true }),
   Inbox: reactModule(InboxQueryRenderer, { isRootViewForTabName: "inbox" }, [InboxScreenQuery]),
   Inquiry: reactModule(Inquiry, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   LiveAuction: reactModule(LiveAuctionView, {
@@ -526,12 +524,18 @@ export const modules = defineModules({
     hidesBottomTabs: true,
     alwaysPresentModally: true,
     modalPresentationStyle: "fullScreen",
+    screenOptions: {
+      gestureEnabled: false,
+    },
   }),
   MyCollectionArtworkEdit: reactModule(MyCollectionArtworkEditQueryRenderer, {
     hidesBackButton: true,
     hidesBottomTabs: true,
     alwaysPresentModally: true,
     modalPresentationStyle: "fullScreen",
+    screenOptions: {
+      gestureEnabled: false,
+    },
   }),
   MyCollectionAddCollectedArtists: reactModule(MyCollectionAddCollectedArtistsScreen, {
     screenOptions: {
@@ -559,6 +563,11 @@ export const modules = defineModules({
     },
     [MyCollectionScreenQuery]
   ),
+  CompleteMyProfile: reactModule(CompleteMyProfile, {
+    fullBleed: true,
+    hidesBackButton: true,
+    hidesBottomTabs: true,
+  }),
   MyProfileEditForm: reactModule(MyProfileEditFormScreen),
   MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
   MyProfileSettings: reactModule(MyProfileSettings),
@@ -652,17 +661,15 @@ export const modules = defineModules({
     hidesBackButton: true,
     fullBleed: true,
   }),
-  SubmitArtwork: unsafe_getFeatureFlag("AREnableNewSubmissionFlow")
-    ? reactModule(SubmitArtworkForm, {
-        hidesBackButton: true,
-        alwaysPresentModally: true,
-        modalPresentationStyle: "fullScreen",
-        hidesBottomTabs: true,
-        screenOptions: {
-          gestureEnabled: false,
-        },
-      })
-    : reactModule(SubmitArtwork, { hidesBackButton: true, hidesBottomTabs: true }),
+  SubmitArtwork: reactModule(SubmitArtworkForm, {
+    hidesBackButton: true,
+    alwaysPresentModally: true,
+    modalPresentationStyle: "fullScreen",
+    hidesBottomTabs: true,
+    screenOptions: {
+      gestureEnabled: false,
+    },
+  }),
   SubmitArtworkEdit: reactModule(SubmitArtworkFormEdit, {
     hidesBackButton: true,
     alwaysPresentModally: true,

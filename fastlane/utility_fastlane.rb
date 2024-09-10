@@ -71,7 +71,7 @@ end
 lane :tag_and_push do |options|
   # Do a tag, we use a http git remote so we can have push access
   # as the default remote for circle is read-only
-  tag = options[:tag]
+  tag = options[:tag].strip
   `git tag -d "#{tag}"`
   add_git_tag tag: tag
   `git remote add http https://github.com/artsy/eigen.git || true`

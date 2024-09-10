@@ -1,3 +1,4 @@
+import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import {
   artworkDetailsEmptyInitialValues,
   ArtworkDetailsFormModel,
@@ -35,7 +36,7 @@ export interface ArtworkSubmissionModel {
 export interface SubmissionModel {
   draft: {
     submissionID: string
-    currentStep: string
+    currentStep: keyof SubmitArtworkStackNavigation | undefined
   } | null
   submission: ArtworkSubmissionModel
   setDraft: Action<this, this["draft"]>

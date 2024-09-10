@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Spacer, ArrowRightIcon, Flex, Text } from "@artsy/palette-mobile"
+import { Spacer, ArrowRightIcon, Flex, Text, useSpace } from "@artsy/palette-mobile"
 import {
   MyCollectionArtworkArticles_article$data,
   MyCollectionArtworkArticles_article$key,
@@ -20,7 +20,7 @@ interface MyCollectionArtworkArticlesProps {
 
 export const MyCollectionArtworkArticles: React.FC<MyCollectionArtworkArticlesProps> = (props) => {
   const { trackEvent } = useTracking()
-
+  const space = useSpace()
   const articles = useFragment(articleFragment, props.articles)
 
   if (!articles.length) {
@@ -28,15 +28,15 @@ export const MyCollectionArtworkArticles: React.FC<MyCollectionArtworkArticlesPr
   }
 
   return (
-    <Flex mb={4} mt={2}>
+    <Flex mt={2}>
       <TouchableOpacity
         onPress={() => {
           trackEvent(tracks.tappedArticleGroup())
           navigate(`/artist/${props.artistSlug}/articles`)
         }}
       >
-        <Flex flexDirection="row" alignItems="flex-start" mb={2}>
-          <Flex flex={1} flexDirection="row">
+        <Flex flexDirection="row" alignItems="flex-start" mb={2} px={2}>
+          <Flex flex={1} flexDirection="row" mb={1}>
             <Text variant="sm-display">{`Articles featuring ${props.artistNames || ""}`}</Text>
             {!!props?.totalCount && (
               <Text variant="xs" color="blue100" ml={0.5} mt={-0.5}>
@@ -60,6 +60,7 @@ export const MyCollectionArtworkArticles: React.FC<MyCollectionArtworkArticlesPr
         initialNumToRender={2}
         showsHorizontalScrollIndicator={false}
         data={articles}
+        contentContainerStyle={{ paddingHorizontal: space(2) }}
         keyExtractor={(item) => item.id}
         renderItem={({ item, index }) => (
           <ArticleCardContainer

@@ -69,6 +69,7 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
 
             <Spacer y={0.5} />
 
+            {/* @ts-ignore: fix ExpiresInTimer fragment data */}
             {shouldDisplayExpiresInTimer(notificationType, item) && <ExpiresInTimer item={item} />}
 
             <Spacer y={2} />

@@ -12,7 +12,6 @@ import { WaysWeSell } from "app/Scenes/SellWithArtsy/Components/WaysWeSell"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { RefreshEvents, SELL_SCREEN_REFRESH_KEY } from "app/utils/refreshHelpers"
 import { useSwitchStatusBarStyle } from "app/utils/useStatusBarStyle"
 import { compact } from "lodash"
@@ -28,7 +27,7 @@ import { SellWithArtsyRecentlySold } from "./Components/SellWithArtsyRecentlySol
 export const SellWithArtsyHome: React.FC = () => {
   const { draft } = GlobalStore.useAppState((state) => state.artworkSubmission)
 
-  const submissionID = draft?.submissionID
+  const id = draft?.submissionID
 
   const [fetchKey, increaseFetchKey] = useReducer((state) => state + 1, 0)
 
@@ -45,7 +44,7 @@ export const SellWithArtsyHome: React.FC = () => {
 
   const { recentlySoldArtworks, me, submission } = useLazyLoadQuery<SellWithArtsyHomeQuery>(
     SellWithArtsyHomeScreenQuery,
-    { submissionID: submissionID, includeSubmission: !!submissionID },
+    { submissionID: id, includeSubmission: !!id },
     {
       fetchPolicy: "store-and-network",
       fetchKey: fetchKey ?? 0,
@@ -59,24 +58,13 @@ export const SellWithArtsyHome: React.FC = () => {
 
   useSwitchStatusBarStyle(onFocusStatusBarStyle, onBlurStatusBarStyle)
 
-  const enableNewSubmissionFlow = useFeatureFlag("AREnableNewSubmissionFlow")
-
   const tracking = useTracking()
 
   const handleConsignPress = (tappedConsignArgs: TappedConsignArgs) => {
     tracking.trackEvent(tappedConsign(tappedConsignArgs))
 
-    if (enableNewSubmissionFlow) {
-      navigate("/sell/submissions/new")
-      return
-    }
-
-    GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
-      photos: [],
-    })
-    GlobalStore.actions.artworkSubmission.submission.setSubmissionIdForMyCollection("")
-    const route = "/sell/submissions/new"
-    navigate(route)
+    navigate("/sell/submissions/new")
+    return
   }
 
   const handleInquiryPress = (
@@ -98,20 +86,6 @@ export const SellWithArtsyHome: React.FC = () => {
       },
     })
   }
-
-  useEffect(() => {
-    if (enableNewSubmissionFlow) {
-      return
-    }
-
-    return () => {
-      GlobalStore.actions.artworkSubmission.submission.resetSessionState()
-      GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
-        photos: [],
-      })
-      GlobalStore.actions.artworkSubmission.submission.setSubmissionIdForMyCollection("")
-    }
-  }, [])
 
   const data = compact([
     {

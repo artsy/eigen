@@ -1,4 +1,5 @@
 import { Box, Text, LinkText, Button, Checkbox } from "@artsy/palette-mobile"
+import { Token, createToken } from "@stripe/stripe-react-native"
 import { BidderPositionQuery } from "__generated__/BidderPositionQuery.graphql"
 import { ConfirmBidCreateBidderPositionMutation } from "__generated__/ConfirmBidCreateBidderPositionMutation.graphql"
 import { ConfirmBidCreateCreditCardMutation } from "__generated__/ConfirmBidCreateCreditCardMutation.graphql"
@@ -13,7 +14,7 @@ import { Flex } from "app/Components/Bidding/Elements/Flex"
 import { BidResultScreen } from "app/Components/Bidding/Screens/BidResult"
 import { bidderPositionQuery } from "app/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery"
 import { PriceSummary } from "app/Components/Bidding/Screens/ConfirmBid/PriceSummary"
-import { Address, Bid, PaymentCardTextFieldParams, StripeToken } from "app/Components/Bidding/types"
+import { Address, Bid, PaymentCardTextFieldParams } from "app/Components/Bidding/types"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Modal } from "app/Components/Modal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
@@ -28,8 +29,6 @@ import React from "react"
 import { Image, ScrollView, ViewProps } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { PayloadError } from "relay-runtime"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import stripe from "tipsi-stripe"
 
 type BidderPositionResult = NonNullable<
   NonNullable<ConfirmBidCreateBidderPositionMutation["response"]["createBidderPosition"]>["result"]
@@ -48,7 +47,7 @@ export interface ConfirmBidProps extends ViewProps {
 interface ConfirmBidState {
   billingAddress?: Address
   creditCardFormParams?: PaymentCardTextFieldParams
-  creditCardToken?: StripeToken
+  creditCardToken?: Token.Result
   conditionsOfSaleChecked: boolean
   isLoading: boolean
   requiresCheckbox: boolean
@@ -137,9 +136,12 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   /** Run through the full flow setting up the user account and making a bid  */
   async setupAddressCardAndBidderPosition() {
     try {
+      if (!this.state.creditCardToken) {
+        throw new Error("[ConfirmBid] Credit card token not present")
+      }
+
       await this.updatePhoneNumber()
-      const token = await this.createTokenFromAddress()
-      await this.createCreditCard(token)
+      await this.createCreditCard(this.state.creditCardToken)
       await this.createBidderPosition()
     } catch (error) {
       if (!this.state.errorModalVisible) {
@@ -183,26 +185,22 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   async createTokenFromAddress() {
     const { billingAddress, creditCardFormParams } = this.state
 
-    return stripe.createTokenWithCard({
+    return createToken({
       ...creditCardFormParams,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      name: billingAddress.fullName,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      addressLine1: billingAddress.addressLine1,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      addressLine2: billingAddress.addressLine2,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      addressCity: billingAddress.city,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      addressState: billingAddress.state,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      addressZip: billingAddress.postalCode,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      addressCountry: billingAddress.country.shortName,
+      type: "Card",
+      name: billingAddress?.fullName,
+      address: {
+        line1: billingAddress?.addressLine1,
+        line2: billingAddress?.addressLine2,
+        city: billingAddress?.city,
+        state: billingAddress?.state,
+        postalCode: billingAddress?.postalCode,
+        country: billingAddress?.country.shortName,
+      },
     })
   }
 
-  async createCreditCard(token: any) {
+  async createCreditCard(token: Token.Result) {
     return new Promise<void>((done) => {
       commitMutation<ConfirmBidCreateCreditCardMutation>(this.props.relay.environment, {
         onCompleted: (data, errors) => {
@@ -244,7 +242,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
             }
           }
         `,
-        variables: { input: { token: token.tokenId } },
+        variables: { input: { token: token.id } },
       })
     })
   }
@@ -378,12 +376,8 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     )
   }
 
-  onCreditCardAdded(token: StripeToken, params: PaymentCardTextFieldParams) {
-    this.setState({ creditCardToken: token, creditCardFormParams: params })
-  }
-
-  onBillingAddressAdded(values: Address) {
-    this.setState({ billingAddress: values })
+  onCreditCardAdded(token: Token.Result, address: Address) {
+    this.setState({ creditCardToken: token, billingAddress: address })
   }
 
   presentErrorResult(error: Error | ReadonlyArray<PayloadError> | null | undefined) {
@@ -535,7 +529,6 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                 <PaymentInfo
                   navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
                   onCreditCardAdded={this.onCreditCardAdded.bind(this)}
-                  onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
                   billingAddress={this.state.billingAddress}
                   creditCardFormParams={this.state.creditCardFormParams}
                   creditCardToken={this.state.creditCardToken}

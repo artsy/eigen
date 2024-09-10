@@ -17,12 +17,12 @@ export const updateMyUserProfile = async (
           updateMyUserProfile(input: $input) {
             me {
               ...MyProfileHeader_me
+              ...MyProfileEditForm_me
               email
               name
               phone
               profession
               otherRelevantPositions
-              bio
               icon {
                 internalID
                 imageURL

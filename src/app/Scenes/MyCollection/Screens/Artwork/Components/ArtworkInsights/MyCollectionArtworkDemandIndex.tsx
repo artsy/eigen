@@ -48,8 +48,7 @@ export const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandI
 
       <Spacer y={1} />
       <DemandRankScale demandRank={demandRank} demandRankDisplayText={demandRankDisplayText} />
-
-      <Separator my={2} borderColor="black10" />
+      <Separator my={4} borderColor="black10" />
     </Flex>
   )
 }

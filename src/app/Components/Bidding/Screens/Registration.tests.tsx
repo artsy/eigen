@@ -1,4 +1,5 @@
-import { Text, LinkText, Checkbox, Button } from "@artsy/palette-mobile"
+import { Button, Checkbox, LinkText, Text } from "@artsy/palette-mobile"
+import { createToken } from "@stripe/stripe-react-native"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { Registration_me$data } from "__generated__/Registration_me.graphql"
 import { Registration_sale$data } from "__generated__/Registration_sale.graphql"
@@ -11,18 +12,19 @@ import { Address } from "app/Components/Bidding/types"
 import { Modal } from "app/Components/Modal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import * as navigation from "app/system/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { TouchableWithoutFeedback } from "react-native"
 import relay from "react-relay"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import stripe from "tipsi-stripe"
-import { BillingAddress } from "./BillingAddress"
 import { CreditCardForm } from "./CreditCardForm"
 import { Registration } from "./Registration"
 
 const commitMutationMock = (fn?: typeof relay.commitMutation) =>
   jest.fn<typeof relay.commitMutation, Parameters<typeof relay.commitMutation>>(fn as any)
+
+jest.mock("@stripe/stripe-react-native", () => ({
+  createToken: jest.fn(),
+}))
 
 let nextStep: any
 const mockNavigator = { push: (route: any) => (nextStep = route), pop: () => null }
@@ -32,14 +34,14 @@ const mockPostNotificationName = LegacyNativeModules.ARNotificationsManager.post
 it("renders properly for a user without a credit card", () => {
   renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCardOrPhone} />)
 
-  expect(screen.queryByText("A valid credit card is required.")).toBeOnTheScreen()
+  expect(screen.getByText("A valid credit card is required.")).toBeOnTheScreen()
 })
 
 describe("User does not have a valid phone number", () => {
   it("renders properly for a user without a phone number", () => {
     renderWithWrappers(<Registration {...initialPropsForUserWithoutPhone} />)
 
-    expect(screen.queryByText("A valid phone number is required.")).toBeOnTheScreen()
+    expect(screen.getByText("A valid phone number is required.")).toBeOnTheScreen()
   })
 })
 
@@ -47,7 +49,7 @@ it("renders properly for a user with a credit card and phone", () => {
   renderWithWrappers(<Registration {...initialPropsForUserWithCreditCardAndPhone} />)
 
   expect(
-    screen.queryByText(
+    screen.getByText(
       "To complete your registration, please confirm that you agree to the Conditions of Sale."
     )
   ).toBeOnTheScreen()
@@ -67,7 +69,7 @@ it("renders properly for a verified user with a credit card and phone", () => {
   )
 
   expect(
-    screen.queryByText(
+    screen.getByText(
       "To complete your registration, please confirm that you agree to the Conditions of Sale."
     )
   ).toBeOnTheScreen()
@@ -75,46 +77,39 @@ it("renders properly for a verified user with a credit card and phone", () => {
   expect(screen.queryByText("valid credit card")).not.toBeOnTheScreen()
 })
 
-it("shows the billing address that the user typed in the billing address form", () => {
-  const billingAddressRow = renderWithWrappersLEGACY(
+it("shows the credit card form when the user tap the edit text in the credit card row", async () => {
+  const { root } = renderWithWrappersLEGACY(
     <Registration {...initialPropsForUserWithoutCreditCardOrPhone} />
-  ).root.findAllByType(BidInfoRow)[1]
-  billingAddressRow.instance.props.onPress()
-  expect(nextStep.component).toEqual(BillingAddress)
-
-  nextStep.passProps.onSubmit(billingAddress)
-
-  expect(billingAddressRow.findAllByType(Text)[1].props.children).toEqual(
-    "401 Broadway 25th floor New York NY"
   )
-})
+  const creditCardRow = await root.findAllByType(BidInfoRow)
 
-it("shows the credit card form when the user tap the edit text in the credit card row", () => {
-  const creditcardRow = renderWithWrappersLEGACY(
-    <Registration {...initialPropsForUserWithoutCreditCardOrPhone} />
-  ).root.findAllByType(BidInfoRow)[0]
-
-  creditcardRow.instance.props.onPress()
+  creditCardRow[0].instance.props.onPress()
 
   expect(nextStep.component).toEqual(CreditCardForm)
 })
 
-it("shows the option for entering payment information if the user does not have a credit card on file", () => {
-  const component = renderWithWrappersLEGACY(
+it("shows the option for entering payment information if the user does not have a credit card on file", async () => {
+  const { root } = renderWithWrappersLEGACY(
     <Registration {...initialPropsForUserWithoutCreditCardOrPhone} />
   )
 
-  expect(component.root.findAllByType(Checkbox).length).toEqual(1)
-  expect(component.root.findAllByType(BidInfoRow).length).toEqual(2)
+  const checkboxes = await root.findAllByType(Checkbox)
+  const bidInfoRows = await root.findAllByType(BidInfoRow)
+
+  expect(checkboxes.length).toEqual(1)
+  expect(bidInfoRows.length).toEqual(1)
 })
 
-it("shows no option for entering payment information if the user has a credit card on file", () => {
-  const component = renderWithWrappersLEGACY(
+it("shows no option for entering payment information if the user has a credit card on file", async () => {
+  const { root } = renderWithWrappersLEGACY(
     <Registration {...initialPropsForUserWithCreditCardAndPhone} />
   )
 
-  expect(component.root.findAllByType(Checkbox).length).toEqual(1)
-  expect(component.root.findAllByType(BidInfoRow).length).toEqual(0)
+  const checkboxes = await root.findAllByType(Checkbox)
+  const bidInfoRows = await root.findAllByType(BidInfoRow)
+
+  expect(checkboxes.length).toEqual(1)
+  expect(bidInfoRows.length).toEqual(0)
 })
 
 describe("when the sale requires identity verification", () => {
@@ -126,22 +121,26 @@ describe("when the sale requires identity verification", () => {
     },
   }
 
-  it("displays information about IDV if the user is not verified", () => {
-    const component = renderWithWrappersLEGACY(
+  it("displays information about IDV if the user is not verified", async () => {
+    const { root } = renderWithWrappersLEGACY(
       <Registration {...propsWithIDVSale} me={{ ...me, isIdentityVerified: false } as any} />
     )
 
-    expect(component.root.findAllByType(Text)[6].props.children).toEqual(
+    const text = await root.findAllByType(Text)
+
+    expect(text.map(({ props }) => props.children)[4]).toEqual(
       "This auction requires Artsy to verify your identity before bidding."
     )
   })
 
-  it("does not display information about IDV if the user is verified", () => {
-    const component = renderWithWrappersLEGACY(
+  it("does not display information about IDV if the user is verified", async () => {
+    const { root } = renderWithWrappersLEGACY(
       <Registration {...propsWithIDVSale} me={{ ...me, isIdentityVerified: true } as any} />
     )
 
-    expect(component.root.findAllByType(Text).map(({ props }) => props.children)).not.toContain(
+    const text = await root.findAllByType(Text)
+
+    expect(text.map(({ props }) => props.children)).not.toContain(
       "This auction requires Artsy to verify your identity before bidding."
     )
   })
@@ -166,19 +165,21 @@ describe("when pressing register button", () => {
         onCompleted?.(mockRequestResponses.qualifiedBidder, null)
         return null
       }) as any
+    ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
 
-    stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
-
-    const component = renderWithWrappersLEGACY(
+    const { root } = renderWithWrappersLEGACY(
       <Registration {...initialPropsForUserWithoutCreditCardOrPhone} />
     )
-    component.root.findByType(Registration).instance.setState({
+    const registrationComponent = await root.findByType(Registration)
+    registrationComponent.instance.setState({
       conditionsOfSaleChecked: true,
       billingAddress,
-      creditCardToken: stripeToken,
+      creditCardToken: stripeToken.token,
     })
 
-    await component.root.findByProps({ testID: "register-button" }).props.onPress()
+    const registerButton = await root.findByProps({ testID: "register-button" })
+    await registerButton.props.onPress()
+
     expect(relay.commitMutation).toHaveBeenCalledWith(
       expect.any(Object),
       expect.objectContaining({
@@ -225,27 +226,32 @@ describe("when pressing register button", () => {
     expect(relay.commitMutation).toHaveBeenCalled()
   })
 
-  it("disables tap events while a spinner is being shown", () => {
+  it("disables tap events while a spinner is being shown", async () => {
     const navigator = { push: jest.fn() } as any
     relay.commitMutation = jest.fn()
 
-    const component = renderWithWrappersLEGACY(
+    const { root } = renderWithWrappersLEGACY(
       <Registration {...initialPropsForUserWithoutCreditCardOrPhone} navigator={navigator} />
     )
 
-    component.root.findByType(Registration).instance.setState({
+    const registrationComponent = await root.findByType(Registration)
+
+    registrationComponent.instance.setState({
       conditionsOfSaleChecked: true,
       creditCardToken: stripeToken,
       billingAddress,
     })
 
-    component.root.findByProps({ testID: "register-button" }).props.onPress()
+    const registerButton = await root.findByProps({ testID: "register-button" })
 
-    const yourMaxBidRow = component.root.findAllByType(TouchableWithoutFeedback)[0]
-    const creditCardRow = component.root.findAllByType(TouchableWithoutFeedback)[1]
-    const billingAddressRow = component.root.findAllByType(TouchableWithoutFeedback)[2]
-    const conditionsOfSaleLink = component.root.findByType(LinkText)
-    const conditionsOfSaleCheckbox = component.root.findByType(Checkbox)
+    registerButton.props.onPress()
+
+    const buttons = await root.findAllByType(TouchableWithoutFeedback)
+
+    const yourMaxBidRow = buttons[0]
+    const creditCardRow = buttons[1]
+    const conditionsOfSaleLink = await root.findByType(LinkText)
+    const conditionsOfSaleCheckbox = await root.findByType(Checkbox)
 
     yourMaxBidRow.instance.props.onPress()
 
@@ -255,22 +261,18 @@ describe("when pressing register button", () => {
 
     expect(navigator.push).not.toHaveBeenCalled()
 
-    billingAddressRow.instance.props.onPress()
-
-    expect(navigator.push).not.toHaveBeenCalled()
-
     expect(conditionsOfSaleLink.props.onPress).toBeUndefined()
     expect(conditionsOfSaleCheckbox.props.disabled).toBeTruthy()
   })
 
-  it("displays an error message on a stripe failure", async () => {
+  // skipping this test since we don't create a ticket on registration now
+  xit("displays an error message on a stripe failure", async () => {
     relay.commitMutation = jest
       .fn()
       .mockImplementationOnce((_, { onCompleted }) =>
         onCompleted(mockRequestResponses.updateMyUserProfile)
       )
-
-    stripe.createTokenWithCard.mockImplementation(() => {
+    ;(createToken as jest.Mock).mockImplementation(() => {
       throw new Error("Error tokenizing card")
     })
     console.error = jest.fn() // Silences component logging.
@@ -373,8 +375,8 @@ describe("when pressing register button", () => {
 
   it("displays an error message on a creditCardMutation failure", async () => {
     renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCardOrPhone} />)
-
-    stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
+    console.error = jest.fn() // Silences component logging.
+    ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
     relay.commitMutation = commitMutationMock()
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       .mockImplementationOnce((_, { onCompleted }) => {
@@ -411,7 +413,9 @@ describe("when pressing register button", () => {
     renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCardOrPhone} />)
 
     const errors = [{ message: "malformed error" }]
-    stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
+
+    console.error = jest.fn() // Silences component logging.
+    ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
 
     relay.commitMutation = commitMutationMock()
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -449,8 +453,8 @@ describe("when pressing register button", () => {
 
   it("displays an error message on a createCreditCard mutation network failure", async () => {
     renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCardOrPhone} />)
-
-    stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
+    console.error = jest.fn() // Silences component logging.
+    ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
     relay.commitMutation = commitMutationMock()
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       .mockImplementationOnce((_, { onCompleted }) => {
@@ -660,7 +664,7 @@ it("navigates to the conditions of sale when the user taps the link", () => {
 
   fireEvent.press(screen.getByText("Conditions of Sale"))
 
-  expect(navigation.navigate).toHaveBeenCalledWith("/conditions-of-sale")
+  expect(navigate).toHaveBeenCalledWith("/conditions-of-sale")
 })
 
 describe("when AREnableNewTermsAndConditions is enabled", () => {
@@ -688,7 +692,7 @@ describe("when AREnableNewTermsAndConditions is enabled", () => {
 
     fireEvent.press(screen.getByText("General Terms and Conditions of Sale"))
 
-    expect(navigation.navigate).toHaveBeenCalledWith("/terms")
+    expect(navigate).toHaveBeenCalledWith("/terms")
   })
 })
 
@@ -707,15 +711,17 @@ const billingAddress: Partial<Address> = {
 }
 
 const stripeToken = {
-  tokenId: "fake-token",
-  created: "1528229731",
-  livemode: 0,
-  card: {
-    brand: "VISA",
-    last4: "4242",
+  token: {
+    id: "fake-token",
+    created: "1528229731",
+    livemode: 0,
+    card: {
+      brand: "VISA",
+      last4: "4242",
+    },
+    bankAccount: null,
+    extra: null,
   },
-  bankAccount: null,
-  extra: null,
 }
 
 const sale: Partial<Registration_sale$data> = {

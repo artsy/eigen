@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 set -exo pipefail
 
-yarn jetifier
-
 pushd android
 ./gradlew clean --no-daemon --max-workers 2
 yarn react-native build-android --mode=release --extra-params='--no-daemon --max-workers 2'

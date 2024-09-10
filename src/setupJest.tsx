@@ -2,6 +2,8 @@ import { format } from "util"
 import mockAsyncStorage from "@react-native-async-storage/async-storage/jest/async-storage-mock"
 // @ts-expect-error
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js"
+// @ts-expect-error
+import mockStripe from "@stripe/stripe-react-native/jest/mock.js"
 import "@testing-library/jest-native/extend-expect"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
@@ -104,11 +106,7 @@ jest.mock("react-tracking")
 ;(track as jest.Mock).mockImplementation(() => (x: any) => x)
 ;(useTracking as jest.Mock).mockImplementation(() => ({ trackEvent: mockTrackEvent }))
 
-jest.mock("tipsi-stripe", () => ({
-  setOptions: jest.fn(),
-  paymentRequestWithCardForm: jest.fn(),
-  createTokenWithCard: jest.fn(),
-}))
+jest.mock("@stripe/stripe-react-native", () => mockStripe)
 
 jest.mock("sift-react-native", () => ({
   unsetUserId: jest.fn(),
@@ -417,6 +415,10 @@ function getNativeModules(): OurNativeModules {
       presentEmailComposerWithSubject: jest.fn(),
       presentMediaPreviewController: jest.fn(),
     },
+    ARTDeeplinkTimeoutModule: {
+      invalidateDeeplinkTimeout: jest.fn(),
+    },
+
     ARCocoaConstantsModule: {
       UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
       AREnabled: true,
@@ -485,6 +487,9 @@ jest.mock("app/NativeModules/LegacyNativeModules", () => ({
       presentEmailComposerWithBody: jest.fn(),
       presentEmailComposerWithSubject: jest.fn(),
       presentMediaPreviewController: jest.fn(),
+    },
+    ARTDeeplinkTimeoutModule: {
+      invalidateDeeplinkTimeout: jest.fn(),
     },
     ARCocoaConstantsModule: {
       UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
@@ -660,18 +665,19 @@ jest.mock("@gorhom/bottom-sheet", () => ({
   ...require("@gorhom/bottom-sheet/mock"),
 }))
 
-jest.mock("react-native-collapsible-tab-view", () => {
-  const getMockCollapsibleTabs =
-    require("app/utils/tests/getMockCollapsibleTabView").getMockCollapsibleTabs
-  return getMockCollapsibleTabs()
-})
-
 jest.mock("@shopify/flash-list", () => {
   const { FlatList } = require("react-native")
   return {
     ...jest.requireActual("@shopify/flash-list"),
     MasonryFlashList: FlatList,
+    FlashList: FlatList,
   }
+})
+
+jest.mock("react-native-collapsible-tab-view", () => {
+  const getMockCollapsibleTabs =
+    require("app/utils/tests/getMockCollapsibleTabView").getMockCollapsibleTabs
+  return getMockCollapsibleTabs()
 })
 
 jest.mock("prettier", () => ({
@@ -692,4 +698,9 @@ jest.mock("@react-native-community/geolocation", () => ({
   startObserving: jest.fn(),
   setRNConfiguration: jest.fn(),
   stopObserving: jest.fn(),
+}))
+
+jest.mock("react-native-document-picker", () => ({
+  default: jest.fn(),
+  pick: jest.fn(),
 }))

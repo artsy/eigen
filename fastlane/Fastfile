@@ -229,7 +229,6 @@ desc 'Ship android beta to play store or firebase'
 lane :ship_beta_android do |options|
   deployment_target = options[:deployment_target] || 'play_store' # default to 'play_store'
 
-  sh('yarn jetifier')
   sh('yarn relay')
 
   is_android_beta = deployment_target == 'firebase'
@@ -454,7 +453,7 @@ lane :deploy_to_codepush do |options|
     api_token: ENV['APP_CENTER_API_TOKEN'],
     owner_name: 'mobile-artsy',
     app_name: app_name,
-    description: "#{description} version:#{release_version}",
+    description: "#{description} version:#{release_name}",
     deployment: deployment_name,
     sourcemap_output: sourcemap_output,
     output_dir: './build',
@@ -496,13 +495,13 @@ lane :promote_codepush do |options|
   sourceDeployment = 'Canary'
   targetDeployment = 'Production'
 
-  submission_tag = sh("./scripts/codepush/get-submission-tag.sh")
+  submission_tag = sh("../scripts/codepush/get-submission-tag.sh")
 
-if submission_tag && !submission_tag.empty?
-  tag_and_push(tag: submission_tag)
-else
-  UI.warn("Submission tag could not be added! Please add one yourself so we can find the release code!")
-end
+  if submission_tag && !submission_tag.empty?
+    tag_and_push(tag: submission_tag)
+  else
+    UI.warn("Submission tag could not be added! Please add one yourself so we can find the release code!")
+  end
 
   # Promote to prod with rollout percentage, make it mandatory
   sh("appcenter codepush promote -a #{androidAppName} -s #{sourceDeployment} -d #{targetDeployment} -r #{rolloutPercentage} --mandatory")

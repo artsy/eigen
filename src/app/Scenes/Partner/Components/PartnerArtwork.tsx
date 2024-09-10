@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Box, Flex, Spinner, Tabs, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { Box, Flex, Tabs, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { PartnerArtwork_partner$data } from "__generated__/PartnerArtwork_partner.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import {
@@ -13,9 +13,11 @@ import { extractNodes } from "app/utils/extractNodes"
 
 import {
   ESTIMATED_MASONRY_ITEM_SIZE,
+  MASONRY_LIST_PAGE_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
 } from "app/utils/masonryHelpers"
+import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 import React, { useCallback, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
@@ -24,7 +26,7 @@ export const PartnerArtwork: React.FC<{
   relay: RelayPaginationProp
 }> = ({ partner, relay }) => {
   const [isFilterArtworksModalVisible, setIsFilterArtworksModalVisible] = useState(false)
-
+  const [isLoading, setIsLoading] = useState(false)
   const space = useSpace()
   const { width } = useScreenDimensions()
 
@@ -32,7 +34,7 @@ export const PartnerArtwork: React.FC<{
     relay,
     aggregations: partner.artworks?.aggregations,
     componentPath: "PartnerArtwork/PartnerArtwork",
-    pageSize: 30,
+    pageSize: MASONRY_LIST_PAGE_SIZE,
   })
   const appliedFiltersCount = useSelectedFiltersCount()
 
@@ -40,14 +42,43 @@ export const PartnerArtwork: React.FC<{
 
   const loadMore = useCallback(() => {
     if (relay.hasMore() && !relay.isLoading()) {
-      relay.loadMore(10)
+      // IMPORTANT: this is a workaround to show the spinner concistently between refetches of pages
+      // and it is not needed for grids that use relay hooks since isLoadingNext works better than the
+      // legacy container API. See FairArtworks.tsx for an example of how to use with relay hooks.
+      setIsLoading(true)
+      relay.loadMore(MASONRY_LIST_PAGE_SIZE, () => {
+        setIsLoading(false)
+      })
     }
   }, [relay.hasMore(), relay.isLoading()])
 
-  const shouldDisplaySpinner = !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
+  const shouldDisplaySpinner =
+    !!isLoading && !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
 
   const emptyText =
     "There are no matching works from this gallery.\nTry changing your search filters"
+
+  const renderItem = useCallback(({ item, columnIndex }) => {
+    const imgAspectRatio = item.image?.aspectRatio ?? 1
+    const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
+    const imgHeight = imgWidth / imgAspectRatio
+
+    return (
+      <Flex
+        pl={columnIndex === 0 ? 0 : 1}
+        pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
+        mt={2}
+      >
+        <ArtworkGridItem
+          contextScreenOwnerType={OwnerType.partner}
+          contextScreenOwnerId={partner.internalID}
+          contextScreenOwnerSlug={partner.slug}
+          artwork={item}
+          height={imgHeight}
+        />
+      </Flex>
+    )
+  }, [])
 
   return (
     <>
@@ -62,35 +93,11 @@ export const PartnerArtwork: React.FC<{
           </Box>
         }
         keyExtractor={(item) => item.id}
-        renderItem={({ item, columnIndex }) => {
-          const imgAspectRatio = item.image?.aspectRatio ?? 1
-          const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
-          const imgHeight = imgWidth / imgAspectRatio
-
-          return (
-            <Flex
-              pl={columnIndex === 0 ? 0 : 1}
-              pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
-              mt={2}
-            >
-              <ArtworkGridItem
-                contextScreenOwnerType={OwnerType.partner}
-                contextScreenOwnerId={partner.internalID}
-                contextScreenOwnerSlug={partner.slug}
-                artwork={item}
-                height={imgHeight}
-              />
-            </Flex>
-          )
-        }}
+        renderItem={renderItem}
         onEndReached={loadMore}
         onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
         ListFooterComponent={
-          shouldDisplaySpinner ? (
-            <Flex my={4} flexDirection="row" justifyContent="center">
-              <Spinner />
-            </Flex>
-          ) : null
+          <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
         }
         // need to pass zIndex: 1 here in order for the SubTabBar to
         // be visible above list content

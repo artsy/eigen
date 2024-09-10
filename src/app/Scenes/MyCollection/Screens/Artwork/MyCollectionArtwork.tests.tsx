@@ -1,47 +1,60 @@
-import { fireEvent } from "@testing-library/react-native"
-import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
+import { screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { MyCollectionArtworkScreen } from "./MyCollectionArtwork"
 
-const mockEnvironment = getMockRelayEnvironment()
-
 describe("My Collection Artwork", () => {
-  it("show new artwork screen ", () => {
-    const { getByTestId } = renderWithHookWrappersTL(
-      <MyCollectionArtworkScreen
-        artworkId="random-id"
-        artistInternalID="internal-id"
-        medium="medium"
-        category="medium"
-      />,
-      mockEnvironment
-    )
+  const { renderWithRelay } = setupTestWrapper({ Component: MyCollectionArtworkScreen })
 
-    resolveMostRecentRelayOperation(mockEnvironment)
-    expect(() => getByTestId("my-collection-artwork")).toBeTruthy()
-    expect(() => getByTestId("old-my-collection-artwork")).toThrowError(
-      "Unable to find an element with testID: old-my-collection-artwork"
-    )
+  it("show new artwork screen ", async () => {
+    renderWithRelay({
+      Artwork: () => ({
+        id: "random-id",
+        artist: { internalID: "internal-id" },
+        medium: "medium",
+        category: "medium",
+      }),
+    })
+
+    await waitForElementToBeRemoved(() => screen.queryByTestId("my-collection-artwork-placeholder"))
+
+    expect(() => screen.getByTestId("my-collection-artwork")).toBeTruthy()
   })
 
-  describe("edit button", () => {
-    it("shows the edit button", async () => {
-      const { findByText } = renderWithHookWrappersTL(
-        <MyCollectionArtworkScreen
-          artworkId="random-id"
-          artistInternalID="internal-id"
-          medium="medium"
-          category="medium"
-        />,
-        mockEnvironment
+  describe("Edit button", () => {
+    it("should be hidden when consignmentSubmission is available", async () => {
+      renderWithRelay({
+        Artwork: () => ({
+          id: "random-id",
+          artist: { internalID: "internal-id" },
+          medium: "medium",
+          category: "medium",
+          consignmentSubmission: { internalID: "submission-id" },
+        }),
+      })
+
+      await waitForElementToBeRemoved(() =>
+        screen.queryByTestId("my-collection-artwork-placeholder")
       )
 
-      const editButton = await findByText("Edit")
+      expect(screen.queryByText("Edit")).not.toBeOnTheScreen()
+    })
 
-      expect(editButton).toBeTruthy()
+    it("should be visible when consignmentSubmission is not available", async () => {
+      renderWithRelay({
+        Artwork: () => ({
+          id: "random-id",
+          artist: { internalID: "internal-id" },
+          medium: "medium",
+          category: "medium",
+          consignmentSubmission: null,
+        }),
+      })
 
-      fireEvent.press(editButton)
+      await waitForElementToBeRemoved(() =>
+        screen.queryByTestId("my-collection-artwork-placeholder")
+      )
+
+      expect(screen.getByText("Edit")).toBeOnTheScreen()
     })
   })
 })

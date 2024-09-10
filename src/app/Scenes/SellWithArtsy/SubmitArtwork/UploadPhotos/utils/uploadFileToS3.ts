@@ -1,3 +1,6 @@
+import { NormalizedDocument } from "app/utils/normalizeUploadedDocument"
+import { isImage } from "app/utils/showDocumentsAndPhotosActionSheet"
+import { DocumentPickerResponse } from "react-native-document-picker"
 import { AssetCredentials } from "./gemini/getGeminiCredentialsForEnvironment"
 
 export { getGeminiCredentialsForEnvironment } from "./gemini/getGeminiCredentialsForEnvironment"
@@ -20,6 +23,7 @@ interface Props {
   assetCredentials: AssetCredentials
   updateProgress?: (progress: number) => void
   filename?: string
+  file?: NormalizedDocument | null
 }
 export const uploadFileToS3 = ({
   filePath,
@@ -27,6 +31,7 @@ export const uploadFileToS3 = ({
   assetCredentials,
   updateProgress,
   filename,
+  file,
 }: Props) =>
   new Promise<S3UploadResponse>((resolve, reject) => {
     const formData = new FormData()
@@ -34,14 +39,32 @@ export const uploadFileToS3 = ({
     const bucket = assetCredentials.policyDocument.conditions.bucket
     const uploadURL = `https://${bucket}.s3.amazonaws.com`
 
+    const isImageType =
+      // File is explicitly an image
+      (file?.item && isImage(file?.item)) ||
+      // File is an image because no document is available
+      // TODO: Replace all usages of uploadFileToS3 to use file then remove this
+      !file?.item
+
+    const contentType = isImageType ? "image/jpg" : (file.item as DocumentPickerResponse).type
+
+    const name = filename || file?.name
+    const key = `${geminiKey}+/${name}`
     const data = {
       acl,
-      "Content-Type": "image/jpg",
-      key: geminiKey + "/${filename}", // NOTE: This form (which _looks_ like ES6 interpolation) is required by AWS
+      "Content-Type": contentType,
+      key,
       AWSAccessKeyId: assetCredentials.credentials,
       success_action_status: assetCredentials.policyDocument.conditions.successActionStatus,
       policy: assetCredentials.policyEncoded,
       signature: assetCredentials.signature,
+      file: isImageType
+        ? {
+            uri: filePath,
+            type: "image/jpeg",
+            name: filename ?? "photo.jpg",
+          }
+        : file?.item,
     }
 
     for (const key in data) {
@@ -51,12 +74,6 @@ export const uploadFileToS3 = ({
         formData.append(key, data[key])
       }
     }
-
-    formData.append("file", {
-      uri: filePath,
-      type: "image/jpeg",
-      name: filename ?? "photo.jpg",
-    })
 
     // Fetch didn't seem to work, so I had to move to a lower
     // level abstraction. Note that this request will fail if you are using a debugger.
@@ -69,10 +86,8 @@ export const uploadFileToS3 = ({
         e.target.status.toString() ===
         assetCredentials.policyDocument.conditions.successActionStatus
       ) {
-        // e.g. https://artsy-media-uploads.s3.amazonaws.com/A3tfuXp0t5OuUKv07XaBOw%2F%24%7Bfilename%7D
-        const url = e.target.responseHeaders.Location
         resolve({
-          key: url.split("/").pop().replace("%2F", "/"),
+          key,
         })
       } else {
         reject(new Error("S3 upload failed"))
@@ -92,4 +107,11 @@ export const uploadFileToS3 = ({
 
     request.setRequestHeader("Content-type", "multipart/form-data")
     request.send(formData)
+
+    if (file?.item) {
+      file.abortUploading = () => {
+        request.abort()
+        reject(new Error("File upload aborted"))
+      }
+    }
   })

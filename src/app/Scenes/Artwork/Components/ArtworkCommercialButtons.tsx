@@ -1,11 +1,13 @@
 import { Spacer, Flex, Join } from "@artsy/palette-mobile"
 import { ArtworkCommercialButtons_artwork$key } from "__generated__/ArtworkCommercialButtons_artwork.graphql"
-import { ArtworkCommercialButtons_me$key } from "__generated__/ArtworkCommercialButtons_me.graphql"
 import { ArtworkCommercialButtons_partnerOffer$key } from "__generated__/ArtworkCommercialButtons_partnerOffer.graphql"
+import { BidButton_me$key } from "__generated__/BidButton_me.graphql"
+import { MyProfileEditModal_me$key } from "__generated__/MyProfileEditModal_me.graphql"
+import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtworkStore } from "app/Scenes/Artwork/ArtworkStore"
 import { BuyNowButton } from "app/Scenes/Artwork/Components/CommercialButtons/BuyNowButton"
-import { InquiryButtonsFragmentContainer } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryButtons"
+import { ContactGalleryButton } from "app/Scenes/Artwork/Components/CommercialButtons/ContactGalleryButton"
 import { MakeOfferButtonFragmentContainer } from "app/Scenes/Artwork/Components/CommercialButtons/MakeOfferButton"
 import { getTimer } from "app/utils/getTimer"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -15,7 +17,7 @@ import { BidButtonFragmentContainer } from "./CommercialButtons/BidButton"
 
 interface ArtworkCommercialButtonsProps {
   artwork: ArtworkCommercialButtons_artwork$key
-  me: ArtworkCommercialButtons_me$key
+  me: MyProfileEditModal_me$key & useSendInquiry_me$key & BidButton_me$key
   partnerOffer: ArtworkCommercialButtons_partnerOffer$key
 }
 
@@ -121,7 +123,7 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
     if (hasActivePartnerOffer) {
       return (
         <RowContainer>
-          <InquiryButtonsFragmentContainer artwork={artworkData} variant="outline" block />
+          <ContactGalleryButton artwork={artworkData} me={meData} variant="outline" block />
           <BuyNowButton
             partnerOffer={partnerOfferData}
             artwork={artworkData}
@@ -133,7 +135,7 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
 
     return (
       <RowContainer>
-        <InquiryButtonsFragmentContainer artwork={artworkData} variant="outline" block />
+        <ContactGalleryButton artwork={artworkData} me={meData} variant="outline" block />
         <MakeOfferButtonFragmentContainer artwork={artworkData} editionSetID={selectedEditionId} />
       </RowContainer>
     )
@@ -167,7 +169,7 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
     if (hasActivePartnerOffer) {
       return (
         <RowContainer>
-          <InquiryButtonsFragmentContainer artwork={artworkData} variant="outline" block />
+          <ContactGalleryButton artwork={artworkData} me={meData} variant="outline" block />
           <BuyNowButton
             partnerOffer={partnerOfferData}
             artwork={artworkData}
@@ -177,7 +179,7 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
       )
     }
 
-    return <InquiryButtonsFragmentContainer artwork={artworkData} block />
+    return <ContactGalleryButton artwork={artworkData} me={meData} block />
   }
 
   return null
@@ -198,7 +200,7 @@ const artworkFragment = graphql`
     }
     ...BuyNowButton_artwork
     ...MakeOfferButton_artwork
-    ...InquiryButtons_artwork
+    ...ContactGalleryButton_artwork
     ...BidButton_artwork
   }
 `
@@ -206,6 +208,8 @@ const artworkFragment = graphql`
 const meFragment = graphql`
   fragment ArtworkCommercialButtons_me on Me {
     ...BidButton_me
+    ...useSendInquiry_me
+    ...MyProfileEditModal_me
   }
 `
 
@@ -213,6 +217,7 @@ const partnerOfferFragment = graphql`
   fragment ArtworkCommercialButtons_partnerOffer on PartnerOfferToCollector {
     internalID
     isAvailable
+    isActive
     endAt
   }
 `

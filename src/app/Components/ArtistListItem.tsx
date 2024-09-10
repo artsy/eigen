@@ -240,7 +240,7 @@ export const ArtistListItemContainer = createFragmentContainer(ArtistListItem, {
       # TOFIX: we must use coverArtwork#image here instead, this replacement is fixing
       # an Artist#coverImage got replaced by this component data with wrong data
       image {
-        url
+        url(version: "small")
       }
     }
   `,

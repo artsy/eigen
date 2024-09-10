@@ -1,13 +1,15 @@
-import { InquiryQuestionInput } from "__generated__/SubmitInquiryRequestMutation.graphql"
+import { InquiryQuestionInput } from "__generated__/useSubmitInquiryRequestMutation.graphql"
 import { LocationWithDetails } from "app/utils/googleMaps"
 import { Dispatch } from "react"
 
 export type ArtworkInquiryActions =
-  | SelectInquiryType
   | SelectLocation
   | SelectInquiryQuestion
-  | SetMessage
   | ResetForm
+  | SetInquiryModalVisible
+  | SetSuccessNotificationVisible
+  | SetCollectionPromptVisible
+  | SetProfilePromptVisible
 
 export interface ArtworkInquiryContextProps {
   state: ArtworkInquiryContextState
@@ -15,21 +17,17 @@ export interface ArtworkInquiryContextProps {
 }
 
 export interface ArtworkInquiryContextState {
-  readonly inquiryType: InquiryTypes | null
   readonly shippingLocation: LocationWithDetails | null
   readonly inquiryQuestions: InquiryQuestionInput[]
-  readonly message: string | null
+  readonly inquiryModalVisible: boolean
+  readonly successNotificationVisible: boolean
+  readonly collectionPromptVisible: boolean
+  readonly profilePromptVisible: boolean
 }
-
-export type InquiryTypes = "Inquire on price" | "Contact Gallery" | "Inquire to purchase"
 
 interface ResetForm {
   type: "resetForm"
   payload: null
-}
-interface SelectInquiryType {
-  type: "selectInquiryType"
-  payload: InquiryTypes
 }
 
 interface SelectLocation {
@@ -37,20 +35,29 @@ interface SelectLocation {
   payload: LocationWithDetails
 }
 
-interface SetMessage {
-  type: "setMessage"
-  payload: string
-}
-
 interface SelectInquiryQuestion {
   type: "selectInquiryQuestion"
   payload: InquiryQuestionInput & { isChecked: boolean }
 }
 
-export enum InquiryOptions {
-  RequestPrice = "Inquire on price",
-  ContactGallery = "Contact Gallery",
-  InquireToPurchase = "Inquire to purchase",
+interface SetInquiryModalVisible {
+  type: "setInquiryModalVisible"
+  payload: boolean
+}
+
+interface SetSuccessNotificationVisible {
+  type: "setSuccessNotificationVisible"
+  payload: boolean
+}
+
+interface SetCollectionPromptVisible {
+  type: "setCollectionPromptVisible"
+  payload: boolean
+}
+
+interface SetProfilePromptVisible {
+  type: "setProfilePromptVisible"
+  payload: boolean
 }
 
 /**

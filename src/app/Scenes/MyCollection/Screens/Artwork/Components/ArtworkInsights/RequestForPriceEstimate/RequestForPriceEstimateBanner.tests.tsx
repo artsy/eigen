@@ -34,7 +34,6 @@ describe("RequestForPriceEstimateBanner", () => {
               me={props.me}
               artwork={props.artwork}
               marketPriceInsights={props.marketPriceInsights}
-              contextModule="insights"
             />
           )
         }

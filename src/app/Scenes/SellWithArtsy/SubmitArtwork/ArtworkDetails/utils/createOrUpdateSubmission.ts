@@ -3,7 +3,7 @@ import {
   CreateSubmissionMutationInput,
 } from "__generated__/createConsignSubmissionMutation.graphql"
 import { UpdateSubmissionMutationInput } from "__generated__/updateConsignSubmissionMutation.graphql"
-import { ArtworkDetailsFormModel as NewArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import {
   ArtworkDetailsFormModel,
   ContactInformationFormModel as SWASubmissionContactInformationFormModel,
@@ -20,15 +20,14 @@ const DEFAULT_SOURCE = "APP_INBOUND"
 
 export const createOrUpdateSubmission = async (
   values:
-    | (Partial<NewArtworkDetailsFormModel> & Partial<SWASubmissionContactInformationFormModel>)
+    | (Partial<SubmissionModel> & Partial<SWASubmissionContactInformationFormModel>)
     | (ArtworkDetailsFormModel & SWASubmissionContactInformationFormModel),
-  submissionId: string | null
+  externalID: string | null
 ) => {
   const isRarityLimitedEdition = values.attributionClass === limitedEditionValue
   type NewType = ConsignmentAttributionClass
 
-  const attributionClass =
-    (values?.attributionClass?.replace(" ", "_").toUpperCase() as NewType) || null
+  const attributionClass = values?.attributionClass?.replace(" ", "_").toUpperCase() as NewType
 
   const submissionValues: SubmissionInput = {
     artistID: values.artistId,
@@ -36,18 +35,20 @@ export const createOrUpdateSubmission = async (
     category: values.category,
     depth: values.depth,
     dimensionsMetric: values.dimensionsMetric,
-    editionNumber: isRarityLimitedEdition ? values.editionNumber : "",
-    editionSizeFormatted: isRarityLimitedEdition ? values.editionSizeFormatted : "",
+    editionNumber: isRarityLimitedEdition ? values.editionNumber : undefined,
+    editionSizeFormatted: isRarityLimitedEdition ? values.editionSizeFormatted : undefined,
     height: values.height,
     locationCity: values.location?.city,
     locationCountry: values.location?.country,
     locationCountryCode: values.location?.countryCode,
-    locationPostalCode: values.location?.zipCode || null,
+    locationPostalCode: values.location?.zipCode,
     locationState: values.location?.state,
+    locationAddress: values.location?.address,
+    locationAddress2: values.location?.address2,
     medium: values.medium,
     provenance: values.provenance,
     signature: values.signature,
-    state: values.state || "DRAFT",
+    state: values.state,
     title: values.title,
     userEmail: values.userEmail,
     userName: values.userName,
@@ -59,9 +60,9 @@ export const createOrUpdateSubmission = async (
     year: values.year,
   }
 
-  if (submissionId) {
+  if (externalID) {
     return await updateConsignSubmission({
-      id: submissionId,
+      externalId: externalID,
       ...submissionValues,
     })
   }

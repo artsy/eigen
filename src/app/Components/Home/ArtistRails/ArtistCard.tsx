@@ -1,5 +1,6 @@
 import { CloseIcon, Flex, FollowButton, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { ArtistCard_artist$data } from "__generated__/ArtistCard_artist.graphql"
+import { useFollowArtist } from "app/Components/Artist/useFollowArtist"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 
 import { navigate } from "app/system/navigation/navigate"
@@ -14,12 +15,29 @@ interface ArtistCardProps {
   onDismiss?: () => void
   onFollow?: () => void
   onPress?: () => void
+  // Use the default follow button instead of the injected onFollow button
+  showDefaultFollowButton?: boolean
 }
 
-const IMAGE_MAX_HEIGHT = 180
+export const IMAGE_MAX_HEIGHT = 180
 
-export const ArtistCard: React.FC<ArtistCardProps> = ({ artist, onDismiss, onFollow, onPress }) => {
+export const ArtistCard: React.FC<ArtistCardProps> = ({
+  artist,
+  onDismiss,
+  onFollow,
+  onPress,
+  showDefaultFollowButton = false,
+}) => {
   const color = useColor()
+  const { handleFollowToggle } = useFollowArtist(artist)
+
+  if (__DEV__) {
+    if (showDefaultFollowButton && onFollow) {
+      console.warn(
+        "ArtistCard: onFollow and showDefaultFollowButton are both set, onFollow will be ignored"
+      )
+    }
+  }
 
   const artistImages = extractNodes(artist.filterArtworksConnection)
     .filter((artwork) => {
@@ -56,11 +74,15 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({ artist, onDismiss, onFol
               </Text>
             )}
           </Flex>
-          {!!onFollow && (
-            <Flex>
-              <FollowButton isFollowed={!!artist.isFollowed} onPress={onFollow} />
-            </Flex>
-          )}
+          {!!onFollow ||
+            (showDefaultFollowButton && (
+              <Flex>
+                <FollowButton
+                  isFollowed={!!artist.isFollowed}
+                  onPress={handleFollowToggle ?? onFollow}
+                />
+              </Flex>
+            ))}
         </Flex>
         {!!onDismiss && (
           <Flex
@@ -190,6 +212,7 @@ export const ArtistCardContainer = createFragmentContainer(ArtistCard, {
           }
         }
       }
+      ...useFollowArtist_artist
     }
   `,
 })

@@ -1,6 +1,7 @@
 import { ConsignmentAttributionClass } from "__generated__/createConsignSubmissionMutation.graphql"
+import { ArtworkConditionEnumType } from "__generated__/myCollectionCreateArtworkMutation.graphql"
 import { FetchArtworkInformationResult } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/fetchArtworkInformation"
-import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { acceptableCategoriesForSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/acceptableCategoriesForSubmission"
 import { getAttributionClassValueByName } from "app/utils/artworkRarityClassifications"
 import { compact } from "lodash"
@@ -36,8 +37,9 @@ export const getInitialSubmissionFormValuesFromArtwork = (
   // Although ideally we would set the type as a partial here,
   // that will make us quickly forget to update the type when we add new fields/screens
   // This is a tradeoff between type safety and ease of development
-  const formValues: ArtworkDetailsFormModel = {
+  const formValues: SubmissionModel = {
     submissionId: null,
+    externalId: null,
     artist: artwork.artist?.displayLabel || "",
     artistId: artwork.artist?.internalID || "",
     artistSearchResult: {
@@ -65,6 +67,8 @@ export const getInitialSubmissionFormValuesFromArtwork = (
       country: artwork?.location?.country || "",
       zipCode: artwork?.location?.postalCode || "",
       countryCode: "",
+      address: artwork?.location?.address || "",
+      address2: artwork?.location?.address2 || "",
     },
     medium: artwork.medium || "",
     myCollectionArtworkID: artwork.internalID,
@@ -90,6 +94,19 @@ export const getInitialSubmissionFormValuesFromArtwork = (
     userName: "",
     userEmail: "",
     userPhone: "",
+
+    artwork: {
+      internalID: artwork.internalID,
+      isFramed: artwork.isFramed,
+      framedMetric: artwork.framedMetric,
+      framedWidth: artwork.framedWidth,
+      framedHeight: artwork.framedHeight,
+      framedDepth: artwork.framedDepth,
+      condition: artwork.condition?.value as ArtworkConditionEnumType | null | undefined,
+      conditionDescription: artwork.conditionDescription?.details,
+    },
+
+    additionalDocuments: [],
   }
 
   return formValues

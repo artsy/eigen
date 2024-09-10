@@ -9,7 +9,6 @@ import { ArtistAutosuggest } from "app/Scenes/MyCollection/Screens/ArtworkForm/C
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { Suspense } from "react"
 import { useTracking } from "react-tracking"
@@ -17,8 +16,6 @@ import { useTracking } from "react-tracking"
 export const MyCollectionArtworkFormArtist: React.FC<
   StackScreenProps<ArtworkFormScreen, "ArtworkFormArtist">
 > = ({ navigation }) => {
-  const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
-
   const tracking = useTracking()
 
   const preferredCurrency = GlobalStore.useAppState((state) => state.userPrefs.currency)
@@ -43,29 +40,18 @@ export const MyCollectionArtworkFormArtist: React.FC<
   const handleSkipPress = async (artistDisplayName: string) => {
     GlobalStore.actions.myCollection.artwork.resetForm()
 
-    if (enableCollectedArtists) {
-      navigation.navigate("AddMyCollectionArtist", {
-        props: {
-          artistDisplayName: artistDisplayName,
-          onSubmit: (values) => {
-            GlobalStore.actions.myCollection.artwork.updateFormValues({
-              customArtist: values,
-              metric: preferredMetric,
-            })
-            navigation.navigate("ArtworkFormMain")
-          },
+    navigation.navigate("AddMyCollectionArtist", {
+      props: {
+        artistDisplayName: artistDisplayName,
+        onSubmit: (values) => {
+          GlobalStore.actions.myCollection.artwork.updateFormValues({
+            customArtist: values,
+            metric: preferredMetric,
+          })
+          navigation.navigate("ArtworkFormMain")
         },
-      })
-    } else {
-      requestAnimationFrame(() => {
-        GlobalStore.actions.myCollection.artwork.updateFormValues({
-          artistDisplayName,
-          metric: preferredMetric,
-          pricePaidCurrency: preferredCurrency,
-        })
-        navigation.navigate("ArtworkFormMain")
-      })
-    }
+      },
+    })
   }
 
   const handleBack = () => {

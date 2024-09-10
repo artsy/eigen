@@ -1,7 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import { MyCollectionAddCollectedArtistsScreen } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtists"
-import { dismissModal, navigate, popToRoot } from "app/system/navigation/navigate"
+import { dismissModal, navigate, goBack } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -14,7 +14,7 @@ describe("MyCollectionAddCollectedArtists", () => {
   it("renders MyCollectionAddCollectedArtists", async () => {
     renderWithRelay()
 
-    expect(screen.queryByText("Add Artists You Collect")).toBeOnTheScreen()
+    expect(screen.getByText("Add Artists You Collect")).toBeOnTheScreen()
   })
 
   it("adds collected artists by creating user interests", async () => {
@@ -58,7 +58,7 @@ describe("MyCollectionAddCollectedArtists", () => {
     await flushPromiseQueue()
 
     expect(dismissModal).toHaveBeenCalledWith()
-    expect(popToRoot).toHaveBeenCalledWith()
+    expect(goBack).toHaveBeenCalledWith()
   })
 
   it("creates custom artists", async () => {

@@ -13,7 +13,6 @@ import { filterArtistsByKeyword } from "app/Scenes/MyCollection/utils/filterArti
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
 import { IMAGE_SIZE } from "app/Scenes/Search/components/SearchResultImage"
 import { extractNodes } from "app/utils/extractNodes"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { sortBy } from "lodash"
 import { ReactElement, isValidElement } from "react"
@@ -47,8 +46,6 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
   autoFocus = typeof jest === "undefined",
   disableFormik = false,
 }) => {
-  const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
-
   const { formik } = useArtworkForm(disableFormik)
   const { artist: artistQuery } = formik.values
   const trimmedQuery = artistQuery.trimStart()
@@ -163,7 +160,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
                 </Flex>
               )}
               ListFooterComponent={() =>
-                !disableCustomArtists && !onlyShowCollectedArtists && !!enableCollectedArtists ? (
+                !disableCustomArtists && !onlyShowCollectedArtists ? (
                   <Touchable
                     accessibilityLabel="Create New Artist"
                     haptic

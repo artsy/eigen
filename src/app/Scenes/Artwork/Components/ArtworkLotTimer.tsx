@@ -136,7 +136,7 @@ const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
   biddingEndAt,
   hasBeenExtended,
 }) => {
-  const { sale, isForSale } = artwork
+  const { sale, isForSale, collectorSignals } = artwork
   const isBiddableInAuction = timerState !== AuctionTimerState.CLOSED && isForSale
   const setAuctionState = ArtworkStore.useStoreActions((action) => action.setAuctionState)
 
@@ -204,9 +204,20 @@ const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
       </Flex>
       {!!shouldShowTimer && (
         <>
-          <Text variant="xs" color="black60" textAlign="right">
-            {label}
-          </Text>
+          <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
+            <Text variant="xs" color="black60">
+              {!!collectorSignals?.auction?.lotWatcherCount
+                ? `${collectorSignals.auction.lotWatcherCount} Watcher${
+                    collectorSignals.auction.lotWatcherCount > 1 ? "s" : ""
+                  }`
+                : ""}
+            </Text>
+
+            <Text variant="xs" color="black60" textAlign="right">
+              {label}
+            </Text>
+          </Flex>
+
           <Spacer y={1} />
           {!!sale?.extendedBiddingPeriodMinutes && !!sale?.extendedBiddingIntervalMinutes && (
             <>
@@ -250,6 +261,11 @@ export const ArtworkLotTimerFragmentContainer = createFragmentContainer(Auctiono
         liveStartAt
         startAt
         endAt
+      }
+      collectorSignals {
+        auction {
+          lotWatcherCount
+        }
       }
     }
   `,

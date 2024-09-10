@@ -122,7 +122,7 @@ export const ArtistSeriesMoreSeriesFragmentContainer = createFragmentContainer(
 export const tracks = {
   tapViewAllArtistSeries: (artistId: string, artistSlug: string) => ({
     action: ActionType.tappedArtistSeriesGroup,
-    context_module: ContextModule.artistSeriesRail,
+    context_module: ContextModule.moreSeriesByThisArtist,
     context_screen_owner_type: OwnerType.artist,
     context_screen_owner_id: artistId,
     context_screen_owner_slug: artistSlug,

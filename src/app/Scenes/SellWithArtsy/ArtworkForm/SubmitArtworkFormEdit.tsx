@@ -1,8 +1,10 @@
 import { SubmitArtworkFormEditQuery } from "__generated__/SubmitArtworkFormEditQuery.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
-import { SubmitArtworkForm } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
+import {
+  SubmitArtworkForm,
+  SubmitArtworkProps,
+} from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { getInitialSubmissionValues } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/getInitialSubmissionValues"
-import { SubmitArtworkProps } from "app/Scenes/SellWithArtsy/SubmitArtwork/SubmitArtwork"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
@@ -10,7 +12,7 @@ export const SubmitArtworkFormEdit: React.FC<SubmitArtworkProps> = withSuspense(
   const data = useLazyLoadQuery<SubmitArtworkFormEditQuery>(
     submitArtworkFormEditQuery,
     {
-      id: props.submissionID,
+      id: props.externalID,
     },
     { fetchPolicy: "network-only" }
   )
@@ -21,10 +23,11 @@ export const SubmitArtworkFormEdit: React.FC<SubmitArtworkProps> = withSuspense(
 
   return (
     <SubmitArtworkForm
-      submissionID={props.submissionID}
-      initialValues={getInitialSubmissionValues(data.submission)}
+      externalID={props.externalID}
+      initialValues={getInitialSubmissionValues(data.submission, data?.me)}
       initialStep={props.initialStep}
       navigationState={props.navigationState}
+      hasStartedFlowFromMyCollection={props.hasStartedFlowFromMyCollection}
     />
   )
 })
@@ -44,10 +47,26 @@ const submitArtworkFormEditQuery = graphql`
       locationState
       locationPostalCode
       locationCountryCode
+      locationAddress
+      locationAddress2
       year
       title
       signature
       medium
+      myCollectionArtwork {
+        internalID
+        isFramed
+        framedMetric
+        framedWidth
+        framedHeight
+        framedDepth
+        condition {
+          value
+        }
+        conditionDescription {
+          details
+        }
+      }
       attributionClass
       editionNumber
       editionSize
@@ -61,6 +80,7 @@ const submitArtworkFormEditQuery = graphql`
       userName
       userPhone
       source
+      state
       sourceArtworkID
       assets {
         id
@@ -68,6 +88,30 @@ const submitArtworkFormEditQuery = graphql`
         geminiToken
         size
         filename
+      }
+      externalId
+      addtionalAssets: assets(assetType: [ADDITIONAL_FILE]) {
+        id
+        size
+        filename
+        documentPath
+        s3Path
+        s3Bucket
+      }
+    }
+    me {
+      addressConnection {
+        edges {
+          node {
+            addressLine1
+            addressLine2
+            city
+            country
+            isDefault
+            postalCode
+            region
+          }
+        }
       }
     }
   }

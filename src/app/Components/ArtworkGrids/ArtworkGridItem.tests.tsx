@@ -3,9 +3,9 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkGridItemTestsQuery } from "__generated__/ArtworkGridItemTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { DateTime } from "luxon"
 import { graphql } from "react-relay"
 import Artwork from "./ArtworkGridItem"
 
@@ -57,6 +57,7 @@ describe("ArtworkGridItem", () => {
             title: "Some Kind of Dinosaur",
             slug: "cool-artwork",
             internalID: "abc1234",
+            collectorSignals: null,
           }),
         },
         {
@@ -82,6 +83,150 @@ describe("ArtworkGridItem", () => {
         position: 0,
         sort: "-decayed_merch",
         type: "thumbnail",
+      })
+    })
+
+    it("sends a tracking event when partner offer is available", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnablePartnerOfferSignals: true })
+
+      renderWithRelay(
+        {
+          Artwork: () => ({
+            title: "Some Kind of Dinosaur",
+            slug: "cool-artwork",
+            internalID: "abc1234",
+            sale: { isAuction: false },
+            collectorSignals: {
+              partnerOffer: {
+                isAvailable: true,
+                endAt: DateTime.fromMillis(Date.now()).plus({ hours: 12 }).toISO(),
+                priceWithDiscount: { display: "$2,750" },
+              },
+              auction: null,
+            },
+          }),
+        },
+        {
+          contextScreenOwnerType: OwnerType.artist,
+          contextScreenOwnerId: "abc124",
+          contextScreenOwnerSlug: "andy-warhol",
+          itemIndex: 0,
+        }
+      )
+
+      const touchableArtwork = screen.getByTestId("artworkGridItem-Some Kind of Dinosaur")
+      fireEvent.press(touchableArtwork)
+
+      expect(mockTrackEvent).toBeCalledWith({
+        action: "tappedMainArtworkGrid",
+        context_module: "artworkGrid",
+        context_screen_owner_id: "abc124",
+        context_screen_owner_slug: "andy-warhol",
+        context_screen_owner_type: "artist",
+        destination_screen_owner_id: "abc1234",
+        destination_screen_owner_slug: "cool-artwork",
+        destination_screen_owner_type: "artwork",
+        position: 0,
+        sort: "-decayed_merch",
+        type: "thumbnail",
+        signal_label: "Limited-Time Offer",
+      })
+    })
+
+    describe("with auction signals", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAuctionImprovementsSignals: true })
+      })
+
+      it("sends a tracking event when with time left to bid label", () => {
+        renderWithRelay(
+          {
+            Artwork: () => ({
+              title: "Some Kind of Dinosaur",
+              slug: "cool-artwork",
+              internalID: "abc1234",
+              sale: { isAuction: true },
+              collectorSignals: {
+                partnerOffer: null,
+                auction: {
+                  lotClosesAt: DateTime.fromMillis(Date.now()).plus({ days: 1 }).toISO(),
+                  registrationEndsAt: DateTime.fromMillis(Date.now()).minus({ days: 1 }).toISO(),
+                  bidCount: 7,
+                  lotWatcherCount: 49,
+                },
+              },
+            }),
+          },
+          {
+            contextScreenOwnerType: OwnerType.artist,
+            contextScreenOwnerId: "abc124",
+            contextScreenOwnerSlug: "andy-warhol",
+            itemIndex: 0,
+          }
+        )
+
+        const touchableArtwork = screen.getByTestId("artworkGridItem-Some Kind of Dinosaur")
+        fireEvent.press(touchableArtwork)
+
+        expect(mockTrackEvent).toBeCalledWith({
+          action: "tappedMainArtworkGrid",
+          context_module: "artworkGrid",
+          context_screen_owner_id: "abc124",
+          context_screen_owner_slug: "andy-warhol",
+          context_screen_owner_type: "artist",
+          destination_screen_owner_id: "abc1234",
+          destination_screen_owner_slug: "cool-artwork",
+          destination_screen_owner_type: "artwork",
+          position: 0,
+          sort: "-decayed_merch",
+          type: "thumbnail",
+          signal_bid_count: 7,
+          signal_lot_watcher_count: 49,
+          signal_label: "Time left to bid",
+        })
+      })
+
+      it("sends a tracking event when with live bidding signal", () => {
+        renderWithRelay(
+          {
+            Artwork: () => ({
+              title: "Some Kind of Dinosaur",
+              slug: "cool-artwork",
+              internalID: "abc1234",
+              sale: { isAuction: true },
+              collectorSignals: {
+                partnerOffer: null,
+                auction: { liveBiddingStarted: true, bidCount: 2, lotWatcherCount: 29 },
+              },
+            }),
+          },
+          {
+            contextScreenOwnerType: OwnerType.artist,
+            contextScreenOwnerId: "abc124",
+            contextScreenOwnerSlug: "andy-warhol",
+            itemIndex: 0,
+          }
+        )
+
+        const touchableArtwork = screen.getByTestId("artworkGridItem-Some Kind of Dinosaur")
+        fireEvent.press(touchableArtwork)
+
+        expect(mockTrackEvent).toBeCalledWith({
+          action: "tappedMainArtworkGrid",
+          context_module: "artworkGrid",
+          context_screen_owner_id: "abc124",
+          context_screen_owner_slug: "andy-warhol",
+          context_screen_owner_type: "artist",
+          destination_screen_owner_id: "abc1234",
+          destination_screen_owner_slug: "cool-artwork",
+          destination_screen_owner_type: "artwork",
+          position: 0,
+          sort: "-decayed_merch",
+          type: "thumbnail",
+          signal_bid_count: 2,
+          signal_lot_watcher_count: 29,
+          signal_label: "Bidding live now",
+        })
       })
     })
   })
@@ -163,7 +308,7 @@ describe("ArtworkGridItem", () => {
         }),
       })
 
-      expect(screen.queryByText("Some Kind of Dinosaur")).toBeOnTheScreen()
+      expect(screen.getByText("Some Kind of Dinosaur")).toBeOnTheScreen()
     })
   })
 
@@ -179,7 +324,7 @@ describe("ArtworkGridItem", () => {
         }),
       })
 
-      expect(screen.queryByText("Some Kind of Dinosaur")).toBeOnTheScreen()
+      expect(screen.getByText("Some Kind of Dinosaur")).toBeOnTheScreen()
     })
 
     it("renders without throwing an error when an auction is about to open, but not closed or finished", () => {
@@ -196,11 +341,16 @@ describe("ArtworkGridItem", () => {
               bidderPositions: 1,
             },
           },
+          collectorSignals: {
+            auction: {
+              bidCount: 1,
+            },
+          },
           realizedPrice: null,
         }),
       })
 
-      expect(screen.queryByText("$200 (1 bid)")).toBeOnTheScreen()
+      expect(screen.getByText("$200 (1 bid)")).toBeOnTheScreen()
     })
 
     it("does not show the partner name if hidePartner is set to true", () => {
@@ -239,7 +389,7 @@ describe("ArtworkGridItem", () => {
         { hidePartner: false }
       )
 
-      expect(screen.queryByText("partner")).toBeOnTheScreen()
+      expect(screen.getByText("partner")).toBeOnTheScreen()
     })
   })
 
@@ -265,8 +415,7 @@ describe("ArtworkGridItem", () => {
         { showLotLabel: true }
       )
 
-      expect(screen.queryByText("Lot 1")).toBeOnTheScreen()
-      expect(screen.queryByTestId("lot-close-info")).toBeOnTheScreen()
+      expect(screen.getByText("Lot 1")).toBeOnTheScreen()
     })
 
     it("does not show the LotCloseInfo component when the sale does not have cascading end times", () => {
@@ -286,44 +435,214 @@ describe("ArtworkGridItem", () => {
         {}
       )
 
-      expect(screen.queryByTestId("lot-close-info")).toBeFalsy()
+      expect(screen.queryByText("Lot 1")).not.toBeOnTheScreen()
     })
   })
 
   describe("save artworks", () => {
-    it("favourites works", async () => {
+    it("favourites works", () => {
       renderWithRelay({
         Artwork: () => artwork,
       })
 
-      await flushPromiseQueue()
-
-      expect(screen.queryByTestId("empty-heart-icon")).toBeTruthy()
-      expect(screen.queryByTestId("filled-heart-icon")).toBeNull()
+      expect(screen.getByTestId("empty-heart-icon")).toBeOnTheScreen()
+      expect(screen.queryByTestId("filled-heart-icon")).not.toBeOnTheScreen()
 
       fireEvent.press(screen.getByTestId("save-artwork-icon"))
 
-      expect(screen.queryByTestId("filled-heart-icon")).toBeTruthy()
-      expect(screen.queryByTestId("empty-heart-icon")).toBeNull()
+      expect(screen.getByTestId("filled-heart-icon")).toBeOnTheScreen()
+      expect(screen.queryByTestId("empty-heart-icon")).not.toBeOnTheScreen()
     })
 
     it("is not visible when hideSaveIcon prop is specified", () => {
       renderWithRelay({}, { hideSaveIcon: true })
 
-      expect(screen.queryByTestId("empty-heart-icon")).toBeNull()
-      expect(screen.queryByTestId("filled-heart-icon")).toBeNull()
+      expect(screen.queryByTestId("empty-heart-icon")).not.toBeOnTheScreen()
+      expect(screen.queryByTestId("filled-heart-icon")).not.toBeOnTheScreen()
     })
   })
 
   describe("unlisted artworks", () => {
-    it("shows exclusive access", async () => {
+    it("shows exclusive access", () => {
       renderWithRelay({
         Artwork: () => ({
           isUnlisted: true,
         }),
       })
 
-      expect(screen.getByText("Exclusive Access")).toBeTruthy()
+      expect(screen.getByText("Exclusive Access")).toBeOnTheScreen()
+    })
+  })
+
+  describe("artwork signals", () => {
+    describe("partner offer signal", () => {
+      beforeEach(
+        () => __globalStoreTestUtils__?.injectFeatureFlags({ AREnablePartnerOfferSignals: true })
+      )
+
+      const futureDate = DateTime.fromMillis(Date.now())
+        .plus({ days: 1, hours: 12, minutes: 1 })
+        .toISO()
+
+      const collectorSignals = {
+        partnerOffer: {
+          isAvailable: true,
+          endAt: futureDate,
+          priceWithDiscount: { display: "$2,750" },
+        },
+      }
+
+      it("shows the limited-time offer signal for non-auction artworks", () => {
+        renderWithRelay({
+          Artwork: () => ({
+            ...artwork,
+            sale: { ...artwork.sale, isAuction: false },
+            realizedPrice: null,
+            collectorSignals,
+          }),
+        })
+
+        expect(screen.getByText("Limited-Time Offer")).toBeOnTheScreen()
+        expect(screen.getByText("Exp. 1d 12h")).toBeOnTheScreen()
+      })
+
+      it("doesn't show the limited-time offer signal for auction artworks", () => {
+        renderWithRelay({
+          // artwork is by default an auction
+          Artwork: () => ({ ...artwork, realizedPrice: null, collectorSignals }),
+        })
+
+        expect(screen.queryByText("Limited-Time Offer")).not.toBeOnTheScreen()
+        expect(screen.queryByText("Exp. 1d 12h")).not.toBeOnTheScreen()
+      })
+
+      it("doesn't show the limited-time offer signal if priceOfferMessage is present", () => {
+        renderWithRelay(
+          {
+            Artwork: () => ({
+              ...artwork,
+              sale: { ...artwork.sale, isAuction: false },
+              realizedPrice: null,
+              collectorSignals,
+            }),
+          },
+          {
+            priceOfferMessage: {
+              priceListedMessage: "$12,500",
+              priceWithDiscountMessage: "$10,000",
+            },
+          }
+        )
+
+        expect(screen.queryByText("Limited-Time Offer")).not.toBeOnTheScreen()
+        expect(screen.queryByText("Exp. 1d 12h")).not.toBeOnTheScreen()
+      })
+    })
+
+    describe("auction signals", () => {
+      beforeEach(
+        () =>
+          __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAuctionImprovementsSignals: true })
+      )
+
+      describe("live auction", () => {
+        it("shows the bidding live now signal", () => {
+          renderWithRelay({
+            Artwork: () => ({
+              ...artwork,
+              sale: { ...artwork.sale, isClosed: false },
+              realizedPrice: null,
+              collectorSignals: { auction: { liveBiddingStarted: true } },
+            }),
+          })
+
+          expect(screen.getByText("Bidding live now")).toBeOnTheScreen()
+        })
+
+        it("shows the bidding closed signal", () => {
+          renderWithRelay({
+            Artwork: () => ({
+              ...artwork,
+              sale: { ...artwork.sale, isClosed: false },
+              realizedPrice: null,
+              collectorSignals: {
+                auction: {
+                  lotClosesAt: DateTime.fromMillis(Date.now()).minus({ days: 1 }).toISO(),
+                },
+              },
+            }),
+          })
+
+          expect(screen.getByText("Bidding closed")).toBeOnTheScreen()
+        })
+      })
+
+      describe("bidding timers", () => {
+        it("shows the Register by date", () => {
+          const registerDate = DateTime.fromMillis(Date.now()).plus({ days: 1 })
+
+          renderWithRelay({
+            Artwork: () => ({
+              ...artwork,
+              sale: { ...artwork.sale, isClosed: false },
+              realizedPrice: null,
+              collectorSignals: { auction: { registrationEndsAt: registerDate.toISO() } },
+            }),
+          })
+
+          // Register by Aug 26
+          expect(
+            screen.getByText(`Register by ${registerDate.toFormat("MMM d")}`)
+          ).toBeOnTheScreen()
+        })
+
+        it("shows the time left to bid", () => {
+          renderWithRelay({
+            Artwork: () => ({
+              ...artwork,
+              sale: { ...artwork.sale, isClosed: false },
+              realizedPrice: null,
+              collectorSignals: {
+                auction: { lotClosesAt: DateTime.fromMillis(Date.now()).plus({ days: 1 }).toISO() },
+              },
+            }),
+          })
+
+          expect(screen.getByText("23h 59m left to bid")).toBeOnTheScreen()
+        })
+
+        it("shows the extended left to bid in minutes", () => {
+          renderWithRelay({
+            Artwork: () => ({
+              ...artwork,
+              sale: { ...artwork.sale, isClosed: false },
+              realizedPrice: null,
+              collectorSignals: {
+                auction: {
+                  lotClosesAt: DateTime.fromMillis(Date.now()).plus({ minutes: 1 }).toISO(),
+                  onlineBiddingExtended: true,
+                },
+              },
+            }),
+          })
+
+          expect(screen.getByText("Extended, 59s left")).toBeOnTheScreen()
+        })
+      })
+
+      it("shows number of bids", () => {
+        renderWithRelay({
+          Artwork: () => ({
+            ...artwork,
+            sale: { ...artwork.sale, isClosed: false },
+            saleArtwork: { currentBid: { display: "$3,700" } },
+            realizedPrice: null,
+            collectorSignals: { auction: { bidCount: 7 } },
+          }),
+        })
+
+        expect(screen.getByText("$3,700 (7 bids)")).toBeOnTheScreen()
+      })
     })
   })
 })

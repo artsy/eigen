@@ -1,12 +1,12 @@
 import { BackButton, Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { myCollectionUpdateArtwork } from "app/Scenes/MyCollection/mutations/myCollectionUpdateArtwork"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { SubmitArtworkProgressBar } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkProgressBar"
-import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubmitArtworkTracking"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { refreshSellScreen } from "app/utils/refreshHelpers"
 import { useFormikContext } from "formik"
 import { useEffect } from "react"
@@ -16,38 +16,13 @@ const HEADER_HEIGHT = 50
 
 export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
   const { trackTappedSubmissionSaveExit } = useSubmitArtworkTracking()
-  const enableSaveAndExit = useFeatureFlag("AREnableSaveAndContinueSubmission")
   const currentStep = SubmitArtworkFormStore.useStoreState((state) => state.currentStep)
   const hasCompletedForm = currentStep === "CompleteYourSubmission"
 
-  const { values } = useFormikContext<ArtworkDetailsFormModel>()
+  const { values } = useFormikContext<SubmissionModel>()
 
   const handleSaveAndExitPress = async () => {
     Keyboard.dismiss()
-    if (!enableSaveAndExit) {
-      if (hasCompletedForm) {
-        goBack()
-        return
-      }
-
-      Alert.alert(
-        "Are you sure you want to exit?",
-        "Your artwork will not be submitted.",
-        [
-          {
-            text: "Cancel",
-            style: "cancel",
-          },
-          {
-            text: "Yes",
-            onPress: () => goBack(),
-            style: "destructive",
-          },
-        ],
-        { cancelable: true }
-      )
-      return
-    }
 
     if (hasCompletedForm) {
       // Reset form if user is on the last step
@@ -58,13 +33,30 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
     }
 
     try {
-      trackTappedSubmissionSaveExit(values.submissionId, currentStep)
+      trackTappedSubmissionSaveExit(values.externalId, currentStep)
 
-      const submissionId = await createOrUpdateSubmission(values, values.submissionId)
+      await createOrUpdateSubmission(values, values.externalId)
 
-      if (submissionId) {
+      // If an submission has a my collection artwork, we need to update its values
+      if (values.artwork.internalID) {
+        const newValues = {
+          artworkId: values.artwork.internalID,
+          framedMetric: values.artwork.framedMetric,
+          framedWidth: values.artwork.framedWidth,
+          framedHeight: values.artwork.framedHeight,
+          framedDepth: values.artwork.framedDepth,
+          isFramed: values.artwork.isFramed,
+          condition: values.artwork.condition,
+          conditionDescription: values.artwork.conditionDescription,
+        }
+
+        // Make API call to update my collection artwork
+        await myCollectionUpdateArtwork(newValues)
+      }
+
+      if (values.externalId) {
         GlobalStore.actions.artworkSubmission.setDraft({
-          submissionID: submissionId,
+          submissionID: values.externalId,
           currentStep,
         })
       }
@@ -118,7 +110,7 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
         {!!showSaveAndExit && (
           <Flex style={{ flexGrow: 1, alignItems: "flex-end" }}>
             <Touchable onPress={handleSaveAndExitPress}>
-              <Text>{!hasCompletedForm && !!enableSaveAndExit ? "Save & " : ""}Exit</Text>
+              <Text variant="sm">{!hasCompletedForm ? "Save & " : ""}Exit</Text>
             </Touchable>
           </Flex>
         )}

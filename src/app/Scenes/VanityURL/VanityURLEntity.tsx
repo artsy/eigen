@@ -1,7 +1,7 @@
 import { Flex, Spinner } from "@artsy/palette-mobile"
 import { VanityURLEntityQuery } from "__generated__/VanityURLEntityQuery.graphql"
 import { VanityURLEntity_fairOrPartner$data } from "__generated__/VanityURLEntity_fairOrPartner.graphql"
-import { FairFragmentContainer, FairPlaceholder, FairQueryRenderer } from "app/Scenes/Fair/Fair"
+import { Fair, FairPlaceholder, FairScreen } from "app/Scenes/Fair/Fair"
 import { PartnerContainer, PartnerSkeleton } from "app/Scenes/Partner/Partner"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -13,19 +13,20 @@ interface EntityProps {
   fairOrPartner: VanityURLEntity_fairOrPartner$data
 }
 
-const VanityURLEntity: React.FC<EntityProps> = ({ fairOrPartner, originalSlug }) => {
+export const VanityURLEntity: React.FC<EntityProps> = ({ fairOrPartner, originalSlug }) => {
   // Because `__typename` is not allowed in fragments anymore, we need to check for the existance of `slug` or `id` in the fragment
   // https://github.com/facebook/relay/commit/ed53bb095ddd494092819884cb4f46df94b45b79#diff-4e3d961b12253787bd61506608bc366be34ab276c09690de7df17203de7581e8
   const isFair = fairOrPartner.__typename === "Fair" || "slug" in fairOrPartner
   const isPartner = fairOrPartner.__typename === "Partner" || "id" in fairOrPartner
 
   if (isFair) {
-    return <FairFragmentContainer fair={fairOrPartner} />
-  } else if (isPartner) {
-    return <PartnerContainer partner={fairOrPartner} />
-  } else {
-    return <VanityURLPossibleRedirect slug={originalSlug} />
+    return <Fair fair={fairOrPartner} />
   }
+  if (isPartner) {
+    return <PartnerContainer partner={fairOrPartner} />
+  }
+
+  return <VanityURLPossibleRedirect slug={originalSlug} />
 }
 
 const VanityURLEntityFragmentContainer = createFragmentContainer(VanityURLEntity, {
@@ -52,7 +53,7 @@ interface RendererProps {
 
 export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugType, slug }) => {
   if (slugType === "fairID") {
-    return <FairQueryRenderer fairID={slug} />
+    return <FairScreen fairID={slug} />
   } else if (!entity && !slugType) {
     return <VanityURLPossibleRedirect slug={slug} />
   } else {

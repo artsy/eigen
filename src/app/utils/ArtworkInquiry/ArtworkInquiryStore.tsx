@@ -1,36 +1,27 @@
-import { InquiryQuestionInput } from "__generated__/SubmitInquiryRequestMutation.graphql"
+import { InquiryQuestionInput } from "__generated__/useSubmitInquiryRequestMutation.graphql"
 import {
   ArtworkInquiryActions,
   ArtworkInquiryContextProps,
   ArtworkInquiryContextState,
-  InquiryOptions,
-  InquiryQuestionIDs,
 } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
-import { createContext, Reducer, useReducer } from "react"
+import { createContext, Reducer, useContext, useReducer } from "react"
 
-const initialArtworkInquiryState: ArtworkInquiryContextState = {
+export const initialArtworkInquiryState: ArtworkInquiryContextState = {
   shippingLocation: null,
-  inquiryType: null,
   inquiryQuestions: [],
-  message: null,
+  inquiryModalVisible: false,
+  successNotificationVisible: false,
+  collectionPromptVisible: false,
+  profilePromptVisible: false,
 }
 
-export const reducer = (
+export const artworkInquiryStateReducer = (
   inquiryState: ArtworkInquiryContextState,
   action: ArtworkInquiryActions
 ): ArtworkInquiryContextState => {
   switch (action.type) {
     case "resetForm":
       return initialArtworkInquiryState
-    case "selectInquiryType":
-      return {
-        ...inquiryState,
-        inquiryType: action.payload,
-        inquiryQuestions:
-          action.payload === InquiryOptions.RequestPrice
-            ? [{ questionID: InquiryQuestionIDs.PriceAndAvailability }]
-            : inquiryState.inquiryQuestions,
-      }
 
     case "selectShippingLocation":
       return {
@@ -50,21 +41,39 @@ export const reducer = (
         inquiryQuestions: newSelection,
       }
     }
-    case "setMessage":
+    case "setInquiryModalVisible":
       return {
         ...inquiryState,
-        message: action.payload,
+        inquiryModalVisible: action.payload,
+      }
+    case "setSuccessNotificationVisible":
+      return {
+        ...inquiryState,
+        successNotificationVisible: action.payload,
+      }
+    case "setCollectionPromptVisible":
+      return {
+        ...inquiryState,
+        collectionPromptVisible: action.payload,
+      }
+    case "setProfilePromptVisible":
+      return {
+        ...inquiryState,
+        profilePromptVisible: action.payload,
       }
   }
 }
 
 export const ArtworkInquiryContext = createContext<ArtworkInquiryContextProps>(null as any)
 
+export const useArtworkInquiryContext = () => useContext(ArtworkInquiryContext)
+
 export const ArtworkInquiryStateProvider = ({ children }: any) => {
   const [state, dispatch] = useReducer<Reducer<ArtworkInquiryContextState, ArtworkInquiryActions>>(
-    reducer,
+    artworkInquiryStateReducer,
     initialArtworkInquiryState
   )
+
   return (
     <ArtworkInquiryContext.Provider value={{ state, dispatch }}>
       {children}

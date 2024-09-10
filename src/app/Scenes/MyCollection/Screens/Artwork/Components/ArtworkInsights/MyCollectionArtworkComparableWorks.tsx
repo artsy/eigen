@@ -1,15 +1,10 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Separator } from "@artsy/palette-mobile"
 import { MyCollectionArtworkComparableWorks_artwork$key } from "__generated__/MyCollectionArtworkComparableWorks_artwork.graphql"
-import {
-  AuctionResultListItemFragmentContainer,
-  AuctionResultListSeparator,
-} from "app/Components/Lists/AuctionResultListItem"
+import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { useScreenDimensions } from "app/utils/hooks"
-import { FlatList } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -21,7 +16,6 @@ export const MyCollectionArtworkComparableWorks: React.FC<
   MyCollectionArtworkComparableWorksProps
 > = (props) => {
   const { trackEvent } = useTracking()
-  const { width } = useScreenDimensions()
 
   const artwork = useFragment(artworkFragment, props.artwork)
 
@@ -32,24 +26,23 @@ export const MyCollectionArtworkComparableWorks: React.FC<
   }
 
   return (
-    <Flex mb={6}>
+    <Flex>
       <SectionTitle title="Comparable Works" />
-
-      <FlatList
-        data={comparableWorks}
-        keyExtractor={(item) => item.internalID}
-        renderItem={({ item }) => (
+      {comparableWorks.map((item) => (
+        <Flex my={1} mx={-2} key={item.internalID}>
           <AuctionResultListItemFragmentContainer
             auctionResult={item}
             onPress={() => {
-              trackEvent(tracks.tappedAuctionResultGroup(artwork?.internalID, artwork?.slug))
-              navigate(`/artist/${artwork?.artist?.slug!}/auction-result/${item.internalID}`)
+              if (artwork.artist?.slug) {
+                trackEvent(tracks.tappedAuctionResultGroup(artwork?.internalID, artwork?.slug))
+                navigate(`/artist/${artwork.artist.slug}/auction-result/${item.internalID}`)
+              }
             }}
           />
-        )}
-        ItemSeparatorComponent={AuctionResultListSeparator}
-        style={{ width, left: -20 }}
-      />
+        </Flex>
+      ))}
+
+      <Separator my={4} borderColor="black10" />
     </Flex>
   )
 }

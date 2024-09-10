@@ -1,9 +1,8 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ActivityItem_Test_Query } from "__generated__/ActivityItem_Test_Query.graphql"
 import { ActivityItem_notification$key } from "__generated__/ActivityItem_notification.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Suspense } from "react"
@@ -51,9 +50,7 @@ describe("ActivityItem", () => {
   it("should the basic info", async () => {
     renderWithRelay({ Notification: () => notificationWithFF })
 
-    await flushPromiseQueue()
-
-    expect(screen.getByText("Notification Headline")).toBeTruthy()
+    await screen.findByText("Notification Headline")
   })
 
   it("should render the formatted publication date", async () => {
@@ -61,9 +58,7 @@ describe("ActivityItem", () => {
       Notification: () => notification,
     })
 
-    await flushPromiseQueue()
-
-    expect(screen.getByText("2 days ago")).toBeTruthy()
+    await screen.findByText("2 days ago")
   })
 
   it("should render artwork images", async () => {
@@ -71,9 +66,7 @@ describe("ActivityItem", () => {
       Notification: () => notification,
     })
 
-    await flushPromiseQueue()
-
-    expect(screen.getAllByLabelText("Activity Artwork Image")).toHaveLength(4)
+    await waitFor(() => expect(screen.getAllByLabelText("Activity Artwork Image")).toHaveLength(4))
   })
 
   it("should track event when an item is tapped", async () => {
@@ -81,9 +74,7 @@ describe("ActivityItem", () => {
       Notification: () => notificationWithFF,
     })
 
-    await flushPromiseQueue()
-
-    fireEvent.press(screen.getByText("Notification Headline"))
+    fireEvent.press(await screen.findByText("Notification Headline"))
 
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
       [
@@ -99,13 +90,28 @@ describe("ActivityItem", () => {
     renderWithRelay({
       Notification: () => notificationWithFF,
     })
-    await flushPromiseQueue()
 
-    fireEvent.press(screen.getByText("Notification Headline"))
+    fireEvent.press(await screen.findByText("Notification Headline"))
 
-    await flushPromiseQueue()
+    await waitFor(() =>
+      expect(navigate).toHaveBeenCalledWith('/notification/<mock-value-for-field-"internalID">')
+    )
+  })
 
-    expect(navigate).toHaveBeenCalledWith('/notification/<mock-value-for-field-"internalID">')
+  it("does not navigate given a notificationItem of type 'PartnerOfferCreatedNotificationItem'", async () => {
+    renderWithRelay({
+      Notification: () => ({
+        ...notificationWithFF,
+        item: {
+          item: notificationWithFF.item,
+          __typename: "CollectorProfileUpdatePromptNotificationItem",
+        },
+      }),
+    })
+
+    fireEvent.press(await screen.findByText("Tell us a little bit more about you."))
+
+    expect(navigate).not.toHaveBeenCalled()
   })
 
   it("should NOT call `mark as read` mutation if the notification has already been read", async () => {
@@ -113,14 +119,12 @@ describe("ActivityItem", () => {
       Notification: () => notificationWithFF,
     })
 
-    await flushPromiseQueue()
+    fireEvent.press(await screen.findByText("Notification Headline"))
 
-    fireEvent.press(screen.getByText("Notification Headline"))
-
-    await flushPromiseQueue()
-
-    expect(() => mockEnvironment.mock.getMostRecentOperation()).toThrowError(
-      "There are no pending operations in the list"
+    await waitFor(() =>
+      expect(() => mockEnvironment.mock.getMostRecentOperation()).toThrowError(
+        "There are no pending operations in the list"
+      )
     )
   })
 
@@ -130,10 +134,7 @@ describe("ActivityItem", () => {
         Notification: () => notificationWithFF,
       })
 
-      await flushPromiseQueue()
-
-      const indicator = screen.queryByLabelText("Unread notification indicator")
-      expect(indicator).toBeNull()
+      expect(screen.queryByLabelText("Unread notification indicator")).not.toBeOnTheScreen()
     })
 
     it("should be rendered when notification is unread", async () => {
@@ -144,10 +145,7 @@ describe("ActivityItem", () => {
         }),
       })
 
-      await flushPromiseQueue()
-
-      const indicator = screen.getByLabelText("Unread notification indicator")
-      expect(indicator).toBeTruthy()
+      await screen.findByLabelText("Unread notification indicator")
     })
 
     it("should be removed after the activity item is pressed", async () => {
@@ -158,9 +156,7 @@ describe("ActivityItem", () => {
         }),
       })
 
-      await flushPromiseQueue()
-
-      expect(screen.getByLabelText("Unread notification indicator")).toBeTruthy()
+      await screen.findByLabelText("Unread notification indicator")
       fireEvent.press(screen.getByText("Notification Headline"))
       expect(screen.queryByLabelText("Unread notification indicator")).toBeFalsy()
     })
@@ -175,10 +171,7 @@ describe("ActivityItem", () => {
         }),
       })
 
-      await flushPromiseQueue()
-
-      const label = screen.getByLabelText("Notification type: Alert")
-      expect(label).toBeTruthy()
+      await screen.findByLabelText("Notification type: Alert")
     })
 
     it("should render 'Offer'", async () => {
@@ -189,12 +182,8 @@ describe("ActivityItem", () => {
         }),
       })
 
-      await flushPromiseQueue()
-
-      const label = screen.getByLabelText("Notification type: Offer")
-      expect(label).toBeTruthy()
-      const badge = screen.getByText("Limited-Time Offer")
-      expect(badge).toBeTruthy()
+      await screen.findByLabelText("Notification type: Offer")
+      expect(screen.getByText("Limited-Time Offer")).toBeOnTheScreen()
     })
   })
 
@@ -207,9 +196,7 @@ describe("ActivityItem", () => {
         }),
       })
 
-      await flushPromiseQueue()
-
-      expect(screen.queryByLabelText("Remaining artworks count")).toBeFalsy()
+      expect(screen.queryByLabelText("Remaining artworks count")).not.toBeOnTheScreen()
     })
 
     it("should NOT be rendered if notification is not artwork-based", async () => {
@@ -221,9 +208,7 @@ describe("ActivityItem", () => {
         }),
       })
 
-      await flushPromiseQueue()
-
-      expect(screen.queryByLabelText("Remaining artworks count")).toBeFalsy()
+      expect(screen.queryByLabelText("Remaining artworks count")).not.toBeOnTheScreen()
     })
 
     it("should be rendered if there are more than 4", async () => {
@@ -234,10 +219,8 @@ describe("ActivityItem", () => {
         }),
       })
 
-      await flushPromiseQueue()
-
-      expect(screen.getByLabelText("Remaining artworks count")).toBeTruthy()
-      expect(screen.getByText("+ 1")).toBeTruthy()
+      await screen.findByLabelText("Remaining artworks count")
+      expect(screen.getByText("+ 1")).toBeOnTheScreen()
     })
   })
 })
@@ -264,6 +247,7 @@ const notification = {
       url: "artwork-image-four",
     },
   ],
+  item: { __typename: "PartnerOfferCreatedNotificationItem" },
 }
 
 const notificationWithFF = {
@@ -287,4 +271,5 @@ const notificationWithFF = {
       url: "artwork-image-four",
     },
   ],
+  item: { __typename: "PartnerOfferCreatedNotificationItem" },
 }

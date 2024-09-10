@@ -33,11 +33,14 @@ describe("ArtworkStickyBottomContent", () => {
     },
     query: graphql`
       query ArtworkStickyBottomContent_Test_Query {
-        artwork(id: "artworkID") {
+        artwork(id: "artworkID") @required(action: NONE) {
           ...ArtworkStickyBottomContent_artwork
         }
-        me {
-          ...ArtworkStickyBottomContent_me
+        me @required(action: NONE) {
+          ...ArtworkCommercialButtons_me
+          ...BidButton_me
+          ...useSendInquiry_me
+          ...MyProfileEditModal_me
           partnerOffersConnection(artworkID: "artworkID", first: 1) {
             edges {
               node {

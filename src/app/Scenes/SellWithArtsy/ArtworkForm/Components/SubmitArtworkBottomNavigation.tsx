@@ -1,13 +1,18 @@
 import { Button, Flex, Spacer, Text, Touchable, useSpace } from "@artsy/palette-mobile"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
-import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/navigationHelpers"
-import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import {
+  INITIAL_EDIT_STEP,
+  SubmitArtworkStackNavigation,
+} from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
+import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
+import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubmitArtworkTracking"
 import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { dismissModal, navigate, popToRoot, switchTab } from "app/system/navigation/navigate"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useIsKeyboardVisible } from "app/utils/hooks/useIsKeyboardVisible"
+import { NormalizedDocument } from "app/utils/normalizeUploadedDocument"
 import { useFormikContext } from "formik"
 import { useEffect } from "react"
 import { LayoutAnimation } from "react-native"
@@ -19,29 +24,42 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
     trackTappedSubmitAnotherWork,
     trackTappedViewArtworkInMyCollection,
   } = useSubmitArtworkTracking()
-  const { navigateToNextStep, navigateToPreviousStep, isFinalStep, isValid } =
-    useSubmissionContext()
-  const { values } = useFormikContext<ArtworkDetailsFormModel>()
+  const {
+    navigateToNextStep,
+    navigateToPreviousStep,
+    isFinalStep,
+    isValid,
+    currentStep,
+    isLoading,
+  } = useSubmissionContext()
+  const { values } = useFormikContext<SubmissionModel>()
+  const navigation = useNavigation<NavigationProp<SubmitArtworkStackNavigation>>()
+
+  const setCurrentStep = SubmitArtworkFormStore.useStoreActions((actions) => actions.setCurrentStep)
 
   const { trackTappedNewSubmission, trackTappedStartMyCollection, trackConsignmentSubmitted } =
     useSubmitArtworkTracking()
+
+  const isUploadingAdditionalDocuments = values.additionalDocuments.some(
+    (document: NormalizedDocument) => document.loading
+  )
+  const allDocumentsAreValid = values.additionalDocuments.every(
+    (document: NormalizedDocument) => !document.errorMessage
+  )
 
   const isUploadingPhotos = values.photos.some((photo: Photo) => photo.loading)
   const allPhotosAreValid = values.photos.every(
     (photo: Photo) => !photo.error && !photo.errorMessage
   )
-  const showStartFromMyCollection = useFeatureFlag("AREnableSubmitMyCollectionArtworkInSubmitFlow")
-
-  const { isLoading, currentStep } = SubmitArtworkFormStore.useStoreState((state) => state)
 
   const handleBackPress = () => {
-    trackTappedSubmissionBack(values.submissionId, currentStep)
+    trackTappedSubmissionBack(values.externalId, currentStep)
     navigateToPreviousStep()
   }
 
   const handleNextPress = () => {
     if (isFinalStep) {
-      trackConsignmentSubmitted(values.submissionId)
+      trackConsignmentSubmitted(values.externalId)
     }
 
     navigateToNextStep()
@@ -65,31 +83,25 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
         <Button
           onPress={() => {
             trackTappedNewSubmission()
-            navigateToNextStep({
-              step: "SelectArtist",
-              skipMutation: true,
-            })
+            navigation.navigate("SelectArtist")
+            setCurrentStep("SelectArtist")
           }}
           block
         >
           Start New Submission
         </Button>
-        {!!showStartFromMyCollection && (
-          <Button
-            onPress={() => {
-              trackTappedStartMyCollection()
-              navigateToNextStep({
-                skipMutation: true,
-                step: "SubmitArtworkFromMyCollection",
-              })
-            }}
-            block
-            mt={2}
-            variant="outline"
-          >
-            Start from My Collection
-          </Button>
-        )}
+        <Button
+          onPress={() => {
+            trackTappedStartMyCollection()
+            navigation.navigate("SubmitArtworkFromMyCollection")
+            setCurrentStep("SubmitArtworkFromMyCollection")
+          }}
+          block
+          mt={2}
+          variant="outline"
+        >
+          Start from My Collection
+        </Button>
       </Wrapper>
     )
   }
@@ -97,35 +109,33 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
   if (currentStep === "CompleteYourSubmission") {
     return (
       <Wrapper>
-        <Flex px={2}>
-          <Spacer y={1} />
-          <Button
-            block
-            onPress={() => {
-              trackTappedSubmitAnotherWork(values.submissionId)
-              dismissModal(() => {
-                navigate("/sell/submissions/new")
-              })
-            }}
-          >
-            Submit Another Work
-          </Button>
-          <Spacer y={2} />
-          <Button
-            block
-            onPress={() => {
-              trackTappedViewArtworkInMyCollection(values.submissionId)
-              switchTab("profile")
-              dismissModal()
-              requestAnimationFrame(() => {
-                popToRoot()
-              })
-            }}
-            variant="outline"
-          >
-            View Artwork In My Collection
-          </Button>
-        </Flex>
+        <Spacer y={1} />
+        <Button
+          block
+          onPress={() => {
+            trackTappedSubmitAnotherWork(values.externalId)
+            dismissModal(() => {
+              navigate("/sell/submissions/new")
+            })
+          }}
+        >
+          Submit Another Work
+        </Button>
+        <Spacer y={2} />
+        <Button
+          block
+          onPress={() => {
+            trackTappedViewArtworkInMyCollection(values.externalId)
+            switchTab("profile")
+            dismissModal()
+            requestAnimationFrame(() => {
+              popToRoot()
+            })
+          }}
+          variant="outline"
+        >
+          View Artwork In My Collection
+        </Button>
       </Wrapper>
     )
   }
@@ -169,18 +179,29 @@ export const SubmitArtworkBottomNavigation: React.FC<{}> = () => {
     )
   }
 
+  // Hide the "Back" button in the Title step when editing a submission to disallow updating the artist.
+  const displayBackButton = !(values.externalId && currentStep === INITIAL_EDIT_STEP)
+
   return (
     <Wrapper>
       <Flex flexDirection="row" justifyContent="space-between" backgroundColor="white100">
         <Flex flexDirection="row" alignItems="center">
-          <Touchable onPress={handleBackPress}>
-            <Text underline>Back</Text>
-          </Touchable>
+          {!!displayBackButton && (
+            <Touchable onPress={handleBackPress}>
+              <Text underline>Back</Text>
+            </Touchable>
+          )}
         </Flex>
         <Button
           onPress={handleNextPress}
-          disabled={!isValid || isLoading || isUploadingPhotos || !allPhotosAreValid}
-          loading={isLoading || isUploadingPhotos}
+          disabled={
+            !isValid ||
+            isLoading ||
+            isUploadingPhotos ||
+            !allPhotosAreValid ||
+            !allDocumentsAreValid
+          }
+          loading={isLoading || isUploadingPhotos || isUploadingAdditionalDocuments}
         >
           {isFinalStep ? "Submit Artwork" : "Continue"}
         </Button>

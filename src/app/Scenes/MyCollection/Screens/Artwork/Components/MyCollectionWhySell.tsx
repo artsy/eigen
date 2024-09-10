@@ -1,12 +1,10 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Button, Flex, Separator, Spacer, Text } from "@artsy/palette-mobile"
 import { MyCollectionWhySell_artwork$key } from "__generated__/MyCollectionWhySell_artwork.graphql"
-import { initializeSubmissionArtworkForm } from "app/Scenes/MyCollection/utils/initializeSubmissionArtworkForm"
+import { SubmitArtworkProps } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { fetchArtworkInformation } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/fetchArtworkInformation"
 import { getInitialSubmissionFormValuesFromArtwork } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/getInitialSubmissionValuesFromArtwork"
-import { SubmitArtworkProps } from "app/Scenes/SellWithArtsy/SubmitArtwork/SubmitArtwork"
 import { navigate } from "app/system/navigation/navigate"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -20,11 +18,10 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
   const { contextModule } = props
   const { trackEvent } = useTracking()
   const artwork = useFragment(artworkFragment, props.artwork)
-  const enableNewSubmissionFlow = useFeatureFlag("AREnableNewSubmissionFlow")
 
   const submissionId = artwork.submissionId
 
-  if (submissionId) {
+  if (submissionId || !artwork.artist?.targetSupply?.isTargetSupply) {
     return null
   }
 
@@ -40,7 +37,6 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
 
   return (
     <Flex>
-      {contextModule === "about" && <Separator mb={2} borderColor="black10" />}
       <Text variant="sm-display" testID="SWA-banner-in-MC">
         Interested in Selling This Work?
       </Text>
@@ -64,23 +60,19 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
                 "Submit This Artwork to Sell"
               )
             )
-            if (enableNewSubmissionFlow) {
-              const passProps: SubmitArtworkProps = {
-                initialValues: {},
-                initialStep: "StartFlow",
-                hasStartedFlowFromMyCollection: true,
-              }
-
-              const artworkData = await fetchArtworkInformation(artwork.internalID)
-              if (artworkData) {
-                passProps.initialValues = getInitialSubmissionFormValuesFromArtwork(artworkData)
-                passProps.initialStep = "AddTitle"
-              }
-              navigate("/sell/submissions/new", { passProps })
-            } else {
-              initializeSubmissionArtworkForm(artwork)
-              navigate("/sell/submissions/new")
+            const passProps: SubmitArtworkProps = {
+              initialValues: {},
+              initialStep: "StartFlow",
+              hasStartedFlowFromMyCollection: true,
             }
+
+            const artworkData = await fetchArtworkInformation(artwork.internalID)
+
+            if (artworkData) {
+              passProps.initialValues = getInitialSubmissionFormValuesFromArtwork(artworkData)
+              passProps.initialStep = "AddTitle"
+            }
+            navigate("/sell/submissions/new", { passProps })
           }}
           testID="submitArtworkToSellButton"
         >
@@ -100,7 +92,8 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
           </Text>
         </Text>
       </>
-      {contextModule === "insights" && <Separator mt={2} mb={2} borderColor="black10" />}
+
+      <Separator my={4} borderColor="black10" />
     </Flex>
   )
 }
@@ -118,6 +111,9 @@ const artworkFragment = graphql`
     artist {
       internalID
       name
+      targetSupply {
+        isTargetSupply
+      }
     }
     attributionClass {
       name

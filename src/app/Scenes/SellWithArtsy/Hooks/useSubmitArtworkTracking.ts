@@ -96,6 +96,32 @@ export const useSubmitArtworkTracking = () => {
     })
   }
 
+  const trackTappedEditSubmission = (
+    submission_id: string,
+    buttonLabel: string | null | undefined,
+    submission_state: string
+  ) => {
+    trackEvent({
+      action: "tappedEditSubmission",
+      context_module: ContextModule.sell,
+      context_owner_type: OwnerType.myCollectionArtwork,
+      submission_id,
+      submission_state,
+      subject: buttonLabel,
+    })
+  }
+
+  const trackSubmissionStepScreen = (
+    currentStep: SubmitArtworkScreen,
+    submission_id: string | undefined
+  ) => {
+    trackEvent({
+      action: "screen",
+      context_screen_owner_type: getOwnerType(currentStep),
+      context_screen_owner_id: submission_id,
+    })
+  }
+
   return {
     trackTappedContinueSubmission,
     trackTappedNewSubmission,
@@ -106,6 +132,8 @@ export const useSubmitArtworkTracking = () => {
     trackTappedSubmitAnotherWork,
     trackTappedViewArtworkInMyCollection,
     trackTappedContactAdvisor,
+    trackTappedEditSubmission,
+    trackSubmissionStepScreen,
   }
 }
 
@@ -129,8 +157,18 @@ const getOwnerType = (currentStep: SubmitArtworkScreen): OwnerType => {
       return OwnerType.submitArtworkStepAddPhoneNumber
     case "CompleteYourSubmission":
       return OwnerType.submitArtworkStepCompleteYourSubmission
+    case "CompleteYourSubmissionPostApproval":
+      return OwnerType.submitArtworkStepCompleteYourSubmissionPostApproval
     case "ArtistRejected":
       return OwnerType.submitArtworkStepArtistRejected
+    case "ShippingLocation":
+      return OwnerType.submitArtworkStepShippingLocation
+    case "FrameInformation":
+      return OwnerType.submitArtworkStepFrameInformation
+    case "AdditionalDocuments":
+      return OwnerType.submitArtworkStepAddtionalDocuments
+    case "Condition":
+      return OwnerType.submitArtworkStepCondition
     case "SubmitArtworkFromMyCollection":
       return OwnerType.submitArtworkStepSelectArtworkMyCollectionArtwork
   }

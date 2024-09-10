@@ -105,7 +105,11 @@
 {
 
     bool handled = [[[ARAppDelegate braze] notifications] handleBackgroundNotificationWithUserInfo:userInfo fetchCompletionHandler:handler];
+
     if (handled) {
+        NSString *url = userInfo[@"ab_uri"];
+        [self receivedNotification:userInfo];
+        [self tappedNotification:userInfo url:url];
         return;
     }
 
@@ -157,13 +161,26 @@
 
 - (void)receivedNotification:(NSDictionary *)notificationInfo;
 {
-    [[AREmission sharedInstance] sendEvent:ARAnalyticsNotificationReceived traits:notificationInfo];
+    NSDictionary *normalizedInfo = [self normalizedNotificationInfo:notificationInfo];
+    [[AREmission sharedInstance] sendEvent:ARAnalyticsNotificationReceived traits:normalizedInfo];
     [[SEGAnalytics sharedAnalytics] receivedRemoteNotification:notificationInfo];
+}
+
+- (NSDictionary *)normalizedNotificationInfo:(NSDictionary *)notificationInfo {
+    NSMutableDictionary *normalizedInfo = [notificationInfo mutableCopy];
+
+    if (notificationInfo[@"ab_uri"] != nil) {
+        normalizedInfo[@"url"] = notificationInfo[@"ab_uri"];
+    }
+
+    return normalizedInfo;
 }
 
 - (void)tappedNotification:(NSDictionary *)notificationInfo url:(NSString *)url;
 {
-    [[AREmission sharedInstance] sendEvent:ARAnalyticsNotificationTapped traits:notificationInfo];
+
+    NSDictionary *normalizedInfo = [self normalizedNotificationInfo:notificationInfo];
+    [[AREmission sharedInstance] sendEvent:ARAnalyticsNotificationTapped traits:normalizedInfo];
 
     NSDictionary *props = [self filteredProps:notificationInfo];
     [[AREmission sharedInstance] navigate:url withProps:props];

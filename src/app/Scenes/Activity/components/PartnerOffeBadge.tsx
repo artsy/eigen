@@ -1,5 +1,5 @@
 import { Box, Text } from "@artsy/palette-mobile"
-import { NotificationTypesEnum } from "__generated__/ActivityRail_notificationsConnection.graphql"
+import { NotificationTypesEnum } from "__generated__/ActivityRail_viewer.graphql"
 import { getNotificationTypeBadge } from "app/Scenes/Activity/utils/getNotificationTypeLabel"
 
 interface PartnerOfferBadgeProps {

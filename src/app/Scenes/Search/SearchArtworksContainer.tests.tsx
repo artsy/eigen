@@ -60,6 +60,7 @@ describe("SearchArtworks", () => {
         internalID: "internalID",
         slug: "artworkSlug",
         artistNames: "Artist Name",
+        collectorSignals: null,
       }),
     })
 

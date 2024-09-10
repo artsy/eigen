@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>UIUserInterfaceStyle</key>
+	<string>Light</string>
 	<key>AppIdentifierPrefix</key>
 	<string>$(AppIdentifierPrefix)</string>
 	<key>CFBundleDevelopmentRegion</key>
@@ -138,6 +140,8 @@
 	<string>Camera access is needed to submit consignments.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Photos will be used to gauge the quality of the work you are submitting.</string>
+	<key>NSDocumentsUsageDescription</key>
+	<string>In order to add additional documents to your submission, we need access to your documents to pick files.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Unica77LL-Italic.otf</string>

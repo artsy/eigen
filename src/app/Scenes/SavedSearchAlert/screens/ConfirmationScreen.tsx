@@ -1,6 +1,7 @@
 import { ActionType, ContextModule, OwnerType, TappedArtworkGroup } from "@artsy/cohesion"
 import { Box, Button, Flex, Spacer, Text, useTheme, Pill } from "@artsy/palette-mobile"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
+import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import {
   ConfirmationScreenMatchingArtworksQuery,
   ConfirmationScreenMatchingArtworksQuery$data,
@@ -13,6 +14,11 @@ import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { useSavedSearchPills } from "app/Scenes/SavedSearchAlert/useSavedSearchPills"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import {
+  CollectorSignals,
+  getArtworkSignalTrackingFields,
+} from "app/utils/getArtworkSignalTrackingFields"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { PlaceholderRaggedText } from "app/utils/placeholders"
@@ -21,6 +27,7 @@ import { useEffect } from "react"
 import { ScrollView } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
+import { useTracking } from "react-tracking"
 
 export const NUMBER_OF_ARTWORKS_TO_SHOW = 10
 
@@ -159,10 +166,12 @@ interface MatchingArtworksProps {
 const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection, closeModal }) => {
   const screen = useScreenDimensions()
   const { space } = useTheme()
+  const { trackEvent } = useTracking()
   const route = useRoute<RouteProp<CreateSavedSearchAlertNavigationStack, "ConfirmationScreen">>()
   const artworks = extractNodes(artworksConnection)
   const total = artworksConnection?.counts?.total
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
+  const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
 
   const areMoreMatchesAvailable =
     total > NUMBER_OF_ARTWORKS_TO_SHOW && attributes?.artistIDs?.length === 1
@@ -208,9 +217,15 @@ const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection,
         width={screen.width - space(2)}
         artworks={artworks}
         hideSaveIcon
-        onPress={(slug: string) => {
+        onPress={(slug: string, artwork?: ArtworkGridItem_artwork$data) => {
           closeModal?.()
-          tracks.tappedArtworkGroup(slug)
+          trackEvent(
+            tracks.tappedArtworkGroup(
+              slug,
+              artwork?.collectorSignals,
+              AREnableAuctionImprovementsSignals
+            )
+          )
           requestAnimationFrame(() => {
             navigate?.(`artwork/${slug}`)
           })
@@ -229,12 +244,17 @@ const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection,
 }
 
 const tracks = {
-  tappedArtworkGroup: (slug: string): TappedArtworkGroup => ({
+  tappedArtworkGroup: (
+    slug: string,
+    collectorSignals: CollectorSignals,
+    auctionSignalsFeatureFlagEnabled: boolean
+  ): TappedArtworkGroup => ({
     action: ActionType.tappedArtworkGroup,
     context_module: ContextModule.alertConfirmation,
     context_screen_owner_type: OwnerType.alertConfirmation,
     destination_screen_owner_type: OwnerType.artwork,
     destination_screen_owner_slug: slug,
     type: "thumbnail",
+    ...getArtworkSignalTrackingFields(collectorSignals, auctionSignalsFeatureFlagEnabled),
   }),
 }

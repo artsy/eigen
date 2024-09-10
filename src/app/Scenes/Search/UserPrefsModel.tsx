@@ -9,8 +9,8 @@ import { fetchQuery, graphql } from "react-relay"
 const currencies = ["USD", "EUR", "GBP"] as const
 const metrics = ["in", "cm"] as const
 
-export type Currency = typeof currencies[number]
-export type Metric = typeof metrics[number]
+export type Currency = (typeof currencies)[number]
+export type Metric = (typeof metrics)[number]
 export type ViewOption = "grid" | "list"
 
 // set default currency depending on device locale
@@ -29,24 +29,18 @@ export interface UserPrefsModel {
   currency: Currency
   metric: Metric | ""
   priceRange: string
-  artworkViewOption: ViewOption
-  artistViewOption: ViewOption
   defaultViewOption: ViewOption
   setCurrency: Action<this, Currency>
   setMetric: Action<this, Metric>
   setPriceRange: Action<this, string>
   fetchRemoteUserPrefs: Thunk<UserPrefsModel>
   didRehydrate: ThunkOn<UserPrefsModel, {}, GlobalStoreModel>
-  setArtworkViewOption: Action<this, ViewOption>
-  setArtistViewOption: Action<this, ViewOption>
   setDefaultViewOption: Action<this, ViewOption>
 }
 
 export const getUserPrefsModel = (): UserPrefsModel => ({
   currency: DEFAULT_CURRENCY,
   metric: DEFAULT_METRIC,
-  artworkViewOption: DEFAULT_VIEW_OPTION,
-  artistViewOption: DEFAULT_VIEW_OPTION,
   priceRange: DEFAULT_PRICE_RANGE,
   defaultViewOption: "list",
   setCurrency: action((state, currency) => {
@@ -91,12 +85,6 @@ export const getUserPrefsModel = (): UserPrefsModel => ({
       }
     }
   ),
-  setArtworkViewOption: action((state, viewOption) => {
-    state.artworkViewOption = viewOption
-  }),
-  setArtistViewOption: action((state, viewOption) => {
-    state.artworkViewOption = viewOption
-  }),
   setDefaultViewOption: action((state, viewOption) => {
     state.defaultViewOption = viewOption
   }),

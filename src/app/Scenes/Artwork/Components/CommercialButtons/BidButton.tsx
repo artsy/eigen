@@ -85,12 +85,16 @@ export class BidButton extends React.Component<BidButtonProps> {
     const hasBid = getHasBid(myLotStanding)
     if (hasBid) {
       return {
+        signal_lot_watcher_count: artwork.collectorSignals?.auction?.lotWatcherCount,
+        signal_bid_count: artwork.collectorSignals?.auction?.bidCount,
         action_name: Schema.ActionNames.IncreaseMaxBid,
         action_type: Schema.ActionTypes.Tap,
       }
     }
 
     return {
+      signal_lot_watcher_count: artwork.collectorSignals?.auction?.lotWatcherCount,
+      signal_bid_count: artwork.collectorSignals?.auction?.bidCount,
       action: ActionType.tappedBid,
     }
   })
@@ -294,6 +298,12 @@ export const BidButtonFragmentContainer = createFragmentContainer(BidButtonConta
       saleArtwork {
         increments {
           cents
+        }
+      }
+      collectorSignals {
+        auction {
+          bidCount
+          lotWatcherCount
         }
       }
     }

@@ -2,7 +2,6 @@ import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { BackButton, Button, Flex, useSpace } from "@artsy/palette-mobile"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { navigate, switchTab } from "app/system/navigation/navigate"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { screen } from "app/utils/track/helpers"
 import { useEffect, useRef, useState } from "react"
 import { BackHandler, LayoutAnimation, Modal, TouchableOpacity } from "react-native"
@@ -186,7 +185,6 @@ export const FooterButtons = ({
 }) => {
   const { trackEvent } = useTracking()
   const { bottom: bottomInset } = useSafeAreaInsets()
-  const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
 
   // Animate how the last step buttons appear in the last step
   useEffect(() => {
@@ -197,48 +195,11 @@ export const FooterButtons = ({
   }, [isLastStep])
 
   if (isLastStep) {
-    if (!!enableCollectedArtists) {
-      return (
-        <Flex position="absolute" bottom={bottomInset} px={2} mb={1}>
-          <Button
-            variant="outline"
-            mb={2}
-            block
-            onPress={() => {
-              switchTab("profile")
-              dismissModal()
-              requestAnimationFrame(() => {
-                navigate("my-collection/artworks/new", {
-                  passProps: {
-                    source: Tab.collection,
-                  },
-                })
-                trackEvent(tracks.addCollectedArtwork())
-              })
-            }}
-          >
-            Add Artwork
-          </Button>
-          <Button
-            variant="outline"
-            block
-            onPress={() => {
-              dismissModal()
-              requestAnimationFrame(() => {
-                navigate("my-collection/artists/new")
-              })
-            }}
-          >
-            Add Artists
-          </Button>
-        </Flex>
-      )
-    }
-
     return (
       <Flex position="absolute" bottom={bottomInset} px={2} mb={1}>
         <Button
-          variant="fillDark"
+          variant="outline"
+          mb={2}
           block
           onPress={() => {
             switchTab("profile")
@@ -253,20 +214,25 @@ export const FooterButtons = ({
             })
           }}
         >
-          Upload Artwork
+          Add Artwork
         </Button>
         <Button
-          variant="text"
+          variant="outline"
           block
           onPress={() => {
             switchTab("profile")
+            dismissModal()
             requestAnimationFrame(() => {
-              dismissModal()
+              navigate("my-collection/artists/new", {
+                passProps: {
+                  source: Tab.collection,
+                },
+              })
             })
-            trackEvent(tracks.visitMyCollection())
+            trackEvent(tracks.addCollectedArtist())
           }}
         >
-          Go to My Collection
+          Add Artists
         </Button>
       </Flex>
     )
@@ -294,10 +260,11 @@ const tracks = {
     context_owner_type: OwnerType.myCollectionOnboarding,
     platform: "mobile",
   }),
-  visitMyCollection: () => ({
-    action: ActionType.visitMyCollection,
-    context_screen_owner_type: OwnerType.myCollectionOnboarding,
+  addCollectedArtist: () => ({
+    action: ActionType.addNewArtistName,
     context_module: ContextModule.myCollectionOnboarding,
+    context_owner_type: OwnerType.myCollectionOnboarding,
+    platform: "mobile",
   }),
   myCollectionOnboardingCompleted: () => ({
     action: ActionType.myCollectionOnboardingCompleted,
@@ -305,12 +272,6 @@ const tracks = {
     context_screen_owner_type: OwnerType.myCollectionOnboarding,
     context_module: ContextModule.myCollectionOnboarding,
     destination_screen_owner_type: OwnerType.myCollectionOnboarding,
-  }),
-  visitMyCollectionOnboardingSlide: (slideIndex: number) => ({
-    action: ActionType.visitMyCollectionOnboardingSlide,
-    context_screen_owner_type: OwnerType.myCollectionOnboarding,
-    context_module: ContextModule.myCollectionOnboarding,
-    index: slideIndex,
   }),
   screen: (slideIndex: string) =>
     screen({

@@ -1,5 +1,6 @@
 import { Spinner } from "@artsy/palette-mobile"
-import { Fair, FairFragmentContainer, FairPlaceholder } from "app/Scenes/Fair/Fair"
+import { waitFor } from "@testing-library/react-native"
+import { Fair, FairPlaceholder } from "app/Scenes/Fair/Fair"
 import { PartnerContainer, PartnerSkeleton } from "app/Scenes/Partner/Partner"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { __renderWithPlaceholderTestUtils__ } from "app/utils/renderWithPlaceholder"
@@ -12,6 +13,7 @@ import { VanityURLPossibleRedirect } from "./VanityURLPossibleRedirect"
 jest.mock("./VanityURLPossibleRedirect", () => ({
   VanityURLPossibleRedirect: () => null,
 }))
+
 
 const TestRenderer: React.FC<{
   entity: "fair" | "partner" | "unknown"
@@ -28,6 +30,7 @@ describe("VanityURLEntity", () => {
     env = getMockRelayEnvironment()
   })
 
+
   it("renders a VanityURLPossibleRedirect when 404", () => {
     if (__renderWithPlaceholderTestUtils__) {
       __renderWithPlaceholderTestUtils__.allowFallbacksAtTestTime = true
@@ -39,16 +42,19 @@ describe("VanityURLEntity", () => {
     expect(UNSAFE_getAllByType(VanityURLPossibleRedirect)).toHaveLength(1)
   })
 
-  it("renders a fairQueryRenderer when given a fair id", () => {
+  it("renders a fairQueryRenderer when given a fair id", async () => {
     const tree = renderWithWrappersLEGACY(
       <TestRenderer entity="fair" slugType="fairID" slug="some-fair" />
     )
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("FairQuery")
+
+    await waitFor(() =>
+      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("FairQuery")
+    )
     act(() => {
       env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation))
     })
-    const fairComponent = tree.root.findByType(Fair)
-    expect(fairComponent).toBeDefined()
+
+    await waitFor(() => expect(tree.root.findByType(Fair)).toBeDefined())
   })
 
   describe("rendering a profile", () => {
@@ -83,6 +89,7 @@ describe("VanityURLEntity", () => {
       expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
         "VanityURLEntityQuery"
       )
+
       act(() => {
         env.mock.resolveMostRecentOperation((operation) =>
           MockPayloadGenerator.generate(operation, {
@@ -97,6 +104,7 @@ describe("VanityURLEntity", () => {
           })
         )
       })
+
       const partnerComponent = tree.root.findByType(PartnerContainer)
       expect(partnerComponent).toBeDefined()
     })
@@ -121,7 +129,7 @@ describe("VanityURLEntity", () => {
           })
         )
       })
-      const fairComponent = tree.root.findByType(FairFragmentContainer)
+      const fairComponent = tree.root.findByType(Fair)
       expect(fairComponent).toBeDefined()
     })
 

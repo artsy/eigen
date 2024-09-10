@@ -1,201 +1,210 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import {
+  act,
+  fireEvent,
+  screen,
+  waitFor,
+  waitForElementToBeRemoved,
+} from "@testing-library/react-native"
 import { InquiryModalTestsQuery } from "__generated__/InquiryModalTestsQuery.graphql"
-import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
-import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
+import { InquiryModal } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryModal"
+import { AUTOMATED_MESSAGES } from "app/Scenes/Artwork/Components/CommercialButtons/constants"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import {
+  ArtworkInquiryContext,
+  initialArtworkInquiryState,
+  artworkInquiryStateReducer,
+} from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
+import {
+  ArtworkInquiryActions,
+  ArtworkInquiryContextState,
+  InquiryQuestionIDs,
+} from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import React from "react"
+import { Reducer, Suspense, useReducer } from "react"
 import { graphql } from "react-relay"
-import { InquiryModalFragmentContainer } from "./InquiryModal"
 
-const toggleVisibility = jest.fn()
-const onMutationSuccessful = jest.fn()
-const mockDispatch = jest.fn()
+describe("inquiry modal", () => {
+  let initialState: ArtworkInquiryContextState
 
-const initialState = {
-  shippingLocation: null,
-  inquiryType: null,
-  message: null,
-  inquiryQuestions: [],
-}
-
-const { renderWithRelay } = setupTestWrapper<InquiryModalTestsQuery>({
-  Component: (props) => {
-    return (
-      <ArtworkInquiryContext.Provider
-        value={{ state: initialState, dispatch: mockDispatch }}
-        {...props}
-      >
-        <FakeApp {...props} />
-      </ArtworkInquiryContext.Provider>
-    )
-  },
-  query: graphql`
-    query InquiryModalTestsQuery @relay_test_operation {
-      artwork(id: "pumpkins") {
-        ...InquiryModal_artwork
+  const { renderWithRelay } = setupTestWrapper<InquiryModalTestsQuery>({
+    Component: ({ artwork, me }) => (
+      <Suspense fallback={null}>
+        <ArtworkInquiryContext.Provider value={useReducerWithInquiryModalVisible(initialState)}>
+          <InquiryModal artwork={artwork} me={me} />
+        </ArtworkInquiryContext.Provider>
+      </Suspense>
+    ),
+    query: graphql`
+      query InquiryModalTestsQuery @relay_test_operation {
+        artwork(id: "artwork-id") @required(action: NONE) {
+          ...InquiryModal_artwork
+        }
+        me @required(action: NONE) {
+          ...useSendInquiry_me
+          ...MyProfileEditModal_me
+        }
       }
-    }
-  `,
-})
-
-// An app shell that holds modal visibility properties
-const FakeApp = (props: InquiryModalTestsQuery["response"]) => {
-  const [modalIsVisible, setModalIsVisible] = React.useState(true)
-  toggleVisibility.mockImplementation(() => setModalIsVisible(!modalIsVisible))
-  const modalProps = {
-    modalIsVisible,
-    toggleVisibility,
-    onMutationSuccessful,
-  }
-
-  return (
-    <InquiryModalFragmentContainer
-      artwork={props!.artwork!}
-      modalIsVisible={modalProps.modalIsVisible}
-      toggleVisibility={modalProps.toggleVisibility}
-      onMutationSuccessful={modalProps.onMutationSuccessful}
-    />
-  )
-}
-
-describe("<InquiryModal />", () => {
-  it("renders the modal", () => {
-    renderWithRelay()
-    expect(screen.getByText("What information are you looking for?")).toBeOnTheScreen()
+    `,
   })
 
-  it("open and close modal", async () => {
-    renderWithRelay()
-    expect(screen.getByTestId("inquiry-modal")).toHaveProp("visible", true)
-
-    const cancelButton = screen.getByTestId("fancy-modal-header-left-button")
-
-    fireEvent.press(cancelButton)
-    await flushPromiseQueue()
-
-    expect(screen.getByTestId("inquiry-modal")).toHaveProp("visible", false)
+  beforeEach(() => {
+    initialState = { ...initialArtworkInquiryState, inquiryModalVisible: true }
   })
-})
 
-describe("user can select checkboxes", () => {
-  it("user can select 'Price & Availability'", () => {
+  it("renders", () => {
+    renderWithRelay({ Artwork: () => mockArtwork })
+
+    expect(screen.getByText("Artist Name")).toBeVisible()
+    expect(screen.getByText("Title, Date")).toBeVisible()
+    expect(screen.getByLabelText("Image of Title")).toBeVisible()
+    expect(screen.getByText("Question")).toBeVisible()
+    expect(AUTOMATED_MESSAGES).toContain(screen.getByLabelText("Add message").props.value)
+  })
+
+  it("opens the shipping modal when the 'add your location' field is pressed", async () => {
     renderWithRelay({
       Artwork: () => ({
+        ...mockArtwork,
         inquiryQuestions: [
-          { internalID: "price_and_availability", question: "Price & Availability" },
-          { internalID: "shipping_quote", question: "Shipping" },
-          { internalID: "condition_and_provenance", question: "Condition & Provance" },
-        ],
-      }),
-    })
-    const checkbox = screen.getByTestId("checkbox-price_and_availability")
-    fireEvent.press(checkbox)
-    expect(mockDispatch).toBeCalledWith({
-      payload: {
-        details: null,
-        isChecked: true,
-        questionID: "price_and_availability",
-      },
-      type: "selectInquiryQuestion",
-    })
-  })
-
-  it("user can select 'Shipping quote'", () => {
-    renderWithRelay({
-      Artwork: () => ({
-        inquiryQuestions: [
-          { internalID: "price_and_availability", question: "Price & Availability" },
-          { internalID: "shipping_quote", question: "Shipping" },
-          { internalID: "condition_and_provenance", question: "Condition & Provance" },
-        ],
-      }),
-    })
-
-    const checkbox = screen.getByTestId("checkbox-shipping_quote")
-    fireEvent.press(checkbox)
-
-    expect(mockDispatch).toBeCalledWith({
-      payload: {
-        isChecked: true,
-        questionID: "shipping_quote",
-      },
-      type: "selectInquiryQuestion",
-    })
-  })
-
-  it("user can select 'Condition and provance'", () => {
-    renderWithRelay({
-      Artwork: () => ({
-        inquiryQuestions: [
-          { internalID: "price_and_availability", question: "Price & Availability" },
-          { internalID: "shipping_quote", question: "Shipping" },
-          { internalID: "condition_and_provenance", question: "Condition & Provance" },
-        ],
-      }),
-    })
-    const checkbox = screen.getByTestId("checkbox-condition_and_provenance")
-    fireEvent.press(checkbox)
-
-    expect(mockDispatch).toBeCalledWith({
-      payload: {
-        details: null,
-        isChecked: true,
-        questionID: "condition_and_provenance",
-      },
-      type: "selectInquiryQuestion",
-    })
-  })
-})
-
-describe("when submiting an inquiry", () => {
-  it("it shows error message on failed inquiry", async () => {
-    const { env } = renderWithRelay(
-      {
-        Artwork: () => ({
-          inquiryQuestions: [
-            { internalID: "price_and_availability", question: "Price & Availability" },
-            { internalID: "shipping_quote", question: "Shipping" },
-            { internalID: "condition_and_provenance", question: "Condition & Provance" },
-          ],
-        }),
-      },
-      {
-        value: {
-          state: {
-            inquiryQuestions: ["test"],
+          {
+            internalID: InquiryQuestionIDs.Shipping,
+            question: "Shipping",
           },
-          dispatch: mockDispatch,
-        },
-      }
-    )
+        ],
+      }),
+    })
 
-    const checkbox = screen.getByTestId("checkbox-shipping_quote")
+    fireEvent.press(screen.getByText("Shipping"))
 
-    fireEvent.press(checkbox)
-    const sendButton = screen.getByTestId("fancy-modal-header-right-button")
+    await waitFor(() => {
+      expect(screen.getByText("Add your location")).toBeVisible()
+    })
 
-    fireEvent.press(sendButton)
-    rejectMostRecentRelayOperation(env, new Error())
+    fireEvent.press(screen.getByText("Add your location"))
 
-    await flushPromiseQueue()
-
-    expect(
-      screen.getByText("Sorry, we were unable to send this message. Please try again.")
-    ).toBeOnTheScreen()
+    await waitFor(() => expect(screen.getByText("Add Location")).toBeVisible())
   })
-})
 
-describe("user can add a custom message", () => {
-  it("add custom message", () => {
+  it("enables the 'send' button when an inquiry question is selected", async () => {
+    renderWithRelay({ Artwork: () => mockArtwork })
+
+    expect(screen.getByText("Send")).toBeDisabled()
+
+    fireEvent.press(screen.getByText("Question"))
+
+    await waitFor(() => expect(screen.getByText("Send")).toBeEnabled())
+  })
+
+  it("closes when the 'cancel' button is pressed", async () => {
     renderWithRelay()
-    const testString = "Test message"
-    const input = screen.getByTestId("add-message-input")
-    fireEvent.changeText(input, testString)
 
-    expect(mockDispatch).toBeCalledWith({
-      payload: testString,
-      type: "setMessage",
+    fireEvent.press(screen.getByText("Cancel"))
+
+    await waitForElementToBeRemoved(() =>
+      screen.queryByText("What information are you looking for?")
+    )
+  })
+
+  it("tracks an event when the inquiry modal is closed", async () => {
+    renderWithRelay({ Artwork: () => mockArtwork })
+
+    fireEvent.press(screen.getByText("Cancel"))
+
+    await waitFor(() => {
+      expect(mockTrackEvent).toHaveBeenCalledWith({
+        action_type: "tap",
+        action_name: "inquiryCancel",
+        owner_type: "Artwork",
+        owner_id: "artwork-id",
+        owner_slug: "artwork-slug",
+      })
+    })
+  })
+
+  describe("when the inquiry is successfully sent", () => {
+    const sendInquiry = jest.fn()
+    beforeAll(() => {
+      jest
+        .spyOn(require("app/Scenes/Artwork/hooks/useSendInquiry"), "useSendInquiry")
+        .mockReturnValue({
+          sendInquiry,
+          error: null,
+        })
+    })
+
+    afterAll(() => {
+      jest.clearAllMocks()
+    })
+
+    it("tracks two events before and after the inquiry is successfully sent", async () => {
+      renderWithRelay({ Artwork: () => mockArtwork })
+
+      fireEvent.press(screen.getByText("Question"))
+
+      await waitFor(() => expect(screen.getByText("Send")).toBeEnabled())
+
+      fireEvent.press(screen.getByText("Send"))
+
+      expect(sendInquiry).toHaveBeenCalledWith(expect.toBeString())
+    })
+
+    describe("and the profile prompt feature flag is enabled", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCollectorProfilePrompts: true })
+      })
+
+      it("displays the profile prompt", async () => {
+        initialState = { ...initialState, profilePromptVisible: true }
+        renderWithRelay({ Artwork: () => mockArtwork })
+
+        expect(
+          screen.getByText("Inquiry sent! Tell Partner Name more about yourself.")
+        ).toBeOnTheScreen()
+      })
+
+      it("displays the collection prompt", async () => {
+        initialState = { ...initialState, collectionPromptVisible: true }
+        const { mockResolveLastOperation } = renderWithRelay({ Artwork: () => mockArtwork })
+
+        act(() => mockResolveLastOperation({}))
+
+        expect(
+          screen.getByText("Inquiry sent! Tell us about the artists in your collection.")
+        ).toBeOnTheScreen()
+      })
     })
   })
 })
+
+const mockArtwork = {
+  internalID: "artwork-id",
+  slug: "artwork-slug",
+  title: "Title",
+  date: "Date",
+  artistNames: "Artist Name",
+  image: {
+    url: "https://example.com/image.jpg",
+  },
+  inquiryQuestions: [
+    {
+      internalID: "question-id",
+      question: "Question",
+    },
+  ],
+  partner: {
+    name: "Partner Name",
+  },
+}
+
+const useReducerWithInquiryModalVisible = (initialState: ArtworkInquiryContextState) => {
+  const [state, dispatch] = useReducer<Reducer<ArtworkInquiryContextState, ArtworkInquiryActions>>(
+    artworkInquiryStateReducer,
+    initialState
+  )
+
+  return {
+    state,
+    dispatch,
+  }
+}

@@ -9,8 +9,10 @@ import {
   SavedSearchStoreProvider,
   savedSearchModel,
 } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { ConfirmationScreen, NUMBER_OF_ARTWORKS_TO_SHOW } from "./ConfirmationScreen"
 
@@ -160,6 +162,104 @@ describe(ConfirmationScreen, () => {
       await waitForElementToBeRemoved(() => screen.queryByTestId("MatchingArtworksPlaceholder"))
 
       expect(screen.queryByText("See all matching works")).not.toBeOnTheScreen()
+    })
+  })
+
+  describe("tracking", () => {
+    afterEach(() => {
+      jest.clearAllMocks()
+      __globalStoreTestUtils__?.reset()
+    })
+
+    it("sends a tracking event when an artwork is tapped", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnablePartnerOfferSignals: false })
+
+      renderWithRelay({
+        FilterArtworksConnection: () => ({
+          edges: [{ node: { title: "Untitled #1", slug: "untitled", collectorSignals: null } }],
+        }),
+      })
+
+      await waitForElementToBeRemoved(() => screen.queryByTestId("MatchingArtworksPlaceholder"))
+
+      fireEvent.press(screen.getByText("Untitled #1"))
+
+      expect(mockTrackEvent).toBeCalledWith({
+        action: "tappedArtworkGroup",
+        context_module: "alertConfirmation",
+        context_screen_owner_type: "alertConfirmation",
+        destination_screen_owner_slug: "untitled",
+        destination_screen_owner_type: "artwork",
+        type: "thumbnail",
+      })
+    })
+
+    it("sends a tracking event when an artwork with a partner offer is tapped", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnablePartnerOfferSignals: true })
+
+      renderWithRelay({
+        FilterArtworksConnection: () => ({
+          edges: [
+            {
+              node: {
+                title: "Untitled #1",
+                slug: "untitled",
+                collectorSignals: { partnerOffer: { isAvailable: true }, auction: null },
+              },
+            },
+          ],
+        }),
+      })
+
+      await waitForElementToBeRemoved(() => screen.queryByTestId("MatchingArtworksPlaceholder"))
+
+      fireEvent.press(screen.getByText("Untitled #1"))
+
+      expect(mockTrackEvent).toBeCalledWith({
+        action: "tappedArtworkGroup",
+        context_module: "alertConfirmation",
+        context_screen_owner_type: "alertConfirmation",
+        destination_screen_owner_slug: "untitled",
+        destination_screen_owner_type: "artwork",
+        type: "thumbnail",
+        signal_label: "Limited-Time Offer",
+      })
+    })
+
+    it("sends a tracking event when an artwork with a partner offer is tapped", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAuctionImprovementsSignals: true })
+
+      renderWithRelay({
+        FilterArtworksConnection: () => ({
+          edges: [
+            {
+              node: {
+                title: "Untitled #1",
+                slug: "untitled",
+                collectorSignals: {
+                  auction: { bidCount: 7, lotWatcherCount: 49, liveBiddingStarted: true },
+                },
+              },
+            },
+          ],
+        }),
+      })
+
+      await waitForElementToBeRemoved(() => screen.queryByTestId("MatchingArtworksPlaceholder"))
+
+      fireEvent.press(screen.getByText("Untitled #1"))
+
+      expect(mockTrackEvent).toBeCalledWith({
+        action: "tappedArtworkGroup",
+        context_module: "alertConfirmation",
+        context_screen_owner_type: "alertConfirmation",
+        destination_screen_owner_slug: "untitled",
+        destination_screen_owner_type: "artwork",
+        type: "thumbnail",
+        signal_label: "Bidding live now",
+        signal_bid_count: 7,
+        signal_lot_watcher_count: 49,
+      })
     })
   })
 })

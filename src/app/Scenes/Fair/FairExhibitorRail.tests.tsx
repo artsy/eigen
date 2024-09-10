@@ -1,6 +1,7 @@
 import { FairExhibitorRailTestsQuery } from "__generated__/FairExhibitorRailTestsQuery.graphql"
 import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
@@ -14,7 +15,7 @@ describe("FairExhibitors", () => {
   const getWrapper = (mockResolvers = {}) => {
     const env = createMockEnvironment()
 
-    const tree = renderWithWrappersLEGACY(
+    const { root } = renderWithWrappersLEGACY(
       <QueryRenderer<FairExhibitorRailTestsQuery>
         environment={env}
         query={graphql`
@@ -44,7 +45,7 @@ describe("FairExhibitors", () => {
       MockPayloadGenerator.generate(operation, mockResolvers)
     )
 
-    return tree
+    return { root }
   }
 
   it("renders an exhibitor rail", () => {
@@ -59,6 +60,7 @@ describe("FairExhibitors", () => {
   })
 
   it("tracks taps on artworks in the rail", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnablePartnerOfferSignals: false })
     const wrapper = getWrapper({
       Show: () => ({
         fair: {
@@ -71,14 +73,15 @@ describe("FairExhibitors", () => {
               node: {
                 internalID: "artwork1234",
                 slug: "cool-artwork-1",
+                collectorSignals: null,
               },
             },
           ],
         },
       }),
     })
-    const artwork = wrapper.root.findAllByType(ArtworkRailCard)[0]
-    act(() => artwork.props.onPress())
+    const artwork = wrapper.root.findAllByType(ArtworkRailCard)
+    act(() => artwork[0].props.onPress())
     expect(trackEvent).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
       context_module: "galleryBoothRail",
@@ -93,6 +96,86 @@ describe("FairExhibitors", () => {
     })
   })
 
+  it("tracks taps on artworks with partner offer in the rail", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnablePartnerOfferSignals: true })
+    const wrapper = getWrapper({
+      Show: () => ({
+        fair: {
+          internalID: "abc123",
+          slug: "some-fair",
+        },
+        artworksConnection: {
+          edges: [
+            {
+              node: {
+                internalID: "artwork1234",
+                slug: "cool-artwork-1",
+                collectorSignals: { partnerOffer: { isAvailable: true }, auction: null },
+              },
+            },
+          ],
+        },
+      }),
+    })
+    const artwork = wrapper.root.findAllByType(ArtworkRailCard)
+    act(() => artwork[0].props.onPress())
+    expect(trackEvent).toHaveBeenCalledWith({
+      action: "tappedArtworkGroup",
+      context_module: "galleryBoothRail",
+      context_screen_owner_id: "abc123",
+      context_screen_owner_slug: "some-fair",
+      context_screen_owner_type: "fair",
+      destination_screen_owner_id: "artwork1234",
+      destination_screen_owner_slug: "cool-artwork-1",
+      destination_screen_owner_type: "artwork",
+      horizontal_slide_position: 0,
+      type: "thumbnail",
+      signal_label: "Limited-Time Offer",
+    })
+  })
+
+  it("tracks taps on artworks with auction signals in the rail", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAuctionImprovementsSignals: true })
+    const wrapper = getWrapper({
+      Show: () => ({
+        fair: {
+          internalID: "abc123",
+          slug: "some-fair",
+        },
+        artworksConnection: {
+          edges: [
+            {
+              node: {
+                internalID: "artwork1234",
+                slug: "cool-artwork-1",
+                collectorSignals: {
+                  auction: { bidCount: 7, lotWatcherCount: 49, liveBiddingStarted: true },
+                },
+              },
+            },
+          ],
+        },
+      }),
+    })
+    const artwork = wrapper.root.findAllByType(ArtworkRailCard)
+    act(() => artwork[0].props.onPress())
+    expect(trackEvent).toHaveBeenCalledWith({
+      action: "tappedArtworkGroup",
+      context_module: "galleryBoothRail",
+      context_screen_owner_id: "abc123",
+      context_screen_owner_slug: "some-fair",
+      context_screen_owner_type: "fair",
+      destination_screen_owner_id: "artwork1234",
+      destination_screen_owner_slug: "cool-artwork-1",
+      destination_screen_owner_type: "artwork",
+      horizontal_slide_position: 0,
+      type: "thumbnail",
+      signal_label: "Bidding live now",
+      signal_bid_count: 7,
+      signal_lot_watcher_count: 49,
+    })
+  })
+
   it("tracks taps on the show", () => {
     const wrapper = getWrapper({
       Show: () => ({
@@ -104,8 +187,8 @@ describe("FairExhibitors", () => {
         },
       }),
     })
-    const show = wrapper.root.findAllByType(SectionTitle)[0]
-    act(() => show.props.onPress())
+    const show = wrapper.root.findAllByType(SectionTitle)
+    act(() => show[0].props.onPress())
     expect(trackEvent).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
       context_module: "galleryBoothRail",

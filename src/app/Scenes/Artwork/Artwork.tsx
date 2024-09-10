@@ -69,7 +69,7 @@ import { ShippingAndTaxesFragmentContainer } from "./Components/ShippingAndTaxes
 interface ArtworkProps {
   artworkAboveTheFold: Artwork_artworkAboveTheFold$data | null | undefined
   artworkBelowTheFold: Artwork_artworkBelowTheFold$data | null | undefined
-  me: Artwork_me$data | null | undefined
+  me: Artwork_me$data
   isVisible: boolean
   onLoad: (artworkProps: ArtworkProps) => void
   relay: RelayRefetchProp
@@ -104,17 +104,23 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
 
   const partnerOffer = extractNodes(me?.partnerOffersConnection)[0]
 
+  const allowExpiredPartnerOffers = useFeatureFlag("AREnableExpiredPartnerOffers")
   const enableAuctionHeaderAlertCTA = useFeatureFlag("AREnableAuctionHeaderAlertCTA")
   const enablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
 
   const expectedPartnerOfferId = !!props.partner_offer_id && enablePartnerOfferOnArtworkScreen
 
   const partnerOfferUnavailable = expectedPartnerOfferId && !artworkAboveTheFold?.isPurchasable
+
+  const partnerOfferExpiredCondition = allowExpiredPartnerOffers
+    ? partnerOffer && partnerOffer.internalID == props.partner_offer_id && !partnerOffer.isActive
+    : !partnerOffer || partnerOffer.internalID !== props.partner_offer_id
+
   const partnerOfferExpired =
     expectedPartnerOfferId &&
     // checking for unavailability to avoid showing double banners
     !partnerOfferUnavailable &&
-    (!partnerOffer || partnerOffer.internalID !== props.partner_offer_id)
+    partnerOfferExpiredCondition
 
   const shouldRenderPartner = () => {
     const { sale, partner } = artworkBelowTheFold ?? {}
@@ -331,7 +337,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
         })
       }
 
-      if (!!enablePartnerOfferOnArtworkScreen && !!partnerOffer?.note) {
+      if (!!enablePartnerOfferOnArtworkScreen && !!partnerOffer?.isActive && !!partnerOffer?.note) {
         sections.push({
           key: "partnerOfferNote",
           element: (
@@ -375,6 +381,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
           element: (
             <PartnerCard
               artwork={artworkBelowTheFold}
+              me={me}
               showShortContactGallery={
                 !!artworkAboveTheFold?.isUnlisted && !!artworkBelowTheFold.partner?.isInquireable
               }
@@ -463,6 +470,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
           <PartnerCard
             shouldShowQuestions={!!artworkBelowTheFold.partner?.isInquireable}
             artwork={artworkBelowTheFold}
+            me={me}
             showShortContactGallery={
               !!artworkAboveTheFold?.isUnlisted && !!artworkBelowTheFold.partner?.isInquireable
             }
@@ -567,7 +575,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
         <ArtworkStickyBottomContent
           artwork={artworkAboveTheFold}
           me={me}
-          partnerOffer={extractNodes(me.partnerOffersConnection)[0]}
+          partnerOffer={partnerOffer}
         />
       )}
 
@@ -763,12 +771,16 @@ export const ArtworkContainer = createRefetchContainer(
     `,
     me: graphql`
       fragment Artwork_me on Me @argumentDefinitions(artworkID: { type: "String!" }) {
-        ...ArtworkStickyBottomContent_me
+        ...ArtworkCommercialButtons_me
+        ...useSendInquiry_me
+        ...MyProfileEditModal_me
+        ...BidButton_me
         partnerOffersConnection(artworkID: $artworkID, first: 1) {
           edges {
             node {
               internalID
               note
+              isActive
               ...ArtworkStickyBottomContent_partnerOffer
               ...ArtworkPartnerOfferNote_partnerOffer
               ...ArtworkPrice_partnerOffer
@@ -828,7 +840,8 @@ export const ArtworkQueryRenderer: React.FC<ArtworkScreenProps> = ({
         renderComponent: ({ above, below }) => {
           if (
             // Make sure that the artwork exists
-            above.artworkResult?.__typename === "Artwork"
+            above.artworkResult?.__typename === "Artwork" &&
+            above.me
           ) {
             return (
               <ArtworkContainer

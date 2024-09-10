@@ -2,6 +2,7 @@ import {
   ConsignmentSubmissionCategoryAggregation,
   ConsignmentSubmissionSource,
 } from "__generated__/createConsignSubmissionMutation.graphql"
+import { ArtworkConditionEnumType } from "__generated__/myCollectionCreateArtworkMutation.graphql"
 import {
   ConsignmentAttributionClass,
   ConsignmentSubmissionStateAggregation,
@@ -14,6 +15,7 @@ import {
 import { Location } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/validation"
 import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
 import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
+import { NormalizedDocument } from "app/utils/normalizeUploadedDocument"
 import * as Yup from "yup"
 
 export const getCurrentValidationSchema = (_injectedStep?: keyof SubmitArtworkStackNavigation) => {
@@ -32,10 +34,52 @@ export const getCurrentValidationSchema = (_injectedStep?: keyof SubmitArtworkSt
       return provenanceSchema
     case "AddDimensions":
       return dimensionsSchema
+    case "ShippingLocation":
+      return shippingLocationSchema
+    case "FrameInformation":
+      return frameInformationSchema
+    case "Condition":
+      return conditionSchema
+    case "AdditionalDocuments":
+      return additionalDocumentsSchema
     default:
       return Yup.object()
   }
 }
+
+const additionalDocumentsSchema = Yup.object().shape({
+  additionalDocuments: Yup.array().min(0),
+})
+
+const conditionSchema = Yup.object().shape({
+  condition: Yup.string()
+    .oneOf(
+      ["EXCELLENT", "FAIR", "GOOD", "VERY_GOOD"],
+      "Condition must be one of EXCELLENT, FAIR, GOOD, VERY_GOOD"
+    )
+    .nullable(),
+  conditionDescription: Yup.string().trim(),
+})
+
+const frameInformationSchema = Yup.object().shape({
+  isFramed: Yup.boolean().nullable(),
+  framedMetric: Yup.string().trim(),
+  framedWidth: Yup.string().trim(),
+  framedHeight: Yup.string().trim(),
+  framedDepth: Yup.string().trim(),
+})
+
+const shippingLocationSchema = Yup.object().shape({
+  location: Yup.object().shape({
+    city: Yup.string().required().trim(),
+    state: Yup.string().required().trim(),
+    country: Yup.string().required().trim(),
+    countryCode: Yup.string().trim(),
+    zipCode: Yup.string().required().trim(),
+    address: Yup.string().required().trim(),
+    address2: Yup.string().trim(),
+  }),
+})
 
 const artistFormSchema = Yup.object().shape({
   artist: Yup.string().required().trim(),
@@ -83,7 +127,7 @@ const artworkDetailsValidationSchema = Yup.object().shape({
   year: Yup.string(),
 })
 
-export interface ArtworkDetailsFormModel {
+export interface SubmissionModel {
   submissionId: string | null
   artist: string
   artistId: string
@@ -101,7 +145,7 @@ export interface ArtworkDetailsFormModel {
   provenance: string
   signature?: boolean | null | undefined
   source: ConsignmentSubmissionSource | null
-  state?: ConsignmentSubmissionStateAggregation
+  state?: ConsignmentSubmissionStateAggregation | null
   utmMedium?: string
   utmSource?: string
   utmTerm?: string
@@ -117,9 +161,24 @@ export interface ArtworkDetailsFormModel {
   userName: string
   userEmail: string
   userPhone: string
+
+  // Artwork
+  artwork: {
+    internalID: string | null | undefined
+    isFramed: boolean | null | undefined
+    framedMetric: string | null | undefined
+    framedWidth: string | null | undefined
+    framedHeight: string | null | undefined
+    framedDepth: string | null | undefined
+    condition: ArtworkConditionEnumType | null | undefined
+    conditionDescription: string | null | undefined
+  }
+
+  externalId: string | null
+  additionalDocuments: NormalizedDocument[]
 }
 
-export const artworkDetailsEmptyInitialValues: ArtworkDetailsFormModel = {
+export const submissionModelInitialValues: SubmissionModel = {
   submissionId: null,
   artist: "",
   artistId: "",
@@ -159,4 +218,19 @@ export const artworkDetailsEmptyInitialValues: ArtworkDetailsFormModel = {
   userName: "",
   userEmail: "",
   userPhone: "",
+
+  // Artwork
+  artwork: {
+    internalID: null,
+    isFramed: null,
+    framedMetric: "in",
+    framedWidth: null,
+    framedHeight: null,
+    framedDepth: null,
+    condition: null,
+    conditionDescription: null,
+  },
+
+  externalId: null,
+  additionalDocuments: [],
 }

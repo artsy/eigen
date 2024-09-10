@@ -1,6 +1,5 @@
 import { Text } from "@artsy/palette-mobile"
 import { BidInfoRow } from "app/Components/Bidding/Components/BidInfoRow"
-import { BillingAddress } from "app/Components/Bidding/Screens/BillingAddress"
 import { CreditCardForm } from "app/Components/Bidding/Screens/CreditCardForm"
 import NavigatorIOS, {
   NavigatorIOSPushArgs,
@@ -8,12 +7,6 @@ import NavigatorIOS, {
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 
 import { PaymentInfo } from "./PaymentInfo"
-
-jest.mock("tipsi-stripe", () => ({
-  setOptions: jest.fn(),
-  paymentRequestWithCardForm: jest.fn(),
-  createTokenWithCard: jest.fn(),
-}))
 
 let nextStep: NavigatorIOSPushArgs
 const mockNavigator: Partial<NavigatorIOS> = {
@@ -30,26 +23,17 @@ it("renders without throwing an error", () => {
   renderWithWrappersLEGACY(<PaymentInfo {...initialProps} />)
 })
 
-it("shows the billing address that the user typed in the billing address form", () => {
-  const billingAddressRow = renderWithWrappersLEGACY(
-    <PaymentInfo {...initialProps} />
-  ).root.findAllByType(BidInfoRow)[1]
-  billingAddressRow.instance.props.onPress()
-  expect(nextStep.component).toEqual(BillingAddress)
+it("shows the cc info that the user had typed into the form", async () => {
+  const { root } = renderWithWrappersLEGACY(<PaymentInfo {...initialProps} />)
 
-  expect(billingAddressRow.findAllByType(Text)[1].props.children).toEqual(
-    "401 Broadway 25th floor New York NY"
-  )
-})
+  const creditCardRow = await root.findAllByType(BidInfoRow)
 
-it("shows the cc info that the user had typed into the form", () => {
-  const creditCardRow = renderWithWrappersLEGACY(
-    <PaymentInfo {...initialProps} />
-  ).root.findAllByType(BidInfoRow)[0]
-  creditCardRow.instance.props.onPress()
+  creditCardRow[0].instance.props.onPress()
   expect(nextStep.component).toEqual(CreditCardForm)
 
-  expect(creditCardRow.findAllByType(Text)[1].props.children).toEqual("VISA •••• 4242")
+  const creditCardRowText = await creditCardRow[0].findAllByType(Text)
+
+  expect(creditCardRowText[1].props.children).toEqual("VISA •••• 4242")
 })
 
 const billingAddress = {
@@ -62,7 +46,7 @@ const billingAddress = {
 }
 
 const creditCardToken = {
-  tokenId: "fake-token",
+  id: "fake-token",
   created: "1528229731",
   livemode: 0,
   card: {
