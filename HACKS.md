@@ -304,6 +304,17 @@ patch.
 This package includes a `setPageName` method on `SiftReactNative`, but no corresponding type.
 I patched it to add the type.
 
+## Patch-package for @react-navigation/native
+
+#### When we can remove this:
+
+When we upgrade to 6.0.14 or higher, should do shortly but requires fixing a fair few type issues.
+
+### Explanation/Context
+
+React native removed removeEventListener which this library uses and causes jest tests to fail with type errors. This commit fixes the issue:
+https://github.com/react-navigation/react-navigation/commit/6e9da7304127a7c33cda2da2fa9ea1740ef56604
+
 ## Patch-package for react-native-device-info
 
 #### When we can remove this:
