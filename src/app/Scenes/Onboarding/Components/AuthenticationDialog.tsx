@@ -1,31 +1,32 @@
 import { BackButton, Button, Flex, LinkText, Text, useTheme } from "@artsy/palette-mobile"
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
+import { OnboardingStore } from "app/Scenes/Onboarding/OnboardingStore"
 import { navigate } from "app/system/navigation/navigate"
 import { Field, Formik } from "formik"
-import React, { useRef, useState } from "react"
+import React, { useRef } from "react"
 import { Image } from "react-native"
 import * as Yup from "yup"
 
 export const AuthenticationDialog: React.FC = () => {
-  const [userIsEnteringEmail, setUserIsEnteringEmail] = useState(false)
-  const [userIsEnteringPassword, setUserIsEnteringPassword] = useState(false)
+  const currentStep = OnboardingStore.useStoreState((state) => state.currentStep)
+  const stepForward = OnboardingStore.useStoreActions((actions) => actions.stepForward)
+  const stepBackward = OnboardingStore.useStoreActions((actions) => actions.stepBackward)
 
   const bottomSheetRef = useRef<BottomSheet>(null)
 
   const { space } = useTheme()
 
   const handleEmailInputFocus = () => {
-    setUserIsEnteringEmail(true)
+    stepForward()
   }
 
   const handleBackButtonPress = () => {
-    setUserIsEnteringEmail(false)
+    stepBackward()
   }
 
   const handleContinueButtonPress = () => {
-    setUserIsEnteringEmail(false)
-    setUserIsEnteringPassword(true)
+    stepForward()
   }
 
   const emailValidationSchema = Yup.object().shape({
@@ -56,21 +57,22 @@ export const AuthenticationDialog: React.FC = () => {
             initialValues={{ email: "", password: "" }}
             onSubmit={handleContinueButtonPress}
             validationSchema={
-              !userIsEnteringPassword ? emailValidationSchema : passwordValidationSchema
+              currentStep === "EmailStep" ? emailValidationSchema : passwordValidationSchema
             }
             validateOnMount
           >
             {({ handleBlur, handleChange, handleSubmit, isValid, values }) => (
               <>
-                {(!!userIsEnteringEmail || !!userIsEnteringPassword) && (
+                {(currentStep === "EmailStep" || currentStep === "LoginPasswordStep") && (
                   <BackButton onPress={handleBackButtonPress} />
                 )}
-                {!userIsEnteringPassword ? (
+                {(currentStep === "WelcomeStep" || currentStep === "EmailStep") && (
                   <Text variant="sm-display">Sign up or log in</Text>
-                ) : (
+                )}
+                {currentStep === "LoginPasswordStep" && (
                   <Text variant="sm-display">Welcome back to Artsy</Text>
                 )}
-                {!userIsEnteringPassword ? (
+                {(currentStep === "WelcomeStep" || currentStep === "EmailStep") && (
                   <Field
                     name="email"
                     autoCapitalize="none"
@@ -87,7 +89,8 @@ export const AuthenticationDialog: React.FC = () => {
                     value={values.email}
                     onChangeText={handleChange("email")}
                   />
-                ) : (
+                )}
+                {currentStep === "LoginPasswordStep" && (
                   <Field
                     name="password"
                     autoCapitalize="none"
@@ -102,7 +105,7 @@ export const AuthenticationDialog: React.FC = () => {
                     onChangeText={handleChange("password")}
                   />
                 )}
-                {!(userIsEnteringEmail || userIsEnteringPassword) && (
+                {currentStep === "WelcomeStep" && (
                   <Flex gap={space(1)}>
                     <Text variant="xs" textAlign="center">
                       Or continue with
@@ -120,7 +123,7 @@ export const AuthenticationDialog: React.FC = () => {
                     </Flex>
                   </Flex>
                 )}
-                {!(userIsEnteringEmail || userIsEnteringPassword) && (
+                {currentStep === "WelcomeStep" && (
                   <Text variant="xxs" color="black60" textAlign="center">
                     By tapping Continue with Apple, Facebook, or Google, you agree to Artsy’s{" "}
                     <LinkText variant="xxs" onPress={() => navigate("/terms")}>
@@ -132,7 +135,7 @@ export const AuthenticationDialog: React.FC = () => {
                     </LinkText>
                   </Text>
                 )}
-                {(!!userIsEnteringEmail || !!userIsEnteringPassword) && (
+                {(currentStep === "EmailStep" || currentStep === "LoginPasswordStep") && (
                   <Button block width={100} onPress={handleSubmit} disabled={!isValid}>
                     Continue
                   </Button>

@@ -5,9 +5,8 @@ import {
   DEFAULT_NAVIGATION_BAR_COLOR,
 } from "app/NativeModules/ArtsyNativeModule"
 import { AuthenticationDialog } from "app/Scenes/Onboarding/Components/AuthenticationDialog"
-import { OnboardingStore, OnboardingStoreModel } from "app/Scenes/Onboarding/OnboardingStore"
+import { OnboardingStore } from "app/Scenes/Onboarding/OnboardingStore"
 import { useScreenDimensions } from "app/utils/hooks"
-import { useStoreState } from "easy-peasy"
 import backgroundImage from "images/WelcomeImage.webp"
 import { MotiView, View } from "moti"
 import { useEffect } from "react"
@@ -126,7 +125,7 @@ const Background: React.FC = () => {
   )
 }
 
-const Body = () => {
+const Body: React.FC = () => {
   return (
     <>
       <Foo />
@@ -140,11 +139,10 @@ const Body = () => {
   )
 }
 
-const Foo = () => {
-  const step = useStoreState<OnboardingStoreModel>((state) => state.step)
+const Foo: React.FC = () => {
+  const currentStep = OnboardingStore.useStoreState((state) => state.currentStep)
 
-  console.log("🐺", { step })
-  if (step !== "WelcomeStep") {
+  if (currentStep !== "WelcomeStep") {
     return null
   }
 
@@ -161,11 +159,10 @@ const Foo = () => {
   )
 }
 
-const Bar = () => {
-  const step = useStoreState<OnboardingStoreModel>((state) => state.step)
+const Bar: React.FC = () => {
+  const currentStep = OnboardingStore.useStoreState((state) => state.currentStep)
 
-  console.log("🦊", { step })
-  if (step !== "WelcomeStep") {
+  if (currentStep !== "WelcomeStep") {
     return null
   }
 
