@@ -1,3 +1,4 @@
+import { ActionType, OwnerType } from "@artsy/cohesion"
 import { Button, Flex, Text, Touchable, useScreenDimensions } from "@artsy/palette-mobile"
 import { GalleriesHomeViewSection_section$key } from "__generated__/GalleriesHomeViewSection_section.graphql"
 import { navigate } from "app/system/navigation/navigate"
@@ -5,13 +6,15 @@ import { isTablet } from "react-native-device-info"
 import FastImage from "react-native-fast-image"
 import LinearGradient from "react-native-linear-gradient"
 import { graphql, useFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface GalleriesHomeViewSectionProps {
   section: GalleriesHomeViewSection_section$key
 }
 export const GalleriesHomeViewSection: React.FC<GalleriesHomeViewSectionProps> = (props) => {
-  const { width, height } = useScreenDimensions()
+  const tracking = useTracking()
 
+  const { width, height } = useScreenDimensions()
   const section = useFragment(GalleriesHomeViewSectionFragment, props.section)
 
   if (!section?.component) {
@@ -25,16 +28,17 @@ export const GalleriesHomeViewSection: React.FC<GalleriesHomeViewSectionProps> =
 
   const componentHref = section.component?.behaviors?.viewAll?.href
 
+  const handleOnPress = () => {
+    if (componentHref) {
+      tracking.trackEvent(tracks.tappedSection({ sectionID: section.internalID }))
+
+      navigate(componentHref)
+    }
+  }
+
   return (
     <Flex>
-      <Touchable
-        onPress={() => {
-          if (componentHref) {
-            navigate(componentHref)
-          }
-        }}
-        haptic="impactLight"
-      >
+      <Touchable onPress={handleOnPress} haptic="impactLight">
         {!!hasImage && (
           <Flex position="absolute">
             <FastImage
@@ -73,9 +77,7 @@ export const GalleriesHomeViewSection: React.FC<GalleriesHomeViewSectionProps> =
                 <Button
                   variant={hasImage ? "outlineLight" : "fillDark"}
                   size="small"
-                  onPress={() => {
-                    navigate(componentHref)
-                  }}
+                  onPress={handleOnPress}
                 >
                   Explore
                 </Button>
@@ -90,6 +92,7 @@ export const GalleriesHomeViewSection: React.FC<GalleriesHomeViewSectionProps> =
 
 const GalleriesHomeViewSectionFragment = graphql`
   fragment GalleriesHomeViewSection_section on GalleriesHomeViewSection {
+    internalID
     component {
       title
       backgroundImageURL
@@ -102,3 +105,12 @@ const GalleriesHomeViewSectionFragment = graphql`
     }
   }
 `
+
+export const tracks = {
+  tappedSection: ({ sectionID }: { sectionID: string }) => ({
+    action: ActionType.tappedShowMore,
+    context_module: sectionID,
+    context_screen_owner_type: OwnerType.home,
+    destination_screen_owner_type: OwnerType.galleriesForYou,
+  }),
+}
