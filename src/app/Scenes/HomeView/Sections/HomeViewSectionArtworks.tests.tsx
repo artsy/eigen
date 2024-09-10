@@ -88,6 +88,9 @@ describe("HomeViewSectionArtworks", () => {
             "destination_screen_owner_type": "artwork",
             "horizontal_slide_position": 1,
             "module_height": "single",
+            "signal_bid_count": 42,
+            "signal_label": "Limited-Time Offer",
+            "signal_lot_watcher_count": 42,
             "type": "thumbnail",
           },
         ]
