@@ -1,4 +1,4 @@
-const path = require("path");
+const path = require("path")
 const { getDefaultConfig, mergeConfig } = require("@react-native/metro-config")
 const { FileStore } = require("metro-cache")
 
@@ -21,7 +21,7 @@ const config = {
   resolver: {
     resolverMainFields: ["sbmodern", "react-native", "browser", "main"], // needed for storybook
     extraNodeModules: {
-      images: path.resolve(__dirname, './images'),  // Add this line for Metro to resolve 'images'
+      images: path.resolve(__dirname, "./images"), // Add this line for Metro to resolve 'images folder'
     },
   },
 }
