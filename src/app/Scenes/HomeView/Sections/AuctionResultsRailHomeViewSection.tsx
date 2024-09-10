@@ -23,15 +23,14 @@ export const AuctionResultsRailHomeViewSection: React.FC<AuctionResultsRailHomeV
   }
 
   const auctionResults = extractNodes(section.auctionResultsConnection)
+  const componentHref = section.component?.behaviors?.viewAll?.href
 
   return (
     <Flex>
       <Flex px={2}>
         <SectionTitle
           title={section.component?.title ?? "Auction Results"}
-          {...(section.component?.href
-            ? { onPress: () => navigate(section.component?.href as string) }
-            : {})}
+          onPress={componentHref ? () => navigate(componentHref) : undefined}
         />
       </Flex>
       <FlatList
@@ -47,18 +46,16 @@ export const AuctionResultsRailHomeViewSection: React.FC<AuctionResultsRailHomeV
           />
         )}
         keyExtractor={(item) => item.internalID}
-        {...(section.component?.behaviors?.viewAll?.href
-          ? {
-              ListFooterComponent: (
-                <BrowseMoreRailCard
-                  onPress={() => {
-                    navigate(section.component?.behaviors?.viewAll?.href as string)
-                  }}
-                  text={section.component?.behaviors?.viewAll?.buttonText ?? "Browse All Results"}
-                />
-              ),
-            }
-          : {})}
+        ListFooterComponent={
+          componentHref ? (
+            <BrowseMoreRailCard
+              onPress={() => {
+                navigate(componentHref)
+              }}
+              text="Browse All Results"
+            />
+          ) : undefined
+        }
       />
     </Flex>
   )
@@ -68,10 +65,8 @@ const sectionFragment = graphql`
   fragment AuctionResultsRailHomeViewSection_section on AuctionResultsRailHomeViewSection {
     component {
       title
-      href
       behaviors {
         viewAll {
-          buttonText
           href
         }
       }

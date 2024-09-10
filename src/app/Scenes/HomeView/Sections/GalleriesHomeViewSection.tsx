@@ -23,8 +23,7 @@ export const GalleriesHomeViewSection: React.FC<GalleriesHomeViewSectionProps> =
   const hasImage = !!section.component.backgroundImageURL
   const textColor = hasImage ? "white100" : "black100"
 
-  const componentHref = section.component?.href
-  const viewAllHref = section.component?.behaviors?.viewAll?.href
+  const componentHref = section.component?.behaviors?.viewAll?.href
 
   return (
     <Flex>
@@ -69,16 +68,16 @@ export const GalleriesHomeViewSection: React.FC<GalleriesHomeViewSectionProps> =
               </Text>
             </Flex>
 
-            {!!viewAllHref && (
+            {!!componentHref && (
               <Flex mt={0.5} maxWidth={150}>
                 <Button
                   variant={hasImage ? "outlineLight" : "fillDark"}
                   size="small"
                   onPress={() => {
-                    navigate(viewAllHref)
+                    navigate(componentHref)
                   }}
                 >
-                  {section.component.behaviors?.viewAll?.buttonText}
+                  Explore
                 </Button>
               </Flex>
             )}
@@ -95,11 +94,9 @@ const GalleriesHomeViewSectionFragment = graphql`
       title
       backgroundImageURL
       description
-      href
       behaviors {
         viewAll {
           href
-          buttonText
         }
       }
     }

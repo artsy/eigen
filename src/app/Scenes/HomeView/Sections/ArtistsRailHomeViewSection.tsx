@@ -8,6 +8,7 @@ import {
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { PAGE_SIZE } from "app/Components/constants"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -27,6 +28,7 @@ export const ArtistsRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionPro
   const tracking = useTracking()
 
   const title = section.component?.title
+  const componentHref = section.component?.behaviors?.viewAll?.href
 
   const onEndReached = () => {
     if (!hasMore() && !isLoading()) {
@@ -49,7 +51,16 @@ export const ArtistsRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionPro
   return (
     <Flex>
       <Flex px={2}>
-        <SectionTitle title={title} />
+        <SectionTitle
+          title={title}
+          onPress={
+            componentHref
+              ? () => {
+                  navigate(componentHref)
+                }
+              : undefined
+          }
+        />
       </Flex>
       <CardRailFlatList<Artist>
         data={artists}
@@ -105,6 +116,11 @@ export const ArtistsRailHomeViewSectionPaginationContainer = createPaginationCon
         internalID
         component {
           title
+          behaviors {
+            viewAll {
+              href
+            }
+          }
         }
         artistsConnection(after: $cursor, first: $count)
           @connection(key: "ArtistsRailHomeViewSection_artistsConnection") {

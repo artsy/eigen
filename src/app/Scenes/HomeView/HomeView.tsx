@@ -1,14 +1,24 @@
-import { Flex, Screen, Spacer, Spinner, Text } from "@artsy/palette-mobile"
+import {
+  Flex,
+  Screen,
+  Spacer,
+  SpacingUnitDSValueNumber,
+  Spinner,
+  Text,
+} from "@artsy/palette-mobile"
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
 import { HomeViewSectionsConnection_viewer$key } from "__generated__/HomeViewSectionsConnection_viewer.graphql"
+import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
 import { Section } from "app/Scenes/HomeView/Sections/Section"
 import { extractNodes } from "app/utils/extractNodes"
 import { Suspense } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
+const SECTION_SEPARATOR_HEIGHT: SpacingUnitDSValueNumber = 6
+
 export const HomeView: React.FC = () => {
   const queryData = useLazyLoadQuery<HomeViewQuery>(homeViewScreenQuery, {
-    count: 5,
+    count: 10,
   })
 
   const { data, loadNext, hasNext } = usePaginationFragment<
@@ -19,7 +29,7 @@ export const HomeView: React.FC = () => {
   const sections = extractNodes(data?.homeView.sectionsConnection)
 
   return (
-    <Screen>
+    <Screen safeArea={false}>
       <Screen.Body fullwidth>
         <Screen.FlatList
           data={sections}
@@ -27,8 +37,9 @@ export const HomeView: React.FC = () => {
           renderItem={({ item }) => {
             return <Section section={item} />
           }}
-          ItemSeparatorComponent={() => <Spacer y={2} />}
+          ItemSeparatorComponent={SectionSeparator}
           onEndReached={() => loadNext(10)}
+          ListHeaderComponent={<HomeHeader />}
           ListFooterComponent={
             hasNext ? (
               <Flex width="100%" justifyContent="center" alignItems="center" height={200}>
@@ -42,10 +53,12 @@ export const HomeView: React.FC = () => {
   )
 }
 
+const SectionSeparator = () => <Spacer y={SECTION_SEPARATOR_HEIGHT} />
+
 export const HomeViewScreen: React.FC = () => (
   <Suspense
     fallback={
-      <Flex flex={1} justifyContent="center" alignItems="center">
+      <Flex flex={1} justifyContent="center" alignItems="center" testID="new-home-view-skeleton">
         <Text>Loading home view…</Text>
       </Flex>
     }

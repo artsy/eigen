@@ -16,7 +16,7 @@ import ConversationSnippet from "./ConversationSnippet"
 import { NoMessages } from "./NoMessages"
 
 interface Props {
-  me: Conversations_me$data
+  me?: Conversations_me$data
   relay: RelayPaginationProp
   headerView?: JSX.Element
   onRefresh?: () => any
@@ -87,9 +87,9 @@ export const Conversations: React.FC<Props> = (props) => {
     }
   }, [isActiveTab])
 
-  const conversations = extractNodes(props.me.conversations)
+  const conversations = extractNodes(props.me?.conversations)
 
-  const unreadCount = props.me.conversations?.totalUnreadCount
+  const unreadCount = props.me?.conversations?.totalUnreadCount
   const unreadCounter = unreadCount ? `(${unreadCount})` : null
 
   return (

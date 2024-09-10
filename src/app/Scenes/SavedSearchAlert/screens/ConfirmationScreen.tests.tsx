@@ -176,7 +176,7 @@ describe(ConfirmationScreen, () => {
 
       renderWithRelay({
         FilterArtworksConnection: () => ({
-          edges: [{ node: { title: "Untitled #1", slug: "untitled" } }],
+          edges: [{ node: { title: "Untitled #1", slug: "untitled", collectorSignals: null } }],
         }),
       })
 
@@ -194,7 +194,7 @@ describe(ConfirmationScreen, () => {
       })
     })
 
-    it("sends a tracking event when an artwork is tapped", async () => {
+    it("sends a tracking event when an artwork with a partner offer is tapped", async () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnablePartnerOfferSignals: true })
 
       renderWithRelay({
@@ -204,7 +204,7 @@ describe(ConfirmationScreen, () => {
               node: {
                 title: "Untitled #1",
                 slug: "untitled",
-                collectorSignals: { partnerOffer: { isAvailable: true } },
+                collectorSignals: { partnerOffer: { isAvailable: true }, auction: null },
               },
             },
           ],
@@ -223,6 +223,42 @@ describe(ConfirmationScreen, () => {
         destination_screen_owner_type: "artwork",
         type: "thumbnail",
         signal_label: "Limited-Time Offer",
+      })
+    })
+
+    it("sends a tracking event when an artwork with a partner offer is tapped", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAuctionImprovementsSignals: true })
+
+      renderWithRelay({
+        FilterArtworksConnection: () => ({
+          edges: [
+            {
+              node: {
+                title: "Untitled #1",
+                slug: "untitled",
+                collectorSignals: {
+                  auction: { bidCount: 7, lotWatcherCount: 49, liveBiddingStarted: true },
+                },
+              },
+            },
+          ],
+        }),
+      })
+
+      await waitForElementToBeRemoved(() => screen.queryByTestId("MatchingArtworksPlaceholder"))
+
+      fireEvent.press(screen.getByText("Untitled #1"))
+
+      expect(mockTrackEvent).toBeCalledWith({
+        action: "tappedArtworkGroup",
+        context_module: "alertConfirmation",
+        context_screen_owner_type: "alertConfirmation",
+        destination_screen_owner_slug: "untitled",
+        destination_screen_owner_type: "artwork",
+        type: "thumbnail",
+        signal_label: "Bidding live now",
+        signal_bid_count: 7,
+        signal_lot_watcher_count: 49,
       })
     })
   })

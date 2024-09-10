@@ -5,6 +5,10 @@ import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import {
+  CollectorSignals,
+  getArtworkSignalTrackingFields,
+} from "app/utils/getArtworkSignalTrackingFields"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -15,7 +19,7 @@ interface FairExhibitorRailProps {
 
 const FairExhibitorRail: React.FC<FairExhibitorRailProps> = ({ show }) => {
   const { trackEvent } = useTracking()
-  const AREnablePartnerOfferSignals = useFeatureFlag("AREnablePartnerOfferSignals")
+  const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
 
   const artworks = extractNodes(show?.artworksConnection)
 
@@ -43,15 +47,14 @@ const FairExhibitorRail: React.FC<FairExhibitorRailProps> = ({ show }) => {
         artworks={artworks}
         onPress={(artwork, position) => {
           if (artwork?.href) {
-            const partnerOfferAvailable =
-              AREnablePartnerOfferSignals && !!artwork.collectorSignals?.partnerOffer?.isAvailable
             trackEvent(
               tracks.tappedArtwork(
                 show,
                 artwork?.internalID ?? "",
                 artwork?.slug ?? "",
                 position,
-                partnerOfferAvailable
+                artwork.collectorSignals,
+                AREnableAuctionImprovementsSignals
               )
             )
             navigate(artwork.href)
@@ -100,7 +103,8 @@ const tracks = {
     artworkID: string,
     artworkSlug: string,
     position: number,
-    withPartnerOffer?: boolean
+    collectorSignals: CollectorSignals,
+    auctionSignalsFeatureFlagEnabled: boolean
   ) => ({
     action: ActionType.tappedArtworkGroup,
     context_module: ContextModule.galleryBoothRail,
@@ -112,7 +116,7 @@ const tracks = {
     destination_screen_owner_slug: artworkSlug,
     horizontal_slide_position: position,
     type: "thumbnail",
-    signal_label: withPartnerOffer ? "Limited-Time Offer" : undefined,
+    ...getArtworkSignalTrackingFields(collectorSignals, auctionSignalsFeatureFlagEnabled),
   }),
   tappedShow: (show: FairExhibitorRail_show$data) => ({
     action: ActionType.tappedArtworkGroup,

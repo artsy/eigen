@@ -7,6 +7,7 @@ import { useItemsImpressionsTracking } from "app/Scenes/Home/Components/useImpre
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { CollectorSignals } from "app/utils/getArtworkSignalTrackingFields"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
   ArtworkActionTrackingProps,
@@ -30,7 +31,7 @@ export const ArtworkRecommendationsRail: React.FC<
 > = memo(({ isRailVisible, mb, me, scrollRef, title, ...otherProps }) => {
   const { trackEvent } = useTracking()
   const trackingProps = extractArtworkActionTrackingProps(otherProps)
-  const AREnablePartnerOfferSignals = useFeatureFlag("AREnablePartnerOfferSignals")
+  const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
 
   const { artworkRecommendations } = useFragment(artworksFragment, me)
 
@@ -71,15 +72,13 @@ export const ArtworkRecommendationsRail: React.FC<
               return
             }
 
-            const partnerOfferAvailable =
-              AREnablePartnerOfferSignals && !!artwork.collectorSignals?.partnerOffer?.isAvailable
-
             trackEvent(
               tracks.tappedArtwork(
                 artwork.slug,
                 artwork.internalID,
                 position,
-                partnerOfferAvailable
+                artwork.collectorSignals,
+                AREnableAuctionImprovementsSignals
               )
             )
             navigate(artwork.href)
@@ -121,13 +120,20 @@ const tracks = {
     destination_screen_owner_type: OwnerType.artworkRecommendations,
     type: type,
   }),
-  tappedArtwork: (slug: string, internalID: string, position: number, withPartnerOffer: boolean) =>
+  tappedArtwork: (
+    slug: string,
+    internalID: string,
+    position: number,
+    collectorSignals: CollectorSignals,
+    auctionSignalsFeatureFlagEnabled: boolean
+  ) =>
     HomeAnalytics.artworkThumbnailTapEvent(
       ContextModule.artworkRecommendationsRail,
       slug,
       internalID,
       position,
       "single",
-      withPartnerOffer
+      collectorSignals,
+      auctionSignalsFeatureFlagEnabled
     ),
 }

@@ -29,6 +29,12 @@ describe("ArticlesCardsHomeViewSection", () => {
     renderWithRelay({
       HomeViewComponent: () => ({
         title: "Some news items",
+        behaviors: {
+          viewAll: {
+            href: "/articles",
+            buttonText: "All the news",
+          },
+        },
       }),
       ArticleConnection: () => ({
         edges: [
@@ -58,5 +64,6 @@ describe("ArticlesCardsHomeViewSection", () => {
     expect(screen.getByText(/The first news item/)).toBeOnTheScreen()
     expect(screen.getByText(/The second news item/)).toBeOnTheScreen()
     expect(screen.getByText(/The third news item/)).toBeOnTheScreen()
+    expect(screen.getByText(/All the news/)).toBeOnTheScreen()
   })
 })
