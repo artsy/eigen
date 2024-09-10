@@ -1,5 +1,5 @@
 import { ContextModule } from "@artsy/cohesion"
-import { Spacer, Flex } from "@artsy/palette-mobile"
+import { Flex, Spacer } from "@artsy/palette-mobile"
 import { ArticlesRail_articlesConnection$data } from "__generated__/ArticlesRail_articlesConnection.graphql"
 import { ArticleCardContainer } from "app/Components/ArticleCard"
 import { SectionTitle } from "app/Components/SectionTitle"
@@ -14,13 +14,13 @@ import { useTracking } from "react-tracking"
 
 interface ArticlesRailProps {
   articlesConnection: ArticlesRail_articlesConnection$data
-  sectionID?: string
+  contextModule?: ContextModule
   title: string
 }
 
 export const ArticlesRail: React.FC<ArticlesRailProps> = ({
   articlesConnection,
-  sectionID,
+  contextModule,
   title,
 }) => {
   const articles = extractNodes(articlesConnection)
@@ -58,7 +58,7 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = ({
                   item.internalID,
                   item.slug || "",
                   index,
-                  sectionID as ContextModule
+                  contextModule
                 )
                 tracking.trackEvent(tapEvent)
               }}

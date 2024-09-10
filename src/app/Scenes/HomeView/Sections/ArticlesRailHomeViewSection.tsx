@@ -1,3 +1,4 @@
+import { ContextModule } from "@artsy/cohesion"
 import { ArticlesRailHomeViewSection_section$key } from "__generated__/ArticlesRailHomeViewSection_section.graphql"
 import { ArticlesRailFragmentContainer } from "app/Scenes/Home/Components/ArticlesRail"
 import { graphql, useFragment } from "react-relay"
@@ -17,7 +18,7 @@ export const ArticlesRailHomeViewSection: React.FC<ArticlesRailHomeViewSectionPr
     <ArticlesRailFragmentContainer
       title={section.component?.title ?? ""}
       articlesConnection={section.articlesConnection}
-      sectionID={section.internalID}
+      contextModule={section.internalID as ContextModule}
     />
   )
 }
