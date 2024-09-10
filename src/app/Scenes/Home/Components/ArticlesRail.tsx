@@ -15,12 +15,14 @@ import { useTracking } from "react-tracking"
 interface ArticlesRailProps {
   articlesConnection: ArticlesRail_articlesConnection$data
   contextModule?: ContextModule
+  onSectionTitlePress?: () => void
   title: string
 }
 
 export const ArticlesRail: React.FC<ArticlesRailProps> = ({
   articlesConnection,
   contextModule,
+  onSectionTitlePress,
   title,
 }) => {
   const articles = extractNodes(articlesConnection)
@@ -30,16 +32,19 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = ({
     return null
   }
 
+  const onTitlePress = () => {
+    if (onSectionTitlePress) {
+      onSectionTitlePress()
+    } else {
+      tracking.trackEvent(HomeAnalytics.articlesHeaderTapEvent())
+      navigate("/articles")
+    }
+  }
+
   return (
     <Flex>
       <Flex mx={2}>
-        <SectionTitle
-          title={title}
-          onPress={() => {
-            tracking.trackEvent(HomeAnalytics.articlesHeaderTapEvent())
-            navigate("/articles")
-          }}
-        />
+        <SectionTitle title={title} onPress={onTitlePress} />
       </Flex>
       <Flex>
         <FlatList

@@ -78,14 +78,15 @@ export default class HomeAnalytics {
   static fairThumbnailTapEvent(
     fairID?: string,
     fairSlug?: string,
-    index?: number
+    index?: number,
+    contextModule?: ContextModule
   ): TappedEntityGroup {
     return tappedEntityGroup({
       contextScreenOwnerType: OwnerType.home,
       destinationScreenOwnerId: fairID,
       destinationScreenOwnerSlug: fairSlug,
       destinationScreenOwnerType: OwnerType.fair,
-      contextModule: ContextModule.fairRail,
+      contextModule: contextModule || ContextModule.fairRail,
       horizontalSlidePosition: index,
       moduleHeight: "double",
       type: "thumbnail",
@@ -112,10 +113,14 @@ export default class HomeAnalytics {
     })
   }
 
-  static activityThumbnailTapEvent(index: number, destinationModule: string): TappedEntityGroup {
+  static activityThumbnailTapEvent(
+    index: number,
+    destinationModule: string,
+    contextModule?: ContextModule
+  ): TappedEntityGroup {
     return {
       action: ActionType.tappedActivityGroup,
-      context_module: ContextModule.activityRail,
+      context_module: contextModule || ContextModule.activityRail,
       context_screen_owner_type: OwnerType.home,
       destination_screen_owner_type: destinationModule.toLowerCase() as TappedEntityDestinationType,
       horizontal_slide_position: index,
@@ -236,10 +241,11 @@ export default class HomeAnalytics {
     key: string | null,
     id: string,
     slug: string,
-    index?: number
+    index?: number,
+    contextModule?: ContextModule
   ): TappedEntityGroup {
     return tappedEntityGroup({
-      contextModule: this.artistRailContextModule(key),
+      contextModule: contextModule || this.artistRailContextModule(key),
       contextScreenOwnerType: OwnerType.home,
       destinationScreenOwnerType: OwnerType.artist,
       destinationScreenOwnerId: id,

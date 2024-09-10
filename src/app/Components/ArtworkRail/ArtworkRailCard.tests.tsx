@@ -51,6 +51,7 @@ describe("ArtworkRailCard", () => {
           sale: { isClosed: false, isAuction: true },
           saleArtwork: { currentBid: { display: "$200" }, counts: { bidderPositions: 1 } },
           realizedPrice: null,
+          collectorSignals: { auction: { bidCount: 1 } },
         }),
       })
 
@@ -82,7 +83,8 @@ describe("ArtworkRailCard", () => {
   })
 
   describe("cascading end times", () => {
-    it("shows the UrgencyTag component when the sale has cascading end times", () => {
+    // skipping since we don't use the UrgencyTag after releasing the auction signals
+    it.skip("shows the UrgencyTag component when the sale has cascading end times", () => {
       renderWithRelay({
         Artwork: () => ({
           sale: {

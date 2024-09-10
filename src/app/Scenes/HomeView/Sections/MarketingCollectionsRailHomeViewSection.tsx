@@ -6,6 +6,7 @@ import {
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { MarketingCollectionRailItem } from "app/Scenes/HomeView/Sections/MarketingCollectionRailItem"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { graphql, useFragment } from "react-relay"
@@ -19,6 +20,7 @@ export const MarketingCollectionsRailHomeViewSection: React.FC<
 > = ({ section }) => {
   const data = useFragment(fragment, section)
   const component = data.component
+  const componentHref = component?.behaviors?.viewAll?.href
 
   if (!component) return null
 
@@ -28,7 +30,16 @@ export const MarketingCollectionsRailHomeViewSection: React.FC<
   return (
     <Flex>
       <Flex pl={2} pr={2}>
-        <SectionTitle title={component.title} />
+        <SectionTitle
+          title={component.title}
+          onPress={
+            componentHref
+              ? () => {
+                  navigate(componentHref)
+                }
+              : undefined
+          }
+        />
       </Flex>
 
       <CardRailFlatList<
@@ -50,6 +61,11 @@ const fragment = graphql`
   fragment MarketingCollectionsRailHomeViewSection_section on MarketingCollectionsRailHomeViewSection {
     component {
       title
+      behaviors {
+        viewAll {
+          href
+        }
+      }
     }
 
     marketingCollectionsConnection(first: 10) {

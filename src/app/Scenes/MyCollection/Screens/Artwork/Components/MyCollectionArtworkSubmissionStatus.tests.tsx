@@ -50,6 +50,10 @@ describe("MyCollectionArtworkSubmissionStatus", () => {
   })
 
   it("display Submission status and In Progress when submission is in progress", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({
+      AREnableSubmitArtworkTier2Information: false,
+    })
+
     renderWithRelay({
       Artwork: () => {
         return {
@@ -67,6 +71,10 @@ describe("MyCollectionArtworkSubmissionStatus", () => {
   })
 
   it("display Submission status and Evaluation Complete when submission has been evaluated", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({
+      AREnableSubmitArtworkTier2Information: false,
+    })
+
     renderWithRelay({
       Artwork: () => {
         return {

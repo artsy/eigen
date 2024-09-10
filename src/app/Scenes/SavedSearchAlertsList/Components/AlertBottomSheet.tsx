@@ -35,6 +35,8 @@ export const AlertBottomSheet: FC<AlertBottomSheetProps> = ({
 
   return (
     <AutomountedBottomSheetModal
+      // TODO: Onyx to fix the type issue of snapPoints + replace useBottomSheetDynamicSnapPoints
+      // @ts-ignore-next-line
       snapPoints={animatedSnapPoints}
       handleHeight={animatedHandleHeight}
       contentHeight={animatedContentHeight}

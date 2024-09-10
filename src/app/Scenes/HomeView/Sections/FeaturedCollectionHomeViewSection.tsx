@@ -16,6 +16,7 @@ export const FeaturedCollectionHomeViewSection: React.FC<
   const { width } = useWindowDimensions()
   const data = useFragment(fragment, section)
   const component = data.component
+  const componentHref = component?.behaviors?.viewAll?.href
 
   if (!component) return null
 
@@ -23,7 +24,9 @@ export const FeaturedCollectionHomeViewSection: React.FC<
   if (!artworks || artworks.length === 0) return null
 
   const handlePress = () => {
-    navigate(component.href as string)
+    if (componentHref) {
+      navigate(componentHref)
+    }
   }
 
   const handleOnArtworkPress = (artwork: any, _position: any) => {
@@ -54,7 +57,7 @@ export const FeaturedCollectionHomeViewSection: React.FC<
         artworks={artworks}
         showSaveIcon
         onPress={handleOnArtworkPress}
-        onMorePress={handlePress}
+        onMorePress={componentHref ? handlePress : undefined}
       />
     </Flex>
   )
@@ -66,7 +69,11 @@ const fragment = graphql`
       title
       description
       backgroundImageURL
-      href
+      behaviors {
+        viewAll {
+          href
+        }
+      }
     }
 
     artworksConnection(first: 10) {

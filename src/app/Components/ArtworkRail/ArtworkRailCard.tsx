@@ -18,6 +18,7 @@ import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionT
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
+import { HEART_ICON_SIZE } from "app/Components/constants"
 import { formattedTimeLeft } from "app/Scenes/Activity/utils/formattedTimeLeft"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
@@ -38,7 +39,6 @@ import { LARGE_RAIL_IMAGE_WIDTH } from "./LargeArtworkRail"
 import { SMALL_RAIL_IMAGE_WIDTH } from "./SmallArtworkRail"
 
 export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = 90
-const SAVE_ICON_SIZE = 26
 
 export const ARTWORK_RAIL_CARD_IMAGE_HEIGHT = {
   small: 230,
@@ -412,15 +412,15 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                     {isSaved ? (
                       <HeartFillIcon
                         testID="filled-heart-icon"
-                        height={SAVE_ICON_SIZE}
-                        width={SAVE_ICON_SIZE}
+                        height={HEART_ICON_SIZE}
+                        width={HEART_ICON_SIZE}
                         fill="blue100"
                       />
                     ) : (
                       <HeartIcon
                         testID="empty-heart-icon"
-                        height={SAVE_ICON_SIZE}
-                        width={SAVE_ICON_SIZE}
+                        height={HEART_ICON_SIZE}
+                        width={HEART_ICON_SIZE}
                         fill={primaryTextColor}
                       />
                     )}
