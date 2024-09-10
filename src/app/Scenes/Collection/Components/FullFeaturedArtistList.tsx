@@ -22,7 +22,6 @@ export class FullFeaturedArtistList extends React.Component<Props> {
     // When a collection contains artistsIDs we want to only display those artists as featured
     // instead of all the artists in the collection.
     if (artistIDs.length > 0) {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       return allArtists.filter((artist) => artistIDs.includes(artist?.internalID))
     }
 

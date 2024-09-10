@@ -321,7 +321,6 @@ export const FullFeaturedArtistListCollectionFixture: FullFeaturedArtistListTest
     },
     featuredArtistExclusionIds: [],
     query: {
-      id: "query-id",
       artistIDs: [],
     },
   }
