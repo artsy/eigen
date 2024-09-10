@@ -10,6 +10,7 @@ import { LoadingSpinner } from "app/Components/Modals/LoadingModal"
 import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { GlobalStore } from "app/store/GlobalStore"
+import { routingInstrumentation } from "app/system/errorReporting/setupSentry"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { logNavigation } from "app/utils/loggers"
 import { Platform } from "react-native"
@@ -48,6 +49,8 @@ export const ModalStack: React.FC = ({ children }) => {
       ref={__unsafe_mainModalStackRef}
       initialState={initialState}
       onReady={() => {
+        routingInstrumentation.registerNavigationContainer(__unsafe_mainModalStackRef)
+
         setNavigationReady({ isNavigationReady: true })
 
         if (trackSiftAndroid) {

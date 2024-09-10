@@ -2,12 +2,6 @@ import { MiddlewareNextFn, RelayNetworkLayerResponse } from "react-relay-network
 import { errorMiddleware } from "./errorMiddleware"
 import { GraphQLRequest } from "./types"
 
-jest.mock("@sentry/react-native", () => ({
-  init: jest.requireActual("@sentry/react-native").init,
-  withScope: jest.requireActual("@sentry/react-native").withScope,
-  captureException: jest.fn(),
-}))
-
 describe(errorMiddleware, () => {
   const middleware = errorMiddleware()
 

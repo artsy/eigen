@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/react-native"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { HomeQueryRenderer } from "app/Scenes/Home/Home"
 import { HomeViewScreen } from "app/Scenes/HomeView/HomeView"
@@ -5,15 +6,15 @@ import { Playground } from "app/Scenes/Playground/Playground"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+// import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useEffect } from "react"
 
-export const HomeContainer = () => {
+export const InnerHomeContainer = () => {
   const artQuizState = GlobalStore.useAppState((state) => state.auth.onboardingArtQuizState)
   const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
   const showPlayground = useDevToggle("DTShowPlayground")
 
-  const preferLegacyHomeScreen = useFeatureFlag("ARPreferLegacyHomeScreen")
+  const preferLegacyHomeScreen = true // useFeatureFlag("ARPreferLegacyHomeScreen")
 
   const shouldDisplayNewHomeView = ArtsyNativeModule.isBetaOrDev && !preferLegacyHomeScreen
 
@@ -42,3 +43,5 @@ export const HomeContainer = () => {
     return <HomeQueryRenderer />
   }
 }
+
+export const HomeContainer = Sentry.withProfiler(InnerHomeContainer)

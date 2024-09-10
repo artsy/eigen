@@ -221,12 +221,18 @@ jest.mock("@invertase/react-native-apple-authentication", () => ({
 }))
 
 jest.mock("@sentry/react-native", () => ({
-  captureMessage() {},
+  captureMessage: jest.fn(),
   init() {},
   setUser() {},
   addBreadcrumb() {},
   withScope() {},
   Severity: "info",
+  ReactNavigationInstrumentation: jest.fn().mockImplementation(() => ({
+    registerNavigationContainer: jest.fn(),
+  })),
+  wrap: jest.fn().mockImplementation((component) => component),
+  withProfiler: jest.fn().mockImplementation((component) => component),
+  TimeToFullDisplay: () => null,
 }))
 
 jest.mock("@react-native-mapbox-gl/maps", () => ({

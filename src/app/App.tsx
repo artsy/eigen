@@ -1,11 +1,12 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
-import { GlobalStore } from "app/store/GlobalStore"
+import * as Sentry from "@sentry/react-native"
+import { GlobalStore, unsafe__getEnvironment, unsafe_getDevToggle } from "app/store/GlobalStore"
 import { codePushOptions } from "app/system/codepush"
 import { AsyncStorageDevtools } from "app/system/devTools/AsyncStorageDevTools"
 import { DevMenuWrapper } from "app/system/devTools/DevMenu/DevMenuWrapper"
 import { setupFlipper } from "app/system/devTools/flipper"
 import { useRageShakeDevMenu } from "app/system/devTools/useRageShakeDevMenu"
-import { useErrorReporting } from "app/system/errorReporting/hooks"
+import { setupSentry } from "app/system/errorReporting/setupSentry"
 import { ModalStack } from "app/system/navigation/ModalStack"
 import { usePurgeCacheOnAppUpdate } from "app/system/relay/usePurgeCacheOnAppUpdate"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
@@ -54,6 +55,14 @@ if (__DEV__) {
 
 setupFlipper()
 
+// Sentry must be setup early in the app lifecycle to hook into navigation
+const debugSentry = unsafe_getDevToggle("DTDebugSentry")
+const environment = unsafe__getEnvironment()
+setupSentry({
+  environment: environment.env,
+  debug: debugSentry,
+})
+
 addTrackingProvider(SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider)
 addTrackingProvider("console", ConsoleTrackingProvider)
 
@@ -85,7 +94,6 @@ const Main = () => {
 
   const fpsCounter = useDevToggle("DTFPSCounter")
 
-  useErrorReporting()
   useStripeConfig()
   useSiftConfig()
   useWebViewCookies()
@@ -163,4 +171,5 @@ const InnerApp = () => (
   </Providers>
 )
 
-export const App = codePush(codePushOptions)(InnerApp)
+const SentryApp = Sentry.wrap(InnerApp)
+export const App = codePush(codePushOptions)(SentryApp)

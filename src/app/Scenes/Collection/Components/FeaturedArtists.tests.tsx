@@ -96,7 +96,6 @@ const FeaturedArtistCollectionFixture: FeaturedArtistsTestsQuery["rawResponse"][
     },
     featuredArtistExclusionIds: [],
     query: {
-      id: "query-id",
       artistIDs: [],
     },
   }
