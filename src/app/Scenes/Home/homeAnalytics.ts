@@ -59,14 +59,15 @@ export default class HomeAnalytics {
   static auctionThumbnailTapEvent(
     id?: string,
     slug?: string,
-    horizontalSlidePosition?: number
+    horizontalSlidePosition?: number,
+    contextModule?: ContextModule
   ): TappedEntityGroup {
     return tappedEntityGroup({
       contextScreenOwnerType: OwnerType.home,
       destinationScreenOwnerId: id,
       destinationScreenOwnerSlug: slug,
       destinationScreenOwnerType: OwnerType.sale,
-      contextModule: ContextModule.auctionRail,
+      contextModule: contextModule || ContextModule.auctionRail,
       horizontalSlidePosition,
       moduleHeight: "double",
       type: "thumbnail",
