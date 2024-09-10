@@ -26,9 +26,14 @@ describe("conditional rendering of old vs new home screen", () => {
         () => __globalStoreTestUtils__?.injectFeatureFlags({ ARPreferLegacyHomeScreen: false })
       )
 
-      it("renders the NEW screen", () => {
+      xit("renders the NEW screen", () => {
         renderWithWrappers(<HomeContainer />)
         expect(screen.getByTestId("new-home-view-skeleton")).toBeOnTheScreen()
+      })
+
+      it("temporarily renders the old screen while we make breaking changes", () => {
+        renderWithWrappers(<HomeContainer />)
+        expect(screen.queryByTestId("new-home-view-skeleton")).not.toBeOnTheScreen()
       })
     })
 
