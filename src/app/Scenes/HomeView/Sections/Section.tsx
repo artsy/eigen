@@ -3,7 +3,7 @@ import { HomeViewSectionsConnection_viewer$data } from "__generated__/HomeViewSe
 import { ActivityRailHomeViewSection } from "app/Scenes/HomeView/Sections/ActivityRailHomeViewSection"
 import { ArticlesCardsHomeViewSection } from "app/Scenes/HomeView/Sections/ArticlesCardsHomeViewSection"
 import { ArticlesRailHomeViewSection } from "app/Scenes/HomeView/Sections/ArticlesRailHomeViewSection"
-import { ArtistsRailHomeViewSectionPaginationContainer } from "app/Scenes/HomeView/Sections/ArtistsRailHomeViewSection"
+import { ArtistsRailHomeViewSectionPaginationContainer } from "app/Scenes/HomeView/Sections/ArtistsRailHomeViewSection/ArtistsRailHomeViewSection"
 import { ArtworksRailHomeViewSection } from "app/Scenes/HomeView/Sections/ArtworksRailHomeViewSection"
 import { AuctionResultsRailHomeViewSection } from "app/Scenes/HomeView/Sections/AuctionResultsRailHomeViewSection"
 import { FairsRailHomeViewSection } from "app/Scenes/HomeView/Sections/FairsRailHomeViewSection"

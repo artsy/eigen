@@ -1,4 +1,4 @@
-import { ContextModule } from "@artsy/cohesion"
+import { ContextModule, OwnerType, tappedEntityGroup } from "@artsy/cohesion"
 import { Flex, Spacer, Spinner } from "@artsy/palette-mobile"
 import { ArtistsRailHomeViewSection_section$data } from "__generated__/ArtistsRailHomeViewSection_section.graphql"
 import {
@@ -8,7 +8,6 @@ import {
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { PAGE_SIZE } from "app/Components/constants"
-import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -162,12 +161,16 @@ export const tracks = {
     artistSlug: string
     index: number
     sectionID: string
-  }) =>
-    HomeAnalytics.artistThumbnailTapEvent(
-      "SUGGESTIONS",
-      artistID,
-      artistSlug,
-      index,
-      sectionID as ContextModule
-    ),
+  }) => {
+    return tappedEntityGroup({
+      contextModule: sectionID as ContextModule,
+      contextScreenOwnerType: OwnerType.home,
+      destinationScreenOwnerType: OwnerType.artist,
+      destinationScreenOwnerId: artistID,
+      destinationScreenOwnerSlug: artistSlug,
+      horizontalSlidePosition: index,
+      moduleHeight: "double",
+      type: "thumbnail",
+    })
+  },
 }
