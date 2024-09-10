@@ -1,3 +1,4 @@
+import { ContextModule } from "@artsy/cohesion"
 import { ShowsRailHomeViewSection_section$key } from "__generated__/ShowsRailHomeViewSection_section.graphql"
 import { ShowsRailContainer } from "app/Scenes/Home/Components/ShowsRail"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -16,7 +17,7 @@ export const ShowsRailHomeViewSection: React.FC<ShowsRailHomeViewSectionProps> =
     <ShowsRailContainer
       title={component?.title || "Shows"}
       disableLocation={!enableShowsForYouLocation}
-      sectionID={data.internalID}
+      contextModule={data.internalID as ContextModule}
     />
   )
 }

@@ -17,7 +17,7 @@ import { useTracking } from "react-tracking"
 interface ShowsRailProps {
   disableLocation: boolean
   location?: Location | null
-  sectionID?: string
+  contextModule?: ContextModule
   title: string
 }
 
@@ -25,7 +25,7 @@ interface ShowsRailProps {
 const NUMBER_OF_SHOWS = 10
 
 export const ShowsRail: React.FC<ShowsRailProps> = memo(
-  ({ disableLocation, location, sectionID, title }) => {
+  ({ disableLocation, location, contextModule, title }) => {
     const tracking = useTracking()
 
     const queryVariables = location
@@ -67,12 +67,7 @@ export const ShowsRail: React.FC<ShowsRailProps> = memo(
                 show={item}
                 onPress={() => {
                   tracking.trackEvent(
-                    tracks.tappedThumbnail(
-                      item.internalID,
-                      item.slug || "",
-                      index,
-                      sectionID as ContextModule
-                    )
+                    tracks.tappedThumbnail(item.internalID, item.slug || "", index, contextModule)
                   )
                 }}
               />
@@ -139,12 +134,12 @@ export const tracks = {
 interface ShowsRailContainerProps {
   title: string
   disableLocation?: boolean
-  sectionID?: string
+  contextModule?: ContextModule
 }
 
 export const ShowsRailContainer: React.FC<ShowsRailContainerProps> = ({
   disableLocation = false,
-  sectionID,
+  contextModule,
   ...restProps
 }) => {
   const visualizeLocation = useDevToggle("DTLocationDetectionVisialiser")
@@ -170,7 +165,7 @@ export const ShowsRailContainer: React.FC<ShowsRailContainerProps> = ({
         {...restProps}
         location={location}
         disableLocation={disableLocation}
-        sectionID={sectionID}
+        contextModule={contextModule}
       />
     </Suspense>
   )
