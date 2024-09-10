@@ -4,7 +4,7 @@ import { SalesRailHomeViewSection_section$key } from "__generated__/SalesRailHom
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
-import LegacyHomeAnalytics from "app/Scenes/Home/homeAnalytics"
+import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { SalesRailItem } from "app/Scenes/HomeView/Sections/SalesRailItem"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -54,7 +54,7 @@ export const SalesRailHomeViewSection: React.FC<SalesRailHomeViewSectionProps> =
               sale={item}
               onPress={(sale) => {
                 tracking.trackEvent(
-                  LegacyHomeAnalytics.auctionThumbnailTapEvent(
+                  HomeAnalytics.auctionThumbnailTapEvent(
                     sale?.internalID,
                     sale?.slug,
                     index,
