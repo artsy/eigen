@@ -6,7 +6,7 @@ import { Playground } from "app/Scenes/Playground/Playground"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+// import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useEffect } from "react"
 
 export const InnerHomeContainer = () => {
@@ -14,7 +14,7 @@ export const InnerHomeContainer = () => {
   const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
   const showPlayground = useDevToggle("DTShowPlayground")
 
-  const preferLegacyHomeScreen = useFeatureFlag("ARPreferLegacyHomeScreen")
+  const preferLegacyHomeScreen = true // useFeatureFlag("ARPreferLegacyHomeScreen")
 
   const shouldDisplayNewHomeView = ArtsyNativeModule.isBetaOrDev && !preferLegacyHomeScreen
 
