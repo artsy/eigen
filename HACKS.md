@@ -304,16 +304,6 @@ patch.
 This package includes a `setPageName` method on `SiftReactNative`, but no corresponding type.
 I patched it to add the type.
 
-## Patch-package for react-native-reanimated
-
-#### When can we remove this:
-
-When we upgrade to Reanimated 3.4.0
-
-#### Explanation/Context:
-
-Fixes some issues on Android when Reanimated stops. https://github.com/software-mansion/react-native-reanimated/issues/4626
-
 ## Patch-package for @react-navigation/native
 
 #### When we can remove this:
