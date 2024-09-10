@@ -1,4 +1,5 @@
-import { Spacer, Flex } from "@artsy/palette-mobile"
+import { ContextModule } from "@artsy/cohesion"
+import { Flex, Spacer } from "@artsy/palette-mobile"
 import { ArticlesRail_articlesConnection$data } from "__generated__/ArticlesRail_articlesConnection.graphql"
 import { ArticleCardContainer } from "app/Components/ArticleCard"
 import { SectionTitle } from "app/Components/SectionTitle"
@@ -12,15 +13,17 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface ArticlesRailProps {
-  title: string
   articlesConnection: ArticlesRail_articlesConnection$data
+  contextModule?: ContextModule
   onSectionTitlePress?: () => void
+  title: string
 }
 
 export const ArticlesRail: React.FC<ArticlesRailProps> = ({
-  title,
   articlesConnection,
+  contextModule,
   onSectionTitlePress,
+  title,
 }) => {
   const articles = extractNodes(articlesConnection)
   const tracking = useTracking()
@@ -59,7 +62,8 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = ({
                 const tapEvent = HomeAnalytics.articleThumbnailTapEvent(
                   item.internalID,
                   item.slug || "",
-                  index
+                  index,
+                  contextModule
                 )
                 tracking.trackEvent(tapEvent)
               }}
