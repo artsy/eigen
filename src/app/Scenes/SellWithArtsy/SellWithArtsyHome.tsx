@@ -7,7 +7,6 @@ import { Highlights } from "app/Scenes/SellWithArtsy/Components/Highlights"
 import { MeetTheSpecialists } from "app/Scenes/SellWithArtsy/Components/MeetTheSpecialists"
 import { SpeakToTheTeam } from "app/Scenes/SellWithArtsy/Components/SpeakToTheTeam"
 import { StickySWAHeader } from "app/Scenes/SellWithArtsy/Components/StickySWAHeader"
-import { Testimonials } from "app/Scenes/SellWithArtsy/Components/Testimonials"
 import { WaysWeSell } from "app/Scenes/SellWithArtsy/Components/WaysWeSell"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
@@ -42,14 +41,15 @@ export const SellWithArtsyHome: React.FC = () => {
     increaseFetchKey()
   }
 
-  const { recentlySoldArtworks, me, submission } = useLazyLoadQuery<SellWithArtsyHomeQuery>(
-    SellWithArtsyHomeScreenQuery,
-    { submissionID: id, includeSubmission: !!id },
-    {
-      fetchPolicy: "store-and-network",
-      fetchKey: fetchKey ?? 0,
-    }
-  )
+  const { recentlySoldArtworks, me, submission, staticContent } =
+    useLazyLoadQuery<SellWithArtsyHomeQuery>(
+      SellWithArtsyHomeScreenQuery,
+      { submissionID: id, includeSubmission: !!id },
+      {
+        fetchPolicy: "store-and-network",
+        fetchKey: fetchKey ?? 0,
+      }
+    )
 
   const onFocusStatusBarStyle: StatusBarStyle = "dark-content"
   const onBlurStatusBarStyle: StatusBarStyle = "dark-content"
@@ -108,9 +108,11 @@ export const SellWithArtsyHome: React.FC = () => {
       key: "faq-swa",
       content: <FAQSWA />,
     },
-    {
+    staticContent && {
       key: "meet-the-specialists",
-      content: <MeetTheSpecialists onInquiryPress={handleInquiryPress} />,
+      content: (
+        <MeetTheSpecialists onInquiryPress={handleInquiryPress} staticContent={staticContent} />
+      ),
     },
     {
       key: "collectors-network",
@@ -119,10 +121,6 @@ export const SellWithArtsyHome: React.FC = () => {
     !!recentlySoldArtworks && {
       key: "recently-sold-artworks",
       content: <SellWithArtsyRecentlySold recentlySoldArtworks={recentlySoldArtworks} />,
-    },
-    {
-      key: "testimonials",
-      content: <Testimonials />,
     },
     {
       key: "speak-to-the-team",
@@ -163,6 +161,9 @@ export const SellWithArtsyHomeScreenQuery = graphql`
     }
     submission(id: $submissionID) @include(if: $includeSubmission) {
       ...Header_submission
+    }
+    staticContent {
+      ...MeetTheSpecialists_staticContent
     }
   }
 `

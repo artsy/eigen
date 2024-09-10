@@ -1,19 +1,18 @@
 import { ActionType, ContextModule, OwnerType, TappedConsignmentInquiry } from "@artsy/cohesion"
 import { Flex, Spacer, Text, useColor, useSpace, Button } from "@artsy/palette-mobile"
-import { MeetTheSpecialistsQuery } from "__generated__/MeetTheSpecialistsQuery.graphql"
 import { MeetTheSpecialists_staticContent$key } from "__generated__/MeetTheSpecialists_staticContent.graphql"
 import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
 import { ReadMore } from "app/Components/ReadMore"
-import { SpecialistsData } from "app/Scenes/SellWithArtsy/utils/useSWALandingPageData"
 import { AnimateHeight } from "app/utils/animations/AnimateHeight"
-import { PlaceholderBox, PlaceholderButton, PlaceholderText } from "app/utils/placeholders"
 import { MotiView } from "moti"
-import { Suspense, useState } from "react"
+import { useState } from "react"
 import { FlatList, ImageBackground } from "react-native"
 import { isTablet } from "react-native-device-info"
 import LinearGradient from "react-native-linear-gradient"
 import { Easing } from "react-native-reanimated"
-import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
+import { graphql, useFragment } from "react-relay"
+
+const IMG_HEIGHT_TO_WIDTH_RATIO = 1.511 // based on designs
 
 type InqueryPress = (
   trackingargs?: TappedConsignmentInquiry,
@@ -21,46 +20,26 @@ type InqueryPress = (
   recipientName?: string
 ) => void
 
-const MeetTheSpecialistsContent: React.FC<{ onInquiryPress: InqueryPress }> = ({
-  onInquiryPress,
-}) => {
-  const specialistsData = useLazyLoadQuery<MeetTheSpecialistsQuery>(SpecialistsQuery, {})
-
-  if (!specialistsData.staticContent) {
-    return null
-  }
-
-  return (
-    <MeetTheSpecialistsList
-      staticContent={specialistsData.staticContent}
-      onInquiryPress={onInquiryPress}
-    />
-  )
-}
-
-export const MeetTheSpecialists: React.FC<{ onInquiryPress: InqueryPress }> = ({
-  onInquiryPress,
-}) => {
-  return (
-    <Suspense fallback={<LoadingSkeleton />}>
-      <MeetTheSpecialistsContent onInquiryPress={onInquiryPress} />
-    </Suspense>
-  )
-}
-
-const MeetTheSpecialistsList: React.FC<{
-  staticContent: MeetTheSpecialists_staticContent$key
+export const MeetTheSpecialists: React.FC<{
   onInquiryPress: InqueryPress
+  staticContent: MeetTheSpecialists_staticContent$key | null
 }> = ({ onInquiryPress, staticContent }) => {
+  const staticContentData = useFragment(specialistFragment, staticContent)
+  const [isBioExpanded, setIsBioExpanded] = useState(false)
+
+  const color = useColor()
   const space = useSpace()
 
-  const specialists = useFragment(specialistFragment, staticContent)
-  console.log("[LOGD] specialists", specialists)
+  const imgWidth = useExtraLargeWidth()
+  const imgHeight = imgWidth * IMG_HEIGHT_TO_WIDTH_RATIO
 
-  const specialistBios = specialists?.specialistBios
+  const specialistBios = staticContentData?.specialistBios
+
   if (!specialistBios) {
     return null
   }
+
+  const bioTextLimit = isTablet() ? 160 : 88
 
   return (
     <Flex>
@@ -77,7 +56,77 @@ const MeetTheSpecialistsList: React.FC<{
         showsHorizontalScrollIndicator={false}
         data={specialistBios}
         renderItem={({ item }) => {
-          return <Specialist specialist={item} onInquiryPress={onInquiryPress} />
+          const buttonText = `Contact ${item.firstName}`
+
+          return (
+            <ImageBackground
+              source={{ uri: item.image.imageURL || "" }}
+              resizeMode="cover"
+              style={{
+                width: imgWidth,
+                height: imgHeight,
+                marginRight: space(1),
+              }}
+            >
+              <MotiView
+                style={{
+                  position: "absolute",
+                  height: "100%",
+                  flexDirection: "row",
+                }}
+                animate={{ bottom: isBioExpanded ? -20 : -imgHeight / 3 }}
+                transition={{
+                  type: "timing",
+                  duration: 400,
+                  easing: Easing.out(Easing.exp),
+                }}
+              >
+                <LinearGradient
+                  colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 1)"]}
+                  style={{
+                    width: "100%",
+                  }}
+                />
+              </MotiView>
+              <Flex position="absolute" bottom={0} pb={2} mt={1} mx={1}>
+                <AnimateHeight>
+                  <Text variant="lg-display" color={color("white100")}>
+                    {item.name}
+                  </Text>
+                  <Text variant="xs" fontWeight="bold" mb={1} color={color("white100")}>
+                    {item.jobTitle}
+                  </Text>
+                  <Flex>
+                    <ReadMore
+                      content={item.bio}
+                      maxChars={bioTextLimit}
+                      textStyle="new"
+                      textVariant="xs"
+                      linkTextVariant="xs"
+                      color={color("white100")}
+                      showReadLessButton
+                      onExpand={(isExpanded) => setIsBioExpanded(isExpanded)}
+                    />
+                  </Flex>
+                </AnimateHeight>
+                <Spacer y={2} />
+                <Button
+                  size="small"
+                  variant="outlineLight"
+                  testID="MeetTheSpecialists-contact-CTA"
+                  onPress={() => {
+                    onInquiryPress(
+                      tracks.consignmentInquiryTapped(buttonText),
+                      item.email,
+                      item.firstName
+                    )
+                  }}
+                >
+                  {buttonText}
+                </Button>
+              </Flex>
+            </ImageBackground>
+          )
         }}
         keyExtractor={(item) => item.name}
         ListFooterComponent={() => <Spacer x={4} />}
@@ -101,95 +150,6 @@ const MeetTheSpecialistsList: React.FC<{
   )
 }
 
-interface SpecialistProps {
-  specialist: SpecialistsData
-  onInquiryPress: InqueryPress
-}
-
-const Specialist: React.FC<SpecialistProps> = ({ specialist, onInquiryPress }) => {
-  const color = useColor()
-  const space = useSpace()
-  const bioTextLimit = isTablet() ? 160 : 88
-
-  const buttonText = `Contact ${specialist.firstName}`
-
-  const imgHeightToWidthRatio = 1.511 // based on designs
-  const imgWidth = useExtraLargeWidth()
-  const imgHeight = imgWidth * imgHeightToWidthRatio
-
-  const [isBioExpanded, setIsBioExpanded] = useState(false)
-
-  return (
-    <ImageBackground
-      source={{ uri: specialist.image.imageURL || "" }}
-      resizeMode="cover"
-      style={{
-        width: imgWidth,
-        height: imgHeight,
-        marginRight: space(1),
-      }}
-    >
-      <MotiView
-        style={{
-          position: "absolute",
-          height: "100%",
-          flexDirection: "row",
-        }}
-        animate={{ bottom: isBioExpanded ? -20 : -imgHeight / 3 }}
-        transition={{
-          type: "timing",
-          duration: 400,
-          easing: Easing.out(Easing.exp),
-        }}
-      >
-        <LinearGradient
-          colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 1)"]}
-          style={{
-            width: "100%",
-          }}
-        />
-      </MotiView>
-      <Flex position="absolute" bottom={0} pb={2} mt={1} mx={1}>
-        <AnimateHeight>
-          <Text variant="lg-display" color={color("white100")}>
-            {specialist.name}
-          </Text>
-          <Text variant="xs" fontWeight="bold" mb={1} color={color("white100")}>
-            {specialist.jobTitle}
-          </Text>
-          <Flex>
-            <ReadMore
-              content={specialist.bio}
-              maxChars={bioTextLimit}
-              textStyle="new"
-              textVariant="xs"
-              linkTextVariant="xs"
-              color={color("white100")}
-              showReadLessButton
-              onExpand={(isExpanded) => setIsBioExpanded(isExpanded)}
-            />
-          </Flex>
-        </AnimateHeight>
-        <Spacer y={2} />
-        <Button
-          size="small"
-          variant="outlineLight"
-          testID="MeetTheSpecialists-contact-CTA"
-          onPress={() => {
-            onInquiryPress(
-              tracks.consignmentInquiryTapped(buttonText),
-              specialist.email,
-              specialist.firstName
-            )
-          }}
-        >
-          {buttonText}
-        </Button>
-      </Flex>
-    </ImageBackground>
-  )
-}
-
 const tracks = {
   consignmentInquiryTapped: (subject: string): TappedConsignmentInquiry => ({
     action: ActionType.tappedConsignmentInquiry,
@@ -198,43 +158,6 @@ const tracks = {
     context_screen_owner_type: OwnerType.sell,
     subject,
   }),
-}
-
-const LoadingSkeleton = () => {
-  const imgHeightToWidthRatio = 1.511 // based on designs
-  const imgWidth = useExtraLargeWidth()
-  return (
-    <Flex>
-      <PlaceholderText marginHorizontal={20} width="60%" height={40} />
-      <PlaceholderText marginHorizontal={20} />
-      <PlaceholderText marginHorizontal={20} />
-
-      <Spacer y={2} />
-      <FlatList
-        contentContainerStyle={{ marginLeft: 20 }}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        data={[1, 2, 3]}
-        renderItem={() => {
-          return (
-            <PlaceholderBox
-              width={imgWidth}
-              height={imgWidth * imgHeightToWidthRatio}
-              marginRight={10}
-            />
-          )
-        }}
-        keyExtractor={(item) => item + "yy"}
-        ListFooterComponent={() => <Spacer x={4} />}
-      />
-      <Flex mx={2} mt={2}>
-        <PlaceholderText />
-        <PlaceholderText />
-
-        <PlaceholderButton />
-      </Flex>
-    </Flex>
-  )
 }
 
 const specialistFragment = graphql`
@@ -248,14 +171,6 @@ const specialistFragment = graphql`
       image {
         imageURL
       }
-    }
-  }
-`
-
-const SpecialistsQuery = graphql`
-  query MeetTheSpecialistsQuery {
-    staticContent {
-      ...MeetTheSpecialists_staticContent
     }
   }
 `
