@@ -11,10 +11,12 @@ import { useRef, useState } from "react"
 import { FlatList, PixelRatio, ViewabilityConfig } from "react-native"
 import { useFragment, graphql } from "react-relay"
 
+type HeroUnit = NonNullable<
+  NonNullable<NonNullable<HeroUnitsRail_heroUnitsConnection$data["edges"]>[number]>["node"]
+>
 interface HeroUnitProps {
-  item: NonNullable<
-    NonNullable<NonNullable<HeroUnitsRail_heroUnitsConnection$data["edges"]>[number]>["node"]
-  >
+  item: HeroUnit
+  onPress?: () => void
 }
 
 const fontScale = PixelRatio.getFontScale()
@@ -23,12 +25,14 @@ const CARD_HEIGHT = 250 * fontScale
 const CARD_IMAGE_WIDTH = 125
 const DESCRIPTION_LINES = fontScale > 1 ? 4 : 3
 
-export const HeroUnit: React.FC<HeroUnitProps> = ({ item }) => {
+export const HeroUnit: React.FC<HeroUnitProps> = ({ item, onPress }) => {
   const { width: screenWidth } = useScreenDimensions()
   const cardImageWidth = screenWidth > 700 ? screenWidth / 2 : CARD_IMAGE_WIDTH
   const imageSrc = item.image?.imageURL ?? ""
 
   const handlePress = () => {
+    onPress?.()
+
     if (item.link.url) {
       navigate(item.link.url)
     }
