@@ -5,6 +5,7 @@ import {
   TransitionPresets,
 } from "@react-navigation/stack"
 import { FPSCounter } from "app/Components/FPSCounter"
+import { OnboardingStore } from "app/Scenes/Onboarding/OnboardingStore"
 import { OAuthProvider } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { DevMenu as DevMenuDefault } from "app/system/devTools/DevMenu/DevMenu"
@@ -135,7 +136,13 @@ export const Onboarding = () => {
       <ArtsyKeyboardAvoidingViewContext.Provider
         value={{ isVisible: true, isPresentedModally: false, bottomOffset: 0 }}
       >
-        {onboardingState === "incomplete" ? <OnboardingQuiz /> : <OnboardingWelcomeScreens />}
+        {onboardingState === "incomplete" ? (
+          <OnboardingQuiz />
+        ) : (
+          <OnboardingStore.Provider>
+            <OnboardingWelcomeScreens />
+          </OnboardingStore.Provider>
+        )}
         <NetworkAwareProvider />
       </ArtsyKeyboardAvoidingViewContext.Provider>
       {!!fpsCounter && <FPSCounter style={{ bottom: Platform.OS === "ios" ? 40 : undefined }} />}
