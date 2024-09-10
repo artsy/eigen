@@ -83,12 +83,12 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v19-pods-{{ checksum ".manifests/cocoapods" }}
+            - v20-pods-{{ checksum ".manifests/cocoapods" }}
       - run:
           name: Install Pods
           command: cd ios; bundle exec pod check --ignore-dev-pods || bundle exec pod install; cd ..;
       - save_cache:
-          key: v19-pods-{{ checksum ".manifests/cocoapods" }}
+          key: v20-pods-{{ checksum ".manifests/cocoapods" }}
           paths:
             - ios/Pods
             # this changes after pod install because we don't install dev tools on CI
@@ -98,7 +98,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v16-app_build_ios-{{ checksum ".manifests/app_build" }}
+            - v17-app_build_ios-{{ checksum ".manifests/app_build" }}
       - run:
           name: Download fonts from s3
           command: ./scripts/setup/download-fonts
@@ -109,7 +109,7 @@ commands:
           name: Build App
           command: ./scripts/ci/ci-ios
       - save_cache:
-          key: v16-app_build_ios-{{ checksum ".manifests/app_build" }}
+          key: v17-app_build_ios-{{ checksum ".manifests/app_build" }}
           paths:
             - derived_data
             - node_modules/react-native-config
@@ -375,7 +375,7 @@ jobs:
           at: ../workspace
       - restore_cache:
           keys:
-            - v11-test-success-{{ checksum "../workspace/.manifests/native_code" }}
+            - v12-test-success-{{ checksum "../workspace/.manifests/native_code" }}
       # we can quit the macos build early if there were no native code changes
       # and we're not on the beta branch
       - run:
@@ -417,7 +417,7 @@ jobs:
           name: Run tests if native code has changed
           command: ls xcode_test_raw.log || ./scripts/ci/ci-test-ios
       - save_cache:
-          key: v11-test-success-{{ checksum ".manifests/native_code" }}
+          key: v12-test-success-{{ checksum ".manifests/native_code" }}
           paths:
             - xcode_test_raw.log
 

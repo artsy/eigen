@@ -10,6 +10,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { DateTime } from "luxon"
+import { Suspense } from "react"
 import { graphql } from "react-relay"
 import { ArtworkCommercialButtons } from "./ArtworkCommercialButtons"
 
@@ -25,11 +26,13 @@ describe("ArtworkCommercialButtons", () => {
       return (
         <ArtworkInquiryStateProvider>
           <ArtworkStoreProvider>
-            <ArtworkCommercialButtons
-              partnerOffer={partnerOffer}
-              artwork={props.artwork}
-              me={props.me}
-            />
+            <Suspense fallback={null}>
+              <ArtworkCommercialButtons
+                partnerOffer={partnerOffer}
+                artwork={props.artwork}
+                me={props.me}
+              />
+            </Suspense>
           </ArtworkStoreProvider>
         </ArtworkInquiryStateProvider>
       )
@@ -55,6 +58,10 @@ describe("ArtworkCommercialButtons", () => {
         }
       }
     `,
+  })
+
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCollectorProfilePrompts: true })
   })
 
   it("renders Purchase button if artwork isAcquireable", () => {
@@ -505,7 +512,7 @@ describe("ArtworkCommercialButtons", () => {
           ...ArtworkFixture,
           isOfferable: true,
           isInquireable: true,
-          collectorSignals: { partnerOffer: { internalID: "partnerOfferID" } },
+          collectorSignals: { partnerOffer: { internalID: "partnerOfferID" }, auction: null },
         }
 
         renderWithRelay(
@@ -536,7 +543,7 @@ describe("ArtworkCommercialButtons", () => {
           ...ArtworkFixture,
           isOfferable: true,
           isInquireable: true,
-          collectorSignals: { partnerOffer: { internalID: "partnerOfferID" } },
+          collectorSignals: { partnerOffer: { internalID: "partnerOfferID" }, auction: null },
         }
 
         renderWithRelay(

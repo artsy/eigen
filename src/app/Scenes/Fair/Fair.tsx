@@ -22,7 +22,7 @@ import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { Suspense } from "react"
 import { TouchableOpacity } from "react-native"
 import RNShare from "react-native-share"
-import { createFragmentContainer, graphql, useFragment, useLazyLoadQuery } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 import { FairHeader } from "./Components/FairHeader"
 
@@ -141,10 +141,6 @@ const fragment = graphql`
     }
   }
 `
-
-export const FairFragmentContainer = createFragmentContainer(Fair, {
-  fair: fragment,
-})
 
 const query = graphql`
   query FairQuery($fairID: String!) {

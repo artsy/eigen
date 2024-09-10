@@ -18,6 +18,7 @@ export const SalesRailHomeViewSection: React.FC<SalesRailHomeViewSectionProps> =
   const listRef = useRef<FlatList<any>>()
   const data = useFragment(fragment, section)
   const component = data.component
+  const componentHref = component?.behaviors?.viewAll?.href
   const sales = extractNodes(data.salesConnection)
 
   const { width } = useScreenDimensions()
@@ -32,9 +33,13 @@ export const SalesRailHomeViewSection: React.FC<SalesRailHomeViewSectionProps> =
       <Flex px={2}>
         <SectionTitle
           title={component?.title}
-          onPress={() => {
-            navigate(component?.behaviors?.viewAll?.href || "/auctions")
-          }}
+          onPress={
+            componentHref
+              ? () => {
+                  navigate(componentHref)
+                }
+              : undefined
+          }
         />
       </Flex>
       <CardRailFlatList
@@ -47,12 +52,14 @@ export const SalesRailHomeViewSection: React.FC<SalesRailHomeViewSectionProps> =
           return <SalesRailItem sale={item} />
         }}
         ListFooterComponent={
-          <BrowseMoreRailCard
-            onPress={() => {
-              navigate(component?.behaviors?.viewAll?.href || "/auctions")
-            }}
-            text={component?.behaviors?.viewAll?.buttonText || "Browse All Auctions"}
-          />
+          componentHref ? (
+            <BrowseMoreRailCard
+              onPress={() => {
+                navigate(componentHref)
+              }}
+              text="Browse All Auctions"
+            />
+          ) : undefined
         }
       />
     </Flex>
@@ -66,7 +73,6 @@ const fragment = graphql`
       behaviors {
         viewAll {
           href
-          buttonText
         }
       }
     }

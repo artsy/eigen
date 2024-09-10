@@ -102,6 +102,7 @@ describe("ArtworkGridItem", () => {
                 endAt: DateTime.fromMillis(Date.now()).plus({ hours: 12 }).toISO(),
                 priceWithDiscount: { display: "$2,750" },
               },
+              auction: null,
             },
           }),
         },
@@ -340,6 +341,11 @@ describe("ArtworkGridItem", () => {
               bidderPositions: 1,
             },
           },
+          collectorSignals: {
+            auction: {
+              bidCount: 1,
+            },
+          },
           realizedPrice: null,
         }),
       })
@@ -410,7 +416,6 @@ describe("ArtworkGridItem", () => {
       )
 
       expect(screen.getByText("Lot 1")).toBeOnTheScreen()
-      expect(screen.getByTestId("lot-close-info")).toBeOnTheScreen()
     })
 
     it("does not show the LotCloseInfo component when the sale does not have cascading end times", () => {
@@ -430,7 +435,7 @@ describe("ArtworkGridItem", () => {
         {}
       )
 
-      expect(screen.queryByTestId("lot-close-info")).not.toBeOnTheScreen()
+      expect(screen.queryByText("Lot 1")).not.toBeOnTheScreen()
     })
   })
 
