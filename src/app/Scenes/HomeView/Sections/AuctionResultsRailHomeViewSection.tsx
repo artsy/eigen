@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType, TappedEntityGroup } from "@artsy/cohesion"
 import { Flex, useScreenDimensions } from "@artsy/palette-mobile"
 import { AuctionResultsRailHomeViewSection_section$key } from "__generated__/AuctionResultsRailHomeViewSection_section.graphql"
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
@@ -23,15 +24,14 @@ export const AuctionResultsRailHomeViewSection: React.FC<AuctionResultsRailHomeV
   }
 
   const auctionResults = extractNodes(section.auctionResultsConnection)
+  const componentHref = section.component?.behaviors?.viewAll?.href
 
   return (
     <Flex>
       <Flex px={2}>
         <SectionTitle
           title={section.component?.title ?? "Auction Results"}
-          {...(section.component?.href
-            ? { onPress: () => navigate(section.component?.href as string) }
-            : {})}
+          onPress={componentHref ? () => navigate(componentHref) : undefined}
         />
       </Flex>
       <FlatList
@@ -39,26 +39,32 @@ export const AuctionResultsRailHomeViewSection: React.FC<AuctionResultsRailHomeV
         data={auctionResults}
         showsHorizontalScrollIndicator={false}
         initialNumToRender={3}
-        renderItem={({ item }) => (
-          <AuctionResultListItemFragmentContainer
-            showArtistName
-            auctionResult={item}
-            width={screenWidth * 0.9}
-          />
-        )}
+        renderItem={({ item, index }) => {
+          return (
+            <AuctionResultListItemFragmentContainer
+              showArtistName
+              auctionResult={item}
+              width={screenWidth * 0.9}
+              trackingEventPayload={tracks.tappedAuctionResultGroup({
+                auctionResultID: item.internalID,
+                auctionResultSlug: item.slug ?? "",
+                index,
+                sectionID: section.internalID,
+              })}
+            />
+          )
+        }}
         keyExtractor={(item) => item.internalID}
-        {...(section.component?.behaviors?.viewAll?.href
-          ? {
-              ListFooterComponent: (
-                <BrowseMoreRailCard
-                  onPress={() => {
-                    navigate(section.component?.behaviors?.viewAll?.href as string)
-                  }}
-                  text={section.component?.behaviors?.viewAll?.buttonText ?? "Browse All Results"}
-                />
-              ),
-            }
-          : {})}
+        ListFooterComponent={
+          componentHref ? (
+            <BrowseMoreRailCard
+              onPress={() => {
+                navigate(componentHref)
+              }}
+              text="Browse All Results"
+            />
+          ) : undefined
+        }
       />
     </Flex>
   )
@@ -66,12 +72,11 @@ export const AuctionResultsRailHomeViewSection: React.FC<AuctionResultsRailHomeV
 
 const sectionFragment = graphql`
   fragment AuctionResultsRailHomeViewSection_section on AuctionResultsRailHomeViewSection {
+    internalID
     component {
       title
-      href
       behaviors {
         viewAll {
-          buttonText
           href
         }
       }
@@ -81,9 +86,35 @@ const sectionFragment = graphql`
       edges {
         node {
           internalID
+          slug
           ...AuctionResultListItem_auctionResult
         }
       }
     }
   }
 `
+
+const tracks = {
+  tappedAuctionResultGroup: ({
+    auctionResultID,
+    auctionResultSlug,
+    index,
+    sectionID,
+  }: {
+    auctionResultID: string
+    auctionResultSlug: string
+    index: number
+    sectionID: string
+  }): TappedEntityGroup => {
+    return {
+      action: ActionType.tappedAuctionResultGroup,
+      context_module: sectionID as ContextModule,
+      context_screen_owner_type: OwnerType.home,
+      destination_screen_owner_id: auctionResultID,
+      destination_screen_owner_slug: auctionResultSlug,
+      destination_screen_owner_type: OwnerType.auctionResult,
+      horizontal_slide_position: index,
+      type: "thumbnail",
+    }
+  },
+}

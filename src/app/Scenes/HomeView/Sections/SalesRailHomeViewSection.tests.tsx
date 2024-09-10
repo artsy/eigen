@@ -35,7 +35,6 @@ describe("SalesRailHomeViewSection", () => {
           behaviors: {
             viewAll: {
               href: "/auctions",
-              buttonText: "Browse All Auctions",
             },
           },
         },

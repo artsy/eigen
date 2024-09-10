@@ -4,9 +4,14 @@ import { ContactGalleryButton } from "app/Scenes/Artwork/Components/CommercialBu
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { Suspense } from "react"
 import { graphql } from "react-relay"
 
 describe("ContactGalleryButton", () => {
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCollectorProfilePrompts: true })
+  })
+
   it("opens the inquiry modal when the 'contact gallery' button is pressed", async () => {
     renderWithRelay()
 
@@ -43,7 +48,7 @@ describe("ContactGalleryButton", () => {
       Artwork: () => ({
         internalID: "artwork-id",
         slug: "artwork-slug",
-        collectorSignals: { partnerOffer: { isAvailable: true } },
+        collectorSignals: { partnerOffer: { isAvailable: true }, auction: null },
       }),
     })
 
@@ -90,7 +95,11 @@ describe("ContactGalleryButton", () => {
 })
 
 const { renderWithRelay } = setupTestWrapper<ContactGalleryButtonTestsQuery>({
-  Component: ({ artwork, me }) => <ContactGalleryButton artwork={artwork} me={me} />,
+  Component: ({ artwork, me }) => (
+    <Suspense fallback={null}>
+      <ContactGalleryButton artwork={artwork} me={me} />
+    </Suspense>
+  ),
   query: graphql`
     query ContactGalleryButtonTestsQuery @relay_test_operation {
       artwork(id: "artwork-id") @required(action: NONE) {
