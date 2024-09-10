@@ -4,6 +4,7 @@ import { ArtworksRailHomeViewSection_section$key } from "__generated__/ArtworksR
 import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import LegacyHomeAnalytics from "app/Scenes/Home/homeAnalytics"
+import { getSectionHref } from "app/Scenes/HomeView/helpers/getSectionHref"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { View } from "react-native"
@@ -22,7 +23,7 @@ export const ArtworksRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionPr
   const data = useFragment(fragment, section)
   const title = data.component?.title
   const artworks = extractNodes(data.artworksConnection)
-  const componentHref = "home-view/sections/" + data.internalID
+  const componentHref = getSectionHref(data.internalID, data.component?.behaviors?.viewAll?.href)
 
   if (!artworks || artworks.length === 0) {
     return null
