@@ -55,7 +55,7 @@ import { ArtworkEditionSetInformationFragmentContainer as ArtworkEditionSetInfor
 import { ArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/ArtworkHeader"
 import { ArtworkHistoryFragmentContainer as ArtworkHistory } from "./Components/ArtworkHistory"
 import { ArtworkLotDetails } from "./Components/ArtworkLotDetails/ArtworkLotDetails"
-import { ArtworkShowingNowCollectorSignalFragmentContainer } from "./Components/ArtworkShowingNowCollectorSignal"
+import { ArtworkShowingNowCollectorSignalFragmentContainer as ArtworkShowingNowCollectorSignal } from "./Components/ArtworkShowingNowCollectorSignal"
 import { ArtworkStickyBottomContent } from "./Components/ArtworkStickyBottomContent"
 import { ArtworksInSeriesRail } from "./Components/ArtworksInSeriesRail"
 import { BelowTheFoldPlaceholder } from "./Components/BelowTheFoldPlaceholder"
@@ -304,9 +304,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
 
       sections.push({
         key: "artworkShowingNowCollectorSignal",
-        element: (
-          <ArtworkShowingNowCollectorSignalFragmentContainer artwork={artworkAboveTheFold} />
-        ),
+        element: <ArtworkShowingNowCollectorSignal artwork={artworkAboveTheFold} />,
         excludeSeparator: true,
         excludeVerticalMargin: true,
       })
