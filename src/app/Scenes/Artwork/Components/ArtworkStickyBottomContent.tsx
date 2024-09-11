@@ -81,7 +81,7 @@ export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProp
     >
       <Separator />
       <Box px={2} py={1}>
-        <ArtworkPrice artwork={artworkData} partnerOffer={partnerOfferData} mb={1} />
+        <ArtworkPrice artwork={artworkData} mb={1} />
         <ArtworkCommercialButtons artwork={artworkData} partnerOffer={partnerOfferData} me={me} />
       </Box>
     </Box>
@@ -104,7 +104,6 @@ const artworkFragment = graphql`
 const partnerOfferFragment = graphql`
   fragment ArtworkStickyBottomContent_partnerOffer on PartnerOfferToCollector {
     internalID
-    ...ArtworkPrice_partnerOffer
     ...ArtworkCommercialButtons_partnerOffer
   }
 `

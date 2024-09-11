@@ -1,6 +1,5 @@
 import { Box, Flex, FlexProps, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkPrice_artwork$key } from "__generated__/ArtworkPrice_artwork.graphql"
-import { ArtworkPrice_partnerOffer$key } from "__generated__/ArtworkPrice_partnerOffer.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtworkStore } from "app/Scenes/Artwork/ArtworkStore"
 import { ExpiresInTimer } from "app/Scenes/Artwork/Components/ExpiresInTimer"
@@ -10,16 +9,11 @@ import { ArtworkAuctionBidInfo } from "./ArtworkAuctionBidInfo"
 
 interface ArtworkPriceProps extends FlexProps {
   artwork: ArtworkPrice_artwork$key
-  partnerOffer: ArtworkPrice_partnerOffer$key
 }
 
-export const ArtworkPrice: React.FC<ArtworkPriceProps> = ({
-  artwork,
-  partnerOffer,
-  ...flexProps
-}) => {
+export const ArtworkPrice: React.FC<ArtworkPriceProps> = ({ artwork, ...flexProps }) => {
   const artworkData = useFragment(artworkPriceFragment, artwork)
-  const partnerOfferData = useFragment(partnerOfferPriceFragment, partnerOffer)
+  const partnerOfferData = artworkData.collectorSignals?.partnerOffer
   const selectedEditionId = ArtworkStore.useStoreState((state) => state.selectedEditionId)
   const auctionState = ArtworkStore.useStoreState((state) => state.auctionState)
   const editionSets = artworkData.editionSets ?? []
@@ -51,9 +45,8 @@ export const ArtworkPrice: React.FC<ArtworkPriceProps> = ({
 
   if (
     !!AREnablePartnerOfferOnArtworkScreen &&
-    !!partnerOfferData &&
-    partnerOfferData.isAvailable &&
-    partnerOfferData.isActive
+    partnerOfferData &&
+    artworkData.collectorSignals?.primaryLabel === "PARTNER_OFFER"
   ) {
     const listPrice = artworkData.isPriceHidden ? "Not publicly listed" : message
 
@@ -68,7 +61,7 @@ export const ArtworkPrice: React.FC<ArtworkPriceProps> = ({
 
           <Spacer x={1} />
 
-          <ExpiresInTimer item={partnerOfferData} />
+          <ExpiresInTimer endAt={partnerOfferData.endAt} />
         </Flex>
 
         <Flex flexDirection="row" flexWrap="wrap" mt={1} alignItems="flex-end">
@@ -108,17 +101,17 @@ const artworkPriceFragment = graphql`
       internalID
       saleMessage
     }
-    ...ArtworkAuctionBidInfo_artwork
-  }
-`
-
-const partnerOfferPriceFragment = graphql`
-  fragment ArtworkPrice_partnerOffer on PartnerOfferToCollector {
-    endAt
-    isAvailable
-    isActive
-    priceWithDiscount {
-      display
+    collectorSignals {
+      primaryLabel
+      partnerOffer {
+        endAt
+        isAvailable
+        isActive
+        priceWithDiscount {
+          display
+        }
+      }
     }
+    ...ArtworkAuctionBidInfo_artwork
   }
 `

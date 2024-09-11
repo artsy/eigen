@@ -783,7 +783,6 @@ export const ArtworkContainer = createRefetchContainer(
               isActive
               ...ArtworkStickyBottomContent_partnerOffer
               ...ArtworkPartnerOfferNote_partnerOffer
-              ...ArtworkPrice_partnerOffer
             }
           }
         }

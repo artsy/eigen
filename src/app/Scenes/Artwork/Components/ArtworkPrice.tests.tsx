@@ -7,7 +7,6 @@ import {
   artworkModel,
 } from "app/Scenes/Artwork/ArtworkStore"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { extractNodes } from "app/utils/extractNodes"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { DateTime } from "luxon"
 import { graphql } from "react-relay"
@@ -19,13 +18,10 @@ interface TestProps {
 
 describe("ArtworkPrice", () => {
   const { renderWithRelay } = setupTestWrapper<ArtworkPrice_Test_Query, TestProps>({
-    Component: ({ artwork, me, initialData }) => {
+    Component: ({ artwork, initialData }) => {
       return (
         <ArtworkStoreProvider runtimeModel={{ ...artworkModel, ...initialData }}>
-          <ArtworkPrice
-            artwork={artwork!}
-            partnerOffer={extractNodes(me!.partnerOffersConnection)[0]}
-          />
+          <ArtworkPrice artwork={artwork!} />
         </ArtworkStoreProvider>
       )
     },
@@ -33,15 +29,6 @@ describe("ArtworkPrice", () => {
       query ArtworkPrice_Test_Query {
         artwork(id: "artworkID") {
           ...ArtworkPrice_artwork
-        }
-        me {
-          partnerOffersConnection(first: 1) {
-            edges {
-              node {
-                ...ArtworkPrice_partnerOffer
-              }
-            }
-          }
         }
       }
     `,
@@ -74,7 +61,6 @@ describe("ArtworkPrice", () => {
             { internalID: "edition-set-two", saleMessage: "$2000" },
           ],
         }),
-        Me: () => ({ partnerOffersConnection: { edges: [] } }),
       },
       { initialData: { selectedEditionId: "edition-set-one" } }
     )
@@ -85,7 +71,6 @@ describe("ArtworkPrice", () => {
   it("should render the sale message", () => {
     renderWithRelay({
       Artwork: () => ({ isInAuction: false, saleMessage: "$1000" }),
-      Me: () => ({ partnerOffersConnection: { edges: [] } }),
     })
 
     expect(screen.getByText("$1000")).toBeOnTheScreen()
@@ -96,19 +81,12 @@ describe("ArtworkPrice", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnablePartnerOfferOnArtworkScreen: true })
     })
 
-    it("should NOT render if there is not partner offers", () => {
+    it("should NOT render if there is no primaryLabel", () => {
       renderWithRelay({
-        Artwork: () => ({ isInAuction: false }),
-        Me: () => ({ partnerOffersConnection: { edges: [] } }),
-      })
-
-      expect(screen.queryByText("Limited-Time Offer")).not.toBeOnTheScreen()
-    })
-
-    it("should NOT render if the partner offer is not available", () => {
-      renderWithRelay({
-        Artwork: () => ({ isInAuction: false }),
-        Me: () => ({ partnerOffersConnection: { edges: [{ node: unavailablePartnerOffer }] } }),
+        Artwork: () => ({
+          isInAuction: false,
+          collectorSignals: { primaryLabel: null },
+        }),
       })
 
       expect(screen.queryByText("Limited-Time Offer")).not.toBeOnTheScreen()
@@ -117,8 +95,12 @@ describe("ArtworkPrice", () => {
     describe("when a Partner Offer is available", () => {
       it("should render the partner offer details", () => {
         renderWithRelay({
-          Artwork: () => ({ isInAuction: false, isPriceHidden: false, saleMessage: "US$500" }),
-          Me: () => ({ partnerOffersConnection: { edges: [{ node: testPartnerOffer }] } }),
+          Artwork: () => ({
+            isInAuction: false,
+            isPriceHidden: false,
+            saleMessage: "US$500",
+            collectorSignals: { partnerOffer: testPartnerOffer, primaryLabel: "PARTNER_OFFER" },
+          }),
         })
 
         expect(screen.getByText("Limited-Time Offer")).toBeOnTheScreen()
@@ -128,8 +110,11 @@ describe("ArtworkPrice", () => {
 
       it("should render 'Not publicly listed' if the artwork price is hidden", () => {
         renderWithRelay({
-          Artwork: () => ({ isInAuction: false, isPriceHidden: true }),
-          Me: () => ({ partnerOffersConnection: { edges: [{ node: testPartnerOffer }] } }),
+          Artwork: () => ({
+            isInAuction: false,
+            isPriceHidden: true,
+            collectorSignals: { partnerOffer: testPartnerOffer, primaryLabel: "PARTNER_OFFER" },
+          }),
         })
 
         expect(screen.getByText("(List Price: Not publicly listed)")).toBeOnTheScreen()
@@ -145,9 +130,4 @@ const testPartnerOffer = {
   priceWithDiscount: {
     display: "$350",
   },
-}
-
-const unavailablePartnerOffer = {
-  ...testPartnerOffer,
-  isAvailable: false,
 }
