@@ -1,4 +1,4 @@
-import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
 import { MedianSalePriceAtAuctionQuery } from "__generated__/MedianSalePriceAtAuctionQuery.graphql"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { useLazyLoadQuery } from "react-relay"
@@ -29,7 +29,7 @@ describe("SelectArtist", () => {
       mockEnvironment.mock.resolveMostRecentOperation({ data: mockResult })
 
       // Check initial artist is selected
-      await waitFor(() => expect(screen.getByText("Andy Warhol")).toBeTruthy())
+      await screen.findByText("Andy Warhol")
 
       fireEvent.press(screen.getByTestId("change-artist-touchable"))
 
@@ -49,10 +49,8 @@ describe("SelectArtist", () => {
       })
 
       // Modal is hidden and the artist is updated
-      await waitFor(() =>
-        expect(screen.getByTestId("select-artist-modal").props.visible).toBeFalse()
-      )
-      expect(screen.getByTestId("select-artist-modal").props.visible).toBeFalse()
+      await waitForElementToBeRemoved(() => screen.queryByTestId("select-artist-modal"))
+
       expect(screen.getByText("Banksy")).toBeTruthy()
     })
   })
@@ -63,7 +61,7 @@ describe("SelectArtist", () => {
 
       mockEnvironment.mock.resolveMostRecentOperation({ data: mockResult })
 
-      await waitFor(() => expect(screen.getByTestId("change-artist-touchable")).toBeTruthy())
+      await screen.findByTestId("change-artist-touchable")
       fireEvent.press(screen.getByTestId("change-artist-touchable"))
 
       // Modal is visible and the section list is populated
@@ -93,12 +91,9 @@ describe("SelectArtist", () => {
           ...insights,
         },
       })
-      await waitFor(() =>
-        expect(screen.getByTestId("select-artist-modal").props.visible).toBeFalse()
-      )
+      await waitForElementToBeRemoved(() => screen.queryByTestId("select-artist-modal"))
 
       // Modal is hidden and the artist is updated
-      expect(screen.getByTestId("select-artist-modal").props.visible).toBeFalse()
       expect(screen.getByText("Amoako Boafo")).toBeTruthy()
     })
 
@@ -107,7 +102,7 @@ describe("SelectArtist", () => {
 
       mockEnvironment.mock.resolveMostRecentOperation({ data: mockResult })
 
-      await waitFor(() => expect(screen.getByTestId("change-artist-touchable")).toBeTruthy())
+      await screen.findByTestId("change-artist-touchable")
       fireEvent.press(screen.getByTestId("change-artist-touchable"))
 
       // Modal is visible and the section list is populated

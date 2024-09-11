@@ -62,28 +62,30 @@ describe("RequestConditionReport", () => {
 
   describe("component", () => {
     it("renders correctly", () => {
-      const { queryByText, getByLabelText } = renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(env, {
         Me: () => me,
         Artwork: () => artwork,
       })
 
-      expect(queryByText("Request a Report")).toBeTruthy()
-      expect(getByLabelText("Condition Report Requested Modal")).toHaveProp("visible", false)
-      expect(getByLabelText("Condition Report Requested Error Modal")).toHaveProp("visible", false)
+      expect(screen.getByText("Request a Report")).toBeTruthy()
+      expect(screen.queryByLabelText("Condition Report Requested Modal")).not.toBeOnTheScreen()
+      expect(
+        screen.queryByLabelText("Condition Report Requested Error Modal")
+      ).not.toBeOnTheScreen()
     })
 
     it("shows an error modal on failure", async () => {
-      const { getByText, queryByText, getByLabelText } = renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(env, {
         Me: () => me,
         Artwork: () => artwork,
       })
 
-      expect(queryByText("Request a Report")).toBeTruthy()
-      fireEvent.press(getByText("Request a Report"))
+      expect(screen.getByText("Request a Report")).toBeTruthy()
+      fireEvent.press(screen.getByText("Request a Report"))
 
       // successfully tracks the press of the button
       expect(mockPostEventToProviders).toHaveBeenCalledTimes(1)
@@ -103,11 +105,7 @@ describe("RequestConditionReport", () => {
 
       rejectMostRecentRelayOperation(env, new Error("Error saving artwork"))
 
-      expect(getByLabelText("Condition Report Requested Error Modal")).toHaveProp("visible", false)
-
-      await waitFor(() =>
-        expect(getByLabelText("Condition Report Requested Error Modal")).toHaveProp("visible", true)
-      )
+      await screen.findByLabelText("Condition Report Requested Error Modal")
 
       // tracks the fail event successfully
       expect(mockPostEventToProviders).toHaveBeenCalledTimes(2)
@@ -121,8 +119,11 @@ describe("RequestConditionReport", () => {
         ]
       `)
 
-      expect(getByLabelText("Condition Report Requested Error Modal")).toHaveProp("visible", true)
-      expect(getByLabelText("Condition Report Requested Modal")).toHaveProp("visible", false)
+      expect(screen.getByLabelText("Condition Report Requested Error Modal")).toHaveProp(
+        "visible",
+        true
+      )
+      expect(screen.queryByLabelText("Condition Report Requested Modal")).not.toBeOnTheScreen()
     })
 
     it("displays correct text", () => {
@@ -133,19 +134,19 @@ describe("RequestConditionReport", () => {
         Artwork: () => artwork,
       })
 
-      expect(screen.queryByText("Request a Report")).toBeTruthy()
+      expect(screen.getByText("Request a Report")).toBeTruthy()
     })
 
     it("shows a success modal on success", async () => {
-      const { getByText, queryByText, getByLabelText } = renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(env, {
         Me: () => me,
         Artwork: () => artwork,
       })
 
-      expect(queryByText("Request a Report")).toBeTruthy()
-      fireEvent.press(getByText("Request a Report"))
+      expect(screen.getByText("Request a Report")).toBeTruthy()
+      fireEvent.press(screen.getByText("Request a Report"))
 
       // successfully tracks the press of the button
       expect(mockPostEventToProviders).toHaveBeenCalledTimes(1)
@@ -167,11 +168,16 @@ describe("RequestConditionReport", () => {
         env.mock.resolveMostRecentOperation({ data: { requestConditionReport: { success: true } } })
       )
 
-      expect(getByLabelText("Condition Report Requested Error Modal")).toHaveProp("visible", false)
-      expect(getByLabelText("Condition Report Requested Modal")).toHaveProp("visible", false)
+      expect(
+        screen.queryByLabelText("Condition Report Requested Error Modal")
+      ).not.toBeOnTheScreen()
+      expect(screen.queryByLabelText("Condition Report Requested Modal")).not.toBeOnTheScreen()
 
       await waitFor(() =>
-        expect(getByLabelText("Condition Report Requested Modal")).toHaveProp("visible", true)
+        expect(screen.getByLabelText("Condition Report Requested Modal")).toHaveProp(
+          "visible",
+          true
+        )
       )
 
       // tracks the success event successfully
@@ -186,8 +192,10 @@ describe("RequestConditionReport", () => {
         ]
       `)
 
-      expect(getByLabelText("Condition Report Requested Modal")).toHaveProp("visible", true)
-      expect(getByLabelText("Condition Report Requested Error Modal")).toHaveProp("visible", false)
+      expect(screen.getByLabelText("Condition Report Requested Modal")).toHaveProp("visible", true)
+      expect(
+        screen.queryByLabelText("Condition Report Requested Error Modal")
+      ).not.toBeOnTheScreen()
     })
   })
 })
