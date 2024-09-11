@@ -277,6 +277,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableCollectionsWithoutHeaderImage",
   },
+  AREnableCuratorsPicksAndInterestSignals: {
+    description: "Enable Curators' Picks and Increased Interest signals",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableCuratorsPicksAndInterestSignals",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
