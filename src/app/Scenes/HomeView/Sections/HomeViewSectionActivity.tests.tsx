@@ -1,23 +1,24 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { ActivityHomeViewSection } from "app/Scenes/HomeView/Sections/ActivityHomeViewSection"
+import { HomeViewSectionActivityTestsQuery } from "__generated__/HomeViewSectionActivityTestsQuery.graphql"
+import { HomeViewSectionActivity } from "app/Scenes/HomeView/Sections/HomeViewSectionActivity"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-describe("ActivityHomeViewSection", () => {
-  const { renderWithRelay } = setupTestWrapper<ActivityHomeViewSectionTestsQuery>({
+describe("HomeViewSectionActivity", () => {
+  const { renderWithRelay } = setupTestWrapper<HomeViewSectionActivityTestsQuery>({
     Component: (props) => {
       if (!props.homeView.section) {
         return null
       }
-      return <ActivityHomeViewSection section={props.homeView.section} />
+      return <HomeViewSectionActivity section={props.homeView.section} />
     },
     query: graphql`
-      query ActivityHomeViewSectionTestsQuery @relay_test_operation {
+      query HomeViewSectionActivityTestsQuery @relay_test_operation {
         homeView {
           section(id: "home-view-section-latest-activity") {
-            ... on ActivityHomeViewSection {
-              ...ActivityHomeViewSection_section
+            ... on HomeViewSectionActivity {
+              ...HomeViewSectionActivity_section
             }
           }
         }
@@ -40,7 +41,7 @@ describe("ActivityHomeViewSection", () => {
 
   it("renders a list of activities", () => {
     renderWithRelay({
-      ActivityRailHomeViewSection: () => ({
+      HomeViewSectionActivity: () => ({
         internalID: "home-view-section-latest-activity",
         component: {
           title: "Latest Activity",

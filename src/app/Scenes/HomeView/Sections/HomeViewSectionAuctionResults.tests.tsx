@@ -1,25 +1,25 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { AuctionResultsHomeViewSectionTestsQuery } from "__generated__/AuctionResultsHomeViewSectionTestsQuery.graphql"
-import { AuctionResultsHomeViewSection } from "app/Scenes/HomeView/Sections/AuctionResultsHomeViewSection"
+import { HomeViewSectionAuctionResultsTestsQuery } from "__generated__/HomeViewSectionAuctionResultsTestsQuery.graphql"
+import { HomeViewSectionAuctionResults } from "app/Scenes/HomeView/Sections/HomeViewSectionAuctionResults"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-describe("AuctionResultsHomeViewSection", () => {
-  const { renderWithRelay } = setupTestWrapper<AuctionResultsHomeViewSectionTestsQuery>({
+describe("HomeViewSectionAuctionResults", () => {
+  const { renderWithRelay } = setupTestWrapper<HomeViewSectionAuctionResultsTestsQuery>({
     Component: (props) => {
       if (!props.homeView.section) {
         return null
       }
-      return <AuctionResultsHomeViewSection section={props.homeView.section} />
+      return <HomeViewSectionAuctionResults section={props.homeView.section} />
     },
     query: graphql`
-      query AuctionResultsHomeViewSectionTestsQuery @relay_test_operation {
+      query HomeViewSectionAuctionResultsTestsQuery @relay_test_operation {
         homeView {
           section(id: "home-view-section-latest-auction-results") {
-            ... on AuctionResultsHomeViewSection {
-              ...AuctionResultsHomeViewSection_section
+            ... on HomeViewSectionAuctionResults {
+              ...HomeViewSectionAuctionResults_section
             }
           }
         }
@@ -43,7 +43,7 @@ describe("AuctionResultsHomeViewSection", () => {
 
   it("renders a list of auction results", () => {
     renderWithRelay({
-      AuctionResultsRailHomeViewSection: () => ({
+      HomeViewSectionAuctionResults: () => ({
         internalID: "home-view-section-latest-auction-results",
         component: {
           title: "Latest Auction Results",
@@ -98,7 +98,7 @@ describe("AuctionResultsHomeViewSection", () => {
 
   it("navigates to ViewAll when the user taps the 'View All' button", () => {
     renderWithRelay({
-      AuctionResultsRailHomeViewSection: () => ({
+      HomeViewSectionAuctionResults: () => ({
         internalID: "home-view-section-latest-auction-results",
         component: {
           title: "Latest Auction Results",

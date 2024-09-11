@@ -1,22 +1,22 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { HeroUnitsRailHomeViewSectionTestsQuery } from "__generated__/HeroUnitsRailHomeViewSectionTestsQuery.graphql"
-import { HeroUnitsHomeViewSection } from "app/Scenes/HomeView/Sections/HeroUnitsHomeViewSection"
+import { HomeViewSectionHeroUnitsTestsQuery } from "__generated__/HomeViewSectionHeroUnitsTestsQuery.graphql"
+import { HomeViewSectionHeroUnits } from "app/Scenes/HomeView/Sections/HomeViewSectionHeroUnits"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-describe("HeroUnitsRailHomeViewSection", () => {
-  const { renderWithRelay } = setupTestWrapper<HeroUnitsRailHomeViewSectionTestsQuery>({
+describe("HomeViewSectionHeroUnits", () => {
+  const { renderWithRelay } = setupTestWrapper<HomeViewSectionHeroUnitsTestsQuery>({
     Component: (props) => {
-      return <HeroUnitsHomeViewSection section={props.homeView.section} />
+      return <HomeViewSectionHeroUnits section={props.homeView.section} />
     },
     query: graphql`
-      query HeroUnitsRailHomeViewSectionTestsQuery @relay_test_operation {
+      query HomeViewSectionHeroUnitsTestsQuery @relay_test_operation {
         homeView @required(action: NONE) {
           section(id: "home-view-section-hero-units") @required(action: NONE) {
-            ... on HeroUnitsHomeViewSection {
-              ...HeroUnitsHomeViewSection_section
+            ... on HomeViewSectionHeroUnits {
+              ...HomeViewSectionHeroUnits_section
             }
           }
         }
@@ -26,7 +26,7 @@ describe("HeroUnitsRailHomeViewSection", () => {
 
   it("renders the section properly", async () => {
     renderWithRelay({
-      HeroUnitsHomeViewSection: () => ({
+      HomeViewSectionHeroUnits: () => ({
         internalID: "home-view-section-hero-units",
         heroUnitsConnection: {
           edges: [
@@ -61,7 +61,7 @@ describe("HeroUnitsRailHomeViewSection", () => {
 
   it("navigates and tracks hero unit taps", () => {
     renderWithRelay({
-      HeroUnitsHomeViewSection: () => ({
+      HomeViewSectionHeroUnits: () => ({
         internalID: "home-view-section-hero-units",
         heroUnitsConnection: {
           edges: [

@@ -1,14 +1,14 @@
 import { Flex, Separator, Text, Touchable, useSpace } from "@artsy/palette-mobile"
-import { ArticlesCardsHomeViewSection_section$key } from "__generated__/ArticlesCardsHomeViewSection_section.graphql"
+import { HomeViewSectionArticlesCards_section$key } from "__generated__/HomeViewSectionArticlesCards_section.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { graphql, useFragment } from "react-relay"
 
-interface ArticlesCardsHomeViewSectionProps {
-  section: ArticlesCardsHomeViewSection_section$key
+interface HomeViewSectionArticlesCardsProps {
+  section: HomeViewSectionArticlesCards_section$key
 }
 
-export const ArticlesCardsHomeViewSection: React.FC<ArticlesCardsHomeViewSectionProps> = (
+export const HomeViewSectionArticlesCards: React.FC<HomeViewSectionArticlesCardsProps> = (
   props
 ) => {
   const { section } = props
@@ -62,7 +62,7 @@ const date = () =>
   })
 
 const fragment = graphql`
-  fragment ArticlesCardsHomeViewSection_section on ArticlesHomeViewSection {
+  fragment HomeViewSectionArticlesCards_section on HomeViewSectionArticles {
     component {
       title
       behaviors {

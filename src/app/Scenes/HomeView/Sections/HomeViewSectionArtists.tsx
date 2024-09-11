@@ -1,6 +1,6 @@
 import { ContextModule, OwnerType, tappedEntityGroup } from "@artsy/cohesion"
 import { Flex, Spacer, Spinner } from "@artsy/palette-mobile"
-import { ArtistsHomeViewSection_section$data } from "__generated__/ArtistsHomeViewSection_section.graphql"
+import { HomeViewSectionArtists_section$data } from "__generated__/HomeViewSectionArtists_section.graphql"
 import {
   IMAGE_MAX_HEIGHT as ARTIST_RAIL_IMAGE_MAX_HEIGHT,
   ArtistCardContainer,
@@ -14,13 +14,13 @@ import { ExtractNodeType } from "app/utils/relayHelpers"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
-interface ArtworksHomeViewSectionProps {
-  section: ArtistsHomeViewSection_section$data
+interface HomeViewSectionArtworksProps {
+  section: HomeViewSectionArtists_section$data
   relay: RelayPaginationProp
 }
 
-type Artist = ExtractNodeType<ArtistsHomeViewSection_section$data["artistsConnection"]>
-export const ArtistsHomeViewSection: React.FC<ArtworksHomeViewSectionProps> = ({
+type Artist = ExtractNodeType<HomeViewSectionArtists_section$data["artistsConnection"]>
+export const HomeViewSectionArtists: React.FC<HomeViewSectionArtworksProps> = ({
   section,
   relay,
 }) => {
@@ -106,11 +106,11 @@ export const ArtistsHomeViewSection: React.FC<ArtworksHomeViewSectionProps> = ({
   )
 }
 
-export const ArtistsHomeViewSectionPaginationContainer = createPaginationContainer(
-  ArtistsHomeViewSection,
+export const HomeViewSectionArtistsPaginationContainer = createPaginationContainer(
+  HomeViewSectionArtists,
   {
     section: graphql`
-      fragment ArtistsHomeViewSection_section on ArtistsHomeViewSection
+      fragment HomeViewSectionArtists_section on HomeViewSectionArtists
       @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         id
         internalID
@@ -123,7 +123,7 @@ export const ArtistsHomeViewSectionPaginationContainer = createPaginationContain
           }
         }
         artistsConnection(after: $cursor, first: $count)
-          @connection(key: "ArtistsHomeViewSection_artistsConnection") {
+          @connection(key: "HomeViewSectionArtists_artistsConnection") {
           totalCount
           edges {
             node {
@@ -155,10 +155,10 @@ export const ArtistsHomeViewSectionPaginationContainer = createPaginationContain
       }
     },
     query: graphql`
-      query ArtistsHomeViewSectionQuery($cursor: String, $count: Int!, $id: String!) {
+      query HomeViewSectionArtistsQuery($cursor: String, $count: Int!, $id: String!) {
         homeView {
           section(id: $id) {
-            ...ArtistsHomeViewSection_section @arguments(cursor: $cursor, count: $count)
+            ...HomeViewSectionArtists_section @arguments(cursor: $cursor, count: $count)
           }
         }
       }

@@ -1,14 +1,14 @@
 import { ContextModule } from "@artsy/cohesion"
-import { ArticlesHomeViewSection_section$key } from "__generated__/ArticlesHomeViewSection_section.graphql"
+import { HomeViewSectionArticles_section$key } from "__generated__/HomeViewSectionArticles_section.graphql"
 import { ArticlesRailFragmentContainer } from "app/Scenes/Home/Components/ArticlesRail"
 import { navigate } from "app/system/navigation/navigate"
 import { graphql, useFragment } from "react-relay"
 
-interface ArticlesHomeViewSectionProps {
-  section: ArticlesHomeViewSection_section$key
+interface HomeViewSectionArticlesProps {
+  section: HomeViewSectionArticles_section$key
 }
 
-export const ArticlesHomeViewSection: React.FC<ArticlesHomeViewSectionProps> = (props) => {
+export const HomeViewSectionArticles: React.FC<HomeViewSectionArticlesProps> = (props) => {
   const section = useFragment(sectionFragment, props.section)
 
   if (!section.articlesConnection) {
@@ -34,7 +34,7 @@ export const ArticlesHomeViewSection: React.FC<ArticlesHomeViewSectionProps> = (
 }
 
 const sectionFragment = graphql`
-  fragment ArticlesHomeViewSection_section on ArticlesHomeViewSection {
+  fragment HomeViewSectionArticles_section on HomeViewSectionArticles {
     internalID
     component {
       title

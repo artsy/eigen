@@ -77,62 +77,62 @@ const sectionsFragment = graphql`
         edges {
           node {
             __typename
-            ... on GenericHomeViewSection {
+            ... on HomeViewSectionGeneric {
               internalID
               component {
                 type
               }
-              ...GenericHomeViewSection_section
+              ...HomeViewSectionGeneric_section
             }
-            ... on ActivityHomeViewSection {
+            ... on HomeViewSectionActivity {
               internalID
-              ...ActivityHomeViewSection_section
+              ...HomeViewSectionActivity_section
             }
-            ... on ArticlesHomeViewSection {
+            ... on HomeViewSectionArticles {
               internalID
-              ...ArticlesHomeViewSection_section
-              ...ArticlesCardsHomeViewSection_section
+              ...HomeViewSectionArticles_section
+              ...HomeViewSectionArticlesCards_section
             }
-            ... on ArtworksHomeViewSection {
+            ... on HomeViewSectionArtworks {
               internalID
-              ...ArtworksHomeViewSection_section
-              ...FeaturedCollectionHomeViewSection_section
+              ...HomeViewSectionArtworks_section
+              ...HomeViewSectionFeaturedCollection_section
             }
-            ... on ArtistsHomeViewSection {
+            ... on HomeViewSectionArtists {
               internalID
-              ...ArtistsHomeViewSection_section
+              ...HomeViewSectionArtists_section
             }
-            ... on AuctionResultsHomeViewSection {
+            ... on HomeViewSectionAuctionResults {
               internalID
-              ...AuctionResultsHomeViewSection_section
+              ...HomeViewSectionAuctionResults_section
             }
-            ... on HeroUnitsHomeViewSection {
+            ... on HomeViewSectionHeroUnits {
               internalID
-              ...HeroUnitsHomeViewSection_section
+              ...HomeViewSectionHeroUnits_section
             }
-            ... on FairsHomeViewSection {
+            ... on HomeViewSectionFairs {
               internalID
-              ...FairsHomeViewSection_section
+              ...HomeViewSectionFairs_section
             }
-            ... on MarketingCollectionsHomeViewSection {
+            ... on HomeViewSectionMarketingCollections {
               internalID
-              ...MarketingCollectionsHomeViewSection_section
+              ...HomeViewSectionMarketingCollections_section
             }
-            ... on ShowsHomeViewSection {
+            ... on HomeViewSectionShows {
               internalID
-              ...ShowsHomeViewSection_section
+              ...HomeViewSectionShows_section
             }
-            ... on ViewingRoomsHomeViewSection {
+            ... on HomeViewSectionViewingRooms {
               internalID
-              ...ViewingRoomsHomeViewSection_section
+              ...HomeViewSectionViewingRooms_section
             }
-            ... on SalesHomeViewSection {
+            ... on HomeViewSectionSales {
               internalID
-              ...SalesHomeViewSection_section
+              ...HomeViewSectionSales_section
             }
-            ... on GalleriesHomeViewSection {
+            ... on HomeViewSectionGalleries {
               internalID
-              ...GalleriesHomeViewSection_section
+              ...HomeViewSectionGalleries_section
             }
           }
         }

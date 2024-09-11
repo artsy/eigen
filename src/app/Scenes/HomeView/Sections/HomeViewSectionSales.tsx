@@ -1,11 +1,11 @@
 import { ContextModule } from "@artsy/cohesion"
 import { Flex, useScreenDimensions } from "@artsy/palette-mobile"
-import { SalesHomeViewSection_section$key } from "__generated__/SalesHomeViewSection_section.graphql"
+import { HomeViewSectionSales_section$key } from "__generated__/HomeViewSectionSales_section.graphql"
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
-import { SalesItem } from "app/Scenes/HomeView/Sections/SalesItem"
+import { HomeViewSectionSalesItem } from "app/Scenes/HomeView/Sections/HomeViewSectionSalesItem"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useRef } from "react"
@@ -13,11 +13,11 @@ import { FlatList } from "react-native-gesture-handler"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
-interface SalesHomeViewSectionProps {
-  section: SalesHomeViewSection_section$key
+interface HomeViewSectionSalesProps {
+  section: HomeViewSectionSales_section$key
 }
 
-export const SalesRailHomeViewSection: React.FC<SalesHomeViewSectionProps> = ({ section }) => {
+export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({ section }) => {
   const tracking = useTracking()
 
   const listRef = useRef<FlatList<any>>()
@@ -55,7 +55,7 @@ export const SalesRailHomeViewSection: React.FC<SalesHomeViewSectionProps> = ({ 
         initialNumToRender={isTablet ? 10 : 5}
         renderItem={({ item, index }) => {
           return (
-            <SalesItem
+            <HomeViewSectionSalesItem
               sale={item}
               onPress={(sale) => {
                 tracking.trackEvent(
@@ -86,7 +86,7 @@ export const SalesRailHomeViewSection: React.FC<SalesHomeViewSectionProps> = ({ 
 }
 
 const fragment = graphql`
-  fragment SalesHomeViewSection_section on SalesHomeViewSection {
+  fragment HomeViewSectionSales_section on HomeViewSectionSales {
     internalID
     component {
       title
@@ -102,7 +102,7 @@ const fragment = graphql`
         node {
           href
           slug
-          ...SalesItem_sale
+          ...HomeViewSectionSalesItem_sale
         }
       }
     }

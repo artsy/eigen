@@ -1,22 +1,24 @@
-import { screen, waitForElementToBeRemoved } from "@testing-library/react-native"
-import { ViewingRoomsHomeViewSection } from "app/Scenes/HomeView/Sections/ViewingRoomsHomeViewSection"
+import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { HomeViewSectionViewingRoomsTestsQuery } from "__generated__/HomeViewSectionViewingRoomsTestsQuery.graphql"
+import { HomeViewSectionViewingRooms } from "app/Scenes/HomeView/Sections/HomeViewSectionViewingRooms"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-describe("ViewingRoomsHomeViewSection", () => {
-  const { renderWithRelay } = setupTestWrapper<ViewingRoomsHomeViewSectionTestsQuery>({
+describe("HomeViewSectionViewingRooms", () => {
+  const { renderWithRelay } = setupTestWrapper<HomeViewSectionViewingRoomsTestsQuery>({
     Component: (props) => {
       if (!props.homeView.section) {
         return null
       }
-      return <ViewingRoomsHomeViewSection section={props.homeView.section} />
+      return <HomeViewSectionViewingRooms section={props.homeView.section} />
     },
     query: graphql`
-      query ViewingRoomsHomeViewSectionTestsQuery @relay_test_operation {
+      query HomeViewSectionViewingRoomsTestsQuery @relay_test_operation {
         homeView {
           section(id: "home-view-section-viewing-rooms") {
-            ... on ViewingRoomsHomeViewSection {
-              ...ViewingRoomsHomeViewSection_section
+            ... on HomeViewSectionViewingRooms {
+              ...HomeViewSectionViewingRooms_section
             }
           }
         }
@@ -64,7 +66,7 @@ describe("ViewingRoomsHomeViewSection", () => {
 
   it("navigates and tracks individual viewing room taps", async () => {
     const { mockResolveLastOperation } = renderWithRelay({
-      ViewingRoomsRailHomeViewSection: () => ({
+      HomeViewSectionViewingRooms: () => ({
         internalID: "home-view-section-viewing-rooms",
         component: {
           title: "Viewing Rooms",

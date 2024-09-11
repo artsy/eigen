@@ -1,26 +1,25 @@
 import { ContextModule } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
 import {
-  MarketingCollectionsHomeViewSection_section$data,
-  MarketingCollectionsHomeViewSection_section$key,
-} from "__generated__/MarketingCollectionsHomeViewSection_section.graphql"
+  HomeViewSectionMarketingCollections_section$data,
+  HomeViewSectionMarketingCollections_section$key,
+} from "__generated__/HomeViewSectionMarketingCollections_section.graphql"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import LegacyHomeAnalytics from "app/Scenes/Home/homeAnalytics"
-import { MarketingCollectionItem } from "app/Scenes/HomeView/Sections/MarketingCollectionItem"
-import { MarketingCollectionRailItem } from "app/Scenes/HomeView/Sections/MarketingCollectionRailItem"
+import { HomeViewSectionMarketingCollectionsItem } from "app/Scenes/HomeView/Sections/HomeViewSectionMarketingCollectionsItem"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
-interface MarketingCollectionsHomeViewSectionProps {
-  section: MarketingCollectionsHomeViewSection_section$key
+interface HomeViewSectionMarketingCollectionsProps {
+  section: HomeViewSectionMarketingCollections_section$key
 }
 
-export const MarketingCollectionsHomeViewSection: React.FC<
-  MarketingCollectionsHomeViewSectionProps
+export const HomeViewSectionMarketingCollections: React.FC<
+  HomeViewSectionMarketingCollectionsProps
 > = ({ section }) => {
   const tracking = useTracking()
 
@@ -50,14 +49,14 @@ export const MarketingCollectionsHomeViewSection: React.FC<
 
       <CardRailFlatList<
         ExtractNodeType<
-          MarketingCollectionsHomeViewSection_section$data["marketingCollectionsConnection"]
+          HomeViewSectionMarketingCollections_section$data["marketingCollectionsConnection"]
         >
       >
         data={marketingCollections}
         initialNumToRender={3}
         renderItem={({ item, index }) => {
           return (
-            <MarketingCollectionRailItem
+            <HomeViewSectionMarketingCollectionsItem
               key={item.internalID}
               marketingCollection={item}
               onPress={(marketCollection) => {
@@ -79,7 +78,7 @@ export const MarketingCollectionsHomeViewSection: React.FC<
 }
 
 const fragment = graphql`
-  fragment MarketingCollectionsHomeViewSection_section on MarketingCollectionsHomeViewSection {
+  fragment HomeViewSectionMarketingCollections_section on HomeViewSectionMarketingCollections {
     internalID
     component {
       title
@@ -94,7 +93,7 @@ const fragment = graphql`
       edges {
         node {
           internalID
-          ...MarketingCollectionItem_marketingCollection
+          ...HomeViewSectionMarketingCollectionsItem_marketingCollection
         }
       }
     }

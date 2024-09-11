@@ -1,14 +1,14 @@
 import { ContextModule } from "@artsy/cohesion"
-import { ShowsHomeViewSection_section$key } from "__generated__/ShowsHomeViewSection_section.graphql"
+import { HomeViewSectionShows_section$key } from "__generated__/HomeViewSectionShows_section.graphql"
 import { ShowsRailContainer } from "app/Scenes/Home/Components/ShowsRail"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { graphql, useFragment } from "react-relay"
 
-interface ShowsHomeViewSectionProps {
-  section: ShowsHomeViewSection_section$key
+interface HomeViewSectionShowsProps {
+  section: HomeViewSectionShows_section$key
 }
 
-export const ShowsHomeViewSection: React.FC<ShowsHomeViewSectionProps> = ({ section }) => {
+export const HomeViewSectionShows: React.FC<HomeViewSectionShowsProps> = ({ section }) => {
   const enableShowsForYouLocation = useFeatureFlag("AREnableShowsForYouLocation")
   const data = useFragment(fragment, section)
   const component = data.component
@@ -23,7 +23,7 @@ export const ShowsHomeViewSection: React.FC<ShowsHomeViewSectionProps> = ({ sect
 }
 
 const fragment = graphql`
-  fragment ShowsHomeViewSection_section on ShowsHomeViewSection {
+  fragment HomeViewSectionShows_section on HomeViewSectionShows {
     internalID
     component {
       title

@@ -1,6 +1,6 @@
 import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
-import { ShowsHomeViewSectionTestsQuery } from "__generated__/ShowsHomeViewSectionTestsQuery.graphql"
-import { ShowsHomeViewSection } from "app/Scenes/HomeView/Sections/ShowsHomeViewSection"
+import { HomeViewSectionShowsTestsQuery } from "__generated__/HomeViewSectionShowsTestsQuery.graphql"
+import { HomeViewSectionShows } from "app/Scenes/HomeView/Sections/HomeViewSectionShows"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -13,20 +13,20 @@ jest.mock("@react-native-community/geolocation", () => ({
   }),
 }))
 
-describe("ShowsHomeViewSection", () => {
-  const { renderWithRelay } = setupTestWrapper<ShowsHomeViewSectionTestsQuery>({
+describe("HomeViewSectionShows", () => {
+  const { renderWithRelay } = setupTestWrapper<HomeViewSectionShowsTestsQuery>({
     Component: (props) => {
       if (!props.homeView.section) {
         return null
       }
-      return <ShowsHomeViewSection section={props.homeView.section} />
+      return <HomeViewSectionShows section={props.homeView.section} />
     },
     query: graphql`
-      query ShowsHomeViewSectionTestsQuery @relay_test_operation {
+      query HomeViewSectionShowsTestsQuery @relay_test_operation {
         homeView {
           section(id: "home-view-section-shows") {
-            ... on ShowsHomeViewSection {
-              ...ShowsHomeViewSection_section
+            ... on HomeViewSectionShows {
+              ...HomeViewSectionShows_section
             }
           }
         }
@@ -67,7 +67,7 @@ describe("ShowsHomeViewSection", () => {
 
   it("tracks shows taps properly", async () => {
     const { mockResolveLastOperation } = renderWithRelay({
-      ShowsRailHomeViewSection: () => ({
+      HomeViewSectionShows: () => ({
         internalID: "home-view-section-shows-for-you",
         component: {
           title: "Shows for You",

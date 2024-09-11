@@ -15,9 +15,7 @@ interface HomeViewSectionArtworksProps {
   section: HomeViewSectionArtworks_section$key
 }
 
-export const ArtworksRailHomeViewSection: React.FC<HomeViewSectionArtworksProps> = ({
-  section,
-}) => {
+export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = ({ section }) => {
   const tracking = useTracking()
 
   const data = useFragment(fragment, section)
@@ -84,7 +82,7 @@ export const ArtworksRailHomeViewSection: React.FC<HomeViewSectionArtworksProps>
 }
 
 const fragment = graphql`
-  fragment ArtworksRailHomeViewSection_section on HomeViewSectionArtworks {
+  fragment HomeViewSectionArtworks_section on HomeViewSectionArtworks {
     __typename
     internalID
     component {

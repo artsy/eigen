@@ -1,24 +1,24 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { ArticlesHomeViewSectionTestsQuery } from "__generated__/ArticlesHomeViewSectionTestsQuery.graphql"
-import { ArticlesHomeViewSection } from "app/Scenes/HomeView/Sections/ArticlesHomeViewSection"
+import { HomeViewSectionArticlesTestsQuery } from "__generated__/HomeViewSectionArticlesTestsQuery.graphql"
+import { HomeViewSectionArticles } from "app/Scenes/HomeView/Sections/HomeViewSectionArticles"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-describe("ArticlesHomeViewSection", () => {
-  const { renderWithRelay } = setupTestWrapper<ArticlesHomeViewSectionTestsQuery>({
+describe("HomeViewSectionArticles", () => {
+  const { renderWithRelay } = setupTestWrapper<HomeViewSectionArticlesTestsQuery>({
     Component: (props) => {
       if (!props.homeView.section) {
         return null
       }
-      return <ArticlesHomeViewSection section={props.homeView.section} />
+      return <HomeViewSectionArticles section={props.homeView.section} />
     },
     query: graphql`
-      query ArticlesHomeViewSectionTestsQuery @relay_test_operation {
+      query HomeViewSectionArticlesTestsQuery @relay_test_operation {
         homeView {
           section(id: "home-view-section-articles-rail") {
-            ... on ArticlesHomeViewSection {
-              ...ArticlesHomeViewSection_section
+            ... on HomeViewSectionArticles {
+              ...HomeViewSectionArticles_section
             }
           }
         }
@@ -28,7 +28,7 @@ describe("ArticlesHomeViewSection", () => {
 
   it("renders a list of articles", () => {
     renderWithRelay({
-      ArticlesRailHomeViewSection: () => ({
+      HomeViewSectionArticles: () => ({
         internalID: "home-view-section-latest-articles",
         component: {
           title: "Latest Articles",

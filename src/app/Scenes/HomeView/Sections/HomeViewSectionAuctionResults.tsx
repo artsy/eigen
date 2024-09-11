@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType, TappedEntityGroup } from "@artsy/cohesion"
 import { Flex, useScreenDimensions } from "@artsy/palette-mobile"
-import { AuctionResultsHomeViewSection_section$key } from "__generated__/AuctionResultsHomeViewSection_section.graphql"
+import { HomeViewSectionAuctionResults_section$key } from "__generated__/HomeViewSectionAuctionResults_section.graphql"
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
@@ -9,11 +9,11 @@ import { extractNodes } from "app/utils/extractNodes"
 import { FlatList } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
-interface AuctionResultsHomeViewSectionProps {
-  section: AuctionResultsHomeViewSection_section$key
+interface HomeViewSectionAuctionResultsProps {
+  section: HomeViewSectionAuctionResults_section$key
 }
 
-export const AuctionResultsHomeViewSection: React.FC<AuctionResultsHomeViewSectionProps> = (
+export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResultsProps> = (
   props
 ) => {
   const section = useFragment(sectionFragment, props.section)
@@ -71,7 +71,7 @@ export const AuctionResultsHomeViewSection: React.FC<AuctionResultsHomeViewSecti
 }
 
 const sectionFragment = graphql`
-  fragment AuctionResultsHomeViewSection_section on AuctionResultsHomeViewSection {
+  fragment HomeViewSectionAuctionResults_section on HomeViewSectionAuctionResults {
     internalID
     component {
       title

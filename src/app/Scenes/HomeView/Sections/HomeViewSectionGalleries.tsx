@@ -1,6 +1,6 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
 import { Button, Flex, Text, Touchable, useScreenDimensions } from "@artsy/palette-mobile"
-import { GalleriesHomeViewSection_section$key } from "__generated__/GalleriesHomeViewSection_section.graphql"
+import { HomeViewSectionGalleries_section$key } from "__generated__/HomeViewSectionGalleries_section.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { isTablet } from "react-native-device-info"
 import FastImage from "react-native-fast-image"
@@ -8,14 +8,14 @@ import LinearGradient from "react-native-linear-gradient"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
-interface GalleriesHomeViewSectionProps {
-  section: GalleriesHomeViewSection_section$key
+interface HomeViewSectionGalleriesProps {
+  section: HomeViewSectionGalleries_section$key
 }
-export const GalleriesHomeViewSection: React.FC<GalleriesHomeViewSectionProps> = (props) => {
+export const HomeViewSectionGalleries: React.FC<HomeViewSectionGalleriesProps> = (props) => {
   const tracking = useTracking()
 
   const { width, height } = useScreenDimensions()
-  const section = useFragment(GalleriesHomeViewSectionFragment, props.section)
+  const section = useFragment(HomeViewSectionGalleriesFragment, props.section)
 
   if (!section?.component) {
     return null
@@ -90,8 +90,8 @@ export const GalleriesHomeViewSection: React.FC<GalleriesHomeViewSectionProps> =
   )
 }
 
-const GalleriesHomeViewSectionFragment = graphql`
-  fragment GalleriesHomeViewSection_section on GalleriesHomeViewSection {
+const HomeViewSectionGalleriesFragment = graphql`
+  fragment HomeViewSectionGalleries_section on HomeViewSectionGalleries {
     internalID
     component {
       title

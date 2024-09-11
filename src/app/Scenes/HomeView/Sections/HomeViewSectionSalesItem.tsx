@@ -1,8 +1,9 @@
 import { Text } from "@artsy/palette-mobile"
 import {
-  SalesRailItem_sale$data,
-  SalesRailItem_sale$key,
-} from "__generated__/SalesRailItem_sale.graphql"
+  HomeViewSectionSalesItem_sale$data,
+  HomeViewSectionSalesItem_sale$key,
+} from "__generated__/HomeViewSectionSalesItem_sale.graphql"
+
 import {
   CardRailCard,
   CardRailMetadataContainer as MetadataContainer,
@@ -16,12 +17,15 @@ import { FC } from "react"
 import { View } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
-interface SalesItemProps {
-  sale: SalesRailItem_sale$key
-  onPress?: (sale: SalesRailItem_sale$data) => void
+interface HomeViewSectionSalesItemProps {
+  sale: HomeViewSectionSalesItem_sale$key
+  onPress?: (sale: HomeViewSectionSalesItem_sale$data) => void
 }
 
-export const SalesItem: FC<SalesItemProps> = ({ sale: saleProp, onPress }) => {
+export const HomeViewSectionSalesItem: FC<HomeViewSectionSalesItemProps> = ({
+  sale: saleProp,
+  onPress,
+}) => {
   const isArtworksConnectionEnabled = useFeatureFlag("AREnableArtworksConnectionForAuction")
   const sale = useFragment(fragment, saleProp)
 
@@ -72,7 +76,7 @@ export const SalesItem: FC<SalesItemProps> = ({ sale: saleProp, onPress }) => {
 }
 
 const fragment = graphql`
-  fragment SalesItem_sale on Sale {
+  fragment HomeViewSectionSalesItem_sale on Sale {
     href
     name
     liveURLIfOpen
