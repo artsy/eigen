@@ -6,12 +6,14 @@ import {
   TransitionPresets,
 } from "@react-navigation/stack"
 import { FPSCounter } from "app/Components/FPSCounter"
+import { OnboardingHome } from "app/Scenes/Onboarding/OnboardingHome"
 import { OAuthProvider } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { DevMenu as DevMenuDefault } from "app/system/devTools/DevMenu/DevMenu"
 import { ArtsyKeyboardAvoidingViewContext } from "app/utils/ArtsyKeyboardAvoidingView"
 import { NetworkAwareProvider } from "app/utils/NetworkAwareProvider"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Platform, View } from "react-native"
 import { ForgotPassword } from "./ForgotPassword"
 import {
@@ -26,6 +28,7 @@ import { OnboardingWebView, OnboardingWebViewRoute } from "./OnboardingWebView"
 import { OnboardingWelcome } from "./OnboardingWelcome"
 
 export type OnboardingNavigationStack = {
+  OnboardingHome: undefined
   OnboardingWelcome: undefined
   OnboardingLogin: { withFadeAnimation: boolean } | undefined
   OnboardingLoginWithEmail: { withFadeAnimation: boolean; email: string } | undefined
@@ -68,53 +71,62 @@ export const __unsafe__onboardingNavigationRef: React.MutableRefObject<Navigatio
 export const OnboardingWelcomeScreens = () => {
   const userIsDev = GlobalStore.useAppState((s) => s.artsyPrefs.userIsDev.value)
 
+  const signupLoginFusionEnabled = useFeatureFlag("AREnableSignupLoginFusion")
+
   return (
     <NavigationContainer independent ref={__unsafe__onboardingNavigationRef}>
       <StackNavigator.Navigator
-        initialRouteName="OnboardingWelcome"
+        initialRouteName={signupLoginFusionEnabled ? "OnboardingHome" : "OnboardingWelcome"}
         screenOptions={{
           headerShown: false,
           headerMode: "screen",
         }}
       >
-        <StackNavigator.Group screenOptions={{ ...TransitionPresets.SlideFromRightIOS }}>
-          <StackNavigator.Screen name="OnboardingWelcome" component={OnboardingWelcome} />
-          <StackNavigator.Screen
-            name="OnboardingLogin"
-            component={OnboardingLogin}
-            options={({ route: { params } }) => ({
-              cardStyleInterpolator: params?.withFadeAnimation
-                ? CardStyleInterpolators.forFadeFromBottomAndroid
-                : CardStyleInterpolators.forHorizontalIOS,
-            })}
-          />
-          <StackNavigator.Screen
-            name="OnboardingLoginWithEmail"
-            component={OnboardingLoginWithEmail}
-            options={({ route: { params } }) => ({
-              cardStyleInterpolator: params?.withFadeAnimation
-                ? CardStyleInterpolators.forFadeFromBottomAndroid
-                : CardStyleInterpolators.forHorizontalIOS,
-            })}
-          />
-          <StackNavigator.Screen name="OnboardingLoginWithOTP" component={OnboardingLoginWithOTP} />
-          <StackNavigator.Screen
-            name="OnboardingCreateAccount"
-            component={OnboardingCreateAccount}
-            options={({ route: { params } }) => ({
-              cardStyleInterpolator: params?.withFadeAnimation
-                ? CardStyleInterpolators.forFadeFromBottomAndroid
-                : CardStyleInterpolators.forHorizontalIOS,
-            })}
-          />
-          <StackNavigator.Screen
-            name="OnboardingCreateAccountWithEmail"
-            component={OnboardingCreateAccountWithEmail}
-          />
-          <StackNavigator.Screen name="OnboardingSocialLink" component={OnboardingSocialLink} />
-          <StackNavigator.Screen name="ForgotPassword" component={ForgotPassword} />
-          <StackNavigator.Screen name="OnboardingWebView" component={OnboardingWebView} />
-        </StackNavigator.Group>
+        {signupLoginFusionEnabled ? (
+          <StackNavigator.Screen name="OnboardingHome" component={OnboardingHome} />
+        ) : (
+          <StackNavigator.Group screenOptions={{ ...TransitionPresets.SlideFromRightIOS }}>
+            <StackNavigator.Screen name="OnboardingWelcome" component={OnboardingWelcome} />
+            <StackNavigator.Screen
+              name="OnboardingLogin"
+              component={OnboardingLogin}
+              options={({ route: { params } }) => ({
+                cardStyleInterpolator: params?.withFadeAnimation
+                  ? CardStyleInterpolators.forFadeFromBottomAndroid
+                  : CardStyleInterpolators.forHorizontalIOS,
+              })}
+            />
+            <StackNavigator.Screen
+              name="OnboardingLoginWithEmail"
+              component={OnboardingLoginWithEmail}
+              options={({ route: { params } }) => ({
+                cardStyleInterpolator: params?.withFadeAnimation
+                  ? CardStyleInterpolators.forFadeFromBottomAndroid
+                  : CardStyleInterpolators.forHorizontalIOS,
+              })}
+            />
+            <StackNavigator.Screen
+              name="OnboardingLoginWithOTP"
+              component={OnboardingLoginWithOTP}
+            />
+            <StackNavigator.Screen
+              name="OnboardingCreateAccount"
+              component={OnboardingCreateAccount}
+              options={({ route: { params } }) => ({
+                cardStyleInterpolator: params?.withFadeAnimation
+                  ? CardStyleInterpolators.forFadeFromBottomAndroid
+                  : CardStyleInterpolators.forHorizontalIOS,
+              })}
+            />
+            <StackNavigator.Screen
+              name="OnboardingCreateAccountWithEmail"
+              component={OnboardingCreateAccountWithEmail}
+            />
+            <StackNavigator.Screen name="OnboardingSocialLink" component={OnboardingSocialLink} />
+            <StackNavigator.Screen name="ForgotPassword" component={ForgotPassword} />
+            <StackNavigator.Screen name="OnboardingWebView" component={OnboardingWebView} />
+          </StackNavigator.Group>
+        )}
 
         <StackNavigator.Group>
           {!!userIsDev && (
