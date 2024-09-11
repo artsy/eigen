@@ -50,6 +50,16 @@ When we upgrade our deps to a version of react-native that includes removal of d
 
 When updating to rn-0.69.10 we had to patch this due to deprecation of PropTypes. For this reason we also installed `deprecated-react-native-prop-types` to avoid errors and we patched the `react-native` package to use the deprecated PropTypes coming from the `deprecated-react-native-prop-types` package.
 
+### react-native jest/setup.js patch
+
+#### When can we remove this:
+
+When we upgrade react-native to 75 according to this https://github.com/facebook/react-native/issues/41907#issuecomment-2293385777 & https://github.com/facebook/react-native/pull/43497/files#diff-feb65a029adc6c226f7d3bfdc5238d2c8f31c4da1fea238705b2012f35178af6
+
+#### Explanation/Context:
+
+When updating to rn-0.73.9 we had to patch this due to some changes on the setup jest files making our tests fail due to a missconfiguration on the image jest setup.
+
 ## deprecated-react-native-prop-types dependency
 
 #### When can we remove this:
