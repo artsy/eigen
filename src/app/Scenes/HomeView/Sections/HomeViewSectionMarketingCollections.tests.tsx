@@ -43,7 +43,7 @@ describe("HomeViewSectionMarketingCollections", () => {
         title: "Marketing Collections",
         behaviors: {
           viewAll: {
-            href: "/marketing-collections-view-all-href",
+            href: "/collections",
           },
         },
       }),
@@ -69,18 +69,18 @@ describe("HomeViewSectionMarketingCollections", () => {
 
     fireEvent.press(screen.getByText("Marketing Collections"))
 
-    expect(navigate).toHaveBeenCalledWith("/marketing-collections-view-all-href")
+    expect(navigate).toHaveBeenCalledWith("/collections")
   })
 
   it("navigates and tracks clicks on an individual collection", () => {
     renderWithRelay({
       HomeViewSectionMarketingCollections: () => ({
-        internalID: "home-view-section-latest-auction-results",
+        internalID: "home-view-section-marketing-collections",
         component: {
           title: "Marketing Collections",
           behaviors: {
             viewAll: {
-              href: "/marketing-collections-view-all-href",
+              href: "/collections",
             },
           },
         },
@@ -112,11 +112,9 @@ describe("HomeViewSectionMarketingCollections", () => {
       [
         {
           "action": "tappedCollectionGroup",
-          "context_module": "home-view-section-latest-auction-results",
-          "context_screen_owner_id": undefined,
-          "context_screen_owner_slug": undefined,
+          "context_module": "marketingCollectionsRail",
           "context_screen_owner_type": "home",
-          "destination_screen_owner_id": undefined,
+          "destination_screen_owner_id": "marketing-collection-id-2",
           "destination_screen_owner_slug": "marketing-collection-slug-2",
           "destination_screen_owner_type": "collection",
           "horizontal_slide_position": 1,
