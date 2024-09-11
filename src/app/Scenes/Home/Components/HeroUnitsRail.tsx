@@ -11,7 +11,7 @@ import { useRef, useState } from "react"
 import { FlatList, PixelRatio, ViewabilityConfig } from "react-native"
 import { useFragment, graphql } from "react-relay"
 
-export type HeroUnit = NonNullable<
+type HeroUnit = NonNullable<
   NonNullable<NonNullable<HeroUnitsRail_heroUnitsConnection$data["edges"]>[number]>["node"]
 >
 interface HeroUnitProps {
