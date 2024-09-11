@@ -226,7 +226,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     !!isRecentlySoldArtwork && (size === "large" || size === "extraLarge")
 
   const displayLimitedTimeOfferSignal =
-    AREnablePartnerOfferSignals && collectorSignals?.partnerOffer?.isAvailable && !sale?.isAuction
+    AREnablePartnerOfferSignals && collectorSignals?.primaryLabel === "PARTNER_OFFER"
 
   const displayAuctionSignal = AREnableAuctionImprovementsSignals && sale?.isAuction
 
@@ -652,6 +652,7 @@ const artworkFragment = graphql`
     title
     realizedPrice
     collectorSignals {
+      primaryLabel
       partnerOffer {
         isAvailable
         endAt

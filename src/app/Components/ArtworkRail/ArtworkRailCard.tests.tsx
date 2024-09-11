@@ -183,7 +183,7 @@ describe("ArtworkRailCard", () => {
             ...artwork,
             sale: { ...artwork.sale, isAuction: false },
             realizedPrice: null,
-            collectorSignals,
+            collectorSignals: { ...collectorSignals, primaryLabel: "PARTNER_OFFER" },
           }),
         })
 
@@ -194,7 +194,11 @@ describe("ArtworkRailCard", () => {
       it("doesn't show the limited-time offer signal for auction artworks", () => {
         renderWithRelay({
           // artwork is by default an auction
-          Artwork: () => ({ ...artwork, realizedPrice: null, collectorSignals }),
+          Artwork: () => ({
+            ...artwork,
+            realizedPrice: null,
+            collectorSignals: { ...collectorSignals, primaryLabel: null },
+          }),
         })
 
         expect(screen.queryByText("Limited-Time Offer")).not.toBeOnTheScreen()
