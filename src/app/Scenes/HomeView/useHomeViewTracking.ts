@@ -5,6 +5,7 @@ import {
   TappedArticleGroup,
   TappedArtistGroup,
   TappedArtworkGroup,
+  TappedAuctionResultGroup,
   TappedViewingRoomGroup,
 } from "@artsy/cohesion"
 import { getArtworkSignalTrackingFields } from "app/utils/getArtworkSignalTrackingFields"
@@ -113,6 +114,32 @@ export const useHomeViewTracking = () => {
           artworkCollectorSignals,
           AREnableAuctionImprovementsSignals
         ),
+      }
+
+      trackEvent(payload)
+    },
+
+    tappedAuctionResultGroup: (
+      auctionResultID: string,
+      auctionResultSlug: string | null | undefined,
+      sectionID: string,
+      index: number
+    ) => {
+      let payload: TappedAuctionResultGroup = {
+        action: ActionType.tappedAuctionResultGroup,
+        context_module: formatSectionIDAsContextModule(sectionID),
+        context_screen_owner_type: OwnerType.home,
+        destination_screen_owner_id: auctionResultID,
+        destination_screen_owner_type: OwnerType.auctionResult,
+        horizontal_slide_position: index,
+        type: "thumbnail",
+      }
+
+      if (auctionResultSlug) {
+        payload = {
+          ...payload,
+          destination_screen_owner_slug: auctionResultSlug,
+        }
       }
 
       trackEvent(payload)
