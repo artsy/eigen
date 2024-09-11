@@ -31,7 +31,7 @@ const ArtworkShowingNowCollectorSignal: React.FC<ArtworkShowingNowCollectorSigna
         <FairIcon mr={0.5} fill="black60" height={25} width={25} />
         <Flex flexDirection="column" alignContent="left">
           <Text variant="sm" color="black100">
-            Showing now {bullet} {showStartsAt} - {showEndAt}
+            Showing now {bullet} {showStartsAt}-{showEndAt}
           </Text>
 
           <LinkText variant="sm" color="black60" onPress={() => navigate(runningShow.href || "#")}>
