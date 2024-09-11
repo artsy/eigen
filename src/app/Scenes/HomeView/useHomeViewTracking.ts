@@ -9,6 +9,7 @@ import {
   TappedAuctionResultGroup,
   TappedCollectionGroup,
   TappedFairGroup,
+  TappedShowGroup,
   TappedShowMore,
   TappedViewingRoomGroup,
 } from "@artsy/cohesion"
@@ -210,6 +211,21 @@ export const useHomeViewTracking = () => {
         destination_screen_owner_slug: collectionSlug,
         horizontal_slide_position: index,
         module_height: "double",
+        type: "thumbnail",
+      }
+
+      trackEvent(payload)
+    },
+
+    tappedShowGroup: (showID: string, showSlug: string, sectionID: string, index: number) => {
+      const payload: TappedShowGroup = {
+        action: ActionType.tappedShowGroup,
+        context_module: formatSectionIDAsContextModule(sectionID),
+        context_screen_owner_type: OwnerType.home,
+        destination_screen_owner_type: OwnerType.show,
+        destination_screen_owner_id: showID,
+        destination_screen_owner_slug: showSlug,
+        horizontal_slide_position: index,
         type: "thumbnail",
       }
 
