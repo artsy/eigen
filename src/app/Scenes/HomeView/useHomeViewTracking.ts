@@ -13,6 +13,7 @@ import {
   TappedShowMore,
   TappedViewingRoomGroup,
 } from "@artsy/cohesion"
+import { ClickedNotificationsBell } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
 import { getArtworkSignalTrackingFields } from "app/utils/getArtworkSignalTrackingFields"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { camelCase } from "lodash"
@@ -40,6 +41,15 @@ export const useHomeViewTracking = () => {
   const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
 
   return {
+    // TODO: Shouldn't this be tappedNotificationBell?
+    clickedNotificationBell: () => {
+      const payload: ClickedNotificationsBell = {
+        action: ActionType.clickedNotificationsBell,
+      }
+
+      trackEvent(payload)
+    },
+
     tappedActivityGroup: (destinationPath: string, sectionID: string, index: number) => {
       // TODO: Type as TappedActivityGroup once artsy/cohesion is updated
       const payload = {

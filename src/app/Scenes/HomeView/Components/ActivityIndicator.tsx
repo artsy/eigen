@@ -1,20 +1,18 @@
-import { ActionType } from "@artsy/cohesion"
-import { ClickedNotificationsBell } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
 import { BellIcon, Box, DEFAULT_HIT_SLOP, VisualClueDot } from "@artsy/palette-mobile"
+import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { TouchableOpacity } from "react-native"
-import { useTracking } from "react-tracking"
 
 interface ActivityIndicatorProps {
   hasUnseenNotifications: boolean
 }
 
 export const ActivityIndicator: React.FC<ActivityIndicatorProps> = ({ hasUnseenNotifications }) => {
-  const tracking = useTracking()
+  const { clickedNotificationBell } = useHomeViewTracking()
 
   const navigateToActivityPanel = () => {
+    clickedNotificationBell()
     navigate("/notifications")
-    tracking.trackEvent(tracks.clickedNotificationsBell())
   }
 
   return (
@@ -39,10 +37,4 @@ export const ActivityIndicator: React.FC<ActivityIndicatorProps> = ({ hasUnseenN
       </TouchableOpacity>
     </Box>
   )
-}
-
-const tracks = {
-  clickedNotificationsBell: (): ClickedNotificationsBell => ({
-    action: ActionType.clickedNotificationsBell,
-  }),
 }
