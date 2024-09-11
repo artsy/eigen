@@ -81,7 +81,7 @@ describe("HomeViewSectionArtworks", () => {
         [
           {
             "action": "tappedArtworkGroup",
-            "context_module": "home-view-section-new-works-for-you",
+            "context_module": "newWorksForYouRail",
             "context_screen_owner_type": "home",
             "destination_screen_owner_id": "artwork-2-id",
             "destination_screen_owner_slug": "artwork-2-slug",

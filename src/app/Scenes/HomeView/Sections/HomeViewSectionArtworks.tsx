@@ -1,4 +1,3 @@
-import { ContextModule } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
 import { HomeViewSectionArtworks_section$key } from "__generated__/HomeViewSectionArtworks_section.graphql"
 import { LargeArtworkRail_artworks$data } from "__generated__/LargeArtworkRail_artworks.graphql"
@@ -16,9 +15,7 @@ interface HomeViewSectionArtworksProps {
   section: HomeViewSectionArtworks_section$key
 }
 
-export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = ({
-  section,
-}) => {
+export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = ({ section }) => {
   const { tappedArtworkGroup } = useHomeViewTracking()
 
   const data = useFragment(fragment, section)
@@ -34,9 +31,17 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     artwork: LargeArtworkRail_artworks$data[0] | SmallArtworkRail_artworks$data[0],
     position: number
   ) => {
-    tappedArtworkGroup(artwork, data.internalID as ContextModule, position)
+    tappedArtworkGroup(
+      artwork.internalID,
+      artwork.slug,
+      artwork.collectorSignals,
+      data.internalID,
+      position
+    )
 
-    navigate(artwork.href as string)
+    if (artwork.href) {
+      navigate(artwork.href)
+    }
   }
 
   return (

@@ -1,4 +1,3 @@
-import { ContextModule } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
 import { HomeViewSectionViewingRooms_section$key } from "__generated__/HomeViewSectionViewingRooms_section.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
@@ -35,7 +34,7 @@ export const HomeViewSectionViewingRooms: React.FC<{
       <Suspense fallback={<ViewingRoomsRailPlaceholder />}>
         <LegacyViewingRoomsHomeRail
           onPress={(viewingRoom) => {
-            tappedViewingRoomGroup(viewingRoom, data.internalID as ContextModule)
+            tappedViewingRoomGroup(viewingRoom.internalID, viewingRoom.slug, data.internalID)
 
             navigate(`/viewing-room/${viewingRoom.slug}`)
           }}

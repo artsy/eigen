@@ -95,11 +95,9 @@ describe("HomeViewSectionHeroUnits", () => {
      [
        {
          "action": "tappedHeroUnitsGroup",
-         "context_module": "home-view-section-hero-units",
+         "context_module": "heroUnitsRail",
          "context_screen_owner_type": "home",
-         "destination_screen_owner_id": "hero-unit-1-id",
-         "destination_screen_owner_type": "Collection",
-         "destination_screen_owner_url": "/collection/collection-1",
+         "destination_path": "/collection/collection-1",
          "type": "header",
        },
      ]

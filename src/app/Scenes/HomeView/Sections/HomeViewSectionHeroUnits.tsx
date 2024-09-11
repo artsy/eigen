@@ -1,4 +1,3 @@
-import { ContextModule } from "@artsy/cohesion"
 import { Spacer } from "@artsy/palette-mobile"
 import { HomeViewSectionHeroUnits_section$key } from "__generated__/HomeViewSectionHeroUnits_section.graphql"
 import { PaginationDots } from "app/Components/PaginationDots"
@@ -14,9 +13,7 @@ interface HomeViewSectionHeroUnitsProps {
   section: HomeViewSectionHeroUnits_section$key
 }
 
-export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> = ({
-  section,
-}) => {
+export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> = ({ section }) => {
   const { tappedHeroUnitsGroup } = useHomeViewTracking()
 
   const data = useFragment(fragment, section)
@@ -50,7 +47,7 @@ export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> =
           <HeroUnit
             item={item}
             onPress={() => {
-              tappedHeroUnitsGroup(item, data.internalID as ContextModule)
+              tappedHeroUnitsGroup(item.link.url, data.internalID)
             }}
           />
         )}
