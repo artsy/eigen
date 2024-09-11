@@ -103,6 +103,9 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
 
   const AREnablePartnerOfferSignals = useFeatureFlag("AREnablePartnerOfferSignals")
   const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
+  const AREnableCuratorsPicksAndInterestSignals = useFeatureFlag(
+    "AREnableCuratorsPicksAndInterestSignals"
+  )
 
   const {
     artistNames,
@@ -306,14 +309,17 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                     </Text>
                   </Box>
                 )}
-                {!sale?.isAuction && !displayLimitedTimeOfferSignal && !!collectorSignals && (
-                  <ArtworkSocialSignal
-                    collectorSignals={collectorSignals}
-                    hideCuratorsPick={hideCuratorsPickSignal}
-                    hideIncreasedInterest={hideIncreasedInterestSignal}
-                    dark={dark}
-                  />
-                )}
+                {!sale?.isAuction &&
+                  !displayLimitedTimeOfferSignal &&
+                  !!collectorSignals &&
+                  !!AREnableCuratorsPicksAndInterestSignals && (
+                    <ArtworkSocialSignal
+                      collectorSignals={collectorSignals}
+                      hideCuratorsPick={hideCuratorsPickSignal}
+                      hideIncreasedInterest={hideIncreasedInterestSignal}
+                      dark={dark}
+                    />
+                  )}
                 {!!lotLabel && (
                   <Text lineHeight="20px" color={secondaryTextColor} numberOfLines={1}>
                     Lot {lotLabel}
