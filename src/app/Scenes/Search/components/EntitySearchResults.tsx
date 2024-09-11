@@ -80,7 +80,7 @@ export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selec
       )}
       ListFooterComponent={
         <Flex alignItems="center" my={2}>
-          {isLoadingNext ? <Spinner /> : null}
+          {isLoadingNext ? <Spinner testID="spinner" /> : null}
         </Flex>
       }
       onScrollBeginDrag={handleOnScrollBeginDrag}
