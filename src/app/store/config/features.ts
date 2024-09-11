@@ -275,6 +275,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableCollectionsWithoutHeaderImage",
   },
+  AREnableSignupLoginFusion: {
+    description: "Enable unified sign up and login flow",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableSignupLoginFusion",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
