@@ -1,13 +1,16 @@
 import { ContextModule } from "@artsy/cohesion"
 import { Flex, Spacer, Touchable } from "@artsy/palette-mobile"
-import { ViewingRoomsHomeRailQuery } from "__generated__/ViewingRoomsHomeRailQuery.graphql"
-import { ViewingRoomsHomeRail_viewingRoom$data } from "__generated__/ViewingRoomsHomeRail_viewingRoom.graphql"
+import {
+  ViewingRoomsHomeRailQuery,
+  ViewingRoomsHomeRailQuery$data,
+} from "__generated__/ViewingRoomsHomeRailQuery.graphql"
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { MediumCard } from "app/Components/Cards"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { Schema } from "app/utils/track"
 import { times } from "lodash"
 import React, { memo, Suspense } from "react"
@@ -76,7 +79,10 @@ export const ViewingRoomsRailPlaceholder = () => (
 
 interface ViewingRoomsHomeRailProps {
   trackInfo?: { screen: string; ownerType: string; contextModule?: ContextModule }
-  onPress?: (viewingRoom: ViewingRoomsHomeRail_viewingRoom$data) => void
+  onPress?: (
+    viewingRoom: ExtractNodeType<ViewingRoomsHomeRailQuery$data["viewingRooms"]>,
+    index: number
+  ) => void
 }
 
 export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({
@@ -96,13 +102,13 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({
         data={regular}
         initialNumToRender={isTablet() ? 10 : 5}
         keyExtractor={(item) => `${item.internalID}`}
-        renderItem={({ item }) => {
+        renderItem={({ item, index }) => {
           const tag = tagForStatus(item.status, item.distanceToOpen, item.distanceToClose)
           return (
             <Touchable
               onPress={() => {
                 if (onPress) {
-                  return onPress(item as any)
+                  return onPress(item, index)
                 }
 
                 if (!!item.slug) {
@@ -136,19 +142,11 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({
   )
 }
 
-graphql`
-  fragment ViewingRoomsHomeRail_viewingRoom on ViewingRoom {
-    internalID
-    slug
-  }
-`
-
 const ViewingRoomsHomeRailMainQuery = graphql`
   query ViewingRoomsHomeRailQuery {
     viewingRooms(first: 10) {
       edges {
         node {
-          ...ViewingRoomsHomeRail_viewingRoom
           internalID
           title
           slug

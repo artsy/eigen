@@ -33,8 +33,8 @@ export const HomeViewSectionViewingRooms: React.FC<{
       </Flex>
       <Suspense fallback={<ViewingRoomsRailPlaceholder />}>
         <LegacyViewingRoomsHomeRail
-          onPress={(viewingRoom) => {
-            tappedViewingRoomGroup(viewingRoom.internalID, viewingRoom.slug, data.internalID)
+          onPress={(viewingRoom, index) => {
+            tappedViewingRoomGroup(viewingRoom.internalID, viewingRoom.slug, data.internalID, index)
 
             navigate(`/viewing-room/${viewingRoom.slug}`)
           }}

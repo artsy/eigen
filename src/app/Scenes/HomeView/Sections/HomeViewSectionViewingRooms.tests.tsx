@@ -118,6 +118,7 @@ describe("HomeViewSectionViewingRooms", () => {
           "destination_screen_owner_id": "one",
           "destination_screen_owner_slug": "alessandro-pessoli-ardente-primavera-number-1",
           "destination_screen_owner_type": "viewingRoom",
+          "horizontal_slide_position": 0,
           "type": "thumbnail",
         },
       ]

@@ -253,7 +253,12 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
-    tappedViewingRoomGroup: (viewingRoomID: string, viewingRoomSlug: string, sectionID: string) => {
+    tappedViewingRoomGroup: (
+      viewingRoomID: string,
+      viewingRoomSlug: string,
+      sectionID: string,
+      index: number
+    ) => {
       const payload: TappedViewingRoomGroup = {
         action: ActionType.tappedViewingRoomGroup,
         context_module: formatSectionIDAsContextModule(sectionID),
@@ -261,6 +266,7 @@ export const useHomeViewTracking = () => {
         destination_screen_owner_type: OwnerType.viewingRoom,
         destination_screen_owner_id: viewingRoomID,
         destination_screen_owner_slug: viewingRoomSlug,
+        horizontal_slide_position: index,
         type: "thumbnail",
       }
 
