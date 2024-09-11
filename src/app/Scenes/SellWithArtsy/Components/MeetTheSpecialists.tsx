@@ -1,19 +1,18 @@
 import { ActionType, ContextModule, OwnerType, TappedConsignmentInquiry } from "@artsy/cohesion"
 import { Flex, Spacer, Text, useColor, useSpace, Button } from "@artsy/palette-mobile"
+import { MeetTheSpecialists_staticContent$key } from "__generated__/MeetTheSpecialists_staticContent.graphql"
 import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
 import { ReadMore } from "app/Components/ReadMore"
-import {
-  SpecialistsData,
-  useSWALandingPageData,
-} from "app/Scenes/SellWithArtsy/utils/useSWALandingPageData"
 import { AnimateHeight } from "app/utils/animations/AnimateHeight"
-import { PlaceholderBox, PlaceholderButton, PlaceholderText } from "app/utils/placeholders"
 import { MotiView } from "moti"
 import { useState } from "react"
 import { FlatList, ImageBackground } from "react-native"
 import { isTablet } from "react-native-device-info"
 import LinearGradient from "react-native-linear-gradient"
 import { Easing } from "react-native-reanimated"
+import { graphql, useFragment } from "react-relay"
+
+const IMG_HEIGHT_TO_WIDTH_RATIO = 1.511 // based on designs
 
 type InqueryPress = (
   trackingargs?: TappedConsignmentInquiry,
@@ -23,19 +22,15 @@ type InqueryPress = (
 
 export const MeetTheSpecialists: React.FC<{
   onInquiryPress: InqueryPress
-}> = ({ onInquiryPress }) => {
+  staticContent: MeetTheSpecialists_staticContent$key
+}> = ({ onInquiryPress, staticContent }) => {
+  const staticContentData = useFragment(specialistFragment, staticContent)
+
   const space = useSpace()
 
-  const {
-    data: { specialists },
-    loading,
-  } = useSWALandingPageData()
+  const specialistBios = staticContentData?.specialistBios
 
-  if (loading) {
-    return <LoadingSkeleton />
-  }
-
-  if (!specialists) {
+  if (!specialistBios) {
     return null
   }
 
@@ -52,7 +47,7 @@ export const MeetTheSpecialists: React.FC<{
         contentContainerStyle={{ marginLeft: space(2) }}
         horizontal
         showsHorizontalScrollIndicator={false}
-        data={specialists}
+        data={specialistBios}
         renderItem={({ item }) => {
           return <Specialist specialist={item} onInquiryPress={onInquiryPress} />
         }}
@@ -79,26 +74,32 @@ export const MeetTheSpecialists: React.FC<{
 }
 
 interface SpecialistProps {
-  specialist: SpecialistsData
+  specialist: {
+    image: { imageURL: string | undefined | null }
+    firstName: string
+    name: string
+    jobTitle: string
+    bio: string
+    email: string
+  }
   onInquiryPress: InqueryPress
 }
-
 const Specialist: React.FC<SpecialistProps> = ({ specialist, onInquiryPress }) => {
+  const [isBioExpanded, setIsBioExpanded] = useState(false)
+
   const color = useColor()
   const space = useSpace()
-  const bioTextLimit = isTablet() ? 160 : 88
+
+  const imgWidth = useExtraLargeWidth()
+  const imgHeight = imgWidth * IMG_HEIGHT_TO_WIDTH_RATIO
 
   const buttonText = `Contact ${specialist.firstName}`
 
-  const imgHeightToWidthRatio = 1.511 // based on designs
-  const imgWidth = useExtraLargeWidth()
-  const imgHeight = imgWidth * imgHeightToWidthRatio
-
-  const [isBioExpanded, setIsBioExpanded] = useState(false)
+  const bioTextLimit = isTablet() ? 160 : 88
 
   return (
     <ImageBackground
-      source={{ uri: specialist.image }}
+      source={{ uri: specialist.image.imageURL || "" }}
       resizeMode="cover"
       style={{
         width: imgWidth,
@@ -177,39 +178,17 @@ const tracks = {
   }),
 }
 
-const LoadingSkeleton = () => {
-  const imgHeightToWidthRatio = 1.511 // based on designs
-  const imgWidth = useExtraLargeWidth()
-  return (
-    <Flex>
-      <PlaceholderText marginHorizontal={20} width="60%" height={40} />
-      <PlaceholderText marginHorizontal={20} />
-      <PlaceholderText marginHorizontal={20} />
-
-      <Spacer y={2} />
-      <FlatList
-        contentContainerStyle={{ marginLeft: 20 }}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        data={[1, 2, 3]}
-        renderItem={() => {
-          return (
-            <PlaceholderBox
-              width={imgWidth}
-              height={imgWidth * imgHeightToWidthRatio}
-              marginRight={10}
-            />
-          )
-        }}
-        keyExtractor={(item) => item + "yy"}
-        ListFooterComponent={() => <Spacer x={4} />}
-      />
-      <Flex mx={2} mt={2}>
-        <PlaceholderText />
-        <PlaceholderText />
-
-        <PlaceholderButton />
-      </Flex>
-    </Flex>
-  )
-}
+const specialistFragment = graphql`
+  fragment MeetTheSpecialists_staticContent on StaticContent {
+    specialistBios {
+      name
+      firstName
+      jobTitle
+      bio
+      email
+      image {
+        imageURL
+      }
+    }
+  }
+`
