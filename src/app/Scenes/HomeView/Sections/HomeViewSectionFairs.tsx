@@ -1,20 +1,20 @@
 import { ContextModule } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
-import { FairsRailHomeViewSection_section$key } from "__generated__/FairsRailHomeViewSection_section.graphql"
+import { HomeViewSectionFairs_section$key } from "__generated__/HomeViewSectionFairs_section.graphql"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import LegacyHomeAnalytics from "app/Scenes/Home/homeAnalytics"
-import { FairRailItem } from "app/Scenes/HomeView/Sections/FairRailItem"
+import { HomeViewSectionFairsFairItem } from "app/Scenes/HomeView/Sections/HomeViewSectionFairsFairItem"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
-interface FairsRailHomeViewSectionProps {
-  section: FairsRailHomeViewSection_section$key
+interface HomeViewSectionFairsProps {
+  section: HomeViewSectionFairs_section$key
 }
 
-export const FairsRailHomeViewSection: React.FC<FairsRailHomeViewSectionProps> = ({ section }) => {
+export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = ({ section }) => {
   const tracking = useTracking()
 
   const data = useFragment(fragment, section)
@@ -47,7 +47,7 @@ export const FairsRailHomeViewSection: React.FC<FairsRailHomeViewSectionProps> =
         initialNumToRender={3}
         renderItem={({ item, index }) => {
           return (
-            <FairRailItem
+            <HomeViewSectionFairsFairItem
               key={item.internalID}
               fair={item}
               onPress={(fair) => {
@@ -69,7 +69,7 @@ export const FairsRailHomeViewSection: React.FC<FairsRailHomeViewSectionProps> =
 }
 
 const fragment = graphql`
-  fragment FairsRailHomeViewSection_section on FairsRailHomeViewSection {
+  fragment HomeViewSectionFairs_section on HomeViewSectionFairs {
     internalID
     component {
       title
@@ -85,7 +85,7 @@ const fragment = graphql`
       edges {
         node {
           internalID
-          ...FairRailItem_fair
+          ...HomeViewSectionFairsFairItem_fair
         }
       }
     }

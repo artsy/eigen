@@ -1,7 +1,7 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { graphql, useFragment } from "react-relay"
 
-export const GenericHomeViewSection: React.FC<{ section: any }> = (props) => {
+export const HomeViewSectionGeneric: React.FC<{ section: any }> = (props) => {
   const { section } = props
 
   const data = useFragment(genericSectionFragment, section)
@@ -28,7 +28,7 @@ export const GenericHomeViewSection: React.FC<{ section: any }> = (props) => {
 }
 
 const genericSectionFragment = graphql`
-  fragment GenericHomeViewSection_section on GenericHomeViewSection {
+  fragment HomeViewSectionGeneric_section on HomeViewSectionGeneric {
     component {
       title
     }

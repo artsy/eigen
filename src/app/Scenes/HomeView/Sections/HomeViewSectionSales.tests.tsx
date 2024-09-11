@@ -1,25 +1,25 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { SalesRailHomeViewSectionTestsQuery } from "__generated__/SalesRailHomeViewSectionTestsQuery.graphql"
-import { SalesRailHomeViewSection } from "app/Scenes/HomeView/Sections/SalesRailHomeViewSection"
+import { HomeViewSectionSalesTestsQuery } from "__generated__/HomeViewSectionSalesTestsQuery.graphql"
+import { HomeViewSectionSales } from "app/Scenes/HomeView/Sections/HomeViewSectionSales"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-describe("SalesRailHomeViewSection", () => {
-  const { renderWithRelay } = setupTestWrapper<SalesRailHomeViewSectionTestsQuery>({
+describe("HomeViewSectionSales", () => {
+  const { renderWithRelay } = setupTestWrapper<HomeViewSectionSalesTestsQuery>({
     Component: (props) => {
       if (!props.homeView.section) {
         return null
       }
-      return <SalesRailHomeViewSection section={props.homeView.section} />
+      return <HomeViewSectionSales section={props.homeView.section} />
     },
     query: graphql`
-      query SalesRailHomeViewSectionTestsQuery @relay_test_operation {
+      query HomeViewSectionSalesTestsQuery @relay_test_operation {
         homeView {
           section(id: "home-view-section-auctions") {
-            ... on SalesRailHomeViewSection {
-              ...SalesRailHomeViewSection_section
+            ... on HomeViewSectionSales {
+              ...HomeViewSectionSales_section
             }
           }
         }
@@ -29,7 +29,7 @@ describe("SalesRailHomeViewSection", () => {
 
   it("renders the section properly", async () => {
     renderWithRelay({
-      SalesRailHomeViewSection: () => ({
+      HomeViewSectionSales: () => ({
         component: {
           title: "Auctions",
           behaviors: {
@@ -63,7 +63,7 @@ describe("SalesRailHomeViewSection", () => {
 
   it("tracks item presses properly", async () => {
     renderWithRelay({
-      SalesRailHomeViewSection: () => ({
+      HomeViewSectionSales: () => ({
         internalID: "home-view-section-sales",
         component: {
           title: "Auctions",

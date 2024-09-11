@@ -1,25 +1,25 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { ArtworksRailHomeViewSectionTestsQuery } from "__generated__/ArtworksRailHomeViewSectionTestsQuery.graphql"
-import { ArtworksRailHomeViewSection } from "app/Scenes/HomeView/Sections/ArtworksRailHomeViewSection"
+import { HomeViewSectionArtworksTestsQuery } from "__generated__/HomeViewSectionArtworksTestsQuery.graphql"
+import { HomeViewSectionArtworks } from "app/Scenes/HomeView/Sections/HomeViewSectionArtworks"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-describe("ArtworksRailHomeViewSection", () => {
-  const { renderWithRelay } = setupTestWrapper<ArtworksRailHomeViewSectionTestsQuery>({
+describe("HomeViewSectionArtworks", () => {
+  const { renderWithRelay } = setupTestWrapper<HomeViewSectionArtworksTestsQuery>({
     Component: (props) => {
       if (!props.homeView.section) {
         return null
       }
-      return <ArtworksRailHomeViewSection section={props.homeView.section} />
+      return <HomeViewSectionArtworks section={props.homeView.section} />
     },
     query: graphql`
-      query ArtworksRailHomeViewSectionTestsQuery @relay_test_operation {
+      query HomeViewSectionArtworksTestsQuery @relay_test_operation {
         homeView {
           section(id: "home-view-section-new-works-for-you") {
-            ... on ArtworksRailHomeViewSection {
-              ...ArtworksRailHomeViewSection_section
+            ... on HomeViewSectionArtworks {
+              ...HomeViewSectionArtworks_section
             }
           }
         }
@@ -43,7 +43,7 @@ describe("ArtworksRailHomeViewSection", () => {
 
   it("renders a list of artworks", () => {
     renderWithRelay({
-      ArtworksRailHomeViewSection: () => ({
+      HomeViewSectionArtworks: () => ({
         internalID: "home-view-section-new-works-for-you",
         component: {
           title: "New Works for You",

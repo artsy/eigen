@@ -1,7 +1,7 @@
 import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import { Flex, Screen, SimpleMessage, Text } from "@artsy/palette-mobile"
 import { HomeViewSectionScreenArtworksQuery } from "__generated__/HomeViewSectionScreenArtworksQuery.graphql"
-import { HomeViewSectionScreenArtworks_artworksRailHomeViewSection$key } from "__generated__/HomeViewSectionScreenArtworks_artworksRailHomeViewSection.graphql"
+import { HomeViewSectionScreenArtworks_homeViewSectionArworks$key } from "__generated__/HomeViewSectionScreenArtworks_homeViewSectionArworks.graphql"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import { PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
@@ -11,13 +11,13 @@ import { useRefreshControl } from "app/utils/refreshHelpers"
 import { graphql, usePaginationFragment } from "react-relay"
 
 interface ArtworksScreenHomeSection {
-  section: HomeViewSectionScreenArtworks_artworksRailHomeViewSection$key
+  section: HomeViewSectionScreenArtworks_homeViewSectionArworks$key
 }
 
 export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> = (props) => {
   const { data, isLoadingNext, loadNext, refetch, hasNext } = usePaginationFragment<
     HomeViewSectionScreenArtworksQuery,
-    HomeViewSectionScreenArtworks_artworksRailHomeViewSection$key
+    HomeViewSectionScreenArtworks_homeViewSectionArworks$key
   >(artworksFragment, props.section)
 
   const artworks = extractNodes(data?.artworksConnection)
@@ -59,7 +59,7 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
 }
 
 export const artworksFragment = graphql`
-  fragment HomeViewSectionScreenArtworks_artworksRailHomeViewSection on ArtworksRailHomeViewSection
+  fragment HomeViewSectionScreenArtworks_homeViewSectionArworks on HomeViewSectionArtworks
   @refetchable(queryName: "ArtworksScreenHomeSection_viewerRefetch")
   @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
     internalID
@@ -89,7 +89,7 @@ export const artworksQuery = graphql`
   query HomeViewSectionScreenArtworksQuery($id: String!) {
     homeView {
       section(id: $id) @principalField {
-        ...HomeViewSectionScreenArtworks_artworksRailHomeViewSection
+        ...HomeViewSectionScreenArtworks_homeViewSectionArworks
       }
     }
   }

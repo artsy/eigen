@@ -1,25 +1,25 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { ArtistsRailHomeViewSectionTestsQuery } from "__generated__/ArtistsRailHomeViewSectionTestsQuery.graphql"
-import { ArtistsRailHomeViewSectionPaginationContainer } from "app/Scenes/HomeView/Sections/ArtistsRailHomeViewSection"
+import { HomeViewSectionArtistsTestsQuery } from "__generated__/HomeViewSectionArtistsTestsQuery.graphql"
+import { HomeViewSectionArtistsPaginationContainer } from "app/Scenes/HomeView/Sections/HomeViewSectionArtists"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-describe("ArtistsRailHomeViewSection", () => {
-  const { renderWithRelay } = setupTestWrapper<ArtistsRailHomeViewSectionTestsQuery>({
+describe("HomeViewSectionArtists", () => {
+  const { renderWithRelay } = setupTestWrapper<HomeViewSectionArtistsTestsQuery>({
     Component: (props) => {
       if (!props.homeView.section) {
         return null
       }
-      return <ArtistsRailHomeViewSectionPaginationContainer section={props.homeView.section} />
+      return <HomeViewSectionArtistsPaginationContainer section={props.homeView.section} />
     },
     query: graphql`
-      query ArtistsRailHomeViewSectionTestsQuery @relay_test_operation {
+      query HomeViewSectionArtistsTestsQuery @relay_test_operation {
         homeView {
           section(id: "home-view-section-recommended-artists") {
-            ... on ArtistsRailHomeViewSection {
-              ...ArtistsRailHomeViewSection_section
+            ... on HomeViewSectionArtists {
+              ...HomeViewSectionArtists_section
             }
           }
         }
@@ -44,7 +44,7 @@ describe("ArtistsRailHomeViewSection", () => {
 
   it("renders a list of artists", () => {
     renderWithRelay({
-      ArtistsRailHomeViewSection: () => ({
+      HomeViewSectionArtists: () => ({
         internalID: "home-view-section-recommended-artists",
         component: {
           title: "Recommended Artists",

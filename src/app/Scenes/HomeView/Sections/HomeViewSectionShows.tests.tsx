@@ -1,6 +1,6 @@
 import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
-import { ShowsRailHomeViewSectionTestsQuery } from "__generated__/ShowsRailHomeViewSectionTestsQuery.graphql"
-import { ShowsRailHomeViewSection } from "app/Scenes/HomeView/Sections/ShowsRailHomeViewSection"
+import { HomeViewSectionShowsTestsQuery } from "__generated__/HomeViewSectionShowsTestsQuery.graphql"
+import { HomeViewSectionShows } from "app/Scenes/HomeView/Sections/HomeViewSectionShows"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -13,20 +13,20 @@ jest.mock("@react-native-community/geolocation", () => ({
   }),
 }))
 
-describe("ShowsRailHomeViewSection", () => {
-  const { renderWithRelay } = setupTestWrapper<ShowsRailHomeViewSectionTestsQuery>({
+describe("HomeViewSectionShows", () => {
+  const { renderWithRelay } = setupTestWrapper<HomeViewSectionShowsTestsQuery>({
     Component: (props) => {
       if (!props.homeView.section) {
         return null
       }
-      return <ShowsRailHomeViewSection section={props.homeView.section} />
+      return <HomeViewSectionShows section={props.homeView.section} />
     },
     query: graphql`
-      query ShowsRailHomeViewSectionTestsQuery @relay_test_operation {
+      query HomeViewSectionShowsTestsQuery @relay_test_operation {
         homeView {
           section(id: "home-view-section-shows") {
-            ... on ShowsRailHomeViewSection {
-              ...ShowsRailHomeViewSection_section
+            ... on HomeViewSectionShows {
+              ...HomeViewSectionShows_section
             }
           }
         }
@@ -67,7 +67,7 @@ describe("ShowsRailHomeViewSection", () => {
 
   it("tracks shows taps properly", async () => {
     const { mockResolveLastOperation } = renderWithRelay({
-      ShowsRailHomeViewSection: () => ({
+      HomeViewSectionShows: () => ({
         internalID: "home-view-section-shows-for-you",
         component: {
           title: "Shows for You",

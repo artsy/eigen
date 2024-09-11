@@ -1,23 +1,23 @@
 import { screen } from "@testing-library/react-native"
-import { ArticlesCardsHomeViewSectionTestsQuery } from "__generated__/ArticlesCardsHomeViewSectionTestsQuery.graphql"
-import { ArticlesCardsHomeViewSection } from "app/Scenes/HomeView/Sections/ArticlesCardsHomeViewSection"
+import { HomeViewSectionArticlesCardsTestsQuery } from "__generated__/HomeViewSectionArticlesCardsTestsQuery.graphql"
+import { HomeViewSectionArticlesCards } from "app/Scenes/HomeView/Sections/HomeViewSectionArticlesCards"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-describe("ArticlesCardsHomeViewSection", () => {
-  const { renderWithRelay } = setupTestWrapper<ArticlesCardsHomeViewSectionTestsQuery>({
+describe("HomeViewSectionArticlesCards", () => {
+  const { renderWithRelay } = setupTestWrapper<HomeViewSectionArticlesCardsTestsQuery>({
     Component: (props) => {
       if (!props.homeView.section) {
         return null
       }
-      return <ArticlesCardsHomeViewSection section={props.homeView.section} />
+      return <HomeViewSectionArticlesCards section={props.homeView.section} />
     },
     query: graphql`
-      query ArticlesCardsHomeViewSectionTestsQuery @relay_test_operation {
+      query HomeViewSectionArticlesCardsTestsQuery @relay_test_operation {
         homeView {
           section(id: "home-view-section-latest-activity") {
-            ... on ArticlesRailHomeViewSection {
-              ...ArticlesCardsHomeViewSection_section
+            ... on HomeViewSectionArticles {
+              ...HomeViewSectionArticlesCards_section
             }
           }
         }

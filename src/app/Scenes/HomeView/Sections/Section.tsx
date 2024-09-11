@@ -1,20 +1,20 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { HomeViewSectionsConnection_viewer$data } from "__generated__/HomeViewSectionsConnection_viewer.graphql"
-import { ActivityRailHomeViewSection } from "app/Scenes/HomeView/Sections/ActivityRailHomeViewSection"
-import { ArticlesCardsHomeViewSection } from "app/Scenes/HomeView/Sections/ArticlesCardsHomeViewSection"
-import { ArticlesRailHomeViewSection } from "app/Scenes/HomeView/Sections/ArticlesRailHomeViewSection"
-import { ArtistsRailHomeViewSectionPaginationContainer } from "app/Scenes/HomeView/Sections/ArtistsRailHomeViewSection"
-import { ArtworksRailHomeViewSection } from "app/Scenes/HomeView/Sections/ArtworksRailHomeViewSection"
-import { AuctionResultsRailHomeViewSection } from "app/Scenes/HomeView/Sections/AuctionResultsRailHomeViewSection"
-import { FairsRailHomeViewSection } from "app/Scenes/HomeView/Sections/FairsRailHomeViewSection"
-import { FeaturedCollectionHomeViewSection } from "app/Scenes/HomeView/Sections/FeaturedCollectionHomeViewSection"
-import { GalleriesHomeViewSection } from "app/Scenes/HomeView/Sections/GalleriesHomeViewSection"
-import { GenericHomeViewSection } from "app/Scenes/HomeView/Sections/GenericHomeViewSection"
-import { HeroUnitsRailHomeViewSection } from "app/Scenes/HomeView/Sections/HeroUnitsRailHomeViewSection"
-import { MarketingCollectionsRailHomeViewSection } from "app/Scenes/HomeView/Sections/MarketingCollectionsRailHomeViewSection"
-import { SalesRailHomeViewSection } from "app/Scenes/HomeView/Sections/SalesRailHomeViewSection"
-import { ShowsRailHomeViewSection } from "app/Scenes/HomeView/Sections/ShowsRailHomeViewSection"
-import { ViewingRoomsRailHomeViewSection } from "app/Scenes/HomeView/Sections/ViewingRoomsRailHomeViewSection"
+import { HomeViewSectionActivity } from "app/Scenes/HomeView/Sections/HomeViewSectionActivity"
+import { HomeViewSectionArticles } from "app/Scenes/HomeView/Sections/HomeViewSectionArticles"
+import { HomeViewSectionArticlesCards } from "app/Scenes/HomeView/Sections/HomeViewSectionArticlesCards"
+import { HomeViewSectionArtistsPaginationContainer } from "app/Scenes/HomeView/Sections/HomeViewSectionArtists"
+import { HomeViewSectionArtworks } from "app/Scenes/HomeView/Sections/HomeViewSectionArtworks"
+import { HomeViewSectionAuctionResults } from "app/Scenes/HomeView/Sections/HomeViewSectionAuctionResults"
+import { HomeViewSectionFairs } from "app/Scenes/HomeView/Sections/HomeViewSectionFairs"
+import { HomeViewSectionFeaturedCollection } from "app/Scenes/HomeView/Sections/HomeViewSectionFeaturedCollection"
+import { HomeViewSectionGalleries } from "app/Scenes/HomeView/Sections/HomeViewSectionGalleries"
+import { HomeViewSectionGeneric } from "app/Scenes/HomeView/Sections/HomeViewSectionGeneric"
+import { HomeViewSectionHeroUnits } from "app/Scenes/HomeView/Sections/HomeViewSectionHeroUnits"
+import { HomeViewSectionMarketingCollections } from "app/Scenes/HomeView/Sections/HomeViewSectionMarketingCollections"
+import { HomeViewSectionSales } from "app/Scenes/HomeView/Sections/HomeViewSectionSales"
+import { HomeViewSectionShows } from "app/Scenes/HomeView/Sections/HomeViewSectionShows"
+import { HomeViewSectionViewingRooms } from "app/Scenes/HomeView/Sections/HomeViewSectionViewingRooms"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 
 type SectionsConnection = NonNullable<
@@ -28,38 +28,38 @@ export const Section: React.FC<{ section: SectionT }> = (props) => {
 
   switch (section.component?.type) {
     case "FeaturedCollection":
-      return <FeaturedCollectionHomeViewSection section={section} />
+      return <HomeViewSectionFeaturedCollection section={section} />
     case "ArticlesCard":
-      return <ArticlesCardsHomeViewSection section={section} />
+      return <HomeViewSectionArticlesCards section={section} />
   }
 
   switch (section.__typename) {
-    case "ActivityRailHomeViewSection":
-      return <ActivityRailHomeViewSection section={section} />
-    case "ArtworksRailHomeViewSection":
-      return <ArtworksRailHomeViewSection section={section} />
-    case "GalleriesHomeViewSection":
-      return <GalleriesHomeViewSection section={section} />
-    case "GenericHomeViewSection":
-      return <GenericHomeViewSection section={section} />
-    case "ArticlesRailHomeViewSection":
-      return <ArticlesRailHomeViewSection section={section} />
-    case "ArtistsRailHomeViewSection":
-      return <ArtistsRailHomeViewSectionPaginationContainer section={section} />
-    case "AuctionResultsRailHomeViewSection":
-      return <AuctionResultsRailHomeViewSection section={section} />
-    case "HeroUnitsHomeViewSection":
-      return <HeroUnitsRailHomeViewSection section={section} />
-    case "FairsRailHomeViewSection":
-      return <FairsRailHomeViewSection section={section} />
-    case "MarketingCollectionsRailHomeViewSection":
-      return <MarketingCollectionsRailHomeViewSection section={section} />
-    case "ShowsRailHomeViewSection":
-      return <ShowsRailHomeViewSection section={section} />
-    case "ViewingRoomsRailHomeViewSection":
-      return <ViewingRoomsRailHomeViewSection section={section} />
-    case "SalesRailHomeViewSection":
-      return <SalesRailHomeViewSection section={section} />
+    case "HomeViewSectionActivity":
+      return <HomeViewSectionActivity section={section} />
+    case "HomeViewSectionArtworks":
+      return <HomeViewSectionArtworks section={section} />
+    case "HomeViewSectionGalleries":
+      return <HomeViewSectionGalleries section={section} />
+    case "HomeViewSectionGeneric":
+      return <HomeViewSectionGeneric section={section} />
+    case "HomeViewSectionArticles":
+      return <HomeViewSectionArticles section={section} />
+    case "HomeViewSectionArtists":
+      return <HomeViewSectionArtistsPaginationContainer section={section} />
+    case "HomeViewSectionAuctionResults":
+      return <HomeViewSectionAuctionResults section={section} />
+    case "HomeViewSectionHeroUnits":
+      return <HomeViewSectionHeroUnits section={section} />
+    case "HomeViewSectionFairs":
+      return <HomeViewSectionFairs section={section} />
+    case "HomeViewSectionMarketingCollections":
+      return <HomeViewSectionMarketingCollections section={section} />
+    case "HomeViewSectionShows":
+      return <HomeViewSectionShows section={section} />
+    case "HomeViewSectionViewingRooms":
+      return <HomeViewSectionViewingRooms section={section} />
+    case "HomeViewSectionSales":
+      return <HomeViewSectionSales section={section} />
     default:
       if (__DEV__) {
         return (

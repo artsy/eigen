@@ -1,25 +1,25 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { FairsRailHomeViewSectionTestsQuery } from "__generated__/FairsRailHomeViewSectionTestsQuery.graphql"
-import { FairsRailHomeViewSection } from "app/Scenes/HomeView/Sections/FairsRailHomeViewSection"
+import { HomeViewSectionFairsTestsQuery } from "__generated__/HomeViewSectionFairsTestsQuery.graphql"
+import { HomeViewSectionFairs } from "app/Scenes/HomeView/Sections/HomeViewSectionFairs"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-describe("FairsRailHomeViewSection", () => {
-  const { renderWithRelay } = setupTestWrapper<FairsRailHomeViewSectionTestsQuery>({
+describe("HomeViewSectionFairs", () => {
+  const { renderWithRelay } = setupTestWrapper<HomeViewSectionFairsTestsQuery>({
     Component: (props) => {
       if (!props.homeView.section) {
         return null
       }
-      return <FairsRailHomeViewSection section={props.homeView.section} />
+      return <HomeViewSectionFairs section={props.homeView.section} />
     },
     query: graphql`
-      query FairsRailHomeViewSectionTestsQuery @relay_test_operation {
+      query HomeViewSectionFairsTestsQuery @relay_test_operation {
         homeView {
           section(id: "home-view-section-latest-auction-results") {
-            ... on FairsRailHomeViewSection {
-              ...FairsRailHomeViewSection_section
+            ... on HomeViewSectionFairs {
+              ...HomeViewSectionFairs_section
             }
           }
         }
@@ -71,7 +71,7 @@ describe("FairsRailHomeViewSection", () => {
 
   it("tracks fairs taps properly", () => {
     renderWithRelay({
-      FairsRailHomeViewSection: () => ({
+      HomeViewSectionFairs: () => ({
         internalID: "home-view-section-fairs-for-you",
         component: {
           title: "Fairs for You",

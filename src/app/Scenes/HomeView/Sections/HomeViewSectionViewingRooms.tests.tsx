@@ -1,24 +1,24 @@
 import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
-import { ViewingRoomsRailHomeViewSectionTestsQuery } from "__generated__/ViewingRoomsRailHomeViewSectionTestsQuery.graphql"
-import { ViewingRoomsRailHomeViewSection } from "app/Scenes/HomeView/Sections/ViewingRoomsRailHomeViewSection"
+import { HomeViewSectionViewingRoomsTestsQuery } from "__generated__/HomeViewSectionViewingRoomsTestsQuery.graphql"
+import { HomeViewSectionViewingRooms } from "app/Scenes/HomeView/Sections/HomeViewSectionViewingRooms"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-describe("ViewingRoomsRailHomeViewSection", () => {
-  const { renderWithRelay } = setupTestWrapper<ViewingRoomsRailHomeViewSectionTestsQuery>({
+describe("HomeViewSectionViewingRooms", () => {
+  const { renderWithRelay } = setupTestWrapper<HomeViewSectionViewingRoomsTestsQuery>({
     Component: (props) => {
       if (!props.homeView.section) {
         return null
       }
-      return <ViewingRoomsRailHomeViewSection section={props.homeView.section} />
+      return <HomeViewSectionViewingRooms section={props.homeView.section} />
     },
     query: graphql`
-      query ViewingRoomsRailHomeViewSectionTestsQuery @relay_test_operation {
+      query HomeViewSectionViewingRoomsTestsQuery @relay_test_operation {
         homeView {
           section(id: "home-view-section-viewing-rooms") {
-            ... on ViewingRoomsRailHomeViewSection {
-              ...ViewingRoomsRailHomeViewSection_section
+            ... on HomeViewSectionViewingRooms {
+              ...HomeViewSectionViewingRooms_section
             }
           }
         }
@@ -66,7 +66,7 @@ describe("ViewingRoomsRailHomeViewSection", () => {
 
   it("navigates and tracks individual viewing room taps", async () => {
     const { mockResolveLastOperation } = renderWithRelay({
-      ViewingRoomsRailHomeViewSection: () => ({
+      HomeViewSectionViewingRooms: () => ({
         internalID: "home-view-section-viewing-rooms",
         component: {
           title: "Viewing Rooms",
