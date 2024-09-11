@@ -27,12 +27,11 @@ import { useTracking } from "react-tracking"
 
  Examples
  - home-view-section-artist-rail -> artistRail
- - home-view-section-new-works-for-you -> newWorksForYouRail
+ - home-view-section-new-works-for-you -> newWorksForYou
 
 */
 const formatSectionIDAsContextModule = (sectionID: string) => {
   let contextModule = sectionID.replace(/^home-view-section-/, "")
-  contextModule = contextModule.replace(/(-rail)?$/, "-rail")
   contextModule = camelCase(contextModule)
 
   return contextModule as ContextModule

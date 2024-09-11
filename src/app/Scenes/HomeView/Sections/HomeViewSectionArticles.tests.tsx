@@ -63,7 +63,7 @@ describe("HomeViewSectionArticles", () => {
         [
           {
             "action": "tappedArticleGroup",
-            "context_module": "latestArticlesRail",
+            "context_module": "latestArticles",
             "context_screen_owner_type": "home",
             "destination_screen_owner_id": "article-2-id",
             "destination_screen_owner_slug": "article-2",

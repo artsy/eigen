@@ -82,7 +82,7 @@ describe("HomeViewSectionArtists", () => {
         [
           {
             "action": "tappedArtistGroup",
-            "context_module": "recommendedArtistsRail",
+            "context_module": "recommendedArtists",
             "context_screen_owner_type": "home",
             "destination_screen_owner_id": "artist-2-id",
             "destination_screen_owner_slug": "artist-2-slug",
