@@ -43,11 +43,11 @@ export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> =
         decelerationRate="fast"
         horizontal
         keyExtractor={(item) => item.internalID}
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <HeroUnit
             item={item}
             onPress={() => {
-              tappedHeroUnitsGroup(item.link.url, data.internalID)
+              tappedHeroUnitsGroup(item.link.url, data.internalID, index)
             }}
           />
         )}

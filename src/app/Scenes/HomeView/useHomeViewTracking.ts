@@ -162,13 +162,14 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
-    tappedHeroUnitsGroup: (destinationPath: string, sectionID: string) => {
+    tappedHeroUnitsGroup: (destinationPath: string, sectionID: string, index: number) => {
       // TODO: Type as TappedHeroUnitsGroup once artsy/cohesion is updated
       const payload = {
         action: ActionType.tappedHeroUnitsGroup,
         context_module: formatSectionIDAsContextModule(sectionID),
         context_screen_owner_type: OwnerType.home,
         destination_path: destinationPath,
+        horizontal_slide_position: index,
         type: "header",
       }
 
