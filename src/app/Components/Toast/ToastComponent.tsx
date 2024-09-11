@@ -70,7 +70,7 @@ export const ToastComponent = ({
 
     const { modules } = require("app/AppRegistry")
 
-    const moduleName = __unsafe_mainModalStackRef.current?.getCurrentRoute()?.params // @ts-expect-error
+    const moduleName = __unsafe_mainModalStackRef?.current?.getCurrentRoute()?.params // @ts-expect-error
       ?.moduleName as keyof typeof modules
 
     const isBottomTabHidden = modules[moduleName]?.options?.hidesBottomTabs

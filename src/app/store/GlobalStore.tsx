@@ -135,9 +135,9 @@ export function getCurrentEmissionState() {
  * react components.
  */
 export function unsafe__getSelectedTab(): BottomTabType {
-  const tabState = __unsafe_mainModalStackRef.current
+  const tabState = __unsafe_mainModalStackRef?.current
     ?.getRootState()
-    .routes.find((r) => r.state?.type === "tab")?.state
+    ?.routes.find((r) => r.state?.type === "tab")?.state
   if (!tabState) {
     return "home"
   } else {
@@ -220,6 +220,17 @@ export function unsafe_getUserEmail() {
   }
   if (__DEV__) {
     throw new Error(`Unable to retrieve user email`)
+  }
+  return null
+}
+
+export function unsafe_getIsNavigationReady() {
+  const state = globalStoreInstance().getState() ?? null
+  if (state) {
+    return state.sessionState.isNavigationReady
+  }
+  if (__DEV__) {
+    throw new Error(`Unable to nav state`)
   }
   return null
 }

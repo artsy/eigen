@@ -7,7 +7,7 @@ export function useSelectedTab(): BottomTabType {
     (state) => state.routes.find((r) => r.state?.type === "tab")?.state
   )
 
-  const _unsafe_tabState = __unsafe_mainModalStackRef.current
+  const _unsafe_tabState = __unsafe_mainModalStackRef?.current
     ?.getState()
     ?.routes.find((r) => r.state?.type === "tab")?.state
 

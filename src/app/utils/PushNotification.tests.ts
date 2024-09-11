@@ -116,7 +116,7 @@ describe("Push Notification Tests", () => {
       expect(navigate).not.toHaveBeenCalled()
     })
 
-    it("Handles tapped notification instantly if user is logged in", async () => {
+    it("Handles tapped notification instantly if user is logged in and nav is ready", async () => {
       mockFetchJsonOnce({
         xapp_token: "xapp-token",
         expires_in: "never",
@@ -140,6 +140,7 @@ describe("Push Notification Tests", () => {
         email: "user@example.com",
         password: "mypassword",
       })
+      __globalStoreTestUtils__?.injectState({ sessionState: { isNavigationReady: true } })
 
       mockFetch.mockClear()
       mockFetchJsonOnce({}, 201)
