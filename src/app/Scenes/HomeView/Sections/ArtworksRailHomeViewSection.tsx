@@ -4,6 +4,7 @@ import { ArtworksRailHomeViewSection_section$key } from "__generated__/ArtworksR
 import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import LegacyHomeAnalytics from "app/Scenes/Home/homeAnalytics"
+import { getSectionHref } from "app/Scenes/HomeView/helpers/getSectionHref"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { View } from "react-native"
@@ -22,7 +23,7 @@ export const ArtworksRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionPr
   const data = useFragment(fragment, section)
   const title = data.component?.title
   const artworks = extractNodes(data.artworksConnection)
-  const componentHref = data.component?.behaviors?.viewAll?.href
+  const componentHref = getSectionHref(data.internalID, data.component?.behaviors?.viewAll?.href)
 
   if (!artworks || artworks.length === 0) {
     return null
@@ -51,7 +52,11 @@ export const ArtworksRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionPr
             onPress={
               componentHref
                 ? () => {
-                    navigate(componentHref)
+                    navigate(componentHref, {
+                      passProps: {
+                        sectionType: data.__typename,
+                      },
+                    })
                   }
                 : undefined
             }
@@ -64,7 +69,11 @@ export const ArtworksRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionPr
           onMorePress={
             componentHref
               ? () => {
-                  navigate(componentHref)
+                  navigate(componentHref, {
+                    passProps: {
+                      sectionType: data.__typename,
+                    },
+                  })
                 }
               : undefined
           }
@@ -76,6 +85,7 @@ export const ArtworksRailHomeViewSection: React.FC<ArtworksRailHomeViewSectionPr
 
 const fragment = graphql`
   fragment ArtworksRailHomeViewSection_section on ArtworksRailHomeViewSection {
+    __typename
     internalID
     component {
       title
