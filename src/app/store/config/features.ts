@@ -288,6 +288,11 @@ export const features = {
     readyForRelease: false,
     showInDevMenu: true,
   },
+  AREnableSignupLoginFusion: {
+    description: "Enable the fused signup and login flow",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
