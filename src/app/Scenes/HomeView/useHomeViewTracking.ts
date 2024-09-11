@@ -5,6 +5,7 @@ import {
   TappedArticleGroup,
   TappedArtistGroup,
   TappedArtworkGroup,
+  TappedAuctionGroup,
   TappedAuctionResultGroup,
   TappedCollectionGroup,
   TappedFairGroup,
@@ -116,6 +117,22 @@ export const useHomeViewTracking = () => {
           artworkCollectorSignals,
           AREnableAuctionImprovementsSignals
         ),
+      }
+
+      trackEvent(payload)
+    },
+
+    tappedAuctionGroup: (saleID: string, saleSlug: string, sectionID: string, index: number) => {
+      const payload: TappedAuctionGroup = {
+        action: ActionType.tappedAuctionGroup,
+        context_module: formatSectionIDAsContextModule(sectionID),
+        context_screen_owner_type: OwnerType.home,
+        destination_screen_owner_type: OwnerType.sale,
+        destination_screen_owner_id: saleID,
+        destination_screen_owner_slug: saleSlug,
+        horizontal_slide_position: index,
+        module_height: "double",
+        type: "thumbnail",
       }
 
       trackEvent(payload)
