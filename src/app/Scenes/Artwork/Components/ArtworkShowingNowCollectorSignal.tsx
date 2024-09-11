@@ -12,8 +12,11 @@ const ArtworkShowingNowCollectorSignal: React.FC<ArtworkShowingNowCollectorSigna
   artwork,
 }) => {
   const { collectorSignals } = artwork
-  const runningShow = collectorSignals?.runningShow
+  if (!collectorSignals) {
+    return null
+  }
 
+  const runningShow = collectorSignals.runningShow
   if (!runningShow || !runningShow.startAt || !runningShow.endAt) {
     return null
   }
@@ -24,8 +27,9 @@ const ArtworkShowingNowCollectorSignal: React.FC<ArtworkShowingNowCollectorSigna
   return (
     <Box mt={4} mb={2}>
       <Flex
-        testID="artwork-showing-now-collector-ssignal"
+        testID=""
         flexDirection="row"
+        artwork-showing-now-collector-signal
         alignContent="center"
       >
         <FairIcon mr={0.5} fill="black60" height={25} width={25} />
