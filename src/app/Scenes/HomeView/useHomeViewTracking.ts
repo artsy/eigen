@@ -2,8 +2,6 @@ import {
   ActionType,
   ContextModule,
   OwnerType,
-  ScreenOwnerType,
-  TappedActivityGroup,
   TappedArtworkGroup,
   TappedViewingRoomGroup,
 } from "@artsy/cohesion"
@@ -34,12 +32,15 @@ export const useHomeViewTracking = () => {
   const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
 
   return {
-    tappedActivityGroup: (sectionID: string) => {
-      const payload: TappedActivityGroup = {
+    tappedActivityGroup: (destinationPath: string, sectionID: string, index: number) => {
+      // TODO: Type as TappedActivityGroup once artsy/cohesion is updated
+      const payload = {
         action: ActionType.tappedActivityGroup,
         context_module: formatSectionIDAsContextModule(sectionID),
         context_screen_owner_type: OwnerType.home,
-        destination_screen_owner_type: "" as ScreenOwnerType,
+        destination_path: destinationPath,
+        horizontal_slide_position: index,
+        module_height: "single",
         type: "thumbnail",
       }
 

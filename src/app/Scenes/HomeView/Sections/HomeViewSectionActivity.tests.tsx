@@ -53,6 +53,7 @@ describe("HomeViewSectionActivity", () => {
                 internalID: "id-1",
                 notificationType: "ARTWORK_ALERT",
                 headline: "artwork alert",
+                targetHref: "/artwork-room/id-1",
               },
             },
             {
@@ -60,6 +61,7 @@ describe("HomeViewSectionActivity", () => {
                 internalID: "id-2",
                 notificationType: "VIEWING_ROOM_PUBLISHED",
                 headline: "viewing room published",
+                targetHref: "/viewing-room/id-2",
               },
             },
           ],
@@ -76,9 +78,9 @@ describe("HomeViewSectionActivity", () => {
         [
           {
             "action": "tappedActivityGroup",
-            "context_module": "home-view-section-latest-activity",
+            "context_module": "latestActivityRail",
             "context_screen_owner_type": "home",
-            "destination_screen_owner_type": "vanityurlentity",
+            "destination_path": "/viewing-room/id-2",
             "horizontal_slide_position": 1,
             "module_height": "single",
             "type": "thumbnail",
