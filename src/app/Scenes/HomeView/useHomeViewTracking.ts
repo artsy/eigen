@@ -9,6 +9,7 @@ import {
   TappedAuctionResultGroup,
   TappedCollectionGroup,
   TappedFairGroup,
+  TappedShowMore,
   TappedViewingRoomGroup,
 } from "@artsy/cohesion"
 import { getArtworkSignalTrackingFields } from "app/utils/getArtworkSignalTrackingFields"
@@ -210,6 +211,17 @@ export const useHomeViewTracking = () => {
         horizontal_slide_position: index,
         module_height: "double",
         type: "thumbnail",
+      }
+
+      trackEvent(payload)
+    },
+
+    tappedShowMore: (subject: string, sectionID: string) => {
+      const payload: TappedShowMore = {
+        action: ActionType.tappedShowMore,
+        context_module: formatSectionIDAsContextModule(sectionID),
+        context_screen_owner_type: OwnerType.home,
+        subject: subject,
       }
 
       trackEvent(payload)
