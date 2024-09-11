@@ -3,6 +3,7 @@ import {
   ContextModule,
   OwnerType,
   TappedArticleGroup,
+  TappedArtistGroup,
   TappedArtworkGroup,
   TappedViewingRoomGroup,
 } from "@artsy/cohesion"
@@ -70,6 +71,22 @@ export const useHomeViewTracking = () => {
           ...payload,
           destination_screen_owner_slug: articleSlug,
         }
+      }
+
+      trackEvent(payload)
+    },
+
+    tappedArtistGroup: (artistID: string, artistSlug: string, sectionID: string, index: number) => {
+      const payload: TappedArtistGroup = {
+        action: ActionType.tappedArtistGroup,
+        context_module: formatSectionIDAsContextModule(sectionID),
+        context_screen_owner_type: OwnerType.home,
+        destination_screen_owner_type: OwnerType.artist,
+        destination_screen_owner_id: artistID,
+        destination_screen_owner_slug: artistSlug,
+        horizontal_slide_position: index,
+        module_height: "double",
+        type: "thumbnail",
       }
 
       trackEvent(payload)
