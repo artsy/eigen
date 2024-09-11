@@ -281,6 +281,7 @@ jest.mock("react-native-reanimated", () => {
 
   return {
     ...require("react-native-reanimated/mock"),
+    useEvent: jest.fn(),
     FadeInRight: animationMock,
     FadeInLeft: animationMock,
     FadeIn: {
