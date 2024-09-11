@@ -107,9 +107,7 @@ describe("HomeViewSectionFairs", () => {
         [
           {
             "action": "tappedFairGroup",
-            "context_module": "home-view-section-fairs-for-you",
-            "context_screen_owner_id": undefined,
-            "context_screen_owner_slug": undefined,
+            "context_module": "fairsForYouRail",
             "context_screen_owner_type": "home",
             "destination_screen_owner_id": "fair-2-id",
             "destination_screen_owner_slug": "fair-2-slug",
