@@ -2,6 +2,7 @@ import {
   ActionType,
   ContextModule,
   OwnerType,
+  TappedActivityGroup,
   TappedArticleGroup,
   TappedArtistGroup,
   TappedArtworkGroup,
@@ -9,6 +10,7 @@ import {
   TappedAuctionResultGroup,
   TappedCollectionGroup,
   TappedFairGroup,
+  TappedHeroUnitGroup,
   TappedShowGroup,
   TappedShowMore,
   TappedViewingRoomGroup,
@@ -51,8 +53,7 @@ export const useHomeViewTracking = () => {
     },
 
     tappedActivityGroup: (destinationPath: string, sectionID: string, index: number) => {
-      // TODO: Type as TappedActivityGroup once artsy/cohesion is updated
-      const payload = {
+      const payload: TappedActivityGroup = {
         action: ActionType.tappedActivityGroup,
         context_module: formatSectionIDAsContextModule(sectionID),
         context_screen_owner_type: OwnerType.home,
@@ -192,10 +193,9 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
-    tappedHeroUnitsGroup: (destinationPath: string, sectionID: string, index: number) => {
-      // TODO: Type as TappedHeroUnitsGroup once artsy/cohesion is updated
-      const payload = {
-        action: ActionType.tappedHeroUnitsGroup,
+    tappedHeroUnitGroup: (destinationPath: string, sectionID: string, index: number) => {
+      const payload: TappedHeroUnitGroup = {
+        action: ActionType.tappedHeroUnitGroup,
         context_module: formatSectionIDAsContextModule(sectionID),
         context_screen_owner_type: OwnerType.home,
         destination_path: destinationPath,

@@ -94,7 +94,7 @@ describe("HomeViewSectionHeroUnits", () => {
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
      [
        {
-         "action": "tappedHeroUnitsGroup",
+         "action": "tappedHeroUnitGroup",
          "context_module": "heroUnitsRail",
          "context_screen_owner_type": "home",
          "destination_path": "/collection/collection-1",

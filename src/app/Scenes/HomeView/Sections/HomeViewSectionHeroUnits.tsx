@@ -14,7 +14,7 @@ interface HomeViewSectionHeroUnitsProps {
 }
 
 export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> = ({ section }) => {
-  const { tappedHeroUnitsGroup } = useHomeViewTracking()
+  const { tappedHeroUnitGroup } = useHomeViewTracking()
 
   const data = useFragment(fragment, section)
   const heroUnits = extractNodes(data.heroUnitsConnection)
@@ -47,7 +47,7 @@ export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> =
           <HeroUnit
             item={item}
             onPress={() => {
-              tappedHeroUnitsGroup(item.link.url, data.internalID, index)
+              tappedHeroUnitGroup(item.link.url, data.internalID, index)
             }}
           />
         )}
