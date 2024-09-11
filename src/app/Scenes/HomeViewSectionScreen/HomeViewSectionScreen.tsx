@@ -43,7 +43,7 @@ const HOME_SECTION_SCREEN_QUERY = graphql`
           component {
             title
           }
-          ...HomeViewSectionScreenArtworks_homeViewSectionArworks
+          ...HomeViewSectionScreenArtworks_section
         }
       }
     }

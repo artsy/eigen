@@ -1,7 +1,7 @@
 import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import { Flex, Screen, SimpleMessage, Text } from "@artsy/palette-mobile"
 import { HomeViewSectionScreenArtworksQuery } from "__generated__/HomeViewSectionScreenArtworksQuery.graphql"
-import { HomeViewSectionScreenArtworks_homeViewSectionArworks$key } from "__generated__/HomeViewSectionScreenArtworks_homeViewSectionArworks.graphql"
+import { HomeViewSectionScreenArtworks_section$key } from "__generated__/HomeViewSectionScreenArtworks_section.graphql"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import { PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
@@ -11,13 +11,13 @@ import { useRefreshControl } from "app/utils/refreshHelpers"
 import { graphql, usePaginationFragment } from "react-relay"
 
 interface ArtworksScreenHomeSection {
-  section: HomeViewSectionScreenArtworks_homeViewSectionArworks$key
+  section: HomeViewSectionScreenArtworks_section$key
 }
 
 export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> = (props) => {
   const { data, isLoadingNext, loadNext, refetch, hasNext } = usePaginationFragment<
     HomeViewSectionScreenArtworksQuery,
-    HomeViewSectionScreenArtworks_homeViewSectionArworks$key
+    HomeViewSectionScreenArtworks_section$key
   >(artworksFragment, props.section)
 
   const artworks = extractNodes(data?.artworksConnection)
@@ -54,12 +54,13 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
       style={{ paddingBottom: 120 }}
       contextModule={data.internalID as ContextModule}
       contextScreenOwnerType={data.internalID as ScreenOwnerType}
+      contextScreenOwnerId={data.internalID as string}
     />
   )
 }
 
 export const artworksFragment = graphql`
-  fragment HomeViewSectionScreenArtworks_homeViewSectionArworks on HomeViewSectionArtworks
+  fragment HomeViewSectionScreenArtworks_section on HomeViewSectionArtworks
   @refetchable(queryName: "ArtworksScreenHomeSection_viewerRefetch")
   @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
     internalID
@@ -89,7 +90,7 @@ export const artworksQuery = graphql`
   query HomeViewSectionScreenArtworksQuery($id: String!) {
     homeView {
       section(id: $id) @principalField {
-        ...HomeViewSectionScreenArtworks_homeViewSectionArworks
+        ...HomeViewSectionScreenArtworks_section
       }
     }
   }
