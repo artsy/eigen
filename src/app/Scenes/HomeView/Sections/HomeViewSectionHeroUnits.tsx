@@ -1,7 +1,8 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Flex, Spacer } from "@artsy/palette-mobile"
 import { HomeViewSectionHeroUnits_section$key } from "__generated__/HomeViewSectionHeroUnits_section.graphql"
 import { PaginationDots } from "app/Components/PaginationDots"
 import { HeroUnit } from "app/Scenes/Home/Components/HeroUnitsRail"
+import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
@@ -37,7 +38,7 @@ export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> =
   const { width } = useScreenDimensions()
 
   return (
-    <>
+    <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
       <FlatList
         data={heroUnits}
         decelerationRate="fast"
@@ -57,7 +58,7 @@ export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> =
       />
       <Spacer y={2} />
       <PaginationDots currentIndex={currentIndex} length={heroUnits.length} />
-    </>
+    </Flex>
   )
 }
 

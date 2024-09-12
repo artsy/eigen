@@ -1,4 +1,5 @@
 import { Flex, Text } from "@artsy/palette-mobile"
+import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
 import { graphql, useFragment } from "react-relay"
 
 export const HomeViewSectionGeneric: React.FC<{ section: any }> = (props) => {
@@ -8,7 +9,7 @@ export const HomeViewSectionGeneric: React.FC<{ section: any }> = (props) => {
   const title = data.component?.title
 
   return (
-    <Flex bg="black5" alignItems="center">
+    <Flex bg="black5" alignItems="center" my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
       <Text color="black60" p={2}>
         Need to render the{" "}
         <Text color="black100" fontSize="80%">

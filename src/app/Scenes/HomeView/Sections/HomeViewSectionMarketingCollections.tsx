@@ -5,6 +5,7 @@ import {
 } from "__generated__/HomeViewSectionMarketingCollections_section.graphql"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
 import { HomeViewSectionMarketingCollectionsItem } from "app/Scenes/HomeView/Sections/HomeViewSectionMarketingCollectionsItem"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
@@ -31,7 +32,7 @@ export const HomeViewSectionMarketingCollections: React.FC<
   if (!marketingCollections || marketingCollections.length === 0) return null
 
   return (
-    <Flex>
+    <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
       <Flex pl={2} pr={2}>
         <SectionTitle
           title={component.title}
