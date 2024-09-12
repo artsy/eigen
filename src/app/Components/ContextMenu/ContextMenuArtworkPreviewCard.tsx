@@ -1,5 +1,6 @@
 import { Flex, Text, useColor, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
+import { ArtworkRail2Card_artwork$data } from "__generated__/ArtworkRail2Card_artwork.graphql"
 import { ArtworkRailCard_artwork$data } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { RecentlySoldCardSection } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { ArtworkDisplayProps } from "app/Components/ContextMenu/ContextMenuArtwork"
@@ -25,7 +26,10 @@ const useFullWidth = () => {
 }
 
 export interface ContextMenuArtworkPreviewCardProps {
-  artwork: ArtworkRailCard_artwork$data | ArtworkGridItem_artwork$data
+  artwork:
+    | ArtworkRailCard_artwork$data
+    | ArtworkRail2Card_artwork$data
+    | ArtworkGridItem_artwork$data
   artworkDisplayProps?: ArtworkDisplayProps
 }
 
