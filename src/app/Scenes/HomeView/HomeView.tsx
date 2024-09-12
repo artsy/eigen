@@ -68,6 +68,7 @@ export const HomeView: React.FC = () => {
             ) : null
           }
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
+          onEndReachedThreshold={3}
         />
       </Screen.Body>
     </Screen>
@@ -140,7 +141,6 @@ const sectionsFragment = graphql`
             }
             ... on HomeViewSectionGalleries {
               internalID
-              ...HomeViewSectionGalleries_section
             }
           }
         }
