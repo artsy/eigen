@@ -69,7 +69,7 @@ export type VolleyMetric =
 class VolleyClient {
   queue: VolleyMetric[] = []
   private _dispatch = throttle(
-    () => {
+    async () => {
       const metrics = this.queue
       this.queue = []
 
@@ -81,18 +81,21 @@ class VolleyClient {
       if (!volleyURL) {
         return
       }
-      fetch(volleyURL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          serviceName: "eigen",
-          metrics,
-        }),
-      }).catch(() => {
+
+      try {
+        await fetch(volleyURL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            serviceName: "eigen",
+            metrics,
+          }),
+        })
+      } catch {
         console.error("volleyClient.ts", "Failed to post metrics to volley")
-      })
+      }
     },
     1000,
     {

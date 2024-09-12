@@ -1,20 +1,29 @@
 import { volleyClient } from "app/utils/volleyClient"
+import { Middleware, RelayRequestAny, RelayNetworkLayerRequest } from "react-relay-network-modern"
 
-export function timingMiddleware() {
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  return (next) => (req) => {
+export function timingMiddleware(): Middleware {
+  return (next) => async (req) => {
     const startTime = Date.now()
-    const operation = req.operation.name || "UnknownOperation"
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    return next(req).then((res) => {
+    const operation = isSingleRequest(req) ? req.operation.name : "UnknownOperation"
+    return next(req).then(async (res) => {
       const duration = Date.now() - startTime
-      volleyClient.send({
-        type: "timing",
-        name: "graphql-request-duration",
-        timing: duration,
-        tags: [`operation:${operation}`],
-      })
+
+      try {
+        await volleyClient.send({
+          type: "timing",
+          name: "graphql-request-duration",
+          timing: duration,
+          tags: [`operation:${operation}`],
+        })
+      } catch (error) {
+        console.error("Error in timingMiddleware", error)
+      }
+
       return res
     })
   }
+}
+
+function isSingleRequest(req: RelayRequestAny): req is RelayNetworkLayerRequest {
+  return (req as RelayNetworkLayerRequest).operation !== undefined
 }
