@@ -328,7 +328,7 @@ describe("ArtworkRailCard", () => {
         expect(screen.getByText("Increased Interest")).toBeOnTheScreen()
       })
 
-      it("renders the increased interest signal even when there's a curator's pick signal", () => {
+      it("renders the curator's pick signal even when there's a increased interest signal", () => {
         renderWithRelay({
           Artwork: () => ({
             collectorSignals: {
@@ -338,8 +338,8 @@ describe("ArtworkRailCard", () => {
           }),
         })
 
-        expect(screen.getByText("Increased Interest")).toBeOnTheScreen()
-        expect(screen.queryByText("Curators’ Pick")).not.toBeOnTheScreen()
+        expect(screen.getByText("Curators’ Pick")).toBeOnTheScreen()
+        expect(screen.queryByText("Increased Interest")).not.toBeOnTheScreen()
       })
 
       it("renders the curators pick signal", () => {

@@ -50,7 +50,7 @@ describe("ArtworkSocialSignal", () => {
       expect(screen.queryByText("Increased Interest")).not.toBeOnTheScreen()
     })
 
-    it("renders the increased interest signal even if with curator's pick singal available", () => {
+    it("renders the curator's pick signal even if with increased interest singal available", () => {
       renderWithRelay({
         Artwork: () => ({
           collectorSignals: {
@@ -60,7 +60,7 @@ describe("ArtworkSocialSignal", () => {
         }),
       })
 
-      expect(screen.getByText("Increased Interest")).toBeOnTheScreen()
+      expect(screen.getByText("Curators’ Pick")).toBeOnTheScreen()
     })
   })
 

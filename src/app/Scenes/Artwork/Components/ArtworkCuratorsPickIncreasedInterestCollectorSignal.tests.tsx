@@ -44,9 +44,9 @@ describe("ArtworkCuratorsPickIncreasedInterestCollectorSignal", () => {
       }),
     })
 
-    expect(screen.getByText("Increased Interest")).toBeOnTheScreen()
-    expect(screen.getByText("Based on collector activity in the past 14 days")).toBeOnTheScreen()
-    expect(screen.queryByText("Curators’ Pick")).not.toBeOnTheScreen()
+    expect(screen.getByText("Curators’ Pick")).toBeOnTheScreen()
+    expect(screen.getByText("Hand selected by Artsy curators this week")).toBeOnTheScreen()
+    expect(screen.queryByText("Increased Interest")).not.toBeOnTheScreen()
   })
 
   it("renders the curators pick signal", () => {

@@ -18,16 +18,16 @@ export const ArtworkCuratorsPickIncreasedInterestCollectorSignal: React.FC<Props
     return null
   }
 
-  const { increasedInterest } = collectorSignals
+  const { curatorsPick } = collectorSignals
 
-  let singalTitle = "Curators’ Pick"
-  let signalDescription = "Hand selected by Artsy curators this week"
-  let SignalIcon = VerifiedIcon
+  let singalTitle = "Increased Interest"
+  let signalDescription = "Based on collector activity in the past 14 days"
+  let SignalIcon = TrendingIcon
 
-  if (increasedInterest) {
-    singalTitle = "Increased Interest"
-    signalDescription = "Based on collector activity in the past 14 days"
-    SignalIcon = TrendingIcon
+  if (curatorsPick) {
+    singalTitle = "Curators’ Pick"
+    signalDescription = "Hand selected by Artsy curators this week"
+    SignalIcon = VerifiedIcon
   }
 
   return (
