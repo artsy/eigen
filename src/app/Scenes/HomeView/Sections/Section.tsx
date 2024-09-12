@@ -4,10 +4,10 @@ import { HomeViewSectionActivity } from "app/Scenes/HomeView/Sections/HomeViewSe
 import { HomeViewSectionArticles } from "app/Scenes/HomeView/Sections/HomeViewSectionArticles"
 import { HomeViewSectionArticlesCards } from "app/Scenes/HomeView/Sections/HomeViewSectionArticlesCards"
 import { HomeViewSectionArtistsPaginationContainer } from "app/Scenes/HomeView/Sections/HomeViewSectionArtists"
-import { HomeViewSectionArtworks } from "app/Scenes/HomeView/Sections/HomeViewSectionArtworks"
+import { HomeViewSectionArtworksQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionArtworks"
 import { HomeViewSectionAuctionResults } from "app/Scenes/HomeView/Sections/HomeViewSectionAuctionResults"
 import { HomeViewSectionFairs } from "app/Scenes/HomeView/Sections/HomeViewSectionFairs"
-import { HomeViewSectionFeaturedCollection } from "app/Scenes/HomeView/Sections/HomeViewSectionFeaturedCollection"
+import { HomeViewSectionFeaturedCollectionQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionFeaturedCollection"
 import { HomeViewSectionGalleries } from "app/Scenes/HomeView/Sections/HomeViewSectionGalleries"
 import { HomeViewSectionGeneric } from "app/Scenes/HomeView/Sections/HomeViewSectionGeneric"
 import { HomeViewSectionHeroUnits } from "app/Scenes/HomeView/Sections/HomeViewSectionHeroUnits"
@@ -26,9 +26,16 @@ type SectionT = ExtractNodeType<SectionsConnection>
 export const Section: React.FC<{ section: SectionT }> = (props) => {
   const { section } = props
 
+  if (!section.internalID) {
+    if (__DEV__) {
+      throw new Error("Section has no internalID")
+    }
+    return null
+  }
+
   switch (section.component?.type) {
     case "FeaturedCollection":
-      return <HomeViewSectionFeaturedCollection section={section} />
+      return <HomeViewSectionFeaturedCollectionQueryRenderer sectionID={section.internalID} />
     case "ArticlesCard":
       return <HomeViewSectionArticlesCards section={section} />
   }
@@ -37,7 +44,7 @@ export const Section: React.FC<{ section: SectionT }> = (props) => {
     case "HomeViewSectionActivity":
       return <HomeViewSectionActivity section={section} />
     case "HomeViewSectionArtworks":
-      return <HomeViewSectionArtworks section={section} />
+      return <HomeViewSectionArtworksQueryRenderer sectionID={section.internalID} />
     case "HomeViewSectionGalleries":
       return <HomeViewSectionGalleries section={section} />
     case "HomeViewSectionGeneric":

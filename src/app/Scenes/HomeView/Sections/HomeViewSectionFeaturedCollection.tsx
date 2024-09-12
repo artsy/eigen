@@ -1,11 +1,13 @@
 import { Flex, Image, Spacer, Text } from "@artsy/palette-mobile"
+import { HomeViewSectionFeaturedCollectionQuery } from "__generated__/HomeViewSectionFeaturedCollectionQuery.graphql"
 import { HomeViewSectionFeaturedCollection_section$key } from "__generated__/HomeViewSectionFeaturedCollection_section.graphql"
 import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { TouchableOpacity, useWindowDimensions } from "react-native"
-import { graphql, useFragment } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionFeaturedCollectionProps {
   section: HomeViewSectionFeaturedCollection_section$key
@@ -86,3 +88,30 @@ const fragment = graphql`
     }
   }
 `
+
+const homeViewSectionFeaturedCollectionQuery = graphql`
+  query HomeViewSectionFeaturedCollectionQuery($id: String!) {
+    homeView {
+      section(id: $id) {
+        ...HomeViewSectionFeaturedCollection_section
+      }
+    }
+  }
+`
+
+export const HomeViewSectionFeaturedCollectionQueryRenderer: React.FC<{
+  sectionID: string
+}> = withSuspense((props) => {
+  const data = useLazyLoadQuery<HomeViewSectionFeaturedCollectionQuery>(
+    homeViewSectionFeaturedCollectionQuery,
+    {
+      id: props.sectionID,
+    }
+  )
+
+  if (!data.homeView.section) {
+    return null
+  }
+
+  return <HomeViewSectionFeaturedCollection section={data.homeView.section} />
+})
