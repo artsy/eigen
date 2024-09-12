@@ -19,6 +19,7 @@ import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/Cr
 import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
+import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { DurationProvider } from "app/Components/Countdown"
@@ -80,6 +81,8 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   /** allows for artwork to be added to recent searches */
   updateRecentSearchesOnTap?: boolean
   urgencyTagTextStyle?: TextProps
+  hideIncreasedInterestSignal?: boolean
+  hideCuratorsPickSignal?: boolean
 }
 
 export const Artwork: React.FC<ArtworkProps> = ({
@@ -110,6 +113,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
   trackTap,
   updateRecentSearchesOnTap = false,
   urgencyTagTextStyle,
+  hideIncreasedInterestSignal = false,
+  hideCuratorsPickSignal = false,
 }) => {
   const itemRef = useRef<any>()
   const color = useColor()
@@ -118,6 +123,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
   const AREnablePartnerOfferSignals = useFeatureFlag("AREnablePartnerOfferSignals")
   const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
+  const AREnableCuratorsPicksAndInterestSignals = useFeatureFlag(
+    "AREnableCuratorsPicksAndInterestSignals"
+  )
 
   let filterParams: any = undefined
 
@@ -355,6 +363,16 @@ export const Artwork: React.FC<ArtworkProps> = ({
                     </Text>
                   </Box>
                 )}
+                {!isAuction &&
+                  !displayLimitedTimeOfferSignal &&
+                  !!collectorSignals &&
+                  !!AREnableCuratorsPicksAndInterestSignals && (
+                    <ArtworkSocialSignal
+                      collectorSignals={collectorSignals}
+                      hideCuratorsPick={hideCuratorsPickSignal}
+                      hideIncreasedInterest={hideIncreasedInterestSignal}
+                    />
+                  )}
                 {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
                   <>
                     <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
@@ -592,6 +610,7 @@ export default createFragmentContainer(Artwork, {
           lotClosesAt
         }
         ...ArtworkAuctionTimer_collectorSignals
+        ...ArtworkSocialSignal_collectorSignals
       }
       ...useSaveArtworkToArtworkLists_artwork
     }

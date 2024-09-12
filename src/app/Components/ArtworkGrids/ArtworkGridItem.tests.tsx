@@ -644,6 +644,54 @@ describe("ArtworkGridItem", () => {
         expect(screen.getByText("$3,700 (7 bids)")).toBeOnTheScreen()
       })
     })
+
+    describe("social signal", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({
+          AREnableCuratorsPicksAndInterestSignals: true,
+        })
+      })
+
+      it("renders the increased interest signal", () => {
+        renderWithRelay({
+          Artwork: () => ({
+            collectorSignals: {
+              increasedInterest: true,
+              curatorsPick: false,
+            },
+          }),
+        })
+
+        expect(screen.getByText("Increased Interest")).toBeOnTheScreen()
+      })
+
+      it("renders the increased interest signal even when there's a curator's pick signal", () => {
+        renderWithRelay({
+          Artwork: () => ({
+            collectorSignals: {
+              increasedInterest: true,
+              curatorsPick: true,
+            },
+          }),
+        })
+
+        expect(screen.getByText("Increased Interest")).toBeOnTheScreen()
+        expect(screen.queryByText("Curators’ Pick")).not.toBeOnTheScreen()
+      })
+
+      it("renders the curators pick signal", () => {
+        renderWithRelay({
+          Artwork: () => ({
+            collectorSignals: {
+              increasedInterest: false,
+              curatorsPick: true,
+            },
+          }),
+        })
+
+        expect(screen.getByText("Curators’ Pick")).toBeOnTheScreen()
+      })
+    })
   })
 })
 

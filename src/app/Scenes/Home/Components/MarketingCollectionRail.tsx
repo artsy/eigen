@@ -108,6 +108,8 @@ export const MarketingCollectionRail: React.FC<MarketingCollectionRailProps> = m
           dark
           showPartnerName
           onMorePress={handleMorePress}
+          hideCuratorsPickSignal
+          hideIncreasedInterestSignal
         />
       </Flex>
     )
