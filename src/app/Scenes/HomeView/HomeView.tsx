@@ -10,28 +10,54 @@ import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
 import { HomeViewSectionsConnection_viewer$key } from "__generated__/HomeViewSectionsConnection_viewer.graphql"
 import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
 import { Section } from "app/Scenes/HomeView/Sections/Section"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { extractNodes } from "app/utils/extractNodes"
-import { Suspense } from "react"
-import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
+import { Suspense, useState } from "react"
+import { RefreshControl } from "react-native"
+import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 const SECTION_SEPARATOR_HEIGHT: SpacingUnitDSValueNumber = 6
+const NUMBER_OF_SECTIONS_TO_LOAD = 10
 
 export const HomeView: React.FC = () => {
   const queryData = useLazyLoadQuery<HomeViewQuery>(homeViewScreenQuery, {
-    count: 10,
+    count: NUMBER_OF_SECTIONS_TO_LOAD,
   })
+  const [isRefreshing, setIsRefreshing] = useState(false)
 
   const { data, loadNext, hasNext } = usePaginationFragment<
     HomeViewQuery,
     HomeViewSectionsConnection_viewer$key
   >(sectionsFragment, queryData.viewer)
 
+  const flatlistRef = useBottomTabsScrollToTop("home")
+
   const sections = extractNodes(data?.homeView.sectionsConnection)
+
+  const handleRefresh = () => {
+    if (isRefreshing) return
+
+    setIsRefreshing(true)
+
+    fetchQuery(getRelayEnvironment(), homeViewScreenQuery, {
+      count: NUMBER_OF_SECTIONS_TO_LOAD,
+    }).subscribe({
+      complete: () => {
+        setIsRefreshing(false)
+      },
+      error: (error: Error) => {
+        setIsRefreshing(false)
+        console.error(error)
+      },
+    })
+  }
 
   return (
     <Screen safeArea={false}>
       <Screen.Body fullwidth>
         <Screen.FlatList
+          innerRef={flatlistRef}
           data={sections}
           keyExtractor={(item) => `${item.internalID || ""}`}
           renderItem={({ item }) => {
@@ -47,6 +73,7 @@ export const HomeView: React.FC = () => {
               </Flex>
             ) : null
           }
+          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
         />
       </Screen.Body>
     </Screen>
