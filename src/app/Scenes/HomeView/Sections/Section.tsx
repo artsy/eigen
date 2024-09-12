@@ -1,8 +1,8 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { HomeViewSectionsConnection_viewer$data } from "__generated__/HomeViewSectionsConnection_viewer.graphql"
 import { HomeViewSectionActivityQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionActivity"
-import { HomeViewSectionArticles } from "app/Scenes/HomeView/Sections/HomeViewSectionArticles"
-import { HomeViewSectionArticlesCards } from "app/Scenes/HomeView/Sections/HomeViewSectionArticlesCards"
+import { HomeViewSectionArticlesQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionArticles"
+import { HomeViewSectionArticlesCardsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionArticlesCards"
 import { HomeViewSectionArtistsPaginationContainer } from "app/Scenes/HomeView/Sections/HomeViewSectionArtists"
 import { HomeViewSectionArtworksQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionArtworks"
 import { HomeViewSectionAuctionResults } from "app/Scenes/HomeView/Sections/HomeViewSectionAuctionResults"
@@ -37,7 +37,7 @@ export const Section: React.FC<{ section: SectionT }> = (props) => {
     case "FeaturedCollection":
       return <HomeViewSectionFeaturedCollectionQueryRenderer sectionID={section.internalID} />
     case "ArticlesCard":
-      return <HomeViewSectionArticlesCards section={section} />
+      return <HomeViewSectionArticlesCardsQueryRenderer sectionID={section.internalID} />
   }
 
   switch (section.__typename) {
@@ -50,7 +50,7 @@ export const Section: React.FC<{ section: SectionT }> = (props) => {
     case "HomeViewSectionGeneric":
       return <HomeViewSectionGeneric section={section} />
     case "HomeViewSectionArticles":
-      return <HomeViewSectionArticles section={section} />
+      return <HomeViewSectionArticlesQueryRenderer sectionID={section.internalID} />
     case "HomeViewSectionArtists":
       return <HomeViewSectionArtistsPaginationContainer section={section} />
     case "HomeViewSectionAuctionResults":

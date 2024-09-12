@@ -1,9 +1,11 @@
 import { Flex, Separator, Text, Touchable, useSpace } from "@artsy/palette-mobile"
+import { HomeViewSectionArticlesCardsQuery } from "__generated__/HomeViewSectionArticlesCardsQuery.graphql"
 import { HomeViewSectionArticlesCards_section$key } from "__generated__/HomeViewSectionArticlesCards_section.graphql"
 import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { graphql, useFragment } from "react-relay"
+import { withSuspense } from "app/utils/hooks/withSuspense"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionArticlesCardsProps {
   section: HomeViewSectionArticlesCards_section$key
@@ -91,3 +93,30 @@ const fragment = graphql`
     }
   }
 `
+
+const homeViewSectionArticlesCardsQuery = graphql`
+  query HomeViewSectionArticlesCardsQuery($id: String!) {
+    homeView {
+      section(id: $id) {
+        ...HomeViewSectionArticlesCards_section
+      }
+    }
+  }
+`
+
+export const HomeViewSectionArticlesCardsQueryRenderer: React.FC<{
+  sectionID: string
+}> = withSuspense((props) => {
+  const data = useLazyLoadQuery<HomeViewSectionArticlesCardsQuery>(
+    homeViewSectionArticlesCardsQuery,
+    {
+      id: props.sectionID,
+    }
+  )
+
+  if (!data.homeView.section) {
+    return null
+  }
+
+  return <HomeViewSectionArticlesCards section={data.homeView.section} />
+})
