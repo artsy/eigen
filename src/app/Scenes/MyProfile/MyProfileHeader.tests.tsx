@@ -17,7 +17,7 @@ describe("MyProfileHeader", () => {
     `,
   })
 
-  it("Header Settings onPress navigates to my profile edit", () => {
+  it("onPress navigates to my-profile/edit", () => {
     renderWithRelay()
     const profileImage = screen.getByTestId("profile-image")
 
@@ -29,8 +29,8 @@ describe("MyProfileHeader", () => {
     })
   })
 
-  describe("new settings screen", () => {
-    it("renders new settings screen", async () => {
+  describe("settings screen", () => {
+    it("renders settings screen", async () => {
       renderWithRelay({
         Me: () => ({
           name: "Collector Collectorson",
