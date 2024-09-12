@@ -92,7 +92,7 @@ class VolleyClient {
           metrics,
         }),
       }).catch(() => {
-        console.error("volleyClient.ts", "Failed to post metrics to volley")
+        console.log("volleyClient.ts", "Failed to post metrics to volley")
       })
     },
     1000,
@@ -107,7 +107,7 @@ class VolleyClient {
       tags: [...(metric.tags ?? []), getDeviceTag(), ...(await getNetworkTags())],
     })
     this._dispatch()?.catch(() => {
-      console.error("volleyClient.ts", "Failed to dispatch metrics to volley")
+      console.log("volleyClient.ts", "Failed to dispatch metrics to volley")
     })
   }
 }
