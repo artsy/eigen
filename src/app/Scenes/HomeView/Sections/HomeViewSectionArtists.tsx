@@ -1,4 +1,5 @@
 import { Flex, Spacer, Spinner } from "@artsy/palette-mobile"
+import { HomeViewSectionArtistsMainQuery } from "__generated__/HomeViewSectionArtistsMainQuery.graphql"
 import { HomeViewSectionArtists_section$data } from "__generated__/HomeViewSectionArtists_section.graphql"
 import {
   IMAGE_MAX_HEIGHT as ARTIST_RAIL_IMAGE_MAX_HEIGHT,
@@ -11,8 +12,14 @@ import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeVie
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { ExtractNodeType } from "app/utils/relayHelpers"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import {
+  createPaginationContainer,
+  graphql,
+  RelayPaginationProp,
+  useLazyLoadQuery,
+} from "react-relay"
 
 interface HomeViewSectionArtworksProps {
   section: HomeViewSectionArtists_section$data
@@ -163,3 +170,27 @@ export const HomeViewSectionArtistsPaginationContainer = createPaginationContain
     `,
   }
 )
+
+const homeViewSectionArtistsQuery = graphql`
+  query HomeViewSectionArtistsMainQuery($id: String!) {
+    homeView {
+      section(id: $id) {
+        ...HomeViewSectionArtists_section
+      }
+    }
+  }
+`
+
+export const HomeViewSectionArtistsQueryRenderer: React.FC<{
+  sectionID: string
+}> = withSuspense((props) => {
+  const data = useLazyLoadQuery<HomeViewSectionArtistsMainQuery>(homeViewSectionArtistsQuery, {
+    id: props.sectionID,
+  })
+
+  if (!data.homeView.section) {
+    return null
+  }
+
+  return <HomeViewSectionArtistsPaginationContainer section={data.homeView.section} />
+})

@@ -3,7 +3,7 @@ import { HomeViewSectionsConnection_viewer$data } from "__generated__/HomeViewSe
 import { HomeViewSectionActivityQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionActivity"
 import { HomeViewSectionArticlesQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionArticles"
 import { HomeViewSectionArticlesCardsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionArticlesCards"
-import { HomeViewSectionArtistsPaginationContainer } from "app/Scenes/HomeView/Sections/HomeViewSectionArtists"
+import { HomeViewSectionArtistsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionArtists"
 import { HomeViewSectionArtworksQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionArtworks"
 import { HomeViewSectionAuctionResults } from "app/Scenes/HomeView/Sections/HomeViewSectionAuctionResults"
 import { HomeViewSectionFairs } from "app/Scenes/HomeView/Sections/HomeViewSectionFairs"
@@ -52,7 +52,7 @@ export const Section: React.FC<{ section: SectionT }> = (props) => {
     case "HomeViewSectionArticles":
       return <HomeViewSectionArticlesQueryRenderer sectionID={section.internalID} />
     case "HomeViewSectionArtists":
-      return <HomeViewSectionArtistsPaginationContainer section={section} />
+      return <HomeViewSectionArtistsQueryRenderer sectionID={section.internalID} />
     case "HomeViewSectionAuctionResults":
       return <HomeViewSectionAuctionResults section={section} />
     case "HomeViewSectionHeroUnits":
