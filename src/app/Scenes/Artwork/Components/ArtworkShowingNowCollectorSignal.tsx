@@ -44,7 +44,6 @@ export const ArtworkShowingNowCollectorSignal: React.FC<Props> = ({ artwork }) =
 const fragment = graphql`
   fragment ArtworkShowingNowCollectorSignal_artwork on Artwork {
     collectorSignals {
-      primaryLabel
       runningShow {
         endAt
         href
