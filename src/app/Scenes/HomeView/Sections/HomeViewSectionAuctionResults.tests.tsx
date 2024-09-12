@@ -82,7 +82,7 @@ describe("HomeViewSectionAuctionResults", () => {
         [
           {
             "action": "tappedAuctionResultGroup",
-            "context_module": "home-view-section-latest-auction-results",
+            "context_module": "latestAuctionResults",
             "context_screen_owner_type": "home",
             "destination_screen_owner_id": "auction-result-2-id",
             "destination_screen_owner_slug": "auction-result-2-slug",

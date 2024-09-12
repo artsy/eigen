@@ -1,4 +1,3 @@
-import { ContextModule, OwnerType, tappedEntityGroup } from "@artsy/cohesion"
 import { Flex, Spacer, Spinner } from "@artsy/palette-mobile"
 import { HomeViewSectionArtists_section$data } from "__generated__/HomeViewSectionArtists_section.graphql"
 import {
@@ -8,11 +7,11 @@ import {
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { PAGE_SIZE } from "app/Components/constants"
+import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
-import { useTracking } from "react-tracking"
 
 interface HomeViewSectionArtworksProps {
   section: HomeViewSectionArtists_section$data
@@ -25,7 +24,7 @@ export const HomeViewSectionArtists: React.FC<HomeViewSectionArtworksProps> = ({
   relay,
 }) => {
   const { hasMore, isLoading, loadMore } = relay
-  const tracking = useTracking()
+  const tracking = useHomeViewTracking()
 
   const title = section.component?.title
   const componentHref = section.component?.behaviors?.viewAll?.href
@@ -89,13 +88,11 @@ export const HomeViewSectionArtists: React.FC<HomeViewSectionArtworksProps> = ({
               artist={artist}
               showDefaultFollowButton
               onPress={() => {
-                tracking.trackEvent(
-                  tracks.tapArtistCard({
-                    artistID: artist.internalID,
-                    artistSlug: artist.slug,
-                    index,
-                    sectionID: section.internalID,
-                  })
+                tracking.tappedArtistGroup(
+                  artist.internalID,
+                  artist.slug,
+                  section.internalID,
+                  index
                 )
               }}
             />
@@ -165,28 +162,3 @@ export const HomeViewSectionArtistsPaginationContainer = createPaginationContain
     `,
   }
 )
-
-export const tracks = {
-  tapArtistCard: ({
-    artistID,
-    artistSlug,
-    index,
-    sectionID,
-  }: {
-    artistID: string
-    artistSlug: string
-    index: number
-    sectionID: string
-  }) => {
-    return tappedEntityGroup({
-      contextModule: sectionID as ContextModule,
-      contextScreenOwnerType: OwnerType.home,
-      destinationScreenOwnerType: OwnerType.artist,
-      destinationScreenOwnerId: artistID,
-      destinationScreenOwnerSlug: artistSlug,
-      horizontalSlidePosition: index,
-      moduleHeight: "double",
-      type: "thumbnail",
-    })
-  },
-}

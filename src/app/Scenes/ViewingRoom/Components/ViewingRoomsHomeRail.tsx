@@ -1,12 +1,16 @@
 import { ContextModule } from "@artsy/cohesion"
 import { Flex, Spacer, Touchable } from "@artsy/palette-mobile"
-import { ViewingRoomsHomeRailQuery } from "__generated__/ViewingRoomsHomeRailQuery.graphql"
+import {
+  ViewingRoomsHomeRailQuery,
+  ViewingRoomsHomeRailQuery$data,
+} from "__generated__/ViewingRoomsHomeRailQuery.graphql"
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { MediumCard } from "app/Components/Cards"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { Schema } from "app/utils/track"
 import { times } from "lodash"
 import React, { memo, Suspense } from "react"
@@ -75,9 +79,16 @@ export const ViewingRoomsRailPlaceholder = () => (
 
 interface ViewingRoomsHomeRailProps {
   trackInfo?: { screen: string; ownerType: string; contextModule?: ContextModule }
+  onPress?: (
+    viewingRoom: ExtractNodeType<ViewingRoomsHomeRailQuery$data["viewingRooms"]>,
+    index: number
+  ) => void
 }
 
-export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({ trackInfo }) => {
+export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({
+  trackInfo,
+  onPress,
+}) => {
   const queryData = useLazyLoadQuery<ViewingRoomsHomeRailQuery>(ViewingRoomsHomeRailMainQuery, {})
   const regular = extractNodes(queryData.viewingRooms)
   const { trackEvent } = useTracking()
@@ -91,11 +102,15 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({ trac
         data={regular}
         initialNumToRender={isTablet() ? 10 : 5}
         keyExtractor={(item) => `${item.internalID}`}
-        renderItem={({ item }) => {
+        renderItem={({ item, index }) => {
           const tag = tagForStatus(item.status, item.distanceToOpen, item.distanceToClose)
           return (
             <Touchable
               onPress={() => {
+                if (onPress) {
+                  return onPress(item, index)
+                }
+
                 if (!!item.slug) {
                   trackEvent(
                     trackInfo
