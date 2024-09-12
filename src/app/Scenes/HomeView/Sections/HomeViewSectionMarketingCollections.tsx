@@ -1,4 +1,5 @@
 import { Flex } from "@artsy/palette-mobile"
+import { HomeViewSectionMarketingCollectionsQuery } from "__generated__/HomeViewSectionMarketingCollectionsQuery.graphql"
 import {
   HomeViewSectionMarketingCollections_section$data,
   HomeViewSectionMarketingCollections_section$key,
@@ -10,8 +11,9 @@ import { HomeViewSectionMarketingCollectionsItem } from "app/Scenes/HomeView/Sec
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { ExtractNodeType } from "app/utils/relayHelpers"
-import { graphql, useFragment } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionMarketingCollectionsProps {
   section: HomeViewSectionMarketingCollections_section$key
@@ -96,3 +98,30 @@ const fragment = graphql`
     }
   }
 `
+
+const homeViewSectionMarketingCollectionsQuery = graphql`
+  query HomeViewSectionMarketingCollectionsQuery($id: String!) {
+    homeView {
+      section(id: $id) {
+        ...HomeViewSectionMarketingCollections_section
+      }
+    }
+  }
+`
+
+export const HomeViewSectionMarketingCollectionsQueryRenderer: React.FC<{
+  sectionID: string
+}> = withSuspense((props) => {
+  const data = useLazyLoadQuery<HomeViewSectionMarketingCollectionsQuery>(
+    homeViewSectionMarketingCollectionsQuery,
+    {
+      id: props.sectionID,
+    }
+  )
+
+  if (!data.homeView.section) {
+    return null
+  }
+
+  return <HomeViewSectionMarketingCollections section={data.homeView.section} />
+})
