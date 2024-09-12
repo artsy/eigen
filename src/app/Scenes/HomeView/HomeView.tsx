@@ -119,7 +119,6 @@ const sectionsFragment = graphql`
             }
             ... on HomeViewSectionAuctionResults {
               internalID
-              ...HomeViewSectionAuctionResults_section
             }
             ... on HomeViewSectionHeroUnits {
               internalID
