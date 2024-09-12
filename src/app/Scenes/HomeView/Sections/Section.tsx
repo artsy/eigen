@@ -6,7 +6,7 @@ import { HomeViewSectionArticlesCardsQueryRenderer } from "app/Scenes/HomeView/S
 import { HomeViewSectionArtistsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionArtists"
 import { HomeViewSectionArtworksQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionArtworks"
 import { HomeViewSectionAuctionResultsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionAuctionResults"
-import { HomeViewSectionFairs } from "app/Scenes/HomeView/Sections/HomeViewSectionFairs"
+import { HomeViewSectionFairsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionFairs"
 import { HomeViewSectionFeaturedCollectionQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionFeaturedCollection"
 import { HomeViewSectionGalleries } from "app/Scenes/HomeView/Sections/HomeViewSectionGalleries"
 import { HomeViewSectionGeneric } from "app/Scenes/HomeView/Sections/HomeViewSectionGeneric"
@@ -58,7 +58,7 @@ export const Section: React.FC<{ section: SectionT }> = (props) => {
     case "HomeViewSectionHeroUnits":
       return <HomeViewSectionHeroUnitsQueryRenderer sectionID={section.internalID} />
     case "HomeViewSectionFairs":
-      return <HomeViewSectionFairs section={section} />
+      return <HomeViewSectionFairsQueryRenderer sectionID={section.internalID} />
     case "HomeViewSectionMarketingCollections":
       return <HomeViewSectionMarketingCollections section={section} />
     case "HomeViewSectionShows":
