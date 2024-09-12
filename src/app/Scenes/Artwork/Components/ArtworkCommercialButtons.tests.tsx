@@ -451,6 +451,7 @@ describe("ArtworkCommercialButtons", () => {
         ...ArtworkFixture,
         isOfferable: true,
         isInquireable: true,
+        collectorSignals: null,
       }
 
       renderWithRelay(
@@ -480,6 +481,7 @@ describe("ArtworkCommercialButtons", () => {
         ...ArtworkFixture,
         isOfferable: true,
         isInquireable: true,
+        collectorSignals: null,
       }
 
       renderWithRelay(
