@@ -17,7 +17,7 @@ const Container = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
-  border-top-width: 1;
+  border-top-width: 1px;
   border-top-color: ${themeGet("colors.black10")};
   padding: 10px;
   background-color: ${(p: ContainerProps) => (p.active ? "white" : themeGet("colors.black5"))};

@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { NavigationState } from "@react-navigation/native"
-import { GlobalStore } from "app/store/GlobalStore"
+import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { useEffect, useState } from "react"
 
 export const PREVIOUS_LAUNCH_COUNT_KEY = "previous-launch-count-key"
@@ -11,7 +11,12 @@ export const PREVIOUS_LAUNCH_COUNT_KEY = "previous-launch-count-key"
  */
 export const useReloadedDevNavigationState = (key: string) => {
   const [isReady, setIsReady] = useState(__DEV__ ? false : true)
-  const launchCount = GlobalStore.useAppState((state) => state.native.sessionState.launchCount)
+  const launchCount = ArtsyNativeModule.launchCount
+  // TODO: This seems to be unreliable and return undefined in some cases
+  // Look if should be removed in favor of the native module
+  // const globalLaunchCount = GlobalStore.useAppState(
+  //   (state) => state.native.sessionState.launchCount
+  // )
   const [initialState, setInitialState] = useState()
 
   useEffect(() => {
@@ -28,6 +33,7 @@ export const useReloadedDevNavigationState = (key: string) => {
         // If the state is undefined, we don't want to set it
         if (
           state !== undefined &&
+          launchCount !== undefined &&
           // only reinstate state cache for bundle reloads, not for app starts/restarts
           previousLaunchCount === launchCount.toString()
         ) {
@@ -35,8 +41,10 @@ export const useReloadedDevNavigationState = (key: string) => {
         }
       } finally {
         setIsReady(true)
-        // Save the current launch count for the next time
-        AsyncStorage.setItem(PREVIOUS_LAUNCH_COUNT_KEY, launchCount.toString())
+        if (launchCount !== undefined) {
+          // Save the current launch count for the next time
+          AsyncStorage.setItem(PREVIOUS_LAUNCH_COUNT_KEY, launchCount.toString())
+        }
       }
     }
 

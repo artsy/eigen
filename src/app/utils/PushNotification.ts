@@ -233,9 +233,9 @@ export const handleNotificationAction = (notification: Omit<ReceivedNotification
 export async function configure() {
   PushNotification.configure({
     // (optional) Called when Token is generated (iOS and Android)
-    onRegister: (token) => {
+    onRegister: async (token) => {
       try {
-        saveToken(token.token)
+        await saveToken(token.token)
       } catch (e) {
         captureMessage(`Error saving push notification token: ${e}`, "info")
       }
