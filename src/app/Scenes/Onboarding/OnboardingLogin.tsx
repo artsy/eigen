@@ -212,6 +212,11 @@ export const OnboardingLoginWithEmail: React.FC<OnboardingLoginProps> = ({ navig
         return
       }
 
+      if (res === "network_error") {
+        setErrors({ password: "Network error. Please try again." }) // pragma: allowlist secret
+        return
+      }
+
       if (res !== "success" && res !== "otp_missing" && res !== "on_demand_otp_missing") {
         // For security purposes, we are returning a generic error message
         setErrors({ password: "Incorrect email or password" }) // pragma: allowlist secret

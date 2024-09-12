@@ -39,6 +39,7 @@ type SignInStatus =
   | "on_demand_otp_missing"
   | "invalid_otp"
   | "auth_blocked"
+  | "network_error"
 
 interface EmailOAuthParams {
   oauthProvider: "email"
@@ -295,89 +296,93 @@ export const getAuthModel = (): AuthModel => ({
       jwt: "jwt",
     }
 
-    const result = await actions.gravityUnauthenticatedRequest({
-      path: `/oauth2/access_token`,
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: {
-        email,
-        oauth_provider: oauthProvider,
-        otp_attempt: oauthMode === "email" ? args?.otp ?? undefined : undefined,
-        password: oauthMode === "email" ? args.password : undefined,
-        oauth_token: oauthMode === "accessToken" ? args.accessToken : undefined,
-        jwt: oauthMode === "jwt" ? args.jwt : undefined,
-        apple_uid: oauthProvider === "apple" ? args.appleUid : undefined,
-        id_token: oauthMode === "idToken" ? args.idToken : undefined,
-        grant_type: grantTypeMap[oauthMode],
-        client_id: clientKey,
-        client_secret: clientSecret,
-        scope: "offline_access",
-      },
-    })
-
-    if (result.status === 403) {
-      return "auth_blocked"
-    }
-
-    if (result.status === 201) {
-      const { expires_in, access_token: userAccessToken } = await result.json()
-      const user = await actions.getUser({ accessToken: userAccessToken })
-
-      actions.setSessionState({
-        isUserIdentified: false,
-      })
-
-      actions.setState({
-        userAccessToken,
-        userAccessTokenExpiresIn: expires_in,
-        userID: user.id,
-        userEmail: email,
-        onboardingState: onboardingState ?? "complete",
-      })
-
-      // TODO: do we need to set requested push permissions false here
-
-      if (oauthProvider === "email") {
-        Keychain.setInternetCredentials(
-          store.getStoreState().devicePrefs.environment.strings.webURL.slice("https://".length),
+    try {
+      const result = await actions.gravityUnauthenticatedRequest({
+        path: `/oauth2/access_token`,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: {
           email,
-          args.password
-        )
+          oauth_provider: oauthProvider,
+          otp_attempt: oauthMode === "email" ? args?.otp ?? undefined : undefined,
+          password: oauthMode === "email" ? args.password : undefined,
+          oauth_token: oauthMode === "accessToken" ? args.accessToken : undefined,
+          jwt: oauthMode === "jwt" ? args.jwt : undefined,
+          apple_uid: oauthProvider === "apple" ? args.appleUid : undefined,
+          id_token: oauthMode === "idToken" ? args.idToken : undefined,
+          grant_type: grantTypeMap[oauthMode],
+          client_id: clientKey,
+          client_secret: clientSecret,
+          scope: "offline_access",
+        },
+      })
+
+      if (result.status === 403) {
+        return "auth_blocked"
       }
 
-      actions.identifyUser()
+      if (result.status === 201) {
+        const { expires_in, access_token: userAccessToken } = await result.json()
+        const user = await actions.getUser({ accessToken: userAccessToken })
 
-      if (user.id !== store.getState().previousSessionUserID) {
-        const storeActions = store.getStoreActions()
+        actions.setSessionState({
+          isUserIdentified: false,
+        })
 
-        storeActions.search.clearRecentSearches()
-        storeActions.recentPriceRanges.clearAllPriceRanges()
+        actions.setState({
+          userAccessToken,
+          userAccessTokenExpiresIn: expires_in,
+          userID: user.id,
+          userEmail: email,
+          onboardingState: onboardingState ?? "complete",
+        })
+
+        // TODO: do we need to set requested push permissions false here
+
+        if (oauthProvider === "email") {
+          Keychain.setInternetCredentials(
+            store.getStoreState().devicePrefs.environment.strings.webURL.slice("https://".length),
+            email,
+            args.password
+          )
+        }
+
+        actions.identifyUser()
+
+        if (user.id !== store.getState().previousSessionUserID) {
+          const storeActions = store.getStoreActions()
+
+          storeActions.search.clearRecentSearches()
+          storeActions.recentPriceRanges.clearAllPriceRanges()
+        }
+
+        postEventToProviders(tracks.loggedIn(oauthProvider))
+
+        onSignIn?.()
+
+        // Setting up user prefs from gravity after successsfull login.
+        GlobalStore.actions.userPrefs.fetchRemoteUserPrefs()
+
+        return "success"
       }
 
-      postEventToProviders(tracks.loggedIn(oauthProvider))
+      const { error_description: errorDescription } = await result.json()
 
-      onSignIn?.()
+      switch (errorDescription) {
+        case "missing two-factor authentication code":
+          return "otp_missing"
+        case "missing on-demand authentication code":
+          return "on_demand_otp_missing"
+        case "invalid two-factor authentication code":
+          return "invalid_otp"
 
-      // Setting up user prefs from gravity after successsfull login.
-      GlobalStore.actions.userPrefs.fetchRemoteUserPrefs()
-
-      return "success"
-    }
-
-    const { error_description: errorDescription } = await result.json()
-
-    switch (errorDescription) {
-      case "missing two-factor authentication code":
-        return "otp_missing"
-      case "missing on-demand authentication code":
-        return "on_demand_otp_missing"
-      case "invalid two-factor authentication code":
-        return "invalid_otp"
-
-      default:
-        return "failure"
+        default:
+          return "failure"
+      }
+    } catch {
+      return "network_error"
     }
   }),
   signUp: thunk(async (actions, args) => {
