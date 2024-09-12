@@ -108,7 +108,11 @@ class VolleyClient {
       ...metric,
       tags: [...(metric.tags ?? []), getDeviceTag(), ...(await getNetworkTags())],
     })
-    this._dispatch()
+    try {
+      await this._dispatch()
+    } catch {
+      console.error("volleyClient.ts", "Failed to dispatch metrics to volley")
+    }
   }
 }
 
