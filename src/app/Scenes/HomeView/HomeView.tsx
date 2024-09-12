@@ -116,8 +116,6 @@ const sectionsFragment = graphql`
             }
             ... on HomeViewSectionArtworks {
               internalID
-              ...HomeViewSectionArtworks_section
-              ...HomeViewSectionFeaturedCollection_section
             }
             ... on HomeViewSectionArtists {
               internalID
