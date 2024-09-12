@@ -12,5 +12,7 @@ export function updateExperimentsContext(newContext: IMutableContext) {
 export const forceFetchToggles = throttle(unthrottledForceFetch, 2000, { trailing: false })
 function unthrottledForceFetch(unleashEnv: "production" | "staging") {
   const client = getUnleashClient({ env: unleashEnv })
-  client.start()
+  client.start().catch((error) => {
+    console.log("Error starting unleash client", error)
+  })
 }

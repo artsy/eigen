@@ -38,7 +38,9 @@ export function getUnleashClient(props?: {
       envBeingUsed = props?.env
     }
     unleashClient = createUnleashClient(nullToUndef(props?.userId))
-    unleashClient.start()
+    unleashClient.start().catch((error) => {
+      console.log("Error starting unleash client", error)
+    })
   }
   return unleashClient
 }
@@ -48,8 +50,6 @@ let unleashClient: UnleashClient | null = null
 const storageName = (name: string) => `unleash-values:${name}`
 
 const createUnleashClient = (userId: string | undefined) => {
-  console.debug("Unleash creating client", envBeingUsed)
-
   return new UnleashClient({
     url:
       envBeingUsed === "production"
