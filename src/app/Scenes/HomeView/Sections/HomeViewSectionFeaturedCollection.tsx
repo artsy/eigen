@@ -11,11 +11,9 @@ import {
 } from "@artsy/palette-mobile"
 import { HomeViewSectionFeaturedCollectionQuery } from "__generated__/HomeViewSectionFeaturedCollectionQuery.graphql"
 import { HomeViewSectionFeaturedCollection_section$key } from "__generated__/HomeViewSectionFeaturedCollection_section.graphql"
+import { ArtworkRail2 } from "app/Components/ArtworkRail/ArtworkRail2"
 import { ARTWORK_RAIL_CARD_IMAGE_HEIGHT } from "app/Components/ArtworkRail/ArtworkRailCard"
-import {
-  LARGE_RAIL_IMAGE_WIDTH,
-  LargeArtworkRail,
-} from "app/Components/ArtworkRail/LargeArtworkRail"
+import { LARGE_RAIL_IMAGE_WIDTH } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
@@ -93,7 +91,7 @@ export const HomeViewSectionFeaturedCollection: React.FC<HomeViewSectionFeatured
 
       <Spacer y={4} />
 
-      <LargeArtworkRail
+      <ArtworkRail2
         dark
         showPartnerName
         artworks={artworks}
@@ -125,7 +123,7 @@ const fragment = graphql`
     artworksConnection(first: 10) {
       edges {
         node {
-          ...LargeArtworkRail_artworks
+          ...ArtworkRail2_artworks
         }
       }
     }

@@ -1,4 +1,4 @@
-import { Spacer, Flex, Join } from "@artsy/palette-mobile"
+import { Flex, Join, Spacer } from "@artsy/palette-mobile"
 import { LargeArtworkRail_artworks$key } from "__generated__/LargeArtworkRail_artworks.graphql"
 import {
   PlaceholderBox,
@@ -8,7 +8,7 @@ import {
 } from "app/utils/placeholders"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
 import { times } from "lodash"
-import { useFragment, graphql } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { ArtworkRail, ArtworkRailProps } from "./ArtworkRail"
 import { ARTWORK_RAIL_CARD_IMAGE_HEIGHT } from "./ArtworkRailCard"
 

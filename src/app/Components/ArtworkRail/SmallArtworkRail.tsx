@@ -1,6 +1,6 @@
 import { SmallArtworkRail_artworks$key } from "__generated__/SmallArtworkRail_artworks.graphql"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
-import { useFragment, graphql } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { ArtworkRail, ArtworkRailProps } from "./ArtworkRail"
 
 type SmallArtworkRailProps = Omit<ArtworkRailProps, "artworks" | "size"> & {

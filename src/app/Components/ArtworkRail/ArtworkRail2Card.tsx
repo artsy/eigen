@@ -17,6 +17,8 @@ import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/Cr
 import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
 import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
+import { LARGE_RAIL_IMAGE_WIDTH } from "app/Components/ArtworkRail/LargeArtworkRail"
+import { SMALL_RAIL_IMAGE_WIDTH } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { HEART_ICON_SIZE } from "app/Components/constants"
@@ -36,8 +38,6 @@ import { useMemo, useState } from "react"
 import { Dimensions, GestureResponderEvent, PixelRatio, TouchableHighlight } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
-import { LARGE_RAIL_IMAGE_WIDTH } from "./LargeArtworkRail"
-import { SMALL_RAIL_IMAGE_WIDTH } from "./SmallArtworkRail"
 
 export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = 90
 
@@ -84,8 +84,6 @@ export const ArtworkRail2Card: React.FC<ArtworkRail2CardProps> = ({
   hideCuratorsPickSignal = false,
   ...restProps
 }) => {
-  const EXTRALARGE_RAIL_CARD_IMAGE_WIDTH = useExtraLargeWidth()
-
   const { trackEvent } = useTracking()
   const fontScale = PixelRatio.getFontScale()
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
@@ -495,14 +493,6 @@ const ArtworkRail2CardImage: React.FC<ArtworkRail2CardImageProps> = ({
       return Dimensions.get("screen").width / aspectRatio
     }
   }
-
-  const enableNewArtworkRail = true
-
-  const imageHeight = 215
-  const imageMinWidth = 140
-  const imageMaxWidth = 340
-
-  const imageWidth = enableNewArtworkRail ? undefined : containerWidth
 
   return (
     <Flex>

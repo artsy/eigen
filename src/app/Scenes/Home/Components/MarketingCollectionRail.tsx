@@ -1,7 +1,7 @@
 import { Flex, Image, Spacer, Text } from "@artsy/palette-mobile"
 import { MarketingCollectionRail_home$key } from "__generated__/MarketingCollectionRail_home.graphql"
 import { MarketingCollectionRail_marketingCollection$key } from "__generated__/MarketingCollectionRail_marketingCollection.graphql"
-import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
+import { ArtworkRail2 } from "app/Components/ArtworkRail/ArtworkRail2"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -11,7 +11,7 @@ import {
 } from "app/utils/track/ArtworkActions"
 import { memo } from "react"
 import { TouchableOpacity, useWindowDimensions } from "react-native"
-import { useFragment, graphql } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface MarketingCollectionRailProps extends ArtworkActionTrackingProps {
@@ -101,7 +101,7 @@ export const MarketingCollectionRail: React.FC<MarketingCollectionRailProps> = m
 
         <Spacer y={4} />
 
-        <LargeArtworkRail
+        <ArtworkRail2
           {...trackingProps}
           artworks={artworks}
           onPress={handleArtworkPress}
@@ -143,7 +143,7 @@ const marketingCollectionFragment = graphql`
           internalID
           slug
           href
-          ...LargeArtworkRail_artworks
+          ...ArtworkRail2_artworks
         }
       }
     }

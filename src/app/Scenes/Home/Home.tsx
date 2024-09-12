@@ -24,7 +24,7 @@ import { Home_notificationsConnection$data } from "__generated__/Home_notificati
 import { Home_recommendedAuctionLots$data } from "__generated__/Home_recommendedAuctionLots.graphql"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
-import { LargeArtworkRailPlaceholder } from "app/Components/ArtworkRail/LargeArtworkRail"
+import { ArtworkRail2Placeholder } from "app/Components/ArtworkRail/ArtworkRail2"
 import { ArtistRailFragmentContainer } from "app/Components/Home/ArtistRails/ArtistRail"
 import { RecommendedArtistsRailFragmentContainer } from "app/Components/Home/ArtistRails/RecommendedArtistsRail"
 import { useDismissSavedArtwork } from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
@@ -676,7 +676,7 @@ const HomePlaceholder: React.FC = () => {
         <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
         <Spacer y={0.5} />
         <Flex flexDirection="row">
-          <LargeArtworkRailPlaceholder />
+          <ArtworkRail2Placeholder />
         </Flex>
       </Box>
       <ModuleSeparator />

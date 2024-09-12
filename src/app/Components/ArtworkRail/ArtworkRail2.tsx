@@ -1,17 +1,27 @@
-import { Box, Spacer } from "@artsy/palette-mobile"
+import { Box, Flex, Join, Spacer } from "@artsy/palette-mobile"
 import {
   ArtworkRail2_artworks$data,
   ArtworkRail2_artworks$key,
 } from "__generated__/ArtworkRail2_artworks.graphql"
-import { ArtworkRail2Card } from "app/Components/ArtworkRail/ArtworkRail2Card"
-import { ArtworkCardSize } from "app/Components/ArtworkRail/ArtworkRailCard"
+import {
+  ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
+  ArtworkRail2Card,
+} from "app/Components/ArtworkRail/ArtworkRail2Card"
+import { LARGE_RAIL_IMAGE_WIDTH } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
 import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
 import {
+  PlaceholderBox,
+  PlaceholderText,
+  RandomWidthPlaceholderText,
+  useMemoizedRandom,
+} from "app/utils/placeholders"
+import {
   ArtworkActionTrackingProps,
   extractArtworkActionTrackingProps,
 } from "app/utils/track/ArtworkActions"
+import { times } from "lodash"
 import React, { ReactElement } from "react"
 import { FlatList, ViewabilityConfig } from "react-native"
 import { isTablet } from "react-native-device-info"
@@ -28,7 +38,6 @@ interface CommonArtworkRail2Props {
   listRef?: React.RefObject<FlatList<any>>
   onEndReached?: () => void
   onEndReachedThreshold?: number
-  size: ArtworkCardSize
   showSaveIcon?: boolean
   onMorePress?: () => void
   viewabilityConfig?: ViewabilityConfig | undefined
@@ -44,7 +53,6 @@ export interface ArtworkRail2Props extends CommonArtworkRail2Props, ArtworkActio
 
 export const ArtworkRail2: React.FC<ArtworkRail2Props> = ({
   listRef,
-  size,
   onPress,
   onEndReached,
   onEndReachedThreshold,
@@ -150,3 +158,16 @@ const artworksFragment = graphql`
 `
 
 const SpacerComponent = () => <Spacer x={2} />
+
+export const ArtworkRail2Placeholder: React.FC = () => (
+  <Join separator={<Spacer x="15px" />}>
+    {times(3 + useMemoizedRandom() * 10).map((index) => (
+      <Flex key={index}>
+        <PlaceholderBox height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT} width={LARGE_RAIL_IMAGE_WIDTH} />
+        <Spacer y={2} />
+        <PlaceholderText width={295} />
+        <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
+      </Flex>
+    ))}
+  </Join>
+)
