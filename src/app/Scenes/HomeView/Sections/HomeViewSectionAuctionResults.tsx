@@ -18,7 +18,7 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
 ) => {
   const section = useFragment(sectionFragment, props.section)
   const { width: screenWidth } = useScreenDimensions()
-  const { tappedAuctionResultGroup } = useHomeViewTracking()
+  const tracking = useHomeViewTracking()
 
   if (!section || !section.auctionResultsConnection?.totalCount) {
     return null
@@ -47,7 +47,12 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
               auctionResult={item}
               width={screenWidth * 0.9}
               onTrack={() => {
-                tappedAuctionResultGroup(item.internalID, item.slug, section.internalID, index)
+                tracking.tappedAuctionResultGroup(
+                  item.internalID,
+                  item.slug,
+                  section.internalID,
+                  index
+                )
               }}
             />
           )

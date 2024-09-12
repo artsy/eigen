@@ -24,7 +24,7 @@ export const HomeViewSectionArtists: React.FC<HomeViewSectionArtworksProps> = ({
   relay,
 }) => {
   const { hasMore, isLoading, loadMore } = relay
-  const { tappedArtistGroup } = useHomeViewTracking()
+  const tracking = useHomeViewTracking()
 
   const title = section.component?.title
   const componentHref = section.component?.behaviors?.viewAll?.href
@@ -88,7 +88,12 @@ export const HomeViewSectionArtists: React.FC<HomeViewSectionArtworksProps> = ({
               artist={artist}
               showDefaultFollowButton
               onPress={() => {
-                tappedArtistGroup(artist.internalID, artist.slug, section.internalID, index)
+                tracking.tappedArtistGroup(
+                  artist.internalID,
+                  artist.slug,
+                  section.internalID,
+                  index
+                )
               }}
             />
           )

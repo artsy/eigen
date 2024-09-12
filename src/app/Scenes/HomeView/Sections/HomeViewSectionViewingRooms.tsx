@@ -14,7 +14,7 @@ export const HomeViewSectionViewingRooms: React.FC<{
   section: HomeViewSectionViewingRooms_section$key
 }> = ({ section }) => {
   const data = useFragment(viewingRoomsFragment, section)
-  const { tappedViewingRoomGroup } = useHomeViewTracking()
+  const tracking = useHomeViewTracking()
   const componentHref = data.component?.behaviors?.viewAll?.href
 
   return (
@@ -34,7 +34,12 @@ export const HomeViewSectionViewingRooms: React.FC<{
       <Suspense fallback={<ViewingRoomsRailPlaceholder />}>
         <LegacyViewingRoomsHomeRail
           onPress={(viewingRoom, index) => {
-            tappedViewingRoomGroup(viewingRoom.internalID, viewingRoom.slug, data.internalID, index)
+            tracking.tappedViewingRoomGroup(
+              viewingRoom.internalID,
+              viewingRoom.slug,
+              data.internalID,
+              index
+            )
 
             navigate(`/viewing-room/${viewingRoom.slug}`)
           }}

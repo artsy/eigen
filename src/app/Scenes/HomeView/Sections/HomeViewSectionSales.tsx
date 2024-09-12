@@ -16,7 +16,7 @@ interface HomeViewSectionSalesProps {
 }
 
 export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({ section }) => {
-  const { tappedAuctionGroup } = useHomeViewTracking()
+  const tracking = useHomeViewTracking()
 
   const listRef = useRef<FlatList<any>>()
   const data = useFragment(fragment, section)
@@ -56,7 +56,7 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({ sect
             <HomeViewSectionSalesItem
               sale={item}
               onPress={(sale) => {
-                tappedAuctionGroup(sale.internalID, sale.slug, data.internalID, index)
+                tracking.tappedAuctionGroup(sale.internalID, sale.slug, data.internalID, index)
               }}
             />
           )

@@ -19,7 +19,7 @@ interface HomeViewSectionMarketingCollectionsProps {
 export const HomeViewSectionMarketingCollections: React.FC<
   HomeViewSectionMarketingCollectionsProps
 > = ({ section }) => {
-  const { tappedMarketingCollectionGroup } = useHomeViewTracking()
+  const tracking = useHomeViewTracking()
 
   const data = useFragment(fragment, section)
   const component = data.component
@@ -58,7 +58,7 @@ export const HomeViewSectionMarketingCollections: React.FC<
               key={item.internalID}
               marketingCollection={item}
               onPress={(collection) => {
-                tappedMarketingCollectionGroup(
+                tracking.tappedMarketingCollectionGroup(
                   collection.internalID,
                   collection.slug,
                   data.internalID,

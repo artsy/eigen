@@ -11,7 +11,7 @@ interface HomeViewSectionGalleriesProps {
   section: HomeViewSectionGalleries_section$key
 }
 export const HomeViewSectionGalleries: React.FC<HomeViewSectionGalleriesProps> = (props) => {
-  const { tappedShowMore } = useHomeViewTracking()
+  const tracking = useHomeViewTracking()
 
   const { width, height } = useScreenDimensions()
   const section = useFragment(HomeViewSectionGalleriesFragment, props.section)
@@ -28,7 +28,7 @@ export const HomeViewSectionGalleries: React.FC<HomeViewSectionGalleriesProps> =
   const componentHref = section.component?.behaviors?.viewAll?.href
 
   const handleOnPress = () => {
-    tappedShowMore("Explore", section.internalID)
+    tracking.tappedShowMore("Explore", section.internalID)
 
     if (componentHref) {
       navigate(componentHref)

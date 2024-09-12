@@ -10,7 +10,7 @@ interface HomeViewSectionArticlesProps {
 
 export const HomeViewSectionArticles: React.FC<HomeViewSectionArticlesProps> = (props) => {
   const section = useFragment(sectionFragment, props.section)
-  const { tappedArticleGroup } = useHomeViewTracking()
+  const tracking = useHomeViewTracking()
 
   if (!section.articlesConnection) {
     return null
@@ -23,7 +23,7 @@ export const HomeViewSectionArticles: React.FC<HomeViewSectionArticlesProps> = (
       title={section.component?.title ?? ""}
       articlesConnection={section.articlesConnection}
       onTrack={(article, index) => {
-        tappedArticleGroup(article.internalID, article.slug, section.internalID, index)
+        tracking.tappedArticleGroup(article.internalID, article.slug, section.internalID, index)
       }}
       onSectionTitlePress={
         componentHref

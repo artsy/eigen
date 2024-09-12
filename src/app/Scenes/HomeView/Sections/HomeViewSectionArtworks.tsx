@@ -16,7 +16,7 @@ interface HomeViewSectionArtworksProps {
 }
 
 export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = ({ section }) => {
-  const { tappedArtworkGroup } = useHomeViewTracking()
+  const tracking = useHomeViewTracking()
 
   const data = useFragment(fragment, section)
   const title = data.component?.title
@@ -31,7 +31,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     artwork: LargeArtworkRail_artworks$data[0] | SmallArtworkRail_artworks$data[0],
     position: number
   ) => {
-    tappedArtworkGroup(
+    tracking.tappedArtworkGroup(
       artwork.internalID,
       artwork.slug,
       artwork.collectorSignals,

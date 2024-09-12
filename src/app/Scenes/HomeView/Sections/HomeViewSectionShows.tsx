@@ -12,14 +12,14 @@ export const HomeViewSectionShows: React.FC<HomeViewSectionShowsProps> = ({ sect
   const enableShowsForYouLocation = useFeatureFlag("AREnableShowsForYouLocation")
   const data = useFragment(fragment, section)
   const component = data.component
-  const { tappedShowGroup } = useHomeViewTracking()
+  const tracking = useHomeViewTracking()
 
   return (
     <ShowsRailContainer
       title={component?.title || "Shows"}
       disableLocation={!enableShowsForYouLocation}
       onTrack={(show, index) => {
-        tappedShowGroup(show.internalID, show.slug, data.internalID, index)
+        tracking.tappedShowGroup(show.internalID, show.slug, data.internalID, index)
       }}
     />
   )

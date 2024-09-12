@@ -15,7 +15,7 @@ interface HomeViewSectionActivityProps {
 }
 
 export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = ({ section }) => {
-  const { tappedActivityGroup } = useHomeViewTracking()
+  const tracking = useHomeViewTracking()
 
   const data = useFragment(sectionFragment, section)
   const component = data.component
@@ -68,7 +68,7 @@ export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = (
             <ActivityRailItem
               item={item}
               onPress={() => {
-                tappedActivityGroup(item.targetHref, data.internalID, index)
+                tracking.tappedActivityGroup(item.targetHref, data.internalID, index)
               }}
             />
           )

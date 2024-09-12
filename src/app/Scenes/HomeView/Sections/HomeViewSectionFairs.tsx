@@ -13,7 +13,7 @@ interface HomeViewSectionFairsProps {
 }
 
 export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = ({ section }) => {
-  const { tappedFairGroup } = useHomeViewTracking()
+  const tracking = useHomeViewTracking()
 
   const data = useFragment(fragment, section)
   const component = data.component
@@ -49,7 +49,7 @@ export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = ({ sect
               key={item.internalID}
               fair={item}
               onPress={(fair) => {
-                tappedFairGroup(fair.internalID, fair.slug, data.internalID, index)
+                tracking.tappedFairGroup(fair.internalID, fair.slug, data.internalID, index)
               }}
             />
           )
