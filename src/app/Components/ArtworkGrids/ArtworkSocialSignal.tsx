@@ -16,10 +16,6 @@ export const ArtworkSocialSignal: React.FC<ArtworkSocialSignalProps> = ({
 }) => {
   const { curatorsPick, increasedInterest } = useFragment(fragment, collectorSignals)
 
-  if ((hideIncreasedInterest && hideCuratorsPick) || (!curatorsPick && !increasedInterest)) {
-    return null
-  }
-
   const primaryColor = dark ? "white100" : "black100"
 
   switch (true) {
