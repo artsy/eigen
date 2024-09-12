@@ -12,7 +12,7 @@ import { HomeViewSectionGalleries } from "app/Scenes/HomeView/Sections/HomeViewS
 import { HomeViewSectionGeneric } from "app/Scenes/HomeView/Sections/HomeViewSectionGeneric"
 import { HomeViewSectionHeroUnitsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionHeroUnits"
 import { HomeViewSectionMarketingCollectionsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionMarketingCollections"
-import { HomeViewSectionSales } from "app/Scenes/HomeView/Sections/HomeViewSectionSales"
+import { HomeViewSectionSalesQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionSales"
 import { HomeViewSectionShowsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionShows"
 import { HomeViewSectionViewingRoomsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionViewingRooms"
 import { ExtractNodeType } from "app/utils/relayHelpers"
@@ -66,7 +66,7 @@ export const Section: React.FC<{ section: SectionT }> = (props) => {
     case "HomeViewSectionViewingRooms":
       return <HomeViewSectionViewingRoomsQueryRenderer sectionID={section.internalID} />
     case "HomeViewSectionSales":
-      return <HomeViewSectionSales section={section} />
+      return <HomeViewSectionSalesQueryRenderer sectionID={section.internalID} />
     default:
       if (__DEV__) {
         return (

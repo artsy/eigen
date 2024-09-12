@@ -163,7 +163,6 @@ const sectionsFragment = graphql`
             }
             ... on HomeViewSectionSales {
               internalID
-              ...HomeViewSectionSales_section
             }
             ... on HomeViewSectionGalleries {
               internalID

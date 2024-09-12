@@ -1,4 +1,5 @@
 import { Flex } from "@artsy/palette-mobile"
+import { HomeViewSectionSalesQuery } from "__generated__/HomeViewSectionSalesQuery.graphql"
 import { HomeViewSectionSales_section$key } from "__generated__/HomeViewSectionSales_section.graphql"
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
@@ -12,9 +13,10 @@ import {
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { useRef } from "react"
 import { FlatList } from "react-native-gesture-handler"
-import { graphql, useFragment } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionSalesProps {
   section: HomeViewSectionSales_section$key
@@ -102,3 +104,27 @@ const fragment = graphql`
     }
   }
 `
+
+const homeViewSectionSalesQuery = graphql`
+  query HomeViewSectionSalesQuery($id: String!) {
+    homeView {
+      section(id: $id) {
+        ...HomeViewSectionSales_section
+      }
+    }
+  }
+`
+
+export const HomeViewSectionSalesQueryRenderer: React.FC<{
+  sectionID: string
+}> = withSuspense((props) => {
+  const data = useLazyLoadQuery<HomeViewSectionSalesQuery>(homeViewSectionSalesQuery, {
+    id: props.sectionID,
+  })
+
+  if (!data.homeView.section) {
+    return null
+  }
+
+  return <HomeViewSectionSales section={data.homeView.section} />
+})
