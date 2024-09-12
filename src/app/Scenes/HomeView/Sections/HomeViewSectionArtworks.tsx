@@ -1,5 +1,6 @@
 import { ContextModule } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
+import { HomeViewSectionArtworksQuery } from "__generated__/HomeViewSectionArtworksQuery.graphql"
 import { HomeViewSectionArtworks_section$key } from "__generated__/HomeViewSectionArtworks_section.graphql"
 import { LargeArtworkRail_artworks$data } from "__generated__/LargeArtworkRail_artworks.graphql"
 import { SmallArtworkRail_artworks$data } from "__generated__/SmallArtworkRail_artworks.graphql"
@@ -10,8 +11,9 @@ import { getSectionHref } from "app/Scenes/HomeView/helpers/getSectionHref"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { View } from "react-native"
-import { graphql, useFragment } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionArtworksProps {
   section: HomeViewSectionArtworks_section$key
@@ -109,3 +111,27 @@ const fragment = graphql`
     }
   }
 `
+
+const homeViewSectionArtworksQuery = graphql`
+  query HomeViewSectionArtworksQuery($id: String!) {
+    homeView {
+      section(id: $id) {
+        ...HomeViewSectionArtworks_section
+      }
+    }
+  }
+`
+
+export const HomeViewSectionArtworksQueryRenderer: React.FC<{
+  sectionID: string
+}> = withSuspense((props) => {
+  const data = useLazyLoadQuery<HomeViewSectionArtworksQuery>(homeViewSectionArtworksQuery, {
+    id: props.sectionID,
+  })
+
+  if (!data.homeView.section) {
+    return null
+  }
+
+  return <HomeViewSectionArtworks section={data.homeView.section} />
+})
