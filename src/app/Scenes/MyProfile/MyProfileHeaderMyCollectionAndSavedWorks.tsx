@@ -1,6 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Screen, Tabs, VisualClueDot } from "@artsy/palette-mobile"
-import { ArtworkListsQR } from "app/Scenes/ArtworkLists/ArtworkLists"
 import { MyCollectionBottomSheetModals } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModals"
 import { MyCollectionQueryRenderer } from "app/Scenes/MyCollection/MyCollection"
 import { MyCollectionInsightsQR } from "app/Scenes/MyCollection/Screens/Insights/MyCollectionInsights"
@@ -10,7 +9,6 @@ import {
 } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { MyProfileHeaderQueryRenderer } from "app/Scenes/MyProfile/MyProfileHeader"
 import { GlobalStore } from "app/store/GlobalStore"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -18,7 +16,6 @@ import { useMemo } from "react"
 
 export enum Tab {
   collection = "My Collection",
-  savedWorks = "Saves",
   insights = "Insights",
 }
 
@@ -31,8 +28,6 @@ interface MyProfileTabProps {
 }
 
 export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<Props> = ({ initialTab }) => {
-  const newCollectorSettings = useFeatureFlag("AREnableNewCollectorSettings")
-  const { isDismissed } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
   const viewKind = MyCollectionTabsStore.useStoreState((state) => state.viewKind)
   const { showVisualClue } = useVisualClue()
 
@@ -41,15 +36,6 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<Props> = ({ init
   if (showVisualClue("MyCollectionInsights")) {
     indicators.push({
       tabName: Tab.insights,
-      Component: () => {
-        return <VisualClueDot style={{ left: -29, alignSelf: "flex-end", marginTop: 15 }} />
-      },
-    })
-  }
-  // if the progress of saved artwork onboarding reached the final stage of the chain we show the dot
-  if (isDismissed("find-saved-artwork").status && !isDismissed("save-highlight").status) {
-    indicators.push({
-      tabName: Tab.savedWorks,
       Component: () => {
         return <VisualClueDot style={{ left: -29, alignSelf: "flex-end", marginTop: 15 }} />
       },
@@ -87,13 +73,6 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<Props> = ({ init
                 <MyCollectionInsightsQR />
               </Tabs.Lazy>
             </Tabs.Tab>
-            {!newCollectorSettings ? (
-              <Tabs.Tab name={Tab.savedWorks} label={Tab.savedWorks}>
-                <Tabs.Lazy>
-                  <ArtworkListsQR />
-                </Tabs.Lazy>
-              </Tabs.Tab>
-            ) : null}
           </Tabs>
         </Screen.Body>
       </Screen>

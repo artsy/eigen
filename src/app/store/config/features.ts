@@ -81,12 +81,6 @@ export const features = {
     readyForRelease: true,
     echoFlagKey: "AREnableNewAuctionsRailCard",
   },
-  AREnableNewCollectorSettings: {
-    description: "Enable New Collector Settings",
-    readyForRelease: true,
-    echoFlagKey: "AREnableNewCollectorSettings",
-    showInDevMenu: true,
-  },
   // TODO: need to refresh it, not released yet but marked as ready since 3 months
   AREnableLongPressOnArtworkCards: {
     description: "Enable Context Menu on artwork cards",
