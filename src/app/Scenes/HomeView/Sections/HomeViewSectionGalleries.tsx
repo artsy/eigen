@@ -1,18 +1,17 @@
-import { ActionType, OwnerType } from "@artsy/cohesion"
 import { Button, Flex, Text, Touchable, useScreenDimensions } from "@artsy/palette-mobile"
 import { HomeViewSectionGalleries_section$key } from "__generated__/HomeViewSectionGalleries_section.graphql"
+import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { isTablet } from "react-native-device-info"
 import FastImage from "react-native-fast-image"
 import LinearGradient from "react-native-linear-gradient"
 import { graphql, useFragment } from "react-relay"
-import { useTracking } from "react-tracking"
 
 interface HomeViewSectionGalleriesProps {
   section: HomeViewSectionGalleries_section$key
 }
 export const HomeViewSectionGalleries: React.FC<HomeViewSectionGalleriesProps> = (props) => {
-  const tracking = useTracking()
+  const tracking = useHomeViewTracking()
 
   const { width, height } = useScreenDimensions()
   const section = useFragment(HomeViewSectionGalleriesFragment, props.section)
@@ -29,9 +28,9 @@ export const HomeViewSectionGalleries: React.FC<HomeViewSectionGalleriesProps> =
   const componentHref = section.component?.behaviors?.viewAll?.href
 
   const handleOnPress = () => {
-    if (componentHref) {
-      tracking.trackEvent(tracks.tappedSection({ sectionID: section.internalID }))
+    tracking.tappedShowMore("Explore", section.internalID)
 
+    if (componentHref) {
       navigate(componentHref)
     }
   }
@@ -105,12 +104,3 @@ const HomeViewSectionGalleriesFragment = graphql`
     }
   }
 `
-
-export const tracks = {
-  tappedSection: ({ sectionID }: { sectionID: string }) => ({
-    action: ActionType.tappedShowMore,
-    context_module: sectionID,
-    context_screen_owner_type: OwnerType.home,
-    destination_screen_owner_type: OwnerType.galleriesForYou,
-  }),
-}

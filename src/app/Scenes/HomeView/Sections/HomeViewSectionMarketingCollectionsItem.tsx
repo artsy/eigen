@@ -69,6 +69,7 @@ export const HomeViewSectionMarketingCollectionsItem: FC<
 
 const fragment = graphql`
   fragment HomeViewSectionMarketingCollectionsItem_marketingCollection on MarketingCollection {
+    internalID
     title
     slug
     artworksConnection(first: 5, sort: "-decayed_merch") {

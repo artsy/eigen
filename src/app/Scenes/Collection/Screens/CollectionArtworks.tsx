@@ -27,6 +27,8 @@ interface CollectionArtworksProps {
   relay: RelayPaginationProp
 }
 
+const CURATORS_PICKS_SLUGS = ["curators-picks-emerging-artists", "curators-picks-blue-chip-artists"]
+
 export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collection, relay }) => {
   const { width } = useScreenDimensions()
   const space = useSpace()
@@ -104,6 +106,8 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
     const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
     const imgHeight = imgWidth / imgAspectRatio
 
+    const hideSignals = CURATORS_PICKS_SLUGS.includes(collection.slug)
+
     return (
       <Flex
         pl={columnIndex === 0 ? 0 : 1}
@@ -117,6 +121,8 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
           contextScreenOwnerSlug={collection.slug}
           artwork={item}
           height={imgHeight}
+          hideCuratorsPickSignal={hideSignals}
+          hideIncreasedInterestSignal={hideSignals}
         />
       </Flex>
     )

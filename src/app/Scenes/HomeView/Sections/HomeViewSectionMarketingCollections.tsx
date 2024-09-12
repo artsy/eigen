@@ -1,4 +1,3 @@
-import { ContextModule } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
 import {
   HomeViewSectionMarketingCollections_section$data,
@@ -6,13 +5,12 @@ import {
 } from "__generated__/HomeViewSectionMarketingCollections_section.graphql"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
-import LegacyHomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { HomeViewSectionMarketingCollectionsItem } from "app/Scenes/HomeView/Sections/HomeViewSectionMarketingCollectionsItem"
+import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { graphql, useFragment } from "react-relay"
-import { useTracking } from "react-tracking"
 
 interface HomeViewSectionMarketingCollectionsProps {
   section: HomeViewSectionMarketingCollections_section$key
@@ -21,7 +19,7 @@ interface HomeViewSectionMarketingCollectionsProps {
 export const HomeViewSectionMarketingCollections: React.FC<
   HomeViewSectionMarketingCollectionsProps
 > = ({ section }) => {
-  const tracking = useTracking()
+  const tracking = useHomeViewTracking()
 
   const data = useFragment(fragment, section)
   const component = data.component
@@ -59,15 +57,13 @@ export const HomeViewSectionMarketingCollections: React.FC<
             <HomeViewSectionMarketingCollectionsItem
               key={item.internalID}
               marketingCollection={item}
-              onPress={(marketCollection) => {
-                const tapEvent = LegacyHomeAnalytics.collectionThumbnailTapEvent(
-                  marketCollection.slug,
-                  index,
-                  data.internalID as ContextModule
+              onPress={(collection) => {
+                tracking.tappedMarketingCollectionGroup(
+                  collection.internalID,
+                  collection.slug,
+                  data.internalID,
+                  index
                 )
-                if (tapEvent) {
-                  tracking.trackEvent(tapEvent)
-                }
               }}
             />
           )

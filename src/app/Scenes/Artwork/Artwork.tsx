@@ -10,6 +10,7 @@ import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsCo
 import { AuctionTimerState, currentTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { ArtworkAuctionCreateAlertHeader } from "app/Scenes/Artwork/ArtworkAuctionCreateAlertHeader"
+import { ArtworkCuratorsPickIncreasedInterestCollectorSignal } from "app/Scenes/Artwork/Components/ArtworkCuratorsPickIncreasedInterestCollectorSignal"
 import { ArtworkDimensionsClassificationAndAuthenticityFragmentContainer } from "app/Scenes/Artwork/Components/ArtworkDimensionsClassificationAndAuthenticity/ArtworkDimensionsClassificationAndAuthenticity"
 import { ArtworkErrorScreen } from "app/Scenes/Artwork/Components/ArtworkError"
 import { ArtworkPartnerOfferNote } from "app/Scenes/Artwork/Components/ArtworkPartnerOfferNote"
@@ -108,6 +109,9 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
   const allowExpiredPartnerOffers = useFeatureFlag("AREnableExpiredPartnerOffers")
   const enableAuctionHeaderAlertCTA = useFeatureFlag("AREnableAuctionHeaderAlertCTA")
   const enablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
+  const enableCuratorsPicksAndInterestSignals = useFeatureFlag(
+    "AREnableCuratorsPicksAndInterestSignals"
+  )
 
   const expectedPartnerOfferId = !!props.partner_offer_id && enablePartnerOfferOnArtworkScreen
 
@@ -306,6 +310,17 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
         sections.push({
           key: "artworkShowingNowCollectorSignal",
           element: <ArtworkShowingNowCollectorSignal artwork={artworkAboveTheFold} />,
+          excludeSeparator: true,
+          excludeVerticalMargin: true,
+        })
+      }
+
+      if (enableCuratorsPicksAndInterestSignals) {
+        sections.push({
+          key: "artworkCuratorsPickIncreasedInterestCollectorSignal",
+          element: (
+            <ArtworkCuratorsPickIncreasedInterestCollectorSignal artwork={artworkAboveTheFold} />
+          ),
           excludeSeparator: true,
           excludeVerticalMargin: true,
         })
@@ -683,6 +698,7 @@ export const ArtworkContainer = createRefetchContainer(
         ...ArtworkPrice_artwork
         ...ArtworkDimensionsClassificationAndAuthenticity_artwork
         ...ArtworkShowingNowCollectorSignal_artwork
+        ...ArtworkCuratorsPickIncreasedInterestCollectorSignal_artwork
         slug
         internalID
         isAcquireable

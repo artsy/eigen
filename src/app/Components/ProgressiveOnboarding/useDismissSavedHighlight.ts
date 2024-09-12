@@ -1,5 +1,4 @@
 import { Tabs } from "@artsy/palette-mobile"
-import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useEffect } from "react"
 
@@ -18,7 +17,7 @@ export const useDismissSavedHighlight = () => {
   const dismissed = isDismissed("save-highlight").status
 
   useEffect(() => {
-    if (dismissed || !focusedTab || focusedTab !== Tab.savedWorks || !isReady) {
+    if (dismissed || !focusedTab || !isReady) {
       return
     }
 
