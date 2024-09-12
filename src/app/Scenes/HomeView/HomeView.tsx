@@ -107,7 +107,6 @@ const sectionsFragment = graphql`
             }
             ... on HomeViewSectionActivity {
               internalID
-              ...HomeViewSectionActivity_section
             }
             ... on HomeViewSectionArticles {
               internalID
