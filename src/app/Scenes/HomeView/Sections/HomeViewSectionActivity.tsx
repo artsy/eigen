@@ -1,4 +1,5 @@
 import { Flex, Spacer } from "@artsy/palette-mobile"
+import { HomeViewSectionActivityQuery } from "__generated__/HomeViewSectionActivityQuery.graphql"
 import { HomeViewSectionActivity_section$key } from "__generated__/HomeViewSectionActivity_section.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { shouldDisplayNotification } from "app/Scenes/Activity/utils/shouldDisplayNotification"
@@ -12,8 +13,9 @@ import {
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { FlatList } from "react-native"
-import { graphql, useFragment } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionActivityProps {
   section: HomeViewSectionActivity_section$key
@@ -123,3 +125,27 @@ const sectionFragment = graphql`
     }
   }
 `
+
+const homeViewSectionActivityQuery = graphql`
+  query HomeViewSectionActivityQuery($id: String!) {
+    homeView {
+      section(id: $id) {
+        ...HomeViewSectionActivity_section
+      }
+    }
+  }
+`
+
+export const HomeViewSectionActivityQueryRenderer: React.FC<{
+  sectionID: string
+}> = withSuspense((props) => {
+  const data = useLazyLoadQuery<HomeViewSectionActivityQuery>(homeViewSectionActivityQuery, {
+    id: props.sectionID,
+  })
+
+  if (!data.homeView.section) {
+    return null
+  }
+
+  return <HomeViewSectionActivity section={data.homeView.section} />
+})
