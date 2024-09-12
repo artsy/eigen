@@ -1,3 +1,4 @@
+import { Flex } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import {
   CardStyleInterpolators,
@@ -116,7 +117,18 @@ export const OnboardingWelcomeScreens = () => {
         </StackNavigator.Group>
 
         <StackNavigator.Group>
-          {!!userIsDev && <StackNavigator.Screen name="DevMenu" component={DevMenu} />}
+          {!!userIsDev && (
+            <StackNavigator.Screen
+              name="DevMenu"
+              component={DevMenu}
+              options={{
+                headerShown: true,
+                header: () => {
+                  return <Flex height={50} />
+                },
+              }}
+            />
+          )}
         </StackNavigator.Group>
       </StackNavigator.Navigator>
     </NavigationContainer>
