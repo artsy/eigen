@@ -8,6 +8,7 @@ import {
   WorksForYouScreenQuery,
 } from "app/Components/Containers/WorksForYou"
 import { FadeIn } from "app/Components/FadeIn"
+import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { ActivityItemScreenQueryRenderer } from "app/Scenes/Activity/ActivityItemScreen"
 import { ArtQuiz } from "app/Scenes/ArtQuiz/ArtQuiz"
 import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
@@ -21,7 +22,7 @@ import { CollectionScreen } from "app/Scenes/Collection/Collection"
 import { CompleteMyProfile } from "app/Scenes/CompleteMyProfile/CompleteMyProfile"
 import { GalleriesForYouScreen } from "app/Scenes/GalleriesForYou/GalleriesForYouScreen"
 import { HomeContainer } from "app/Scenes/Home/HomeContainer"
-import { HomeViewScreen } from "app/Scenes/HomeView/HomeView"
+import { HomeViewScreen, homeViewScreenQuery } from "app/Scenes/HomeView/HomeView"
 import { HomeViewSectionScreenQueryRenderer } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreen"
 import { AddMyCollectionArtist } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
 import { MyCollectionArtworkEditQueryRenderer } from "app/Scenes/MyCollection/Screens/ArtworkForm/Screens/MyCollectionArtworkEdit"
@@ -142,7 +143,7 @@ import {
   ViewingRoomsListScreen,
   viewingRoomsListScreenQuery,
 } from "./Scenes/ViewingRoom/ViewingRoomsList"
-import { GlobalStore } from "./store/GlobalStore"
+import { GlobalStore, unsafe_getFeatureFlag } from "./store/GlobalStore"
 import { propsStore } from "./store/PropsStore"
 import { DevMenu } from "./system/devTools/DevMenu/DevMenu"
 import { Schema, screenTrack } from "./utils/track"
@@ -488,9 +489,15 @@ export const modules = defineModules({
     fullBleed: true,
     hidesBackButton: true,
   }),
-  Home: reactModule(HomeContainer, {
-    isRootViewForTabName: "home",
-  }),
+  Home: reactModule(
+    HomeContainer,
+    {
+      isRootViewForTabName: "home",
+    },
+    ArtsyNativeModule.isBetaOrDev && !unsafe_getFeatureFlag("ARPreferLegacyHomeScreen")
+      ? [homeViewScreenQuery]
+      : undefined
+  ),
   HomeView: reactModule(HomeViewScreen, { hidesBackButton: true }),
   HomeViewSectionScreen: reactModule(HomeViewSectionScreenQueryRenderer, {
     hidesBackButton: true,
