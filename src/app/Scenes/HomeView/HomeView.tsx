@@ -153,7 +153,6 @@ const sectionsFragment = graphql`
             }
             ... on HomeViewSectionArtists {
               internalID
-              ...HomeViewSectionArtists_section
             }
             ... on HomeViewSectionAuctionResults {
               internalID
