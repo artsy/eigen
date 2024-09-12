@@ -226,6 +226,26 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
+    tappedNewsGroup: (
+      articleID: string,
+      articleSlug: string | undefined | null,
+      sectionID: string,
+      index: number
+    ) => {
+      const payload: TappedNewsGroup = {
+        action: ActionType.tappedNewsGroup,
+        context_module: formatSectionIDAsContextModule(sectionID),
+        context_screen_owner_type: OwnerType.home,
+        destination_screen_owner_type: OwnerType.article,
+        destination_screen_owner_id: articleID,
+        destination_screen_owner_slug: articleSlug,
+        vertical_slide_position: index,
+        type: "thumbnail",
+      }
+
+      trackEvent(payload)
+    },
+
     tappedShowGroup: (showID: string, showSlug: string, sectionID: string, index: number) => {
       const payload: TappedShowGroup = {
         action: ActionType.tappedShowGroup,
