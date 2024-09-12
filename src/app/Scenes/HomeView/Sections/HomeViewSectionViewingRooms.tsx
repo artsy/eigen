@@ -1,4 +1,5 @@
 import { Flex } from "@artsy/palette-mobile"
+import { HomeViewSectionViewingRoomsQuery } from "__generated__/HomeViewSectionViewingRoomsQuery.graphql"
 import { HomeViewSectionViewingRooms_section$key } from "__generated__/HomeViewSectionViewingRooms_section.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
@@ -8,8 +9,9 @@ import {
   ViewingRoomsRailPlaceholder,
 } from "app/Scenes/ViewingRoom/Components/ViewingRoomsHomeRail"
 import { navigate } from "app/system/navigation/navigate"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { Suspense } from "react"
-import { graphql, useFragment } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 export const HomeViewSectionViewingRooms: React.FC<{
   section: HomeViewSectionViewingRooms_section$key
@@ -63,3 +65,30 @@ const viewingRoomsFragment = graphql`
     }
   }
 `
+
+const homeViewSectionViewingRoomsQuery = graphql`
+  query HomeViewSectionViewingRoomsQuery($id: String!) {
+    homeView {
+      section(id: $id) {
+        ...HomeViewSectionViewingRooms_section
+      }
+    }
+  }
+`
+
+export const HomeViewSectionViewingRoomsQueryRenderer: React.FC<{
+  sectionID: string
+}> = withSuspense((props) => {
+  const data = useLazyLoadQuery<HomeViewSectionViewingRoomsQuery>(
+    homeViewSectionViewingRoomsQuery,
+    {
+      id: props.sectionID,
+    }
+  )
+
+  if (!data.homeView.section) {
+    return null
+  }
+
+  return <HomeViewSectionViewingRooms section={data.homeView.section} />
+})

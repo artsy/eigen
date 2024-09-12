@@ -14,7 +14,7 @@ import { HomeViewSectionHeroUnitsQueryRenderer } from "app/Scenes/HomeView/Secti
 import { HomeViewSectionMarketingCollectionsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionMarketingCollections"
 import { HomeViewSectionSales } from "app/Scenes/HomeView/Sections/HomeViewSectionSales"
 import { HomeViewSectionShowsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionShows"
-import { HomeViewSectionViewingRooms } from "app/Scenes/HomeView/Sections/HomeViewSectionViewingRooms"
+import { HomeViewSectionViewingRoomsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionViewingRooms"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 
 type SectionsConnection = NonNullable<
@@ -64,7 +64,7 @@ export const Section: React.FC<{ section: SectionT }> = (props) => {
     case "HomeViewSectionShows":
       return <HomeViewSectionShowsQueryRenderer sectionID={section.internalID} />
     case "HomeViewSectionViewingRooms":
-      return <HomeViewSectionViewingRooms section={section} />
+      return <HomeViewSectionViewingRoomsQueryRenderer sectionID={section.internalID} />
     case "HomeViewSectionSales":
       return <HomeViewSectionSales section={section} />
     default:
