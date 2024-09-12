@@ -1,23 +1,26 @@
-import { screen, waitFor } from "@testing-library/react-native"
+import { screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react-native"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Suspense } from "react"
+import { Text } from "react-native"
 import { ActivityScreen } from "./ActivityScreen"
 
 describe("ActivityScreen", () => {
   const { renderWithRelay } = setupTestWrapper({
     Component: () => (
-      <Suspense fallback={null}>
+      <Suspense fallback={<Text>loading</Text>}>
         <ActivityScreen />
       </Suspense>
     ),
   })
 
   it("renders items", async () => {
-    renderWithRelay({
+    const { mockResolveLastOperation } = renderWithRelay({
       NotificationConnection: () => notifications,
     })
+    mockResolveLastOperation({})
 
-    await screen.findByText("Notification One")
+    await waitForElementToBeRemoved(() => screen.queryByText("loading"))
+    expect(screen.getByText("Notification One")).toBeOnTheScreen()
     expect(screen.getByText("Notification Two")).toBeOnTheScreen()
   })
 
