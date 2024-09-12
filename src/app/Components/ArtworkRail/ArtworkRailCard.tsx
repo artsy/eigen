@@ -671,6 +671,7 @@ const artworkFragment = graphql`
     title
     realizedPrice
     collectorSignals {
+      primaryLabel
       partnerOffer {
         isAvailable
         endAt
@@ -682,9 +683,6 @@ const artworkFragment = graphql`
         lotWatcherCount
         bidCount
         liveBiddingStarted
-        liveStartAt
-        onlineBiddingExtended
-        registrationEndsAt
         lotClosesAt
       }
       ...ArtworkAuctionTimer_collectorSignals

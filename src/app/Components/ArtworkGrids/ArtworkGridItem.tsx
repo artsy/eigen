@@ -604,11 +604,9 @@ export default createFragmentContainer(Artwork, {
           lotWatcherCount
           bidCount
           liveBiddingStarted
-          liveStartAt
-          onlineBiddingExtended
-          registrationEndsAt
           lotClosesAt
         }
+        primaryLabel
         ...ArtworkAuctionTimer_collectorSignals
         ...ArtworkSocialSignal_collectorSignals
       }
