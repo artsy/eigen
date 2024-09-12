@@ -669,9 +669,5 @@ export const ArtworkFixture = {
       ],
     },
   },
-  collectorSignals: {
-    runningShow: null,
-    auction: null,
-    partnerOffer: null,
-  },
+  collectorSignals: null,
 }

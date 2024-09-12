@@ -1,6 +1,5 @@
 import { screen } from "@testing-library/react-native"
 import { ArtworkShowingNowCollectorSignal } from "app/Scenes/Artwork/Components/ArtworkShowingNowCollectorSignal"
-// import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -14,10 +13,6 @@ describe("ArtworkShowingNowCollectorSignal", () => {
         }
       }
     `,
-  })
-
-  beforeEach(() => {
-    // __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCuratorsPicksAndInterestSignals: true })
   })
 
   it("renders showing now signal when running show is present", () => {
@@ -47,6 +42,6 @@ describe("ArtworkShowingNowCollectorSignal", () => {
       }),
     })
 
-    expect(screen.queryByText("Showing now")).not.toBeOnTheScreen()
+    expect(screen.queryByText(/Showing now/)).not.toBeOnTheScreen()
   })
 })
