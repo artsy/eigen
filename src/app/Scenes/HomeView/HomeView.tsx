@@ -165,7 +165,6 @@ const sectionsFragment = graphql`
             }
             ... on HomeViewSectionMarketingCollections {
               internalID
-              ...HomeViewSectionMarketingCollections_section
             }
             ... on HomeViewSectionShows {
               internalID
