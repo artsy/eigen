@@ -175,3 +175,16 @@ index e98550f..43c67e5 100644
    .mock('../Libraries/Text/Text', () =>
      mockComponent('../Libraries/Text/Text', MockNativeMethods),
    )
+diff --git a/node_modules/react-native/scripts/find-node-for-xcode.sh b/node_modules/react-native/scripts/find-node-for-xcode.sh
+index a36bbc2..c7b9321 100644
+--- a/node_modules/react-native/scripts/find-node-for-xcode.sh
++++ b/node_modules/react-native/scripts/find-node-for-xcode.sh
+@@ -4,7 +4,7 @@
+ # This source code is licensed under the MIT license found in the
+ # LICENSE file in the root directory of this source tree.
+ 
+-set -e
++set +e
+ 
+ # WHY WE NEED THIS:
+ # This script is used to find a valid instance of `node` installed in the machine.

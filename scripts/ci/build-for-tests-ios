@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration Debug -sdk iphonesimulator build -destination platform="$DEVICE_HOST_PLAT",OS="$DEVICE_HOST_OS",name="$DEVICE_HOST_NAME" -derivedDataPath "$DERIVED_DATA_PATH" GCC_PREPROCESSOR_DEFINITIONS='$(inherited) CI_DISABLE_FLIPPER=1' |
+xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration Debug -sdk iphonesimulator build -destination platform="$DEVICE_HOST_PLAT",OS="$DEVICE_HOST_OS",name="$DEVICE_HOST_NAME" -derivedDataPath "$DERIVED_DATA_PATH" |
 	tee ./xcode_build_raw.log |
 	bundle exec xcpretty -c
