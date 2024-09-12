@@ -134,7 +134,6 @@ const sectionsFragment = graphql`
             }
             ... on HomeViewSectionViewingRooms {
               internalID
-              ...HomeViewSectionViewingRooms_section
             }
             ... on HomeViewSectionSales {
               internalID
