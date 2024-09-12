@@ -11,15 +11,14 @@ export const ArtworkCuratorsPickIncreasedInterestCollectorSignal: React.FC<Props
 }) => {
   const { collectorSignals } = useFragment(fragment, artwork)
 
-  if (!collectorSignals) {
+  if (
+    !collectorSignals ||
+    (!collectorSignals.increasedInterest && !collectorSignals.curatorsPick)
+  ) {
     return null
   }
 
-  const { increasedInterest, curatorsPick } = collectorSignals
-
-  if (!increasedInterest && !curatorsPick) {
-    return null
-  }
+  const { increasedInterest } = collectorSignals
 
   let singalTitle = "Curators’ Pick"
   let signalDescription = "Hand selected by Artsy curators this week"
@@ -32,7 +31,7 @@ export const ArtworkCuratorsPickIncreasedInterestCollectorSignal: React.FC<Props
   }
 
   return (
-    <Flex flexDirection="row" mt={4} mb={2}>
+    <Flex flexDirection="row" pt={4} pb={2}>
       <SignalIcon mr={0.5} mt="2px" />
 
       <Flex flexDirection="column">
