@@ -1,5 +1,6 @@
 import { ContextModule } from "@artsy/cohesion"
 import { Flex, Spacer } from "@artsy/palette-mobile"
+import { HomeViewSectionHeroUnitsQuery } from "__generated__/HomeViewSectionHeroUnitsQuery.graphql"
 import { HomeViewSectionHeroUnits_section$key } from "__generated__/HomeViewSectionHeroUnits_section.graphql"
 import { PaginationDots } from "app/Components/PaginationDots"
 import { HeroUnit } from "app/Scenes/Home/Components/HeroUnitsRail"
@@ -11,9 +12,10 @@ import {
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { useRef, useState } from "react"
 import { FlatList, ViewabilityConfig, ViewToken } from "react-native"
-import { graphql, useFragment } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionHeroUnitsProps {
   section: HomeViewSectionHeroUnits_section$key
@@ -97,3 +99,27 @@ const fragment = graphql`
     }
   }
 `
+
+const homeViewSectionHeroUnitsQuery = graphql`
+  query HomeViewSectionHeroUnitsQuery($id: String!) {
+    homeView {
+      section(id: $id) {
+        ...HomeViewSectionHeroUnits_section
+      }
+    }
+  }
+`
+
+export const HomeViewSectionHeroUnitsQueryRenderer: React.FC<{
+  sectionID: string
+}> = withSuspense((props) => {
+  const data = useLazyLoadQuery<HomeViewSectionHeroUnitsQuery>(homeViewSectionHeroUnitsQuery, {
+    id: props.sectionID,
+  })
+
+  if (!data.homeView.section) {
+    return null
+  }
+
+  return <HomeViewSectionHeroUnits section={data.homeView.section} />
+})
