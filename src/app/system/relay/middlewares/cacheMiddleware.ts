@@ -27,24 +27,32 @@ export const cacheMiddleware = () => {
       }
     }
 
-    cache.set(queryID!, variables, null)
+    cache.set(queryID!, variables, null).catch((error) => {
+      console.error("Error setting cache", error)
+    })
 
     const response = await next(req)
 
     const clearCache = () => {
-      cache.clear(queryID!, req.variables)
+      cache.clear(queryID!, req.variables).catch((error) => {
+        console.error("Error clearing cache", error)
+      })
     }
 
     if (response.status >= 200 && response.status < 300) {
       if (isQuery) {
         // Don't cache responses with errors in them (GraphQL responses are always 200, even if they contain errors).
         if ((response.json as any).errors === undefined) {
-          cache.set(
-            queryID!,
-            req.variables,
-            JSON.stringify(response.json),
-            req.cacheConfig.emissionCacheTTLSeconds
-          )
+          cache
+            .set(
+              queryID!,
+              req.variables,
+              JSON.stringify(response.json),
+              req.cacheConfig.emissionCacheTTLSeconds
+            )
+            .catch((error) => {
+              console.error("Error setting cache", error)
+            })
         } else {
           clearCache()
           return response
@@ -52,7 +60,9 @@ export const cacheMiddleware = () => {
       } else {
         // Clear the entire cache if a mutation is made (unless it's in the allowlist).
         if (!IGNORE_CACHE_CLEAR_MUTATION_ALLOWLIST.includes(req.operation.name)) {
-          cache.clearAll()
+          cache.clearAll().catch((error) => {
+            console.error("Error clearing cache", error)
+          })
         }
       }
       return response
