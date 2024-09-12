@@ -6,6 +6,7 @@ import {
   Spinner,
   Text,
 } from "@artsy/palette-mobile"
+import { ErrorBoundary } from "@sentry/react-native"
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
 import { HomeViewSectionsConnection_viewer$key } from "__generated__/HomeViewSectionsConnection_viewer.graphql"
 import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
@@ -56,15 +57,17 @@ export const HomeView: React.FC = () => {
 const SectionSeparator = () => <Spacer y={SECTION_SEPARATOR_HEIGHT} />
 
 export const HomeViewScreen: React.FC = () => (
-  <Suspense
-    fallback={
-      <Flex flex={1} justifyContent="center" alignItems="center" testID="new-home-view-skeleton">
-        <Text>Loading home view…</Text>
-      </Flex>
-    }
-  >
-    <HomeView />
-  </Suspense>
+  <ErrorBoundary fallback={<Text>Something went wrong</Text>}>
+    <Suspense
+      fallback={
+        <Flex flex={1} justifyContent="center" alignItems="center" testID="new-home-view-skeleton">
+          <Text>Loading home view…</Text>
+        </Flex>
+      }
+    >
+      <HomeView />
+    </Suspense>
+  </ErrorBoundary>
 )
 
 const sectionsFragment = graphql`
