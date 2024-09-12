@@ -19,22 +19,27 @@ export const cacheMiddleware = () => {
     const isCacheIgnoredQuery = IGNORE_CACHE_QUERY_ALLOWLIST.includes(operation.name)
     const queryID = operation.id
 
+    if (!queryID) {
+      console.error("Query ID not found")
+      return next(req)
+    }
+
     // If we have valid data in cache return
     if (isQuery && !cacheConfig.force && !isCacheIgnoredQuery) {
-      const dataFromCache = await cache.get(queryID!, variables)
+      const dataFromCache = await cache.get(queryID, variables)
       if (dataFromCache) {
         return JSON.parse(dataFromCache)
       }
     }
 
-    cache.set(queryID!, variables, null).catch((error) => {
+    cache.set(queryID, variables, null).catch((error) => {
       console.error("Error setting cache", error)
     })
 
     const response = await next(req)
 
     const clearCache = () => {
-      cache.clear(queryID!, req.variables).catch((error) => {
+      cache.clear(queryID, req.variables).catch((error) => {
         console.error("Error clearing cache", error)
       })
     }
@@ -45,7 +50,7 @@ export const cacheMiddleware = () => {
         if ((response.json as any).errors === undefined) {
           cache
             .set(
-              queryID!,
+              queryID,
               req.variables,
               JSON.stringify(response.json),
               req.cacheConfig.emissionCacheTTLSeconds
