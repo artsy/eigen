@@ -302,12 +302,14 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
         excludeVerticalMargin: true,
       })
 
-      sections.push({
-        key: "artworkShowingNowCollectorSignal",
-        element: <ArtworkShowingNowCollectorSignal artwork={artworkAboveTheFold} />,
-        excludeSeparator: true,
-        excludeVerticalMargin: true,
-      })
+      if (!artworkAboveTheFold?.isUnlisted) {
+        sections.push({
+          key: "artworkShowingNowCollectorSignal",
+          element: <ArtworkShowingNowCollectorSignal artwork={artworkAboveTheFold} />,
+          excludeSeparator: true,
+          excludeVerticalMargin: true,
+        })
+      }
 
       sections.push({
         key: "dimensionsClassificationAndAuthenticity",

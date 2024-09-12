@@ -24,7 +24,7 @@ export const ArtworkShowingNowCollectorSignal: React.FC<Props> = ({ artwork }) =
   const showEndAt: string = DateTime.fromISO(runningShow.endAt).toFormat("MMM d")
 
   return (
-    <Box mt={4} mb={2}>
+    <Box pt={4} pb={2}>
       <Flex testID="artwork-showing-now-collector-signal" flexDirection="row" alignContent="center">
         <FairIcon mr={0.5} fill="black60" height={25} width={25} />
         <Flex flexDirection="column" alignContent="left">
@@ -44,6 +44,7 @@ export const ArtworkShowingNowCollectorSignal: React.FC<Props> = ({ artwork }) =
 const fragment = graphql`
   fragment ArtworkShowingNowCollectorSignal_artwork on Artwork {
     collectorSignals {
+      primaryLabel
       runningShow {
         endAt
         href
