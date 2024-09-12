@@ -1,4 +1,5 @@
 import { Flex, useScreenDimensions } from "@artsy/palette-mobile"
+import { HomeViewSectionAuctionResultsQuery } from "__generated__/HomeViewSectionAuctionResultsQuery.graphql"
 import { HomeViewSectionAuctionResults_section$key } from "__generated__/HomeViewSectionAuctionResults_section.graphql"
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
@@ -11,8 +12,9 @@ import {
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { FlatList } from "react-native"
-import { graphql, useFragment } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionAuctionResultsProps {
   section: HomeViewSectionAuctionResults_section$key
@@ -102,3 +104,30 @@ const sectionFragment = graphql`
     }
   }
 `
+
+const homeViewSectionAuctionResultsQuery = graphql`
+  query HomeViewSectionAuctionResultsQuery($id: String!) {
+    homeView {
+      section(id: $id) {
+        ...HomeViewSectionAuctionResults_section
+      }
+    }
+  }
+`
+
+export const HomeViewSectionAuctionResultsQueryRenderer: React.FC<{
+  sectionID: string
+}> = withSuspense((props) => {
+  const data = useLazyLoadQuery<HomeViewSectionAuctionResultsQuery>(
+    homeViewSectionAuctionResultsQuery,
+    {
+      id: props.sectionID,
+    }
+  )
+
+  if (!data.homeView.section) {
+    return null
+  }
+
+  return <HomeViewSectionAuctionResults section={data.homeView.section} />
+})
