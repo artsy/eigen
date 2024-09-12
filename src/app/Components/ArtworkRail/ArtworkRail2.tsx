@@ -1,4 +1,4 @@
-import { Box, Flex, Join, Spacer } from "@artsy/palette-mobile"
+import { Box, Flex, Join, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import {
   ArtworkRail2_artworks$data,
   ArtworkRail2_artworks$key,
@@ -11,12 +11,7 @@ import { LARGE_RAIL_IMAGE_WIDTH } from "app/Components/ArtworkRail/LargeArtworkR
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
 import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
-import {
-  PlaceholderBox,
-  PlaceholderText,
-  RandomWidthPlaceholderText,
-  useMemoizedRandom,
-} from "app/utils/placeholders"
+import { RandomWidthPlaceholderText, useMemoizedRandom } from "app/utils/placeholders"
 import {
   ArtworkActionTrackingProps,
   extractArtworkActionTrackingProps,
@@ -163,9 +158,9 @@ export const ArtworkRail2Placeholder: React.FC = () => (
   <Join separator={<Spacer x="15px" />}>
     {times(3 + useMemoizedRandom() * 10).map((index) => (
       <Flex key={index}>
-        <PlaceholderBox height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT} width={LARGE_RAIL_IMAGE_WIDTH} />
+        <SkeletonBox height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT} width={LARGE_RAIL_IMAGE_WIDTH} />
         <Spacer y={2} />
-        <PlaceholderText width={295} />
+        <SkeletonText>Artist</SkeletonText>
         <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
       </Flex>
     ))}
