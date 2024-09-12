@@ -82,20 +82,18 @@ class VolleyClient {
         return
       }
 
-      try {
-        await fetch(volleyURL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            serviceName: "eigen",
-            metrics,
-          }),
-        })
-      } catch {
+      fetch(volleyURL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          serviceName: "eigen",
+          metrics,
+        }),
+      }).catch(() => {
         console.error("volleyClient.ts", "Failed to post metrics to volley")
-      }
+      })
     },
     1000,
     {
@@ -108,11 +106,9 @@ class VolleyClient {
       ...metric,
       tags: [...(metric.tags ?? []), getDeviceTag(), ...(await getNetworkTags())],
     })
-    try {
-      await this._dispatch()
-    } catch {
+    this._dispatch()?.catch(() => {
       console.error("volleyClient.ts", "Failed to dispatch metrics to volley")
-    }
+    })
   }
 }
 

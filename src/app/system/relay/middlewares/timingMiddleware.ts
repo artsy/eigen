@@ -8,16 +8,16 @@ export function timingMiddleware(): Middleware {
     return next(req).then(async (res) => {
       const duration = Date.now() - startTime
 
-      try {
-        await volleyClient.send({
+      volleyClient
+        .send({
           type: "timing",
           name: "graphql-request-duration",
           timing: duration,
           tags: [`operation:${operation}`],
         })
-      } catch (error) {
-        console.error("Error in timingMiddleware", error)
-      }
+        .catch((error) => {
+          console.error("Error in timingMiddleware", error)
+        })
 
       return res
     })
