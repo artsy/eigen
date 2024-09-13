@@ -7,7 +7,53 @@ interface FiveUpImageLayoutProps {
 }
 
 const DEFAULT_HEIGHT = 480
-const GAP = 3
+
+export const GAP = 3
+
+const getLargeImageDimensions = ({
+  height: heightProp,
+  width: widthProp,
+}: {
+  height: number
+  width: number
+}) => {
+  return { width: (2 / 3) * widthProp, height: (2 / 3) * heightProp }
+}
+
+const getSmallImageDimensions = ({
+  height: heightProp,
+  width: widthProp,
+}: {
+  height: number
+  width: number
+}) => {
+  return { width: (1 / 3) * widthProp, height: (1 / 3) * heightProp - GAP / 2 }
+}
+
+const getHorizontalImageDimensions = ({
+  height: heightProp,
+  width: widthProp,
+}: {
+  height: number
+  width: number
+}) => {
+  return { width: (2 / 3) * widthProp, height: (1 / 3) * heightProp - GAP / 2 }
+}
+
+export const DEFAULT_LARGE_IMAGE_DIMENSIONS = getLargeImageDimensions({
+  height: DEFAULT_HEIGHT - GAP,
+  width: 0.65 * DEFAULT_HEIGHT - GAP,
+})
+
+export const DEFAULT_SMALL_IMAGE_DIMENSIONS = getSmallImageDimensions({
+  height: DEFAULT_HEIGHT,
+  width: 0.65 * DEFAULT_HEIGHT - GAP,
+})
+
+export const DEFAULT_HORIZONTAL_IMAGE_DIMENSIONS = getHorizontalImageDimensions({
+  height: DEFAULT_HEIGHT - GAP,
+  width: 0.65 * DEFAULT_HEIGHT - GAP,
+})
 
 export const FiveUpImageLayout: React.FC<FiveUpImageLayoutProps> = ({
   imageURLs,
@@ -19,9 +65,9 @@ export const FiveUpImageLayout: React.FC<FiveUpImageLayoutProps> = ({
   const height = heightProp - GAP
   const width = 0.65 * height - GAP
 
-  const largeImageDimensions = { width: (2 / 3) * width, height: (2 / 3) * height }
-  const smallImageDimensions = { width: (1 / 3) * width, height: (1 / 3) * height - GAP / 2 }
-  const horizontalImageDimensions = { width: (2 / 3) * width, height: (1 / 3) * height - GAP / 2 }
+  const largeImageDimensions = getLargeImageDimensions({ height, width })
+  const smallImageDimensions = getSmallImageDimensions({ height, width })
+  const horizontalImageDimensions = getHorizontalImageDimensions({ height, width })
 
   return (
     <Flex>
