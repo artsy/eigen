@@ -24,6 +24,7 @@ interface Props {
   auctionResult: AuctionResultListItem_auctionResult$data
   first?: boolean
   onPress?: () => void
+  onTrack?: () => void
   showArtistName?: boolean
   trackingEventPayload?: {}
   width?: number
@@ -38,6 +39,7 @@ const AuctionResultListItem: React.FC<Props> = ({
   onPress,
   showArtistName,
   trackingEventPayload,
+  onTrack,
   width,
   withHorizontalPadding = true,
 }) => {
@@ -58,9 +60,12 @@ const AuctionResultListItem: React.FC<Props> = ({
       return
     }
 
-    if (trackingEventPayload) {
+    if (onTrack) {
+      onTrack()
+    } else if (trackingEventPayload) {
       tracking.trackEvent(trackingEventPayload)
     }
+
     // For upcoming auction results that are happening in Artsy we want to navigate to the lot page
     if (auctionResult.isUpcoming && auctionResult.isInArtsyAuction && auctionResult.externalURL) {
       navigate(auctionResult.externalURL)

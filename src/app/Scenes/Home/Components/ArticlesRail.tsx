@@ -1,4 +1,3 @@
-import { ContextModule } from "@artsy/cohesion"
 import { Flex, Spacer } from "@artsy/palette-mobile"
 import { ArticlesRail_articlesConnection$data } from "__generated__/ArticlesRail_articlesConnection.graphql"
 import { ArticleCardContainer } from "app/Components/ArticleCard"
@@ -6,6 +5,7 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { memo } from "react"
 import { FlatList } from "react-native"
 import { isTablet } from "react-native-device-info"
@@ -14,14 +14,14 @@ import { useTracking } from "react-tracking"
 
 interface ArticlesRailProps {
   articlesConnection: ArticlesRail_articlesConnection$data
-  contextModule?: ContextModule
+  onTrack?: (article: ExtractNodeType<ArticlesRail_articlesConnection$data>, index: number) => void
   onSectionTitlePress?: () => void
   title: string
 }
 
 export const ArticlesRail: React.FC<ArticlesRailProps> = ({
   articlesConnection,
-  contextModule,
+  onTrack,
   onSectionTitlePress,
   title,
 }) => {
@@ -59,11 +59,14 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = ({
           renderItem={({ item, index }) => (
             <ArticleCardContainer
               onPress={() => {
+                if (onTrack) {
+                  return onTrack(item, index)
+                }
+
                 const tapEvent = HomeAnalytics.articleThumbnailTapEvent(
                   item.internalID,
                   item.slug || "",
-                  index,
-                  contextModule
+                  index
                 )
                 tracking.trackEvent(tapEvent)
               }}

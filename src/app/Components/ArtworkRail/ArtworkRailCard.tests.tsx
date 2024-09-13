@@ -307,6 +307,54 @@ describe("ArtworkRailCard", () => {
         expect(screen.getByText("$3,700 (7 bids)")).toBeOnTheScreen()
       })
     })
+
+    describe("social signal", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({
+          AREnableCuratorsPicksAndInterestSignals: true,
+        })
+      })
+
+      it("renders the increased interest signal", () => {
+        renderWithRelay({
+          Artwork: () => ({
+            collectorSignals: {
+              increasedInterest: true,
+              curatorsPick: false,
+            },
+          }),
+        })
+
+        expect(screen.getByText("Increased Interest")).toBeOnTheScreen()
+      })
+
+      it("renders the curator's pick signal even when there's a increased interest signal", () => {
+        renderWithRelay({
+          Artwork: () => ({
+            collectorSignals: {
+              increasedInterest: true,
+              curatorsPick: true,
+            },
+          }),
+        })
+
+        expect(screen.getByText("Curators’ Pick")).toBeOnTheScreen()
+        expect(screen.queryByText("Increased Interest")).not.toBeOnTheScreen()
+      })
+
+      it("renders the curators pick signal", () => {
+        renderWithRelay({
+          Artwork: () => ({
+            collectorSignals: {
+              increasedInterest: false,
+              curatorsPick: true,
+            },
+          }),
+        })
+
+        expect(screen.getByText("Curators’ Pick")).toBeOnTheScreen()
+      })
+    })
   })
 })
 

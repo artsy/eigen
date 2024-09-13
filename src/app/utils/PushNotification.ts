@@ -6,6 +6,7 @@ import {
   getCurrentEmissionState,
   GlobalStore,
   unsafe__getEnvironment,
+  unsafe_getIsNavigationReady,
   unsafe_getUserAccessToken,
 } from "app/store/GlobalStore"
 import { PendingPushNotification } from "app/store/PendingPushNotificationModel"
@@ -177,6 +178,7 @@ export const handleReceivedNotification = (
     console.log("RECEIVED NOTIFICATION", notification)
   }
   const isLoggedIn = !!unsafe_getUserAccessToken()
+  const isNavigationReady = !!unsafe_getIsNavigationReady()
   if (notification.userInteraction) {
     // track notification tapped event only in android
     // ios handles it in the native side
@@ -189,7 +191,7 @@ export const handleReceivedNotification = (
         message: notification?.message?.toString(),
       })
     }
-    if (!isLoggedIn) {
+    if (!isLoggedIn || !isNavigationReady) {
       // removing finish because we do not use it on android and we don't want to serialise functions at this time
       const newNotification = { ...notification, finish: undefined, tappedAt: Date.now() }
       delete newNotification.finish
@@ -232,11 +234,11 @@ export const handleNotificationAction = (notification: Omit<ReceivedNotification
 export async function configure() {
   PushNotification.configure({
     // (optional) Called when Token is generated (iOS and Android)
-    onRegister: (token) => {
+    onRegister: async (token) => {
       try {
         registerPushToken(token.token)
-
-        saveToken(token.token)
+        
+        await saveToken(token.token)
       } catch (e) {
         captureMessage(`Error saving push notification token: ${e}`, "info")
       }

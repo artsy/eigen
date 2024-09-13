@@ -54,6 +54,8 @@ const OnboardingMarketingCollection: React.FC<OnboardingMarketingCollectionProps
           connection={marketingCollection?.artworks}
           shouldAddPadding
           disableArtworksListPrompt
+          hideCuratorsPick={slug === "curators-picks-emerging"}
+          hideIncreasedInterest={slug === "curators-picks-emerging"}
         />
         <Flex p={2} backgroundColor="white">
           <Button block onPress={() => navigate("OnboardingPostFollowLoadingScreen")} mb={1}>

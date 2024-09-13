@@ -1,24 +1,22 @@
-import { ContextModule } from "@artsy/cohesion"
 import { Flex, Spacer } from "@artsy/palette-mobile"
 import { HomeViewSectionActivity_section$key } from "__generated__/HomeViewSectionActivity_section.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { shouldDisplayNotification } from "app/Scenes/Activity/utils/shouldDisplayNotification"
 import { SeeAllCard } from "app/Scenes/Home/Components/ActivityRail"
 import { ActivityRailItem } from "app/Scenes/Home/Components/ActivityRailItem"
-import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
-import { matchRoute } from "app/routes"
+import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
+import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { FlatList } from "react-native"
 import { graphql, useFragment } from "react-relay"
-import { useTracking } from "react-tracking"
 
 interface HomeViewSectionActivityProps {
   section: HomeViewSectionActivity_section$key
 }
 
 export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = ({ section }) => {
-  const tracking = useTracking()
+  const tracking = useHomeViewTracking()
 
   const data = useFragment(sectionFragment, section)
   const component = data.component
@@ -33,7 +31,7 @@ export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = (
   }
 
   return (
-    <Flex pt={2}>
+    <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
       <Flex px={2}>
         <SectionTitle
           title={component?.title || "Activity"}
@@ -71,17 +69,7 @@ export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = (
             <ActivityRailItem
               item={item}
               onPress={() => {
-                const destinationRoute = matchRoute(item.targetHref)
-                const destinationModule =
-                  destinationRoute.type === "match" ? destinationRoute?.module : ""
-
-                tracking.trackEvent(
-                  HomeAnalytics.activityThumbnailTapEvent(
-                    index,
-                    destinationModule,
-                    data.internalID as ContextModule
-                  )
-                )
+                tracking.tappedActivityGroup(item.targetHref, data.internalID, index)
               }}
             />
           )

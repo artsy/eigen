@@ -94,12 +94,11 @@ describe("HomeViewSectionHeroUnits", () => {
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
      [
        {
-         "action": "tappedHeroUnitsGroup",
-         "context_module": "home-view-section-hero-units",
+         "action": "tappedHeroUnitGroup",
+         "context_module": "heroUnits",
          "context_screen_owner_type": "home",
-         "destination_screen_owner_id": "hero-unit-1-id",
-         "destination_screen_owner_type": "Collection",
-         "destination_screen_owner_url": "/collection/collection-1",
+         "destination_path": "/collection/collection-1",
+         "horizontal_slide_position": 1,
          "type": "header",
        },
      ]

@@ -1,13 +1,17 @@
 import { ActionType, ContextModule, OwnerType, TappedShowGroup } from "@artsy/cohesion"
 import { Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { ShowsRailQuery } from "__generated__/ShowsRailQuery.graphql"
-import { ShowsRail_showsConnection$key } from "__generated__/ShowsRail_showsConnection.graphql"
+import {
+  ShowsRail_showsConnection$data,
+  ShowsRail_showsConnection$key,
+} from "__generated__/ShowsRail_showsConnection.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { ShowCardContainer } from "app/Components/ShowCard"
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { Location, useLocation } from "app/utils/hooks/useLocation"
 import { PlaceholderBox, RandomWidthPlaceholderText } from "app/utils/placeholders"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { times } from "lodash"
 import { Suspense, memo } from "react"
 import { FlatList } from "react-native"
@@ -18,6 +22,7 @@ interface ShowsRailProps {
   disableLocation: boolean
   location?: Location | null
   contextModule?: ContextModule
+  onTrack?: (show: ExtractNodeType<ShowsRail_showsConnection$data>, index: number) => void
   title: string
 }
 
@@ -25,7 +30,7 @@ interface ShowsRailProps {
 const NUMBER_OF_SHOWS = 10
 
 export const ShowsRail: React.FC<ShowsRailProps> = memo(
-  ({ disableLocation, location, contextModule, title }) => {
+  ({ disableLocation, location, contextModule, onTrack, title }) => {
     const tracking = useTracking()
 
     const queryVariables = location
@@ -66,6 +71,10 @@ export const ShowsRail: React.FC<ShowsRailProps> = memo(
               <ShowCardContainer
                 show={item}
                 onPress={() => {
+                  if (onTrack) {
+                    return onTrack(item, index)
+                  }
+
                   tracking.trackEvent(
                     tracks.tappedThumbnail(item.internalID, item.slug || "", index, contextModule)
                   )
@@ -135,11 +144,13 @@ interface ShowsRailContainerProps {
   title: string
   disableLocation?: boolean
   contextModule?: ContextModule
+  onTrack?: (show: ExtractNodeType<ShowsRail_showsConnection$data>, index: number) => void
 }
 
 export const ShowsRailContainer: React.FC<ShowsRailContainerProps> = ({
   disableLocation = false,
   contextModule,
+  onTrack,
   ...restProps
 }) => {
   const visualizeLocation = useDevToggle("DTLocationDetectionVisialiser")
@@ -166,6 +177,7 @@ export const ShowsRailContainer: React.FC<ShowsRailContainerProps> = ({
         location={location}
         disableLocation={disableLocation}
         contextModule={contextModule}
+        onTrack={onTrack}
       />
     </Suspense>
   )

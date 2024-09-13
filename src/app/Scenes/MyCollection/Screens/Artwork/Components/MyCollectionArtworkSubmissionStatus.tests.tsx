@@ -18,77 +18,73 @@ describe("MyCollectionArtworkSubmissionStatus", () => {
     `,
   })
 
-  it("Displays nothing when there is no submission", () => {
-    renderWithRelay({
-      Artwork: () => {
-        return {
-          consignmentSubmission: null,
-        }
-      },
+  describe("AREnableSubmitArtworkTier2Information feature flag is off", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        AREnableSubmitArtworkTier2Information: false,
+      })
     })
 
-    expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).toBe(null)
-  })
+    it("Displays nothing when there is no submission", () => {
+      renderWithRelay({
+        Artwork: () => {
+          return {
+            consignmentSubmission: null,
+          }
+        },
+      })
 
-  it("Displays nothing if state is DRAFT", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({
-      AREnableSubmitArtworkTier2Information: false,
+      expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).toBe(null)
     })
 
-    renderWithRelay({
-      Artwork: () => {
-        return {
-          consignmentSubmission: {
-            externalID: "some-external-id",
-            state: "DRAFT",
-          },
-        }
-      },
+    it("Displays nothing if state is DRAFT", () => {
+      renderWithRelay({
+        Artwork: () => {
+          return {
+            consignmentSubmission: {
+              externalID: "some-external-id",
+              state: "DRAFT",
+            },
+          }
+        },
+      })
+
+      expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).toBe(null)
     })
 
-    expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).toBe(null)
-  })
+    it("display Submission status and In Progress when submission is in progress", () => {
+      renderWithRelay({
+        Artwork: () => {
+          return {
+            consignmentSubmission: {
+              externalID: "some-external-id",
+              state: "SUBMITTED",
+              stateLabel: "In Progress",
+            },
+          }
+        },
+      })
 
-  it("display Submission status and In Progress when submission is in progress", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({
-      AREnableSubmitArtworkTier2Information: false,
+      expect(screen.getByText("Submission Status")).toBeDefined()
+      expect(screen.getByText("In Progress")).toBeDefined()
     })
 
-    renderWithRelay({
-      Artwork: () => {
-        return {
-          consignmentSubmission: {
-            externalID: "some-external-id",
-            state: "SUBMITTED",
-            stateLabel: "In Progress",
-          },
-        }
-      },
+    it("display Submission status and Evaluation Complete when submission has been evaluated", () => {
+      renderWithRelay({
+        Artwork: () => {
+          return {
+            consignmentSubmission: {
+              externalID: "some-external-id",
+              state: "REJECTED",
+              stateLabel: "Evaluation Complete",
+            },
+          }
+        },
+      })
+
+      expect(screen.getByText("Submission Status")).toBeDefined()
+      expect(screen.getByText("Evaluation Complete")).toBeDefined()
     })
-
-    expect(screen.getByText("Submission Status")).toBeDefined()
-    expect(screen.getByText("In Progress")).toBeDefined()
-  })
-
-  it("display Submission status and Evaluation Complete when submission has been evaluated", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({
-      AREnableSubmitArtworkTier2Information: false,
-    })
-
-    renderWithRelay({
-      Artwork: () => {
-        return {
-          consignmentSubmission: {
-            externalID: "some-external-id",
-            state: "REJECTED",
-            stateLabel: "Evaluation Complete",
-          },
-        }
-      },
-    })
-
-    expect(screen.getByText("Submission Status")).toBeDefined()
-    expect(screen.getByText("Evaluation Complete")).toBeDefined()
   })
 
   describe("AREnableSubmitArtworkTier2Information feature flag is on", () => {
@@ -96,6 +92,18 @@ describe("MyCollectionArtworkSubmissionStatus", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({
         AREnableSubmitArtworkTier2Information: true,
       })
+    })
+
+    it("Displays nothing when there is no submission", () => {
+      renderWithRelay({
+        Artwork: () => {
+          return {
+            consignmentSubmission: null,
+          }
+        },
+      })
+
+      expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).toBe(null)
     })
 
     it("displays submission status even if state is DRAFT", () => {

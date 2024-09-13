@@ -1,24 +1,23 @@
-import { ContextModule } from "@artsy/cohesion"
 import { Flex, useScreenDimensions } from "@artsy/palette-mobile"
 import { HomeViewSectionSales_section$key } from "__generated__/HomeViewSectionSales_section.graphql"
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
-import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
+import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
 import { HomeViewSectionSalesItem } from "app/Scenes/HomeView/Sections/HomeViewSectionSalesItem"
+import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useRef } from "react"
 import { FlatList } from "react-native-gesture-handler"
 import { graphql, useFragment } from "react-relay"
-import { useTracking } from "react-tracking"
 
 interface HomeViewSectionSalesProps {
   section: HomeViewSectionSales_section$key
 }
 
 export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({ section }) => {
-  const tracking = useTracking()
+  const tracking = useHomeViewTracking()
 
   const listRef = useRef<FlatList<any>>()
   const data = useFragment(fragment, section)
@@ -34,7 +33,7 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({ sect
   }
 
   return (
-    <Flex>
+    <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
       <Flex px={2}>
         <SectionTitle
           title={component?.title}
@@ -58,14 +57,7 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({ sect
             <HomeViewSectionSalesItem
               sale={item}
               onPress={(sale) => {
-                tracking.trackEvent(
-                  HomeAnalytics.auctionThumbnailTapEvent(
-                    sale?.internalID,
-                    sale?.slug,
-                    index,
-                    data.internalID as ContextModule
-                  )
-                )
+                tracking.tappedAuctionGroup(sale.internalID, sale.slug, data.internalID, index)
               }}
             />
           )

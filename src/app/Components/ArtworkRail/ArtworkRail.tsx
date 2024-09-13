@@ -30,6 +30,8 @@ interface CommonArtworkRailProps {
   onMorePress?: () => void
   viewabilityConfig?: ViewabilityConfig | undefined
   onViewableItemsChanged?: (info: { viewableItems: any[]; changed: any[] }) => void
+  hideIncreasedInterestSignal?: boolean
+  hideCuratorsPickSignal?: boolean
 }
 
 export interface ArtworkRailProps extends CommonArtworkRailProps, ArtworkActionTrackingProps {
@@ -56,6 +58,8 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
   viewabilityConfig,
   onViewableItemsChanged,
   onMorePress,
+  hideIncreasedInterestSignal,
+  hideCuratorsPickSignal,
   ...otherProps
 }) => {
   const trackingProps = extractArtworkActionTrackingProps(otherProps)
@@ -109,6 +113,8 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
                 onSupressArtwork={() => {
                   handleSupress(item)
                 }}
+                hideIncreasedInterestSignal={hideIncreasedInterestSignal}
+                hideCuratorsPickSignal={hideCuratorsPickSignal}
               />
             </Box>
           </Disappearable>

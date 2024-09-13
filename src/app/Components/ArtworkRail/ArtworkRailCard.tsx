@@ -15,6 +15,7 @@ import {
 } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
+import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
@@ -68,6 +69,8 @@ export interface ArtworkRailCardProps extends ArtworkActionTrackingProps {
   showSaveIcon?: boolean
   size: ArtworkCardSize
   testID?: string
+  hideIncreasedInterestSignal?: boolean
+  hideCuratorsPickSignal?: boolean
 }
 
 export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
@@ -86,6 +89,8 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   showSaveIcon = false,
   size,
   testID,
+  hideIncreasedInterestSignal = false,
+  hideCuratorsPickSignal = false,
   ...restProps
 }) => {
   const EXTRALARGE_RAIL_CARD_IMAGE_WIDTH = useExtraLargeWidth()
@@ -98,6 +103,9 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
 
   const AREnablePartnerOfferSignals = useFeatureFlag("AREnablePartnerOfferSignals")
   const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
+  const AREnableCuratorsPicksAndInterestSignals = useFeatureFlag(
+    "AREnableCuratorsPicksAndInterestSignals"
+  )
 
   const {
     artistNames,
@@ -301,6 +309,17 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                     </Text>
                   </Box>
                 )}
+                {!sale?.isAuction &&
+                  !displayLimitedTimeOfferSignal &&
+                  !!collectorSignals &&
+                  !!AREnableCuratorsPicksAndInterestSignals && (
+                    <ArtworkSocialSignal
+                      collectorSignals={collectorSignals}
+                      hideCuratorsPick={hideCuratorsPickSignal}
+                      hideIncreasedInterest={hideIncreasedInterestSignal}
+                      dark={dark}
+                    />
+                  )}
                 {!!lotLabel && (
                   <Text lineHeight="20px" color={secondaryTextColor} numberOfLines={1}>
                     Lot {lotLabel}
@@ -669,6 +688,7 @@ const artworkFragment = graphql`
         lotClosesAt
       }
       ...ArtworkAuctionTimer_collectorSignals
+      ...ArtworkSocialSignal_collectorSignals
     }
     ...useSaveArtworkToArtworkLists_artwork
   }

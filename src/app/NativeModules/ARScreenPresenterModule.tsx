@@ -29,15 +29,17 @@ type Mutable<T> = T extends object
       -readonly [P in keyof T]: Mutable<T[P]>
     }
   : T extends Array<infer E>
-  ? Array<Mutable<E>>
-  : T extends ReadonlyArray<infer E2>
-  ? Array<Mutable<E2>>
-  : T
+    ? Array<Mutable<E>>
+    : T extends ReadonlyArray<infer E2>
+      ? Array<Mutable<E2>>
+      : T
 
 function updateNavigationState(updater: (draft: Mutable<NavigationState>) => void) {
-  const currentState = __unsafe_mainModalStackRef.current?.getRootState()
-  const nextState = immer(currentState, updater)
-  __unsafe_mainModalStackRef.current?.resetRoot(nextState)
+  const currentState = __unsafe_mainModalStackRef?.current?.getRootState()
+  if (currentState) {
+    const nextState = immer(currentState, updater)
+    __unsafe_mainModalStackRef?.current?.resetRoot(nextState)
+  }
 }
 function updateTabStackState(
   tab: BottomTabType,
@@ -61,7 +63,7 @@ function updateTabStackState(
 
 // If the user is looking at a modal, return the nav stack ref for that modal, otherwise return null.
 function getCurrentlyPresentedModalNavStackKey() {
-  const mainModalStackRoutes = __unsafe_mainModalStackRef.current?.getRootState().routes
+  const mainModalStackRoutes = __unsafe_mainModalStackRef?.current?.getRootState()?.routes
 
   if (!mainModalStackRoutes || mainModalStackRoutes.length <= 1) {
     // the user is not looking at a modal.
@@ -80,16 +82,16 @@ function getCurrentlyPresentedModalNavStackKey() {
 // set up yet, we check and wait for animations to finish
 // to more reliably navigate
 function dispatchNavAction(action: NavigationAction) {
-  if (!__unsafe_mainModalStackRef.current) {
+  if (!__unsafe_mainModalStackRef?.current) {
     requestAnimationFrame(() => {
-      __unsafe_mainModalStackRef.current?.dispatch(action)
+      __unsafe_mainModalStackRef?.current?.dispatch(action)
     })
   } else {
-    __unsafe_mainModalStackRef.current?.dispatch(action)
+    __unsafe_mainModalStackRef?.current?.dispatch(action)
   }
 }
 
-export const ARScreenPresenterModule: typeof NativeModules["ARScreenPresenterModule"] = {
+export const ARScreenPresenterModule: (typeof NativeModules)["ARScreenPresenterModule"] = {
   switchTab(tab: BottomTabType) {
     dispatchNavAction(TabActions.jumpTo(tab))
   },
@@ -153,7 +155,7 @@ export const ARScreenPresenterModule: typeof NativeModules["ARScreenPresenterMod
     })
   },
   goBack(_selectedTab: BottomTabType) {
-    __unsafe_mainModalStackRef.current?.goBack()
+    __unsafe_mainModalStackRef?.current?.goBack()
   },
   dismissModal(..._args: any[]) {
     StatusBar.setBarStyle("dark-content", true)
