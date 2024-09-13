@@ -80,6 +80,7 @@ export const requestSystemPermissions = async () => {
     })
     GlobalStore.actions.artsyPrefs.pushPromptLogic.setPushNotificationSystemDialogRejected(true)
   }
+  return status
 }
 
 const ONE_WEEK_MS = 1000 * 60 * 60 * 24 * 7 // One week in milliseconds
