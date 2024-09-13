@@ -1,3 +1,4 @@
+import { registerPushToken } from "@braze/react-native-sdk"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { captureMessage } from "@sentry/react-native"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
@@ -233,6 +234,8 @@ export async function configure() {
     // (optional) Called when Token is generated (iOS and Android)
     onRegister: (token) => {
       try {
+        registerPushToken(token.token)
+
         saveToken(token.token)
       } catch (e) {
         captureMessage(`Error saving push notification token: ${e}`, "info")
