@@ -1,4 +1,5 @@
 import { Flex, Screen, Spinner, Text } from "@artsy/palette-mobile"
+import { FlashList } from "@shopify/flash-list"
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
 import { HomeViewSectionsConnection_viewer$key } from "__generated__/HomeViewSectionsConnection_viewer.graphql"
 import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
@@ -26,7 +27,7 @@ export const HomeView: React.FC = () => {
     HomeViewSectionsConnection_viewer$key
   >(sectionsFragment, queryData.viewer)
 
-  const flatlistRef = useBottomTabsScrollToTop("home")
+  const flashlistRef = useBottomTabsScrollToTop("home")
 
   const sections = extractNodes(data?.homeView.sectionsConnection)
 
@@ -51,8 +52,8 @@ export const HomeView: React.FC = () => {
   return (
     <Screen safeArea={false}>
       <Screen.Body fullwidth>
-        <Screen.FlatList
-          innerRef={flatlistRef}
+        <FlashList
+          ref={flashlistRef}
           data={sections}
           keyExtractor={(item) => `${item.internalID || ""}`}
           renderItem={({ item }) => {
@@ -60,6 +61,7 @@ export const HomeView: React.FC = () => {
           }}
           onEndReached={() => loadNext(10)}
           ListHeaderComponent={<HomeHeader />}
+          estimatedItemSize={500}
           ListFooterComponent={
             hasNext ? (
               <Flex width="100%" justifyContent="center" alignItems="center" height={200}>
