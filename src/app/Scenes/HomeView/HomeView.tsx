@@ -1,3 +1,4 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import {
   Flex,
   Screen,
@@ -13,6 +14,7 @@ import { Section } from "app/Scenes/HomeView/Sections/Section"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { extractNodes } from "app/utils/extractNodes"
+import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
 import { Suspense, useState } from "react"
 import { RefreshControl } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
@@ -32,6 +34,8 @@ export const HomeView: React.FC = () => {
   >(sectionsFragment, queryData.viewer)
 
   const flatlistRef = useBottomTabsScrollToTop("home")
+
+  useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
 
   const sections = extractNodes(data?.homeView.sectionsConnection)
 
