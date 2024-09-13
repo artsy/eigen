@@ -130,7 +130,7 @@ const HomeViewSectionArtworksPlaceholder: React.FC = () => {
   const randomValue = useMemoizedRandom()
   return (
     <Skeleton>
-      <Flex m={2}>
+      <Flex mx={2} my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
         <SkeletonText variant="lg-display">Arwtworks Rail</SkeletonText>
         <Spacer y={2} />
 
