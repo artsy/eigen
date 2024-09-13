@@ -78,7 +78,7 @@ export const HomeView: React.FC = () => {
           renderItem={({ item }) => {
             return <Section section={item} />
           }}
-          onEndReached={() => loadNext(10)}
+          onEndReached={() => loadNext(NUMBER_OF_SECTIONS_TO_LOAD)}
           ListHeaderComponent={<HomeHeader />}
           estimatedItemSize={500}
           ListFooterComponent={
@@ -89,7 +89,7 @@ export const HomeView: React.FC = () => {
             ) : null
           }
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-          onEndReachedThreshold={3}
+          onEndReachedThreshold={0.5}
         />
       </Screen.Body>
     </Screen>
