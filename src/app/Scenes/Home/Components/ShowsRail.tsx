@@ -183,7 +183,7 @@ export const ShowsRailContainer: React.FC<ShowsRailContainerProps> = ({
   )
 }
 
-const ShowsRailPlaceholder: React.FC = () => {
+export const ShowsRailPlaceholder: React.FC = () => {
   return (
     <Flex ml={2} mt={2} testID="show-rail-placeholder">
       <RandomWidthPlaceholderText minWidth={100} maxWidth={200} marginBottom={20} />
