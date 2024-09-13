@@ -7,10 +7,13 @@ import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
 import { HomeViewSectionMarketingCollectionsItem } from "app/Scenes/HomeView/Sections/HomeViewSectionMarketingCollectionsItem"
+import { HORIZONTAL_FLATLIST_WINDOW_SIZE } from "app/Scenes/HomeView/helpers/constants"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
+import { INITIAL_NUMBER_TO_RENDER } from "app/Scenes/Sale/Components/SaleArtworksRail"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
+import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 
 interface HomeViewSectionMarketingCollectionsProps {
@@ -52,7 +55,8 @@ export const HomeViewSectionMarketingCollections: React.FC<
         >
       >
         data={marketingCollections}
-        initialNumToRender={3}
+        initialNumToRender={isTablet() ? 10 : INITIAL_NUMBER_TO_RENDER}
+        windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
         renderItem={({ item, index }) => {
           return (
             <HomeViewSectionMarketingCollectionsItem

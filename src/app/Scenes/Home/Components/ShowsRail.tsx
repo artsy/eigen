@@ -7,6 +7,8 @@ import {
 } from "__generated__/ShowsRail_showsConnection.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { ShowCardContainer } from "app/Components/ShowCard"
+import { HORIZONTAL_FLATLIST_WINDOW_SIZE } from "app/Scenes/HomeView/helpers/constants"
+import { INITIAL_NUMBER_TO_RENDER } from "app/Scenes/Sale/Components/SaleArtworksRail"
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { Location, useLocation } from "app/utils/hooks/useLocation"
@@ -15,6 +17,7 @@ import { ExtractNodeType } from "app/utils/relayHelpers"
 import { times } from "lodash"
 import { Suspense, memo } from "react"
 import { FlatList } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -60,7 +63,8 @@ export const ShowsRail: React.FC<ShowsRailProps> = memo(
         <Flex>
           <FlatList
             horizontal
-            initialNumToRender={2}
+            initialNumToRender={isTablet() ? 10 : INITIAL_NUMBER_TO_RENDER}
+            windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
             showsHorizontalScrollIndicator={false}
             ListHeaderComponent={() => <Spacer x={2} />}
             ListFooterComponent={() => <Spacer x={2} />}

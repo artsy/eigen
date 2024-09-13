@@ -6,6 +6,8 @@ import { ArtworkCardSize, ArtworkRailCard } from "app/Components/ArtworkRail/Art
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
 import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
+import { HORIZONTAL_FLATLIST_WINDOW_SIZE } from "app/Scenes/HomeView/helpers/constants"
+import { INITIAL_NUMBER_TO_RENDER } from "app/Scenes/Sale/Components/SaleArtworksRail"
 import {
   ArtworkActionTrackingProps,
   extractArtworkActionTrackingProps,
@@ -92,7 +94,8 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
       }
       showsHorizontalScrollIndicator={false}
       data={artworksSlice}
-      initialNumToRender={isTablet() ? 10 : 5}
+      initialNumToRender={isTablet() ? 10 : INITIAL_NUMBER_TO_RENDER}
+      windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
       contentContainerStyle={{ alignItems: "flex-end" }}
       renderItem={({ item, index }) => {
         return (
