@@ -25,7 +25,7 @@ import {
   usePaginationFragment,
 } from "react-relay"
 
-const NUMBER_OF_SECTIONS_TO_LOAD = 5
+export const NUMBER_OF_SECTIONS_TO_LOAD = 5
 // Hard coding the value here because 30px is not a valid value for the spacing unit
 // and we need it to be consistent with 60px spacing between sections
 export const HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT = "30px"
@@ -35,6 +35,8 @@ export const HomeView: React.FC = () => {
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   const queryData = useLazyLoadQuery<HomeViewQuery>(homeViewScreenQuery, {
+    // If you add any variable to the this query,
+    // you need to update prefetchUrl("/") call to include it in App.tsx
     count: NUMBER_OF_SECTIONS_TO_LOAD,
   })
 
