@@ -4364,7 +4364,10 @@ type CollectorSignals {
   partnerOffer: PartnerOfferToCollector
 
   # Primary label signal available to collector
-  primaryLabel: LabelSignalEnum
+  primaryLabel(
+    # Signals to ignore
+    ignore: [LabelSignalEnum]
+  ): LabelSignalEnum
 
   # Pending auction registration end time
   registrationEndsAt: String @deprecated(reason: "Use nested field in `auction` instead")
