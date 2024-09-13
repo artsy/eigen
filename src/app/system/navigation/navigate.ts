@@ -157,7 +157,7 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
         requestAnimationFrame(pushView)
       }, timeoutTime)
     } else {
-      pushView()
+      requestAnimationFrame(pushView)
     }
   }
 }
