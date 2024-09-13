@@ -70,13 +70,9 @@ class MainApplication : Application(), ReactApplication {
         val applicationContext = this
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (!task.isSuccessful) {
-                // Log.i(TAG, "TOKEN failed to fetch registration token")
-                // Log.w(TAG, "Fetching FCM registration token failed", task.exception)
                 return@addOnCompleteListener
             }
             val token = task.result
-            // Log.i(TAG, "TOKEN firebase messaging token $token")
-            // Braze.getInstance(applicationContext).setRegisteredPushToken(token)
         }
 
         ReactNativeFlipper.initializeFlipper(this, reactNativeHost.reactInstanceManager)

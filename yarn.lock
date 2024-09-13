@@ -1523,10 +1523,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@braze/react-native-sdk@5.2.0":
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/@braze/react-native-sdk/-/react-native-sdk-5.2.0.tgz#26036f854bcc9caa69f47da34a69e065f53f0a09"
-  integrity sha512-WLXvAaO6476smK0RfbeRrNLTpZrsCjc+daF8PLAJzngjJLDPELSFTpTeWj7OAUf6Q+AlZE7JcX97yHbG4lF+6w==
+"@braze/react-native-sdk@8.4.0":
+  version "8.4.0"
+  resolved "https://registry.yarnpkg.com/@braze/react-native-sdk/-/react-native-sdk-8.4.0.tgz#fc18b834a18d7ef87ba6baaa714a1a9e2c7e31e1"
+  integrity sha512-ypXVQD9lzIkQVgxQQoAYNZK/log/nHpPzz53iIsFelAM2hbT6NkyEEjM3SO0kO3UcZWZZvVtdR96ueX6wQep9g==
 
 "@egjs/hammerjs@^2.0.17":
   version "2.0.17"
