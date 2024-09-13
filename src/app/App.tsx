@@ -10,6 +10,7 @@ import { setupSentry } from "app/system/errorReporting/setupSentry"
 import { ModalStack } from "app/system/navigation/ModalStack"
 import { usePurgeCacheOnAppUpdate } from "app/system/relay/usePurgeCacheOnAppUpdate"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { addTrackingProvider } from "app/utils/track"
 import {
   SEGMENT_TRACKING_PROVIDER,
@@ -35,7 +36,7 @@ import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
 import { Onboarding } from "./Scenes/Onboarding/Onboarding"
 import { DynamicIslandStagingIndicator } from "./utils/DynamicIslandStagingIndicator"
 import { createAllChannels, savePendingToken } from "./utils/PushNotification"
-import { useInitializeQueryPrefetching } from "./utils/queryPrefetching"
+import { useInitializeQueryPrefetching, usePrefetch } from "./utils/queryPrefetching"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import { useFreshInstallTracking } from "./utils/useFreshInstallTracking"
 import { useInitialNotification } from "./utils/useInitialNotification"
@@ -91,8 +92,10 @@ const Main = () => {
   const forceUpdateMessage = GlobalStore.useAppState(
     (state) => state.artsyPrefs.echo.forceUpdateMessage
   )
+  const preferLegacyHomeScreen = useFeatureFlag("ARPreferLegacyHomeScreen")
 
   const fpsCounter = useDevToggle("DTFPSCounter")
+  const shouldDisplayNewHomeView = ArtsyNativeModule.isBetaOrDev && !preferLegacyHomeScreen
 
   useStripeConfig()
   useSiftConfig()
@@ -110,6 +113,8 @@ const Main = () => {
   useScreenReaderTracking()
   useFreshInstallTracking()
   usePurgeCacheOnAppUpdate()
+
+  const prefetchUrl = usePrefetch()
 
   useEffect(() => {
     if (isHydrated) {
@@ -135,6 +140,10 @@ const Main = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
+      if (shouldDisplayNewHomeView) {
+        prefetchUrl("/")
+      }
+
       savePendingToken()
     }
   }, [isLoggedIn])

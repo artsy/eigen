@@ -74,17 +74,19 @@ export const HomeView: React.FC = () => {
   )
 }
 
-export const HomeViewScreen: React.FC = () => (
-  <Suspense
-    fallback={
-      <Flex flex={1} justifyContent="center" alignItems="center" testID="new-home-view-skeleton">
-        <Text>Loading home view…</Text>
-      </Flex>
-    }
-  >
-    <HomeView />
-  </Suspense>
-)
+export const HomeViewScreen: React.FC = () => {
+  return (
+    <Suspense
+      fallback={
+        <Flex flex={1} justifyContent="center" alignItems="center" testID="new-home-view-skeleton">
+          <Text>Loading home view…</Text>
+        </Flex>
+      }
+    >
+      <HomeView />
+    </Suspense>
+  )
+}
 
 const sectionsFragment = graphql`
   fragment HomeViewSectionsConnection_viewer on Viewer
