@@ -72,7 +72,6 @@ export function setupSentry(props: SetupSentryProps = { debug: false }) {
     debug: props.debug,
     integrations: [
       new Sentry.ReactNativeTracing({
-        enableUserInteractionTracing: true,
         routingInstrumentation,
         beforeNavigate: (context: TransactionContext) => {
           /**
