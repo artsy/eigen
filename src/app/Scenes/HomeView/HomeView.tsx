@@ -1,11 +1,4 @@
-import {
-  Flex,
-  Screen,
-  Spacer,
-  SpacingUnitDSValueNumber,
-  Spinner,
-  Text,
-} from "@artsy/palette-mobile"
+import { Flex, Screen, Spinner, Text } from "@artsy/palette-mobile"
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
 import { HomeViewSectionsConnection_viewer$key } from "__generated__/HomeViewSectionsConnection_viewer.graphql"
 import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
@@ -17,8 +10,10 @@ import { Suspense, useState } from "react"
 import { RefreshControl } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
-const SECTION_SEPARATOR_HEIGHT: SpacingUnitDSValueNumber = 6
 const NUMBER_OF_SECTIONS_TO_LOAD = 10
+// Hard coding the value here because 30px is not a valid value for the spacing unit
+// and we need it to be consistent with 60px spacing between sections
+export const HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT = "30px"
 
 export const HomeView: React.FC = () => {
   const queryData = useLazyLoadQuery<HomeViewQuery>(homeViewScreenQuery, {
@@ -63,7 +58,6 @@ export const HomeView: React.FC = () => {
           renderItem={({ item }) => {
             return <Section section={item} />
           }}
-          ItemSeparatorComponent={SectionSeparator}
           onEndReached={() => loadNext(10)}
           ListHeaderComponent={<HomeHeader />}
           ListFooterComponent={
@@ -79,8 +73,6 @@ export const HomeView: React.FC = () => {
     </Screen>
   )
 }
-
-const SectionSeparator = () => <Spacer y={SECTION_SEPARATOR_HEIGHT} />
 
 export const HomeViewScreen: React.FC = () => (
   <Suspense

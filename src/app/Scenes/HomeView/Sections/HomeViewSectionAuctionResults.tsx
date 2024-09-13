@@ -3,6 +3,7 @@ import { HomeViewSectionAuctionResults_section$key } from "__generated__/HomeVie
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -28,7 +29,7 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
   const componentHref = section.component?.behaviors?.viewAll?.href
 
   return (
-    <Flex>
+    <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
       <Flex px={2}>
         <SectionTitle
           title={section.component?.title ?? "Auction Results"}

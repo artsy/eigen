@@ -1,5 +1,6 @@
 import { Flex, Separator, Text, Touchable, useSpace } from "@artsy/palette-mobile"
 import { HomeViewSectionArticlesCards_section$key } from "__generated__/HomeViewSectionArticlesCards_section.graphql"
+import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { graphql, useFragment } from "react-relay"
@@ -27,7 +28,14 @@ export const HomeViewSectionArticlesCards: React.FC<HomeViewSectionArticlesCards
   }
 
   return (
-    <Flex m={2} p={2} border="1px solid" borderColor="black30" gap={space(2)}>
+    <Flex
+      my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}
+      mx={2}
+      p={2}
+      border="1px solid"
+      borderColor="black30"
+      gap={space(2)}
+    >
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
         <Text variant="lg-display">{title}</Text>
         <Text variant="lg-display">{date()}</Text>

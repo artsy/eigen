@@ -4,6 +4,7 @@ import { LargeArtworkRail_artworks$data } from "__generated__/LargeArtworkRail_a
 import { SmallArtworkRail_artworks$data } from "__generated__/SmallArtworkRail_artworks.graphql"
 import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
 import { getSectionHref } from "app/Scenes/HomeView/helpers/getSectionHref"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
@@ -45,7 +46,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   }
 
   return (
-    <Flex>
+    <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
       <View>
         <Flex pl={2} pr={2}>
           <SectionTitle

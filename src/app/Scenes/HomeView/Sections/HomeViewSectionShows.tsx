@@ -1,5 +1,7 @@
+import { Flex } from "@artsy/palette-mobile"
 import { HomeViewSectionShows_section$key } from "__generated__/HomeViewSectionShows_section.graphql"
 import { ShowsRailContainer } from "app/Scenes/Home/Components/ShowsRail"
+import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { graphql, useFragment } from "react-relay"
@@ -15,13 +17,15 @@ export const HomeViewSectionShows: React.FC<HomeViewSectionShowsProps> = ({ sect
   const tracking = useHomeViewTracking()
 
   return (
-    <ShowsRailContainer
-      title={component?.title || "Shows"}
-      disableLocation={!enableShowsForYouLocation}
-      onTrack={(show, index) => {
-        tracking.tappedShowGroup(show.internalID, show.slug, data.internalID, index)
-      }}
-    />
+    <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
+      <ShowsRailContainer
+        title={component?.title || "Shows"}
+        disableLocation={!enableShowsForYouLocation}
+        onTrack={(show, index) => {
+          tracking.tappedShowGroup(show.internalID, show.slug, data.internalID, index)
+        }}
+      />
+    </Flex>
   )
 }
 

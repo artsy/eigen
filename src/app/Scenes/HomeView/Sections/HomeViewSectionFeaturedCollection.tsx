@@ -1,6 +1,7 @@
 import { Flex, Image, Spacer, Text } from "@artsy/palette-mobile"
 import { HomeViewSectionFeaturedCollection_section$key } from "__generated__/HomeViewSectionFeaturedCollection_section.graphql"
 import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
+import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { TouchableOpacity, useWindowDimensions } from "react-native"
@@ -34,7 +35,7 @@ export const HomeViewSectionFeaturedCollection: React.FC<
   }
 
   return (
-    <Flex pb={2} backgroundColor="black100">
+    <Flex pb={2} backgroundColor="black100" my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
       <TouchableOpacity onPress={handlePress} activeOpacity={0.7}>
         {!!component.backgroundImageURL && (
           <Image width={width} height={80} resizeMode="cover" src={component.backgroundImageURL} />

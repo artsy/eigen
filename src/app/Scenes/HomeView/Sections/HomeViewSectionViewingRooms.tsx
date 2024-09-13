@@ -1,6 +1,7 @@
 import { Flex } from "@artsy/palette-mobile"
 import { HomeViewSectionViewingRooms_section$key } from "__generated__/HomeViewSectionViewingRooms_section.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import {
   ViewingRoomsHomeRail as LegacyViewingRoomsHomeRail,
@@ -18,7 +19,7 @@ export const HomeViewSectionViewingRooms: React.FC<{
   const componentHref = data.component?.behaviors?.viewAll?.href
 
   return (
-    <Flex>
+    <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
       <Flex px={2}>
         <SectionTitle
           title={data.component?.title}
