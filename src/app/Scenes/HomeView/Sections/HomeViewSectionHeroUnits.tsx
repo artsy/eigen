@@ -43,6 +43,10 @@ export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> =
 
   const { width } = useScreenDimensions()
 
+  if (!heroUnits || heroUnits.length === 0) {
+    return null
+  }
+
   return (
     <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
       <FlatList
