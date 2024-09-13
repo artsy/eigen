@@ -15,6 +15,7 @@ import { ArtworkDimensionsClassificationAndAuthenticityFragmentContainer } from 
 import { ArtworkErrorScreen } from "app/Scenes/Artwork/Components/ArtworkError"
 import { ArtworkPartnerOfferNote } from "app/Scenes/Artwork/Components/ArtworkPartnerOfferNote"
 import { ArtworkScreenHeader } from "app/Scenes/Artwork/Components/ArtworkScreenHeader"
+import { ArtworkShowingNowCollectorSignal } from "app/Scenes/Artwork/Components/ArtworkShowingNowCollectorSignal"
 import { AbreviatedArtsyGuarantee } from "app/Scenes/Artwork/Components/PrivateArtwork/AbreviatedArtsyGuarantee"
 import { PrivateArtworkExclusiveAccess } from "app/Scenes/Artwork/Components/PrivateArtwork/PrivateArtworkExclusiveAccess"
 import { PrivateArtworkMetadata } from "app/Scenes/Artwork/Components/PrivateArtwork/PrivateArtworkMetadata"
@@ -304,6 +305,15 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
         excludeSeparator: true,
         excludeVerticalMargin: true,
       })
+
+      if (!artworkAboveTheFold?.isUnlisted) {
+        sections.push({
+          key: "artworkShowingNowCollectorSignal",
+          element: <ArtworkShowingNowCollectorSignal artwork={artworkAboveTheFold} />,
+          excludeSeparator: true,
+          excludeVerticalMargin: true,
+        })
+      }
 
       if (enableCuratorsPicksAndInterestSignals) {
         sections.push({
@@ -687,6 +697,7 @@ export const ArtworkContainer = createRefetchContainer(
         ...ArtworkPartnerOfferNote_artwork
         ...ArtworkPrice_artwork
         ...ArtworkDimensionsClassificationAndAuthenticity_artwork
+        ...ArtworkShowingNowCollectorSignal_artwork
         ...ArtworkCuratorsPickIncreasedInterestCollectorSignal_artwork
         slug
         internalID
