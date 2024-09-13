@@ -44,6 +44,11 @@
 
 @end
 
+#if defined(FB_SONARKIT_ENABLED) && (!defined(CI_DISABLE_FLIPPER) || (CI_DISABLE_FLIPPER != 1))
+#import <FlipperKit/FlipperClient.h>
+#import <FlipperPerformancePlugin.h>
+#endif
+
 @implementation ARAppDelegate
 
 static ARAppDelegate *_sharedInstance = nil;
@@ -129,6 +134,10 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    #if defined(FB_SONARKIT_ENABLED) && (!defined(CI_DISABLE_FLIPPER) ||    (CI_DISABLE_FLIPPER != 1))
+        FlipperClient *client = [FlipperClient sharedClient];
+        [client addPlugin:[FlipperPerformancePlugin new]];
+    #endif
     [self setupForAppLaunch:launchOptions];
 
     [self setupAnalytics:application withLaunchOptions:launchOptions];
