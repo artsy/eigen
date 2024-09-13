@@ -1,4 +1,12 @@
-import { Button, Flex, Text, Touchable, useScreenDimensions } from "@artsy/palette-mobile"
+import {
+  Button,
+  Flex,
+  Skeleton,
+  SkeletonBox,
+  Text,
+  Touchable,
+  useScreenDimensions,
+} from "@artsy/palette-mobile"
 import { HomeViewSectionGalleriesQuery } from "__generated__/HomeViewSectionGalleriesQuery.graphql"
 import { HomeViewSectionGalleries_section$key } from "__generated__/HomeViewSectionGalleries_section.graphql"
 import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
@@ -13,6 +21,7 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 interface HomeViewSectionGalleriesProps {
   section: HomeViewSectionGalleries_section$key
 }
+
 export const HomeViewSectionGalleries: React.FC<HomeViewSectionGalleriesProps> = (props) => {
   const tracking = useHomeViewTracking()
 
@@ -108,6 +117,18 @@ const HomeViewSectionGalleriesFragment = graphql`
   }
 `
 
+const HomeViewSectionGalleriesPlaceholder: React.FC = () => {
+  const { height } = useScreenDimensions()
+
+  return (
+    <Skeleton>
+      <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
+        <SkeletonBox height={height * 0.5} width="100%"></SkeletonBox>
+      </Flex>
+    </Skeleton>
+  )
+}
+
 const homeViewSectionGalleriesQuery = graphql`
   query HomeViewSectionGalleriesQuery($id: String!) {
     homeView {
@@ -130,4 +151,4 @@ export const HomeViewSectionGalleriesQueryRenderer: React.FC<{
   }
 
   return <HomeViewSectionGalleries section={data.homeView.section} />
-})
+}, HomeViewSectionGalleriesPlaceholder)
