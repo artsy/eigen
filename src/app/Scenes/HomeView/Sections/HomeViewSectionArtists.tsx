@@ -1,7 +1,16 @@
-import { Flex, Spacer, Spinner } from "@artsy/palette-mobile"
+import {
+  Flex,
+  Join,
+  Skeleton,
+  SkeletonBox,
+  SkeletonText,
+  Spacer,
+  Spinner,
+} from "@artsy/palette-mobile"
 import { HomeViewSectionArtistsMainQuery } from "__generated__/HomeViewSectionArtistsMainQuery.graphql"
 import { HomeViewSectionArtists_section$data } from "__generated__/HomeViewSectionArtists_section.graphql"
 import {
+  ARTIST_CARD_WIDTH,
   IMAGE_MAX_HEIGHT as ARTIST_RAIL_IMAGE_MAX_HEIGHT,
   ArtistCardContainer,
 } from "app/Components/Home/ArtistRails/ArtistCard"
@@ -13,7 +22,9 @@ import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
+import { useMemoizedRandom } from "app/utils/placeholders"
 import { ExtractNodeType } from "app/utils/relayHelpers"
+import { times } from "lodash"
 import {
   createPaginationContainer,
   graphql,
@@ -181,6 +192,36 @@ const homeViewSectionArtistsQuery = graphql`
   }
 `
 
+const HomeViewSectionArtistsPlaceholder: React.FC = () => {
+  const randomValue = useMemoizedRandom()
+  return (
+    <Skeleton>
+      <Flex mx={2} my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
+        <SkeletonText variant="lg-display">Recommended Artists</SkeletonText>
+
+        <Spacer y={2} />
+
+        <Flex flexDirection="row" mt={0.5}>
+          <Join separator={<Spacer x="15px" />}>
+            {times(3 + randomValue * 10).map((index) => (
+              <Flex key={index}>
+                <SkeletonBox
+                  key={index}
+                  height={ARTIST_RAIL_IMAGE_MAX_HEIGHT}
+                  width={ARTIST_CARD_WIDTH}
+                />
+                <Spacer y={1} />
+                <SkeletonText>Andy Warhol</SkeletonText>
+                <SkeletonText>Nationality, b 1023</SkeletonText>
+              </Flex>
+            ))}
+          </Join>
+        </Flex>
+      </Flex>
+    </Skeleton>
+  )
+}
+
 export const HomeViewSectionArtistsQueryRenderer: React.FC<{
   sectionID: string
 }> = withSuspense((props) => {
@@ -193,4 +234,4 @@ export const HomeViewSectionArtistsQueryRenderer: React.FC<{
   }
 
   return <HomeViewSectionArtistsPaginationContainer section={data.homeView.section} />
-})
+}, HomeViewSectionArtistsPlaceholder)
