@@ -10,8 +10,8 @@ export interface MediumCardProps extends BoxProps {
   tag?: CardTagProps
 }
 
-const MEDIUM_CARD_HEIGHT = 370
-const MEDIUM_CARD_WIDTH = 280
+export const MEDIUM_CARD_HEIGHT = 370
+export const MEDIUM_CARD_WIDTH = 280
 
 /**
  * `MediumCard` is a card with one image one tall image, and text for title and subtitle
