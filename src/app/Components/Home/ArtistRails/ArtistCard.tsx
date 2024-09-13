@@ -8,7 +8,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
-const ARTIST_CARD_WIDTH = 295
+export const ARTIST_CARD_WIDTH = 295
 
 interface ArtistCardProps {
   artist: ArtistCard_artist$data
