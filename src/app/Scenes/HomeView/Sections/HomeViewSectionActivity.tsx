@@ -152,7 +152,7 @@ const HomeViewSectionActivityPlaceholder: React.FC = () => {
   const randomValue = useMemoizedRandom()
 
   return (
-    <Flex ml={2} mr={2} my={2}>
+    <Flex ml={2} mr={2} my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
       <SkeletonText variant="lg-display">Latest Activity</SkeletonText>
       <Spacer y={2} />
       <Flex flexDirection="row">
