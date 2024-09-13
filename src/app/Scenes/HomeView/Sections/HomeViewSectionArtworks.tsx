@@ -143,7 +143,7 @@ const HomeViewSectionArtworksPlaceholder: React.FC = () => {
                   width={LARGE_RAIL_IMAGE_WIDTH}
                 />
                 <Spacer y={2} />
-                <SkeletonText>Andy Warhold</SkeletonText>
+                <SkeletonText>Andy Warhol</SkeletonText>
                 <SkeletonText>A creative name for a work</SkeletonText>
                 <SkeletonText>Gallery or Partner</SkeletonText>
                 <SkeletonText>1000 €</SkeletonText>

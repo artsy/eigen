@@ -22,7 +22,7 @@ import {
   usePaginationFragment,
 } from "react-relay"
 
-const NUMBER_OF_SECTIONS_TO_LOAD = 100
+const NUMBER_OF_SECTIONS_TO_LOAD = 5
 // Hard coding the value here because 30px is not a valid value for the spacing unit
 // and we need it to be consistent with 60px spacing between sections
 export const HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT = "30px"
@@ -132,42 +132,6 @@ const sectionsFragment = graphql`
                 type
               }
               ...HomeViewSectionGeneric_section
-            }
-            ... on HomeViewSectionActivity {
-              internalID
-            }
-            ... on HomeViewSectionArticles {
-              internalID
-            }
-            ... on HomeViewSectionArtworks {
-              internalID
-            }
-            ... on HomeViewSectionArtists {
-              internalID
-            }
-            ... on HomeViewSectionAuctionResults {
-              internalID
-            }
-            ... on HomeViewSectionHeroUnits {
-              internalID
-            }
-            ... on HomeViewSectionFairs {
-              internalID
-            }
-            ... on HomeViewSectionMarketingCollections {
-              internalID
-            }
-            ... on HomeViewSectionShows {
-              internalID
-            }
-            ... on HomeViewSectionViewingRooms {
-              internalID
-            }
-            ... on HomeViewSectionSales {
-              internalID
-            }
-            ... on HomeViewSectionGalleries {
-              internalID
             }
           }
         }
