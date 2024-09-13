@@ -98,6 +98,14 @@ describe("Artwork", () => {
     resolveMostRecentRelayOperation(environment, {
       Artwork: () => ({
         isUnlisted: false,
+        collectorSignals: {
+          runningShow: {
+            name: "Art Basel",
+            href: "/show/art-basel",
+            startAt: "2021-06-17T00:00:00+00:00",
+            endAt: "2021-06-20T00:00:00+00:00",
+          },
+        },
       }),
     })
     // ArtworkMarkAsRecentlyViewedQuery
@@ -126,7 +134,9 @@ describe("Artwork", () => {
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isUnlisted: false,
+          collectorSignals: null,
         }),
+        Me: () => ({ partnerOffersConnection: { edges: [] } }),
       })
       // ArtworkMarkAsRecentlyViewedQuery
       resolveMostRecentRelayOperation(environment)
@@ -198,8 +208,10 @@ describe("Artwork", () => {
           return {
             isUnlisted: false,
             internalID: "artwork123",
+            collectorSignals: null,
           }
         },
+        Me: () => ({ partnerOffersConnection: { edges: [] } }),
       })
       // ArtworkMarkAsRecentlyViewedQuery
       resolveMostRecentRelayOperation(environment)
@@ -437,7 +449,15 @@ describe("Artwork", () => {
       renderWithWrappers(<TestRenderer />)
 
       // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment)
+      resolveMostRecentRelayOperation(environment, {
+        Artwork() {
+          return {
+            isUnlisted: false,
+            collectorSignals: null,
+          }
+        },
+        Me: () => ({ partnerOffersConnection: { edges: [] } }),
+      })
 
       // ArtworkMarkAsRecentlyViewedQuery
       resolveMostRecentRelayOperation(environment)
@@ -445,6 +465,7 @@ describe("Artwork", () => {
       // ArtworkBelowTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
+          collectorSignals: null,
           isUnlisted: false,
           context: {
             isAuction: false,
@@ -469,7 +490,15 @@ describe("Artwork", () => {
       renderWithWrappers(<TestRenderer />)
 
       // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment)
+      resolveMostRecentRelayOperation(environment, {
+        Artwork() {
+          return {
+            isUnlisted: false,
+            collectorSignals: null,
+          }
+        },
+        Me: () => ({ partnerOffersConnection: { edges: [] } }),
+      })
 
       // ArtworkMarkAsRecentlyViewedQuery
       resolveMostRecentRelayOperation(environment)
@@ -503,7 +532,12 @@ describe("Artwork", () => {
       renderWithWrappers(<TestRenderer />)
 
       // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment)
+      resolveMostRecentRelayOperation(environment, {
+        Artwork: () => ({
+          collectorSignals: null,
+        }),
+        Me: () => ({ partnerOffersConnection: { edges: [] } }),
+      })
       // ArtworkMarkAsRecentlyViewedQuery
       resolveMostRecentRelayOperation(environment)
       // ArtworkBelowTheFoldQuery
@@ -568,12 +602,14 @@ describe("Artwork", () => {
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
+          collectorSignals: null,
           isUnlisted: false,
           isEligibleForArtsyGuarantee: true,
           context: {
             isAuction: false,
           },
         }),
+        Me: () => ({ partnerOffersConnection: { edges: [] } }),
       })
       // ArtworkMarkAsRecentlyViewedQuery
       resolveMostRecentRelayOperation(environment)
@@ -850,6 +886,14 @@ describe("Artwork", () => {
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
+        Artwork() {
+          return {
+            collectorSignals: null,
+            artist: null,
+            isUnlisted: false,
+            sale: null,
+          }
+        },
         Me: () => ({ partnerOffersConnection: { edges: [] } }),
       })
       // ArtworkMarkAsRecentlyViewedQuery
@@ -863,6 +907,7 @@ describe("Artwork", () => {
           context: {
             isAuction: false,
           },
+          artistSeriesConnection: null,
           contextGrids: [
             {
               title: "Grid Name",
@@ -952,7 +997,7 @@ describe("Artwork", () => {
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
-        Artwork: () => ({ isUnlisted: true }),
+        Artwork: () => ({ isUnlisted: true, collectorSignals: null }),
         Me: () => ({ partnerOffersConnection: { edges: [] } }),
       })
       // ArtworkMarkAsRecentlyViewedQuery
@@ -963,6 +1008,7 @@ describe("Artwork", () => {
           isUnlisted: true,
           isForSale: true,
           isInAuction: false,
+          collectorSignals: null,
           partner: {
             type: "foo",
           },
