@@ -4,9 +4,11 @@ import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
 import { HomeViewSectionFairsFairItem } from "app/Scenes/HomeView/Sections/HomeViewSectionFairsFairItem"
-import { HORIZONTAL_FLATLIST_WINDOW_SIZE } from "app/Scenes/HomeView/helpers/constants"
+import {
+  HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
+  HORIZONTAL_FLATLIST_WINDOW_SIZE,
+} from "app/Scenes/HomeView/helpers/constants"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
-import { INITIAL_NUMBER_TO_RENDER } from "app/Scenes/Sale/Components/SaleArtworksRail"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { isTablet } from "react-native-device-info"
@@ -46,7 +48,7 @@ export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = ({ sect
 
       <CardRailFlatList<any>
         data={fairs}
-        initialNumToRender={isTablet() ? 10 : INITIAL_NUMBER_TO_RENDER}
+        initialNumToRender={isTablet() ? 10 : HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
         windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
         renderItem={({ item, index }) => {
           return (

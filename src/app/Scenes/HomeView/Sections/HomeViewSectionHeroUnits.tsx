@@ -3,9 +3,11 @@ import { HomeViewSectionHeroUnits_section$key } from "__generated__/HomeViewSect
 import { PaginationDots } from "app/Components/PaginationDots"
 import { HeroUnit } from "app/Scenes/Home/Components/HeroUnitsRail"
 import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
-import { HORIZONTAL_FLATLIST_WINDOW_SIZE } from "app/Scenes/HomeView/helpers/constants"
+import {
+  HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
+  HORIZONTAL_FLATLIST_WINDOW_SIZE,
+} from "app/Scenes/HomeView/helpers/constants"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
-import { INITIAL_NUMBER_TO_RENDER } from "app/Scenes/Sale/Components/SaleArtworksRail"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
 import { useRef, useState } from "react"
@@ -58,7 +60,7 @@ export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> =
         snapToAlignment="start"
         snapToInterval={width}
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
-        initialNumToRender={isTablet() ? 10 : INITIAL_NUMBER_TO_RENDER}
+        initialNumToRender={isTablet() ? 10 : HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
         windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
       />
       <Spacer y={2} />

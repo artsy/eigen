@@ -5,9 +5,11 @@ import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
 import { HomeViewSectionSalesItem } from "app/Scenes/HomeView/Sections/HomeViewSectionSalesItem"
-import { HORIZONTAL_FLATLIST_WINDOW_SIZE } from "app/Scenes/HomeView/helpers/constants"
+import {
+  HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
+  HORIZONTAL_FLATLIST_WINDOW_SIZE,
+} from "app/Scenes/HomeView/helpers/constants"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
-import { INITIAL_NUMBER_TO_RENDER } from "app/Scenes/Sale/Components/SaleArtworksRail"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useRef } from "react"
@@ -51,7 +53,7 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({ sect
         prefetchVariablesExtractor={(item) => ({ saleSlug: item?.slug })}
         listRef={listRef}
         data={sales}
-        initialNumToRender={isTablet() ? 10 : INITIAL_NUMBER_TO_RENDER}
+        initialNumToRender={isTablet() ? 10 : HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
         windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
         renderItem={({ item, index }) => {
           return (

@@ -4,9 +4,11 @@ import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
-import { HORIZONTAL_FLATLIST_WINDOW_SIZE } from "app/Scenes/HomeView/helpers/constants"
+import {
+  HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
+  HORIZONTAL_FLATLIST_WINDOW_SIZE,
+} from "app/Scenes/HomeView/helpers/constants"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
-import { INITIAL_NUMBER_TO_RENDER } from "app/Scenes/Sale/Components/SaleArtworksRail"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { FlatList } from "react-native"
@@ -41,7 +43,7 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
       </Flex>
       <FlatList
         horizontal
-        initialNumToRender={isTablet() ? 10 : INITIAL_NUMBER_TO_RENDER}
+        initialNumToRender={isTablet() ? 10 : HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
         windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
         data={auctionResults}
         showsHorizontalScrollIndicator={false}

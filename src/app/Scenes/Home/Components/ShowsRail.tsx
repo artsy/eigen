@@ -7,8 +7,10 @@ import {
 } from "__generated__/ShowsRail_showsConnection.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { ShowCardContainer } from "app/Components/ShowCard"
-import { HORIZONTAL_FLATLIST_WINDOW_SIZE } from "app/Scenes/HomeView/helpers/constants"
-import { INITIAL_NUMBER_TO_RENDER } from "app/Scenes/Sale/Components/SaleArtworksRail"
+import {
+  HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
+  HORIZONTAL_FLATLIST_WINDOW_SIZE,
+} from "app/Scenes/HomeView/helpers/constants"
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { Location, useLocation } from "app/utils/hooks/useLocation"
@@ -63,7 +65,9 @@ export const ShowsRail: React.FC<ShowsRailProps> = memo(
         <Flex>
           <FlatList
             horizontal
-            initialNumToRender={isTablet() ? 10 : INITIAL_NUMBER_TO_RENDER}
+            initialNumToRender={
+              isTablet() ? 10 : HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT
+            }
             windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
             showsHorizontalScrollIndicator={false}
             ListHeaderComponent={() => <Spacer x={2} />}

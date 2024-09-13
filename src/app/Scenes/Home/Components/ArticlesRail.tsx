@@ -3,8 +3,10 @@ import { ArticlesRail_articlesConnection$data } from "__generated__/ArticlesRail
 import { ArticleCardContainer } from "app/Components/ArticleCard"
 import { SectionTitle } from "app/Components/SectionTitle"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
-import { HORIZONTAL_FLATLIST_WINDOW_SIZE } from "app/Scenes/HomeView/helpers/constants"
-import { INITIAL_NUMBER_TO_RENDER } from "app/Scenes/Sale/Components/SaleArtworksRail"
+import {
+  HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
+  HORIZONTAL_FLATLIST_WINDOW_SIZE,
+} from "app/Scenes/HomeView/helpers/constants"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
@@ -55,7 +57,7 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = ({
           ListHeaderComponent={() => <Spacer x={2} />}
           ListFooterComponent={() => <Spacer x={2} />}
           ItemSeparatorComponent={() => <Spacer x={2} />}
-          initialNumToRender={isTablet() ? 10 : INITIAL_NUMBER_TO_RENDER}
+          initialNumToRender={isTablet() ? 10 : HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
           windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
           data={articles}
           keyExtractor={(item) => `${item.internalID}`}
