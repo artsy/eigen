@@ -137,7 +137,7 @@ const homeViewSectionActivityQuery = graphql`
   }
 `
 
-export const HomeViewSectionActivityPlaceholder: React.FC = () => {
+const HomeViewSectionActivityPlaceholder: React.FC = () => {
   const randomValue = useMemoizedRandom()
 
   return (
