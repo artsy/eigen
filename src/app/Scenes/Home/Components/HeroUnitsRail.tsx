@@ -21,7 +21,7 @@ interface HeroUnitProps {
 
 const fontScale = PixelRatio.getFontScale()
 
-const CARD_HEIGHT = 250 * fontScale
+export const HERO_UNIT_CARD_HEIGHT = 250 * fontScale
 const CARD_IMAGE_WIDTH = 125
 const DESCRIPTION_LINES = fontScale > 1 ? 4 : 3
 
@@ -40,8 +40,8 @@ export const HeroUnit: React.FC<HeroUnitProps> = ({ item, onPress }) => {
 
   return (
     <Touchable key={item.internalID} onPress={handlePress}>
-      <Flex bg="black100" flexDirection="row" height={CARD_HEIGHT} width={screenWidth}>
-        <Image height={CARD_HEIGHT} src={imageSrc} width={cardImageWidth} />
+      <Flex bg="black100" flexDirection="row" height={HERO_UNIT_CARD_HEIGHT} width={screenWidth}>
+        <Image height={HERO_UNIT_CARD_HEIGHT} src={imageSrc} width={cardImageWidth} />
         <Box p={2} width={screenWidth - cardImageWidth}>
           <Text color="white100" mb={1} numberOfLines={2} variant="lg-display">
             {item.title}
