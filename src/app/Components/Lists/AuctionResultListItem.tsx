@@ -31,8 +31,8 @@ interface Props {
   withHorizontalPadding?: boolean
 }
 
-const IMAGE_WIDTH = 100
-const IMAGE_HEIGHT = 130
+export const AUCTION_RESULT_CARD_IMAGE_WIDTH = 100
+export const AUCTION_RESULT_CARD_IMAGE_HEIGHT = 130
 
 const AuctionResultListItem: React.FC<Props> = ({
   auctionResult,
@@ -80,8 +80,8 @@ const AuctionResultListItem: React.FC<Props> = ({
         {/* Sale Artwork Thumbnail Image */}
         {!auctionResult.images?.thumbnail?.url || couldNotLoadImage ? (
           <Flex
-            width={IMAGE_WIDTH}
-            height={IMAGE_HEIGHT}
+            width={AUCTION_RESULT_CARD_IMAGE_WIDTH}
+            height={AUCTION_RESULT_CARD_IMAGE_HEIGHT}
             borderRadius={2}
             backgroundColor="black5"
             alignItems="center"
@@ -91,8 +91,8 @@ const AuctionResultListItem: React.FC<Props> = ({
           </Flex>
         ) : (
           <Flex
-            width={IMAGE_WIDTH}
-            height={IMAGE_HEIGHT}
+            width={AUCTION_RESULT_CARD_IMAGE_WIDTH}
+            height={AUCTION_RESULT_CARD_IMAGE_HEIGHT}
             borderRadius={2}
             alignItems="center"
             justifyContent="center"
@@ -102,7 +102,7 @@ const AuctionResultListItem: React.FC<Props> = ({
           >
             <FastImage
               style={{
-                height: IMAGE_HEIGHT,
+                height: AUCTION_RESULT_CARD_IMAGE_HEIGHT,
                 width: 100,
               }}
               source={{
