@@ -10754,13 +10754,13 @@ type HomeView {
   section(
     # The ID of the section
     id: String!
-  ): HomeViewSection
+  ): HomeViewSectionGeneric
   sectionsConnection(
     after: String
     before: String
     first: Int
     last: Int
-  ): HomeViewSectionConnection!
+  ): HomeViewSectionGenericConnection!
 }
 
 # A component specification
@@ -10801,20 +10801,6 @@ type HomeViewComponentBehaviorsViewAll {
   # href of the view all button
   href: String
 }
-
-union HomeViewSection =
-    HomeViewSectionActivity
-  | HomeViewSectionArticles
-  | HomeViewSectionArtists
-  | HomeViewSectionArtworks
-  | HomeViewSectionAuctionResults
-  | HomeViewSectionFairs
-  | HomeViewSectionGalleries
-  | HomeViewSectionHeroUnits
-  | HomeViewSectionMarketingCollections
-  | HomeViewSectionSales
-  | HomeViewSectionShows
-  | HomeViewSectionViewingRooms
 
 # A user activity section in the home view
 type HomeViewSectionActivity implements HomeViewSectionGeneric & Node {
@@ -10910,26 +10896,6 @@ type HomeViewSectionAuctionResults implements HomeViewSectionGeneric & Node {
   internalID: ID!
 }
 
-# A connection to a list of items.
-type HomeViewSectionConnection {
-  # A list of edges.
-  edges: [HomeViewSectionEdge]
-  pageCursors: PageCursors!
-
-  # Information to aid in pagination.
-  pageInfo: PageInfo!
-  totalCount: Int
-}
-
-# An edge in a connection.
-type HomeViewSectionEdge {
-  # A cursor for use in pagination
-  cursor: String!
-
-  # The item at the end of the edge
-  node: HomeViewSection
-}
-
 # A fairs section in the home view
 type HomeViewSectionFairs implements HomeViewSectionGeneric & Node {
   # The component that is prescribed for this section
@@ -10974,6 +10940,26 @@ interface HomeViewSectionGeneric {
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+}
+
+# A connection to a list of items.
+type HomeViewSectionGenericConnection {
+  # A list of edges.
+  edges: [HomeViewSectionGenericEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type HomeViewSectionGenericEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: HomeViewSectionGeneric
 }
 
 # A hero units section in the home view
