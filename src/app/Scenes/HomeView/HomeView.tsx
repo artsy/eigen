@@ -8,6 +8,9 @@ import {
 } from "@artsy/palette-mobile"
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
 import { HomeViewSectionsConnection_viewer$key } from "__generated__/HomeViewSectionsConnection_viewer.graphql"
+import { HomeView_me$key } from "__generated__/HomeView_me.graphql"
+import { useDismissSavedArtwork } from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
+import { useEnableProgressiveOnboarding } from "app/Components/ProgressiveOnboarding/useEnableProgressiveOnboarding"
 import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
 import { Section } from "app/Scenes/HomeView/Sections/Section"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -15,23 +18,34 @@ import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { extractNodes } from "app/utils/extractNodes"
 import { Suspense, useState } from "react"
 import { RefreshControl } from "react-native"
-import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
+import {
+  fetchQuery,
+  graphql,
+  useFragment,
+  useLazyLoadQuery,
+  usePaginationFragment,
+} from "react-relay"
 
 const SECTION_SEPARATOR_HEIGHT: SpacingUnitDSValueNumber = 6
 const NUMBER_OF_SECTIONS_TO_LOAD = 10
 
 export const HomeView: React.FC = () => {
+  const flatlistRef = useBottomTabsScrollToTop("home")
+  const [isRefreshing, setIsRefreshing] = useState(false)
+
   const queryData = useLazyLoadQuery<HomeViewQuery>(homeViewScreenQuery, {
     count: NUMBER_OF_SECTIONS_TO_LOAD,
   })
-  const [isRefreshing, setIsRefreshing] = useState(false)
 
   const { data, loadNext, hasNext } = usePaginationFragment<
     HomeViewQuery,
     HomeViewSectionsConnection_viewer$key
   >(sectionsFragment, queryData.viewer)
 
-  const flatlistRef = useBottomTabsScrollToTop("home")
+  const meData = useFragment<HomeView_me$key>(meFragment, queryData.me)
+  const savedArtworksCount = meData?.counts?.savedArtworks ?? 0
+  useDismissSavedArtwork(savedArtworksCount > 0)
+  useEnableProgressiveOnboarding()
 
   const sections = extractNodes(data?.homeView.sectionsConnection)
 
@@ -93,6 +107,14 @@ export const HomeViewScreen: React.FC = () => (
     <HomeView />
   </Suspense>
 )
+
+const meFragment = graphql`
+  fragment HomeView_me on Me {
+    counts {
+      savedArtworks
+    }
+  }
+`
 
 const sectionsFragment = graphql`
   fragment HomeViewSectionsConnection_viewer on Viewer
@@ -170,6 +192,10 @@ const sectionsFragment = graphql`
 
 export const homeViewScreenQuery = graphql`
   query HomeViewQuery($count: Int!, $cursor: String) {
+    me {
+      ...HomeView_me
+    }
+
     viewer {
       ...HomeViewSectionsConnection_viewer @arguments(count: $count, cursor: $cursor)
     }
