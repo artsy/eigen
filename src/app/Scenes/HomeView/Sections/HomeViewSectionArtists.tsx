@@ -208,7 +208,7 @@ const HomeViewSectionArtistsPlaceholder: React.FC = () => {
 
         <Spacer y={2} />
 
-        <Flex flexDirection="row" mt={0.5}>
+        <Flex flexDirection="row">
           <Join separator={<Spacer x="15px" />}>
             {times(3 + randomValue * 10).map((index) => (
               <Flex key={index}>

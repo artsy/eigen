@@ -12,8 +12,8 @@ import {
 } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-const WIDTH = 295
-const HEIGHT = 230
+export const ARTICLE_CARD_IMAGE_WIDTH = 295
+export const ARTICLE_CARD_IMAGE_HEIGHT = 230
 
 interface ArticleCardProps extends ViewProps {
   article: ArticleCard_article$data
@@ -35,9 +35,9 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
   const { width } = useWindowDimensions()
 
   return (
-    <Flex width={isFluid ? "100%" : WIDTH}>
+    <Flex width={isFluid ? "100%" : ARTICLE_CARD_IMAGE_WIDTH}>
       <TouchableWithoutFeedback onPress={onTap} testID="article-card">
-        <Flex width={isFluid ? "100%" : WIDTH} overflow="hidden">
+        <Flex width={isFluid ? "100%" : ARTICLE_CARD_IMAGE_WIDTH} overflow="hidden">
           {!!imageURL &&
             (isFluid ? (
               <>
@@ -52,7 +52,11 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
                 </View>
               </>
             ) : (
-              <OpaqueImageView imageURL={imageURL} width={WIDTH} height={HEIGHT} />
+              <OpaqueImageView
+                imageURL={imageURL}
+                width={ARTICLE_CARD_IMAGE_WIDTH}
+                height={ARTICLE_CARD_IMAGE_HEIGHT}
+              />
             ))}
           <Spacer y={1} />
           <Text variant="xs">{article.vertical || " "}</Text>
