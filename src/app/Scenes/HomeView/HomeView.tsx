@@ -24,7 +24,7 @@ import {
   usePaginationFragment,
 } from "react-relay"
 
-const NUMBER_OF_SECTIONS_TO_LOAD = 10
+const NUMBER_OF_SECTIONS_TO_LOAD = 100
 // Hard coding the value here because 30px is not a valid value for the spacing unit
 // and we need it to be consistent with 60px spacing between sections
 export const HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT = "30px"

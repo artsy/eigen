@@ -1,8 +1,8 @@
 import { ContextModule } from "@artsy/cohesion"
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Skeleton } from "@artsy/palette-mobile"
 import { HomeViewSectionShowsQuery } from "__generated__/HomeViewSectionShowsQuery.graphql"
 import { HomeViewSectionShows_section$key } from "__generated__/HomeViewSectionShows_section.graphql"
-import { ShowsRailContainer } from "app/Scenes/Home/Components/ShowsRail"
+import { ShowsRailContainer, ShowsRailPlaceholder } from "app/Scenes/Home/Components/ShowsRail"
 import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -47,6 +47,16 @@ const fragment = graphql`
   }
 `
 
+const HomeViewSectionShowsPlaceholder: React.FC = () => {
+  return (
+    <Skeleton>
+      <Flex mx={2} my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
+        <ShowsRailPlaceholder />
+      </Flex>
+    </Skeleton>
+  )
+}
+
 const homeViewSectionShowsQuery = graphql`
   query HomeViewSectionShowsQuery($id: String!) {
     homeView {
@@ -69,4 +79,4 @@ export const HomeViewSectionShowsQueryRenderer: React.FC<{
   }
 
   return <HomeViewSectionShows section={data.homeView.section} />
-})
+}, HomeViewSectionShowsPlaceholder)

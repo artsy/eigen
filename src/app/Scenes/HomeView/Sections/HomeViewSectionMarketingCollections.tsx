@@ -209,13 +209,5 @@ export const HomeViewSectionMarketingCollectionsQueryRenderer: React.FC<{
     return null
   }
 
-  // // return <HomeViewSectionMarketingCollectionsPlaceholder />
-
-  // return (
-  //   <>
-  //     <HomeViewSectionMarketingCollectionsPlaceholder />
-  //     <HomeViewSectionMarketingCollections section={data.homeView.section} />
-  //   </>
-  // )
   return <HomeViewSectionMarketingCollections section={data.homeView.section} />
 }, HomeViewSectionMarketingCollectionsPlaceholder)
