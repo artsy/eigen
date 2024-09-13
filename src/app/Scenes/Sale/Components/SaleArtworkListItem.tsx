@@ -103,7 +103,7 @@ export const SaleArtworkListItem: React.FC<Props> = ({ artwork, contextScreenOwn
               </Text>
             )}
             {!!saleInfo && (
-              <Text variant="sm" color="black60" numberOfLines={1}>
+              <Text variant="sm" color="black60" weight="medium" numberOfLines={1}>
                 {saleInfo}
               </Text>
             )}
