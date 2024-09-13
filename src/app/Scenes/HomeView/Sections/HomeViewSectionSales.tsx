@@ -1,9 +1,11 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Join, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import { HomeViewSectionSalesQuery } from "__generated__/HomeViewSectionSalesQuery.graphql"
 import { HomeViewSectionSales_section$key } from "__generated__/HomeViewSectionSales_section.graphql"
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
+import { CardRailCard, CardRailMetadataContainer } from "app/Components/Home/CardRailCard"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { LARGE_IMAGE_SIZE, SMALL_IMAGE_SIZE } from "app/Components/ThreeUpImageLayout"
 import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
 import { HomeViewSectionSalesItem } from "app/Scenes/HomeView/Sections/HomeViewSectionSalesItem"
 import {
@@ -14,6 +16,8 @@ import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
+import { useMemoizedRandom } from "app/utils/placeholders"
+import { times } from "lodash"
 import { useRef } from "react"
 import { FlatList } from "react-native-gesture-handler"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -105,6 +109,54 @@ const fragment = graphql`
   }
 `
 
+const HomeViewSectionSalesPlaceholder: React.FC = () => {
+  const randomValue = useMemoizedRandom()
+  return (
+    <Skeleton>
+      <Flex mx={2} my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
+        <SkeletonText>Auctions</SkeletonText>
+
+        <Spacer y={1} />
+
+        <Flex flexDirection="row">
+          <Join separator={<Spacer x="15px" />}>
+            {times(2 + randomValue * 10).map((index) => (
+              <CardRailCard key={index}>
+                <Flex>
+                  <Flex flexDirection="row">
+                    <SkeletonBox height={LARGE_IMAGE_SIZE} width={LARGE_IMAGE_SIZE} />
+                    <Flex>
+                      <SkeletonBox
+                        height={SMALL_IMAGE_SIZE}
+                        width={SMALL_IMAGE_SIZE}
+                        borderLeftWidth={2}
+                        borderColor="white100"
+                        borderBottomWidth={1}
+                      />
+                      <SkeletonBox
+                        height={SMALL_IMAGE_SIZE}
+                        width={SMALL_IMAGE_SIZE}
+                        borderLeftWidth={2}
+                        borderColor="white100"
+                        borderTopWidth={1}
+                      />
+                    </Flex>
+                  </Flex>
+                  <CardRailMetadataContainer>
+                    <SkeletonText variant="lg-display" numberOfLines={2}>
+                      xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                    </SkeletonText>
+                  </CardRailMetadataContainer>
+                </Flex>
+              </CardRailCard>
+            ))}
+          </Join>
+        </Flex>
+      </Flex>
+    </Skeleton>
+  )
+}
+
 const homeViewSectionSalesQuery = graphql`
   query HomeViewSectionSalesQuery($id: String!) {
     homeView {
@@ -127,4 +179,4 @@ export const HomeViewSectionSalesQueryRenderer: React.FC<{
   }
 
   return <HomeViewSectionSales section={data.homeView.section} />
-})
+}, HomeViewSectionSalesPlaceholder)
