@@ -119,7 +119,6 @@
     "@ptomasroos/react-native-multi-slider": "2.2.2",
     "@react-native-async-storage/async-storage": "1.19.3",
     "@react-native-clipboard/clipboard": "1.7.0",
-    "@react-native-community/datetimepicker": "6.1.4",
     "@react-native-community/geolocation": "3.0.6",
     "@react-native-community/netinfo": "11.3.2",
     "@react-native-cookies/cookies": "6.0.11",
