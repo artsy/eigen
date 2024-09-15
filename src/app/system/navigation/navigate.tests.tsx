@@ -36,6 +36,14 @@ describe(navigate, () => {
   beforeEach(() => {
     Linking.openURL = jest.fn()
     LegacyNativeModules.ARScreenPresenterModule.pushView = jest.fn()
+    jest.spyOn(global, "requestAnimationFrame").mockImplementation((cb) => {
+      cb(0)
+      return 0
+    })
+  })
+
+  afterEach(() => {
+    jest.restoreAllMocks()
   })
 
   describe("routes to various screens", () => {
