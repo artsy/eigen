@@ -142,7 +142,6 @@
     "events": "3.3.0",
     "formik": "2.2.9",
     "google-libphonenumber": "3.2.33",
-    "grapheme-splitter": "1.0.4",
     "html-entities": "2.3.3",
     "jwt-decode": "4.0.0",
     "limiter": "^2.1.0",
