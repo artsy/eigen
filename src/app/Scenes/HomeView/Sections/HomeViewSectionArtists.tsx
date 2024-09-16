@@ -16,7 +16,6 @@ import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
-import { isTablet } from "react-native-device-info"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 interface HomeViewSectionArtworksProps {
@@ -104,7 +103,7 @@ export const HomeViewSectionArtists: React.FC<HomeViewSectionArtworksProps> = ({
             />
           )
         }}
-        initialNumToRender={isTablet() ? 10 : HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
+        initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
         windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
       />
     </Flex>

@@ -19,7 +19,6 @@ import { ExtractNodeType } from "app/utils/relayHelpers"
 import { times } from "lodash"
 import { Suspense, memo } from "react"
 import { FlatList } from "react-native"
-import { isTablet } from "react-native-device-info"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -65,9 +64,7 @@ export const ShowsRail: React.FC<ShowsRailProps> = memo(
         <Flex>
           <FlatList
             horizontal
-            initialNumToRender={
-              isTablet() ? 10 : HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT
-            }
+            initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
             windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
             showsHorizontalScrollIndicator={false}
             ListHeaderComponent={() => <Spacer x={2} />}

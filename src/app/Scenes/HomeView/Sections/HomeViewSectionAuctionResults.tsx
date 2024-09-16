@@ -12,7 +12,6 @@ import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { FlatList } from "react-native"
-import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 
 interface HomeViewSectionAuctionResultsProps {
@@ -43,7 +42,7 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
       </Flex>
       <FlatList
         horizontal
-        initialNumToRender={isTablet() ? 10 : HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
+        initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
         windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
         data={auctionResults}
         showsHorizontalScrollIndicator={false}

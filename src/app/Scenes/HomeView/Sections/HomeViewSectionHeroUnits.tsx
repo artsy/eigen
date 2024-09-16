@@ -12,7 +12,6 @@ import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
 import { useRef, useState } from "react"
 import { FlatList, ViewabilityConfig, ViewToken } from "react-native"
-import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 
 interface HomeViewSectionHeroUnitsProps {
@@ -60,7 +59,7 @@ export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> =
         snapToAlignment="start"
         snapToInterval={width}
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
-        initialNumToRender={isTablet() ? 10 : HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
+        initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
         windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
       />
       <Spacer y={2} />

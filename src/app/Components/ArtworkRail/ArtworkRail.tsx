@@ -16,7 +16,6 @@ import {
 } from "app/utils/track/ArtworkActions"
 import React, { ReactElement } from "react"
 import { FlatList, ViewabilityConfig } from "react-native"
-import { isTablet } from "react-native-device-info"
 
 const MAX_NUMBER_OF_ARTWORKS = 30
 
@@ -96,7 +95,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
       }
       showsHorizontalScrollIndicator={false}
       data={artworksSlice}
-      initialNumToRender={isTablet() ? 10 : HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_ARTWORKS}
+      initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_ARTWORKS}
       windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
       contentContainerStyle={{ alignItems: "flex-end" }}
       renderItem={({ item, index }) => {

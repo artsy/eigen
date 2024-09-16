@@ -13,7 +13,6 @@ import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useRef } from "react"
-import { isTablet } from "react-native-device-info"
 import { FlatList } from "react-native-gesture-handler"
 import { graphql, useFragment } from "react-relay"
 
@@ -53,7 +52,7 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({ sect
         prefetchVariablesExtractor={(item) => ({ saleSlug: item?.slug })}
         listRef={listRef}
         data={sales}
-        initialNumToRender={isTablet() ? 10 : HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
+        initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
         windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
         renderItem={({ item, index }) => {
           return (

@@ -12,7 +12,6 @@ import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { memo } from "react"
 import { FlatList } from "react-native"
-import { isTablet } from "react-native-device-info"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -57,7 +56,7 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = ({
           ListHeaderComponent={() => <Spacer x={2} />}
           ListFooterComponent={() => <Spacer x={2} />}
           ItemSeparatorComponent={() => <Spacer x={2} />}
-          initialNumToRender={isTablet() ? 10 : HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
+          initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
           windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
           data={articles}
           keyExtractor={(item) => `${item.internalID}`}

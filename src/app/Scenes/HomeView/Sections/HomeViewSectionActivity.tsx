@@ -13,7 +13,6 @@ import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { FlatList } from "react-native"
-import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 
 interface HomeViewSectionActivityProps {
@@ -67,7 +66,7 @@ export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = (
         }
         ItemSeparatorComponent={() => <Spacer x={2} />}
         data={notifications}
-        initialNumToRender={isTablet() ? 10 : HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
+        initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
         windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
         keyExtractor={(item) => item.internalID}
         renderItem={({ item, index }) => {
