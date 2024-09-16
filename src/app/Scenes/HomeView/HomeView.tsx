@@ -27,15 +27,18 @@ export const NUMBER_OF_SECTIONS_TO_LOAD = 5
 // and we need it to be consistent with 60px spacing between sections
 export const HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT = "30px"
 
+export const homeViewScreenQueryVariables = () => ({
+  count: NUMBER_OF_SECTIONS_TO_LOAD,
+})
+
 export const HomeView: React.FC = () => {
   const flashlistRef = useBottomTabsScrollToTop("home")
   const [isRefreshing, setIsRefreshing] = useState(false)
 
-  const queryData = useLazyLoadQuery<HomeViewQuery>(homeViewScreenQuery, {
-    // If you add any variable to the this query,
-    // you need to update prefetchUrl("/") call to include it in App.tsx
-    count: NUMBER_OF_SECTIONS_TO_LOAD,
-  })
+  const queryData = useLazyLoadQuery<HomeViewQuery>(
+    homeViewScreenQuery,
+    homeViewScreenQueryVariables()
+  )
 
   const { data, loadNext, hasNext } = usePaginationFragment<
     HomeViewQuery,
