@@ -116,14 +116,15 @@ const HomeViewScreenPlaceholder: React.FC = () => {
   return (
     <Screen safeArea={false}>
       <Screen.Body fullwidth>
-        <HomeHeader />
+        <Flex testID="new-home-view-skeleton">
+          <HomeHeader />
+        </Flex>
       </Screen.Body>
     </Screen>
   )
 }
 
 export const HomeViewScreen: React.FC = withSuspense(() => {
-  // return <HomeViewScreenPlaceholder />
   return <HomeView />
 }, HomeViewScreenPlaceholder)
 
