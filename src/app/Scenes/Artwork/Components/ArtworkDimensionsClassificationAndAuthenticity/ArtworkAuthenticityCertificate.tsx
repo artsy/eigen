@@ -25,7 +25,7 @@ export const ArtworkAuthenticityCertificate: React.FC<ArtworkAuthenticityCertifi
         flexDirection="row"
         alignContent="center"
       >
-        <CertificateIcon mr={0.5} fill="black60" />
+        <CertificateIcon mr={0.5} fill="black60" height={25} width={25} />
         <Text color="black60" variant="sm">
           Includes a{" "}
           <LinkText
