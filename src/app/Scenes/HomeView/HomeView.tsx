@@ -3,15 +3,18 @@ import { Flex, Screen, Spinner, Text } from "@artsy/palette-mobile"
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
 import { HomeViewSectionsConnection_viewer$key } from "__generated__/HomeViewSectionsConnection_viewer.graphql"
 import { HomeView_me$key } from "__generated__/HomeView_me.graphql"
+import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { useDismissSavedArtwork } from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
 import { useEnableProgressiveOnboarding } from "app/Components/ProgressiveOnboarding/useEnableProgressiveOnboarding"
 import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
 import { Section } from "app/Scenes/HomeView/Sections/Section"
+import { searchQueryDefaultVariables } from "app/Scenes/Search/Search"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { extractNodes } from "app/utils/extractNodes"
+import { usePrefetch } from "app/utils/queryPrefetching"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
-import { Suspense, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { RefreshControl } from "react-native"
 import {
   fetchQuery,
@@ -43,10 +46,18 @@ export const HomeView: React.FC = () => {
   const savedArtworksCount = meData?.counts?.savedArtworks ?? 0
   useDismissSavedArtwork(savedArtworksCount > 0)
   useEnableProgressiveOnboarding()
+  const prefetchUrl = usePrefetch()
 
   useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
 
   const sections = extractNodes(data?.homeView.sectionsConnection)
+
+  useEffect(() => {
+    prefetchUrl<SearchQuery>("search", searchQueryDefaultVariables)
+    prefetchUrl("my-profile")
+    prefetchUrl("inbox")
+    prefetchUrl("sell")
+  }, [])
 
   const handleRefresh = () => {
     if (isRefreshing) return
