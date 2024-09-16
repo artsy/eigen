@@ -3,16 +3,12 @@ import {
   userShouldBePromptedToAddArtistsToCollection,
 } from "./collectorPromptHelpers"
 
-// Mock Date to avoid issues with time-based tests
-const MOCK_DATE = new Date("2024-08-20T00:00:00Z")
-global.Date.now = jest.fn(() => MOCK_DATE.getTime())
-
 describe("userShouldBePromptedToCompleteProfile", () => {
   it("should prompt the user when location and profession are missing and cooldown period has passed", () => {
     const result = userShouldBePromptedToCompleteProfile({
       locationDisplay: "",
       profession: undefined,
-      lastUpdatePromptAt: "2024-07-01T00:00:00Z",
+      lastUpdatePromptAt: daysAgo(60),
     })
 
     expect(result).toBe(true)
@@ -22,7 +18,7 @@ describe("userShouldBePromptedToCompleteProfile", () => {
     const result = userShouldBePromptedToCompleteProfile({
       locationDisplay: undefined,
       profession: undefined,
-      lastUpdatePromptAt: "2024-08-15T00:00:00Z",
+      lastUpdatePromptAt: daysAgo(15),
     })
 
     expect(result).toBe(false)
@@ -32,7 +28,7 @@ describe("userShouldBePromptedToCompleteProfile", () => {
     const result = userShouldBePromptedToCompleteProfile({
       locationDisplay: "New York",
       profession: "Artist",
-      lastUpdatePromptAt: "2024-07-01T00:00:00Z",
+      lastUpdatePromptAt: daysAgo(45),
     })
 
     expect(result).toBe(false)
@@ -42,7 +38,7 @@ describe("userShouldBePromptedToCompleteProfile", () => {
     const result = userShouldBePromptedToCompleteProfile({
       locationDisplay: "New York",
       profession: undefined,
-      lastUpdatePromptAt: "2024-07-01T00:00:00Z",
+      lastUpdatePromptAt: daysAgo(45),
     })
 
     expect(result).toBe(true)
@@ -64,7 +60,7 @@ describe("userShouldBePromptedToAddArtistsToCollection", () => {
     const result = userShouldBePromptedToAddArtistsToCollection({
       artworksCount: 0,
       artistsCount: 0,
-      lastUpdatePromptAt: "2024-07-01T00:00:00Z",
+      lastUpdatePromptAt: daysAgo(45),
     })
 
     expect(result).toBe(true)
@@ -74,7 +70,7 @@ describe("userShouldBePromptedToAddArtistsToCollection", () => {
     const result = userShouldBePromptedToAddArtistsToCollection({
       artworksCount: 0,
       artistsCount: 0,
-      lastUpdatePromptAt: "2024-08-15T00:00:00Z",
+      lastUpdatePromptAt: daysAgo(15),
     })
 
     expect(result).toBe(false)
@@ -84,7 +80,7 @@ describe("userShouldBePromptedToAddArtistsToCollection", () => {
     const result = userShouldBePromptedToAddArtistsToCollection({
       artworksCount: 1,
       artistsCount: 1,
-      lastUpdatePromptAt: "2024-07-01T00:00:00Z",
+      lastUpdatePromptAt: daysAgo(45),
     })
 
     expect(result).toBe(false)
@@ -116,7 +112,7 @@ describe("userHasNotBeenPromptedWithinCooldownPeriod", () => {
     const result = userShouldBePromptedToCompleteProfile({
       locationDisplay: undefined,
       profession: undefined,
-      lastUpdatePromptAt: "2024-07-01T00:00:00Z",
+      lastUpdatePromptAt: daysAgo(45),
     })
 
     expect(result).toBe(true)
@@ -126,9 +122,15 @@ describe("userHasNotBeenPromptedWithinCooldownPeriod", () => {
     const result = userShouldBePromptedToCompleteProfile({
       locationDisplay: undefined,
       profession: undefined,
-      lastUpdatePromptAt: "2024-08-15T00:00:00Z",
+      lastUpdatePromptAt: daysAgo(15),
     })
 
     expect(result).toBe(false)
   })
 })
+
+const daysAgo = (days: number) => {
+  const date = new Date()
+  date.setDate(date.getDate() - days)
+  return date.toISOString()
+}
