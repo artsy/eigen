@@ -6,8 +6,8 @@ interface ThreeUpImageLayoutProps {
   imageURLs: string[]
 }
 
-const LARGE_IMAGE_SIZE = 180
-const SMALL_IMAGE_SIZE = LARGE_IMAGE_SIZE / 2
+export const LARGE_IMAGE_SIZE = 180
+export const SMALL_IMAGE_SIZE = LARGE_IMAGE_SIZE / 2
 
 export const ThreeUpImageLayout: React.FC<ThreeUpImageLayoutProps> = ({ imageURLs }) => {
   // Ensure we have an array of exactly 3 URLs, copying over the last image if we have less than 3

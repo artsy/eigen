@@ -1,5 +1,6 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex, Screen, Spinner, Text } from "@artsy/palette-mobile"
+import { Flex, Screen, Spinner } from "@artsy/palette-mobile"
+import { FlashList } from "@shopify/flash-list"
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
 import { HomeViewSectionsConnection_viewer$key } from "__generated__/HomeViewSectionsConnection_viewer.graphql"
 import { HomeView_me$key } from "__generated__/HomeView_me.graphql"
@@ -12,10 +13,11 @@ import { searchQueryDefaultVariables } from "app/Scenes/Search/Search"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { extractNodes } from "app/utils/extractNodes"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { usePrefetch } from "app/utils/queryPrefetching"
 import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
-import { Suspense, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { RefreshControl } from "react-native"
 import {
   fetchQuery,
@@ -25,18 +27,23 @@ import {
   usePaginationFragment,
 } from "react-relay"
 
-const NUMBER_OF_SECTIONS_TO_LOAD = 10
+export const NUMBER_OF_SECTIONS_TO_LOAD = 5
 // Hard coding the value here because 30px is not a valid value for the spacing unit
 // and we need it to be consistent with 60px spacing between sections
 export const HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT = "30px"
 
+export const homeViewScreenQueryVariables = () => ({
+  count: NUMBER_OF_SECTIONS_TO_LOAD,
+})
+
 export const HomeView: React.FC = () => {
-  const flatlistRef = useBottomTabsScrollToTop("home")
+  const flashlistRef = useBottomTabsScrollToTop("home")
   const [isRefreshing, setIsRefreshing] = useState(false)
 
-  const queryData = useLazyLoadQuery<HomeViewQuery>(homeViewScreenQuery, {
-    count: NUMBER_OF_SECTIONS_TO_LOAD,
-  })
+  const queryData = useLazyLoadQuery<HomeViewQuery>(
+    homeViewScreenQuery,
+    homeViewScreenQueryVariables()
+  )
 
   const { data, loadNext, hasNext } = usePaginationFragment<
     HomeViewQuery,
@@ -85,15 +92,16 @@ export const HomeView: React.FC = () => {
   return (
     <Screen safeArea={false}>
       <Screen.Body fullwidth>
-        <Screen.FlatList
-          innerRef={flatlistRef}
+        <FlashList
+          ref={flashlistRef}
           data={sections}
           keyExtractor={(item) => `${item.internalID || ""}`}
           renderItem={({ item }) => {
             return <Section section={item} />
           }}
-          onEndReached={() => loadNext(10)}
-          ListHeaderComponent={<HomeHeader />}
+          onEndReached={() => loadNext(NUMBER_OF_SECTIONS_TO_LOAD)}
+          ListHeaderComponent={HomeHeader}
+          estimatedItemSize={500}
           ListFooterComponent={
             hasNext ? (
               <Flex width="100%" justifyContent="center" alignItems="center" height={200}>
@@ -102,25 +110,28 @@ export const HomeView: React.FC = () => {
             ) : null
           }
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
+          onEndReachedThreshold={1}
         />
       </Screen.Body>
     </Screen>
   )
 }
 
-export const HomeViewScreen: React.FC = () => {
+const HomeViewScreenPlaceholder: React.FC = () => {
   return (
-    <Suspense
-      fallback={
-        <Flex flex={1} justifyContent="center" alignItems="center" testID="new-home-view-skeleton">
-          <Text>Loading home view…</Text>
+    <Screen safeArea={false}>
+      <Screen.Body fullwidth>
+        <Flex testID="new-home-view-skeleton">
+          <HomeHeader />
         </Flex>
-      }
-    >
-      <HomeView />
-    </Suspense>
+      </Screen.Body>
+    </Screen>
   )
 }
+
+export const HomeViewScreen: React.FC = withSuspense(() => {
+  return <HomeView />
+}, HomeViewScreenPlaceholder)
 
 const meFragment = graphql`
   fragment HomeView_me on Me {
@@ -146,56 +157,6 @@ const sectionsFragment = graphql`
                 type
               }
               ...HomeViewSectionGeneric_section
-            }
-            ... on HomeViewSectionActivity {
-              internalID
-              ...HomeViewSectionActivity_section
-            }
-            ... on HomeViewSectionArticles {
-              internalID
-              ...HomeViewSectionArticles_section
-              ...HomeViewSectionArticlesCards_section
-            }
-            ... on HomeViewSectionArtworks {
-              internalID
-              ...HomeViewSectionArtworks_section
-              ...HomeViewSectionFeaturedCollection_section
-            }
-            ... on HomeViewSectionArtists {
-              internalID
-              ...HomeViewSectionArtists_section
-            }
-            ... on HomeViewSectionAuctionResults {
-              internalID
-              ...HomeViewSectionAuctionResults_section
-            }
-            ... on HomeViewSectionHeroUnits {
-              internalID
-              ...HomeViewSectionHeroUnits_section
-            }
-            ... on HomeViewSectionFairs {
-              internalID
-              ...HomeViewSectionFairs_section
-            }
-            ... on HomeViewSectionMarketingCollections {
-              internalID
-              ...HomeViewSectionMarketingCollections_section
-            }
-            ... on HomeViewSectionShows {
-              internalID
-              ...HomeViewSectionShows_section
-            }
-            ... on HomeViewSectionViewingRooms {
-              internalID
-              ...HomeViewSectionViewingRooms_section
-            }
-            ... on HomeViewSectionSales {
-              internalID
-              ...HomeViewSectionSales_section
-            }
-            ... on HomeViewSectionGalleries {
-              internalID
-              ...HomeViewSectionGalleries_section
             }
           }
         }

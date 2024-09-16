@@ -87,7 +87,7 @@ const fragment = graphql`
   }
 `
 
-const CollectionCard = styled.TouchableHighlight.attrs(() => ({
+export const CollectionCard = styled.TouchableHighlight.attrs(() => ({
   underlayColor: themeGet("colors.white100"),
   activeOpacity: 0.8,
 }))``
