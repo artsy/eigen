@@ -78,7 +78,7 @@ describe("HomeViewSectionActivity", () => {
         [
           {
             "action": "tappedActivityGroup",
-            "context_module": "latestActivity",
+            "context_module": "<mock-value-for-field-"contextModule">",
             "context_screen_owner_type": "home",
             "destination_path": "/viewing-room/id-2",
             "horizontal_slide_position": 1,

@@ -66,6 +66,7 @@ export const HomeViewSectionFeaturedCollection: React.FC<
 
 const fragment = graphql`
   fragment HomeViewSectionFeaturedCollection_section on HomeViewSectionArtworks {
+    contextModule
     component {
       title
       description

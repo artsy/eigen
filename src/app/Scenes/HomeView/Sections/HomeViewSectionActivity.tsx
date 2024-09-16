@@ -1,3 +1,4 @@
+import { ContextModule } from "@artsy/cohesion"
 import { Flex, Spacer } from "@artsy/palette-mobile"
 import { HomeViewSectionActivity_section$key } from "__generated__/HomeViewSectionActivity_section.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
@@ -74,7 +75,11 @@ export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = (
             <ActivityRailItem
               item={item}
               onPress={() => {
-                tracking.tappedActivityGroup(item.targetHref, data.internalID, index)
+                tracking.tappedActivityGroup(
+                  item.targetHref,
+                  data.contextModule as ContextModule,
+                  index
+                )
               }}
             />
           )
@@ -87,6 +92,7 @@ export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = (
 const sectionFragment = graphql`
   fragment HomeViewSectionActivity_section on HomeViewSectionActivity {
     internalID
+    contextModule
     component {
       title
       behaviors {

@@ -113,7 +113,7 @@ describe("HomeViewSectionViewingRooms", () => {
       [
         {
           "action": "tappedViewingRoomGroup",
-          "context_module": "viewingRooms",
+          "context_module": "<mock-value-for-field-"contextModule">",
           "context_screen_owner_type": "home",
           "destination_screen_owner_id": "one",
           "destination_screen_owner_slug": "alessandro-pessoli-ardente-primavera-number-1",

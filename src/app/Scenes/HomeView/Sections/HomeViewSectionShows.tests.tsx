@@ -105,7 +105,7 @@ describe("HomeViewSectionShows", () => {
         [
           {
             "action": "tappedShowGroup",
-            "context_module": "showsForYou",
+            "context_module": "<mock-value-for-field-"contextModule">",
             "context_screen_owner_type": "home",
             "destination_screen_owner_id": "show-2-id",
             "destination_screen_owner_slug": "show-2-slug",

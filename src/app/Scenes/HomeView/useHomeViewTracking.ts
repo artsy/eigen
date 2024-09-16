@@ -18,24 +18,7 @@ import {
 import { ClickedNotificationsBell } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
 import { getArtworkSignalTrackingFields } from "app/utils/getArtworkSignalTrackingFields"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { camelCase } from "lodash"
 import { useTracking } from "react-tracking"
-
-/**
-
- Convert section ID to requested ContextModule format
-
- Examples
- - home-view-section-artist-rail -> artistRail
- - home-view-section-new-works-for-you -> newWorksForYou
-
-*/
-const formatSectionIDAsContextModule = (sectionID: string) => {
-  let contextModule = sectionID.replace(/^home-view-section-/, "")
-  contextModule = camelCase(contextModule)
-
-  return contextModule as ContextModule
-}
 
 export const useHomeViewTracking = () => {
   const { trackEvent } = useTracking()
@@ -51,10 +34,10 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
-    tappedActivityGroup: (destinationPath: string, sectionID: string, index: number) => {
+    tappedActivityGroup: (destinationPath: string, contextModule: ContextModule, index: number) => {
       const payload: TappedActivityGroup = {
         action: ActionType.tappedActivityGroup,
-        context_module: formatSectionIDAsContextModule(sectionID),
+        context_module: contextModule,
         context_screen_owner_type: OwnerType.home,
         destination_path: destinationPath,
         horizontal_slide_position: index,
@@ -68,12 +51,12 @@ export const useHomeViewTracking = () => {
     tappedArticleGroup: (
       articleID: string,
       articleSlug: string | undefined | null,
-      sectionID: string,
+      contextModule: ContextModule,
       index: number
     ) => {
       let payload: TappedArticleGroup = {
         action: ActionType.tappedArticleGroup,
-        context_module: formatSectionIDAsContextModule(sectionID),
+        context_module: contextModule,
         context_screen_owner_type: OwnerType.home,
         destination_screen_owner_id: articleID,
         destination_screen_owner_type: OwnerType.article,
@@ -92,10 +75,15 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
-    tappedArtistGroup: (artistID: string, artistSlug: string, sectionID: string, index: number) => {
+    tappedArtistGroup: (
+      artistID: string,
+      artistSlug: string,
+      contextModule: ContextModule,
+      index: number
+    ) => {
       const payload: TappedArtistGroup = {
         action: ActionType.tappedArtistGroup,
-        context_module: formatSectionIDAsContextModule(sectionID),
+        context_module: contextModule,
         context_screen_owner_type: OwnerType.home,
         destination_screen_owner_type: OwnerType.artist,
         destination_screen_owner_id: artistID,
@@ -112,12 +100,12 @@ export const useHomeViewTracking = () => {
       artworkID: string,
       artworkSlug: string,
       artworkCollectorSignals: any,
-      sectionID: string,
+      contextModule: ContextModule,
       index: number
     ) => {
       const payload: TappedArtworkGroup = {
         action: ActionType.tappedArtworkGroup,
-        context_module: formatSectionIDAsContextModule(sectionID),
+        context_module: contextModule,
         context_screen_owner_type: OwnerType.home,
         destination_screen_owner_id: artworkID,
         destination_screen_owner_slug: artworkSlug,
@@ -134,10 +122,15 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
-    tappedAuctionGroup: (saleID: string, saleSlug: string, sectionID: string, index: number) => {
+    tappedAuctionGroup: (
+      saleID: string,
+      saleSlug: string,
+      contextModule: ContextModule,
+      index: number
+    ) => {
       const payload: TappedAuctionGroup = {
         action: ActionType.tappedAuctionGroup,
-        context_module: formatSectionIDAsContextModule(sectionID),
+        context_module: contextModule,
         context_screen_owner_type: OwnerType.home,
         destination_screen_owner_type: OwnerType.sale,
         destination_screen_owner_id: saleID,
@@ -153,12 +146,12 @@ export const useHomeViewTracking = () => {
     tappedAuctionResultGroup: (
       auctionResultID: string,
       auctionResultSlug: string | null | undefined,
-      sectionID: string,
+      contextModule: ContextModule,
       index: number
     ) => {
       let payload: TappedAuctionResultGroup = {
         action: ActionType.tappedAuctionResultGroup,
-        context_module: formatSectionIDAsContextModule(sectionID),
+        context_module: contextModule,
         context_screen_owner_type: OwnerType.home,
         destination_screen_owner_id: auctionResultID,
         destination_screen_owner_type: OwnerType.auctionResult,
@@ -176,10 +169,15 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
-    tappedFairGroup: (fairID: string, fairSlug: string, sectionID: string, index: number) => {
+    tappedFairGroup: (
+      fairID: string,
+      fairSlug: string,
+      contextModule: ContextModule,
+      index: number
+    ) => {
       const payload: TappedFairGroup = {
         action: ActionType.tappedFairGroup,
-        context_module: formatSectionIDAsContextModule(sectionID),
+        context_module: contextModule,
         context_screen_owner_type: OwnerType.home,
         destination_screen_owner_type: OwnerType.fair,
         destination_screen_owner_id: fairID,
@@ -192,10 +190,10 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
-    tappedHeroUnitGroup: (destinationPath: string, sectionID: string, index: number) => {
+    tappedHeroUnitGroup: (destinationPath: string, contextModule: ContextModule, index: number) => {
       const payload: TappedHeroUnitGroup = {
         action: ActionType.tappedHeroUnitGroup,
-        context_module: formatSectionIDAsContextModule(sectionID),
+        context_module: contextModule,
         context_screen_owner_type: OwnerType.home,
         destination_path: destinationPath,
         horizontal_slide_position: index,
@@ -208,12 +206,12 @@ export const useHomeViewTracking = () => {
     tappedMarketingCollectionGroup: (
       collectionID: string,
       collectionSlug: string,
-      sectionID: string,
+      contextModule: ContextModule,
       index: number
     ) => {
       const payload: TappedCollectionGroup = {
         action: ActionType.tappedCollectionGroup,
-        context_module: formatSectionIDAsContextModule(sectionID),
+        context_module: contextModule,
         context_screen_owner_type: OwnerType.home,
         destination_screen_owner_type: OwnerType.collection,
         destination_screen_owner_id: collectionID,
@@ -226,10 +224,15 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
-    tappedShowGroup: (showID: string, showSlug: string, sectionID: string, index: number) => {
+    tappedShowGroup: (
+      showID: string,
+      showSlug: string,
+      contextModule: ContextModule,
+      index: number
+    ) => {
       const payload: TappedShowGroup = {
         action: ActionType.tappedShowGroup,
-        context_module: formatSectionIDAsContextModule(sectionID),
+        context_module: contextModule,
         context_screen_owner_type: OwnerType.home,
         destination_screen_owner_type: OwnerType.show,
         destination_screen_owner_id: showID,
@@ -241,10 +244,10 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
-    tappedShowMore: (subject: string, sectionID: string) => {
+    tappedShowMore: (subject: string, contextModule: ContextModule) => {
       const payload: TappedShowMore = {
         action: ActionType.tappedShowMore,
-        context_module: formatSectionIDAsContextModule(sectionID),
+        context_module: contextModule,
         context_screen_owner_type: OwnerType.home,
         subject: subject,
       }
@@ -255,12 +258,12 @@ export const useHomeViewTracking = () => {
     tappedViewingRoomGroup: (
       viewingRoomID: string,
       viewingRoomSlug: string,
-      sectionID: string,
+      contextModule: ContextModule,
       index: number
     ) => {
       const payload: TappedViewingRoomGroup = {
         action: ActionType.tappedViewingRoomGroup,
-        context_module: formatSectionIDAsContextModule(sectionID),
+        context_module: contextModule,
         context_screen_owner_type: OwnerType.home,
         destination_screen_owner_type: OwnerType.viewingRoom,
         destination_screen_owner_id: viewingRoomID,

@@ -1,3 +1,4 @@
+import { ContextModule } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
 import { HomeViewSectionFairs_section$key } from "__generated__/HomeViewSectionFairs_section.graphql"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
@@ -55,7 +56,12 @@ export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = ({ sect
               key={item.internalID}
               fair={item}
               onPress={(fair) => {
-                tracking.tappedFairGroup(fair.internalID, fair.slug, data.internalID, index)
+                tracking.tappedFairGroup(
+                  fair.internalID,
+                  fair.slug,
+                  data.contextModule as ContextModule,
+                  index
+                )
               }}
             />
           )
@@ -68,6 +74,7 @@ export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = ({ sect
 const fragment = graphql`
   fragment HomeViewSectionFairs_section on HomeViewSectionFairs {
     internalID
+    contextModule
     component {
       title
       description

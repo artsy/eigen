@@ -1,3 +1,4 @@
+import { ContextModule } from "@artsy/cohesion"
 import { Flex, Spacer } from "@artsy/palette-mobile"
 import { HomeViewSectionHeroUnits_section$key } from "__generated__/HomeViewSectionHeroUnits_section.graphql"
 import { PaginationDots } from "app/Components/PaginationDots"
@@ -52,7 +53,11 @@ export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> =
           <HeroUnit
             item={item}
             onPress={() => {
-              tracking.tappedHeroUnitGroup(item.link.url, data.internalID, index)
+              tracking.tappedHeroUnitGroup(
+                item.link.url,
+                data.contextModule as ContextModule,
+                index
+              )
             }}
           />
         )}
@@ -71,6 +76,7 @@ export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> =
 const fragment = graphql`
   fragment HomeViewSectionHeroUnits_section on HomeViewSectionHeroUnits {
     internalID
+    contextModule
     heroUnitsConnection(first: 10) {
       edges {
         node {

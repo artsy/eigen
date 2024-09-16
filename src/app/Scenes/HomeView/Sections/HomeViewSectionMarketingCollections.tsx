@@ -1,3 +1,4 @@
+import { ContextModule } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
 import {
   HomeViewSectionMarketingCollections_section$data,
@@ -67,7 +68,7 @@ export const HomeViewSectionMarketingCollections: React.FC<
                 tracking.tappedMarketingCollectionGroup(
                   collection.internalID,
                   collection.slug,
-                  data.internalID,
+                  data.contextModule as ContextModule,
                   index
                 )
               }}
@@ -82,6 +83,7 @@ export const HomeViewSectionMarketingCollections: React.FC<
 const fragment = graphql`
   fragment HomeViewSectionMarketingCollections_section on HomeViewSectionMarketingCollections {
     internalID
+    contextModule
     component {
       title
       behaviors {

@@ -1,3 +1,4 @@
+import { ContextModule } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
 import { HomeViewSectionViewingRooms_section$key } from "__generated__/HomeViewSectionViewingRooms_section.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
@@ -38,7 +39,7 @@ export const HomeViewSectionViewingRooms: React.FC<{
             tracking.tappedViewingRoomGroup(
               viewingRoom.internalID,
               viewingRoom.slug,
-              data.internalID,
+              data.contextModule as ContextModule,
               index
             )
 
@@ -53,6 +54,7 @@ export const HomeViewSectionViewingRooms: React.FC<{
 const viewingRoomsFragment = graphql`
   fragment HomeViewSectionViewingRooms_section on HomeViewSectionViewingRooms {
     internalID
+    contextModule
     component {
       title
       behaviors {
