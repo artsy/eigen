@@ -138,6 +138,7 @@
     "autosuggest-highlight": "3.3.4",
     "deprecated-react-native-prop-types": "4.1.0",
     "easy-peasy": "6.0.0",
+    "events": "3.3.0",
     "formik": "2.2.9",
     "google-libphonenumber": "3.2.33",
     "html-entities": "2.3.3",
