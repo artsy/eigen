@@ -1,8 +1,9 @@
 import { ContextModule } from "@artsy/cohesion"
-import { Flex, Spacer } from "@artsy/palette-mobile"
+import { Flex, Skeleton, SkeletonBox, Spacer } from "@artsy/palette-mobile"
+import { HomeViewSectionHeroUnitsQuery } from "__generated__/HomeViewSectionHeroUnitsQuery.graphql"
 import { HomeViewSectionHeroUnits_section$key } from "__generated__/HomeViewSectionHeroUnits_section.graphql"
 import { PaginationDots } from "app/Components/PaginationDots"
-import { HeroUnit } from "app/Scenes/Home/Components/HeroUnitsRail"
+import { HERO_UNIT_CARD_HEIGHT, HeroUnit } from "app/Scenes/Home/Components/HeroUnitsRail"
 import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
@@ -11,9 +12,10 @@ import {
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { useRef, useState } from "react"
 import { FlatList, ViewabilityConfig, ViewToken } from "react-native"
-import { graphql, useFragment } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionHeroUnitsProps {
   section: HomeViewSectionHeroUnits_section$key
@@ -41,6 +43,10 @@ export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> =
   const viewabilityConfigCallbackPairs = useRef([{ onViewableItemsChanged, viewabilityConfig }])
 
   const { width } = useScreenDimensions()
+
+  if (!heroUnits || heroUnits.length === 0) {
+    return null
+  }
 
   return (
     <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
@@ -97,3 +103,42 @@ const fragment = graphql`
     }
   }
 `
+
+const HomeViewSectionHeroUnitsPlaceholder: React.FC = () => {
+  return (
+    <Skeleton>
+      <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
+        <Spacer y={1} />
+
+        <Flex flexDirection="row">
+          <SkeletonBox height={HERO_UNIT_CARD_HEIGHT} width="100%" />
+        </Flex>
+      </Flex>
+      <PaginationDots currentIndex={-1} length={1} />
+    </Skeleton>
+  )
+}
+
+const homeViewSectionHeroUnitsQuery = graphql`
+  query HomeViewSectionHeroUnitsQuery($id: String!) {
+    homeView {
+      section(id: $id) {
+        ...HomeViewSectionHeroUnits_section
+      }
+    }
+  }
+`
+
+export const HomeViewSectionHeroUnitsQueryRenderer: React.FC<{
+  sectionID: string
+}> = withSuspense((props) => {
+  const data = useLazyLoadQuery<HomeViewSectionHeroUnitsQuery>(homeViewSectionHeroUnitsQuery, {
+    id: props.sectionID,
+  })
+
+  if (!data.homeView.section) {
+    return null
+  }
+
+  return <HomeViewSectionHeroUnits section={data.homeView.section} />
+}, HomeViewSectionHeroUnitsPlaceholder)

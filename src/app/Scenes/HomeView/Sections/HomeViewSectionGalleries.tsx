@@ -1,17 +1,28 @@
 import { ContextModule } from "@artsy/cohesion"
-import { Button, Flex, Text, Touchable, useScreenDimensions } from "@artsy/palette-mobile"
+import {
+  Button,
+  Flex,
+  Skeleton,
+  SkeletonBox,
+  Text,
+  Touchable,
+  useScreenDimensions,
+} from "@artsy/palette-mobile"
+import { HomeViewSectionGalleriesQuery } from "__generated__/HomeViewSectionGalleriesQuery.graphql"
 import { HomeViewSectionGalleries_section$key } from "__generated__/HomeViewSectionGalleries_section.graphql"
 import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { isTablet } from "react-native-device-info"
 import FastImage from "react-native-fast-image"
 import LinearGradient from "react-native-linear-gradient"
-import { graphql, useFragment } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionGalleriesProps {
   section: HomeViewSectionGalleries_section$key
 }
+
 export const HomeViewSectionGalleries: React.FC<HomeViewSectionGalleriesProps> = (props) => {
   const tracking = useHomeViewTracking()
 
@@ -107,3 +118,39 @@ const HomeViewSectionGalleriesFragment = graphql`
     }
   }
 `
+
+const HomeViewSectionGalleriesPlaceholder: React.FC = () => {
+  const { height } = useScreenDimensions()
+
+  return (
+    <Skeleton>
+      <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
+        <SkeletonBox height={height * 0.5} width="100%"></SkeletonBox>
+      </Flex>
+    </Skeleton>
+  )
+}
+
+const homeViewSectionGalleriesQuery = graphql`
+  query HomeViewSectionGalleriesQuery($id: String!) {
+    homeView {
+      section(id: $id) {
+        ...HomeViewSectionGalleries_section
+      }
+    }
+  }
+`
+
+export const HomeViewSectionGalleriesQueryRenderer: React.FC<{
+  sectionID: string
+}> = withSuspense((props) => {
+  const data = useLazyLoadQuery<HomeViewSectionGalleriesQuery>(homeViewSectionGalleriesQuery, {
+    id: props.sectionID,
+  })
+
+  if (!data.homeView.section) {
+    return null
+  }
+
+  return <HomeViewSectionGalleries section={data.homeView.section} />
+}, HomeViewSectionGalleriesPlaceholder)

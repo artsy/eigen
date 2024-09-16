@@ -1,20 +1,20 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { HomeViewSectionsConnection_viewer$data } from "__generated__/HomeViewSectionsConnection_viewer.graphql"
-import { HomeViewSectionActivity } from "app/Scenes/HomeView/Sections/HomeViewSectionActivity"
-import { HomeViewSectionArticles } from "app/Scenes/HomeView/Sections/HomeViewSectionArticles"
-import { HomeViewSectionArticlesCards } from "app/Scenes/HomeView/Sections/HomeViewSectionArticlesCards"
-import { HomeViewSectionArtistsPaginationContainer } from "app/Scenes/HomeView/Sections/HomeViewSectionArtists"
-import { HomeViewSectionArtworks } from "app/Scenes/HomeView/Sections/HomeViewSectionArtworks"
-import { HomeViewSectionAuctionResults } from "app/Scenes/HomeView/Sections/HomeViewSectionAuctionResults"
-import { HomeViewSectionFairs } from "app/Scenes/HomeView/Sections/HomeViewSectionFairs"
-import { HomeViewSectionFeaturedCollection } from "app/Scenes/HomeView/Sections/HomeViewSectionFeaturedCollection"
-import { HomeViewSectionGalleries } from "app/Scenes/HomeView/Sections/HomeViewSectionGalleries"
+import { HomeViewSectionActivityQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionActivity"
+import { HomeViewSectionArticlesQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionArticles"
+import { HomeViewSectionArticlesCardsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionArticlesCards"
+import { HomeViewSectionArtistsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionArtists"
+import { HomeViewSectionArtworksQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionArtworks"
+import { HomeViewSectionAuctionResultsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionAuctionResults"
+import { HomeViewSectionFairsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionFairs"
+import { HomeViewSectionFeaturedCollectionQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionFeaturedCollection"
+import { HomeViewSectionGalleriesQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionGalleries"
 import { HomeViewSectionGeneric } from "app/Scenes/HomeView/Sections/HomeViewSectionGeneric"
-import { HomeViewSectionHeroUnits } from "app/Scenes/HomeView/Sections/HomeViewSectionHeroUnits"
-import { HomeViewSectionMarketingCollections } from "app/Scenes/HomeView/Sections/HomeViewSectionMarketingCollections"
-import { HomeViewSectionSales } from "app/Scenes/HomeView/Sections/HomeViewSectionSales"
-import { HomeViewSectionShows } from "app/Scenes/HomeView/Sections/HomeViewSectionShows"
-import { HomeViewSectionViewingRooms } from "app/Scenes/HomeView/Sections/HomeViewSectionViewingRooms"
+import { HomeViewSectionHeroUnitsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionHeroUnits"
+import { HomeViewSectionMarketingCollectionsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionMarketingCollections"
+import { HomeViewSectionSalesQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionSales"
+import { HomeViewSectionShowsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionShows"
+import { HomeViewSectionViewingRoomsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionViewingRooms"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 
 type SectionsConnection = NonNullable<
@@ -26,40 +26,47 @@ type SectionT = ExtractNodeType<SectionsConnection>
 export const Section: React.FC<{ section: SectionT }> = (props) => {
   const { section } = props
 
+  if (!section.internalID) {
+    if (__DEV__) {
+      throw new Error("Section has no internalID")
+    }
+    return null
+  }
+
   switch (section.component?.type) {
     case "FeaturedCollection":
-      return <HomeViewSectionFeaturedCollection section={section} />
+      return <HomeViewSectionFeaturedCollectionQueryRenderer sectionID={section.internalID} />
     case "ArticlesCard":
-      return <HomeViewSectionArticlesCards section={section} />
+      return <HomeViewSectionArticlesCardsQueryRenderer sectionID={section.internalID} />
   }
 
   switch (section.__typename) {
     case "HomeViewSectionActivity":
-      return <HomeViewSectionActivity section={section} />
+      return <HomeViewSectionActivityQueryRenderer sectionID={section.internalID} />
     case "HomeViewSectionArtworks":
-      return <HomeViewSectionArtworks section={section} />
+      return <HomeViewSectionArtworksQueryRenderer sectionID={section.internalID} />
     case "HomeViewSectionGalleries":
-      return <HomeViewSectionGalleries section={section} />
+      return <HomeViewSectionGalleriesQueryRenderer sectionID={section.internalID} />
     case "HomeViewSectionGeneric":
       return <HomeViewSectionGeneric section={section} />
     case "HomeViewSectionArticles":
-      return <HomeViewSectionArticles section={section} />
+      return <HomeViewSectionArticlesQueryRenderer sectionID={section.internalID} />
     case "HomeViewSectionArtists":
-      return <HomeViewSectionArtistsPaginationContainer section={section} />
+      return <HomeViewSectionArtistsQueryRenderer sectionID={section.internalID} />
     case "HomeViewSectionAuctionResults":
-      return <HomeViewSectionAuctionResults section={section} />
+      return <HomeViewSectionAuctionResultsQueryRenderer sectionID={section.internalID} />
     case "HomeViewSectionHeroUnits":
-      return <HomeViewSectionHeroUnits section={section} />
+      return <HomeViewSectionHeroUnitsQueryRenderer sectionID={section.internalID} />
     case "HomeViewSectionFairs":
-      return <HomeViewSectionFairs section={section} />
+      return <HomeViewSectionFairsQueryRenderer sectionID={section.internalID} />
     case "HomeViewSectionMarketingCollections":
-      return <HomeViewSectionMarketingCollections section={section} />
+      return <HomeViewSectionMarketingCollectionsQueryRenderer sectionID={section.internalID} />
     case "HomeViewSectionShows":
-      return <HomeViewSectionShows section={section} />
+      return <HomeViewSectionShowsQueryRenderer sectionID={section.internalID} />
     case "HomeViewSectionViewingRooms":
-      return <HomeViewSectionViewingRooms section={section} />
+      return <HomeViewSectionViewingRoomsQueryRenderer sectionID={section.internalID} />
     case "HomeViewSectionSales":
-      return <HomeViewSectionSales section={section} />
+      return <HomeViewSectionSalesQueryRenderer sectionID={section.internalID} />
     default:
       if (__DEV__) {
         return (
