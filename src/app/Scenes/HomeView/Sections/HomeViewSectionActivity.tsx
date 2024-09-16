@@ -5,6 +5,10 @@ import { shouldDisplayNotification } from "app/Scenes/Activity/utils/shouldDispl
 import { SeeAllCard } from "app/Scenes/Home/Components/ActivityRail"
 import { ActivityRailItem } from "app/Scenes/Home/Components/ActivityRailItem"
 import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
+import {
+  HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
+  HORIZONTAL_FLATLIST_WINDOW_SIZE,
+} from "app/Scenes/HomeView/helpers/constants"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -62,7 +66,8 @@ export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = (
         }
         ItemSeparatorComponent={() => <Spacer x={2} />}
         data={notifications}
-        initialNumToRender={3}
+        initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
+        windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
         keyExtractor={(item) => item.internalID}
         renderItem={({ item, index }) => {
           return (

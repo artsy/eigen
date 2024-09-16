@@ -1,10 +1,14 @@
-import { Flex, useScreenDimensions } from "@artsy/palette-mobile"
+import { Flex } from "@artsy/palette-mobile"
 import { HomeViewSectionSales_section$key } from "__generated__/HomeViewSectionSales_section.graphql"
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
 import { HomeViewSectionSalesItem } from "app/Scenes/HomeView/Sections/HomeViewSectionSalesItem"
+import {
+  HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
+  HORIZONTAL_FLATLIST_WINDOW_SIZE,
+} from "app/Scenes/HomeView/helpers/constants"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -24,9 +28,6 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({ sect
   const component = data.component
   const componentHref = component?.behaviors?.viewAll?.href
   const sales = extractNodes(data.salesConnection)
-
-  const { width } = useScreenDimensions()
-  const isTablet = width > 700
 
   if (sales.length === 0) {
     return null
@@ -51,7 +52,8 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({ sect
         prefetchVariablesExtractor={(item) => ({ saleSlug: item?.slug })}
         listRef={listRef}
         data={sales}
-        initialNumToRender={isTablet ? 10 : 5}
+        initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
+        windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
         renderItem={({ item, index }) => {
           return (
             <HomeViewSectionSalesItem

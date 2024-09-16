@@ -4,6 +4,10 @@ import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
+import {
+  HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
+  HORIZONTAL_FLATLIST_WINDOW_SIZE,
+} from "app/Scenes/HomeView/helpers/constants"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -38,9 +42,10 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
       </Flex>
       <FlatList
         horizontal
+        initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
+        windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
         data={auctionResults}
         showsHorizontalScrollIndicator={false}
-        initialNumToRender={3}
         renderItem={({ item, index }) => {
           return (
             <AuctionResultListItemFragmentContainer
