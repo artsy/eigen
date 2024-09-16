@@ -33,10 +33,10 @@ export const ArtworkCollectorSignalsRow: React.FC<Props> = ({ artwork }) => {
     return null
   }
 
-  let singalTitle: string = null
-  let signalDescription: string = null
-  let SignalIcon = null
-  let href: string = null
+  let singalTitle: string | null = null
+  let signalDescription = ""
+  let SignalIcon = FairIcon
+  let href: string | null = null
 
   switch (true) {
     case curatorsPick && enableCuratorsPicksAndInterestSignals: {
@@ -52,7 +52,7 @@ export const ArtworkCollectorSignalsRow: React.FC<Props> = ({ artwork }) => {
       break
     }
     case !!runningShow: {
-      if (!runningShow.startAt || !runningShow.endAt) {
+      if (!runningShow?.startAt || !runningShow?.endAt) {
         break
       }
       const showStartsAt = DateTime.fromISO(runningShow.startAt).toFormat("MMM d")
