@@ -1,11 +1,10 @@
 import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import { Flex, Join, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
-import { ArtworkRail2_artworks$data } from "__generated__/ArtworkRail2_artworks.graphql"
+import { ArtworkRail_artworks$data } from "__generated__/ArtworkRail_artworks.graphql"
 import { HomeViewSectionArtworksQuery } from "__generated__/HomeViewSectionArtworksQuery.graphql"
 import { HomeViewSectionArtworks_section$key } from "__generated__/HomeViewSectionArtworks_section.graphql"
-import { ArtworkRail2 } from "app/Components/ArtworkRail/ArtworkRail2"
+import { ARTWORK_RAIL_IMAGE_WIDTH, ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { ARTWORK_RAIL_CARD_IMAGE_HEIGHT } from "app/Components/ArtworkRail/ArtworkRailCard"
-import { LARGE_RAIL_IMAGE_WIDTH } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
@@ -33,7 +32,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   }
 
   const handleOnArtworkPress = (
-    artwork: ArtworkRail2_artworks$data[0] | ArtworkRail2_artworks$data[0],
+    artwork: ArtworkRail_artworks$data[0] | ArtworkRail_artworks$data[0],
     position: number
   ) => {
     tracking.tappedArtworkGroup(
@@ -81,7 +80,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
             onPress={viewAll ? onSectionViewAll : undefined}
           />
         </Flex>
-        <ArtworkRail2
+        <ArtworkRail
           contextModule={section.contextModule as ContextModule}
           artworks={artworks}
           onPress={handleOnArtworkPress}
@@ -111,7 +110,7 @@ const fragment = graphql`
     artworksConnection(first: 10) {
       edges {
         node {
-          ...ArtworkRail2_artworks
+          ...ArtworkRail_artworks
         }
       }
     }
@@ -142,7 +141,7 @@ const HomeViewSectionArtworksPlaceholder: React.FC = () => {
               <Flex key={index}>
                 <SkeletonBox
                   height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT.large}
-                  width={LARGE_RAIL_IMAGE_WIDTH}
+                  width={ARTWORK_RAIL_IMAGE_WIDTH}
                 />
                 <Spacer y={2} />
                 <SkeletonText>Andy Warhol</SkeletonText>

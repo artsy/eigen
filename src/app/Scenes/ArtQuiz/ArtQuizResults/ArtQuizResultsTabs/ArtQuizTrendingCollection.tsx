@@ -1,7 +1,7 @@
 import { Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtQuizTrendingCollection_collection$key } from "__generated__/ArtQuizTrendingCollection_collection.graphql"
 import { ArtQuizTrendingCollections_viewer$data } from "__generated__/ArtQuizTrendingCollections_viewer.graphql"
-import { ArtworkRail2 } from "app/Components/ArtworkRail/ArtworkRail2"
+import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { ReadMore } from "app/Components/ReadMore"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -39,7 +39,7 @@ export const ArtQuizTrendingCollection = ({
         )}
       </Flex>
       <Spacer y={1} />
-      <ArtworkRail2
+      <ArtworkRail
         artworks={artworks}
         onPress={(artwork) => {
           if (artwork?.href) {
@@ -58,7 +58,7 @@ const artQuizTrendingCollectionFragment = graphql`
     artworksConnection(first: 16) {
       edges {
         node {
-          ...ArtworkRail2_artworks
+          ...ArtworkRail_artworks
         }
       }
     }

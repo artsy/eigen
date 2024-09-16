@@ -1,8 +1,8 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
-import { ArtworkRail2_artworks$data } from "__generated__/ArtworkRail2_artworks.graphql"
+import { ArtworkRail_artworks$data } from "__generated__/ArtworkRail_artworks.graphql"
 import { NewWorksForYouRail_artworkConnection$key } from "__generated__/NewWorksForYouRail_artworkConnection.graphql"
-import { ArtworkRail2 } from "app/Components/ArtworkRail/ArtworkRail2"
+import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { useItemsImpressionsTracking } from "app/Scenes/Home/Components/useImpressionsTracking"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
@@ -52,7 +52,7 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
     }
 
     const handleOnArtworkPress = (
-      artwork: ArtworkRail2_artworks$data[0] | ArtworkRail2_artworks$data[0],
+      artwork: ArtworkRail_artworks$data[0] | ArtworkRail_artworks$data[0],
       position: number
     ) => {
       if (!artwork.href) {
@@ -86,7 +86,7 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
               }}
             />
           </Flex>
-          <ArtworkRail2
+          <ArtworkRail
             {...trackingProps}
             artworks={artworks}
             onPress={handleOnArtworkPress}
@@ -118,7 +118,7 @@ const artworksFragment = graphql`
           title
           internalID
           slug
-          ...ArtworkRail2_artworks
+          ...ArtworkRail_artworks
         }
       }
     }

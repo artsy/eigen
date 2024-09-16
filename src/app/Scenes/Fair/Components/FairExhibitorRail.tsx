@@ -1,7 +1,7 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
 import { FairExhibitorRail_show$data } from "__generated__/FairExhibitorRail_show.graphql"
-import { ArtworkRail2 } from "app/Components/ArtworkRail/ArtworkRail2"
+import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -43,7 +43,7 @@ const FairExhibitorRail: React.FC<FairExhibitorRailProps> = ({ show }) => {
           }}
         />
       </Flex>
-      <ArtworkRail2
+      <ArtworkRail
         artworks={artworks}
         onPress={(artwork, position) => {
           if (artwork?.href) {
@@ -89,7 +89,7 @@ export const FairExhibitorRailFragmentContainer = createFragmentContainer(FairEx
       artworksConnection(first: 20) {
         edges {
           node {
-            ...ArtworkRail2_artworks
+            ...ArtworkRail_artworks
           }
         }
       }

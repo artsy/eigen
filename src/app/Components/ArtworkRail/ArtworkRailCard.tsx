@@ -17,8 +17,7 @@ import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/Cr
 import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
 import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
-import { LARGE_RAIL_IMAGE_WIDTH } from "app/Components/ArtworkRail/LargeArtworkRail"
-import { SMALL_RAIL_IMAGE_WIDTH } from "app/Components/ArtworkRail/SmallArtworkRail"
+import { ARTWORK_RAIL_IMAGE_WIDTH } from "app/Components/ArtworkRail/ArtworkRail"
 import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { HEART_ICON_SIZE } from "app/Components/constants"
@@ -178,18 +177,18 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
       case "small":
         return artwork.image?.resized?.width
       case "large":
-        if (imageDimensions.width <= SMALL_RAIL_IMAGE_WIDTH) {
-          return SMALL_RAIL_IMAGE_WIDTH
-        } else if (imageDimensions.width >= LARGE_RAIL_IMAGE_WIDTH) {
-          return LARGE_RAIL_IMAGE_WIDTH
+        if (imageDimensions.width <= ARTWORK_RAIL_IMAGE_WIDTH) {
+          return ARTWORK_RAIL_IMAGE_WIDTH
+        } else if (imageDimensions.width >= ARTWORK_RAIL_IMAGE_WIDTH) {
+          return ARTWORK_RAIL_IMAGE_WIDTH
         } else {
           return imageDimensions.width
         }
       case "extraLarge":
-        if (imageDimensions.width <= SMALL_RAIL_IMAGE_WIDTH) {
-          return SMALL_RAIL_IMAGE_WIDTH
-        } else if (imageDimensions.width <= LARGE_RAIL_IMAGE_WIDTH) {
-          return LARGE_RAIL_IMAGE_WIDTH
+        if (imageDimensions.width <= ARTWORK_RAIL_IMAGE_WIDTH) {
+          return ARTWORK_RAIL_IMAGE_WIDTH
+        } else if (imageDimensions.width <= ARTWORK_RAIL_IMAGE_WIDTH) {
+          return ARTWORK_RAIL_IMAGE_WIDTH
         } else if (imageDimensions.width >= EXTRALARGE_RAIL_CARD_IMAGE_WIDTH) {
           return EXTRALARGE_RAIL_CARD_IMAGE_WIDTH
         } else {

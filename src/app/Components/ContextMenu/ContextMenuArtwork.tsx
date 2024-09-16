@@ -1,7 +1,6 @@
 import { ActionType, ContextModule, LongPressedArtwork, ScreenOwnerType } from "@artsy/cohesion"
 import { useColor } from "@artsy/palette-mobile"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
-import { ArtworkRail2Card_artwork$data } from "__generated__/ArtworkRail2Card_artwork.graphql"
 import { ArtworkRailCard_artwork$data } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ArtworkRailCardProps } from "app/Components/ArtworkRail/ArtworkRailCard"
@@ -38,7 +37,7 @@ export type ArtworkDisplayProps = Pick<
 interface ContextMenuArtworkProps {
   artwork:
     | ArtworkRailCard_artwork$data
-    | ArtworkRail2Card_artwork$data
+    | ArtworkRailCard_artwork$data
     | ArtworkGridItem_artwork$data
   onCreateAlertActionPress: () => void
   onSupressArtwork?: () => void
@@ -232,7 +231,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   const artworkPreviewComponent = (
     artwork:
       | ArtworkRailCard_artwork$data
-      | ArtworkRail2Card_artwork$data
+      | ArtworkRailCard_artwork$data
       | ArtworkGridItem_artwork$data
   ) => {
     return (

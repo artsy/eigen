@@ -4,7 +4,7 @@ import {
   ArtworksInSeriesRail_artwork$data,
   ArtworksInSeriesRail_artwork$key,
 } from "__generated__/ArtworksInSeriesRail_artwork.graphql"
-import { ArtworkRail2 } from "app/Components/ArtworkRail/ArtworkRail2"
+import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -44,7 +44,7 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = (props)
           navigate(`/artist-series/${firstArtistSeries?.slug}`)
         }}
       />
-      <ArtworkRail2
+      <ArtworkRail
         artworks={artworks}
         onPress={(item) => {
           if (!!item.href) {
@@ -78,7 +78,7 @@ const artworkFragment = graphql`
           filterArtworksConnection(first: 20, input: { sort: "-decayed_merch" }) {
             edges {
               node {
-                ...ArtworkRail2_artworks
+                ...ArtworkRail_artworks
               }
             }
           }

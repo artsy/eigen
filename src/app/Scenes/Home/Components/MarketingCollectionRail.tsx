@@ -1,7 +1,7 @@
 import { Flex, Image, Spacer, Text } from "@artsy/palette-mobile"
 import { MarketingCollectionRail_home$key } from "__generated__/MarketingCollectionRail_home.graphql"
 import { MarketingCollectionRail_marketingCollection$key } from "__generated__/MarketingCollectionRail_marketingCollection.graphql"
-import { ArtworkRail2 } from "app/Components/ArtworkRail/ArtworkRail2"
+import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -101,7 +101,7 @@ export const MarketingCollectionRail: React.FC<MarketingCollectionRailProps> = m
 
         <Spacer y={4} />
 
-        <ArtworkRail2
+        <ArtworkRail
           {...trackingProps}
           artworks={artworks}
           onPress={handleArtworkPress}
@@ -143,7 +143,7 @@ const marketingCollectionFragment = graphql`
           internalID
           slug
           href
-          ...ArtworkRail2_artworks
+          ...ArtworkRail_artworks
         }
       }
     }

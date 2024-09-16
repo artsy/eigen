@@ -1,6 +1,6 @@
 import { Flex } from "@artsy/palette-mobile"
 import { ArtworkModuleRail_rail$data } from "__generated__/ArtworkModuleRail_rail.graphql"
-import { ArtworkRail2 } from "app/Components/ArtworkRail/ArtworkRail2"
+import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
@@ -111,7 +111,7 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
       <Flex pl={2} pr={2}>
         <SectionTitle title={title} subtitle={subtitle} onPress={handleTitlePress} />
       </Flex>
-      <ArtworkRail2
+      <ArtworkRail
         {...trackingProps}
         listRef={listRef}
         artworks={artworks}
@@ -148,7 +148,7 @@ export const ArtworkModuleRailFragmentContainer = memo(
         key
         results {
           slug
-          ...ArtworkRail2_artworks
+          ...ArtworkRail_artworks
         }
         context {
           ... on HomePageRelatedArtistArtworkModule {

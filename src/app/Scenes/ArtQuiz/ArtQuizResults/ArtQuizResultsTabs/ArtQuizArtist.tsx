@@ -4,7 +4,7 @@ import {
   ArtQuizArtist_artist$data,
   ArtQuizArtist_artist$key,
 } from "__generated__/ArtQuizArtist_artist.graphql"
-import { ArtworkRail2 } from "app/Components/ArtworkRail/ArtworkRail2"
+import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { ReadMore } from "app/Components/ReadMore"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -81,7 +81,7 @@ export const ArtQuizArtist = ({
         </Flex>
         <Spacer y={2} />
         <Flex mx={-2}>
-          <ArtworkRail2
+          <ArtworkRail
             artworks={artworks}
             onPress={(artwork) => {
               if (artwork?.href) {
@@ -110,7 +110,7 @@ const artQuizArtistFragment = graphql`
     artworksConnection(first: 15, sort: PUBLISHED_AT_DESC) {
       edges {
         node {
-          ...ArtworkRail2_artworks
+          ...ArtworkRail_artworks
         }
       }
     }

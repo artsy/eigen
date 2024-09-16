@@ -1,8 +1,14 @@
-import { Box, Spacer } from "@artsy/palette-mobile"
-import { LargeArtworkRail_artworks$data } from "__generated__/LargeArtworkRail_artworks.graphql"
+import { Box, Flex, Join, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
+import {
+  ArtworkRail_artworks$data,
+  ArtworkRail_artworks$key,
+} from "__generated__/ArtworkRail_artworks.graphql"
 import { SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$data } from "__generated__/SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection.graphql"
-import { SmallArtworkRail_artworks$data } from "__generated__/SmallArtworkRail_artworks.graphql"
-import { ArtworkCardSize, ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
+import {
+  ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
+  ArtworkCardSize,
+  ArtworkRailCard,
+} from "app/Components/ArtworkRail/ArtworkRailCard"
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
 import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
@@ -10,14 +16,18 @@ import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_ARTWORKS,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
 } from "app/Scenes/HomeView/helpers/constants"
+import { RandomWidthPlaceholderText, useMemoizedRandom } from "app/utils/placeholders"
 import {
   ArtworkActionTrackingProps,
   extractArtworkActionTrackingProps,
 } from "app/utils/track/ArtworkActions"
+import { times } from "lodash"
 import React, { ReactElement } from "react"
 import { FlatList, ViewabilityConfig } from "react-native"
+import { graphql, useFragment } from "react-relay"
 
 const MAX_NUMBER_OF_ARTWORKS = 30
+export const ARTWORK_RAIL_IMAGE_WIDTH = 295
 
 interface CommonArtworkRailProps {
   dark?: boolean
@@ -38,11 +48,8 @@ interface CommonArtworkRailProps {
 }
 
 export interface ArtworkRailProps extends CommonArtworkRailProps, ArtworkActionTrackingProps {
-  artworks: LargeArtworkRail_artworks$data | SmallArtworkRail_artworks$data
-  onPress?: (
-    artwork: LargeArtworkRail_artworks$data[0] | SmallArtworkRail_artworks$data[0],
-    index: number
-  ) => void
+  artworks: ArtworkRail_artworks$key
+  onPress?: (artwork: ArtworkRail_artworks$data[0], index: number) => void
 }
 
 export const ArtworkRail: React.FC<ArtworkRailProps> = ({
@@ -56,7 +63,6 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
   hideArtistName = false,
   showPartnerName = true,
   dark = false,
-  artworks,
   showSaveIcon = false,
   viewabilityConfig,
   onViewableItemsChanged,
@@ -66,6 +72,10 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
   ...otherProps
 }) => {
   const trackingProps = extractArtworkActionTrackingProps(otherProps)
+
+  const artworks = useFragment(artworksFragment, otherProps.artworks)
+
+  // TODO: Refactor this to use a better solution
   // We need to set the maximum number of artists to not cause layout shifts
   const artworksSlice = artworks.slice(0, MAX_NUMBER_OF_ARTWORKS).map((artwork) => {
     return {
@@ -194,4 +204,38 @@ export const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> =
   )
 }
 
+const artworksFragment = graphql`
+  fragment ArtworkRail_artworks on Artwork @relay(plural: true) {
+    ...ArtworkRailCard_artwork @arguments(width: 590)
+    internalID
+    href
+    slug
+    collectorSignals {
+      auction {
+        bidCount
+        liveBiddingStarted
+        lotClosesAt
+        lotWatcherCount
+        registrationEndsAt
+      }
+      partnerOffer {
+        isAvailable
+      }
+    }
+  }
+`
+
 const SpacerComponent = () => <Spacer x={2} />
+
+export const ArtworkRail2Placeholder: React.FC = () => (
+  <Join separator={<Spacer x="15px" />}>
+    {times(3 + useMemoizedRandom() * 10).map((index) => (
+      <Flex key={index}>
+        <SkeletonBox height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT} width={ARTWORK_RAIL_IMAGE_WIDTH} />
+        <Spacer y={2} />
+        <SkeletonText>Artist</SkeletonText>
+        <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
+      </Flex>
+    ))}
+  </Join>
+)
