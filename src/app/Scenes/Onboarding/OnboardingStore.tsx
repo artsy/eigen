@@ -1,33 +1,25 @@
 import { Action, action, createContextStore } from "easy-peasy"
 
 export interface OnboardingStoreModel {
-  currentStep:
-    | "WelcomeStep"
-    | "EmailStep"
-    | "LoginPasswordStep"
-    | "SignUpPasswordStep"
-    | "NameStep"
-    | "ForgotPasswordStep"
-  stepForward: Action<OnboardingStoreModel>
-  stepBackward: Action<OnboardingStoreModel>
+  currentStep: "WelcomeStep" | "EmailStep" | "LoginPasswordStep" | "SignUpPasswordStep"
+  navigateToWelcomeStep: Action<OnboardingStoreModel>
+  navigateToEmailStep: Action<OnboardingStoreModel>
+  navigateToLoginPasswordStep: Action<OnboardingStoreModel>
+  navigateToSignUpPasswordStep: Action<OnboardingStoreModel>
 }
 
 export const OnboardingStore = createContextStore<OnboardingStoreModel>({
   currentStep: "WelcomeStep",
-  stepForward: action((state) => {
-    switch (state.currentStep) {
-      case "WelcomeStep":
-        return { currentStep: "EmailStep" }
-      case "EmailStep":
-        return { currentStep: "LoginPasswordStep" }
-    }
+  navigateToWelcomeStep: action((state) => {
+    state.currentStep = "WelcomeStep"
   }),
-  stepBackward: action((state) => {
-    switch (state.currentStep) {
-      case "EmailStep":
-        return { currentStep: "WelcomeStep" }
-      case "LoginPasswordStep":
-        return { currentStep: "EmailStep" }
-    }
+  navigateToEmailStep: action((state) => {
+    state.currentStep = "EmailStep"
+  }),
+  navigateToLoginPasswordStep: action((state) => {
+    state.currentStep = "LoginPasswordStep"
+  }),
+  navigateToSignUpPasswordStep: action((state) => {
+    state.currentStep = "SignUpPasswordStep"
   }),
 })
