@@ -1,27 +1,10 @@
 import { BackButton, Button, Text } from "@artsy/palette-mobile"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
 import { OnboardingStore } from "app/Scenes/Onboarding/OnboardingStore"
-import { useAuthenticationFormContext } from "app/Scenes/Onboarding/useAuthenticationFormContext"
-import { Field } from "formik"
-import { useEffect } from "react"
+import { Field, Formik } from "formik"
+import * as Yup from "yup"
 
 export const EmailStep: React.FC = () => {
-  const { handleBlur, handleChange, isValid, validateForm, values, validateField } =
-    useAuthenticationFormContext()
-
-  useEffect(() => {
-    console.log("🦆", "isValid", { isValid })
-  }, [isValid])
-
-  useEffect(() => {
-    console.log("🦜", "validateField")
-  }, [validateField])
-
-  useEffect(() => {
-    console.log("🦅", "validateForm")
-    validateForm()
-  }, [validateForm])
-
   const navigateToWelcomeStep = OnboardingStore.useStoreActions(
     (actions) => actions.navigateToWelcomeStep
   )
@@ -47,30 +30,43 @@ export const EmailStep: React.FC = () => {
   }
 
   return (
-    <>
-      <BackButton onPress={handleBackButtonPress} />
+    <Formik
+      initialValues={{ email: "" }}
+      onSubmit={handleContinueButtonPress}
+      validationSchema={Yup.object().shape({
+        email: Yup.string().email().required(),
+      })}
+      validateOnMount
+    >
+      {({ handleBlur, handleChange, handleSubmit, isValid, values }) => {
+        return (
+          <>
+            <BackButton onPress={handleBackButtonPress} />
 
-      <Text variant="sm-display">Sign up or log in</Text>
+            <Text variant="sm-display">Sign up or log in</Text>
 
-      <Field
-        name="email"
-        autoCapitalize="none"
-        autoComplete="email"
-        keyboardType="email-address"
-        spellCheck={false}
-        autoCorrect={false}
-        component={BottomSheetInput}
-        onBlur={handleBlur("email")}
-        placeholder="Enter your email address"
-        returnKeyType="done"
-        title="Email"
-        value={values.email}
-        onChangeText={handleChange("email")}
-      />
+            <Field
+              name="email"
+              autoCapitalize="none"
+              autoComplete="email"
+              keyboardType="email-address"
+              spellCheck={false}
+              autoCorrect={false}
+              component={BottomSheetInput}
+              onBlur={handleBlur("email")}
+              placeholder="Enter your email address"
+              returnKeyType="done"
+              title="Email"
+              value={values.email}
+              onChangeText={handleChange("email")}
+            />
 
-      <Button block width={100} onPress={handleContinueButtonPress} disabled={!isValid}>
-        Continue
-      </Button>
-    </>
+            <Button block width={100} onPress={handleSubmit} disabled={!isValid}>
+              Continue
+            </Button>
+          </>
+        )
+      }}
+    </Formik>
   )
 }

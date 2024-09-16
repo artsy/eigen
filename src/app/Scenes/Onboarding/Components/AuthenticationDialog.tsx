@@ -1,18 +1,20 @@
 import { Flex, useTheme } from "@artsy/palette-mobile"
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet"
-import { AuthenticationWizard } from "app/Scenes/Onboarding/Components/AuthenticationWizard"
-import React, { useRef } from "react"
+import { EmailStep } from "app/Scenes/Onboarding/Components/EmailStep"
+import { LoginPasswordStep } from "app/Scenes/Onboarding/Components/LoginPasswordStep"
+import { WelcomeStep } from "app/Scenes/Onboarding/Components/WelcomeStep"
+import { OnboardingStore } from "app/Scenes/Onboarding/OnboardingStore"
+import React from "react"
 import { View } from "react-native"
 
 export const AuthenticationDialog: React.FC = () => {
-  const bottomSheetRef = useRef<BottomSheet>(null)
+  const currentStep = OnboardingStore.useStoreState((state) => state.currentStep)
 
   const { space } = useTheme()
 
   return (
     <View style={{ flex: 1 }}>
       <BottomSheet
-        ref={bottomSheetRef}
         snapPoints={["100%"]}
         detached
         enableContentPanningGesture={false}
@@ -20,7 +22,9 @@ export const AuthenticationDialog: React.FC = () => {
       >
         <BottomSheetScrollView>
           <Flex padding={2} gap={space(1)}>
-            <AuthenticationWizard />
+            {currentStep === "WelcomeStep" && <WelcomeStep />}
+            {currentStep === "EmailStep" && <EmailStep />}
+            {currentStep === "LoginPasswordStep" && <LoginPasswordStep />}
           </Flex>
         </BottomSheetScrollView>
       </BottomSheet>
