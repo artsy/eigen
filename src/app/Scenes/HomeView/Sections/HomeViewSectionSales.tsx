@@ -1,3 +1,4 @@
+import { ContextModule } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
 import { HomeViewSectionSales_section$key } from "__generated__/HomeViewSectionSales_section.graphql"
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
@@ -59,7 +60,12 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({ sect
             <HomeViewSectionSalesItem
               sale={item}
               onPress={(sale) => {
-                tracking.tappedAuctionGroup(sale.internalID, sale.slug, data.internalID, index)
+                tracking.tappedAuctionGroup(
+                  sale.internalID,
+                  sale.slug,
+                  data.contextModule as ContextModule,
+                  index
+                )
               }}
             />
           )
@@ -82,6 +88,7 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({ sect
 const fragment = graphql`
   fragment HomeViewSectionSales_section on HomeViewSectionSales {
     internalID
+    contextModule
     component {
       title
       behaviors {

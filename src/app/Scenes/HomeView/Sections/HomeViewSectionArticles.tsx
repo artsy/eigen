@@ -1,3 +1,4 @@
+import { ContextModule } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
 import { HomeViewSectionArticles_section$key } from "__generated__/HomeViewSectionArticles_section.graphql"
 import { ArticlesRailFragmentContainer } from "app/Scenes/Home/Components/ArticlesRail"
@@ -26,7 +27,12 @@ export const HomeViewSectionArticles: React.FC<HomeViewSectionArticlesProps> = (
         title={section.component?.title ?? ""}
         articlesConnection={section.articlesConnection}
         onTrack={(article, index) => {
-          tracking.tappedArticleGroup(article.internalID, article.slug, section.internalID, index)
+          tracking.tappedArticleGroup(
+            article.internalID,
+            article.slug,
+            section.contextModule as ContextModule,
+            index
+          )
         }}
         onSectionTitlePress={
           componentHref
@@ -43,6 +49,7 @@ export const HomeViewSectionArticles: React.FC<HomeViewSectionArticlesProps> = (
 const sectionFragment = graphql`
   fragment HomeViewSectionArticles_section on HomeViewSectionArticles {
     internalID
+    contextModule
     component {
       title
       behaviors {

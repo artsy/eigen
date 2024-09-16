@@ -1,3 +1,4 @@
+import { ContextModule } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
 import { HomeViewSectionArtworks_section$key } from "__generated__/HomeViewSectionArtworks_section.graphql"
 import { LargeArtworkRail_artworks$data } from "__generated__/LargeArtworkRail_artworks.graphql"
@@ -22,7 +23,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   const data = useFragment(fragment, section)
   const title = data.component?.title
   const artworks = extractNodes(data.artworksConnection)
-  const componentHref = getSectionHref(data.internalID, data.component?.behaviors?.viewAll?.href)
+  const componentHref = getSectionHref(data.contextModule, data.component?.behaviors?.viewAll?.href)
 
   if (!artworks || artworks.length === 0) {
     return null
@@ -36,7 +37,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
       artwork.internalID,
       artwork.slug,
       artwork.collectorSignals,
-      data.internalID,
+      data.contextModule as ContextModule,
       position
     )
 
@@ -89,6 +90,7 @@ const fragment = graphql`
   fragment HomeViewSectionArtworks_section on HomeViewSectionArtworks {
     __typename
     internalID
+    contextModule
     component {
       title
       behaviors {

@@ -107,7 +107,7 @@ describe("HomeViewSectionFairs", () => {
         [
           {
             "action": "tappedFairGroup",
-            "context_module": "fairsForYou",
+            "context_module": "<mock-value-for-field-"contextModule">",
             "context_screen_owner_type": "home",
             "destination_screen_owner_id": "fair-2-id",
             "destination_screen_owner_slug": "fair-2-slug",

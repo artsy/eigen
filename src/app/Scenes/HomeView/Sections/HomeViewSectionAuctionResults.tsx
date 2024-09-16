@@ -1,3 +1,4 @@
+import { ContextModule } from "@artsy/cohesion"
 import { Flex, useScreenDimensions } from "@artsy/palette-mobile"
 import { HomeViewSectionAuctionResults_section$key } from "__generated__/HomeViewSectionAuctionResults_section.graphql"
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
@@ -56,7 +57,7 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
                 tracking.tappedAuctionResultGroup(
                   item.internalID,
                   item.slug,
-                  section.internalID,
+                  section.contextModule as ContextModule,
                   index
                 )
               }}
@@ -82,6 +83,7 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
 const sectionFragment = graphql`
   fragment HomeViewSectionAuctionResults_section on HomeViewSectionAuctionResults {
     internalID
+    contextModule
     component {
       title
       behaviors {

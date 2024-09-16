@@ -1,3 +1,4 @@
+import { ContextModule } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
 import { HomeViewSectionShows_section$key } from "__generated__/HomeViewSectionShows_section.graphql"
 import { ShowsRailContainer } from "app/Scenes/Home/Components/ShowsRail"
@@ -22,7 +23,12 @@ export const HomeViewSectionShows: React.FC<HomeViewSectionShowsProps> = ({ sect
         title={component?.title || "Shows"}
         disableLocation={!enableShowsForYouLocation}
         onTrack={(show, index) => {
-          tracking.tappedShowGroup(show.internalID, show.slug, data.internalID, index)
+          tracking.tappedShowGroup(
+            show.internalID,
+            show.slug,
+            data.contextModule as ContextModule,
+            index
+          )
         }}
       />
     </Flex>
@@ -32,6 +38,7 @@ export const HomeViewSectionShows: React.FC<HomeViewSectionShowsProps> = ({ sect
 const fragment = graphql`
   fragment HomeViewSectionShows_section on HomeViewSectionShows {
     internalID
+    contextModule
     component {
       title
     }

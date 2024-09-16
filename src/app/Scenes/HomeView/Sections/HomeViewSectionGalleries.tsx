@@ -1,3 +1,4 @@
+import { ContextModule } from "@artsy/cohesion"
 import { Button, Flex, Text, Touchable, useScreenDimensions } from "@artsy/palette-mobile"
 import { HomeViewSectionGalleries_section$key } from "__generated__/HomeViewSectionGalleries_section.graphql"
 import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
@@ -29,7 +30,7 @@ export const HomeViewSectionGalleries: React.FC<HomeViewSectionGalleriesProps> =
   const componentHref = section.component?.behaviors?.viewAll?.href
 
   const handleOnPress = () => {
-    tracking.tappedShowMore("Explore", section.internalID)
+    tracking.tappedShowMore("Explore", section.contextModule as ContextModule)
 
     if (componentHref) {
       navigate(componentHref)
@@ -93,6 +94,7 @@ export const HomeViewSectionGalleries: React.FC<HomeViewSectionGalleriesProps> =
 const HomeViewSectionGalleriesFragment = graphql`
   fragment HomeViewSectionGalleries_section on HomeViewSectionGalleries {
     internalID
+    contextModule
     component {
       title
       backgroundImageURL

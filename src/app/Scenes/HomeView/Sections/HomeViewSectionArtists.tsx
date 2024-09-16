@@ -1,3 +1,4 @@
+import { ContextModule } from "@artsy/cohesion"
 import { Flex, Spacer, Spinner } from "@artsy/palette-mobile"
 import { HomeViewSectionArtists_section$data } from "__generated__/HomeViewSectionArtists_section.graphql"
 import {
@@ -96,7 +97,7 @@ export const HomeViewSectionArtists: React.FC<HomeViewSectionArtworksProps> = ({
                 tracking.tappedArtistGroup(
                   artist.internalID,
                   artist.slug,
-                  section.internalID,
+                  section.contextModule as ContextModule,
                   index
                 )
               }}
@@ -116,8 +117,8 @@ export const HomeViewSectionArtistsPaginationContainer = createPaginationContain
     section: graphql`
       fragment HomeViewSectionArtists_section on HomeViewSectionArtists
       @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
-        id
         internalID
+        contextModule
         component {
           title
           behaviors {
