@@ -140,7 +140,7 @@ const HomeViewSectionArtworksPlaceholder: React.FC = () => {
             {times(2 + randomValue * 10).map((index) => (
               <Flex key={index}>
                 <SkeletonBox
-                  height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT.large}
+                  height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
                   width={ARTWORK_RAIL_IMAGE_WIDTH}
                 />
                 <Spacer y={2} />

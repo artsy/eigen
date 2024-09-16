@@ -150,7 +150,7 @@ const HomeViewSectionFeaturedCollectionPlaceholder: React.FC = () => {
           <Join separator={<Spacer x="15px" />}>
             <Flex>
               <SkeletonBox
-                height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT.large}
+                height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
                 width={ARTWORK_RAIL_IMAGE_WIDTH}
               />
               <Spacer y={2} />

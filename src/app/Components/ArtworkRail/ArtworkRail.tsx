@@ -6,7 +6,6 @@ import {
 import { SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$data } from "__generated__/SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection.graphql"
 import {
   ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
-  ArtworkCardSize,
   ArtworkRailCard,
 } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
@@ -38,7 +37,6 @@ interface CommonArtworkRailProps {
   listRef?: React.RefObject<FlatList<any>>
   onEndReached?: () => void
   onEndReachedThreshold?: number
-  size: ArtworkCardSize
   showSaveIcon?: boolean
   onMorePress?: () => void
   viewabilityConfig?: ViewabilityConfig | undefined
@@ -54,7 +52,6 @@ export interface ArtworkRailProps extends CommonArtworkRailProps, ArtworkActionT
 
 export const ArtworkRail: React.FC<ArtworkRailProps> = ({
   listRef,
-  size,
   onPress,
   onEndReached,
   onEndReachedThreshold,
@@ -123,7 +120,6 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
                   onPress?.(item, index)
                 }}
                 showSaveIcon={showSaveIcon}
-                size={size}
                 onSupressArtwork={() => {
                   handleSupress(item)
                 }}
@@ -152,7 +148,6 @@ export interface RecentlySoldArtworksRailProps extends CommonArtworkRailProps {
 
 export const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> = ({
   listRef,
-  size,
   onPress,
   onEndReached,
   onEndReachedThreshold,
@@ -192,7 +187,6 @@ export const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> =
             lowEstimateDisplay={item?.lowEstimate?.display || ""}
             highEstimateDisplay={item?.highEstimate?.display || ""}
             performanceDisplay={item?.performance?.mid ?? undefined}
-            size={size}
             showPartnerName={showPartnerName}
             isRecentlySoldArtwork
             hideArtistName={hideArtistName}
@@ -227,7 +221,7 @@ const artworksFragment = graphql`
 
 const SpacerComponent = () => <Spacer x={2} />
 
-export const ArtworkRail2Placeholder: React.FC = () => (
+export const ArtworkRailPlaceholder: React.FC = () => (
   <Join separator={<Spacer x="15px" />}>
     {times(3 + useMemoizedRandom() * 10).map((index) => (
       <Flex key={index}>

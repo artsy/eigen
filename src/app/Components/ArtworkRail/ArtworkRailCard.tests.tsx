@@ -8,9 +8,7 @@ import { graphql } from "react-relay"
 
 describe("ArtworkRailCard", () => {
   const { renderWithRelay } = setupTestWrapper<ArtworkRailCardTestsQuery>({
-    Component: (props) => (
-      <ArtworkRailCard {...props} artwork={props.artwork!} size={(props as any).size || "large"} />
-    ),
+    Component: (props) => <ArtworkRailCard {...props} artwork={props.artwork!} />,
     query: graphql`
       query ArtworkRailCardTestsQuery @relay_test_operation {
         artwork(id: "the-artwork") {
