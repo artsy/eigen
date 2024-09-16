@@ -21,11 +21,11 @@ interface HomeViewSectionHeroUnitsProps {
   section: HomeViewSectionHeroUnits_section$key
 }
 
-export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> = ({ section }) => {
+export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> = (props) => {
   const tracking = useHomeViewTracking()
 
-  const data = useFragment(fragment, section)
-  const heroUnits = extractNodes(data.heroUnitsConnection)
+  const section = useFragment(fragment, props.section)
+  const heroUnits = extractNodes(section.heroUnitsConnection)
 
   const [currentIndex, setCurrentIndex] = useState(0)
 
@@ -61,7 +61,7 @@ export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> =
             onPress={() => {
               tracking.tappedHeroUnitGroup(
                 item.link.url,
-                data.contextModule as ContextModule,
+                section.contextModule as ContextModule,
                 index
               )
             }}

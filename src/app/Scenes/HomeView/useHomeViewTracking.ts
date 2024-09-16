@@ -2,6 +2,7 @@ import {
   ActionType,
   ContextModule,
   OwnerType,
+  ScreenOwnerType,
   TappedActivityGroup,
   TappedArticleGroup,
   TappedArtistGroup,
@@ -48,6 +49,18 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
+    tappedActivityGroupViewAll: (contextModule: ContextModule, ownerType: ScreenOwnerType) => {
+      const payload: TappedActivityGroup = {
+        action: ActionType.tappedActivityGroup,
+        context_module: contextModule,
+        context_screen_owner_type: OwnerType.home,
+        destination_screen_owner_type: ownerType,
+        type: "viewAll",
+      }
+
+      trackEvent(payload)
+    },
+
     tappedArticleGroup: (
       articleID: string,
       articleSlug: string | undefined | null,
@@ -75,6 +88,18 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
+    tappedArticleGroupViewAll: (contextModule: ContextModule, ownerType: ScreenOwnerType) => {
+      const payload: TappedArticleGroup = {
+        action: ActionType.tappedArticleGroup,
+        context_module: contextModule,
+        context_screen_owner_type: OwnerType.home,
+        destination_screen_owner_type: ownerType,
+        type: "viewAll",
+      }
+
+      trackEvent(payload)
+    },
+
     tappedArtistGroup: (
       artistID: string,
       artistSlug: string,
@@ -91,6 +116,18 @@ export const useHomeViewTracking = () => {
         horizontal_slide_position: index,
         module_height: "double",
         type: "thumbnail",
+      }
+
+      trackEvent(payload)
+    },
+
+    tappedArtistGroupViewAll: (contextModule: ContextModule, ownerType: ScreenOwnerType) => {
+      const payload: TappedArtistGroup = {
+        action: ActionType.tappedArtistGroup,
+        context_module: contextModule,
+        context_screen_owner_type: OwnerType.home,
+        destination_screen_owner_type: ownerType,
+        type: "viewAll",
       }
 
       trackEvent(payload)
@@ -122,6 +159,18 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
+    tappedArtworkGroupViewAll: (contextModule: ContextModule, ownerType: ScreenOwnerType) => {
+      const payload: TappedArtworkGroup = {
+        action: ActionType.tappedArtworkGroup,
+        context_module: contextModule,
+        context_screen_owner_type: OwnerType.home,
+        destination_screen_owner_type: ownerType,
+        type: "viewAll",
+      }
+
+      trackEvent(payload)
+    },
+
     tappedAuctionGroup: (
       saleID: string,
       saleSlug: string,
@@ -138,6 +187,18 @@ export const useHomeViewTracking = () => {
         horizontal_slide_position: index,
         module_height: "double",
         type: "thumbnail",
+      }
+
+      trackEvent(payload)
+    },
+
+    tappedAuctionGroupViewAll: (contextModule: ContextModule, ownerType: ScreenOwnerType) => {
+      const payload: TappedAuctionGroup = {
+        action: ActionType.tappedAuctionGroup,
+        context_module: contextModule,
+        context_screen_owner_type: OwnerType.home,
+        destination_screen_owner_type: ownerType,
+        type: "viewAll",
       }
 
       trackEvent(payload)
@@ -169,6 +230,18 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
+    tappedAuctionResultGroupViewAll: (contextModule: ContextModule, ownerType: ScreenOwnerType) => {
+      const payload: TappedAuctionResultGroup = {
+        action: ActionType.tappedAuctionResultGroup,
+        context_module: contextModule,
+        context_screen_owner_type: OwnerType.home,
+        destination_screen_owner_type: ownerType,
+        type: "viewAll",
+      }
+
+      trackEvent(payload)
+    },
+
     tappedFairGroup: (
       fairID: string,
       fairSlug: string,
@@ -185,6 +258,18 @@ export const useHomeViewTracking = () => {
         horizontal_slide_position: index,
         module_height: "double",
         type: "thumbnail",
+      }
+
+      trackEvent(payload)
+    },
+
+    tappedFairGroupViewAll: (contextModule: ContextModule, ownerType: ScreenOwnerType) => {
+      const payload: TappedFairGroup = {
+        action: ActionType.tappedFairGroup,
+        context_module: contextModule,
+        context_screen_owner_type: OwnerType.home,
+        destination_screen_owner_type: ownerType,
+        type: "viewAll",
       }
 
       trackEvent(payload)
@@ -219,6 +304,21 @@ export const useHomeViewTracking = () => {
         horizontal_slide_position: index,
         module_height: "double",
         type: "thumbnail",
+      }
+
+      trackEvent(payload)
+    },
+
+    tappedMarketingCollectionGroupViewAll: (
+      contextModule: ContextModule,
+      ownerType: ScreenOwnerType
+    ) => {
+      const payload: TappedCollectionGroup = {
+        action: ActionType.tappedCollectionGroup,
+        context_module: contextModule,
+        context_screen_owner_type: OwnerType.home,
+        destination_screen_owner_type: ownerType,
+        type: "viewAll",
       }
 
       trackEvent(payload)
@@ -270,6 +370,18 @@ export const useHomeViewTracking = () => {
         destination_screen_owner_slug: viewingRoomSlug,
         horizontal_slide_position: index,
         type: "thumbnail",
+      }
+
+      trackEvent(payload)
+    },
+
+    tappedViewingRoomGroupViewAll: (contextModule: ContextModule, ownerType: ScreenOwnerType) => {
+      const payload: TappedViewingRoomGroup = {
+        action: ActionType.tappedViewingRoomGroup,
+        context_module: contextModule,
+        context_screen_owner_type: OwnerType.home,
+        destination_screen_owner_type: ownerType,
+        type: "viewAll",
       }
 
       trackEvent(payload)

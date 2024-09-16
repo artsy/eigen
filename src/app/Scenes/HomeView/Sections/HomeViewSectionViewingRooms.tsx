@@ -1,4 +1,4 @@
-import { ContextModule } from "@artsy/cohesion"
+import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import { Flex, Join, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import { HomeViewSectionViewingRoomsQuery } from "__generated__/HomeViewSectionViewingRoomsQuery.graphql"
 import { HomeViewSectionViewingRooms_section$key } from "__generated__/HomeViewSectionViewingRooms_section.graphql"
@@ -19,23 +19,34 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 export const HomeViewSectionViewingRooms: React.FC<{
   section: HomeViewSectionViewingRooms_section$key
-}> = ({ section }) => {
-  const data = useFragment(viewingRoomsFragment, section)
+}> = (props) => {
   const tracking = useHomeViewTracking()
-  const componentHref = data.component?.behaviors?.viewAll?.href
+  const section = useFragment(viewingRoomsFragment, props.section)
+  const viewAll = section.component?.behaviors?.viewAll
+
+  const onSectionViewAll = () => {
+    tracking.tappedViewingRoomGroupViewAll(
+      section.contextModule as ContextModule,
+      "viewingRooms" as ScreenOwnerType
+    )
+
+    if (viewAll?.href) {
+      navigate(viewAll.href)
+    } else {
+      navigate(`/section/${section.internalID}`, {
+        passProps: {
+          sectionType: section.__typename,
+        },
+      })
+    }
+  }
 
   return (
     <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
       <Flex px={2}>
         <SectionTitle
-          title={data.component?.title}
-          onPress={
-            componentHref
-              ? () => {
-                  navigate(componentHref)
-                }
-              : undefined
-          }
+          title={section.component?.title}
+          onPress={viewAll ? onSectionViewAll : undefined}
         />
       </Flex>
       <Suspense fallback={<ViewingRoomsRailPlaceholder />}>
@@ -44,7 +55,7 @@ export const HomeViewSectionViewingRooms: React.FC<{
             tracking.tappedViewingRoomGroup(
               viewingRoom.internalID,
               viewingRoom.slug,
-              data.contextModule as ContextModule,
+              section.contextModule as ContextModule,
               index
             )
 
@@ -58,6 +69,7 @@ export const HomeViewSectionViewingRooms: React.FC<{
 
 const viewingRoomsFragment = graphql`
   fragment HomeViewSectionViewingRooms_section on HomeViewSectionViewingRooms {
+    __typename
     internalID
     contextModule
     component {

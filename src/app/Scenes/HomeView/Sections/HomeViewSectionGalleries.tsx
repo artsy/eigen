@@ -38,19 +38,25 @@ export const HomeViewSectionGalleries: React.FC<HomeViewSectionGalleriesProps> =
   const hasImage = !!section.component.backgroundImageURL
   const textColor = hasImage ? "white100" : "black100"
 
-  const componentHref = section.component?.behaviors?.viewAll?.href
+  const viewAll = section.component.behaviors?.viewAll
 
-  const handleOnPress = () => {
+  const onSectionViewAll = () => {
     tracking.tappedShowMore("Explore", section.contextModule as ContextModule)
 
-    if (componentHref) {
-      navigate(componentHref)
+    if (viewAll?.href) {
+      navigate(viewAll.href)
+    } else {
+      navigate(`/section/${section.internalID}`, {
+        passProps: {
+          sectionType: section.__typename,
+        },
+      })
     }
   }
 
   return (
     <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
-      <Touchable onPress={handleOnPress} haptic="impactLight">
+      <Touchable onPress={onSectionViewAll} haptic="impactLight">
         {!!hasImage && (
           <Flex position="absolute">
             <FastImage
@@ -84,12 +90,12 @@ export const HomeViewSectionGalleries: React.FC<HomeViewSectionGalleriesProps> =
               </Text>
             </Flex>
 
-            {!!componentHref && (
+            {!!viewAll && (
               <Flex mt={0.5} maxWidth={150}>
                 <Button
                   variant={hasImage ? "outlineLight" : "fillDark"}
                   size="small"
-                  onPress={handleOnPress}
+                  onPress={onSectionViewAll}
                 >
                   Explore
                 </Button>
@@ -104,6 +110,7 @@ export const HomeViewSectionGalleries: React.FC<HomeViewSectionGalleriesProps> =
 
 const HomeViewSectionGalleriesFragment = graphql`
   fragment HomeViewSectionGalleries_section on HomeViewSectionGalleries {
+    __typename
     internalID
     contextModule
     component {

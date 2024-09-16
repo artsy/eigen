@@ -39,6 +39,7 @@ export const HomeViewSectionShows: React.FC<HomeViewSectionShowsProps> = ({ sect
 
 const fragment = graphql`
   fragment HomeViewSectionShows_section on HomeViewSectionShows {
+    __typename
     internalID
     contextModule
     component {

@@ -1,4 +1,4 @@
-import { ContextModule } from "@artsy/cohesion"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Join, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import { HomeViewSectionAuctionResultsQuery } from "__generated__/HomeViewSectionAuctionResultsQuery.graphql"
 import { HomeViewSectionAuctionResults_section$key } from "__generated__/HomeViewSectionAuctionResults_section.graphql"
@@ -41,14 +41,31 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
   }
 
   const auctionResults = extractNodes(section.auctionResultsConnection)
-  const componentHref = section.component?.behaviors?.viewAll?.href
+  const viewAll = section.component?.behaviors?.viewAll
+
+  const onSectionViewAll = () => {
+    tracking.tappedAuctionResultGroupViewAll(
+      section.contextModule as ContextModule,
+      OwnerType.auctionResultsForArtistsYouFollow
+    )
+
+    if (viewAll?.href) {
+      navigate(viewAll.href)
+    } else {
+      navigate(`/section/${section.internalID}`, {
+        passProps: {
+          sectionType: section.__typename,
+        },
+      })
+    }
+  }
 
   return (
     <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
       <Flex px={2}>
         <SectionTitle
           title={section.component?.title ?? "Auction Results"}
-          onPress={componentHref ? () => navigate(componentHref) : undefined}
+          onPress={viewAll ? onSectionViewAll : undefined}
         />
       </Flex>
       <FlatList
@@ -76,13 +93,8 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
         }}
         keyExtractor={(item) => item.internalID}
         ListFooterComponent={
-          componentHref ? (
-            <BrowseMoreRailCard
-              onPress={() => {
-                navigate(componentHref)
-              }}
-              text="Browse All Results"
-            />
+          viewAll ? (
+            <BrowseMoreRailCard onPress={onSectionViewAll} text="Browse All Results" />
           ) : undefined
         }
       />
@@ -92,6 +104,7 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
 
 const sectionFragment = graphql`
   fragment HomeViewSectionAuctionResults_section on HomeViewSectionAuctionResults {
+    __typename
     internalID
     contextModule
     component {

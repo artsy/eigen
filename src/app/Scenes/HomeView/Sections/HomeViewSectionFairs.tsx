@@ -1,4 +1,4 @@
-import { ContextModule } from "@artsy/cohesion"
+import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import { Flex, Join, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import { HomeViewSectionFairsQuery } from "__generated__/HomeViewSectionFairsQuery.graphql"
 import { HomeViewSectionFairs_section$key } from "__generated__/HomeViewSectionFairs_section.graphql"
@@ -24,31 +24,36 @@ interface HomeViewSectionFairsProps {
   section: HomeViewSectionFairs_section$key
 }
 
-export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = ({ section }) => {
+export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = (props) => {
   const tracking = useHomeViewTracking()
 
-  const data = useFragment(fragment, section)
-  const component = data.component
-  const componentHref = component?.behaviors?.viewAll?.href
+  const section = useFragment(fragment, props.section)
+  const viewAll = section.component?.behaviors?.viewAll
 
-  if (!component) return null
-
-  const fairs = extractNodes(data.fairsConnection)
+  const fairs = extractNodes(section.fairsConnection)
   if (!fairs || fairs.length === 0) return null
+
+  const onSectionViewAll = () => {
+    tracking.tappedFairGroupViewAll(section.contextModule as ContextModule, "" as ScreenOwnerType)
+
+    if (viewAll?.href) {
+      navigate(viewAll.href)
+    } else {
+      navigate(`/section/${section.internalID}`, {
+        passProps: {
+          sectionType: section.__typename,
+        },
+      })
+    }
+  }
 
   return (
     <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
       <Flex pl={2} pr={2}>
         <SectionTitle
-          title={component.title}
-          subtitle={component.description}
-          onPress={
-            componentHref
-              ? () => {
-                  navigate(componentHref)
-                }
-              : undefined
-          }
+          title={section.component?.title}
+          subtitle={section.component?.description}
+          onPress={viewAll ? onSectionViewAll : undefined}
         />
       </Flex>
 
@@ -65,7 +70,7 @@ export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = ({ sect
                 tracking.tappedFairGroup(
                   fair.internalID,
                   fair.slug,
-                  data.contextModule as ContextModule,
+                  section.contextModule as ContextModule,
                   index
                 )
               }}
@@ -79,6 +84,7 @@ export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = ({ sect
 
 const fragment = graphql`
   fragment HomeViewSectionFairs_section on HomeViewSectionFairs {
+    __typename
     internalID
     contextModule
     component {
