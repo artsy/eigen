@@ -1,5 +1,6 @@
 import { Button, Flex, Text, Touchable, useScreenDimensions } from "@artsy/palette-mobile"
 import { HomeViewSectionGalleries_section$key } from "__generated__/HomeViewSectionGalleries_section.graphql"
+import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { isTablet } from "react-native-device-info"
@@ -36,7 +37,7 @@ export const HomeViewSectionGalleries: React.FC<HomeViewSectionGalleriesProps> =
   }
 
   return (
-    <Flex>
+    <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
       <Touchable onPress={handleOnPress} haptic="impactLight">
         {!!hasImage && (
           <Flex position="absolute">

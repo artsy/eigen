@@ -14,6 +14,7 @@ import { eigenSentryReleaseName } from "app/system/errorReporting/setupSentry"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { RelayCache } from "app/system/relay/RelayCache"
 import { useUnleashEnvironment } from "app/utils/experiments/hooks"
+import { requestSystemPermissions } from "app/utils/requestPushNotificationsPermission"
 import { capitalize, sortBy } from "lodash"
 import { useState } from "react"
 import { Alert, Button, Platform } from "react-native"
@@ -152,6 +153,13 @@ export const DevTools: React.FC<{}> = () => {
             onPress={() => {
               Clipboard.setString(DeviceInfo.getUniqueIdSync())
               toast.show("Copied to clipboard", "middle")
+            }}
+          />
+          <DevMenuButtonItem
+            title="Request push registration"
+            onPress={async () => {
+              const status = await requestSystemPermissions()
+              toast.show(`Push registration status: ${status}`, "middle")
             }}
           />
           <DevMenuButtonItem

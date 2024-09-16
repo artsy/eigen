@@ -4364,7 +4364,10 @@ type CollectorSignals {
   partnerOffer: PartnerOfferToCollector
 
   # Primary label signal available to collector
-  primaryLabel: LabelSignalEnum
+  primaryLabel(
+    # Signals to ignore
+    ignore: [LabelSignalEnum]
+  ): LabelSignalEnum
 
   # Pending auction registration end time
   registrationEndsAt: String @deprecated(reason: "Use nested field in `auction` instead")
@@ -10751,13 +10754,13 @@ type HomeView {
   section(
     # The ID of the section
     id: String!
-  ): HomeViewSection
+  ): HomeViewSectionGeneric
   sectionsConnection(
     after: String
     before: String
     first: Int
     last: Int
-  ): HomeViewSectionConnection!
+  ): HomeViewSectionGenericConnection!
 }
 
 # A component specification
@@ -10799,24 +10802,13 @@ type HomeViewComponentBehaviorsViewAll {
   href: String
 }
 
-union HomeViewSection =
-    HomeViewSectionActivity
-  | HomeViewSectionArticles
-  | HomeViewSectionArtists
-  | HomeViewSectionArtworks
-  | HomeViewSectionAuctionResults
-  | HomeViewSectionFairs
-  | HomeViewSectionGalleries
-  | HomeViewSectionHeroUnits
-  | HomeViewSectionMarketingCollections
-  | HomeViewSectionSales
-  | HomeViewSectionShows
-  | HomeViewSectionViewingRooms
-
 # A user activity section in the home view
 type HomeViewSectionActivity implements HomeViewSectionGeneric & Node {
   # The component that is prescribed for this section
   component: HomeViewComponent
+
+  # An analytics context label for this section
+  contextModule: String!
 
   # A globally unique ID.
   id: ID!
@@ -10838,6 +10830,9 @@ type HomeViewSectionArticles implements HomeViewSectionGeneric & Node {
   # The component that is prescribed for this section
   component: HomeViewComponent
 
+  # An analytics context label for this section
+  contextModule: String!
+
   # A globally unique ID.
   id: ID!
 
@@ -10852,6 +10847,9 @@ type HomeViewSectionArtists implements HomeViewSectionGeneric & Node {
   # The component that is prescribed for this section
   component: HomeViewComponent
 
+  # An analytics context label for this section
+  contextModule: String!
+
   # A globally unique ID.
   id: ID!
 
@@ -10865,6 +10863,9 @@ type HomeViewSectionArtworks implements HomeViewSectionGeneric & Node {
 
   # The component that is prescribed for this section
   component: HomeViewComponent
+
+  # An analytics context label for this section
+  contextModule: String!
 
   # A globally unique ID.
   id: ID!
@@ -10885,6 +10886,9 @@ type HomeViewSectionAuctionResults implements HomeViewSectionGeneric & Node {
   # The component that is prescribed for this section
   component: HomeViewComponent
 
+  # An analytics context label for this section
+  contextModule: String!
+
   # A globally unique ID.
   id: ID!
 
@@ -10892,30 +10896,13 @@ type HomeViewSectionAuctionResults implements HomeViewSectionGeneric & Node {
   internalID: ID!
 }
 
-# A connection to a list of items.
-type HomeViewSectionConnection {
-  # A list of edges.
-  edges: [HomeViewSectionEdge]
-  pageCursors: PageCursors!
-
-  # Information to aid in pagination.
-  pageInfo: PageInfo!
-  totalCount: Int
-}
-
-# An edge in a connection.
-type HomeViewSectionEdge {
-  # A cursor for use in pagination
-  cursor: String!
-
-  # The item at the end of the edge
-  node: HomeViewSection
-}
-
 # A fairs section in the home view
 type HomeViewSectionFairs implements HomeViewSectionGeneric & Node {
   # The component that is prescribed for this section
   component: HomeViewComponent
+
+  # An analytics context label for this section
+  contextModule: String!
   fairsConnection(after: String, before: String, first: Int, last: Int): FairConnection
 
   # A globally unique ID.
@@ -10930,6 +10917,9 @@ type HomeViewSectionGalleries implements HomeViewSectionGeneric & Node {
   # The component that is prescribed for this section
   component: HomeViewComponent
 
+  # An analytics context label for this section
+  contextModule: String!
+
   # A globally unique ID.
   id: ID!
 
@@ -10942,6 +10932,9 @@ interface HomeViewSectionGeneric {
   # The component that is prescribed for this section
   component: HomeViewComponent
 
+  # An analytics context label for this section
+  contextModule: String!
+
   # A globally unique ID.
   id: ID!
 
@@ -10949,10 +10942,33 @@ interface HomeViewSectionGeneric {
   internalID: ID!
 }
 
+# A connection to a list of items.
+type HomeViewSectionGenericConnection {
+  # A list of edges.
+  edges: [HomeViewSectionGenericEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type HomeViewSectionGenericEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: HomeViewSectionGeneric
+}
+
 # A hero units section in the home view
 type HomeViewSectionHeroUnits implements HomeViewSectionGeneric & Node {
   # The component that is prescribed for this section
   component: HomeViewComponent
+
+  # An analytics context label for this section
+  contextModule: String!
   heroUnitsConnection(after: String, before: String, first: Int, last: Int): HeroUnitConnection
 
   # A globally unique ID.
@@ -10966,6 +10982,9 @@ type HomeViewSectionHeroUnits implements HomeViewSectionGeneric & Node {
 type HomeViewSectionMarketingCollections implements HomeViewSectionGeneric & Node {
   # The component that is prescribed for this section
   component: HomeViewComponent
+
+  # An analytics context label for this section
+  contextModule: String!
 
   # A globally unique ID.
   id: ID!
@@ -10985,6 +11004,9 @@ type HomeViewSectionSales implements HomeViewSectionGeneric & Node {
   # The component that is prescribed for this section
   component: HomeViewComponent
 
+  # An analytics context label for this section
+  contextModule: String!
+
   # A globally unique ID.
   id: ID!
 
@@ -10998,6 +11020,9 @@ type HomeViewSectionShows implements HomeViewSectionGeneric & Node {
   # The component that is prescribed for this section
   component: HomeViewComponent
 
+  # An analytics context label for this section
+  contextModule: String!
+
   # A globally unique ID.
   id: ID!
 
@@ -11009,6 +11034,9 @@ type HomeViewSectionShows implements HomeViewSectionGeneric & Node {
 type HomeViewSectionViewingRooms implements HomeViewSectionGeneric & Node {
   # The component that is prescribed for this section
   component: HomeViewComponent
+
+  # An analytics context label for this section
+  contextModule: String!
 
   # A globally unique ID.
   id: ID!

@@ -1,14 +1,10 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import {
-  Flex,
-  Screen,
-  Spacer,
-  SpacingUnitDSValueNumber,
-  Spinner,
-  Text,
-} from "@artsy/palette-mobile"
+import { Flex, Screen, Spinner, Text } from "@artsy/palette-mobile"
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
 import { HomeViewSectionsConnection_viewer$key } from "__generated__/HomeViewSectionsConnection_viewer.graphql"
+import { HomeView_me$key } from "__generated__/HomeView_me.graphql"
+import { useDismissSavedArtwork } from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
+import { useEnableProgressiveOnboarding } from "app/Components/ProgressiveOnboarding/useEnableProgressiveOnboarding"
 import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
 import { Section } from "app/Scenes/HomeView/Sections/Section"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -17,23 +13,36 @@ import { extractNodes } from "app/utils/extractNodes"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
 import { Suspense, useState } from "react"
 import { RefreshControl } from "react-native"
-import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
+import {
+  fetchQuery,
+  graphql,
+  useFragment,
+  useLazyLoadQuery,
+  usePaginationFragment,
+} from "react-relay"
 
-const SECTION_SEPARATOR_HEIGHT: SpacingUnitDSValueNumber = 6
 const NUMBER_OF_SECTIONS_TO_LOAD = 10
+// Hard coding the value here because 30px is not a valid value for the spacing unit
+// and we need it to be consistent with 60px spacing between sections
+export const HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT = "30px"
 
 export const HomeView: React.FC = () => {
+  const flatlistRef = useBottomTabsScrollToTop("home")
+  const [isRefreshing, setIsRefreshing] = useState(false)
+
   const queryData = useLazyLoadQuery<HomeViewQuery>(homeViewScreenQuery, {
     count: NUMBER_OF_SECTIONS_TO_LOAD,
   })
-  const [isRefreshing, setIsRefreshing] = useState(false)
 
   const { data, loadNext, hasNext } = usePaginationFragment<
     HomeViewQuery,
     HomeViewSectionsConnection_viewer$key
   >(sectionsFragment, queryData.viewer)
 
-  const flatlistRef = useBottomTabsScrollToTop("home")
+  const meData = useFragment<HomeView_me$key>(meFragment, queryData.me)
+  const savedArtworksCount = meData?.counts?.savedArtworks ?? 0
+  useDismissSavedArtwork(savedArtworksCount > 0)
+  useEnableProgressiveOnboarding()
 
   useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
 
@@ -67,7 +76,6 @@ export const HomeView: React.FC = () => {
           renderItem={({ item }) => {
             return <Section section={item} />
           }}
-          ItemSeparatorComponent={SectionSeparator}
           onEndReached={() => loadNext(10)}
           ListHeaderComponent={<HomeHeader />}
           ListFooterComponent={
@@ -84,19 +92,27 @@ export const HomeView: React.FC = () => {
   )
 }
 
-const SectionSeparator = () => <Spacer y={SECTION_SEPARATOR_HEIGHT} />
+export const HomeViewScreen: React.FC = () => {
+  return (
+    <Suspense
+      fallback={
+        <Flex flex={1} justifyContent="center" alignItems="center" testID="new-home-view-skeleton">
+          <Text>Loading home view…</Text>
+        </Flex>
+      }
+    >
+      <HomeView />
+    </Suspense>
+  )
+}
 
-export const HomeViewScreen: React.FC = () => (
-  <Suspense
-    fallback={
-      <Flex flex={1} justifyContent="center" alignItems="center" testID="new-home-view-skeleton">
-        <Text>Loading home view…</Text>
-      </Flex>
+const meFragment = graphql`
+  fragment HomeView_me on Me {
+    counts {
+      savedArtworks
     }
-  >
-    <HomeView />
-  </Suspense>
-)
+  }
+`
 
 const sectionsFragment = graphql`
   fragment HomeViewSectionsConnection_viewer on Viewer
@@ -174,6 +190,10 @@ const sectionsFragment = graphql`
 
 export const homeViewScreenQuery = graphql`
   query HomeViewQuery($count: Int!, $cursor: String) {
+    me {
+      ...HomeView_me
+    }
+
     viewer {
       ...HomeViewSectionsConnection_viewer @arguments(count: $count, cursor: $cursor)
     }
