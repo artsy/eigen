@@ -1,3 +1,4 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, Spinner, Text } from "@artsy/palette-mobile"
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
 import { HomeViewSectionsConnection_viewer$key } from "__generated__/HomeViewSectionsConnection_viewer.graphql"
@@ -9,6 +10,7 @@ import { Section } from "app/Scenes/HomeView/Sections/Section"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { extractNodes } from "app/utils/extractNodes"
+import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
 import { Suspense, useState } from "react"
 import { RefreshControl } from "react-native"
 import {
@@ -41,6 +43,8 @@ export const HomeView: React.FC = () => {
   const savedArtworksCount = meData?.counts?.savedArtworks ?? 0
   useDismissSavedArtwork(savedArtworksCount > 0)
   useEnableProgressiveOnboarding()
+
+  useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
 
   const sections = extractNodes(data?.homeView.sectionsConnection)
 
