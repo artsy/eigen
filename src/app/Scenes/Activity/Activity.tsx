@@ -56,7 +56,9 @@ export const Activity: React.FC = () => {
         title="Activity"
         separatorComponent={<Separator borderColor="black5" />}
       >
-        <ActivityHeader />
+        <Suspense fallback={null}>
+          <ActivityHeader />
+        </Suspense>
       </Screen.StickySubHeader>
 
       <Suspense fallback={<ActivityContentPlaceholder />}>
