@@ -34,7 +34,7 @@ export const ArtworkCollectorSignalsRow: React.FC<Props> = ({ artwork }) => {
   }
 
   let singalTitle: string | null = null
-  let signalDescription = ""
+  let signalDescription: string | null = null
   let SignalIcon = FairIcon
   let href: string | null = null
 
@@ -59,7 +59,7 @@ export const ArtworkCollectorSignalsRow: React.FC<Props> = ({ artwork }) => {
       const showEndAt = DateTime.fromISO(runningShow.endAt).toFormat("MMM d")
       singalTitle = `Showing now ${bullet} ${showStartsAt}-${showEndAt}`
       SignalIcon = FairIcon
-      href = runningShow.href
+      href = runningShow?.href
       signalDescription = runningShow?.name
     }
   }
