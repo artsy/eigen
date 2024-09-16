@@ -17,9 +17,12 @@ describe("ActivityScreen", () => {
     const { mockResolveLastOperation } = renderWithRelay({
       NotificationConnection: () => notifications,
     })
-    mockResolveLastOperation({})
 
-    await waitForElementToBeRemoved(() => screen.queryByText("loading"))
+    mockResolveLastOperation({
+      NotificationConnection: () => ({ totalCount: 1 }),
+    })
+
+    await waitForElementToBeRemoved(() => screen.queryByText("loading"), { timeout: 4000 })
     expect(screen.getByText("Notification One")).toBeOnTheScreen()
     expect(screen.getByText("Notification Two")).toBeOnTheScreen()
   })

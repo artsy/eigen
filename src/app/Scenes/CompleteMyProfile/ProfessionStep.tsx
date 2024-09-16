@@ -39,6 +39,7 @@ export const ProfessionStep: FC = () => {
 
             <Input
               aria-label="Profession"
+              aria-valuetext={profession}
               placeholder="Profession"
               title="Profession"
               value={profession as string}

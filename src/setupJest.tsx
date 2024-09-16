@@ -4,7 +4,7 @@ import mockAsyncStorage from "@react-native-async-storage/async-storage/jest/asy
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js"
 // @ts-expect-error
 import mockStripe from "@stripe/stripe-react-native/jest/mock.js"
-import "@testing-library/jest-native/extend-expect"
+import "@testing-library/react-native/extend-expect"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { ScreenDimensionsWithSafeAreas } from "app/utils/hooks"

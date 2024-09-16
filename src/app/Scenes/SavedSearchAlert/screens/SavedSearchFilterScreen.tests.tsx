@@ -27,7 +27,7 @@ describe("ClearAllButton", () => {
       </SavedSearchStoreProvider>
     )
 
-    expect(screen.getByText("Clear All")).toHaveAccessibilityState({ disabled: false })
+    expect(screen.getByText("Clear All")).toBeDisabled()
 
     fireEvent(screen.getByText("Clear All"), "onPress")
 
