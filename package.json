@@ -159,7 +159,6 @@
     "react-native-code-push": "8.1.0",
     "react-native-config": "https://github.com/artsy/react-native-config.git#v1.4.12-artsy",
     "react-native-context-menu-view": "git+https://github.com/artsy/react-native-context-menu-view.git#v1.10.10-artsy",
-    "react-native-dev-menu-android": "1.0.10",
     "react-native-device-info": "10.3.0",
     "react-native-document-picker": "9.3.0",
     "react-native-fast-image": "8.6.3",
