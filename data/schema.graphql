@@ -1,3 +1,5 @@
+directive @cacheable on QUERY
+
 directive @optionalField on FIELD
 
 directive @principalField on FIELD
