@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex, Screen, Spinner, Text } from "@artsy/palette-mobile"
+import { Flex, Screen, Spinner } from "@artsy/palette-mobile"
 import { FlashList } from "@shopify/flash-list"
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
 import { HomeViewSectionsConnection_viewer$key } from "__generated__/HomeViewSectionsConnection_viewer.graphql"
@@ -11,8 +11,9 @@ import { Section } from "app/Scenes/HomeView/Sections/Section"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { extractNodes } from "app/utils/extractNodes"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
-import { Suspense, useState } from "react"
+import { useState } from "react"
 import { RefreshControl } from "react-native"
 import {
   fetchQuery,
@@ -82,7 +83,7 @@ export const HomeView: React.FC = () => {
             return <Section section={item} />
           }}
           onEndReached={() => loadNext(NUMBER_OF_SECTIONS_TO_LOAD)}
-          ListHeaderComponent={<HomeHeader />}
+          ListHeaderComponent={HomeHeader}
           estimatedItemSize={500}
           ListFooterComponent={
             hasNext ? (
@@ -99,19 +100,20 @@ export const HomeView: React.FC = () => {
   )
 }
 
-export const HomeViewScreen: React.FC = () => {
+const HomeViewScreenPlaceholder: React.FC = () => {
   return (
-    <Suspense
-      fallback={
-        <Flex flex={1} justifyContent="center" alignItems="center" testID="new-home-view-skeleton">
-          <Text>Loading home view…</Text>
-        </Flex>
-      }
-    >
-      <HomeView />
-    </Suspense>
+    <Screen safeArea={false}>
+      <Screen.Body fullwidth>
+        <HomeHeader />
+      </Screen.Body>
+    </Screen>
   )
 }
+
+export const HomeViewScreen: React.FC = withSuspense(() => {
+  // return <HomeViewScreenPlaceholder />
+  return <HomeView />
+}, HomeViewScreenPlaceholder)
 
 const meFragment = graphql`
   fragment HomeView_me on Me {
