@@ -780,7 +780,7 @@ PODS:
   - RecaptchaInterop (100.0.0)
   - RNAppleAuthentication (2.1.5):
     - React-Core
-  - RNBootSplash (3.2.0):
+  - RNBootSplash (6.1.3):
     - React-Core
   - RNCAsyncStorage (1.19.3):
     - React-Core
@@ -1527,7 +1527,7 @@ SPEC CHECKSUMS:
   ReactCommon: 841449721eb2e004de2c3366844b0a03f329f2cb
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
   RNAppleAuthentication: 63c2127ace11985b94f852fc480eb84145653712
-  RNBootSplash: 24175aa28fe203b10c48dc34e78d946fd33c77af
+  RNBootSplash: 0177d81b7c094bbb9d7af80e77f8694922dae46d
   RNCAsyncStorage: c913ede1fa163a71cea118ed4670bbaaa4b511bb
   RNCClipboard: 245417a78ab585e0d4d83926c28907e7b2bc24bd
   RNDeviceInfo: 4701f0bf2a06b34654745053db0ce4cb0c53ada7

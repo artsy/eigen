@@ -55,16 +55,19 @@ public class MainActivity extends ReactActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
+
+    RNBootSplash.init(this, R.style.BootTheme);
+
     // Following line is required to prevent a crash
     // See HACKS.md for more context
     // https://github.com/software-mansion/react-native-screens/issues/17
+
     super.onCreate(null);
 
     if (!isTablet()) {
       // prevent screen rotation on phones
       setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
-    RNBootSplash.init(R.drawable.bootsplash, MainActivity.this);
 
     RNPushNotification.IntentHandlers.add(new RNPushNotification.RNIntentHandler() {
       @Override
