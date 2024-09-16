@@ -105,7 +105,7 @@ export const HomeView: React.FC = () => {
             ) : null
           }
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-          onEndReachedThreshold={0.5}
+          onEndReachedThreshold={1}
         />
       </Screen.Body>
     </Screen>
