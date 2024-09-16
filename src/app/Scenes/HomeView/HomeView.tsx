@@ -13,6 +13,7 @@ import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { extractNodes } from "app/utils/extractNodes"
 import { usePrefetch } from "app/utils/queryPrefetching"
+import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
 import { Suspense, useEffect, useState } from "react"
 import { RefreshControl } from "react-native"
@@ -57,6 +58,10 @@ export const HomeView: React.FC = () => {
     prefetchUrl("my-profile")
     prefetchUrl("inbox")
     prefetchUrl("sell")
+  }, [])
+
+  useEffect(() => {
+    requestPushNotificationsPermission()
   }, [])
 
   const handleRefresh = () => {
