@@ -7,12 +7,15 @@ import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
 import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
 import {
+  HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_ARTWORKS,
+  HORIZONTAL_FLATLIST_WINDOW_SIZE,
+} from "app/Scenes/HomeView/helpers/constants"
+import {
   ArtworkActionTrackingProps,
   extractArtworkActionTrackingProps,
 } from "app/utils/track/ArtworkActions"
 import React, { ReactElement } from "react"
 import { FlatList, ViewabilityConfig } from "react-native"
-import { isTablet } from "react-native-device-info"
 
 const MAX_NUMBER_OF_ARTWORKS = 30
 
@@ -92,7 +95,8 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
       }
       showsHorizontalScrollIndicator={false}
       data={artworksSlice}
-      initialNumToRender={isTablet() ? 10 : 5}
+      initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_ARTWORKS}
+      windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
       contentContainerStyle={{ alignItems: "flex-end" }}
       renderItem={({ item, index }) => {
         return (

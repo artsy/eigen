@@ -48,7 +48,7 @@ describe("HomeViewSectionGalleries", () => {
       [
         {
           "action": "tappedShowMore",
-          "context_module": "galleriesNearYou",
+          "context_module": "<mock-value-for-field-"contextModule">",
           "context_screen_owner_type": "home",
           "subject": "Explore",
         },

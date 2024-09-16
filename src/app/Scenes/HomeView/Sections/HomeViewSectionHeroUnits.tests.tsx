@@ -95,7 +95,7 @@ describe("HomeViewSectionHeroUnits", () => {
      [
        {
          "action": "tappedHeroUnitGroup",
-         "context_module": "heroUnits",
+         "context_module": "<mock-value-for-field-"contextModule">",
          "context_screen_owner_type": "home",
          "destination_path": "/collection/collection-1",
          "horizontal_slide_position": 1,

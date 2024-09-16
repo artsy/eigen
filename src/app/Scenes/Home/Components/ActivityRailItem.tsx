@@ -22,7 +22,7 @@ interface ActivityRailItemProps {
 }
 
 export const ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE = 60
-const ACTIVITY_RAIL_ITEM_WIDTH = 240
+export const ACTIVITY_RAIL_ITEM_WIDTH = 240
 
 export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
   const enableBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
