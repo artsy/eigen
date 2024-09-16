@@ -1,6 +1,6 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import * as Sentry from "@sentry/react-native"
-import { NUMBER_OF_SECTIONS_TO_LOAD } from "app/Scenes/HomeView/HomeView"
+import { homeViewScreenQueryVariables } from "app/Scenes/HomeView/HomeView"
 import { GlobalStore, unsafe__getEnvironment, unsafe_getDevToggle } from "app/store/GlobalStore"
 import { codePushOptions } from "app/system/codepush"
 import { AsyncStorageDevtools } from "app/system/devTools/AsyncStorageDevTools"
@@ -142,9 +142,7 @@ const Main = () => {
   useEffect(() => {
     if (isLoggedIn) {
       if (shouldDisplayNewHomeView) {
-        prefetchUrl("/", {
-          count: NUMBER_OF_SECTIONS_TO_LOAD,
-        })
+        prefetchUrl("/", homeViewScreenQueryVariables())
       }
 
       savePendingToken()
