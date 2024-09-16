@@ -42,6 +42,8 @@ class MainActivity : ReactActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        RNBootSplash.init(this, R.style.BootTheme)
+
         // Following line is required to prevent a crash
         // See HACKS.md for more context
         // https://github.com/software-mansion/react-native-screens/issues/17
@@ -51,7 +53,7 @@ class MainActivity : ReactActivity() {
             // prevent screen rotation on phones
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
-        RNBootSplash.init(R.drawable.bootsplash, this)
+
 
         RNPushNotification.IntentHandlers.add(object : RNPushNotification.RNIntentHandler {
             override fun onNewIntent(intent: Intent) {
