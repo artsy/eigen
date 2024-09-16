@@ -59,8 +59,8 @@ export const ArtworkCollectorSignalsRow: React.FC<Props> = ({ artwork }) => {
       const showEndAt = DateTime.fromISO(runningShow.endAt).toFormat("MMM d")
       singalTitle = `Showing now ${bullet} ${showStartsAt}-${showEndAt}`
       SignalIcon = FairIcon
-      href = runningShow.href || "#"
-      signalDescription = runningShow.name
+      href = runningShow.href
+      signalDescription = runningShow?.name
     }
   }
 
@@ -78,7 +78,7 @@ export const ArtworkCollectorSignalsRow: React.FC<Props> = ({ artwork }) => {
         </Text>
 
         {href ? (
-          <LinkText variant="sm" color="black60" onPress={() => navigate(href)}>
+          <LinkText variant="sm" color="black60" onPress={() => navigate(href || "#")}>
             {signalDescription}
           </LinkText>
         ) : (
