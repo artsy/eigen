@@ -10775,7 +10775,7 @@ type HomeViewComponent {
   description: String
 
   # A screen to navigate to when this component is clicked
-  href: String
+  href: String @deprecated(reason: "Use `behaviors.viewAll.href` instead")
 
   # A display title for this section
   title: String
@@ -10800,6 +10800,9 @@ type HomeViewComponentBehaviorsViewAll {
 
   # href of the view all button
   href: String
+
+  # [Analytics] `owner type` analytics value, as defined in our schema (artsy/cohesion), for the requested destination
+  ownerType: String
 }
 
 # A user activity section in the home view
