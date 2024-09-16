@@ -74,6 +74,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
           />
         </Flex>
         <LargeArtworkRail
+          contextModule={data.contextModule as ContextModule}
           artworks={artworks}
           onPress={handleOnArtworkPress}
           showSaveIcon
