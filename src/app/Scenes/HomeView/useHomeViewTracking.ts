@@ -27,7 +27,7 @@ export const useHomeViewTracking = () => {
 
   return {
     // TODO: Shouldn't this be tappedNotificationBell?
-    clickedNotificationBell: () => {
+    tappedNotificationBell: () => {
       const payload: ClickedNotificationsBell = {
         action: ActionType.clickedNotificationsBell,
       }
@@ -63,26 +63,20 @@ export const useHomeViewTracking = () => {
 
     tappedArticleGroup: (
       articleID: string,
-      articleSlug: string | undefined | null,
+      articleSlug: string | null | undefined,
       contextModule: ContextModule,
       index: number
     ) => {
-      let payload: TappedArticleGroup = {
+      const payload: TappedArticleGroup = {
         action: ActionType.tappedArticleGroup,
         context_module: contextModule,
         context_screen_owner_type: OwnerType.home,
         destination_screen_owner_id: articleID,
+        destination_screen_owner_slug: articleSlug ?? undefined,
         destination_screen_owner_type: OwnerType.article,
         horizontal_slide_position: index,
         module_height: "double",
         type: "thumbnail",
-      }
-
-      if (articleSlug) {
-        payload = {
-          ...payload,
-          destination_screen_owner_slug: articleSlug,
-        }
       }
 
       trackEvent(payload)
@@ -159,12 +153,17 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
-    tappedArtworkGroupViewAll: (contextModule: ContextModule, ownerType: ScreenOwnerType) => {
+    tappedArtworkGroupViewAll: (
+      contextModule: ContextModule,
+      ownerType: ScreenOwnerType,
+      sectionID?: string
+    ) => {
       const payload: TappedArtworkGroup = {
         action: ActionType.tappedArtworkGroup,
         context_module: contextModule,
         context_screen_owner_type: OwnerType.home,
         destination_screen_owner_type: ownerType,
+        destination_screen_owner_id: sectionID,
         type: "viewAll",
       }
 
@@ -230,12 +229,17 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
-    tappedAuctionResultGroupViewAll: (contextModule: ContextModule, ownerType: ScreenOwnerType) => {
+    tappedAuctionResultGroupViewAll: (
+      contextModule: ContextModule,
+      ownerType: ScreenOwnerType,
+      sectionID?: string
+    ) => {
       const payload: TappedAuctionResultGroup = {
         action: ActionType.tappedAuctionResultGroup,
         context_module: contextModule,
         context_screen_owner_type: OwnerType.home,
         destination_screen_owner_type: ownerType,
+        destination_screen_owner_id: sectionID,
         type: "viewAll",
       }
 
@@ -263,12 +267,17 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
-    tappedFairGroupViewAll: (contextModule: ContextModule, ownerType: ScreenOwnerType) => {
+    tappedFairGroupViewAll: (
+      contextModule: ContextModule,
+      ownerType: ScreenOwnerType,
+      sectionID?: string
+    ) => {
       const payload: TappedFairGroup = {
         action: ActionType.tappedFairGroup,
         context_module: contextModule,
         context_screen_owner_type: OwnerType.home,
         destination_screen_owner_type: ownerType,
+        destination_screen_owner_id: sectionID,
         type: "viewAll",
       }
 

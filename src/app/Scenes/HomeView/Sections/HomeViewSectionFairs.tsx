@@ -34,12 +34,21 @@ export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = (props)
   if (!fairs || fairs.length === 0) return null
 
   const onSectionViewAll = () => {
-    tracking.tappedFairGroupViewAll(section.contextModule as ContextModule, "" as ScreenOwnerType)
-
     if (viewAll?.href) {
+      tracking.tappedFairGroupViewAll(
+        section.contextModule as ContextModule,
+        viewAll?.ownerType as ScreenOwnerType
+      )
+
       navigate(viewAll.href)
     } else {
-      navigate(`/section/${section.internalID}`, {
+      tracking.tappedFairGroupViewAll(
+        section.contextModule as ContextModule,
+        "homeViewSection" as ScreenOwnerType,
+        section.internalID
+      )
+
+      navigate(`/home-view/sections/${section.internalID}`, {
         passProps: {
           sectionType: section.__typename,
         },
@@ -93,6 +102,7 @@ const fragment = graphql`
       behaviors {
         viewAll {
           href
+          ownerType
         }
       }
     }

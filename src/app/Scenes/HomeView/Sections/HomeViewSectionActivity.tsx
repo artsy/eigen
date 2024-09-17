@@ -1,4 +1,4 @@
-import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
 import { Flex, Join, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import { HomeViewSectionActivityQuery } from "__generated__/HomeViewSectionActivityQuery.graphql"
 import { HomeViewSectionActivity_section$key } from "__generated__/HomeViewSectionActivity_section.graphql"
@@ -42,13 +42,20 @@ export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = (
   }
 
   const onSectionViewAll = () => {
-    tracking.tappedActivityGroupViewAll(
-      section.contextModule as ContextModule,
-      OwnerType.activities
-    )
-
     if (viewAll?.href) {
+      tracking.tappedActivityGroupViewAll(
+        section.contextModule as ContextModule,
+        viewAll?.ownerType as ScreenOwnerType
+      )
+
       navigate(viewAll.href)
+    } else {
+      tracking.tappedActivityGroupViewAll(
+        section.contextModule as ContextModule,
+        OwnerType.activities
+      )
+
+      navigate("/notifications")
     }
   }
 
@@ -62,7 +69,11 @@ export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = (
         horizontal
         showsHorizontalScrollIndicator={false}
         ListHeaderComponent={() => <Spacer x={2} />}
-        ListFooterComponent={viewAll ? () => <SeeAllCard onPress={onSectionViewAll} /> : undefined}
+        ListFooterComponent={
+          viewAll
+            ? () => <SeeAllCard buttonText={viewAll.buttonText} onPress={onSectionViewAll} />
+            : undefined
+        }
         ItemSeparatorComponent={() => <Spacer x={2} />}
         data={notifications}
         initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
@@ -95,7 +106,9 @@ const sectionFragment = graphql`
       title
       behaviors {
         viewAll {
+          buttonText
           href
+          ownerType
         }
       }
     }

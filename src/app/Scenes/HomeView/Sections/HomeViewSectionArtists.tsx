@@ -73,7 +73,7 @@ export const HomeViewSectionArtists: React.FC<HomeViewSectionArtworksProps> = ({
   const onSectionViewAll = () => {
     tracking.tappedArticleGroupViewAll(
       section.contextModule as ContextModule,
-      "" as ScreenOwnerType
+      viewAll?.ownerType as ScreenOwnerType
     )
 
     if (viewAll?.href) {
@@ -146,6 +146,7 @@ export const HomeViewSectionArtistsPaginationContainer = createPaginationContain
           behaviors {
             viewAll {
               href
+              ownerType
             }
           }
         }

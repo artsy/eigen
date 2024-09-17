@@ -10,7 +10,10 @@ import {
   useSpace,
 } from "@artsy/palette-mobile"
 import { HomeViewSectionArticlesCardsQuery } from "__generated__/HomeViewSectionArticlesCardsQuery.graphql"
-import { HomeViewSectionArticlesCards_section$data, HomeViewSectionArticlesCards_section$key } from "__generated__/HomeViewSectionArticlesCards_section.graphql"
+import {
+  HomeViewSectionArticlesCards_section$data,
+  HomeViewSectionArticlesCards_section$key,
+} from "__generated__/HomeViewSectionArticlesCards_section.graphql"
 import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
@@ -45,14 +48,14 @@ export const HomeViewSectionArticlesCards: React.FC<HomeViewSectionArticlesCards
     }
   }
 
-  const onSectionTitlePress = (href: string | null | undefined) => {
-    tracking.tappedArticleGroupViewAll(
-      section.contextModule as ContextModule,
-      "marketNews" as ScreenOwnerType
-    )
+  const onSectionTitlePress = () => {
+    if (viewAll?.href) {
+      tracking.tappedArticleGroupViewAll(
+        section.contextModule as ContextModule,
+        viewAll?.ownerType as ScreenOwnerType
+      )
 
-    if (href) {
-      navigate(href)
+      navigate(viewAll.href)
     }
   }
 
@@ -82,7 +85,7 @@ export const HomeViewSectionArticlesCards: React.FC<HomeViewSectionArticlesCards
         </Flex>
       ))}
       {!!viewAll && (
-        <Touchable onPress={() => onSectionTitlePress(viewAll.href)}>
+        <Touchable onPress={onSectionTitlePress}>
           <Flex flexDirection="row" justifyContent="flex-end">
             <Text variant="sm-display">{viewAll.buttonText}</Text>
           </Flex>
@@ -105,8 +108,9 @@ const fragment = graphql`
       title
       behaviors {
         viewAll {
-          href
           buttonText
+          href
+          ownerType
         }
       }
     }

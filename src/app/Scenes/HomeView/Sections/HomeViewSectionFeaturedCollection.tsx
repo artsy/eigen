@@ -1,4 +1,4 @@
-import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import {
   Flex,
   Image,
@@ -30,9 +30,9 @@ interface HomeViewSectionFeaturedCollectionProps {
 
 const HEADER_IMAGE_HEIGHT = 80
 
-export const HomeViewSectionFeaturedCollection: React.FC<
-  HomeViewSectionFeaturedCollectionProps
-> = (props) => {
+export const HomeViewSectionFeaturedCollection: React.FC<HomeViewSectionFeaturedCollectionProps> = (
+  props
+) => {
   const { width } = useWindowDimensions()
   const tracking = useHomeViewTracking()
   const section = useFragment(fragment, props.section)
@@ -45,12 +45,20 @@ export const HomeViewSectionFeaturedCollection: React.FC<
   if (!artworks || artworks.length === 0) return null
 
   const onSectionViewAll = () => {
-    tracking.tappedArtworkGroupViewAll(section.contextModule as ContextModule, OwnerType.collection)
-
     if (viewAll?.href) {
+      tracking.tappedArtworkGroupViewAll(
+        section.contextModule as ContextModule,
+        viewAll?.ownerType as ScreenOwnerType
+      )
+
       navigate(viewAll.href)
     } else {
-      navigate(`/section/${section.internalID}`, {
+      tracking.tappedArtworkGroupViewAll(
+        section.contextModule as ContextModule,
+        "homeViewSection" as ScreenOwnerType
+      )
+
+      navigate(`/home-view/sections/${section.internalID}`, {
         passProps: {
           sectionType: section.__typename,
         },
@@ -109,6 +117,7 @@ const fragment = graphql`
       behaviors {
         viewAll {
           href
+          ownerType
         }
       }
     }

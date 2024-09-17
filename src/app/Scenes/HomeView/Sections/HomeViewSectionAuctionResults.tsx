@@ -1,4 +1,4 @@
-import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
 import { Flex, Join, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import { HomeViewSectionAuctionResultsQuery } from "__generated__/HomeViewSectionAuctionResultsQuery.graphql"
 import { HomeViewSectionAuctionResults_section$key } from "__generated__/HomeViewSectionAuctionResults_section.graphql"
@@ -44,19 +44,20 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
   const viewAll = section.component?.behaviors?.viewAll
 
   const onSectionViewAll = () => {
-    tracking.tappedAuctionResultGroupViewAll(
-      section.contextModule as ContextModule,
-      OwnerType.auctionResultsForArtistsYouFollow
-    )
-
     if (viewAll?.href) {
+      tracking.tappedAuctionResultGroupViewAll(
+        section.contextModule as ContextModule,
+        viewAll?.ownerType as ScreenOwnerType
+      )
+
       navigate(viewAll.href)
     } else {
-      navigate(`/section/${section.internalID}`, {
-        passProps: {
-          sectionType: section.__typename,
-        },
-      })
+      tracking.tappedAuctionResultGroupViewAll(
+        section.contextModule as ContextModule,
+        OwnerType.lotsByArtistsYouFollow
+      )
+
+      navigate("/auction-results-for-artists-you-follow")
     }
   }
 
@@ -94,7 +95,7 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
         keyExtractor={(item) => item.internalID}
         ListFooterComponent={
           viewAll ? (
-            <BrowseMoreRailCard onPress={onSectionViewAll} text="Browse All Results" />
+            <BrowseMoreRailCard onPress={onSectionViewAll} text={viewAll.buttonText} />
           ) : undefined
         }
       />
@@ -111,7 +112,9 @@ const sectionFragment = graphql`
       title
       behaviors {
         viewAll {
+          buttonText
           href
+          ownerType
         }
       }
     }

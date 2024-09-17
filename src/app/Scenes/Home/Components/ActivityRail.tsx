@@ -104,9 +104,10 @@ const notificationsConnectionFragment = graphql`
 
 interface SeeAllCardProps {
   onPress: () => void
+  buttonText?: string | null
 }
 
-export const SeeAllCard: React.FC<SeeAllCardProps> = ({ onPress }) => {
+export const SeeAllCard: React.FC<SeeAllCardProps> = ({ buttonText, onPress }) => {
   const { space } = useTheme()
 
   return (
@@ -116,7 +117,7 @@ export const SeeAllCard: React.FC<SeeAllCardProps> = ({ onPress }) => {
         hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
       >
         <Text accessibilityLabel="See All" fontWeight="bold">
-          See All
+          {buttonText ?? "See All"}
         </Text>
       </TouchableOpacity>
     </Flex>

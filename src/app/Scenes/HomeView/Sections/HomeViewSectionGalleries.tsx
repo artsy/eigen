@@ -46,11 +46,7 @@ export const HomeViewSectionGalleries: React.FC<HomeViewSectionGalleriesProps> =
     if (viewAll?.href) {
       navigate(viewAll.href)
     } else {
-      navigate(`/section/${section.internalID}`, {
-        passProps: {
-          sectionType: section.__typename,
-        },
-      })
+      navigate("/galleries-for-you")
     }
   }
 

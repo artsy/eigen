@@ -53,14 +53,20 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   }
 
   const onSectionViewAll = () => {
-    tracking.tappedArtworkGroupViewAll(
-      section.contextModule as ContextModule,
-      "" as ScreenOwnerType
-    )
-
     if (viewAll?.href) {
+      tracking.tappedArtworkGroupViewAll(
+        section.contextModule as ContextModule,
+        viewAll?.ownerType as ScreenOwnerType
+      )
+
       navigate(viewAll.href)
     } else {
+      tracking.tappedArtworkGroupViewAll(
+        section.contextModule as ContextModule,
+        "homeViewSection" as ScreenOwnerType,
+        section.internalID
+      )
+
       navigate(`/home-view/sections/${section.internalID}`, {
         passProps: {
           sectionType: section.__typename,
@@ -100,6 +106,7 @@ const fragment = graphql`
       behaviors {
         viewAll {
           href
+          ownerType
         }
       }
     }

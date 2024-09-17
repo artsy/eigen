@@ -39,15 +39,20 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = (props)
   const viewAll = section.component?.behaviors?.viewAll
 
   const onSectionViewAll = () => {
-    tracking.tappedAuctionResultGroupViewAll(
-      section.contextModule as ContextModule,
-      "" as ScreenOwnerType
-    )
-
     if (viewAll?.href) {
+      tracking.tappedAuctionResultGroupViewAll(
+        section.contextModule as ContextModule,
+        viewAll?.ownerType as ScreenOwnerType
+      )
+
       navigate(viewAll.href)
     } else {
-      navigate(`/section/${section.internalID}`, {
+      tracking.tappedAuctionResultGroupViewAll(
+        section.contextModule as ContextModule,
+        "homeViewSection" as ScreenOwnerType
+      )
+
+      navigate(`/home-view/sections/${section.internalID}`, {
         passProps: {
           sectionType: section.__typename,
         },
@@ -109,6 +114,7 @@ const fragment = graphql`
         viewAll {
           buttonText
           href
+          ownerType
         }
       }
     }

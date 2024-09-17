@@ -1,4 +1,4 @@
-import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import { Flex, Join, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import { HomeViewSectionArticlesQuery } from "__generated__/HomeViewSectionArticlesQuery.graphql"
 import { HomeViewSectionArticles_section$key } from "__generated__/HomeViewSectionArticles_section.graphql"
@@ -26,9 +26,12 @@ export const HomeViewSectionArticles: React.FC<HomeViewSectionArticlesProps> = (
   }
 
   const onSectionViewAll = () => {
-    tracking.tappedArticleGroupViewAll(section.contextModule as ContextModule, OwnerType.articles)
-
     if (viewAll?.href) {
+      tracking.tappedArticleGroupViewAll(
+        section.contextModule as ContextModule,
+        viewAll?.ownerType as ScreenOwnerType
+      )
+
       navigate(viewAll.href)
     }
   }
@@ -61,6 +64,7 @@ const sectionFragment = graphql`
       behaviors {
         viewAll {
           href
+          ownerType
         }
       }
     }

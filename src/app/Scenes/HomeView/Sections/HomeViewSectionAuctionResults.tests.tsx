@@ -122,8 +122,8 @@ describe("HomeViewSectionAuctionResults", () => {
       }),
     })
 
-    expect(screen.getByText("Browse All Results")).toBeOnTheScreen()
-    fireEvent.press(screen.getByText("Browse All Results"))
+    expect(screen.getByText("View All")).toBeOnTheScreen()
+    fireEvent.press(screen.getByText("View All"))
 
     expect(navigate).toHaveBeenCalledWith("/auction-results-for-artists-you-follow-view-all-href")
   })

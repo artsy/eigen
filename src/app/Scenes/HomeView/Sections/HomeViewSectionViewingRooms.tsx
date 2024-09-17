@@ -25,15 +25,20 @@ export const HomeViewSectionViewingRooms: React.FC<{
   const viewAll = section.component?.behaviors?.viewAll
 
   const onSectionViewAll = () => {
-    tracking.tappedViewingRoomGroupViewAll(
-      section.contextModule as ContextModule,
-      "viewingRooms" as ScreenOwnerType
-    )
-
     if (viewAll?.href) {
+      tracking.tappedViewingRoomGroupViewAll(
+        section.contextModule as ContextModule,
+        viewAll?.ownerType as ScreenOwnerType
+      )
+
       navigate(viewAll.href)
     } else {
-      navigate(`/section/${section.internalID}`, {
+      tracking.tappedViewingRoomGroupViewAll(
+        section.contextModule as ContextModule,
+        "homeViewSection" as ScreenOwnerType
+      )
+
+      navigate(`/home-view/sections/${section.internalID}`, {
         passProps: {
           sectionType: section.__typename,
         },
@@ -77,6 +82,7 @@ const viewingRoomsFragment = graphql`
       behaviors {
         viewAll {
           href
+          ownerType
         }
       }
     }
