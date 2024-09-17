@@ -12,7 +12,6 @@ import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import React, { useState, useCallback, useMemo } from "react"
 import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
-import { FragmentRefs } from "relay-runtime"
 
 interface Props {
   me: FavoriteArtists_me$data
@@ -51,19 +50,7 @@ const Artists: React.FC<Props> = ({ me, relay }) => {
   }, [relay])
 
   const renderItem = useCallback(
-    ({
-      item,
-    }: {
-      item: {
-        readonly artist:
-          | {
-              readonly id: string
-              readonly " $fragmentSpreads": FragmentRefs<"ArtistListItem_artist">
-            }
-          | null
-          | undefined
-      }
-    }) => {
+    ({ item }) => {
       if (item.artist)
         return (
           <ArtistListItem
@@ -78,12 +65,9 @@ const Artists: React.FC<Props> = ({ me, relay }) => {
     [me.followsAndSaves?.artists]
   )
 
-  const keyExtractor = useCallback(
-    (item: { artist?: { id: string } | null }, index: number): string => {
-      return `${item.artist?.id}-${index}`
-    },
-    []
-  )
+  const keyExtractor = useCallback((item, index) => {
+    return `${item.artist?.id}-${index}`
+  }, [])
 
   const artists = useMemo(
     () => extractNodes(me.followsAndSaves?.artists),
