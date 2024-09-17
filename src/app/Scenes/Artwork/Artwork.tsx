@@ -108,9 +108,6 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
   const allowExpiredPartnerOffers = useFeatureFlag("AREnableExpiredPartnerOffers")
   const enableAuctionHeaderAlertCTA = useFeatureFlag("AREnableAuctionHeaderAlertCTA")
   const enablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
-  // const enableCuratorsPicksAndInterestSignals = useFeatureFlag(
-  //   "AREnableCuratorsPicksAndInterestSignals"
-  // )
 
   const expectedPartnerOfferId = !!props.partner_offer_id && enablePartnerOfferOnArtworkScreen
 

@@ -62,15 +62,19 @@ describe("ArtworkCollectorSignalsRow", () => {
       expect(screen.getByText(/Saenger Galería at The Armory Show 2024/)).toBeOnTheScreen()
     })
 
-    it("doesn't render if running show is not present", () => {
+    it("doesn't render if running show is not present even if others present", () => {
       renderWithRelay({
         Artwork: () => ({
           collectorSignals: {
             runningShow: null,
+            curatorsPick: true,
+            increasedInterest: true,
           },
         }),
       })
 
+      expect(screen.queryByText(/Curators’ Pick/)).not.toBeOnTheScreen()
+      expect(screen.queryByText(/Increased Interest/)).not.toBeOnTheScreen()
       expect(screen.queryByText(/Showing now/)).not.toBeOnTheScreen()
     })
   })
