@@ -204,7 +204,7 @@ describe(ConfirmationScreen, () => {
               node: {
                 title: "Untitled #1",
                 slug: "untitled",
-                collectorSignals: { partnerOffer: { isAvailable: true }, auction: null },
+                collectorSignals: { primaryLabel: "PARTNER_OFFER", auction: null },
               },
             },
           ],
@@ -237,7 +237,8 @@ describe(ConfirmationScreen, () => {
                 title: "Untitled #1",
                 slug: "untitled",
                 collectorSignals: {
-                  auction: { bidCount: 7, lotWatcherCount: 49, liveBiddingStarted: true },
+                  primaryLabel: null,
+                  auction: { bidCount: 7, lotWatcherCount: 49 },
                 },
               },
             },
@@ -256,7 +257,7 @@ describe(ConfirmationScreen, () => {
         destination_screen_owner_slug: "untitled",
         destination_screen_owner_type: "artwork",
         type: "thumbnail",
-        signal_label: "Bidding live now",
+        signal_label: "",
         signal_bid_count: 7,
         signal_lot_watcher_count: 49,
       })

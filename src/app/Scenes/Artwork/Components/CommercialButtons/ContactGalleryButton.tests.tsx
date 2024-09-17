@@ -48,7 +48,7 @@ describe("ContactGalleryButton", () => {
       Artwork: () => ({
         internalID: "artwork-id",
         slug: "artwork-slug",
-        collectorSignals: { partnerOffer: { isAvailable: true }, auction: null },
+        collectorSignals: { primaryLabel: "PARTNER_OFFER", auction: null },
       }),
     })
 
@@ -73,7 +73,8 @@ describe("ContactGalleryButton", () => {
         internalID: "artwork-id",
         slug: "artwork-slug",
         collectorSignals: {
-          auction: { bidCount: 7, lotWatcherCount: 49, liveBiddingStarted: true },
+          primaryLabel: null,
+          auction: { bidCount: 7, lotWatcherCount: 49 },
         },
       }),
     })
@@ -86,7 +87,7 @@ describe("ContactGalleryButton", () => {
         context_owner_id: "artwork-id",
         context_owner_slug: "artwork-slug",
         context_owner_type: "artwork",
-        signal_label: "Bidding live now",
+        signal_label: "",
         signal_bid_count: 7,
         signal_lot_watcher_count: 49,
       })

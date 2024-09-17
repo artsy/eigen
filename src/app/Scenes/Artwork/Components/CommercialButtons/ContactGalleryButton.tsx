@@ -80,15 +80,10 @@ const artworkFragment = graphql`
     internalID
     slug
     collectorSignals {
-      partnerOffer {
-        isAvailable
-      }
+      primaryLabel
       auction {
         bidCount
-        liveBiddingStarted
-        lotClosesAt
         lotWatcherCount
-        registrationEndsAt
       }
     }
     ...InquiryModal_artwork

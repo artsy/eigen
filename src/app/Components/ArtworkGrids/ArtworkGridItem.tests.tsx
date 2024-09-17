@@ -102,6 +102,7 @@ describe("ArtworkGridItem", () => {
                 endAt: DateTime.fromMillis(Date.now()).plus({ hours: 12 }).toISO(),
                 priceWithDiscount: { display: "$2,750" },
               },
+              primaryLabel: "PARTNER_OFFER",
               auction: null,
             },
           }),
@@ -148,9 +149,8 @@ describe("ArtworkGridItem", () => {
               sale: { isAuction: true },
               collectorSignals: {
                 partnerOffer: null,
+                primaryLabel: null,
                 auction: {
-                  lotClosesAt: DateTime.fromMillis(Date.now()).plus({ days: 1 }).toISO(),
-                  registrationEndsAt: DateTime.fromMillis(Date.now()).minus({ days: 1 }).toISO(),
                   bidCount: 7,
                   lotWatcherCount: 49,
                 },
@@ -182,7 +182,7 @@ describe("ArtworkGridItem", () => {
           type: "thumbnail",
           signal_bid_count: 7,
           signal_lot_watcher_count: 49,
-          signal_label: "Time left to bid",
+          signal_label: "",
         })
       })
 
@@ -195,8 +195,9 @@ describe("ArtworkGridItem", () => {
               internalID: "abc1234",
               sale: { isAuction: true },
               collectorSignals: {
+                primaryLabel: null,
                 partnerOffer: null,
-                auction: { liveBiddingStarted: true, bidCount: 2, lotWatcherCount: 29 },
+                auction: { bidCount: 2, lotWatcherCount: 29 },
               },
             }),
           },
@@ -225,7 +226,7 @@ describe("ArtworkGridItem", () => {
           type: "thumbnail",
           signal_bid_count: 2,
           signal_lot_watcher_count: 29,
-          signal_label: "Bidding live now",
+          signal_label: "",
         })
       })
     })
