@@ -1,11 +1,11 @@
 import {
   AvatarSize,
-  ClassTheme,
   EntityHeader,
   Flex,
   FollowButton,
   Text,
   Touchable,
+  useColor,
 } from "@artsy/palette-mobile"
 import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItemFollowArtistMutation.graphql"
 import { ArtistListItem_artist$data } from "__generated__/ArtistListItem_artist.graphql"
@@ -77,6 +77,7 @@ const ArtistListItem: React.FC<Props> = ({
   withFeedback = false,
   theme = "light",
 }) => {
+  const color = useColor()
   const { is_followed, initials, image, href, name, nationality, birthday, deathday } = artist
 
   const tracking = useTracking()
@@ -136,46 +137,42 @@ const ArtistListItem: React.FC<Props> = ({
   }
 
   return (
-    <ClassTheme>
-      {({ color }) => (
-        <Touchable
-          noFeedback={!withFeedback}
-          onPress={() => {
-            if (onPress) {
-              onPress()
-              return
-            }
+    <Touchable
+      noFeedback={!withFeedback}
+      onPress={() => {
+        if (onPress) {
+          onPress()
+          return
+        }
 
-            if (href && !disableNavigation) {
-              handleTap(href)
-            }
-          }}
-          underlayColor={color("black5")}
-          style={containerStyle}
-        >
-          <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-            <Flex flex={1}>
-              <EntityHeader
-                mr={1}
-                name={name}
-                meta={meta}
-                imageUrl={image?.url ?? undefined}
-                initials={initials ?? undefined}
-                avatarSize={avatarSize}
-                RightButton={RightButton}
-                displayPrivateIcon={isPrivate}
-                theme={theme}
-              />
-            </Flex>
-            {!!showFollowButton && (
-              <Flex>
-                <FollowButton haptic isFollowed={!!is_followed} onPress={handleFollowArtist} />
-              </Flex>
-            )}
+        if (href && !disableNavigation) {
+          handleTap(href)
+        }
+      }}
+      underlayColor={color("black5")}
+      style={containerStyle}
+    >
+      <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+        <Flex flex={1}>
+          <EntityHeader
+            mr={1}
+            name={name}
+            meta={meta}
+            imageUrl={image?.url ?? undefined}
+            initials={initials ?? undefined}
+            avatarSize={avatarSize}
+            RightButton={RightButton}
+            displayPrivateIcon={isPrivate}
+            theme={theme}
+          />
+        </Flex>
+        {!!showFollowButton && (
+          <Flex>
+            <FollowButton haptic isFollowed={!!is_followed} onPress={handleFollowArtist} />
           </Flex>
-        </Touchable>
-      )}
-    </ClassTheme>
+        )}
+      </Flex>
+    </Touchable>
   )
 }
 
