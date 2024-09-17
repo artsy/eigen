@@ -1,4 +1,4 @@
-import { Spacer, ClassTheme, Tabs, Flex } from "@artsy/palette-mobile"
+import { Spacer, Tabs, Flex, useSpace } from "@artsy/palette-mobile"
 import { FavoriteArtistsQuery } from "__generated__/FavoriteArtistsQuery.graphql"
 import { FavoriteArtists_me$data } from "__generated__/FavoriteArtists_me.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
@@ -9,113 +9,126 @@ import { PAGE_SIZE } from "app/Components/constants"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import React from "react"
+import React, { useState, useCallback, useMemo } from "react"
 import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
+import { FragmentRefs } from "relay-runtime"
 
 interface Props {
   me: FavoriteArtists_me$data
   relay: RelayPaginationProp
 }
 
-interface State {
-  fetchingMoreData: boolean
-  refreshingFromPull: boolean
-}
+const Artists: React.FC<Props> = ({ me, relay }) => {
+  const space = useSpace()
+  const [fetchingMoreData, setFetchingMoreData] = useState(false)
+  const [refreshingFromPull, setRefreshingFromPull] = useState(false)
 
-class Artists extends React.Component<Props, State> {
-  state = {
-    fetchingMoreData: false,
-    refreshingFromPull: false,
-  }
-
-  loadMore = () => {
-    if (!this.props.relay.hasMore() || this.props.relay.isLoading()) {
+  const loadMore = useCallback(() => {
+    if (!relay.hasMore() || relay.isLoading()) {
       return
     }
 
-    this.setState({ fetchingMoreData: true })
-    this.props.relay.loadMore(PAGE_SIZE, (error) => {
+    setFetchingMoreData(true)
+    relay.loadMore(PAGE_SIZE, (error) => {
       if (error) {
         // FIXME: Handle error
         console.error("Artists/index.tsx", error.message)
       }
-      this.setState({ fetchingMoreData: false })
+      setFetchingMoreData(false)
     })
-  }
+  }, [relay])
 
-  handleRefresh = () => {
-    this.setState({ refreshingFromPull: true })
-    this.props.relay.refetchConnection(PAGE_SIZE, (error) => {
+  const handleRefresh = useCallback(() => {
+    setRefreshingFromPull(true)
+    relay.refetchConnection(PAGE_SIZE, (error) => {
       if (error) {
         // FIXME: Handle error
         console.error("Artists/index.tsx #handleRefresh", error.message)
       }
-      this.setState({ refreshingFromPull: false })
+      setRefreshingFromPull(false)
     })
-  }
+  }, [relay])
 
-  // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
-  render() {
-    const rows = extractNodes(this.props.me.followsAndSaves?.artists)
-
-    if (rows.length === 0) {
-      return (
-        <Tabs.ScrollView
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshingFromPull}
-              onRefresh={this.handleRefresh}
-            />
-          }
-        >
-          <ZeroState
-            title="You haven’t followed any artists yet"
-            subtitle="When you’ve found an artist you like, follow them to get updates on new works that become available."
+  const renderItem = useCallback(
+    ({
+      item,
+    }: {
+      item: {
+        readonly artist:
+          | {
+              readonly id: string
+              readonly " $fragmentSpreads": FragmentRefs<"ArtistListItem_artist">
+            }
+          | null
+          | undefined
+      }
+    }) => {
+      if (item.artist)
+        return (
+          <ArtistListItem
+            artist={item.artist}
+            withFeedback
+            containerStyle={{ paddingHorizontal: space(2), paddingVertical: space(0.5) }}
           />
-        </Tabs.ScrollView>
-      )
-    }
+        )
 
+      return null
+    },
+    [me.followsAndSaves?.artists]
+  )
+
+  const keyExtractor = useCallback(
+    (item: { artist?: { id: string } | null }, index: number): string => {
+      return `${item.artist?.id}-${index}`
+    },
+    []
+  )
+
+  const artists = useMemo(
+    () => extractNodes(me.followsAndSaves?.artists),
+    [me.followsAndSaves?.artists]
+  )
+
+  if (artists.length === 0) {
     return (
-      <ClassTheme>
-        {({ space }) => (
-          <Tabs.FlatList
-            data={rows}
-            onEndReached={this.loadMore}
-            contentContainerStyle={{ marginVertical: space(1) }}
-            onEndReachedThreshold={0.2}
-            refreshControl={
-              <RefreshControl
-                refreshing={this.state.refreshingFromPull}
-                onRefresh={this.handleRefresh}
-              />
-            }
-            style={{ paddingHorizontal: 0 }}
-            ItemSeparatorComponent={() => <Spacer y={1} />}
-            ListFooterComponent={
-              this.state.fetchingMoreData ? (
-                <Flex my={4} flexDirection="row" justifyContent="center">
-                  <Spinner />
-                </Flex>
-              ) : (
-                <Spacer y={2} />
-              )
-            }
-            renderItem={({ item }) => {
-              return (
-                <ArtistListItem
-                  artist={item.artist!}
-                  withFeedback
-                  containerStyle={{ paddingHorizontal: space(2), paddingVertical: space(0.5) }}
-                />
-              )
-            }}
-          />
-        )}
-      </ClassTheme>
+      <Tabs.ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshingFromPull} onRefresh={handleRefresh} />
+        }
+      >
+        <ZeroState
+          title="You haven’t followed any artists yet"
+          subtitle="When you’ve found an artist you like, follow them to get updates on new works that become available."
+        />
+      </Tabs.ScrollView>
     )
   }
+
+  return (
+    <Tabs.FlashList
+      data={artists}
+      onEndReached={loadMore}
+      estimatedItemSize={80}
+      keyExtractor={keyExtractor}
+      contentContainerStyle={{ paddingVertical: space(1) }}
+      onEndReachedThreshold={0.2}
+      refreshControl={<RefreshControl refreshing={refreshingFromPull} onRefresh={handleRefresh} />}
+      style={{ paddingHorizontal: 0 }}
+      ItemSeparatorComponent={() => <Spacer y={1} />}
+      ListHeaderComponent={<Spacer y={2} />}
+      ListFooterComponent={
+        fetchingMoreData ? (
+          <Flex my={4} flexDirection="row" justifyContent="center">
+            <Spinner />
+          </Flex>
+        ) : (
+          <Spacer y={2} />
+        )
+      }
+      renderItem={renderItem}
+    />
+  )
 }
 
 const FavoriteArtistsContainer = createPaginationContainer(
