@@ -63,11 +63,10 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
   const backgroundColor = dark ? "black100" : "white100"
 
   const getTextHeight = () => {
-    return ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + (displayRealizedPrice ? 50 : 0)
+    return ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT
   }
 
   const containerWidth = FULL_WIDTH_RAIL_CARD_IMAGE_WIDTH
-  const displayForRecentlySoldArtwork = !!displayRealizedPrice
 
   return (
     <Flex backgroundColor={backgroundColor} m={1}>
@@ -75,11 +74,6 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
         containerWidth={containerWidth}
         image={image}
         urgencyTag={urgencyTag}
-        imageHeightExtra={
-          displayForRecentlySoldArtwork
-            ? getTextHeight() - ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT
-            : undefined
-        }
       />
       <Flex
         my={1}
@@ -100,31 +94,21 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
             </Text>
           )}
           {!hideArtistName && !!artistNames && (
-            <Text
-              color={primaryTextColor}
-              numberOfLines={1}
-              lineHeight={displayForRecentlySoldArtwork ? undefined : "20px"}
-              variant={displayForRecentlySoldArtwork ? "md" : "xs"}
-            >
+            <Text color={primaryTextColor} numberOfLines={1} lineHeight="20px" variant="xs">
               {artistNames}
             </Text>
           )}
           {!!title && (
             <Text
-              lineHeight={displayForRecentlySoldArtwork ? undefined : "20px"}
-              color={displayForRecentlySoldArtwork ? undefined : secondaryTextColor}
+              lineHeight="20px"
+              color={secondaryTextColor}
               numberOfLines={1}
               variant="xs"
-              fontStyle={displayForRecentlySoldArtwork ? undefined : "italic"}
+              fontStyle="italic"
             >
               {title}
               {!!date && (
-                <Text
-                  lineHeight={displayForRecentlySoldArtwork ? undefined : "20px"}
-                  color={displayForRecentlySoldArtwork ? undefined : secondaryTextColor}
-                  numberOfLines={1}
-                  variant="xs"
-                >
+                <Text lineHeight="20px" color={secondaryTextColor} numberOfLines={1} variant="xs">
                   {title && date ? ", " : ""}
                   {date}
                 </Text>

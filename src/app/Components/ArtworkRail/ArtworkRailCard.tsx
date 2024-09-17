@@ -402,7 +402,6 @@ export interface ArtworkRailCardImageProps {
   image: ArtworkRailCard_artwork$data["image"]
   urgencyTag?: string | null
   containerWidth?: number | null
-  displayRealizedPrice?: boolean
   /** imageHeightExtra is an optional padding value you might want to add to image height
    * When using large width like with RecentlySold, image appears cropped
    * TODO: - Investigate why
@@ -414,11 +413,9 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
   image,
   urgencyTag = null,
   containerWidth,
-  displayRealizedPrice,
   imageHeightExtra = 0,
 }) => {
   const color = useColor()
-  const EXTRALARGE_RAIL_CARD_IMAGE_WIDTH = useExtraLargeWidth()
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
   if (!containerWidth) {
@@ -438,15 +435,10 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
     )
   }
 
-  const containerDimensions = displayRealizedPrice
-    ? {
-        width: EXTRALARGE_RAIL_CARD_IMAGE_WIDTH,
-        height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
-      }
-    : {
-        width: ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
-        height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
-      }
+  const containerDimensions = {
+    width: ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
+    height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
+  }
 
   const imageDimensions = sizeToFit(
     {
