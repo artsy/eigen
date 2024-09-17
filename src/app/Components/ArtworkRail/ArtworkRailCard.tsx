@@ -33,7 +33,7 @@ import {
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { compact } from "lodash"
 import { useMemo, useState } from "react"
-import { Dimensions, GestureResponderEvent, PixelRatio, TouchableHighlight } from "react-native"
+import { GestureResponderEvent, PixelRatio, TouchableHighlight } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -474,46 +474,18 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
     containerDimensions
   )
 
-  const aspectRatio = image?.aspectRatio || imageDimensions.width / imageDimensions.height
-
-  const getImageHeight = () => {
-    let adjustedHeight = 0
-
-    if (imageDimensions.height) {
-      adjustedHeight = imageDimensions.height + imageHeightExtra
-    } else {
-      adjustedHeight = ARTWORK_RAIL_CARD_IMAGE_HEIGHT
-    }
-
-    console.log({ height, adjustedHeight, aspectRatio })
-    if (!height) {
-      return adjustedHeight
-    }
-
-    const MINIMUM_ASPECT_RATIO = 0.2
-    const MAXIMUM_ASPECT_RATIO = 0.7
-
-    // Make sure that the image height is not too little or not too big
-    // See https://artsy.slack.com/archives/C05EQL4R5N0/p1701167802957189?thread_ts=1701164551.999919&cid=C05EQL4R5N0
-    if (aspectRatio < MINIMUM_ASPECT_RATIO) {
-      return Dimensions.get("screen").width / MINIMUM_ASPECT_RATIO
-    } else if (aspectRatio > MAXIMUM_ASPECT_RATIO) {
-      return Dimensions.get("screen").width / aspectRatio
-    } else {
-      return Dimensions.get("screen").width / aspectRatio
-    }
-  }
+  const imageHeight = imageDimensions.height
+    ? imageDimensions.height + imageHeightExtra
+    : ARTWORK_RAIL_CARD_IMAGE_HEIGHT
 
   return (
     <Flex>
-      <Flex width={containerWidth}>
-        <Image
-          src={src}
-          width={containerWidth}
-          height={getImageHeight()}
-          blurhash={showBlurhash ? image?.blurhash : undefined}
-        />
-      </Flex>
+      <Image
+        src={src}
+        width={containerWidth}
+        height={imageHeight}
+        blurhash={showBlurhash ? image?.blurhash : undefined}
+      />
 
       {!!urgencyTag && (
         <Flex
