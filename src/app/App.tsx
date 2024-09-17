@@ -117,23 +117,28 @@ const Main = () => {
 
   const prefetchUrl = usePrefetch()
 
+  const setAndroidTheme = async () => {
+    await RNBootSplash.hide({
+      fade: true,
+    })
+    ArtsyNativeModule.lockActivityScreenOrientation()
+    ArtsyNativeModule.setAppStyling()
+    if (isLoggedIn) {
+      ArtsyNativeModule.setNavigationBarColor(DEFAULT_NAVIGATION_BAR_COLOR)
+      ArtsyNativeModule.setAppLightContrast(false)
+    }
+  }
+
   useEffect(() => {
     if (isHydrated) {
       // We wait a bit until the UI finishes drawing behind the splash screen
-      setTimeout(() => {
+      setTimeout(async () => {
+        await RNBootSplash.hide({
+          fade: true,
+        })
+
         if (Platform.OS === "android") {
-          RNBootSplash.hide().then(() => {
-            requestAnimationFrame(() => {
-              ArtsyNativeModule.lockActivityScreenOrientation()
-            })
-          })
-        }
-        if (Platform.OS === "android") {
-          ArtsyNativeModule.setAppStyling()
-        }
-        if (isLoggedIn && Platform.OS === "android") {
-          ArtsyNativeModule.setNavigationBarColor(DEFAULT_NAVIGATION_BAR_COLOR)
-          ArtsyNativeModule.setAppLightContrast(false)
+          await setAndroidTheme()
         }
       }, 500)
     }
