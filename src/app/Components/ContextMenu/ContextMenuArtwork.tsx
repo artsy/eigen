@@ -35,10 +35,7 @@ export type ArtworkDisplayProps = Pick<
 >
 
 interface ContextMenuArtworkProps {
-  artwork:
-    | ArtworkRailCard_artwork$data
-    | ArtworkRailCard_artwork$data
-    | ArtworkGridItem_artwork$data
+  artwork: ArtworkRailCard_artwork$data | ArtworkGridItem_artwork$data
   onCreateAlertActionPress: () => void
   onSupressArtwork?: () => void
   haptic?: HapticFeedbackTypes | boolean
@@ -229,10 +226,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   }
 
   const artworkPreviewComponent = (
-    artwork:
-      | ArtworkRailCard_artwork$data
-      | ArtworkRailCard_artwork$data
-      | ArtworkGridItem_artwork$data
+    artwork: ArtworkRailCard_artwork$data | ArtworkGridItem_artwork$data
   ) => {
     return (
       <ContextMenuArtworkPreviewCard artwork={artwork} artworkDisplayProps={artworkDisplayProps} />

@@ -25,10 +25,7 @@ const useFullWidth = () => {
 }
 
 export interface ContextMenuArtworkPreviewCardProps {
-  artwork:
-    | ArtworkRailCard_artwork$data
-    | ArtworkRailCard_artwork$data
-    | ArtworkGridItem_artwork$data
+  artwork: ArtworkRailCard_artwork$data | ArtworkGridItem_artwork$data
   artworkDisplayProps?: ArtworkDisplayProps
 }
 
