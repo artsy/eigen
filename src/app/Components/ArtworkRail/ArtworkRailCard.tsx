@@ -7,7 +7,6 @@ import {
   Text,
   Touchable,
   useColor,
-  useScreenDimensions,
 } from "@artsy/palette-mobile"
 import {
   ArtworkRailCard_artwork$data,
@@ -17,6 +16,7 @@ import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/Cr
 import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
 import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
+import { ARTWORK_RAIL_IMAGE_WIDTH } from "app/Components/ArtworkRail/ArtworkRail"
 import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { HEART_ICON_SIZE } from "app/Components/constants"
@@ -33,24 +33,13 @@ import {
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { compact } from "lodash"
 import { useMemo, useState } from "react"
-import { Dimensions, GestureResponderEvent, PixelRatio, TouchableHighlight } from "react-native"
+import { GestureResponderEvent, PixelRatio, TouchableHighlight } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
-import { LARGE_RAIL_IMAGE_WIDTH } from "./LargeArtworkRail"
-import { SMALL_RAIL_IMAGE_WIDTH } from "./SmallArtworkRail"
 
 export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = 90
-
-export const ARTWORK_RAIL_CARD_IMAGE_HEIGHT = {
-  small: 230,
-  large: 320,
-  extraLarge: 400,
-  fullWidth: Dimensions.get("window").height,
-}
-
+export const ARTWORK_RAIL_CARD_IMAGE_HEIGHT = 320
 const ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH = 295
-
-export type ArtworkCardSize = "small" | "large" | "extraLarge" | "fullWidth"
 
 export interface ArtworkRailCardProps extends ArtworkActionTrackingProps {
   artwork: ArtworkRailCard_artwork$key
@@ -67,7 +56,6 @@ export interface ArtworkRailCardProps extends ArtworkActionTrackingProps {
   onSupressArtwork?: () => void
   priceRealizedDisplay?: string
   showSaveIcon?: boolean
-  size: ArtworkCardSize
   testID?: string
   hideIncreasedInterestSignal?: boolean
   hideCuratorsPickSignal?: boolean
@@ -87,7 +75,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   onSupressArtwork,
   priceRealizedDisplay,
   showSaveIcon = false,
-  size,
   testID,
   hideIncreasedInterestSignal = false,
   hideCuratorsPickSignal = false,
@@ -99,7 +86,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const fontScale = PixelRatio.getFontScale()
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
   const artwork = useFragment(artworkFragment, restProps.artwork)
-  const { width: screenWidth } = useScreenDimensions()
 
   const AREnablePartnerOfferSignals = useFeatureFlag("AREnablePartnerOfferSignals")
   const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
@@ -147,60 +133,32 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     contextScreen,
   } = restProps
 
-  const getTextHeightByArtworkSize = (cardSize: ArtworkCardSize) => {
-    if (cardSize === "small") {
-      return ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + 30
-    }
+  const getTextHeightByArtworkSize = () => {
     return ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + (isRecentlySoldArtwork ? 50 : 0)
   }
 
   const containerWidth = useMemo(() => {
-    const imageDimensions =
-      size !== "fullWidth"
-        ? sizeToFit(
-            {
-              width: image?.resized?.width ?? 0,
-              height: image?.resized?.height ?? 0,
-            },
-            {
-              width: isRecentlySoldArtwork
-                ? EXTRALARGE_RAIL_CARD_IMAGE_WIDTH
-                : ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
-              height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
-            }
-          )
-        : {
-            width: screenWidth,
-            height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
-          }
+    const imageDimensions = sizeToFit(
+      {
+        width: image?.resized?.width ?? 0,
+        height: image?.resized?.height ?? 0,
+      },
+      {
+        width: isRecentlySoldArtwork
+          ? EXTRALARGE_RAIL_CARD_IMAGE_WIDTH
+          : ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
+        height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
+      }
+    )
 
-    switch (size) {
-      case "small":
-        return artwork.image?.resized?.width
-      case "large":
-        if (imageDimensions.width <= SMALL_RAIL_IMAGE_WIDTH) {
-          return SMALL_RAIL_IMAGE_WIDTH
-        } else if (imageDimensions.width >= LARGE_RAIL_IMAGE_WIDTH) {
-          return LARGE_RAIL_IMAGE_WIDTH
-        } else {
-          return imageDimensions.width
-        }
-      case "extraLarge":
-        if (imageDimensions.width <= SMALL_RAIL_IMAGE_WIDTH) {
-          return SMALL_RAIL_IMAGE_WIDTH
-        } else if (imageDimensions.width <= LARGE_RAIL_IMAGE_WIDTH) {
-          return LARGE_RAIL_IMAGE_WIDTH
-        } else if (imageDimensions.width >= EXTRALARGE_RAIL_CARD_IMAGE_WIDTH) {
-          return EXTRALARGE_RAIL_CARD_IMAGE_WIDTH
-        } else {
-          return imageDimensions.width
-        }
-      case "fullWidth":
-        return Dimensions.get("window").width
+    const SMALL_RAIL_IMAGE_WIDTH = 155
 
-      default:
-        assertNever(size)
-        break
+    if (imageDimensions.width <= SMALL_RAIL_IMAGE_WIDTH) {
+      return SMALL_RAIL_IMAGE_WIDTH
+    } else if (imageDimensions.width >= ARTWORK_RAIL_IMAGE_WIDTH) {
+      return ARTWORK_RAIL_IMAGE_WIDTH
+    } else {
+      return imageDimensions.width
     }
   }, [image?.resized?.height, image?.resized?.width])
 
@@ -230,8 +188,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     onCompleted: onArtworkSavedOrUnSaved,
   })
 
-  const displayForRecentlySoldArtwork =
-    !!isRecentlySoldArtwork && (size === "large" || size === "extraLarge")
+  const displayForRecentlySoldArtwork = !!isRecentlySoldArtwork
 
   const displayLimitedTimeOfferSignal =
     AREnablePartnerOfferSignals && collectorSignals?.partnerOffer?.isAvailable && !sale?.isAuction
@@ -280,11 +237,10 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
             <ArtworkRailCardImage
               containerWidth={containerWidth}
               image={image}
-              size={size}
               urgencyTag={!displayAuctionSignal ? urgencyTag : null}
               imageHeightExtra={
                 displayForRecentlySoldArtwork
-                  ? getTextHeightByArtworkSize(size) - ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT
+                  ? getTextHeightByArtworkSize() - ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT
                   : undefined
               }
             />
@@ -294,7 +250,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
               // Recently sold artworks require more space for the text container
               // to accommodate the estimate and realized price
               style={{
-                height: fontScale * getTextHeightByArtworkSize(size),
+                height: fontScale * getTextHeightByArtworkSize(),
                 ...metaContainerStyles,
               }}
               backgroundColor={backgroundColor}
@@ -328,7 +284,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                 {!hideArtistName && !!artistNames && (
                   <Text
                     color={primaryTextColor}
-                    numberOfLines={size === "small" ? 2 : 1}
+                    numberOfLines={1}
                     lineHeight={displayForRecentlySoldArtwork ? undefined : "20px"}
                     variant={displayForRecentlySoldArtwork ? "md" : "xs"}
                   >
@@ -339,7 +295,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                   <Text
                     lineHeight={displayForRecentlySoldArtwork ? undefined : "20px"}
                     color={displayForRecentlySoldArtwork ? undefined : secondaryTextColor}
-                    numberOfLines={size === "small" ? 2 : 1}
+                    numberOfLines={1}
                     variant="xs"
                     fontStyle={displayForRecentlySoldArtwork ? undefined : "italic"}
                   >
@@ -348,7 +304,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                       <Text
                         lineHeight={displayForRecentlySoldArtwork ? undefined : "20px"}
                         color={displayForRecentlySoldArtwork ? undefined : secondaryTextColor}
-                        numberOfLines={size === "small" ? 2 : 1}
+                        numberOfLines={1}
                         variant="xs"
                       >
                         {title && date ? ", " : ""}
@@ -364,7 +320,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                   </Text>
                 )}
 
-                {!!isRecentlySoldArtwork && (size === "large" || size === "extraLarge") && (
+                {!!isRecentlySoldArtwork && (
                   <RecentlySoldCardSection
                     priceRealizedDisplay={priceRealizedDisplay}
                     lowEstimateDisplay={lowEstimateDisplay}
@@ -462,7 +418,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
 
 export interface ArtworkRailCardImageProps {
   image: ArtworkRailCard_artwork$data["image"]
-  size: ArtworkCardSize
   urgencyTag?: string | null
   containerWidth?: number | null
   isRecentlySoldArtwork?: boolean
@@ -475,7 +430,6 @@ export interface ArtworkRailCardImageProps {
 
 const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
   image,
-  size,
   urgencyTag = null,
   containerWidth,
   isRecentlySoldArtwork,
@@ -496,80 +450,42 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
       <Flex
         bg={color("black30")}
         width={width}
-        height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size]}
+        height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
         style={{ borderRadius: 2 }}
       />
     )
   }
 
-  const getContainerDimensions = () => {
-    if (isRecentlySoldArtwork) {
-      return {
+  const containerDimensions = isRecentlySoldArtwork
+    ? {
         width: EXTRALARGE_RAIL_CARD_IMAGE_WIDTH,
-        height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
+        height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
       }
-    }
-
-    if (size === "fullWidth") {
-      return {
-        width: Dimensions.get("screen").width,
-        height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
+    : {
+        width: ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
+        height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
       }
-    }
-
-    return {
-      width: ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
-      height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
-    }
-  }
 
   const imageDimensions = sizeToFit(
     {
       width: width ?? 0,
       height: height ?? 0,
     },
-    getContainerDimensions()
+    containerDimensions
   )
 
-  const aspectRatio = image?.aspectRatio || imageDimensions.width / imageDimensions.height
-
-  const getImageHeight = () => {
-    let adjustedHeight = 0
-
-    if (imageDimensions.height) {
-      adjustedHeight = imageDimensions.height + imageHeightExtra
-    } else {
-      adjustedHeight = ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size]
-    }
-
-    if (size !== "fullWidth" || !height) {
-      return adjustedHeight
-    }
-
-    const MINIMUM_ASPECT_RATIO = 0.2
-    const MAXIMUM_ASPECT_RATIO = 0.7
-
-    // Make sure that the image height is not too little or not too big
-    // See https://artsy.slack.com/archives/C05EQL4R5N0/p1701167802957189?thread_ts=1701164551.999919&cid=C05EQL4R5N0
-    if (aspectRatio < MINIMUM_ASPECT_RATIO) {
-      return Dimensions.get("screen").width / MINIMUM_ASPECT_RATIO
-    } else if (aspectRatio > MAXIMUM_ASPECT_RATIO) {
-      return Dimensions.get("screen").width / aspectRatio
-    } else {
-      return Dimensions.get("screen").width / aspectRatio
-    }
-  }
+  const imageHeight = imageDimensions.height
+    ? imageDimensions.height + imageHeightExtra
+    : ARTWORK_RAIL_CARD_IMAGE_HEIGHT
 
   return (
     <Flex>
-      <Flex width={containerWidth}>
-        <Image
-          src={src}
-          width={containerWidth}
-          height={getImageHeight()}
-          blurhash={showBlurhash ? image?.blurhash : undefined}
-        />
-      </Flex>
+      <Image
+        src={src}
+        width={containerWidth}
+        height={imageHeight}
+        blurhash={showBlurhash ? image?.blurhash : undefined}
+      />
 
       {!!urgencyTag && (
         <Flex

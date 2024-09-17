@@ -1,7 +1,7 @@
 import { TappedMainArtworkGrid } from "@artsy/cohesion"
-import { LargeArtworkRail_artworks$data } from "__generated__/LargeArtworkRail_artworks.graphql"
+import { ArtworkRail_artworks$data } from "__generated__/ArtworkRail_artworks.graphql"
 
-export type CollectorSignals = LargeArtworkRail_artworks$data[0]["collectorSignals"]
+export type CollectorSignals = ArtworkRail_artworks$data[0]["collectorSignals"]
 
 type ArtworkSignalTrackingFields = Pick<
   TappedMainArtworkGrid,

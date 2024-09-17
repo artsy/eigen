@@ -1,4 +1,4 @@
-import { ContextModule, ActionType, ScreenOwnerType, LongPressedArtwork } from "@artsy/cohesion"
+import { ActionType, ContextModule, LongPressedArtwork, ScreenOwnerType } from "@artsy/cohesion"
 import { useColor } from "@artsy/palette-mobile"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { ArtworkRailCard_artwork$data } from "__generated__/ArtworkRailCard_artwork.graphql"
@@ -14,7 +14,7 @@ import { Schema } from "app/utils/track"
 import { isEmpty } from "lodash"
 import { InteractionManager, Platform } from "react-native"
 import ContextMenu, { ContextMenuAction, ContextMenuProps } from "react-native-context-menu-view"
-import { trigger, HapticFeedbackTypes } from "react-native-haptic-feedback"
+import { HapticFeedbackTypes, trigger } from "react-native-haptic-feedback"
 import { useTracking } from "react-tracking"
 
 interface ContextAction extends Omit<ContextMenuAction, "subtitle"> {

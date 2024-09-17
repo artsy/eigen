@@ -1,6 +1,6 @@
 import { Flex } from "@artsy/palette-mobile"
 import { NewBuyNowArtworksRail_sale$data } from "__generated__/NewBuyNowArtworksRail_sale.graphql"
-import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
+import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -23,7 +23,7 @@ export const NewBuyNowArtworksRail: React.FC<NewBuyNowArtworksRailProps> = ({ sa
       <Flex mx={2}>
         <SectionTitle title="Artworks Available to Buy Now" />
       </Flex>
-      <SmallArtworkRail
+      <ArtworkRail
         artworks={compact(artworks)}
         onPress={(artwork) => {
           if (artwork?.href) {
@@ -46,7 +46,7 @@ export const NewBuyNowArtworksRailContainer = createFragmentContainer(NewBuyNowA
           @connection(key: "NewBuyNowArtworksRail_artworksConnection") {
           edges {
             node {
-              ...SmallArtworkRail_artworks
+              ...ArtworkRail_artworks
             }
           }
         }
