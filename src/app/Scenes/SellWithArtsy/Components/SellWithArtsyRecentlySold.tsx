@@ -5,10 +5,11 @@ import {
   SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$key,
 } from "__generated__/SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection.graphql"
 import { ArtworkRailProps } from "app/Components/ArtworkRail/ArtworkRail"
-import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
+import { ArtworkRailCard, ArtworkRailCardProps } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { compact } from "lodash"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -116,6 +117,14 @@ const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> = ({
             highEstimateDisplay={item?.highEstimate?.display || ""}
             performanceDisplay={item?.performance?.mid ?? undefined}
             showPartnerName={showPartnerName}
+            CustomSalePriceComponent={
+              <RecentlySoldCardSection
+                priceRealizedDisplay={item?.priceRealized?.display || ""}
+                lowEstimateDisplay={item?.lowEstimate?.display || ""}
+                highEstimateDisplay={item?.highEstimate?.display || ""}
+                performanceDisplay={item?.performance?.mid ?? undefined}
+              />
+            }
             displayRealizedPrice
             hideArtistName={hideArtistName}
           />
@@ -123,6 +132,31 @@ const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> = ({
       }}
       keyExtractor={(item, index) => String(item?.artwork?.slug || index)}
     />
+  )
+}
+
+const RecentlySoldCardSection: React.FC<
+  Pick<
+    ArtworkRailCardProps,
+    "priceRealizedDisplay" | "lowEstimateDisplay" | "highEstimateDisplay" | "performanceDisplay"
+  >
+> = ({ priceRealizedDisplay, lowEstimateDisplay, highEstimateDisplay, performanceDisplay }) => {
+  return (
+    <Flex>
+      <Flex flexDirection="row" justifyContent="space-between" mt={1}>
+        <Text variant="lg-display" numberOfLines={1}>
+          {priceRealizedDisplay}
+        </Text>
+        {!!performanceDisplay && (
+          <Text variant="lg-display" color="green" numberOfLines={1}>
+            {`+${performanceDisplay}`}
+          </Text>
+        )}
+      </Flex>
+      <Text variant="xs" color="black60" lineHeight="20px">
+        Estimate {compact([lowEstimateDisplay, highEstimateDisplay]).join("—")}
+      </Text>
+    </Flex>
   )
 }
 

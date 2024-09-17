@@ -26,12 +26,12 @@ export type ArtworkDisplayProps = Pick<
   | "dark"
   | "hideArtistName"
   | "showPartnerName"
-  | "displayRealizedPrice"
   | "lotLabel"
   | "lowEstimateDisplay"
   | "highEstimateDisplay"
   | "performanceDisplay"
   | "priceRealizedDisplay"
+  | "CustomSalePriceComponent"
 >
 
 interface ContextMenuArtworkProps {

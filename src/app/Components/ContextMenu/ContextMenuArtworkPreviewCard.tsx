@@ -1,7 +1,6 @@
 import { Flex, Text, useColor, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { ArtworkRailCard_artwork$data } from "__generated__/ArtworkRailCard_artwork.graphql"
-import { RecentlySoldCardSection } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { ArtworkDisplayProps } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
@@ -34,10 +33,10 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
   artworkDisplayProps,
 }) => {
   const {
+    CustomSalePriceComponent,
     dark = false,
     hideArtistName = false,
     showPartnerName = true,
-    displayRealizedPrice = false,
     lotLabel,
     lowEstimateDisplay,
     highEstimateDisplay,
@@ -121,27 +120,19 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
               {partner?.name}
             </Text>
           )}
-          {!!displayRealizedPrice && (
-            <RecentlySoldCardSection
-              priceRealizedDisplay={priceRealizedDisplay}
-              lowEstimateDisplay={lowEstimateDisplay}
-              highEstimateDisplay={highEstimateDisplay}
-              performanceDisplay={performanceDisplay}
-              secondaryTextColor={secondaryTextColor}
-            />
-          )}
-
-          {!!saleMessage && !displayRealizedPrice && (
-            <Text
-              lineHeight="20px"
-              variant="xs"
-              color={primaryTextColor}
-              numberOfLines={1}
-              fontWeight={500}
-            >
-              {saleMessage}
-            </Text>
-          )}
+          {CustomSalePriceComponent
+            ? CustomSalePriceComponent
+            : !!saleMessage && (
+                <Text
+                  lineHeight="20px"
+                  variant="xs"
+                  color={primaryTextColor}
+                  numberOfLines={1}
+                  fontWeight={500}
+                >
+                  {saleMessage}
+                </Text>
+              )}
         </Flex>
       </Flex>
     </Flex>

@@ -31,7 +31,6 @@ import {
   tracks as artworkActionTracks,
 } from "app/utils/track/ArtworkActions"
 import { sizeToFit } from "app/utils/useSizeToFit"
-import { compact } from "lodash"
 import { useMemo, useState } from "react"
 import { GestureResponderEvent, PixelRatio, TouchableHighlight } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -46,6 +45,7 @@ export interface ArtworkRailCardProps extends ArtworkActionTrackingProps {
   dark?: boolean
   hideArtistName?: boolean
   showPartnerName?: boolean
+  CustomSalePriceComponent?: Element
   displayRealizedPrice?: boolean
   lotLabel?: string | null
   lowEstimateDisplay?: string
@@ -64,6 +64,7 @@ export interface ArtworkRailCardProps extends ArtworkActionTrackingProps {
 export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   hideArtistName = false,
   showPartnerName = false,
+  CustomSalePriceComponent,
   displayRealizedPrice = false,
   dark = false,
   lotLabel,
@@ -213,6 +214,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
           hideArtistName,
           displayRealizedPrice,
           lotLabel,
+          CustomSalePriceComponent,
           lowEstimateDisplay,
           highEstimateDisplay,
           performanceDisplay,
@@ -302,39 +304,31 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                   </Text>
                 )}
 
-                {displayRealizedPrice ? (
-                  <RecentlySoldCardSection
-                    priceRealizedDisplay={priceRealizedDisplay}
-                    lowEstimateDisplay={lowEstimateDisplay}
-                    highEstimateDisplay={highEstimateDisplay}
-                    performanceDisplay={performanceDisplay}
-                    secondaryTextColor={secondaryTextColor}
-                  />
-                ) : (
-                  !!saleMessage && (
-                    <Text
-                      lineHeight="20px"
-                      variant="xs"
-                      color={saleInfoTextColor}
-                      numberOfLines={1}
-                      fontWeight={saleInfoTextWeight}
-                    >
-                      {saleMessage}
-                      {!!displayLimitedTimeOfferSignal && (
-                        <Text
-                          lineHeight="20px"
-                          variant="xs"
-                          fontWeight="normal"
-                          color="blue100"
-                          numberOfLines={1}
-                        >
-                          {"  "}
-                          Exp. {partnerOfferEndAt}
-                        </Text>
-                      )}
-                    </Text>
-                  )
-                )}
+                {CustomSalePriceComponent
+                  ? CustomSalePriceComponent
+                  : !!saleMessage && (
+                      <Text
+                        lineHeight="20px"
+                        variant="xs"
+                        color={saleInfoTextColor}
+                        numberOfLines={1}
+                        fontWeight={saleInfoTextWeight}
+                      >
+                        {saleMessage}
+                        {!!displayLimitedTimeOfferSignal && (
+                          <Text
+                            lineHeight="20px"
+                            variant="xs"
+                            fontWeight="normal"
+                            color="blue100"
+                            numberOfLines={1}
+                          >
+                            {"  "}
+                            Exp. {partnerOfferEndAt}
+                          </Text>
+                        )}
+                      </Text>
+                    )}
 
                 {!!isUnlisted && (
                   <Text
@@ -478,31 +472,6 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
           </Text>
         </Flex>
       )}
-    </Flex>
-  )
-}
-
-export const RecentlySoldCardSection: React.FC<
-  Pick<
-    ArtworkRailCardProps,
-    "priceRealizedDisplay" | "lowEstimateDisplay" | "highEstimateDisplay" | "performanceDisplay"
-  > & { secondaryTextColor: string }
-> = ({ priceRealizedDisplay, lowEstimateDisplay, highEstimateDisplay, performanceDisplay }) => {
-  return (
-    <Flex>
-      <Flex flexDirection="row" justifyContent="space-between" mt={1}>
-        <Text variant="lg-display" numberOfLines={1}>
-          {priceRealizedDisplay}
-        </Text>
-        {!!performanceDisplay && (
-          <Text variant="lg-display" color="green" numberOfLines={1}>
-            {`+${performanceDisplay}`}
-          </Text>
-        )}
-      </Flex>
-      <Text variant="xs" color="black60" lineHeight="20px">
-        Estimate {compact([lowEstimateDisplay, highEstimateDisplay]).join("—")}
-      </Text>
     </Flex>
   )
 }
