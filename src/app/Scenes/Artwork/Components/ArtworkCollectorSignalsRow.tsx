@@ -82,7 +82,7 @@ export const ArtworkCollectorSignalsRow: React.FC<Props> = ({ artwork }) => {
         </Text>
 
         {href ? (
-          <LinkText variant="sm" color="black60" onPress={() => navigate(href || "#")}>
+          <LinkText variant="sm" color="black60" onPress={() => navigate(href)}>
             {signalDescription}
           </LinkText>
         ) : (
