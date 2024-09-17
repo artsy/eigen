@@ -1,4 +1,4 @@
-import { ContextModule } from "@artsy/cohesion"
+import { ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
 import { Flex, Join, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import { HomeViewSectionActivityQuery } from "__generated__/HomeViewSectionActivityQuery.graphql"
 import { HomeViewSectionActivity_section$key } from "__generated__/HomeViewSectionActivity_section.graphql"
@@ -28,34 +28,41 @@ interface HomeViewSectionActivityProps {
   section: HomeViewSectionActivity_section$key
 }
 
-export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = ({ section }) => {
+export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = (props) => {
   const tracking = useHomeViewTracking()
 
-  const data = useFragment(sectionFragment, section)
-  const component = data.component
-  const componentHref = component?.behaviors?.viewAll?.href
-
-  const notificationsNodes = extractNodes(data?.notificationsConnection)
-
-  const notifications = notificationsNodes.filter(shouldDisplayNotification)
+  const section = useFragment(sectionFragment, props.section)
+  const notifications = extractNodes(section.notificationsConnection).filter(
+    shouldDisplayNotification
+  )
+  const viewAll = section.component?.behaviors?.viewAll
 
   if (!notifications.length) {
     return null
   }
 
+  const onSectionViewAll = () => {
+    if (viewAll?.href) {
+      tracking.tappedActivityGroupViewAll(
+        section.contextModule as ContextModule,
+        viewAll?.ownerType as ScreenOwnerType
+      )
+
+      navigate(viewAll.href)
+    } else {
+      tracking.tappedActivityGroupViewAll(
+        section.contextModule as ContextModule,
+        OwnerType.activities
+      )
+
+      navigate("/notifications")
+    }
+  }
+
   return (
     <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
       <Flex px={2}>
-        <SectionTitle
-          title={component?.title || "Activity"}
-          onPress={
-            componentHref
-              ? () => {
-                  navigate(componentHref)
-                }
-              : undefined
-          }
-        />
+        <SectionTitle title={section.component?.title} onPress={onSectionViewAll} />
       </Flex>
 
       <FlatList
@@ -63,14 +70,8 @@ export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = (
         showsHorizontalScrollIndicator={false}
         ListHeaderComponent={() => <Spacer x={2} />}
         ListFooterComponent={
-          componentHref
-            ? () => (
-                <SeeAllCard
-                  onPress={() => {
-                    navigate(componentHref)
-                  }}
-                />
-              )
+          viewAll
+            ? () => <SeeAllCard buttonText={viewAll.buttonText} onPress={onSectionViewAll} />
             : undefined
         }
         ItemSeparatorComponent={() => <Spacer x={2} />}
@@ -85,7 +86,7 @@ export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = (
               onPress={() => {
                 tracking.tappedActivityGroup(
                   item.targetHref,
-                  data.contextModule as ContextModule,
+                  section.contextModule as ContextModule,
                   index
                 )
               }}
@@ -105,7 +106,9 @@ const sectionFragment = graphql`
       title
       behaviors {
         viewAll {
+          buttonText
           href
+          ownerType
         }
       }
     }

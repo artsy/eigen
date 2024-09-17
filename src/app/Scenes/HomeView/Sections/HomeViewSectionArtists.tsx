@@ -1,4 +1,4 @@
-import { ContextModule } from "@artsy/cohesion"
+import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import {
   Flex,
   Join,
@@ -50,8 +50,7 @@ export const HomeViewSectionArtists: React.FC<HomeViewSectionArtworksProps> = ({
   const { hasMore, isLoading, loadMore } = relay
   const tracking = useHomeViewTracking()
 
-  const title = section.component?.title
-  const componentHref = section.component?.behaviors?.viewAll?.href
+  const viewAll = section.component?.behaviors?.viewAll
 
   const onEndReached = () => {
     if (!hasMore() && !isLoading()) {
@@ -71,18 +70,23 @@ export const HomeViewSectionArtists: React.FC<HomeViewSectionArtworksProps> = ({
 
   const artists = extractNodes(section.artistsConnection)
 
+  const onSectionViewAll = () => {
+    tracking.tappedArticleGroupViewAll(
+      section.contextModule as ContextModule,
+      viewAll?.ownerType as ScreenOwnerType
+    )
+
+    if (viewAll?.href) {
+      navigate(viewAll.href)
+    }
+  }
+
   return (
     <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
       <Flex px={2}>
         <SectionTitle
-          title={title}
-          onPress={
-            componentHref
-              ? () => {
-                  navigate(componentHref)
-                }
-              : undefined
-          }
+          title={section.component?.title}
+          onPress={viewAll ? onSectionViewAll : undefined}
         />
       </Flex>
       <CardRailFlatList<Artist>
@@ -142,6 +146,7 @@ export const HomeViewSectionArtistsPaginationContainer = createPaginationContain
           behaviors {
             viewAll {
               href
+              ownerType
             }
           }
         }

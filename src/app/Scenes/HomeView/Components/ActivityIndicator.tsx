@@ -11,7 +11,8 @@ export const ActivityIndicator: React.FC<ActivityIndicatorProps> = ({ hasUnseenN
   const tracking = useHomeViewTracking()
 
   const navigateToActivityPanel = () => {
-    tracking.clickedNotificationBell()
+    tracking.tappedNotificationBell()
+
     navigate("/notifications")
   }
 

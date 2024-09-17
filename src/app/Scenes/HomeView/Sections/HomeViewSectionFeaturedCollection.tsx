@@ -1,3 +1,4 @@
+import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import {
   Flex,
   Image,
@@ -16,6 +17,7 @@ import {
   LargeArtworkRail,
 } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
+import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
@@ -28,22 +30,39 @@ interface HomeViewSectionFeaturedCollectionProps {
 
 const HEADER_IMAGE_HEIGHT = 80
 
-export const HomeViewSectionFeaturedCollection: React.FC<
-  HomeViewSectionFeaturedCollectionProps
-> = ({ section }) => {
+export const HomeViewSectionFeaturedCollection: React.FC<HomeViewSectionFeaturedCollectionProps> = (
+  props
+) => {
   const { width } = useWindowDimensions()
-  const data = useFragment(fragment, section)
-  const component = data.component
-  const componentHref = component?.behaviors?.viewAll?.href
+  const tracking = useHomeViewTracking()
+  const section = useFragment(fragment, props.section)
+  const component = section.component
+  const viewAll = component?.behaviors?.viewAll
 
   if (!component) return null
 
-  const artworks = extractNodes(data.artworksConnection)
+  const artworks = extractNodes(section.artworksConnection)
   if (!artworks || artworks.length === 0) return null
 
-  const handlePress = () => {
-    if (componentHref) {
-      navigate(componentHref)
+  const onSectionViewAll = () => {
+    if (viewAll?.href) {
+      tracking.tappedArtworkGroupViewAll(
+        section.contextModule as ContextModule,
+        viewAll?.ownerType as ScreenOwnerType
+      )
+
+      navigate(viewAll.href)
+    } else {
+      tracking.tappedArtworkGroupViewAll(
+        section.contextModule as ContextModule,
+        "homeViewSection" as ScreenOwnerType
+      )
+
+      navigate(`/home-view/sections/${section.internalID}`, {
+        passProps: {
+          sectionType: section.__typename,
+        },
+      })
     }
   }
 
@@ -53,7 +72,7 @@ export const HomeViewSectionFeaturedCollection: React.FC<
 
   return (
     <Flex pb={2} backgroundColor="black100" my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
-      <TouchableOpacity onPress={handlePress} activeOpacity={0.7}>
+      <TouchableOpacity onPress={onSectionViewAll} activeOpacity={0.7}>
         {!!component.backgroundImageURL && (
           <Image
             width={width}
@@ -80,7 +99,7 @@ export const HomeViewSectionFeaturedCollection: React.FC<
         artworks={artworks}
         showSaveIcon
         onPress={handleOnArtworkPress}
-        onMorePress={componentHref ? handlePress : undefined}
+        onMorePress={onSectionViewAll}
       />
     </Flex>
   )
@@ -88,6 +107,8 @@ export const HomeViewSectionFeaturedCollection: React.FC<
 
 const fragment = graphql`
   fragment HomeViewSectionFeaturedCollection_section on HomeViewSectionArtworks {
+    __typename
+    internalID
     contextModule
     component {
       title
@@ -96,6 +117,7 @@ const fragment = graphql`
       behaviors {
         viewAll {
           href
+          ownerType
         }
       }
     }

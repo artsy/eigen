@@ -1,4 +1,4 @@
-import { ContextModule } from "@artsy/cohesion"
+import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import { Flex, Join, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import { HomeViewSectionArtworksQuery } from "__generated__/HomeViewSectionArtworksQuery.graphql"
 import { HomeViewSectionArtworks_section$key } from "__generated__/HomeViewSectionArtworks_section.graphql"
@@ -11,7 +11,6 @@ import {
 } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
-import { getSectionHref } from "app/Scenes/HomeView/helpers/getSectionHref"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -25,13 +24,12 @@ interface HomeViewSectionArtworksProps {
   section: HomeViewSectionArtworks_section$key
 }
 
-export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = ({ section }) => {
+export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (props) => {
   const tracking = useHomeViewTracking()
 
-  const data = useFragment(fragment, section)
-  const title = data.component?.title
-  const artworks = extractNodes(data.artworksConnection)
-  const componentHref = getSectionHref(data.contextModule, data.component?.behaviors?.viewAll?.href)
+  const section = useFragment(fragment, props.section)
+  const artworks = extractNodes(section.artworksConnection)
+  const viewAll = section.component?.behaviors?.viewAll
 
   if (!artworks || artworks.length === 0) {
     return null
@@ -45,7 +43,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
       artwork.internalID,
       artwork.slug,
       artwork.collectorSignals,
-      data.contextModule as ContextModule,
+      section.contextModule as ContextModule,
       position
     )
 
@@ -54,41 +52,44 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     }
   }
 
+  const onSectionViewAll = () => {
+    if (viewAll?.href) {
+      tracking.tappedArtworkGroupViewAll(
+        section.contextModule as ContextModule,
+        viewAll?.ownerType as ScreenOwnerType
+      )
+
+      navigate(viewAll.href)
+    } else {
+      tracking.tappedArtworkGroupViewAll(
+        section.contextModule as ContextModule,
+        "homeViewSection" as ScreenOwnerType,
+        section.internalID
+      )
+
+      navigate(`/home-view/sections/${section.internalID}`, {
+        passProps: {
+          sectionType: section.__typename,
+        },
+      })
+    }
+  }
+
   return (
     <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
       <View>
         <Flex pl={2} pr={2}>
           <SectionTitle
-            title={title}
-            onPress={
-              componentHref
-                ? () => {
-                    navigate(componentHref, {
-                      passProps: {
-                        sectionType: data.__typename,
-                      },
-                    })
-                  }
-                : undefined
-            }
+            title={section.component?.title}
+            onPress={viewAll ? onSectionViewAll : undefined}
           />
         </Flex>
         <LargeArtworkRail
-          contextModule={data.contextModule as ContextModule}
+          contextModule={section.contextModule as ContextModule}
           artworks={artworks}
           onPress={handleOnArtworkPress}
           showSaveIcon
-          onMorePress={
-            componentHref
-              ? () => {
-                  navigate(componentHref, {
-                    passProps: {
-                      sectionType: data.__typename,
-                    },
-                  })
-                }
-              : undefined
-          }
+          onMorePress={viewAll ? onSectionViewAll : undefined}
         />
       </View>
     </Flex>
@@ -105,6 +106,7 @@ const fragment = graphql`
       behaviors {
         viewAll {
           href
+          ownerType
         }
       }
     }

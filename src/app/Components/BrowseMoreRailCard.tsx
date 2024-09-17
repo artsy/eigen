@@ -3,7 +3,7 @@ import { Button, Flex } from "@artsy/palette-mobile"
 interface BrowseMoreRailCardProps {
   dark?: boolean
   onPress: () => void
-  text: string
+  text?: string | null
 }
 
 export const BrowseMoreRailCard: React.FC<BrowseMoreRailCardProps> = ({ dark, onPress, text }) => {
@@ -12,9 +12,9 @@ export const BrowseMoreRailCard: React.FC<BrowseMoreRailCardProps> = ({ dark, on
       <Button
         variant={dark ? "outlineLight" : "outline"}
         onPress={onPress}
-        accessibilityLabel={text}
+        accessibilityLabel={text ?? "Browse All Results"}
       >
-        {text}
+        {text ?? "Browse All Results"}
       </Button>
     </Flex>
   )

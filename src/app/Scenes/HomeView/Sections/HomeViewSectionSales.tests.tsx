@@ -34,6 +34,7 @@ describe("HomeViewSectionSales", () => {
           title: "Auctions",
           behaviors: {
             viewAll: {
+              buttonText: null,
               href: "/auctions",
             },
           },

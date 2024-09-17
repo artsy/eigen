@@ -1,4 +1,4 @@
-import { ContextModule } from "@artsy/cohesion"
+import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import { Flex, Join, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import { HomeViewSectionMarketingCollectionsQuery } from "__generated__/HomeViewSectionMarketingCollectionsQuery.graphql"
 import {
@@ -37,31 +37,44 @@ interface HomeViewSectionMarketingCollectionsProps {
 
 export const HomeViewSectionMarketingCollections: React.FC<
   HomeViewSectionMarketingCollectionsProps
-> = ({ section }) => {
+> = (props) => {
   const tracking = useHomeViewTracking()
 
-  const data = useFragment(fragment, section)
-  const component = data.component
-  const componentHref = component?.behaviors?.viewAll?.href
+  const section = useFragment(fragment, props.section)
+  const component = section.component
 
   if (!component) return null
 
-  const marketingCollections = extractNodes(data.marketingCollectionsConnection)
+  const marketingCollections = extractNodes(section.marketingCollectionsConnection)
   if (!marketingCollections || marketingCollections.length === 0) return null
+  const viewAll = section.component.behaviors?.viewAll
+
+  const onSectionViewAll = () => {
+    if (viewAll?.href) {
+      tracking.tappedMarketingCollectionGroupViewAll(
+        section.contextModule as ContextModule,
+        viewAll?.ownerType as ScreenOwnerType
+      )
+
+      navigate(viewAll.href)
+    } else {
+      tracking.tappedMarketingCollectionGroupViewAll(
+        section.contextModule as ContextModule,
+        "homeViewSection" as ScreenOwnerType
+      )
+
+      navigate(`/home-view/sections/${section.internalID}`, {
+        passProps: {
+          sectionType: section.__typename,
+        },
+      })
+    }
+  }
 
   return (
     <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
       <Flex pl={2} pr={2}>
-        <SectionTitle
-          title={component.title}
-          onPress={
-            componentHref
-              ? () => {
-                  navigate(componentHref)
-                }
-              : undefined
-          }
-        />
+        <SectionTitle title={component.title} onPress={viewAll ? onSectionViewAll : undefined} />
       </Flex>
 
       <CardRailFlatList<
@@ -81,7 +94,7 @@ export const HomeViewSectionMarketingCollections: React.FC<
                 tracking.tappedMarketingCollectionGroup(
                   collection.internalID,
                   collection.slug,
-                  data.contextModule as ContextModule,
+                  section.contextModule as ContextModule,
                   index
                 )
               }}
@@ -95,6 +108,7 @@ export const HomeViewSectionMarketingCollections: React.FC<
 
 const fragment = graphql`
   fragment HomeViewSectionMarketingCollections_section on HomeViewSectionMarketingCollections {
+    __typename
     internalID
     contextModule
     component {
@@ -102,6 +116,7 @@ const fragment = graphql`
       behaviors {
         viewAll {
           href
+          ownerType
         }
       }
     }
