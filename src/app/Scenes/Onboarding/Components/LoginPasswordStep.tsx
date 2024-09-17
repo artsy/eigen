@@ -1,21 +1,26 @@
-import { BackButton, Button, Text } from "@artsy/palette-mobile"
+import { BackButton, Button, Flex, Text, useTheme } from "@artsy/palette-mobile"
+import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
+import { StackScreenProps } from "@react-navigation/stack"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
+import { OnboardingHomeNavigationStack } from "app/Scenes/Onboarding/OnboardingHome"
 import { OnboardingStore } from "app/Scenes/Onboarding/OnboardingStore"
 import { Field, Formik } from "formik"
 import * as Yup from "yup"
 
-export const LoginPasswordStep: React.FC = () => {
-  const navigateToEmailStep = OnboardingStore.useStoreActions(
-    (actions) => actions.navigateToEmailStep
-  )
+type LoginPasswordStepProps = StackScreenProps<OnboardingHomeNavigationStack, "LoginPasswordStep">
+
+export const LoginPasswordStep: React.FC<LoginPasswordStepProps> = ({ navigation }) => {
+  const changeStep = OnboardingStore.useStoreActions((actions) => actions.changeStep)
+  changeStep("LoginPasswordStep")
+
+  const { space } = useTheme()
 
   const handleContinueButtonPress = () => {
-    // TODO: login
     console.log("🐖")
   }
 
   const handleBackButtonPress = () => {
-    navigateToEmailStep()
+    navigation.goBack()
   }
 
   return (
@@ -29,28 +34,30 @@ export const LoginPasswordStep: React.FC = () => {
     >
       {({ handleChange, handleSubmit, isValid, values }) => {
         return (
-          <>
-            <BackButton onPress={handleBackButtonPress} />
-            <Text variant="sm-display">Welcome back to Artsy</Text>
+          <BottomSheetScrollView>
+            <Flex padding={2} gap={space(1)}>
+              <BackButton onPress={handleBackButtonPress} />
+              <Text variant="sm-display">Welcome back to Artsy</Text>
 
-            <Field
-              name="password"
-              autoCapitalize="none"
-              autoComplete="current-password"
-              autoCorrect={false}
-              secureTextEntry
-              component={BottomSheetInput}
-              placeholder="Enter your password"
-              returnKeyType="done"
-              title="Password"
-              value={values.password}
-              onChangeText={handleChange("password")}
-            />
+              <Field
+                name="password"
+                autoCapitalize="none"
+                autoComplete="current-password"
+                autoCorrect={false}
+                secureTextEntry
+                component={BottomSheetInput}
+                placeholder="Enter your password"
+                returnKeyType="done"
+                title="Password"
+                value={values.password}
+                onChangeText={handleChange("password")}
+              />
 
-            <Button block width={100} onPress={handleSubmit} disabled={!isValid}>
-              Continue
-            </Button>
-          </>
+              <Button block width={100} onPress={handleSubmit} disabled={!isValid}>
+                Continue
+              </Button>
+            </Flex>
+          </BottomSheetScrollView>
         )
       }}
     </Formik>

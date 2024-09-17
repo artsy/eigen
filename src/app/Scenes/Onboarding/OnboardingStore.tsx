@@ -1,11 +1,18 @@
 import { Action, action, createContextStore } from "easy-peasy"
 
+export type OnboardingStoreStep =
+  | "WelcomeStep"
+  | "EmailStep"
+  | "LoginPasswordStep"
+  | "SignUpPasswordStep"
+
 export interface OnboardingStoreModel {
-  currentStep: "WelcomeStep" | "EmailStep" | "LoginPasswordStep" | "SignUpPasswordStep"
+  currentStep: OnboardingStoreStep
   navigateToWelcomeStep: Action<OnboardingStoreModel>
   navigateToEmailStep: Action<OnboardingStoreModel>
   navigateToLoginPasswordStep: Action<OnboardingStoreModel>
   navigateToSignUpPasswordStep: Action<OnboardingStoreModel>
+  changeStep: Action<OnboardingStoreModel, OnboardingStoreStep>
 }
 
 export const OnboardingStore = createContextStore<OnboardingStoreModel>({
@@ -21,5 +28,8 @@ export const OnboardingStore = createContextStore<OnboardingStoreModel>({
   }),
   navigateToSignUpPasswordStep: action((state) => {
     state.currentStep = "SignUpPasswordStep"
+  }),
+  changeStep: action((state, payload) => {
+    state.currentStep = payload
   }),
 })

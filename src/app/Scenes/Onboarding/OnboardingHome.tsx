@@ -59,6 +59,7 @@ export const OnboardingHome: React.FC<OnboardingHomeProps> = ({ navigation }) =>
 
       <LegacyScreen.Body>
         <OnboardingStore.Provider>
+          {/* TODO: figure out why logo and text don't return when navigating back to welcome step */}
           <ArtsyLogo />
           <WelcomeText />
           <AuthenticationDialog />
@@ -177,4 +178,10 @@ const WelcomeText: React.FC = () => {
       <LegacyScreen.SafeBottomPadding />
     </MotiView>
   )
+}
+
+export type OnboardingHomeNavigationStack = {
+  WelcomeStep: undefined
+  EmailStep: undefined
+  LoginPasswordStep: undefined
 }

@@ -1,32 +1,26 @@
-import { BackButton, Button, Text } from "@artsy/palette-mobile"
+import { BackButton, Button, Flex, Text, useTheme } from "@artsy/palette-mobile"
+import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
+import { StackScreenProps } from "@react-navigation/stack"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
+import { OnboardingHomeNavigationStack } from "app/Scenes/Onboarding/OnboardingHome"
 import { OnboardingStore } from "app/Scenes/Onboarding/OnboardingStore"
 import { Field, Formik } from "formik"
 import * as Yup from "yup"
 
-export const EmailStep: React.FC = () => {
-  const navigateToWelcomeStep = OnboardingStore.useStoreActions(
-    (actions) => actions.navigateToWelcomeStep
-  )
-  const navigateToLoginPasswordStep = OnboardingStore.useStoreActions(
-    (actions) => actions.navigateToLoginPasswordStep
-  )
-  const navigateToSignUpPasswordStep = OnboardingStore.useStoreActions(
-    (actions) => actions.navigateToSignUpPasswordStep
-  )
+type EmailStepProps = StackScreenProps<OnboardingHomeNavigationStack, "EmailStep">
+
+export const EmailStep: React.FC<EmailStepProps> = ({ navigation }) => {
+  const changeStep = OnboardingStore.useStoreActions((actions) => actions.changeStep)
+  changeStep("EmailStep")
+
+  const { space } = useTheme()
 
   const handleContinueButtonPress = () => {
-    const userExists = true
-
-    if (userExists) {
-      navigateToLoginPasswordStep()
-    } else {
-      navigateToSignUpPasswordStep()
-    }
+    navigation.navigate("LoginPasswordStep")
   }
 
   const handleBackButtonPress = () => {
-    navigateToWelcomeStep()
+    navigation.goBack()
   }
 
   return (
@@ -40,31 +34,33 @@ export const EmailStep: React.FC = () => {
     >
       {({ handleBlur, handleChange, handleSubmit, isValid, values }) => {
         return (
-          <>
-            <BackButton onPress={handleBackButtonPress} />
+          <BottomSheetScrollView>
+            <Flex padding={2} gap={space(1)}>
+              <BackButton onPress={handleBackButtonPress} />
 
-            <Text variant="sm-display">Sign up or log in</Text>
+              <Text variant="sm-display">Sign up or log in</Text>
 
-            <Field
-              name="email"
-              autoCapitalize="none"
-              autoComplete="email"
-              keyboardType="email-address"
-              spellCheck={false}
-              autoCorrect={false}
-              component={BottomSheetInput}
-              onBlur={handleBlur("email")}
-              placeholder="Enter your email address"
-              returnKeyType="done"
-              title="Email"
-              value={values.email}
-              onChangeText={handleChange("email")}
-            />
+              <Field
+                name="email"
+                autoCapitalize="none"
+                autoComplete="email"
+                keyboardType="email-address"
+                spellCheck={false}
+                autoCorrect={false}
+                component={BottomSheetInput}
+                onBlur={handleBlur("email")}
+                placeholder="Enter your email address"
+                returnKeyType="done"
+                title="Email"
+                value={values.email}
+                onChangeText={handleChange("email")}
+              />
 
-            <Button block width={100} onPress={handleSubmit} disabled={!isValid}>
-              Continue
-            </Button>
-          </>
+              <Button block width={100} onPress={handleSubmit} disabled={!isValid}>
+                Continue
+              </Button>
+            </Flex>
+          </BottomSheetScrollView>
         )
       }}
     </Formik>
