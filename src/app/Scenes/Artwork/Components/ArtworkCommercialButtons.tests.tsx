@@ -534,7 +534,7 @@ describe("ArtworkCommercialButtons", () => {
               "context_owner_id": "5b2b745e9c18db204fc32e11",
               "context_owner_slug": "andreas-rod-prinzknecht",
               "context_owner_type": "artwork",
-              "signal_label": "Limited-Time Offer",
+              "signal_label": "",
             },
           ]
         `)
@@ -567,7 +567,7 @@ describe("ArtworkCommercialButtons", () => {
               "context_owner_id": "5b2b745e9c18db204fc32e11",
               "context_owner_slug": "andreas-rod-prinzknecht",
               "context_owner_type": "artwork",
-              "signal_label": "Limited-Time Offer",
+              "signal_label": "",
             },
           ]
         `)
@@ -613,7 +613,7 @@ describe("ArtworkCommercialButtons", () => {
               "context_owner_slug": "andreas-rod-prinzknecht",
               "context_owner_type": "artwork",
               "signal_bid_count": 7,
-              "signal_label": "Time left to bid",
+              "signal_label": "",
               "signal_lot_watcher_count": 49,
             },
           ]
@@ -650,7 +650,7 @@ describe("ArtworkCommercialButtons", () => {
               "context_owner_slug": "andreas-rod-prinzknecht",
               "context_owner_type": "artwork",
               "signal_bid_count": 3,
-              "signal_label": "Bidding live now",
+              "signal_label": "",
               "signal_lot_watcher_count": 29,
             },
           ]
