@@ -7,7 +7,7 @@ import { VisualClueName } from "app/store/config/visualClues"
 import { switchTab } from "app/system/navigation/navigate"
 import { useSelectedTab } from "app/utils/hooks/useSelectedTab"
 import { useVisualClue } from "app/utils/hooks/useVisualClue"
-import { LayoutAnimation, TouchableWithoutFeedback, View } from "react-native"
+import { TouchableWithoutFeedback, View } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { BottomTabOption, BottomTabType } from "./BottomTabType"
@@ -37,7 +37,6 @@ export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
   const tracking = useTracking()
 
   const onPress = () => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     if (tab === unsafe__getSelectedTab()) {
       LegacyNativeModules.ARScreenPresenterModule.popToRootOrScrollToTop(tab)
     } else {
