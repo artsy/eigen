@@ -1,5 +1,5 @@
 import { Flex, Text } from "@artsy/palette-mobile"
-import { HomeViewSectionsConnection_viewer$data } from "__generated__/HomeViewSectionsConnection_viewer.graphql"
+import { HomeViewSectionGeneric_section$data } from "__generated__/HomeViewSectionGeneric_section.graphql"
 import { HomeViewSectionActivityQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionActivity"
 import { HomeViewSectionArticlesQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionArticles"
 import { HomeViewSectionArticlesCardsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionArticlesCards"
@@ -15,15 +15,11 @@ import { HomeViewSectionMarketingCollectionsQueryRenderer } from "app/Scenes/Hom
 import { HomeViewSectionSalesQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionSales"
 import { HomeViewSectionShowsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionShows"
 import { HomeViewSectionViewingRoomsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionViewingRooms"
-import { ExtractNodeType } from "app/utils/relayHelpers"
+import { CleanRelayFragment } from "app/utils/relayHelpers"
 
-type SectionsConnection = NonNullable<
-  HomeViewSectionsConnection_viewer$data["homeView"]["sectionsConnection"]
->
-
-type SectionT = ExtractNodeType<SectionsConnection>
-
-export const Section: React.FC<{ section: SectionT }> = (props) => {
+export const Section: React.FC<{
+  section: CleanRelayFragment<HomeViewSectionGeneric_section$data>
+}> = (props) => {
   const { section } = props
 
   if (!section.internalID) {
