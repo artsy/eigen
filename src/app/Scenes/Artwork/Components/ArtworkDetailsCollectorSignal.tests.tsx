@@ -1,16 +1,16 @@
 import { screen } from "@testing-library/react-native"
-import { ArtworkCollectorSignalsRow } from "app/Scenes/Artwork/Components/ArtworkCollectorSignalsRow"
+import { ArtworkDetailsCollectorSignal } from "app/Scenes/Artwork/Components/ArtworkDetailsCollectorSignal"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-describe("ArtworkCollectorSignalsRow", () => {
+describe("ArtworkDetailsCollectorSignal", () => {
   const { renderWithRelay } = setupTestWrapper({
-    Component: ArtworkCollectorSignalsRow,
+    Component: ArtworkDetailsCollectorSignal,
     query: graphql`
-      query ArtworkCollectorSignalsRowTestsQuery @relay_test_operation {
+      query ArtworkDetailsCollectorSignalTestsQuery @relay_test_operation {
         artwork(id: "example") {
-          ...ArtworkCollectorSignalsRow_artwork
+          ...ArtworkDetailsCollectorSignal_artwork
         }
       }
     `,

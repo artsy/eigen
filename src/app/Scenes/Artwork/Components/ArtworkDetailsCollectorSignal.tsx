@@ -8,30 +8,33 @@ import {
   VerifiedIcon,
 } from "@artsy/palette-mobile"
 
-import { ArtworkCollectorSignalsRow_artwork$key } from "__generated__/ArtworkCollectorSignalsRow_artwork.graphql"
+import { ArtworkDetailsCollectorSignal_artwork$key } from "__generated__/ArtworkDetailsCollectorSignal_artwork.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { DateTime } from "luxon"
 import { graphql, useFragment } from "react-relay"
 
 interface Props {
-  artwork: ArtworkCollectorSignalsRow_artwork$key
+  artwork: ArtworkDetailsCollectorSignal_artwork$key
 }
 
-export const ArtworkCollectorSignalsRow: React.FC<Props> = ({ artwork }) => {
+export const ArtworkDetailsCollectorSignal: React.FC<Props> = ({ artwork }) => {
   const enableCuratorsPicksAndInterestSignals = useFeatureFlag(
     "AREnableCuratorsPicksAndInterestSignals"
   )
 
   const { collectorSignals } = useFragment(fragment, artwork)
-  if (!collectorSignals) {
+
+  if (
+    !collectorSignals ||
+    (!collectorSignals.curatorsPick &&
+      !collectorSignals.increasedInterest &&
+      !collectorSignals.runningShow)
+  ) {
     return null
   }
 
   const { curatorsPick, increasedInterest, runningShow } = collectorSignals
-  if (!curatorsPick && !increasedInterest && !runningShow) {
-    return null
-  }
 
   let singalTitle: string | null = null
   let signalDescription: string | null = null
@@ -82,7 +85,7 @@ export const ArtworkCollectorSignalsRow: React.FC<Props> = ({ artwork }) => {
         </Text>
 
         {href ? (
-          <LinkText variant="sm" color="black60" onPress={() => navigate(href)}>
+          <LinkText variant="sm" color="black60" onPress={() => navigate(href || "#")}>
             {signalDescription}
           </LinkText>
         ) : (
@@ -96,7 +99,7 @@ export const ArtworkCollectorSignalsRow: React.FC<Props> = ({ artwork }) => {
 }
 
 const fragment = graphql`
-  fragment ArtworkCollectorSignalsRow_artwork on Artwork {
+  fragment ArtworkDetailsCollectorSignal_artwork on Artwork {
     collectorSignals {
       curatorsPick
       increasedInterest
