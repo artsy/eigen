@@ -205,15 +205,10 @@ const artworksFragment = graphql`
     href
     slug
     collectorSignals {
+      primaryLabel
       auction {
         bidCount
-        liveBiddingStarted
-        lotClosesAt
         lotWatcherCount
-        registrationEndsAt
-      }
-      partnerOffer {
-        isAvailable
       }
     }
   }
