@@ -33,7 +33,7 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
   artworkDisplayProps,
 }) => {
   const {
-    CustomSalePriceComponent,
+    SalePriceComponent,
     dark = false,
     hideArtistName = false,
     showPartnerName = true,
@@ -116,8 +116,8 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
               {partner?.name}
             </Text>
           )}
-          {CustomSalePriceComponent
-            ? CustomSalePriceComponent
+          {SalePriceComponent
+            ? SalePriceComponent
             : !!saleMessage && (
                 <Text
                   lineHeight="20px"

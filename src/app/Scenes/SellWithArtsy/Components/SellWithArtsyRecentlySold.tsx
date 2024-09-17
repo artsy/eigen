@@ -113,7 +113,7 @@ const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> = ({
               onPress?.(item, index)
             }}
             showPartnerName={showPartnerName}
-            CustomSalePriceComponent={
+            SalePriceComponent={
               <RecentlySoldCardSection
                 priceRealizedDisplay={item?.priceRealized?.display || ""}
                 lowEstimateDisplay={item?.lowEstimate?.display || ""}

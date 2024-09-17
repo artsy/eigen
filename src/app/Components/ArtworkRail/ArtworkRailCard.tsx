@@ -45,9 +45,12 @@ export interface ArtworkRailCardProps extends ArtworkActionTrackingProps {
   hideArtistName?: boolean
   showPartnerName?: boolean
   /**
-   * CustomSalePriceComponent is a component that can be passed in to override the default sale price
+   * Rendered instead of the sale price section if provided.
    */
-  CustomSalePriceComponent?: Element
+  SalePriceComponent?:
+    | React.ComponentType<any>
+    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
+    | null
   lotLabel?: string | null
   metaContainerStyles?: {}
   onPress?: (event: GestureResponderEvent) => void
@@ -61,7 +64,7 @@ export interface ArtworkRailCardProps extends ArtworkActionTrackingProps {
 export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   hideArtistName = false,
   showPartnerName = false,
-  CustomSalePriceComponent,
+  SalePriceComponent,
   dark = false,
   lotLabel,
   metaContainerStyles,
@@ -203,7 +206,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
           showPartnerName,
           hideArtistName,
           lotLabel,
-          CustomSalePriceComponent,
+          SalePriceComponent,
         }}
       >
         <TouchableHighlight
@@ -287,8 +290,8 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                   </Text>
                 )}
 
-                {CustomSalePriceComponent
-                  ? CustomSalePriceComponent
+                {SalePriceComponent
+                  ? SalePriceComponent
                   : !!saleMessage && (
                       <Text
                         lineHeight="20px"
