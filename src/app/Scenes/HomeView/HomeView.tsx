@@ -15,6 +15,7 @@ import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { usePrefetch } from "app/utils/queryPrefetching"
+import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
 import { useEffect, useState } from "react"
 import { RefreshControl } from "react-native"
@@ -64,6 +65,10 @@ export const HomeView: React.FC = () => {
     prefetchUrl("my-profile")
     prefetchUrl("inbox")
     prefetchUrl("sell")
+  }, [])
+
+  useEffect(() => {
+    requestPushNotificationsPermission()
   }, [])
 
   const handleRefresh = () => {
