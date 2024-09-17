@@ -5,7 +5,7 @@ import {
   SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$key,
 } from "__generated__/SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection.graphql"
 import { ArtworkRailProps } from "app/Components/ArtworkRail/ArtworkRail"
-import { ArtworkRailCard, ArtworkRailCardProps } from "app/Components/ArtworkRail/ArtworkRailCard"
+import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -112,10 +112,6 @@ const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> = ({
             onPress={() => {
               onPress?.(item, index)
             }}
-            priceRealizedDisplay={item?.priceRealized?.display || ""}
-            lowEstimateDisplay={item?.lowEstimate?.display || ""}
-            highEstimateDisplay={item?.highEstimate?.display || ""}
-            performanceDisplay={item?.performance?.mid ?? undefined}
             showPartnerName={showPartnerName}
             CustomSalePriceComponent={
               <RecentlySoldCardSection
@@ -125,7 +121,6 @@ const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> = ({
                 performanceDisplay={item?.performance?.mid ?? undefined}
               />
             }
-            displayRealizedPrice
             hideArtistName={hideArtistName}
           />
         )
@@ -135,12 +130,19 @@ const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> = ({
   )
 }
 
-const RecentlySoldCardSection: React.FC<
-  Pick<
-    ArtworkRailCardProps,
-    "priceRealizedDisplay" | "lowEstimateDisplay" | "highEstimateDisplay" | "performanceDisplay"
-  >
-> = ({ priceRealizedDisplay, lowEstimateDisplay, highEstimateDisplay, performanceDisplay }) => {
+interface RecentlySoldCardSectionProps {
+  priceRealizedDisplay: string
+  lowEstimateDisplay: string
+  highEstimateDisplay: string
+  performanceDisplay?: string
+}
+
+const RecentlySoldCardSection: React.FC<RecentlySoldCardSectionProps> = ({
+  priceRealizedDisplay,
+  lowEstimateDisplay,
+  highEstimateDisplay,
+  performanceDisplay,
+}) => {
   return (
     <Flex>
       <Flex flexDirection="row" justifyContent="space-between" mt={1}>

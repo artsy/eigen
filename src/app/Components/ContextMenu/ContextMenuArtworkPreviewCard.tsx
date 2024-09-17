@@ -38,10 +38,6 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
     hideArtistName = false,
     showPartnerName = true,
     lotLabel,
-    lowEstimateDisplay,
-    highEstimateDisplay,
-    performanceDisplay,
-    priceRealizedDisplay,
   } = artworkDisplayProps ?? {}
 
   const FULL_WIDTH_RAIL_CARD_IMAGE_WIDTH = useFullWidth()

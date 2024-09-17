@@ -17,7 +17,6 @@ import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionT
 import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ARTWORK_RAIL_IMAGE_WIDTH } from "app/Components/ArtworkRail/ArtworkRail"
-import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { HEART_ICON_SIZE } from "app/Components/constants"
 import { formattedTimeLeft } from "app/Scenes/Activity/utils/formattedTimeLeft"
@@ -45,16 +44,14 @@ export interface ArtworkRailCardProps extends ArtworkActionTrackingProps {
   dark?: boolean
   hideArtistName?: boolean
   showPartnerName?: boolean
+  /**
+   * CustomSalePriceComponent is a component that can be passed in to override the default sale price
+   */
   CustomSalePriceComponent?: Element
-  displayRealizedPrice?: boolean
   lotLabel?: string | null
-  lowEstimateDisplay?: string
-  highEstimateDisplay?: string
   metaContainerStyles?: {}
-  performanceDisplay?: string
   onPress?: (event: GestureResponderEvent) => void
   onSupressArtwork?: () => void
-  priceRealizedDisplay?: string
   showSaveIcon?: boolean
   testID?: string
   hideIncreasedInterestSignal?: boolean
@@ -65,28 +62,19 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   hideArtistName = false,
   showPartnerName = false,
   CustomSalePriceComponent,
-  displayRealizedPrice = false,
   dark = false,
   lotLabel,
-  lowEstimateDisplay,
-  highEstimateDisplay,
   metaContainerStyles,
-  performanceDisplay,
   onPress,
   onSupressArtwork,
-  priceRealizedDisplay,
   showSaveIcon = false,
   testID,
   hideIncreasedInterestSignal = false,
   hideCuratorsPickSignal = false,
   ...restProps
 }) => {
-  const EXTRALARGE_RAIL_CARD_IMAGE_WIDTH = useExtraLargeWidth()
-
   const { trackEvent } = useTracking()
   const fontScale = PixelRatio.getFontScale()
-  const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
-  const artwork = useFragment(artworkFragment, restProps.artwork)
 
   const AREnablePartnerOfferSignals = useFeatureFlag("AREnablePartnerOfferSignals")
   const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
@@ -94,6 +82,9 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     "AREnableCuratorsPicksAndInterestSignals"
   )
 
+  const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
+
+  const artwork = useFragment(artworkFragment, restProps.artwork)
   const {
     artistNames,
     date,
@@ -116,7 +107,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const partnerOfferEndAt = collectorSignals?.partnerOffer?.endAt
     ? formattedTimeLeft(getTimer(collectorSignals.partnerOffer.endAt).time).timerCopy
     : ""
-
   const extendedBiddingEndAt = saleArtwork?.extendedBiddingEndAt
   const lotEndAt = saleArtwork?.endAt
   const endAt = extendedBiddingEndAt ?? lotEndAt ?? sale?.endAt
@@ -212,13 +202,8 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
           dark,
           showPartnerName,
           hideArtistName,
-          displayRealizedPrice,
           lotLabel,
           CustomSalePriceComponent,
-          lowEstimateDisplay,
-          highEstimateDisplay,
-          performanceDisplay,
-          priceRealizedDisplay,
         }}
       >
         <TouchableHighlight
@@ -236,8 +221,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
             <Flex
               my={1}
               width={containerWidth}
-              // Recently sold artworks require more space for the text container
-              // to accommodate the estimate and realized price
               style={{
                 height: fontScale * ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT,
                 ...metaContainerStyles,
@@ -346,6 +329,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                   <ArtworkAuctionTimer collectorSignals={collectorSignals} inRailCard />
                 )}
               </Flex>
+
               {!!showSaveIcon && (
                 <Flex flexDirection="row" alignItems="flex-start">
                   {!!displayAuctionSignal && !!collectorSignals?.auction?.lotWatcherCount && (
@@ -396,18 +380,12 @@ export interface ArtworkRailCardImageProps {
   image: ArtworkRailCard_artwork$data["image"]
   urgencyTag?: string | null
   containerWidth?: number | null
-  /** imageHeightExtra is an optional padding value you might want to add to image height
-   * When using large width like with RecentlySold, image appears cropped
-   * TODO: - Investigate why
-   */
-  imageHeightExtra?: number
 }
 
 const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
   image,
   urgencyTag = null,
   containerWidth,
-  imageHeightExtra = 0,
 }) => {
   const color = useColor()
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
@@ -442,9 +420,7 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
     containerDimensions
   )
 
-  const imageHeight = imageDimensions.height
-    ? imageDimensions.height + imageHeightExtra
-    : ARTWORK_RAIL_CARD_IMAGE_HEIGHT
+  const imageHeight = imageDimensions.height || ARTWORK_RAIL_CARD_IMAGE_HEIGHT
 
   return (
     <Flex>
