@@ -46,7 +46,7 @@ export interface ArtworkRailCardProps extends ArtworkActionTrackingProps {
   dark?: boolean
   hideArtistName?: boolean
   showPartnerName?: boolean
-  isRecentlySoldArtwork?: boolean
+  displayRealizedPrice?: boolean
   lotLabel?: string | null
   lowEstimateDisplay?: string
   highEstimateDisplay?: string
@@ -64,8 +64,8 @@ export interface ArtworkRailCardProps extends ArtworkActionTrackingProps {
 export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   hideArtistName = false,
   showPartnerName = false,
+  displayRealizedPrice = false,
   dark = false,
-  isRecentlySoldArtwork = false,
   lotLabel,
   lowEstimateDisplay,
   highEstimateDisplay,
@@ -133,10 +133,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     contextScreen,
   } = restProps
 
-  const getTextHeightByArtworkSize = () => {
-    return ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + (isRecentlySoldArtwork ? 50 : 0)
-  }
-
   const containerWidth = useMemo(() => {
     const imageDimensions = sizeToFit(
       {
@@ -144,9 +140,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
         height: image?.resized?.height ?? 0,
       },
       {
-        width: isRecentlySoldArtwork
-          ? EXTRALARGE_RAIL_CARD_IMAGE_WIDTH
-          : ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
+        width: ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
         height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
       }
     )
@@ -188,8 +182,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     onCompleted: onArtworkSavedOrUnSaved,
   })
 
-  const displayForRecentlySoldArtwork = !!isRecentlySoldArtwork
-
   const displayLimitedTimeOfferSignal =
     AREnablePartnerOfferSignals && collectorSignals?.partnerOffer?.isAvailable && !sale?.isAuction
 
@@ -219,7 +211,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
           dark,
           showPartnerName,
           hideArtistName,
-          isRecentlySoldArtwork,
+          displayRealizedPrice,
           lotLabel,
           lowEstimateDisplay,
           highEstimateDisplay,
@@ -238,11 +230,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
               containerWidth={containerWidth}
               image={image}
               urgencyTag={!displayAuctionSignal ? urgencyTag : null}
-              imageHeightExtra={
-                displayForRecentlySoldArtwork
-                  ? getTextHeightByArtworkSize() - ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT
-                  : undefined
-              }
             />
             <Flex
               my={1}
@@ -250,7 +237,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
               // Recently sold artworks require more space for the text container
               // to accommodate the estimate and realized price
               style={{
-                height: fontScale * getTextHeightByArtworkSize(),
+                height: fontScale * ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT,
                 ...metaContainerStyles,
               }}
               backgroundColor={backgroundColor}
@@ -282,28 +269,23 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                   </Text>
                 )}
                 {!hideArtistName && !!artistNames && (
-                  <Text
-                    color={primaryTextColor}
-                    numberOfLines={1}
-                    lineHeight={displayForRecentlySoldArtwork ? undefined : "20px"}
-                    variant={displayForRecentlySoldArtwork ? "md" : "xs"}
-                  >
+                  <Text color={primaryTextColor} numberOfLines={1} lineHeight="20px" variant="xs">
                     {artistNames}
                   </Text>
                 )}
                 {!!title && (
                   <Text
-                    lineHeight={displayForRecentlySoldArtwork ? undefined : "20px"}
-                    color={displayForRecentlySoldArtwork ? undefined : secondaryTextColor}
+                    lineHeight="20px"
+                    color={secondaryTextColor}
                     numberOfLines={1}
                     variant="xs"
-                    fontStyle={displayForRecentlySoldArtwork ? undefined : "italic"}
+                    fontStyle="italic"
                   >
                     {title}
                     {!!date && (
                       <Text
-                        lineHeight={displayForRecentlySoldArtwork ? undefined : "20px"}
-                        color={displayForRecentlySoldArtwork ? undefined : secondaryTextColor}
+                        lineHeight="20px"
+                        color={secondaryTextColor}
                         numberOfLines={1}
                         variant="xs"
                       >
@@ -320,7 +302,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                   </Text>
                 )}
 
-                {!!isRecentlySoldArtwork && (
+                {displayRealizedPrice ? (
                   <RecentlySoldCardSection
                     priceRealizedDisplay={priceRealizedDisplay}
                     lowEstimateDisplay={lowEstimateDisplay}
@@ -328,30 +310,30 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                     performanceDisplay={performanceDisplay}
                     secondaryTextColor={secondaryTextColor}
                   />
-                )}
-
-                {!!saleMessage && !isRecentlySoldArtwork && (
-                  <Text
-                    lineHeight="20px"
-                    variant="xs"
-                    color={saleInfoTextColor}
-                    numberOfLines={1}
-                    fontWeight={saleInfoTextWeight}
-                  >
-                    {saleMessage}
-                    {!!displayLimitedTimeOfferSignal && (
-                      <Text
-                        lineHeight="20px"
-                        variant="xs"
-                        fontWeight="normal"
-                        color="blue100"
-                        numberOfLines={1}
-                      >
-                        {"  "}
-                        Exp. {partnerOfferEndAt}
-                      </Text>
-                    )}
-                  </Text>
+                ) : (
+                  !!saleMessage && (
+                    <Text
+                      lineHeight="20px"
+                      variant="xs"
+                      color={saleInfoTextColor}
+                      numberOfLines={1}
+                      fontWeight={saleInfoTextWeight}
+                    >
+                      {saleMessage}
+                      {!!displayLimitedTimeOfferSignal && (
+                        <Text
+                          lineHeight="20px"
+                          variant="xs"
+                          fontWeight="normal"
+                          color="blue100"
+                          numberOfLines={1}
+                        >
+                          {"  "}
+                          Exp. {partnerOfferEndAt}
+                        </Text>
+                      )}
+                    </Text>
+                  )
                 )}
 
                 {!!isUnlisted && (
@@ -420,7 +402,7 @@ export interface ArtworkRailCardImageProps {
   image: ArtworkRailCard_artwork$data["image"]
   urgencyTag?: string | null
   containerWidth?: number | null
-  isRecentlySoldArtwork?: boolean
+  displayRealizedPrice?: boolean
   /** imageHeightExtra is an optional padding value you might want to add to image height
    * When using large width like with RecentlySold, image appears cropped
    * TODO: - Investigate why
@@ -432,7 +414,7 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
   image,
   urgencyTag = null,
   containerWidth,
-  isRecentlySoldArtwork,
+  displayRealizedPrice,
   imageHeightExtra = 0,
 }) => {
   const color = useColor()
@@ -456,7 +438,7 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
     )
   }
 
-  const containerDimensions = isRecentlySoldArtwork
+  const containerDimensions = displayRealizedPrice
     ? {
         width: EXTRALARGE_RAIL_CARD_IMAGE_WIDTH,
         height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT,

@@ -1,11 +1,18 @@
 import { ContextModule, OwnerType, tappedEntityGroup, TappedEntityGroupArgs } from "@artsy/cohesion"
 import { Flex, Spacer, Text } from "@artsy/palette-mobile"
-import { SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$key } from "__generated__/SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection.graphql"
-import { RecentlySoldArtworksRail } from "app/Components/ArtworkRail/ArtworkRail"
+import {
+  SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$data,
+  SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$key,
+} from "__generated__/SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection.graphql"
+import { ArtworkRailProps } from "app/Components/ArtworkRail/ArtworkRail"
+import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
+import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
+
+const MAX_NUMBER_OF_ARTWORKS = 30
 
 interface SellWithArtsyRecentlySoldProps {
   recentlySoldArtworks: SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$key
@@ -54,6 +61,68 @@ export const SellWithArtsyRecentlySold: React.FC<SellWithArtsyRecentlySoldProps>
         showPartnerName={false}
       />
     </Flex>
+  )
+}
+
+type RecentlySoldArtwork = NonNullable<
+  NonNullable<SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$data["edges"]>[0]
+>["node"]
+
+export interface RecentlySoldArtworksRailProps
+  extends Omit<ArtworkRailProps, "artworks" | "onPress"> {
+  recentlySoldArtworks: RecentlySoldArtwork[]
+  onPress?: (recentlySoldArtwork: RecentlySoldArtwork, index: number) => void
+}
+
+const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> = ({
+  listRef,
+  onPress,
+  onEndReached,
+  onEndReachedThreshold,
+  ListHeaderComponent = <Spacer x={2} />,
+  ListFooterComponent = <Spacer x={2} />,
+  hideArtistName = false,
+  recentlySoldArtworks,
+  showPartnerName = true,
+}) => {
+  return (
+    <PrefetchFlatList
+      onEndReached={onEndReached}
+      onEndReachedThreshold={onEndReachedThreshold}
+      prefetchUrlExtractor={(item) => item?.artwork?.href || undefined}
+      listRef={listRef}
+      horizontal
+      ListHeaderComponent={ListHeaderComponent}
+      ListFooterComponent={ListFooterComponent}
+      ItemSeparatorComponent={() => <Spacer x="15px" />}
+      showsHorizontalScrollIndicator={false}
+      // We need to set the maximum number of artworks to not cause layout shifts
+      data={recentlySoldArtworks.slice(0, MAX_NUMBER_OF_ARTWORKS)}
+      initialNumToRender={MAX_NUMBER_OF_ARTWORKS}
+      contentContainerStyle={{ alignItems: "flex-end" }}
+      renderItem={({ item, index }) => {
+        if (!item?.artwork) {
+          return null
+        }
+
+        return (
+          <ArtworkRailCard
+            artwork={item.artwork}
+            onPress={() => {
+              onPress?.(item, index)
+            }}
+            priceRealizedDisplay={item?.priceRealized?.display || ""}
+            lowEstimateDisplay={item?.lowEstimate?.display || ""}
+            highEstimateDisplay={item?.highEstimate?.display || ""}
+            performanceDisplay={item?.performance?.mid ?? undefined}
+            showPartnerName={showPartnerName}
+            displayRealizedPrice
+            hideArtistName={hideArtistName}
+          />
+        )
+      }}
+      keyExtractor={(item, index) => String(item?.artwork?.slug || index)}
+    />
   )
 }
 

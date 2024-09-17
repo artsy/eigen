@@ -88,6 +88,11 @@ export const SellWithArtsyHome: React.FC = () => {
   }
 
   const data = compact([
+    // TODO: Remove this
+    !!recentlySoldArtworks && {
+      key: "recently-sold-artworks",
+      content: <SellWithArtsyRecentlySold recentlySoldArtworks={recentlySoldArtworks} />,
+    },
     {
       key: "header",
       content: <Header submission={submission || null} />,

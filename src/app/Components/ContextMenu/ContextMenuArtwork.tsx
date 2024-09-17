@@ -26,7 +26,7 @@ export type ArtworkDisplayProps = Pick<
   | "dark"
   | "hideArtistName"
   | "showPartnerName"
-  | "isRecentlySoldArtwork"
+  | "displayRealizedPrice"
   | "lotLabel"
   | "lowEstimateDisplay"
   | "highEstimateDisplay"
