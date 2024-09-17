@@ -511,6 +511,7 @@
 		CBE327A027E275A400395A93 /* Bidder.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3266527E275A300395A93 /* Bidder.m */; };
 		CBE327A127E275A400395A93 /* BidderPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3266627E275A300395A93 /* BidderPosition.m */; };
 		CBE327A227E275A400395A93 /* SystemTime.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3266927E275A300395A93 /* SystemTime.m */; };
+		E1856EA22C98923B00849C0E /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E1856EA12C98923B00849C0E /* BootSplash.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1392,6 +1393,7 @@
 		CBE3266B27E275A300395A93 /* LiveAuctionLot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveAuctionLot.h; sourceTree = "<group>"; };
 		CBE3266D27E275A300395A93 /* ARHasImageBaseURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARHasImageBaseURL.h; sourceTree = "<group>"; };
 		CBE3266E27E275A300395A93 /* ARPostAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARPostAttachment.h; sourceTree = "<group>"; };
+		E1856EA12C98923B00849C0E /* BootSplash.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = BootSplash.storyboard; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -3263,6 +3265,7 @@
 				CBE3262427E275A200395A93 /* Artsy.Store.entitlements */,
 				CBE3262527E275A200395A93 /* Info.plist */,
 				CBE3262627E275A200395A93 /* Launch Screen.xib */,
+				E1856EA12C98923B00849C0E /* BootSplash.storyboard */,
 			);
 			path = App_Resources;
 			sourceTree = "<group>";
@@ -3581,6 +3584,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E1856EA22C98923B00849C0E /* BootSplash.storyboard in Resources */,
 				CBE3272F27E275A400395A93 /* followButton@3x.png in Resources */,
 				CBE326B627E275A300395A93 /* LiveAuctions.storyboard in Resources */,
 				CBE326FB27E275A300395A93 /* live_auctions_socket.json in Resources */,
