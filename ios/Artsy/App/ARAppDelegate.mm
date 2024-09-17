@@ -36,6 +36,8 @@
 #import "AREmission.h"
 #import "ARNotificationsManager.h"
 #import <React/RCTLinkingManager.h>
+#import "RNBootSplash.h"
+
 
 @interface ARAppDelegate ()
 @property (strong, nonatomic, readwrite) NSString *referralURLRepresentation;
@@ -153,6 +155,14 @@ static ARAppDelegate *_sharedInstance = nil;
     }
 
     return [super application:application didFinishLaunchingWithOptions:launchOptions];
+}
+
+- (UIView *)createRootViewWithBridge:(RCTBridge *)bridge
+                          moduleName:(NSString *)moduleName
+                           initProps:(NSDictionary *)initProps {
+  UIView *rootView = [super createRootViewWithBridge:bridge moduleName:moduleName initProps:initProps];
+  [RNBootSplash initWithStoryboard:@"BootSplash" rootView:rootView]; // ⬅️ initialize the splash screen
+  return rootView;
 }
 
 - (void)setupAnalytics:(UIApplication *)application withLaunchOptions:(NSDictionary *)launchOptions
