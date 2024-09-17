@@ -25,9 +25,10 @@ export const createOrUpdateSubmission = async (
   externalID: string | null
 ) => {
   const isRarityLimitedEdition = values.attributionClass === limitedEditionValue
-  type NewType = ConsignmentAttributionClass
 
-  const attributionClass = values?.attributionClass?.replace(" ", "_").toUpperCase() as NewType
+  const attributionClass = values?.attributionClass
+    ?.replace(" ", "_")
+    .toUpperCase() as ConsignmentAttributionClass
 
   const submissionValues: SubmissionInput = {
     artistID: values.artistId,
