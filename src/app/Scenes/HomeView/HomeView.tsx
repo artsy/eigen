@@ -95,7 +95,7 @@ export const HomeView: React.FC = () => {
         <FlashList
           ref={flashlistRef}
           data={sections}
-          keyExtractor={(item) => `${item.internalID || ""}`}
+          keyExtractor={(item) => item.internalID}
           renderItem={({ item }) => {
             return <Section section={item} />
           }}
@@ -151,13 +151,12 @@ const sectionsFragment = graphql`
         edges {
           node {
             __typename
-            ... on HomeViewSectionGeneric {
-              internalID
-              component {
-                type
-              }
-              ...HomeViewSectionGeneric_section
+            internalID
+            component {
+              title
+              type
             }
+            ...HomeViewSectionGeneric_section
           }
         }
       }
