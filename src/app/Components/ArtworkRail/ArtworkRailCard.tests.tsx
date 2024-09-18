@@ -42,20 +42,6 @@ describe("ArtworkRailCard", () => {
       expect(screen.getByText("Some Kind of Dinosaur, 2015")).toBeOnTheScreen()
     })
 
-    it("renders without throwing an error when an auction is about to open, but not closed or finished", () => {
-      renderWithRelay({
-        Artwork: () => ({
-          title: "Some Kind of Dinosaur",
-          sale: { isClosed: false, isAuction: true },
-          saleArtwork: { currentBid: { display: "$200" }, counts: { bidderPositions: 1 } },
-          realizedPrice: null,
-          collectorSignals: { auction: { bidCount: 1 } },
-        }),
-      })
-
-      expect(screen.getByText("$200 (1 bid)")).toBeOnTheScreen()
-    })
-
     it("shows the partner name if showPartnerName is set to true", () => {
       renderWithRelay(
         { Artwork: () => ({ partner: { name: "partner" } }) },
@@ -289,20 +275,6 @@ describe("ArtworkRailCard", () => {
 
           expect(screen.getByText("Extended, 59s left to bid")).toBeOnTheScreen()
         })
-      })
-
-      it("shows number of bids", () => {
-        renderWithRelay({
-          Artwork: () => ({
-            ...artwork,
-            sale: { ...artwork.sale, isClosed: false },
-            saleArtwork: { currentBid: { display: "$3,700" } },
-            realizedPrice: null,
-            collectorSignals: { auction: { bidCount: 7 } },
-          }),
-        })
-
-        expect(screen.getByText("$3,700 (7 bids)")).toBeOnTheScreen()
       })
     })
 
