@@ -333,7 +333,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
 const artworkFragment = graphql`
   fragment ArtworkRailCard_artwork on Artwork {
     ...CreateArtworkAlertModal_artwork
-    ...ArtworkRailCardImage_artwork @arguments(width: 590)
+    ...ArtworkRailCardImage_artwork
     ...ContextMenuArtwork_artwork
 
     id

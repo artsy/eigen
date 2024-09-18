@@ -38,8 +38,7 @@ interface ContextMenuArtworkProps {
 }
 
 const artworkFragment = graphql`
-  fragment ContextMenuArtwork_artwork on Artwork
-  @argumentDefinitions(width: { type: "Int", defaultValue: 295 }) {
+  fragment ContextMenuArtwork_artwork on Artwork @argumentDefinitions(width: { type: "Int" }) {
     ...ContextMenuArtworkPreviewCard_artwork @arguments(width: $width)
     ...useSaveArtworkToArtworkLists_artwork
 

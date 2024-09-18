@@ -1,7 +1,6 @@
 import { Flex, Image, Text, useColor } from "@artsy/palette-mobile"
-import { ArtworkRailCardImage_artwork$key } from "__generated__/ArtworkRailCardImage_artwork.graphql"
+import { LegacyArtworkRailCardImage_artwork$key } from "__generated__/LegacyArtworkRailCardImage_artwork.graphql"
 import { ARTWORK_RAIL_IMAGE_WIDTH } from "app/Components/ArtworkRail/ArtworkRail"
-import { LegacyArtworkRailCardImage } from "app/Components/ArtworkRail/LegacyArtworkRailCardImage"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { useMemo } from "react"
@@ -10,31 +9,27 @@ import { graphql, useFragment } from "react-relay"
 export const ARTWORK_RAIL_CARD_IMAGE_HEIGHT = 320
 export const ARTWORK_RAIL_CARD_IMAGE_WIDTH = 295
 
-export interface ArtworkRailCardImageProps {
-  artwork: ArtworkRailCardImage_artwork$key
+export interface LegacyArtworkRailCardImageProps {
+  artwork: LegacyArtworkRailCardImage_artwork$key
   urgencyTag?: string | null
 }
 
-export const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
+export const LegacyArtworkRailCardImage: React.FC<LegacyArtworkRailCardImageProps> = ({
   urgencyTag = null,
   ...restProps
 }) => {
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
-  const enableArtworkRailRedesignImageAspectRatio = useFeatureFlag(
-    "ARenableArtworkRailRedesignImageAspectRatio"
-  )
 
   const color = useColor()
 
-  const artwork = useFragment(artworkFragment, restProps.artwork)
-  const image = artwork?.image
-  const { width, height, src } = image?.resized || {}
+  const { image } = useFragment(artworkFragment, restProps.artwork)
+  const { width, height, src } = image?.legacyResized || {}
 
   const containerWidth = useMemo(() => {
     const imageDimensions = sizeToFit(
       {
-        width: image?.resized?.width ?? 0,
-        height: image?.resized?.height ?? 0,
+        width: image?.legacyResized?.width ?? 0,
+        height: image?.legacyResized?.height ?? 0,
       },
       {
         width: ARTWORK_RAIL_CARD_IMAGE_WIDTH,
@@ -51,11 +46,7 @@ export const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
     } else {
       return imageDimensions.width
     }
-  }, [image?.resized?.height, image?.resized?.width])
-
-  if (!enableArtworkRailRedesignImageAspectRatio) {
-    return <LegacyArtworkRailCardImage artwork={artwork} urgencyTag={urgencyTag} />
-  }
+  }, [image?.legacyResized?.height, image?.legacyResized?.width])
 
   if (!containerWidth) {
     return null
@@ -118,13 +109,11 @@ export const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
 }
 
 const artworkFragment = graphql`
-  fragment ArtworkRailCardImage_artwork on Artwork {
-    ...LegacyArtworkRailCardImage_artwork
-
+  fragment LegacyArtworkRailCardImage_artwork on Artwork {
     image(includeAll: false) {
       blurhash
       url(version: "large")
-      resized(width: 100) {
+      legacyResized: resized(width: 590) {
         src
         srcSet
         width

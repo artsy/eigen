@@ -277,6 +277,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableCuratorsPicksAndInterestSignals",
   },
+  ARenableArtworkRailRedesignImageAspectRatio: {
+    description: "Enable new aspect ratio for artwork rail images",
+    readyForRelease: false,
+    showInDevMenu: true,
+    // echoFlagKey: "ARenableArtworkRailRedesignImageAspectRatio",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
