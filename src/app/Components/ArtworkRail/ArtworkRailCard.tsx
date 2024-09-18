@@ -17,7 +17,6 @@ import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionT
 import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ARTWORK_RAIL_IMAGE_WIDTH } from "app/Components/ArtworkRail/ArtworkRail"
-import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { HEART_ICON_SIZE } from "app/Components/constants"
 import { formattedTimeLeft } from "app/Scenes/Activity/utils/formattedTimeLeft"
@@ -31,7 +30,6 @@ import {
   tracks as artworkActionTracks,
 } from "app/utils/track/ArtworkActions"
 import { sizeToFit } from "app/utils/useSizeToFit"
-import { compact } from "lodash"
 import { useMemo, useState } from "react"
 import { GestureResponderEvent, PixelRatio, TouchableHighlight } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -46,15 +44,17 @@ export interface ArtworkRailCardProps extends ArtworkActionTrackingProps {
   dark?: boolean
   hideArtistName?: boolean
   showPartnerName?: boolean
-  isRecentlySoldArtwork?: boolean
+  /**
+   * Rendered instead of the sale price section if provided.
+   */
+  SalePriceComponent?:
+    | React.ComponentType<any>
+    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
+    | null
   lotLabel?: string | null
-  lowEstimateDisplay?: string
-  highEstimateDisplay?: string
   metaContainerStyles?: {}
-  performanceDisplay?: string
   onPress?: (event: GestureResponderEvent) => void
   onSupressArtwork?: () => void
-  priceRealizedDisplay?: string
   showSaveIcon?: boolean
   testID?: string
   hideIncreasedInterestSignal?: boolean
@@ -64,28 +64,20 @@ export interface ArtworkRailCardProps extends ArtworkActionTrackingProps {
 export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   hideArtistName = false,
   showPartnerName = false,
+  SalePriceComponent,
   dark = false,
-  isRecentlySoldArtwork = false,
   lotLabel,
-  lowEstimateDisplay,
-  highEstimateDisplay,
   metaContainerStyles,
-  performanceDisplay,
   onPress,
   onSupressArtwork,
-  priceRealizedDisplay,
   showSaveIcon = false,
   testID,
   hideIncreasedInterestSignal = false,
   hideCuratorsPickSignal = false,
   ...restProps
 }) => {
-  const EXTRALARGE_RAIL_CARD_IMAGE_WIDTH = useExtraLargeWidth()
-
   const { trackEvent } = useTracking()
   const fontScale = PixelRatio.getFontScale()
-  const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
-  const artwork = useFragment(artworkFragment, restProps.artwork)
 
   const AREnablePartnerOfferSignals = useFeatureFlag("AREnablePartnerOfferSignals")
   const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
@@ -93,6 +85,9 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     "AREnableCuratorsPicksAndInterestSignals"
   )
 
+  const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
+
+  const artwork = useFragment(artworkFragment, restProps.artwork)
   const {
     artistNames,
     date,
@@ -115,7 +110,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const partnerOfferEndAt = collectorSignals?.partnerOffer?.endAt
     ? formattedTimeLeft(getTimer(collectorSignals.partnerOffer.endAt).time).timerCopy
     : ""
-
   const extendedBiddingEndAt = saleArtwork?.extendedBiddingEndAt
   const lotEndAt = saleArtwork?.endAt
   const endAt = extendedBiddingEndAt ?? lotEndAt ?? sale?.endAt
@@ -133,10 +127,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     contextScreen,
   } = restProps
 
-  const getTextHeightByArtworkSize = () => {
-    return ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + (isRecentlySoldArtwork ? 50 : 0)
-  }
-
   const containerWidth = useMemo(() => {
     const imageDimensions = sizeToFit(
       {
@@ -144,9 +134,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
         height: image?.resized?.height ?? 0,
       },
       {
-        width: isRecentlySoldArtwork
-          ? EXTRALARGE_RAIL_CARD_IMAGE_WIDTH
-          : ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
+        width: ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
         height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
       }
     )
@@ -188,8 +176,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     onCompleted: onArtworkSavedOrUnSaved,
   })
 
-  const displayForRecentlySoldArtwork = !!isRecentlySoldArtwork
-
   const displayLimitedTimeOfferSignal =
     AREnablePartnerOfferSignals && collectorSignals?.partnerOffer?.isAvailable && !sale?.isAuction
 
@@ -219,12 +205,8 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
           dark,
           showPartnerName,
           hideArtistName,
-          isRecentlySoldArtwork,
           lotLabel,
-          lowEstimateDisplay,
-          highEstimateDisplay,
-          performanceDisplay,
-          priceRealizedDisplay,
+          SalePriceComponent,
         }}
       >
         <TouchableHighlight
@@ -238,19 +220,12 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
               containerWidth={containerWidth}
               image={image}
               urgencyTag={!displayAuctionSignal ? urgencyTag : null}
-              imageHeightExtra={
-                displayForRecentlySoldArtwork
-                  ? getTextHeightByArtworkSize() - ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT
-                  : undefined
-              }
             />
             <Flex
               my={1}
               width={containerWidth}
-              // Recently sold artworks require more space for the text container
-              // to accommodate the estimate and realized price
               style={{
-                height: fontScale * getTextHeightByArtworkSize(),
+                height: fontScale * ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT,
                 ...metaContainerStyles,
               }}
               backgroundColor={backgroundColor}
@@ -282,28 +257,23 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                   </Text>
                 )}
                 {!hideArtistName && !!artistNames && (
-                  <Text
-                    color={primaryTextColor}
-                    numberOfLines={1}
-                    lineHeight={displayForRecentlySoldArtwork ? undefined : "20px"}
-                    variant={displayForRecentlySoldArtwork ? "md" : "xs"}
-                  >
+                  <Text color={primaryTextColor} numberOfLines={1} lineHeight="20px" variant="xs">
                     {artistNames}
                   </Text>
                 )}
                 {!!title && (
                   <Text
-                    lineHeight={displayForRecentlySoldArtwork ? undefined : "20px"}
-                    color={displayForRecentlySoldArtwork ? undefined : secondaryTextColor}
+                    lineHeight="20px"
+                    color={secondaryTextColor}
                     numberOfLines={1}
                     variant="xs"
-                    fontStyle={displayForRecentlySoldArtwork ? undefined : "italic"}
+                    fontStyle="italic"
                   >
                     {title}
                     {!!date && (
                       <Text
-                        lineHeight={displayForRecentlySoldArtwork ? undefined : "20px"}
-                        color={displayForRecentlySoldArtwork ? undefined : secondaryTextColor}
+                        lineHeight="20px"
+                        color={secondaryTextColor}
                         numberOfLines={1}
                         variant="xs"
                       >
@@ -320,39 +290,31 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                   </Text>
                 )}
 
-                {!!isRecentlySoldArtwork && (
-                  <RecentlySoldCardSection
-                    priceRealizedDisplay={priceRealizedDisplay}
-                    lowEstimateDisplay={lowEstimateDisplay}
-                    highEstimateDisplay={highEstimateDisplay}
-                    performanceDisplay={performanceDisplay}
-                    secondaryTextColor={secondaryTextColor}
-                  />
-                )}
-
-                {!!saleMessage && !isRecentlySoldArtwork && (
-                  <Text
-                    lineHeight="20px"
-                    variant="xs"
-                    color={saleInfoTextColor}
-                    numberOfLines={1}
-                    fontWeight={saleInfoTextWeight}
-                  >
-                    {saleMessage}
-                    {!!displayLimitedTimeOfferSignal && (
+                {SalePriceComponent
+                  ? SalePriceComponent
+                  : !!saleMessage && (
                       <Text
                         lineHeight="20px"
                         variant="xs"
-                        fontWeight="normal"
-                        color="blue100"
+                        color={saleInfoTextColor}
                         numberOfLines={1}
+                        fontWeight={saleInfoTextWeight}
                       >
-                        {"  "}
-                        Exp. {partnerOfferEndAt}
+                        {saleMessage}
+                        {!!displayLimitedTimeOfferSignal && (
+                          <Text
+                            lineHeight="20px"
+                            variant="xs"
+                            fontWeight="normal"
+                            color="blue100"
+                            numberOfLines={1}
+                          >
+                            {"  "}
+                            Exp. {partnerOfferEndAt}
+                          </Text>
+                        )}
                       </Text>
                     )}
-                  </Text>
-                )}
 
                 {!!isUnlisted && (
                   <Text
@@ -370,6 +332,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                   <ArtworkAuctionTimer collectorSignals={collectorSignals} inRailCard />
                 )}
               </Flex>
+
               {!!showSaveIcon && (
                 <Flex flexDirection="row" alignItems="flex-start">
                   {!!displayAuctionSignal && !!collectorSignals?.auction?.lotWatcherCount && (
@@ -420,23 +383,14 @@ export interface ArtworkRailCardImageProps {
   image: ArtworkRailCard_artwork$data["image"]
   urgencyTag?: string | null
   containerWidth?: number | null
-  isRecentlySoldArtwork?: boolean
-  /** imageHeightExtra is an optional padding value you might want to add to image height
-   * When using large width like with RecentlySold, image appears cropped
-   * TODO: - Investigate why
-   */
-  imageHeightExtra?: number
 }
 
 const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
   image,
   urgencyTag = null,
   containerWidth,
-  isRecentlySoldArtwork,
-  imageHeightExtra = 0,
 }) => {
   const color = useColor()
-  const EXTRALARGE_RAIL_CARD_IMAGE_WIDTH = useExtraLargeWidth()
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
   if (!containerWidth) {
@@ -456,15 +410,10 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
     )
   }
 
-  const containerDimensions = isRecentlySoldArtwork
-    ? {
-        width: EXTRALARGE_RAIL_CARD_IMAGE_WIDTH,
-        height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
-      }
-    : {
-        width: ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
-        height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
-      }
+  const containerDimensions = {
+    width: ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
+    height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
+  }
 
   const imageDimensions = sizeToFit(
     {
@@ -474,9 +423,7 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
     containerDimensions
   )
 
-  const imageHeight = imageDimensions.height
-    ? imageDimensions.height + imageHeightExtra
-    : ARTWORK_RAIL_CARD_IMAGE_HEIGHT
+  const imageHeight = imageDimensions.height || ARTWORK_RAIL_CARD_IMAGE_HEIGHT
 
   return (
     <Flex>
@@ -504,31 +451,6 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
           </Text>
         </Flex>
       )}
-    </Flex>
-  )
-}
-
-export const RecentlySoldCardSection: React.FC<
-  Pick<
-    ArtworkRailCardProps,
-    "priceRealizedDisplay" | "lowEstimateDisplay" | "highEstimateDisplay" | "performanceDisplay"
-  > & { secondaryTextColor: string }
-> = ({ priceRealizedDisplay, lowEstimateDisplay, highEstimateDisplay, performanceDisplay }) => {
-  return (
-    <Flex>
-      <Flex flexDirection="row" justifyContent="space-between" mt={1}>
-        <Text variant="lg-display" numberOfLines={1}>
-          {priceRealizedDisplay}
-        </Text>
-        {!!performanceDisplay && (
-          <Text variant="lg-display" color="green" numberOfLines={1}>
-            {`+${performanceDisplay}`}
-          </Text>
-        )}
-      </Flex>
-      <Text variant="xs" color="black60" lineHeight="20px">
-        Estimate {compact([lowEstimateDisplay, highEstimateDisplay]).join("—")}
-      </Text>
     </Flex>
   )
 }
