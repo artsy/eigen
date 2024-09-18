@@ -1,7 +1,6 @@
 import { Flex, Text, useColor, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { ArtworkRailCard_artwork$data } from "__generated__/ArtworkRailCard_artwork.graphql"
-import { RecentlySoldCardSection } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { ArtworkDisplayProps } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
@@ -34,15 +33,11 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
   artworkDisplayProps,
 }) => {
   const {
+    SalePriceComponent,
     dark = false,
     hideArtistName = false,
     showPartnerName = true,
-    isRecentlySoldArtwork = false,
     lotLabel,
-    lowEstimateDisplay,
-    highEstimateDisplay,
-    performanceDisplay,
-    priceRealizedDisplay,
   } = artworkDisplayProps ?? {}
 
   const FULL_WIDTH_RAIL_CARD_IMAGE_WIDTH = useFullWidth()
@@ -63,11 +58,10 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
   const backgroundColor = dark ? "black100" : "white100"
 
   const getTextHeight = () => {
-    return ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + (isRecentlySoldArtwork ? 50 : 0)
+    return ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT
   }
 
   const containerWidth = FULL_WIDTH_RAIL_CARD_IMAGE_WIDTH
-  const displayForRecentlySoldArtwork = !!isRecentlySoldArtwork
 
   return (
     <Flex backgroundColor={backgroundColor} m={1}>
@@ -75,11 +69,6 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
         containerWidth={containerWidth}
         image={image}
         urgencyTag={urgencyTag}
-        imageHeightExtra={
-          displayForRecentlySoldArtwork
-            ? getTextHeight() - ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT
-            : undefined
-        }
       />
       <Flex
         my={1}
@@ -100,31 +89,21 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
             </Text>
           )}
           {!hideArtistName && !!artistNames && (
-            <Text
-              color={primaryTextColor}
-              numberOfLines={1}
-              lineHeight={displayForRecentlySoldArtwork ? undefined : "20px"}
-              variant={displayForRecentlySoldArtwork ? "md" : "xs"}
-            >
+            <Text color={primaryTextColor} numberOfLines={1} lineHeight="20px" variant="xs">
               {artistNames}
             </Text>
           )}
           {!!title && (
             <Text
-              lineHeight={displayForRecentlySoldArtwork ? undefined : "20px"}
-              color={displayForRecentlySoldArtwork ? undefined : secondaryTextColor}
+              lineHeight="20px"
+              color={secondaryTextColor}
               numberOfLines={1}
               variant="xs"
-              fontStyle={displayForRecentlySoldArtwork ? undefined : "italic"}
+              fontStyle="italic"
             >
               {title}
               {!!date && (
-                <Text
-                  lineHeight={displayForRecentlySoldArtwork ? undefined : "20px"}
-                  color={displayForRecentlySoldArtwork ? undefined : secondaryTextColor}
-                  numberOfLines={1}
-                  variant="xs"
-                >
+                <Text lineHeight="20px" color={secondaryTextColor} numberOfLines={1} variant="xs">
                   {title && date ? ", " : ""}
                   {date}
                 </Text>
@@ -137,27 +116,19 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
               {partner?.name}
             </Text>
           )}
-          {!!isRecentlySoldArtwork && (
-            <RecentlySoldCardSection
-              priceRealizedDisplay={priceRealizedDisplay}
-              lowEstimateDisplay={lowEstimateDisplay}
-              highEstimateDisplay={highEstimateDisplay}
-              performanceDisplay={performanceDisplay}
-              secondaryTextColor={secondaryTextColor}
-            />
-          )}
-
-          {!!saleMessage && !isRecentlySoldArtwork && (
-            <Text
-              lineHeight="20px"
-              variant="xs"
-              color={primaryTextColor}
-              numberOfLines={1}
-              fontWeight={500}
-            >
-              {saleMessage}
-            </Text>
-          )}
+          {SalePriceComponent
+            ? SalePriceComponent
+            : !!saleMessage && (
+                <Text
+                  lineHeight="20px"
+                  variant="xs"
+                  color={primaryTextColor}
+                  numberOfLines={1}
+                  fontWeight={500}
+                >
+                  {saleMessage}
+                </Text>
+              )}
         </Flex>
       </Flex>
     </Flex>
@@ -168,7 +139,7 @@ export interface ContextMenuArtworkPreviewCardImageProps {
   image: ArtworkRailCard_artwork$data["image"]
   urgencyTag?: string | null
   containerWidth?: number
-  isRecentlySoldArtwork?: boolean
+  displayRealizedPrice?: boolean
   /** imageHeightExtra is an optional padding value you might want to add to image height
    * When using large width like with RecentlySold, image appears cropped
    * TODO: - Investigate why
@@ -178,7 +149,7 @@ export interface ContextMenuArtworkPreviewCardImageProps {
 
 export const ContextMenuArtworkPreviewCardImage: React.FC<
   ContextMenuArtworkPreviewCardImageProps
-> = ({ image, urgencyTag = null, containerWidth, isRecentlySoldArtwork, imageHeightExtra = 0 }) => {
+> = ({ image, urgencyTag = null, containerWidth, displayRealizedPrice, imageHeightExtra = 0 }) => {
   const color = useColor()
   const FULL_WIDTH_RAIL_CARD_IMAGE_WIDTH = useFullWidth()
 
@@ -201,7 +172,7 @@ export const ContextMenuArtworkPreviewCardImage: React.FC<
       height: height ?? 0,
     },
     {
-      width: isRecentlySoldArtwork
+      width: displayRealizedPrice
         ? FULL_WIDTH_RAIL_CARD_IMAGE_WIDTH
         : ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
       height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT,

@@ -23,15 +23,7 @@ interface ContextAction extends Omit<ContextMenuAction, "subtitle"> {
 
 export type ArtworkDisplayProps = Pick<
   ArtworkRailCardProps,
-  | "dark"
-  | "hideArtistName"
-  | "showPartnerName"
-  | "isRecentlySoldArtwork"
-  | "lotLabel"
-  | "lowEstimateDisplay"
-  | "highEstimateDisplay"
-  | "performanceDisplay"
-  | "priceRealizedDisplay"
+  "dark" | "hideArtistName" | "showPartnerName" | "lotLabel" | "SalePriceComponent"
 >
 
 interface ContextMenuArtworkProps {
