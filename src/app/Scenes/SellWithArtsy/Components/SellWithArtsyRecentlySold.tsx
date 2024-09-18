@@ -9,6 +9,7 @@ import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { compact } from "lodash"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -65,9 +66,8 @@ export const SellWithArtsyRecentlySold: React.FC<SellWithArtsyRecentlySoldProps>
   )
 }
 
-type RecentlySoldArtwork = NonNullable<
-  NonNullable<SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$data["edges"]>[0]
->["node"]
+type RecentlySoldArtwork =
+  ExtractNodeType<SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$data>
 
 export interface RecentlySoldArtworksRailProps
   extends Omit<ArtworkRailProps, "artworks" | "onPress"> {
@@ -167,7 +167,7 @@ const customRecentlySoldArtworksFragment = graphql`
     edges {
       node {
         artwork {
-          ...ArtworkRailCard_artwork @arguments(width: 250)
+          ...ArtworkRailCard_artwork
           internalID
           href
           slug

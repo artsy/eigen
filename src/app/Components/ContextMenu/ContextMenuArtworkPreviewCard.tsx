@@ -1,20 +1,14 @@
-import { Flex, Text, useColor, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
-import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
-import { ArtworkRailCard_artwork$data } from "__generated__/ArtworkRailCard_artwork.graphql"
+import { Flex, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { ContextMenuArtworkPreviewCard_artwork$key } from "__generated__/ContextMenuArtworkPreviewCard_artwork.graphql"
 import { ArtworkDisplayProps } from "app/Components/ContextMenu/ContextMenuArtwork"
-import { OpaqueImageView } from "app/Components/OpaqueImageView2"
+import { ContextMenuArtworkPreviewCardImage } from "app/Components/ContextMenu/ContextMenuArtworkPreviewCardImage"
 import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
-import { sizeToFit } from "app/utils/useSizeToFit"
 import { PixelRatio } from "react-native"
 import { isTablet } from "react-native-device-info"
-import { graphql } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 
 const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = 70
-
-const ARTWORK_RAIL_CARD_IMAGE_HEIGHT = 400
-
-const ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH = 295
 
 const useFullWidth = () => {
   const space = useSpace()
@@ -24,14 +18,16 @@ const useFullWidth = () => {
 }
 
 export interface ContextMenuArtworkPreviewCardProps {
-  artwork: ArtworkRailCard_artwork$data | ArtworkGridItem_artwork$data
+  artwork: ContextMenuArtworkPreviewCard_artwork$key
   artworkDisplayProps?: ArtworkDisplayProps
 }
 
 export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCardProps> = ({
-  artwork,
   artworkDisplayProps,
+  ...restProps
 }) => {
+  const artwork = useFragment(artworkFragment, restProps.artwork)
+
   const {
     SalePriceComponent,
     dark = false,
@@ -44,7 +40,7 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
 
   const fontScale = PixelRatio.getFontScale()
 
-  const { artistNames, date, image, partner, title, sale, saleArtwork } = artwork
+  const { artistNames, date, partner, title, sale, saleArtwork } = artwork
 
   const saleMessage = defaultSaleMessageOrBidInfo({ artwork, isSmallTile: true })
 
@@ -67,7 +63,7 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
     <Flex backgroundColor={backgroundColor} m={1}>
       <ContextMenuArtworkPreviewCardImage
         containerWidth={containerWidth}
-        image={image}
+        artwork={artwork}
         urgencyTag={urgencyTag}
       />
       <Flex
@@ -135,111 +131,15 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
   )
 }
 
-export interface ContextMenuArtworkPreviewCardImageProps {
-  image: ArtworkRailCard_artwork$data["image"]
-  urgencyTag?: string | null
-  containerWidth?: number
-  /** imageHeightExtra is an optional padding value you might want to add to image height
-   * When using large width like with RecentlySold, image appears cropped
-   * TODO: - Investigate why
-   */
-  imageHeightExtra?: number
-}
-
-export const ContextMenuArtworkPreviewCardImage: React.FC<
-  ContextMenuArtworkPreviewCardImageProps
-> = ({ image, urgencyTag = null, containerWidth, imageHeightExtra = 0 }) => {
-  const color = useColor()
-
-  const { width, height, src } = image?.resized || {}
-
-  if (!src) {
-    return (
-      <Flex
-        bg={color("black30")}
-        width={width}
-        height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
-        style={{ borderRadius: 2 }}
-      />
-    )
-  }
-
-  const imageDimensions = sizeToFit(
-    {
-      width: width ?? 0,
-      height: height ?? 0,
-    },
-    {
-      width: ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
-      height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
-    }
-  )
-
-  return (
-    <Flex>
-      <Flex width={containerWidth}>
-        <OpaqueImageView
-          style={{ maxHeight: ARTWORK_RAIL_CARD_IMAGE_HEIGHT }}
-          imageURL={src}
-          height={
-            imageDimensions.height
-              ? imageDimensions.height + imageHeightExtra
-              : ARTWORK_RAIL_CARD_IMAGE_HEIGHT
-          }
-          width={containerWidth}
-        />
-      </Flex>
-      {!!urgencyTag && (
-        <Flex
-          backgroundColor={color("white100")}
-          position="absolute"
-          px="5px"
-          py="3px"
-          bottom="5px"
-          left="5px"
-          borderRadius={2}
-          alignSelf="flex-start"
-        >
-          <Text variant="xs" color={color("black100")} numberOfLines={1}>
-            {urgencyTag}
-          </Text>
-        </Flex>
-      )}
-    </Flex>
-  )
-}
-
-export const artworkFragment = graphql`
+const artworkFragment = graphql`
   fragment ContextMenuArtworkPreviewCard_artwork on Artwork
   @argumentDefinitions(width: { type: "Int" }) {
-    ...CreateArtworkAlertModal_artwork
-    id
-    internalID
-    availability
-    slug
-    isAcquireable
-    isBiddable
-    isInquireable
-    isOfferable
-    href
+    ...ContextMenuArtworkPreviewCardImage_artwork @arguments(width: $width)
+
     artistNames
-    artists(shallow: true) {
-      name
-    }
-    widthCm
-    heightCm
-    isHangable
     date
-    image {
-      url(version: "large")
-      resized(width: $width) {
-        src
-        srcSet
-        width
-        height
-      }
-      aspectRatio
-    }
+    title
+    realizedPrice
     sale {
       isAuction
       isClosed
@@ -259,8 +159,5 @@ export const artworkFragment = graphql`
     partner {
       name
     }
-    title
-    realizedPrice
-    ...useSaveArtworkToArtworkLists_artwork
   }
 `

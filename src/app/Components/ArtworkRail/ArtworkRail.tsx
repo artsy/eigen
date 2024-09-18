@@ -3,10 +3,8 @@ import {
   ArtworkRail_artworks$data,
   ArtworkRail_artworks$key,
 } from "__generated__/ArtworkRail_artworks.graphql"
-import {
-  ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
-  ArtworkRailCard,
-} from "app/Components/ArtworkRail/ArtworkRailCard"
+import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
+import { ARTWORK_RAIL_CARD_IMAGE_HEIGHT } from "app/Components/ArtworkRail/ArtworkRailCardImage"
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
 import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
@@ -135,7 +133,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
 
 const artworksFragment = graphql`
   fragment ArtworkRail_artworks on Artwork @relay(plural: true) {
-    ...ArtworkRailCard_artwork @arguments(width: 590)
+    ...ArtworkRailCard_artwork
     internalID
     href
     slug

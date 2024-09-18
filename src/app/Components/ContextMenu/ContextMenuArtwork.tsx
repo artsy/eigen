@@ -1,7 +1,7 @@
 import { ActionType, ContextModule, LongPressedArtwork, ScreenOwnerType } from "@artsy/cohesion"
 import { useColor } from "@artsy/palette-mobile"
-import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
-import { ArtworkRailCard_artwork$data } from "__generated__/ArtworkRailCard_artwork.graphql"
+import { ContextMenuArtworkPreviewCard_artwork$key } from "__generated__/ContextMenuArtworkPreviewCard_artwork.graphql"
+import { ContextMenuArtwork_artwork$key } from "__generated__/ContextMenuArtwork_artwork.graphql"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ArtworkRailCardProps } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { ContextMenuArtworkPreviewCard } from "app/Components/ContextMenu/ContextMenuArtworkPreviewCard"
@@ -15,6 +15,7 @@ import { isEmpty } from "lodash"
 import { InteractionManager, Platform } from "react-native"
 import ContextMenu, { ContextMenuAction, ContextMenuProps } from "react-native-context-menu-view"
 import { HapticFeedbackTypes, trigger } from "react-native-haptic-feedback"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface ContextAction extends Omit<ContextMenuAction, "subtitle"> {
@@ -27,7 +28,7 @@ export type ArtworkDisplayProps = Pick<
 >
 
 interface ContextMenuArtworkProps {
-  artwork: ArtworkRailCard_artwork$data | ArtworkGridItem_artwork$data
+  artwork: ContextMenuArtwork_artwork$key
   onCreateAlertActionPress: () => void
   onSupressArtwork?: () => void
   haptic?: HapticFeedbackTypes | boolean
@@ -36,8 +37,38 @@ interface ContextMenuArtworkProps {
   contextModule?: ContextModule
 }
 
+const artworkFragment = graphql`
+  fragment ContextMenuArtwork_artwork on Artwork
+  @argumentDefinitions(width: { type: "Int", defaultValue: 295 }) {
+    ...ContextMenuArtworkPreviewCard_artwork @arguments(width: $width)
+    ...useSaveArtworkToArtworkLists_artwork
+
+    title
+    href
+    artistNames
+    artists(shallow: true) {
+      name
+    }
+    slug
+    internalID
+    id
+    isHangable
+    contextMenuImage: image {
+      url(version: "large")
+    }
+    image(includeAll: false) {
+      url(version: "large")
+    }
+    sale {
+      isAuction
+      isClosed
+    }
+    heightCm
+    widthCm
+  }
+`
+
 export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
-  artwork,
   children,
   haptic = true,
   artworkDisplayProps,
@@ -45,7 +76,10 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   onSupressArtwork,
   contextScreenOwnerType,
   contextModule,
+  ...restProps
 }) => {
+  const artwork = useFragment(artworkFragment, restProps.artwork)
+
   const { trackEvent } = useTracking()
   const { showShareSheet } = useShareSheet()
   const enableContextMenuForRecommendations =
@@ -217,9 +251,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
     return <>{children}</>
   }
 
-  const artworkPreviewComponent = (
-    artwork: ArtworkRailCard_artwork$data | ArtworkGridItem_artwork$data
-  ) => {
+  const artworkPreviewComponent = (artwork: ContextMenuArtworkPreviewCard_artwork$key) => {
     return (
       <ContextMenuArtworkPreviewCard artwork={artwork} artworkDisplayProps={artworkDisplayProps} />
     )
