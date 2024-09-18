@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/NodesManager.java b/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/NodesManager.java
-index e974f8e..0cbe877 100644
+index e974f8e..f18d93d 100644
 --- a/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/NodesManager.java
 +++ b/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/NodesManager.java
 @@ -81,7 +81,7 @@ public class NodesManager implements EventDispatcherListener {
@@ -7,7 +7,7 @@ index e974f8e..0cbe877 100644
    private List<OnAnimationFrame> mFrameCallbacks = new ArrayList<>();
    private ConcurrentLinkedQueue<CopiedEvent> mEventQueue = new ConcurrentLinkedQueue<>();
 -  public double currentFrameTimeMs;
-+  private double lastFrameTimeMs
++  private double lastFrameTimeMs;
    public Set<String> uiProps = Collections.emptySet();
    public Set<String> nativeProps = Collections.emptySet();
    private ReaCompatibility compatibility;
@@ -28,7 +28,7 @@ index e974f8e..0cbe877 100644
 +      // due to frame drops. If this occurs, the additional callback execution should be ignored.
 +      lastFrameTimeMs = currentFrameTimeMs;
 +      while (!mEventQueue.isEmpty()) {
-+        CopiedEvent event = mEventQueue.poll();
++        CopiedEvent copiedEvent = mEventQueue.poll();
 +        handleEvent(copiedEvent.getTargetTag(), copiedEvent.getEventName(), copiedEvent.getPayload());
 +      }
  
