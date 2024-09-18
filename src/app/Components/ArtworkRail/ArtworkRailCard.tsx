@@ -1,22 +1,10 @@
-import {
-  Box,
-  Flex,
-  HeartFillIcon,
-  HeartIcon,
-  Image,
-  Text,
-  Touchable,
-  useColor,
-} from "@artsy/palette-mobile"
-import {
-  ArtworkRailCard_artwork$data,
-  ArtworkRailCard_artwork$key,
-} from "__generated__/ArtworkRailCard_artwork.graphql"
+import { Box, Flex, HeartFillIcon, HeartIcon, Text, Touchable } from "@artsy/palette-mobile"
+import { ArtworkRailCard_artwork$key } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
 import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
-import { ARTWORK_RAIL_IMAGE_WIDTH } from "app/Components/ArtworkRail/ArtworkRail"
+import { ArtworkRailCardImage } from "app/Components/ArtworkRail/ArtworkRailCardImage"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { HEART_ICON_SIZE } from "app/Components/constants"
 import { formattedTimeLeft } from "app/Scenes/Activity/utils/formattedTimeLeft"
@@ -29,15 +17,12 @@ import {
   ArtworkActionTrackingProps,
   tracks as artworkActionTracks,
 } from "app/utils/track/ArtworkActions"
-import { sizeToFit } from "app/utils/useSizeToFit"
-import { useMemo, useState } from "react"
+import { useState } from "react"
 import { GestureResponderEvent, PixelRatio, TouchableHighlight } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = 90
-export const ARTWORK_RAIL_CARD_IMAGE_HEIGHT = 320
-const ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH = 295
 
 export interface ArtworkRailCardProps extends ArtworkActionTrackingProps {
   artwork: ArtworkRailCard_artwork$key
@@ -88,17 +73,8 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
 
   const artwork = useFragment(artworkFragment, restProps.artwork)
-  const {
-    artistNames,
-    date,
-    image,
-    partner,
-    title,
-    sale,
-    saleArtwork,
-    isUnlisted,
-    collectorSignals,
-  } = artwork
+  const { artistNames, date, partner, title, sale, saleArtwork, isUnlisted, collectorSignals } =
+    artwork
 
   const saleMessage = defaultSaleMessageOrBidInfo({
     artwork,
@@ -126,29 +102,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     contextScreenOwnerSlug,
     contextScreen,
   } = restProps
-
-  const containerWidth = useMemo(() => {
-    const imageDimensions = sizeToFit(
-      {
-        width: image?.resized?.width ?? 0,
-        height: image?.resized?.height ?? 0,
-      },
-      {
-        width: ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
-        height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
-      }
-    )
-
-    const SMALL_RAIL_IMAGE_WIDTH = 155
-
-    if (imageDimensions.width <= SMALL_RAIL_IMAGE_WIDTH) {
-      return SMALL_RAIL_IMAGE_WIDTH
-    } else if (imageDimensions.width >= ARTWORK_RAIL_IMAGE_WIDTH) {
-      return ARTWORK_RAIL_IMAGE_WIDTH
-    } else {
-      return imageDimensions.width
-    }
-  }, [image?.resized?.height, image?.resized?.width])
 
   const onArtworkSavedOrUnSaved = (saved: boolean) => {
     const { availability, isAcquireable, isBiddable, isInquireable, isOfferable } = artwork
@@ -217,13 +170,11 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
         >
           <Flex backgroundColor={backgroundColor}>
             <ArtworkRailCardImage
-              containerWidth={containerWidth}
-              image={image}
+              artwork={artwork}
               urgencyTag={!displayAuctionSignal ? urgencyTag : null}
             />
             <Flex
               my={1}
-              width={containerWidth}
               style={{
                 height: fontScale * ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT,
                 ...metaContainerStyles,
@@ -379,85 +330,12 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   )
 }
 
-export interface ArtworkRailCardImageProps {
-  image: ArtworkRailCard_artwork$data["image"]
-  urgencyTag?: string | null
-  containerWidth?: number | null
-}
-
-const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
-  image,
-  urgencyTag = null,
-  containerWidth,
-}) => {
-  const color = useColor()
-  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
-
-  if (!containerWidth) {
-    return null
-  }
-
-  const { width, height, src } = image?.resized || {}
-
-  if (!src) {
-    return (
-      <Flex
-        bg={color("black30")}
-        width={width}
-        height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
-        style={{ borderRadius: 2 }}
-      />
-    )
-  }
-
-  const containerDimensions = {
-    width: ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
-    height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
-  }
-
-  const imageDimensions = sizeToFit(
-    {
-      width: width ?? 0,
-      height: height ?? 0,
-    },
-    containerDimensions
-  )
-
-  const imageHeight = imageDimensions.height || ARTWORK_RAIL_CARD_IMAGE_HEIGHT
-
-  return (
-    <Flex>
-      <Image
-        src={src}
-        width={containerWidth}
-        height={imageHeight}
-        blurhash={showBlurhash ? image?.blurhash : undefined}
-      />
-
-      {!!urgencyTag && (
-        <Flex
-          testID="auction-urgency-tag"
-          backgroundColor={color("white100")}
-          position="absolute"
-          px="5px"
-          py="3px"
-          bottom="5px"
-          left="5px"
-          borderRadius={2}
-          alignSelf="flex-start"
-        >
-          <Text variant="xs" color={color("black100")} numberOfLines={1}>
-            {urgencyTag}
-          </Text>
-        </Flex>
-      )}
-    </Flex>
-  )
-}
-
 const artworkFragment = graphql`
-  fragment ArtworkRailCard_artwork on Artwork @argumentDefinitions(width: { type: "Int" }) {
+  fragment ArtworkRailCard_artwork on Artwork {
     ...CreateArtworkAlertModal_artwork
+    ...ArtworkRailCardImage_artwork @arguments(width: 590)
+    ...ContextMenuArtwork_artwork
+
     id
     internalID
     availability
@@ -471,21 +349,13 @@ const artworkFragment = graphql`
     artists(shallow: true) {
       name
     }
+    image(includeAll: false) {
+      url(version: "large")
+    }
     widthCm
     heightCm
     isHangable
     date
-    image {
-      blurhash
-      url(version: "large")
-      resized(width: $width) {
-        src
-        srcSet
-        width
-        height
-      }
-      aspectRatio
-    }
     isUnlisted
     sale {
       isAuction

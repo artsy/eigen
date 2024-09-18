@@ -533,6 +533,7 @@ export default createFragmentContainer(Artwork, {
       width: { type: "Int" }
     ) {
       ...CreateArtworkAlertModal_artwork
+      ...ContextMenuArtwork_artwork @arguments(width: $width)
       availability
       title
       date
