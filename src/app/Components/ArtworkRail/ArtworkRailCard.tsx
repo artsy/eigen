@@ -71,7 +71,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     "AREnableCuratorsPicksAndInterestSignals"
   )
   const enableArtworkRailRedesignImageAspectRatio = useFeatureFlag(
-    "ARenableArtworkRailRedesignImageAspectRatio"
+    "AREnableArtworkRailRedesignImageAspectRatio"
   )
 
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)

@@ -277,11 +277,11 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableCuratorsPicksAndInterestSignals",
   },
-  ARenableArtworkRailRedesignImageAspectRatio: {
+  AREnableArtworkRailRedesignImageAspectRatio: {
     description: "Enable new aspect ratio for artwork rail images",
     readyForRelease: false,
     showInDevMenu: true,
-    // echoFlagKey: "ARenableArtworkRailRedesignImageAspectRatio",
+    // echoFlagKey: "AREnableArtworkRailRedesignImageAspectRatio",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 
