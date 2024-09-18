@@ -1058,12 +1058,16 @@ DEPENDENCIES:
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://cdn.cocoapods.org/:
+  https://github.com/artsy/Specs.git:
+    - Aerodramus
+  trunk:
     - AFNetworkActivityLogger
+    - AFNetworking
     - Analytics
     - AppAuth
     - AppCenter
     - AppCenterReactNativeShared
+    - Base64
     - BrazeKit
     - BrazeLocation
     - BrazeUI
@@ -1074,6 +1078,7 @@ SPEC REPOS:
     - CwlMachBadInstructionHandler
     - CwlPosixPreconditionTesting
     - CwlPreconditionTesting
+    - Expecta
     - "Expecta+Snapshots"
     - FBAEMKit
     - FBSDKCoreKit
@@ -1094,6 +1099,7 @@ SPEC REPOS:
     - Flipper-Fmt
     - Flipper-Folly
     - Flipper-Glog
+    - Flipper-PeerTalk
     - FlipperKit
     - fmt
     - Forgeries
@@ -1121,6 +1127,7 @@ SPEC REPOS:
     - Nimble-Snapshots
     - ObjectiveSugar
     - OCMock
+    - OHHTTPStubs
     - OpenSSL-Universal
     - ORStackView
     - PromisesObjC
@@ -1148,14 +1155,6 @@ SPEC REPOS:
     - "UIView+BooleanAnimations"
     - "XCTest+OHHTTPStubSuiteCleanUp"
     - YogaKit
-  https://github.com/artsy/Specs.git:
-    - Aerodramus
-  https://github.com/CocoaPods/Specs.git:
-    - AFNetworking
-    - Base64
-    - Expecta
-    - Flipper-PeerTalk
-    - OHHTTPStubs
 
 EXTERNAL SOURCES:
   appcenter-core:
@@ -1365,7 +1364,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Aerodramus: a22de7451c8fc85ae5d974f5d6a656f59046fffc
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
-  AFNetworking: 8dd5f9b9691e09186393069a12cc3b5ed7c8b511
+  AFNetworking: 9d57de7506959955d82fb5274ee4bec86b930e52
   Analytics: 9655e0e1c71ea98107cfcb2b14891168acc6c6c9
   AppAuth: a13994980c1ec792f7e2e665acd4d4aa6be43240
   AppCenter: a4070ec3d4418b5539067a51f57155012e486ebd
