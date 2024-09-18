@@ -134,6 +134,7 @@ dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
 
+    implementation "androidx.core:core-splashscreen:1.0.0"
     // This is required to fix an issue that causes the app to crash on startup
     // This can be removed as soon as we get to a react-native version above 0.66
     // See https://github.com/facebook/react-native/issues/31725#issuecomment-901682370
@@ -148,8 +149,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:21.1.0'
 
     implementation "androidx.core:core-splashscreen:1.0.0"
-
     implementation 'commons-io:commons-io:2.8.0'
+
     implementation("com.facebook.react:flipper-integration")
 
     // For WebP support, including animated WebP
