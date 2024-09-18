@@ -82,6 +82,7 @@
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize"
             android:exported="true"
+            android:fitsSystemWindows="true"
             android:theme="@style/BootTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

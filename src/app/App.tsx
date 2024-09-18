@@ -18,19 +18,19 @@ import {
   SegmentTrackingProvider,
 } from "app/utils/track/SegmentTrackingProvider"
 import { useDeepLinks } from "app/utils/useDeepLinks"
+import { useHideSplashScreen } from "app/utils/useHideSplashScreen"
 import { useIdentifyUser } from "app/utils/useIdentifyUser"
 import { useSiftConfig } from "app/utils/useSiftConfig"
 import { useStripeConfig } from "app/utils/useStripeConfig"
 import { useEffect } from "react"
-import { NativeModules, Platform, UIManager, View } from "react-native"
-import RNBootSplash from "react-native-bootsplash"
+import { NativeModules, UIManager, View } from "react-native"
 import codePush from "react-native-code-push"
 import Config from "react-native-config"
 import { Settings } from "react-native-fbsdk-next"
 import "react-native-get-random-values"
 import { useWebViewCookies } from "./Components/ArtsyWebView"
 import { FPSCounter } from "./Components/FPSCounter"
-import { ArtsyNativeModule, DEFAULT_NAVIGATION_BAR_COLOR } from "./NativeModules/ArtsyNativeModule"
+import { ArtsyNativeModule } from "./NativeModules/ArtsyNativeModule"
 import { Providers } from "./Providers"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
@@ -114,35 +114,9 @@ const Main = () => {
   useScreenReaderTracking()
   useFreshInstallTracking()
   usePurgeCacheOnAppUpdate()
+  useHideSplashScreen()
 
   const prefetchUrl = usePrefetch()
-
-  const setAndroidTheme = async () => {
-    await RNBootSplash.hide({
-      fade: true,
-    })
-    ArtsyNativeModule.lockActivityScreenOrientation()
-    ArtsyNativeModule.setAppStyling()
-    if (isLoggedIn) {
-      ArtsyNativeModule.setNavigationBarColor(DEFAULT_NAVIGATION_BAR_COLOR)
-      ArtsyNativeModule.setAppLightContrast(false)
-    }
-  }
-
-  useEffect(() => {
-    if (isHydrated) {
-      // We wait a bit until the UI finishes drawing behind the splash screen
-      setTimeout(async () => {
-        await RNBootSplash.hide({
-          fade: true,
-        })
-
-        if (Platform.OS === "android") {
-          await setAndroidTheme()
-        }
-      }, 500)
-    }
-  }, [isHydrated])
 
   useEffect(() => {
     if (isLoggedIn) {
