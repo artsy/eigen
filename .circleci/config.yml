@@ -98,7 +98,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v19-app_build_ios-{{ checksum ".manifests/app_build" }}
+            - v21-app_build_ios-{{ checksum ".manifests/app_build" }}
       - run:
           name: Download fonts from s3
           command: ./scripts/setup/download-fonts
@@ -109,7 +109,7 @@ commands:
           name: Build App
           command: ./scripts/ci/ci-ios
       - save_cache:
-          key: v19-app_build_ios-{{ checksum ".manifests/app_build" }}
+          key: v21-app_build_ios-{{ checksum ".manifests/app_build" }}
           paths:
             - derived_data
             - node_modules/react-native-config
@@ -412,6 +412,7 @@ jobs:
           platform: "iOS"
           device: "iPhone 15 Pro"
       - build-app-ios
+      - macos/install-rosetta
       - run:
           name: Run tests if native code has changed
           command: ls xcode_test_raw.log || ./scripts/ci/ci-test-ios
@@ -515,6 +516,7 @@ jobs:
       - update-echo
       - install-gems
       - install-cocoapods
+      - macos/install-rosetta
       - run:
           name: Upload iOS build to Maestro App Quality Copilot
           no_output_timeout: 20m

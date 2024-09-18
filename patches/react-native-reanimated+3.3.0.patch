@@ -1,0 +1,54 @@
+diff --git a/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/NodesManager.java b/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/NodesManager.java
+index e974f8e..f18d93d 100644
+--- a/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/NodesManager.java
++++ b/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/NodesManager.java
+@@ -81,7 +81,7 @@ public class NodesManager implements EventDispatcherListener {
+   private RCTEventEmitter mCustomEventHandler;
+   private List<OnAnimationFrame> mFrameCallbacks = new ArrayList<>();
+   private ConcurrentLinkedQueue<CopiedEvent> mEventQueue = new ConcurrentLinkedQueue<>();
+-  public double currentFrameTimeMs;
++  private double lastFrameTimeMs;
+   public Set<String> uiProps = Collections.emptySet();
+   public Set<String> nativeProps = Collections.emptySet();
+   private ReaCompatibility compatibility;
+@@ -234,22 +234,27 @@ public class NodesManager implements EventDispatcherListener {
+   }
+ 
+   private void onAnimationFrame(long frameTimeNanos) {
+-    currentFrameTimeMs = frameTimeNanos / 1000000.;
+-
+-    while (!mEventQueue.isEmpty()) {
+-      CopiedEvent copiedEvent = mEventQueue.poll();
+-      handleEvent(copiedEvent.getTargetTag(), copiedEvent.getEventName(), copiedEvent.getPayload());
+-    }
++    double currentFrameTimeMs = frameTimeNanos / 1000000.;
++    
++    if (currentFrameTimeMs > lastFrameTimeMs) {
++      // It is possible for ChoreographerCallback to be executed twice within the same frame
++      // due to frame drops. If this occurs, the additional callback execution should be ignored.
++      lastFrameTimeMs = currentFrameTimeMs;
++      while (!mEventQueue.isEmpty()) {
++        CopiedEvent copiedEvent = mEventQueue.poll();
++        handleEvent(copiedEvent.getTargetTag(), copiedEvent.getEventName(), copiedEvent.getPayload());
++      }
+ 
+-    if (!mFrameCallbacks.isEmpty()) {
+-      List<OnAnimationFrame> frameCallbacks = mFrameCallbacks;
+-      mFrameCallbacks = new ArrayList<>(frameCallbacks.size());
+-      for (int i = 0, size = frameCallbacks.size(); i < size; i++) {
+-        frameCallbacks.get(i).onAnimationFrame(currentFrameTimeMs);
++      if (!mFrameCallbacks.isEmpty()) {
++        List<OnAnimationFrame> frameCallbacks = mFrameCallbacks;
++        mFrameCallbacks = new ArrayList<>(frameCallbacks.size());
++        for (int i = 0, size = frameCallbacks.size(); i < size; i++) {
++          frameCallbacks.get(i).onAnimationFrame(currentFrameTimeMs);
++        }
+       }
+-    }
+ 
+-    performOperations();
++      performOperations();
++    }
+ 
+     mCallbackPosted.set(false);
+ 
