@@ -9,11 +9,13 @@ import { CollectorProfilePrompt } from "./CollectorProfilePrompt"
 interface CollectorUpdateNotificationProps {
   notification: CollectorUpdateNotification_notification$key
   item: CollectorUpdateNotification_item$key
+  onPress: () => void
 }
 
 export const CollectorUpdateNotification: FC<CollectorUpdateNotificationProps> = ({
   notification: _notification,
   item: _item,
+  onPress,
 }) => {
   const [promptVisible, setPromptVisible] = useState(false)
   const notification = useFragment(NOTIFICATION_FRAGMENT, _notification)
@@ -27,9 +29,14 @@ export const CollectorUpdateNotification: FC<CollectorUpdateNotificationProps> =
     item.me.myCollectionInfo.artworksCount === 0 && !item.me.userInterestsConnection?.totalCount
   const itemInfo = hasEmptyCollection ? addArtistsToCollectiontInfo : collectorProfileInfo
 
+  const handleOnPress = () => {
+    setPromptVisible(true)
+    onPress()
+  }
+
   return (
     <>
-      <Touchable onPress={() => setPromptVisible(true)}>
+      <Touchable onPress={handleOnPress}>
         <Flex flex={1} py={2} pr={2}>
           <Text variant="sm-display" fontWeight={500}>
             {itemInfo.title}

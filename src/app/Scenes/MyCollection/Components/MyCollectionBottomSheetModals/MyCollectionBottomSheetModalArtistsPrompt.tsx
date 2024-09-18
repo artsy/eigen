@@ -1,8 +1,10 @@
+import { Spinner } from "@artsy/palette-mobile"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import {
   MyCollectionArtistsPrompt,
   MyCollectionArtistsPromptProps,
 } from "app/Scenes/MyCollection/Components/MyCollectionArtistsPrompt/MyCollectionArtistsPrompt"
+import { Suspense } from "react"
 import { Dimensions } from "react-native"
 
 interface MyCollectionBottomSheetModalArtistsPromptProps extends MyCollectionArtistsPromptProps {
@@ -20,7 +22,9 @@ export const MyCollectionBottomSheetModalArtistsPrompt: React.FC<
       enableOverDrag={false}
       onDismiss={onDismiss}
     >
-      <MyCollectionArtistsPrompt {...rest} />
+      <Suspense fallback={<Spinner />}>
+        <MyCollectionArtistsPrompt {...rest} />
+      </Suspense>
     </AutomountedBottomSheetModal>
   )
 }
