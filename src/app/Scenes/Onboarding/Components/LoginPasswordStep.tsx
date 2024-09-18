@@ -3,16 +3,12 @@ import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
 import { OnboardingHomeNavigationStack } from "app/Scenes/Onboarding/OnboardingHome"
-import { OnboardingStore } from "app/Scenes/Onboarding/OnboardingStore"
 import { Field, Formik } from "formik"
 import * as Yup from "yup"
 
 type LoginPasswordStepProps = StackScreenProps<OnboardingHomeNavigationStack, "LoginPasswordStep">
 
 export const LoginPasswordStep: React.FC<LoginPasswordStepProps> = ({ navigation }) => {
-  const changeStep = OnboardingStore.useStoreActions((actions) => actions.changeStep)
-  changeStep("LoginPasswordStep")
-
   const { space } = useTheme()
 
   const handleContinueButtonPress = () => {
@@ -32,7 +28,7 @@ export const LoginPasswordStep: React.FC<LoginPasswordStepProps> = ({ navigation
       })}
       validateOnMount
     >
-      {({ handleChange, handleSubmit, isValid, values }) => {
+      {({ handleChange, isValid, values }) => {
         return (
           <BottomSheetScrollView>
             <Flex padding={2} gap={space(1)}>
@@ -53,7 +49,7 @@ export const LoginPasswordStep: React.FC<LoginPasswordStepProps> = ({ navigation
                 onChangeText={handleChange("password")}
               />
 
-              <Button block width={100} onPress={handleSubmit} disabled={!isValid}>
+              <Button block width={100} onPress={handleContinueButtonPress} disabled={!isValid}>
                 Continue
               </Button>
             </Flex>

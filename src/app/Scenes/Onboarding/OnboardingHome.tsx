@@ -5,8 +5,8 @@ import {
   DEFAULT_NAVIGATION_BAR_COLOR,
 } from "app/NativeModules/ArtsyNativeModule"
 import { AuthenticationDialog } from "app/Scenes/Onboarding/Components/AuthenticationDialog"
-import { OnboardingStore } from "app/Scenes/Onboarding/OnboardingStore"
 import { useScreenDimensions } from "app/utils/hooks"
+import { Action, action, createContextStore } from "easy-peasy"
 import backgroundImage from "images/WelcomeImage.webp"
 import { MotiView } from "moti"
 import { useEffect } from "react"
@@ -58,12 +58,11 @@ export const OnboardingHome: React.FC<OnboardingHomeProps> = ({ navigation }) =>
       </LegacyScreen.Background>
 
       <LegacyScreen.Body>
-        <OnboardingStore.Provider>
-          {/* TODO: figure out why logo and text don't return when navigating back to welcome step */}
+        <OnboardingHomeStore.Provider>
           <ArtsyLogo />
           <WelcomeText />
           <AuthenticationDialog />
-        </OnboardingStore.Provider>
+        </OnboardingHomeStore.Provider>
       </LegacyScreen.Body>
     </LegacyScreen>
   )
@@ -131,9 +130,11 @@ const Background: React.FC = () => {
 }
 
 const ArtsyLogo: React.FC = () => {
-  const currentStep = OnboardingStore.useStoreState((state) => state.currentStep)
+  const userIsAuthenticating = OnboardingHomeStore.useStoreState(
+    (state) => state.userIsAuthenticating
+  )
 
-  if (currentStep !== "WelcomeStep") {
+  if (userIsAuthenticating) {
     return null
   }
 
@@ -151,9 +152,11 @@ const ArtsyLogo: React.FC = () => {
 }
 
 const WelcomeText: React.FC = () => {
-  const currentStep = OnboardingStore.useStoreState((state) => state.currentStep)
+  const userIsAuthenticating = OnboardingHomeStore.useStoreState(
+    (state) => state.userIsAuthenticating
+  )
 
-  if (currentStep !== "WelcomeStep") {
+  if (userIsAuthenticating) {
     return null
   }
 
@@ -185,3 +188,15 @@ export type OnboardingHomeNavigationStack = {
   EmailStep: undefined
   LoginPasswordStep: undefined
 }
+
+interface OnboardingHomeStoreModel {
+  userIsAuthenticating: boolean
+  setUserIsAuthenticating: Action<OnboardingHomeStoreModel, boolean>
+}
+
+export const OnboardingHomeStore = createContextStore<OnboardingHomeStoreModel>({
+  userIsAuthenticating: false,
+  setUserIsAuthenticating: action((state, payload) => {
+    state.userIsAuthenticating = payload
+  }),
+})

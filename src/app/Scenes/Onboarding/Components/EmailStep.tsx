@@ -3,16 +3,12 @@ import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
 import { OnboardingHomeNavigationStack } from "app/Scenes/Onboarding/OnboardingHome"
-import { OnboardingStore } from "app/Scenes/Onboarding/OnboardingStore"
 import { Field, Formik } from "formik"
 import * as Yup from "yup"
 
 type EmailStepProps = StackScreenProps<OnboardingHomeNavigationStack, "EmailStep">
 
 export const EmailStep: React.FC<EmailStepProps> = ({ navigation }) => {
-  const changeStep = OnboardingStore.useStoreActions((actions) => actions.changeStep)
-  changeStep("EmailStep")
-
   const { space } = useTheme()
 
   const handleContinueButtonPress = () => {
@@ -32,7 +28,7 @@ export const EmailStep: React.FC<EmailStepProps> = ({ navigation }) => {
       })}
       validateOnMount
     >
-      {({ handleBlur, handleChange, handleSubmit, isValid, values }) => {
+      {({ handleBlur, handleChange, isValid, values }) => {
         return (
           <BottomSheetScrollView>
             <Flex padding={2} gap={space(1)}>
@@ -56,7 +52,7 @@ export const EmailStep: React.FC<EmailStepProps> = ({ navigation }) => {
                 onChangeText={handleChange("email")}
               />
 
-              <Button block width={100} onPress={handleSubmit} disabled={!isValid}>
+              <Button block width={100} onPress={handleContinueButtonPress} disabled={!isValid}>
                 Continue
               </Button>
             </Flex>

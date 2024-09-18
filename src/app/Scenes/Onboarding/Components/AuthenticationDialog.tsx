@@ -1,20 +1,33 @@
 import { Flex, useTheme } from "@artsy/palette-mobile"
 import BottomSheet from "@gorhom/bottom-sheet"
-import { NavigationContainer } from "@react-navigation/native"
+import { NavigationContainer, NavigationState } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { EmailStep } from "app/Scenes/Onboarding/Components/EmailStep"
 import { LoginPasswordStep } from "app/Scenes/Onboarding/Components/LoginPasswordStep"
 import { WelcomeStep } from "app/Scenes/Onboarding/Components/WelcomeStep"
+import { OnboardingHomeStore } from "app/Scenes/Onboarding/OnboardingHome"
 import React from "react"
-import { View } from "react-native"
+
+const Stack = createStackNavigator()
 
 export const AuthenticationDialog: React.FC = () => {
+  const setUserIsAuthenticating = OnboardingHomeStore.useStoreActions(
+    (actions) => actions.setUserIsAuthenticating
+  )
+
   const { space } = useTheme()
 
-  const Stack = createStackNavigator()
+  const handleStateChange = (state: NavigationState | undefined) => {
+    if (state === undefined) {
+      return
+    }
+
+    const newState = state.routeNames.at(state.index)
+    setUserIsAuthenticating(newState !== "WelcomeStep")
+  }
 
   return (
-    <View style={{ flex: 1 }}>
+    <Flex flex={1}>
       <BottomSheet
         snapPoints={["100%"]}
         detached
@@ -22,7 +35,7 @@ export const AuthenticationDialog: React.FC = () => {
         handleComponent={null}
       >
         <Flex style={{ borderRadius: space(2), overflow: "hidden", flex: 1 }}>
-          <NavigationContainer independent>
+          <NavigationContainer independent onStateChange={handleStateChange}>
             <Stack.Navigator
               screenOptions={{
                 headerShown: false,
@@ -38,6 +51,6 @@ export const AuthenticationDialog: React.FC = () => {
           </NavigationContainer>
         </Flex>
       </BottomSheet>
-    </View>
+    </Flex>
   )
 }
