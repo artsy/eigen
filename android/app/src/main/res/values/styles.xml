@@ -1,6 +1,4 @@
 <resources>
-
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:textColor">#000000</item>
         <item name="colorPrimaryDark">#000000</item>
@@ -19,12 +17,10 @@
         <item name="android:forceDarkAllowed">false</item>
     </style>
 
-    <style name="BootTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:background">@drawable/bootsplash</item>
-        <item name="android:navigationBarColor">@color/bootsplash_background</item>
+    <style name="BootTheme" parent="Theme.BootSplash">
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:forceDarkAllowed">false</item>
+        <item name="bootSplashBackground">@color/bootsplash_background</item>
+        <item name="bootSplashLogo">@drawable/bootsplash_logo</item>
+        <item name="postBootSplashTheme">@style/AppTheme</item>
     </style>
-
 </resources>
