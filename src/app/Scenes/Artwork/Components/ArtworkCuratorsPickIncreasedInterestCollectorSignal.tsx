@@ -1,4 +1,4 @@
-import { Flex, Text, TrendingIcon, VerifiedIcon } from "@artsy/palette-mobile"
+import { Flex, Text, VerifiedIcon } from "@artsy/palette-mobile"
 import { ArtworkCuratorsPickIncreasedInterestCollectorSignal_artwork$key } from "__generated__/ArtworkCuratorsPickIncreasedInterestCollectorSignal_artwork.graphql"
 import { graphql, useFragment } from "react-relay"
 
@@ -22,7 +22,7 @@ export const ArtworkCuratorsPickIncreasedInterestCollectorSignal: React.FC<Props
 
   let singalTitle = "Increased Interest"
   let signalDescription = "Based on collector activity in the past 14 days"
-  let SignalIcon = TrendingIcon
+  let SignalIcon = VerifiedIcon
 
   if (curatorsPick) {
     singalTitle = "Curators’ Pick"
