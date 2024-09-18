@@ -412,6 +412,7 @@ jobs:
           platform: "iOS"
           device: "iPhone 15 Pro"
       - build-app-ios
+      - macos/install-rosetta
       - run:
           name: Run tests if native code has changed
           command: ls xcode_test_raw.log || ./scripts/ci/ci-test-ios
@@ -515,6 +516,7 @@ jobs:
       - update-echo
       - install-gems
       - install-cocoapods
+      - macos/install-rosetta
       - run:
           name: Upload iOS build to Maestro App Quality Copilot
           no_output_timeout: 20m
