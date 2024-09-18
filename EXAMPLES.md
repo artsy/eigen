@@ -15,7 +15,7 @@ Links:
 ## I want to write a test.
 
 - We use `@testing-library/react-native` and our helper `renderWithWrappers`.
-- We refer to this guide 👉 [How should I query?](https://callstack.github.io/react-native-testing-library/docs/how-should-i-query/) from `@testing-library/react-native` for querying components
+- We refer to this guide 👉 [How should I query?](https://callstack.github.io/react-native-testing-library/docs/guides/how-to-query) from `@testing-library/react-native` for querying components
 
 Example Links:
 
