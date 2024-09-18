@@ -139,7 +139,6 @@ export interface ContextMenuArtworkPreviewCardImageProps {
   image: ArtworkRailCard_artwork$data["image"]
   urgencyTag?: string | null
   containerWidth?: number
-  displayRealizedPrice?: boolean
   /** imageHeightExtra is an optional padding value you might want to add to image height
    * When using large width like with RecentlySold, image appears cropped
    * TODO: - Investigate why
@@ -149,9 +148,8 @@ export interface ContextMenuArtworkPreviewCardImageProps {
 
 export const ContextMenuArtworkPreviewCardImage: React.FC<
   ContextMenuArtworkPreviewCardImageProps
-> = ({ image, urgencyTag = null, containerWidth, displayRealizedPrice, imageHeightExtra = 0 }) => {
+> = ({ image, urgencyTag = null, containerWidth, imageHeightExtra = 0 }) => {
   const color = useColor()
-  const FULL_WIDTH_RAIL_CARD_IMAGE_WIDTH = useFullWidth()
 
   const { width, height, src } = image?.resized || {}
 
@@ -172,9 +170,7 @@ export const ContextMenuArtworkPreviewCardImage: React.FC<
       height: height ?? 0,
     },
     {
-      width: displayRealizedPrice
-        ? FULL_WIDTH_RAIL_CARD_IMAGE_WIDTH
-        : ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
+      width: ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
       height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
     }
   )
