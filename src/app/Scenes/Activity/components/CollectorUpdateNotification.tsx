@@ -47,13 +47,13 @@ export const CollectorUpdateNotification: FC<CollectorUpdateNotificationProps> =
         <MyCollectionBottomSheetModalArtistsPrompt
           title="Tell us about the artists in your collection."
           visible={promptVisible}
-          onDismiss={() => setPromptVisible(true)}
+          onDismiss={() => setPromptVisible(false)}
         />
       ) : (
         <CollectorProfilePrompt
           me={item.me}
           visible={promptVisible}
-          onDismiss={() => setPromptVisible(true)}
+          onDismiss={() => setPromptVisible(false)}
         />
       )}
     </>
