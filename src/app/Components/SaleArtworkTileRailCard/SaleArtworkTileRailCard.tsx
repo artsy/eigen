@@ -133,7 +133,7 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
   })
 
   const customSaleMessageDisplay = useCustomSaleMessage ? (
-    <Text variant="xs" lineHeight="20px" weight="medium" numberOfLines={1}>
+    <Text variant="xs" lineHeight="20px" numberOfLines={1}>
       {customSaleMessage}
     </Text>
   ) : null
