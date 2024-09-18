@@ -98,7 +98,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v17-app_build_ios-{{ checksum ".manifests/app_build" }}
+            - v21-app_build_ios-{{ checksum ".manifests/app_build" }}
       - run:
           name: Download fonts from s3
           command: ./scripts/setup/download-fonts
@@ -109,7 +109,7 @@ commands:
           name: Build App
           command: ./scripts/ci/ci-ios
       - save_cache:
-          key: v17-app_build_ios-{{ checksum ".manifests/app_build" }}
+          key: v21-app_build_ios-{{ checksum ".manifests/app_build" }}
           paths:
             - derived_data
             - node_modules/react-native-config
