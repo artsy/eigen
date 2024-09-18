@@ -1,4 +1,4 @@
-import { Flex, Image, Text, useColor } from "@artsy/palette-mobile"
+import { Flex, Image, useColor } from "@artsy/palette-mobile"
 import { LegacyArtworkRailCardImage_artwork$key } from "__generated__/LegacyArtworkRailCardImage_artwork.graphql"
 import { ARTWORK_RAIL_IMAGE_WIDTH } from "app/Components/ArtworkRail/ArtworkRail"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -86,24 +86,6 @@ export const LegacyArtworkRailCardImage: React.FC<LegacyArtworkRailCardImageProp
         height={imageHeight}
         blurhash={showBlurhash ? image?.blurhash : undefined}
       />
-
-      {!!urgencyTag && (
-        <Flex
-          testID="auction-urgency-tag"
-          backgroundColor={color("white100")}
-          position="absolute"
-          px="5px"
-          py="3px"
-          bottom="5px"
-          left="5px"
-          borderRadius={2}
-          alignSelf="flex-start"
-        >
-          <Text variant="xs" color={color("black100")} numberOfLines={1}>
-            {urgencyTag}
-          </Text>
-        </Flex>
-      )}
     </Flex>
   )
 }

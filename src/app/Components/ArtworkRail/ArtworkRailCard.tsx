@@ -12,7 +12,6 @@ import { formattedTimeLeft } from "app/Scenes/Activity/utils/formattedTimeLeft"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { getTimer } from "app/utils/getTimer"
-import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
   ArtworkActionTrackingProps,
@@ -77,8 +76,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
 
   const artwork = useFragment(artworkFragment, restProps.artwork)
-  const { artistNames, date, partner, title, sale, saleArtwork, isUnlisted, collectorSignals } =
-    artwork
+  const { artistNames, date, partner, title, sale, isUnlisted, collectorSignals } = artwork
 
   const saleMessage = defaultSaleMessageOrBidInfo({
     artwork,
@@ -90,10 +88,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const partnerOfferEndAt = collectorSignals?.partnerOffer?.endAt
     ? formattedTimeLeft(getTimer(collectorSignals.partnerOffer.endAt).time).timerCopy
     : ""
-  const extendedBiddingEndAt = saleArtwork?.extendedBiddingEndAt
-  const lotEndAt = saleArtwork?.endAt
-  const endAt = extendedBiddingEndAt ?? lotEndAt ?? sale?.endAt
-  const urgencyTag = sale?.isAuction && !sale?.isClosed ? getUrgencyTag(endAt) : null
 
   const primaryTextColor = dark ? "white100" : "black100"
   const secondaryTextColor = dark ? "black15" : "black60"
@@ -176,7 +170,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
             {enableArtworkRailRedesignImageAspectRatio ? (
               <ArtworkRailCardImage artwork={artwork} />
             ) : (
-              <LegacyArtworkRailCardImage artwork={artwork} urgencyTag={urgencyTag} />
+              <LegacyArtworkRailCardImage artwork={artwork} />
             )}
 
             <Flex
@@ -370,16 +364,6 @@ const artworkFragment = graphql`
       endAt
     }
     saleMessage
-    saleArtwork {
-      counts {
-        bidderPositions
-      }
-      currentBid {
-        display
-      }
-      endAt
-      extendedBiddingEndAt
-    }
     partner {
       name
     }
