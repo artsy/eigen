@@ -5,6 +5,7 @@ import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionT
 import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ArtworkRailCardImage } from "app/Components/ArtworkRail/ArtworkRailCardImage"
+import { LegacyArtworkRailCardImage } from "app/Components/ArtworkRail/LegacyArtworkRailCardImage"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { HEART_ICON_SIZE } from "app/Components/constants"
 import { formattedTimeLeft } from "app/Scenes/Activity/utils/formattedTimeLeft"
@@ -68,6 +69,9 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
   const AREnableCuratorsPicksAndInterestSignals = useFeatureFlag(
     "AREnableCuratorsPicksAndInterestSignals"
+  )
+  const enableArtworkRailRedesignImageAspectRatio = useFeatureFlag(
+    "ARenableArtworkRailRedesignImageAspectRatio"
   )
 
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
@@ -169,10 +173,12 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
           testID={testID}
         >
           <Flex backgroundColor={backgroundColor}>
-            <ArtworkRailCardImage
-              artwork={artwork}
-              urgencyTag={!displayAuctionSignal ? urgencyTag : null}
-            />
+            {enableArtworkRailRedesignImageAspectRatio ? (
+              <ArtworkRailCardImage artwork={artwork} />
+            ) : (
+              <LegacyArtworkRailCardImage artwork={artwork} urgencyTag={urgencyTag} />
+            )}
+
             <Flex
               my={1}
               style={{
@@ -334,6 +340,7 @@ const artworkFragment = graphql`
   fragment ArtworkRailCard_artwork on Artwork {
     ...CreateArtworkAlertModal_artwork
     ...ArtworkRailCardImage_artwork
+    ...LegacyArtworkRailCardImage_artwork
     ...ContextMenuArtwork_artwork
 
     id

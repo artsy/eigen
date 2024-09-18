@@ -3,7 +3,7 @@ import { ContextMenuArtworkPreviewCardImage_artwork$key } from "__generated__/Co
 import {
   ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
   ARTWORK_RAIL_CARD_IMAGE_WIDTH,
-} from "app/Components/ArtworkRail/ArtworkRailCardImage"
+} from "app/Components/ArtworkRail/LegacyArtworkRailCardImage"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { graphql, useFragment } from "react-relay"
