@@ -7,17 +7,18 @@ import { HomeView_me$key } from "__generated__/HomeView_me.graphql"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { useDismissSavedArtwork } from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
 import { useEnableProgressiveOnboarding } from "app/Components/ProgressiveOnboarding/useEnableProgressiveOnboarding"
+import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
 import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
 import { Section } from "app/Scenes/HomeView/Sections/Section"
 import { searchQueryDefaultVariables } from "app/Scenes/Search/Search"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { extractNodes } from "app/utils/extractNodes"
-import { withSuspense } from "app/utils/hooks/withSuspense"
+import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
 import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { RefreshControl } from "react-native"
 import {
   fetchQuery,
@@ -119,19 +120,27 @@ export const HomeView: React.FC = () => {
 
 const HomeViewScreenPlaceholder: React.FC = () => {
   return (
-    <Screen safeArea={false}>
-      <Screen.Body fullwidth>
-        <Flex testID="new-home-view-skeleton">
-          <HomeHeader />
-        </Flex>
-      </Screen.Body>
-    </Screen>
+    <ProvidePlaceholderContext>
+      <Screen safeArea={false}>
+        <Screen.Body fullwidth>
+          <Flex testID="new-home-view-skeleton">
+            <HomeHeader />
+          </Flex>
+        </Screen.Body>
+      </Screen>
+    </ProvidePlaceholderContext>
   )
 }
 
-export const HomeViewScreen: React.FC = withSuspense(() => {
-  return <HomeView />
-}, HomeViewScreenPlaceholder)
+export const HomeViewScreen: React.FC = () => {
+  return (
+    <RetryErrorBoundary>
+      <Suspense fallback={<HomeViewScreenPlaceholder />}>
+        <HomeView />
+      </Suspense>
+    </RetryErrorBoundary>
+  )
+}
 
 const meFragment = graphql`
   fragment HomeView_me on Me {
