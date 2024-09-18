@@ -44,8 +44,7 @@ export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = (props)
     } else {
       tracking.tappedFairGroupViewAll(
         section.contextModule as ContextModule,
-        "homeViewSection" as ScreenOwnerType,
-        section.internalID
+        section.ownerType as ScreenOwnerType
       )
 
       navigate(`/home-view/sections/${section.internalID}`, {
@@ -106,6 +105,7 @@ const fragment = graphql`
         }
       }
     }
+    ownerType
 
     fairsConnection(first: 10) {
       edges {

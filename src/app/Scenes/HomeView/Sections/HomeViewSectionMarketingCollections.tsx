@@ -60,7 +60,7 @@ export const HomeViewSectionMarketingCollections: React.FC<
     } else {
       tracking.tappedMarketingCollectionGroupViewAll(
         section.contextModule as ContextModule,
-        "homeViewSection" as ScreenOwnerType
+        section.ownerType as ScreenOwnerType
       )
 
       navigate(`/home-view/sections/${section.internalID}`, {
@@ -120,6 +120,7 @@ const fragment = graphql`
         }
       }
     }
+    ownerType
 
     marketingCollectionsConnection(first: 10) {
       edges {

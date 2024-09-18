@@ -52,7 +52,7 @@ export const HomeViewSectionFeaturedCollection: React.FC<HomeViewSectionFeatured
     } else {
       tracking.tappedArtworkGroupViewAll(
         section.contextModule as ContextModule,
-        "homeViewSection" as ScreenOwnerType
+        section.ownerType as ScreenOwnerType
       )
 
       navigate(`/home-view/sections/${section.internalID}`, {
@@ -118,6 +118,7 @@ const fragment = graphql`
         }
       }
     }
+    ownerType
 
     artworksConnection(first: 10) {
       edges {

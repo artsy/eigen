@@ -67,6 +67,7 @@ export const artworksFragment = graphql`
     component {
       title
     }
+    ownerType
     artworksConnection(after: $cursor, first: $count)
       @connection(key: "ArtworksScreenHomeSection_artworksConnection", filters: []) {
       totalCount
