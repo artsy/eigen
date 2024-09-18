@@ -71,12 +71,12 @@ export const HomeViewSectionArtists: React.FC<HomeViewSectionArtworksProps> = ({
   const artists = extractNodes(section.artistsConnection)
 
   const onSectionViewAll = () => {
-    tracking.tappedArticleGroupViewAll(
-      section.contextModule as ContextModule,
-      viewAll?.ownerType as ScreenOwnerType
-    )
-
     if (viewAll?.href) {
+      tracking.tappedArticleGroupViewAll(
+        section.contextModule as ContextModule,
+        viewAll?.ownerType as ScreenOwnerType
+      )
+
       navigate(viewAll.href)
     }
   }
@@ -150,6 +150,8 @@ export const HomeViewSectionArtistsPaginationContainer = createPaginationContain
             }
           }
         }
+        ownerType
+
         artistsConnection(after: $cursor, first: $count)
           @connection(key: "HomeViewSectionArtists_artistsConnection") {
           totalCount

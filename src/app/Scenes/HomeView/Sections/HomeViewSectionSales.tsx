@@ -49,7 +49,7 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = (props)
     } else {
       tracking.tappedAuctionResultGroupViewAll(
         section.contextModule as ContextModule,
-        "homeViewSection" as ScreenOwnerType
+        section.ownerType as ScreenOwnerType
       )
 
       navigate(`/home-view/sections/${section.internalID}`, {
@@ -118,6 +118,7 @@ const fragment = graphql`
         }
       }
     }
+    ownerType
 
     salesConnection(first: 10) {
       edges {

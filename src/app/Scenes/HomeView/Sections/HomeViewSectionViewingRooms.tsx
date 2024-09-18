@@ -35,7 +35,7 @@ export const HomeViewSectionViewingRooms: React.FC<{
     } else {
       tracking.tappedViewingRoomGroupViewAll(
         section.contextModule as ContextModule,
-        "homeViewSection" as ScreenOwnerType
+        section.ownerType as ScreenOwnerType
       )
 
       navigate(`/home-view/sections/${section.internalID}`, {
@@ -86,6 +86,7 @@ const viewingRoomsFragment = graphql`
         }
       }
     }
+    ownerType
   }
 `
 

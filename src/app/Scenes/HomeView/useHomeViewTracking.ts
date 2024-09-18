@@ -2,6 +2,7 @@ import {
   ActionType,
   ContextModule,
   OwnerType,
+  Screen,
   ScreenOwnerType,
   TappedActivityGroup,
   TappedArticleGroup,
@@ -26,6 +27,15 @@ export const useHomeViewTracking = () => {
   const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
 
   return {
+    screen: (ownerType: ScreenOwnerType) => {
+      const payload: Screen = {
+        action: ActionType.screen,
+        context_screen_owner_type: ownerType,
+      }
+
+      trackEvent(payload)
+    },
+
     // TODO: Shouldn't this be tappedNotificationBell?
     tappedNotificationBell: () => {
       const payload: ClickedNotificationsBell = {
@@ -49,12 +59,15 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
-    tappedActivityGroupViewAll: (contextModule: ContextModule, ownerType: ScreenOwnerType) => {
+    tappedActivityGroupViewAll: (
+      contextModule: ContextModule,
+      destinationOwnerType: ScreenOwnerType
+    ) => {
       const payload: TappedActivityGroup = {
         action: ActionType.tappedActivityGroup,
         context_module: contextModule,
         context_screen_owner_type: OwnerType.home,
-        destination_screen_owner_type: ownerType,
+        destination_screen_owner_type: destinationOwnerType,
         type: "viewAll",
       }
 
@@ -82,12 +95,15 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
-    tappedArticleGroupViewAll: (contextModule: ContextModule, ownerType: ScreenOwnerType) => {
+    tappedArticleGroupViewAll: (
+      contextModule: ContextModule,
+      destinationOwnerType: ScreenOwnerType
+    ) => {
       const payload: TappedArticleGroup = {
         action: ActionType.tappedArticleGroup,
         context_module: contextModule,
         context_screen_owner_type: OwnerType.home,
-        destination_screen_owner_type: ownerType,
+        destination_screen_owner_type: destinationOwnerType,
         type: "viewAll",
       }
 
@@ -115,12 +131,15 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
-    tappedArtistGroupViewAll: (contextModule: ContextModule, ownerType: ScreenOwnerType) => {
+    tappedArtistGroupViewAll: (
+      contextModule: ContextModule,
+      destinationOwnerType: ScreenOwnerType
+    ) => {
       const payload: TappedArtistGroup = {
         action: ActionType.tappedArtistGroup,
         context_module: contextModule,
         context_screen_owner_type: OwnerType.home,
-        destination_screen_owner_type: ownerType,
+        destination_screen_owner_type: destinationOwnerType,
         type: "viewAll",
       }
 
@@ -155,15 +174,13 @@ export const useHomeViewTracking = () => {
 
     tappedArtworkGroupViewAll: (
       contextModule: ContextModule,
-      ownerType: ScreenOwnerType,
-      sectionID?: string
+      destinationOwnerType: ScreenOwnerType
     ) => {
       const payload: TappedArtworkGroup = {
         action: ActionType.tappedArtworkGroup,
         context_module: contextModule,
         context_screen_owner_type: OwnerType.home,
-        destination_screen_owner_type: ownerType,
-        destination_screen_owner_id: sectionID,
+        destination_screen_owner_type: destinationOwnerType,
         type: "viewAll",
       }
 
@@ -191,12 +208,15 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
-    tappedAuctionGroupViewAll: (contextModule: ContextModule, ownerType: ScreenOwnerType) => {
+    tappedAuctionGroupViewAll: (
+      contextModule: ContextModule,
+      destinationOwnerType: ScreenOwnerType
+    ) => {
       const payload: TappedAuctionGroup = {
         action: ActionType.tappedAuctionGroup,
         context_module: contextModule,
         context_screen_owner_type: OwnerType.home,
-        destination_screen_owner_type: ownerType,
+        destination_screen_owner_type: destinationOwnerType,
         type: "viewAll",
       }
 
@@ -231,15 +251,13 @@ export const useHomeViewTracking = () => {
 
     tappedAuctionResultGroupViewAll: (
       contextModule: ContextModule,
-      ownerType: ScreenOwnerType,
-      sectionID?: string
+      destinationOwnerType: ScreenOwnerType
     ) => {
       const payload: TappedAuctionResultGroup = {
         action: ActionType.tappedAuctionResultGroup,
         context_module: contextModule,
         context_screen_owner_type: OwnerType.home,
-        destination_screen_owner_type: ownerType,
-        destination_screen_owner_id: sectionID,
+        destination_screen_owner_type: destinationOwnerType,
         type: "viewAll",
       }
 
@@ -269,15 +287,13 @@ export const useHomeViewTracking = () => {
 
     tappedFairGroupViewAll: (
       contextModule: ContextModule,
-      ownerType: ScreenOwnerType,
-      sectionID?: string
+      destinationOwnerType: ScreenOwnerType
     ) => {
       const payload: TappedFairGroup = {
         action: ActionType.tappedFairGroup,
         context_module: contextModule,
         context_screen_owner_type: OwnerType.home,
-        destination_screen_owner_type: ownerType,
-        destination_screen_owner_id: sectionID,
+        destination_screen_owner_type: destinationOwnerType,
         type: "viewAll",
       }
 
@@ -320,13 +336,13 @@ export const useHomeViewTracking = () => {
 
     tappedMarketingCollectionGroupViewAll: (
       contextModule: ContextModule,
-      ownerType: ScreenOwnerType
+      destinationOwnerType: ScreenOwnerType
     ) => {
       const payload: TappedCollectionGroup = {
         action: ActionType.tappedCollectionGroup,
         context_module: contextModule,
         context_screen_owner_type: OwnerType.home,
-        destination_screen_owner_type: ownerType,
+        destination_screen_owner_type: destinationOwnerType,
         type: "viewAll",
       }
 
@@ -384,12 +400,15 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
-    tappedViewingRoomGroupViewAll: (contextModule: ContextModule, ownerType: ScreenOwnerType) => {
+    tappedViewingRoomGroupViewAll: (
+      contextModule: ContextModule,
+      destinationOwnerType: ScreenOwnerType
+    ) => {
       const payload: TappedViewingRoomGroup = {
         action: ActionType.tappedViewingRoomGroup,
         context_module: contextModule,
         context_screen_owner_type: OwnerType.home,
-        destination_screen_owner_type: ownerType,
+        destination_screen_owner_type: destinationOwnerType,
         type: "viewAll",
       }
 

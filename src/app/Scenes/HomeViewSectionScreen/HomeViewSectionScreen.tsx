@@ -1,12 +1,15 @@
+import { ScreenOwnerType } from "@artsy/cohesion"
 import { Screen, Text } from "@artsy/palette-mobile"
 import {
   HomeViewSectionScreenQuery,
   HomeViewSectionScreenQuery$data,
 } from "__generated__/HomeViewSectionScreenQuery.graphql"
+import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { HomeViewSectionScreenContent } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreenContent"
 import { HomeViewSectionScreenPlaceholder } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreenPlaceholder"
 import { goBack } from "app/system/navigation/navigate"
 import { withSuspense } from "app/utils/hooks/withSuspense"
+import { useEffect } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 interface HomeSectionScreenProps {
@@ -14,8 +17,13 @@ interface HomeSectionScreenProps {
 }
 
 export const HomeViewSectionScreen: React.FC<HomeSectionScreenProps> = ({ section }) => {
+  const tracking = useHomeViewTracking()
   const title =
     section?.__typename === "ArtworksRailHomeViewSection" ? section.component?.title : ""
+
+  useEffect(() => {
+    tracking.screen(section.ownerType as ScreenOwnerType)
+  }, [])
 
   return (
     <Screen>
@@ -38,6 +46,7 @@ const HOME_SECTION_SCREEN_QUERY = graphql`
         component {
           title
         }
+        ownerType
 
         ... on HomeViewSectionArtworks {
           ...HomeViewSectionScreenArtworks_section
