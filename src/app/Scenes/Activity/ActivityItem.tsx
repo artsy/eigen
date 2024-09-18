@@ -60,7 +60,11 @@ export const ActivityItem: React.FC<ActivityItemProps> = memo(
       <TouchableOpacity activeOpacity={0.65} onPress={handlePress}>
         <Flex flexDirection="row" alignItems="center" justifyContent="space-between" px={2}>
           {!!isCollectorProfileUpdate ? (
-            <CollectorUpdateNotification notification={notification} item={notification.item} />
+            <CollectorUpdateNotification
+              notification={notification}
+              item={notification.item}
+              onPress={handlePress}
+            />
           ) : (
             <Flex flex={1} pr={2}>
               <Flex flexDirection="column" py={2}>
