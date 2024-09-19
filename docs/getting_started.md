@@ -232,3 +232,44 @@ When you connect an iPhone to your machine, Xcode will prompt you to join a team
 ## Read more
 
 Learn about what things are architecturally [here](https://github.com/artsy/eigen/blob/main/docs/overview.md), then move [to the blog.](http://artsy.github.io/blog/categories/eigen/) for more in-depth discussions on Eigen.
+
+## Steps To Upgrade `react-native` to 0.73.9 on your machine:
+
+#### JAVA:
+
+For asdf users:
+
+```sh
+asdf install
+```
+
+For non-asdf users:
+
+```sh
+brew install --cask zulu@17
+
+# Get path to where cask was installed to double-click installer
+brew info --cask zulu@17
+```
+
+> [!IMPORTANT]
+> For all (asdf/ non asdf users). After you install the JDK, update your JAVA_HOME environment variable in your `.zshrc` file. Afterwards run `source ~/.zshrc` to make it effective and restart your terminal.
+> If you used above steps, JDK will likely be at /Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home.
+> You can try out in the terminal by typing $JAVA_HOME to make sure that it was updated properly.
+
+#### Before running the app and in order to install without any caching issues
+
+```sh
+# Delete node modules and caches:
+rm -rf node_modules && rm -rf .cache && rm -rf "$TMPDIR/metro*" && rm -rf "$TMPDIR/haste-map-*"
+
+# install all the dependencies needed
+yarn install:all
+
+# you will most likely have to run also the following to bump hermes-engine:
+cd ios && bundle exec pod update hermes-engine --no-repo-update & cd ..
+```
+
+#### Read more on proper environmet setup
+
+You can also find more information on how to properly setup your environment for react native in [this official doc](https://reactnative.dev/docs/0.73/environment-setup).
