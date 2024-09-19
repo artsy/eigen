@@ -151,217 +151,205 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     displayAuctionSignal && collectorSignals?.auction?.liveBiddingStarted ? "normal" : "bold"
 
   return (
-    <Box pr="15px">
-      <Disappearable ref={(ref) => ((artwork as DissapearableArtwork)._disappearable = ref)}>
-        <AnalyticsContextProvider
-          contextScreenOwnerId={contextScreenOwnerId}
-          contextScreenOwnerSlug={contextScreenOwnerSlug}
+    <Disappearable ref={(ref) => ((artwork as DissapearableArtwork)._disappearable = ref)}>
+      <AnalyticsContextProvider
+        contextScreenOwnerId={contextScreenOwnerId}
+        contextScreenOwnerSlug={contextScreenOwnerSlug}
+        contextScreenOwnerType={contextScreenOwnerType}
+      >
+        <ContextMenuArtwork
+          contextModule={contextModule}
           contextScreenOwnerType={contextScreenOwnerType}
+          onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
+          onSupressArtwork={supressArtwork}
+          artwork={artwork}
+          artworkDisplayProps={{
+            dark,
+            showPartnerName,
+            hideArtistName,
+            lotLabel,
+            SalePriceComponent,
+          }}
         >
-          <ContextMenuArtwork
-            contextModule={contextModule}
-            contextScreenOwnerType={contextScreenOwnerType}
-            onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
-            onSupressArtwork={supressArtwork}
-            artwork={artwork}
-            artworkDisplayProps={{
-              dark,
-              showPartnerName,
-              hideArtistName,
-              lotLabel,
-              SalePriceComponent,
-            }}
+          <TouchableHighlight
+            underlayColor={backgroundColor}
+            activeOpacity={0.8}
+            onPress={onPress}
+            testID={testID}
           >
-            <TouchableHighlight
-              underlayColor={backgroundColor}
-              activeOpacity={0.8}
-              onPress={onPress}
-              testID={testID}
-            >
-              <Flex backgroundColor={backgroundColor}>
-                {enableArtworkRailRedesignImageAspectRatio ? (
-                  <ArtworkRailCardImage artwork={artwork} />
-                ) : (
-                  <LegacyArtworkRailCardImage artwork={artwork} />
-                )}
+            <Flex backgroundColor={backgroundColor}>
+              {enableArtworkRailRedesignImageAspectRatio ? (
+                <ArtworkRailCardImage artwork={artwork} />
+              ) : (
+                <LegacyArtworkRailCardImage artwork={artwork} />
+              )}
 
-                <Flex
-                  my={1}
-                  style={{
-                    height: fontScale * ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT,
-                    ...metaContainerStyles,
-                  }}
-                  backgroundColor={backgroundColor}
-                  flexDirection="row"
-                  justifyContent="space-between"
-                >
-                  <Flex flex={1} backgroundColor={backgroundColor}>
-                    {!!displayLimitedTimeOfferSignal && (
-                      <Box
-                        backgroundColor="blue10"
-                        px={0.5}
-                        alignSelf="flex-start"
-                        borderRadius={3}
-                      >
-                        <Text lineHeight="20px" variant="xs" color="blue100">
-                          Limited-Time Offer
+              <Flex
+                my={1}
+                style={{
+                  height: fontScale * ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT,
+                  ...metaContainerStyles,
+                }}
+                backgroundColor={backgroundColor}
+                flexDirection="row"
+                justifyContent="space-between"
+              >
+                <Flex flex={1} backgroundColor={backgroundColor}>
+                  {!!displayLimitedTimeOfferSignal && (
+                    <Box backgroundColor="blue10" px={0.5} alignSelf="flex-start" borderRadius={3}>
+                      <Text lineHeight="20px" variant="xs" color="blue100">
+                        Limited-Time Offer
+                      </Text>
+                    </Box>
+                  )}
+
+                  {!sale?.isAuction &&
+                    !displayLimitedTimeOfferSignal &&
+                    !!collectorSignals &&
+                    !!enableCuratorsPicksAndInterestSignals && (
+                      <ArtworkSocialSignal
+                        collectorSignals={collectorSignals}
+                        hideCuratorsPick={hideCuratorsPickSignal}
+                        hideIncreasedInterest={hideIncreasedInterestSignal}
+                        dark={dark}
+                      />
+                    )}
+
+                  {!!lotLabel && (
+                    <Text lineHeight="20px" color={secondaryTextColor} numberOfLines={1}>
+                      Lot {lotLabel}
+                    </Text>
+                  )}
+
+                  {!hideArtistName && !!artistNames && (
+                    <Text color={primaryTextColor} numberOfLines={1} lineHeight="20px" variant="xs">
+                      {artistNames}
+                    </Text>
+                  )}
+
+                  {!!title && (
+                    <Text
+                      lineHeight="20px"
+                      color={secondaryTextColor}
+                      numberOfLines={1}
+                      variant="xs"
+                      fontStyle="italic"
+                    >
+                      {title}
+                      {!!date && (
+                        <Text
+                          lineHeight="20px"
+                          color={secondaryTextColor}
+                          numberOfLines={1}
+                          variant="xs"
+                        >
+                          {title && date ? ", " : ""}
+                          {date}
                         </Text>
-                      </Box>
-                    )}
-
-                    {!sale?.isAuction &&
-                      !displayLimitedTimeOfferSignal &&
-                      !!collectorSignals &&
-                      !!enableCuratorsPicksAndInterestSignals && (
-                        <ArtworkSocialSignal
-                          collectorSignals={collectorSignals}
-                          hideCuratorsPick={hideCuratorsPickSignal}
-                          hideIncreasedInterest={hideIncreasedInterestSignal}
-                          dark={dark}
-                        />
                       )}
+                    </Text>
+                  )}
 
-                    {!!lotLabel && (
-                      <Text lineHeight="20px" color={secondaryTextColor} numberOfLines={1}>
-                        Lot {lotLabel}
-                      </Text>
-                    )}
+                  {!!showPartnerName && !!partner?.name && (
+                    <Text
+                      lineHeight="20px"
+                      variant="xs"
+                      color={secondaryTextColor}
+                      numberOfLines={1}
+                    >
+                      {partner?.name}
+                    </Text>
+                  )}
 
-                    {!hideArtistName && !!artistNames && (
-                      <Text
-                        color={primaryTextColor}
-                        numberOfLines={1}
-                        lineHeight="20px"
-                        variant="xs"
-                      >
-                        {artistNames}
-                      </Text>
-                    )}
+                  {SalePriceComponent
+                    ? SalePriceComponent
+                    : !!saleMessage && (
+                        <Text
+                          lineHeight="20px"
+                          variant="xs"
+                          color={saleInfoTextColor}
+                          numberOfLines={1}
+                          fontWeight={saleInfoTextWeight}
+                        >
+                          {saleMessage}
 
-                    {!!title && (
-                      <Text
-                        lineHeight="20px"
-                        color={secondaryTextColor}
-                        numberOfLines={1}
-                        variant="xs"
-                        fontStyle="italic"
-                      >
-                        {title}
-                        {!!date && (
-                          <Text
-                            lineHeight="20px"
-                            color={secondaryTextColor}
-                            numberOfLines={1}
-                            variant="xs"
-                          >
-                            {title && date ? ", " : ""}
-                            {date}
-                          </Text>
-                        )}
-                      </Text>
-                    )}
-
-                    {!!showPartnerName && !!partner?.name && (
-                      <Text
-                        lineHeight="20px"
-                        variant="xs"
-                        color={secondaryTextColor}
-                        numberOfLines={1}
-                      >
-                        {partner?.name}
-                      </Text>
-                    )}
-
-                    {SalePriceComponent
-                      ? SalePriceComponent
-                      : !!saleMessage && (
-                          <Text
-                            lineHeight="20px"
-                            variant="xs"
-                            color={saleInfoTextColor}
-                            numberOfLines={1}
-                            fontWeight={saleInfoTextWeight}
-                          >
-                            {saleMessage}
-
-                            {!!displayLimitedTimeOfferSignal && (
-                              <Text
-                                lineHeight="20px"
-                                variant="xs"
-                                fontWeight="normal"
-                                color="blue100"
-                                numberOfLines={1}
-                              >
-                                {"  "}
-                                Exp. {partnerOfferEndAt}
-                              </Text>
-                            )}
-                          </Text>
-                        )}
-
-                    {!!isUnlisted && (
-                      <Text
-                        lineHeight="20px"
-                        variant="xs"
-                        color={primaryTextColor}
-                        numberOfLines={1}
-                        fontWeight="bold"
-                      >
-                        Exclusive Access
-                      </Text>
-                    )}
-
-                    {!!displayAuctionSignal && !!collectorSignals && (
-                      <ArtworkAuctionTimer collectorSignals={collectorSignals} inRailCard />
-                    )}
-                  </Flex>
-
-                  {!!showSaveIcon && (
-                    <Flex flexDirection="row" alignItems="flex-start">
-                      {!!displayAuctionSignal && !!collectorSignals?.auction?.lotWatcherCount && (
-                        <Text lineHeight="20px" variant="xs" numberOfLines={1}>
-                          {collectorSignals.auction.lotWatcherCount}
+                          {!!displayLimitedTimeOfferSignal && (
+                            <Text
+                              lineHeight="20px"
+                              variant="xs"
+                              fontWeight="normal"
+                              color="blue100"
+                              numberOfLines={1}
+                            >
+                              {"  "}
+                              Exp. {partnerOfferEndAt}
+                            </Text>
+                          )}
                         </Text>
                       )}
 
-                      <Touchable
-                        haptic
-                        hitSlop={{ bottom: 5, right: 5, left: 5, top: 5 }}
-                        onPress={saveArtworkToLists}
-                        testID="save-artwork-icon"
-                        underlayColor={backgroundColor}
-                      >
-                        {isSaved ? (
-                          <HeartFillIcon
-                            testID="filled-heart-icon"
-                            height={HEART_ICON_SIZE}
-                            width={HEART_ICON_SIZE}
-                            fill="blue100"
-                          />
-                        ) : (
-                          <HeartIcon
-                            testID="empty-heart-icon"
-                            height={HEART_ICON_SIZE}
-                            width={HEART_ICON_SIZE}
-                            fill={primaryTextColor}
-                          />
-                        )}
-                      </Touchable>
-                    </Flex>
+                  {!!isUnlisted && (
+                    <Text
+                      lineHeight="20px"
+                      variant="xs"
+                      color={primaryTextColor}
+                      numberOfLines={1}
+                      fontWeight="bold"
+                    >
+                      Exclusive Access
+                    </Text>
+                  )}
+
+                  {!!displayAuctionSignal && !!collectorSignals && (
+                    <ArtworkAuctionTimer collectorSignals={collectorSignals} inRailCard />
                   )}
                 </Flex>
-              </Flex>
-            </TouchableHighlight>
-          </ContextMenuArtwork>
 
-          <CreateArtworkAlertModal
-            artwork={artwork}
-            onClose={() => setShowCreateArtworkAlertModal(false)}
-            visible={showCreateArtworkAlertModal}
-          />
-        </AnalyticsContextProvider>
-      </Disappearable>
-    </Box>
+                {!!showSaveIcon && (
+                  <Flex flexDirection="row" alignItems="flex-start">
+                    {!!displayAuctionSignal && !!collectorSignals?.auction?.lotWatcherCount && (
+                      <Text lineHeight="20px" variant="xs" numberOfLines={1}>
+                        {collectorSignals.auction.lotWatcherCount}
+                      </Text>
+                    )}
+
+                    <Touchable
+                      haptic
+                      hitSlop={{ bottom: 5, right: 5, left: 5, top: 5 }}
+                      onPress={saveArtworkToLists}
+                      testID="save-artwork-icon"
+                      underlayColor={backgroundColor}
+                    >
+                      {isSaved ? (
+                        <HeartFillIcon
+                          testID="filled-heart-icon"
+                          height={HEART_ICON_SIZE}
+                          width={HEART_ICON_SIZE}
+                          fill="blue100"
+                        />
+                      ) : (
+                        <HeartIcon
+                          testID="empty-heart-icon"
+                          height={HEART_ICON_SIZE}
+                          width={HEART_ICON_SIZE}
+                          fill={primaryTextColor}
+                        />
+                      )}
+                    </Touchable>
+                  </Flex>
+                )}
+              </Flex>
+            </Flex>
+          </TouchableHighlight>
+        </ContextMenuArtwork>
+
+        <CreateArtworkAlertModal
+          artwork={artwork}
+          onClose={() => setShowCreateArtworkAlertModal(false)}
+          visible={showCreateArtworkAlertModal}
+        />
+      </AnalyticsContextProvider>
+    </Disappearable>
   )
 }
 

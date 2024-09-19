@@ -1,4 +1,4 @@
-import { Flex, Join, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
+import { Box, Flex, Join, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import {
   ArtworkRail_artworks$data,
   ArtworkRail_artworks$key,
@@ -84,20 +84,22 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
       contentContainerStyle={{ alignItems: "flex-end" }}
       renderItem={({ item, index }) => {
         return (
-          <ArtworkRailCard
-            testID={`artwork-${item.slug}`}
-            artwork={item}
-            showPartnerName={showPartnerName}
-            hideArtistName={hideArtistName}
-            dark={dark}
-            onPress={() => {
-              onPress?.(item, index)
-            }}
-            showSaveIcon={showSaveIcon}
-            hideIncreasedInterestSignal={hideIncreasedInterestSignal}
-            hideCuratorsPickSignal={hideCuratorsPickSignal}
-            {...extractArtworkActionTrackingProps(otherProps)}
-          />
+          <Box pr="15px">
+            <ArtworkRailCard
+              testID={`artwork-${item.slug}`}
+              artwork={item}
+              showPartnerName={showPartnerName}
+              hideArtistName={hideArtistName}
+              dark={dark}
+              onPress={() => {
+                onPress?.(item, index)
+              }}
+              showSaveIcon={showSaveIcon}
+              hideIncreasedInterestSignal={hideIncreasedInterestSignal}
+              hideCuratorsPickSignal={hideCuratorsPickSignal}
+              {...extractArtworkActionTrackingProps(otherProps)}
+            />
+          </Box>
         )
       }}
       keyExtractor={(item) => item.internalID}
