@@ -12,6 +12,7 @@ import { HomeViewSectionViewingRoomsQuery } from "__generated__/HomeViewSectionV
 import { HomeViewSectionViewingRooms_section$key } from "__generated__/HomeViewSectionViewingRooms_section.graphql"
 import { MEDIUM_CARD_HEIGHT, MEDIUM_CARD_WIDTH } from "app/Components/Cards"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import {
   ViewingRoomsHomeRail as LegacyViewingRoomsHomeRail,
@@ -74,6 +75,7 @@ export const HomeViewSectionViewingRooms: React.FC<{
             navigate(`/viewing-room/${viewingRoom.slug}`)
           }}
         />
+        <HomeViewSectionSentinel contextModule={section.contextModule as ContextModule} />
       </Suspense>
     </Flex>
   )

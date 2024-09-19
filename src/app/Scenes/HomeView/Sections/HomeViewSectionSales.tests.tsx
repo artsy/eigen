@@ -1,5 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { HomeViewSectionSalesTestsQuery } from "__generated__/HomeViewSectionSalesTestsQuery.graphql"
+import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionSales } from "app/Scenes/HomeView/Sections/HomeViewSectionSales"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -12,7 +13,11 @@ describe("HomeViewSectionSales", () => {
       if (!props.homeView.section) {
         return null
       }
-      return <HomeViewSectionSales section={props.homeView.section} />
+      return (
+        <HomeViewStoreProvider>
+          <HomeViewSectionSales section={props.homeView.section} />
+        </HomeViewStoreProvider>
+      )
     },
     query: graphql`
       query HomeViewSectionSalesTestsQuery @relay_test_operation {

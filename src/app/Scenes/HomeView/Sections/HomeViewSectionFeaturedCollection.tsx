@@ -14,6 +14,7 @@ import { HomeViewSectionFeaturedCollectionQuery } from "__generated__/HomeViewSe
 import { HomeViewSectionFeaturedCollection_section$key } from "__generated__/HomeViewSectionFeaturedCollection_section.graphql"
 import { ARTWORK_RAIL_IMAGE_WIDTH, ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { ARTWORK_RAIL_CARD_IMAGE_HEIGHT } from "app/Components/ArtworkRail/LegacyArtworkRailCardImage"
+import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -100,6 +101,8 @@ export const HomeViewSectionFeaturedCollection: React.FC<
           onMorePress={onSectionViewAll}
         />
       </Flex>
+
+      <HomeViewSectionSentinel contextModule={section.contextModule as ContextModule} />
     </Flex>
   )
 }

@@ -3,6 +3,7 @@ import { Flex, FlexProps, Skeleton } from "@artsy/palette-mobile"
 import { HomeViewSectionShowsQuery } from "__generated__/HomeViewSectionShowsQuery.graphql"
 import { HomeViewSectionShows_section$key } from "__generated__/HomeViewSectionShows_section.graphql"
 import { ShowsRailContainer, ShowsRailPlaceholder } from "app/Scenes/Home/Components/ShowsRail"
+import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { withSuspense } from "app/utils/hooks/withSuspense"
@@ -35,6 +36,7 @@ export const HomeViewSectionShows: React.FC<HomeViewSectionShowsProps> = ({
           )
         }}
       />
+      <HomeViewSectionSentinel contextModule={section.contextModule as ContextModule} />
     </Flex>
   )
 }

@@ -1,5 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { HomeViewSectionActivityTestsQuery } from "__generated__/HomeViewSectionActivityTestsQuery.graphql"
+import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionActivity } from "app/Scenes/HomeView/Sections/HomeViewSectionActivity"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -11,7 +12,11 @@ describe("HomeViewSectionActivity", () => {
       if (!props.homeView.section) {
         return null
       }
-      return <HomeViewSectionActivity section={props.homeView.section} />
+      return (
+        <HomeViewStoreProvider>
+          <HomeViewSectionActivity section={props.homeView.section} />
+        </HomeViewStoreProvider>
+      )
     },
     query: graphql`
       query HomeViewSectionActivityTestsQuery @relay_test_operation {

@@ -12,6 +12,7 @@ import { HomeViewSectionArticlesQuery } from "__generated__/HomeViewSectionArtic
 import { HomeViewSectionArticles_section$key } from "__generated__/HomeViewSectionArticles_section.graphql"
 import { ARTICLE_CARD_IMAGE_HEIGHT, ARTICLE_CARD_IMAGE_WIDTH } from "app/Components/ArticleCard"
 import { ArticlesRailFragmentContainer } from "app/Scenes/Home/Components/ArticlesRail"
+import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
@@ -62,6 +63,8 @@ export const HomeViewSectionArticles: React.FC<HomeViewSectionArticlesProps> = (
         }}
         onSectionTitlePress={viewAll ? onSectionViewAll : undefined}
       />
+
+      <HomeViewSectionSentinel contextModule={section.contextModule as ContextModule} />
     </Flex>
   )
 }

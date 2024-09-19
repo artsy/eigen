@@ -1,5 +1,6 @@
 import { screen } from "@testing-library/react-native"
 import { HomeViewSectionArticlesCardsTestsQuery } from "__generated__/HomeViewSectionArticlesCardsTestsQuery.graphql"
+import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionArticlesCards } from "app/Scenes/HomeView/Sections/HomeViewSectionArticlesCards"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
@@ -10,7 +11,11 @@ describe("HomeViewSectionArticlesCards", () => {
       if (!props.homeView.section) {
         return null
       }
-      return <HomeViewSectionArticlesCards section={props.homeView.section} />
+      return (
+        <HomeViewStoreProvider>
+          <HomeViewSectionArticlesCards section={props.homeView.section} />
+        </HomeViewStoreProvider>
+      )
     },
     query: graphql`
       query HomeViewSectionArticlesCardsTestsQuery @relay_test_operation {

@@ -21,6 +21,7 @@ import {
 } from "app/Components/FiveUpImageLayout"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import {
   CollectionCard,
   HomeViewSectionMarketingCollectionsItem,
@@ -109,6 +110,8 @@ export const HomeViewSectionMarketingCollections: React.FC<
           )
         }}
       />
+
+      <HomeViewSectionSentinel contextModule={section.contextModule as ContextModule} />
     </Flex>
   )
 }

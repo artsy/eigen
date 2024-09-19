@@ -15,6 +15,7 @@ import {
   HomeViewSectionArticlesCards_section$data,
   HomeViewSectionArticlesCards_section$key,
 } from "__generated__/HomeViewSectionArticlesCards_section.graphql"
+import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -87,6 +88,8 @@ export const HomeViewSectionArticlesCards: React.FC<HomeViewSectionArticlesCards
           </Touchable>
         )}
       </Flex>
+
+      <HomeViewSectionSentinel contextModule={section.contextModule as ContextModule} />
     </Flex>
   )
 }

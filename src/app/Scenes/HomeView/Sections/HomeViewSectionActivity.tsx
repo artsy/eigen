@@ -10,6 +10,7 @@ import {
   ACTIVITY_RAIL_ITEM_WIDTH,
   ActivityRailItem,
 } from "app/Scenes/Home/Components/ActivityRailItem"
+import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
@@ -96,6 +97,8 @@ export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = (
           )
         }}
       />
+
+      <HomeViewSectionSentinel contextModule={section.contextModule as ContextModule} />
     </Flex>
   )
 }
