@@ -75,7 +75,20 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
 
   const artwork = useFragment(artworkFragment, restProps.artwork)
-  const { artistNames, date, partner, title, sale, isUnlisted, collectorSignals } = artwork
+  const {
+    artistNames,
+    availability,
+    date,
+    isAcquireable,
+    isBiddable,
+    isInquireable,
+    isOfferable,
+    partner,
+    title,
+    sale,
+    isUnlisted,
+    collectorSignals,
+  } = artwork
 
   const saleMessage = defaultSaleMessageOrBidInfo({
     artwork,
@@ -101,20 +114,20 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   } = restProps
 
   const onArtworkSavedOrUnSaved = (saved: boolean) => {
-    const { availability, isAcquireable, isBiddable, isInquireable, isOfferable } = artwork
-    const params = {
-      acquireable: isAcquireable,
-      availability,
-      biddable: isBiddable,
-      context_module: contextModule,
-      context_screen: contextScreen,
-      context_screen_owner_id: contextScreenOwnerId,
-      context_screen_owner_slug: contextScreenOwnerSlug,
-      context_screen_owner_type: contextScreenOwnerType,
-      inquireable: isInquireable,
-      offerable: isOfferable,
-    }
-    trackEvent(artworkActionTracks.saveOrUnsaveArtwork(saved, params))
+    trackEvent(
+      artworkActionTracks.saveOrUnsaveArtwork(saved, {
+        acquireable: isAcquireable,
+        availability,
+        biddable: isBiddable,
+        context_module: contextModule,
+        context_screen: contextScreen,
+        context_screen_owner_id: contextScreenOwnerId,
+        context_screen_owner_slug: contextScreenOwnerSlug,
+        context_screen_owner_type: contextScreenOwnerType,
+        inquireable: isInquireable,
+        offerable: isOfferable,
+      })
+    )
   }
 
   const supressArtwork = () => {
@@ -197,6 +210,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                         </Text>
                       </Box>
                     )}
+
                     {!sale?.isAuction &&
                       !displayLimitedTimeOfferSignal &&
                       !!collectorSignals &&
@@ -208,11 +222,13 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                           dark={dark}
                         />
                       )}
+
                     {!!lotLabel && (
                       <Text lineHeight="20px" color={secondaryTextColor} numberOfLines={1}>
                         Lot {lotLabel}
                       </Text>
                     )}
+
                     {!hideArtistName && !!artistNames && (
                       <Text
                         color={primaryTextColor}
@@ -223,6 +239,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                         {artistNames}
                       </Text>
                     )}
+
                     {!!title && (
                       <Text
                         lineHeight="20px"
