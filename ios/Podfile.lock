@@ -1445,9 +1445,15 @@ PODS:
     - React-Core
   - RNReactNativeHapticFeedback (1.13.0):
     - React-Core
-  - RNReanimated (3.6.3):
+  - RNReanimated (3.3.0):
+    - DoubleConversion
+    - FBLazyVector
     - glog
-    - RCT-Folly (= 2022.05.16.00)
+    - hermes-engine
+    - RCT-Folly
+    - RCTRequired
+    - RCTTypeSafety
+    - React-callinvoker
     - React-Core
     - React-Core/DevSupport
     - React-Core/RCTWebSocket
@@ -2199,9 +2205,9 @@ SPEC CHECKSUMS:
   RNLocalize: 6351aa411de4283a753a2946e21a77d1b9e271e3
   RNPermissions: 23abdfa77d3cd3700b181a2d47f29939c6878ce6
   RNReactNativeHapticFeedback: b83bfb4b537bdd78eb4f6ffe63c6884f7b049ead
-  RNReanimated: f6b02d8f5eaa2830296411d4ec3b8ef5442dd13d
+  RNReanimated: baf235f9df1976cbf89ae726e25c48301dacf061
   RNScreens: 17e2f657f1b09a71ec3c821368a04acbb7ebcb46
-  RNSentry: 5381e9284aec59a546e4a7d40e33ad0839b99c1e
+  RNSentry: e9aa15bb2f3e18c822c002eea13bbd3b222ab493
   RNShare: 859ff710211285676b0bcedd156c12437ea1d564
   RNSVG: ba3e7232f45e34b7b47e74472386cf4e1a676d0a
   SDWebImage: 40b0b4053e36c660a764958bff99eed16610acbb
