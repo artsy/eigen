@@ -1,7 +1,8 @@
 import { Flex, Spinner } from "@artsy/palette-mobile"
-import { ErrorBoundary } from "@sentry/react-native"
+import { captureException } from "@sentry/react-native"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { Suspense } from "react"
+import { ErrorBoundary } from "react-error-boundary"
 
 export const withSuspense =
   (
@@ -14,10 +15,14 @@ export const withSuspense =
     ErrorFallback?: React.FC<any>
   ) =>
   (props: any) => {
-    const FallbackComponent = ErrorFallback ?? Fallback
-
+    // we display the fallback component if error or we defensively hide the component
+    const errorFallback = !!ErrorFallback ? <ErrorFallback {...props} /> : undefined
     return (
-      <ErrorBoundary fallback={<FallbackComponent {...props} />}>
+      <ErrorBoundary
+        fallbackRender={() => errorFallback}
+        // onError captures the exception and sends it to Sentry
+        onError={(error) => captureException(error)}
+      >
         <Suspense
           fallback={
             <ProvidePlaceholderContext>
