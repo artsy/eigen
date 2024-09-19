@@ -1,5 +1,5 @@
 {
-  "extends": "@tsconfig/react-native/tsconfig.json",
+  "extends": "@react-native/typescript-config/tsconfig.json",
   "compilerOptions": {
     "jsx": "react-jsx", // This is for vscode not to suggest importing React, after react17.
     "incremental": true, // improved build speeds.
@@ -12,5 +12,5 @@
     "noUnusedParameters": true, // what it says.
     "skipLibCheck": true // temporary disable typechecking node_modules to use Charts lib. Victory is actively migrating to TS and the types for now are a mess.
   },
-  "include": ["src/**/*.tsx", "src/**/*.ts", "typings/*.d.ts", "scripts/**/*.ts", "scripts/**/*.js"]
+  "include": ["src/**/*.tsx", "src/**/*.ts", "typings/*.d.ts", "scripts/**/*.ts"]
 }

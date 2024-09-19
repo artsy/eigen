@@ -1,8 +1,10 @@
 import { format } from "util"
 import mockAsyncStorage from "@react-native-async-storage/async-storage/jest/async-storage-mock"
-// @ts-expect-error
+// @ts-ignore-next-line
+import mockClipboard from "@react-native-clipboard/clipboard/jest/clipboard-mock.js"
+// @ts-ignore-next-line
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js"
-// @ts-expect-error
+// @ts-ignore-next-line
 import mockStripe from "@stripe/stripe-react-native/jest/mock.js"
 import "@testing-library/jest-native/extend-expect"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
@@ -15,7 +17,8 @@ import * as matchers from "jest-extended"
 
 import { isPlainObject } from "lodash"
 import { NativeModules } from "react-native"
-// @ts-expect-error
+import "react-native-gesture-handler/jestSetup"
+// @ts-ignore-next-line
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
 import track, { useTracking } from "react-tracking"
 
@@ -30,6 +33,8 @@ global.__TEST__ = true
 declare const process: any
 
 expect.extend(matchers)
+
+jest.mock("@react-native-clipboard/clipboard", () => mockClipboard)
 
 function logToError(type: keyof typeof console, args: unknown[], constructorOpt: () => void) {
   const explanation =
@@ -276,6 +281,7 @@ jest.mock("react-native-reanimated", () => {
 
   return {
     ...require("react-native-reanimated/mock"),
+    useEvent: jest.fn(),
     FadeInRight: animationMock,
     FadeInLeft: animationMock,
     FadeIn: {
