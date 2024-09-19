@@ -47,25 +47,31 @@ export interface ArtworkRailCardProps extends ArtworkActionTrackingProps {
 }
 
 export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
-  hideArtistName = false,
-  showPartnerName = false,
-  SalePriceComponent,
+  contextModule,
+  contextScreenOwnerType,
+  contextScreenOwnerId,
+  contextScreenOwnerSlug,
+  contextScreen,
   dark = false,
-  lotLabel,
-  metaContainerStyles,
-  onPress,
-  showSaveIcon = false,
-  testID,
+  hideArtistName = false,
   hideIncreasedInterestSignal = false,
   hideCuratorsPickSignal = false,
+  lotLabel,
+  showPartnerName = false,
+  metaContainerStyles,
+  onPress,
+  SalePriceComponent,
+  showSaveIcon = false,
+  testID,
+
   ...restProps
 }) => {
   const { trackEvent } = useTracking()
   const fontScale = PixelRatio.getFontScale()
 
-  const AREnablePartnerOfferSignals = useFeatureFlag("AREnablePartnerOfferSignals")
-  const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
-  const AREnableCuratorsPicksAndInterestSignals = useFeatureFlag(
+  const enablePartnerOfferSignals = useFeatureFlag("AREnablePartnerOfferSignals")
+  const enableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
+  const enableCuratorsPicksAndInterestSignals = useFeatureFlag(
     "AREnableCuratorsPicksAndInterestSignals"
   )
   const enableArtworkRailRedesignImageAspectRatio = useFeatureFlag(
@@ -93,8 +99,8 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const saleMessage = defaultSaleMessageOrBidInfo({
     artwork,
     isSmallTile: true,
-    collectorSignals: AREnablePartnerOfferSignals ? collectorSignals : null,
-    auctionSignals: AREnableAuctionImprovementsSignals ? collectorSignals?.auction : null,
+    collectorSignals: enablePartnerOfferSignals ? collectorSignals : null,
+    auctionSignals: enableAuctionImprovementsSignals ? collectorSignals?.auction : null,
   })
 
   const partnerOfferEndAt = collectorSignals?.partnerOffer?.endAt
@@ -104,14 +110,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const primaryTextColor = dark ? "white100" : "black100"
   const secondaryTextColor = dark ? "black15" : "black60"
   const backgroundColor = dark ? "black100" : "white100"
-
-  const {
-    contextModule,
-    contextScreenOwnerType,
-    contextScreenOwnerId,
-    contextScreenOwnerSlug,
-    contextScreen,
-  } = restProps
 
   const onArtworkSavedOrUnSaved = (saved: boolean) => {
     trackEvent(
@@ -140,9 +138,9 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   })
 
   const displayLimitedTimeOfferSignal =
-    AREnablePartnerOfferSignals && collectorSignals?.partnerOffer?.isAvailable && !sale?.isAuction
+    enablePartnerOfferSignals && collectorSignals?.partnerOffer?.isAvailable && !sale?.isAuction
 
-  const displayAuctionSignal = AREnableAuctionImprovementsSignals && sale?.isAuction
+  const displayAuctionSignal = enableAuctionImprovementsSignals && sale?.isAuction
 
   const saleInfoTextColor =
     displayAuctionSignal && collectorSignals?.auction?.liveBiddingStarted
@@ -214,7 +212,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                     {!sale?.isAuction &&
                       !displayLimitedTimeOfferSignal &&
                       !!collectorSignals &&
-                      !!AREnableCuratorsPicksAndInterestSignals && (
+                      !!enableCuratorsPicksAndInterestSignals && (
                         <ArtworkSocialSignal
                           collectorSignals={collectorSignals}
                           hideCuratorsPick={hideCuratorsPickSignal}
