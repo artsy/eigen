@@ -4,7 +4,7 @@ import {
   ArtsyNativeModule,
   DEFAULT_NAVIGATION_BAR_COLOR,
 } from "app/NativeModules/ArtsyNativeModule"
-import { AuthenticationDialog } from "app/Scenes/Onboarding/Components/AuthenticationDialog"
+import { AuthenticationDialog } from "app/Scenes/Onboarding/AuthenticationDialog/AuthenticationDialog"
 import { useScreenDimensions } from "app/utils/hooks"
 import { Action, action, createContextStore } from "easy-peasy"
 import backgroundImage from "images/WelcomeImage.webp"
@@ -186,7 +186,11 @@ const WelcomeText: React.FC = () => {
 export type OnboardingHomeNavigationStack = {
   WelcomeStep: undefined
   EmailStep: undefined
-  LoginPasswordStep: undefined
+  SignUpPasswordStep: { email: string }
+  SignUpNameStep: { email: string; password: string }
+  LoginPasswordStep: { email: string }
+  LoginOTPStep: { email: string; password: string; mode: string }
+  ForgotPasswordStep: { email: string }
 }
 
 interface OnboardingHomeStoreModel {

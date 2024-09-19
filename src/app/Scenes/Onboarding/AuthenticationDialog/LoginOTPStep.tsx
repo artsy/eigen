@@ -3,16 +3,37 @@ import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
 import { OnboardingHomeNavigationStack } from "app/Scenes/Onboarding/OnboardingHome"
-import { Field, Formik } from "formik"
+import { GlobalStore } from "app/store/GlobalStore"
+import { Field, Formik, FormikHelpers } from "formik"
 import * as Yup from "yup"
 
-type EmailStepProps = StackScreenProps<OnboardingHomeNavigationStack, "EmailStep">
+type LoginOTPStepProps = StackScreenProps<OnboardingHomeNavigationStack, "LoginOTPStep">
 
-export const EmailStep: React.FC<EmailStepProps> = ({ navigation }) => {
+interface LoginOTPStepFormValues {
+  otp: string
+}
+
+export const LoginOTPStep: React.FC<LoginOTPStepProps> = ({ navigation, route }) => {
   const { space } = useTheme()
 
-  const handleContinueButtonPress = () => {
-    navigation.navigate("LoginPasswordStep")
+  const handleContinueButtonPress = async (
+    { otp }: LoginOTPStepFormValues,
+    { validateForm }: FormikHelpers<LoginOTPStepFormValues>
+  ) => {
+    validateForm()
+
+    const email = route.params.email
+    const password = route.params.password
+
+    const response = await GlobalStore.actions.auth.signIn({
+      oauthProvider: "email",
+      oauthMode: "email",
+      email,
+      password,
+      otp: otp.trim(),
+    })
+
+    console.log({ response })
   }
 
   const handleBackButtonPress = () => {
@@ -21,14 +42,14 @@ export const EmailStep: React.FC<EmailStepProps> = ({ navigation }) => {
 
   return (
     <Formik
-      initialValues={{ email: "" }}
+      initialValues={{ otp: "" }}
       onSubmit={handleContinueButtonPress}
       validationSchema={Yup.object().shape({
-        email: Yup.string().email().required(),
+        email: Yup.string().required(),
       })}
       validateOnMount
     >
-      {({ handleBlur, handleChange, isValid, values }) => {
+      {({ handleBlur, handleChange, handleSubmit, isValid, values }) => {
         return (
           <BottomSheetScrollView>
             <Flex padding={2} gap={space(1)}>
@@ -40,6 +61,7 @@ export const EmailStep: React.FC<EmailStepProps> = ({ navigation }) => {
                 name="email"
                 autoCapitalize="none"
                 autoComplete="email"
+                autoFocus
                 keyboardType="email-address"
                 spellCheck={false}
                 autoCorrect={false}
@@ -48,11 +70,11 @@ export const EmailStep: React.FC<EmailStepProps> = ({ navigation }) => {
                 placeholder="Enter your email address"
                 returnKeyType="done"
                 title="Email"
-                value={values.email}
+                value={values.otp}
                 onChangeText={handleChange("email")}
               />
 
-              <Button block width={100} onPress={handleContinueButtonPress} disabled={!isValid}>
+              <Button block width={100} onPress={handleSubmit} disabled={!isValid}>
                 Continue
               </Button>
             </Flex>
