@@ -71,7 +71,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   }
 
   return (
-    <HomeViewSectionWrapper sectionID={section.internalID}>
+    <HomeViewSectionWrapper contextModule={section.contextModule as ContextModule}>
       <View>
         <Flex pl={2} pr={2}>
           <SectionTitle

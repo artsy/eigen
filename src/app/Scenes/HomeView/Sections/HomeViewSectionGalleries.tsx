@@ -51,7 +51,7 @@ export const HomeViewSectionGalleries: React.FC<HomeViewSectionGalleriesProps> =
   }
 
   return (
-    <HomeViewSectionWrapper sectionID={section.internalID}>
+    <HomeViewSectionWrapper contextModule={section.contextModule as ContextModule}>
       <Touchable onPress={onSectionViewAll} haptic="impactLight">
         {!!hasImage && (
           <Flex position="absolute">

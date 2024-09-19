@@ -20,7 +20,7 @@ export const HomeViewSectionShows: React.FC<HomeViewSectionShowsProps> = (props)
   const tracking = useHomeViewTracking()
 
   return (
-    <HomeViewSectionWrapper sectionID={section.internalID}>
+    <HomeViewSectionWrapper contextModule={section.contextModule as ContextModule}>
       <ShowsRailContainer
         title={component?.title || "Shows"}
         disableLocation={!enableShowsForYouLocation}

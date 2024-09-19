@@ -8,26 +8,26 @@ import React, { useCallback } from "react"
 
 interface HomeViewSectionWrapperProps {
   children: React.ReactNode
-  sectionID?: string
+  contextModule?: ContextModule
 }
 
 export const HomeViewSectionWrapper: React.FC<HomeViewSectionWrapperProps> = ({
   children,
-  sectionID,
+  contextModule,
 }) => {
   const { viewedSection } = useHomeViewTracking()
   const addTrackedSection = HomeViewStore.useStoreActions((actions) => actions.addTrackedSection)
   const trackedSections = HomeViewStore.useStoreState((state) => state.trackedSections)
 
   const handleImageVisibility = useCallback(() => {
-    if (sectionID && !trackedSections.includes(sectionID)) {
-      viewedSection(sectionID as ContextModule)
-      addTrackedSection(sectionID)
+    if (contextModule && !trackedSections.includes(contextModule)) {
+      viewedSection(contextModule as ContextModule)
+      addTrackedSection(contextModule)
     }
-  }, [sectionID, viewedSection, addTrackedSection, trackedSections])
+  }, [contextModule, viewedSection, addTrackedSection, trackedSections])
 
-  // We only track section views if we have a sectionID
-  if (sectionID) {
+  // We only track section views if we have a contextModule
+  if (contextModule) {
     return (
       <VisibilitySensor onChange={handleImageVisibility}>
         <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>{children}</Flex>

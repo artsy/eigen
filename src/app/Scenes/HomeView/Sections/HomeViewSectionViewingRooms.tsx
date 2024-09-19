@@ -47,7 +47,7 @@ export const HomeViewSectionViewingRooms: React.FC<{
   }
 
   return (
-    <HomeViewSectionWrapper sectionID={section.internalID}>
+    <HomeViewSectionWrapper contextModule={section.contextModule as ContextModule}>
       <Flex px={2}>
         <SectionTitle
           title={section.component?.title}

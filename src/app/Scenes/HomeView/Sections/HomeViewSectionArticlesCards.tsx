@@ -60,7 +60,7 @@ export const HomeViewSectionArticlesCards: React.FC<HomeViewSectionArticlesCards
   }
 
   return (
-    <HomeViewSectionWrapper sectionID={section.internalID}>
+    <HomeViewSectionWrapper contextModule={section.contextModule as ContextModule}>
       <Flex mx={2} p={2} border="1px solid" borderColor="black30" gap={space(2)}>
         <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
           <Text variant="lg-display">{section.component?.title}</Text>

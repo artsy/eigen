@@ -38,7 +38,7 @@ export const HomeViewSectionArticles: React.FC<HomeViewSectionArticlesProps> = (
   }
 
   return (
-    <HomeViewSectionWrapper sectionID={section.internalID}>
+    <HomeViewSectionWrapper contextModule={section.contextModule as ContextModule}>
       <ArticlesRailFragmentContainer
         title={section.component?.title ?? ""}
         articlesConnection={section.articlesConnection}

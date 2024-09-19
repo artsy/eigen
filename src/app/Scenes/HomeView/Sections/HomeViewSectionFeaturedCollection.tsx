@@ -68,7 +68,7 @@ export const HomeViewSectionFeaturedCollection: React.FC<HomeViewSectionFeatured
   }
 
   return (
-    <HomeViewSectionWrapper sectionID={section.internalID}>
+    <HomeViewSectionWrapper contextModule={section.contextModule as ContextModule}>
       <Flex pb={2} backgroundColor="black100">
         <TouchableOpacity onPress={onSectionViewAll} activeOpacity={0.7}>
           {!!component.backgroundImageURL && (
