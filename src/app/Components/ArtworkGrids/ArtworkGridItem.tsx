@@ -279,6 +279,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const saleInfoTextColor =
     displayAuctionSignal && collectorSignals?.auction?.liveBiddingStarted ? "blue100" : "black100"
 
+  const saleInfoTextWeight =
+    displayAuctionSignal && collectorSignals?.auction?.liveBiddingStarted ? "normal" : "bold"
+
   const handleSupress = async (item: DissapearableArtwork) => {
     await item._disappearable?.disappear()
   }
@@ -443,9 +446,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   <Text
                     lineHeight="18px"
                     variant="xs"
-                    weight="medium"
                     numberOfLines={1}
                     color={saleInfoTextColor}
+                    fontWeight={saleInfoTextWeight}
                     {...saleInfoTextStyle}
                   >
                     {saleInfo}
