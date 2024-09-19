@@ -99,7 +99,7 @@ export const HomeView: React.FC = () => {
           data={sections}
           keyExtractor={(item) => item.internalID}
           renderItem={({ item }) => {
-            return <Section section={item} />
+            return <Section section={item} my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT} />
           }}
           onEndReached={() => loadNext(NUMBER_OF_SECTIONS_TO_LOAD)}
           ListHeaderComponent={HomeHeader}

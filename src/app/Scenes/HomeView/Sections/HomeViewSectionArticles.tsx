@@ -1,10 +1,17 @@
 import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
-import { Flex, Join, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
+import {
+  Flex,
+  FlexProps,
+  Join,
+  Skeleton,
+  SkeletonBox,
+  SkeletonText,
+  Spacer,
+} from "@artsy/palette-mobile"
 import { HomeViewSectionArticlesQuery } from "__generated__/HomeViewSectionArticlesQuery.graphql"
 import { HomeViewSectionArticles_section$key } from "__generated__/HomeViewSectionArticles_section.graphql"
 import { ARTICLE_CARD_IMAGE_HEIGHT, ARTICLE_CARD_IMAGE_WIDTH } from "app/Components/ArticleCard"
 import { ArticlesRailFragmentContainer } from "app/Scenes/Home/Components/ArticlesRail"
-import { HomeViewSectionWrapper } from "app/Scenes/HomeView/Components/HomeViewSectionWrapper"
 import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
@@ -17,8 +24,11 @@ interface HomeViewSectionArticlesProps {
   section: HomeViewSectionArticles_section$key
 }
 
-export const HomeViewSectionArticles: React.FC<HomeViewSectionArticlesProps> = (props) => {
-  const section = useFragment(sectionFragment, props.section)
+export const HomeViewSectionArticles: React.FC<HomeViewSectionArticlesProps> = ({
+  section: sectionProp,
+  ...flexProps
+}) => {
+  const section = useFragment(sectionFragment, sectionProp)
   const tracking = useHomeViewTracking()
   const viewAll = section.component?.behaviors?.viewAll
 
@@ -38,7 +48,7 @@ export const HomeViewSectionArticles: React.FC<HomeViewSectionArticlesProps> = (
   }
 
   return (
-    <HomeViewSectionWrapper contextModule={section.contextModule as ContextModule}>
+    <Flex {...flexProps}>
       <ArticlesRailFragmentContainer
         title={section.component?.title ?? ""}
         articlesConnection={section.articlesConnection}
@@ -52,7 +62,7 @@ export const HomeViewSectionArticles: React.FC<HomeViewSectionArticlesProps> = (
         }}
         onSectionTitlePress={viewAll ? onSectionViewAll : undefined}
       />
-    </HomeViewSectionWrapper>
+    </Flex>
   )
 }
 
@@ -85,11 +95,11 @@ const homeViewSectionArticlesQuery = graphql`
   }
 `
 
-const HomeViewSectionArticlesPlaceholder: React.FC = () => {
+const HomeViewSectionArticlesPlaceholder: React.FC<FlexProps> = (flexProps) => {
   const randomValue = useMemoizedRandom()
   return (
     <Skeleton>
-      <HomeViewSectionWrapper>
+      <Flex {...flexProps}>
         <Flex mx={2} my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
           <SkeletonText variant="lg-display">Artsy Editorial</SkeletonText>
 
@@ -120,21 +130,24 @@ const HomeViewSectionArticlesPlaceholder: React.FC = () => {
             </Join>
           </Flex>
         </Flex>
-      </HomeViewSectionWrapper>
+      </Flex>
     </Skeleton>
   )
 }
 
-export const HomeViewSectionArticlesQueryRenderer: React.FC<{
+interface HomeViewSectionArticlesQueryRendererProps extends FlexProps {
   sectionID: string
-}> = withSuspense((props) => {
-  const data = useLazyLoadQuery<HomeViewSectionArticlesQuery>(homeViewSectionArticlesQuery, {
-    id: props.sectionID,
-  })
+}
 
-  if (!data.homeView.section) {
-    return null
-  }
+export const HomeViewSectionArticlesQueryRenderer: React.FC<HomeViewSectionArticlesQueryRendererProps> =
+  withSuspense(({ sectionID, ...flexProps }) => {
+    const data = useLazyLoadQuery<HomeViewSectionArticlesQuery>(homeViewSectionArticlesQuery, {
+      id: sectionID,
+    })
 
-  return <HomeViewSectionArticles section={data.homeView.section} />
-}, HomeViewSectionArticlesPlaceholder)
+    if (!data.homeView.section) {
+      return null
+    }
+
+    return <HomeViewSectionArticles section={data.homeView.section} {...flexProps} />
+  }, HomeViewSectionArticlesPlaceholder)

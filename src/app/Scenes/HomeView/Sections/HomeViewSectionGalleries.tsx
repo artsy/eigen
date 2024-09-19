@@ -2,6 +2,7 @@ import { ContextModule } from "@artsy/cohesion"
 import {
   Button,
   Flex,
+  FlexProps,
   Skeleton,
   SkeletonBox,
   Text,
@@ -10,7 +11,6 @@ import {
 } from "@artsy/palette-mobile"
 import { HomeViewSectionGalleriesQuery } from "__generated__/HomeViewSectionGalleriesQuery.graphql"
 import { HomeViewSectionGalleries_section$key } from "__generated__/HomeViewSectionGalleries_section.graphql"
-import { HomeViewSectionWrapper } from "app/Scenes/HomeView/Components/HomeViewSectionWrapper"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { withSuspense } from "app/utils/hooks/withSuspense"
@@ -23,11 +23,14 @@ interface HomeViewSectionGalleriesProps {
   section: HomeViewSectionGalleries_section$key
 }
 
-export const HomeViewSectionGalleries: React.FC<HomeViewSectionGalleriesProps> = (props) => {
+export const HomeViewSectionGalleries: React.FC<HomeViewSectionGalleriesProps> = ({
+  section: sectionProp,
+  ...flexProps
+}) => {
   const tracking = useHomeViewTracking()
 
   const { width, height } = useScreenDimensions()
-  const section = useFragment(HomeViewSectionGalleriesFragment, props.section)
+  const section = useFragment(HomeViewSectionGalleriesFragment, sectionProp)
 
   if (!section?.component) {
     return null
@@ -51,7 +54,7 @@ export const HomeViewSectionGalleries: React.FC<HomeViewSectionGalleriesProps> =
   }
 
   return (
-    <HomeViewSectionWrapper contextModule={section.contextModule as ContextModule}>
+    <Flex {...flexProps}>
       <Touchable onPress={onSectionViewAll} haptic="impactLight">
         {!!hasImage && (
           <Flex position="absolute">
@@ -100,7 +103,7 @@ export const HomeViewSectionGalleries: React.FC<HomeViewSectionGalleriesProps> =
           </Flex>
         </Flex>
       </Touchable>
-    </HomeViewSectionWrapper>
+    </Flex>
   )
 }
 
@@ -122,14 +125,14 @@ const HomeViewSectionGalleriesFragment = graphql`
   }
 `
 
-const HomeViewSectionGalleriesPlaceholder: React.FC = () => {
+const HomeViewSectionGalleriesPlaceholder: React.FC<FlexProps> = (flexProps) => {
   const { height } = useScreenDimensions()
 
   return (
     <Skeleton>
-      <HomeViewSectionWrapper>
+      <Flex {...flexProps}>
         <SkeletonBox height={height * 0.5} width="100%"></SkeletonBox>
-      </HomeViewSectionWrapper>
+      </Flex>
     </Skeleton>
   )
 }
@@ -144,16 +147,19 @@ const homeViewSectionGalleriesQuery = graphql`
   }
 `
 
-export const HomeViewSectionGalleriesQueryRenderer: React.FC<{
+interface HomeViewSectionGalleriesQueryRendererProps extends FlexProps {
   sectionID: string
-}> = withSuspense((props) => {
-  const data = useLazyLoadQuery<HomeViewSectionGalleriesQuery>(homeViewSectionGalleriesQuery, {
-    id: props.sectionID,
-  })
+}
 
-  if (!data.homeView.section) {
-    return null
-  }
+export const HomeViewSectionGalleriesQueryRenderer: React.FC<HomeViewSectionGalleriesQueryRendererProps> =
+  withSuspense(({ sectionID, ...flexProps }) => {
+    const data = useLazyLoadQuery<HomeViewSectionGalleriesQuery>(homeViewSectionGalleriesQuery, {
+      id: sectionID,
+    })
 
-  return <HomeViewSectionGalleries section={data.homeView.section} />
-}, HomeViewSectionGalleriesPlaceholder)
+    if (!data.homeView.section) {
+      return null
+    }
+
+    return <HomeViewSectionGalleries section={data.homeView.section} {...flexProps} />
+  }, HomeViewSectionGalleriesPlaceholder)

@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
-import { Flex, Join, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
+import { Flex, FlexProps, Join, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import { HomeViewSectionActivityQuery } from "__generated__/HomeViewSectionActivityQuery.graphql"
 import { HomeViewSectionActivity_section$key } from "__generated__/HomeViewSectionActivity_section.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
@@ -10,7 +10,6 @@ import {
   ACTIVITY_RAIL_ITEM_WIDTH,
   ActivityRailItem,
 } from "app/Scenes/Home/Components/ActivityRailItem"
-import { HomeViewSectionWrapper } from "app/Scenes/HomeView/Components/HomeViewSectionWrapper"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
@@ -28,10 +27,13 @@ interface HomeViewSectionActivityProps {
   section: HomeViewSectionActivity_section$key
 }
 
-export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = (props) => {
+export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = ({
+  section: sectionProp,
+  ...flexProps
+}) => {
   const tracking = useHomeViewTracking()
 
-  const section = useFragment(sectionFragment, props.section)
+  const section = useFragment(sectionFragment, sectionProp)
   const notifications = extractNodes(section.notificationsConnection).filter(
     shouldDisplayNotification
   )
@@ -60,7 +62,7 @@ export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = (
   }
 
   return (
-    <HomeViewSectionWrapper contextModule={section.contextModule as ContextModule}>
+    <Flex {...flexProps}>
       <Flex px={2}>
         <SectionTitle title={section.component?.title} onPress={onSectionViewAll} />
       </Flex>
@@ -94,7 +96,7 @@ export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = (
           )
         }}
       />
-    </HomeViewSectionWrapper>
+    </Flex>
   )
 }
 
@@ -151,11 +153,11 @@ const homeViewSectionActivityQuery = graphql`
   }
 `
 
-const HomeViewSectionActivityPlaceholder: React.FC = () => {
+const HomeViewSectionActivityPlaceholder: React.FC<FlexProps> = (flexProps) => {
   const randomValue = useMemoizedRandom()
 
   return (
-    <HomeViewSectionWrapper>
+    <Flex {...flexProps}>
       <Flex ml={2} mr={2}>
         <SkeletonText variant="lg-display">Latest Activity</SkeletonText>
         <Spacer y={2} />
@@ -183,20 +185,23 @@ const HomeViewSectionActivityPlaceholder: React.FC = () => {
           </Join>
         </Flex>
       </Flex>
-    </HomeViewSectionWrapper>
+    </Flex>
   )
 }
 
-export const HomeViewSectionActivityQueryRenderer: React.FC<{
+interface HomeViewSectionActivityQueryRendererProps extends FlexProps {
   sectionID: string
-}> = withSuspense((props) => {
-  const data = useLazyLoadQuery<HomeViewSectionActivityQuery>(homeViewSectionActivityQuery, {
-    id: props.sectionID,
-  })
+}
 
-  if (!data.homeView.section) {
-    return null
-  }
+export const HomeViewSectionActivityQueryRenderer: React.FC<HomeViewSectionActivityQueryRendererProps> =
+  withSuspense(({ sectionID, ...flexProps }) => {
+    const data = useLazyLoadQuery<HomeViewSectionActivityQuery>(homeViewSectionActivityQuery, {
+      id: sectionID,
+    })
 
-  return <HomeViewSectionActivity section={data.homeView.section} />
-}, HomeViewSectionActivityPlaceholder)
+    if (!data.homeView.section) {
+      return null
+    }
+
+    return <HomeViewSectionActivity section={data.homeView.section} {...flexProps} />
+  }, HomeViewSectionActivityPlaceholder)

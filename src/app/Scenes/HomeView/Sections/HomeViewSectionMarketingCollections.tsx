@@ -1,5 +1,13 @@
 import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
-import { Flex, Join, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
+import {
+  Flex,
+  FlexProps,
+  Join,
+  Skeleton,
+  SkeletonBox,
+  SkeletonText,
+  Spacer,
+} from "@artsy/palette-mobile"
 import { HomeViewSectionMarketingCollectionsQuery } from "__generated__/HomeViewSectionMarketingCollectionsQuery.graphql"
 import {
   HomeViewSectionMarketingCollections_section$data,
@@ -13,7 +21,6 @@ import {
 } from "app/Components/FiveUpImageLayout"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { HomeViewSectionWrapper } from "app/Scenes/HomeView/Components/HomeViewSectionWrapper"
 import {
   CollectionCard,
   HomeViewSectionMarketingCollectionsItem,
@@ -37,10 +44,10 @@ interface HomeViewSectionMarketingCollectionsProps {
 
 export const HomeViewSectionMarketingCollections: React.FC<
   HomeViewSectionMarketingCollectionsProps
-> = (props) => {
+> = ({ section: sectionProp, ...flexProps }) => {
   const tracking = useHomeViewTracking()
 
-  const section = useFragment(fragment, props.section)
+  const section = useFragment(fragment, sectionProp)
   const component = section.component
 
   if (!component) return null
@@ -72,7 +79,7 @@ export const HomeViewSectionMarketingCollections: React.FC<
   }
 
   return (
-    <HomeViewSectionWrapper contextModule={section.contextModule as ContextModule}>
+    <Flex {...flexProps}>
       <Flex pl={2} pr={2}>
         <SectionTitle title={component.title} onPress={viewAll ? onSectionViewAll : undefined} />
       </Flex>
@@ -102,7 +109,7 @@ export const HomeViewSectionMarketingCollections: React.FC<
           )
         }}
       />
-    </HomeViewSectionWrapper>
+    </Flex>
   )
 }
 
@@ -133,11 +140,11 @@ const fragment = graphql`
   }
 `
 
-const HomeViewSectionMarketingCollectionsPlaceholder: React.FC = () => {
+const HomeViewSectionMarketingCollectionsPlaceholder: React.FC<FlexProps> = (flexProps) => {
   const randomValue = useMemoizedRandom()
   return (
     <Skeleton>
-      <HomeViewSectionWrapper>
+      <Flex {...flexProps}>
         <Flex mx={2}>
           <SkeletonText>Collections</SkeletonText>
 
@@ -198,7 +205,7 @@ const HomeViewSectionMarketingCollectionsPlaceholder: React.FC = () => {
             </Join>
           </Flex>
         </Flex>
-      </HomeViewSectionWrapper>
+      </Flex>
     </Skeleton>
   )
 }
@@ -213,19 +220,22 @@ const homeViewSectionMarketingCollectionsQuery = graphql`
   }
 `
 
-export const HomeViewSectionMarketingCollectionsQueryRenderer: React.FC<{
+interface HomeViewSectionMarketingCollectionsQueryRendererProps extends FlexProps {
   sectionID: string
-}> = withSuspense((props) => {
-  const data = useLazyLoadQuery<HomeViewSectionMarketingCollectionsQuery>(
-    homeViewSectionMarketingCollectionsQuery,
-    {
-      id: props.sectionID,
+}
+
+export const HomeViewSectionMarketingCollectionsQueryRenderer: React.FC<HomeViewSectionMarketingCollectionsQueryRendererProps> =
+  withSuspense(({ sectionID, ...flexProps }) => {
+    const data = useLazyLoadQuery<HomeViewSectionMarketingCollectionsQuery>(
+      homeViewSectionMarketingCollectionsQuery,
+      {
+        id: sectionID,
+      }
+    )
+
+    if (!data.homeView.section) {
+      return null
     }
-  )
 
-  if (!data.homeView.section) {
-    return null
-  }
-
-  return <HomeViewSectionMarketingCollections section={data.homeView.section} />
-}, HomeViewSectionMarketingCollectionsPlaceholder)
+    return <HomeViewSectionMarketingCollections section={data.homeView.section} {...flexProps} />
+  }, HomeViewSectionMarketingCollectionsPlaceholder)

@@ -1,6 +1,7 @@
 import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import {
   Flex,
+  FlexProps,
   Separator,
   Skeleton,
   SkeletonBox,
@@ -14,7 +15,6 @@ import {
   HomeViewSectionArticlesCards_section$data,
   HomeViewSectionArticlesCards_section$key,
 } from "__generated__/HomeViewSectionArticlesCards_section.graphql"
-import { HomeViewSectionWrapper } from "app/Scenes/HomeView/Components/HomeViewSectionWrapper"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -31,10 +31,11 @@ type ArticleType = ExtractNodeType<
   HomeViewSectionArticlesCards_section$data["cardArticlesConnection"]
 >
 
-export const HomeViewSectionArticlesCards: React.FC<HomeViewSectionArticlesCardsProps> = (
-  props
-) => {
-  const section = useFragment(fragment, props.section)
+export const HomeViewSectionArticlesCards: React.FC<HomeViewSectionArticlesCardsProps> = ({
+  section: sectionProp,
+  ...flexProps
+}) => {
+  const section = useFragment(fragment, sectionProp)
   const articles = extractNodes(section.cardArticlesConnection)
   const viewAll = section.component?.behaviors?.viewAll
 
@@ -60,7 +61,7 @@ export const HomeViewSectionArticlesCards: React.FC<HomeViewSectionArticlesCards
   }
 
   return (
-    <HomeViewSectionWrapper contextModule={section.contextModule as ContextModule}>
+    <Flex {...flexProps}>
       <Flex mx={2} p={2} border="1px solid" borderColor="black30" gap={space(2)}>
         <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
           <Text variant="lg-display">{section.component?.title}</Text>
@@ -86,7 +87,7 @@ export const HomeViewSectionArticlesCards: React.FC<HomeViewSectionArticlesCards
           </Touchable>
         )}
       </Flex>
-    </HomeViewSectionWrapper>
+    </Flex>
   )
 }
 
@@ -122,11 +123,11 @@ const fragment = graphql`
   }
 `
 
-const HomeViewSectionArticlesCardsPlaceholder: React.FC = () => {
+const HomeViewSectionArticlesCardsPlaceholder: React.FC<FlexProps> = (flexProps) => {
   const space = useSpace()
   return (
     <Skeleton>
-      <HomeViewSectionWrapper>
+      <Flex {...flexProps}>
         <Flex mx={2} p={2} border="1px solid" borderColor="black30" gap={space(2)}>
           <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
             <SkeletonText variant="lg-display">title</SkeletonText>
@@ -146,7 +147,7 @@ const HomeViewSectionArticlesCardsPlaceholder: React.FC = () => {
             <SkeletonText variant="sm-display">More News</SkeletonText>
           </Flex>
         </Flex>
-      </HomeViewSectionWrapper>
+      </Flex>
     </Skeleton>
   )
 }
@@ -161,19 +162,22 @@ const homeViewSectionArticlesCardsQuery = graphql`
   }
 `
 
-export const HomeViewSectionArticlesCardsQueryRenderer: React.FC<{
+interface HomeViewSectionArticlesCardsQueryRendererProps extends FlexProps {
   sectionID: string
-}> = withSuspense((props) => {
-  const data = useLazyLoadQuery<HomeViewSectionArticlesCardsQuery>(
-    homeViewSectionArticlesCardsQuery,
-    {
-      id: props.sectionID,
+}
+
+export const HomeViewSectionArticlesCardsQueryRenderer: React.FC<HomeViewSectionArticlesCardsQueryRendererProps> =
+  withSuspense(({ sectionID, ...flexProps }) => {
+    const data = useLazyLoadQuery<HomeViewSectionArticlesCardsQuery>(
+      homeViewSectionArticlesCardsQuery,
+      {
+        id: sectionID,
+      }
+    )
+
+    if (!data.homeView.section) {
+      return null
     }
-  )
 
-  if (!data.homeView.section) {
-    return null
-  }
-
-  return <HomeViewSectionArticlesCards section={data.homeView.section} />
-}, HomeViewSectionArticlesCardsPlaceholder)
+    return <HomeViewSectionArticlesCards section={data.homeView.section} {...flexProps} />
+  }, HomeViewSectionArticlesCardsPlaceholder)

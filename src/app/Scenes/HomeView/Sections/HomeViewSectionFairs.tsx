@@ -1,12 +1,19 @@
 import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
-import { Flex, Join, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
+import {
+  Flex,
+  FlexProps,
+  Join,
+  Skeleton,
+  SkeletonBox,
+  SkeletonText,
+  Spacer,
+} from "@artsy/palette-mobile"
 import { HomeViewSectionFairsQuery } from "__generated__/HomeViewSectionFairsQuery.graphql"
 import { HomeViewSectionFairs_section$key } from "__generated__/HomeViewSectionFairs_section.graphql"
 import { CardRailCard, CardRailMetadataContainer } from "app/Components/Home/CardRailCard"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { LARGE_IMAGE_SIZE, SMALL_IMAGE_SIZE } from "app/Components/ThreeUpImageLayout"
-import { HomeViewSectionWrapper } from "app/Scenes/HomeView/Components/HomeViewSectionWrapper"
 import { HomeViewSectionFairsFairItem } from "app/Scenes/HomeView/Sections/HomeViewSectionFairsFairItem"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
@@ -24,10 +31,13 @@ interface HomeViewSectionFairsProps {
   section: HomeViewSectionFairs_section$key
 }
 
-export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = (props) => {
+export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = ({
+  section: sectionProp,
+  ...flexProps
+}) => {
   const tracking = useHomeViewTracking()
 
-  const section = useFragment(fragment, props.section)
+  const section = useFragment(fragment, sectionProp)
   const viewAll = section.component?.behaviors?.viewAll
 
   const fairs = extractNodes(section.fairsConnection)
@@ -56,7 +66,7 @@ export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = (props)
   }
 
   return (
-    <HomeViewSectionWrapper contextModule={section.contextModule as ContextModule}>
+    <Flex {...flexProps}>
       <Flex pl={2} pr={2}>
         <SectionTitle
           title={section.component?.title}
@@ -86,7 +96,7 @@ export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = (props)
           )
         }}
       />
-    </HomeViewSectionWrapper>
+    </Flex>
   )
 }
 
@@ -118,11 +128,11 @@ const fragment = graphql`
   }
 `
 
-const HomeViewSectionFairsPlaceholder: React.FC = () => {
+const HomeViewSectionFairsPlaceholder: React.FC<FlexProps> = (flexProps) => {
   const randomValue = useMemoizedRandom()
   return (
     <Skeleton>
-      <HomeViewSectionWrapper>
+      <Flex {...flexProps}>
         <Flex mx={2}>
           <SkeletonText>Featured Fairs</SkeletonText>
           <SkeletonText>See Wroks in Top Art Fairs</SkeletonText>
@@ -161,7 +171,7 @@ const HomeViewSectionFairsPlaceholder: React.FC = () => {
             </Join>
           </Flex>
         </Flex>
-      </HomeViewSectionWrapper>
+      </Flex>
     </Skeleton>
   )
 }
@@ -176,16 +186,19 @@ const homeViewSectionFairsQuery = graphql`
   }
 `
 
-export const HomeViewSectionFairsQueryRenderer: React.FC<{
+interface HomeViewSectionFairsQueryRendererProps extends FlexProps {
   sectionID: string
-}> = withSuspense((props) => {
-  const data = useLazyLoadQuery<HomeViewSectionFairsQuery>(homeViewSectionFairsQuery, {
-    id: props.sectionID,
-  })
+}
 
-  if (!data.homeView.section) {
-    return null
-  }
+export const HomeViewSectionFairsQueryRenderer: React.FC<HomeViewSectionFairsQueryRendererProps> =
+  withSuspense(({ sectionID, ...flexProps }) => {
+    const data = useLazyLoadQuery<HomeViewSectionFairsQuery>(homeViewSectionFairsQuery, {
+      id: sectionID,
+    })
 
-  return <HomeViewSectionFairs section={data.homeView.section} />
-}, HomeViewSectionFairsPlaceholder)
+    if (!data.homeView.section) {
+      return null
+    }
+
+    return <HomeViewSectionFairs section={data.homeView.section} {...flexProps} />
+  }, HomeViewSectionFairsPlaceholder)

@@ -1,10 +1,17 @@
 import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
-import { Flex, Join, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
+import {
+  Flex,
+  FlexProps,
+  Join,
+  Skeleton,
+  SkeletonBox,
+  SkeletonText,
+  Spacer,
+} from "@artsy/palette-mobile"
 import { HomeViewSectionViewingRoomsQuery } from "__generated__/HomeViewSectionViewingRoomsQuery.graphql"
 import { HomeViewSectionViewingRooms_section$key } from "__generated__/HomeViewSectionViewingRooms_section.graphql"
 import { MEDIUM_CARD_HEIGHT, MEDIUM_CARD_WIDTH } from "app/Components/Cards"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { HomeViewSectionWrapper } from "app/Scenes/HomeView/Components/HomeViewSectionWrapper"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import {
   ViewingRoomsHomeRail as LegacyViewingRoomsHomeRail,
@@ -19,9 +26,9 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 export const HomeViewSectionViewingRooms: React.FC<{
   section: HomeViewSectionViewingRooms_section$key
-}> = (props) => {
+}> = ({ section: sectionProp, ...flexProps }) => {
   const tracking = useHomeViewTracking()
-  const section = useFragment(viewingRoomsFragment, props.section)
+  const section = useFragment(viewingRoomsFragment, sectionProp)
   const viewAll = section.component?.behaviors?.viewAll
 
   const onSectionViewAll = () => {
@@ -47,7 +54,7 @@ export const HomeViewSectionViewingRooms: React.FC<{
   }
 
   return (
-    <HomeViewSectionWrapper contextModule={section.contextModule as ContextModule}>
+    <Flex {...flexProps}>
       <Flex px={2}>
         <SectionTitle
           title={section.component?.title}
@@ -68,7 +75,7 @@ export const HomeViewSectionViewingRooms: React.FC<{
           }}
         />
       </Suspense>
-    </HomeViewSectionWrapper>
+    </Flex>
   )
 }
 
@@ -90,11 +97,11 @@ const viewingRoomsFragment = graphql`
   }
 `
 
-const HomeViewSectionArtworksPlaceholder: React.FC = () => {
+const HomeViewSectionArtworksPlaceholder: React.FC<FlexProps> = (flexProps) => {
   const randomValue = useMemoizedRandom()
   return (
     <Skeleton>
-      <HomeViewSectionWrapper>
+      <Flex {...flexProps}>
         <Flex mx={2}>
           <SkeletonText variant="lg-display">Viewing Rooms</SkeletonText>
 
@@ -110,7 +117,7 @@ const HomeViewSectionArtworksPlaceholder: React.FC = () => {
             </Join>
           </Flex>
         </Flex>
-      </HomeViewSectionWrapper>
+      </Flex>
     </Skeleton>
   )
 }
@@ -125,19 +132,22 @@ const homeViewSectionViewingRoomsQuery = graphql`
   }
 `
 
-export const HomeViewSectionViewingRoomsQueryRenderer: React.FC<{
+interface HomeViewSectionViewingRoomsQueryRendererProps extends FlexProps {
   sectionID: string
-}> = withSuspense((props) => {
-  const data = useLazyLoadQuery<HomeViewSectionViewingRoomsQuery>(
-    homeViewSectionViewingRoomsQuery,
-    {
-      id: props.sectionID,
+}
+
+export const HomeViewSectionViewingRoomsQueryRenderer: React.FC<HomeViewSectionViewingRoomsQueryRendererProps> =
+  withSuspense(({ sectionID, ...flexProps }) => {
+    const data = useLazyLoadQuery<HomeViewSectionViewingRoomsQuery>(
+      homeViewSectionViewingRoomsQuery,
+      {
+        id: sectionID,
+      }
+    )
+
+    if (!data.homeView.section) {
+      return null
     }
-  )
 
-  if (!data.homeView.section) {
-    return null
-  }
-
-  return <HomeViewSectionViewingRooms section={data.homeView.section} />
-}, HomeViewSectionArtworksPlaceholder)
+    return <HomeViewSectionViewingRooms section={data.homeView.section} {...flexProps} />
+  }, HomeViewSectionArtworksPlaceholder)

@@ -1,9 +1,8 @@
 import { ContextModule } from "@artsy/cohesion"
-import { Flex, Skeleton } from "@artsy/palette-mobile"
+import { Flex, FlexProps, Skeleton } from "@artsy/palette-mobile"
 import { HomeViewSectionShowsQuery } from "__generated__/HomeViewSectionShowsQuery.graphql"
 import { HomeViewSectionShows_section$key } from "__generated__/HomeViewSectionShows_section.graphql"
 import { ShowsRailContainer, ShowsRailPlaceholder } from "app/Scenes/Home/Components/ShowsRail"
-import { HomeViewSectionWrapper } from "app/Scenes/HomeView/Components/HomeViewSectionWrapper"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { withSuspense } from "app/utils/hooks/withSuspense"
@@ -13,14 +12,17 @@ interface HomeViewSectionShowsProps {
   section: HomeViewSectionShows_section$key
 }
 
-export const HomeViewSectionShows: React.FC<HomeViewSectionShowsProps> = (props) => {
+export const HomeViewSectionShows: React.FC<HomeViewSectionShowsProps> = ({
+  section: sectionProp,
+  ...flexProps
+}) => {
   const enableShowsForYouLocation = useFeatureFlag("AREnableShowsForYouLocation")
-  const section = useFragment(fragment, props.section)
+  const section = useFragment(fragment, sectionProp)
   const component = section.component
   const tracking = useHomeViewTracking()
 
   return (
-    <HomeViewSectionWrapper contextModule={section.contextModule as ContextModule}>
+    <Flex {...flexProps}>
       <ShowsRailContainer
         title={component?.title || "Shows"}
         disableLocation={!enableShowsForYouLocation}
@@ -33,7 +35,7 @@ export const HomeViewSectionShows: React.FC<HomeViewSectionShowsProps> = (props)
           )
         }}
       />
-    </HomeViewSectionWrapper>
+    </Flex>
   )
 }
 
@@ -48,14 +50,14 @@ const fragment = graphql`
   }
 `
 
-const HomeViewSectionShowsPlaceholder: React.FC = () => {
+const HomeViewSectionShowsPlaceholder: React.FC<FlexProps> = (flexProps) => {
   return (
     <Skeleton>
-      <HomeViewSectionWrapper>
+      <Flex {...flexProps}>
         <Flex mx={2}>
           <ShowsRailPlaceholder />
         </Flex>
-      </HomeViewSectionWrapper>
+      </Flex>
     </Skeleton>
   )
 }
@@ -70,16 +72,19 @@ const homeViewSectionShowsQuery = graphql`
   }
 `
 
-export const HomeViewSectionShowsQueryRenderer: React.FC<{
+interface HomeViewSectionShowsQueryRendererProps extends FlexProps {
   sectionID: string
-}> = withSuspense((props) => {
-  const data = useLazyLoadQuery<HomeViewSectionShowsQuery>(homeViewSectionShowsQuery, {
-    id: props.sectionID,
-  })
+}
 
-  if (!data.homeView.section) {
-    return null
-  }
+export const HomeViewSectionShowsQueryRenderer: React.FC<HomeViewSectionShowsQueryRendererProps> =
+  withSuspense(({ sectionID, ...flexProps }) => {
+    const data = useLazyLoadQuery<HomeViewSectionShowsQuery>(homeViewSectionShowsQuery, {
+      id: sectionID,
+    })
 
-  return <HomeViewSectionShows section={data.homeView.section} />
-}, HomeViewSectionShowsPlaceholder)
+    if (!data.homeView.section) {
+      return null
+    }
+
+    return <HomeViewSectionShows section={data.homeView.section} {...flexProps} />
+  }, HomeViewSectionShowsPlaceholder)

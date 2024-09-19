@@ -1,4 +1,4 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, FlexProps, Text } from "@artsy/palette-mobile"
 import { HomeViewSectionGeneric_section$data } from "__generated__/HomeViewSectionGeneric_section.graphql"
 import { HomeViewSectionActivityQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionActivity"
 import { HomeViewSectionArticlesQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionArticles"
@@ -17,11 +17,11 @@ import { HomeViewSectionShowsQueryRenderer } from "app/Scenes/HomeView/Sections/
 import { HomeViewSectionViewingRoomsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionViewingRooms"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
 
-export const Section: React.FC<{
+interface SectionProps extends FlexProps {
   section: CleanRelayFragment<HomeViewSectionGeneric_section$data>
-}> = (props) => {
-  const { section } = props
+}
 
+export const Section: React.FC<SectionProps> = ({ section, ...flexProps }) => {
   if (!section.internalID) {
     if (__DEV__) {
       throw new Error("Section has no internalID")
@@ -31,38 +31,54 @@ export const Section: React.FC<{
 
   switch (section.component?.type) {
     case "FeaturedCollection":
-      return <HomeViewSectionFeaturedCollectionQueryRenderer sectionID={section.internalID} />
+      return (
+        <HomeViewSectionFeaturedCollectionQueryRenderer
+          sectionID={section.internalID}
+          {...flexProps}
+        />
+      )
     case "ArticlesCard":
-      return <HomeViewSectionArticlesCardsQueryRenderer sectionID={section.internalID} />
+      return (
+        <HomeViewSectionArticlesCardsQueryRenderer sectionID={section.internalID} {...flexProps} />
+      )
   }
 
   switch (section.__typename) {
     case "HomeViewSectionActivity":
-      return <HomeViewSectionActivityQueryRenderer sectionID={section.internalID} />
+      return <HomeViewSectionActivityQueryRenderer sectionID={section.internalID} {...flexProps} />
     case "HomeViewSectionArtworks":
-      return <HomeViewSectionArtworksQueryRenderer sectionID={section.internalID} />
+      return <HomeViewSectionArtworksQueryRenderer sectionID={section.internalID} {...flexProps} />
     case "HomeViewSectionGalleries":
-      return <HomeViewSectionGalleriesQueryRenderer sectionID={section.internalID} />
+      return <HomeViewSectionGalleriesQueryRenderer sectionID={section.internalID} {...flexProps} />
     case "HomeViewSectionGeneric":
-      return <HomeViewSectionGeneric section={section} />
+      return <HomeViewSectionGeneric section={section} {...flexProps} />
     case "HomeViewSectionArticles":
-      return <HomeViewSectionArticlesQueryRenderer sectionID={section.internalID} />
+      return <HomeViewSectionArticlesQueryRenderer sectionID={section.internalID} {...flexProps} />
     case "HomeViewSectionArtists":
-      return <HomeViewSectionArtistsQueryRenderer sectionID={section.internalID} />
+      return <HomeViewSectionArtistsQueryRenderer sectionID={section.internalID} {...flexProps} />
     case "HomeViewSectionAuctionResults":
-      return <HomeViewSectionAuctionResultsQueryRenderer sectionID={section.internalID} />
+      return (
+        <HomeViewSectionAuctionResultsQueryRenderer sectionID={section.internalID} {...flexProps} />
+      )
     case "HomeViewSectionHeroUnits":
-      return <HomeViewSectionHeroUnitsQueryRenderer sectionID={section.internalID} />
+      return <HomeViewSectionHeroUnitsQueryRenderer sectionID={section.internalID} {...flexProps} />
     case "HomeViewSectionFairs":
-      return <HomeViewSectionFairsQueryRenderer sectionID={section.internalID} />
+      return <HomeViewSectionFairsQueryRenderer sectionID={section.internalID} {...flexProps} />
     case "HomeViewSectionMarketingCollections":
-      return <HomeViewSectionMarketingCollectionsQueryRenderer sectionID={section.internalID} />
+      return (
+        <HomeViewSectionMarketingCollectionsQueryRenderer
+          sectionID={section.internalID}
+          {...flexProps}
+        />
+      )
     case "HomeViewSectionShows":
-      return <HomeViewSectionShowsQueryRenderer sectionID={section.internalID} />
+      return <HomeViewSectionShowsQueryRenderer sectionID={section.internalID} {...flexProps} />
     case "HomeViewSectionViewingRooms":
-      return <HomeViewSectionViewingRoomsQueryRenderer sectionID={section.internalID} />
+      return (
+        <HomeViewSectionViewingRoomsQueryRenderer sectionID={section.internalID} {...flexProps} />
+      )
     case "HomeViewSectionSales":
-      return <HomeViewSectionSalesQueryRenderer sectionID={section.internalID} />
+      return <HomeViewSectionSalesQueryRenderer sectionID={section.internalID} {...flexProps} />
     default:
       if (__DEV__) {
         return (

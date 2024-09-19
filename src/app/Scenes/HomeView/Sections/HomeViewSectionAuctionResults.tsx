@@ -1,5 +1,13 @@
 import { ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
-import { Flex, Join, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
+import {
+  Flex,
+  FlexProps,
+  Join,
+  Skeleton,
+  SkeletonBox,
+  SkeletonText,
+  Spacer,
+} from "@artsy/palette-mobile"
 import { HomeViewSectionAuctionResultsQuery } from "__generated__/HomeViewSectionAuctionResultsQuery.graphql"
 import { HomeViewSectionAuctionResults_section$key } from "__generated__/HomeViewSectionAuctionResults_section.graphql"
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
@@ -9,7 +17,6 @@ import {
   AuctionResultListItemFragmentContainer,
 } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { HomeViewSectionWrapper } from "app/Scenes/HomeView/Components/HomeViewSectionWrapper"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
@@ -30,10 +37,11 @@ interface HomeViewSectionAuctionResultsProps {
 // Avoid the card width to be too wide on tablets
 const AUCTION_RESULT_CARD_WIDTH = Math.min(400, Dimensions.get("window").width * 0.9)
 
-export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResultsProps> = (
-  props
-) => {
-  const section = useFragment(sectionFragment, props.section)
+export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResultsProps> = ({
+  section: sectionProp,
+  ...flexProps
+}) => {
+  const section = useFragment(sectionFragment, sectionProp)
   const tracking = useHomeViewTracking()
 
   if (!section || !section.auctionResultsConnection?.totalCount) {
@@ -62,7 +70,7 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
   }
 
   return (
-    <HomeViewSectionWrapper contextModule={section.contextModule as ContextModule}>
+    <Flex {...flexProps}>
       <Flex px={2}>
         <SectionTitle
           title={section.component?.title ?? "Auction Results"}
@@ -99,7 +107,7 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
           ) : undefined
         }
       />
-    </HomeViewSectionWrapper>
+    </Flex>
   )
 }
 
@@ -131,11 +139,11 @@ const sectionFragment = graphql`
   }
 `
 
-const HomeViewSectionAuctionResultsPlaceholder: React.FC = () => {
+const HomeViewSectionAuctionResultsPlaceholder: React.FC<FlexProps> = (flexProps) => {
   const randomValue = useMemoizedRandom()
   return (
     <Skeleton>
-      <HomeViewSectionWrapper>
+      <Flex {...flexProps}>
         <Flex mx={2}>
           <SkeletonText variant="lg-display">List of Auction Results</SkeletonText>
 
@@ -174,7 +182,7 @@ const HomeViewSectionAuctionResultsPlaceholder: React.FC = () => {
             </Join>
           </Flex>
         </Flex>
-      </HomeViewSectionWrapper>
+      </Flex>
     </Skeleton>
   )
 }
@@ -189,19 +197,22 @@ const homeViewSectionAuctionResultsQuery = graphql`
   }
 `
 
-export const HomeViewSectionAuctionResultsQueryRenderer: React.FC<{
+interface HomeViewSectionAuctionResultsQueryRendererProps extends FlexProps {
   sectionID: string
-}> = withSuspense((props) => {
-  const data = useLazyLoadQuery<HomeViewSectionAuctionResultsQuery>(
-    homeViewSectionAuctionResultsQuery,
-    {
-      id: props.sectionID,
+}
+
+export const HomeViewSectionAuctionResultsQueryRenderer: React.FC<HomeViewSectionAuctionResultsQueryRendererProps> =
+  withSuspense(({ sectionID, ...flexProps }) => {
+    const data = useLazyLoadQuery<HomeViewSectionAuctionResultsQuery>(
+      homeViewSectionAuctionResultsQuery,
+      {
+        id: sectionID,
+      }
+    )
+
+    if (!data.homeView.section) {
+      return null
     }
-  )
 
-  if (!data.homeView.section) {
-    return null
-  }
-
-  return <HomeViewSectionAuctionResults section={data.homeView.section} />
-}, HomeViewSectionAuctionResultsPlaceholder)
+    return <HomeViewSectionAuctionResults section={data.homeView.section} {...flexProps} />
+  }, HomeViewSectionAuctionResultsPlaceholder)
