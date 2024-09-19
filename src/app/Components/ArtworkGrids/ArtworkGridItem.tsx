@@ -58,8 +58,11 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   disableArtworksListPrompt?: boolean
   /** Hide sale info */
   height?: number
+  hideCuratorsPickSignal?: boolean
+  hideIncreasedInterestSignal?: boolean
   /** Hide partner name */
   hidePartner?: boolean
+  hideRegisterBySignal?: boolean
   hideSaleInfo?: boolean
   hideSaveIcon?: boolean
   /** Hide urgency tags (3 Days left, 1 hour left) */
@@ -81,8 +84,6 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   /** allows for artwork to be added to recent searches */
   updateRecentSearchesOnTap?: boolean
   urgencyTagTextStyle?: TextProps
-  hideIncreasedInterestSignal?: boolean
-  hideCuratorsPickSignal?: boolean
 }
 
 export const Artwork: React.FC<ArtworkProps> = ({
@@ -97,7 +98,10 @@ export const Artwork: React.FC<ArtworkProps> = ({
   contextScreenQuery,
   disableArtworksListPrompt = false,
   height,
+  hideCuratorsPickSignal = false,
+  hideIncreasedInterestSignal = false,
   hidePartner = false,
+  hideRegisterBySignal = false,
   hideSaleInfo = false,
   hideSaveIcon = false,
   hideUrgencyTags = false,
@@ -113,8 +117,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
   trackTap,
   updateRecentSearchesOnTap = false,
   urgencyTagTextStyle,
-  hideIncreasedInterestSignal = false,
-  hideCuratorsPickSignal = false,
 }) => {
   const itemRef = useRef<any>()
   const color = useColor()
@@ -472,7 +474,10 @@ export const Artwork: React.FC<ArtworkProps> = ({
                 )}
 
                 {!!displayAuctionSignal && !!collectorSignals && (
-                  <ArtworkAuctionTimer collectorSignals={collectorSignals} />
+                  <ArtworkAuctionTimer
+                    collectorSignals={collectorSignals}
+                    hideRegisterBySignal={hideRegisterBySignal}
+                  />
                 )}
               </Flex>
               {!hideSaveIcon && (

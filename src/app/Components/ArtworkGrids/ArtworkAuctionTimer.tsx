@@ -7,11 +7,13 @@ import { graphql, useFragment } from "react-relay"
 
 interface ArtworkAuctionTimerProps {
   collectorSignals: ArtworkAuctionTimer_collectorSignals$key
+  hideRegisterBySignal?: boolean
   inRailCard?: boolean
 }
 
 export const ArtworkAuctionTimer: React.FC<ArtworkAuctionTimerProps> = ({
   collectorSignals,
+  hideRegisterBySignal,
   inRailCard,
 }) => {
   const lineHeight = inRailCard ? "20px" : "18px"
@@ -25,6 +27,10 @@ export const ArtworkAuctionTimer: React.FC<ArtworkAuctionTimerProps> = ({
 
   if (registrationEndsAt && DateTime.fromISO(registrationEndsAt).diffNow().as("seconds") > 0) {
     const formattedRegistrationEndsAt = DateTime.fromISO(registrationEndsAt).toFormat("MMM d")
+
+    if (hideRegisterBySignal) {
+      return null
+    }
 
     return (
       <Text lineHeight={lineHeight} variant="xs" numberOfLines={1} color="black100">
