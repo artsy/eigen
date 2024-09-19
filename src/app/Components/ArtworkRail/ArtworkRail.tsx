@@ -62,7 +62,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
   const artworks = useFragment(artworksFragment, otherProps.artworks)
 
   // TODO: Fix the actual bug and remove this workaround
-  // We have to limit the number of artworks in the rail to avoid layout shifts that happen when scrolling at the end of the list
+  // We have to limit the number of artworks in the rail to avoid layout shifts that happen when scrolling at the end of the list. (╯°□°)╯︵ ┻━┻
   const artworksData = artworks.slice(0, 30)
 
   return (
