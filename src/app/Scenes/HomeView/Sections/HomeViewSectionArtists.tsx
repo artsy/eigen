@@ -18,7 +18,7 @@ import {
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { PAGE_SIZE } from "app/Components/constants"
-import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
+import { HomeViewSectionWrapper } from "app/Scenes/HomeView/Components/HomeViewSectionWrapper"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
@@ -82,7 +82,7 @@ export const HomeViewSectionArtists: React.FC<HomeViewSectionArtworksProps> = ({
   }
 
   return (
-    <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
+    <HomeViewSectionWrapper>
       <Flex px={2}>
         <SectionTitle
           title={section.component?.title}
@@ -129,7 +129,7 @@ export const HomeViewSectionArtists: React.FC<HomeViewSectionArtworksProps> = ({
         initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
         windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
       />
-    </Flex>
+    </HomeViewSectionWrapper>
   )
 }
 
@@ -210,28 +210,30 @@ const HomeViewSectionArtistsPlaceholder: React.FC = () => {
   const randomValue = useMemoizedRandom()
   return (
     <Skeleton>
-      <Flex mx={2} my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
-        <SkeletonText variant="lg-display">Recommended Artists</SkeletonText>
+      <HomeViewSectionWrapper>
+        <Flex mx={2}>
+          <SkeletonText variant="lg-display">Recommended Artists</SkeletonText>
 
-        <Spacer y={2} />
+          <Spacer y={2} />
 
-        <Flex flexDirection="row">
-          <Join separator={<Spacer x="15px" />}>
-            {times(3 + randomValue * 10).map((index) => (
-              <Flex key={index}>
-                <SkeletonBox
-                  key={index}
-                  height={ARTIST_RAIL_IMAGE_MAX_HEIGHT}
-                  width={ARTIST_CARD_WIDTH}
-                />
-                <Spacer y={1} />
-                <SkeletonText>Andy Warhol</SkeletonText>
-                <SkeletonText>Nationality, b 1023</SkeletonText>
-              </Flex>
-            ))}
-          </Join>
+          <Flex flexDirection="row">
+            <Join separator={<Spacer x="15px" />}>
+              {times(3 + randomValue * 10).map((index) => (
+                <Flex key={index}>
+                  <SkeletonBox
+                    key={index}
+                    height={ARTIST_RAIL_IMAGE_MAX_HEIGHT}
+                    width={ARTIST_CARD_WIDTH}
+                  />
+                  <Spacer y={1} />
+                  <SkeletonText>Andy Warhol</SkeletonText>
+                  <SkeletonText>Nationality, b 1023</SkeletonText>
+                </Flex>
+              ))}
+            </Join>
+          </Flex>
         </Flex>
-      </Flex>
+      </HomeViewSectionWrapper>
     </Skeleton>
   )
 }

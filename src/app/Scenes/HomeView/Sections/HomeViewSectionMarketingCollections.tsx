@@ -13,7 +13,7 @@ import {
 } from "app/Components/FiveUpImageLayout"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
+import { HomeViewSectionWrapper } from "app/Scenes/HomeView/Components/HomeViewSectionWrapper"
 import {
   CollectionCard,
   HomeViewSectionMarketingCollectionsItem,
@@ -72,7 +72,7 @@ export const HomeViewSectionMarketingCollections: React.FC<
   }
 
   return (
-    <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
+    <HomeViewSectionWrapper>
       <Flex pl={2} pr={2}>
         <SectionTitle title={component.title} onPress={viewAll ? onSectionViewAll : undefined} />
       </Flex>
@@ -102,7 +102,7 @@ export const HomeViewSectionMarketingCollections: React.FC<
           )
         }}
       />
-    </Flex>
+    </HomeViewSectionWrapper>
   )
 }
 
@@ -137,66 +137,68 @@ const HomeViewSectionMarketingCollectionsPlaceholder: React.FC = () => {
   const randomValue = useMemoizedRandom()
   return (
     <Skeleton>
-      <Flex mx={2} my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
-        <SkeletonText>Collections</SkeletonText>
+      <HomeViewSectionWrapper>
+        <Flex mx={2}>
+          <SkeletonText>Collections</SkeletonText>
 
-        <Spacer y={1} />
+          <Spacer y={1} />
 
-        <Flex flexDirection="row">
-          <Join separator={<Spacer x="15px" />}>
-            {times(2 + randomValue * 10).map((index) => (
-              <CollectionCard key={index}>
-                <Flex>
-                  <Flex flexDirection="row">
-                    <SkeletonBox
-                      height={DEFAULT_LARGE_IMAGE_DIMENSIONS.height}
-                      width={DEFAULT_LARGE_IMAGE_DIMENSIONS.width}
-                      borderBottomWidth={GAP}
-                      borderColor="white100"
-                    />
-                    <Flex>
+          <Flex flexDirection="row">
+            <Join separator={<Spacer x="15px" />}>
+              {times(2 + randomValue * 10).map((index) => (
+                <CollectionCard key={index}>
+                  <Flex>
+                    <Flex flexDirection="row">
+                      <SkeletonBox
+                        height={DEFAULT_LARGE_IMAGE_DIMENSIONS.height}
+                        width={DEFAULT_LARGE_IMAGE_DIMENSIONS.width}
+                        borderBottomWidth={GAP}
+                        borderColor="white100"
+                      />
+                      <Flex>
+                        <SkeletonBox
+                          height={DEFAULT_SMALL_IMAGE_DIMENSIONS.height}
+                          width={DEFAULT_SMALL_IMAGE_DIMENSIONS.width}
+                          borderLeftWidth={GAP}
+                          borderColor="white100"
+                          borderBottomWidth={GAP}
+                        />
+                        <SkeletonBox
+                          height={DEFAULT_SMALL_IMAGE_DIMENSIONS.height}
+                          width={DEFAULT_SMALL_IMAGE_DIMENSIONS.width}
+                          borderLeftWidth={GAP}
+                          borderColor="white100"
+                          borderBottomWidth={GAP}
+                        />
+                      </Flex>
+                    </Flex>
+                    <Flex flexDirection="row">
                       <SkeletonBox
                         height={DEFAULT_SMALL_IMAGE_DIMENSIONS.height}
                         width={DEFAULT_SMALL_IMAGE_DIMENSIONS.width}
-                        borderLeftWidth={GAP}
                         borderColor="white100"
-                        borderBottomWidth={GAP}
                       />
                       <SkeletonBox
-                        height={DEFAULT_SMALL_IMAGE_DIMENSIONS.height}
-                        width={DEFAULT_SMALL_IMAGE_DIMENSIONS.width}
+                        height={DEFAULT_HORIZONTAL_IMAGE_DIMENSIONS.height}
+                        width={DEFAULT_HORIZONTAL_IMAGE_DIMENSIONS.width}
                         borderLeftWidth={GAP}
                         borderColor="white100"
-                        borderBottomWidth={GAP}
                       />
                     </Flex>
-                  </Flex>
-                  <Flex flexDirection="row">
-                    <SkeletonBox
-                      height={DEFAULT_SMALL_IMAGE_DIMENSIONS.height}
-                      width={DEFAULT_SMALL_IMAGE_DIMENSIONS.width}
-                      borderColor="white100"
-                    />
-                    <SkeletonBox
-                      height={DEFAULT_HORIZONTAL_IMAGE_DIMENSIONS.height}
-                      width={DEFAULT_HORIZONTAL_IMAGE_DIMENSIONS.width}
-                      borderLeftWidth={GAP}
-                      borderColor="white100"
-                    />
-                  </Flex>
 
-                  <Spacer y={1} />
+                    <Spacer y={1} />
 
-                  <Flex>
-                    <SkeletonText>New this week</SkeletonText>
-                    <SkeletonText>21 works</SkeletonText>
+                    <Flex>
+                      <SkeletonText>New this week</SkeletonText>
+                      <SkeletonText>21 works</SkeletonText>
+                    </Flex>
                   </Flex>
-                </Flex>
-              </CollectionCard>
-            ))}
-          </Join>
+                </CollectionCard>
+              ))}
+            </Join>
+          </Flex>
         </Flex>
-      </Flex>
+      </HomeViewSectionWrapper>
     </Skeleton>
   )
 }

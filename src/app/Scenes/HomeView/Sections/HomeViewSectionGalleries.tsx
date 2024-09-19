@@ -10,7 +10,7 @@ import {
 } from "@artsy/palette-mobile"
 import { HomeViewSectionGalleriesQuery } from "__generated__/HomeViewSectionGalleriesQuery.graphql"
 import { HomeViewSectionGalleries_section$key } from "__generated__/HomeViewSectionGalleries_section.graphql"
-import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
+import { HomeViewSectionWrapper } from "app/Scenes/HomeView/Components/HomeViewSectionWrapper"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { withSuspense } from "app/utils/hooks/withSuspense"
@@ -51,7 +51,7 @@ export const HomeViewSectionGalleries: React.FC<HomeViewSectionGalleriesProps> =
   }
 
   return (
-    <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
+    <HomeViewSectionWrapper>
       <Touchable onPress={onSectionViewAll} haptic="impactLight">
         {!!hasImage && (
           <Flex position="absolute">
@@ -100,7 +100,7 @@ export const HomeViewSectionGalleries: React.FC<HomeViewSectionGalleriesProps> =
           </Flex>
         </Flex>
       </Touchable>
-    </Flex>
+    </HomeViewSectionWrapper>
   )
 }
 
@@ -127,9 +127,9 @@ const HomeViewSectionGalleriesPlaceholder: React.FC = () => {
 
   return (
     <Skeleton>
-      <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
+      <HomeViewSectionWrapper>
         <SkeletonBox height={height * 0.5} width="100%"></SkeletonBox>
-      </Flex>
+      </HomeViewSectionWrapper>
     </Skeleton>
   )
 }

@@ -6,7 +6,7 @@ import { HomeViewSectionArtworks_section$key } from "__generated__/HomeViewSecti
 import { ARTWORK_RAIL_IMAGE_WIDTH, ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { ARTWORK_RAIL_CARD_IMAGE_HEIGHT } from "app/Components/ArtworkRail/LegacyArtworkRailCardImage"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
+import { HomeViewSectionWrapper } from "app/Scenes/HomeView/Components/HomeViewSectionWrapper"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -71,7 +71,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   }
 
   return (
-    <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
+    <HomeViewSectionWrapper>
       <View>
         <Flex pl={2} pr={2}>
           <SectionTitle
@@ -87,7 +87,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
           onMorePress={viewAll ? onSectionViewAll : undefined}
         />
       </View>
-    </Flex>
+    </HomeViewSectionWrapper>
   )
 }
 
@@ -131,28 +131,30 @@ const HomeViewSectionArtworksPlaceholder: React.FC = () => {
   const randomValue = useMemoizedRandom()
   return (
     <Skeleton>
-      <Flex mx={2} my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
-        <SkeletonText variant="lg-display">Arwtworks Rail</SkeletonText>
-        <Spacer y={2} />
+      <HomeViewSectionWrapper>
+        <Flex mx={2}>
+          <SkeletonText variant="lg-display">Arwtworks Rail</SkeletonText>
+          <Spacer y={2} />
 
-        <Flex flexDirection="row">
-          <Join separator={<Spacer x="15px" />}>
-            {times(2 + randomValue * 10).map((index) => (
-              <Flex key={index}>
-                <SkeletonBox
-                  height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
-                  width={ARTWORK_RAIL_IMAGE_WIDTH}
-                />
-                <Spacer y={2} />
-                <SkeletonText>Andy Warhol</SkeletonText>
-                <SkeletonText>A creative name for a work</SkeletonText>
-                <SkeletonText>Gallery or Partner</SkeletonText>
-                <SkeletonText>1000 €</SkeletonText>
-              </Flex>
-            ))}
-          </Join>
+          <Flex flexDirection="row">
+            <Join separator={<Spacer x="15px" />}>
+              {times(2 + randomValue * 10).map((index) => (
+                <Flex key={index}>
+                  <SkeletonBox
+                    height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
+                    width={ARTWORK_RAIL_IMAGE_WIDTH}
+                  />
+                  <Spacer y={2} />
+                  <SkeletonText>Andy Warhol</SkeletonText>
+                  <SkeletonText>A creative name for a work</SkeletonText>
+                  <SkeletonText>Gallery or Partner</SkeletonText>
+                  <SkeletonText>1000 €</SkeletonText>
+                </Flex>
+              ))}
+            </Join>
+          </Flex>
         </Flex>
-      </Flex>
+      </HomeViewSectionWrapper>
     </Skeleton>
   )
 }

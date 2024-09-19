@@ -9,7 +9,7 @@ import {
   AuctionResultListItemFragmentContainer,
 } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
+import { HomeViewSectionWrapper } from "app/Scenes/HomeView/Components/HomeViewSectionWrapper"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
@@ -62,7 +62,7 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
   }
 
   return (
-    <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
+    <HomeViewSectionWrapper>
       <Flex px={2}>
         <SectionTitle
           title={section.component?.title ?? "Auction Results"}
@@ -99,7 +99,7 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
           ) : undefined
         }
       />
-    </Flex>
+    </HomeViewSectionWrapper>
   )
 }
 
@@ -135,44 +135,46 @@ const HomeViewSectionAuctionResultsPlaceholder: React.FC = () => {
   const randomValue = useMemoizedRandom()
   return (
     <Skeleton>
-      <Flex mx={2} my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
-        <SkeletonText variant="lg-display">List of Auction Results</SkeletonText>
+      <HomeViewSectionWrapper>
+        <Flex mx={2}>
+          <SkeletonText variant="lg-display">List of Auction Results</SkeletonText>
 
-        <Spacer y={1} />
+          <Spacer y={1} />
 
-        <Flex flexDirection="row">
-          <Join separator={<Spacer x="15px" />}>
-            {times(3 + randomValue * 10).map((index) => (
-              <Flex
-                key={index}
-                maxWidth={AUCTION_RESULT_CARD_WIDTH}
-                flexDirection="row"
-                overflow="hidden"
-              >
-                <SkeletonBox
+          <Flex flexDirection="row">
+            <Join separator={<Spacer x="15px" />}>
+              {times(3 + randomValue * 10).map((index) => (
+                <Flex
                   key={index}
-                  height={AUCTION_RESULT_CARD_IMAGE_HEIGHT}
-                  width={AUCTION_RESULT_CARD_IMAGE_WIDTH}
-                />
-                <Spacer x={1} />
-                <Flex>
-                  <SkeletonText variant="xs">Katherine Bernhardt</SkeletonText>
-                  <SkeletonText variant="xs">Shower Power</SkeletonText>
-                  <SkeletonText variant="xs" numberOfLines={2}>
-                    Unique lithograph in colors, on somerset tub sized paper, the full sheet.
-                  </SkeletonText>
-                  <SkeletonText variant="xs" numberOfLines={1} mt={1}>
-                    Set 11, 2024 - Phillips
-                  </SkeletonText>
-                  <SkeletonText variant="xs" numberOfLines={1}>
-                    $10,000
-                  </SkeletonText>
+                  maxWidth={AUCTION_RESULT_CARD_WIDTH}
+                  flexDirection="row"
+                  overflow="hidden"
+                >
+                  <SkeletonBox
+                    key={index}
+                    height={AUCTION_RESULT_CARD_IMAGE_HEIGHT}
+                    width={AUCTION_RESULT_CARD_IMAGE_WIDTH}
+                  />
+                  <Spacer x={1} />
+                  <Flex>
+                    <SkeletonText variant="xs">Katherine Bernhardt</SkeletonText>
+                    <SkeletonText variant="xs">Shower Power</SkeletonText>
+                    <SkeletonText variant="xs" numberOfLines={2}>
+                      Unique lithograph in colors, on somerset tub sized paper, the full sheet.
+                    </SkeletonText>
+                    <SkeletonText variant="xs" numberOfLines={1} mt={1}>
+                      Set 11, 2024 - Phillips
+                    </SkeletonText>
+                    <SkeletonText variant="xs" numberOfLines={1}>
+                      $10,000
+                    </SkeletonText>
+                  </Flex>
                 </Flex>
-              </Flex>
-            ))}
-          </Join>
+              ))}
+            </Join>
+          </Flex>
         </Flex>
-      </Flex>
+      </HomeViewSectionWrapper>
     </Skeleton>
   )
 }

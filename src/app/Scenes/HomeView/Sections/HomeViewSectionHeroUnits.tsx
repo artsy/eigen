@@ -4,7 +4,7 @@ import { HomeViewSectionHeroUnitsQuery } from "__generated__/HomeViewSectionHero
 import { HomeViewSectionHeroUnits_section$key } from "__generated__/HomeViewSectionHeroUnits_section.graphql"
 import { PaginationDots } from "app/Components/PaginationDots"
 import { HERO_UNIT_CARD_HEIGHT, HeroUnit } from "app/Scenes/Home/Components/HeroUnitsRail"
-import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
+import { HomeViewSectionWrapper } from "app/Scenes/HomeView/Components/HomeViewSectionWrapper"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
@@ -49,7 +49,7 @@ export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> =
   }
 
   return (
-    <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
+    <HomeViewSectionWrapper>
       <FlatList
         data={heroUnits}
         decelerationRate="fast"
@@ -75,7 +75,7 @@ export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> =
       />
       <Spacer y={2} />
       <PaginationDots currentIndex={currentIndex} length={heroUnits.length} />
-    </Flex>
+    </HomeViewSectionWrapper>
   )
 }
 
@@ -107,13 +107,13 @@ const fragment = graphql`
 const HomeViewSectionHeroUnitsPlaceholder: React.FC = () => {
   return (
     <Skeleton>
-      <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
+      <HomeViewSectionWrapper>
         <Spacer y={1} />
 
         <Flex flexDirection="row">
           <SkeletonBox height={HERO_UNIT_CARD_HEIGHT} width="100%" />
         </Flex>
-      </Flex>
+      </HomeViewSectionWrapper>
       <PaginationDots currentIndex={-1} length={1} />
     </Skeleton>
   )

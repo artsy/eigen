@@ -3,7 +3,7 @@ import { Flex, Skeleton } from "@artsy/palette-mobile"
 import { HomeViewSectionShowsQuery } from "__generated__/HomeViewSectionShowsQuery.graphql"
 import { HomeViewSectionShows_section$key } from "__generated__/HomeViewSectionShows_section.graphql"
 import { ShowsRailContainer, ShowsRailPlaceholder } from "app/Scenes/Home/Components/ShowsRail"
-import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
+import { HomeViewSectionWrapper } from "app/Scenes/HomeView/Components/HomeViewSectionWrapper"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { withSuspense } from "app/utils/hooks/withSuspense"
@@ -20,7 +20,7 @@ export const HomeViewSectionShows: React.FC<HomeViewSectionShowsProps> = ({ sect
   const tracking = useHomeViewTracking()
 
   return (
-    <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
+    <HomeViewSectionWrapper>
       <ShowsRailContainer
         title={component?.title || "Shows"}
         disableLocation={!enableShowsForYouLocation}
@@ -33,7 +33,7 @@ export const HomeViewSectionShows: React.FC<HomeViewSectionShowsProps> = ({ sect
           )
         }}
       />
-    </Flex>
+    </HomeViewSectionWrapper>
   )
 }
 
@@ -51,9 +51,11 @@ const fragment = graphql`
 const HomeViewSectionShowsPlaceholder: React.FC = () => {
   return (
     <Skeleton>
-      <Flex mx={2} my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
-        <ShowsRailPlaceholder />
-      </Flex>
+      <HomeViewSectionWrapper>
+        <Flex mx={2}>
+          <ShowsRailPlaceholder />
+        </Flex>
+      </HomeViewSectionWrapper>
     </Skeleton>
   )
 }

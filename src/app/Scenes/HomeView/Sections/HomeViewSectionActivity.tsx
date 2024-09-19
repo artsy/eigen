@@ -10,7 +10,7 @@ import {
   ACTIVITY_RAIL_ITEM_WIDTH,
   ActivityRailItem,
 } from "app/Scenes/Home/Components/ActivityRailItem"
-import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
+import { HomeViewSectionWrapper } from "app/Scenes/HomeView/Components/HomeViewSectionWrapper"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
@@ -60,7 +60,7 @@ export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = (
   }
 
   return (
-    <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
+    <HomeViewSectionWrapper>
       <Flex px={2}>
         <SectionTitle title={section.component?.title} onPress={onSectionViewAll} />
       </Flex>
@@ -94,7 +94,7 @@ export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = (
           )
         }}
       />
-    </Flex>
+    </HomeViewSectionWrapper>
   )
 }
 
@@ -155,33 +155,35 @@ const HomeViewSectionActivityPlaceholder: React.FC = () => {
   const randomValue = useMemoizedRandom()
 
   return (
-    <Flex ml={2} mr={2} my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
-      <SkeletonText variant="lg-display">Latest Activity</SkeletonText>
-      <Spacer y={2} />
-      <Flex flexDirection="row">
-        <Join separator={<Spacer x="15px" />}>
-          {times(3 + randomValue * 10).map((index) => (
-            <Flex key={index} flexDirection="row">
-              <SkeletonBox
-                height={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
-                width={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
-              />
-              <Flex ml={1} maxWidth={ACTIVITY_RAIL_ITEM_WIDTH}>
-                <SkeletonText variant="xs" numberOfLines={1}>
-                  6 new works by Andy Warhol
-                </SkeletonText>
-                <SkeletonText variant="xs" numberOfLines={1}>
-                  2021-01-01
-                </SkeletonText>
-                <SkeletonText variant="xs" numberOfLines={1}>
-                  Follow - 6 days ago
-                </SkeletonText>
+    <HomeViewSectionWrapper>
+      <Flex ml={2} mr={2}>
+        <SkeletonText variant="lg-display">Latest Activity</SkeletonText>
+        <Spacer y={2} />
+        <Flex flexDirection="row">
+          <Join separator={<Spacer x="15px" />}>
+            {times(3 + randomValue * 10).map((index) => (
+              <Flex key={index} flexDirection="row">
+                <SkeletonBox
+                  height={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
+                  width={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
+                />
+                <Flex ml={1} maxWidth={ACTIVITY_RAIL_ITEM_WIDTH}>
+                  <SkeletonText variant="xs" numberOfLines={1}>
+                    6 new works by Andy Warhol
+                  </SkeletonText>
+                  <SkeletonText variant="xs" numberOfLines={1}>
+                    2021-01-01
+                  </SkeletonText>
+                  <SkeletonText variant="xs" numberOfLines={1}>
+                    Follow - 6 days ago
+                  </SkeletonText>
+                </Flex>
               </Flex>
-            </Flex>
-          ))}
-        </Join>
+            ))}
+          </Join>
+        </Flex>
       </Flex>
-    </Flex>
+    </HomeViewSectionWrapper>
   )
 }
 

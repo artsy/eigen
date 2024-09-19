@@ -13,7 +13,7 @@ import { HomeViewSectionFeaturedCollectionQuery } from "__generated__/HomeViewSe
 import { HomeViewSectionFeaturedCollection_section$key } from "__generated__/HomeViewSectionFeaturedCollection_section.graphql"
 import { ARTWORK_RAIL_IMAGE_WIDTH, ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { ARTWORK_RAIL_CARD_IMAGE_HEIGHT } from "app/Components/ArtworkRail/LegacyArtworkRailCardImage"
-import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
+import { HomeViewSectionWrapper } from "app/Scenes/HomeView/Components/HomeViewSectionWrapper"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -68,37 +68,39 @@ export const HomeViewSectionFeaturedCollection: React.FC<HomeViewSectionFeatured
   }
 
   return (
-    <Flex pb={2} backgroundColor="black100" my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
-      <TouchableOpacity onPress={onSectionViewAll} activeOpacity={0.7}>
-        {!!component.backgroundImageURL && (
-          <Image
-            width={width}
-            height={HEADER_IMAGE_HEIGHT}
-            resizeMode="cover"
-            src={component.backgroundImageURL}
-          />
-        )}
-        <Flex mx={2} mt={2}>
-          <Text color="white100" variant="lg-display" mb={0.5}>
-            {component.title}
-          </Text>
-          <Text color="white100" variant="xs">
-            {component.description}
-          </Text>
-        </Flex>
-      </TouchableOpacity>
+    <HomeViewSectionWrapper>
+      <Flex pb={2} backgroundColor="black100">
+        <TouchableOpacity onPress={onSectionViewAll} activeOpacity={0.7}>
+          {!!component.backgroundImageURL && (
+            <Image
+              width={width}
+              height={HEADER_IMAGE_HEIGHT}
+              resizeMode="cover"
+              src={component.backgroundImageURL}
+            />
+          )}
+          <Flex mx={2} mt={2}>
+            <Text color="white100" variant="lg-display" mb={0.5}>
+              {component.title}
+            </Text>
+            <Text color="white100" variant="xs">
+              {component.description}
+            </Text>
+          </Flex>
+        </TouchableOpacity>
 
-      <Spacer y={4} />
+        <Spacer y={4} />
 
-      <ArtworkRail
-        dark
-        showPartnerName
-        artworks={artworks}
-        showSaveIcon
-        onPress={handleOnArtworkPress}
-        onMorePress={onSectionViewAll}
-      />
-    </Flex>
+        <ArtworkRail
+          dark
+          showPartnerName
+          artworks={artworks}
+          showSaveIcon
+          onPress={handleOnArtworkPress}
+          onMorePress={onSectionViewAll}
+        />
+      </Flex>
+    </HomeViewSectionWrapper>
   )
 }
 

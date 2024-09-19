@@ -7,7 +7,7 @@ import { CardRailCard, CardRailMetadataContainer } from "app/Components/Home/Car
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { LARGE_IMAGE_SIZE, SMALL_IMAGE_SIZE } from "app/Components/ThreeUpImageLayout"
-import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
+import { HomeViewSectionWrapper } from "app/Scenes/HomeView/Components/HomeViewSectionWrapper"
 import { HomeViewSectionSalesItem } from "app/Scenes/HomeView/Sections/HomeViewSectionSalesItem"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
@@ -61,7 +61,7 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = (props)
   }
 
   return (
-    <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
+    <HomeViewSectionWrapper>
       <Flex px={2}>
         <SectionTitle
           title={section.component?.title}
@@ -99,7 +99,7 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = (props)
           ) : undefined
         }
       />
-    </Flex>
+    </HomeViewSectionWrapper>
   )
 }
 
@@ -136,46 +136,48 @@ const HomeViewSectionSalesPlaceholder: React.FC = () => {
   const randomValue = useMemoizedRandom()
   return (
     <Skeleton>
-      <Flex mx={2} my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
-        <SkeletonText>Auctions</SkeletonText>
+      <HomeViewSectionWrapper>
+        <Flex mx={2}>
+          <SkeletonText>Auctions</SkeletonText>
 
-        <Spacer y={1} />
+          <Spacer y={1} />
 
-        <Flex flexDirection="row">
-          <Join separator={<Spacer x="15px" />}>
-            {times(2 + randomValue * 10).map((index) => (
-              <CardRailCard key={index}>
-                <Flex>
-                  <Flex flexDirection="row">
-                    <SkeletonBox height={LARGE_IMAGE_SIZE} width={LARGE_IMAGE_SIZE} />
-                    <Flex>
-                      <SkeletonBox
-                        height={SMALL_IMAGE_SIZE}
-                        width={SMALL_IMAGE_SIZE}
-                        borderLeftWidth={2}
-                        borderColor="white100"
-                        borderBottomWidth={1}
-                      />
-                      <SkeletonBox
-                        height={SMALL_IMAGE_SIZE}
-                        width={SMALL_IMAGE_SIZE}
-                        borderLeftWidth={2}
-                        borderColor="white100"
-                        borderTopWidth={1}
-                      />
+          <Flex flexDirection="row">
+            <Join separator={<Spacer x="15px" />}>
+              {times(2 + randomValue * 10).map((index) => (
+                <CardRailCard key={index}>
+                  <Flex>
+                    <Flex flexDirection="row">
+                      <SkeletonBox height={LARGE_IMAGE_SIZE} width={LARGE_IMAGE_SIZE} />
+                      <Flex>
+                        <SkeletonBox
+                          height={SMALL_IMAGE_SIZE}
+                          width={SMALL_IMAGE_SIZE}
+                          borderLeftWidth={2}
+                          borderColor="white100"
+                          borderBottomWidth={1}
+                        />
+                        <SkeletonBox
+                          height={SMALL_IMAGE_SIZE}
+                          width={SMALL_IMAGE_SIZE}
+                          borderLeftWidth={2}
+                          borderColor="white100"
+                          borderTopWidth={1}
+                        />
+                      </Flex>
                     </Flex>
+                    <CardRailMetadataContainer>
+                      <SkeletonText variant="lg-display" numberOfLines={2}>
+                        xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                      </SkeletonText>
+                    </CardRailMetadataContainer>
                   </Flex>
-                  <CardRailMetadataContainer>
-                    <SkeletonText variant="lg-display" numberOfLines={2}>
-                      xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                    </SkeletonText>
-                  </CardRailMetadataContainer>
-                </Flex>
-              </CardRailCard>
-            ))}
-          </Join>
+                </CardRailCard>
+              ))}
+            </Join>
+          </Flex>
         </Flex>
-      </Flex>
+      </HomeViewSectionWrapper>
     </Skeleton>
   )
 }
