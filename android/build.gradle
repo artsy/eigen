@@ -24,6 +24,11 @@ buildscript {
     }
 }
 
+plugins {
+    id("co.uzzu.dotenv.gradle") version "4.0.0"
+}
+
+
 allprojects {
     repositories {
         maven { url "https://appboy.github.io/appboy-android-sdk/sdk" }
@@ -35,7 +40,7 @@ allprojects {
             }
             credentials {
                 username 'mapbox'
-                password = System.getenv("MAPBOX_DOWNLOAD_TOKEN")
+                password = env.MAPBOX_DOWNLOAD_TOKEN.value
             }
         }
     }
