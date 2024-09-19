@@ -502,14 +502,7 @@ export const modules = defineModules({
     },
     [homeViewScreenQuery]
   ),
-  HomeView: reactModule(HomeViewScreen, {
-    hidesBackButton: true,
-    screenOptions: {
-      statusBarColor: "red",
-      statusBarTranslucent: true,
-      statusBarStyle: "dark",
-    },
-  }),
+  HomeView: reactModule(HomeViewScreen, { hidesBackButton: true }),
   HomeViewSectionScreen: reactModule(HomeViewSectionScreenQueryRenderer, {
     hidesBackButton: true,
     fullBleed: true,
