@@ -49,7 +49,7 @@ export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> =
   }
 
   return (
-    <HomeViewSectionWrapper>
+    <HomeViewSectionWrapper sectionID={section.internalID}>
       <FlatList
         data={heroUnits}
         decelerationRate="fast"

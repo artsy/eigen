@@ -47,7 +47,7 @@ export const HomeViewSectionViewingRooms: React.FC<{
   }
 
   return (
-    <HomeViewSectionWrapper>
+    <HomeViewSectionWrapper sectionID={section.internalID}>
       <Flex px={2}>
         <SectionTitle
           title={section.component?.title}

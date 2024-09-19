@@ -60,7 +60,7 @@ export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = (
   }
 
   return (
-    <HomeViewSectionWrapper>
+    <HomeViewSectionWrapper sectionID={section.internalID}>
       <Flex px={2}>
         <SectionTitle title={section.component?.title} onPress={onSectionViewAll} />
       </Flex>

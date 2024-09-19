@@ -62,7 +62,7 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
   }
 
   return (
-    <HomeViewSectionWrapper>
+    <HomeViewSectionWrapper sectionID={section.internalID}>
       <Flex px={2}>
         <SectionTitle
           title={section.component?.title ?? "Auction Results"}

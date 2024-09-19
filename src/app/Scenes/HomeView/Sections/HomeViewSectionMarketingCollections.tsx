@@ -72,7 +72,7 @@ export const HomeViewSectionMarketingCollections: React.FC<
   }
 
   return (
-    <HomeViewSectionWrapper>
+    <HomeViewSectionWrapper sectionID={section.internalID}>
       <Flex pl={2} pr={2}>
         <SectionTitle title={component.title} onPress={viewAll ? onSectionViewAll : undefined} />
       </Flex>

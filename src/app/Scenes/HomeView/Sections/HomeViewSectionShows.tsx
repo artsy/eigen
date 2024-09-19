@@ -13,14 +13,14 @@ interface HomeViewSectionShowsProps {
   section: HomeViewSectionShows_section$key
 }
 
-export const HomeViewSectionShows: React.FC<HomeViewSectionShowsProps> = ({ section }) => {
+export const HomeViewSectionShows: React.FC<HomeViewSectionShowsProps> = (props) => {
   const enableShowsForYouLocation = useFeatureFlag("AREnableShowsForYouLocation")
-  const data = useFragment(fragment, section)
-  const component = data.component
+  const section = useFragment(fragment, props.section)
+  const component = section.component
   const tracking = useHomeViewTracking()
 
   return (
-    <HomeViewSectionWrapper>
+    <HomeViewSectionWrapper sectionID={section.internalID}>
       <ShowsRailContainer
         title={component?.title || "Shows"}
         disableLocation={!enableShowsForYouLocation}
@@ -28,7 +28,7 @@ export const HomeViewSectionShows: React.FC<HomeViewSectionShowsProps> = ({ sect
           tracking.tappedShowGroup(
             show.internalID,
             show.slug,
-            data.contextModule as ContextModule,
+            section.contextModule as ContextModule,
             index
           )
         }}

@@ -56,7 +56,7 @@ export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = (props)
   }
 
   return (
-    <HomeViewSectionWrapper>
+    <HomeViewSectionWrapper sectionID={section.internalID}>
       <Flex pl={2} pr={2}>
         <SectionTitle
           title={section.component?.title}
