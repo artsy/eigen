@@ -7,6 +7,7 @@ import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSav
 import { ArtworkRailCardImage } from "app/Components/ArtworkRail/ArtworkRailCardImage"
 import { LegacyArtworkRailCardImage } from "app/Components/ArtworkRail/LegacyArtworkRailCardImage"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
+import { DissapearableArtwork } from "app/Components/Disappearable"
 import { HEART_ICON_SIZE } from "app/Components/constants"
 import { formattedTimeLeft } from "app/Scenes/Activity/utils/formattedTimeLeft"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
@@ -39,7 +40,6 @@ export interface ArtworkRailCardProps extends ArtworkActionTrackingProps {
   lotLabel?: string | null
   metaContainerStyles?: {}
   onPress?: (event: GestureResponderEvent) => void
-  onSupressArtwork?: () => void
   showSaveIcon?: boolean
   testID?: string
   hideIncreasedInterestSignal?: boolean
@@ -54,7 +54,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   lotLabel,
   metaContainerStyles,
   onPress,
-  onSupressArtwork,
   showSaveIcon = false,
   testID,
   hideIncreasedInterestSignal = false,
@@ -119,7 +118,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   }
 
   const supressArtwork = () => {
-    onSupressArtwork?.()
+    ;(artwork as DissapearableArtwork)?._disappearable?.disappear()
   }
 
   const { isSaved, saveArtworkToLists } = useSaveArtworkToArtworkLists({

@@ -68,16 +68,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
 
   // TODO: Refactor this to use a better solution
   // We need to set the maximum number of artists to not cause layout shifts
-  const artworksSlice = artworks.slice(0, MAX_NUMBER_OF_ARTWORKS).map((artwork) => {
-    return {
-      ...artwork,
-      _disappearable: null,
-    }
-  })
-
-  const handleSupress = async (item: DissapearableArtwork) => {
-    await item._disappearable?.disappear()
-  }
+  let artworkData = artworks.slice(0, MAX_NUMBER_OF_ARTWORKS)
 
   return (
     <PrefetchFlatList
@@ -95,13 +86,13 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
         )
       }
       showsHorizontalScrollIndicator={false}
-      data={artworksSlice}
+      data={artworkData}
       initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_ARTWORKS}
       windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
       contentContainerStyle={{ alignItems: "flex-end" }}
       renderItem={({ item, index }) => {
         return (
-          <Disappearable ref={(ref) => ((item as any)._disappearable = ref)}>
+          <Disappearable ref={(ref) => ((item as DissapearableArtwork)._disappearable = ref)}>
             <Box pr="15px">
               <ArtworkRailCard
                 testID={`artwork-${item.slug}`}
@@ -114,9 +105,6 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
                   onPress?.(item, index)
                 }}
                 showSaveIcon={showSaveIcon}
-                onSupressArtwork={() => {
-                  handleSupress(item)
-                }}
                 hideIncreasedInterestSignal={hideIncreasedInterestSignal}
                 hideCuratorsPickSignal={hideCuratorsPickSignal}
               />
