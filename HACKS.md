@@ -361,16 +361,6 @@ https://github.com/SwiftyJSON/SwiftyJSON/issues/1154
 Apples has started requiring apps and certain 3rd party libraries declare in a privacy manifest why they use some apis, SwiftyJSON is one of them. The
 privacy manifest has been added in 5.0.2 but the version has not been published to cocoapods.
 
-## Patch-package for react-native-reanimated
-
-#### When can we remove this:
-
-When we upgrade to Reanimated 3.4.0
-
-#### Explanation/Context:
-
-Fixes some issues on Android when Reanimated stops. https://github.com/software-mansion/react-native-reanimated/issues/4626
-
 ## Patch-package for react-native-fast-image
 
 #### When we can remove this:
