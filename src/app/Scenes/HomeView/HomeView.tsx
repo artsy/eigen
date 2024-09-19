@@ -9,6 +9,7 @@ import { useDismissSavedArtwork } from "app/Components/ProgressiveOnboarding/use
 import { useEnableProgressiveOnboarding } from "app/Components/ProgressiveOnboarding/useEnableProgressiveOnboarding"
 import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
 import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
+import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { Section } from "app/Scenes/HomeView/Sections/Section"
 import { searchQueryDefaultVariables } from "app/Scenes/Search/Search"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -134,11 +135,13 @@ const HomeViewScreenPlaceholder: React.FC = () => {
 
 export const HomeViewScreen: React.FC = () => {
   return (
-    <RetryErrorBoundary>
-      <Suspense fallback={<HomeViewScreenPlaceholder />}>
-        <HomeView />
-      </Suspense>
-    </RetryErrorBoundary>
+    <HomeViewStoreProvider>
+      <RetryErrorBoundary>
+        <Suspense fallback={<HomeViewScreenPlaceholder />}>
+          <HomeView />
+        </Suspense>
+      </RetryErrorBoundary>
+    </HomeViewStoreProvider>
   )
 }
 
