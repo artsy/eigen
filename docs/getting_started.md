@@ -47,7 +47,7 @@ Check that Command Line Tools version is added in the Locations tab. Xcode>Setti
 >
 > `export JAVA_HOME="<YOUR-ASDF-JAVA-PATH-HERE>"`
 
-1. Android development environment: Follow the [official docs](https://reactnative.dev/docs/environment-setup). Select "React Native CLI Quickstart" tab
+1. Android development environment: Follow the [official docs](https://reactnative.dev/docs/0.72/environment-setup?guide=native). Select "React Native CLI Quickstart" tab
 
 2. [Create a virtual device](https://developer.android.com/studio/run/managing-avds) on which to run the Android app.
 
