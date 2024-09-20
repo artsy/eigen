@@ -53,6 +53,7 @@ describe("HomeViewSectionArtworks", () => {
         component: {
           title: "New Works for You",
         },
+        ownerType: "newWorksForYou",
         artworksConnection: {
           edges: [
             {
@@ -89,9 +90,9 @@ describe("HomeViewSectionArtworks", () => {
             "action": "tappedMainArtworkGrid",
             "context_module": "artworkGrid",
             "context_screen": undefined,
-            "context_screen_owner_id": "home-view-section-new-works-for-you",
+            "context_screen_owner_id": undefined,
             "context_screen_owner_slug": undefined,
-            "context_screen_owner_type": "home-view-section-new-works-for-you",
+            "context_screen_owner_type": "newWorksForYou",
             "destination_screen_owner_id": "artwork-2-id",
             "destination_screen_owner_slug": "artwork-2-slug",
             "destination_screen_owner_type": "artwork",
