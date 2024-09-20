@@ -2,11 +2,10 @@ import { BackButton, Button, Flex, Text, useTheme } from "@artsy/palette-mobile"
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
-import { AuthenticationDialogFormValues } from "app/Scenes/Onboarding/AuthenticationDialog/AuthenticationDialog"
+import { AuthenticationDialogFormValues } from "app/Scenes/Onboarding/AuthenticationDialog/AuthenticationDialogForm"
 import { OnboardingHomeNavigationStack } from "app/Scenes/Onboarding/OnboardingHome"
 import { useFormikContext } from "formik"
 import { Platform } from "react-native"
-import * as Yup from "yup"
 
 type EmailStepProps = StackScreenProps<OnboardingHomeNavigationStack, "EmailStep">
 
@@ -15,10 +14,6 @@ export const EmailStep: React.FC<EmailStepProps> = ({ navigation }) => {
 
   const { errors, handleChange, handleSubmit, isValid, setErrors } =
     useFormikContext<AuthenticationDialogFormValues>()
-
-  const handleContinueButtonPress = () => {
-    navigation.navigate("SignUpPasswordStep")
-  }
 
   const handleBackButtonPress = () => {
     navigation.goBack()
@@ -30,23 +25,6 @@ export const EmailStep: React.FC<EmailStepProps> = ({ navigation }) => {
         <BackButton onPress={handleBackButtonPress} />
 
         <Text variant="sm-display">Sign up or log in</Text>
-
-        {/* <Field
-          name="email"
-          autoCapitalize="none"
-          autoComplete="email"
-          autoFocus
-          keyboardType="email-address"
-          spellCheck={false}
-          autoCorrect={false}
-          component={BottomSheetInput}
-          onBlur={handleBlur("email")}
-          placeholder="Enter your email address"
-          returnKeyType="done"
-          title="Email"
-          value={values.email}
-          onChangeText={handleChange("email")}
-        /> */}
 
         <BottomSheetInput
           autoCapitalize="none"
@@ -76,16 +54,10 @@ export const EmailStep: React.FC<EmailStepProps> = ({ navigation }) => {
           testID="emailInput"
         />
 
-        <Button block width={100} onPress={handleContinueButtonPress} disabled={!isValid}>
+        <Button block width={100} onPress={handleSubmit} disabled={!isValid}>
           Continue
         </Button>
       </Flex>
     </BottomSheetScrollView>
   )
 }
-
-export const EmailStepValidationSchema = Yup.object().shape({
-  email: Yup.string()
-    .email("Please provide a valid email address")
-    .required("Email field is required"),
-})

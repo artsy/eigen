@@ -2,14 +2,13 @@ import { BackButton, Button, Flex, Text, useTheme } from "@artsy/palette-mobile"
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
-import { AuthenticationDialogFormValues } from "app/Scenes/Onboarding/AuthenticationDialog/AuthenticationDialog"
+import { AuthenticationDialogFormValues } from "app/Scenes/Onboarding/AuthenticationDialog/AuthenticationDialogForm"
 import { EmailSubscriptionCheckbox } from "app/Scenes/Onboarding/OnboardingCreateAccount/EmailSubscriptionCheckbox"
 import { TermsOfServiceCheckbox } from "app/Scenes/Onboarding/OnboardingCreateAccount/TermsOfServiceCheckbox"
 import { OnboardingHomeNavigationStack } from "app/Scenes/Onboarding/OnboardingHome"
 import { useFormikContext } from "formik"
 import { useState } from "react"
 import { Keyboard } from "react-native"
-import * as Yup from "yup"
 
 type SignUpNameStepProps = StackScreenProps<OnboardingHomeNavigationStack, "SignUpNameStep">
 
@@ -29,21 +28,8 @@ export const SignUpNameStep: React.FC<SignUpNameStepProps> = ({ navigation }) =>
     <BottomSheetScrollView>
       <Flex padding={2} gap={space(1)}>
         <BackButton onPress={handleBackButtonPress} />
-        <Text variant="sm-display">Welcome to Artsy</Text>
 
-        {/* <Field
-          name="name"
-          autoCapitalize="none"
-          autoComplete="current-password"
-          autoCorrect={false}
-          secureTextEntry
-          component={BottomSheetInput}
-          placeholder="First and last name"
-          returnKeyType="done"
-          title="Full Name"
-          value={values.password}
-          onChangeText={handleChange("password")}
-        /> */}
+        <Text variant="sm-display">Welcome to Artsy</Text>
 
         <BottomSheetInput
           autoCapitalize="words"
@@ -98,7 +84,3 @@ export const SignUpNameStep: React.FC<SignUpNameStepProps> = ({ navigation }) =>
     </BottomSheetScrollView>
   )
 }
-
-export const SignUpNameStepValidationSchema = Yup.object().shape({
-  name: Yup.string().trim().required("Full name field is required"),
-})
