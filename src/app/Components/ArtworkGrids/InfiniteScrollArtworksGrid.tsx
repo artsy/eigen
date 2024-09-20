@@ -122,6 +122,8 @@ export interface Props extends ArtworkActionTrackingProps {
   hideIncreasedInterest?: boolean
 
   hideCuratorsPick?: boolean
+
+  hideRegisterBySignal?: boolean
 }
 
 interface PrivateProps {
@@ -182,7 +184,10 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
   FooterComponent,
   hasMore,
   HeaderComponent,
+  hideCuratorsPick,
+  hideIncreasedInterest,
   hidePartner = false,
+  hideRegisterBySignal,
   hideSaveIcon = false,
   hideUrgencyTags,
   isLoading,
@@ -204,8 +209,6 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
   updateRecentSearchesOnTap = false,
   useParentAwareScrollView = Platform.OS === "android",
   width,
-  hideIncreasedInterest,
-  hideCuratorsPick,
 }) => {
   const artworks = extractNodes(connection)
 
@@ -359,6 +362,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
             displayToolTip={displayToolTip}
             hideIncreasedInterestSignal={hideIncreasedInterest}
             hideCuratorsPickSignal={hideCuratorsPick}
+            hideRegisterBySignal={hideRegisterBySignal}
           />
         )
         // Setting a marginBottom on the artwork component didn’t work, so using a spacer view instead.

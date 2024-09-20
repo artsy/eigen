@@ -7,11 +7,13 @@ import { graphql, useFragment } from "react-relay"
 
 interface ArtworkAuctionTimerProps {
   collectorSignals: ArtworkAuctionTimer_collectorSignals$key
+  hideRegisterBySignal?: boolean
   inRailCard?: boolean
 }
 
 export const ArtworkAuctionTimer: React.FC<ArtworkAuctionTimerProps> = ({
   collectorSignals,
+  hideRegisterBySignal,
   inRailCard,
 }) => {
   const lineHeight = inRailCard ? "20px" : "18px"
@@ -23,7 +25,11 @@ export const ArtworkAuctionTimer: React.FC<ArtworkAuctionTimerProps> = ({
 
   const { lotClosesAt, onlineBiddingExtended, registrationEndsAt } = data.auction
 
-  if (registrationEndsAt && DateTime.fromISO(registrationEndsAt).diffNow().as("seconds") > 0) {
+  if (
+    registrationEndsAt &&
+    DateTime.fromISO(registrationEndsAt).diffNow().as("seconds") > 0 &&
+    !hideRegisterBySignal
+  ) {
     const formattedRegistrationEndsAt = DateTime.fromISO(registrationEndsAt).toFormat("MMM d")
 
     return (
