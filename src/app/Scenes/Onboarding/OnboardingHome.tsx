@@ -130,11 +130,9 @@ const Background: React.FC = () => {
 }
 
 const ArtsyLogo: React.FC = () => {
-  const userIsAuthenticating = OnboardingHomeStore.useStoreState(
-    (state) => state.userIsAuthenticating
-  )
+  const currentStep = OnboardingHomeStore.useStoreState((state) => state.currentStep)
 
-  if (userIsAuthenticating) {
+  if (currentStep !== "WelcomeStep") {
     return null
   }
 
@@ -152,11 +150,9 @@ const ArtsyLogo: React.FC = () => {
 }
 
 const WelcomeText: React.FC = () => {
-  const userIsAuthenticating = OnboardingHomeStore.useStoreState(
-    (state) => state.userIsAuthenticating
-  )
+  const currentStep = OnboardingHomeStore.useStoreState((state) => state.currentStep)
 
-  if (userIsAuthenticating) {
+  if (currentStep !== "WelcomeStep") {
     return null
   }
 
@@ -186,21 +182,21 @@ const WelcomeText: React.FC = () => {
 export type OnboardingHomeNavigationStack = {
   WelcomeStep: undefined
   EmailStep: undefined
-  SignUpPasswordStep: { email: string }
-  SignUpNameStep: { email: string; password: string }
+  SignUpPasswordStep: undefined
+  SignUpNameStep: undefined
   LoginPasswordStep: { email: string }
   LoginOTPStep: { email: string; password: string; mode: string }
   ForgotPasswordStep: { email: string }
 }
 
 interface OnboardingHomeStoreModel {
-  userIsAuthenticating: boolean
-  setUserIsAuthenticating: Action<OnboardingHomeStoreModel, boolean>
+  currentStep: string | undefined
+  setCurrentStep: Action<OnboardingHomeStoreModel, string | undefined>
 }
 
 export const OnboardingHomeStore = createContextStore<OnboardingHomeStoreModel>({
-  userIsAuthenticating: false,
-  setUserIsAuthenticating: action((state, payload) => {
-    state.userIsAuthenticating = payload
+  currentStep: "WelcomeStep",
+  setCurrentStep: action((state, payload) => {
+    state.currentStep = payload
   }),
 })
