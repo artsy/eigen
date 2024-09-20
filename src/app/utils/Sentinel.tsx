@@ -1,5 +1,6 @@
 /**
  * This code is adapted from an ISC licensed project.
+ * Link: https://github.com/SvanBoxel/visibility-sensor-react-native/blob/master/src/index.tsx
  * Original author: 2020 Sebass van Boxel
  * Copyright 2020 Sebass van Boxel
  *
