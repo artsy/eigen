@@ -15639,27 +15639,6 @@ type Query {
     last: Int
     userId: ID!
   ): UserAddressConnection
-
-  # List viewing rooms
-  _unused_gravity_viewingRoomsConnection(
-    # Returns the elements in the list that come after the specified cursor.
-    after: String
-
-    # Returns the elements in the list that come before the specified cursor.
-    before: String
-    featured: Boolean
-
-    # Returns the first _n_ elements from the list.
-    first: Int
-    ids: [ID!]
-
-    # Returns the last _n_ elements from the list.
-    last: Int
-    partnerID: ID
-
-    # Returns only viewing rooms with these statuses
-    statuses: [ViewingRoomStatusEnum!] = [live]
-  ): ViewingRoomsConnection
   admin: Admin
 
   # Find an agreement by ID
@@ -16918,6 +16897,27 @@ type Query {
     # Returns only viewing rooms with these statuses
     statuses: [ViewingRoomStatusEnum!] = [live]
   ): ViewingRoomConnection @deprecated(reason: "Use viewingRoomsConnection")
+
+  # List viewing rooms
+  viewingRoomsConnection(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+    featured: Boolean
+
+    # Returns the first _n_ elements from the list.
+    first: Int
+    ids: [ID!]
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+    partnerID: ID
+
+    # Returns only viewing rooms with these statuses
+    statuses: [ViewingRoomStatusEnum!] = [live]
+  ): ViewingRoomsConnection
 }
 
 type Quiz {
