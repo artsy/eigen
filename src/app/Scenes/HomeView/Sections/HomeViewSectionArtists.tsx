@@ -20,6 +20,7 @@ import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { PAGE_SIZE } from "app/Components/constants"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
+import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
@@ -41,12 +42,14 @@ import {
 interface HomeViewSectionArtworksProps {
   section: HomeViewSectionArtists_section$data
   relay: RelayPaginationProp
+  index: number
 }
 
 type Artist = ExtractNodeType<HomeViewSectionArtists_section$data["artistsConnection"]>
 export const HomeViewSectionArtists: React.FC<HomeViewSectionArtworksProps> = ({
   section,
   relay,
+  index,
   ...flexProps
 }) => {
   const { hasMore, isLoading, loadMore } = relay
@@ -132,7 +135,10 @@ export const HomeViewSectionArtists: React.FC<HomeViewSectionArtworksProps> = ({
         windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
       />
 
-      <HomeViewSectionSentinel contextModule={section.contextModule as ContextModule} />
+      <HomeViewSectionSentinel
+        contextModule={section.contextModule as ContextModule}
+        index={index}
+      />
     </Flex>
   )
 }
@@ -242,12 +248,8 @@ const HomeViewSectionArtistsPlaceholder: React.FC<FlexProps> = (flexProps) => {
   )
 }
 
-interface HomeViewSectionArtistsQueryRendererProps extends FlexProps {
-  sectionID: string
-}
-
-export const HomeViewSectionArtistsQueryRenderer: React.FC<HomeViewSectionArtistsQueryRendererProps> =
-  withSuspense(({ sectionID, ...flexProps }) => {
+export const HomeViewSectionArtistsQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
+  ({ sectionID, index, ...flexProps }) => {
     const data = useLazyLoadQuery<HomeViewSectionArtistsMainQuery>(homeViewSectionArtistsQuery, {
       id: sectionID,
     })
@@ -257,6 +259,12 @@ export const HomeViewSectionArtistsQueryRenderer: React.FC<HomeViewSectionArtist
     }
 
     return (
-      <HomeViewSectionArtistsPaginationContainer section={data.homeView.section} {...flexProps} />
+      <HomeViewSectionArtistsPaginationContainer
+        section={data.homeView.section}
+        index={index}
+        {...flexProps}
+      />
     )
-  }, HomeViewSectionArtistsPlaceholder)
+  },
+  HomeViewSectionArtistsPlaceholder
+)

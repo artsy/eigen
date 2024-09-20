@@ -4501,11 +4501,6 @@
     "@styled-system/core" "^5.1.2"
     "@styled-system/css" "^5.1.5"
 
-"@svanboxel/visibility-sensor-react-native@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@svanboxel/visibility-sensor-react-native/-/visibility-sensor-react-native-1.0.2.tgz#7174f33c6abb4e1472ec29f1b559c5162c022fc7"
-  integrity sha512-UH9EyC2VeOrC6M4tleR0/NgbEBK3sLvTGgq3veGFjLPstGl5grHPxfWXTdSwf4wMbo8UNYRIwEiC1JcItO3wVQ==
-
 "@szmarczak/http-timer@^4.0.5":
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/@szmarczak/http-timer/-/http-timer-4.0.6.tgz#b4a914bb62e7c272d4e5989fe4440f812ab1d807"

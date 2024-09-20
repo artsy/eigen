@@ -15,6 +15,7 @@ import { ARTWORK_RAIL_IMAGE_WIDTH, ArtworkRail } from "app/Components/ArtworkRai
 import { ARTWORK_RAIL_CARD_IMAGE_HEIGHT } from "app/Components/ArtworkRail/LegacyArtworkRailCardImage"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
+import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -25,10 +26,12 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionArtworksProps extends FlexProps {
   section: HomeViewSectionArtworks_section$key
+  index: number
 }
 
 export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = ({
   section: sectionProp,
+  index,
   ...flexProps
 }) => {
   const tracking = useHomeViewTracking()
@@ -96,7 +99,10 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
         onMorePress={viewAll ? onSectionViewAll : undefined}
       />
 
-      <HomeViewSectionSentinel contextModule={section.contextModule as ContextModule} />
+      <HomeViewSectionSentinel
+        contextModule={section.contextModule as ContextModule}
+        index={index}
+      />
     </Flex>
   )
 }
@@ -169,12 +175,8 @@ const HomeViewSectionArtworksPlaceholder: React.FC<FlexProps> = (flexProps) => {
   )
 }
 
-interface HomeViewSectionArtworksQueryRendererProps extends FlexProps {
-  sectionID: string
-}
-
-export const HomeViewSectionArtworksQueryRenderer: React.FC<HomeViewSectionArtworksQueryRendererProps> =
-  withSuspense(({ sectionID, ...flexProps }) => {
+export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
+  ({ sectionID, index, ...flexProps }) => {
     const data = useLazyLoadQuery<HomeViewSectionArtworksQuery>(homeViewSectionArtworksQuery, {
       id: sectionID,
     })
@@ -183,5 +185,7 @@ export const HomeViewSectionArtworksQueryRenderer: React.FC<HomeViewSectionArtwo
       return null
     }
 
-    return <HomeViewSectionArtworks section={data.homeView.section} {...flexProps} />
-  }, HomeViewSectionArtworksPlaceholder)
+    return <HomeViewSectionArtworks section={data.homeView.section} index={index} {...flexProps} />
+  },
+  HomeViewSectionArtworksPlaceholder
+)

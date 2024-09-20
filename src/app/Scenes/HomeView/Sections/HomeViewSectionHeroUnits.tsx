@@ -5,6 +5,7 @@ import { HomeViewSectionHeroUnits_section$key } from "__generated__/HomeViewSect
 import { PaginationDots } from "app/Components/PaginationDots"
 import { HERO_UNIT_CARD_HEIGHT, HeroUnit } from "app/Scenes/Home/Components/HeroUnitsRail"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
+import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
@@ -19,10 +20,12 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionHeroUnitsProps extends FlexProps {
   section: HomeViewSectionHeroUnits_section$key
+  index: number
 }
 
 export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> = ({
   section: sectionProp,
+  index,
   ...flexProps
 }) => {
   const tracking = useHomeViewTracking()
@@ -79,7 +82,10 @@ export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> =
       <Spacer y={2} />
       <PaginationDots currentIndex={currentIndex} length={heroUnits.length} />
 
-      <HomeViewSectionSentinel contextModule={section.contextModule as ContextModule} />
+      <HomeViewSectionSentinel
+        contextModule={section.contextModule as ContextModule}
+        index={index}
+      />
     </Flex>
   )
 }
@@ -134,12 +140,8 @@ const homeViewSectionHeroUnitsQuery = graphql`
   }
 `
 
-interface HomeViewSectionHeroUnitsQueryRendererProps extends FlexProps {
-  sectionID: string
-}
-
-export const HomeViewSectionHeroUnitsQueryRenderer: React.FC<HomeViewSectionHeroUnitsQueryRendererProps> =
-  withSuspense(({ sectionID, ...flexProps }) => {
+export const HomeViewSectionHeroUnitsQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
+  ({ sectionID, index, ...flexProps }) => {
     const data = useLazyLoadQuery<HomeViewSectionHeroUnitsQuery>(homeViewSectionHeroUnitsQuery, {
       id: sectionID,
     })
@@ -148,5 +150,7 @@ export const HomeViewSectionHeroUnitsQueryRenderer: React.FC<HomeViewSectionHero
       return null
     }
 
-    return <HomeViewSectionHeroUnits section={data.homeView.section} {...flexProps} />
-  }, HomeViewSectionHeroUnitsPlaceholder)
+    return <HomeViewSectionHeroUnits section={data.homeView.section} index={index} {...flexProps} />
+  },
+  HomeViewSectionHeroUnitsPlaceholder
+)

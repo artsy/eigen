@@ -12,7 +12,7 @@ describe("HomeViewSectionMarketingCollections", () => {
     Component: (props) => {
       return (
         <HomeViewStoreProvider>
-          <HomeViewSectionMarketingCollections section={props.homeView.section} />
+          <HomeViewSectionMarketingCollections section={props.homeView.section} index={0} />
         </HomeViewStoreProvider>
       )
     },

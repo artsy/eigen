@@ -17,6 +17,7 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { LARGE_IMAGE_SIZE, SMALL_IMAGE_SIZE } from "app/Components/ThreeUpImageLayout"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { HomeViewSectionSalesItem } from "app/Scenes/HomeView/Sections/HomeViewSectionSalesItem"
+import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
@@ -33,10 +34,12 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionSalesProps {
   section: HomeViewSectionSales_section$key
+  index: number
 }
 
 export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({
   section: sectionProp,
+  index,
   ...flexProps
 }) => {
   const tracking = useHomeViewTracking()
@@ -111,7 +114,10 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({
         }
       />
 
-      <HomeViewSectionSentinel contextModule={section.contextModule as ContextModule} />
+      <HomeViewSectionSentinel
+        contextModule={section.contextModule as ContextModule}
+        index={index}
+      />
     </Flex>
   )
 }
@@ -205,12 +211,8 @@ const homeViewSectionSalesQuery = graphql`
   }
 `
 
-interface HomeViewSectionSalesQueryRendererProps extends FlexProps {
-  sectionID: string
-}
-
-export const HomeViewSectionSalesQueryRenderer: React.FC<HomeViewSectionSalesQueryRendererProps> =
-  withSuspense(({ sectionID, ...flexProps }) => {
+export const HomeViewSectionSalesQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
+  ({ sectionID, index, ...flexProps }) => {
     const data = useLazyLoadQuery<HomeViewSectionSalesQuery>(homeViewSectionSalesQuery, {
       id: sectionID,
     })
@@ -219,5 +221,7 @@ export const HomeViewSectionSalesQueryRenderer: React.FC<HomeViewSectionSalesQue
       return null
     }
 
-    return <HomeViewSectionSales section={data.homeView.section} {...flexProps} />
-  }, HomeViewSectionSalesPlaceholder)
+    return <HomeViewSectionSales section={data.homeView.section} index={index} {...flexProps} />
+  },
+  HomeViewSectionSalesPlaceholder
+)

@@ -26,6 +26,7 @@ import {
   CollectionCard,
   HomeViewSectionMarketingCollectionsItem,
 } from "app/Scenes/HomeView/Sections/HomeViewSectionMarketingCollectionsItem"
+import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
@@ -41,11 +42,12 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionMarketingCollectionsProps {
   section: HomeViewSectionMarketingCollections_section$key
+  index: number
 }
 
 export const HomeViewSectionMarketingCollections: React.FC<
   HomeViewSectionMarketingCollectionsProps
-> = ({ section: sectionProp, ...flexProps }) => {
+> = ({ section: sectionProp, index, ...flexProps }) => {
   const tracking = useHomeViewTracking()
 
   const section = useFragment(fragment, sectionProp)
@@ -111,7 +113,10 @@ export const HomeViewSectionMarketingCollections: React.FC<
         }}
       />
 
-      <HomeViewSectionSentinel contextModule={section.contextModule as ContextModule} />
+      <HomeViewSectionSentinel
+        contextModule={section.contextModule as ContextModule}
+        index={index}
+      />
     </Flex>
   )
 }
@@ -223,12 +228,8 @@ const homeViewSectionMarketingCollectionsQuery = graphql`
   }
 `
 
-interface HomeViewSectionMarketingCollectionsQueryRendererProps extends FlexProps {
-  sectionID: string
-}
-
-export const HomeViewSectionMarketingCollectionsQueryRenderer: React.FC<HomeViewSectionMarketingCollectionsQueryRendererProps> =
-  withSuspense(({ sectionID, ...flexProps }) => {
+export const HomeViewSectionMarketingCollectionsQueryRenderer: React.FC<SectionSharedProps> =
+  withSuspense(({ sectionID, index, ...flexProps }) => {
     const data = useLazyLoadQuery<HomeViewSectionMarketingCollectionsQuery>(
       homeViewSectionMarketingCollectionsQuery,
       {
@@ -240,5 +241,11 @@ export const HomeViewSectionMarketingCollectionsQueryRenderer: React.FC<HomeView
       return null
     }
 
-    return <HomeViewSectionMarketingCollections section={data.homeView.section} {...flexProps} />
+    return (
+      <HomeViewSectionMarketingCollections
+        section={data.homeView.section}
+        index={index}
+        {...flexProps}
+      />
+    )
   }, HomeViewSectionMarketingCollectionsPlaceholder)

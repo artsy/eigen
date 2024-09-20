@@ -416,11 +416,12 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
-    viewedSection: (contextModule: ContextModule) => {
+    viewedSection: (contextModule: ContextModule, index: number) => {
       const payload: RailViewed = {
         action: ActionType.railViewed,
         context_module: contextModule,
         context_screen: OwnerType.home,
+        position_y: index,
       }
 
       trackEvent(payload)

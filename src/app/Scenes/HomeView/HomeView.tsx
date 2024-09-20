@@ -98,8 +98,8 @@ export const HomeView: React.FC = () => {
           ref={flashlistRef}
           data={sections}
           keyExtractor={(item) => item.internalID}
-          renderItem={({ item }) => {
-            return <Section section={item} my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT} />
+          renderItem={({ item, index }) => {
+            return <Section section={item} my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT} index={index} />
           }}
           onEndReached={() => loadNext(NUMBER_OF_SECTIONS_TO_LOAD)}
           ListHeaderComponent={HomeHeader}

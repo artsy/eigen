@@ -14,7 +14,7 @@ describe("HomeViewSectionViewingRooms", () => {
       }
       return (
         <HomeViewStoreProvider>
-          <HomeViewSectionViewingRooms section={props.homeView.section} />
+          <HomeViewSectionViewingRooms section={props.homeView.section} index={0} />
         </HomeViewStoreProvider>
       )
     },

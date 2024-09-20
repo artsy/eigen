@@ -15,6 +15,7 @@ import { HomeViewSectionFeaturedCollection_section$key } from "__generated__/Hom
 import { ARTWORK_RAIL_IMAGE_WIDTH, ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { ARTWORK_RAIL_CARD_IMAGE_HEIGHT } from "app/Components/ArtworkRail/LegacyArtworkRailCardImage"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
+import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -24,13 +25,14 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionFeaturedCollectionProps {
   section: HomeViewSectionFeaturedCollection_section$key
+  index: number
 }
 
 const HEADER_IMAGE_HEIGHT = 80
 
 export const HomeViewSectionFeaturedCollection: React.FC<
   HomeViewSectionFeaturedCollectionProps
-> = ({ section: sectionProp, ...flexProps }) => {
+> = ({ section: sectionProp, index, ...flexProps }) => {
   const { width } = useWindowDimensions()
   const tracking = useHomeViewTracking()
   const section = useFragment(fragment, sectionProp)
@@ -102,7 +104,10 @@ export const HomeViewSectionFeaturedCollection: React.FC<
         />
       </Flex>
 
-      <HomeViewSectionSentinel contextModule={section.contextModule as ContextModule} />
+      <HomeViewSectionSentinel
+        contextModule={section.contextModule as ContextModule}
+        index={index}
+      />
     </Flex>
   )
 }
@@ -182,12 +187,8 @@ const homeViewSectionFeaturedCollectionQuery = graphql`
   }
 `
 
-interface HomeViewSectionFeaturedCollectionQueryRendererProps extends FlexProps {
-  sectionID: string
-}
-
-export const HomeViewSectionFeaturedCollectionQueryRenderer: React.FC<HomeViewSectionFeaturedCollectionQueryRendererProps> =
-  withSuspense(({ sectionID, ...flexProps }) => {
+export const HomeViewSectionFeaturedCollectionQueryRenderer: React.FC<SectionSharedProps> =
+  withSuspense(({ sectionID, index, ...flexProps }) => {
     const data = useLazyLoadQuery<HomeViewSectionFeaturedCollectionQuery>(
       homeViewSectionFeaturedCollectionQuery,
       {
@@ -199,5 +200,11 @@ export const HomeViewSectionFeaturedCollectionQueryRenderer: React.FC<HomeViewSe
       return null
     }
 
-    return <HomeViewSectionFeaturedCollection section={data.homeView.section} {...flexProps} />
+    return (
+      <HomeViewSectionFeaturedCollection
+        section={data.homeView.section}
+        index={index}
+        {...flexProps}
+      />
+    )
   }, HomeViewSectionFeaturedCollectionPlaceholder)

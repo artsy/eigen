@@ -6,10 +6,12 @@ import React, { useCallback } from "react"
 
 interface HomeViewSectionSentinelProps {
   contextModule: ContextModule
+  index: number
 }
 
 export const HomeViewSectionSentinel: React.FC<HomeViewSectionSentinelProps> = ({
   contextModule,
+  index,
 }) => {
   const { viewedSection } = useHomeViewTracking()
   const addTrackedSection = HomeViewStore.useStoreActions((actions) => actions.addTrackedSection)
@@ -17,13 +19,13 @@ export const HomeViewSectionSentinel: React.FC<HomeViewSectionSentinelProps> = (
 
   const handleImageVisibility = useCallback(
     (visible) => {
-      if (visible && contextModule && !trackedSections.includes(contextModule)) {
-        viewedSection(contextModule as ContextModule)
+      if (visible && !trackedSections.includes(contextModule)) {
+        viewedSection(contextModule as ContextModule, index)
         addTrackedSection(contextModule)
       }
     },
     [contextModule, viewedSection, addTrackedSection, trackedSections]
   )
 
-  return <Sentinel onAppear={handleImageVisibility} />
+  return <Sentinel onChange={handleImageVisibility} />
 }

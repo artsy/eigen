@@ -4,6 +4,7 @@ import { HomeViewSectionShowsQuery } from "__generated__/HomeViewSectionShowsQue
 import { HomeViewSectionShows_section$key } from "__generated__/HomeViewSectionShows_section.graphql"
 import { ShowsRailContainer, ShowsRailPlaceholder } from "app/Scenes/Home/Components/ShowsRail"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
+import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { withSuspense } from "app/utils/hooks/withSuspense"
@@ -11,10 +12,12 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionShowsProps {
   section: HomeViewSectionShows_section$key
+  index: number
 }
 
 export const HomeViewSectionShows: React.FC<HomeViewSectionShowsProps> = ({
   section: sectionProp,
+  index,
   ...flexProps
 }) => {
   const enableShowsForYouLocation = useFeatureFlag("AREnableShowsForYouLocation")
@@ -36,7 +39,10 @@ export const HomeViewSectionShows: React.FC<HomeViewSectionShowsProps> = ({
           )
         }}
       />
-      <HomeViewSectionSentinel contextModule={section.contextModule as ContextModule} />
+      <HomeViewSectionSentinel
+        contextModule={section.contextModule as ContextModule}
+        index={index}
+      />
     </Flex>
   )
 }
@@ -74,12 +80,8 @@ const homeViewSectionShowsQuery = graphql`
   }
 `
 
-interface HomeViewSectionShowsQueryRendererProps extends FlexProps {
-  sectionID: string
-}
-
-export const HomeViewSectionShowsQueryRenderer: React.FC<HomeViewSectionShowsQueryRendererProps> =
-  withSuspense(({ sectionID, ...flexProps }) => {
+export const HomeViewSectionShowsQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
+  ({ sectionID, index, ...flexProps }) => {
     const data = useLazyLoadQuery<HomeViewSectionShowsQuery>(homeViewSectionShowsQuery, {
       id: sectionID,
     })
@@ -88,5 +90,7 @@ export const HomeViewSectionShowsQueryRenderer: React.FC<HomeViewSectionShowsQue
       return null
     }
 
-    return <HomeViewSectionShows section={data.homeView.section} {...flexProps} />
-  }, HomeViewSectionShowsPlaceholder)
+    return <HomeViewSectionShows section={data.homeView.section} index={index} {...flexProps} />
+  },
+  HomeViewSectionShowsPlaceholder
+)

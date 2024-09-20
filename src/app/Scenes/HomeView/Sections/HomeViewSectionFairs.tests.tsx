@@ -15,7 +15,7 @@ describe("HomeViewSectionFairs", () => {
       }
       return (
         <HomeViewStoreProvider>
-          <HomeViewSectionFairs section={props.homeView.section} />
+          <HomeViewSectionFairs section={props.homeView.section} index={0} />
         </HomeViewStoreProvider>
       )
     },

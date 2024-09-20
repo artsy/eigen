@@ -11,6 +11,7 @@ import {
   ActivityRailItem,
 } from "app/Scenes/Home/Components/ActivityRailItem"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
+import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
@@ -26,10 +27,12 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionActivityProps {
   section: HomeViewSectionActivity_section$key
+  index: number
 }
 
 export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = ({
   section: sectionProp,
+  index,
   ...flexProps
 }) => {
   const tracking = useHomeViewTracking()
@@ -98,7 +101,10 @@ export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = (
         }}
       />
 
-      <HomeViewSectionSentinel contextModule={section.contextModule as ContextModule} />
+      <HomeViewSectionSentinel
+        contextModule={section.contextModule as ContextModule}
+        index={index}
+      />
     </Flex>
   )
 }
@@ -192,12 +198,8 @@ const HomeViewSectionActivityPlaceholder: React.FC<FlexProps> = (flexProps) => {
   )
 }
 
-interface HomeViewSectionActivityQueryRendererProps extends FlexProps {
-  sectionID: string
-}
-
-export const HomeViewSectionActivityQueryRenderer: React.FC<HomeViewSectionActivityQueryRendererProps> =
-  withSuspense(({ sectionID, ...flexProps }) => {
+export const HomeViewSectionActivityQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
+  ({ sectionID, index, ...flexProps }) => {
     const data = useLazyLoadQuery<HomeViewSectionActivityQuery>(homeViewSectionActivityQuery, {
       id: sectionID,
     })
@@ -206,5 +208,7 @@ export const HomeViewSectionActivityQueryRenderer: React.FC<HomeViewSectionActiv
       return null
     }
 
-    return <HomeViewSectionActivity section={data.homeView.section} {...flexProps} />
-  }, HomeViewSectionActivityPlaceholder)
+    return <HomeViewSectionActivity section={data.homeView.section} index={index} {...flexProps} />
+  },
+  HomeViewSectionActivityPlaceholder
+)

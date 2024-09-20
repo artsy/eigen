@@ -14,7 +14,7 @@ describe("HomeViewSectionActivity", () => {
       }
       return (
         <HomeViewStoreProvider>
-          <HomeViewSectionActivity section={props.homeView.section} />
+          <HomeViewSectionActivity section={props.homeView.section} index={0} />
         </HomeViewStoreProvider>
       )
     },

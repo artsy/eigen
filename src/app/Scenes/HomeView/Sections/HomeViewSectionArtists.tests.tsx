@@ -15,7 +15,7 @@ describe("HomeViewSectionArtists", () => {
       }
       return (
         <HomeViewStoreProvider>
-          <HomeViewSectionArtistsPaginationContainer section={props.homeView.section} />
+          <HomeViewSectionArtistsPaginationContainer section={props.homeView.section} index={0} />
         </HomeViewStoreProvider>
       )
     },

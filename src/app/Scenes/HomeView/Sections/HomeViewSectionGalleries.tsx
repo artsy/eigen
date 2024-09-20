@@ -12,6 +12,7 @@ import {
 import { HomeViewSectionGalleriesQuery } from "__generated__/HomeViewSectionGalleriesQuery.graphql"
 import { HomeViewSectionGalleries_section$key } from "__generated__/HomeViewSectionGalleries_section.graphql"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
+import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { withSuspense } from "app/utils/hooks/withSuspense"
@@ -22,10 +23,12 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionGalleriesProps {
   section: HomeViewSectionGalleries_section$key
+  index: number
 }
 
 export const HomeViewSectionGalleries: React.FC<HomeViewSectionGalleriesProps> = ({
   section: sectionProp,
+  index,
   ...flexProps
 }) => {
   const tracking = useHomeViewTracking()
@@ -105,7 +108,10 @@ export const HomeViewSectionGalleries: React.FC<HomeViewSectionGalleriesProps> =
         </Flex>
       </Touchable>
 
-      <HomeViewSectionSentinel contextModule={section.contextModule as ContextModule} />
+      <HomeViewSectionSentinel
+        contextModule={section.contextModule as ContextModule}
+        index={index}
+      />
     </Flex>
   )
 }
@@ -150,12 +156,8 @@ const homeViewSectionGalleriesQuery = graphql`
   }
 `
 
-interface HomeViewSectionGalleriesQueryRendererProps extends FlexProps {
-  sectionID: string
-}
-
-export const HomeViewSectionGalleriesQueryRenderer: React.FC<HomeViewSectionGalleriesQueryRendererProps> =
-  withSuspense(({ sectionID, ...flexProps }) => {
+export const HomeViewSectionGalleriesQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
+  ({ sectionID, index, ...flexProps }) => {
     const data = useLazyLoadQuery<HomeViewSectionGalleriesQuery>(homeViewSectionGalleriesQuery, {
       id: sectionID,
     })
@@ -164,5 +166,7 @@ export const HomeViewSectionGalleriesQueryRenderer: React.FC<HomeViewSectionGall
       return null
     }
 
-    return <HomeViewSectionGalleries section={data.homeView.section} {...flexProps} />
-  }, HomeViewSectionGalleriesPlaceholder)
+    return <HomeViewSectionGalleries section={data.homeView.section} index={index} {...flexProps} />
+  },
+  HomeViewSectionGalleriesPlaceholder
+)

@@ -18,6 +18,7 @@ import {
 } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
+import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
@@ -33,6 +34,7 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionAuctionResultsProps {
   section: HomeViewSectionAuctionResults_section$key
+  index: number
 }
 
 // Avoid the card width to be too wide on tablets
@@ -40,6 +42,7 @@ const AUCTION_RESULT_CARD_WIDTH = Math.min(400, Dimensions.get("window").width *
 
 export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResultsProps> = ({
   section: sectionProp,
+  index,
   ...flexProps
 }) => {
   const section = useFragment(sectionFragment, sectionProp)
@@ -109,7 +112,10 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
         }
       />
 
-      <HomeViewSectionSentinel contextModule={section.contextModule as ContextModule} />
+      <HomeViewSectionSentinel
+        contextModule={section.contextModule as ContextModule}
+        index={index}
+      />
     </Flex>
   )
 }
@@ -200,12 +206,8 @@ const homeViewSectionAuctionResultsQuery = graphql`
   }
 `
 
-interface HomeViewSectionAuctionResultsQueryRendererProps extends FlexProps {
-  sectionID: string
-}
-
-export const HomeViewSectionAuctionResultsQueryRenderer: React.FC<HomeViewSectionAuctionResultsQueryRendererProps> =
-  withSuspense(({ sectionID, ...flexProps }) => {
+export const HomeViewSectionAuctionResultsQueryRenderer: React.FC<SectionSharedProps> =
+  withSuspense(({ sectionID, index, ...flexProps }) => {
     const data = useLazyLoadQuery<HomeViewSectionAuctionResultsQuery>(
       homeViewSectionAuctionResultsQuery,
       {
@@ -217,5 +219,7 @@ export const HomeViewSectionAuctionResultsQueryRenderer: React.FC<HomeViewSectio
       return null
     }
 
-    return <HomeViewSectionAuctionResults section={data.homeView.section} {...flexProps} />
+    return (
+      <HomeViewSectionAuctionResults section={data.homeView.section} index={index} {...flexProps} />
+    )
   }, HomeViewSectionAuctionResultsPlaceholder)

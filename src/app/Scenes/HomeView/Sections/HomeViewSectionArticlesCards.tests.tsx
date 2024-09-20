@@ -13,7 +13,7 @@ describe("HomeViewSectionArticlesCards", () => {
       }
       return (
         <HomeViewStoreProvider>
-          <HomeViewSectionArticlesCards section={props.homeView.section} />
+          <HomeViewSectionArticlesCards section={props.homeView.section} index={0} />
         </HomeViewStoreProvider>
       )
     },

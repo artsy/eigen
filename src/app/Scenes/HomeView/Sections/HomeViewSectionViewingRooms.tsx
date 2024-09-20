@@ -13,6 +13,7 @@ import { HomeViewSectionViewingRooms_section$key } from "__generated__/HomeViewS
 import { MEDIUM_CARD_HEIGHT, MEDIUM_CARD_WIDTH } from "app/Components/Cards"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
+import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import {
   ViewingRoomsHomeRail as LegacyViewingRoomsHomeRail,
@@ -25,9 +26,16 @@ import { times } from "lodash"
 import { Suspense } from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
-export const HomeViewSectionViewingRooms: React.FC<{
+interface HomeViewSectionViewingRoomsProps extends FlexProps {
   section: HomeViewSectionViewingRooms_section$key
-}> = ({ section: sectionProp, ...flexProps }) => {
+  index: number
+}
+
+export const HomeViewSectionViewingRooms: React.FC<HomeViewSectionViewingRoomsProps> = ({
+  section: sectionProp,
+  index,
+  ...flexProps
+}) => {
   const tracking = useHomeViewTracking()
   const section = useFragment(viewingRoomsFragment, sectionProp)
   const viewAll = section.component?.behaviors?.viewAll
@@ -75,7 +83,10 @@ export const HomeViewSectionViewingRooms: React.FC<{
             navigate(`/viewing-room/${viewingRoom.slug}`)
           }}
         />
-        <HomeViewSectionSentinel contextModule={section.contextModule as ContextModule} />
+        <HomeViewSectionSentinel
+          contextModule={section.contextModule as ContextModule}
+          index={index}
+        />
       </Suspense>
     </Flex>
   )
@@ -134,12 +145,8 @@ const homeViewSectionViewingRoomsQuery = graphql`
   }
 `
 
-interface HomeViewSectionViewingRoomsQueryRendererProps extends FlexProps {
-  sectionID: string
-}
-
-export const HomeViewSectionViewingRoomsQueryRenderer: React.FC<HomeViewSectionViewingRoomsQueryRendererProps> =
-  withSuspense(({ sectionID, ...flexProps }) => {
+export const HomeViewSectionViewingRoomsQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
+  ({ sectionID, index, ...flexProps }) => {
     const data = useLazyLoadQuery<HomeViewSectionViewingRoomsQuery>(
       homeViewSectionViewingRoomsQuery,
       {
@@ -151,5 +158,9 @@ export const HomeViewSectionViewingRoomsQueryRenderer: React.FC<HomeViewSectionV
       return null
     }
 
-    return <HomeViewSectionViewingRooms section={data.homeView.section} {...flexProps} />
-  }, HomeViewSectionArtworksPlaceholder)
+    return (
+      <HomeViewSectionViewingRooms section={data.homeView.section} index={index} {...flexProps} />
+    )
+  },
+  HomeViewSectionArtworksPlaceholder
+)

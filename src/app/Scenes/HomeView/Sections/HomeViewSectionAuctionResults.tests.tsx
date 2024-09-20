@@ -15,7 +15,7 @@ describe("HomeViewSectionAuctionResults", () => {
       }
       return (
         <HomeViewStoreProvider>
-          <HomeViewSectionAuctionResults section={props.homeView.section} />
+          <HomeViewSectionAuctionResults section={props.homeView.section} index={0} />
         </HomeViewStoreProvider>
       )
     },

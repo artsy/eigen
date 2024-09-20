@@ -16,6 +16,7 @@ import {
   HomeViewSectionArticlesCards_section$key,
 } from "__generated__/HomeViewSectionArticlesCards_section.graphql"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
+import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -26,6 +27,7 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionArticlesCardsProps {
   section: HomeViewSectionArticlesCards_section$key
+  index: number
 }
 
 type ArticleType = ExtractNodeType<
@@ -34,6 +36,7 @@ type ArticleType = ExtractNodeType<
 
 export const HomeViewSectionArticlesCards: React.FC<HomeViewSectionArticlesCardsProps> = ({
   section: sectionProp,
+  index,
   ...flexProps
 }) => {
   const section = useFragment(fragment, sectionProp)
@@ -89,7 +92,10 @@ export const HomeViewSectionArticlesCards: React.FC<HomeViewSectionArticlesCards
         )}
       </Flex>
 
-      <HomeViewSectionSentinel contextModule={section.contextModule as ContextModule} />
+      <HomeViewSectionSentinel
+        contextModule={section.contextModule as ContextModule}
+        index={index}
+      />
     </Flex>
   )
 }
@@ -165,12 +171,8 @@ const homeViewSectionArticlesCardsQuery = graphql`
   }
 `
 
-interface HomeViewSectionArticlesCardsQueryRendererProps extends FlexProps {
-  sectionID: string
-}
-
-export const HomeViewSectionArticlesCardsQueryRenderer: React.FC<HomeViewSectionArticlesCardsQueryRendererProps> =
-  withSuspense(({ sectionID, ...flexProps }) => {
+export const HomeViewSectionArticlesCardsQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
+  ({ sectionID, index, ...flexProps }) => {
     const data = useLazyLoadQuery<HomeViewSectionArticlesCardsQuery>(
       homeViewSectionArticlesCardsQuery,
       {
@@ -182,5 +184,9 @@ export const HomeViewSectionArticlesCardsQueryRenderer: React.FC<HomeViewSection
       return null
     }
 
-    return <HomeViewSectionArticlesCards section={data.homeView.section} {...flexProps} />
-  }, HomeViewSectionArticlesCardsPlaceholder)
+    return (
+      <HomeViewSectionArticlesCards section={data.homeView.section} index={index} {...flexProps} />
+    )
+  },
+  HomeViewSectionArticlesCardsPlaceholder
+)
