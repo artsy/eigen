@@ -1,5 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { HomeViewSectionScreenArtworksTestsQuery } from "__generated__/HomeViewSectionScreenArtworksTestsQuery.graphql"
+import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionScreenArtworks } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreenArtworks"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -12,7 +13,11 @@ describe("HomeViewSectionArtworks", () => {
       if (!props.homeView.section) {
         return null
       }
-      return <HomeViewSectionScreenArtworks section={props.homeView.section} />
+      return (
+        <HomeViewStoreProvider>
+          <HomeViewSectionScreenArtworks section={props.homeView.section} />
+        </HomeViewStoreProvider>
+      )
     },
     query: graphql`
       query HomeViewSectionScreenArtworksTestsQuery @relay_test_operation {

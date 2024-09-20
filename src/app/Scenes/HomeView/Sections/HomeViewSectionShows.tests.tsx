@@ -1,5 +1,6 @@
 import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
 import { HomeViewSectionShowsTestsQuery } from "__generated__/HomeViewSectionShowsTestsQuery.graphql"
+import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionShows } from "app/Scenes/HomeView/Sections/HomeViewSectionShows"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -19,7 +20,11 @@ describe("HomeViewSectionShows", () => {
       if (!props.homeView.section) {
         return null
       }
-      return <HomeViewSectionShows section={props.homeView.section} />
+      return (
+        <HomeViewStoreProvider>
+          <HomeViewSectionShows section={props.homeView.section} index={0} />
+        </HomeViewStoreProvider>
+      )
     },
     query: graphql`
       query HomeViewSectionShowsTestsQuery @relay_test_operation {

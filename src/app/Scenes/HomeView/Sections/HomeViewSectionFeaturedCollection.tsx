@@ -1,6 +1,7 @@
 import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import {
   Flex,
+  FlexProps,
   Image,
   Join,
   Skeleton,
@@ -13,7 +14,8 @@ import { HomeViewSectionFeaturedCollectionQuery } from "__generated__/HomeViewSe
 import { HomeViewSectionFeaturedCollection_section$key } from "__generated__/HomeViewSectionFeaturedCollection_section.graphql"
 import { ARTWORK_RAIL_IMAGE_WIDTH, ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { ARTWORK_RAIL_CARD_IMAGE_HEIGHT } from "app/Components/ArtworkRail/LegacyArtworkRailCardImage"
-import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
+import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
+import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -23,16 +25,17 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionFeaturedCollectionProps {
   section: HomeViewSectionFeaturedCollection_section$key
+  index: number
 }
 
 const HEADER_IMAGE_HEIGHT = 80
 
-export const HomeViewSectionFeaturedCollection: React.FC<HomeViewSectionFeaturedCollectionProps> = (
-  props
-) => {
+export const HomeViewSectionFeaturedCollection: React.FC<
+  HomeViewSectionFeaturedCollectionProps
+> = ({ section: sectionProp, index, ...flexProps }) => {
   const { width } = useWindowDimensions()
   const tracking = useHomeViewTracking()
-  const section = useFragment(fragment, props.section)
+  const section = useFragment(fragment, sectionProp)
   const component = section.component
   const viewAll = component?.behaviors?.viewAll
 
@@ -68,35 +71,42 @@ export const HomeViewSectionFeaturedCollection: React.FC<HomeViewSectionFeatured
   }
 
   return (
-    <Flex pb={2} backgroundColor="black100" my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
-      <TouchableOpacity onPress={onSectionViewAll} activeOpacity={0.7}>
-        {!!component.backgroundImageURL && (
-          <Image
-            width={width}
-            height={HEADER_IMAGE_HEIGHT}
-            resizeMode="cover"
-            src={component.backgroundImageURL}
-          />
-        )}
-        <Flex mx={2} mt={2}>
-          <Text color="white100" variant="lg-display" mb={0.5}>
-            {component.title}
-          </Text>
-          <Text color="white100" variant="xs">
-            {component.description}
-          </Text>
-        </Flex>
-      </TouchableOpacity>
+    <Flex {...flexProps}>
+      <Flex pb={2} backgroundColor="black100">
+        <TouchableOpacity onPress={onSectionViewAll} activeOpacity={0.7}>
+          {!!component.backgroundImageURL && (
+            <Image
+              width={width}
+              height={HEADER_IMAGE_HEIGHT}
+              resizeMode="cover"
+              src={component.backgroundImageURL}
+            />
+          )}
+          <Flex mx={2} mt={2}>
+            <Text color="white100" variant="lg-display" mb={0.5}>
+              {component.title}
+            </Text>
+            <Text color="white100" variant="xs">
+              {component.description}
+            </Text>
+          </Flex>
+        </TouchableOpacity>
 
-      <Spacer y={4} />
+        <Spacer y={4} />
 
-      <ArtworkRail
-        dark
-        showPartnerName
-        artworks={artworks}
-        showSaveIcon
-        onPress={handleOnArtworkPress}
-        onMorePress={onSectionViewAll}
+        <ArtworkRail
+          dark
+          showPartnerName
+          artworks={artworks}
+          showSaveIcon
+          onPress={handleOnArtworkPress}
+          onMorePress={onSectionViewAll}
+        />
+      </Flex>
+
+      <HomeViewSectionSentinel
+        contextModule={section.contextModule as ContextModule}
+        index={index}
       />
     </Flex>
   )
@@ -130,7 +140,7 @@ const fragment = graphql`
   }
 `
 
-const HomeViewSectionFeaturedCollectionPlaceholder: React.FC = () => {
+const HomeViewSectionFeaturedCollectionPlaceholder: React.FC<FlexProps> = () => {
   return (
     <Skeleton>
       <SkeletonBox>
@@ -177,19 +187,24 @@ const homeViewSectionFeaturedCollectionQuery = graphql`
   }
 `
 
-export const HomeViewSectionFeaturedCollectionQueryRenderer: React.FC<{
-  sectionID: string
-}> = withSuspense((props) => {
-  const data = useLazyLoadQuery<HomeViewSectionFeaturedCollectionQuery>(
-    homeViewSectionFeaturedCollectionQuery,
-    {
-      id: props.sectionID,
+export const HomeViewSectionFeaturedCollectionQueryRenderer: React.FC<SectionSharedProps> =
+  withSuspense(({ sectionID, index, ...flexProps }) => {
+    const data = useLazyLoadQuery<HomeViewSectionFeaturedCollectionQuery>(
+      homeViewSectionFeaturedCollectionQuery,
+      {
+        id: sectionID,
+      }
+    )
+
+    if (!data.homeView.section) {
+      return null
     }
-  )
 
-  if (!data.homeView.section) {
-    return null
-  }
-
-  return <HomeViewSectionFeaturedCollection section={data.homeView.section} />
-}, HomeViewSectionFeaturedCollectionPlaceholder)
+    return (
+      <HomeViewSectionFeaturedCollection
+        section={data.homeView.section}
+        index={index}
+        {...flexProps}
+      />
+    )
+  }, HomeViewSectionFeaturedCollectionPlaceholder)

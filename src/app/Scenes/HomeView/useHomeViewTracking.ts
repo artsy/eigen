@@ -2,6 +2,7 @@ import {
   ActionType,
   ContextModule,
   OwnerType,
+  RailViewed,
   Screen,
   ScreenOwnerType,
   TappedActivityGroup,
@@ -410,6 +411,17 @@ export const useHomeViewTracking = () => {
         context_screen_owner_type: OwnerType.home,
         destination_screen_owner_type: destinationOwnerType,
         type: "viewAll",
+      }
+
+      trackEvent(payload)
+    },
+
+    viewedSection: (contextModule: ContextModule, index: number) => {
+      const payload: RailViewed = {
+        action: ActionType.railViewed,
+        context_module: contextModule,
+        context_screen: OwnerType.home,
+        position_y: index,
       }
 
       trackEvent(payload)

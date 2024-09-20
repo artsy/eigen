@@ -1,13 +1,22 @@
 import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
-import { Flex, Join, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
+import {
+  Flex,
+  FlexProps,
+  Join,
+  Skeleton,
+  SkeletonBox,
+  SkeletonText,
+  Spacer,
+} from "@artsy/palette-mobile"
 import { HomeViewSectionFairsQuery } from "__generated__/HomeViewSectionFairsQuery.graphql"
 import { HomeViewSectionFairs_section$key } from "__generated__/HomeViewSectionFairs_section.graphql"
 import { CardRailCard, CardRailMetadataContainer } from "app/Components/Home/CardRailCard"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { LARGE_IMAGE_SIZE, SMALL_IMAGE_SIZE } from "app/Components/ThreeUpImageLayout"
-import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
+import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { HomeViewSectionFairsFairItem } from "app/Scenes/HomeView/Sections/HomeViewSectionFairsFairItem"
+import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
@@ -22,12 +31,17 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionFairsProps {
   section: HomeViewSectionFairs_section$key
+  index: number
 }
 
-export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = (props) => {
+export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = ({
+  section: sectionProp,
+  index,
+  ...flexProps
+}) => {
   const tracking = useHomeViewTracking()
 
-  const section = useFragment(fragment, props.section)
+  const section = useFragment(fragment, sectionProp)
   const viewAll = section.component?.behaviors?.viewAll
 
   const fairs = extractNodes(section.fairsConnection)
@@ -56,7 +70,7 @@ export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = (props)
   }
 
   return (
-    <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
+    <Flex {...flexProps}>
       <Flex pl={2} pr={2}>
         <SectionTitle
           title={section.component?.title}
@@ -85,6 +99,11 @@ export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = (props)
             />
           )
         }}
+      />
+
+      <HomeViewSectionSentinel
+        contextModule={section.contextModule as ContextModule}
+        index={index}
       />
     </Flex>
   )
@@ -118,46 +137,48 @@ const fragment = graphql`
   }
 `
 
-const HomeViewSectionFairsPlaceholder: React.FC = () => {
+const HomeViewSectionFairsPlaceholder: React.FC<FlexProps> = (flexProps) => {
   const randomValue = useMemoizedRandom()
   return (
     <Skeleton>
-      <Flex mx={2} my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
-        <SkeletonText>Featured Fairs</SkeletonText>
-        <SkeletonText>See Wroks in Top Art Fairs</SkeletonText>
-        <Spacer y={1} />
+      <Flex {...flexProps}>
+        <Flex mx={2}>
+          <SkeletonText>Featured Fairs</SkeletonText>
+          <SkeletonText>See Wroks in Top Art Fairs</SkeletonText>
+          <Spacer y={1} />
 
-        <Flex flexDirection="row">
-          <Join separator={<Spacer x="15px" />}>
-            {times(2 + randomValue * 10).map((index) => (
-              <CardRailCard key={index}>
-                <Flex>
-                  <Flex flexDirection="row">
-                    <SkeletonBox height={LARGE_IMAGE_SIZE} width={LARGE_IMAGE_SIZE} />
-                    <Flex>
-                      <SkeletonBox
-                        height={SMALL_IMAGE_SIZE}
-                        width={SMALL_IMAGE_SIZE}
-                        borderLeftWidth={2}
-                        borderColor="white100"
-                        borderBottomWidth={1}
-                      />
-                      <SkeletonBox
-                        height={SMALL_IMAGE_SIZE}
-                        width={SMALL_IMAGE_SIZE}
-                        borderLeftWidth={2}
-                        borderColor="white100"
-                        borderTopWidth={1}
-                      />
+          <Flex flexDirection="row">
+            <Join separator={<Spacer x="15px" />}>
+              {times(2 + randomValue * 10).map((index) => (
+                <CardRailCard key={index}>
+                  <Flex>
+                    <Flex flexDirection="row">
+                      <SkeletonBox height={LARGE_IMAGE_SIZE} width={LARGE_IMAGE_SIZE} />
+                      <Flex>
+                        <SkeletonBox
+                          height={SMALL_IMAGE_SIZE}
+                          width={SMALL_IMAGE_SIZE}
+                          borderLeftWidth={2}
+                          borderColor="white100"
+                          borderBottomWidth={1}
+                        />
+                        <SkeletonBox
+                          height={SMALL_IMAGE_SIZE}
+                          width={SMALL_IMAGE_SIZE}
+                          borderLeftWidth={2}
+                          borderColor="white100"
+                          borderTopWidth={1}
+                        />
+                      </Flex>
                     </Flex>
+                    <CardRailMetadataContainer>
+                      <SkeletonText numberOfLines={1}>Art on Paper 2024, New York</SkeletonText>
+                    </CardRailMetadataContainer>
                   </Flex>
-                  <CardRailMetadataContainer>
-                    <SkeletonText numberOfLines={1}>Art on Paper 2024, New York</SkeletonText>
-                  </CardRailMetadataContainer>
-                </Flex>
-              </CardRailCard>
-            ))}
-          </Join>
+                </CardRailCard>
+              ))}
+            </Join>
+          </Flex>
         </Flex>
       </Flex>
     </Skeleton>
@@ -174,16 +195,17 @@ const homeViewSectionFairsQuery = graphql`
   }
 `
 
-export const HomeViewSectionFairsQueryRenderer: React.FC<{
-  sectionID: string
-}> = withSuspense((props) => {
-  const data = useLazyLoadQuery<HomeViewSectionFairsQuery>(homeViewSectionFairsQuery, {
-    id: props.sectionID,
-  })
+export const HomeViewSectionFairsQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
+  ({ sectionID, index, ...flexProps }) => {
+    const data = useLazyLoadQuery<HomeViewSectionFairsQuery>(homeViewSectionFairsQuery, {
+      id: sectionID,
+    })
 
-  if (!data.homeView.section) {
-    return null
-  }
+    if (!data.homeView.section) {
+      return null
+    }
 
-  return <HomeViewSectionFairs section={data.homeView.section} />
-}, HomeViewSectionFairsPlaceholder)
+    return <HomeViewSectionFairs section={data.homeView.section} index={index} {...flexProps} />
+  },
+  HomeViewSectionFairsPlaceholder
+)
