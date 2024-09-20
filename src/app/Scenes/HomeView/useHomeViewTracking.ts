@@ -14,11 +14,11 @@ import {
   TappedCollectionGroup,
   TappedFairGroup,
   TappedHeroUnitGroup,
+  TappedNotificationsBell,
   TappedShowGroup,
   TappedShowMore,
   TappedViewingRoomGroup,
 } from "@artsy/cohesion"
-import { ClickedNotificationsBell } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
 import { getArtworkSignalTrackingFields } from "app/utils/getArtworkSignalTrackingFields"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useTracking } from "react-tracking"
@@ -37,10 +37,9 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
-    // TODO: Shouldn't this be tappedNotificationBell?
     tappedNotificationBell: () => {
-      const payload: ClickedNotificationsBell = {
-        action: ActionType.clickedNotificationsBell,
+      const payload: TappedNotificationsBell = {
+        action: ActionType.tappedNotificationsBell,
       }
 
       trackEvent(payload)

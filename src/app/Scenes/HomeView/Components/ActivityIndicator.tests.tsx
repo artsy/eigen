@@ -18,7 +18,7 @@ describe("ActivityIndicator", () => {
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
       [
         {
-          "action": "clickedNotificationsBell",
+          "action": "tappedNotificationsBell",
         },
       ]
     `)
