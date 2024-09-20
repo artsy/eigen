@@ -25,7 +25,7 @@ describe("SavedSearchFilterPriceRange", () => {
       }),
     })
 
-    await waitForElementToBeRemoved(() => screen.getByTestId("loading-skeleton"))
+    await waitForElementToBeRemoved(() => screen.queryByTestId("loading-skeleton"))
 
     expect(screen.getByLabelText("Minimum Price Range Input")).toHaveProp("value", "200")
     expect(screen.getByLabelText("Maximum Price Range Input")).toHaveProp("value", "3000")
@@ -47,7 +47,7 @@ describe("SavedSearchFilterPriceRange", () => {
       }),
     })
 
-    await waitForElementToBeRemoved(() => screen.getByTestId("loading-skeleton"))
+    await waitForElementToBeRemoved(() => screen.queryByTestId("loading-skeleton"))
 
     expect(screen.getByLabelText("Minimum Price Range Input")).toHaveProp("value", "200")
     expect(screen.getByLabelText("Maximum Price Range Input")).toHaveProp("value", "3000")
