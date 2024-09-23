@@ -4,6 +4,7 @@ import { NavigationContainer, NavigationState } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { AuthenticationDialogForm } from "app/Scenes/Onboarding/AuthenticationDialog/AuthenticationDialogForm"
 import { EmailStep } from "app/Scenes/Onboarding/AuthenticationDialog/EmailStep"
+import { ForgotPasswordStep } from "app/Scenes/Onboarding/AuthenticationDialog/ForgotPasswordStep"
 import { LoginOTPStep } from "app/Scenes/Onboarding/AuthenticationDialog/LoginOTPStep"
 import { LoginPasswordStep } from "app/Scenes/Onboarding/AuthenticationDialog/LoginPasswordStep"
 import { SignUpNameStep } from "app/Scenes/Onboarding/AuthenticationDialog/SignUpNameStep"
@@ -55,7 +56,7 @@ export const AuthenticationDialog: React.FC = () => {
                 <Stack.Screen name="SignUpNameStep" component={SignUpNameStep} />
                 <Stack.Screen name="LoginPasswordStep" component={LoginPasswordStep} />
                 <Stack.Screen name="LoginOTPStep" component={LoginOTPStep} />
-                {/* <Stack.Screen name="ForgotPasswordStep" component={ForgotPasswordStep} /> */}
+                <Stack.Screen name="ForgotPasswordStep" component={ForgotPasswordStep} />
               </Stack.Navigator>
             </AuthenticationDialogForm>
           </NavigationContainer>

@@ -1,4 +1,4 @@
-import { BackButton, Button, Flex, Text, useTheme } from "@artsy/palette-mobile"
+import { BackButton, Button, Flex, Spacer, Text, Touchable, useTheme } from "@artsy/palette-mobile"
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
@@ -55,6 +55,18 @@ export const LoginPasswordStep: React.FC<LoginPasswordStepProps> = ({ navigation
           error={errors.password}
           testID="password"
         />
+
+        <Spacer y={4} />
+
+        <Touchable
+          onPress={() => {
+            navigation.navigate("ForgotPasswordStep")
+          }}
+        >
+          <Text variant="sm" color="black60" style={{ textDecorationLine: "underline" }}>
+            Forgot password?
+          </Text>
+        </Touchable>
 
         <Button block width={100} onPress={handleSubmit} disabled={!isValid}>
           Continue

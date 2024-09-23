@@ -98,6 +98,19 @@ export const AuthenticationDialogForm: React.FC<AuthenticationDialogFormProps> =
         } else if (res !== "success") {
           setErrors({ otp: "Something went wrong. Please try again, or contact support@artsy.net" })
         }
+      } else if (currentStep === "ForgotPasswordStep") {
+        const res = await GlobalStore.actions.auth.forgotPassword({
+          email,
+        })
+        if (!res) {
+          // For security purposes, we are returning a generic error message
+          setErrors({
+            email:
+              "Couldn’t send reset password link. Please try again, or contact support@artsy.net",
+          })
+        } else {
+          navigation.navigate("ForgotPasswordStep", { requestedPasswordReset: true })
+        }
       }
     },
     validationSchema: () => {
@@ -110,7 +123,9 @@ export const AuthenticationDialogForm: React.FC<AuthenticationDialogFormProps> =
         case "SignUpNameStep":
           return NameValidationSchema
         case "LoginOTPStep":
-          return OtpSchema
+          return OtpValidationSchema
+        case "ForgotPasswordStep":
+          return ForgotPasswordValidationSchema
         default:
           return EmptyValidationSchema
           break
@@ -157,6 +172,10 @@ const NameValidationSchema = Yup.object().shape({
 
 const EmptyValidationSchema = Yup.object().shape({})
 
-const OtpSchema = Yup.object().shape({
+const OtpValidationSchema = Yup.object().shape({
   otp: Yup.string().test("otp", "This field is required", (value) => value !== ""),
+})
+
+const ForgotPasswordValidationSchema = Yup.object().shape({
+  email: Yup.string().email("Please provide a valid email address"),
 })
