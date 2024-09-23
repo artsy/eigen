@@ -511,7 +511,7 @@ export const HomeFragmentContainer = memo(
         }
       `,
       featured: graphql`
-        fragment Home_featured on ViewingRoomConnection {
+        fragment Home_featured on ViewingRoomsConnection {
           ...ViewingRoomsListFeatured_featured
         }
       `,
@@ -571,7 +571,7 @@ export const HomeFragmentContainer = memo(
         meBelow: me @optionalField {
           ...Home_meBelow
         }
-        featured: viewingRooms(featured: true) @optionalField {
+        featured: viewingRoomsConnection(featured: true) @optionalField {
           ...Home_featured
         }
         articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, featured: true) @optionalField {
@@ -799,7 +799,7 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
             emergingPicks: marketingCollection(slug: "curators-picks-emerging") @optionalField {
               ...Home_emergingPicks
             }
-            featured: viewingRooms(featured: true) @optionalField {
+            featured: viewingRoomsConnection(featured: true) @optionalField {
               ...Home_featured
             }
             me @optionalField {

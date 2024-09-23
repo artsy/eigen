@@ -41,7 +41,7 @@ describe("HomeViewSectionViewingRooms", () => {
     expect(screen.getByText("Viewing Rooms")).toBeOnTheScreen()
 
     mockResolveLastOperation({
-      ViewingRoomConnection: () => ({
+      ViewingRoomsConnection: () => ({
         edges: [
           {
             node: {
@@ -88,7 +88,7 @@ describe("HomeViewSectionViewingRooms", () => {
     expect(screen.getByText("Viewing Rooms")).toBeOnTheScreen()
 
     mockResolveLastOperation({
-      ViewingRoomConnection: () => ({
+      ViewingRoomsConnection: () => ({
         edges: [
           {
             node: {

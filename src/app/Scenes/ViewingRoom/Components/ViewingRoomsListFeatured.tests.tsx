@@ -14,7 +14,7 @@ describe(FeaturedRail, () => {
         environment={mockEnvironment}
         query={graphql`
           query ViewingRoomsListFeaturedTestsQuery {
-            featured: viewingRooms(featured: true) {
+            featured: viewingRoomsConnection(featured: true) {
               ...ViewingRoomsListFeatured_featured
             }
           }
