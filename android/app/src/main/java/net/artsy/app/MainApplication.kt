@@ -66,15 +66,6 @@ class MainApplication : Application(), ReactApplication {
 
         Analytics.setSingletonInstance(analytics)
 
-        // Register for Firebase Cloud Messaging manually.
-        val applicationContext = this
-        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                return@addOnCompleteListener
-            }
-            val token = task.result
-        }
-
         ReactNativeFlipper.initializeFlipper(this, reactNativeHost.reactInstanceManager)
 
         registerActivityLifecycleCallbacks(BrazeActivityLifecycleCallbackListener())
