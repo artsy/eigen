@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import { NativeModules as AllNativeModules, Platform } from "react-native"
@@ -123,7 +124,7 @@ const LegacyNativeModulesAndroid = {
   ArtsyNativeModule: {
     updateAuthState: noop("updateAuthState"),
     clearUserData: () => Promise.resolve(),
-    getPushToken: () => Promise.resolve(null),
+    getPushToken: () => AsyncStorage.getItem("PUSH_NOTIFICATION_TOKEN"),
   },
 
   ARNotificationsManager: {
