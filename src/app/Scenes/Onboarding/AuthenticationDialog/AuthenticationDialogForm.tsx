@@ -34,11 +34,16 @@ export const AuthenticationDialogForm: React.FC<AuthenticationDialogFormProps> =
       { setErrors }
     ) => {
       if (currentStep === "EmailStep") {
-        // TODO: This is a temporary solution to determine if the user is signing up or logging in
-        if (email.endsWith("artsymail.com")) {
+        const res = await GlobalStore.actions.auth.verifyUser({ email })
+
+        if (res === "user_exists") {
           navigation.navigate("LoginPasswordStep")
-        } else {
+        } else if (res === "user_does_not_exist") {
           navigation.navigate("SignUpPasswordStep")
+        } else if (res === "something_went_wrong") {
+          setErrors({
+            email: "Something went wrong. Please try again, or contact support@artsy.net",
+          })
         }
       } else if (currentStep === "SignUpPasswordStep") {
         navigation.navigate("SignUpNameStep")
@@ -66,8 +71,6 @@ export const AuthenticationDialogForm: React.FC<AuthenticationDialogFormProps> =
           email,
           password,
         })
-
-        console.log({ res })
 
         if (res === "otp_missing") {
           navigation.navigate("LoginOTPStep", { otpMode: "standard" })

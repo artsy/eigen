@@ -806,7 +806,6 @@ export const getAuthModel = (): AuthModel => ({
 
     state.sessionState.isUserIdentified = true
   }),
-
   signOut: thunk(async (actions, _) => {
     const signOutGoogle = async () => {
       try {

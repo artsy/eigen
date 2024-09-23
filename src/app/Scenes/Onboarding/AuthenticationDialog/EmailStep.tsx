@@ -1,18 +1,16 @@
-import { BackButton, Button, Flex, Text, useTheme } from "@artsy/palette-mobile"
+import { BackButton, Button, Flex, Input, Text, useTheme } from "@artsy/palette-mobile"
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
-import { BottomSheetInput } from "app/Components/BottomSheetInput"
 import { AuthenticationDialogFormValues } from "app/Scenes/Onboarding/AuthenticationDialog/AuthenticationDialogForm"
 import { OnboardingHomeNavigationStack } from "app/Scenes/Onboarding/OnboardingHome"
 import { useFormikContext } from "formik"
-import { Platform } from "react-native"
 
 type EmailStepProps = StackScreenProps<OnboardingHomeNavigationStack, "EmailStep">
 
 export const EmailStep: React.FC<EmailStepProps> = ({ navigation }) => {
   const { color, space } = useTheme()
 
-  const { errors, handleChange, handleSubmit, isValid, setErrors } =
+  const { errors, handleChange, handleSubmit, isValid, values } =
     useFormikContext<AuthenticationDialogFormValues>()
 
   const handleBackButtonPress = () => {
@@ -26,32 +24,27 @@ export const EmailStep: React.FC<EmailStepProps> = ({ navigation }) => {
 
         <Text variant="sm-display">Sign up or log in</Text>
 
-        <BottomSheetInput
+        <Input
           autoCapitalize="none"
           autoComplete="email"
-          enableClearButton
-          autoFocus
-          title="Email"
+          // There is no need to autofocus here if we are getting
+          // the email already from the navigation params
+          autoFocus={!values.email}
           keyboardType="email-address"
           onChangeText={(text) => {
-            // Hide error when the user starts to type again
-            if (errors.email) {
-              setErrors({
-                email: undefined,
-              })
-            }
             handleChange("email")(text.trim())
           }}
-          onSubmitEditing={handleSubmit}
-          blurOnSubmit={false}
+          blurOnSubmit={false} // This is needed to avoid UI jump when the user submits
           placeholderTextColor={color("black30")}
-          placeholder="Email address"
+          title="Email"
           returnKeyType="next"
           spellCheck={false}
           autoCorrect={false}
-          textContentType={Platform.OS === "ios" ? "username" : "emailAddress"}
+          // We need to to set textContentType to username (instead of emailAddress) here
+          // enable autofill of login details from the device keychain.
+          textContentType="username"
           error={errors.email}
-          testID="emailInput"
+          testID="email-address"
         />
 
         <Button block width={100} onPress={handleSubmit} disabled={!isValid}>
