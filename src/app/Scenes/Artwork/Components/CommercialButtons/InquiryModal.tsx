@@ -109,7 +109,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
           leftButtonText="Cancel"
           onLeftButtonPress={handleDismiss}
           rightButtonText="Send"
-          rightButtonDisabled={state.inquiryQuestions.length === 0}
+          rightButtonDisabled={state.inquiryQuestions.length === 0 && message === ""}
           onRightButtonPress={() => sendInquiry(message)}
         >
           Contact Gallery
