@@ -5477,6 +5477,50 @@ type CommerceOfferSubmittedEvent implements CommerceEventInterface {
   offer: CommerceOffer!
 }
 
+type CommerceOptInFailure {
+  mutationError: GravityMutationError
+}
+
+input CommerceOptInMutationInput {
+  # whether or not there is a CoA
+  certificateOfAuthenticity: Boolean
+  clientMutationId: String
+
+  # whether or not the CoA is by an authenticating body
+  coaByAuthenticatingBody: Boolean
+
+  # whether or not the CoA is by the gallery
+  coaByGallery: Boolean
+
+  # whether or not the artwork is set to exact price
+  exactPrice: Boolean
+
+  # whether or not it is framed
+  framed: Boolean
+
+  # ID of the partner
+  id: String!
+
+  # whether or not pick up it is pick up available
+  pickupAvailable: Boolean
+}
+
+type CommerceOptInMutationPayload {
+  clientMutationId: String
+  commerceOptInMutationOrError: CommerceOptInMutationType
+}
+
+union CommerceOptInMutationType = CommerceOptInFailure | CommerceOptInSuccess
+
+type CommerceOptInResponse {
+  count: Int
+  ids: [String]
+}
+
+type CommerceOptInSuccess {
+  updatedCommerceOptIn: CommerceOptInResponse
+}
+
 # Order
 interface CommerceOrder {
   # Whether Artsy collects taxes (e.g., sales tax or VAT) on this order.
@@ -13035,6 +13079,9 @@ type Mutation {
     # Parameters for FulfillAtOnce
     input: CommerceFulfillAtOnceInput!
   ): CommerceFulfillAtOncePayload
+
+  # Opt all eligible artworks into BNMO
+  commerceOptIn(input: CommerceOptInMutationInput!): CommerceOptInMutationPayload
 
   # Selects an ARTA shipping option for an order, updating the LineItem#selected_shipping_quote_id.
   commerceSelectShippingOption(
