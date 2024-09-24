@@ -6,17 +6,21 @@ import {
   ArtworkRailCardCommonProps,
   ArtworkRailCardMeta,
 } from "app/Components/ArtworkRail/ArtworkRailCardMeta"
-import { LegacyArtworkRailCardImage } from "app/Components/ArtworkRail/LegacyArtworkRailCardImage"
+import {
+  ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
+  LegacyArtworkRailCardImage,
+} from "app/Components/ArtworkRail/LegacyArtworkRailCardImage"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
 import { useState } from "react"
-import { GestureResponderEvent, TouchableHighlight } from "react-native"
+import { GestureResponderEvent, PixelRatio, TouchableHighlight } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
-export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = 90
+export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = PixelRatio.getFontScale() * 90
+export const ARTWORK_RAIL_CARD_MINIMUM_WIDTH = 140
 
 export interface ArtworkRailCardProps
   extends ArtworkActionTrackingProps,
@@ -86,7 +90,10 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
             onPress={onPress}
             testID={testID}
           >
-            <Flex backgroundColor={backgroundColor}>
+            <Flex
+              height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT + ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT}
+              justifyContent="flex-end"
+            >
               {enableArtworkRailRedesignImageAspectRatio ? (
                 <ArtworkRailCardImage artwork={artwork} />
               ) : (
