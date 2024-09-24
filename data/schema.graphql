@@ -312,7 +312,6 @@ type Alert {
   ): String!
   forSale: Boolean
   formattedPriceRange: String
-  hasRecentlyEnabledUserSearchCriteria: Boolean
   height: String
   href: String
 
@@ -343,7 +342,6 @@ type Alert {
   settings: AlertSettings!
   sizes: [String]
   summary: JSON
-  totalUserSearchCriteriaCount: Int
   width: String
 }
 
@@ -417,38 +415,6 @@ enum AlertsConnectionSortEnum {
 
 type AlertsCounts {
   totalUserSearchCriteriaCount: Int
-}
-
-# A connection to a list of items.
-type AlertsSummaryArtistConnection {
-  # A list of edges.
-  edges: [AlertsSummaryArtistEdge]
-  pageCursors: PageCursors!
-
-  # Information to aid in pagination.
-  pageInfo: PageInfo!
-  totalCount: Int
-}
-
-# An edge in a connection.
-type AlertsSummaryArtistEdge {
-  counts: AlertsSummaryCounts
-
-  # A cursor for use in pagination
-  cursor: String!
-  isRecentlyEnabled: Boolean
-
-  # The item at the end of the edge
-  node: Artist
-  topHit: Alert
-}
-
-type AlertsSummaryCounts {
-  totalUserSearchCriteriaCount: Int
-  totalWithAdditionalGeneIdsCount: Int
-  totalWithAttributionClassCount: Int
-  totalWithOtherMetadataCount: Int
-  totalWithPriceRangeCount: Int
 }
 
 type Algolia {
@@ -1472,15 +1438,6 @@ type ArticleUnpublishedArtworkPartner {
 }
 
 type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Searchable {
-  alertsConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-    page: Int
-    size: Int
-    sort: String
-  ): AlertConnection
   alternateNames: [String]
   articlesConnection(
     after: String
@@ -14246,19 +14203,6 @@ type Partner implements Node {
     page: Int
     size: Int
   ): PartnerAlertsConnection
-  alertsSummaryArtistsConnection(
-    activeInventory: Boolean
-    after: String
-    before: String
-    first: Int
-    hasMedium: Boolean
-    hasPrice: Boolean
-    hasRarity: Boolean
-    last: Int
-    page: Int
-    represented: Boolean
-    size: Int
-  ): AlertsSummaryArtistConnection
 
   # A connection of all artists from a Partner.
   allArtistsConnection(
