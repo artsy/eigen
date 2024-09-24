@@ -1,0 +1,40 @@
+diff --git a/node_modules/whatwg-fetch/dist/fetch.umd.js b/node_modules/whatwg-fetch/dist/fetch.umd.js
+index f9b44fd..d7e8171 100644
+--- a/node_modules/whatwg-fetch/dist/fetch.umd.js
++++ b/node_modules/whatwg-fetch/dist/fetch.umd.js
+@@ -444,6 +444,20 @@
+     exports.DOMException.prototype.constructor = exports.DOMException;
+   }
+ 
++  const urlRejectionMap = {
++    "https://cdn-settings.segment.com/v1/projects/hN8I1TcVxhWrdJnSzpItJEOHh8OS2GiY/settings": false,
++    "http://localhost:8081/symbolicate": false,
++    "https://echo.artsy.net/Echo.json": false,
++    "https://metaphysics-staging.artsy.net/v2": false,
++    "https://unleashprx-staging.artsy.net/proxy?sessionId=617037342&appName=eigen&environment=default&userId=5fce98bf9981c52222061eea": false,
++    "https://staging.artsy.net": false,
++    "https://live-staging.artsy.net/login": false,
++    "https://clients3.google.com/generate_204": false,
++    "https://volley-staging.artsy.net/report": false,
++    "https://stagingapi.artsy.net/api/v1/me": false,
++    "https://api.segment.io/v1/b": false,
++  };
++
+   function fetch(input, init) {
+     return new Promise(function(resolve, reject) {
+       var request = new Request(input, init);
+@@ -452,6 +466,14 @@
+         return reject(new exports.DOMException('Aborted', 'AbortError'))
+       }
+ 
++      // Check if the URL exists in the urlRejectionMap
++      if (!Object.prototype.hasOwnProperty.call(urlRejectionMap, request.url)) {
++        console.log(`FETCH: URL not in supported list: ${request.url}`);
++      } else if (urlRejectionMap[request.url]) {
++        // If toggle is true, simulate a failure
++        return reject(new TypeError('Network request failed'));
++      }
++
+       var xhr = new XMLHttpRequest();
+ 
+       function abortXhr() {
