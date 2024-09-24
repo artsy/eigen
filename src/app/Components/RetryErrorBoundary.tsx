@@ -9,7 +9,8 @@ interface RetryErrorBoundaryProps {
   notFoundText?: string
   notFoundBackButtonText?: string
   notFoundOnBackPress?: () => void
-  children: React.ReactNode
+  children?: React.ReactNode
+  appWideErrorBoundary?: boolean
 }
 interface RetryErrorBoundaryState {
   error: Error | null
@@ -19,6 +20,10 @@ export class RetryErrorBoundary extends Component<
   RetryErrorBoundaryProps,
   RetryErrorBoundaryState
 > {
+  static defaultProps = {
+    shouldTrackError: false,
+  }
+
   static getDerivedStateFromError(error: Error | null): RetryErrorBoundaryState {
     return { error }
   }
@@ -54,11 +59,25 @@ export class RetryErrorBoundary extends Component<
         )
       }
 
-      return <LoadFailureView error={error} onRetry={this._retry} />
+      return (
+        <LoadFailureView
+          error={error}
+          onRetry={this._retry}
+          appWideErrorBoundary={this.props.appWideErrorBoundary}
+        />
+      )
     }
 
     return children
   }
+}
+
+export const AppWideErrorBoundary: React.FC<RetryErrorBoundaryProps> = ({ children, ...props }) => {
+  return (
+    <RetryErrorBoundary {...props} shouldTrackError={true}>
+      {children}
+    </RetryErrorBoundary>
+  )
 }
 
 export const getNotFoundRoute = (error: any) => {
