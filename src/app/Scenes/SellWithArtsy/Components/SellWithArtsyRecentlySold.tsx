@@ -1,5 +1,6 @@
 import { ContextModule, OwnerType, tappedEntityGroup, TappedEntityGroupArgs } from "@artsy/cohesion"
 import { Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { ListRenderItem } from "@shopify/flash-list"
 import {
   SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$data,
   SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$key,
@@ -14,6 +15,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { compact } from "lodash"
+import { useCallback } from "react"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -89,6 +91,34 @@ const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> = ({
   recentlySoldArtworks,
   showPartnerName = true,
 }) => {
+  const renderItem: ListRenderItem<RecentlySoldArtwork> = useCallback(
+    ({ item, index }) => {
+      if (!item?.artwork) {
+        return null
+      }
+
+      return (
+        <ArtworkRailCard
+          artwork={item.artwork}
+          onPress={() => {
+            onPress?.(item, index)
+          }}
+          metaContainerStyles={{ height: 100 }}
+          showPartnerName={showPartnerName}
+          SalePriceComponent={
+            <RecentlySoldCardSection
+              priceRealizedDisplay={item?.priceRealized?.display || ""}
+              lowEstimateDisplay={item?.lowEstimate?.display || ""}
+              highEstimateDisplay={item?.highEstimate?.display || ""}
+              performanceDisplay={item?.performance?.mid ?? undefined}
+            />
+          }
+          hideArtistName={hideArtistName}
+        />
+      )
+    },
+    [hideArtistName, onPress, showPartnerName]
+  )
   return (
     <PrefetchFlashList
       // We need to set the maximum number of artworks to not cause layout shifts
@@ -103,31 +133,7 @@ const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> = ({
       onEndReached={onEndReached}
       onEndReachedThreshold={onEndReachedThreshold}
       prefetchUrlExtractor={(item) => item?.artwork?.href || undefined}
-      renderItem={({ item, index }) => {
-        if (!item?.artwork) {
-          return null
-        }
-
-        return (
-          <ArtworkRailCard
-            artwork={item.artwork}
-            onPress={() => {
-              onPress?.(item, index)
-            }}
-            metaContainerStyles={{ height: 100 }}
-            showPartnerName={showPartnerName}
-            SalePriceComponent={
-              <RecentlySoldCardSection
-                priceRealizedDisplay={item?.priceRealized?.display || ""}
-                lowEstimateDisplay={item?.lowEstimate?.display || ""}
-                highEstimateDisplay={item?.highEstimate?.display || ""}
-                performanceDisplay={item?.performance?.mid ?? undefined}
-              />
-            }
-            hideArtistName={hideArtistName}
-          />
-        )
-      }}
+      renderItem={renderItem}
       showsHorizontalScrollIndicator={false}
     />
   )

@@ -1,4 +1,5 @@
 import { Box, Flex, Join, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
+import { ListRenderItem } from "@shopify/flash-list"
 import {
   ArtworkRail_artworks$data,
   ArtworkRail_artworks$key,
@@ -16,13 +17,15 @@ import {
   extractArtworkActionTrackingProps,
 } from "app/utils/track/ArtworkActions"
 import { times } from "lodash"
-import React, { ReactElement } from "react"
+import React, { ReactElement, useCallback } from "react"
 import { FlatList, ViewabilityConfig } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 
 export const INITIAL_NUM_TO_RENDER = isTablet() ? 10 : 5
 export const ARTWORK_RAIL_IMAGE_WIDTH = 295
+
+type Artwork = ArtworkRail_artworks$data[0]
 
 export interface ArtworkRailProps extends ArtworkActionTrackingProps {
   artworks: ArtworkRail_artworks$key
@@ -63,6 +66,29 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
 }) => {
   const artworks = useFragment(artworksFragment, otherProps.artworks)
 
+  const renderItem: ListRenderItem<Artwork> = useCallback(
+    ({ item, index }) => {
+      return (
+        <Box pr={2}>
+          <ArtworkRailCard
+            testID={`artwork-${item.slug}`}
+            artwork={item}
+            showPartnerName={showPartnerName}
+            hideArtistName={hideArtistName}
+            dark={dark}
+            onPress={() => {
+              onPress?.(item, index)
+            }}
+            showSaveIcon={showSaveIcon}
+            hideIncreasedInterestSignal={hideIncreasedInterestSignal}
+            hideCuratorsPickSignal={hideCuratorsPickSignal}
+            {...extractArtworkActionTrackingProps(otherProps)}
+          />
+        </Box>
+      )
+    },
+    [hideArtistName, onPress, showPartnerName]
+  )
   return (
     <PrefetchFlashList
       data={artworks}
@@ -83,26 +109,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
       onEndReachedThreshold={onEndReachedThreshold}
       onViewableItemsChanged={onViewableItemsChanged}
       prefetchUrlExtractor={(item) => item?.href || undefined}
-      renderItem={({ item, index }) => {
-        return (
-          <Box pr={2}>
-            <ArtworkRailCard
-              testID={`artwork-${item.slug}`}
-              artwork={item}
-              showPartnerName={showPartnerName}
-              hideArtistName={hideArtistName}
-              dark={dark}
-              onPress={() => {
-                onPress?.(item, index)
-              }}
-              showSaveIcon={showSaveIcon}
-              hideIncreasedInterestSignal={hideIncreasedInterestSignal}
-              hideCuratorsPickSignal={hideCuratorsPickSignal}
-              {...extractArtworkActionTrackingProps(otherProps)}
-            />
-          </Box>
-        )
-      }}
+      renderItem={renderItem}
       showsHorizontalScrollIndicator={false}
       viewabilityConfig={viewabilityConfig}
     />
