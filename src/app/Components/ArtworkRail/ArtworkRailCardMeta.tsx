@@ -13,7 +13,6 @@ import {
   ArtworkActionTrackingProps,
   tracks as artworkActionTracks,
 } from "app/utils/track/ArtworkActions"
-import { PixelRatio } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -61,8 +60,6 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
   showSaveIcon = false,
 }) => {
   const { trackEvent } = useTracking()
-  const fontScale = PixelRatio.getFontScale()
-
   const enablePartnerOfferSignals = useFeatureFlag("AREnablePartnerOfferSignals")
   const enableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
   const enableCuratorsPicksAndInterestSignals = useFeatureFlag(
@@ -139,7 +136,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
     <Flex
       my={1}
       style={{
-        height: fontScale * ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT,
+        height: ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT,
         ...metaContainerStyles,
       }}
       backgroundColor={backgroundColor}

@@ -5,8 +5,11 @@ import {
   SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$key,
 } from "__generated__/SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection.graphql"
 import { ArtworkRailProps } from "app/Components/ArtworkRail/ArtworkRail"
-import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
-import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
+import {
+  ARTWORK_RAIL_CARD_MINIMUM_WIDTH,
+  ArtworkRailCard,
+} from "app/Components/ArtworkRail/ArtworkRailCard"
+import { PrefetchFlashList } from "app/Components/PrefetchFlashList"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
@@ -87,20 +90,19 @@ const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> = ({
   showPartnerName = true,
 }) => {
   return (
-    <PrefetchFlatList
+    <PrefetchFlashList
+      // We need to set the maximum number of artworks to not cause layout shifts
+      data={recentlySoldArtworks.slice(0, MAX_NUMBER_OF_ARTWORKS)}
+      estimatedItemSize={ARTWORK_RAIL_CARD_MINIMUM_WIDTH}
+      horizontal
+      keyExtractor={(item, index) => String(item?.artwork?.slug || index)}
+      ItemSeparatorComponent={() => <Spacer x="15px" />}
+      ListFooterComponent={ListFooterComponent}
+      ListHeaderComponent={ListHeaderComponent}
+      listRef={listRef}
       onEndReached={onEndReached}
       onEndReachedThreshold={onEndReachedThreshold}
       prefetchUrlExtractor={(item) => item?.artwork?.href || undefined}
-      listRef={listRef}
-      horizontal
-      ListHeaderComponent={ListHeaderComponent}
-      ListFooterComponent={ListFooterComponent}
-      ItemSeparatorComponent={() => <Spacer x="15px" />}
-      showsHorizontalScrollIndicator={false}
-      // We need to set the maximum number of artworks to not cause layout shifts
-      data={recentlySoldArtworks.slice(0, MAX_NUMBER_OF_ARTWORKS)}
-      initialNumToRender={MAX_NUMBER_OF_ARTWORKS}
-      contentContainerStyle={{ alignItems: "flex-end" }}
       renderItem={({ item, index }) => {
         if (!item?.artwork) {
           return null
@@ -112,6 +114,7 @@ const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> = ({
             onPress={() => {
               onPress?.(item, index)
             }}
+            metaContainerStyles={{ height: 100 }}
             showPartnerName={showPartnerName}
             SalePriceComponent={
               <RecentlySoldCardSection
@@ -125,7 +128,7 @@ const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> = ({
           />
         )
       }}
-      keyExtractor={(item, index) => String(item?.artwork?.slug || index)}
+      showsHorizontalScrollIndicator={false}
     />
   )
 }
