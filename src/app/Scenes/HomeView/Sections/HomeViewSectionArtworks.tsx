@@ -153,7 +153,7 @@ const HomeViewSectionArtworksPlaceholder: React.FC<FlexProps> = (flexProps) => {
           <Spacer y={2} />
 
           <Flex flexDirection="row">
-            <Join separator={<Spacer x="15px" />}>
+            <Join separator={<Spacer x={2} />}>
               {times(2 + randomValue * 10).map((index) => (
                 <Flex key={index}>
                   <SkeletonBox
