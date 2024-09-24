@@ -220,7 +220,7 @@ describe("OrderHistoryRow", () => {
 
       expect(navigate).toHaveBeenCalledWith("/orders/internal-id/payment/new", {
         modal: true,
-        passProps: { orderID: "internal-id", title: "Update Payment Method" },
+        passProps: { orderID: "internal-id", title: "Update Payment Details" },
       })
     })
     it("is not visible when the displayState is not PAYMENT_FAILED", () => {

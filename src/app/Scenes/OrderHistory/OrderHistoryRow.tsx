@@ -122,7 +122,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
             onPress={() =>
               navigate(`/orders/${order.internalID}/payment/new`, {
                 modal: true,
-                passProps: { orderID: order.internalID, title: "Update Payment Method" },
+                passProps: { orderID: order.internalID, title: "Update Payment Details" },
               })
             }
             testID="update-payment-button"
