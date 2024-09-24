@@ -3,11 +3,13 @@ import {
   ArtworkRail_artworks$data,
   ArtworkRail_artworks$key,
 } from "__generated__/ArtworkRail_artworks.graphql"
-import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
+import {
+  ARTWORK_RAIL_CARD_MINIMUM_WIDTH,
+  ArtworkRailCard,
+} from "app/Components/ArtworkRail/ArtworkRailCard"
 import { ARTWORK_RAIL_CARD_IMAGE_HEIGHT } from "app/Components/ArtworkRail/LegacyArtworkRailCardImage"
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
-import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
-import { HORIZONTAL_FLATLIST_WINDOW_SIZE } from "app/Scenes/HomeView/helpers/constants"
+import { PrefetchFlashList } from "app/Components/PrefetchFlashList"
 import { RandomWidthPlaceholderText, useMemoizedRandom } from "app/utils/placeholders"
 import {
   ArtworkActionTrackingProps,
@@ -62,13 +64,11 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
   const artworks = useFragment(artworksFragment, otherProps.artworks)
 
   return (
-    <PrefetchFlatList
-      onEndReached={onEndReached}
-      onEndReachedThreshold={onEndReachedThreshold}
-      prefetchUrlExtractor={(item) => item?.href || undefined}
-      listRef={listRef}
+    <PrefetchFlashList
+      data={artworks}
+      estimatedItemSize={ARTWORK_RAIL_CARD_MINIMUM_WIDTH}
       horizontal
-      ListHeaderComponent={ListHeaderComponent}
+      keyExtractor={(item) => item.internalID}
       ListFooterComponent={
         <>
           {!!onMorePress && (
@@ -77,11 +77,12 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
           {ListFooterComponent}
         </>
       }
-      showsHorizontalScrollIndicator={false}
-      data={artworks}
-      initialNumToRender={INITIAL_NUM_TO_RENDER}
-      windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
-      contentContainerStyle={{ alignItems: "flex-end" }}
+      ListHeaderComponent={ListHeaderComponent}
+      listRef={listRef}
+      onEndReached={onEndReached}
+      onEndReachedThreshold={onEndReachedThreshold}
+      onViewableItemsChanged={onViewableItemsChanged}
+      prefetchUrlExtractor={(item) => item?.href || undefined}
       renderItem={({ item, index }) => {
         return (
           <Box pr={2}>
@@ -102,9 +103,8 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
           </Box>
         )
       }}
-      keyExtractor={(item) => item.internalID}
+      showsHorizontalScrollIndicator={false}
       viewabilityConfig={viewabilityConfig}
-      onViewableItemsChanged={onViewableItemsChanged}
     />
   )
 }
