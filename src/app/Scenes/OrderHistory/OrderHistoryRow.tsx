@@ -18,8 +18,17 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
   const { artwork, artworkVersion } = lineItem || {}
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
   const trackingUrl = getTrackingUrl(lineItem)
+
   const orderStatus = getOrderStatus(order.displayState)
-  const orderIsInactive = orderStatus === "canceled" || orderStatus === "refunded"
+  const orderStatusColor = ["canceled", "payment failed"].includes(orderStatus)
+    ? "red100"
+    : "black60"
+
+  const hasFailedPayment = orderStatus === "payment failed"
+  const isActive =
+    !hasFailedPayment &&
+    orderStatus &&
+    !(["canceled", "refunded"] as string[]).includes(orderStatus)
   const isViewOffer = orderStatus === "pending" && order?.mode === "OFFER"
 
   const artworkImageUrl = artworkVersion?.image?.resized?.url
@@ -62,15 +71,17 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
             <Text textAlign="right" variant="sm" testID="price">
               {order.buyerTotal}
             </Text>
-            <Text
-              textAlign="right"
-              variant="xs"
-              color={orderStatus === "canceled" ? "red100" : "black60"}
-              style={{ textTransform: "capitalize" }}
-              testID="order-status"
-            >
-              {orderStatus}
-            </Text>
+            {!!orderStatus && (
+              <Text
+                textAlign="right"
+                variant="xs"
+                color={orderStatusColor}
+                style={{ textTransform: "capitalize" }}
+                testID="order-status"
+              >
+                {orderStatus}
+              </Text>
+            )}
           </Flex>
         </Flex>
       </Flex>
@@ -86,7 +97,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
             Track Package
           </Button>
         )}
-        {!orderIsInactive && (
+        {!!isActive && (
           <Button
             block
             variant="fillGray"
@@ -102,6 +113,21 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
             testID="view-order-button"
           >
             {isViewOffer ? "View Offer" : "View Order"}
+          </Button>
+        )}
+        {!!hasFailedPayment && (
+          <Button
+            block
+            variant="fillDark"
+            onPress={() =>
+              navigate(`/orders/${order.internalID}/payment/new`, {
+                modal: true,
+                passProps: { orderID: order.internalID, title: "Update Payment Method" },
+              })
+            }
+            testID="update-payment-button"
+          >
+            Update Payment Method
           </Button>
         )}
       </Box>
