@@ -12,11 +12,13 @@ interface LoadFailureViewProps {
   error?: Error
   onRetry?: () => void
   justifyContent?: JustifyContentValue
+  appWideErrorBoundary?: boolean
 }
 
 export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
   error,
   onRetry,
+  appWideErrorBoundary = false,
   ...restProps
 }) => {
   const color = useColor()
@@ -31,7 +33,7 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
   const showErrorMessage = __DEV__ || isStaging || showErrorInLoadFailureViewToggle
 
   const trackLoadFailureView = (error: Error | undefined) => {
-    const shouldTrackError = !__DEV__ && !isStaging
+    const shouldTrackError = !__DEV__ && !isStaging && appWideErrorBoundary
     if (shouldTrackError) {
       Sentry.withScope((scope) => {
         scope.setExtra("user-id", userId)

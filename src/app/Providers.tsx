@@ -11,7 +11,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context"
 import { RelayEnvironmentProvider } from "react-relay"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
 import { PopoverMessageProvider } from "./Components/PopoverMessage/PopoverMessageProvider"
-import { RetryErrorBoundary } from "./Components/RetryErrorBoundary"
+import { AppWideErrorBoundary } from "./Components/RetryErrorBoundary"
 import { ToastProvider } from "./Components/Toast/toastHook"
 import { GlobalStore, GlobalStoreProvider } from "./store/GlobalStore"
 import { GravityWebsocketContextProvider } from "./utils/Websockets/GravityWebsocketContext"
@@ -36,7 +36,7 @@ export const Providers: React.FC<{ children: React.ReactNode }> = ({ children })
       ThemeWithDarkModeSupport, // uses: GlobalStoreProvider
       // TODO: rename to ScreenContextProvider
       Screen.ScreenScrollContextProvider,
-      RetryErrorBoundary,
+      AppWideErrorBoundary,
       SuspenseProvider,
       ActionSheetProvider,
       PopoverMessageProvider,
