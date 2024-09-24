@@ -97,7 +97,7 @@ describe("FairFollowedArtistsRail", () => {
               node: {
                 internalID: "abc123",
                 slug: "some-artwork",
-                collectorSignals: { partnerOffer: { isAvailable: true }, auction: null },
+                collectorSignals: { primaryLabel: "PARTNER_OFFER", auction: null },
               },
             },
           ],
@@ -137,7 +137,8 @@ describe("FairFollowedArtistsRail", () => {
                 internalID: "abc123",
                 slug: "some-artwork",
                 collectorSignals: {
-                  auction: { bidCount: 7, lotWatcherCount: 49, liveBiddingStarted: true },
+                  primaryLabel: null,
+                  auction: { bidCount: 7, lotWatcherCount: 49 },
                 },
               },
             },
@@ -161,7 +162,7 @@ describe("FairFollowedArtistsRail", () => {
       destination_screen_owner_type: "artwork",
       horizontal_slide_position: 0,
       type: "thumbnail",
-      signal_label: "Bidding live now",
+      signal_label: "",
       signal_bid_count: 7,
       signal_lot_watcher_count: 49,
     })

@@ -1,4 +1,4 @@
-import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
+import { ScreenOwnerType } from "@artsy/cohesion"
 import { Flex, Screen, SimpleMessage, Text } from "@artsy/palette-mobile"
 import { HomeViewSectionScreenArtworksQuery } from "__generated__/HomeViewSectionScreenArtworksQuery.graphql"
 import { HomeViewSectionScreenArtworks_section$key } from "__generated__/HomeViewSectionScreenArtworks_section.graphql"
@@ -15,12 +15,18 @@ interface ArtworksScreenHomeSection {
 }
 
 export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> = (props) => {
-  const { data, isLoadingNext, loadNext, refetch, hasNext } = usePaginationFragment<
+  const {
+    data: section,
+    isLoadingNext,
+    loadNext,
+    refetch,
+    hasNext,
+  } = usePaginationFragment<
     HomeViewSectionScreenArtworksQuery,
     HomeViewSectionScreenArtworks_section$key
   >(artworksFragment, props.section)
 
-  const artworks = extractNodes(data?.artworksConnection)
+  const artworks = extractNodes(section?.artworksConnection)
 
   const RefreshControl = useRefreshControl(refetch)
 
@@ -38,9 +44,9 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
       }
       ListHeaderComponent={() => (
         <Flex>
-          <Text variant="lg-display">{data.component?.title}</Text>
+          <Text variant="lg-display">{section.component?.title}</Text>
           <Text variant="xs" pt={2}>
-            {data.artworksConnection?.totalCount} {pluralize("Artwork", artworks.length)}
+            {section.artworksConnection?.totalCount} {pluralize("Artwork", artworks.length)}
           </Text>
         </Flex>
       )}
@@ -52,9 +58,7 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
       isLoading={isLoadingNext}
       onScroll={scrollHandler}
       style={{ paddingBottom: 120 }}
-      contextModule={data.internalID as ContextModule}
-      contextScreenOwnerType={data.internalID as ScreenOwnerType}
-      contextScreenOwnerId={data.internalID as string}
+      contextScreenOwnerType={section.ownerType as ScreenOwnerType}
     />
   )
 }
@@ -67,6 +71,7 @@ export const artworksFragment = graphql`
     component {
       title
     }
+    ownerType
     artworksConnection(after: $cursor, first: $count)
       @connection(key: "ArtworksScreenHomeSection_artworksConnection", filters: []) {
       totalCount

@@ -180,7 +180,10 @@ describe("ArtworksInSeriesRail", () => {
       Artwork: () => ({
         internalID: "artwork124",
         slug: "my-cool-artwork",
-        collectorSignals: { partnerOffer: { isAvailable: true }, auction: null },
+        collectorSignals: {
+          primaryLabel: "PARTNER_OFFER",
+          auction: null,
+        },
         artistSeriesConnection: {
           edges: [
             {
@@ -218,7 +221,8 @@ describe("ArtworksInSeriesRail", () => {
         internalID: "artwork124",
         slug: "my-cool-artwork",
         collectorSignals: {
-          auction: { liveBiddingStarted: true, bidCount: 7, lotWatcherCount: 49 },
+          primaryLabel: null,
+          auction: { bidCount: 7, lotWatcherCount: 49 },
         },
         artistSeriesConnection: {
           edges: [{ node: { slug: "alex-katz-departure-28", id: "abctest" } }],
@@ -238,7 +242,7 @@ describe("ArtworksInSeriesRail", () => {
       destination_screen_owner_slug: "my-cool-artwork",
       destination_screen_owner_type: "artwork",
       type: "thumbnail",
-      signal_label: "Bidding live now",
+      signal_label: "",
       signal_bid_count: 7,
       signal_lot_watcher_count: 49,
     })

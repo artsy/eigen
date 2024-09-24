@@ -1,37 +1,42 @@
-import { screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { act, screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react-native"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { Suspense } from "react"
-import { Text } from "react-native"
 import { ActivityScreen } from "./ActivityScreen"
 
 describe("ActivityScreen", () => {
   const { renderWithRelay } = setupTestWrapper({
-    Component: () => (
-      <Suspense fallback={<Text>loading</Text>}>
-        <ActivityScreen />
-      </Suspense>
-    ),
+    Component: () => <ActivityScreen />,
   })
 
   it("renders items", async () => {
-    const { mockResolveLastOperation } = renderWithRelay({
+    const { mockResolveLastOperation: resolveHeaderLastOperation } = renderWithRelay({
       NotificationConnection: () => notifications,
     })
-    mockResolveLastOperation({})
 
-    await waitForElementToBeRemoved(() => screen.queryByText("loading"))
+    act(() => {
+      resolveHeaderLastOperation({})
+    })
+
+    await waitForElementToBeRemoved(() => screen.queryByTestId("activity-content-placeholder"))
+
     expect(screen.getByText("Notification One")).toBeOnTheScreen()
     expect(screen.getByText("Notification Two")).toBeOnTheScreen()
   })
 
   describe("notification type filter pills", () => {
     it("renders all filter pills", async () => {
-      const { mockResolveLastOperation } = renderWithRelay({
-        NotificationConnection: () => notifications,
+      const { mockResolveLastOperation: resolveHeaderLastOperation } = renderWithRelay({
+        NotificationConnection: () => {
+          notifications
+        },
       })
-      mockResolveLastOperation({
-        NotificationConnection: () => ({ totalCount: 1 }),
+
+      act(() => {
+        resolveHeaderLastOperation({
+          NotificationConnection: () => ({ totalCount: 1 }),
+        })
       })
+
+      await waitForElementToBeRemoved(() => screen.queryByTestId("activity-content-placeholder"))
 
       await screen.findByText("All")
       expect(screen.getByText("Offers")).toBeOnTheScreen()
@@ -40,12 +45,17 @@ describe("ActivityScreen", () => {
     })
 
     it("does not render 'Offers' filter pill when there are no offers available", async () => {
-      const { mockResolveLastOperation } = renderWithRelay({
+      const { mockResolveLastOperation: resolveHeaderLastOperation } = renderWithRelay({
         NotificationConnection: () => notifications,
       })
-      mockResolveLastOperation({
-        NotificationConnection: () => ({ totalCount: 0 }),
+
+      act(() => {
+        resolveHeaderLastOperation({
+          NotificationConnection: () => ({ totalCount: 0 }),
+        })
       })
+
+      await waitForElementToBeRemoved(() => screen.queryByTestId("activity-content-placeholder"))
 
       await waitFor(() => expect(screen.queryByText("Offers")).not.toBeOnTheScreen())
 
@@ -82,6 +92,8 @@ describe("ActivityScreen", () => {
         ],
       }),
     })
+
+    await waitForElementToBeRemoved(() => screen.queryByTestId("activity-content-placeholder"))
 
     await screen.findByText("Notification One")
     expect(screen.getByText("Notification Two")).toBeOnTheScreen()

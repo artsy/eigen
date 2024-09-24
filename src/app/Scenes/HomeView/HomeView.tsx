@@ -1,46 +1,109 @@
-import {
-  Flex,
-  Screen,
-  Spacer,
-  SpacingUnitDSValueNumber,
-  Spinner,
-  Text,
-} from "@artsy/palette-mobile"
-import { ErrorBoundary } from "@sentry/react-native"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { Flex, Screen, Spinner } from "@artsy/palette-mobile"
+import { FlashList } from "@shopify/flash-list"
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
 import { HomeViewSectionsConnection_viewer$key } from "__generated__/HomeViewSectionsConnection_viewer.graphql"
+import { HomeView_me$key } from "__generated__/HomeView_me.graphql"
+import { SearchQuery } from "__generated__/SearchQuery.graphql"
+import { useDismissSavedArtwork } from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
+import { useEnableProgressiveOnboarding } from "app/Components/ProgressiveOnboarding/useEnableProgressiveOnboarding"
+import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
 import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
+import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { Section } from "app/Scenes/HomeView/Sections/Section"
+import { searchQueryDefaultVariables } from "app/Scenes/Search/Search"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { extractNodes } from "app/utils/extractNodes"
-import { Suspense } from "react"
-import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
+import { ProvidePlaceholderContext } from "app/utils/placeholders"
+import { usePrefetch } from "app/utils/queryPrefetching"
+import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
+import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
+import { Suspense, useEffect, useState } from "react"
+import { RefreshControl } from "react-native"
+import {
+  fetchQuery,
+  graphql,
+  useFragment,
+  useLazyLoadQuery,
+  usePaginationFragment,
+} from "react-relay"
 
-const SECTION_SEPARATOR_HEIGHT: SpacingUnitDSValueNumber = 6
+export const NUMBER_OF_SECTIONS_TO_LOAD = 5
+// Hard coding the value here because 30px is not a valid value for the spacing unit
+// and we need it to be consistent with 60px spacing between sections
+export const HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT = "30px"
+
+export const homeViewScreenQueryVariables = () => ({
+  count: NUMBER_OF_SECTIONS_TO_LOAD,
+})
 
 export const HomeView: React.FC = () => {
-  const queryData = useLazyLoadQuery<HomeViewQuery>(homeViewScreenQuery, {
-    count: 10,
-  })
+  const flashlistRef = useBottomTabsScrollToTop("home")
+  const [isRefreshing, setIsRefreshing] = useState(false)
+
+  const queryData = useLazyLoadQuery<HomeViewQuery>(
+    homeViewScreenQuery,
+    homeViewScreenQueryVariables()
+  )
 
   const { data, loadNext, hasNext } = usePaginationFragment<
     HomeViewQuery,
     HomeViewSectionsConnection_viewer$key
   >(sectionsFragment, queryData.viewer)
 
+  const meData = useFragment<HomeView_me$key>(meFragment, queryData.me)
+  const savedArtworksCount = meData?.counts?.savedArtworks ?? 0
+  useDismissSavedArtwork(savedArtworksCount > 0)
+  useEnableProgressiveOnboarding()
+  const prefetchUrl = usePrefetch()
+
+  useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
+
   const sections = extractNodes(data?.homeView.sectionsConnection)
+
+  useEffect(() => {
+    prefetchUrl<SearchQuery>("search", searchQueryDefaultVariables)
+    prefetchUrl("my-profile")
+    prefetchUrl("inbox")
+    prefetchUrl("sell")
+  }, [])
+
+  useEffect(() => {
+    requestPushNotificationsPermission()
+  }, [])
+
+  const handleRefresh = () => {
+    if (isRefreshing) return
+
+    setIsRefreshing(true)
+
+    fetchQuery(getRelayEnvironment(), homeViewScreenQuery, {
+      count: NUMBER_OF_SECTIONS_TO_LOAD,
+    }).subscribe({
+      complete: () => {
+        setIsRefreshing(false)
+      },
+      error: (error: Error) => {
+        setIsRefreshing(false)
+        console.error(error)
+      },
+    })
+  }
 
   return (
     <Screen safeArea={false}>
       <Screen.Body fullwidth>
-        <Screen.FlatList
+        <FlashList
+          ref={flashlistRef}
           data={sections}
-          keyExtractor={(item) => `${item.internalID || ""}`}
-          renderItem={({ item }) => {
-            return <Section section={item} />
+          keyExtractor={(item) => item.internalID}
+          renderItem={({ item, index }) => {
+            return <Section section={item} my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT} index={index} />
           }}
-          ItemSeparatorComponent={SectionSeparator}
-          onEndReached={() => loadNext(10)}
-          ListHeaderComponent={<HomeHeader />}
+          onEndReached={() => loadNext(NUMBER_OF_SECTIONS_TO_LOAD)}
+          ListHeaderComponent={HomeHeader}
+          estimatedItemSize={500}
           ListFooterComponent={
             hasNext ? (
               <Flex width="100%" justifyContent="center" alignItems="center" height={200}>
@@ -48,27 +111,47 @@ export const HomeView: React.FC = () => {
               </Flex>
             ) : null
           }
+          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
+          onEndReachedThreshold={1}
         />
       </Screen.Body>
     </Screen>
   )
 }
 
-const SectionSeparator = () => <Spacer y={SECTION_SEPARATOR_HEIGHT} />
+const HomeViewScreenPlaceholder: React.FC = () => {
+  return (
+    <ProvidePlaceholderContext>
+      <Screen safeArea={false}>
+        <Screen.Body fullwidth>
+          <Flex testID="new-home-view-skeleton">
+            <HomeHeader />
+          </Flex>
+        </Screen.Body>
+      </Screen>
+    </ProvidePlaceholderContext>
+  )
+}
 
-export const HomeViewScreen: React.FC = () => (
-  <ErrorBoundary fallback={<Text>Something went wrong</Text>}>
-    <Suspense
-      fallback={
-        <Flex flex={1} justifyContent="center" alignItems="center" testID="new-home-view-skeleton">
-          <Text>Loading home view…</Text>
-        </Flex>
-      }
-    >
-      <HomeView />
-    </Suspense>
-  </ErrorBoundary>
-)
+export const HomeViewScreen: React.FC = () => {
+  return (
+    <HomeViewStoreProvider>
+      <RetryErrorBoundary>
+        <Suspense fallback={<HomeViewScreenPlaceholder />}>
+          <HomeView />
+        </Suspense>
+      </RetryErrorBoundary>
+    </HomeViewStoreProvider>
+  )
+}
+
+const meFragment = graphql`
+  fragment HomeView_me on Me {
+    counts {
+      savedArtworks
+    }
+  }
+`
 
 const sectionsFragment = graphql`
   fragment HomeViewSectionsConnection_viewer on Viewer
@@ -80,63 +163,12 @@ const sectionsFragment = graphql`
         edges {
           node {
             __typename
-            ... on HomeViewSectionGeneric {
-              internalID
-              component {
-                type
-              }
-              ...HomeViewSectionGeneric_section
+            internalID
+            component {
+              title
+              type
             }
-            ... on HomeViewSectionActivity {
-              internalID
-              ...HomeViewSectionActivity_section
-            }
-            ... on HomeViewSectionArticles {
-              internalID
-              ...HomeViewSectionArticles_section
-              ...HomeViewSectionArticlesCards_section
-            }
-            ... on HomeViewSectionArtworks {
-              internalID
-              ...HomeViewSectionArtworks_section
-              ...HomeViewSectionFeaturedCollection_section
-            }
-            ... on HomeViewSectionArtists {
-              internalID
-              ...HomeViewSectionArtists_section
-            }
-            ... on HomeViewSectionAuctionResults {
-              internalID
-              ...HomeViewSectionAuctionResults_section
-            }
-            ... on HomeViewSectionHeroUnits {
-              internalID
-              ...HomeViewSectionHeroUnits_section
-            }
-            ... on HomeViewSectionFairs {
-              internalID
-              ...HomeViewSectionFairs_section
-            }
-            ... on HomeViewSectionMarketingCollections {
-              internalID
-              ...HomeViewSectionMarketingCollections_section
-            }
-            ... on HomeViewSectionShows {
-              internalID
-              ...HomeViewSectionShows_section
-            }
-            ... on HomeViewSectionViewingRooms {
-              internalID
-              ...HomeViewSectionViewingRooms_section
-            }
-            ... on HomeViewSectionSales {
-              internalID
-              ...HomeViewSectionSales_section
-            }
-            ... on HomeViewSectionGalleries {
-              internalID
-              ...HomeViewSectionGalleries_section
-            }
+            ...HomeViewSectionGeneric_section
           }
         }
       }
@@ -146,6 +178,10 @@ const sectionsFragment = graphql`
 
 export const homeViewScreenQuery = graphql`
   query HomeViewQuery($count: Int!, $cursor: String) {
+    me {
+      ...HomeView_me
+    }
+
     viewer {
       ...HomeViewSectionsConnection_viewer @arguments(count: $count, cursor: $cursor)
     }

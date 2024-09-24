@@ -1,8 +1,8 @@
 import { OwnerType } from "@artsy/cohesion"
-import { screen } from "app/utils/track/helpers"
-import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
-import { ActivityScreenStore } from "app/Scenes/Activity/ActivityScreenStore"
 import { Activity } from "app/Scenes/Activity/Activity"
+import { ActivityScreenStore } from "app/Scenes/Activity/ActivityScreenStore"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 
 export const ActivityScreen = () => {
   return (

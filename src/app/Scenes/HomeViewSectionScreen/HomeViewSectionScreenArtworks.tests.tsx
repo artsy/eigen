@@ -1,5 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { HomeViewSectionScreenArtworksTestsQuery } from "__generated__/HomeViewSectionScreenArtworksTestsQuery.graphql"
+import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionScreenArtworks } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreenArtworks"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -12,7 +13,11 @@ describe("HomeViewSectionArtworks", () => {
       if (!props.homeView.section) {
         return null
       }
-      return <HomeViewSectionScreenArtworks section={props.homeView.section} />
+      return (
+        <HomeViewStoreProvider>
+          <HomeViewSectionScreenArtworks section={props.homeView.section} />
+        </HomeViewStoreProvider>
+      )
     },
     query: graphql`
       query HomeViewSectionScreenArtworksTestsQuery @relay_test_operation {
@@ -48,6 +53,7 @@ describe("HomeViewSectionArtworks", () => {
         component: {
           title: "New Works for You",
         },
+        ownerType: "newWorksForYou",
         artworksConnection: {
           edges: [
             {
@@ -64,6 +70,7 @@ describe("HomeViewSectionArtworks", () => {
                 slug: "artwork-2-slug",
                 title: "Artwork 2",
                 href: "/artwork-2-href",
+                collectorSignals: { primaryLabel: "PARTNER_OFFER", auction: null },
               },
             },
           ],
@@ -83,17 +90,15 @@ describe("HomeViewSectionArtworks", () => {
             "action": "tappedMainArtworkGrid",
             "context_module": "artworkGrid",
             "context_screen": undefined,
-            "context_screen_owner_id": "home-view-section-new-works-for-you",
+            "context_screen_owner_id": undefined,
             "context_screen_owner_slug": undefined,
-            "context_screen_owner_type": "home-view-section-new-works-for-you",
+            "context_screen_owner_type": "newWorksForYou",
             "destination_screen_owner_id": "artwork-2-id",
             "destination_screen_owner_slug": "artwork-2-slug",
             "destination_screen_owner_type": "artwork",
             "position": 1,
             "query": undefined,
-            "signal_bid_count": 42,
             "signal_label": "Limited-Time Offer",
-            "signal_lot_watcher_count": 42,
             "sort": undefined,
             "type": "thumbnail",
           },

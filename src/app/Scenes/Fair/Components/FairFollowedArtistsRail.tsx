@@ -1,7 +1,7 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
 import { FairFollowedArtistsRail_fair$data } from "__generated__/FairFollowedArtistsRail_fair.graphql"
-import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
+import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -41,7 +41,7 @@ export const FairFollowedArtistsRail: React.FC<FairFollowedArtistsRailProps> = (
           }
         />
       </Flex>
-      <SmallArtworkRail
+      <ArtworkRail
         artworks={artworks}
         onPress={(artwork, position) => {
           if (!artwork.href) {
@@ -75,7 +75,7 @@ export const FairFollowedArtistsRailFragmentContainer = createFragmentContainer(
         filterArtworksConnection(first: 20, input: { includeArtworksByFollowedArtists: true }) {
           edges {
             node {
-              ...SmallArtworkRail_artworks
+              ...ArtworkRail_artworks
             }
           }
         }

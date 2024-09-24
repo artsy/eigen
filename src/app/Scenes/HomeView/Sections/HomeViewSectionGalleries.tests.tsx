@@ -1,5 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { HomeViewSectionGalleriesTestsQuery } from "__generated__/HomeViewSectionGalleriesTestsQuery.graphql"
+import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionGalleries } from "app/Scenes/HomeView/Sections/HomeViewSectionGalleries"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -9,7 +10,11 @@ import { graphql } from "react-relay"
 describe("HomeViewSectionGalleries", () => {
   const { renderWithRelay } = setupTestWrapper<HomeViewSectionGalleriesTestsQuery>({
     Component: (props) => {
-      return <HomeViewSectionGalleries section={props.homeView.section} />
+      return (
+        <HomeViewStoreProvider>
+          <HomeViewSectionGalleries section={props.homeView.section} index={0} />
+        </HomeViewStoreProvider>
+      )
     },
     query: graphql`
       query HomeViewSectionGalleriesTestsQuery @relay_test_operation {
@@ -48,7 +53,7 @@ describe("HomeViewSectionGalleries", () => {
       [
         {
           "action": "tappedShowMore",
-          "context_module": "galleriesNearYou",
+          "context_module": "<mock-value-for-field-"contextModule">",
           "context_screen_owner_type": "home",
           "subject": "Explore",
         },

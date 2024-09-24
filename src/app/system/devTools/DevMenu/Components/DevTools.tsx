@@ -13,7 +13,9 @@ import { DevToggleItem } from "app/system/devTools/DevMenu/Components/DevToggleI
 import { eigenSentryReleaseName } from "app/system/errorReporting/setupSentry"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { RelayCache } from "app/system/relay/RelayCache"
+import { saveToken } from "app/utils/PushNotification"
 import { useUnleashEnvironment } from "app/utils/experiments/hooks"
+import { requestSystemPermissions } from "app/utils/requestPushNotificationsPermission"
 import { capitalize, sortBy } from "lodash"
 import { useState } from "react"
 import { Alert, Button, Platform } from "react-native"
@@ -155,14 +157,24 @@ export const DevTools: React.FC<{}> = () => {
             }}
           />
           <DevMenuButtonItem
+            title="Request push registration"
+            onPress={async () => {
+              const status = await requestSystemPermissions()
+              toast.show(`Push registration status: ${status}`, "middle")
+
+              // On android onRegister is not called when permissions are already granted, make sure token is saved in this env
+              if (Platform.OS === "android" && status === "granted") {
+                const token = await LegacyNativeModules.ArtsyNativeModule.getPushToken()
+                if (token) {
+                  saveToken(token, true)
+                }
+              }
+            }}
+          />
+          <DevMenuButtonItem
             title="Copy push token"
             onPress={async () => {
-              let pushToken
-              if (Platform.OS === "ios") {
-                pushToken = await LegacyNativeModules.ArtsyNativeModule.getPushToken()
-              } else {
-                pushToken = await AsyncStorage.getItem("PUSH_NOTIFICATION_TOKEN")
-              }
+              const pushToken = await LegacyNativeModules.ArtsyNativeModule.getPushToken()
               Clipboard.setString(pushToken ?? "")
               if (!pushToken) {
                 toast.show("No push token found", "middle")

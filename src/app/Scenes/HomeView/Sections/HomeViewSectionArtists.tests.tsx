@@ -1,5 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { HomeViewSectionArtistsTestsQuery } from "__generated__/HomeViewSectionArtistsTestsQuery.graphql"
+import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionArtistsPaginationContainer } from "app/Scenes/HomeView/Sections/HomeViewSectionArtists"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -12,7 +13,11 @@ describe("HomeViewSectionArtists", () => {
       if (!props.homeView.section) {
         return null
       }
-      return <HomeViewSectionArtistsPaginationContainer section={props.homeView.section} />
+      return (
+        <HomeViewStoreProvider>
+          <HomeViewSectionArtistsPaginationContainer section={props.homeView.section} index={0} />
+        </HomeViewStoreProvider>
+      )
     },
     query: graphql`
       query HomeViewSectionArtistsTestsQuery @relay_test_operation {
@@ -82,7 +87,7 @@ describe("HomeViewSectionArtists", () => {
         [
           {
             "action": "tappedArtistGroup",
-            "context_module": "recommendedArtists",
+            "context_module": "<mock-value-for-field-"contextModule">",
             "context_screen_owner_type": "home",
             "destination_screen_owner_id": "artist-2-id",
             "destination_screen_owner_slug": "artist-2-slug",

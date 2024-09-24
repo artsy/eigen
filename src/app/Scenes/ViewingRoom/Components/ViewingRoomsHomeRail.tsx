@@ -80,7 +80,7 @@ export const ViewingRoomsRailPlaceholder = () => (
 interface ViewingRoomsHomeRailProps {
   trackInfo?: { screen: string; ownerType: string; contextModule?: ContextModule }
   onPress?: (
-    viewingRoom: ExtractNodeType<ViewingRoomsHomeRailQuery$data["viewingRooms"]>,
+    viewingRoom: ExtractNodeType<ViewingRoomsHomeRailQuery$data["viewingRoomsConnection"]>,
     index: number
   ) => void
 }
@@ -90,7 +90,7 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({
   onPress,
 }) => {
   const queryData = useLazyLoadQuery<ViewingRoomsHomeRailQuery>(ViewingRoomsHomeRailMainQuery, {})
-  const regular = extractNodes(queryData.viewingRooms)
+  const regular = extractNodes(queryData.viewingRoomsConnection)
   const { trackEvent } = useTracking()
 
   return (
@@ -144,7 +144,7 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({
 
 const ViewingRoomsHomeRailMainQuery = graphql`
   query ViewingRoomsHomeRailQuery {
-    viewingRooms(first: 10) {
+    viewingRoomsConnection(first: 10) {
       edges {
         node {
           internalID

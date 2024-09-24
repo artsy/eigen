@@ -273,9 +273,15 @@ export const features = {
   },
   AREnableCuratorsPicksAndInterestSignals: {
     description: "Enable Curators' Picks and Increased Interest signals",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableCuratorsPicksAndInterestSignals",
+  },
+  AREnableArtworkRailRedesignImageAspectRatio: {
+    description: "Enable new aspect ratio for artwork rail images",
+    readyForRelease: false,
+    showInDevMenu: true,
+    // echoFlagKey: "AREnableArtworkRailRedesignImageAspectRatio",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 

@@ -1,4 +1,4 @@
-const list = ["app", "palette", "shared", "__generated__"]
+const list = ["app", "palette", "shared", "__generated__", "images"]
 
 // babel module resolver just needs `*`
 const babelModuleResolverAlias = list.reduce((acc, name) => {
@@ -6,6 +6,9 @@ const babelModuleResolverAlias = list.reduce((acc, name) => {
   acc[`${name}/*`] = `./src/${name}/*`
   return acc
 }, {})
+
+babelModuleResolverAlias["images"] = "./images"  // Add alias for 'images' folder
+babelModuleResolverAlias["images/*"] = "./images/*"  // Support for nested files
 
 // jest allows for regex
 const jestModuleNameMap = list.reduce((acc, name) => {

@@ -1,4 +1,5 @@
 import { BackButton, Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { useToast } from "app/Components/Toast/toastHook"
 import { myCollectionUpdateArtwork } from "app/Scenes/MyCollection/mutations/myCollectionUpdateArtwork"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { SubmitArtworkProgressBar } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkProgressBar"
@@ -15,6 +16,7 @@ import { Alert, Keyboard, LayoutAnimation } from "react-native"
 const HEADER_HEIGHT = 50
 
 export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
+  const toast = useToast()
   const { trackTappedSubmissionSaveExit } = useSubmitArtworkTracking()
   const currentStep = SubmitArtworkFormStore.useStoreState((state) => state.currentStep)
   const hasCompletedForm = currentStep === "CompleteYourSubmission"
@@ -39,19 +41,29 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
 
       // If an submission has a my collection artwork, we need to update its values
       if (values.artwork.internalID) {
-        const newValues = {
-          artworkId: values.artwork.internalID,
-          framedMetric: values.artwork.framedMetric,
-          framedWidth: values.artwork.framedWidth,
-          framedHeight: values.artwork.framedHeight,
-          framedDepth: values.artwork.framedDepth,
-          isFramed: values.artwork.isFramed,
-          condition: values.artwork.condition,
-          conditionDescription: values.artwork.conditionDescription,
-        }
+        try {
+          const newValues = {
+            artworkId: values.artwork.internalID,
+            framedMetric: values.artwork.framedMetric,
+            framedWidth: values.artwork.framedWidth,
+            framedHeight: values.artwork.framedHeight,
+            framedDepth: values.artwork.framedDepth,
+            isFramed: values.artwork.isFramed,
+            condition: values.artwork.condition || undefined,
+            conditionDescription: values.artwork.conditionDescription,
+          }
 
-        // Make API call to update my collection artwork
-        await myCollectionUpdateArtwork(newValues)
+          // Make API call to update my collection artwork
+          await myCollectionUpdateArtwork(newValues)
+        } catch (error) {
+          console.error(
+            "Something went wrong. Some values on the MyC artwork could not be updated.",
+            error
+          )
+          toast.show("Something went wrong. Some values could not be updated.", "bottom", {
+            backgroundColor: "yellow100",
+          })
+        }
       }
 
       if (values.externalId) {
@@ -63,6 +75,7 @@ export const SubmitArtworkTopNavigation: React.FC<{}> = () => {
 
       refreshSellScreen()
     } catch (error) {
+      console.log({ error })
       console.error("Something went wrong. The submission could not be saved.", error)
 
       Alert.alert("Something went wrong. The submission could not be saved.")

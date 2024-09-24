@@ -1,6 +1,6 @@
 import { Flex } from "@artsy/palette-mobile"
 import { ViewingRoomArtworkRail_viewingRoom$data } from "__generated__/ViewingRoomArtworkRail_viewingRoom.graphql"
-import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
+import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -34,7 +34,7 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = ({ 
           }}
         />
       </Flex>
-      <SmallArtworkRail
+      <ArtworkRail
         artworks={artworks}
         onPress={(artwork) => {
           tracking.trackEvent(
@@ -97,7 +97,7 @@ export const ViewingRoomArtworkRailContainer = createFragmentContainer(ViewingRo
         totalCount
         edges {
           node {
-            ...SmallArtworkRail_artworks
+            ...ArtworkRail_artworks
           }
         }
       }

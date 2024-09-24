@@ -29,8 +29,11 @@ export const HomeViewSectionGeneric: React.FC<{ section: any }> = (props) => {
 
 const genericSectionFragment = graphql`
   fragment HomeViewSectionGeneric_section on HomeViewSectionGeneric {
+    __typename
+    internalID
     component {
       title
+      type
     }
   }
 `

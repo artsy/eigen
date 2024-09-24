@@ -21,7 +21,7 @@ describe("ViewingRoomsList", () => {
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Query: () => ({
-        viewingRooms: {
+        viewingRoomsConnection: {
           edges: [
             { node: { title: "one", status: "live" } },
             { node: { title: "two", status: "live" } },

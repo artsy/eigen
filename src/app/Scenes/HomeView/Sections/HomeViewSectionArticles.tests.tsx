@@ -1,5 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { HomeViewSectionArticlesTestsQuery } from "__generated__/HomeViewSectionArticlesTestsQuery.graphql"
+import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionArticles } from "app/Scenes/HomeView/Sections/HomeViewSectionArticles"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -11,7 +12,11 @@ describe("HomeViewSectionArticles", () => {
       if (!props.homeView.section) {
         return null
       }
-      return <HomeViewSectionArticles section={props.homeView.section} />
+      return (
+        <HomeViewStoreProvider>
+          <HomeViewSectionArticles section={props.homeView.section} index={0} />
+        </HomeViewStoreProvider>
+      )
     },
     query: graphql`
       query HomeViewSectionArticlesTestsQuery @relay_test_operation {
@@ -63,7 +68,7 @@ describe("HomeViewSectionArticles", () => {
         [
           {
             "action": "tappedArticleGroup",
-            "context_module": "latestArticles",
+            "context_module": "<mock-value-for-field-"contextModule">",
             "context_screen_owner_type": "home",
             "destination_screen_owner_id": "article-2-id",
             "destination_screen_owner_slug": "article-2",

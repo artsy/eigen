@@ -19,23 +19,6 @@ export const ArtworkSocialSignal: React.FC<ArtworkSocialSignalProps> = ({
   const primaryColor = dark ? "white100" : "black100"
 
   switch (true) {
-    case increasedInterest && !hideIncreasedInterest:
-      return (
-        <Box
-          px={0.5}
-          pb="2px"
-          alignSelf="flex-start"
-          borderRadius={3}
-          borderWidth={1}
-          borderColor={primaryColor}
-          mb={0.5}
-        >
-          <Text color={primaryColor} variant="xxs">
-            Increased Interest
-          </Text>
-        </Box>
-      )
-
     case curatorsPick && !hideCuratorsPick:
       return (
         <Box
@@ -49,6 +32,23 @@ export const ArtworkSocialSignal: React.FC<ArtworkSocialSignalProps> = ({
         >
           <Text color={primaryColor} variant="xxs">
             Curators’ Pick
+          </Text>
+        </Box>
+      )
+
+    case increasedInterest && !hideIncreasedInterest:
+      return (
+        <Box
+          px={0.5}
+          pb="2px"
+          alignSelf="flex-start"
+          borderRadius={3}
+          borderWidth={1}
+          borderColor={primaryColor}
+          mb={0.5}
+        >
+          <Text color={primaryColor} variant="xxs">
+            Increased Interest
           </Text>
         </Box>
       )

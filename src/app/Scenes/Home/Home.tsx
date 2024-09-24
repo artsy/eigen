@@ -24,7 +24,7 @@ import { Home_notificationsConnection$data } from "__generated__/Home_notificati
 import { Home_recommendedAuctionLots$data } from "__generated__/Home_recommendedAuctionLots.graphql"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
-import { LargeArtworkRailPlaceholder } from "app/Components/ArtworkRail/LargeArtworkRail"
+import { ArtworkRailPlaceholder } from "app/Components/ArtworkRail/ArtworkRail"
 import { ArtistRailFragmentContainer } from "app/Components/Home/ArtistRails/ArtistRail"
 import { RecommendedArtistsRailFragmentContainer } from "app/Components/Home/ArtistRails/RecommendedArtistsRail"
 import { useDismissSavedArtwork } from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
@@ -511,7 +511,7 @@ export const HomeFragmentContainer = memo(
         }
       `,
       featured: graphql`
-        fragment Home_featured on ViewingRoomConnection {
+        fragment Home_featured on ViewingRoomsConnection {
           ...ViewingRoomsListFeatured_featured
         }
       `,
@@ -571,7 +571,7 @@ export const HomeFragmentContainer = memo(
         meBelow: me @optionalField {
           ...Home_meBelow
         }
-        featured: viewingRooms(featured: true) @optionalField {
+        featured: viewingRoomsConnection(featured: true) @optionalField {
           ...Home_featured
         }
         articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, featured: true) @optionalField {
@@ -676,7 +676,7 @@ const HomePlaceholder: React.FC = () => {
         <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
         <Spacer y={0.5} />
         <Flex flexDirection="row">
-          <LargeArtworkRailPlaceholder />
+          <ArtworkRailPlaceholder />
         </Flex>
       </Box>
       <ModuleSeparator />
@@ -799,7 +799,7 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
             emergingPicks: marketingCollection(slug: "curators-picks-emerging") @optionalField {
               ...Home_emergingPicks
             }
-            featured: viewingRooms(featured: true) @optionalField {
+            featured: viewingRoomsConnection(featured: true) @optionalField {
               ...Home_featured
             }
             me @optionalField {

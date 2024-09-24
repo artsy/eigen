@@ -1,56 +1,101 @@
-import { Flex, Separator, Text, Touchable, useSpace } from "@artsy/palette-mobile"
-import { HomeViewSectionArticlesCards_section$key } from "__generated__/HomeViewSectionArticlesCards_section.graphql"
+import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
+import {
+  Flex,
+  FlexProps,
+  Separator,
+  Skeleton,
+  SkeletonBox,
+  SkeletonText,
+  Text,
+  Touchable,
+  useSpace,
+} from "@artsy/palette-mobile"
+import { HomeViewSectionArticlesCardsQuery } from "__generated__/HomeViewSectionArticlesCardsQuery.graphql"
+import {
+  HomeViewSectionArticlesCards_section$data,
+  HomeViewSectionArticlesCards_section$key,
+} from "__generated__/HomeViewSectionArticlesCards_section.graphql"
+import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
+import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
+import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { graphql, useFragment } from "react-relay"
+import { withSuspense } from "app/utils/hooks/withSuspense"
+import { ExtractNodeType } from "app/utils/relayHelpers"
+import { times } from "lodash"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionArticlesCardsProps {
   section: HomeViewSectionArticlesCards_section$key
+  index: number
 }
 
-export const HomeViewSectionArticlesCards: React.FC<HomeViewSectionArticlesCardsProps> = (
-  props
-) => {
-  const { section } = props
-  const data = useFragment(fragment, section)
-  const articles = extractNodes(data.cardArticlesConnection)
-  const title = data.component?.title ?? "News"
-  const componentHref = data.component?.behaviors?.viewAll?.href
-  const componentButtonText = data.component?.behaviors?.viewAll?.buttonText
+type ArticleType = ExtractNodeType<
+  HomeViewSectionArticlesCards_section$data["cardArticlesConnection"]
+>
+
+export const HomeViewSectionArticlesCards: React.FC<HomeViewSectionArticlesCardsProps> = ({
+  section: sectionProp,
+  index,
+  ...flexProps
+}) => {
+  const section = useFragment(fragment, sectionProp)
+  const articles = extractNodes(section.cardArticlesConnection)
+  const viewAll = section.component?.behaviors?.viewAll
+
+  const tracking = useHomeViewTracking()
 
   const space = useSpace()
 
-  const handleOnPress = () => {
-    if (componentHref) {
-      navigate(componentHref)
+  const onItemPress = (article: ArticleType) => {
+    if (article.href) {
+      navigate(article.href)
+    }
+  }
+
+  const onSectionTitlePress = () => {
+    if (viewAll?.href) {
+      tracking.tappedArticleGroupViewAll(
+        section.contextModule as ContextModule,
+        viewAll?.ownerType as ScreenOwnerType
+      )
+
+      navigate(viewAll.href)
     }
   }
 
   return (
-    <Flex m={2} p={2} border="1px solid" borderColor="black30" gap={space(2)}>
-      <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-        <Text variant="lg-display">{title}</Text>
-        <Text variant="lg-display">{date()}</Text>
-      </Flex>
-      {articles.map((article, index) => (
-        <Flex key={index} gap={space(2)}>
-          <Touchable onPress={handleOnPress}>
-            <Flex flexDirection="row" alignItems="center">
-              <Text variant="sm-display" numberOfLines={3}>
-                {article.title}
-              </Text>
+    <Flex {...flexProps}>
+      <Flex mx={2} p={2} border="1px solid" borderColor="black30" gap={space(2)}>
+        <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+          <Text variant="lg-display">{section.component?.title}</Text>
+          <Text variant="lg-display">{date()}</Text>
+        </Flex>
+        {articles.map((article, index) => (
+          <Flex key={index} gap={space(2)}>
+            <Touchable onPress={() => onItemPress(article)}>
+              <Flex flexDirection="row" alignItems="center">
+                <Text variant="sm-display" numberOfLines={3}>
+                  {article.title}
+                </Text>
+              </Flex>
+            </Touchable>
+            {index !== articles.length - 1 && <Separator />}
+          </Flex>
+        ))}
+        {!!viewAll && (
+          <Touchable onPress={onSectionTitlePress}>
+            <Flex flexDirection="row" justifyContent="flex-end">
+              <Text variant="sm-display">{viewAll.buttonText}</Text>
             </Flex>
           </Touchable>
-          {index !== articles.length - 1 && <Separator />}
-        </Flex>
-      ))}
-      {!!componentHref && (
-        <Touchable onPress={() => navigate(componentHref)}>
-          <Flex flexDirection="row" justifyContent="flex-end">
-            <Text variant="sm-display">{componentButtonText}</Text>
-          </Flex>
-        </Touchable>
-      )}
+        )}
+      </Flex>
+
+      <HomeViewSectionSentinel
+        contextModule={section.contextModule as ContextModule}
+        index={index}
+      />
     </Flex>
   )
 }
@@ -63,12 +108,15 @@ const date = () =>
 
 const fragment = graphql`
   fragment HomeViewSectionArticlesCards_section on HomeViewSectionArticles {
+    internalID
+    contextModule
     component {
       title
       behaviors {
         viewAll {
-          href
           buttonText
+          href
+          ownerType
         }
       }
     }
@@ -83,3 +131,62 @@ const fragment = graphql`
     }
   }
 `
+
+const HomeViewSectionArticlesCardsPlaceholder: React.FC<FlexProps> = (flexProps) => {
+  const space = useSpace()
+  return (
+    <Skeleton>
+      <Flex {...flexProps}>
+        <Flex mx={2} p={2} border="1px solid" borderColor="black30" gap={space(2)}>
+          <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+            <SkeletonText variant="lg-display">title</SkeletonText>
+            <SkeletonText variant="lg-display">2021-12-31</SkeletonText>
+          </Flex>
+          {times(3).map((_, index) => (
+            <SkeletonBox key={index} gap={space(2)}>
+              <Flex flexDirection="row" alignItems="center">
+                <SkeletonText variant="sm-display" numberOfLines={3}>
+                  Larry Gagosian and Peter Doig to collaborate on a new exhibition.
+                </SkeletonText>
+              </Flex>
+              {index !== 2 && <Separator />}
+            </SkeletonBox>
+          ))}
+          <Flex flexDirection="row" justifyContent="flex-end">
+            <SkeletonText variant="sm-display">More News</SkeletonText>
+          </Flex>
+        </Flex>
+      </Flex>
+    </Skeleton>
+  )
+}
+
+const homeViewSectionArticlesCardsQuery = graphql`
+  query HomeViewSectionArticlesCardsQuery($id: String!) {
+    homeView {
+      section(id: $id) {
+        ...HomeViewSectionArticlesCards_section
+      }
+    }
+  }
+`
+
+export const HomeViewSectionArticlesCardsQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
+  ({ sectionID, index, ...flexProps }) => {
+    const data = useLazyLoadQuery<HomeViewSectionArticlesCardsQuery>(
+      homeViewSectionArticlesCardsQuery,
+      {
+        id: sectionID,
+      }
+    )
+
+    if (!data.homeView.section) {
+      return null
+    }
+
+    return (
+      <HomeViewSectionArticlesCards section={data.homeView.section} index={index} {...flexProps} />
+    )
+  },
+  HomeViewSectionArticlesCardsPlaceholder
+)

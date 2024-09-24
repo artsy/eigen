@@ -1,5 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { HomeViewSectionMarketingCollectionsTestsQuery } from "__generated__/HomeViewSectionMarketingCollectionsTestsQuery.graphql"
+import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionMarketingCollections } from "app/Scenes/HomeView/Sections/HomeViewSectionMarketingCollections"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -9,7 +10,11 @@ import { graphql } from "react-relay"
 describe("HomeViewSectionMarketingCollections", () => {
   const { renderWithRelay } = setupTestWrapper<HomeViewSectionMarketingCollectionsTestsQuery>({
     Component: (props) => {
-      return <HomeViewSectionMarketingCollections section={props.homeView.section} />
+      return (
+        <HomeViewStoreProvider>
+          <HomeViewSectionMarketingCollections section={props.homeView.section} index={0} />
+        </HomeViewStoreProvider>
+      )
     },
     query: graphql`
       query HomeViewSectionMarketingCollectionsTestsQuery @relay_test_operation {
@@ -112,7 +117,7 @@ describe("HomeViewSectionMarketingCollections", () => {
       [
         {
           "action": "tappedCollectionGroup",
-          "context_module": "marketingCollections",
+          "context_module": "<mock-value-for-field-"contextModule">",
           "context_screen_owner_type": "home",
           "destination_screen_owner_id": "marketing-collection-id-2",
           "destination_screen_owner_slug": "marketing-collection-slug-2",

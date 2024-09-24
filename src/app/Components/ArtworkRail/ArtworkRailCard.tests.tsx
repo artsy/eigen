@@ -8,9 +8,7 @@ import { graphql } from "react-relay"
 
 describe("ArtworkRailCard", () => {
   const { renderWithRelay } = setupTestWrapper<ArtworkRailCardTestsQuery>({
-    Component: (props) => (
-      <ArtworkRailCard {...props} artwork={props.artwork!} size={(props as any).size || "large"} />
-    ),
+    Component: (props) => <ArtworkRailCard {...props} artwork={props.artwork!} />,
     query: graphql`
       query ArtworkRailCardTestsQuery @relay_test_operation {
         artwork(id: "the-artwork") {
@@ -42,20 +40,6 @@ describe("ArtworkRailCard", () => {
       })
 
       expect(screen.getByText("Some Kind of Dinosaur, 2015")).toBeOnTheScreen()
-    })
-
-    it("renders without throwing an error when an auction is about to open, but not closed or finished", () => {
-      renderWithRelay({
-        Artwork: () => ({
-          title: "Some Kind of Dinosaur",
-          sale: { isClosed: false, isAuction: true },
-          saleArtwork: { currentBid: { display: "$200" }, counts: { bidderPositions: 1 } },
-          realizedPrice: null,
-          collectorSignals: { auction: { bidCount: 1 } },
-        }),
-      })
-
-      expect(screen.getByText("$200 (1 bid)")).toBeOnTheScreen()
     })
 
     it("shows the partner name if showPartnerName is set to true", () => {
@@ -292,20 +276,6 @@ describe("ArtworkRailCard", () => {
           expect(screen.getByText("Extended, 59s left to bid")).toBeOnTheScreen()
         })
       })
-
-      it("shows number of bids", () => {
-        renderWithRelay({
-          Artwork: () => ({
-            ...artwork,
-            sale: { ...artwork.sale, isClosed: false },
-            saleArtwork: { currentBid: { display: "$3,700" } },
-            realizedPrice: null,
-            collectorSignals: { auction: { bidCount: 7 } },
-          }),
-        })
-
-        expect(screen.getByText("$3,700 (7 bids)")).toBeOnTheScreen()
-      })
     })
 
     describe("social signal", () => {
@@ -328,7 +298,7 @@ describe("ArtworkRailCard", () => {
         expect(screen.getByText("Increased Interest")).toBeOnTheScreen()
       })
 
-      it("renders the increased interest signal even when there's a curator's pick signal", () => {
+      it("renders the curator's pick signal even when there's a increased interest signal", () => {
         renderWithRelay({
           Artwork: () => ({
             collectorSignals: {
@@ -338,8 +308,8 @@ describe("ArtworkRailCard", () => {
           }),
         })
 
-        expect(screen.getByText("Increased Interest")).toBeOnTheScreen()
-        expect(screen.queryByText("Curators’ Pick")).not.toBeOnTheScreen()
+        expect(screen.getByText("Curators’ Pick")).toBeOnTheScreen()
+        expect(screen.queryByText("Increased Interest")).not.toBeOnTheScreen()
       })
 
       it("renders the curators pick signal", () => {

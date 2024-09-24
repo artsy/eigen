@@ -1,9 +1,7 @@
 import { TappedMainArtworkGrid } from "@artsy/cohesion"
-import { LargeArtworkRail_artworks$data } from "__generated__/LargeArtworkRail_artworks.graphql"
-import { isEmpty } from "lodash"
-import { DateTime } from "luxon"
+import { ArtworkRail_artworks$data } from "__generated__/ArtworkRail_artworks.graphql"
 
-export type CollectorSignals = LargeArtworkRail_artworks$data[0]["collectorSignals"]
+export type CollectorSignals = ArtworkRail_artworks$data[0]["collectorSignals"]
 
 type ArtworkSignalTrackingFields = Pick<
   TappedMainArtworkGrid,
@@ -19,38 +17,27 @@ export const getArtworkSignalTrackingFields = (
   }
 
   const artworkTrackingSignalLabels: ArtworkSignalTrackingFields = {}
-
-  let signal_label = ""
-  const { partnerOffer, auction } = collectorSignals
-
-  if (!isEmpty(partnerOffer)) {
-    signal_label = "Limited-Time Offer"
-  }
+  const { auction, primaryLabel } = collectorSignals
 
   if (auctionSignalsFeatureFlagEnabled && auction) {
-    const { bidCount, liveBiddingStarted, lotClosesAt, lotWatcherCount, registrationEndsAt } =
-      auction
-
-    const registrationEnded =
-      registrationEndsAt && DateTime.fromISO(registrationEndsAt).diffNow().as("seconds") <= 0
-
-    const lotEndAt = !!lotClosesAt && DateTime.fromISO(lotClosesAt)
-
-    if (
-      !!registrationEnded &&
-      lotEndAt &&
-      lotEndAt.diffNow().as("days") <= 5 &&
-      lotEndAt.diffNow().as("seconds") > 0
-    ) {
-      signal_label = "Time left to bid"
-    }
-
-    if (liveBiddingStarted) {
-      signal_label = "Bidding live now"
-    }
+    const { bidCount, lotWatcherCount } = auction
 
     artworkTrackingSignalLabels.signal_bid_count = bidCount
     artworkTrackingSignalLabels.signal_lot_watcher_count = lotWatcherCount
+  }
+
+  let signal_label = ""
+
+  switch (primaryLabel) {
+    case "PARTNER_OFFER":
+      signal_label = "Limited-Time Offer"
+      break
+    case "CURATORS_PICK":
+      signal_label = "Curators' Pick"
+      break
+    case "INCREASED_INTEREST":
+      signal_label = "Increased Interest"
+      break
   }
 
   artworkTrackingSignalLabels.signal_label = signal_label

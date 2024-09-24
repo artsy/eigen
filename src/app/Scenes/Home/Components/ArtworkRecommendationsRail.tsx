@@ -1,7 +1,7 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, SpacingUnit } from "@artsy/palette-mobile"
 import { ArtworkRecommendationsRail_me$key } from "__generated__/ArtworkRecommendationsRail_me.graphql"
-import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
+import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { useItemsImpressionsTracking } from "app/Scenes/Home/Components/useImpressionsTracking"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
@@ -64,7 +64,7 @@ export const ArtworkRecommendationsRail: React.FC<
         <Flex pl={2} pr={2}>
           <SectionTitle title={title} onPress={() => handleMorePress("header")} />
         </Flex>
-        <LargeArtworkRail
+        <ArtworkRail
           {...trackingProps}
           artworks={artworks}
           onPress={(artwork, position) => {
@@ -105,7 +105,7 @@ const artworksFragment = graphql`
       edges {
         node {
           slug
-          ...LargeArtworkRail_artworks
+          ...ArtworkRail_artworks
         }
       }
     }

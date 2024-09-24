@@ -134,11 +134,10 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  #if defined(FB_SONARKIT_ENABLED) && (!defined(CI_DISABLE_FLIPPER) || (CI_DISABLE_FLIPPER != 1))
-    FlipperClient *client = [FlipperClient sharedClient];
-    [client addPlugin:[FlipperPerformancePlugin new]];
-  #endif
-
+    #if defined(FB_SONARKIT_ENABLED) && (!defined(CI_DISABLE_FLIPPER) ||    (CI_DISABLE_FLIPPER != 1))
+        FlipperClient *client = [FlipperClient sharedClient];
+        [client addPlugin:[FlipperPerformancePlugin new]];
+    #endif
     [self setupForAppLaunch:launchOptions];
 
     [self setupAnalytics:application withLaunchOptions:launchOptions];
@@ -275,6 +274,11 @@ static ARAppDelegate *_sharedInstance = nil;
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
+{
+  return [self getBundleURL];
+}
+
+- (NSURL *)getBundleURL
 {
 #if DEBUG
     return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];

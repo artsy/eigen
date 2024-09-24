@@ -21,7 +21,7 @@ import { CollectionScreen } from "app/Scenes/Collection/Collection"
 import { CompleteMyProfile } from "app/Scenes/CompleteMyProfile/CompleteMyProfile"
 import { GalleriesForYouScreen } from "app/Scenes/GalleriesForYou/GalleriesForYouScreen"
 import { HomeContainer } from "app/Scenes/Home/HomeContainer"
-import { HomeViewScreen } from "app/Scenes/HomeView/HomeView"
+import { HomeViewScreen, homeViewScreenQuery } from "app/Scenes/HomeView/HomeView"
 import { HomeViewSectionScreenQueryRenderer } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreen"
 import { AddMyCollectionArtist } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
 import { MyCollectionArtworkEditQueryRenderer } from "app/Scenes/MyCollection/Screens/ArtworkForm/Screens/MyCollectionArtworkEdit"
@@ -488,9 +488,13 @@ export const modules = defineModules({
     fullBleed: true,
     hidesBackButton: true,
   }),
-  Home: reactModule(HomeContainer, {
-    isRootViewForTabName: "home",
-  }),
+  Home: reactModule(
+    HomeContainer,
+    {
+      isRootViewForTabName: "home",
+    },
+    [homeViewScreenQuery]
+  ),
   HomeView: reactModule(HomeViewScreen, { hidesBackButton: true }),
   HomeViewSectionScreen: reactModule(HomeViewSectionScreenQueryRenderer, {
     hidesBackButton: true,

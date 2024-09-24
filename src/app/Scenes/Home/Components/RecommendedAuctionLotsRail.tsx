@@ -5,8 +5,7 @@ import {
   RecommendedAuctionLotsRail_smallArtworkConnection$data,
   RecommendedAuctionLotsRail_smallArtworkConnection$key,
 } from "__generated__/RecommendedAuctionLotsRail_smallArtworkConnection.graphql"
-import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
-import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
+import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { RailScrollProps } from "app/Scenes/Home/Components/types"
 import { useItemsImpressionsTracking } from "app/Scenes/Home/Components/useImpressionsTracking"
@@ -83,7 +82,7 @@ export const RecommendedAuctionLotsRail: React.FC<
       navigate(artwork.href)
     }
 
-    const AuctionLotsRail = size == "large" ? LargeArtworkRail : SmallArtworkRail
+    const AuctionLotsRail = size == "large" ? ArtworkRail : ArtworkRail
 
     return (
       <View ref={railRef}>
@@ -122,7 +121,7 @@ const largeArtworksFragment = graphql`
           title
           internalID
           slug
-          ...LargeArtworkRail_artworks
+          ...ArtworkRail_artworks
         }
       }
     }
@@ -137,7 +136,7 @@ const smallArtworksFragment = graphql`
           title
           internalID
           slug
-          ...SmallArtworkRail_artworks
+          ...ArtworkRail_artworks
         }
       }
     }

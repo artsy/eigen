@@ -235,7 +235,7 @@ export async function configure() {
     // (optional) Called when Token is generated (iOS and Android)
     onRegister: async (token) => {
       try {
-        await saveToken(token.token)
+        saveToken(token.token)
       } catch (e) {
         captureMessage(`Error saving push notification token: ${e}`, "info")
       }

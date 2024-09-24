@@ -1,5 +1,6 @@
 import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
 import { HomeViewSectionViewingRoomsTestsQuery } from "__generated__/HomeViewSectionViewingRoomsTestsQuery.graphql"
+import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionViewingRooms } from "app/Scenes/HomeView/Sections/HomeViewSectionViewingRooms"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -11,7 +12,11 @@ describe("HomeViewSectionViewingRooms", () => {
       if (!props.homeView.section) {
         return null
       }
-      return <HomeViewSectionViewingRooms section={props.homeView.section} />
+      return (
+        <HomeViewStoreProvider>
+          <HomeViewSectionViewingRooms section={props.homeView.section} index={0} />
+        </HomeViewStoreProvider>
+      )
     },
     query: graphql`
       query HomeViewSectionViewingRoomsTestsQuery @relay_test_operation {
@@ -36,7 +41,7 @@ describe("HomeViewSectionViewingRooms", () => {
     expect(screen.getByText("Viewing Rooms")).toBeOnTheScreen()
 
     mockResolveLastOperation({
-      ViewingRoomConnection: () => ({
+      ViewingRoomsConnection: () => ({
         edges: [
           {
             node: {
@@ -83,7 +88,7 @@ describe("HomeViewSectionViewingRooms", () => {
     expect(screen.getByText("Viewing Rooms")).toBeOnTheScreen()
 
     mockResolveLastOperation({
-      ViewingRoomConnection: () => ({
+      ViewingRoomsConnection: () => ({
         edges: [
           {
             node: {
@@ -113,7 +118,7 @@ describe("HomeViewSectionViewingRooms", () => {
       [
         {
           "action": "tappedViewingRoomGroup",
-          "context_module": "viewingRooms",
+          "context_module": "<mock-value-for-field-"contextModule">",
           "context_screen_owner_type": "home",
           "destination_screen_owner_id": "one",
           "destination_screen_owner_slug": "alessandro-pessoli-ardente-primavera-number-1",

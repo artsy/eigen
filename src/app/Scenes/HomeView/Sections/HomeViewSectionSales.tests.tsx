@@ -1,5 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { HomeViewSectionSalesTestsQuery } from "__generated__/HomeViewSectionSalesTestsQuery.graphql"
+import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionSales } from "app/Scenes/HomeView/Sections/HomeViewSectionSales"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -12,7 +13,11 @@ describe("HomeViewSectionSales", () => {
       if (!props.homeView.section) {
         return null
       }
-      return <HomeViewSectionSales section={props.homeView.section} />
+      return (
+        <HomeViewStoreProvider>
+          <HomeViewSectionSales section={props.homeView.section} index={0} />
+        </HomeViewStoreProvider>
+      )
     },
     query: graphql`
       query HomeViewSectionSalesTestsQuery @relay_test_operation {
@@ -34,6 +39,7 @@ describe("HomeViewSectionSales", () => {
           title: "Auctions",
           behaviors: {
             viewAll: {
+              buttonText: null,
               href: "/auctions",
             },
           },
@@ -105,7 +111,7 @@ describe("HomeViewSectionSales", () => {
         [
           {
             "action": "tappedAuctionGroup",
-            "context_module": "sales",
+            "context_module": "<mock-value-for-field-"contextModule">",
             "context_screen_owner_type": "home",
             "destination_screen_owner_id": "sale-2-id",
             "destination_screen_owner_slug": "sale-2-slug",

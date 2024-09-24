@@ -463,6 +463,7 @@ lane :deploy_to_codepush do |options|
   )
 
   # Sentry config
+  sh("yarn add @sentry/cli -D")
   sentry_cli_path = 'node_modules/@sentry/cli/bin/sentry-cli'
   project_slug = 'eigen'
   org_slug = 'artsynet'

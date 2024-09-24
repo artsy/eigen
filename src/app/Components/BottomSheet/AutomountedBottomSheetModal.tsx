@@ -4,6 +4,7 @@ import {
   BottomSheetModalProps,
 } from "@gorhom/bottom-sheet"
 import { DefaultBottomSheetBackdrop } from "app/Components/BottomSheet/DefaultBottomSheetBackdrop"
+import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { FC, useCallback, useEffect, useRef } from "react"
 
 export interface AutomountedBottomSheetModalProps extends BottomSheetModalProps {
@@ -17,6 +18,12 @@ export const AutomountedBottomSheetModal: FC<AutomountedBottomSheetModalProps> =
   ...rest
 }) => {
   const ref = useRef<BottomSheetModal>(null)
+
+  // dismiss modal on back button press on Android
+  useBackHandler(() => {
+    ref.current?.dismiss()
+    return true
+  })
 
   useEffect(() => {
     if (visible) {

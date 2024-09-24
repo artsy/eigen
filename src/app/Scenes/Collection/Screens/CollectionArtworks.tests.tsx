@@ -6,7 +6,11 @@ import {
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { CollectionArtworksFragmentContainer as CollectionArtworks } from "app/Scenes/Collection/Screens/CollectionArtworks"
+import {
+  CollectionArtworksFragmentContainer as CollectionArtworks,
+  CURATORS_PICKS_SLUGS,
+} from "app/Scenes/Collection/Screens/CollectionArtworks"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -51,6 +55,65 @@ describe("CollectionArtworks", () => {
     })
 
     expect(screen.getByText("Showing 123 works")).toBeOnTheScreen()
+  })
+
+  fdescribe("collector signals", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        AREnableCuratorsPicksAndInterestSignals: true,
+      })
+    })
+
+    it("renders the collector signals", () => {
+      renderWithRelay({
+        MarketingCollection: () => ({
+          collectionArtworks: {
+            counts: { total: 123 },
+            edges: [
+              {
+                node: {
+                  title: "Artwork Title",
+                  collectorSignals: {
+                    curatorsPick: true,
+                  },
+                },
+              },
+            ],
+          },
+        }),
+      })
+
+      expect(screen.getByText("Showing 123 works")).toBeOnTheScreen()
+      expect(screen.getByText("Artwork Title")).toBeOnTheScreen()
+      expect(screen.getByText("Curators’ Pick")).toBeOnTheScreen()
+    })
+
+    CURATORS_PICKS_SLUGS.forEach((slug) => {
+      it(`does not render the collector signals for ${slug} collection`, () => {
+        renderWithRelay({
+          MarketingCollection: () => ({
+            slug,
+            collectionArtworks: {
+              counts: { total: 123 },
+              edges: [
+                {
+                  node: {
+                    title: "Artwork Title",
+                    collectorSignals: {
+                      curatorsPick: true,
+                    },
+                  },
+                },
+              ],
+            },
+          }),
+        })
+
+        expect(screen.getByText("Showing 123 works")).toBeOnTheScreen()
+        expect(screen.getByText("Artwork Title")).toBeOnTheScreen()
+        expect(screen.queryByText("Curators’ Pick")).not.toBeOnTheScreen()
+      })
+    })
   })
 })
 

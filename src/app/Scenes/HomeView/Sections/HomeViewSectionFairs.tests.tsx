@@ -1,5 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { HomeViewSectionFairsTestsQuery } from "__generated__/HomeViewSectionFairsTestsQuery.graphql"
+import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionFairs } from "app/Scenes/HomeView/Sections/HomeViewSectionFairs"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -12,7 +13,11 @@ describe("HomeViewSectionFairs", () => {
       if (!props.homeView.section) {
         return null
       }
-      return <HomeViewSectionFairs section={props.homeView.section} />
+      return (
+        <HomeViewStoreProvider>
+          <HomeViewSectionFairs section={props.homeView.section} index={0} />
+        </HomeViewStoreProvider>
+      )
     },
     query: graphql`
       query HomeViewSectionFairsTestsQuery @relay_test_operation {
@@ -107,7 +112,7 @@ describe("HomeViewSectionFairs", () => {
         [
           {
             "action": "tappedFairGroup",
-            "context_module": "fairsForYou",
+            "context_module": "<mock-value-for-field-"contextModule">",
             "context_screen_owner_type": "home",
             "destination_screen_owner_id": "fair-2-id",
             "destination_screen_owner_slug": "fair-2-slug",

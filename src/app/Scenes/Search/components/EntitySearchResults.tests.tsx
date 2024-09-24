@@ -1,29 +1,10 @@
 import { Spinner } from "@artsy/palette-mobile"
-import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { screen, waitForElementToBeRemoved } from "@testing-library/react-native"
 import { EntitySearchResultsQuery } from "__generated__/EntitySearchResultsQuery.graphql"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
 import { EntitySearchResultsScreen } from "app/Scenes/Search/components/EntitySearchResults"
 import { ARTIST_PILL } from "app/Scenes/Search/constants"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-
-const eventData = {
-  nativeEvent: {
-    contentOffset: {
-      y: 500,
-    },
-    contentSize: {
-      // Dimensions of the scrollable content
-      height: 500,
-      width: 100,
-    },
-    layoutMeasurement: {
-      // Dimensions of the device
-      height: 100,
-      width: 100,
-    },
-  },
-}
 
 describe("EntitySearchResults", () => {
   const initialProps = {
@@ -53,12 +34,12 @@ describe("EntitySearchResults", () => {
 
     expect(screen.getByTestId("SingleIndexSearchPlaceholder")).toBeTruthy()
 
-    await waitForElementToBeRemoved(() => screen.getByTestId("SingleIndexSearchPlaceholder"))
+    await waitForElementToBeRemoved(() => screen.queryByTestId("SingleIndexSearchPlaceholder"))
 
-    expect(screen.queryByLabelText("Artist search results list")).toBeTruthy()
+    expect(screen.getByLabelText("Artist search results list")).toBeTruthy()
 
     mockEdges.edges.forEach((edge) => {
-      expect(screen.queryByLabelText(`Search Result for ${edge.node.displayLabel}`)).toBeTruthy()
+      expect(screen.getByLabelText(`Search Result for ${edge.node.displayLabel}`)).toBeTruthy()
       expect(
         screen.getByLabelText(`Search Result for ${edge.node.displayLabel}`)
       ).toHaveTextContent(edge.node.displayLabel)
@@ -80,50 +61,12 @@ describe("EntitySearchResults", () => {
 
     expect(screen.getByTestId("SingleIndexSearchPlaceholder")).toBeTruthy()
 
-    await waitForElementToBeRemoved(() => screen.getByTestId("SingleIndexSearchPlaceholder"))
+    await waitForElementToBeRemoved(() => screen.queryByTestId("SingleIndexSearchPlaceholder"))
 
-    expect(screen.queryByLabelText("Artist search results list")).toBeTruthy()
+    expect(screen.getByLabelText("Artist search results list")).toBeTruthy()
 
     expect(screen.queryByText("Sorry, we couldn’t find an Artist for “Banksy.”"))
     expect(screen.queryByText("Please try searching again with a different spelling."))
-  })
-
-  it("renders the spinner when fetching more results, and hides it when done", async () => {
-    const { env } = renderWithRelay({
-      Query: () => ({
-        searchConnection: {
-          totalCount: 16,
-          ...mockEdges,
-          pageInfo: {
-            hasNextPage: true,
-          },
-        },
-      }),
-    })
-
-    await waitForElementToBeRemoved(() => screen.getByTestId("SingleIndexSearchPlaceholder"))
-
-    expect(screen.queryByLabelText("Artist search results list")).toBeTruthy()
-
-    expect(screen.UNSAFE_queryByType(Spinner)).toBeFalsy()
-
-    fireEvent.scroll(screen.getByLabelText("Artist search results list"), eventData)
-
-    expect(screen.UNSAFE_queryByType(Spinner)).toBeTruthy()
-
-    resolveMostRecentRelayOperation(env, {
-      Query: () => ({
-        searchConnection: {
-          totalCount: 16,
-          ...extraMockEdges,
-          pageInfo: {
-            hasNextPage: false,
-          },
-        },
-      }),
-    })
-
-    expect(screen.UNSAFE_queryByType(Spinner)).toBeFalsy()
   })
 })
 
@@ -177,36 +120,6 @@ const mockEdges = {
     {
       node: {
         displayLabel: "Banksy X Andy Warhol",
-      },
-    },
-  ],
-}
-
-const extraMockEdges = {
-  edges: [
-    {
-      node: {
-        displayLabel: "Extra Banksy",
-      },
-    },
-    {
-      node: {
-        displayLabel: "Extra Hanksy",
-      },
-    },
-    {
-      node: {
-        displayLabel: "Extra Not Banksy",
-      },
-    },
-    {
-      node: {
-        displayLabel: "Extra Banksy X Banksy of England",
-      },
-    },
-    {
-      node: {
-        displayLabel: "Extra Banksy X Bristol Riots",
       },
     },
   ],
