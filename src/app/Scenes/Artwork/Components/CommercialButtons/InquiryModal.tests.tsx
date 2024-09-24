@@ -89,6 +89,9 @@ describe("inquiry modal", () => {
   it("enables the 'send' button when an inquiry question is selected", async () => {
     renderWithRelay({ Artwork: () => mockArtwork })
 
+    // clearing the input field
+    fireEvent.changeText(screen.getByLabelText("Add message"), "")
+
     expect(screen.getByText("Send")).toBeDisabled()
 
     fireEvent.press(screen.getByText("Question"))
