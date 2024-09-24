@@ -1,5 +1,8 @@
 import { Flex, Image, useColor } from "@artsy/palette-mobile"
-import { LegacyArtworkRailCardImage_artwork$key } from "__generated__/LegacyArtworkRailCardImage_artwork.graphql"
+import {
+  LegacyArtworkRailCardImage_artwork$data,
+  LegacyArtworkRailCardImage_artwork$key,
+} from "__generated__/LegacyArtworkRailCardImage_artwork.graphql"
 import { ARTWORK_RAIL_IMAGE_WIDTH } from "app/Components/ArtworkRail/ArtworkRail"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { sizeToFit } from "app/utils/useSizeToFit"
@@ -26,26 +29,7 @@ export const LegacyArtworkRailCardImage: React.FC<LegacyArtworkRailCardImageProp
   const { width, height, src } = image?.legacyResized || {}
 
   const containerWidth = useMemo(() => {
-    const imageDimensions = sizeToFit(
-      {
-        width: image?.legacyResized?.width ?? 0,
-        height: image?.legacyResized?.height ?? 0,
-      },
-      {
-        width: ARTWORK_RAIL_CARD_IMAGE_WIDTH,
-        height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
-      }
-    )
-
-    const SMALL_RAIL_IMAGE_WIDTH = 155
-
-    if (imageDimensions.width <= SMALL_RAIL_IMAGE_WIDTH) {
-      return SMALL_RAIL_IMAGE_WIDTH
-    } else if (imageDimensions.width >= ARTWORK_RAIL_IMAGE_WIDTH) {
-      return ARTWORK_RAIL_IMAGE_WIDTH
-    } else {
-      return imageDimensions.width
-    }
+    return getContainerWidth(image)
   }, [image?.legacyResized?.height, image?.legacyResized?.width])
 
   if (!containerWidth) {
@@ -105,3 +89,26 @@ const artworkFragment = graphql`
     }
   }
 `
+
+export const getContainerWidth = (image: LegacyArtworkRailCardImage_artwork$data["image"]) => {
+  const imageDimensions = sizeToFit(
+    {
+      width: image?.legacyResized?.width ?? 0,
+      height: image?.legacyResized?.height ?? 0,
+    },
+    {
+      width: ARTWORK_RAIL_CARD_IMAGE_WIDTH,
+      height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
+    }
+  )
+
+  const SMALL_RAIL_IMAGE_WIDTH = 155
+
+  if (imageDimensions.width <= SMALL_RAIL_IMAGE_WIDTH) {
+    return SMALL_RAIL_IMAGE_WIDTH
+  } else if (imageDimensions.width >= ARTWORK_RAIL_IMAGE_WIDTH) {
+    return ARTWORK_RAIL_IMAGE_WIDTH
+  } else {
+    return imageDimensions.width
+  }
+}
