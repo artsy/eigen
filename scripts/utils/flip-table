@@ -30,6 +30,9 @@ if ! rm -rf ~/Library/Developer/Xcode/DerivedData; then
 	rm -rf ~/Library/Developer/Xcode/DerivedData
 fi
 
+echo 'Clear Xcode generated .env (╯°□°)╯︵ ┻━┻'
+rm -rf ios/.xcode.env.local
+
 echo 'Reset yalc linked packages (ﾉಠдಠ)ﾉ︵┻━┻'
 if command -v yalc &> /dev/null
 then

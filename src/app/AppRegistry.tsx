@@ -8,6 +8,7 @@ import {
   WorksForYouScreenQuery,
 } from "app/Components/Containers/WorksForYou"
 import { FadeIn } from "app/Components/FadeIn"
+import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { ActivityItemScreenQueryRenderer } from "app/Scenes/Activity/ActivityItemScreen"
 import { ArtQuiz } from "app/Scenes/ArtQuiz/ArtQuiz"
 import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
@@ -142,7 +143,7 @@ import {
   ViewingRoomsListScreen,
   viewingRoomsListScreenQuery,
 } from "./Scenes/ViewingRoom/ViewingRoomsList"
-import { GlobalStore } from "./store/GlobalStore"
+import { GlobalStore, unsafe_getFeatureFlag } from "./store/GlobalStore"
 import { propsStore } from "./store/PropsStore"
 import { DevMenu } from "./system/devTools/DevMenu/DevMenu"
 import { Schema, screenTrack } from "./utils/track"
@@ -373,7 +374,10 @@ export const modules = defineModules({
     ArtistScreenQuery,
   ]),
   ArtistShows: reactModule(ArtistShows2QueryRenderer),
-  ArtistArticles: reactModule(ArtistArticlesQueryRenderer),
+  ArtistArticles: reactModule(ArtistArticlesQueryRenderer, {
+    fullBleed: true,
+    hidesBackButton: true,
+  }),
   ArtistSeries: reactModule(ArtistSeriesQueryRenderer, {
     fullBleed: true,
     hidesBackButton: true,
@@ -492,6 +496,11 @@ export const modules = defineModules({
     HomeContainer,
     {
       isRootViewForTabName: "home",
+      screenOptions: {
+        statusBarTranslucent: true,
+      },
+      fullBleed:
+        ArtsyNativeModule.isBetaOrDev && !unsafe_getFeatureFlag("ARPreferLegacyHomeScreen"),
     },
     [homeViewScreenQuery]
   ),

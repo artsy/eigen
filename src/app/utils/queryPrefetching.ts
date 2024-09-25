@@ -95,7 +95,7 @@ const prefetchUrl = async <TQuery extends OperationType>(
 
   try {
     for (const query of queries) {
-      prefetchQuery(query, options)
+      await prefetchQuery(query, options)
     }
   } catch (error) {
     console.error(`Prefetching "${url}" failed.`, error)
