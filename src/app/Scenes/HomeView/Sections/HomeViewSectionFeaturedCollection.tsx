@@ -10,6 +10,7 @@ import {
   Spacer,
   Text,
 } from "@artsy/palette-mobile"
+import { ArtworkRail_artworks$data } from "__generated__/ArtworkRail_artworks.graphql"
 import { HomeViewSectionFeaturedCollectionQuery } from "__generated__/HomeViewSectionFeaturedCollectionQuery.graphql"
 import { HomeViewSectionFeaturedCollection_section$key } from "__generated__/HomeViewSectionFeaturedCollection_section.graphql"
 import { ARTWORK_RAIL_IMAGE_WIDTH, ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
@@ -66,8 +67,18 @@ export const HomeViewSectionFeaturedCollection: React.FC<
     }
   }
 
-  const handleOnArtworkPress = (artwork: any, _position: any) => {
-    navigate(artwork.href)
+  const handleOnArtworkPress = (artwork: ArtworkRail_artworks$data[0], index: number) => {
+    if (artwork.href) {
+      tracking.tappedArtworkGroup(
+        artwork.internalID,
+        artwork.slug,
+        artwork.collectorSignals,
+        section.contextModule as ContextModule,
+        index
+      )
+
+      navigate(artwork.href)
+    }
   }
 
   return (
