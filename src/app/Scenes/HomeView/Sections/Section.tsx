@@ -14,6 +14,7 @@ import { HomeViewSectionHeroUnitsQueryRenderer } from "app/Scenes/HomeView/Secti
 import { HomeViewSectionMarketingCollectionsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionMarketingCollections"
 import { HomeViewSectionSalesQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionSales"
 import { HomeViewSectionShowsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionShows"
+import { HomeViewSectionVeryFelineArtworksQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionVeryFelineArtworks"
 import { HomeViewSectionViewingRoomsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionViewingRooms"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
 
@@ -42,6 +43,10 @@ export const Section: React.FC<SectionProps> = ({ section, ...rest }) => {
       )
     case "ArticlesCard":
       return <HomeViewSectionArticlesCardsQueryRenderer sectionID={section.internalID} {...rest} />
+    case "VeryFelineArtworks":
+      return (
+        <HomeViewSectionVeryFelineArtworksQueryRenderer sectionID={section.internalID} {...rest} />
+      )
   }
 
   switch (section.__typename) {
