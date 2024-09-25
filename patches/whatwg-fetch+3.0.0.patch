@@ -1,38 +1,67 @@
 diff --git a/node_modules/whatwg-fetch/dist/fetch.umd.js b/node_modules/whatwg-fetch/dist/fetch.umd.js
-index f9b44fd..d7e8171 100644
+index f9b44fd..5a34ec9 100644
 --- a/node_modules/whatwg-fetch/dist/fetch.umd.js
 +++ b/node_modules/whatwg-fetch/dist/fetch.umd.js
-@@ -444,6 +444,20 @@
+@@ -444,6 +444,26 @@
      exports.DOMException.prototype.constructor = exports.DOMException;
    }
  
-+  const urlRejectionMap = {
-+    "https://cdn-settings.segment.com/v1/projects/hN8I1TcVxhWrdJnSzpItJEOHh8OS2GiY/settings": false,
-+    "http://localhost:8081/symbolicate": false,
-+    "https://echo.artsy.net/Echo.json": false,
-+    "https://metaphysics-staging.artsy.net/v2": false,
-+    "https://unleashprx-staging.artsy.net/proxy?sessionId=617037342&appName=eigen&environment=default&userId=5fce98bf9981c52222061eea": false,
-+    "https://staging.artsy.net": false,
-+    "https://live-staging.artsy.net/login": false,
-+    "https://clients3.google.com/generate_204": false,
-+    "https://volley-staging.artsy.net/report": false,
-+    "https://stagingapi.artsy.net/api/v1/me": false,
-+    "https://api.segment.io/v1/b": false,
++  const hostRejectionMap = {
++    "cdn-settings.segment.com": false,
++    "localhost": false,
++    "echo.artsy.net": false,
++    "metaphysics-staging.artsy.net": false,
++    "unleashprx-staging.artsy.net": false,
++    "staging.artsy.net": false,
++    "live-staging.artsy.net": false,
++    "clients3.google.com": false,
++    "volley-staging.artsy.net": false,
++    "stagingapi.artsy.net": false,
++    "api.segment.io": false,
++    "localhost:8081": false,
++    "click.artsy.net": false 
++  };
++
++  const metaphysicsRejectionTests = {
++    saleID: "artsy-auction-street-art-7", // Key-value pair to match in the body
 +  };
 +
    function fetch(input, init) {
      return new Promise(function(resolve, reject) {
        var request = new Request(input, init);
-@@ -452,6 +466,14 @@
+@@ -452,6 +472,37 @@
          return reject(new exports.DOMException('Aborted', 'AbortError'))
        }
  
-+      // Check if the URL exists in the urlRejectionMap
-+      if (!Object.prototype.hasOwnProperty.call(urlRejectionMap, request.url)) {
-+        console.log(`FETCH: URL not in supported list: ${request.url}`);
-+      } else if (urlRejectionMap[request.url]) {
-+        // If toggle is true, simulate a failure
-+        return reject(new TypeError('Network request failed'));
++       // Extract the host from the request URL
++      const requestUrl = new URL(request.url);
++      const requestHost = requestUrl.host;
++
++       // Check if the host exists in the hostRejectionMap
++      if (!Object.prototype.hasOwnProperty.call(hostRejectionMap, requestHost)) {
++        console.log(`FETCH: Host not in supported list: ${requestHost}`);
++      } else if (requestHost.includes("metaphysics")) {
++        // If it's a request to Metaphysics, we inspect the body content from init
++        try {
++          // If body is a string, we assume it's a JSON string and parse it
++          const body = JSON.parse(init.body);
++
++          // Check if the body contains the specific variables you want to fail on
++          // update this for specific queries
++          const shouldReject = Object.entries(metaphysicsRejectionTests).some(([key, value]) => {
++            return body.variables && body.variables[key] === value;
++          });
++
++          if (shouldReject) {
++            console.warn("FETCH: Network request failed due to specific GraphQL query variables");
++            return reject(new Error('Network request failed due to specific GraphQL query variables'));
++          }
++        } catch (e) {
++          console.log("Failed to parse request body for inspection", e);
++        }
++      } else if (hostRejectionMap[requestHost]) {
++         // If toggle is true, simulate a failure
++         return reject(new TypeError('Network request failed'));
 +      }
 +
        var xhr = new XMLHttpRequest();
