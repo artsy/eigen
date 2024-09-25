@@ -1,9 +1,9 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, Spinner } from "@artsy/palette-mobile"
 import { FlashList } from "@shopify/flash-list"
+import { HomeViewFetchMeQuery } from "__generated__/HomeViewFetchMeQuery.graphql"
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
 import { HomeViewSectionsConnection_viewer$key } from "__generated__/HomeViewSectionsConnection_viewer.graphql"
-import { HomeView_me$key } from "__generated__/HomeView_me.graphql"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { useDismissSavedArtwork } from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
 import { useEnableProgressiveOnboarding } from "app/Components/ProgressiveOnboarding/useEnableProgressiveOnboarding"
@@ -22,13 +22,7 @@ import { requestPushNotificationsPermission } from "app/utils/requestPushNotific
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
 import { Suspense, useEffect, useState } from "react"
 import { RefreshControl } from "react-native"
-import {
-  fetchQuery,
-  graphql,
-  useFragment,
-  useLazyLoadQuery,
-  usePaginationFragment,
-} from "react-relay"
+import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 export const NUMBER_OF_SECTIONS_TO_LOAD = 5
 // Hard coding the value here because 30px is not a valid value for the spacing unit
@@ -53,8 +47,8 @@ export const HomeView: React.FC = () => {
     HomeViewSectionsConnection_viewer$key
   >(sectionsFragment, queryData.viewer)
 
-  const meData = useFragment<HomeView_me$key>(meFragment, queryData.me)
-  const savedArtworksCount = meData?.counts?.savedArtworks ?? 0
+  const [savedArtworksCount, setSavedArtworksCount] = useState(0)
+
   useDismissSavedArtwork(savedArtworksCount > 0)
   useEnableProgressiveOnboarding()
   const prefetchUrl = usePrefetch()
@@ -77,6 +71,32 @@ export const HomeView: React.FC = () => {
 
   useEffect(() => {
     tracking.screen(OwnerType.home)
+  }, [])
+
+  useEffect(() => {
+    const fetchMe = async () => {
+      const result = await fetchQuery<HomeViewFetchMeQuery>(
+        getRelayEnvironment(),
+        graphql`
+          query HomeViewFetchMeQuery {
+            me {
+              counts {
+                savedArtworks
+              }
+            }
+          }
+        `,
+        {}
+      ).toPromise()
+
+      return result?.me
+    }
+
+    fetchMe().then((me) => {
+      if (me?.counts?.savedArtworks) {
+        setSavedArtworksCount(me?.counts?.savedArtworks)
+      }
+    })
   }, [])
 
   const handleRefresh = () => {
@@ -151,14 +171,6 @@ export const HomeViewScreen: React.FC = () => {
   )
 }
 
-const meFragment = graphql`
-  fragment HomeView_me on Me {
-    counts {
-      savedArtworks
-    }
-  }
-`
-
 const sectionsFragment = graphql`
   fragment HomeViewSectionsConnection_viewer on Viewer
   @argumentDefinitions(count: { type: "Int" }, cursor: { type: "String" })
@@ -184,10 +196,6 @@ const sectionsFragment = graphql`
 
 export const homeViewScreenQuery = graphql`
   query HomeViewQuery($count: Int!, $cursor: String) {
-    me {
-      ...HomeView_me
-    }
-
     viewer {
       ...HomeViewSectionsConnection_viewer @arguments(count: $count, cursor: $cursor)
     }
