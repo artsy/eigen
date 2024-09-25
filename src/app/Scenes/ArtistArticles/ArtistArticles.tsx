@@ -1,9 +1,15 @@
+import { ActionType, ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
+import { Screen } from "@artsy/palette-mobile"
+import { ArticleCard_article$data } from "__generated__/ArticleCard_article.graphql"
 import { ArtistArticlesResultQuery } from "__generated__/ArtistArticlesResultQuery.graphql"
 import { ArtistArticles_artist$data } from "__generated__/ArtistArticles_artist.graphql"
 import { ArticlesList, ArticlesPlaceholder } from "app/Scenes/Articles/ArticlesList"
+import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import React, { useState } from "react"
 import {
   createPaginationContainer,
@@ -12,6 +18,7 @@ import {
   graphql,
   Environment,
 } from "react-relay"
+import { useTracking } from "react-tracking"
 
 const PAGE_SIZE = 10
 
@@ -24,6 +31,7 @@ export const ArtistArticles: React.FC<ArticlesProps> = ({ artist, relay }) => {
   const articles = extractNodes(artist.articlesConnection)
 
   const [refreshing, setRefreshing] = useState(false)
+  const tracking = useTracking()
 
   const handleLoadMore = () => {
     if (!relay.hasMore() || relay.isLoading()) {
@@ -41,15 +49,34 @@ export const ArtistArticles: React.FC<ArticlesProps> = ({ artist, relay }) => {
     setRefreshing(false)
   }
 
+  const handleOnPress = (article: ArticleCard_article$data) => {
+    const tapEvent = tracks.tapArticlesListItem(article.internalID, article.slug || "")
+    tracking.trackEvent(tapEvent)
+  }
+
   return (
-    <ArticlesList
-      articles={articles as any}
-      isLoading={relay.isLoading}
-      hasMore={relay.hasMore}
-      refreshing={refreshing}
-      handleLoadMore={handleLoadMore}
-      handleRefresh={handleRefresh}
-    />
+    <Screen>
+      <ProvideScreenTrackingWithCohesionSchema
+        info={screen({
+          // TODO: Use value from @artsy/cohesion
+          context_screen_owner_type: "artistArticles" as ScreenOwnerType,
+        })}
+      >
+        <Screen.AnimatedHeader onBack={goBack} title="Articles" />
+        <Screen.StickySubHeader title="Articles" />
+        <Screen.Body fullwidth>
+          <ArticlesList
+            articles={articles as any}
+            isLoading={relay.isLoading}
+            hasMore={relay.hasMore}
+            refreshing={refreshing}
+            handleLoadMore={handleLoadMore}
+            handleRefresh={handleRefresh}
+            handleOnPress={handleOnPress}
+          />
+        </Screen.Body>
+      </ProvideScreenTrackingWithCohesionSchema>
+    </Screen>
   )
 }
 
@@ -115,4 +142,16 @@ export const ArtistArticlesQueryRenderer: React.FC<{
       })}
     />
   )
+}
+
+export const tracks = {
+  tapArticlesListItem: (articleId: string, articleSlug: string) => ({
+    action: ActionType.tappedArticleGroup,
+    context_module: ContextModule.articles,
+    // TODO: Use value from @artsy/cohesion
+    context_screen_owner_type: "artistArticles" as ScreenOwnerType,
+    destination_screen_owner_type: OwnerType.article,
+    destination_screen_owner_id: articleId,
+    destination_screen_owner_slug: articleSlug,
+  }),
 }

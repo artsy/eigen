@@ -373,7 +373,10 @@ export const modules = defineModules({
     ArtistScreenQuery,
   ]),
   ArtistShows: reactModule(ArtistShows2QueryRenderer),
-  ArtistArticles: reactModule(ArtistArticlesQueryRenderer),
+  ArtistArticles: reactModule(ArtistArticlesQueryRenderer, {
+    fullBleed: true,
+    hidesBackButton: true,
+  }),
   ArtistSeries: reactModule(ArtistSeriesQueryRenderer, {
     fullBleed: true,
     hidesBackButton: true,
