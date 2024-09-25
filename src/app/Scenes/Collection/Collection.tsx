@@ -119,7 +119,15 @@ export const CollectionContent: React.FC<CollectionProps> = ({ collection }) => 
 }
 
 const CollectionQueryRenderer: React.FC<CollectionScreenProps> = ({ collectionID }) => {
-  const data = useLazyLoadQuery<CollectionQuery>(query, { collectionID })
+  const data = useLazyLoadQuery<CollectionQuery>(
+    query,
+    { collectionID },
+    {
+      networkCacheConfig: {
+        force: false,
+      },
+    }
+  )
 
   if (!data?.collection) {
     return null

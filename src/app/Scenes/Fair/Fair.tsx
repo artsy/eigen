@@ -155,7 +155,15 @@ interface FairQueryRendererProps {
 }
 
 const FairQueryRenderer: React.FC<FairQueryRendererProps> = ({ fairID }) => {
-  const data = useLazyLoadQuery<FairQuery>(query, { fairID })
+  const data = useLazyLoadQuery<FairQuery>(
+    query,
+    { fairID },
+    {
+      networkCacheConfig: {
+        force: false,
+      },
+    }
+  )
 
   if (!data?.fair) {
     return null
