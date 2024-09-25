@@ -58,7 +58,7 @@ export const ArtistArticles: React.FC<ArticlesProps> = ({ artist, relay }) => {
     <Screen>
       <ProvideScreenTrackingWithCohesionSchema
         info={screen({
-          context_screen_owner_type: OwnerType.artistArticles,
+          context_screen_owner_type: OwnerType.articles,
         })}
       >
         <Screen.AnimatedHeader onBack={goBack} title="Articles" />
@@ -147,7 +147,7 @@ export const tracks = {
   tapArticlesListItem: (articleId: string, articleSlug: string) => ({
     action: ActionType.tappedArticleGroup,
     context_module: ContextModule.articles,
-    context_screen_owner_type: OwnerType.artistArticles,
+    context_screen_owner_type: OwnerType.articles,
     destination_screen_owner_type: OwnerType.article,
     destination_screen_owner_id: articleId,
     destination_screen_owner_slug: articleSlug,
