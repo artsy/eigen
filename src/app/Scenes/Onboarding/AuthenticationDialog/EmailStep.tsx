@@ -1,17 +1,25 @@
 import { BackButton, Button, Flex, Input, Text, useTheme } from "@artsy/palette-mobile"
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
+import { useRecaptcha } from "app/Components/Recaptcha/Recaptcha"
 import { AuthenticationDialogFormValues } from "app/Scenes/Onboarding/AuthenticationDialog/AuthenticationDialogForm"
 import { OnboardingHomeNavigationStack } from "app/Scenes/Onboarding/OnboardingHome"
 import { useFormikContext } from "formik"
+import { useEffect } from "react"
 
 type EmailStepProps = StackScreenProps<OnboardingHomeNavigationStack, "EmailStep">
 
 export const EmailStep: React.FC<EmailStepProps> = ({ navigation }) => {
   const { color, space } = useTheme()
 
-  const { errors, handleChange, handleSubmit, isValid, values } =
+  const { errors, handleChange, handleSubmit, isValid, setFieldValue, values } =
     useFormikContext<AuthenticationDialogFormValues>()
+
+  const { Recaptcha, token } = useRecaptcha({ source: "authentication", action: "verify_email" })
+
+  useEffect(() => {
+    setFieldValue("recaptchaToken", token)
+  }, [token, setFieldValue])
 
   const handleBackButtonPress = () => {
     navigation.goBack()
@@ -23,6 +31,8 @@ export const EmailStep: React.FC<EmailStepProps> = ({ navigation }) => {
         <BackButton onPress={handleBackButtonPress} />
 
         <Text variant="sm-display">Sign up or log in</Text>
+
+        <Recaptcha />
 
         <Input
           autoCapitalize="none"

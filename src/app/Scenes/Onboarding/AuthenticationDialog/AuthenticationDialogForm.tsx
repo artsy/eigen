@@ -28,13 +28,14 @@ export const AuthenticationDialogForm: React.FC<AuthenticationDialogFormProps> =
       name: "",
       otp: "",
       password: "",
+      recaptchaToken: "",
     },
     onSubmit: async (
-      { acceptedTerms, agreedToReceiveEmails, email, name, otp, password },
+      { acceptedTerms, agreedToReceiveEmails, email, name, otp, password, recaptchaToken },
       { setErrors }
     ) => {
       if (currentStep === "EmailStep") {
-        const res = await GlobalStore.actions.auth.verifyUser({ email })
+        const res = await GlobalStore.actions.auth.verifyUser({ email, recaptchaToken })
 
         if (res === "user_exists") {
           navigation.navigate("LoginPasswordStep")
@@ -152,6 +153,7 @@ export interface AuthenticationDialogFormValues {
   name: string
   otp: string
   password: string
+  recaptchaToken: string
 }
 
 const EmailValidationSchema = Yup.object().shape({
