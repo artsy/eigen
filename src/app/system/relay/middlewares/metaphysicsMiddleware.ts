@@ -1,5 +1,4 @@
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { getCurrentURL } from "app/routes"
 import {
   getCurrentEmissionState,
   unsafe__getEnvironment,
@@ -108,7 +107,7 @@ export function metaphysicsURLMiddleware() {
         // Always include auth headers if not using CDN
         !unsafe_getFeatureFlag("ARUseMetaphysicsCDN") ||
         // If using CDN, include them only if the request is not cacheable
-        shouldSkipCDNCache(req as GraphQLRequest, getCurrentURL())
+        shouldSkipCDNCache(req as GraphQLRequest)
 
       const authHeaders = {
         "X-USER-ID": userID,
