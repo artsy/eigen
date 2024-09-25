@@ -153,7 +153,7 @@ export const PartnerQueryRenderer: React.FC<{
     <QueryRenderer<PartnerQuery>
       environment={getRelayEnvironment()}
       query={graphql`
-        query PartnerQuery($partnerID: String!, $displayArtistsSection: Boolean!) {
+        query PartnerQuery($partnerID: String!, $displayArtistsSection: Boolean!) @cacheable {
           partner(id: $partnerID) {
             ...Partner_partner @arguments(displayArtistsSection: $displayArtistsSection)
           }

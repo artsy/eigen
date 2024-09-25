@@ -283,6 +283,11 @@ export const features = {
     showInDevMenu: true,
     // echoFlagKey: "AREnableArtworkRailRedesignImageAspectRatio",
   },
+  ARUseMetaphysicsCDN: {
+    description: "Use Metaphysics CDN (requires app restart)",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {

@@ -95,7 +95,7 @@ const sectionFragment = graphql`
 `
 
 const homeViewSectionArticlesQuery = graphql`
-  query HomeViewSectionArticlesQuery($id: String!) {
+  query HomeViewSectionArticlesQuery($id: String!) @cacheable {
     homeView {
       section(id: $id) {
         ...HomeViewSectionArticles_section

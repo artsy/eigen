@@ -261,7 +261,7 @@ export const ViewingRoomQueryRenderer: React.FC<{ viewing_room_id: string }> = (
     <QueryRenderer<ViewingRoomQuery>
       environment={getRelayEnvironment()}
       query={graphql`
-        query ViewingRoomQuery($viewingRoomID: ID!) {
+        query ViewingRoomQuery($viewingRoomID: ID!) @cacheable {
           viewingRoom(id: $viewingRoomID) @principalField {
             ...ViewingRoom_viewingRoom
           }

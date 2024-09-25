@@ -147,7 +147,7 @@ const HomeViewSectionGalleriesPlaceholder: React.FC<FlexProps> = (flexProps) => 
 }
 
 const homeViewSectionGalleriesQuery = graphql`
-  query HomeViewSectionGalleriesQuery($id: String!) {
+  query HomeViewSectionGalleriesQuery($id: String!) @cacheable {
     homeView {
       section(id: $id) {
         ...HomeViewSectionGalleries_section

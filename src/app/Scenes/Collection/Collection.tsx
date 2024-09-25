@@ -174,7 +174,7 @@ const CollectionPlaceholder: React.FC = () => {
 }
 
 const query = graphql`
-  query CollectionQuery($collectionID: String!) {
+  query CollectionQuery($collectionID: String!) @cacheable {
     collection: marketingCollection(slug: $collectionID) @principalField {
       ...Collection_collection
     }
