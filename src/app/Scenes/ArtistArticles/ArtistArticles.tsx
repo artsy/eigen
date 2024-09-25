@@ -1,4 +1,4 @@
-import { ActionType, ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Screen } from "@artsy/palette-mobile"
 import { ArticleCard_article$data } from "__generated__/ArticleCard_article.graphql"
 import { ArtistArticlesResultQuery } from "__generated__/ArtistArticlesResultQuery.graphql"
@@ -58,8 +58,7 @@ export const ArtistArticles: React.FC<ArticlesProps> = ({ artist, relay }) => {
     <Screen>
       <ProvideScreenTrackingWithCohesionSchema
         info={screen({
-          // TODO: Use value from @artsy/cohesion
-          context_screen_owner_type: "artistArticles" as ScreenOwnerType,
+          context_screen_owner_type: OwnerType.artistArticles,
         })}
       >
         <Screen.AnimatedHeader onBack={goBack} title="Articles" />
@@ -148,8 +147,7 @@ export const tracks = {
   tapArticlesListItem: (articleId: string, articleSlug: string) => ({
     action: ActionType.tappedArticleGroup,
     context_module: ContextModule.articles,
-    // TODO: Use value from @artsy/cohesion
-    context_screen_owner_type: "artistArticles" as ScreenOwnerType,
+    context_screen_owner_type: OwnerType.artistArticles,
     destination_screen_owner_type: OwnerType.article,
     destination_screen_owner_id: articleId,
     destination_screen_owner_slug: articleSlug,
