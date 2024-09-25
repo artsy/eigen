@@ -68,6 +68,7 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
         Please try again
       </Text>
       {!!isStaging && <Box mb={1} border={2} width={200} borderColor="devpurple" />}
+
       {!!onRetry && (
         <Touchable
           onPress={debounce(() => {
@@ -111,6 +112,14 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
       {!!showErrorMessage && (
         <Flex m={2}>
           <Text>Error: {error?.message}</Text>
+        </Flex>
+      )}
+      {!!(appWideErrorBoundary && __DEV__) && (
+        <Flex m={2}>
+          <Text color="red">
+            This is the app wide error boundary. This should be avoided, please add local error
+            handling to the originating screen.
+          </Text>
         </Flex>
       )}
     </Flex>
