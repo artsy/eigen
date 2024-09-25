@@ -1,9 +1,12 @@
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { getCurrentURL } from "app/routes"
 import {
   getCurrentEmissionState,
   unsafe__getEnvironment,
   unsafe_getFeatureFlag,
 } from "app/store/GlobalStore"
+import { shouldSkipCDNCache } from "app/system/relay/middlewares/cacheHeaderMiddleware"
+import { GraphQLRequest } from "app/system/relay/middlewares/types"
 import { logQueryPath } from "app/utils/loggers"
 import { omit } from "lodash"
 import { Middleware, urlMiddleware } from "react-relay-network-modern"
@@ -90,20 +93,33 @@ export function metaphysicsExtensionsLoggerMiddleware() {
 }
 
 export function metaphysicsURLMiddleware() {
-  const metaphysicsURL = unsafe_getFeatureFlag("ARUseMetaphysicsCDN")
-    ? unsafe__getEnvironment().metaphysicsCDNURL
-    : unsafe__getEnvironment().metaphysicsURL
-
   return urlMiddleware({
-    url: () => metaphysicsURL,
-    headers: () => {
+    url: () => {
+      const metaphysicsURL = unsafe_getFeatureFlag("ARUseMetaphysicsCDN")
+        ? unsafe__getEnvironment().metaphysicsCDNURL
+        : unsafe__getEnvironment().metaphysicsURL
+
+      return metaphysicsURL
+    },
+    headers: (req) => {
       const { userAgent, userID, authenticationToken } = getCurrentEmissionState()
+
+      const includeAuthHeaders =
+        // Always include auth headers if not using CDN
+        !unsafe_getFeatureFlag("ARUseMetaphysicsCDN") ||
+        // IF using CDN, include them only if the request is cacheable
+        shouldSkipCDNCache(req as GraphQLRequest, getCurrentURL())
+
+      const authHeaders = {
+        "X-USER-ID": userID,
+        "X-ACCESS-TOKEN": authenticationToken,
+      }
+
       return {
         "Content-Type": "application/json",
         "User-Agent": userAgent,
-        "X-USER-ID": userID,
-        "X-ACCESS-TOKEN": authenticationToken,
         "X-TIMEZONE": LegacyNativeModules.ARCocoaConstantsModule.LocalTimeZone,
+        ...(includeAuthHeaders ? authHeaders : {}),
       }
     },
   })
