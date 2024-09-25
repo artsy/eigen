@@ -35,8 +35,14 @@ export class RetryErrorBoundary extends Component<
   }
 
   render() {
-    const { children, failureView, notFoundTitle, notFoundText, notFoundBackButtonText } =
-      this.props
+    const {
+      children,
+      failureView,
+      notFoundTitle,
+      notFoundText,
+      notFoundBackButtonText,
+      appWideErrorBoundary,
+    } = this.props
     const { error } = this.state
 
     if (error) {
@@ -63,7 +69,7 @@ export class RetryErrorBoundary extends Component<
         <LoadFailureView
           error={error}
           onRetry={this._retry}
-          appWideErrorBoundary={this.props.appWideErrorBoundary}
+          appWideErrorBoundary={appWideErrorBoundary}
         />
       )
     }
