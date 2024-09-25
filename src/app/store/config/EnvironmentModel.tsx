@@ -29,6 +29,14 @@ export const environment = defineEnvironmentOptions({
       production: "https://api.artsy.net",
     },
   },
+  metaphysicsCDNURL: {
+    description: "Metaphysics CDN URL",
+    presets: {
+      local: "http://localhost:5001/v2",
+      staging: "https://metaphysics-cdn-staging.artsy.net/v2",
+      production: "https://metaphysics-cdn.artsy.net/v2",
+    },
+  },
   metaphysicsURL: {
     description: "Metaphysics URL",
     presets: {

@@ -198,7 +198,7 @@ interface ArtistQueryRendererProps {
 }
 
 export const ArtistScreenQuery = graphql`
-  query ArtistAboveTheFoldQuery($artistID: String!, $input: FilterArtworksInput) {
+  query ArtistAboveTheFoldQuery($artistID: String!, $input: FilterArtworksInput) @cacheable {
     artist(id: $artistID) @principalField {
       ...ArtistHeader_artist
       ...ArtistArtworks_artist @arguments(input: $input)
@@ -284,7 +284,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
               }}
               below={{
                 query: graphql`
-                  query ArtistBelowTheFoldQuery($artistID: String!) {
+                  query ArtistBelowTheFoldQuery($artistID: String!) @cacheable {
                     artist(id: $artistID) {
                       ...ArtistAbout_artist
                       ...ArtistInsights_artist

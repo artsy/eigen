@@ -143,7 +143,7 @@ const fragment = graphql`
 `
 
 const query = graphql`
-  query FairQuery($fairID: String!) {
+  query FairQuery($fairID: String!) @cacheable {
     fair(id: $fairID) @principalField {
       ...Fair_fair
     }

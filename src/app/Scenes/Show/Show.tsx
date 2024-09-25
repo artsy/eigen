@@ -159,7 +159,7 @@ export const ShowQueryRenderer: React.FC<ShowQueryRendererProps> = ({ showID }) 
     <QueryRenderer<ShowQuery>
       environment={getRelayEnvironment()}
       query={graphql`
-        query ShowQuery($showID: String!) {
+        query ShowQuery($showID: String!) @cacheable {
           show(id: $showID) @principalField {
             ...Show_show
           }

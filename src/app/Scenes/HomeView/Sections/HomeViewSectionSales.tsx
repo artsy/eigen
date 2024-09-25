@@ -202,7 +202,7 @@ const HomeViewSectionSalesPlaceholder: React.FC<FlexProps> = (flexProps) => {
 }
 
 const homeViewSectionSalesQuery = graphql`
-  query HomeViewSectionSalesQuery($id: String!) {
+  query HomeViewSectionSalesQuery($id: String!) @cacheable {
     homeView {
       section(id: $id) {
         ...HomeViewSectionSales_section

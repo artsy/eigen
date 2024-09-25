@@ -1,6 +1,9 @@
-import { captureMessage } from "@sentry/react-native"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/GlobalStore"
+import {
+  getCurrentEmissionState,
+  unsafe__getEnvironment,
+  unsafe_getFeatureFlag,
+} from "app/store/GlobalStore"
 import { logQueryPath } from "app/utils/loggers"
 import { omit } from "lodash"
 import { Middleware, urlMiddleware } from "react-relay-network-modern"
@@ -87,8 +90,12 @@ export function metaphysicsExtensionsLoggerMiddleware() {
 }
 
 export function metaphysicsURLMiddleware() {
+  const metaphysicsURL = unsafe_getFeatureFlag("ARUseMetaphysicsCDN")
+    ? unsafe__getEnvironment().metaphysicsCDNURL
+    : unsafe__getEnvironment().metaphysicsURL
+
   return urlMiddleware({
-    url: () => unsafe__getEnvironment().metaphysicsURL,
+    url: () => metaphysicsURL,
     headers: () => {
       const { userAgent, userID, authenticationToken } = getCurrentEmissionState()
       return {
@@ -104,8 +111,6 @@ export function metaphysicsURLMiddleware() {
 
 export function persistedQueryMiddleware(): Middleware {
   return (next) => async (req) => {
-    // Get query body either from local queryMap or
-    // send queryID to metaphysics
     let body: { variables?: object; query?: string; documentID?: string } = {}
     const queryID = req.getID()
     const variables = req.getVariables()
@@ -116,18 +121,8 @@ export function persistedQueryMiddleware(): Middleware {
       req.fetchOpts.body = JSON.stringify(body)
     }
 
-    try {
-      return await next(req)
-    } catch (e: any) {
-      if (e.toString().includes("Unable to serve persisted query with ID")) {
-        // this should not happen normally, but let's try again with full query text to avoid ruining the user's day?
-        captureMessage(e.stack)
-        body = { query: require("../../../../../data/complete.queryMap.json")[queryID], variables }
-        req.fetchOpts.body = JSON.stringify(body)
-        return await next(req)
-      } else {
-        throw e
-      }
-    }
+    body = { query: require("../../../../../data/complete.queryMap.json")[queryID], variables }
+    req.fetchOpts.body = JSON.stringify(body)
+    return await next(req)
   }
 }

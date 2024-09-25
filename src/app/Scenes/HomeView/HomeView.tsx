@@ -195,7 +195,7 @@ const sectionsFragment = graphql`
 `
 
 export const homeViewScreenQuery = graphql`
-  query HomeViewQuery($count: Int!, $cursor: String) {
+  query HomeViewQuery($count: Int!, $cursor: String) @cacheable {
     viewer {
       ...HomeViewSectionsConnection_viewer @arguments(count: $count, cursor: $cursor)
     }
