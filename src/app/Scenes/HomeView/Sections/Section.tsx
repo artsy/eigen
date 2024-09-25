@@ -8,6 +8,7 @@ import { HomeViewSectionArtworksQueryRenderer } from "app/Scenes/HomeView/Sectio
 import { HomeViewSectionAuctionResultsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionAuctionResults"
 import { HomeViewSectionFairsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionFairs"
 import { HomeViewSectionFeaturedCollectionQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionFeaturedCollection"
+import { HomeViewSectionFeaturedLinksQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionFeaturedLinks"
 import { HomeViewSectionGalleriesQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionGalleries"
 import { HomeViewSectionGeneric } from "app/Scenes/HomeView/Sections/HomeViewSectionGeneric"
 import { HomeViewSectionHeroUnitsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionHeroUnits"
@@ -76,6 +77,8 @@ export const Section: React.FC<SectionProps> = ({ section, ...rest }) => {
       return <HomeViewSectionViewingRoomsQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionSales":
       return <HomeViewSectionSalesQueryRenderer sectionID={section.internalID} {...rest} />
+    case "HomeViewSectionFeaturedLinks":
+      return <HomeViewSectionFeaturedLinksQueryRenderer sectionID={section.internalID} {...rest} />
     default:
       if (__DEV__) {
         return (
