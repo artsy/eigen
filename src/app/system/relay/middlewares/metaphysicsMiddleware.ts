@@ -107,7 +107,7 @@ export function metaphysicsURLMiddleware() {
       const includeAuthHeaders =
         // Always include auth headers if not using CDN
         !unsafe_getFeatureFlag("ARUseMetaphysicsCDN") ||
-        // IF using CDN, include them only if the request is cacheable
+        // If using CDN, include them only if the request is not cacheable
         shouldSkipCDNCache(req as GraphQLRequest, getCurrentURL())
 
       const authHeaders = {
