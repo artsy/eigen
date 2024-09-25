@@ -1,11 +1,23 @@
-import { ReloadIcon, Flex, Box, BoxProps, useColor, Text, Touchable } from "@artsy/palette-mobile"
+import {
+  ReloadIcon,
+  Flex,
+  Box,
+  BoxProps,
+  useColor,
+  Text,
+  Touchable,
+  BackButton,
+} from "@artsy/palette-mobile"
 import * as Sentry from "@sentry/react-native"
 import { GlobalStore } from "app/store/GlobalStore"
+import { goBack } from "app/system/navigation/navigate"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { debounce } from "lodash"
 import { useEffect, useRef, useState } from "react"
 import { Animated, Easing } from "react-native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { space } from "styled-system"
 import { JustifyContentValue } from "./Bidding/Elements/types"
 
 interface LoadFailureViewProps {
@@ -13,12 +25,16 @@ interface LoadFailureViewProps {
   onRetry?: () => void
   justifyContent?: JustifyContentValue
   appWideErrorBoundary?: boolean
+  showBackButton?: boolean
 }
+
+const HEADER_HEIGHT = 50
 
 export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
   error,
   onRetry,
   appWideErrorBoundary = false,
+  showBackButton = false,
   ...restProps
 }) => {
   const color = useColor()
@@ -27,6 +43,7 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
   const userId = GlobalStore.useAppState((state) => state.auth.userID)
   const activeTab = GlobalStore.useAppState((state) => state.bottomTabs.sessionState.selectedTab)
   const showErrorInLoadFailureViewToggle = useDevToggle("DTShowErrorInLoadFailureView")
+  const topInsets = useSafeAreaInsets().top
 
   const isStaging = useIsStaging()
 
@@ -62,66 +79,83 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
   }
 
   return (
-    <Flex flex={1} alignItems="center" justifyContent="center" {...restProps}>
-      <Text variant="lg-display">Unable to load</Text>
-      <Text variant="sm-display" mb={1}>
-        Please try again
-      </Text>
-      {!!isStaging && <Box mb={1} border={2} width={200} borderColor="devpurple" />}
+    <>
+      {!!showBackButton && (
+        <Flex pt={`${topInsets}px`} mx={2} mb={2} height={HEADER_HEIGHT}>
+          <Flex flexDirection="row" justifyContent="space-between" height={30} mb={1}>
+            <BackButton
+              onPress={goBack}
+              hitSlop={{
+                top: space(2),
+                left: space(2),
+                right: space(2),
+                bottom: space(2),
+              }}
+            />
+          </Flex>
+        </Flex>
+      )}
+      <Flex flex={1} alignItems="center" justifyContent="center" {...restProps}>
+        <Text variant="lg-display">Unable to load</Text>
+        <Text variant="sm-display" mb={1}>
+          Please try again
+        </Text>
+        {!!isStaging && <Box mb={1} border={2} width={200} borderColor="devpurple" />}
 
-      {!!onRetry && (
-        <Touchable
-          onPress={debounce(() => {
-            if (!isAnimating) {
-              playAnimation()
-            }
-            onRetry?.()
-          })}
-          underlayColor={color("black5")}
-          haptic
-          style={{
-            height: 40,
-            width: 40,
-            borderRadius: 20,
-            borderColor: color("black10"),
-            borderWidth: 1,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Animated.View
+        {!!onRetry && (
+          <Touchable
+            onPress={debounce(() => {
+              if (!isAnimating) {
+                playAnimation()
+              }
+              onRetry?.()
+            })}
+            underlayColor={color("black5")}
+            haptic
             style={{
               height: 40,
               width: 40,
+              borderRadius: 20,
+              borderColor: color("black10"),
+              borderWidth: 1,
               justifyContent: "center",
               alignItems: "center",
-              transform: [
-                {
-                  rotate: spinAnimation.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: ["0deg", "360deg"],
-                  }),
-                },
-              ],
             }}
           >
-            <ReloadIcon height={25} width={25} />
-          </Animated.View>
-        </Touchable>
-      )}
-      {!!showErrorMessage && (
-        <Flex m={2}>
-          <Text>Error: {error?.message}</Text>
-        </Flex>
-      )}
-      {!!(appWideErrorBoundary && __DEV__) && (
-        <Flex m={2}>
-          <Text color="red">
-            This is the app wide error boundary. This should be avoided, please add local error
-            handling to the originating screen.
-          </Text>
-        </Flex>
-      )}
-    </Flex>
+            <Animated.View
+              style={{
+                height: 40,
+                width: 40,
+                justifyContent: "center",
+                alignItems: "center",
+                transform: [
+                  {
+                    rotate: spinAnimation.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: ["0deg", "360deg"],
+                    }),
+                  },
+                ],
+              }}
+            >
+              <ReloadIcon height={25} width={25} />
+            </Animated.View>
+          </Touchable>
+        )}
+        {!!showErrorMessage && (
+          <Flex m={2}>
+            <Text>Error: {error?.message}</Text>
+          </Flex>
+        )}
+        {!!(appWideErrorBoundary && __DEV__) && (
+          <Flex m={2}>
+            <Text color="red">
+              This is the app wide error boundary. This should be avoided, please add local error
+              handling to the originating screen.
+            </Text>
+          </Flex>
+        )}
+      </Flex>
+    </>
   )
 }

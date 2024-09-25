@@ -11,6 +11,7 @@ interface RetryErrorBoundaryProps {
   notFoundOnBackPress?: () => void
   children?: React.ReactNode
   appWideErrorBoundary?: boolean
+  showBackButton?: boolean
 }
 interface RetryErrorBoundaryState {
   error: Error | null
@@ -22,6 +23,7 @@ export class RetryErrorBoundary extends Component<
 > {
   static defaultProps = {
     appWideErrorBoundary: false,
+    showBackButton: false,
   }
 
   static getDerivedStateFromError(error: Error | null): RetryErrorBoundaryState {
@@ -42,6 +44,7 @@ export class RetryErrorBoundary extends Component<
       notFoundText,
       notFoundBackButtonText,
       appWideErrorBoundary,
+      showBackButton,
     } = this.props
     const { error } = this.state
 
@@ -69,6 +72,7 @@ export class RetryErrorBoundary extends Component<
         <LoadFailureView
           error={error}
           onRetry={this._retry}
+          showBackButton={showBackButton}
           appWideErrorBoundary={appWideErrorBoundary}
         />
       )
