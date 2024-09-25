@@ -645,6 +645,7 @@ describe("when pressing register button", () => {
 })
 
 it("shows a checkbox for agreeing to the conditions of sale", () => {
+  __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewTermsAndConditions: false })
   renderWithWrappers(<Registration {...initialPropsForUserWithCreditCardAndPhone} />)
 
   expect(
@@ -655,6 +656,7 @@ it("shows a checkbox for agreeing to the conditions of sale", () => {
 })
 
 it("navigates to the conditions of sale when the user taps the link", () => {
+  __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewTermsAndConditions: false })
   jest.mock("app/system/navigation/navigate", () => ({
     ...jest.requireActual("app/system/navigation/navigate"),
     navigate: jest.fn(),
