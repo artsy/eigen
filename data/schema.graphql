@@ -5469,6 +5469,52 @@ type CommerceOptInMutationPayload {
 
 union CommerceOptInMutationType = CommerceOptInFailure | CommerceOptInSuccess
 
+type CommerceOptInReportFailure {
+  mutationError: GravityMutationError
+}
+
+input CommerceOptInReportMutationInput {
+  # whether it should be updated to CoA
+  certificateOfAuthenticity: Boolean
+  clientMutationId: String
+
+  # whether or not the CoA is by an authenticating body
+  coaByAuthenticatingBody: Boolean
+
+  # whether or not the CoA is by the gallery
+  coaByGallery: Boolean
+
+  # whether the report will contain data for eligible or non-eligible artworks.
+  eligible: Boolean
+
+  # whether or not the artworks should be set to exact price
+  exactPrice: Boolean
+
+  # whether or not it should be set to framed
+  framed: Boolean
+
+  # ID of the partner
+  id: String!
+
+  # whether or not pick up should be available
+  pickupAvailable: Boolean
+}
+
+type CommerceOptInReportMutationPayload {
+  clientMutationId: String
+  commerceOptInReportMutationOrError: CommerceOptInReportMutationType
+}
+
+union CommerceOptInReportMutationType = CommerceOptInReportFailure | CommerceOptInReportSuccess
+
+type CommerceOptInReportResponse {
+  message: String
+}
+
+type CommerceOptInReportSuccess {
+  createdCommerceOptInReport: CommerceOptInReportResponse
+}
+
 type CommerceOptInResponse {
   count: Int
   ids: [String]
@@ -5719,6 +5765,9 @@ enum CommerceOrderDisplayStateEnum {
 
   # order has been collected and is with shipper
   IN_TRANSIT
+
+  # order is submitted by buyer but payment processing failed
+  PAYMENT_FAILED
 
   # order is still pending submission by buyer
   PENDING
@@ -10940,6 +10989,25 @@ type HomeViewSectionFairs implements HomeViewSectionGeneric & Node {
   ownerType: String
 }
 
+# A section containing a list of navigation links
+type HomeViewSectionFeaturedLinks implements HomeViewSectionGeneric & Node {
+  # Component prescription for this section, for overriding or customizing presentation and behavior
+  component: HomeViewComponent
+
+  # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
+  contextModule: String!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  linksConnection(after: String, before: String, first: Int, last: Int): FeaturedLinkConnection
+
+  # [Analytics] `owner type` analytics value for this scetion when displayed in a standalone UI, as defined in our schema (artsy/cohesion)
+  ownerType: String
+}
+
 # A section containing a list of galleries
 type HomeViewSectionGalleries implements HomeViewSectionGeneric & Node {
   # Component prescription for this section, for overriding or customizing presentation and behavior
@@ -13039,6 +13107,9 @@ type Mutation {
 
   # Opt all eligible artworks into BNMO
   commerceOptIn(input: CommerceOptInMutationInput!): CommerceOptInMutationPayload
+
+  # Generate CommerceOptIn report about artworks eligibility for a given partner
+  commerceOptInReport(input: CommerceOptInReportMutationInput!): CommerceOptInReportMutationPayload
 
   # Selects an ARTA shipping option for an order, updating the LineItem#selected_shipping_quote_id.
   commerceSelectShippingOption(
