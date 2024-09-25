@@ -20,15 +20,13 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
   const trackingUrl = getTrackingUrl(lineItem)
 
   const orderStatus = getOrderStatus(order.displayState)
-  const orderStatusColor = ["canceled", "payment failed"].includes(orderStatus)
+  const orderStatusColor = ["canceled", "payment failed"].includes(orderStatus as string)
     ? "red100"
     : "black60"
 
-  const hasFailedPayment = orderStatus === "payment failed"
-  const isActive =
-    !hasFailedPayment &&
-    orderStatus &&
-    !(["canceled", "refunded"] as string[]).includes(orderStatus)
+  const showFixPayment = orderStatus === "payment failed"
+  const showViewOrder =
+    !showFixPayment && orderStatus && !(["canceled", "refunded"] as string[]).includes(orderStatus)
   const isViewOffer = orderStatus === "pending" && order?.mode === "OFFER"
 
   const artworkImageUrl = artworkVersion?.image?.resized?.url
@@ -97,7 +95,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
             Track Package
           </Button>
         )}
-        {!!isActive && (
+        {!!showViewOrder && (
           <Button
             block
             variant="fillGray"
@@ -115,7 +113,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
             {isViewOffer ? "View Offer" : "View Order"}
           </Button>
         )}
-        {!!hasFailedPayment && (
+        {!!showFixPayment && (
           <Button
             block
             variant="fillDark"
