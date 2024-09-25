@@ -7,10 +7,7 @@ import {
 import { GraphQLRequest } from "app/system/relay/middlewares/types"
 import { Middleware } from "react-relay-network-modern"
 
-export const RELAY_CACHE_CONFIG_HEADER_KEY = "x-relay-cache-config"
-export const RELAY_CACHE_PATH_HEADER_KEY = "x-relay-cache-path"
-
-export const shouldSkipCDNCache = (req: GraphQLRequest, url: string | undefined) => {
+export const shouldSkipCDNCache = (req: GraphQLRequest) => {
   // The order of these checks is important.
   // We only want to use CDN cache if:
   // - force is false in the cacheConfig
@@ -24,6 +21,7 @@ export const shouldSkipCDNCache = (req: GraphQLRequest, url: string | undefined)
   }
 
   if (isRequestCacheable(req)) {
+    const url = getCurrentURL()
     if (url && hasNoCacheParamPresent(url)) {
       // Don't use CDN cache if the url has the nocache param
       return true
@@ -44,16 +42,9 @@ export const shouldSkipCDNCache = (req: GraphQLRequest, url: string | undefined)
 
 export const cacheHeaderMiddleware = (): Middleware => {
   return (next) => async (req) => {
-    const url = getCurrentURL()
-
-    const cacheHeaders = {
-      [RELAY_CACHE_CONFIG_HEADER_KEY]: JSON.stringify((req as GraphQLRequest).cacheConfig),
-      ...(url ? { RELAY_CACHE_PATH_HEADER_KEY: url } : {}),
-    }
-
     const cacheControlHeader = (() => {
       switch (true) {
-        case shouldSkipCDNCache(req as GraphQLRequest, url): {
+        case shouldSkipCDNCache(req as GraphQLRequest): {
           return { "Cache-Control": "no-cache" }
         }
 
@@ -66,7 +57,6 @@ export const cacheHeaderMiddleware = (): Middleware => {
     // @ts-expect-error
     req.fetchOpts.headers = {
       ...req.fetchOpts.headers,
-      ...cacheHeaders,
       ...cacheControlHeader,
     }
 
