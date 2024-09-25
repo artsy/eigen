@@ -26,7 +26,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
 
   const showFixPayment = orderStatus === "payment failed"
   const showViewOrder =
-    !showFixPayment && orderStatus && !(["canceled", "refunded"] as string[]).includes(orderStatus)
+    !showFixPayment && orderStatus && !["canceled", "refunded"].includes(orderStatus)
   const isViewOffer = orderStatus === "pending" && order?.mode === "OFFER"
 
   const artworkImageUrl = artworkVersion?.image?.resized?.url
