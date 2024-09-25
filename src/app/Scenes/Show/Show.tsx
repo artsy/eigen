@@ -166,6 +166,9 @@ export const ShowQueryRenderer: React.FC<ShowQueryRendererProps> = ({ showID }) 
         }
       `}
       variables={{ showID }}
+      cacheConfig={{
+        force: false,
+      }}
       render={renderWithPlaceholder({
         Container: ShowFragmentContainer,
         renderPlaceholder: () => <ShowPlaceholder />,

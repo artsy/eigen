@@ -13,10 +13,15 @@ export const RELAY_CACHE_PATH_HEADER_KEY = "x-relay-cache-path"
 export const shouldSkipCDNCache = (req: GraphQLRequest, url: string | undefined) => {
   // The order of these checks is important.
   // We only want to use CDN cache if:
+  // - force is false in the cacheConfig
   // - @cacheable is present on the query
   // - the query does not have any of the following arguments:
   //     - a known personalized argument is present in the query (for example `include_artworks_by_followed_artists`)
   //     - nocache param is present in the url
+
+  if (req.cacheConfig?.force === true) {
+    return true
+  }
 
   if (isRequestCacheable(req)) {
     if (url && hasNoCacheParamPresent(url)) {

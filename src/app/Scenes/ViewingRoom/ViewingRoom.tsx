@@ -267,7 +267,7 @@ export const ViewingRoomQueryRenderer: React.FC<{ viewing_room_id: string }> = (
           }
         }
       `}
-      cacheConfig={{ force: true }}
+      cacheConfig={{ force: false }}
       variables={{
         viewingRoomID,
       }}

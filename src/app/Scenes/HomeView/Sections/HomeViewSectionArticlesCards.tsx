@@ -186,6 +186,11 @@ export const HomeViewSectionArticlesCardsQueryRenderer: React.FC<SectionSharedPr
       homeViewSectionArticlesCardsQuery,
       {
         id: sectionID,
+      },
+      {
+        networkCacheConfig: {
+          force: false,
+        },
       }
     )
 

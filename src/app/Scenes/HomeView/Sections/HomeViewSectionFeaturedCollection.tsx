@@ -204,6 +204,11 @@ export const HomeViewSectionFeaturedCollectionQueryRenderer: React.FC<SectionSha
       homeViewSectionFeaturedCollectionQuery,
       {
         id: sectionID,
+      },
+      {
+        networkCacheConfig: {
+          force: false,
+        },
       }
     )
 

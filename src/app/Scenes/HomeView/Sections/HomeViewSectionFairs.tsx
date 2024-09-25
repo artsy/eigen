@@ -197,9 +197,17 @@ const homeViewSectionFairsQuery = graphql`
 
 export const HomeViewSectionFairsQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
   ({ sectionID, index, ...flexProps }) => {
-    const data = useLazyLoadQuery<HomeViewSectionFairsQuery>(homeViewSectionFairsQuery, {
-      id: sectionID,
-    })
+    const data = useLazyLoadQuery<HomeViewSectionFairsQuery>(
+      homeViewSectionFairsQuery,
+      {
+        id: sectionID,
+      },
+      {
+        networkCacheConfig: {
+          force: false,
+        },
+      }
+    )
 
     if (!data.homeView.section) {
       return null

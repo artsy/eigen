@@ -163,6 +163,9 @@ export const PartnerQueryRenderer: React.FC<{
         partnerID,
         displayArtistsSection: data?.partner?.displayArtistsSection ?? true,
       }}
+      cacheConfig={{
+        force: false,
+      }}
       render={renderWithPlaceholder({
         Container: PartnerContainer,
         initialProps: others,

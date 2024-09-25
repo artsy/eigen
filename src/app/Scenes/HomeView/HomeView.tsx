@@ -39,7 +39,12 @@ export const HomeView: React.FC = () => {
 
   const queryData = useLazyLoadQuery<HomeViewQuery>(
     homeViewScreenQuery,
-    homeViewScreenQueryVariables()
+    homeViewScreenQueryVariables(),
+    {
+      networkCacheConfig: {
+        force: false,
+      },
+    }
   )
 
   const { data, loadNext, hasNext } = usePaginationFragment<

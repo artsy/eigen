@@ -151,6 +151,11 @@ export const HomeViewSectionViewingRoomsQueryRenderer: React.FC<SectionSharedPro
       homeViewSectionViewingRoomsQuery,
       {
         id: sectionID,
+      },
+      {
+        networkCacheConfig: {
+          force: false,
+        },
       }
     )
 

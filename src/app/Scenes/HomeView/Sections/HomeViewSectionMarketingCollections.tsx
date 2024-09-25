@@ -234,6 +234,11 @@ export const HomeViewSectionMarketingCollectionsQueryRenderer: React.FC<SectionS
       homeViewSectionMarketingCollectionsQuery,
       {
         id: sectionID,
+      },
+      {
+        networkCacheConfig: {
+          force: false,
+        },
       }
     )
 

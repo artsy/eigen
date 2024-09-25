@@ -13,7 +13,11 @@ import { useTracking } from "react-tracking"
 import { ArticlesList, ArticlesPlaceholder } from "./ArticlesList"
 
 export const Articles: React.FC = () => {
-  const queryData = useLazyLoadQuery<ArticlesQuery>(ArticlesScreenQuery, articlesQueryVariables)
+  const queryData = useLazyLoadQuery<ArticlesQuery>(ArticlesScreenQuery, articlesQueryVariables, {
+    networkCacheConfig: {
+      force: false,
+    },
+  })
 
   const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment<
     ArticlesQuery,
