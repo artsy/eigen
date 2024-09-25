@@ -497,7 +497,6 @@ export const modules = defineModules({
     {
       isRootViewForTabName: "home",
       screenOptions: {
-        statusBarColor: "red",
         statusBarTranslucent: true,
       },
       fullBleed:
