@@ -1,4 +1,3 @@
-import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Spacer, Flex, Text, Screen } from "@artsy/palette-mobile"
 import { ArticleCard_article$data } from "__generated__/ArticleCard_article.graphql"
 import { ArticleCardContainer } from "app/Components/ArticleCard"
@@ -8,12 +7,9 @@ import {
   ProvidePlaceholderContext,
   RandomWidthPlaceholderText,
 } from "app/utils/placeholders"
-import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
-import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
 import { ActivityIndicator, FlatList, RefreshControl } from "react-native"
 import { isTablet } from "react-native-device-info"
-import { useTracking } from "react-tracking"
 interface ArticlesListProps {
   articles: ArticleCard_article$data[]
   isLoading: () => boolean
@@ -21,6 +17,7 @@ interface ArticlesListProps {
   refreshing: boolean
   handleLoadMore: () => void
   handleRefresh: () => void
+  handleOnPress: (article: ArticleCard_article$data) => void
 }
 
 export const ArticlesList: React.FC<ArticlesListProps> = ({
@@ -29,55 +26,45 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
   articles,
   refreshing,
   handleLoadMore,
+  handleOnPress,
   handleRefresh,
 }) => {
   const numColumns = useNumColumns()
 
-  const tracking = useTracking()
-
   return (
-    <ProvideScreenTrackingWithCohesionSchema
-      info={screen({
-        context_screen_owner_type: OwnerType.articles,
-      })}
-    >
-      <Screen.FlatList
-        numColumns={numColumns}
-        key={`${numColumns}`}
-        data={articles}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
-        keyExtractor={(item) => `${item.internalID}-${numColumns}`}
-        renderItem={({ item, index }) => {
-          return (
-            <ArticlesListItem index={index}>
-              <ArticleCardContainer
-                article={item as any}
-                isFluid
-                onPress={() => {
-                  const tapEvent = tracks.tapArticlesListItem(item.internalID, item.slug || "")
-                  tracking.trackEvent(tapEvent)
-                }}
-              />
-            </ArticlesListItem>
-          )
-        }}
-        ItemSeparatorComponent={() => <Spacer y={4} />}
-        onEndReached={handleLoadMore}
-        onEndReachedThreshold={1}
-        style={{ paddingTop: 20 }}
-        ListFooterComponent={() => (
-          <Flex
-            alignItems="center"
-            justifyContent="center"
-            p={4}
-            pb={6}
-            style={{ opacity: isLoading() && hasMore() ? 1 : 0 }}
-          >
-            <ActivityIndicator />
-          </Flex>
-        )}
-      />
-    </ProvideScreenTrackingWithCohesionSchema>
+    <Screen.FlatList
+      numColumns={numColumns}
+      key={`${numColumns}`}
+      data={articles}
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
+      keyExtractor={(item) => `${item.internalID}-${numColumns}`}
+      renderItem={({ item, index }) => {
+        return (
+          <ArticlesListItem index={index}>
+            <ArticleCardContainer
+              article={item as any}
+              isFluid
+              onPress={() => handleOnPress(item)}
+            />
+          </ArticlesListItem>
+        )
+      }}
+      ItemSeparatorComponent={() => <Spacer y={4} />}
+      onEndReached={handleLoadMore}
+      onEndReachedThreshold={1}
+      style={{ paddingTop: 20 }}
+      ListFooterComponent={() => (
+        <Flex
+          alignItems="center"
+          justifyContent="center"
+          p={4}
+          pb={6}
+          style={{ opacity: isLoading() && hasMore() ? 1 : 0 }}
+        >
+          <ActivityIndicator />
+        </Flex>
+      )}
+    />
   )
 }
 interface ArticlesListItemProps {
@@ -161,17 +148,6 @@ export const ArticlesPlaceholder: React.FC<ArticlesPlaceholderProps> = ({
       </Screen.Body>
     </Screen>
   )
-}
-
-export const tracks = {
-  tapArticlesListItem: (articleId: string, articleSlug: string) => ({
-    action: ActionType.tappedArticleGroup,
-    context_module: ContextModule.articles,
-    context_screen_owner_type: OwnerType.articles,
-    destination_screen_owner_type: OwnerType.article,
-    destination_screen_owner_id: articleId,
-    destination_screen_owner_slug: articleSlug,
-  }),
 }
 
 export const ArticlesHeader = ({ title = "" }) => (

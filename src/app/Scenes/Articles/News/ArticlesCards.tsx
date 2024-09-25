@@ -73,6 +73,6 @@ const tracks = {
     context_screen_owner_type: OwnerType.home,
     context_screen_owner_id: "",
     destination_screen_owner_id: "",
-    destination_screen_owner_type: OwnerType.articles,
+    destination_screen_owner_type: OwnerType.marketNews,
   }),
 }
