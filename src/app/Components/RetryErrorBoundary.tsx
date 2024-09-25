@@ -21,7 +21,7 @@ export class RetryErrorBoundary extends Component<
   RetryErrorBoundaryState
 > {
   static defaultProps = {
-    shouldTrackError: false,
+    appWideErrorBoundary: false,
   }
 
   static getDerivedStateFromError(error: Error | null): RetryErrorBoundaryState {
@@ -74,7 +74,7 @@ export class RetryErrorBoundary extends Component<
 
 export const AppWideErrorBoundary: React.FC<RetryErrorBoundaryProps> = ({ children, ...props }) => {
   return (
-    <RetryErrorBoundary {...props} shouldTrackError={true}>
+    <RetryErrorBoundary {...props} appWideErrorBoundary={true}>
       {children}
     </RetryErrorBoundary>
   )
