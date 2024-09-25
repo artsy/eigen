@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react"
 import { QueryRenderer, Environment, GraphQLTaggedNode } from "react-relay"
 import { CacheConfig, FetchPolicy, OperationType } from "relay-runtime"
 import { MockEnvironment } from "relay-test-utils"
-import { renderWithPlaceholder } from "./renderWithPlaceholder"
+import { FallbackRenderer, renderWithPlaceholder } from "./renderWithPlaceholder"
 
 interface AboveTheFoldQueryRendererProps<
   AboveQuery extends OperationType,
@@ -29,6 +29,7 @@ interface AboveTheFoldQueryRendererProps<
         }) => React.ReactChild
         renderPlaceholder: () => React.ReactChild
       }
+  fallback?: FallbackRenderer
   cacheConfig?: CacheConfig | null
   fetchPolicy?: FetchPolicy
   /** Fire below-the-fold query after the given timeout or when the above-the-fold query returns. */
@@ -75,11 +76,14 @@ export function AboveTheFoldQueryRenderer<
         : renderWithPlaceholder({
             renderPlaceholder: props.render.renderPlaceholder,
             render: props.render.renderComponent,
+            renderFallback: ({ retry }) =>
+              props.fallback ? <props.fallback retry={retry} /> : null,
           }),
     [props.render]
   )
 
   const error = aboveArgs?.error || belowArgs?.error || null
+
   const retry = () => {
     aboveArgs?.retry?.()
     belowArgs?.retry?.()
