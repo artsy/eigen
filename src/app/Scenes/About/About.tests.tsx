@@ -5,6 +5,10 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { About } from "./About"
 
 describe("About", () => {
+  beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewTermsAndConditions: false })
+    })
+
   it("renders Terms of Use", () => {
     renderWithWrappers(<About />)
     fireEvent.press(screen.getByText("Terms of Use"))
