@@ -11,6 +11,7 @@ import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
 import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
 import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { Section } from "app/Scenes/HomeView/Sections/Section"
+import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { searchQueryDefaultVariables } from "app/Scenes/Search/Search"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
@@ -57,6 +58,7 @@ export const HomeView: React.FC = () => {
   useDismissSavedArtwork(savedArtworksCount > 0)
   useEnableProgressiveOnboarding()
   const prefetchUrl = usePrefetch()
+  const tracking = useHomeViewTracking()
 
   useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
 
@@ -71,6 +73,10 @@ export const HomeView: React.FC = () => {
 
   useEffect(() => {
     requestPushNotificationsPermission()
+  }, [])
+
+  useEffect(() => {
+    tracking.screen(OwnerType.home)
   }, [])
 
   const handleRefresh = () => {

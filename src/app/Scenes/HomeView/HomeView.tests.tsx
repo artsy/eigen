@@ -2,6 +2,7 @@ import { HomeViewSectionArtworksTestsQuery } from "__generated__/HomeViewSection
 import * as dismissSavedArtworkModule from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
 import { HomeViewScreen } from "app/Scenes/HomeView/HomeView"
 import * as requestPushNotificationsPermissionModule from "app/utils/requestPushNotificationsPermission"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -59,5 +60,14 @@ describe("HomeView", () => {
     renderWithRelay({})
 
     expect(requestPushNotificationsPermissionSpy).toHaveBeenCalled()
+  })
+
+  it("fires a screen view event", () => {
+    renderWithRelay({})
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "screen",
+      context_screen_owner_type: "home",
+    })
   })
 })
