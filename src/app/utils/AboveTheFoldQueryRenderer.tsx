@@ -77,7 +77,7 @@ export function AboveTheFoldQueryRenderer<
             renderPlaceholder: props.render.renderPlaceholder,
             render: props.render.renderComponent,
             renderFallback: ({ retry }) =>
-              props.fallback ? <props.fallback retry={retry} /> : null,
+              props.fallback ? <props.fallback retry={retry} error={error ?? undefined} /> : null,
           }),
     [props.render]
   )
