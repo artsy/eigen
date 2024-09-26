@@ -7,7 +7,7 @@ import { ProvidePlaceholderContext } from "./placeholders"
 type ReadyState = Parameters<React.ComponentProps<typeof QueryRenderer>["render"]>[0]
 
 export type FallbackRenderer = (args: {
-  retry: null | (() => void)
+  retry?: (() => void) | null
   error?: Error
 }) => React.ReactElement | null
 
@@ -77,15 +77,15 @@ export function renderWithPlaceholder<Props>({
         return <LoadFailureView error={error} />
       } else {
         retrying = true
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         return <LoadFailureView onRetry={retry} error={error} />
       }
     } else if (props) {
       if (render) {
         return <>{render({ ...initialProps, ...(props as any) })}</>
-      } else {
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+      } else if (Container) {
         return <Container {...initialProps} {...(props as any)} />
+      } else {
+        return null
       }
     } else {
       return (

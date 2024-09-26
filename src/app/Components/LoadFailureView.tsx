@@ -22,7 +22,7 @@ import { JustifyContentValue } from "./Bidding/Elements/types"
 
 interface LoadFailureViewProps {
   error?: Error
-  onRetry?: () => void
+  onRetry?: (() => void) | null
   justifyContent?: JustifyContentValue
   appWideErrorBoundary?: boolean
   showBackButton?: boolean
