@@ -189,7 +189,7 @@ const HomeViewSectionFeaturedCollectionPlaceholder: React.FC<FlexProps> = () => 
 }
 
 const homeViewSectionFeaturedCollectionQuery = graphql`
-  query HomeViewSectionFeaturedCollectionQuery($id: String!) {
+  query HomeViewSectionFeaturedCollectionQuery($id: String!) @cacheable {
     homeView {
       section(id: $id) {
         ...HomeViewSectionFeaturedCollection_section
@@ -204,6 +204,11 @@ export const HomeViewSectionFeaturedCollectionQueryRenderer: React.FC<SectionSha
       homeViewSectionFeaturedCollectionQuery,
       {
         id: sectionID,
+      },
+      {
+        networkCacheConfig: {
+          force: false,
+        },
       }
     )
 

@@ -147,7 +147,7 @@ const HomeViewSectionGalleriesPlaceholder: React.FC<FlexProps> = (flexProps) => 
 }
 
 const homeViewSectionGalleriesQuery = graphql`
-  query HomeViewSectionGalleriesQuery($id: String!) {
+  query HomeViewSectionGalleriesQuery($id: String!) @cacheable {
     homeView {
       section(id: $id) {
         ...HomeViewSectionGalleries_section
@@ -158,9 +158,17 @@ const homeViewSectionGalleriesQuery = graphql`
 
 export const HomeViewSectionGalleriesQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
   ({ sectionID, index, ...flexProps }) => {
-    const data = useLazyLoadQuery<HomeViewSectionGalleriesQuery>(homeViewSectionGalleriesQuery, {
-      id: sectionID,
-    })
+    const data = useLazyLoadQuery<HomeViewSectionGalleriesQuery>(
+      homeViewSectionGalleriesQuery,
+      {
+        id: sectionID,
+      },
+      {
+        networkCacheConfig: {
+          force: false,
+        },
+      }
+    )
 
     if (!data.homeView.section) {
       return null

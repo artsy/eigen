@@ -143,7 +143,7 @@ const fragment = graphql`
 `
 
 const query = graphql`
-  query FairQuery($fairID: String!) {
+  query FairQuery($fairID: String!) @cacheable {
     fair(id: $fairID) @principalField {
       ...Fair_fair
     }
@@ -155,7 +155,15 @@ interface FairQueryRendererProps {
 }
 
 const FairQueryRenderer: React.FC<FairQueryRendererProps> = ({ fairID }) => {
-  const data = useLazyLoadQuery<FairQuery>(query, { fairID })
+  const data = useLazyLoadQuery<FairQuery>(
+    query,
+    { fairID },
+    {
+      networkCacheConfig: {
+        force: false,
+      },
+    }
+  )
 
   if (!data?.fair) {
     return null

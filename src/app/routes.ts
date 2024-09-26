@@ -1,6 +1,7 @@
 import { parse } from "url"
 import { AppModule } from "app/AppRegistry"
 import { ArtsyWebViewConfig } from "app/Components/ArtsyWebView"
+import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { RouteMatcher } from "app/system/navigation/RouteMatcher"
 import { compact } from "lodash"
@@ -110,7 +111,69 @@ function decodeUrl(url: string): string {
   return url
 }
 
-function getDomainMap(): Record<string, RouteMatcher[] | null> {
+type ModuleMap = {
+  [key in AppModule]: {
+    route: string
+    params: string[]
+  }
+}
+
+export function getModuleMap(): ModuleMap {
+  const domainMap = getDomainMap()
+  const artsyDotNetRoutes = domainMap["artsy.net"]
+
+  const moduleMap = {} as ModuleMap
+
+  if (artsyDotNetRoutes) {
+    artsyDotNetRoutes.forEach((moduleDescriptor) => {
+      if (
+        // Some routes have the same module name, so we need to check if it's already in the map
+        // before adding it
+        !moduleMap[moduleDescriptor["module"]] &&
+        moduleDescriptor["module"] !== "ModalWebView" &&
+        moduleDescriptor["module"] !== "ReactWebView"
+      ) {
+        moduleMap[moduleDescriptor["module"]] = {
+          route: moduleDescriptor["route"],
+          params: moduleDescriptor["parts"]
+            .filter((part) => part.type === "variable")
+            .map((part) => (part as any).name),
+        }
+      }
+    })
+  }
+
+  return moduleMap
+}
+
+// Helper method that returns the current URL
+export const getCurrentURL = () => {
+  const moduleMap = getModuleMap()
+  const moduleDescriptor = __unsafe_mainModalStackRef.current?.getCurrentRoute()?.params as any
+
+  const { webURL } = unsafe__getEnvironment()
+
+  const currentModuleName = moduleDescriptor?.moduleName as AppModule | undefined
+  if (!currentModuleName) {
+    return
+  }
+
+  const currentModuleProps = moduleDescriptor.props
+
+  const currentModule = moduleMap[currentModuleName]
+
+  let { route: path } = currentModule
+
+  if (currentModuleProps) {
+    Object.entries(currentModuleProps).map(([key, value]) => {
+      path = path.replace(`:${key}`, value as string)
+    })
+  }
+
+  return encodeURI(`${webURL}${path}`)
+}
+
+export function getDomainMap(): Record<string, RouteMatcher[] | null> {
   const liveDotArtsyDotNet: RouteMatcher[] = compact([
     Platform.OS === "ios"
       ? addRoute("/*", "LiveAuction", (params) => ({ slug: params["*"] }))

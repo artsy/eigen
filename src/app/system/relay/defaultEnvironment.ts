@@ -1,3 +1,4 @@
+import { cacheHeaderMiddleware } from "app/system/relay/middlewares/cacheHeaderMiddleware"
 import { Environment as IEnvironment } from "react-relay"
 import {
   errorMiddleware as relayErrorMiddleware,
@@ -31,6 +32,7 @@ const network = new RelayNetworkLayer(
     // @ts-expect-error
     errorMiddleware(),
     metaphysicsExtensionsLoggerMiddleware(),
+    cacheHeaderMiddleware(),
     simpleLoggerMiddleware(),
     __DEV__ ? relayErrorMiddleware() : null,
     timingMiddleware(),

@@ -131,7 +131,7 @@ const HomeViewSectionHeroUnitsPlaceholder: React.FC<FlexProps> = (flexProps) => 
 }
 
 const homeViewSectionHeroUnitsQuery = graphql`
-  query HomeViewSectionHeroUnitsQuery($id: String!) {
+  query HomeViewSectionHeroUnitsQuery($id: String!) @cacheable {
     homeView {
       section(id: $id) {
         ...HomeViewSectionHeroUnits_section
@@ -142,9 +142,17 @@ const homeViewSectionHeroUnitsQuery = graphql`
 
 export const HomeViewSectionHeroUnitsQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
   ({ sectionID, index, ...flexProps }) => {
-    const data = useLazyLoadQuery<HomeViewSectionHeroUnitsQuery>(homeViewSectionHeroUnitsQuery, {
-      id: sectionID,
-    })
+    const data = useLazyLoadQuery<HomeViewSectionHeroUnitsQuery>(
+      homeViewSectionHeroUnitsQuery,
+      {
+        id: sectionID,
+      },
+      {
+        networkCacheConfig: {
+          force: false,
+        },
+      }
+    )
 
     if (!data.homeView.section) {
       return null
