@@ -15,8 +15,10 @@ export const InnerHomeContainer = () => {
   const showPlayground = useDevToggle("DTShowPlayground")
 
   const preferLegacyHomeScreen = useFeatureFlag("ARPreferLegacyHomeScreen")
+  const isArtsyEmployee = GlobalStore.useAppState((state) => state.auth.userHasArtsyEmail)
 
-  const shouldDisplayNewHomeView = ArtsyNativeModule.isBetaOrDev && !preferLegacyHomeScreen
+  const shouldDisplayNewHomeView =
+    (isArtsyEmployee || ArtsyNativeModule.isBetaOrDev) && !preferLegacyHomeScreen
 
   const navigateToArtQuiz = async () => {
     await navigate("/art-quiz")
