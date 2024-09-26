@@ -5,7 +5,11 @@ import { TouchableOpacity } from "react-native"
 const Wrapper: React.FC<{ onPress?(): any }> = ({ onPress, children }) => {
   if (onPress) {
     return (
-      <TouchableOpacity onPress={onPress} testID="touchable-wrapper">
+      <TouchableOpacity
+        onPress={onPress}
+        testID="touchable-wrapper"
+        hitSlop={{ top: 10, bottom: 10 }}
+      >
         {children}
       </TouchableOpacity>
     )
