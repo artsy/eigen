@@ -150,8 +150,10 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
         {!!(trackErrorBoundary && __DEV__) && (
           <Flex m={2}>
             <Text color="red">
-              This is the app wide error boundary. This should be avoided, please add local error
-              handling to the originating screen.
+              This is marked as a tracked major error boundary. If this is being handled correctly
+              pass trackErrorBoundary=false to the LoadFailureView. Handled correctly means: 1)
+              local to the screen 2) navigation is accessible. If not, please add error handling to
+              originating screen.
             </Text>
           </Flex>
         )}
