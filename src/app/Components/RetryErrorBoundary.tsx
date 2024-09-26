@@ -12,7 +12,10 @@ interface RetryErrorBoundaryProps {
   children?: React.ReactNode
   trackErrorBoundary?: boolean
   showBackButton?: boolean
+  showCloseButton?: boolean
+  useSafeArea?: boolean
 }
+
 interface RetryErrorBoundaryState {
   error: Error | null
 }
@@ -24,6 +27,8 @@ export class RetryErrorBoundary extends Component<
   static defaultProps = {
     trackErrorBoundary: true,
     showBackButton: false,
+    showCloseButton: false,
+    useSafeArea: true,
   }
 
   static getDerivedStateFromError(error: Error | null): RetryErrorBoundaryState {
@@ -45,6 +50,8 @@ export class RetryErrorBoundary extends Component<
       notFoundBackButtonText,
       trackErrorBoundary,
       showBackButton,
+      showCloseButton,
+      useSafeArea,
     } = this.props
     const { error } = this.state
 
@@ -73,7 +80,9 @@ export class RetryErrorBoundary extends Component<
           error={error}
           onRetry={this._retry}
           showBackButton={showBackButton}
+          showCloseButton={showCloseButton}
           trackErrorBoundary={trackErrorBoundary}
+          useSafeArea={useSafeArea}
         />
       )
     }
