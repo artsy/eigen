@@ -828,7 +828,7 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
             `,
             variables: {},
           }}
-          fallback={() => <LoadFailureView />}
+          fallback={({ error }) => <LoadFailureView error={error} trackErrorBoundary={false} />}
           render={{
             renderComponent: ({ above, below }) => {
               if (!above) {

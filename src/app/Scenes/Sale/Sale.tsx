@@ -500,7 +500,7 @@ export const SaleQueryRenderer: React.FC<{
           } else {
             captureMessage(`SaleQueryRenderer ${error.message}`)
           }
-          return <LoadFailureView error={error} />
+          return <LoadFailureView error={error} trackErrorBoundary={false} />
         }
         if (!props?.above.me || !props.above.sale) {
           return <SalePlaceholder />
