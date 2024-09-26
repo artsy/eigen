@@ -25,7 +25,9 @@ export const useHideSplashScreen = () => {
     if (isHydrated) {
       if (isLoggedIn && isNavigationReady) {
         if (shouldDisplayNewHomeView) {
-          prefetchUrl("/", homeViewScreenQueryVariables())
+          prefetchUrl("/", homeViewScreenQueryVariables(), {
+            force: false,
+          })
             ?.then(() => {
               hideSplashScreen()
             })

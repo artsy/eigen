@@ -1,3 +1,4 @@
+import { captureMessage } from "@sentry/react-native"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import {
   getCurrentEmissionState,
@@ -126,18 +127,32 @@ export function metaphysicsURLMiddleware() {
 
 export function persistedQueryMiddleware(): Middleware {
   return (next) => async (req) => {
+    // Doing this just for more accurate types
+    const request = req as GraphQLRequest
+    // Get query body either from local queryMap or
+    // send queryID to metaphysics
     let body: { variables?: object; query?: string; documentID?: string } = {}
-    const queryID = req.getID()
-    const variables = req.getVariables()
+    const queryID = request.getID()
+    const variables = request.getVariables()
 
-    body = { documentID: queryID, variables }
+    body = { documentID: queryID, variables, query: request.operation.name }
 
     if (body && (body.query || body.documentID)) {
-      req.fetchOpts.body = JSON.stringify(body)
+      request.fetchOpts.body = JSON.stringify(body)
     }
 
-    body = { query: require("../../../../../data/complete.queryMap.json")[queryID], variables }
-    req.fetchOpts.body = JSON.stringify(body)
-    return await next(req)
+    try {
+      return await next(req)
+    } catch (e: any) {
+      if (e.toString().includes("Unable to serve persisted query with ID")) {
+        // this should not happen normally, but let's try again with full query text to avoid ruining the user's day?
+        captureMessage(e.stack)
+        body = { query: require("../../../../../data/complete.queryMap.json")[queryID], variables }
+        request.fetchOpts.body = JSON.stringify(body)
+        return await next(req)
+      } else {
+        throw e
+      }
+    }
   }
 }
