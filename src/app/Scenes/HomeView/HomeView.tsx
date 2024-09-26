@@ -1,5 +1,6 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, Spinner } from "@artsy/palette-mobile"
+import { useFocusEffect } from "@react-navigation/native"
 import { FlashList } from "@shopify/flash-list"
 import { HomeViewFetchMeQuery } from "__generated__/HomeViewFetchMeQuery.graphql"
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
@@ -20,7 +21,7 @@ import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
 import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
-import { Suspense, useEffect, useState } from "react"
+import { Suspense, useCallback, useEffect, useState } from "react"
 import { RefreshControl } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
@@ -74,9 +75,11 @@ export const HomeView: React.FC = () => {
     requestPushNotificationsPermission()
   }, [])
 
-  useEffect(() => {
-    tracking.screen(OwnerType.home)
-  }, [])
+  useFocusEffect(
+    useCallback(() => {
+      tracking.screen(OwnerType.home)
+    }, [])
+  )
 
   useEffect(() => {
     const fetchMe = async () => {
