@@ -10867,7 +10867,7 @@ type HomeViewSectionActivity implements HomeViewSectionGeneric & Node {
   component: HomeViewComponent
 
   # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  contextModule: String!
+  contextModule: String
 
   # A globally unique ID.
   id: ID!
@@ -10893,7 +10893,7 @@ type HomeViewSectionArticles implements HomeViewSectionGeneric & Node {
   component: HomeViewComponent
 
   # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  contextModule: String!
+  contextModule: String
 
   # A globally unique ID.
   id: ID!
@@ -10913,7 +10913,7 @@ type HomeViewSectionArtists implements HomeViewSectionGeneric & Node {
   component: HomeViewComponent
 
   # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  contextModule: String!
+  contextModule: String
 
   # A globally unique ID.
   id: ID!
@@ -10933,7 +10933,7 @@ type HomeViewSectionArtworks implements HomeViewSectionGeneric & Node {
   component: HomeViewComponent
 
   # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  contextModule: String!
+  contextModule: String
 
   # A globally unique ID.
   id: ID!
@@ -10958,7 +10958,7 @@ type HomeViewSectionAuctionResults implements HomeViewSectionGeneric & Node {
   component: HomeViewComponent
 
   # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  contextModule: String!
+  contextModule: String
 
   # A globally unique ID.
   id: ID!
@@ -10976,7 +10976,7 @@ type HomeViewSectionFairs implements HomeViewSectionGeneric & Node {
   component: HomeViewComponent
 
   # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  contextModule: String!
+  contextModule: String
   fairsConnection(after: String, before: String, first: Int, last: Int): FairConnection
 
   # A globally unique ID.
@@ -10995,7 +10995,7 @@ type HomeViewSectionGalleries implements HomeViewSectionGeneric & Node {
   component: HomeViewComponent
 
   # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  contextModule: String!
+  contextModule: String
 
   # A globally unique ID.
   id: ID!
@@ -11013,7 +11013,7 @@ interface HomeViewSectionGeneric {
   component: HomeViewComponent
 
   # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  contextModule: String!
+  contextModule: String
 
   # A globally unique ID.
   id: ID!
@@ -11051,7 +11051,7 @@ type HomeViewSectionHeroUnits implements HomeViewSectionGeneric & Node {
   component: HomeViewComponent
 
   # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  contextModule: String!
+  contextModule: String
   heroUnitsConnection(after: String, before: String, first: Int, last: Int): HeroUnitConnection
 
   # A globally unique ID.
@@ -11070,7 +11070,7 @@ type HomeViewSectionMarketingCollections implements HomeViewSectionGeneric & Nod
   component: HomeViewComponent
 
   # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  contextModule: String!
+  contextModule: String
 
   # A globally unique ID.
   id: ID!
@@ -11094,7 +11094,7 @@ type HomeViewSectionSales implements HomeViewSectionGeneric & Node {
   component: HomeViewComponent
 
   # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  contextModule: String!
+  contextModule: String
 
   # A globally unique ID.
   id: ID!
@@ -11113,7 +11113,7 @@ type HomeViewSectionShows implements HomeViewSectionGeneric & Node {
   component: HomeViewComponent
 
   # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  contextModule: String!
+  contextModule: String
 
   # A globally unique ID.
   id: ID!
@@ -11131,7 +11131,7 @@ type HomeViewSectionViewingRooms implements HomeViewSectionGeneric & Node {
   component: HomeViewComponent
 
   # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  contextModule: String!
+  contextModule: String
 
   # A globally unique ID.
   id: ID!
