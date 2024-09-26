@@ -9,7 +9,8 @@
  */
 
 import { Flex } from "@artsy/palette-mobile"
-import { FC, ReactNode, useEffect, useRef, useState } from "react"
+import { useFocusEffect } from "@react-navigation/native"
+import { FC, ReactNode, useCallback, useRef, useState } from "react"
 import { Dimensions, View } from "react-native"
 
 export interface IDimensionData {
@@ -38,12 +39,14 @@ export const Sentinel: FC<Props> = ({ children, onChange }) => {
 
   let interval: any = null
 
-  useEffect(() => {
-    setLastValue(false)
-    startWatching()
-    isInViewPort()
-    return stopWatching
-  }, [dimensions.rectTop, dimensions.rectBottom, dimensions.rectWidth])
+  useFocusEffect(
+    useCallback(() => {
+      setLastValue(false)
+      startWatching()
+      isInViewPort()
+      return stopWatching
+    }, [dimensions.rectTop, dimensions.rectBottom, dimensions.rectWidth])
+  )
 
   const startWatching = () => {
     if (interval) {

@@ -1,6 +1,6 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, Spinner } from "@artsy/palette-mobile"
-import { FlashList } from "@shopify/flash-list"
+import { useFocusEffect } from "@react-navigation/native"
 import { HomeViewFetchMeQuery } from "__generated__/HomeViewFetchMeQuery.graphql"
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
 import { HomeViewSectionsConnection_viewer$key } from "__generated__/HomeViewSectionsConnection_viewer.graphql"
@@ -20,8 +20,9 @@ import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
 import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
-import { Suspense, useEffect, useState } from "react"
+import { Suspense, useCallback, useEffect, useState } from "react"
 import { RefreshControl } from "react-native"
+import { FlatList } from "react-native-gesture-handler"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 export const NUMBER_OF_SECTIONS_TO_LOAD = 5
@@ -74,9 +75,11 @@ export const HomeView: React.FC = () => {
     requestPushNotificationsPermission()
   }, [])
 
-  useEffect(() => {
-    tracking.screen(OwnerType.home)
-  }, [])
+  useFocusEffect(
+    useCallback(() => {
+      tracking.screen(OwnerType.home)
+    }, [])
+  )
 
   useEffect(() => {
     const fetchMe = async () => {
@@ -125,7 +128,7 @@ export const HomeView: React.FC = () => {
   return (
     <Screen safeArea={false}>
       <Screen.Body fullwidth>
-        <FlashList
+        <FlatList
           ref={flashlistRef}
           data={sections}
           keyExtractor={(item) => item.internalID}
@@ -134,7 +137,6 @@ export const HomeView: React.FC = () => {
           }}
           onEndReached={() => loadNext(NUMBER_OF_SECTIONS_TO_LOAD)}
           ListHeaderComponent={HomeHeader}
-          estimatedItemSize={500}
           ListFooterComponent={
             hasNext ? (
               <Flex width="100%" justifyContent="center" alignItems="center" height={200}>
@@ -144,6 +146,7 @@ export const HomeView: React.FC = () => {
           }
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
           onEndReachedThreshold={1}
+          windowSize={11}
         />
       </Screen.Body>
     </Screen>
