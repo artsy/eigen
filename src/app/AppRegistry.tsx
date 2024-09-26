@@ -36,7 +36,7 @@ import { SavedArtworks } from "app/Scenes/SavedArtworks/SavedArtworks"
 import { AlertArtworks } from "app/Scenes/SavedSearchAlert/AlertArtworks"
 import { SearchScreen, SearchScreenQuery } from "app/Scenes/Search/Search"
 import { SubmitArtworkForm } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
-import { SubmitArtworkFormEdit } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkFormEdit"
+import { SubmitArtworkFormEditContainer } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkFormEdit"
 import { SimilarToRecentlyViewedScreen } from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
 import { ArtsyKeyboardAvoidingViewContext } from "app/utils/ArtsyKeyboardAvoidingView"
 import { SafeAreaInsets, useScreenDimensions } from "app/utils/hooks"
@@ -686,7 +686,7 @@ export const modules = defineModules({
       gestureEnabled: false,
     },
   }),
-  SubmitArtworkEdit: reactModule(SubmitArtworkFormEdit, {
+  SubmitArtworkEdit: reactModule(SubmitArtworkFormEditContainer, {
     hidesBackButton: true,
     alwaysPresentModally: true,
     modalPresentationStyle: "fullScreen",
