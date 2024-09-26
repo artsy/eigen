@@ -24,7 +24,7 @@ interface LoadFailureViewProps {
   error?: Error
   onRetry?: (() => void) | null
   justifyContent?: JustifyContentValue
-  appWideErrorBoundary?: boolean
+  trackErrorBoundary?: boolean
   showBackButton?: boolean
 }
 
@@ -33,7 +33,7 @@ const HEADER_HEIGHT = 50
 export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
   error,
   onRetry,
-  appWideErrorBoundary = false,
+  trackErrorBoundary = true,
   showBackButton = false,
   ...restProps
 }) => {
@@ -50,7 +50,7 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
   const showErrorMessage = __DEV__ || isStaging || showErrorInLoadFailureViewToggle
 
   const trackLoadFailureView = (error: Error | undefined) => {
-    const shouldTrackError = !__DEV__ && !isStaging && appWideErrorBoundary
+    const shouldTrackError = !__DEV__ && !isStaging && trackErrorBoundary
     if (shouldTrackError) {
       Sentry.withScope((scope) => {
         scope.setExtra("user-id", userId)
@@ -147,7 +147,7 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
             <Text>Error: {error?.message}</Text>
           </Flex>
         )}
-        {!!(appWideErrorBoundary && __DEV__) && (
+        {!!(trackErrorBoundary && __DEV__) && (
           <Flex m={2}>
             <Text color="red">
               This is the app wide error boundary. This should be avoided, please add local error
