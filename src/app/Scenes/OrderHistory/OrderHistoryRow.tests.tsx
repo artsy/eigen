@@ -54,7 +54,7 @@ describe("OrderHistoryRow", () => {
   it("displays the artist name", () => {
     renderWithRelay({ CommerceOrder: () => mockOrder })
 
-    expect(screen.getByTestId("artist-names")).toHaveTextContent("Torbjørn Rødland")
+    expect(screen.getByText("Torbjørn Rødland")).toBeOnTheScreen()
   })
 
   it("displays the partner name", () => {
@@ -66,19 +66,19 @@ describe("OrderHistoryRow", () => {
   it("displays the order creation date", () => {
     renderWithRelay({ CommerceOrder: () => mockOrder })
 
-    expect(screen.queryByTestId("date")).toHaveTextContent("5/18/2021")
+    expect(screen.getByText("5/18/2021")).toBeOnTheScreen()
   })
 
   it("displays the price", () => {
     renderWithRelay({ CommerceOrder: () => mockOrder })
 
-    expect(screen.getByTestId("price")).toHaveTextContent("11,200")
+    expect(screen.getByText("11,200")).toBeOnTheScreen()
   })
 
   it("displays the display state", () => {
     renderWithRelay({ CommerceOrder: () => mockOrder })
 
-    expect(screen.getByTestId("order-status")).toHaveTextContent("pending")
+    expect(screen.getByText("pending")).toBeOnTheScreen()
   })
 
   describe("artwork image", () => {

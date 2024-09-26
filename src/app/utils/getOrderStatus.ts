@@ -1,6 +1,6 @@
 import { CommerceOrderDisplayStateEnum } from "__generated__/OrderDetailsHeader_info.graphql"
 
-export function getOrderStatus(displayState: CommerceOrderDisplayStateEnum): string | "" {
+export function getOrderStatus(displayState: CommerceOrderDisplayStateEnum): string {
   switch (displayState) {
     case "SUBMITTED":
       return "pending"
