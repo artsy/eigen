@@ -19,7 +19,7 @@ export const hasNoCacheParamPresent = (url: string) => {
   return false
 }
 
-export const SKIP_CACHE_ARGUMENTS = ["includeArtworksByFollowedArtists", "collectionID"]
+export const SKIP_CACHE_ARGUMENTS = ["includeArtworksByFollowedArtists"]
 // Important - Add any new personalized argument checks to this list. That way, logged-in queries
 // _without_ this argument can still be `@cacheable`, and when queries include this argument,
 // those queries will not be cached.
