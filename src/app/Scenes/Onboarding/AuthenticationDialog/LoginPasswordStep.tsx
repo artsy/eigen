@@ -63,7 +63,7 @@ export const LoginPasswordStep: React.FC<LoginPasswordStepProps> = ({ navigation
             navigation.navigate("ForgotPasswordStep")
           }}
         >
-          <Text variant="sm" color="black60" style={{ textDecorationLine: "underline" }}>
+          <Text variant="sm" color="black60" underline>
             Forgot password?
           </Text>
         </Touchable>

@@ -18,7 +18,9 @@ export const EmailStep: React.FC<EmailStepProps> = ({ navigation }) => {
   const { Recaptcha, token } = useRecaptcha({ source: "authentication", action: "verify_email" })
 
   useEffect(() => {
-    setFieldValue("recaptchaToken", token)
+    if (!values.recaptchaToken) {
+      setFieldValue("recaptchaToken", token)
+    }
   }, [token, setFieldValue])
 
   const handleBackButtonPress = () => {

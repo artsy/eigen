@@ -6,7 +6,7 @@ import {
 } from "app/Scenes/Onboarding/OnboardingHome"
 import { GlobalStore } from "app/store/GlobalStore"
 import { showBlockedAuthError } from "app/utils/auth/authHelpers"
-import { FormikProvider, useFormik } from "formik"
+import { FormikErrors, FormikProvider, useFormik } from "formik"
 import React from "react"
 import { Alert } from "react-native"
 import * as Yup from "yup"
@@ -28,93 +28,31 @@ export const AuthenticationDialogForm: React.FC<AuthenticationDialogFormProps> =
       name: "",
       otp: "",
       password: "",
-      recaptchaToken: "",
+      recaptchaToken: null,
     },
     onSubmit: async (
       { acceptedTerms, agreedToReceiveEmails, email, name, otp, password, recaptchaToken },
-      { setErrors }
+      { setErrors, setFieldValue }
     ) => {
-      if (currentStep === "EmailStep") {
-        const res = await GlobalStore.actions.auth.verifyUser({ email, recaptchaToken })
-
-        if (res === "user_exists") {
-          navigation.navigate("LoginPasswordStep")
-        } else if (res === "user_does_not_exist") {
-          navigation.navigate("SignUpPasswordStep")
-        } else if (res === "something_went_wrong") {
-          setErrors({
-            email: "Something went wrong. Please try again, or contact support@artsy.net",
-          })
-        }
-      } else if (currentStep === "SignUpPasswordStep") {
-        navigation.navigate("SignUpNameStep")
-      } else if (currentStep === "SignUpNameStep" && acceptedTerms) {
-        const res = await GlobalStore.actions.auth.signUp({
-          oauthProvider: "email",
-          oauthMode: "email",
-          email,
-          password,
-          name: name.trim(),
-          agreedToReceiveEmails,
-        })
-
-        if (!res.success) {
-          if (res.error === "blocked_attempt") {
-            showBlockedAuthError("sign up")
-          } else {
-            Alert.alert("Try again", res.message)
-          }
-        }
-      } else if (currentStep === "LoginPasswordStep") {
-        const res = await GlobalStore.actions.auth.signIn({
-          oauthProvider: "email",
-          oauthMode: "email",
-          email,
-          password,
-        })
-
-        if (res === "otp_missing") {
-          navigation.navigate("LoginOTPStep", { otpMode: "standard" })
-        } else if (res === "on_demand_otp_missing") {
-          navigation.navigate("LoginOTPStep", { otpMode: "standard" })
-        }
-
-        if (res === "auth_blocked") {
-          showBlockedAuthError("sign in")
-          return
-        }
-
-        if (res !== "success" && res !== "otp_missing" && res !== "on_demand_otp_missing") {
-          // For security purposes, we are returning a generic error message
-          setErrors({ password: "Incorrect email or password" }) // pragma: allowlist secret
-        }
-      } else if (currentStep === "LoginOTPStep") {
-        const res = await GlobalStore.actions.auth.signIn({
-          oauthProvider: "email",
-          oauthMode: "email",
-          email,
-          password,
-          otp: otp.trim(),
-        })
-
-        if (res === "invalid_otp") {
-          setErrors({ otp: "Invalid two-factor authentication code" })
-        } else if (res !== "success") {
-          setErrors({ otp: "Something went wrong. Please try again, or contact support@artsy.net" })
-        }
-      } else if (currentStep === "ForgotPasswordStep") {
-        const res = await GlobalStore.actions.auth.forgotPassword({
-          email,
-        })
-        if (!res) {
-          // For security purposes, we are returning a generic error message
-          setErrors({
-            email:
-              "Couldn’t send reset password link. Please try again, or contact support@artsy.net",
-          })
-        } else {
-          navigation.navigate("ForgotPasswordStep", { requestedPasswordReset: true })
-        }
+      switch (currentStep) {
+        case "EmailStep":
+          handleEmailStep(email, recaptchaToken, setErrors, setFieldValue, navigation)
+          break
+        case "SignUpPasswordStep":
+          navigation.navigate("SignUpNameStep")
+          break
+        case "SignUpNameStep":
+          handleSignUpNameStep(email, password, name, acceptedTerms, agreedToReceiveEmails)
+          break
+        case "LoginPasswordStep":
+          handleLoginPasswordStep(email, password, setErrors, navigation)
+          break
+        case "LoginOTPStep":
+          handleLoginOTPStep(email, password, otp, setErrors)
+          break
+        case "ForgotPasswordStep":
+          handleForgotPasswordStep(email, setErrors, navigation)
+          break
       }
     },
     validationSchema: () => {
@@ -132,7 +70,6 @@ export const AuthenticationDialogForm: React.FC<AuthenticationDialogFormProps> =
           return ForgotPasswordValidationSchema
         default:
           return EmptyValidationSchema
-          break
       }
     },
     validateOnMount: false,
@@ -153,7 +90,7 @@ export interface AuthenticationDialogFormValues {
   name: string
   otp: string
   password: string
-  recaptchaToken: string
+  recaptchaToken: string | null
 }
 
 const EmailValidationSchema = Yup.object().shape({
@@ -184,3 +121,131 @@ const OtpValidationSchema = Yup.object().shape({
 const ForgotPasswordValidationSchema = Yup.object().shape({
   email: Yup.string().email("Please provide a valid email address"),
 })
+
+const handleEmailStep = async (
+  email: string,
+  recaptchaToken: string | null,
+  setErrors: (errors: FormikErrors<AuthenticationDialogFormValues>) => void,
+  setFieldValue: (field: string, value: any) => void,
+  navigation: AuthenticationDialogFormNavigationProp
+) => {
+  if (!recaptchaToken) {
+    setErrors({
+      email: "Something went wrong. Please try again, or contact support@artsy.net",
+    })
+
+    return
+  }
+
+  const res = await GlobalStore.actions.auth.verifyUser({ email, recaptchaToken })
+
+  setFieldValue("recaptchaToken", null)
+
+  if (res === "user_exists") {
+    navigation.navigate("LoginPasswordStep")
+  } else if (res === "user_does_not_exist") {
+    navigation.navigate("SignUpPasswordStep")
+  } else if (res === "something_went_wrong") {
+    setErrors({
+      email: "Something went wrong. Please try again, or contact support@artsy.net",
+    })
+  }
+}
+
+const handleSignUpNameStep = async (
+  email: string,
+  password: string,
+  name: string,
+  acceptedTerms: boolean,
+  agreedToReceiveEmails: boolean
+) => {
+  if (!acceptedTerms) {
+    return
+  }
+
+  const res = await GlobalStore.actions.auth.signUp({
+    oauthProvider: "email",
+    oauthMode: "email",
+    email,
+    password,
+    name: name.trim(),
+    agreedToReceiveEmails,
+  })
+
+  if (!res.success) {
+    if (res.error === "blocked_attempt") {
+      showBlockedAuthError("sign up")
+    } else {
+      Alert.alert("Try again", res.message)
+    }
+  }
+}
+
+const handleLoginPasswordStep = async (
+  email: string,
+  password: string,
+  setErrors: (errors: FormikErrors<AuthenticationDialogFormValues>) => void,
+  navigation: AuthenticationDialogFormNavigationProp
+) => {
+  const res = await GlobalStore.actions.auth.signIn({
+    oauthProvider: "email",
+    oauthMode: "email",
+    email,
+    password,
+  })
+
+  if (res === "otp_missing") {
+    navigation.navigate("LoginOTPStep", { otpMode: "standard" })
+  } else if (res === "on_demand_otp_missing") {
+    navigation.navigate("LoginOTPStep", { otpMode: "standard" })
+  }
+
+  if (res === "auth_blocked") {
+    showBlockedAuthError("sign in")
+    return
+  }
+
+  if (res !== "success" && res !== "otp_missing" && res !== "on_demand_otp_missing") {
+    // For security purposes, we are returning a generic error message
+    setErrors({ password: "Incorrect email or password" }) // pragma: allowlist secret
+  }
+}
+
+const handleLoginOTPStep = async (
+  email: string,
+  password: string,
+  otp: string,
+  setErrors: (errors: FormikErrors<AuthenticationDialogFormValues>) => void
+) => {
+  const res = await GlobalStore.actions.auth.signIn({
+    oauthProvider: "email",
+    oauthMode: "email",
+    email,
+    password,
+    otp: otp.trim(),
+  })
+
+  if (res === "invalid_otp") {
+    setErrors({ otp: "Invalid two-factor authentication code" })
+  } else if (res !== "success") {
+    setErrors({ otp: "Something went wrong. Please try again, or contact support@artsy.net" })
+  }
+}
+
+const handleForgotPasswordStep = async (
+  email: string,
+  setErrors: (errors: FormikErrors<AuthenticationDialogFormValues>) => void,
+  navigation: AuthenticationDialogFormNavigationProp
+) => {
+  const res = await GlobalStore.actions.auth.forgotPassword({
+    email,
+  })
+  if (!res) {
+    // For security purposes, we are returning a generic error message
+    setErrors({
+      email: "Couldn’t send reset password link. Please try again, or contact support@artsy.net",
+    })
+  } else {
+    navigation.navigate("ForgotPasswordStep", { requestedPasswordReset: true })
+  }
+}
