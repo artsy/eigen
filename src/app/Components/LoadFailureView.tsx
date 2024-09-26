@@ -26,6 +26,8 @@ interface LoadFailureViewProps {
   justifyContent?: JustifyContentValue
   trackErrorBoundary?: boolean
   showBackButton?: boolean
+  showCloseButton?: boolean
+  useSafeArea?: boolean
 }
 
 const HEADER_HEIGHT = 50
@@ -35,6 +37,8 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
   onRetry,
   trackErrorBoundary = true,
   showBackButton = false,
+  showCloseButton = false,
+  useSafeArea = true,
   ...restProps
 }) => {
   const color = useColor()
@@ -43,7 +47,8 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
   const userId = GlobalStore.useAppState((state) => state.auth.userID)
   const activeTab = GlobalStore.useAppState((state) => state.bottomTabs.sessionState.selectedTab)
   const showErrorInLoadFailureViewToggle = useDevToggle("DTShowErrorInLoadFailureView")
-  const topInsets = useSafeAreaInsets().top
+  const safeAreaInset = useSafeAreaInsets()
+  const topInsets = useSafeArea ? safeAreaInset.top : 0
 
   const isStaging = useIsStaging()
 
@@ -78,13 +83,16 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
     ).start()
   }
 
+  const showTopButton = !!showBackButton || !!showCloseButton
+
   return (
     <>
-      {!!showBackButton && (
+      {!!showTopButton && (
         <Flex pt={`${topInsets}px`} mx={2} mb={2} height={HEADER_HEIGHT}>
           <Flex flexDirection="row" justifyContent="space-between" height={30} mb={1}>
             <BackButton
               onPress={goBack}
+              showX={showCloseButton}
               hitSlop={{
                 top: space(2),
                 left: space(2),
