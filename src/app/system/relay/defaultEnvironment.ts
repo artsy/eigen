@@ -1,6 +1,7 @@
 import { cacheHeaderMiddleware } from "app/system/relay/middlewares/cacheHeaderMiddleware"
 import { Environment as IEnvironment } from "react-relay"
 import {
+  cacheMiddleware,
   errorMiddleware as relayErrorMiddleware,
   RelayNetworkLayer,
   uploadMiddleware,
@@ -8,7 +9,6 @@ import {
 import { Environment, RecordSource, Store } from "relay-runtime"
 import { MockEnvironment } from "relay-test-utils"
 
-import { cacheMiddleware } from "./middlewares/cacheMiddleware"
 import { checkAuthenticationMiddleware } from "./middlewares/checkAuthenticationMiddleware"
 import { errorMiddleware } from "./middlewares/errorMiddleware"
 import {
@@ -23,8 +23,11 @@ import { timingMiddleware } from "./middlewares/timingMiddleware"
 const network = new RelayNetworkLayer(
   [
     // middlewares use LIFO. The bottom ones in the array will run first after the fetch.
-    // @ts-expect-error
-    cacheMiddleware(),
+    cacheMiddleware({
+      size: 500, // max 500 requests
+      ttl: 3600000, // 1 hour
+      clearOnMutation: true,
+    }),
     persistedQueryMiddleware(),
     metaphysicsURLMiddleware(),
     rateLimitMiddleware(),
