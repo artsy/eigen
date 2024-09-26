@@ -294,7 +294,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
                 `,
                 variables: { artistID },
               }}
-              fallback={() => <LoadFailureView showBackButton />}
+              fallback={({ error }) => <LoadFailureView showBackButton error={error} />}
               render={{
                 renderPlaceholder: () => <ArtistSkeleton />,
                 renderComponent: ({ above, below }) => {

@@ -6,7 +6,10 @@ import { ProvidePlaceholderContext } from "./placeholders"
 
 type ReadyState = Parameters<React.ComponentProps<typeof QueryRenderer>["render"]>[0]
 
-export type FallbackRenderer = (args: { retry: null | (() => void) }) => React.ReactElement | null
+export type FallbackRenderer = (args: {
+  retry: null | (() => void)
+  error?: Error
+}) => React.ReactElement | null
 
 export function renderWithPlaceholder<Props>({
   Container,
@@ -63,7 +66,7 @@ export function renderWithPlaceholder<Props>({
       }
 
       if (renderFallback) {
-        return renderFallback({ retry })
+        return renderFallback({ retry, error })
       } else if (retrying) {
         retrying = false
         // TODO: Even though this code path is reached, the retry button keeps spinning. iirc it _should_ disappear when
@@ -71,11 +74,11 @@ export function renderWithPlaceholder<Props>({
         //
         // This will re-use the native view first created in the renderFailure callback, which means it can
         // continue its ‘retry’ animation.
-        return <LoadFailureView />
+        return <LoadFailureView error={error} />
       } else {
         retrying = true
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        return <LoadFailureView onRetry={retry} />
+        return <LoadFailureView onRetry={retry} error={error} />
       }
     } else if (props) {
       if (render) {
