@@ -60,7 +60,7 @@ describe("OrderHistoryRow", () => {
   it("displays the partner name", () => {
     renderWithRelay({ CommerceOrder: () => mockOrder })
 
-    expect(screen.getByTestId("partner-name")).toHaveTextContent("Andrea Festa Fine Art")
+    expect(screen.getByText("Andrea Festa Fine Art")).toBeOnTheScreen()
   })
 
   it("displays the order creation date", () => {
