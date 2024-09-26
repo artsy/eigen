@@ -1,4 +1,3 @@
-import { captureMessage } from "@sentry/react-native"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/GlobalStore"
 import { logQueryPath } from "app/utils/loggers"
@@ -10,12 +9,19 @@ import { Middleware, urlMiddleware } from "react-relay-network-modern"
  * sends about API requests it makes for you, and logs it out during dev
  * time into your console at the same places as the relay queries.
  */
-export function metaphysicsExtensionsLoggerMiddleware() {
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  return (next) => (req) => {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+export function metaphysicsExtensionsLoggerMiddleware(): Middleware {
+  return (next) => async (req) => {
     return next(req).then((res) => {
-      const requests = res.json.extensions?.requests
+      const jsonResponse = res.json as {
+        extensions?: {
+          requests?: {
+            stitching?: { [key: string]: any }
+            [key: string]: any
+          }
+        }
+      }
+
+      const requests = jsonResponse.extensions?.requests
 
       if (requests && console.groupCollapsed) {
         // See: https://github.com/artsy/metaphysics/blob/main/src/app/loaders/api/extensionsLogger.ts
@@ -116,18 +122,8 @@ export function persistedQueryMiddleware(): Middleware {
       req.fetchOpts.body = JSON.stringify(body)
     }
 
-    try {
-      return await next(req)
-    } catch (e: any) {
-      if (e.toString().includes("Unable to serve persisted query with ID")) {
-        // this should not happen normally, but let's try again with full query text to avoid ruining the user's day?
-        captureMessage(e.stack)
-        body = { query: require("../../../../../data/complete.queryMap.json")[queryID], variables }
-        req.fetchOpts.body = JSON.stringify(body)
-        return await next(req)
-      } else {
-        throw e
-      }
-    }
+    body = { query: require("../../../../../data/complete.queryMap.json")[queryID], variables }
+    req.fetchOpts.body = JSON.stringify(body)
+    return await next(req)
   }
 }

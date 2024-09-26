@@ -846,6 +846,7 @@ export const ArtworkQueryRenderer: React.FC<ArtworkScreenProps> = ({
         `,
         variables: { artworkID },
       }}
+      fallback={() => <ArtworkErrorScreen />}
       render={{
         renderPlaceholder: () => <AboveTheFoldPlaceholder artworkID={artworkID} />,
         renderComponent: ({ above, below }) => {

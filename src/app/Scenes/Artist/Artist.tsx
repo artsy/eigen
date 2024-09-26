@@ -32,6 +32,7 @@ import { DEFAULT_ARTWORK_SORT } from "app/Components/ArtworkFilter/Filters/SortO
 import { getOnlyFilledSearchCriteriaValues } from "app/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { SearchCriteriaQueryRenderer } from "app/Scenes/Artist/SearchCriteria"
@@ -293,6 +294,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
                 `,
                 variables: { artistID },
               }}
+              fallback={() => <LoadFailureView showBackButton />}
               render={{
                 renderPlaceholder: () => <ArtistSkeleton />,
                 renderComponent: ({ above, below }) => {

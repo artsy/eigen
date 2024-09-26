@@ -39,7 +39,9 @@ export function useDeepLinks() {
         targetURL = await fetch(url)
       } catch (error) {
         if (__DEV__) {
-          console.warn(error)
+          console.warn(
+            `[handleDeepLink] Error fetching marketing url redirect on: ${url} failed with error: ${error}`
+          )
         } else {
           captureMessage(
             `[handleDeepLink] Error fetching marketing url redirect on: ${url} failed with error: ${error}`,
