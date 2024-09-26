@@ -20,7 +20,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
   const trackingUrl = getTrackingUrl(lineItem)
 
   const orderStatus = getOrderStatus(order.displayState)
-  const orderStatusColor = ["canceled", "payment failed"].includes(orderStatus as string)
+  const orderStatusColor = ["canceled", "payment failed"].includes(orderStatus)
     ? "red100"
     : "black60"
 
