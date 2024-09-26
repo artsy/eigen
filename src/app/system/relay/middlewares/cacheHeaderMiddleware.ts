@@ -1,4 +1,5 @@
 import { getCurrentURL } from "app/routes"
+import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import {
   hasNoCacheParamPresent,
   hasPersonalizedArguments,
@@ -42,6 +43,10 @@ export const shouldSkipCDNCache = (req: GraphQLRequest) => {
 
 export const cacheHeaderMiddleware = (): Middleware => {
   return (next) => async (req) => {
+    if (!unsafe_getFeatureFlag("ARUseMetaphysicsCDN")) {
+      return next(req)
+    }
+
     const cacheControlHeader = (() => {
       switch (true) {
         case shouldSkipCDNCache(req as GraphQLRequest): {
