@@ -1,6 +1,6 @@
 import { CommerceOrderDisplayStateEnum } from "__generated__/OrderDetailsHeader_info.graphql"
 
-export function getOrderStatus(displayState: CommerceOrderDisplayStateEnum) {
+export function getOrderStatus(displayState: CommerceOrderDisplayStateEnum): string {
   switch (displayState) {
     case "SUBMITTED":
       return "pending"
@@ -18,7 +18,9 @@ export function getOrderStatus(displayState: CommerceOrderDisplayStateEnum) {
       return "in transit"
     case "CANCELED":
       return "canceled"
+    case "PAYMENT_FAILED":
+      return "payment failed"
     default:
-      return "unknown"
+      return ""
   }
 }

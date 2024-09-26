@@ -39,21 +39,23 @@ export const OrderDetailsHeader: React.FC<Props> = ({ info }) => {
         </Text>
       </Flex>
 
-      <Flex flexDirection="row" justifyContent="space-between">
-        <Text variant="sm" mb={1}>
-          Status
-        </Text>
+      {!!orderStatus && (
+        <Flex flexDirection="row" justifyContent="space-between">
+          <Text variant="sm" mb={1}>
+            Status
+          </Text>
 
-        <Text
-          testID="status"
-          color="black60"
-          variant="sm"
-          mb={1}
-          style={{ textTransform: "capitalize" }}
-        >
-          {orderStatus}
-        </Text>
-      </Flex>
+          <Text
+            testID="status"
+            color="black60"
+            variant="sm"
+            mb={1}
+            style={{ textTransform: "capitalize" }}
+          >
+            {orderStatus}
+          </Text>
+        </Flex>
+      )}
 
       <Flex flexDirection="row" justifyContent="space-between">
         <Text variant="sm" mb={1}>

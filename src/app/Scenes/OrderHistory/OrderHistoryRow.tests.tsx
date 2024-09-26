@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { OrderHistoryRowTestsQuery } from "__generated__/OrderHistoryRowTestsQuery.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { extractText } from "app/utils/tests/extractText"
@@ -52,44 +52,44 @@ describe("OrderHistoryRow", () => {
   })
 
   it("displays the artist name", () => {
-    const tree = renderWithRelay({ CommerceOrder: () => mockOrder })
+    renderWithRelay({ CommerceOrder: () => mockOrder })
 
-    expect(tree.queryByTestId("artist-names")?.children[0]).toBe("Torbjørn Rødland")
+    expect(screen.getByText("Torbjørn Rødland")).toBeOnTheScreen()
   })
 
   it("displays the partner name", () => {
-    const tree = renderWithRelay({ CommerceOrder: () => mockOrder })
+    renderWithRelay({ CommerceOrder: () => mockOrder })
 
-    expect(tree.queryByTestId("partner-name")?.children[0]).toBe("Andrea Festa Fine Art")
+    expect(screen.getByText("Andrea Festa Fine Art")).toBeOnTheScreen()
   })
 
   it("displays the order creation date", () => {
-    const tree = renderWithRelay({ CommerceOrder: () => mockOrder })
+    renderWithRelay({ CommerceOrder: () => mockOrder })
 
-    expect(tree.queryByTestId("date")?.children[0]).toBe("5/18/2021")
+    expect(screen.getByText("5/18/2021")).toBeOnTheScreen()
   })
 
   it("displays the price", () => {
-    const tree = renderWithRelay({ CommerceOrder: () => mockOrder })
+    renderWithRelay({ CommerceOrder: () => mockOrder })
 
-    expect(tree.queryByTestId("price")?.children[0]).toBe("11,200")
+    expect(screen.getByText("11,200")).toBeOnTheScreen()
   })
 
   it("displays the display state", () => {
-    const tree = renderWithRelay({ CommerceOrder: () => mockOrder })
+    renderWithRelay({ CommerceOrder: () => mockOrder })
 
-    expect(tree.queryByTestId("order-status")?.children[0]).toBe("pending")
+    expect(screen.getByText("pending")).toBeOnTheScreen()
   })
 
   describe("artwork image", () => {
     it("displays the image", () => {
-      const tree = renderWithRelay({ CommerceOrder: () => mockOrder })
+      renderWithRelay({ CommerceOrder: () => mockOrder })
 
-      expect(tree.queryByTestId("image")).toBeTruthy()
+      expect(screen.getByTestId("image")).toBeTruthy()
     })
 
     it("displays a gray box unless there is an image", () => {
-      const tree = renderWithRelay({
+      renderWithRelay({
         CommerceOrder: () => ({
           ...mockOrder,
           lineItems: {
@@ -111,13 +111,13 @@ describe("OrderHistoryRow", () => {
         }),
       })
 
-      expect(tree.queryByTestId("image-box")).toBeTruthy()
+      expect(screen.getByTestId("image-box")).toBeTruthy()
     })
   })
 
   describe("track package button", () => {
     it("is visible when a tracking URL is provided", () => {
-      const tree = renderWithRelay({
+      renderWithRelay({
         CommerceOrder: () => ({
           ...mockOrder,
           lineItems: {
@@ -134,11 +134,11 @@ describe("OrderHistoryRow", () => {
         }),
       })
 
-      expect(tree.queryByTestId("track-package-button")).toBeTruthy()
+      expect(screen.getByTestId("track-package-button")).toBeTruthy()
     })
 
     it("is visible when a tracking number is provided", () => {
-      const tree = renderWithRelay({
+      renderWithRelay({
         CommerceOrder: () => ({
           ...mockOrder,
           lineItems: {
@@ -155,11 +155,11 @@ describe("OrderHistoryRow", () => {
         }),
       })
 
-      expect(tree.queryByTestId("track-package-button")).toBeTruthy()
+      expect(screen.getByTestId("track-package-button")).toBeTruthy()
     })
 
     it("is visible when a tracking ID is provided", () => {
-      const tree = renderWithRelay({
+      renderWithRelay({
         CommerceOrder: () => ({
           ...mockOrder,
           lineItems: {
@@ -176,11 +176,11 @@ describe("OrderHistoryRow", () => {
         }),
       })
 
-      expect(tree.queryByTestId("track-package-button")).toBeTruthy()
+      expect(screen.getByTestId("track-package-button")).toBeTruthy()
     })
 
     it("is not visible unless tracking information is provided", () => {
-      const tree = renderWithRelay({
+      renderWithRelay({
         CommerceOrder: () => ({
           ...mockOrder,
           lineItems: {
@@ -197,46 +197,82 @@ describe("OrderHistoryRow", () => {
         }),
       })
 
-      expect(tree.queryByTestId("track-package-button")).toBeNull()
+      expect(screen.queryByTestId("track-package-button")).toBeNull()
+    })
+  })
+
+  describe("update payment method button", () => {
+    it("is includes a message and button go fix payment when the displayState is PAYMENT_FAILED", () => {
+      renderWithRelay({
+        CommerceOrder: () => ({
+          ...mockOrder,
+          internalID: "internal-id",
+          displayState: "PAYMENT_FAILED",
+        }),
+      })
+
+      screen.getByText("payment failed")
+
+      const button = screen.getByTestId("update-payment-button")
+      expect(button).toBeVisible()
+
+      fireEvent.press(button!)
+
+      expect(navigate).toHaveBeenCalledWith("/orders/internal-id/payment/new", {
+        modal: true,
+        passProps: { orderID: "internal-id", title: "Update Payment Details" },
+      })
+    })
+    it("is not visible when the displayState is not PAYMENT_FAILED", () => {
+      renderWithRelay({
+        CommerceOrder: () => ({
+          ...mockOrder,
+          internalID: "internal-id",
+          displayState: "SUBMITTED",
+        }),
+      })
+
+      const button = screen.queryByTestId("update-payment-button")
+      expect(button).toBeNull()
     })
   })
 
   describe("view order button", () => {
     it("is visible when the order is submitted", () => {
-      const tree = renderWithRelay({
+      renderWithRelay({
         CommerceOrder: () => ({
           ...mockOrder,
           displayState: "SUBMITTED",
         }),
       })
 
-      expect(tree.queryByTestId("view-order-button")).toBeTruthy()
+      expect(screen.getByTestId("view-order-button")).toBeTruthy()
     })
 
     it("is not visible when the order is canceled", () => {
-      const tree = renderWithRelay({
+      renderWithRelay({
         CommerceOrder: () => ({
           ...mockOrder,
           displayState: "CANCELED",
         }),
       })
 
-      expect(tree.queryByTestId("view-order-button")).toBeNull()
+      expect(screen.queryByTestId("view-order-button")).toBeNull()
     })
 
     it("is not visible when the order is refunded", () => {
-      const tree = renderWithRelay({
+      renderWithRelay({
         CommerceOrder: () => ({
           ...mockOrder,
           displayState: "REFUNDED",
         }),
       })
 
-      expect(tree.queryByTestId("view-order-button")).toBeNull()
+      expect(screen.queryByTestId("view-order-button")).toBeNull()
     })
 
     it("shows 'view order' when the order is submitted", () => {
-      const tree = renderWithRelay({
+      renderWithRelay({
         CommerceOrder: () => ({
           ...mockOrder,
           displayState: "SUBMITTED",
@@ -244,11 +280,11 @@ describe("OrderHistoryRow", () => {
         }),
       })
 
-      expect(extractText(tree.getByTestId("view-order-button"))).toContain("View Order")
+      expect(extractText(screen.getByTestId("view-order-button"))).toContain("View Order")
     })
 
     it("shows 'view offer' when the order has a submitted offer", () => {
-      const tree = renderWithRelay({
+      renderWithRelay({
         CommerceOrder: () => ({
           ...mockOrder,
           displayState: "SUBMITTED",
@@ -256,11 +292,11 @@ describe("OrderHistoryRow", () => {
         }),
       })
 
-      expect(extractText(tree.getByTestId("view-order-button"))).toContain("View Offer")
+      expect(extractText(screen.getByTestId("view-order-button"))).toContain("View Offer")
     })
 
     it("shows 'view order' when the order has an approved offer", () => {
-      const tree = renderWithRelay({
+      renderWithRelay({
         CommerceOrder: () => ({
           ...mockOrder,
           displayState: "APPROVED",
@@ -268,11 +304,11 @@ describe("OrderHistoryRow", () => {
         }),
       })
 
-      expect(extractText(tree.getByTestId("view-order-button"))).toContain("View Order")
+      expect(extractText(screen.getByTestId("view-order-button"))).toContain("View Order")
     })
 
     it("navigates to the counteroffer when the order has a submitted offer", () => {
-      const tree = renderWithRelay({
+      renderWithRelay({
         CommerceOrder: () => ({
           ...mockOrder,
           internalID: "internal-id",
@@ -280,7 +316,7 @@ describe("OrderHistoryRow", () => {
           mode: "OFFER",
         }),
       })
-      const button = tree.UNSAFE_getByProps({ testID: "view-order-button" })
+      const button = screen.UNSAFE_getByProps({ testID: "view-order-button" })
 
       fireEvent.press(button)
 
@@ -291,7 +327,7 @@ describe("OrderHistoryRow", () => {
     })
 
     it("navigates to the purchase summary when the order has a processing offer", () => {
-      const tree = renderWithRelay({
+      renderWithRelay({
         CommerceOrder: () => ({
           ...mockOrder,
           internalID: "internal-id",
@@ -300,7 +336,7 @@ describe("OrderHistoryRow", () => {
         }),
       })
 
-      const button = tree.getByTestId("view-order-button")
+      const button = screen.getByTestId("view-order-button")
       fireEvent.press(button)
       expect(navigate).toHaveBeenCalledWith("/user/purchases/internal-id")
     })

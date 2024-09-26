@@ -27,9 +27,11 @@ export const TrackOrderSection: React.FC<Props> = ({ section }) => {
   return (
     <Flex flexDirection="row" justifyContent="space-between">
       <Flex>
-        <Text testID="orderStatus" variant="sm" style={{ textTransform: "capitalize" }}>
-          {orderStatus}
-        </Text>
+        {!!orderStatus && (
+          <Text testID="orderStatus" variant="sm" style={{ textTransform: "capitalize" }}>
+            {orderStatus}
+          </Text>
+        )}
         {!!shipment?.trackingNumber && (
           <Text testID="trackingNumber" variant="sm" color="black60">
             Tracking:&nbsp;
