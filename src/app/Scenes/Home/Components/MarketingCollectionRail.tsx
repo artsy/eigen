@@ -110,6 +110,7 @@ export const MarketingCollectionRail: React.FC<MarketingCollectionRailProps> = m
           onMorePress={handleMorePress}
           hideCuratorsPickSignal
           hideIncreasedInterestSignal
+          showSaveIcon
         />
       </Flex>
     )

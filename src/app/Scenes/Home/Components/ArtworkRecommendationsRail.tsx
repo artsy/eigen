@@ -86,6 +86,7 @@ export const ArtworkRecommendationsRail: React.FC<
           onMorePress={() => handleMorePress("viewAll")}
           onViewableItemsChanged={onViewableItemsChanged}
           viewabilityConfig={viewabilityConfig}
+          showSaveIcon
         />
       </View>
     </Flex>
