@@ -36,7 +36,7 @@ export const AuthenticationDialogForm: React.FC<AuthenticationDialogFormProps> =
     ) => {
       switch (currentStep) {
         case "EmailStep":
-          handleEmailStep(email, recaptchaToken, setErrors, setFieldValue, navigation)
+          handleEmailStep(email, recaptchaToken, setFieldValue, navigation)
           break
         case "SignUpPasswordStep":
           navigation.navigate("SignUpNameStep")
@@ -57,6 +57,7 @@ export const AuthenticationDialogForm: React.FC<AuthenticationDialogFormProps> =
     },
     validationSchema: () => {
       switch (currentStep) {
+        case "WelcomeStep":
         case "EmailStep":
           return EmailValidationSchema
         case "LoginPasswordStep":
@@ -72,7 +73,6 @@ export const AuthenticationDialogForm: React.FC<AuthenticationDialogFormProps> =
           return EmptyValidationSchema
       }
     },
-    validateOnMount: false,
   })
 
   return <FormikProvider value={formik}>{children}</FormikProvider>
@@ -125,15 +125,11 @@ const ForgotPasswordValidationSchema = Yup.object().shape({
 const handleEmailStep = async (
   email: string,
   recaptchaToken: string | null,
-  setErrors: (errors: FormikErrors<AuthenticationDialogFormValues>) => void,
   setFieldValue: (field: string, value: any) => void,
   navigation: AuthenticationDialogFormNavigationProp
 ) => {
   if (!recaptchaToken) {
-    setErrors({
-      email: "Something went wrong. Please try again, or contact support@artsy.net",
-    })
-
+    Alert.alert("Something went wrong. Please try again, or contact support@artsy.net")
     return
   }
 
@@ -146,9 +142,7 @@ const handleEmailStep = async (
   } else if (res === "user_does_not_exist") {
     navigation.navigate("SignUpPasswordStep")
   } else if (res === "something_went_wrong") {
-    setErrors({
-      email: "Something went wrong. Please try again, or contact support@artsy.net",
-    })
+    Alert.alert("Something went wrong. Please try again, or contact support@artsy.net")
   }
 }
 

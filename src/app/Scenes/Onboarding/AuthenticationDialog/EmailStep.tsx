@@ -12,8 +12,17 @@ type EmailStepProps = StackScreenProps<OnboardingHomeNavigationStack, "EmailStep
 export const EmailStep: React.FC<EmailStepProps> = ({ navigation }) => {
   const { color, space } = useTheme()
 
-  const { errors, handleChange, handleSubmit, isValid, setFieldValue, values } =
-    useFormikContext<AuthenticationDialogFormValues>()
+  const {
+    errors,
+    handleChange,
+    handleSubmit,
+    isValid,
+    setErrors,
+    setFieldValue,
+    setTouched,
+    touched,
+    values,
+  } = useFormikContext<AuthenticationDialogFormValues>()
 
   const { Recaptcha, token } = useRecaptcha({ source: "authentication", action: "verify_email" })
 
@@ -24,6 +33,9 @@ export const EmailStep: React.FC<EmailStepProps> = ({ navigation }) => {
   }, [token, setFieldValue])
 
   const handleBackButtonPress = () => {
+    // clear the form validation state
+    setErrors({})
+    setTouched({})
     navigation.goBack()
   }
 
@@ -55,7 +67,7 @@ export const EmailStep: React.FC<EmailStepProps> = ({ navigation }) => {
           // We need to to set textContentType to username (instead of emailAddress) here
           // enable autofill of login details from the device keychain.
           textContentType="username"
-          error={errors.email}
+          error={touched.email ? errors.email : undefined}
           testID="email-address"
         />
 
