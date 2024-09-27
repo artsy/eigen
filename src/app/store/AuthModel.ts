@@ -40,6 +40,8 @@ type SignInStatus =
   | "invalid_otp"
   | "auth_blocked"
 
+type VerifyUserStatus = "user_exists" | "user_does_not_exist" | "something_went_wrong"
+
 interface EmailOAuthParams {
   oauthProvider: "email"
   oauthMode: "email"
@@ -182,6 +184,13 @@ export interface AuthModel {
   setArtQuizState: Action<this, OnboardingArtQuizState>
   identifyUser: Action<this>
   signOut: Thunk<this>
+  verifyUser: Thunk<
+    this,
+    { email: string; recaptchaToken: string },
+    {},
+    GlobalStoreModel,
+    Promise<VerifyUserStatus>
+  >
 }
 
 const clientKey = __DEV__ ? Config.ARTSY_DEV_API_CLIENT_KEY : Config.ARTSY_PROD_API_CLIENT_KEY
@@ -828,6 +837,31 @@ export const getAuthModel = (): AuthModel => ({
     ])
 
     actions.setSessionState({ isUserIdentified: true })
+  }),
+  verifyUser: thunk(async (actions, { email, recaptchaToken }) => {
+    const result = await actions.gravityUnauthenticatedRequest({
+      path: `/api/v1/user/identify`,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: {
+        email,
+        recaptcha_token: recaptchaToken,
+      },
+    })
+
+    if (result.status !== 201) {
+      return "something_went_wrong"
+    }
+
+    const { exists } = await result.json()
+
+    if (exists) {
+      return "user_exists"
+    } else {
+      return "user_does_not_exist"
+    }
   }),
 })
 
