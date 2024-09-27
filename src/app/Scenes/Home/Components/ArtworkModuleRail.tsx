@@ -135,6 +135,7 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
           navigate(artwork.href)
         }}
         onMorePress={handlePressMore}
+        showSaveIcon
       />
     </Flex>
   )
