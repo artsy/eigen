@@ -12,7 +12,7 @@ import { ArtworkRail_artworks$data } from "__generated__/ArtworkRail_artworks.gr
 import { HomeViewSectionArtworksQuery } from "__generated__/HomeViewSectionArtworksQuery.graphql"
 import { HomeViewSectionArtworks_section$key } from "__generated__/HomeViewSectionArtworks_section.graphql"
 import { ARTWORK_RAIL_IMAGE_WIDTH, ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
-import { ARTWORK_RAIL_CARD_IMAGE_HEIGHT } from "app/Components/ArtworkRail/LegacyArtworkRailCardImage"
+import { LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT } from "app/Components/ArtworkRail/LegacyArtworkRailCardImage"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
@@ -145,6 +145,7 @@ const homeViewSectionArtworksQuery = graphql`
 
 const HomeViewSectionArtworksPlaceholder: React.FC<FlexProps> = (flexProps) => {
   const randomValue = useMemoizedRandom()
+  // here adjust placeholder
   return (
     <Skeleton>
       <Flex {...flexProps}>
@@ -157,8 +158,8 @@ const HomeViewSectionArtworksPlaceholder: React.FC<FlexProps> = (flexProps) => {
               {times(2 + randomValue * 10).map((index) => (
                 <Flex key={index}>
                   <SkeletonBox
-                    height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
-                    width={ARTWORK_RAIL_IMAGE_WIDTH}
+                    height={LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
+                    width={ARTWORK_RAIL_IMAGE_WIDTH + 100}
                   />
                   <Spacer y={2} />
                   <SkeletonText>Andy Warhol</SkeletonText>

@@ -8,7 +8,7 @@ import {
   ARTWORK_RAIL_CARD_MINIMUM_WIDTH,
   ArtworkRailCard,
 } from "app/Components/ArtworkRail/ArtworkRailCard"
-import { ARTWORK_RAIL_CARD_IMAGE_HEIGHT } from "app/Components/ArtworkRail/LegacyArtworkRailCardImage"
+import { LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT } from "app/Components/ArtworkRail/LegacyArtworkRailCardImage"
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { PrefetchFlashList } from "app/Components/PrefetchFlashList"
 import { RandomWidthPlaceholderText, useMemoizedRandom } from "app/utils/placeholders"
@@ -23,7 +23,7 @@ import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 
 export const INITIAL_NUM_TO_RENDER = isTablet() ? 10 : 5
-export const ARTWORK_RAIL_IMAGE_WIDTH = 295
+export const ARTWORK_RAIL_IMAGE_WIDTH = 295 // here
 
 type Artwork = ArtworkRail_artworks$data[0]
 
@@ -68,6 +68,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
 
   const renderItem: ListRenderItem<Artwork> = useCallback(
     ({ item, index }) => {
+      // remove <Box pr={2}> and add separator to flatlist
       return (
         <Box pr={2}>
           <ArtworkRailCard
@@ -134,10 +135,14 @@ const artworksFragment = graphql`
 `
 
 export const ArtworkRailPlaceholder: React.FC = () => (
+  // adjust placeholder
   <Join separator={<Spacer x="15px" />}>
     {times(3 + useMemoizedRandom() * 10).map((index) => (
       <Flex key={index}>
-        <SkeletonBox height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT} width={ARTWORK_RAIL_IMAGE_WIDTH} />
+        <SkeletonBox
+          height={LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
+          width={ARTWORK_RAIL_IMAGE_WIDTH + 200}
+        />
         <Spacer y={2} />
         <SkeletonText>Artist</SkeletonText>
         <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />

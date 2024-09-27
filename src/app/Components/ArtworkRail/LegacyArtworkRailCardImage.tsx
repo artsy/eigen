@@ -9,16 +9,14 @@ import { sizeToFit } from "app/utils/useSizeToFit"
 import { useMemo } from "react"
 import { graphql, useFragment } from "react-relay"
 
-export const ARTWORK_RAIL_CARD_IMAGE_HEIGHT = 320
+export const LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT = 320
 export const ARTWORK_RAIL_CARD_IMAGE_WIDTH = 295
 
 export interface LegacyArtworkRailCardImageProps {
   artwork: LegacyArtworkRailCardImage_artwork$key
-  urgencyTag?: string | null
 }
 
 export const LegacyArtworkRailCardImage: React.FC<LegacyArtworkRailCardImageProps> = ({
-  urgencyTag = null,
   ...restProps
 }) => {
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
@@ -41,7 +39,7 @@ export const LegacyArtworkRailCardImage: React.FC<LegacyArtworkRailCardImageProp
       <Flex
         bg={color("black30")}
         width={width}
-        height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
+        height={LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
         style={{ borderRadius: 2 }}
       />
     )
@@ -49,7 +47,7 @@ export const LegacyArtworkRailCardImage: React.FC<LegacyArtworkRailCardImageProp
 
   const containerDimensions = {
     width: ARTWORK_RAIL_CARD_IMAGE_WIDTH,
-    height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
+    height: LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
   }
 
   const imageDimensions = sizeToFit(
@@ -60,7 +58,7 @@ export const LegacyArtworkRailCardImage: React.FC<LegacyArtworkRailCardImageProp
     containerDimensions
   )
 
-  const imageHeight = imageDimensions.height || ARTWORK_RAIL_CARD_IMAGE_HEIGHT
+  const imageHeight = imageDimensions.height || LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT
 
   return (
     <Flex>
@@ -98,7 +96,7 @@ export const getContainerWidth = (image: LegacyArtworkRailCardImage_artwork$data
     },
     {
       width: ARTWORK_RAIL_CARD_IMAGE_WIDTH,
-      height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
+      height: LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
     }
   )
 

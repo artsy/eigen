@@ -1,4 +1,4 @@
-import { Image, Flex, useColor } from "@artsy/palette-mobile"
+import { Image, Flex } from "@artsy/palette-mobile"
 import { ArtworkRailCardImage_artwork$key } from "__generated__/ArtworkRailCardImage_artwork.graphql"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { graphql, useFragment } from "react-relay"
@@ -6,9 +6,9 @@ import { graphql, useFragment } from "react-relay"
 export interface ArtworkRailCardImageProps {
   artwork: ArtworkRailCardImage_artwork$key
 }
-export const CONTAINER_HEIGHT = 215
-export const MIN_IMAGE_WIDTH = 140
-export const MAX_IMAGE_WIDTH = 340
+export const ARTWORK_RAIL_CARD_IMAGE_HEIGHT = 215
+export const ARTWORK_RAIL_MIN_IMAGE_WIDTH = 140
+export const ARTWORK_RAIL_MAX_IMAGE_WIDTH = 340
 const PADDING = 10
 
 // Take
@@ -26,64 +26,80 @@ const wideImage = {
   width: 1000,
 }
 
+/* const wideImage = {
+  aspectRatio: 2.28,
+  height: 1768,
+  url: "https://d32dm0rphc51dk.cloudfront.net/3PjwqKQuAqp1ZcgEro4qbg/large.jpg",
+  width: 4030,
+} */
 export const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({ ...restProps }) => {
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
   const artwork = useFragment(artworkFragment, restProps.artwork)
-  const color = useColor()
-  //  const { image } = artwork
 
-  const image = tallImage
-  if (!artwork?.image || !image?.url || !image?.aspectRatio) {
-    return (
-      <Flex
-        bg={color("black30")}
-        width={MIN_IMAGE_WIDTH}
-        height={CONTAINER_HEIGHT}
-        style={{ borderRadius: 2 }}
-      />
-    )
+  const { image } = artwork
+
+  // const image = wideImage
+
+  const useImageDimentions = () => {
+    if (!image?.aspectRatio) {
+      return { containerWidth: 0 }
+    }
+
+    const imageWidth = ARTWORK_RAIL_CARD_IMAGE_HEIGHT * image?.aspectRatio
+
+    let containerWidth = imageWidth
+    let horizontalPadding = 0
+    let verticalPadding = 0
+
+    // Case when the image width is narrower than the maximum width
+    if (imageWidth <= ARTWORK_RAIL_MIN_IMAGE_WIDTH) {
+      containerWidth = ARTWORK_RAIL_MIN_IMAGE_WIDTH
+      verticalPadding = PADDING
+    }
+
+    // Case when the image width is wider than the maximum width
+    if (imageWidth >= ARTWORK_RAIL_MAX_IMAGE_WIDTH) {
+      containerWidth = ARTWORK_RAIL_MAX_IMAGE_WIDTH
+      horizontalPadding = PADDING
+    }
+
+    const displayImageWidth =
+      imageWidth <= ARTWORK_RAIL_MIN_IMAGE_WIDTH
+        ? Math.min(imageWidth, ARTWORK_RAIL_MIN_IMAGE_WIDTH) - 2 * horizontalPadding
+        : Math.min(
+            Math.max(imageWidth, ARTWORK_RAIL_MIN_IMAGE_WIDTH),
+            ARTWORK_RAIL_MAX_IMAGE_WIDTH
+          ) -
+          2 * horizontalPadding
+
+    const displayImageHeight =
+      Math.min(displayImageWidth / image.aspectRatio, ARTWORK_RAIL_CARD_IMAGE_HEIGHT) -
+      2 * verticalPadding
+
+    return { containerWidth, displayImageWidth, displayImageHeight }
   }
 
-  const imageWidth = CONTAINER_HEIGHT * image?.aspectRatio
-
-  let containerWidth = imageWidth
-  let horizontalPadding = 0
-  let verticalPadding = 0
-  let imageDisplayWidth = 0
-  let imageDisplayHeight = 0
-
-  if (imageWidth <= MIN_IMAGE_WIDTH) {
-    containerWidth = MIN_IMAGE_WIDTH
-    verticalPadding = PADDING
-    imageDisplayHeight = CONTAINER_HEIGHT - 2 * verticalPadding
-    imageDisplayWidth = imageDisplayHeight * image.aspectRatio
-  }
-
-  // Case when the image width is wider than the maximum width
-  if (imageWidth >= MAX_IMAGE_WIDTH) {
-    containerWidth = MAX_IMAGE_WIDTH
-    horizontalPadding = PADDING
-    imageDisplayWidth = MAX_IMAGE_WIDTH - 2 * horizontalPadding
-    imageDisplayHeight = imageDisplayWidth / image.aspectRatio
-  }
+  const { containerWidth, displayImageWidth, displayImageHeight } = useImageDimentions()
 
   return (
     <Flex
       backgroundColor="black5"
       justifyContent="center"
       alignItems="center"
-      height={CONTAINER_HEIGHT}
+      height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
       width={containerWidth}
     >
-      <Image
-        src={image.url}
-        width={imageDisplayWidth}
-        height={imageDisplayHeight}
-        aspectRatio={image.aspectRatio}
-        blurhash={showBlurhash ? image.blurhash : undefined}
-        performResize={false}
-        resizeMode="contain"
-      />
+      {!!image?.url && (
+        <Image
+          src={image.url}
+          width={displayImageWidth}
+          height={displayImageHeight}
+          aspectRatio={image.aspectRatio}
+          blurhash={showBlurhash ? image.blurhash : undefined}
+          performResize={false}
+          resizeMode="contain"
+        />
+      )}
     </Flex>
   )
 }

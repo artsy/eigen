@@ -14,7 +14,7 @@ import { ArtworkRail_artworks$data } from "__generated__/ArtworkRail_artworks.gr
 import { HomeViewSectionFeaturedCollectionQuery } from "__generated__/HomeViewSectionFeaturedCollectionQuery.graphql"
 import { HomeViewSectionFeaturedCollection_section$key } from "__generated__/HomeViewSectionFeaturedCollection_section.graphql"
 import { ARTWORK_RAIL_IMAGE_WIDTH, ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
-import { ARTWORK_RAIL_CARD_IMAGE_HEIGHT } from "app/Components/ArtworkRail/LegacyArtworkRailCardImage"
+import { LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT } from "app/Components/ArtworkRail/LegacyArtworkRailCardImage"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
@@ -152,6 +152,7 @@ const fragment = graphql`
 `
 
 const HomeViewSectionFeaturedCollectionPlaceholder: React.FC<FlexProps> = () => {
+  // here adjust placeholder
   return (
     <Skeleton>
       <SkeletonBox>
@@ -172,7 +173,7 @@ const HomeViewSectionFeaturedCollectionPlaceholder: React.FC<FlexProps> = () => 
           <Join separator={<Spacer x="15px" />}>
             <Flex>
               <SkeletonBox
-                height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
+                height={LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
                 width={ARTWORK_RAIL_IMAGE_WIDTH}
               />
               <Spacer y={2} />
