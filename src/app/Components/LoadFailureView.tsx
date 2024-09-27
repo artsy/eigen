@@ -7,6 +7,7 @@ import {
   Text,
   Touchable,
   BackButton,
+  DEFAULT_HIT_SLOP,
 } from "@artsy/palette-mobile"
 import * as Sentry from "@sentry/react-native"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -17,7 +18,7 @@ import { debounce } from "lodash"
 import { useEffect, useRef, useState } from "react"
 import { Animated, Easing } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { space } from "styled-system"
+
 import { JustifyContentValue } from "./Bidding/Elements/types"
 
 interface LoadFailureViewProps {
@@ -90,16 +91,7 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
       {!!showTopButton && (
         <Flex pt={`${topInsets}px`} mx={2} mb={2} height={HEADER_HEIGHT}>
           <Flex flexDirection="row" justifyContent="space-between" height={30} mb={1}>
-            <BackButton
-              onPress={goBack}
-              showX={showCloseButton}
-              hitSlop={{
-                top: space(2),
-                left: space(2),
-                right: space(2),
-                bottom: space(2),
-              }}
-            />
+            <BackButton onPress={goBack} showX={showCloseButton} hitSlop={DEFAULT_HIT_SLOP} />
           </Flex>
         </Flex>
       )}
