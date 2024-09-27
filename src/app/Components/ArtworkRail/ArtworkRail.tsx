@@ -8,9 +8,14 @@ import {
   ARTWORK_RAIL_CARD_MINIMUM_WIDTH,
   ArtworkRailCard,
 } from "app/Components/ArtworkRail/ArtworkRailCard"
+import {
+  ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
+  ARTWORK_RAIL_MIN_IMAGE_WIDTH,
+} from "app/Components/ArtworkRail/ArtworkRailCardImage"
 import { LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT } from "app/Components/ArtworkRail/LegacyArtworkRailCardImage"
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { PrefetchFlashList } from "app/Components/PrefetchFlashList"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { RandomWidthPlaceholderText, useMemoizedRandom } from "app/utils/placeholders"
 import {
   ArtworkActionTrackingProps,
@@ -68,7 +73,6 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
 
   const renderItem: ListRenderItem<Artwork> = useCallback(
     ({ item, index }) => {
-      // remove <Box pr={2}> and add separator to flatlist
       return (
         <Box pr={2}>
           <ArtworkRailCard
@@ -134,19 +138,31 @@ const artworksFragment = graphql`
   }
 `
 
-export const ArtworkRailPlaceholder: React.FC = () => (
-  // adjust placeholder
-  <Join separator={<Spacer x="15px" />}>
-    {times(3 + useMemoizedRandom() * 10).map((index) => (
-      <Flex key={index}>
-        <SkeletonBox
-          height={LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
-          width={ARTWORK_RAIL_IMAGE_WIDTH + 200}
-        />
-        <Spacer y={2} />
-        <SkeletonText>Artist</SkeletonText>
-        <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
-      </Flex>
-    ))}
-  </Join>
-)
+export const ArtworkRailPlaceholder: React.FC = () => {
+  const enableArtworkRailRedesignImageAspectRatio = !useFeatureFlag(
+    "AREnableArtworkRailRedesignImageAspectRatio"
+  )
+
+  return (
+    <Join separator={<Spacer x="15px" />}>
+      {times(3 + useMemoizedRandom() * 10).map((index) => (
+        <Flex key={index}>
+          {enableArtworkRailRedesignImageAspectRatio ? (
+            <SkeletonBox
+              height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
+              width={ARTWORK_RAIL_MIN_IMAGE_WIDTH * 2}
+            />
+          ) : (
+            <SkeletonBox
+              height={LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
+              width={ARTWORK_RAIL_IMAGE_WIDTH}
+            />
+          )}
+          <Spacer y={2} />
+          <SkeletonText>Artist</SkeletonText>
+          <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
+        </Flex>
+      ))}
+    </Join>
+  )
+}

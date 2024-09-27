@@ -14,12 +14,17 @@ import { ArtworkRail_artworks$data } from "__generated__/ArtworkRail_artworks.gr
 import { HomeViewSectionFeaturedCollectionQuery } from "__generated__/HomeViewSectionFeaturedCollectionQuery.graphql"
 import { HomeViewSectionFeaturedCollection_section$key } from "__generated__/HomeViewSectionFeaturedCollection_section.graphql"
 import { ARTWORK_RAIL_IMAGE_WIDTH, ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
+import {
+  ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
+  ARTWORK_RAIL_MIN_IMAGE_WIDTH,
+} from "app/Components/ArtworkRail/ArtworkRailCardImage"
 import { LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT } from "app/Components/ArtworkRail/LegacyArtworkRailCardImage"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { TouchableOpacity, useWindowDimensions } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -152,7 +157,10 @@ const fragment = graphql`
 `
 
 const HomeViewSectionFeaturedCollectionPlaceholder: React.FC<FlexProps> = () => {
-  // here adjust placeholder
+  const enableArtworkRailRedesignImageAspectRatio = !useFeatureFlag(
+    "AREnableArtworkRailRedesignImageAspectRatio"
+  )
+
   return (
     <Skeleton>
       <SkeletonBox>
@@ -172,10 +180,17 @@ const HomeViewSectionFeaturedCollectionPlaceholder: React.FC<FlexProps> = () => 
         <Flex flexDirection="row">
           <Join separator={<Spacer x="15px" />}>
             <Flex>
-              <SkeletonBox
-                height={LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
-                width={ARTWORK_RAIL_IMAGE_WIDTH}
-              />
+              {enableArtworkRailRedesignImageAspectRatio ? (
+                <SkeletonBox
+                  height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
+                  width={ARTWORK_RAIL_MIN_IMAGE_WIDTH * 2}
+                />
+              ) : (
+                <SkeletonBox
+                  height={LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
+                  width={ARTWORK_RAIL_IMAGE_WIDTH}
+                />
+              )}
               <Spacer y={2} />
               <SkeletonText>Andy Warhol</SkeletonText>
               <SkeletonText>A creative name for a work</SkeletonText>
