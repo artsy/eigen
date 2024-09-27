@@ -157,7 +157,7 @@ const fragment = graphql`
 `
 
 const HomeViewSectionFeaturedCollectionPlaceholder: React.FC<FlexProps> = () => {
-  const enableArtworkRailRedesignImageAspectRatio = !useFeatureFlag(
+  const enableArtworkRailRedesignImageAspectRatio = useFeatureFlag(
     "AREnableArtworkRailRedesignImageAspectRatio"
   )
 

@@ -139,7 +139,7 @@ const artworksFragment = graphql`
 `
 
 export const ArtworkRailPlaceholder: React.FC = () => {
-  const enableArtworkRailRedesignImageAspectRatio = !useFeatureFlag(
+  const enableArtworkRailRedesignImageAspectRatio = useFeatureFlag(
     "AREnableArtworkRailRedesignImageAspectRatio"
   )
 

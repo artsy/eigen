@@ -150,7 +150,7 @@ const homeViewSectionArtworksQuery = graphql`
 
 const HomeViewSectionArtworksPlaceholder: React.FC<FlexProps> = (flexProps) => {
   const randomValue = useMemoizedRandom()
-  const enableArtworkRailRedesignImageAspectRatio = !useFeatureFlag(
+  const enableArtworkRailRedesignImageAspectRatio = useFeatureFlag(
     "AREnableArtworkRailRedesignImageAspectRatio"
   )
 

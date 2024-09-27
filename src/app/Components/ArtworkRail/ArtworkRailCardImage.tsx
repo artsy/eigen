@@ -11,34 +11,11 @@ export const ARTWORK_RAIL_MIN_IMAGE_WIDTH = 140
 export const ARTWORK_RAIL_MAX_IMAGE_WIDTH = 340
 const PADDING = 10
 
-// Take
-const tallImage = {
-  aspectRatio: 0.3,
-  height: 3000,
-  url: "https://d32dm0rphc51dk.cloudfront.net/IIPB-7WL_QaSV9sqORf0TQ/large.jpg",
-  width: 911,
-}
-
-const wideImage = {
-  aspectRatio: 2.81,
-  height: 356,
-  url: "https://d32dm0rphc51dk.cloudfront.net/nELDUsRuQl5DLM-WedfSMQ/large.jpg",
-  width: 1000,
-}
-
-/* const wideImage = {
-  aspectRatio: 2.28,
-  height: 1768,
-  url: "https://d32dm0rphc51dk.cloudfront.net/3PjwqKQuAqp1ZcgEro4qbg/large.jpg",
-  width: 4030,
-} */
 export const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({ ...restProps }) => {
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
   const artwork = useFragment(artworkFragment, restProps.artwork)
 
   const { image } = artwork
-
-  // const image = wideImage
 
   const useImageDimentions = () => {
     if (!image?.aspectRatio) {

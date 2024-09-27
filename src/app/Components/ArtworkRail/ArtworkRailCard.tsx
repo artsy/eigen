@@ -49,7 +49,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   testID,
   ...restProps
 }) => {
-  const enableArtworkRailRedesignImageAspectRatio = !useFeatureFlag(
+  const enableArtworkRailRedesignImageAspectRatio = useFeatureFlag(
     "AREnableArtworkRailRedesignImageAspectRatio"
   )
 
