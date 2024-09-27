@@ -28,6 +28,7 @@ import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { ArtworkRailPlaceholder } from "app/Components/ArtworkRail/ArtworkRail"
 import { ArtistRailFragmentContainer } from "app/Components/Home/ArtistRails/ArtistRail"
 import { RecommendedArtistsRailFragmentContainer } from "app/Components/Home/ArtistRails/RecommendedArtistsRail"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { useDismissSavedArtwork } from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
 import { useEnableProgressiveOnboarding } from "app/Components/ProgressiveOnboarding/useEnableProgressiveOnboarding"
 import { ArticlesCards } from "app/Scenes/Articles/News/ArticlesCards"
@@ -827,6 +828,7 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
             `,
             variables: {},
           }}
+          fallback={({ error }) => <LoadFailureView error={error} trackErrorBoundary={false} />}
           render={{
             renderComponent: ({ above, below }) => {
               if (!above) {
