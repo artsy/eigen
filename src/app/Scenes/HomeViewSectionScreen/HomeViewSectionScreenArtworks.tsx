@@ -1,7 +1,7 @@
 import { ScreenOwnerType } from "@artsy/cohesion"
 import { Flex, Screen, SimpleMessage, Text } from "@artsy/palette-mobile"
-import { HomeViewSectionScreenArtworksQuery } from "__generated__/HomeViewSectionScreenArtworksQuery.graphql"
 import { HomeViewSectionScreenArtworks_section$key } from "__generated__/HomeViewSectionScreenArtworks_section.graphql"
+import { HomeViewSectionScreenQuery } from "__generated__/HomeViewSectionScreenQuery.graphql"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import { PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
@@ -21,10 +21,10 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
     loadNext,
     refetch,
     hasNext,
-  } = usePaginationFragment<
-    HomeViewSectionScreenArtworksQuery,
-    HomeViewSectionScreenArtworks_section$key
-  >(artworksFragment, props.section)
+  } = usePaginationFragment<HomeViewSectionScreenQuery, HomeViewSectionScreenArtworks_section$key>(
+    artworksFragment,
+    props.section
+  )
 
   const artworks = extractNodes(section?.artworksConnection)
 
@@ -86,16 +86,6 @@ export const artworksFragment = graphql`
           }
           ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
         }
-      }
-    }
-  }
-`
-
-export const artworksQuery = graphql`
-  query HomeViewSectionScreenArtworksQuery($id: String!) {
-    homeView {
-      section(id: $id) @principalField {
-        ...HomeViewSectionScreenArtworks_section
       }
     }
   }

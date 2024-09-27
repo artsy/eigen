@@ -6,7 +6,7 @@ export const HomeViewSectionScreenPlaceholderContent: React.FC<{
   sectionType: string
 }> = ({ sectionType }) => {
   switch (sectionType) {
-    case "ArtworksRailHomeViewSection":
+    case "HomeViewSectionArtworks":
       return <HomeViewSectionScreenArtworksPlaceholder />
     default:
       return (
