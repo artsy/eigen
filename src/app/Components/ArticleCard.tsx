@@ -1,15 +1,9 @@
-import { Spacer, Flex, useTheme, Text } from "@artsy/palette-mobile"
+import { Spacer, Flex, useTheme, Text, Touchable } from "@artsy/palette-mobile"
 import { ArticleCard_article$data } from "__generated__/ArticleCard_article.graphql"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { navigate } from "app/system/navigation/navigate"
 import { DateTime } from "luxon"
-import {
-  GestureResponderEvent,
-  TouchableWithoutFeedback,
-  useWindowDimensions,
-  View,
-  ViewProps,
-} from "react-native"
+import { GestureResponderEvent, useWindowDimensions, View, ViewProps } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 export const ARTICLE_CARD_IMAGE_WIDTH = 295
@@ -36,7 +30,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
 
   return (
     <Flex width={isFluid ? "100%" : ARTICLE_CARD_IMAGE_WIDTH}>
-      <TouchableWithoutFeedback onPress={onTap} testID="article-card">
+      <Touchable onPress={onTap} testID="article-card">
         <Flex width={isFluid ? "100%" : ARTICLE_CARD_IMAGE_WIDTH} overflow="hidden">
           {!!imageURL &&
             (isFluid ? (
@@ -74,7 +68,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
             </Text>
           )}
         </Flex>
-      </TouchableWithoutFeedback>
+      </Touchable>
     </Flex>
   )
 }
