@@ -12710,6 +12710,7 @@ type Me implements Node {
     last: Int
     states: [ArtworkConsignmentSubmissionState]
   ): ArtworkConsignmentSubmissionConnection
+  tasks(limit: Int): [Task]
   type: String
 
   # The count of conversations with unread messages.
@@ -18763,6 +18764,47 @@ type TargetSupplyMicrofunnelMetadata {
   str: String
   uniqueVisitors: String
   views: String
+}
+
+type Task implements Node {
+  actionLink: String!
+  actionMessage: String!
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  dismissedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  expiresAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+
+  # A globally unique ID.
+  id: ID!
+  imageUrl: String!
+
+  # A type-specific ID.
+  internalID: ID!
+  message: String!
+  resolvedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  sourceId: String
+  sourceType: String
+  taskType: String!
+  title: String!
 }
 
 type TaxInfo {
