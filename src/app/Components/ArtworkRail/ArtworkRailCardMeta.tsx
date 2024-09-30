@@ -299,6 +299,14 @@ const artworkMetaFragment = graphql`
       isClosed
       endAt
     }
+    saleArtwork {
+      currentBid {
+        display
+      }
+      counts {
+        bidderPositions
+      }
+    }
     saleMessage
     partner {
       name
