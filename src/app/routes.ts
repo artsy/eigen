@@ -216,10 +216,7 @@ export function getDomainMap(): Record<string, RouteMatcher[] | null> {
 
     addRoute("/artwork-certificate-of-authenticity", "ArtworkCertificateAuthenticity"),
     addRoute("/artwork-classifications", "ArtworkAttributionClassFAQ"),
-    addRoute("/artwork-lists", "MyProfile", (params) => ({
-      ...params,
-      initialTab: "Saves",
-    })),
+    addRoute("/artwork-lists", "SavedArtworks"),
     addRoute("/artwork-list/:listID", "ArtworkList"),
     addRoute("/artwork-recommendations", "ArtworkRecommendations"),
     addRoute("/artwork/:artworkID", "Artwork"),
