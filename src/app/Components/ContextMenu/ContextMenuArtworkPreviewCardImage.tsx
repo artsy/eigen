@@ -1,7 +1,7 @@
 import { Flex, Text, useColor } from "@artsy/palette-mobile"
 import { ContextMenuArtworkPreviewCardImage_artwork$key } from "__generated__/ContextMenuArtworkPreviewCardImage_artwork.graphql"
 import {
-  ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
+  LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
   ARTWORK_RAIL_CARD_IMAGE_WIDTH,
 } from "app/Components/ArtworkRail/LegacyArtworkRailCardImage"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
@@ -42,7 +42,7 @@ export const ContextMenuArtworkPreviewCardImage: React.FC<
       <Flex
         bg={color("black30")}
         width={width}
-        height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
+        height={LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
         style={{ borderRadius: 2 }}
       />
     )
@@ -55,7 +55,7 @@ export const ContextMenuArtworkPreviewCardImage: React.FC<
     },
     {
       width: ARTWORK_RAIL_CARD_IMAGE_WIDTH,
-      height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
+      height: LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
     }
   )
 
@@ -63,9 +63,9 @@ export const ContextMenuArtworkPreviewCardImage: React.FC<
     <Flex>
       <Flex width={containerWidth}>
         <OpaqueImageView
-          style={{ maxHeight: ARTWORK_RAIL_CARD_IMAGE_HEIGHT }}
+          style={{ maxHeight: LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT }}
           imageURL={src}
-          height={imageDimensions.height || ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
+          height={imageDimensions.height || LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
           width={containerWidth}
         />
       </Flex>
