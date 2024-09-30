@@ -7,7 +7,7 @@ import {
   ArtworkRailCardMeta,
 } from "app/Components/ArtworkRail/ArtworkRailCardMeta"
 import {
-  ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
+  LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
   LegacyArtworkRailCardImage,
 } from "app/Components/ArtworkRail/LegacyArtworkRailCardImage"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
@@ -91,7 +91,11 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
             testID={testID}
           >
             <Flex
-              height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT + ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT}
+              height={
+                enableArtworkRailRedesignImageAspectRatio
+                  ? "auto"
+                  : LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT + ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT
+              }
               justifyContent="flex-end"
             >
               {enableArtworkRailRedesignImageAspectRatio ? (
