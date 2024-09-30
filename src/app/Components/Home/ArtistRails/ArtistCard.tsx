@@ -74,15 +74,14 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({
               </Text>
             )}
           </Flex>
-          {!!onFollow ||
-            (showDefaultFollowButton && (
-              <Flex>
-                <FollowButton
-                  isFollowed={!!artist.isFollowed}
-                  onPress={handleFollowToggle ?? onFollow}
-                />
-              </Flex>
-            ))}
+          {!!(onFollow || showDefaultFollowButton) && (
+            <Flex>
+              <FollowButton
+                isFollowed={!!artist.isFollowed}
+                onPress={onFollow ?? handleFollowToggle}
+              />
+            </Flex>
+          )}
         </Flex>
         {!!onDismiss && (
           <Flex
