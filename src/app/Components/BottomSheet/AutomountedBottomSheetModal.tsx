@@ -5,7 +5,7 @@ import {
 } from "@gorhom/bottom-sheet"
 import { DefaultBottomSheetBackdrop } from "app/Components/BottomSheet/DefaultBottomSheetBackdrop"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
-import { FC, useCallback, useEffect, useRef } from "react"
+import { FC, useCallback, useEffect, useRef, useState } from "react"
 
 export interface AutomountedBottomSheetModalProps extends BottomSheetModalProps {
   visible: boolean
@@ -18,12 +18,26 @@ export const AutomountedBottomSheetModal: FC<AutomountedBottomSheetModalProps> =
   ...rest
 }) => {
   const ref = useRef<BottomSheetModal>(null)
+  const [modalIsPresented, setModalIsPresented] = useState(false)
 
   // dismiss modal on back button press on Android
   useBackHandler(() => {
-    ref.current?.dismiss()
-    return true
+    if (ref.current && modalIsPresented) {
+      ref.current.dismiss()
+      return true
+    } else {
+      // modal is not presented, let the default back button behavior happen
+      return false
+    }
   })
+
+  const handlePresent = () => {
+    setModalIsPresented(true)
+  }
+
+  const handleDismiss = () => {
+    setModalIsPresented(false)
+  }
 
   useEffect(() => {
     if (visible) {
@@ -56,6 +70,8 @@ export const AutomountedBottomSheetModal: FC<AutomountedBottomSheetModalProps> =
     <BottomSheetModal
       ref={ref}
       enablePanDownToClose
+      onDismiss={handleDismiss}
+      onAnimate={handlePresent}
       keyboardBlurBehavior="restore"
       backdropComponent={renderBackdrop}
       {...rest}
