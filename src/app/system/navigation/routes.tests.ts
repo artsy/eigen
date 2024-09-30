@@ -58,10 +58,8 @@ describe("artsy.net routes", () => {
   it("routes to Artwork Lists", () => {
     expect(matchRoute("/artwork-lists")).toMatchInlineSnapshot(`
       {
-        "module": "MyProfile",
-        "params": {
-          "initialTab": "Saves",
-        },
+        "module": "SavedArtworks",
+        "params": {},
         "type": "match",
       }
     `)
