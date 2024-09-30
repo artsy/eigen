@@ -839,17 +839,23 @@ export const getAuthModel = (): AuthModel => ({
     actions.setSessionState({ isUserIdentified: true })
   }),
   verifyUser: thunk(async (actions, { email, recaptchaToken }) => {
-    const result = await actions.gravityUnauthenticatedRequest({
-      path: `/api/v1/user/identify`,
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: {
-        email,
-        recaptcha_token: recaptchaToken,
-      },
-    })
+    let result: Response
+
+    try {
+      result = await actions.gravityUnauthenticatedRequest({
+        path: `/api/v1/user/identify`,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: {
+          email,
+          recaptcha_token: recaptchaToken,
+        },
+      })
+    } catch (error) {
+      return "something_went_wrong"
+    }
 
     if (result.status !== 201) {
       return "something_went_wrong"
