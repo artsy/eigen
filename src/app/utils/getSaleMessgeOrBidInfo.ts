@@ -1,19 +1,19 @@
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { DateTime } from "luxon"
 
-type ArtworkSale = Pick<
-  NonNullable<ArtworkGridItem_artwork$data["sale"]>,
-  "isAuction" | "isClosed"
-> | null
+type ArtworkSale =
+  | Pick<NonNullable<ArtworkGridItem_artwork$data["sale"]>, "isAuction" | "isClosed">
+  | null
+  | undefined
 
-type ArtworkSaleArtwork = Pick<
-  NonNullable<ArtworkGridItem_artwork$data["saleArtwork"]>,
-  "counts" | "currentBid"
-> | null
+type ArtworkSaleArtwork =
+  | Pick<NonNullable<ArtworkGridItem_artwork$data["saleArtwork"]>, "counts" | "currentBid">
+  | null
+  | undefined
 
 type Artwork = Pick<ArtworkGridItem_artwork$data, "saleMessage" | "realizedPrice"> & {
-  sale?: ArtworkSale
-  saleArtwork?: ArtworkSaleArtwork
+  sale: ArtworkSale
+  saleArtwork: ArtworkSaleArtwork
 }
 type collectorSignals = ArtworkGridItem_artwork$data["collectorSignals"]
 type AuctionSignals = NonNullable<ArtworkGridItem_artwork$data["collectorSignals"]>["auction"]

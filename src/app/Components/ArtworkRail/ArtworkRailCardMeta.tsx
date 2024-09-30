@@ -246,11 +246,11 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
 
       {!!showSaveIcon && (
         <Flex flexDirection="row" alignItems="flex-start">
-          {!!displayAuctionSignal && !!collectorSignals?.auction?.lotWatcherCount ? (
+          {!!displayAuctionSignal && !!collectorSignals?.auction?.lotWatcherCount && (
             <Text lineHeight="20px" variant="xs" numberOfLines={1}>
               {collectorSignals.auction.lotWatcherCount}
             </Text>
-          ) : null}
+          )}
 
           <Touchable
             haptic
@@ -298,6 +298,14 @@ const artworkMetaFragment = graphql`
       isAuction
       isClosed
       endAt
+    }
+    saleArtwork {
+      currentBid {
+        display
+      }
+      counts {
+        bidderPositions
+      }
     }
     saleMessage
     partner {
