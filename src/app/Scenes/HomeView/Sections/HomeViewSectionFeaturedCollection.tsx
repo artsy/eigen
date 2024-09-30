@@ -114,9 +114,11 @@ export const HomeViewSectionFeaturedCollection: React.FC<
           dark
           showPartnerName
           artworks={artworks}
-          showSaveIcon
           onPress={handleOnArtworkPress}
           onMorePress={onSectionViewAll}
+          hideCuratorsPickSignal
+          hideIncreasedInterestSignal
+          showSaveIcon
         />
       </Flex>
 
