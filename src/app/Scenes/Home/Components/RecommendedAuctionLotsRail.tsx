@@ -92,7 +92,6 @@ export const RecommendedAuctionLotsRail: React.FC<
             onPress={() => {
               trackEvent(tracks.tappedHeader(contextScreenOwnerType))
               navigate("/auctions/lots-for-you-ending-soon")
-              console.log(contextScreenOwnerType)
             }}
           />
         </Flex>
