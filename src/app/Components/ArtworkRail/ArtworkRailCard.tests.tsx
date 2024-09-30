@@ -135,6 +135,27 @@ describe("ArtworkRailCard", () => {
     })
   })
 
+  describe("artwork image", () => {
+    beforeEach(
+      () =>
+        __globalStoreTestUtils__?.injectFeatureFlags({
+          AREnableArtworkRailRedesignImageAspectRatio: true,
+        })
+    )
+
+    it("renders the artwork image", () => {
+      renderWithRelay({ Artwork: () => artwork })
+
+      expect(screen.getByTestId("artwork-rail-card-image")).toBeOnTheScreen()
+    })
+
+    it("doesn't render an image if the url is not present", () => {
+      renderWithRelay({ Artwork: () => ({ ...artwork, image: { url: null } }) })
+
+      expect(screen.queryByTestId("artwork-rail-card-image")).not.toBeOnTheScreen()
+    })
+  })
+
   describe("unlisted artworks", () => {
     it("shows exclusive access", () => {
       renderWithRelay({ Artwork: () => ({ isUnlisted: true }) })

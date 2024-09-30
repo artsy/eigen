@@ -28,7 +28,7 @@ import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 
 export const INITIAL_NUM_TO_RENDER = isTablet() ? 10 : 5
-export const ARTWORK_RAIL_IMAGE_WIDTH = 295 // here
+export const ARTWORK_RAIL_IMAGE_WIDTH = 295
 
 type Artwork = ArtworkRail_artworks$data[0]
 

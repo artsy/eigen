@@ -18,11 +18,10 @@ export const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({ ...r
   const { image } = artwork
 
   const useImageDimentions = () => {
-    if (!image?.aspectRatio) {
-      return { containerWidth: 0 }
-    }
+    const imageAspectRatio =
+      image?.aspectRatio ?? (image?.width && image?.height ? image.width / image.height : 1)
 
-    const imageWidth = ARTWORK_RAIL_CARD_IMAGE_HEIGHT * image?.aspectRatio
+    const imageWidth = ARTWORK_RAIL_CARD_IMAGE_HEIGHT * imageAspectRatio
 
     let containerWidth = imageWidth
     let horizontalPadding = 0
@@ -50,7 +49,7 @@ export const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({ ...r
           2 * horizontalPadding
 
     const displayImageHeight =
-      Math.min(displayImageWidth / image.aspectRatio, ARTWORK_RAIL_CARD_IMAGE_HEIGHT) -
+      Math.min(displayImageWidth / imageAspectRatio, ARTWORK_RAIL_CARD_IMAGE_HEIGHT) -
       2 * verticalPadding
 
     return { containerWidth, displayImageWidth, displayImageHeight }
@@ -75,6 +74,7 @@ export const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({ ...r
           blurhash={showBlurhash ? image.blurhash : undefined}
           performResize={false}
           resizeMode="contain"
+          testID="artwork-rail-card-image"
         />
       )}
     </Flex>
@@ -87,6 +87,8 @@ const artworkFragment = graphql`
       blurhash
       url(version: "large")
       aspectRatio
+      width
+      height
     }
   }
 `
