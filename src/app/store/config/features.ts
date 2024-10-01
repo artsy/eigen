@@ -305,6 +305,12 @@ export const features = {
     readyForRelease: false,
     showInDevMenu: true,
   },
+  AREnableDynamicHomeView: {
+    description: "Enable new home screen",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableDynamicHomeView",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
