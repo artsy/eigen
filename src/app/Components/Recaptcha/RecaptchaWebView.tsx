@@ -1,6 +1,5 @@
 import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { FC, useRef } from "react"
-import { Alert } from "react-native"
 import Config from "react-native-config"
 import WebView, { WebViewMessageEvent } from "react-native-webview"
 import { ShouldStartLoadRequest } from "react-native-webview/lib/WebViewTypes"
@@ -53,7 +52,6 @@ export const RecaptchaWebView: FC<RecaptchaWebViewProps> = ({
       allowFileAccessFromFileURLs
       javaScriptCanOpenWindowsAutomatically
       onShouldStartLoadWithRequest={(e: ShouldStartLoadRequest) => {
-        Alert.alert("onShouldStartLoadWithRequest", e.url)
         if (
           e.url.startsWith("https://www.google.com/recaptcha") ||
           e.url.startsWith("https://staging.artsy.net") ||
