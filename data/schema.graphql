@@ -9246,9 +9246,9 @@ enum ExhibitionPeriodFormat {
 
 # A marketing collection category to explore by
 type ExploreByMarketingCollectionCategory {
+  href: String!
   image: Image
   name: String!
-  slug: String!
 }
 
 type External {
