@@ -115,7 +115,7 @@ export function getCurrentEmissionState() {
   // `getUserAgentSync` breaks the Chrome Debugger, so we use a string instead.
   const userAgent = `${
     __DEV__ ? "Artsy-Mobile " + Platform.OS : DeviceInfo.getUserAgentSync()
-  } Artsy-Mobile/${version} Eigen/${DeviceInfo.getBuildNumber()}/${version}`
+  } ${DeviceInfo.getSystemName()}/${DeviceInfo.getSystemVersion()} Artsy-Mobile/${version} Eigen/${DeviceInfo.getBuildNumber()}/${version}`
 
   const data: GlobalStoreModel["native"]["sessionState"] = {
     authenticationToken: state?.auth.userAccessToken || "",

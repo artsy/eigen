@@ -156,9 +156,9 @@ describe("ArtsyWebViewPage", () => {
     it("on iOS", () => {
       const tree = render()
       expect(webViewProps(tree).userAgent).toBe(
-        `Artsy-Mobile ios Artsy-Mobile/${appJson().version} Eigen/some-build-number/${
+        `Artsy-Mobile ios some-system-name/some-system-version Artsy-Mobile/${
           appJson().version
-        }`
+        } Eigen/some-build-number/${appJson().version}`
       )
     })
 
@@ -168,9 +168,9 @@ describe("ArtsyWebViewPage", () => {
       const source = webViewProps(tree).source as any
       expect(source).toHaveProperty("headers")
       expect(source?.headers["User-Agent"]).toBe(
-        `Artsy-Mobile android Artsy-Mobile/${appJson().version} Eigen/some-build-number/${
+        `Artsy-Mobile android some-system-name/some-system-version Artsy-Mobile/${
           appJson().version
-        }`
+        } Eigen/some-build-number/${appJson().version}`
       )
     })
   })
