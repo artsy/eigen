@@ -10970,6 +10970,25 @@ type HomeViewSectionAuctionResults implements HomeViewSectionGeneric & Node {
   ownerType: String
 }
 
+# A section containing a list of curated marketing collections
+type HomeViewSectionDiscoverMarketingCollections implements HomeViewSectionGeneric & Node {
+  # Component prescription for this section, for overriding or customizing presentation and behavior
+  component: HomeViewComponent
+
+  # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
+  contextModule: String
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  linksConnection(after: String, before: String, first: Int, last: Int): FeaturedLinkConnection
+
+  # [Analytics] `owner type` analytics value for this scetion when displayed in a standalone UI, as defined in our schema (artsy/cohesion)
+  ownerType: String
+}
+
 # A fairs section in the home view
 type HomeViewSectionFairs implements HomeViewSectionGeneric & Node {
   # Component prescription for this section, for overriding or customizing presentation and behavior
