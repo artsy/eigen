@@ -14,6 +14,7 @@ import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
 import { withSuspense } from "app/utils/hooks/withSuspense"
+import { isNumber } from "lodash"
 import { useRef, useState } from "react"
 import { FlatList, ViewabilityConfig, ViewToken } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -39,7 +40,7 @@ export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> =
     if (viewableItems.length > 0) {
       const index = viewableItems[0].index
 
-      if (index) {
+      if (isNumber(index)) {
         setCurrentIndex(index)
       }
     }
