@@ -1,5 +1,5 @@
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { TouchableWithoutFeedback } from "react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { ArticleCard } from "./ArticleCard"
 
 it("renders without throwing an error", () => {
@@ -13,7 +13,9 @@ it("renders without throwing an error", () => {
     },
   }
 
-  const tree = renderWithWrappersLEGACY(<ArticleCard article={article as any} onPress={onPress} />)
-  tree.root.findAllByType(TouchableWithoutFeedback)[0].props.onPress()
+  renderWithWrappers(<ArticleCard article={article as any} onPress={onPress} />)
+
+  fireEvent(screen.getByTestId("article-card"), "press")
+
   expect(onPress).toHaveBeenCalled()
 })
