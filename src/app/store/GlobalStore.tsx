@@ -124,7 +124,6 @@ export function getCurrentEmissionState() {
     userID: state?.auth.userID || "",
     userEmail: "user@example.com", // not used on android
   }
-
   return data
 }
 

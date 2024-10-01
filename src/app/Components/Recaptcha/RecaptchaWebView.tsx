@@ -52,7 +52,6 @@ export const RecaptchaWebView: FC<RecaptchaWebViewProps> = ({
       allowFileAccessFromFileURLs
       javaScriptCanOpenWindowsAutomatically
       onShouldStartLoadWithRequest={(e: ShouldStartLoadRequest) => {
-        // Alert.alert("onShouldStartLoadWithRequest", e.url)
         if (
           e.url.startsWith("https://www.google.com/recaptcha") ||
           e.url.startsWith("https://staging.artsy.net") ||
