@@ -17,7 +17,7 @@ describe("BuyNowArtworksRail", () => {
 
   it(`renders title "Buy now"`, () => {
     const { getByText } = renderWithRelay(mockProps)
-    expect(getByText("Artworks Available to Buy Now")).toBeDefined()
+    expect(getByText("Artworks Available to Inquire")).toBeDefined()
   })
 
   it("renders nothing if there are no artworks", () => {
