@@ -302,7 +302,6 @@ const Home = memo((props: HomeProps) => {
               isRailVisible={visibleRails.has(item.title)}
               scrollRef={scrollRefs.current[index]}
               title={item.title}
-              size="large"
               contextScreenOwnerType={OwnerType.home}
             />
           )
@@ -553,7 +552,7 @@ export const HomeFragmentContainer = memo(
       `,
       recommendedAuctionLots: graphql`
         fragment Home_recommendedAuctionLots on Viewer {
-          ...RecommendedAuctionLotsRail_largeArtworkConnection
+          ...RecommendedAuctionLotsRail_artworkConnection
         }
       `,
     },
