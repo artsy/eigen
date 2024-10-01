@@ -18,7 +18,7 @@ describe("NewBuyNowArtworksRail", () => {
 
   it(`renders "Buy now" rail and artworks`, () => {
     renderWithRelay(mockProps)
-    expect(screen.queryByText("Artworks Available to Buy Now")).toBeDefined()
+    expect(screen.queryByText("Artworks Available to Inquire")).toBeDefined()
     expect(screen.queryAllByText("Best artwork ever, 2019")).toBeDefined()
   })
 
