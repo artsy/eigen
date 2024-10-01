@@ -85,6 +85,7 @@ export const OnboardingWelcomeScreens = () => {
         {signupLoginFusionEnabled ? (
           <StackNavigator.Group screenOptions={{ ...TransitionPresets.SlideFromRightIOS }}>
             <StackNavigator.Screen name="OnboardingHome" component={OnboardingHome} />
+            <StackNavigator.Screen name="OnboardingWebView" component={OnboardingWebView} />
           </StackNavigator.Group>
         ) : (
           <StackNavigator.Group screenOptions={{ ...TransitionPresets.SlideFromRightIOS }}>

@@ -125,8 +125,6 @@ export function getCurrentEmissionState() {
     userEmail: "user@example.com", // not used on android
   }
 
-  console.log({ data })
-
   return data
 }
 

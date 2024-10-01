@@ -182,10 +182,10 @@ const WelcomeText: React.FC = () => {
 export type OnboardingHomeNavigationStack = {
   EmailStep: undefined
   ForgotPasswordStep: { requestedPasswordReset: boolean } | undefined
-  LoginPasswordStep: undefined
-  LoginOTPStep: { otpMode: "standard" | "on_demand" }
-  SignUpPasswordStep: undefined
-  SignUpNameStep: undefined
+  LoginPasswordStep: { email: string }
+  LoginOTPStep: { otpMode: "standard" | "on_demand"; email: string; password: string }
+  SignUpPasswordStep: { email: string }
+  SignUpNameStep: { email: string; password: string }
   WelcomeStep: undefined
 }
 

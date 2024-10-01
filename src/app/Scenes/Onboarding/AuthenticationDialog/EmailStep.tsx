@@ -1,80 +1,110 @@
-import { BackButton, Button, Flex, Input, Text, useTheme } from "@artsy/palette-mobile"
+import { BackButton, Button, Flex, Text, useTheme } from "@artsy/palette-mobile"
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
-import { StackScreenProps } from "@react-navigation/stack"
+import { useNavigation } from "@react-navigation/native"
+import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack"
+import { BottomSheetInput } from "app/Components/BottomSheetInput"
 import { useRecaptcha } from "app/Components/Recaptcha/Recaptcha"
-import { AuthenticationDialogFormValues } from "app/Scenes/Onboarding/AuthenticationDialog/AuthenticationDialogForm"
 import { OnboardingHomeNavigationStack } from "app/Scenes/Onboarding/OnboardingHome"
-import { useFormikContext } from "formik"
+import { GlobalStore } from "app/store/GlobalStore"
+import { FormikProvider, useFormik, useFormikContext } from "formik"
 import { useEffect } from "react"
+import { Alert } from "react-native"
+import * as Yup from "yup"
 
 type EmailStepProps = StackScreenProps<OnboardingHomeNavigationStack, "EmailStep">
 
-export const EmailStep: React.FC<EmailStepProps> = ({ navigation }) => {
-  const { color, space } = useTheme()
+interface EmailStepFormValues {
+  email: string
+  recaptchaToken: string | null
+}
 
-  const {
-    errors,
-    handleChange,
-    handleSubmit,
-    isValid,
-    setErrors,
-    setFieldValue,
-    setTouched,
-    touched,
-    values,
-  } = useFormikContext<AuthenticationDialogFormValues>()
+export const EmailStep: React.FC<EmailStepProps> = ({ navigation }) => {
+  const formik = useFormik<EmailStepFormValues>({
+    initialValues: { email: "", recaptchaToken: null },
+    onSubmit: async ({ email, recaptchaToken }, { setFieldValue }) => {
+      if (!recaptchaToken) {
+        Alert.alert("Something went wrong. Please try again, or contact support@artsy.net")
+        return
+      }
+
+      const res = await GlobalStore.actions.auth.verifyUser({ email, recaptchaToken })
+
+      setFieldValue("recaptchaToken", null)
+
+      if (res === "user_exists") {
+        navigation.navigate("LoginPasswordStep", { email })
+      } else if (res === "user_does_not_exist") {
+        navigation.navigate("SignUpPasswordStep", { email })
+      } else if (res === "something_went_wrong") {
+        Alert.alert("Something went wrong. Please try again, or contact support@artsy.net")
+      }
+    },
+    validateOnMount: false,
+    validationSchema: Yup.object().shape({
+      email: Yup.string()
+        .email("Please provide a valid email address")
+        .required("Email field is required"),
+    }),
+  })
+
+  return (
+    <BottomSheetScrollView>
+      <FormikProvider value={formik}>
+        <EmailStepForm />
+      </FormikProvider>
+    </BottomSheetScrollView>
+  )
+}
+
+const EmailStepForm: React.FC = () => {
+  const { errors, handleChange, handleSubmit, isValid, setFieldValue } =
+    useFormikContext<EmailStepFormValues>()
+
+  const navigation = useNavigation<StackNavigationProp<OnboardingHomeNavigationStack>>()
 
   const { Recaptcha, token } = useRecaptcha({ source: "authentication", action: "verify_email" })
 
+  const { color, space } = useTheme()
+
+  // TODO: reset recaptchaToken when the user navigates back
   useEffect(() => {
-    if (!values.recaptchaToken) {
-      setFieldValue("recaptchaToken", token)
-    }
-  }, [token, setFieldValue])
+    setFieldValue("recaptchaToken", token)
+  }, [setFieldValue, token])
 
   const handleBackButtonPress = () => {
-    // clear the form validation state
-    setErrors({})
-    setTouched({})
     navigation.goBack()
   }
 
   return (
-    <BottomSheetScrollView>
-      <Flex padding={2} gap={space(1)}>
-        <BackButton onPress={handleBackButtonPress} />
+    <Flex padding={2} gap={space(1)}>
+      <BackButton onPress={handleBackButtonPress} />
 
-        <Text variant="sm-display">Sign up or log in</Text>
+      <Text variant="sm-display">Sign up or log in</Text>
+      <Recaptcha />
 
-        <Recaptcha />
+      <BottomSheetInput
+        autoCapitalize="none"
+        autoComplete="email"
+        autoFocus={true}
+        keyboardType="email-address"
+        onChangeText={(text) => {
+          handleChange("email")(text.trim())
+        }}
+        blurOnSubmit={false} // This is needed to avoid UI jump when the user submits
+        placeholderTextColor={color("black30")}
+        title="Email"
+        returnKeyType="next"
+        spellCheck={false}
+        autoCorrect={false}
+        // We need to to set textContentType to username (instead of emailAddress) here
+        // enable autofill of login details from the device keychain.
+        textContentType="username"
+        error={errors.email}
+      />
 
-        <Input
-          autoCapitalize="none"
-          autoComplete="email"
-          // There is no need to autofocus here if we are getting
-          // the email already from the navigation params
-          autoFocus={!values.email}
-          keyboardType="email-address"
-          onChangeText={(text) => {
-            handleChange("email")(text.trim())
-          }}
-          blurOnSubmit={false} // This is needed to avoid UI jump when the user submits
-          placeholderTextColor={color("black30")}
-          title="Email"
-          returnKeyType="next"
-          spellCheck={false}
-          autoCorrect={false}
-          // We need to to set textContentType to username (instead of emailAddress) here
-          // enable autofill of login details from the device keychain.
-          textContentType="username"
-          error={touched.email ? errors.email : undefined}
-          testID="email-address"
-        />
-
-        <Button block width={100} onPress={handleSubmit} disabled={!isValid}>
-          Continue
-        </Button>
-      </Flex>
-    </BottomSheetScrollView>
+      <Button block width={100} onPress={handleSubmit} disabled={!isValid}>
+        Continue
+      </Button>
+    </Flex>
   )
 }
