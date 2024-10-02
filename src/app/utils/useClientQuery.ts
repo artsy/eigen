@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react"
+import { useUpdateEffect } from "app/utils/useUpdateEffect"
+import { useEffect, useRef, useState } from "react"
 import { Environment, fetchQuery, GraphQLTaggedNode, useRelayEnvironment } from "react-relay"
 import { CacheConfig, FetchQueryFetchPolicy, OperationType } from "relay-runtime"
 
@@ -33,7 +34,22 @@ export const useClientQuery = <T extends OperationType>({
   const [error, setError] = useState<Error | null>(null)
   const [loading, setLoading] = useState(true)
 
+  const key = useRef(JSON.stringify(variables))
+  const prevKey = useRef(key.current)
+
+  useUpdateEffect(() => {
+    key.current = JSON.stringify(variables)
+  }, [variables])
+
   useEffect(() => {
+    if (key.current !== prevKey.current) {
+      setData(null)
+      setError(null)
+      setLoading(true)
+
+      prevKey.current = key.current
+    }
+
     if (skip || data || error) return
 
     const exec = async () => {
