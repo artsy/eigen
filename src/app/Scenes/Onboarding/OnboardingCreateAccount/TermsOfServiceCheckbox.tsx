@@ -1,13 +1,12 @@
 import { Flex, Text, Touchable, Checkbox } from "@artsy/palette-mobile"
-import { ParamListBase } from "@react-navigation/native"
-import { StackNavigationProp } from "@react-navigation/stack"
+import { NavigationProp } from "@react-navigation/native"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 
 interface TermsOfServiceCheckboxProps {
   checked: boolean
   setChecked: (checked: boolean) => void
   error: boolean
-  navigation: StackNavigationProp<ParamListBase>
+  navigation: NavigationProp<any>
 }
 
 export const TermsOfServiceCheckbox: React.FC<TermsOfServiceCheckboxProps> = ({

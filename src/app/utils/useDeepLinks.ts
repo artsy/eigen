@@ -21,12 +21,12 @@ export function useDeepLinks() {
   }, [])
 
   useEffect(() => {
-    Linking.addEventListener("url", ({ url }) => {
+    const subscription = Linking.addListener("url", ({ url }) => {
       handleDeepLink(url)
     })
 
     return () => {
-      Linking.removeAllListeners("url")
+      subscription.remove()
     }
   }, [isHydrated, isLoggedIn])
 

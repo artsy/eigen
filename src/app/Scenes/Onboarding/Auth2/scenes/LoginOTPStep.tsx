@@ -2,37 +2,38 @@ import {
   BackButton,
   Button,
   Flex,
-  LinkText,
+  Input,
   SimpleMessage,
   Spacer,
   Text,
+  Touchable,
   useTheme,
 } from "@artsy/palette-mobile"
-import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
-import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack"
-import { BottomSheetInput } from "app/Components/BottomSheetInput"
-import { OnboardingHomeNavigationStack } from "app/Scenes/Onboarding/OnboardingHome"
+import {
+  useAuthNavigation,
+  useAuthScreen,
+} from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
+import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
 import { GlobalStore } from "app/store/GlobalStore"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import * as Yup from "yup"
-
-type LoginOTPStepProps = StackScreenProps<OnboardingHomeNavigationStack, "LoginOTPStep">
 
 interface LoginOTPStepFormValues {
   otp: string
 }
 
-export const LoginOTPStep: React.FC<LoginOTPStepProps> = ({ route }) => {
+export const LoginOTPStep: React.FC = () => {
+  const screen = useAuthScreen()
+
   const formik = useFormik<LoginOTPStepFormValues>({
     initialValues: { otp: "" },
-    onSubmit: async ({ otp }, { setErrors }) => {
+    onSubmit: async ({ otp }, { setErrors, resetForm }) => {
       const res = await GlobalStore.actions.auth.signIn({
         oauthProvider: "email",
         oauthMode: "email",
-        email: route.params.email,
-        password: route.params.password,
+        email: screen.params?.email,
+        password: screen.params?.password,
         otp: otp.trim(),
       })
 
@@ -41,44 +42,67 @@ export const LoginOTPStep: React.FC<LoginOTPStepProps> = ({ route }) => {
       } else if (res !== "success") {
         setErrors({ otp: "Something went wrong. Please try again, or contact support@artsy.net" })
       }
+
+      if (res === "success") {
+        resetForm()
+      }
     },
     validationSchema: Yup.string().test("otp", "This field is required", (value) => value !== ""),
   })
 
   return (
-    <BottomSheetScrollView>
-      <FormikProvider value={formik}>
-        <LoginOTPStepForm />
-      </FormikProvider>
-    </BottomSheetScrollView>
+    <FormikProvider value={formik}>
+      <LoginOTPStepForm />
+    </FormikProvider>
   )
 }
 
 const LoginOTPStepForm: React.FC = () => {
   const [recoveryCodeMode, setRecoveryCodeMode] = useState(false)
 
-  const { errors, handleChange, handleSubmit, isValid, setErrors, validateForm, values } =
-    useFormikContext<LoginOTPStepFormValues>()
+  const {
+    errors,
+    handleChange,
+    handleSubmit,
+    isValid,
+    setErrors,
+    validateForm,
+    values,
+    resetForm,
+  } = useFormikContext<LoginOTPStepFormValues>()
 
-  const navigation = useNavigation<StackNavigationProp<OnboardingHomeNavigationStack>>()
-  const route = useRoute<RouteProp<OnboardingHomeNavigationStack, "LoginOTPStep">>()
+  const navigation = useAuthNavigation()
+  const screen = useAuthScreen()
+  const otpRef = useRef<Input>(null)
 
-  const { color, space } = useTheme()
+  const { color } = useTheme()
+
+  useInputAutofocus({
+    screenName: "LoginOTPStep",
+    inputRef: otpRef,
+  })
 
   const handleBackButtonPress = () => {
     navigation.goBack()
+    resetForm()
   }
 
   return (
-    <Flex padding={2} gap={space(1)}>
+    <Flex padding={2}>
       <BackButton onPress={handleBackButtonPress} />
-      <Text variant="sm-display">Authentication Code</Text>
-      <BottomSheetInput
+
+      <Input
         autoCapitalize="none"
-        autoCorrect={false}
-        autoFocus
         autoComplete="one-time-code"
+        autoCorrect={false}
+        error={errors.otp}
         keyboardType={recoveryCodeMode ? "ascii-capable" : "number-pad"}
+        placeholder={recoveryCodeMode ? "Enter a recovery code" : "Enter an authentication code"}
+        placeholderTextColor={color("black30")}
+        ref={otpRef}
+        returnKeyType="done"
+        title={recoveryCodeMode ? "Recovery code" : "Authentication code"}
+        value={values.otp}
         onChangeText={(text) => {
           // Hide error when the user starts to type again
           if (errors.otp) {
@@ -88,21 +112,14 @@ const LoginOTPStepForm: React.FC = () => {
           handleChange("otp")(text)
         }}
         onBlur={() => validateForm()}
-        placeholder={recoveryCodeMode ? "Enter a recovery code" : "Enter an authentication code"}
-        placeholderTextColor={color("black30")}
-        title={recoveryCodeMode ? "Recovery code" : undefined}
-        returnKeyType="done"
-        value={values.otp}
-        error={errors.otp}
       />
-      <Spacer y={1} />
-      <LinkText variant="sm" color="black60" onPress={() => setRecoveryCodeMode((v) => !v)}>
-        {recoveryCodeMode ? "Enter authentication code" : "Enter recovery code instead"}
-      </LinkText>
 
-      {route.params.otpMode === "on_demand" && (
+      <Spacer y={1} />
+
+      {screen.params?.otpMode === "on_demand" && (
         <>
           <Spacer y={2} />
+
           <SimpleMessage testID="on_demand_message">
             Your safety and security are important to us. Please check your email for a one-time
             authentication code to complete your login.
@@ -110,9 +127,23 @@ const LoginOTPStepForm: React.FC = () => {
         </>
       )}
 
+      <Spacer y={2} />
+
       <Button block width={100} onPress={handleSubmit} disabled={!isValid}>
         Continue
       </Button>
+
+      <Spacer y={2} />
+
+      <Touchable
+        onPress={() => {
+          setRecoveryCodeMode((mode) => !mode)
+        }}
+      >
+        <Text variant="xs" color="black60" underline>
+          {recoveryCodeMode ? "Enter authentication code" : "Enter recovery code instead"}
+        </Text>
+      </Touchable>
     </Flex>
   )
 }

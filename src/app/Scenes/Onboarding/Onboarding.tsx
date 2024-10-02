@@ -6,7 +6,7 @@ import {
   TransitionPresets,
 } from "@react-navigation/stack"
 import { FPSCounter } from "app/Components/FPSCounter"
-import { OnboardingHome } from "app/Scenes/Onboarding/OnboardingHome"
+import { AuthApp } from "app/Scenes/Onboarding/Auth2/AuthApp"
 import { OAuthProvider } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { DevMenu as DevMenuDefault } from "app/system/devTools/DevMenu/DevMenu"
@@ -84,7 +84,7 @@ export const OnboardingWelcomeScreens = () => {
       >
         {signupLoginFusionEnabled ? (
           <StackNavigator.Group screenOptions={{ ...TransitionPresets.SlideFromRightIOS }}>
-            <StackNavigator.Screen name="OnboardingHome" component={OnboardingHome} />
+            <StackNavigator.Screen name="OnboardingHome" component={AuthApp} />
             <StackNavigator.Screen name="OnboardingWebView" component={OnboardingWebView} />
           </StackNavigator.Group>
         ) : (
