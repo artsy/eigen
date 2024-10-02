@@ -8,10 +8,12 @@ Sometimes we need to test a release build on the emulator or our local device, w
 
 - Start the packager with `yarn start`.
 - In another terminal, run `yarn bundle:ios` to generate the jsbundle.
+- Open `ios/Podfile` and comment out all Flipper related bits
 - Run `yarn pod-install`, so that the jsbundle is added to your build.
 - Open the project in Xcode using `open ios/Artsy.xcworkspace`.
 - Select the `Artsy (Store)` scheme from the top bar.
-- Go to all targets and enable the `Automatically manage signing` checkbox, and select the `Art.sy Inc.` team. You can do this by tapping on the top item `Artsy` on the navigator left sidebar, then you will see the targets exactly to the right of that sidebar. Go through all except `ArtsyTests`, click them, and on the right you go to `Signing & Capabilities` tab, and you will see the checkbox.
+- Tapping on the top item `Artsy` on the navigator left sidebar, then you will see the targets exactly to the right of that sidebar. Go to all targets and enable the `Automatically manage signing` checkbox, and select the `Art.sy Inc.` team. Go through all except `ArtsyTests`, click them, and on the right you go to `Signing & Capabilities` tab, and you will see the checkbox. 
+  - https://github.com/user-attachments/assets/6c52bb05-eb70-469f-ae70-ef6f60411c9b
 - Do **not** commit these changes. Just reset them when you're done.
 - Press play, and wait for the app to start on your simulator or your device.
 
