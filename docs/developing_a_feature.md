@@ -4,7 +4,7 @@ Artsy releases the app on a [2-week cadence 🔐](https://www.notion.so/artsy/2-
 
 For very small features (like adding a single new label to a view) we simply open a pull request.
 
-For bigger features that will take longer than a sprint, we put development behind a **feature flags** in order to be able to test our work without making our progress work visible to our users. This way we can the flag off and on and thoroughly test it before releasing it.
+For bigger features that will take longer than a sprint, we put development behind a **feature flags** in order to be able to test our work without making our in-progress work visible to our users. This way we can toggle the flag off and on and thoroughly test the feature before releasing it.
 
 ## Contents
 
