@@ -1,0 +1,77 @@
+diff --git a/node_modules/whatwg-fetch/dist/fetch.umd.js b/node_modules/whatwg-fetch/dist/fetch.umd.js
+index f9b44fd..331f863 100644
+--- a/node_modules/whatwg-fetch/dist/fetch.umd.js
++++ b/node_modules/whatwg-fetch/dist/fetch.umd.js
+@@ -444,6 +444,28 @@
+     exports.DOMException.prototype.constructor = exports.DOMException;
+   }
+ 
++  const hostRejectionMap = {
++    "cdn-settings.segment.com": false,
++    "localhost": false,
++    "echo.artsy.net": false,
++    "metaphysics-staging.artsy.net": false,
++    "unleashprx-staging.artsy.net": false,
++    "staging.artsy.net": false,
++    "live-staging.artsy.net": false,
++    "clients3.google.com": false,
++    "volley-staging.artsy.net": false,
++    "stagingapi.artsy.net": false,
++    "api.segment.io": false,
++    "localhost:8081": false,
++    "click.artsy.net": false
++  };
++
++
++  const metaphysicsRejectionTests = {
++    query: "query HomeAboveTheFoldQuery",
++    saleID: "artsy-auction-street-art-7", // Key-value pair to match in the body
++  };
++
+   function fetch(input, init) {
+     return new Promise(function(resolve, reject) {
+       var request = new Request(input, init);
+@@ -452,6 +474,43 @@
+         return reject(new exports.DOMException('Aborted', 'AbortError'))
+       }
+ 
++       // Extract the host from the request URL
++      const requestUrl = new URL(request.url);
++      const requestHost = requestUrl.host;
++
++       // Check if the host exists in the hostRejectionMap
++       if (!Object.prototype.hasOwnProperty.call(hostRejectionMap, requestHost)) {
++        console.log(`FETCH: Host not in supported list: ${requestHost}`);
++      } else if (requestHost.includes("metaphysics")) {
++        // If it's a request to Metaphysics, inspect the body content
++        try {
++          // Ensure that the body exists and is a JSON string
++          if (init.body) {
++            const body = JSON.parse(init.body);
++  
++            console.log("FETCH: Metaphysics request body", body);
++  
++            // Check if the body matches the query string in rejection tests
++            const shouldRejectQuery = metaphysicsRejectionTests.query && body.query.includes(metaphysicsRejectionTests.query);
++  
++            // Check for variable-based rejection
++            const shouldRejectVariables = Object.entries(metaphysicsRejectionTests).some(([key, value]) => {
++              return key !== 'query' && body.variables && body.variables[key] === value;
++            });
++  
++            if (shouldRejectQuery || shouldRejectVariables) {
++              console.warn("FETCH: Network request failed due to specific GraphQL query conditions");
++              return reject(new Error('Network request failed due to specific GraphQL query conditions'));
++            }
++          }
++        } catch (e) {
++          console.log("Failed to parse request body for inspection", e);
++        }
++      } else if (hostRejectionMap[requestHost]) {
++        // If toggle is true, simulate a failure
++        return reject(new TypeError('Network request failed'));
++      }  
++
+       var xhr = new XMLHttpRequest();
+ 
+       function abortXhr() {
