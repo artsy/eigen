@@ -358,11 +358,8 @@ type AlertConnection {
 
 # An edge in a connection.
 type AlertEdge {
-  counts: AlertsCounts
-
   # A cursor for use in pagination
   cursor: String!
-  isRecentlyEnabled: Boolean
 
   # The item at the end of the edge
   node: Alert
@@ -411,10 +408,6 @@ enum AlertSourceType {
 enum AlertsConnectionSortEnum {
   ENABLED_AT_DESC
   NAME_ASC
-}
-
-type AlertsCounts {
-  totalUserSearchCriteriaCount: Int
 }
 
 type Algolia {
