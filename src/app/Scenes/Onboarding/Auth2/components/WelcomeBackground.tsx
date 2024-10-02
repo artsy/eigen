@@ -1,9 +1,11 @@
 import { ArtsyLogoWhiteIcon, Flex, Spacer, Text, useScreenDimensions } from "@artsy/palette-mobile"
 import backgroundImage from "images/WelcomeImage.webp"
+import { MotiView } from "moti"
 import { useEffect } from "react"
 import { Image } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import Animated, {
+  Easing,
   useAnimatedStyle,
   useSharedValue,
   withSequence,
@@ -22,18 +24,29 @@ export const WelcomeBackground: React.FC = () => {
         <ArtsyLogoWhiteIcon height={25} width={75} mt={safeArea.top} />
       </Flex>
 
-      <Flex flex={1} justifyContent="center" p={2}>
-        <Text variant="xl" color="white">
-          Collect Art by the World’s Leading Artists
-        </Text>
+      <Flex flex={1} px={2} bottom="-25%">
+        <MotiView
+          from={{ opacity: 0, translateY: 40 }}
+          animate={{ opacity: 1, translateY: 0 }}
+          transition={{
+            type: "timing",
+            duration: 700,
+            delay: 500,
+            easing: Easing.out(Easing.circle),
+          }}
+        >
+          <Text variant="xl" color="white">
+            Collect Art by the World’s Leading Artists
+          </Text>
 
-        <Spacer y={1} />
+          <Spacer y={1} />
 
-        <Text variant="sm" color="white">
-          Build your personalized profile, get market insights, buy and sell art with confidence.
-        </Text>
+          <Text variant="sm" color="white">
+            Build your personalized profile, get market insights, buy and sell art with confidence.
+          </Text>
 
-        <Spacer y={2} />
+          <Spacer y={2} />
+        </MotiView>
       </Flex>
     </>
   )

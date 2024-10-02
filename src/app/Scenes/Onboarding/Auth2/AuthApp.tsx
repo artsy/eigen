@@ -1,4 +1,5 @@
 import { Screen } from "@artsy/palette-mobile"
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 import { AuthModal } from "app/Scenes/Onboarding/Auth2/AuthModal"
 import { AuthScenes } from "app/Scenes/Onboarding/Auth2/AuthScenes"
 import { WelcomeBackground } from "app/Scenes/Onboarding/Auth2/components/WelcomeBackground"
@@ -15,9 +16,11 @@ export const AuthApp: React.FC = () => {
       </Screen.Background>
 
       <Screen.Body>
-        <AuthModal mt={6} mb={4}>
-          <AuthScenes />
-        </AuthModal>
+        <BottomSheetModalProvider>
+          <AuthModal>
+            <AuthScenes />
+          </AuthModal>
+        </BottomSheetModalProvider>
       </Screen.Body>
     </Screen>
   )

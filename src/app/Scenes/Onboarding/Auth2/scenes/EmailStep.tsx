@@ -1,25 +1,21 @@
 import { BackButton, Button, Flex, Text, useTheme } from "@artsy/palette-mobile"
 import { BottomSheetScrollView, useBottomSheet } from "@gorhom/bottom-sheet"
-import { useNavigation } from "@react-navigation/native"
-import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
 import { useRecaptcha } from "app/Components/Recaptcha/Recaptcha"
-import { OnboardingHomeNavigationStack } from "app/Scenes/Onboarding/OnboardingHome"
+import { useAuthNavigation } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import { useEffect } from "react"
 import { Alert } from "react-native"
 import * as Yup from "yup"
 
-type EmailStepProps = StackScreenProps<OnboardingHomeNavigationStack, "EmailStep">
-
 interface EmailStepFormValues {
   email: string
   recaptchaToken: string | null
 }
 
-export const EmailStep: React.FC<EmailStepProps> = () => {
-  const navigation = useNavigation<OnboardingHomeNavigationStack>()
+export const EmailStep: React.FC = () => {
+  const navigation = useAuthNavigation()
 
   const formik = useFormik<EmailStepFormValues>({
     initialValues: { email: "", recaptchaToken: null },
@@ -62,8 +58,8 @@ const EmailStepForm: React.FC = () => {
   const { errors, handleChange, handleSubmit, isValid, setFieldValue } =
     useFormikContext<EmailStepFormValues>()
 
-  const navigation = useNavigation<StackNavigationProp<OnboardingHomeNavigationStack>>()
-  const bottomSheet = useBottomSheet()
+  const navigation = useAuthNavigation()
+  // const bottomSheet = useBottomSheet()
 
   const { Recaptcha, token } = useRecaptcha({ source: "authentication", action: "verify_email" })
 
@@ -77,7 +73,7 @@ const EmailStepForm: React.FC = () => {
   const handleBackButtonPress = () => {
     navigation.goBack()
     setTimeout(() => {
-      bottomSheet.snapToIndex(0)
+      // bottomSheet.snapToIndex(0)
     }, 50)
   }
 

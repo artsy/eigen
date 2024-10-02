@@ -1,21 +1,22 @@
 import { BackButton, Button, Flex, Spacer, Text, useTheme } from "@artsy/palette-mobile"
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
-import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack"
+import { StackNavigationProp } from "@react-navigation/stack"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
+import { AuthNavigationStack } from "app/Scenes/Onboarding/Auth2/AuthScenes"
+import { useAuthNavigation } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { OnboardingNavigationStack } from "app/Scenes/Onboarding/Onboarding"
-import { OnboardingHomeNavigationStack } from "app/Scenes/Onboarding/OnboardingHome"
 import { GlobalStore } from "app/store/GlobalStore"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import * as Yup from "yup"
-
-type ForgotPasswordStepProps = StackScreenProps<OnboardingHomeNavigationStack, "ForgotPasswordStep">
 
 interface ForgotPasswordStepFormValues {
   email: string
 }
 
-export const ForgotPasswordStep: React.FC<ForgotPasswordStepProps> = ({ navigation }) => {
+export const ForgotPasswordStep: React.FC = () => {
+  const navigation = useAuthNavigation()
+
   const formik = useFormik<ForgotPasswordStepFormValues>({
     initialValues: { email: "" },
     onSubmit: async ({ email }, { setErrors }) => {
@@ -49,7 +50,7 @@ const ForgotPasswordStepForm: React.FC = () => {
     useFormikContext<ForgotPasswordStepFormValues>()
 
   const navigation = useNavigation<StackNavigationProp<OnboardingNavigationStack>>()
-  const route = useRoute<RouteProp<OnboardingHomeNavigationStack, "ForgotPasswordStep">>()
+  const route = useRoute<RouteProp<AuthNavigationStack, "ForgotPasswordStep">>()
 
   const { color, space } = useTheme()
 
