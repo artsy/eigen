@@ -1,5 +1,4 @@
 import {
-  act,
   fireEvent,
   screen,
   waitFor,
@@ -168,9 +167,7 @@ describe("inquiry modal", () => {
 
       it("displays the collection prompt", async () => {
         initialState = { ...initialState, collectionPromptVisible: true }
-        const { mockResolveLastOperation } = renderWithRelay({ Artwork: () => mockArtwork })
-
-        act(() => mockResolveLastOperation({}))
+        renderWithRelay({ Artwork: () => mockArtwork })
 
         expect(
           screen.getByText("Inquiry sent! Tell us about the artists in your collection.")
