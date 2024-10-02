@@ -124,14 +124,18 @@ const HomeViewSectionArticlesPlaceholder: React.FC = () => {
 
 export const HomeViewSectionArticlesQueryRenderer: React.FC<{
   sectionID: string
-}> = withSuspense((props) => {
-  const data = useLazyLoadQuery<HomeViewSectionArticlesQuery>(homeViewSectionArticlesQuery, {
-    id: props.sectionID,
-  })
+}> = withSuspense(
+  (props) => {
+    const data = useLazyLoadQuery<HomeViewSectionArticlesQuery>(homeViewSectionArticlesQuery, {
+      id: props.sectionID,
+    })
 
-  if (!data.homeView.section) {
-    return null
-  }
+    if (!data.homeView.section) {
+      return null
+    }
 
-  return <HomeViewSectionArticles section={data.homeView.section} />
-}, HomeViewSectionArticlesPlaceholder)
+    return <HomeViewSectionArticles section={data.homeView.section} />
+  },
+  HomeViewSectionArticlesPlaceholder,
+  undefined
+)

@@ -159,14 +159,18 @@ const HomeViewSectionArtworksPlaceholder: React.FC = () => {
 
 export const HomeViewSectionArtworksQueryRenderer: React.FC<{
   sectionID: string
-}> = withSuspense((props) => {
-  const data = useLazyLoadQuery<HomeViewSectionArtworksQuery>(homeViewSectionArtworksQuery, {
-    id: props.sectionID,
-  })
+}> = withSuspense(
+  (props) => {
+    const data = useLazyLoadQuery<HomeViewSectionArtworksQuery>(homeViewSectionArtworksQuery, {
+      id: props.sectionID,
+    })
 
-  if (!data.homeView.section) {
-    return null
-  }
+    if (!data.homeView.section) {
+      return null
+    }
 
-  return <HomeViewSectionArtworks section={data.homeView.section} />
-}, HomeViewSectionArtworksPlaceholder)
+    return <HomeViewSectionArtworks section={data.homeView.section} />
+  },
+  HomeViewSectionArtworksPlaceholder,
+  undefined
+)

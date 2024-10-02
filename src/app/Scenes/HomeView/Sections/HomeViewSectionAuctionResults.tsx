@@ -189,17 +189,21 @@ const homeViewSectionAuctionResultsQuery = graphql`
 
 export const HomeViewSectionAuctionResultsQueryRenderer: React.FC<{
   sectionID: string
-}> = withSuspense((props) => {
-  const data = useLazyLoadQuery<HomeViewSectionAuctionResultsQuery>(
-    homeViewSectionAuctionResultsQuery,
-    {
-      id: props.sectionID,
+}> = withSuspense(
+  (props) => {
+    const data = useLazyLoadQuery<HomeViewSectionAuctionResultsQuery>(
+      homeViewSectionAuctionResultsQuery,
+      {
+        id: props.sectionID,
+      }
+    )
+
+    if (!data.homeView.section) {
+      return null
     }
-  )
 
-  if (!data.homeView.section) {
-    return null
-  }
-
-  return <HomeViewSectionAuctionResults section={data.homeView.section} />
-}, HomeViewSectionAuctionResultsPlaceholder)
+    return <HomeViewSectionAuctionResults section={data.homeView.section} />
+  },
+  HomeViewSectionAuctionResultsPlaceholder,
+  undefined
+)
