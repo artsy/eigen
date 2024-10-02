@@ -44,15 +44,18 @@ export const WelcomeStep: React.FC<WelcomeStepProps> = React.memo(() => {
   })
 
   const handleEmailInputFocus = () => {
-    requestAnimationFrame(() => {
-      emailRef.current?.focus()
-      bottomSheet.snapToIndex(1)
+    InteractionManager.runAfterInteractions(() => {
       setShowEmailInput(true)
+
+      InteractionManager.runAfterInteractions(() => {
+        bottomSheet.snapToIndex(1)
+        emailRef.current?.focus()
+      })
     })
   }
 
   const handleBackButtonPress = () => {
-    requestAnimationFrame(() => {
+    InteractionManager.runAfterInteractions(() => {
       bottomSheet.snapToIndex(0)
       setShowEmailInput(false)
     })
@@ -67,11 +70,15 @@ export const WelcomeStep: React.FC<WelcomeStepProps> = React.memo(() => {
             opacity: showEmailForm ? 0 : 1,
           }}
           animate={{
-            height: showEmailForm ? "70%" : 0,
+            height: showEmailForm ? "80%" : 0,
             opacity: showEmailForm ? 1 : 0,
-            marginBottom: showEmailForm ? 0 : 40,
+            marginBottom: showEmailForm ? 0 : 30,
           }}
-          transition={{ type: "timing", duration: 300, easing: Easing.out(Easing.circle) }}
+          transition={{
+            type: "timing",
+            duration: 100,
+            easing: Easing.linear,
+          }}
         >
           <Formik<EmailFormValues>
             initialValues={{ email: "", recaptchaToken: token }}
@@ -141,7 +148,7 @@ export const WelcomeStep: React.FC<WelcomeStepProps> = React.memo(() => {
         <MotiView
           from={{ opacity: showEmailForm ? 1 : 0 }}
           animate={{ opacity: showEmailForm ? 0 : 1 }}
-          transition={{ duration: showEmailForm ? 0 : 500, delay: showEmailForm ? 0 : 100 }}
+          transition={{ duration: showEmailForm ? 0 : 500, delay: showEmailForm ? 0 : 200 }}
         >
           <Flex px={2} gap={space(1)}>
             <Text variant="sm-display">Sign up or log in</Text>

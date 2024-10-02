@@ -19,7 +19,6 @@ export const AuthModal: React.FC<FlexProps> = ({ children }) => {
       enablePanDownToClose={false}
       keyboardBehavior="extend"
       keyboardBlurBehavior="restore"
-      // detached
     >
       <Flex borderRadius={space(2)} flex={1} ml={2} mr={2}>
         {children}

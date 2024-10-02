@@ -30,8 +30,8 @@ export const WelcomeBackground: React.FC = () => {
           animate={{ opacity: 1, translateY: 0 }}
           transition={{
             type: "timing",
-            duration: 700,
-            delay: 500,
+            duration: 800,
+            delay: 600,
             easing: Easing.out(Easing.circle),
           }}
         >
