@@ -170,6 +170,9 @@ export const handlePendingNotification = (notification: PendingPushNotification 
   GlobalStore.actions.pendingPushNotification.setPendingPushNotification(null)
 }
 
+let lastEventTimestamp = 0
+const DEBOUNCE_THRESHOLD = 500 // 500ms threshold
+
 export const handleReceivedNotification = (
   notification: Omit<ReceivedNotification, "userInfo">
 ) => {
@@ -179,9 +182,18 @@ export const handleReceivedNotification = (
   const isLoggedIn = !!unsafe_getUserAccessToken()
   const isNavigationReady = !!unsafe_getIsNavigationReady()
   if (notification.userInteraction) {
+    const now = Date.now()
     // track notification tapped event only in android
     // ios handles it in the native side
     if (Platform.OS === "android") {
+      // debounce events to avoid double tracking
+      // once we resolve the underlying issue with double handleReceivedNotification calls we can remove
+      if (now - lastEventTimestamp < DEBOUNCE_THRESHOLD) {
+        return
+      }
+
+      lastEventTimestamp = now
+
       SegmentTrackingProvider.postEvent({
         event_name: AnalyticsConstants.NotificationTapped.key,
         label: notification.data.label,
