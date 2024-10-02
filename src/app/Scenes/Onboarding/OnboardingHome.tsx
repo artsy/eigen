@@ -1,12 +1,11 @@
-import { Spacer, ArtsyLogoWhiteIcon, Text, LegacyScreen } from "@artsy/palette-mobile"
+import { Spacer, ArtsyLogoWhiteIcon, Text, Screen } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import {
   ArtsyNativeModule,
   DEFAULT_NAVIGATION_BAR_COLOR,
 } from "app/NativeModules/ArtsyNativeModule"
-import { AuthenticationDialog } from "app/Scenes/Onboarding/AuthenticationDialog/AuthenticationDialog"
+import { AuthenticationDialog } from "app/Scenes/Onboarding/Auth2/AuthenticationDialog"
 import { useScreenDimensions } from "app/utils/hooks"
-import { Action, action, createContextStore } from "easy-peasy"
 import backgroundImage from "images/WelcomeImage.webp"
 import { MotiView } from "moti"
 import { useEffect } from "react"
@@ -25,46 +24,23 @@ type OnboardingHomeProps = StackScreenProps<OnboardingNavigationStack, "Onboardi
 const imgProps = Image.resolveAssetSource(backgroundImage)
 
 export const OnboardingHome: React.FC<OnboardingHomeProps> = ({ navigation }) => {
-  useEffect(() => {
-    if (Platform.OS === "ios") {
-      return
-    }
-    const unsubscribe = navigation.addListener("blur", () => {
-      requestAnimationFrame(() => {
-        ArtsyNativeModule.setNavigationBarColor(DEFAULT_NAVIGATION_BAR_COLOR)
-        ArtsyNativeModule.setAppLightContrast(false)
-      })
-    })
-    return unsubscribe
-  }, [navigation])
-
-  useEffect(() => {
-    if (Platform.OS === "ios") {
-      return
-    }
-    const unsubscribe = navigation.addListener("focus", () => {
-      requestAnimationFrame(() => {
-        ArtsyNativeModule.setNavigationBarColor("#000000")
-        ArtsyNativeModule.setAppLightContrast(true)
-      })
-    })
-    return unsubscribe
-  }, [navigation])
+  useAndroidStatusBarColor(navigation)
 
   return (
-    <LegacyScreen>
-      <LegacyScreen.Background>
+    <Screen safeArea={false}>
+      <Screen.Background>
         <Background />
-      </LegacyScreen.Background>
+      </Screen.Background>
 
-      <LegacyScreen.Body>
-        <OnboardingHomeStore.Provider>
-          <ArtsyLogo />
-          <WelcomeText />
-          <AuthenticationDialog />
-        </OnboardingHomeStore.Provider>
-      </LegacyScreen.Body>
-    </LegacyScreen>
+      <Screen.Body>
+        {/* <Flex position="absolute" width="100%" height="100%"> */}
+        {/* <ArtsyLogo /> */}
+        {/* <WelcomeText /> */}
+        {/* </Flex> */}
+        <AuthenticationDialog mt={6} mb={4} />
+        {/* </Flex> */}
+      </Screen.Body>
+    </Screen>
   )
 }
 
@@ -130,7 +106,7 @@ const Background: React.FC = () => {
 }
 
 const ArtsyLogo: React.FC = () => {
-  const currentStep = OnboardingHomeStore.useStoreState((state) => state.currentStep)
+  const currentStep = OnboardingContext.useStoreState((state) => state.currentStep)
 
   if (currentStep !== "WelcomeStep") {
     return null
@@ -150,7 +126,7 @@ const ArtsyLogo: React.FC = () => {
 }
 
 const WelcomeText: React.FC = () => {
-  const currentStep = OnboardingHomeStore.useStoreState((state) => state.currentStep)
+  const currentStep = OnboardingContext.useStoreState((state) => state.currentStep)
 
   if (currentStep !== "WelcomeStep") {
     return null
@@ -173,30 +149,33 @@ const WelcomeText: React.FC = () => {
       </Text>
 
       <Spacer y={2} />
-
-      <LegacyScreen.SafeBottomPadding />
     </MotiView>
   )
 }
 
-export type OnboardingHomeNavigationStack = {
-  EmailStep: undefined
-  ForgotPasswordStep: { requestedPasswordReset: boolean } | undefined
-  LoginPasswordStep: { email: string }
-  LoginOTPStep: { otpMode: "standard" | "on_demand"; email: string; password: string }
-  SignUpPasswordStep: { email: string }
-  SignUpNameStep: { email: string; password: string }
-  WelcomeStep: undefined
-}
+const useAndroidStatusBarColor = (navigation: OnboardingHomeProps["navigation"]) => {
+  useEffect(() => {
+    if (Platform.OS === "ios") {
+      return
+    }
 
-interface OnboardingHomeStoreModel {
-  currentStep: string | undefined
-  setCurrentStep: Action<OnboardingHomeStoreModel, string | undefined>
-}
+    const unsubscribeBlur = navigation.addListener("blur", () => {
+      requestAnimationFrame(() => {
+        ArtsyNativeModule.setNavigationBarColor(DEFAULT_NAVIGATION_BAR_COLOR)
+        ArtsyNativeModule.setAppLightContrast(false)
+      })
+    })
 
-export const OnboardingHomeStore = createContextStore<OnboardingHomeStoreModel>({
-  currentStep: "WelcomeStep",
-  setCurrentStep: action((state, payload) => {
-    state.currentStep = payload
-  }),
-})
+    const unsubscribeFocus = navigation.addListener("focus", () => {
+      requestAnimationFrame(() => {
+        ArtsyNativeModule.setNavigationBarColor("#000000")
+        ArtsyNativeModule.setAppLightContrast(true)
+      })
+    })
+
+    return () => {
+      unsubscribeBlur()
+      unsubscribeFocus()
+    }
+  }, [navigation])
+}

@@ -1,7 +1,8 @@
-import { Button, Flex, LinkText, Text, useTheme } from "@artsy/palette-mobile"
-import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
+import { Button, Flex, LinkText, Text, Touchable, useTheme } from "@artsy/palette-mobile"
+import { BottomSheetScrollView, useBottomSheet } from "@gorhom/bottom-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
+import { EmailStep } from "app/Scenes/Onboarding/Auth2/EmailStep"
 import { OnboardingHomeNavigationStack } from "app/Scenes/Onboarding/OnboardingHome"
 import { AuthPromiseRejectType, AuthPromiseResolveType } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -15,10 +16,13 @@ type WelcomeStepProps = StackScreenProps<OnboardingHomeNavigationStack, "Welcome
 export const WelcomeStep: React.FC<WelcomeStepProps> = ({ navigation }) => {
   const [mode, _setMode] = useState<"login" | "signup">("login")
 
+  const bottomSheet = useBottomSheet()
+
   const { space } = useTheme()
 
   const handleEmailInputFocus = () => {
-    navigation.navigate("EmailStep")
+    bottomSheet.snapToIndex(1)
+    // navigation.navigate("EmailStep")
   }
 
   const handleSocialLogin = async (callback: () => Promise<AuthPromiseResolveType>) => {
@@ -51,16 +55,23 @@ export const WelcomeStep: React.FC<WelcomeStepProps> = ({ navigation }) => {
       agreedToReceiveEmails: mode === "signup",
     })
 
+  if (currentStep) {
+    return <EmailStep />
+  }
+
   return (
     <BottomSheetScrollView>
       <Flex padding={2} gap={space(1)}>
         <Text variant="sm-display">Sign up or log in</Text>
 
-        <BottomSheetInput
-          onFocus={handleEmailInputFocus}
-          placeholder="Enter your email address"
-          title="Email"
-        />
+        <Touchable onPress={handleEmailInputFocus}>
+          <BottomSheetInput
+            onTouchStart={handleEmailInputFocus}
+            placeholder="Enter your email address"
+            title="Email"
+            style={{ pointerEvents: "none" }}
+          />
+        </Touchable>
 
         <Flex gap={space(1)}>
           <Text variant="xs" textAlign="center">

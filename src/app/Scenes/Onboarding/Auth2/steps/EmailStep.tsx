@@ -1,5 +1,5 @@
 import { BackButton, Button, Flex, Text, useTheme } from "@artsy/palette-mobile"
-import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
+import { BottomSheetScrollView, useBottomSheet } from "@gorhom/bottom-sheet"
 import { useNavigation } from "@react-navigation/native"
 import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
@@ -18,7 +18,9 @@ interface EmailStepFormValues {
   recaptchaToken: string | null
 }
 
-export const EmailStep: React.FC<EmailStepProps> = ({ navigation }) => {
+export const EmailStep: React.FC<EmailStepProps> = () => {
+  const navigation = useNavigation<OnboardingHomeNavigationStack>()
+
   const formik = useFormik<EmailStepFormValues>({
     initialValues: { email: "", recaptchaToken: null },
     onSubmit: async ({ email, recaptchaToken }, { setFieldValue }) => {
@@ -61,6 +63,7 @@ const EmailStepForm: React.FC = () => {
     useFormikContext<EmailStepFormValues>()
 
   const navigation = useNavigation<StackNavigationProp<OnboardingHomeNavigationStack>>()
+  const bottomSheet = useBottomSheet()
 
   const { Recaptcha, token } = useRecaptcha({ source: "authentication", action: "verify_email" })
 
@@ -73,6 +76,9 @@ const EmailStepForm: React.FC = () => {
 
   const handleBackButtonPress = () => {
     navigation.goBack()
+    setTimeout(() => {
+      bottomSheet.snapToIndex(0)
+    }, 50)
   }
 
   return (
