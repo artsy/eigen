@@ -32,7 +32,11 @@ export const MyCollectionArtistsAutosuggestListHeader: FC<
   }
 
   if (isLoading) {
-    return <LoadingSpinner />
+    return (
+      <Flex p={4}>
+        <LoadingSpinner />
+      </Flex>
+    )
   }
 
   return (
