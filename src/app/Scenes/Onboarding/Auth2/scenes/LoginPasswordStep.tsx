@@ -1,15 +1,22 @@
-import { BackButton, Button, Flex, Spacer, Text, Touchable, useTheme } from "@artsy/palette-mobile"
-import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
-import { useNavigation } from "@react-navigation/native"
-import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack"
-import { BottomSheetInput } from "app/Components/BottomSheetInput"
-import { OnboardingHomeNavigationStack } from "app/Scenes/Onboarding/OnboardingHome"
+import {
+  BackButton,
+  Button,
+  Flex,
+  Input,
+  Spacer,
+  Text,
+  Touchable,
+  useTheme,
+} from "@artsy/palette-mobile"
+import { StackScreenProps } from "@react-navigation/stack"
+import { AuthNavigationStack } from "app/Scenes/Onboarding/Auth2/AuthScenes"
+import { useAuthNavigation } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { showBlockedAuthError } from "app/utils/auth/authHelpers"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import * as Yup from "yup"
 
-type LoginPasswordStepProps = StackScreenProps<OnboardingHomeNavigationStack, "LoginPasswordStep">
+type LoginPasswordStepProps = StackScreenProps<AuthNavigationStack, "LoginPasswordStep">
 
 interface LoginPasswordStepFormValues {
   password: string
@@ -58,11 +65,9 @@ export const LoginPasswordStep: React.FC<LoginPasswordStepProps> = ({ navigation
   })
 
   return (
-    <BottomSheetScrollView>
-      <FormikProvider value={formik}>
-        <LoginPasswordStepForm />
-      </FormikProvider>
-    </BottomSheetScrollView>
+    <FormikProvider value={formik}>
+      <LoginPasswordStepForm />
+    </FormikProvider>
   )
 }
 
@@ -81,7 +86,7 @@ const LoginPasswordStepForm: React.FC = () => {
 
   const { color, space } = useTheme()
 
-  const navigation = useNavigation<StackNavigationProp<OnboardingHomeNavigationStack>>()
+  const navigation = useAuthNavigation()
 
   const handleBackButtonPress = () => {
     navigation.goBack()
@@ -92,7 +97,7 @@ const LoginPasswordStepForm: React.FC = () => {
       <BackButton onPress={handleBackButtonPress} />
       <Text variant="sm-display">Welcome back to Artsy</Text>
 
-      <BottomSheetInput
+      <Input
         autoCapitalize="none"
         autoComplete="password"
         autoCorrect={false}

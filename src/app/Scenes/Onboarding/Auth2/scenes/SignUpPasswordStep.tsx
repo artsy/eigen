@@ -1,14 +1,12 @@
-import { BackButton, Button, Flex, Text, useTheme } from "@artsy/palette-mobile"
-import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
-import { useNavigation } from "@react-navigation/native"
-import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack"
-import { BottomSheetInput } from "app/Components/BottomSheetInput"
-import { OnboardingHomeNavigationStack } from "app/Scenes/Onboarding/OnboardingHome"
+import { BackButton, Button, Flex, Input, Text, useTheme } from "@artsy/palette-mobile"
+import { StackScreenProps } from "@react-navigation/stack"
+import { AuthNavigationStack } from "app/Scenes/Onboarding/Auth2/AuthScenes"
+import { useAuthNavigation } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import React from "react"
 import * as Yup from "yup"
 
-type SignUpPasswordStepProps = StackScreenProps<OnboardingHomeNavigationStack, "SignUpPasswordStep">
+type SignUpPasswordStepProps = StackScreenProps<AuthNavigationStack, "SignUpPasswordStep">
 
 interface SignUpPasswordStepFormValues {
   password: string
@@ -34,11 +32,9 @@ export const SignUpPasswordStep: React.FC<SignUpPasswordStepProps> = ({ navigati
   })
 
   return (
-    <BottomSheetScrollView>
-      <FormikProvider value={formik}>
-        <SignUpPasswordStepForm />
-      </FormikProvider>
-    </BottomSheetScrollView>
+    <FormikProvider value={formik}>
+      <SignUpPasswordStepForm />
+    </FormikProvider>
   )
 }
 
@@ -46,7 +42,7 @@ const SignUpPasswordStepForm: React.FC = () => {
   const { errors, handleChange, handleSubmit, isValid, setErrors } =
     useFormikContext<SignUpPasswordStepFormValues>()
 
-  const navigation = useNavigation<StackNavigationProp<OnboardingHomeNavigationStack>>()
+  const navigation = useAuthNavigation()
 
   const { color, space } = useTheme()
 
@@ -59,7 +55,8 @@ const SignUpPasswordStepForm: React.FC = () => {
       <BackButton onPress={handleBackButtonPress} />
 
       <Text variant="sm-display">Welcome to Artsy</Text>
-      <BottomSheetInput
+
+      <Input
         autoCapitalize="none"
         autoComplete="password"
         title="Password"

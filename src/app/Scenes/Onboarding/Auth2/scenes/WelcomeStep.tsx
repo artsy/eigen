@@ -1,16 +1,17 @@
 import {
   BackButton,
+  Box,
   Button,
   Flex,
+  Input,
   LinkText,
+  Spacer,
   Text,
-  Touchable,
   useTheme,
 } from "@artsy/palette-mobile"
-import { BottomSheetScrollView, useBottomSheet } from "@gorhom/bottom-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
-import { BottomSheetInput } from "app/Components/BottomSheetInput"
 import { useRecaptcha } from "app/Components/Recaptcha/Recaptcha"
+import { AuthContext } from "app/Scenes/Onboarding/Auth2/AuthContext"
 import { AuthNavigationStack } from "app/Scenes/Onboarding/Auth2/AuthScenes"
 import { useAuthNavigation } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { AuthPromiseRejectType, AuthPromiseResolveType } from "app/store/AuthModel"
@@ -18,10 +19,8 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { osMajorVersion } from "app/utils/platformUtil"
 import { Formik } from "formik"
-import { MotiView } from "moti"
 import React, { useRef, useState } from "react"
 import { Alert, Image, InteractionManager, Platform, TextInput } from "react-native"
-import { Easing } from "react-native-reanimated"
 import * as Yup from "yup"
 
 type WelcomeStepProps = StackScreenProps<AuthNavigationStack, "WelcomeStep">
@@ -33,10 +32,12 @@ interface EmailFormValues {
 
 export const WelcomeStep: React.FC<WelcomeStepProps> = React.memo(() => {
   const navigation = useAuthNavigation()
-  const bottomSheet = useBottomSheet()
-  const [showEmailForm, setShowEmailInput] = useState(false)
-  const { color, space } = useTheme()
+  const setModalExpanded = AuthContext.useStoreActions((actions) => actions.setModalExpanded)
+  const isModalExpanded = AuthContext.useStoreState((state) => state.isModalExpanded)
+
+  const { color } = useTheme()
   const emailRef = useRef<TextInput>(null)
+  const isSelectLoginMethodStep = !isModalExpanded
 
   const { Recaptcha, token } = useRecaptcha({
     source: "authentication",
@@ -45,90 +46,77 @@ export const WelcomeStep: React.FC<WelcomeStepProps> = React.memo(() => {
 
   const handleEmailInputFocus = () => {
     InteractionManager.runAfterInteractions(() => {
-      setShowEmailInput(true)
-
-      InteractionManager.runAfterInteractions(() => {
-        bottomSheet.snapToIndex(1)
-        emailRef.current?.focus()
-      })
+      setModalExpanded(true)
+      emailRef.current?.focus()
     })
   }
 
   const handleBackButtonPress = () => {
     InteractionManager.runAfterInteractions(() => {
-      bottomSheet.snapToIndex(0)
-      setShowEmailInput(false)
+      setModalExpanded(false)
+      emailRef.current?.blur()
     })
   }
 
   return (
     <>
-      <BottomSheetScrollView>
-        <MotiView
-          from={{
-            height: showEmailForm ? 0 : "90%",
-            opacity: showEmailForm ? 0 : 1,
-          }}
-          animate={{
-            height: showEmailForm ? "80%" : 0,
-            opacity: showEmailForm ? 1 : 0,
-            marginBottom: showEmailForm ? 0 : 30,
-          }}
-          transition={{
-            type: "timing",
-            duration: 100,
-            easing: Easing.linear,
-          }}
-        >
-          <Formik<EmailFormValues>
-            initialValues={{ email: "", recaptchaToken: token }}
-            validateOnMount={false}
-            validationSchema={Yup.object().shape({
-              email: Yup.string()
-                .email("Please provide a valid email address")
-                .required("Email field is required"),
-            })}
-            onSubmit={async ({ email, recaptchaToken }, { setFieldValue }) => {
-              if (!recaptchaToken) {
-                Alert.alert("Something went wrong. Please try again, or contact support@artsy.net")
-                return
-              }
+      <Formik<EmailFormValues>
+        initialValues={{ email: "", recaptchaToken: token }}
+        validateOnMount={false}
+        validationSchema={Yup.object().shape({
+          email: Yup.string()
+            .email("Please provide a valid email address")
+            .required("Email field is required"),
+        })}
+        onSubmit={async ({ email, recaptchaToken }, { setFieldValue }) => {
+          if (!recaptchaToken) {
+            Alert.alert("Something went wrong. Please try again, or contact support@artsy.net")
+            return
+          }
 
-              const res = await GlobalStore.actions.auth.verifyUser({ email, recaptchaToken })
+          const res = await GlobalStore.actions.auth.verifyUser({ email, recaptchaToken })
 
-              setFieldValue("recaptchaToken", null)
+          setFieldValue("recaptchaToken", null)
 
-              if (res === "user_exists") {
-                navigation.navigate("LoginPasswordStep", { email })
-              } else if (res === "user_does_not_exist") {
-                navigation.navigate("SignUpPasswordStep", { email })
-              } else if (res === "something_went_wrong") {
-                Alert.alert("Something went wrong. Please try again, or contact support@artsy.net")
-              }
-            }}
-          >
-            {({ errors, handleChange, handleSubmit, isValid }) => {
-              return (
-                <Flex padding={2} gap={space(1)}>
+          if (res === "user_exists") {
+            navigation.navigate("LoginPasswordStep", { email })
+          } else if (res === "user_does_not_exist") {
+            navigation.navigate("SignUpPasswordStep", { email })
+          } else if (res === "something_went_wrong") {
+            Alert.alert("Something went wrong. Please try again, or contact support@artsy.net")
+          }
+        }}
+      >
+        {({ errors, handleChange, handleSubmit, isValid }) => {
+          return (
+            <Flex padding={2} position="relative">
+              {!isSelectLoginMethodStep && (
+                <>
                   <BackButton onPress={handleBackButtonPress} />
+                  <Spacer y={1} />
+                </>
+              )}
+              <Flex height={isSelectLoginMethodStep ? "100%" : "85%"} justifyContent="center">
+                <Box>
+                  <Text variant="sm">Sign up or log in</Text>
 
-                  <Text variant="sm-display">Sign up or log in</Text>
-                  <Recaptcha />
+                  {!isSelectLoginMethodStep && <Recaptcha />}
 
-                  <BottomSheetInput
+                  <Input
                     autoCapitalize="none"
                     autoComplete="email"
                     keyboardType="email-address"
                     onChangeText={(text) => {
                       handleChange("email")(text.trim())
                     }}
-                    blurOnSubmit={false} // This is needed to avoid UI jump when the user submits
+                    // blurOnSubmit={false} // This is needed to avoid UI jump when the user submits
                     placeholderTextColor={color("black30")}
                     title="Email"
                     returnKeyType="next"
                     spellCheck={false}
                     autoCorrect={false}
                     ref={emailRef}
+                    onFocus={handleEmailInputFocus}
                     onBlur={handleBackButtonPress}
                     // We need to to set textContentType to username (instead of emailAddress) here
                     // enable autofill of login details from the device keychain.
@@ -136,47 +124,36 @@ export const WelcomeStep: React.FC<WelcomeStepProps> = React.memo(() => {
                     error={errors.email}
                   />
 
-                  <Button block width={100} onPress={handleSubmit} disabled={!isValid}>
-                    Continue
-                  </Button>
-                </Flex>
-              )
-            }}
-          </Formik>
-        </MotiView>
+                  <Flex display={isSelectLoginMethodStep ? "flex" : "none"}>
+                    <Spacer y={2} />
 
-        <MotiView
-          from={{ opacity: showEmailForm ? 1 : 0 }}
-          animate={{ opacity: showEmailForm ? 0 : 1 }}
-          transition={{ duration: showEmailForm ? 0 : 500, delay: showEmailForm ? 0 : 200 }}
-        >
-          <Flex px={2} gap={space(1)}>
-            <Text variant="sm-display">Sign up or log in</Text>
+                    <SocialLoginButtons />
 
-            <Touchable onPress={handleEmailInputFocus}>
-              <BottomSheetInput
-                onTouchStart={handleEmailInputFocus}
-                placeholder="Enter your email address"
-                title="Email"
-                style={{ pointerEvents: "none" }}
-              />
-            </Touchable>
+                    <Spacer y={1} />
 
-            <SocialLoginButtons />
+                    <Text variant="xxs" color="black60" textAlign="center">
+                      By tapping Continue with Apple, Facebook, or Google, you agree to Artsy’s{" "}
+                      <LinkText variant="xxs" onPress={() => navigate("/terms")}>
+                        Terms of Use
+                      </LinkText>{" "}
+                      and{" "}
+                      <LinkText variant="xxs" onPress={() => navigate("/privacy")}>
+                        Privacy Policy
+                      </LinkText>
+                    </Text>
+                  </Flex>
 
-            <Text variant="xxs" color="black60" textAlign="center">
-              By tapping Continue with Apple, Facebook, or Google, you agree to Artsy’s{" "}
-              <LinkText variant="xxs" onPress={() => navigate("/terms")}>
-                Terms of Use
-              </LinkText>{" "}
-              and{" "}
-              <LinkText variant="xxs" onPress={() => navigate("/privacy")}>
-                Privacy Policy
-              </LinkText>
-            </Text>
-          </Flex>
-        </MotiView>
-      </BottomSheetScrollView>
+                  <Flex display={isSelectLoginMethodStep ? "none" : "flex"}>
+                    <Button block width={100} onPress={handleSubmit} disabled={!isValid} mt={2}>
+                      Continue
+                    </Button>
+                  </Flex>
+                </Box>
+              </Flex>
+            </Flex>
+          )
+        }}
+      </Formik>
     </>
   )
 })
@@ -206,24 +183,38 @@ const SocialLoginButtons: React.FC = () => {
     })
 
   return (
-    <Flex gap={1}>
+    <Flex>
       <Text variant="xs" textAlign="center">
         Or continue with
       </Text>
 
-      <Flex flexDirection="row" justifyContent="space-evenly">
+      <Spacer y={1} />
+
+      <Flex flexDirection="row" justifyContent="space-evenly" width="100%">
         {Platform.OS === "ios" && osMajorVersion() >= 13 && (
           <Button variant="fillDark" width="100%" onPress={handleApplePress}>
-            <Image source={require("images/apple.webp")} />
+            <Flex height="100%" justifyContent="center" alignItems="center">
+              <Image source={require("images/apple.webp")} />
+            </Flex>
           </Button>
         )}
 
-        <Button variant="outline" width="100%" onPress={handleGooglePress}>
-          <Image source={require("images/google.webp")} />
+        <Button variant="outline" onPress={handleGooglePress}>
+          <Flex justifyContent="center" alignItems="center">
+            <Image
+              source={require("images/google.webp")}
+              style={{ position: "relative", top: 2 }}
+            />
+          </Flex>
         </Button>
 
         <Button variant="outline" width="100%" onPress={handleFacebookPress}>
-          <Image source={require("images/facebook.webp")} />
+          <Flex justifyContent="center" alignItems="center">
+            <Image
+              source={require("images/facebook.webp")}
+              style={{ position: "relative", top: 2 }}
+            />
+          </Flex>
         </Button>
       </Flex>
     </Flex>

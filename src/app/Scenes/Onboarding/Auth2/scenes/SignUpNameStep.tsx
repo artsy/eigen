@@ -1,12 +1,10 @@
-import { BackButton, Button, Flex, Text, useTheme } from "@artsy/palette-mobile"
-import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
+import { BackButton, Button, Flex, Input, Text, useTheme } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack"
-import { BottomSheetInput } from "app/Components/BottomSheetInput"
+import { AuthNavigationStack } from "app/Scenes/Onboarding/Auth2/AuthScenes"
 import { OnboardingNavigationStack } from "app/Scenes/Onboarding/Onboarding"
 import { EmailSubscriptionCheckbox } from "app/Scenes/Onboarding/OnboardingCreateAccount/EmailSubscriptionCheckbox"
 import { TermsOfServiceCheckbox } from "app/Scenes/Onboarding/OnboardingCreateAccount/TermsOfServiceCheckbox"
-import { OnboardingHomeNavigationStack } from "app/Scenes/Onboarding/OnboardingHome"
 import { GlobalStore } from "app/store/GlobalStore"
 import { showBlockedAuthError } from "app/utils/auth/authHelpers"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
@@ -14,7 +12,7 @@ import React, { useState } from "react"
 import { Alert, Keyboard } from "react-native"
 import * as Yup from "yup"
 
-type SignUpNameStepProps = StackScreenProps<OnboardingHomeNavigationStack, "SignUpNameStep">
+type SignUpNameStepProps = StackScreenProps<AuthNavigationStack, "SignUpNameStep">
 
 interface SignUpNameStepFormValues {
   name: string
@@ -53,11 +51,9 @@ export const SignUpNameStep: React.FC<SignUpNameStepProps> = ({ route }) => {
   })
 
   return (
-    <BottomSheetScrollView>
-      <FormikProvider value={formik}>
-        <SignUpNameStepForm />
-      </FormikProvider>
-    </BottomSheetScrollView>
+    <FormikProvider value={formik}>
+      <SignUpNameStepForm />
+    </FormikProvider>
   )
 }
 
@@ -81,7 +77,7 @@ const SignUpNameStepForm: React.FC = () => {
 
       <Text variant="sm-display">Welcome to Artsy</Text>
 
-      <BottomSheetInput
+      <Input
         autoCapitalize="words"
         autoComplete="name"
         autoCorrect={false}

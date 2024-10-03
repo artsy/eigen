@@ -1,8 +1,6 @@
-import { BackButton, Button, Flex, Spacer, Text, useTheme } from "@artsy/palette-mobile"
-import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
+import { BackButton, Button, Flex, Input, Spacer, Text, useTheme } from "@artsy/palette-mobile"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
-import { BottomSheetInput } from "app/Components/BottomSheetInput"
 import { AuthNavigationStack } from "app/Scenes/Onboarding/Auth2/AuthScenes"
 import { useAuthNavigation } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { OnboardingNavigationStack } from "app/Scenes/Onboarding/Onboarding"
@@ -37,11 +35,9 @@ export const ForgotPasswordStep: React.FC = () => {
   })
 
   return (
-    <BottomSheetScrollView>
-      <FormikProvider value={formik}>
-        <ForgotPasswordStepForm />
-      </FormikProvider>
-    </BottomSheetScrollView>
+    <FormikProvider value={formik}>
+      <ForgotPasswordStepForm />
+    </FormikProvider>
   )
 }
 
@@ -75,7 +71,7 @@ const ForgotPasswordStepForm: React.FC = () => {
         {!!requestedPasswordReset ? (
           <Text color="blue100">Password reset link sent. Please check your email.</Text>
         ) : (
-          <BottomSheetInput
+          <Input
             autoCapitalize="none"
             autoComplete="email"
             enableClearButton

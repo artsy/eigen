@@ -2,23 +2,23 @@ import {
   BackButton,
   Button,
   Flex,
+  Input,
   LinkText,
   SimpleMessage,
   Spacer,
   Text,
   useTheme,
 } from "@artsy/palette-mobile"
-import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
-import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack"
-import { BottomSheetInput } from "app/Components/BottomSheetInput"
-import { OnboardingHomeNavigationStack } from "app/Scenes/Onboarding/OnboardingHome"
+import { RouteProp, useRoute } from "@react-navigation/native"
+import { StackScreenProps } from "@react-navigation/stack"
+import { AuthNavigationStack } from "app/Scenes/Onboarding/Auth2/AuthScenes"
+import { useAuthNavigation } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import { useState } from "react"
 import * as Yup from "yup"
 
-type LoginOTPStepProps = StackScreenProps<OnboardingHomeNavigationStack, "LoginOTPStep">
+type LoginOTPStepProps = StackScreenProps<AuthNavigationStack, "LoginOTPStep">
 
 interface LoginOTPStepFormValues {
   otp: string
@@ -46,11 +46,9 @@ export const LoginOTPStep: React.FC<LoginOTPStepProps> = ({ route }) => {
   })
 
   return (
-    <BottomSheetScrollView>
-      <FormikProvider value={formik}>
-        <LoginOTPStepForm />
-      </FormikProvider>
-    </BottomSheetScrollView>
+    <FormikProvider value={formik}>
+      <LoginOTPStepForm />
+    </FormikProvider>
   )
 }
 
@@ -60,8 +58,8 @@ const LoginOTPStepForm: React.FC = () => {
   const { errors, handleChange, handleSubmit, isValid, setErrors, validateForm, values } =
     useFormikContext<LoginOTPStepFormValues>()
 
-  const navigation = useNavigation<StackNavigationProp<OnboardingHomeNavigationStack>>()
-  const route = useRoute<RouteProp<OnboardingHomeNavigationStack, "LoginOTPStep">>()
+  const navigation = useAuthNavigation()
+  const route = useRoute<RouteProp<AuthNavigationStack, "LoginOTPStep">>()
 
   const { color, space } = useTheme()
 
@@ -73,7 +71,7 @@ const LoginOTPStepForm: React.FC = () => {
     <Flex padding={2} gap={space(1)}>
       <BackButton onPress={handleBackButtonPress} />
       <Text variant="sm-display">Authentication Code</Text>
-      <BottomSheetInput
+      <Input
         autoCapitalize="none"
         autoCorrect={false}
         autoFocus

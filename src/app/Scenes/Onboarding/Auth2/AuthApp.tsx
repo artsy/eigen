@@ -1,7 +1,8 @@
 import { Screen } from "@artsy/palette-mobile"
-import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
-import { AuthModal } from "app/Scenes/Onboarding/Auth2/AuthModal"
+import { AuthContext } from "app/Scenes/Onboarding/Auth2/AuthContext"
+// import { AuthModal } from "app/Scenes/Onboarding/Auth2/AuthModal"
 import { AuthScenes } from "app/Scenes/Onboarding/Auth2/AuthScenes"
+import { AuthModal } from "app/Scenes/Onboarding/Auth2/components/AuthModal"
 import { WelcomeBackground } from "app/Scenes/Onboarding/Auth2/components/WelcomeBackground"
 import { useAndroidStatusBarColor } from "app/Scenes/Onboarding/Auth2/hooks/useAndroidStatusBarColor"
 import React from "react"
@@ -16,11 +17,11 @@ export const AuthApp: React.FC = () => {
       </Screen.Background>
 
       <Screen.Body>
-        <BottomSheetModalProvider>
+        <AuthContext.Provider>
           <AuthModal>
             <AuthScenes />
           </AuthModal>
-        </BottomSheetModalProvider>
+        </AuthContext.Provider>
       </Screen.Body>
     </Screen>
   )
