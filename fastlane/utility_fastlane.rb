@@ -74,8 +74,7 @@ lane :tag_and_push do |options|
   tag = options[:tag].strip
   `git tag -d "#{tag}"`
   add_git_tag tag: tag
-  # Check if the remote exists before adding it
-  `git remote | grep http || git remote add http https://github.com/artsy/eigen.git`
+  `git remote add http https://github.com/artsy/eigen.git || true`
   # use no-verify to skip the pre-push hook
   `git push http #{tag} -f --no-verify`
 end
