@@ -38,7 +38,7 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
   }
 
   const handleManageSaves = () => {
-    navigate("/artwork-lists")
+    navigate("/settings/saves")
   }
 
   return (

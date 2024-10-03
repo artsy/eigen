@@ -1,5 +1,13 @@
 import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
-import { Flex, Join, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
+import {
+  Flex,
+  FlexProps,
+  Join,
+  Skeleton,
+  SkeletonBox,
+  SkeletonText,
+  Spacer,
+} from "@artsy/palette-mobile"
 import { HomeViewSectionMarketingCollectionsQuery } from "__generated__/HomeViewSectionMarketingCollectionsQuery.graphql"
 import {
   HomeViewSectionMarketingCollections_section$data,
@@ -13,11 +21,12 @@ import {
 } from "app/Components/FiveUpImageLayout"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
+import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import {
   CollectionCard,
   HomeViewSectionMarketingCollectionsItem,
 } from "app/Scenes/HomeView/Sections/HomeViewSectionMarketingCollectionsItem"
+import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
@@ -33,14 +42,15 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionMarketingCollectionsProps {
   section: HomeViewSectionMarketingCollections_section$key
+  index: number
 }
 
 export const HomeViewSectionMarketingCollections: React.FC<
   HomeViewSectionMarketingCollectionsProps
-> = (props) => {
+> = ({ section: sectionProp, index, ...flexProps }) => {
   const tracking = useHomeViewTracking()
 
-  const section = useFragment(fragment, props.section)
+  const section = useFragment(fragment, sectionProp)
   const component = section.component
 
   if (!component) return null
@@ -72,7 +82,7 @@ export const HomeViewSectionMarketingCollections: React.FC<
   }
 
   return (
-    <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
+    <Flex {...flexProps}>
       <Flex pl={2} pr={2}>
         <SectionTitle title={component.title} onPress={viewAll ? onSectionViewAll : undefined} />
       </Flex>
@@ -101,6 +111,11 @@ export const HomeViewSectionMarketingCollections: React.FC<
             />
           )
         }}
+      />
+
+      <HomeViewSectionSentinel
+        contextModule={section.contextModule as ContextModule}
+        index={index}
       />
     </Flex>
   )
@@ -133,68 +148,70 @@ const fragment = graphql`
   }
 `
 
-const HomeViewSectionMarketingCollectionsPlaceholder: React.FC = () => {
+const HomeViewSectionMarketingCollectionsPlaceholder: React.FC<FlexProps> = (flexProps) => {
   const randomValue = useMemoizedRandom()
   return (
     <Skeleton>
-      <Flex mx={2} my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
-        <SkeletonText>Collections</SkeletonText>
+      <Flex {...flexProps}>
+        <Flex mx={2}>
+          <SkeletonText>Collections</SkeletonText>
 
-        <Spacer y={1} />
+          <Spacer y={1} />
 
-        <Flex flexDirection="row">
-          <Join separator={<Spacer x="15px" />}>
-            {times(2 + randomValue * 10).map((index) => (
-              <CollectionCard key={index}>
-                <Flex>
-                  <Flex flexDirection="row">
-                    <SkeletonBox
-                      height={DEFAULT_LARGE_IMAGE_DIMENSIONS.height}
-                      width={DEFAULT_LARGE_IMAGE_DIMENSIONS.width}
-                      borderBottomWidth={GAP}
-                      borderColor="white100"
-                    />
-                    <Flex>
+          <Flex flexDirection="row">
+            <Join separator={<Spacer x="15px" />}>
+              {times(2 + randomValue * 10).map((index) => (
+                <CollectionCard key={index}>
+                  <Flex>
+                    <Flex flexDirection="row">
+                      <SkeletonBox
+                        height={DEFAULT_LARGE_IMAGE_DIMENSIONS.height}
+                        width={DEFAULT_LARGE_IMAGE_DIMENSIONS.width}
+                        borderBottomWidth={GAP}
+                        borderColor="white100"
+                      />
+                      <Flex>
+                        <SkeletonBox
+                          height={DEFAULT_SMALL_IMAGE_DIMENSIONS.height}
+                          width={DEFAULT_SMALL_IMAGE_DIMENSIONS.width}
+                          borderLeftWidth={GAP}
+                          borderColor="white100"
+                          borderBottomWidth={GAP}
+                        />
+                        <SkeletonBox
+                          height={DEFAULT_SMALL_IMAGE_DIMENSIONS.height}
+                          width={DEFAULT_SMALL_IMAGE_DIMENSIONS.width}
+                          borderLeftWidth={GAP}
+                          borderColor="white100"
+                          borderBottomWidth={GAP}
+                        />
+                      </Flex>
+                    </Flex>
+                    <Flex flexDirection="row">
                       <SkeletonBox
                         height={DEFAULT_SMALL_IMAGE_DIMENSIONS.height}
                         width={DEFAULT_SMALL_IMAGE_DIMENSIONS.width}
-                        borderLeftWidth={GAP}
                         borderColor="white100"
-                        borderBottomWidth={GAP}
                       />
                       <SkeletonBox
-                        height={DEFAULT_SMALL_IMAGE_DIMENSIONS.height}
-                        width={DEFAULT_SMALL_IMAGE_DIMENSIONS.width}
+                        height={DEFAULT_HORIZONTAL_IMAGE_DIMENSIONS.height}
+                        width={DEFAULT_HORIZONTAL_IMAGE_DIMENSIONS.width}
                         borderLeftWidth={GAP}
                         borderColor="white100"
-                        borderBottomWidth={GAP}
                       />
                     </Flex>
-                  </Flex>
-                  <Flex flexDirection="row">
-                    <SkeletonBox
-                      height={DEFAULT_SMALL_IMAGE_DIMENSIONS.height}
-                      width={DEFAULT_SMALL_IMAGE_DIMENSIONS.width}
-                      borderColor="white100"
-                    />
-                    <SkeletonBox
-                      height={DEFAULT_HORIZONTAL_IMAGE_DIMENSIONS.height}
-                      width={DEFAULT_HORIZONTAL_IMAGE_DIMENSIONS.width}
-                      borderLeftWidth={GAP}
-                      borderColor="white100"
-                    />
-                  </Flex>
 
-                  <Spacer y={1} />
+                    <Spacer y={1} />
 
-                  <Flex>
-                    <SkeletonText>New this week</SkeletonText>
-                    <SkeletonText>21 works</SkeletonText>
+                    <Flex>
+                      <SkeletonText>New this week</SkeletonText>
+                      <SkeletonText>21 works</SkeletonText>
+                    </Flex>
                   </Flex>
-                </Flex>
-              </CollectionCard>
-            ))}
-          </Join>
+                </CollectionCard>
+              ))}
+            </Join>
+          </Flex>
         </Flex>
       </Flex>
     </Skeleton>
@@ -202,7 +219,7 @@ const HomeViewSectionMarketingCollectionsPlaceholder: React.FC = () => {
 }
 
 const homeViewSectionMarketingCollectionsQuery = graphql`
-  query HomeViewSectionMarketingCollectionsQuery($id: String!) {
+  query HomeViewSectionMarketingCollectionsQuery($id: String!) @cacheable {
     homeView {
       section(id: $id) {
         ...HomeViewSectionMarketingCollections_section
@@ -211,19 +228,29 @@ const homeViewSectionMarketingCollectionsQuery = graphql`
   }
 `
 
-export const HomeViewSectionMarketingCollectionsQueryRenderer: React.FC<{
-  sectionID: string
-}> = withSuspense((props) => {
-  const data = useLazyLoadQuery<HomeViewSectionMarketingCollectionsQuery>(
-    homeViewSectionMarketingCollectionsQuery,
-    {
-      id: props.sectionID,
+export const HomeViewSectionMarketingCollectionsQueryRenderer: React.FC<SectionSharedProps> =
+  withSuspense(({ sectionID, index, ...flexProps }) => {
+    const data = useLazyLoadQuery<HomeViewSectionMarketingCollectionsQuery>(
+      homeViewSectionMarketingCollectionsQuery,
+      {
+        id: sectionID,
+      },
+      {
+        networkCacheConfig: {
+          force: false,
+        },
+      }
+    )
+
+    if (!data.homeView.section) {
+      return null
     }
-  )
 
-  if (!data.homeView.section) {
-    return null
-  }
-
-  return <HomeViewSectionMarketingCollections section={data.homeView.section} />
-}, HomeViewSectionMarketingCollectionsPlaceholder)
+    return (
+      <HomeViewSectionMarketingCollections
+        section={data.homeView.section}
+        index={index}
+        {...flexProps}
+      />
+    )
+  }, HomeViewSectionMarketingCollectionsPlaceholder)

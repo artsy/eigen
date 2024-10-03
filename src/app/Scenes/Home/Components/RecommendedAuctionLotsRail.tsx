@@ -1,10 +1,9 @@
 import { ActionType, ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
-import { RecommendedAuctionLotsRail_largeArtworkConnection$key } from "__generated__/RecommendedAuctionLotsRail_largeArtworkConnection.graphql"
 import {
-  RecommendedAuctionLotsRail_smallArtworkConnection$data,
-  RecommendedAuctionLotsRail_smallArtworkConnection$key,
-} from "__generated__/RecommendedAuctionLotsRail_smallArtworkConnection.graphql"
+  RecommendedAuctionLotsRail_artworkConnection$data,
+  RecommendedAuctionLotsRail_artworkConnection$key,
+} from "__generated__/RecommendedAuctionLotsRail_artworkConnection.graphql"
 import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { RailScrollProps } from "app/Scenes/Home/Components/types"
@@ -22,13 +21,8 @@ import { useTracking } from "react-tracking"
 
 interface RecommendedAuctionLotsRailProps extends ArtworkActionTrackingProps {
   title: string
-  artworkConnection:
-    | RecommendedAuctionLotsRail_smallArtworkConnection$key
-    | RecommendedAuctionLotsRail_largeArtworkConnection$key
-    | null
-    | undefined
+  artworkConnection: RecommendedAuctionLotsRail_artworkConnection$key | null | undefined
   isRailVisible: boolean
-  size: "small" | "large"
 }
 
 export const RecommendedAuctionLotsRail: React.FC<
@@ -39,7 +33,6 @@ export const RecommendedAuctionLotsRail: React.FC<
     artworkConnection,
     isRailVisible,
     scrollRef,
-    size,
     contextScreenOwnerType,
     ...restProps
   }) => {
@@ -48,9 +41,9 @@ export const RecommendedAuctionLotsRail: React.FC<
     const trackingProps = extractArtworkActionTrackingProps(restProps)
 
     const { artworksForUser } = useFragment(
-      size === "large" ? largeArtworksFragment : smallArtworksFragment,
+      artworksFragment,
       artworkConnection
-    ) as RecommendedAuctionLotsRail_smallArtworkConnection$data
+    ) as RecommendedAuctionLotsRail_artworkConnection$data
 
     const railRef = useRef<View>(null)
     const listRef = useRef<FlatList<any>>(null)
@@ -82,8 +75,6 @@ export const RecommendedAuctionLotsRail: React.FC<
       navigate(artwork.href)
     }
 
-    const AuctionLotsRail = size == "large" ? ArtworkRail : ArtworkRail
-
     return (
       <View ref={railRef}>
         <Flex pl={2} pr={2}>
@@ -96,7 +87,7 @@ export const RecommendedAuctionLotsRail: React.FC<
             }}
           />
         </Flex>
-        <AuctionLotsRail
+        <ArtworkRail
           {...trackingProps}
           artworks={artworks as any}
           onPress={handleOnArtworkPress}
@@ -113,23 +104,8 @@ export const RecommendedAuctionLotsRail: React.FC<
   }
 )
 
-const largeArtworksFragment = graphql`
-  fragment RecommendedAuctionLotsRail_largeArtworkConnection on Viewer {
-    artworksForUser(includeBackfill: true, first: 10, onlyAtAuction: true) {
-      edges {
-        node {
-          title
-          internalID
-          slug
-          ...ArtworkRail_artworks
-        }
-      }
-    }
-  }
-`
-
-const smallArtworksFragment = graphql`
-  fragment RecommendedAuctionLotsRail_smallArtworkConnection on Viewer {
+const artworksFragment = graphql`
+  fragment RecommendedAuctionLotsRail_artworkConnection on Viewer {
     artworksForUser(includeBackfill: true, first: 10, onlyAtAuction: true) {
       edges {
         node {

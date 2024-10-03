@@ -8,7 +8,7 @@ updates:
     open-pull-requests-limit: 0
     assignees:
       - "brainbicycle"
-      - "pvinis"
+      - "gkartalis"
     reviewers:
       - "artsy/mobile-platform"
   - package-ecosystem: "npm"
@@ -19,7 +19,7 @@ updates:
     open-pull-requests-limit: 0
     assignees:
       - "brainbicycle"
-      - "pvinis"
+      - "gkartalis"
     reviewers:
       - "artsy/mobile-platform"
   - package-ecosystem: "pip"
@@ -30,7 +30,7 @@ updates:
     open-pull-requests-limit: 0
     assignees:
       - "brainbicycle"
-      - "pvinis"
+      - "gkartalis"
     reviewers:
       - "artsy/mobile-platform"
   - package-ecosystem: "github-actions"
@@ -39,7 +39,7 @@ updates:
       interval: daily
     open-pull-requests-limit: 0
     assignees:
-     - brainbicycle
-     - pvinis
+      - brainbicycle
+      - gkartalis
     reviewers:
-     - artsy/mobile-platform
+      - artsy/mobile-platform

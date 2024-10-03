@@ -119,7 +119,7 @@ If there are issues setting up the app, see the [troubleshooting doc](troublesho
 
 ## Contribute
 
-We welcome independent contributions! Feel free to open an issue and open a PR and assign one of [Brian Beckerle](https://github.com/brainbicycle), [Pavlos Vinieratos](https://github.com/pvinis), [Mounir Dhahri](https://github.com/MounirDhahri) as a reviewer or anyone else listed [here](https://github.com/artsy/eigen#meta).
+We welcome independent contributions! Feel free to open an issue and open a PR and assign one of [Brian Beckerle](https://github.com/brainbicycle), [George Kartalis](https://github.com/gkartalis), [Mounir Dhahri](https://github.com/MounirDhahri) as a reviewer or anyone else listed [here](https://github.com/artsy/eigen#meta).
 
 If you work at Artsy you can find a ticket on [CX backlog 🔐](https://artsyproduct.atlassian.net/jira/software/c/projects/CX/boards/77/backlog?issueLimit=100) and look for a **#good-first-issue**
 

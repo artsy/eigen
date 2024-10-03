@@ -47,17 +47,18 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = (props)
       <ArtworkRail
         artworks={artworks}
         onPress={(item) => {
-          if (!!item.href) {
-            trackEvent(
-              tracks.tappedArtwork(
-                artwork,
-                item,
-                item.collectorSignals,
-                AREnableAuctionImprovementsSignals
-              )
+          if (!item.href) return
+
+          trackEvent(
+            tracks.tappedArtwork(
+              artwork,
+              item,
+              item.collectorSignals,
+              AREnableAuctionImprovementsSignals
             )
-            navigate(item.href)
-          }
+          )
+
+          navigate(item.href)
         }}
         ListHeaderComponent={null}
         ListFooterComponent={null}

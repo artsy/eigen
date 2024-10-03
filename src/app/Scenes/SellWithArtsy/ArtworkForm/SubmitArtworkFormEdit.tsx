@@ -1,5 +1,5 @@
 import { SubmitArtworkFormEditQuery } from "__generated__/SubmitArtworkFormEditQuery.graphql"
-import { LoadFailureView } from "app/Components/LoadFailureView"
+import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
 import {
   SubmitArtworkForm,
   SubmitArtworkProps,
@@ -17,20 +17,28 @@ export const SubmitArtworkFormEdit: React.FC<SubmitArtworkProps> = withSuspense(
     { fetchPolicy: "network-only" }
   )
 
-  if (!data?.submission) {
-    return <LoadFailureView />
-  }
-
   return (
-    <SubmitArtworkForm
-      externalID={props.externalID}
-      initialValues={getInitialSubmissionValues(data.submission, data?.me)}
-      initialStep={props.initialStep}
-      navigationState={props.navigationState}
-      hasStartedFlowFromMyCollection={props.hasStartedFlowFromMyCollection}
-    />
+    <>
+      {!!data?.submission && (
+        <SubmitArtworkForm
+          externalID={props.externalID}
+          initialValues={getInitialSubmissionValues(data.submission, data?.me)}
+          initialStep={props.initialStep}
+          navigationState={props.navigationState}
+          hasStartedFlowFromMyCollection={props.hasStartedFlowFromMyCollection}
+        />
+      )}
+    </>
   )
 })
+
+export const SubmitArtworkFormEditContainer: React.FC<SubmitArtworkProps> = (props) => {
+  return (
+    <RetryErrorBoundary showCloseButton={true} trackErrorBoundary={false} useSafeArea={false}>
+      <SubmitArtworkFormEdit {...props} />
+    </RetryErrorBoundary>
+  )
+}
 
 const submitArtworkFormEditQuery = graphql`
   query SubmitArtworkFormEditQuery($id: ID) {

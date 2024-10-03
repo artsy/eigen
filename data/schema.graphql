@@ -312,7 +312,6 @@ type Alert {
   ): String!
   forSale: Boolean
   formattedPriceRange: String
-  hasRecentlyEnabledUserSearchCriteria: Boolean
   height: String
   href: String
 
@@ -343,7 +342,6 @@ type Alert {
   settings: AlertSettings!
   sizes: [String]
   summary: JSON
-  totalUserSearchCriteriaCount: Int
   width: String
 }
 
@@ -360,11 +358,8 @@ type AlertConnection {
 
 # An edge in a connection.
 type AlertEdge {
-  counts: AlertsCounts
-
   # A cursor for use in pagination
   cursor: String!
-  isRecentlyEnabled: Boolean
 
   # The item at the end of the edge
   node: Alert
@@ -413,42 +408,6 @@ enum AlertSourceType {
 enum AlertsConnectionSortEnum {
   ENABLED_AT_DESC
   NAME_ASC
-}
-
-type AlertsCounts {
-  totalUserSearchCriteriaCount: Int
-}
-
-# A connection to a list of items.
-type AlertsSummaryArtistConnection {
-  # A list of edges.
-  edges: [AlertsSummaryArtistEdge]
-  pageCursors: PageCursors!
-
-  # Information to aid in pagination.
-  pageInfo: PageInfo!
-  totalCount: Int
-}
-
-# An edge in a connection.
-type AlertsSummaryArtistEdge {
-  counts: AlertsSummaryCounts
-
-  # A cursor for use in pagination
-  cursor: String!
-  isRecentlyEnabled: Boolean
-
-  # The item at the end of the edge
-  node: Artist
-  topHit: Alert
-}
-
-type AlertsSummaryCounts {
-  totalUserSearchCriteriaCount: Int
-  totalWithAdditionalGeneIdsCount: Int
-  totalWithAttributionClassCount: Int
-  totalWithOtherMetadataCount: Int
-  totalWithPriceRangeCount: Int
 }
 
 type Algolia {
@@ -1472,15 +1431,6 @@ type ArticleUnpublishedArtworkPartner {
 }
 
 type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Searchable {
-  alertsConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-    page: Int
-    size: Int
-    sort: String
-  ): AlertConnection
   alternateNames: [String]
   articlesConnection(
     after: String
@@ -5477,6 +5427,96 @@ type CommerceOfferSubmittedEvent implements CommerceEventInterface {
   offer: CommerceOffer!
 }
 
+type CommerceOptInFailure {
+  mutationError: GravityMutationError
+}
+
+input CommerceOptInMutationInput {
+  # whether or not there is a CoA
+  certificateOfAuthenticity: Boolean
+  clientMutationId: String
+
+  # whether or not the CoA is by an authenticating body
+  coaByAuthenticatingBody: Boolean
+
+  # whether or not the CoA is by the gallery
+  coaByGallery: Boolean
+
+  # whether or not the artwork is set to exact price
+  exactPrice: Boolean
+
+  # whether or not it is framed
+  framed: Boolean
+
+  # ID of the partner
+  id: String!
+
+  # whether or not pick up it is pick up available
+  pickupAvailable: Boolean
+}
+
+type CommerceOptInMutationPayload {
+  clientMutationId: String
+  commerceOptInMutationOrError: CommerceOptInMutationType
+}
+
+union CommerceOptInMutationType = CommerceOptInFailure | CommerceOptInSuccess
+
+type CommerceOptInReportFailure {
+  mutationError: GravityMutationError
+}
+
+input CommerceOptInReportMutationInput {
+  # whether it should be updated to CoA
+  certificateOfAuthenticity: Boolean
+  clientMutationId: String
+
+  # whether or not the CoA is by an authenticating body
+  coaByAuthenticatingBody: Boolean
+
+  # whether or not the CoA is by the gallery
+  coaByGallery: Boolean
+
+  # whether the report will contain data for eligible or non-eligible artworks.
+  eligible: Boolean
+
+  # whether or not the artworks should be set to exact price
+  exactPrice: Boolean
+
+  # whether or not it should be set to framed
+  framed: Boolean
+
+  # ID of the partner
+  id: String!
+
+  # whether or not pick up should be available
+  pickupAvailable: Boolean
+}
+
+type CommerceOptInReportMutationPayload {
+  clientMutationId: String
+  commerceOptInReportMutationOrError: CommerceOptInReportMutationType
+}
+
+union CommerceOptInReportMutationType = CommerceOptInReportFailure | CommerceOptInReportSuccess
+
+type CommerceOptInReportResponse {
+  message: String
+}
+
+type CommerceOptInReportSuccess {
+  createdCommerceOptInReport: CommerceOptInReportResponse
+}
+
+type CommerceOptInResponse {
+  count: Int
+  ids: [String]
+}
+
+type CommerceOptInSuccess {
+  updatedCommerceOptIn: CommerceOptInResponse
+}
+
 # Order
 interface CommerceOrder {
   # Whether Artsy collects taxes (e.g., sales tax or VAT) on this order.
@@ -5718,6 +5758,9 @@ enum CommerceOrderDisplayStateEnum {
 
   # order has been collected and is with shipper
   IN_TRANSIT
+
+  # order is submitted by buyer but payment processing failed
+  PAYMENT_FAILED
 
   # order is still pending submission by buyer
   PENDING
@@ -9194,6 +9237,13 @@ enum ExhibitionPeriodFormat {
   SHORT
 }
 
+# A marketing collection category to explore by
+type ExploreByMarketingCollectionCategory {
+  href: String!
+  image: Image
+  name: String!
+}
+
 type External {
   auctionHouses(size: Int, term: String): [ExternalAuctionHouse!]!
   fairs(size: Int, term: String): [ExternalFair!]!
@@ -10817,7 +10867,7 @@ type HomeViewSectionActivity implements HomeViewSectionGeneric & Node {
   component: HomeViewComponent
 
   # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  contextModule: String!
+  contextModule: String
 
   # A globally unique ID.
   id: ID!
@@ -10843,7 +10893,7 @@ type HomeViewSectionArticles implements HomeViewSectionGeneric & Node {
   component: HomeViewComponent
 
   # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  contextModule: String!
+  contextModule: String
 
   # A globally unique ID.
   id: ID!
@@ -10863,7 +10913,7 @@ type HomeViewSectionArtists implements HomeViewSectionGeneric & Node {
   component: HomeViewComponent
 
   # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  contextModule: String!
+  contextModule: String
 
   # A globally unique ID.
   id: ID!
@@ -10883,7 +10933,7 @@ type HomeViewSectionArtworks implements HomeViewSectionGeneric & Node {
   component: HomeViewComponent
 
   # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  contextModule: String!
+  contextModule: String
 
   # A globally unique ID.
   id: ID!
@@ -10908,7 +10958,46 @@ type HomeViewSectionAuctionResults implements HomeViewSectionGeneric & Node {
   component: HomeViewComponent
 
   # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  contextModule: String!
+  contextModule: String
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
+  # [Analytics] `owner type` analytics value for this scetion when displayed in a standalone UI, as defined in our schema (artsy/cohesion)
+  ownerType: String
+}
+
+# A section containing a list of curated marketing collections
+type HomeViewSectionDiscoverMarketingCollections implements HomeViewSectionGeneric & Node {
+  # Component prescription for this section, for overriding or customizing presentation and behavior
+  component: HomeViewComponent
+
+  # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
+  contextModule: String
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  linksConnection(after: String, before: String, first: Int, last: Int): FeaturedLinkConnection
+
+  # [Analytics] `owner type` analytics value for this scetion when displayed in a standalone UI, as defined in our schema (artsy/cohesion)
+  ownerType: String
+}
+
+# Marketing Collection Categories section in the home view
+type HomeViewSectionExploreByMarketingCollectionCategories implements HomeViewSectionGeneric & Node {
+  categories: [ExploreByMarketingCollectionCategory!]!
+
+  # Component prescription for this section, for overriding or customizing presentation and behavior
+  component: HomeViewComponent
+
+  # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
+  contextModule: String
 
   # A globally unique ID.
   id: ID!
@@ -10926,7 +11015,7 @@ type HomeViewSectionFairs implements HomeViewSectionGeneric & Node {
   component: HomeViewComponent
 
   # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  contextModule: String!
+  contextModule: String
   fairsConnection(after: String, before: String, first: Int, last: Int): FairConnection
 
   # A globally unique ID.
@@ -10945,7 +11034,7 @@ type HomeViewSectionGalleries implements HomeViewSectionGeneric & Node {
   component: HomeViewComponent
 
   # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  contextModule: String!
+  contextModule: String
 
   # A globally unique ID.
   id: ID!
@@ -10963,7 +11052,7 @@ interface HomeViewSectionGeneric {
   component: HomeViewComponent
 
   # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  contextModule: String!
+  contextModule: String
 
   # A globally unique ID.
   id: ID!
@@ -11001,7 +11090,7 @@ type HomeViewSectionHeroUnits implements HomeViewSectionGeneric & Node {
   component: HomeViewComponent
 
   # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  contextModule: String!
+  contextModule: String
   heroUnitsConnection(after: String, before: String, first: Int, last: Int): HeroUnitConnection
 
   # A globally unique ID.
@@ -11020,7 +11109,7 @@ type HomeViewSectionMarketingCollections implements HomeViewSectionGeneric & Nod
   component: HomeViewComponent
 
   # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  contextModule: String!
+  contextModule: String
 
   # A globally unique ID.
   id: ID!
@@ -11044,7 +11133,7 @@ type HomeViewSectionSales implements HomeViewSectionGeneric & Node {
   component: HomeViewComponent
 
   # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  contextModule: String!
+  contextModule: String
 
   # A globally unique ID.
   id: ID!
@@ -11063,7 +11152,7 @@ type HomeViewSectionShows implements HomeViewSectionGeneric & Node {
   component: HomeViewComponent
 
   # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  contextModule: String!
+  contextModule: String
 
   # A globally unique ID.
   id: ID!
@@ -11081,7 +11170,7 @@ type HomeViewSectionViewingRooms implements HomeViewSectionGeneric & Node {
   component: HomeViewComponent
 
   # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  contextModule: String!
+  contextModule: String
 
   # A globally unique ID.
   id: ID!
@@ -12002,8 +12091,8 @@ type MarketingCollection implements Node {
     timezone: String
   ): String
   credit: String
-  description: String
-  descriptionMarkdown: String
+  description: String @deprecated(reason: "Use `markdownDescription` field instead")
+  descriptionMarkdown: String @deprecated(reason: "Use `markdownDescription` field instead")
   featuredArtistExclusionIds: [String!]!
   geneIds: [String]
   headerImage: String
@@ -12019,6 +12108,7 @@ type MarketingCollection implements Node {
 
   # Linked Collections
   linkedCollections: [MarketingCollectionGroup!]!
+  markdownDescription(format: Format): String
   priceGuidance: Float
   query: MarketingCollectionQuery!
 
@@ -12660,6 +12750,7 @@ type Me implements Node {
     last: Int
     states: [ArtworkConsignmentSubmissionState]
   ): ArtworkConsignmentSubmissionConnection
+  tasks(limit: Int): [Task]
   type: String
 
   # The count of conversations with unread messages.
@@ -13035,6 +13126,12 @@ type Mutation {
     # Parameters for FulfillAtOnce
     input: CommerceFulfillAtOnceInput!
   ): CommerceFulfillAtOncePayload
+
+  # Opt all eligible artworks into BNMO
+  commerceOptIn(input: CommerceOptInMutationInput!): CommerceOptInMutationPayload
+
+  # Generate CommerceOptIn report about artworks eligibility for a given partner
+  commerceOptInReport(input: CommerceOptInReportMutationInput!): CommerceOptInReportMutationPayload
 
   # Selects an ARTA shipping option for an order, updating the LineItem#selected_shipping_quote_id.
   commerceSelectShippingOption(
@@ -14199,19 +14296,6 @@ type Partner implements Node {
     page: Int
     size: Int
   ): PartnerAlertsConnection
-  alertsSummaryArtistsConnection(
-    activeInventory: Boolean
-    after: String
-    before: String
-    first: Int
-    hasMedium: Boolean
-    hasPrice: Boolean
-    hasRarity: Boolean
-    last: Int
-    page: Int
-    represented: Boolean
-    size: Int
-  ): AlertsSummaryArtistConnection
 
   # A connection of all artists from a Partner.
   allArtistsConnection(
@@ -18720,6 +18804,47 @@ type TargetSupplyMicrofunnelMetadata {
   str: String
   uniqueVisitors: String
   views: String
+}
+
+type Task implements Node {
+  actionLink: String!
+  actionMessage: String!
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  dismissedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  expiresAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+
+  # A globally unique ID.
+  id: ID!
+  imageUrl: String!
+
+  # A type-specific ID.
+  internalID: ID!
+  message: String!
+  resolvedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  sourceId: String
+  sourceType: String
+  taskType: String!
+  title: String!
 }
 
 type TaxInfo {

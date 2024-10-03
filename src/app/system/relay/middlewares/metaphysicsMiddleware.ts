@@ -1,5 +1,11 @@
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/GlobalStore"
+import {
+  getCurrentEmissionState,
+  unsafe__getEnvironment,
+  unsafe_getFeatureFlag,
+} from "app/store/GlobalStore"
+import { shouldSkipCDNCache } from "app/system/relay/middlewares/cacheHeaderMiddleware"
+import { GraphQLRequest } from "app/system/relay/middlewares/types"
 import { logQueryPath } from "app/utils/loggers"
 import { omit } from "lodash"
 import { Middleware, urlMiddleware } from "react-relay-network-modern"
@@ -87,15 +93,32 @@ export function metaphysicsExtensionsLoggerMiddleware() {
 
 export function metaphysicsURLMiddleware() {
   return urlMiddleware({
-    url: () => unsafe__getEnvironment().metaphysicsURL,
-    headers: () => {
+    url: () => {
+      const metaphysicsURL = unsafe_getFeatureFlag("ARUseMetaphysicsCDN")
+        ? unsafe__getEnvironment().metaphysicsCDNURL
+        : unsafe__getEnvironment().metaphysicsURL
+
+      return metaphysicsURL
+    },
+    headers: (req) => {
       const { userAgent, userID, authenticationToken } = getCurrentEmissionState()
+
+      const includeAuthHeaders =
+        // Always include auth headers if not using CDN
+        !unsafe_getFeatureFlag("ARUseMetaphysicsCDN") ||
+        // If using CDN, include them only if the request is not cacheable
+        shouldSkipCDNCache(req as GraphQLRequest)
+
+      const authHeaders = {
+        "X-USER-ID": userID,
+        "X-ACCESS-TOKEN": authenticationToken,
+      }
+
       return {
         "Content-Type": "application/json",
         "User-Agent": userAgent,
-        "X-USER-ID": userID,
-        "X-ACCESS-TOKEN": authenticationToken,
         "X-TIMEZONE": LegacyNativeModules.ARCocoaConstantsModule.LocalTimeZone,
+        ...(includeAuthHeaders ? authHeaders : {}),
       }
     },
   })
@@ -103,14 +126,18 @@ export function metaphysicsURLMiddleware() {
 
 export function persistedQueryMiddleware(): Middleware {
   return (next) => async (req) => {
+    // Doing this just for more accurate types
+    const request = req as GraphQLRequest
+    // Get query body either from local queryMap or
+    // send queryID to metaphysics
     let body: { variables?: object; query?: string; documentID?: string } = {}
-    const queryID = req.getID()
-    const variables = req.getVariables()
+    const queryID = request.getID()
+    const variables = request.getVariables()
 
-    body = { documentID: queryID, variables }
+    body = { documentID: queryID, variables, query: request.operation.name }
 
     if (body && (body.query || body.documentID)) {
-      req.fetchOpts.body = JSON.stringify(body)
+      request.fetchOpts.body = JSON.stringify(body)
     }
 
     body = { query: require("../../../../../data/complete.queryMap.json")[queryID], variables }

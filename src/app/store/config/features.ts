@@ -279,9 +279,19 @@ export const features = {
   },
   AREnableArtworkRailRedesignImageAspectRatio: {
     description: "Enable new aspect ratio for artwork rail images",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableArtworkRailRedesignImageAspectRatio",
+  },
+  ARUseMetaphysicsCDN: {
+    description: "Use Metaphysics CDN (requires app restart)",
     readyForRelease: false,
     showInDevMenu: true,
-    // echoFlagKey: "AREnableArtworkRailRedesignImageAspectRatio",
+  },
+  AREnableSignupLoginFusion: {
+    description: "Enable the fused signup and login flow",
+    readyForRelease: false,
+    showInDevMenu: true,
   },
 } satisfies { [key: string]: FeatureDescriptor }
 

@@ -12,7 +12,7 @@ export interface Disappearable {
 
 export interface DissapearableArtwork {
   internalID: string
-  _disappearable: Disappearable | null
+  _disappearable?: Disappearable | null
 }
 
 export const Disappearable = forwardRef<Disappearable, React.PropsWithChildren<{}>>(

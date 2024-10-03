@@ -9,8 +9,13 @@ interface RetryErrorBoundaryProps {
   notFoundText?: string
   notFoundBackButtonText?: string
   notFoundOnBackPress?: () => void
-  children: React.ReactNode
+  children?: React.ReactNode
+  trackErrorBoundary?: boolean
+  showBackButton?: boolean
+  showCloseButton?: boolean
+  useSafeArea?: boolean
 }
+
 interface RetryErrorBoundaryState {
   error: Error | null
 }
@@ -19,6 +24,13 @@ export class RetryErrorBoundary extends Component<
   RetryErrorBoundaryProps,
   RetryErrorBoundaryState
 > {
+  static defaultProps = {
+    trackErrorBoundary: true,
+    showBackButton: false,
+    showCloseButton: false,
+    useSafeArea: true,
+  }
+
   static getDerivedStateFromError(error: Error | null): RetryErrorBoundaryState {
     return { error }
   }
@@ -30,8 +42,17 @@ export class RetryErrorBoundary extends Component<
   }
 
   render() {
-    const { children, failureView, notFoundTitle, notFoundText, notFoundBackButtonText } =
-      this.props
+    const {
+      children,
+      failureView,
+      notFoundTitle,
+      notFoundText,
+      notFoundBackButtonText,
+      trackErrorBoundary,
+      showBackButton,
+      showCloseButton,
+      useSafeArea,
+    } = this.props
     const { error } = this.state
 
     if (error) {
@@ -54,11 +75,28 @@ export class RetryErrorBoundary extends Component<
         )
       }
 
-      return <LoadFailureView error={error} onRetry={this._retry} />
+      return (
+        <LoadFailureView
+          error={error}
+          onRetry={this._retry}
+          showBackButton={showBackButton}
+          showCloseButton={showCloseButton}
+          trackErrorBoundary={trackErrorBoundary}
+          useSafeArea={useSafeArea}
+        />
+      )
     }
 
     return children
   }
+}
+
+export const AppWideErrorBoundary: React.FC<RetryErrorBoundaryProps> = ({ children, ...props }) => {
+  return (
+    <RetryErrorBoundary {...props} trackErrorBoundary={true}>
+      {children}
+    </RetryErrorBoundary>
+  )
 }
 
 export const getNotFoundRoute = (error: any) => {

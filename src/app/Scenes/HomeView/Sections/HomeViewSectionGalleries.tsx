@@ -2,6 +2,7 @@ import { ContextModule } from "@artsy/cohesion"
 import {
   Button,
   Flex,
+  FlexProps,
   Skeleton,
   SkeletonBox,
   Text,
@@ -10,7 +11,8 @@ import {
 } from "@artsy/palette-mobile"
 import { HomeViewSectionGalleriesQuery } from "__generated__/HomeViewSectionGalleriesQuery.graphql"
 import { HomeViewSectionGalleries_section$key } from "__generated__/HomeViewSectionGalleries_section.graphql"
-import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
+import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
+import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { withSuspense } from "app/utils/hooks/withSuspense"
@@ -21,13 +23,18 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionGalleriesProps {
   section: HomeViewSectionGalleries_section$key
+  index: number
 }
 
-export const HomeViewSectionGalleries: React.FC<HomeViewSectionGalleriesProps> = (props) => {
+export const HomeViewSectionGalleries: React.FC<HomeViewSectionGalleriesProps> = ({
+  section: sectionProp,
+  index,
+  ...flexProps
+}) => {
   const tracking = useHomeViewTracking()
 
   const { width, height } = useScreenDimensions()
-  const section = useFragment(HomeViewSectionGalleriesFragment, props.section)
+  const section = useFragment(HomeViewSectionGalleriesFragment, sectionProp)
 
   if (!section?.component) {
     return null
@@ -51,7 +58,7 @@ export const HomeViewSectionGalleries: React.FC<HomeViewSectionGalleriesProps> =
   }
 
   return (
-    <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
+    <Flex {...flexProps}>
       <Touchable onPress={onSectionViewAll} haptic="impactLight">
         {!!hasImage && (
           <Flex position="absolute">
@@ -100,6 +107,11 @@ export const HomeViewSectionGalleries: React.FC<HomeViewSectionGalleriesProps> =
           </Flex>
         </Flex>
       </Touchable>
+
+      <HomeViewSectionSentinel
+        contextModule={section.contextModule as ContextModule}
+        index={index}
+      />
     </Flex>
   )
 }
@@ -122,12 +134,12 @@ const HomeViewSectionGalleriesFragment = graphql`
   }
 `
 
-const HomeViewSectionGalleriesPlaceholder: React.FC = () => {
+const HomeViewSectionGalleriesPlaceholder: React.FC<FlexProps> = (flexProps) => {
   const { height } = useScreenDimensions()
 
   return (
     <Skeleton>
-      <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
+      <Flex {...flexProps}>
         <SkeletonBox height={height * 0.5} width="100%"></SkeletonBox>
       </Flex>
     </Skeleton>
@@ -135,7 +147,7 @@ const HomeViewSectionGalleriesPlaceholder: React.FC = () => {
 }
 
 const homeViewSectionGalleriesQuery = graphql`
-  query HomeViewSectionGalleriesQuery($id: String!) {
+  query HomeViewSectionGalleriesQuery($id: String!) @cacheable {
     homeView {
       section(id: $id) {
         ...HomeViewSectionGalleries_section
@@ -144,16 +156,25 @@ const homeViewSectionGalleriesQuery = graphql`
   }
 `
 
-export const HomeViewSectionGalleriesQueryRenderer: React.FC<{
-  sectionID: string
-}> = withSuspense((props) => {
-  const data = useLazyLoadQuery<HomeViewSectionGalleriesQuery>(homeViewSectionGalleriesQuery, {
-    id: props.sectionID,
-  })
+export const HomeViewSectionGalleriesQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
+  ({ sectionID, index, ...flexProps }) => {
+    const data = useLazyLoadQuery<HomeViewSectionGalleriesQuery>(
+      homeViewSectionGalleriesQuery,
+      {
+        id: sectionID,
+      },
+      {
+        networkCacheConfig: {
+          force: false,
+        },
+      }
+    )
 
-  if (!data.homeView.section) {
-    return null
-  }
+    if (!data.homeView.section) {
+      return null
+    }
 
-  return <HomeViewSectionGalleries section={data.homeView.section} />
-}, HomeViewSectionGalleriesPlaceholder)
+    return <HomeViewSectionGalleries section={data.homeView.section} index={index} {...flexProps} />
+  },
+  HomeViewSectionGalleriesPlaceholder
+)

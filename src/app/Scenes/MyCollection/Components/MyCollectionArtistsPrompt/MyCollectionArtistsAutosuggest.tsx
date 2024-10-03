@@ -7,9 +7,10 @@ import { MyCollectionArtistsAutosuggestListHeader } from "app/Scenes/MyCollectio
 import { FOOTER_HEIGHT } from "app/Scenes/MyCollection/Components/MyCollectionArtistsPrompt/MyCollectionArtistsPromptFooter"
 import { extractNodes } from "app/utils/extractNodes"
 import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
+import { useClientQuery } from "app/utils/useClientQuery"
 import { FC, useState } from "react"
 import { FlatList, Keyboard, KeyboardAvoidingView } from "react-native"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { graphql } from "react-relay"
 
 export const MyCollectionArtistsAutosuggest: FC = () => {
   const space = useSpace()
@@ -21,8 +22,10 @@ export const MyCollectionArtistsAutosuggest: FC = () => {
 
   const { debouncedValue: debouncedQuery } = useDebouncedValue({ value: query, delay: 250 })
 
-  const data = useLazyLoadQuery<MyCollectionArtistsAutosuggestQuery>(QUERY, {
-    query: debouncedQuery,
+  const { data, loading } = useClientQuery<MyCollectionArtistsAutosuggestQuery>({
+    query: QUERY,
+    variables: { query: debouncedQuery },
+    skip: !debouncedQuery,
   })
 
   const matches = extractNodes(data?.matchConnection)
@@ -71,7 +74,7 @@ export const MyCollectionArtistsAutosuggest: FC = () => {
               query={query}
               debouncedQuery={debouncedQuery}
               resultsLength={matches.length}
-              isLoading={!data}
+              isLoading={loading}
             />
           )}
           ListFooterComponent={() => <Flex height={FOOTER_HEIGHT + bottom} />}

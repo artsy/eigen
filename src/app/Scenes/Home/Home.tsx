@@ -4,6 +4,7 @@ import {
   Box,
   Flex,
   Join,
+  Screen,
   Spacer,
   SpacingUnitDSValueNumber,
 } from "@artsy/palette-mobile"
@@ -27,6 +28,7 @@ import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { ArtworkRailPlaceholder } from "app/Components/ArtworkRail/ArtworkRail"
 import { ArtistRailFragmentContainer } from "app/Components/Home/ArtistRails/ArtistRail"
 import { RecommendedArtistsRailFragmentContainer } from "app/Components/Home/ArtistRails/RecommendedArtistsRail"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { useDismissSavedArtwork } from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
 import { useEnableProgressiveOnboarding } from "app/Components/ProgressiveOnboarding/useEnableProgressiveOnboarding"
 import { ArticlesCards } from "app/Scenes/Articles/News/ArticlesCards"
@@ -85,6 +87,7 @@ import {
   ViewabilityConfig,
 } from "react-native"
 import { isTablet } from "react-native-device-info"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { Environment, RelayRefetchProp, createRefetchContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { HeroUnitsRail } from "./Components/HeroUnitsRail"
@@ -134,6 +137,7 @@ const Home = memo((props: HomeProps) => {
   useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
   const prefetchUrl = usePrefetch()
   const tracking = useTracking()
+  const { top } = useSafeAreaInsets()
 
   const viewabilityConfig = useRef<ViewabilityConfig>({
     // Percent of of the item that is visible for a partially occluded item to count as "viewable"
@@ -298,7 +302,6 @@ const Home = memo((props: HomeProps) => {
               isRailVisible={visibleRails.has(item.title)}
               scrollRef={scrollRefs.current[index]}
               title={item.title}
-              size="large"
               contextScreenOwnerType={OwnerType.home}
             />
           )
@@ -353,7 +356,7 @@ const Home = memo((props: HomeProps) => {
   )
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, paddingTop: top }}>
       <AboveTheFoldFlatList<HomeModule>
         listRef={flatlistRef}
         testID="home-flat-list"
@@ -511,7 +514,7 @@ export const HomeFragmentContainer = memo(
         }
       `,
       featured: graphql`
-        fragment Home_featured on ViewingRoomConnection {
+        fragment Home_featured on ViewingRoomsConnection {
           ...ViewingRoomsListFeatured_featured
         }
       `,
@@ -549,7 +552,7 @@ export const HomeFragmentContainer = memo(
       `,
       recommendedAuctionLots: graphql`
         fragment Home_recommendedAuctionLots on Viewer {
-          ...RecommendedAuctionLotsRail_largeArtworkConnection
+          ...RecommendedAuctionLotsRail_artworkConnection
         }
       `,
     },
@@ -571,7 +574,7 @@ export const HomeFragmentContainer = memo(
         meBelow: me @optionalField {
           ...Home_meBelow
         }
-        featured: viewingRooms(featured: true) @optionalField {
+        featured: viewingRoomsConnection(featured: true) @optionalField {
           ...Home_featured
         }
         articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, featured: true) @optionalField {
@@ -634,8 +637,10 @@ const HomePlaceholder: React.FC = () => {
   const randomValue = useMemoizedRandom()
   const enableLatestActivityRail = useFeatureFlag("AREnableLatestActivityRail")
 
+  const { top } = useSafeAreaInsets()
+
   return (
-    <Flex>
+    <Flex style={{ paddingTop: top }}>
       <Box mb={1} mt={2}>
         <Flex alignItems="center">
           <ArtsyLogoBlackIcon scale={0.75} />
@@ -764,89 +769,95 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
   }, [flash_message])
 
   return (
-    <AboveTheFoldQueryRenderer<HomeAboveTheFoldQuery, HomeBelowTheFoldQuery>
-      environment={environment || getRelayEnvironment()}
-      above={{
-        query: graphql`
-          query HomeAboveTheFoldQuery($version: String!) {
-            homePage @optionalField {
-              ...Home_homePageAbove
-            }
-            me @optionalField {
-              ...Home_meAbove
-            }
-            newWorksForYou: viewer @optionalField {
-              ...Home_newWorksForYou
-            }
-            notificationsConnection: viewer @optionalField {
-              ...Home_notificationsConnection
-            }
-            viewer {
-              ...Home_heroUnits
-            }
-          }
-        `,
-        variables: {
-          version: worksForYouRecommendationsModel.payload || DEFAULT_RECS_MODEL_VERSION,
-        },
-      }}
-      below={{
-        query: graphql`
-          query HomeBelowTheFoldQuery {
-            homePage @optionalField {
-              ...Home_homePageBelow
-            }
-            emergingPicks: marketingCollection(slug: "curators-picks-emerging") @optionalField {
-              ...Home_emergingPicks
-            }
-            featured: viewingRooms(featured: true) @optionalField {
-              ...Home_featured
-            }
-            me @optionalField {
-              ...Home_meBelow
-              ...RecommendedArtistsRail_me
-            }
-            articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, featured: true) @optionalField {
-              ...Home_articlesConnection
-            }
-            news: viewer @optionalField {
-              ...Home_news
-            }
-            recommendedAuctionLots: viewer @optionalField {
-              ...Home_recommendedAuctionLots
-            }
-          }
-        `,
-        variables: {},
-      }}
-      render={{
-        renderComponent: ({ above, below }) => {
-          if (!above) {
-            throw new Error("no data")
-          }
+    <Screen safeArea={false}>
+      <Screen.Body fullwidth>
+        <AboveTheFoldQueryRenderer<HomeAboveTheFoldQuery, HomeBelowTheFoldQuery>
+          environment={environment || getRelayEnvironment()}
+          above={{
+            query: graphql`
+              query HomeAboveTheFoldQuery($version: String!) {
+                homePage @optionalField {
+                  ...Home_homePageAbove
+                }
+                me @optionalField {
+                  ...Home_meAbove
+                }
+                newWorksForYou: viewer @optionalField {
+                  ...Home_newWorksForYou
+                }
+                notificationsConnection: viewer @optionalField {
+                  ...Home_notificationsConnection
+                }
+                viewer {
+                  ...Home_heroUnits
+                }
+              }
+            `,
+            variables: {
+              version: worksForYouRecommendationsModel.payload || DEFAULT_RECS_MODEL_VERSION,
+            },
+          }}
+          below={{
+            query: graphql`
+              query HomeBelowTheFoldQuery {
+                homePage @optionalField {
+                  ...Home_homePageBelow
+                }
+                emergingPicks: marketingCollection(slug: "curators-picks-emerging") @optionalField {
+                  ...Home_emergingPicks
+                }
+                featured: viewingRoomsConnection(featured: true) @optionalField {
+                  ...Home_featured
+                }
+                me @optionalField {
+                  ...Home_meBelow
+                  ...RecommendedArtistsRail_me
+                }
+                articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, featured: true)
+                  @optionalField {
+                  ...Home_articlesConnection
+                }
+                news: viewer @optionalField {
+                  ...Home_news
+                }
+                recommendedAuctionLots: viewer @optionalField {
+                  ...Home_recommendedAuctionLots
+                }
+              }
+            `,
+            variables: {},
+          }}
+          fallback={({ error }) => <LoadFailureView error={error} trackErrorBoundary={false} />}
+          render={{
+            renderComponent: ({ above, below }) => {
+              if (!above) {
+                throw new Error("no data")
+              }
 
-          return (
-            <HomeFragmentContainer
-              articlesConnection={below?.articlesConnection ?? null}
-              news={below?.news ?? null}
-              emergingPicks={below?.emergingPicks ?? null}
-              featured={below ? below.featured : null}
-              homePageAbove={above.homePage}
-              homePageBelow={below ? below.homePage : null}
-              newWorksForYou={above.newWorksForYou}
-              notificationsConnection={above.notificationsConnection}
-              meAbove={above.me}
-              meBelow={below ? below.me : null}
-              loading={!below}
-              heroUnits={above ? above.viewer : null}
-              recommendedAuctionLots={below?.recommendedAuctionLots ?? null}
-            />
-          )
-        },
-        renderPlaceholder: () => <HomePlaceholder />,
-      }}
-      cacheConfig={{ force: true }}
-      belowTheFoldTimeout={100}
-    />
+              return (
+                <HomeFragmentContainer
+                  articlesConnection={below?.articlesConnection ?? null}
+                  news={below?.news ?? null}
+                  emergingPicks={below?.emergingPicks ?? null}
+                  featured={below ? below.featured : null}
+                  homePageAbove={above.homePage}
+                  homePageBelow={below ? below.homePage : null}
+                  newWorksForYou={above.newWorksForYou}
+                  notificationsConnection={above.notificationsConnection}
+                  meAbove={above.me}
+                  meBelow={below ? below.me : null}
+                  loading={!below}
+                  heroUnits={above ? above.viewer : null}
+                  recommendedAuctionLots={below?.recommendedAuctionLots ?? null}
+                />
+              )
+            },
+            renderPlaceholder: () => <HomePlaceholder />,
+          }}
+          cacheConfig={{ force: true }}
+          belowTheFoldTimeout={100}
+        />
+      </Screen.Body>
+    </Screen>
   )
 }

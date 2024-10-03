@@ -1,5 +1,4 @@
 import {
-  act,
   fireEvent,
   screen,
   waitFor,
@@ -89,6 +88,9 @@ describe("inquiry modal", () => {
   it("enables the 'send' button when an inquiry question is selected", async () => {
     renderWithRelay({ Artwork: () => mockArtwork })
 
+    // clearing the input field
+    fireEvent.changeText(screen.getByLabelText("Add message"), "")
+
     expect(screen.getByText("Send")).toBeDisabled()
 
     fireEvent.press(screen.getByText("Question"))
@@ -165,9 +167,7 @@ describe("inquiry modal", () => {
 
       it("displays the collection prompt", async () => {
         initialState = { ...initialState, collectionPromptVisible: true }
-        const { mockResolveLastOperation } = renderWithRelay({ Artwork: () => mockArtwork })
-
-        act(() => mockResolveLastOperation({}))
+        renderWithRelay({ Artwork: () => mockArtwork })
 
         expect(
           screen.getByText("Inquiry sent! Tell us about the artists in your collection.")

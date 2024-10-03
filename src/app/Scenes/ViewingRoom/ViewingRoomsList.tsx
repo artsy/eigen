@@ -11,7 +11,7 @@ import { useScreenDimensions } from "app/utils/hooks"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { times } from "lodash"
-import React, { Suspense, useRef, useState } from "react"
+import { Fragment, Suspense, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { useLazyLoadQuery, usePaginationFragment, graphql, useFragment } from "react-relay"
 import { featuredFragment, FeaturedRail } from "./Components/ViewingRoomsListFeatured"
@@ -23,7 +23,8 @@ const fragmentSpec = graphql`
   fragment ViewingRoomsList_viewingRooms on Query
   @refetchable(queryName: "ViewingRoomsList_viewingRoomsRefetch")
   @argumentDefinitions(count: { type: "Int" }, after: { type: "String" }) {
-    viewingRooms(first: $count, after: $after) @connection(key: "ViewingRoomsList_viewingRooms") {
+    viewingRoomsConnection(first: $count, after: $after)
+      @connection(key: "ViewingRoomsList_viewingRoomsConnection") {
       edges {
         node {
           internalID
@@ -38,7 +39,7 @@ export const viewingRoomsListScreenQuery = graphql`
   query ViewingRoomsListQuery($count: Int!, $after: String) {
     ...ViewingRoomsList_viewingRooms @arguments(count: $count, after: $after)
 
-    featured: viewingRooms(featured: true) {
+    featured: viewingRoomsConnection(featured: true) {
       ...ViewingRoomsListFeatured_featured
     }
   }
@@ -67,7 +68,7 @@ export const ViewingRoomsList = () => {
     ViewingRoomsListQuery,
     ViewingRoomsList_viewingRooms$key
   >(fragmentSpec, queryData)
-  const viewingRooms = extractNodes(data.viewingRooms)
+  const viewingRooms = extractNodes(data.viewingRoomsConnection)
 
   const featuredData = useFragment<ViewingRoomsListFeatured_featured$key>(
     featuredFragment,
@@ -185,11 +186,11 @@ const Placeholder = () => (
       <Flex mx={2} mt={4}>
         <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
         {times(2).map((i) => (
-          <React.Fragment key={i}>
+          <Fragment key={i}>
             <PlaceholderBox width="100%" height={220} />
             <PlaceholderText width={120 + Math.random() * 100} marginTop={10} />
             <PlaceholderText width={80 + Math.random() * 100} marginTop={6} />
-          </React.Fragment>
+          </Fragment>
         ))}
       </Flex>
     </PageWithSimpleHeader>
@@ -200,12 +201,12 @@ const LoadingMorePlaceholder = () => (
   <ProvidePlaceholderContext>
     <Flex mx={2} mt={4}>
       {times(2).map((i) => (
-        <React.Fragment key={i}>
+        <Fragment key={i}>
           <PlaceholderBox width="100%" height={220} />
           <PlaceholderText width={120 + Math.random() * 100} marginTop={10} />
           <PlaceholderText width={80 + Math.random() * 100} marginTop={6} />
           <Spacer y={4} />
-        </React.Fragment>
+        </Fragment>
       ))}
     </Flex>
   </ProvidePlaceholderContext>

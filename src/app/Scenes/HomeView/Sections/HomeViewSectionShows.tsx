@@ -1,9 +1,10 @@
 import { ContextModule } from "@artsy/cohesion"
-import { Flex, Skeleton } from "@artsy/palette-mobile"
+import { Flex, FlexProps, Skeleton } from "@artsy/palette-mobile"
 import { HomeViewSectionShowsQuery } from "__generated__/HomeViewSectionShowsQuery.graphql"
 import { HomeViewSectionShows_section$key } from "__generated__/HomeViewSectionShows_section.graphql"
 import { ShowsRailContainer, ShowsRailPlaceholder } from "app/Scenes/Home/Components/ShowsRail"
-import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
+import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
+import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { withSuspense } from "app/utils/hooks/withSuspense"
@@ -11,16 +12,21 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionShowsProps {
   section: HomeViewSectionShows_section$key
+  index: number
 }
 
-export const HomeViewSectionShows: React.FC<HomeViewSectionShowsProps> = ({ section }) => {
+export const HomeViewSectionShows: React.FC<HomeViewSectionShowsProps> = ({
+  section: sectionProp,
+  index,
+  ...flexProps
+}) => {
   const enableShowsForYouLocation = useFeatureFlag("AREnableShowsForYouLocation")
-  const data = useFragment(fragment, section)
-  const component = data.component
+  const section = useFragment(fragment, sectionProp)
+  const component = section.component
   const tracking = useHomeViewTracking()
 
   return (
-    <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
+    <Flex {...flexProps}>
       <ShowsRailContainer
         title={component?.title || "Shows"}
         disableLocation={!enableShowsForYouLocation}
@@ -28,10 +34,14 @@ export const HomeViewSectionShows: React.FC<HomeViewSectionShowsProps> = ({ sect
           tracking.tappedShowGroup(
             show.internalID,
             show.slug,
-            data.contextModule as ContextModule,
+            section.contextModule as ContextModule,
             index
           )
         }}
+      />
+      <HomeViewSectionSentinel
+        contextModule={section.contextModule as ContextModule}
+        index={index}
       />
     </Flex>
   )
@@ -48,18 +58,20 @@ const fragment = graphql`
   }
 `
 
-const HomeViewSectionShowsPlaceholder: React.FC = () => {
+const HomeViewSectionShowsPlaceholder: React.FC<FlexProps> = (flexProps) => {
   return (
     <Skeleton>
-      <Flex mx={2} my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
-        <ShowsRailPlaceholder />
+      <Flex {...flexProps}>
+        <Flex mx={2}>
+          <ShowsRailPlaceholder />
+        </Flex>
       </Flex>
     </Skeleton>
   )
 }
 
 const homeViewSectionShowsQuery = graphql`
-  query HomeViewSectionShowsQuery($id: String!) {
+  query HomeViewSectionShowsQuery($id: String!) @cacheable {
     homeView {
       section(id: $id) {
         ...HomeViewSectionShows_section
@@ -68,16 +80,25 @@ const homeViewSectionShowsQuery = graphql`
   }
 `
 
-export const HomeViewSectionShowsQueryRenderer: React.FC<{
-  sectionID: string
-}> = withSuspense((props) => {
-  const data = useLazyLoadQuery<HomeViewSectionShowsQuery>(homeViewSectionShowsQuery, {
-    id: props.sectionID,
-  })
+export const HomeViewSectionShowsQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
+  ({ sectionID, index, ...flexProps }) => {
+    const data = useLazyLoadQuery<HomeViewSectionShowsQuery>(
+      homeViewSectionShowsQuery,
+      {
+        id: sectionID,
+      },
+      {
+        networkCacheConfig: {
+          force: false,
+        },
+      }
+    )
 
-  if (!data.homeView.section) {
-    return null
-  }
+    if (!data.homeView.section) {
+      return null
+    }
 
-  return <HomeViewSectionShows section={data.homeView.section} />
-}, HomeViewSectionShowsPlaceholder)
+    return <HomeViewSectionShows section={data.homeView.section} index={index} {...flexProps} />
+  },
+  HomeViewSectionShowsPlaceholder
+)

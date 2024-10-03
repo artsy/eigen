@@ -37,6 +37,27 @@ describe("ArtworkAuctionTimer", () => {
     expect(screen.getByText(`Register by ${registerDate.toFormat("MMM d")}`)).toBeOnTheScreen()
   })
 
+  it('hides "Register by" when hideRegisterBySignal is true', () => {
+    const registerDate = DateTime.fromMillis(Date.now()).plus({ days: 1 })
+
+    renderWithRelay(
+      {
+        Artwork: () => ({
+          collectorSignals: {
+            auction: {
+              registrationEndsAt: registerDate.toISO(),
+            },
+          },
+        }),
+      },
+      { hideRegisterBySignal: true }
+    )
+
+    expect(
+      screen.queryByText(`Register by ${registerDate.toFormat("MMM d")}`)
+    ).not.toBeOnTheScreen()
+  })
+
   it("shows the time left to bid", () => {
     renderWithRelay({
       Artwork: () => ({

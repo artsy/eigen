@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
-import { Flex, Join, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
+import { Flex, FlexProps, Join, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import { HomeViewSectionActivityQuery } from "__generated__/HomeViewSectionActivityQuery.graphql"
 import { HomeViewSectionActivity_section$key } from "__generated__/HomeViewSectionActivity_section.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
@@ -10,7 +10,8 @@ import {
   ACTIVITY_RAIL_ITEM_WIDTH,
   ActivityRailItem,
 } from "app/Scenes/Home/Components/ActivityRailItem"
-import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
+import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
+import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
@@ -26,12 +27,17 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionActivityProps {
   section: HomeViewSectionActivity_section$key
+  index: number
 }
 
-export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = (props) => {
+export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = ({
+  section: sectionProp,
+  index,
+  ...flexProps
+}) => {
   const tracking = useHomeViewTracking()
 
-  const section = useFragment(sectionFragment, props.section)
+  const section = useFragment(sectionFragment, sectionProp)
   const notifications = extractNodes(section.notificationsConnection).filter(
     shouldDisplayNotification
   )
@@ -60,7 +66,7 @@ export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = (
   }
 
   return (
-    <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
+    <Flex {...flexProps}>
       <Flex px={2}>
         <SectionTitle title={section.component?.title} onPress={onSectionViewAll} />
       </Flex>
@@ -93,6 +99,11 @@ export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = (
             />
           )
         }}
+      />
+
+      <HomeViewSectionSentinel
+        contextModule={section.contextModule as ContextModule}
+        index={index}
       />
     </Flex>
   )
@@ -151,50 +162,53 @@ const homeViewSectionActivityQuery = graphql`
   }
 `
 
-const HomeViewSectionActivityPlaceholder: React.FC = () => {
+const HomeViewSectionActivityPlaceholder: React.FC<FlexProps> = (flexProps) => {
   const randomValue = useMemoizedRandom()
 
   return (
-    <Flex ml={2} mr={2} my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
-      <SkeletonText variant="lg-display">Latest Activity</SkeletonText>
-      <Spacer y={2} />
-      <Flex flexDirection="row">
-        <Join separator={<Spacer x="15px" />}>
-          {times(3 + randomValue * 10).map((index) => (
-            <Flex key={index} flexDirection="row">
-              <SkeletonBox
-                height={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
-                width={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
-              />
-              <Flex ml={1} maxWidth={ACTIVITY_RAIL_ITEM_WIDTH}>
-                <SkeletonText variant="xs" numberOfLines={1}>
-                  6 new works by Andy Warhol
-                </SkeletonText>
-                <SkeletonText variant="xs" numberOfLines={1}>
-                  2021-01-01
-                </SkeletonText>
-                <SkeletonText variant="xs" numberOfLines={1}>
-                  Follow - 6 days ago
-                </SkeletonText>
+    <Flex {...flexProps}>
+      <Flex ml={2} mr={2}>
+        <SkeletonText variant="lg-display">Latest Activity</SkeletonText>
+        <Spacer y={2} />
+        <Flex flexDirection="row">
+          <Join separator={<Spacer x="15px" />}>
+            {times(3 + randomValue * 10).map((index) => (
+              <Flex key={index} flexDirection="row">
+                <SkeletonBox
+                  height={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
+                  width={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
+                />
+                <Flex ml={1} maxWidth={ACTIVITY_RAIL_ITEM_WIDTH}>
+                  <SkeletonText variant="xs" numberOfLines={1}>
+                    6 new works by Andy Warhol
+                  </SkeletonText>
+                  <SkeletonText variant="xs" numberOfLines={1}>
+                    2021-01-01
+                  </SkeletonText>
+                  <SkeletonText variant="xs" numberOfLines={1}>
+                    Follow - 6 days ago
+                  </SkeletonText>
+                </Flex>
               </Flex>
-            </Flex>
-          ))}
-        </Join>
+            ))}
+          </Join>
+        </Flex>
       </Flex>
     </Flex>
   )
 }
 
-export const HomeViewSectionActivityQueryRenderer: React.FC<{
-  sectionID: string
-}> = withSuspense((props) => {
-  const data = useLazyLoadQuery<HomeViewSectionActivityQuery>(homeViewSectionActivityQuery, {
-    id: props.sectionID,
-  })
+export const HomeViewSectionActivityQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
+  ({ sectionID, index, ...flexProps }) => {
+    const data = useLazyLoadQuery<HomeViewSectionActivityQuery>(homeViewSectionActivityQuery, {
+      id: sectionID,
+    })
 
-  if (!data.homeView.section) {
-    return null
-  }
+    if (!data.homeView.section) {
+      return null
+    }
 
-  return <HomeViewSectionActivity section={data.homeView.section} />
-}, HomeViewSectionActivityPlaceholder)
+    return <HomeViewSectionActivity section={data.homeView.section} index={index} {...flexProps} />
+  },
+  HomeViewSectionActivityPlaceholder
+)

@@ -69,4 +69,21 @@ describe("conditional rendering of old vs new home screen", () => {
       })
     })
   })
+
+  describe("when using an artsymail account", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ ARPreferLegacyHomeScreen: false })
+    })
+
+    it("renders the NEW screen", () => {
+      __globalStoreTestUtils__?.injectState({
+        auth: {
+          userEmail: "test@artsymail.com",
+        },
+      })
+
+      renderWithWrappers(<HomeContainer />)
+      expect(screen.getByTestId("new-home-view-skeleton")).toBeOnTheScreen()
+    })
+  })
 })

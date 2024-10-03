@@ -1,10 +1,11 @@
 import { ContextModule } from "@artsy/cohesion"
-import { Flex, Skeleton, SkeletonBox, Spacer } from "@artsy/palette-mobile"
+import { Flex, FlexProps, Skeleton, SkeletonBox, Spacer } from "@artsy/palette-mobile"
 import { HomeViewSectionHeroUnitsQuery } from "__generated__/HomeViewSectionHeroUnitsQuery.graphql"
 import { HomeViewSectionHeroUnits_section$key } from "__generated__/HomeViewSectionHeroUnits_section.graphql"
 import { PaginationDots } from "app/Components/PaginationDots"
 import { HERO_UNIT_CARD_HEIGHT, HeroUnit } from "app/Scenes/Home/Components/HeroUnitsRail"
-import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
+import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
+import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
@@ -13,18 +14,24 @@ import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
 import { withSuspense } from "app/utils/hooks/withSuspense"
+import { isNumber } from "lodash"
 import { useRef, useState } from "react"
 import { FlatList, ViewabilityConfig, ViewToken } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
-interface HomeViewSectionHeroUnitsProps {
+interface HomeViewSectionHeroUnitsProps extends FlexProps {
   section: HomeViewSectionHeroUnits_section$key
+  index: number
 }
 
-export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> = (props) => {
+export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> = ({
+  section: sectionProp,
+  index,
+  ...flexProps
+}) => {
   const tracking = useHomeViewTracking()
 
-  const section = useFragment(fragment, props.section)
+  const section = useFragment(fragment, sectionProp)
   const heroUnits = extractNodes(section.heroUnitsConnection)
 
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -33,7 +40,7 @@ export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> =
     if (viewableItems.length > 0) {
       const index = viewableItems[0].index
 
-      if (index) {
+      if (isNumber(index)) {
         setCurrentIndex(index)
       }
     }
@@ -49,7 +56,7 @@ export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> =
   }
 
   return (
-    <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
+    <Flex {...flexProps}>
       <FlatList
         data={heroUnits}
         decelerationRate="fast"
@@ -75,6 +82,11 @@ export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> =
       />
       <Spacer y={2} />
       <PaginationDots currentIndex={currentIndex} length={heroUnits.length} />
+
+      <HomeViewSectionSentinel
+        contextModule={section.contextModule as ContextModule}
+        index={index}
+      />
     </Flex>
   )
 }
@@ -104,10 +116,10 @@ const fragment = graphql`
   }
 `
 
-const HomeViewSectionHeroUnitsPlaceholder: React.FC = () => {
+const HomeViewSectionHeroUnitsPlaceholder: React.FC<FlexProps> = (flexProps) => {
   return (
     <Skeleton>
-      <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
+      <Flex {...flexProps}>
         <Spacer y={1} />
 
         <Flex flexDirection="row">
@@ -120,7 +132,7 @@ const HomeViewSectionHeroUnitsPlaceholder: React.FC = () => {
 }
 
 const homeViewSectionHeroUnitsQuery = graphql`
-  query HomeViewSectionHeroUnitsQuery($id: String!) {
+  query HomeViewSectionHeroUnitsQuery($id: String!) @cacheable {
     homeView {
       section(id: $id) {
         ...HomeViewSectionHeroUnits_section
@@ -129,16 +141,25 @@ const homeViewSectionHeroUnitsQuery = graphql`
   }
 `
 
-export const HomeViewSectionHeroUnitsQueryRenderer: React.FC<{
-  sectionID: string
-}> = withSuspense((props) => {
-  const data = useLazyLoadQuery<HomeViewSectionHeroUnitsQuery>(homeViewSectionHeroUnitsQuery, {
-    id: props.sectionID,
-  })
+export const HomeViewSectionHeroUnitsQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
+  ({ sectionID, index, ...flexProps }) => {
+    const data = useLazyLoadQuery<HomeViewSectionHeroUnitsQuery>(
+      homeViewSectionHeroUnitsQuery,
+      {
+        id: sectionID,
+      },
+      {
+        networkCacheConfig: {
+          force: false,
+        },
+      }
+    )
 
-  if (!data.homeView.section) {
-    return null
-  }
+    if (!data.homeView.section) {
+      return null
+    }
 
-  return <HomeViewSectionHeroUnits section={data.homeView.section} />
-}, HomeViewSectionHeroUnitsPlaceholder)
+    return <HomeViewSectionHeroUnits section={data.homeView.section} index={index} {...flexProps} />
+  },
+  HomeViewSectionHeroUnitsPlaceholder
+)

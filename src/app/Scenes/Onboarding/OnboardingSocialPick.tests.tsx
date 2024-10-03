@@ -27,12 +27,18 @@ describe("OnboardingSocialPick", () => {
         mode = "login"
       })
 
-      it("renders the disclaimer text", () => {
-        renderWithWrappers(<TestRenderer />)
+      describe("when the new disclaimer is disabled", () => {
+        beforeEach(() => {
+          __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewTermsAndConditions: false })
+        })
 
-        expect(screen.getByTestId("disclaimer")).toHaveTextContent(
-          "By tapping Continue with Facebook, Google or Apple, you agree to Artsy's Terms of Use and Privacy Policy"
-        )
+        it("renders the disclaimer text", () => {
+          renderWithWrappers(<TestRenderer />)
+
+          expect(screen.getByTestId("disclaimer")).toHaveTextContent(
+            "By tapping Continue with Facebook, Google or Apple, you agree to Artsy's Terms of Use and Privacy Policy"
+          )
+        })
       })
 
       describe("when the new disclaimer is enabled", () => {
@@ -55,12 +61,18 @@ describe("OnboardingSocialPick", () => {
         mode = "signup"
       })
 
-      it("renders the disclaimer text", () => {
-        renderWithWrappers(<TestRenderer />)
+      describe("when the new disclaimer is disabled", () => {
+        beforeEach(() => {
+          __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewTermsAndConditions: false })
+        })
 
-        expect(screen.getByTestId("disclaimer")).toHaveTextContent(
-          "By tapping Continue with Facebook, Google or Apple, you agree to Artsy's Terms of Use and Privacy Policy"
-        )
+        it("renders the disclaimer text", () => {
+          renderWithWrappers(<TestRenderer />)
+
+          expect(screen.getByTestId("disclaimer")).toHaveTextContent(
+            "By tapping Continue with Facebook, Google or Apple, you agree to Artsy's Terms of Use and Privacy Policy"
+          )
+        })
       })
 
       describe("when the new disclaimer is enabled", () => {
@@ -89,12 +101,18 @@ describe("OnboardingSocialPick", () => {
         mode = "login"
       })
 
-      it("renders the disclaimer text", () => {
-        renderWithWrappers(<TestRenderer />)
+      describe("when the new disclaimer is disabled", () => {
+        beforeEach(() => {
+          __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewTermsAndConditions: false })
+        })
 
-        expect(screen.getByTestId("disclaimer")).toHaveTextContent(
-          "By tapping Continue with Facebook, Google, you agree to Artsy's Terms of Use and Privacy Policy"
-        )
+        it("renders the disclaimer text", () => {
+          renderWithWrappers(<TestRenderer />)
+
+          expect(screen.getByTestId("disclaimer")).toHaveTextContent(
+            "By tapping Continue with Facebook, Google, you agree to Artsy's Terms of Use and Privacy Policy"
+          )
+        })
       })
 
       describe("when the new disclaimer is enabled", () => {
@@ -117,12 +135,18 @@ describe("OnboardingSocialPick", () => {
         mode = "signup"
       })
 
-      it("renders the disclaimer text", () => {
-        renderWithWrappers(<TestRenderer />)
+      describe("when the new disclaimer is disabled", () => {
+        beforeEach(() => {
+          __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewTermsAndConditions: false })
+        })
 
-        expect(screen.getByTestId("disclaimer")).toHaveTextContent(
-          "By tapping Continue with Facebook, Google, you agree to Artsy's Terms of Use and Privacy Policy"
-        )
+        it("renders the disclaimer text", () => {
+          renderWithWrappers(<TestRenderer />)
+
+          expect(screen.getByTestId("disclaimer")).toHaveTextContent(
+            "By tapping Continue with Facebook, Google, you agree to Artsy's Terms of Use and Privacy Policy"
+          )
+        })
       })
 
       describe("when the new disclaimer is enabled", () => {

@@ -1,6 +1,7 @@
 import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import {
   Flex,
+  FlexProps,
   Join,
   Skeleton,
   SkeletonBox,
@@ -18,7 +19,8 @@ import {
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { PAGE_SIZE } from "app/Components/constants"
-import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
+import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
+import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
@@ -40,12 +42,15 @@ import {
 interface HomeViewSectionArtworksProps {
   section: HomeViewSectionArtists_section$data
   relay: RelayPaginationProp
+  index: number
 }
 
 type Artist = ExtractNodeType<HomeViewSectionArtists_section$data["artistsConnection"]>
 export const HomeViewSectionArtists: React.FC<HomeViewSectionArtworksProps> = ({
   section,
   relay,
+  index,
+  ...flexProps
 }) => {
   const { hasMore, isLoading, loadMore } = relay
   const tracking = useHomeViewTracking()
@@ -82,7 +87,7 @@ export const HomeViewSectionArtists: React.FC<HomeViewSectionArtworksProps> = ({
   }
 
   return (
-    <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
+    <Flex {...flexProps}>
       <Flex px={2}>
         <SectionTitle
           title={section.component?.title}
@@ -128,6 +133,11 @@ export const HomeViewSectionArtists: React.FC<HomeViewSectionArtworksProps> = ({
         }}
         initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
         windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
+      />
+
+      <HomeViewSectionSentinel
+        contextModule={section.contextModule as ContextModule}
+        index={index}
       />
     </Flex>
   )
@@ -206,46 +216,55 @@ const homeViewSectionArtistsQuery = graphql`
   }
 `
 
-const HomeViewSectionArtistsPlaceholder: React.FC = () => {
+const HomeViewSectionArtistsPlaceholder: React.FC<FlexProps> = (flexProps) => {
   const randomValue = useMemoizedRandom()
   return (
     <Skeleton>
-      <Flex mx={2} my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
-        <SkeletonText variant="lg-display">Recommended Artists</SkeletonText>
+      <Flex {...flexProps}>
+        <Flex mx={2}>
+          <SkeletonText variant="lg-display">Recommended Artists</SkeletonText>
 
-        <Spacer y={2} />
+          <Spacer y={2} />
 
-        <Flex flexDirection="row">
-          <Join separator={<Spacer x="15px" />}>
-            {times(3 + randomValue * 10).map((index) => (
-              <Flex key={index}>
-                <SkeletonBox
-                  key={index}
-                  height={ARTIST_RAIL_IMAGE_MAX_HEIGHT}
-                  width={ARTIST_CARD_WIDTH}
-                />
-                <Spacer y={1} />
-                <SkeletonText>Andy Warhol</SkeletonText>
-                <SkeletonText>Nationality, b 1023</SkeletonText>
-              </Flex>
-            ))}
-          </Join>
+          <Flex flexDirection="row">
+            <Join separator={<Spacer x="15px" />}>
+              {times(3 + randomValue * 10).map((index) => (
+                <Flex key={index}>
+                  <SkeletonBox
+                    key={index}
+                    height={ARTIST_RAIL_IMAGE_MAX_HEIGHT}
+                    width={ARTIST_CARD_WIDTH}
+                  />
+                  <Spacer y={1} />
+                  <SkeletonText>Andy Warhol</SkeletonText>
+                  <SkeletonText>Nationality, b 1023</SkeletonText>
+                </Flex>
+              ))}
+            </Join>
+          </Flex>
         </Flex>
       </Flex>
     </Skeleton>
   )
 }
 
-export const HomeViewSectionArtistsQueryRenderer: React.FC<{
-  sectionID: string
-}> = withSuspense((props) => {
-  const data = useLazyLoadQuery<HomeViewSectionArtistsMainQuery>(homeViewSectionArtistsQuery, {
-    id: props.sectionID,
-  })
+export const HomeViewSectionArtistsQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
+  ({ sectionID, index, ...flexProps }) => {
+    const data = useLazyLoadQuery<HomeViewSectionArtistsMainQuery>(homeViewSectionArtistsQuery, {
+      id: sectionID,
+    })
 
-  if (!data.homeView.section) {
-    return null
-  }
+    if (!data.homeView.section) {
+      return null
+    }
 
-  return <HomeViewSectionArtistsPaginationContainer section={data.homeView.section} />
-}, HomeViewSectionArtistsPlaceholder)
+    return (
+      <HomeViewSectionArtistsPaginationContainer
+        section={data.homeView.section}
+        index={index}
+        {...flexProps}
+      />
+    )
+  },
+  HomeViewSectionArtistsPlaceholder
+)

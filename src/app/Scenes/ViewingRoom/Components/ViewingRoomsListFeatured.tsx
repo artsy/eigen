@@ -7,14 +7,14 @@ import { RailScrollProps } from "app/Scenes/Home/Components/types"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
-import React, { useImperativeHandle, useRef } from "react"
+import { FC, useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { tagForStatus } from "./ViewingRoomsListItem"
 
 export const featuredFragment = graphql`
-  fragment ViewingRoomsListFeatured_featured on ViewingRoomConnection {
+  fragment ViewingRoomsListFeatured_featured on ViewingRoomsConnection {
     edges {
       node {
         internalID
@@ -41,7 +41,7 @@ interface FeaturedRailProps {
   trackInfo?: { screen: string; ownerType: string }
 }
 
-export const FeaturedRail: React.FC<FeaturedRailProps & Partial<RailScrollProps>> = ({
+export const FeaturedRail: FC<FeaturedRailProps & Partial<RailScrollProps>> = ({
   scrollRef,
   trackInfo,
   ...props

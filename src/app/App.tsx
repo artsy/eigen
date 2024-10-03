@@ -1,6 +1,5 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import * as Sentry from "@sentry/react-native"
-import { homeViewScreenQueryVariables } from "app/Scenes/HomeView/HomeView"
 import { GlobalStore, unsafe__getEnvironment, unsafe_getDevToggle } from "app/store/GlobalStore"
 import { codePushOptions } from "app/system/codepush"
 import { AsyncStorageDevtools } from "app/system/devTools/AsyncStorageDevTools"
@@ -11,33 +10,32 @@ import { setupSentry } from "app/system/errorReporting/setupSentry"
 import { ModalStack } from "app/system/navigation/ModalStack"
 import { usePurgeCacheOnAppUpdate } from "app/system/relay/usePurgeCacheOnAppUpdate"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { addTrackingProvider } from "app/utils/track"
 import {
   SEGMENT_TRACKING_PROVIDER,
   SegmentTrackingProvider,
 } from "app/utils/track/SegmentTrackingProvider"
+import { useAndroidAppStyling } from "app/utils/useAndroidAppStyling"
 import { useDeepLinks } from "app/utils/useDeepLinks"
+import { useHideSplashScreen } from "app/utils/useHideSplashScreen"
 import { useIdentifyUser } from "app/utils/useIdentifyUser"
 import { useSiftConfig } from "app/utils/useSiftConfig"
 import { useStripeConfig } from "app/utils/useStripeConfig"
 import { useEffect } from "react"
-import { NativeModules, Platform, UIManager, View } from "react-native"
-import RNBootSplash from "react-native-bootsplash"
+import { NativeModules, UIManager, View } from "react-native"
 import codePush from "react-native-code-push"
 import Config from "react-native-config"
 import { Settings } from "react-native-fbsdk-next"
 import "react-native-get-random-values"
 import { useWebViewCookies } from "./Components/ArtsyWebView"
 import { FPSCounter } from "./Components/FPSCounter"
-import { ArtsyNativeModule, DEFAULT_NAVIGATION_BAR_COLOR } from "./NativeModules/ArtsyNativeModule"
 import { Providers } from "./Providers"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
 import { Onboarding } from "./Scenes/Onboarding/Onboarding"
 import { DynamicIslandStagingIndicator } from "./utils/DynamicIslandStagingIndicator"
 import { createAllChannels, savePendingToken } from "./utils/PushNotification"
-import { useInitializeQueryPrefetching, usePrefetch } from "./utils/queryPrefetching"
+import { useInitializeQueryPrefetching } from "./utils/queryPrefetching"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import { useFreshInstallTracking } from "./utils/useFreshInstallTracking"
 import { useInitialNotification } from "./utils/useInitialNotification"
@@ -93,10 +91,8 @@ const Main = () => {
   const forceUpdateMessage = GlobalStore.useAppState(
     (state) => state.artsyPrefs.echo.forceUpdateMessage
   )
-  const preferLegacyHomeScreen = useFeatureFlag("ARPreferLegacyHomeScreen")
 
   const fpsCounter = useDevToggle("DTFPSCounter")
-  const shouldDisplayNewHomeView = ArtsyNativeModule.isBetaOrDev && !preferLegacyHomeScreen
 
   useStripeConfig()
   useSiftConfig()
@@ -114,37 +110,11 @@ const Main = () => {
   useScreenReaderTracking()
   useFreshInstallTracking()
   usePurgeCacheOnAppUpdate()
-
-  const prefetchUrl = usePrefetch()
-
-  useEffect(() => {
-    if (isHydrated) {
-      // We wait a bit until the UI finishes drawing behind the splash screen
-      setTimeout(() => {
-        if (Platform.OS === "android") {
-          RNBootSplash.hide().then(() => {
-            requestAnimationFrame(() => {
-              ArtsyNativeModule.lockActivityScreenOrientation()
-            })
-          })
-        }
-        if (Platform.OS === "android") {
-          ArtsyNativeModule.setAppStyling()
-        }
-        if (isLoggedIn && Platform.OS === "android") {
-          ArtsyNativeModule.setNavigationBarColor(DEFAULT_NAVIGATION_BAR_COLOR)
-          ArtsyNativeModule.setAppLightContrast(false)
-        }
-      }, 500)
-    }
-  }, [isHydrated])
+  useHideSplashScreen()
+  useAndroidAppStyling()
 
   useEffect(() => {
     if (isLoggedIn) {
-      if (shouldDisplayNewHomeView) {
-        prefetchUrl("/", homeViewScreenQueryVariables())
-      }
-
       savePendingToken()
     }
   }, [isLoggedIn])

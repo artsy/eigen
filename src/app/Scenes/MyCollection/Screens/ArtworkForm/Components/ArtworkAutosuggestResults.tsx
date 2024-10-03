@@ -213,7 +213,9 @@ export const ArtworkAutosuggestResultsQueryRenderer: React.FC<{
           onPress,
           setShowSkipAheadToAddArtworkLink,
         },
-        renderFallback: ({ retry }) => <LoadFailureView onRetry={retry || (() => {})} />,
+        renderFallback: ({ retry, error }) => (
+          <LoadFailureView error={error} onRetry={retry || (() => {})} trackErrorBoundary={false} />
+        ),
       })}
       variables={{ count: 20, keyword, input: { artistIDs: [artistSlug] } }}
       cacheConfig={{ force: true }}

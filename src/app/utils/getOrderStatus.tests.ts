@@ -11,9 +11,10 @@ describe(getOrderStatus, () => {
     expect(getOrderStatus("PROCESSING_APPROVAL")).toBe("payment processing")
     expect(getOrderStatus("IN_TRANSIT")).toBe("in transit")
     expect(getOrderStatus("CANCELED")).toBe("canceled")
+    expect(getOrderStatus("PAYMENT_FAILED")).toBe("payment failed")
   })
-  it("returns 'unknown' for order states that are not displayed", () => {
-    expect(getOrderStatus("ABANDONED")).toBe("unknown")
-    expect(getOrderStatus("PENDING")).toBe("unknown")
+  it("returns empty string ('') for order states that are not displayed", () => {
+    expect(getOrderStatus("ABANDONED")).toBe("")
+    expect(getOrderStatus("PENDING")).toBe("")
   })
 })

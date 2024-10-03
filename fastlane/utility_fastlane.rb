@@ -75,7 +75,8 @@ lane :tag_and_push do |options|
   `git tag -d "#{tag}"`
   add_git_tag tag: tag
   `git remote add http https://github.com/artsy/eigen.git || true`
-  `git push http #{tag} -f`
+  # use no-verify to skip the pre-push hook
+  `git push http #{tag} -f --no-verify`
 end
 
 desc 'Create a new version in app store connect'

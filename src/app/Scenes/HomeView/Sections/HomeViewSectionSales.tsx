@@ -1,5 +1,13 @@
 import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
-import { Flex, Join, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
+import {
+  Flex,
+  FlexProps,
+  Join,
+  Skeleton,
+  SkeletonBox,
+  SkeletonText,
+  Spacer,
+} from "@artsy/palette-mobile"
 import { HomeViewSectionSalesQuery } from "__generated__/HomeViewSectionSalesQuery.graphql"
 import { HomeViewSectionSales_section$key } from "__generated__/HomeViewSectionSales_section.graphql"
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
@@ -7,8 +15,9 @@ import { CardRailCard, CardRailMetadataContainer } from "app/Components/Home/Car
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { LARGE_IMAGE_SIZE, SMALL_IMAGE_SIZE } from "app/Components/ThreeUpImageLayout"
-import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
+import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { HomeViewSectionSalesItem } from "app/Scenes/HomeView/Sections/HomeViewSectionSalesItem"
+import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
@@ -25,13 +34,18 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionSalesProps {
   section: HomeViewSectionSales_section$key
+  index: number
 }
 
-export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = (props) => {
+export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({
+  section: sectionProp,
+  index,
+  ...flexProps
+}) => {
   const tracking = useHomeViewTracking()
 
   const listRef = useRef<FlatList<any>>()
-  const section = useFragment(fragment, props.section)
+  const section = useFragment(fragment, sectionProp)
 
   const sales = extractNodes(section.salesConnection)
   if (sales.length === 0) return null
@@ -61,7 +75,7 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = (props)
   }
 
   return (
-    <Flex my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
+    <Flex {...flexProps}>
       <Flex px={2}>
         <SectionTitle
           title={section.component?.title}
@@ -99,6 +113,11 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = (props)
           ) : undefined
         }
       />
+
+      <HomeViewSectionSentinel
+        contextModule={section.contextModule as ContextModule}
+        index={index}
+      />
     </Flex>
   )
 }
@@ -132,48 +151,50 @@ const fragment = graphql`
   }
 `
 
-const HomeViewSectionSalesPlaceholder: React.FC = () => {
+const HomeViewSectionSalesPlaceholder: React.FC<FlexProps> = (flexProps) => {
   const randomValue = useMemoizedRandom()
   return (
     <Skeleton>
-      <Flex mx={2} my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT}>
-        <SkeletonText>Auctions</SkeletonText>
+      <Flex {...flexProps}>
+        <Flex mx={2}>
+          <SkeletonText>Auctions</SkeletonText>
 
-        <Spacer y={1} />
+          <Spacer y={1} />
 
-        <Flex flexDirection="row">
-          <Join separator={<Spacer x="15px" />}>
-            {times(2 + randomValue * 10).map((index) => (
-              <CardRailCard key={index}>
-                <Flex>
-                  <Flex flexDirection="row">
-                    <SkeletonBox height={LARGE_IMAGE_SIZE} width={LARGE_IMAGE_SIZE} />
-                    <Flex>
-                      <SkeletonBox
-                        height={SMALL_IMAGE_SIZE}
-                        width={SMALL_IMAGE_SIZE}
-                        borderLeftWidth={2}
-                        borderColor="white100"
-                        borderBottomWidth={1}
-                      />
-                      <SkeletonBox
-                        height={SMALL_IMAGE_SIZE}
-                        width={SMALL_IMAGE_SIZE}
-                        borderLeftWidth={2}
-                        borderColor="white100"
-                        borderTopWidth={1}
-                      />
+          <Flex flexDirection="row">
+            <Join separator={<Spacer x="15px" />}>
+              {times(2 + randomValue * 10).map((index) => (
+                <CardRailCard key={index}>
+                  <Flex>
+                    <Flex flexDirection="row">
+                      <SkeletonBox height={LARGE_IMAGE_SIZE} width={LARGE_IMAGE_SIZE} />
+                      <Flex>
+                        <SkeletonBox
+                          height={SMALL_IMAGE_SIZE}
+                          width={SMALL_IMAGE_SIZE}
+                          borderLeftWidth={2}
+                          borderColor="white100"
+                          borderBottomWidth={1}
+                        />
+                        <SkeletonBox
+                          height={SMALL_IMAGE_SIZE}
+                          width={SMALL_IMAGE_SIZE}
+                          borderLeftWidth={2}
+                          borderColor="white100"
+                          borderTopWidth={1}
+                        />
+                      </Flex>
                     </Flex>
+                    <CardRailMetadataContainer>
+                      <SkeletonText variant="lg-display" numberOfLines={2}>
+                        xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                      </SkeletonText>
+                    </CardRailMetadataContainer>
                   </Flex>
-                  <CardRailMetadataContainer>
-                    <SkeletonText variant="lg-display" numberOfLines={2}>
-                      xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                    </SkeletonText>
-                  </CardRailMetadataContainer>
-                </Flex>
-              </CardRailCard>
-            ))}
-          </Join>
+                </CardRailCard>
+              ))}
+            </Join>
+          </Flex>
         </Flex>
       </Flex>
     </Skeleton>
@@ -181,7 +202,7 @@ const HomeViewSectionSalesPlaceholder: React.FC = () => {
 }
 
 const homeViewSectionSalesQuery = graphql`
-  query HomeViewSectionSalesQuery($id: String!) {
+  query HomeViewSectionSalesQuery($id: String!) @cacheable {
     homeView {
       section(id: $id) {
         ...HomeViewSectionSales_section
@@ -190,16 +211,25 @@ const homeViewSectionSalesQuery = graphql`
   }
 `
 
-export const HomeViewSectionSalesQueryRenderer: React.FC<{
-  sectionID: string
-}> = withSuspense((props) => {
-  const data = useLazyLoadQuery<HomeViewSectionSalesQuery>(homeViewSectionSalesQuery, {
-    id: props.sectionID,
-  })
+export const HomeViewSectionSalesQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
+  ({ sectionID, index, ...flexProps }) => {
+    const data = useLazyLoadQuery<HomeViewSectionSalesQuery>(
+      homeViewSectionSalesQuery,
+      {
+        id: sectionID,
+      },
+      {
+        networkCacheConfig: {
+          force: false,
+        },
+      }
+    )
 
-  if (!data.homeView.section) {
-    return null
-  }
+    if (!data.homeView.section) {
+      return null
+    }
 
-  return <HomeViewSectionSales section={data.homeView.section} />
-}, HomeViewSectionSalesPlaceholder)
+    return <HomeViewSectionSales section={data.homeView.section} index={index} {...flexProps} />
+  },
+  HomeViewSectionSalesPlaceholder
+)

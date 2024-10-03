@@ -67,7 +67,11 @@ describe("ConfirmBid", () => {
   })
 
   describe("disclaimer", () => {
-    describe("when the user is not registered", () => {
+    describe("when the user is not registered and AREnableNewTermsAndConditions is disabled", () => {
+       beforeEach(() => {
+          __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewTermsAndConditions: false })
+        })
+
       it("displays a checkbox", () => {
         renderWithWrappers(<ConfirmBid {...initialProps} />)
 
@@ -125,7 +129,11 @@ describe("ConfirmBid", () => {
       })
     })
 
-    describe("when the user is registered", () => {
+    describe("when the user is registered and AREnableNewTermsAndConditions is disabled", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewTermsAndConditions: false })
+      })
+
       it("does not display a checkbox", () => {
         renderWithWrappers(<ConfirmBid {...initialPropsForRegisteredUser} />)
 

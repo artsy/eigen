@@ -154,7 +154,7 @@ export const SaleLotsList: React.FC<Props> = ({
 
       {viewAsFilter?.paramValue === ViewAsValues.List ? (
         <SaleArtworkListContainer
-          connection={saleArtworksConnection.saleArtworksConnection!}
+          connection={saleArtworksConnection.saleArtworksConnection}
           hasMore={relay.hasMore}
           loadMore={relay.loadMore}
           isLoading={relay.isLoading}
@@ -165,7 +165,7 @@ export const SaleLotsList: React.FC<Props> = ({
       ) : (
         <Flex px={2}>
           <InfiniteScrollArtworksGridContainer
-            connection={saleArtworksConnection.saleArtworksConnection!}
+            connection={saleArtworksConnection.saleArtworksConnection}
             contextScreenOwnerType={OwnerType.sale}
             contextScreenOwnerId={saleID}
             contextScreenOwnerSlug={saleSlug}
@@ -175,6 +175,7 @@ export const SaleLotsList: React.FC<Props> = ({
             showLotLabel
             hidePartner
             hideUrgencyTags
+            hideRegisterBySignal
           />
         </Flex>
       )}

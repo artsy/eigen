@@ -26,7 +26,7 @@ export const SalesScreenQuery = graphql`
       ...UpcomingAuctions_viewer
     }
     recommendedAuctionLots: viewer {
-      ...RecommendedAuctionLotsRail_smallArtworkConnection
+      ...RecommendedAuctionLotsRail_artworkConnection
     }
   }
 `
@@ -86,7 +86,6 @@ export const Sales: React.FC = () => {
             artworkConnection={data.recommendedAuctionLots}
             isRailVisible={true}
             scrollRef={null}
-            size="small"
             contextScreenOwnerType={OwnerType.auctions}
           />
           <CurrentlyRunningAuctions

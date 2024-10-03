@@ -6,6 +6,7 @@ import { RateLimiter } from "limiter"
 import { useEffect } from "react"
 import { fetchQuery, GraphQLTaggedNode } from "react-relay"
 import {
+  CacheConfig,
   createOperationDescriptor,
   getRequest,
   OperationType,
@@ -43,13 +44,23 @@ async function isRateLimited() {
   return remainingRequests < 0
 }
 
-const prefetchQuery = async (query: GraphQLTaggedNode, variables?: Variables) => {
+const prefetchQuery = async ({
+  query,
+  variables,
+  networkCacheConfig = {
+    force: true,
+  },
+}: {
+  query: GraphQLTaggedNode
+  variables?: Variables
+  networkCacheConfig?: CacheConfig
+}) => {
   const environment = getRelayEnvironment()
   const operation = createOperationDescriptor(getRequest(query), variables ?? {})
 
   try {
     await fetchQuery(environment, query, variables ?? {}, {
-      networkCacheConfig: { force: true },
+      networkCacheConfig,
     }).toPromise()
     // this will retain the result in the relay store so it's not garbage collected.
     environment.retain(operation)
@@ -64,7 +75,10 @@ const prefetchQuery = async (query: GraphQLTaggedNode, variables?: Variables) =>
 
 const prefetchUrl = async <TQuery extends OperationType>(
   url: string,
-  variables?: VariablesOf<TQuery>
+  variables?: VariablesOf<TQuery>,
+  networkCacheConfig: CacheConfig = {
+    force: true,
+  }
 ) => {
   if (await isRateLimited()) {
     console.log("Reached prefetching rate limit.")
@@ -91,11 +105,11 @@ const prefetchUrl = async <TQuery extends OperationType>(
     return
   }
 
-  const options = { ...result.params, ...variables }
+  const allVariables = { ...result.params, ...variables }
 
   try {
     for (const query of queries) {
-      prefetchQuery(query, options)
+      await prefetchQuery({ query, variables: allVariables, networkCacheConfig })
     }
   } catch (error) {
     console.error(`Prefetching "${url}" failed.`, error)

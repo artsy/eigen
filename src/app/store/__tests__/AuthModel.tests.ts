@@ -880,4 +880,48 @@ describe("AuthModel", () => {
       )
     })
   })
+
+  describe("verifyUser", () => {
+    beforeEach(async () => {
+      mockFetchJsonOnce({
+        xapp_token: "my-special-token",
+        expires_in: "never",
+      })
+      await GlobalStore.actions.auth.getXAppToken()
+      mockFetch.mockClear()
+    })
+
+    it('returns "user_exists" if the user exists', async () => {
+      mockFetchJsonOnce({ exists: true }, 201)
+
+      const result = await GlobalStore.actions.auth.verifyUser({
+        email: "email",
+        recaptchaToken: "token",
+      })
+
+      expect(result).toBe("user_exists")
+    })
+
+    it('returns "user_does_not_exist" if the user does not exist', async () => {
+      mockFetchJsonOnce({ exists: false }, 201)
+
+      const result = await GlobalStore.actions.auth.verifyUser({
+        email: "email",
+        recaptchaToken: "token",
+      })
+
+      expect(result).toBe("user_does_not_exist")
+    })
+
+    it('returns "something_went_wrong" if the request fails', async () => {
+      mockFetchJsonOnce({ error: "bad times" }, 500)
+
+      const result = await GlobalStore.actions.auth.verifyUser({
+        email: "email",
+        recaptchaToken: "token",
+      })
+
+      expect(result).toBe("something_went_wrong")
+    })
+  })
 })
