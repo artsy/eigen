@@ -8,21 +8,23 @@ import {
   Touchable,
   useTheme,
 } from "@artsy/palette-mobile"
-import { StackScreenProps } from "@react-navigation/stack"
-import { AuthNavigationStack } from "app/Scenes/Onboarding/Auth2/AuthScenes"
-import { useAuthNavigation } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
+import {
+  useAuthNavigation,
+  useAuthRoute,
+} from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { showBlockedAuthError } from "app/utils/auth/authHelpers"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import * as Yup from "yup"
 
-type LoginPasswordStepProps = StackScreenProps<AuthNavigationStack, "LoginPasswordStep">
-
 interface LoginPasswordStepFormValues {
   password: string
 }
 
-export const LoginPasswordStep: React.FC<LoginPasswordStepProps> = ({ navigation, route }) => {
+export const LoginPasswordStep: React.FC = () => {
+  const navigation = useAuthNavigation()
+  const route = useAuthRoute<"LoginPasswordStep">()
+
   const formik = useFormik<LoginPasswordStepFormValues>({
     initialValues: { password: "" },
     onSubmit: async ({ password }, { setErrors }) => {

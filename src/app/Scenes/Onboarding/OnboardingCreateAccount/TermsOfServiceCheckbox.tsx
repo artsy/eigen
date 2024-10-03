@@ -1,22 +1,21 @@
 import { Flex, Text, Touchable, Checkbox } from "@artsy/palette-mobile"
-import { ParamListBase } from "@react-navigation/native"
-import { StackNavigationProp } from "@react-navigation/stack"
+import { useAuthNavigation } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 
 interface TermsOfServiceCheckboxProps {
   checked: boolean
   setChecked: (checked: boolean) => void
   error: boolean
-  navigation: StackNavigationProp<ParamListBase>
 }
 
 export const TermsOfServiceCheckbox: React.FC<TermsOfServiceCheckboxProps> = ({
   setChecked,
   checked,
   error,
-  navigation,
 }) => {
   const showNewDisclaimer = useFeatureFlag("AREnableNewTermsAndConditions")
+
+  const navigation = useAuthNavigation()
 
   return (
     <Touchable haptic onPress={() => setChecked(!checked)}>

@@ -7,7 +7,6 @@ import {
 } from "@react-navigation/stack"
 import { FPSCounter } from "app/Components/FPSCounter"
 import { AuthApp } from "app/Scenes/Onboarding/Auth2/AuthApp"
-import { OnboardingHome } from "app/Scenes/Onboarding/OnboardingHome"
 import { OAuthProvider } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { DevMenu as DevMenuDefault } from "app/system/devTools/DevMenu/DevMenu"

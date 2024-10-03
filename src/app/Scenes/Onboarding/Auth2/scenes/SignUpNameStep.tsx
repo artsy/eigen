@@ -1,8 +1,8 @@
 import { BackButton, Button, Flex, Input, Text, useTheme } from "@artsy/palette-mobile"
-import { useNavigation } from "@react-navigation/native"
-import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack"
-import { AuthNavigationStack } from "app/Scenes/Onboarding/Auth2/AuthScenes"
-import { OnboardingNavigationStack } from "app/Scenes/Onboarding/Onboarding"
+import {
+  useAuthNavigation,
+  useAuthRoute,
+} from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { EmailSubscriptionCheckbox } from "app/Scenes/Onboarding/OnboardingCreateAccount/EmailSubscriptionCheckbox"
 import { TermsOfServiceCheckbox } from "app/Scenes/Onboarding/OnboardingCreateAccount/TermsOfServiceCheckbox"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -12,15 +12,15 @@ import React, { useState } from "react"
 import { Alert, Keyboard } from "react-native"
 import * as Yup from "yup"
 
-type SignUpNameStepProps = StackScreenProps<AuthNavigationStack, "SignUpNameStep">
-
 interface SignUpNameStepFormValues {
   name: string
   acceptedTerms: boolean
   agreedToReceiveEmails: boolean
 }
 
-export const SignUpNameStep: React.FC<SignUpNameStepProps> = ({ route }) => {
+export const SignUpNameStep: React.FC = () => {
+  const route = useAuthRoute<"SignUpNameStep">()
+
   const formik = useFormik<SignUpNameStepFormValues>({
     initialValues: { name: "", acceptedTerms: false, agreedToReceiveEmails: false },
     onSubmit: async ({ acceptedTerms, agreedToReceiveEmails, name }) => {
@@ -63,7 +63,7 @@ const SignUpNameStepForm: React.FC = () => {
   const { errors, handleChange, handleSubmit, isValid, setErrors, setFieldValue, values } =
     useFormikContext<SignUpNameStepFormValues>()
 
-  const navigation = useNavigation<StackNavigationProp<OnboardingNavigationStack>>()
+  const navigation = useAuthNavigation()
 
   const { color, space } = useTheme()
 
@@ -115,7 +115,6 @@ const SignUpNameStepForm: React.FC = () => {
           setChecked={() => setFieldValue("acceptedTerms", !values.acceptedTerms)}
           checked={values.acceptedTerms}
           error={highlightTerms}
-          navigation={navigation}
         />
         <EmailSubscriptionCheckbox
           setChecked={() => setFieldValue("agreedToReceiveEmails", !values.agreedToReceiveEmails)}

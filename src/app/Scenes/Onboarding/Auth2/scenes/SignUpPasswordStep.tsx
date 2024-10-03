@@ -1,18 +1,20 @@
 import { BackButton, Button, Flex, Input, Text, useTheme } from "@artsy/palette-mobile"
-import { StackScreenProps } from "@react-navigation/stack"
-import { AuthNavigationStack } from "app/Scenes/Onboarding/Auth2/AuthScenes"
-import { useAuthNavigation } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
+import {
+  useAuthNavigation,
+  useAuthRoute,
+} from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import React from "react"
 import * as Yup from "yup"
-
-type SignUpPasswordStepProps = StackScreenProps<AuthNavigationStack, "SignUpPasswordStep">
 
 interface SignUpPasswordStepFormValues {
   password: string
 }
 
-export const SignUpPasswordStep: React.FC<SignUpPasswordStepProps> = ({ navigation, route }) => {
+export const SignUpPasswordStep: React.FC = () => {
+  const navigation = useAuthNavigation()
+  const route = useAuthRoute<"SignUpPasswordStep">()
+
   const formik = useFormik<SignUpPasswordStepFormValues>({
     initialValues: { password: "" },
     onSubmit: ({ password }) => {

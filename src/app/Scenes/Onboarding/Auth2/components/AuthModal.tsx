@@ -33,13 +33,14 @@ export const AuthModal: React.FC = ({ children }) => {
           }}
           transition={{
             type: "timing",
-            duration: 700,
+            duration: 600,
             easing: Easing.out(Easing.exp),
           }}
           style={{
             width: "100%",
             backgroundColor: "white",
             borderRadius: space(2),
+            overflow: "hidden",
           }}
         >
           <Flex height="100%" justifyContent="center" p={1}>

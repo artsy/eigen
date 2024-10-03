@@ -9,10 +9,8 @@ import {
   Text,
   useTheme,
 } from "@artsy/palette-mobile"
-import { StackScreenProps } from "@react-navigation/stack"
 import { useRecaptcha } from "app/Components/Recaptcha/Recaptcha"
 import { AuthContext } from "app/Scenes/Onboarding/Auth2/AuthContext"
-import { AuthNavigationStack } from "app/Scenes/Onboarding/Auth2/AuthScenes"
 import { useAuthNavigation } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { AuthPromiseRejectType, AuthPromiseResolveType } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -23,14 +21,12 @@ import React, { useRef, useState } from "react"
 import { Alert, Image, InteractionManager, Platform, TextInput } from "react-native"
 import * as Yup from "yup"
 
-type EmailSocialStepProps = StackScreenProps<AuthNavigationStack, "EmailSocialStep">
-
 interface EmailFormValues {
   email: string
   recaptchaToken: string | undefined
 }
 
-export const EmailSocialStep: React.FC<EmailSocialStepProps> = React.memo(() => {
+export const EmailSocialStep: React.FC = () => {
   const navigation = useAuthNavigation()
   const setModalExpanded = AuthContext.useStoreActions((actions) => actions.setModalExpanded)
   const isModalExpanded = AuthContext.useStoreState((state) => state.isModalExpanded)
@@ -49,12 +45,17 @@ export const EmailSocialStep: React.FC<EmailSocialStepProps> = React.memo(() => 
       <Formik<EmailFormValues>
         initialValues={{ email: "", recaptchaToken: token }}
         validateOnMount={false}
-        validationSchema={Yup.object().shape({
+        _validationSchema={Yup.object().shape({
           email: Yup.string()
             .email("Please provide a valid email address")
             .required("Email field is required"),
         })}
         onSubmit={async ({ email, recaptchaToken }, { setFieldValue }) => {
+          navigation.navigate("LoginPasswordStep", { email })
+
+          return
+
+          // Fixme
           if (!recaptchaToken) {
             Alert.alert("Something went wrong. Please try again, or contact support@artsy.net")
             return
@@ -110,7 +111,7 @@ export const EmailSocialStep: React.FC<EmailSocialStepProps> = React.memo(() => 
                     onChangeText={(text) => {
                       handleChange("email")(text.trim())
                     }}
-                    // blurOnSubmit={false} // This is needed to avoid UI jump when the user submits
+                    blurOnSubmit={false} // This is needed to avoid UI jump when the user submits
                     placeholderTextColor={color("black30")}
                     title="Email"
                     returnKeyType="next"
@@ -118,7 +119,7 @@ export const EmailSocialStep: React.FC<EmailSocialStepProps> = React.memo(() => 
                     autoCorrect={false}
                     ref={emailRef}
                     onFocus={handleEmailInputFocus}
-                    onBlur={handleBackButtonPress}
+                    // onBlur={handleBackButtonPress}
                     // We need to to set textContentType to username (instead of emailAddress) here
                     // enable autofill of login details from the device keychain.
                     textContentType="username"
@@ -157,7 +158,7 @@ export const EmailSocialStep: React.FC<EmailSocialStepProps> = React.memo(() => 
       </Formik>
     </>
   )
-})
+}
 
 const SocialLoginButtons: React.FC = () => {
   const [mode, _setMode] = useState<"login" | "signup">("login")

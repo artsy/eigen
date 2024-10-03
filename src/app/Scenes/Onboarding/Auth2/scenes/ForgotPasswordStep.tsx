@@ -1,9 +1,8 @@
 import { BackButton, Button, Flex, Input, Spacer, Text, useTheme } from "@artsy/palette-mobile"
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
-import { StackNavigationProp } from "@react-navigation/stack"
-import { AuthNavigationStack } from "app/Scenes/Onboarding/Auth2/AuthScenes"
-import { useAuthNavigation } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
-import { OnboardingNavigationStack } from "app/Scenes/Onboarding/Onboarding"
+import {
+  useAuthNavigation,
+  useAuthRoute,
+} from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import * as Yup from "yup"
@@ -45,8 +44,8 @@ const ForgotPasswordStepForm: React.FC = () => {
   const { dirty, handleChange, handleSubmit, isSubmitting, isValid, validateForm, values } =
     useFormikContext<ForgotPasswordStepFormValues>()
 
-  const navigation = useNavigation<StackNavigationProp<OnboardingNavigationStack>>()
-  const route = useRoute<RouteProp<AuthNavigationStack, "ForgotPasswordStep">>()
+  const navigation = useAuthNavigation()
+  const route = useAuthRoute<"ForgotPasswordStep">()
 
   const { color, space } = useTheme()
 

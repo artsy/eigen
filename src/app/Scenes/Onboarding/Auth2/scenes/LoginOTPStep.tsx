@@ -9,30 +9,30 @@ import {
   Text,
   useTheme,
 } from "@artsy/palette-mobile"
-import { RouteProp, useRoute } from "@react-navigation/native"
-import { StackScreenProps } from "@react-navigation/stack"
-import { AuthNavigationStack } from "app/Scenes/Onboarding/Auth2/AuthScenes"
-import { useAuthNavigation } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
+import {
+  useAuthNavigation,
+  useAuthRoute,
+} from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import { useState } from "react"
 import * as Yup from "yup"
 
-type LoginOTPStepProps = StackScreenProps<AuthNavigationStack, "LoginOTPStep">
-
 interface LoginOTPStepFormValues {
   otp: string
 }
 
-export const LoginOTPStep: React.FC<LoginOTPStepProps> = ({ route }) => {
+export const LoginOTPStep: React.FC = () => {
+  const route = useAuthRoute<"LoginOTPStep">()
+
   const formik = useFormik<LoginOTPStepFormValues>({
     initialValues: { otp: "" },
     onSubmit: async ({ otp }, { setErrors }) => {
       const res = await GlobalStore.actions.auth.signIn({
         oauthProvider: "email",
         oauthMode: "email",
-        email: route.params.email,
-        password: route.params.password,
+        email: route.params?.email,
+        password: route.params?.password,
         otp: otp.trim(),
       })
 
@@ -59,7 +59,7 @@ const LoginOTPStepForm: React.FC = () => {
     useFormikContext<LoginOTPStepFormValues>()
 
   const navigation = useAuthNavigation()
-  const route = useRoute<RouteProp<AuthNavigationStack, "LoginOTPStep">>()
+  const route = useAuthRoute<"LoginOTPStep">()
 
   const { color, space } = useTheme()
 
@@ -98,7 +98,7 @@ const LoginOTPStepForm: React.FC = () => {
         {recoveryCodeMode ? "Enter authentication code" : "Enter recovery code instead"}
       </LinkText>
 
-      {route.params.otpMode === "on_demand" && (
+      {route.params?.otpMode === "on_demand" && (
         <>
           <Spacer y={2} />
           <SimpleMessage testID="on_demand_message">
