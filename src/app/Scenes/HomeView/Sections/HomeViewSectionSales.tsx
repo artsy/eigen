@@ -231,5 +231,6 @@ export const HomeViewSectionSalesQueryRenderer: React.FC<SectionSharedProps> = w
 
     return <HomeViewSectionSales section={data.homeView.section} index={index} {...flexProps} />
   },
-  HomeViewSectionSalesPlaceholder
+  HomeViewSectionSalesPlaceholder,
+  undefined
 )

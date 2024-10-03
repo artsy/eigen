@@ -161,5 +161,6 @@ export const HomeViewSectionHeroUnitsQueryRenderer: React.FC<SectionSharedProps>
 
     return <HomeViewSectionHeroUnits section={data.homeView.section} index={index} {...flexProps} />
   },
-  HomeViewSectionHeroUnitsPlaceholder
+  HomeViewSectionHeroUnitsPlaceholder,
+  undefined
 )

@@ -176,5 +176,6 @@ export const HomeViewSectionGalleriesQueryRenderer: React.FC<SectionSharedProps>
 
     return <HomeViewSectionGalleries section={data.homeView.section} index={index} {...flexProps} />
   },
-  HomeViewSectionGalleriesPlaceholder
+  HomeViewSectionGalleriesPlaceholder,
+  undefined
 )

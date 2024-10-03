@@ -167,5 +167,6 @@ export const HomeViewSectionViewingRoomsQueryRenderer: React.FC<SectionSharedPro
       <HomeViewSectionViewingRooms section={data.homeView.section} index={index} {...flexProps} />
     )
   },
-  HomeViewSectionArtworksPlaceholder
+  HomeViewSectionArtworksPlaceholder,
+  undefined
 )

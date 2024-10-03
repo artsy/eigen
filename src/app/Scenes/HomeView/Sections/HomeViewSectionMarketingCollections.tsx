@@ -229,28 +229,32 @@ const homeViewSectionMarketingCollectionsQuery = graphql`
 `
 
 export const HomeViewSectionMarketingCollectionsQueryRenderer: React.FC<SectionSharedProps> =
-  withSuspense(({ sectionID, index, ...flexProps }) => {
-    const data = useLazyLoadQuery<HomeViewSectionMarketingCollectionsQuery>(
-      homeViewSectionMarketingCollectionsQuery,
-      {
-        id: sectionID,
-      },
-      {
-        networkCacheConfig: {
-          force: false,
+  withSuspense(
+    ({ sectionID, index, ...flexProps }) => {
+      const data = useLazyLoadQuery<HomeViewSectionMarketingCollectionsQuery>(
+        homeViewSectionMarketingCollectionsQuery,
+        {
+          id: sectionID,
         },
+        {
+          networkCacheConfig: {
+            force: false,
+          },
+        }
+      )
+
+      if (!data.homeView.section) {
+        return null
       }
-    )
 
-    if (!data.homeView.section) {
-      return null
-    }
-
-    return (
-      <HomeViewSectionMarketingCollections
-        section={data.homeView.section}
-        index={index}
-        {...flexProps}
-      />
-    )
-  }, HomeViewSectionMarketingCollectionsPlaceholder)
+      return (
+        <HomeViewSectionMarketingCollections
+          section={data.homeView.section}
+          index={index}
+          {...flexProps}
+        />
+      )
+    },
+    HomeViewSectionMarketingCollectionsPlaceholder,
+    undefined
+  )

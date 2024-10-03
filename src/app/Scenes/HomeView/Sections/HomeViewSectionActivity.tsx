@@ -210,5 +210,6 @@ export const HomeViewSectionActivityQueryRenderer: React.FC<SectionSharedProps> 
 
     return <HomeViewSectionActivity section={data.homeView.section} index={index} {...flexProps} />
   },
-  HomeViewSectionActivityPlaceholder
+  HomeViewSectionActivityPlaceholder,
+  undefined
 )

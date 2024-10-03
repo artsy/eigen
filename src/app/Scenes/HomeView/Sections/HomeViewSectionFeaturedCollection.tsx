@@ -217,28 +217,32 @@ const homeViewSectionFeaturedCollectionQuery = graphql`
 `
 
 export const HomeViewSectionFeaturedCollectionQueryRenderer: React.FC<SectionSharedProps> =
-  withSuspense(({ sectionID, index, ...flexProps }) => {
-    const data = useLazyLoadQuery<HomeViewSectionFeaturedCollectionQuery>(
-      homeViewSectionFeaturedCollectionQuery,
-      {
-        id: sectionID,
-      },
-      {
-        networkCacheConfig: {
-          force: false,
+  withSuspense(
+    ({ sectionID, index, ...flexProps }) => {
+      const data = useLazyLoadQuery<HomeViewSectionFeaturedCollectionQuery>(
+        homeViewSectionFeaturedCollectionQuery,
+        {
+          id: sectionID,
         },
+        {
+          networkCacheConfig: {
+            force: false,
+          },
+        }
+      )
+
+      if (!data.homeView.section) {
+        return null
       }
-    )
 
-    if (!data.homeView.section) {
-      return null
-    }
-
-    return (
-      <HomeViewSectionFeaturedCollection
-        section={data.homeView.section}
-        index={index}
-        {...flexProps}
-      />
-    )
-  }, HomeViewSectionFeaturedCollectionPlaceholder)
+      return (
+        <HomeViewSectionFeaturedCollection
+          section={data.homeView.section}
+          index={index}
+          {...flexProps}
+        />
+      )
+    },
+    HomeViewSectionFeaturedCollectionPlaceholder,
+    undefined
+  )

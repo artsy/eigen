@@ -266,5 +266,6 @@ export const HomeViewSectionArtistsQueryRenderer: React.FC<SectionSharedProps> =
       />
     )
   },
-  HomeViewSectionArtistsPlaceholder
+  HomeViewSectionArtistsPlaceholder,
+  undefined
 )
