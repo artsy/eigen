@@ -65,7 +65,10 @@ export const ActivityItemScreenQueryRenderer: FC<ActivityItemScreenQueryRenderer
           return null
       }
     },
-    () => <Placeholder />
+    () => <Placeholder />,
+    (fallbackProps) => {
+      return <ActivityErrorScreen headerTitle="Activity" error={fallbackProps.error} />
+    }
   )
 
 const ActivityItemQuery = graphql`
