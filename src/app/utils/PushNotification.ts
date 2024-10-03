@@ -185,13 +185,10 @@ export const handleReceivedNotification = (
     const now = Date.now()
     // track notification tapped event only in android
     // ios handles it in the native side
-    if (Platform.OS === "android") {
-      // debounce events to avoid double tracking
-      // once we resolve the underlying issue with double handleReceivedNotification calls we can remove
-      if (now - lastEventTimestamp < DEBOUNCE_THRESHOLD) {
-        return
-      }
+    // debounce events to avoid double tracking
+    // once we resolve the underlying issue with double handleReceivedNotification calls we can remove
 
+    if (Platform.OS === "android" && now - lastEventTimestamp > DEBOUNCE_THRESHOLD) {
       lastEventTimestamp = now
 
       SegmentTrackingProvider.postEvent({
