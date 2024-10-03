@@ -146,18 +146,14 @@ const homeViewSectionGalleriesQuery = graphql`
 
 export const HomeViewSectionGalleriesQueryRenderer: React.FC<{
   sectionID: string
-}> = withSuspense(
-  (props) => {
-    const data = useLazyLoadQuery<HomeViewSectionGalleriesQuery>(homeViewSectionGalleriesQuery, {
-      id: props.sectionID,
-    })
+}> = withSuspense((props) => {
+  const data = useLazyLoadQuery<HomeViewSectionGalleriesQuery>(homeViewSectionGalleriesQuery, {
+    id: props.sectionID,
+  })
 
-    if (!data.homeView.section) {
-      return null
-    }
+  if (!data.homeView.section) {
+    return null
+  }
 
-    return <HomeViewSectionGalleries section={data.homeView.section} />
-  },
-  HomeViewSectionGalleriesPlaceholder,
-  undefined
-)
+  return <HomeViewSectionGalleries section={data.homeView.section} />
+}, HomeViewSectionGalleriesPlaceholder)

@@ -238,18 +238,14 @@ const HomeViewSectionArtistsPlaceholder: React.FC = () => {
 
 export const HomeViewSectionArtistsQueryRenderer: React.FC<{
   sectionID: string
-}> = withSuspense(
-  (props) => {
-    const data = useLazyLoadQuery<HomeViewSectionArtistsMainQuery>(homeViewSectionArtistsQuery, {
-      id: props.sectionID,
-    })
+}> = withSuspense((props) => {
+  const data = useLazyLoadQuery<HomeViewSectionArtistsMainQuery>(homeViewSectionArtistsQuery, {
+    id: props.sectionID,
+  })
 
-    if (!data.homeView.section) {
-      return null
-    }
+  if (!data.homeView.section) {
+    return null
+  }
 
-    return <HomeViewSectionArtistsPaginationContainer section={data.homeView.section} />
-  },
-  HomeViewSectionArtistsPlaceholder,
-  undefined
-)
+  return <HomeViewSectionArtistsPaginationContainer section={data.homeView.section} />
+}, HomeViewSectionArtistsPlaceholder)
