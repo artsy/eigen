@@ -46,6 +46,7 @@ interface HomeViewSectionArtworksProps {
 }
 
 type Artist = ExtractNodeType<HomeViewSectionArtists_section$data["artistsConnection"]>
+
 export const HomeViewSectionArtists: React.FC<HomeViewSectionArtworksProps> = ({
   section,
   relay,
@@ -109,11 +110,12 @@ export const HomeViewSectionArtists: React.FC<HomeViewSectionArtworksProps> = ({
                 alignItems="center"
               >
                 <Spinner />
+                <Spacer x={2} />
               </Flex>
             )
           }
 
-          return null
+          return <Spacer x={2} />
         }}
         renderItem={({ item: artist, index }) => {
           return (
