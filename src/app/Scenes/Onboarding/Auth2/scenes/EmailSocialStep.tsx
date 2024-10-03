@@ -23,14 +23,14 @@ import React, { useRef, useState } from "react"
 import { Alert, Image, InteractionManager, Platform, TextInput } from "react-native"
 import * as Yup from "yup"
 
-type WelcomeStepProps = StackScreenProps<AuthNavigationStack, "WelcomeStep">
+type EmailSocialStepProps = StackScreenProps<AuthNavigationStack, "EmailSocialStep">
 
 interface EmailFormValues {
   email: string
   recaptchaToken: string | undefined
 }
 
-export const WelcomeStep: React.FC<WelcomeStepProps> = React.memo(() => {
+export const EmailSocialStep: React.FC<EmailSocialStepProps> = React.memo(() => {
   const navigation = useAuthNavigation()
   const setModalExpanded = AuthContext.useStoreActions((actions) => actions.setModalExpanded)
   const isModalExpanded = AuthContext.useStoreState((state) => state.isModalExpanded)
@@ -43,20 +43,6 @@ export const WelcomeStep: React.FC<WelcomeStepProps> = React.memo(() => {
     source: "authentication",
     action: "verify_email",
   })
-
-  const handleEmailInputFocus = () => {
-    InteractionManager.runAfterInteractions(() => {
-      setModalExpanded(true)
-      emailRef.current?.focus()
-    })
-  }
-
-  const handleBackButtonPress = () => {
-    InteractionManager.runAfterInteractions(() => {
-      setModalExpanded(false)
-      emailRef.current?.blur()
-    })
-  }
 
   return (
     <>
@@ -87,7 +73,22 @@ export const WelcomeStep: React.FC<WelcomeStepProps> = React.memo(() => {
           }
         }}
       >
-        {({ errors, handleChange, handleSubmit, isValid }) => {
+        {({ errors, handleChange, handleSubmit, isValid, resetForm }) => {
+          const handleEmailInputFocus = () => {
+            InteractionManager.runAfterInteractions(() => {
+              setModalExpanded(true)
+              emailRef.current?.focus()
+            })
+          }
+
+          const handleBackButtonPress = () => {
+            InteractionManager.runAfterInteractions(() => {
+              setModalExpanded(false)
+              emailRef.current?.blur()
+              resetForm()
+            })
+          }
+
           return (
             <Flex padding={2} position="relative">
               {!isSelectLoginMethodStep && (

@@ -12,17 +12,17 @@ export const AuthApp: React.FC = () => {
 
   return (
     <Screen safeArea={false}>
-      <Screen.Background>
-        <WelcomeBackground />
-      </Screen.Background>
+      <AuthContext.Provider>
+        <Screen.Background>
+          <WelcomeBackground />
+        </Screen.Background>
 
-      <Screen.Body>
-        <AuthContext.Provider>
+        <Screen.Body>
           <AuthModal>
             <AuthScenes />
           </AuthModal>
-        </AuthContext.Provider>
-      </Screen.Body>
+        </Screen.Body>
+      </AuthContext.Provider>
     </Screen>
   )
 }

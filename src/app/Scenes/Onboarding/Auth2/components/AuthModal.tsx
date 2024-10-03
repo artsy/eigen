@@ -26,7 +26,7 @@ export const AuthModal: React.FC = ({ children }) => {
         <MotiView
           from={{
             height: HEIGHT.collapsed,
-            bottom: space(2),
+            bottom: space(4),
           }}
           animate={{
             height: isModalExpanded ? screenHeight * 0.5 - insets.top : HEIGHT.collapsed,
@@ -40,34 +40,11 @@ export const AuthModal: React.FC = ({ children }) => {
             width: "100%",
             backgroundColor: "white",
             borderRadius: space(2),
-            // alignItems: "center",
-            // justifyContent: "center",
-            // overflow: "hidden",
           }}
         >
-          <MotiView
-            from={{
-              translateY: 0,
-            }}
-            animate={
-              {
-                // translateY: expanded ? -screenHeight * 0.4 + 150 : 0,
-              }
-            }
-            transition={{
-              type: "timing",
-              duration: 500,
-              easing: Easing.out(Easing.exp),
-            }}
-            style={{
-              flex: 1,
-              padding: 10,
-            }}
-          >
-            <Flex height="100%" justifyContent="center">
-              {children}
-            </Flex>
-          </MotiView>
+          <Flex height="100%" justifyContent="center" p={1}>
+            {children}
+          </Flex>
         </MotiView>
       </Box>
     </KeyboardAvoidingView>

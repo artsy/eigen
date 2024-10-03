@@ -1,4 +1,5 @@
 import { ArtsyLogoWhiteIcon, Flex, Spacer, Text, useScreenDimensions } from "@artsy/palette-mobile"
+import { AuthContext } from "app/Scenes/Onboarding/Auth2/AuthContext"
 import backgroundImage from "images/WelcomeImage.webp"
 import { MotiView } from "moti"
 import { useEffect } from "react"
@@ -14,6 +15,7 @@ import Animated, {
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 export const WelcomeBackground: React.FC = () => {
+  const { isMounted, isModalExpanded } = AuthContext.useStoreState((state) => state)
   const safeArea = useSafeAreaInsets()
 
   return (
@@ -24,15 +26,18 @@ export const WelcomeBackground: React.FC = () => {
         <ArtsyLogoWhiteIcon height={25} width={75} mt={safeArea.top} />
       </Flex>
 
-      <Flex flex={1} px={2} bottom="-25%">
+      <Flex flex={1} px={2} justifyContent="center" position="relative" top={-safeArea.top * 2}>
         <MotiView
-          from={{ opacity: 0, translateY: 40 }}
-          animate={{ opacity: 1, translateY: 0 }}
+          from={{ opacity: isModalExpanded ? 1 : 0, translateY: isMounted ? 0 : 20 }}
+          animate={{ opacity: isModalExpanded ? 0 : 1, translateY: 0 }}
           transition={{
             type: "timing",
-            duration: 800,
-            delay: 600,
-            easing: Easing.out(Easing.circle),
+            duration: isMounted ? 300 : 1000,
+            delay: (() => {
+              if (isMounted) return 100
+              return 600
+            })(),
+            easing: isMounted ? Easing.linear : Easing.out(Easing.circle),
           }}
         >
           <Text variant="xl" color="white">
@@ -99,7 +104,7 @@ const AnimatedBackground: React.FC = () => {
       </Animated.View>
 
       <LinearGradient
-        colors={["rgba(0, 0, 0, 0)", `rgba(0, 0, 0, 0.85)`]}
+        colors={["rgba(0, 0, 0, 0)", `rgba(0, 0, 0, 0.95)`]}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
         style={{
