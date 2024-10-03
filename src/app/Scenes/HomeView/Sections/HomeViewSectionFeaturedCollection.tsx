@@ -179,21 +179,17 @@ const homeViewSectionFeaturedCollectionQuery = graphql`
 
 export const HomeViewSectionFeaturedCollectionQueryRenderer: React.FC<{
   sectionID: string
-}> = withSuspense(
-  (props) => {
-    const data = useLazyLoadQuery<HomeViewSectionFeaturedCollectionQuery>(
-      homeViewSectionFeaturedCollectionQuery,
-      {
-        id: props.sectionID,
-      }
-    )
-
-    if (!data.homeView.section) {
-      return null
+}> = withSuspense((props) => {
+  const data = useLazyLoadQuery<HomeViewSectionFeaturedCollectionQuery>(
+    homeViewSectionFeaturedCollectionQuery,
+    {
+      id: props.sectionID,
     }
+  )
 
-    return <HomeViewSectionFeaturedCollection section={data.homeView.section} />
-  },
-  HomeViewSectionFeaturedCollectionPlaceholder,
-  undefined
-)
+  if (!data.homeView.section) {
+    return null
+  }
+
+  return <HomeViewSectionFeaturedCollection section={data.homeView.section} />
+}, HomeViewSectionFeaturedCollectionPlaceholder)
