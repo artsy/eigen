@@ -21,15 +21,18 @@ export const AuthBackground: React.FC = () => {
 
       <Flex flex={1} px={2} justifyContent="center" position="relative" top={-safeArea.top * 2}>
         <MotiView
-          from={{ opacity: isModalExpanded ? 1 : 0, translateY: isMounted ? 0 : 40 }}
-          animate={{ opacity: isModalExpanded ? 0 : 1, translateY: 0 }}
+          from={{
+            opacity: isModalExpanded ? 1 : 0,
+            translateY: isMounted ? 0 : 40,
+          }}
+          animate={{
+            opacity: isModalExpanded ? 0 : 1,
+            translateY: 0,
+          }}
           transition={{
             type: "timing",
             duration: isMounted ? 300 : 1000,
-            delay: (() => {
-              if (isMounted) return 100
-              return 1000
-            })(),
+            delay: isMounted ? 100 : 1000,
             easing: isMounted ? Easing.linear : Easing.out(Easing.circle),
           }}
         >

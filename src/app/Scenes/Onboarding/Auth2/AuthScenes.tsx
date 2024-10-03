@@ -1,51 +1,52 @@
-import { NavigationContainer } from "@react-navigation/native"
-import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
-// import { OnboardingHomeNavigationStack } from "app/Scenes/Onboarding/Auth2/AuthenticationDialog"
+import { Flex } from "@artsy/palette-mobile"
+import { AuthContext } from "app/Scenes/Onboarding/Auth2/AuthContext"
 import { EmailSocialStep } from "app/Scenes/Onboarding/Auth2/scenes/EmailSocialStep"
 import { ForgotPasswordStep } from "app/Scenes/Onboarding/Auth2/scenes/ForgotPasswordStep"
 import { LoginOTPStep } from "app/Scenes/Onboarding/Auth2/scenes/LoginOTPStep"
 import { LoginPasswordStep } from "app/Scenes/Onboarding/Auth2/scenes/LoginPasswordStep"
 import { SignUpNameStep } from "app/Scenes/Onboarding/Auth2/scenes/SignUpNameStep"
 import { SignUpPasswordStep } from "app/Scenes/Onboarding/Auth2/scenes/SignUpPasswordStep"
-import { OnboardingWebViewRoute } from "app/Scenes/Onboarding/OnboardingWebView"
 import React from "react"
-
-export type AuthNavigationStack = {
-  EmailSocialStep: undefined
-  ForgotPasswordStep: { requestedPasswordReset: boolean } | undefined
-  LoginPasswordStep: { email: string }
-  LoginOTPStep: { otpMode: "standard" | "on_demand"; email: string; password: string }
-  OnboardingWebView: { url: OnboardingWebViewRoute }
-  SignUpPasswordStep: { email: string }
-  SignUpNameStep: { email: string; password: string }
-}
-
-const Stack = createStackNavigator<AuthNavigationStack>()
+import { ScrollView } from "react-native-gesture-handler"
 
 export const AuthScenes: React.FC = () => {
   return (
-    <NavigationContainer independent>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-          gestureEnabled: false,
-          cardStyle: { backgroundColor: "white" },
+    <ScrollView keyboardShouldPersistTaps>
+      <AuthScreen name="EmailSocialStep">
+        <EmailSocialStep />
+      </AuthScreen>
 
-          ...TransitionPresets.ModalFadeTransition,
-        }}
-        initialRouteName="EmailSocialStep"
-      >
-        <Stack.Screen
-          name="EmailSocialStep"
-          component={EmailSocialStep}
-          options={{ animationTypeForReplace: "pop" }}
-        />
-        <Stack.Screen name="SignUpPasswordStep" component={SignUpPasswordStep} />
-        <Stack.Screen name="SignUpNameStep" component={SignUpNameStep} />
-        <Stack.Screen name="LoginPasswordStep" component={LoginPasswordStep} />
-        <Stack.Screen name="LoginOTPStep" component={LoginOTPStep} />
-        <Stack.Screen name="ForgotPasswordStep" component={ForgotPasswordStep} />
-      </Stack.Navigator>
-    </NavigationContainer>
+      <AuthScreen name="LoginPasswordStep">
+        <LoginPasswordStep />
+      </AuthScreen>
+
+      <AuthScreen name="LoginOTPStep">
+        <LoginOTPStep />
+      </AuthScreen>
+
+      <AuthScreen name="ForgotPasswordStep">
+        <ForgotPasswordStep />
+      </AuthScreen>
+
+      <AuthScreen name="SignUpNameStep">
+        <SignUpNameStep />
+      </AuthScreen>
+
+      <AuthScreen name="SignUpPasswordStep">
+        <SignUpPasswordStep />
+      </AuthScreen>
+    </ScrollView>
   )
+}
+
+interface AuthScreenProps {
+  name: string
+  isVisible?: boolean
+}
+
+const AuthScreen: React.FC<AuthScreenProps> = ({ children, name }) => {
+  const currentScreen = AuthContext.useStoreState((state) => state.currentScreen)
+  const isVisible = name === currentScreen?.name
+
+  return <Flex display={isVisible ? "flex" : "none"}>{children}</Flex>
 }

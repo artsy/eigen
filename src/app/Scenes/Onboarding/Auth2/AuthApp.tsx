@@ -1,6 +1,6 @@
 import { Screen } from "@artsy/palette-mobile"
 import { AuthContext } from "app/Scenes/Onboarding/Auth2/AuthContext"
-import { AuthScenes2 } from "app/Scenes/Onboarding/Auth2/AuthScenes2"
+import { AuthScenes } from "app/Scenes/Onboarding/Auth2/AuthScenes"
 import { AuthBackground } from "app/Scenes/Onboarding/Auth2/components/AuthBackground"
 import { AuthModal } from "app/Scenes/Onboarding/Auth2/components/AuthModal"
 import { useAndroidStatusBarColor } from "app/Scenes/Onboarding/Auth2/hooks/useAndroidStatusBarColor"
@@ -18,7 +18,7 @@ export const AuthApp: React.FC = () => {
 
         <Screen.Body>
           <AuthModal>
-            <AuthScenes2 />
+            <AuthScenes />
           </AuthModal>
         </Screen.Body>
       </AuthContext.Provider>

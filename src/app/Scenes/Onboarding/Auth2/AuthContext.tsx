@@ -1,8 +1,18 @@
-import { AuthNavigationStack } from "app/Scenes/Onboarding/Auth2/AuthScenes"
+import { OnboardingWebViewRoute } from "app/Scenes/Onboarding/OnboardingWebView"
 import { action, Action, createContextStore } from "easy-peasy"
 
+export type AuthScreens = {
+  EmailSocialStep: undefined
+  ForgotPasswordStep: { requestedPasswordReset: boolean } | undefined
+  LoginPasswordStep: { email: string }
+  LoginOTPStep: { otpMode: "standard" | "on_demand"; email: string; password: string }
+  OnboardingWebView: { url: OnboardingWebViewRoute }
+  SignUpPasswordStep: { email: string }
+  SignUpNameStep: { email: string; password: string }
+}
+
 export interface AuthScreen {
-  name: keyof AuthNavigationStack
+  name: keyof AuthScreens
   params?: Record<string, any>
 }
 
