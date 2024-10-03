@@ -3,6 +3,7 @@ import { Flex, Screen, SimpleMessage, Text } from "@artsy/palette-mobile"
 import { WorksForYouArtworksQuery } from "__generated__/WorksForYouArtworksQuery.graphql"
 import { WorksForYouArtworks_viewer$key } from "__generated__/WorksForYouArtworks_viewer.graphql"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { NewWorksForYouPlaceholder } from "app/Scenes/NewWorksForYou/NewWorksForYou"
 import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
@@ -20,6 +21,8 @@ interface NewWorksForYouProps {
 
 export const WorksForYouArtworks: React.FC<NewWorksForYouProps> = ({ viewer }) => {
   const defaultViewOption = GlobalStore.useAppState((state) => state.userPrefs.defaultViewOption)
+
+  console.warn("WorksForYouArtworks")
 
   const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment(
     newWorksForYouArtworksFragment,
@@ -145,5 +148,6 @@ export const WorksForYouArtworksQR: React.FC<WorksForYouArtworksQRProps> = withS
 
     return <WorksForYouArtworks viewer={data.viewer} />
   },
-  () => <NewWorksForYouPlaceholder />
+  () => <NewWorksForYouPlaceholder />,
+  (fallbackProps) => <LoadFailureView error={fallbackProps.error} trackErrorBoundary={false} />
 )
