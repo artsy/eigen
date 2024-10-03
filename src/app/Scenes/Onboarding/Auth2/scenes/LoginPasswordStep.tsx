@@ -10,7 +10,7 @@ import {
 } from "@artsy/palette-mobile"
 import {
   useAuthNavigation,
-  useAuthRoute,
+  useAuthScreen,
 } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { showBlockedAuthError } from "app/utils/auth/authHelpers"
@@ -23,7 +23,7 @@ interface LoginPasswordStepFormValues {
 
 export const LoginPasswordStep: React.FC = () => {
   const navigation = useAuthNavigation()
-  const route = useAuthRoute<"LoginPasswordStep">()
+  const screen = useAuthScreen()
 
   const formik = useFormik<LoginPasswordStepFormValues>({
     initialValues: { password: "" },
@@ -31,21 +31,27 @@ export const LoginPasswordStep: React.FC = () => {
       const res = await GlobalStore.actions.auth.signIn({
         oauthProvider: "email",
         oauthMode: "email",
-        email: route.params.email,
+        email: screen.params?.email,
         password,
       })
 
       if (res === "otp_missing") {
-        navigation.navigate("LoginOTPStep", {
-          otpMode: "standard",
-          email: route.params.email,
-          password,
+        navigation.navigate({
+          name: "LoginOTPStep",
+          params: {
+            otpMode: "standard",
+            email: screen.params?.email,
+            password,
+          },
         })
       } else if (res === "on_demand_otp_missing") {
-        navigation.navigate("LoginOTPStep", {
-          otpMode: "on_demand",
-          email: route.params.email,
-          password,
+        navigation.navigate({
+          name: "LoginOTPStep",
+          params: {
+            otpMode: "on_demand",
+            email: screen.params?.email,
+            password,
+          },
         })
       }
 
@@ -135,7 +141,7 @@ const LoginPasswordStepForm: React.FC = () => {
 
       <Touchable
         onPress={() => {
-          navigation.navigate("ForgotPasswordStep")
+          navigation.navigate({ name: "ForgotPasswordStep" })
         }}
       >
         <Text variant="sm" color="black60" underline>

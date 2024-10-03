@@ -23,7 +23,6 @@ import * as Yup from "yup"
 
 interface EmailFormValues {
   email: string
-  recaptchaToken: string | undefined
 }
 
 export const EmailSocialStep: React.FC = () => {
@@ -43,38 +42,34 @@ export const EmailSocialStep: React.FC = () => {
   return (
     <>
       <Formik<EmailFormValues>
-        initialValues={{ email: "", recaptchaToken: token }}
+        initialValues={{ email: "" }}
         validateOnMount={false}
-        _validationSchema={Yup.object().shape({
+        validationSchema={Yup.object().shape({
           email: Yup.string()
             .email("Please provide a valid email address")
             .required("Email field is required"),
         })}
-        onSubmit={async ({ email, recaptchaToken }, { setFieldValue }) => {
-          navigation.navigate("LoginPasswordStep", { email })
-
-          return
-
-          // Fixme
-          if (!recaptchaToken) {
+        onSubmit={async ({ email }, { setFieldValue }) => {
+          // FIXME
+          if (!token) {
             Alert.alert("Something went wrong. Please try again, or contact support@artsy.net")
             return
           }
 
-          const res = await GlobalStore.actions.auth.verifyUser({ email, recaptchaToken })
+          const res = await GlobalStore.actions.auth.verifyUser({ email, recaptchaToken: token })
 
           setFieldValue("recaptchaToken", null)
 
           if (res === "user_exists") {
-            navigation.navigate("LoginPasswordStep", { email })
+            navigation.navigate({ name: "LoginPasswordStep", params: { email } })
           } else if (res === "user_does_not_exist") {
-            navigation.navigate("SignUpPasswordStep", { email })
+            navigation.navigate({ name: "SignUpPasswordStep", params: { email } })
           } else if (res === "something_went_wrong") {
             Alert.alert("Something went wrong. Please try again, or contact support@artsy.net")
           }
         }}
       >
-        {({ errors, handleChange, handleSubmit, isValid, resetForm }) => {
+        {({ errors, handleChange, handleSubmit, isValid, resetForm, values }) => {
           const handleEmailInputFocus = () => {
             InteractionManager.runAfterInteractions(() => {
               setModalExpanded(true)
@@ -85,8 +80,8 @@ export const EmailSocialStep: React.FC = () => {
           const handleBackButtonPress = () => {
             InteractionManager.runAfterInteractions(() => {
               setModalExpanded(false)
-              emailRef.current?.blur()
               resetForm()
+              emailRef.current?.blur()
             })
           }
 
@@ -119,6 +114,7 @@ export const EmailSocialStep: React.FC = () => {
                     autoCorrect={false}
                     ref={emailRef}
                     onFocus={handleEmailInputFocus}
+                    value={values.email}
                     // onBlur={handleBackButtonPress}
                     // We need to to set textContentType to username (instead of emailAddress) here
                     // enable autofill of login details from the device keychain.

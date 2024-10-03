@@ -1,6 +1,4 @@
-import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
-import { AuthContext } from "app/Scenes/Onboarding/Auth2/AuthContext"
-import { AuthNavigationStack } from "app/Scenes/Onboarding/Auth2/AuthScenes"
+import { AuthContext, AuthScreen } from "app/Scenes/Onboarding/Auth2/AuthContext"
 
 export const useAuthNavigation = () => {
   // const navigation = useNavigation<NavigationProp<AuthNavigationStack>>()
@@ -8,7 +6,7 @@ export const useAuthNavigation = () => {
   const actions = AuthContext.useStoreActions((actions) => actions)
 
   return {
-    navigate: (screen: keyof AuthNavigationStack) => {
+    navigate: (screen: AuthScreen) => {
       actions.setCurrentScreen(screen)
     },
     goBack: () => {
@@ -17,7 +15,7 @@ export const useAuthNavigation = () => {
   }
 }
 
-export const useAuthRoute = <T extends keyof AuthNavigationStack>() => {
-  const route = useRoute<RouteProp<AuthNavigationStack, T>>()
-  return route
+export const useAuthScreen = () => {
+  const currentScreen = AuthContext.useStoreState((state) => state.currentScreen) as AuthScreen
+  return currentScreen
 }

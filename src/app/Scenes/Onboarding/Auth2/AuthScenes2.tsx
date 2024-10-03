@@ -46,8 +46,7 @@ interface AuthScreenProps {
 
 const AuthScreen: React.FC<AuthScreenProps> = ({ children, name }) => {
   const currentScreen = AuthContext.useStoreState((state) => state.currentScreen)
-  const isVisible = name === currentScreen
-  console.log(currentScreen)
+  const isVisible = name === currentScreen?.name
 
   return <Flex display={isVisible ? "flex" : "none"}>{children}</Flex>
 }

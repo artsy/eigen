@@ -1,7 +1,7 @@
 import { BackButton, Button, Flex, Input, Text, useTheme } from "@artsy/palette-mobile"
 import {
   useAuthNavigation,
-  useAuthRoute,
+  useAuthScreen,
 } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { EmailSubscriptionCheckbox } from "app/Scenes/Onboarding/OnboardingCreateAccount/EmailSubscriptionCheckbox"
 import { TermsOfServiceCheckbox } from "app/Scenes/Onboarding/OnboardingCreateAccount/TermsOfServiceCheckbox"
@@ -19,7 +19,7 @@ interface SignUpNameStepFormValues {
 }
 
 export const SignUpNameStep: React.FC = () => {
-  const route = useAuthRoute<"SignUpNameStep">()
+  const screen = useAuthScreen()
 
   const formik = useFormik<SignUpNameStepFormValues>({
     initialValues: { name: "", acceptedTerms: false, agreedToReceiveEmails: false },
@@ -31,8 +31,8 @@ export const SignUpNameStep: React.FC = () => {
       const res = await GlobalStore.actions.auth.signUp({
         oauthProvider: "email",
         oauthMode: "email",
-        email: route.params.email,
-        password: route.params.password,
+        email: screen.params?.email,
+        password: screen.params?.password,
         name: name.trim(),
         agreedToReceiveEmails,
       })

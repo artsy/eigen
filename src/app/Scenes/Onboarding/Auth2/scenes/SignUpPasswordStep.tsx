@@ -1,7 +1,7 @@
 import { BackButton, Button, Flex, Input, Text, useTheme } from "@artsy/palette-mobile"
 import {
   useAuthNavigation,
-  useAuthRoute,
+  useAuthScreen,
 } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import React from "react"
@@ -13,14 +13,17 @@ interface SignUpPasswordStepFormValues {
 
 export const SignUpPasswordStep: React.FC = () => {
   const navigation = useAuthNavigation()
-  const route = useAuthRoute<"SignUpPasswordStep">()
+  const screen = useAuthScreen()
 
   const formik = useFormik<SignUpPasswordStepFormValues>({
     initialValues: { password: "" },
     onSubmit: ({ password }) => {
-      navigation.navigate("SignUpNameStep", {
-        email: route.params.email,
-        password: password,
+      navigation.navigate({
+        name: "SignUpNameStep",
+        params: {
+          email: screen.params?.email,
+          password: password,
+        },
       })
     },
     validationSchema: Yup.object().shape({

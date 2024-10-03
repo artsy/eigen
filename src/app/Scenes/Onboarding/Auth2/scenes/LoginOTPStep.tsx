@@ -11,7 +11,7 @@ import {
 } from "@artsy/palette-mobile"
 import {
   useAuthNavigation,
-  useAuthRoute,
+  useAuthScreen,
 } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
@@ -23,7 +23,7 @@ interface LoginOTPStepFormValues {
 }
 
 export const LoginOTPStep: React.FC = () => {
-  const route = useAuthRoute<"LoginOTPStep">()
+  const screen = useAuthScreen()
 
   const formik = useFormik<LoginOTPStepFormValues>({
     initialValues: { otp: "" },
@@ -31,8 +31,8 @@ export const LoginOTPStep: React.FC = () => {
       const res = await GlobalStore.actions.auth.signIn({
         oauthProvider: "email",
         oauthMode: "email",
-        email: route.params?.email,
-        password: route.params?.password,
+        email: screen.params?.email,
+        password: screen.params?.password,
         otp: otp.trim(),
       })
 
@@ -59,7 +59,7 @@ const LoginOTPStepForm: React.FC = () => {
     useFormikContext<LoginOTPStepFormValues>()
 
   const navigation = useAuthNavigation()
-  const route = useAuthRoute<"LoginOTPStep">()
+  const screen = useAuthScreen()
 
   const { color, space } = useTheme()
 
@@ -98,7 +98,7 @@ const LoginOTPStepForm: React.FC = () => {
         {recoveryCodeMode ? "Enter authentication code" : "Enter recovery code instead"}
       </LinkText>
 
-      {route.params?.otpMode === "on_demand" && (
+      {screen.params?.otpMode === "on_demand" && (
         <>
           <Spacer y={2} />
           <SimpleMessage testID="on_demand_message">

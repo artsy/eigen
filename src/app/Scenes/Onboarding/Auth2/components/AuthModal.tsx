@@ -11,7 +11,7 @@ const HEIGHT = {
 }
 
 export const AuthModal: React.FC = ({ children }) => {
-  const isModalExpanded = AuthContext.useStoreState((state) => state.isModalExpanded)
+  const { isModalExpanded, isMounted } = AuthContext.useStoreState((state) => state)
 
   const screenHeight = Dimensions.get("window").height
   const { space } = useTheme()
@@ -27,13 +27,16 @@ export const AuthModal: React.FC = ({ children }) => {
           from={{
             height: HEIGHT.collapsed,
             bottom: space(4),
+            translateY: isModalExpanded ? 0 : screenHeight * 4,
           }}
           animate={{
             height: isModalExpanded ? screenHeight * 0.5 - insets.top : HEIGHT.collapsed,
+            translateY: 0,
           }}
           transition={{
             type: "timing",
             duration: 600,
+            delay: isMounted ? 0 : 500,
             easing: Easing.out(Easing.exp),
           }}
           style={{

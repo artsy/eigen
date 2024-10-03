@@ -1,7 +1,7 @@
 import { BackButton, Button, Flex, Input, Spacer, Text, useTheme } from "@artsy/palette-mobile"
 import {
   useAuthNavigation,
-  useAuthRoute,
+  useAuthScreen,
 } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
@@ -27,7 +27,10 @@ export const ForgotPasswordStep: React.FC = () => {
             "Couldn’t send reset password link. Please try again, or contact support@artsy.net",
         })
       } else {
-        navigation.navigate("ForgotPasswordStep", { requestedPasswordReset: true })
+        navigation.navigate({
+          name: "ForgotPasswordStep",
+          params: { requestedPasswordReset: true },
+        })
       }
     },
     validationSchema: Yup.string().email("Please provide a valid email address"),
@@ -45,7 +48,7 @@ const ForgotPasswordStepForm: React.FC = () => {
     useFormikContext<ForgotPasswordStepFormValues>()
 
   const navigation = useAuthNavigation()
-  const route = useAuthRoute<"ForgotPasswordStep">()
+  const screen = useAuthScreen()
 
   const { color, space } = useTheme()
 
@@ -53,7 +56,7 @@ const ForgotPasswordStepForm: React.FC = () => {
     navigation.goBack()
   }
 
-  const requestedPasswordReset = route.params?.requestedPasswordReset
+  const requestedPasswordReset = screen.params?.requestedPasswordReset
 
   return (
     <Flex padding={2} gap={space(1)}>
