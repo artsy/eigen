@@ -5,6 +5,7 @@ import {
   HomeViewSectionScreenQuery,
   HomeViewSectionScreenQuery$data,
 } from "__generated__/HomeViewSectionScreenQuery.graphql"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { HomeViewSectionScreenContent } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreenContent"
 import { HomeViewSectionScreenPlaceholder } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreenPlaceholder"
@@ -76,5 +77,8 @@ export const HomeViewSectionScreenQueryRenderer = withSuspense(
 
     return <HomeViewSectionScreen section={data.homeView.section} />
   },
-  HomeViewSectionScreenPlaceholder
+  HomeViewSectionScreenPlaceholder,
+  (fallbackProps) => (
+    <LoadFailureView showBackButton trackErrorBoundary={false} error={fallbackProps.error} />
+  )
 )
