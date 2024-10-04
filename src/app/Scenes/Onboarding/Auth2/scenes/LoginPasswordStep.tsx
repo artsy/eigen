@@ -1,42 +1,59 @@
-import { BackButton, Button, Flex, Spacer, Text, Touchable, useTheme } from "@artsy/palette-mobile"
-import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
-import { useNavigation } from "@react-navigation/native"
-import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack"
-import { BottomSheetInput } from "app/Components/BottomSheetInput"
-import { OnboardingHomeNavigationStack } from "app/Scenes/Onboarding/OnboardingHome"
+import {
+  BackButton,
+  Button,
+  Flex,
+  Input,
+  Spacer,
+  Text,
+  Touchable,
+  useTheme,
+} from "@artsy/palette-mobile"
+import {
+  useAuthNavigation,
+  useAuthScreen,
+} from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
+import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
 import { GlobalStore } from "app/store/GlobalStore"
 import { showBlockedAuthError } from "app/utils/auth/authHelpers"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
+import { useRef } from "react"
 import * as Yup from "yup"
-
-type LoginPasswordStepProps = StackScreenProps<OnboardingHomeNavigationStack, "LoginPasswordStep">
 
 interface LoginPasswordStepFormValues {
   password: string
 }
 
-export const LoginPasswordStep: React.FC<LoginPasswordStepProps> = ({ navigation, route }) => {
+export const LoginPasswordStep: React.FC = () => {
+  const navigation = useAuthNavigation()
+  const screen = useAuthScreen()
+
   const formik = useFormik<LoginPasswordStepFormValues>({
     initialValues: { password: "" },
-    onSubmit: async ({ password }, { setErrors }) => {
+    onSubmit: async ({ password }, { setErrors, resetForm }) => {
       const res = await GlobalStore.actions.auth.signIn({
         oauthProvider: "email",
         oauthMode: "email",
-        email: route.params.email,
+        email: screen.params?.email,
         password,
       })
 
       if (res === "otp_missing") {
-        navigation.navigate("LoginOTPStep", {
-          otpMode: "standard",
-          email: route.params.email,
-          password,
+        navigation.navigate({
+          name: "LoginOTPStep",
+          params: {
+            otpMode: "standard",
+            email: screen.params?.email,
+            password,
+          },
         })
       } else if (res === "on_demand_otp_missing") {
-        navigation.navigate("LoginOTPStep", {
-          otpMode: "on_demand",
-          email: route.params.email,
-          password,
+        navigation.navigate({
+          name: "LoginOTPStep",
+          params: {
+            otpMode: "on_demand",
+            email: screen.params?.email,
+            password,
+          },
         })
       }
 
@@ -49,6 +66,10 @@ export const LoginPasswordStep: React.FC<LoginPasswordStepProps> = ({ navigation
         // For security purposes, we are returning a generic error message
         setErrors({ password: "Incorrect email or password" }) // pragma: allowlist secret
       }
+
+      if (res === "success") {
+        resetForm()
+      }
     },
     validationSchema: Yup.string().test(
       "password",
@@ -58,45 +79,62 @@ export const LoginPasswordStep: React.FC<LoginPasswordStepProps> = ({ navigation
   })
 
   return (
-    <BottomSheetScrollView>
-      <FormikProvider value={formik}>
-        <LoginPasswordStepForm />
-      </FormikProvider>
-    </BottomSheetScrollView>
+    <FormikProvider value={formik}>
+      <LoginPasswordStepForm />
+    </FormikProvider>
   )
 }
 
 const LoginPasswordStepForm: React.FC = () => {
   const {
-    values,
+    dirty,
     errors,
-    touched,
     handleChange,
     handleSubmit,
+    isSubmitting,
     isValid,
-    dirty,
-    validateForm,
+    resetForm,
     setErrors,
+    touched,
+    validateForm,
+    values,
   } = useFormikContext<LoginPasswordStepFormValues>()
 
-  const { color, space } = useTheme()
+  const navigation = useAuthNavigation()
+  const passwordRef = useRef<Input>(null)
+  const { color } = useTheme()
 
-  const navigation = useNavigation<StackNavigationProp<OnboardingHomeNavigationStack>>()
+  useInputAutofocus({
+    screenName: "LoginPasswordStep",
+    inputRef: passwordRef,
+    delay: 0,
+  })
 
   const handleBackButtonPress = () => {
     navigation.goBack()
+    resetForm()
   }
 
   return (
-    <Flex padding={2} gap={space(1)}>
+    <Flex padding={2}>
       <BackButton onPress={handleBackButtonPress} />
+
+      <Spacer y={1} />
+
       <Text variant="sm-display">Welcome back to Artsy</Text>
 
-      <BottomSheetInput
+      <Input
         autoCapitalize="none"
         autoComplete="password"
         autoCorrect={false}
-        autoFocus
+        error={values.password.length > 0 || touched.password ? errors.password : undefined}
+        placeholderTextColor={color("black30")}
+        ref={passwordRef}
+        returnKeyType="done"
+        secureTextEntry
+        testID="password"
+        title="Password"
+        value={values.password}
         onChangeText={(text) => {
           // Hide error when the user starts to type again
           if (errors.password) {
@@ -113,32 +151,29 @@ const LoginPasswordStepForm: React.FC = () => {
           }
         }}
         onBlur={() => validateForm()}
-        placeholderTextColor={color("black30")}
-        secureTextEntry
-        title="Password"
-        returnKeyType="done"
         // We need to to set textContentType to password here
         // enable autofill of login details from the device keychain.
         textContentType="password"
-        error={values.password.length > 0 || touched.password ? errors.password : undefined}
-        testID="password"
       />
 
-      <Spacer y={4} />
+      <Spacer y={2} />
+
+      <Button block width="100%" onPress={handleSubmit} disabled={!isValid} loading={isSubmitting}>
+        Continue
+      </Button>
+
+      <Spacer y={2} />
 
       <Touchable
         onPress={() => {
-          navigation.navigate("ForgotPasswordStep")
+          navigation.navigate({ name: "ForgotPasswordStep" })
+          resetForm()
         }}
       >
-        <Text variant="sm" color="black60" underline>
+        <Text variant="xs" color="black60" underline>
           Forgot password?
         </Text>
       </Touchable>
-
-      <Button block width={100} onPress={handleSubmit} disabled={!isValid}>
-        Continue
-      </Button>
     </Flex>
   )
 }

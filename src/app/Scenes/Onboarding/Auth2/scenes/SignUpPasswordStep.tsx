@@ -1,27 +1,32 @@
-import { BackButton, Button, Flex, Text, useTheme } from "@artsy/palette-mobile"
-import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
-import { useNavigation } from "@react-navigation/native"
-import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack"
-import { BottomSheetInput } from "app/Components/BottomSheetInput"
-import { OnboardingHomeNavigationStack } from "app/Scenes/Onboarding/OnboardingHome"
+import { BackButton, Button, Flex, Input, Spacer, Text, useTheme } from "@artsy/palette-mobile"
+import {
+  useAuthNavigation,
+  useAuthScreen,
+} from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import React from "react"
 import * as Yup from "yup"
-
-type SignUpPasswordStepProps = StackScreenProps<OnboardingHomeNavigationStack, "SignUpPasswordStep">
 
 interface SignUpPasswordStepFormValues {
   password: string
 }
 
-export const SignUpPasswordStep: React.FC<SignUpPasswordStepProps> = ({ navigation, route }) => {
+export const SignUpPasswordStep: React.FC = () => {
+  const navigation = useAuthNavigation()
+  const screen = useAuthScreen()
+
   const formik = useFormik<SignUpPasswordStepFormValues>({
     initialValues: { password: "" },
-    onSubmit: ({ password }) => {
-      navigation.navigate("SignUpNameStep", {
-        email: route.params.email,
-        password: password,
+    onSubmit: ({ password }, { resetForm }) => {
+      navigation.navigate({
+        name: "SignUpNameStep",
+        params: {
+          email: screen.params?.email,
+          password: password,
+        },
       })
+
+      resetForm()
     },
     validationSchema: Yup.object().shape({
       password: Yup.string()
@@ -34,37 +39,46 @@ export const SignUpPasswordStep: React.FC<SignUpPasswordStepProps> = ({ navigati
   })
 
   return (
-    <BottomSheetScrollView>
-      <FormikProvider value={formik}>
-        <SignUpPasswordStepForm />
-      </FormikProvider>
-    </BottomSheetScrollView>
+    <FormikProvider value={formik}>
+      <SignUpPasswordStepForm />
+    </FormikProvider>
   )
 }
 
 const SignUpPasswordStepForm: React.FC = () => {
-  const { errors, handleChange, handleSubmit, isValid, setErrors } =
+  const { errors, handleChange, handleSubmit, isValid, setErrors, values, resetForm } =
     useFormikContext<SignUpPasswordStepFormValues>()
 
-  const navigation = useNavigation<StackNavigationProp<OnboardingHomeNavigationStack>>()
+  const navigation = useAuthNavigation()
 
-  const { color, space } = useTheme()
+  const { color } = useTheme()
 
   const handleBackButtonPress = () => {
     navigation.goBack()
+    resetForm()
   }
 
   return (
-    <Flex padding={2} gap={space(1)}>
+    <Flex padding={2}>
       <BackButton onPress={handleBackButtonPress} />
 
+      <Spacer y={1} />
+
       <Text variant="sm-display">Welcome to Artsy</Text>
-      <BottomSheetInput
+
+      <Input
         autoCapitalize="none"
         autoComplete="password"
-        title="Password"
         autoCorrect={false}
-        autoFocus
+        blurOnSubmit={false}
+        error={errors.password}
+        placeholder="Password"
+        placeholderTextColor={color("black30")}
+        returnKeyType="done"
+        secureTextEntry
+        textContentType="password"
+        title="Password"
+        value={values.password}
         onChangeText={(text) => {
           // Hide error when the user starts to type again
           if (errors.password) {
@@ -75,16 +89,9 @@ const SignUpPasswordStepForm: React.FC = () => {
           handleChange("password")(text)
         }}
         onSubmitEditing={handleSubmit}
-        blurOnSubmit={false}
-        placeholderTextColor={color("black30")}
-        placeholder="Password"
-        secureTextEntry
-        returnKeyType="done"
-        // We need to set textContentType to password here
-        // enable autofill of login details from the device keychain.
-        textContentType="password"
-        error={errors.password}
       />
+
+      <Spacer y={2} />
 
       <Button block width={100} onPress={handleSubmit} disabled={!isValid}>
         Continue

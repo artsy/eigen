@@ -68,7 +68,7 @@ export const OnboardingCreateAccountName: React.FC<OnboardingCreateAccountNamePr
           setChecked={() => setFieldValue("acceptedTerms", !values.acceptedTerms)}
           checked={values.acceptedTerms}
           error={highlightTerms}
-          navigation={navigation}
+          navigation={navigation as any}
         />
         <EmailSubscriptionCheckbox
           setChecked={() => setFieldValue("agreedToReceiveEmails", !values.agreedToReceiveEmails)}
