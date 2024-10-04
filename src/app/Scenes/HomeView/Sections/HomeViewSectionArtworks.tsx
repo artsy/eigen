@@ -158,7 +158,7 @@ const HomeViewSectionArtworksPlaceholder: React.FC<FlexProps> = (flexProps) => {
     <Skeleton>
       <Flex {...flexProps}>
         <Flex mx={2}>
-          <SkeletonText variant="lg-display">Arwtworks Rail</SkeletonText>
+          <SkeletonText variant="sm-display">Arwtworks Rail</SkeletonText>
           <Spacer y={2} />
 
           <Flex flexDirection="row">
@@ -177,10 +177,13 @@ const HomeViewSectionArtworksPlaceholder: React.FC<FlexProps> = (flexProps) => {
                     />
                   )}
                   <Spacer y={2} />
-                  <SkeletonText>Andy Warhol</SkeletonText>
-                  <SkeletonText>A creative name for a work</SkeletonText>
-                  <SkeletonText>Gallery or Partner</SkeletonText>
-                  <SkeletonText>1000 €</SkeletonText>
+
+                  <Join separator={<Spacer y={0.5} />}>
+                    <SkeletonText variant="xxs">Andy Warhol</SkeletonText>
+                    <SkeletonText variant="xxs">A creative name for a work</SkeletonText>
+                    <SkeletonText variant="xxs">Gallery or Partner</SkeletonText>
+                    <SkeletonText variant="xxs">1000 €</SkeletonText>
+                  </Join>
                 </Flex>
               ))}
             </Join>

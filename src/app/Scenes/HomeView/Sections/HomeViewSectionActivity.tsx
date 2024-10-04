@@ -168,7 +168,6 @@ const HomeViewSectionActivityPlaceholder: React.FC<FlexProps> = (flexProps) => {
   return (
     <Flex {...flexProps} mx={2}>
       <SkeletonText variant="sm-display">Latest Activity</SkeletonText>
-
       <Spacer y={2} />
 
       <Flex flexDirection="row">
