@@ -9,7 +9,7 @@ import {
 } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { BrowseSimilarWorksContent } from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorksContent"
 import { BrowseSimilarWorksErrorState } from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorksErrorState"
-import { withSuspense } from "app/utils/hooks/withSuspense"
+import { strictWithSuspense } from "app/utils/hooks/withSuspense"
 import { PlaceholderBox, PlaceholderRaggedText } from "app/utils/placeholders"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
@@ -68,7 +68,7 @@ const BrowseSimilarWorks: React.FC<{ artwork: BrowseSimilarWorks_artwork$key }> 
   return <BrowseSimilarWorksContent params={params} />
 }
 
-export const BrowseSimilarWorksQueryRenderer: React.FC<{ artworkID: string }> = withSuspense(
+export const BrowseSimilarWorksQueryRenderer: React.FC<{ artworkID: string }> = strictWithSuspense(
   (props) => {
     const data = useLazyLoadQuery<BrowseSimilarWorksQuery>(SimilarWorksQuery, {
       artworkID: props.artworkID,

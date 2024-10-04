@@ -25,7 +25,7 @@ import {
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { withSuspense } from "app/utils/hooks/withSuspense"
+import { strictWithSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
 import { useRef } from "react"
@@ -211,7 +211,7 @@ const homeViewSectionSalesQuery = graphql`
   }
 `
 
-export const HomeViewSectionSalesQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
+export const HomeViewSectionSalesQueryRenderer: React.FC<SectionSharedProps> = strictWithSuspense(
   ({ sectionID, index, ...flexProps }) => {
     const data = useLazyLoadQuery<HomeViewSectionSalesQuery>(
       homeViewSectionSalesQuery,
