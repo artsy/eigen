@@ -5,8 +5,8 @@ import { Dimensions, KeyboardAvoidingView, Platform } from "react-native"
 import { Easing } from "react-native-reanimated"
 
 const HEIGHT = {
-  WelcomeStep: 300,
-  LoginEmailStep: 280,
+  WelcomeStep: 320,
+  LoginEmailStep: 320,
   LoginPasswordStep: 320,
   ForgotPasswordStep: 320,
   LoginOTPStep: 280,
@@ -49,16 +49,14 @@ export const AuthModal: React.FC = ({ children }) => {
       <Box flex={1}>
         <MotiView
           from={{
-            height: HEIGHT.collapsed,
             top: isModalExpanded ? 0 : screenHeight,
           }}
           animate={{
-            height,
             top,
           }}
           transition={{
             type: "timing",
-            duration: 600,
+            duration: isModalExpanded ? 800 : 600,
             delay: isMounted ? 0 : 500,
             easing: Easing.out(Easing.exp),
           }}
@@ -70,7 +68,7 @@ export const AuthModal: React.FC = ({ children }) => {
             position: "relative",
           }}
         >
-          <Flex height="100%" justifyContent="center" p={1}>
+          <Flex justifyContent="center" p={1}>
             {children}
           </Flex>
         </MotiView>

@@ -89,7 +89,13 @@ const SignUpNameStepForm: React.FC = () => {
         autoCapitalize="words"
         autoComplete="name"
         autoCorrect={false}
-        autoFocus
+        blurOnSubmit={false}
+        error={errors.name}
+        maxLength={128}
+        placeholder="First and last name"
+        placeholderTextColor={color("black30")}
+        ref={nameRef}
+        returnKeyType="done"
         title="Full Name"
         onChangeText={(text) => {
           if (errors.name) {
@@ -109,13 +115,6 @@ const SignUpNameStepForm: React.FC = () => {
             }
           })
         }}
-        blurOnSubmit={false}
-        placeholder="First and last name"
-        placeholderTextColor={color("black30")}
-        returnKeyType="done"
-        maxLength={128}
-        error={errors.name}
-        ref={nameRef}
       />
 
       <Spacer y={2} />

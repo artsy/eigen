@@ -94,9 +94,18 @@ const ForgotPasswordStepForm: React.FC = () => {
             <Input
               autoCapitalize="none"
               autoComplete="email"
+              autoCorrect={false}
+              blurOnSubmit={false} // This is needed to avoid UI jump when the user submits
               enableClearButton
-              autoFocus
               keyboardType="email-address"
+              placeholder="Email address"
+              placeholderTextColor={color("black30")}
+              ref={forgotPasswordRef}
+              returnKeyType="done"
+              spellCheck={false}
+              testID="email-address"
+              textContentType="emailAddress"
+              value={values.email}
               onChangeText={(text) => {
                 handleChange("email")(text.trim())
               }}
@@ -108,16 +117,6 @@ const ForgotPasswordStepForm: React.FC = () => {
               onBlur={() => {
                 validateForm()
               }}
-              blurOnSubmit={false} // This is needed to avoid UI jump when the user submits
-              placeholder="Email address"
-              placeholderTextColor={color("black30")}
-              value={values.email}
-              returnKeyType="done"
-              spellCheck={false}
-              autoCorrect={false}
-              textContentType="emailAddress"
-              testID="email-address"
-              ref={forgotPasswordRef}
             />
           </>
         )}

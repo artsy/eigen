@@ -14,9 +14,9 @@ export const WelcomeStep: React.FC = () => {
   const navigation = useAuthNavigation()
 
   const handleEmailPress = () => {
-    InteractionManager.runAfterInteractions(() => {
-      setModalExpanded(true)
+    requestAnimationFrame(() => {
       navigation.navigate({ name: "LoginEmailStep" })
+      setModalExpanded(true)
     })
   }
 

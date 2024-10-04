@@ -66,9 +66,15 @@ const SignUpPasswordStepForm: React.FC = () => {
       <Input
         autoCapitalize="none"
         autoComplete="password"
-        title="Password"
         autoCorrect={false}
-        autoFocus
+        blurOnSubmit={false}
+        error={errors.password}
+        placeholder="Password"
+        placeholderTextColor={color("black30")}
+        returnKeyType="done"
+        secureTextEntry
+        textContentType="password"
+        title="Password"
         onChangeText={(text) => {
           // Hide error when the user starts to type again
           if (errors.password) {
@@ -79,15 +85,6 @@ const SignUpPasswordStepForm: React.FC = () => {
           handleChange("password")(text)
         }}
         onSubmitEditing={handleSubmit}
-        blurOnSubmit={false}
-        placeholderTextColor={color("black30")}
-        placeholder="Password"
-        secureTextEntry
-        returnKeyType="done"
-        // We need to set textContentType to password here
-        // enable autofill of login details from the device keychain.
-        textContentType="password"
-        error={errors.password}
       />
 
       <Spacer y={2} />

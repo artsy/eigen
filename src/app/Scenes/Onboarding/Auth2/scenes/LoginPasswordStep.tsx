@@ -102,6 +102,7 @@ const LoginPasswordStepForm: React.FC = () => {
   useInputAutofocus({
     screenName: "LoginPasswordStep",
     inputRef: passwordRef,
+    delay: 100,
   })
 
   const handleBackButtonPress = () => {
@@ -117,11 +118,16 @@ const LoginPasswordStepForm: React.FC = () => {
       <Text variant="sm-display">Welcome back to Artsy</Text>
 
       <Input
-        ref={passwordRef}
         autoCapitalize="none"
         autoComplete="password"
         autoCorrect={false}
-        autoFocus
+        error={values.password.length > 0 || touched.password ? errors.password : undefined}
+        placeholderTextColor={color("black30")}
+        ref={passwordRef}
+        returnKeyType="done"
+        secureTextEntry
+        testID="password"
+        title="Password"
         onChangeText={(text) => {
           // Hide error when the user starts to type again
           if (errors.password) {
@@ -138,15 +144,9 @@ const LoginPasswordStepForm: React.FC = () => {
           }
         }}
         onBlur={() => validateForm()}
-        placeholderTextColor={color("black30")}
-        secureTextEntry
-        title="Password"
-        returnKeyType="done"
         // We need to to set textContentType to password here
         // enable autofill of login details from the device keychain.
         textContentType="password"
-        error={values.password.length > 0 || touched.password ? errors.password : undefined}
-        testID="password"
       />
 
       <Spacer y={2} />

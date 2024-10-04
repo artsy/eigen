@@ -1,5 +1,4 @@
 import { AuthScreen } from "app/Scenes/Onboarding/Auth2/components/AuthScreen"
-// import { EmailSocialStep } from "app/Scenes/Onboarding/Auth2/scenes/EmailSocialStep"
 import { ForgotPasswordStep } from "app/Scenes/Onboarding/Auth2/scenes/ForgotPasswordStep"
 import { LoginEmailStep } from "app/Scenes/Onboarding/Auth2/scenes/LoginEmailStep"
 import { LoginOTPStep } from "app/Scenes/Onboarding/Auth2/scenes/LoginOTPStep"
