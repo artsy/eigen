@@ -24,7 +24,7 @@ import { Suspense, useCallback, useEffect, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
-export const NUMBER_OF_SECTIONS_TO_LOAD = 30
+export const NUMBER_OF_SECTIONS_TO_LOAD = 10
 // Hard coding the value here because 30px is not a valid value for the spacing unit
 // and we need it to be consistent with 60px spacing between sections
 export const HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT = "30px"
@@ -144,7 +144,7 @@ export const HomeView: React.FC = () => {
             ) : null
           }
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-          onEndReachedThreshold={1}
+          onEndReachedThreshold={2}
         />
       </Screen.Body>
     </Screen>
