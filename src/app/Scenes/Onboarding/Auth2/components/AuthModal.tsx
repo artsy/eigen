@@ -31,14 +31,13 @@ export const AuthModal: React.FC = ({ children }) => {
     return HEIGHT.collapsed
   })()
 
-  const top = (() => {
+  const translateY = (() => {
     // Position the modal in the center of the screen, minus some padding
     if (isModalExpanded) {
-      return screenHeight / 2 - height / 2 - space(12)
+      return 0
     }
 
-    // Position at the bottom of the screen, minus height of modal and padding
-    return screenHeight - height - space(6)
+    return screenHeight / 2 - height / 2 - space(6)
   })()
 
   return (
@@ -46,13 +45,13 @@ export const AuthModal: React.FC = ({ children }) => {
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <Box flex={1}>
+      <Box flex={1} height="100%" justifyContent="center">
         <MotiView
           from={{
-            top: isModalExpanded ? 0 : screenHeight,
+            translateY: isModalExpanded ? 0 : screenHeight,
           }}
           animate={{
-            top,
+            translateY,
           }}
           transition={{
             type: "timing",

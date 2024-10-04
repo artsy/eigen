@@ -1,6 +1,6 @@
 import { Box } from "@artsy/palette-mobile"
 import { RecaptchaWebView } from "app/Components/Recaptcha/RecaptchaWebView"
-import { useCallback, useState } from "react"
+import { useState } from "react"
 
 type State = "idle" | "error" | undefined
 type UseRecaptchaProps = { source: string; action: string }
@@ -10,10 +10,7 @@ export const useRecaptcha = ({ source, action }: UseRecaptchaProps) => {
   const [state, setState] = useState<State>()
 
   const handleOnToken = (token: string) => {
-    if (state !== "idle") {
-      setState("idle")
-      setToken(token)
-    }
+    setToken(token)
   }
 
   const handleOnError = (error: string) => {
@@ -21,13 +18,10 @@ export const useRecaptcha = ({ source, action }: UseRecaptchaProps) => {
     setState("error")
   }
 
-  const RecaptchaComponent = useCallback(
-    () => (
-      <Box height={0}>
-        <RecaptchaWebView action={action} onToken={handleOnToken} onError={handleOnError} />
-      </Box>
-    ),
-    [action]
+  const RecaptchaComponent = () => (
+    <Box height={0}>
+      <RecaptchaWebView action={action} onToken={handleOnToken} onError={handleOnError} />
+    </Box>
   )
 
   return { Recaptcha: RecaptchaComponent, token, state }

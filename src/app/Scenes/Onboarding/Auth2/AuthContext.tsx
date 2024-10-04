@@ -23,6 +23,7 @@ interface AuthContextModel {
   isGoingBack: boolean
   isModalExpanded: boolean
   isMounted: boolean
+  popScreen: Action<AuthContextModel>
   previousScreens: Array<AuthScreen | undefined>
   setCurrentScreen: Action<AuthContextModel, AuthScreen>
   setIsGoingBack: Action<AuthContextModel, boolean>
@@ -48,14 +49,17 @@ export const AuthContext = createContextStore<AuthContextModel>({
 
   setIsGoingBack: action((state, isGoingBack) => {
     state.isGoingBack = isGoingBack
+  }),
 
-    if (isGoingBack) {
-      state.currentScreen = state.previousScreens.pop()
-    }
+  popScreen: action((state) => {
+    state.currentScreen = state.previousScreens.pop()
   }),
 
   goBack: thunk(async (actions) => {
     actions.setIsGoingBack(true)
+
+    actions.popScreen()
+    setTimeout(() => {}, 0)
 
     setTimeout(() => {
       actions.setIsGoingBack(false)

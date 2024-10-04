@@ -17,7 +17,7 @@ export const SignUpPasswordStep: React.FC = () => {
 
   const formik = useFormik<SignUpPasswordStepFormValues>({
     initialValues: { password: "" },
-    onSubmit: ({ password }) => {
+    onSubmit: ({ password }, { resetForm }) => {
       navigation.navigate({
         name: "SignUpNameStep",
         params: {
@@ -25,6 +25,8 @@ export const SignUpPasswordStep: React.FC = () => {
           password: password,
         },
       })
+
+      resetForm()
     },
     validationSchema: Yup.object().shape({
       password: Yup.string()
@@ -44,7 +46,7 @@ export const SignUpPasswordStep: React.FC = () => {
 }
 
 const SignUpPasswordStepForm: React.FC = () => {
-  const { errors, handleChange, handleSubmit, isValid, setErrors } =
+  const { errors, handleChange, handleSubmit, isValid, setErrors, values, resetForm } =
     useFormikContext<SignUpPasswordStepFormValues>()
 
   const navigation = useAuthNavigation()
@@ -53,6 +55,7 @@ const SignUpPasswordStepForm: React.FC = () => {
 
   const handleBackButtonPress = () => {
     navigation.goBack()
+    resetForm()
   }
 
   return (
@@ -75,6 +78,7 @@ const SignUpPasswordStepForm: React.FC = () => {
         secureTextEntry
         textContentType="password"
         title="Password"
+        value={values.password}
         onChangeText={(text) => {
           // Hide error when the user starts to type again
           if (errors.password) {

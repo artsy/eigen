@@ -29,7 +29,7 @@ export const LoginPasswordStep: React.FC = () => {
 
   const formik = useFormik<LoginPasswordStepFormValues>({
     initialValues: { password: "" },
-    onSubmit: async ({ password }, { setErrors }) => {
+    onSubmit: async ({ password }, { setErrors, resetForm }) => {
       const res = await GlobalStore.actions.auth.signIn({
         oauthProvider: "email",
         oauthMode: "email",
@@ -66,6 +66,10 @@ export const LoginPasswordStep: React.FC = () => {
         // For security purposes, we are returning a generic error message
         setErrors({ password: "Incorrect email or password" }) // pragma: allowlist secret
       }
+
+      if (res === "success") {
+        resetForm()
+      }
     },
     validationSchema: Yup.string().test(
       "password",
@@ -89,6 +93,7 @@ const LoginPasswordStepForm: React.FC = () => {
     handleSubmit,
     isSubmitting,
     isValid,
+    resetForm,
     setErrors,
     touched,
     validateForm,
@@ -102,11 +107,12 @@ const LoginPasswordStepForm: React.FC = () => {
   useInputAutofocus({
     screenName: "LoginPasswordStep",
     inputRef: passwordRef,
-    delay: 100,
+    delay: 0,
   })
 
   const handleBackButtonPress = () => {
     navigation.goBack()
+    resetForm()
   }
 
   return (
@@ -128,6 +134,7 @@ const LoginPasswordStepForm: React.FC = () => {
         secureTextEntry
         testID="password"
         title="Password"
+        value={values.password}
         onChangeText={(text) => {
           // Hide error when the user starts to type again
           if (errors.password) {
@@ -160,6 +167,7 @@ const LoginPasswordStepForm: React.FC = () => {
       <Touchable
         onPress={() => {
           navigation.navigate({ name: "ForgotPasswordStep" })
+          resetForm()
         }}
       >
         <Text variant="xs" color="black60" underline>

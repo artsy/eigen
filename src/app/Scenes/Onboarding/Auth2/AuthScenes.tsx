@@ -1,6 +1,5 @@
 import { AuthScreen } from "app/Scenes/Onboarding/Auth2/components/AuthScreen"
 import { ForgotPasswordStep } from "app/Scenes/Onboarding/Auth2/scenes/ForgotPasswordStep"
-import { LoginEmailStep } from "app/Scenes/Onboarding/Auth2/scenes/LoginEmailStep"
 import { LoginOTPStep } from "app/Scenes/Onboarding/Auth2/scenes/LoginOTPStep"
 import { LoginPasswordStep } from "app/Scenes/Onboarding/Auth2/scenes/LoginPasswordStep"
 import { SignUpNameStep } from "app/Scenes/Onboarding/Auth2/scenes/SignUpNameStep"
@@ -14,10 +13,6 @@ export const AuthScenes: React.FC = () => {
       <ScrollView keyboardShouldPersistTaps="always">
         <AuthScreen name="WelcomeStep">
           <WelcomeStep />
-        </AuthScreen>
-
-        <AuthScreen name="LoginEmailStep">
-          <LoginEmailStep />
         </AuthScreen>
 
         <AuthScreen name="LoginPasswordStep">

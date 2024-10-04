@@ -28,7 +28,7 @@ export const LoginOTPStep: React.FC = () => {
 
   const formik = useFormik<LoginOTPStepFormValues>({
     initialValues: { otp: "" },
-    onSubmit: async ({ otp }, { setErrors }) => {
+    onSubmit: async ({ otp }, { setErrors, resetForm }) => {
       const res = await GlobalStore.actions.auth.signIn({
         oauthProvider: "email",
         oauthMode: "email",
@@ -41,6 +41,10 @@ export const LoginOTPStep: React.FC = () => {
         setErrors({ otp: "Invalid two-factor authentication code" })
       } else if (res !== "success") {
         setErrors({ otp: "Something went wrong. Please try again, or contact support@artsy.net" })
+      }
+
+      if (res === "success") {
+        resetForm()
       }
     },
     validationSchema: Yup.string().test("otp", "This field is required", (value) => value !== ""),
@@ -56,8 +60,16 @@ export const LoginOTPStep: React.FC = () => {
 const LoginOTPStepForm: React.FC = () => {
   const [recoveryCodeMode, setRecoveryCodeMode] = useState(false)
 
-  const { errors, handleChange, handleSubmit, isValid, setErrors, validateForm, values } =
-    useFormikContext<LoginOTPStepFormValues>()
+  const {
+    errors,
+    handleChange,
+    handleSubmit,
+    isValid,
+    setErrors,
+    validateForm,
+    values,
+    resetForm,
+  } = useFormikContext<LoginOTPStepFormValues>()
 
   const navigation = useAuthNavigation()
   const screen = useAuthScreen()
@@ -72,6 +84,7 @@ const LoginOTPStepForm: React.FC = () => {
 
   const handleBackButtonPress = () => {
     navigation.goBack()
+    resetForm()
   }
 
   return (

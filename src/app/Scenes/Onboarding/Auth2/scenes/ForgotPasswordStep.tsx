@@ -18,7 +18,7 @@ export const ForgotPasswordStep: React.FC = () => {
 
   const formik = useFormik<ForgotPasswordStepFormValues>({
     initialValues: { email: "" },
-    onSubmit: async ({ email }, { setErrors }) => {
+    onSubmit: async ({ email }, { setErrors, resetForm }) => {
       const res = await GlobalStore.actions.auth.forgotPassword({
         email,
       })
@@ -33,9 +33,15 @@ export const ForgotPasswordStep: React.FC = () => {
           name: "ForgotPasswordStep",
           params: { requestedPasswordReset: true },
         })
+
+        resetForm()
       }
     },
-    validationSchema: Yup.string().email("Please provide a valid email address"),
+    validationSchema: Yup.object().shape({
+      email: Yup.string()
+        .email("Please provide a valid email address")
+        .required("Email field is required"),
+    }),
   })
 
   return (
@@ -46,8 +52,16 @@ export const ForgotPasswordStep: React.FC = () => {
 }
 
 const ForgotPasswordStepForm: React.FC = () => {
-  const { dirty, handleChange, handleSubmit, isSubmitting, isValid, validateForm, values } =
-    useFormikContext<ForgotPasswordStepFormValues>()
+  const {
+    dirty,
+    handleChange,
+    handleSubmit,
+    isSubmitting,
+    isValid,
+    validateForm,
+    values,
+    resetForm,
+  } = useFormikContext<ForgotPasswordStepFormValues>()
 
   const navigation = useAuthNavigation()
 
@@ -59,6 +73,7 @@ const ForgotPasswordStepForm: React.FC = () => {
 
   const handleBackButtonPress = () => {
     navigation.goBack()
+    resetForm()
   }
 
   const requestedPasswordReset = screen.params?.requestedPasswordReset
@@ -85,7 +100,7 @@ const ForgotPasswordStepForm: React.FC = () => {
         )}
 
         {!!requestedPasswordReset ? (
-          <Text color="blue100" pt={0.5} variant="xs">
+          <Text color="blue100" mt={1} variant="sm">
             Password reset link sent. Please check your email.
           </Text>
         ) : (
@@ -130,7 +145,7 @@ const ForgotPasswordStepForm: React.FC = () => {
 
           <Button
             variant="fillDark"
-            onPress={() => navigation.navigate({ name: "LoginEmailStep" })}
+            onPress={() => navigation.navigate({ name: "WelcomeStep" })}
             block
             haptic="impactMedium"
             testID="returnToLoginButton"

@@ -24,7 +24,7 @@ export const SignUpNameStep: React.FC = () => {
 
   const formik = useFormik<SignUpNameStepFormValues>({
     initialValues: { name: "", acceptedTerms: false, agreedToReceiveEmails: false },
-    onSubmit: async ({ acceptedTerms, agreedToReceiveEmails, name }) => {
+    onSubmit: async ({ acceptedTerms, agreedToReceiveEmails, name }, { resetForm }) => {
       if (!acceptedTerms) {
         return
       }
@@ -44,6 +44,10 @@ export const SignUpNameStep: React.FC = () => {
         } else {
           Alert.alert("Try again", res.message)
         }
+      }
+
+      if (res.success) {
+        resetForm()
       }
     },
     validationSchema: Yup.object().shape({
@@ -97,6 +101,7 @@ const SignUpNameStepForm: React.FC = () => {
         ref={nameRef}
         returnKeyType="done"
         title="Full Name"
+        value={values.name}
         onChangeText={(text) => {
           if (errors.name) {
             setErrors({
