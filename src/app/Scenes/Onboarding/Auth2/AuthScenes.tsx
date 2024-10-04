@@ -5,12 +5,11 @@ import { LoginPasswordStep } from "app/Scenes/Onboarding/Auth2/scenes/LoginPassw
 import { SignUpNameStep } from "app/Scenes/Onboarding/Auth2/scenes/SignUpNameStep"
 import { SignUpPasswordStep } from "app/Scenes/Onboarding/Auth2/scenes/SignUpPasswordStep"
 import { WelcomeStep } from "app/Scenes/Onboarding/Auth2/scenes/WelcomeStep"
-import { ScrollView } from "react-native-gesture-handler"
 
 export const AuthScenes: React.FC = () => {
   return (
     <>
-      <ScrollView keyboardShouldPersistTaps="always">
+      <>
         <AuthScreen name="WelcomeStep">
           <WelcomeStep />
         </AuthScreen>
@@ -34,7 +33,7 @@ export const AuthScenes: React.FC = () => {
         <AuthScreen name="SignUpPasswordStep">
           <SignUpPasswordStep />
         </AuthScreen>
-      </ScrollView>
+      </>
     </>
   )
 }

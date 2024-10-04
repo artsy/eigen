@@ -14,7 +14,7 @@ export const useInputAutofocus = ({
   screenName,
   inputRef,
   enabled = true,
-  delay = 0,
+  delay = 100,
 }: UseInputAutofocusProps) => {
   const currentScreen = useAuthScreen()
 
@@ -27,10 +27,16 @@ export const useInputAutofocus = ({
       return
     }
 
+    let timeout: NodeJS.Timeout
+
     requestAnimationFrame(() => {
-      setTimeout(() => {
+      timeout = setTimeout(() => {
         inputRef.current?.focus()
       }, delay)
     })
+
+    return () => {
+      clearTimeout(timeout)
+    }
   }, [currentScreen])
 }

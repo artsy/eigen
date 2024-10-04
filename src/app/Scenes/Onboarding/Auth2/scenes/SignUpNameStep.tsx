@@ -24,48 +24,47 @@ interface SignUpNameStepFormValues {
 export const SignUpNameStep: React.FC = () => {
   const screen = useAuthScreen()
 
-  const initialValues: SignUpNameStepFormValues = {
-    name: "",
-    acceptedTerms: false,
-    agreedToReceiveEmails: false,
-  }
-
-  const validationSchema = Yup.object().shape({
-    name: Yup.string().trim().required("Full name field is required"),
-  })
-
-  const onSubmit = async (
-    { acceptedTerms, agreedToReceiveEmails, name }: SignUpNameStepFormValues,
-    { resetForm }: FormikHelpers<SignUpNameStepFormValues>
-  ) => {
-    if (!acceptedTerms) {
-      return
-    }
-
-    const res = await GlobalStore.actions.auth.signUp({
-      oauthProvider: "email",
-      oauthMode: "email",
-      email: screen.params?.email,
-      password: screen.params?.password,
-      name: name.trim(),
-      agreedToReceiveEmails,
-    })
-
-    if (!res.success) {
-      if (res.error === "blocked_attempt") {
-        showBlockedAuthError("sign up")
-      } else {
-        Alert.alert("Try again", res.message)
-      }
-    }
-
-    if (res.success) {
-      resetForm()
-    }
-  }
-
   return (
-    <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
+    <Formik
+      initialValues={{
+        name: "",
+        acceptedTerms: false,
+        agreedToReceiveEmails: false,
+      }}
+      validateOnChange={false}
+      validationSchema={Yup.object().shape({
+        name: Yup.string().trim().required("Full name field is required"),
+      })}
+      onSubmit={async (
+        { acceptedTerms, agreedToReceiveEmails, name }: SignUpNameStepFormValues,
+        { resetForm }: FormikHelpers<SignUpNameStepFormValues>
+      ) => {
+        if (!acceptedTerms) {
+          return
+        }
+
+        const res = await GlobalStore.actions.auth.signUp({
+          oauthProvider: "email",
+          oauthMode: "email",
+          email: screen.params?.email,
+          password: screen.params?.password,
+          name: name.trim(),
+          agreedToReceiveEmails,
+        })
+
+        if (!res.success) {
+          if (res.error === "blocked_attempt") {
+            showBlockedAuthError("sign up")
+          } else {
+            Alert.alert("Try again", res.message)
+          }
+        }
+
+        if (res.success) {
+          resetForm()
+        }
+      }}
+    >
       <SignUpNameStepForm />
     </Formik>
   )

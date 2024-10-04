@@ -26,37 +26,36 @@ interface LoginOTPStepFormValues {
 export const LoginOTPStep: React.FC = () => {
   const screen = useAuthScreen()
 
-  const initialValues: LoginOTPStepFormValues = { otp: "" }
-
-  const validationSchema = Yup.object().shape({
-    otp: Yup.string().required("This field is required"),
-  })
-
-  const onSubmit = async (
-    { otp }: LoginOTPStepFormValues,
-    { setErrors, resetForm }: FormikHelpers<LoginOTPStepFormValues>
-  ) => {
-    const res = await GlobalStore.actions.auth.signIn({
-      oauthProvider: "email",
-      oauthMode: "email",
-      email: screen.params?.email,
-      password: screen.params?.password,
-      otp: otp.trim(),
-    })
-
-    if (res === "invalid_otp") {
-      setErrors({ otp: "Invalid two-factor authentication code" })
-    } else if (res !== "success") {
-      setErrors({ otp: "Something went wrong. Please try again, or contact support@artsy.net" })
-    }
-
-    if (res === "success") {
-      resetForm()
-    }
-  }
-
   return (
-    <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
+    <Formik
+      initialValues={{ otp: "" }}
+      validateOnChange={false}
+      validationSchema={Yup.object().shape({
+        otp: Yup.string().required("This field is required"),
+      })}
+      onSubmit={async (
+        { otp }: LoginOTPStepFormValues,
+        { setErrors, resetForm }: FormikHelpers<LoginOTPStepFormValues>
+      ) => {
+        const res = await GlobalStore.actions.auth.signIn({
+          oauthProvider: "email",
+          oauthMode: "email",
+          email: screen.params?.email,
+          password: screen.params?.password,
+          otp: otp.trim(),
+        })
+
+        if (res === "invalid_otp") {
+          setErrors({ otp: "Invalid two-factor authentication code" })
+        } else if (res !== "success") {
+          setErrors({ otp: "Something went wrong. Please try again, or contact support@artsy.net" })
+        }
+
+        if (res === "success") {
+          resetForm()
+        }
+      }}
+    >
       <LoginOTPStepForm />
     </Formik>
   )

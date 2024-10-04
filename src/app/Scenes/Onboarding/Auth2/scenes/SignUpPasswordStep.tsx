@@ -3,8 +3,9 @@ import {
   useAuthNavigation,
   useAuthScreen,
 } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
+import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
 import { Formik, FormikHelpers, useFormikContext } from "formik"
-import React from "react"
+import React, { useRef } from "react"
 import * as Yup from "yup"
 
 interface SignUpPasswordStepFormValues {
@@ -15,34 +16,32 @@ export const SignUpPasswordStep: React.FC = () => {
   const navigation = useAuthNavigation()
   const screen = useAuthScreen()
 
-  const initialValues: SignUpPasswordStepFormValues = { password: "" }
-
-  const validationSchema = Yup.object().shape({
-    password: Yup.string()
-      .min(8, "Your password should be at least 8 characters")
-      .matches(/[A-Z]/, "Your password should contain at least one uppercase letter")
-      .matches(/[a-z]/, "Your password should contain at least one lowercase letter")
-      .matches(/[0-9]/, "Your password should contain at least one digit")
-      .required("Password field is required"),
-  })
-
-  const onSubmit = (
-    { password }: SignUpPasswordStepFormValues,
-    { resetForm }: FormikHelpers<SignUpPasswordStepFormValues>
-  ) => {
-    navigation.navigate({
-      name: "SignUpNameStep",
-      params: {
-        email: screen.params?.email,
-        password,
-      },
-    })
-
-    resetForm()
-  }
-
   return (
-    <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
+    <Formik
+      initialValues={{ password: "" }}
+      validationSchema={Yup.object().shape({
+        password: Yup.string()
+          .min(8, "Your password should be at least 8 characters")
+          .matches(/[A-Z]/, "Your password should contain at least one uppercase letter")
+          .matches(/[a-z]/, "Your password should contain at least one lowercase letter")
+          .matches(/[0-9]/, "Your password should contain at least one digit")
+          .required("Password field is required"),
+      })}
+      onSubmit={(
+        { password }: SignUpPasswordStepFormValues,
+        { resetForm }: FormikHelpers<SignUpPasswordStepFormValues>
+      ) => {
+        navigation.navigate({
+          name: "SignUpNameStep",
+          params: {
+            email: screen.params?.email,
+            password,
+          },
+        })
+
+        resetForm()
+      }}
+    >
       <SignUpPasswordStepForm />
     </Formik>
   )
@@ -54,6 +53,12 @@ const SignUpPasswordStepForm: React.FC = () => {
 
   const navigation = useAuthNavigation()
   const { color } = useTheme()
+  const passwordRef = useRef<Input>(null)
+
+  useInputAutofocus({
+    screenName: "SignUpPasswordStep",
+    inputRef: passwordRef,
+  })
 
   const handleBackButtonPress = () => {
     navigation.goBack()
@@ -76,6 +81,7 @@ const SignUpPasswordStepForm: React.FC = () => {
         error={errors.password}
         placeholder="Password"
         placeholderTextColor={color("black30")}
+        ref={passwordRef}
         returnKeyType="done"
         secureTextEntry
         textContentType="password"

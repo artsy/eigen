@@ -24,62 +24,61 @@ interface LoginPasswordStepFormValues {
 }
 
 export const LoginPasswordStep: React.FC = () => {
-  const navigation = useAuthNavigation()
   const screen = useAuthScreen()
-
-  const initialValues: LoginPasswordStepFormValues = { password: "" }
-
-  const validationSchema = Yup.object().shape({
-    password: Yup.string().required("Password field is required"),
-  })
-
-  const onSubmit = async (
-    { password }: LoginPasswordStepFormValues,
-    { setErrors, resetForm }: FormikHelpers<LoginPasswordStepFormValues>
-  ) => {
-    const res = await GlobalStore.actions.auth.signIn({
-      oauthProvider: "email",
-      oauthMode: "email",
-      email: screen.params?.email,
-      password,
-    })
-
-    if (res === "otp_missing") {
-      navigation.navigate({
-        name: "LoginOTPStep",
-        params: {
-          otpMode: "standard",
-          email: screen.params?.email,
-          password,
-        },
-      })
-    } else if (res === "on_demand_otp_missing") {
-      navigation.navigate({
-        name: "LoginOTPStep",
-        params: {
-          otpMode: "on_demand",
-          email: screen.params?.email,
-          password,
-        },
-      })
-    }
-
-    if (res === "auth_blocked") {
-      showBlockedAuthError("sign in")
-      return
-    }
-
-    if (res !== "success" && res !== "otp_missing" && res !== "on_demand_otp_missing") {
-      setErrors({ password: "Incorrect email or password" }) // pragma: allowlist secret
-    }
-
-    if (res === "success") {
-      resetForm()
-    }
-  }
+  const navigation = useAuthNavigation()
 
   return (
-    <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
+    <Formik
+      initialValues={{ password: "" }}
+      validateOnChange={false}
+      validationSchema={Yup.object().shape({
+        password: Yup.string().required("Password field is required"),
+      })}
+      onSubmit={async (
+        { password }: LoginPasswordStepFormValues,
+        { setErrors, resetForm }: FormikHelpers<LoginPasswordStepFormValues>
+      ) => {
+        const res = await GlobalStore.actions.auth.signIn({
+          oauthProvider: "email",
+          oauthMode: "email",
+          email: screen.params?.email,
+          password,
+        })
+
+        if (res === "otp_missing") {
+          navigation.navigate({
+            name: "LoginOTPStep",
+            params: {
+              otpMode: "standard",
+              email: screen.params?.email,
+              password,
+            },
+          })
+        } else if (res === "on_demand_otp_missing") {
+          navigation.navigate({
+            name: "LoginOTPStep",
+            params: {
+              otpMode: "on_demand",
+              email: screen.params?.email,
+              password,
+            },
+          })
+        }
+
+        if (res === "auth_blocked") {
+          showBlockedAuthError("sign in")
+          return
+        }
+
+        if (res !== "success" && res !== "otp_missing" && res !== "on_demand_otp_missing") {
+          setErrors({ password: "Incorrect email or password" }) // pragma: allowlist secret
+        }
+
+        if (res === "success") {
+          resetForm()
+        }
+      }}
+    >
       <LoginPasswordStepForm />
     </Formik>
   )
@@ -107,7 +106,6 @@ const LoginPasswordStepForm: React.FC = () => {
   useInputAutofocus({
     screenName: "LoginPasswordStep",
     inputRef: passwordRef,
-    delay: 0,
   })
 
   const handleBackButtonPress = () => {

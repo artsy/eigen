@@ -16,38 +16,37 @@ interface ForgotPasswordStepFormValues {
 export const ForgotPasswordStep: React.FC = () => {
   const navigation = useAuthNavigation()
 
-  const initialValues: ForgotPasswordStepFormValues = { email: "" }
-
-  const validationSchema = Yup.object().shape({
-    email: Yup.string()
-      .email("Please provide a valid email address")
-      .required("Email field is required"),
-  })
-
-  const onSubmit = async (
-    { email }: ForgotPasswordStepFormValues,
-    { setErrors, resetForm }: FormikHelpers<ForgotPasswordStepFormValues>
-  ) => {
-    const res = await GlobalStore.actions.auth.forgotPassword({
-      email,
-    })
-
-    if (!res) {
-      setErrors({
-        email: "Couldn’t send reset password link. Please try again, or contact support@artsy.net",
-      })
-    } else {
-      navigation.navigate({
-        name: "ForgotPasswordStep",
-        params: { requestedPasswordReset: true },
-      })
-
-      resetForm()
-    }
-  }
-
   return (
-    <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
+    <Formik
+      initialValues={{ email: "" }}
+      onSubmit={async (
+        { email }: ForgotPasswordStepFormValues,
+        { setErrors, resetForm }: FormikHelpers<ForgotPasswordStepFormValues>
+      ) => {
+        const res = await GlobalStore.actions.auth.forgotPassword({
+          email,
+        })
+
+        if (!res) {
+          setErrors({
+            email:
+              "Couldn’t send reset password link. Please try again, or contact support@artsy.net",
+          })
+        } else {
+          navigation.navigate({
+            name: "ForgotPasswordStep",
+            params: { requestedPasswordReset: true },
+          })
+
+          resetForm()
+        }
+      }}
+      validationSchema={Yup.object().shape({
+        email: Yup.string()
+          .email("Please provide a valid email address")
+          .required("Email field is required"),
+      })}
+    >
       <ForgotPasswordStepForm />
     </Formik>
   )
