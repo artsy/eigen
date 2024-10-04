@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedShowGroup } from "@artsy/cohesion"
-import { Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Join, SkeletonBox, Spacer, Text } from "@artsy/palette-mobile"
 import { ShowsRailQuery } from "__generated__/ShowsRailQuery.graphql"
 import {
   ShowsRail_showsConnection$data,
@@ -14,7 +14,6 @@ import {
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { Location, useLocation } from "app/utils/hooks/useLocation"
-import { PlaceholderBox, RandomWidthPlaceholderText } from "app/utils/placeholders"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { times } from "lodash"
 import { Suspense, memo } from "react"
@@ -190,13 +189,23 @@ export const ShowsRailContainer: React.FC<ShowsRailContainerProps> = ({
 
 export const ShowsRailPlaceholder: React.FC = () => {
   return (
-    <Flex ml={2} mt={2} testID="show-rail-placeholder">
-      <RandomWidthPlaceholderText minWidth={100} maxWidth={200} marginBottom={20} />
+    <Flex mx={2} testID="show-rail-placeholder">
+      <SkeletonBox width={100} height={18} />
+      <Spacer y={1} />
 
       <Flex flexDirection="row">
-        {times(4).map((i) => (
-          <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
-        ))}
+        <Join separator={<Spacer x="15px" />}>
+          {times(2).map((i) => (
+            <Flex key={i} flexDirection="column">
+              <SkeletonBox width={300} height={230} my={1} />
+              <Join separator={<Spacer y={0.5} />}>
+                <SkeletonBox width={280} height={32} />
+                <SkeletonBox width={100} height={24} />
+                <SkeletonBox width={130} height={24} />
+              </Join>
+            </Flex>
+          ))}
+        </Join>
       </Flex>
     </Flex>
   )

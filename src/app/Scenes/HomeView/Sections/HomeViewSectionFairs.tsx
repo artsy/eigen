@@ -135,8 +135,8 @@ const HomeViewSectionFairsPlaceholder: React.FC<FlexProps> = (flexProps) => {
     <Skeleton>
       <Flex {...flexProps}>
         <Flex mx={2}>
-          <SkeletonBox width={100} height={18} mb={0.5}></SkeletonBox>
-          <SkeletonBox width={200} height={18} mb={0.5}></SkeletonBox>
+          <SkeletonBox width={100} height={18} mb={0.5} />
+          <SkeletonBox width={200} height={18} />
           <Spacer y={1} />
 
           <Flex flexDirection="row">
