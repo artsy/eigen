@@ -222,8 +222,7 @@ const HomeViewSectionArtistsPlaceholder: React.FC<FlexProps> = (flexProps) => {
     <Skeleton>
       <Flex {...flexProps}>
         <Flex mx={2}>
-          <SkeletonText variant="lg-display">Recommended Artists</SkeletonText>
-
+          <SkeletonText variant="sm-display">Recommended Artists</SkeletonText>
           <Spacer y={2} />
 
           <Flex flexDirection="row">
@@ -236,8 +235,10 @@ const HomeViewSectionArtistsPlaceholder: React.FC<FlexProps> = (flexProps) => {
                     width={ARTIST_CARD_WIDTH}
                   />
                   <Spacer y={1} />
-                  <SkeletonText>Andy Warhol</SkeletonText>
-                  <SkeletonText>Nationality, b 1023</SkeletonText>
+                  <SkeletonText variant="xs" mb={0.5}>
+                    Andy Warhol
+                  </SkeletonText>
+                  <SkeletonText variant="xs">Nationality, b 1023</SkeletonText>
                 </Flex>
               ))}
             </Join>
