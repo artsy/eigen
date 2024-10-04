@@ -5,7 +5,7 @@ orbs:
   queue: eddiewebb/queue@2.2.1
   horizon: artsy/release@0.0.1
   macos: circleci/macos@2.5.2
-  android: circleci/android@2.5.0
+  android: circleci/android@3.0.0
 
 commands:
   await-previous-builds:
