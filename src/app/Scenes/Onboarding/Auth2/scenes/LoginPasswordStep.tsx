@@ -15,7 +15,7 @@ import {
 import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
 import { GlobalStore } from "app/store/GlobalStore"
 import { showBlockedAuthError } from "app/utils/auth/authHelpers"
-import { FormikProvider, useFormik, useFormikContext } from "formik"
+import { Formik, FormikHelpers, useFormikContext } from "formik"
 import { useRef } from "react"
 import * as Yup from "yup"
 
@@ -27,61 +27,61 @@ export const LoginPasswordStep: React.FC = () => {
   const navigation = useAuthNavigation()
   const screen = useAuthScreen()
 
-  const formik = useFormik<LoginPasswordStepFormValues>({
-    initialValues: { password: "" },
-    onSubmit: async ({ password }, { setErrors, resetForm }) => {
-      const res = await GlobalStore.actions.auth.signIn({
-        oauthProvider: "email",
-        oauthMode: "email",
-        email: screen.params?.email,
-        password,
-      })
+  const initialValues: LoginPasswordStepFormValues = { password: "" }
 
-      if (res === "otp_missing") {
-        navigation.navigate({
-          name: "LoginOTPStep",
-          params: {
-            otpMode: "standard",
-            email: screen.params?.email,
-            password,
-          },
-        })
-      } else if (res === "on_demand_otp_missing") {
-        navigation.navigate({
-          name: "LoginOTPStep",
-          params: {
-            otpMode: "on_demand",
-            email: screen.params?.email,
-            password,
-          },
-        })
-      }
-
-      if (res === "auth_blocked") {
-        showBlockedAuthError("sign in")
-        return
-      }
-
-      if (res !== "success" && res !== "otp_missing" && res !== "on_demand_otp_missing") {
-        // For security purposes, we are returning a generic error message
-        setErrors({ password: "Incorrect email or password" }) // pragma: allowlist secret
-      }
-
-      if (res === "success") {
-        resetForm()
-      }
-    },
-    validationSchema: Yup.string().test(
-      "password",
-      "Password field is required",
-      (value) => value !== ""
-    ),
+  const validationSchema = Yup.object().shape({
+    password: Yup.string().required("Password field is required"),
   })
 
+  const onSubmit = async (
+    { password }: LoginPasswordStepFormValues,
+    { setErrors, resetForm }: FormikHelpers<LoginPasswordStepFormValues>
+  ) => {
+    const res = await GlobalStore.actions.auth.signIn({
+      oauthProvider: "email",
+      oauthMode: "email",
+      email: screen.params?.email,
+      password,
+    })
+
+    if (res === "otp_missing") {
+      navigation.navigate({
+        name: "LoginOTPStep",
+        params: {
+          otpMode: "standard",
+          email: screen.params?.email,
+          password,
+        },
+      })
+    } else if (res === "on_demand_otp_missing") {
+      navigation.navigate({
+        name: "LoginOTPStep",
+        params: {
+          otpMode: "on_demand",
+          email: screen.params?.email,
+          password,
+        },
+      })
+    }
+
+    if (res === "auth_blocked") {
+      showBlockedAuthError("sign in")
+      return
+    }
+
+    if (res !== "success" && res !== "otp_missing" && res !== "on_demand_otp_missing") {
+      setErrors({ password: "Incorrect email or password" }) // pragma: allowlist secret
+    }
+
+    if (res === "success") {
+      resetForm()
+    }
+  }
+
   return (
-    <FormikProvider value={formik}>
+    <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
       <LoginPasswordStepForm />
-    </FormikProvider>
+    </Formik>
   )
 }
 

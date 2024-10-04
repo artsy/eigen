@@ -15,7 +15,7 @@ import {
 } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
 import { GlobalStore } from "app/store/GlobalStore"
-import { FormikProvider, useFormik, useFormikContext } from "formik"
+import { Formik, FormikHelpers, useFormikContext } from "formik"
 import { useRef, useState } from "react"
 import * as Yup from "yup"
 
@@ -26,34 +26,39 @@ interface LoginOTPStepFormValues {
 export const LoginOTPStep: React.FC = () => {
   const screen = useAuthScreen()
 
-  const formik = useFormik<LoginOTPStepFormValues>({
-    initialValues: { otp: "" },
-    onSubmit: async ({ otp }, { setErrors, resetForm }) => {
-      const res = await GlobalStore.actions.auth.signIn({
-        oauthProvider: "email",
-        oauthMode: "email",
-        email: screen.params?.email,
-        password: screen.params?.password,
-        otp: otp.trim(),
-      })
+  const initialValues: LoginOTPStepFormValues = { otp: "" }
 
-      if (res === "invalid_otp") {
-        setErrors({ otp: "Invalid two-factor authentication code" })
-      } else if (res !== "success") {
-        setErrors({ otp: "Something went wrong. Please try again, or contact support@artsy.net" })
-      }
-
-      if (res === "success") {
-        resetForm()
-      }
-    },
-    validationSchema: Yup.string().test("otp", "This field is required", (value) => value !== ""),
+  const validationSchema = Yup.object().shape({
+    otp: Yup.string().required("This field is required"),
   })
 
+  const onSubmit = async (
+    { otp }: LoginOTPStepFormValues,
+    { setErrors, resetForm }: FormikHelpers<LoginOTPStepFormValues>
+  ) => {
+    const res = await GlobalStore.actions.auth.signIn({
+      oauthProvider: "email",
+      oauthMode: "email",
+      email: screen.params?.email,
+      password: screen.params?.password,
+      otp: otp.trim(),
+    })
+
+    if (res === "invalid_otp") {
+      setErrors({ otp: "Invalid two-factor authentication code" })
+    } else if (res !== "success") {
+      setErrors({ otp: "Something went wrong. Please try again, or contact support@artsy.net" })
+    }
+
+    if (res === "success") {
+      resetForm()
+    }
+  }
+
   return (
-    <FormikProvider value={formik}>
+    <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
       <LoginOTPStepForm />
-    </FormikProvider>
+    </Formik>
   )
 }
 

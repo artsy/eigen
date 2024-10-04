@@ -10,7 +10,7 @@ import { EmailSubscriptionCheckbox } from "app/Scenes/Onboarding/OnboardingCreat
 import { TermsOfServiceCheckbox } from "app/Scenes/Onboarding/OnboardingCreateAccount/TermsOfServiceCheckbox"
 import { GlobalStore } from "app/store/GlobalStore"
 import { showBlockedAuthError } from "app/utils/auth/authHelpers"
-import { FormikProvider, useFormik, useFormikContext } from "formik"
+import { Formik, FormikHelpers, useFormikContext } from "formik"
 import React, { useRef, useState } from "react"
 import { Alert, Keyboard } from "react-native"
 import * as Yup from "yup"
@@ -24,43 +24,50 @@ interface SignUpNameStepFormValues {
 export const SignUpNameStep: React.FC = () => {
   const screen = useAuthScreen()
 
-  const formik = useFormik<SignUpNameStepFormValues>({
-    initialValues: { name: "", acceptedTerms: false, agreedToReceiveEmails: false },
-    onSubmit: async ({ acceptedTerms, agreedToReceiveEmails, name }, { resetForm }) => {
-      if (!acceptedTerms) {
-        return
-      }
+  const initialValues: SignUpNameStepFormValues = {
+    name: "",
+    acceptedTerms: false,
+    agreedToReceiveEmails: false,
+  }
 
-      const res = await GlobalStore.actions.auth.signUp({
-        oauthProvider: "email",
-        oauthMode: "email",
-        email: screen.params?.email,
-        password: screen.params?.password,
-        name: name.trim(),
-        agreedToReceiveEmails,
-      })
-
-      if (!res.success) {
-        if (res.error === "blocked_attempt") {
-          showBlockedAuthError("sign up")
-        } else {
-          Alert.alert("Try again", res.message)
-        }
-      }
-
-      if (res.success) {
-        resetForm()
-      }
-    },
-    validationSchema: Yup.object().shape({
-      name: Yup.string().trim().required("Full name field is required"),
-    }),
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().trim().required("Full name field is required"),
   })
 
+  const onSubmit = async (
+    { acceptedTerms, agreedToReceiveEmails, name }: SignUpNameStepFormValues,
+    { resetForm }: FormikHelpers<SignUpNameStepFormValues>
+  ) => {
+    if (!acceptedTerms) {
+      return
+    }
+
+    const res = await GlobalStore.actions.auth.signUp({
+      oauthProvider: "email",
+      oauthMode: "email",
+      email: screen.params?.email,
+      password: screen.params?.password,
+      name: name.trim(),
+      agreedToReceiveEmails,
+    })
+
+    if (!res.success) {
+      if (res.error === "blocked_attempt") {
+        showBlockedAuthError("sign up")
+      } else {
+        Alert.alert("Try again", res.message)
+      }
+    }
+
+    if (res.success) {
+      resetForm()
+    }
+  }
+
   return (
-    <FormikProvider value={formik}>
+    <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
       <SignUpNameStepForm />
-    </FormikProvider>
+    </Formik>
   )
 }
 

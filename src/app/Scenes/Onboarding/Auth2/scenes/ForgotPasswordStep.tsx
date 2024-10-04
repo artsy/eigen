@@ -5,7 +5,7 @@ import {
 } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
 import { GlobalStore } from "app/store/GlobalStore"
-import { FormikProvider, useFormik, useFormikContext } from "formik"
+import { Formik, FormikHelpers, useFormikContext } from "formik"
 import { useRef } from "react"
 import * as Yup from "yup"
 
@@ -16,38 +16,40 @@ interface ForgotPasswordStepFormValues {
 export const ForgotPasswordStep: React.FC = () => {
   const navigation = useAuthNavigation()
 
-  const formik = useFormik<ForgotPasswordStepFormValues>({
-    initialValues: { email: "" },
-    onSubmit: async ({ email }, { setErrors, resetForm }) => {
-      const res = await GlobalStore.actions.auth.forgotPassword({
-        email,
-      })
-      if (!res) {
-        // For security purposes, we are returning a generic error message
-        setErrors({
-          email:
-            "Couldn’t send reset password link. Please try again, or contact support@artsy.net",
-        })
-      } else {
-        navigation.navigate({
-          name: "ForgotPasswordStep",
-          params: { requestedPasswordReset: true },
-        })
+  const initialValues: ForgotPasswordStepFormValues = { email: "" }
 
-        resetForm()
-      }
-    },
-    validationSchema: Yup.object().shape({
-      email: Yup.string()
-        .email("Please provide a valid email address")
-        .required("Email field is required"),
-    }),
+  const validationSchema = Yup.object().shape({
+    email: Yup.string()
+      .email("Please provide a valid email address")
+      .required("Email field is required"),
   })
 
+  const onSubmit = async (
+    { email }: ForgotPasswordStepFormValues,
+    { setErrors, resetForm }: FormikHelpers<ForgotPasswordStepFormValues>
+  ) => {
+    const res = await GlobalStore.actions.auth.forgotPassword({
+      email,
+    })
+
+    if (!res) {
+      setErrors({
+        email: "Couldn’t send reset password link. Please try again, or contact support@artsy.net",
+      })
+    } else {
+      navigation.navigate({
+        name: "ForgotPasswordStep",
+        params: { requestedPasswordReset: true },
+      })
+
+      resetForm()
+    }
+  }
+
   return (
-    <FormikProvider value={formik}>
+    <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
       <ForgotPasswordStepForm />
-    </FormikProvider>
+    </Formik>
   )
 }
 

@@ -16,7 +16,7 @@ import { AuthPromiseRejectType, AuthPromiseResolveType } from "app/store/AuthMod
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { osMajorVersion } from "app/utils/platformUtil"
-import { FormikProvider, useFormik, useFormikContext } from "formik"
+import { Formik, FormikHelpers, useFormikContext } from "formik"
 import { useRef, useState } from "react"
 import { Alert, Image, InteractionManager, Platform } from "react-native"
 import * as Yup from "yup"
@@ -27,48 +27,50 @@ interface LoginEmailFormValues {
 
 export const WelcomeStep: React.FC = () => {
   const navigation = useAuthNavigation()
-
   const { Recaptcha, token } = useRecaptcha({
     source: "authentication",
     action: "verify_email",
   })
 
-  const formik = useFormik<LoginEmailFormValues>({
-    initialValues: { email: "" },
-    validateOnMount: false,
-    validateOnChange: false,
-    validateOnBlur: true,
-    validationSchema: Yup.object().shape({
-      email: Yup.string()
-        .email("Please provide a valid email address")
-        .required("Email field is required"),
-    }),
-    onSubmit: async ({ email }, { resetForm }) => {
-      // FIXME
-      if (!token) {
-        Alert.alert("Something went wrong. Please try again, or contact support@artsy.net")
-        return
-      }
+  const initialValues: LoginEmailFormValues = { email: "" }
 
-      const res = await GlobalStore.actions.auth.verifyUser({ email, recaptchaToken: token })
-
-      if (res === "user_exists") {
-        navigation.navigate({ name: "LoginPasswordStep", params: { email } })
-      } else if (res === "user_does_not_exist") {
-        navigation.navigate({ name: "SignUpPasswordStep", params: { email } })
-      } else if (res === "something_went_wrong") {
-        Alert.alert("Something went wrong. Please try again, or contact support@artsy.net")
-      }
-
-      resetForm()
-    },
+  const validationSchema = Yup.object().shape({
+    email: Yup.string()
+      .email("Please provide a valid email address")
+      .required("Email field is required"),
   })
 
+  const onSubmit = async (
+    { email }: LoginEmailFormValues,
+    { resetForm }: FormikHelpers<LoginEmailFormValues>
+  ) => {
+    // FIXME
+    if (!token) {
+      Alert.alert("Something went wrong. Please try again, or contact support@artsy.net")
+      return
+    }
+
+    const res = await GlobalStore.actions.auth.verifyUser({ email, recaptchaToken: token })
+
+    if (res === "user_exists") {
+      navigation.navigate({ name: "LoginPasswordStep", params: { email } })
+    } else if (res === "user_does_not_exist") {
+      navigation.navigate({ name: "SignUpPasswordStep", params: { email } })
+    } else if (res === "something_went_wrong") {
+      Alert.alert("Something went wrong. Please try again, or contact support@artsy.net")
+    }
+
+    resetForm()
+  }
+
   return (
-    <FormikProvider value={formik}>
+    <>
       <Recaptcha />
-      <WelcomeStepForm />
-    </FormikProvider>
+
+      <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
+        <WelcomeStepForm />
+      </Formik>
+    </>
   )
 }
 
@@ -77,7 +79,6 @@ const WelcomeStepForm: React.FC = () => {
   const [showSubmit, setShowSubmit] = useState(false)
 
   const { color } = useTheme()
-
   const { errors, handleChange, handleSubmit, isSubmitting, values, resetForm } =
     useFormikContext<LoginEmailFormValues>()
 
