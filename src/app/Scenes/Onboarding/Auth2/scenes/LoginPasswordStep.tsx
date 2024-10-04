@@ -12,9 +12,11 @@ import {
   useAuthNavigation,
   useAuthScreen,
 } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
+import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
 import { GlobalStore } from "app/store/GlobalStore"
 import { showBlockedAuthError } from "app/utils/auth/authHelpers"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
+import { useRef } from "react"
 import * as Yup from "yup"
 
 interface LoginPasswordStepFormValues {
@@ -92,20 +94,29 @@ const LoginPasswordStepForm: React.FC = () => {
     setErrors,
   } = useFormikContext<LoginPasswordStepFormValues>()
 
+  const navigation = useAuthNavigation()
+  const passwordRef = useRef<Input>(null)
   const { color, space } = useTheme()
 
-  const navigation = useAuthNavigation()
+  useInputAutofocus({
+    screenName: "LoginPasswordStep",
+    inputRef: passwordRef,
+  })
 
   const handleBackButtonPress = () => {
     navigation.goBack()
   }
 
   return (
-    <Flex padding={2} gap={space(1)}>
+    <Flex padding={2}>
       <BackButton onPress={handleBackButtonPress} />
-      <Text variant="sm-display">Welcome back to Artsy</Text>
+
+      <Spacer y={1} />
+
+      <Text variant="sm">Welcome back to Artsy</Text>
 
       <Input
+        ref={passwordRef}
         autoCapitalize="none"
         autoComplete="password"
         autoCorrect={false}
@@ -137,21 +148,23 @@ const LoginPasswordStepForm: React.FC = () => {
         testID="password"
       />
 
-      <Spacer y={4} />
+      <Spacer y={2} />
+
+      <Button block width="100%" onPress={handleSubmit} disabled={!isValid}>
+        Continue
+      </Button>
+
+      <Spacer y={2} />
 
       <Touchable
         onPress={() => {
           navigation.navigate({ name: "ForgotPasswordStep" })
         }}
       >
-        <Text variant="sm" color="black60" underline>
+        <Text variant="xs" color="black60" underline>
           Forgot password?
         </Text>
       </Touchable>
-
-      <Button block width={100} onPress={handleSubmit} disabled={!isValid}>
-        Continue
-      </Button>
     </Flex>
   )
 }

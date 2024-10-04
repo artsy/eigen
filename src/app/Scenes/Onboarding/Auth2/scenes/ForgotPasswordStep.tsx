@@ -48,6 +48,7 @@ const ForgotPasswordStepForm: React.FC = () => {
     useFormikContext<ForgotPasswordStepFormValues>()
 
   const navigation = useAuthNavigation()
+
   const screen = useAuthScreen()
 
   const { color, space } = useTheme()
@@ -61,7 +62,8 @@ const ForgotPasswordStepForm: React.FC = () => {
   return (
     <Flex padding={2} gap={space(1)}>
       <BackButton onPress={handleBackButtonPress} />
-      <Flex flex={1} px={2} pt={6} justifyContent="flex-start">
+
+      <Flex flex={1} px={2} mt={6} justifyContent="flex-start">
         <Text variant="lg-display">Forgot Password?</Text>
 
         <Text pt={0.5} color="black100" variant="xs">

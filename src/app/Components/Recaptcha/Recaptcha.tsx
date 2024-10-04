@@ -1,3 +1,4 @@
+import { Box } from "@artsy/palette-mobile"
 import { RecaptchaWebView } from "app/Components/Recaptcha/RecaptchaWebView"
 import { useCallback, useState } from "react"
 
@@ -21,7 +22,11 @@ export const useRecaptcha = ({ source, action }: UseRecaptchaProps) => {
   }
 
   const RecaptchaComponent = useCallback(
-    () => <RecaptchaWebView action={action} onToken={handleOnToken} onError={handleOnError} />,
+    () => (
+      <Box height={0}>
+        <RecaptchaWebView action={action} onToken={handleOnToken} onError={handleOnError} />
+      </Box>
+    ),
     [action]
   )
 

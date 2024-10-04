@@ -1,5 +1,5 @@
 import { OnboardingWebViewRoute } from "app/Scenes/Onboarding/OnboardingWebView"
-import { action, Action, createContextStore } from "easy-peasy"
+import { action, Action, createContextStore, Thunk, thunk } from "easy-peasy"
 
 export type AuthScreens = {
   EmailSocialStep: undefined
@@ -18,16 +18,19 @@ export interface AuthScreen {
 
 interface AuthContextModel {
   currentScreen: AuthScreen | undefined
-  previousScreens: Array<AuthScreen | undefined>
-  isMounted: boolean
+  goBack: Thunk<AuthContextModel>
+  isGoingBack: boolean
   isModalExpanded: boolean
-  goBack: Action<AuthContextModel>
+  isMounted: boolean
+  previousScreens: Array<AuthScreen | undefined>
   setCurrentScreen: Action<AuthContextModel, AuthScreen>
+  setIsGoingBack: Action<AuthContextModel, boolean>
   setModalExpanded: Action<AuthContextModel, boolean>
 }
 
 export const AuthContext = createContextStore<AuthContextModel>({
   isMounted: false,
+  isGoingBack: false,
   currentScreen: { name: "EmailSocialStep" },
   previousScreens: [],
   isModalExpanded: false,
@@ -42,7 +45,19 @@ export const AuthContext = createContextStore<AuthContextModel>({
     state.isModalExpanded = isModalExpanded
   }),
 
-  goBack: action((state) => {
-    state.currentScreen = state.previousScreens.pop()
+  setIsGoingBack: action((state, isGoingBack) => {
+    state.isGoingBack = isGoingBack
+
+    if (isGoingBack) {
+      state.currentScreen = state.previousScreens.pop()
+    }
+  }),
+
+  goBack: thunk(async (actions) => {
+    actions.setIsGoingBack(true)
+
+    setTimeout(() => {
+      actions.setIsGoingBack(false)
+    }, 100)
   }),
 })

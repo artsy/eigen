@@ -1,7 +1,7 @@
 import { ArtsyLogoWhiteIcon, Flex, Spacer, Text, useScreenDimensions } from "@artsy/palette-mobile"
 import { AuthContext } from "app/Scenes/Onboarding/Auth2/AuthContext"
 import { MotiView } from "moti"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Image } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { Easing } from "react-native-reanimated"
@@ -13,7 +13,7 @@ export const AuthBackground: React.FC = () => {
 
   return (
     <Flex backgroundColor="black100" height="100%" pt="-200px" pb="-200px">
-      <AnimatedBackground2 />
+      <AnimatedBackground />
 
       <Flex alignItems="center" width="100%">
         <ArtsyLogoWhiteIcon height={25} width={75} mt={safeArea.top} />
@@ -53,7 +53,7 @@ export const AuthBackground: React.FC = () => {
   )
 }
 
-const AnimatedBackground2: React.FC = () => {
+const AnimatedBackground: React.FC = React.memo(() => {
   const { width: screenWidth, height: screenHeight } = useScreenDimensions()
 
   const [translateXEnd, setTranslateXEnd] = useState<{ firstStop: number; secondStop: number }>({
@@ -122,4 +122,4 @@ const AnimatedBackground2: React.FC = () => {
       </MotiView>
     </>
   )
-}
+})

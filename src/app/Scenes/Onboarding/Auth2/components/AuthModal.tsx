@@ -6,12 +6,13 @@ import { Easing } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 const HEIGHT = {
-  expanded: 500,
+  EmailSocialStep: 280,
+  LoginPasswordStep: 300,
   collapsed: 300,
 }
 
 export const AuthModal: React.FC = ({ children }) => {
-  const { isModalExpanded, isMounted } = AuthContext.useStoreState((state) => state)
+  const { isModalExpanded, isMounted, currentScreen } = AuthContext.useStoreState((state) => state)
 
   const screenHeight = Dimensions.get("window").height
   const { space } = useTheme()
@@ -30,7 +31,7 @@ export const AuthModal: React.FC = ({ children }) => {
             translateY: isModalExpanded ? 0 : screenHeight * 4,
           }}
           animate={{
-            height: isModalExpanded ? screenHeight * 0.5 - insets.top : HEIGHT.collapsed,
+            height: isModalExpanded ? HEIGHT[currentScreen.name] : HEIGHT.collapsed,
             translateY: 0,
           }}
           transition={{

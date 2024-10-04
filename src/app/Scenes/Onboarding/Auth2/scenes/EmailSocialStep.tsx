@@ -12,6 +12,7 @@ import {
 import { useRecaptcha } from "app/Components/Recaptcha/Recaptcha"
 import { AuthContext } from "app/Scenes/Onboarding/Auth2/AuthContext"
 import { useAuthNavigation } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
+import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
 import { AuthPromiseRejectType, AuthPromiseResolveType } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
@@ -39,17 +40,29 @@ export const EmailSocialStep: React.FC = () => {
     action: "verify_email",
   })
 
+  useInputAutofocus({
+    screenName: "EmailSocialStep",
+    inputRef: emailRef,
+    enabled: !isSelectLoginMethodStep,
+  })
+
   return (
     <>
       <Formik<EmailFormValues>
         initialValues={{ email: "" }}
         validateOnMount={false}
+        validateOnChange={false}
+        validateOnBlur={true}
         validationSchema={Yup.object().shape({
           email: Yup.string()
             .email("Please provide a valid email address")
             .required("Email field is required"),
         })}
-        onSubmit={async ({ email }, { setFieldValue }) => {
+        onSubmit={async ({ email }, { resetForm }) => {
+          navigation.navigate({ name: "LoginPasswordStep", params: { email } })
+
+          return
+
           // FIXME
           if (!token) {
             Alert.alert("Something went wrong. Please try again, or contact support@artsy.net")
@@ -58,8 +71,6 @@ export const EmailSocialStep: React.FC = () => {
 
           const res = await GlobalStore.actions.auth.verifyUser({ email, recaptchaToken: token })
 
-          setFieldValue("recaptchaToken", null)
-
           if (res === "user_exists") {
             navigation.navigate({ name: "LoginPasswordStep", params: { email } })
           } else if (res === "user_does_not_exist") {
@@ -67,9 +78,11 @@ export const EmailSocialStep: React.FC = () => {
           } else if (res === "something_went_wrong") {
             Alert.alert("Something went wrong. Please try again, or contact support@artsy.net")
           }
+
+          resetForm()
         }}
       >
-        {({ errors, handleChange, handleSubmit, isValid, resetForm, values }) => {
+        {({ errors, handleChange, handleSubmit, resetForm, values, isSubmitting }) => {
           const handleEmailInputFocus = () => {
             InteractionManager.runAfterInteractions(() => {
               setModalExpanded(true)
@@ -93,7 +106,7 @@ export const EmailSocialStep: React.FC = () => {
                   <Spacer y={1} />
                 </>
               )}
-              <Flex height={isSelectLoginMethodStep ? "100%" : "85%"} justifyContent="center">
+              <Flex>
                 <Box>
                   <Text variant="sm">Sign up or log in</Text>
 
@@ -120,6 +133,7 @@ export const EmailSocialStep: React.FC = () => {
                     // enable autofill of login details from the device keychain.
                     textContentType="username"
                     error={errors.email}
+                    onSubmitEditing={handleSubmit}
                   />
 
                   <Flex display={isSelectLoginMethodStep ? "flex" : "none"}>
@@ -142,7 +156,7 @@ export const EmailSocialStep: React.FC = () => {
                   </Flex>
 
                   <Flex display={isSelectLoginMethodStep ? "none" : "flex"}>
-                    <Button block width={100} onPress={handleSubmit} disabled={!isValid} mt={2}>
+                    <Button block width={100} onPress={handleSubmit} mt={2} loading={isSubmitting}>
                       Continue
                     </Button>
                   </Flex>
