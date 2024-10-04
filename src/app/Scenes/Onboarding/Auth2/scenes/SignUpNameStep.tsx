@@ -1,14 +1,15 @@
-import { BackButton, Button, Flex, Input, Text, useTheme } from "@artsy/palette-mobile"
+import { BackButton, Button, Flex, Input, Spacer, Text, useTheme } from "@artsy/palette-mobile"
 import {
   useAuthNavigation,
   useAuthScreen,
 } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
+import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
 import { EmailSubscriptionCheckbox } from "app/Scenes/Onboarding/OnboardingCreateAccount/EmailSubscriptionCheckbox"
 import { TermsOfServiceCheckbox } from "app/Scenes/Onboarding/OnboardingCreateAccount/TermsOfServiceCheckbox"
 import { GlobalStore } from "app/store/GlobalStore"
 import { showBlockedAuthError } from "app/utils/auth/authHelpers"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
-import React, { useState } from "react"
+import React, { useRef, useState } from "react"
 import { Alert, Keyboard } from "react-native"
 import * as Yup from "yup"
 
@@ -64,16 +65,23 @@ const SignUpNameStepForm: React.FC = () => {
     useFormikContext<SignUpNameStepFormValues>()
 
   const navigation = useAuthNavigation()
+  const { color } = useTheme()
+  const nameRef = useRef<Input>(null)
 
-  const { color, space } = useTheme()
+  useInputAutofocus({
+    screenName: "SignUpNameStep",
+    inputRef: nameRef,
+  })
 
   const handleBackButtonPress = () => {
     navigation.goBack()
   }
 
   return (
-    <Flex padding={2} gap={space(1)}>
+    <Flex padding={2}>
       <BackButton onPress={handleBackButtonPress} />
+
+      <Spacer y={1} />
 
       <Text variant="sm-display">Welcome to Artsy</Text>
 
@@ -107,9 +115,12 @@ const SignUpNameStepForm: React.FC = () => {
         returnKeyType="done"
         maxLength={128}
         error={errors.name}
+        ref={nameRef}
       />
 
-      <Flex my={2}>
+      <Spacer y={2} />
+
+      <Flex>
         {/* TODO: confirm that the links in this component work */}
         <TermsOfServiceCheckbox
           setChecked={() => setFieldValue("acceptedTerms", !values.acceptedTerms)}

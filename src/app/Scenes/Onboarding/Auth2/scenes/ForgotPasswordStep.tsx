@@ -3,8 +3,10 @@ import {
   useAuthNavigation,
   useAuthScreen,
 } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
+import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
 import { GlobalStore } from "app/store/GlobalStore"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
+import { useRef } from "react"
 import * as Yup from "yup"
 
 interface ForgotPasswordStepFormValues {
@@ -51,7 +53,9 @@ const ForgotPasswordStepForm: React.FC = () => {
 
   const screen = useAuthScreen()
 
-  const { color, space } = useTheme()
+  const { color } = useTheme()
+
+  const forgotPasswordRef = useRef<Input>(null)
 
   const handleBackButtonPress = () => {
     navigation.goBack()
@@ -59,90 +63,109 @@ const ForgotPasswordStepForm: React.FC = () => {
 
   const requestedPasswordReset = screen.params?.requestedPasswordReset
 
+  useInputAutofocus({
+    screenName: "ForgotPasswordStep",
+    inputRef: forgotPasswordRef,
+  })
+
   return (
-    <Flex padding={2} gap={space(1)}>
+    <Flex padding={2}>
       <BackButton onPress={handleBackButtonPress} />
 
-      <Flex flex={1} px={2} mt={6} justifyContent="flex-start">
+      <Spacer y={1} />
+
+      <Flex flex={1} justifyContent="flex-start">
         <Text variant="lg-display">Forgot Password?</Text>
 
-        <Text pt={0.5} color="black100" variant="xs">
-          Please enter the email address associated with your Artsy account to receive a reset link.
-        </Text>
-
-        <Spacer y={2} />
+        {!requestedPasswordReset && (
+          <Text pt={0.5} color="black100" variant="xs">
+            Please enter the email address associated with your Artsy account to receive a reset
+            link.
+          </Text>
+        )}
 
         {!!requestedPasswordReset ? (
-          <Text color="blue100">Password reset link sent. Please check your email.</Text>
+          <Text color="blue100" pt={0.5} variant="xs">
+            Password reset link sent. Please check your email.
+          </Text>
         ) : (
-          <Input
-            autoCapitalize="none"
-            autoComplete="email"
-            enableClearButton
-            keyboardType="email-address"
-            onChangeText={(text) => {
-              handleChange("email")(text.trim())
-            }}
-            onSubmitEditing={() => {
-              if (dirty) {
-                handleSubmit()
-              }
-            }}
-            onBlur={() => {
-              validateForm()
-            }}
-            blurOnSubmit={false} // This is needed to avoid UI jump when the user submits
-            placeholder="Email address"
-            placeholderTextColor={color("black30")}
-            value={values.email}
-            returnKeyType="done"
-            spellCheck={false}
-            autoCorrect={false}
-            textContentType="emailAddress"
-            testID="email-address"
-          />
+          <>
+            <Spacer y={2} />
+            <Input
+              autoCapitalize="none"
+              autoComplete="email"
+              enableClearButton
+              autoFocus
+              keyboardType="email-address"
+              onChangeText={(text) => {
+                handleChange("email")(text.trim())
+              }}
+              onSubmitEditing={() => {
+                if (dirty) {
+                  handleSubmit()
+                }
+              }}
+              onBlur={() => {
+                validateForm()
+              }}
+              blurOnSubmit={false} // This is needed to avoid UI jump when the user submits
+              placeholder="Email address"
+              placeholderTextColor={color("black30")}
+              value={values.email}
+              returnKeyType="done"
+              spellCheck={false}
+              autoCorrect={false}
+              textContentType="emailAddress"
+              testID="email-address"
+              ref={forgotPasswordRef}
+            />
+          </>
         )}
       </Flex>
 
-      <Flex px={2} paddingBottom={2}>
-        {!!requestedPasswordReset ? (
-          <>
-            <Button
-              variant="fillDark"
-              onPress={() => navigation.goBack()}
-              block
-              haptic="impactMedium"
-              testID="returnToLoginButton"
-            >
-              Return to login
-            </Button>
-            <Spacer y={1} />
-            <Button
-              onPress={handleSubmit}
-              block
-              haptic="impactMedium"
-              disabled={!isValid || !dirty}
-              loading={isSubmitting}
-              testID="resetButton"
-              variant="outline"
-            >
-              Send Again
-            </Button>
-          </>
-        ) : (
+      <Spacer y={2} />
+
+      {!!requestedPasswordReset ? (
+        <>
+          <Spacer y={2} />
+
+          <Button
+            variant="fillDark"
+            onPress={() => navigation.navigate({ name: "LoginEmailStep" })}
+            block
+            haptic="impactMedium"
+            testID="returnToLoginButton"
+          >
+            Return to login
+          </Button>
+
+          <Spacer y={1} />
+
           <Button
             onPress={handleSubmit}
             block
-            variant="fillDark"
             haptic="impactMedium"
             disabled={!isValid || !dirty}
             loading={isSubmitting}
             testID="resetButton"
+            variant="outline"
           >
-            Send Reset Link
+            Send Again
           </Button>
-        )}
-      </Flex>
+        </>
+      ) : (
+        <Button
+          onPress={handleSubmit}
+          block
+          variant="fillDark"
+          haptic="impactMedium"
+          disabled={!isValid || !dirty}
+          loading={isSubmitting}
+          testID="resetButton"
+        >
+          Send Reset Link
+        </Button>
+      )}
     </Flex>
   )
 }

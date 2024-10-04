@@ -1,4 +1,4 @@
-import { BackButton, Button, Flex, Input, Text, useTheme } from "@artsy/palette-mobile"
+import { BackButton, Button, Flex, Input, Spacer, Text, useTheme } from "@artsy/palette-mobile"
 import {
   useAuthNavigation,
   useAuthScreen,
@@ -49,15 +49,17 @@ const SignUpPasswordStepForm: React.FC = () => {
 
   const navigation = useAuthNavigation()
 
-  const { color, space } = useTheme()
+  const { color } = useTheme()
 
   const handleBackButtonPress = () => {
     navigation.goBack()
   }
 
   return (
-    <Flex padding={2} gap={space(1)}>
+    <Flex padding={2}>
       <BackButton onPress={handleBackButtonPress} />
+
+      <Spacer y={1} />
 
       <Text variant="sm-display">Welcome to Artsy</Text>
 
@@ -87,6 +89,8 @@ const SignUpPasswordStepForm: React.FC = () => {
         textContentType="password"
         error={errors.password}
       />
+
+      <Spacer y={2} />
 
       <Button block width={100} onPress={handleSubmit} disabled={!isValid}>
         Continue

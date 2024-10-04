@@ -3,19 +3,20 @@ import {
   Button,
   Flex,
   Input,
-  LinkText,
   SimpleMessage,
   Spacer,
   Text,
+  Touchable,
   useTheme,
 } from "@artsy/palette-mobile"
 import {
   useAuthNavigation,
   useAuthScreen,
 } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
+import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
 import { GlobalStore } from "app/store/GlobalStore"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import * as Yup from "yup"
 
 interface LoginOTPStepFormValues {
@@ -60,17 +61,23 @@ const LoginOTPStepForm: React.FC = () => {
 
   const navigation = useAuthNavigation()
   const screen = useAuthScreen()
+  const otpRef = useRef<Input>(null)
 
-  const { color, space } = useTheme()
+  const { color } = useTheme()
+
+  useInputAutofocus({
+    screenName: "LoginOTPStep",
+    inputRef: otpRef,
+  })
 
   const handleBackButtonPress = () => {
     navigation.goBack()
   }
 
   return (
-    <Flex padding={2} gap={space(1)}>
+    <Flex padding={2}>
       <BackButton onPress={handleBackButtonPress} />
-      <Text variant="sm-display">Authentication Code</Text>
+
       <Input
         autoCapitalize="none"
         autoCorrect={false}
@@ -88,19 +95,19 @@ const LoginOTPStepForm: React.FC = () => {
         onBlur={() => validateForm()}
         placeholder={recoveryCodeMode ? "Enter a recovery code" : "Enter an authentication code"}
         placeholderTextColor={color("black30")}
-        title={recoveryCodeMode ? "Recovery code" : undefined}
+        title={recoveryCodeMode ? "Recovery code" : "Authentication code"}
         returnKeyType="done"
         value={values.otp}
         error={errors.otp}
+        ref={otpRef}
       />
+
       <Spacer y={1} />
-      <LinkText variant="sm" color="black60" onPress={() => setRecoveryCodeMode((v) => !v)}>
-        {recoveryCodeMode ? "Enter authentication code" : "Enter recovery code instead"}
-      </LinkText>
 
       {screen.params?.otpMode === "on_demand" && (
         <>
           <Spacer y={2} />
+
           <SimpleMessage testID="on_demand_message">
             Your safety and security are important to us. Please check your email for a one-time
             authentication code to complete your login.
@@ -108,9 +115,23 @@ const LoginOTPStepForm: React.FC = () => {
         </>
       )}
 
+      <Spacer y={2} />
+
       <Button block width={100} onPress={handleSubmit} disabled={!isValid}>
         Continue
       </Button>
+
+      <Spacer y={2} />
+
+      <Touchable
+        onPress={() => {
+          setRecoveryCodeMode((mode) => !mode)
+        }}
+      >
+        <Text variant="xs" color="black60" underline>
+          {recoveryCodeMode ? "Enter authentication code" : "Enter recovery code instead"}
+        </Text>
+      </Touchable>
     </Flex>
   )
 }

@@ -83,20 +83,21 @@ export const LoginPasswordStep: React.FC = () => {
 
 const LoginPasswordStepForm: React.FC = () => {
   const {
-    values,
+    dirty,
     errors,
-    touched,
     handleChange,
     handleSubmit,
+    isSubmitting,
     isValid,
-    dirty,
-    validateForm,
     setErrors,
+    touched,
+    validateForm,
+    values,
   } = useFormikContext<LoginPasswordStepFormValues>()
 
   const navigation = useAuthNavigation()
   const passwordRef = useRef<Input>(null)
-  const { color, space } = useTheme()
+  const { color } = useTheme()
 
   useInputAutofocus({
     screenName: "LoginPasswordStep",
@@ -113,7 +114,7 @@ const LoginPasswordStepForm: React.FC = () => {
 
       <Spacer y={1} />
 
-      <Text variant="sm">Welcome back to Artsy</Text>
+      <Text variant="sm-display">Welcome back to Artsy</Text>
 
       <Input
         ref={passwordRef}
@@ -150,7 +151,7 @@ const LoginPasswordStepForm: React.FC = () => {
 
       <Spacer y={2} />
 
-      <Button block width="100%" onPress={handleSubmit} disabled={!isValid}>
+      <Button block width="100%" onPress={handleSubmit} disabled={!isValid} loading={isSubmitting}>
         Continue
       </Button>
 
