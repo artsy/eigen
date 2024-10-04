@@ -1,7 +1,6 @@
 import { ArtsyLogoBlackIcon, Flex, Box, useSpace } from "@artsy/palette-mobile"
 import { AlphaVersionIndicator } from "app/Scenes/HomeView/Components/AlphaVersionIndicator"
 import { GlobalStore } from "app/store/GlobalStore"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { ActivityIndicator } from "./ActivityIndicator"
 
 export const HomeHeader: React.FC = () => {
@@ -9,11 +8,10 @@ export const HomeHeader: React.FC = () => {
     (state) => state.bottomTabs.hasUnseenNotifications
   )
 
-  const { top } = useSafeAreaInsets()
   const space = useSpace()
 
   return (
-    <Box style={{ paddingTop: space(2) + top, paddingBottom: space(2) }}>
+    <Box style={{ paddingTop: space(2), paddingBottom: space(2) }}>
       <Flex flexDirection="row" px={2} justifyContent="space-between" alignItems="center">
         <Box flex={1}>
           <AlphaVersionIndicator />

@@ -125,7 +125,7 @@ export const HomeView: React.FC = () => {
   }
 
   return (
-    <Screen safeArea={false}>
+    <Screen safeArea={true}>
       <Screen.Body fullwidth>
         <FlatList
           ref={flashlistRef}
@@ -154,7 +154,7 @@ export const HomeView: React.FC = () => {
 const HomeViewScreenPlaceholder: React.FC = () => {
   return (
     <ProvidePlaceholderContext>
-      <Screen safeArea={false}>
+      <Screen safeArea={true}>
         <Screen.Body fullwidth>
           <Flex testID="new-home-view-skeleton">
             <HomeHeader />
