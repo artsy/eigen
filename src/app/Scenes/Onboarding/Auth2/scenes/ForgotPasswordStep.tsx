@@ -143,7 +143,7 @@ const ForgotPasswordStepForm: React.FC = () => {
 
           <Button
             variant="fillDark"
-            onPress={() => navigation.navigate({ name: "WelcomeStep" })}
+            onPress={() => navigation.navigate({ name: "LoginWelcomeStep" })}
             block
             haptic="impactMedium"
             testID="returnToLoginButton"

@@ -13,6 +13,7 @@ import {
   useAuthScreen,
 } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
+import { waitForSubmit } from "app/Scenes/Onboarding/Auth2/utils/waitForSubmit"
 import { GlobalStore } from "app/store/GlobalStore"
 import { showBlockedAuthError } from "app/utils/auth/authHelpers"
 import { Formik, useFormikContext } from "formik"
@@ -41,6 +42,8 @@ export const LoginPasswordStep: React.FC = () => {
           email: screen.params?.email,
           password,
         })
+
+        await waitForSubmit()
 
         if (res === "otp_missing") {
           navigation.navigate({

@@ -4,6 +4,7 @@ import {
   useAuthScreen,
 } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
+import { waitForSubmit } from "app/Scenes/Onboarding/Auth2/utils/waitForSubmit"
 import { Formik, useFormikContext } from "formik"
 import React, { useRef } from "react"
 import * as Yup from "yup"
@@ -27,7 +28,9 @@ export const SignUpPasswordStep: React.FC = () => {
           .matches(/[0-9]/, "Your password should contain at least one digit")
           .required("Password field is required"),
       })}
-      onSubmit={({ password }, { resetForm }) => {
+      onSubmit={async ({ password }, { resetForm }) => {
+        await waitForSubmit()
+
         navigation.navigate({
           name: "SignUpNameStep",
           params: {
@@ -45,8 +48,16 @@ export const SignUpPasswordStep: React.FC = () => {
 }
 
 const SignUpPasswordStepForm: React.FC = () => {
-  const { errors, handleChange, handleSubmit, isValid, setErrors, values, resetForm } =
-    useFormikContext<SignUpPasswordStepFormValues>()
+  const {
+    errors,
+    handleChange,
+    handleSubmit,
+    isSubmitting,
+    isValid,
+    setErrors,
+    values,
+    resetForm,
+  } = useFormikContext<SignUpPasswordStepFormValues>()
 
   const navigation = useAuthNavigation()
   const { color } = useTheme()
@@ -74,7 +85,6 @@ const SignUpPasswordStepForm: React.FC = () => {
         autoCapitalize="none"
         autoComplete="password"
         autoCorrect={false}
-        blurOnSubmit={false}
         error={errors.password}
         placeholder="Password"
         placeholderTextColor={color("black30")}
@@ -98,7 +108,7 @@ const SignUpPasswordStepForm: React.FC = () => {
 
       <Spacer y={2} />
 
-      <Button block width={100} onPress={handleSubmit} disabled={!isValid}>
+      <Button block width={100} onPress={handleSubmit} disabled={!isValid} loading={isSubmitting}>
         Continue
       </Button>
     </Flex>

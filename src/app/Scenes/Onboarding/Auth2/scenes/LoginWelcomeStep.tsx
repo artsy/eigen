@@ -12,6 +12,7 @@ import { useRecaptcha } from "app/Components/Recaptcha/Recaptcha"
 import { AuthContext } from "app/Scenes/Onboarding/Auth2/AuthContext"
 import { useAuthNavigation } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
+import { waitForSubmit } from "app/Scenes/Onboarding/Auth2/utils/waitForSubmit"
 import { AuthPromiseRejectType, AuthPromiseResolveType } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
@@ -25,7 +26,7 @@ interface LoginEmailFormValues {
   email: string
 }
 
-export const WelcomeStep: React.FC = () => {
+export const LoginWelcomeStep: React.FC = () => {
   const navigation = useAuthNavigation()
 
   const { Recaptcha, token } = useRecaptcha({
@@ -54,8 +55,7 @@ export const WelcomeStep: React.FC = () => {
 
           const res = await GlobalStore.actions.auth.verifyUser({ email, recaptchaToken: token })
 
-          // Slight delay to give screen nice transition to password or sign up
-          await Promise.resolve((resolve: any) => setTimeout(resolve, 1500))
+          await waitForSubmit()
 
           if (res === "user_exists") {
             navigation.navigate({ name: "LoginPasswordStep", params: { email } })
@@ -68,13 +68,13 @@ export const WelcomeStep: React.FC = () => {
           resetForm()
         }}
       >
-        <WelcomeStepForm />
+        <LoginWelcomeStepForm />
       </Formik>
     </>
   )
 }
 
-const WelcomeStepForm: React.FC = () => {
+const LoginWelcomeStepForm: React.FC = () => {
   const setModalExpanded = AuthContext.useStoreActions((actions) => actions.setModalExpanded)
   const isModalExpanded = AuthContext.useStoreState((state) => state.isModalExpanded)
 
@@ -85,7 +85,7 @@ const WelcomeStepForm: React.FC = () => {
   const emailRef = useRef<Input>(null)
 
   useInputAutofocus({
-    screenName: "WelcomeStep",
+    screenName: "LoginWelcomeStep",
     inputRef: emailRef,
     enabled: isModalExpanded,
   })
@@ -100,10 +100,6 @@ const WelcomeStepForm: React.FC = () => {
 
   const handleEmailFocus = () => {
     setModalExpanded(true)
-  }
-
-  const onSubmitEmail = () => {
-    handleSubmit()
   }
 
   return (
@@ -121,29 +117,20 @@ const WelcomeStepForm: React.FC = () => {
         autoCapitalize="none"
         autoComplete="email"
         autoCorrect={false}
-        // TODO: Do we want to collapse the keyboard on submit? This hides the UI jank around the
-        // ios QuickType bar, which we can't control in iOS.
-        // blurOnSubmit={false} // This is needed to avoid UI jump when the user submits
         error={errors.email}
-        keyboardType="email-address"
         placeholderTextColor={color("black30")}
         ref={emailRef}
         spellCheck={false}
-        // We need to to set textContentType to username (instead of emailAddress) here
-        // enable autofill of login details from the device keychain.
-        textContentType="emailAddress"
+        keyboardType="email-address"
+        textContentType="none"
         returnKeyType="next"
-        // textContentType="none"
         title="Email"
         value={values.email}
         onChangeText={(text) => {
           handleChange("email")(text.trim())
         }}
         onFocus={handleEmailFocus}
-        onSubmitEditing={() => {
-          onSubmitEmail()
-          // handleSubmit()
-        }}
+        onSubmitEditing={handleSubmit}
       />
 
       <Flex display={isModalExpanded ? "flex" : "none"}>
