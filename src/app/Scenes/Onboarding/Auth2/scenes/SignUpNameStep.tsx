@@ -13,7 +13,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { showBlockedAuthError } from "app/utils/auth/authHelpers"
 import { Formik, useFormikContext } from "formik"
 import React, { useRef, useState } from "react"
-import { Alert } from "react-native"
+import { Alert, Keyboard } from "react-native"
 import * as Yup from "yup"
 
 interface SignUpNameStepFormValues {
@@ -40,6 +40,8 @@ export const SignUpNameStep: React.FC = () => {
         if (!values.acceptedTerms) {
           return
         }
+
+        Keyboard.dismiss()
 
         const res = await GlobalStore.actions.auth.signUp({
           oauthProvider: "email",

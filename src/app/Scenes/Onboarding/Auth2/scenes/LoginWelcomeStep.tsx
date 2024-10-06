@@ -19,7 +19,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { osMajorVersion } from "app/utils/platformUtil"
 import { Formik, useFormikContext } from "formik"
 import React, { useRef, useState } from "react"
-import { Alert, Image, InteractionManager, Platform } from "react-native"
+import { Alert, Image, InteractionManager, Keyboard, Platform } from "react-native"
 import * as Yup from "yup"
 
 interface LoginEmailFormValues {
@@ -47,6 +47,8 @@ export const LoginWelcomeStep: React.FC = () => {
             .required("Email field is required"),
         })}
         onSubmit={async ({ email }, { resetForm }) => {
+          Keyboard.dismiss()
+
           // FIXME
           if (!token) {
             Alert.alert("Something went wrong. Please try again, or contact support@artsy.net")

@@ -18,6 +18,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { showBlockedAuthError } from "app/utils/auth/authHelpers"
 import { Formik, useFormikContext } from "formik"
 import { useRef } from "react"
+import { Keyboard } from "react-native"
 import * as Yup from "yup"
 
 interface LoginPasswordStepFormValues {
@@ -36,6 +37,8 @@ export const LoginPasswordStep: React.FC = () => {
         password: Yup.string().required("Password field is required"),
       })}
       onSubmit={async ({ password }, { setErrors, resetForm }) => {
+        Keyboard.dismiss()
+
         const res = await GlobalStore.actions.auth.signIn({
           oauthProvider: "email",
           oauthMode: "email",

@@ -7,6 +7,7 @@ import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAut
 import { waitForSubmit } from "app/Scenes/Onboarding/Auth2/utils/waitForSubmit"
 import { Formik, useFormikContext } from "formik"
 import React, { useRef } from "react"
+import { Keyboard } from "react-native"
 import * as Yup from "yup"
 
 interface SignUpPasswordStepFormValues {
@@ -29,6 +30,8 @@ export const SignUpPasswordStep: React.FC = () => {
           .required("Password field is required"),
       })}
       onSubmit={async ({ password }, { resetForm }) => {
+        Keyboard.dismiss()
+
         await waitForSubmit()
 
         navigation.navigate({
