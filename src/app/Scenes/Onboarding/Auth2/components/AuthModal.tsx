@@ -5,7 +5,7 @@ import { Dimensions, KeyboardAvoidingView, Platform } from "react-native"
 import { Easing } from "react-native-reanimated"
 
 const HEIGHT = {
-  WelcomeStep: 320,
+  LoginWelcomeStep: 320,
   LoginEmailStep: 320,
   LoginPasswordStep: 320,
   ForgotPasswordStep: 320,
@@ -25,7 +25,7 @@ export const AuthModal: React.FC = ({ children }) => {
 
   const height = (() => {
     if (isModalExpanded) {
-      return HEIGHT[currentScreen?.name ?? "WelcomeStep"]
+      return HEIGHT[currentScreen?.name ?? "LoginWelcomeStep"]
     }
 
     return HEIGHT.collapsed

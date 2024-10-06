@@ -14,9 +14,11 @@ import {
   useAuthScreen,
 } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
+import { waitForSubmit } from "app/Scenes/Onboarding/Auth2/utils/waitForSubmit"
 import { GlobalStore } from "app/store/GlobalStore"
-import { FormikProvider, useFormik, useFormikContext } from "formik"
+import { Formik, useFormikContext } from "formik"
 import { useRef, useState } from "react"
+import { Keyboard } from "react-native"
 import * as Yup from "yup"
 
 interface LoginOTPStepFormValues {
@@ -26,34 +28,39 @@ interface LoginOTPStepFormValues {
 export const LoginOTPStep: React.FC = () => {
   const screen = useAuthScreen()
 
-  const formik = useFormik<LoginOTPStepFormValues>({
-    initialValues: { otp: "" },
-    onSubmit: async ({ otp }, { setErrors, resetForm }) => {
-      const res = await GlobalStore.actions.auth.signIn({
-        oauthProvider: "email",
-        oauthMode: "email",
-        email: screen.params?.email,
-        password: screen.params?.password,
-        otp: otp.trim(),
-      })
-
-      if (res === "invalid_otp") {
-        setErrors({ otp: "Invalid two-factor authentication code" })
-      } else if (res !== "success") {
-        setErrors({ otp: "Something went wrong. Please try again, or contact support@artsy.net" })
-      }
-
-      if (res === "success") {
-        resetForm()
-      }
-    },
-    validationSchema: Yup.string().test("otp", "This field is required", (value) => value !== ""),
-  })
-
   return (
-    <FormikProvider value={formik}>
+    <Formik<LoginOTPStepFormValues>
+      initialValues={{ otp: "" }}
+      validateOnChange={false}
+      validationSchema={Yup.object().shape({
+        otp: Yup.string().required("This field is required"),
+      })}
+      onSubmit={async ({ otp }, { setErrors, resetForm }) => {
+        Keyboard.dismiss()
+
+        const res = await GlobalStore.actions.auth.signIn({
+          oauthProvider: "email",
+          oauthMode: "email",
+          email: screen.params?.email,
+          password: screen.params?.password,
+          otp: otp.trim(),
+        })
+
+        await waitForSubmit()
+
+        if (res === "invalid_otp") {
+          setErrors({ otp: "Invalid two-factor authentication code" })
+        } else if (res !== "success") {
+          setErrors({ otp: "Something went wrong. Please try again, or contact support@artsy.net" })
+        }
+
+        if (res === "success") {
+          resetForm()
+        }
+      }}
+    >
       <LoginOTPStepForm />
-    </FormikProvider>
+    </Formik>
   )
 }
 

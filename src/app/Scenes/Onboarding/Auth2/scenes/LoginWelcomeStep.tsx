@@ -12,20 +12,21 @@ import { useRecaptcha } from "app/Components/Recaptcha/Recaptcha"
 import { AuthContext } from "app/Scenes/Onboarding/Auth2/AuthContext"
 import { useAuthNavigation } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
+import { waitForSubmit } from "app/Scenes/Onboarding/Auth2/utils/waitForSubmit"
 import { AuthPromiseRejectType, AuthPromiseResolveType } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { osMajorVersion } from "app/utils/platformUtil"
-import { FormikProvider, useFormik, useFormikContext } from "formik"
-import { useRef, useState } from "react"
-import { Alert, Image, InteractionManager, Platform } from "react-native"
+import { Formik, useFormikContext } from "formik"
+import React, { useRef, useState } from "react"
+import { Alert, Image, InteractionManager, Keyboard, Platform } from "react-native"
 import * as Yup from "yup"
 
 interface LoginEmailFormValues {
   email: string
 }
 
-export const WelcomeStep: React.FC = () => {
+export const LoginWelcomeStep: React.FC = () => {
   const navigation = useAuthNavigation()
 
   const { Recaptcha, token } = useRecaptcha({
@@ -33,79 +34,79 @@ export const WelcomeStep: React.FC = () => {
     action: "verify_email",
   })
 
-  const formik = useFormik<LoginEmailFormValues>({
-    initialValues: { email: "" },
-    validateOnMount: false,
-    validateOnChange: false,
-    validateOnBlur: true,
-    validationSchema: Yup.object().shape({
-      email: Yup.string()
-        .email("Please provide a valid email address")
-        .required("Email field is required"),
-    }),
-    onSubmit: async ({ email }, { resetForm }) => {
-      // FIXME
-      if (!token) {
-        Alert.alert("Something went wrong. Please try again, or contact support@artsy.net")
-        return
-      }
-
-      const res = await GlobalStore.actions.auth.verifyUser({ email, recaptchaToken: token })
-
-      if (res === "user_exists") {
-        navigation.navigate({ name: "LoginPasswordStep", params: { email } })
-      } else if (res === "user_does_not_exist") {
-        navigation.navigate({ name: "SignUpPasswordStep", params: { email } })
-      } else if (res === "something_went_wrong") {
-        Alert.alert("Something went wrong. Please try again, or contact support@artsy.net")
-      }
-
-      resetForm()
-    },
-  })
-
   return (
-    <FormikProvider value={formik}>
+    <>
       <Recaptcha />
-      <WelcomeStepForm />
-    </FormikProvider>
+
+      <Formik<LoginEmailFormValues>
+        initialValues={{ email: "" }}
+        validateOnChange={false}
+        validationSchema={Yup.object().shape({
+          email: Yup.string()
+            .email("Please provide a valid email address")
+            .required("Email field is required"),
+        })}
+        onSubmit={async ({ email }, { resetForm }) => {
+          Keyboard.dismiss()
+
+          // FIXME
+          if (!token) {
+            Alert.alert("Something went wrong. Please try again, or contact support@artsy.net")
+            return
+          }
+
+          const res = await GlobalStore.actions.auth.verifyUser({ email, recaptchaToken: token })
+
+          await waitForSubmit()
+
+          if (res === "user_exists") {
+            navigation.navigate({ name: "LoginPasswordStep", params: { email } })
+          } else if (res === "user_does_not_exist") {
+            navigation.navigate({ name: "SignUpPasswordStep", params: { email } })
+          } else if (res === "something_went_wrong") {
+            Alert.alert("Something went wrong. Please try again, or contact support@artsy.net")
+          }
+
+          resetForm()
+        }}
+      >
+        <LoginWelcomeStepForm />
+      </Formik>
+    </>
   )
 }
 
-const WelcomeStepForm: React.FC = () => {
+const LoginWelcomeStepForm: React.FC = () => {
   const setModalExpanded = AuthContext.useStoreActions((actions) => actions.setModalExpanded)
-  const [showSubmit, setShowSubmit] = useState(false)
+  const isModalExpanded = AuthContext.useStoreState((state) => state.isModalExpanded)
 
   const { color } = useTheme()
-
   const { errors, handleChange, handleSubmit, isSubmitting, values, resetForm } =
     useFormikContext<LoginEmailFormValues>()
 
   const emailRef = useRef<Input>(null)
 
   useInputAutofocus({
-    screenName: "WelcomeStep",
+    screenName: "LoginWelcomeStep",
     inputRef: emailRef,
-    enabled: showSubmit,
+    enabled: isModalExpanded,
   })
 
   const handleBackButtonPress = () => {
     requestAnimationFrame(() => {
       emailRef.current?.blur()
-      setShowSubmit(false)
       setModalExpanded(false)
       resetForm()
     })
   }
 
   const handleEmailFocus = () => {
-    setShowSubmit(true)
     setModalExpanded(true)
   }
 
   return (
     <Flex p={2}>
-      {!!showSubmit && (
+      {!!isModalExpanded && (
         <>
           <BackButton onPress={handleBackButtonPress} />
           <Spacer y={1} />
@@ -118,26 +119,23 @@ const WelcomeStepForm: React.FC = () => {
         autoCapitalize="none"
         autoComplete="email"
         autoCorrect={false}
-        blurOnSubmit={false} // This is needed to avoid UI jump when the user submits
         error={errors.email}
-        keyboardType="email-address"
-        onSubmitEditing={handleSubmit}
         placeholderTextColor={color("black30")}
         ref={emailRef}
-        returnKeyType="next"
         spellCheck={false}
-        // We need to to set textContentType to username (instead of emailAddress) here
-        // enable autofill of login details from the device keychain.
-        textContentType="username"
+        keyboardType="email-address"
+        textContentType="none"
+        returnKeyType="next"
         title="Email"
         value={values.email}
         onChangeText={(text) => {
           handleChange("email")(text.trim())
         }}
         onFocus={handleEmailFocus}
+        onSubmitEditing={handleSubmit}
       />
 
-      <Flex display={showSubmit ? "flex" : "none"}>
+      <Flex display={isModalExpanded ? "flex" : "none"}>
         <Spacer y={2} />
 
         <Button block width="100%" onPress={handleSubmit} loading={isSubmitting}>
@@ -145,7 +143,7 @@ const WelcomeStepForm: React.FC = () => {
         </Button>
       </Flex>
 
-      <Flex display={showSubmit ? "none" : "flex"}>
+      <Flex display={isModalExpanded ? "none" : "flex"}>
         <Spacer y={2} />
 
         <SocialLoginButtons />

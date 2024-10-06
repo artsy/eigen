@@ -2,8 +2,7 @@ import { OnboardingWebViewRoute } from "app/Scenes/Onboarding/OnboardingWebView"
 import { action, Action, createContextStore } from "easy-peasy"
 
 export type AuthScreens = {
-  WelcomeStep: undefined
-  LoginEmailStep: undefined
+  LoginWelcomeStep: undefined
   LoginPasswordStep: { email: string }
   LoginOTPStep: { otpMode: "standard" | "on_demand"; email: string; password: string }
   ForgotPasswordStep: { requestedPasswordReset: boolean } | undefined
@@ -29,7 +28,7 @@ interface AuthContextModel {
 
 export const AuthContext = createContextStore<AuthContextModel>({
   isMounted: false,
-  currentScreen: { name: "WelcomeStep" },
+  currentScreen: { name: "LoginWelcomeStep" },
   previousScreens: [],
   isModalExpanded: false,
 

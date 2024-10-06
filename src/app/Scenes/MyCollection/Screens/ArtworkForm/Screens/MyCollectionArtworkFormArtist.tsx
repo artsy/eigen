@@ -55,7 +55,7 @@ export const MyCollectionArtworkFormArtist: React.FC<
   }
 
   const handleBack = () => {
-    // TOOD: The state doesn't need to be stored in the global store
+    // TODO: The state doesn't need to be stored in the global store
     GlobalStore.actions.myCollection.artwork.resetForm()
     goBack()
   }

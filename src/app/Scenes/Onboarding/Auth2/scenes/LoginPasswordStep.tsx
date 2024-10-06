@@ -13,10 +13,12 @@ import {
   useAuthScreen,
 } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
+import { waitForSubmit } from "app/Scenes/Onboarding/Auth2/utils/waitForSubmit"
 import { GlobalStore } from "app/store/GlobalStore"
 import { showBlockedAuthError } from "app/utils/auth/authHelpers"
-import { FormikProvider, useFormik, useFormikContext } from "formik"
+import { Formik, useFormikContext } from "formik"
 import { useRef } from "react"
+import { Keyboard } from "react-native"
 import * as Yup from "yup"
 
 interface LoginPasswordStepFormValues {
@@ -24,64 +26,64 @@ interface LoginPasswordStepFormValues {
 }
 
 export const LoginPasswordStep: React.FC = () => {
-  const navigation = useAuthNavigation()
   const screen = useAuthScreen()
-
-  const formik = useFormik<LoginPasswordStepFormValues>({
-    initialValues: { password: "" },
-    onSubmit: async ({ password }, { setErrors, resetForm }) => {
-      const res = await GlobalStore.actions.auth.signIn({
-        oauthProvider: "email",
-        oauthMode: "email",
-        email: screen.params?.email,
-        password,
-      })
-
-      if (res === "otp_missing") {
-        navigation.navigate({
-          name: "LoginOTPStep",
-          params: {
-            otpMode: "standard",
-            email: screen.params?.email,
-            password,
-          },
-        })
-      } else if (res === "on_demand_otp_missing") {
-        navigation.navigate({
-          name: "LoginOTPStep",
-          params: {
-            otpMode: "on_demand",
-            email: screen.params?.email,
-            password,
-          },
-        })
-      }
-
-      if (res === "auth_blocked") {
-        showBlockedAuthError("sign in")
-        return
-      }
-
-      if (res !== "success" && res !== "otp_missing" && res !== "on_demand_otp_missing") {
-        // For security purposes, we are returning a generic error message
-        setErrors({ password: "Incorrect email or password" }) // pragma: allowlist secret
-      }
-
-      if (res === "success") {
-        resetForm()
-      }
-    },
-    validationSchema: Yup.string().test(
-      "password",
-      "Password field is required",
-      (value) => value !== ""
-    ),
-  })
+  const navigation = useAuthNavigation()
 
   return (
-    <FormikProvider value={formik}>
+    <Formik<LoginPasswordStepFormValues>
+      initialValues={{ password: "" }}
+      validateOnChange={false}
+      validationSchema={Yup.object().shape({
+        password: Yup.string().required("Password field is required"),
+      })}
+      onSubmit={async ({ password }, { setErrors, resetForm }) => {
+        Keyboard.dismiss()
+
+        const res = await GlobalStore.actions.auth.signIn({
+          oauthProvider: "email",
+          oauthMode: "email",
+          email: screen.params?.email,
+          password,
+        })
+
+        await waitForSubmit()
+
+        if (res === "otp_missing") {
+          navigation.navigate({
+            name: "LoginOTPStep",
+            params: {
+              otpMode: "standard",
+              email: screen.params?.email,
+              password,
+            },
+          })
+        } else if (res === "on_demand_otp_missing") {
+          navigation.navigate({
+            name: "LoginOTPStep",
+            params: {
+              otpMode: "on_demand",
+              email: screen.params?.email,
+              password,
+            },
+          })
+        }
+
+        if (res === "auth_blocked") {
+          showBlockedAuthError("sign in")
+          return
+        }
+
+        if (res !== "success" && res !== "otp_missing" && res !== "on_demand_otp_missing") {
+          setErrors({ password: "Incorrect email or password" }) // pragma: allowlist secret
+        }
+
+        if (res === "success") {
+          resetForm()
+        }
+      }}
+    >
       <LoginPasswordStepForm />
-    </FormikProvider>
+    </Formik>
   )
 }
 
@@ -107,7 +109,6 @@ const LoginPasswordStepForm: React.FC = () => {
   useInputAutofocus({
     screenName: "LoginPasswordStep",
     inputRef: passwordRef,
-    delay: 0,
   })
 
   const handleBackButtonPress = () => {
