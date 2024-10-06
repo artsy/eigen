@@ -4,7 +4,7 @@ import {
   useAuthScreen,
 } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
-import { Formik, FormikHelpers, useFormikContext } from "formik"
+import { Formik, useFormikContext } from "formik"
 import React, { useRef } from "react"
 import * as Yup from "yup"
 
@@ -17,7 +17,7 @@ export const SignUpPasswordStep: React.FC = () => {
   const screen = useAuthScreen()
 
   return (
-    <Formik
+    <Formik<SignUpPasswordStepFormValues>
       initialValues={{ password: "" }}
       validationSchema={Yup.object().shape({
         password: Yup.string()
@@ -27,10 +27,7 @@ export const SignUpPasswordStep: React.FC = () => {
           .matches(/[0-9]/, "Your password should contain at least one digit")
           .required("Password field is required"),
       })}
-      onSubmit={(
-        { password }: SignUpPasswordStepFormValues,
-        { resetForm }: FormikHelpers<SignUpPasswordStepFormValues>
-      ) => {
+      onSubmit={({ password }, { resetForm }) => {
         navigation.navigate({
           name: "SignUpNameStep",
           params: {
@@ -84,7 +81,7 @@ const SignUpPasswordStepForm: React.FC = () => {
         ref={passwordRef}
         returnKeyType="done"
         secureTextEntry
-        textContentType="password"
+        textContentType="none"
         title="Password"
         value={values.password}
         onChangeText={(text) => {

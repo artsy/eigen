@@ -10,7 +10,7 @@ import { EmailSubscriptionCheckbox } from "app/Scenes/Onboarding/OnboardingCreat
 import { TermsOfServiceCheckbox } from "app/Scenes/Onboarding/OnboardingCreateAccount/TermsOfServiceCheckbox"
 import { GlobalStore } from "app/store/GlobalStore"
 import { showBlockedAuthError } from "app/utils/auth/authHelpers"
-import { Formik, FormikHelpers, useFormikContext } from "formik"
+import { Formik, useFormikContext } from "formik"
 import React, { useRef, useState } from "react"
 import { Alert, Keyboard } from "react-native"
 import * as Yup from "yup"
@@ -25,7 +25,7 @@ export const SignUpNameStep: React.FC = () => {
   const screen = useAuthScreen()
 
   return (
-    <Formik
+    <Formik<SignUpNameStepFormValues>
       initialValues={{
         name: "",
         acceptedTerms: false,
@@ -35,11 +35,8 @@ export const SignUpNameStep: React.FC = () => {
       validationSchema={Yup.object().shape({
         name: Yup.string().trim().required("Full name field is required"),
       })}
-      onSubmit={async (
-        { acceptedTerms, agreedToReceiveEmails, name }: SignUpNameStepFormValues,
-        { resetForm }: FormikHelpers<SignUpNameStepFormValues>
-      ) => {
-        if (!acceptedTerms) {
+      onSubmit={async (values, { resetForm }) => {
+        if (!values.acceptedTerms) {
           return
         }
 
@@ -48,8 +45,8 @@ export const SignUpNameStep: React.FC = () => {
           oauthMode: "email",
           email: screen.params?.email,
           password: screen.params?.password,
-          name: name.trim(),
-          agreedToReceiveEmails,
+          name: values.name.trim(),
+          agreedToReceiveEmails: values.agreedToReceiveEmails,
         })
 
         if (!res.success) {
@@ -104,11 +101,14 @@ const SignUpNameStepForm: React.FC = () => {
         autoCorrect={false}
         blurOnSubmit={false}
         error={errors.name}
+        keyboardType="name-phone-pad"
         maxLength={128}
         placeholder="First and last name"
         placeholderTextColor={color("black30")}
         ref={nameRef}
         returnKeyType="done"
+        spellCheck={false}
+        textContentType="name"
         title="Full Name"
         value={values.name}
         onChangeText={(text) => {

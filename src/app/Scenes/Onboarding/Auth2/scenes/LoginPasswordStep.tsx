@@ -15,7 +15,7 @@ import {
 import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
 import { GlobalStore } from "app/store/GlobalStore"
 import { showBlockedAuthError } from "app/utils/auth/authHelpers"
-import { Formik, FormikHelpers, useFormikContext } from "formik"
+import { Formik, useFormikContext } from "formik"
 import { useRef } from "react"
 import * as Yup from "yup"
 
@@ -28,16 +28,13 @@ export const LoginPasswordStep: React.FC = () => {
   const navigation = useAuthNavigation()
 
   return (
-    <Formik
+    <Formik<LoginPasswordStepFormValues>
       initialValues={{ password: "" }}
       validateOnChange={false}
       validationSchema={Yup.object().shape({
         password: Yup.string().required("Password field is required"),
       })}
-      onSubmit={async (
-        { password }: LoginPasswordStepFormValues,
-        { setErrors, resetForm }: FormikHelpers<LoginPasswordStepFormValues>
-      ) => {
+      onSubmit={async ({ password }, { setErrors, resetForm }) => {
         const res = await GlobalStore.actions.auth.signIn({
           oauthProvider: "email",
           oauthMode: "email",

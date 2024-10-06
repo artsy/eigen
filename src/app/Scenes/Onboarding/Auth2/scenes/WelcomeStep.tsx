@@ -16,7 +16,7 @@ import { AuthPromiseRejectType, AuthPromiseResolveType } from "app/store/AuthMod
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { osMajorVersion } from "app/utils/platformUtil"
-import { Formik, FormikHelpers, useFormikContext } from "formik"
+import { Formik, useFormikContext } from "formik"
 import React, { useRef, useState } from "react"
 import { Alert, Image, InteractionManager, Platform } from "react-native"
 import * as Yup from "yup"
@@ -37,7 +37,7 @@ export const WelcomeStep: React.FC = () => {
     <>
       <Recaptcha />
 
-      <Formik
+      <Formik<LoginEmailFormValues>
         initialValues={{ email: "" }}
         validateOnChange={false}
         validationSchema={Yup.object().shape({
@@ -45,10 +45,7 @@ export const WelcomeStep: React.FC = () => {
             .email("Please provide a valid email address")
             .required("Email field is required"),
         })}
-        onSubmit={async (
-          { email }: LoginEmailFormValues,
-          { resetForm }: FormikHelpers<LoginEmailFormValues>
-        ) => {
+        onSubmit={async ({ email }, { resetForm }) => {
           // FIXME
           if (!token) {
             Alert.alert("Something went wrong. Please try again, or contact support@artsy.net")
@@ -56,6 +53,9 @@ export const WelcomeStep: React.FC = () => {
           }
 
           const res = await GlobalStore.actions.auth.verifyUser({ email, recaptchaToken: token })
+
+          // Slight delay to give screen nice transition to password or sign up
+          await Promise.resolve((resolve: any) => setTimeout(resolve, 1500))
 
           if (res === "user_exists") {
             navigation.navigate({ name: "LoginPasswordStep", params: { email } })
@@ -102,6 +102,10 @@ const WelcomeStepForm: React.FC = () => {
     setModalExpanded(true)
   }
 
+  const onSubmitEmail = () => {
+    handleSubmit()
+  }
+
   return (
     <Flex p={2}>
       {!!isModalExpanded && (
@@ -117,23 +121,29 @@ const WelcomeStepForm: React.FC = () => {
         autoCapitalize="none"
         autoComplete="email"
         autoCorrect={false}
-        blurOnSubmit={false} // This is needed to avoid UI jump when the user submits
+        // TODO: Do we want to collapse the keyboard on submit? This hides the UI jank around the
+        // ios QuickType bar, which we can't control in iOS.
+        // blurOnSubmit={false} // This is needed to avoid UI jump when the user submits
         error={errors.email}
         keyboardType="email-address"
-        onSubmitEditing={handleSubmit}
         placeholderTextColor={color("black30")}
         ref={emailRef}
-        returnKeyType="next"
         spellCheck={false}
         // We need to to set textContentType to username (instead of emailAddress) here
         // enable autofill of login details from the device keychain.
-        textContentType="username"
+        textContentType="emailAddress"
+        returnKeyType="next"
+        // textContentType="none"
         title="Email"
         value={values.email}
         onChangeText={(text) => {
           handleChange("email")(text.trim())
         }}
         onFocus={handleEmailFocus}
+        onSubmitEditing={() => {
+          onSubmitEmail()
+          // handleSubmit()
+        }}
       />
 
       <Flex display={isModalExpanded ? "flex" : "none"}>

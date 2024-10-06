@@ -15,7 +15,7 @@ import {
 } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Formik, FormikHelpers, useFormikContext } from "formik"
+import { Formik, useFormikContext } from "formik"
 import { useRef, useState } from "react"
 import * as Yup from "yup"
 
@@ -27,16 +27,13 @@ export const LoginOTPStep: React.FC = () => {
   const screen = useAuthScreen()
 
   return (
-    <Formik
+    <Formik<LoginOTPStepFormValues>
       initialValues={{ otp: "" }}
       validateOnChange={false}
       validationSchema={Yup.object().shape({
         otp: Yup.string().required("This field is required"),
       })}
-      onSubmit={async (
-        { otp }: LoginOTPStepFormValues,
-        { setErrors, resetForm }: FormikHelpers<LoginOTPStepFormValues>
-      ) => {
+      onSubmit={async ({ otp }, { setErrors, resetForm }) => {
         const res = await GlobalStore.actions.auth.signIn({
           oauthProvider: "email",
           oauthMode: "email",

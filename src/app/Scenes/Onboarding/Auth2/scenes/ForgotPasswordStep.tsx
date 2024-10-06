@@ -5,7 +5,7 @@ import {
 } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Formik, FormikHelpers, useFormikContext } from "formik"
+import { Formik, useFormikContext } from "formik"
 import { useRef } from "react"
 import * as Yup from "yup"
 
@@ -17,12 +17,9 @@ export const ForgotPasswordStep: React.FC = () => {
   const navigation = useAuthNavigation()
 
   return (
-    <Formik
+    <Formik<ForgotPasswordStepFormValues>
       initialValues={{ email: "" }}
-      onSubmit={async (
-        { email }: ForgotPasswordStepFormValues,
-        { setErrors, resetForm }: FormikHelpers<ForgotPasswordStepFormValues>
-      ) => {
+      onSubmit={async ({ email }, { setErrors, resetForm }) => {
         const res = await GlobalStore.actions.auth.forgotPassword({
           email,
         })
