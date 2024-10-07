@@ -7,12 +7,13 @@ import { PAGE_SIZE } from "app/Components/constants"
 import { NewWorksFromGalleriesYouFollowPlaceholder } from "app/Scenes/NewWorksFromGalleriesYouFollow/Components/NewWorksFromGalleriesYouFollowPlaceholder"
 import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
-import { withSuspense } from "app/utils/hooks/withSuspense"
+import { strictWithSuspense } from "app/utils/hooks/withSuspense"
 import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
 import { useRefreshControl } from "app/utils/refreshHelpers"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 export const NewWorksFromGalleriesYouFollow: React.FC = () => {
+  console.warn("NewWorksFromGalleriesYouFollow")
   const queryData = useLazyLoadQuery<NewWorksFromGalleriesYouFollowQuery>(
     NewWorksFromGalleriesYouFollowScreenQuery,
     newWorksFromGalleriesYouFollowQueryVariables
@@ -84,6 +85,12 @@ const artworkConnectionFragment = graphql`
   }
 `
 
-export const NewWorksFromGalleriesYouFollowQR: React.FC = withSuspense(() => {
-  return <NewWorksFromGalleriesYouFollow />
-}, NewWorksFromGalleriesYouFollowPlaceholder)
+export const NewWorksFromGalleriesYouFollowQR: React.FC = strictWithSuspense(
+  () => {
+    return <NewWorksFromGalleriesYouFollow />
+  },
+  NewWorksFromGalleriesYouFollowPlaceholder,
+  () => {
+    return <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
+  }
+)
