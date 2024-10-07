@@ -6,6 +6,8 @@ import ReanimatedSwipeable, {
 } from "react-native-gesture-handler/ReanimatedSwipeable"
 import { SharedValue } from "react-native-reanimated"
 
+const FRICTION = 1.2
+
 export interface SwipeableProps {
   children: React.ReactNode
   actionOnPress: () => void
@@ -25,7 +27,7 @@ export const Swipeable = forwardRef((props: SwipeableProps, swipeableRef: Swipea
     swipeableProps,
   } = props
 
-  const renderRightActions: (
+  const RightActions: (
     progress: SharedValue<number>,
     dragX: SharedValue<number>,
     swipable: SwipeableMethods
@@ -33,13 +35,14 @@ export const Swipeable = forwardRef((props: SwipeableProps, swipeableRef: Swipea
     return (
       <Touchable haptic onPress={actionOnPress}>
         <Flex
-          ml={1}
-          p={1}
           flex={1}
-          minWidth={71}
+          ml={1}
+          p={2}
           bg={actionBackground}
-          alignItems="center"
           justifyContent="center"
+          border="1px solid"
+          borderColor={actionBackground}
+          borderRadius={5}
         >
           {actionComponent}
         </Flex>
@@ -52,8 +55,8 @@ export const Swipeable = forwardRef((props: SwipeableProps, swipeableRef: Swipea
       testID="swipeable-component"
       ref={swipeableRef}
       enabled={enabled}
-      renderRightActions={renderRightActions}
-      friction={1.5}
+      renderRightActions={RightActions}
+      friction={FRICTION}
       {...swipeableProps}
     >
       {children}
