@@ -12,7 +12,6 @@ import { useRecaptcha } from "app/Components/Recaptcha/Recaptcha"
 import { AuthContext } from "app/Scenes/Onboarding/Auth2/AuthContext"
 import { useAuthNavigation } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
-import { waitForSubmit } from "app/Scenes/Onboarding/Auth2/utils/waitForSubmit"
 import { AuthPromiseRejectType, AuthPromiseResolveType } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
@@ -20,7 +19,7 @@ import { osMajorVersion } from "app/utils/platformUtil"
 import { Formik, useFormikContext } from "formik"
 import { MotiView } from "moti"
 import React, { useRef, useState } from "react"
-import { Alert, Image, InteractionManager, Keyboard, Platform } from "react-native"
+import { Alert, Image, InteractionManager, Platform } from "react-native"
 import { Easing } from "react-native-reanimated"
 import * as Yup from "yup"
 
@@ -49,8 +48,6 @@ export const LoginWelcomeStep: React.FC = () => {
             .required("Email field is required"),
         })}
         onSubmit={async ({ email }, { resetForm }) => {
-          Keyboard.dismiss()
-
           // FIXME
           if (!token) {
             Alert.alert("Something went wrong. Please try again, or contact support@artsy.net")
@@ -58,8 +55,6 @@ export const LoginWelcomeStep: React.FC = () => {
           }
 
           const res = await GlobalStore.actions.auth.verifyUser({ email, recaptchaToken: token })
-
-          await waitForSubmit()
 
           if (res === "user_exists") {
             navigation.navigate({ name: "LoginPasswordStep", params: { email } })
@@ -121,6 +116,7 @@ const LoginWelcomeStepForm: React.FC = () => {
         autoCapitalize="none"
         autoComplete="email"
         autoCorrect={false}
+        blurOnSubmit={false}
         error={errors.email}
         placeholderTextColor={color("black30")}
         ref={emailRef}

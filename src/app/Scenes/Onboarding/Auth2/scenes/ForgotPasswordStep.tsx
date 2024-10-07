@@ -62,11 +62,8 @@ const ForgotPasswordStepForm: React.FC = () => {
   } = useFormikContext<ForgotPasswordStepFormValues>()
 
   const navigation = useAuthNavigation()
-
   const screen = useAuthScreen()
-
   const { color } = useTheme()
-
   const forgotPasswordRef = useRef<Input>(null)
 
   const handleBackButtonPress = () => {

@@ -10,8 +10,6 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ children, name }) => {
   const { currentScreen } = AuthContext.useStoreState((state) => state)
   const isVisible = name === currentScreen?.name
 
-  if (!isVisible) return null
-
   return (
     <>
       <Flex display={isVisible ? "flex" : "none"}>{children}</Flex>

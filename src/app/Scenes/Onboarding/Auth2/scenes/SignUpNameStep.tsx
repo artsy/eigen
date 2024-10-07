@@ -5,7 +5,6 @@ import {
   useAuthScreen,
 } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
-import { waitForSubmit } from "app/Scenes/Onboarding/Auth2/utils/waitForSubmit"
 import { OnboardingNavigationStack } from "app/Scenes/Onboarding/Onboarding"
 import { EmailSubscriptionCheckbox } from "app/Scenes/Onboarding/OnboardingCreateAccount/EmailSubscriptionCheckbox"
 import { TermsOfServiceCheckbox } from "app/Scenes/Onboarding/OnboardingCreateAccount/TermsOfServiceCheckbox"
@@ -13,7 +12,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { showBlockedAuthError } from "app/utils/auth/authHelpers"
 import { Formik, useFormikContext } from "formik"
 import React, { useRef, useState } from "react"
-import { Alert, Keyboard } from "react-native"
+import { Alert } from "react-native"
 import * as Yup from "yup"
 
 interface SignUpNameStepFormValues {
@@ -41,8 +40,6 @@ export const SignUpNameStep: React.FC = () => {
           return
         }
 
-        Keyboard.dismiss()
-
         const res = await GlobalStore.actions.auth.signUp({
           oauthProvider: "email",
           oauthMode: "email",
@@ -51,8 +48,6 @@ export const SignUpNameStep: React.FC = () => {
           name: values.name.trim(),
           agreedToReceiveEmails: values.agreedToReceiveEmails,
         })
-
-        await waitForSubmit()
 
         if (!res.success) {
           if (res.error === "blocked_attempt") {
