@@ -4,6 +4,7 @@ import {
   useAuthScreen,
 } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
+import { waitForSubmit } from "app/Scenes/Onboarding/Auth2/utils/waitForSubmit"
 import { Formik, useFormikContext } from "formik"
 import React, { useRef } from "react"
 import * as Yup from "yup"
@@ -28,6 +29,8 @@ export const SignUpPasswordStep: React.FC = () => {
           .required("Password field is required"),
       })}
       onSubmit={async ({ password }, { resetForm }) => {
+        await waitForSubmit(500)
+
         navigation.navigate({
           name: "SignUpNameStep",
           params: {
@@ -66,8 +69,8 @@ const SignUpPasswordStepForm: React.FC = () => {
   })
 
   const handleBackButtonPress = () => {
-    navigation.goBack()
     resetForm()
+    navigation.goBack()
   }
 
   return (

@@ -67,8 +67,8 @@ const ForgotPasswordStepForm: React.FC = () => {
   const forgotPasswordRef = useRef<Input>(null)
 
   const handleBackButtonPress = () => {
-    navigation.goBack()
     resetForm()
+    navigation.goBack()
   }
 
   const requestedPasswordReset = screen.params?.requestedPasswordReset
