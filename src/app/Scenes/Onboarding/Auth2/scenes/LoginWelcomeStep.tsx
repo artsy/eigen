@@ -19,7 +19,7 @@ import { osMajorVersion } from "app/utils/platformUtil"
 import { Formik, useFormikContext } from "formik"
 import { MotiView } from "moti"
 import React, { useRef, useState } from "react"
-import { Alert, Image, InteractionManager, Platform } from "react-native"
+import { Image, InteractionManager, Platform } from "react-native"
 import { Easing } from "react-native-reanimated"
 import * as Yup from "yup"
 
@@ -50,7 +50,10 @@ export const LoginWelcomeStep: React.FC = () => {
         onSubmit={async ({ email }, { resetForm }) => {
           // FIXME
           if (!token) {
-            Alert.alert("Something went wrong. Please try again, or contact support@artsy.net")
+            navigation.navigate({
+              name: "LoginPasswordStep",
+              params: { email, showSignUpLink: true },
+            })
             return
           }
 
@@ -61,7 +64,10 @@ export const LoginWelcomeStep: React.FC = () => {
           } else if (res === "user_does_not_exist") {
             navigation.navigate({ name: "SignUpPasswordStep", params: { email } })
           } else if (res === "something_went_wrong") {
-            Alert.alert("Something went wrong. Please try again, or contact support@artsy.net")
+            navigation.navigate({
+              name: "LoginPasswordStep",
+              params: { email, showSignUpLink: true },
+            })
           }
 
           resetForm()

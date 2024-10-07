@@ -1,4 +1,13 @@
-import { BackButton, Button, Flex, Input, Spacer, Text, useTheme } from "@artsy/palette-mobile"
+import {
+  BackButton,
+  Button,
+  Flex,
+  Input,
+  LinkText,
+  Spacer,
+  Text,
+  useTheme,
+} from "@artsy/palette-mobile"
 import {
   useAuthNavigation,
   useAuthScreen,
@@ -60,6 +69,7 @@ const SignUpPasswordStepForm: React.FC = () => {
   } = useFormikContext<SignUpPasswordStepFormValues>()
 
   const navigation = useAuthNavigation()
+  const screen = useAuthScreen()
   const { color } = useTheme()
   const passwordRef = useRef<Input>(null)
 
@@ -112,6 +122,28 @@ const SignUpPasswordStepForm: React.FC = () => {
       <Button block width={100} onPress={handleSubmit} disabled={!isValid} loading={isSubmitting}>
         Continue
       </Button>
+
+      {!!screen.params?.showLoginLink && (
+        <>
+          <Spacer y={1} />
+
+          <Text variant="xs" color="black60" textAlign="center">
+            Already have an account?{" "}
+            <LinkText
+              variant="xs"
+              onPress={() => {
+                navigation.navigate({
+                  name: "LoginPasswordStep",
+                  params: { email: screen.params?.email, showSignUpLink: true },
+                })
+                resetForm()
+              }}
+            >
+              Login.
+            </LinkText>
+          </Text>
+        </>
+      )}
     </Flex>
   )
 }
