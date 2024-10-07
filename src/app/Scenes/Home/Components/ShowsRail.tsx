@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedShowGroup } from "@artsy/cohesion"
-import { Flex, Join, SkeletonBox, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Join, SkeletonBox, SkeletonText, Spacer, Text } from "@artsy/palette-mobile"
 import { ShowsRailQuery } from "__generated__/ShowsRailQuery.graphql"
 import {
   ShowsRail_showsConnection$data,
@@ -190,7 +190,7 @@ export const ShowsRailContainer: React.FC<ShowsRailContainerProps> = ({
 export const ShowsRailPlaceholder: React.FC = () => {
   return (
     <Flex mx={2} testID="show-rail-placeholder">
-      <SkeletonBox width={100} height={18} />
+      <SkeletonText numberOfLines={1}>Art on Paper 2024, New York</SkeletonText>
       <Spacer y={1} />
 
       <Flex flexDirection="row">

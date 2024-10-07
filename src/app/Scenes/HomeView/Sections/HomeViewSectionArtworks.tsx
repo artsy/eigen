@@ -176,13 +176,14 @@ const HomeViewSectionArtworksPlaceholder: React.FC<FlexProps> = (flexProps) => {
                       width={ARTWORK_RAIL_IMAGE_WIDTH}
                     />
                   )}
-                  <Spacer y={2} />
+                  <Spacer y={1} />
 
                   <Join separator={<Spacer y={0.5} />}>
-                    <SkeletonText variant="xxs">Andy Warhol</SkeletonText>
-                    <SkeletonText variant="xxs">A creative name for a work</SkeletonText>
-                    <SkeletonText variant="xxs">Gallery or Partner</SkeletonText>
-                    <SkeletonText variant="xxs">1000 €</SkeletonText>
+                    <SkeletonBox height={15} width={60} />
+                    <SkeletonBox height={15} width={100} />
+                    <SkeletonBox height={15} width={120} />
+                    <SkeletonBox height={15} width={80} />
+                    <SkeletonBox height={15} width={110} />
                   </Join>
                 </Flex>
               ))}

@@ -235,6 +235,7 @@ const HomeViewSectionArtistsPlaceholder: React.FC<FlexProps> = (flexProps) => {
                     width={ARTIST_CARD_WIDTH}
                   />
                   <Spacer y={1} />
+
                   <SkeletonText variant="xs" mb={0.5}>
                     Andy Warhol
                   </SkeletonText>

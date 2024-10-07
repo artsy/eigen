@@ -180,15 +180,9 @@ const HomeViewSectionActivityPlaceholder: React.FC<FlexProps> = (flexProps) => {
                 width={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
               />
               <Flex maxWidth={ACTIVITY_RAIL_ITEM_WIDTH}>
-                <SkeletonText variant="xxs" mb={0.5} numberOfLines={1}>
-                  6 new works by Andy Warhol
-                </SkeletonText>
-                <SkeletonText variant="xxs" mb={0.5} numberOfLines={1}>
-                  2021-01-01
-                </SkeletonText>
-                <SkeletonText variant="xxs" numberOfLines={1}>
-                  Follow - 6 days ago
-                </SkeletonText>
+                <SkeletonBox width={140} height={15} mb={0.5} />
+                <SkeletonBox width={60} height={15} mb={0.5} />
+                <SkeletonBox width={100} height={15} />
               </Flex>
             </Flex>
           ))}
