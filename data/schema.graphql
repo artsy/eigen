@@ -2246,6 +2246,8 @@ type Artwork implements Node & Searchable & Sellable {
     last: Int
   ): ArtistSeriesConnection
   artists(
+    private: Boolean = true
+
     # Use whatever is in the original response instead of making a request
     shallow: Boolean
   ): [Artist]
