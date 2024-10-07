@@ -1,6 +1,7 @@
 import { Box, Flex, useTheme } from "@artsy/palette-mobile"
 import { AuthContext } from "app/Scenes/Onboarding/Auth2/AuthContext"
 import { MotiView } from "moti"
+import { useMemo } from "react"
 import { Dimensions } from "react-native"
 import { Easing } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -20,27 +21,27 @@ const HEIGHT = {
 export const AuthModal: React.FC = ({ children }) => {
   const { isModalExpanded, isMounted, currentScreen } = AuthContext.useStoreState((state) => state)
 
-  const { space } = useTheme()
+  const { color, space } = useTheme()
   const insets = useSafeAreaInsets()
 
   const screenHeight = Dimensions.get("window").height
 
-  const height = (() => {
+  const height = useMemo(() => {
     if (isModalExpanded) {
       return HEIGHT[currentScreen?.name ?? "LoginWelcomeStep"]
     }
 
     return HEIGHT.collapsed
-  })()
+  }, [currentScreen])
 
-  const translateY = (() => {
+  const translateY = useMemo(() => {
     // Position the modal in the center of the screen, minus some padding
     if (isModalExpanded) {
       return insets.top + space(6)
     }
 
     return screenHeight - height - insets.bottom
-  })()
+  }, [isModalExpanded, height])
 
   return (
     <Box flex={1} height="100%">
@@ -59,7 +60,7 @@ export const AuthModal: React.FC = ({ children }) => {
         }}
         style={{
           width: "100%",
-          backgroundColor: "white",
+          backgroundColor: color("white100"),
           borderRadius: space(2),
           overflow: "hidden",
           position: "relative",
