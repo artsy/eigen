@@ -16,7 +16,7 @@ import {
   useSavedSearchFilter,
   useSearchCriteriaAttributes,
 } from "app/Scenes/SavedSearchAlert/helpers"
-import { withSuspense } from "app/utils/hooks/withSuspense"
+import { strictWithSuspense } from "app/utils/hooks/withSuspense"
 import { compact } from "lodash"
 import { useState } from "react"
 import { TouchableOpacity } from "react-native"
@@ -32,6 +32,8 @@ const SavedSearchFilterArtistSeries: React.FC<SavedSearchFilterArtistSeriesProps
   const artistSeries = (artist?.filterArtworksConnection?.aggregations || []).find(
     (aggs) => aggs?.slice === "ARTIST_SERIES"
   )
+
+  console.warn("SavedSearchFilterArtistSeries", artistSeries)
 
   const { handlePress } = useSavedSearchFilter({ criterion: SearchCriteria.artistSeriesIDs })
 
@@ -125,18 +127,22 @@ const savedSearchFilterPriceRangeQuery = graphql`
   }
 `
 
-export const SavedSearchFilterArtistSeriesQR: React.FC<{}> = withSuspense(() => {
-  const artistID = SavedSearchStore.useStoreState((state) => state.entity.artists[0].id)
-  const data = useLazyLoadQuery<SavedSearchFilterArtistSeriesQuery>(
-    savedSearchFilterPriceRangeQuery,
-    {
-      artistID: artistID,
+export const SavedSearchFilterArtistSeriesQR: React.FC<{}> = strictWithSuspense(
+  () => {
+    const artistID = SavedSearchStore.useStoreState((state) => state.entity.artists[0].id)
+    const data = useLazyLoadQuery<SavedSearchFilterArtistSeriesQuery>(
+      savedSearchFilterPriceRangeQuery,
+      {
+        artistID: artistID,
+      }
+    )
+
+    if (!data.artist) {
+      return null
     }
-  )
 
-  if (!data.artist) {
-    return null
-  }
-
-  return <SavedSearchFilterArtistSeries artist={data.artist} />
-}, Placeholder)
+    return <SavedSearchFilterArtistSeries artist={data.artist} />
+  },
+  Placeholder,
+  undefined
+)
