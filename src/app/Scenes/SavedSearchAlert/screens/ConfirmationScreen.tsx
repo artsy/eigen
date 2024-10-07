@@ -20,7 +20,7 @@ import {
 } from "app/utils/getArtworkSignalTrackingFields"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
-import { withSuspense } from "app/utils/hooks/withSuspense"
+import { strictWithSuspense } from "app/utils/hooks/withSuspense"
 import { PlaceholderRaggedText } from "app/utils/placeholders"
 import { pluralize } from "app/utils/pluralize"
 import { useEffect } from "react"
@@ -123,7 +123,7 @@ const MatchingArtworksPlaceholder: React.FC = () => {
   )
 }
 
-const MatchingArtworksContainer: React.FC<{ closeModal?: () => void }> = withSuspense(
+const MatchingArtworksContainer: React.FC<{ closeModal?: () => void }> = strictWithSuspense(
   ({ closeModal }) => {
     // TODO: instead of using artworksConnection and passing attributes from the store, use `alert.artworksConnection` field instead.
     const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
@@ -140,7 +140,14 @@ const MatchingArtworksContainer: React.FC<{ closeModal?: () => void }> = withSus
 
     return <MatchingArtworks artworksConnection={data.artworksConnection} closeModal={closeModal} />
   },
-  MatchingArtworksPlaceholder
+  MatchingArtworksPlaceholder,
+  () => {
+    return (
+      <Text mb={2} p={2} bg="black10" color="black60">
+        There aren't any works available that meet the criteria at this time.
+      </Text>
+    )
+  }
 )
 
 const matchingArtworksQuery = graphql`
