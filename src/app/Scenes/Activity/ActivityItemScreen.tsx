@@ -4,7 +4,7 @@ import { ActivityItemScreenQuery } from "__generated__/ActivityItemScreenQuery.g
 import { AlertNotification } from "app/Scenes/Activity/components/AlertNotification"
 import { ArtworkPublishedNotification } from "app/Scenes/Activity/components/ArtworkPublishedNotification"
 import { goBack, navigate } from "app/system/navigation/navigate"
-import { strictWithSuspense } from "app/utils/hooks/withSuspense"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { FC, useEffect } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -29,7 +29,7 @@ interface ActivityItemScreenQueryRendererProps {
 }
 
 export const ActivityItemScreenQueryRenderer: FC<ActivityItemScreenQueryRendererProps> =
-  strictWithSuspense(
+  withSuspense(
     ({ notificationID }) => {
       const data = useLazyLoadQuery<ActivityItemScreenQuery>(ActivityItemQuery, {
         internalID: notificationID,

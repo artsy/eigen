@@ -13,7 +13,7 @@ import {
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
-import { strictWithSuspense } from "app/utils/hooks/withSuspense"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { isNumber } from "lodash"
 import { useRef, useState } from "react"
 import { FlatList, ViewabilityConfig, ViewToken } from "react-native"
@@ -141,29 +141,26 @@ const homeViewSectionHeroUnitsQuery = graphql`
   }
 `
 
-export const HomeViewSectionHeroUnitsQueryRenderer: React.FC<SectionSharedProps> =
-  strictWithSuspense(
-    ({ sectionID, index, ...flexProps }) => {
-      const data = useLazyLoadQuery<HomeViewSectionHeroUnitsQuery>(
-        homeViewSectionHeroUnitsQuery,
-        {
-          id: sectionID,
+export const HomeViewSectionHeroUnitsQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
+  ({ sectionID, index, ...flexProps }) => {
+    const data = useLazyLoadQuery<HomeViewSectionHeroUnitsQuery>(
+      homeViewSectionHeroUnitsQuery,
+      {
+        id: sectionID,
+      },
+      {
+        networkCacheConfig: {
+          force: false,
         },
-        {
-          networkCacheConfig: {
-            force: false,
-          },
-        }
-      )
-
-      if (!data.homeView.section) {
-        return null
       }
+    )
 
-      return (
-        <HomeViewSectionHeroUnits section={data.homeView.section} index={index} {...flexProps} />
-      )
-    },
-    HomeViewSectionHeroUnitsPlaceholder,
-    undefined
-  )
+    if (!data.homeView.section) {
+      return null
+    }
+
+    return <HomeViewSectionHeroUnits section={data.homeView.section} index={index} {...flexProps} />
+  },
+  HomeViewSectionHeroUnitsPlaceholder,
+  undefined
+)

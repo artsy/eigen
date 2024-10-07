@@ -13,7 +13,7 @@ import {
 } from "app/Scenes/NewWorksForYou/NewWorksForYou"
 import { goBack } from "app/system/navigation/navigate"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
-import { strictWithSuspense } from "app/utils/hooks/withSuspense"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { ScrollView } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
@@ -76,7 +76,7 @@ export const ArtworkError: React.FC<ArtworkErrorProps> = ({ homePage, me, viewer
   )
 }
 
-export const ArtworkErrorScreen: React.FC<{}> = strictWithSuspense(
+export const ArtworkErrorScreen: React.FC<{}> = withSuspense(
   () => {
     const worksForYouRecommendationsModel = useExperimentVariant(
       RECOMMENDATION_MODEL_EXPERIMENT_NAME

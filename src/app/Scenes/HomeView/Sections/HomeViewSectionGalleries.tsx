@@ -15,7 +15,7 @@ import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeView
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
-import { strictWithSuspense } from "app/utils/hooks/withSuspense"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { isTablet } from "react-native-device-info"
 import FastImage from "react-native-fast-image"
 import LinearGradient from "react-native-linear-gradient"
@@ -156,29 +156,26 @@ const homeViewSectionGalleriesQuery = graphql`
   }
 `
 
-export const HomeViewSectionGalleriesQueryRenderer: React.FC<SectionSharedProps> =
-  strictWithSuspense(
-    ({ sectionID, index, ...flexProps }) => {
-      const data = useLazyLoadQuery<HomeViewSectionGalleriesQuery>(
-        homeViewSectionGalleriesQuery,
-        {
-          id: sectionID,
+export const HomeViewSectionGalleriesQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
+  ({ sectionID, index, ...flexProps }) => {
+    const data = useLazyLoadQuery<HomeViewSectionGalleriesQuery>(
+      homeViewSectionGalleriesQuery,
+      {
+        id: sectionID,
+      },
+      {
+        networkCacheConfig: {
+          force: false,
         },
-        {
-          networkCacheConfig: {
-            force: false,
-          },
-        }
-      )
-
-      if (!data.homeView.section) {
-        return null
       }
+    )
 
-      return (
-        <HomeViewSectionGalleries section={data.homeView.section} index={index} {...flexProps} />
-      )
-    },
-    HomeViewSectionGalleriesPlaceholder,
-    undefined
-  )
+    if (!data.homeView.section) {
+      return null
+    }
+
+    return <HomeViewSectionGalleries section={data.homeView.section} index={index} {...flexProps} />
+  },
+  HomeViewSectionGalleriesPlaceholder,
+  undefined
+)

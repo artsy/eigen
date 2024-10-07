@@ -4,7 +4,7 @@ import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { Suspense } from "react"
 import { ErrorBoundary, FallbackProps } from "react-error-boundary"
 
-export const strictWithSuspense =
+export const withSuspense =
   (
     Component: React.FC<any>,
     Fallback: React.FC<any> = () => (

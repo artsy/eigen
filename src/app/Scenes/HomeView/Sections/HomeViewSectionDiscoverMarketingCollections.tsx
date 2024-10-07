@@ -6,7 +6,7 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { strictWithSuspense } from "app/utils/hooks/withSuspense"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { times } from "lodash"
 import { FlatList, ScrollView } from "react-native"
 import { isTablet } from "react-native-device-info"
@@ -133,7 +133,7 @@ const homeViewSectionDiscoverMarketingCollectionsQuery = graphql`
 `
 
 export const HomeViewSectionDiscoverMarketingCollectionsQueryRenderer: React.FC<SectionSharedProps> =
-  strictWithSuspense(
+  withSuspense(
     ({ sectionID, index, ...flexProps }) => {
       const data = useLazyLoadQuery<HomeViewSectionDiscoverMarketingCollectionsQuery>(
         homeViewSectionDiscoverMarketingCollectionsQuery,

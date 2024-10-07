@@ -7,7 +7,7 @@ import { LoadFailureView } from "app/Components/LoadFailureView"
 import { NewWorksForYouPlaceholder } from "app/Scenes/NewWorksForYou/NewWorksForYou"
 import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
-import { strictWithSuspense } from "app/utils/hooks/withSuspense"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
 import { pluralize } from "app/utils/pluralize"
 import { useRefreshControl } from "app/utils/refreshHelpers"
@@ -125,7 +125,7 @@ interface WorksForYouArtworksQRProps {
   onlyAtAuction?: boolean
 }
 
-export const WorksForYouArtworksQR: React.FC<WorksForYouArtworksQRProps> = strictWithSuspense(
+export const WorksForYouArtworksQR: React.FC<WorksForYouArtworksQRProps> = withSuspense(
   ({ version, onlyAtAuction = false, maxWorksPerArtist = 3 }) => {
     const data = useLazyLoadQuery<WorksForYouArtworksQuery>(
       newWorksForYouArtworksQuery,

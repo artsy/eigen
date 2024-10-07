@@ -24,7 +24,7 @@ import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { strictWithSuspense } from "app/utils/hooks/withSuspense"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -191,21 +191,18 @@ const HomeViewSectionArtworksPlaceholder: React.FC<FlexProps> = (flexProps) => {
   )
 }
 
-export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> =
-  strictWithSuspense(
-    ({ sectionID, index, ...flexProps }) => {
-      const data = useLazyLoadQuery<HomeViewSectionArtworksQuery>(homeViewSectionArtworksQuery, {
-        id: sectionID,
-      })
+export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
+  ({ sectionID, index, ...flexProps }) => {
+    const data = useLazyLoadQuery<HomeViewSectionArtworksQuery>(homeViewSectionArtworksQuery, {
+      id: sectionID,
+    })
 
-      if (!data.homeView.section) {
-        return null
-      }
+    if (!data.homeView.section) {
+      return null
+    }
 
-      return (
-        <HomeViewSectionArtworks section={data.homeView.section} index={index} {...flexProps} />
-      )
-    },
-    HomeViewSectionArtworksPlaceholder,
-    undefined
-  )
+    return <HomeViewSectionArtworks section={data.homeView.section} index={index} {...flexProps} />
+  },
+  HomeViewSectionArtworksPlaceholder,
+  undefined
+)

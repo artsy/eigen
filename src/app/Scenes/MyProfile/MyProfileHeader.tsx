@@ -24,7 +24,7 @@ import {
 import { MyProfileHeaderQuery } from "__generated__/MyProfileHeaderQuery.graphql"
 import { MyProfileHeader_me$key } from "__generated__/MyProfileHeader_me.graphql"
 import { navigate } from "app/system/navigation/navigate"
-import { strictWithSuspense } from "app/utils/hooks/withSuspense"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { useRefetch } from "app/utils/relayHelpers"
 import { TouchableOpacity } from "react-native"
 import { useFragment, useLazyLoadQuery, graphql } from "react-relay"
@@ -287,7 +287,7 @@ const myProfileHeaderQuery = graphql`
   }
 `
 
-export const MyProfileHeaderQueryRenderer = strictWithSuspense(
+export const MyProfileHeaderQueryRenderer = withSuspense(
   (props) => {
     const data = useLazyLoadQuery<MyProfileHeaderQuery>(
       myProfileHeaderQuery,

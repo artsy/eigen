@@ -19,7 +19,7 @@ import { BrowseSimilarWorksExploreMoreButton } from "app/Scenes/Artwork/Componen
 import { extractPills } from "app/Scenes/SavedSearchAlert/pillExtractors"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { strictWithSuspense } from "app/utils/hooks/withSuspense"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import { ScrollView } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -87,51 +87,50 @@ const SimilarArtworksPlaceholder: React.FC = () => {
   return <GenericGridPlaceholder width={screen.width - space(4)} />
 }
 
-const SimilarArtworksContainer: React.FC<{ attributes: SearchCriteriaAttributes }> =
-  strictWithSuspense(
-    ({ attributes }) => {
-      const screen = useScreenDimensions()
-      const { space } = useTheme()
+const SimilarArtworksContainer: React.FC<{ attributes: SearchCriteriaAttributes }> = withSuspense(
+  ({ attributes }) => {
+    const screen = useScreenDimensions()
+    const { space } = useTheme()
 
-      const data = useLazyLoadQuery<BrowseSimilarWorksContentQuery>(similarArtworksQuery, {
-        first: NUMBER_OF_ARTWORKS_TO_SHOW,
-        input: {
-          ...attributes,
-          forSale: true,
-          sort: "-published_at",
-        } as FilterArtworksInput,
-      })
+    const data = useLazyLoadQuery<BrowseSimilarWorksContentQuery>(similarArtworksQuery, {
+      first: NUMBER_OF_ARTWORKS_TO_SHOW,
+      input: {
+        ...attributes,
+        forSale: true,
+        sort: "-published_at",
+      } as FilterArtworksInput,
+    })
 
-      if (!data || !data.artworksConnection) {
-        return (
-          <SimpleMessage>
-            There aren’t any works available that meet the criteria at this time.
-          </SimpleMessage>
-        )
-      }
-
-      const artworks = extractNodes(data.artworksConnection)
-
-      return (
-        <>
-          <GenericGrid
-            width={screen.width - space(2)}
-            artworks={artworks}
-            onPress={(internalID: string) => {
-              navigate(`artwork/${internalID}`)
-            }}
-          />
-          <Spacer y={2} />
-          <BrowseSimilarWorksExploreMoreButton attributes={attributes} />
-        </>
-      )
-    },
-    SimilarArtworksPlaceholder,
-    () => {
+    if (!data || !data.artworksConnection) {
       return (
         <SimpleMessage>
           There aren’t any works available that meet the criteria at this time.
         </SimpleMessage>
       )
     }
-  )
+
+    const artworks = extractNodes(data.artworksConnection)
+
+    return (
+      <>
+        <GenericGrid
+          width={screen.width - space(2)}
+          artworks={artworks}
+          onPress={(internalID: string) => {
+            navigate(`artwork/${internalID}`)
+          }}
+        />
+        <Spacer y={2} />
+        <BrowseSimilarWorksExploreMoreButton attributes={attributes} />
+      </>
+    )
+  },
+  SimilarArtworksPlaceholder,
+  () => {
+    return (
+      <SimpleMessage>
+        There aren’t any works available that meet the criteria at this time.
+      </SimpleMessage>
+    )
+  }
+)

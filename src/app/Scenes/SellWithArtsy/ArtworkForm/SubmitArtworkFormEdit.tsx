@@ -6,10 +6,10 @@ import {
   SubmitArtworkProps,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { getInitialSubmissionValues } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/getInitialSubmissionValues"
-import { strictWithSuspense } from "app/utils/hooks/withSuspense"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
-export const SubmitArtworkFormEdit: React.FC<SubmitArtworkProps> = strictWithSuspense(
+export const SubmitArtworkFormEdit: React.FC<SubmitArtworkProps> = withSuspense(
   (props) => {
     const data = useLazyLoadQuery<SubmitArtworkFormEditQuery>(
       submitArtworkFormEditQuery,

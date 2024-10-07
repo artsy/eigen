@@ -17,7 +17,7 @@ import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeVie
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
-import { strictWithSuspense } from "app/utils/hooks/withSuspense"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -144,29 +144,26 @@ const HomeViewSectionArticlesPlaceholder: React.FC<FlexProps> = (flexProps) => {
   )
 }
 
-export const HomeViewSectionArticlesQueryRenderer: React.FC<SectionSharedProps> =
-  strictWithSuspense(
-    ({ sectionID, index, ...flexProps }) => {
-      const data = useLazyLoadQuery<HomeViewSectionArticlesQuery>(
-        homeViewSectionArticlesQuery,
-        {
-          id: sectionID,
+export const HomeViewSectionArticlesQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
+  ({ sectionID, index, ...flexProps }) => {
+    const data = useLazyLoadQuery<HomeViewSectionArticlesQuery>(
+      homeViewSectionArticlesQuery,
+      {
+        id: sectionID,
+      },
+      {
+        networkCacheConfig: {
+          force: false,
         },
-        {
-          networkCacheConfig: {
-            force: false,
-          },
-        }
-      )
-
-      if (!data.homeView.section) {
-        return null
       }
+    )
 
-      return (
-        <HomeViewSectionArticles section={data.homeView.section} index={index} {...flexProps} />
-      )
-    },
-    HomeViewSectionArticlesPlaceholder,
-    undefined
-  )
+    if (!data.homeView.section) {
+      return null
+    }
+
+    return <HomeViewSectionArticles section={data.homeView.section} index={index} {...flexProps} />
+  },
+  HomeViewSectionArticlesPlaceholder,
+  undefined
+)

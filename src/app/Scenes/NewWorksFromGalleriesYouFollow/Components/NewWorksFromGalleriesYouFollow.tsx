@@ -7,7 +7,7 @@ import { PAGE_SIZE } from "app/Components/constants"
 import { NewWorksFromGalleriesYouFollowPlaceholder } from "app/Scenes/NewWorksFromGalleriesYouFollow/Components/NewWorksFromGalleriesYouFollowPlaceholder"
 import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
-import { strictWithSuspense } from "app/utils/hooks/withSuspense"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
 import { useRefreshControl } from "app/utils/refreshHelpers"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
@@ -85,7 +85,7 @@ const artworkConnectionFragment = graphql`
   }
 `
 
-export const NewWorksFromGalleriesYouFollowQR: React.FC = strictWithSuspense(
+export const NewWorksFromGalleriesYouFollowQR: React.FC = withSuspense(
   () => {
     return <NewWorksFromGalleriesYouFollow />
   },

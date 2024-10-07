@@ -20,7 +20,7 @@ import {
 } from "app/utils/getArtworkSignalTrackingFields"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
-import { strictWithSuspense } from "app/utils/hooks/withSuspense"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { PlaceholderRaggedText } from "app/utils/placeholders"
 import { pluralize } from "app/utils/pluralize"
 import { useEffect } from "react"
@@ -123,7 +123,7 @@ const MatchingArtworksPlaceholder: React.FC = () => {
   )
 }
 
-const MatchingArtworksContainer: React.FC<{ closeModal?: () => void }> = strictWithSuspense(
+const MatchingArtworksContainer: React.FC<{ closeModal?: () => void }> = withSuspense(
   ({ closeModal }) => {
     // TODO: instead of using artworksConnection and passing attributes from the store, use `alert.artworksConnection` field instead.
     const attributes = SavedSearchStore.useStoreState((state) => state.attributes)

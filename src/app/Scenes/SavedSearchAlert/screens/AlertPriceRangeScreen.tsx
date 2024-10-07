@@ -13,7 +13,7 @@ import { getBarsFromAggregations } from "app/Components/PriceRange/utils"
 import { CreateSavedSearchAlertNavigationStack } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { GlobalStore } from "app/store/GlobalStore"
-import { strictWithSuspense } from "app/utils/hooks/withSuspense"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
@@ -109,7 +109,7 @@ const Placeholder: React.FC<{}> = () => (
 )
 
 export const AlertPriceRangeScreenQueryRenderer: React.FC<AlertPriceRangeScreenQRProps> =
-  strictWithSuspense(
+  withSuspense(
     (props) => {
       const artistID = SavedSearchStore.useStoreState((state) => state.entity.artists[0].id)
       const data = useLazyLoadQuery<AlertPriceRangeScreenQuery>(alertPriceRangeScreenQuery, {

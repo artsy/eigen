@@ -16,7 +16,7 @@ import {
 } from "app/Scenes/MyCollection/Screens/CollectedArtistsPrivacy/UserInterestsStore"
 import { updateUserInterests } from "app/Scenes/MyCollection/Screens/CollectedArtistsPrivacy/updateUserInterests"
 import { popToRoot } from "app/system/navigation/navigate"
-import { strictWithSuspense } from "app/utils/hooks/withSuspense"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { times } from "lodash"
 import { useState } from "react"
 import { SafeAreaView } from "react-native-safe-area-context"
@@ -94,7 +94,7 @@ const ShareSettingsScreenPlaceholder: React.FC<{}> = () => (
   </Flex>
 )
 
-export const MyCollectionCollectedArtistsPrivacyQueryRenderer: React.FC<{}> = strictWithSuspense(
+export const MyCollectionCollectedArtistsPrivacyQueryRenderer: React.FC<{}> = withSuspense(
   () => {
     const data = useLazyLoadQuery<MyCollectionCollectedArtistsPrivacyQuery>(
       myCollectionCollectedArtistsPrivacyQuery,

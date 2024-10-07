@@ -10,7 +10,7 @@ import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { HomeViewSectionScreenContent } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreenContent"
 import { HomeViewSectionScreenPlaceholder } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreenPlaceholder"
 import { goBack } from "app/system/navigation/navigate"
-import { strictWithSuspense } from "app/utils/hooks/withSuspense"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { useCallback } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
@@ -65,7 +65,7 @@ interface HomeViewSectionScreenQueryRendererProps {
   sectionType: string
 }
 
-export const HomeViewSectionScreenQueryRenderer = strictWithSuspense(
+export const HomeViewSectionScreenQueryRenderer = withSuspense(
   (props: HomeViewSectionScreenQueryRendererProps) => {
     const data = useLazyLoadQuery<HomeViewSectionScreenQuery>(HOME_SECTION_SCREEN_QUERY, {
       id: props.sectionID,

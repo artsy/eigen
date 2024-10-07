@@ -16,7 +16,7 @@ import {
   useSavedSearchFilter,
   useSearchCriteriaAttributes,
 } from "app/Scenes/SavedSearchAlert/helpers"
-import { strictWithSuspense } from "app/utils/hooks/withSuspense"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { compact } from "lodash"
 import { useState } from "react"
 import { TouchableOpacity } from "react-native"
@@ -125,7 +125,7 @@ const savedSearchFilterPriceRangeQuery = graphql`
   }
 `
 
-export const SavedSearchFilterArtistSeriesQR: React.FC<{}> = strictWithSuspense(
+export const SavedSearchFilterArtistSeriesQR: React.FC<{}> = withSuspense(
   () => {
     const artistID = SavedSearchStore.useStoreState((state) => state.entity.artists[0].id)
     const data = useLazyLoadQuery<SavedSearchFilterArtistSeriesQuery>(

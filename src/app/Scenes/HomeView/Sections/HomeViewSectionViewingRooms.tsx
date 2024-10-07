@@ -20,7 +20,7 @@ import {
   ViewingRoomsRailPlaceholder,
 } from "app/Scenes/ViewingRoom/Components/ViewingRoomsHomeRail"
 import { navigate } from "app/system/navigation/navigate"
-import { strictWithSuspense } from "app/utils/hooks/withSuspense"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
 import { Suspense } from "react"
@@ -145,29 +145,28 @@ const homeViewSectionViewingRoomsQuery = graphql`
   }
 `
 
-export const HomeViewSectionViewingRoomsQueryRenderer: React.FC<SectionSharedProps> =
-  strictWithSuspense(
-    ({ sectionID, index, ...flexProps }) => {
-      const data = useLazyLoadQuery<HomeViewSectionViewingRoomsQuery>(
-        homeViewSectionViewingRoomsQuery,
-        {
-          id: sectionID,
+export const HomeViewSectionViewingRoomsQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
+  ({ sectionID, index, ...flexProps }) => {
+    const data = useLazyLoadQuery<HomeViewSectionViewingRoomsQuery>(
+      homeViewSectionViewingRoomsQuery,
+      {
+        id: sectionID,
+      },
+      {
+        networkCacheConfig: {
+          force: false,
         },
-        {
-          networkCacheConfig: {
-            force: false,
-          },
-        }
-      )
-
-      if (!data.homeView.section) {
-        return null
       }
+    )
 
-      return (
-        <HomeViewSectionViewingRooms section={data.homeView.section} index={index} {...flexProps} />
-      )
-    },
-    HomeViewSectionArtworksPlaceholder,
-    undefined
-  )
+    if (!data.homeView.section) {
+      return null
+    }
+
+    return (
+      <HomeViewSectionViewingRooms section={data.homeView.section} index={index} {...flexProps} />
+    )
+  },
+  HomeViewSectionArtworksPlaceholder,
+  undefined
+)

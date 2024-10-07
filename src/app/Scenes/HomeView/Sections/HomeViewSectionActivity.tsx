@@ -19,7 +19,7 @@ import {
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { strictWithSuspense } from "app/utils/hooks/withSuspense"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
 import { FlatList } from "react-native"
@@ -198,21 +198,18 @@ const HomeViewSectionActivityPlaceholder: React.FC<FlexProps> = (flexProps) => {
   )
 }
 
-export const HomeViewSectionActivityQueryRenderer: React.FC<SectionSharedProps> =
-  strictWithSuspense(
-    ({ sectionID, index, ...flexProps }) => {
-      const data = useLazyLoadQuery<HomeViewSectionActivityQuery>(homeViewSectionActivityQuery, {
-        id: sectionID,
-      })
+export const HomeViewSectionActivityQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
+  ({ sectionID, index, ...flexProps }) => {
+    const data = useLazyLoadQuery<HomeViewSectionActivityQuery>(homeViewSectionActivityQuery, {
+      id: sectionID,
+    })
 
-      if (!data.homeView.section) {
-        return null
-      }
+    if (!data.homeView.section) {
+      return null
+    }
 
-      return (
-        <HomeViewSectionActivity section={data.homeView.section} index={index} {...flexProps} />
-      )
-    },
-    HomeViewSectionActivityPlaceholder,
-    undefined
-  )
+    return <HomeViewSectionActivity section={data.homeView.section} index={index} {...flexProps} />
+  },
+  HomeViewSectionActivityPlaceholder,
+  undefined
+)

@@ -1,7 +1,7 @@
 import { MyCollectionArtworkEditQuery } from "__generated__/MyCollectionArtworkEditQuery.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { MyCollectionArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
-import { strictWithSuspense } from "app/utils/hooks/withSuspense"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 interface MyCollectionArtworkEditProps {
@@ -55,7 +55,7 @@ export const myCollectionArtworkEditQuery = graphql`
   }
 `
 
-export const MyCollectionArtworkEditQueryRenderer = strictWithSuspense(
+export const MyCollectionArtworkEditQueryRenderer = withSuspense(
   ({ artworkID }: MyCollectionArtworkEditProps) => {
     const data = useLazyLoadQuery<MyCollectionArtworkEditQuery>(myCollectionArtworkEditQuery, {
       artworkId: artworkID,
