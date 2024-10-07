@@ -14,11 +14,9 @@ import {
   useAuthScreen,
 } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
-import { waitForSubmit } from "app/Scenes/Onboarding/Auth2/utils/waitForSubmit"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Formik, useFormikContext } from "formik"
 import { useRef, useState } from "react"
-import { Keyboard } from "react-native"
 import * as Yup from "yup"
 
 interface LoginOTPStepFormValues {
@@ -36,8 +34,6 @@ export const LoginOTPStep: React.FC = () => {
         otp: Yup.string().required("This field is required"),
       })}
       onSubmit={async ({ otp }, { setErrors, resetForm }) => {
-        Keyboard.dismiss()
-
         const res = await GlobalStore.actions.auth.signIn({
           oauthProvider: "email",
           oauthMode: "email",
@@ -45,8 +41,6 @@ export const LoginOTPStep: React.FC = () => {
           password: screen.params?.password,
           otp: otp.trim(),
         })
-
-        await waitForSubmit()
 
         if (res === "invalid_otp") {
           setErrors({ otp: "Invalid two-factor authentication code" })
@@ -102,6 +96,7 @@ const LoginOTPStepForm: React.FC = () => {
         autoCapitalize="none"
         autoComplete="one-time-code"
         autoCorrect={false}
+        blurOnSubmit={false}
         error={errors.otp}
         keyboardType={recoveryCodeMode ? "ascii-capable" : "number-pad"}
         placeholder={recoveryCodeMode ? "Enter a recovery code" : "Enter an authentication code"}

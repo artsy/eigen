@@ -13,12 +13,10 @@ import {
   useAuthScreen,
 } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
-import { waitForSubmit } from "app/Scenes/Onboarding/Auth2/utils/waitForSubmit"
 import { GlobalStore } from "app/store/GlobalStore"
 import { showBlockedAuthError } from "app/utils/auth/authHelpers"
 import { Formik, useFormikContext } from "formik"
 import { useRef } from "react"
-import { Keyboard } from "react-native"
 import * as Yup from "yup"
 
 interface LoginPasswordStepFormValues {
@@ -37,16 +35,12 @@ export const LoginPasswordStep: React.FC = () => {
         password: Yup.string().required("Password field is required"),
       })}
       onSubmit={async ({ password }, { setErrors, resetForm }) => {
-        Keyboard.dismiss()
-
         const res = await GlobalStore.actions.auth.signIn({
           oauthProvider: "email",
           oauthMode: "email",
           email: screen.params?.email,
           password,
         })
-
-        await waitForSubmit()
 
         if (res === "otp_missing") {
           navigation.navigate({
@@ -128,11 +122,16 @@ const LoginPasswordStepForm: React.FC = () => {
         autoCapitalize="none"
         autoComplete="password"
         autoCorrect={false}
+        blurOnSubmit={false}
         error={values.password.length > 0 || touched.password ? errors.password : undefined}
         placeholderTextColor={color("black30")}
         ref={passwordRef}
         returnKeyType="done"
         secureTextEntry
+        // textContentType="oneTimeCode"
+        // We need to to set textContentType to password here
+        // enable autofill of login details from the device keychain.
+        textContentType="password"
         testID="password"
         title="Password"
         value={values.password}
@@ -151,10 +150,7 @@ const LoginPasswordStepForm: React.FC = () => {
             handleSubmit()
           }
         }}
-        onBlur={() => validateForm()}
-        // We need to to set textContentType to password here
-        // enable autofill of login details from the device keychain.
-        textContentType="password"
+        onBlur={validateForm}
       />
 
       <Spacer y={2} />
