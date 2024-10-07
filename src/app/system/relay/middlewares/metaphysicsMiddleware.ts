@@ -1,3 +1,4 @@
+import { captureMessage } from "@sentry/react-native"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import {
   getCurrentEmissionState,
@@ -140,8 +141,18 @@ export function persistedQueryMiddleware(): Middleware {
       request.fetchOpts.body = JSON.stringify(body)
     }
 
-    body = { query: require("../../../../../data/complete.queryMap.json")[queryID], variables }
-    req.fetchOpts.body = JSON.stringify(body)
-    return await next(req)
+    try {
+      return await next(req)
+    } catch (e: any) {
+      if (e.toString().includes("Unable to serve persisted query with ID")) {
+        // this should not happen normally, but let's try again with full query text to avoid ruining the user's day?
+        captureMessage(e.stack)
+        body = { query: require("../../../../../data/complete.queryMap.json")[queryID], variables }
+        req.fetchOpts.body = JSON.stringify(body)
+        return await next(req)
+      } else {
+        throw e
+      }
+    }
   }
 }
