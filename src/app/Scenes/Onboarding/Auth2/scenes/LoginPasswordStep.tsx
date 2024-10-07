@@ -133,9 +133,10 @@ const LoginPasswordStepForm: React.FC = () => {
         ref={passwordRef}
         returnKeyType="done"
         secureTextEntry
+        // textContentType="oneTimeCode"
         testID="password"
         title="Password"
-        value={values.password}
+        // value={values.password}
         onChangeText={(text) => {
           // Hide error when the user starts to type again
           if (errors.password) {
