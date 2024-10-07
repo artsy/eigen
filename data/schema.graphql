@@ -9259,7 +9259,7 @@ enum ExhibitionPeriodFormat {
   SHORT
 }
 
-# A marketing collection category to explore by
+# [deprecated in favor of `HomeViewCard`] A marketing collection category to explore by
 type ExploreByMarketingCollectionCategory {
   href: String!
   image: Image
@@ -10839,6 +10839,35 @@ type HomeView {
   ): HomeViewSectionGenericConnection!
 }
 
+type HomeViewCard {
+  entityID: String
+  entityType: String
+  href: String
+  image: Image
+  subtitle: String
+  title: String!
+}
+
+# A connection to a list of items.
+type HomeViewCardConnection {
+  # A list of edges.
+  edges: [HomeViewCardEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type HomeViewCardEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: HomeViewCard
+}
+
 # A component specification, to allow for customization of presentation and behavior
 type HomeViewComponent {
   # A background image for this section
@@ -10992,7 +11021,27 @@ type HomeViewSectionAuctionResults implements HomeViewSectionGeneric & Node {
   ownerType: String
 }
 
-# A section containing a list of curated marketing collections
+# A section containing a list of navigation cards
+type HomeViewSectionCards implements HomeViewSectionGeneric & Node {
+  cardsConnection(after: String, before: String, first: Int, last: Int): HomeViewCardConnection
+
+  # Component prescription for this section, for overriding or customizing presentation and behavior
+  component: HomeViewComponent
+
+  # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
+  contextModule: String
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
+  # [Analytics] `owner type` analytics value for this scetion when displayed in a standalone UI, as defined in our schema (artsy/cohesion)
+  ownerType: String
+}
+
+# [deprecated in favor of `HomeViewSectionCards`] A section containing a list of curated marketing collections
 type HomeViewSectionDiscoverMarketingCollections implements HomeViewSectionGeneric & Node {
   # Component prescription for this section, for overriding or customizing presentation and behavior
   component: HomeViewComponent
@@ -11011,7 +11060,7 @@ type HomeViewSectionDiscoverMarketingCollections implements HomeViewSectionGener
   ownerType: String
 }
 
-# Marketing Collection Categories section in the home view
+# [deprecated in favor of `HomeViewSectionCards`] Marketing Collection Categories section in the home view
 type HomeViewSectionExploreByMarketingCollectionCategories implements HomeViewSectionGeneric & Node {
   categories: [ExploreByMarketingCollectionCategory!]!
 
