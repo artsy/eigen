@@ -22,8 +22,6 @@ interface NewWorksForYouProps {
 export const WorksForYouArtworks: React.FC<NewWorksForYouProps> = ({ viewer }) => {
   const defaultViewOption = GlobalStore.useAppState((state) => state.userPrefs.defaultViewOption)
 
-  console.warn("WorksForYouArtworks")
-
   const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment(
     newWorksForYouArtworksFragment,
     viewer

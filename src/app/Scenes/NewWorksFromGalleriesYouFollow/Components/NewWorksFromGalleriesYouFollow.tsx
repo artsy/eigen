@@ -13,7 +13,6 @@ import { useRefreshControl } from "app/utils/refreshHelpers"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 export const NewWorksFromGalleriesYouFollow: React.FC = () => {
-  console.warn("NewWorksFromGalleriesYouFollow")
   const queryData = useLazyLoadQuery<NewWorksFromGalleriesYouFollowQuery>(
     NewWorksFromGalleriesYouFollowScreenQuery,
     newWorksFromGalleriesYouFollowQueryVariables
