@@ -9008,6 +9008,28 @@ type DislikeArtworkPayload {
   me: Me!
 }
 
+type DismissTaskFailure {
+  mutationError: GravityMutationError!
+}
+
+input DismissTaskMutationInput {
+  clientMutationId: String
+  id: String!
+}
+
+type DismissTaskMutationPayload {
+  clientMutationId: String
+
+  # On success: the new state of the Task
+  taskOrError: DismissTaskResponseOrError!
+}
+
+union DismissTaskResponseOrError = DismissTaskFailure | DismissTaskSuccess
+
+type DismissTaskSuccess {
+  task: Task!
+}
+
 type DoNotUseThisPartner {
   displayName: String
   display_name: String @deprecated(reason: "Use displayName")
@@ -13447,6 +13469,9 @@ type Mutation {
 
   # Add (or remove) an artwork to (from) a users dislikes.
   dislikeArtwork(input: DislikeArtworkInput!): DislikeArtworkPayload
+
+  # Updates a Task on the logged in User
+  dismissTask(input: DismissTaskMutationInput!): DismissTaskMutationPayload
   enableSecondFactor(
     # Parameters for EnableSecondFactor
     input: EnableSecondFactorInput!
