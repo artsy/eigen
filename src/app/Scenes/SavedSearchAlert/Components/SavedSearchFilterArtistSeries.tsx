@@ -33,8 +33,6 @@ const SavedSearchFilterArtistSeries: React.FC<SavedSearchFilterArtistSeriesProps
     (aggs) => aggs?.slice === "ARTIST_SERIES"
   )
 
-  console.warn("SavedSearchFilterArtistSeries", artistSeries)
-
   const { handlePress } = useSavedSearchFilter({ criterion: SearchCriteria.artistSeriesIDs })
 
   const selectedAttributes = useSearchCriteriaAttributes(SearchCriteria.artistSeriesIDs) as string[]
