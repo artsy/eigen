@@ -29,7 +29,8 @@ export const LoginOTPStep: React.FC = () => {
   return (
     <Formik<LoginOTPStepFormValues>
       initialValues={{ otp: "" }}
-      validateOnChange={false}
+      validateOnChange={true}
+      validateOnMount={false}
       validationSchema={Yup.object().shape({
         otp: Yup.string().required("This field is required"),
       })}
@@ -65,6 +66,7 @@ const LoginOTPStepForm: React.FC = () => {
     errors,
     handleChange,
     handleSubmit,
+    isSubmitting,
     isValid,
     setErrors,
     validateForm,
@@ -84,8 +86,9 @@ const LoginOTPStepForm: React.FC = () => {
   })
 
   const handleBackButtonPress = () => {
-    navigation.goBack()
     resetForm()
+    navigation.goBack()
+    setRecoveryCodeMode(false)
   }
 
   return (
@@ -98,7 +101,7 @@ const LoginOTPStepForm: React.FC = () => {
         autoCorrect={false}
         blurOnSubmit={false}
         error={errors.otp}
-        keyboardType={recoveryCodeMode ? "ascii-capable" : "number-pad"}
+        keyboardType={recoveryCodeMode ? "ascii-capable" : "numeric"}
         placeholder={recoveryCodeMode ? "Enter a recovery code" : "Enter an authentication code"}
         placeholderTextColor={color("black30")}
         ref={otpRef}
@@ -131,7 +134,7 @@ const LoginOTPStepForm: React.FC = () => {
 
       <Spacer y={2} />
 
-      <Button block width={100} onPress={handleSubmit} disabled={!isValid}>
+      <Button block width={100} onPress={handleSubmit} disabled={!isValid} loading={isSubmitting}>
         Continue
       </Button>
 

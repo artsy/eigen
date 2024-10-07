@@ -30,7 +30,7 @@ export const LoginPasswordStep: React.FC = () => {
   return (
     <Formik<LoginPasswordStepFormValues>
       initialValues={{ password: "" }}
-      validateOnChange={false}
+      validateOnChange={true}
       validationSchema={Yup.object().shape({
         password: Yup.string().required("Password field is required"),
       })}
@@ -62,17 +62,18 @@ export const LoginPasswordStep: React.FC = () => {
           })
         }
 
-        if (res === "auth_blocked") {
-          showBlockedAuthError("sign in")
-          return
-        }
-
-        if (res !== "success" && res !== "otp_missing" && res !== "on_demand_otp_missing") {
-          setErrors({ password: "Incorrect email or password" }) // pragma: allowlist secret
-        }
-
-        if (res === "success") {
-          resetForm()
+        switch (true) {
+          case res === "auth_blocked": {
+            showBlockedAuthError("sign in")
+            break
+          }
+          case res !== "success" && res !== "otp_missing" && res !== "on_demand_otp_missing": {
+            setErrors({ password: "Incorrect email or password" }) // pragma: allowlist secret
+            break
+          }
+          default: {
+            resetForm()
+          }
         }
       }}
     >
@@ -106,8 +107,8 @@ const LoginPasswordStepForm: React.FC = () => {
   })
 
   const handleBackButtonPress = () => {
-    navigation.goBack()
     resetForm()
+    navigation.goBack()
   }
 
   return (

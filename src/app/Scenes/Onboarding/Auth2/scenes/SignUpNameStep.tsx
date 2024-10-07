@@ -93,8 +93,8 @@ const SignUpNameStepForm: React.FC = () => {
   })
 
   const handleBackButtonPress = () => {
-    navigation.goBack()
     resetForm()
+    navigation.goBack()
   }
 
   return (
