@@ -29,7 +29,6 @@ interface MyCollectionCollectedArtistsPrivacyProps {
 export const MyCollectionCollectedArtistsPrivacy: React.FC<
   MyCollectionCollectedArtistsPrivacyProps
 > = ({ me }) => {
-  console.warn("MyCollectionArtistsPrivacy")
   if (!me) {
     return null
   }
