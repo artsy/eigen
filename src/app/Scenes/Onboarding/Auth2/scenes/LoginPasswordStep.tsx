@@ -3,6 +3,7 @@ import {
   Button,
   Flex,
   Input,
+  LinkText,
   Spacer,
   Text,
   Touchable,
@@ -97,6 +98,7 @@ const LoginPasswordStepForm: React.FC = () => {
   } = useFormikContext<LoginPasswordStepFormValues>()
 
   const navigation = useAuthNavigation()
+  const screen = useAuthScreen()
   const passwordRef = useRef<Input>(null)
   const { color } = useTheme()
 
@@ -158,6 +160,28 @@ const LoginPasswordStepForm: React.FC = () => {
       <Button block width="100%" onPress={handleSubmit} disabled={!isValid} loading={isSubmitting}>
         Continue
       </Button>
+
+      {!!screen.params?.showSignUpLink && (
+        <>
+          <Spacer y={1} />
+
+          <Text variant="xs" color="black60" textAlign="center">
+            Don't have an account?{" "}
+            <LinkText
+              variant="xs"
+              onPress={() => {
+                navigation.navigate({
+                  name: "SignUpPasswordStep",
+                  params: { email: screen.params?.email, showLoginLink: true },
+                })
+                resetForm()
+              }}
+            >
+              Sign up.
+            </LinkText>
+          </Text>
+        </>
+      )}
 
       <Spacer y={2} />
 
