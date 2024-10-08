@@ -84,6 +84,12 @@ const artworkConnectionFragment = graphql`
   }
 `
 
-export const NewWorksFromGalleriesYouFollowQR: React.FC = withSuspense(() => {
-  return <NewWorksFromGalleriesYouFollow />
-}, NewWorksFromGalleriesYouFollowPlaceholder)
+export const NewWorksFromGalleriesYouFollowQR: React.FC = withSuspense({
+  Component: () => {
+    return <NewWorksFromGalleriesYouFollow />
+  },
+  LoadingFallback: NewWorksFromGalleriesYouFollowPlaceholder,
+  ErrorFallback: () => {
+    return <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
+  },
+})

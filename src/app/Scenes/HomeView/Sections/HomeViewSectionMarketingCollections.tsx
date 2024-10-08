@@ -34,7 +34,7 @@ import {
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { withSuspense } from "app/utils/hooks/withSuspense"
+import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { times } from "lodash"
@@ -229,28 +229,32 @@ const homeViewSectionMarketingCollectionsQuery = graphql`
 `
 
 export const HomeViewSectionMarketingCollectionsQueryRenderer: React.FC<SectionSharedProps> =
-  withSuspense(({ sectionID, index, ...flexProps }) => {
-    const data = useLazyLoadQuery<HomeViewSectionMarketingCollectionsQuery>(
-      homeViewSectionMarketingCollectionsQuery,
-      {
-        id: sectionID,
-      },
-      {
-        networkCacheConfig: {
-          force: false,
+  withSuspense({
+    Component: ({ sectionID, index, ...flexProps }) => {
+      const data = useLazyLoadQuery<HomeViewSectionMarketingCollectionsQuery>(
+        homeViewSectionMarketingCollectionsQuery,
+        {
+          id: sectionID,
         },
+        {
+          networkCacheConfig: {
+            force: false,
+          },
+        }
+      )
+
+      if (!data.homeView.section) {
+        return null
       }
-    )
 
-    if (!data.homeView.section) {
-      return null
-    }
-
-    return (
-      <HomeViewSectionMarketingCollections
-        section={data.homeView.section}
-        index={index}
-        {...flexProps}
-      />
-    )
-  }, HomeViewSectionMarketingCollectionsPlaceholder)
+      return (
+        <HomeViewSectionMarketingCollections
+          section={data.homeView.section}
+          index={index}
+          {...flexProps}
+        />
+      )
+    },
+    LoadingFallback: HomeViewSectionMarketingCollectionsPlaceholder,
+    ErrorFallback: NoFallback,
+  })

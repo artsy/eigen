@@ -3,6 +3,7 @@ import { Flex, Join, Spacer, Spinner, Text } from "@artsy/palette-mobile"
 import { ArtworkErrorQuery } from "__generated__/ArtworkErrorQuery.graphql"
 import { ArtworkErrorRecentlyViewed_homePage$key } from "__generated__/ArtworkErrorRecentlyViewed_homePage.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { ArtworkModuleRailFragmentContainer } from "app/Scenes/Home/Components/ArtworkModuleRail"
 import { ArtworkRecommendationsRail } from "app/Scenes/Home/Components/ArtworkRecommendationsRail"
 import { NewWorksForYouRail } from "app/Scenes/Home/Components/NewWorksForYouRail"
@@ -75,8 +76,8 @@ export const ArtworkError: React.FC<ArtworkErrorProps> = ({ homePage, me, viewer
   )
 }
 
-export const ArtworkErrorScreen: React.FC<{}> = withSuspense(
-  () => {
+export const ArtworkErrorScreen: React.FC<{}> = withSuspense({
+  Component: () => {
     const worksForYouRecommendationsModel = useExperimentVariant(
       RECOMMENDATION_MODEL_EXPERIMENT_NAME
     )
@@ -100,12 +101,23 @@ export const ArtworkErrorScreen: React.FC<{}> = withSuspense(
     }
     return <ArtworkError homePage={data.homePage} me={data.me} viewer={data.viewer} />
   },
-  () => (
+  LoadingFallback: () => (
     <Flex flex={1} alignItems="center" justifyContent="center" testID="placeholder">
       <Spinner />
     </Flex>
-  )
-)
+  ),
+  ErrorFallback: (fallbackProps) => {
+    return (
+      <LoadFailureView
+        onRetry={fallbackProps.resetErrorBoundary}
+        useSafeArea={false}
+        error={fallbackProps.error}
+        showBackButton={true}
+        trackErrorBoundary={false}
+      />
+    )
+  },
+})
 
 const recentlyViewedFragment = graphql`
   fragment ArtworkErrorRecentlyViewed_homePage on HomePage {

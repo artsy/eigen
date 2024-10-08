@@ -28,7 +28,7 @@ import {
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { withSuspense } from "app/utils/hooks/withSuspense"
+import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { times } from "lodash"
@@ -252,8 +252,8 @@ const HomeViewSectionArtistsPlaceholder: React.FC<FlexProps> = (flexProps) => {
   )
 }
 
-export const HomeViewSectionArtistsQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
-  ({ sectionID, index, ...flexProps }) => {
+export const HomeViewSectionArtistsQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
+  Component: ({ sectionID, index, ...flexProps }) => {
     const data = useLazyLoadQuery<HomeViewSectionArtistsMainQuery>(homeViewSectionArtistsQuery, {
       id: sectionID,
     })
@@ -270,5 +270,6 @@ export const HomeViewSectionArtistsQueryRenderer: React.FC<SectionSharedProps> =
       />
     )
   },
-  HomeViewSectionArtistsPlaceholder
-)
+  LoadingFallback: HomeViewSectionArtistsPlaceholder,
+  ErrorFallback: NoFallback,
+})

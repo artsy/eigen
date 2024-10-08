@@ -50,17 +50,26 @@ const BrowseSimilarWorks: React.FC<{ artwork: BrowseSimilarWorks_artwork$key }> 
 
   const artworkAlert = computeArtworkAlertProps(artwork)
 
+  if (
+    !artworkAlert ||
+    !artworkAlert.entity ||
+    !artworkAlert.attributes ||
+    !artworkAlert.aggregations
+  ) {
+    return null
+  }
+
   const params: BrowseSimilarWorksProps = {
-    aggregations: artworkAlert.aggregations!,
-    attributes: artworkAlert.attributes!,
-    entity: artworkAlert.entity!,
+    aggregations: artworkAlert.aggregations,
+    attributes: artworkAlert.attributes,
+    entity: artworkAlert.entity,
   }
 
   return <BrowseSimilarWorksContent params={params} />
 }
 
-export const BrowseSimilarWorksQueryRenderer: React.FC<{ artworkID: string }> = withSuspense(
-  (props) => {
+export const BrowseSimilarWorksQueryRenderer: React.FC<{ artworkID: string }> = withSuspense({
+  Component: (props) => {
     const data = useLazyLoadQuery<BrowseSimilarWorksQuery>(SimilarWorksQuery, {
       artworkID: props.artworkID,
     })
@@ -69,10 +78,13 @@ export const BrowseSimilarWorksQueryRenderer: React.FC<{ artworkID: string }> = 
       return <BrowseSimilarWorksErrorState />
     }
 
-    return <BrowseSimilarWorks artwork={data.artwork!} />
+    return <BrowseSimilarWorks artwork={data.artwork} />
   },
-  BrowseSimilarWorksPlaceholder
-)
+  LoadingFallback: BrowseSimilarWorksPlaceholder,
+  ErrorFallback: () => {
+    return <BrowseSimilarWorksErrorState />
+  },
+})
 
 const similarWorksFragment = graphql`
   fragment BrowseSimilarWorks_artwork on Artwork {

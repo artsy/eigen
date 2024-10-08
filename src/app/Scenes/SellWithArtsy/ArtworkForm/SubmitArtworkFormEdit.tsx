@@ -1,35 +1,50 @@
 import { SubmitArtworkFormEditQuery } from "__generated__/SubmitArtworkFormEditQuery.graphql"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
 import {
   SubmitArtworkForm,
   SubmitArtworkProps,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { getInitialSubmissionValues } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/getInitialSubmissionValues"
-import { withSuspense } from "app/utils/hooks/withSuspense"
+import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
-export const SubmitArtworkFormEdit: React.FC<SubmitArtworkProps> = withSuspense((props) => {
-  const data = useLazyLoadQuery<SubmitArtworkFormEditQuery>(
-    submitArtworkFormEditQuery,
-    {
-      id: props.externalID,
-    },
-    { fetchPolicy: "network-only" }
-  )
+export const SubmitArtworkFormEdit: React.FC<SubmitArtworkProps> = withSuspense({
+  Component: (props) => {
+    const data = useLazyLoadQuery<SubmitArtworkFormEditQuery>(
+      submitArtworkFormEditQuery,
+      {
+        id: props.externalID,
+      },
+      { fetchPolicy: "network-only" }
+    )
 
-  return (
-    <>
-      {!!data?.submission && (
-        <SubmitArtworkForm
-          externalID={props.externalID}
-          initialValues={getInitialSubmissionValues(data.submission, data?.me)}
-          initialStep={props.initialStep}
-          navigationState={props.navigationState}
-          hasStartedFlowFromMyCollection={props.hasStartedFlowFromMyCollection}
-        />
-      )}
-    </>
-  )
+    return (
+      <>
+        {!!data?.submission && (
+          <SubmitArtworkForm
+            externalID={props.externalID}
+            initialValues={getInitialSubmissionValues(data.submission, data?.me)}
+            initialStep={props.initialStep}
+            navigationState={props.navigationState}
+            hasStartedFlowFromMyCollection={props.hasStartedFlowFromMyCollection}
+          />
+        )}
+      </>
+    )
+  },
+  LoadingFallback: SpinnerFallback,
+  ErrorFallback: (fallbackProps) => {
+    return (
+      <LoadFailureView
+        onRetry={fallbackProps.resetErrorBoundary}
+        error={fallbackProps.error}
+        showCloseButton={true}
+        trackErrorBoundary={false}
+        useSafeArea={false}
+      />
+    )
+  },
 })
 
 export const SubmitArtworkFormEditContainer: React.FC<SubmitArtworkProps> = (props) => {

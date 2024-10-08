@@ -20,7 +20,7 @@ import {
   ViewingRoomsRailPlaceholder,
 } from "app/Scenes/ViewingRoom/Components/ViewingRoomsHomeRail"
 import { navigate } from "app/system/navigation/navigate"
-import { withSuspense } from "app/utils/hooks/withSuspense"
+import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
 import { Suspense } from "react"
@@ -145,8 +145,8 @@ const homeViewSectionViewingRoomsQuery = graphql`
   }
 `
 
-export const HomeViewSectionViewingRoomsQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
-  ({ sectionID, index, ...flexProps }) => {
+export const HomeViewSectionViewingRoomsQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
+  Component: ({ sectionID, index, ...flexProps }) => {
     const data = useLazyLoadQuery<HomeViewSectionViewingRoomsQuery>(
       homeViewSectionViewingRoomsQuery,
       {
@@ -167,5 +167,6 @@ export const HomeViewSectionViewingRoomsQueryRenderer: React.FC<SectionSharedPro
       <HomeViewSectionViewingRooms section={data.homeView.section} index={index} {...flexProps} />
     )
   },
-  HomeViewSectionArtworksPlaceholder
-)
+  LoadingFallback: HomeViewSectionArtworksPlaceholder,
+  ErrorFallback: NoFallback,
+})

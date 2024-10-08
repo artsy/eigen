@@ -6,7 +6,7 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { withSuspense } from "app/utils/hooks/withSuspense"
+import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { times } from "lodash"
 import { FlatList, ScrollView } from "react-native"
 import { isTablet } from "react-native-device-info"
@@ -133,23 +133,27 @@ const homeViewSectionDiscoverMarketingCollectionsQuery = graphql`
 `
 
 export const HomeViewSectionDiscoverMarketingCollectionsQueryRenderer: React.FC<SectionSharedProps> =
-  withSuspense(({ sectionID, index, ...flexProps }) => {
-    const data = useLazyLoadQuery<HomeViewSectionDiscoverMarketingCollectionsQuery>(
-      homeViewSectionDiscoverMarketingCollectionsQuery,
-      {
-        id: sectionID,
+  withSuspense({
+    Component: ({ sectionID, index, ...flexProps }) => {
+      const data = useLazyLoadQuery<HomeViewSectionDiscoverMarketingCollectionsQuery>(
+        homeViewSectionDiscoverMarketingCollectionsQuery,
+        {
+          id: sectionID,
+        }
+      )
+
+      if (!data.homeView.section) {
+        return null
       }
-    )
 
-    if (!data.homeView.section) {
-      return null
-    }
-
-    return (
-      <HomeViewSectionDiscoverMarketingCollections
-        section={data.homeView.section}
-        index={index}
-        {...flexProps}
-      />
-    )
-  }, HomeViewSectionDiscoverMarketingCollectionsPlaceholder)
+      return (
+        <HomeViewSectionDiscoverMarketingCollections
+          section={data.homeView.section}
+          index={index}
+          {...flexProps}
+        />
+      )
+    },
+    LoadingFallback: HomeViewSectionDiscoverMarketingCollectionsPlaceholder,
+    ErrorFallback: NoFallback,
+  })

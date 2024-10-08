@@ -5,6 +5,7 @@ import {
   HomeViewSectionScreenQuery,
   HomeViewSectionScreenQuery$data,
 } from "__generated__/HomeViewSectionScreenQuery.graphql"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { HomeViewSectionScreenContent } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreenContent"
 import { HomeViewSectionScreenPlaceholder } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreenPlaceholder"
@@ -64,8 +65,8 @@ interface HomeViewSectionScreenQueryRendererProps {
   sectionType: string
 }
 
-export const HomeViewSectionScreenQueryRenderer = withSuspense(
-  (props: HomeViewSectionScreenQueryRendererProps) => {
+export const HomeViewSectionScreenQueryRenderer = withSuspense({
+  Component: (props: HomeViewSectionScreenQueryRendererProps) => {
     const data = useLazyLoadQuery<HomeViewSectionScreenQuery>(HOME_SECTION_SCREEN_QUERY, {
       id: props.sectionID,
     })
@@ -76,5 +77,13 @@ export const HomeViewSectionScreenQueryRenderer = withSuspense(
 
     return <HomeViewSectionScreen section={data.homeView.section} />
   },
-  HomeViewSectionScreenPlaceholder
-)
+  LoadingFallback: HomeViewSectionScreenPlaceholder,
+  ErrorFallback: (fallbackProps) => (
+    <LoadFailureView
+      showBackButton
+      trackErrorBoundary={false}
+      error={fallbackProps.error}
+      onRetry={fallbackProps.resetErrorBoundary}
+    />
+  ),
+})

@@ -29,8 +29,8 @@ interface ActivityItemScreenQueryRendererProps {
 }
 
 export const ActivityItemScreenQueryRenderer: FC<ActivityItemScreenQueryRendererProps> =
-  withSuspense(
-    ({ notificationID }) => {
+  withSuspense({
+    Component: ({ notificationID }) => {
       const data = useLazyLoadQuery<ActivityItemScreenQuery>(ActivityItemQuery, {
         internalID: notificationID,
       })
@@ -65,8 +65,11 @@ export const ActivityItemScreenQueryRenderer: FC<ActivityItemScreenQueryRenderer
           return null
       }
     },
-    () => <Placeholder />
-  )
+    LoadingFallback: () => <Placeholder />,
+    ErrorFallback: (fallbackProps) => {
+      return <ActivityErrorScreen headerTitle="Activity" error={fallbackProps.error} />
+    },
+  })
 
 const ActivityItemQuery = graphql`
   query ActivityItemScreenQuery($internalID: String!) {

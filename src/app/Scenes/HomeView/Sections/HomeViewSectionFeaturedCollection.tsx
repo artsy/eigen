@@ -25,7 +25,7 @@ import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { withSuspense } from "app/utils/hooks/withSuspense"
+import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { TouchableOpacity, useWindowDimensions } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
@@ -217,28 +217,32 @@ const homeViewSectionFeaturedCollectionQuery = graphql`
 `
 
 export const HomeViewSectionFeaturedCollectionQueryRenderer: React.FC<SectionSharedProps> =
-  withSuspense(({ sectionID, index, ...flexProps }) => {
-    const data = useLazyLoadQuery<HomeViewSectionFeaturedCollectionQuery>(
-      homeViewSectionFeaturedCollectionQuery,
-      {
-        id: sectionID,
-      },
-      {
-        networkCacheConfig: {
-          force: false,
+  withSuspense({
+    Component: ({ sectionID, index, ...flexProps }) => {
+      const data = useLazyLoadQuery<HomeViewSectionFeaturedCollectionQuery>(
+        homeViewSectionFeaturedCollectionQuery,
+        {
+          id: sectionID,
         },
+        {
+          networkCacheConfig: {
+            force: false,
+          },
+        }
+      )
+
+      if (!data.homeView.section) {
+        return null
       }
-    )
 
-    if (!data.homeView.section) {
-      return null
-    }
-
-    return (
-      <HomeViewSectionFeaturedCollection
-        section={data.homeView.section}
-        index={index}
-        {...flexProps}
-      />
-    )
-  }, HomeViewSectionFeaturedCollectionPlaceholder)
+      return (
+        <HomeViewSectionFeaturedCollection
+          section={data.homeView.section}
+          index={index}
+          {...flexProps}
+        />
+      )
+    },
+    LoadingFallback: HomeViewSectionFeaturedCollectionPlaceholder,
+    ErrorFallback: NoFallback,
+  })

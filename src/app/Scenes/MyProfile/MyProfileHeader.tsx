@@ -19,6 +19,7 @@ import {
   SkeletonText,
   Button,
   Image,
+  SimpleMessage,
 } from "@artsy/palette-mobile"
 import { MyProfileHeaderQuery } from "__generated__/MyProfileHeaderQuery.graphql"
 import { MyProfileHeader_me$key } from "__generated__/MyProfileHeader_me.graphql"
@@ -286,21 +287,30 @@ const myProfileHeaderQuery = graphql`
   }
 `
 
-export const MyProfileHeaderQueryRenderer = withSuspense((props) => {
-  const data = useLazyLoadQuery<MyProfileHeaderQuery>(
-    myProfileHeaderQuery,
-    {},
-    {
-      fetchPolicy: "network-only",
-      networkCacheConfig: {
-        force: true,
-      },
-    }
-  )
+export const MyProfileHeaderQueryRenderer = withSuspense({
+  Component: (props) => {
+    const data = useLazyLoadQuery<MyProfileHeaderQuery>(
+      myProfileHeaderQuery,
+      {},
+      {
+        fetchPolicy: "network-only",
+        networkCacheConfig: {
+          force: true,
+        },
+      }
+    )
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  return <MyProfileHeader meProp={data.me!} {...props} />
-}, MyProfileHeaderPlaceholder)
+    if (!data.me) {
+      return <SimpleMessage m={2}>Failed to load profile. Please check back later.</SimpleMessage>
+    }
+
+    return <MyProfileHeader meProp={data.me} {...props} />
+  },
+  LoadingFallback: MyProfileHeaderPlaceholder,
+  ErrorFallback: () => {
+    return <SimpleMessage m={2}>Failed to load profile. Please check back later.</SimpleMessage>
+  },
+})
 
 const tracks = {
   tappedCompleteMyProfile: ({ id }: { id: string }): TappedCompleteYourProfile => ({

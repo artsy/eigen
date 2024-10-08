@@ -16,7 +16,7 @@ import {
   useSavedSearchFilter,
   useSearchCriteriaAttributes,
 } from "app/Scenes/SavedSearchAlert/helpers"
-import { withSuspense } from "app/utils/hooks/withSuspense"
+import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { compact } from "lodash"
 import { useState } from "react"
 import { TouchableOpacity } from "react-native"
@@ -125,18 +125,22 @@ const savedSearchFilterPriceRangeQuery = graphql`
   }
 `
 
-export const SavedSearchFilterArtistSeriesQR: React.FC<{}> = withSuspense(() => {
-  const artistID = SavedSearchStore.useStoreState((state) => state.entity.artists[0].id)
-  const data = useLazyLoadQuery<SavedSearchFilterArtistSeriesQuery>(
-    savedSearchFilterPriceRangeQuery,
-    {
-      artistID: artistID,
+export const SavedSearchFilterArtistSeriesQR: React.FC<{}> = withSuspense({
+  Component: () => {
+    const artistID = SavedSearchStore.useStoreState((state) => state.entity.artists[0].id)
+    const data = useLazyLoadQuery<SavedSearchFilterArtistSeriesQuery>(
+      savedSearchFilterPriceRangeQuery,
+      {
+        artistID: artistID,
+      }
+    )
+
+    if (!data.artist) {
+      return null
     }
-  )
 
-  if (!data.artist) {
-    return null
-  }
-
-  return <SavedSearchFilterArtistSeries artist={data.artist} />
-}, Placeholder)
+    return <SavedSearchFilterArtistSeries artist={data.artist} />
+  },
+  LoadingFallback: Placeholder,
+  ErrorFallback: NoFallback,
+})

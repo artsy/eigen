@@ -13,7 +13,7 @@ import {
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
-import { withSuspense } from "app/utils/hooks/withSuspense"
+import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { isNumber } from "lodash"
 import { useRef, useState } from "react"
 import { FlatList, ViewabilityConfig, ViewToken } from "react-native"
@@ -141,8 +141,8 @@ const homeViewSectionHeroUnitsQuery = graphql`
   }
 `
 
-export const HomeViewSectionHeroUnitsQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
-  ({ sectionID, index, ...flexProps }) => {
+export const HomeViewSectionHeroUnitsQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
+  Component: ({ sectionID, index, ...flexProps }) => {
     const data = useLazyLoadQuery<HomeViewSectionHeroUnitsQuery>(
       homeViewSectionHeroUnitsQuery,
       {
@@ -161,5 +161,6 @@ export const HomeViewSectionHeroUnitsQueryRenderer: React.FC<SectionSharedProps>
 
     return <HomeViewSectionHeroUnits section={data.homeView.section} index={index} {...flexProps} />
   },
-  HomeViewSectionHeroUnitsPlaceholder
-)
+  LoadingFallback: HomeViewSectionHeroUnitsPlaceholder,
+  ErrorFallback: NoFallback,
+})

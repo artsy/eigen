@@ -87,8 +87,8 @@ const SimilarArtworksPlaceholder: React.FC = () => {
   return <GenericGridPlaceholder width={screen.width - space(4)} />
 }
 
-const SimilarArtworksContainer: React.FC<{ attributes: SearchCriteriaAttributes }> = withSuspense(
-  ({ attributes }) => {
+const SimilarArtworksContainer: React.FC<{ attributes: SearchCriteriaAttributes }> = withSuspense({
+  Component: ({ attributes }) => {
     const screen = useScreenDimensions()
     const { space } = useTheme()
 
@@ -125,5 +125,12 @@ const SimilarArtworksContainer: React.FC<{ attributes: SearchCriteriaAttributes 
       </>
     )
   },
-  SimilarArtworksPlaceholder
-)
+  LoadingFallback: SimilarArtworksPlaceholder,
+  ErrorFallback: () => {
+    return (
+      <SimpleMessage>
+        There aren’t any works available that meet the criteria at this time.
+      </SimpleMessage>
+    )
+  },
+})
