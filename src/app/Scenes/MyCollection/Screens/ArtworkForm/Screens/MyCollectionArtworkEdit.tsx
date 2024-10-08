@@ -1,7 +1,7 @@
 import { MyCollectionArtworkEditQuery } from "__generated__/MyCollectionArtworkEditQuery.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { MyCollectionArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
-import { withSuspense } from "app/utils/hooks/withSuspense"
+import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 interface MyCollectionArtworkEditProps {
@@ -63,7 +63,7 @@ export const MyCollectionArtworkEditQueryRenderer = withSuspense({
 
     return <MyCollectionArtworkFormScreen artwork={data.artwork} mode="edit" />
   },
-  LoadingFallback: undefined,
+  LoadingFallback: SpinnerFallback,
   ErrorFallback: (fallbackProps) => {
     return (
       <LoadFailureView

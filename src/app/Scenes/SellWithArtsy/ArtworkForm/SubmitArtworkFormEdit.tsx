@@ -6,7 +6,7 @@ import {
   SubmitArtworkProps,
 } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { getInitialSubmissionValues } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/getInitialSubmissionValues"
-import { withSuspense } from "app/utils/hooks/withSuspense"
+import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 export const SubmitArtworkFormEdit: React.FC<SubmitArtworkProps> = withSuspense({
@@ -33,7 +33,7 @@ export const SubmitArtworkFormEdit: React.FC<SubmitArtworkProps> = withSuspense(
       </>
     )
   },
-  LoadingFallback: undefined,
+  LoadingFallback: SpinnerFallback,
   ErrorFallback: (fallbackProps) => {
     return (
       <LoadFailureView

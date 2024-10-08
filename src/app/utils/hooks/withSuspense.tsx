@@ -5,10 +5,11 @@ import { ReactElement, Suspense } from "react"
 import { ErrorBoundary, FallbackProps } from "react-error-boundary"
 
 export const NoFallback = Symbol("NoFallback")
+export const SpinnerFallback = Symbol("SpinnerFallback")
 
 interface WithSuspenseOptions {
   Component: React.FC<any>
-  LoadingFallback?: React.FC<any>
+  LoadingFallback: React.FC<any> | typeof SpinnerFallback
   ErrorFallback: ((props: FallbackProps) => ReactElement | null) | typeof NoFallback
 }
 
@@ -20,9 +21,12 @@ const DefaultLoadingFallback: React.FC = () => (
 
 export const withSuspense = ({
   Component,
-  LoadingFallback = DefaultLoadingFallback,
+  LoadingFallback,
   ErrorFallback,
 }: WithSuspenseOptions) => {
+  const LoadingFallbackComponent =
+    LoadingFallback === SpinnerFallback ? DefaultLoadingFallback : LoadingFallback
+
   return (props: any) => {
     // we display the fallback component if error or we defensively hide the component
     return (
@@ -40,7 +44,7 @@ export const withSuspense = ({
         <Suspense
           fallback={
             <ProvidePlaceholderContext>
-              <LoadingFallback {...props} />
+              <LoadingFallbackComponent {...props} />
             </ProvidePlaceholderContext>
           }
         >
