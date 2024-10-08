@@ -19,7 +19,6 @@ export const Task: React.FC<{
       <Swipeable
         actionComponent={<Text color="white100">Clear</Text>}
         actionOnPress={handleClearTask}
-        actionOnSwipe={handleClearTask}
         actionBackground="red100"
       >
         <Flex backgroundColor="white100" borderRadius={5}>
