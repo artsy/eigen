@@ -14,7 +14,7 @@ export const withSuspense =
         <Spinner />
       </Flex>
     ),
-    ErrorFallback: ((props: FallbackProps) => React.ReactNode) | typeof NoFallback
+    ErrorFallback: ((props: FallbackProps) => React.ReactElement) | typeof NoFallback
   ) =>
   (props: any) => {
     // we display the fallback component if error or we defensively hide the component
@@ -25,7 +25,6 @@ export const withSuspense =
             // No fallback means render nothing when an error occurs
             return null
           }
-          // Render the provided error fallback component
           return ErrorFallback ? ErrorFallback(error) : null
         }}
         // onError captures the exception and sends it to Sentry

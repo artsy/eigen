@@ -15,7 +15,7 @@ import { PriceRange } from "app/Components/PriceRange/types"
 import { getBarsFromAggregations } from "app/Components/PriceRange/utils"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { useSearchCriteriaAttributes } from "app/Scenes/SavedSearchAlert/helpers"
-import { withSuspense } from "app/utils/hooks/withSuspense"
+import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useEffect, useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import useDebounce from "react-use/lib/useDebounce"
@@ -139,5 +139,5 @@ export const SavedSearchFilterPriceRangeQR: React.FC<{}> = withSuspense(
     return <SavedSearchFilterPriceRange artist={data.artist} />
   },
   Placeholder,
-  undefined
+  NoFallback
 )

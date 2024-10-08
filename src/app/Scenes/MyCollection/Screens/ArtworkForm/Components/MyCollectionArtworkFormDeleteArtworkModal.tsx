@@ -8,7 +8,7 @@ import {
   Text,
 } from "@artsy/palette-mobile"
 import { MyCollectionArtworkFormDeleteArtworkModalQuery } from "__generated__/MyCollectionArtworkFormDeleteArtworkModalQuery.graphql"
-import { withSuspense } from "app/utils/hooks/withSuspense"
+import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useState } from "react"
 import { Modal } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -106,5 +106,5 @@ export const MyCollectionArtworkFormDeleteArtworkModal: React.FC<MyCollectionArt
       )
     },
     undefined,
-    undefined
+    NoFallback
   )

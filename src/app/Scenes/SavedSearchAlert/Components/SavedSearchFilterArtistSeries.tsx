@@ -16,7 +16,7 @@ import {
   useSavedSearchFilter,
   useSearchCriteriaAttributes,
 } from "app/Scenes/SavedSearchAlert/helpers"
-import { withSuspense } from "app/utils/hooks/withSuspense"
+import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { compact } from "lodash"
 import { useState } from "react"
 import { TouchableOpacity } from "react-native"
@@ -142,5 +142,5 @@ export const SavedSearchFilterArtistSeriesQR: React.FC<{}> = withSuspense(
     return <SavedSearchFilterArtistSeries artist={data.artist} />
   },
   Placeholder,
-  undefined
+  NoFallback
 )

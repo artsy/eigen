@@ -20,7 +20,7 @@ import {
   ViewingRoomsRailPlaceholder,
 } from "app/Scenes/ViewingRoom/Components/ViewingRoomsHomeRail"
 import { navigate } from "app/system/navigation/navigate"
-import { withSuspense } from "app/utils/hooks/withSuspense"
+import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
 import { Suspense } from "react"
@@ -168,5 +168,5 @@ export const HomeViewSectionViewingRoomsQueryRenderer: React.FC<SectionSharedPro
     )
   },
   HomeViewSectionArtworksPlaceholder,
-  undefined
+  NoFallback
 )

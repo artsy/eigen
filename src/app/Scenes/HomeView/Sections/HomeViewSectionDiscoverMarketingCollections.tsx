@@ -6,7 +6,7 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { withSuspense } from "app/utils/hooks/withSuspense"
+import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { times } from "lodash"
 import { FlatList, ScrollView } from "react-native"
 import { isTablet } from "react-native-device-info"
@@ -155,5 +155,5 @@ export const HomeViewSectionDiscoverMarketingCollectionsQueryRenderer: React.FC<
       )
     },
     HomeViewSectionDiscoverMarketingCollectionsPlaceholder,
-    undefined
+    NoFallback
   )

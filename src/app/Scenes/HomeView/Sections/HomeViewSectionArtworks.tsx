@@ -24,7 +24,7 @@ import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { withSuspense } from "app/utils/hooks/withSuspense"
+import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -204,5 +204,5 @@ export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> 
     return <HomeViewSectionArtworks section={data.homeView.section} index={index} {...flexProps} />
   },
   HomeViewSectionArtworksPlaceholder,
-  undefined
+  NoFallback
 )

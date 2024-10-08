@@ -20,7 +20,7 @@ import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { withSuspense } from "app/utils/hooks/withSuspense"
+import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { times } from "lodash"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -203,5 +203,5 @@ export const HomeViewSectionArticlesCardsQueryRenderer: React.FC<SectionSharedPr
     )
   },
   HomeViewSectionArticlesCardsPlaceholder,
-  undefined
+  NoFallback
 )

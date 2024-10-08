@@ -7,7 +7,7 @@ import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeView
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { withSuspense } from "app/utils/hooks/withSuspense"
+import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionShowsProps {
@@ -101,5 +101,5 @@ export const HomeViewSectionShowsQueryRenderer: React.FC<SectionSharedProps> = w
     return <HomeViewSectionShows section={data.homeView.section} index={index} {...flexProps} />
   },
   HomeViewSectionShowsPlaceholder,
-  undefined
+  NoFallback
 )

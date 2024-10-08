@@ -17,7 +17,7 @@ import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeVie
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
-import { withSuspense } from "app/utils/hooks/withSuspense"
+import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -165,5 +165,5 @@ export const HomeViewSectionArticlesQueryRenderer: React.FC<SectionSharedProps> 
     return <HomeViewSectionArticles section={data.homeView.section} index={index} {...flexProps} />
   },
   HomeViewSectionArticlesPlaceholder,
-  undefined
+  NoFallback
 )
