@@ -18,7 +18,7 @@ export interface AuthScreen {
 
 interface AuthContextModel {
   currentScreen: AuthScreen | undefined
-  goBack: Action<AuthContextModel>
+  goBack: Action<AuthContextModel, AuthScreen["params"]>
   isModalExpanded: boolean
   isMounted: boolean
   previousScreens: Array<AuthScreen | undefined>
@@ -42,7 +42,13 @@ export const AuthContext = createContextStore<AuthContextModel>({
     state.isModalExpanded = isModalExpanded
   }),
 
-  goBack: action((state) => {
-    state.currentScreen = state.previousScreens.pop()
+  goBack: action((state, params) => {
+    const currentScreen = state.previousScreens.pop()
+
+    if (currentScreen && params) {
+      currentScreen.params = params
+    }
+
+    state.currentScreen = currentScreen
   }),
 })
