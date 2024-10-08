@@ -569,6 +569,9 @@ parameters:
   run_workflow_build-run-tests-for-echo:
     type: boolean
     default: false
+  run_workflow_test-build-deploy:
+    type: boolean
+    default: true
 
 workflows:
   version: 2
@@ -597,13 +600,14 @@ workflows:
     jobs:
       - check-flags
 
-  build-run-tests-for-echo::
+  build-run-tests-for-echo:
     when: << pipeline.parameters.run_workflow_build-run-tests-for-echo >>
     jobs:
       - build-echo-test-js
       - test-js
 
   test-build-deploy:
+    when: << pipeline.parameters.run_workflow_test-build-deploy >>
     jobs:
       - detect-secrets:
           filters:
