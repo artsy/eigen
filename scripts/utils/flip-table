@@ -51,6 +51,9 @@ rm -rf src/__generated__/*.graphql.ts
 echo 'Clear build artefacts (╯ರ ~ ರ）╯︵ ┻━┻'
 find dist/ ! -name '.gitkeep' -type f -exec rm -f {} +
 
+echo 'Setup Assets'
+yarn setup:artsy
+
 echo 'Reinstall dependencies ┬─┬ノ( º _ ºノ)'
 yarn install:all
 
