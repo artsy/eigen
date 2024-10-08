@@ -217,8 +217,8 @@ const homeViewSectionFeaturedCollectionQuery = graphql`
 `
 
 export const HomeViewSectionFeaturedCollectionQueryRenderer: React.FC<SectionSharedProps> =
-  withSuspense(
-    ({ sectionID, index, ...flexProps }) => {
+  withSuspense({
+    Component: ({ sectionID, index, ...flexProps }) => {
       const data = useLazyLoadQuery<HomeViewSectionFeaturedCollectionQuery>(
         homeViewSectionFeaturedCollectionQuery,
         {
@@ -243,6 +243,6 @@ export const HomeViewSectionFeaturedCollectionQueryRenderer: React.FC<SectionSha
         />
       )
     },
-    HomeViewSectionFeaturedCollectionPlaceholder,
-    NoFallback
-  )
+    LoadingFallback: HomeViewSectionFeaturedCollectionPlaceholder,
+    ErrorFallback: NoFallback,
+  })

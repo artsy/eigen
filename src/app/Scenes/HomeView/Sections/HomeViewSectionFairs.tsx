@@ -195,8 +195,8 @@ const homeViewSectionFairsQuery = graphql`
   }
 `
 
-export const HomeViewSectionFairsQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
-  ({ sectionID, index, ...flexProps }) => {
+export const HomeViewSectionFairsQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
+  Component: ({ sectionID, index, ...flexProps }) => {
     const data = useLazyLoadQuery<HomeViewSectionFairsQuery>(
       homeViewSectionFairsQuery,
       {
@@ -215,6 +215,6 @@ export const HomeViewSectionFairsQueryRenderer: React.FC<SectionSharedProps> = w
 
     return <HomeViewSectionFairs section={data.homeView.section} index={index} {...flexProps} />
   },
-  HomeViewSectionFairsPlaceholder,
-  NoFallback
-)
+  LoadingFallback: HomeViewSectionFairsPlaceholder,
+  ErrorFallback: NoFallback,
+})

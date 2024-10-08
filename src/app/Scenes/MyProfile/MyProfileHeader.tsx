@@ -287,8 +287,8 @@ const myProfileHeaderQuery = graphql`
   }
 `
 
-export const MyProfileHeaderQueryRenderer = withSuspense(
-  (props) => {
+export const MyProfileHeaderQueryRenderer = withSuspense({
+  Component: (props) => {
     const data = useLazyLoadQuery<MyProfileHeaderQuery>(
       myProfileHeaderQuery,
       {},
@@ -306,11 +306,11 @@ export const MyProfileHeaderQueryRenderer = withSuspense(
 
     return <MyProfileHeader meProp={data.me} {...props} />
   },
-  MyProfileHeaderPlaceholder,
-  () => {
+  LoadingFallback: MyProfileHeaderPlaceholder,
+  ErrorFallback: () => {
     return <SimpleMessage m={2}>Failed to load profile. Please check back later.</SimpleMessage>
-  }
-)
+  },
+})
 
 const tracks = {
   tappedCompleteMyProfile: ({ id }: { id: string }): TappedCompleteYourProfile => ({

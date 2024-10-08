@@ -34,8 +34,8 @@ const myCollectionArtworkFormDeleteArtworkModalQuery = graphql`
 `
 
 export const MyCollectionArtworkFormDeleteArtworkModal: React.FC<MyCollectionArtworkFormDeleteArtworkModalProps> =
-  withSuspense(
-    ({ visible, hideModal, deleteArtwork, artistID }) => {
+  withSuspense({
+    Component: ({ visible, hideModal, deleteArtwork, artistID }) => {
       const data = useLazyLoadQuery<MyCollectionArtworkFormDeleteArtworkModalQuery>(
         myCollectionArtworkFormDeleteArtworkModalQuery,
         {
@@ -105,6 +105,6 @@ export const MyCollectionArtworkFormDeleteArtworkModal: React.FC<MyCollectionArt
         </Modal>
       )
     },
-    undefined,
-    NoFallback
-  )
+    LoadingFallback: undefined,
+    ErrorFallback: NoFallback,
+  })

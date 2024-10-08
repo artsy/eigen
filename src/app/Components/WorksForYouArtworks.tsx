@@ -122,8 +122,8 @@ interface WorksForYouArtworksQRProps {
   onlyAtAuction?: boolean
 }
 
-export const WorksForYouArtworksQR: React.FC<WorksForYouArtworksQRProps> = withSuspense(
-  ({ version, onlyAtAuction = false, maxWorksPerArtist = 3 }) => {
+export const WorksForYouArtworksQR: React.FC<WorksForYouArtworksQRProps> = withSuspense({
+  Component: ({ version, onlyAtAuction = false, maxWorksPerArtist = 3 }) => {
     const data = useLazyLoadQuery<WorksForYouArtworksQuery>(
       newWorksForYouArtworksQuery,
       {
@@ -145,6 +145,6 @@ export const WorksForYouArtworksQR: React.FC<WorksForYouArtworksQRProps> = withS
 
     return <WorksForYouArtworks viewer={data.viewer} />
   },
-  () => <NewWorksForYouPlaceholder />,
-  () => <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
-)
+  LoadingFallback: () => <NewWorksForYouPlaceholder />,
+  ErrorFallback: () => <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>,
+})

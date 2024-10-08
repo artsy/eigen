@@ -65,8 +65,8 @@ interface HomeViewSectionScreenQueryRendererProps {
   sectionType: string
 }
 
-export const HomeViewSectionScreenQueryRenderer = withSuspense(
-  (props: HomeViewSectionScreenQueryRendererProps) => {
+export const HomeViewSectionScreenQueryRenderer = withSuspense({
+  Component: (props: HomeViewSectionScreenQueryRendererProps) => {
     const data = useLazyLoadQuery<HomeViewSectionScreenQuery>(HOME_SECTION_SCREEN_QUERY, {
       id: props.sectionID,
     })
@@ -77,8 +77,8 @@ export const HomeViewSectionScreenQueryRenderer = withSuspense(
 
     return <HomeViewSectionScreen section={data.homeView.section} />
   },
-  HomeViewSectionScreenPlaceholder,
-  (fallbackProps) => (
+  LoadingFallback: HomeViewSectionScreenPlaceholder,
+  ErrorFallback: (fallbackProps) => (
     <LoadFailureView showBackButton trackErrorBoundary={false} error={fallbackProps.error} />
-  )
-)
+  ),
+})

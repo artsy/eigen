@@ -1,22 +1,29 @@
 import { Flex, Spinner } from "@artsy/palette-mobile"
 import { captureException } from "@sentry/react-native"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
-import { Suspense } from "react"
+import { ReactElement, Suspense } from "react"
 import { ErrorBoundary, FallbackProps } from "react-error-boundary"
 
 export const NoFallback = Symbol("NoFallback")
 
-export const withSuspense =
-  (
-    Component: React.FC<any>,
-    Fallback: React.FC<any> = () => (
-      <Flex flex={1} justifyContent="center" alignItems="center">
-        <Spinner />
-      </Flex>
-    ),
-    ErrorFallback: ((props: FallbackProps) => React.ReactElement) | typeof NoFallback
-  ) =>
-  (props: any) => {
+interface WithSuspenseOptions {
+  Component: React.FC<any>
+  LoadingFallback?: React.FC<any>
+  ErrorFallback: ((props: FallbackProps) => ReactElement | null) | typeof NoFallback
+}
+
+const DefaultLoadingFallback: React.FC = () => (
+  <Flex flex={1} justifyContent="center" alignItems="center">
+    <Spinner />
+  </Flex>
+)
+
+export const withSuspense = ({
+  Component,
+  LoadingFallback = DefaultLoadingFallback,
+  ErrorFallback,
+}: WithSuspenseOptions) => {
+  return (props: any) => {
     // we display the fallback component if error or we defensively hide the component
     return (
       <ErrorBoundary
@@ -33,7 +40,7 @@ export const withSuspense =
         <Suspense
           fallback={
             <ProvidePlaceholderContext>
-              <Fallback {...props} />
+              <LoadingFallback {...props} />
             </ProvidePlaceholderContext>
           }
         >
@@ -42,3 +49,4 @@ export const withSuspense =
       </ErrorBoundary>
     )
   }
+}

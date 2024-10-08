@@ -207,8 +207,8 @@ const homeViewSectionAuctionResultsQuery = graphql`
 `
 
 export const HomeViewSectionAuctionResultsQueryRenderer: React.FC<SectionSharedProps> =
-  withSuspense(
-    ({ sectionID, index, ...flexProps }) => {
+  withSuspense({
+    Component: ({ sectionID, index, ...flexProps }) => {
       const data = useLazyLoadQuery<HomeViewSectionAuctionResultsQuery>(
         homeViewSectionAuctionResultsQuery,
         {
@@ -228,6 +228,6 @@ export const HomeViewSectionAuctionResultsQueryRenderer: React.FC<SectionSharedP
         />
       )
     },
-    HomeViewSectionAuctionResultsPlaceholder,
-    NoFallback
-  )
+    LoadingFallback: HomeViewSectionAuctionResultsPlaceholder,
+    ErrorFallback: NoFallback,
+  })

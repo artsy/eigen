@@ -109,8 +109,8 @@ const Placeholder: React.FC<{}> = () => (
 )
 
 export const AlertPriceRangeScreenQueryRenderer: React.FC<AlertPriceRangeScreenQRProps> =
-  withSuspense(
-    (props) => {
+  withSuspense({
+    Component: (props) => {
       const artistID = SavedSearchStore.useStoreState((state) => state.entity.artists[0].id)
       const data = useLazyLoadQuery<AlertPriceRangeScreenQuery>(alertPriceRangeScreenQuery, {
         artistID: artistID,
@@ -118,6 +118,6 @@ export const AlertPriceRangeScreenQueryRenderer: React.FC<AlertPriceRangeScreenQ
 
       return <AlertPriceRangeScreen artist={data.artist} {...props} />
     },
-    Placeholder,
-    NoFallback
-  )
+    LoadingFallback: Placeholder,
+    ErrorFallback: NoFallback,
+  })

@@ -248,8 +248,8 @@ const HomeViewSectionArtistsPlaceholder: React.FC<FlexProps> = (flexProps) => {
   )
 }
 
-export const HomeViewSectionArtistsQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
-  ({ sectionID, index, ...flexProps }) => {
+export const HomeViewSectionArtistsQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
+  Component: ({ sectionID, index, ...flexProps }) => {
     const data = useLazyLoadQuery<HomeViewSectionArtistsMainQuery>(homeViewSectionArtistsQuery, {
       id: sectionID,
     })
@@ -266,6 +266,6 @@ export const HomeViewSectionArtistsQueryRenderer: React.FC<SectionSharedProps> =
       />
     )
   },
-  HomeViewSectionArtistsPlaceholder,
-  NoFallback
-)
+  LoadingFallback: HomeViewSectionArtistsPlaceholder,
+  ErrorFallback: NoFallback,
+})

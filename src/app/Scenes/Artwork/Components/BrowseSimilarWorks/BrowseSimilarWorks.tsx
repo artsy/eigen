@@ -68,8 +68,8 @@ const BrowseSimilarWorks: React.FC<{ artwork: BrowseSimilarWorks_artwork$key }> 
   return <BrowseSimilarWorksContent params={params} />
 }
 
-export const BrowseSimilarWorksQueryRenderer: React.FC<{ artworkID: string }> = withSuspense(
-  (props) => {
+export const BrowseSimilarWorksQueryRenderer: React.FC<{ artworkID: string }> = withSuspense({
+  Component: (props) => {
     const data = useLazyLoadQuery<BrowseSimilarWorksQuery>(SimilarWorksQuery, {
       artworkID: props.artworkID,
     })
@@ -80,11 +80,11 @@ export const BrowseSimilarWorksQueryRenderer: React.FC<{ artworkID: string }> = 
 
     return <BrowseSimilarWorks artwork={data.artwork} />
   },
-  BrowseSimilarWorksPlaceholder,
-  () => {
+  LoadingFallback: BrowseSimilarWorksPlaceholder,
+  ErrorFallback: () => {
     return <BrowseSimilarWorksErrorState />
-  }
-)
+  },
+})
 
 const similarWorksFragment = graphql`
   fragment BrowseSimilarWorks_artwork on Artwork {

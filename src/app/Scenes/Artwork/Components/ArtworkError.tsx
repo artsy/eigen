@@ -76,8 +76,8 @@ export const ArtworkError: React.FC<ArtworkErrorProps> = ({ homePage, me, viewer
   )
 }
 
-export const ArtworkErrorScreen: React.FC<{}> = withSuspense(
-  () => {
+export const ArtworkErrorScreen: React.FC<{}> = withSuspense({
+  Component: () => {
     const worksForYouRecommendationsModel = useExperimentVariant(
       RECOMMENDATION_MODEL_EXPERIMENT_NAME
     )
@@ -101,12 +101,12 @@ export const ArtworkErrorScreen: React.FC<{}> = withSuspense(
     }
     return <ArtworkError homePage={data.homePage} me={data.me} viewer={data.viewer} />
   },
-  () => (
+  LoadingFallback: () => (
     <Flex flex={1} alignItems="center" justifyContent="center" testID="placeholder">
       <Spinner />
     </Flex>
   ),
-  (fallbackProps) => {
+  ErrorFallback: (fallbackProps) => {
     return (
       <LoadFailureView
         useSafeArea={false}
@@ -115,8 +115,8 @@ export const ArtworkErrorScreen: React.FC<{}> = withSuspense(
         trackErrorBoundary={false}
       />
     )
-  }
-)
+  },
+})
 
 const recentlyViewedFragment = graphql`
   fragment ArtworkErrorRecentlyViewed_homePage on HomePage {

@@ -55,16 +55,16 @@ export const myCollectionArtworkEditQuery = graphql`
   }
 `
 
-export const MyCollectionArtworkEditQueryRenderer = withSuspense(
-  ({ artworkID }: MyCollectionArtworkEditProps) => {
+export const MyCollectionArtworkEditQueryRenderer = withSuspense({
+  Component: ({ artworkID }: MyCollectionArtworkEditProps) => {
     const data = useLazyLoadQuery<MyCollectionArtworkEditQuery>(myCollectionArtworkEditQuery, {
       artworkId: artworkID,
     })
 
     return <MyCollectionArtworkFormScreen artwork={data.artwork} mode="edit" />
   },
-  undefined,
-  (fallbackProps) => {
+  LoadingFallback: undefined,
+  ErrorFallback: (fallbackProps) => {
     return (
       <LoadFailureView
         showBackButton={true}
@@ -73,5 +73,5 @@ export const MyCollectionArtworkEditQueryRenderer = withSuspense(
         trackErrorBoundary={false}
       />
     )
-  }
-)
+  },
+})

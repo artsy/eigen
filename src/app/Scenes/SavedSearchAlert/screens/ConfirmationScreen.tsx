@@ -123,8 +123,8 @@ const MatchingArtworksPlaceholder: React.FC = () => {
   )
 }
 
-const MatchingArtworksContainer: React.FC<{ closeModal?: () => void }> = withSuspense(
-  ({ closeModal }) => {
+const MatchingArtworksContainer: React.FC<{ closeModal?: () => void }> = withSuspense({
+  Component: ({ closeModal }) => {
     // TODO: instead of using artworksConnection and passing attributes from the store, use `alert.artworksConnection` field instead.
     const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
     const currentArtworkID = SavedSearchStore.useStoreState((state) => state.currentArtworkID)
@@ -140,15 +140,15 @@ const MatchingArtworksContainer: React.FC<{ closeModal?: () => void }> = withSus
 
     return <MatchingArtworks artworksConnection={data.artworksConnection} closeModal={closeModal} />
   },
-  MatchingArtworksPlaceholder,
-  () => {
+  LoadingFallback: MatchingArtworksPlaceholder,
+  ErrorFallback: () => {
     return (
       <Text mb={2} p={2} bg="black10" color="black60">
         There aren't any works available that meet the criteria at this time.
       </Text>
     )
-  }
-)
+  },
+})
 
 const matchingArtworksQuery = graphql`
   query ConfirmationScreenMatchingArtworksQuery($input: FilterArtworksInput, $first: Int) {

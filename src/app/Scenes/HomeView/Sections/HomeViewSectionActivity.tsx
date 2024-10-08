@@ -198,8 +198,8 @@ const HomeViewSectionActivityPlaceholder: React.FC<FlexProps> = (flexProps) => {
   )
 }
 
-export const HomeViewSectionActivityQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
-  ({ sectionID, index, ...flexProps }) => {
+export const HomeViewSectionActivityQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
+  Component: ({ sectionID, index, ...flexProps }) => {
     const data = useLazyLoadQuery<HomeViewSectionActivityQuery>(homeViewSectionActivityQuery, {
       id: sectionID,
     })
@@ -210,6 +210,6 @@ export const HomeViewSectionActivityQueryRenderer: React.FC<SectionSharedProps> 
 
     return <HomeViewSectionActivity section={data.homeView.section} index={index} {...flexProps} />
   },
-  HomeViewSectionActivityPlaceholder,
-  NoFallback
-)
+  LoadingFallback: HomeViewSectionActivityPlaceholder,
+  ErrorFallback: NoFallback,
+})

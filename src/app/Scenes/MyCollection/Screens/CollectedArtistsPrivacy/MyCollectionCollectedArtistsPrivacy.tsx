@@ -94,8 +94,8 @@ const ShareSettingsScreenPlaceholder: React.FC<{}> = () => (
   </Flex>
 )
 
-export const MyCollectionCollectedArtistsPrivacyQueryRenderer: React.FC<{}> = withSuspense(
-  () => {
+export const MyCollectionCollectedArtistsPrivacyQueryRenderer: React.FC<{}> = withSuspense({
+  Component: () => {
     const data = useLazyLoadQuery<MyCollectionCollectedArtistsPrivacyQuery>(
       myCollectionCollectedArtistsPrivacyQuery,
       {},
@@ -114,8 +114,8 @@ export const MyCollectionCollectedArtistsPrivacyQueryRenderer: React.FC<{}> = wi
       </UserInterestsStoreProvider>
     )
   },
-  ShareSettingsScreenPlaceholder,
-  (fallbackProps) => {
+  LoadingFallback: ShareSettingsScreenPlaceholder,
+  ErrorFallback: (fallbackProps) => {
     return (
       <LoadFailureView
         error={fallbackProps.error}
@@ -124,8 +124,8 @@ export const MyCollectionCollectedArtistsPrivacyQueryRenderer: React.FC<{}> = wi
         useSafeArea={false}
       />
     )
-  }
-)
+  },
+})
 
 const myCollectionCollectedArtistsPrivacyQuery = graphql`
   query MyCollectionCollectedArtistsPrivacyQuery {

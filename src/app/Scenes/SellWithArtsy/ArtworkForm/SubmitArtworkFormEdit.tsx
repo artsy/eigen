@@ -9,8 +9,8 @@ import { getInitialSubmissionValues } from "app/Scenes/SellWithArtsy/ArtworkForm
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
-export const SubmitArtworkFormEdit: React.FC<SubmitArtworkProps> = withSuspense(
-  (props) => {
+export const SubmitArtworkFormEdit: React.FC<SubmitArtworkProps> = withSuspense({
+  Component: (props) => {
     const data = useLazyLoadQuery<SubmitArtworkFormEditQuery>(
       submitArtworkFormEditQuery,
       {
@@ -33,8 +33,8 @@ export const SubmitArtworkFormEdit: React.FC<SubmitArtworkProps> = withSuspense(
       </>
     )
   },
-  undefined,
-  (fallbackProps) => {
+  LoadingFallback: undefined,
+  ErrorFallback: (fallbackProps) => {
     return (
       <LoadFailureView
         error={fallbackProps.error}
@@ -43,8 +43,8 @@ export const SubmitArtworkFormEdit: React.FC<SubmitArtworkProps> = withSuspense(
         useSafeArea={false}
       />
     )
-  }
-)
+  },
+})
 
 export const SubmitArtworkFormEditContainer: React.FC<SubmitArtworkProps> = (props) => {
   return (

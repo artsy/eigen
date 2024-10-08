@@ -85,12 +85,12 @@ const artworkConnectionFragment = graphql`
   }
 `
 
-export const RecentlyViewedArtworksQR: React.FC = withSuspense(
-  () => {
+export const RecentlyViewedArtworksQR: React.FC = withSuspense({
+  Component: () => {
     return <RecentlyViewedArtworks />
   },
-  RecentlyViewedPlaceholder,
-  () => {
+  LoadingFallback: RecentlyViewedPlaceholder,
+  ErrorFallback: () => {
     return <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
-  }
-)
+  },
+})

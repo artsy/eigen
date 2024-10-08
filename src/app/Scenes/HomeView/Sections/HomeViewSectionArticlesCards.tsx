@@ -181,27 +181,33 @@ const homeViewSectionArticlesCardsQuery = graphql`
 `
 
 export const HomeViewSectionArticlesCardsQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
-  ({ sectionID, index, ...flexProps }) => {
-    const data = useLazyLoadQuery<HomeViewSectionArticlesCardsQuery>(
-      homeViewSectionArticlesCardsQuery,
-      {
-        id: sectionID,
-      },
-      {
-        networkCacheConfig: {
-          force: false,
+  {
+    Component: ({ sectionID, index, ...flexProps }) => {
+      const data = useLazyLoadQuery<HomeViewSectionArticlesCardsQuery>(
+        homeViewSectionArticlesCardsQuery,
+        {
+          id: sectionID,
         },
+        {
+          networkCacheConfig: {
+            force: false,
+          },
+        }
+      )
+
+      if (!data.homeView.section) {
+        return null
       }
-    )
 
-    if (!data.homeView.section) {
-      return null
-    }
-
-    return (
-      <HomeViewSectionArticlesCards section={data.homeView.section} index={index} {...flexProps} />
-    )
-  },
-  HomeViewSectionArticlesCardsPlaceholder,
-  NoFallback
+      return (
+        <HomeViewSectionArticlesCards
+          section={data.homeView.section}
+          index={index}
+          {...flexProps}
+        />
+      )
+    },
+    LoadingFallback: HomeViewSectionArticlesCardsPlaceholder,
+    ErrorFallback: NoFallback,
+  }
 )

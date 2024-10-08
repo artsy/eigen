@@ -133,8 +133,8 @@ const homeViewSectionDiscoverMarketingCollectionsQuery = graphql`
 `
 
 export const HomeViewSectionDiscoverMarketingCollectionsQueryRenderer: React.FC<SectionSharedProps> =
-  withSuspense(
-    ({ sectionID, index, ...flexProps }) => {
+  withSuspense({
+    Component: ({ sectionID, index, ...flexProps }) => {
       const data = useLazyLoadQuery<HomeViewSectionDiscoverMarketingCollectionsQuery>(
         homeViewSectionDiscoverMarketingCollectionsQuery,
         {
@@ -154,6 +154,6 @@ export const HomeViewSectionDiscoverMarketingCollectionsQueryRenderer: React.FC<
         />
       )
     },
-    HomeViewSectionDiscoverMarketingCollectionsPlaceholder,
-    NoFallback
-  )
+    LoadingFallback: HomeViewSectionDiscoverMarketingCollectionsPlaceholder,
+    ErrorFallback: NoFallback,
+  })

@@ -122,8 +122,8 @@ const savedSearchFilterPriceRangeQuery = graphql`
   }
 `
 
-export const SavedSearchFilterPriceRangeQR: React.FC<{}> = withSuspense(
-  () => {
+export const SavedSearchFilterPriceRangeQR: React.FC<{}> = withSuspense({
+  Component: () => {
     const artistID = SavedSearchStore.useStoreState((state) => state.entity.artists[0].id)
     const data = useLazyLoadQuery<SavedSearchFilterPriceRangeQuery>(
       savedSearchFilterPriceRangeQuery,
@@ -138,6 +138,6 @@ export const SavedSearchFilterPriceRangeQR: React.FC<{}> = withSuspense(
 
     return <SavedSearchFilterPriceRange artist={data.artist} />
   },
-  Placeholder,
-  NoFallback
-)
+  LoadingFallback: Placeholder,
+  ErrorFallback: NoFallback,
+})
