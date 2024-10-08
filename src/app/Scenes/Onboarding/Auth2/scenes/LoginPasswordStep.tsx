@@ -7,8 +7,8 @@ import {
   Spacer,
   Text,
   Touchable,
-  useTheme,
 } from "@artsy/palette-mobile"
+import { PasswordInput } from "app/Scenes/Onboarding/Auth2/components/PasswordInput"
 import {
   useAuthNavigation,
   useAuthScreen,
@@ -20,7 +20,7 @@ import { Formik, useFormikContext } from "formik"
 import { useRef } from "react"
 import * as Yup from "yup"
 
-interface LoginPasswordStepFormValues {
+export interface LoginPasswordStepFormValues {
   password: string
 }
 
@@ -31,7 +31,6 @@ export const LoginPasswordStep: React.FC = () => {
   return (
     <Formik<LoginPasswordStepFormValues>
       initialValues={{ password: "" }}
-      validateOnChange={true}
       validationSchema={Yup.object().shape({
         password: Yup.string().required("Password field is required"),
       })}
@@ -84,24 +83,12 @@ export const LoginPasswordStep: React.FC = () => {
 }
 
 const LoginPasswordStepForm: React.FC = () => {
-  const {
-    dirty,
-    errors,
-    handleChange,
-    handleSubmit,
-    isSubmitting,
-    isValid,
-    resetForm,
-    setErrors,
-    touched,
-    validateForm,
-    values,
-  } = useFormikContext<LoginPasswordStepFormValues>()
+  const { handleSubmit, isSubmitting, isValid, resetForm } =
+    useFormikContext<LoginPasswordStepFormValues>()
 
   const navigation = useAuthNavigation()
   const screen = useAuthScreen()
   const passwordRef = useRef<Input>(null)
-  const { color } = useTheme()
 
   useInputAutofocus({
     screenName: "LoginPasswordStep",
@@ -121,44 +108,11 @@ const LoginPasswordStepForm: React.FC = () => {
 
       <Text variant="sm-display">Welcome back to Artsy</Text>
 
-      <Input
-        autoCapitalize="none"
-        autoComplete="password"
-        autoCorrect={false}
-        blurOnSubmit={false}
-        error={values.password.length > 0 || touched.password ? errors.password : undefined}
-        placeholderTextColor={color("black30")}
-        ref={passwordRef}
-        returnKeyType="done"
-        secureTextEntry
-        // textContentType="oneTimeCode"
-        // We need to to set textContentType to password here
-        // enable autofill of login details from the device keychain.
-        textContentType="password"
-        testID="password"
-        title="Password"
-        value={values.password}
-        onChangeText={(text) => {
-          // Hide error when the user starts to type again
-          if (errors.password) {
-            setErrors({
-              password: undefined,
-            })
-            validateForm()
-          }
-          handleChange("password")(text)
-        }}
-        onSubmitEditing={() => {
-          if (dirty && !!values.password) {
-            handleSubmit()
-          }
-        }}
-        onBlur={validateForm}
-      />
+      <PasswordInput ref={passwordRef} />
 
       <Spacer y={2} />
 
-      <Button block width="100%" onPress={handleSubmit} disabled={!isValid} loading={isSubmitting}>
+      <Button block width={100} onPress={handleSubmit} disabled={!isValid} loading={isSubmitting}>
         Continue
       </Button>
 

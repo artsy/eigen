@@ -1,13 +1,5 @@
-import {
-  BackButton,
-  Button,
-  Flex,
-  Input,
-  LinkText,
-  Spacer,
-  Text,
-  useTheme,
-} from "@artsy/palette-mobile"
+import { BackButton, Button, Flex, Input, LinkText, Spacer, Text } from "@artsy/palette-mobile"
+import { PasswordInput } from "app/Scenes/Onboarding/Auth2/components/PasswordInput"
 import {
   useAuthNavigation,
   useAuthScreen,
@@ -18,7 +10,7 @@ import { Formik, useFormikContext } from "formik"
 import React, { useRef } from "react"
 import * as Yup from "yup"
 
-interface SignUpPasswordStepFormValues {
+export interface SignUpPasswordStepFormValues {
   password: string
 }
 
@@ -57,20 +49,11 @@ export const SignUpPasswordStep: React.FC = () => {
 }
 
 const SignUpPasswordStepForm: React.FC = () => {
-  const {
-    errors,
-    handleChange,
-    handleSubmit,
-    isSubmitting,
-    isValid,
-    setErrors,
-    values,
-    resetForm,
-  } = useFormikContext<SignUpPasswordStepFormValues>()
+  const { handleSubmit, isSubmitting, isValid, resetForm } =
+    useFormikContext<SignUpPasswordStepFormValues>()
 
   const navigation = useAuthNavigation()
   const screen = useAuthScreen()
-  const { color } = useTheme()
   const passwordRef = useRef<Input>(null)
 
   useInputAutofocus({
@@ -91,31 +74,7 @@ const SignUpPasswordStepForm: React.FC = () => {
 
       <Text variant="sm-display">Welcome to Artsy</Text>
 
-      <Input
-        autoCapitalize="none"
-        autoComplete="password"
-        autoCorrect={false}
-        blurOnSubmit={false}
-        error={errors.password}
-        placeholder="Password"
-        placeholderTextColor={color("black30")}
-        ref={passwordRef}
-        returnKeyType="done"
-        secureTextEntry
-        textContentType="none"
-        title="Password"
-        value={values.password}
-        onChangeText={(text) => {
-          // Hide error when the user starts to type again
-          if (errors.password) {
-            setErrors({
-              password: undefined,
-            })
-          }
-          handleChange("password")(text)
-        }}
-        onSubmitEditing={handleSubmit}
-      />
+      <PasswordInput ref={passwordRef} />
 
       <Spacer y={2} />
 
