@@ -2,6 +2,7 @@ import { Flex, Spinner } from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { NavigationContainer } from "@react-navigation/native"
 import { screen } from "@testing-library/react-native"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import {
   PREVIOUS_LAUNCH_COUNT_KEY,
   useReloadedDevNavigationState,
@@ -28,6 +29,11 @@ describe("useReloadedDevNavigationState", () => {
       </Flex>
     )
   }
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
   describe("when the launch count is different", () => {
     it("should return initialState as undefined", async () => {
       jest
@@ -78,6 +84,33 @@ describe("useReloadedDevNavigationState", () => {
       const injectedState = (navigationContainerProps as any).props.initialState
 
       expect(injectedState).toEqual(reactNavigationMockState)
+    })
+  })
+  describe("when DTDisableNavigationStateRehydration is enabled", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ DTDisableNavigationStateRehydration: true })
+    })
+
+    it("should skip rehydration", async () => {
+      jest
+        .spyOn(AsyncStorage, "getItem")
+        .mockResolvedValueOnce(JSON.stringify(reactNavigationMockState))
+      jest.spyOn(AsyncStorage, "getItem").mockResolvedValueOnce("1")
+      jest.spyOn(AsyncStorage, "setItem").mockResolvedValueOnce()
+
+      renderWithWrappers(<Test />)
+
+      expect(() => screen.getByTestId("spinner")).toThrow()
+
+      expect(AsyncStorage.getItem).not.toHaveBeenCalledWith(MOCK_NAVIGATION_STATE_KEY)
+
+      expect(screen.getByTestId("content")).toBeTruthy()
+
+      // eslint-disable-next-line testing-library/no-node-access
+      const navigationContainerProps = screen.getByTestId("content").children[0]
+      const injectedState = (navigationContainerProps as any).props.initialState
+
+      expect(injectedState).toEqual(undefined)
     })
   })
 })

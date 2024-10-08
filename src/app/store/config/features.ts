@@ -384,6 +384,10 @@ export const devToggles: { [key: string]: DevToggleDescriptor } = {
   DTEnableNewImageLabel: {
     description: "Show a label on new OpaqueImageView",
   },
+  DTDisableNavigationStateRehydration: {
+    description:
+      "Disable navigation state rehydration. This change only affects DEV builds. In release builds, navigation state is never rehydrated.",
+  },
 }
 
 export const isDevToggle = (name: FeatureName | DevToggleName): name is DevToggleName => {

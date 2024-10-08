@@ -10,7 +10,7 @@ import { Action, Middleware } from "redux"
 import logger from "redux-logger"
 import { version } from "./../../../app.json"
 import { getGlobalStoreModel, GlobalStoreModel, GlobalStoreState } from "./GlobalStoreModel"
-import { FeatureMap } from "./config/FeaturesModel"
+import { DevToggleMap, FeatureMap } from "./config/FeaturesModel"
 import { persistenceMiddleware, unpersist } from "./persistence"
 
 function createGlobalStore() {
@@ -68,7 +68,7 @@ export const __globalStoreTestUtils__ = __TEST__
       setProductionMode() {
         this.injectState({ devicePrefs: { environment: { env: "production" } } })
       },
-      injectFeatureFlags(options: Partial<FeatureMap>) {
+      injectFeatureFlags(options: Partial<FeatureMap> | Partial<DevToggleMap>) {
         this.injectState({ artsyPrefs: { features: { localOverrides: options } } })
       },
       getCurrentState: () => globalStoreInstance().getState(),
