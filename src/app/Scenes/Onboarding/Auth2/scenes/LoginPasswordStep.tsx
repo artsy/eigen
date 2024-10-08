@@ -31,7 +31,6 @@ export const LoginPasswordStep: React.FC = () => {
   return (
     <Formik<LoginPasswordStepFormValues>
       initialValues={{ password: "" }}
-      validateOnChange={true}
       validationSchema={Yup.object().shape({
         password: Yup.string().required("Password field is required"),
       })}
@@ -113,7 +112,7 @@ const LoginPasswordStepForm: React.FC = () => {
 
       <Spacer y={2} />
 
-      <Button block width="100%" onPress={handleSubmit} disabled={!isValid} loading={isSubmitting}>
+      <Button block width={100} onPress={handleSubmit} disabled={!isValid} loading={isSubmitting}>
         Continue
       </Button>
 

@@ -21,7 +21,6 @@ export const SignUpPasswordStep: React.FC = () => {
   return (
     <Formik<SignUpPasswordStepFormValues>
       initialValues={{ password: "" }}
-      validateOnChange={true}
       validationSchema={Yup.object().shape({
         password: Yup.string()
           .min(8, "Your password should be at least 8 characters")
