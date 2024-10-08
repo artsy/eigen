@@ -186,7 +186,7 @@ const HomeViewSectionAuctionResultsPlaceholder: React.FC<FlexProps> = (flexProps
                     <Flex>
                       <Join separator={<Spacer y={0.5} />}>
                         <SkeletonBox width={120} height={15} />
-                        <SkeletonBox width={80} height={22} />
+                        <SkeletonBox width={80} height={15} />
                       </Join>
                     </Flex>
                   </Flex>
