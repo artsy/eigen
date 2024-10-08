@@ -4,6 +4,8 @@ import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { Suspense } from "react"
 import { ErrorBoundary, FallbackProps } from "react-error-boundary"
 
+export const NoFallback = Symbol("NoFallback")
+
 export const withSuspense =
   (
     Component: React.FC<any>,
@@ -12,18 +14,19 @@ export const withSuspense =
         <Spinner />
       </Flex>
     ),
-    ErrorFallback: ((props: FallbackProps) => React.ReactNode) | undefined
+    ErrorFallback: ((props: FallbackProps) => React.ReactNode) | typeof NoFallback
   ) =>
   (props: any) => {
     // we display the fallback component if error or we defensively hide the component
     return (
       <ErrorBoundary
         fallbackRender={(error) => {
-          if (ErrorFallback) {
-            return ErrorFallback(error)
-          } else {
-            return undefined
+          if (ErrorFallback === NoFallback) {
+            // No fallback means render nothing when an error occurs
+            return null
           }
+          // Render the provided error fallback component
+          return ErrorFallback ? ErrorFallback(error) : null
         }}
         // onError captures the exception and sends it to Sentry
         onError={(error) => captureException(error)}

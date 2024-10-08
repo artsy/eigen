@@ -13,7 +13,7 @@ import { getBarsFromAggregations } from "app/Components/PriceRange/utils"
 import { CreateSavedSearchAlertNavigationStack } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { GlobalStore } from "app/store/GlobalStore"
-import { withSuspense } from "app/utils/hooks/withSuspense"
+import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
@@ -119,5 +119,5 @@ export const AlertPriceRangeScreenQueryRenderer: React.FC<AlertPriceRangeScreenQ
       return <AlertPriceRangeScreen artist={data.artist} {...props} />
     },
     Placeholder,
-    undefined
+    NoFallback
   )
