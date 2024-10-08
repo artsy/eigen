@@ -103,7 +103,9 @@ async function getChangelogFromPrs(prs: PullsGetResponse[]) {
       if (positions !== null) {
         const sectionContent = prBody.slice(positions.start, positions.end)
         const sectionChanges = parseSectionChanges(sectionContent)
-        for (const entry of sectionChanges) {
+        for (let entry of sectionChanges) {
+          const authorName = pr.user.login // Fallback to GitHub handle
+          entry = `${entry} - ${authorName}` // Append the handle to the entry
           changelog += `${entry} : ${section} : PR #${pr.number}\n`
           prHasChangelog = true
         }
@@ -136,12 +138,12 @@ async function main() {
 
   console.log(chalk.bold.green("\nPRs with #nochangelog:"))
   for (const pr of prsWithNoChangelog) {
-    console.log(chalk.green(`PR #${pr.number}: ${pr.title}`))
+    console.log(chalk.green(`PR #${pr.number}: ${pr.title} - ${pr.user.login}`))
   }
 
   console.log(chalk.bold.yellow("\nPRs without changelog entries:"))
   for (const pr of prsWithoutChangelog) {
-    console.log(chalk.yellow(`PR #${pr.number}: ${pr.title}`))
+    console.log(chalk.yellow(`PR #${pr.number}: ${pr.title} - ${pr.user.login}`))
   }
 }
 
