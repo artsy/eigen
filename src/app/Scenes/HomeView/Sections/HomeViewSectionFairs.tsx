@@ -1,13 +1,5 @@
 import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
-import {
-  Flex,
-  FlexProps,
-  Join,
-  Skeleton,
-  SkeletonBox,
-  SkeletonText,
-  Spacer,
-} from "@artsy/palette-mobile"
+import { Flex, FlexProps, Join, Skeleton, SkeletonBox, Spacer } from "@artsy/palette-mobile"
 import { HomeViewSectionFairsQuery } from "__generated__/HomeViewSectionFairsQuery.graphql"
 import { HomeViewSectionFairs_section$key } from "__generated__/HomeViewSectionFairs_section.graphql"
 import { CardRailCard, CardRailMetadataContainer } from "app/Components/Home/CardRailCard"
@@ -143,8 +135,8 @@ const HomeViewSectionFairsPlaceholder: React.FC<FlexProps> = (flexProps) => {
     <Skeleton>
       <Flex {...flexProps}>
         <Flex mx={2}>
-          <SkeletonText>Featured Fairs</SkeletonText>
-          <SkeletonText>See Wroks in Top Art Fairs</SkeletonText>
+          <SkeletonBox width={100} height={18} mb={0.5} />
+          <SkeletonBox width={200} height={18} />
           <Spacer y={1} />
 
           <Flex flexDirection="row">
@@ -171,8 +163,10 @@ const HomeViewSectionFairsPlaceholder: React.FC<FlexProps> = (flexProps) => {
                         />
                       </Flex>
                     </Flex>
+
                     <CardRailMetadataContainer>
-                      <SkeletonText numberOfLines={1}>Art on Paper 2024, New York</SkeletonText>
+                      <SkeletonBox width={180} height={18} mb={0.5} />
+                      <SkeletonBox width={130} height={18} />
                     </CardRailMetadataContainer>
                   </Flex>
                 </CardRailCard>

@@ -62,9 +62,7 @@ const HomeViewSectionShowsPlaceholder: React.FC<FlexProps> = (flexProps) => {
   return (
     <Skeleton>
       <Flex {...flexProps}>
-        <Flex mx={2}>
-          <ShowsRailPlaceholder />
-        </Flex>
+        <ShowsRailPlaceholder />
       </Flex>
     </Skeleton>
   )

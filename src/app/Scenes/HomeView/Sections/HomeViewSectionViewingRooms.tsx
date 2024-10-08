@@ -116,7 +116,7 @@ const HomeViewSectionArtworksPlaceholder: React.FC<FlexProps> = (flexProps) => {
     <Skeleton>
       <Flex {...flexProps}>
         <Flex mx={2}>
-          <SkeletonText variant="lg-display">Viewing Rooms</SkeletonText>
+          <SkeletonText variant="sm-display">Viewing Rooms</SkeletonText>
 
           <Spacer y={2} />
 

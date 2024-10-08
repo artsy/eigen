@@ -157,7 +157,7 @@ const HomeViewSectionSalesPlaceholder: React.FC<FlexProps> = (flexProps) => {
     <Skeleton>
       <Flex {...flexProps}>
         <Flex mx={2}>
-          <SkeletonText>Auctions</SkeletonText>
+          <SkeletonText variant="sm-display">Auctions</SkeletonText>
 
           <Spacer y={1} />
 
