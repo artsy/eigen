@@ -1,3 +1,4 @@
+import { Flex, Text } from "@artsy/palette-mobile"
 import { NavigationContainer, Route } from "@react-navigation/native"
 import {
   CardStyleInterpolators,
@@ -41,7 +42,17 @@ export const ModalStack: React.FC = ({ children }) => {
   const trackSiftAndroid = Platform.OS === "android" && enableAdditionalSiftAndroidTracking
 
   if (!isReady) {
-    return <LoadingSpinner />
+    return (
+      <LoadingSpinner>
+        {!!__DEV__ && (
+          <Flex px={2} mt={2}>
+            <Text color="devpurple" variant="xs" italic textAlign="center">
+              This spinner is only visible in DEV mode.{"\n"}
+            </Text>
+          </Flex>
+        )}
+      </LoadingSpinner>
+    )
   }
 
   return (

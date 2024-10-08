@@ -1,4 +1,5 @@
-import { Flex, Color, Spinner } from "@artsy/palette-mobile"
+import { Color, Flex, Spinner } from "@artsy/palette-mobile"
+import { ReactNode } from "react"
 import { Modal, ModalProps } from "react-native"
 
 interface LoadingModalProps {
@@ -24,12 +25,18 @@ const LoadingModal: React.FC<LoadingModalProps & ModalProps> = ({
   )
 }
 
-export const LoadingSpinner: React.FC<{ dark?: boolean }> = ({ dark = false }) => {
+export const LoadingSpinner: React.FC<{ dark?: boolean; children?: ReactNode }> = ({
+  dark = false,
+  children,
+}) => {
   const { backgroundColor, spinnerColor } = getColors(dark)
 
   return (
-    <Flex flex={1} alignItems="center" justifyContent="center" style={{ backgroundColor }}>
-      <Spinner color={spinnerColor} />
+    <Flex flex={1} justifyContent="center" style={{ backgroundColor }}>
+      <Flex alignItems="center">
+        <Spinner color={spinnerColor} size="large" />
+        {children}
+      </Flex>
     </Flex>
   )
 }
