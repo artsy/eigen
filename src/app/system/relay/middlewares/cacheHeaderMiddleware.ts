@@ -1,4 +1,5 @@
 import { getCurrentURL } from "app/routes"
+import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import {
   hasNoCacheParamPresent,
   hasPersonalizedArguments,
@@ -43,7 +44,10 @@ export const shouldSkipCDNCache = (req: GraphQLRequest) => {
 export const cacheHeaderMiddleware = (): Middleware => {
   return (next) => async (req) => {
     const cacheControlHeader = (() => {
+      const enableCacheableDirective = unsafe_getFeatureFlag("AREnableCacheableDirective")
       switch (true) {
+        // Skip CDN cache if cacheable directive feature flag is disabled
+        case !enableCacheableDirective:
         case shouldSkipCDNCache(req as GraphQLRequest): {
           return { "Cache-Control": "no-cache" }
         }
