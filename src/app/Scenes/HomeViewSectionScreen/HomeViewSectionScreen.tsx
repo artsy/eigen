@@ -79,6 +79,11 @@ export const HomeViewSectionScreenQueryRenderer = withSuspense({
   },
   LoadingFallback: HomeViewSectionScreenPlaceholder,
   ErrorFallback: (fallbackProps) => (
-    <LoadFailureView showBackButton trackErrorBoundary={false} error={fallbackProps.error} />
+    <LoadFailureView
+      showBackButton
+      trackErrorBoundary={false}
+      error={fallbackProps.error}
+      onRetry={fallbackProps.resetErrorBoundary}
+    />
   ),
 })

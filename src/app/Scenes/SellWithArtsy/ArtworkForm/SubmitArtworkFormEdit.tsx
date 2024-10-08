@@ -37,6 +37,7 @@ export const SubmitArtworkFormEdit: React.FC<SubmitArtworkProps> = withSuspense(
   ErrorFallback: (fallbackProps) => {
     return (
       <LoadFailureView
+        onRetry={fallbackProps.resetErrorBoundary}
         error={fallbackProps.error}
         showCloseButton={true}
         trackErrorBoundary={false}

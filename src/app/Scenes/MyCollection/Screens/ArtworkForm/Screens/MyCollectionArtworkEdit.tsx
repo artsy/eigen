@@ -67,6 +67,7 @@ export const MyCollectionArtworkEditQueryRenderer = withSuspense({
   ErrorFallback: (fallbackProps) => {
     return (
       <LoadFailureView
+        onRetry={fallbackProps.resetErrorBoundary}
         showBackButton={true}
         useSafeArea={false}
         error={fallbackProps.error}

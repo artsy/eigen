@@ -118,6 +118,7 @@ export const MyCollectionCollectedArtistsPrivacyQueryRenderer: React.FC<{}> = wi
   ErrorFallback: (fallbackProps) => {
     return (
       <LoadFailureView
+        onRetry={fallbackProps.resetErrorBoundary}
         error={fallbackProps.error}
         trackErrorBoundary={false}
         showCloseButton={true}

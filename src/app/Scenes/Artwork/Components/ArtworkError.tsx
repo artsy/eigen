@@ -109,6 +109,7 @@ export const ArtworkErrorScreen: React.FC<{}> = withSuspense({
   ErrorFallback: (fallbackProps) => {
     return (
       <LoadFailureView
+        onRetry={fallbackProps.resetErrorBoundary}
         useSafeArea={false}
         error={fallbackProps.error}
         showBackButton={true}
