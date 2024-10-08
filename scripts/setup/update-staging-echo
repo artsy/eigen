@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+curl https://echo.artsy.net/Echo.staging.json > ios/Artsy/App/EchoNew.json
+npx prettier -w ios/Artsy/App/EchoNew.json

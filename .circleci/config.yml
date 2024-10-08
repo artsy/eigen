@@ -59,6 +59,11 @@ commands:
       - run:
           name: Update echo
           command: ./scripts/setup/update-echo
+  update-staging-echo:
+    steps:
+      - run:
+          name: Update staging echo
+          command: ./scripts/setup/update-staging-echo
   generate-query-map:
     steps:
       - run:
@@ -362,6 +367,40 @@ jobs:
             - .manifests
             - dist
 
+  build-echo-test-js:
+    executor:
+      name: node/default
+      tag: "20.9.0"
+    resource_class: medium
+    steps:
+      - checkout
+      - generate-checksums
+      - setup-awscli
+      - setup-env-file
+      - install-node-modules
+      - run-relay-compiler
+      # would it be possible to deferenciate this with a flag in order to not duplicate code?
+      - update-staging-echo
+      - generate-query-map
+      - run:
+          name: Check generated folder
+          command: |
+            if test "$(git diff -- src/__generated__)"
+            then
+              echo 'You forgot to run `yarn relay` before comitting'
+              exit 1
+            fi
+      - run:
+          name: Generate app_build manifest
+          command: ./scripts/ci/generate-manifest.js .manifests/app_build '^\./manifests/native_code' '^dist/'
+      - store_artifacts:
+          path: .manifests
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .manifests
+            - dist
+
   build-test-app-ios:
     environment:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
@@ -526,6 +565,11 @@ jobs:
           no_output_timeout: 20m
           command: ./scripts/maestro/run-ios-nightly.sh
 
+parameters:
+  run_workflow_build-run-tests-for-echo:
+    type: boolean
+    default: false
+
 workflows:
   version: 2
   nightly:
@@ -552,6 +596,12 @@ workflows:
                 - main
     jobs:
       - check-flags
+
+  build-run-tests-for-echo::
+    when: << pipeline.parameters.run_workflow_build-run-tests-for-echo >>
+    jobs:
+      - build-echo-test-js
+      - test-js
 
   test-build-deploy:
     jobs:
