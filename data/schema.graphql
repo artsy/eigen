@@ -11235,6 +11235,15 @@ type HomeViewSectionShows implements HomeViewSectionGeneric & Node {
 
   # [Analytics] `owner type` analytics value for this scetion when displayed in a standalone UI, as defined in our schema (artsy/cohesion)
   ownerType: String
+  showsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+
+    # Include shows within a radius of the provided location
+    near: Near
+  ): ShowConnection
 }
 
 # A viewing rooms section in the home view
