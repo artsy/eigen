@@ -51,7 +51,8 @@ function logToError(type: keyof typeof console, args: unknown[], constructorOpt:
     typeof args[0] === "string" &&
     !args[0].includes("is using incorrect casing") &&
     !args[0].includes("is unrecognized in this browser") &&
-    !args[0].includes("React does not recognize the `testID` prop on a DOM element.")
+    // @ts-expect-error
+    ![args[0].includes("React does not recognize the `testID` prop on a DOM element.")]
   ) {
     const err = new Error(explanation + chalk.red(format(args[0], ...args.slice(1))))
     ;(Error as any).captureStackTrace(err, constructorOpt)
