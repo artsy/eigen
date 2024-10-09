@@ -41,7 +41,6 @@ export const LoginWelcomeStep: React.FC = () => {
 
       <Formik<LoginEmailFormValues>
         initialValues={{ email: "" }}
-        validateOnChange={false}
         validationSchema={Yup.object().shape({
           email: Yup.string()
             .email("Please provide a valid email address")
@@ -70,7 +69,7 @@ export const LoginWelcomeStep: React.FC = () => {
             })
           }
 
-          resetForm()
+          resetForm({ values: { email } })
         }}
       >
         <LoginWelcomeStepForm />
@@ -84,8 +83,16 @@ const LoginWelcomeStepForm: React.FC = () => {
   const isModalExpanded = AuthContext.useStoreState((state) => state.isModalExpanded)
 
   const { color } = useTheme()
-  const { errors, handleChange, handleSubmit, isSubmitting, values, resetForm } =
-    useFormikContext<LoginEmailFormValues>()
+  const {
+    errors,
+    handleChange,
+    handleSubmit,
+    isSubmitting,
+    isValid,
+    resetForm,
+    submitCount,
+    values,
+  } = useFormikContext<LoginEmailFormValues>()
 
   const emailRef = useRef<Input>(null)
 
@@ -99,7 +106,7 @@ const LoginWelcomeStepForm: React.FC = () => {
     requestAnimationFrame(() => {
       emailRef.current?.blur()
       setModalExpanded(false)
-      resetForm()
+      resetForm({ values: { email: "" } })
     })
   }
 
@@ -123,7 +130,7 @@ const LoginWelcomeStepForm: React.FC = () => {
         autoComplete="email"
         autoCorrect={false}
         blurOnSubmit={false}
-        error={errors.email}
+        error={submitCount > 0 ? errors.email : undefined}
         placeholderTextColor={color("black30")}
         ref={emailRef}
         spellCheck={false}
@@ -147,7 +154,13 @@ const LoginWelcomeStepForm: React.FC = () => {
       >
         <Spacer y={2} />
 
-        <Button block width="100%" onPress={handleSubmit} loading={isSubmitting}>
+        <Button
+          block
+          width="100%"
+          onPress={handleSubmit}
+          loading={isSubmitting}
+          disabled={!isValid || !values.email}
+        >
           Continue
         </Button>
       </MotiView>
