@@ -5,6 +5,7 @@ import {
   unsafe__getEnvironment,
   unsafe_getFeatureFlag,
 } from "app/store/GlobalStore"
+import { CACHEABLE_DIRECTIVE_REGEX } from "app/system/relay/helpers/cacheHeaderMiddlewareHelpers"
 import { shouldSkipCDNCache } from "app/system/relay/middlewares/cacheHeaderMiddleware"
 import { GraphQLRequest } from "app/system/relay/middlewares/types"
 import { logQueryPath } from "app/utils/loggers"
@@ -107,6 +108,8 @@ export function metaphysicsURLMiddleware() {
       const includeAuthHeaders =
         // Always include auth headers if not using CDN
         !unsafe_getFeatureFlag("ARUseMetaphysicsCDN") ||
+        // Always include headers if not using @cacheable directive
+        !unsafe_getFeatureFlag("AREnableCacheableDirective") ||
         // If using CDN, include them only if the request is not cacheable
         shouldSkipCDNCache(req as GraphQLRequest)
 
@@ -131,11 +134,18 @@ export function persistedQueryMiddleware(): Middleware {
     const request = req as GraphQLRequest
     // Get query body either from local queryMap or
     // send queryID to metaphysics
-    let body: { variables?: object; query?: string; documentID?: string } = {}
+    let body: { variables?: object; query?: string; documentID?: string; cacheable?: boolean } = {}
     const queryID = request.getID()
     const variables = request.getVariables()
 
-    body = { documentID: queryID, variables, query: request.operation.name }
+    body = {
+      documentID: queryID,
+      variables,
+      query: request.operation.name,
+      cacheable: CACHEABLE_DIRECTIVE_REGEX.test(
+        require("../../../../../data/complete.queryMap.json")[queryID]
+      ),
+    }
 
     if (body && (body.query || body.documentID)) {
       request.fetchOpts.body = JSON.stringify(body)

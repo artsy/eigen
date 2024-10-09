@@ -1,9 +1,16 @@
 import { GraphQLRequest } from "app/system/relay/middlewares/types"
 import { Variables } from "react-relay"
 
-const CACHEABLE_DIRECTIVE_REGEX = /@\bcacheable\b/
+export const CACHEABLE_DIRECTIVE_REGEX = /@\bcacheable\b/
+export const CACHEABLE_ARGUMENT_REGEX = /"cacheable":true/
+
 export const isRequestCacheable = (req: GraphQLRequest) => {
   const queryText = req.fetchOpts.body as string
+
+  // Query is a persisted query
+  if (queryText.startsWith('{"documentID"')) {
+    return CACHEABLE_ARGUMENT_REGEX.test(queryText)
+  }
 
   return CACHEABLE_DIRECTIVE_REGEX.test(queryText)
 }

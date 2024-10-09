@@ -287,6 +287,13 @@ export const features = {
     description: "Use Metaphysics CDN (requires app restart)",
     readyForRelease: false,
     showInDevMenu: true,
+    echoFlagKey: "ARUseMetaphysicsCDN",
+  },
+  AREnableCacheableDirective: {
+    description: "Enable @cacheable Directive",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableCacheableDirective",
   },
   AREnableSignupLoginFusion: {
     description: "Enable the fused signup and login flow",
