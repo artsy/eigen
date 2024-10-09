@@ -10,8 +10,6 @@ type CollectionsByCategoriesNavigationRoutes = {
 export const CollectionsByCategory: FC = () => {
   const { params } = useRoute<RouteProp<CollectionsByCategoriesNavigationRoutes, "collections">>()
 
-  console.log(params)
-
   const category = params?.props.category ?? ""
 
   return (
