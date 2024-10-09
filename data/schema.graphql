@@ -15757,7 +15757,6 @@ type Query {
     last: Int
     userId: ID!
   ): AuctionsLotStandingConnection!
-  _unused_gravity_devices(userId: ID!): [Device!]!
 
   # Autocomplete resolvers.
   _unused_gravity_matchPartners(
