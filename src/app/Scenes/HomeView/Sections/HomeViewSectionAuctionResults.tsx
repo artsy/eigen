@@ -64,9 +64,13 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
 
       navigate(viewAll.href)
     } else {
+      // TODO: This default view all behavior navigates to the existing Auction
+      // "Results From Artists You Follow" screen. This should eventually be
+      // updated to navigate to a HomeViewSectionAuctionResults screen and we can
+      // use the `component > behaviors > viewAll > ownerType` value.
       tracking.tappedAuctionResultGroupViewAll(
         section.contextModule as ContextModule,
-        OwnerType.lotsByArtistsYouFollow
+        OwnerType.auctionResultsForArtistsYouFollow
       )
 
       navigate("/auction-results-for-artists-you-follow")

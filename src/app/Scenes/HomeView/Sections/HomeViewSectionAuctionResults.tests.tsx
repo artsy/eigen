@@ -101,7 +101,7 @@ describe("HomeViewSectionAuctionResults", () => {
     expect(navigate).toHaveBeenCalledWith("/artist/artist-2/auction-result/auction-result-2-id")
   })
 
-  it("navigates to ViewAll when the user taps the 'View All' button", () => {
+  it("navigates to requested `href` destination when the user taps the 'View All' button", () => {
     renderWithRelay({
       HomeViewSectionAuctionResults: () => ({
         internalID: "home-view-section-latest-auction-results",
@@ -111,7 +111,7 @@ describe("HomeViewSectionAuctionResults", () => {
           behaviors: {
             viewAll: {
               buttonText: "View All",
-              href: "/auction-results-for-artists-you-follow-view-all-href",
+              href: "/example-href",
             },
           },
           auctionResultsConnection: {
@@ -130,6 +130,41 @@ describe("HomeViewSectionAuctionResults", () => {
     expect(screen.getByText("View All")).toBeOnTheScreen()
     fireEvent.press(screen.getByText("View All"))
 
-    expect(navigate).toHaveBeenCalledWith("/auction-results-for-artists-you-follow-view-all-href")
+    expect(navigate).toHaveBeenCalledWith("/example-href")
+  })
+
+  it("navigates to default View All implementation when `href` is unspecified and the user taps the 'View All' button", () => {
+    renderWithRelay({
+      HomeViewSectionAuctionResults: () => ({
+        internalID: "home-view-section-latest-auction-results",
+        component: {
+          title: "Latest Auction Results",
+          href: "/auction-results-for-artists-you-follow-href",
+          behaviors: {
+            viewAll: {
+              buttonText: "View All",
+              href: null,
+            },
+          },
+          auctionResultsConnection: {},
+        },
+      }),
+    })
+
+    expect(screen.getByText("View All")).toBeOnTheScreen()
+    fireEvent.press(screen.getByText("View All"))
+
+    expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+        [
+          {
+            "action": "tappedAuctionResultGroup",
+            "context_module": "<mock-value-for-field-"contextModule">",
+            "context_screen_owner_type": "home",
+            "destination_screen_owner_type": "auctionResultsForArtistsYouFollow",
+            "type": "viewAll",
+          },
+        ]
+      `)
+    expect(navigate).toHaveBeenCalledWith("/auction-results-for-artists-you-follow")
   })
 })
