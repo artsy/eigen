@@ -164,13 +164,25 @@ export const getCurrentURL = () => {
 
   let { route: path } = currentModule
 
+  const queryParams = [] as { [key: string]: string }[]
+
   if (currentModuleProps) {
     Object.entries(currentModuleProps).map(([key, value]) => {
-      path = path.replace(`:${key}`, value as string)
+      if (path.includes(`:${key}`)) {
+        path = path.replace(`:${key}`, value as string)
+      } else {
+        queryParams.push({ [key]: value as string })
+      }
     })
   }
 
-  return encodeURI(`${webURL}${path}`)
+  const queryParamsString = queryParams.map((params) =>
+    Object.entries(params)
+      .map(([key, value]) => `${key}=${value}`)
+      .join("&")
+  )
+
+  return encodeURI(`${webURL}${path}?${queryParamsString}`)
 }
 
 export function getDomainMap(): Record<string, RouteMatcher[] | null> {
