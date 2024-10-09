@@ -1,5 +1,5 @@
 import { Color, Flex, Touchable } from "@artsy/palette-mobile"
-import { forwardRef, useEffect, useState } from "react"
+import { forwardRef, useRef } from "react"
 import ReanimatedSwipeable, {
   SwipeableMethods,
   SwipeableRef,
@@ -32,13 +32,12 @@ export const Swipeable = forwardRef((props: SwipeableProps, swipeableRef: Swipea
 
   const width = useSharedValue(0)
 
-  const [hasSwiped, setHasSwiped] = useState(false)
+  const hasSwiped = useRef(false)
 
-  useEffect(() => {
-    if (!hasSwiped) return
-
+  const handleSwipeToInteract = () => {
+    hasSwiped.current = true
     actionOnSwipe?.()
-  }, [hasSwiped])
+  }
 
   const RightActions = (
     _progress: SharedValue<number>,
@@ -48,12 +47,12 @@ export const Swipeable = forwardRef((props: SwipeableProps, swipeableRef: Swipea
     useAnimatedStyle(() => {
       "worklet"
       // Don't do anything if the action is disabled, if the user has already swiped, or if the width is not yet set (on first render)
-      if (!actionOnSwipe || hasSwiped || !width.value) return {}
+      if (!actionOnSwipe || hasSwiped.current || !width.value) return {}
 
       if (width.value + dragX.value * FRICTION <= SWIPE_TO_INTERACT_THRESHOLD) {
         // TODO: Add haptic feedback
 
-        runOnJS(setHasSwiped)(true)
+        runOnJS(handleSwipeToInteract)()
 
         return {}
       }
