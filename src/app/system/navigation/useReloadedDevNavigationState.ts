@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { NavigationState } from "@react-navigation/native"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
+import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useEffect, useState } from "react"
 
 export const PREVIOUS_LAUNCH_COUNT_KEY = "previous-launch-count-key"
@@ -10,7 +11,14 @@ export const PREVIOUS_LAUNCH_COUNT_KEY = "previous-launch-count-key"
  * It will save the navigation state to AsyncStorage and reload it when the app is reloaded.
  */
 export const useReloadedDevNavigationState = (key: string) => {
-  const [isReady, setIsReady] = useState(__DEV__ ? false : true)
+  const isNavigationStateRehydrationDisabledToggle = useDevToggle(
+    "DTDisableNavigationStateRehydration"
+  )
+
+  // We only rehydrate navigation state on dev builds and if the toggle is disabled
+  const isNavigationStateRehydrationEnabled = __DEV__ && !isNavigationStateRehydrationDisabledToggle
+
+  const [isReady, setIsReady] = useState(isNavigationStateRehydrationEnabled ? false : true)
   const launchCount = ArtsyNativeModule.launchCount
   // TODO: This seems to be unreliable and return undefined in some cases
   // Look if should be removed in favor of the native module
@@ -20,7 +28,7 @@ export const useReloadedDevNavigationState = (key: string) => {
   const [initialState, setInitialState] = useState()
 
   useEffect(() => {
-    if (!__DEV__) {
+    if (!isNavigationStateRehydrationEnabled) {
       return
     }
 
@@ -54,14 +62,13 @@ export const useReloadedDevNavigationState = (key: string) => {
   }, [isReady])
 
   const saveSession = (state: NavigationState | undefined) => {
-    if (__DEV__) {
+    if (isNavigationStateRehydrationEnabled) {
       AsyncStorage.setItem(key, JSON.stringify(state))
     }
   }
 
   return {
-    // Double checking that this can only be false in dev and test
-    isReady: isReady || !__DEV__,
+    isReady: isReady,
     initialState,
     saveSession,
   }
