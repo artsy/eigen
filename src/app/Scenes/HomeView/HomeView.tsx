@@ -80,30 +80,31 @@ export const HomeView: React.FC = () => {
     }, [])
   )
 
-  useEffect(() => {
-    const fetchMe = async () => {
-      const result = await fetchQuery<HomeViewFetchMeQuery>(
-        getRelayEnvironment(),
-        graphql`
-          query HomeViewFetchMeQuery {
-            me {
-              counts {
-                savedArtworks
-              }
+  const fetchSavedArtworksCount = async () => {
+    fetchQuery<HomeViewFetchMeQuery>(
+      getRelayEnvironment(),
+      graphql`
+        query HomeViewFetchMeQuery {
+          me {
+            counts {
+              savedArtworks
             }
           }
-        `,
-        {}
-      ).toPromise()
-
-      return result?.me
-    }
-
-    fetchMe().then((me) => {
-      if (me?.counts?.savedArtworks) {
-        setSavedArtworksCount(me?.counts?.savedArtworks)
-      }
+        }
+      `,
+      {}
+    ).subscribe({
+      error: (error: any) => {
+        console.error("Unable to fetch saved artworks count.", error)
+      },
+      next: (data) => {
+        setSavedArtworksCount(data?.me?.counts?.savedArtworks || 0)
+      },
     })
+  }
+
+  useEffect(() => {
+    fetchSavedArtworksCount()
   }, [])
 
   const handleRefresh = () => {
