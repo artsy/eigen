@@ -51,7 +51,7 @@ function logToError(type: keyof typeof console, args: unknown[], constructorOpt:
     typeof args[0] === "string" &&
     !args[0].includes("is using incorrect casing") &&
     !args[0].includes("is unrecognized in this browser") &&
-    ![args[0].includes("React does not recognize the `testID` prop on a DOM element.")]
+    !args[0].includes("React does not recognize the `testID` prop on a DOM element.")
   ) {
     const err = new Error(explanation + chalk.red(format(args[0], ...args.slice(1))))
     ;(Error as any).captureStackTrace(err, constructorOpt)
@@ -89,12 +89,6 @@ if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
 /**
  * External deps mocks
  */
-
-jest.mock("react-native-screens", () => ({
-  ...jest.requireActual("react-native-screens"),
-  enableScreens: jest.fn(),
-}))
-
 jest.mock("@react-native-async-storage/async-storage", () => mockAsyncStorage)
 
 jest.mock("@react-native-community/netinfo", () => mockRNCNetInfo)
