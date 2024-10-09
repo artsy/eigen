@@ -1,4 +1,14 @@
-import { Flex, Image, Text, Touchable, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import {
+  Flex,
+  Image,
+  Skeleton,
+  SkeletonBox,
+  SkeletonText,
+  Text,
+  Touchable,
+  useScreenDimensions,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { HomeViewSectionExploreByQuery } from "__generated__/HomeViewSectionExploreByQuery.graphql"
 import { HomeViewSectionExploreBy_section$key } from "__generated__/HomeViewSectionExploreBy_section.graphql"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
@@ -45,7 +55,7 @@ export const HomeViewSectionExploreBy: React.FC<HomeViewSectionExploreByProps> =
           return (
             <Touchable
               key={`exploreBy-${index}`}
-              onPress={() => navigate(`/collections?category=${category.entityID}`)}
+              onPress={() => navigate(`/collections-by-category/${category.entityID}`)}
             >
               <Flex borderRadius={5} overflow="hidden">
                 <Image src={src} width={imageSize} height={imageSize} />
@@ -99,7 +109,29 @@ const query = graphql`
 `
 
 const HomeViewExploreByPlaceholder: React.FC = () => {
-  return null
+  const { width } = useScreenDimensions()
+  const space = useSpace()
+
+  const columns = !isTablet() ? 2 : 3
+  const imageColumnGaps = columns === 2 ? space(0.5) : 0
+  const imageSize = width / columns - space(2) - imageColumnGaps
+
+  return (
+    <Skeleton>
+      <Flex p={2} gap={space(2)}>
+        <SkeletonText>Explore by category</SkeletonText>
+        <Flex flexDirection="row" flexWrap="wrap" gap={space(1)}>
+          <>
+            {Array.from({ length: 6 }).map((_, index) => (
+              <Flex key={index} borderRadius={5}>
+                <SkeletonBox height={imageSize} width={imageSize} />
+              </Flex>
+            ))}
+          </>
+        </Flex>
+      </Flex>
+    </Skeleton>
+  )
 }
 
 export const HomeViewSectionExploreByQueryRenderer: React.FC<SectionSharedProps> = withSuspense(

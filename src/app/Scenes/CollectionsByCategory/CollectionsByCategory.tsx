@@ -3,12 +3,14 @@ import { RouteProp, useRoute } from "@react-navigation/native"
 import { goBack } from "app/system/navigation/navigate"
 import { FC } from "react"
 
-type CollectionsNavigationRoutes = {
+type CollectionsByCategoriesNavigationRoutes = {
   collections: { props: { category: string } }
 }
 
-export const Collections: FC = () => {
-  const { params } = useRoute<RouteProp<CollectionsNavigationRoutes, "collections">>()
+export const CollectionsByCategory: FC = () => {
+  const { params } = useRoute<RouteProp<CollectionsByCategoriesNavigationRoutes, "collections">>()
+
+  console.log(params)
 
   const category = params?.props.category ?? ""
 

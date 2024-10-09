@@ -18,7 +18,7 @@ import { BrowseSimilarWorksQueryRenderer } from "app/Scenes/Artwork/Components/B
 import { ArtworkListScreen } from "app/Scenes/ArtworkList/ArtworkList"
 import { ArtworkRecommendationsScreen } from "app/Scenes/ArtworkRecommendations/ArtworkRecommendations"
 import { CollectionScreen } from "app/Scenes/Collection/Collection"
-import { Collections } from "app/Scenes/Collections/Collections"
+import { CollectionsByCategory } from "app/Scenes/CollectionsByCategory/CollectionsByCategory"
 import { CompleteMyProfile } from "app/Scenes/CompleteMyProfile/CompleteMyProfile"
 import { GalleriesForYouScreen } from "app/Scenes/GalleriesForYou/GalleriesForYouScreen"
 import { HomeContainer } from "app/Scenes/Home/HomeContainer"
@@ -459,13 +459,16 @@ export const modules = defineModules({
   CitySavedList: reactModule(CitySavedListQueryRenderer),
   CitySectionList: reactModule(CitySectionListQueryRenderer),
   Collection: reactModule(CollectionScreen, { fullBleed: true, hidesBackButton: true }),
+  CollectionsByCategory: reactModule(CollectionsByCategory, {
+    fullBleed: true,
+    hidesBackButton: true,
+  }),
   ConsignmentInquiry: reactModule(ConsignmentInquiryScreen, {
     hidesBottomTabs: true,
     screenOptions: {
       gestureEnabled: false,
     },
   }),
-  Collections: reactModule(Collections, { fullBleed: true, hidesBackButton: true }),
   Conversation: reactModule(Conversation, { onlyShowInTabName: "inbox" }),
   ConversationDetails: reactModule(ConversationDetailsQueryRenderer),
   DarkModeSettings: reactModule(DarkModeSettings),
