@@ -285,13 +285,13 @@ export const features = {
   },
   ARUseMetaphysicsCDN: {
     description: "Use Metaphysics CDN (requires app restart)",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "ARUseMetaphysicsCDN",
   },
   AREnableCacheableDirective: {
     description: "Enable @cacheable Directive",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableCacheableDirective",
   },
