@@ -260,11 +260,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableAuctionImprovementsSignals",
   },
-  ARPreferLegacyHomeScreen: {
-    description: "Prefer legacy home screen",
-    readyForRelease: false,
-    showInDevMenu: true,
-  },
   AREnableCollectionsWithoutHeaderImage: {
     description: "Remove the header image from collections",
     readyForRelease: true,
@@ -304,6 +299,17 @@ export const features = {
     description: "Enable marketing collections categories elements in the home view",
     readyForRelease: false,
     showInDevMenu: true,
+  },
+  ARPreferLegacyHomeScreen: {
+    description: "Prefer legacy home screen",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
+  AREnableDynamicHomeView: {
+    description: "Enable new home screen",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableDynamicHomeView",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 

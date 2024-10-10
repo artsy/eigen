@@ -1,5 +1,4 @@
 import * as Sentry from "@sentry/react-native"
-import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { HomeQueryRenderer } from "app/Scenes/Home/Home"
 import { HomeViewScreen } from "app/Scenes/HomeView/HomeView"
 import { Playground } from "app/Scenes/Playground/Playground"
@@ -14,11 +13,10 @@ export const InnerHomeContainer = () => {
   const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
   const showPlayground = useDevToggle("DTShowPlayground")
 
+  const enableDynamicHomeView = useFeatureFlag("AREnableDynamicHomeView")
   const preferLegacyHomeScreen = useFeatureFlag("ARPreferLegacyHomeScreen")
-  const isArtsyEmployee = GlobalStore.useAppState((state) => state.auth.userHasArtsyEmail)
 
-  const shouldDisplayNewHomeView =
-    (isArtsyEmployee || ArtsyNativeModule.isBetaOrDev) && !preferLegacyHomeScreen
+  const shouldDisplayNewHomeView = enableDynamicHomeView && !preferLegacyHomeScreen
 
   const navigateToArtQuiz = async () => {
     await navigate("/art-quiz")
