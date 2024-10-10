@@ -39,7 +39,7 @@
     "flip_table_extreme": "./scripts/utils/flip-table-extreme",
     "generate-cities-cache": "node scripts/city-guide/generate-cities-cache.js",
     "generate-cities-objc": "node scripts/city-guide/generate-cities-objc.js",
-    "generate-changelog": "ts-node scripts/changelog/generateChangelog.ts",
+    "generate-changelog": "tsx scripts/changelog/generateChangelog.ts",
     "navigate-to-route": "./scripts/utils/navigate-to-route",
     "navigate-to-route-android": "./scripts/utils/navigate-to-route-android",
     "init-metaflags": "jq -Rn '{ }' | sponge metaflags.json",
@@ -322,7 +322,7 @@
     "rn-flipper-async-storage-advanced": "1.0.5",
     "sponge": "0.1.0",
     "tmp": "0.2.1",
-    "ts-node": "8.4.1",
+    "tsx": "4.19.1",
     "typescript": "5.2.2",
     "vscode-apollo-relay": "1.5.2",
     "yargs": "17.7.2"
