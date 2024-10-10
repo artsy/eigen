@@ -138,6 +138,22 @@ const LoginPasswordStepForm: React.FC = () => {
         onSubmitEditing={handleSubmit}
       />
 
+      <Spacer y={1} />
+
+      <Touchable
+        onPress={() => {
+          navigation.navigate({
+            name: "ForgotPasswordStep",
+            params: { email: screen.params?.email },
+          })
+          resetForm()
+        }}
+      >
+        <Text variant="xs" color="black60" underline>
+          Forgot password?
+        </Text>
+      </Touchable>
+
       <Spacer y={2} />
 
       <Button
@@ -171,19 +187,6 @@ const LoginPasswordStepForm: React.FC = () => {
           </Text>
         </>
       )}
-
-      <Spacer y={2} />
-
-      <Touchable
-        onPress={() => {
-          navigation.navigate({ name: "ForgotPasswordStep" })
-          resetForm()
-        }}
-      >
-        <Text variant="xs" color="black60" underline>
-          Forgot password?
-        </Text>
-      </Touchable>
     </Flex>
   )
 }
