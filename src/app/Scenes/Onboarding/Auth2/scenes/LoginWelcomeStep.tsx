@@ -84,16 +84,8 @@ const LoginWelcomeStepForm: React.FC = () => {
   const isModalExpanded = AuthContext.useStoreState((state) => state.isModalExpanded)
 
   const { color } = useTheme()
-  const {
-    errors,
-    handleChange,
-    handleSubmit,
-    isSubmitting,
-    isValid,
-    resetForm,
-    submitCount,
-    values,
-  } = useFormikContext<LoginEmailFormValues>()
+  const { handleChange, handleSubmit, isSubmitting, isValid, resetForm, values } =
+    useFormikContext<LoginEmailFormValues>()
 
   const navigation = useNavigation<NavigationProp<OnboardingNavigationStack>>()
   const emailRef = useRef<Input>(null)
@@ -132,7 +124,6 @@ const LoginWelcomeStepForm: React.FC = () => {
         autoComplete="email"
         autoCorrect={false}
         blurOnSubmit={false}
-        error={submitCount > 0 ? errors.email : undefined}
         placeholderTextColor={color("black30")}
         ref={emailRef}
         spellCheck={false}

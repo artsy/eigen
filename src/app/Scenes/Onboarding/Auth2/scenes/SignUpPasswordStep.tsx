@@ -57,7 +57,7 @@ export const SignUpPasswordStep: React.FC = () => {
 }
 
 const SignUpPasswordStepForm: React.FC = () => {
-  const { errors, handleChange, handleSubmit, isSubmitting, resetForm, submitCount, values } =
+  const { handleChange, handleSubmit, isSubmitting, isValid, resetForm, values } =
     useFormikContext<SignUpPasswordStepFormValues>()
 
   const navigation = useAuthNavigation()
@@ -89,7 +89,6 @@ const SignUpPasswordStepForm: React.FC = () => {
         autoComplete="password"
         autoCorrect={false}
         blurOnSubmit={false}
-        error={submitCount > 0 ? errors.password : undefined}
         placeholderTextColor={color("black30")}
         ref={passwordRef}
         returnKeyType="done"
@@ -104,9 +103,22 @@ const SignUpPasswordStepForm: React.FC = () => {
         onSubmitEditing={handleSubmit}
       />
 
+      <Spacer y={1} />
+
+      <Text variant="xs" color="black60">
+        Password must be at least 8 characters and include a lowercase letter, uppercase letter, and
+        digit.
+      </Text>
+
       <Spacer y={2} />
 
-      <Button block width={100} onPress={handleSubmit} loading={isSubmitting}>
+      <Button
+        block
+        width={100}
+        onPress={handleSubmit}
+        loading={isSubmitting}
+        disabled={!isValid || !values.password}
+      >
         Continue
       </Button>
 
