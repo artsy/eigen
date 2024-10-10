@@ -235,15 +235,36 @@ Learn about what things are architecturally [here](https://github.com/artsy/eige
 
 ## Steps To Upgrade `react-native` to 0.73.9 on your machine:
 
-#### JAVA:
+#### Upgrading JAVA:
 
 For asdf users:
 
+1. install the new Java version:
+
 ```sh
+# in the eigen directory
 asdf install
 ```
 
-For non-asdf users:
+2. Update `$JAVA_HOME` in your shell config (`.zshrc`) to the asdf java install path.
+
+- Open your `.zshrc` file with the editor of your choice and add the following lines:
+
+```
+. ~/.asdf/plugins/java/set-java-home.zsh
+```
+
+- Save the file and run `source ~/.zshrc` to make the changes effective.
+
+3. Set global java version in your machine (optional):
+
+```sh
+$ asdf global java zulu-17.50.19
+```
+
+For brew users:
+
+1. install the new Java version
 
 ```sh
 brew install --cask zulu@17
@@ -252,10 +273,18 @@ brew install --cask zulu@17
 brew info --cask zulu@17
 ```
 
-> [!IMPORTANT]
-> For all (asdf/ non asdf users). After you install the JDK, update your JAVA_HOME environment variable in your `.zshrc` file. Afterwards run `source ~/.zshrc` to make it effective and restart your terminal.
-> If you used above steps, JDK will likely be at /Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home.
-> You can try out in the terminal by typing $JAVA_HOME to make sure that it was updated properly.
+2. Update `$JAVA_HOME` in your shell config (`.zshrc`) to the homebrew java install path.
+
+- Open your `.zshrc` file with the editor of your choice and add the following lines:
+
+```
+export JAVA_HOME="/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home"
+```
+
+- Save the file and run `source ~/.zshrc` to make the changes effective.
+
+> [!NOTE]
+> For both approaches - you can try out in the terminal by typing $JAVA_HOME to make sure that it was updated properly.
 
 #### Before running the app and in order to install without any caching issues
 
