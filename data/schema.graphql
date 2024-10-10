@@ -9269,13 +9269,6 @@ enum ExhibitionPeriodFormat {
   SHORT
 }
 
-# [deprecated in favor of `HomeViewCard`] A marketing collection category to explore by
-type ExploreByMarketingCollectionCategory {
-  href: String!
-  image: Image
-  name: String!
-}
-
 type External {
   auctionHouses(size: Int, term: String): [ExternalAuctionHouse!]!
   fairs(size: Int, term: String): [ExternalFair!]!
@@ -11034,45 +11027,6 @@ type HomeViewSectionAuctionResults implements HomeViewSectionGeneric & Node {
 # A section containing a list of navigation cards
 type HomeViewSectionCards implements HomeViewSectionGeneric & Node {
   cardsConnection(after: String, before: String, first: Int, last: Int): HomeViewCardConnection
-
-  # Component prescription for this section, for overriding or customizing presentation and behavior
-  component: HomeViewComponent
-
-  # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  contextModule: String
-
-  # A globally unique ID.
-  id: ID!
-
-  # A type-specific ID likely used as a database ID.
-  internalID: ID!
-
-  # [Analytics] `owner type` analytics value for this scetion when displayed in a standalone UI, as defined in our schema (artsy/cohesion)
-  ownerType: String
-}
-
-# [deprecated in favor of `HomeViewSectionCards`] A section containing a list of curated marketing collections
-type HomeViewSectionDiscoverMarketingCollections implements HomeViewSectionGeneric & Node {
-  # Component prescription for this section, for overriding or customizing presentation and behavior
-  component: HomeViewComponent
-
-  # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  contextModule: String
-
-  # A globally unique ID.
-  id: ID!
-
-  # A type-specific ID likely used as a database ID.
-  internalID: ID!
-  linksConnection(after: String, before: String, first: Int, last: Int): FeaturedLinkConnection
-
-  # [Analytics] `owner type` analytics value for this scetion when displayed in a standalone UI, as defined in our schema (artsy/cohesion)
-  ownerType: String
-}
-
-# [deprecated in favor of `HomeViewSectionCards`] Marketing Collection Categories section in the home view
-type HomeViewSectionExploreByMarketingCollectionCategories implements HomeViewSectionGeneric & Node {
-  categories: [ExploreByMarketingCollectionCategory!]!
 
   # Component prescription for this section, for overriding or customizing presentation and behavior
   component: HomeViewComponent
