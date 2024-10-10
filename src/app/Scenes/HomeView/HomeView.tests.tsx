@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import { HomeViewSectionArtworksTestsQuery } from "__generated__/HomeViewSectionArtworksTestsQuery.graphql"
 import * as dismissSavedArtworkModule from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
 import { HomeViewScreen } from "app/Scenes/HomeView/HomeView"
@@ -73,5 +74,15 @@ describe("HomeView", () => {
       action: "screen",
       context_screen_owner_type: "home",
     })
+  })
+
+  it("renders an email confirmation banner", async () => {
+    renderWithRelay({
+      Me: () => ({
+        canRequestEmailConfirmation: true,
+      }),
+    })
+
+    expect(screen.getByText("Tap here to verify your email address")).toBeTruthy()
   })
 })
