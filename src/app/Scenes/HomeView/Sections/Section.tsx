@@ -6,10 +6,10 @@ import { HomeViewSectionArticlesCardsQueryRenderer } from "app/Scenes/HomeView/S
 import { HomeViewSectionArtistsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionArtists"
 import { HomeViewSectionArtworksQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionArtworks"
 import { HomeViewSectionAuctionResultsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionAuctionResults"
+import { HomeViewSectionCardQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionCard"
 import { HomeViewSectionDiscoverMarketingCollectionsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionDiscoverMarketingCollections"
 import { HomeViewSectionFairsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionFairs"
 import { HomeViewSectionFeaturedCollectionQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionFeaturedCollection"
-import { HomeViewSectionGalleriesQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionGalleries"
 import { HomeViewSectionGeneric } from "app/Scenes/HomeView/Sections/HomeViewSectionGeneric"
 import { HomeViewSectionHeroUnitsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionHeroUnits"
 import { HomeViewSectionMarketingCollectionsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionMarketingCollections"
@@ -57,8 +57,8 @@ export const Section: React.FC<SectionProps> = ({ section, ...rest }) => {
       return <HomeViewSectionActivityQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionArtworks":
       return <HomeViewSectionArtworksQueryRenderer sectionID={section.internalID} {...rest} />
-    case "HomeViewSectionGalleries":
-      return <HomeViewSectionGalleriesQueryRenderer sectionID={section.internalID} {...rest} />
+    case "HomeViewSectionCard":
+      return <HomeViewSectionCardQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionGeneric":
       return <HomeViewSectionGeneric section={section} {...rest} />
     case "HomeViewSectionArticles":

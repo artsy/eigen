@@ -1,4 +1,4 @@
-import { ContextModule } from "@artsy/cohesion"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import {
   Button,
   Flex,
@@ -9,8 +9,8 @@ import {
   Touchable,
   useScreenDimensions,
 } from "@artsy/palette-mobile"
-import { HomeViewSectionGalleriesQuery } from "__generated__/HomeViewSectionGalleriesQuery.graphql"
-import { HomeViewSectionGalleries_section$key } from "__generated__/HomeViewSectionGalleries_section.graphql"
+import { HomeViewSectionCardQuery } from "__generated__/HomeViewSectionCardQuery.graphql"
+import { HomeViewSectionCard_section$key } from "__generated__/HomeViewSectionCard_section.graphql"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
@@ -21,12 +21,12 @@ import FastImage from "react-native-fast-image"
 import LinearGradient from "react-native-linear-gradient"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
-interface HomeViewSectionGalleriesProps {
-  section: HomeViewSectionGalleries_section$key
+interface HomeViewSectionCardProps {
+  section: HomeViewSectionCard_section$key
   index: number
 }
 
-export const HomeViewSectionGalleries: React.FC<HomeViewSectionGalleriesProps> = ({
+export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
   section: sectionProp,
   index,
   ...flexProps
@@ -34,36 +34,34 @@ export const HomeViewSectionGalleries: React.FC<HomeViewSectionGalleriesProps> =
   const tracking = useHomeViewTracking()
 
   const { width, height } = useScreenDimensions()
-  const section = useFragment(HomeViewSectionGalleriesFragment, sectionProp)
+  const section = useFragment(HomeViewSectionCardFragment, sectionProp)
 
-  if (!section?.component) {
+  if (!section?.card) {
     return null
   }
 
   const imageHeight = height * 0.5
 
-  const hasImage = !!section.component.backgroundImageURL
+  const hasImage = !!section.card.image?.imageURL
   const textColor = hasImage ? "white100" : "black100"
+  const buttonText = section.card.buttonText ?? "More"
+  const route = getRoute(section.card)
 
-  const viewAll = section.component.behaviors?.viewAll
+  const onPress = () => {
+    tracking.tappedShowMore(buttonText, section.contextModule as ContextModule)
 
-  const onSectionViewAll = () => {
-    tracking.tappedShowMore("Explore", section.contextModule as ContextModule)
-
-    if (viewAll?.href) {
-      navigate(viewAll.href)
-    } else {
-      navigate("/galleries-for-you")
+    if (route) {
+      navigate(route)
     }
   }
 
   return (
     <Flex {...flexProps}>
-      <Touchable onPress={onSectionViewAll} haptic="impactLight">
+      <Touchable onPress={onPress} haptic="impactLight">
         {!!hasImage && (
           <Flex position="absolute">
             <FastImage
-              source={{ uri: section.component.backgroundImageURL }}
+              source={{ uri: section.card.image.imageURL }}
               style={{ width: width, height: imageHeight }}
               resizeMode={isTablet() ? "contain" : "cover"}
             />
@@ -83,24 +81,24 @@ export const HomeViewSectionGalleries: React.FC<HomeViewSectionGalleriesProps> =
 
         <Flex justifyContent="flex-end" px={2} pb={2} height={hasImage ? imageHeight : undefined}>
           <Text variant="lg-display" color={textColor}>
-            {section.component.title}
+            {section.card.title}
           </Text>
 
           <Flex mt={0.5} justifyContent="space-between" flexDirection="row">
             <Flex flex={1} mr={2}>
               <Text variant="sm-display" color={textColor}>
-                {section.component.description}
+                {section.card.subtitle}
               </Text>
             </Flex>
 
-            {!!viewAll && (
+            {!!route && (
               <Flex mt={0.5} maxWidth={150}>
                 <Button
                   variant={hasImage ? "outlineLight" : "fillDark"}
                   size="small"
-                  onPress={onSectionViewAll}
+                  onPress={onPress}
                 >
-                  Explore
+                  {buttonText}
                 </Button>
               </Flex>
             )}
@@ -116,25 +114,26 @@ export const HomeViewSectionGalleries: React.FC<HomeViewSectionGalleriesProps> =
   )
 }
 
-const HomeViewSectionGalleriesFragment = graphql`
-  fragment HomeViewSectionGalleries_section on HomeViewSectionGalleries {
+const HomeViewSectionCardFragment = graphql`
+  fragment HomeViewSectionCard_section on HomeViewSectionCard {
     __typename
     internalID
     contextModule
-    component {
+    card {
       title
-      backgroundImageURL
-      description
-      behaviors {
-        viewAll {
-          href
-        }
+      subtitle
+      href
+      buttonText
+      image {
+        imageURL
       }
+      entityID
+      entityType
     }
   }
 `
 
-const HomeViewSectionGalleriesPlaceholder: React.FC<FlexProps> = (flexProps) => {
+const HomeViewSectionCardPlaceholder: React.FC<FlexProps> = (flexProps) => {
   const { height } = useScreenDimensions()
 
   return (
@@ -146,20 +145,20 @@ const HomeViewSectionGalleriesPlaceholder: React.FC<FlexProps> = (flexProps) => 
   )
 }
 
-const homeViewSectionGalleriesQuery = graphql`
-  query HomeViewSectionGalleriesQuery($id: String!) @cacheable {
+const homeViewSectionCardQuery = graphql`
+  query HomeViewSectionCardQuery($id: String!) @cacheable {
     homeView {
       section(id: $id) {
-        ...HomeViewSectionGalleries_section
+        ...HomeViewSectionCard_section
       }
     }
   }
 `
 
-export const HomeViewSectionGalleriesQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
+export const HomeViewSectionCardQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
   Component: ({ sectionID, index, ...flexProps }) => {
-    const data = useLazyLoadQuery<HomeViewSectionGalleriesQuery>(
-      homeViewSectionGalleriesQuery,
+    const data = useLazyLoadQuery<HomeViewSectionCardQuery>(
+      homeViewSectionCardQuery,
       {
         id: sectionID,
       },
@@ -174,8 +173,21 @@ export const HomeViewSectionGalleriesQueryRenderer: React.FC<SectionSharedProps>
       return null
     }
 
-    return <HomeViewSectionGalleries section={data.homeView.section} index={index} {...flexProps} />
+    return <HomeViewSectionCard section={data.homeView.section} index={index} {...flexProps} />
   },
-  LoadingFallback: HomeViewSectionGalleriesPlaceholder,
+  LoadingFallback: HomeViewSectionCardPlaceholder,
   ErrorFallback: NoFallback,
 })
+
+function getRoute(card: any) {
+  let route
+
+  if (card?.href) {
+    route = card.href
+  } else if (card.entityType === "Page" && card.entityID === OwnerType.galleriesForYou) {
+    // not a canonical web url, thus the indirection above
+    route = "/galleries-for-you"
+  }
+
+  return route
+}
