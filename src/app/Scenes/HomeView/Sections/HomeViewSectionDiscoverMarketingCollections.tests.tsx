@@ -36,7 +36,6 @@ describe("HomeViewSectionDiscoverMarketingCollections", () => {
   it("renders the section properly", async () => {
     renderWithRelay({
       HomeViewSectionCards: () => ({
-        internalID: "home-view-section-discover-marketing-collections",
         component: {
           title: "Discover Something New",
         },

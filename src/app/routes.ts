@@ -246,6 +246,7 @@ export function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/city-fair/:citySlug", "CityFairList"),
     addRoute("/city-save/:citySlug", "CitySavedList"),
     addRoute("/city/:citySlug/:section", "CitySectionList"),
+    addRoute("/collections-by-category/:category", "CollectionsByCategory"),
     addRoute("/collection/:collectionID", "Collection"),
     addRoute("/collection/:collectionID/artists", "FullFeaturedArtistList"),
     addRoute("/collections/my-collection/marketing-landing", "SellNotRootTabView"),
