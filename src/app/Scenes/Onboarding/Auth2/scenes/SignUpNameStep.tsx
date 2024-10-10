@@ -153,7 +153,7 @@ const SignUpNameStepForm: React.FC = () => {
         />
       </Flex>
 
-      <Button block width={100} onPress={handleSubmit} disabled={!isValid} loading={isSubmitting}>
+      <Button block width="100%" onPress={handleSubmit} disabled={!isValid} loading={isSubmitting}>
         Continue
       </Button>
     </Flex>

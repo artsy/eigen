@@ -134,7 +134,7 @@ const LoginOTPStepForm: React.FC = () => {
 
       <Spacer y={2} />
 
-      <Button block width={100} onPress={handleSubmit} disabled={!isValid} loading={isSubmitting}>
+      <Button block width="100%" onPress={handleSubmit} disabled={!isValid} loading={isSubmitting}>
         Continue
       </Button>
 

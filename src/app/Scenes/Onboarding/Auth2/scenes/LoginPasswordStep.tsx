@@ -142,7 +142,7 @@ const LoginPasswordStepForm: React.FC = () => {
 
       <Button
         block
-        width={100}
+        width="100%"
         onPress={handleSubmit}
         disabled={!isValid || !values.password}
         loading={isSubmitting}
