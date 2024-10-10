@@ -1,17 +1,17 @@
 import { screen } from "@testing-library/react-native"
-import { HomeViewSectionExploreByTestsQuery } from "__generated__/HomeViewSectionExploreByTestsQuery.graphql"
-import { HomeViewSectionExploreBy } from "app/Scenes/HomeView/Sections/HomeViewSectionExploreBy"
+import { HomeViewSectionCardsTestsQuery } from "__generated__/HomeViewSectionCardsTestsQuery.graphql"
+import { HomeViewSectionExploreBy } from "app/Scenes/HomeView/Sections/HomeViewSectionCards"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-describe("HomeViewSectionExploreBy", () => {
-  const { renderWithRelay } = setupTestWrapper<HomeViewSectionExploreByTestsQuery>({
+describe("HomeViewSectionCards", () => {
+  const { renderWithRelay } = setupTestWrapper<HomeViewSectionCardsTestsQuery>({
     Component: (props) => <HomeViewSectionExploreBy section={props.homeView.section} />,
     query: graphql`
-      query HomeViewSectionExploreByTestsQuery @relay_test_operation {
+      query HomeViewSectionCardsTestsQuery @relay_test_operation {
         homeView @required(action: NONE) {
           section(id: "home-view-section-explore-by-category") @required(action: NONE) {
-            ...HomeViewSectionExploreBy_section
+            ...HomeViewSectionCards_section
           }
         }
       }
