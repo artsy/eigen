@@ -6,8 +6,8 @@ import { HomeViewSectionArticlesCardsQueryRenderer } from "app/Scenes/HomeView/S
 import { HomeViewSectionArtistsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionArtists"
 import { HomeViewSectionArtworksQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionArtworks"
 import { HomeViewSectionAuctionResultsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionAuctionResults"
+import { HomeViewSectionCardsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionCards"
 import { HomeViewSectionDiscoverMarketingCollectionsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionDiscoverMarketingCollections"
-import { HomeViewSectionExploreByQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionExploreBy"
 import { HomeViewSectionFairsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionFairs"
 import { HomeViewSectionFeaturedCollectionQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionFeaturedCollection"
 import { HomeViewSectionGalleriesQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionGalleries"
@@ -71,7 +71,7 @@ export const Section: React.FC<SectionProps> = ({ section, ...rest }) => {
     case "HomeViewSectionHeroUnits":
       return <HomeViewSectionHeroUnitsQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionCards":
-      return <HomeViewSectionExploreByQueryRenderer sectionID={section.internalID} {...rest} />
+      return <HomeViewSectionCardsQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionFairs":
       return <HomeViewSectionFairsQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionMarketingCollections":

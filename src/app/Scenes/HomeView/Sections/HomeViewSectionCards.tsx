@@ -9,23 +9,23 @@ import {
   useScreenDimensions,
   useSpace,
 } from "@artsy/palette-mobile"
-import { HomeViewSectionExploreByQuery } from "__generated__/HomeViewSectionExploreByQuery.graphql"
-import { HomeViewSectionExploreBy_section$key } from "__generated__/HomeViewSectionExploreBy_section.graphql"
+import { HomeViewSectionCardsQuery } from "__generated__/HomeViewSectionCardsQuery.graphql"
+import { HomeViewSectionCards_section$key } from "__generated__/HomeViewSectionCards_section.graphql"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { withSuspense } from "app/utils/hooks/withSuspense"
+import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useClientQuery } from "app/utils/useClientQuery"
 import React from "react"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 
-interface HomeViewSectionExploreByProps {
-  section: HomeViewSectionExploreBy_section$key
+interface HomeViewSectionCardsProps {
+  section: HomeViewSectionCards_section$key
 }
 
-export const HomeViewSectionExploreBy: React.FC<HomeViewSectionExploreByProps> = ({
+export const HomeViewSectionExploreBy: React.FC<HomeViewSectionCardsProps> = ({
   section: _section,
 }) => {
   const { width } = useScreenDimensions()
@@ -79,7 +79,7 @@ export const HomeViewSectionExploreBy: React.FC<HomeViewSectionExploreByProps> =
 }
 
 const fragment = graphql`
-  fragment HomeViewSectionExploreBy_section on HomeViewSectionCards {
+  fragment HomeViewSectionCards_section on HomeViewSectionCards {
     internalID
     component {
       title
@@ -99,16 +99,16 @@ const fragment = graphql`
 `
 
 const query = graphql`
-  query HomeViewSectionExploreByQuery($id: String!) {
+  query HomeViewSectionCardsQuery($id: String!) {
     homeView {
       section(id: $id) {
-        ...HomeViewSectionExploreBy_section
+        ...HomeViewSectionCards_section
       }
     }
   }
 `
 
-const HomeViewExploreByPlaceholder: React.FC = () => {
+const HomeViewCardsPlaceholder: React.FC = () => {
   const { width } = useScreenDimensions()
   const space = useSpace()
 
@@ -134,27 +134,21 @@ const HomeViewExploreByPlaceholder: React.FC = () => {
   )
 }
 
-export const HomeViewSectionExploreByQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
-  ({ sectionID, index, ...flexProps }) => {
+export const HomeViewSectionCardsQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
+  Component: ({ sectionID, index, ...flexProps }) => {
     const isEnabled = useFeatureFlag("AREnableMarketingCollectionsCategories")
-    const { data } = useClientQuery<HomeViewSectionExploreByQuery>({
+    const { data } = useClientQuery<HomeViewSectionCardsQuery>({
       query,
-      variables: {
-        id: sectionID,
-      },
-      // TODO: get rid of the sectionID check after MP changes are deployed
-      skip: !isEnabled || sectionID === "home-view-section-discover-something-new",
+      variables: { id: sectionID },
+      skip: !isEnabled,
     })
 
-    if (
-      !data?.homeView.section ||
-      !isEnabled ||
-      sectionID === "home-view-section-discover-something-new"
-    ) {
+    if (!data?.homeView.section || !isEnabled) {
       return null
     }
 
     return <HomeViewSectionExploreBy section={data.homeView.section} index={index} {...flexProps} />
   },
-  HomeViewExploreByPlaceholder
-)
+  LoadingFallback: HomeViewCardsPlaceholder,
+  ErrorFallback: NoFallback,
+})
