@@ -1,4 +1,4 @@
-import { ContextModule } from "@artsy/cohesion"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import {
   Button,
   Flex,
@@ -45,12 +45,13 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
   const hasImage = !!section.card.image?.imageURL
   const textColor = hasImage ? "white100" : "black100"
   const buttonText = section.card.buttonText ?? "More"
+  const route = getRoute(section.card)
 
   const onPress = () => {
     tracking.tappedShowMore(buttonText, section.contextModule as ContextModule)
 
-    if (section.card?.href) {
-      navigate(section.card.href)
+    if (route) {
+      navigate(route)
     }
   }
 
@@ -90,7 +91,7 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
               </Text>
             </Flex>
 
-            {!!section.card?.href && (
+            {!!route && (
               <Flex mt={0.5} maxWidth={150}>
                 <Button
                   variant={hasImage ? "outlineLight" : "fillDark"}
@@ -126,6 +127,8 @@ const HomeViewSectionCardFragment = graphql`
       image {
         imageURL
       }
+      entityID
+      entityType
     }
   }
 `
@@ -134,7 +137,6 @@ const HomeViewSectionCardPlaceholder: React.FC<FlexProps> = (flexProps) => {
   const { height } = useScreenDimensions()
 
   return (
-    // TODO: adjust?
     <Skeleton>
       <Flex {...flexProps}>
         <SkeletonBox height={height * 0.5} width="100%"></SkeletonBox>
@@ -175,3 +177,16 @@ export const HomeViewSectionCardQueryRenderer: React.FC<SectionSharedProps> = wi
   },
   HomeViewSectionCardPlaceholder
 )
+
+function getRoute(card: any) {
+  let route
+
+  if (card?.href) {
+    route = card.href
+  } else if (card.entityType === "Page" && card.entityID === OwnerType.galleriesForYou) {
+    // not a canonical web url, thus the indirection above
+    route = "/galleries-for-you"
+  }
+
+  return route
+}
