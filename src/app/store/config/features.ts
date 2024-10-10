@@ -300,6 +300,11 @@ export const features = {
     readyForRelease: false,
     showInDevMenu: true,
   },
+  AREnableMarketingCollectionsCategories: {
+    description: "Enable marketing collections categories elements in the home view",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
