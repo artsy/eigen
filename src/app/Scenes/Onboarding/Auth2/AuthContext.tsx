@@ -5,7 +5,7 @@ export type AuthScreens = {
   LoginWelcomeStep: undefined
   LoginPasswordStep: { email: string }
   LoginOTPStep: { otpMode: "standard" | "on_demand"; email: string; password: string }
-  ForgotPasswordStep: { requestedPasswordReset: boolean } | undefined
+  ForgotPasswordStep: { requestedPasswordReset: boolean; email: string } | undefined
   SignUpPasswordStep: { email: string }
   SignUpNameStep: { email: string; password: string }
   OnboardingWebView: { url: OnboardingWebViewRoute }
