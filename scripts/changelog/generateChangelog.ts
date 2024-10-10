@@ -104,8 +104,8 @@ async function getChangelogFromPrs(prs: PullsGetResponse[]) {
         const sectionContent = prBody.slice(positions.start, positions.end)
         const sectionChanges = parseSectionChanges(sectionContent)
         for (let entry of sectionChanges) {
-          const authorName = pr.user.login // Fallback to GitHub handle
-          entry = `${entry} - ${authorName}` // Append the handle to the entry
+          const authorName = pr.user.login
+          entry = `${entry} - ${authorName}`
           changelog += `${entry} : ${section} : PR #${pr.number}\n`
           prHasChangelog = true
         }
