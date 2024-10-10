@@ -140,7 +140,6 @@ const SignUpNameStepForm: React.FC = () => {
       <Spacer y={2} />
 
       <Flex>
-        {/* TODO: confirm that the links in this component work */}
         <TermsOfServiceCheckbox
           setChecked={() => setFieldValue("acceptedTerms", !values.acceptedTerms)}
           checked={values.acceptedTerms}
@@ -153,7 +152,13 @@ const SignUpNameStepForm: React.FC = () => {
         />
       </Flex>
 
-      <Button block width="100%" onPress={handleSubmit} disabled={!isValid} loading={isSubmitting}>
+      <Button
+        block
+        width="100%"
+        onPress={handleSubmit}
+        disabled={!isValid || !values.name}
+        loading={isSubmitting}
+      >
         Continue
       </Button>
     </Flex>
