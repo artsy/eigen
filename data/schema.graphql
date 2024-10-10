@@ -7927,6 +7927,29 @@ union CreateConsignmentInquiryMutationType =
     ConsignmentInquiryMutationFailure
   | ConsignmentInquiryMutationSuccess
 
+input CreateDiscoveryArtworkReferenceMutationInput {
+  # The artwork's ID
+  artworkId: String!
+  clientMutationId: String
+
+  # The reference type
+  reference: ReferenceTypes!
+
+  # The user's ID
+  userId: String
+}
+
+type CreateDiscoveryArtworkReferenceMutationPayload {
+  clientMutationId: String
+
+  # On success: return boolean. On failure: MutationError.
+  createDiscoveryArtworkReferenceResponseOrError: CreateDiscoveryArtworkReferenceResponseOrError
+}
+
+union CreateDiscoveryArtworkReferenceResponseOrError =
+    DiscoveryArtworkReferenceMutationFailure
+  | DiscoveryArtworkReferenceMutationSuccess
+
 type CreateFeatureFailure {
   mutationError: GravityMutationError
 }
@@ -9004,6 +9027,14 @@ type DisableSecondFactorPayload {
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
   secondFactorOrErrors: SecondFactorOrErrorsUnion!
+}
+
+type DiscoveryArtworkReferenceMutationFailure {
+  mutationError: GravityMutationError
+}
+
+type DiscoveryArtworkReferenceMutationSuccess {
+  success: Boolean
 }
 
 input DislikeArtworkInput {
@@ -11208,6 +11239,25 @@ type HomeViewSectionShows implements HomeViewSectionGeneric & Node {
   ): ShowConnection
 }
 
+# A tasks section in the home view
+type HomeViewSectionTasks implements HomeViewSectionGeneric & Node {
+  # Component prescription for this section, for overriding or customizing presentation and behavior
+  component: HomeViewComponent
+
+  # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
+  contextModule: String
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
+  # [Analytics] `owner type` analytics value for this scetion when displayed in a standalone UI, as defined in our schema (artsy/cohesion)
+  ownerType: String
+  tasksConnection(after: String, before: String, first: Int, last: Int): TaskConnection
+}
+
 # A viewing rooms section in the home view
 type HomeViewSectionViewingRooms implements HomeViewSectionGeneric & Node {
   # Component prescription for this section, for overriding or customizing presentation and behavior
@@ -13318,6 +13368,11 @@ type Mutation {
 
   # Create a credit card
   createCreditCard(input: CreditCardInput!): CreditCardPayload
+
+  # Creates a cross reference for artwork and user in weaviate
+  createDiscoveryArtworkReference(
+    input: CreateDiscoveryArtworkReferenceMutationInput!
+  ): CreateDiscoveryArtworkReferenceMutationPayload
 
   # Creates a feature.
   createFeature(input: CreateFeatureMutationInput!): CreateFeatureMutationPayload
@@ -16274,6 +16329,14 @@ type Query {
     last: Int
   ): ArtistConnection
   departments: [Department!]!
+  discoverArtworks(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    limit: Int
+    userId: String
+  ): ArtworkConnection
 
   # A namespace external partners (provided by Galaxy)
   external: External!
@@ -17152,6 +17215,11 @@ type RecordArtworkViewPayload {
 
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
+}
+
+enum ReferenceTypes {
+  DISLIKED_ARTWORKS
+  LIKED_ARTWORKS
 }
 
 enum RelatedArtistsKind {
@@ -18892,6 +18960,26 @@ type Task implements Node {
   sourceType: String
   taskType: String!
   title: String!
+}
+
+# A connection to a list of items.
+type TaskConnection {
+  # A list of edges.
+  edges: [TaskEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type TaskEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: Task
 }
 
 type TaxInfo {
@@ -20847,6 +20935,14 @@ type Viewer {
     last: Int
   ): ArtistConnection
   departments: [Department!]!
+  discoverArtworks(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    limit: Int
+    userId: String
+  ): ArtworkConnection
 
   # A namespace external partners (provided by Galaxy)
   external: External!
