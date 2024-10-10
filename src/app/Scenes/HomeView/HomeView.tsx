@@ -7,7 +7,7 @@ import { HomeViewSectionsConnection_viewer$key } from "__generated__/HomeViewSec
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { useDismissSavedArtwork } from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
 import { useEnableProgressiveOnboarding } from "app/Components/ProgressiveOnboarding/useEnableProgressiveOnboarding"
-import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
+import { RetryErrorBoundary, useRetryErrorBoundaryContext } from "app/Components/RetryErrorBoundary"
 import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
 import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { Section } from "app/Scenes/HomeView/Sections/Section"
@@ -37,6 +37,8 @@ export const HomeView: React.FC = () => {
   const flashlistRef = useBottomTabsScrollToTop("home")
   const [isRefreshing, setIsRefreshing] = useState(false)
 
+  const { fetchKey } = useRetryErrorBoundaryContext()
+
   const queryData = useLazyLoadQuery<HomeViewQuery>(
     homeViewScreenQuery,
     homeViewScreenQueryVariables(),
@@ -44,6 +46,7 @@ export const HomeView: React.FC = () => {
       networkCacheConfig: {
         force: false,
       },
+      fetchKey,
     }
   )
 
