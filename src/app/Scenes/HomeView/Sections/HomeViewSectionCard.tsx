@@ -15,7 +15,7 @@ import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeView
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
-import { withSuspense } from "app/utils/hooks/withSuspense"
+import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { isTablet } from "react-native-device-info"
 import FastImage from "react-native-fast-image"
 import LinearGradient from "react-native-linear-gradient"
@@ -155,8 +155,8 @@ const homeViewSectionCardQuery = graphql`
   }
 `
 
-export const HomeViewSectionCardQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
-  ({ sectionID, index, ...flexProps }) => {
+export const HomeViewSectionCardQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
+  Component: ({ sectionID, index, ...flexProps }) => {
     const data = useLazyLoadQuery<HomeViewSectionCardQuery>(
       homeViewSectionCardQuery,
       {
@@ -175,8 +175,9 @@ export const HomeViewSectionCardQueryRenderer: React.FC<SectionSharedProps> = wi
 
     return <HomeViewSectionCard section={data.homeView.section} index={index} {...flexProps} />
   },
-  HomeViewSectionCardPlaceholder
-)
+  LoadingFallback: HomeViewSectionCardPlaceholder,
+  ErrorFallback: NoFallback,
+})
 
 function getRoute(card: any) {
   let route
