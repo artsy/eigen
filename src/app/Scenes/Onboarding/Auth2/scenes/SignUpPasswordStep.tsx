@@ -48,7 +48,7 @@ export const SignUpPasswordStep: React.FC = () => {
           },
         })
 
-        resetForm()
+        resetForm({ values: { email: screen.params?.email } })
       }}
     >
       <SignUpPasswordStepForm />

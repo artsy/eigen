@@ -31,9 +31,9 @@ export const SignUpNameStep: React.FC = () => {
         acceptedTerms: false,
         agreedToReceiveEmails: false,
       }}
-      validateOnChange={false}
       validationSchema={Yup.object().shape({
         name: Yup.string().trim().required("Full name field is required"),
+        acceptedTerms: Yup.boolean().oneOf([true], "You must accept the terms and conditions"),
       })}
       onSubmit={async (values, { resetForm }) => {
         if (!values.acceptedTerms) {
