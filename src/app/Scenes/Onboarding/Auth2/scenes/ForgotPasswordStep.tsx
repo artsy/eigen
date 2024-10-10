@@ -6,7 +6,7 @@ import {
 import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Formik, useFormikContext } from "formik"
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 import * as Yup from "yup"
 
 interface ForgotPasswordStepFormValues {
@@ -15,14 +15,19 @@ interface ForgotPasswordStepFormValues {
 
 export const ForgotPasswordStep: React.FC = () => {
   const navigation = useAuthNavigation()
+  const screen = useAuthScreen()
 
   return (
     <Formik<ForgotPasswordStepFormValues>
-      initialValues={{ email: "" }}
+      initialValues={{ email: screen.params?.email ?? "" }}
       onSubmit={async ({ email }, { setErrors, resetForm }) => {
+        console.log("🧸")
+
         const res = await GlobalStore.actions.auth.forgotPassword({
           email,
         })
+
+        console.log({ res })
 
         if (!res) {
           setErrors({
@@ -59,6 +64,7 @@ const ForgotPasswordStepForm: React.FC = () => {
     validateForm,
     values,
     resetForm,
+    setValues,
   } = useFormikContext<ForgotPasswordStepFormValues>()
 
   const navigation = useAuthNavigation()
@@ -77,6 +83,10 @@ const ForgotPasswordStepForm: React.FC = () => {
     screenName: "ForgotPasswordStep",
     inputRef: forgotPasswordRef,
   })
+
+  useEffect(() => {
+    setValues({ email: screen.params?.email ?? "" })
+  }, [screen.params?.email])
 
   return (
     <Flex padding={2}>
@@ -167,7 +177,7 @@ const ForgotPasswordStepForm: React.FC = () => {
           block
           variant="fillDark"
           haptic="impactMedium"
-          disabled={!isValid}
+          disabled={!isValid || !values.email}
           loading={isSubmitting}
           testID="resetButton"
         >
