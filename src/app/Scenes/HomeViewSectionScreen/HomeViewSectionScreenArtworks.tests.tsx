@@ -78,7 +78,7 @@ describe("HomeViewSectionArtworks", () => {
       }),
     })
 
-    expect(screen.getByText("New Works for You")).toBeOnTheScreen()
+    expect(screen.getAllByText("New Works for You")).toBeDefined()
     expect(screen.getByText(/Artwork 1/)).toBeOnTheScreen()
     expect(screen.getByText(/Artwork 2/)).toBeOnTheScreen()
 

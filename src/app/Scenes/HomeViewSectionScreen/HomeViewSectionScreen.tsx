@@ -9,7 +9,6 @@ import { LoadFailureView } from "app/Components/LoadFailureView"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { HomeViewSectionScreenContent } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreenContent"
 import { HomeViewSectionScreenPlaceholder } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreenPlaceholder"
-import { goBack } from "app/system/navigation/navigate"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { useCallback } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -20,7 +19,6 @@ interface HomeSectionScreenProps {
 
 export const HomeViewSectionScreen: React.FC<HomeSectionScreenProps> = ({ section }) => {
   const tracking = useHomeViewTracking()
-  const title = section.component?.title
 
   useFocusEffect(
     useCallback(() => {
@@ -30,11 +28,7 @@ export const HomeViewSectionScreen: React.FC<HomeSectionScreenProps> = ({ sectio
 
   return (
     <Screen>
-      <Screen.AnimatedHeader onBack={goBack} title={title || ""} />
-
-      <Screen.Body fullwidth>
-        <HomeViewSectionScreenContent section={section} />
-      </Screen.Body>
+      <HomeViewSectionScreenContent section={section} />
     </Screen>
   )
 }

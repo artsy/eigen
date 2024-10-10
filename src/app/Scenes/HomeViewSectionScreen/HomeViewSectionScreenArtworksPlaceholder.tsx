@@ -1,7 +1,11 @@
 import { Flex, Screen, Skeleton, SkeletonText, Spacer } from "@artsy/palette-mobile"
+import { GlobalStore } from "app/store/GlobalStore"
+import { PlaceholderList } from "app/utils/PlaceholderList"
 import { PlaceholderGrid } from "app/utils/placeholderGrid"
 
 export const HomeViewSectionScreenArtworksPlaceholder: React.FC = () => {
+  const defaultViewOption = GlobalStore.useAppState((state) => state.userPrefs.defaultViewOption)
+
   return (
     <Skeleton>
       <Screen.ScrollView>
@@ -15,7 +19,8 @@ export const HomeViewSectionScreenArtworksPlaceholder: React.FC = () => {
 
         <Spacer y={1} />
 
-        <PlaceholderGrid />
+        {defaultViewOption === "grid" && <PlaceholderGrid />}
+        {defaultViewOption === "list" && <PlaceholderList />}
       </Screen.ScrollView>
     </Skeleton>
   )
