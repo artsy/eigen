@@ -7,8 +7,8 @@ import {
   Spacer,
   Text,
   Touchable,
+  useTheme,
 } from "@artsy/palette-mobile"
-import { PasswordInput } from "app/Scenes/Onboarding/Auth2/components/PasswordInput"
 import {
   useAuthNavigation,
   useAuthScreen,
@@ -83,12 +83,22 @@ export const LoginPasswordStep: React.FC = () => {
 }
 
 const LoginPasswordStepForm: React.FC = () => {
-  const { handleSubmit, isSubmitting, isValid, resetForm } =
-    useFormikContext<LoginPasswordStepFormValues>()
+  const {
+    errors,
+    handleChange,
+    handleSubmit,
+    isSubmitting,
+    isValid,
+    resetForm,
+    submitCount,
+    values,
+  } = useFormikContext<LoginPasswordStepFormValues>()
 
   const navigation = useAuthNavigation()
   const screen = useAuthScreen()
   const passwordRef = useRef<Input>(null)
+
+  const { color } = useTheme()
 
   useInputAutofocus({
     screenName: "LoginPasswordStep",
@@ -108,11 +118,35 @@ const LoginPasswordStepForm: React.FC = () => {
 
       <Text variant="sm-display">Welcome back to Artsy</Text>
 
-      <PasswordInput ref={passwordRef} />
+      <Input
+        autoCapitalize="none"
+        autoComplete="password"
+        autoCorrect={false}
+        blurOnSubmit={false}
+        error={submitCount > 0 ? errors.password : undefined}
+        placeholderTextColor={color("black30")}
+        ref={passwordRef}
+        returnKeyType="done"
+        secureTextEntry
+        textContentType="password"
+        testID="password"
+        title="Password"
+        value={values.password}
+        onChangeText={(text) => {
+          handleChange("password")(text)
+        }}
+        onSubmitEditing={handleSubmit}
+      />
 
       <Spacer y={2} />
 
-      <Button block width={100} onPress={handleSubmit} disabled={!isValid} loading={isSubmitting}>
+      <Button
+        block
+        width="100%"
+        onPress={handleSubmit}
+        disabled={!isValid || !values.password}
+        loading={isSubmitting}
+      >
         Continue
       </Button>
 
