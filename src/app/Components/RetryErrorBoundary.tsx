@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React, { Component, createContext, useContext } from "react"
 import { LoadFailureView } from "./LoadFailureView"
 import { NotFoundFailureView } from "./NotFoundFailureView"
 
@@ -18,6 +18,7 @@ interface RetryErrorBoundaryProps {
 
 interface RetryErrorBoundaryState {
   error: Error | null
+  fetchKey: number
 }
 
 export class RetryErrorBoundary extends Component<
@@ -32,13 +33,21 @@ export class RetryErrorBoundary extends Component<
   }
 
   static getDerivedStateFromError(error: Error | null): RetryErrorBoundaryState {
+    // @ts-expect-error If we set the fetchKey here as well it will only increase once and be set to 0 again with the next error.
     return { error }
   }
 
-  state = { error: null }
+  state = { error: null, fetchKey: 0 }
 
   _retry = () => {
-    this.setState({ error: null })
+    this.setState((prev) => ({
+      // Clear the error
+      error: null,
+      // Increment and set a new fetchKey in order
+      // to trigger a re-evaluation and refetching
+      // of the query using useLazyLoadQuery
+      fetchKey: prev.fetchKey + 1,
+    }))
   }
 
   render() {
@@ -53,7 +62,7 @@ export class RetryErrorBoundary extends Component<
       showCloseButton,
       useSafeArea,
     } = this.props
-    const { error } = this.state
+    const { error, fetchKey } = this.state
 
     if (error) {
       if (failureView) {
@@ -87,7 +96,11 @@ export class RetryErrorBoundary extends Component<
       )
     }
 
-    return children
+    return (
+      <RetryErrorBoundaryContext.Provider value={{ fetchKey }}>
+        {children}
+      </RetryErrorBoundaryContext.Provider>
+    )
   }
 }
 
@@ -117,4 +130,14 @@ export const getNotFoundRoute = (error: any) => {
 
 export const getErrorHttpStatusCodes = (error: any) => {
   return error?.res?.json?.errors?.[0]?.extensions?.httpStatusCodes || []
+}
+
+interface RetryErrorBoundaryContextProps {
+  fetchKey?: number
+}
+
+const RetryErrorBoundaryContext = createContext<RetryErrorBoundaryContextProps>({})
+
+export const useRetryErrorBoundaryContext = () => {
+  return useContext(RetryErrorBoundaryContext)
 }
