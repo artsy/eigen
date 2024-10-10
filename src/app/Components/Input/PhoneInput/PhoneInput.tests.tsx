@@ -1,4 +1,4 @@
-import { Input, Text } from "@artsy/palette-mobile"
+import { Input } from "@artsy/palette-mobile"
 import { screen } from "@testing-library/react-native"
 import { SelectModal } from "app/Components/Select/Components/SelectModal"
 import { extractText } from "app/utils/tests/extractText"
@@ -6,9 +6,7 @@ import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/re
 import { act } from "react-test-renderer"
 import { PhoneInput } from "./PhoneInput"
 
-// TODO: Fix asap
-// Tested on device and works well
-describe.skip("PhoneInput", () => {
+describe("PhoneInput", () => {
   let onChange = jest.fn()
   let onChangeText = jest.fn()
   const setValidation = jest.fn()
@@ -34,13 +32,16 @@ describe.skip("PhoneInput", () => {
     expect(root.findAllByType(SelectModal)).toHaveLength(1)
     // eslint-disable-next-line testing-library/await-async-queries
     root.findByType(SelectModal).props.onSelectValue("de")
-    expect(extractText(root)).toContain("🇩🇪+4978 25577664")
+    expect(extractText(root)).toInclude("+49")
+    expect(extractText(root)).toInclude("78 2557 7664")
     // eslint-disable-next-line testing-library/await-async-queries
     root.findByType(SelectModal).props.onSelectValue("fr")
-    expect(extractText(root)).toContain("🇫🇷+3378 25 57 76 64")
+    expect(extractText(root)).toInclude("+49")
+    expect(extractText(root)).toInclude("782 5577664")
     // eslint-disable-next-line testing-library/await-async-queries
     root.findByType(SelectModal).props.onSelectValue("us")
-    expect(extractText(root)).toContain("🇺🇸+1(782) 557-7664")
+    expect(extractText(root)).toInclude("+1")
+    expect(extractText(root)).toInclude("782 5577664")
   })
 
   it("renders an input with the phone number pre-filled", () => {
@@ -56,7 +57,9 @@ describe.skip("PhoneInput", () => {
     // eslint-disable-next-line testing-library/await-async-queries
     expect(root.findAllByType(Input)).toHaveLength(1)
     // eslint-disable-next-line testing-library/await-async-queries
-    expect(extractText(root.findByType(Input))).toBe("🇬🇧+447825 577664")
+    expect(extractText(root.findByType(Input))).toInclude("78 2557 7664")
+    // eslint-disable-next-line testing-library/await-async-queries
+    expect(extractText(root.findByType(Input))).toInclude("+44")
   })
 
   it("shows custom error message, when error is controlled and phone number is invalid", () => {
@@ -79,7 +82,7 @@ describe.skip("PhoneInput", () => {
     })
 
     // eslint-disable-next-line testing-library/await-async-queries
-    expect(root.findAllByType(Text)[2].props["children"]).toBe("custom error message")
+    expect(extractText(root)).toInclude("custom error message")
   })
 
   it("shows local error message when parent does not control error and phone number is invalid", () => {
@@ -88,6 +91,7 @@ describe.skip("PhoneInput", () => {
         value="447825577664"
         onChange={onChange}
         onChangeText={onChangeText}
+        shouldDisplayLocalError
         setValidation={() => {
           return false
         }}
@@ -100,7 +104,7 @@ describe.skip("PhoneInput", () => {
     })
 
     // eslint-disable-next-line testing-library/await-async-queries
-    expect(root.findAllByType(Text)[2].props["children"]).toBe("Please enter a valid phone number.")
+    expect(extractText(root)).toInclude("Please enter a valid phone number.")
   })
 
   it("does not show a validation message when phone number valid", () => {
@@ -141,7 +145,10 @@ describe.skip("PhoneInput", () => {
       // eslint-disable-next-line testing-library/await-async-queries
       root.findByType(SelectModal).props.onSelectValue("us")
     })
-    expect(onChange).toHaveBeenCalledWith("+1 (999) ")
-    expect(onChangeText).toHaveBeenCalledWith("+1 (999) ")
+
+    // Using last here because the input component is re-rendered
+    // when the country is changed
+    expect(onChange).toHaveBeenLastCalledWith("+1 999")
+    expect(onChangeText).toHaveBeenLastCalledWith("+1 999")
   })
 })

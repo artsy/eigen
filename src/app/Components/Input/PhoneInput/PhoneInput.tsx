@@ -12,13 +12,11 @@ import {
   ValuePayload,
 } from "app/Components/Input/INTERNALSelectAndInputCombinationBase"
 import { InputRef } from "app/Components/Input/Input"
+import { isValidNumber } from "app/Components/Input/PhoneInput/isValidPhoneNumber"
 import { SelectOption } from "app/Components/Select"
-import * as glibphone from "google-libphonenumber"
-import replace from "lodash/replace"
 import { forwardRef, useEffect, useRef, useState } from "react"
 import { cleanUserPhoneNumber } from "./cleanUserPhoneNumber"
 import { countries, countryIndex } from "./countries"
-import { formatPhoneNumber } from "./formatPhoneNumber"
 
 export const PhoneInput = forwardRef<
   InputRef,
@@ -46,27 +44,10 @@ export const PhoneInput = forwardRef<
     const color = useColor()
     const initialValues = cleanUserPhoneNumber(value ?? "")
     const [countryCode, setCountryCode] = useState<string>(initialValues.countryCode)
-    const [phoneNumber, setPhoneNumber] = useState(
-      formatPhoneNumber({
-        current: initialValues.phoneNumber,
-        previous: initialValues.phoneNumber,
-        countryCode,
-      })
-    )
+    const [phoneNumber, setPhoneNumber] = useState(initialValues.phoneNumber)
     const [validationErrorMessage, setValidationErrorMessage] = useState("")
     const dialCode = countryIndex[countryCode].dialCode
     const countryISO2Code = countryIndex[countryCode].iso2
-    const phoneUtil = glibphone.PhoneNumberUtil.getInstance()
-
-    const isValidNumber = (number: string, code: string) => {
-      try {
-        number = replace(number, /[+()-\s]/g, "")
-        const parsedNumber = phoneUtil.parse(number, code)
-        return phoneUtil.isValidNumber(parsedNumber)
-      } catch (err) {
-        return false
-      }
-    }
 
     const handleValidation = () => {
       const isValid = isValidNumber(phoneNumber, countryISO2Code)
@@ -94,18 +75,8 @@ export const PhoneInput = forwardRef<
         input: { value: phone },
       } = selectAndInputValue
 
-      const newDialCode = countryIndex[code].dialCode ?? dialCode
-      const fullPhoneNumber = newDialCode ? `+${newDialCode} ${phone}` : phone
-
-      const cleanPhoneNumber = cleanUserPhoneNumber(fullPhoneNumber ?? "")
-
-      const formattedPhoneNumber = formatPhoneNumber({
-        current: cleanPhoneNumber.phoneNumber,
-        previous: initialValues.phoneNumber,
-        countryCode: cleanPhoneNumber.countryCode,
-      })
-
-      setPhoneNumber(formattedPhoneNumber.replace(/\D+$/, ""))
+      setCountryCode(code)
+      setPhoneNumber(phone || "")
     }
 
     const selectedCountry = countries.find((c) => c.iso2 === countryISO2Code)
@@ -117,7 +88,6 @@ export const PhoneInput = forwardRef<
           {...rest}
           ref={ref}
           value={phoneNumber}
-          placeholder={countryIndex[countryCode]?.mask?.replace(/9/g, "0")}
           placeholderTextColor={color("black30")}
           keyboardType="phone-pad"
           onValueChange={onValueChange}
@@ -135,13 +105,6 @@ export const PhoneInput = forwardRef<
           onModalFinishedClosingForSelect={onModalFinishedClosing}
           onSelectValueForSelect={(newCountryCode) => {
             setCountryCode(newCountryCode)
-            setPhoneNumber(
-              formatPhoneNumber({
-                current: phoneNumber,
-                previous: phoneNumber,
-                countryCode: newCountryCode,
-              })
-            )
           }}
           titleForSelect="Country code"
           renderButtonForSelect={({ selectedValue, onPress }) => {
@@ -188,6 +151,7 @@ export const PhoneInput = forwardRef<
           error={
             shouldDisplayLocalError && validationErrorMessage ? validationErrorMessage : rest.error
           }
+          mask={countryCode ? countryIndex[countryCode]?.mask : undefined}
         />
       </Flex>
     )
