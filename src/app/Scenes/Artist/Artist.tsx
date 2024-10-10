@@ -125,6 +125,8 @@ export const Artist: React.FC<ArtistProps> = (props) => {
     [artistAboveTheFold, headerHeight]
   )
 
+  throw new Error("This is George testing stuff in staging only")
+
   return (
     <ProvideScreenTracking
       info={{
