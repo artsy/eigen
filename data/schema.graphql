@@ -10874,6 +10874,7 @@ type HomeView {
 }
 
 type HomeViewCard {
+  buttonText: String
   entityID: String
   entityType: String
   href: String
@@ -11055,6 +11056,26 @@ type HomeViewSectionAuctionResults implements HomeViewSectionGeneric & Node {
   ownerType: String
 }
 
+# A section that consists of a single navigation card
+type HomeViewSectionCard implements HomeViewSectionGeneric & Node {
+  card: HomeViewCard
+
+  # Component prescription for this section, for overriding or customizing presentation and behavior
+  component: HomeViewComponent
+
+  # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
+  contextModule: String
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
+  # [Analytics] `owner type` analytics value for this scetion when displayed in a standalone UI, as defined in our schema (artsy/cohesion)
+  ownerType: String
+}
+
 # A section containing a list of navigation cards
 type HomeViewSectionCards implements HomeViewSectionGeneric & Node {
   cardsConnection(after: String, before: String, first: Int, last: Int): HomeViewCardConnection
@@ -11083,24 +11104,6 @@ type HomeViewSectionFairs implements HomeViewSectionGeneric & Node {
   # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
   contextModule: String
   fairsConnection(after: String, before: String, first: Int, last: Int): FairConnection
-
-  # A globally unique ID.
-  id: ID!
-
-  # A type-specific ID likely used as a database ID.
-  internalID: ID!
-
-  # [Analytics] `owner type` analytics value for this scetion when displayed in a standalone UI, as defined in our schema (artsy/cohesion)
-  ownerType: String
-}
-
-# A section containing a list of galleries
-type HomeViewSectionGalleries implements HomeViewSectionGeneric & Node {
-  # Component prescription for this section, for overriding or customizing presentation and behavior
-  component: HomeViewComponent
-
-  # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  contextModule: String
 
   # A globally unique ID.
   id: ID!
