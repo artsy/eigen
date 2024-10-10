@@ -6,11 +6,13 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { useClientQuery } from "app/utils/useClientQuery"
 import { times } from "lodash"
 import { FlatList, ScrollView } from "react-native"
 import { isTablet } from "react-native-device-info"
-import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 
 interface HomeViewSectionDiscoverMarketingCollectionsProps {
   section: HomeViewSectionDiscoverMarketingCollections_section$key
@@ -21,7 +23,7 @@ export const HomeViewSectionDiscoverMarketingCollections: React.FC<
   HomeViewSectionDiscoverMarketingCollectionsProps
 > = ({ section: sectionProp }) => {
   const section = useFragment(fragment, sectionProp)
-  const links = extractNodes(section.linksConnection)
+  const links = extractNodes(section.cardsConnection)
 
   if (links.length === 0) return null
 
@@ -46,7 +48,7 @@ export const HomeViewSectionDiscoverMarketingCollections: React.FC<
           showsHorizontalScrollIndicator={false}
           numColumns={numColumns}
           data={links}
-          keyExtractor={(item) => item.internalID}
+          keyExtractor={(item, index) => `item_${index}_${item.entityID}`}
           renderItem={({ item }) => (
             <Chip
               key={item.href}
@@ -64,7 +66,7 @@ export const HomeViewSectionDiscoverMarketingCollections: React.FC<
 }
 
 const fragment = graphql`
-  fragment HomeViewSectionDiscoverMarketingCollections_section on HomeViewSectionDiscoverMarketingCollections {
+  fragment HomeViewSectionDiscoverMarketingCollections_section on HomeViewSectionCards {
     __typename
     internalID
     contextModule
@@ -72,10 +74,10 @@ const fragment = graphql`
     component {
       title
     }
-    linksConnection(first: 10) {
+    cardsConnection(first: 10) {
       edges {
         node {
-          internalID
+          entityID
           title
           subtitle
           href
@@ -122,7 +124,7 @@ const HomeViewSectionDiscoverMarketingCollectionsPlaceholder: React.FC<FlexProps
   )
 }
 
-const homeViewSectionDiscoverMarketingCollectionsQuery = graphql`
+const query = graphql`
   query HomeViewSectionDiscoverMarketingCollectionsQuery($id: String!) {
     homeView {
       section(id: $id) {
@@ -135,14 +137,14 @@ const homeViewSectionDiscoverMarketingCollectionsQuery = graphql`
 export const HomeViewSectionDiscoverMarketingCollectionsQueryRenderer: React.FC<SectionSharedProps> =
   withSuspense({
     Component: ({ sectionID, index, ...flexProps }) => {
-      const data = useLazyLoadQuery<HomeViewSectionDiscoverMarketingCollectionsQuery>(
-        homeViewSectionDiscoverMarketingCollectionsQuery,
-        {
-          id: sectionID,
-        }
-      )
+      const isEnabled = useFeatureFlag("AREnableMarketingCollectionsCategories")
+      const { data } = useClientQuery<HomeViewSectionDiscoverMarketingCollectionsQuery>({
+        query,
+        variables: { id: sectionID },
+        skip: !isEnabled,
+      })
 
-      if (!data.homeView.section) {
+      if (!data?.homeView.section || !isEnabled) {
         return null
       }
 

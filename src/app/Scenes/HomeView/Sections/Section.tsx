@@ -43,6 +43,13 @@ export const Section: React.FC<SectionProps> = ({ section, ...rest }) => {
       )
     case "ArticlesCard":
       return <HomeViewSectionArticlesCardsQueryRenderer sectionID={section.internalID} {...rest} />
+    case "Chips":
+      return (
+        <HomeViewSectionDiscoverMarketingCollectionsQueryRenderer
+          sectionID={section.internalID}
+          {...rest}
+        />
+      )
   }
 
   switch (section.__typename) {
@@ -77,13 +84,6 @@ export const Section: React.FC<SectionProps> = ({ section, ...rest }) => {
       return <HomeViewSectionViewingRoomsQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionSales":
       return <HomeViewSectionSalesQueryRenderer sectionID={section.internalID} {...rest} />
-    case "HomeViewSectionDiscoverMarketingCollections":
-      return (
-        <HomeViewSectionDiscoverMarketingCollectionsQueryRenderer
-          sectionID={section.internalID}
-          {...rest}
-        />
-      )
     default:
       if (__DEV__) {
         return (

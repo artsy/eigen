@@ -24,7 +24,7 @@ describe("HomeViewSectionDiscoverMarketingCollections", () => {
           homeView @required(action: NONE) {
             section(id: "home-view-section-discover-marketing-collections")
               @required(action: NONE) {
-              ... on HomeViewSectionDiscoverMarketingCollections {
+              ... on HomeViewSectionCards {
                 ...HomeViewSectionDiscoverMarketingCollections_section
               }
             }
@@ -35,12 +35,12 @@ describe("HomeViewSectionDiscoverMarketingCollections", () => {
 
   it("renders the section properly", async () => {
     renderWithRelay({
-      HomeViewSectionDiscoverMarketingCollections: () => ({
+      HomeViewSectionCards: () => ({
         internalID: "home-view-section-discover-marketing-collections",
         component: {
           title: "Discover Something New",
         },
-        linksConnection: {
+        cardsConnection: {
           edges: [
             {
               node: {
