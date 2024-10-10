@@ -20,8 +20,7 @@ interface HomeSectionScreenProps {
 
 export const HomeViewSectionScreen: React.FC<HomeSectionScreenProps> = ({ section }) => {
   const tracking = useHomeViewTracking()
-  const title =
-    section?.__typename === "ArtworksRailHomeViewSection" ? section.component?.title : ""
+  const title = section.component?.title
 
   useFocusEffect(
     useCallback(() => {
