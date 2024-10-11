@@ -14769,6 +14769,7 @@ type PartnerAlertHitsEdge {
 
   # The item at the end of the edge
   node: Alert
+  partnerSearchCriteriaID: String
   userIDs: [String]
 }
 
