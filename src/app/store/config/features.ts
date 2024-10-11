@@ -311,6 +311,11 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableDynamicHomeView",
   },
+  AREnableHomeVieTasksSection: {
+    description: "Enable the Home view tasks section",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {

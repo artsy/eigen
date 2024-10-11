@@ -17,6 +17,7 @@ import { HomeViewSectionSalesQueryRenderer } from "app/Scenes/HomeView/Sections/
 import { HomeViewSectionShowsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionShows"
 import { HomeViewSectionTasksQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionTasks"
 import { HomeViewSectionViewingRoomsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionViewingRooms"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
 
 interface SectionProps extends FlexProps {
@@ -30,6 +31,8 @@ export interface SectionSharedProps extends FlexProps {
 }
 
 export const Section: React.FC<SectionProps> = ({ section, ...rest }) => {
+  const enableHomeViewTasksSection = useFeatureFlag("AREnableHomeVieTasksSection")
+
   if (!section.internalID) {
     if (__DEV__) {
       throw new Error("Section has no internalID")
@@ -86,7 +89,9 @@ export const Section: React.FC<SectionProps> = ({ section, ...rest }) => {
     case "HomeViewSectionSales":
       return <HomeViewSectionSalesQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionTasks":
-      return <HomeViewSectionTasksQueryRenderer sectionID={section.internalID} {...rest} />
+      return enableHomeViewTasksSection ? (
+        <HomeViewSectionTasksQueryRenderer sectionID={section.internalID} {...rest} />
+      ) : null
     default:
       if (__DEV__) {
         return (
