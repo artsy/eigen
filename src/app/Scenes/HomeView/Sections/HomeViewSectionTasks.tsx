@@ -1,22 +1,11 @@
-import {
-  Flex,
-  FlexProps,
-  Join,
-  Skeleton,
-  SkeletonBox,
-  SkeletonText,
-  Spacer,
-} from "@artsy/palette-mobile"
+import { Flex, FlexProps, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import { HomeViewSectionTasksQuery } from "__generated__/HomeViewSectionTasksQuery.graphql"
 import { HomeViewSectionTasks_section$key } from "__generated__/HomeViewSectionTasks_section.graphql"
-import { MEDIUM_CARD_HEIGHT, MEDIUM_CARD_WIDTH } from "app/Components/Cards"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { Task } from "app/Components/Tasks/Task"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
-import { useMemoizedRandom } from "app/utils/placeholders"
-import { times } from "lodash"
 import { useState } from "react"
 import { LayoutAnimation } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -88,25 +77,17 @@ const tasksFragment = graphql`
   }
 `
 
-const HomeViewSectionTasksPlaceholder: React.FC = () => {
-  const randomValue = useMemoizedRandom()
-
+const HomeViewSectionTasksPlaceholder: React.FC<FlexProps> = (flexProps) => {
   return (
     <Skeleton>
-      <Flex>
+      <Flex {...flexProps}>
         <Flex mx={2}>
           <SkeletonText variant="sm-display">Act Now</SkeletonText>
 
           <Spacer y={2} />
 
-          <Flex flexDirection="row">
-            <Join separator={<Spacer x="15px" />}>
-              {times(2 + randomValue * 10).map((index) => (
-                <Flex key={index}>
-                  <SkeletonBox height={MEDIUM_CARD_HEIGHT} width={MEDIUM_CARD_WIDTH} />
-                </Flex>
-              ))}
-            </Join>
+          <Flex>
+            <SkeletonBox height={82} />
           </Flex>
         </Flex>
       </Flex>
@@ -126,17 +107,9 @@ const homeViewSectionTasksQuery = graphql`
 
 export const HomeViewSectionTasksQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
   Component: ({ sectionID, index, ...flexProps }) => {
-    const data = useLazyLoadQuery<HomeViewSectionTasksQuery>(
-      homeViewSectionTasksQuery,
-      {
-        id: sectionID,
-      },
-      {
-        networkCacheConfig: {
-          force: false,
-        },
-      }
-    )
+    const data = useLazyLoadQuery<HomeViewSectionTasksQuery>(homeViewSectionTasksQuery, {
+      id: sectionID,
+    })
 
     if (!data.homeView.section) {
       return null
@@ -147,20 +120,3 @@ export const HomeViewSectionTasksQueryRenderer: React.FC<SectionSharedProps> = w
   LoadingFallback: HomeViewSectionTasksPlaceholder,
   ErrorFallback: NoFallback,
 })
-
-// const data = useLazyLoadQuery<HomeViewSectionTasksQuery>(
-//   graphql`
-//     query HomeViewSectionTasksQuery {
-//       me {
-//         tasks(limit: 1) {
-//           internalID
-//           ...Task_task
-//         }
-//       }
-//     }
-//   `,
-//   {},
-//   {
-//     fetchPolicy: "network-only",
-//   }
-// )
