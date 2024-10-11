@@ -99,7 +99,7 @@ export const ShowCardContainer = createFragmentContainer(ShowCard, {
       formattedEndAt: endAt(format: "MMM D")
       href
       metaImage {
-        url(version: "large")
+        url(version: "larger")
       }
       city
       partner {
