@@ -4881,7 +4881,7 @@ type CommerceCreatePartnerOfferOrderPayload {
 scalar CommerceDate
 
 # An ISO 8601 datetime
-scalar CommerceDateTime @specifiedBy(url: "https://tools.ietf.org/html/rfc3339")
+scalar CommerceDateTime
 
 enum CommerceEeiFormStatusEnum {
   # approved
