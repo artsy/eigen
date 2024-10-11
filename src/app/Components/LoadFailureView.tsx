@@ -10,6 +10,7 @@ import {
   DEFAULT_HIT_SLOP,
 } from "@artsy/palette-mobile"
 import * as Sentry from "@sentry/react-native"
+import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
@@ -55,7 +56,7 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
 
   const showErrorMessage = __DEV__ || isStaging || showErrorInLoadFailureViewToggle
 
-  const trackLoadFailureView = (error: Error | undefined) => {
+  const trackLoadFailureView = (error: Error | undefined, routeParams: any) => {
     const shouldTrackError = !__DEV__ && !isStaging && trackErrorBoundary
     if (shouldTrackError) {
       Sentry.withScope((scope) => {
@@ -63,14 +64,19 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
         if (error) {
           scope.setExtra("error", error)
         }
-        Sentry.captureMessage("Unable to load in tab: " + activeTab, "error")
+        Sentry.captureMessage(
+          "Unable to load in tab: " + activeTab + " params:" + JSON.stringify(routeParams),
+          "error"
+        )
       })
     }
   }
 
   useEffect(() => {
-    trackLoadFailureView(error)
-  }, [error])
+    const routeParams = __unsafe_mainModalStackRef?.current?.getCurrentRoute()?.params
+
+    trackLoadFailureView(error, routeParams)
+  }, [error, __unsafe_mainModalStackRef?.current?.getCurrentRoute()?.params])
 
   const playAnimation = () => {
     setIsAnimating(true)
