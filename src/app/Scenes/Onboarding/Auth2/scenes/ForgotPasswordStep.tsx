@@ -154,7 +154,6 @@ const ForgotPasswordStepForm: React.FC = () => {
             onPress={handleSubmit}
             block
             haptic="impactMedium"
-            disabled={!isValid || !dirty}
             loading={isSubmitting}
             testID="resetButton"
             variant="outline"
@@ -168,7 +167,7 @@ const ForgotPasswordStepForm: React.FC = () => {
           block
           variant="fillDark"
           haptic="impactMedium"
-          disabled={!isValid || !dirty}
+          disabled={!isValid}
           loading={isSubmitting}
           testID="resetButton"
         >

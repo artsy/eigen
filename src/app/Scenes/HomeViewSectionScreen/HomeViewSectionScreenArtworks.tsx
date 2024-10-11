@@ -1,20 +1,28 @@
 import { ScreenOwnerType } from "@artsy/cohesion"
-import { Flex, Screen, SimpleMessage, Text } from "@artsy/palette-mobile"
+import { FullWidthIcon, GridIcon, Screen, SimpleMessage, Text } from "@artsy/palette-mobile"
 import { HomeViewSectionScreenArtworks_section$key } from "__generated__/HomeViewSectionScreenArtworks_section.graphql"
 import { HomeViewSectionScreenQuery } from "__generated__/HomeViewSectionScreenQuery.graphql"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import { PAGE_SIZE } from "app/Components/constants"
+import { GlobalStore } from "app/store/GlobalStore"
+import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
 import { pluralize } from "app/utils/pluralize"
 import { useRefreshControl } from "app/utils/refreshHelpers"
+import { MotiPressable } from "moti/interactions"
 import { graphql, usePaginationFragment } from "react-relay"
+
+const ICON_SIZE = 26
 
 interface ArtworksScreenHomeSection {
   section: HomeViewSectionScreenArtworks_section$key
 }
 
 export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> = (props) => {
+  const defaultViewOption = GlobalStore.useAppState((state) => state.userPrefs.defaultViewOption)
+  const setDefaultViewOption = GlobalStore.actions.userPrefs.setDefaultViewOption
+
   const {
     data: section,
     isLoadingNext,
@@ -32,34 +40,60 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
 
   const { scrollHandler } = Screen.useListenForScreenScroll()
 
+  const numOfColumns = defaultViewOption === "grid" ? NUM_COLUMNS_MASONRY : 1
+
   return (
-    <MasonryInfiniteScrollArtworkGrid
-      animated
-      artworks={artworks}
-      numColumns={NUM_COLUMNS_MASONRY}
-      disableAutoLayout
-      pageSize={PAGE_SIZE}
-      ListEmptyComponent={
-        <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
-      }
-      ListHeaderComponent={() => (
-        <Flex>
-          <Text variant="lg-display">{section.component?.title}</Text>
-          <Text variant="xs" pt={2}>
+    <>
+      <Screen.AnimatedHeader
+        onBack={goBack}
+        title={section.component?.title || ""}
+        rightElements={
+          <MotiPressable
+            onPress={() => {
+              setDefaultViewOption(defaultViewOption === "list" ? "grid" : "list")
+            }}
+            style={{ top: 5 }}
+          >
+            {defaultViewOption === "grid" ? (
+              <FullWidthIcon height={ICON_SIZE} width={ICON_SIZE} />
+            ) : (
+              <GridIcon height={ICON_SIZE} width={ICON_SIZE} />
+            )}
+          </MotiPressable>
+        }
+      />
+
+      <Screen.StickySubHeader
+        title={section.component?.title || ""}
+        Component={
+          <Text variant="xs" mt={1}>
             {section.artworksConnection?.totalCount} {pluralize("Artwork", artworks.length)}
           </Text>
-        </Flex>
-      )}
-      refreshControl={RefreshControl}
-      hasMore={hasNext}
-      loadMore={() => {
-        loadNext(PAGE_SIZE)
-      }}
-      isLoading={isLoadingNext}
-      onScroll={scrollHandler}
-      style={{ paddingBottom: 120 }}
-      contextScreenOwnerType={section.ownerType as ScreenOwnerType}
-    />
+        }
+      />
+
+      <Screen.Body fullwidth>
+        <MasonryInfiniteScrollArtworkGrid
+          animated
+          artworks={artworks}
+          numColumns={numOfColumns}
+          disableAutoLayout
+          pageSize={PAGE_SIZE}
+          ListEmptyComponent={
+            <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
+          }
+          refreshControl={RefreshControl}
+          hasMore={hasNext}
+          loadMore={() => {
+            loadNext(PAGE_SIZE)
+          }}
+          isLoading={isLoadingNext}
+          onScroll={scrollHandler}
+          style={{ paddingBottom: 120 }}
+          contextScreenOwnerType={section.ownerType as ScreenOwnerType}
+        />
+      </Screen.Body>
+    </>
   )
 }
 

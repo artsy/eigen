@@ -8,13 +8,14 @@ import {
   Text,
   useTheme,
 } from "@artsy/palette-mobile"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { useRecaptcha } from "app/Components/Recaptcha/Recaptcha"
 import { AuthContext } from "app/Scenes/Onboarding/Auth2/AuthContext"
 import { useAuthNavigation } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
+import { OnboardingNavigationStack } from "app/Scenes/Onboarding/Onboarding"
 import { AuthPromiseRejectType, AuthPromiseResolveType } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
-import { navigate } from "app/system/navigation/navigate"
 import { osMajorVersion } from "app/utils/platformUtil"
 import { Formik, useFormikContext } from "formik"
 import { MotiView } from "moti"
@@ -41,7 +42,6 @@ export const LoginWelcomeStep: React.FC = () => {
 
       <Formik<LoginEmailFormValues>
         initialValues={{ email: "" }}
-        validateOnChange={false}
         validationSchema={Yup.object().shape({
           email: Yup.string()
             .email("Please provide a valid email address")
@@ -70,7 +70,7 @@ export const LoginWelcomeStep: React.FC = () => {
             })
           }
 
-          resetForm()
+          resetForm({ values: { email } })
         }}
       >
         <LoginWelcomeStepForm />
@@ -84,9 +84,10 @@ const LoginWelcomeStepForm: React.FC = () => {
   const isModalExpanded = AuthContext.useStoreState((state) => state.isModalExpanded)
 
   const { color } = useTheme()
-  const { errors, handleChange, handleSubmit, isSubmitting, values, resetForm } =
+  const { handleChange, handleSubmit, isSubmitting, isValid, resetForm, values } =
     useFormikContext<LoginEmailFormValues>()
 
+  const navigation = useNavigation<NavigationProp<OnboardingNavigationStack>>()
   const emailRef = useRef<Input>(null)
 
   useInputAutofocus({
@@ -99,7 +100,7 @@ const LoginWelcomeStepForm: React.FC = () => {
     requestAnimationFrame(() => {
       emailRef.current?.blur()
       setModalExpanded(false)
-      resetForm()
+      resetForm({ values: { email: "" } })
     })
   }
 
@@ -123,7 +124,6 @@ const LoginWelcomeStepForm: React.FC = () => {
         autoComplete="email"
         autoCorrect={false}
         blurOnSubmit={false}
-        error={errors.email}
         placeholderTextColor={color("black30")}
         ref={emailRef}
         spellCheck={false}
@@ -147,7 +147,13 @@ const LoginWelcomeStepForm: React.FC = () => {
       >
         <Spacer y={2} />
 
-        <Button block width="100%" onPress={handleSubmit} loading={isSubmitting}>
+        <Button
+          block
+          width="100%"
+          onPress={handleSubmit}
+          loading={isSubmitting}
+          disabled={!isValid || !values.email}
+        >
           Continue
         </Button>
       </MotiView>
@@ -166,11 +172,17 @@ const LoginWelcomeStepForm: React.FC = () => {
 
         <Text variant="xxs" color="black60" textAlign="center">
           By tapping Continue with Apple, Facebook, or Google, you agree to Artsy’s{" "}
-          <LinkText variant="xxs" onPress={() => navigate("/terms")}>
-            Terms of Use
+          <LinkText
+            variant="xxs"
+            onPress={() => navigation.navigate("OnboardingWebView", { url: "/terms" })}
+          >
+            Terms and Conditions
           </LinkText>{" "}
           and{" "}
-          <LinkText variant="xxs" onPress={() => navigate("/privacy")}>
+          <LinkText
+            variant="xxs"
+            onPress={() => navigation.navigate("OnboardingWebView", { url: "/privacy" })}
+          >
             Privacy Policy
           </LinkText>
         </Text>

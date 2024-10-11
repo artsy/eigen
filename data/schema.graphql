@@ -4881,7 +4881,7 @@ type CommerceCreatePartnerOfferOrderPayload {
 scalar CommerceDate
 
 # An ISO 8601 datetime
-scalar CommerceDateTime @specifiedBy(url: "https://tools.ietf.org/html/rfc3339")
+scalar CommerceDateTime
 
 enum CommerceEeiFormStatusEnum {
   # approved
@@ -5455,6 +5455,9 @@ input CommerceOptInMutationInput {
   # ID of the partner
   id: String!
 
+  # The partner location ID to assign
+  locationId: String
+
   # whether or not pick up it is pick up available
   pickupAvailable: Boolean
 }
@@ -5492,6 +5495,9 @@ input CommerceOptInReportMutationInput {
 
   # ID of the partner
   id: String!
+
+  # The partner location ID to assign
+  locationId: String
 
   # whether or not pick up should be available
   pickupAvailable: Boolean
@@ -7927,6 +7933,29 @@ union CreateConsignmentInquiryMutationType =
     ConsignmentInquiryMutationFailure
   | ConsignmentInquiryMutationSuccess
 
+input CreateDiscoveryArtworkReferenceMutationInput {
+  # The artwork's ID
+  artworkId: String!
+  clientMutationId: String
+
+  # The reference type
+  reference: ReferenceTypes!
+
+  # The user's ID
+  userId: String
+}
+
+type CreateDiscoveryArtworkReferenceMutationPayload {
+  clientMutationId: String
+
+  # On success: return boolean. On failure: MutationError.
+  createDiscoveryArtworkReferenceResponseOrError: CreateDiscoveryArtworkReferenceResponseOrError
+}
+
+union CreateDiscoveryArtworkReferenceResponseOrError =
+    DiscoveryArtworkReferenceMutationFailure
+  | DiscoveryArtworkReferenceMutationSuccess
+
 type CreateFeatureFailure {
   mutationError: GravityMutationError
 }
@@ -9006,6 +9035,14 @@ type DisableSecondFactorPayload {
   secondFactorOrErrors: SecondFactorOrErrorsUnion!
 }
 
+type DiscoveryArtworkReferenceMutationFailure {
+  mutationError: GravityMutationError
+}
+
+type DiscoveryArtworkReferenceMutationSuccess {
+  success: Boolean
+}
+
 input DislikeArtworkInput {
   artworkID: String!
   clientMutationId: String
@@ -9267,13 +9304,6 @@ enum ExhibitionPeriodFormat {
 
   # Short formatted period e.g. Feb 25 - May 24, 2015
   SHORT
-}
-
-# [deprecated in favor of `HomeViewCard`] A marketing collection category to explore by
-type ExploreByMarketingCollectionCategory {
-  href: String!
-  image: Image
-  name: String!
 }
 
 type External {
@@ -10850,6 +10880,7 @@ type HomeView {
 }
 
 type HomeViewCard {
+  buttonText: String
   entityID: String
   entityType: String
   href: String
@@ -11031,48 +11062,29 @@ type HomeViewSectionAuctionResults implements HomeViewSectionGeneric & Node {
   ownerType: String
 }
 
+# A section that consists of a single navigation card
+type HomeViewSectionCard implements HomeViewSectionGeneric & Node {
+  card: HomeViewCard
+
+  # Component prescription for this section, for overriding or customizing presentation and behavior
+  component: HomeViewComponent
+
+  # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
+  contextModule: String
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
+  # [Analytics] `owner type` analytics value for this scetion when displayed in a standalone UI, as defined in our schema (artsy/cohesion)
+  ownerType: String
+}
+
 # A section containing a list of navigation cards
 type HomeViewSectionCards implements HomeViewSectionGeneric & Node {
   cardsConnection(after: String, before: String, first: Int, last: Int): HomeViewCardConnection
-
-  # Component prescription for this section, for overriding or customizing presentation and behavior
-  component: HomeViewComponent
-
-  # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  contextModule: String
-
-  # A globally unique ID.
-  id: ID!
-
-  # A type-specific ID likely used as a database ID.
-  internalID: ID!
-
-  # [Analytics] `owner type` analytics value for this scetion when displayed in a standalone UI, as defined in our schema (artsy/cohesion)
-  ownerType: String
-}
-
-# [deprecated in favor of `HomeViewSectionCards`] A section containing a list of curated marketing collections
-type HomeViewSectionDiscoverMarketingCollections implements HomeViewSectionGeneric & Node {
-  # Component prescription for this section, for overriding or customizing presentation and behavior
-  component: HomeViewComponent
-
-  # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  contextModule: String
-
-  # A globally unique ID.
-  id: ID!
-
-  # A type-specific ID likely used as a database ID.
-  internalID: ID!
-  linksConnection(after: String, before: String, first: Int, last: Int): FeaturedLinkConnection
-
-  # [Analytics] `owner type` analytics value for this scetion when displayed in a standalone UI, as defined in our schema (artsy/cohesion)
-  ownerType: String
-}
-
-# [deprecated in favor of `HomeViewSectionCards`] Marketing Collection Categories section in the home view
-type HomeViewSectionExploreByMarketingCollectionCategories implements HomeViewSectionGeneric & Node {
-  categories: [ExploreByMarketingCollectionCategory!]!
 
   # Component prescription for this section, for overriding or customizing presentation and behavior
   component: HomeViewComponent
@@ -11098,24 +11110,6 @@ type HomeViewSectionFairs implements HomeViewSectionGeneric & Node {
   # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
   contextModule: String
   fairsConnection(after: String, before: String, first: Int, last: Int): FairConnection
-
-  # A globally unique ID.
-  id: ID!
-
-  # A type-specific ID likely used as a database ID.
-  internalID: ID!
-
-  # [Analytics] `owner type` analytics value for this scetion when displayed in a standalone UI, as defined in our schema (artsy/cohesion)
-  ownerType: String
-}
-
-# A section containing a list of galleries
-type HomeViewSectionGalleries implements HomeViewSectionGeneric & Node {
-  # Component prescription for this section, for overriding or customizing presentation and behavior
-  component: HomeViewComponent
-
-  # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  contextModule: String
 
   # A globally unique ID.
   id: ID!
@@ -11252,6 +11246,25 @@ type HomeViewSectionShows implements HomeViewSectionGeneric & Node {
     # Include shows within a radius of the provided location
     near: Near
   ): ShowConnection
+}
+
+# A tasks section in the home view
+type HomeViewSectionTasks implements HomeViewSectionGeneric & Node {
+  # Component prescription for this section, for overriding or customizing presentation and behavior
+  component: HomeViewComponent
+
+  # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
+  contextModule: String
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
+  # [Analytics] `owner type` analytics value for this scetion when displayed in a standalone UI, as defined in our schema (artsy/cohesion)
+  ownerType: String
+  tasksConnection(after: String, before: String, first: Int, last: Int): TaskConnection
 }
 
 # A viewing rooms section in the home view
@@ -13364,6 +13377,11 @@ type Mutation {
 
   # Create a credit card
   createCreditCard(input: CreditCardInput!): CreditCardPayload
+
+  # Creates a cross reference for artwork and user in weaviate
+  createDiscoveryArtworkReference(
+    input: CreateDiscoveryArtworkReferenceMutationInput!
+  ): CreateDiscoveryArtworkReferenceMutationPayload
 
   # Creates a feature.
   createFeature(input: CreateFeatureMutationInput!): CreateFeatureMutationPayload
@@ -16320,6 +16338,14 @@ type Query {
     last: Int
   ): ArtistConnection
   departments: [Department!]!
+  discoverArtworks(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    limit: Int
+    userId: String
+  ): ArtworkConnection
 
   # A namespace external partners (provided by Galaxy)
   external: External!
@@ -17198,6 +17224,11 @@ type RecordArtworkViewPayload {
 
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
+}
+
+enum ReferenceTypes {
+  DISLIKED_ARTWORKS
+  LIKED_ARTWORKS
 }
 
 enum RelatedArtistsKind {
@@ -18938,6 +18969,26 @@ type Task implements Node {
   sourceType: String
   taskType: String!
   title: String!
+}
+
+# A connection to a list of items.
+type TaskConnection {
+  # A list of edges.
+  edges: [TaskEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type TaskEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: Task
 }
 
 type TaxInfo {
@@ -20893,6 +20944,14 @@ type Viewer {
     last: Int
   ): ArtistConnection
   departments: [Department!]!
+  discoverArtworks(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    limit: Int
+    userId: String
+  ): ArtworkConnection
 
   # A namespace external partners (provided by Galaxy)
   external: External!

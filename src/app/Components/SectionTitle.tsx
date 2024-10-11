@@ -45,7 +45,7 @@ export const SectionTitle: React.FC<{
   return (
     <Wrapper onPress={onPress}>
       <Flex mb={mb} flexDirection="row" alignItems="flex-start">
-        <Flex flex={1} overflow="hidden">
+        <Flex flex={1}>
           <Text variant={titleVariant} ellipsizeMode="tail" numberOfLines={1} testID="title">
             {typeof title === "string" ? titleText : title}
           </Text>

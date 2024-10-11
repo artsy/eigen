@@ -1,89 +1,49 @@
 import { screen } from "@testing-library/react-native"
-import * as ArtsyNativeModule from "app/NativeModules/ArtsyNativeModule"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { HomeContainer } from "./HomeContainer"
-
-jest.mock("app/NativeModules/ArtsyNativeModule", () => ({
-  ...jest.requireActual("app/NativeModules/ArtsyNativeModule"),
-  ArtsyNativeModule: {
-    ArtsyNativeModule: {
-      isBetaOrDev: undefined, // set in each test condition below
-    },
-  },
-}))
 
 describe("conditional rendering of old vs new home screen", () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })
 
-  describe("when running in beta or simulator", () => {
-    beforeEach(() => (ArtsyNativeModule.ArtsyNativeModule.isBetaOrDev = true))
+  describe("when ARPreferLegacyHomeScreen is true", () => {
+    beforeEach(
+      () => __globalStoreTestUtils__?.injectFeatureFlags({ ARPreferLegacyHomeScreen: true })
+    )
 
-    describe("when ARPreferLegacyHomeScreen is false", () => {
+    it("renders the old screen always", () => {
+      renderWithWrappers(<HomeContainer />)
+      expect(screen.queryByTestId("new-home-view-skeleton")).not.toBeOnTheScreen()
+    })
+  })
+
+  describe("when ARPreferLegacyHomeScreen is false", () => {
+    beforeEach(
+      () => __globalStoreTestUtils__?.injectFeatureFlags({ ARPreferLegacyHomeScreen: false })
+    )
+
+    describe("when AREnableDynamicHomeView is true", () => {
       beforeEach(
-        () => __globalStoreTestUtils__?.injectFeatureFlags({ ARPreferLegacyHomeScreen: false })
+        () => __globalStoreTestUtils__?.injectFeatureFlags({ AREnableDynamicHomeView: true })
       )
 
-      it("renders the NEW screen", () => {
+      it("renders the new screen", () => {
         renderWithWrappers(<HomeContainer />)
         expect(screen.getByTestId("new-home-view-skeleton")).toBeOnTheScreen()
       })
     })
 
-    describe("when ARPreferLegacyHomeScreen is true", () => {
+    describe("when AREnableDynamicHomeView is false", () => {
       beforeEach(
-        () => __globalStoreTestUtils__?.injectFeatureFlags({ ARPreferLegacyHomeScreen: true })
+        () => __globalStoreTestUtils__?.injectFeatureFlags({ AREnableDynamicHomeView: false })
       )
 
       it("renders the old screen", () => {
         renderWithWrappers(<HomeContainer />)
         expect(screen.queryByTestId("new-home-view-skeleton")).not.toBeOnTheScreen()
       })
-    })
-  })
-
-  describe("when NOT running in beta or simulator", () => {
-    beforeEach(() => (ArtsyNativeModule.ArtsyNativeModule.isBetaOrDev = false))
-
-    describe("when ARPreferLegacyHomeScreen is false", () => {
-      beforeEach(
-        () => __globalStoreTestUtils__?.injectFeatureFlags({ ARPreferLegacyHomeScreen: false })
-      )
-
-      it("renders the old screen", () => {
-        renderWithWrappers(<HomeContainer />)
-        expect(screen.queryByTestId("new-home-view-skeleton")).not.toBeOnTheScreen()
-      })
-    })
-
-    describe("when ARPreferLegacyHomeScreen is true", () => {
-      beforeEach(
-        () => __globalStoreTestUtils__?.injectFeatureFlags({ ARPreferLegacyHomeScreen: true })
-      )
-
-      it("renders the old screen", () => {
-        renderWithWrappers(<HomeContainer />)
-        expect(screen.queryByTestId("new-home-view-skeleton")).not.toBeOnTheScreen()
-      })
-    })
-  })
-
-  describe("when using an artsymail account", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ ARPreferLegacyHomeScreen: false })
-    })
-
-    it("renders the NEW screen", () => {
-      __globalStoreTestUtils__?.injectState({
-        auth: {
-          userEmail: "test@artsymail.com",
-        },
-      })
-
-      renderWithWrappers(<HomeContainer />)
-      expect(screen.getByTestId("new-home-view-skeleton")).toBeOnTheScreen()
     })
   })
 })

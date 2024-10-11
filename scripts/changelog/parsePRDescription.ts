@@ -22,7 +22,7 @@ export const parsePRDescription = (description: string): ParseResult => {
       continue
     }
     i++
-    // either a single text paragraph or a list
+    // either a single text paragraph or a list.
     const sectionLines = []
     while (i < lines.length && lines[i].match(/^( *\w|-[\w ]|\*[\w ]|\s*$)/)) {
       sectionLines.push(lines[i])

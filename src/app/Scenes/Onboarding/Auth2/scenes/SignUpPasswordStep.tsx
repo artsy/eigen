@@ -1,5 +1,13 @@
-import { BackButton, Button, Flex, Input, LinkText, Spacer, Text } from "@artsy/palette-mobile"
-import { PasswordInput } from "app/Scenes/Onboarding/Auth2/components/PasswordInput"
+import {
+  BackButton,
+  Button,
+  Flex,
+  Input,
+  LinkText,
+  Spacer,
+  Text,
+  useTheme,
+} from "@artsy/palette-mobile"
 import {
   useAuthNavigation,
   useAuthScreen,
@@ -49,12 +57,14 @@ export const SignUpPasswordStep: React.FC = () => {
 }
 
 const SignUpPasswordStepForm: React.FC = () => {
-  const { handleSubmit, isSubmitting, isValid, resetForm } =
+  const { handleChange, handleSubmit, isSubmitting, isValid, resetForm, values } =
     useFormikContext<SignUpPasswordStepFormValues>()
 
   const navigation = useAuthNavigation()
   const screen = useAuthScreen()
   const passwordRef = useRef<Input>(null)
+
+  const { color } = useTheme()
 
   useInputAutofocus({
     screenName: "SignUpPasswordStep",
@@ -74,11 +84,41 @@ const SignUpPasswordStepForm: React.FC = () => {
 
       <Text variant="sm-display">Welcome to Artsy</Text>
 
-      <PasswordInput ref={passwordRef} />
+      <Input
+        autoCapitalize="none"
+        autoComplete="password"
+        autoCorrect={false}
+        blurOnSubmit={false}
+        placeholderTextColor={color("black30")}
+        ref={passwordRef}
+        returnKeyType="done"
+        secureTextEntry
+        textContentType="password"
+        testID="password"
+        title="Password"
+        value={values.password}
+        onChangeText={(text) => {
+          handleChange("password")(text)
+        }}
+        onSubmitEditing={handleSubmit}
+      />
+
+      <Spacer y={1} />
+
+      <Text variant="xs" color="black60">
+        Password must be at least 8 characters and include a lowercase letter, uppercase letter, and
+        digit.
+      </Text>
 
       <Spacer y={2} />
 
-      <Button block width={100} onPress={handleSubmit} disabled={!isValid} loading={isSubmitting}>
+      <Button
+        block
+        width="100%"
+        onPress={handleSubmit}
+        loading={isSubmitting}
+        disabled={!isValid || !values.password}
+      >
         Continue
       </Button>
 
