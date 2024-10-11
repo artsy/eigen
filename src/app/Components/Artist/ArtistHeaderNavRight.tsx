@@ -14,7 +14,7 @@ interface ArtistHeaderNavRightProps {
 
 export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
   artist,
-  // onSharePress,
+  onSharePress,
 }) => {
   const { currentScrollY, scrollYOffset } = useScreenScrollContext()
   const data = useFragment(fragment, artist)
@@ -37,11 +37,7 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
 
   return (
     <Flex flexDirection="row" alignItems="center" justifyContent="flex-end" width={185} py={1}>
-      <TouchableOpacity
-        onPress={() => {
-          throw new Error("Not implemented")
-        }}
-      >
+      <TouchableOpacity onPress={onSharePress}>
         <ShareIcon width={23} height={23} />
       </TouchableOpacity>
 

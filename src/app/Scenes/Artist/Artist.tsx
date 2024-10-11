@@ -143,12 +143,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
             rightElements: (
               <ArtistHeaderNavRight artist={artistAboveTheFold} onSharePress={handleSharePress} />
             ),
-            onBack: () => {
-              if (__TEST__) {
-                return goBack()
-              }
-              throw new Error("This is George testing stuff in staging only")
-            },
+            onBack: goBack,
           }}
           BelowTitleHeaderComponent={renderBelowTheHeaderComponent}
         >
