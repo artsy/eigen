@@ -125,8 +125,6 @@ export const Artist: React.FC<ArtistProps> = (props) => {
     [artistAboveTheFold, headerHeight]
   )
 
-  throw new Error("This is George testing stuff in staging only")
-
   return (
     <ProvideScreenTracking
       info={{
@@ -145,7 +143,12 @@ export const Artist: React.FC<ArtistProps> = (props) => {
             rightElements: (
               <ArtistHeaderNavRight artist={artistAboveTheFold} onSharePress={handleSharePress} />
             ),
-            onBack: goBack,
+            onBack: () => {
+              if (__TEST__) {
+                return goBack()
+              }
+              throw new Error("This is George testing stuff in staging only")
+            },
           }}
           BelowTitleHeaderComponent={renderBelowTheHeaderComponent}
         >
