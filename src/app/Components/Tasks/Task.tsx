@@ -1,27 +1,48 @@
-import { Button, Flex, Image, Text } from "@artsy/palette-mobile"
+import { Flex, Image, Text, Touchable } from "@artsy/palette-mobile"
 import { Task_task$key } from "__generated__/Task_task.graphql"
 import { Swipeable } from "app/Components/Swipeable/Swipeable"
 import { navigate } from "app/system/navigation/navigate"
+import { useDismissTask } from "app/utils/mutations/useDismissTask"
 import { graphql, useFragment } from "react-relay"
 
+const TASK_IMAGE_SIZE = 60
+
 export const Task: React.FC<{
-  task: Task_task$key
+  disableSwipeable?: boolean
   onClearTask: () => void
-}> = ({ onClearTask, ...restProps }) => {
+  task: Task_task$key
+}> = ({ disableSwipeable, onClearTask, ...restProps }) => {
+  const { submitMutation: dismissTask } = useDismissTask()
+
   const task = useFragment(taskFragment, restProps.task)
 
-  const handleClearTask = () => {
+  const handlePressTask = () => {
+    // TODO: Add tracking
+    // TODO: Resolve task (call mutation)
+
+    onClearTask()
+
+    navigate(task.actionLink)
+  }
+
+  const handleClearTask = async () => {
+    // TODO: Add tracking
+
+    dismissTask({ variables: { taskID: task.internalID } })
+
     onClearTask()
   }
 
   return (
-    <Flex pb={1}>
-      <Swipeable
-        actionComponent={<Text color="white100">Clear</Text>}
-        actionOnPress={handleClearTask}
-        actionBackground="red100"
-      >
-        <Flex backgroundColor="white100" borderRadius={5}>
+    <Swipeable
+      actionComponent={<Text color="white100">Clear</Text>}
+      actionOnPress={handleClearTask}
+      actionOnSwipe={handleClearTask}
+      actionBackground="red100"
+      enabled={!disableSwipeable}
+    >
+      <Flex backgroundColor="white100" borderRadius={5}>
+        <Touchable onPress={handlePressTask}>
           <Flex
             p={1}
             ml={2}
@@ -30,38 +51,34 @@ export const Task: React.FC<{
             borderColor="black60"
             borderRadius={5}
             zIndex={3}
-            backgroundColor="white100"
+            backgroundColor="black100"
           >
             <Flex pr={1}>
-              <Image src={task.imageUrl} width={70} height={70} />
+              <Image src={task.imageUrl} width={TASK_IMAGE_SIZE} height={TASK_IMAGE_SIZE} />
             </Flex>
 
             <Flex flex={1}>
-              <Text variant="xs" fontWeight="bold" mb={0.5}>
+              <Text color="white100" variant="xs" fontWeight="bold">
                 {task.title}
               </Text>
 
-              <Text variant="xs" mb={1}>
+              <Text color="white100" variant="xs">
                 {task.message}
               </Text>
-
-              <Button variant="outline" size="small" onPress={() => navigate(task.actionLink)}>
-                {task.actionMessage}
-              </Button>
             </Flex>
           </Flex>
-        </Flex>
-      </Swipeable>
-    </Flex>
+        </Touchable>
+      </Flex>
+    </Swipeable>
   )
 }
 
 const taskFragment = graphql`
   fragment Task_task on Task {
-    title
-    message
     actionLink
-    actionMessage
     imageUrl
+    internalID
+    message
+    title
   }
 `
