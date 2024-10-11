@@ -29,8 +29,6 @@ export const LoginOTPStep: React.FC = () => {
   return (
     <Formik<LoginOTPStepFormValues>
       initialValues={{ otp: "" }}
-      validateOnChange={true}
-      validateOnMount={false}
       validationSchema={Yup.object().shape({
         otp: Yup.string().required("This field is required"),
       })}
@@ -60,19 +58,18 @@ export const LoginOTPStep: React.FC = () => {
 }
 
 const LoginOTPStepForm: React.FC = () => {
-  const [recoveryCodeMode, setRecoveryCodeMode] = useState(false)
-
   const {
     errors,
     handleChange,
     handleSubmit,
     isSubmitting,
     isValid,
-    setErrors,
     validateForm,
     values,
     resetForm,
   } = useFormikContext<LoginOTPStepFormValues>()
+
+  const [codeType, setCodeType] = useState<"authentication" | "recovery">("authentication")
 
   const navigation = useAuthNavigation()
   const screen = useAuthScreen()
@@ -86,9 +83,9 @@ const LoginOTPStepForm: React.FC = () => {
   })
 
   const handleBackButtonPress = () => {
-    resetForm()
     navigation.goBack()
-    setRecoveryCodeMode(false)
+    resetForm()
+    setCodeType("authentication")
   }
 
   return (
@@ -101,20 +98,17 @@ const LoginOTPStepForm: React.FC = () => {
         autoCorrect={false}
         blurOnSubmit={false}
         error={errors.otp}
-        keyboardType={recoveryCodeMode ? "email-address" : "numeric"}
-        placeholder={recoveryCodeMode ? "Enter a recovery code" : "Enter an authentication code"}
+        keyboardType={codeType === "authentication" ? "numeric" : "ascii-capable"}
+        placeholder={
+          codeType === "authentication" ? "Enter an authentication code" : "Enter a recovery code"
+        }
         placeholderTextColor={color("black30")}
         ref={otpRef}
         returnKeyType="done"
-        title={recoveryCodeMode ? "Recovery code" : "Authentication code"}
+        title={codeType === "authentication" ? "Authentication code" : "Recovery code"}
         value={values.otp}
         textContentType="oneTimeCode"
         onChangeText={(text) => {
-          // Hide error when the user starts to type again
-          if (errors.otp) {
-            setErrors({ otp: undefined })
-            validateForm()
-          }
           handleChange("otp")(text)
         }}
         onBlur={() => validateForm()}
@@ -141,15 +135,23 @@ const LoginOTPStepForm: React.FC = () => {
 
       <Spacer y={2} />
 
-      <Touchable
-        onPress={() => {
-          setRecoveryCodeMode((mode) => !mode)
-        }}
-      >
-        <Text variant="xs" color="black60" underline>
-          {recoveryCodeMode ? "Enter authentication code" : "Enter recovery code instead"}
-        </Text>
-      </Touchable>
+      {screen.params?.otpMode === "standard" && (
+        <Touchable
+          onPress={() => {
+            if (codeType === "authentication") {
+              setCodeType("recovery")
+            } else {
+              setCodeType("authentication")
+            }
+          }}
+        >
+          <Text variant="xs" color="black60" underline>
+            {codeType === "authentication"
+              ? "Enter recovery code instead"
+              : "Enter authentication code"}
+          </Text>
+        </Touchable>
+      )}
     </Flex>
   )
 }
