@@ -26,9 +26,6 @@ import { FlatList, RefreshControl } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 export const NUMBER_OF_SECTIONS_TO_LOAD = 10
-// Hard coding the value here because 30px is not a valid value for the spacing unit
-// and we need it to be consistent with 60px spacing between sections
-export const HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT = "30px"
 
 export const homeViewScreenQueryVariables = () => ({
   count: NUMBER_OF_SECTIONS_TO_LOAD,
@@ -137,7 +134,7 @@ export const HomeView: React.FC = () => {
           data={sections}
           keyExtractor={(item) => item.internalID}
           renderItem={({ item, index }) => {
-            return <Section section={item} my={HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT} index={index} />
+            return <Section section={item} my={2} index={index} />
           }}
           onEndReached={() => loadNext(NUMBER_OF_SECTIONS_TO_LOAD)}
           ListHeaderComponent={HomeHeader}

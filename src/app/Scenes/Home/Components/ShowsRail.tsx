@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedShowGroup } from "@artsy/cohesion"
-import { Flex, Join, SkeletonText, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, FlexProps, Join, SkeletonText, Spacer, Text } from "@artsy/palette-mobile"
 import { ShowsRailQuery } from "__generated__/ShowsRailQuery.graphql"
 import {
   ShowsRail_showsConnection$data,
