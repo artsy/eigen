@@ -1,14 +1,13 @@
-import { OnboardingWebViewRoute } from "app/Scenes/Onboarding/OnboardingWebView"
 import { action, Action, createContextStore } from "easy-peasy"
 
 export type AuthScreens = {
   LoginWelcomeStep: undefined
-  LoginPasswordStep: { email: string }
-  LoginOTPStep: { otpMode: "standard" | "on_demand"; email: string; password: string }
-  ForgotPasswordStep: { requestedPasswordReset: boolean } | undefined
-  SignUpPasswordStep: { email: string }
-  SignUpNameStep: { email: string; password: string }
-  OnboardingWebView: { url: OnboardingWebViewRoute }
+  LoginPasswordStep: undefined
+  LoginOTPStep: undefined
+  ForgotPasswordStep: undefined
+  SignUpPasswordStep: undefined
+  SignUpNameStep: undefined
+  OnboardingWebView: undefined
 }
 
 export interface AuthScreen {
@@ -24,25 +23,28 @@ interface AuthContextModel {
   previousScreens: Array<AuthScreen | undefined>
   setCurrentScreen: Action<AuthContextModel, AuthScreen>
   setModalExpanded: Action<AuthContextModel, boolean>
+  setParams: Action<AuthContextModel, Record<string, any>>
 }
 
 export const AuthContext = createContextStore<AuthContextModel>({
-  isMounted: false,
   currentScreen: { name: "LoginWelcomeStep" },
-  previousScreens: [],
+  goBack: action((state) => {
+    state.currentScreen = state.previousScreens.pop()
+  }),
   isModalExpanded: false,
-
+  isMounted: false,
+  previousScreens: [],
   setCurrentScreen: action((state, currentScreen) => {
     state.previousScreens.push(state.currentScreen)
     state.currentScreen = currentScreen
   }),
-
   setModalExpanded: action((state, isModalExpanded) => {
     state.isMounted = true
     state.isModalExpanded = isModalExpanded
   }),
-
-  goBack: action((state) => {
-    state.currentScreen = state.previousScreens.pop()
+  setParams: action((state, params) => {
+    if (state.currentScreen && params) {
+      state.currentScreen.params = { ...(state.currentScreen.params ?? {}), ...params }
+    }
   }),
 })

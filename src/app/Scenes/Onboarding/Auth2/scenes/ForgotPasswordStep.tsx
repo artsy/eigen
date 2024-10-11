@@ -6,7 +6,7 @@ import {
 import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Formik, useFormikContext } from "formik"
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 import * as Yup from "yup"
 
 interface ForgotPasswordStepFormValues {
@@ -15,11 +15,12 @@ interface ForgotPasswordStepFormValues {
 
 export const ForgotPasswordStep: React.FC = () => {
   const navigation = useAuthNavigation()
+  const screen = useAuthScreen()
 
   return (
     <Formik<ForgotPasswordStepFormValues>
-      initialValues={{ email: "" }}
-      onSubmit={async ({ email }, { setErrors, resetForm }) => {
+      initialValues={{ email: screen.params?.email ?? "" }}
+      onSubmit={async ({ email }, { setErrors }) => {
         const res = await GlobalStore.actions.auth.forgotPassword({
           email,
         })
@@ -30,12 +31,7 @@ export const ForgotPasswordStep: React.FC = () => {
               "Couldn’t send reset password link. Please try again, or contact support@artsy.net",
           })
         } else {
-          navigation.navigate({
-            name: "ForgotPasswordStep",
-            params: { requestedPasswordReset: true },
-          })
-
-          resetForm()
+          navigation.setParams({ requestedPasswordReset: true })
         }
       }}
       validationSchema={Yup.object().shape({
@@ -59,6 +55,7 @@ const ForgotPasswordStepForm: React.FC = () => {
     validateForm,
     values,
     resetForm,
+    setValues,
   } = useFormikContext<ForgotPasswordStepFormValues>()
 
   const navigation = useAuthNavigation()
@@ -67,8 +64,8 @@ const ForgotPasswordStepForm: React.FC = () => {
   const forgotPasswordRef = useRef<Input>(null)
 
   const handleBackButtonPress = () => {
-    resetForm()
     navigation.goBack()
+    resetForm({ values: { email: screen.params?.email ?? "" } })
   }
 
   const requestedPasswordReset = screen.params?.requestedPasswordReset
@@ -77,6 +74,10 @@ const ForgotPasswordStepForm: React.FC = () => {
     screenName: "ForgotPasswordStep",
     inputRef: forgotPasswordRef,
   })
+
+  useEffect(() => {
+    setValues({ email: screen.params?.email ?? "" })
+  }, [screen.params?.email])
 
   return (
     <Flex padding={2}>
@@ -140,7 +141,7 @@ const ForgotPasswordStepForm: React.FC = () => {
 
           <Button
             variant="fillDark"
-            onPress={() => navigation.navigate({ name: "LoginWelcomeStep" })}
+            onPress={handleBackButtonPress}
             block
             haptic="impactMedium"
             testID="returnToLoginButton"
