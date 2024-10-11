@@ -10,7 +10,7 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
-interface HomeViewSectionShowsProps {
+interface HomeViewSectionShowsProps extends FlexProps {
   section: HomeViewSectionShows_section$key
   index: number
 }
@@ -26,7 +26,7 @@ export const HomeViewSectionShows: React.FC<HomeViewSectionShowsProps> = ({
   const tracking = useHomeViewTracking()
 
   return (
-    <Flex {...flexProps}>
+    <Flex>
       <ShowsRailContainer
         title={component?.title || "Shows"}
         disableLocation={!enableShowsForYouLocation}
@@ -38,6 +38,7 @@ export const HomeViewSectionShows: React.FC<HomeViewSectionShowsProps> = ({
             index
           )
         }}
+        {...flexProps}
       />
       <HomeViewSectionSentinel
         contextModule={section.contextModule as ContextModule}
