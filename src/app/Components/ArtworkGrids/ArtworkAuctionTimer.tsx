@@ -3,6 +3,7 @@ import { ArtworkAuctionTimer_collectorSignals$key } from "__generated__/ArtworkA
 import { formattedTimeLeft } from "app/Scenes/Activity/utils/formattedTimeLeft"
 import { getTimer } from "app/utils/getTimer"
 import { DateTime } from "luxon"
+import { useEffect, useRef, useState } from "react"
 import { graphql, useFragment } from "react-relay"
 
 interface ArtworkAuctionTimerProps {
@@ -11,6 +12,8 @@ interface ArtworkAuctionTimerProps {
   inRailCard?: boolean
 }
 
+const INTERVAL = 1000
+
 export const ArtworkAuctionTimer: React.FC<ArtworkAuctionTimerProps> = ({
   collectorSignals,
   hideRegisterBySignal,
@@ -18,12 +21,23 @@ export const ArtworkAuctionTimer: React.FC<ArtworkAuctionTimerProps> = ({
 }) => {
   const lineHeight = inRailCard ? "20px" : "18px"
   const data = useFragment(fragment, collectorSignals)
+  const { lotClosesAt, onlineBiddingExtended, registrationEndsAt } = data.auction ?? {}
 
-  if (!data.auction) {
-    return null
-  }
+  const lotEndAt = DateTime.fromISO(lotClosesAt ?? "")
+  const intervalId = useRef<ReturnType<typeof setInterval> | null>(null)
+  const [time, setTime] = useState(getTimer(lotClosesAt ?? "")["time"])
 
-  const { lotClosesAt, onlineBiddingExtended, registrationEndsAt } = data.auction
+  useEffect(() => {
+    intervalId.current = setInterval(() => {
+      const { time: timerTime } = getTimer(lotClosesAt ?? "")
+
+      setTime(timerTime)
+    }, INTERVAL)
+
+    return () => {
+      if (intervalId.current) clearInterval(intervalId.current)
+    }
+  }, [])
 
   if (
     registrationEndsAt &&
@@ -39,14 +53,11 @@ export const ArtworkAuctionTimer: React.FC<ArtworkAuctionTimerProps> = ({
     )
   }
 
-  const lotEndAt = DateTime.fromISO(lotClosesAt ?? "")
-
   if (!lotClosesAt || lotEndAt.diffNow().as("days") > 5 || lotEndAt.diffNow().as("seconds") <= 0) {
     return null
   }
 
   const timerColor = lotEndAt.diffNow().as("hours") <= 1 ? "red100" : "blue100"
-  const { time } = getTimer(lotClosesAt)
   const { timerCopy } = formattedTimeLeft(time)
 
   if (onlineBiddingExtended) {
