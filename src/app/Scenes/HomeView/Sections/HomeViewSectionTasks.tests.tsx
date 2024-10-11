@@ -3,18 +3,10 @@ import { HomeViewSectionTasksTestsQuery } from "__generated__/HomeViewSectionTas
 import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionTasks } from "app/Scenes/HomeView/Sections/HomeViewSectionTasks"
 import { navigate } from "app/system/navigation/navigate"
-import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
 
 describe("HomeViewSectionTasks", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    mockEnvironment = getMockRelayEnvironment()
-  })
-
   const { renderWithRelay } = setupTestWrapper<HomeViewSectionTasksTestsQuery>({
     Component: (props) => {
       if (!props.homeView.section) {
