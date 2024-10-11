@@ -128,7 +128,7 @@ const LoginWelcomeStepForm: React.FC = () => {
         ref={emailRef}
         spellCheck={false}
         keyboardType="email-address"
-        textContentType="none"
+        textContentType="username"
         returnKeyType="next"
         title="Email"
         value={values.email}

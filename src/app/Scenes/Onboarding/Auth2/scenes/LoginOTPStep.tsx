@@ -101,13 +101,14 @@ const LoginOTPStepForm: React.FC = () => {
         autoCorrect={false}
         blurOnSubmit={false}
         error={errors.otp}
-        keyboardType={recoveryCodeMode ? "ascii-capable" : "numeric"}
+        keyboardType={recoveryCodeMode ? "email-address" : "numeric"}
         placeholder={recoveryCodeMode ? "Enter a recovery code" : "Enter an authentication code"}
         placeholderTextColor={color("black30")}
         ref={otpRef}
         returnKeyType="done"
         title={recoveryCodeMode ? "Recovery code" : "Authentication code"}
         value={values.otp}
+        textContentType="oneTimeCode"
         onChangeText={(text) => {
           // Hide error when the user starts to type again
           if (errors.otp) {
