@@ -1,8 +1,10 @@
+import { ContextModule } from "@artsy/cohesion"
 import { Flex, FlexProps, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import { HomeViewSectionTasksQuery } from "__generated__/HomeViewSectionTasksQuery.graphql"
 import { HomeViewSectionTasks_section$key } from "__generated__/HomeViewSectionTasks_section.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { Task } from "app/Components/Tasks/Task"
+import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
@@ -41,19 +43,18 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
 
   return (
     <Flex {...flexProps}>
-      <Flex mr={2}>
-        {!!displayTask && (
-          <Flex>
-            <Flex ml={2}>
-              <SectionTitle title={section.component?.title} />
-            </Flex>
-
-            <Flex>
-              <Task task={task} onClearTask={handleClearTask} />
-            </Flex>
-          </Flex>
-        )}
+      <Flex mx={2}>
+        <SectionTitle title={section.component?.title} />
       </Flex>
+
+      <Flex mr={2}>
+        <Task task={task} onClearTask={handleClearTask} />
+      </Flex>
+
+      <HomeViewSectionSentinel
+        contextModule={section.contextModule as ContextModule}
+        index={index}
+      />
     </Flex>
   )
 }

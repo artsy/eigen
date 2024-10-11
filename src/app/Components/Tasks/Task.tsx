@@ -18,8 +18,9 @@ export const Task: React.FC<{
 
   const handlePressTask = () => {
     // TODO: Add tracking
-    // TODO: Resolve task (call mutation)
 
+    // TODO: Resolve the task instead of dismissing it.
+    dismissTask({ variables: { taskID: task.internalID } })
     onClearTask()
 
     navigate(task.actionLink)
@@ -29,7 +30,6 @@ export const Task: React.FC<{
     // TODO: Add tracking
 
     dismissTask({ variables: { taskID: task.internalID } })
-
     onClearTask()
   }
 
