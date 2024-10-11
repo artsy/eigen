@@ -101,27 +101,24 @@ interface HeadlineProps {
 }
 
 const Headline: React.FC<HeadlineProps> = ({ headline, notificationType }) => {
-  if (["ARTWORK_ALERT", "ARTWORK_PUBLISHED"].includes(notificationType)) {
-    // Splitting the headline by " by " to display the artist name on a new line
-    return (
-      <Text variant="sm-display" fontWeight="bold" ellipsizeMode="tail" numberOfLines={2}>
-        {headline.split(" by ")[0] + " by \n" + headline.split(" by ")[1]}
-      </Text>
-    )
-  }
+  let text = headline
 
-  if (["PARTNER_OFFER_CREATED"].includes(notificationType)) {
-    // Splitting the headline by " by " to only display the artist name
-    return (
-      <Text variant="sm-display" fontWeight="bold" ellipsizeMode="tail" numberOfLines={1}>
-        {headline.split(" by ")[1]}
-      </Text>
-    )
+  if (["ARTWORK_ALERT", "ARTWORK_PUBLISHED"].includes(notificationType)) {
+    const split = headline.split(" by ")
+    text = split[0] + " by \n" + split[1]
+  } else if (["PARTNER_SHOW_OPENED"].includes(notificationType)) {
+    const split = headline.split(" at ")
+    text = split[0] + " at \n" + split[1]
+  } else if (["PARTNER_OFFER_CREATED"].includes(notificationType)) {
+    text = headline.split(" by ")[1]
+  } else if (["VIEWING_ROOM_PUBLISHED"].includes(notificationType)) {
+    const split = headline.split(" published by ")
+    text = split[0] + " by \n" + split[1]
   }
 
   return (
-    <Text variant="sm-display" fontWeight="bold" ellipsizeMode="tail" numberOfLines={1}>
-      {headline}
+    <Text variant="sm-display" fontWeight="bold" ellipsizeMode="tail" numberOfLines={2}>
+      {text}
     </Text>
   )
 }
