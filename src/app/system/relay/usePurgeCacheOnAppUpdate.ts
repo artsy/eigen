@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { RelayCache } from "app/system/relay/RelayCache"
+import { _globalCacheRef } from "app/system/relay/defaultEnvironment"
 import { useEffect } from "react"
 import DeviceInfo from "react-native-device-info"
 
@@ -18,7 +18,7 @@ export const usePurgeCacheOnAppUpdate = () => {
           version = value as string
         }
 
-        RelayCache.clearAll()
+        _globalCacheRef.clear()
         AsyncStorage.setItem(APP_CURRENT_VERSION_KEY, version)
       }
     })

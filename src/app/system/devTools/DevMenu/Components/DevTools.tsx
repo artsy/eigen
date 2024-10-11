@@ -1,4 +1,4 @@
-import { Flex, SearchInput, MenuItem, Text } from "@artsy/palette-mobile"
+import { Flex, MenuItem, SearchInput, Text } from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import Clipboard from "@react-native-clipboard/clipboard"
 import * as Sentry from "@sentry/react-native"
@@ -12,7 +12,7 @@ import { DevMenuButtonItem } from "app/system/devTools/DevMenu/Components/DevMen
 import { DevToggleItem } from "app/system/devTools/DevMenu/Components/DevToggleItem"
 import { eigenSentryReleaseName } from "app/system/errorReporting/setupSentry"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
-import { RelayCache } from "app/system/relay/RelayCache"
+import { _globalCacheRef } from "app/system/relay/defaultEnvironment"
 import { saveToken } from "app/utils/PushNotification"
 import { useUnleashEnvironment } from "app/utils/experiments/hooks"
 import { requestSystemPermissions } from "app/utils/requestPushNotificationsPermission"
@@ -103,9 +103,8 @@ export const DevTools: React.FC<{}> = () => {
           <DevMenuButtonItem
             title="Clear Relay Cache"
             onPress={() => {
-              RelayCache.clearAll().then(() => {
-                toast.show("Relay cache cleared ✅", "middle")
-              })
+              _globalCacheRef.clear()
+              toast.show("Relay cache cleared ✅", "middle")
             }}
           />
           <DevMenuButtonItem

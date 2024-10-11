@@ -2,11 +2,13 @@ import { cacheHeaderMiddleware } from "app/system/relay/middlewares/cacheHeaderM
 import { Environment as IEnvironment } from "react-relay"
 import {
   cacheMiddleware,
+  perfMiddleware,
   errorMiddleware as relayErrorMiddleware,
   RelayNetworkLayer,
   uploadMiddleware,
 } from "react-relay-network-modern"
 import { Environment, RecordSource, Store } from "relay-runtime"
+import RelayQueryResponseCache from "relay-runtime/lib/network/RelayQueryResponseCache"
 import { MockEnvironment } from "relay-test-utils"
 
 import { checkAuthenticationMiddleware } from "./middlewares/checkAuthenticationMiddleware"
@@ -20,13 +22,16 @@ import { rateLimitMiddleware } from "./middlewares/rateLimitMiddleware"
 import { simpleLoggerMiddleware } from "./middlewares/simpleLoggerMiddleware"
 import { timingMiddleware } from "./middlewares/timingMiddleware"
 
+export let _globalCacheRef: RelayQueryResponseCache
+
 const network = new RelayNetworkLayer(
   [
     // middlewares use LIFO. The bottom ones in the array will run first after the fetch.
     cacheMiddleware({
       size: 500, // max 500 requests
-      ttl: 3600000, // 1 hour
+      ttl: 900000, // 1 hour
       clearOnMutation: true,
+      onInit: (cache) => (_globalCacheRef = cache),
     }),
     persistedQueryMiddleware(),
     metaphysicsURLMiddleware(),
@@ -38,6 +43,7 @@ const network = new RelayNetworkLayer(
     cacheHeaderMiddleware(),
     simpleLoggerMiddleware(),
     __DEV__ ? relayErrorMiddleware() : null,
+    __DEV__ ? perfMiddleware() : null,
     timingMiddleware(),
     checkAuthenticationMiddleware(), // KEEP AS CLOSE TO THE BOTTOM OF THIS ARRAY AS POSSIBLE. It needs to run as early as possible in the middlewares.
   ],

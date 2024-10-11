@@ -1,7 +1,7 @@
-import { Flex, Join, Spacer, LogoutIcon, ReloadIcon, CloseIcon } from "@artsy/palette-mobile"
+import { CloseIcon, Flex, Join, LogoutIcon, ReloadIcon, Spacer } from "@artsy/palette-mobile"
 import { GlobalStore } from "app/store/GlobalStore"
-import { RelayCache } from "app/system/relay/RelayCache"
-import { TouchableOpacity, Alert, DevSettings } from "react-native"
+import { _globalCacheRef } from "app/system/relay/defaultEnvironment"
+import { Alert, DevSettings, TouchableOpacity } from "react-native"
 
 export const NavButtons: React.FC<{ onClose(): void }> = ({ onClose }) => {
   const isLoggedIn = !!GlobalStore.useAppState((state) => !!state.auth.userID)
@@ -34,7 +34,7 @@ export const NavButtons: React.FC<{ onClose(): void }> = ({ onClose }) => {
         {!!__DEV__ && (
           <TouchableOpacity
             onPress={() => {
-              RelayCache.clearAll()
+              _globalCacheRef.clear()
               onClose()
               requestAnimationFrame(() => DevSettings.reload())
             }}
