@@ -1,7 +1,8 @@
-import { Spacer, Flex, useTheme, Text, Touchable } from "@artsy/palette-mobile"
+import { Spacer, Flex, useTheme, Text, Touchable, SkeletonBox, SkeletonText } from "@artsy/palette-mobile"
 import { ArticleCard_article$data } from "__generated__/ArticleCard_article.graphql"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { navigate } from "app/system/navigation/navigate"
+import { compact } from "lodash"
 import { DateTime } from "luxon"
 import { GestureResponderEvent, useWindowDimensions, View, ViewProps } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -28,6 +29,11 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
   const { space } = useTheme()
   const { width } = useWindowDimensions()
 
+  const formattedPublishedAt =
+    article.publishedAt && DateTime.fromISO(article.publishedAt).toFormat("MMM d, yyyy")
+
+  const formattedVerticalAndDate = compact([article.vertical, formattedPublishedAt]).join(" • ")
+
   return (
     <Flex width={isFluid ? "100%" : ARTICLE_CARD_IMAGE_WIDTH}>
       <Touchable onPress={onTap} testID="article-card">
@@ -53,18 +59,17 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
               />
             ))}
           <Spacer y={1} />
-          <Text variant="xs">{article.vertical || " "}</Text>
-          <Text numberOfLines={3} ellipsizeMode="tail" variant="lg-display">
+          <Text numberOfLines={2} ellipsizeMode="tail" variant="sm-display" mb={0.5}>
             {article.thumbnailTitle}
           </Text>
           {!!article.byline && (
-            <Text color="black100" variant="xs" mt={0.5}>
+            <Text color="black60" variant="xs">
               {article.byline}
             </Text>
           )}
           {!!article.publishedAt && (
-            <Text color="black60" variant="xs" mt={0.5}>
-              {DateTime.fromISO(article.publishedAt).toFormat("MMM d, yyyy")}
+            <Text color="black100" variant="xs">
+              {formattedVerticalAndDate}
             </Text>
           )}
         </Flex>
@@ -89,3 +94,23 @@ export const ArticleCardContainer = createFragmentContainer(ArticleCard, {
     }
   `,
 })
+
+export const SkeletonArticleCard: React.FC = () => (
+  <Flex maxWidth={ARTICLE_CARD_IMAGE_WIDTH}>
+    <SkeletonBox
+      height={ARTICLE_CARD_IMAGE_HEIGHT}
+      width={ARTICLE_CARD_IMAGE_WIDTH}
+    />
+    <Spacer y={1} />
+    <SkeletonText variant="lg-display" mb={0.5}>
+      10 Shows we suggest you don't miss during Berlin Art Week
+    </SkeletonText>
+
+    <SkeletonText variant="xs" numberOfLines={1}>
+      Article Author
+    </SkeletonText>
+    <SkeletonText variant="xs" numberOfLines={1}>
+      Art • Sep 10, 2024
+    </SkeletonText>
+  </Flex>
+)

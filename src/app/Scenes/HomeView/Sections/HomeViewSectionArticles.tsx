@@ -4,13 +4,12 @@ import {
   FlexProps,
   Join,
   Skeleton,
-  SkeletonBox,
   SkeletonText,
   Spacer,
 } from "@artsy/palette-mobile"
 import { HomeViewSectionArticlesQuery } from "__generated__/HomeViewSectionArticlesQuery.graphql"
 import { HomeViewSectionArticles_section$key } from "__generated__/HomeViewSectionArticles_section.graphql"
-import { ARTICLE_CARD_IMAGE_HEIGHT, ARTICLE_CARD_IMAGE_WIDTH } from "app/Components/ArticleCard"
+import { SkeletonArticleCard } from "app/Components/ArticleCard"
 import { ArticlesRailFragmentContainer } from "app/Scenes/Home/Components/ArticlesRail"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { HOME_VIEW_SECTIONS_SEPARATOR_HEIGHT } from "app/Scenes/HomeView/HomeView"
@@ -117,27 +116,7 @@ const HomeViewSectionArticlesPlaceholder: React.FC<FlexProps> = (flexProps) => {
           <Flex flexDirection="row">
             <Join separator={<Spacer x="15px" />}>
               {times(3 + randomValue * 10).map((index) => (
-                <Flex key={index} maxWidth={ARTICLE_CARD_IMAGE_WIDTH}>
-                  <SkeletonBox
-                    key={index}
-                    height={ARTICLE_CARD_IMAGE_HEIGHT}
-                    width={ARTICLE_CARD_IMAGE_WIDTH}
-                  />
-                  <Spacer y={1} />
-                  <SkeletonText variant="xs" mb={0.5}>
-                    Art Market
-                  </SkeletonText>
-                  <SkeletonText variant="lg-display" mb={0.5}>
-                    10 Shows we suggest you don't miss during Berlin Art Week
-                  </SkeletonText>
-
-                  <SkeletonText variant="xs" numberOfLines={1} mb={0.5}>
-                    Article Author
-                  </SkeletonText>
-                  <SkeletonText variant="xs" numberOfLines={1}>
-                    Sep 10, 2024
-                  </SkeletonText>
-                </Flex>
+                <SkeletonArticleCard key={index} />
               ))}
             </Join>
           </Flex>
