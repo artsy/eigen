@@ -1,7 +1,7 @@
 import { screen } from "@testing-library/react-native"
+import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { HomeHeader } from "./HomeHeader"
 
 describe("HomeHeader", () => {
   const TestRenderer: React.FC = () => {

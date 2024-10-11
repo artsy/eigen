@@ -1,7 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react-native"
+import { ActivityIndicator } from "app/Scenes/HomeView/Components/ActivityIndicator"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { ActivityIndicator } from "./ActivityIndicator"
 
 describe("ActivityIndicator", () => {
   it("should be displayed", () => {
