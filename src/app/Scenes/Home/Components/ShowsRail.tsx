@@ -1,20 +1,12 @@
 import { ActionType, ContextModule, OwnerType, TappedShowGroup } from "@artsy/cohesion"
-import {
-  Flex,
-  FlexProps,
-  Join,
-  SkeletonBox,
-  SkeletonText,
-  Spacer,
-  Text,
-} from "@artsy/palette-mobile"
+import { Flex, Join, SkeletonText, Spacer, Text } from "@artsy/palette-mobile"
 import { ShowsRailQuery } from "__generated__/ShowsRailQuery.graphql"
 import {
   ShowsRail_showsConnection$data,
   ShowsRail_showsConnection$key,
 } from "__generated__/ShowsRail_showsConnection.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { ShowCardContainer } from "app/Components/ShowCard"
+import { ShowCardContainer, SkeletonShowCard } from "app/Components/ShowCard"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
@@ -197,21 +189,14 @@ export const ShowsRailContainer: React.FC<ShowsRailContainerProps> = ({
 
 export const ShowsRailPlaceholder: React.FC = () => {
   return (
-    <Flex mx={2} testID="show-rail-placeholder">
-      <SkeletonText numberOfLines={1}>Art on Paper 2024, New York</SkeletonText>
+    <Flex m={2} testID="show-rail-placeholder">
+      <SkeletonText numberOfLines={1}>Shows for You</SkeletonText>
       <Spacer y={1} />
 
       <Flex flexDirection="row">
-        <Join separator={<Spacer x="15px" />}>
-          {times(2).map((i) => (
-            <Flex key={i} flexDirection="column">
-              <SkeletonBox width={300} height={230} my={1} />
-              <Join separator={<Spacer y={0.5} />}>
-                <SkeletonBox width={280} height={32} />
-                <SkeletonBox width={100} height={24} />
-                <SkeletonBox width={130} height={24} />
-              </Join>
-            </Flex>
+        <Join separator={<Spacer x={2} />}>
+          {times(2).map((index) => (
+            <SkeletonShowCard key={index} />
           ))}
         </Join>
       </Flex>

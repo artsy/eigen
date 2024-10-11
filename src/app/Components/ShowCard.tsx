@@ -1,4 +1,4 @@
-import { Spacer, Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { Spacer, Flex, Text, Touchable, SkeletonBox, SkeletonText } from "@artsy/palette-mobile"
 import { toTitleCase } from "@artsy/to-title-case"
 import { ShowCard_show$data } from "__generated__/ShowCard_show.graphql"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
@@ -42,11 +42,13 @@ export const ShowCard: React.FC<ShowCardProps> = ({ show, onPress }) => {
         <Flex width={WIDTH} overflow="hidden">
           {!!imageURL && <ImageView imageURL={imageURL} width={WIDTH} height={HEIGHT} />}
           <Spacer y={1} />
-          <Text numberOfLines={3} ellipsizeMode="tail" variant="lg-display">
+          <Text numberOfLines={2} ellipsizeMode="tail" variant="sm-display" mb={0.5}>
             {show.name}
           </Text>
-          <Text color="black60">{show.partner?.name}</Text>
-          <Text>{formattedCityAndDate}</Text>
+          <Text variant="xs" color="black60">
+            {show.partner?.name}
+          </Text>
+          <Text variant="xs">{formattedCityAndDate}</Text>
         </Flex>
       </Touchable>
     </Flex>
@@ -113,3 +115,17 @@ export const ShowCardContainer = createFragmentContainer(ShowCard, {
     }
   `,
 })
+
+export const SkeletonShowCard: React.FC = () => {
+  return (
+    <Flex width={WIDTH} overflow="hidden">
+      <SkeletonBox height={HEIGHT} width={WIDTH} />
+      <Spacer y={1} />
+      <SkeletonText variant="sm-display" mb={0.5}>
+        Example Show
+      </SkeletonText>
+      <SkeletonText variant="xs"></SkeletonText>
+      <SkeletonText variant="xs">Berlin • Oct 8-Nov 9</SkeletonText>
+    </Flex>
+  )
+}
