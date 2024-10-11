@@ -20,14 +20,10 @@ export const ForgotPasswordStep: React.FC = () => {
   return (
     <Formik<ForgotPasswordStepFormValues>
       initialValues={{ email: screen.params?.email ?? "" }}
-      onSubmit={async ({ email }, { setErrors, resetForm }) => {
-        console.log("🧸")
-
+      onSubmit={async ({ email }, { setErrors }) => {
         const res = await GlobalStore.actions.auth.forgotPassword({
           email,
         })
-
-        console.log({ res })
 
         if (!res) {
           setErrors({
@@ -35,12 +31,7 @@ export const ForgotPasswordStep: React.FC = () => {
               "Couldn’t send reset password link. Please try again, or contact support@artsy.net",
           })
         } else {
-          navigation.navigate({
-            name: "ForgotPasswordStep",
-            params: { requestedPasswordReset: true },
-          })
-
-          resetForm()
+          navigation.setParams({ requestedPasswordReset: true })
         }
       }}
       validationSchema={Yup.object().shape({
@@ -73,8 +64,8 @@ const ForgotPasswordStepForm: React.FC = () => {
   const forgotPasswordRef = useRef<Input>(null)
 
   const handleBackButtonPress = () => {
-    resetForm()
     navigation.goBack()
+    resetForm({ values: { email: screen.params?.email ?? "" } })
   }
 
   const requestedPasswordReset = screen.params?.requestedPasswordReset
@@ -150,7 +141,7 @@ const ForgotPasswordStepForm: React.FC = () => {
 
           <Button
             variant="fillDark"
-            onPress={() => navigation.navigate({ name: "LoginWelcomeStep" })}
+            onPress={handleBackButtonPress}
             block
             haptic="impactMedium"
             testID="returnToLoginButton"
@@ -177,7 +168,7 @@ const ForgotPasswordStepForm: React.FC = () => {
           block
           variant="fillDark"
           haptic="impactMedium"
-          disabled={!isValid || !values.email}
+          disabled={!isValid}
           loading={isSubmitting}
           testID="resetButton"
         >
