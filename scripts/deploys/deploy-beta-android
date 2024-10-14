@@ -5,7 +5,7 @@ source ./scripts/ci/ci-setup-export-vars
 
 # Check if there is a build in progress
 echo "Checking if there is a build in progress..."
-build_status=$(curl https://circleci.com/api/v1.1/project/github/artsy/eigen/tree/beta-android -s | jq -r '.[0].status')
+build_status=$(curl "https://circleci.com/api/v1.1/project/github/artsy/eigen/tree/beta-android?filter=running&limit=1&shallow=true" -s -H 'Cache-Control: no-cache' | jq -r '.[0].status')
 
 # Check if the build status is "running"
 if [ "$build_status" = "running" ]; then
