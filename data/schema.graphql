@@ -11753,61 +11753,6 @@ union InventoryHoldOrErrorUnion = Error | InventoryHold
 # A hold or error object
 union InventoryHoldOrErrorsUnion = Errors | InventoryHold
 
-# Fields of an invoice (currently from Lewitt)
-type Invoice implements Node {
-  # A globally unique ID.
-  id: ID!
-    @deprecated(
-      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
-    )
-
-  # A type-specific ID likely used as a database ID.
-  internalID: ID!
-    @deprecated(
-      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
-    )
-
-  # Lewitt's invoice id.
-  lewittInvoiceID: String!
-    @deprecated(
-      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
-    )
-
-  # Link to public checkout page.
-  paymentURL: String
-    @deprecated(
-      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
-    )
-
-  # Current state of invoice.
-  state: InvoiceState
-    @deprecated(
-      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
-    )
-
-  # A formatted price with various currency formatting options.
-  total(
-    decimal: String = "."
-    disambiguate: Boolean = false
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-    @deprecated(
-      reason: "Payment Request was deprecated. The type was kept for legacy client support. [Will be removed in v2]"
-    )
-}
-
-enum InvoiceState {
-  PAID
-  REFUNDED
-  UNPAID
-  VOID
-}
-
 # Represents untyped JSON
 scalar JSON
 
@@ -12525,18 +12470,6 @@ type Me implements Node {
 
   # A type-specific ID.
   internalID: ID!
-
-  # An invoice
-  invoice(
-    # The ID of the Conversation
-    conversationId: String!
-
-    # The ID of the invoice
-    invoiceId: String!
-  ): Invoice
-    @deprecated(
-      reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
-    )
   isCollector: Boolean!
 
   # User has confirmed their email address
@@ -12979,22 +12912,12 @@ type Message implements Node {
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
-  invoice: Invoice
-    @deprecated(
-      reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
-    )
 
   # True if message is the first in the conversation.
   isFirstMessage: Boolean
 
   # True if message is from the user to the partner.
   isFromUser: Boolean
-
-  # True if message is an invoice message
-  isInvoice: Boolean
-    @deprecated(
-      reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
-    )
 
   # True if message was sent on the platform. False if sent via an email client.
   isMessageSentOnPlatform: Boolean
