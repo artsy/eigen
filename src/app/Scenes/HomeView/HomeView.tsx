@@ -130,6 +130,7 @@ export const HomeView: React.FC = () => {
     <Screen safeArea={true}>
       <Screen.Body fullwidth>
         <FlatList
+          showsVerticalScrollIndicator={false}
           ref={flashlistRef}
           data={sections}
           keyExtractor={(item) => item.internalID}
