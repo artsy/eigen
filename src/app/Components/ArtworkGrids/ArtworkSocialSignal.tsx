@@ -28,7 +28,6 @@ export const ArtworkSocialSignal: React.FC<ArtworkSocialSignalProps> = ({
           borderRadius={3}
           borderWidth={1}
           borderColor={primaryColor}
-          mb={0.5}
         >
           <Text color={primaryColor} variant="xxs">
             Curators’ Pick
@@ -45,7 +44,6 @@ export const ArtworkSocialSignal: React.FC<ArtworkSocialSignalProps> = ({
           borderRadius={3}
           borderWidth={1}
           borderColor={primaryColor}
-          mb={0.5}
         >
           <Text color={primaryColor} variant="xxs">
             Increased Interest
