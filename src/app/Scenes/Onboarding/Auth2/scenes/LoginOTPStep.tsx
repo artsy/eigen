@@ -92,6 +92,10 @@ const LoginOTPStepForm: React.FC = () => {
     <Flex padding={2}>
       <BackButton onPress={handleBackButtonPress} />
 
+      <Spacer y={1} />
+
+      <Text variant="sm-display">Authentication Code</Text>
+
       <Input
         autoCapitalize="none"
         autoComplete="one-time-code"
