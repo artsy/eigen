@@ -47,6 +47,15 @@ describe("HomeViewSectionTasks", () => {
 
     expect(screen.getByText("Task 1")).toBeOnTheScreen()
     expect(screen.getByText("Task Message 1")).toBeOnTheScreen()
+
+    expect(screen.queryByText("Task 2")).not.toBeOnTheScreen()
+
+    fireEvent.press(screen.getByText("Show All"))
+
+    expect(screen.getByText("Task 1")).toBeOnTheScreen()
+    expect(screen.getByText("Task 2")).toBeOnTheScreen()
+
+    expect(screen.getByText("Show Less")).toBeOnTheScreen()
   })
 
   it("navigates and tracks when tapping a task", async () => {
@@ -60,6 +69,7 @@ describe("HomeViewSectionTasks", () => {
       }),
     })
 
+    fireEvent.press(screen.getByText("Show All"))
     fireEvent.press(screen.getByText("Task 1"))
 
     await waitFor(() => {
@@ -131,6 +141,16 @@ const mockTasks = {
         message: "Task Message 1",
         title: "Task 1",
         taskType: "send_wire",
+      },
+    },
+    {
+      node: {
+        actionLink: "/test-link2",
+        actionMessage: "View",
+        imageUrl: "https://d2v80f5yrouhh2.cloudfront.net/2/2.jpg",
+        internalID: "two",
+        message: "Task Message 2",
+        title: "Task 2",
       },
     },
   ],
