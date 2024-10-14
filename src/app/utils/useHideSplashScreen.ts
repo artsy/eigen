@@ -6,6 +6,8 @@ import { usePrefetch } from "app/utils/queryPrefetching"
 import { useEffect } from "react"
 import RNBootSplash from "react-native-bootsplash"
 
+const HOME_VIEW_SPLASH_SCREEN_DELAY = 500
+
 export const useHideSplashScreen = () => {
   const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
@@ -28,13 +30,9 @@ export const useHideSplashScreen = () => {
           prefetchUrl("/", homeViewScreenQueryVariables(), {
             force: false,
           })
-            ?.then(() => {
-              hideSplashScreen()
-            })
-            .catch((error) => {
-              console.error("Failed to prefetch home view", error)
-              hideSplashScreen()
-            })
+          setTimeout(() => {
+            hideSplashScreen()
+          }, HOME_VIEW_SPLASH_SCREEN_DELAY)
         }
         return
       }
@@ -42,6 +40,5 @@ export const useHideSplashScreen = () => {
         hideSplashScreen()
       }
     }
-    hideSplashScreen()
   }, [isHydrated, isLoggedIn, isNavigationReady])
 }
