@@ -29,7 +29,10 @@ export const Task: React.FC<TaskProps> = ({
   const task = useFragment(taskFragment, restProps.task)
 
   const handlePressTask = () => {
-    if (onPress) return onPress()
+    if (onPress) {
+      onPress()
+      return
+    }
 
     // TODO: Add tracking
 
