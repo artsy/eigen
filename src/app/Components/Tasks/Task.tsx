@@ -3,20 +3,37 @@ import { Task_task$key } from "__generated__/Task_task.graphql"
 import { Swipeable } from "app/Components/Swipeable/Swipeable"
 import { navigate } from "app/system/navigation/navigate"
 import { useDismissTask } from "app/utils/mutations/useDismissTask"
+import { useRef } from "react"
+import { PixelRatio } from "react-native"
+import { SwipeableMethods } from "react-native-gesture-handler/lib/typescript/components/ReanimatedSwipeable"
 import { graphql, useFragment } from "react-relay"
 
 const TASK_IMAGE_SIZE = 60
 
-export const Task: React.FC<{
+interface TaskProps {
   disableSwipeable?: boolean
   onClearTask: () => void
+  onPress?: () => void
   task: Task_task$key
-}> = ({ disableSwipeable, onClearTask, ...restProps }) => {
+}
+
+export const Task: React.FC<TaskProps> = ({
+  disableSwipeable,
+  onClearTask,
+  onPress,
+  ...restProps
+}) => {
   const { submitMutation: dismissTask } = useDismissTask()
+  const fontScale = PixelRatio.getFontScale()
 
   const task = useFragment(taskFragment, restProps.task)
 
   const handlePressTask = () => {
+    if (onPress) {
+      onPress()
+      return
+    }
+
     // TODO: Add tracking
 
     // TODO: Resolve the task instead of dismissing it.
@@ -28,18 +45,26 @@ export const Task: React.FC<{
 
   const handleClearTask = async () => {
     // TODO: Add tracking
-
     dismissTask({ variables: { taskID: task.internalID } })
+
     onClearTask()
   }
 
+  const swipeableRef = useRef<SwipeableMethods>(null)
+
   return (
     <Swipeable
-      actionComponent={<Text color="white100">Clear</Text>}
+      actionComponent={
+        <Text variant="xs" color="white100">
+          Clear
+        </Text>
+      }
+      actionComponentWidth={80 * fontScale}
       actionOnPress={handleClearTask}
       actionOnSwipe={handleClearTask}
       actionBackground="red100"
       enabled={!disableSwipeable}
+      ref={swipeableRef}
     >
       <Flex backgroundColor="white100" borderRadius={5}>
         <Touchable onPress={handlePressTask}>
@@ -48,7 +73,7 @@ export const Task: React.FC<{
             ml={2}
             flexDirection="row"
             border="1px solid"
-            borderColor="black60"
+            borderColor="black100"
             borderRadius={5}
             zIndex={3}
             backgroundColor="black100"
@@ -57,7 +82,7 @@ export const Task: React.FC<{
               <Image src={task.imageUrl} width={TASK_IMAGE_SIZE} height={TASK_IMAGE_SIZE} />
             </Flex>
 
-            <Flex flex={1}>
+            <Flex flex={1} pr={1}>
               <Text color="white100" variant="xs" fontWeight="bold">
                 {task.title}
               </Text>
