@@ -1,4 +1,4 @@
-import { Color, Flex, Touchable } from "@artsy/palette-mobile"
+import { Color, Flex, Touchable, useColor } from "@artsy/palette-mobile"
 import { forwardRef, useRef } from "react"
 import ReanimatedSwipeable, {
   SwipeableMethods,
@@ -41,6 +41,7 @@ export const Swipeable = forwardRef((props: SwipeableProps, swipeableRef: Swipea
     swipeableProps,
   } = props
 
+  const color = useColor()
   const width = useSharedValue(0)
 
   const hasSwiped = useRef(false)
@@ -86,8 +87,8 @@ export const Swipeable = forwardRef((props: SwipeableProps, swipeableRef: Swipea
                 top: 0,
                 right: 0,
                 height: "100%",
-                backgroundColor: actionBackground,
-                borderColor: actionBackground,
+                backgroundColor: color(actionBackground),
+                borderColor: color(actionBackground),
                 borderRadius: 5,
                 minWidth: actionComponentWidth,
                 justifyContent: "center",
