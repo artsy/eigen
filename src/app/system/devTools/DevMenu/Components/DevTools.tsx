@@ -103,7 +103,7 @@ export const DevTools: React.FC<{}> = () => {
           <DevMenuButtonItem
             title="Clear Relay Cache"
             onPress={() => {
-              _globalCacheRef.clear()
+              _globalCacheRef?.clear()
               toast.show("Relay cache cleared ✅", "middle")
             }}
           />

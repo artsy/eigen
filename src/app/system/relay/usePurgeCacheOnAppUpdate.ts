@@ -18,7 +18,7 @@ export const usePurgeCacheOnAppUpdate = () => {
           version = value as string
         }
 
-        _globalCacheRef.clear()
+        _globalCacheRef?.clear()
         AsyncStorage.setItem(APP_CURRENT_VERSION_KEY, version)
       }
     })

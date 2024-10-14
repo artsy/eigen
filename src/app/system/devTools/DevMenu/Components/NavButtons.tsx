@@ -34,7 +34,7 @@ export const NavButtons: React.FC<{ onClose(): void }> = ({ onClose }) => {
         {!!__DEV__ && (
           <TouchableOpacity
             onPress={() => {
-              _globalCacheRef.clear()
+              _globalCacheRef?.clear()
               onClose()
               requestAnimationFrame(() => DevSettings.reload())
             }}

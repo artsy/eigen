@@ -22,7 +22,7 @@ import { rateLimitMiddleware } from "./middlewares/rateLimitMiddleware"
 import { simpleLoggerMiddleware } from "./middlewares/simpleLoggerMiddleware"
 import { timingMiddleware } from "./middlewares/timingMiddleware"
 
-export let _globalCacheRef: RelayQueryResponseCache
+export let _globalCacheRef: RelayQueryResponseCache | undefined
 
 const network = new RelayNetworkLayer(
   [

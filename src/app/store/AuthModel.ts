@@ -833,7 +833,7 @@ export const getAuthModel = (): AuthModel => ({
       await signOutGoogle(),
       LoginManager.logOut(),
       CookieManager.clearAll(),
-      _globalCacheRef.clear(),
+      _globalCacheRef?.clear(),
     ])
 
     actions.setSessionState({ isUserIdentified: true })

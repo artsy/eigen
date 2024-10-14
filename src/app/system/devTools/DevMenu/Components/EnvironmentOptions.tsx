@@ -124,7 +124,7 @@ function envMenuOption(
         GlobalStore.actions.devicePrefs.environment.setEnv(env)
         onClose()
         GlobalStore.actions.auth.signOut()
-        _globalCacheRef.clear()
+        _globalCacheRef?.clear()
       } else {
         setShowCustomURLOptions(!showCustomURLOptions)
       }
