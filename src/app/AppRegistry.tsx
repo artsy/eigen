@@ -500,9 +500,6 @@ export const modules = defineModules({
     HomeContainer,
     {
       isRootViewForTabName: "home",
-      screenOptions: {
-        statusBarTranslucent: true,
-      },
       fullBleed: true,
     },
     [homeViewScreenQuery]
