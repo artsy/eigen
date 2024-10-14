@@ -6,7 +6,7 @@ import { usePrefetch } from "app/utils/queryPrefetching"
 import { useEffect } from "react"
 import RNBootSplash from "react-native-bootsplash"
 
-const HOME_VIEW_QUERY_AVERAGE_LATENCY = 500
+const HOME_VIEW_SPLASH_SCREEN_DELAY = 500
 
 export const useHideSplashScreen = () => {
   const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
@@ -32,7 +32,7 @@ export const useHideSplashScreen = () => {
           })
           setTimeout(() => {
             hideSplashScreen()
-          }, HOME_VIEW_QUERY_AVERAGE_LATENCY)
+          }, HOME_VIEW_SPLASH_SCREEN_DELAY)
         }
         return
       }
