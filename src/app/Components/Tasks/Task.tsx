@@ -16,7 +16,6 @@ interface TaskProps {
   onPress?: () => void
   task: Task_task$key
 }
-
 export const Task: React.FC<TaskProps> = ({
   disableSwipeable,
   onClearTask,
@@ -62,7 +61,6 @@ export const Task: React.FC<TaskProps> = ({
       actionComponentWidth={80 * fontScale}
       actionOnPress={handleClearTask}
       actionOnSwipe={handleClearTask}
-      actionBackground="red100"
       enabled={!disableSwipeable}
       ref={swipeableRef}
     >
