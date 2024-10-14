@@ -79,7 +79,7 @@ export const ArtworkDetailsCollectorSignal: React.FC<Props> = ({ artwork }) => {
     <Flex flexDirection="row" pt={4} pb={2}>
       <SignalIcon mr={0.5} fill="black60" height={25} width={25} />
 
-      <Flex flexDirection="column">
+      <Flex flex={1} flexDirection="column">
         <Text variant="sm-display" color="black100">
           {singalTitle}
         </Text>
