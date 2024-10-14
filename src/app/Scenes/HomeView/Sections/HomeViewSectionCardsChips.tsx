@@ -1,7 +1,6 @@
-import { Flex, FlexProps, Skeleton, SkeletonBox, Spacer } from "@artsy/palette-mobile"
-import { HomeViewSectionDiscoverMarketingCollectionsQuery } from "__generated__/HomeViewSectionDiscoverMarketingCollectionsQuery.graphql"
-import { HomeViewSectionDiscoverMarketingCollections_section$key } from "__generated__/HomeViewSectionDiscoverMarketingCollections_section.graphql"
-import { Chip } from "app/Components/Chip"
+import { Chip, Flex, Skeleton, SkeletonBox, Spacer, useSpace } from "@artsy/palette-mobile"
+import { HomeViewSectionCardsChipsQuery } from "__generated__/HomeViewSectionCardsChipsQuery.graphql"
+import { HomeViewSectionCardsChips_section$key } from "__generated__/HomeViewSectionCardsChips_section.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { navigate } from "app/system/navigation/navigate"
@@ -9,55 +8,65 @@ import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useClientQuery } from "app/utils/useClientQuery"
-import { times } from "lodash"
 import { FlatList, ScrollView } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 
-interface HomeViewSectionDiscoverMarketingCollectionsProps {
-  section: HomeViewSectionDiscoverMarketingCollections_section$key
+interface HomeViewSectionCardsChipsProps {
+  section: HomeViewSectionCardsChips_section$key
   index: number
 }
 
-export const HomeViewSectionDiscoverMarketingCollections: React.FC<
-  HomeViewSectionDiscoverMarketingCollectionsProps
-> = ({ section: sectionProp }) => {
+const CHIP_WIDTH = 230
+
+export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps> = ({
+  section: sectionProp,
+}) => {
+  const space = useSpace()
   const section = useFragment(fragment, sectionProp)
   const links = extractNodes(section.cardsConnection)
 
   if (links.length === 0) return null
 
-  const numColumns = isTablet() ? Math.ceil(links.length / 2) : Math.ceil(links.length / 3)
+  const numColumns = !isTablet() ? Math.ceil(links.length / 3) : Math.ceil(links.length / 2)
+  const snapToOffsets = !isTablet()
+    ? [CHIP_WIDTH / 2 + CHIP_WIDTH / 4, CHIP_WIDTH * 2]
+    : [CHIP_WIDTH * 3]
 
   return (
-    <Flex>
-      <Flex pl={2}>
+    <Flex p={2}>
+      <Flex>
         <SectionTitle title={section.component?.title} />
       </Flex>
+
       <ScrollView
         horizontal
-        showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ paddingLeft: 20, paddingRight: 10 }}
+        pagingEnabled
+        snapToEnd={false}
+        snapToOffsets={snapToOffsets}
+        decelerationRate="fast"
       >
         <FlatList
           scrollEnabled={true}
-          contentContainerStyle={{ alignSelf: "flex-start" }}
+          columnWrapperStyle={{ gap: space(1) }}
           ItemSeparatorComponent={() => <Spacer y={1} />}
+          contentContainerStyle={{ gap: 40 }}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           numColumns={numColumns}
           data={links}
           keyExtractor={(item, index) => `item_${index}_${item.entityID}`}
           renderItem={({ item }) => (
-            <Chip
-              key={item.href}
-              title={item.title}
-              subtitle={item.subtitle}
-              onPress={() => {
-                if (item?.href) navigate(item.href)
-              }}
-            />
+            <Flex minWidth={CHIP_WIDTH}>
+              <Chip
+                key={item.href}
+                title={item.title}
+                onPress={() => {
+                  if (item?.href) navigate(item.href)
+                }}
+              />
+            </Flex>
           )}
         />
       </ScrollView>
@@ -66,7 +75,7 @@ export const HomeViewSectionDiscoverMarketingCollections: React.FC<
 }
 
 const fragment = graphql`
-  fragment HomeViewSectionDiscoverMarketingCollections_section on HomeViewSectionCards {
+  fragment HomeViewSectionCardsChips_section on HomeViewSectionCards {
     __typename
     internalID
     contextModule
@@ -79,7 +88,6 @@ const fragment = graphql`
         node {
           entityID
           title
-          subtitle
           href
         }
       }
@@ -87,11 +95,10 @@ const fragment = graphql`
   }
 `
 
-const HomeViewSectionDiscoverMarketingCollectionsPlaceholder: React.FC<FlexProps> = () => {
-  const data = times(9).map((index) => {
-    index
-  })
-  const numColumns = isTablet() ? Math.ceil(data.length / 2) : Math.ceil(data.length / 3)
+const HomeViewSectionCardsChipsPlaceholder: React.FC = () => {
+  const listSize = 9
+
+  const numColumns = isTablet() ? Math.ceil(listSize / 2) : Math.ceil(listSize / 3)
   return (
     <Skeleton>
       <Flex pl={2}>
@@ -111,7 +118,7 @@ const HomeViewSectionDiscoverMarketingCollectionsPlaceholder: React.FC<FlexProps
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
             numColumns={numColumns}
-            data={data}
+            data={Array.from({ length: listSize })}
             renderItem={() => (
               <Flex width={250} marginRight="10px">
                 <SkeletonBox height={60} borderRadius="5px" />
@@ -125,37 +132,32 @@ const HomeViewSectionDiscoverMarketingCollectionsPlaceholder: React.FC<FlexProps
 }
 
 const query = graphql`
-  query HomeViewSectionDiscoverMarketingCollectionsQuery($id: String!) {
+  query HomeViewSectionCardsChipsQuery($id: String!) {
     homeView {
       section(id: $id) {
-        ...HomeViewSectionDiscoverMarketingCollections_section
+        ...HomeViewSectionCardsChips_section
       }
     }
   }
 `
 
-export const HomeViewSectionDiscoverMarketingCollectionsQueryRenderer: React.FC<SectionSharedProps> =
-  withSuspense({
-    Component: ({ sectionID, index, ...flexProps }) => {
-      const isEnabled = useFeatureFlag("AREnableMarketingCollectionsCategories")
-      const { data } = useClientQuery<HomeViewSectionDiscoverMarketingCollectionsQuery>({
-        query,
-        variables: { id: sectionID },
-        skip: !isEnabled,
-      })
+export const HomeViewSectionCardsChipsQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
+  Component: ({ sectionID, index, ...flexProps }) => {
+    const isEnabled = useFeatureFlag("AREnableMarketingCollectionsCategories")
+    const { data } = useClientQuery<HomeViewSectionCardsChipsQuery>({
+      query,
+      variables: { id: sectionID },
+      skip: !isEnabled,
+    })
 
-      if (!data?.homeView.section || !isEnabled) {
-        return null
-      }
+    if (!data?.homeView.section || !isEnabled) {
+      return null
+    }
 
-      return (
-        <HomeViewSectionDiscoverMarketingCollections
-          section={data.homeView.section}
-          index={index}
-          {...flexProps}
-        />
-      )
-    },
-    LoadingFallback: HomeViewSectionDiscoverMarketingCollectionsPlaceholder,
-    ErrorFallback: NoFallback,
-  })
+    return (
+      <HomeViewSectionCardsChips section={data.homeView.section} index={index} {...flexProps} />
+    )
+  },
+  LoadingFallback: HomeViewSectionCardsChipsPlaceholder,
+  ErrorFallback: NoFallback,
+})
