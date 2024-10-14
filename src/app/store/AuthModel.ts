@@ -5,7 +5,7 @@ import CookieManager from "@react-native-cookies/cookies"
 import { GoogleSignin, statusCodes } from "@react-native-google-signin/google-signin"
 import * as Sentry from "@sentry/react-native"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import * as RelayCache from "app/system/relay/RelayCache"
+import { _globalCacheRef } from "app/system/relay/defaultEnvironment"
 import {
   handleClassicFacebookAuth,
   handleLimitedFacebookAuth,
@@ -833,7 +833,7 @@ export const getAuthModel = (): AuthModel => ({
       await signOutGoogle(),
       LoginManager.logOut(),
       CookieManager.clearAll(),
-      RelayCache.clearAll(),
+      _globalCacheRef?.clear(),
     ])
 
     actions.setSessionState({ isUserIdentified: true })
