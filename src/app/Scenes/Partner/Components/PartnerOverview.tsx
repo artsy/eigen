@@ -29,8 +29,7 @@ export const PartnerOverview: React.FC<{
 
 export const PartnerOverviewFragmentContainer = createFragmentContainer(PartnerOverview, {
   partner: graphql`
-    fragment PartnerOverview_partner on Partner
-    @argumentDefinitions(displayArtistsSection: { type: "Boolean", defaultValue: false }) {
+    fragment PartnerOverview_partner on Partner {
       displayArtistsSection
       profile {
         bio
@@ -42,7 +41,7 @@ export const PartnerOverviewFragmentContainer = createFragmentContainer(PartnerO
         totalCount
       }
       ...PartnerOverviewListBase_partner
-      ...PartnerOverviewListArtists_partner @include(if: $displayArtistsSection)
+      ...PartnerOverviewListArtists_partner
     }
   `,
 })
