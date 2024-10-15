@@ -25,18 +25,22 @@ export const useHideSplashScreen = () => {
     }
 
     if (isHydrated) {
-      if (isLoggedIn && isNavigationReady) {
-        if (shouldDisplayNewHomeView) {
-          prefetchUrl("/", homeViewScreenQueryVariables(), {
-            force: false,
-          })
-          setTimeout(() => {
-            hideSplashScreen()
-          }, HOME_VIEW_SPLASH_SCREEN_DELAY)
+      if (shouldDisplayNewHomeView) {
+        if (isLoggedIn && isNavigationReady) {
+          if (shouldDisplayNewHomeView) {
+            prefetchUrl("/", homeViewScreenQueryVariables(), {
+              force: false,
+            })
+            setTimeout(() => {
+              hideSplashScreen()
+            }, HOME_VIEW_SPLASH_SCREEN_DELAY)
+          }
+          return
         }
-        return
-      }
-      if (!isLoggedIn) {
+        if (!isLoggedIn) {
+          hideSplashScreen()
+        }
+      } else {
         hideSplashScreen()
       }
     }
