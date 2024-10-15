@@ -104,8 +104,7 @@ export const PartnerContainer = createRefetchContainer(
   Partner,
   {
     partner: graphql`
-      fragment Partner_partner on Partner
-      @argumentDefinitions(displayArtistsSection: { type: "Boolean", defaultValue: true }) {
+      fragment Partner_partner on Partner {
         id
         name
         internalID
@@ -113,7 +112,7 @@ export const PartnerContainer = createRefetchContainer(
         partnerType
         displayFullPartnerPage
         ...PartnerArtwork_partner @arguments(input: { sort: "-partner_updated_at" })
-        ...PartnerOverview_partner @arguments(displayArtistsSection: $displayArtistsSection)
+        ...PartnerOverview_partner
         ...PartnerShows_partner
         ...PartnerHeader_partner
         ...PartnerSubscriberBanner_partner
@@ -133,7 +132,7 @@ export const PartnerQueryRenderer: React.FC<{
   partnerID: string
   isVisible: boolean
 }> = ({ partnerID, ...others }) => {
-  const { loading, data } = useClientQuery<PartnerInitialQuery>({
+  const { loading } = useClientQuery<PartnerInitialQuery>({
     environment: getRelayEnvironment(),
     query: graphql`
       query PartnerInitialQuery($partnerID: String!) {
@@ -153,15 +152,14 @@ export const PartnerQueryRenderer: React.FC<{
     <QueryRenderer<PartnerQuery>
       environment={getRelayEnvironment()}
       query={graphql`
-        query PartnerQuery($partnerID: String!, $displayArtistsSection: Boolean!) @cacheable {
+        query PartnerQuery($partnerID: String!) @cacheable {
           partner(id: $partnerID) {
-            ...Partner_partner @arguments(displayArtistsSection: $displayArtistsSection)
+            ...Partner_partner
           }
         }
       `}
       variables={{
         partnerID,
-        displayArtistsSection: data?.partner?.displayArtistsSection ?? true,
       }}
       cacheConfig={{
         force: false,

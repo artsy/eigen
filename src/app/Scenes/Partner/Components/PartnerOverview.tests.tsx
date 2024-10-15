@@ -10,7 +10,7 @@ describe("PartnerOverview", () => {
     query: graphql`
       query PartnerOverview_Test_Query @relay_test_operation {
         partner(id: "example") {
-          ...PartnerOverview_partner @arguments(displayArtistsSection: true)
+          ...PartnerOverview_partner
         }
       }
     `,
