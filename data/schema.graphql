@@ -11811,6 +11811,7 @@ type Invoice {
     symbol: String
     thousand: String = ","
   ): String
+  remainingMinor: Int!
   state: InvoiceState!
 }
 
