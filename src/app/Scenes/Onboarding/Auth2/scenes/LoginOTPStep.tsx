@@ -15,7 +15,7 @@ import {
 } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Formik, useFormikContext } from "formik"
+import { Formik } from "formik"
 import { useRef, useState } from "react"
 import * as Yup from "yup"
 
@@ -24,13 +24,22 @@ interface LoginOTPStepFormValues {
 }
 
 export const LoginOTPStep: React.FC = () => {
+  const [codeType, setCodeType] = useState<"authentication" | "recovery">("authentication")
+
+  const navigation = useAuthNavigation()
   const screen = useAuthScreen()
+  const otpRef = useRef<Input>(null)
+
+  const { color } = useTheme()
+
+  useInputAutofocus({
+    screenName: "LoginOTPStep",
+    inputRef: otpRef,
+  })
 
   return (
     <Formik<LoginOTPStepFormValues>
       initialValues={{ otp: "" }}
-      validateOnChange={true}
-      validateOnMount={false}
       validationSchema={Yup.object().shape({
         otp: Yup.string().required("This field is required"),
       })}
@@ -54,101 +63,99 @@ export const LoginOTPStep: React.FC = () => {
         }
       }}
     >
-      <LoginOTPStepForm />
-    </Formik>
-  )
-}
+      {({
+        errors,
+        handleChange,
+        handleSubmit,
+        isSubmitting,
+        isValid,
+        validateForm,
+        values,
+        resetForm,
+      }) => (
+        <Flex padding={2}>
+          <BackButton
+            onPress={() => {
+              navigation.goBack()
+              resetForm()
+              setCodeType("authentication")
+            }}
+          />
 
-const LoginOTPStepForm: React.FC = () => {
-  const [recoveryCodeMode, setRecoveryCodeMode] = useState(false)
+          <Spacer y={1} />
 
-  const {
-    errors,
-    handleChange,
-    handleSubmit,
-    isSubmitting,
-    isValid,
-    setErrors,
-    validateForm,
-    values,
-    resetForm,
-  } = useFormikContext<LoginOTPStepFormValues>()
+          <Text variant="sm-display">Authentication Code</Text>
 
-  const navigation = useAuthNavigation()
-  const screen = useAuthScreen()
-  const otpRef = useRef<Input>(null)
+          <Input
+            autoCapitalize="none"
+            autoComplete="one-time-code"
+            autoCorrect={false}
+            blurOnSubmit={false}
+            error={errors.otp}
+            keyboardType={codeType === "authentication" ? "numeric" : "ascii-capable"}
+            placeholder={
+              codeType === "authentication"
+                ? "Enter an authentication code"
+                : "Enter a recovery code"
+            }
+            placeholderTextColor={color("black30")}
+            ref={otpRef}
+            returnKeyType="done"
+            title={codeType === "authentication" ? "Authentication code" : "Recovery code"}
+            value={values.otp}
+            textContentType="oneTimeCode"
+            onChangeText={(text) => {
+              handleChange("otp")(text)
+            }}
+            onBlur={() => validateForm()}
+          />
 
-  const { color } = useTheme()
+          <Spacer y={1} />
 
-  useInputAutofocus({
-    screenName: "LoginOTPStep",
-    inputRef: otpRef,
-  })
+          {screen.params?.otpMode === "on_demand" && (
+            <>
+              <Spacer y={2} />
 
-  const handleBackButtonPress = () => {
-    resetForm()
-    navigation.goBack()
-    setRecoveryCodeMode(false)
-  }
+              <SimpleMessage>
+                Your safety and security are important to us. Please check your email for a one-time
+                authentication code to complete your login.
+              </SimpleMessage>
+            </>
+          )}
 
-  return (
-    <Flex padding={2}>
-      <BackButton onPress={handleBackButtonPress} />
-
-      <Input
-        autoCapitalize="none"
-        autoComplete="one-time-code"
-        autoCorrect={false}
-        blurOnSubmit={false}
-        error={errors.otp}
-        keyboardType={recoveryCodeMode ? "ascii-capable" : "numeric"}
-        placeholder={recoveryCodeMode ? "Enter a recovery code" : "Enter an authentication code"}
-        placeholderTextColor={color("black30")}
-        ref={otpRef}
-        returnKeyType="done"
-        title={recoveryCodeMode ? "Recovery code" : "Authentication code"}
-        value={values.otp}
-        onChangeText={(text) => {
-          // Hide error when the user starts to type again
-          if (errors.otp) {
-            setErrors({ otp: undefined })
-            validateForm()
-          }
-          handleChange("otp")(text)
-        }}
-        onBlur={() => validateForm()}
-      />
-
-      <Spacer y={1} />
-
-      {screen.params?.otpMode === "on_demand" && (
-        <>
           <Spacer y={2} />
 
-          <SimpleMessage testID="on_demand_message">
-            Your safety and security are important to us. Please check your email for a one-time
-            authentication code to complete your login.
-          </SimpleMessage>
-        </>
+          <Button
+            block
+            width="100%"
+            onPress={handleSubmit}
+            disabled={!isValid}
+            loading={isSubmitting}
+          >
+            Continue
+          </Button>
+
+          <Spacer y={2} />
+
+          {screen.params?.otpMode === "standard" && (
+            <Touchable
+              onPress={() => {
+                if (codeType === "authentication") {
+                  setCodeType("recovery")
+                } else {
+                  setCodeType("authentication")
+                }
+              }}
+            >
+              <Text variant="xs" color="black60" underline>
+                {codeType === "authentication"
+                  ? "Enter recovery code instead"
+                  : "Enter authentication code"}
+              </Text>
+            </Touchable>
+          )}
+        </Flex>
       )}
-
-      <Spacer y={2} />
-
-      <Button block width="100%" onPress={handleSubmit} disabled={!isValid} loading={isSubmitting}>
-        Continue
-      </Button>
-
-      <Spacer y={2} />
-
-      <Touchable
-        onPress={() => {
-          setRecoveryCodeMode((mode) => !mode)
-        }}
-      >
-        <Text variant="xs" color="black60" underline>
-          {recoveryCodeMode ? "Enter authentication code" : "Enter recovery code instead"}
-        </Text>
-      </Touchable>
-    </Flex>
+    </Formik>
   )
 }

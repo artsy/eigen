@@ -146,7 +146,7 @@ const ForgotPasswordStepForm: React.FC = () => {
             haptic="impactMedium"
             testID="returnToLoginButton"
           >
-            Return to login
+            Return to Login
           </Button>
 
           <Spacer y={1} />
