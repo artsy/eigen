@@ -30,8 +30,8 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
 
   const numColumns = !isTablet() ? Math.ceil(links.length / 3) : Math.ceil(links.length / 2)
   const snapToOffsets = !isTablet()
-    ? [CHIP_WIDTH / 2 + CHIP_WIDTH / 4, CHIP_WIDTH * 2]
-    : [CHIP_WIDTH * 3]
+    ? [CHIP_WIDTH / 2 + CHIP_WIDTH / 4 + space(0.5), CHIP_WIDTH * 2]
+    : [CHIP_WIDTH * numColumns - 2]
 
   return (
     <Flex p={2}>
