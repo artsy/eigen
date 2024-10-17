@@ -14,11 +14,11 @@ export const NoFallback = Symbol("NoFallback")
  */
 export const SpinnerFallback = Symbol("SpinnerFallback")
 
-interface WithSuspenseOptions {
+type WithSuspenseOptions<T> = {
   /**
    * The component to be rendered within the suspense boundary.
    */
-  Component: React.FC<any>
+  Component: React.FC<T extends Object ? T : any>
 
   /**
    * The component to display while the content is loading.
@@ -45,16 +45,16 @@ const DefaultLoadingFallback: React.FC = () => (
  * Allows specifying fallback components for both loading and error states.
  *
  * @param {WithSuspenseOptions} options - Configuration options for the HOC.
- * @param {React.FC<any>} options.Component - The component to render within the suspense boundary.
+ * @param {React.FC<T>} options.Component - The component to render within the suspense boundary.
  * @param {React.FC<any> | typeof SpinnerFallback} options.LoadingFallback - The component to display while loading (or `SpinnerFallback` for default).
  * @param {((props: FallbackProps) => ReactElement | null) | typeof NoFallback} options.ErrorFallback - The component to display if an error occurs (or `NoFallback` to skip).
  * @returns {React.FC<any>} The wrapped component with suspense and error handling.
  */
-export const withSuspense = ({
+export const withSuspense = <T extends Object | any>({
   Component,
   LoadingFallback,
   ErrorFallback,
-}: WithSuspenseOptions) => {
+}: WithSuspenseOptions<T>): React.FC<T> => {
   const LoadingFallbackComponent =
     LoadingFallback === SpinnerFallback ? DefaultLoadingFallback : LoadingFallback
 

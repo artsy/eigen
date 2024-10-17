@@ -23,10 +23,12 @@ import { graphql, useFragment } from "react-relay"
 
 interface HomeViewSectionCardsProps {
   section: HomeViewSectionCards_section$key
+  homeViewSectionId: string
 }
 
 export const HomeViewSectionExploreBy: React.FC<HomeViewSectionCardsProps> = ({
   section: _section,
+  homeViewSectionId,
 }) => {
   const { width } = useScreenDimensions()
   const space = useSpace()
@@ -42,6 +44,12 @@ export const HomeViewSectionExploreBy: React.FC<HomeViewSectionCardsProps> = ({
   const imageSize = width / columns - space(2) - imageColumnGaps
   const categories = extractNodes(section.cardsConnection)
 
+  const handleCategoryPress = (category: string, entityID: string) => {
+    navigate(
+      `/collections-by-category/${category}?homeViewSectionId=${homeViewSectionId}&entityID=${entityID}`
+    )
+  }
+
   return (
     <Flex p={2} gap={space(2)}>
       <Text>{section.component?.title}</Text>
@@ -55,7 +63,7 @@ export const HomeViewSectionExploreBy: React.FC<HomeViewSectionCardsProps> = ({
           return (
             <Touchable
               key={`exploreBy-${index}`}
-              onPress={() => navigate(`/collections-by-category/${category.entityID}`)}
+              onPress={() => handleCategoryPress(category.title, category.entityID)}
             >
               <Flex borderRadius={5} overflow="hidden">
                 <Image src={src} width={imageSize} height={imageSize} />
@@ -87,8 +95,8 @@ const fragment = graphql`
     cardsConnection(first: 6) {
       edges {
         node {
-          entityID
-          title
+          entityID @required(action: NONE)
+          title @required(action: NONE)
           image {
             url
           }
@@ -134,8 +142,10 @@ const HomeViewCardsPlaceholder: React.FC = () => {
   )
 }
 
-export const HomeViewSectionCardsQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
-  Component: ({ sectionID, index, ...flexProps }) => {
+export const HomeViewSectionCardsQueryRenderer = withSuspense<
+  Pick<SectionSharedProps, "sectionID">
+>({
+  Component: ({ sectionID }) => {
     const isEnabled = useFeatureFlag("AREnableMarketingCollectionsCategories")
     const { data } = useClientQuery<HomeViewSectionCardsQuery>({
       query,
@@ -147,7 +157,9 @@ export const HomeViewSectionCardsQueryRenderer: React.FC<SectionSharedProps> = w
       return null
     }
 
-    return <HomeViewSectionExploreBy section={data.homeView.section} index={index} {...flexProps} />
+    return (
+      <HomeViewSectionExploreBy section={data.homeView.section} homeViewSectionId={sectionID} />
+    )
   },
   LoadingFallback: HomeViewCardsPlaceholder,
   ErrorFallback: NoFallback,
