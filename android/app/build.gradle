@@ -217,9 +217,14 @@ dependencies {
     implementation 'com.facebook.fresco:animated-webp:3.6.0'
     implementation 'com.facebook.fresco:webpsupport:3.6.0'
 
+    // for Android In App Update
+    implementation 'com.google.android.play:app-update:2.1.0'
+    implementation 'com.google.android.play:app-update-ktx:2.1.0'
+
     // Test dependencies
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'io.mockk:mockk:1.13.12'
+
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
