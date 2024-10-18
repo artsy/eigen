@@ -1,3 +1,4 @@
+import { ActionType, ResetYourPassword } from "@artsy/cohesion"
 import { BackButton, Button, Flex, Input, Spacer, Text, useTheme } from "@artsy/palette-mobile"
 import {
   useAuthNavigation,
@@ -7,6 +8,7 @@ import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAut
 import { GlobalStore } from "app/store/GlobalStore"
 import { Formik, useFormikContext } from "formik"
 import { useEffect, useRef } from "react"
+import { useTracking } from "react-tracking"
 import * as Yup from "yup"
 
 interface ForgotPasswordStepFormValues {
@@ -16,6 +18,7 @@ interface ForgotPasswordStepFormValues {
 export const ForgotPasswordStep: React.FC = () => {
   const navigation = useAuthNavigation()
   const screen = useAuthScreen()
+  const tracking = useTracking()
 
   return (
     <Formik<ForgotPasswordStepFormValues>
@@ -28,9 +31,10 @@ export const ForgotPasswordStep: React.FC = () => {
         if (!res) {
           setErrors({
             email:
-              "Couldn’t send reset password link. Please try again, or contact support@artsy.net",
+              "Couldn't send reset password link. Please try again, or contact support@artsy.net",
           })
         } else {
+          tracking.trackEvent(tracks.resetYourPassword())
           navigation.setParams({ requestedPasswordReset: true })
         }
       }}
@@ -180,4 +184,11 @@ const ForgotPasswordStepForm: React.FC = () => {
       )}
     </Flex>
   )
+}
+
+const tracks = {
+  resetYourPassword: (): Partial<ResetYourPassword> => ({
+    action: ActionType.resetYourPassword,
+    trigger: "tap",
+  }),
 }
