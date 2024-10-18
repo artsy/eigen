@@ -1,9 +1,10 @@
 import { Button, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { NavigationRoutesParams } from "app/Navigation/Navigation"
+import { AuthenticatedRoutesParams } from "app/Navigation/AuthenticatedRoutes/Tabs"
 
 export const HomeScreen: React.FC = () => {
-  const navigation = useNavigation<NavigationProp<NavigationRoutesParams>>()
+  const navigation = useNavigation<NavigationProp<AuthenticatedRoutesParams>>()
+
   return (
     <Flex justifyContent="center" alignItems="center" flex={1}>
       <Text variant="lg-display">Home</Text>
@@ -18,6 +19,18 @@ export const HomeScreen: React.FC = () => {
         }}
       >
         Go to Artwork
+      </Button>
+
+      <Spacer y={2} />
+
+      <Button
+        onPress={() => {
+          navigation.navigate("Artist", {
+            artistID: "banksy",
+          })
+        }}
+      >
+        Go to Artist
       </Button>
     </Flex>
   )

@@ -1,6 +1,9 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { AuthenticatedRoutes, AuthenticatedRoutesParams } from "app/Navigation/AuthenticatedRoutes"
+import {
+  AuthenticatedRoutes,
+  AuthenticatedRoutesParams,
+} from "app/Navigation/AuthenticatedRoutes/Tabs"
 import {
   UnauthenticatedRoutes,
   UnauthenticatedRoutesParams,
@@ -16,10 +19,8 @@ export const Navigation = () => {
 
   return (
     <NavigationContainer>
-      <MainStackNavigator.Navigator>
-        {!isLoggedIn && UnauthenticatedRoutes()}
-        {!!isLoggedIn && AuthenticatedRoutes()}
-      </MainStackNavigator.Navigator>
+      {!isLoggedIn && UnauthenticatedRoutes()}
+      {!!isLoggedIn && AuthenticatedRoutes()}
     </NavigationContainer>
   )
 }
