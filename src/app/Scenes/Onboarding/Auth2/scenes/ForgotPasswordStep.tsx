@@ -1,3 +1,4 @@
+import { ActionType, ResetYourPassword } from "@artsy/cohesion"
 import { BackButton, Button, Flex, Input, Spacer, Text, useTheme } from "@artsy/palette-mobile"
 import {
   useAuthNavigation,
@@ -7,6 +8,7 @@ import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAut
 import { GlobalStore } from "app/store/GlobalStore"
 import { Formik, useFormikContext } from "formik"
 import { useEffect, useRef } from "react"
+import { useTracking } from "react-tracking"
 import * as Yup from "yup"
 
 interface ForgotPasswordStepFormValues {
@@ -16,6 +18,7 @@ interface ForgotPasswordStepFormValues {
 export const ForgotPasswordStep: React.FC = () => {
   const navigation = useAuthNavigation()
   const screen = useAuthScreen()
+  const tracking = useTracking()
 
   return (
     <Formik<ForgotPasswordStepFormValues>
@@ -28,9 +31,10 @@ export const ForgotPasswordStep: React.FC = () => {
         if (!res) {
           setErrors({
             email:
-              "Couldn’t send reset password link. Please try again, or contact support@artsy.net",
+              "Couldn't send reset password link. Please try again, or contact support@artsy.net",
           })
         } else {
+          tracking.trackEvent(tracks.resetYourPassword())
           navigation.setParams({ requestedPasswordReset: true })
         }
       }}
@@ -48,6 +52,7 @@ export const ForgotPasswordStep: React.FC = () => {
 const ForgotPasswordStepForm: React.FC = () => {
   const {
     dirty,
+    errors,
     handleChange,
     handleSubmit,
     isSubmitting,
@@ -86,7 +91,7 @@ const ForgotPasswordStepForm: React.FC = () => {
       <Spacer y={1} />
 
       <Flex flex={1} justifyContent="flex-start">
-        <Text variant="lg-display">Forgot Password?</Text>
+        <Text variant="sm-display">Forgot Password?</Text>
 
         {!requestedPasswordReset && (
           <Text pt={0.5} color="black100" variant="xs">
@@ -97,7 +102,8 @@ const ForgotPasswordStepForm: React.FC = () => {
 
         {!!requestedPasswordReset ? (
           <Text color="blue100" mt={1} variant="sm">
-            Password reset link sent. Please check your email.
+            Password reset link set—check your email. Please note, you must wait 5 minutes to
+            receive another link.
           </Text>
         ) : (
           <>
@@ -117,6 +123,7 @@ const ForgotPasswordStepForm: React.FC = () => {
               testID="email-address"
               textContentType="emailAddress"
               value={values.email}
+              error={errors.email}
               onChangeText={(text) => {
                 handleChange("email")(text.trim())
               }}
@@ -177,4 +184,11 @@ const ForgotPasswordStepForm: React.FC = () => {
       )}
     </Flex>
   )
+}
+
+const tracks = {
+  resetYourPassword: (): Partial<ResetYourPassword> => ({
+    action: ActionType.resetYourPassword,
+    trigger: "tap",
+  }),
 }
