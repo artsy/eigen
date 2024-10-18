@@ -87,18 +87,19 @@ const ForgotPasswordStepForm: React.FC = () => {
       <Spacer y={1} />
 
       <Flex flex={1} justifyContent="flex-start">
-        <Text variant="lg-display">Forgot Password?</Text>
+        <Text variant="sm-display">Forgot Password?</Text>
 
-        {!requestedPasswordReset && (
+        {!!requestedPasswordReset && (
           <Text pt={0.5} color="black100" variant="xs">
             Please enter the email address associated with your Artsy account to receive a reset
             link.
           </Text>
         )}
 
-        {!!requestedPasswordReset ? (
+        {!requestedPasswordReset ? (
           <Text color="blue100" mt={1} variant="sm">
-            Password reset link sent. Please check your email.
+            Password reset link set—check your email. Please note, you must wait 5 minutes to
+            receive another link.
           </Text>
         ) : (
           <>
@@ -137,7 +138,7 @@ const ForgotPasswordStepForm: React.FC = () => {
 
       <Spacer y={2} />
 
-      {!!requestedPasswordReset ? (
+      {!requestedPasswordReset ? (
         <>
           <Spacer y={2} />
 
