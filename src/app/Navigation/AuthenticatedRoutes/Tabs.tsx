@@ -9,6 +9,7 @@ import { SearchStackPrams, SearchTab } from "app/Navigation/AuthenticatedRoutes/
 import { SellStackPrams, SellTab } from "app/Navigation/AuthenticatedRoutes/SellTab"
 import { SharedRoutesParams } from "app/Navigation/AuthenticatedRoutes/SharedRoutes"
 import { BottomTabsIcon } from "app/Scenes/BottomTabs/BottomTabsIcon"
+import { useTabBarBadge } from "app/utils/useTabBarBadge"
 
 export type AuthenticatedRoutesParams = {
   Home: NavigatorScreenParams<HomeStackPrams>
@@ -31,6 +32,8 @@ const Tab = createBottomTabNavigator<TabRoutesParams>()
 export const TabStackNavigator = createNativeStackNavigator<AuthenticatedRoutesParams>()
 
 export const AuthenticatedRoutes = () => {
+  const { unreadConversationsCount } = useTabBarBadge()
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => {
@@ -50,7 +53,7 @@ export const AuthenticatedRoutes = () => {
         name="inbox"
         component={InboxTab}
         options={{
-          tabBarBadge: 3,
+          tabBarBadge: unreadConversationsCount,
         }}
       />
       <Tab.Screen name="sell" component={SellTab} />
