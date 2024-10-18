@@ -154,7 +154,7 @@
     "react": "18.2.0",
     "react-error-boundary": "4.0.13",
     "react-fps": "1.0.6",
-    "react-native": "0.73.9",
+    "react-native": "0.73.10",
     "react-native-blob-util": "0.19.9",
     "react-native-blurhash": "1.1.11",
     "react-native-bootsplash": "6.1.3",
