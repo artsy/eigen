@@ -1,15 +1,19 @@
 import { EventEmitter } from "events"
 import { ActionType, OwnerType, Screen } from "@artsy/cohesion"
+import { NavigationContainerRef, StackActions } from "@react-navigation/native"
 import { addBreadcrumb, captureMessage } from "@sentry/react-native"
-import { AppModule, ViewOptions, modules } from "app/AppRegistry"
+import { AppModule, modules, ViewOptions } from "app/AppRegistry"
+import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { matchRoute } from "app/routes"
-import { GlobalStore, unsafe__getSelectedTab } from "app/store/GlobalStore"
+import { GlobalStore, unsafe__getSelectedTab, unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import { propsStore } from "app/store/PropsStore"
 import { postEventToProviders } from "app/utils/track/providers"
 import { visualize } from "app/utils/visualizer"
 import { InteractionManager, Linking, Platform } from "react-native"
+
+export const __unsafe_navigationRef = { current: null as NavigationContainerRef<any> | null }
 
 export interface ViewDescriptor extends ViewOptions {
   type: "react" | "native"
@@ -114,6 +118,17 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
       ...options.passProps,
     },
     ...module.options,
+  }
+
+  const useNewNavigation = unsafe_getFeatureFlag("AREnableNewNavigation")
+
+  if (useNewNavigation) {
+    if (__unsafe_navigationRef.current?.isReady()) {
+      __unsafe_navigationRef.current.dispatch(
+        StackActions.push(result.module, { ...result.params, ...options.passProps })
+      )
+    }
+    return
   }
 
   // Set props which we will reinject later. See HACKS.md
@@ -221,8 +236,18 @@ export function dismissModal(after?: () => void) {
 }
 
 export function goBack(backProps?: GoBackProps) {
-  LegacyNativeModules.ARScreenPresenterModule.goBack(unsafe__getSelectedTab())
+  const useNewNavigation = unsafe_getFeatureFlag("AREnableNewNavigation")
+
   navigationEvents.emit("goBack", backProps)
+
+  if (useNewNavigation) {
+    if (__unsafe_navigationRef.current?.isReady()) {
+      __unsafe_navigationRef.current.dispatch(StackActions.pop())
+    }
+    return
+  }
+
+  LegacyNativeModules.ARScreenPresenterModule.goBack(unsafe__getSelectedTab())
 }
 
 export function popParentViewController() {
