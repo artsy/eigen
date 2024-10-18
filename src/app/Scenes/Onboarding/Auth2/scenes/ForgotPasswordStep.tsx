@@ -48,6 +48,7 @@ export const ForgotPasswordStep: React.FC = () => {
 const ForgotPasswordStepForm: React.FC = () => {
   const {
     dirty,
+    errors,
     handleChange,
     handleSubmit,
     isSubmitting,
@@ -117,6 +118,7 @@ const ForgotPasswordStepForm: React.FC = () => {
               testID="email-address"
               textContentType="emailAddress"
               value={values.email}
+              error={errors.email}
               onChangeText={(text) => {
                 handleChange("email")(text.trim())
               }}
