@@ -1,10 +1,12 @@
+import { AuthImpression, ActionType } from "@artsy/cohesion"
 import { Box, Flex, useTheme } from "@artsy/palette-mobile"
 import { AuthContext } from "app/Scenes/Onboarding/Auth2/AuthContext"
 import { MotiView } from "moti"
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import { Dimensions } from "react-native"
 import { Easing } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { useTracking } from "react-tracking"
 
 const HEIGHT = {
   LoginWelcomeStep: 320,
@@ -23,6 +25,12 @@ export const AuthModal: React.FC = ({ children }) => {
 
   const { color, space } = useTheme()
   const insets = useSafeAreaInsets()
+
+  const tracking = useTracking()
+
+  useEffect(() => {
+    tracking.trackEvent(tracks.authImpression())
+  }, [])
 
   const screenHeight = Dimensions.get("window").height
 
@@ -73,4 +81,10 @@ export const AuthModal: React.FC = ({ children }) => {
     </Box>
     // </KeyboardAvoidingView>
   )
+}
+
+const tracks = {
+  authImpression: (): Partial<AuthImpression> => ({
+    action: ActionType.authImpression,
+  }),
 }
