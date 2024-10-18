@@ -14,7 +14,7 @@ require Pod::Executable.execute_command('node', ['-p',
   )', __dir__]).strip
 
 project 'Artsy.xcodeproj'
-platform :ios, '15.0'
+platform :ios, '14.0'
 inhibit_all_warnings! # ignore all warnings from all pods
 
 prepare_react_native_project!
