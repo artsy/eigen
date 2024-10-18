@@ -155,6 +155,10 @@ dependencies {
     implementation 'com.facebook.fresco:webpsupport:2.6.0'
     implementation 'com.android.support:support-core-utils:24.2.1'
 
+    // for Android In App Update
+    implementation 'com.google.android.play:app-update:2.1.0'
+    implementation 'com.google.android.play:app-update-ktx:2.1.0'
+
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")

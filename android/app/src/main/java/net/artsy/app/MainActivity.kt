@@ -9,6 +9,7 @@ import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.content.Intent
+import android.content.IntentSender
 import android.net.Uri
 import androidx.annotation.Nullable
 import com.facebook.react.ReactActivity
@@ -18,9 +19,20 @@ import com.dieam.reactnativepushnotification.modules.RNPushNotification
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
 import com.facebook.react.defaults.DefaultReactActivityDelegate
 
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import androidx.activity.result.contract.ActivityResultContracts
+import com.google.android.gms.tasks.Task
+import com.google.android.play.core.appupdate.AppUpdateInfo
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateOptions
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
+
 import android.util.Log
 
 class MainActivity : ReactActivity() {
+    private val DAYS_FOR_FLEXIBLE_UPDATE = 7
+    private lateinit var appUpdateManager: AppUpdateManager
 
     /**
      * Returns the name of the main component registered from JavaScript. This is
@@ -90,6 +102,37 @@ class MainActivity : ReactActivity() {
                 return null
             }
         })
+        appUpdateManager = AppUpdateManagerFactory.create(this)
+
+        checkForAppUpdate()
+    }
+
+    private fun checkForAppUpdate() {
+        val appUpdateInfoTask: Task<AppUpdateInfo> = appUpdateManager.appUpdateInfo
+
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
+                (appUpdateInfo.clientVersionStalenessDays() ?: -1) >= DAYS_FOR_FLEXIBLE_UPDATE &&
+                appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
+                // Start a flexible update
+                try {
+                    appUpdateManager.startUpdateFlowForResult(
+                        appUpdateInfo,
+                        registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+                            // handle callback
+                            if (result.resultCode != RESULT_OK) {
+                                Log.d("ARTSY", "Update flow failed! Result code: ${result.resultCode}")
+                                // If the update is canceled or fails,
+                                // you can request to start the update again.
+                            }
+                        },
+                        AppUpdateOptions.newBuilder(AppUpdateType.FLEXIBLE).build()
+                    )
+                } catch (e: IntentSender.SendIntentException) {
+                    e.printStackTrace()
+                }
+            }
+        }
     }
 
     // Basic overriding this class required for braze integration:
