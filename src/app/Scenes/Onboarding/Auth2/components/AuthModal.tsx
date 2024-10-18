@@ -86,5 +86,6 @@ export const AuthModal: React.FC = ({ children }) => {
 const tracks = {
   authImpression: (): Partial<AuthImpression> => ({
     action: ActionType.authImpression,
+    trigger: "tap",
   }),
 }
