@@ -882,6 +882,8 @@ interface ArtworkScreenProps {
 }
 
 export const ArtworkScreen: React.FC<ArtworkScreenProps> = (props) => {
+  console.log("===============")
+  console.log(JSON.stringify(props, null, 2))
   const [artworkProps, setArtworkProps] = useState<ArtworkProps | null>(null)
 
   return (
