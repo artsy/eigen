@@ -1,9 +1,10 @@
 import { Button, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { NavigationRoutesParams } from "app/Navigation/Navigation"
+import { UnauthenticatedRoutesParams } from "app/Navigation/UnauthenticatedRoutes"
 
 export const LoginScreen: React.FC = () => {
-  const navigation = useNavigation<NavigationProp<NavigationRoutesParams>>()
+  const navigation = useNavigation<NavigationProp<UnauthenticatedRoutesParams>>()
+
   return (
     <Flex justifyContent="center" alignItems="center" flex={1}>
       <Text variant="lg-display">Login</Text>
