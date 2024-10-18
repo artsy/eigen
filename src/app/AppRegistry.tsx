@@ -707,6 +707,9 @@ export const modules = defineModules({
   WorksForYou: reactModule(WorksForYouQueryRenderer, {}, [WorksForYouScreenQuery]),
 })
 
+// TODO: This is not needed
+// We only need to register native modules
+// We can do that separately
 // Register react modules with the app registry
 for (const moduleName of Object.keys(modules)) {
   const descriptor = modules[moduleName as AppModule]

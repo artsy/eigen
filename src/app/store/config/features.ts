@@ -316,6 +316,11 @@ export const features = {
     readyForRelease: false,
     showInDevMenu: true,
   },
+  AREnableNewNavigation: {
+    description: "Enable new navigation infra",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
