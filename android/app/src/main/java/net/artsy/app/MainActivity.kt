@@ -125,7 +125,6 @@ class MainActivity : ReactActivity() {
                     "appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE): ${appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)}"
             )
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
-                (appUpdateInfo.clientVersionStalenessDays() ?: -1) >= DAYS_FOR_FLEXIBLE_UPDATE &&
                 appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
                 Log.d(TAG, "appUpdateInfoTask.addOnSuccessListener: passed appUpdateInfo if statements")
                 // Start a flexible update
