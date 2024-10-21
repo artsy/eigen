@@ -12,11 +12,13 @@ import yargs from "yargs/yargs"
 config({ path: resolve(__dirname, "../../.env.releases") })
 
 /**
+ *
  * Convenience script for fetching notion cards from our mobile QA and creating Jira issues for them.
  * Usage: yarn export-notion-to-jira <databaseId>
  * To get the database id, go to the latest Mobile QA page, scroll to the bugs section,
  * click on the dots next to "Board View" and select "Copy Link".
  * The link should be of format: https://www.notion.so/artsy/<databaseId>?v=<version>&pvs=<pvs>
+ *
  */
 
 const NOTION_API_TOKEN = process.env.NOTION_API_TOKEN
