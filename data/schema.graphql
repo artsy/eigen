@@ -5458,6 +5458,9 @@ type CommerceOptInFailure {
 }
 
 input CommerceOptInMutationInput {
+  # Opt artwork into Artsy Shipping Domestic
+  artsyShippingDomestic: Boolean
+
   # whether or not there is a CoA
   certificateOfAuthenticity: Boolean
   clientMutationId: String
@@ -5496,6 +5499,9 @@ type CommerceOptInReportFailure {
 }
 
 input CommerceOptInReportMutationInput {
+  # Opt artwork into Artsy Shipping Domestic
+  artsyShippingDomestic: Boolean
+
   # whether it should be updated to CoA
   certificateOfAuthenticity: Boolean
   clientMutationId: String
