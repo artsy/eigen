@@ -636,23 +636,18 @@ describe("AuthModel", () => {
       ;(GoogleSignin.getTokens as jest.Mock).mockReturnValue({ accessToken: "google-token" })
     })
 
-    it("throws an error if google play services are not available", async () => {
+    fit("throws an error if google play services are not available", async () => {
       ;(GoogleSignin.hasPlayServices as jest.Mock).mockReturnValue(false)
 
-      const result = await GlobalStore.actions.auth
-        .authGoogle({ signInOrUp: "signUp", agreedToReceiveEmails: true })
-        .catch((e) => e)
+      const result = await GlobalStore.actions.auth.authGoogle().catch((e) => e)
       const expectedError = new AuthError("Play services are not available.")
       expect(result).toMatchObject(expectedError)
     })
 
-    it("fetches profile info from google and signs up", async () => {
+    fit("fetches profile info from google and signs up", async () => {
       GlobalStore.actions.auth.signUp = jest.fn(() => ({ success: true })) as any
 
-      await GlobalStore.actions.auth.authGoogle({
-        signInOrUp: "signUp",
-        agreedToReceiveEmails: false,
-      })
+      await GlobalStore.actions.auth.authGoogle()
 
       expect(GlobalStore.actions.auth.signUp).toHaveBeenCalledWith({
         email: "googleEmail@gmail.com",
@@ -660,7 +655,7 @@ describe("AuthModel", () => {
         accessToken: "google-token",
         oauthProvider: "google",
         oauthMode: "accessToken",
-        agreedToReceiveEmails: false,
+        agreedToReceiveEmails: true,
       })
     })
 
@@ -670,9 +665,7 @@ describe("AuthModel", () => {
         message: "Could not sign up",
       })) as any
 
-      const result = await GlobalStore.actions.auth
-        .authGoogle({ signInOrUp: "signUp", agreedToReceiveEmails: true })
-        .catch((e) => e)
+      const result = await GlobalStore.actions.auth.authGoogle().catch((e) => e)
       const expectedError = new AuthError("Could not sign up")
       expect(result).toMatchObject(expectedError)
     })
@@ -682,7 +675,7 @@ describe("AuthModel", () => {
       mockFetchJsonOnce({ email: "emailFromArtsy@mail.com" })
       GlobalStore.actions.auth.signIn = jest.fn(() => true) as any
 
-      await GlobalStore.actions.auth.authGoogle({ signInOrUp: "signIn" })
+      await GlobalStore.actions.auth.authGoogle()
 
       expect(GlobalStore.actions.auth.signIn).toHaveBeenCalledWith({
         email: "emailFromArtsy@mail.com",
@@ -698,7 +691,7 @@ describe("AuthModel", () => {
       mockFetchJsonOnce({ access_token: "x-access-token" }, 201)
       mockFetchJsonOnce({ id: "my-user-id" })
 
-      await GlobalStore.actions.auth.authGoogle({ signInOrUp: "signIn" })
+      await GlobalStore.actions.auth.authGoogle()
 
       expect(mockPostEventToProviders).toHaveBeenCalledTimes(1)
       expect(mockPostEventToProviders.mock.calls[0]).toMatchInlineSnapshot(`
@@ -714,9 +707,7 @@ describe("AuthModel", () => {
     it("throws an error if getting X-ACCESS-TOKEN fails", async () => {
       mockFetchJsonOnce({ error_description: "getting X-ACCESS-TOKEN error" })
 
-      const result = await GlobalStore.actions.auth
-        .authGoogle({ signInOrUp: "signIn" })
-        .catch((e) => e)
+      const result = await GlobalStore.actions.auth.authGoogle().catch((e) => e)
       const expectedError = new AuthError("Login attempt failed")
       expect(result).toMatchObject(expectedError)
     })

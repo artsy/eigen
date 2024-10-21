@@ -152,11 +152,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
   const continueWithApple = () =>
     GlobalStore.actions.auth.authApple({ agreedToReceiveEmails: true })
 
-  const continueWithGoogle = () =>
-    GlobalStore.actions.auth.authGoogle({
-      signInOrUp: mode === "login" ? "signIn" : "signUp",
-      agreedToReceiveEmails: mode === "signup",
-    })
+  const continueWithGoogle = () => GlobalStore.actions.auth.authGoogle()
 
   const continueWithFacebook = () =>
     GlobalStore.actions.auth.authFacebook({

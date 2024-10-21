@@ -93,10 +93,7 @@ export const OnboardingSocialLink: React.FC<
 
   const linkWithSocialAccount = async (provider: OAuthProvider) => {
     const { authFacebook, authApple, authGoogle } = GlobalStore.actions.auth
-    const FBOrGoogProvider: { [key: string]: typeof authFacebook } = {
-      facebook: authFacebook,
-      google: authGoogle,
-    }
+
     switch (provider) {
       case "email":
         console.warn("You should not be passing email here. Use the formik form")
@@ -107,8 +104,12 @@ export const OnboardingSocialLink: React.FC<
         })
         return
       case "google":
+        authGoogle({
+          onSignIn: () => onSignIn(providerToBeLinked, tokenForProviderToBeLinked),
+        })
+        return
       case "facebook":
-        FBOrGoogProvider[provider]({
+        authFacebook({
           signInOrUp: "signIn",
           onSignIn: () => onSignIn(providerToBeLinked, tokenForProviderToBeLinked),
         })

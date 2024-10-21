@@ -155,8 +155,7 @@ export interface AuthModel {
   >
   authGoogle: Thunk<
     this,
-    | { signInOrUp: "signIn"; onSignIn?: () => void }
-    | { signInOrUp: "signUp"; agreedToReceiveEmails: boolean },
+    { onSignIn: () => void } | undefined,
     {},
     GlobalStoreModel,
     Promise<AuthPromiseResolveType>
@@ -569,79 +568,79 @@ export const getAuthModel = (): AuthModel => ({
         const userInfo = await GoogleSignin.signIn()
         const accessToken = (await GoogleSignin.getTokens()).accessToken
 
-        if (options.signInOrUp === "signUp") {
-          const resultGravitySignUp = userInfo.user.name
-            ? await actions.signUp({
-                email: userInfo.user.email,
-                name: userInfo.user.name,
-                oauthMode: "accessToken",
-                accessToken,
-                oauthProvider: "google",
-                agreedToReceiveEmails: options.agreedToReceiveEmails,
-              })
-            : { success: false, message: "missing name in google's userInfo" }
+        const resultGravitySignUp = userInfo.user.name
+          ? await actions.signUp({
+              email: userInfo.user.email,
+              name: userInfo.user.name,
+              oauthMode: "accessToken",
+              accessToken,
+              oauthProvider: "google",
+              agreedToReceiveEmails: true,
+            })
+          : { success: false, message: "missing name in google's userInfo" }
 
-          if (resultGravitySignUp.success) {
-            resolve({ success: true })
-            return
-          } else if (resultGravitySignUp.error === "blocked_attempt") {
-            reject(new AuthError("Attempt blocked"))
-          } else {
-            reject(
-              new AuthError(
-                resultGravitySignUp.message,
-                resultGravitySignUp.error,
-                resultGravitySignUp.meta
-              )
+        if (resultGravitySignUp.success) {
+          resolve({ success: true })
+          return
+        } else if (resultGravitySignUp.error === "blocked_attempt") {
+          reject(new AuthError("Attempt blocked"))
+          return
+        } else {
+          console.log({ resultGravitySignUp })
+          reject(
+            new AuthError(
+              resultGravitySignUp.message,
+              resultGravitySignUp.error,
+              resultGravitySignUp.meta
             )
-            return
-          }
+          )
+          // TODO: figure out which errors should end this flow here
+          // return
         }
 
-        if (options.signInOrUp === "signIn") {
-          // we need to get X-ACCESS-TOKEN before actual sign in
-          const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
-            path: `/oauth2/access_token`,
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: {
-              oauth_provider: "google",
-              oauth_token: accessToken,
-              client_id: clientKey,
-              client_secret: clientSecret,
-              grant_type: "oauth_token",
-              scope: "offline_access",
-            },
+        // If sign up failed, try to sign in because of TODO:, try to sign in
+
+        const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
+          path: `/oauth2/access_token`,
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: {
+            oauth_provider: "google",
+            oauth_token: accessToken,
+            client_id: clientKey,
+            client_secret: clientSecret,
+            grant_type: "oauth_token",
+            scope: "offline_access",
+          },
+        })
+
+        if (resultGravityAccessToken.status === 201) {
+          const { access_token: userAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
+          const { email } = await actions.getUser({ accessToken: userAccessToken })
+
+          const resultGravitySignIn = await actions.signIn({
+            oauthProvider: "google",
+            oauthMode: "accessToken",
+            email,
+            accessToken,
+            onSignIn: options?.onSignIn ?? undefined,
           })
 
-          if (resultGravityAccessToken.status === 201) {
-            const { access_token: userAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
-            const { email } = await actions.getUser({ accessToken: userAccessToken })
-
-            const resultGravitySignIn = await actions.signIn({
-              oauthProvider: "google",
-              oauthMode: "accessToken",
-              email,
-              accessToken,
-              onSignIn: options.onSignIn,
-            })
-
-            if (resultGravitySignIn) {
-              resolve({ success: true })
-              return
-            } else {
-              reject(new AuthError("Could not log in"))
-              return
-            }
+          if (resultGravitySignIn) {
+            resolve({ success: true })
+            return
           } else {
-            if (resultGravityAccessToken.status === 403) {
-              reject(new AuthError("Attempt blocked"))
-            } else {
-              const res = await resultGravityAccessToken.json()
-              showError(res, reject, "google")
-            }
+            reject(new AuthError("Could not log in"))
+            return
+          }
+        } else {
+          if (resultGravityAccessToken.status === 403) {
+            reject(new AuthError("Attempt blocked"))
+          } else {
+            const res = await resultGravityAccessToken.json()
+            showError(res, reject, "google")
           }
         }
       } catch (e: any) {
