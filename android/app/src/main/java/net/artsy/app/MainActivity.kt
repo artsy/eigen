@@ -70,6 +70,7 @@ class MainActivity : ReactActivity() {
     }
 
     private fun checkForAppUpdate() {
+        Log.d(TAG, "here we go!")
         Log.d(TAG, "checkForAppUpdate: started checking for update!")
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
 
