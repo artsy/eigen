@@ -38,7 +38,7 @@ const argv = yargs(hideBin(process.argv)).argv as any
 const databaseId = argv._[0]
 
 if (!databaseId) {
-  console.error(chalk.bold.red("Usage: yarn notionFetch <databaseId>"))
+  console.error(chalk.bold.red("Usage: yarn export-notion-to-jira <databaseId>"))
   process.exit(1)
 }
 
