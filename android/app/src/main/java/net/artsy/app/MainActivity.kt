@@ -21,7 +21,6 @@ import com.facebook.react.defaults.DefaultReactActivityDelegate
 
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
 import androidx.activity.result.contract.ActivityResultContracts
-import com.google.android.gms.tasks.Task
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateOptions
@@ -32,6 +31,7 @@ import android.util.Log
 
 class MainActivity : ReactActivity() {
     private val DAYS_FOR_FLEXIBLE_UPDATE = 7
+    private val TAG = "ArtsyApp"
     private lateinit var appUpdateManager: AppUpdateManager
 
     /**
@@ -108,20 +108,29 @@ class MainActivity : ReactActivity() {
     }
 
     private fun checkForAppUpdate() {
-        val appUpdateInfoTask: Task<AppUpdateInfo> = appUpdateManager.appUpdateInfo
+        Log.d(TAG, "checkForAppUpdate: started checking for update!")
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+
+        appUpdateInfoTask.addOnFailureListener { appUpdateInfo ->
+            Log.d(TAG, "checkForAppUpdate: task failed: ${appUpdateInfo.toString()}")
+        }
 
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            Log.d(TAG, "checkForAppUpdate: adding listener, appUpdateInfo: ${appUpdateInfo.toString()}")
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
                 (appUpdateInfo.clientVersionStalenessDays() ?: -1) >= DAYS_FOR_FLEXIBLE_UPDATE &&
                 appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
+                Log.d(TAG, "appUpdateInfoTask.addOnSuccessListener: passed appUpdateInfo if statements")
                 // Start a flexible update
                 try {
+                    Log.d(TAG, "appUpdateInfoTask.addOnSuccessListener: trying to start an update flow")
                     appUpdateManager.startUpdateFlowForResult(
                         appUpdateInfo,
                         registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+                            Log.d(TAG, "startUpdateFlowForResult: getting result: ${result.toString()}")
                             // handle callback
                             if (result.resultCode != RESULT_OK) {
-                                Log.d("ARTSY", "Update flow failed! Result code: ${result.resultCode}")
+                                Log.d(TAG, "Update flow failed! Result code: ${result.resultCode}")
                                 // If the update is canceled or fails,
                                 // you can request to start the update again.
                             }
@@ -129,6 +138,7 @@ class MainActivity : ReactActivity() {
                         AppUpdateOptions.newBuilder(AppUpdateType.FLEXIBLE).build()
                     )
                 } catch (e: IntentSender.SendIntentException) {
+                    Log.d(TAG, "startUpdateFlowForResult: errored out with ${e.toString()}")
                     e.printStackTrace()
                 }
             }
