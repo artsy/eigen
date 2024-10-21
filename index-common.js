@@ -17,7 +17,6 @@ if (__DEV__) {
   } catch {}
 }
 
-require("./src/app/system/errorReporting/setupSentry").setupSentry({ environment: "bootstrap" })
 import "react-native-url-polyfill/auto"
 const { AppRegistry } = require("react-native")
 
