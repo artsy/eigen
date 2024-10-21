@@ -71,7 +71,7 @@ export function setupSentry(props: SetupSentryProps = { debug: false }) {
     tracesSampleRate: props.debug ? 1.0 : 0.1,
     debug: props.debug,
     integrations: [
-      new Sentry.ReactNativeTracing({
+      Sentry.reactNativeTracingIntegration({
         routingInstrumentation,
         beforeNavigate: (context: TransactionContext) => {
           /**
