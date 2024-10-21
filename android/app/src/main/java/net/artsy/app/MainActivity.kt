@@ -118,6 +118,12 @@ class MainActivity : ReactActivity() {
 
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
             Log.d(TAG, "checkForAppUpdate: adding listener, appUpdateInfo: ${appUpdateInfo.toString()}")
+
+            Log.d(TAG, "checkForAppUpdate: conditions: \n" +
+                    "appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE: ${appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE}\n" +
+                    "(appUpdateInfo.clientVersionStalenessDays() ?: -1) >= DAYS_FOR_FLEXIBLE_UPDATE: ${(appUpdateInfo.clientVersionStalenessDays() ?: -1) >= DAYS_FOR_FLEXIBLE_UPDATE}" +
+                    "appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE): ${appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)}"
+            )
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
                 (appUpdateInfo.clientVersionStalenessDays() ?: -1) >= DAYS_FOR_FLEXIBLE_UPDATE &&
                 appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
