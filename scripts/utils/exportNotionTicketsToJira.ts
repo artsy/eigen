@@ -58,7 +58,7 @@ async function fetchNotionDatabase(databaseId: string) {
   }
 }
 
-async function createJiraIssue(issueSummary: string, issueDescription: string) {
+async function createJiraIssue(issueSummary: string, issueLink: string) {
   try {
     const auth = Buffer.from(`${JIRA_EMAIL}:${JIRA_API_TOKEN}`).toString("base64")
     const response = await fetch(`${JIRA_BASE_URL}/rest/api/3/issue`, {
@@ -82,7 +82,19 @@ async function createJiraIssue(issueSummary: string, issueDescription: string) {
                 content: [
                   {
                     type: "text",
-                    text: issueDescription,
+                    text: "Auto-generated from mobile QA Notion card ",
+                  },
+                  {
+                    type: "text",
+                    text: "here",
+                    marks: [
+                      {
+                        type: "link",
+                        attrs: {
+                          href: issueLink,
+                        },
+                      },
+                    ],
                   },
                 ],
               },
@@ -115,8 +127,7 @@ async function main() {
     for (const page of notionData.results) {
       const issueSummary = page.properties.Name.title[0]?.plain_text || "No Title"
       const notionPageUrl = page.url
-      const issueDescription = `Auto-generated from mobile QA Notion card here: ${notionPageUrl}`
-      await createJiraIssue(issueSummary, issueDescription)
+      await createJiraIssue(issueSummary, notionPageUrl)
     }
   }
 }
