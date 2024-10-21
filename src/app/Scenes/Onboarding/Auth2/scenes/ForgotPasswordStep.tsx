@@ -28,7 +28,7 @@ export const ForgotPasswordStep: React.FC = () => {
         if (!res) {
           setErrors({
             email:
-              "Couldn’t send reset password link. Please try again, or contact support@artsy.net",
+              "Couldn't send reset password link. Please try again, or contact support@artsy.net",
           })
         } else {
           navigation.setParams({ requestedPasswordReset: true })
@@ -48,6 +48,7 @@ export const ForgotPasswordStep: React.FC = () => {
 const ForgotPasswordStepForm: React.FC = () => {
   const {
     dirty,
+    errors,
     handleChange,
     handleSubmit,
     isSubmitting,
@@ -86,7 +87,7 @@ const ForgotPasswordStepForm: React.FC = () => {
       <Spacer y={1} />
 
       <Flex flex={1} justifyContent="flex-start">
-        <Text variant="lg-display">Forgot Password?</Text>
+        <Text variant="sm-display">Forgot Password?</Text>
 
         {!requestedPasswordReset && (
           <Text pt={0.5} color="black100" variant="xs">
@@ -97,7 +98,8 @@ const ForgotPasswordStepForm: React.FC = () => {
 
         {!!requestedPasswordReset ? (
           <Text color="blue100" mt={1} variant="sm">
-            Password reset link sent. Please check your email.
+            Password reset link set—check your email. Please note, you must wait 5 minutes to
+            receive another link.
           </Text>
         ) : (
           <>
@@ -117,6 +119,7 @@ const ForgotPasswordStepForm: React.FC = () => {
               testID="email-address"
               textContentType="emailAddress"
               value={values.email}
+              error={errors.email}
               onChangeText={(text) => {
                 handleChange("email")(text.trim())
               }}
