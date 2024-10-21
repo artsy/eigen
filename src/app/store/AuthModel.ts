@@ -1,4 +1,4 @@
-import { ActionType, AuthService, CreatedAccount } from "@artsy/cohesion"
+import { ActionType, AuthService, CreatedAccount, ResetYourPassword } from "@artsy/cohesion"
 import Braze from "@braze/react-native-sdk"
 import { appleAuth } from "@invertase/react-native-apple-authentication"
 import CookieManager from "@react-native-cookies/cookies"
@@ -278,6 +278,8 @@ export const getAuthModel = (): AuthModel => ({
     // For security purposes we don't want to disclose when a user is not found
     // this is indicated by 400 on gravity side, treat as success
     if (result.ok || result.status === 400) {
+      postEventToProviders(tracks.resetYourPassword())
+
       return true
     }
     return false
@@ -879,5 +881,9 @@ const tracks = {
   loggedIn: (service: AuthService) => ({
     action: ActionType.successfullyLoggedIn,
     service,
+  }),
+  resetYourPassword: (): Partial<ResetYourPassword> => ({
+    action: ActionType.resetYourPassword,
+    trigger: "tap",
   }),
 }
