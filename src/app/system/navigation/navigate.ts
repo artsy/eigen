@@ -1,6 +1,6 @@
 import { EventEmitter } from "events"
 import { ActionType, OwnerType, Screen } from "@artsy/cohesion"
-import { NavigationContainerRef, StackActions } from "@react-navigation/native"
+import { NavigationContainerRef, StackActions, TabActions } from "@react-navigation/native"
 import { addBreadcrumb, captureMessage } from "@sentry/react-native"
 import { AppModule, modules, ViewOptions } from "app/AppRegistry"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
@@ -179,6 +179,8 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
 export const navigationEvents = new EventEmitter()
 
 export function switchTab(tab: BottomTabType, props?: object) {
+  const enableNewNavigation = unsafe_getFeatureFlag("AREnableNewNavigation")
+
   // root tabs are only mounted once so cannot be tracked
   // like other screens manually track screen views here
   // home handles this on its own since it is default tab
@@ -189,8 +191,15 @@ export function switchTab(tab: BottomTabType, props?: object) {
   if (props) {
     GlobalStore.actions.bottomTabs.setTabProps({ tab, props })
   }
+
   GlobalStore.actions.bottomTabs.setSelectedTab(tab)
-  LegacyNativeModules.ARScreenPresenterModule.switchTab(tab)
+
+  if (enableNewNavigation) {
+    __unsafe_navigationRef?.current?.dispatch(TabActions.jumpTo(tab, props))
+    return
+  } else {
+    LegacyNativeModules.ARScreenPresenterModule.switchTab(tab)
+  }
 }
 
 const tracks = {
