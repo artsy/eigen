@@ -127,7 +127,6 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       contentContainerStyle={{
         // No paddings are needed for single column grids
         paddingHorizontal: getAdjustedNumColumns() === 1 ? 0 : space(2),
-        paddingBottom: artworks.length === 1 ? 0 : space(6),
       }}
       data={artworks}
       keyExtractor={(item) => item.id}
@@ -140,7 +139,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       refreshControl={refreshControl}
       renderItem={renderItem}
       ListFooterComponent={
-        <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
+        hasMore ? <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} /> : null
       }
       onScroll={rest.onScroll}
     />
