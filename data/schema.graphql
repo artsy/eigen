@@ -7984,6 +7984,24 @@ union CreateDiscoveryArtworkReferenceResponseOrError =
     DiscoveryArtworkReferenceMutationFailure
   | DiscoveryArtworkReferenceMutationSuccess
 
+input CreateDiscoveryUserMutationInput {
+  clientMutationId: String
+
+  # The user's ID
+  userId: String!
+}
+
+type CreateDiscoveryUserMutationPayload {
+  clientMutationId: String
+
+  # On success: return boolean. On failure: MutationError.
+  createDiscoveryUserReferenceResponseOrError: CreateDiscoveryUserResponseOrError
+}
+
+union CreateDiscoveryUserResponseOrError =
+    DiscoveryUserMutationFailure
+  | DiscoveryUserMutationSuccess
+
 type CreateFeatureFailure {
   mutationError: GravityMutationError
 }
@@ -8804,6 +8822,32 @@ type DeleteCreditCardPayload {
   me: Me
 }
 
+type DeleteDiscoveryUserReferencesMutationFailure {
+  mutationError: GravityMutationError
+}
+
+input DeleteDiscoveryUserReferencesMutationInput {
+  clientMutationId: String
+
+  # The user's ID
+  userId: String!
+}
+
+type DeleteDiscoveryUserReferencesMutationPayload {
+  clientMutationId: String
+
+  # On success: return boolean. On failure: MutationError.
+  deleteDiscoveryUserReferencesResponseOrError: DeleteDiscoveryUserReferencesResponseOrError
+}
+
+type DeleteDiscoveryUserReferencesMutationSuccess {
+  success: Boolean
+}
+
+union DeleteDiscoveryUserReferencesResponseOrError =
+    DeleteDiscoveryUserReferencesMutationFailure
+  | DeleteDiscoveryUserReferencesMutationSuccess
+
 type DeleteFeatureFailure {
   mutationError: GravityMutationError
 }
@@ -9094,6 +9138,14 @@ type DiscoveryArtworkReferenceMutationFailure {
 }
 
 type DiscoveryArtworkReferenceMutationSuccess {
+  success: Boolean
+}
+
+type DiscoveryUserMutationFailure {
+  mutationError: GravityMutationError
+}
+
+type DiscoveryUserMutationSuccess {
   success: Boolean
 }
 
@@ -13468,6 +13520,9 @@ type Mutation {
     input: CreateDiscoveryArtworkReferenceMutationInput!
   ): CreateDiscoveryArtworkReferenceMutationPayload
 
+  # Creates a user object in weaviate
+  createDiscoveryUser(input: CreateDiscoveryUserMutationInput!): CreateDiscoveryUserMutationPayload
+
   # Creates a feature.
   createFeature(input: CreateFeatureMutationInput!): CreateFeatureMutationPayload
 
@@ -13571,6 +13626,11 @@ type Mutation {
 
   # Remove a credit card
   deleteCreditCard(input: DeleteCreditCardInput!): DeleteCreditCardPayload
+
+  # Deletes a user artwork references in weaviate
+  deleteDiscoveryUserReferences(
+    input: DeleteDiscoveryUserReferencesMutationInput!
+  ): DeleteDiscoveryUserReferencesMutationPayload
 
   # deletes a feature.
   deleteFeature(input: DeleteFeatureMutationInput!): DeleteFeatureMutationPayload
