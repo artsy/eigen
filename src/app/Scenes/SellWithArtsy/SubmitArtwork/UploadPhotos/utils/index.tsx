@@ -1,3 +1,4 @@
+import { StackScreenProps } from "@react-navigation/stack"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { SellWithArtsyHomeQueryRenderer } from "app/Scenes/SellWithArtsy/SellWithArtsyHome"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -9,7 +10,9 @@ export interface SellTabProps {
   overwriteHardwareBackButtonPath?: BottomTabType
 }
 
-export const SellWithArtsy: React.FC = () => {
+type SellWithArtsyProps = StackScreenProps<any>
+
+export const SellWithArtsy: React.FC<SellWithArtsyProps> = () => {
   const sellTabProps = GlobalStore.useAppState((state) => {
     return state.bottomTabs.sessionState.tabProps.sell ?? {}
   }) as SellTabProps

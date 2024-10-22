@@ -1,6 +1,7 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Spacer, Flex, Box } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
+import { StackScreenProps } from "@react-navigation/stack"
 import { SearchQuery, SearchQuery$variables } from "__generated__/SearchQuery.graphql"
 import { SearchInput } from "app/Components/SearchInput"
 import { SearchPills } from "app/Scenes/Search/SearchPills"
@@ -186,7 +187,9 @@ export const SearchScreenQuery = graphql`
   }
 `
 
-export const SearchScreen: React.FC = () => (
+type SearchScreenProps = StackScreenProps<any>
+
+export const SearchScreen: React.FC<SearchScreenProps> = () => (
   <Suspense fallback={<SearchPlaceholder />}>
     <Search />
   </Suspense>

@@ -2,8 +2,6 @@ import { ScreenWrapper, SharedRoutes } from "app/Navigation/AuthenticatedRoutes/
 import { TabStackNavigator } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { MyProfile } from "app/Scenes/MyProfile/MyProfile"
 
-export type ProfileStackPrams = {}
-
 export const ProfileTab = () => {
   return (
     <TabStackNavigator.Navigator
@@ -17,7 +15,7 @@ export const ProfileTab = () => {
         }}
         children={(props) => {
           return (
-            <ScreenWrapper>
+            <ScreenWrapper fullBleed>
               <MyProfile {...props} />
             </ScreenWrapper>
           )
