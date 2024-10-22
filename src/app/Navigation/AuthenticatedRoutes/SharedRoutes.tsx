@@ -43,6 +43,5 @@ interface PageWrapperProps {
 const ScreenWrapper: React.FC<PageWrapperProps> = ({ fullBleed, children }) => {
   const safeAreaInsets = useScreenDimensions().safeAreaInsets
   const paddingTop = fullBleed ? 0 : safeAreaInsets.top
-  // if we're in a modal, just pass isVisible through
   return <View style={{ flex: 1, paddingTop }}>{children}</View>
 }
