@@ -2,26 +2,24 @@ import { Text } from "@artsy/palette-mobile"
 import { THEME } from "@artsy/palette-tokens"
 import { toTitleCase } from "@artsy/to-title-case"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import { NavigatorScreenParams } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { AppModule, modules } from "app/AppRegistry"
-import { HomeStackPrams, HomeTab } from "app/Navigation/AuthenticatedRoutes/HomeTab"
-import { InboxStackPrams, InboxTab } from "app/Navigation/AuthenticatedRoutes/InboxTab"
-import { ProfileStackPrams, ProfileTab } from "app/Navigation/AuthenticatedRoutes/ProfileTab"
-import { SearchStackPrams, SearchTab } from "app/Navigation/AuthenticatedRoutes/SearchTab"
-import { SellStackPrams, SellTab } from "app/Navigation/AuthenticatedRoutes/SellTab"
-import { SharedRoutesParams } from "app/Navigation/AuthenticatedRoutes/SharedRoutes"
+import { HomeTab } from "app/Navigation/AuthenticatedRoutes/HomeTab"
+import { InboxTab } from "app/Navigation/AuthenticatedRoutes/InboxTab"
+import { ProfileTab } from "app/Navigation/AuthenticatedRoutes/ProfileTab"
+import { SearchTab } from "app/Navigation/AuthenticatedRoutes/SearchTab"
+import { SellTab } from "app/Navigation/AuthenticatedRoutes/SellTab"
 import { BottomTabsIcon } from "app/Scenes/BottomTabs/BottomTabsIcon"
 import { __unsafe_navigationRef } from "app/system/navigation/navigate"
 import { useTabBarBadge } from "app/utils/useTabBarBadge"
 
 export type AuthenticatedRoutesParams = {
-  Home: NavigatorScreenParams<HomeStackPrams>
-  Search: NavigatorScreenParams<SearchStackPrams>
-  Profile: NavigatorScreenParams<ProfileStackPrams>
-  Inbox: NavigatorScreenParams<InboxStackPrams>
-  Sell: NavigatorScreenParams<SellStackPrams>
-} & SharedRoutesParams
+  Home: undefined
+  Search: undefined
+  Profile: undefined
+  Inbox: undefined
+  Sell: undefined
+} & { [key in AppModule]: undefined }
 
 type TabRoutesParams = {
   home: undefined

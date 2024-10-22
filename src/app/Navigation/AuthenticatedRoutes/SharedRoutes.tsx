@@ -3,8 +3,6 @@ import { AppModule, modules } from "app/AppRegistry"
 import { TabStackNavigator } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { View } from "react-native"
 
-export type SharedRoutesParams = { [key in AppModule]: undefined }
-
 export const SharedRoutes = () => {
   return (
     <TabStackNavigator.Group>
@@ -13,14 +11,13 @@ export const SharedRoutes = () => {
           return (
             <TabStackNavigator.Screen
               key={moduleName}
-              name={moduleName as keyof SharedRoutesParams}
+              name={moduleName as AppModule}
               options={{
                 presentation: module.options.alwaysPresentModally ? "fullScreenModal" : "card",
-
                 ...module.options.screenOptions,
               }}
               children={(props) => {
-                const params = props.route.params as {} | {}
+                const params = props.route.params || {}
                 return (
                   <ScreenWrapper fullBleed={module.options.fullBleed}>
                     <module.Component {...params} {...props} />

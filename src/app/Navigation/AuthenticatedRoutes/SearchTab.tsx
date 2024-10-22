@@ -2,10 +2,6 @@ import { ScreenWrapper, SharedRoutes } from "app/Navigation/AuthenticatedRoutes/
 import { TabStackNavigator } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { SearchScreen } from "app/Scenes/Search/Search"
 
-export type SearchStackPrams = {
-  Search: undefined
-}
-
 export const SearchTab = () => {
   return (
     <TabStackNavigator.Navigator screenOptions={{ headerShown: false }} initialRouteName="Search">
