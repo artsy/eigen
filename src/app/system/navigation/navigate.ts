@@ -3,7 +3,6 @@ import { ActionType, OwnerType, Screen } from "@artsy/cohesion"
 import { NavigationContainerRef, StackActions } from "@react-navigation/native"
 import { addBreadcrumb, captureMessage } from "@sentry/react-native"
 import { AppModule, modules, ViewOptions } from "app/AppRegistry"
-import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { matchRoute } from "app/routes"
@@ -223,10 +222,16 @@ const tracks = {
 }
 
 export function dismissModal(after?: () => void) {
+  const enableNewNavigation = unsafe_getFeatureFlag("AREnableNewNavigation")
+
   // We wait for interaction to finish before dismissing the modal, otherwise,
   // we might get a race condition that causes the UI to freeze
   InteractionManager.runAfterInteractions(() => {
-    LegacyNativeModules.ARScreenPresenterModule.dismissModal()
+    if (enableNewNavigation) {
+      __unsafe_navigationRef?.current?.dispatch(StackActions.pop())
+    } else {
+      LegacyNativeModules.ARScreenPresenterModule.dismissModal()
+    }
     if (Platform.OS === "android") {
       navigationEvents.emit("modalDismissed")
     }
@@ -250,12 +255,13 @@ export function goBack(backProps?: GoBackProps) {
   LegacyNativeModules.ARScreenPresenterModule.goBack(unsafe__getSelectedTab())
 }
 
-export function popParentViewController() {
-  LegacyNativeModules.ARScreenPresenterModule.popStack(unsafe__getSelectedTab())
-}
-
 export function popToRoot() {
-  LegacyNativeModules.ARScreenPresenterModule.popToRootAndScrollToTop(unsafe__getSelectedTab())
+  const enableNewNavigation = unsafe_getFeatureFlag("AREnableNewNavigation")
+  if (enableNewNavigation) {
+    __unsafe_navigationRef?.current?.dispatch(StackActions.popToTop())
+  } else {
+    LegacyNativeModules.ARScreenPresenterModule.popToRootAndScrollToTop(unsafe__getSelectedTab())
+  }
 }
 
 export enum EntityType {
