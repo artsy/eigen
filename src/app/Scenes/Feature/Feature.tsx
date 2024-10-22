@@ -1,8 +1,9 @@
-import { Spacer, Flex, Text, Separator } from "@artsy/palette-mobile"
+import { Spacer, Flex, Text, Separator, Box } from "@artsy/palette-mobile"
 import { FeatureQuery } from "__generated__/FeatureQuery.graphql"
 import { Feature_feature$data } from "__generated__/Feature_feature.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
+import { ReadMore } from "app/Components/ReadMore"
 import { Stack } from "app/Components/Stack"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
@@ -101,9 +102,14 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
           <Flex pb={2} mx={2}>
             {!!set.name && <Text variant="lg-display">{set.name}</Text>}
             {!!set.description && (
-              <Text variant="sm" color="black60">
-                {set.description}
-              </Text>
+              <Box py={1}>
+                <ReadMore
+                  content={set.description}
+                  maxChars={200}
+                  textVariant="md"
+                  linkTextVariant="md"
+                />
+              </Box>
             )}
           </Flex>
         ),
