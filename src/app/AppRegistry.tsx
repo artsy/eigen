@@ -500,6 +500,7 @@ export const modules = defineModules({
     HomeContainer,
     {
       isRootViewForTabName: "home",
+      hidesBackButton: true,
       fullBleed: true,
     },
     [homeViewScreenQuery]
@@ -509,7 +510,9 @@ export const modules = defineModules({
     hidesBackButton: true,
     fullBleed: true,
   }),
-  Inbox: reactModule(InboxQueryRenderer, { isRootViewForTabName: "inbox" }, [InboxScreenQuery]),
+  Inbox: reactModule(InboxQueryRenderer, { isRootViewForTabName: "inbox", hidesBackButton: true }, [
+    InboxScreenQuery,
+  ]),
   Inquiry: reactModule(Inquiry, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   LiveAuction: reactModule(LiveAuctionView, {
     alwaysPresentModally: true,
@@ -578,6 +581,7 @@ export const modules = defineModules({
     {
       isRootViewForTabName: "profile",
       fullBleed: true,
+      hidesBackButton: true,
     },
     [MyCollectionScreenQuery]
   ),
@@ -660,9 +664,11 @@ export const modules = defineModules({
     hidesBackButton: true,
     fullBleed: true,
   }),
-  Sell: reactModule(SellWithArtsy, { isRootViewForTabName: "sell", fullBleed: true }, [
-    SellWithArtsyHomeScreenQuery,
-  ]),
+  Sell: reactModule(
+    SellWithArtsy,
+    { isRootViewForTabName: "sell", fullBleed: true, hidesBackButton: true },
+    [SellWithArtsyHomeScreenQuery]
+  ),
   SellNotRootTabView: reactModule(SellWithArtsy),
   SavedArtworks: reactModule(SavedArtworks, {
     fullBleed: true,
@@ -672,7 +678,9 @@ export const modules = defineModules({
     fullBleed: true,
     hidesBackButton: true,
   }),
-  Search: reactModule(SearchScreen, { isRootViewForTabName: "search" }, [SearchScreenQuery]),
+  Search: reactModule(SearchScreen, { isRootViewForTabName: "search", hidesBackButton: true }, [
+    SearchScreenQuery,
+  ]),
   Show: reactModule(ShowQueryRenderer, { fullBleed: true }),
   ShowMoreInfo: reactModule(ShowMoreInfoQueryRenderer),
   SimilarToRecentlyViewed: reactModule(SimilarToRecentlyViewedScreen, {
@@ -683,7 +691,6 @@ export const modules = defineModules({
     hidesBackButton: true,
     alwaysPresentModally: true,
     modalPresentationStyle: "fullScreen",
-    hidesBottomTabs: true,
     screenOptions: {
       gestureEnabled: false,
     },
