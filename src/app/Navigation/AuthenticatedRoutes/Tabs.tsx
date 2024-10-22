@@ -1,14 +1,10 @@
+import { Text } from "@artsy/palette-mobile"
 import { THEME } from "@artsy/palette-tokens"
+import { toTitleCase } from "@artsy/to-title-case"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import { NavigatorScreenParams } from "@react-navigation/native"
-import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { HomeStackPrams, HomeTab } from "app/Navigation/AuthenticatedRoutes/HomeTab"
-import { InboxStackPrams, InboxTab } from "app/Navigation/AuthenticatedRoutes/InboxTab"
-import { ProfileStackPrams, ProfileTab } from "app/Navigation/AuthenticatedRoutes/ProfileTab"
-import { SearchStackPrams, SearchTab } from "app/Navigation/AuthenticatedRoutes/SearchTab"
-import { SellStackPrams, SellTab } from "app/Navigation/AuthenticatedRoutes/SellTab"
-import { SharedRoutesParams } from "app/Navigation/AuthenticatedRoutes/SharedRoutes"
+import { AppModule, modules } from "app/AppRegistry"
 import { BottomTabsIcon } from "app/Scenes/BottomTabs/BottomTabsIcon"
+import { __unsafe_navigationRef } from "app/system/navigation/navigate"
 import { useTabBarBadge } from "app/utils/useTabBarBadge"
 
 export type AuthenticatedRoutesParams = {
@@ -37,11 +33,23 @@ export const AuthenticatedRoutes = () => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => {
+        const currentRoute = __unsafe_navigationRef.current?.getCurrentRoute()?.name
+
         return {
           headerShown: false,
+          tabBarStyle: {
+            display:
+              currentRoute && modules[currentRoute as AppModule]?.options.hidesBottomTabs
+                ? "none"
+                : "flex",
+          },
           tabBarIcon: ({ focused }) => {
             return <BottomTabsIcon tab={route.name} state={focused ? "active" : "inactive"} />
           },
+          tabBarLabel: () => {
+            return <Text variant="xxs">{toTitleCase(route.name)}</Text>
+          },
+          tabBarHideOnKeyboard: true,
           tabBarActiveTintColor: THEME.colors["black100"],
           tabBarInactiveTintColor: THEME.colors["black60"],
         }
