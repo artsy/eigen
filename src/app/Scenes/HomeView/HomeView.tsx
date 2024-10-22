@@ -129,25 +129,6 @@ export const HomeView: React.FC = () => {
   return (
     <Screen safeArea={true}>
       <Screen.Body fullwidth>
-        {/* <Flex backgroundColor="red10"> */}
-        {/* <Button
-            onPress={() => {
-              navigation.dispatch(
-                TabActions.jumpTo("inbox", {
-                  screen: "Inbox",
-                })
-              )
-              // navigation.navigate("Inbox", {
-              //   screen: "Inbox",
-              // })
-            }}
-            block
-            variant="outline"
-            my={2}
-          >
-            Change Tab
-          </Button>
-        </Flex> */}
         <FlatList
           showsVerticalScrollIndicator={false}
           ref={flashlistRef}
