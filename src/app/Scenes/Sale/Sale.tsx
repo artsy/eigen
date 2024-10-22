@@ -17,7 +17,7 @@ import { LoadFailureView } from "app/Components/LoadFailureView"
 import Spinner from "app/Components/Spinner"
 import { CascadingEndTimesBanner } from "app/Scenes/Artwork/Components/CascadingEndTimesBanner"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
-import { navigate, popParentViewController } from "app/system/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { AuctionWebsocketContextProvider } from "app/utils/Websockets/auctions/AuctionSocketContext"
@@ -137,8 +137,10 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
   const switchToLive = () => {
     const liveBaseURL = unsafe__getEnvironment().predictionURL
     const liveAuctionURL = `${liveBaseURL}/${sale.slug}`
-    navigate(liveAuctionURL)
-    setTimeout(popParentViewController, 500)
+    navigate(liveAuctionURL, {
+      replaceActiveScreen: true,
+      replaceActiveModal: true,
+    })
   }
 
   const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 30 })
