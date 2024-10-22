@@ -60,7 +60,6 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
   showSaveIcon = false,
 }) => {
   const { trackEvent } = useTracking()
-  const enablePartnerOfferSignals = useFeatureFlag("AREnablePartnerOfferSignals")
   const enableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
   const enableCuratorsPicksAndInterestSignals = useFeatureFlag(
     "AREnableCuratorsPicksAndInterestSignals"
@@ -86,7 +85,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
   const saleMessage = defaultSaleMessageOrBidInfo({
     artwork,
     isSmallTile: true,
-    collectorSignals: enablePartnerOfferSignals ? collectorSignals : null,
+    collectorSignals: collectorSignals,
     auctionSignals: enableAuctionImprovementsSignals ? collectorSignals?.auction : null,
   })
 
@@ -98,7 +97,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
   const secondaryTextColor = dark ? "black15" : "black60"
 
   const displayLimitedTimeOfferSignal =
-    enablePartnerOfferSignals && collectorSignals?.partnerOffer?.isAvailable && !sale?.isAuction
+    collectorSignals?.partnerOffer?.isAvailable && !sale?.isAuction
 
   const displayAuctionSignal = enableAuctionImprovementsSignals && sale?.isAuction
 

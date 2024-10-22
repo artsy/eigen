@@ -248,12 +248,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableCollectorProfilePrompts",
   },
-  AREnablePartnerOfferSignals: {
-    description: "Enable partner offer signals",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnablePartnerOfferSignals",
-  },
   AREnableAuctionImprovementsSignals: {
     description: "Enable new auction lot signals",
     readyForRelease: true,

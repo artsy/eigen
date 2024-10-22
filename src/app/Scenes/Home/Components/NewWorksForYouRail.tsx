@@ -8,7 +8,6 @@ import { useItemsImpressionsTracking } from "app/Scenes/Home/Components/useImpre
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
   ArtworkActionTrackingProps,
   extractArtworkActionTrackingProps,
@@ -29,7 +28,6 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
   ({ title, artworkConnection, isRailVisible, scrollRef, ...restProps }) => {
     const { trackEvent } = useTracking()
     const trackingProps = extractArtworkActionTrackingProps(restProps)
-    const AREnablePartnerOfferSignals = useFeatureFlag("AREnablePartnerOfferSignals")
 
     const { artworksForUser } = useFragment(artworksFragment, artworkConnection)
 
@@ -59,7 +57,7 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
         return
       }
 
-      const collectorSignals = AREnablePartnerOfferSignals ? artwork.collectorSignals : null
+      const collectorSignals = artwork.collectorSignals
 
       trackEvent(
         HomeAnalytics.artworkThumbnailTapEvent(

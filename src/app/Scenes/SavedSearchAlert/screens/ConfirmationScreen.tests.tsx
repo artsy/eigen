@@ -172,8 +172,6 @@ describe(ConfirmationScreen, () => {
     })
 
     it("sends a tracking event when an artwork is tapped", async () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnablePartnerOfferSignals: false })
-
       renderWithRelay({
         FilterArtworksConnection: () => ({
           edges: [{ node: { title: "Untitled #1", slug: "untitled", collectorSignals: null } }],
@@ -195,8 +193,6 @@ describe(ConfirmationScreen, () => {
     })
 
     it("sends a tracking event when an artwork with a partner offer is tapped", async () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnablePartnerOfferSignals: true })
-
       renderWithRelay({
         FilterArtworksConnection: () => ({
           edges: [

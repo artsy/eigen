@@ -166,10 +166,6 @@ describe("ArtworkRailCard", () => {
 
   describe("artwork signals", () => {
     describe("partner offer signal", () => {
-      beforeEach(
-        () => __globalStoreTestUtils__?.injectFeatureFlags({ AREnablePartnerOfferSignals: true })
-      )
-
       const futureDate = DateTime.fromMillis(Date.now())
         .plus({ days: 1, hours: 12, minutes: 1 })
         .toISO()
