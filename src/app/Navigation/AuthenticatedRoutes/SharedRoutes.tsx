@@ -40,7 +40,7 @@ interface PageWrapperProps {
   fullBleed?: boolean
 }
 
-const ScreenWrapper: React.FC<PageWrapperProps> = ({ fullBleed, children }) => {
+export const ScreenWrapper: React.FC<PageWrapperProps> = ({ fullBleed, children }) => {
   const safeAreaInsets = useScreenDimensions().safeAreaInsets
   const paddingTop = fullBleed ? 0 : safeAreaInsets.top
   return <View style={{ flex: 1, paddingTop }}>{children}</View>
