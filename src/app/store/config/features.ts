@@ -316,6 +316,12 @@ export const features = {
     readyForRelease: false,
     showInDevMenu: true,
   },
+  AREnableRedesignSaveCTA: {
+    description: "Enable redesign Save CTA",
+    readyForRelease: false,
+    showInDevMenu: true,
+    /* echoFlagKey: "AREnableRedesignSaveCTA" */
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {

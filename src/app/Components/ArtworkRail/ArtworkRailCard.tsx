@@ -12,6 +12,7 @@ import {
 } from "app/Components/ArtworkRail/LegacyArtworkRailCardImage"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
+import { HEART_ICON_SIZE } from "app/Components/constants"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
@@ -20,6 +21,10 @@ import { GestureResponderEvent, PixelRatio, TouchableHighlight } from "react-nat
 import { graphql, useFragment } from "react-relay"
 
 export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = PixelRatio.getFontScale() * 90
+
+export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT_NEW_SAVE_CTA =
+  PixelRatio.getFontScale() * 90 + 20 + HEART_ICON_SIZE
+
 export const ARTWORK_RAIL_CARD_MINIMUM_WIDTH = 140
 
 export interface ArtworkRailCardProps

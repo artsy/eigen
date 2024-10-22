@@ -3,8 +3,11 @@ import { ArtworkRailCardMeta_artwork$key } from "__generated__/ArtworkRailCardMe
 import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
 import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
-import { ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT } from "app/Components/ArtworkRail/ArtworkRailCard"
-import { HEART_ICON_SIZE } from "app/Components/constants"
+import {
+  ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT,
+  ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT_NEW_SAVE_CTA,
+} from "app/Components/ArtworkRail/ArtworkRailCard"
+import { HEART_ICON_SIZE, HEART_ICON_SIZE_NEW_SAVE_CTA } from "app/Components/constants"
 import { formattedTimeLeft } from "app/Scenes/Activity/utils/formattedTimeLeft"
 import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { getTimer } from "app/utils/getTimer"
@@ -60,11 +63,13 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
   showSaveIcon = false,
 }) => {
   const { trackEvent } = useTracking()
+
   const enablePartnerOfferSignals = useFeatureFlag("AREnablePartnerOfferSignals")
   const enableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
   const enableCuratorsPicksAndInterestSignals = useFeatureFlag(
     "AREnableCuratorsPicksAndInterestSignals"
   )
+  const enableRedesignSaveCTA = true // useFeatureFlag("AREnableRedesignSaveCTA")
 
   const artwork = useFragment(artworkMetaFragment, artworkProp)
 
@@ -136,7 +141,9 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
     <Flex
       my={1}
       style={{
-        height: ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT,
+        height: enableRedesignSaveCTA
+          ? ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT_NEW_SAVE_CTA
+          : ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT,
         ...metaContainerStyles,
       }}
       backgroundColor={backgroundColor}
@@ -244,39 +251,83 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
         )}
       </Flex>
 
-      {!!showSaveIcon && (
-        <Flex flexDirection="row" alignItems="flex-start">
-          {!!displayAuctionSignal && !!collectorSignals?.auction?.lotWatcherCount && (
-            <Text lineHeight="20px" variant="xs" numberOfLines={1}>
-              {collectorSignals.auction.lotWatcherCount}
-            </Text>
-          )}
-
+      {!!showSaveIcon &&
+        (enableRedesignSaveCTA ? (
           <Touchable
             haptic
-            hitSlop={{ bottom: 5, right: 5, left: 5, top: 5 }}
             onPress={saveArtworkToLists}
             testID="save-artwork-icon"
-            underlayColor={backgroundColor}
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+            }}
           >
-            {isSaved ? (
-              <HeartFillIcon
-                testID="filled-heart-icon"
-                height={HEART_ICON_SIZE}
-                width={HEART_ICON_SIZE}
-                fill="blue100"
-              />
-            ) : (
-              <HeartIcon
-                testID="empty-heart-icon"
-                height={HEART_ICON_SIZE}
-                width={HEART_ICON_SIZE}
-                fill={primaryTextColor}
-              />
-            )}
+            <Flex
+              flexDirection="row"
+              p={1}
+              borderRadius={50}
+              justifyContent="center"
+              alignItems="center"
+              backgroundColor="black5"
+            >
+              {isSaved ? (
+                <HeartFillIcon
+                  testID="filled-heart-icon"
+                  height={HEART_ICON_SIZE_NEW_SAVE_CTA}
+                  width={HEART_ICON_SIZE_NEW_SAVE_CTA}
+                  fill="black100"
+                  p={1}
+                />
+              ) : (
+                <HeartIcon
+                  testID="empty-heart-icon"
+                  height={HEART_ICON_SIZE_NEW_SAVE_CTA}
+                  width={HEART_ICON_SIZE_NEW_SAVE_CTA}
+                  p={1}
+                />
+              )}
+
+              {!!displayAuctionSignal && !!collectorSignals?.auction?.lotWatcherCount && (
+                <Text pl={0.5} variant="xxs" numberOfLines={1} textAlign="center">
+                  {collectorSignals.auction.lotWatcherCount}
+                </Text>
+              )}
+            </Flex>
           </Touchable>
-        </Flex>
-      )}
+        ) : (
+          <Flex flexDirection="row" alignItems="flex-start">
+            {!!displayAuctionSignal && !!collectorSignals?.auction?.lotWatcherCount && (
+              <Text lineHeight="20px" variant="xs" numberOfLines={1}>
+                {collectorSignals.auction.lotWatcherCount}
+              </Text>
+            )}
+
+            <Touchable
+              haptic
+              hitSlop={{ bottom: 5, right: 5, left: 5, top: 5 }}
+              onPress={saveArtworkToLists}
+              testID="save-artwork-icon"
+              underlayColor={backgroundColor}
+            >
+              {isSaved ? (
+                <HeartFillIcon
+                  testID="filled-heart-icon"
+                  height={HEART_ICON_SIZE}
+                  width={HEART_ICON_SIZE}
+                  fill="blue100"
+                />
+              ) : (
+                <HeartIcon
+                  testID="empty-heart-icon"
+                  height={HEART_ICON_SIZE}
+                  width={HEART_ICON_SIZE}
+                  fill={primaryTextColor}
+                />
+              )}
+            </Touchable>
+          </Flex>
+        ))}
     </Flex>
   )
 }
