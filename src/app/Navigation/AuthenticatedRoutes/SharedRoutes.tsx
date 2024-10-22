@@ -9,7 +9,7 @@ export const SharedRoutes = () => {
   return (
     <TabStackNavigator.Group>
       {Object.entries(modules).map(([moduleName, module]) => {
-        if (module.type === "react" && module.Component) {
+        if (module.type === "react" && module.Component && !module.options.isRootViewForTabName) {
           return (
             <TabStackNavigator.Screen
               key={moduleName}
