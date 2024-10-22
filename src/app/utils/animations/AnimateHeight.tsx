@@ -1,61 +1,71 @@
-import { MotiView, useDynamicAnimation } from "moti"
-import { useState, useRef, useEffect } from "react"
-import { Easing } from "react-native-reanimated"
+import { StyleSheet } from "react-native"
+import Animated, {
+  runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated"
 
-type AnimateHeightProps = {
-  children?: React.ReactNode
-  enterFrom?: "bottom" | "top"
+const transition = { duration: 200 } as const
+
+interface AnimateHeightProps {
+  children: React.ReactNode
+  enabled?: boolean
+  hide?: boolean
+  style?: any
+  onHeightDidAnimate?: (height: number) => void
   initialHeight?: number
-} & React.ComponentProps<typeof MotiView>
+}
 
 export const AnimateHeight: React.FC<AnimateHeightProps> = ({
   children,
-  animate = {},
-  transition = {
-    type: "timing",
-    duration: 400,
-    easing: Easing.out(Easing.exp),
-  },
-  initialHeight = 100,
+  enabled = true,
+  hide = !children,
+  style,
+  onHeightDidAnimate,
+  initialHeight = 0,
 }) => {
-  const animation = useDynamicAnimation(() => ({
-    height: initialHeight,
-  }))
-  const [height, setHeight] = useState(initialHeight)
+  const measuredHeight = useSharedValue(initialHeight)
+  const childStyle = useAnimatedStyle(
+    () => ({
+      opacity: withTiming(!measuredHeight.value || hide ? 0 : 1, transition),
+    }),
+    [hide, measuredHeight]
+  )
 
-  const mounted = useRef(false)
-
-  useEffect(() => {
-    mounted.current = true
-
-    return () => {
-      mounted.current = false
+  const containerStyle = useAnimatedStyle(() => {
+    return {
+      height: withTiming(hide ? 0 : measuredHeight.value, transition, () => {
+        if (onHeightDidAnimate) {
+          runOnJS(onHeightDidAnimate)(measuredHeight.value)
+        }
+      }),
     }
-  }, [])
+  }, [hide, measuredHeight])
 
-  useEffect(() => {
-    if (animation.current?.height == height) {
-      return
-    }
-
-    animation.animateTo({
-      height,
-    })
-  }, [animation, height])
+  if (!enabled) {
+    return <>{children}</>
+  }
 
   return (
-    <MotiView state={animation} transition={transition} style={{ overflow: "hidden" }}>
-      <MotiView
-        animate={{ ...animate, opacity: !height ? 0 : 1 }}
-        transition={transition}
-        onLayout={(next) => {
-          if (mounted.current) {
-            setHeight(next.nativeEvent.layout.height)
-          }
+    <Animated.View style={[styles.hidden, style, containerStyle]}>
+      <Animated.View
+        style={[StyleSheet.absoluteFill, styles.autoBottom, childStyle]}
+        onLayout={({ nativeEvent }) => {
+          measuredHeight.value = Math.ceil(nativeEvent.layout.height)
         }}
       >
         {children}
-      </MotiView>
-    </MotiView>
+      </Animated.View>
+    </Animated.View>
   )
 }
+
+const styles = StyleSheet.create({
+  autoBottom: {
+    bottom: "auto",
+  },
+  hidden: {
+    overflow: "hidden",
+  },
+})
