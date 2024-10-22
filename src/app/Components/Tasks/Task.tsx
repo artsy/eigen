@@ -55,7 +55,7 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
             Clear
           </Text>
         }
-        actionComponentWidth={80 * fontScale}
+        actionComponentWidth={70 * fontScale}
         actionOnPress={handleClearTask}
         actionOnSwipe={handleClearTask}
         enabled={!disableSwipeable}
