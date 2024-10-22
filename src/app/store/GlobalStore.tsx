@@ -20,9 +20,6 @@ function createGlobalStore() {
     middleware.push(persistenceMiddleware)
 
     if (__DEV__) {
-      const reduxInFlipper = require("redux-flipper").default
-      middleware.push(reduxInFlipper())
-
       if (logAction) {
         middleware.push(logger)
       }
