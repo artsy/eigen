@@ -1,6 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { TaskTestQuery } from "__generated__/TaskTestQuery.graphql"
 import { Task } from "app/Components/Tasks/Task"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -49,6 +50,14 @@ describe("Task Component", () => {
 
     expect(mockClearTask).toHaveBeenCalled()
     expect(mockDissmissTask).toHaveBeenCalled()
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedClearNotification",
+      context_module: "actNow",
+      context_screen_owner_type: "home",
+      destination_path: "www.test.com",
+      notification_category: "send_wire",
+      notification_id: "one",
+    })
   })
 
   it("should acknowledge the task when pressed", () => {
@@ -58,13 +67,23 @@ describe("Task Component", () => {
 
     expect(mockAcknowledgeTask).toHaveBeenCalled()
     expect(mockClearTask).toHaveBeenCalled()
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedNotification",
+      context_module: "actNow",
+      context_screen_owner_type: "home",
+      destination_path: "www.test.com",
+      notification_category: "send_wire",
+      notification_id: "one",
+    })
   })
 })
 
 const mockTask = {
+  internalID: "one",
   imageUrl: "www.test.com/img.jpeg",
   title: "Test Task",
   message: "Test Message",
   actionLink: "www.test.com",
   actionMessage: "Test Action",
+  taskType: "send_wire",
 }
