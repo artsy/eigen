@@ -680,9 +680,8 @@ const HomePlaceholder: React.FC = () => {
       <Box ml={2} mr={2}>
         <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
         <Spacer y={0.5} />
-        <Flex flexDirection="row">
-          <ArtworkRailPlaceholder />
-        </Flex>
+
+        <ArtworkRailPlaceholder />
       </Box>
       <ModuleSeparator />
 
