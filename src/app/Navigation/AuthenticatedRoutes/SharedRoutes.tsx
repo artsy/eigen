@@ -22,8 +22,11 @@ export const SharedRoutes = (): JSX.Element => {
                 presentation: module.options.alwaysPresentModally ? "fullScreenModal" : "card",
                 headerShown:
                   !module.options.hidesBackButton && !module.options.hasOwnModalCloseButton,
-                ...module.options.screenOptions,
-                headerLeft: () => {
+                headerLeft: ({ canGoBack }) => {
+                  if (!canGoBack) {
+                    return null
+                  }
+
                   return (
                     <Touchable
                       onPress={() => {
@@ -37,6 +40,7 @@ export const SharedRoutes = (): JSX.Element => {
                   )
                 },
                 headerTitle: "",
+                ...module.options.screenOptions,
               }}
               children={(props) => {
                 const params = props.route.params || {}

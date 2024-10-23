@@ -7,7 +7,7 @@ export const NavButtons: React.FC<{ onClose(): void }> = ({ onClose }) => {
   const isLoggedIn = !!GlobalStore.useAppState((state) => !!state.auth.userID)
 
   return (
-    <Flex style={{ flexDirection: "row", alignItems: "center" }} pb={2} px={2}>
+    <Flex style={{ flexDirection: "row", alignItems: "center" }} px={2}>
       <Join separator={<Spacer x={2} />}>
         {!!isLoggedIn && (
           <TouchableOpacity

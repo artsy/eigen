@@ -305,7 +305,7 @@ export const features = {
     showInDevMenu: true,
   },
   AREnableNewNavigation: {
-    description: "Enable new navigation infra",
+    description: "Enable new navigation infra (Requires App Restart!)",
     readyForRelease: false,
     showInDevMenu: true,
   },
