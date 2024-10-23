@@ -12,6 +12,11 @@ import { SellTab } from "app/Navigation/AuthenticatedRoutes/SellTab"
 import { BottomTabsIcon } from "app/Scenes/BottomTabs/BottomTabsIcon"
 import { __unsafe_navigationRef } from "app/system/navigation/navigate"
 import { useTabBarBadge } from "app/utils/useTabBarBadge"
+import { Platform } from "react-native"
+
+if (Platform.OS === "ios") {
+  require("app/Navigation/AuthenticatedRoutes/NativeScreens")
+}
 
 export type AuthenticatedRoutesParams = {
   Home: undefined
