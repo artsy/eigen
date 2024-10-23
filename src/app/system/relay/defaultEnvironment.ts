@@ -1,4 +1,5 @@
 import { cacheHeaderMiddleware } from "app/system/relay/middlewares/cacheHeaderMiddleware"
+import { logRelay } from "app/utils/loggers"
 import { Environment as IEnvironment } from "react-relay"
 import {
   cacheMiddleware,
@@ -42,8 +43,8 @@ const network = new RelayNetworkLayer(
     metaphysicsExtensionsLoggerMiddleware(),
     cacheHeaderMiddleware(),
     simpleLoggerMiddleware(),
-    __DEV__ ? relayErrorMiddleware() : null,
-    __DEV__ ? perfMiddleware() : null,
+    __DEV__ && logRelay ? relayErrorMiddleware() : null,
+    __DEV__ && logRelay ? perfMiddleware() : null,
     timingMiddleware(),
     checkAuthenticationMiddleware(), // KEEP AS CLOSE TO THE BOTTOM OF THIS ARRAY AS POSSIBLE. It needs to run as early as possible in the middlewares.
   ],
