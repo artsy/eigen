@@ -1,7 +1,13 @@
-import { bullet, FairIcon, Flex, LinkText, Text } from "@artsy/palette-mobile"
-
+import {
+  ArrowUpRightIcon,
+  bullet,
+  FairIcon,
+  FireIcon,
+  Flex,
+  LinkText,
+  Text,
+} from "@artsy/palette-mobile"
 import { ArtworkDetailsCollectorSignal_artwork$key } from "__generated__/ArtworkDetailsCollectorSignal_artwork.graphql"
-import { ArrowUpIcon, FireIcon } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
 import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { DateTime } from "luxon"
@@ -44,7 +50,7 @@ export const ArtworkDetailsCollectorSignal: React.FC<Props> = ({ artwork }) => {
     case increasedInterest && enableCuratorsPicksAndInterestSignals: {
       singalTitle = "Increased Interest"
       signalDescription = "Based on collector activity in the past 14 days"
-      SignalIcon = ArrowUpIcon
+      SignalIcon = ArrowUpRightIcon
       break
     }
     case !!runningShow: {

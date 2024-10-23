@@ -307,7 +307,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
                     color="black60"
                     numberOfLines={1}
                     style={{ textDecorationLine: "line-through" }}
+                    {...saleInfoTextStyle}
                   >
+                    {" "}
                     {part.slice(1, -1)}
                   </Text>
                 )
@@ -320,8 +322,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   color={saleInfoTextColor}
                   numberOfLines={1}
                   fontWeight={saleInfoTextWeight}
+                  {...saleInfoTextStyle}
                 >
-                  {part}{" "}
+                  {part}
                 </Text>
               )
             })}
@@ -332,6 +335,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
             fontWeight="normal"
             color="blue100"
             numberOfLines={1}
+            {...saleInfoTextStyle}
           >
             Offer Expires {partnerOfferEndAt}
           </Text>
@@ -345,6 +349,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
           color={saleInfoTextColor}
           numberOfLines={1}
           fontWeight={saleInfoTextWeight}
+          {...saleInfoTextStyle}
         >
           {saleInfo}
         </Text>

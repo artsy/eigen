@@ -151,6 +151,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
                     numberOfLines={1}
                     style={{ textDecorationLine: "line-through" }}
                   >
+                    {" "}
                     {part.slice(1, -1)}
                   </Text>
                 )
@@ -164,7 +165,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
                   numberOfLines={1}
                   fontWeight={saleInfoTextWeight}
                 >
-                  {part}{" "}
+                  {part}
                 </Text>
               )
             })}
