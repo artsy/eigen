@@ -2,7 +2,7 @@ import { ScreenWrapper, SharedRoutes } from "app/Navigation/AuthenticatedRoutes/
 import { TabStackNavigator } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { SellWithArtsy } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils"
 
-export const SellTab = () => {
+export const SellTab = (): JSX.Element => {
   return (
     <TabStackNavigator.Navigator screenOptions={{ headerShown: false }} initialRouteName="Sell">
       <TabStackNavigator.Screen
