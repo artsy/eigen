@@ -1,6 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Button, Flex, Separator, Spacer, Text, useColor } from "@artsy/palette-mobile"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { MenuItem } from "app/Components/MenuItem"
 import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -19,8 +18,6 @@ export const MyProfileSettings: React.FC<MyProfileSettingsProps> = ({ onSuccess 
 
   return (
     <>
-      <FancyModalHeader hideBottomDivider>Account</FancyModalHeader>
-
       <ScrollView>
         <Text variant="xs" color="black60" px={2}>
           Settings

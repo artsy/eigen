@@ -62,7 +62,7 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
         </Flex>
       )}
 
-      <Text variant="xs" color="grey" mx={2}>
+      <Text variant="xs" color="grey" mx={2} mt={2}>
         Build:{" "}
         <Text variant="xs">
           v{DeviceInfo.getVersion()}, build {DeviceInfo.getBuildNumber()} (

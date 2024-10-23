@@ -299,7 +299,7 @@ export interface ViewOptions {
   screenOptions?: NativeStackNavigationOptions
 }
 
-type ModuleDescriptor = {
+export type ModuleDescriptor = {
   type: "react"
   Component: React.ComponentType<any>
   Queries?: GraphQLTaggedNode[]
@@ -340,7 +340,11 @@ export const modules = defineModules({
     hidesBackButton: true,
     hidesBottomTabs: true,
   }),
-  About: reactModule(About),
+  About: reactModule(About, {
+    screenOptions: {
+      headerTitle: "About",
+    },
+  }),
   AddMyCollectionArtist: reactModule(AddMyCollectionArtist, {
     hidesBackButton: true,
   }),
@@ -392,9 +396,9 @@ export const modules = defineModules({
     [ArtworkScreenQuery]
   ),
   ArtworkMedium: reactModule(ArtworkMediumQueryRenderer, {
-    fullBleed: true,
-    alwaysPresentModally: true,
-    modalPresentationStyle: "fullScreen",
+    screenOptions: {
+      presentation: "fullScreenModal",
+    },
   }),
   ArtworkAttributionClassFAQ: reactModule(ArtworkAttributionClassFAQQueryRenderer, {
     fullBleed: true,
@@ -430,7 +434,6 @@ export const modules = defineModules({
   AuctionRegistration: reactModule(RegistrationFlow, {
     alwaysPresentModally: true,
     hasOwnModalCloseButton: true,
-    fullBleed: Platform.OS === "ios",
     screenOptions: {
       // Don't allow the screen to be swiped away by mistake
       gestureEnabled: false,
@@ -540,13 +543,31 @@ export const modules = defineModules({
   }),
   MedianSalePriceAtAuction: reactModule(MedianSalePriceAtAuction),
   Map: reactModule(MapContainer, { fullBleed: true, ignoreTabs: true }),
-  MyAccount: reactModule(MyAccountQueryRenderer),
-  MyAccountEditEmail: reactModule(MyAccountEditEmailQueryRenderer, { hidesBackButton: true }),
-  MyAccountEditPriceRange: reactModule(MyAccountEditPriceRangeQueryRenderer, {
-    hidesBackButton: true,
+  MyAccount: reactModule(MyAccountQueryRenderer, {
+    screenOptions: {
+      headerTitle: "Account Settings",
+    },
   }),
-  MyAccountEditPassword: reactModule(MyAccountEditPassword, { hidesBackButton: true }),
-  MyAccountEditPhone: reactModule(MyAccountEditPhoneQueryRenderer, { hidesBackButton: true }),
+  MyAccountEditEmail: reactModule(MyAccountEditEmailQueryRenderer, {
+    screenOptions: {
+      headerTitle: "Email",
+    },
+  }),
+  MyAccountEditPriceRange: reactModule(MyAccountEditPriceRangeQueryRenderer, {
+    screenOptions: {
+      headerTitle: "Price Range",
+    },
+  }),
+  MyAccountEditPassword: reactModule(MyAccountEditPassword, {
+    screenOptions: {
+      headerTitle: "Password",
+    },
+  }),
+  MyAccountEditPhone: reactModule(MyAccountEditPhoneQueryRenderer, {
+    screenOptions: {
+      headerTitle: "Phone Number",
+    },
+  }),
   MyAccountDeleteAccount: reactModule(MyAccountDeleteAccountQueryRenderer),
   MyBids: reactModule(MyBidsQueryRenderer),
   MyCollection: reactModule(MyCollectionQueryRenderer),
@@ -605,8 +626,16 @@ export const modules = defineModules({
     hidesBackButton: true,
     hidesBottomTabs: true,
   }),
-  MyProfileEditForm: reactModule(MyProfileEditFormScreen),
-  MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
+  MyProfileEditForm: reactModule(MyProfileEditFormScreen, {
+    screenOptions: {
+      headerTitle: "Edit Profile",
+    },
+  }),
+  MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer, {
+    screenOptions: {
+      headerTitle: "Payment",
+    },
+  }),
   MyProfileSettings: reactModule(MyProfileSettings),
   MySellingProfile: reactModule(View),
   NewWorksForYou: reactModule(NewWorksForYouQueryRenderer, {
@@ -615,9 +644,15 @@ export const modules = defineModules({
     fullBleed: true,
   }),
   MyProfilePaymentNewCreditCard: reactModule(MyProfilePaymentNewCreditCard, {
-    hidesBackButton: true,
+    screenOptions: {
+      headerTitle: "Add new card",
+    },
   }),
-  MyProfilePushNotifications: reactModule(MyProfilePushNotificationsQueryRenderer),
+  MyProfilePushNotifications: reactModule(MyProfilePushNotificationsQueryRenderer, {
+    screenOptions: {
+      headerTitle: "Push Notifications",
+    },
+  }),
   NewWorksFromGalleriesYouFollow: reactModule(NewWorksFromGalleriesYouFollowScreen, {
     hidesBackButton: true,
     fullBleed: true,
@@ -642,22 +677,25 @@ export const modules = defineModules({
     hidesBackButton: true,
   }),
   PriceDatabase: reactModule(PriceDatabase, { hidesBackButton: true }),
-  PrivacyRequest: reactModule(PrivacyRequest),
+  PrivacyRequest: reactModule(PrivacyRequest, {
+    screenOptions: {
+      headerTitle: "Personal Data Request",
+    },
+  }),
   PurchaseModal: reactModule(PurchaseModalQueryRenderer, {
     hasOwnModalCloseButton: true,
   }),
   ModalWebView: reactModule(ArtsyWebViewPage, {
-    fullBleed: false,
+    // fullBleed: false,
     hasOwnModalCloseButton: true,
     hidesBackButton: true,
     alwaysPresentModally: true,
-    modalPresentationStyle: "fullScreen",
     screenOptions: {
       gestureEnabled: false,
     },
   }),
   ReactWebView: reactModule(ArtsyWebViewPage, {
-    fullBleed: true,
+    // fullBleed: true,
     hasOwnModalCloseButton: true,
     hidesBackButton: true,
   }),
