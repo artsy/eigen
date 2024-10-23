@@ -50,7 +50,7 @@ export const MapRenderer: React.FC<{
                 error,
                 retry: () => {
                   isRetrying = true
-                  retry!()
+                  retry?.()
                 },
                 isRetrying,
               }}

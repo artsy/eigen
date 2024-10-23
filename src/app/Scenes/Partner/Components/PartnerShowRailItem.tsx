@@ -1,11 +1,10 @@
-import { Spacer, Flex, Text, useScreenDimensions, Image } from "@artsy/palette-mobile"
+import { Flex, Image, Spacer, Text, Touchable, useScreenDimensions } from "@artsy/palette-mobile"
 import { PartnerShowRailItem_show$data } from "__generated__/PartnerShowRailItem_show.graphql"
 import { exhibitionDates } from "app/Scenes/Map/exhibitionPeriodParser"
 import { navigate } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
 import { first } from "lodash"
 import React from "react"
-import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -29,7 +28,7 @@ export const PartnerShowRailItem: React.FC<Props> = (props) => {
   const sectionWidth = windowWidth - 100
 
   return (
-    <TouchableWithoutFeedback onPress={onPress}>
+    <Touchable onPress={onPress}>
       <Flex my="15px" mr={2} width={sectionWidth}>
         {!!imageURL && (
           <Image height={200} width={sectionWidth} src={imageURL} blurhash={coverImage?.blurhash} />
@@ -44,7 +43,7 @@ export const PartnerShowRailItem: React.FC<Props> = (props) => {
           </Text>
         )}
       </Flex>
-    </TouchableWithoutFeedback>
+    </Touchable>
   )
 }
 
