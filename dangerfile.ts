@@ -156,7 +156,7 @@ export const validatePRChangelog = () => {
       .map(([section, sectionValue]) => {
         return `\n- ${
           changelogTemplateSections[section as keyof typeof changedSections]
-        } (${sectionValue})`
+        } (${sectionValue} - ${pr.user.login})`
       })
       .join("")
 
