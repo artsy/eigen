@@ -33,14 +33,16 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
   useBackHandler(handleBackButton)
 
   useEffect(() => {
-    requestAnimationFrame(() => {
-      navigation?.setOptions({
-        headerRight: () => (
-          <Flex justifyContent="center" alignItems="center">
-            <NavButtons onClose={onClose} />
-          </Flex>
-        ),
-      })
+    queueMicrotask(() => {
+      if (enableNewNavigation) {
+        navigation?.setOptions({
+          headerRight: () => (
+            <Flex justifyContent="center" alignItems="center">
+              <NavButtons onClose={onClose} />
+            </Flex>
+          ),
+        })
+      }
     })
   }, [navigation])
 
@@ -52,7 +54,7 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
       {!!enableNewNavigation && <LargeHeaderView />}
 
       {!enableNewNavigation && (
-        <Flex flexDirection="row" justifyContent="space-between" alignItems="center" mb={2}>
+        <Flex flexDirection="row" justifyContent="space-between" alignItems="center" mb={2} pr={2}>
           <Text variant="lg-display" px={2}>
             Dev Settings
           </Text>

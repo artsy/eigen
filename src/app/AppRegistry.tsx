@@ -1,3 +1,4 @@
+import { Flex } from "@artsy/palette-mobile"
 import { NativeStackNavigationOptions } from "@react-navigation/native-stack"
 import { BidFlow } from "app/Components/Containers/BidFlow"
 import { InboxQueryRenderer, InboxScreenQuery } from "app/Components/Containers/Inbox"
@@ -417,7 +418,9 @@ export const modules = defineModules({
     [SalesScreenQuery]
   ),
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
-  AuctionResult: reactModule(AuctionResultQueryRenderer, { hidesBackButton: true }),
+  AuctionResult: reactModule(AuctionResultQueryRenderer, {
+    hidesBackButton: !unsafe_getFeatureFlag("AREnableNewNavigation"),
+  }),
   AuctionResultsForArtistsYouFollow: reactModule(
     AuctionResultsForArtistsYouFollowQueryRenderer,
     {},
@@ -476,11 +479,13 @@ export const modules = defineModules({
     // No need to hide bottom tabs if it's a modal because they will be hidden by default
     hidesBottomTabs: !unsafe_getFeatureFlag("AREnableNewNavigation"),
     hidesBackButton: !unsafe_getFeatureFlag("AREnableNewNavigation"),
-    alwaysPresentModally: !!unsafe_getFeatureFlag("AREnableNewNavigation"),
+    // alwaysPresentModally: !!unsafe_getFeatureFlag("AREnableNewNavigation"),
     screenOptions: {
       headerTitle: "Dev Settings",
       headerLargeTitle: true,
-      headerLeft: undefined,
+      headerLeft: () => {
+        return <Flex />
+      },
     },
   }),
   EditSavedSearchAlert: reactModule(EditSavedSearchAlertQueryRenderer, {
