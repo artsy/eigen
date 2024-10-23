@@ -81,7 +81,7 @@ RCT_EXPORT_MODULE();
 
 - (NSDictionary *)constantsToExport
 {
-    return @{ @"nativeState" : self.state };
+    return self.state;
 }
 
 - (NSArray<NSString *> *)supportedEvents

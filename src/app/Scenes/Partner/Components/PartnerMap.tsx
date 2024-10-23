@@ -1,6 +1,6 @@
 import { Spacer, Flex, Box, Text } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
-import MapboxGL from "@react-native-mapbox-gl/maps"
+import MapboxGL from "@rnmapbox/maps"
 import { themeGet } from "@styled-system/theme-get"
 import { PartnerMap_location$data } from "__generated__/PartnerMap_location.graphql"
 import { Pin } from "app/Components/Icons/Pin"
