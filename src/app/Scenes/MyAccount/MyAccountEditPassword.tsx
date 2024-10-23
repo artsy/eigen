@@ -1,12 +1,9 @@
-import { Flex, Input, Separator } from "@artsy/palette-mobile"
+import { Flex, Input, Separator, Text, Touchable } from "@artsy/palette-mobile"
+import { useNavigation } from "@react-navigation/native"
 import { Stack } from "app/Components/Stack"
 import { getCurrentEmissionState, GlobalStore, unsafe__getEnvironment } from "app/store/GlobalStore"
 import React, { useEffect, useState } from "react"
-import { Alert, Text } from "react-native"
-import {
-  MyAccountFieldEditScreen,
-  MyAccountFieldEditScreenProps,
-} from "./Components/MyAccountFieldEditScreen"
+import { Alert } from "react-native"
 
 export const MyAccountEditPassword: React.FC<{}> = ({}) => {
   const [currentPassword, setCurrentPassword] = useState<string>("")
@@ -15,6 +12,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
   const [receivedErrorCurrent, setReceivedErrorCurrent] = useState<string | undefined>(undefined)
   const [receivedErrorNew, setReceivedErrorNew] = useState<string | undefined>(undefined)
   const [receivedErrorConfirm, setReceivedErrorConfirm] = useState<string | undefined>(undefined)
+  const navigation = useNavigation()
 
   // resetting the errors when user types
   useEffect(() => {
@@ -27,7 +25,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
     setReceivedErrorConfirm(undefined)
   }, [passwordConfirmation])
 
-  const onSave: MyAccountFieldEditScreenProps["onSave"] = async () => {
+  const handleSave = async () => {
     const { authenticationToken, userAgent } = getCurrentEmissionState()
     const { gravityURL } = unsafe__getEnvironment()
     if (newPassword !== passwordConfirmation) {
@@ -86,13 +84,24 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
     }
   }
 
+  useEffect(() => {
+    const isValid = Boolean(currentPassword && newPassword && passwordConfirmation)
+
+    navigation.setOptions({
+      headerRight: () => {
+        return (
+          <Touchable onPress={handleSave} disabled={!isValid}>
+            <Text variant="xs" color={!!isValid ? "black100" : "black60"}>
+              Save
+            </Text>
+          </Touchable>
+        )
+      },
+    })
+  }, [navigation, currentPassword, newPassword, passwordConfirmation])
+
   return (
-    <MyAccountFieldEditScreen
-      title="Password"
-      canSave={Boolean(currentPassword && newPassword && passwordConfirmation)}
-      onSave={onSave}
-      contentContainerStyle={{ paddingHorizontal: 0 }}
-    >
+    <Flex pt={2}>
       <Flex mx={2}>
         <Input
           autoComplete="password"
@@ -127,6 +136,6 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
           error={receivedErrorConfirm}
         />
       </Stack>
-    </MyAccountFieldEditScreen>
+    </Flex>
   )
 }

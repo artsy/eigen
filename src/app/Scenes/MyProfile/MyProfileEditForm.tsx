@@ -19,7 +19,6 @@ import { useNavigation } from "@react-navigation/native"
 import { MyProfileEditFormQuery } from "__generated__/MyProfileEditFormQuery.graphql"
 import { MyProfileEditForm_me$key } from "__generated__/MyProfileEditForm_me.graphql"
 import { Image } from "app/Components/Bidding/Elements/Image"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { buildLocationDisplay } from "app/Components/LocationAutocomplete"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import {
@@ -129,10 +128,9 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
     initialValues: {
       name: me?.name ?? "",
       displayLocation: { display: buildLocationDisplay(me?.location ?? null) },
-      location:
-        {
-          ...me?.location,
-        } ?? undefined,
+      location: {
+        ...me?.location,
+      },
       profession: me?.profession ?? "",
       otherRelevantPositions: me?.otherRelevantPositions ?? "",
       photo: me?.icon?.url || "",
@@ -189,22 +187,10 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
     }
   }, [showVerificationBannerForEmail, showVerificationBannerForID])
 
-  const onLeftButtonPressHandler = () => {
-    navigation.goBack()
-  }
-
   const showCompleteYourProfileBanner = !me?.collectorProfile?.isProfileComplete
 
   return (
     <>
-      <FancyModalHeader
-        onLeftButtonPress={onLeftButtonPressHandler}
-        rightButtonText="Skip"
-        hideBottomDivider
-      >
-        Edit Profile
-      </FancyModalHeader>
-
       {!!showCompleteYourProfileBanner && (
         <Message
           variant="info"
@@ -314,12 +300,6 @@ export const MyProfileEditFormScreen: React.FC<MyProfileEditFormProps> = (props)
 const LoadingSkeleton = () => {
   return (
     <ProvidePlaceholderContext>
-      <Flex alignItems="center" mt={2}>
-        <Text variant="sm-display" mr={0.5}>
-          Edit Profile
-        </Text>
-      </Flex>
-      <Spacer y={4} />
       <Flex flexDirection="row" pl={2} alignItems="center">
         <PlaceholderBox width={99} height={99} borderRadius={50} />
         <PlaceholderText width={100} height={20} marginTop={6} marginLeft={20} />

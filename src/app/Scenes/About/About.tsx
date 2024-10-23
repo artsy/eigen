@@ -1,6 +1,5 @@
 import { useTheme } from "@artsy/palette-mobile"
 import { MenuItem } from "app/Components/MenuItem"
-import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { useToast } from "app/Components/Toast/toastHook"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
@@ -45,27 +44,25 @@ export const About: React.FC = () => {
   )
 
   return (
-    <PageWithSimpleHeader title="About">
-      <ScrollView contentContainerStyle={{ paddingTop: 10 }}>
-        <MenuItem
-          title={showNewDisclaimer ? "Terms and Conditions" : "Terms of Use"}
-          onPress={() => navigate("/terms")}
-        />
-        <MenuItem title="Privacy Policy" onPress={() => navigate("/privacy")} />
-        <MenuItem
-          title={showNewDisclaimer ? "Auction Supplement" : "Conditions of Sale"}
-          onPress={() => navigate(showNewDisclaimer ? "/supplemental-cos" : "/conditions-of-sale")}
-        />
-        <MenuItem
-          title="Version"
-          text={appVersion}
-          onPress={() => updateTapCount((count) => count + 1)}
-          chevron={false}
-          style={
-            userIsDev ? { borderRightColor: color("devpurple"), borderRightWidth: 1 } : undefined
-          }
-        />
-      </ScrollView>
-    </PageWithSimpleHeader>
+    <ScrollView contentContainerStyle={{ paddingTop: 10 }}>
+      <MenuItem
+        title={showNewDisclaimer ? "Terms and Conditions" : "Terms of Use"}
+        onPress={() => navigate("/terms")}
+      />
+      <MenuItem title="Privacy Policy" onPress={() => navigate("/privacy")} />
+      <MenuItem
+        title={showNewDisclaimer ? "Auction Supplement" : "Conditions of Sale"}
+        onPress={() => navigate(showNewDisclaimer ? "/supplemental-cos" : "/conditions-of-sale")}
+      />
+      <MenuItem
+        title="Version"
+        text={appVersion}
+        onPress={() => updateTapCount((count) => count + 1)}
+        chevron={false}
+        style={
+          userIsDev ? { borderRightColor: color("devpurple"), borderRightWidth: 1 } : undefined
+        }
+      />
+    </ScrollView>
   )
 }
