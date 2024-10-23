@@ -3,7 +3,7 @@ import { AppModule, modules } from "app/AppRegistry"
 import { TabStackNavigator } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { View } from "react-native"
 
-export const SharedRoutes = () => {
+export const SharedRoutes = (): JSX.Element => {
   return (
     <TabStackNavigator.Group>
       {Object.entries(modules).map(([moduleName, module]) => {
@@ -33,11 +33,11 @@ export const SharedRoutes = () => {
   )
 }
 
-interface PageWrapperProps {
+export interface ScreenWrapperProps {
   fullBleed?: boolean
 }
 
-export const ScreenWrapper: React.FC<PageWrapperProps> = ({ fullBleed, children }) => {
+export const ScreenWrapper: React.FC<ScreenWrapperProps> = ({ fullBleed, children }) => {
   const safeAreaInsets = useScreenDimensions().safeAreaInsets
   const paddingTop = fullBleed ? 0 : safeAreaInsets.top
   return <View style={{ flex: 1, paddingTop }}>{children}</View>

@@ -2,7 +2,7 @@ import { ScreenWrapper, SharedRoutes } from "app/Navigation/AuthenticatedRoutes/
 import { TabStackNavigator } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { MyProfile } from "app/Scenes/MyProfile/MyProfile"
 
-export const ProfileTab = () => {
+export const ProfileTab = (): JSX.Element => {
   return (
     <TabStackNavigator.Navigator
       screenOptions={{ headerShown: false }}
