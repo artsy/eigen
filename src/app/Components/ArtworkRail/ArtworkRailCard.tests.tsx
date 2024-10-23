@@ -296,12 +296,6 @@ describe("ArtworkRailCard", () => {
     })
 
     describe("social signal", () => {
-      beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({
-          AREnableCuratorsPicksAndInterestSignals: true,
-        })
-      })
-
       it("renders the increased interest signal", () => {
         renderWithRelay({
           Artwork: () => ({
