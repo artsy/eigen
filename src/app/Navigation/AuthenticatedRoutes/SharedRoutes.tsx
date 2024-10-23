@@ -1,15 +1,11 @@
-import {
-  ArrowLeftIcon,
-  DEFAULT_HIT_SLOP,
-  Touchable,
-  useScreenDimensions,
-} from "@artsy/palette-mobile"
+import { ArrowLeftIcon, DEFAULT_HIT_SLOP, Touchable, useTheme } from "@artsy/palette-mobile"
 import { AppModule, modules } from "app/AppRegistry"
 import { TabStackNavigator } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { goBack } from "app/system/navigation/navigate"
 import { View } from "react-native"
 
 export const SharedRoutes = (): JSX.Element => {
+  const { theme } = useTheme()
   return (
     <TabStackNavigator.Group>
       {Object.entries(modules).map(([moduleName, module]) => {
@@ -40,6 +36,10 @@ export const SharedRoutes = (): JSX.Element => {
                   )
                 },
                 headerTitle: "",
+                headerTitleStyle: {
+                  fontFamily: theme.fonts.sans.regular,
+                  ...theme.textTreatments["sm-display"],
+                },
                 ...module.options.screenOptions,
               }}
               children={(props) => {
@@ -64,7 +64,7 @@ export interface ScreenWrapperProps {
 }
 
 export const ScreenWrapper: React.FC<ScreenWrapperProps> = ({ fullBleed, children }) => {
-  const safeAreaInsets = useScreenDimensions().safeAreaInsets
-  const paddingTop = fullBleed ? 0 : safeAreaInsets.top
-  return <View style={{ flex: 1, paddingTop }}>{children}</View>
+  // const safeAreaInsets = useSafeAreaInsets()
+  // const paddingTop = fullBleed ? 0 : safeAreaInsets.top
+  return <View style={{ flex: 1 }}>{children}</View>
 }
