@@ -108,6 +108,7 @@ export const LoginOTPStep: React.FC = () => {
               handleChange("otp")(text)
             }}
             onBlur={() => validateForm()}
+            onSubmitEditing={handleSubmit}
           />
 
           <Spacer y={1} />
