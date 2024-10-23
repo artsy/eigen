@@ -11,9 +11,11 @@ import {
   TappedArtworkGroup,
   TappedAuctionGroup,
   TappedAuctionResultGroup,
+  TappedClearNotification,
   TappedCollectionGroup,
   TappedFairGroup,
   TappedHeroUnitGroup,
+  TappedNotification,
   TappedNotificationsBell,
   TappedShowGroup,
   TappedShowMore,
@@ -264,6 +266,24 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
+    tappedClearNotification: (
+      contextModule: ContextModule,
+      destinationPath: string,
+      notificationID: string,
+      notificationCategory: string
+    ) => {
+      const payload: TappedClearNotification = {
+        action: ActionType.tappedClearNotification,
+        context_module: contextModule,
+        context_screen_owner_type: OwnerType.home,
+        destination_path: destinationPath,
+        notification_id: notificationID,
+        notification_category: notificationCategory,
+      }
+
+      trackEvent(payload)
+    },
+
     tappedFairGroup: (
       fairID: string,
       fairSlug: string,
@@ -344,6 +364,24 @@ export const useHomeViewTracking = () => {
         context_screen_owner_type: OwnerType.home,
         destination_screen_owner_type: destinationOwnerType,
         type: "viewAll",
+      }
+
+      trackEvent(payload)
+    },
+
+    tappedNotification: (
+      contextModule: ContextModule,
+      destinationPath: string,
+      notificationID: string,
+      notificationCategory: string
+    ) => {
+      const payload: TappedNotification = {
+        action: ActionType.tappedNotification,
+        context_module: contextModule,
+        context_screen_owner_type: OwnerType.home,
+        destination_path: destinationPath,
+        notification_id: notificationID,
+        notification_category: notificationCategory,
       }
 
       trackEvent(payload)
