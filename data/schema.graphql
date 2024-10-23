@@ -9133,6 +9133,14 @@ type DisableSecondFactorPayload {
   secondFactorOrErrors: SecondFactorOrErrorsUnion!
 }
 
+enum DiscoverArtworksSort {
+  # Sort by certainty ascending. High certainty means the artwork is more likely to be recommended.
+  CERTAINTY_ASC
+
+  # Sort by certainty descending. High certainty means the artwork is more likely to be recommended.
+  CERTAINTY_DESC
+}
+
 type DiscoveryArtworkReferenceMutationFailure {
   mutationError: GravityMutationError
 }
@@ -16488,9 +16496,11 @@ type Query {
   discoverArtworks(
     after: String
     before: String
+    certainty: Int
     first: Int
     last: Int
     limit: Int
+    sort: DiscoverArtworksSort
     userId: String
   ): ArtworkConnection
 
@@ -21094,9 +21104,11 @@ type Viewer {
   discoverArtworks(
     after: String
     before: String
+    certainty: Int
     first: Int
     last: Int
     limit: Int
+    sort: DiscoverArtworksSort
     userId: String
   ): ArtworkConnection
 
