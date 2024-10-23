@@ -22,7 +22,7 @@ describe("EntitySearchResults", () => {
     ),
   })
 
-  it("renders without throwing an error", async () => {
+  it("renders results component without throwing an error", async () => {
     renderWithRelay({
       Query: () => ({
         searchConnection: {

@@ -139,7 +139,6 @@ describe("ArtworksInSeriesRail", () => {
   })
 
   it("tracks clicks on an individual artwork", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnablePartnerOfferSignals: false })
     renderWithRelay({
       Artwork: () => ({
         internalID: "artwork124",
@@ -174,8 +173,6 @@ describe("ArtworksInSeriesRail", () => {
   })
 
   it("tracks clicks on an individual artwork with a partner offer", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnablePartnerOfferSignals: true })
-
     renderWithRelay({
       Artwork: () => ({
         internalID: "artwork124",

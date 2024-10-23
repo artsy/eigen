@@ -56,7 +56,6 @@ describe("FairFollowedArtistsRail", () => {
   }
 
   it("tracks taps on artworks", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnablePartnerOfferSignals: false })
     const wrapper = getWrapper({
       Fair: () => ({
         internalID: "xyz123",
@@ -86,7 +85,6 @@ describe("FairFollowedArtistsRail", () => {
   })
 
   it("tracks taps on artworks with partner offers", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnablePartnerOfferSignals: true })
     const wrapper = getWrapper({
       Fair: () => ({
         internalID: "xyz123",
