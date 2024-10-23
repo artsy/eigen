@@ -2,6 +2,7 @@ import { Flex, Image, Text, Touchable } from "@artsy/palette-mobile"
 import { Task_task$key } from "__generated__/Task_task.graphql"
 import { Swipeable } from "app/Components/Swipeable/Swipeable"
 import { navigate } from "app/system/navigation/navigate"
+import { useAcknowledgeTask } from "app/utils/mutations/useAcknowledgeTask"
 import { useDismissTask } from "app/utils/mutations/useDismissTask"
 import { useRef } from "react"
 import { PixelRatio } from "react-native"
@@ -23,6 +24,7 @@ export const Task: React.FC<TaskProps> = ({
   ...restProps
 }) => {
   const { submitMutation: dismissTask } = useDismissTask()
+  const { submitMutation: acknowledgeTask } = useAcknowledgeTask()
   const fontScale = PixelRatio.getFontScale()
 
   const task = useFragment(taskFragment, restProps.task)
@@ -35,8 +37,7 @@ export const Task: React.FC<TaskProps> = ({
 
     // TODO: Add tracking
 
-    // TODO: Resolve the task instead of dismissing it.
-    dismissTask({ variables: { taskID: task.internalID } })
+    acknowledgeTask({ variables: { taskID: task.internalID } })
     onClearTask()
 
     navigate(task.actionLink)
