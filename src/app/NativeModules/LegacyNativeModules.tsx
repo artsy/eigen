@@ -4,7 +4,6 @@ import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import { NativeModules as AllNativeModules, Platform } from "react-native"
 import { getLocales, getTimeZone } from "react-native-localize"
 import { ARScreenPresenterModule } from "./ARScreenPresenterModule"
-import type { NativeState } from "app/store/NativeModel"
 import type { ViewDescriptor } from "app/system/navigation/navigate"
 import type { Image as RNCImage } from "react-native-image-crop-picker"
 
@@ -36,7 +35,7 @@ interface LegacyNativeModules {
     getPushToken(): Promise<string | null>
   }
   ARNotificationsManager: {
-    nativeState: NativeState
+    getConstants(): object
     postNotificationName(type: string, data: object): void
     didFinishBootstrapping(): void
     reactStateUpdated(state: {
@@ -132,6 +131,7 @@ const LegacyNativeModulesAndroid = {
     postNotificationName: noop("postNotificationName"),
     didFinishBootstrapping: () => null,
     reactStateUpdated: () => null,
+    getConstants: () => ({}),
   },
 
   ARTemporaryAPIModule: {

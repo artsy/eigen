@@ -237,7 +237,7 @@ jest.mock("@sentry/react-native", () => ({
   TimeToFullDisplay: () => null,
 }))
 
-jest.mock("@react-native-mapbox-gl/maps", () => ({
+jest.mock("@rnmapbox/maps", () => ({
   MapView: () => null,
   StyleURL: {
     Light: null,

@@ -15,6 +15,7 @@
 
 + (ARAppDelegate *)sharedInstance;
 + (Braze *)braze;
+- (NSURL *)bundleURL;
 
 @property (strong, nonatomic) ARWindow *window;
 @property (strong, nonatomic) UIViewController *viewController;

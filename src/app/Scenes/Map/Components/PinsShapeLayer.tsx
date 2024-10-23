@@ -1,8 +1,8 @@
 import MapboxGL, {
   CircleLayerStyle,
-  ShapeSourceProps,
+  // ShapeSourceProps,
   SymbolLayerStyle,
-} from "@react-native-mapbox-gl/maps"
+} from "@rnmapbox/maps"
 import { BucketKey } from "app/Scenes/Map/bucketCityResults"
 import { FilterData } from "app/Scenes/Map/types"
 import { isEqual } from "lodash"
@@ -11,7 +11,7 @@ import { Animated, StyleProp } from "react-native"
 
 interface Props {
   featureCollections: { [key in BucketKey]: FilterData } | {}
-  onPress?: ShapeSourceProps["onPress"]
+  onPress?: any["onPress"]
   duration?: number
   filterID: string
 }

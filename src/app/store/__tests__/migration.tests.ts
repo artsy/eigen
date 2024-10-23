@@ -161,13 +161,15 @@ describe(migrate, () => {
 describe("artsy app store migrations", () => {
   it("are up to date", () => {
     // Reset the nativeState to its original state
-    LegacyNativeModules.ARNotificationsManager.nativeState = {
-      userAgent: "Jest Unit Tests",
-      authenticationToken: null as any,
-      launchCount: 1,
-      userID: null as any,
-      userEmail: null as any,
-    }
+
+    // TODO: use jest mock on getConstants
+    // LegacyNativeModules.ARNotificationsManager.nativeState = {
+    //   userAgent: "Jest Unit Tests",
+    //   authenticationToken: null as any,
+    //   launchCount: 1,
+    //   userID: null as any,
+    //   userEmail: null as any,
+    // }
 
     __globalStoreTestUtils__?.reset()
 

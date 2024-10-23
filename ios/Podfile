@@ -19,7 +19,6 @@ inhibit_all_warnings! # ignore all warnings from all pods
 
 prepare_react_native_project!
 
-$ReactNativeMapboxGLIOSVersion = '~> 6.4'
 
 plugin 'cocoapods-patch'
 
@@ -57,7 +56,7 @@ check_for_existing_netrc_file
 add_mapbox_creds
 
 pre_install do |installer|
-  $RNMBGL.pre_install(installer)
+  $RNMapboxMaps.pre_install(installer)
 end
 
 
@@ -157,7 +156,7 @@ target 'Artsy' do
       # :ccache_enabled => true
     )
 
-    $RNMBGL.post_install(installer)
+    $RNMapboxMaps.post_install(installer)
 
     installer.pods_project.targets.each do |target|
         target.build_configurations.each do |config|

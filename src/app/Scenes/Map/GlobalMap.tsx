@@ -1,5 +1,5 @@
 import { Flex, Box, ClassTheme, Text } from "@artsy/palette-mobile"
-import MapboxGL, { MapViewProps, OnPressEvent } from "@react-native-mapbox-gl/maps"
+import MapboxGL from "@rnmapbox/maps"
 import { themeGet } from "@styled-system/theme-get"
 import { GlobalMap_viewer$data } from "__generated__/GlobalMap_viewer.graphql"
 import { Pin } from "app/Components/Icons/Pin"
@@ -532,7 +532,7 @@ export class GlobalMap extends React.Component<Props, State> {
       this.props.initialCoordinates || get(city, "coordinates")
     const { mapLoaded, activeShows, activePin } = this.state
 
-    const mapProps: MapViewProps = {
+    const mapProps = {
       styleURL: ArtsyMapStyleURL,
       userTrackingMode: MapboxGL.UserTrackingModes.Follow,
       logoEnabled: !!city,
@@ -587,6 +587,8 @@ export class GlobalMap extends React.Component<Props, State> {
                 {...mapProps}
                 onRegionIsChanging={this.onRegionIsChanging}
                 onDidFinishRenderingMapFully={this.onDidFinishRenderingMapFully}
+                attributionEnabled={true}
+                attributionPosition={{ top: 10, left: 10 }}
                 onPress={this.onPressMap}
               >
                 <MapboxGL.Camera
@@ -604,7 +606,7 @@ export class GlobalMap extends React.Component<Props, State> {
                       <PinsShapeLayer
                         filterID={cityTabs[this.state.activeIndex].id}
                         featureCollections={this.state.featureCollections}
-                        onPress={(e) => this.handleFeaturePress(e)}
+                        onPress={(e: any) => this.handleFeaturePress(e)}
                       />
                     )}
                     <ShowCardContainer>{this.renderShowCard()}</ShowCardContainer>
@@ -632,14 +634,12 @@ export class GlobalMap extends React.Component<Props, State> {
    * What's happening is that we have to replicate a subset of the map's clustering algorithm to get
    * access to the shows that the user has tapped on.
    */
-  async handleFeaturePress(event: OnPressEvent) {
+  async handleFeaturePress(event: any) {
     if (!this.map.current) {
       return
     }
     const {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       properties: { slug, cluster, type },
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       geometry: { coordinates },
     } = event.features[0]
 

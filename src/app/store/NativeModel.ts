@@ -1,5 +1,5 @@
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { NotificationsManager } from "app/NativeModules/NotificationsManager"
+// import { NotificationsManager } from "app/NativeModules/NotificationsManager"
 import { navigate, navigationEvents } from "app/system/navigation/navigate"
 import { SegmentTrackingProvider } from "app/utils/track/SegmentTrackingProvider"
 import { InfoType } from "app/utils/track/providers"
@@ -50,7 +50,7 @@ export interface NativeModel {
 }
 
 export const getNativeModel = (): NativeModel => ({
-  sessionState: LegacyNativeModules.ARNotificationsManager?.nativeState ?? {},
+  sessionState: {}, // LegacyNativeModules.ARNotificationsManager?.nativeState ?? {},
   setLocalState: action((state, nextNativeState) => {
     Object.assign(state.sessionState, nextNativeState)
   }),
@@ -60,7 +60,8 @@ export const getNativeModel = (): NativeModel => ({
 })
 
 export function listenToNativeEvents(cb: (event: NativeEvent) => void) {
-  return NotificationsManager.addListener("event", cb)
+  return "hamburgers"
+  // return NotificationsManager.addListener("event", cb)
 }
 
 listenToNativeEvents((event: NativeEvent) => {

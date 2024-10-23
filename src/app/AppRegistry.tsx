@@ -272,6 +272,12 @@ class PageWrapper extends React.Component<PageWrapperProps> {
   }
 }
 
+/**
+ * eigen brigde
+ * (RCTBridge *) 0x0000600001cd17a0
+ * (RCTBridge *) 0x0000600001ccc870
+ */
+
 function register(
   screenName: string,
   Component: React.ComponentType<any>,
@@ -281,6 +287,13 @@ function register(
     <PageWrapper {...options} moduleName={screenName} ViewComponent={Component} viewProps={props} />
   )
   AppRegistry.registerComponent(screenName, () => WrappedComponent)
+}
+
+function registerCity() {
+  console.warn("Registering City")
+  AppRegistry.registerComponent("City", () => CityView)
+  AppRegistry.registerComponent("Map", () => MapContainer)
+  AppRegistry.registerComponent("CityPicker", () => CityPicker)
 }
 
 export interface ViewOptions {
@@ -708,9 +721,13 @@ export const modules = defineModules({
 })
 
 // Register react modules with the app registry
+registerCity()
 for (const moduleName of Object.keys(modules)) {
   const descriptor = modules[moduleName as AppModule]
   if (Platform.OS === "ios") {
+    if (moduleName === "City") {
+      console.warn("Registering City moudle for iOS")
+    }
     // TODO: this should not be needed. right?
     register(moduleName, descriptor.Component, {
       fullBleed: descriptor.options.fullBleed,
