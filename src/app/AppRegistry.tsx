@@ -143,7 +143,7 @@ import {
   ViewingRoomsListScreen,
   viewingRoomsListScreenQuery,
 } from "./Scenes/ViewingRoom/ViewingRoomsList"
-import { GlobalStore } from "./store/GlobalStore"
+import { GlobalStore, unsafe_getFeatureFlag } from "./store/GlobalStore"
 import { propsStore } from "./store/PropsStore"
 import { DevMenu } from "./system/devTools/DevMenu/DevMenu"
 import { Schema, screenTrack } from "./utils/track"
@@ -714,13 +714,10 @@ export const modules = defineModules({
   WorksForYou: reactModule(WorksForYouQueryRenderer, {}, [WorksForYouScreenQuery]),
 })
 
-// TODO: This is not needed
-// We only need to register native modules
-// We can do that separately
 // Register react modules with the app registry
 for (const moduleName of Object.keys(modules)) {
   const descriptor = modules[moduleName as AppModule]
-  if (Platform.OS === "ios") {
+  if (Platform.OS === "ios" && !unsafe_getFeatureFlag("AREnableNewNavigation")) {
     // TODO: this should not be needed. right?
     register(moduleName, descriptor.Component, {
       fullBleed: descriptor.options.fullBleed,
