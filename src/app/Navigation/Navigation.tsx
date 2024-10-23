@@ -17,9 +17,16 @@ export const MainStackNavigator = createNativeStackNavigator<NavigationRoutesPar
 
 export const Navigation = () => {
   const isLoggedIn = GlobalStore.useAppState((state) => state.auth.userID)
+  const { setSessionState: setNavigationReady } = GlobalStore.actions
 
   return (
-    <NavigationContainer ref={__unsafe_navigationRef} theme={theme}>
+    <NavigationContainer
+      ref={__unsafe_navigationRef}
+      theme={theme}
+      onReady={() => {
+        setNavigationReady({ isNavigationReady: true })
+      }}
+    >
       {!isLoggedIn && UnauthenticatedRoutes()}
       {!!isLoggedIn && AuthenticatedRoutes()}
     </NavigationContainer>
