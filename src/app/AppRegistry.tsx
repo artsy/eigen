@@ -473,9 +473,15 @@ export const modules = defineModules({
   ConversationDetails: reactModule(ConversationDetailsQueryRenderer),
   DarkModeSettings: reactModule(DarkModeSettings),
   DevMenu: reactModule(DevMenu, {
-    hidesBottomTabs: true,
-    hidesBackButton: true,
+    // No need to hide bottom tabs if it's a modal because they will be hidden by default
+    hidesBottomTabs: !unsafe_getFeatureFlag("AREnableNewNavigation"),
+    hidesBackButton: !unsafe_getFeatureFlag("AREnableNewNavigation"),
     alwaysPresentModally: !!unsafe_getFeatureFlag("AREnableNewNavigation"),
+    screenOptions: {
+      headerTitle: "Dev Settings",
+      headerLargeTitle: true,
+      headerLeft: undefined,
+    },
   }),
   EditSavedSearchAlert: reactModule(EditSavedSearchAlertQueryRenderer, {
     hidesBackButton: true,
