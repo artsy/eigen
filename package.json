@@ -112,7 +112,7 @@
     "@artsy/cohesion": "4.210.0",
     "@artsy/palette-mobile": "13.2.40",
     "@artsy/to-title-case": "1.1.0",
-    "@braze/react-native-sdk": "8.4.0",
+    "@braze/react-native-sdk": "11.0.0",
     "@expo/react-native-action-sheet": "4.0.1",
     "@gorhom/bottom-sheet": "4.5.1",
     "@invertase/react-native-apple-authentication": "2.1.5",
