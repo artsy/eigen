@@ -288,6 +288,69 @@ export const Artwork: React.FC<ArtworkProps> = ({
     await item._disappearable?.disappear()
   }
 
+  const getSaleMessage = () => {
+    // TODO: move into a hook, rename getOfferMessage???
+    const parts = saleInfo && saleInfo.split(/(~.*?~)/)
+    if (!parts) return null
+
+    if (displayLimitedTimeOfferSignal) {
+      return (
+        <>
+          <Flex flexDirection="row">
+            {parts.map((part, index) => {
+              if (part.startsWith("~") && part.endsWith("~")) {
+                return (
+                  <Text
+                    key={index}
+                    lineHeight="20px"
+                    variant="xs"
+                    color="black60"
+                    numberOfLines={1}
+                    style={{ textDecorationLine: "line-through" }}
+                  >
+                    {part.slice(1, -1)}
+                  </Text>
+                )
+              }
+              return (
+                <Text
+                  key={index}
+                  lineHeight="20px"
+                  variant="xs"
+                  color={saleInfoTextColor}
+                  numberOfLines={1}
+                  fontWeight={saleInfoTextWeight}
+                >
+                  {part}{" "}
+                </Text>
+              )
+            })}
+          </Flex>
+          <Text
+            lineHeight="20px"
+            variant="xs"
+            fontWeight="normal"
+            color="blue100"
+            numberOfLines={1}
+          >
+            Offer Expires {partnerOfferEndAt}
+          </Text>
+        </>
+      )
+    } else
+      return (
+        <Text
+          lineHeight="20px"
+          variant="xs"
+          color={saleInfoTextColor}
+          numberOfLines={1}
+          fontWeight={saleInfoTextWeight}
+        >
+          {saleInfo}
+        </Text>
+      )
+  }
+
   return (
     <Disappearable ref={(ref) => ((artwork as any)._disappearable = ref)}>
       <ContextMenuArtwork
@@ -361,23 +424,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
               style={artworkMetaStyle}
             >
               <Flex flex={1}>
-                {!!displayLimitedTimeOfferSignal && (
-                  <Box backgroundColor="blue10" px={0.5} alignSelf="flex-start" borderRadius={3}>
-                    <Text lineHeight="20px" variant="xs" color="blue100">
-                      Limited-Time Offer
-                    </Text>
-                  </Box>
-                )}
-                {!isAuction &&
-                  !displayLimitedTimeOfferSignal &&
-                  !!collectorSignals &&
-                  !!AREnableCuratorsPicksAndInterestSignals && (
-                    <ArtworkSocialSignal
-                      collectorSignals={collectorSignals}
-                      hideCuratorsPick={hideCuratorsPickSignal}
-                      hideIncreasedInterest={hideIncreasedInterestSignal}
-                    />
-                  )}
                 {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
                   <>
                     <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
@@ -444,31 +490,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                     </Text>
                   </Flex>
                 )}
-                {!!saleInfo && !hideSaleInfo && !displayPriceOfferMessage && (
-                  <Text
-                    lineHeight="18px"
-                    variant="xs"
-                    numberOfLines={1}
-                    color={saleInfoTextColor}
-                    fontWeight={saleInfoTextWeight}
-                    {...saleInfoTextStyle}
-                  >
-                    {saleInfo}
-                    {!!displayLimitedTimeOfferSignal && (
-                      <Text
-                        lineHeight="18px"
-                        variant="xs"
-                        weight="regular"
-                        numberOfLines={1}
-                        color="blue100"
-                        {...saleInfoTextStyle}
-                      >
-                        {"  "}
-                        Exp. {partnerOfferEndAt}
-                      </Text>
-                    )}
-                  </Text>
-                )}
+                {!!saleInfo && !hideSaleInfo && !displayPriceOfferMessage && getSaleMessage()}
 
                 {!!artwork.isUnlisted && (
                   <Text lineHeight="18px" variant="xs" numberOfLines={1} fontWeight="bold">
@@ -482,6 +504,17 @@ export const Artwork: React.FC<ArtworkProps> = ({
                     hideRegisterBySignal={hideRegisterBySignal}
                   />
                 )}
+
+                {!isAuction &&
+                  !displayLimitedTimeOfferSignal &&
+                  !!collectorSignals &&
+                  !!AREnableCuratorsPicksAndInterestSignals && (
+                    <ArtworkSocialSignal
+                      collectorSignals={collectorSignals}
+                      hideCuratorsPick={hideCuratorsPickSignal}
+                      hideIncreasedInterest={hideIncreasedInterestSignal}
+                    />
+                  )}
               </Flex>
               {!hideSaveIcon && (
                 <Flex flexDirection="row" alignItems="flex-start">

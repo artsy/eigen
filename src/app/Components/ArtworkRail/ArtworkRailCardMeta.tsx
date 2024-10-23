@@ -1,4 +1,4 @@
-import { Box, Flex, HeartFillIcon, HeartIcon, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, HeartFillIcon, HeartIcon, Text, Touchable } from "@artsy/palette-mobile"
 import { ArtworkRailCardMeta_artwork$key } from "__generated__/ArtworkRailCardMeta_artwork.graphql"
 import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
 import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
@@ -6,7 +6,7 @@ import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSav
 import { ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { HEART_ICON_SIZE } from "app/Components/constants"
 import { formattedTimeLeft } from "app/Scenes/Activity/utils/formattedTimeLeft"
-import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
+import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { getTimer } from "app/utils/getTimer"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
@@ -83,7 +83,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
     collectorSignals,
   } = artwork
 
-  const saleMessage = defaultSaleMessageOrBidInfo({
+  const saleMessage = saleMessageOrBidInfo({
     artwork,
     isSmallTile: true,
     collectorSignals: enablePartnerOfferSignals ? collectorSignals : null,
@@ -132,6 +132,68 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
     onCompleted: onArtworkSavedOrUnSaved,
   })
 
+  const getSaleMessage = () => {
+    const parts = saleMessage && saleMessage.split(/(~.*?~)/)
+    if (!parts) return null
+
+    if (displayLimitedTimeOfferSignal) {
+      return (
+        <>
+          <Flex flexDirection="row">
+            {parts.map((part, index) => {
+              if (part.startsWith("~") && part.endsWith("~")) {
+                return (
+                  <Text
+                    key={index}
+                    lineHeight="20px"
+                    variant="xs"
+                    color="black60"
+                    numberOfLines={1}
+                    style={{ textDecorationLine: "line-through" }}
+                  >
+                    {part.slice(1, -1)}
+                  </Text>
+                )
+              }
+              return (
+                <Text
+                  key={index}
+                  lineHeight="20px"
+                  variant="xs"
+                  color={saleInfoTextColor}
+                  numberOfLines={1}
+                  fontWeight={saleInfoTextWeight}
+                >
+                  {part}{" "}
+                </Text>
+              )
+            })}
+          </Flex>
+          <Text
+            lineHeight="20px"
+            variant="xs"
+            fontWeight="normal"
+            color="blue100"
+            numberOfLines={1}
+          >
+            Offer Expires {partnerOfferEndAt}
+          </Text>
+        </>
+      )
+    } else
+      return (
+        <Text
+          lineHeight="20px"
+          variant="xs"
+          color={saleInfoTextColor}
+          numberOfLines={1}
+          fontWeight={saleInfoTextWeight}
+        >
+          {saleMessage}
+        </Text>
+      )
+  }
+
   return (
     <Flex
       my={1}
@@ -144,26 +206,6 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
       justifyContent="space-between"
     >
       <Flex flex={1} backgroundColor={backgroundColor}>
-        {!!displayLimitedTimeOfferSignal && (
-          <Box backgroundColor="blue10" px={0.5} alignSelf="flex-start" borderRadius={3}>
-            <Text lineHeight="20px" variant="xs" color="blue100">
-              Limited-Time Offer
-            </Text>
-          </Box>
-        )}
-
-        {!sale?.isAuction &&
-          !displayLimitedTimeOfferSignal &&
-          !!collectorSignals &&
-          !!enableCuratorsPicksAndInterestSignals && (
-            <ArtworkSocialSignal
-              collectorSignals={collectorSignals}
-              hideCuratorsPick={hideCuratorsPickSignal}
-              hideIncreasedInterest={hideIncreasedInterestSignal}
-              dark={dark}
-            />
-          )}
-
         {!!lotLabel && (
           <Text lineHeight="20px" color={secondaryTextColor} numberOfLines={1}>
             Lot {lotLabel}
@@ -200,32 +242,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
           </Text>
         )}
 
-        {SalePriceComponent
-          ? SalePriceComponent
-          : !!saleMessage && (
-              <Text
-                lineHeight="20px"
-                variant="xs"
-                color={saleInfoTextColor}
-                numberOfLines={1}
-                fontWeight={saleInfoTextWeight}
-              >
-                {saleMessage}
-
-                {!!displayLimitedTimeOfferSignal && (
-                  <Text
-                    lineHeight="20px"
-                    variant="xs"
-                    fontWeight="normal"
-                    color="blue100"
-                    numberOfLines={1}
-                  >
-                    {"  "}
-                    Exp. {partnerOfferEndAt}
-                  </Text>
-                )}
-              </Text>
-            )}
+        {SalePriceComponent ? SalePriceComponent : !!saleMessage && getSaleMessage()}
 
         {!!isUnlisted && (
           <Text
@@ -242,6 +259,18 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
         {!!displayAuctionSignal && !!collectorSignals && (
           <ArtworkAuctionTimer collectorSignals={collectorSignals} inRailCard />
         )}
+
+        {!sale?.isAuction &&
+          !displayLimitedTimeOfferSignal &&
+          !!collectorSignals &&
+          !!enableCuratorsPicksAndInterestSignals && (
+            <ArtworkSocialSignal
+              collectorSignals={collectorSignals}
+              hideCuratorsPick={hideCuratorsPickSignal}
+              hideIncreasedInterest={hideIncreasedInterestSignal}
+              dark={dark}
+            />
+          )}
       </Flex>
 
       {!!showSaveIcon && (

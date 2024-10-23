@@ -84,7 +84,9 @@ export const saleMessageOrBidInfo = ({
   }
 
   if (collectorSignals?.partnerOffer?.isAvailable) {
-    return collectorSignals.partnerOffer.priceWithDiscount?.display
+    const salePrice = artwork.saleMessage && `~${artwork.saleMessage}~`
+
+    return `${collectorSignals.partnerOffer.priceWithDiscount?.display}${salePrice}`
   }
 
   return artwork.saleMessage

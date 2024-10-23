@@ -2,7 +2,7 @@ import { Flex, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile
 import { ContextMenuArtworkPreviewCard_artwork$key } from "__generated__/ContextMenuArtworkPreviewCard_artwork.graphql"
 import { ArtworkDisplayProps } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { ContextMenuArtworkPreviewCardImage } from "app/Components/ContextMenu/ContextMenuArtworkPreviewCardImage"
-import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
+import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { PixelRatio } from "react-native"
 import { isTablet } from "react-native-device-info"
@@ -42,7 +42,7 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
 
   const { artistNames, date, partner, title, sale, saleArtwork } = artwork
 
-  const saleMessage = defaultSaleMessageOrBidInfo({ artwork, isSmallTile: true })
+  const saleMessage = saleMessageOrBidInfo({ artwork, isSmallTile: true })
 
   const extendedBiddingEndAt = saleArtwork?.extendedBiddingEndAt
   const lotEndAt = saleArtwork?.endAt
@@ -122,7 +122,7 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
                   numberOfLines={1}
                   fontWeight={500}
                 >
-                  {saleMessage}
+                  11 {saleMessage}
                 </Text>
               )}
         </Flex>
