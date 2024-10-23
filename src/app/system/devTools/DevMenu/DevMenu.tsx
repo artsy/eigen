@@ -1,8 +1,9 @@
 import { Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
-import { useNavigation } from "@react-navigation/native"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
 
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
-import { LargeHeaderView } from "app/Navigation/AuthenticatedRoutes/LargeHeaderView"
+import { AuthenticatedRoutesParams } from "app/Navigation/AuthenticatedRoutes/Tabs"
+import { LargeHeaderView } from "app/Navigation/Utils/LargeHeaderView"
 import { GlobalStore } from "app/store/GlobalStore"
 import { CodePushOptions } from "app/system/devTools/DevMenu/CodePushOptions"
 import { DevMenuButtonItem } from "app/system/devTools/DevMenu/Components/DevMenuButtonItem"
@@ -22,7 +23,7 @@ import DeviceInfo from "react-native-device-info"
 export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
   const userEmail = GlobalStore.useAppState((s) => s.auth.userEmail)
   const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
-  const navigation = useNavigation()
+  const navigation = useNavigation<NavigationProp<AuthenticatedRoutesParams, "DevMenu">>()
 
   const handleBackButton = () => {
     onClose()
@@ -32,7 +33,7 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
   useBackHandler(handleBackButton)
 
   useEffect(() => {
-    queueMicrotask(() => {
+    requestAnimationFrame(() => {
       navigation?.setOptions({
         headerRight: () => (
           <Flex justifyContent="center" alignItems="center">
