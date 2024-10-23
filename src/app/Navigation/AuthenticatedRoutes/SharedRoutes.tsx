@@ -1,6 +1,12 @@
-import { useScreenDimensions } from "@artsy/palette-mobile"
+import {
+  ArrowLeftIcon,
+  DEFAULT_HIT_SLOP,
+  Touchable,
+  useScreenDimensions,
+} from "@artsy/palette-mobile"
 import { AppModule, modules } from "app/AppRegistry"
 import { TabStackNavigator } from "app/Navigation/AuthenticatedRoutes/Tabs"
+import { goBack } from "app/system/navigation/navigate"
 import { View } from "react-native"
 
 export const SharedRoutes = (): JSX.Element => {
@@ -14,7 +20,23 @@ export const SharedRoutes = (): JSX.Element => {
               name={moduleName as AppModule}
               options={{
                 presentation: module.options.alwaysPresentModally ? "fullScreenModal" : "card",
+                headerShown:
+                  !module.options.hidesBackButton && !module.options.hasOwnModalCloseButton,
                 ...module.options.screenOptions,
+                headerLeft: () => {
+                  return (
+                    <Touchable
+                      onPress={() => {
+                        goBack()
+                      }}
+                      underlayColor="transparent"
+                      hitSlop={DEFAULT_HIT_SLOP}
+                    >
+                      <ArrowLeftIcon fill="onBackgroundHigh" />
+                    </Touchable>
+                  )
+                },
+                headerTitle: "",
               }}
               children={(props) => {
                 const params = props.route.params || {}
