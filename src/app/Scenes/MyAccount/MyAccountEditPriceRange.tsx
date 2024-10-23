@@ -1,20 +1,20 @@
+import { Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { useNavigation } from "@react-navigation/native"
 import { MyAccountEditPriceRangeQuery } from "__generated__/MyAccountEditPriceRangeQuery.graphql"
 import { MyAccountEditPriceRange_me$data } from "__generated__/MyAccountEditPriceRange_me.graphql"
 import { Select, SelectOption } from "app/Components/Select"
+import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PlaceholderBox } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import React, { useEffect, useState } from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import {
-  MyAccountFieldEditScreen,
-  MyAccountFieldEditScreenPlaceholder,
-} from "./Components/MyAccountFieldEditScreen"
 import { updateMyUserProfile } from "./updateMyUserProfile"
 
 const MyAccountEditPriceRange: React.FC<{
   me: MyAccountEditPriceRange_me$data
 }> = ({ me }) => {
+  const navigation = useNavigation()
   const [receivedError, setReceivedError] = useState<string | undefined>(undefined)
   const [priceRange, setPriceRange] = useState<string>(me.priceRange ?? "")
   const [priceRangeMax, setPriceRangeMax] = useState<number | null | undefined>(me.priceRangeMax)
@@ -24,19 +24,33 @@ const MyAccountEditPriceRange: React.FC<{
     setReceivedError(undefined)
   }, [priceRange])
 
+  useEffect(() => {
+    const isValid = !!priceRange && priceRange !== me.priceRange
+
+    navigation.setOptions({
+      headerRight: () => {
+        return (
+          <Touchable onPress={handleSave} disabled={!isValid}>
+            <Text variant="xs" color={!!isValid ? "black100" : "black60"}>
+              Save
+            </Text>
+          </Touchable>
+        )
+      },
+    })
+  }, [navigation, priceRange, me.priceRange])
+
+  const handleSave = async () => {
+    try {
+      await updateMyUserProfile({ priceRangeMin, priceRangeMax })
+      goBack()
+    } catch (e: any) {
+      setReceivedError(e)
+    }
+  }
+
   return (
-    <MyAccountFieldEditScreen
-      title="Price Range"
-      canSave={!!priceRange && priceRange !== me.priceRange}
-      onSave={async (dismiss) => {
-        try {
-          await updateMyUserProfile({ priceRangeMin, priceRangeMax })
-          dismiss()
-        } catch (e: any) {
-          setReceivedError(e)
-        }
-      }}
-    >
+    <Flex p={2}>
       <Select
         title="Price Range"
         options={PRICE_BUCKETS}
@@ -54,16 +68,12 @@ const MyAccountEditPriceRange: React.FC<{
         }}
         hasError={!!receivedError}
       />
-    </MyAccountFieldEditScreen>
+    </Flex>
   )
 }
 
 const MyAccountEditPriceRangePlaceholder: React.FC<{}> = ({}) => {
-  return (
-    <MyAccountFieldEditScreenPlaceholder title="Price Range">
-      <PlaceholderBox height={40} />
-    </MyAccountFieldEditScreenPlaceholder>
-  )
+  return <PlaceholderBox height={40} />
 }
 
 export const MyAccountEditPriceRangeContainer = createFragmentContainer(MyAccountEditPriceRange, {

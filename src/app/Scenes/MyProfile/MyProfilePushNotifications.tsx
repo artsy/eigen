@@ -1,7 +1,6 @@
-import { Flex, Box, Text, Separator, Join, Button } from "@artsy/palette-mobile"
+import { Box, Button, Flex, Join, Separator, Text } from "@artsy/palette-mobile"
 import { MyProfilePushNotificationsQuery } from "__generated__/MyProfilePushNotificationsQuery.graphql"
 import { MyProfilePushNotifications_me$data } from "__generated__/MyProfilePushNotifications_me.graphql"
-import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { SwitchMenu } from "app/Components/SwitchMenu"
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -15,15 +14,7 @@ import { requestSystemPermissions } from "app/utils/requestPushNotificationsPerm
 import useAppState from "app/utils/useAppState"
 import { debounce } from "lodash"
 import React, { useCallback, useEffect, useState } from "react"
-import {
-  ActivityIndicator,
-  Alert,
-  Linking,
-  Platform,
-  RefreshControl,
-  ScrollView,
-  View,
-} from "react-native"
+import { Alert, Linking, Platform, RefreshControl, ScrollView, View } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
 const INSTRUCTIONS = Platform.select({
@@ -302,21 +293,12 @@ export const MyProfilePushNotifications: React.FC<{
 
   // TODO: the below logic may be broken on Android 13 with runtime push permissions
   return (
-    <PageWithSimpleHeader
-      title="Push Notifications"
-      right={isLoading ? <ActivityIndicator style={{ marginRight: 5 }} /> : null}
-    >
-      <ScrollView
-        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
-      >
-        {notificationAuthorizationStatus === PushAuthorizationStatus.Denied && (
-          <OpenSettingsBanner />
-        )}
-        {notificationAuthorizationStatus === PushAuthorizationStatus.NotDetermined &&
-          Platform.OS === "ios" && <AllowPushNotificationsBanner />}
-        {renderContent()}
-      </ScrollView>
-    </PageWithSimpleHeader>
+    <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
+      {notificationAuthorizationStatus === PushAuthorizationStatus.Denied && <OpenSettingsBanner />}
+      {notificationAuthorizationStatus === PushAuthorizationStatus.NotDetermined &&
+        Platform.OS === "ios" && <AllowPushNotificationsBanner />}
+      {renderContent()}
+    </ScrollView>
   )
 }
 

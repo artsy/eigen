@@ -10,8 +10,8 @@ import { ProfileTab } from "app/Navigation/AuthenticatedRoutes/ProfileTab"
 import { SearchTab } from "app/Navigation/AuthenticatedRoutes/SearchTab"
 import { SellTab } from "app/Navigation/AuthenticatedRoutes/SellTab"
 import { BottomTabsIcon } from "app/Scenes/BottomTabs/BottomTabsIcon"
+import { unsafe_getDevPrefs } from "app/store/GlobalStore"
 import { __unsafe_navigationRef } from "app/system/navigation/navigate"
-import { useTabBarBadge } from "app/utils/useTabBarBadge"
 import { Platform } from "react-native"
 
 if (Platform.OS === "ios") {
@@ -39,7 +39,8 @@ const Tab = createBottomTabNavigator<TabRoutesParams>()
 export const TabStackNavigator = createNativeStackNavigator<AuthenticatedRoutesParams>()
 
 export const AuthenticatedRoutes = () => {
-  const { unreadConversationsCount } = useTabBarBadge()
+  // TODO: Look into other ways of getting this
+  // const { unreadConversationsCount } = useTabBarBadge()
 
   return (
     <Tab.Navigator
@@ -83,7 +84,7 @@ export const AuthenticatedRoutes = () => {
         name="inbox"
         component={InboxTab}
         options={{
-          tabBarBadge: unreadConversationsCount,
+          tabBarBadge: 3,
         }}
       />
       <Tab.Screen name="sell" component={SellTab} />
