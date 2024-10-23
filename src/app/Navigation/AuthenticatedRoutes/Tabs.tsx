@@ -60,7 +60,16 @@ export const AuthenticatedRoutes = () => {
             return <BottomTabsIcon tab={route.name} state={focused ? "active" : "inactive"} />
           },
           tabBarLabel: () => {
-            return <Text variant="xxs">{toTitleCase(route.name)}</Text>
+            return (
+              <Text
+                variant="xxs"
+                color={
+                  unsafe_getDevPrefs().environment.env === "staging" ? "devpurple" : "black100"
+                }
+              >
+                {toTitleCase(route.name)}
+              </Text>
+            )
           },
           tabBarHideOnKeyboard: true,
           tabBarActiveTintColor: THEME.colors["black100"],

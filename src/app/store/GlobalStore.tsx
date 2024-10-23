@@ -250,3 +250,7 @@ export function unsafe__getEnvironment() {
   } = globalStoreInstance().getState().devicePrefs
   return { ...strings, stripePublishableKey, env, userIsDev: value }
 }
+
+export function unsafe_getDevPrefs() {
+  return globalStoreInstance().getState().devicePrefs
+}
