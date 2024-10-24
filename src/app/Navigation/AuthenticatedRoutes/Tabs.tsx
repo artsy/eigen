@@ -46,12 +46,11 @@ export const AuthenticatedRoutes = () => {
     <Tab.Navigator
       screenOptions={({ route }) => {
         const currentRoute = __unsafe_navigationRef.current?.getCurrentRoute()?.name
-
         return {
           headerShown: false,
           tabBarStyle: {
-            // TODO: Test this with design
             animate: true,
+            position: "absolute",
             display:
               currentRoute && modules[currentRoute as AppModule]?.options.hidesBottomTabs
                 ? "none"

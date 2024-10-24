@@ -11,7 +11,7 @@ import { ArtworkStore } from "app/Scenes/Artwork/ArtworkStore"
 import { useScreenDimensions } from "app/utils/hooks"
 import { DateTime } from "luxon"
 import { useEffect } from "react"
-import { useFragment, graphql } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { ArtworkCommercialButtons } from "./ArtworkCommercialButtons"
 import { ArtworkPrice } from "./ArtworkPrice"
 
@@ -29,7 +29,6 @@ export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProp
   me,
   partnerOffer,
 }) => {
-  const { safeAreaInsets } = useScreenDimensions()
   const artworkData = useFragment(artworkFragment, artwork)
   const partnerOfferData = useFragment(partnerOfferFragment, partnerOffer)
   const auctionState = ArtworkStore.useStoreState((state) => state.auctionState)
@@ -71,7 +70,6 @@ export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProp
     <Box
       accessibilityLabel="Sticky bottom commercial section"
       bg="white100"
-      pb={`${safeAreaInsets.bottom}px`}
       onLayout={(e) => {
         dispatch({
           type: "SET_TOAST_BOTTOM_PADDING",
