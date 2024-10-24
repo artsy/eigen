@@ -3,14 +3,13 @@ import { SentConsignmentInquiry } from "@artsy/cohesion/dist/Schema/Events/Consi
 import { ConsignmentInquiryScreenMutation } from "__generated__/ConsignmentInquiryScreenMutation.graphql"
 import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { useToast } from "app/Components/Toast/toastHook"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { FormikProvider, useFormik } from "formik"
 import { useState } from "react"
-import { Environment, graphql, commitMutation } from "react-relay"
+import { commitMutation, Environment, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import * as Yup from "yup"
 import { ConsignmentInquiryConfirmation } from "./ConsignmentInquiryConfirmation"
@@ -135,8 +134,6 @@ export const ConsignmentInquiryScreen: React.FC<InquiryScreenProps> = ({
     <FormikProvider value={formik}>
       <>
         <ArtsyKeyboardAvoidingView>
-          <FancyModalHeader hideBottomDivider />
-
           <ConsignmentInquiryForm
             confirmLeaveEdit={(v) => setShowAbandonModal(v)}
             canPopScreen={canPopScreen}
