@@ -70,7 +70,7 @@ const ForgotPasswordStepForm: React.FC = () => {
   }
 
   const handleReturnToLoginPress = () => {
-    navigation.goBack(2)
+    navigation.navigate({ name: "LoginWelcomeStep" })
     resetForm({ values: { email: screen.params?.email ?? "" } })
   }
 
