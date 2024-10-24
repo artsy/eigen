@@ -11,7 +11,7 @@ jest.mock("lodash/throttle", () => (fn: any) => {
 
 describe("Search", () => {
   const { renderWithRelay } = setupTestWrapper({
-    Component: () => <SearchScreen />,
+    Component: () => <SearchScreen route={{} as any} navigation={{} as any} />,
   })
 
   it("should render a text input with placeholder and no pills", async () => {

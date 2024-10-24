@@ -1,4 +1,5 @@
-import { Input, Spacer } from "@artsy/palette-mobile"
+import { Flex, Input, Spacer, Text, Touchable } from "@artsy/palette-mobile"
+import { useNavigation } from "@react-navigation/native"
 import { useStripe } from "@stripe/stripe-react-native"
 import { CreateCardTokenParams } from "@stripe/stripe-react-native/lib/typescript/src/types/Token"
 import { MyProfilePaymentNewCreditCardSaveCardMutation } from "__generated__/MyProfilePaymentNewCreditCardSaveCardMutation.graphql"
@@ -6,10 +7,11 @@ import { CountrySelect } from "app/Components/CountrySelect"
 import { CreditCardField } from "app/Components/CreditCardField/CreditCardField"
 import { Select } from "app/Components/Select/SelectV2"
 import { Stack } from "app/Components/Stack"
-import { MyAccountFieldEditScreen } from "app/Scenes/MyAccount/Components/MyAccountFieldEditScreen"
+import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { Action, Computed, action, computed, useLocalStore } from "easy-peasy"
-import React, { useRef } from "react"
+import React, { useEffect, useRef } from "react"
+import { Alert, ScrollView } from "react-native"
 import { commitMutation, graphql } from "react-relay"
 import { __triggerRefresh } from "./MyProfilePayment"
 
@@ -91,7 +93,30 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
   const stateRef = useRef<Input>(null)
   const countryRef = useRef<Select<any>>(null)
 
-  const screenRef = useRef<MyAccountFieldEditScreen>(null)
+  const navigation = useNavigation()
+
+  const scrollViewRef = useRef<ScrollView>(null)
+
+  useEffect(() => {
+    const isValid = state.allPresent
+
+    navigation.setOptions({
+      headerRight: () => {
+        return (
+          <Touchable
+            onPress={() => {
+              handleSave()
+            }}
+            disabled={!isValid}
+          >
+            <Text variant="xs" color={!!isValid ? "black100" : "black60"}>
+              Save
+            </Text>
+          </Touchable>
+        )
+      },
+    })
+  }, [navigation, state.allPresent])
 
   const buildTokenParams = (): CreateCardTokenParams => {
     return {
@@ -108,124 +133,123 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
     }
   }
 
+  const handleSave = async () => {
+    try {
+      const tokenBody = buildTokenParams()
+      const stripeResult = await createToken(tokenBody)
+      const tokenId = stripeResult.token?.id
+
+      if (!stripeResult || stripeResult.error || !tokenId) {
+        throw new Error(
+          `Unexpected stripe card tokenization result ${JSON.stringify(stripeResult.error)}`
+        )
+      }
+      const gravityResult = await saveCreditCard(tokenId)
+      if (gravityResult.createCreditCard?.creditCardOrError?.creditCard) {
+        await __triggerRefresh?.()
+      } else {
+        // TODO: we can probably present these errors to the user?
+        throw new Error(
+          `Error trying to save card ${JSON.stringify(
+            gravityResult.createCreditCard?.creditCardOrError?.mutationError
+          )}`
+        )
+      }
+      goBack()
+    } catch (e) {
+      console.error(e)
+      Alert.alert(
+        "Something went wrong while attempting to save your credit card. Please try again or contact us."
+      )
+    }
+  }
+
   return (
-    <MyAccountFieldEditScreen
-      ref={screenRef}
-      canSave={state.allPresent}
-      title="Add new card"
-      onSave={async (dismiss, alert) => {
-        try {
-          const tokenBody = buildTokenParams()
-          const stripeResult = await createToken(tokenBody)
-          const tokenId = stripeResult.token?.id
+    <ScrollView ref={scrollViewRef}>
+      <Flex p={2}>
+        <Stack spacing={2}>
+          <>
+            <CreditCardField
+              onCardChange={(cardDetails) => {
+                actions.fields.creditCard.setValue({
+                  valid: cardDetails.complete,
+                  params: {
+                    expMonth: cardDetails.expiryMonth,
+                    expYear: cardDetails.expiryYear,
+                    last4: cardDetails.last4,
+                  },
+                })
+              }}
+            />
+          </>
 
-          if (!stripeResult || stripeResult.error || !tokenId) {
-            throw new Error(
-              `Unexpected stripe card tokenization result ${JSON.stringify(stripeResult.error)}`
-            )
-          }
-          const gravityResult = await saveCreditCard(tokenId)
-          if (gravityResult.createCreditCard?.creditCardOrError?.creditCard) {
-            await __triggerRefresh?.()
-          } else {
-            // TODO: we can probably present these errors to the user?
-            throw new Error(
-              `Error trying to save card ${JSON.stringify(
-                gravityResult.createCreditCard?.creditCardOrError?.mutationError
-              )}`
-            )
-          }
-          dismiss()
-        } catch (e) {
-          console.error(e)
-          alert(
-            "Something went wrong while attempting to save your credit card. Please try again or contact us."
-          )
-        }
-      }}
-    >
-      <Stack spacing={2}>
-        <>
-          <CreditCardField
-            onCardChange={(cardDetails) => {
-              actions.fields.creditCard.setValue({
-                valid: cardDetails.complete,
-                params: {
-                  expMonth: cardDetails.expiryMonth,
-                  expYear: cardDetails.expiryYear,
-                  last4: cardDetails.last4,
-                },
-              })
-            }}
+          <Input
+            title="Name on card"
+            placeholder="Full name"
+            onChangeText={actions.fields.fullName.setValue}
+            returnKeyType="next"
+            onSubmitEditing={() => addressLine1Ref.current?.focus()}
           />
-        </>
+          <Input
+            ref={addressLine1Ref}
+            title="Address line 1"
+            placeholder="Add street address"
+            onChangeText={actions.fields.addressLine1.setValue}
+            returnKeyType="next"
+            onSubmitEditing={() => addressLine2Ref.current?.focus()}
+          />
+          <Input
+            ref={addressLine2Ref}
+            title="Address line 2"
+            optional
+            placeholder={[
+              "Add your apt, floor, suite, etc.",
+              "Add your apt, floor, etc.",
+              "Add your apt, etc.",
+            ]}
+            onChangeText={actions.fields.addressLine2.setValue}
+            returnKeyType="next"
+            onSubmitEditing={() => cityRef.current?.focus()}
+          />
+          <Input
+            ref={cityRef}
+            title="City"
+            onChangeText={actions.fields.city.setValue}
+            returnKeyType="next"
+            onSubmitEditing={() => postalCodeRef.current?.focus()}
+          />
+          <Input
+            ref={postalCodeRef}
+            title="Postal Code"
+            onChangeText={actions.fields.postalCode.setValue}
+            returnKeyType="next"
+            onSubmitEditing={() => stateRef.current?.focus()}
+          />
 
-        <Input
-          title="Name on card"
-          placeholder="Full name"
-          onChangeText={actions.fields.fullName.setValue}
-          returnKeyType="next"
-          onSubmitEditing={() => addressLine1Ref.current?.focus()}
-        />
-        <Input
-          ref={addressLine1Ref}
-          title="Address line 1"
-          placeholder="Add street address"
-          onChangeText={actions.fields.addressLine1.setValue}
-          returnKeyType="next"
-          onSubmitEditing={() => addressLine2Ref.current?.focus()}
-        />
-        <Input
-          ref={addressLine2Ref}
-          title="Address line 2"
-          optional
-          placeholder={[
-            "Add your apt, floor, suite, etc.",
-            "Add your apt, floor, etc.",
-            "Add your apt, etc.",
-          ]}
-          onChangeText={actions.fields.addressLine2.setValue}
-          returnKeyType="next"
-          onSubmitEditing={() => cityRef.current?.focus()}
-        />
-        <Input
-          ref={cityRef}
-          title="City"
-          onChangeText={actions.fields.city.setValue}
-          returnKeyType="next"
-          onSubmitEditing={() => postalCodeRef.current?.focus()}
-        />
-        <Input
-          ref={postalCodeRef}
-          title="Postal Code"
-          onChangeText={actions.fields.postalCode.setValue}
-          returnKeyType="next"
-          onSubmitEditing={() => stateRef.current?.focus()}
-        />
+          <Input
+            ref={stateRef}
+            title="State, province, or region"
+            onChangeText={actions.fields.state.setValue}
+            onSubmitEditing={() => {
+              stateRef.current?.blur()
+              scrollViewRef.current?.scrollToEnd()
+              setTimeout(() => {
+                countryRef.current?.open()
+              }, 100)
+            }}
+            returnKeyType="next"
+          />
 
-        <Input
-          ref={stateRef}
-          title="State, province, or region"
-          onChangeText={actions.fields.state.setValue}
-          onSubmitEditing={() => {
-            stateRef.current?.blur()
-            screenRef.current?.scrollToEnd()
-            setTimeout(() => {
-              countryRef.current?.open()
-            }, 100)
-          }}
-          returnKeyType="next"
-        />
+          <Spacer y={2} />
 
-        <Spacer y={2} />
-
-        <CountrySelect
-          ref={countryRef}
-          onSelectValue={actions.fields.country.setValue}
-          value={state.fields.country.value}
-        />
-      </Stack>
-    </MyAccountFieldEditScreen>
+          <CountrySelect
+            ref={countryRef}
+            onSelectValue={actions.fields.country.setValue}
+            value={state.fields.country.value}
+          />
+        </Stack>
+      </Flex>
+    </ScrollView>
   )
 }
 

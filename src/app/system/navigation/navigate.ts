@@ -1,15 +1,18 @@
 import { EventEmitter } from "events"
 import { ActionType, OwnerType, Screen } from "@artsy/cohesion"
+import { NavigationContainerRef, StackActions, TabActions } from "@react-navigation/native"
 import { addBreadcrumb, captureMessage } from "@sentry/react-native"
-import { AppModule, ViewOptions, modules } from "app/AppRegistry"
+import { AppModule, modules, ViewOptions } from "app/AppRegistry"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { matchRoute } from "app/routes"
-import { GlobalStore, unsafe__getSelectedTab } from "app/store/GlobalStore"
+import { GlobalStore, unsafe__getSelectedTab, unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import { propsStore } from "app/store/PropsStore"
 import { postEventToProviders } from "app/utils/track/providers"
 import { visualize } from "app/utils/visualizer"
 import { InteractionManager, Linking, Platform } from "react-native"
+
+export const __unsafe_navigationRef = { current: null as NavigationContainerRef<any> | null }
 
 export interface ViewDescriptor extends ViewOptions {
   type: "react" | "native"
@@ -116,6 +119,17 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
     ...module.options,
   }
 
+  const useNewNavigation = unsafe_getFeatureFlag("AREnableNewNavigation")
+
+  if (useNewNavigation) {
+    if (__unsafe_navigationRef.current?.isReady()) {
+      __unsafe_navigationRef.current.dispatch(
+        StackActions.push(result.module, { ...result.params, ...options.passProps })
+      )
+    }
+    return
+  }
+
   // Set props which we will reinject later. See HACKS.md
   propsStore.setPendingProps(screenDescriptor.moduleName, screenDescriptor.props)
 
@@ -165,6 +179,8 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
 export const navigationEvents = new EventEmitter()
 
 export function switchTab(tab: BottomTabType, props?: object) {
+  const enableNewNavigation = unsafe_getFeatureFlag("AREnableNewNavigation")
+
   // root tabs are only mounted once so cannot be tracked
   // like other screens manually track screen views here
   // home handles this on its own since it is default tab
@@ -175,8 +191,15 @@ export function switchTab(tab: BottomTabType, props?: object) {
   if (props) {
     GlobalStore.actions.bottomTabs.setTabProps({ tab, props })
   }
+
   GlobalStore.actions.bottomTabs.setSelectedTab(tab)
-  LegacyNativeModules.ARScreenPresenterModule.switchTab(tab)
+
+  if (enableNewNavigation) {
+    __unsafe_navigationRef?.current?.dispatch(TabActions.jumpTo(tab, props))
+    return
+  } else {
+    LegacyNativeModules.ARScreenPresenterModule.switchTab(tab)
+  }
 }
 
 const tracks = {
@@ -208,10 +231,16 @@ const tracks = {
 }
 
 export function dismissModal(after?: () => void) {
+  const enableNewNavigation = unsafe_getFeatureFlag("AREnableNewNavigation")
+
   // We wait for interaction to finish before dismissing the modal, otherwise,
   // we might get a race condition that causes the UI to freeze
   InteractionManager.runAfterInteractions(() => {
-    LegacyNativeModules.ARScreenPresenterModule.dismissModal()
+    if (enableNewNavigation) {
+      __unsafe_navigationRef?.current?.dispatch(StackActions.pop())
+    } else {
+      LegacyNativeModules.ARScreenPresenterModule.dismissModal()
+    }
     if (Platform.OS === "android") {
       navigationEvents.emit("modalDismissed")
     }
@@ -221,16 +250,27 @@ export function dismissModal(after?: () => void) {
 }
 
 export function goBack(backProps?: GoBackProps) {
-  LegacyNativeModules.ARScreenPresenterModule.goBack(unsafe__getSelectedTab())
-  navigationEvents.emit("goBack", backProps)
-}
+  const useNewNavigation = unsafe_getFeatureFlag("AREnableNewNavigation")
 
-export function popParentViewController() {
-  LegacyNativeModules.ARScreenPresenterModule.popStack(unsafe__getSelectedTab())
+  navigationEvents.emit("goBack", backProps)
+
+  if (useNewNavigation) {
+    if (__unsafe_navigationRef.current?.isReady()) {
+      __unsafe_navigationRef.current.dispatch(StackActions.pop())
+    }
+    return
+  }
+
+  LegacyNativeModules.ARScreenPresenterModule.goBack(unsafe__getSelectedTab())
 }
 
 export function popToRoot() {
-  LegacyNativeModules.ARScreenPresenterModule.popToRootAndScrollToTop(unsafe__getSelectedTab())
+  const enableNewNavigation = unsafe_getFeatureFlag("AREnableNewNavigation")
+  if (enableNewNavigation) {
+    __unsafe_navigationRef?.current?.dispatch(StackActions.popToTop())
+  } else {
+    LegacyNativeModules.ARScreenPresenterModule.popToRootAndScrollToTop(unsafe__getSelectedTab())
+  }
 }
 
 export enum EntityType {

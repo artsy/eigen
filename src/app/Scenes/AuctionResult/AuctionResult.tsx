@@ -11,6 +11,7 @@ import {
   Separator,
   BackButton,
 } from "@artsy/palette-mobile"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { addBreadcrumb } from "@sentry/react-native"
 import { AuctionResultQuery } from "__generated__/AuctionResultQuery.graphql"
 import { AuctionResult_artist$key } from "__generated__/AuctionResult_artist.graphql"
@@ -20,16 +21,18 @@ import {
 } from "__generated__/AuctionResult_auctionResult.graphql"
 import { ratioColor } from "app/Components/AuctionResult/AuctionResultMidEstimate"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
+import { AuthenticatedRoutesParams } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { QAInfoPanel } from "app/utils/QAInfo"
 import { useScreenDimensions } from "app/utils/hooks"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderBox } from "app/utils/placeholders"
 import { getImageSquareDimensions } from "app/utils/resizeImage"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { capitalize } from "lodash"
 import moment from "moment"
-import React, { Suspense, useEffect, useState } from "react"
+import React, { Suspense, useEffect, useLayoutEffect, useState } from "react"
 import { Image, ScrollView, TextInput, TouchableWithoutFeedback } from "react-native"
 import FastImage from "react-native-fast-image"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -47,11 +50,19 @@ interface Props {
 export const AuctionResult: React.FC<Props> = (props) => {
   const artist = useFragment(artistFragment, props.artist)
   const auctionResult = useFragment(auctionResultFragment, props.auctionResult)
+  const navigation = useNavigation<NavigationProp<AuthenticatedRoutesParams, "AuctionResult">>()
+  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
 
   const { theme } = useTheme()
   const space = useSpace()
 
   const tracking = useTracking()
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: `${auctionResult.title}, ${auctionResult.dateText}`,
+    })
+  }, [navigation])
 
   const details = []
   const makeRow = (
@@ -224,18 +235,21 @@ export const AuctionResult: React.FC<Props> = (props) => {
 
   return (
     <ProvideScreenTrackingWithCohesionSchema info={tracks.screen(auctionResult.internalID)}>
-      <Flex flexDirection="row" alignItems="center" height={44} px={2}>
-        <Flex pr={2} alignItems="center">
-          <BackButton
-            onPress={goBack}
-            hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
-          />
+      {!enableNewNavigation && (
+        <Flex flexDirection="row" alignItems="center" height={44} px={2}>
+          <Flex pr={2} alignItems="center">
+            <BackButton
+              onPress={goBack}
+              hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
+            />
+          </Flex>
+          <Text variant="sm" numberOfLines={1} style={{ flexShrink: 1 }}>
+            {auctionResult.title}
+          </Text>
+          {!!auctionResult.dateText && <Text variant="sm">, {auctionResult.dateText}</Text>}
         </Flex>
-        <Text variant="sm" numberOfLines={1} style={{ flexShrink: 1 }}>
-          {auctionResult.title}
-        </Text>
-        {!!auctionResult.dateText && <Text variant="sm">, {auctionResult.dateText}</Text>}
-      </Flex>
+      )}
+
       <ScrollView>
         <Join separator={<Spacer y={2} />}>
           {!!auctionResult?.images?.larger && (

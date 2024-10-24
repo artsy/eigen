@@ -1,10 +1,9 @@
-import { Flex, Box, ClassTheme, Text, Button } from "@artsy/palette-mobile"
+import { Box, Button, ClassTheme, Flex, Image, Text } from "@artsy/palette-mobile"
 import { EventMutation } from "__generated__/EventMutation.graphql"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { exhibitionDates } from "app/Scenes/Map/exhibitionPeriodParser"
 import { Show } from "app/Scenes/Map/types"
 import { navigate } from "app/system/navigation/navigate"
-import { Schema, Track, track as _track } from "app/utils/track"
+import { track as _track, Schema, Track } from "app/utils/track"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, graphql, RelayProp } from "react-relay"
@@ -133,8 +132,8 @@ export class Event extends React.Component<Props, State> {
           <TouchableWithoutFeedback onPress={() => this.handleTap()}>
             <Box mb={2}>
               {!!url && (
-                <Box mb={2}>
-                  <OpaqueImageView imageURL={url} height={145} />
+                <Box mb={2} justifyContent="center" overflow="hidden">
+                  <Image src={url} height={145} />
                 </Box>
               )}
               <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">

@@ -19,7 +19,6 @@ import { useNavigation } from "@react-navigation/native"
 import { MyProfileEditFormQuery } from "__generated__/MyProfileEditFormQuery.graphql"
 import { MyProfileEditForm_me$key } from "__generated__/MyProfileEditForm_me.graphql"
 import { Image } from "app/Components/Bidding/Elements/Image"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { buildLocationDisplay } from "app/Components/LocationAutocomplete"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import {
@@ -27,6 +26,7 @@ import {
   UserProfileFormikSchema,
   userProfileYupSchema,
 } from "app/Scenes/MyProfile/Components/UserProfileFields"
+import { fetchProfileData } from "app/Scenes/MyProfile/MyProfileHeader"
 import { useEditProfile } from "app/Scenes/MyProfile/hooks/useEditProfile"
 import { navigate } from "app/system/navigation/navigate"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
@@ -37,7 +37,7 @@ import { sendEmail } from "app/utils/sendEmail"
 import { useHasBeenTrue } from "app/utils/useHasBeenTrue"
 import { FormikProvider, useFormik } from "formik"
 import React, { Suspense, useEffect, useState } from "react"
-import { InteractionManager, ScrollView } from "react-native"
+import { ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery, useRefetchableFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import * as Yup from "yup"
@@ -57,7 +57,7 @@ interface MyProfileEditFormProps {
   onSuccess?: () => void
 }
 
-export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess }) => {
+export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = () => {
   const { trackEvent } = useTracking()
   const data = useLazyLoadQuery<MyProfileEditFormQuery>(MyProfileEditFormScreenQuery, {})
   const { updateProfile, isLoading, setIsLoading } = useEditProfile()
@@ -129,10 +129,9 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
     initialValues: {
       name: me?.name ?? "",
       displayLocation: { display: buildLocationDisplay(me?.location ?? null) },
-      location:
-        {
-          ...me?.location,
-        } ?? undefined,
+      location: {
+        ...me?.location,
+      },
       profession: me?.profession ?? "",
       otherRelevantPositions: me?.otherRelevantPositions ?? "",
       photo: me?.icon?.url || "",
@@ -150,9 +149,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
         setIsLoading(false)
       }
 
-      InteractionManager.runAfterInteractions(() => {
-        onSuccess?.()
-      })
+      fetchProfileData()
       navigation.goBack()
     },
     validationSchema: editMyProfileSchema,
@@ -189,22 +186,10 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
     }
   }, [showVerificationBannerForEmail, showVerificationBannerForID])
 
-  const onLeftButtonPressHandler = () => {
-    navigation.goBack()
-  }
-
   const showCompleteYourProfileBanner = !me?.collectorProfile?.isProfileComplete
 
   return (
     <>
-      <FancyModalHeader
-        onLeftButtonPress={onLeftButtonPressHandler}
-        rightButtonText="Skip"
-        hideBottomDivider
-      >
-        Edit Profile
-      </FancyModalHeader>
-
       {!!showCompleteYourProfileBanner && (
         <Message
           variant="info"
@@ -314,12 +299,6 @@ export const MyProfileEditFormScreen: React.FC<MyProfileEditFormProps> = (props)
 const LoadingSkeleton = () => {
   return (
     <ProvidePlaceholderContext>
-      <Flex alignItems="center" mt={2}>
-        <Text variant="sm-display" mr={0.5}>
-          Edit Profile
-        </Text>
-      </Flex>
-      <Spacer y={4} />
       <Flex flexDirection="row" pl={2} alignItems="center">
         <PlaceholderBox width={99} height={99} borderRadius={50} />
         <PlaceholderText width={100} height={20} marginTop={6} marginLeft={20} />

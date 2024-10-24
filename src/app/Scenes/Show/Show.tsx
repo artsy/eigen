@@ -1,18 +1,16 @@
-import { Spacer, Flex, Box, Separator } from "@artsy/palette-mobile"
+import { Box, Flex, Separator, Spacer } from "@artsy/palette-mobile"
 import { ShowQuery } from "__generated__/ShowQuery.graphql"
 import { Show_show$data } from "__generated__/Show_show.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { useScreenDimensions } from "app/utils/hooks"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { times } from "lodash"
 import React, { useRef, useState } from "react"
 import { Animated } from "react-native"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ShowArtworksWithNavigation as ShowArtworks } from "./Components/ShowArtworks"
 import { ShowArtworksEmptyStateFragmentContainer } from "./Components/ShowArtworksEmptyState"
@@ -48,7 +46,7 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
   const artworkProps = { show, visible, toggleFilterArtworksModal }
 
   const sections: Section[] = [
-    { key: "header", element: <ShowHeader show={show} mx={2} /> },
+    { key: "header", element: <ShowHeader show={show} mx={2} mt={2} /> },
 
     ...(Boolean(show.images?.length)
       ? [{ key: "install-shots", element: <ShowInstallShots show={show} /> }]
@@ -109,11 +107,9 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
           keyExtractor={({ key }) => key}
           stickyHeaderIndices={[sections.findIndex((section) => section.key === "filter") + 1]}
           viewabilityConfig={viewConfigRef.current}
-          ListHeaderComponent={<Spacer y={6} />}
           ListFooterComponent={<Spacer y={2} />}
           ItemSeparatorComponent={() => <Spacer y="15px" />}
           contentContainerStyle={{
-            paddingTop: useScreenDimensions().safeAreaInsets.top,
             paddingBottom: 40,
           }}
           renderItem={({ item: { element } }) => element}
@@ -178,9 +174,8 @@ export const ShowQueryRenderer: React.FC<ShowQueryRendererProps> = ({ showID }) 
 }
 
 export const ShowPlaceholder: React.FC = () => {
-  const saInsets = useSafeAreaInsets()
   return (
-    <Flex px={2} pt={`${saInsets.top + 80}px`}>
+    <Flex px={2} pt={2}>
       {/* Title */}
       <PlaceholderText height={25} width={200 + Math.random() * 100} />
       <PlaceholderText height={25} width={100 + Math.random() * 100} />

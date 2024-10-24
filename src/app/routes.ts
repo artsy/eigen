@@ -349,14 +349,12 @@ export function getDomainMap(): Record<string, RouteMatcher[] | null> {
     // Webview routes
     addWebViewRoute("/auction-faq", {
       alwaysPresentModally: true,
-      safeAreaEdges: ["bottom"],
     }),
     addWebViewRoute("/buy-now-feature-faq"),
     addWebViewRoute("/buyer-guarantee"),
     addWebViewRoute("/categories"),
     addWebViewRoute("/conditions-of-sale", {
       alwaysPresentModally: true,
-      safeAreaEdges: ["bottom"],
     }),
     addWebViewRoute("/identity-verification-faq"),
     addWebViewRoute("/meet-the-specialists"),
@@ -364,16 +362,15 @@ export function getDomainMap(): Record<string, RouteMatcher[] | null> {
       mimicBrowserBackButton: true,
       useRightCloseButton: true,
       alwaysPresentModally: true,
-      safeAreaEdges: ["bottom"],
     }),
     addWebViewRoute("/price-database"),
     addWebViewRoute("/privacy", {
-      alwaysPresentModally: true,
-      safeAreaEdges: ["bottom"],
+      // TODO: is this required?
+      // alwaysPresentModally: true,
     }),
     addWebViewRoute("/terms", {
-      alwaysPresentModally: true,
-      safeAreaEdges: ["bottom"],
+      // TODO: is this required?
+      // alwaysPresentModally: true,
     }),
     addWebViewRoute("/unsubscribe"),
 

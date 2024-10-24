@@ -1,4 +1,4 @@
-import { Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { PartnerShowsRail_partner$data } from "__generated__/PartnerShowsRail_partner.graphql"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToEdge } from "app/utils/isCloseToEdge"
@@ -32,25 +32,24 @@ const PartnerShowsRail: React.FC<{
     })
   }
 
+  if (!currentAndUpcomingShows?.length) {
+    return null
+  }
+
   return (
-    <>
-      {!!currentAndUpcomingShows && !!currentAndUpcomingShows.length && (
-        <>
-          <Text variant="sm-display">Current and upcoming shows</Text>
-          <FlatList
-            horizontal
-            onScroll={isCloseToEdge(fetchNextPage)}
-            data={currentAndUpcomingShows}
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => {
-              return <RailItem show={item} />
-            }}
-          />
-          <Spacer y={2} />
-        </>
-      )}
-    </>
+    <Flex mb={2}>
+      <Text variant="sm-display">Current and upcoming shows</Text>
+      <FlatList
+        horizontal
+        onScroll={isCloseToEdge(fetchNextPage)}
+        data={currentAndUpcomingShows}
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => {
+          return <RailItem show={item} />
+        }}
+      />
+    </Flex>
   )
 }
 

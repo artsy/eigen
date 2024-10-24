@@ -336,6 +336,19 @@ When we upgrade to 6.0.14 or higher, should do shortly but requires fixing a fai
 React native removed removeEventListener which this library uses and causes jest tests to fail with type errors. This commit fixes the issue:
 https://github.com/react-navigation/react-navigation/commit/6e9da7304127a7c33cda2da2fa9ea1740ef56604
 
+## Patch-package for react-native-screens
+
+#### When we can remove this:
+
+When we upgrade from react-native-screens
+
+### Explanation/Context
+
+When modal is shown the underlying RNSScreen isn't attached to any navigation controller. During the modal dismissal transition this update method is called on this RNSScreen resulting in nil `navctr`. After the transition is completed it will be called again and will configure the navigation controller correctly.
+
+Also see: https://github.com/software-mansion/react-native-screens/pull/2336
+PR with the fix: https://github.com/software-mansion/react-native-screens/pull/2336
+
 ## Patch-package for react-native-device-info
 
 #### When we can remove this:
