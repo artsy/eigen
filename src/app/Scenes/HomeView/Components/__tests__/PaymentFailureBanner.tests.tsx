@@ -23,7 +23,7 @@ describe("PaymentFailureBanner", () => {
 
   it("renders the error banner when a single payment has failed", () => {
     renderWithRelay({
-      CommerceMyOrders: () => ({
+      CommerceOrderConnectionWithTotalCount: () => ({
         edges: [
           {
             node: {
@@ -42,7 +42,7 @@ describe("PaymentFailureBanner", () => {
 
   it("renders the error banner when multiple payments have failed", () => {
     renderWithRelay({
-      CommerceMyOrders: () => ({
+      CommerceOrderConnectionWithTotalCount: () => ({
         edges: [
           {
             node: {
@@ -69,7 +69,7 @@ describe("PaymentFailureBanner", () => {
 
   it("does not render the banner when there are no payment failures", () => {
     renderWithRelay({
-      CommerceMyOrders: () => ({
+      CommerceOrderConnectionWithTotalCount: () => ({
         edges: [],
       }),
     })
