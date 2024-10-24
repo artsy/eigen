@@ -12,7 +12,7 @@ export const InboxTab = (): JSX.Element => {
         }}
         children={(props) => {
           return (
-            <ScreenWrapper>
+            <ScreenWrapper fullBleed>
               <InboxQueryRenderer {...props} />
             </ScreenWrapper>
           )
