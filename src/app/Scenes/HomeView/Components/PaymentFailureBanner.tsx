@@ -13,7 +13,7 @@ export const PaymentFailureBanner: React.FC = () => {
     if (failedPayments.length) {
       console.warn("trackBannerView")
     }
-  }, [])
+  }, [failedPayments.length])
 
   // const handleBannerLinkClick = () => {
   //   console.warn("trackBannerLinkClick")
@@ -32,7 +32,9 @@ export const PaymentFailureBanner: React.FC = () => {
       ? "Payment failed for your recent order.\nUpdate payment method."
       : "Payment failed for your recent orders.\nUpdate payment method for each order."
 
-  return <Banner variant="error" text={bannerText} dismissable />
+  return (
+    <Banner data-testid="payment-failure-banner" variant="error" text={bannerText} dismissable />
+  )
 }
 
 const query = graphql`
