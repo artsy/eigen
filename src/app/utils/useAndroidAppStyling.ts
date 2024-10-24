@@ -1,7 +1,7 @@
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useEffect } from "react"
-import { Platform, StatusBar } from "react-native"
+import { Platform } from "react-native"
 
 export const useAndroidAppStyling = () => {
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
@@ -15,8 +15,7 @@ export const useAndroidAppStyling = () => {
         }
 
         if (isLoggedIn && Platform.OS === "android") {
-          ArtsyNativeModule.setAppStyling()
-          StatusBar.setBarStyle("dark-content")
+          ArtsyNativeModule.setAppLightContrast(false)
         }
       }, 500)
     }
