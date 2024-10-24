@@ -201,10 +201,7 @@ const SocialLoginButtons: React.FC = () => {
 
   const handleGooglePress = () =>
     onSocialLogin(() => {
-      return GlobalStore.actions.auth.authGoogle({
-        signInOrUp: mode === "login" ? "signIn" : "signUp",
-        agreedToReceiveEmails: mode === "signup",
-      })
+      return GlobalStore.actions.auth.authGoogle()
     })
 
   const handleFacebookPress = () =>
