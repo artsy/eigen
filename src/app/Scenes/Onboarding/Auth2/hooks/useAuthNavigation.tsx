@@ -4,8 +4,10 @@ export const useAuthNavigation = () => {
   const actions = AuthContext.useStoreActions((actions) => actions)
 
   return {
-    goBack: () => {
-      actions.goBack()
+    goBack: (count = 1) => {
+      for (let i = 0; i < count; i++) {
+        actions.goBack()
+      }
     },
     navigate: (screen: AuthScreen) => {
       actions.setCurrentScreen(screen)

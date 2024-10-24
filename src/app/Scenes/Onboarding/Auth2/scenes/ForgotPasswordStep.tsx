@@ -69,6 +69,11 @@ const ForgotPasswordStepForm: React.FC = () => {
     resetForm({ values: { email: screen.params?.email ?? "" } })
   }
 
+  const handleReturnToLoginPress = () => {
+    navigation.goBack(2)
+    resetForm({ values: { email: screen.params?.email ?? "" } })
+  }
+
   const requestedPasswordReset = screen.params?.requestedPasswordReset
 
   useInputAutofocus({
@@ -83,7 +88,6 @@ const ForgotPasswordStepForm: React.FC = () => {
   return (
     <Flex padding={2}>
       <BackButton onPress={handleBackButtonPress} />
-
       <Spacer y={1} />
 
       <Flex flex={1} justifyContent="flex-start">
@@ -144,7 +148,7 @@ const ForgotPasswordStepForm: React.FC = () => {
 
           <Button
             variant="fillDark"
-            onPress={handleBackButtonPress}
+            onPress={handleReturnToLoginPress}
             block
             haptic="impactMedium"
             testID="returnToLoginButton"
