@@ -17385,8 +17385,10 @@ type RecordArtworkViewPayload {
 }
 
 enum ReferenceTypes {
-  DISLIKED_ARTWORKS
   LIKED_ARTWORKS
+
+  # Artworks that the user has seen and not "liked". Should not be considered a negative signal.
+  SEEN_ARTWORKS
 }
 
 enum RelatedArtistsKind {
