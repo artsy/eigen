@@ -328,6 +328,8 @@ const artQuizScreenOptions = {
 
 export type AppModule = keyof typeof modules
 
+// comment
+
 export const modules = defineModules({
   Activity: reactModule(ActivityScreen, {
     fullBleed: true,
