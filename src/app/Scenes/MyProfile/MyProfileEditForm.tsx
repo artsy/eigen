@@ -26,6 +26,7 @@ import {
   UserProfileFormikSchema,
   userProfileYupSchema,
 } from "app/Scenes/MyProfile/Components/UserProfileFields"
+import { fetchProfileData } from "app/Scenes/MyProfile/MyProfileHeader"
 import { useEditProfile } from "app/Scenes/MyProfile/hooks/useEditProfile"
 import { navigate } from "app/system/navigation/navigate"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
@@ -36,7 +37,7 @@ import { sendEmail } from "app/utils/sendEmail"
 import { useHasBeenTrue } from "app/utils/useHasBeenTrue"
 import { FormikProvider, useFormik } from "formik"
 import React, { Suspense, useEffect, useState } from "react"
-import { InteractionManager, ScrollView } from "react-native"
+import { ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery, useRefetchableFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import * as Yup from "yup"
@@ -56,7 +57,7 @@ interface MyProfileEditFormProps {
   onSuccess?: () => void
 }
 
-export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess }) => {
+export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = () => {
   const { trackEvent } = useTracking()
   const data = useLazyLoadQuery<MyProfileEditFormQuery>(MyProfileEditFormScreenQuery, {})
   const { updateProfile, isLoading, setIsLoading } = useEditProfile()
@@ -148,9 +149,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
         setIsLoading(false)
       }
 
-      InteractionManager.runAfterInteractions(() => {
-        onSuccess?.()
-      })
+      fetchProfileData()
       navigation.goBack()
     },
     validationSchema: editMyProfileSchema,

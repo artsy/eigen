@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Button, Flex, Separator, Spacer, Text, useColor } from "@artsy/palette-mobile"
+import { Button, Flex, Separator, Spacer, Text, useColor, useSpace } from "@artsy/palette-mobile"
 import { MenuItem } from "app/Components/MenuItem"
 import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -7,32 +7,21 @@ import { navigate } from "app/system/navigation/navigate"
 import { Alert, ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
 
-interface MyProfileSettingsProps {
-  onSuccess?: () => void
-}
-
-export const MyProfileSettings: React.FC<MyProfileSettingsProps> = ({ onSuccess }) => {
+export const MyProfileSettings: React.FC = () => {
   const color = useColor()
+  const space = useSpace()
+
   const tracking = useTracking()
   const separatorColor = color("black5")
 
   return (
     <>
-      <ScrollView>
+      <ScrollView contentContainerStyle={{ paddingTop: space(2) }}>
         <Text variant="xs" color="black60" px={2}>
           Settings
         </Text>
         <Spacer y={2} />
-        <MenuItem
-          title="Edit Profile"
-          onPress={() =>
-            navigate("my-profile/edit", {
-              passProps: {
-                onSuccess,
-              },
-            })
-          }
-        />
+        <MenuItem title="Edit Profile" onPress={() => navigate("my-profile/edit")} />
         <Separator my={1} borderColor={separatorColor} />
         <MenuItem title="Account Settings" onPress={() => navigate("my-account")} />
         <Separator my={1} borderColor={separatorColor} />
