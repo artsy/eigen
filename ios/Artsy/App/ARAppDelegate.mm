@@ -107,13 +107,10 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [[ARLogger sharedLogger] startLogging];
 
-    AREmission *emission = [self setupSharedEmission];
+    [self setupSharedEmission];
 
     [AppCenterReactNative register];
 
-    RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
-    self.bridge = bridge;
-    [emission setBridge:bridge];
 
     self.moduleName = @"eigen";
 
@@ -147,10 +144,17 @@ static ARAppDelegate *_sharedInstance = nil;
     return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 
+- (RCTBridge *)createBridgeWithDelegate:(id<RCTBridgeDelegate>)delegate launchOptions:(NSDictionary *)launchOptions {
+    RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
+    AREmission *emission = [AREmission sharedInstance];
+    [emission setBridge:bridge];
+    return bridge;
+}
+
 - (UIView *)createRootViewWithBridge:(RCTBridge *)bridge
                           moduleName:(NSString *)moduleName
                            initProps:(NSDictionary *)initProps {
-  UIView *rootView = [super createRootViewWithBridge:self.bridge moduleName:moduleName initProps:initProps];
+  UIView *rootView = [super createRootViewWithBridge:bridge moduleName:moduleName initProps:initProps];
   [RNBootSplash initWithStoryboard:@"BootSplash" rootView:rootView]; // ⬅️ initialize the splash screen
   return rootView;
 }
