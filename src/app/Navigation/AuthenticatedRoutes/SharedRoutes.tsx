@@ -5,6 +5,7 @@ import {
   Touchable,
   useTheme,
 } from "@artsy/palette-mobile"
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs"
 import { AppModule, modules } from "app/AppRegistry"
 import { TabStackNavigator } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { isHeaderShown } from "app/Navigation/Utils/isHeaderShown"
@@ -60,8 +61,11 @@ export const SharedRoutes = (): JSX.Element => {
                   module.options.fullBleed ??
                   // when no header is visible, we want to make sure we are bound by the insets
                   isHeaderShown(module)
+
+                const hidesBottomTabs = module.options.hidesBottomTabs
+
                 return (
-                  <ScreenWrapper fullBleed={isFullBleed}>
+                  <ScreenWrapper fullBleed={isFullBleed} hidesBottomTabs={hidesBottomTabs}>
                     <module.Component {...params} {...props} />
                   </ScreenWrapper>
                 )
@@ -77,13 +81,21 @@ export const SharedRoutes = (): JSX.Element => {
 
 export interface ScreenWrapperProps {
   fullBleed?: boolean
+  hidesBottomTabs?: boolean
 }
 
-export const ScreenWrapper: React.FC<ScreenWrapperProps> = ({ fullBleed = false, children }) => {
+export const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
+  fullBleed = false,
+  hidesBottomTabs = false,
+  children,
+}) => {
   const safeAreaInsets = useSafeAreaInsets()
+  const tabBarHeight = useBottomTabBarHeight()
 
   const padding = fullBleed
-    ? undefined
+    ? {
+        paddingBottom: hidesBottomTabs ? 0 : tabBarHeight,
+      }
     : {
         paddingBottom: safeAreaInsets.bottom,
         paddingTop: safeAreaInsets.top,

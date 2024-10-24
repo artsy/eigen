@@ -470,7 +470,7 @@ export const modules = defineModules({
     hidesBackButton: true,
   }),
   ConsignmentInquiry: reactModule(ConsignmentInquiryScreen, {
-    hidesBottomTabs: true,
+    alwaysPresentModally: true,
     screenOptions: {
       gestureEnabled: false,
     },
@@ -482,7 +482,7 @@ export const modules = defineModules({
     // No need to hide bottom tabs if it's a modal because they will be hidden by default
     hidesBottomTabs: !unsafe_getFeatureFlag("AREnableNewNavigation"),
     hidesBackButton: !unsafe_getFeatureFlag("AREnableNewNavigation"),
-    // alwaysPresentModally: !!unsafe_getFeatureFlag("AREnableNewNavigation"),
+    alwaysPresentModally: !!unsafe_getFeatureFlag("AREnableNewNavigation"),
     screenOptions: {
       headerTitle: "Dev Settings",
       headerLargeTitle: true,
@@ -636,7 +636,12 @@ export const modules = defineModules({
       headerTitle: "Payment",
     },
   }),
-  MyProfileSettings: reactModule(MyProfileSettings),
+  MyProfileSettings: reactModule(MyProfileSettings, {
+    alwaysPresentModally: true,
+    screenOptions: {
+      headerTitle: "Account",
+    },
+  }),
   MySellingProfile: reactModule(View),
   NewWorksForYou: reactModule(NewWorksForYouQueryRenderer, {
     hidesBottomTabs: true,
