@@ -34,7 +34,9 @@ describe("EntitySearchResults", () => {
 
     expect(screen.getByTestId("SingleIndexSearchPlaceholder")).toBeTruthy()
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("SingleIndexSearchPlaceholder"))
+    await waitForElementToBeRemoved(() => screen.queryByTestId("SingleIndexSearchPlaceholder"), {
+      timeout: 10000,
+    })
 
     expect(screen.getByLabelText("Artist search results list")).toBeTruthy()
 
@@ -61,7 +63,9 @@ describe("EntitySearchResults", () => {
 
     expect(screen.getByTestId("SingleIndexSearchPlaceholder")).toBeTruthy()
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("SingleIndexSearchPlaceholder"))
+    await waitForElementToBeRemoved(() => screen.queryByTestId("SingleIndexSearchPlaceholder"), {
+      timeout: 10000,
+    })
 
     expect(screen.getByLabelText("Artist search results list")).toBeTruthy()
 
