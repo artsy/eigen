@@ -8,6 +8,7 @@ import {
 import { ArtworkRailProps } from "app/Components/ArtworkRail/ArtworkRail"
 import {
   ARTWORK_RAIL_CARD_MINIMUM_WIDTH,
+  ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT,
   ArtworkRailCard,
 } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { PrefetchFlashList } from "app/Components/PrefetchFlashList"
@@ -103,7 +104,9 @@ const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> = ({
           onPress={() => {
             onPress?.(item, index)
           }}
-          metaContainerStyles={{ height: 100 }}
+          metaContainerStyles={{
+            height: ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + 10,
+          }}
           showPartnerName={showPartnerName}
           SalePriceComponent={
             <RecentlySoldCardSection
@@ -154,12 +157,12 @@ const RecentlySoldCardSection: React.FC<RecentlySoldCardSectionProps> = ({
 }) => {
   return (
     <Flex>
-      <Flex flexDirection="row" justifyContent="space-between" mt={1}>
-        <Text variant="lg-display" numberOfLines={1}>
+      <Flex flexDirection="row" justifyContent="space-between">
+        <Text variant="md" numberOfLines={1}>
           {priceRealizedDisplay}
         </Text>
         {!!performanceDisplay && (
-          <Text variant="lg-display" color="green" numberOfLines={1}>
+          <Text variant="md" color="green" numberOfLines={1}>
             {`+${performanceDisplay}`}
           </Text>
         )}
