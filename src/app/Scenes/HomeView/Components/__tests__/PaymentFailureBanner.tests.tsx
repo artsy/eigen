@@ -74,6 +74,6 @@ describe("PaymentFailureBanner", () => {
       }),
     })
 
-    expect(screen.queryByTestId("payment-failure-banner")).toBeNull()
+    expect(screen.queryByTestId("PaymentFailureBanner")).toBeNull()
   })
 })

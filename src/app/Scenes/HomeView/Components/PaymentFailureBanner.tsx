@@ -44,7 +44,12 @@ export const PaymentFailureBanner: React.FC = () => {
 
   useEffect(() => {
     if (isFocused) {
-      refetch({})
+      refetch(
+        {},
+        {
+          fetchPolicy: "network-only",
+        }
+      )
     }
   }, [isFocused])
 
@@ -71,15 +76,10 @@ export const PaymentFailureBanner: React.FC = () => {
     failedPayments.length === 1 ? "Update payment method." : "Update payment method for each order."
 
   return (
-    <Banner data-testid="payment-failure-banner" variant="error" dismissable>
+    <Banner data-testid="PaymentFailureBanner" variant="error" dismissable>
       <Text style={{ alignSelf: "center" }} textAlign="left" variant="xs" color="white100">
         {bannerText}{" "}
-        <LinkText
-          textAlign="center"
-          variant="xs"
-          color="white100"
-          onPress={() => handleBannerLinkClick()}
-        >
+        <LinkText variant="xs" color="white100" onPress={() => handleBannerLinkClick()}>
           {linkText}
         </LinkText>
       </Text>
