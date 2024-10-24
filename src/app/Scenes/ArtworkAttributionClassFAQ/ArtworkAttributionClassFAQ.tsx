@@ -1,15 +1,4 @@
-import {
-  Spacer,
-  Box,
-  Text,
-  Separator,
-  Join,
-  Button,
-  Screen,
-  CloseIcon,
-  Touchable,
-  useSpace,
-} from "@artsy/palette-mobile"
+import { Box, Button, Join, Screen, Separator, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkAttributionClassFAQQuery } from "__generated__/ArtworkAttributionClassFAQQuery.graphql"
 import { ArtworkAttributionClassFAQ_artworkAttributionClasses$data } from "__generated__/ArtworkAttributionClassFAQ_artworkAttributionClasses.graphql"
 import { goBack } from "app/system/navigation/navigate"
@@ -26,22 +15,9 @@ interface Props {
 
 export const ArtworkAttributionClassFAQ: React.FC<Props> = ({ artworkAttributionClasses }) => {
   useAndroidGoBack()
-  const space = useSpace()
 
   return (
     <Screen>
-      <Screen.Header
-        leftElements={
-          <Touchable
-            accessibilityRole="button"
-            accessibilityLabel="Close"
-            onPress={() => goBack()}
-            hitSlop={{ top: space(2), left: space(2), bottom: space(2), right: space(2) }}
-          >
-            <CloseIcon fill="black100" />
-          </Touchable>
-        }
-      />
       <Screen.Body>
         <ScrollView>
           <Box py={2}>
