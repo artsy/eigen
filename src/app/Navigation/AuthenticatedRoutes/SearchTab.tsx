@@ -12,7 +12,7 @@ export const SearchTab = (): JSX.Element => {
         }}
         children={(props) => {
           return (
-            <ScreenWrapper>
+            <ScreenWrapper fullBleed>
               <SearchScreen {...props} />
             </ScreenWrapper>
           )

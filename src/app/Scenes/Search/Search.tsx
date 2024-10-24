@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Spacer, Flex, Box } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box, Screen } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { SearchQuery, SearchQuery$variables } from "__generated__/SearchQuery.graphql"
@@ -190,9 +190,11 @@ export const SearchScreenQuery = graphql`
 type SearchScreenProps = StackScreenProps<any>
 
 export const SearchScreen: React.FC<SearchScreenProps> = () => (
-  <Suspense fallback={<SearchPlaceholder />}>
-    <Search />
-  </Suspense>
+  <Screen>
+    <Suspense fallback={<SearchPlaceholder />}>
+      <Search />
+    </Suspense>
+  </Screen>
 )
 
 const Scrollable = styled(ScrollView).attrs(() => ({
