@@ -1,5 +1,6 @@
 import {
   ActionType,
+  BannerViewed,
   ContextModule,
   OwnerType,
   RailViewed,
@@ -11,6 +12,7 @@ import {
   TappedArtworkGroup,
   TappedAuctionGroup,
   TappedAuctionResultGroup,
+  TappedChangePaymentMethod,
   TappedClearNotification,
   TappedCollectionGroup,
   TappedFairGroup,
@@ -463,5 +465,21 @@ export const useHomeViewTracking = () => {
 
       trackEvent(payload)
     },
+
+    bannerViewed: (orders: any): BannerViewed => ({
+      action: ActionType.bannerViewed,
+      context_screen: OwnerType.home,
+      context_module: ContextModule.paymentFailed,
+      item_type: orders.length === 1 ? "order" : "orders",
+      idem_id: orders.length === 1 ? orders[0].internalID : "",
+    }),
+
+    tappedChangePaymentMethod: (orders: any): TappedChangePaymentMethod => ({
+      action: ActionType.tappedChangePaymentMethod,
+      context_screen: OwnerType.home,
+      context_module: ContextModule.paymentFailed,
+      item_type: orders.length === 1 ? "order" : "orders",
+      idem_id: orders.length === 1 ? orders[0].internalID : "",
+    }),
   }
 }
