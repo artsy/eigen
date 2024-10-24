@@ -260,12 +260,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableCollectionsWithoutHeaderImage",
   },
-  AREnableCuratorsPicksAndInterestSignals: {
-    description: "Enable Curators' Picks and Increased Interest signals",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableCuratorsPicksAndInterestSignals",
-  },
   AREnableArtworkRailRedesignImageAspectRatio: {
     description: "Enable new aspect ratio for artwork rail images",
     readyForRelease: true,

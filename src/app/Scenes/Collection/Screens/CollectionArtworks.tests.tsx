@@ -10,7 +10,6 @@ import {
   CollectionArtworksFragmentContainer as CollectionArtworks,
   CURATORS_PICKS_SLUGS,
 } from "app/Scenes/Collection/Screens/CollectionArtworks"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -58,12 +57,6 @@ describe("CollectionArtworks", () => {
   })
 
   fdescribe("collector signals", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({
-        AREnableCuratorsPicksAndInterestSignals: true,
-      })
-    })
-
     it("renders the collector signals", () => {
       renderWithRelay({
         MarketingCollection: () => ({

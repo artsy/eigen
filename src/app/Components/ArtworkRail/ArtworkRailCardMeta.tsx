@@ -61,9 +61,6 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
 }) => {
   const { trackEvent } = useTracking()
   const enableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
-  const enableCuratorsPicksAndInterestSignals = useFeatureFlag(
-    "AREnableCuratorsPicksAndInterestSignals"
-  )
 
   const artwork = useFragment(artworkMetaFragment, artworkProp)
 
@@ -151,17 +148,14 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
           </Box>
         )}
 
-        {!sale?.isAuction &&
-          !displayLimitedTimeOfferSignal &&
-          !!collectorSignals &&
-          !!enableCuratorsPicksAndInterestSignals && (
-            <ArtworkSocialSignal
-              collectorSignals={collectorSignals}
-              hideCuratorsPick={hideCuratorsPickSignal}
-              hideIncreasedInterest={hideIncreasedInterestSignal}
-              dark={dark}
-            />
-          )}
+        {!sale?.isAuction && !displayLimitedTimeOfferSignal && !!collectorSignals && (
+          <ArtworkSocialSignal
+            collectorSignals={collectorSignals}
+            hideCuratorsPick={hideCuratorsPickSignal}
+            hideIncreasedInterest={hideIncreasedInterestSignal}
+            dark={dark}
+          />
+        )}
 
         {!!lotLabel && (
           <Text lineHeight="20px" color={secondaryTextColor} numberOfLines={1}>

@@ -124,9 +124,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
   const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
-  const AREnableCuratorsPicksAndInterestSignals = useFeatureFlag(
-    "AREnableCuratorsPicksAndInterestSignals"
-  )
 
   let filterParams: any = undefined
 
@@ -364,16 +361,13 @@ export const Artwork: React.FC<ArtworkProps> = ({
                     </Text>
                   </Box>
                 )}
-                {!isAuction &&
-                  !displayLimitedTimeOfferSignal &&
-                  !!collectorSignals &&
-                  !!AREnableCuratorsPicksAndInterestSignals && (
-                    <ArtworkSocialSignal
-                      collectorSignals={collectorSignals}
-                      hideCuratorsPick={hideCuratorsPickSignal}
-                      hideIncreasedInterest={hideIncreasedInterestSignal}
-                    />
-                  )}
+                {!isAuction && !displayLimitedTimeOfferSignal && !!collectorSignals && (
+                  <ArtworkSocialSignal
+                    collectorSignals={collectorSignals}
+                    hideCuratorsPick={hideCuratorsPickSignal}
+                    hideIncreasedInterest={hideIncreasedInterestSignal}
+                  />
+                )}
                 {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
                   <>
                     <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
