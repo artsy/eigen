@@ -9,7 +9,6 @@ import {
 } from "@artsy/palette-mobile"
 import { ArtworkDetailsCollectorSignal_artwork$key } from "__generated__/ArtworkDetailsCollectorSignal_artwork.graphql"
 import { navigate } from "app/system/navigation/navigate"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { DateTime } from "luxon"
 import { graphql, useFragment } from "react-relay"
 
@@ -18,10 +17,6 @@ interface Props {
 }
 
 export const ArtworkDetailsCollectorSignal: React.FC<Props> = ({ artwork }) => {
-  const enableCuratorsPicksAndInterestSignals = useFeatureFlag(
-    "AREnableCuratorsPicksAndInterestSignals"
-  )
-
   const { collectorSignals } = useFragment(fragment, artwork)
 
   if (
@@ -41,13 +36,13 @@ export const ArtworkDetailsCollectorSignal: React.FC<Props> = ({ artwork }) => {
   let SignalIcon = FairIcon
 
   switch (true) {
-    case curatorsPick && enableCuratorsPicksAndInterestSignals: {
+    case curatorsPick: {
       singalTitle = "Curators’ Pick"
       signalDescription = "Hand selected by Artsy curators this week"
       SignalIcon = FireIcon
       break
     }
-    case increasedInterest && enableCuratorsPicksAndInterestSignals: {
+    case increasedInterest: {
       singalTitle = "Increased Interest"
       signalDescription = "Based on collector activity in the past 14 days"
       SignalIcon = ArrowUpRightIcon

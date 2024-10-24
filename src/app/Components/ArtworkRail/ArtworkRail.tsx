@@ -1,4 +1,4 @@
-import { Box, Flex, Join, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
+import { Box, Flex, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import { ListRenderItem } from "@shopify/flash-list"
 import {
   ArtworkRail_artworks$data,
@@ -16,12 +16,11 @@ import { LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT } from "app/Components/ArtworkRai
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { PrefetchFlashList } from "app/Components/PrefetchFlashList"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { RandomWidthPlaceholderText, useMemoizedRandom } from "app/utils/placeholders"
+import { RandomWidthPlaceholderText } from "app/utils/placeholders"
 import {
   ArtworkActionTrackingProps,
   extractArtworkActionTrackingProps,
 } from "app/utils/track/ArtworkActions"
-import { times } from "lodash"
 import React, { ReactElement, useCallback } from "react"
 import { FlatList, ViewabilityConfig } from "react-native"
 import { isTablet } from "react-native-device-info"
@@ -142,10 +141,11 @@ export const ArtworkRailPlaceholder: React.FC = () => {
   const enableArtworkRailRedesignImageAspectRatio = useFeatureFlag(
     "AREnableArtworkRailRedesignImageAspectRatio"
   )
+  const cards = !isTablet() ? 2 : 6
 
   return (
-    <Join separator={<Spacer x="15px" />}>
-      {times(3 + useMemoizedRandom() * 10).map((index) => (
+    <Flex gap={15} flexDirection="row">
+      {Array.from({ length: cards }).map((_, index) => (
         <Flex key={index}>
           {enableArtworkRailRedesignImageAspectRatio ? (
             <SkeletonBox
@@ -163,6 +163,6 @@ export const ArtworkRailPlaceholder: React.FC = () => {
           <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
         </Flex>
       ))}
-    </Join>
+    </Flex>
   )
 }

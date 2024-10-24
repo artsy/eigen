@@ -248,12 +248,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableCollectorProfilePrompts",
   },
-  AREnablePartnerOfferSignals: {
-    description: "Enable partner offer signals",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnablePartnerOfferSignals",
-  },
   AREnableAuctionImprovementsSignals: {
     description: "Enable new auction lot signals",
     readyForRelease: true,
@@ -265,12 +259,6 @@ export const features = {
     readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableCollectionsWithoutHeaderImage",
-  },
-  AREnableCuratorsPicksAndInterestSignals: {
-    description: "Enable Curators' Picks and Increased Interest signals",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableCuratorsPicksAndInterestSignals",
   },
   AREnableArtworkRailRedesignImageAspectRatio: {
     description: "Enable new aspect ratio for artwork rail images",

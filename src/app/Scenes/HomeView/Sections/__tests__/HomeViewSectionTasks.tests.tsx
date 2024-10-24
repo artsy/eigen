@@ -3,6 +3,7 @@ import { HomeViewSectionTasksTestsQuery } from "__generated__/HomeViewSectionTas
 import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionTasks } from "app/Scenes/HomeView/Sections/HomeViewSectionTasks"
 import { navigate } from "app/system/navigation/navigate"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -62,8 +63,18 @@ describe("HomeViewSectionTasks", () => {
     fireEvent.press(screen.getByText("Task 1"))
 
     expect(navigate).toHaveBeenCalledWith("/test-link")
-
-    // TODO: Test tracking
+    expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+      [
+        {
+          "action": "tappedNotification",
+          "context_module": "actNow",
+          "context_screen_owner_type": "home",
+          "destination_path": "/test-link",
+          "notification_category": "send_wire",
+          "notification_id": "one",
+        },
+      ]
+    `)
   })
 
   it("clears and tracks when clearing a dask", async () => {
@@ -83,7 +94,18 @@ describe("HomeViewSectionTasks", () => {
       expect(screen.queryByText("Task 1")).not.toBeOnTheScreen()
     })
 
-    // TODO: Test tracking
+    expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+      [
+        {
+          "action": "tappedClearNotification",
+          "context_module": "actNow",
+          "context_screen_owner_type": "home",
+          "destination_path": "/test-link",
+          "notification_category": "send_wire",
+          "notification_id": "one",
+        },
+      ]
+    `)
   })
 })
 
@@ -97,6 +119,7 @@ const mockTasks = {
         internalID: "one",
         message: "Task Message 1",
         title: "Task 1",
+        taskType: "send_wire",
       },
     },
   ],

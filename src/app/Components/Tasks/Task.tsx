@@ -1,7 +1,10 @@
+import { ContextModule } from "@artsy/cohesion"
 import { Flex, Image, Text, Touchable } from "@artsy/palette-mobile"
 import { Task_task$key } from "__generated__/Task_task.graphql"
 import { Swipeable } from "app/Components/Swipeable/Swipeable"
+import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
+import { useAcknowledgeTask } from "app/utils/mutations/useAcknowledgeTask"
 import { useDismissTask } from "app/utils/mutations/useDismissTask"
 import { useRef } from "react"
 import { PixelRatio } from "react-native"
@@ -22,7 +25,9 @@ export const Task: React.FC<TaskProps> = ({
   onPress,
   ...restProps
 }) => {
+  const { tappedNotification, tappedClearNotification } = useHomeViewTracking()
   const { submitMutation: dismissTask } = useDismissTask()
+  const { submitMutation: acknowledgeTask } = useAcknowledgeTask()
   const fontScale = PixelRatio.getFontScale()
 
   const task = useFragment(taskFragment, restProps.task)
@@ -33,19 +38,16 @@ export const Task: React.FC<TaskProps> = ({
       return
     }
 
-    // TODO: Add tracking
-
-    // TODO: Resolve the task instead of dismissing it.
-    dismissTask({ variables: { taskID: task.internalID } })
+    acknowledgeTask({ variables: { taskID: task.internalID } })
+    tappedNotification(ContextModule.actNow, task.actionLink, task.internalID, task.taskType)
     onClearTask()
 
     navigate(task.actionLink)
   }
 
   const handleClearTask = async () => {
-    // TODO: Add tracking
     dismissTask({ variables: { taskID: task.internalID } })
-
+    tappedClearNotification(ContextModule.actNow, task.actionLink, task.internalID, task.taskType)
     onClearTask()
   }
 
@@ -103,5 +105,6 @@ const taskFragment = graphql`
     internalID
     message
     title
+    taskType
   }
 `

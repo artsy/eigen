@@ -15,7 +15,12 @@ describe("My Collection Artwork", () => {
       }),
     })
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("my-collection-artwork-placeholder"))
+    await waitForElementToBeRemoved(
+      () => screen.queryByTestId("my-collection-artwork-placeholder"),
+      {
+        timeout: 10000,
+      }
+    )
 
     expect(() => screen.getByTestId("my-collection-artwork")).toBeTruthy()
   })

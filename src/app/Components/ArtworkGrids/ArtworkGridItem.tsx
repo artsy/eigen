@@ -123,11 +123,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const tracking = useTracking()
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
-  const AREnablePartnerOfferSignals = useFeatureFlag("AREnablePartnerOfferSignals")
   const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
-  const AREnableCuratorsPicksAndInterestSignals = useFeatureFlag(
-    "AREnableCuratorsPicksAndInterestSignals"
-  )
 
   let filterParams: any = undefined
 
@@ -248,7 +244,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const saleInfo = saleMessageOrBidInfo({
     artwork,
-    collectorSignals: AREnablePartnerOfferSignals ? collectorSignals : null,
+    collectorSignals: collectorSignals,
     auctionSignals: AREnableAuctionImprovementsSignals ? collectorSignals?.auction : null,
   })
 
@@ -271,10 +267,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
     !!priceOfferMessage.priceWithDiscountMessage
 
   const displayLimitedTimeOfferSignal =
-    AREnablePartnerOfferSignals &&
-    collectorSignals?.partnerOffer?.isAvailable &&
-    !isAuction &&
-    !displayPriceOfferMessage
+    collectorSignals?.partnerOffer?.isAvailable && !isAuction && !displayPriceOfferMessage
 
   const displayAuctionSignal = AREnableAuctionImprovementsSignals && isAuction
 
@@ -355,6 +348,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
         </Text>
       )
   }
+
+  const displayArtworkSocialSignal =
+    !isAuction && !displayLimitedTimeOfferSignal && !!collectorSignals
 
   return (
     <Disappearable ref={(ref) => ((artwork as any)._disappearable = ref)}>
@@ -510,16 +506,13 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   />
                 )}
 
-                {!isAuction &&
-                  !displayLimitedTimeOfferSignal &&
-                  !!collectorSignals &&
-                  !!AREnableCuratorsPicksAndInterestSignals && (
-                    <ArtworkSocialSignal
-                      collectorSignals={collectorSignals}
-                      hideCuratorsPick={hideCuratorsPickSignal}
-                      hideIncreasedInterest={hideIncreasedInterestSignal}
-                    />
-                  )}
+                {!!displayArtworkSocialSignal && (
+                  <ArtworkSocialSignal
+                    collectorSignals={collectorSignals}
+                    hideCuratorsPick={hideCuratorsPickSignal}
+                    hideIncreasedInterest={hideIncreasedInterestSignal}
+                  />
+                )}
               </Flex>
               {!hideSaveIcon && (
                 <Flex flexDirection="row" alignItems="flex-start">

@@ -60,7 +60,6 @@ describe("FairExhibitors", () => {
   })
 
   it("tracks taps on artworks in the rail", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnablePartnerOfferSignals: false })
     const wrapper = getWrapper({
       Show: () => ({
         fair: {
@@ -97,7 +96,6 @@ describe("FairExhibitors", () => {
   })
 
   it("tracks taps on artworks with partner offer in the rail", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnablePartnerOfferSignals: true })
     const wrapper = getWrapper({
       Show: () => ({
         fair: {

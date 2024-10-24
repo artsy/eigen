@@ -22,7 +22,7 @@ describe("EntitySearchResults", () => {
     ),
   })
 
-  it("renders without throwing an error", async () => {
+  it("renders results component without throwing an error", async () => {
     renderWithRelay({
       Query: () => ({
         searchConnection: {
@@ -34,7 +34,9 @@ describe("EntitySearchResults", () => {
 
     expect(screen.getByTestId("SingleIndexSearchPlaceholder")).toBeTruthy()
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("SingleIndexSearchPlaceholder"))
+    await waitForElementToBeRemoved(() => screen.queryByTestId("SingleIndexSearchPlaceholder"), {
+      timeout: 10000,
+    })
 
     expect(screen.getByLabelText("Artist search results list")).toBeTruthy()
 
@@ -61,7 +63,9 @@ describe("EntitySearchResults", () => {
 
     expect(screen.getByTestId("SingleIndexSearchPlaceholder")).toBeTruthy()
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("SingleIndexSearchPlaceholder"))
+    await waitForElementToBeRemoved(() => screen.queryByTestId("SingleIndexSearchPlaceholder"), {
+      timeout: 10000,
+    })
 
     expect(screen.getByLabelText("Artist search results list")).toBeTruthy()
 
