@@ -61,13 +61,22 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
     if (shouldTrackError) {
       Sentry.withScope((scope) => {
         scope.setExtra("user-id", userId)
+        scope.setExtra("activeTab", activeTab)
         if (error) {
-          scope.setExtra("error", error)
+          scope.setExtra("error-details", error)
         }
-        Sentry.captureMessage(
-          "Unable to load in tab: " + activeTab + " params:" + JSON.stringify(routeParams),
-          "error"
-        )
+
+        if (routeParams) {
+          scope.setExtra("routeParams", JSON.stringify(routeParams))
+        }
+
+        const moduleName = routeParams?.moduleName
+        let message = "Unable to load in tab: " + activeTab
+        if (!!moduleName) {
+          message = "Unable to load in screen: " + moduleName
+        }
+
+        Sentry.captureMessage(message, "error")
       })
     }
   }
