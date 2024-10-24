@@ -83,7 +83,7 @@ const fragment = graphql`
     component {
       title
     }
-    cardsConnection(first: 10) {
+    cardsConnection {
       edges {
         node {
           entityID
