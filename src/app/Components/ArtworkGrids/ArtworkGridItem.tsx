@@ -657,6 +657,7 @@ export default createFragmentContainer(Artwork, {
         ...ArtworkAuctionTimer_collectorSignals
         ...ArtworkSocialSignal_collectorSignals
       }
+      ...ArtworkSaleMessageComponent_artwork
       ...useSaveArtworkToArtworkLists_artwork
     }
   `,
