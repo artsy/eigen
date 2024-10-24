@@ -21,7 +21,7 @@ describe("PaymentFailureBanner", () => {
     variables: {},
   })
 
-  it("renders the error banner when a single payment has failed", async () => {
+  it("renders the error banner when a single payment has failed", () => {
     renderWithRelay({
       CommerceMyOrders: () => ({
         edges: [
@@ -40,7 +40,7 @@ describe("PaymentFailureBanner", () => {
     ).toBeTruthy()
   })
 
-  it("renders the error banner when multiple payments have failed", async () => {
+  it("renders the error banner when multiple payments have failed", () => {
     renderWithRelay({
       CommerceMyOrders: () => ({
         edges: [
@@ -67,13 +67,13 @@ describe("PaymentFailureBanner", () => {
     ).toBeTruthy()
   })
 
-  it("does not render the banner when there are no payment failures", async () => {
+  it("does not render the banner when there are no payment failures", () => {
     renderWithRelay({
       CommerceMyOrders: () => ({
         edges: [],
       }),
     })
 
-    expect(screen.queryByText("Payment failed for your recent orders.")).toBeNull()
+    expect(screen.queryByTestId("payment-failure-banner")).toBeNull()
   })
 })
