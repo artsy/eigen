@@ -31,11 +31,8 @@ export const Body: React.FC<BodyProps> = ({ viewer }) => {
 
   return (
     <Flex gap={space(4)}>
-      <Text variant="xl" px={2}>
-        {category}
-      </Text>
-
       <Flex px={2} gap={space(2)}>
+        <Text variant="xl">{category}</Text>
         <Text>Explore collections with {category}</Text>
         {/* TODO: fix typings broken by some unknown reason here, prob related to @plural */}
         <CollectionsChips marketingCollections={data.marketingCollections as any} />
@@ -75,11 +72,9 @@ const BodyPlaceholder: React.FC = () => {
   return (
     <Skeleton>
       <Flex gap={space(4)}>
-        <Flex px={2}>
-          <SkeletonText variant="xl">Category</SkeletonText>
-        </Flex>
-
         <Flex gap={space(1)} px={2}>
+          <SkeletonText variant="xl">Category</SkeletonText>
+
           <SkeletonText>Category description text</SkeletonText>
 
           <CollectionsChipsPlaceholder />
