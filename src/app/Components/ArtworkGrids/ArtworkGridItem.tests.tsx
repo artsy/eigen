@@ -491,14 +491,15 @@ describe("ArtworkGridItem", () => {
         renderWithRelay({
           Artwork: () => ({
             ...artwork,
+            saleMessage: "$120,500",
             sale: { ...artwork.sale, isAuction: false },
             realizedPrice: null,
             collectorSignals,
           }),
         })
 
-        expect(screen.getByText("Limited-Time Offer")).toBeOnTheScreen()
-        expect(screen.getByText("Exp. 1d 12h")).toBeOnTheScreen()
+        expect(screen.getByText("$120,500")).toBeOnTheScreen()
+        expect(screen.getByText("Offer Expires 1d 12h")).toBeOnTheScreen()
       })
 
       it("doesn't show the limited-time offer signal for auction artworks", () => {
