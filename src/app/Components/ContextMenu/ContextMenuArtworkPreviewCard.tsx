@@ -122,7 +122,7 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
                   numberOfLines={1}
                   fontWeight={500}
                 >
-                  11 {saleMessage}
+                  {saleMessage}
                 </Text>
               )}
         </Flex>

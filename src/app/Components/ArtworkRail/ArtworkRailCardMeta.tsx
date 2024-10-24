@@ -195,6 +195,12 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
       )
   }
 
+  const displayArtworkSocialSignal =
+    !sale?.isAuction &&
+    !displayLimitedTimeOfferSignal &&
+    !!collectorSignals &&
+    !!enableCuratorsPicksAndInterestSignals
+
   return (
     <Flex
       my={1}
@@ -261,17 +267,14 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
           <ArtworkAuctionTimer collectorSignals={collectorSignals} inRailCard />
         )}
 
-        {!sale?.isAuction &&
-          !displayLimitedTimeOfferSignal &&
-          !!collectorSignals &&
-          !!enableCuratorsPicksAndInterestSignals && (
-            <ArtworkSocialSignal
-              collectorSignals={collectorSignals}
-              hideCuratorsPick={hideCuratorsPickSignal}
-              hideIncreasedInterest={hideIncreasedInterestSignal}
-              dark={dark}
-            />
-          )}
+        {!!displayArtworkSocialSignal && (
+          <ArtworkSocialSignal
+            collectorSignals={collectorSignals}
+            hideCuratorsPick={hideCuratorsPickSignal}
+            hideIncreasedInterest={hideIncreasedInterestSignal}
+            dark={dark}
+          />
+        )}
       </Flex>
 
       {!!showSaveIcon && (

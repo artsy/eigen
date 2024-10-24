@@ -33,7 +33,8 @@ export const ArtworkSocialSignal: React.FC<ArtworkSocialSignalProps> = ({
       return (
         <Box flexDirection="row" alignItems="center">
           <ArrowUpRightIcon />
-          <Text color={primaryColor} variant="xs" pl="3px">
+          <Text color={primaryColor} variant="xs">
+            {" "}
             Increased Interest
           </Text>
         </Box>
