@@ -1,13 +1,27 @@
 import { Banner } from "@artsy/palette-mobile"
 import { PaymentFailureBanner_Query } from "__generated__/PaymentFailureBanner_Query.graphql"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { useEffect } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 export const PaymentFailureBanner: React.FC = () => {
   const data = useLazyLoadQuery<PaymentFailureBanner_Query>(query, {})
-  const orders = extractNodes(data?.me?.orders)
+  const failedPayments = extractNodes(data?.commerceMyOrders)
 
-  const failedPayments = orders?.filter((order) => order?.paymentSet === false) || []
+  useEffect(() => {
+    if (failedPayments.length) {
+      console.warn("trackBannerView")
+    }
+  }, [])
+
+  const handleBannerLinkClick = () => {
+    console.warn("trackBannerLinkClick")
+
+    failedPayments.length === 1
+      ? navigate(`orders/${failedPayments[0].internalID}/payment/new`)
+      : navigate(`settings/purchases`)
+  }
 
   if (failedPayments.length === 0) {
     return null
@@ -23,17 +37,11 @@ export const PaymentFailureBanner: React.FC = () => {
 
 const query = graphql`
   query PaymentFailureBanner_Query {
-    me @required(action: NONE) {
-      orders(first: 10) @connection(key: "PaymentFailureBanner_orders") {
-        edges {
-          node {
-            code
-            internalID
-            displayState
-            ... on CommerceOrder {
-              paymentSet
-            }
-          }
+    commerceMyOrders(first: 10, filters: [PAYMENT_FAILED]) {
+      edges {
+        node {
+          code
+          internalID
         }
       }
     }
