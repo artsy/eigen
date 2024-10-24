@@ -10,10 +10,7 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import React, { useEffect, useRef, useState } from "react"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { string } from "yup"
-import {
-  MyAccountFieldEditScreen,
-  MyAccountFieldEditScreenPlaceholder,
-} from "./Components/MyAccountFieldEditScreen"
+import { MyAccountFieldEditScreen } from "./Components/MyAccountFieldEditScreen"
 import { updateMyUserProfile } from "./updateMyUserProfile"
 
 const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me$data; relay: RelayProp }> = ({
@@ -87,11 +84,7 @@ const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me$data; relay: Rela
 }
 
 const MyAccountEditEmailPlaceholder: React.FC<{}> = ({}) => {
-  return (
-    <MyAccountFieldEditScreenPlaceholder title="Email">
-      <PlaceholderBox height={40} />
-    </MyAccountFieldEditScreenPlaceholder>
-  )
+  return <PlaceholderBox height={40} />
 }
 
 export const MyAccountEditEmailContainer = createFragmentContainer(MyAccountEditEmail, {
