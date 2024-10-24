@@ -396,19 +396,13 @@ export const modules = defineModules({
     [ArtworkScreenQuery]
   ),
   ArtworkMedium: reactModule(ArtworkMediumQueryRenderer, {
-    screenOptions: {
-      presentation: "fullScreenModal",
-    },
+    fullBleed: true,
   }),
   ArtworkAttributionClassFAQ: reactModule(ArtworkAttributionClassFAQQueryRenderer, {
     fullBleed: true,
-    alwaysPresentModally: true,
-    modalPresentationStyle: "fullScreen",
   }),
   ArtworkCertificateAuthenticity: reactModule(CertificateOfAuthenticity, {
     fullBleed: true,
-    alwaysPresentModally: true,
-    modalPresentationStyle: "fullScreen",
   }),
   ArtworkList: reactModule(ArtworkListScreen, { hidesBackButton: true }),
   ArtworkRecommendations: reactModule(ArtworkRecommendationsScreen),
@@ -446,8 +440,6 @@ export const modules = defineModules({
   }),
   AuctionBuyersPremium: reactModule(AuctionBuyersPremiumQueryRenderer, {
     fullBleed: true,
-    alwaysPresentModally: true,
-    modalPresentationStyle: "fullScreen",
   }),
   BottomTabs: reactModule(BottomTabs, { fullBleed: true }),
   BrowseSimilarWorks: reactModule(BrowseSimilarWorksQueryRenderer, {
@@ -455,9 +447,8 @@ export const modules = defineModules({
     hidesBottomTabs: true,
   }),
   CareerHighlightsBigCardsSwiper: reactModule(CareerHighlightsBigCardsSwiper, {
-    alwaysPresentModally: true,
     hidesBackButton: true,
-    fullBleed: true,
+    hidesBottomTabs: true,
   }),
   City: reactModule(CityView, { fullBleed: true, ignoreTabs: true }),
   CityFairList: reactModule(CityFairListQueryRenderer, { fullBleed: true }),
@@ -637,7 +628,6 @@ export const modules = defineModules({
     },
   }),
   MyProfileSettings: reactModule(MyProfileSettings, {
-    alwaysPresentModally: true,
     screenOptions: {
       headerTitle: "Account",
     },
@@ -750,7 +740,6 @@ export const modules = defineModules({
   SubmitArtwork: reactModule(SubmitArtworkForm, {
     hidesBackButton: true,
     alwaysPresentModally: true,
-    modalPresentationStyle: "fullScreen",
     screenOptions: {
       gestureEnabled: false,
     },
@@ -758,7 +747,6 @@ export const modules = defineModules({
   SubmitArtworkEdit: reactModule(SubmitArtworkFormEditContainer, {
     hidesBackButton: true,
     alwaysPresentModally: true,
-    modalPresentationStyle: "fullScreen",
     hidesBottomTabs: true,
     screenOptions: {
       gestureEnabled: false,
