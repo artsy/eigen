@@ -21,13 +21,13 @@ import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilter
 import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
 import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
+import { ArtworkSaleMessageComponent } from "app/Components/ArtworkRail/ArtworkSaleMessageComponent"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { DurationProvider } from "app/Components/Countdown"
 import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
 import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
 import { HEART_ICON_SIZE } from "app/Components/constants"
 import { PartnerOffer } from "app/Scenes/Activity/components/NotificationArtworkList"
-import { formattedTimeLeft } from "app/Scenes/Activity/utils/formattedTimeLeft"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
@@ -252,10 +252,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
     ? currentBiddingEndAt
     : artwork.saleArtwork?.endAt || artwork.sale?.endAt
 
-  const partnerOfferEndAt = collectorSignals?.partnerOffer?.endAt
-    ? formattedTimeLeft(getTimer(collectorSignals.partnerOffer.endAt).time).timerCopy
-    : ""
-
   const urgencyTag = getUrgencyTag(endsAt)
 
   const canShowAuctionProgressBar =
@@ -271,82 +267,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const displayAuctionSignal = AREnableAuctionImprovementsSignals && isAuction
 
-  const saleInfoTextColor =
-    displayAuctionSignal && collectorSignals?.auction?.liveBiddingStarted ? "blue100" : "black100"
-
-  const saleInfoTextWeight =
-    displayAuctionSignal && collectorSignals?.auction?.liveBiddingStarted ? "normal" : "bold"
-
   const handleSupress = async (item: DissapearableArtwork) => {
     await item._disappearable?.disappear()
-  }
-
-  const getSaleMessage = () => {
-    // TODO: move into a hook, rename getOfferMessage???
-    const parts = saleInfo && saleInfo.split(/(~.*?~)/)
-    if (!parts) return null
-
-    if (displayLimitedTimeOfferSignal) {
-      return (
-        <>
-          <Flex flexDirection="row">
-            {parts.map((part, index) => {
-              if (part.startsWith("~") && part.endsWith("~")) {
-                return (
-                  <Text
-                    key={index}
-                    lineHeight="20px"
-                    variant="xs"
-                    color="black60"
-                    numberOfLines={1}
-                    style={{ textDecorationLine: "line-through" }}
-                    {...saleInfoTextStyle}
-                  >
-                    {" "}
-                    {part.slice(1, -1)}
-                  </Text>
-                )
-              }
-              return (
-                <Text
-                  key={index}
-                  lineHeight="20px"
-                  variant="xs"
-                  color={saleInfoTextColor}
-                  numberOfLines={1}
-                  fontWeight={saleInfoTextWeight}
-                  {...saleInfoTextStyle}
-                >
-                  {part}
-                </Text>
-              )
-            })}
-          </Flex>
-          <Text
-            lineHeight="20px"
-            variant="xs"
-            fontWeight="normal"
-            color="blue100"
-            numberOfLines={1}
-            {...saleInfoTextStyle}
-          >
-            Offer Expires {partnerOfferEndAt}
-          </Text>
-        </>
-      )
-    } else
-      return (
-        <Text
-          lineHeight="20px"
-          variant="xs"
-          color={saleInfoTextColor}
-          numberOfLines={1}
-          fontWeight={saleInfoTextWeight}
-          {...saleInfoTextStyle}
-        >
-          {saleInfo}
-        </Text>
-      )
   }
 
   const displayArtworkSocialSignal =
@@ -491,7 +413,14 @@ export const Artwork: React.FC<ArtworkProps> = ({
                     </Text>
                   </Flex>
                 )}
-                {!!saleInfo && !hideSaleInfo && !displayPriceOfferMessage && getSaleMessage()}
+                {!!saleInfo && !hideSaleInfo && !displayPriceOfferMessage && (
+                  <ArtworkSaleMessageComponent
+                    artwork={artwork}
+                    saleMessage={saleInfo}
+                    displayLimitedTimeOfferSignal={displayLimitedTimeOfferSignal}
+                    saleInfoTextStyle={saleInfoTextStyle}
+                  />
+                )}
 
                 {!!artwork.isUnlisted && (
                   <Text lineHeight="18px" variant="xs" numberOfLines={1} fontWeight="bold">

@@ -1,4 +1,4 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Text, TextProps } from "@artsy/palette-mobile"
 import { ArtworkSaleMessageComponent_artwork$key } from "__generated__/ArtworkSaleMessageComponent_artwork.graphql"
 import { useMetaDataTextColor } from "app/Components/ArtworkRail/ArtworkRailUtils"
 import { formattedTimeLeft } from "app/Scenes/Activity/utils/formattedTimeLeft"
@@ -10,14 +10,16 @@ interface ArtworkSaleMessageComponentProps {
   artwork: ArtworkSaleMessageComponent_artwork$key
   displayLimitedTimeOfferSignal: boolean | null | undefined
   saleMessage: string | null | undefined
-  dark: boolean
+  saleInfoTextStyle?: TextProps
+  dark?: boolean
 }
 
 export const ArtworkSaleMessageComponent: React.FC<ArtworkSaleMessageComponentProps> = ({
   artwork,
   displayLimitedTimeOfferSignal,
   saleMessage,
-  dark,
+  saleInfoTextStyle,
+  dark = false,
 }) => {
   const enableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
 
@@ -71,13 +73,21 @@ export const ArtworkSaleMessageComponent: React.FC<ArtworkSaleMessageComponentPr
                 color={saleInfoTextColor}
                 numberOfLines={1}
                 fontWeight={saleInfoTextWeight}
+                {...saleInfoTextStyle}
               >
                 {part}
               </Text>
             )
           })}
         </Flex>
-        <Text lineHeight="20px" variant="xs" fontWeight="normal" color="blue100" numberOfLines={1}>
+        <Text
+          lineHeight="20px"
+          variant="xs"
+          fontWeight="normal"
+          color="blue100"
+          numberOfLines={1}
+          {...saleInfoTextStyle}
+        >
           Offer Expires {partnerOfferEndAt}
         </Text>
       </>
@@ -90,6 +100,7 @@ export const ArtworkSaleMessageComponent: React.FC<ArtworkSaleMessageComponentPr
         color={saleInfoTextColor}
         numberOfLines={1}
         fontWeight={saleInfoTextWeight}
+        {...saleInfoTextStyle}
       >
         {saleMessage}
       </Text>

@@ -1,5 +1,6 @@
 import { Flex, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { ContextMenuArtworkPreviewCard_artwork$key } from "__generated__/ContextMenuArtworkPreviewCard_artwork.graphql"
+import { useMetaDataTextColor } from "app/Components/ArtworkRail/ArtworkRailUtils"
 import { ArtworkDisplayProps } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { ContextMenuArtworkPreviewCardImage } from "app/Components/ContextMenu/ContextMenuArtworkPreviewCardImage"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
@@ -49,9 +50,7 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
   const endAt = extendedBiddingEndAt ?? lotEndAt ?? sale?.endAt
   const urgencyTag = sale?.isAuction && !sale?.isClosed ? getUrgencyTag(endAt) : null
 
-  const primaryTextColor = dark ? "white100" : "black100"
-  const secondaryTextColor = dark ? "black15" : "black60"
-  const backgroundColor = dark ? "black100" : "white100"
+  const { primaryTextColor, secondaryTextColor, backgroundColor } = useMetaDataTextColor({ dark })
 
   const getTextHeight = () => {
     return ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT

@@ -3,5 +3,7 @@ export const useMetaDataTextColor = ({ dark }: { dark: boolean }) => {
 
   const secondaryTextColor = dark ? "black15" : "black60"
 
-  return { primaryTextColor, secondaryTextColor }
+  const backgroundColor = dark ? "black100" : "white100"
+
+  return { primaryTextColor, secondaryTextColor, backgroundColor }
 }
