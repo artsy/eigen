@@ -1,6 +1,7 @@
 import {
   ArrowRightIcon,
   Flex,
+  Separator,
   Skeleton,
   SkeletonText,
   Spacer,
@@ -10,12 +11,12 @@ import { CollectionRailCollectionsByCategoryQuery } from "__generated__/Collecti
 import { CollectionRail_marketingCollection$key } from "__generated__/CollectionRail_marketingCollection.graphql"
 import { ArtworkRail, ArtworkRailPlaceholder } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { navigate } from "app/system/navigation/navigate"
 import { ElementInView } from "app/utils/ElementInView"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense, NoFallback } from "app/utils/hooks/withSuspense"
-import { useClientQuery } from "app/utils/useClientQuery"
 import { FC, useState } from "react"
-import { graphql, useFragment } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface CollectionRailProps {
   collection: CollectionRail_marketingCollection$key
@@ -31,13 +32,21 @@ export const CollectionRail: FC<CollectionRailProps> = ({ collection: _collectio
   const artworks = extractNodes(collection.artworksConnection)
 
   return (
-    <Flex>
-      <SectionTitle
-        title={collection.title}
-        onPress={() => {}}
-        RightButtonContent={() => <ArrowRightIcon />}
+    <Flex px={2}>
+      <Flex justifyContent="center">
+        <SectionTitle
+          title={collection.title}
+          titleVariant="md"
+          onPress={() => navigate(`/collection/${collection.slug}`)}
+        />
+      </Flex>
+      <ArtworkRail
+        onPress={(artwork) => navigate(artwork.href ?? "")}
+        artworks={artworks}
+        ListHeaderComponent={null}
+        showSaveIcon
+        showPartnerName
       />
-      <ArtworkRail artworks={artworks} ListHeaderComponent={null} />
     </Flex>
   )
 }
@@ -45,6 +54,7 @@ export const CollectionRail: FC<CollectionRailProps> = ({ collection: _collectio
 const fragment = graphql`
   fragment CollectionRail_marketingCollection on MarketingCollection {
     title @required(action: NONE)
+    slug @required(action: NONE)
 
     artworksConnection(first: 10) {
       counts @required(action: NONE) {
@@ -66,23 +76,26 @@ const fragment = graphql`
 export const CollectionRailPlaceholder: FC = () => {
   return (
     <Skeleton>
-      <Flex justifyContent="space-between" flexDirection="row">
-        <SkeletonText>Category title</SkeletonText>
-        <ArrowRightIcon />
-      </Flex>
+      <Flex px={2}>
+        <Flex justifyContent="space-between" flexDirection="row">
+          <SkeletonText variant="md">Category title</SkeletonText>
+          <ArrowRightIcon />
+        </Flex>
 
-      <Spacer y={1} />
+        <Spacer y={1} />
 
-      <Flex flexDirection="row">
-        <ArtworkRailPlaceholder />
+        <Flex flexDirection="row">
+          <ArtworkRailPlaceholder />
+          <Separator borderColor="black10" my={2} />
+        </Flex>
       </Flex>
     </Skeleton>
   )
 }
 
 const query = graphql`
-  query CollectionRailCollectionsByCategoryQuery($slug: String!) {
-    marketingCollection(slug: $slug) {
+  query CollectionRailCollectionsByCategoryQuery($slug: String!, $isVisible: Boolean!) {
+    marketingCollection(slug: $slug) @include(if: $isVisible) {
       ...CollectionRail_marketingCollection
 
       title
@@ -99,10 +112,9 @@ export const CollectionRailWithSuspense = withSuspense<CollectionRailWithSuspens
   Component: ({ slug }) => {
     const { height } = useScreenDimensions()
     const [isVisible, setIsVisible] = useState(false)
-    const { data, loading } = useClientQuery<CollectionRailCollectionsByCategoryQuery>({
-      query,
-      variables: { slug },
-      skip: !isVisible,
+    const data = useLazyLoadQuery<CollectionRailCollectionsByCategoryQuery>(query, {
+      slug,
+      isVisible,
     })
 
     const handleOnVisible = () => {
@@ -111,7 +123,7 @@ export const CollectionRailWithSuspense = withSuspense<CollectionRailWithSuspens
       }
     }
 
-    if (loading || !data?.marketingCollection || !isVisible) {
+    if (!data?.marketingCollection || !isVisible) {
       // We don't need to overfetch all rails at once, fetch as they become closer to be visible
       return (
         <ElementInView onVisible={handleOnVisible} visibilityMargin={-height}>

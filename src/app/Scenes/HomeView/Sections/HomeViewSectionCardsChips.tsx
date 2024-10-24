@@ -7,10 +7,9 @@ import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
-import { useClientQuery } from "app/utils/useClientQuery"
 import { FlatList, ScrollView } from "react-native"
 import { isTablet } from "react-native-device-info"
-import { graphql, useFragment } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionCardsChipsProps {
   section: HomeViewSectionCardsChips_section$key
@@ -132,9 +131,9 @@ const HomeViewSectionCardsChipsPlaceholder: React.FC = () => {
 }
 
 const query = graphql`
-  query HomeViewSectionCardsChipsQuery($id: String!) {
+  query HomeViewSectionCardsChipsQuery($id: String!, $isEnabled: Boolean!) {
     homeView {
-      section(id: $id) {
+      section(id: $id) @include(if: $isEnabled) {
         ...HomeViewSectionCardsChips_section
       }
     }
@@ -144,10 +143,9 @@ const query = graphql`
 export const HomeViewSectionCardsChipsQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
   Component: ({ sectionID, index, ...flexProps }) => {
     const isEnabled = useFeatureFlag("AREnableMarketingCollectionsCategories")
-    const { data } = useClientQuery<HomeViewSectionCardsChipsQuery>({
-      query,
-      variables: { id: sectionID },
-      skip: !isEnabled,
+    const data = useLazyLoadQuery<HomeViewSectionCardsChipsQuery>(query, {
+      id: sectionID,
+      isEnabled,
     })
 
     if (!data?.homeView.section || !isEnabled) {
