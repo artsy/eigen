@@ -170,11 +170,12 @@ const LoginWelcomeStepForm: React.FC = () => {
 
         <Spacer y={1} />
 
-        <Text variant="xxs" color="black60" textAlign="center">
+        <Text variant="xxs" color="black60" textAlign="center" lineHeight="16px">
           By tapping Continue with Apple, Facebook, or Google, you agree to Artsy’s{" "}
           <LinkText
             variant="xxs"
             onPress={() => navigation.navigate("OnboardingWebView", { url: "/terms" })}
+            lineHeight="16px"
           >
             Terms and Conditions
           </LinkText>{" "}
@@ -182,9 +183,11 @@ const LoginWelcomeStepForm: React.FC = () => {
           <LinkText
             variant="xxs"
             onPress={() => navigation.navigate("OnboardingWebView", { url: "/privacy" })}
+            lineHeight="16px"
           >
             Privacy Policy
           </LinkText>
+          .
         </Text>
       </MotiView>
     </Flex>
