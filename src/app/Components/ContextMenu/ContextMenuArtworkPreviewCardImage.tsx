@@ -1,10 +1,9 @@
-import { Flex, Text, useColor } from "@artsy/palette-mobile"
+import { Flex, Image, Text, useColor } from "@artsy/palette-mobile"
 import { ContextMenuArtworkPreviewCardImage_artwork$key } from "__generated__/ContextMenuArtworkPreviewCardImage_artwork.graphql"
 import {
   LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
   ARTWORK_RAIL_CARD_IMAGE_WIDTH,
 } from "app/Components/ArtworkRail/LegacyArtworkRailCardImage"
-import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { graphql, useFragment } from "react-relay"
 
@@ -62,9 +61,9 @@ export const ContextMenuArtworkPreviewCardImage: React.FC<
   return (
     <Flex>
       <Flex width={containerWidth}>
-        <OpaqueImageView
+        <Image
           style={{ maxHeight: LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT }}
-          imageURL={src}
+          src={src}
           height={imageDimensions.height || LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
           width={containerWidth}
         />

@@ -117,7 +117,7 @@ describe("MyCollectionArtworkGridItem", () => {
       }),
     })
 
-    expect(screen.getByTestId("test-high-demand-icon")).toBeTruthy()
+    expect(screen.getByTestId("test-high-demand-signal")).toBeTruthy()
   })
 
   it("does not render the high demand icon if artist is P1 and artwork is submitted for sale", () => {
@@ -141,6 +141,6 @@ describe("MyCollectionArtworkGridItem", () => {
       }),
     })
 
-    expect(screen.queryByTestId("test-high-demand-icon")).toBeFalsy()
+    expect(screen.queryByTestId("test-high-demand-signal")).toBeFalsy()
   })
 })

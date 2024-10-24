@@ -1,8 +1,7 @@
 import { tappedCollectedArtwork } from "@artsy/cohesion"
-import { Flex, Box, Text, Popover, useColor } from "@artsy/palette-mobile"
+import { Box, Text, Popover, useColor, TrendingIcon } from "@artsy/palette-mobile"
 import { MyCollectionArtworkGridItem_artwork$data } from "__generated__/MyCollectionArtworkGridItem_artwork.graphql"
 import { DEFAULT_SECTION_MARGIN } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import HighDemandIcon from "app/Components/Icons/HighDemandIcon"
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { MyCollectionImageView } from "app/Scenes/MyCollection/Components/MyCollectionImageView"
 import { SubmissionStatus } from "app/Scenes/MyCollection/Components/SubmissionStatus"
@@ -119,12 +118,6 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
           <Box maxWidth={width} mt={1} style={{ flex: 1 }}>
             <Text lineHeight="18px" weight="regular" variant="xs" numberOfLines={2}>
               {artistNames}
-
-              {!!showHighDemandIcon && (
-                <Flex testID="test-high-demand-icon">
-                  <HighDemandIcon style={{ marginLeft: 2, marginBottom: -2 }} />
-                </Flex>
-              )}
             </Text>
 
             {!!title ? (
@@ -141,6 +134,15 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
                 {date ? `, ${date}` : ""}
               </Text>
             ) : null}
+
+            {!!showHighDemandIcon && (
+              <Box testID="test-high-demand-signal" alignItems="center" flexDirection="row">
+                <TrendingIcon />
+                <Text variant="xs" pl="3px" textAlign="center">
+                  High demand
+                </Text>
+              </Box>
+            )}
 
             {!!enableSubmitArtworkTier2Information && <SubmissionStatus artwork={artwork} />}
           </Box>
