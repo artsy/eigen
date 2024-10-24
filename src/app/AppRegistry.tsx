@@ -731,9 +731,11 @@ export const modules = defineModules({
     fullBleed: true,
     hidesBackButton: true,
   }),
-  Search: reactModule(SearchScreen, { isRootViewForTabName: "search", hidesBackButton: true }, [
-    SearchScreenQuery,
-  ]),
+  Search: reactModule(
+    SearchScreen,
+    { isRootViewForTabName: "search", hidesBackButton: true, fullBleed: true },
+    [SearchScreenQuery]
+  ),
   Show: reactModule(ShowQueryRenderer, { fullBleed: true }),
   ShowMoreInfo: reactModule(ShowMoreInfoQueryRenderer),
   SimilarToRecentlyViewed: reactModule(SimilarToRecentlyViewedScreen, {
