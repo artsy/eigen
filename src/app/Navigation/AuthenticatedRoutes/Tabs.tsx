@@ -1,6 +1,3 @@
-import { Text } from "@artsy/palette-mobile"
-import { THEME } from "@artsy/palette-tokens"
-import { toTitleCase } from "@artsy/to-title-case"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { AppModule, modules } from "app/AppRegistry"
@@ -9,8 +6,7 @@ import { InboxTab } from "app/Navigation/AuthenticatedRoutes/InboxTab"
 import { ProfileTab } from "app/Navigation/AuthenticatedRoutes/ProfileTab"
 import { SearchTab } from "app/Navigation/AuthenticatedRoutes/SearchTab"
 import { SellTab } from "app/Navigation/AuthenticatedRoutes/SellTab"
-import { BottomTabsIcon } from "app/Scenes/BottomTabs/BottomTabsIcon"
-import { unsafe_getDevPrefs } from "app/store/GlobalStore"
+import { BottomTabsButton } from "app/Scenes/BottomTabs/BottomTabsButton"
 import { __unsafe_navigationRef } from "app/system/navigation/navigate"
 import { Platform } from "react-native"
 
@@ -56,24 +52,8 @@ export const AuthenticatedRoutes = () => {
                 ? "none"
                 : "flex",
           },
-          tabBarIcon: ({ focused }) => {
-            return <BottomTabsIcon tab={route.name} state={focused ? "active" : "inactive"} />
-          },
-          tabBarLabel: () => {
-            return (
-              <Text
-                variant="xxs"
-                color={
-                  unsafe_getDevPrefs().environment.env === "staging" ? "devpurple" : "black100"
-                }
-              >
-                {toTitleCase(route.name)}
-              </Text>
-            )
-          },
           tabBarHideOnKeyboard: true,
-          tabBarActiveTintColor: THEME.colors["black100"],
-          tabBarInactiveTintColor: THEME.colors["black60"],
+          tabBarButton: (props) => <BottomTabsButton tab={route.name} {...props} />,
         }
       }}
     >
