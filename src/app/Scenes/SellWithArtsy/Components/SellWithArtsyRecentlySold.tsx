@@ -8,7 +8,6 @@ import {
 import { ArtworkRailProps } from "app/Components/ArtworkRail/ArtworkRail"
 import {
   ARTWORK_RAIL_CARD_MINIMUM_WIDTH,
-  ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT,
   ArtworkRailCard,
 } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { PrefetchFlashList } from "app/Components/PrefetchFlashList"
@@ -17,6 +16,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { compact } from "lodash"
 import { useCallback } from "react"
+import { PixelRatio } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -105,7 +105,7 @@ const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> = ({
             onPress?.(item, index)
           }}
           metaContainerStyles={{
-            height: ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + 10,
+            height: PixelRatio.getFontScale() * 100,
           }}
           showPartnerName={showPartnerName}
           SalePriceComponent={
@@ -167,7 +167,7 @@ const RecentlySoldCardSection: React.FC<RecentlySoldCardSectionProps> = ({
           </Text>
         )}
       </Flex>
-      <Text variant="xs" color="black60" lineHeight="20px">
+      <Text variant="xs" color="black60">
         Estimate {compact([lowEstimateDisplay, highEstimateDisplay]).join("—")}
       </Text>
     </Flex>
