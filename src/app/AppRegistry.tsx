@@ -481,6 +481,7 @@ export const modules = defineModules({
     hidesBottomTabs: !unsafe_getFeatureFlag("AREnableNewNavigation"),
     hidesBackButton: !unsafe_getFeatureFlag("AREnableNewNavigation"),
     alwaysPresentModally: !!unsafe_getFeatureFlag("AREnableNewNavigation"),
+    fullBleed: true,
     screenOptions: {
       headerTitle: "Dev Settings",
       headerLargeTitle: true,
