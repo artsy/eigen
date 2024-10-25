@@ -32,6 +32,7 @@ export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProp
   const artworkData = useFragment(artworkFragment, artwork)
   const partnerOfferData = useFragment(partnerOfferFragment, partnerOffer)
   const auctionState = ArtworkStore.useStoreState((state) => state.auctionState)
+  const { safeAreaInsets } = useScreenDimensions()
 
   const { bottom: bottomSafeAreaInset } = useScreenDimensions().safeAreaInsets
 
@@ -70,6 +71,7 @@ export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProp
     <Box
       accessibilityLabel="Sticky bottom commercial section"
       bg="white100"
+      pb={`${safeAreaInsets.bottom}px`}
       onLayout={(e) => {
         dispatch({
           type: "SET_TOAST_BOTTOM_PADDING",

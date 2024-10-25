@@ -99,7 +99,7 @@ export const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
       }
     : {
         // Bottom inset + bottom tabs height - bottom tabs border
-        paddingBottom: safeAreaInsets.bottom + ICON_HEIGHT - 2,
+        paddingBottom: hidesBottomTabs ? 0 : safeAreaInsets.bottom + ICON_HEIGHT - 2,
         paddingTop: safeAreaInsets.top,
         paddingRight: safeAreaInsets.right,
         paddingLeft: safeAreaInsets.left,
