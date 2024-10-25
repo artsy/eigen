@@ -29,17 +29,7 @@ export const Navigation = () => {
   const { setSessionState: setNavigationReady } = GlobalStore.actions
 
   if (!isReady) {
-    return (
-      <LoadingSpinner>
-        {!!__DEV__ && (
-          <Flex px={2} mt={2}>
-            <Text color="devpurple" variant="xs" italic textAlign="center">
-              This spinner is only visible in DEV mode.{"\n"}
-            </Text>
-          </Flex>
-        )}
-      </LoadingSpinner>
-    )
+    return <NavigationLoadingIndicator />
   }
 
   return (
@@ -66,4 +56,18 @@ const theme = {
     ...DefaultTheme.colors,
     background: "#FFF",
   },
+}
+
+const NavigationLoadingIndicator = () => {
+  return (
+    <LoadingSpinner>
+      {!!__DEV__ && (
+        <Flex px={2} mt={2}>
+          <Text color="devpurple" variant="xs" italic textAlign="center">
+            This spinner is only visible in DEV mode.{"\n"}
+          </Text>
+        </Flex>
+      )}
+    </LoadingSpinner>
+  )
 }
