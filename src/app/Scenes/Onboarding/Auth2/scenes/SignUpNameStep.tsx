@@ -4,6 +4,7 @@ import {
   useAuthNavigation,
   useAuthScreen,
 } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
+import { useCountryCode } from "app/Scenes/Onboarding/Auth2/hooks/useCountryCode"
 import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
 import { OnboardingNavigationStack } from "app/Scenes/Onboarding/Onboarding"
 import { EmailSubscriptionCheckbox } from "app/Scenes/Onboarding/OnboardingCreateAccount/EmailSubscriptionCheckbox"
@@ -23,13 +24,19 @@ interface SignUpNameStepFormValues {
 
 export const SignUpNameStep: React.FC = () => {
   const screen = useAuthScreen()
+  const { loading, isAutomaticallySubscribed } = useCountryCode()
+
+  // TODO: Show a skeleton loader
+  if (loading) {
+    return null
+  }
 
   return (
     <Formik<SignUpNameStepFormValues>
       initialValues={{
         name: "",
         acceptedTerms: false,
-        agreedToReceiveEmails: false,
+        agreedToReceiveEmails: isAutomaticallySubscribed,
       }}
       validationSchema={Yup.object().shape({
         name: Yup.string().trim().required("Full name field is required"),
@@ -84,6 +91,7 @@ const SignUpNameStepForm: React.FC = () => {
 
   const navigation = useAuthNavigation()
   const parentNavigation = useNavigation<NavigationProp<OnboardingNavigationStack>>()
+  const { isAutomaticallySubscribed } = useCountryCode()
   const { color } = useTheme()
   const nameRef = useRef<Input>(null)
 
@@ -146,10 +154,14 @@ const SignUpNameStepForm: React.FC = () => {
           error={highlightTerms}
           navigation={parentNavigation}
         />
-        <EmailSubscriptionCheckbox
-          setChecked={() => setFieldValue("agreedToReceiveEmails", !values.agreedToReceiveEmails)}
-          checked={values.agreedToReceiveEmails}
-        />
+        {!isAutomaticallySubscribed ? (
+          <EmailSubscriptionCheckbox
+            setChecked={() => setFieldValue("agreedToReceiveEmails", !values.agreedToReceiveEmails)}
+            checked={values.agreedToReceiveEmails}
+          />
+        ) : (
+          <Spacer y={2} />
+        )}
       </Flex>
 
       <Button
