@@ -669,8 +669,16 @@ export const modules = defineModules({
     },
     [NewsScreenQuery]
   ),
-  OrderHistory: reactModule(OrderHistoryQueryRender),
-  OrderDetails: reactModule(OrderDetailsQueryRender),
+  OrderHistory: reactModule(OrderHistoryQueryRender, {
+    screenOptions: {
+      headerTitle: "Order History",
+    },
+  }),
+  OrderDetails: reactModule(OrderDetailsQueryRender, {
+    screenOptions: {
+      headerTitle: "Order Details",
+    },
+  }),
   Partner: reactModule(PartnerQueryRenderer, {
     fullBleed: true,
     hidesBackButton: true,
