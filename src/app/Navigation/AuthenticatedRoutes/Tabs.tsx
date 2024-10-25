@@ -35,9 +35,6 @@ const Tab = createBottomTabNavigator<TabRoutesParams>()
 export const TabStackNavigator = createNativeStackNavigator<AuthenticatedRoutesParams>()
 
 export const AuthenticatedRoutes = () => {
-  // TODO: Look into other ways of getting this
-  // const { unreadConversationsCount } = useTabBarBadge()
-
   return (
     <Tab.Navigator
       screenOptions={({ route }) => {
@@ -53,19 +50,15 @@ export const AuthenticatedRoutes = () => {
                 : "flex",
           },
           tabBarHideOnKeyboard: true,
-          tabBarButton: (props) => <BottomTabsButton tab={route.name} {...props} />,
+          tabBarButton: (props) => {
+            return <BottomTabsButton tab={route.name} onPress={props.onPress} />
+          },
         }
       }}
     >
       <Tab.Screen name="home" component={HomeTab} />
       <Tab.Screen name="search" component={SearchTab} />
-      <Tab.Screen
-        name="inbox"
-        component={InboxTab}
-        options={{
-          tabBarBadge: 3,
-        }}
-      />
+      <Tab.Screen name="inbox" component={InboxTab} />
       <Tab.Screen name="sell" component={SellTab} />
       <Tab.Screen name="profile" component={ProfileTab} />
     </Tab.Navigator>

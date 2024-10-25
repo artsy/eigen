@@ -1,6 +1,5 @@
 import { tappedTabBar } from "@artsy/cohesion"
 import { Flex, PopIn, Text, Touchable, VisualClueDot, useColor } from "@artsy/palette-mobile"
-import { BottomTabBarButtonProps } from "@react-navigation/bottom-tabs"
 import { ProgressiveOnboardingFindSavedArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingFindSavedArtwork"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { unsafe__getSelectedTab } from "app/store/GlobalStore"
@@ -10,6 +9,8 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { useSelectedTab } from "app/utils/hooks/useSelectedTab"
 import { useVisualClue } from "app/utils/hooks/useVisualClue"
+import { useTabBarBadge } from "app/utils/useTabBarBadge"
+import { useMemo } from "react"
 import { GestureResponderEvent, LayoutAnimation, View } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -17,18 +18,19 @@ import { BottomTabOption, BottomTabType } from "./BottomTabType"
 import { BottomTabsIcon, ICON_HEIGHT, ICON_WIDTH } from "./BottomTabsIcon"
 import { bottomTabsConfig } from "./bottomTabsConfig"
 
-export interface BottomTabsButtonProps extends BottomTabBarButtonProps {
+export interface BottomTabsButtonProps {
   tab: BottomTabType
   badgeCount?: number
   visualClue?: VisualClueName
   forceDisplayVisualClue?: boolean
+  onPress?: (e: GestureResponderEvent) => void
 }
 
 export const BOTTOM_TABS_TEXT_HEIGHT = 15
 
 export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
   tab,
-  badgeCount = 0,
+  badgeCount: badgeCountProp = 0,
   visualClue,
   forceDisplayVisualClue,
   ...buttonProps
@@ -36,7 +38,21 @@ export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
   const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
 
   const selectedTab = useSelectedTab()
+
   const isActive = selectedTab === tab
+
+  const { unreadConversationsCount } = useTabBarBadge()
+
+  const badgeCount = useMemo(() => {
+    if (!enableNewNavigation) {
+      return badgeCountProp
+    }
+
+    if (tab === "inbox") {
+      return unreadConversationsCount ?? 0
+    }
+    return 0
+  }, [unreadConversationsCount])
 
   const { showVisualClue } = useVisualClue()
 
