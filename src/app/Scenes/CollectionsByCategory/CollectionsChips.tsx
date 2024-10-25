@@ -28,8 +28,8 @@ export const CollectionsChips: React.FC<CollectionsChipsProps> = ({
 
   const snapToOffsets = getSnapToOffsets(numColumns, space(1), space(2))
 
-  const handleChipPress = (slug: string, id: number) => {
-    trackChipTap(slug, id)
+  const handleChipPress = (slug: string, index: number) => {
+    trackChipTap(slug, index)
     navigate(`/collection/${slug}`)
   }
 
