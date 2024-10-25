@@ -84,10 +84,24 @@ export const saleMessageOrBidInfo = ({
   }
 
   if (collectorSignals?.partnerOffer?.isAvailable) {
+    // If there is a partnerOffer we have to show the message as a strikethrough
+    // in order to not change the type of the returned value we mark the message with ~
+    // and parse it in the parsedSaleMessage function to apply different styles to each part later
     const salePrice = artwork.saleMessage ? `~${artwork.saleMessage}~` : ""
 
     return `${collectorSignals.partnerOffer.priceWithDiscount?.display}${salePrice}`
   }
 
   return artwork.saleMessage
+}
+
+export const parsedSaleMessage = (saleMessage: string | null | undefined) => {
+  // Split the sale message into parts to apply different styles to each part
+  const parts = saleMessage && saleMessage.split(/(~.*?~)/)
+
+  return { parts }
+}
+
+export const displayAsLinethrought = (part: string) => {
+  return part.startsWith("~") && part.endsWith("~")
 }

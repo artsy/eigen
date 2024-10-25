@@ -2,6 +2,7 @@ import { Flex, Text, TextProps } from "@artsy/palette-mobile"
 import { ArtworkSaleMessageComponent_artwork$key } from "__generated__/ArtworkSaleMessageComponent_artwork.graphql"
 import { useMetaDataTextColor } from "app/Components/ArtworkRail/ArtworkRailUtils"
 import { formattedTimeLeft } from "app/Scenes/Activity/utils/formattedTimeLeft"
+import { displayAsLinethrought, parsedSaleMessage } from "app/utils/getSaleMessgeOrBidInfo"
 import { getTimer } from "app/utils/getTimer"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { graphql, useFragment } from "react-relay"
@@ -41,7 +42,7 @@ export const ArtworkSaleMessageComponent: React.FC<ArtworkSaleMessageComponentPr
   const saleInfoTextWeight =
     displayAuctionSignal && collectorSignals?.auction?.liveBiddingStarted ? "normal" : "bold"
 
-  const parts = saleMessage && saleMessage.split(/(~.*?~)/)
+  const { parts } = parsedSaleMessage(saleMessage)
 
   if (!parts) return null
 
@@ -50,7 +51,7 @@ export const ArtworkSaleMessageComponent: React.FC<ArtworkSaleMessageComponentPr
       <>
         <Flex flexDirection="row">
           {parts.map((part, index) => {
-            if (part.startsWith("~") && part.endsWith("~")) {
+            if (displayAsLinethrought(part)) {
               return (
                 <Text
                   key={index}
