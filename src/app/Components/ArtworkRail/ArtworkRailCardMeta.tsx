@@ -5,7 +5,7 @@ import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSi
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { useMetaDataTextColor } from "app/Components/ArtworkRail/ArtworkRailUtils"
-import { ArtworkSaleMessageComponent } from "app/Components/ArtworkRail/ArtworkSaleMessageComponent"
+import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessage"
 import { HEART_ICON_SIZE } from "app/Components/constants"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -169,7 +169,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
         {SalePriceComponent
           ? SalePriceComponent
           : !!saleMessage && (
-              <ArtworkSaleMessageComponent
+              <ArtworkSaleMessage
                 artwork={artwork}
                 saleMessage={saleMessage}
                 displayLimitedTimeOfferSignal={displayLimitedTimeOfferSignal}
@@ -290,7 +290,7 @@ const artworkMetaFragment = graphql`
       ...ArtworkSocialSignal_collectorSignals
     }
 
-    ...ArtworkSaleMessageComponent_artwork
+    ...ArtworkSaleMessage_artwork
     ...useSaveArtworkToArtworkLists_artwork
   }
 `

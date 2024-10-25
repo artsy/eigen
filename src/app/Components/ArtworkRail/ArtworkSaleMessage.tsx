@@ -1,5 +1,5 @@
 import { Flex, Text, TextProps } from "@artsy/palette-mobile"
-import { ArtworkSaleMessageComponent_artwork$key } from "__generated__/ArtworkSaleMessageComponent_artwork.graphql"
+import { ArtworkSaleMessage_artwork$key } from "__generated__/ArtworkSaleMessage_artwork.graphql"
 import { useMetaDataTextColor } from "app/Components/ArtworkRail/ArtworkRailUtils"
 import { formattedTimeLeft } from "app/Scenes/Activity/utils/formattedTimeLeft"
 import { displayAsLinethrought, parsedSaleMessage } from "app/utils/getSaleMessgeOrBidInfo"
@@ -7,15 +7,15 @@ import { getTimer } from "app/utils/getTimer"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { graphql, useFragment } from "react-relay"
 
-interface ArtworkSaleMessageComponentProps {
-  artwork: ArtworkSaleMessageComponent_artwork$key
+interface ArtworkSaleMessageProps {
+  artwork: ArtworkSaleMessage_artwork$key
   displayLimitedTimeOfferSignal: boolean | null | undefined
   saleMessage: string | null | undefined
   saleInfoTextStyle?: TextProps
   dark?: boolean
 }
 
-export const ArtworkSaleMessageComponent: React.FC<ArtworkSaleMessageComponentProps> = ({
+export const ArtworkSaleMessage: React.FC<ArtworkSaleMessageProps> = ({
   artwork,
   displayLimitedTimeOfferSignal,
   saleMessage,
@@ -109,7 +109,7 @@ export const ArtworkSaleMessageComponent: React.FC<ArtworkSaleMessageComponentPr
 }
 
 const fragment = graphql`
-  fragment ArtworkSaleMessageComponent_artwork on Artwork {
+  fragment ArtworkSaleMessage_artwork on Artwork {
     collectorSignals {
       partnerOffer {
         endAt

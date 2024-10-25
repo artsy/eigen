@@ -21,7 +21,7 @@ import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilter
 import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
 import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
-import { ArtworkSaleMessageComponent } from "app/Components/ArtworkRail/ArtworkSaleMessageComponent"
+import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessage"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { DurationProvider } from "app/Components/Countdown"
 import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
@@ -414,7 +414,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   </Flex>
                 )}
                 {!!saleInfo && !hideSaleInfo && !displayPriceOfferMessage && (
-                  <ArtworkSaleMessageComponent
+                  <ArtworkSaleMessage
                     artwork={artwork}
                     saleMessage={saleInfo}
                     displayLimitedTimeOfferSignal={displayLimitedTimeOfferSignal}
@@ -579,7 +579,7 @@ export default createFragmentContainer(Artwork, {
         ...ArtworkAuctionTimer_collectorSignals
         ...ArtworkSocialSignal_collectorSignals
       }
-      ...ArtworkSaleMessageComponent_artwork
+      ...ArtworkSaleMessage_artwork
       ...useSaveArtworkToArtworkLists_artwork
     }
   `,
