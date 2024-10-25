@@ -124,7 +124,7 @@ export const MyProfileHeader: React.FC<MyProfileHeaderProps> = ({ meProp }) => {
         )}
       </Flex>
 
-      <Spacer y={2} />
+      <Spacer y={1} />
 
       {/* Activity */}
       <Flex flexDirection="row" px={2} alignSelf="stretch" justifyContent="space-between">
@@ -195,7 +195,13 @@ const MyProfileHeaderPlaceholder: React.FC<{}> = () => {
           </Flex>
         </Flex>
 
-        <Spacer y={2} />
+        <Spacer y={1} />
+
+        <Flex flexDirection="row" justifyContent="center" alignItems="center">
+          <SkeletonBox width={140} height={36} borderRadius={18} />
+        </Flex>
+
+        <Spacer y={1} />
 
         <Flex flexDirection="row" px={2} alignSelf="stretch" justifyContent="space-between">
           <Flex flex={1}>

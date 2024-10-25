@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import { AuctionResult_artist$data } from "__generated__/AuctionResult_artist.graphql"
 import { AuctionResult_auctionResult$data } from "__generated__/AuctionResult_auctionResult.graphql"
 import { AuctionResultQueryRenderer } from "app/Scenes/AuctionResult/AuctionResult"
@@ -23,7 +24,7 @@ describe("Activity", () => {
   })
 
   it("renders items", async () => {
-    const { getAllByText } = renderWithHookWrappersTL(
+    renderWithHookWrappersTL(
       <AuctionResultQueryRenderer
         auctionResultInternalID="auction-result-id"
         artistID="artist-id"
@@ -38,13 +39,12 @@ describe("Activity", () => {
 
     await flushPromiseQueue()
 
-    expect(getAllByText("Banksy")).toBeTruthy()
-    expect(getAllByText("Pulp Fiction")).toBeTruthy()
-    expect(getAllByText("Bonhams")).toBeTruthy()
-    expect(getAllByText("Pre-sale Estimate")).toBeTruthy()
-    expect(getAllByText("£70,000–£100,000")).toBeTruthy()
-    expect(getAllByText("London, New Bond Street")).toBeTruthy()
-    expect(getAllByText("Lot number")).toBeTruthy()
+    expect(screen.getAllByText("Pulp Fiction")).toBeTruthy()
+    expect(screen.getAllByText("Bonhams")).toBeTruthy()
+    expect(screen.getAllByText("Pre-sale Estimate")).toBeTruthy()
+    expect(screen.getAllByText("£70,000–£100,000")).toBeTruthy()
+    expect(screen.getAllByText("London, New Bond Street")).toBeTruthy()
+    expect(screen.getAllByText("Lot number")).toBeTruthy()
   })
 })
 

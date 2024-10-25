@@ -466,7 +466,10 @@ export const modules = defineModules({
       gestureEnabled: false,
     },
   }),
-  Conversation: reactModule(Conversation, { onlyShowInTabName: "inbox", hidesBackButton: true }),
+  Conversation: reactModule(Conversation, {
+    onlyShowInTabName: "inbox",
+    hidesBackButton: true,
+  }),
   ConversationDetails: reactModule(ConversationDetailsQueryRenderer, {
     screenOptions: {
       headerTitle: "Details",

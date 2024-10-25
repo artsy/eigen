@@ -141,7 +141,7 @@ export const SellWithArtsyHome: React.FC = () => {
         ItemSeparatorComponent={() => <Spacer y={6} />}
         showsVerticalScrollIndicator={false}
         windowSize={3}
-        initialNumToRender={5}
+        initialNumToRender={__TEST__ ? 21 : 5}
         innerRef={scrollViewRef}
       />
 

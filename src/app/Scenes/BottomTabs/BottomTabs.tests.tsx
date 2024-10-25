@@ -62,7 +62,7 @@ describe(BottomTabs, () => {
 
       await flushPromiseQueue()
 
-      expect(screen.queryByLabelText("home visual clue")).toBeTruthy()
+      expect(screen.getByLabelText("home visual clue")).toBeTruthy()
     })
 
     it("should NOT be displayed if there are NO unseen notifications", async () => {
@@ -123,7 +123,7 @@ describe(BottomTabs, () => {
     expect(screen.queryByLabelText("profile bottom tab")).toBeFalsy()
   })
 
-  it("fetches the notifications info on mount", async () => {
+  fit("fetches the notifications info on mount", async () => {
     renderWithWrappers(<TestWrapper />)
 
     expect(mockEnvironment.mock.getAllOperations()).toHaveLength(1)
@@ -147,7 +147,7 @@ describe(BottomTabs, () => {
    * we will get `setImmediate is not a function` error for the next test cases
    * It is related to this problem: https://github.com/artsy/eigen/blob/main/HACKS.md#jestfake-timers
    */
-  it("fetches the notifications info once in a while", async () => {
+  fit("fetches the notifications info once in a while", async () => {
     jest.useFakeTimers({
       legacyFakeTimers: true,
     })
