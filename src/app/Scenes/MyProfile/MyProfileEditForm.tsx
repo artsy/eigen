@@ -299,7 +299,7 @@ export const MyProfileEditFormScreen: React.FC<MyProfileEditFormProps> = (props)
 const LoadingSkeleton = () => {
   return (
     <ProvidePlaceholderContext>
-      <Flex flexDirection="row" pl={2} alignItems="center">
+      <Flex flexDirection="row" pl={2} alignItems="center" mt={2}>
         <PlaceholderBox width={99} height={99} borderRadius={50} />
         <PlaceholderText width={100} height={20} marginTop={6} marginLeft={20} />
       </Flex>

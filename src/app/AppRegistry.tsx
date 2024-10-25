@@ -593,10 +593,12 @@ export const modules = defineModules({
     },
   }),
   MyCollectionAddCollectedArtists: reactModule(MyCollectionAddCollectedArtistsScreen, {
+    hidesBackButton: !unsafe_getFeatureFlag("AREnableNewNavigation"),
+    hidesBottomTabs: true,
     screenOptions: {
+      headerTitle: "Add Artists You Collect",
       gestureEnabled: false,
     },
-    hidesBottomTabs: true,
   }),
   MyCollectionSellingWithartsyFAQ: reactModule(MyCollectionSellingWithArtsyFAQ),
   MyCollectionCollectedArtistsPrivacy: reactModule(
