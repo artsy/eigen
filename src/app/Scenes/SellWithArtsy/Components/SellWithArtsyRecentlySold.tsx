@@ -16,6 +16,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { compact } from "lodash"
 import { useCallback } from "react"
+import { PixelRatio } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -103,7 +104,9 @@ const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> = ({
           onPress={() => {
             onPress?.(item, index)
           }}
-          metaContainerStyles={{ height: 100 }}
+          metaContainerStyles={{
+            height: PixelRatio.getFontScale() * 100,
+          }}
           showPartnerName={showPartnerName}
           SalePriceComponent={
             <RecentlySoldCardSection
@@ -154,17 +157,17 @@ const RecentlySoldCardSection: React.FC<RecentlySoldCardSectionProps> = ({
 }) => {
   return (
     <Flex>
-      <Flex flexDirection="row" justifyContent="space-between" mt={1}>
-        <Text variant="lg-display" numberOfLines={1}>
+      <Flex flexDirection="row">
+        <Text variant="md" numberOfLines={1}>
           {priceRealizedDisplay}
         </Text>
         {!!performanceDisplay && (
-          <Text variant="lg-display" color="green" numberOfLines={1}>
+          <Text variant="md" color="green" numberOfLines={1} ml={0.5}>
             {`+${performanceDisplay}`}
           </Text>
         )}
       </Flex>
-      <Text variant="xs" color="black60" lineHeight="20px">
+      <Text variant="xs" color="black60">
         Estimate {compact([lowEstimateDisplay, highEstimateDisplay]).join("—")}
       </Text>
     </Flex>
