@@ -1,20 +1,23 @@
 import { tappedTabBar } from "@artsy/cohesion"
-import { Flex, PopIn, Text, VisualClueDot, useColor } from "@artsy/palette-mobile"
+import { Flex, PopIn, Text, Touchable, VisualClueDot, useColor } from "@artsy/palette-mobile"
+import { BottomTabBarButtonProps } from "@react-navigation/bottom-tabs"
 import { ProgressiveOnboardingFindSavedArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingFindSavedArtwork"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { unsafe__getSelectedTab } from "app/store/GlobalStore"
 import { VisualClueName } from "app/store/config/visualClues"
 import { switchTab } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { useSelectedTab } from "app/utils/hooks/useSelectedTab"
 import { useVisualClue } from "app/utils/hooks/useVisualClue"
-import { LayoutAnimation, TouchableWithoutFeedback, View } from "react-native"
+import { GestureResponderEvent, LayoutAnimation, View } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { BottomTabOption, BottomTabType } from "./BottomTabType"
 import { BottomTabsIcon, ICON_HEIGHT, ICON_WIDTH } from "./BottomTabsIcon"
 import { bottomTabsConfig } from "./bottomTabsConfig"
 
-export interface BottomTabsButtonProps {
+export interface BottomTabsButtonProps extends BottomTabBarButtonProps {
   tab: BottomTabType
   badgeCount?: number
   visualClue?: VisualClueName
@@ -28,15 +31,32 @@ export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
   badgeCount = 0,
   visualClue,
   forceDisplayVisualClue,
+  ...buttonProps
 }) => {
+  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
+
   const selectedTab = useSelectedTab()
   const isActive = selectedTab === tab
 
   const { showVisualClue } = useVisualClue()
 
   const tracking = useTracking()
+  const isStaging = useIsStaging()
 
-  const onPress = () => {
+  const onPress = (e: GestureResponderEvent) => {
+    if (enableNewNavigation) {
+      buttonProps.onPress?.(e)
+      tracking.trackEvent(
+        tappedTabBar({
+          tab: bottomTabsConfig[tab].analyticsDescription,
+          badge: badgeCount > 0,
+          contextScreenOwnerType: BottomTabOption[selectedTab],
+        })
+      )
+
+      return
+    }
+
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     if (tab === unsafe__getSelectedTab()) {
       LegacyNativeModules.ARScreenPresenterModule.popToRootOrScrollToTop(tab)
@@ -53,17 +73,19 @@ export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
   }
 
   return (
-    <TouchableWithoutFeedback
+    <Touchable
       accessibilityRole="button"
       accessibilityLabel={`${tab} bottom tab`}
       accessibilityState={{ selected: isActive }}
       onPress={onPress}
+      haptic="impactLight"
       style={{ flex: 1 }}
+      {...buttonProps}
     >
       <View style={{ flex: 1 }}>
         <ProgressiveOnboardingFindSavedArtwork tab={tab}>
-          <Flex flex={1} alignItems="center">
-            <Flex flex={1} height={ICON_HEIGHT}>
+          <Flex flex={1} alignItems="center" overflow="hidden">
+            <Flex flex={1} height={ICON_HEIGHT} width={ICON_WIDTH}>
               <IconWrapper>
                 <BottomTabsIcon tab={tab} state="inactive" />
               </IconWrapper>
@@ -87,7 +109,9 @@ export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
               alignItems="center"
               justifyContent="center"
             >
-              <Text variant="xxs">{bottomTabsConfig[tab].name}</Text>
+              <Text variant="xxs" color={isStaging && isActive ? "devpurple" : "black100"}>
+                {bottomTabsConfig[tab].name}
+              </Text>
             </Flex>
           </Flex>
         </ProgressiveOnboardingFindSavedArtwork>
@@ -127,7 +151,7 @@ export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
           </IconWrapper>
         )}
       </View>
-    </TouchableWithoutFeedback>
+    </Touchable>
   )
 }
 
