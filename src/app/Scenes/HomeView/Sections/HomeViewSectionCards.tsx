@@ -1,4 +1,4 @@
-import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
+import { ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
 import {
   Flex,
   Image,
@@ -49,19 +49,20 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
   const imageSize = width / columns - space(2) - imageColumnGaps
   const cards = extractNodes(section.cardsConnection)
 
-  const handleCardPress = (card: (typeof cards)[number]) => {
+  const handleCardPress = (card: (typeof cards)[number], index: number) => {
     const href =
-      card.entityType === "MarketingCollectionCategory"
+      card.entityType === OwnerType.collectionsCategory
         ? `/collections-by-category/${card.title}?homeViewSectionId=${homeViewSectionId}&entityID=${card.entityID}`
         : card.href
 
     if (href) {
-      tracking.tappedCardGroup(
-        section.contextModule as ContextModule,
-        card.entityType as ScreenOwnerType,
+      tracking.tappedCardGroup({
+        contextModule: section.contextModule as ContextModule,
+        destinationOwnerType: card.entityType as ScreenOwnerType,
         href,
-        card.entityID
-      )
+        entityID: card.entityID,
+        positionY: index,
+      })
       navigate(href)
     }
   }
@@ -77,7 +78,7 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
           }
 
           return (
-            <Touchable key={`exploreBy-${index}`} onPress={() => handleCardPress(card)}>
+            <Touchable key={`exploreBy-${index}`} onPress={() => handleCardPress(card, index)}>
               <Flex borderRadius={5} overflow="hidden">
                 <Image src={src} width={imageSize} height={imageSize} />
 

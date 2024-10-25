@@ -39,13 +39,13 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
 
   const handleOnChipPress = (card: (typeof cards)[number], index: number) => {
     if (card.href) {
-      tracking.tappedCardGroup(
-        section.contextModule as ContextModule,
-        card.entityType as ScreenOwnerType,
-        card.href,
-        card.entityID ?? undefined,
-        index
-      )
+      tracking.tappedCardGroup({
+        contextModule: section.contextModule as ContextModule,
+        destinationOwnerType: card.entityType as ScreenOwnerType,
+        href: card.href,
+        entityID: card.entityID ?? undefined,
+        horizontalSlidePosition: index,
+      })
       navigate(card.href)
     }
   }
