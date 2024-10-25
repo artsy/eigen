@@ -23,7 +23,8 @@ export const ArtworkSocialSignal: React.FC<ArtworkSocialSignalProps> = ({
       return (
         <Box alignItems="center" flexDirection="row">
           <FireIcon />
-          <Text color={primaryColor} variant="xs" pl="3px" textAlign="center">
+          <Text color={primaryColor} variant="xs" textAlign="center">
+            {" "}
             Curators’ Pick
           </Text>
         </Box>
