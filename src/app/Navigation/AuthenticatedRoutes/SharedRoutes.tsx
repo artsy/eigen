@@ -10,6 +10,7 @@ import { AppModule, modules } from "app/AppRegistry"
 import { TabStackNavigator } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { isHeaderShown } from "app/Navigation/Utils/isHeaderShown"
 import { isModalScreen } from "app/Navigation/Utils/isModalScreen"
+import { ICON_HEIGHT } from "app/Scenes/BottomTabs/BottomTabsIcon"
 import { goBack } from "app/system/navigation/navigate"
 import { View } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -97,7 +98,8 @@ export const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
         paddingBottom: hidesBottomTabs ? 0 : tabBarHeight,
       }
     : {
-        paddingBottom: safeAreaInsets.bottom,
+        // Bottom inset + bottom tabs height - bottom tabs border
+        paddingBottom: safeAreaInsets.bottom + ICON_HEIGHT - 2,
         paddingTop: safeAreaInsets.top,
         paddingRight: safeAreaInsets.right,
         paddingLeft: safeAreaInsets.left,

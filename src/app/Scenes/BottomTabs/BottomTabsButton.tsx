@@ -51,8 +51,9 @@ export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
     if (tab === "inbox") {
       return unreadConversationsCount ?? 0
     }
+
     return 0
-  }, [unreadConversationsCount])
+  }, [unreadConversationsCount, badgeCountProp])
 
   const { showVisualClue } = useVisualClue()
 

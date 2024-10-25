@@ -1,11 +1,12 @@
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { MyAccountFieldEditScreen } from "./Components/MyAccountFieldEditScreen"
+import { screen } from "@testing-library/react-native"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { MyAccountEditPassword } from "./MyAccountEditPassword"
 
 describe(MyAccountEditPassword, () => {
-  it("has the right title", () => {
-    const tree = renderWithWrappersLEGACY(<MyAccountEditPassword />)
+  it("has the right titles", () => {
+    renderWithWrappers(<MyAccountEditPassword />)
 
-    expect(tree.root.findByType(MyAccountFieldEditScreen).props.title).toEqual("Password")
+    expect(screen.getByText("Current password")).toBeTruthy()
+    expect(screen.getByText("New password")).toBeTruthy()
   })
 })

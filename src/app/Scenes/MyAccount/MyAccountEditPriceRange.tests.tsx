@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import { MyAccountEditPriceRangeTestsQuery } from "__generated__/MyAccountEditPriceRangeTestsQuery.graphql"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -29,7 +30,7 @@ describe(MyAccountEditPriceRangeQueryRenderer, () => {
   })
 
   it("submits the changes", async () => {
-    const { getAllByText, getByText } = renderWithRelay({
+    renderWithRelay({
       Me: () => ({
         priceRange: "-1:2500",
         priceRangeMax: 2500,
@@ -39,8 +40,8 @@ describe(MyAccountEditPriceRangeQueryRenderer, () => {
 
     await flushPromiseQueue()
 
-    expect(getAllByText("Price Range")[0]).toBeTruthy()
+    expect(screen.getAllByText("Price Range")[0]).toBeTruthy()
 
-    expect(getByText("Under $2,500")).toBeTruthy()
+    expect(screen.getByText("Under $2,500")).toBeTruthy()
   })
 })

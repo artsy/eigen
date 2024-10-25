@@ -76,7 +76,7 @@ describe(MyAccountQueryRenderer, () => {
       return result
     })
 
-    expect(tree.findAllByType(Text)[2].props.children).toBe(
+    expect(tree.findAllByType(Text)[1].props.children).toBe(
       "myverylongemailmyverylongemailmyverylongemail@averylongdomainaverylongdomainaverylongdomain.com"
     )
   })

@@ -18,6 +18,7 @@ export const BottomTabs: React.FC<BottomTabBarProps> = (props) => {
   const focusedRoute = findFocusedRoute(props.state)
   const params = focusedRoute?.params as any
   const module = modules[params?.moduleName as AppModule]
+  // const unreadConversationsCount = 3
   const unreadConversationsCount = GlobalStore.useAppState(
     (state) => state.bottomTabs.sessionState.unreadCounts.conversations
   )
@@ -43,7 +44,15 @@ export const BottomTabs: React.FC<BottomTabBarProps> = (props) => {
   }
 
   return (
-    <Flex position="absolute" left={0} right={0} bottom={0} pb={`${bottom}px`} bg="white100">
+    <Flex
+      position="absolute"
+      left={0}
+      right={0}
+      bottom={0}
+      pb={`${bottom}px`}
+      bg="white100"
+      height={BOTTOM_TABS_HEIGHT}
+    >
       <Separator
         style={{
           borderColor: isStaging ? color("devpurple") : color("black10"),

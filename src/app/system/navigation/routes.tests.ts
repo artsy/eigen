@@ -668,12 +668,8 @@ describe("artsy.net routes", () => {
   it("routes to Terms and Conditions", () => {
     expect(matchRoute("/terms")).toMatchInlineSnapshot(`
       {
-        "module": "ModalWebView",
+        "module": "ReactWebView",
         "params": {
-          "alwaysPresentModally": true,
-          "safeAreaEdges": [
-            "bottom",
-          ],
           "url": "/terms",
         },
         "type": "match",
@@ -684,12 +680,8 @@ describe("artsy.net routes", () => {
   it("routes to Privacy Policy", () => {
     expect(matchRoute("/privacy")).toMatchInlineSnapshot(`
       {
-        "module": "ModalWebView",
+        "module": "ReactWebView",
         "params": {
-          "alwaysPresentModally": true,
-          "safeAreaEdges": [
-            "bottom",
-          ],
           "url": "/privacy",
         },
         "type": "match",
@@ -876,9 +868,6 @@ describe("artsy.net routes", () => {
         "module": "ModalWebView",
         "params": {
           "alwaysPresentModally": true,
-          "safeAreaEdges": [
-            "bottom",
-          ],
           "url": "/conditions-of-sale",
         },
         "type": "match",
@@ -1148,12 +1137,8 @@ describe("artsy.net routes", () => {
   it("routes /privacy to a web view", () => {
     expect(matchRoute("/privacy")).toMatchInlineSnapshot(`
       {
-        "module": "ModalWebView",
+        "module": "ReactWebView",
         "params": {
-          "alwaysPresentModally": true,
-          "safeAreaEdges": [
-            "bottom",
-          ],
           "url": "/privacy",
         },
         "type": "match",
