@@ -1,4 +1,4 @@
-import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import {
   Flex,
   Image,
@@ -35,7 +35,7 @@ export const HomeViewSectionExploreBy: React.FC<HomeViewSectionCardsProps> = ({
   index,
 }) => {
   const { width } = useScreenDimensions()
-  const { tappedCard } = useHomeViewTracking()
+  const tracking = useHomeViewTracking()
   const space = useSpace()
   const section = useFragment(fragment, _section)
 
@@ -49,11 +49,17 @@ export const HomeViewSectionExploreBy: React.FC<HomeViewSectionCardsProps> = ({
   const imageSize = width / columns - space(2) - imageColumnGaps
   const categories = extractNodes(section.cardsConnection)
 
-  const handleCategoryPress = (category: string, entityID: string) => {
-    tappedCard(ContextModule.exploreBy, OwnerType.collectionsCategory)
-    navigate(
-      `/collections-by-category/${category}?homeViewSectionId=${homeViewSectionId}&entityID=${entityID}`
+  const handleCategoryPress = (card: (typeof categories)[number]) => {
+    const href = card.href
+      ? card.href
+      : `/collections-by-category/${card.title}?homeViewSectionId=${homeViewSectionId}&entityID=${card.entityID}`
+
+    tracking.tappedCard(
+      section.contextModule as ContextModule,
+      card.entityType as ScreenOwnerType,
+      href
     )
+    navigate(href)
   }
 
   return (
@@ -67,10 +73,7 @@ export const HomeViewSectionExploreBy: React.FC<HomeViewSectionCardsProps> = ({
           }
 
           return (
-            <Touchable
-              key={`exploreBy-${index}`}
-              onPress={() => handleCategoryPress(category.title, category.entityID)}
-            >
+            <Touchable key={`exploreBy-${index}`} onPress={() => handleCategoryPress(category)}>
               <Flex borderRadius={5} overflow="hidden">
                 <Image src={src} width={imageSize} height={imageSize} />
 
@@ -89,7 +92,10 @@ export const HomeViewSectionExploreBy: React.FC<HomeViewSectionCardsProps> = ({
         })}
       </Flex>
 
-      <HomeViewSectionSentinel contextModule={ContextModule.exploreBy} index={index} />
+      <HomeViewSectionSentinel
+        contextModule={section.contextModule as ContextModule}
+        index={index}
+      />
     </Flex>
   )
 }
@@ -100,11 +106,14 @@ const fragment = graphql`
     component {
       title
     }
+    contextModule
     cardsConnection(first: 6) {
       edges {
         node {
           entityID @required(action: NONE)
           title @required(action: NONE)
+          entityType
+          href
           image {
             url
           }

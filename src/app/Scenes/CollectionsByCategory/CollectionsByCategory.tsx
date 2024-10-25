@@ -4,7 +4,8 @@ import { RouteProp, useRoute } from "@react-navigation/native"
 import { BodyWithSuspense } from "app/Scenes/CollectionsByCategory/Body"
 import { FooterWithSuspense } from "app/Scenes/CollectionsByCategory/Footer"
 import { goBack } from "app/system/navigation/navigate"
-import { ProvideScreenTracking, Schema } from "app/utils/track"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import { FC } from "react"
 
 type CollectionsByCategoriesNavigationRoutes = {
@@ -28,14 +29,13 @@ export const CollectionsByCategory: FC = () => {
 
   const category = params.props.category
 
-  const trackingInfo: Schema.PageView = {
-    context_screen: Schema.PageNames.CollectionsCategory,
-    context_screen_owner_slug: category,
-    context_screen_owner_type: OwnerType.collectionsCategory,
-  }
-
   return (
-    <ProvideScreenTracking info={trackingInfo}>
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({
+        context_screen_owner_type: OwnerType.collectionsCategory,
+        context_screen_owner_slug: category,
+      })}
+    >
       <Screen>
         <Screen.Header onBack={goBack} title={category} animated />
         <Screen.Body fullwidth flex={1}>
@@ -48,6 +48,6 @@ export const CollectionsByCategory: FC = () => {
           </Screen.ScrollView>
         </Screen.Body>
       </Screen>
-    </ProvideScreenTracking>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }

@@ -108,7 +108,6 @@ export enum PageNames {
   CityGuideSavedList = "CityGuideSavedList",
   CityPicker = "CityPicker",
   Collection = "Collection",
-  CollectionsCategory = "CollectionsCategory",
   ConsignmentsOverView = "ConsignmentsOverview",
   ConsignmentsSubmission = "ConsignmentsSubmit",
   ConversationPage = "Conversation",

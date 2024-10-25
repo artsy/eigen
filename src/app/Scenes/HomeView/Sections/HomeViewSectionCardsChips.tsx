@@ -1,4 +1,4 @@
-import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import { Chip, Flex, Skeleton, SkeletonBox, Spacer, useSpace } from "@artsy/palette-mobile"
 import { HomeViewSectionCardsChipsQuery } from "__generated__/HomeViewSectionCardsChipsQuery.graphql"
 import { HomeViewSectionCardsChips_section$key } from "__generated__/HomeViewSectionCardsChips_section.graphql"
@@ -26,7 +26,7 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
   index,
 }) => {
   const space = useSpace()
-  const { tappedCard } = useHomeViewTracking()
+  const tracking = useHomeViewTracking()
   const section = useFragment(fragment, sectionProp)
   const links = extractNodes(section.cardsConnection)
 
@@ -37,9 +37,16 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
     ? [CHIP_WIDTH / 2 + CHIP_WIDTH / 4 + space(0.5), CHIP_WIDTH * 2]
     : [CHIP_WIDTH * numColumns - 2]
 
-  const handleOnItemPress = (href: string, index: number) => {
-    tappedCard(ContextModule.discoverSomethingNewRail, OwnerType.collection, href, index)
-    navigate(href)
+  const handleOnItemPress = (card: (typeof links)[number], index: number) => {
+    if (card.href) {
+      tracking.tappedCard(
+        section.contextModule as ContextModule,
+        card.entityType as ScreenOwnerType,
+        card.href,
+        index
+      )
+      navigate(card.href)
+    }
   }
 
   return (
@@ -71,11 +78,7 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
               <Chip
                 key={item.href}
                 title={item.title}
-                onPress={() => {
-                  if (item?.href) {
-                    handleOnItemPress(item.href, index)
-                  }
-                }}
+                onPress={() => handleOnItemPress(item, index)}
               />
             </Flex>
           )}
@@ -83,7 +86,7 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
       </ScrollView>
 
       <HomeViewSectionSentinel
-        contextModule={ContextModule.discoverSomethingNewRail}
+        contextModule={section.contextModule as ContextModule}
         index={index}
       />
     </Flex>
@@ -103,6 +106,7 @@ const fragment = graphql`
       edges {
         node {
           entityID
+          entityType
           title
           href
         }
