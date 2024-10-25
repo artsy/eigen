@@ -1,8 +1,11 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Chip, Flex, Skeleton, SkeletonBox, Spacer, useSpace } from "@artsy/palette-mobile"
 import { HomeViewSectionCardsChipsQuery } from "__generated__/HomeViewSectionCardsChipsQuery.graphql"
 import { HomeViewSectionCardsChips_section$key } from "__generated__/HomeViewSectionCardsChips_section.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
+import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -20,8 +23,10 @@ const CHIP_WIDTH = 230
 
 export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps> = ({
   section: sectionProp,
+  index,
 }) => {
   const space = useSpace()
+  const { tappedCard } = useHomeViewTracking()
   const section = useFragment(fragment, sectionProp)
   const links = extractNodes(section.cardsConnection)
 
@@ -31,6 +36,11 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
   const snapToOffsets = !isTablet()
     ? [CHIP_WIDTH / 2 + CHIP_WIDTH / 4 + space(0.5), CHIP_WIDTH * 2]
     : [CHIP_WIDTH * numColumns - 2]
+
+  const handleOnItemPress = (href: string, index: number) => {
+    tappedCard(ContextModule.discoverSomethingNewRail, OwnerType.collection, href, index)
+    navigate(href)
+  }
 
   return (
     <Flex p={2}>
@@ -56,19 +66,26 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
           numColumns={numColumns}
           data={links}
           keyExtractor={(item, index) => `item_${index}_${item.entityID}`}
-          renderItem={({ item }) => (
+          renderItem={({ item, index }) => (
             <Flex minWidth={CHIP_WIDTH}>
               <Chip
                 key={item.href}
                 title={item.title}
                 onPress={() => {
-                  if (item?.href) navigate(item.href)
+                  if (item?.href) {
+                    handleOnItemPress(item.href, index)
+                  }
                 }}
               />
             </Flex>
           )}
         />
       </ScrollView>
+
+      <HomeViewSectionSentinel
+        contextModule={ContextModule.discoverSomethingNewRail}
+        index={index}
+      />
     </Flex>
   )
 }

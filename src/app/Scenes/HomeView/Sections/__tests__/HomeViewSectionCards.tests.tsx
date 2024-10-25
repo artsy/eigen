@@ -7,7 +7,11 @@ import { graphql } from "react-relay"
 describe("HomeViewSectionCards", () => {
   const { renderWithRelay } = setupTestWrapper<HomeViewSectionCardsTestsQuery>({
     Component: (props) => (
-      <HomeViewSectionExploreBy section={props.homeView.section} homeViewSectionId="test-id" />
+      <HomeViewSectionExploreBy
+        index={4}
+        section={props.homeView.section}
+        homeViewSectionId="test-id"
+      />
     ),
     query: graphql`
       query HomeViewSectionCardsTestsQuery @relay_test_operation {

@@ -1,5 +1,6 @@
 import { Chip, Flex, SkeletonBox, SkeletonText, Spacer, useSpace } from "@artsy/palette-mobile"
 import { CollectionsChips_marketingCollections$key } from "__generated__/CollectionsChips_marketingCollections.graphql"
+import { useCollectionByCategoryTracking } from "app/Scenes/CollectionsByCategory/hooks/useCollectionByCategoryTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { Dimensions, FlatList, ScrollView } from "react-native"
 import { isTablet } from "react-native-device-info"
@@ -17,6 +18,7 @@ export const CollectionsChips: React.FC<CollectionsChipsProps> = ({
 }) => {
   const marketingCollections = useFragment(fragment, _marketingCollections)
   const space = useSpace()
+  const { trackChipTap } = useCollectionByCategoryTracking()
 
   if (!marketingCollections) {
     return null
@@ -25,6 +27,11 @@ export const CollectionsChips: React.FC<CollectionsChipsProps> = ({
   const numColumns = Math.ceil(marketingCollections.length / 3)
 
   const snapToOffsets = getSnapToOffsets(numColumns, space(1), space(2))
+
+  const handleChipPress = (slug: string, id: number) => {
+    trackChipTap(slug, id)
+    navigate(`/collection/${slug}`)
+  }
 
   return (
     <Flex>
@@ -45,13 +52,15 @@ export const CollectionsChips: React.FC<CollectionsChipsProps> = ({
           numColumns={numColumns}
           data={marketingCollections}
           keyExtractor={(item, index) => `item_${index}_${item.internalID}`}
-          renderItem={({ item }) => (
+          renderItem={({ item, index }) => (
             <Flex minWidth={CHIP_WIDTH}>
               <Chip
                 key={item.internalID}
                 title={item.title}
                 onPress={() => {
-                  if (item?.slug) navigate(`/collection/${item.slug}`)
+                  if (item?.slug) {
+                    handleChipPress(item.slug, index)
+                  }
                 }}
               />
             </Flex>

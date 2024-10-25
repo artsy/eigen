@@ -11,6 +11,7 @@ import {
   TappedArtworkGroup,
   TappedAuctionGroup,
   TappedAuctionResultGroup,
+  TappedCardGroup,
   TappedClearNotification,
   TappedCollectionGroup,
   TappedFairGroup,
@@ -263,6 +264,24 @@ export const useHomeViewTracking = () => {
         type: "viewAll",
       }
 
+      trackEvent(payload)
+    },
+
+    tappedCard: (
+      contextModule: ContextModule,
+      destinationOwnerType: ScreenOwnerType,
+      destinationOwnerSlug?: string,
+      horizontalSlidePosition?: number
+    ) => {
+      const payload: TappedCardGroup = {
+        action: ActionType.tappedCardGroup,
+        context_module: contextModule,
+        context_screen_owner_type: OwnerType.home,
+        destination_screen_owner_type: destinationOwnerType,
+        destination_screen_owner_slug: destinationOwnerSlug,
+        horizontal_slide_position: horizontalSlidePosition,
+        type: "thumbnail",
+      }
       trackEvent(payload)
     },
 

@@ -7,10 +7,12 @@ import {
   Spacer,
   useScreenDimensions,
 } from "@artsy/palette-mobile"
+import { ArtworkRail_artworks$data } from "__generated__/ArtworkRail_artworks.graphql"
 import { CollectionRailCollectionsByCategoryQuery } from "__generated__/CollectionRailCollectionsByCategoryQuery.graphql"
 import { CollectionRail_marketingCollection$key } from "__generated__/CollectionRail_marketingCollection.graphql"
 import { ArtworkRail, ArtworkRailPlaceholder } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { useCollectionByCategoryTracking } from "app/Scenes/CollectionsByCategory/hooks/useCollectionByCategoryTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { ElementInView } from "app/utils/ElementInView"
 import { extractNodes } from "app/utils/extractNodes"
@@ -24,6 +26,7 @@ interface CollectionRailProps {
 
 export const CollectionRail: FC<CollectionRailProps> = ({ collection: _collection }) => {
   const collection = useFragment(fragment, _collection)
+  const { trackArtworkRailItemTap, trackArtworkRailViewAllTap } = useCollectionByCategoryTracking()
 
   if (!collection || collection.artworksConnection?.counts.total === 0) {
     return null
@@ -31,17 +34,23 @@ export const CollectionRail: FC<CollectionRailProps> = ({ collection: _collectio
 
   const artworks = extractNodes(collection.artworksConnection)
 
+  const handleArtworkPress = (artwork: ArtworkRail_artworks$data[0], index: number) => {
+    trackArtworkRailItemTap(artwork.internalID, index)
+    navigate(artwork.href ?? "")
+  }
+
+  const handleTitlePress = () => {
+    trackArtworkRailViewAllTap(collection.slug)
+    navigate(`/collection/${collection.slug}`)
+  }
+
   return (
     <Flex px={2}>
       <Flex justifyContent="center">
-        <SectionTitle
-          title={collection.title}
-          titleVariant="md"
-          onPress={() => navigate(`/collection/${collection.slug}`)}
-        />
+        <SectionTitle title={collection.title} titleVariant="md" onPress={handleTitlePress} />
       </Flex>
       <ArtworkRail
-        onPress={(artwork) => navigate(artwork.href ?? "")}
+        onPress={handleArtworkPress}
         artworks={artworks}
         ListHeaderComponent={null}
         showSaveIcon
