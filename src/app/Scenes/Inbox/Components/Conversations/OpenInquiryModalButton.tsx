@@ -31,7 +31,13 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({
         <Flex flexDirection="row">
           <ShieldIcon mr={1} mt="3px" />
           <Flex flexShrink={1}>
-            <Text color="black60" variant="sm-display" mb={1}>
+            <Text
+              color="black60"
+              variant="sm-display"
+              mb={1}
+              adjustsFontSizeToFit
+              numberOfLines={2}
+            >
               Always complete purchases with our secure checkout in order to be covered by{" "}
               <Text
                 style={{ textDecorationLine: "underline" }}

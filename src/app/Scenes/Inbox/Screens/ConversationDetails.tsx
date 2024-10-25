@@ -1,7 +1,6 @@
 import { Flex } from "@artsy/palette-mobile"
 import { ConversationDetailsQuery } from "__generated__/ConversationDetailsQuery.graphql"
 import { ConversationDetails_me$data } from "__generated__/ConversationDetails_me.graphql"
-import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { ItemInfoFragmentContainer } from "app/Scenes/Inbox/Components/Conversations/ItemInfo"
 import { OrderInformationFragmentContainer } from "app/Scenes/Inbox/Components/Conversations/OrderInformation"
 import { PaymentMethodFragmentContainer } from "app/Scenes/Inbox/Components/Conversations/PaymentMethod"
@@ -21,37 +20,34 @@ interface Props {
 }
 export const ConversationDetails: React.FC<Props> = ({ me }) => {
   const conversation = me.conversation
-  const partnerName = conversation?.to.name
   const item = conversation?.items?.[0]?.item
 
   const order = extractNodes(conversation?.orderConnection)
   const orderItem = order[0]
 
   return (
-    <PageWithSimpleHeader title={partnerName ?? ""}>
-      <ScrollView>
-        <Flex>
-          {!!orderItem && <SellerReplyEstimateFragmentContainer order={orderItem} />}
+    <ScrollView>
+      <Flex>
+        {!!orderItem && <SellerReplyEstimateFragmentContainer order={orderItem} />}
 
-          {!!item && <ItemInfoFragmentContainer item={item} />}
+        {!!item && <ItemInfoFragmentContainer item={item} />}
 
-          {!!item && !!orderItem && (
-            <OrderInformationFragmentContainer artwork={item} order={orderItem} />
-          )}
+        {!!item && !!orderItem && (
+          <OrderInformationFragmentContainer artwork={item} order={orderItem} />
+        )}
 
-          {!!orderItem && (
-            <>
-              <ShippingFragmentContainer order={orderItem} />
-              <PaymentMethodFragmentContainer order={orderItem} />
-            </>
-          )}
+        {!!orderItem && (
+          <>
+            <ShippingFragmentContainer order={orderItem} />
+            <PaymentMethodFragmentContainer order={orderItem} />
+          </>
+        )}
 
-          {!!conversation && <AttachmentListFragmentContainer conversation={conversation} />}
+        {!!conversation && <AttachmentListFragmentContainer conversation={conversation} />}
 
-          <Support />
-        </Flex>
-      </ScrollView>
-    </PageWithSimpleHeader>
+        <Support />
+      </Flex>
+    </ScrollView>
   )
 }
 
