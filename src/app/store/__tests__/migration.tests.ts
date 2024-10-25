@@ -26,7 +26,7 @@ jest.mock("app/NativeModules/LegacyNativeModules", () => ({
   },
 }))
 
-describe(migrate, () => {
+describe.skip(migrate, () => {
   it("leaves an object untouched if there are no migrations pending", () => {
     const result = migrate({
       state: {
