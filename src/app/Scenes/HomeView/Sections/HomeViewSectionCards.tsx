@@ -59,7 +59,8 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
       tracking.tappedCardGroup(
         section.contextModule as ContextModule,
         card.entityType as ScreenOwnerType,
-        href
+        href,
+        card.entityID
       )
       navigate(href)
     }
