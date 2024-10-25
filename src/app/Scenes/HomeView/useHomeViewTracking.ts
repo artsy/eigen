@@ -267,10 +267,10 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
-    tappedCard: (
+    tappedCardGroup: (
       contextModule: ContextModule,
       destinationOwnerType: ScreenOwnerType,
-      destinationOwnerSlug?: string,
+      destinationOwnerId?: string,
       horizontalSlidePosition?: number
     ) => {
       const payload: TappedCardGroup = {
@@ -278,7 +278,7 @@ export const useHomeViewTracking = () => {
         context_module: contextModule,
         context_screen_owner_type: OwnerType.home,
         destination_screen_owner_type: destinationOwnerType,
-        destination_screen_owner_slug: destinationOwnerSlug,
+        destination_screen_owner_id: destinationOwnerId,
         horizontal_slide_position: horizontalSlidePosition,
         type: "thumbnail",
       }

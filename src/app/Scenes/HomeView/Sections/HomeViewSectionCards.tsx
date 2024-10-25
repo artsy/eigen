@@ -29,7 +29,7 @@ interface HomeViewSectionCardsProps {
   index: number
 }
 
-export const HomeViewSectionExploreBy: React.FC<HomeViewSectionCardsProps> = ({
+export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
   section: _section,
   homeViewSectionId,
   index,
@@ -47,33 +47,36 @@ export const HomeViewSectionExploreBy: React.FC<HomeViewSectionCardsProps> = ({
 
   const imageColumnGaps = columns === 2 ? space(0.5) : 0
   const imageSize = width / columns - space(2) - imageColumnGaps
-  const categories = extractNodes(section.cardsConnection)
+  const cards = extractNodes(section.cardsConnection)
 
-  const handleCategoryPress = (card: (typeof categories)[number]) => {
-    const href = card.href
-      ? card.href
-      : `/collections-by-category/${card.title}?homeViewSectionId=${homeViewSectionId}&entityID=${card.entityID}`
+  const handleCardPress = (card: (typeof cards)[number]) => {
+    const href =
+      card.entityType === "MarketingCollectionCategory"
+        ? `/collections-by-category/${card.title}?homeViewSectionId=${homeViewSectionId}&entityID=${card.entityID}`
+        : card.href
 
-    tracking.tappedCard(
-      section.contextModule as ContextModule,
-      card.entityType as ScreenOwnerType,
-      href
-    )
-    navigate(href)
+    if (href) {
+      tracking.tappedCardGroup(
+        section.contextModule as ContextModule,
+        card.entityType as ScreenOwnerType,
+        href
+      )
+      navigate(href)
+    }
   }
 
   return (
     <Flex p={2} gap={space(2)}>
       <Text>{section.component?.title}</Text>
       <Flex flexDirection="row" flexWrap="wrap" gap={space(1)}>
-        {categories.map((category, index) => {
-          const src = category.image?.url
+        {cards.map((card, index) => {
+          const src = card.image?.url
           if (!src) {
             return null
           }
 
           return (
-            <Touchable key={`exploreBy-${index}`} onPress={() => handleCategoryPress(category)}>
+            <Touchable key={`exploreBy-${index}`} onPress={() => handleCardPress(card)}>
               <Flex borderRadius={5} overflow="hidden">
                 <Image src={src} width={imageSize} height={imageSize} />
 
@@ -84,7 +87,7 @@ export const HomeViewSectionExploreBy: React.FC<HomeViewSectionCardsProps> = ({
                   backgroundColor="white100"
                   p={0.5}
                 >
-                  <Text variant="lg-display">{category.title}</Text>
+                  <Text variant="lg-display">{card.title}</Text>
                 </Flex>
               </Flex>
             </Touchable>
@@ -171,7 +174,7 @@ export const HomeViewSectionCardsQueryRenderer = withSuspense<
     }
 
     return (
-      <HomeViewSectionExploreBy
+      <HomeViewSectionCards
         section={data.homeView.section}
         homeViewSectionId={sectionID}
         index={index}

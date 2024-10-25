@@ -28,18 +28,18 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
   const space = useSpace()
   const tracking = useHomeViewTracking()
   const section = useFragment(fragment, sectionProp)
-  const links = extractNodes(section.cardsConnection)
+  const cards = extractNodes(section.cardsConnection)
 
-  if (links.length === 0) return null
+  if (cards.length === 0) return null
 
-  const numColumns = !isTablet() ? Math.ceil(links.length / 3) : Math.ceil(links.length / 2)
+  const numColumns = !isTablet() ? Math.ceil(cards.length / 3) : Math.ceil(cards.length / 2)
   const snapToOffsets = !isTablet()
     ? [CHIP_WIDTH / 2 + CHIP_WIDTH / 4 + space(0.5), CHIP_WIDTH * 2]
     : [CHIP_WIDTH * numColumns - 2]
 
-  const handleOnItemPress = (card: (typeof links)[number], index: number) => {
+  const handleOnChipPress = (card: (typeof cards)[number], index: number) => {
     if (card.href) {
-      tracking.tappedCard(
+      tracking.tappedCardGroup(
         section.contextModule as ContextModule,
         card.entityType as ScreenOwnerType,
         card.href,
@@ -71,14 +71,14 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           numColumns={numColumns}
-          data={links}
+          data={cards}
           keyExtractor={(item, index) => `item_${index}_${item.entityID}`}
           renderItem={({ item, index }) => (
             <Flex minWidth={CHIP_WIDTH}>
               <Chip
                 key={item.href}
                 title={item.title}
-                onPress={() => handleOnItemPress(item, index)}
+                onPress={() => handleOnChipPress(item, index)}
               />
             </Flex>
           )}
