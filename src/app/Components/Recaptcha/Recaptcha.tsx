@@ -18,14 +18,21 @@ export const useRecaptcha = ({ source, action }: UseRecaptchaProps) => {
     setState("error")
   }
 
-  const RecaptchaComponent = useCallback(
-    () => (
+  interface RecaptchaComponentProps {
+    active?: boolean
+  }
+
+  const RecaptchaComponent: React.FC<RecaptchaComponentProps> = useCallback(({ active }) => {
+    if (!active) {
+      return null
+    }
+
+    return (
       <Box height={0}>
         <RecaptchaWebView action={action} onToken={handleOnToken} onError={handleOnError} />
       </Box>
-    ),
-    []
-  )
+    )
+  }, [])
 
   return { Recaptcha: RecaptchaComponent, token, state }
 }
