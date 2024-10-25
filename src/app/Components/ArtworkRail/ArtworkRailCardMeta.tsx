@@ -1,13 +1,13 @@
-import { Box, Flex, HeartFillIcon, HeartIcon, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, HeartFillIcon, HeartIcon, Text, Touchable } from "@artsy/palette-mobile"
 import { ArtworkRailCardMeta_artwork$key } from "__generated__/ArtworkRailCardMeta_artwork.graphql"
 import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
 import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT } from "app/Components/ArtworkRail/ArtworkRailCard"
+import { useMetaDataTextColor } from "app/Components/ArtworkRail/ArtworkRailUtils"
+import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessage"
 import { HEART_ICON_SIZE } from "app/Components/constants"
-import { formattedTimeLeft } from "app/Scenes/Activity/utils/formattedTimeLeft"
-import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
-import { getTimer } from "app/utils/getTimer"
+import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
   ArtworkActionTrackingProps,
@@ -79,32 +79,19 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
     collectorSignals,
   } = artwork
 
-  const saleMessage = defaultSaleMessageOrBidInfo({
+  const saleMessage = saleMessageOrBidInfo({
     artwork,
     isSmallTile: true,
     collectorSignals: collectorSignals,
     auctionSignals: enableAuctionImprovementsSignals ? collectorSignals?.auction : null,
   })
 
-  const partnerOfferEndAt = collectorSignals?.partnerOffer?.endAt
-    ? formattedTimeLeft(getTimer(collectorSignals.partnerOffer.endAt).time).timerCopy
-    : ""
-
-  const primaryTextColor = dark ? "white100" : "black100"
-  const secondaryTextColor = dark ? "black15" : "black60"
+  const { primaryTextColor, secondaryTextColor } = useMetaDataTextColor({ dark })
 
   const displayLimitedTimeOfferSignal =
     collectorSignals?.partnerOffer?.isAvailable && !sale?.isAuction
 
   const displayAuctionSignal = enableAuctionImprovementsSignals && sale?.isAuction
-
-  const saleInfoTextColor =
-    displayAuctionSignal && collectorSignals?.auction?.liveBiddingStarted
-      ? "blue100"
-      : primaryTextColor
-
-  const saleInfoTextWeight =
-    displayAuctionSignal && collectorSignals?.auction?.liveBiddingStarted ? "normal" : "bold"
 
   const onArtworkSavedOrUnSaved = (saved: boolean) => {
     trackEvent(
@@ -128,6 +115,9 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
     onCompleted: onArtworkSavedOrUnSaved,
   })
 
+  const displayArtworkSocialSignal =
+    !sale?.isAuction && !displayLimitedTimeOfferSignal && !!collectorSignals
+
   return (
     <Flex
       my={1}
@@ -140,23 +130,6 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
       justifyContent="space-between"
     >
       <Flex flex={1} backgroundColor={backgroundColor}>
-        {!!displayLimitedTimeOfferSignal && (
-          <Box backgroundColor="blue10" px={0.5} alignSelf="flex-start" borderRadius={3}>
-            <Text lineHeight="20px" variant="xs" color="blue100">
-              Limited-Time Offer
-            </Text>
-          </Box>
-        )}
-
-        {!sale?.isAuction && !displayLimitedTimeOfferSignal && !!collectorSignals && (
-          <ArtworkSocialSignal
-            collectorSignals={collectorSignals}
-            hideCuratorsPick={hideCuratorsPickSignal}
-            hideIncreasedInterest={hideIncreasedInterestSignal}
-            dark={dark}
-          />
-        )}
-
         {!!lotLabel && (
           <Text lineHeight="20px" color={secondaryTextColor} numberOfLines={1}>
             Lot {lotLabel}
@@ -196,28 +169,12 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
         {SalePriceComponent
           ? SalePriceComponent
           : !!saleMessage && (
-              <Text
-                lineHeight="20px"
-                variant="xs"
-                color={saleInfoTextColor}
-                numberOfLines={1}
-                fontWeight={saleInfoTextWeight}
-              >
-                {saleMessage}
-
-                {!!displayLimitedTimeOfferSignal && (
-                  <Text
-                    lineHeight="20px"
-                    variant="xs"
-                    fontWeight="normal"
-                    color="blue100"
-                    numberOfLines={1}
-                  >
-                    {"  "}
-                    Exp. {partnerOfferEndAt}
-                  </Text>
-                )}
-              </Text>
+              <ArtworkSaleMessage
+                artwork={artwork}
+                saleMessage={saleMessage}
+                displayLimitedTimeOfferSignal={displayLimitedTimeOfferSignal}
+                dark={dark}
+              />
             )}
 
         {!!isUnlisted && (
@@ -234,6 +191,15 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
 
         {!!displayAuctionSignal && !!collectorSignals && (
           <ArtworkAuctionTimer collectorSignals={collectorSignals} inRailCard />
+        )}
+
+        {!!displayArtworkSocialSignal && (
+          <ArtworkSocialSignal
+            collectorSignals={collectorSignals}
+            hideCuratorsPick={hideCuratorsPickSignal}
+            hideIncreasedInterest={hideIncreasedInterestSignal}
+            dark={dark}
+          />
         )}
       </Flex>
 
@@ -290,7 +256,6 @@ const artworkMetaFragment = graphql`
     sale {
       isAuction
       isClosed
-      endAt
     }
     saleArtwork {
       currentBid {
@@ -325,6 +290,7 @@ const artworkMetaFragment = graphql`
       ...ArtworkSocialSignal_collectorSignals
     }
 
+    ...ArtworkSaleMessage_artwork
     ...useSaveArtworkToArtworkLists_artwork
   }
 `

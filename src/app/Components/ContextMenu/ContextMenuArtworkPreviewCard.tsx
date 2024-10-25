@@ -1,8 +1,9 @@
 import { Flex, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { ContextMenuArtworkPreviewCard_artwork$key } from "__generated__/ContextMenuArtworkPreviewCard_artwork.graphql"
+import { useMetaDataTextColor } from "app/Components/ArtworkRail/ArtworkRailUtils"
 import { ArtworkDisplayProps } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { ContextMenuArtworkPreviewCardImage } from "app/Components/ContextMenu/ContextMenuArtworkPreviewCardImage"
-import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
+import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { PixelRatio } from "react-native"
 import { isTablet } from "react-native-device-info"
@@ -42,16 +43,14 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
 
   const { artistNames, date, partner, title, sale, saleArtwork } = artwork
 
-  const saleMessage = defaultSaleMessageOrBidInfo({ artwork, isSmallTile: true })
+  const saleMessage = saleMessageOrBidInfo({ artwork, isSmallTile: true })
 
   const extendedBiddingEndAt = saleArtwork?.extendedBiddingEndAt
   const lotEndAt = saleArtwork?.endAt
   const endAt = extendedBiddingEndAt ?? lotEndAt ?? sale?.endAt
   const urgencyTag = sale?.isAuction && !sale?.isClosed ? getUrgencyTag(endAt) : null
 
-  const primaryTextColor = dark ? "white100" : "black100"
-  const secondaryTextColor = dark ? "black15" : "black60"
-  const backgroundColor = dark ? "black100" : "white100"
+  const { primaryTextColor, secondaryTextColor, backgroundColor } = useMetaDataTextColor({ dark })
 
   const getTextHeight = () => {
     return ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT

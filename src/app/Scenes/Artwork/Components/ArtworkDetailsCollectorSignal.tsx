@@ -1,13 +1,12 @@
 import {
+  ArrowUpRightIcon,
   bullet,
   FairIcon,
+  FireIcon,
   Flex,
   LinkText,
   Text,
-  TrendingIcon,
-  VerifiedIcon,
 } from "@artsy/palette-mobile"
-
 import { ArtworkDetailsCollectorSignal_artwork$key } from "__generated__/ArtworkDetailsCollectorSignal_artwork.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { DateTime } from "luxon"
@@ -40,13 +39,13 @@ export const ArtworkDetailsCollectorSignal: React.FC<Props> = ({ artwork }) => {
     case curatorsPick: {
       singalTitle = "Curators’ Pick"
       signalDescription = "Hand selected by Artsy curators this week"
-      SignalIcon = VerifiedIcon
+      SignalIcon = FireIcon
       break
     }
     case increasedInterest: {
       singalTitle = "Increased Interest"
       signalDescription = "Based on collector activity in the past 14 days"
-      SignalIcon = TrendingIcon
+      SignalIcon = ArrowUpRightIcon
       break
     }
     case !!runningShow: {

@@ -21,13 +21,13 @@ import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilter
 import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
 import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
+import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessage"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { DurationProvider } from "app/Components/Countdown"
 import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
 import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
 import { HEART_ICON_SIZE } from "app/Components/constants"
 import { PartnerOffer } from "app/Scenes/Activity/components/NotificationArtworkList"
-import { formattedTimeLeft } from "app/Scenes/Activity/utils/formattedTimeLeft"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
@@ -252,10 +252,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
     ? currentBiddingEndAt
     : artwork.saleArtwork?.endAt || artwork.sale?.endAt
 
-  const partnerOfferEndAt = collectorSignals?.partnerOffer?.endAt
-    ? formattedTimeLeft(getTimer(collectorSignals.partnerOffer.endAt).time).timerCopy
-    : ""
-
   const urgencyTag = getUrgencyTag(endsAt)
 
   const canShowAuctionProgressBar =
@@ -271,15 +267,12 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const displayAuctionSignal = AREnableAuctionImprovementsSignals && isAuction
 
-  const saleInfoTextColor =
-    displayAuctionSignal && collectorSignals?.auction?.liveBiddingStarted ? "blue100" : "black100"
-
-  const saleInfoTextWeight =
-    displayAuctionSignal && collectorSignals?.auction?.liveBiddingStarted ? "normal" : "bold"
-
   const handleSupress = async (item: DissapearableArtwork) => {
     await item._disappearable?.disappear()
   }
+
+  const displayArtworkSocialSignal =
+    !isAuction && !displayLimitedTimeOfferSignal && !!collectorSignals
 
   return (
     <Disappearable ref={(ref) => ((artwork as any)._disappearable = ref)}>
@@ -354,20 +347,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
               style={artworkMetaStyle}
             >
               <Flex flex={1}>
-                {!!displayLimitedTimeOfferSignal && (
-                  <Box backgroundColor="blue10" px={0.5} alignSelf="flex-start" borderRadius={3}>
-                    <Text lineHeight="20px" variant="xs" color="blue100">
-                      Limited-Time Offer
-                    </Text>
-                  </Box>
-                )}
-                {!isAuction && !displayLimitedTimeOfferSignal && !!collectorSignals && (
-                  <ArtworkSocialSignal
-                    collectorSignals={collectorSignals}
-                    hideCuratorsPick={hideCuratorsPickSignal}
-                    hideIncreasedInterest={hideIncreasedInterestSignal}
-                  />
-                )}
                 {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
                   <>
                     <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
@@ -435,29 +414,12 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   </Flex>
                 )}
                 {!!saleInfo && !hideSaleInfo && !displayPriceOfferMessage && (
-                  <Text
-                    lineHeight="18px"
-                    variant="xs"
-                    numberOfLines={1}
-                    color={saleInfoTextColor}
-                    fontWeight={saleInfoTextWeight}
-                    {...saleInfoTextStyle}
-                  >
-                    {saleInfo}
-                    {!!displayLimitedTimeOfferSignal && (
-                      <Text
-                        lineHeight="18px"
-                        variant="xs"
-                        weight="regular"
-                        numberOfLines={1}
-                        color="blue100"
-                        {...saleInfoTextStyle}
-                      >
-                        {"  "}
-                        Exp. {partnerOfferEndAt}
-                      </Text>
-                    )}
-                  </Text>
+                  <ArtworkSaleMessage
+                    artwork={artwork}
+                    saleMessage={saleInfo}
+                    displayLimitedTimeOfferSignal={displayLimitedTimeOfferSignal}
+                    saleInfoTextStyle={saleInfoTextStyle}
+                  />
                 )}
 
                 {!!artwork.isUnlisted && (
@@ -470,6 +432,14 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   <ArtworkAuctionTimer
                     collectorSignals={collectorSignals}
                     hideRegisterBySignal={hideRegisterBySignal}
+                  />
+                )}
+
+                {!!displayArtworkSocialSignal && (
+                  <ArtworkSocialSignal
+                    collectorSignals={collectorSignals}
+                    hideCuratorsPick={hideCuratorsPickSignal}
+                    hideIncreasedInterest={hideIncreasedInterestSignal}
                   />
                 )}
               </Flex>
@@ -609,6 +579,7 @@ export default createFragmentContainer(Artwork, {
         ...ArtworkAuctionTimer_collectorSignals
         ...ArtworkSocialSignal_collectorSignals
       }
+      ...ArtworkSaleMessage_artwork
       ...useSaveArtworkToArtworkLists_artwork
     }
   `,
