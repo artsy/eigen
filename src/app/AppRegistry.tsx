@@ -466,8 +466,12 @@ export const modules = defineModules({
       gestureEnabled: false,
     },
   }),
-  Conversation: reactModule(Conversation, { onlyShowInTabName: "inbox" }),
-  ConversationDetails: reactModule(ConversationDetailsQueryRenderer),
+  Conversation: reactModule(Conversation, { onlyShowInTabName: "inbox", hidesBackButton: true }),
+  ConversationDetails: reactModule(ConversationDetailsQueryRenderer, {
+    screenOptions: {
+      headerTitle: "Details",
+    },
+  }),
   DarkModeSettings: reactModule(DarkModeSettings),
   DevMenu: reactModule(DevMenu, {
     // No need to hide bottom tabs if it's a modal because they will be hidden by default
