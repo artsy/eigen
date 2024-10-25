@@ -157,12 +157,12 @@ const RecentlySoldCardSection: React.FC<RecentlySoldCardSectionProps> = ({
 }) => {
   return (
     <Flex>
-      <Flex flexDirection="row" justifyContent="space-between">
+      <Flex flexDirection="row">
         <Text variant="md" numberOfLines={1}>
           {priceRealizedDisplay}
         </Text>
         {!!performanceDisplay && (
-          <Text variant="md" color="green" numberOfLines={1}>
+          <Text variant="md" color="green" numberOfLines={1} ml={0.5}>
             {`+${performanceDisplay}`}
           </Text>
         )}
