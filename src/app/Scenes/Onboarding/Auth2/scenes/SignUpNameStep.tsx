@@ -26,7 +26,6 @@ export const SignUpNameStep: React.FC = () => {
   const screen = useAuthScreen()
   const { loading, isAutomaticallySubscribed } = useCountryCode()
 
-  // TODO: Show a skeleton loader
   if (loading) {
     return null
   }
@@ -114,6 +113,7 @@ const SignUpNameStepForm: React.FC = () => {
       <Text variant="sm-display">Welcome to Artsy</Text>
 
       <Input
+        accessibilityHint="Enter your full name"
         autoCapitalize="words"
         autoComplete="name"
         autoCorrect={false}
