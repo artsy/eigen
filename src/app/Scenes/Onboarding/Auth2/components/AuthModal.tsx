@@ -68,7 +68,7 @@ export const AuthModal: React.FC = ({ children }) => {
         style={{
           width: "100%",
           backgroundColor: color("white100"),
-          borderRadius: space(2),
+          borderRadius: space(1),
           overflow: "hidden",
           position: "relative",
         }}
