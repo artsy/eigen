@@ -43,7 +43,7 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
         contextModule: section.contextModule as ContextModule,
         destinationOwnerType: card.entityType as ScreenOwnerType,
         href: card.href,
-        entityID: card.entityID ?? undefined,
+        entityID: card.entityID ?? "",
         horizontalSlidePosition: index,
       })
       navigate(card.href)
