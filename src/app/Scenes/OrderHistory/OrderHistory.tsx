@@ -157,7 +157,9 @@ export const OrderHistoryQueryRender: React.FC<{}> = ({}) => {
 
   const Wrapper = enableNewNavigation
     ? Fragment
-    : () => <PageWithSimpleHeader title="Order History" />
+    : ({ children }: { children: React.ReactNode }) => (
+        <PageWithSimpleHeader title="Order History">{children}</PageWithSimpleHeader>
+      )
 
   return (
     <Wrapper>
