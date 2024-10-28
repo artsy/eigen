@@ -169,7 +169,7 @@ export const MyCollectionArtworkGridItemFragmentContainer = createFragmentContai
           name
         }
         images(includeAll: $includeAllImages) {
-          url
+          url(version: "large")
           isDefault
           internalID
           versions
