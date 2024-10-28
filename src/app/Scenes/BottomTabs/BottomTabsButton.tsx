@@ -96,7 +96,6 @@ export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
       accessibilityLabel={`${tab} bottom tab`}
       accessibilityState={{ selected: isActive }}
       onPress={onPress}
-      haptic="impactLight"
       style={{
         flex: 1,
         ...(enableNewNavigation && isStaging

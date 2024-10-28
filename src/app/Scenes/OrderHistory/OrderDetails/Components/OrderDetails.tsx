@@ -133,7 +133,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
 }
 
 export const OrderDetailsPlaceholder: React.FC<{}> = () => (
-  <Flex px={2}>
+  <Flex px={2} testID="order-details-placeholder">
     <Flex flexDirection="row" mt={2}>
       <Flex mr={2}>
         <PlaceholderText width={80} marginTop={10} />
@@ -236,7 +236,10 @@ export const OrderDetailsQueryRender: React.FC<{ orderID: string }> = ({ orderID
   const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
   const Wrapper = enableNewNavigation
     ? Fragment
-    : () => <PageWithSimpleHeader title="Order Details" />
+    : ({ children }: { children: React.ReactNode }) => (
+        <PageWithSimpleHeader title="Order Details">{children}</PageWithSimpleHeader>
+      )
+
   return (
     <Wrapper>
       <QueryRenderer<OrderDetailsQuery>
