@@ -38,6 +38,7 @@ export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
   const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
 
   const selectedTab = useSelectedTab()
+  const color = useColor()
 
   const isActive = selectedTab === tab
 
@@ -96,7 +97,15 @@ export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
       accessibilityState={{ selected: isActive }}
       onPress={onPress}
       haptic="impactLight"
-      style={{ flex: 1 }}
+      style={{
+        flex: 1,
+        ...(enableNewNavigation && isStaging
+          ? {
+              borderTopWidth: 1,
+              borderTopColor: isStaging ? color("devpurple") : color("black100"),
+            }
+          : {}),
+      }}
       {...buttonProps}
     >
       <View style={{ flex: 1 }}>
@@ -126,9 +135,7 @@ export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
               alignItems="center"
               justifyContent="center"
             >
-              <Text variant="xxs" color={isStaging && isActive ? "devpurple" : "black100"}>
-                {bottomTabsConfig[tab].name}
-              </Text>
+              <Text variant="xxs">{bottomTabsConfig[tab].name}</Text>
             </Flex>
           </Flex>
         </ProgressiveOnboardingFindSavedArtwork>
