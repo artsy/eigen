@@ -63,7 +63,7 @@ export const SharedRoutes = (): JSX.Element => {
                   // when no header is visible, we want to make sure we are bound by the insets
                   isHeaderShown(module)
 
-                const hidesBottomTabs = module.options.hidesBottomTabs
+                const hidesBottomTabs = module.options.hidesBottomTabs || isModalScreen(module)
 
                 return (
                   <ScreenWrapper fullBleed={isFullBleed} hidesBottomTabs={hidesBottomTabs}>

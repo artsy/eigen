@@ -461,7 +461,6 @@ export const modules = defineModules({
     hidesBackButton: true,
   }),
   ConsignmentInquiry: reactModule(ConsignmentInquiryScreen, {
-    alwaysPresentModally: true,
     screenOptions: {
       gestureEnabled: false,
     },
