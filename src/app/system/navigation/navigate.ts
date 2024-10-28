@@ -119,9 +119,9 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
     ...module.options,
   }
 
-  const useNewNavigation = unsafe_getFeatureFlag("AREnableNewNavigation")
+  const enableNewNavigation = unsafe_getFeatureFlag("AREnableNewNavigation")
 
-  if (useNewNavigation) {
+  if (enableNewNavigation) {
     if (__unsafe_navigationRef.current?.isReady()) {
       __unsafe_navigationRef.current.dispatch(
         StackActions.push(result.module, { ...result.params, ...options.passProps })
@@ -250,11 +250,11 @@ export function dismissModal(after?: () => void) {
 }
 
 export function goBack(backProps?: GoBackProps) {
-  const useNewNavigation = unsafe_getFeatureFlag("AREnableNewNavigation")
+  const enableNewNavigation = unsafe_getFeatureFlag("AREnableNewNavigation")
 
   navigationEvents.emit("goBack", backProps)
 
-  if (useNewNavigation) {
+  if (enableNewNavigation) {
     if (__unsafe_navigationRef.current?.isReady()) {
       __unsafe_navigationRef.current.dispatch(StackActions.pop())
     }

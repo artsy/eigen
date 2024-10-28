@@ -364,14 +364,8 @@ export function getDomainMap(): Record<string, RouteMatcher[] | null> {
       alwaysPresentModally: true,
     }),
     addWebViewRoute("/price-database"),
-    addWebViewRoute("/privacy", {
-      // TODO: is this required?
-      // alwaysPresentModally: true,
-    }),
-    addWebViewRoute("/terms", {
-      // TODO: is this required?
-      // alwaysPresentModally: true,
-    }),
+    addWebViewRoute("/privacy"),
+    addWebViewRoute("/terms"),
     addWebViewRoute("/unsubscribe"),
 
     // Every other route needs to go above

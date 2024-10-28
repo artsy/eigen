@@ -152,7 +152,7 @@ export const SaleCardFragmentContainer = createFragmentContainer(SaleCard, {
       liveStartAt
       endAt
       coverImage {
-        url(version: "larger")
+        url
       }
       partner {
         name

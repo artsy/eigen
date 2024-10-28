@@ -60,7 +60,7 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
         ItemSeparatorComponent={() => <Spacer y={2} />}
         contentContainerStyle={{
           paddingTop: space(2),
-          paddingBottom: space(2),
+          paddingBottom: space(4),
           paddingLeft: space(2),
         }}
         ListFooterComponent={

@@ -15,6 +15,7 @@ import { goBack } from "app/system/navigation/navigate"
 import { View } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
+console.log("=======")
 export const SharedRoutes = (): JSX.Element => {
   const { theme } = useTheme()
   return (

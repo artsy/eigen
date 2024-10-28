@@ -526,9 +526,15 @@ export const modules = defineModules({
     hidesBackButton: true,
     fullBleed: true,
   }),
-  Inbox: reactModule(InboxQueryRenderer, { isRootViewForTabName: "inbox", hidesBackButton: true }, [
-    InboxScreenQuery,
-  ]),
+  Inbox: reactModule(
+    InboxQueryRenderer,
+    {
+      isRootViewForTabName: "inbox",
+      hidesBackButton: true,
+      fullBleed: !unsafe_getFeatureFlag("AREnableNewNavigation"),
+    },
+    [InboxScreenQuery]
+  ),
   Inquiry: reactModule(Inquiry, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   LiveAuction: reactModule(LiveAuctionView, {
     alwaysPresentModally: true,

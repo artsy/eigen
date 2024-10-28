@@ -28,11 +28,13 @@ export interface BottomTabsButtonProps {
 
 export const BOTTOM_TABS_TEXT_HEIGHT = 15
 
+// TODO: Improve this component once we remove enableNewNavigation feature flag
+// There are too many rerenders happening in this component
 export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
   tab,
   badgeCount: badgeCountProp = 0,
   visualClue,
-  forceDisplayVisualClue,
+  forceDisplayVisualClue: forceDisplayVisualClueProp,
   ...buttonProps
 }) => {
   const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
@@ -42,7 +44,19 @@ export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
 
   const isActive = selectedTab === tab
 
-  const { unreadConversationsCount } = useTabBarBadge()
+  const { unreadConversationsCount, hasUnseenNotifications } = useTabBarBadge()
+
+  const forceDisplayVisualClue = useMemo(() => {
+    if (!enableNewNavigation) {
+      return forceDisplayVisualClueProp
+    }
+
+    if (tab === "home") {
+      return hasUnseenNotifications
+    }
+
+    return false
+  }, [hasUnseenNotifications, forceDisplayVisualClueProp])
 
   const badgeCount = useMemo(() => {
     if (!enableNewNavigation) {

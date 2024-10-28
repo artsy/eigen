@@ -1,8 +1,9 @@
-import { BackButton, Flex, InfoCircleIcon, Text, Touchable } from "@artsy/palette-mobile"
+import { BackButton, InfoCircleIcon, Touchable } from "@artsy/palette-mobile"
 import NetInfo from "@react-native-community/netinfo"
 import { ConversationQuery } from "__generated__/ConversationQuery.graphql"
 import { Conversation_me$data } from "__generated__/Conversation_me.graphql"
 import ConnectivityBanner from "app/Components/ConnectivityBanner"
+import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { ComposerFragmentContainer } from "app/Scenes/Inbox/Components/Conversations/Composer"
 import Messages from "app/Scenes/Inbox/Components/Conversations/Messages"
 import { sendConversationMessage } from "app/Scenes/Inbox/Components/Conversations/SendConversationMessage"
@@ -21,18 +22,6 @@ import styled from "styled-components/native"
 const Container = styled.View`
   flex: 1;
   flex-direction: column;
-`
-const Header = styled.View`
-  align-self: stretch;
-  flex-direction: column;
-  margin-bottom: 18px;
-`
-
-const HeaderTextContainer = styled(Flex)`
-  flex-direction: row;
-  justify-content: center;
-  flex-grow: 1;
-  justify-content: space-between;
 `
 
 interface Props {
@@ -161,72 +150,69 @@ export class Conversation extends React.Component<Props, State> {
     }
 
     return (
-      <ComposerFragmentContainer
-        conversation={conversation}
-        disabled={this.state.sendingMessage || !this.state.isConnected}
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        ref={(composer) => (this.composer = composer)}
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        value={this.state.failedMessageText}
-        onSubmit={(text) => {
-          this.setState({ sendingMessage: true, failedMessageText: null })
-          sendConversationMessage(
-            this.props.relay.environment,
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            conversation,
-            text,
-            (_response) => {
-              this.messageSuccessfullySent(text)
-            },
-            (error) => {
-              this.messageFailedToSend(error, text)
-            }
-          )
-          this.messages.scrollToLastMessage()
-        }}
+      <PageWithSimpleHeader
+        title={partnerName}
+        left={<BackButton onPress={goBack} />}
+        right={
+          <Touchable
+            onPress={() => {
+              navigate(`/conversation/${this.props.me?.conversation?.internalID}/details`)
+            }}
+            hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
+          >
+            <InfoCircleIcon />
+          </Touchable>
+        }
       >
-        <Container>
-          <Header>
-            <Flex flexDirection="row" alignSelf="stretch" mx={2}>
-              <HeaderTextContainer>
-                <BackButton onPress={goBack} />
-                <Text ml={1} variant="sm">
-                  {partnerName}
-                </Text>
-                <Touchable
-                  onPress={() => {
-                    navigate(`/conversation/${this.props.me?.conversation?.internalID}/details`)
-                  }}
-                  hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
-                >
-                  <InfoCircleIcon />
-                </Touchable>
-              </HeaderTextContainer>
-            </Flex>
-          </Header>
-          <ShadowSeparator />
-          {!this.state.isConnected && <ConnectivityBanner />}
-          <Messages
-            componentRef={(messages) => (this.messages = messages)}
-            conversation={conversation as any}
-            onDataFetching={(loading) => {
-              this.setState({ fetchingData: loading })
-            }}
-            onRefresh={() => {
-              this.props.relay.refetch(
-                { conversationID: conversation?.internalID },
-                null,
-                (error) => {
-                  if (error) {
-                    console.error("Conversation.tsx", error.message)
-                  }
-                },
-                { force: true }
-              )
-            }}
-          />
-        </Container>
-      </ComposerFragmentContainer>
+        <ComposerFragmentContainer
+          conversation={conversation}
+          disabled={this.state.sendingMessage || !this.state.isConnected}
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+          ref={(composer) => (this.composer = composer)}
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+          value={this.state.failedMessageText}
+          onSubmit={(text) => {
+            this.setState({ sendingMessage: true, failedMessageText: null })
+            sendConversationMessage(
+              this.props.relay.environment,
+              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+              conversation,
+              text,
+              (_response) => {
+                this.messageSuccessfullySent(text)
+              },
+              (error) => {
+                this.messageFailedToSend(error, text)
+              }
+            )
+            this.messages.scrollToLastMessage()
+          }}
+        >
+          <Container>
+            <ShadowSeparator />
+            {!this.state.isConnected && <ConnectivityBanner />}
+            <Messages
+              componentRef={(messages) => (this.messages = messages)}
+              conversation={conversation as any}
+              onDataFetching={(loading) => {
+                this.setState({ fetchingData: loading })
+              }}
+              onRefresh={() => {
+                this.props.relay.refetch(
+                  { conversationID: conversation?.internalID },
+                  null,
+                  (error) => {
+                    if (error) {
+                      console.error("Conversation.tsx", error.message)
+                    }
+                  },
+                  { force: true }
+                )
+              }}
+            />
+          </Container>
+        </ComposerFragmentContainer>
+      </PageWithSimpleHeader>
     )
   }
 }

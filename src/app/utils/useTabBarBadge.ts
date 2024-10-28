@@ -22,7 +22,6 @@ export const useTabBarBadge = () => {
 
   return {
     unreadConversationsCount: unreadConversationsCount || undefined,
-    // TODO: USE THIS
     hasUnseenNotifications,
   }
 }
