@@ -1,4 +1,4 @@
-import { Banner, LinkText, Text } from "@artsy/palette-mobile"
+import { Banner, Flex, LinkText, Text } from "@artsy/palette-mobile"
 import { useIsFocused } from "@react-navigation/native"
 import { PaymentFailureBannerQuery } from "__generated__/PaymentFailureBannerQuery.graphql"
 import { PaymentFailureBannerRefetchQuery } from "__generated__/PaymentFailureBannerRefetchQuery.graphql"
@@ -69,20 +69,27 @@ export const PaymentFailureBanner: React.FC = () => {
 
   const bannerText =
     failedPayments.length === 1
-      ? "Payment failed for your recent order.\n"
-      : "Payment failed for your recent orders.\n"
+      ? "Payment failed for your recent order."
+      : "Payment failed for your recent orders."
 
   const linkText =
     failedPayments.length === 1 ? "Update payment method." : "Update payment method for each order."
 
   return (
     <Banner data-testid="PaymentFailureBanner" variant="error" dismissable>
-      <Text style={{ alignSelf: "center" }} textAlign="left" variant="xs" color="white100">
-        {bannerText}{" "}
-        <LinkText variant="xs" color="white100" onPress={() => handleBannerLinkClick()}>
+      <Flex>
+        <Text textAlign="left" variant="xs" color="white100">
+          {bannerText}
+        </Text>
+        <LinkText
+          variant="xs"
+          textAlign="left"
+          color="white100"
+          onPress={() => handleBannerLinkClick()}
+        >
           {linkText}
         </LinkText>
-      </Text>
+      </Flex>
     </Banner>
   )
 }

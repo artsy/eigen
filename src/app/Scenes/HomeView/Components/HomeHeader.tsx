@@ -1,4 +1,4 @@
-import { ArtsyLogoBlackIcon, Flex, Box, useSpace } from "@artsy/palette-mobile"
+import { ArtsyLogoBlackIcon, Flex, Box } from "@artsy/palette-mobile"
 import { PaymentFailureBanner } from "app/Scenes/HomeView/Components/PaymentFailureBanner"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -11,8 +11,6 @@ export const HomeHeader: React.FC = () => {
     (state) => state.bottomTabs.hasUnseenNotifications
   )
 
-  const space = useSpace()
-
   return (
     <>
       {!!showPaymentFailureBanner && (
@@ -20,7 +18,7 @@ export const HomeHeader: React.FC = () => {
           <PaymentFailureBanner />
         </Suspense>
       )}
-      <Box style={{ paddingTop: space(2), paddingBottom: space(2) }}>
+      <Box py={2}>
         <Flex flexDirection="row" px={2} justifyContent="space-between" alignItems="center">
           <Box flex={1} />
           <Box>
