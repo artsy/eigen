@@ -1,8 +1,11 @@
+import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import { Chip, Flex, Skeleton, SkeletonBox, Spacer, useSpace } from "@artsy/palette-mobile"
 import { HomeViewSectionCardsChipsQuery } from "__generated__/HomeViewSectionCardsChipsQuery.graphql"
 import { HomeViewSectionCardsChips_section$key } from "__generated__/HomeViewSectionCardsChips_section.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
+import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -20,17 +23,32 @@ const CHIP_WIDTH = 230
 
 export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps> = ({
   section: sectionProp,
+  index,
 }) => {
   const space = useSpace()
+  const tracking = useHomeViewTracking()
   const section = useFragment(fragment, sectionProp)
-  const links = extractNodes(section.cardsConnection)
+  const cards = extractNodes(section.cardsConnection)
 
-  if (links.length === 0) return null
+  if (cards.length === 0) return null
 
-  const numColumns = !isTablet() ? Math.ceil(links.length / 3) : Math.ceil(links.length / 2)
+  const numColumns = !isTablet() ? Math.ceil(cards.length / 3) : Math.ceil(cards.length / 2)
   const snapToOffsets = !isTablet()
     ? [CHIP_WIDTH / 2 + CHIP_WIDTH / 4 + space(0.5), CHIP_WIDTH * 2]
     : [CHIP_WIDTH * numColumns - 2]
+
+  const handleOnChipPress = (card: (typeof cards)[number], index: number) => {
+    if (card.href) {
+      tracking.tappedCardGroup({
+        contextModule: section.contextModule as ContextModule,
+        destinationOwnerType: card.entityType as ScreenOwnerType,
+        href: card.href,
+        entityID: card.entityID ?? "",
+        horizontalSlidePosition: index,
+      })
+      navigate(card.href)
+    }
+  }
 
   return (
     <Flex p={2}>
@@ -54,21 +72,24 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           numColumns={numColumns}
-          data={links}
+          data={cards}
           keyExtractor={(item, index) => `item_${index}_${item.entityID}`}
-          renderItem={({ item }) => (
+          renderItem={({ item, index }) => (
             <Flex minWidth={CHIP_WIDTH}>
               <Chip
                 key={item.href}
                 title={item.title}
-                onPress={() => {
-                  if (item?.href) navigate(item.href)
-                }}
+                onPress={() => handleOnChipPress(item, index)}
               />
             </Flex>
           )}
         />
       </ScrollView>
+
+      <HomeViewSectionSentinel
+        contextModule={section.contextModule as ContextModule}
+        index={index}
+      />
     </Flex>
   )
 }
@@ -86,6 +107,7 @@ const fragment = graphql`
       edges {
         node {
           entityID
+          entityType
           title
           href
         }

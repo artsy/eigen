@@ -285,8 +285,9 @@ export const features = {
   },
   AREnableMarketingCollectionsCategories: {
     description: "Enable marketing collections categories elements in the home view",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableMarketingCollectionsCategories",
   },
   ARPreferLegacyHomeScreen: {
     description: "Prefer legacy home screen",

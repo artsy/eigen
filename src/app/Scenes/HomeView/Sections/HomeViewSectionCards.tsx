@@ -1,3 +1,4 @@
+import { ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
 import {
   Flex,
   Image,
@@ -11,7 +12,9 @@ import {
 } from "@artsy/palette-mobile"
 import { HomeViewSectionCardsQuery } from "__generated__/HomeViewSectionCardsQuery.graphql"
 import { HomeViewSectionCards_section$key } from "__generated__/HomeViewSectionCards_section.graphql"
+import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
+import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -23,13 +26,16 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 interface HomeViewSectionCardsProps {
   section: HomeViewSectionCards_section$key
   homeViewSectionId: string
+  index: number
 }
 
-export const HomeViewSectionExploreBy: React.FC<HomeViewSectionCardsProps> = ({
+export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
   section: _section,
   homeViewSectionId,
+  index,
 }) => {
   const { width } = useScreenDimensions()
+  const tracking = useHomeViewTracking()
   const space = useSpace()
   const section = useFragment(fragment, _section)
 
@@ -41,29 +47,38 @@ export const HomeViewSectionExploreBy: React.FC<HomeViewSectionCardsProps> = ({
 
   const imageColumnGaps = columns === 2 ? space(0.5) : 0
   const imageSize = width / columns - space(2) - imageColumnGaps
-  const categories = extractNodes(section.cardsConnection)
+  const cards = extractNodes(section.cardsConnection)
 
-  const handleCategoryPress = (category: string, entityID: string) => {
-    navigate(
-      `/collections-by-category/${category}?homeViewSectionId=${homeViewSectionId}&entityID=${entityID}`
-    )
+  const handleCardPress = (card: (typeof cards)[number], index: number) => {
+    const href =
+      card.entityType === OwnerType.collectionsCategory
+        ? `/collections-by-category/${card.title}?homeViewSectionId=${homeViewSectionId}&entityID=${card.entityID}`
+        : card.href
+
+    if (href) {
+      tracking.tappedCardGroup({
+        contextModule: section.contextModule as ContextModule,
+        destinationOwnerType: card.entityType as ScreenOwnerType,
+        href,
+        entityID: card.entityID,
+        positionY: index,
+      })
+      navigate(href)
+    }
   }
 
   return (
     <Flex p={2} gap={space(2)}>
       <Text>{section.component?.title}</Text>
       <Flex flexDirection="row" flexWrap="wrap" gap={space(1)}>
-        {categories.map((category, index) => {
-          const src = category.image?.url
+        {cards.map((card, index) => {
+          const src = card.image?.url
           if (!src) {
             return null
           }
 
           return (
-            <Touchable
-              key={`exploreBy-${index}`}
-              onPress={() => handleCategoryPress(category.title, category.entityID)}
-            >
+            <Touchable key={`exploreBy-${index}`} onPress={() => handleCardPress(card, index)}>
               <Flex borderRadius={5} overflow="hidden">
                 <Image src={src} width={imageSize} height={imageSize} />
 
@@ -74,13 +89,18 @@ export const HomeViewSectionExploreBy: React.FC<HomeViewSectionCardsProps> = ({
                   backgroundColor="white100"
                   p={0.5}
                 >
-                  <Text variant="lg-display">{category.title}</Text>
+                  <Text variant="lg-display">{card.title}</Text>
                 </Flex>
               </Flex>
             </Touchable>
           )
         })}
       </Flex>
+
+      <HomeViewSectionSentinel
+        contextModule={section.contextModule as ContextModule}
+        index={index}
+      />
     </Flex>
   )
 }
@@ -91,11 +111,14 @@ const fragment = graphql`
     component {
       title
     }
+    contextModule
     cardsConnection(first: 6) {
       edges {
         node {
           entityID @required(action: NONE)
           title @required(action: NONE)
+          entityType
+          href
           image {
             url
           }
@@ -142,9 +165,9 @@ const HomeViewCardsPlaceholder: React.FC = () => {
 }
 
 export const HomeViewSectionCardsQueryRenderer = withSuspense<
-  Pick<SectionSharedProps, "sectionID">
+  Pick<SectionSharedProps, "sectionID" | "index">
 >({
-  Component: ({ sectionID }) => {
+  Component: ({ sectionID, index }) => {
     const isEnabled = useFeatureFlag("AREnableMarketingCollectionsCategories")
     const data = useLazyLoadQuery<HomeViewSectionCardsQuery>(query, { id: sectionID, isEnabled })
 
@@ -153,7 +176,11 @@ export const HomeViewSectionCardsQueryRenderer = withSuspense<
     }
 
     return (
-      <HomeViewSectionExploreBy section={data.homeView.section} homeViewSectionId={sectionID} />
+      <HomeViewSectionCards
+        section={data.homeView.section}
+        homeViewSectionId={sectionID}
+        index={index}
+      />
     )
   },
   LoadingFallback: HomeViewCardsPlaceholder,
