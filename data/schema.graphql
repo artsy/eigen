@@ -4095,6 +4095,30 @@ type CitySponsoredContent {
   ): ShowConnection
 }
 
+# An client-facing feature flag, used for tracking releases, experiments, etc.
+type ClientFeatureFlag {
+  # A description of the feature
+  description: String
+
+  # Whether the feature is enabled
+  enabled: String!
+
+  # The name of the feature
+  name: String!
+
+  # The name of the experimental variant being shown currently (when the feature is of type `experiment`)
+  variant: String
+
+  # The variants available within this experiment (when the feature is of type `experiment`)
+  variants: [ClientFeatureFlagVariant]
+}
+
+type ClientFeatureFlagVariant {
+  name: String!
+  stickiness: String
+  weight: Int!
+}
+
 # A collection of artworks
 type Collection {
   artworksConnection(
@@ -9844,6 +9868,7 @@ type FeatureEdge {
   node: Feature
 }
 
+# An admin-facing feature flag, used for managing releases, experiments, etc.
 type FeatureFlag {
   createdAt(
     format: String
@@ -10978,6 +11003,9 @@ type HomePageSalesModule {
 
 # Schema for server-driven home view content
 type HomeView {
+  # Currently running A/B tests for home view content
+  experiments: [ClientFeatureFlag]!
+
   # A single home view section, addressed by internal id
   section(
     # The ID of the section
@@ -16181,7 +16209,7 @@ type Query {
     respectParamsOrder: Boolean = false
   ): ArtworkConnection
     @deprecated(
-      reason: "This is only for use in resolving stitched queries, not for first-class client use."
+      reason: "This is only for use in resolving stitched queries, not for first-class client use!"
     )
 
   # Artworks Elastic Search results
@@ -20911,7 +20939,7 @@ type Viewer {
     respectParamsOrder: Boolean = false
   ): ArtworkConnection
     @deprecated(
-      reason: "This is only for use in resolving stitched queries, not for first-class client use."
+      reason: "This is only for use in resolving stitched queries, not for first-class client use!"
     )
 
   # Artworks Elastic Search results
