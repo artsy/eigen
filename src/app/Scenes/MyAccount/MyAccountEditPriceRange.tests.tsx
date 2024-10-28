@@ -1,5 +1,6 @@
 import { screen } from "@testing-library/react-native"
 import { MyAccountEditPriceRangeTestsQuery } from "__generated__/MyAccountEditPriceRangeTestsQuery.graphql"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
@@ -11,6 +12,9 @@ import {
 describe(MyAccountEditPriceRangeQueryRenderer, () => {
   beforeEach(() => {
     jest.clearAllMocks()
+    __globalStoreTestUtils__?.injectFeatureFlags({
+      AREnableNewNavigation: true,
+    })
   })
 
   const { renderWithRelay } = setupTestWrapper<MyAccountEditPriceRangeTestsQuery>({

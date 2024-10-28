@@ -21,7 +21,7 @@ export const MyProfileSettings: React.FC = () => {
   const Wrapper = enableNewNavigation
     ? Fragment
     : ({ children }: { children: React.ReactNode }) => (
-        <PageWithSimpleHeader title="Edit Profile">{children}</PageWithSimpleHeader>
+        <PageWithSimpleHeader title="Profile">{children}</PageWithSimpleHeader>
       )
   return (
     <Wrapper>
