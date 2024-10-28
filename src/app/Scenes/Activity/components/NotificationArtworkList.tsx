@@ -36,7 +36,8 @@ export const NotificationArtworkList: FC<NotificationArtworkListProps> = (props)
   const color = useColor()
 
   return (
-    <Flex minHeight={400}>
+    // Setting the min heiht here because lashlist needs a container with a valid height.
+    <Flex minHeight={1}>
       <MasonryInfiniteScrollArtworkGrid
         animated
         artworks={artworks}
