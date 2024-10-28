@@ -21,5 +21,5 @@ appId: ${MAESTRO_APP_ID}
     when:
       platform: Android
     commands:
-      - tapOn: "checkbox of consent, Check this element to consent with the Terms of Service"
+      - tapOn: "Accept terms and privacy policy, Check this element to accept Artsy's terms and privacy policy"
 - tapOn: "Next.*"
