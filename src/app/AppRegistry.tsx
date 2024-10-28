@@ -480,7 +480,7 @@ export const modules = defineModules({
     hidesBottomTabs: !unsafe_getFeatureFlag("AREnableNewNavigation"),
     hidesBackButton: !unsafe_getFeatureFlag("AREnableNewNavigation"),
     alwaysPresentModally: !!unsafe_getFeatureFlag("AREnableNewNavigation"),
-    fullBleed: true,
+    fullBleed: !!unsafe_getFeatureFlag("AREnableNewNavigation"),
     screenOptions: {
       headerTitle: "Dev Settings",
       headerLargeTitle: true,
@@ -547,21 +547,25 @@ export const modules = defineModules({
     },
   }),
   MyAccountEditEmail: reactModule(MyAccountEditEmailQueryRenderer, {
+    hidesBackButton: !unsafe_getFeatureFlag("AREnableNewNavigation"),
     screenOptions: {
       headerTitle: "Email",
     },
   }),
   MyAccountEditPriceRange: reactModule(MyAccountEditPriceRangeQueryRenderer, {
+    hidesBackButton: !unsafe_getFeatureFlag("AREnableNewNavigation"),
     screenOptions: {
       headerTitle: "Price Range",
     },
   }),
   MyAccountEditPassword: reactModule(MyAccountEditPassword, {
+    hidesBackButton: !unsafe_getFeatureFlag("AREnableNewNavigation"),
     screenOptions: {
       headerTitle: "Password",
     },
   }),
   MyAccountEditPhone: reactModule(MyAccountEditPhoneQueryRenderer, {
+    hidesBackButton: !unsafe_getFeatureFlag("AREnableNewNavigation"),
     screenOptions: {
       headerTitle: "Phone Number",
     },
@@ -698,7 +702,6 @@ export const modules = defineModules({
     hasOwnModalCloseButton: true,
   }),
   ModalWebView: reactModule(ArtsyWebViewPage, {
-    // fullBleed: false,
     hasOwnModalCloseButton: true,
     hidesBackButton: true,
     alwaysPresentModally: true,
@@ -707,7 +710,6 @@ export const modules = defineModules({
     },
   }),
   ReactWebView: reactModule(ArtsyWebViewPage, {
-    // fullBleed: true,
     hasOwnModalCloseButton: true,
     hidesBackButton: true,
   }),

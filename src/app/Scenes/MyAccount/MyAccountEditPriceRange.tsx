@@ -2,12 +2,15 @@ import { Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { MyAccountEditPriceRangeQuery } from "__generated__/MyAccountEditPriceRangeQuery.graphql"
 import { MyAccountEditPriceRange_me$data } from "__generated__/MyAccountEditPriceRange_me.graphql"
+import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { Select, SelectOption } from "app/Components/Select"
+import { MyAccountFieldEditScreen } from "app/Scenes/MyAccount/Components/MyAccountFieldEditScreen"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderBox } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import React, { useEffect, useState } from "react"
+import React, { Fragment, useEffect, useState } from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { updateMyUserProfile } from "./updateMyUserProfile"
 
@@ -15,6 +18,8 @@ const MyAccountEditPriceRange: React.FC<{
   me: MyAccountEditPriceRange_me$data
 }> = ({ me }) => {
   const navigation = useNavigation()
+  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
+
   const [receivedError, setReceivedError] = useState<string | undefined>(undefined)
   const [priceRange, setPriceRange] = useState<string>(me.priceRange ?? "")
   const [priceRangeMax, setPriceRangeMax] = useState<number | null | undefined>(me.priceRangeMax)
@@ -49,31 +54,65 @@ const MyAccountEditPriceRange: React.FC<{
     }
   }
 
+  const Wrapper = enableNewNavigation
+    ? Fragment
+    : ({ children }: { children: React.ReactNode }) => (
+        <MyAccountFieldEditScreen
+          title="Price Range"
+          canSave={!!priceRange && priceRange !== me.priceRange}
+          onSave={async (dismiss) => {
+            try {
+              await updateMyUserProfile({ priceRangeMin, priceRangeMax })
+              dismiss()
+            } catch (e: any) {
+              setReceivedError(e)
+            }
+          }}
+        >
+          {children}
+        </MyAccountFieldEditScreen>
+      )
+
   return (
-    <Flex p={2}>
-      <Select
-        title="Price Range"
-        options={PRICE_BUCKETS}
-        enableSearch={false}
-        value={priceRange}
-        onSelectValue={(value) => {
-          setPriceRange(value)
+    <Wrapper>
+      <Flex p={enableNewNavigation ? 2 : 0}>
+        <Select
+          title="Price Range"
+          options={PRICE_BUCKETS}
+          enableSearch={false}
+          value={priceRange}
+          onSelectValue={(value) => {
+            setPriceRange(value)
 
-          // We don't actually accept a priceRange,
-          // so have to split it into min/max
-          const [priceRangeMinFin, priceRangeMaxFin] = value.split(":").map((n) => parseInt(n, 10))
+            // We don't actually accept a priceRange,
+            // so have to split it into min/max
+            const [priceRangeMinFin, priceRangeMaxFin] = value
+              .split(":")
+              .map((n) => parseInt(n, 10))
 
-          setPriceRangeMin(priceRangeMinFin)
-          setPriceRangeMax(priceRangeMaxFin)
-        }}
-        hasError={!!receivedError}
-      />
-    </Flex>
+            setPriceRangeMin(priceRangeMinFin)
+            setPriceRangeMax(priceRangeMaxFin)
+          }}
+          hasError={!!receivedError}
+        />
+      </Flex>
+    </Wrapper>
   )
 }
 
 const MyAccountEditPriceRangePlaceholder: React.FC<{}> = ({}) => {
-  return <PlaceholderBox height={40} />
+  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
+  const Wrapper = enableNewNavigation
+    ? Fragment
+    : ({ children }: { children: React.ReactNode }) => (
+        <PageWithSimpleHeader title="Price Range">{children}</PageWithSimpleHeader>
+      )
+
+  return (
+    <Wrapper>
+      <PlaceholderBox height={40} />
+    </Wrapper>
+  )
 }
 
 export const MyAccountEditPriceRangeContainer = createFragmentContainer(MyAccountEditPriceRange, {

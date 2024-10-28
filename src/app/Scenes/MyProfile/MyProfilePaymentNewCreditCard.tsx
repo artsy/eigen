@@ -5,12 +5,14 @@ import { CreateCardTokenParams } from "@stripe/stripe-react-native/lib/typescrip
 import { MyProfilePaymentNewCreditCardSaveCardMutation } from "__generated__/MyProfilePaymentNewCreditCardSaveCardMutation.graphql"
 import { CountrySelect } from "app/Components/CountrySelect"
 import { CreditCardField } from "app/Components/CreditCardField/CreditCardField"
+import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { Select } from "app/Components/Select/SelectV2"
 import { Stack } from "app/Components/Stack"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Action, Computed, action, computed, useLocalStore } from "easy-peasy"
-import React, { useEffect, useRef } from "react"
+import React, { Fragment, useEffect, useRef } from "react"
 import { Alert, ScrollView } from "react-native"
 import { commitMutation, graphql } from "react-relay"
 import { __triggerRefresh } from "./MyProfilePayment"
@@ -66,6 +68,7 @@ interface Store {
 
 export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
   const { createToken } = useStripe()
+  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
 
   const [state, actions] = useLocalStore<Store>(() => ({
     fields: {
@@ -164,92 +167,100 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
     }
   }
 
+  const Wrapper = enableNewNavigation
+    ? Fragment
+    : ({ children }: { children: React.ReactNode }) => (
+        <PageWithSimpleHeader title="Add Credit Card">{children}</PageWithSimpleHeader>
+      )
+
   return (
-    <ScrollView ref={scrollViewRef}>
-      <Flex p={2}>
-        <Stack spacing={2}>
-          <>
-            <CreditCardField
-              onCardChange={(cardDetails) => {
-                actions.fields.creditCard.setValue({
-                  valid: cardDetails.complete,
-                  params: {
-                    expMonth: cardDetails.expiryMonth,
-                    expYear: cardDetails.expiryYear,
-                    last4: cardDetails.last4,
-                  },
-                })
-              }}
+    <Wrapper>
+      <ScrollView ref={scrollViewRef}>
+        <Flex p={2}>
+          <Stack spacing={2}>
+            <>
+              <CreditCardField
+                onCardChange={(cardDetails) => {
+                  actions.fields.creditCard.setValue({
+                    valid: cardDetails.complete,
+                    params: {
+                      expMonth: cardDetails.expiryMonth,
+                      expYear: cardDetails.expiryYear,
+                      last4: cardDetails.last4,
+                    },
+                  })
+                }}
+              />
+            </>
+
+            <Input
+              title="Name on card"
+              placeholder="Full name"
+              onChangeText={actions.fields.fullName.setValue}
+              returnKeyType="next"
+              onSubmitEditing={() => addressLine1Ref.current?.focus()}
             />
-          </>
+            <Input
+              ref={addressLine1Ref}
+              title="Address line 1"
+              placeholder="Add street address"
+              onChangeText={actions.fields.addressLine1.setValue}
+              returnKeyType="next"
+              onSubmitEditing={() => addressLine2Ref.current?.focus()}
+            />
+            <Input
+              ref={addressLine2Ref}
+              title="Address line 2"
+              optional
+              placeholder={[
+                "Add your apt, floor, suite, etc.",
+                "Add your apt, floor, etc.",
+                "Add your apt, etc.",
+              ]}
+              onChangeText={actions.fields.addressLine2.setValue}
+              returnKeyType="next"
+              onSubmitEditing={() => cityRef.current?.focus()}
+            />
+            <Input
+              ref={cityRef}
+              title="City"
+              onChangeText={actions.fields.city.setValue}
+              returnKeyType="next"
+              onSubmitEditing={() => postalCodeRef.current?.focus()}
+            />
+            <Input
+              ref={postalCodeRef}
+              title="Postal Code"
+              onChangeText={actions.fields.postalCode.setValue}
+              returnKeyType="next"
+              onSubmitEditing={() => stateRef.current?.focus()}
+            />
 
-          <Input
-            title="Name on card"
-            placeholder="Full name"
-            onChangeText={actions.fields.fullName.setValue}
-            returnKeyType="next"
-            onSubmitEditing={() => addressLine1Ref.current?.focus()}
-          />
-          <Input
-            ref={addressLine1Ref}
-            title="Address line 1"
-            placeholder="Add street address"
-            onChangeText={actions.fields.addressLine1.setValue}
-            returnKeyType="next"
-            onSubmitEditing={() => addressLine2Ref.current?.focus()}
-          />
-          <Input
-            ref={addressLine2Ref}
-            title="Address line 2"
-            optional
-            placeholder={[
-              "Add your apt, floor, suite, etc.",
-              "Add your apt, floor, etc.",
-              "Add your apt, etc.",
-            ]}
-            onChangeText={actions.fields.addressLine2.setValue}
-            returnKeyType="next"
-            onSubmitEditing={() => cityRef.current?.focus()}
-          />
-          <Input
-            ref={cityRef}
-            title="City"
-            onChangeText={actions.fields.city.setValue}
-            returnKeyType="next"
-            onSubmitEditing={() => postalCodeRef.current?.focus()}
-          />
-          <Input
-            ref={postalCodeRef}
-            title="Postal Code"
-            onChangeText={actions.fields.postalCode.setValue}
-            returnKeyType="next"
-            onSubmitEditing={() => stateRef.current?.focus()}
-          />
+            <Input
+              ref={stateRef}
+              title="State, province, or region"
+              onChangeText={actions.fields.state.setValue}
+              onSubmitEditing={() => {
+                stateRef.current?.blur()
+                scrollViewRef.current?.scrollToEnd()
+                setTimeout(() => {
+                  countryRef.current?.open()
+                }, 100)
+              }}
+              returnKeyType="next"
+            />
 
-          <Input
-            ref={stateRef}
-            title="State, province, or region"
-            onChangeText={actions.fields.state.setValue}
-            onSubmitEditing={() => {
-              stateRef.current?.blur()
-              scrollViewRef.current?.scrollToEnd()
-              setTimeout(() => {
-                countryRef.current?.open()
-              }, 100)
-            }}
-            returnKeyType="next"
-          />
+            <Spacer y={2} />
 
-          <Spacer y={2} />
-
-          <CountrySelect
-            ref={countryRef}
-            onSelectValue={actions.fields.country.setValue}
-            value={state.fields.country.value}
-          />
-        </Stack>
-      </Flex>
-    </ScrollView>
+            <CountrySelect
+              ref={countryRef}
+              onSelectValue={actions.fields.country.setValue}
+              value={state.fields.country.value}
+            />
+          </Stack>
+        </Flex>
+      </ScrollView>
+    </Wrapper>
   )
 }
 

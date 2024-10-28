@@ -44,15 +44,7 @@ export const BottomTabs: React.FC<BottomTabBarProps> = (props) => {
   }
 
   return (
-    <Flex
-      position="absolute"
-      left={0}
-      right={0}
-      bottom={0}
-      pb={`${bottom}px`}
-      bg="white100"
-      height={BOTTOM_TABS_HEIGHT}
-    >
+    <Flex position="absolute" left={0} right={0} bottom={0} pb={`${bottom}px`} bg="white100">
       <Separator
         style={{
           borderColor: isStaging ? color("devpurple") : color("black10"),

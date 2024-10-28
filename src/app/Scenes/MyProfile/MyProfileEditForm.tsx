@@ -21,6 +21,7 @@ import { MyProfileEditForm_me$key } from "__generated__/MyProfileEditForm_me.gra
 import { Image } from "app/Components/Bidding/Elements/Image"
 import { buildLocationDisplay } from "app/Components/LocationAutocomplete"
 import LoadingModal from "app/Components/Modals/LoadingModal"
+import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import {
   UserProfileFields,
   UserProfileFormikSchema,
@@ -31,12 +32,13 @@ import { useEditProfile } from "app/Scenes/MyProfile/hooks/useEditProfile"
 import { navigate } from "app/system/navigation/navigate"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { getConvertedImageUrlFromS3 } from "app/utils/getConvertedImageUrlFromS3"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { sendEmail } from "app/utils/sendEmail"
 import { useHasBeenTrue } from "app/utils/useHasBeenTrue"
 import { FormikProvider, useFormik } from "formik"
-import React, { Suspense, useEffect, useState } from "react"
+import React, { Fragment, Suspense, useEffect, useState } from "react"
 import { ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery, useRefetchableFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -287,12 +289,21 @@ const MyProfileEditFormScreenQuery = graphql`
 `
 
 export const MyProfileEditFormScreen: React.FC<MyProfileEditFormProps> = (props) => {
+  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
+  const Wrapper = enableNewNavigation
+    ? Fragment
+    : ({ children }: { children: React.ReactNode }) => (
+        <PageWithSimpleHeader title="Edit Profile">{children}</PageWithSimpleHeader>
+      )
+
   return (
-    <ArtsyKeyboardAvoidingView>
-      <Suspense fallback={<LoadingSkeleton />}>
-        <MyProfileEditForm {...props} />
-      </Suspense>
-    </ArtsyKeyboardAvoidingView>
+    <Wrapper>
+      <ArtsyKeyboardAvoidingView>
+        <Suspense fallback={<LoadingSkeleton />}>
+          <MyProfileEditForm {...props} />
+        </Suspense>
+      </ArtsyKeyboardAvoidingView>
+    </Wrapper>
   )
 }
 

@@ -1,15 +1,17 @@
 import { useTheme } from "@artsy/palette-mobile"
 import { MenuItem } from "app/Components/MenuItem"
+import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { useToast } from "app/Components/Toast/toastHook"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import React, { useEffect, useState } from "react"
+import React, { Fragment, useEffect, useState } from "react"
 import { ScrollView } from "react-native"
 import DeviceInfo from "react-native-device-info"
 import useDebounce from "react-use/lib/useDebounce"
 
 export const About: React.FC = () => {
+  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
   const { color } = useTheme()
   const appVersion = DeviceInfo.getVersion()
   const toast = useToast()
@@ -43,26 +45,34 @@ export const About: React.FC = () => {
     [tapCount]
   )
 
+  const Wrapper = enableNewNavigation
+    ? Fragment
+    : ({ children }: { children: React.ReactNode }) => (
+        <PageWithSimpleHeader title="About">{children}</PageWithSimpleHeader>
+      )
+
   return (
-    <ScrollView contentContainerStyle={{ paddingTop: 10 }}>
-      <MenuItem
-        title={showNewDisclaimer ? "Terms and Conditions" : "Terms of Use"}
-        onPress={() => navigate("/terms")}
-      />
-      <MenuItem title="Privacy Policy" onPress={() => navigate("/privacy")} />
-      <MenuItem
-        title={showNewDisclaimer ? "Auction Supplement" : "Conditions of Sale"}
-        onPress={() => navigate(showNewDisclaimer ? "/supplemental-cos" : "/conditions-of-sale")}
-      />
-      <MenuItem
-        title="Version"
-        text={appVersion}
-        onPress={() => updateTapCount((count) => count + 1)}
-        chevron={false}
-        style={
-          userIsDev ? { borderRightColor: color("devpurple"), borderRightWidth: 1 } : undefined
-        }
-      />
-    </ScrollView>
+    <Wrapper>
+      <ScrollView contentContainerStyle={{ paddingTop: 10 }}>
+        <MenuItem
+          title={showNewDisclaimer ? "Terms and Conditions" : "Terms of Use"}
+          onPress={() => navigate("/terms")}
+        />
+        <MenuItem title="Privacy Policy" onPress={() => navigate("/privacy")} />
+        <MenuItem
+          title={showNewDisclaimer ? "Auction Supplement" : "Conditions of Sale"}
+          onPress={() => navigate(showNewDisclaimer ? "/supplemental-cos" : "/conditions-of-sale")}
+        />
+        <MenuItem
+          title="Version"
+          text={appVersion}
+          onPress={() => updateTapCount((count) => count + 1)}
+          chevron={false}
+          style={
+            userIsDev ? { borderRightColor: color("devpurple"), borderRightWidth: 1 } : undefined
+          }
+        />
+      </ScrollView>
+    </Wrapper>
   )
 }
