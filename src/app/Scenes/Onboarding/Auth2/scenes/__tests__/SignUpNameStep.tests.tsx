@@ -11,6 +11,8 @@ jest.mock("@artsy/palette-mobile", () => ({
   }),
 }))
 
+const mockUseCountryCode = useCountryCode as jest.Mock
+
 jest.mock("app/Scenes/Onboarding/Auth2/hooks/useCountryCode", () => ({
   useCountryCode: jest.fn().mockReturnValue({
     loading: false,
@@ -60,7 +62,7 @@ describe("SignUpNameStep", () => {
 
   describe("user is automatically subscribed", () => {
     beforeEach(() => {
-      ;(useCountryCode as jest.Mock).mockReturnValue({
+      mockUseCountryCode.mockReturnValue({
         isAutomaticallySubscribed: true,
       })
     })
