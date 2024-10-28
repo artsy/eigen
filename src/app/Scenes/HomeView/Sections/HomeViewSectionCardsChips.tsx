@@ -39,13 +39,13 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
 
   const handleOnChipPress = (card: (typeof cards)[number], index: number) => {
     if (card.href) {
-      tracking.tappedCardGroup({
-        contextModule: section.contextModule as ContextModule,
-        destinationOwnerType: card.entityType as ScreenOwnerType,
-        href: card.href,
-        entityID: card.entityID ?? "",
-        horizontalSlidePosition: index,
-      })
+      tracking.tappedCardGroup(
+        card.entityID,
+        card.entityType as ScreenOwnerType,
+        card.href,
+        section.contextModule as ContextModule,
+        index
+      )
       navigate(card.href)
     }
   }
@@ -106,8 +106,8 @@ const fragment = graphql`
     cardsConnection {
       edges {
         node {
-          entityID
-          entityType
+          entityID @required(action: NONE)
+          entityType @required(action: NONE)
           title
           href
         }

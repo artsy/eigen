@@ -56,13 +56,13 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
         : card.href
 
     if (href) {
-      tracking.tappedCardGroup({
-        contextModule: section.contextModule as ContextModule,
-        destinationOwnerType: card.entityType as ScreenOwnerType,
+      tracking.tappedCardGroup(
+        card.entityID,
+        card.entityType as ScreenOwnerType,
         href,
-        entityID: card.entityID,
-        positionY: index,
-      })
+        section.contextModule as ContextModule,
+        index
+      )
       navigate(href)
     }
   }
