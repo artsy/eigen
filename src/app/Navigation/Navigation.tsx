@@ -44,8 +44,8 @@ export const Navigation = () => {
         saveSession(state)
       }}
     >
-      {!isLoggedIn && UnauthenticatedRoutes()}
-      {!!isLoggedIn && AuthenticatedRoutes()}
+      {!isLoggedIn && UnauthenticatedRoutes}
+      {!!isLoggedIn && AuthenticatedRoutes}
     </NavigationContainer>
   )
 }
