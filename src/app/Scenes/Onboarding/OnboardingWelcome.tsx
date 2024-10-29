@@ -13,6 +13,7 @@ import {
   DEFAULT_NAVIGATION_BAR_COLOR,
 } from "app/NativeModules/ArtsyNativeModule"
 import { useScreenDimensions } from "app/utils/hooks"
+import { useSwitchStatusBarStyle } from "app/utils/useStatusBarStyle"
 import backgroundImage from "images/WelcomeImage.webp"
 import { MotiView } from "moti"
 import { useEffect } from "react"
@@ -58,6 +59,8 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
       )
     }
   }, [])
+
+  useSwitchStatusBarStyle("light-content", "dark-content")
 
   useEffect(() => {
     if (Platform.OS === "ios") {
