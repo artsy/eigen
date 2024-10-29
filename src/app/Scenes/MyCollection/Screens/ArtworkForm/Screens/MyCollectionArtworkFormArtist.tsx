@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { Spacer } from "@artsy/palette-mobile"
+import { SimpleMessage, Spacer } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
 import { AutosuggestResultsPlaceholder } from "app/Components/AutosuggestResults/AutosuggestResultsPlaceholder"
@@ -11,6 +11,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { Suspense } from "react"
+import { ErrorBoundary } from "react-error-boundary"
 import { useTracking } from "react-tracking"
 
 export const MyCollectionArtworkFormArtist: React.FC<
@@ -66,9 +67,15 @@ export const MyCollectionArtworkFormArtist: React.FC<
         Select an Artist
       </FancyModalHeader>
       <ScreenMargin>
-        <Suspense fallback={<Placeholder />}>
-          <ArtistAutosuggest onResultPress={handleResultPress} onSkipPress={handleSkipPress} />
-        </Suspense>
+        <ErrorBoundary
+          fallback={
+            <SimpleMessage m={2}>Something went wrong. Please check back later.</SimpleMessage>
+          }
+        >
+          <Suspense fallback={<Placeholder />}>
+            <ArtistAutosuggest onResultPress={handleResultPress} onSkipPress={handleSkipPress} />
+          </Suspense>
+        </ErrorBoundary>
       </ScreenMargin>
     </>
   )
