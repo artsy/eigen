@@ -411,3 +411,14 @@ https://github.com/fastlane/fastlane/pull/22025
 We want to be able to promote past android builds to prod because we are creating betas often and a release candidate may not be
 the latest. The developer APIs for google play only return the latest release and fastlane verifies that a release exists before allowing
 promotion. We added custom logic to work around this.
+
+## react-native-gesture-handler/ReanimatedSwipeable patch
+
+#### When we can remove this:
+
+When this pr is released in a new version of react-native-gesture-handler and we upgrade to it:
+https://github.com/software-mansion/react-native-gesture-handler/pull/3149
+
+#### Explanation/Context:
+
+We want to be able to open the swipeable view using the `openRight` function, but it doesn't seem to be working as expected. This patch is a workaround to make it work.

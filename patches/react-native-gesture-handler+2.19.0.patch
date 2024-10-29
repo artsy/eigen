@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-gesture-handler/src/components/ReanimatedSwipeable.tsx b/node_modules/react-native-gesture-handler/src/components/ReanimatedSwipeable.tsx
+index 40e760c..9e226a2 100644
+--- a/node_modules/react-native-gesture-handler/src/components/ReanimatedSwipeable.tsx
++++ b/node_modules/react-native-gesture-handler/src/components/ReanimatedSwipeable.tsx
+@@ -444,7 +444,7 @@ const Swipeable = forwardRef<SwipeableMethods, SwipeableProps>(
+       openRight() {
+         'worklet';
+         rightWidth.value = rowWidth.value - rightOffset.value;
+-        animateRow(calculateCurrentOffset(), -rightWidth.value);
++        animateRow(calculateCurrentOffset(), -(rowWidth.value - rightOffset.value));
+       },
+       reset() {
+         'worklet';
