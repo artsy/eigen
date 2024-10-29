@@ -3,7 +3,7 @@ import { useSpace } from "@artsy/palette-mobile"
 import { MasonryFlashList, MasonryFlashListProps } from "@shopify/flash-list"
 import { PriceOfferMessage } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { MasonryArtworkGridItem } from "app/Components/ArtworkGrids/MasonryArtworkGridItem"
-import { PartnerOffer } from "app/Scenes/Activity/components/NotificationArtworkList"
+import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
 import {
   ESTIMATED_MASONRY_ITEM_SIZE,
   MASONRY_LIST_PAGE_SIZE,
@@ -36,7 +36,7 @@ interface MasonryInfiniteScrollArtworkGridProps extends MasonryFlashListOmittedP
   loadMore?: (pageSize: number) => void
   onPress?: (artworkID: string) => void
   pageSize?: number
-  partnerOffer?: PartnerOffer
+  partnerOffer?: PartnerOffer | null
   priceOfferMessage?: PriceOfferMessage
 }
 
