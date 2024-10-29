@@ -1,25 +1,16 @@
-import { ScreenWrapper, SharedRoutes } from "app/Navigation/AuthenticatedRoutes/SharedRoutes"
-import { TabStackNavigator } from "app/Navigation/AuthenticatedRoutes/Tabs"
-import { SearchScreen } from "app/Scenes/Search/Search"
+import { modules } from "app/AppRegistry"
+import { SharedRoutes } from "app/Navigation/AuthenticatedRoutes/SharedRoutes"
+import { registerScreen, StackNavigator } from "app/Navigation/AuthenticatedRoutes/StackNavigator"
 
 export const SearchTab = (): JSX.Element => {
   return (
-    <TabStackNavigator.Navigator screenOptions={{ headerShown: false }} initialRouteName="Search">
-      <TabStackNavigator.Screen
-        name="Search"
-        options={{
-          headerShown: false,
-        }}
-        children={(props) => {
-          return (
-            <ScreenWrapper fullBleed>
-              <SearchScreen {...props} />
-            </ScreenWrapper>
-          )
-        }}
-      />
+    <StackNavigator.Navigator screenOptions={{ headerShown: false }} initialRouteName="Search">
+      {registerScreen({
+        name: "Search",
+        module: modules["Search"],
+      })}
 
       {SharedRoutes()}
-    </TabStackNavigator.Navigator>
+    </StackNavigator.Navigator>
   )
 }

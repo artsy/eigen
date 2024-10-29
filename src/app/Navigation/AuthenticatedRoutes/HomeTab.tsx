@@ -1,22 +1,15 @@
-import { ScreenWrapper, SharedRoutes } from "app/Navigation/AuthenticatedRoutes/SharedRoutes"
-import { TabStackNavigator } from "app/Navigation/AuthenticatedRoutes/Tabs"
-import { HomeContainer } from "app/Scenes/Home/HomeContainer"
+import { modules } from "app/AppRegistry"
+import { SharedRoutes } from "app/Navigation/AuthenticatedRoutes/SharedRoutes"
+import { registerScreen, StackNavigator } from "app/Navigation/AuthenticatedRoutes/StackNavigator"
 
 export const HomeTab = (): JSX.Element => {
   return (
-    <TabStackNavigator.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
-      <TabStackNavigator.Screen
-        name="Home"
-        children={(props) => {
-          return (
-            <ScreenWrapper fullBleed>
-              <HomeContainer {...props} />
-            </ScreenWrapper>
-          )
-        }}
-      />
-
+    <StackNavigator.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
+      {registerScreen({
+        name: "Home",
+        module: modules["Home"],
+      })}
       {SharedRoutes()}
-    </TabStackNavigator.Navigator>
+    </StackNavigator.Navigator>
   )
 }

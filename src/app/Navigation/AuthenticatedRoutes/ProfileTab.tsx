@@ -1,28 +1,16 @@
-import { ScreenWrapper, SharedRoutes } from "app/Navigation/AuthenticatedRoutes/SharedRoutes"
-import { TabStackNavigator } from "app/Navigation/AuthenticatedRoutes/Tabs"
-import { MyProfile } from "app/Scenes/MyProfile/MyProfile"
+import { modules } from "app/AppRegistry"
+import { SharedRoutes } from "app/Navigation/AuthenticatedRoutes/SharedRoutes"
+import { registerScreen, StackNavigator } from "app/Navigation/AuthenticatedRoutes/StackNavigator"
 
 export const ProfileTab = (): JSX.Element => {
   return (
-    <TabStackNavigator.Navigator
-      screenOptions={{ headerShown: false }}
-      initialRouteName="MyProfile"
-    >
-      <TabStackNavigator.Screen
-        name="MyProfile"
-        options={{
-          headerShown: false,
-        }}
-        children={(props) => {
-          return (
-            <ScreenWrapper fullBleed>
-              <MyProfile {...props} />
-            </ScreenWrapper>
-          )
-        }}
-      />
+    <StackNavigator.Navigator screenOptions={{ headerShown: false }} initialRouteName="MyProfile">
+      {registerScreen({
+        name: "MyProfile",
+        module: modules["MyProfile"],
+      })}
 
       {SharedRoutes()}
-    </TabStackNavigator.Navigator>
+    </StackNavigator.Navigator>
   )
 }

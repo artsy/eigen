@@ -1,25 +1,16 @@
-import { InboxQueryRenderer } from "app/Components/Containers/Inbox"
-import { ScreenWrapper, SharedRoutes } from "app/Navigation/AuthenticatedRoutes/SharedRoutes"
-import { TabStackNavigator } from "app/Navigation/AuthenticatedRoutes/Tabs"
+import { modules } from "app/AppRegistry"
+import { SharedRoutes } from "app/Navigation/AuthenticatedRoutes/SharedRoutes"
+import { registerScreen, StackNavigator } from "app/Navigation/AuthenticatedRoutes/StackNavigator"
 
 export const InboxTab = (): JSX.Element => {
   return (
-    <TabStackNavigator.Navigator screenOptions={{ headerShown: false }} initialRouteName="Inbox">
-      <TabStackNavigator.Screen
-        name="Inbox"
-        options={{
-          headerShown: false,
-        }}
-        children={(props) => {
-          return (
-            <ScreenWrapper fullBleed>
-              <InboxQueryRenderer {...props} />
-            </ScreenWrapper>
-          )
-        }}
-      />
+    <StackNavigator.Navigator screenOptions={{ headerShown: false }} initialRouteName="Inbox">
+      {registerScreen({
+        name: "Inbox",
+        module: modules["Inbox"],
+      })}
 
       {SharedRoutes()}
-    </TabStackNavigator.Navigator>
+    </StackNavigator.Navigator>
   )
 }

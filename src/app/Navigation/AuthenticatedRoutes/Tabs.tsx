@@ -1,5 +1,4 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { AppModule, modules } from "app/AppRegistry"
 import { HomeTab } from "app/Navigation/AuthenticatedRoutes/HomeTab"
 import { InboxTab } from "app/Navigation/AuthenticatedRoutes/InboxTab"
@@ -31,8 +30,6 @@ type TabRoutesParams = {
 }
 
 const Tab = createBottomTabNavigator<TabRoutesParams>()
-
-export const TabStackNavigator = createNativeStackNavigator<AuthenticatedRoutesParams>()
 
 export const AuthenticatedRoutes = (
   <Tab.Navigator

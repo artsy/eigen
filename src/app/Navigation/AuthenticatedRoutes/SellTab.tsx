@@ -1,25 +1,16 @@
-import { ScreenWrapper, SharedRoutes } from "app/Navigation/AuthenticatedRoutes/SharedRoutes"
-import { TabStackNavigator } from "app/Navigation/AuthenticatedRoutes/Tabs"
-import { SellWithArtsy } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils"
+import { modules } from "app/AppRegistry"
+import { SharedRoutes } from "app/Navigation/AuthenticatedRoutes/SharedRoutes"
+import { registerScreen, StackNavigator } from "app/Navigation/AuthenticatedRoutes/StackNavigator"
 
 export const SellTab = (): JSX.Element => {
   return (
-    <TabStackNavigator.Navigator screenOptions={{ headerShown: false }} initialRouteName="Sell">
-      <TabStackNavigator.Screen
-        name="Sell"
-        options={{
-          headerShown: false,
-        }}
-        children={(props) => {
-          return (
-            <ScreenWrapper fullBleed>
-              <SellWithArtsy {...props} />
-            </ScreenWrapper>
-          )
-        }}
-      />
+    <StackNavigator.Navigator screenOptions={{ headerShown: false }} initialRouteName="Sell">
+      {registerScreen({
+        name: "Sell",
+        module: modules["Sell"],
+      })}
 
       {SharedRoutes()}
-    </TabStackNavigator.Navigator>
+    </StackNavigator.Navigator>
   )
 }
