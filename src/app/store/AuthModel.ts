@@ -162,6 +162,7 @@ export interface AuthModel {
     GlobalStoreModel,
     Promise<AuthPromiseResolveType>
   >
+  authGoogle2: Thunk<this, { onSignIn?: () => void }, {}, GlobalStoreModel, Promise<SignInStatus>>
   authApple: Thunk<
     this,
     { agreedToReceiveEmails?: boolean; onSignIn?: () => void },
@@ -669,6 +670,91 @@ export const getAuthModel = (): AuthModel => ({
         return
       }
     })
+  }),
+  authGoogle2: thunk(async (actions, options, store) => {
+    let email, accessToken
+
+    try {
+      await GoogleSignin.hasPlayServices()
+      const userInfo = await GoogleSignin.signIn()
+      email = userInfo.user.email
+      accessToken = (await GoogleSignin.getTokens()).accessToken
+    } catch (error) {
+      console.log("Failed to connect to Google Sign-In", error)
+      return "failure"
+    }
+
+    const result = await actions.gravityUnauthenticatedRequest({
+      path: `/oauth2/access_token`,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: {
+        email,
+        oauth_provider: "google",
+        oauth_token: accessToken,
+        grant_type: "oauth_token",
+        client_id: clientKey,
+        client_secret: clientSecret,
+        scope: "offline_access",
+        create_user_if_missing: true,
+      },
+    })
+
+    if (result.status === 403) {
+      return "auth_blocked"
+    }
+
+    if (result.status !== 201) {
+      const { error_description: errorDescription } = await result.json()
+
+      console.error("Failed to authenticate with Google Sign-In", errorDescription)
+
+      switch (errorDescription) {
+        case "missing two-factor authentication code":
+          return "otp_missing"
+        case "missing on-demand authentication code":
+          return "on_demand_otp_missing"
+        case "invalid two-factor authentication code":
+          return "invalid_otp"
+        default:
+          return "failure"
+      }
+    }
+
+    const { expires_in, access_token: userAccessToken } = await result.json()
+    const user = await actions.getUser({ accessToken: userAccessToken })
+
+    actions.setSessionState({
+      isUserIdentified: false,
+    })
+
+    actions.setState({
+      userAccessToken,
+      userAccessTokenExpiresIn: expires_in,
+      userID: user.id,
+      userEmail: user.email,
+      onboardingState: "incomplete",
+    })
+
+    actions.identifyUser()
+
+    if (user.id !== store.getState().previousSessionUserID) {
+      const storeActions = store.getStoreActions()
+
+      storeActions.search.clearRecentSearches()
+      storeActions.recentPriceRanges.clearAllPriceRanges()
+    }
+
+    postEventToProviders(tracks.loggedIn("google"))
+
+    options?.onSignIn?.()
+
+    // Setting up user prefs from gravity after successsfull login.
+    GlobalStore.actions.userPrefs.fetchRemoteUserPrefs()
+
+    return "success"
   }),
   authApple: thunk(async (actions, { agreedToReceiveEmails, onSignIn }) => {
     // eslint-disable-next-line no-async-promise-executor
