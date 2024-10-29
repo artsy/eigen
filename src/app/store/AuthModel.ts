@@ -162,7 +162,7 @@ export interface AuthModel {
     GlobalStoreModel,
     Promise<AuthPromiseResolveType>
   >
-  authGoogle2: Thunk<this, { onSignIn?: () => void }, {}, GlobalStoreModel, Promise<SignInStatus>>
+  authGoogle2: Thunk<this, undefined, {}, GlobalStoreModel, Promise<SignInStatus>>
   authApple: Thunk<
     this,
     { agreedToReceiveEmails?: boolean; onSignIn?: () => void },
@@ -671,7 +671,7 @@ export const getAuthModel = (): AuthModel => ({
       }
     })
   }),
-  authGoogle2: thunk(async (actions, options, store) => {
+  authGoogle2: thunk(async (actions, _payload, helpers) => {
     let email, accessToken
 
     try {
@@ -735,21 +735,20 @@ export const getAuthModel = (): AuthModel => ({
       userAccessTokenExpiresIn: expires_in,
       userID: user.id,
       userEmail: user.email,
-      onboardingState: "incomplete",
+      // TODO: How else can I tell if the user needs to see the onboarding quiz?
+      onboardingState: user.completed_onboarding_at ? "complete" : "incomplete",
     })
 
     actions.identifyUser()
 
-    if (user.id !== store.getState().previousSessionUserID) {
-      const storeActions = store.getStoreActions()
+    if (user.id !== helpers.getState().previousSessionUserID) {
+      const storeActions = helpers.getStoreActions()
 
       storeActions.search.clearRecentSearches()
       storeActions.recentPriceRanges.clearAllPriceRanges()
     }
 
     postEventToProviders(tracks.loggedIn("google"))
-
-    options?.onSignIn?.()
 
     // Setting up user prefs from gravity after successsfull login.
     GlobalStore.actions.userPrefs.fetchRemoteUserPrefs()

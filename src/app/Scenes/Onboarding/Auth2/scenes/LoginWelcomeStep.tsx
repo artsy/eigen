@@ -203,13 +203,7 @@ const SocialLoginButtons: React.FC = () => {
       return GlobalStore.actions.auth.authApple({ agreedToReceiveEmails: true })
     })
 
-  const handleGooglePress = () =>
-    onSocialLogin(() => {
-      return GlobalStore.actions.auth.authGoogle({
-        signInOrUp: mode === "login" ? "signIn" : "signUp",
-        agreedToReceiveEmails: mode === "signup",
-      })
-    })
+  const handleGooglePress = () => GlobalStore.actions.auth.authGoogle2()
 
   const handleFacebookPress = () =>
     onSocialLogin(() => {
