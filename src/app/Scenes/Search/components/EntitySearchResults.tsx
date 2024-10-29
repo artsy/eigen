@@ -1,6 +1,7 @@
-import { Flex, Spacer, useSpace, Spinner, SimpleMessage } from "@artsy/palette-mobile"
+import { Flex, Spacer, useSpace, Spinner } from "@artsy/palette-mobile"
 import { EntitySearchResultsQuery } from "__generated__/EntitySearchResultsQuery.graphql"
 import { EntitySearchResults_searchConnection$key } from "__generated__/EntitySearchResults_searchConnection.graphql"
+import { SimpleErrorMessage } from "app/Components/ErrorView/SimpleErrorMessage"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
 import { SearchResult } from "app/Scenes/Search/components/SearchResult"
 import { SingleIndexEmptyResultsMessage } from "app/Scenes/Search/components/SingleIndexEmptyResultsMessage"
@@ -91,9 +92,7 @@ export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selec
 }
 
 export const EntitySearchResultsScreen: React.FC<SearchResultsProps> = (props) => (
-  <ErrorBoundary
-    fallback={<SimpleMessage m={2}>Something went wrong. Please check back later.</SimpleMessage>}
-  >
+  <ErrorBoundary fallback={<SimpleErrorMessage />}>
     <Suspense
       fallback={
         <SingleIndexSearchPlaceholder hasRoundedImages={props.selectedPill.key === "artist"} />
