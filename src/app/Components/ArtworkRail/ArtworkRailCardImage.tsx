@@ -85,7 +85,7 @@ const artworkFragment = graphql`
   fragment ArtworkRailCardImage_artwork on Artwork {
     image(includeAll: false) {
       blurhash
-      url(version: "large")
+      url(version: ["larger", "large", "medium", "small", "square"])
       aspectRatio
       width
       height
