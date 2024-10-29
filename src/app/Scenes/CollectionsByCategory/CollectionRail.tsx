@@ -65,7 +65,7 @@ const fragment = graphql`
     title @required(action: NONE)
     slug @required(action: NONE)
 
-    artworksConnection(first: 10) {
+    artworksConnection(first: 10, sort: "-decayed_merch") {
       counts @required(action: NONE) {
         total
       }
