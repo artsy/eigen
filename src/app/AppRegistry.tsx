@@ -40,6 +40,8 @@ import { SearchScreen, SearchScreenQuery } from "app/Scenes/Search/Search"
 import { SubmitArtworkForm } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { SubmitArtworkFormEditContainer } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkFormEdit"
 import { SimilarToRecentlyViewedScreen } from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
+import { BackButton } from "app/system/navigation/BackButton"
+import { goBack } from "app/system/navigation/navigate"
 import { ArtsyKeyboardAvoidingViewContext } from "app/utils/ArtsyKeyboardAvoidingView"
 import { SafeAreaInsets, useScreenDimensions } from "app/utils/hooks"
 import { useSelectedTab } from "app/utils/hooks/useSelectedTab"
@@ -541,7 +543,27 @@ export const modules = defineModules({
     hasOwnModalCloseButton: true,
     modalPresentationStyle: "fullScreen",
   }),
-  LocalDiscovery: reactModule(CityGuideView, { fullBleed: true }),
+  LocalDiscovery: reactModule(CityGuideView, {
+    fullBleed: true,
+    screenOptions: unsafe_getFeatureFlag("AREnableNewNavigation")
+      ? {
+          headerTransparent: true,
+          headerLeft: () => {
+            return (
+              <BackButton
+                style={{
+                  top: 0,
+                  left: 0,
+                }}
+                onPress={() => {
+                  goBack()
+                }}
+              />
+            )
+          },
+        }
+      : undefined,
+  }),
   MakeOfferModal: reactModule(MakeOfferModalQueryRenderer, {
     hasOwnModalCloseButton: true,
   }),
