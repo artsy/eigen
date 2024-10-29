@@ -1,5 +1,6 @@
 import {
   ActionType,
+  BannerViewed,
   ContextModule,
   OwnerType,
   RailViewed,
@@ -12,6 +13,7 @@ import {
   TappedAuctionGroup,
   TappedAuctionResultGroup,
   TappedCardGroup,
+  TappedChangePaymentMethod,
   TappedClearNotification,
   TappedCollectionGroup,
   TappedFairGroup,
@@ -22,8 +24,10 @@ import {
   TappedShowMore,
   TappedViewingRoomGroup,
 } from "@artsy/cohesion"
+import { PaymentFailureBanner_Fragment$data } from "__generated__/PaymentFailureBanner_Fragment.graphql"
 import { getArtworkSignalTrackingFields } from "app/utils/getArtworkSignalTrackingFields"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { useTracking } from "react-tracking"
 
 export const useHomeViewTracking = () => {
@@ -35,6 +39,20 @@ export const useHomeViewTracking = () => {
       const payload: Screen = {
         action: ActionType.screen,
         context_screen_owner_type: ownerType,
+      }
+
+      trackEvent(payload)
+    },
+
+    bannerViewed: (
+      orders: Array<ExtractNodeType<PaymentFailureBanner_Fragment$data["commerceMyOrders"]>>
+    ) => {
+      const payload: BannerViewed = {
+        action: ActionType.bannerViewed,
+        context_screen: OwnerType.home,
+        context_module: ContextModule.paymentFailed,
+        item_type: orders.length === 1 ? "order" : "orders",
+        item_id: orders.length === 1 ? orders[0].internalID : "",
       }
 
       trackEvent(payload)
@@ -480,6 +498,20 @@ export const useHomeViewTracking = () => {
         context_module: contextModule,
         context_screen: OwnerType.home,
         position_y: index,
+      }
+
+      trackEvent(payload)
+    },
+
+    tappedChangePaymentMethod: (
+      orders: Array<ExtractNodeType<PaymentFailureBanner_Fragment$data["commerceMyOrders"]>>
+    ) => {
+      const payload: TappedChangePaymentMethod = {
+        action: ActionType.tappedChangePaymentMethod,
+        context_screen: OwnerType.home,
+        context_module: ContextModule.paymentFailed,
+        item_type: orders.length === 1 ? "order" : "orders",
+        item_id: orders.length === 1 ? orders[0].internalID : "",
       }
 
       trackEvent(payload)

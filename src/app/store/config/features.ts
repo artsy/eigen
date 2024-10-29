@@ -305,6 +305,11 @@ export const features = {
     readyForRelease: false,
     showInDevMenu: true,
   },
+  AREnablePaymentFailureBanner: {
+    description: "Enable payment failure banner",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
