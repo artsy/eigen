@@ -6,7 +6,7 @@ import { PaymentFailureBanner_Fragment$key } from "__generated__/PaymentFailureB
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { useEffect } from "react"
+import { useCallback, useEffect } from "react"
 import { graphql, useLazyLoadQuery, useRefetchableFragment } from "react-relay"
 
 export const PaymentFailureBanner: React.FC = () => {
@@ -61,13 +61,16 @@ export const PaymentFailureBanner: React.FC = () => {
     }
   }, [failedPayments, tracking])
 
-  const handleBannerLinkClick = () => {
+  const handleBannerLinkClick = useCallback(() => {
     tracking.tappedChangePaymentMethod(failedPayments)
 
-    failedPayments.length === 1
-      ? navigate(`orders/${failedPayments[0].internalID}/payment/new`)
-      : navigate(`settings/purchases`)
-  }
+    const route =
+      failedPayments.length === 1
+        ? `orders/${failedPayments[0].internalID}/payment/new`
+        : `settings/purchases`
+
+    navigate(route)
+  }, [failedPayments, tracking])
 
   if (failedPayments.length === 0) {
     return null
