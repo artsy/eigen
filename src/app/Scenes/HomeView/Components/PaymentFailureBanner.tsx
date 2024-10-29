@@ -55,6 +55,12 @@ export const PaymentFailureBanner: React.FC = () => {
 
   const failedPayments = extractNodes(data?.commerceMyOrders)
 
+  useEffect(() => {
+    if (failedPayments.length > 0) {
+      tracking.bannerViewed(failedPayments)
+    }
+  }, [failedPayments, tracking])
+
   const handleBannerLinkClick = () => {
     tracking.tappedChangePaymentMethod(failedPayments)
 
