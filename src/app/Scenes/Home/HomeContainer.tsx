@@ -23,7 +23,7 @@ export const InnerHomeContainer = () => {
     await navigate("/art-quiz")
   }
 
-  useSwitchStatusBarStyle("light-content", "dark-content")
+  useSwitchStatusBarStyle("dark-content", "dark-content")
 
   useEffect(() => {
     if (artQuizState === "incomplete" && isNavigationReady) {
