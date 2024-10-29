@@ -24,8 +24,10 @@ import {
   TappedShowMore,
   TappedViewingRoomGroup,
 } from "@artsy/cohesion"
+import { PaymentFailureBanner_Fragment$data } from "__generated__/PaymentFailureBanner_Fragment.graphql"
 import { getArtworkSignalTrackingFields } from "app/utils/getArtworkSignalTrackingFields"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { useTracking } from "react-tracking"
 
 export const useHomeViewTracking = () => {
@@ -42,7 +44,9 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
-    bannerViewed: (orders: any) => {
+    bannerViewed: (
+      orders: Array<ExtractNodeType<PaymentFailureBanner_Fragment$data["commerceMyOrders"]>>
+    ) => {
       const payload: BannerViewed = {
         action: ActionType.bannerViewed,
         context_screen: OwnerType.home,
@@ -499,7 +503,9 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
-    tappedChangePaymentMethod: (orders: any) => {
+    tappedChangePaymentMethod: (
+      orders: Array<ExtractNodeType<PaymentFailureBanner_Fragment$data["commerceMyOrders"]>>
+    ) => {
       const payload: TappedChangePaymentMethod = {
         action: ActionType.tappedChangePaymentMethod,
         context_screen: OwnerType.home,
