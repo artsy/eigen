@@ -76,7 +76,7 @@ const artworkFragment = graphql`
   fragment LegacyArtworkRailCardImage_artwork on Artwork {
     image(includeAll: false) {
       blurhash
-      url(version: "large")
+      url(version: ["larger", "large", "medium", "small", "square"])
       legacyResized: resized(width: 590) {
         src
         srcSet

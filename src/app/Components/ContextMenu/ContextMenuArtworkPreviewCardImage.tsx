@@ -11,7 +11,7 @@ const artworkFragment = graphql`
   fragment ContextMenuArtworkPreviewCardImage_artwork on Artwork
   @argumentDefinitions(width: { type: "Int" }) {
     contextMenuImage: image {
-      url(version: "large")
+      url(version: ["larger", "large", "medium", "small", "square"])
       resized(width: $width) {
         src
         srcSet
