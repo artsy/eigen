@@ -306,6 +306,11 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnablePaymentFailureBanner",
   },
+  AREnableNewSearchModal: {
+    description: "Enable new search modal",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
