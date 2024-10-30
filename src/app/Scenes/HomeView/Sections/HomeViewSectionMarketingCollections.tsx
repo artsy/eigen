@@ -101,13 +101,12 @@ export const HomeViewSectionMarketingCollections: React.FC<
               key={item.internalID}
               marketingCollection={item}
               onPress={(collection) => {
-                tracking.tappedMarketingCollectionGroup({
-                  collectionID: collection.internalID,
-                  collectionSlug: collection.slug,
-                  contextModule: section.contextModule as ContextModule,
-                  index,
-                  moduleHeight: "double",
-                })
+                tracking.tappedMarketingCollectionGroup(
+                  collection.internalID,
+                  collection.slug,
+                  section.contextModule as ContextModule,
+                  index
+                )
               }}
             />
           )
