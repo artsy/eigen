@@ -13,9 +13,9 @@ import {
   ArtworkActionTrackingProps,
   tracks as artworkActionTracks,
 } from "app/utils/track/ArtworkActions"
+import { Text as RNText } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
-
 // These are the props that are shared between ArtworkRailCard and ArtworkRailCardMeta
 export interface ArtworkRailCardCommonProps extends ArtworkActionTrackingProps {
   dark?: boolean
@@ -137,27 +137,25 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
         )}
 
         {!hideArtistName && !!artistNames && (
-          <Text color={primaryTextColor} numberOfLines={1} lineHeight="20px" variant="xs">
-            {artistNames}
-          </Text>
+          <RNText numberOfLines={1} ellipsizeMode="tail">
+            <Text color={primaryTextColor} lineHeight="20px" variant="xs">
+              {artistNames}
+            </Text>
+          </RNText>
         )}
 
         {!!title && (
-          <Text
-            lineHeight="20px"
-            color={secondaryTextColor}
-            numberOfLines={1}
-            variant="xs"
-            fontStyle="italic"
-          >
-            {title}
-            {!!date && (
-              <Text lineHeight="20px" color={secondaryTextColor} numberOfLines={1} variant="xs">
-                {title && date ? ", " : ""}
-                {date}
-              </Text>
-            )}
-          </Text>
+          <RNText numberOfLines={1} ellipsizeMode="tail">
+            <Text lineHeight="20px" color={secondaryTextColor} variant="xs" fontStyle="italic">
+              {title}
+              {!!date && (
+                <Text lineHeight="20px" color={secondaryTextColor} variant="xs">
+                  {title && date ? ", " : ""}
+                  {date}
+                </Text>
+              )}
+            </Text>
+          </RNText>
         )}
 
         {!!showPartnerName && !!partner?.name && (
