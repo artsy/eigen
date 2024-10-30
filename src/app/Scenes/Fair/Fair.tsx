@@ -6,7 +6,6 @@ import {
   SkeletonBox,
   useScreenDimensions,
   SkeletonText,
-  useSpace,
   ShareIcon,
 } from "@artsy/palette-mobile"
 import { FairQuery } from "__generated__/FairQuery.graphql"
@@ -180,7 +179,6 @@ export const FairScreen: React.FC<FairQueryRendererProps> = ({ fairID }) => (
 
 export const FairPlaceholder: React.FC = () => {
   const { safeAreaInsets } = useScreenDimensions()
-  const space = useSpace()
 
   return (
     <Flex top={safeAreaInsets.top}>
@@ -189,7 +187,7 @@ export const FairPlaceholder: React.FC = () => {
           <SkeletonBox width={18} height={18} />
         </Flex>
 
-        <Flex gap={space(2)}>
+        <Flex gap={2}>
           <SkeletonBox height={400} width="100%" />
 
           <SkeletonText mx={2}>Fair Text Long Placeholder</SkeletonText>

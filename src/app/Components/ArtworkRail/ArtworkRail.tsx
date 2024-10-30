@@ -144,7 +144,7 @@ export const ArtworkRailPlaceholder: React.FC = () => {
   const cards = !isTablet() ? 2 : 6
 
   return (
-    <Flex gap={15} flexDirection="row">
+    <Flex gap={2} flexDirection="row">
       {Array.from({ length: cards }).map((_, index) => (
         <Flex key={index}>
           {enableArtworkRailRedesignImageAspectRatio ? (

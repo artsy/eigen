@@ -1,4 +1,4 @@
-import { Flex, Skeleton, SkeletonText, Text, Touchable, useSpace } from "@artsy/palette-mobile"
+import { Flex, Skeleton, SkeletonText, Text, Touchable } from "@artsy/palette-mobile"
 import { useRoute } from "@react-navigation/native"
 import { FooterCollectionsByCategoryQuery } from "__generated__/FooterCollectionsByCategoryQuery.graphql"
 import { Footer_homeViewSectionCards$key } from "__generated__/Footer_homeViewSectionCards.graphql"
@@ -17,7 +17,6 @@ interface FooterProps {
 export const Footer: FC<FooterProps> = ({ cards, homeViewSectionId }) => {
   const { params } = useRoute<CollectionsByCategoriesRouteProp>()
   const data = useFragment(fragment, cards)
-  const space = useSpace()
 
   const category = decodeURI(params.props.category)
 
@@ -34,7 +33,7 @@ export const Footer: FC<FooterProps> = ({ cards, homeViewSectionId }) => {
   }
 
   return (
-    <Flex backgroundColor="black100" p={2} gap={space(2)}>
+    <Flex backgroundColor="black100" p={2} gap={2}>
       <Text color="white100">Explore more categories</Text>
 
       {categories.map((c, index) => (
@@ -65,11 +64,9 @@ const fragment = graphql`
 `
 
 const FooterPlaceholder: FC = () => {
-  const space = useSpace()
-
   return (
     <Skeleton>
-      <Flex p={2} gap={space(2)}>
+      <Flex p={2} gap={2}>
         <SkeletonText>Explore more categories</SkeletonText>
 
         {Array.from({ length: 5 }).map((_, index) => (

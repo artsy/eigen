@@ -8,7 +8,6 @@ import {
   SkeletonText,
   Text,
   Touchable,
-  useSpace,
 } from "@artsy/palette-mobile"
 import { HomeViewSectionArticlesCardsQuery } from "__generated__/HomeViewSectionArticlesCardsQuery.graphql"
 import {
@@ -45,8 +44,6 @@ export const HomeViewSectionArticlesCards: React.FC<HomeViewSectionArticlesCards
 
   const tracking = useHomeViewTracking()
 
-  const space = useSpace()
-
   const onItemPress = (article: ArticleType, index: number) => {
     if (article.href) {
       tracking.tappedArticleGroup(
@@ -73,13 +70,13 @@ export const HomeViewSectionArticlesCards: React.FC<HomeViewSectionArticlesCards
 
   return (
     <Flex {...flexProps}>
-      <Flex mx={2} p={2} border="1px solid" borderColor="black30" gap={space(2)}>
+      <Flex mx={2} p={2} border="1px solid" borderColor="black30" gap={2}>
         <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
           <Text variant="lg-display">{section.component?.title}</Text>
           <Text variant="lg-display">{date()}</Text>
         </Flex>
         {articles.map((article, index) => (
-          <Flex key={index} gap={space(2)}>
+          <Flex key={index} gap={2}>
             <Touchable onPress={() => onItemPress(article, index)}>
               <Flex flexDirection="row" alignItems="center">
                 <Text variant="sm-display" numberOfLines={3}>
@@ -142,17 +139,16 @@ const fragment = graphql`
 `
 
 const HomeViewSectionArticlesCardsPlaceholder: React.FC<FlexProps> = (flexProps) => {
-  const space = useSpace()
   return (
     <Skeleton>
       <Flex {...flexProps}>
-        <Flex mx={2} p={2} border="1px solid" borderColor="black30" gap={space(2)}>
+        <Flex mx={2} p={2} border="1px solid" borderColor="black30" gap={2}>
           <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
             <SkeletonText variant="lg-display">title</SkeletonText>
             <SkeletonText variant="lg-display">2021-12-31</SkeletonText>
           </Flex>
           {times(3).map((_, index) => (
-            <SkeletonBox key={index} gap={space(2)}>
+            <SkeletonBox key={index} gap={2}>
               <Flex flexDirection="row" alignItems="center">
                 <SkeletonText variant="sm-display" numberOfLines={3}>
                   Larry Gagosian and Peter Doig to collaborate on a new exhibition.

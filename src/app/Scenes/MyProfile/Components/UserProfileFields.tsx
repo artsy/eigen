@@ -1,4 +1,4 @@
-import { Flex, Input, useSpace } from "@artsy/palette-mobile"
+import { Flex, Input } from "@artsy/palette-mobile"
 import { EditableLocation } from "__generated__/updateMyUserProfileMutation.graphql"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
 import { LocationAutocomplete, buildLocationDisplay } from "app/Components/LocationAutocomplete"
@@ -35,12 +35,10 @@ export const UserProfileFields: React.FC<UserProfileFieldsProps> = ({ bottomShee
   const professionInputRef = useRef<Input>(null)
   const relevantPositionsInputRef = useRef<Input>(null)
 
-  const space = useSpace()
-
   const InputComponent = bottomSheetInput ? BottomSheetInput : Input
 
   return (
-    <Flex gap={space(2)}>
+    <Flex gap={2}>
       <InputComponent
         ref={nameInputRef}
         title="Full name"

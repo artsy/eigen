@@ -118,7 +118,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
       >
-        <Flex gap={1}>
+        <Flex>
           <>
             <CreditCardField onCardChange={handleOnCardChange} />
 

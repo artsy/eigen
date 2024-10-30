@@ -1,4 +1,4 @@
-import { Avatar, Button, CheckIcon, Flex, Text, useSpace } from "@artsy/palette-mobile"
+import { Avatar, Button, CheckIcon, Flex, Text } from "@artsy/palette-mobile"
 import { MyCollectionArtistsAutosuggestItem_artist$key } from "__generated__/MyCollectionArtistsAutosuggestItem_artist.graphql"
 import { MyCollectionAddCollectedArtistsStore } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsStore"
 import { MotiView } from "moti"
@@ -12,7 +12,6 @@ interface MyCollectionArtistsAutosuggestItemProps {
 export const MyCollectionArtistsAutosuggestItem: FC<MyCollectionArtistsAutosuggestItemProps> = ({
   artist: _artist,
 }) => {
-  const space = useSpace()
   const artist = useFragment(QUERY, _artist)
 
   const artistIds = MyCollectionAddCollectedArtistsStore.useStoreState((state) => state.artistIds)
@@ -38,7 +37,7 @@ export const MyCollectionArtistsAutosuggestItem: FC<MyCollectionArtistsAutosugge
       transition={{ type: "timing", duration: 200 }}
     >
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-        <Flex flexDirection="row" alignItems="center" gap={space(1)} flexShrink={1}>
+        <Flex flexDirection="row" alignItems="center" gap={1} flexShrink={1}>
           {!!displayAvatar && (
             <Avatar
               initials={artist.initials}
