@@ -31,9 +31,11 @@ export const Body: React.FC<BodyProps> = ({ viewer }) => {
 
   return (
     <Flex gap={space(4)}>
-      <Flex px={2} gap={space(2)}>
-        <Text variant="xl">{category}</Text>
-        <Text>Explore collections with {category}</Text>
+      <Flex gap={space(2)}>
+        <Text variant="xl" px={2}>
+          {category}
+        </Text>
+        <Text px={2}>Explore collections with {category}</Text>
         {/* TODO: fix typings broken by some unknown reason here, prob related to @plural */}
         <CollectionsChips marketingCollections={data.marketingCollections as any} />
       </Flex>
@@ -44,10 +46,14 @@ export const Body: React.FC<BodyProps> = ({ viewer }) => {
         estimatedItemSize={ESTIMATED_ITEM_SIZE}
         data={data.marketingCollections}
         keyExtractor={(item) => `artwork_rail_${item?.slug}`}
-        renderItem={({ item }) => {
-          return <CollectionRailWithSuspense slug={item?.slug ?? ""} />
+        renderItem={({ item, index }) => {
+          return (
+            <CollectionRailWithSuspense
+              slug={item?.slug ?? ""}
+              lastElement={index === data.marketingCollections.length - 1}
+            />
+          )
         }}
-        ItemSeparatorComponent={() => <Separator borderColor="black10" my={4} />}
       />
     </Flex>
   )
@@ -72,7 +78,7 @@ const BodyPlaceholder: React.FC = () => {
   return (
     <Skeleton>
       <Flex gap={space(4)}>
-        <Flex gap={space(1)} px={2}>
+        <Flex gap={space(2)} px={2}>
           <SkeletonText variant="xl">Category</SkeletonText>
 
           <SkeletonText>Category description text</SkeletonText>
