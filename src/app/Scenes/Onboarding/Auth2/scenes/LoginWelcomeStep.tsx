@@ -9,6 +9,7 @@ import {
   useTheme,
 } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
+import LoadingModal from "app/Components/Modals/LoadingModal"
 import { useRecaptcha } from "app/Components/Recaptcha/Recaptcha"
 import { AuthContext } from "app/Scenes/Onboarding/Auth2/AuthContext"
 import { useAuthNavigation } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
@@ -85,6 +86,7 @@ export const LoginWelcomeStep: React.FC = () => {
 const LoginWelcomeStepForm: React.FC = () => {
   const setModalExpanded = AuthContext.useStoreActions((actions) => actions.setModalExpanded)
   const isModalExpanded = AuthContext.useStoreState((state) => state.isModalExpanded)
+  const isLoading = GlobalStore.useAppState((state) => state.auth.sessionState.isLoading)
 
   const { color } = useTheme()
   const { handleChange, handleSubmit, isSubmitting, isValid, resetForm, values } =
@@ -113,6 +115,8 @@ const LoginWelcomeStepForm: React.FC = () => {
 
   return (
     <Flex p={2}>
+      <LoadingModal isVisible={isLoading} dark />
+
       {!!isModalExpanded && (
         <>
           <BackButton onPress={handleBackButtonPress} />
@@ -203,7 +207,15 @@ const SocialLoginButtons: React.FC = () => {
       return GlobalStore.actions.auth.authApple({ agreedToReceiveEmails: true })
     })
 
-  const handleGooglePress = () => GlobalStore.actions.auth.authGoogle2()
+  const handleGooglePress = async () => {
+    GlobalStore.actions.auth.setSessionState({ isLoading: true })
+
+    const result = await GlobalStore.actions.auth.authGoogle2()
+
+    if (result !== "success") {
+      GlobalStore.actions.auth.setSessionState({ isLoading: false })
+    }
+  }
 
   const handleFacebookPress = () =>
     onSocialLogin(() => {
