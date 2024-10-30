@@ -3,7 +3,6 @@ import { ArticleSection_section$key } from "__generated__/ArticleSection_section
 import { ArticleSectionImageCollection } from "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionImageCollection"
 import { ArticleSectionImageSet } from "app/Scenes/Article/Components/Sections/ArticleSectionImageSet"
 import { ArticleSectionText } from "app/Scenes/Article/Components/Sections/ArticleSectionText"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useFragment, graphql } from "react-relay"
 
 interface ArticleSectionProps {
@@ -12,10 +11,9 @@ interface ArticleSectionProps {
 }
 
 export const ArticleSection: React.FC<ArticleSectionProps> = ({ article, section }) => {
-  const slideshowEnabled = useFeatureFlag("AREnableArticleSlideShow")
   const data = useFragment(fragment, section)
 
-  if (data.__typename === "ArticleSectionImageSet" && !slideshowEnabled) {
+  if (data.__typename === "ArticleSectionImageSet") {
     return null
   }
 
