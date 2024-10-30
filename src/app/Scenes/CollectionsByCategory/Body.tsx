@@ -64,7 +64,7 @@ const ESTIMATED_ITEM_SIZE = 390
 const fragment = graphql`
   fragment BodyCollectionsByCategory_viewer on Viewer
   @argumentDefinitions(category: { type: "String" }) {
-    marketingCollections(category: $category, first: 20) {
+    marketingCollections(category: $category, sort: CURATED, first: 20) {
       ...CollectionsChips_marketingCollections
 
       slug @required(action: NONE)
