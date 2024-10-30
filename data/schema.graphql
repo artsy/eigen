@@ -2487,6 +2487,9 @@ type Artwork implements Node & Searchable & Sellable {
   isPurchasable: Boolean
   isSaved: Boolean
 
+  # Checks if artwork is saved to any of the user's 'saves' lists
+  isSavedToAnyList: Boolean!
+
   # Checks if artwork is saved to user's lists
   isSavedToList(default: Boolean = false, saves: Boolean = true): Boolean!
 
