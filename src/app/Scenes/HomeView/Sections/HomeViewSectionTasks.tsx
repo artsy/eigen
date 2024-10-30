@@ -11,7 +11,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useEffect, useRef, useState } from "react"
 import { InteractionManager, LayoutAnimation } from "react-native"
-import { SwipeableMethods } from "react-native-gesture-handler/lib/typescript/components/ReanimatedSwipeable"
+import { SwipeableMethods } from "react-native-gesture-handler/ReanimatedSwipeable"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionTasksProps extends FlexProps {
@@ -35,7 +35,9 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
   } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
   const { dismiss } = GlobalStore.actions.progressiveOnboarding
 
-  const shouldStartOnboardingAnimation = isReady && !isDismissed("act-now-tasks").status
+  // adding the find-saved-artwork onboarding key to prevent overlap
+  const shouldStartOnboardingAnimation =
+    isReady && !isDismissed("act-now-tasks").status && !!isDismissed("find-saved-artwork").status
 
   // In the future, we may want to show multiple tasks
   const task = tasks?.[0]
