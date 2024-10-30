@@ -190,8 +190,6 @@ export const MyProfileHeader: React.FC<MyProfileHeaderProps> = ({ meProp }) => {
 }
 
 const MyProfileHeaderPlaceholder: React.FC<{}> = () => {
-  const space = useSpace()
-
   return (
     <Skeleton>
       <Flex justifyContent="center" alignItems="center" gap={0.5} py={1} px={2}>
