@@ -8,10 +8,6 @@ import { Suspense } from "react"
 import { graphql } from "react-relay"
 
 describe("ContactGalleryButton", () => {
-  beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCollectorProfilePrompts: true })
-  })
-
   it("opens the inquiry modal when the 'contact gallery' button is pressed", async () => {
     renderWithRelay()
 

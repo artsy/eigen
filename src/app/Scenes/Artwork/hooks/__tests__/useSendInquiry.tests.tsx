@@ -2,7 +2,7 @@ import { act, renderHook, waitFor } from "@testing-library/react-native"
 import { useSendInquiryTestQuery } from "__generated__/useSendInquiryTestQuery.graphql"
 import * as inquiryRequest from "app/Scenes/Artwork/Components/CommercialButtons/useSubmitInquiryRequest"
 import { useSendInquiry } from "app/Scenes/Artwork/hooks/useSendInquiry"
-import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
+import { GlobalStoreProvider } from "app/store/GlobalStore"
 import { initialArtworkInquiryState } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import * as artworkInquiryStore from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -105,128 +105,122 @@ describe("useSendInquiry", () => {
     })
   })
 
-  describe("given the profile prompt feature flag is enabled", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCollectorProfilePrompts: true })
+  it("dispatches setCollectionPromptVisible given a user without a complete profile and never been prompted", async () => {
+    const loader = await loaderHook({
+      Me: () => ({
+        lastUpdatePromptAt: null,
+        location: { display: null },
+        collectorProfile: { lastUpdatePromptAt: null },
+        myCollectionInfo: { artistsCount: 1, artworksCount: 1 },
+      }),
     })
 
-    it("dispatches setCollectionPromptVisible given a user without a complete profile and never been prompted", async () => {
-      const loader = await loaderHook({
-        Me: () => ({
-          lastUpdatePromptAt: null,
-          location: { display: null },
-          collectorProfile: { lastUpdatePromptAt: null },
-          myCollectionInfo: { artistsCount: 1, artworksCount: 1 },
+    const { result } = renderHook(
+      () =>
+        useSendInquiry({
+          artwork: (loader.current as any).artwork,
+          me: (loader.current as any).me,
+          onCompleted: jest.fn(),
         }),
+      { wrapper }
+    )
+
+    act(() => result.current.sendInquiry("message"))
+
+    await waitFor(() =>
+      expect(dispatch).toHaveBeenCalledWith({
+        type: "setProfilePromptVisible",
+        payload: true,
       })
+    )
+  })
 
-      const { result } = renderHook(
-        () =>
-          useSendInquiry({
-            artwork: (loader.current as any).artwork,
-            me: (loader.current as any).me,
-            onCompleted: jest.fn(),
-          }),
-        { wrapper }
-      )
-
-      act(() => result.current.sendInquiry("message"))
-
-      await waitFor(() =>
-        expect(dispatch).toHaveBeenCalledWith({
-          type: "setProfilePromptVisible",
-          payload: true,
-        })
-      )
+  it("shows the collection prompt if the user has no collections and never been prompted", async () => {
+    const loader = await loaderHook({
+      Me: () => ({
+        collectorProfile: { lastUpdatePromptAt: null },
+        myCollectionInfo: { artworksCount: 0 },
+        userInterestsConnection: { totalCount: 0 },
+      }),
     })
 
-    it("shows the collection prompt if the user has no collections and never been prompted", async () => {
-      const loader = await loaderHook({
-        Me: () => ({
-          collectorProfile: { lastUpdatePromptAt: null },
-          myCollectionInfo: { artworksCount: 0 },
-          userInterestsConnection: { totalCount: 0 },
+    const { result } = renderHook(
+      () =>
+        useSendInquiry({
+          artwork: (loader.current as any).artwork,
+          me: (loader.current as any).me,
+          onCompleted: jest.fn(),
         }),
+      { wrapper }
+    )
+
+    act(() => result.current.sendInquiry("message"))
+
+    await waitFor(() =>
+      expect(dispatch).toHaveBeenCalledWith({
+        type: "setCollectionPromptVisible",
+        payload: true,
       })
+    )
+  })
 
-      const { result } = renderHook(
-        () =>
-          useSendInquiry({
-            artwork: (loader.current as any).artwork,
-            me: (loader.current as any).me,
-            onCompleted: jest.fn(),
-          }),
-        { wrapper }
-      )
-
-      act(() => result.current.sendInquiry("message"))
-
-      await waitFor(() =>
-        expect(dispatch).toHaveBeenCalledWith({
-          type: "setCollectionPromptVisible",
-          payload: true,
-        })
-      )
+  it("shows profile prompt if the user has no collections, no complete profile and never been prompted", async () => {
+    const loader = await loaderHook({
+      Me: () => ({
+        lastUpdatePromptAt: null,
+        location: { display: null },
+        collectorProfile: { lastUpdatePromptAt: null },
+        myCollectionInfo: { artistsCount: 0, artworksCount: 0 },
+        userInterestsConnection: { totalCount: 0 },
+      }),
     })
 
-    it("shows profile prompt if the user has no collections, no complete profile and never been prompted", async () => {
-      const loader = await loaderHook({
-        Me: () => ({
-          lastUpdatePromptAt: null,
-          location: { display: null },
-          collectorProfile: { lastUpdatePromptAt: null },
-          myCollectionInfo: { artistsCount: 0, artworksCount: 0 },
-          userInterestsConnection: { totalCount: 0 },
+    const { result } = renderHook(
+      () =>
+        useSendInquiry({
+          artwork: (loader.current as any).artwork,
+          me: (loader.current as any).me,
+          onCompleted: jest.fn(),
         }),
+      { wrapper }
+    )
+
+    act(() => result.current.sendInquiry("message"))
+
+    await waitFor(() =>
+      expect(dispatch).toHaveBeenCalledWith({
+        type: "setCollectionPromptVisible",
+        payload: true,
       })
+    )
+  })
 
-      const { result } = renderHook(
-        () =>
-          useSendInquiry({
-            artwork: (loader.current as any).artwork,
-            me: (loader.current as any).me,
-            onCompleted: jest.fn(),
-          }),
-        { wrapper }
-      )
-
-      act(() => result.current.sendInquiry("message"))
-
-      await waitFor(() =>
-        expect(dispatch).toHaveBeenCalledWith({
-          type: "setCollectionPromptVisible",
-          payload: true,
-        })
-      )
+  it("does not show any prompt given collection and profile are complete and never been prompted", async () => {
+    const loader = await loaderHook({
+      Me: () => ({
+        collectorProfile: { lastUpdatePromptAt: null },
+        myCollectionInfo: { artistsCount: 1, artworksCount: 1 },
+      }),
     })
 
-    it("does not show any prompt given collection and profile are complete and never been prompted", async () => {
-      const loader = await loaderHook({
-        Me: () => ({
-          collectorProfile: { lastUpdatePromptAt: null },
-          myCollectionInfo: { artistsCount: 1, artworksCount: 1 },
+    const { result } = renderHook(
+      () =>
+        useSendInquiry({
+          artwork: (loader.current as any).artwork,
+          me: (loader.current as any).me,
+          onCompleted: jest.fn(),
         }),
+      { wrapper }
+    )
+
+    act(() => result.current.sendInquiry("message"))
+
+    await waitFor(() =>
+      expect(dispatch).toHaveBeenCalledWith({
+        type: "setSuccessNotificationVisible",
+        payload: true,
       })
-
-      const { result } = renderHook(
-        () =>
-          useSendInquiry({
-            artwork: (loader.current as any).artwork,
-            me: (loader.current as any).me,
-            onCompleted: jest.fn(),
-          }),
-        { wrapper }
-      )
-
-      act(() => result.current.sendInquiry("message"))
-
-      await waitFor(() =>
-        expect(dispatch).toHaveBeenCalledWith({
-          type: "setSuccessNotificationVisible",
-          payload: true,
-        })
-      )
-    })
+    )
   })
 })
 
