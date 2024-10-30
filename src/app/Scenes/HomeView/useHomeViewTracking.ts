@@ -516,5 +516,16 @@ export const useHomeViewTracking = () => {
 
       trackEvent(payload)
     },
+
+    viewedExperiment: (experiment: { name: string; variant?: string | null }) => {
+      const payload = {
+        action: ActionType.experimentViewed,
+        experiment_name: experiment.name,
+        variant_name: experiment.variant,
+        context_owner_type: OwnerType.home,
+      }
+
+      trackEvent(payload)
+    },
   }
 }

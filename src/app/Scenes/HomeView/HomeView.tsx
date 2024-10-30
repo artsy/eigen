@@ -16,12 +16,12 @@ import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { searchQueryDefaultVariables } from "app/Scenes/Search/Search"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
-import { reportExperimentVariant } from "app/utils/experiments/reporter"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
 import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
+import { compact } from "lodash"
 import { Suspense, useCallback, useEffect, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
@@ -77,15 +77,8 @@ export const HomeView: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    queryData.homeView?.experiments?.forEach((experiment) => {
-      if (experiment?.name && experiment?.variant) {
-        reportExperimentVariant({
-          experimentName: experiment.name,
-          variantName: experiment.variant,
-          context_owner_type: OwnerType.home,
-        })
-      }
-    })
+    const experiments = compact(queryData.homeView?.experiments)
+    experiments.forEach((experiment) => tracking.viewedExperiment(experiment))
   }, [queryData.homeView?.experiments])
 
   useFocusEffect(
