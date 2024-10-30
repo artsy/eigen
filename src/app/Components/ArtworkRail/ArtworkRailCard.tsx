@@ -1,7 +1,10 @@
 import { Flex } from "@artsy/palette-mobile"
 import { ArtworkRailCard_artwork$key } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
-import { ArtworkRailCardImage } from "app/Components/ArtworkRail/ArtworkRailCardImage"
+import {
+  ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
+  ArtworkRailCardImage,
+} from "app/Components/ArtworkRail/ArtworkRailCardImage"
 import {
   ArtworkRailCardCommonProps,
   ArtworkRailCardMeta,
@@ -19,7 +22,7 @@ import { useState } from "react"
 import { GestureResponderEvent, PixelRatio, TouchableHighlight } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
-export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = PixelRatio.getFontScale() * 90
+export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = PixelRatio.getFontScale() * 100
 export const ARTWORK_RAIL_CARD_MINIMUM_WIDTH = 140
 
 export interface ArtworkRailCardProps
@@ -53,6 +56,9 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     "AREnableArtworkRailRedesignImageAspectRatio"
   )
 
+  const enableRedesignSaveCTA = true // useFeatureFlag("AREnableRedesignSaveCTA")
+  const enableAddFollowCTA = true // useFeatureFlag("AREnableAddFollowCTA")
+
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
 
   const artwork = useFragment(artworkFragment, restProps.artwork)
@@ -62,6 +68,12 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const supressArtwork = () => {
     ;(artwork as DissapearableArtwork)?._disappearable?.disappear()
   }
+
+  // 36 = 20 (padding) + 16 (icon size)
+  const likeAndFollowCTAPadding = enableRedesignSaveCTA || enableAddFollowCTA ? 36 : 0
+  const artworkRailCardMetaPadding = 10
+  const artworkRailCardMetaDataHeight =
+    ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + artworkRailCardMetaPadding + likeAndFollowCTAPadding + 10 // TODO: check height
 
   return (
     <Disappearable ref={(ref) => ((artwork as DissapearableArtwork)._disappearable = ref)}>
@@ -93,10 +105,10 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
             <Flex
               height={
                 enableArtworkRailRedesignImageAspectRatio
-                  ? "auto"
+                  ? ARTWORK_RAIL_CARD_IMAGE_HEIGHT + artworkRailCardMetaDataHeight
                   : LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT + ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT
               }
-              justifyContent="flex-end"
+              justifyContent={enableArtworkRailRedesignImageAspectRatio ? "flex-start" : "flex-end"}
             >
               {enableArtworkRailRedesignImageAspectRatio ? (
                 <ArtworkRailCardImage artwork={artwork} />
