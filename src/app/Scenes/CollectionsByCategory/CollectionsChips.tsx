@@ -52,7 +52,7 @@ export const CollectionsChips: React.FC<CollectionsChipsProps> = ({
         contentContainerStyle={{ paddingRight: space(2) }}
         keyExtractor={(item, index) => `item_${index}_${item[0]?.internalID}`}
         renderItem={({ item }) => (
-          <Flex gap={space(1)}>
+          <Flex gap={1}>
             {item.map((item, index) => {
               return (
                 <Flex minWidth={CHIP_WIDTH} key={`collectionChips-row-${index}`}>
