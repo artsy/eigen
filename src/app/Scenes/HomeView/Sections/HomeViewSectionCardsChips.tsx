@@ -1,4 +1,4 @@
-import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
+import { ContextModule } from "@artsy/cohesion"
 import { Chip, Flex, Skeleton, SkeletonBox, Spacer, useSpace } from "@artsy/palette-mobile"
 import { HomeViewSectionCardsChipsQuery } from "__generated__/HomeViewSectionCardsChipsQuery.graphql"
 import { HomeViewSectionCardsChips_section$key } from "__generated__/HomeViewSectionCardsChips_section.graphql"
@@ -38,13 +38,11 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
 
   const handleOnChipPress = (card: (typeof cards)[number], index: number) => {
     if (card.href) {
-      tracking.tappedCardGroup(
-        card.entityID,
-        card.entityType as ScreenOwnerType,
-        card.href,
-        section.contextModule as ContextModule,
-        index
-      )
+      tracking.tappedMarketingCollectionGroup({
+        collectionID: card.entityID,
+        contextModule: section.contextModule as ContextModule,
+        index,
+      })
       navigate(card.href)
     }
   }
@@ -106,7 +104,6 @@ const fragment = graphql`
       edges {
         node {
           entityID @required(action: NONE)
-          entityType @required(action: NONE)
           title
           href
         }

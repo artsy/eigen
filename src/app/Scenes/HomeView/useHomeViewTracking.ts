@@ -2,6 +2,7 @@ import {
   ActionType,
   BannerViewed,
   ContextModule,
+  EntityModuleHeight,
   OwnerType,
   RailViewed,
   Screen,
@@ -372,22 +373,34 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
-    tappedMarketingCollectionGroup: (
-      collectionID: string,
-      collectionSlug: string,
-      contextModule: ContextModule,
+    tappedMarketingCollectionGroup: ({
+      contextModule,
+      collectionID,
+      collectionSlug,
+      index,
+      moduleHeight,
+    }: {
+      collectionID: string
+      collectionSlug?: string
+      contextModule: ContextModule
       index: number
-    ) => {
+      moduleHeight?: EntityModuleHeight
+    }) => {
       const payload: TappedCollectionGroup = {
         action: ActionType.tappedCollectionGroup,
         context_module: contextModule,
         context_screen_owner_type: OwnerType.home,
         destination_screen_owner_type: OwnerType.collection,
         destination_screen_owner_id: collectionID,
-        destination_screen_owner_slug: collectionSlug,
         horizontal_slide_position: index,
-        module_height: "double",
         type: "thumbnail",
+      }
+
+      if (collectionSlug) {
+        payload.destination_screen_owner_slug = collectionSlug
+      }
+      if (moduleHeight) {
+        payload.module_height = moduleHeight
       }
 
       trackEvent(payload)
