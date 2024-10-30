@@ -48,12 +48,6 @@ export const features = {
     readyForRelease: false,
     description: "Support dark mode",
   },
-  AREnableArticleSlideShow: {
-    readyForRelease: true,
-    description: "Enable slideshow elements and route on Article screen",
-    echoFlagKey: "AREnableArticleSlideShow",
-    showInDevMenu: true,
-  },
   AREnableEditorialNews: {
     readyForRelease: true,
     description: "Enable news app in the home screen",
