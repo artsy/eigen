@@ -14,7 +14,6 @@ import { navigate } from "app/system/navigation/navigate"
 import { useArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryQuestionIDs } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { LocationWithDetails } from "app/utils/googleMaps"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useUpdateCollectorProfile } from "app/utils/mutations/useUpdateCollectorProfile"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useRef, useState } from "react"
@@ -31,7 +30,6 @@ interface InquiryModalProps {
 
 export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, me }) => {
   const { state, dispatch } = useArtworkInquiryContext()
-  const profilePromptIsEnabled = useFeatureFlag("AREnableCollectorProfilePrompts")
   const scrollViewRef = useRef<ScrollView>(null)
   const tracking = useTracking()
   const [commit] = useUpdateCollectorProfile()
@@ -192,21 +190,17 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
       </FancyModal>
       <InquirySuccessNotification />
 
-      {!!profilePromptIsEnabled && (
-        <CompleteProfilePrompt
-          artwork={artwork}
-          me={me}
-          visible={state.profilePromptVisible}
-          onDismiss={handleProfilePromptDismiss}
-        />
-      )}
-      {!!profilePromptIsEnabled && (
-        <MyCollectionBottomSheetModalArtistsPrompt
-          visible={state.collectionPromptVisible}
-          title="Inquiry sent! Tell us about the artists in your collection."
-          onDismiss={handleCollectionPromptDismiss}
-        />
-      )}
+      <CompleteProfilePrompt
+        artwork={artwork}
+        me={me}
+        visible={state.profilePromptVisible}
+        onDismiss={handleProfilePromptDismiss}
+      />
+      <MyCollectionBottomSheetModalArtistsPrompt
+        visible={state.collectionPromptVisible}
+        title="Inquiry sent! Tell us about the artists in your collection."
+        onDismiss={handleCollectionPromptDismiss}
+      />
     </>
   )
 }

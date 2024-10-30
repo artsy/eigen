@@ -7,7 +7,6 @@ import {
 import { InquiryModalTestsQuery } from "__generated__/InquiryModalTestsQuery.graphql"
 import { InquiryModal } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryModal"
 import { AUTOMATED_MESSAGES } from "app/Scenes/Artwork/Components/CommercialButtons/constants"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import {
   ArtworkInquiryContext,
   initialArtworkInquiryState,
@@ -151,28 +150,22 @@ describe("inquiry modal", () => {
       expect(sendInquiry).toHaveBeenCalledWith(expect.toBeString())
     })
 
-    describe("and the profile prompt feature flag is enabled", () => {
-      beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCollectorProfilePrompts: true })
-      })
+    it("displays the profile prompt", async () => {
+      initialState = { ...initialState, profilePromptVisible: true }
+      renderWithRelay({ Artwork: () => mockArtwork })
 
-      it("displays the profile prompt", async () => {
-        initialState = { ...initialState, profilePromptVisible: true }
-        renderWithRelay({ Artwork: () => mockArtwork })
+      expect(
+        screen.getByText("Inquiry sent! Tell Partner Name more about yourself.")
+      ).toBeOnTheScreen()
+    })
 
-        expect(
-          screen.getByText("Inquiry sent! Tell Partner Name more about yourself.")
-        ).toBeOnTheScreen()
-      })
+    it("displays the collection prompt", async () => {
+      initialState = { ...initialState, collectionPromptVisible: true }
+      renderWithRelay({ Artwork: () => mockArtwork })
 
-      it("displays the collection prompt", async () => {
-        initialState = { ...initialState, collectionPromptVisible: true }
-        renderWithRelay({ Artwork: () => mockArtwork })
-
-        expect(
-          screen.getByText("Inquiry sent! Tell us about the artists in your collection.")
-        ).toBeOnTheScreen()
-      })
+      expect(
+        screen.getByText("Inquiry sent! Tell us about the artists in your collection.")
+      ).toBeOnTheScreen()
     })
   })
 })
