@@ -22,9 +22,13 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface CollectionRailProps {
   collection: CollectionRail_marketingCollection$key
+  lastElement?: boolean
 }
 
-export const CollectionRail: FC<CollectionRailProps> = ({ collection: _collection }) => {
+export const CollectionRail: FC<CollectionRailProps> = ({
+  collection: _collection,
+  lastElement,
+}) => {
   const collection = useFragment(fragment, _collection)
   const { trackArtworkRailItemTap, trackArtworkRailViewAllTap } = useCollectionByCategoryTracking()
 
@@ -44,19 +48,38 @@ export const CollectionRail: FC<CollectionRailProps> = ({ collection: _collectio
     navigate(`/collection/${collection.slug}`)
   }
 
+  if (!artworks.length) {
+    return null
+  }
+
   return (
-    <Flex px={2}>
-      <Flex justifyContent="center">
-        <SectionTitle title={collection.title} titleVariant="md" onPress={handleTitlePress} />
+    <>
+      <Flex px={2}>
+        <Flex justifyContent="center">
+          <SectionTitle
+            title={collection.title}
+            titleVariant="md"
+            onPress={handleTitlePress}
+            RightButtonContent={() => (
+              <Flex flexDirection="row" flex={1}>
+                <Flex my="auto">
+                  <ArrowRightIcon fill="black60" ml={0.5} />
+                </Flex>
+              </Flex>
+            )}
+          />
+        </Flex>
+        <ArtworkRail
+          onPress={handleArtworkPress}
+          artworks={artworks}
+          ListHeaderComponent={null}
+          showSaveIcon
+          showPartnerName
+        />
       </Flex>
-      <ArtworkRail
-        onPress={handleArtworkPress}
-        artworks={artworks}
-        ListHeaderComponent={null}
-        showSaveIcon
-        showPartnerName
-      />
-    </Flex>
+
+      {!lastElement && <Separator borderColor="black10" my={4} />}
+    </>
   )
 }
 
@@ -82,7 +105,7 @@ const fragment = graphql`
   }
 `
 
-export const CollectionRailPlaceholder: FC = () => {
+export const CollectionRailPlaceholder: FC<Partial<CollectionRailProps>> = ({ lastElement }) => {
   return (
     <Skeleton>
       <Flex px={2}>
@@ -98,6 +121,8 @@ export const CollectionRailPlaceholder: FC = () => {
           <Separator borderColor="black10" my={2} />
         </Flex>
       </Flex>
+
+      {!lastElement && <Separator borderColor="black10" my={4} />}
     </Skeleton>
   )
 }
@@ -117,8 +142,10 @@ interface CollectionRailWithSuspenseProps {
   slug: string
 }
 
-export const CollectionRailWithSuspense = withSuspense<CollectionRailWithSuspenseProps>({
-  Component: ({ slug }) => {
+export const CollectionRailWithSuspense = withSuspense<
+  CollectionRailWithSuspenseProps & Partial<CollectionRailProps>
+>({
+  Component: ({ slug, lastElement }) => {
     const { height } = useScreenDimensions()
     const [isVisible, setIsVisible] = useState(false)
     const data = useLazyLoadQuery<CollectionRailCollectionsByCategoryQuery>(query, {
@@ -136,12 +163,12 @@ export const CollectionRailWithSuspense = withSuspense<CollectionRailWithSuspens
       // We don't need to overfetch all rails at once, fetch as they become closer to be visible
       return (
         <ElementInView onVisible={handleOnVisible} visibilityMargin={-height}>
-          <CollectionRailPlaceholder />
+          <CollectionRailPlaceholder lastElement={lastElement} />
         </ElementInView>
       )
     }
 
-    return <CollectionRail collection={data.marketingCollection} />
+    return <CollectionRail collection={data.marketingCollection} lastElement={lastElement} />
   },
   ErrorFallback: NoFallback,
   LoadingFallback: CollectionRailPlaceholder,

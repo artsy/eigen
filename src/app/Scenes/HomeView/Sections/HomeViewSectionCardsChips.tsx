@@ -3,6 +3,7 @@ import { Chip, Flex, Skeleton, SkeletonBox, Spacer, useSpace } from "@artsy/pale
 import { HomeViewSectionCardsChipsQuery } from "__generated__/HomeViewSectionCardsChipsQuery.graphql"
 import { HomeViewSectionCardsChips_section$key } from "__generated__/HomeViewSectionCardsChips_section.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { getSnapToOffsets } from "app/Scenes/CollectionsByCategory/CollectionsChips"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
@@ -33,9 +34,7 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
   if (cards.length === 0) return null
 
   const numColumns = !isTablet() ? Math.ceil(cards.length / 3) : Math.ceil(cards.length / 2)
-  const snapToOffsets = !isTablet()
-    ? [CHIP_WIDTH / 2 + CHIP_WIDTH / 4 + space(0.5), CHIP_WIDTH * 2]
-    : [CHIP_WIDTH * numColumns - 2]
+  const snapToOffsets = getSnapToOffsets(numColumns, space(1), space(1), CHIP_WIDTH)
 
   const handleOnChipPress = (card: (typeof cards)[number], index: number) => {
     if (card.href) {
@@ -51,7 +50,7 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
   }
 
   return (
-    <Flex p={2}>
+    <Flex pl={2} py={2}>
       <Flex>
         <SectionTitle title={section.component?.title} />
       </Flex>
@@ -66,7 +65,7 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
       >
         <FlatList
           scrollEnabled={true}
-          columnWrapperStyle={{ gap: space(1) }}
+          columnWrapperStyle={{ gap: space(1), paddingRight: space(2) }}
           ItemSeparatorComponent={() => <Spacer y={1} />}
           contentContainerStyle={{ gap: 40 }}
           showsVerticalScrollIndicator={false}
