@@ -16,6 +16,7 @@ import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { searchQueryDefaultVariables } from "app/Scenes/Search/Search"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
+import { reportExperimentVariant } from "app/utils/experiments/reporter"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
@@ -74,6 +75,18 @@ export const HomeView: React.FC = () => {
   useEffect(() => {
     requestPushNotificationsPermission()
   }, [])
+
+  useEffect(() => {
+    queryData.homeView?.experiments?.forEach((experiment) => {
+      if (experiment?.name && experiment?.variant) {
+        reportExperimentVariant({
+          experimentName: experiment.name,
+          variantName: experiment.variant,
+          context_owner_type: OwnerType.home,
+        })
+      }
+    })
+  }, [queryData.homeView?.experiments])
 
   useFocusEffect(
     useCallback(() => {
@@ -210,6 +223,12 @@ const sectionsFragment = graphql`
 
 export const homeViewScreenQuery = graphql`
   query HomeViewQuery($count: Int!, $cursor: String) @cacheable {
+    homeView {
+      experiments {
+        name
+        variant
+      }
+    }
     viewer {
       ...HomeViewSectionsConnection_viewer @arguments(count: $count, cursor: $cursor)
     }
