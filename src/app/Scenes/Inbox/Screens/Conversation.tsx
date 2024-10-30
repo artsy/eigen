@@ -3,6 +3,7 @@ import NetInfo from "@react-native-community/netinfo"
 import { ConversationQuery } from "__generated__/ConversationQuery.graphql"
 import { Conversation_me$data } from "__generated__/Conversation_me.graphql"
 import ConnectivityBanner from "app/Components/ConnectivityBanner"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { ComposerFragmentContainer } from "app/Scenes/Inbox/Components/Conversations/Composer"
 import Messages from "app/Scenes/Inbox/Components/Conversations/Messages"
 import { sendConversationMessage } from "app/Scenes/Inbox/Components/Conversations/SendConversationMessage"
@@ -159,12 +160,16 @@ export class Conversation extends React.Component<Props, State> {
 
   render() {
     const conversation = this.props.me.conversation
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+
+    if (!conversation) {
+      return <LoadFailureView trackErrorBoundary={false} />
+    }
+
     const partnerName = conversation.to.name
 
     return (
       <ComposerFragmentContainer
-        conversation={conversation!}
+        conversation={conversation}
         disabled={this.state.sendingMessage || !this.state.isConnected}
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         ref={(composer) => (this.composer = composer)}
