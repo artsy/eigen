@@ -1,4 +1,4 @@
-import { Text, Screen, Button, Spacer, Flex, useSpace, CheckIcon } from "@artsy/palette-mobile"
+import { Text, Screen, Button, Spacer, Flex, CheckIcon } from "@artsy/palette-mobile"
 import { IdentityVerificationStep_me$key } from "__generated__/IdentityVerificationStep_me.graphql"
 import { CompleteMyProfileStore } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
 import { Footer } from "app/Scenes/CompleteMyProfile/Footer"
@@ -10,7 +10,6 @@ import { FC } from "react"
 import { graphql, useFragment } from "react-relay"
 
 export const IdentityVerificationStep: FC = () => {
-  const space = useSpace()
   const { goNext } = useCompleteProfile()
   const { me } = useCompleteMyProfileSteps()
   const data = useFragment<IdentityVerificationStep_me$key>(fragment, me)
@@ -38,7 +37,7 @@ export const IdentityVerificationStep: FC = () => {
 
               <Spacer y={1} />
 
-              <Flex gap={space(2)}>
+              <Flex gap={2}>
                 <Text color="black60">
                   Send an ID verification email and follow the link and instructions to verify your
                   account.

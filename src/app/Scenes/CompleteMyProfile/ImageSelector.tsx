@@ -5,7 +5,6 @@ import {
   Button,
   CheckCircleFillIcon,
   AddCircleIcon,
-  useSpace,
   Image,
   Skeleton,
   SkeletonBox,
@@ -26,7 +25,6 @@ interface ImageSelectorProps {
 
 export const ImageSelector: FC<ImageSelectorProps> = ({ src, onImageSelect }) => {
   const [isLoading, setIsLoading] = useState(false)
-  const space = useSpace()
   const { showActionSheetWithOptions } = useActionSheet()
   const { me } = useCompleteMyProfileSteps()
   const data = useFragment<ImageSelector_me$key>(fragment, me)
@@ -61,7 +59,7 @@ export const ImageSelector: FC<ImageSelectorProps> = ({ src, onImageSelect }) =>
 
   return (
     <Touchable aria-label="Choose a photo" accessibilityRole="button" onPress={handleImagePress}>
-      <Flex alignItems="center" gap={space(2)}>
+      <Flex alignItems="center" gap={2}>
         <Flex alignItems="center">
           <Flex
             alignItems="center"

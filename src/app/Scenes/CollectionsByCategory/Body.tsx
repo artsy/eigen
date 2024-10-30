@@ -1,4 +1,4 @@
-import { Flex, Separator, Skeleton, SkeletonText, Text, useSpace } from "@artsy/palette-mobile"
+import { Flex, Separator, Skeleton, SkeletonText, Text } from "@artsy/palette-mobile"
 import { useRoute } from "@react-navigation/native"
 import { FlashList } from "@shopify/flash-list"
 import { BodyCollectionsByCategoryQuery } from "__generated__/BodyCollectionsByCategoryQuery.graphql"
@@ -20,7 +20,6 @@ interface BodyProps {
 }
 
 export const Body: React.FC<BodyProps> = ({ viewer }) => {
-  const space = useSpace()
   const data = useFragment(fragment, viewer)
   const { params } = useRoute<CollectionsByCategoriesRouteProp>()
   const category = params.props.category
@@ -30,8 +29,8 @@ export const Body: React.FC<BodyProps> = ({ viewer }) => {
   }
 
   return (
-    <Flex gap={space(4)}>
-      <Flex gap={space(2)}>
+    <Flex gap={4}>
+      <Flex gap={2}>
         <Text variant="xl" px={2}>
           {category}
         </Text>
@@ -73,12 +72,10 @@ const fragment = graphql`
 `
 
 const BodyPlaceholder: React.FC = () => {
-  const space = useSpace()
-
   return (
     <Skeleton>
-      <Flex gap={space(4)}>
-        <Flex gap={space(2)} px={2}>
+      <Flex gap={4}>
+        <Flex gap={2} px={2}>
           <SkeletonText variant="xl">Category</SkeletonText>
 
           <SkeletonText>Category description text</SkeletonText>

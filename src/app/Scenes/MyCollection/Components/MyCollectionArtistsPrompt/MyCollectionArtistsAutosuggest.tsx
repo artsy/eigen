@@ -1,4 +1,4 @@
-import { Flex, Input, Spacer, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { Flex, Input, Spacer, useScreenDimensions } from "@artsy/palette-mobile"
 import { useBottomSheet } from "@gorhom/bottom-sheet"
 import { MyCollectionArtistsAutosuggestQuery } from "__generated__/MyCollectionArtistsAutosuggestQuery.graphql"
 import SearchIcon from "app/Components/Icons/SearchIcon"
@@ -13,7 +13,6 @@ import { FlatList, Keyboard, KeyboardAvoidingView } from "react-native"
 import { graphql } from "react-relay"
 
 export const MyCollectionArtistsAutosuggest: FC = () => {
-  const space = useSpace()
   const {
     safeAreaInsets: { bottom },
   } = useScreenDimensions()
@@ -50,7 +49,7 @@ export const MyCollectionArtistsAutosuggest: FC = () => {
 
   return (
     <KeyboardAvoidingView behavior="padding">
-      <Flex gap={space(2)} height="100%">
+      <Flex gap={2} height="100%">
         <Flex>
           <Input
             placeholder="Search for artists on Artsy"

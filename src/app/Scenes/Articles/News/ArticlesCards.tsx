@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedNewsSection } from "@artsy/cohesion"
-import { Flex, Separator, Text, Touchable, useSpace } from "@artsy/palette-mobile"
+import { Flex, Separator, Text, Touchable } from "@artsy/palette-mobile"
 import { ArticlesCards_viewer$key } from "__generated__/ArticlesCards_viewer.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { graphql, useFragment } from "react-relay"
@@ -12,7 +12,6 @@ export interface ArticleNewsProps {
 export const ArticlesCards: React.FC<ArticleNewsProps> = ({ viewer }) => {
   const tracking = useTracking()
   const data = useFragment(ArticlesNewsFragment, viewer)
-  const space = useSpace()
 
   if (!data.articles) {
     return null
@@ -24,13 +23,13 @@ export const ArticlesCards: React.FC<ArticleNewsProps> = ({ viewer }) => {
   }
 
   return (
-    <Flex m={2} p={2} border="1px solid" borderColor="black30" gap={space(2)}>
+    <Flex m={2} p={2} border="1px solid" borderColor="black30" gap={2}>
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
         <Text variant="lg-display">News</Text>
         <Text variant="lg-display">{date}</Text>
       </Flex>
       {data.articles.map((article, index) => (
-        <Flex key={index} gap={space(2)}>
+        <Flex key={index} gap={2}>
           <Touchable onPress={() => handleOnPress(article.href ?? "")}>
             <Flex flexDirection="row" alignItems="center">
               <Text variant="sm-display" numberOfLines={3}>

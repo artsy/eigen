@@ -70,9 +70,9 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
   }
 
   return (
-    <Flex p={2} gap={space(2)}>
+    <Flex p={2} gap={2}>
       <Text>{section.component?.title}</Text>
-      <Flex flexDirection="row" flexWrap="wrap" gap={space(1)}>
+      <Flex flexDirection="row" flexWrap="wrap" gap={1}>
         {cards.map((card, index) => {
           const src = card.image?.url
           if (!src) {
@@ -150,9 +150,9 @@ const HomeViewCardsPlaceholder: React.FC = () => {
 
   return (
     <Skeleton>
-      <Flex p={2} gap={space(2)}>
+      <Flex p={2} gap={2}>
         <SkeletonText>Explore by category</SkeletonText>
-        <Flex flexDirection="row" flexWrap="wrap" gap={space(1)}>
+        <Flex flexDirection="row" flexWrap="wrap" gap={1}>
           <>
             {Array.from({ length: 6 }).map((_, index) => (
               <Flex key={index} borderRadius={5}>
