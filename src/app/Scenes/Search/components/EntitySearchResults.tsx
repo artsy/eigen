@@ -1,6 +1,7 @@
 import { Flex, Spacer, useSpace, Spinner } from "@artsy/palette-mobile"
 import { EntitySearchResultsQuery } from "__generated__/EntitySearchResultsQuery.graphql"
 import { EntitySearchResults_searchConnection$key } from "__generated__/EntitySearchResults_searchConnection.graphql"
+import { SimpleErrorMessage } from "app/Components/ErrorView/SimpleErrorMessage"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
 import { SearchResult } from "app/Scenes/Search/components/SearchResult"
 import { SingleIndexEmptyResultsMessage } from "app/Scenes/Search/components/SingleIndexEmptyResultsMessage"
@@ -9,6 +10,7 @@ import { SEARCH_PILL_KEY_TO_SEARCH_ENTITY } from "app/Scenes/Search/constants"
 import { PillType } from "app/Scenes/Search/types"
 import { extractNodes } from "app/utils/extractNodes"
 import { Suspense, useContext, useEffect, useRef } from "react"
+import { ErrorBoundary } from "react-error-boundary"
 import { FlatList, Keyboard } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
@@ -90,13 +92,15 @@ export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selec
 }
 
 export const EntitySearchResultsScreen: React.FC<SearchResultsProps> = (props) => (
-  <Suspense
-    fallback={
-      <SingleIndexSearchPlaceholder hasRoundedImages={props.selectedPill.key === "artist"} />
-    }
-  >
-    <EntitySearchResults {...props} />
-  </Suspense>
+  <ErrorBoundary fallback={<SimpleErrorMessage />}>
+    <Suspense
+      fallback={
+        <SingleIndexSearchPlaceholder hasRoundedImages={props.selectedPill.key === "artist"} />
+      }
+    >
+      <EntitySearchResults {...props} />
+    </Suspense>
+  </ErrorBoundary>
 )
 
 const entitySearchResultsFragment = graphql`

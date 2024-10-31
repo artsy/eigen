@@ -6,6 +6,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { useSwitchStatusBarStyle } from "app/utils/useStatusBarStyle"
 import { useEffect } from "react"
 
 export const InnerHomeContainer = () => {
@@ -21,6 +22,8 @@ export const InnerHomeContainer = () => {
   const navigateToArtQuiz = async () => {
     await navigate("/art-quiz")
   }
+
+  useSwitchStatusBarStyle("dark-content", "dark-content")
 
   useEffect(() => {
     if (artQuizState === "incomplete" && isNavigationReady) {

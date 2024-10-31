@@ -551,7 +551,7 @@ export default createFragmentContainer(Artwork, {
       }
       image(includeAll: $includeAllImages) {
         blurhash
-        url(version: "large")
+        url(version: ["larger", "large", "medium", "small", "square"])
         aspectRatio
         resized(width: $width) {
           src

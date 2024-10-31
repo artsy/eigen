@@ -1,4 +1,4 @@
-import { Flex, Separator, Skeleton, SkeletonText, Text, useSpace } from "@artsy/palette-mobile"
+import { Flex, Separator, Skeleton, SkeletonText, Text } from "@artsy/palette-mobile"
 import { useRoute } from "@react-navigation/native"
 import { FlashList } from "@shopify/flash-list"
 import { BodyCollectionsByCategoryQuery } from "__generated__/BodyCollectionsByCategoryQuery.graphql"
@@ -20,7 +20,6 @@ interface BodyProps {
 }
 
 export const Body: React.FC<BodyProps> = ({ viewer }) => {
-  const space = useSpace()
   const data = useFragment(fragment, viewer)
   const { params } = useRoute<CollectionsByCategoriesRouteProp>()
   const category = params.props.category
@@ -30,10 +29,12 @@ export const Body: React.FC<BodyProps> = ({ viewer }) => {
   }
 
   return (
-    <Flex gap={space(4)}>
-      <Flex px={2} gap={space(2)}>
-        <Text variant="xl">{category}</Text>
-        <Text>Explore collections with {category}</Text>
+    <Flex gap={4}>
+      <Flex gap={2}>
+        <Text variant="xl" px={2}>
+          {category}
+        </Text>
+        <Text px={2}>Explore collections with {category}</Text>
         {/* TODO: fix typings broken by some unknown reason here, prob related to @plural */}
         <CollectionsChips marketingCollections={data.marketingCollections as any} />
       </Flex>
@@ -44,10 +45,14 @@ export const Body: React.FC<BodyProps> = ({ viewer }) => {
         estimatedItemSize={ESTIMATED_ITEM_SIZE}
         data={data.marketingCollections}
         keyExtractor={(item) => `artwork_rail_${item?.slug}`}
-        renderItem={({ item }) => {
-          return <CollectionRailWithSuspense slug={item?.slug ?? ""} />
+        renderItem={({ item, index }) => {
+          return (
+            <CollectionRailWithSuspense
+              slug={item?.slug ?? ""}
+              lastElement={index === data.marketingCollections.length - 1}
+            />
+          )
         }}
-        ItemSeparatorComponent={() => <Separator borderColor="black10" my={4} />}
       />
     </Flex>
   )
@@ -58,7 +63,7 @@ const ESTIMATED_ITEM_SIZE = 390
 const fragment = graphql`
   fragment BodyCollectionsByCategory_viewer on Viewer
   @argumentDefinitions(category: { type: "String" }) {
-    marketingCollections(category: $category, first: 20) {
+    marketingCollections(category: $category, sort: CURATED, first: 20) {
       ...CollectionsChips_marketingCollections
 
       slug @required(action: NONE)
@@ -67,12 +72,10 @@ const fragment = graphql`
 `
 
 const BodyPlaceholder: React.FC = () => {
-  const space = useSpace()
-
   return (
     <Skeleton>
-      <Flex gap={space(4)}>
-        <Flex gap={space(1)} px={2}>
+      <Flex gap={4}>
+        <Flex gap={2} px={2}>
           <SkeletonText variant="xl">Category</SkeletonText>
 
           <SkeletonText>Category description text</SkeletonText>

@@ -1,10 +1,10 @@
 import {
-  Flex,
-  Text,
-  Screen,
-  FollowButton,
-  Spacer,
   ArrowRightIcon,
+  Flex,
+  FollowButton,
+  Screen,
+  Spacer,
+  Text,
   Touchable,
 } from "@artsy/palette-mobile"
 import { ArtworkPublishedNotificationFollowArtistMutation } from "__generated__/ArtworkPublishedNotificationFollowArtistMutation.graphql"
@@ -14,7 +14,7 @@ import { NotificationArtworkList } from "app/Scenes/Activity/components/Notifica
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { FC } from "react"
 import { ScrollView } from "react-native"
-import { useFragment, graphql, useMutation } from "react-relay"
+import { graphql, useFragment, useMutation } from "react-relay"
 
 interface ArtworkPublishedNotificationProps {
   notification: ArtworkPublishedNotification_notification$key
@@ -81,7 +81,9 @@ export const ArtworkPublishedNotification: FC<ArtworkPublishedNotificationProps>
 
         <NotificationArtworkList artworksConnection={artworksConnection} />
 
-        <Flex mx={2} mt={1} mb={2}>
+        <Spacer y={2} />
+
+        <Flex mx={2}>
           <Touchable onPress={handleViewAllWorksPress}>
             <Flex flexDirection="row">
               <Text fontWeight="bold">View all works by {artist.name}</Text>

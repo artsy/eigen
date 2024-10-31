@@ -60,10 +60,6 @@ describe("ArtworkCommercialButtons", () => {
     `,
   })
 
-  beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCollectorProfilePrompts: true })
-  })
-
   it("renders Purchase button if artwork isAcquireable", () => {
     const artwork = {
       ...ArtworkFixture,

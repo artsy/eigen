@@ -43,7 +43,7 @@ export const FairOverview: FC<FairOverviewProps> = ({ fair }) => {
   return (
     <Tabs.ScrollView style={{ paddingTop: space(2) }}>
       {!isEmpty ? (
-        <Flex gap={space(2)}>
+        <Flex gap={2}>
           {!!previewText && (
             <ReadMore textStyle="new" content={previewText} maxChars={truncatedTextLimit()} />
           )}

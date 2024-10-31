@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedViewWork } from "@artsy/cohesion"
-import { Button, Flex, useSpace, Join, Spacer } from "@artsy/palette-mobile"
+import { Button, Flex, Join, Spacer } from "@artsy/palette-mobile"
 import { BuyNowButton_artwork$key } from "__generated__/BuyNowButton_artwork.graphql"
 import { MyProfileEditModal_me$key } from "__generated__/MyProfileEditModal_me.graphql"
 import { NotificationCommercialButtonsQuery } from "__generated__/NotificationCommercialButtonsQuery.graphql"
@@ -66,7 +66,6 @@ export const CommercialButtons: React.FC<{
   const artworkData = useFragment(artworkFragment, artwork)
 
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
-  const space = useSpace()
 
   const { hasEnded } = getTimer(partnerOffer?.endAt || "")
   const noLongerAvailable = !partnerOffer?.isAvailable
@@ -154,7 +153,7 @@ export const CommercialButtons: React.FC<{
   }
 
   return (
-    <Flex mx={2} gap={space(1)}>
+    <Flex mx={2} gap={1}>
       {renderComponent}
     </Flex>
   )

@@ -1,6 +1,6 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
 import { UploadSizeLimitExceeded } from "@artsy/cohesion/dist/Schema/Events/UploadSizeLimitExceeded"
-import { AddIcon, Flex, ImageIcon, Spacer, Text, useSpace } from "@artsy/palette-mobile"
+import { AddIcon, Flex, ImageIcon, Spacer, Text } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { captureMessage } from "@sentry/react-native"
 import { PhotoItem } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/UploadPhotosPhotoItem"
@@ -29,8 +29,6 @@ export const ICON_SIZE = 18
 export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
   isAnyPhotoLoading,
 }) => {
-  const space = useSpace()
-
   const { values, setFieldValue } = useFormikContext<PhotosFormModel>()
   const { submission } = GlobalStore.useAppState((state) => state.artworkSubmission)
   const submissionId = submission.submissionId || values.submissionId
@@ -141,7 +139,7 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
   const numberOfPlaceholders = Math.max(3 - values.photos.length, 0)
 
   return (
-    <Flex flexDirection="row" flexWrap="wrap" gap={space(1)}>
+    <Flex flexDirection="row" flexWrap="wrap" gap={1}>
       {values.photos.map((photo: Photo, idx: number) => {
         return (
           <PhotoItem

@@ -8,7 +8,6 @@ import {
   userShouldBePromptedToAddArtistsToCollection,
   userShouldBePromptedToCompleteProfile,
 } from "app/utils/collectorPromptHelpers"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import { useState } from "react"
 import { graphql, useFragment } from "react-relay"
@@ -39,7 +38,6 @@ export const useSendInquiry = ({
   )
 
   const tracking = useTracking()
-  const profilePromptIsEnabled = useFeatureFlag("AREnableCollectorProfilePrompts")
 
   const sendInquiry = (message: string) => {
     if (isLoading || !artwork || !me || !collectorProfile) {
@@ -92,13 +90,6 @@ export const useSendInquiry = ({
         const locationDisplay = me.location?.display
         const profession = me.profession
         const artworksCount = me.myCollectionInfo.artworksCount
-
-        if (!profilePromptIsEnabled) {
-          setTimeout(() => {
-            dispatch({ type: "setSuccessNotificationVisible", payload: true })
-          }, 500)
-          return
-        }
 
         if (
           userShouldBePromptedToAddArtistsToCollection({

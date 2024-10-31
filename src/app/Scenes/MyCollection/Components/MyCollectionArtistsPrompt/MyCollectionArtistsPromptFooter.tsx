@@ -1,4 +1,4 @@
-import { Button, Flex, Text, Touchable, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { Button, Flex, Text, Touchable, useScreenDimensions } from "@artsy/palette-mobile"
 import { useBottomSheet } from "@gorhom/bottom-sheet"
 import { MyCollectionAddCollectedArtistsStore } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsStore"
 import { FC } from "react"
@@ -12,7 +12,6 @@ export const MyCollectionArtistsPromptFooter: FC<MyCollectionArtistsPromptFooter
   onPress,
   isLoading,
 }) => {
-  const space = useSpace()
   const {
     safeAreaInsets: { bottom },
   } = useScreenDimensions()
@@ -26,7 +25,7 @@ export const MyCollectionArtistsPromptFooter: FC<MyCollectionArtistsPromptFooter
       left={0}
       right={0}
       p={2}
-      gap={space(2)}
+      gap={2}
       backgroundColor="white100"
       height={FOOTER_HEIGHT + bottom}
     >

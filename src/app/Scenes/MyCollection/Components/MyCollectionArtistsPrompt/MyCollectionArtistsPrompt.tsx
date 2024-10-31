@@ -1,4 +1,4 @@
-import { Flex, Text, useSpace } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { useBottomSheet } from "@gorhom/bottom-sheet"
 import { MyCollectionArtistsPromptBody } from "app/Scenes/MyCollection/Components/MyCollectionArtistsPrompt/MyCollectionArtistsPromptBody"
 import { SNAP_POINTS } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistsPrompt"
@@ -16,7 +16,6 @@ export const MyCollectionArtistsPrompt: FC<MyCollectionArtistsPromptProps> = ({
   title,
   subtitle,
 }) => {
-  const space = useSpace()
   const { animatedIndex } = useBottomSheet()
 
   return (
@@ -34,7 +33,7 @@ export const MyCollectionArtistsPrompt: FC<MyCollectionArtistsPromptProps> = ({
 
         {!!subtitle && <Text>{subtitle}</Text>}
 
-        <Flex pt={2} gap={space(2)} flex={1}>
+        <Flex pt={2} gap={2} flex={1}>
           <MyCollectionAddCollectedArtistsStore.Provider>
             <MyCollectionArtistsPromptBody />
           </MyCollectionAddCollectedArtistsStore.Provider>

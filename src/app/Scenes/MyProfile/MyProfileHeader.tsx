@@ -46,7 +46,7 @@ export const MyProfileHeader: React.FC<MyProfileHeaderProps> = ({ meProp }) => {
     !!me.location?.display && !!me.profession && !!me.icon?.url && !!me.isIdentityVerified
 
   return (
-    <Flex justifyContent="center" alignItems="center" gap={space(0.5)} py={1} px={2}>
+    <Flex justifyContent="center" alignItems="center" gap={0.5} py={1} px={2}>
       <Flex position="absolute" top={space(1)} right={space(2)}>
         <Touchable
           aria-label="Open settings"
@@ -87,7 +87,7 @@ export const MyProfileHeader: React.FC<MyProfileHeaderProps> = ({ meProp }) => {
 
       {/* Information */}
       <Flex>
-        <Flex flexDirection="row" justifyContent="center" alignItems="center" gap={space(0.5)}>
+        <Flex flexDirection="row" justifyContent="center" alignItems="center" gap={0.5}>
           <Text variant="md" color={color("black100")}>
             {me.name}
           </Text>
@@ -134,7 +134,7 @@ export const MyProfileHeader: React.FC<MyProfileHeaderProps> = ({ meProp }) => {
               <Text variant="sm-display" weight="medium">
                 {me.counts.savedArtworks ?? "0"}
               </Text>
-              <Flex flexDirection="row" alignItems="center" gap={space(0.5)}>
+              <Flex flexDirection="row" alignItems="center" gap={0.5}>
                 <HeartIcon />
                 <Text variant="xs">Save{me.counts.savedArtworks !== 1 ? "s" : ""}</Text>
               </Flex>
@@ -148,7 +148,7 @@ export const MyProfileHeader: React.FC<MyProfileHeaderProps> = ({ meProp }) => {
               <Text variant="sm-display" weight="medium">
                 {me.counts.followedArtists ?? "0"}
               </Text>
-              <Flex flexDirection="row" alignItems="center" gap={space(0.5)}>
+              <Flex flexDirection="row" alignItems="center" gap={0.5}>
                 <MultiplePersonsIcon />
                 <Text variant="xs">Follow{me.counts.followedArtists !== 1 ? "s" : ""}</Text>
               </Flex>
@@ -162,7 +162,7 @@ export const MyProfileHeader: React.FC<MyProfileHeaderProps> = ({ meProp }) => {
               <Text variant="sm-display" weight="medium">
                 {me.counts.savedSearches ?? "0"}
               </Text>
-              <Flex flexDirection="row" alignItems="center" gap={space(0.5)}>
+              <Flex flexDirection="row" alignItems="center" gap={0.5}>
                 <BellIcon />
                 <Text variant="xs">Alert{me.counts.savedSearches !== 1 ? "s" : ""}</Text>
               </Flex>
@@ -175,11 +175,9 @@ export const MyProfileHeader: React.FC<MyProfileHeaderProps> = ({ meProp }) => {
 }
 
 const MyProfileHeaderPlaceholder: React.FC<{}> = () => {
-  const space = useSpace()
-
   return (
     <Skeleton>
-      <Flex justifyContent="center" alignItems="center" gap={space(0.5)} py={1} px={2}>
+      <Flex justifyContent="center" alignItems="center" gap={0.5} py={1} px={2}>
         <SkeletonBox width={70} height={70} borderRadius={35}></SkeletonBox>
 
         <Flex>
@@ -205,11 +203,11 @@ const MyProfileHeaderPlaceholder: React.FC<{}> = () => {
 
         <Flex flexDirection="row" px={2} alignSelf="stretch" justifyContent="space-between">
           <Flex flex={1}>
-            <Flex justifyContent="center" alignItems="center" gap={space(0.5)}>
+            <Flex justifyContent="center" alignItems="center" gap={0.5}>
               <Flex>
                 <SkeletonText variant="sm-display">20</SkeletonText>
               </Flex>
-              <Flex flexDirection="row" alignItems="center" gap={space(0.5)}>
+              <Flex flexDirection="row" alignItems="center" gap={0.5}>
                 <SkeletonBox width={18} height={18} borderRadius={9} />
                 <SkeletonText variant="xs">Saves</SkeletonText>
               </Flex>
@@ -217,11 +215,11 @@ const MyProfileHeaderPlaceholder: React.FC<{}> = () => {
           </Flex>
 
           <Flex flex={1}>
-            <Flex justifyContent="center" alignItems="center" gap={space(0.5)}>
+            <Flex justifyContent="center" alignItems="center" gap={0.5}>
               <Flex>
                 <SkeletonText variant="sm-display">20</SkeletonText>
               </Flex>
-              <Flex flexDirection="row" alignItems="center" gap={space(0.5)}>
+              <Flex flexDirection="row" alignItems="center" gap={0.5}>
                 <SkeletonBox width={18} height={18} borderRadius={9} />
                 <SkeletonText variant="xs">Saves</SkeletonText>
               </Flex>
@@ -229,11 +227,11 @@ const MyProfileHeaderPlaceholder: React.FC<{}> = () => {
           </Flex>
 
           <Flex flex={1}>
-            <Flex justifyContent="center" alignItems="center" gap={space(0.5)}>
+            <Flex justifyContent="center" alignItems="center" gap={0.5}>
               <Flex>
                 <SkeletonText variant="sm-display">20</SkeletonText>
               </Flex>
-              <Flex flexDirection="row" alignItems="center" gap={space(0.5)}>
+              <Flex flexDirection="row" alignItems="center" gap={0.5}>
                 <SkeletonBox width={18} height={18} borderRadius={9} />
                 <SkeletonText variant="xs">Saves</SkeletonText>
               </Flex>

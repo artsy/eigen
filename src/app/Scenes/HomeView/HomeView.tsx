@@ -172,7 +172,7 @@ const HomeViewScreenPlaceholder: React.FC = () => {
 export const HomeViewScreen: React.FC = () => {
   return (
     <HomeViewStoreProvider>
-      <RetryErrorBoundary>
+      <RetryErrorBoundary trackErrorBoundary={false}>
         <Suspense fallback={<HomeViewScreenPlaceholder />}>
           <HomeView />
         </Suspense>

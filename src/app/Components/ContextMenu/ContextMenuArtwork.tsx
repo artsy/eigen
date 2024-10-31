@@ -53,10 +53,10 @@ const artworkFragment = graphql`
     id
     isHangable
     contextMenuImage: image {
-      url(version: "large")
+      url(version: ["larger", "large", "medium", "small", "square"])
     }
     image(includeAll: false) {
-      url(version: "large")
+      url(version: ["larger", "large", "medium", "small", "square"])
     }
     sale {
       isAuction

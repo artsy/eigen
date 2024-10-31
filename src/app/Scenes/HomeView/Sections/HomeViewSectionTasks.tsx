@@ -6,10 +6,12 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { Task } from "app/Components/Tasks/Task"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
+import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
-import { useState } from "react"
-import { LayoutAnimation } from "react-native"
+import { useEffect, useRef, useState } from "react"
+import { InteractionManager, LayoutAnimation } from "react-native"
+import { SwipeableMethods } from "react-native-gesture-handler/ReanimatedSwipeable"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionTasksProps extends FlexProps {
@@ -26,19 +28,47 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
 
   const tasks = extractNodes(section.tasksConnection)
 
+  const swipeableRef = useRef<SwipeableMethods>(null)
+  const {
+    isDismissed,
+    sessionState: { isReady },
+  } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
+  const { dismiss } = GlobalStore.actions.progressiveOnboarding
+
+  // adding the find-saved-artwork onboarding key to prevent overlap
+  const shouldStartOnboardingAnimation =
+    isReady && !isDismissed("act-now-tasks").status && !!isDismissed("find-saved-artwork").status
+
   // In the future, we may want to show multiple tasks
   const task = tasks?.[0]
 
   const [displayTask, setDisplayTask] = useState(true)
 
+  useEffect(() => {
+    if (shouldStartOnboardingAnimation) {
+      startOnboardingAnimation()
+    }
+  }, [shouldStartOnboardingAnimation])
+
+  if (!task || !displayTask) {
+    return null
+  }
+
+  const startOnboardingAnimation = () => {
+    InteractionManager.runAfterInteractions(() => {
+      swipeableRef.current?.openRight()
+    }).then(() => {
+      setTimeout(() => {
+        swipeableRef.current?.close()
+        dismiss("act-now-tasks")
+      }, 1500)
+    })
+  }
+
   const handleClearTask = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
 
     setDisplayTask(false)
-  }
-
-  if (!task || !displayTask) {
-    return null
   }
 
   return (
@@ -48,7 +78,7 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
       </Flex>
 
       <Flex mr={2}>
-        <Task task={task} onClearTask={handleClearTask} />
+        <Task ref={swipeableRef} task={task} onClearTask={handleClearTask} />
       </Flex>
 
       <HomeViewSectionSentinel

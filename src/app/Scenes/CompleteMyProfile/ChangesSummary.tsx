@@ -4,7 +4,6 @@ import {
   Screen,
   Spacer,
   Text,
-  useSpace,
   CheckCircleFillIcon,
   CheckCircleIcon,
 } from "@artsy/palette-mobile"
@@ -14,7 +13,6 @@ import { navigate } from "app/system/navigation/navigate"
 import { FC } from "react"
 
 export const ChangesSummary: FC = () => {
-  const space = useSpace()
   const { saveAndExit } = useCompleteProfile()
   const isLoading = CompleteMyProfileStore.useStoreState((state) => state.isLoading)
   const steps = CompleteMyProfileStore.useStoreState((state) => state.steps)
@@ -39,7 +37,7 @@ export const ChangesSummary: FC = () => {
   return (
     <Screen safeArea={false}>
       <Screen.Body pt={2}>
-        <Flex py={2} gap={space(2)}>
+        <Flex py={2} gap={2}>
           <Text variant="lg-display">
             {isCompleted ? "Thank you for completing your profile." : "You’re almost there!"}
           </Text>
@@ -62,9 +60,9 @@ export const ChangesSummary: FC = () => {
             )}
           </Text>
 
-          <Flex gap={space(1)}>
+          <Flex gap={1}>
             {steps.includes("LocationStep") && (
-              <Flex flexDirection="row" alignItems="center" gap={space(1)}>
+              <Flex flexDirection="row" alignItems="center" gap={1}>
                 {hasLocation ? (
                   <CheckCircleFillIcon fill="green100" />
                 ) : (
@@ -77,7 +75,7 @@ export const ChangesSummary: FC = () => {
             )}
 
             {steps.includes("ProfessionStep") && (
-              <Flex flexDirection="row" alignItems="center" gap={space(1)}>
+              <Flex flexDirection="row" alignItems="center" gap={1}>
                 {hasProfession ? (
                   <CheckCircleFillIcon fill="green100" />
                 ) : (
@@ -90,7 +88,7 @@ export const ChangesSummary: FC = () => {
             )}
 
             {steps.includes("AvatarStep") && (
-              <Flex flexDirection="row" alignItems="center" gap={space(1)}>
+              <Flex flexDirection="row" alignItems="center" gap={1}>
                 {hasIconUrl ? (
                   <CheckCircleFillIcon fill="green100" />
                 ) : (
@@ -103,7 +101,7 @@ export const ChangesSummary: FC = () => {
             )}
 
             {steps.includes("IdentityVerificationStep") && (
-              <Flex flexDirection="row" alignItems="center" gap={space(1)}>
+              <Flex flexDirection="row" alignItems="center" gap={1}>
                 {hasIsIdentityVerified ? (
                   <CheckCircleFillIcon fill="green100" />
                 ) : (

@@ -7,7 +7,7 @@ import { CommercialButtonsQueryRenderer } from "app/Scenes/Activity/components/N
 import { extractNodes } from "app/utils/extractNodes"
 import { FC } from "react"
 import { ImageBackground } from "react-native"
-import { useFragment, graphql } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 
 export interface PartnerOffer {
   internalID: string
@@ -36,7 +36,8 @@ export const NotificationArtworkList: FC<NotificationArtworkListProps> = (props)
   const color = useColor()
 
   return (
-    <Flex minHeight={400}>
+    // Setting the min heiht here because Flashlist needs a container with a valid height.
+    <Flex minHeight={1}>
       <MasonryInfiniteScrollArtworkGrid
         animated
         artworks={artworks}
@@ -48,14 +49,15 @@ export const NotificationArtworkList: FC<NotificationArtworkListProps> = (props)
         onScroll={scrollHandler}
         partnerOffer={partnerOffer}
         priceOfferMessage={priceOfferMessage}
-        style={{ paddingBottom: 120 }}
       />
+
       {!!showArtworkCommercialButtons && (
         <CommercialButtonsQueryRenderer
           artworkID={artworks[0].internalID}
           partnerOffer={partnerOffer}
         />
       )}
+
       {!!note && (
         <Flex width="100%" flexDirection="row" p={2}>
           <Flex width="100%" flexDirection="row" bg="black5" p={1}>

@@ -29,6 +29,8 @@ interface HomeViewSectionCardsProps {
   index: number
 }
 
+const IMAGE_RATIO = 0.85
+
 export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
   section: _section,
   homeViewSectionId,
@@ -46,7 +48,7 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
   }
 
   const imageColumnGaps = columns === 2 ? space(0.5) : 0
-  const imageSize = width / columns - space(2) - imageColumnGaps
+  const imageWidth = width / columns - space(2) - imageColumnGaps
   const cards = extractNodes(section.cardsConnection)
 
   const handleCardPress = (card: (typeof cards)[number], index: number) => {
@@ -68,9 +70,9 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
   }
 
   return (
-    <Flex p={2} gap={space(2)}>
+    <Flex p={2} gap={2}>
       <Text>{section.component?.title}</Text>
-      <Flex flexDirection="row" flexWrap="wrap" gap={space(1)}>
+      <Flex flexDirection="row" flexWrap="wrap" gap={1}>
         {cards.map((card, index) => {
           const src = card.image?.url
           if (!src) {
@@ -80,7 +82,7 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
           return (
             <Touchable key={`exploreBy-${index}`} onPress={() => handleCardPress(card, index)}>
               <Flex borderRadius={5} overflow="hidden">
-                <Image src={src} width={imageSize} height={imageSize} />
+                <Image src={src} width={imageWidth} aspectRatio={IMAGE_RATIO} />
 
                 <Flex
                   position="absolute"
@@ -89,7 +91,7 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
                   backgroundColor="white100"
                   p={0.5}
                 >
-                  <Text variant="lg-display">{card.title}</Text>
+                  <Text variant="md">{card.title}</Text>
                 </Flex>
               </Flex>
             </Touchable>
@@ -144,17 +146,17 @@ const HomeViewCardsPlaceholder: React.FC = () => {
 
   const columns = !isTablet() ? 2 : 3
   const imageColumnGaps = columns === 2 ? space(0.5) : 0
-  const imageSize = width / columns - space(2) - imageColumnGaps
+  const imageWidth = width / columns - space(2) - imageColumnGaps
 
   return (
     <Skeleton>
-      <Flex p={2} gap={space(2)}>
+      <Flex p={2} gap={2}>
         <SkeletonText>Explore by category</SkeletonText>
-        <Flex flexDirection="row" flexWrap="wrap" gap={space(1)}>
+        <Flex flexDirection="row" flexWrap="wrap" gap={1}>
           <>
             {Array.from({ length: 6 }).map((_, index) => (
               <Flex key={index} borderRadius={5}>
-                <SkeletonBox height={imageSize} width={imageSize} />
+                <SkeletonBox width={imageWidth} height={imageWidth / IMAGE_RATIO} />
               </Flex>
             ))}
           </>

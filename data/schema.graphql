@@ -2487,6 +2487,9 @@ type Artwork implements Node & Searchable & Sellable {
   isPurchasable: Boolean
   isSaved: Boolean
 
+  # Checks if artwork is saved to any of the user's 'saves' lists
+  isSavedToAnyList: Boolean!
+
   # Checks if artwork is saved to user's lists
   isSavedToList(default: Boolean = false, saves: Boolean = true): Boolean!
 
@@ -12477,6 +12480,7 @@ type MarketingCollectionQuery {
 enum MarketingCollectionsSorts {
   CREATED_AT_ASC
   CREATED_AT_DESC
+  CURATED
   UPDATED_AT_ASC
   UPDATED_AT_DESC
 }

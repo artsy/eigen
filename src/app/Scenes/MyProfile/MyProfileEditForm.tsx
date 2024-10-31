@@ -12,7 +12,6 @@ import {
   Text,
   Touchable,
   useColor,
-  useSpace,
 } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { useNavigation } from "@react-navigation/native"
@@ -70,7 +69,6 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = () => {
   )
 
   const color = useColor()
-  const space = useSpace()
   const navigation = useNavigation()
 
   const { showActionSheetWithOptions } = useActionSheet()
@@ -225,7 +223,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = () => {
               <Text style={{ textDecorationLine: "underline" }}>Choose an Image</Text>
             </Touchable>
           </Flex>
-          <Flex m={2} gap={space(2)}>
+          <Flex m={2} gap={2}>
             <FormikProvider value={formikBag}>
               <UserProfileFields />
             </FormikProvider>

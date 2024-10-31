@@ -1,13 +1,13 @@
 import {
+  ArrowRightIcon,
   Button,
+  DEFAULT_HIT_SLOP,
   Flex,
-  Text,
+  Pill,
   Screen,
   Spacer,
-  ArrowRightIcon,
+  Text,
   Touchable,
-  Pill,
-  DEFAULT_HIT_SLOP,
 } from "@artsy/palette-mobile"
 import { AlertNotification_notification$key } from "__generated__/AlertNotification_notification.graphql"
 import { ActivityErrorScreen } from "app/Scenes/Activity/components/ActivityErrorScreen"
@@ -15,7 +15,7 @@ import { NotificationArtworkList } from "app/Scenes/Activity/components/Notifica
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { FC } from "react"
 import { ScrollView, TouchableOpacity } from "react-native"
-import { useFragment, graphql } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 
 interface AlertNotificationProps {
   notification: AlertNotification_notification$key
@@ -86,7 +86,9 @@ export const AlertNotification: FC<AlertNotificationProps> = ({ notification }) 
 
         <NotificationArtworkList artworksConnection={artworksConnection} />
 
-        <Flex mx={2} mt={1} mb={2}>
+        <Spacer y={2} />
+
+        <Flex mx={2}>
           <Button
             block
             variant="outline"
