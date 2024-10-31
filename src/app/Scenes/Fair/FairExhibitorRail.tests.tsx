@@ -1,7 +1,6 @@
 import { FairExhibitorRailTestsQuery } from "__generated__/FairExhibitorRailTestsQuery.graphql"
 import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
@@ -133,7 +132,6 @@ describe("FairExhibitors", () => {
   })
 
   it("tracks taps on artworks with auction signals in the rail", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAuctionImprovementsSignals: true })
     const wrapper = getWrapper({
       Show: () => ({
         fair: {

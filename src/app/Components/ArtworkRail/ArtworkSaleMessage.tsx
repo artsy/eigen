@@ -4,7 +4,6 @@ import { useMetaDataTextColor } from "app/Components/ArtworkRail/ArtworkRailUtil
 import { formattedTimeLeft } from "app/Scenes/Activity/utils/formattedTimeLeft"
 import { displayAsLinethrought, parsedSaleMessage } from "app/utils/getSaleMessgeOrBidInfo"
 import { getTimer } from "app/utils/getTimer"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { graphql, useFragment } from "react-relay"
 
 interface ArtworkSaleMessageProps {
@@ -22,13 +21,11 @@ export const ArtworkSaleMessage: React.FC<ArtworkSaleMessageProps> = ({
   saleInfoTextStyle,
   dark = false,
 }) => {
-  const enableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
-
   const { collectorSignals, sale } = useFragment(fragment, artwork)
 
   const { primaryTextColor } = useMetaDataTextColor({ dark })
 
-  const displayAuctionSignal = enableAuctionImprovementsSignals && sale?.isAuction
+  const displayAuctionSignal = sale?.isAuction
 
   const partnerOfferEndAt = collectorSignals?.partnerOffer?.endAt
     ? formattedTimeLeft(getTimer(collectorSignals?.partnerOffer.endAt).time).timerCopy

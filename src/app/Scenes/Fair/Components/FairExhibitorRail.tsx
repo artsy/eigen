@@ -9,7 +9,6 @@ import {
   CollectorSignals,
   getArtworkSignalTrackingFields,
 } from "app/utils/getArtworkSignalTrackingFields"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -19,7 +18,6 @@ interface FairExhibitorRailProps {
 
 const FairExhibitorRail: React.FC<FairExhibitorRailProps> = ({ show }) => {
   const { trackEvent } = useTracking()
-  const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
 
   const artworks = extractNodes(show?.artworksConnection)
 
@@ -53,8 +51,7 @@ const FairExhibitorRail: React.FC<FairExhibitorRailProps> = ({ show }) => {
                 artwork?.internalID ?? "",
                 artwork?.slug ?? "",
                 position,
-                artwork.collectorSignals,
-                AREnableAuctionImprovementsSignals
+                artwork.collectorSignals
               )
             )
             navigate(artwork.href)
@@ -103,8 +100,7 @@ const tracks = {
     artworkID: string,
     artworkSlug: string,
     position: number,
-    collectorSignals: CollectorSignals,
-    auctionSignalsFeatureFlagEnabled: boolean
+    collectorSignals: CollectorSignals
   ) => ({
     action: ActionType.tappedArtworkGroup,
     context_module: ContextModule.galleryBoothRail,
@@ -116,7 +112,7 @@ const tracks = {
     destination_screen_owner_slug: artworkSlug,
     horizontal_slide_position: position,
     type: "thumbnail",
-    ...getArtworkSignalTrackingFields(collectorSignals, auctionSignalsFeatureFlagEnabled),
+    ...getArtworkSignalTrackingFields(collectorSignals),
   }),
   tappedShow: (show: FairExhibitorRail_show$data) => ({
     action: ActionType.tappedArtworkGroup,

@@ -236,12 +236,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableSubmitArtworkTier2Information",
   },
-  AREnableAuctionImprovementsSignals: {
-    description: "Enable new auction lot signals",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableAuctionImprovementsSignals",
-  },
   AREnableCollectionsWithoutHeaderImage: {
     description: "Remove the header image from collections",
     readyForRelease: true,

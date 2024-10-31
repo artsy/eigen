@@ -205,11 +205,6 @@ describe("ArtworkRailCard", () => {
     })
 
     describe("auction signals", () => {
-      beforeEach(
-        () =>
-          __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAuctionImprovementsSignals: true })
-      )
-
       describe("live auction", () => {
         it("shows the bidding live now signal", () => {
           renderWithRelay({

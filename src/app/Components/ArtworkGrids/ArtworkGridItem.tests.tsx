@@ -133,10 +133,6 @@ describe("ArtworkGridItem", () => {
     })
 
     describe("with auction signals", () => {
-      beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAuctionImprovementsSignals: true })
-      })
-
       it("sends a tracking event when with time left to bid label", () => {
         renderWithRelay(
           {
@@ -536,11 +532,6 @@ describe("ArtworkGridItem", () => {
     })
 
     describe("auction signals", () => {
-      beforeEach(
-        () =>
-          __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAuctionImprovementsSignals: true })
-      )
-
       describe("live auction", () => {
         it("shows the bidding live now signal", () => {
           renderWithRelay({

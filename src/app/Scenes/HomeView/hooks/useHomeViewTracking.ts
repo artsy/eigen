@@ -26,13 +26,11 @@ import {
 } from "@artsy/cohesion"
 import { PaymentFailureBanner_Fragment$data } from "__generated__/PaymentFailureBanner_Fragment.graphql"
 import { getArtworkSignalTrackingFields } from "app/utils/getArtworkSignalTrackingFields"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { useTracking } from "react-tracking"
 
 export const useHomeViewTracking = () => {
   const { trackEvent } = useTracking()
-  const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
 
   return {
     screen: (ownerType: ScreenOwnerType) => {
@@ -184,10 +182,7 @@ export const useHomeViewTracking = () => {
         horizontal_slide_position: index,
         module_height: "single",
         type: "thumbnail",
-        ...getArtworkSignalTrackingFields(
-          artworkCollectorSignals,
-          AREnableAuctionImprovementsSignals
-        ),
+        ...getArtworkSignalTrackingFields(artworkCollectorSignals),
       }
 
       trackEvent(payload)

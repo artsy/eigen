@@ -223,8 +223,6 @@ describe(ConfirmationScreen, () => {
     })
 
     it("sends a tracking event when an artwork with a partner offer is tapped", async () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAuctionImprovementsSignals: true })
-
       renderWithRelay({
         FilterArtworksConnection: () => ({
           edges: [

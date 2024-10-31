@@ -8,7 +8,6 @@ import { useMetaDataTextColor } from "app/Components/ArtworkRail/ArtworkRailUtil
 import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessage"
 import { HEART_ICON_SIZE } from "app/Components/constants"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
   ArtworkActionTrackingProps,
   tracks as artworkActionTracks,
@@ -60,7 +59,6 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
   showSaveIcon = false,
 }) => {
   const { trackEvent } = useTracking()
-  const enableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
 
   const artwork = useFragment(artworkMetaFragment, artworkProp)
 
@@ -83,7 +81,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
     artwork,
     isSmallTile: true,
     collectorSignals: collectorSignals,
-    auctionSignals: enableAuctionImprovementsSignals ? collectorSignals?.auction : null,
+    auctionSignals: collectorSignals?.auction,
   })
 
   const { primaryTextColor, secondaryTextColor } = useMetaDataTextColor({ dark })
@@ -91,7 +89,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
   const displayLimitedTimeOfferSignal =
     collectorSignals?.partnerOffer?.isAvailable && !sale?.isAuction
 
-  const displayAuctionSignal = enableAuctionImprovementsSignals && sale?.isAuction
+  const displayAuctionSignal = sale?.isAuction
 
   const onArtworkSavedOrUnSaved = (saved: boolean) => {
     trackEvent(
