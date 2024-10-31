@@ -5,7 +5,15 @@ export const registerSharedRoutes = () => {
   return (
     <StackNavigator.Group>
       {Object.entries(modules).map(([moduleName, module]) => {
-        if (module.type === "react" && module.Component && !module.options.isRootViewForTabName) {
+        // The module needs to be a defined react module
+        if (
+          module.type === "react" &&
+          module.Component &&
+          // The module should not be a root view for a tab
+          !module.options.isRootViewForTabName &&
+          // The module is not an restricted to a specific tab
+          !module.options.onlyShowInTabName
+        ) {
           return registerScreen({
             name: moduleName as AppModule,
             module: module,

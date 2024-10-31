@@ -9,6 +9,10 @@ export const InboxTab: React.FC = () => {
         name: "Inbox",
         module: modules["Inbox"],
       })}
+      {registerScreen({
+        name: "Conversation",
+        module: modules["Conversation"],
+      })}
 
       {registerSharedRoutes()}
     </StackNavigator.Navigator>
