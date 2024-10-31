@@ -12,6 +12,14 @@ import { MyCollectionWhySell } from "./MyCollectionWhySell"
 jest.mock("app/Scenes/SellWithArtsy/ArtworkForm/Utils/fetchArtworkInformation", () => ({
   fetchArtworkInformation: () => Promise.resolve(artworkWithoutSubmission),
 }))
+jest.mock(
+  "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission",
+  () => ({
+    createOrUpdateSubmission: jest
+      .fn()
+      .mockResolvedValue({ internalID: "internal-id", externalID: "external-id" }),
+  })
+)
 
 describe("MyCollectionWhySell", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -115,7 +123,7 @@ describe("MyCollectionWhySell", () => {
                 signature: null,
                 source: "MY_COLLECTION",
                 state: "DRAFT",
-                submissionId: null,
+                submissionId: "internal-id",
                 title: "Welcome Mat",
                 userEmail: "",
                 userName: "",
@@ -270,7 +278,7 @@ describe("MyCollectionWhySell", () => {
               signature: null,
               source: "MY_COLLECTION",
               state: "DRAFT",
-              submissionId: null,
+              submissionId: "internal-id",
               title: "Welcome Mat",
               userEmail: "",
               userName: "",
