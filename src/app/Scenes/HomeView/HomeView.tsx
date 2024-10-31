@@ -78,7 +78,15 @@ export const HomeView: React.FC = () => {
 
   useEffect(() => {
     const experiments = compact(queryData.homeView?.experiments)
-    experiments.forEach((experiment) => tracking.viewedExperiment(experiment))
+    experiments.forEach(({ name, variant, enabled }) => {
+      if (!enabled) {
+        console.warn(`Experiment is not enabled: ${name}`)
+      } else if (!variant) {
+        console.warn(`Experiment variant is missing for: ${name}`)
+      } else {
+        tracking.viewedExperiment(name, variant)
+      }
+    })
   }, [queryData.homeView?.experiments])
 
   useFocusEffect(
@@ -220,6 +228,7 @@ export const homeViewScreenQuery = graphql`
       experiments {
         name
         variant
+        enabled
       }
     }
     viewer {

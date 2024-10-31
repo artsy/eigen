@@ -2,6 +2,7 @@ import {
   ActionType,
   BannerViewed,
   ContextModule,
+  ExperimentViewed,
   OwnerType,
   RailViewed,
   Screen,
@@ -517,12 +518,13 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
-    viewedExperiment: (experiment: { name: string; variant?: string | null }) => {
-      const payload = {
+    viewedExperiment: (name: string, variant: string) => {
+      const payload: ExperimentViewed = {
         action: ActionType.experimentViewed,
-        experiment_name: experiment.name,
-        variant_name: experiment.variant,
+        experiment_name: name,
+        variant_name: variant,
         context_owner_type: OwnerType.home,
+        service: "unleash",
       }
 
       trackEvent(payload)
