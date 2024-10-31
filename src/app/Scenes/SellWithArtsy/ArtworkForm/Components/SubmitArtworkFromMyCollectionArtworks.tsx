@@ -77,7 +77,7 @@ export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
       }
     } catch (error) {
       Alert.alert(
-        "Failed to fetch artwork details, ",
+        "Failed to fetch artwork details or create submission.",
         "Please try again or enter details manually."
       )
     } finally {
