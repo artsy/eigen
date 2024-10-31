@@ -608,7 +608,7 @@ export const modules = defineModules({
   ),
   MyCollectionArtworkAdd: reactModule(MyCollectionArtworkAdd, {
     hidesBackButton: true,
-    hidesBottomTabs: true,
+    hidesBottomTabs: !unsafe_getFeatureFlag("AREnableNewNavigation"),
     alwaysPresentModally: true,
     modalPresentationStyle: "fullScreen",
     screenOptions: {
@@ -617,7 +617,7 @@ export const modules = defineModules({
   }),
   MyCollectionArtworkEdit: reactModule(MyCollectionArtworkEditQueryRenderer, {
     hidesBackButton: true,
-    hidesBottomTabs: true,
+    hidesBottomTabs: !unsafe_getFeatureFlag("AREnableNewNavigation"),
     alwaysPresentModally: true,
     modalPresentationStyle: "fullScreen",
     screenOptions: {

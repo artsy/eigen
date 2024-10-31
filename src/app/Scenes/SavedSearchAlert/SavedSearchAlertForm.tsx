@@ -9,7 +9,7 @@ import {
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
 import { getAlertByCriteria } from "app/Scenes/SavedSearchAlert/queries/getAlertByCriteria"
 import { GlobalStore } from "app/store/GlobalStore"
-import { goBack, navigate } from "app/system/navigation/navigate"
+import { goBack, navigate, popToRoot } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { refreshSavedAlerts } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
@@ -56,7 +56,6 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     userAllowsEmails,
     contentContainerStyle,
     onComplete,
-    onDeleteComplete,
     ...other
   } = props
   const enableAlertsFiltersSizeFiltering = useFeatureFlag("AREnableAlertsFiltersSizeFiltering")
@@ -276,7 +275,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     try {
       await deleteSavedSearchMutation(savedSearchAlertId)
       tracking.trackEvent(tracks.deletedSavedSearch(savedSearchAlertId))
-      onDeleteComplete?.()
+      popToRoot()
     } catch (error) {
       console.error(error)
     }
