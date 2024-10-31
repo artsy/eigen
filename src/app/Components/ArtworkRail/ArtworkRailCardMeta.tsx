@@ -159,9 +159,11 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
         )}
 
         {!!showPartnerName && !!partner?.name && (
-          <Text lineHeight="20px" variant="xs" color={secondaryTextColor} numberOfLines={1}>
-            {partner?.name}
-          </Text>
+          <RNText numberOfLines={1} ellipsizeMode="tail">
+            <Text lineHeight="20px" variant="xs" color={secondaryTextColor}>
+              {partner?.name}
+            </Text>
+          </RNText>
         )}
 
         {SalePriceComponent
