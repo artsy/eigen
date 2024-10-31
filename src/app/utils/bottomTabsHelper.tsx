@@ -2,7 +2,7 @@ import EventEmitter from "events"
 import { useScrollToTop } from "@react-navigation/native"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { useEffect, useRef } from "react"
+import React, { useEffect, useRef } from "react"
 import { FlatList, ScrollView } from "react-native"
 
 export const BottomTabsEvents = new EventEmitter()
@@ -17,13 +17,19 @@ export const scrollTabToTop = (tab: BottomTabType) => {
 export const useBottomTabsScrollToTop = (tab: BottomTabType, onScrollToTop?: () => void) => {
   const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
 
-  const ref = useRef(null)
+  const ref = useRef<ScrollView>(null)
 
-  useScrollToTop(ref)
+  useScrollToTop(
+    React.useRef({
+      scrollToTop: () => {
+        handleScrollToTopEvent()
+      },
+    })
+  )
 
   const handleScrollToTopEvent = () => {
-    const flatListRef = ref as React.RefObject<FlatList> | null
-    const scrollViewRef = ref as React.RefObject<ScrollView> | null
+    const flatListRef = ref as unknown as React.RefObject<FlatList> | null
+    const scrollViewRef = ref as unknown as React.RefObject<ScrollView> | null
 
     flatListRef?.current?.scrollToOffset?.({ offset: 0 })
     scrollViewRef?.current?.scrollTo?.({})
