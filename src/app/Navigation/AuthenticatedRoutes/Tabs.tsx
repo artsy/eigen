@@ -6,7 +6,7 @@ import { ProfileTab } from "app/Navigation/AuthenticatedRoutes/ProfileTab"
 import { SearchTab } from "app/Navigation/AuthenticatedRoutes/SearchTab"
 import { SellTab } from "app/Navigation/AuthenticatedRoutes/SellTab"
 import { BottomTabsButton } from "app/Scenes/BottomTabs/BottomTabsButton"
-import { __unsafe_navigationRef } from "app/system/navigation/navigate"
+import { internal_navigationRef } from "app/system/navigation/navigate"
 import { Platform } from "react-native"
 
 if (Platform.OS === "ios") {
@@ -31,31 +31,33 @@ type TabRoutesParams = {
 
 const Tab = createBottomTabNavigator<TabRoutesParams>()
 
-export const AuthenticatedRoutes = (
-  <Tab.Navigator
-    screenOptions={({ route }) => {
-      const currentRoute = __unsafe_navigationRef.current?.getCurrentRoute()?.name
-      return {
-        headerShown: false,
-        tabBarStyle: {
-          animate: true,
-          position: "absolute",
-          display:
-            currentRoute && modules[currentRoute as AppModule]?.options.hidesBottomTabs
-              ? "none"
-              : "flex",
-        },
-        tabBarHideOnKeyboard: true,
-        tabBarButton: (props) => {
-          return <BottomTabsButton tab={route.name} onPress={props.onPress} />
-        },
-      }
-    }}
-  >
-    <Tab.Screen name="home" component={HomeTab} />
-    <Tab.Screen name="search" component={SearchTab} />
-    <Tab.Screen name="inbox" component={InboxTab} />
-    <Tab.Screen name="sell" component={SellTab} />
-    <Tab.Screen name="profile" component={ProfileTab} />
-  </Tab.Navigator>
-)
+export const AuthenticatedRoutes: React.FC = () => {
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => {
+        const currentRoute = internal_navigationRef.current?.getCurrentRoute()?.name
+        return {
+          headerShown: false,
+          tabBarStyle: {
+            animate: true,
+            position: "absolute",
+            display:
+              currentRoute && modules[currentRoute as AppModule]?.options.hidesBottomTabs
+                ? "none"
+                : "flex",
+          },
+          tabBarHideOnKeyboard: true,
+          tabBarButton: (props) => {
+            return <BottomTabsButton tab={route.name} onPress={props.onPress} />
+          },
+        }
+      }}
+    >
+      <Tab.Screen name="home" component={HomeTab} />
+      <Tab.Screen name="search" component={SearchTab} />
+      <Tab.Screen name="inbox" component={InboxTab} />
+      <Tab.Screen name="sell" component={SellTab} />
+      <Tab.Screen name="profile" component={ProfileTab} />
+    </Tab.Navigator>
+  )
+}

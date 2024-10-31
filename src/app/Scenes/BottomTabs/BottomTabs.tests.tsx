@@ -123,7 +123,7 @@ describe(BottomTabs, () => {
     expect(screen.queryByLabelText("profile bottom tab")).toBeFalsy()
   })
 
-  fit("fetches the notifications info on mount", async () => {
+  it("fetches the notifications info on mount", async () => {
     renderWithWrappers(<TestWrapper />)
 
     expect(mockEnvironment.mock.getAllOperations()).toHaveLength(1)
@@ -147,7 +147,7 @@ describe(BottomTabs, () => {
    * we will get `setImmediate is not a function` error for the next test cases
    * It is related to this problem: https://github.com/artsy/eigen/blob/main/HACKS.md#jestfake-timers
    */
-  fit("fetches the notifications info once in a while", async () => {
+  it("fetches the notifications info once in a while", async () => {
     jest.useFakeTimers({
       legacyFakeTimers: true,
     })
@@ -179,8 +179,6 @@ describe(BottomTabs, () => {
     // Check badge counters
     const currentInboxCounter = await findBadgeCounterForTab("inbox")
     expect(currentInboxCounter).toHaveTextContent("3")
-
-    jest.useRealTimers()
   })
 })
 

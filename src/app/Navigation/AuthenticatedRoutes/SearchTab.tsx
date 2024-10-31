@@ -1,8 +1,8 @@
 import { modules } from "app/AppRegistry"
-import { SharedRoutes } from "app/Navigation/AuthenticatedRoutes/SharedRoutes"
+import { registerSharedRoutes } from "app/Navigation/AuthenticatedRoutes/SharedRoutes"
 import { registerScreen, StackNavigator } from "app/Navigation/AuthenticatedRoutes/StackNavigator"
 
-export const SearchTab = (): JSX.Element => {
+export const SearchTab: React.FC = () => {
   return (
     <StackNavigator.Navigator screenOptions={{ headerShown: false }} initialRouteName="Search">
       {registerScreen({
@@ -10,7 +10,7 @@ export const SearchTab = (): JSX.Element => {
         module: modules["Search"],
       })}
 
-      {SharedRoutes()}
+      {registerSharedRoutes()}
     </StackNavigator.Navigator>
   )
 }

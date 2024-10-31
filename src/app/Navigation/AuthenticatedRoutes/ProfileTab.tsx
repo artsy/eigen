@@ -1,8 +1,8 @@
 import { modules } from "app/AppRegistry"
-import { SharedRoutes } from "app/Navigation/AuthenticatedRoutes/SharedRoutes"
+import { registerSharedRoutes } from "app/Navigation/AuthenticatedRoutes/SharedRoutes"
 import { registerScreen, StackNavigator } from "app/Navigation/AuthenticatedRoutes/StackNavigator"
 
-export const ProfileTab = (): JSX.Element => {
+export const ProfileTab: React.FC = () => {
   return (
     <StackNavigator.Navigator screenOptions={{ headerShown: false }} initialRouteName="MyProfile">
       {registerScreen({
@@ -10,7 +10,7 @@ export const ProfileTab = (): JSX.Element => {
         module: modules["MyProfile"],
       })}
 
-      {SharedRoutes()}
+      {registerSharedRoutes()}
     </StackNavigator.Navigator>
   )
 }

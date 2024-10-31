@@ -11,7 +11,8 @@ import {
   UnauthenticatedRoutesParams,
 } from "app/Navigation/UnauthenticatedRoutes"
 import { GlobalStore } from "app/store/GlobalStore"
-import { __unsafe_navigationRef } from "app/system/navigation/navigate"
+import { internal_navigationRef } from "app/system/navigation/navigate"
+
 import { useReloadedDevNavigationState } from "app/system/navigation/useReloadedDevNavigationState"
 
 export type NavigationRoutesParams = UnauthenticatedRoutesParams & AuthenticatedRoutesParams
@@ -34,7 +35,7 @@ export const Navigation = () => {
 
   return (
     <NavigationContainer
-      ref={__unsafe_navigationRef}
+      ref={internal_navigationRef}
       theme={theme}
       initialState={initialState}
       onReady={() => {
@@ -44,8 +45,8 @@ export const Navigation = () => {
         saveSession(state)
       }}
     >
-      {!isLoggedIn && UnauthenticatedRoutes}
-      {!!isLoggedIn && AuthenticatedRoutes}
+      {!isLoggedIn && <UnauthenticatedRoutes />}
+      {!!isLoggedIn && <AuthenticatedRoutes />}
     </NavigationContainer>
   )
 }

@@ -10,11 +10,13 @@ export type UnauthenticatedRoutesParams = {
 
 const UnauthenticatedStack = createNativeStackNavigator<UnauthenticatedRoutesParams>()
 
-export const UnauthenticatedRoutes = (
-  <UnauthenticatedStack.Navigator>
-    <MainStackNavigator.Group>
-      <MainStackNavigator.Screen name="Login" component={LoginScreen} />
-      <MainStackNavigator.Screen name="SignUp" component={SignUpScreen} />
-    </MainStackNavigator.Group>
-  </UnauthenticatedStack.Navigator>
-)
+export const UnauthenticatedRoutes = () => {
+  return (
+    <UnauthenticatedStack.Navigator>
+      <MainStackNavigator.Group>
+        <MainStackNavigator.Screen name="Login" component={LoginScreen} />
+        <MainStackNavigator.Screen name="SignUp" component={SignUpScreen} />
+      </MainStackNavigator.Group>
+    </UnauthenticatedStack.Navigator>
+  )
+}

@@ -12,7 +12,7 @@ import { postEventToProviders } from "app/utils/track/providers"
 import { visualize } from "app/utils/visualizer"
 import { InteractionManager, Linking, Platform } from "react-native"
 
-export const __unsafe_navigationRef = { current: null as NavigationContainerRef<any> | null }
+export const internal_navigationRef = { current: null as NavigationContainerRef<any> | null }
 
 export interface ViewDescriptor extends ViewOptions {
   type: "react" | "native"
@@ -122,8 +122,8 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
   const enableNewNavigation = unsafe_getFeatureFlag("AREnableNewNavigation")
 
   if (enableNewNavigation) {
-    if (__unsafe_navigationRef.current?.isReady()) {
-      __unsafe_navigationRef.current.dispatch(
+    if (internal_navigationRef.current?.isReady()) {
+      internal_navigationRef.current.dispatch(
         StackActions.push(result.module, { ...result.params, ...options.passProps })
       )
     }
@@ -195,7 +195,7 @@ export function switchTab(tab: BottomTabType, props?: object) {
   GlobalStore.actions.bottomTabs.setSelectedTab(tab)
 
   if (enableNewNavigation) {
-    __unsafe_navigationRef?.current?.dispatch(TabActions.jumpTo(tab, props))
+    internal_navigationRef?.current?.dispatch(TabActions.jumpTo(tab, props))
     return
   } else {
     LegacyNativeModules.ARScreenPresenterModule.switchTab(tab)
@@ -237,7 +237,7 @@ export function dismissModal(after?: () => void) {
   // we might get a race condition that causes the UI to freeze
   InteractionManager.runAfterInteractions(() => {
     if (enableNewNavigation) {
-      __unsafe_navigationRef?.current?.dispatch(StackActions.pop())
+      internal_navigationRef?.current?.dispatch(StackActions.pop())
     } else {
       LegacyNativeModules.ARScreenPresenterModule.dismissModal()
     }
@@ -255,8 +255,8 @@ export function goBack(backProps?: GoBackProps) {
   navigationEvents.emit("goBack", backProps)
 
   if (enableNewNavigation) {
-    if (__unsafe_navigationRef.current?.isReady()) {
-      __unsafe_navigationRef.current.dispatch(StackActions.pop())
+    if (internal_navigationRef.current?.isReady()) {
+      internal_navigationRef.current.dispatch(StackActions.pop())
     }
     return
   }
@@ -267,7 +267,7 @@ export function goBack(backProps?: GoBackProps) {
 export function popToRoot() {
   const enableNewNavigation = unsafe_getFeatureFlag("AREnableNewNavigation")
   if (enableNewNavigation) {
-    __unsafe_navigationRef?.current?.dispatch(StackActions.popToTop())
+    internal_navigationRef?.current?.dispatch(StackActions.popToTop())
   } else {
     LegacyNativeModules.ARScreenPresenterModule.popToRootAndScrollToTop(unsafe__getSelectedTab())
   }
