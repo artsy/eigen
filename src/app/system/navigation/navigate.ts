@@ -123,9 +123,15 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
 
   if (enableNewNavigation) {
     if (internal_navigationRef.current?.isReady()) {
-      internal_navigationRef.current.dispatch(
-        StackActions.push(result.module, { ...result.params, ...options.passProps })
-      )
+      if (replaceActiveModal || replaceActiveScreen) {
+        internal_navigationRef.current.dispatch(
+          StackActions.replace(result.module, { ...result.params, ...options.passProps })
+        )
+      } else {
+        internal_navigationRef.current.dispatch(
+          StackActions.push(result.module, { ...result.params, ...options.passProps })
+        )
+      }
     }
     return
   }
