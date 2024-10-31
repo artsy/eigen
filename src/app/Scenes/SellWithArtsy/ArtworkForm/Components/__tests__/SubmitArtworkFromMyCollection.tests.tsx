@@ -12,10 +12,17 @@ jest.mock("app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext", () 
     }
   },
 }))
-
 jest.mock("app/Scenes/SellWithArtsy/ArtworkForm/Utils/fetchArtworkInformation", () => ({
   fetchArtworkInformation: jest.fn().mockResolvedValue({ artwork: mockedFetchedArtwork }),
 }))
+jest.mock(
+  "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission",
+  () => ({
+    createOrUpdateSubmission: jest
+      .fn()
+      .mockResolvedValue({ internalID: "internal-id", externalID: "external-id" }),
+  })
+)
 
 describe("SubmitArtworkFromMyCollection", () => {
   beforeEach(() => {
