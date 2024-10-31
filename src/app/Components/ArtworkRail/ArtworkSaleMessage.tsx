@@ -25,19 +25,13 @@ export const ArtworkSaleMessage: React.FC<ArtworkSaleMessageProps> = ({
 
   const { primaryTextColor } = useMetaDataTextColor({ dark })
 
-  const displayAuctionSignal = sale?.isAuction
-
   const partnerOfferEndAt = collectorSignals?.partnerOffer?.endAt
     ? formattedTimeLeft(getTimer(collectorSignals?.partnerOffer.endAt).time).timerCopy
     : ""
 
-  const saleInfoTextColor =
-    displayAuctionSignal && collectorSignals?.auction?.liveBiddingStarted
-      ? "blue100"
-      : primaryTextColor
-
-  const saleInfoTextWeight =
-    displayAuctionSignal && collectorSignals?.auction?.liveBiddingStarted ? "normal" : "bold"
+  const auctionInLiveBidding = sale?.isAuction && collectorSignals?.auction?.liveBiddingStarted
+  const saleInfoTextColor = auctionInLiveBidding ? "blue100" : primaryTextColor
+  const saleInfoTextWeight = auctionInLiveBidding ? "normal" : "bold"
 
   const { parts } = parsedSaleMessage(saleMessage)
 
