@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react-native"
+import { screen, waitFor } from "@testing-library/react-native"
 import { HomeViewSectionArtworksTestsQuery } from "__generated__/HomeViewSectionArtworksTestsQuery.graphql"
 import * as dismissSavedArtworkModule from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
 import { HomeViewScreen } from "app/Scenes/HomeView/HomeView"
@@ -22,6 +22,13 @@ describe("HomeView", () => {
     },
     query: graphql`
       query HomeViewTestsQuery($count: Int!, $cursor: String) @relay_test_operation {
+        homeView {
+          experiments {
+            name
+            variant
+            enabled
+          }
+        }
         viewer {
           ...HomeViewSectionsConnection_viewer @arguments(count: $count, cursor: $cursor)
         }
@@ -67,12 +74,14 @@ describe("HomeView", () => {
     expect(requestPushNotificationsPermissionSpy).toHaveBeenCalled()
   })
 
-  it("fires a screen view event", () => {
-    renderWithRelay({})
+  it("fires a screen view event", async () => {
+    renderWithRelay()
 
-    expect(mockTrackEvent).toHaveBeenCalledWith({
-      action: "screen",
-      context_screen_owner_type: "home",
+    await waitFor(() => {
+      expect(mockTrackEvent).toHaveBeenCalledWith({
+        action: "screen",
+        context_screen_owner_type: "home",
+      })
     })
   })
 
@@ -84,5 +93,76 @@ describe("HomeView", () => {
     })
 
     expect(screen.getByText("Tap here to verify your email address")).toBeTruthy()
+  })
+
+  describe("home view experiements", () => {
+    it("fires an experiement_viewed event for enabled experiments", async () => {
+      renderWithRelay({
+        HomeView: () => ({
+          experiments: [
+            {
+              name: "some_experiment",
+              variant: "some_variant",
+              enabled: true,
+            },
+          ],
+        }),
+      })
+
+      await waitFor(() => {
+        expect(mockTrackEvent).toHaveBeenCalledWith(
+          expect.objectContaining({
+            action: "experiment_viewed",
+            experiment_name: "some_experiment",
+            variant_name: "some_variant",
+            context_owner_type: "home",
+          })
+        )
+      })
+    })
+
+    it("does not fire an experiement_viewed event for disabled experiments", async () => {
+      renderWithRelay({
+        HomeView: () => ({
+          experiments: [
+            {
+              name: "some_experiment",
+              variant: "some_variant",
+              enabled: false,
+            },
+          ],
+        }),
+      })
+
+      await waitFor(() => {
+        expect(mockTrackEvent).not.toHaveBeenCalledWith(
+          expect.objectContaining({
+            action: "experiment_viewed",
+          })
+        )
+      })
+    })
+
+    it("does not fire an experiement_viewed event when variant is missing", async () => {
+      renderWithRelay({
+        HomeView: () => ({
+          experiments: [
+            {
+              name: "some_experiment",
+              variant: null,
+              enabled: true,
+            },
+          ],
+        }),
+      })
+
+      await waitFor(() => {
+        expect(mockTrackEvent).not.toHaveBeenCalledWith(
+          expect.objectContaining({
+            action: "experiment_viewed",
+          })
+        )
+      })
+    })
   })
 })
