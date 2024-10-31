@@ -86,8 +86,8 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
 
               const submission = await createOrUpdateSubmission(initialValues, null)
 
-              ;(initialValues.submissionId = submission?.internalID || null),
-                (passProps.initialValues = initialValues)
+              initialValues.submissionId = submission?.internalID || null
+              passProps.initialValues = initialValues
               passProps.initialStep = "AddTitle"
 
               navigate("/sell/submissions/new", { passProps })
