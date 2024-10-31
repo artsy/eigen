@@ -11,6 +11,7 @@ import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkFo
 import { fetchArtworkInformation } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/fetchArtworkInformation"
 import { getInitialSubmissionFormValuesFromArtwork } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/getInitialSubmissionValuesFromArtwork"
 import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
+import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { dismissModal, switchTab } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useRefreshControl } from "app/utils/refreshHelpers"
@@ -48,9 +49,11 @@ export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
     try {
       setIsLoading(true)
       // Fetch Artwork Details
+
       const artwork = await fetchArtworkInformation(artworkID)
+
       if (artwork) {
-        const formValues = {
+        const artworkValues = {
           ...getInitialSubmissionFormValuesFromArtwork(artwork),
           submissionId: values.submissionId,
           externalId: values.externalId,
@@ -58,7 +61,15 @@ export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
           userEmail: values.userEmail,
           userPhone: values.userPhone,
         }
-        setValues(formValues)
+
+        const submission = await createOrUpdateSubmission(artworkValues, values.submissionId)
+
+        setValues({
+          ...artworkValues,
+          submissionId: submission?.internalID || values.submissionId,
+          externalId: submission?.externalID || values.externalId,
+        })
+
         setIsLoading(false)
 
         navigation.navigate("AddTitle")
