@@ -72,8 +72,11 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
               const artworkData = await fetchArtworkInformation(artwork.internalID)
 
               if (!artworkData) {
+                console.error(
+                  "Failed to fetch artwork details when submitting My Collection artwork for sale."
+                )
                 Alert.alert(
-                  "Failed to fetch artwork details or create submission.",
+                  "Failed to fetch artwork details.",
                   "Please try again or enter details manually."
                 )
                 return
@@ -89,6 +92,10 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
 
               navigate("/sell/submissions/new", { passProps })
             } catch (error) {
+              console.error(
+                "Failed to fetch artwork details or create submission when submitting My Collection artwork for sale.",
+                error
+              )
               Alert.alert(
                 "Failed to fetch artwork details or create submission.",
                 "Please try again or enter details manually."

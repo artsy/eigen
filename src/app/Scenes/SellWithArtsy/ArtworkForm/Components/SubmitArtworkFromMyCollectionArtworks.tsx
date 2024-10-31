@@ -76,6 +76,10 @@ export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
         setCurrentStep("AddTitle")
       }
     } catch (error) {
+      console.error(
+        "Failed to fetch artwork details or create submission when starting sell flow from My Collection.",
+        error
+      )
       Alert.alert(
         "Failed to fetch artwork details or create submission.",
         "Please try again or enter details manually."
