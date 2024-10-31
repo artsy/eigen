@@ -533,7 +533,7 @@ export const modules = defineModules({
     {
       isRootViewForTabName: "inbox",
       hidesBackButton: true,
-      fullBleed: !unsafe_getFeatureFlag("AREnableNewNavigation"),
+      fullBleed: true,
     },
     [InboxScreenQuery]
   ),
