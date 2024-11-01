@@ -73,7 +73,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const likeAndFollowCTAPadding = enableRedesignSaveCTA || enableAddFollowCTA ? 36 : 0
   const artworkRailCardMetaPadding = 10
   const artworkRailCardMetaDataHeight =
-    ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + artworkRailCardMetaPadding + likeAndFollowCTAPadding + 10 // TODO: check height
+    ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + artworkRailCardMetaPadding + likeAndFollowCTAPadding // TODO: check height
 
   return (
     <Disappearable ref={(ref) => ((artwork as DissapearableArtwork)._disappearable = ref)}>
@@ -108,6 +108,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                   ? ARTWORK_RAIL_CARD_IMAGE_HEIGHT + artworkRailCardMetaDataHeight
                   : LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT + ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT
               }
+              //  backgroundColor="red"
               justifyContent={enableArtworkRailRedesignImageAspectRatio ? "flex-start" : "flex-end"}
             >
               {enableArtworkRailRedesignImageAspectRatio ? (
