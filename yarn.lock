@@ -12764,10 +12764,10 @@ react-native-dev-menu-android@1.0.10:
   resolved "https://registry.yarnpkg.com/react-native-dev-menu-android/-/react-native-dev-menu-android-1.0.10.tgz#3261ed0a026b061631c176bce97a7ff347d91019"
   integrity sha512-EjtdeH9BY3X5UcfFQ4zDT2cik6NcI2+rBqZhFbOShK+Azi2qrog+S5aybE3jIjvPu0WclNAtUF2tMm0l29qEIA==
 
-react-native-device-info@10.3.0:
-  version "10.3.0"
-  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-10.3.0.tgz#6bab64d84d3415dd00cc446c73ec5e2e61fddbe7"
-  integrity sha512-/ziZN1sA1REbJTv5mQZ4tXggcTvSbct+u5kCaze8BmN//lbxcTvWsU6NQd4IihLt89VkbX+14IGc9sVApSxd/w==
+react-native-device-info@14.0.0:
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-14.0.0.tgz#371601bb07f738aba721c74ad9c58b815d16f2b7"
+  integrity sha512-hKgH5URRQyMvr1wcBF8pZ9EnSM6fLGAfYRGZaOM8ljkr841kV5bjteI/p9ORfulxgZjB/vfz2J8zMAYwPOQWJg==
 
 react-native-document-picker@9.3.0:
   version "9.3.0"
