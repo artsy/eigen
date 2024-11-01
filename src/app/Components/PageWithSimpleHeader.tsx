@@ -1,4 +1,4 @@
-import { Flex, Box, Text, Separator, TextProps, NAVBAR_HEIGHT } from "@artsy/palette-mobile"
+import { Flex, Box, Text, Separator, TextProps } from "@artsy/palette-mobile"
 import { View } from "react-native"
 
 export const PageWithSimpleHeader: React.FC<{
@@ -10,29 +10,17 @@ export const PageWithSimpleHeader: React.FC<{
 }> = ({ title, titleWeight, left, right, children, noSeparator }) => {
   return (
     <Box style={{ flex: 1 }}>
-      <Flex px={2} flexDirection="row" alignItems="center" height={NAVBAR_HEIGHT}>
-        <Flex
-          alignItems="flex-start"
-          justifyContent="center"
-          height={NAVBAR_HEIGHT}
-          position="absolute"
-          left={2}
-        >
+      <Flex px={2} pb={1} pt={2} mb={0.5} flexDirection="row" alignItems="center" minHeight={54}>
+        <Flex flex={1} alignItems="flex-start">
           {left}
         </Flex>
-        <Flex flex={1} height={NAVBAR_HEIGHT} justifyContent="center" width="100%" mx={2}>
-          <Text variant="sm-display" weight={titleWeight} textAlign="center" numberOfLines={2}>
+        {/* TODO: figure out how to make this stretch dynamically */}
+        <Flex flex={2.5}>
+          <Text variant="sm-display" weight={titleWeight || "medium"} textAlign="center">
             {title}
           </Text>
         </Flex>
-        <Flex
-          alignItems="flex-end"
-          justifyContent="center"
-          height={NAVBAR_HEIGHT}
-          alignSelf="flex-end"
-          position="absolute"
-          right={2}
-        >
+        <Flex flex={1} alignItems="flex-end">
           {right}
         </Flex>
       </Flex>
