@@ -438,7 +438,7 @@ export const modules = defineModules({
   AuctionBidArtwork: reactModule(BidFlow, {
     alwaysPresentModally: true,
     hasOwnModalCloseButton: true,
-    fullBleed: true,
+    fullBleed: !unsafe_getFeatureFlag("AREnableNewNavigation"),
   }),
   AuctionBuyersPremium: reactModule(AuctionBuyersPremiumQueryRenderer, {
     fullBleed: true,
