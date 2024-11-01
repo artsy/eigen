@@ -833,9 +833,9 @@ export const getAuthModel = (): AuthModel => ({
       Platform.OS === "ios"
         ? await LegacyNativeModules.ArtsyNativeModule.clearUserData()
         : Promise.resolve(),
+      __DEV__ && (await clearNavState()),
       await signOutGoogle(),
       LoginManager.logOut(),
-      __DEV__ && clearNavState(),
       CookieManager.clearAll(),
       _globalCacheRef?.clear(),
     ])

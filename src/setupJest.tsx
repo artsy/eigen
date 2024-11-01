@@ -662,6 +662,7 @@ jest.mock("app/utils/track/providers.tsx", () => ({
 }))
 
 jest.mock("app/system/navigation/useReloadedDevNavigationState", () => ({
+  clearNavState: jest.fn(),
   useReloadedDevNavigationState: jest.fn(() => ({
     isReady: true,
     initialState: undefined,
