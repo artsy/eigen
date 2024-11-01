@@ -54,11 +54,13 @@ export const registerScreen: React.FC<StackNavigatorScreenProps> = ({ name, modu
           )
         },
         headerTitle: "",
+        headerTitleAlign: "center",
+        ...module.options.screenOptions,
         headerTitleStyle: {
           fontFamily: THEMES.v3.fonts.sans.regular,
           ...THEMES.v3.textTreatments["sm-display"],
+          ...((module.options.screenOptions?.headerTitleStyle as {} | undefined) ?? {}),
         },
-        ...module.options.screenOptions,
       }}
       children={(screenProps) => {
         const params = screenProps.route.params || {}
@@ -81,7 +83,7 @@ export const registerScreen: React.FC<StackNavigatorScreenProps> = ({ name, modu
 
 export interface ScreenWrapperProps {
   fullBleed?: boolean
-  hidesBottomTabs?: boolean
+  readonly hidesBottomTabs?: boolean
 }
 
 export const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
@@ -90,7 +92,9 @@ export const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
   children,
 }) => {
   const safeAreaInsets = useSafeAreaInsets()
-  const tabBarHeight = useBottomTabBarHeight()
+  // We don't have the bottom tabs context on modal screens
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const tabBarHeight = hidesBottomTabs ? 0 : useBottomTabBarHeight()
 
   const padding = fullBleed
     ? {
