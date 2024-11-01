@@ -1,10 +1,12 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
+import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { AppModule, modules } from "app/AppRegistry"
 import { HomeTab } from "app/Navigation/AuthenticatedRoutes/HomeTab"
 import { InboxTab } from "app/Navigation/AuthenticatedRoutes/InboxTab"
 import { ProfileTab } from "app/Navigation/AuthenticatedRoutes/ProfileTab"
 import { SearchTab } from "app/Navigation/AuthenticatedRoutes/SearchTab"
 import { SellTab } from "app/Navigation/AuthenticatedRoutes/SellTab"
+import { registerSharedModalRoutes } from "app/Navigation/AuthenticatedRoutes/SharedRoutes"
 import { BottomTabsButton } from "app/Scenes/BottomTabs/BottomTabsButton"
 import { internal_navigationRef } from "app/system/navigation/navigate"
 import { Platform } from "react-native"
@@ -31,7 +33,7 @@ type TabRoutesParams = {
 
 const Tab = createBottomTabNavigator<TabRoutesParams>()
 
-export const AuthenticatedRoutes: React.FC = () => {
+const AppTabs: React.FC = () => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => {
@@ -59,5 +61,20 @@ export const AuthenticatedRoutes: React.FC = () => {
       <Tab.Screen name="sell" component={SellTab} />
       <Tab.Screen name="profile" component={ProfileTab} />
     </Tab.Navigator>
+  )
+}
+
+export const AuthenticatedRoutesStack = createNativeStackNavigator()
+
+export const AuthenticatedRoutes: React.FC = () => {
+  return (
+    <AuthenticatedRoutesStack.Navigator>
+      <AuthenticatedRoutesStack.Screen
+        name="AppTabs"
+        component={AppTabs}
+        options={{ headerShown: false }}
+      />
+      {registerSharedModalRoutes()}
+    </AuthenticatedRoutesStack.Navigator>
   )
 }

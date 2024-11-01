@@ -1,26 +1,46 @@
-import { AppModule, modules } from "app/AppRegistry"
+import { AppModule, modules as allModules } from "app/AppRegistry"
 import { registerScreen, StackNavigator } from "app/Navigation/AuthenticatedRoutes/StackNavigator"
+import { AuthenticatedRoutesStack } from "app/Navigation/AuthenticatedRoutes/Tabs"
+import { isModalScreen } from "app/Navigation/Utils/isModalScreen"
+
+const modules = Object.fromEntries(
+  Object.entries(allModules).filter(([_, module]) => {
+    return (
+      module.type === "react" &&
+      module.Component &&
+      // The module should not be a root view for a tab
+      !module.options.isRootViewForTabName &&
+      // The module is not an restricted to a specific tab
+      !module.options.onlyShowInTabName
+    )
+  })
+)
+
+const modalModules = Object.entries(modules).filter(([_, module]) => isModalScreen(module))
+const nonModalModules = Object.entries(modules).filter(([_, module]) => !isModalScreen(module))
 
 export const registerSharedRoutes = () => {
   return (
     <StackNavigator.Group>
-      {Object.entries(modules).map(([moduleName, module]) => {
-        // The module needs to be a defined react module
-        if (
-          module.type === "react" &&
-          module.Component &&
-          // The module should not be a root view for a tab
-          !module.options.isRootViewForTabName &&
-          // The module is not an restricted to a specific tab
-          !module.options.onlyShowInTabName
-        ) {
-          return registerScreen({
-            name: moduleName as AppModule,
-            module: module,
-          })
-        }
-        return null
+      {nonModalModules.map(([moduleName, module]) => {
+        return registerScreen({
+          name: moduleName as AppModule,
+          module: module,
+        })
       })}
     </StackNavigator.Group>
+  )
+}
+
+export const registerSharedModalRoutes = () => {
+  return (
+    <AuthenticatedRoutesStack.Group screenOptions={{ presentation: "modal" }}>
+      {modalModules.map(([moduleName, module]) => {
+        return registerScreen({
+          name: moduleName as AppModule,
+          module: module,
+        })
+      })}
+    </AuthenticatedRoutesStack.Group>
   )
 }

@@ -154,6 +154,7 @@ export class Conversation extends React.Component<Props, State> {
       <PageWithSimpleHeader
         title={partnerName}
         left={<BackButton onPress={goBack} />}
+        noSeparator
         right={
           <Touchable
             onPress={() => {
