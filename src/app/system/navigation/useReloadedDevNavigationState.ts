@@ -6,6 +6,21 @@ import { useEffect, useState } from "react"
 
 export const PREVIOUS_LAUNCH_COUNT_KEY = "previous-launch-count-key"
 
+// NAV STACK KEYS
+export const MODAL_NAVIGATION_STACK_STATE_KEY = "MODAL_NAVIGATION_STACK_STATE_KEY"
+export const EDIT_SAVED_ARTWORK_NAVIGATION_STACK_STATE_KEY =
+  "EDIT_SAVED_ARTWORK_NAVIGATION_STACK_STATE_KEY"
+export const CREATE_SAVED_ARTWORK_NAVIGATION_STACK_STATE_KEY =
+  "CREATE_SAVED_ARTWORK_NAVIGATION_STACK_STATE_KEY"
+
+export const clearNavState = async () => {
+  await AsyncStorage.multiRemove([
+    MODAL_NAVIGATION_STACK_STATE_KEY,
+    EDIT_SAVED_ARTWORK_NAVIGATION_STACK_STATE_KEY,
+    CREATE_SAVED_ARTWORK_NAVIGATION_STACK_STATE_KEY,
+  ])
+}
+
 /*
  * This hook is used to reload the navigation state in development mode.
  * It will save the navigation state to AsyncStorage and reload it when the app is reloaded.
