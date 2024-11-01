@@ -722,6 +722,58 @@ describe("AuthModel", () => {
     })
   })
 
+  describe("authGoogle2", () => {
+    let mockHasPlayServices: jest.Mock
+    let mockSignIn: jest.Mock
+    let mockGetTokens: jest.Mock
+
+    let signUpSpy: jest.SpyInstance
+    let signInSpy: jest.SpyInstance
+
+    beforeEach(() => {
+      jest.mock("@react-native-google-signin/google-signin")
+
+      mockHasPlayServices = GoogleSignin.hasPlayServices as jest.Mock
+      mockSignIn = GoogleSignin.signIn as jest.Mock
+      mockGetTokens = GoogleSignin.getTokens as jest.Mock
+
+      signUpSpy = jest.spyOn(GlobalStore.actions.auth, "signUp").mockImplementation(jest.fn())
+      signInSpy = jest.spyOn(GlobalStore.actions.auth, "signIn").mockImplementation(jest.fn())
+    })
+
+    afterEach(() => {
+      jest.unmock("@react-native-google-signin/google-signin")
+
+      mockHasPlayServices.mockRestore()
+      mockSignIn.mockRestore()
+      mockGetTokens.mockRestore()
+
+      signUpSpy.mockRestore()
+      signInSpy.mockRestore()
+    })
+
+    it("signs-up before signing-in if an account doesn't exist", async () => {
+      mockHasPlayServices.mockResolvedValue(true)
+      mockSignIn.mockResolvedValue({ user: { email: "foo@bar.baz", name: "Foo Bar" } })
+      mockGetTokens.mockResolvedValue({ accessToken: "google-token" })
+
+      signUpSpy.mockResolvedValue({ success: true })
+
+      expect(await GlobalStore.actions.auth.authGoogle2()).toEqual("success")
+    })
+
+    it("signs-in if an account exists", async () => {
+      mockHasPlayServices.mockResolvedValue(true)
+      mockSignIn.mockResolvedValue({ user: { email: "foo@bar.baz", name: "Foo Bar" } })
+      mockGetTokens.mockResolvedValue({ accessToken: "google-token" })
+
+      signUpSpy.mockResolvedValue({ success: false, error: "Another Account Already Linked" })
+      signInSpy.mockResolvedValue("success")
+
+      expect(await GlobalStore.actions.auth.authGoogle2()).toEqual("success")
+    })
+  })
+
   describe("authApple", () => {
     beforeEach(async () => {
       mockFetchJsonOnce({
