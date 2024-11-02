@@ -17,7 +17,7 @@ export const scrollTabToTop = (tab: BottomTabType) => {
 export const useBottomTabsScrollToTop = (tab: BottomTabType, onScrollToTop?: () => void) => {
   const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
 
-  const ref = useRef<ScrollView>(null)
+  const ref = useRef<ScrollView | FlatList>(null)
 
   useScrollToTop(
     React.useRef({
