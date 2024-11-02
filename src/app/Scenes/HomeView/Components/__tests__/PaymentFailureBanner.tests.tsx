@@ -94,7 +94,7 @@ describe("PaymentFailureBanner", () => {
     expect(text).toBeTruthy()
 
     fireEvent.press(link)
-    expect(navigate).toHaveBeenCalledWith("settings/purchases")
+    expect(navigate).toHaveBeenCalledWith("orders")
   })
 
   it("does not render the banner when there are no payment failures", () => {

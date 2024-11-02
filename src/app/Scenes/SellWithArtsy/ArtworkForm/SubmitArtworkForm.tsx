@@ -39,7 +39,7 @@ import { fetchUserContactInformation } from "app/Scenes/SellWithArtsy/SubmitArtw
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { FormikProvider, useFormik } from "formik"
 import { useEffect } from "react"
-import { Keyboard } from "react-native"
+import { Keyboard, Platform } from "react-native"
 import { isTablet as getIsTablet } from "react-native-device-info"
 
 export type SubmitArtworkStackNavigation = {
@@ -181,20 +181,23 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
                     }
                   : {}),
               },
-              transitionSpec: {
-                open: {
-                  animation: "timing",
-                  config: {
-                    duration: 300,
-                  },
-                },
-                close: {
-                  animation: "timing",
-                  config: {
-                    duration: 300,
-                  },
-                },
-              },
+              transitionSpec:
+                Platform.OS === "ios"
+                  ? {
+                      open: {
+                        animation: "timing",
+                        config: {
+                          duration: 300,
+                        },
+                      },
+                      close: {
+                        animation: "timing",
+                        config: {
+                          duration: 300,
+                        },
+                      },
+                    }
+                  : undefined,
               cardStyleInterpolator: ({ current, next }) => {
                 const opacity = current.progress.interpolate({
                   inputRange: [0, 1],

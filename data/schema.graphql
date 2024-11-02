@@ -3054,6 +3054,7 @@ union ArtworksCollectionsBatchUpdateResponseOrError =
 
 type ArtworksCollectionsBatchUpdateSuccess {
   addedToCollections: [Collection]
+  artwork: Artwork
   counts: ArtworksCollectionsBatchUpdateCounts
   removedFromCollections: [Collection]
 }

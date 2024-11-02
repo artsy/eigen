@@ -65,9 +65,7 @@ export const PaymentFailureBanner: React.FC = () => {
     tracking.tappedChangePaymentMethod(failedPayments)
 
     const route =
-      failedPayments.length === 1
-        ? `orders/${failedPayments[0].internalID}/payment/new`
-        : `settings/purchases`
+      failedPayments.length === 1 ? `orders/${failedPayments[0].internalID}/payment/new` : `orders`
 
     navigate(route)
   }, [failedPayments, tracking])
