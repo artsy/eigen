@@ -11,7 +11,6 @@ import { graphql, useFragment } from "react-relay"
 interface NotificationArtworkListProps {
   artworksConnection?: NotificationArtworkList_artworksConnection$key | null
   priceOfferMessage?: PriceOfferMessage
-  showArtworkCommercialButtons?: boolean
   partnerOffer?: PartnerOffer | null
 }
 
