@@ -20,7 +20,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { osMajorVersion } from "app/utils/platformUtil"
 import { Formik, useFormikContext } from "formik"
 import { MotiView } from "moti"
-import React, { useRef, useState } from "react"
+import React, { useRef } from "react"
 import { Image, InteractionManager, Platform } from "react-native"
 import { Easing } from "react-native-reanimated"
 import * as Yup from "yup"
@@ -200,8 +200,6 @@ const LoginWelcomeStepForm: React.FC = () => {
 }
 
 const SocialLoginButtons: React.FC = () => {
-  const [mode, _setMode] = useState<"login" | "signup">("login")
-
   const handleApplePress = () =>
     onSocialLogin(() => {
       return GlobalStore.actions.auth.authApple({ agreedToReceiveEmails: true })
@@ -214,10 +212,7 @@ const SocialLoginButtons: React.FC = () => {
 
   const handleFacebookPress = () =>
     onSocialLogin(() => {
-      return GlobalStore.actions.auth.authFacebook({
-        signInOrUp: mode === "login" ? "signIn" : "signUp",
-        agreedToReceiveEmails: mode === "signup",
-      })
+      return GlobalStore.actions.auth.authFacebook2()
     })
 
   return (
