@@ -1,6 +1,7 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Spacer } from "@artsy/palette-mobile"
 import { ArtworkRailCard_artwork$key } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
+import { ArtworkRailCardCTAs } from "app/Components/ArtworkRail/ArtworkRailCardCTAs"
 import {
   ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
   ArtworkRailCardImage,
@@ -55,9 +56,8 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const enableArtworkRailRedesignImageAspectRatio = useFeatureFlag(
     "AREnableArtworkRailRedesignImageAspectRatio"
   )
-
-  const enableRedesignSaveCTA = true // useFeatureFlag("AREnableRedesignSaveCTA")
-  const enableAddFollowCTA = true // useFeatureFlag("AREnableAddFollowCTA")
+  const enableRedesignSaveCTA = useFeatureFlag("AREnableRedesignSaveCTA")
+  const enableAddFollowCTA = useFeatureFlag("AREnableAddFollowCTA")
 
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
 
@@ -108,7 +108,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                   ? ARTWORK_RAIL_CARD_IMAGE_HEIGHT + artworkRailCardMetaDataHeight
                   : LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT + ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT
               }
-              //  backgroundColor="red"
               justifyContent={enableArtworkRailRedesignImageAspectRatio ? "flex-start" : "flex-end"}
             >
               {enableArtworkRailRedesignImageAspectRatio ? (
@@ -116,6 +115,8 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
               ) : (
                 <LegacyArtworkRailCardImage artwork={artwork} />
               )}
+
+              <Spacer y={1} />
 
               <ArtworkRailCardMeta
                 artwork={artwork}
@@ -134,6 +135,16 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                 showPartnerName={showPartnerName}
                 showSaveIcon={showSaveIcon}
                 backgroundColor={backgroundColor}
+              />
+
+              <ArtworkRailCardCTAs
+                artwork={artwork}
+                showSaveIcon={showSaveIcon}
+                contextModule={contextModule}
+                contextScreen={contextScreen}
+                contextScreenOwnerId={contextScreenOwnerId}
+                contextScreenOwnerSlug={contextScreenOwnerSlug}
+                contextScreenOwnerType={contextScreenOwnerType}
               />
             </Flex>
           </TouchableHighlight>
@@ -158,5 +169,6 @@ const artworkFragment = graphql`
     ...ContextMenuArtwork_artwork
     ...CreateArtworkAlertModal_artwork
     ...LegacyArtworkRailCardImage_artwork
+    ...ArtworkRailCardCTAs_artwork
   }
 `

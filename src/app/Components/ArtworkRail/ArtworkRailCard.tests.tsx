@@ -114,7 +114,13 @@ describe("ArtworkRailCard", () => {
     })
   })
 
-  describe("save artworks", () => {
+  describe("save artwork when AREnableRedesignSaveCTA is disabled", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        AREnableRedesignSaveCTA: false,
+      })
+    })
+
     it("saving artworks works when showSaveIcon is set to true", () => {
       renderWithRelay({ Artwork: () => artwork }, { showSaveIcon: true })
 
@@ -128,7 +134,7 @@ describe("ArtworkRailCard", () => {
     })
 
     it("does not show heart icon when showSaveIcon is set to false", () => {
-      renderWithRelay({}, { showSaveIcon: false })
+      renderWithRelay({ Artwork: () => artwork }, { showSaveIcon: false })
 
       expect(screen.queryByTestId("empty-heart-icon")).not.toBeOnTheScreen()
       expect(screen.queryByTestId("filled-heart-icon")).not.toBeOnTheScreen()
