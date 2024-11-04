@@ -17,10 +17,10 @@
   dependencies:
     core-js "3"
 
-"@artsy/palette-mobile@13.2.41--canary.269.2590.0":
-  version "13.2.41--canary.269.2590.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-13.2.41--canary.269.2590.0.tgz#ab7bc6d8b8c7998834c151a97b76d396025fefb8"
-  integrity sha512-oiVOfpJbXE6R35c5dOAoy3ktF00JAIPr9o1b0cRtF5vbF+NXRjdFTN2lXzax+WoB7nyeRHY+IZxY90HwME56cw==
+"@artsy/palette-mobile@13.2.44--canary.269.2677.0":
+  version "13.2.44--canary.269.2677.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-13.2.44--canary.269.2677.0.tgz#a46345a13d1d018d47730da7d78664d4c3fea727"
+  integrity sha512-l3ApchyZ9+oMbLpqtBMGeZXtFi9hHO8LOl3ikruZngarrA00G8xzVjIXuuxg1Xo5zdNgzE83MAuVYsPqu3kxqw==
   dependencies:
     "@artsy/palette-tokens" "^6.0.3"
     "@shopify/flash-list" "^1.6.4"
@@ -33,7 +33,7 @@
     react-native-blurhash "^1.1.11"
     react-native-collapsible-tab-view "^8.0.0"
     react-native-fast-image "^8.6.3"
-    react-native-pager-view "^6.2.0"
+    react-native-pager-view "6.4.1"
     react-native-popover-view "^5.1.7"
     react-spring "8.0.23"
     styled-system "^5.1.5"
@@ -3080,10 +3080,10 @@
   resolved "https://registry.yarnpkg.com/@ptomasroos/react-native-multi-slider/-/react-native-multi-slider-2.2.2.tgz#35a97fb8c355627c6a2ded010b360ac5728b44ad"
   integrity sha512-HWyCnRD3Z3SbHK2FLWYmBBqd1B4iXipeKv1+AK0FoY/CElEDTEixHE8hN60TsqxalPrznn798LE2Q4tHuCiyaA==
 
-"@react-native-async-storage/async-storage@1.19.8":
-  version "1.19.8"
-  resolved "https://registry.yarnpkg.com/@react-native-async-storage/async-storage/-/async-storage-1.19.8.tgz#a29fc4f4aa5c85805f8b3edea84e19f797c59fdd"
-  integrity sha512-O25eaSbmH+LEmOobkpwf43bAGIkqE9YGzfWcirTszI90xk4ItaDWpgJsQx9LeAbeAKzVkn1h+Nq5Bo6I6q2oFA==
+"@react-native-async-storage/async-storage@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@react-native-async-storage/async-storage/-/async-storage-2.0.0.tgz#22373f7f83132547701637fc574ddb83b83b384e"
+  integrity sha512-af6H9JjfL6G/PktBfUivvexoiFKQTJGQCtSWxMdivLzNIY94mu9DdiY0JqCSg/LyPCLGKhHPUlRQhNvpu3/KVA==
   dependencies:
     merge-options "^3.0.4"
 
@@ -4638,10 +4638,10 @@
     "@stdlib/utils-constructor-name" "^0.0.x"
     "@stdlib/utils-global" "^0.0.x"
 
-"@stripe/stripe-react-native@0.36.0":
-  version "0.36.0"
-  resolved "https://registry.yarnpkg.com/@stripe/stripe-react-native/-/stripe-react-native-0.36.0.tgz#280861d92bd510aaee770a25dabd3c568e02a945"
-  integrity sha512-l14V50crusdPRbDERVdtCAuG83HhsYVCwytftnzWzkkXW0tdY/7qvvC/EPulBENhbI+g0cwEN3J9u8jRG/vUQw==
+"@stripe/stripe-react-native@0.39.0":
+  version "0.39.0"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-react-native/-/stripe-react-native-0.39.0.tgz#5aff3d62b0c394785853868cf8f27356c4d55eef"
+  integrity sha512-KcsEQYsc3w2aGVVZ+jUKyuJiAkrWljEnomjcWaApVmthChXX46ComiSYM+n5uSPtkVnt7z2H4LfHVgdEzs627A==
 
 "@styled-system/background@^5.1.2":
   version "5.1.2"
@@ -13265,10 +13265,10 @@ react-native-localize@2.1.3:
   resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-2.1.3.tgz#935b5dd1276952fb549f7797fd1a8d4208ab069b"
   integrity sha512-C7vwoLY1DDppfDZ/MUYnTdVGBTbTIP+UigON1EY6w/TTb30j6vrb+WOwkfERJaM7IcVUZudXReW5N4pDcpYN2Q==
 
-react-native-pager-view@6.2.0, react-native-pager-view@^6.2.0:
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/react-native-pager-view/-/react-native-pager-view-6.2.0.tgz#51380d93fbe47f6380dc71d613a787bf27a4ca37"
-  integrity sha512-pf9OnL/Tkr+5s4Gjmsn7xh91PtJLDa6qxYa/bmtUhd/+s4cQdWQ8DIFoOFghwZIHHHwVdWtoXkp6HtpjN+r20g==
+react-native-pager-view@6.4.1:
+  version "6.4.1"
+  resolved "https://registry.yarnpkg.com/react-native-pager-view/-/react-native-pager-view-6.4.1.tgz#82d04107229c19967a503de53a231dd95fcccd10"
+  integrity sha512-HnDxXTRHnR6WJ/vnOitv0C32KG9MJjxLnxswuQlBJmQ7RxF2GWOHSPIRAdZ9fLxdLstV38z9Oz1C95+t+yXkcg==
 
 react-native-permissions@3.8.4:
   version "3.8.4"
