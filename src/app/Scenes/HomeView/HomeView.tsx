@@ -12,6 +12,7 @@ import { EmailConfirmationBannerFragmentContainer } from "app/Scenes/Home/Compon
 import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
 import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { Section } from "app/Scenes/HomeView/Sections/Section"
+import { useHomeViewExperimentTracking } from "app/Scenes/HomeView/useHomeViewExperimentTracking"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { searchQueryDefaultVariables } from "app/Scenes/Search/Search"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -59,6 +60,7 @@ export const HomeView: React.FC = () => {
   useEnableProgressiveOnboarding()
   const prefetchUrl = usePrefetch()
   const tracking = useHomeViewTracking()
+  useHomeViewExperimentTracking(queryData.homeView?.experiments)
 
   useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
 
@@ -210,6 +212,13 @@ const sectionsFragment = graphql`
 
 export const homeViewScreenQuery = graphql`
   query HomeViewQuery($count: Int!, $cursor: String) @cacheable {
+    homeView {
+      experiments {
+        name
+        variant
+        enabled
+      }
+    }
     viewer {
       ...HomeViewSectionsConnection_viewer @arguments(count: $count, cursor: $cursor)
     }
