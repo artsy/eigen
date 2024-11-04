@@ -4,7 +4,6 @@ import { useMetaDataTextColor } from "app/Components/ArtworkRail/ArtworkRailUtil
 import { ArtworkDisplayProps } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { ContextMenuArtworkPreviewCardImage } from "app/Components/ContextMenu/ContextMenuArtworkPreviewCardImage"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
-import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { PixelRatio } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
@@ -41,14 +40,9 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
 
   const fontScale = PixelRatio.getFontScale()
 
-  const { artistNames, date, partner, title, sale, saleArtwork } = artwork
+  const { artistNames, date, partner, title } = artwork
 
   const saleMessage = saleMessageOrBidInfo({ artwork, isSmallTile: true })
-
-  const extendedBiddingEndAt = saleArtwork?.extendedBiddingEndAt
-  const lotEndAt = saleArtwork?.endAt
-  const endAt = extendedBiddingEndAt ?? lotEndAt ?? sale?.endAt
-  const urgencyTag = sale?.isAuction && !sale?.isClosed ? getUrgencyTag(endAt) : null
 
   const { primaryTextColor, secondaryTextColor, backgroundColor } = useMetaDataTextColor({ dark })
 
@@ -60,11 +54,7 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
 
   return (
     <Flex backgroundColor={backgroundColor} m={1}>
-      <ContextMenuArtworkPreviewCardImage
-        containerWidth={containerWidth}
-        artwork={artwork}
-        urgencyTag={urgencyTag}
-      />
+      <ContextMenuArtworkPreviewCardImage containerWidth={containerWidth} artwork={artwork} />
       <Flex
         my={1}
         width={containerWidth}

@@ -34,7 +34,6 @@ import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBiddi
 import { getArtworkSignalTrackingFields } from "app/utils/getArtworkSignalTrackingFields"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { getTimer } from "app/utils/getTimer"
-import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { RandomNumberGenerator } from "app/utils/placeholders"
@@ -65,8 +64,6 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   hideRegisterBySignal?: boolean
   hideSaleInfo?: boolean
   hideSaveIcon?: boolean
-  /** Hide urgency tags (3 Days left, 1 hour left) */
-  hideUrgencyTags?: boolean
   /** Pass Tap to override generic ing, used for home tracking in rails */
   itemIndex?: number
   lotLabelTextStyle?: TextProps
@@ -83,7 +80,6 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   trackingFlow?: string
   /** allows for artwork to be added to recent searches */
   updateRecentSearchesOnTap?: boolean
-  urgencyTagTextStyle?: TextProps
 }
 
 export const Artwork: React.FC<ArtworkProps> = ({
@@ -104,7 +100,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
   hideRegisterBySignal = false,
   hideSaleInfo = false,
   hideSaveIcon = false,
-  hideUrgencyTags = false,
   itemIndex,
   lotLabelTextStyle,
   onPress,
@@ -116,7 +111,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
   titleTextStyle,
   trackTap,
   updateRecentSearchesOnTap = false,
-  urgencyTagTextStyle,
 }) => {
   const itemRef = useRef<any>()
   const color = useColor()
@@ -248,8 +242,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
     ? currentBiddingEndAt
     : artwork.saleArtwork?.endAt || artwork.sale?.endAt
 
-  const urgencyTag = getUrgencyTag(endsAt)
-
   const canShowAuctionProgressBar =
     !!artwork.sale?.extendedBiddingPeriodMinutes && !!artwork.sale?.extendedBiddingIntervalMinutes
 
@@ -295,25 +287,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   blurhash={showBlurhash ? artwork.image.blurhash : undefined}
                   resizeMode="contain"
                 />
-
-                {Boolean(
-                  !hideUrgencyTags && urgencyTag && isAuction && !artwork?.sale?.isClosed
-                ) && (
-                  <Flex
-                    position="absolute"
-                    bottom="5px"
-                    left="5px"
-                    backgroundColor="white"
-                    px="5px"
-                    py="3px"
-                    borderRadius={2}
-                    alignSelf="flex-start"
-                  >
-                    <Text variant="xs" color="black100" numberOfLines={1} {...urgencyTagTextStyle}>
-                      {urgencyTag}
-                    </Text>
-                  </Flex>
-                )}
               </View>
             )}
             {!!canShowAuctionProgressBar && (
