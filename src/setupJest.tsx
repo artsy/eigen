@@ -275,46 +275,6 @@ jest.mock("react-native/Libraries/LayoutAnimation/LayoutAnimation", () => ({
   spring: jest.fn(),
 }))
 
-jest.mock("react-native-gesture-handler", () => {
-  const actual = jest.requireActual("react-native-gesture-handler")
-  const View = require("react-native/Libraries/Components/View/View")
-  const TouchableWithoutFeedback = require("react-native/Libraries/Components/Touchable/TouchableWithoutFeedback")
-  const TouchableHighlight = require("react-native/Libraries/Components/Touchable/TouchableHighlight")
-
-  return {
-    ...actual,
-    Swipeable: View,
-    DrawerLayout: View,
-    State: {},
-    ScrollView: View,
-    Slider: View,
-    Switch: View,
-    TextInput: View,
-    ViewPagerAndroid: View,
-    DrawerLayoutAndroid: View,
-    WebView: View,
-    NativeViewGestureHandler: View,
-    TapGestureHandler: View,
-    FlingGestureHandler: View,
-    ForceTouchGestureHandler: View,
-    LongPressGestureHandler: View,
-    PanGestureHandler: View,
-    PinchGestureHandler: View,
-    RotationGestureHandler: View,
-    /* Buttons */
-    RawButton: View,
-    BaseButton: View,
-    RectButton: View,
-    BorderlessButton: View,
-    /* Other */
-    FlatList: View,
-    gestureHandlerRootHOC: jest.fn(),
-    Directions: {},
-    TouchableHighlight,
-    TouchableWithoutFeedback,
-  }
-})
-
 jest.mock("react-native-image-crop-picker", () => ({
   openPicker: jest.fn(),
   openCamera: jest.fn(),
