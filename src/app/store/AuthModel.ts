@@ -672,6 +672,7 @@ export const getAuthModel = (): AuthModel => ({
     })
   }),
   authGoogle2: thunk(async (actions) => {
+    // TODO: replace authGoogle once we are sure that authGoogle2 is working fine
     // eslint-disable-next-line no-async-promise-executor
     return await new Promise<AuthPromiseResolveType>(async (resolve, reject) => {
       try {
