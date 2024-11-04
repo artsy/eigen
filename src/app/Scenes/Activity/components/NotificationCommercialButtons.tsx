@@ -6,7 +6,7 @@ import { NotificationCommercialButtonsQuery } from "__generated__/NotificationCo
 import { NotificationCommercialButtons_artwork$key } from "__generated__/NotificationCommercialButtons_artwork.graphql"
 import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
-import { PartnerOffer } from "app/Scenes/Activity/components/NotificationArtworkList"
+import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
 import { BuyNowButton } from "app/Scenes/Artwork/Components/CommercialButtons/BuyNowButton"
 import { ContactGalleryButton } from "app/Scenes/Artwork/Components/CommercialButtons/ContactGalleryButton"
 import { MakeOfferButtonFragmentContainer } from "app/Scenes/Artwork/Components/CommercialButtons/MakeOfferButton"
@@ -15,13 +15,13 @@ import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { getTimer } from "app/utils/getTimer"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { useState, Children } from "react"
+import { Children, useState } from "react"
 import { QueryRenderer, graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 export const CommercialButtonsQueryRenderer: React.FC<{
   artworkID: string
-  partnerOffer?: PartnerOffer
+  partnerOffer?: PartnerOffer | null
 }> = ({ artworkID, partnerOffer }) => {
   return (
     <QueryRenderer<NotificationCommercialButtonsQuery>

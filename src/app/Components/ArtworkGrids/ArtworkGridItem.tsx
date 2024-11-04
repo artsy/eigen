@@ -27,7 +27,7 @@ import { DurationProvider } from "app/Components/Countdown"
 import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
 import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
 import { HEART_ICON_SIZE } from "app/Components/constants"
-import { PartnerOffer } from "app/Scenes/Activity/components/NotificationArtworkList"
+import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
@@ -73,7 +73,7 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   /** Overrides onPress and prevents the default behaviour. */
   onPress?: (artworkID: string, artwork?: ArtworkGridItem_artwork$data) => void
   partnerNameTextStyle?: TextProps
-  partnerOffer?: PartnerOffer
+  partnerOffer?: PartnerOffer | null
   priceOfferMessage?: PriceOfferMessage
   saleInfoTextStyle?: TextProps
   /** Show the lot number (Lot 213) */
