@@ -791,11 +791,9 @@ describe("AuthModel", () => {
       })
     })
 
-    fit("tracks createdAccount when user is signed up", async () => {
+    it("tracks createdAccount when user is signed up", async () => {
       mockFetchJsonOnce({ access_token: "x-access-token" }, 201)
       mockFetchJsonOnce({ email: "emailFromArtsy@mail.com" })
-      mockFetchJsonOnce({ access_token: "x-access-token" }, 201)
-      mockFetchJsonOnce({ id: "my-user-id" })
 
       await GlobalStore.actions.auth.authGoogle2()
 
