@@ -723,54 +723,128 @@ describe("AuthModel", () => {
   })
 
   describe("authGoogle2", () => {
-    let mockHasPlayServices: jest.Mock
-    let mockSignIn: jest.Mock
-    let mockGetTokens: jest.Mock
-
-    let signUpSpy: jest.SpyInstance
-    let signInSpy: jest.SpyInstance
-
-    beforeEach(() => {
-      jest.mock("@react-native-google-signin/google-signin")
-
-      mockHasPlayServices = GoogleSignin.hasPlayServices as jest.Mock
-      mockSignIn = GoogleSignin.signIn as jest.Mock
-      mockGetTokens = GoogleSignin.getTokens as jest.Mock
-
-      signUpSpy = jest.spyOn(GlobalStore.actions.auth, "signUp").mockImplementation(jest.fn())
-      signInSpy = jest.spyOn(GlobalStore.actions.auth, "signIn").mockImplementation(jest.fn())
+    beforeEach(async () => {
+      mockFetchJsonOnce({
+        xapp_token: "my-special-token",
+        expires_in: "never",
+      })
+      await GlobalStore.actions.auth.getXAppToken()
+      mockFetch.mockClear()
+      ;(GoogleSignin.hasPlayServices as jest.Mock).mockReturnValue(true)
+      ;(GoogleSignin.signIn as jest.Mock).mockReturnValue({
+        user: { email: "googleEmail@gmail.com", name: "name from google" },
+      })
+      ;(GoogleSignin.getTokens as jest.Mock).mockReturnValue({ accessToken: "google-token" })
     })
 
-    afterEach(() => {
-      jest.unmock("@react-native-google-signin/google-signin")
+    it("throws an error if google play services are not available", async () => {
+      ;(GoogleSignin.hasPlayServices as jest.Mock).mockReturnValue(false)
 
-      mockHasPlayServices.mockRestore()
-      mockSignIn.mockRestore()
-      mockGetTokens.mockRestore()
-
-      signUpSpy.mockRestore()
-      signInSpy.mockRestore()
+      const result = await GlobalStore.actions.auth.authGoogle2().catch((e) => e)
+      const expectedError = new AuthError("Play services are not available.")
+      expect(result).toMatchObject(expectedError)
     })
 
-    it("signs-up before signing-in if an account doesn't exist", async () => {
-      mockHasPlayServices.mockResolvedValue(true)
-      mockSignIn.mockResolvedValue({ user: { email: "foo@bar.baz", name: "Foo Bar" } })
-      mockGetTokens.mockResolvedValue({ accessToken: "google-token" })
+    it("fetches profile info from google and signs up", async () => {
+      GlobalStore.actions.auth.signUp = jest.fn(() => ({ success: true })) as any
 
-      signUpSpy.mockResolvedValue({ success: true })
+      await GlobalStore.actions.auth.authGoogle2()
 
-      expect(await GlobalStore.actions.auth.authGoogle2()).toEqual("success")
+      expect(GlobalStore.actions.auth.signUp).toHaveBeenCalledWith({
+        email: "googleEmail@gmail.com",
+        name: "name from google",
+        accessToken: "google-token",
+        oauthProvider: "google",
+        oauthMode: "accessToken",
+        agreedToReceiveEmails: true,
+      })
     })
 
-    it("signs-in if an account exists", async () => {
-      mockHasPlayServices.mockResolvedValue(true)
-      mockSignIn.mockResolvedValue({ user: { email: "foo@bar.baz", name: "Foo Bar" } })
-      mockGetTokens.mockResolvedValue({ accessToken: "google-token" })
+    it("throws an error if sign up fails", async () => {
+      GlobalStore.actions.auth.signUp = jest.fn(() => ({
+        success: false,
+        message: "Could not sign up",
+      })) as any
 
-      signUpSpy.mockResolvedValue({ success: false, error: "Another Account Already Linked" })
-      signInSpy.mockResolvedValue("success")
+      const result = await GlobalStore.actions.auth.authGoogle2().catch((e) => e)
+      const expectedError = new AuthError("Could not sign up")
+      expect(result).toMatchObject(expectedError)
+    })
 
-      expect(await GlobalStore.actions.auth.authGoogle2()).toEqual("success")
+    it("signs in if an account is already linked", async () => {
+      mockFetchJsonOnce({ access_token: "x-access-token" }, 201)
+      mockFetchJsonOnce({ email: "emailFromArtsy@mail.com" })
+
+      GlobalStore.actions.auth.signIn = jest.fn(() => true) as any
+      GlobalStore.actions.auth.signUp = jest.fn(() => ({
+        success: false,
+        error: "Another Account Already Linked",
+      })) as any
+
+      await GlobalStore.actions.auth.authGoogle2()
+
+      expect(GlobalStore.actions.auth.signIn).toHaveBeenCalledWith({
+        email: "emailFromArtsy@mail.com",
+        accessToken: "google-token",
+        oauthMode: "accessToken",
+        oauthProvider: "google",
+      })
+    })
+
+    fit("tracks createdAccount when user is signed up", async () => {
+      mockFetchJsonOnce({ access_token: "x-access-token" }, 201)
+      mockFetchJsonOnce({ email: "emailFromArtsy@mail.com" })
+      mockFetchJsonOnce({ access_token: "x-access-token" }, 201)
+      mockFetchJsonOnce({ id: "my-user-id" })
+
+      await GlobalStore.actions.auth.authGoogle2()
+
+      expect(mockPostEventToProviders).toHaveBeenCalledTimes(1)
+      expect(mockPostEventToProviders.mock.calls[0]).toMatchInlineSnapshot(`
+        [
+          {
+            "action": "createdAccount",
+            "service": "google",
+          },
+        ]
+      `)
+    })
+
+    it("tracks successfullyLoggedIn when user is signed in", async () => {
+      mockFetchJsonOnce({ access_token: "x-access-token" }, 201)
+      mockFetchJsonOnce({ email: "emailFromArtsy@mail.com" })
+      mockFetchJsonOnce({ access_token: "x-access-token" }, 201)
+      mockFetchJsonOnce({ id: "my-user-id" })
+
+      GlobalStore.actions.auth.signUp = jest.fn(() => ({
+        success: false,
+        error: "Another Account Already Linked",
+      })) as any
+
+      await GlobalStore.actions.auth.authGoogle2()
+
+      expect(mockPostEventToProviders).toHaveBeenCalledTimes(1)
+      expect(mockPostEventToProviders.mock.calls[0]).toMatchInlineSnapshot(`
+        [
+          {
+            "action": "successfullyLoggedIn",
+            "service": "google",
+          },
+        ]
+      `)
+    })
+
+    it("throws an error if getting X-ACCESS-TOKEN fails", async () => {
+      mockFetchJsonOnce({ error_description: "getting X-ACCESS-TOKEN error" })
+
+      GlobalStore.actions.auth.signUp = jest.fn(() => ({
+        success: false,
+        error: "Another Account Already Linked",
+      })) as any
+
+      const result = await GlobalStore.actions.auth.authGoogle2().catch((e) => e)
+      const expectedError = new AuthError("Login attempt failed")
+      expect(result).toMatchObject(expectedError)
     })
   })
 

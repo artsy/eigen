@@ -207,15 +207,10 @@ const SocialLoginButtons: React.FC = () => {
       return GlobalStore.actions.auth.authApple({ agreedToReceiveEmails: true })
     })
 
-  const handleGooglePress = async () => {
-    GlobalStore.actions.auth.setSessionState({ isLoading: true })
-
-    const result = await GlobalStore.actions.auth.authGoogle2()
-
-    if (result !== "success") {
-      GlobalStore.actions.auth.setSessionState({ isLoading: false })
-    }
-  }
+  const handleGooglePress = async () =>
+    onSocialLogin(() => {
+      return GlobalStore.actions.auth.authGoogle2()
+    })
 
   const handleFacebookPress = () =>
     onSocialLogin(() => {
