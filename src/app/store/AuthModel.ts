@@ -162,6 +162,7 @@ export interface AuthModel {
     GlobalStoreModel,
     Promise<AuthPromiseResolveType>
   >
+  authGoogle2: Thunk<this, undefined, {}, GlobalStoreModel, Promise<AuthPromiseResolveType>>
   authApple: Thunk<
     this,
     { agreedToReceiveEmails?: boolean; onSignIn?: () => void },
@@ -643,6 +644,118 @@ export const getAuthModel = (): AuthModel => ({
               const res = await resultGravityAccessToken.json()
               showError(res, reject, "google")
             }
+          }
+        }
+      } catch (e: any) {
+        if (statusCodes.SIGN_IN_CANCELLED === e?.code) {
+          reject(new AuthError(statusCodes.SIGN_IN_CANCELLED))
+          return
+        }
+
+        if (e instanceof Error) {
+          if (e?.message === "DEVELOPER_ERROR") {
+            reject(
+              new AuthError(
+                "Google auth does not work in firebase beta, try again in a playstore beta",
+                e?.message
+              )
+            )
+            return
+          }
+
+          reject(new AuthError("Error logging in with google", e?.message))
+          return
+        }
+        reject(new AuthError("Error logging in with google"))
+        return
+      }
+    })
+  }),
+  authGoogle2: thunk(async (actions) => {
+    // TODO: replace authGoogle once we are sure that authGoogle2 is working fine
+    // eslint-disable-next-line no-async-promise-executor
+    return await new Promise<AuthPromiseResolveType>(async (resolve, reject) => {
+      try {
+        if (!(await GoogleSignin.hasPlayServices())) {
+          reject(new AuthError("Play services are not available."))
+          return
+        }
+        const userInfo = await GoogleSignin.signIn()
+        const accessToken = (await GoogleSignin.getTokens()).accessToken
+
+        const resultGravitySignUp = userInfo.user.name
+          ? await actions.signUp({
+              email: userInfo.user.email,
+              name: userInfo.user.name,
+              oauthMode: "accessToken",
+              accessToken,
+              oauthProvider: "google",
+              agreedToReceiveEmails: true,
+            })
+          : { success: false, message: "missing name in google's userInfo" }
+
+        if (resultGravitySignUp.success) {
+          resolve({ success: true })
+          return
+        }
+
+        if (resultGravitySignUp.error === "blocked_attempt") {
+          reject(new AuthError("Attempt blocked"))
+          return
+        }
+
+        if (resultGravitySignUp.error !== "Another Account Already Linked") {
+          reject(
+            new AuthError(
+              resultGravitySignUp.message,
+              resultGravitySignUp.error,
+              resultGravitySignUp.meta
+            )
+          )
+          return
+        }
+
+        // we need to get X-ACCESS-TOKEN before actual sign in
+        const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
+          path: `/oauth2/access_token`,
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: {
+            oauth_provider: "google",
+            oauth_token: accessToken,
+            client_id: clientKey,
+            client_secret: clientSecret,
+            grant_type: "oauth_token",
+            scope: "offline_access",
+          },
+        })
+
+        if (resultGravityAccessToken.status === 201) {
+          const { access_token: userAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
+          const { email } = await actions.getUser({ accessToken: userAccessToken })
+
+          const resultGravitySignIn = await actions.signIn({
+            oauthProvider: "google",
+            oauthMode: "accessToken",
+            email,
+            accessToken,
+          })
+
+          if (resultGravitySignIn) {
+            resolve({ success: true })
+            return
+          } else {
+            reject(new AuthError("Could not log in"))
+            return
+          }
+        } else {
+          if (resultGravityAccessToken.status === 403) {
+            reject(new AuthError("Attempt blocked"))
+          } else {
+            const res = await resultGravityAccessToken.json()
+            showError(res, reject, "google")
           }
         }
       } catch (e: any) {
