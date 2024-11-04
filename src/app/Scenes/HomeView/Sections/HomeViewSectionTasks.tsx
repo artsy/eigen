@@ -24,45 +24,45 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
   index,
   ...flexProps
 }) => {
+  const swipeableRef = useRef<SwipeableMethods>(null)
+  const [displayTask, setDisplayTask] = useState(true)
+  const [isReady, setIsReady] = useState(false)
   const section = useFragment(tasksFragment, sectionProp)
-
   const tasks = extractNodes(section.tasksConnection)
 
-  const swipeableRef = useRef<SwipeableMethods>(null)
-  const {
-    isDismissed,
-    sessionState: { isReady },
-  } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
+  const { isDismissed } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
   const { dismiss } = GlobalStore.actions.progressiveOnboarding
-
-  // adding the find-saved-artwork onboarding key to prevent overlap
-  const shouldStartOnboardingAnimation =
-    isReady && !isDismissed("act-now-tasks").status && !!isDismissed("find-saved-artwork").status
 
   // In the future, we may want to show multiple tasks
   const task = tasks?.[0]
 
-  const [displayTask, setDisplayTask] = useState(true)
+  // adding the find-saved-artwork onboarding key to prevent overlap
+  const shouldStartOnboardingAnimation =
+    isReady &&
+    !isDismissed("act-now-tasks").status &&
+    !!isDismissed("find-saved-artwork").status &&
+    !!swipeableRef.current &&
+    !!task
 
   useEffect(() => {
     if (shouldStartOnboardingAnimation) {
-      startOnboardingAnimation()
+      InteractionManager.runAfterInteractions(() => {
+        if (swipeableRef.current) {
+          swipeableRef.current.openRight()
+        }
+      }).then(() => {
+        setTimeout(() => {
+          if (swipeableRef.current) {
+            swipeableRef.current.close()
+            dismiss("act-now-tasks")
+          }
+        }, 2000)
+      })
     }
   }, [shouldStartOnboardingAnimation])
 
   if (!task || !displayTask) {
     return null
-  }
-
-  const startOnboardingAnimation = () => {
-    InteractionManager.runAfterInteractions(() => {
-      swipeableRef.current?.openRight()
-    }).then(() => {
-      setTimeout(() => {
-        swipeableRef.current?.close()
-        dismiss("act-now-tasks")
-      }, 1500)
-    })
   }
 
   const handleClearTask = () => {
@@ -77,7 +77,7 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
         <SectionTitle title={section.component?.title} />
       </Flex>
 
-      <Flex mr={2}>
+      <Flex mr={2} onLayout={() => setIsReady(true)}>
         <Task ref={swipeableRef} task={task} onClearTask={handleClearTask} />
       </Flex>
 

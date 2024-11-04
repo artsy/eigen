@@ -88,7 +88,9 @@ export const DevTools: React.FC<{}> = () => {
           <DevMenuButtonItem
             title="Clear Keychain"
             onPress={() => {
-              Keychain.resetInternetCredentials(server)
+              Keychain.resetInternetCredentials(server).then(() => {
+                toast.show("Keychain cleared ✅", "middle")
+              })
             }}
           />
 
@@ -117,7 +119,10 @@ export const DevTools: React.FC<{}> = () => {
           />
           <DevMenuButtonItem
             title="Clear Progressive Onboarding progress"
-            onPress={__clearDissmissed}
+            onPress={() => {
+              __clearDissmissed()
+              toast.show("Progressive Onboarding progress cleared ✅", "middle")
+            }}
           />
           <DevMenuButtonItem title={`Active Unleash env: ${capitalize(unleashEnv)}`} />
 
