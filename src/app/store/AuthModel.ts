@@ -5,6 +5,7 @@ import CookieManager from "@react-native-cookies/cookies"
 import { GoogleSignin, statusCodes } from "@react-native-google-signin/google-signin"
 import * as Sentry from "@sentry/react-native"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { clearNavState } from "app/system/navigation/useReloadedDevNavigationState"
 import { _globalCacheRef } from "app/system/relay/defaultEnvironment"
 import {
   handleClassicFacebookAuth,
@@ -832,6 +833,7 @@ export const getAuthModel = (): AuthModel => ({
       Platform.OS === "ios"
         ? await LegacyNativeModules.ArtsyNativeModule.clearUserData()
         : Promise.resolve(),
+      __DEV__ && (await clearNavState()),
       await signOutGoogle(),
       LoginManager.logOut(),
       CookieManager.clearAll(),
