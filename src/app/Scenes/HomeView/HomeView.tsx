@@ -12,6 +12,7 @@ import { EmailConfirmationBannerFragmentContainer } from "app/Scenes/Home/Compon
 import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
 import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { Section } from "app/Scenes/HomeView/Sections/Section"
+import { useHomeViewExperimentTracking } from "app/Scenes/HomeView/useHomeViewExperimentTracking"
 import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { searchQueryDefaultVariables } from "app/Scenes/Search/Search"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -21,7 +22,6 @@ import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
 import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
-import { compact } from "lodash"
 import { Suspense, useCallback, useEffect, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
@@ -60,6 +60,7 @@ export const HomeView: React.FC = () => {
   useEnableProgressiveOnboarding()
   const prefetchUrl = usePrefetch()
   const tracking = useHomeViewTracking()
+  useHomeViewExperimentTracking(queryData.homeView?.experiments)
 
   useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
 
@@ -75,19 +76,6 @@ export const HomeView: React.FC = () => {
   useEffect(() => {
     requestPushNotificationsPermission()
   }, [])
-
-  useEffect(() => {
-    const experiments = compact(queryData.homeView?.experiments)
-    experiments.forEach(({ name, variant, enabled }) => {
-      if (!enabled) {
-        console.warn(`Experiment is not enabled: ${name}`)
-      } else if (!variant) {
-        console.warn(`Experiment variant is missing for: ${name}`)
-      } else {
-        tracking.viewedExperiment(name, variant)
-      }
-    })
-  }, [queryData.homeView?.experiments])
 
   useFocusEffect(
     useCallback(() => {

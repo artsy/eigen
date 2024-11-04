@@ -2,7 +2,6 @@ import {
   ActionType,
   BannerViewed,
   ContextModule,
-  ExperimentViewed,
   OwnerType,
   RailViewed,
   Screen,
@@ -513,18 +512,6 @@ export const useHomeViewTracking = () => {
         context_module: ContextModule.paymentFailed,
         item_type: orders.length === 1 ? "order" : "orders",
         item_id: orders.length === 1 ? orders[0].internalID : "",
-      }
-
-      trackEvent(payload)
-    },
-
-    viewedExperiment: (name: string, variant: string) => {
-      const payload: ExperimentViewed = {
-        action: ActionType.experimentViewed,
-        experiment_name: name,
-        variant_name: variant,
-        context_owner_type: OwnerType.home,
-        service: "unleash",
       }
 
       trackEvent(payload)
