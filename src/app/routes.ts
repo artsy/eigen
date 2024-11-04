@@ -305,6 +305,7 @@ export function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/new-for-you", "NewWorksForYou"),
     addRoute("/new-works-from-galleries-you-follow", "NewWorksFromGalleriesYouFollow"),
     addRoute("/orders", "OrderHistory"),
+    addRoute("/orders/:orderID", "OrderDetails"),
     addRoute("/partner-locations/:partnerID", "PartnerLocations"),
     addRoute("/partner-offer/:partnerOfferID/checkout", "PartnerOfferContainer"),
     addRoute("/partner/:partnerID", "Partner"),
