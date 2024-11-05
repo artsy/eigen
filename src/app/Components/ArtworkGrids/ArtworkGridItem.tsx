@@ -45,7 +45,6 @@ import React, { useRef, useState } from "react"
 import { View, ViewProps } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { LotCloseInfo } from "./LotCloseInfo"
 import { LotProgressBar } from "./LotProgressBar"
 
 export type PriceOfferMessage = { priceListedMessage: string; priceWithDiscountMessage: string }
@@ -315,17 +314,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
                     <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
                       Lot {artwork.saleArtwork.lotLabel}
                     </Text>
-                    {!!artwork.sale?.cascadingEndTimeIntervalMinutes && !isAuction && (
-                      <DurationProvider startAt={endsAt ?? undefined}>
-                        <LotCloseInfo
-                          duration={null}
-                          saleArtwork={artwork.saleArtwork}
-                          sale={artwork.sale}
-                          lotEndAt={endsAt ?? undefined}
-                          hasBeenExtended={lotSaleExtended}
-                        />
-                      </DurationProvider>
-                    )}
                   </>
                 )}
                 {!!artwork.artistNames && (

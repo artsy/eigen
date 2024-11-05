@@ -388,52 +388,6 @@ describe("ArtworkGridItem", () => {
     })
   })
 
-  describe("cascading end times", () => {
-    it("shows the LotCloseInfo component when the sale has cascading end times", () => {
-      renderWithRelay(
-        {
-          Artwork: () => ({
-            sale: {
-              isClosed: false,
-              isAuction: true,
-              cascadingEndTimeIntervalMinutes: 1,
-              startAt: "2020-11-23T12:41:37.960Z",
-              extendedBiddingEndAt: "2051-11-23T12:41:37.960Z",
-              endAt: "2050-11-23T12:41:37.960Z",
-            },
-            saleArtwork: {
-              lotLabel: "1",
-              lotID: "123",
-            },
-          }),
-        },
-        { showLotLabel: true }
-      )
-
-      expect(screen.getByText("Lot 1")).toBeOnTheScreen()
-    })
-
-    it("does not show the LotCloseInfo component when the sale does not have cascading end times", () => {
-      renderWithRelay(
-        {
-          Artwork: () => ({
-            sale: {
-              isClosed: true,
-              isAuction: true,
-              cascadingEndTimeIntervalMinutes: null,
-            },
-            saleArtwork: {
-              lotLabel: "Lot 1",
-            },
-          }),
-        },
-        {}
-      )
-
-      expect(screen.queryByText("Lot 1")).not.toBeOnTheScreen()
-    })
-  })
-
   describe("save artworks", () => {
     it("favourites works", () => {
       renderWithRelay({
