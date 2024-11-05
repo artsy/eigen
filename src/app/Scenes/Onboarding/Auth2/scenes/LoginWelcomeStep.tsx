@@ -15,13 +15,13 @@ import { AuthContext } from "app/Scenes/Onboarding/Auth2/AuthContext"
 import { useAuthNavigation } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
 import { OnboardingNavigationStack } from "app/Scenes/Onboarding/Onboarding"
-import { AuthPromiseRejectType, AuthPromiseResolveType } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
+import { handleSocialLogin } from "app/utils/auth/socialSignInHelpers"
 import { osMajorVersion } from "app/utils/platformUtil"
 import { Formik, useFormikContext } from "formik"
 import { MotiView } from "moti"
 import React, { useRef } from "react"
-import { Image, InteractionManager, Platform } from "react-native"
+import { Image, Platform } from "react-native"
 import { Easing } from "react-native-reanimated"
 import * as Yup from "yup"
 
@@ -201,17 +201,17 @@ const LoginWelcomeStepForm: React.FC = () => {
 
 const SocialLoginButtons: React.FC = () => {
   const handleApplePress = () =>
-    onSocialLogin(() => {
+    handleSocialLogin(() => {
       return GlobalStore.actions.auth.authApple({ agreedToReceiveEmails: true })
     })
 
   const handleGooglePress = () =>
-    onSocialLogin(() => {
+    handleSocialLogin(() => {
       return GlobalStore.actions.auth.authGoogle2()
     })
 
   const handleFacebookPress = () =>
-    onSocialLogin(() => {
+    handleSocialLogin(() => {
       return GlobalStore.actions.auth.authFacebook2()
     })
 
@@ -252,21 +252,4 @@ const SocialLoginButtons: React.FC = () => {
       </Flex>
     </Flex>
   )
-}
-
-const onSocialLogin = async (callback: () => Promise<AuthPromiseResolveType>) => {
-  GlobalStore.actions.auth.setSessionState({ isLoading: true })
-
-  InteractionManager.runAfterInteractions(() => {
-    callback().catch((error: AuthPromiseRejectType) => {
-      InteractionManager.runAfterInteractions(() => {
-        GlobalStore.actions.auth.setSessionState({ isLoading: false })
-
-        InteractionManager.runAfterInteractions(() => {
-          // TODO: handle error like OnboardingSocialPick does
-          console.error(error)
-        })
-      })
-    })
-  })
 }

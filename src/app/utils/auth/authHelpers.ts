@@ -40,9 +40,24 @@ export const showError = (
   }
 }
 
-export const showBlockedAuthError = (mode: "sign in" | "sign up") => {
-  const messagePrefix = mode === "sign in" ? "Sign in" : "Sign up"
-  const innerMessage = mode === "sign in" ? "signing in" : "signing up"
+export const showBlockedAuthError = (mode: "sign in" | "sign up" | "social sign in") => {
+  let messagePrefix, innerMessage
+
+  switch (mode) {
+    case "sign in":
+      messagePrefix = "Sign in"
+      innerMessage = "signing in"
+      break
+    case "sign up":
+      messagePrefix = "Sign up"
+      innerMessage = "signing up"
+      break
+    case "social sign in":
+      messagePrefix = "Social sign in"
+      innerMessage = "signing in"
+      break
+  }
+
   Alert.alert(
     messagePrefix + " attempt blocked",
     "Please try " +
@@ -632,10 +647,12 @@ export async function handleLimitedFacebookAuth2(
 
     if (resultGravitySignUp.success) {
       resolve({ success: true })
+      return
     }
 
     if (resultGravitySignUp.error === "blocked_attempt") {
       reject(new AuthError("Attempt blocked"))
+      return
     }
 
     if (resultGravitySignUp.error !== "Another Account Already Linked") {
@@ -646,6 +663,7 @@ export async function handleLimitedFacebookAuth2(
           resultGravitySignUp.meta
         )
       )
+      return
     }
 
     const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
@@ -677,9 +695,11 @@ export async function handleLimitedFacebookAuth2(
 
       if (resultGravitySignIn) {
         resolve({ success: true })
-      } else {
-        reject(new AuthError("Could not log in"))
+        return
       }
+
+      reject(new AuthError("Could not log in"))
+      return
     } else {
       if (resultGravityAccessToken.status === 403) {
         reject(new AuthError("Attempt blocked"))
