@@ -1,7 +1,7 @@
 import { Flex, Spacer } from "@artsy/palette-mobile"
 import { ArtworkRailCard_artwork$key } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
-import { ArtworkRailCardCTAs } from "app/Components/ArtworkRail/ArtworkRailCardCTAs"
+import { ArtworkItemCTAs } from "app/Components/Artwork/ArtworkItemCTAs"
 import {
   ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
   ArtworkRailCardImage,
@@ -139,7 +139,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
 
               <Spacer y={0.5} />
 
-              <ArtworkRailCardCTAs
+              <ArtworkItemCTAs
                 artwork={artwork}
                 showSaveIcon={showSaveIcon}
                 contextModule={contextModule}
@@ -171,6 +171,6 @@ const artworkFragment = graphql`
     ...ContextMenuArtwork_artwork
     ...CreateArtworkAlertModal_artwork
     ...LegacyArtworkRailCardImage_artwork
-    ...ArtworkRailCardCTAs_artwork
+    ...ArtworkItemCTAs_artwork
   }
 `

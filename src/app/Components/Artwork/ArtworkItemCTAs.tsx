@@ -9,7 +9,7 @@ import {
   Touchable,
   useColor,
 } from "@artsy/palette-mobile"
-import { ArtworkRailCardCTAs_artwork$key } from "__generated__/ArtworkRailCardCTAs_artwork.graphql"
+import { ArtworkItemCTAs_artwork$key } from "__generated__/ArtworkItemCTAs_artwork.graphql"
 import { useFollowArtist } from "app/Components/Artist/useFollowArtist"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ARTWORK_RAIL_CARD_CTA_ICON_SIZE } from "app/Components/constants"
@@ -21,12 +21,12 @@ import {
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
-interface ArtworkRailCardCTAsProps extends ArtworkActionTrackingProps {
-  artwork: ArtworkRailCardCTAs_artwork$key
+interface ArtworkItemCTAsProps extends ArtworkActionTrackingProps {
+  artwork: ArtworkItemCTAs_artwork$key
   showSaveIcon?: boolean
 }
 
-export const ArtworkRailCardCTAs: React.FC<ArtworkRailCardCTAsProps> = ({
+export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
   artwork: artworkProp,
   showSaveIcon = false,
   contextModule,
@@ -55,13 +55,12 @@ export const ArtworkRailCardCTAs: React.FC<ArtworkRailCardCTAsProps> = ({
   const displayAuctionSignal = enableAuctionImprovementsSignals && sale?.isAuction
 
   const onArtworkSavedOrUnSaved = (saved: boolean) => {
-    // todo:extract
     trackEvent(
       artworkActionTracks.saveOrUnsaveArtwork(saved, {
         acquireable: isAcquireable,
         availability,
         biddable: isBiddable,
-        context_module: contextModule,
+        context_module: contextModule, // here
         context_screen: contextScreen,
         context_screen_owner_id: contextScreenOwnerId,
         context_screen_owner_slug: contextScreenOwnerSlug,
@@ -78,7 +77,7 @@ export const ArtworkRailCardCTAs: React.FC<ArtworkRailCardCTAsProps> = ({
   })
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const { handleFollowToggle } = useFollowArtist(artist!, true)
+  const { handleFollowToggle } = useFollowArtist(artist!)
 
   return (
     <Flex flexDirection="row">
@@ -219,7 +218,7 @@ const FollowArtistFillIcon = ({ fill, ...restProps }: IconProps) => {
 }
 
 const artworkFragment = graphql`
-  fragment ArtworkRailCardCTAs_artwork on Artwork {
+  fragment ArtworkItemCTAs_artwork on Artwork {
     internalID
     availability
     isAcquireable

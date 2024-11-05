@@ -1,17 +1,17 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { ArtworkRailCardCTAsTestsQuery } from "__generated__/ArtworkRailCardCTAsTestsQuery.graphql"
-import { ArtworkRailCardCTAs } from "app/Components/ArtworkRail/ArtworkRailCardCTAs"
+import { ArtworkItemCTAsTestsQuery } from "__generated__/ArtworkItemCTAsTestsQuery.graphql"
+import { ArtworkItemCTAs } from "app/Components/Artwork/ArtworkItemCTAs"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-describe("ArtworkRailCardCTAs", () => {
-  const { renderWithRelay } = setupTestWrapper<ArtworkRailCardCTAsTestsQuery>({
-    Component: (props) => <ArtworkRailCardCTAs {...props} artwork={props.artwork!} />,
+describe("ArtworkItemCTAs", () => {
+  const { renderWithRelay } = setupTestWrapper<ArtworkItemCTAsTestsQuery>({
+    Component: (props) => <ArtworkItemCTAs {...props} artwork={props.artwork!} />,
     query: graphql`
-      query ArtworkRailCardCTAsTestsQuery @relay_test_operation {
+      query ArtworkItemCTAsTestsQuery @relay_test_operation {
         artwork(id: "the-artwork") {
-          ...ArtworkRailCardCTAs_artwork
+          ...ArtworkItemCTAs_artwork
         }
       }
     `,

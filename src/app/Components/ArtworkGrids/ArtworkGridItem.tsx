@@ -16,12 +16,12 @@ import {
 } from "@artsy/palette-mobile"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
+import { ArtworkItemCTAs } from "app/Components/Artwork/ArtworkItemCTAs"
 import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
 import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
-import { ArtworkRailCardCTAs } from "app/Components/ArtworkRail/ArtworkRailCardCTAs"
 import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessage"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { DurationProvider } from "app/Components/Countdown"
@@ -467,7 +467,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
               <Spacer y={positionCTAs === "column" ? 0.5 : 0} />
 
-              <ArtworkRailCardCTAs artwork={artwork} showSaveIcon={!hideSaveIcon} />
+              <ArtworkItemCTAs artwork={artwork} showSaveIcon={!hideSaveIcon} />
             </Flex>
           </View>
         </Touchable>
@@ -509,7 +509,7 @@ export default createFragmentContainer(Artwork, {
       includeAllImages: { type: "Boolean", defaultValue: false }
       width: { type: "Int" }
     ) {
-      ...ArtworkRailCardCTAs_artwork
+      ...ArtworkItemCTAs_artwork
       ...CreateArtworkAlertModal_artwork
       ...ContextMenuArtwork_artwork @arguments(width: $width)
       availability

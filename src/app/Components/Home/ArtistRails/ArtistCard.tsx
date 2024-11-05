@@ -2,7 +2,6 @@ import { CloseIcon, Flex, FollowButton, Text, Touchable, useColor } from "@artsy
 import { ArtistCard_artist$data } from "__generated__/ArtistCard_artist.graphql"
 import { useFollowArtist } from "app/Components/Artist/useFollowArtist"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
-
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { createFragmentContainer, graphql } from "react-relay"
