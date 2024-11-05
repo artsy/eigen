@@ -9,7 +9,6 @@ import {
   Spacer,
   Text,
   Touchable,
-  useSpace,
 } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
@@ -36,8 +35,6 @@ const FILE_SIZE_LIMIT = 50 * 1024 * 1024
 export const SubmitArtworkAdditionalDocuments = () => {
   const { values, setFieldValue } = useFormikContext<SubmissionModel>()
   const [progress, setProgress] = useState<Record<string, number | null>>({})
-
-  const space = useSpace()
 
   const { showActionSheetWithOptions } = useActionSheet()
 
@@ -173,7 +170,7 @@ export const SubmitArtworkAdditionalDocuments = () => {
               Maximum size: 50 MB.
             </Text>
 
-            <Flex rowGap={space(2)}>
+            <Flex rowGap={2}>
               {values.additionalDocuments.map((document) => {
                 return (
                   <UploadedFile
@@ -201,14 +198,13 @@ const UploadedFile: React.FC<{
   onRemove: () => void
   progress?: number | null
 }> = ({ document, onRemove, progress }) => {
-  const space = useSpace()
   const sizeInMb = document.size ? (parseFloat(document.size) / 1024 / 1024).toFixed(2) : 0
 
   return (
     <Flex>
       <Flex
         flexDirection="row"
-        gap={space(1)}
+        gap={1}
         alignItems="center"
         borderWidth={1}
         borderColor="black10"

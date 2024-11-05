@@ -22,6 +22,13 @@ describe("HomeView", () => {
     },
     query: graphql`
       query HomeViewTestsQuery($count: Int!, $cursor: String) @relay_test_operation {
+        homeView {
+          experiments {
+            name
+            variant
+            enabled
+          }
+        }
         viewer {
           ...HomeViewSectionsConnection_viewer @arguments(count: $count, cursor: $cursor)
         }
@@ -68,7 +75,7 @@ describe("HomeView", () => {
   })
 
   it("fires a screen view event", () => {
-    renderWithRelay({})
+    renderWithRelay()
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "screen",
@@ -84,5 +91,70 @@ describe("HomeView", () => {
     })
 
     expect(screen.getByText("Tap here to verify your email address")).toBeTruthy()
+  })
+
+  describe("home view experiements", () => {
+    it("fires an experiement_viewed event for enabled experiments", () => {
+      renderWithRelay({
+        HomeView: () => ({
+          experiments: [
+            {
+              name: "some_experiment",
+              variant: "some_variant",
+              enabled: true,
+            },
+          ],
+        }),
+      })
+
+      expect(mockTrackEvent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          action: "experiment_viewed",
+          experiment_name: "some_experiment",
+          variant_name: "some_variant",
+          context_owner_type: "home",
+        })
+      )
+    })
+
+    it("does not fire an experiement_viewed event for disabled experiments", () => {
+      renderWithRelay({
+        HomeView: () => ({
+          experiments: [
+            {
+              name: "some_experiment",
+              variant: "some_variant",
+              enabled: false,
+            },
+          ],
+        }),
+      })
+
+      expect(mockTrackEvent).not.toHaveBeenCalledWith(
+        expect.objectContaining({
+          action: "experiment_viewed",
+        })
+      )
+    })
+
+    it("does not fire an experiement_viewed event when variant is missing", () => {
+      renderWithRelay({
+        HomeView: () => ({
+          experiments: [
+            {
+              name: "some_experiment",
+              variant: null,
+              enabled: true,
+            },
+          ],
+        }),
+      })
+
+      expect(mockTrackEvent).not.toHaveBeenCalledWith(
+        expect.objectContaining({
+          action: "experiment_viewed",
+        })
+      )
+    })
   })
 })

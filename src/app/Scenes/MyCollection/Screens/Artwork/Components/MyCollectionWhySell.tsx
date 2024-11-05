@@ -4,8 +4,10 @@ import { MyCollectionWhySell_artwork$key } from "__generated__/MyCollectionWhySe
 import { SubmitArtworkProps } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { fetchArtworkInformation } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/fetchArtworkInformation"
 import { getInitialSubmissionFormValuesFromArtwork } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/getInitialSubmissionValuesFromArtwork"
+import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { navigate } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
+import { Alert } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -51,28 +53,54 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
           mb={2}
           block
           onPress={async () => {
-            trackEvent(
-              tracks.tappedSellArtwork(
-                setContextModule,
-                artwork.internalID,
-                artwork.slug,
-                setContextScreen,
-                "Submit This Artwork to Sell"
+            try {
+              trackEvent(
+                tracks.tappedSellArtwork(
+                  setContextModule,
+                  artwork.internalID,
+                  artwork.slug,
+                  setContextScreen,
+                  "Submit This Artwork to Sell"
+                )
               )
-            )
-            const passProps: SubmitArtworkProps = {
-              initialValues: {},
-              initialStep: "StartFlow",
-              hasStartedFlowFromMyCollection: true,
-            }
+              const passProps: SubmitArtworkProps = {
+                initialValues: {},
+                initialStep: "StartFlow",
+                hasStartedFlowFromMyCollection: true,
+              }
 
-            const artworkData = await fetchArtworkInformation(artwork.internalID)
+              const artworkData = await fetchArtworkInformation(artwork.internalID)
 
-            if (artworkData) {
-              passProps.initialValues = getInitialSubmissionFormValuesFromArtwork(artworkData)
+              if (!artworkData) {
+                console.error(
+                  "Failed to fetch artwork details when submitting My Collection artwork for sale."
+                )
+                Alert.alert(
+                  "Failed to fetch artwork details.",
+                  "Please try again or enter details manually."
+                )
+                return
+              }
+
+              const initialValues = getInitialSubmissionFormValuesFromArtwork(artworkData)
+
+              const submission = await createOrUpdateSubmission(initialValues, null)
+
+              initialValues.submissionId = submission?.internalID || null
+              passProps.initialValues = initialValues
               passProps.initialStep = "AddTitle"
+
+              navigate("/sell/submissions/new", { passProps })
+            } catch (error) {
+              console.error(
+                "Failed to fetch artwork details or create submission when submitting My Collection artwork for sale.",
+                error
+              )
+              Alert.alert(
+                "Failed to fetch artwork details or create submission.",
+                "Please try again or enter details manually."
+              )
             }
-            navigate("/sell/submissions/new", { passProps })
           }}
           testID="submitArtworkToSellButton"
         >

@@ -2,7 +2,7 @@ import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import { Flex, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import ArtworkGridItem, { PriceOfferMessage } from "app/Components/ArtworkGrids/ArtworkGridItem"
-import { PartnerOffer } from "app/Scenes/Activity/components/NotificationArtworkList"
+import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
 import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
 import { ViewProps } from "react-native"
 import { FragmentRefs } from "relay-runtime"
@@ -31,7 +31,7 @@ interface MasonryArtworkGridItemProps {
   item: Artwork
   numColumns?: number
   onPress?: (artworkID: string, artwork?: ArtworkGridItem_artwork$data) => void
-  partnerOffer?: PartnerOffer
+  partnerOffer?: PartnerOffer | null
   priceOfferMessage?: PriceOfferMessage
   hideSaveIcon?: boolean
   hideSaleInfo?: boolean

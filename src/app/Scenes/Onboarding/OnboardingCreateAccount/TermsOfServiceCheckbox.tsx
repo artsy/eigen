@@ -28,13 +28,12 @@ export const TermsOfServiceCheckbox: React.FC<TermsOfServiceCheckboxProps> = ({
           checkboxAccessibilityProps={{
             accessible: true,
             accessibilityRole: "checkbox",
-            accessibilityLabel: "checkbox of consent",
-            accessibilityHint: "Check this element to consent with the Terms of Service",
+            accessibilityLabel: "Accept terms and privacy policy",
+            accessibilityHint: "Check this element to accept Artsy's terms and privacy policy",
             accessibilityState: {
               checked,
             },
           }}
-          testID="termsCheckbox"
         >
           {showNewDisclaimer ? (
             <Text variant="xs" testID="disclaimer">

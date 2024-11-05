@@ -48,12 +48,6 @@ export const features = {
     readyForRelease: false,
     description: "Support dark mode",
   },
-  AREnableArticleSlideShow: {
-    readyForRelease: true,
-    description: "Enable slideshow elements and route on Article screen",
-    echoFlagKey: "AREnableArticleSlideShow",
-    showInDevMenu: true,
-  },
   AREnableEditorialNews: {
     readyForRelease: true,
     description: "Enable news app in the home screen",
@@ -242,12 +236,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableSubmitArtworkTier2Information",
   },
-  AREnableCollectorProfilePrompts: {
-    readyForRelease: true,
-    description: "Enable prompts to update collector profile",
-    showInDevMenu: true,
-    echoFlagKey: "AREnableCollectorProfilePrompts",
-  },
   AREnableAuctionImprovementsSignals: {
     description: "Enable new auction lot signals",
     readyForRelease: true,
@@ -316,6 +304,11 @@ export const features = {
     readyForRelease: false,
     showInDevMenu: true,
     /* echoFlagKey: "AREnableAddFollowCTA" */
+  },
+  AREnablePaymentFailureBanner: {
+    description: "Enable payment failure banner",
+    readyForRelease: false,
+    showInDevMenu: true,
   },
 } satisfies { [key: string]: FeatureDescriptor }
 

@@ -49,7 +49,7 @@ describe("SearchArtworks", () => {
 
     rejectMostRecentRelayOperation(mockEnvironment, new Error("Bad connection"))
 
-    expect(screen.getByText("Unable to load")).toBeTruthy()
+    expect(screen.getByText("Something went wrong. Please check back later.")).toBeTruthy()
   })
 
   it("should track event when an artwork is tapped", () => {

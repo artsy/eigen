@@ -78,7 +78,7 @@ export const ActivityEmptyView: React.FC<ActivityEmptyViewProps> = ({ type, refr
             {entity.message}
           </Text>
           <Spacer y={2} />
-          <Flex flexDirection="row" gap={10}>
+          <Flex flexDirection="row" gap={1}>
             <Text variant="xs" color="black60">
               {entity.geStartedMessage}
             </Text>

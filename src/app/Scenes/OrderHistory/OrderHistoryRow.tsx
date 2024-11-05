@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType, TappedChangePaymentMethod } from "@artsy/cohesion"
 import { Flex, Box, Text, Button, Image } from "@artsy/palette-mobile"
 import { OrderHistoryRow_order$data } from "__generated__/OrderHistoryRow_order.graphql"
 import { navigate } from "app/system/navigation/navigate"
@@ -117,12 +118,13 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
           <Button
             block
             variant="fillDark"
-            onPress={() =>
+            onPress={() => {
+              tracks.tappedChangePaymentMethod({ id: order.internalID })
               navigate(`/orders/${order.internalID}/payment/new`, {
                 modal: true,
                 passProps: { orderID: order.internalID, title: "Update Payment Details" },
               })
-            }
+            }}
             testID="update-payment-button"
           >
             Update Payment Method
@@ -177,3 +179,13 @@ export const OrderHistoryRowContainer = createFragmentContainer(OrderHistoryRow,
     }
   `,
 })
+
+export const tracks = {
+  tappedChangePaymentMethod: ({ id }: { id: string }): TappedChangePaymentMethod => ({
+    action: ActionType.tappedChangePaymentMethod,
+    context_module: ContextModule.ordersHistory,
+    context_screen: OwnerType.ordersHistory,
+    item_id: id,
+    item_type: "order",
+  }),
+}
