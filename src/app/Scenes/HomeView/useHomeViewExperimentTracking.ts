@@ -31,13 +31,17 @@ export function useHomeViewExperimentTracking(
     experiments.forEach(({ name, variant, enabled }) => {
       if (!enabled) {
         console.warn(`Experiment is not enabled: ${name}`)
-      } else if (!variant) {
+        return
+      }
+
+      if (!variant) {
         console.warn(`Experiment variant is missing for: ${name}`)
-      } else {
-        if (!trackedExperiments.includes(name)) {
-          trackViewedExperiment(name, variant)
-          addTrackedExperiment(name)
-        }
+        return
+      }
+
+      if (!trackedExperiments.includes(name)) {
+        trackViewedExperiment(name, variant)
+        addTrackedExperiment(name)
       }
     })
   }, [homeViewExperiments])
