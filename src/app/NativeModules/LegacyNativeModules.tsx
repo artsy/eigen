@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
+import { NativeState } from "app/store/NativeModel"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import { NativeModules as AllNativeModules, Platform } from "react-native"
 import { getLocales, getTimeZone } from "react-native-localize"
@@ -35,7 +36,7 @@ interface LegacyNativeModules {
     getPushToken(): Promise<string | null>
   }
   ARNotificationsManager: {
-    getConstants(): object
+    getConstants(): NativeState
     postNotificationName(type: string, data: object): void
     didFinishBootstrapping(): void
     reactStateUpdated(state: {
@@ -127,11 +128,10 @@ const LegacyNativeModulesAndroid = {
   },
 
   ARNotificationsManager: {
-    // nativeState: null as any,
     postNotificationName: noop("postNotificationName"),
     didFinishBootstrapping: () => null,
     reactStateUpdated: () => null,
-    getConstants: () => ({}),
+    getConstants: () => null as any,
   },
 
   ARTemporaryAPIModule: {

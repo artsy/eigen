@@ -436,13 +436,13 @@ function getNativeModules(): OurNativeModules {
     },
 
     ARNotificationsManager: {
-      nativeState: {
+      getConstants: jest.fn(() => ({
         userAgent: "Jest Unit Tests",
         authenticationToken: "authenticationToken",
         launchCount: 1,
         userID: "userID",
         userEmail: "user@example.com",
-      },
+      })),
       postNotificationName: jest.fn(),
       didFinishBootstrapping: jest.fn(),
       reactStateUpdated: jest.fn(),

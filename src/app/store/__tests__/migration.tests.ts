@@ -353,7 +353,7 @@ describe("PendingPushNotification migration", () => {
 
 describe("CopyIOSNativeSessionAuthToTS migration", () => {
   beforeAll(() => {
-    LegacyNativeModules.ARNotificationsManager.nativeState = {
+    LegacyNativeModules.ARNotificationsManager.getConstants = {
       authenticationToken: "authenticationToken",
       onboardingState: "complete",
       userID: "userID",
