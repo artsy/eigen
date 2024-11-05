@@ -170,10 +170,6 @@ jest.mock("react-native-blob-util", () => ({
 
 jest.mock("@react-native-cookies/cookies", () => ({ clearAll: jest.fn() }))
 
-beforeEach(() => {
-  require("@react-native-cookies/cookies").clearAll.mockReset()
-})
-
 jest.mock("react-native-fbsdk-next", () => ({
   LoginManager: {
     logOut: jest.fn(),
