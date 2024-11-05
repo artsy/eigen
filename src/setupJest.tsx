@@ -14,8 +14,6 @@ import { mockPostEventToProviders, mockTrackEvent } from "app/utils/tests/global
 import { mockNavigate } from "app/utils/tests/navigationMocks"
 import chalk from "chalk"
 import * as matchers from "jest-extended"
-
-import { isPlainObject } from "lodash"
 import { NativeModules } from "react-native"
 import "react-native-gesture-handler/jestSetup"
 // @ts-ignore-next-line
@@ -480,24 +478,6 @@ jest.mock("app/NativeModules/LegacyNativeModules", () => ({
 }))
 
 Object.assign(NativeModules, getNativeModules())
-
-beforeEach(() => {
-  function reset(a: any, b: any) {
-    Object.keys(a).forEach((k) => {
-      if (isPlainObject(a[k])) {
-        reset(a[k], b[k])
-      } else {
-        if (a[k]?.mockReset) {
-          a[k].mockReset()
-        } else {
-          a[k] = b?.[k] ?? a[k]
-        }
-      }
-    })
-  }
-  reset(NativeModules, getNativeModules())
-  reset(require("app/system/navigation/navigate"), {})
-})
 
 const mockedModule = (path: string, mockModuleName: string) => jest.mock(path, () => mockModuleName)
 mockedModule("./app/Components/Gene/Header.tsx", "Header")
