@@ -129,6 +129,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
   const enablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
   const enableRedesignSaveCTA = useFeatureFlag("AREnableRedesignSaveCTA")
+  const enableAddFollowCTA = useFeatureFlag("AREnableAddFollowCTA")
 
   let filterParams: any = undefined
 
@@ -465,7 +466,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
                 </Flex>
               )}
 
-              <Spacer y={positionCTAs === "column" ? 0.5 : 0} />
+              {!!(enableAddFollowCTA || enableRedesignSaveCTA) && (
+                <Spacer y={positionCTAs === "column" ? 0.5 : 0} />
+              )}
 
               <ArtworkItemCTAs
                 artwork={artwork}
@@ -489,43 +492,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
     </Disappearable>
   )
 }
-
-/*
-
-// FOLLOW
-{
-  "action_name": "artistUnfollow",
-  "action_type": "success",
-  "owner_id": "5113fea334d34fb18200065b",
-  "owner_slug": "james-jean",
-  "owner_type": "Artwork",
-  "context_screen_owner_type": "newWorksForYou"
-}
-  // tap event
-{
-  "action_name": "artistFollow",
-  "action_type": "tap",
-  "owner_id": "5113fea334d34fb18200065b",
-  "owner_slug": "james-jean",
-  "owner_type": "Artwork",
-  "context_screen_owner_type": "newWorksForYou"
-}
-
-
-// SAVE
-{
-  "action": "success",
-  "action_name": "artworkUnsave",
-  "action_type": "success",
-  "acquireable": false,
-  "availability": "for sale",
-  "biddable": true,
-  "context_screen_owner_type": "newWorksForYou",
-  "inquireable": true,
-  "offerable": false
-}
-
-*/
 
 const ArtworkHeartIcon: React.FC<{ isSaved: boolean | null; index?: number }> = ({
   isSaved,

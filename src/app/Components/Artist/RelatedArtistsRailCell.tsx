@@ -40,7 +40,6 @@ export const RelatedArtistsRailCell: React.FC<RelatedArtistsRailCellProps> = ({
     navigate(relatedArtistData.href)
   }
 
-  // TODO: extract this to a hook or a component
   const handleOnFollow = () => {
     commitMutation({
       variables: {
