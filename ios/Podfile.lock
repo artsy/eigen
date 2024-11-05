@@ -34,9 +34,26 @@ PODS:
     - BrazeKit (~> 9.0.0)
     - BrazeLocation (~> 9.0.0)
     - BrazeUI (~> 9.0.0)
+    - DoubleConversion
     - glog
-    - RCT-Folly (= 2022.05.16.00)
+    - hermes-engine
+    - RCT-Folly (= 2024.01.01.00)
+    - RCTRequired
+    - RCTTypeSafety
     - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - BrazeKit (9.0.0)
   - BrazeLocation (9.0.0):
     - BrazeKit (= 9.0.0)
@@ -2589,7 +2606,7 @@ SPEC CHECKSUMS:
   AppCenterReactNativeShared: 01df23849b1c3c6eb8c4049f54322635650e98f0
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost: 4cb898d0bf20404aab1850c656dcea009429d6c1
-  braze-react-native-sdk: 1d2c861b668ac1dbf9c75706df3fe30435519600
+  braze-react-native-sdk: a971669b039f9a1fb58b639c7e8760d796543748
   BrazeKit: 7406e77825c624d8e7a162d858a4bffdf79270f5
   BrazeLocation: 43405bf92037c9840f5f5467a7b8418583bc7850
   BrazeUI: 9e86bd30ca84f66444a5f6d95e438057000f4d0f
@@ -2655,7 +2672,7 @@ SPEC CHECKSUMS:
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   Pulley: edc993fb57f7eb20541c8453d0fce10559f21dac
   Quick: ce1276c7c27ba2da3cb2fd0cde053c3648b3b22d
-  RCT-Folly: 02617c592a293bd6d418e0a88ff4ee1f88329b47
+  RCT-Folly: 4464f4d875961fce86008d45f4ecf6cef6de0740
   RCTDeprecation: 726d24248aeab6d7180dac71a936bbca6a994ed1
   RCTRequired: a94e7febda6db0345d207e854323c37e3a31d93b
   RCTTypeSafety: 28e24a6e44f5cbf912c66dde6ab7e07d1059a205
