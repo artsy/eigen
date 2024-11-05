@@ -1,15 +1,18 @@
 import { useFollowArtist_artist$key } from "__generated__/useFollowArtist_artist.graphql"
 import { useFollowArtist_artist_Mutation } from "__generated__/useFollowArtist_artist_Mutation.graphql"
+import { useToast } from "app/Components/Toast/toastHook"
+import { navigate, switchTab } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
 import { useState } from "react"
 import { useFragment, graphql, useMutation } from "react-relay"
 import { useTracking } from "react-tracking"
 
-export const useFollowArtist = (artist: useFollowArtist_artist$key) => {
+export const useFollowArtist = (artist: useFollowArtist_artist$key, showToast?: boolean) => {
   const [isLoading, setIsLoading] = useState(false)
   const data = useFragment(fragment, artist)
   const [commitMutation] = useMutation<useFollowArtist_artist_Mutation>(mutation)
   const { trackEvent } = useTracking()
+  const toast = useToast()
 
   const artistCount = data?.counts?.follows ?? 0
 
@@ -93,6 +96,18 @@ export const useFollowArtist = (artist: useFollowArtist_artist$key) => {
     })
 
     setIsLoading(false)
+
+    showToast &&
+      !data.isFollowed &&
+      toast.show("Artist Followed", "bottom", {
+        cta: "View Follows",
+        onPress: () => {
+          switchTab("profile")
+          navigate("favorites")
+        },
+        backgroundColor: "green100",
+        description: "Keep track of the artists you love",
+      })
   }
 
   const onFollowChangeError = () => {

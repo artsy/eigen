@@ -21,6 +21,7 @@ import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilter
 import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
 import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
+import { ArtworkRailCardCTAs } from "app/Components/ArtworkRail/ArtworkRailCardCTAs"
 import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessage"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { DurationProvider } from "app/Components/Countdown"
@@ -84,6 +85,7 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   /** allows for artwork to be added to recent searches */
   updateRecentSearchesOnTap?: boolean
   urgencyTagTextStyle?: TextProps
+  positionCTAs?: "column" | "row"
 }
 
 export const Artwork: React.FC<ArtworkProps> = ({
@@ -117,6 +119,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   trackTap,
   updateRecentSearchesOnTap = false,
   urgencyTagTextStyle,
+  positionCTAs = "column",
 }) => {
   const itemRef = useRef<any>()
   const color = useColor()
@@ -124,6 +127,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
   const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
+  const enablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
+  const enableRedesignSaveCTA = useFeatureFlag("AREnableRedesignSaveCTA")
 
   let filterParams: any = undefined
 
@@ -193,7 +198,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
   })
 
   const { hasEnded } = getTimer(partnerOffer?.endAt || "")
-  const enablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
 
   const handleTap = () => {
     if (onPress) {
@@ -340,8 +344,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
                 </DurationProvider>
               </Box>
             )}
+
             <Flex
-              flexDirection="row"
+              flexDirection={positionCTAs}
               justifyContent="space-between"
               mt={1}
               style={artworkMetaStyle}
@@ -443,7 +448,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   />
                 )}
               </Flex>
-              {!hideSaveIcon && (
+              {!hideSaveIcon && !enableRedesignSaveCTA && (
                 <Flex flexDirection="row" alignItems="flex-start">
                   {!!displayAuctionSignal && !!collectorSignals?.auction?.lotWatcherCount && (
                     <Text lineHeight="18px" variant="xs" numberOfLines={1}>
@@ -459,6 +464,10 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   </Touchable>
                 </Flex>
               )}
+
+              <Spacer y={positionCTAs === "column" ? 0.5 : 0} />
+
+              <ArtworkRailCardCTAs artwork={artwork} showSaveIcon={!hideSaveIcon} />
             </Flex>
           </View>
         </Touchable>
@@ -500,6 +509,7 @@ export default createFragmentContainer(Artwork, {
       includeAllImages: { type: "Boolean", defaultValue: false }
       width: { type: "Int" }
     ) {
+      ...ArtworkRailCardCTAs_artwork
       ...CreateArtworkAlertModal_artwork
       ...ContextMenuArtwork_artwork @arguments(width: $width)
       availability

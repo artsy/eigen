@@ -102,6 +102,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
         onPress={onPress}
         hideSaleInfo={hideSaleInfo}
         hideSaveIcon={hideSaveIcon}
+        positionCTAs={rest.numColumns !== 1 ? "column" : "row"}
       />
     ),
     [rest.numColumns]

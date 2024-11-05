@@ -78,60 +78,58 @@ export const ArtworkRailCardCTAs: React.FC<ArtworkRailCardCTAsProps> = ({
   })
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const { handleFollowToggle } = useFollowArtist(artist!)
+  const { handleFollowToggle } = useFollowArtist(artist!, true)
 
   return (
-    <>
-      <Flex flexDirection="row" backgroundColor="blue">
-        <Join separator={<Spacer x={1} />}>
-          {/* Save CTA */}
-          {!!showSaveIcon && !!enableRedesignSaveCTA && (
-            <ArtworkCardCTAWrapper onPress={saveArtworkToLists} testID="save-artwork">
-              {isSaved ? (
-                <NewFillHeartIcon
-                  testID="heart-icon-filled"
-                  height={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
-                  width={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
-                  fill="black100"
-                />
-              ) : (
-                <NewHeartIcon
-                  testID="heart-icon-empty"
-                  height={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
-                  width={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
-                />
-              )}
+    <Flex flexDirection="row">
+      <Join separator={<Spacer x={1} />}>
+        {/* Save CTA */}
+        {!!showSaveIcon && !!enableRedesignSaveCTA && (
+          <ArtworkCardCTAWrapper onPress={saveArtworkToLists} testID="save-artwork">
+            {isSaved ? (
+              <NewFillHeartIcon
+                testID="heart-icon-filled"
+                height={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
+                width={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
+                fill="black100"
+              />
+            ) : (
+              <NewHeartIcon
+                testID="heart-icon-empty"
+                height={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
+                width={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
+              />
+            )}
 
-              {!!displayAuctionSignal && !!collectorSignals?.auction?.lotWatcherCount && (
-                <Text pl={0.5} variant="xxs" numberOfLines={1} textAlign="center">
-                  {collectorSignals.auction.lotWatcherCount}
-                </Text>
-              )}
-            </ArtworkCardCTAWrapper>
-          )}
+            {!!displayAuctionSignal && !!collectorSignals?.auction?.lotWatcherCount && (
+              <Text pl={0.5} variant="xxs" numberOfLines={1} textAlign="center">
+                {collectorSignals.auction.lotWatcherCount}
+              </Text>
+            )}
+          </ArtworkCardCTAWrapper>
+        )}
 
-          {/* Follow CTA */}
-          {!!enableAddFollowCTA && (
-            <ArtworkCardCTAWrapper onPress={handleFollowToggle} testID="follow-artist">
-              {artist?.isFollowed ? (
-                <FollowArtistFillIcon
-                  testID="follow-icon-filled"
-                  height={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
-                  width={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
-                  fill="black100"
-                />
-              ) : (
-                <FollowArtistIcon
-                  testID="follow-icon-empty"
-                  height={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
-                  width={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
-                />
-              )}
-            </ArtworkCardCTAWrapper>
-          )}
-        </Join>
-      </Flex>
-    </>
+        {/* Follow CTA */}
+        {!!enableAddFollowCTA && (
+          <ArtworkCardCTAWrapper onPress={handleFollowToggle} testID="follow-artist">
+            {artist?.isFollowed ? (
+              <FollowArtistFillIcon
+                testID="follow-icon-filled"
+                height={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
+                width={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
+                fill="black100"
+              />
+            ) : (
+              <FollowArtistIcon
+                testID="follow-icon-empty"
+                height={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
+                width={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
+              />
+            )}
+          </ArtworkCardCTAWrapper>
+        )}
+      </Join>
+    </Flex>
   )
 }
 

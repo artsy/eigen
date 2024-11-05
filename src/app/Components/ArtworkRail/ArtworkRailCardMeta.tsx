@@ -123,7 +123,6 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
       style={{
         ...metaContainerStyles,
       }}
-      backgroundColor="pink"
       flexDirection="row"
       justifyContent="space-between"
     >
