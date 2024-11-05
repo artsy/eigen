@@ -415,10 +415,12 @@ export async function handleClassicFacebookAuth2(
 
       if (resultGravitySignUp.success) {
         resolve({ success: true })
+        return
       }
 
       if (resultGravitySignUp.error === "blocked_attempt") {
         reject(new AuthError("Attempt blocked"))
+        return
       }
 
       if (resultGravitySignUp.error !== "Another Account Already Linked") {
@@ -429,6 +431,7 @@ export async function handleClassicFacebookAuth2(
             resultGravitySignUp.meta
           )
         )
+        return
       }
 
       const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
@@ -439,7 +442,7 @@ export async function handleClassicFacebookAuth2(
         },
         body: {
           oauth_provider: "facebook",
-          oauth_token: accessToken,
+          oauth_token: accessToken.accessToken,
           client_id: clientId,
           client_secret: clientSecret,
           grant_type: "oauth_token",
@@ -460,9 +463,11 @@ export async function handleClassicFacebookAuth2(
 
         if (resultGravitySignIn) {
           resolve({ success: true })
-        } else {
-          reject(new AuthError("Could not log in"))
+          return
         }
+
+        reject(new AuthError("Could not log in"))
+        return
       } else {
         if (resultGravityAccessToken.status === 403) {
           reject(new AuthError("Attempt blocked"))
