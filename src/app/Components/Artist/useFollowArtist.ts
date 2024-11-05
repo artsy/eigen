@@ -1,3 +1,4 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { useFollowArtist_artist$key } from "__generated__/useFollowArtist_artist.graphql"
 import { useFollowArtist_artist_Mutation } from "__generated__/useFollowArtist_artist_Mutation.graphql"
 import { useToast } from "app/Components/Toast/toastHook"
@@ -7,7 +8,17 @@ import { useState } from "react"
 import { useFragment, graphql, useMutation } from "react-relay"
 import { useTracking } from "react-tracking"
 
-export const useFollowArtist = (artist: useFollowArtist_artist$key, showToast?: boolean) => {
+interface Options {
+  artist: useFollowArtist_artist$key
+  showToast?: boolean
+  contextModule?: ContextModule
+  contextScreenOwnerType?: OwnerType
+  ownerType?: Schema.OwnerEntityTypes | OwnerType
+}
+
+export const useFollowArtist = (options: Options) => {
+  const { artist, showToast, contextModule, contextScreenOwnerType, ownerType } = options
+
   const [isLoading, setIsLoading] = useState(false)
   const data = useFragment(fragment, artist)
   const [commitMutation] = useMutation<useFollowArtist_artist_Mutation>(mutation)
@@ -28,7 +39,9 @@ export const useFollowArtist = (artist: useFollowArtist_artist$key, showToast?: 
       action_type: Schema.ActionTypes.Tap,
       owner_id: data.internalID,
       owner_slug: data.slug,
-      owner_type: Schema.OwnerEntityTypes.Artist,
+      owner_type: ownerType,
+      context_screen_owner_type: contextScreenOwnerType,
+      context_module: contextModule,
     })
 
     setIsLoading(true)
@@ -92,7 +105,9 @@ export const useFollowArtist = (artist: useFollowArtist_artist$key, showToast?: 
       action_type: Schema.ActionTypes.Success,
       owner_id: data.internalID,
       owner_slug: data.slug,
-      owner_type: Schema.OwnerEntityTypes.Artist,
+      owner_type: ownerType,
+      context_screen_owner_type: contextScreenOwnerType,
+      context_module: contextModule,
     })
 
     setIsLoading(false)
@@ -121,7 +136,9 @@ export const useFollowArtist = (artist: useFollowArtist_artist$key, showToast?: 
       action_type: Schema.ActionTypes.Fail,
       owner_id: data.internalID,
       owner_slug: data.slug,
-      owner_type: Schema.OwnerEntityTypes.Artist,
+      owner_type: ownerType,
+      context_screen_owner_type: contextScreenOwnerType,
+      context_module: contextModule,
     })
     // callback for analytics purposes
     setIsLoading(false)

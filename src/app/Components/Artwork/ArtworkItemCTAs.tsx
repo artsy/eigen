@@ -14,6 +14,7 @@ import { useFollowArtist } from "app/Components/Artist/useFollowArtist"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ARTWORK_RAIL_CARD_CTA_ICON_SIZE } from "app/Components/constants"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { Schema } from "app/utils/track"
 import {
   ArtworkActionTrackingProps,
   tracks as artworkActionTracks,
@@ -60,7 +61,7 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
         acquireable: isAcquireable,
         availability,
         biddable: isBiddable,
-        context_module: contextModule, // here
+        context_module: contextModule,
         context_screen: contextScreen,
         context_screen_owner_id: contextScreenOwnerId,
         context_screen_owner_slug: contextScreenOwnerSlug,
@@ -76,8 +77,14 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
     onCompleted: onArtworkSavedOrUnSaved,
   })
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const { handleFollowToggle } = useFollowArtist(artist!)
+  const { handleFollowToggle } = useFollowArtist({
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    artist: artist!,
+    showToast: false,
+    contextModule,
+    contextScreenOwnerType,
+    ownerType: Schema.OwnerEntityTypes.Artwork,
+  })
 
   return (
     <Flex flexDirection="row">
