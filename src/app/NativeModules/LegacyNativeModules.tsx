@@ -127,7 +127,7 @@ const LegacyNativeModulesAndroid = {
   },
 
   ARNotificationsManager: {
-    nativeState: null as any,
+    // nativeState: null as any,
     postNotificationName: noop("postNotificationName"),
     didFinishBootstrapping: () => null,
     reactStateUpdated: () => null,

@@ -1,27 +1,19 @@
-import { BottomSheetView, useBottomSheetDynamicSnapPoints } from "@gorhom/bottom-sheet"
+import { BottomSheetView } from "@gorhom/bottom-sheet"
 import {
   AutomountedBottomSheetModal,
   AutomountedBottomSheetModalProps,
 } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
-import { FC, useMemo } from "react"
 
 export type AutoHeightBottomSheetProps = Omit<AutomountedBottomSheetModalProps, "snapPoints">
 
-export const AutoHeightBottomSheet: FC<AutoHeightBottomSheetProps> = ({ children, ...rest }) => {
-  const initialSnapPoints = useMemo(() => ["CONTENT_HEIGHT"], [])
-  const { animatedHandleHeight, animatedSnapPoints, animatedContentHeight, handleContentLayout } =
-    useBottomSheetDynamicSnapPoints(initialSnapPoints)
-
+export const AutoHeightBottomSheet: React.FC<AutoHeightBottomSheetProps> = ({
+  children,
+  ...rest
+}) => {
   return (
-    <AutomountedBottomSheetModal
-      // TODO: Onyx to fix the type issue of snapPoints + replace useBottomSheetDynamicSnapPoints
-      // @ts-ignore-next-line
-      snapPoints={animatedSnapPoints}
-      handleHeight={animatedHandleHeight}
-      contentHeight={animatedContentHeight}
-      {...rest}
-    >
-      <BottomSheetView onLayout={handleContentLayout}>{children}</BottomSheetView>
+    // TODO: make snapPoints work with new implementation
+    <AutomountedBottomSheetModal snapPoints={["CONTENT_HEIGHT"]} enableDynamicSizing {...rest}>
+      <BottomSheetView>{children}</BottomSheetView>
     </AutomountedBottomSheetModal>
   )
 }

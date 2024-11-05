@@ -1,11 +1,8 @@
 import { Flex, Text } from "@artsy/palette-mobile"
-import { useBottomSheet } from "@gorhom/bottom-sheet"
 import { MyCollectionArtistsPromptBody } from "app/Scenes/MyCollection/Components/MyCollectionArtistsPrompt/MyCollectionArtistsPromptBody"
-import { SNAP_POINTS } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistsPrompt"
 import { MyCollectionAddCollectedArtistsStore } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsStore"
 import { MotiView } from "moti"
 import { FC } from "react"
-import { useDerivedValue } from "react-native-reanimated"
 
 export interface MyCollectionArtistsPromptProps {
   title: string
@@ -16,13 +13,14 @@ export const MyCollectionArtistsPrompt: FC<MyCollectionArtistsPromptProps> = ({
   title,
   subtitle,
 }) => {
-  const { animatedIndex } = useBottomSheet()
+  // const { animatedIndex } = useBottomSheet()
 
   return (
     <MotiView
-      animate={useDerivedValue(() => ({
-        height: animatedIndex.value === 1 ? SNAP_POINTS[1] : SNAP_POINTS[0],
-      }))}
+      // TODO: fix this to not violate animate rules
+      // animate={useDerivedValue(() => ({
+      //   height: animatedIndex.value === 1 ? SNAP_POINTS[1] : SNAP_POINTS[0],
+      // }))}
       transition={{
         type: "timing",
         duration: 200,
