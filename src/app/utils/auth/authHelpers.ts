@@ -41,7 +41,7 @@ export const showError = (
 }
 
 export const showBlockedAuthError = (mode: "sign in" | "sign up" | "social sign in") => {
-  let messagePrefix, innerMessage
+  let messagePrefix: string, innerMessage: string
 
   switch (mode) {
     case "sign in":
