@@ -83,8 +83,8 @@ describe("ArtsyWebViewPage", () => {
     tree.UNSAFE_getByType(WebView).props as WebViewProps
 
   it("renders a WebView", () => {
-    const tree = render()
-    expect((webViewProps(tree).source as any).uri).toEqual("https://staging.artsy.net/hello")
+    const view = render()
+    expect((webViewProps(view).source as any).uri).toEqual("https://staging.artsy.net/hello")
   })
 
   it(`renders a back button normally`, () => {
@@ -100,8 +100,8 @@ describe("ArtsyWebViewPage", () => {
   })
 
   it("renders a back button when presented modally and internal navigation is has happened", () => {
-    const tree = render({ isPresentedModally: true })
-    webViewProps(tree).onNavigationStateChange?.({
+    const view = render({ isPresentedModally: true })
+    webViewProps(view).onNavigationStateChange?.({
       ...mockOnNavigationStateChange,
       canGoBack: true,
     })
@@ -109,7 +109,7 @@ describe("ArtsyWebViewPage", () => {
   })
 
   it("shares the correct URL", () => {
-    const tree = render({
+    const view = render({
       showShareButton: true,
       url: "https://staging.artsy.net/non-native/this-doesnt-have-a-native-view-1",
     })
@@ -119,7 +119,7 @@ describe("ArtsyWebViewPage", () => {
       url: "https://staging.artsy.net/non-native/this-doesnt-have-a-native-view-1",
     })
 
-    webViewProps(tree).onNavigationStateChange?.({
+    webViewProps(view).onNavigationStateChange?.({
       ...mockOnNavigationStateChange,
       url: "https://staging.artsy.net/non-native/this-doesnt-have-a-native-view-2",
     })
@@ -154,8 +154,8 @@ describe("ArtsyWebViewPage", () => {
 
   describe("sets the user agent correctly", () => {
     it("on iOS", () => {
-      const tree = render()
-      expect(webViewProps(tree).userAgent).toBe(
+      const view = render()
+      expect(webViewProps(view).userAgent).toBe(
         `Artsy-Mobile ios some-system-name/some-system-version Artsy-Mobile/${
           appJson().version
         } Eigen/some-build-number/${appJson().version}`
@@ -164,8 +164,8 @@ describe("ArtsyWebViewPage", () => {
 
     it("on Android", () => {
       Platform.OS = "android"
-      const tree = render()
-      const source = webViewProps(tree).source as any
+      const view = render()
+      const source = webViewProps(view).source as any
       expect(source).toHaveProperty("headers")
       expect(source?.headers["User-Agent"]).toBe(
         `Artsy-Mobile android some-system-name/some-system-version Artsy-Mobile/${
@@ -176,28 +176,28 @@ describe("ArtsyWebViewPage", () => {
   })
 
   it("receives messages from the browser", () => {
-    const tree = render()
-    webViewProps(tree).onMessage?.({ nativeEvent: { data: '{"event":"event data"}' } } as any)
+    const view = render()
+    webViewProps(view).onMessage?.({ nativeEvent: { data: '{"event":"event data"}' } } as any)
     expect(mockCallWebViewEventCallback).toHaveBeenCalledWith({ event: "event data" })
   })
 
   it("doesn't call the event hook given onMessage data in the wrong format", () => {
-    const tree = render()
-    webViewProps(tree).onMessage?.({ nativeEvent: { data: "some text" } } as any)
+    const view = render()
+    webViewProps(view).onMessage?.({ nativeEvent: { data: "some text" } } as any)
     expect(mockCallWebViewEventCallback).not.toHaveBeenCalled()
   })
 
   describe("mimicBrowserBackButton", () => {
     it("lets our native back button control the browser", () => {
       const mockSystemBackAction = jest.fn()
-      const tree = render({ systemBackAction: mockSystemBackAction })
+      const view = render({ systemBackAction: mockSystemBackAction })
 
       fireEvent.press(screen.getByTestId("fancy-modal-header-left-button"))
       expect(goBack).toHaveBeenCalled()
       ;(goBack as any).mockReset()
       mockSystemBackAction.mockReset()
 
-      webViewProps(tree).onNavigationStateChange?.({
+      webViewProps(view).onNavigationStateChange?.({
         ...mockOnNavigationStateChange,
         canGoBack: true,
       })
@@ -209,9 +209,9 @@ describe("ArtsyWebViewPage", () => {
 
     it("can be overridden", () => {
       const mockSystemBackAction = jest.fn()
-      const tree = render({ mimicBrowserBackButton: false, systemBackAction: mockSystemBackAction })
+      const view = render({ mimicBrowserBackButton: false, systemBackAction: mockSystemBackAction })
 
-      webViewProps(tree).onNavigationStateChange?.({
+      webViewProps(view).onNavigationStateChange?.({
         ...mockOnNavigationStateChange,
         canGoBack: true,
       })
@@ -224,12 +224,12 @@ describe("ArtsyWebViewPage", () => {
 
   describe("navigation interception", () => {
     it("expands google ad links", () => {
-      const tree = render()
+      const view = render()
       const googleURL =
         "https://googleads.g.doubleclick.net/pcs/click?" +
         stringify({ adurl: "https://staging.artsy.net/artist/banksy" })
 
-      webViewProps(tree).onNavigationStateChange?.({
+      webViewProps(view).onNavigationStateChange?.({
         ...mockOnNavigationStateChange,
         url: googleURL,
       })
@@ -237,17 +237,17 @@ describe("ArtsyWebViewPage", () => {
     })
 
     it("allows inner navigation by default for other webview urls", () => {
-      const tree = render()
-      webViewProps(tree).onNavigationStateChange?.({
+      const view = render()
+      webViewProps(view).onNavigationStateChange?.({
         ...mockOnNavigationStateChange,
-        url: "https://staging.artsy.net/orders/order-id",
+        url: "https://staging.artsy.net/orders/order-id/status",
       })
       expect(navigate).not.toHaveBeenCalled()
     })
 
     it("always calls navigate for external urls", () => {
-      const tree = render()
-      webViewProps(tree).onNavigationStateChange?.({
+      const view = render()
+      webViewProps(view).onNavigationStateChange?.({
         ...mockOnNavigationStateChange,
         url: "https://google.com",
       })
@@ -256,9 +256,9 @@ describe("ArtsyWebViewPage", () => {
 
     describe("the inner WebView's goBack method", () => {
       it("is called when the URL matches a route that is not loaded in a web view", () => {
-        const tree = render()
+        const view = render()
 
-        webViewProps(tree).onNavigationStateChange?.({
+        webViewProps(view).onNavigationStateChange?.({
           ...mockOnNavigationStateChange,
           url: "https://staging.artsy.net/artwork/foo",
         })
@@ -267,9 +267,9 @@ describe("ArtsyWebViewPage", () => {
       })
 
       it("is not called when the URL does not match any route", () => {
-        const tree = render()
+        const view = render()
 
-        webViewProps(tree).onNavigationStateChange?.({
+        webViewProps(view).onNavigationStateChange?.({
           ...mockOnNavigationStateChange,
           url: "https://support.artsy.net/",
         })
@@ -278,20 +278,20 @@ describe("ArtsyWebViewPage", () => {
       })
 
       it("is not called when the URL matches a ModalWebView route", () => {
-        const tree = render()
+        const view = render()
 
-        webViewProps(tree).onNavigationStateChange?.({
+        webViewProps(view).onNavigationStateChange?.({
           ...mockOnNavigationStateChange,
-          url: "https://staging.artsy.net/orders/foo",
+          url: "https://staging.artsy.net/orders/foo/status",
         })
 
         expect(mockGoBack).not.toHaveBeenCalled()
       })
 
       it("is not called when the URL matches a ReactWebView route", () => {
-        const tree = render()
+        const view = render()
 
-        webViewProps(tree).onNavigationStateChange?.({
+        webViewProps(view).onNavigationStateChange?.({
           ...mockOnNavigationStateChange,
           url: "https://staging.artsy.net/meet-the-specialists",
         })
@@ -300,9 +300,9 @@ describe("ArtsyWebViewPage", () => {
       })
 
       it("is not called when the URL matches a VanityURLEntity route", () => {
-        const tree = render()
+        const view = render()
 
-        webViewProps(tree).onNavigationStateChange?.({
+        webViewProps(view).onNavigationStateChange?.({
           ...mockOnNavigationStateChange,
           url: "https://staging.artsy.net/foo",
         })
@@ -340,7 +340,7 @@ describe("useWebViewCookies", () => {
     })
   })
 
-  it("retries if it fails", () => {
+  it("retries if it fails", async () => {
     __globalStoreTestUtils__?.injectState({
       auth: { userAccessToken: "some-token", userID: "some-user" },
     })
@@ -350,20 +350,20 @@ describe("useWebViewCookies", () => {
     renderWithWrappers(<Wrapper />)
     expect(mockFetch).toHaveBeenCalledTimes(2)
 
-    waitFor(() => expect(mockFetch).toHaveBeenCalledTimes(4))
+    await waitFor(() => expect(mockFetch).toHaveBeenCalledTimes(4), { timeout: 2000 })
 
-    waitFor(() => expect(mockFetch).toHaveBeenCalledTimes(6))
+    await waitFor(() => expect(mockFetch).toHaveBeenCalledTimes(6), { timeout: 2000 })
 
-    waitFor(() => expect(mockFetch).toHaveBeenCalledTimes(8))
+    await waitFor(() => expect(mockFetch).toHaveBeenCalledTimes(8), { timeout: 2000 })
 
-    waitFor(() => expect(mockFetch).toHaveBeenCalledTimes(10))
+    await waitFor(() => expect(mockFetch).toHaveBeenCalledTimes(10), { timeout: 2000 })
 
     // it stops retrying when it unmounts
     screen.unmount()
 
-    waitFor(() => expect(mockFetch).toHaveBeenCalledTimes(10))
+    await waitFor(() => expect(mockFetch).toHaveBeenCalledTimes(10))
 
-    waitFor(() => expect(mockFetch).toHaveBeenCalledTimes(10))
+    await waitFor(() => expect(mockFetch).toHaveBeenCalledTimes(10))
   })
 })
 
