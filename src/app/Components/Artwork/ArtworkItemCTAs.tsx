@@ -80,7 +80,7 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
   const { handleFollowToggle } = useFollowArtist({
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     artist: artist!,
-    showToast: false,
+    showToast: true,
     contextModule,
     contextScreenOwnerType,
     ownerType: Schema.OwnerEntityTypes.Artwork,
@@ -91,7 +91,7 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
       <Join separator={<Spacer x={1} />}>
         {/* Save CTA */}
         {!!showSaveIcon && !!enableRedesignSaveCTA && (
-          <ArtworkCardCTAWrapper onPress={saveArtworkToLists} testID="save-artwork">
+          <ArtworkItemCTAsWrapper onPress={saveArtworkToLists} testID="save-artwork">
             {isSaved ? (
               <NewFillHeartIcon
                 testID="heart-icon-filled"
@@ -112,12 +112,12 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
                 {collectorSignals.auction.lotWatcherCount}
               </Text>
             )}
-          </ArtworkCardCTAWrapper>
+          </ArtworkItemCTAsWrapper>
         )}
 
         {/* Follow CTA */}
         {!!enableAddFollowCTA && (
-          <ArtworkCardCTAWrapper onPress={handleFollowToggle} testID="follow-artist">
+          <ArtworkItemCTAsWrapper onPress={handleFollowToggle} testID="follow-artist">
             {artist?.isFollowed ? (
               <FollowArtistFillIcon
                 testID="follow-icon-filled"
@@ -132,14 +132,14 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
                 width={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
               />
             )}
-          </ArtworkCardCTAWrapper>
+          </ArtworkItemCTAsWrapper>
         )}
       </Join>
     </Flex>
   )
 }
 
-const ArtworkCardCTAWrapper: React.FC<{ onPress?: () => void; testID: string }> = ({
+const ArtworkItemCTAsWrapper: React.FC<{ onPress?: () => void; testID: string }> = ({
   onPress,
   testID,
   children,
