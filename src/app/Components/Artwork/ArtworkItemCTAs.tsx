@@ -39,6 +39,10 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
 }) => {
   const { trackEvent } = useTracking()
   const enableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
+  const enableNewSaveAndFollowOnArtworkCard = useFeatureFlag(
+    "AREnableNewSaveAndFollowOnArtworkCard"
+  )
+
   const newSaveAndFollowOnArtworkCardExperiment = useExperimentVariant(
     "onyx_artwork-card-save-and-follow-cta-redesign"
   )
@@ -96,6 +100,10 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
     ownerType: Schema.OwnerEntityTypes.Artwork,
   })
 
+  if (!enableNewSaveAndFollowOnArtworkCard) {
+    return null
+  }
+
   const saveCTA = (
     <ArtworkItemCTAsWrapper onPress={saveArtworkToLists} testID="save-artwork">
       {isSaved ? (
@@ -151,7 +159,7 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
         </Join>
       </Flex>
     )
-  } else return <></>
+  } else return null
 }
 
 const ArtworkItemCTAsWrapper: React.FC<{ onPress?: () => void; testID: string }> = ({

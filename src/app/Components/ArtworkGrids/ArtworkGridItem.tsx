@@ -129,6 +129,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
   const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
   const enablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
+  const enableNewSaveAndFollowOnArtworkCard = useFeatureFlag(
+    "AREnableNewSaveAndFollowOnArtworkCard"
+  )
   const newSaveAndFollowOnArtworkCardExperiment = useExperimentVariant(
     "onyx_artwork-card-save-and-follow-cta-redesign"
   )
@@ -462,7 +465,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
                 )}
               </Flex>
               {!hideSaveIcon &&
-                (!!enableShowOldSaveCTA || !newSaveAndFollowOnArtworkCardExperiment.enabled) && (
+                (!enableNewSaveAndFollowOnArtworkCard ||
+                  !newSaveAndFollowOnArtworkCardExperiment.enabled ||
+                  !!enableShowOldSaveCTA) && (
                   <Flex flexDirection="row" alignItems="flex-start">
                     {!!displayAuctionSignal && !!collectorSignals?.auction?.lotWatcherCount && (
                       <Text lineHeight="18px" variant="xs" numberOfLines={1}>
@@ -479,9 +484,10 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   </Flex>
                 )}
 
-              {!!(enableNewSaveCTA || enableNewSaveAndFollowCTAs) && ( // variant a or c
-                <Spacer y={positionCTAs === "column" ? 0.5 : 0} />
-              )}
+              {!!enableNewSaveAndFollowOnArtworkCard &&
+                !!(enableNewSaveCTA || enableNewSaveAndFollowCTAs) && (
+                  <Spacer y={positionCTAs === "column" ? 0.5 : 0} />
+                )}
 
               <ArtworkItemCTAs
                 artwork={artwork}

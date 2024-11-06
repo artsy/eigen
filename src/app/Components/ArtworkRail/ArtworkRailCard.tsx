@@ -17,6 +17,7 @@ import {
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
+import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
 import { useState } from "react"
@@ -56,8 +57,19 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const enableArtworkRailRedesignImageAspectRatio = useFeatureFlag(
     "AREnableArtworkRailRedesignImageAspectRatio"
   )
-  const enableRedesignSaveCTA = useFeatureFlag("AREnableRedesignSaveCTA")
-  const enableAddFollowCTA = useFeatureFlag("AREnableAddFollowCTA")
+  const enableNewSaveAndFollowOnArtworkCard = useFeatureFlag(
+    "AREnableNewSaveAndFollowOnArtworkCard"
+  )
+  const newSaveAndFollowOnArtworkCardExperiment = useExperimentVariant(
+    "onyx_artwork-card-save-and-follow-cta-redesign"
+  )
+
+  const enableNewSaveCTA =
+    newSaveAndFollowOnArtworkCardExperiment.enabled &&
+    newSaveAndFollowOnArtworkCardExperiment.payload === "variant-b"
+  const enableNewSaveAndFollowCTAs =
+    newSaveAndFollowOnArtworkCardExperiment.enabled &&
+    newSaveAndFollowOnArtworkCardExperiment.payload === "variant-c"
 
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
 
@@ -70,7 +82,8 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   }
 
   // 36 = 20 (padding) + 16 (icon size) + 5 (top padding)
-  const likeAndFollowCTAPadding = enableRedesignSaveCTA || enableAddFollowCTA ? 41 : 0
+  const likeAndFollowCTAPadding =
+    enableNewSaveAndFollowOnArtworkCard && (enableNewSaveCTA || enableNewSaveAndFollowCTAs) ? 41 : 0
   const artworkRailCardMetaPadding = 10
   const artworkRailCardMetaDataHeight =
     ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + artworkRailCardMetaPadding + likeAndFollowCTAPadding // TODO: check height
@@ -137,7 +150,8 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                 backgroundColor={backgroundColor}
               />
 
-              <Spacer y={0.5} />
+              {!!enableNewSaveAndFollowOnArtworkCard &&
+                !!(enableNewSaveCTA || enableNewSaveAndFollowCTAs) && <Spacer y={0.5} />}
 
               <ArtworkItemCTAs
                 artwork={artwork}

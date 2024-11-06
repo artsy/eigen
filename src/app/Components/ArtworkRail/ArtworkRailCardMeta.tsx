@@ -61,6 +61,9 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
 }) => {
   const { trackEvent } = useTracking()
   const enableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
+  const enableNewSaveAndFollowOnArtworkCard = useFeatureFlag(
+    "AREnableNewSaveAndFollowOnArtworkCard"
+  )
   const newSaveAndFollowOnArtworkCardExperiment = useExperimentVariant(
     "onyx_artwork-card-save-and-follow-cta-redesign"
   )
@@ -207,7 +210,9 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
         )}
       </Flex>
       {!!showSaveIcon &&
-        (!!enableShowOldSaveCTA || !newSaveAndFollowOnArtworkCardExperiment.enabled) && (
+        (!enableNewSaveAndFollowOnArtworkCard ||
+          !newSaveAndFollowOnArtworkCardExperiment.enabled ||
+          !!enableShowOldSaveCTA) && (
           <Flex flexDirection="row" alignItems="flex-start">
             {!!displayAuctionSignal && !!collectorSignals?.auction?.lotWatcherCount && (
               <Text lineHeight="20px" variant="xs" numberOfLines={1}>

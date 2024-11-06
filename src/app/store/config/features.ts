@@ -293,17 +293,11 @@ export const features = {
     readyForRelease: false,
     showInDevMenu: true,
   },
-  AREnableRedesignSaveCTA: {
-    description: "Enable redesign Save CTA",
+  AREnableNewSaveAndFollowOnArtworkCard: {
+    description: "Redesign Save CTA and Add Follow CTA on Artwork Grid/Rail",
     readyForRelease: false,
     showInDevMenu: true,
-    /* echoFlagKey: "AREnableRedesignSaveCTA" */
-  },
-  AREnableAddFollowCTA: {
-    description: "Enable add Follow CTA",
-    readyForRelease: false,
-    showInDevMenu: true,
-    /* echoFlagKey: "AREnableAddFollowCTA" */
+    /* echoFlagKey: "AREnableNewSaveAndFollowOnArtworkCard" */
   },
   AREnablePaymentFailureBanner: {
     description: "Enable payment failure banner",

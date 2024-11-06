@@ -5,6 +5,7 @@ import { PriceOfferMessage } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { MasonryArtworkGridItem } from "app/Components/ArtworkGrids/MasonryArtworkGridItem"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
   ESTIMATED_MASONRY_ITEM_SIZE,
   MASONRY_LIST_PAGE_SIZE,
@@ -72,6 +73,9 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   const space = useSpace()
   const shouldDisplaySpinner = !!artworks.length && !!isLoading && !!hasMore
   const shouldDisplayHeader = !!artworks.length && ListHeaderComponent !== undefined
+  const enableNewSaveAndFollowOnArtworkCard = useFeatureFlag(
+    "AREnableNewSaveAndFollowOnArtworkCard"
+  )
 
   const newSaveAndFollowOnArtworkCardExperiment = useExperimentVariant(
     "onyx_artwork-card-save-and-follow-cta-redesign"
@@ -109,7 +113,13 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
         onPress={onPress}
         hideSaleInfo={hideSaleInfo}
         hideSaveIcon={hideSaveIcon}
-        positionCTAs={enableShowOldSaveCTA ? "row" : rest.numColumns !== 1 ? "column" : "row"}
+        positionCTAs={
+          enableShowOldSaveCTA || !enableNewSaveAndFollowOnArtworkCard
+            ? "row"
+            : rest.numColumns !== 1
+              ? "column"
+              : "row"
+        }
       />
     ),
     [rest.numColumns]
