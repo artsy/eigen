@@ -20,9 +20,25 @@ jest.unmock("app/NativeModules/LegacyNativeModules")
 const mockFetch = jest.fn()
 ;(global as any).fetch = mockFetch
 
+// Mocks for Facebook Login
+const mockJwtDecode = jwtDecode as jest.Mock
+const mockLogInWithPermissions = LoginManager.logInWithPermissions as jest.Mock
+const mockGetCurrentAccessToken = AccessToken.getCurrentAccessToken as jest.Mock
+const mockGetAuthenticationTokenIOS = AuthenticationToken.getAuthenticationTokenIOS as jest.Mock
+const mockGraphRequest = GraphRequest as jest.Mock
+
+// Mocks for Google Sign-In
+const mockHasPlayServices = GoogleSignin.hasPlayServices as jest.Mock
+const mockGoogleSignIn = GoogleSignin.signIn as jest.Mock
+const mockGoogleGetTokens = GoogleSignin.getTokens as jest.Mock
+
+// Mocks for Sign in with Apple
+const mockApplePerformRequest = appleAuth.performRequest as jest.Mock
+
 function mockFetchResponseOnce(response: Partial<Response>) {
   mockFetch.mockResolvedValueOnce(response)
 }
+
 function mockFetchJsonOnce(json: object, status = 200) {
   mockFetch.mockResolvedValueOnce({
     status,
@@ -351,17 +367,17 @@ describe("AuthModel", () => {
       })
       await GlobalStore.actions.auth.getXAppToken()
       mockFetch.mockClear()
-      ;(LoginManager.logInWithPermissions as jest.Mock).mockReturnValue({ isCancelled: false })
-      ;(AccessToken.getCurrentAccessToken as jest.Mock).mockReturnValue({
+      mockLogInWithPermissions.mockReturnValue({ isCancelled: false })
+      mockGetCurrentAccessToken.mockReturnValue({
         accessToken: "facebook-token",
       })
-      ;(GraphRequest as jest.Mock).mockImplementation((_route, _config, callback) => {
+      mockGraphRequest.mockImplementation((_route, _config, callback) => {
         callback(undefined, { email: "emailFromFacebook@email.com", name: "name from facebook" })
       })
     })
 
     it("throws an error when email permission was denied", async () => {
-      ;(LoginManager.logInWithPermissions as jest.Mock).mockReturnValue({
+      mockLogInWithPermissions.mockReturnValue({
         declinedPermissions: ["email"],
       })
 
@@ -383,14 +399,14 @@ describe("AuthModel", () => {
     describe("Limited login - iOS", () => {
       beforeEach(() => {
         Platform.OS = "ios"
-        ;(AuthenticationToken.getAuthenticationTokenIOS as jest.Mock).mockReturnValue({
+        mockGetAuthenticationTokenIOS.mockReturnValue({
           authenticationToken: "facebook-jwt",
         })
       })
 
       it("fetches jwt from facebook", async () => {
         GlobalStore.actions.auth.signUp = jest.fn(() => ({ success: true })) as any
-        ;(jwtDecode as unknown as jest.Mock).mockReturnValue({
+        mockJwtDecode.mockReturnValue({
           email: "test@example.com",
           name: "Test User",
         })
@@ -403,7 +419,7 @@ describe("AuthModel", () => {
       })
 
       it("throws an error if there is no email or name in the jwt", async () => {
-        ;(jwtDecode as unknown as jest.Mock).mockReturnValue({})
+        mockJwtDecode.mockReturnValue({})
 
         const result = await GlobalStore.actions.auth
           .authFacebook({ signInOrUp: "signUp", agreedToReceiveEmails: true })
@@ -418,7 +434,7 @@ describe("AuthModel", () => {
 
       it("parses profile info from facebook jwt and signs up", async () => {
         GlobalStore.actions.auth.signUp = jest.fn(() => ({ success: true })) as any
-        ;(jwtDecode as unknown as jest.Mock).mockReturnValue({
+        mockJwtDecode.mockReturnValue({
           email: "test@example.com",
           name: "Test User",
         })
@@ -455,7 +471,7 @@ describe("AuthModel", () => {
         mockFetchJsonOnce({ access_token: "x-access-token" }, 201)
         mockFetchJsonOnce({ email: "emailFromArtsy@mail.com" })
         GlobalStore.actions.auth.signIn = jest.fn(() => ({ success: true })) as any
-        ;(jwtDecode as unknown as jest.Mock).mockReturnValue({
+        mockJwtDecode.mockReturnValue({
           email: "test@example.com",
           name: "Test User",
         })
@@ -506,7 +522,7 @@ describe("AuthModel", () => {
       })
 
       it("throws an error if user doesn't have an email", async () => {
-        ;(GraphRequest as jest.Mock).mockImplementation((_route, _config, callback) => {
+        mockGraphRequest.mockImplementation((_route, _config, callback) => {
           callback(undefined, { name: "name from facebook" })
         })
 
@@ -533,7 +549,7 @@ describe("AuthModel", () => {
       it("throws an error if fetching data from facebook fails", async () => {
         const error: any = "fetching fb data error"
 
-        ;(GraphRequest as jest.Mock).mockImplementation((_route, _config, callback) => {
+        mockGraphRequest.mockImplementation((_route, _config, callback) => {
           callback(error, undefined)
         })
 
@@ -629,17 +645,17 @@ describe("AuthModel", () => {
       })
       await GlobalStore.actions.auth.getXAppToken()
       mockFetch.mockClear()
-      ;(LoginManager.logInWithPermissions as jest.Mock).mockReturnValue({ isCancelled: false })
-      ;(AccessToken.getCurrentAccessToken as jest.Mock).mockReturnValue({
+      mockLogInWithPermissions.mockReturnValue({ isCancelled: false })
+      mockGetCurrentAccessToken.mockReturnValue({
         accessToken: "facebook-token",
       })
-      ;(GraphRequest as jest.Mock).mockImplementation((_route, _config, callback) => {
+      mockGraphRequest.mockImplementation((_route, _config, callback) => {
         callback(undefined, { email: "emailFromFacebook@email.com", name: "name from facebook" })
       })
     })
 
     it("throws an error when email permission was denied", async () => {
-      ;(LoginManager.logInWithPermissions as jest.Mock).mockReturnValue({
+      mockLogInWithPermissions.mockReturnValue({
         declinedPermissions: ["email"],
       })
 
@@ -659,14 +675,14 @@ describe("AuthModel", () => {
     describe("Limited login - iOS", () => {
       beforeEach(() => {
         Platform.OS = "ios"
-        ;(AuthenticationToken.getAuthenticationTokenIOS as jest.Mock).mockReturnValue({
+        mockGetAuthenticationTokenIOS.mockReturnValue({
           authenticationToken: "facebook-jwt",
         })
       })
 
       it("fetches jwt from facebook", async () => {
         GlobalStore.actions.auth.signUp = jest.fn(() => ({ success: true })) as any
-        ;(jwtDecode as unknown as jest.Mock).mockReturnValue({
+        mockJwtDecode.mockReturnValue({
           email: "test@example.com",
           name: "Test User",
         })
@@ -676,7 +692,7 @@ describe("AuthModel", () => {
       })
 
       it("throws an error if there is no email or name in the jwt", async () => {
-        ;(jwtDecode as unknown as jest.Mock).mockReturnValue({})
+        mockJwtDecode.mockReturnValue({})
 
         const result = await GlobalStore.actions.auth.authFacebook2().catch((e) => e)
 
@@ -689,7 +705,7 @@ describe("AuthModel", () => {
 
       it("parses profile info from facebook jwt and signs up", async () => {
         GlobalStore.actions.auth.signUp = jest.fn(() => ({ success: true })) as any
-        ;(jwtDecode as unknown as jest.Mock).mockReturnValue({
+        mockJwtDecode.mockReturnValue({
           email: "test@example.com",
           name: "Test User",
         })
@@ -711,7 +727,7 @@ describe("AuthModel", () => {
         mockFetchJsonOnce({ email: "emailFromArtsy@mail.com" })
 
         GlobalStore.actions.auth.signIn = jest.fn(() => ({ success: true })) as any
-        ;(jwtDecode as unknown as jest.Mock).mockReturnValue({
+        mockJwtDecode.mockReturnValue({
           email: "test@example.com",
           name: "Test User",
         })
@@ -752,7 +768,7 @@ describe("AuthModel", () => {
         mockFetchJsonOnce({ email: "emailFromArtsy@mail.com" })
         mockFetchJsonOnce({ access_token: "x-access-token" }, 201)
         mockFetchJsonOnce({ id: "my-user-id" })
-        ;(jwtDecode as unknown as jest.Mock).mockReturnValue({
+        mockJwtDecode.mockReturnValue({
           email: "test@example.com",
           name: "Test User",
         })
@@ -795,7 +811,7 @@ describe("AuthModel", () => {
       })
 
       it("throws an error if user doesn't have an email", async () => {
-        ;(GraphRequest as jest.Mock).mockImplementation((_route, _config, callback) => {
+        mockGraphRequest.mockImplementation((_route, _config, callback) => {
           callback(undefined, { name: "name from facebook" })
         })
 
@@ -817,7 +833,7 @@ describe("AuthModel", () => {
       it("throws an error if fetching data from facebook fails", async () => {
         const error: any = "fetching fb data error"
 
-        ;(GraphRequest as jest.Mock).mockImplementation((_route, _config, callback) => {
+        mockGraphRequest.mockImplementation((_route, _config, callback) => {
           callback(error, undefined)
         })
 
@@ -857,7 +873,7 @@ describe("AuthModel", () => {
         mockFetchJsonOnce({ email: "emailFromArtsy@mail.com" })
 
         GlobalStore.actions.auth.signIn = jest.fn(() => true) as any
-        ;(jwtDecode as unknown as jest.Mock).mockReturnValue({
+        mockJwtDecode.mockReturnValue({
           email: "test@example.com",
           name: "Test User",
         })
@@ -898,7 +914,7 @@ describe("AuthModel", () => {
         mockFetchJsonOnce({ email: "emailFromArtsy@mail.com" })
         mockFetchJsonOnce({ access_token: "x-access-token" }, 201)
         mockFetchJsonOnce({ id: "my-user-id" })
-        ;(jwtDecode as unknown as jest.Mock).mockReturnValue({
+        mockJwtDecode.mockReturnValue({
           email: "test@example.com",
           name: "Test User",
         })
@@ -944,15 +960,15 @@ describe("AuthModel", () => {
       })
       await GlobalStore.actions.auth.getXAppToken()
       mockFetch.mockClear()
-      ;(GoogleSignin.hasPlayServices as jest.Mock).mockReturnValue(true)
-      ;(GoogleSignin.signIn as jest.Mock).mockReturnValue({
+      mockHasPlayServices.mockReturnValue(true)
+      mockGoogleSignIn.mockReturnValue({
         user: { email: "googleEmail@gmail.com", name: "name from google" },
       })
-      ;(GoogleSignin.getTokens as jest.Mock).mockReturnValue({ accessToken: "google-token" })
+      mockGoogleGetTokens.mockReturnValue({ accessToken: "google-token" })
     })
 
     it("throws an error if google play services are not available", async () => {
-      ;(GoogleSignin.hasPlayServices as jest.Mock).mockReturnValue(false)
+      mockHasPlayServices.mockReturnValue(false)
 
       const result = await GlobalStore.actions.auth
         .authGoogle({ signInOrUp: "signUp", agreedToReceiveEmails: true })
@@ -1045,15 +1061,15 @@ describe("AuthModel", () => {
       })
       await GlobalStore.actions.auth.getXAppToken()
       mockFetch.mockClear()
-      ;(GoogleSignin.hasPlayServices as jest.Mock).mockReturnValue(true)
-      ;(GoogleSignin.signIn as jest.Mock).mockReturnValue({
+      mockHasPlayServices.mockReturnValue(true)
+      mockGoogleSignIn.mockReturnValue({
         user: { email: "googleEmail@gmail.com", name: "name from google" },
       })
-      ;(GoogleSignin.getTokens as jest.Mock).mockReturnValue({ accessToken: "google-token" })
+      mockGoogleGetTokens.mockReturnValue({ accessToken: "google-token" })
     })
 
     it("throws an error if google play services are not available", async () => {
-      ;(GoogleSignin.hasPlayServices as jest.Mock).mockReturnValue(false)
+      mockHasPlayServices.mockReturnValue(false)
 
       const result = await GlobalStore.actions.auth.authGoogle2().catch((e) => e)
       const expectedError = new AuthError("Play services are not available.")
@@ -1169,7 +1185,7 @@ describe("AuthModel", () => {
       })
       await GlobalStore.actions.auth.getXAppToken()
       mockFetch.mockClear()
-      ;(appleAuth.performRequest as jest.Mock).mockResolvedValue({
+      mockApplePerformRequest.mockResolvedValue({
         email: "appleEmail@mail.com",
         identityToken: "apple-id-token",
         user: "appleUID",
@@ -1178,7 +1194,7 @@ describe("AuthModel", () => {
 
     it("fetches profile info from apple and signs up", async () => {
       GlobalStore.actions.auth.signUp = jest.fn(() => ({ success: true })) as any
-      ;(appleAuth.performRequest as jest.Mock).mockResolvedValue({
+      mockApplePerformRequest.mockResolvedValue({
         identityToken: "apple-id-token",
         user: "appleUID",
         email: "appleEmail@mail.com",
