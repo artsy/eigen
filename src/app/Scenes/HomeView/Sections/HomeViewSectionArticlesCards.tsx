@@ -141,7 +141,7 @@ const fragment = graphql`
 const HomeViewSectionArticlesCardsPlaceholder: React.FC<FlexProps> = (flexProps) => {
   return (
     <Skeleton>
-      <Flex {...flexProps}>
+      <Flex {...flexProps} testID="HomeViewSectionArticlesCardsPlaceholder">
         <Flex mx={2} p={2} border="1px solid" borderColor="black30" gap={2}>
           <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
             <SkeletonText variant="lg-display">title</SkeletonText>

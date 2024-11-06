@@ -127,7 +127,7 @@ const HomeViewSectionCardsChipsPlaceholder: React.FC = () => {
 
   return (
     <Skeleton>
-      <Flex py={2}>
+      <Flex py={2} testID="HomeViewSectionCardsChipsPlaceholder">
         <Flex px={2}>
           <SectionTitle title="Discover Something New" />
         </Flex>
