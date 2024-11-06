@@ -100,15 +100,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
           <Button
             block
             variant="fillGray"
-            onPress={
-              isViewOffer
-                ? () =>
-                    navigate(`/orders/${order.internalID}`, {
-                      modal: true,
-                      passProps: { orderID: order.internalID, title: "Make Offer" },
-                    })
-                : () => navigate(`/user/purchases/${order.internalID}`)
-            }
+            onPress={() => navigate(`/orders/${order.internalID}`)}
             testID="view-order-button"
           >
             {isViewOffer ? "View Offer" : "View Order"}
