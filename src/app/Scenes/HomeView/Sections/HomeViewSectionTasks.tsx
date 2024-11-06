@@ -9,9 +9,11 @@ import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { AnimatePresence, MotiView } from "moti"
 import { useEffect, useRef, useState } from "react"
-import { InteractionManager, LayoutAnimation } from "react-native"
+import { InteractionManager } from "react-native"
 import { SwipeableMethods } from "react-native-gesture-handler/ReanimatedSwipeable"
+import { Easing } from "react-native-reanimated"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionTasksProps extends FlexProps {
@@ -61,31 +63,39 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
     }
   }, [shouldStartOnboardingAnimation])
 
-  if (!task || !displayTask) {
+  if (!task) {
     return null
   }
 
   const handleClearTask = () => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-
     setDisplayTask(false)
   }
 
   return (
-    <Flex {...flexProps}>
-      <Flex mx={2}>
-        <SectionTitle title={section.component?.title} />
-      </Flex>
+    <AnimatePresence>
+      {!!displayTask && (
+        <MotiView
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          exitTransition={{ type: "timing", easing: Easing.inOut(Easing.ease) }}
+        >
+          <Flex {...flexProps}>
+            <Flex mx={2}>
+              <SectionTitle title={section.component?.title} />
+            </Flex>
 
-      <Flex mr={2} onLayout={() => setIsReady(true)}>
-        <Task ref={swipeableRef} task={task} onClearTask={handleClearTask} />
-      </Flex>
+            <Flex mr={2} onLayout={() => setIsReady(true)}>
+              <Task ref={swipeableRef} task={task} onClearTask={handleClearTask} />
+            </Flex>
 
-      <HomeViewSectionSentinel
-        contextModule={section.contextModule as ContextModule}
-        index={index}
-      />
-    </Flex>
+            <HomeViewSectionSentinel
+              contextModule={section.contextModule as ContextModule}
+              index={index}
+            />
+          </Flex>
+        </MotiView>
+      )}
+    </AnimatePresence>
   )
 }
 
