@@ -17,6 +17,7 @@ import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
 import { searchQueryDefaultVariables } from "app/Scenes/Search/Search"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
+import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
@@ -127,6 +128,12 @@ export const HomeView: React.FC = () => {
       },
     })
   }
+
+  const { trackExperiment } = useExperimentVariant("onyx_artwork-card-save-and-follow-cta-redesign")
+
+  useEffect(() => {
+    trackExperiment()
+  }, [])
 
   return (
     <Screen safeArea={true}>
