@@ -13,6 +13,7 @@ import { ArtworkItemCTAs_artwork$key } from "__generated__/ArtworkItemCTAs_artwo
 import { useFollowArtist } from "app/Components/Artist/useFollowArtist"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ARTWORK_RAIL_CARD_CTA_ICON_SIZE } from "app/Components/constants"
+import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import {
@@ -38,8 +39,17 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
 }) => {
   const { trackEvent } = useTracking()
   const enableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
-  const enableRedesignSaveCTA = useFeatureFlag("AREnableRedesignSaveCTA")
-  const enableAddFollowCTA = useFeatureFlag("AREnableAddFollowCTA")
+  const newSaveAndFollowOnArtworkCardExperiment = useExperimentVariant(
+    "onyx_artwork-card-save-and-follow-cta-redesign"
+  )
+
+  const enableNewSaveCTA =
+    newSaveAndFollowOnArtworkCardExperiment.enabled &&
+    newSaveAndFollowOnArtworkCardExperiment.payload === "variant-b"
+  const enableNewSaveAndFollowCTAs =
+    newSaveAndFollowOnArtworkCardExperiment.enabled &&
+    newSaveAndFollowOnArtworkCardExperiment.payload === "variant-c"
+
   const artwork = useFragment(artworkFragment, artworkProp)
 
   const {
@@ -86,57 +96,62 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
     ownerType: Schema.OwnerEntityTypes.Artwork,
   })
 
-  return (
-    <Flex flexDirection="row">
-      <Join separator={<Spacer x={1} />}>
-        {/* Save CTA */}
-        {!!showSaveIcon && !!enableRedesignSaveCTA && (
-          <ArtworkItemCTAsWrapper onPress={saveArtworkToLists} testID="save-artwork">
-            {isSaved ? (
-              <NewFillHeartIcon
-                testID="heart-icon-filled"
-                height={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
-                width={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
-                fill="black100"
-              />
-            ) : (
-              <NewHeartIcon
-                testID="heart-icon-empty"
-                height={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
-                width={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
-              />
-            )}
+  const saveCTA = (
+    <ArtworkItemCTAsWrapper onPress={saveArtworkToLists} testID="save-artwork">
+      {isSaved ? (
+        <NewFillHeartIcon
+          testID="heart-icon-filled"
+          height={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
+          width={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
+          fill="black100"
+        />
+      ) : (
+        <NewHeartIcon
+          testID="heart-icon-empty"
+          height={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
+          width={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
+        />
+      )}
 
-            {!!displayAuctionSignal && !!collectorSignals?.auction?.lotWatcherCount && (
-              <Text pl={0.5} variant="xxs" numberOfLines={1} textAlign="center">
-                {collectorSignals.auction.lotWatcherCount}
-              </Text>
-            )}
-          </ArtworkItemCTAsWrapper>
-        )}
-
-        {/* Follow CTA */}
-        {!!enableAddFollowCTA && (
-          <ArtworkItemCTAsWrapper onPress={handleFollowToggle} testID="follow-artist">
-            {artist?.isFollowed ? (
-              <FollowArtistFillIcon
-                testID="follow-icon-filled"
-                height={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
-                width={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
-                fill="black100"
-              />
-            ) : (
-              <FollowArtistIcon
-                testID="follow-icon-empty"
-                height={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
-                width={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
-              />
-            )}
-          </ArtworkItemCTAsWrapper>
-        )}
-      </Join>
-    </Flex>
+      {!!displayAuctionSignal && !!collectorSignals?.auction?.lotWatcherCount && (
+        <Text pl={0.5} variant="xxs" numberOfLines={1} textAlign="center">
+          {collectorSignals.auction.lotWatcherCount}
+        </Text>
+      )}
+    </ArtworkItemCTAsWrapper>
   )
+
+  const followCTA = (
+    <ArtworkItemCTAsWrapper onPress={handleFollowToggle} testID="follow-artist">
+      {artist?.isFollowed ? (
+        <FollowArtistFillIcon
+          testID="follow-icon-filled"
+          height={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
+          width={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
+          fill="black100"
+        />
+      ) : (
+        <FollowArtistIcon
+          testID="follow-icon-empty"
+          height={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
+          width={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
+        />
+      )}
+    </ArtworkItemCTAsWrapper>
+  )
+
+  if (enableNewSaveCTA && showSaveIcon) {
+    return saveCTA
+  } else if (enableNewSaveAndFollowCTAs) {
+    return (
+      <Flex flexDirection="row">
+        <Join separator={<Spacer x={1} />}>
+          {!!showSaveIcon && saveCTA}
+          {followCTA}
+        </Join>
+      </Flex>
+    )
+  } else return <></>
 }
 
 const ArtworkItemCTAsWrapper: React.FC<{ onPress?: () => void; testID: string }> = ({
@@ -152,6 +167,7 @@ const ArtworkItemCTAsWrapper: React.FC<{ onPress?: () => void; testID: string }>
       style={{
         bottom: 0,
         left: 0,
+        alignItems: "flex-start",
       }}
     >
       <Flex

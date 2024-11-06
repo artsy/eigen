@@ -32,6 +32,7 @@ import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreated
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
+import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { getArtworkSignalTrackingFields } from "app/utils/getArtworkSignalTrackingFields"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { getTimer } from "app/utils/getTimer"
@@ -128,8 +129,19 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
   const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
   const enablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
-  const enableRedesignSaveCTA = useFeatureFlag("AREnableRedesignSaveCTA")
-  const enableAddFollowCTA = useFeatureFlag("AREnableAddFollowCTA")
+  const newSaveAndFollowOnArtworkCardExperiment = useExperimentVariant(
+    "onyx_artwork-card-save-and-follow-cta-redesign"
+  )
+
+  const enableShowOldSaveCTA =
+    newSaveAndFollowOnArtworkCardExperiment.enabled &&
+    newSaveAndFollowOnArtworkCardExperiment.payload === "variant-a"
+  const enableNewSaveCTA =
+    newSaveAndFollowOnArtworkCardExperiment.enabled &&
+    newSaveAndFollowOnArtworkCardExperiment.payload === "variant-b"
+  const enableNewSaveAndFollowCTAs =
+    newSaveAndFollowOnArtworkCardExperiment.enabled &&
+    newSaveAndFollowOnArtworkCardExperiment.payload === "variant-c"
 
   let filterParams: any = undefined
 
@@ -449,24 +461,25 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   />
                 )}
               </Flex>
-              {!hideSaveIcon && !enableRedesignSaveCTA && (
-                <Flex flexDirection="row" alignItems="flex-start">
-                  {!!displayAuctionSignal && !!collectorSignals?.auction?.lotWatcherCount && (
-                    <Text lineHeight="18px" variant="xs" numberOfLines={1}>
-                      {collectorSignals.auction.lotWatcherCount}
-                    </Text>
-                  )}
-                  <Touchable
-                    haptic
-                    onPress={disableArtworksListPrompt ? handleArtworkSave : saveArtworkToLists}
-                    testID="save-artwork-icon"
-                  >
-                    <ArtworkHeartIcon isSaved={!!isSaved} index={itemIndex} />
-                  </Touchable>
-                </Flex>
-              )}
+              {!hideSaveIcon &&
+                (!!enableShowOldSaveCTA || !newSaveAndFollowOnArtworkCardExperiment.enabled) && (
+                  <Flex flexDirection="row" alignItems="flex-start">
+                    {!!displayAuctionSignal && !!collectorSignals?.auction?.lotWatcherCount && (
+                      <Text lineHeight="18px" variant="xs" numberOfLines={1}>
+                        {collectorSignals.auction.lotWatcherCount}
+                      </Text>
+                    )}
+                    <Touchable
+                      haptic
+                      onPress={disableArtworksListPrompt ? handleArtworkSave : saveArtworkToLists}
+                      testID="save-artwork-icon"
+                    >
+                      <ArtworkHeartIcon isSaved={!!isSaved} index={itemIndex} />
+                    </Touchable>
+                  </Flex>
+                )}
 
-              {!!(enableAddFollowCTA || enableRedesignSaveCTA) && (
+              {!!(enableNewSaveCTA || enableNewSaveAndFollowCTAs) && ( // variant a or c
                 <Spacer y={positionCTAs === "column" ? 0.5 : 0} />
               )}
 

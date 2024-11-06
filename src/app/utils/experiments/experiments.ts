@@ -21,6 +21,12 @@ export const experiments = {
     fallbackEnabled: false,
     description: "Allow tracking impression for home screen rails",
   },
+  "onyx_artwork-card-save-and-follow-cta-redesign": {
+    fallbackEnabled: true,
+    fallbackVariant: "variant-a",
+    description: "Redesign Save CTA and Add Follow CTA on Artwork Grid/Rail",
+    payloadSuggestions: ["variant-a", "variant-b", "variant-c"],
+  },
 } satisfies { [key: string]: ExperimentDescriptor }
 
 export type EXPERIMENT_NAME = keyof typeof experiments
