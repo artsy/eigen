@@ -240,7 +240,7 @@ describe("ArtsyWebViewPage", () => {
       const view = render()
       webViewProps(view).onNavigationStateChange?.({
         ...mockOnNavigationStateChange,
-        url: "https://staging.artsy.net/orders/order-id/status",
+        url: "https://staging.artsy.net/orders/order-id",
       })
       expect(navigate).not.toHaveBeenCalled()
     })
@@ -282,7 +282,7 @@ describe("ArtsyWebViewPage", () => {
 
         webViewProps(view).onNavigationStateChange?.({
           ...mockOnNavigationStateChange,
-          url: "https://staging.artsy.net/orders/foo/status",
+          url: "https://staging.artsy.net/orders/foo",
         })
 
         expect(mockGoBack).not.toHaveBeenCalled()
