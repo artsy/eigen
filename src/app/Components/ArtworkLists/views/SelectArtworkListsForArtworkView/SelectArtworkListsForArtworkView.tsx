@@ -19,6 +19,7 @@ export const SelectArtworkListsForArtworkView = () => {
       visible
       name={ArtworkListsViewName.SelectArtworkListsForArtwork}
       snapPoints={SNAP_POINTS}
+      enableDynamicSizing={false}
       onDismiss={reset}
       footerComponent={SelectArtworkListStickyBottomContent}
     >

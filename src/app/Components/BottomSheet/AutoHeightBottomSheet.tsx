@@ -11,8 +11,7 @@ export const AutoHeightBottomSheet: React.FC<AutoHeightBottomSheetProps> = ({
   ...rest
 }) => {
   return (
-    // TODO: make snapPoints work with new implementation
-    <AutomountedBottomSheetModal snapPoints={["CONTENT_HEIGHT"]} enableDynamicSizing {...rest}>
+    <AutomountedBottomSheetModal enableDynamicSizing {...rest}>
       <BottomSheetView>{children}</BottomSheetView>
     </AutomountedBottomSheetModal>
   )

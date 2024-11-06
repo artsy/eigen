@@ -30,7 +30,6 @@ export const AlertBottomSheet: React.FC<AlertBottomSheetProps> = ({
 
   return (
     <AutomountedBottomSheetModal
-      // TODO: make snapPoints work with new implementation
       enableDynamicSizing
       visible
       name="AlertBottomSheet"
