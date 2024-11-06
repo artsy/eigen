@@ -320,7 +320,10 @@ describe("OrderHistoryRow", () => {
 
       fireEvent.press(button)
 
-      expect(navigate).toHaveBeenCalledWith("/orders/internal-id")
+      expect(navigate).toHaveBeenCalledWith("/orders/internal-id", {
+        modal: true,
+        passProps: { orderID: "internal-id", title: "Make Offer" },
+      })
     })
 
     it("navigates to the purchase summary when the order has a processing offer", () => {
@@ -335,7 +338,7 @@ describe("OrderHistoryRow", () => {
 
       const button = screen.getByTestId("view-order-button")
       fireEvent.press(button)
-      expect(navigate).toHaveBeenCalledWith("/orders/internal-id")
+      expect(navigate).toHaveBeenCalledWith("/user/purchases/internal-id")
     })
   })
 })
