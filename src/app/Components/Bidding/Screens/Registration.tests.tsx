@@ -253,11 +253,11 @@ describe("when pressing register button", () => {
     const conditionsOfSaleLink = await root.findByType(LinkText)
     const conditionsOfSaleCheckbox = await root.findByType(Checkbox)
 
-    yourMaxBidRow.instance.props.onPress()
+    fireEvent(yourMaxBidRow, "onPress")
 
     expect(navigator.push).not.toHaveBeenCalled()
 
-    creditCardRow.instance.props.onPress()
+    fireEvent(creditCardRow, "onPress")
 
     expect(navigator.push).not.toHaveBeenCalled()
 
