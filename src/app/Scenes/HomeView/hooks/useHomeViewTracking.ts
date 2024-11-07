@@ -14,14 +14,14 @@ import {
   TappedAuctionResultGroup,
   TappedCardGroup,
   TappedChangePaymentMethod,
-  TappedClearNotification,
+  TappedClearTask,
   TappedCollectionGroup,
   TappedFairGroup,
   TappedHeroUnitGroup,
-  TappedNotification,
   TappedNotificationsBell,
   TappedShowGroup,
   TappedShowMore,
+  TappedTaskGroup,
   TappedViewingRoomGroup,
 } from "@artsy/cohesion"
 import { PaymentFailureBanner_Fragment$data } from "__generated__/PaymentFailureBanner_Fragment.graphql"
@@ -305,19 +305,19 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
-    tappedClearNotification: (
+    tappedClearTask: (
       contextModule: ContextModule,
       destinationPath: string,
-      notificationID: string,
-      notificationCategory: string
+      taskID: string,
+      taskType: string
     ) => {
-      const payload: TappedClearNotification = {
-        action: ActionType.tappedClearNotification,
+      const payload: TappedClearTask = {
+        action: ActionType.tappedClearTask,
         context_module: contextModule,
         context_screen_owner_type: OwnerType.home,
         destination_path: destinationPath,
-        notification_id: notificationID,
-        notification_category: notificationCategory,
+        task_id: taskID,
+        task_type: taskType,
       }
 
       trackEvent(payload)
@@ -408,19 +408,20 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
-    tappedNotification: (
+    tappedTaskGroup: (
       contextModule: ContextModule,
       destinationPath: string,
-      notificationID: string,
-      notificationCategory: string
+      taskID: string,
+      taskType: string
     ) => {
-      const payload: TappedNotification = {
-        action: ActionType.tappedNotification,
+      const payload: TappedTaskGroup = {
+        action: ActionType.tappedTaskGroup,
         context_module: contextModule,
         context_screen_owner_type: OwnerType.home,
         destination_path: destinationPath,
-        notification_id: notificationID,
-        notification_category: notificationCategory,
+        task_id: taskID,
+        task_type: taskType,
+        type: "thumbnail",
       }
 
       trackEvent(payload)
