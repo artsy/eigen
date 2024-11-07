@@ -66,12 +66,13 @@ describe("HomeViewSectionTasks", () => {
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
       [
         {
-          "action": "tappedNotification",
+          "action": "tappedTaskGroup",
           "context_module": "actNow",
           "context_screen_owner_type": "home",
           "destination_path": "/test-link",
-          "notification_category": "send_wire",
-          "notification_id": "one",
+          "task_id": "one",
+          "task_type": "send_wire",
+          "type": "thumbnail",
         },
       ]
     `)
@@ -97,12 +98,12 @@ describe("HomeViewSectionTasks", () => {
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
       [
         {
-          "action": "tappedClearNotification",
+          "action": "tappedClearTask",
           "context_module": "actNow",
           "context_screen_owner_type": "home",
           "destination_path": "/test-link",
-          "notification_category": "send_wire",
-          "notification_id": "one",
+          "task_id": "one",
+          "task_type": "send_wire",
         },
       ]
     `)

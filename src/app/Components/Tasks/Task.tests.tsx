@@ -51,12 +51,12 @@ describe("Task Component", () => {
     expect(mockClearTask).toHaveBeenCalled()
     expect(mockDissmissTask).toHaveBeenCalled()
     expect(mockTrackEvent).toHaveBeenCalledWith({
-      action: "tappedClearNotification",
+      action: "tappedClearTask",
       context_module: "actNow",
       context_screen_owner_type: "home",
       destination_path: "www.test.com",
-      notification_category: "send_wire",
-      notification_id: "one",
+      task_id: "one",
+      task_type: "send_wire",
     })
   })
 
@@ -68,12 +68,13 @@ describe("Task Component", () => {
     expect(mockAcknowledgeTask).toHaveBeenCalled()
     expect(mockClearTask).toHaveBeenCalled()
     expect(mockTrackEvent).toHaveBeenCalledWith({
-      action: "tappedNotification",
+      action: "tappedTaskGroup",
       context_module: "actNow",
       context_screen_owner_type: "home",
       destination_path: "www.test.com",
-      notification_category: "send_wire",
-      notification_id: "one",
+      task_id: "one",
+      task_type: "send_wire",
+      type: "thumbnail",
     })
   })
 })
