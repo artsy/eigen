@@ -2,7 +2,7 @@ import { ContextModule } from "@artsy/cohesion"
 import { Flex, Image, Text, Touchable } from "@artsy/palette-mobile"
 import { Task_task$key } from "__generated__/Task_task.graphql"
 import { Swipeable } from "app/Components/Swipeable/Swipeable"
-import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
+import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { useAcknowledgeTask } from "app/utils/mutations/useAcknowledgeTask"
 import { useDismissTask } from "app/utils/mutations/useDismissTask"
@@ -21,7 +21,7 @@ interface TaskProps {
 }
 export const Task = forwardRef<SwipeableMethods, TaskProps>(
   ({ disableSwipeable, onClearTask, onPress, ...restProps }, ref) => {
-    const { tappedNotification, tappedClearNotification } = useHomeViewTracking()
+    const { tappedTaskGroup, tappedClearTask } = useHomeViewTracking()
     const { submitMutation: dismissTask } = useDismissTask()
     const { submitMutation: acknowledgeTask } = useAcknowledgeTask()
     const fontScale = PixelRatio.getFontScale()
@@ -35,7 +35,7 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
       }
 
       acknowledgeTask({ variables: { taskID: task.internalID } })
-      tappedNotification(ContextModule.actNow, task.actionLink, task.internalID, task.taskType)
+      tappedTaskGroup(ContextModule.actNow, task.actionLink, task.internalID, task.taskType)
       onClearTask()
 
       navigate(task.actionLink)
@@ -43,7 +43,7 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
 
     const handleClearTask = async () => {
       dismissTask({ variables: { taskID: task.internalID } })
-      tappedClearNotification(ContextModule.actNow, task.actionLink, task.internalID, task.taskType)
+      tappedClearTask(ContextModule.actNow, task.actionLink, task.internalID, task.taskType)
       onClearTask()
     }
 

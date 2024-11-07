@@ -1,8 +1,8 @@
-import { Flex, Box, Text } from "@artsy/palette-mobile"
+import { Flex, Box, Text, Image } from "@artsy/palette-mobile"
 import { ArtworkInfoSection_artwork$data } from "__generated__/ArtworkInfoSection_artwork.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { extractNodes } from "app/utils/extractNodes"
-import { Image } from "react-native"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
@@ -10,7 +10,9 @@ interface Props {
 }
 
 export const ArtworkInfoSection: React.FC<Props> = ({ artwork }) => {
+  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
   const artworkItem = extractNodes(artwork.lineItems)[0].artwork
+
   if (!artworkItem) {
     return (
       <Text variant="sm" color="black60">
@@ -25,14 +27,18 @@ export const ArtworkInfoSection: React.FC<Props> = ({ artwork }) => {
   return (
     <Flex flexDirection="row" justifyContent="space-between">
       {!!image?.url ? (
-        <Image
-          resizeMode="contain"
-          source={{ uri: image.url }}
-          style={{ height: 60, width: 60, marginHorizontal: 22 }}
-          testID="image"
-        />
+        <Box px={2}>
+          <Image
+            resizeMode="cover"
+            src={image.url}
+            width={60}
+            height={60}
+            blurhash={showBlurhash ? image.blurhash : undefined}
+            testID="image"
+          />
+        </Box>
       ) : (
-        <Box width={60} height={60} mx="22px" backgroundColor="black10" />
+        <Box width={60} height={60} mx={2} />
       )}
       <Box style={{ flex: 1, flexShrink: 1 }}>
         <Text pb={1} variant="sm" testID="artistNames">
@@ -82,7 +88,8 @@ export const ArtworkInfoSectionFragmentContainer = createFragmentContainer(Artwo
               }
               date
               image {
-                url(version: "square60")
+                url(version: "square")
+                blurhash
               }
               title
               artistNames

@@ -40,9 +40,24 @@ export const showError = (
   }
 }
 
-export const showBlockedAuthError = (mode: "sign in" | "sign up") => {
-  const messagePrefix = mode === "sign in" ? "Sign in" : "Sign up"
-  const innerMessage = mode === "sign in" ? "signing in" : "signing up"
+export const showBlockedAuthError = (mode: "sign in" | "sign up" | "social sign in") => {
+  let messagePrefix: string, innerMessage: string
+
+  switch (mode) {
+    case "sign in":
+      messagePrefix = "Sign in"
+      innerMessage = "signing in"
+      break
+    case "sign up":
+      messagePrefix = "Sign up"
+      innerMessage = "signing up"
+      break
+    case "social sign in":
+      messagePrefix = "Social sign in"
+      innerMessage = "signing in"
+      break
+  }
+
   Alert.alert(
     messagePrefix + " attempt blocked",
     "Please try " +
@@ -372,6 +387,136 @@ export async function handleClassicFacebookAuth(
   }
 }
 
+// TODO: replace handleClassicFacebookAuth once we are sure that handleClassicFacebookAuth2 is working fine
+export async function handleClassicFacebookAuth2(
+  actions: Actions<AuthModel>,
+  isCancelled: boolean,
+  clientId: string,
+  clientSecret: string,
+  resolve: (value: AuthPromiseResolveType | PromiseLike<AuthPromiseResolveType>) => void,
+  reject: (reason?: any) => void
+) {
+  try {
+    const accessToken = !isCancelled && (await AccessToken.getCurrentAccessToken())
+
+    if (!accessToken) {
+      reject(new AuthError("Could not log in"))
+      return
+    }
+
+    const responseFacebookInfoCallback = async (error: any | null, result: any | null) => {
+      if (error) {
+        reject(new AuthError("Error fetching Facebook data", error))
+        return
+      }
+
+      if (!result || !result.email) {
+        reject(
+          new AuthError(
+            "There is no email associated with your Facebook account. Please log in using your email and password instead."
+          )
+        )
+        return
+      }
+
+      const resultGravitySignUp = await actions.signUp({
+        email: result.email,
+        name: result.name,
+        accessToken: accessToken.accessToken,
+        oauthProvider: "facebook",
+        oauthMode: "accessToken",
+        agreedToReceiveEmails: true,
+      })
+
+      if (resultGravitySignUp.success) {
+        resolve({ success: true })
+        return
+      }
+
+      if (resultGravitySignUp.error === "blocked_attempt") {
+        reject(new AuthError("Attempt blocked"))
+        return
+      }
+
+      if (resultGravitySignUp.error !== "Another Account Already Linked") {
+        reject(
+          new AuthError(
+            resultGravitySignUp.message,
+            resultGravitySignUp.error,
+            resultGravitySignUp.meta
+          )
+        )
+        return
+      }
+
+      const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
+        path: `/oauth2/access_token`,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: {
+          oauth_provider: "facebook",
+          oauth_token: accessToken.accessToken,
+          client_id: clientId,
+          client_secret: clientSecret,
+          grant_type: "oauth_token",
+          scope: "offline_access",
+        },
+      })
+
+      if (resultGravityAccessToken.status === 201) {
+        const { access_token: userAccessToken } = await resultGravityAccessToken.json()
+        const { email: artsyEmail } = await actions.getUser({ accessToken: userAccessToken })
+
+        const resultGravitySignIn = await actions.signIn({
+          oauthProvider: "facebook",
+          oauthMode: "accessToken",
+          email: artsyEmail,
+          accessToken: accessToken.accessToken,
+        })
+
+        if (resultGravitySignIn) {
+          resolve({ success: true })
+          return
+        }
+
+        reject(new AuthError("Could not log in"))
+        return
+      } else {
+        if (resultGravityAccessToken.status === 403) {
+          reject(new AuthError("Attempt blocked"))
+        } else {
+          const res = await resultGravityAccessToken.json()
+          showError(res, reject, "facebook")
+        }
+      }
+    }
+
+    // get info from facebook
+    const infoRequest = new GraphRequest(
+      "/me",
+      {
+        accessToken: accessToken.accessToken,
+        parameters: {
+          fields: {
+            string: "email,name",
+          },
+        },
+      },
+      responseFacebookInfoCallback
+    )
+    new GraphRequestManager().addRequest(infoRequest).start()
+  } catch (error) {
+    if (error instanceof Error) {
+      reject(new AuthError("Error logging in with facebook", error.message))
+      return
+    }
+    reject(new AuthError("Error logging in with facebook"))
+    return
+  }
+}
+
 export async function handleLimitedFacebookAuth(
   actions: Actions<AuthModel>,
   isCancelled: boolean,
@@ -440,6 +585,128 @@ export async function handleLimitedFacebookAuth(
         resolve,
         reject
       )
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      reject(new AuthError("Error preparing for limited Facebook login", error.message))
+    } else {
+      reject(new AuthError("An unexpected error occurred in limited Facebook login"))
+    }
+  }
+}
+
+// TODO: replace handleLimitedFacebookAuth once we are sure that handleLimitedFacebookAuth2 is working fine
+export async function handleLimitedFacebookAuth2(
+  actions: Actions<AuthModel>,
+  isCancelled: boolean,
+  clientId: string,
+  clientSecret: string,
+  resolve: (value: AuthPromiseResolveType | PromiseLike<AuthPromiseResolveType>) => void,
+  reject: (reason?: any) => void
+) {
+  try {
+    // Check if the login operation was cancelled
+    if (isCancelled) {
+      reject(new AuthError("Login was cancelled by the user"))
+      return
+    }
+
+    const limitedLoginJWTToken = await AuthenticationToken.getAuthenticationTokenIOS()
+
+    if (!limitedLoginJWTToken || limitedLoginJWTToken == null) {
+      reject(new AuthError("Could not log in"))
+      return
+    }
+
+    const decodedToken = jwtDecode(limitedLoginJWTToken.authenticationToken) as any
+
+    if (!decodedToken) {
+      reject(new AuthError("Invalid JWT token"))
+      return
+    }
+
+    const { email: facebookEmail, name } = decodedToken
+
+    if (!facebookEmail || !name) {
+      reject(
+        new AuthError(
+          "There is no email or name associated with your Facebook account. Please log in using your email and password instead."
+        )
+      )
+      return
+    }
+
+    const resultGravitySignUp = await actions.signUp({
+      email: facebookEmail,
+      name,
+      jwt: limitedLoginJWTToken.authenticationToken,
+      oauthProvider: "facebook",
+      oauthMode: "jwt",
+      agreedToReceiveEmails: true,
+    })
+
+    if (resultGravitySignUp.success) {
+      resolve({ success: true })
+      return
+    }
+
+    if (resultGravitySignUp.error === "blocked_attempt") {
+      reject(new AuthError("Attempt blocked"))
+      return
+    }
+
+    if (resultGravitySignUp.error !== "Another Account Already Linked") {
+      reject(
+        new AuthError(
+          resultGravitySignUp.message,
+          resultGravitySignUp.error,
+          resultGravitySignUp.meta
+        )
+      )
+      return
+    }
+
+    const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
+      path: `/oauth2/access_token`,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: {
+        oauth_provider: "facebook",
+        jwt: limitedLoginJWTToken.authenticationToken,
+        client_id: clientId,
+        client_secret: clientSecret,
+        grant_type: "jwt",
+        scope: "offline_access",
+      },
+    })
+
+    if (resultGravityAccessToken.status === 201) {
+      const { access_token: userAccessToken } = await resultGravityAccessToken.json()
+      const { email: artsyEmail } = await actions.getUser({ accessToken: userAccessToken })
+
+      const resultGravitySignIn = await actions.signIn({
+        oauthProvider: "facebook",
+        oauthMode: "jwt",
+        email: artsyEmail,
+        jwt: limitedLoginJWTToken.authenticationToken,
+      })
+
+      if (resultGravitySignIn) {
+        resolve({ success: true })
+        return
+      }
+
+      reject(new AuthError("Could not log in"))
+      return
+    } else {
+      if (resultGravityAccessToken.status === 403) {
+        reject(new AuthError("Attempt blocked"))
+      } else {
+        const res = await resultGravityAccessToken.json()
+        showError(res, reject, "facebook")
+      }
     }
   } catch (error) {
     if (error instanceof Error) {

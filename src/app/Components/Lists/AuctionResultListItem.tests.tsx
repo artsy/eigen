@@ -1,6 +1,6 @@
 import { Touchable } from "@artsy/palette-mobile"
 import { AuctionResultListItemTestsQuery } from "__generated__/AuctionResultListItemTestsQuery.graphql"
-import { navigate } from "app/system/navigation/navigate"
+import * as navigation from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
@@ -12,7 +12,12 @@ import { AuctionResultListItemFragmentContainer } from "./AuctionResultListItem"
 
 describe("AuctionResults", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  beforeEach(() => (mockEnvironment = createMockEnvironment()))
+  const navigate = jest.spyOn(navigation, "navigate")
+
+  beforeEach(() => {
+    mockEnvironment = createMockEnvironment()
+    jest.clearAllMocks()
+  })
 
   const TestRenderer = ({ onPress }: { onPress?: () => void }) => (
     <QueryRenderer<AuctionResultListItemTestsQuery>
