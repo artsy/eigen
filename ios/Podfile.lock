@@ -1520,7 +1520,7 @@ PODS:
     - React-Core
   - react-native-netinfo (11.3.2):
     - React-Core
-  - react-native-pager-view (6.4.1):
+  - react-native-pager-view (6.5.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1845,8 +1845,27 @@ PODS:
     - React-Core
     - SDWebImage (~> 5.19.1)
     - SDWebImageWebPCoder (~> 0.8.4)
-  - RNFlashList (1.6.4):
+  - RNFlashList (1.7.1):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.01.01.00)
+    - RCTRequired
+    - RCTTypeSafety
     - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - RNGestureHandler (2.19.0):
     - DoubleConversion
     - glog
@@ -2712,7 +2731,7 @@ SPEC CHECKSUMS:
   react-native-get-random-values: 21325b2244dfa6b58878f51f9aa42821e7ba3d06
   react-native-in-app-review: db8bb167a5f238e7ceca5c242d6b36ce8c4404a4
   react-native-netinfo: 076df4f9b07f6670acf4ce9a75aac8d34c2e2ccc
-  react-native-pager-view: c476f76d54f946df5147645e902d3d7173688187
+  react-native-pager-view: bc0577047c5901fc96f6134881172072a909af7b
   react-native-render-html: 984dfe2294163d04bf5fe25d7c9f122e60e05ebe
   react-native-safe-area-context: f4f7cc09d81ae2d39dfd13e764d718969af07080
   react-native-shake: 3afc62834cdb99016d59676e747bf1a716fa4170
@@ -2751,7 +2770,7 @@ SPEC CHECKSUMS:
   RNCClipboard: 0a720adef5ec193aa0e3de24c3977222c7e52a37
   RNDeviceInfo: 6192a9c9167e256803e554038b22b3b2b40163dc
   RNFastImage: bb8cdea994fb18352557876cf345171a995eb57a
-  RNFlashList: b521ebdd7f9352673817f1d98e8bdc0c8cf8545b
+  RNFlashList: 115dd44377580761bff386a0caebf165424cf16f
   RNGestureHandler: 3b6fa2bfa341c413d3d08444b838515b58e48ee7
   RNGoogleSignin: 24d3b3261f78b0fae0aa013f8ab6f8d25e369b0c
   RNImageCropPicker: 771e2ca319d2cf92e04ebf334ece892ee9a6728f
