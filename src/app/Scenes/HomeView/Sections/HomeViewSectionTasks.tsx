@@ -1,5 +1,6 @@
 import { ContextModule } from "@artsy/cohesion"
 import { Flex, FlexProps, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
+import { useIsFocused } from "@react-navigation/native"
 import { HomeViewSectionTasksQuery } from "__generated__/HomeViewSectionTasksQuery.graphql"
 import { HomeViewSectionTasks_section$key } from "__generated__/HomeViewSectionTasks_section.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
@@ -28,9 +29,9 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
 }) => {
   const swipeableRef = useRef<SwipeableMethods>(null)
   const [displayTask, setDisplayTask] = useState(true)
-  const [isReady, setIsReady] = useState(false)
   const section = useFragment(tasksFragment, sectionProp)
   const tasks = extractNodes(section.tasksConnection)
+  const isFocused = useIsFocused()
 
   const { isDismissed } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
   const { dismiss } = GlobalStore.actions.progressiveOnboarding
@@ -40,7 +41,7 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
 
   // adding the find-saved-artwork onboarding key to prevent overlap
   const shouldStartOnboardingAnimation =
-    isReady &&
+    isFocused &&
     !isDismissed("act-now-tasks").status &&
     !!isDismissed("find-saved-artwork").status &&
     !!swipeableRef.current &&
@@ -84,7 +85,7 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
               <SectionTitle title={section.component?.title} />
             </Flex>
 
-            <Flex mr={2} onLayout={() => setIsReady(true)}>
+            <Flex mr={2}>
               <Task ref={swipeableRef} task={task} onClearTask={handleClearTask} />
             </Flex>
 
