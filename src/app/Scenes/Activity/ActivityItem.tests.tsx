@@ -1,7 +1,7 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ActivityItem_Test_Query } from "__generated__/ActivityItem_Test_Query.graphql"
 import { ActivityItem_notification$key } from "__generated__/ActivityItem_notification.graphql"
-import { navigate } from "app/system/navigation/navigate"
+import * as navigation from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -34,9 +34,11 @@ const TestRenderer = () => {
 
 describe("ActivityItem", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
+  const navigate = jest.spyOn(navigation, "navigate")
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
+    jest.clearAllMocks()
   })
 
   const { renderWithRelay } = setupTestWrapper({
