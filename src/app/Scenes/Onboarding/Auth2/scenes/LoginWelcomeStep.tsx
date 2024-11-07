@@ -16,7 +16,7 @@ import { useAuthNavigation } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavi
 import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
 import { OnboardingNavigationStack } from "app/Scenes/Onboarding/Onboarding"
 import { GlobalStore } from "app/store/GlobalStore"
-import { handleSocialLogin } from "app/utils/auth/socialSignInHelpers"
+import { useSocialLogin } from "app/utils/auth/socialSignInHelpers"
 import { osMajorVersion } from "app/utils/platformUtil"
 import { Formik, useFormikContext } from "formik"
 import { MotiView } from "moti"
@@ -200,6 +200,8 @@ const LoginWelcomeStepForm: React.FC = () => {
 }
 
 const SocialLoginButtons: React.FC = () => {
+  const { handleSocialLogin } = useSocialLogin()
+
   const handleApplePress = () =>
     handleSocialLogin(() => {
       return GlobalStore.actions.auth.authApple({ agreedToReceiveEmails: true })
