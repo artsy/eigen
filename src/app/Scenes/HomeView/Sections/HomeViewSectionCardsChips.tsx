@@ -11,7 +11,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
-import { FlatList, ScrollView } from "react-native"
+import { FlatList } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
@@ -33,7 +33,9 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
 
   if (cards.length === 0) return null
 
-  const numColumns = !isTablet() ? Math.ceil(cards.length / 3) : Math.ceil(cards.length / 2)
+  const numRows = !isTablet() ? 3 : 2
+  const numColumns = Math.ceil(cards.length / 3)
+  const rows = getColumns(cards, numRows, numColumns)
   const snapToOffsets = getSnapToOffsets(numColumns, space(1), space(1), CHIP_WIDTH)
 
   const handleOnChipPress = (card: (typeof cards)[number], index: number) => {
@@ -50,40 +52,41 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
   }
 
   return (
-    <Flex pl={2} py={2}>
-      <Flex>
+    <Flex py={2}>
+      <Flex px={2}>
         <SectionTitle title={section.component?.title} />
       </Flex>
 
-      <ScrollView
+      <FlatList
         horizontal
-        showsHorizontalScrollIndicator={false}
         pagingEnabled
         snapToEnd={false}
         snapToOffsets={snapToOffsets}
         decelerationRate="fast"
-      >
-        <FlatList
-          scrollEnabled={true}
-          columnWrapperStyle={{ gap: space(1), paddingRight: space(2) }}
-          ItemSeparatorComponent={() => <Spacer y={1} />}
-          contentContainerStyle={{ gap: 40 }}
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-          numColumns={numColumns}
-          data={cards}
-          keyExtractor={(item, index) => `item_${index}_${item.entityID}`}
-          renderItem={({ item, index }) => (
-            <Flex minWidth={CHIP_WIDTH}>
-              <Chip
-                key={item.href}
-                title={item.title}
-                onPress={() => handleOnChipPress(item, index)}
-              />
-            </Flex>
-          )}
-        />
-      </ScrollView>
+        contentContainerStyle={{ paddingHorizontal: space(2), gap: space(1) }}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        data={rows}
+        keyExtractor={(item, index) => `item_${index}_${item[0].entityID}`}
+        renderItem={({ item }) => (
+          <Flex gap={1}>
+            {item.map((item, index) => {
+              if (!item?.title) return null
+
+              return (
+                <Flex minWidth={CHIP_WIDTH} key={`collectionChips-row-${index}`}>
+                  <Chip
+                    key={item.href}
+                    title={item.title}
+                    subtitle={item.subtitle as string | undefined}
+                    onPress={() => handleOnChipPress(item, index)}
+                  />
+                </Flex>
+              )
+            })}
+          </Flex>
+        )}
+      />
 
       <HomeViewSectionSentinel
         contextModule={section.contextModule as ContextModule}
@@ -108,6 +111,7 @@ const fragment = graphql`
           entityID @required(action: NONE)
           entityType @required(action: NONE)
           title
+          subtitle
           href
         }
       }
@@ -116,36 +120,32 @@ const fragment = graphql`
 `
 
 const HomeViewSectionCardsChipsPlaceholder: React.FC = () => {
-  const listSize = 9
+  const space = useSpace()
 
-  const numColumns = isTablet() ? Math.ceil(listSize / 2) : Math.ceil(listSize / 3)
+  const listSize = 9
+  const numColumns = Math.ceil(listSize / 3)
+
   return (
     <Skeleton>
-      <Flex pl={2}>
-        <Flex>
+      <Flex py={2}>
+        <Flex px={2}>
           <SectionTitle title="Discover Something New" />
         </Flex>
-        <ScrollView
-          horizontal
+
+        <FlatList
+          scrollEnabled={false}
+          columnWrapperStyle={{ paddingHorizontal: space(2) }}
+          ItemSeparatorComponent={() => <Spacer y={1} />}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ paddingRight: 10 }}
-        >
-          <FlatList
-            scrollEnabled={true}
-            contentContainerStyle={{ alignSelf: "flex-start" }}
-            ItemSeparatorComponent={() => <Spacer y={1} />}
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
-            numColumns={numColumns}
-            data={Array.from({ length: listSize })}
-            renderItem={() => (
-              <Flex width={250} marginRight="10px">
-                <SkeletonBox height={60} borderRadius="5px" />
-              </Flex>
-            )}
-          />
-        </ScrollView>
+          numColumns={numColumns}
+          data={Array.from({ length: listSize })}
+          renderItem={() => (
+            <Flex width={250} marginRight="10px">
+              <SkeletonBox height={60} borderRadius="5px" />
+            </Flex>
+          )}
+        />
       </Flex>
     </Skeleton>
   )
@@ -180,3 +180,13 @@ export const HomeViewSectionCardsChipsQueryRenderer: React.FC<SectionSharedProps
   LoadingFallback: HomeViewSectionCardsChipsPlaceholder,
   ErrorFallback: NoFallback,
 })
+
+const getColumns = <T extends Object>(data: T[], numRows: number, numColumns: number): T[][] => {
+  const rows: T[][] = Array.from({ length: numColumns }, () => [])
+
+  for (let i = 0; i < numRows * numColumns; i++) {
+    rows[i % numColumns].push(data[i])
+  }
+
+  return rows
+}

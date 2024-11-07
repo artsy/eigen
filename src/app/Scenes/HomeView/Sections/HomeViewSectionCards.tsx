@@ -89,7 +89,7 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
                   top={space(1)}
                   left={space(1)}
                   backgroundColor="white100"
-                  p={0.5}
+                  px={0.5}
                 >
                   <Text variant="md">{card.title}</Text>
                 </Flex>
