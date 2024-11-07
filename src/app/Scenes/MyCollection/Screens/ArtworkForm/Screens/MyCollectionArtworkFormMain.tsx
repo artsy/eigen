@@ -238,7 +238,7 @@ export const MyCollectionArtworkFormMain: React.FC<
   return (
     <>
       <ArtsyKeyboardAvoidingView>
-        {formikValues.artistSearchResult?.internalID && showDeleteArtistModal ? (
+        {formikValues.artistSearchResult?.internalID ? (
           <MyCollectionArtworkFormDeleteArtworkModal
             visible={showDeleteArtistModal}
             hideModal={() => setShowDeleteArtistModal(false)}
