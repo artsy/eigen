@@ -104,6 +104,13 @@ android {
         buildConfigField "String", "GITCommitDate", '"2021-01-21T15:08:22+04:00"'
         buildConfigField "String", "GITRemoteOriginURL", '"https://github.com/artsy/eigen.git"'
     }
+
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging true
+        }
+    }
+
     signingConfigs {
         debug {
             storeFile file('debug.keystore')
