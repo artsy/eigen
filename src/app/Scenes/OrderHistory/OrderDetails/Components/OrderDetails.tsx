@@ -2,6 +2,7 @@ import { Flex, Box, Text, Separator } from "@artsy/palette-mobile"
 import { OrderDetailsQuery } from "__generated__/OrderDetailsQuery.graphql"
 import { OrderDetails_order$data } from "__generated__/OrderDetails_order.graphql"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
+import { PendingOfferSection } from "app/Scenes/OrderHistory/OrderDetails/Components/PendingOfferSection"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
@@ -35,6 +36,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
     order.paymentMethod === "WIRE_TRANSFER" &&
     order.state === "PROCESSING_APPROVAL"
   const isShipping = fulfillmentType === "CommerceShipArta" || fulfillmentType === "CommerceShip"
+  const isOfferPending = order.state === "SUBMITTED" && order.mode === "OFFER"
 
   const getShippingName = () => {
     if (
@@ -57,6 +59,10 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
       key: "Artwork_Info",
       title: "Artwork Info",
       data: [<ArtworkInfoSectionFragmentContainer key="Artwork_InfoComponent" artwork={order} />],
+    },
+    isOfferPending && {
+      key: "OfferPending",
+      data: [<PendingOfferSection key="PendingOfferComponent" order={order} />],
     },
     isProcessingWireTransfer && {
       key: "WirePayment",
@@ -195,6 +201,7 @@ export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
     fragment OrderDetails_order on CommerceOrder {
       state
       paymentMethod
+      mode
 
       requestedFulfillment {
         ... on CommerceShip {
@@ -230,6 +237,7 @@ export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
       ...ShipsToSection_address
       ...SoldBySection_soldBy
       ...WirePaymentSection_order
+      ...PendingOfferSection_order
     }
   `,
 })

@@ -6,7 +6,7 @@ import {
   HomeViewSectionScreenQuery$data,
 } from "__generated__/HomeViewSectionScreenQuery.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
-import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
+import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { HomeViewSectionScreenContent } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreenContent"
 import { HomeViewSectionScreenPlaceholder } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreenPlaceholder"
 import { withSuspense } from "app/utils/hooks/withSuspense"

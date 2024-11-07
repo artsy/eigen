@@ -9,7 +9,9 @@ import { clearNavState } from "app/system/navigation/useReloadedDevNavigationSta
 import { _globalCacheRef } from "app/system/relay/defaultEnvironment"
 import {
   handleClassicFacebookAuth,
+  handleClassicFacebookAuth2,
   handleLimitedFacebookAuth,
+  handleLimitedFacebookAuth2,
   handleSignUpError,
   showError,
 } from "app/utils/auth/authHelpers"
@@ -154,6 +156,7 @@ export interface AuthModel {
     GlobalStoreModel,
     Promise<AuthPromiseResolveType>
   >
+  authFacebook2: Thunk<this, undefined, {}, GlobalStoreModel, Promise<AuthPromiseResolveType>>
   authGoogle: Thunk<
     this,
     | { signInOrUp: "signIn"; onSignIn?: () => void }
@@ -550,6 +553,66 @@ export const getAuthModel = (): AuthModel => ({
             // log them out and try again
             LoginManager.logOut()
             GlobalStore.actions.auth.authFacebook(options)
+          }
+
+          reject(new AuthError("Error logging in with facebook", e.message))
+          return
+        }
+        reject(new AuthError("Error logging in with facebook"))
+        return
+      }
+    })
+  }),
+  authFacebook2: thunk(async (actions) => {
+    // TODO: replace authFacebook once we are sure that authFacebook2 is working fine
+    // eslint-disable-next-line no-async-promise-executor
+    return await new Promise<AuthPromiseResolveType>(async (resolve, reject) => {
+      try {
+        let loginTrackingIOS: LoginTracking | undefined
+        if (Platform.OS === "ios") {
+          loginTrackingIOS = "limited"
+        }
+
+        const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions(
+          ["public_profile", "email"],
+          loginTrackingIOS
+        )
+
+        if (declinedPermissions?.includes("email")) {
+          reject(
+            new AuthError("Please allow the use of email to continue.", "Email Permission Declined")
+          )
+          return
+        }
+
+        if (Platform.OS === "ios") {
+          handleLimitedFacebookAuth2(
+            actions,
+            isCancelled,
+            clientKey as string,
+            clientSecret as string,
+            resolve,
+            reject
+          )
+        } else {
+          handleClassicFacebookAuth2(
+            actions,
+            isCancelled,
+            clientKey as string,
+            clientSecret as string,
+            resolve,
+            reject
+          )
+        }
+      } catch (e) {
+        if (e instanceof Error) {
+          if (e.message === "User logged in as different Facebook user.") {
+            // odd and hopefully shouldn't happen often
+            // if the user has a valid session with another account
+            // and tries to log in with a new account they will hit this error
+            // log them out and try again
+            LoginManager.logOut()
+            GlobalStore.actions.auth.authFacebook2()
           }
 
           reject(new AuthError("Error logging in with facebook", e.message))

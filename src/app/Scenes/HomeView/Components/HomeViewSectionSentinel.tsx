@@ -1,6 +1,6 @@
 import { ContextModule } from "@artsy/cohesion"
 import { HomeViewStore } from "app/Scenes/HomeView/HomeViewContext"
-import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
+import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { Sentinel } from "app/utils/Sentinel"
 import React, { useCallback } from "react"
 

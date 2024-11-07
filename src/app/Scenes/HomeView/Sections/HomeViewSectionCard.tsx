@@ -13,7 +13,7 @@ import { HomeViewSectionCardQuery } from "__generated__/HomeViewSectionCardQuery
 import { HomeViewSectionCard_section$key } from "__generated__/HomeViewSectionCard_section.graphql"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
-import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
+import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { isTablet } from "react-native-device-info"
