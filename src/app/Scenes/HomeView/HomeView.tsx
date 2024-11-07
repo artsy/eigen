@@ -129,6 +129,7 @@ export const HomeView: React.FC = () => {
     })
   }
 
+  // TODO: track on a Rail, use useHomeViewExperimentTracking (adjust the hook beforehand)
   const { trackExperiment } = useExperimentVariant("onyx_artwork-card-save-and-follow-cta-redesign")
 
   useEffect(() => {
