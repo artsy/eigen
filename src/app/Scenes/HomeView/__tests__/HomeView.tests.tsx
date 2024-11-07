@@ -93,7 +93,7 @@ describe("HomeView", () => {
     expect(screen.getByText("Tap here to verify your email address")).toBeTruthy()
   })
 
-  describe("home view experiements", () => {
+  describe("home view experiments", () => {
     it("fires an experiment_viewed event for enabled experiments", () => {
       renderWithRelay({
         HomeView: () => ({
