@@ -10,9 +10,11 @@ export interface LotProgressBarProps extends ArtworkAuctionProgressBarProps {
 
 export const LotProgressBar: React.FC<LotProgressBarProps> = (props) => {
   const { duration } = props
+
   if (!duration) {
     return null
   }
+
   const time = {
     days: duration.asDays(),
     hours: duration.hours(),
