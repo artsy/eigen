@@ -38,16 +38,6 @@ When we upgrade to a version of `@segment/analytics-react-native` that includes 
 
 When updating to rn-0.69.10 we had to patch this due to kotlin version missmatch.
 
-## deprecated-react-native-prop-types dependency
-
-#### When can we remove this:
-
-When we upgrade our deps to a version of react-native that includes removal of deprecated PropTypes.
-
-#### Explanation/Context:
-
-When updating to rn-0.69.10 we had to patch this due to deprecation of PropTypes. For this reason we also installed `deprecated-react-native-prop-types` to avoid errors and we patched the `react-native` package to use the deprecated PropTypes coming from the `deprecated-react-native-prop-types` package.
-
 ## react-native-image-crop-picker getRootVC patch
 
 #### When can we remove this:

@@ -104,7 +104,6 @@
   ],
   "dependenciesComments": {
     "react-native": "Try running `npx @rnx-kit/align-deps --requirements react-native@0.66.5` when upgrading to a version, here 0.66.5",
-    "deprecated-react-native-prop-types": "Needed for patching react-native due to rn removing the proptypes from their repo",
     "@babel/plugin-transform-named-capturing-groups-regex": "Needed for compiling android with hermes enabled",
     "braces": "in the resolutions - needed to resolve a security dependency issue - need to remove this when the issue is resolved and packages are updated"
   },
@@ -137,7 +136,6 @@
     "@stripe/stripe-react-native": "0.39.0",
     "@styled-system/theme-get": "5.1.2",
     "autosuggest-highlight": "3.3.4",
-    "deprecated-react-native-prop-types": "4.1.0",
     "easy-peasy": "6.0.5",
     "events": "3.3.0",
     "formik": "2.2.9",
