@@ -346,6 +346,7 @@ class CookieRequestAttempt {
 
       addBreadcrumb({ message: `Successfully set up artsy web view cookies for ${this.url}` })
     } catch (e) {
+      const seconds = __TEST__ ? 1 : 20
       if (this.invalidated) {
         return
       }
@@ -353,7 +354,7 @@ class CookieRequestAttempt {
       addBreadcrumb({
         message: `Retrying to set up artsy web view cookies in 20 seconds ${this.url}`,
       })
-      setTimeout(() => this.makeAttempt(), 1000 * 20)
+      setTimeout(() => this.makeAttempt(), 1000 * seconds)
     }
   }
 }

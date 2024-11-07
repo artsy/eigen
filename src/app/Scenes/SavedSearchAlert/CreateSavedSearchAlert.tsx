@@ -11,7 +11,10 @@ import { localizeHeightAndWidthAttributes } from "app/Scenes/SavedSearchAlert/he
 import { AlertPriceRangeScreenQueryRenderer } from "app/Scenes/SavedSearchAlert/screens/AlertPriceRangeScreen"
 import { ConfirmationScreen } from "app/Scenes/SavedSearchAlert/screens/ConfirmationScreen"
 import { SavedSearchFilterScreen } from "app/Scenes/SavedSearchAlert/screens/SavedSearchFilterScreen"
-import { useReloadedDevNavigationState } from "app/system/navigation/useReloadedDevNavigationState"
+import {
+  CREATE_SAVED_ARTWORK_NAVIGATION_STACK_STATE_KEY,
+  useReloadedDevNavigationState,
+} from "app/system/navigation/useReloadedDevNavigationState"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import {
   CreateSavedSearchAlertNavigationStack,
@@ -20,9 +23,6 @@ import {
 import { EmailPreferencesScreen } from "./screens/EmailPreferencesScreen"
 
 const Stack = createStackNavigator<CreateSavedSearchAlertNavigationStack>()
-
-const CREATE_SAVED_ARTWORK_NAVIGATION_STACK_STATE_KEY =
-  "CREATE_SAVED_ARTWORK_NAVIGATION_STACK_STATE_KEY"
 
 export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (props) => {
   const { visible, params } = props

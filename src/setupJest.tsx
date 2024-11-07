@@ -14,8 +14,6 @@ import { mockPostEventToProviders, mockTrackEvent } from "app/utils/tests/global
 import { mockNavigate } from "app/utils/tests/navigationMocks"
 import chalk from "chalk"
 import * as matchers from "jest-extended"
-
-import { isPlainObject } from "lodash"
 import { NativeModules } from "react-native"
 import "react-native-gesture-handler/jestSetup"
 // @ts-ignore-next-line
@@ -172,10 +170,6 @@ jest.mock("react-native-blob-util", () => ({
 
 jest.mock("@react-native-cookies/cookies", () => ({ clearAll: jest.fn() }))
 
-beforeEach(() => {
-  require("@react-native-cookies/cookies").clearAll.mockReset()
-})
-
 jest.mock("react-native-fbsdk-next", () => ({
   LoginManager: {
     logOut: jest.fn(),
@@ -266,41 +260,7 @@ jest.mock("react-native-localize", () => ({
   },
 }))
 
-require("react-native-reanimated/src/reanimated2/jestUtils").setUpTests()
-
-// @ts-expect-error
-global.__reanimatedWorkletInit = () => {}
-
-jest.mock("react-native-reanimated", () => {
-  const animationMock = {
-    duration: () => {
-      return jest.fn()
-    },
-  }
-
-  return {
-    ...require("react-native-reanimated/mock"),
-    useEvent: jest.fn(),
-    FadeInRight: animationMock,
-    FadeInLeft: animationMock,
-    FadeIn: {
-      duration: () => {
-        return { easing: jest.fn() }
-      },
-    },
-    FadeInDown: {
-      duration: () => {
-        return { easing: jest.fn() }
-      },
-    },
-    FadeOut: {
-      duration: () => {
-        return { easing: jest.fn() }
-      },
-    },
-    FadeOutRight: animationMock,
-  }
-})
+require("react-native-reanimated").setUpTests()
 
 jest.mock("react-native/Libraries/LayoutAnimation/LayoutAnimation", () => ({
   ...jest.requireActual("react-native/Libraries/LayoutAnimation/LayoutAnimation"),
@@ -310,46 +270,6 @@ jest.mock("react-native/Libraries/LayoutAnimation/LayoutAnimation", () => ({
   linear: jest.fn(),
   spring: jest.fn(),
 }))
-
-jest.mock("react-native-gesture-handler", () => {
-  const actual = jest.requireActual("react-native-gesture-handler")
-  const View = require("react-native/Libraries/Components/View/View")
-  const TouchableWithoutFeedback = require("react-native/Libraries/Components/Touchable/TouchableWithoutFeedback")
-  const TouchableHighlight = require("react-native/Libraries/Components/Touchable/TouchableHighlight")
-
-  return {
-    ...actual,
-    Swipeable: View,
-    DrawerLayout: View,
-    State: {},
-    ScrollView: View,
-    Slider: View,
-    Switch: View,
-    TextInput: View,
-    ViewPagerAndroid: View,
-    DrawerLayoutAndroid: View,
-    WebView: View,
-    NativeViewGestureHandler: View,
-    TapGestureHandler: View,
-    FlingGestureHandler: View,
-    ForceTouchGestureHandler: View,
-    LongPressGestureHandler: View,
-    PanGestureHandler: View,
-    PinchGestureHandler: View,
-    RotationGestureHandler: View,
-    /* Buttons */
-    RawButton: View,
-    BaseButton: View,
-    RectButton: View,
-    BorderlessButton: View,
-    /* Other */
-    FlatList: View,
-    gestureHandlerRootHOC: jest.fn(),
-    Directions: {},
-    TouchableHighlight,
-    TouchableWithoutFeedback,
-  }
-})
 
 jest.mock("react-native-image-crop-picker", () => ({
   openPicker: jest.fn(),
@@ -561,24 +481,6 @@ jest.mock("app/NativeModules/LegacyNativeModules", () => ({
 
 Object.assign(NativeModules, getNativeModules())
 
-beforeEach(() => {
-  function reset(a: any, b: any) {
-    Object.keys(a).forEach((k) => {
-      if (isPlainObject(a[k])) {
-        reset(a[k], b[k])
-      } else {
-        if (a[k]?.mockReset) {
-          a[k].mockReset()
-        } else {
-          a[k] = b?.[k] ?? a[k]
-        }
-      }
-    })
-  }
-  reset(NativeModules, getNativeModules())
-  reset(require("app/system/navigation/navigate"), {})
-})
-
 const mockedModule = (path: string, mockModuleName: string) => jest.mock(path, () => mockModuleName)
 mockedModule("./app/Components/Gene/Header.tsx", "Header")
 
@@ -664,6 +566,7 @@ jest.mock("app/utils/track/providers.tsx", () => ({
 }))
 
 jest.mock("app/system/navigation/useReloadedDevNavigationState", () => ({
+  clearNavState: jest.fn(),
   useReloadedDevNavigationState: jest.fn(() => ({
     isReady: true,
     initialState: undefined,

@@ -9,18 +9,19 @@ import {
   useTheme,
 } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
+import LoadingModal from "app/Components/Modals/LoadingModal"
 import { useRecaptcha } from "app/Components/Recaptcha/Recaptcha"
 import { AuthContext } from "app/Scenes/Onboarding/Auth2/AuthContext"
 import { useAuthNavigation } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
 import { OnboardingNavigationStack } from "app/Scenes/Onboarding/Onboarding"
-import { AuthPromiseRejectType, AuthPromiseResolveType } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
+import { handleSocialLogin } from "app/utils/auth/socialSignInHelpers"
 import { osMajorVersion } from "app/utils/platformUtil"
 import { Formik, useFormikContext } from "formik"
 import { MotiView } from "moti"
-import React, { useRef, useState } from "react"
-import { Image, InteractionManager, Platform } from "react-native"
+import React, { useRef } from "react"
+import { Image, Platform } from "react-native"
 import { Easing } from "react-native-reanimated"
 import * as Yup from "yup"
 
@@ -85,6 +86,7 @@ export const LoginWelcomeStep: React.FC = () => {
 const LoginWelcomeStepForm: React.FC = () => {
   const setModalExpanded = AuthContext.useStoreActions((actions) => actions.setModalExpanded)
   const isModalExpanded = AuthContext.useStoreState((state) => state.isModalExpanded)
+  const isLoading = GlobalStore.useAppState((state) => state.auth.sessionState.isLoading)
 
   const { color } = useTheme()
   const { handleChange, handleSubmit, isSubmitting, isValid, resetForm, values } =
@@ -113,6 +115,8 @@ const LoginWelcomeStepForm: React.FC = () => {
 
   return (
     <Flex p={2}>
+      <LoadingModal isVisible={isLoading} dark />
+
       {!!isModalExpanded && (
         <>
           <BackButton onPress={handleBackButtonPress} />
@@ -196,27 +200,19 @@ const LoginWelcomeStepForm: React.FC = () => {
 }
 
 const SocialLoginButtons: React.FC = () => {
-  const [mode, _setMode] = useState<"login" | "signup">("login")
-
   const handleApplePress = () =>
-    onSocialLogin(() => {
+    handleSocialLogin(() => {
       return GlobalStore.actions.auth.authApple({ agreedToReceiveEmails: true })
     })
 
   const handleGooglePress = () =>
-    onSocialLogin(() => {
-      return GlobalStore.actions.auth.authGoogle({
-        signInOrUp: mode === "login" ? "signIn" : "signUp",
-        agreedToReceiveEmails: mode === "signup",
-      })
+    handleSocialLogin(() => {
+      return GlobalStore.actions.auth.authGoogle2()
     })
 
   const handleFacebookPress = () =>
-    onSocialLogin(() => {
-      return GlobalStore.actions.auth.authFacebook({
-        signInOrUp: mode === "login" ? "signIn" : "signUp",
-        agreedToReceiveEmails: mode === "signup",
-      })
+    handleSocialLogin(() => {
+      return GlobalStore.actions.auth.authFacebook2()
     })
 
   return (
@@ -256,21 +252,4 @@ const SocialLoginButtons: React.FC = () => {
       </Flex>
     </Flex>
   )
-}
-
-const onSocialLogin = async (callback: () => Promise<AuthPromiseResolveType>) => {
-  GlobalStore.actions.auth.setSessionState({ isLoading: true })
-
-  InteractionManager.runAfterInteractions(() => {
-    callback().catch((error: AuthPromiseRejectType) => {
-      InteractionManager.runAfterInteractions(() => {
-        GlobalStore.actions.auth.setSessionState({ isLoading: false })
-
-        InteractionManager.runAfterInteractions(() => {
-          // TODO: handle error like OnboardingSocialPick does
-          console.error(error)
-        })
-      })
-    })
-  })
 }

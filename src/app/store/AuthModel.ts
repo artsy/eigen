@@ -5,10 +5,13 @@ import CookieManager from "@react-native-cookies/cookies"
 import { GoogleSignin, statusCodes } from "@react-native-google-signin/google-signin"
 import * as Sentry from "@sentry/react-native"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { clearNavState } from "app/system/navigation/useReloadedDevNavigationState"
 import { _globalCacheRef } from "app/system/relay/defaultEnvironment"
 import {
   handleClassicFacebookAuth,
+  handleClassicFacebookAuth2,
   handleLimitedFacebookAuth,
+  handleLimitedFacebookAuth2,
   handleSignUpError,
   showError,
 } from "app/utils/auth/authHelpers"
@@ -153,6 +156,7 @@ export interface AuthModel {
     GlobalStoreModel,
     Promise<AuthPromiseResolveType>
   >
+  authFacebook2: Thunk<this, undefined, {}, GlobalStoreModel, Promise<AuthPromiseResolveType>>
   authGoogle: Thunk<
     this,
     | { signInOrUp: "signIn"; onSignIn?: () => void }
@@ -161,6 +165,7 @@ export interface AuthModel {
     GlobalStoreModel,
     Promise<AuthPromiseResolveType>
   >
+  authGoogle2: Thunk<this, undefined, {}, GlobalStoreModel, Promise<AuthPromiseResolveType>>
   authApple: Thunk<
     this,
     { agreedToReceiveEmails?: boolean; onSignIn?: () => void },
@@ -558,6 +563,66 @@ export const getAuthModel = (): AuthModel => ({
       }
     })
   }),
+  authFacebook2: thunk(async (actions) => {
+    // TODO: replace authFacebook once we are sure that authFacebook2 is working fine
+    // eslint-disable-next-line no-async-promise-executor
+    return await new Promise<AuthPromiseResolveType>(async (resolve, reject) => {
+      try {
+        let loginTrackingIOS: LoginTracking | undefined
+        if (Platform.OS === "ios") {
+          loginTrackingIOS = "limited"
+        }
+
+        const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions(
+          ["public_profile", "email"],
+          loginTrackingIOS
+        )
+
+        if (declinedPermissions?.includes("email")) {
+          reject(
+            new AuthError("Please allow the use of email to continue.", "Email Permission Declined")
+          )
+          return
+        }
+
+        if (Platform.OS === "ios") {
+          handleLimitedFacebookAuth2(
+            actions,
+            isCancelled,
+            clientKey as string,
+            clientSecret as string,
+            resolve,
+            reject
+          )
+        } else {
+          handleClassicFacebookAuth2(
+            actions,
+            isCancelled,
+            clientKey as string,
+            clientSecret as string,
+            resolve,
+            reject
+          )
+        }
+      } catch (e) {
+        if (e instanceof Error) {
+          if (e.message === "User logged in as different Facebook user.") {
+            // odd and hopefully shouldn't happen often
+            // if the user has a valid session with another account
+            // and tries to log in with a new account they will hit this error
+            // log them out and try again
+            LoginManager.logOut()
+            GlobalStore.actions.auth.authFacebook2()
+          }
+
+          reject(new AuthError("Error logging in with facebook", e.message))
+          return
+        }
+        reject(new AuthError("Error logging in with facebook"))
+        return
+      }
+    })
+  }),
   authGoogle: thunk(async (actions, options) => {
     // eslint-disable-next-line no-async-promise-executor
     return await new Promise<AuthPromiseResolveType>(async (resolve, reject) => {
@@ -642,6 +707,118 @@ export const getAuthModel = (): AuthModel => ({
               const res = await resultGravityAccessToken.json()
               showError(res, reject, "google")
             }
+          }
+        }
+      } catch (e: any) {
+        if (statusCodes.SIGN_IN_CANCELLED === e?.code) {
+          reject(new AuthError(statusCodes.SIGN_IN_CANCELLED))
+          return
+        }
+
+        if (e instanceof Error) {
+          if (e?.message === "DEVELOPER_ERROR") {
+            reject(
+              new AuthError(
+                "Google auth does not work in firebase beta, try again in a playstore beta",
+                e?.message
+              )
+            )
+            return
+          }
+
+          reject(new AuthError("Error logging in with google", e?.message))
+          return
+        }
+        reject(new AuthError("Error logging in with google"))
+        return
+      }
+    })
+  }),
+  authGoogle2: thunk(async (actions) => {
+    // TODO: replace authGoogle once we are sure that authGoogle2 is working fine
+    // eslint-disable-next-line no-async-promise-executor
+    return await new Promise<AuthPromiseResolveType>(async (resolve, reject) => {
+      try {
+        if (!(await GoogleSignin.hasPlayServices())) {
+          reject(new AuthError("Play services are not available."))
+          return
+        }
+        const userInfo = await GoogleSignin.signIn()
+        const accessToken = (await GoogleSignin.getTokens()).accessToken
+
+        const resultGravitySignUp = userInfo.user.name
+          ? await actions.signUp({
+              email: userInfo.user.email,
+              name: userInfo.user.name,
+              oauthMode: "accessToken",
+              accessToken,
+              oauthProvider: "google",
+              agreedToReceiveEmails: true,
+            })
+          : { success: false, message: "missing name in google's userInfo" }
+
+        if (resultGravitySignUp.success) {
+          resolve({ success: true })
+          return
+        }
+
+        if (resultGravitySignUp.error === "blocked_attempt") {
+          reject(new AuthError("Attempt blocked"))
+          return
+        }
+
+        if (resultGravitySignUp.error !== "Another Account Already Linked") {
+          reject(
+            new AuthError(
+              resultGravitySignUp.message,
+              resultGravitySignUp.error,
+              resultGravitySignUp.meta
+            )
+          )
+          return
+        }
+
+        // we need to get X-ACCESS-TOKEN before actual sign in
+        const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
+          path: `/oauth2/access_token`,
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: {
+            oauth_provider: "google",
+            oauth_token: accessToken,
+            client_id: clientKey,
+            client_secret: clientSecret,
+            grant_type: "oauth_token",
+            scope: "offline_access",
+          },
+        })
+
+        if (resultGravityAccessToken.status === 201) {
+          const { access_token: userAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
+          const { email } = await actions.getUser({ accessToken: userAccessToken })
+
+          const resultGravitySignIn = await actions.signIn({
+            oauthProvider: "google",
+            oauthMode: "accessToken",
+            email,
+            accessToken,
+          })
+
+          if (resultGravitySignIn) {
+            resolve({ success: true })
+            return
+          } else {
+            reject(new AuthError("Could not log in"))
+            return
+          }
+        } else {
+          if (resultGravityAccessToken.status === 403) {
+            reject(new AuthError("Attempt blocked"))
+          } else {
+            const res = await resultGravityAccessToken.json()
+            showError(res, reject, "google")
           }
         }
       } catch (e: any) {
@@ -832,6 +1009,7 @@ export const getAuthModel = (): AuthModel => ({
       Platform.OS === "ios"
         ? await LegacyNativeModules.ArtsyNativeModule.clearUserData()
         : Promise.resolve(),
+      __DEV__ && (await clearNavState()),
       await signOutGoogle(),
       LoginManager.logOut(),
       CookieManager.clearAll(),

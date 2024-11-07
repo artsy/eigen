@@ -300,8 +300,9 @@ export const features = {
   },
   AREnablePaymentFailureBanner: {
     description: "Enable payment failure banner",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnablePaymentFailureBanner",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 

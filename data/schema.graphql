@@ -12957,6 +12957,7 @@ type Me implements Node {
     last: Int
     page: Int
   ): ArtworkConnection
+    @deprecated(reason: "These genomic recs are deprecated. Use artworkRecommendations instead.")
   saleRegistrationsConnection(
     after: String
     auctionState: AuctionState
