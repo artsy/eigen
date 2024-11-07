@@ -2,8 +2,13 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkItemCTAsTestsQuery } from "__generated__/ArtworkItemCTAsTestsQuery.graphql"
 import { ArtworkItemCTAs } from "app/Components/Artwork/ArtworkItemCTAs"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
+
+jest.mock("app/utils/experiments/hooks", () => ({
+  useExperimentVariant: jest.fn(),
+}))
 
 describe("ArtworkItemCTAs", () => {
   const { renderWithRelay } = setupTestWrapper<ArtworkItemCTAsTestsQuery>({
@@ -17,42 +22,105 @@ describe("ArtworkItemCTAs", () => {
     `,
   })
 
-  describe("save artwork when AREnableRedesignSaveCTA is enebled", () => {
+  describe("variant-a", () => {
     beforeEach(() => {
       __globalStoreTestUtils__?.injectFeatureFlags({
-        AREnableRedesignSaveCTA: true,
+        AREnableNewSaveAndFollowOnArtworkCard: true,
+      })
+      ;(useExperimentVariant as jest.Mock).mockReturnValue({
+        enabled: true,
+        payload: "variant-a",
+        variant: "variant-a",
       })
     })
 
-    it("does not show heart icon when showSaveIcon is set to false", () => {
-      renderWithRelay({ Artwork: () => artwork }, { showSaveIcon: false })
+    it("do not render new Save and Follow icons", () => {
+      renderWithRelay({ Artwork: () => artwork }, { showSaveIcon: true })
 
-      expect(screen.queryByTestId("save-artwork")).not.toBeOnTheScreen()
       expect(screen.queryByTestId("heart-icon-empty")).not.toBeOnTheScreen()
       expect(screen.queryByTestId("heart-icon-filled")).not.toBeOnTheScreen()
+
+      expect(screen.queryByTestId("follow-icon-filled")).not.toBeOnTheScreen()
+      expect(screen.queryByTestId("follow-icon-empty")).not.toBeOnTheScreen()
+    })
+  })
+
+  describe("variant-b", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        AREnableNewSaveAndFollowOnArtworkCard: true,
+      })
+      ;(useExperimentVariant as jest.Mock).mockReturnValue({
+        enabled: true,
+        payload: "variant-b",
+        variant: "variant-b",
+      })
     })
 
-    it("saving artworks works when showSaveIcon is set to true", () => {
-      renderWithRelay({ Artwork: () => artwork }, { showSaveIcon: true })
+    it("render only the new Save icon", () => {
+      renderWithRelay(
+        {
+          Artwork: () => artwork,
+        },
+        { showSaveIcon: true }
+      )
+
+      // do not render Follow icon
+      expect(screen.queryByTestId("follow-icon-empty")).not.toBeOnTheScreen()
+      expect(screen.queryByTestId("follow-icon-filled")).not.toBeOnTheScreen()
 
       expect(screen.getByTestId("heart-icon-empty")).toBeOnTheScreen()
       expect(screen.queryByTestId("heart-icon-filled")).not.toBeOnTheScreen()
 
-      fireEvent.press(screen.getByTestId("save-artwork"))
+      fireEvent.press(screen.getByTestId("heart-icon-empty"))
 
       expect(screen.getByTestId("heart-icon-filled")).toBeOnTheScreen()
       expect(screen.queryByTestId("heart-icon-empty")).not.toBeOnTheScreen()
     })
+
+    it("does not render the new Save icon if showSaveIcon is false", () => {
+      renderWithRelay(
+        {
+          Artwork: () => artwork,
+        },
+        { showSaveIcon: false }
+      )
+
+      expect(screen.queryByTestId("heart-icon-empty")).not.toBeOnTheScreen()
+      expect(screen.queryByTestId("heart-icon-filled")).not.toBeOnTheScreen()
+    })
   })
 
-  describe("follow artwork when AREnableAddFollowCTA is enabled", () => {
+  describe("variant-c", () => {
     beforeEach(() => {
       __globalStoreTestUtils__?.injectFeatureFlags({
-        AREnableAddFollowCTA: true,
+        AREnableNewSaveAndFollowOnArtworkCard: true,
+      })
+      ;(useExperimentVariant as jest.Mock).mockReturnValue({
+        enabled: true,
+        payload: "variant-c",
+        variant: "variant-c",
       })
     })
 
-    it("following an artist works", () => {
+    it("renders new Save icon", () => {
+      renderWithRelay(
+        {
+          Artwork: () => artwork,
+        },
+        { showSaveIcon: true }
+      )
+
+      expect(screen.getByTestId("heart-icon-empty")).toBeOnTheScreen()
+      expect(screen.queryByTestId("heart-icon-filled")).not.toBeOnTheScreen()
+
+      fireEvent.press(screen.getByTestId("heart-icon-empty"))
+
+      expect(screen.getByTestId("heart-icon-filled")).toBeOnTheScreen()
+      expect(screen.queryByTestId("heart-icon-empty")).not.toBeOnTheScreen()
+    })
+
+    it("renders new Follow icon", () => {
       renderWithRelay({
         Artwork: () => artwork,
       })
@@ -60,10 +128,22 @@ describe("ArtworkItemCTAs", () => {
       expect(screen.getByTestId("follow-icon-empty")).toBeOnTheScreen()
       expect(screen.queryByTestId("follow-icon-filled")).not.toBeOnTheScreen()
 
-      fireEvent.press(screen.getByTestId("follow-artist"))
+      fireEvent.press(screen.getByTestId("follow-icon-empty"))
 
       expect(screen.getByTestId("follow-icon-filled")).toBeOnTheScreen()
       expect(screen.queryByTestId("follow-icon-empty")).not.toBeOnTheScreen()
+    })
+
+    it("does not render the new Save icon if showSaveIcon is false", () => {
+      renderWithRelay(
+        {
+          Artwork: () => artwork,
+        },
+        { showSaveIcon: false }
+      )
+
+      expect(screen.queryByTestId("heart-icon-empty")).not.toBeOnTheScreen()
+      expect(screen.queryByTestId("heart-icon-filled")).not.toBeOnTheScreen()
     })
   })
 })

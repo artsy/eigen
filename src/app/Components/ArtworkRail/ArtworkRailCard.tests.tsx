@@ -114,10 +114,10 @@ describe("ArtworkRailCard", () => {
     })
   })
 
-  describe("save artwork when AREnableRedesignSaveCTA is disabled", () => {
+  describe("save artwork when AREnableNewSaveAndFollowOnArtworkCard is disabled", () => {
     beforeEach(() => {
       __globalStoreTestUtils__?.injectFeatureFlags({
-        AREnableRedesignSaveCTA: false,
+        AREnableNewSaveAndFollowOnArtworkCard: false,
       })
     })
 

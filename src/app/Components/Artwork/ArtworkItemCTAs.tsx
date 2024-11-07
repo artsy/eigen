@@ -9,7 +9,6 @@ import {
   Text,
   Touchable,
 } from "@artsy/palette-mobile"
-
 import { ArtworkItemCTAs_artwork$key } from "__generated__/ArtworkItemCTAs_artwork.graphql"
 import { useFollowArtist } from "app/Components/Artist/useFollowArtist"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
