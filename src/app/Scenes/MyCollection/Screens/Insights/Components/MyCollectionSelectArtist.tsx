@@ -1,6 +1,6 @@
 import { Flex } from "@artsy/palette-mobile"
 import { ArtistItem_artist$key } from "__generated__/ArtistItem_artist.graphql"
-import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
+import { AboveTheFoldFlashList } from "app/Components/AboveTheFoldFlashList"
 import Spinner from "app/Components/Spinner"
 import { ArtistItem } from "app/Scenes/MyCollection/Screens/Insights/ArtistItem"
 import { useScreenDimensions } from "app/utils/hooks"
@@ -19,7 +19,7 @@ export const SelectArtistList: React.FC<SelectArtistListProps> = (props) => {
   const { width, safeAreaInsets } = useScreenDimensions()
 
   return (
-    <AboveTheFoldFlatList<ArtistItem_artist$key>
+    <AboveTheFoldFlashList<ArtistItem_artist$key>
       testID="select-artist-flatlist"
       initialNumToRender={isTablet() ? 24 : 12}
       style={{ width, marginBottom: safeAreaInsets.bottom }}

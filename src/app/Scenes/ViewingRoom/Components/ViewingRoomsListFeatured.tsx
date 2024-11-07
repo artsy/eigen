@@ -1,7 +1,7 @@
 import { ContextModule } from "@artsy/cohesion"
 import { Spacer, Touchable } from "@artsy/palette-mobile"
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
-import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
+import { AboveTheFoldFlashList } from "app/Components/AboveTheFoldFlashList"
 import { MediumCard } from "app/Components/Cards"
 import { RailScrollProps } from "app/Scenes/Home/Components/types"
 import { navigate } from "app/system/navigation/navigate"
@@ -56,7 +56,7 @@ export const FeaturedRail: FC<FeaturedRailProps & Partial<RailScrollProps>> = ({
 
   return (
     <View>
-      <AboveTheFoldFlatList
+      <AboveTheFoldFlashList
         ListHeaderComponent={() => <Spacer x={2} />}
         ListFooterComponent={() => <Spacer x={2} />}
         horizontal

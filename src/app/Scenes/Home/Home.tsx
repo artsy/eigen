@@ -24,7 +24,7 @@ import { Home_news$data } from "__generated__/Home_news.graphql"
 import { Home_notificationsConnection$data } from "__generated__/Home_notificationsConnection.graphql"
 import { Home_recommendedAuctionLots$data } from "__generated__/Home_recommendedAuctionLots.graphql"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
-import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
+import { AboveTheFoldFlashList } from "app/Components/AboveTheFoldFlashList"
 import { ArtworkRailPlaceholder } from "app/Components/ArtworkRail/ArtworkRail"
 import { ArtistRailFragmentContainer } from "app/Components/Home/ArtistRails/ArtistRail"
 import { RecommendedArtistsRailFragmentContainer } from "app/Components/Home/ArtistRails/RecommendedArtistsRail"
@@ -357,7 +357,7 @@ const Home = memo((props: HomeProps) => {
 
   return (
     <View style={{ flex: 1, paddingTop: top }}>
-      <AboveTheFoldFlatList<HomeModule>
+      <AboveTheFoldFlashList<HomeModule>
         listRef={flatlistRef}
         testID="home-flat-list"
         data={modules}
