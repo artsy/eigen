@@ -211,7 +211,7 @@ const sectionsFragment = graphql`
 `
 
 export const homeViewScreenQuery = graphql`
-  query HomeViewQuery($count: Int!, $cursor: String) @cacheable {
+  query HomeViewQuery($count: Int!, $cursor: String) {
     homeView {
       experiments {
         name
