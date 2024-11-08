@@ -15,7 +15,6 @@ import { routingInstrumentation } from "app/system/errorReporting/setupSentry"
 import { internal_navigationRef } from "app/system/navigation/navigate"
 import { useReloadedDevNavigationState } from "app/system/navigation/useReloadedDevNavigationState"
 
-import { NetworkAwareProvider } from "app/utils/NetworkAwareProvider"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { logNavigation } from "app/utils/loggers"
@@ -97,7 +96,6 @@ export const Navigation = () => {
         {!isLoggedIn && <OnboardingWelcomeScreens />}
         {!!isLoggedIn && <AuthenticatedRoutes />}
       </NavigationContainer>
-      <NetworkAwareProvider />
       {!!fpsCounter && <FPSCounter style={{ bottom: Platform.OS === "ios" ? 40 : undefined }} />}
     </Fragment>
   )
