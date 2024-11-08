@@ -1,5 +1,4 @@
 #import "ARMapComponentViewController.h"
-// #import <react-native-mapbox-gl/RCTMGLMapView.h>
 @import MapboxMaps;
 
 @implementation ARMapComponentViewController
