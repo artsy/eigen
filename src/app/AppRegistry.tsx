@@ -399,12 +399,24 @@ export const modules = defineModules({
   ),
   ArtworkMedium: reactModule(ArtworkMediumQueryRenderer, {
     fullBleed: true,
+    alwaysPresentModally: !unsafe_getFeatureFlag("AREnableNewNavigation"),
+    modalPresentationStyle: !unsafe_getFeatureFlag("AREnableNewNavigation")
+      ? "fullScreen"
+      : undefined,
   }),
   ArtworkAttributionClassFAQ: reactModule(ArtworkAttributionClassFAQQueryRenderer, {
     fullBleed: true,
+    alwaysPresentModally: !unsafe_getFeatureFlag("AREnableNewNavigation"),
+    modalPresentationStyle: !unsafe_getFeatureFlag("AREnableNewNavigation")
+      ? "fullScreen"
+      : undefined,
   }),
   ArtworkCertificateAuthenticity: reactModule(CertificateOfAuthenticity, {
     fullBleed: true,
+    alwaysPresentModally: !unsafe_getFeatureFlag("AREnableNewNavigation"),
+    modalPresentationStyle: !unsafe_getFeatureFlag("AREnableNewNavigation")
+      ? "fullScreen"
+      : undefined,
   }),
   ArtworkList: reactModule(ArtworkListScreen, { hidesBackButton: true }),
   ArtworkRecommendations: reactModule(ArtworkRecommendationsScreen),
@@ -429,6 +441,7 @@ export const modules = defineModules({
   AuctionResultsForArtistsYouCollect: reactModule(AuctionResultsForArtistsYouCollect),
   AuctionRegistration: reactModule(RegistrationFlow, {
     alwaysPresentModally: true,
+    fullBleed: Platform.OS === "ios" && !unsafe_getFeatureFlag("AREnableNewNavigation"),
     hasOwnModalCloseButton: true,
     screenOptions: {
       // Don't allow the screen to be swiped away by mistake
@@ -442,6 +455,10 @@ export const modules = defineModules({
   }),
   AuctionBuyersPremium: reactModule(AuctionBuyersPremiumQueryRenderer, {
     fullBleed: true,
+    alwaysPresentModally: !unsafe_getFeatureFlag("AREnableNewNavigation"),
+    modalPresentationStyle: !unsafe_getFeatureFlag("AREnableNewNavigation")
+      ? "fullScreen"
+      : undefined,
   }),
   BottomTabs: reactModule(BottomTabs, { fullBleed: true }),
   BrowseSimilarWorks: reactModule(BrowseSimilarWorksQueryRenderer, {
@@ -449,8 +466,10 @@ export const modules = defineModules({
     hidesBottomTabs: true,
   }),
   CareerHighlightsBigCardsSwiper: reactModule(CareerHighlightsBigCardsSwiper, {
+    alwaysPresentModally: !unsafe_getFeatureFlag("AREnableNewNavigation"),
+    fullBleed: !unsafe_getFeatureFlag("AREnableNewNavigation"),
     hidesBackButton: true,
-    hidesBottomTabs: true,
+    hidesBottomTabs: unsafe_getFeatureFlag("AREnableNewNavigation"),
   }),
   City: reactModule(CityView, { fullBleed: true, ignoreTabs: true }),
   CityFairList: reactModule(CityFairListQueryRenderer, { fullBleed: true }),
@@ -463,6 +482,7 @@ export const modules = defineModules({
     hidesBackButton: true,
   }),
   ConsignmentInquiry: reactModule(ConsignmentInquiryScreen, {
+    hidesBottomTabs: !unsafe_getFeatureFlag("AREnableNewNavigation"),
     screenOptions: {
       gestureEnabled: false,
     },
@@ -733,11 +753,15 @@ export const modules = defineModules({
     hasOwnModalCloseButton: true,
     hidesBackButton: true,
     alwaysPresentModally: true,
+    modalPresentationStyle: !unsafe_getFeatureFlag("AREnableNewNavigation")
+      ? "fullScreen"
+      : undefined,
     screenOptions: {
       gestureEnabled: false,
     },
   }),
   ReactWebView: reactModule(ArtsyWebViewPage, {
+    fullBleed: !unsafe_getFeatureFlag("AREnableNewNavigation"),
     hasOwnModalCloseButton: true,
     hidesBackButton: true,
   }),
@@ -787,6 +811,9 @@ export const modules = defineModules({
   SubmitArtwork: reactModule(SubmitArtworkForm, {
     hidesBackButton: true,
     alwaysPresentModally: true,
+    modalPresentationStyle: !unsafe_getFeatureFlag("AREnableNewNavigation")
+      ? "fullScreen"
+      : undefined,
     screenOptions: {
       gestureEnabled: false,
     },
