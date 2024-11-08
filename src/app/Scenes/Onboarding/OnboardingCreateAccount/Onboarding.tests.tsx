@@ -1,35 +1,45 @@
+import { screen } from "@testing-library/react-native"
 import { Onboarding, OnboardingWelcomeScreens } from "app/Scenes/Onboarding/Onboarding"
 import { OnboardingQuiz } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingQuiz"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { NetworkAwareProvider } from "app/utils/NetworkAwareProvider"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 jest.mock("../OnboardingQuiz/OnboardingQuiz.tsx", () => ({
   OnboardingQuiz: () => "OnboardingQuiz",
 }))
 
 describe("Onboarding", () => {
-  it("renders the welcome screens when the onboarding state is none or complete", () => {
-    const tree1 = renderWithWrappersLEGACY(<Onboarding />)
-    __globalStoreTestUtils__?.injectState({ auth: { onboardingState: "none" } })
-    expect(tree1.root.findAllByType(OnboardingQuiz).length).toEqual(0)
-    expect(tree1.root.findAllByType(OnboardingWelcomeScreens).length).toEqual(1)
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({
+      AREnableSignupLoginFusion: false,
+    })
+  })
 
-    const tree2 = renderWithWrappersLEGACY(<Onboarding />)
+  it("renders the welcome screens when the onboarding state is none or complete", () => {
+    renderWithWrappers(<Onboarding />)
+    __globalStoreTestUtils__?.injectState({ auth: { onboardingState: "none" } })
+
+    expect(screen.UNSAFE_queryByType(OnboardingQuiz)).not.toBeOnTheScreen()
+    expect(screen.UNSAFE_getByType(OnboardingWelcomeScreens)).toBeOnTheScreen()
+
+    renderWithWrappers(<Onboarding />)
     __globalStoreTestUtils__?.injectState({ auth: { onboardingState: "complete" } })
-    expect(tree2.root.findAllByType(OnboardingQuiz).length).toEqual(0)
-    expect(tree2.root.findAllByType(OnboardingWelcomeScreens).length).toEqual(1)
+
+    expect(screen.UNSAFE_queryByType(OnboardingQuiz)).not.toBeOnTheScreen()
+    expect(screen.UNSAFE_getByType(OnboardingWelcomeScreens)).toBeOnTheScreen()
   })
 
   it("renders the personalization flow when the onboarding state is incomplete", () => {
-    const tree = renderWithWrappersLEGACY(<Onboarding />)
+    renderWithWrappers(<Onboarding />)
     __globalStoreTestUtils__?.injectState({ auth: { onboardingState: "incomplete" } })
-    expect(tree.root.findAllByType(OnboardingQuiz).length).toEqual(1)
-    expect(tree.root.findAllByType(OnboardingWelcomeScreens).length).toEqual(0)
+    expect(screen.UNSAFE_getByType(OnboardingQuiz)).toBeOnTheScreen()
+    expect(screen.UNSAFE_queryByType(OnboardingWelcomeScreens)).not.toBeOnTheScreen()
   })
 
   it("renders NetworkAwareProvider", () => {
-    const tree = renderWithWrappersLEGACY(<Onboarding />)
-    expect(tree.root.findAllByType(NetworkAwareProvider).length).toEqual(1)
+    renderWithWrappers(<Onboarding />)
+
+    expect(screen.UNSAFE_getByType(NetworkAwareProvider)).toBeOnTheScreen()
   })
 })
