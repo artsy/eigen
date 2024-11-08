@@ -9,7 +9,7 @@ import { useFragment, graphql, useMutation } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface Options {
-  artist: useFollowArtist_artist$key
+  artist: useFollowArtist_artist$key | null | undefined
   showToast?: boolean
   contextModule?: ContextModule
   contextScreenOwnerType?: OwnerType

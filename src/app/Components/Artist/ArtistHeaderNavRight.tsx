@@ -22,8 +22,7 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
   const [isFollowed, setIsFollowed] = useState(!!data?.isFollowed)
 
   const { handleFollowToggle } = useFollowArtist({
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    artist: data!,
+    artist: data,
     ownerType: Schema.OwnerEntityTypes.Artist,
   })
 

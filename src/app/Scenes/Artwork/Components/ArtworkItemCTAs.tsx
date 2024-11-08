@@ -92,8 +92,7 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
   })
 
   const { handleFollowToggle } = useFollowArtist({
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    artist: artist!,
+    artist,
     showToast: true,
     contextModule,
     contextScreenOwnerType,
