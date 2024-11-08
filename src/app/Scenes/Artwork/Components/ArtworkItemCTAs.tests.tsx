@@ -1,6 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkItemCTAsTestsQuery } from "__generated__/ArtworkItemCTAsTestsQuery.graphql"
-import { ArtworkItemCTAs } from "app/Components/Artwork/ArtworkItemCTAs"
+import { ArtworkItemCTAs } from "app/Scenes/Artwork/Components/ArtworkItemCTAs"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"

@@ -1,7 +1,6 @@
 import { Flex, Spacer } from "@artsy/palette-mobile"
 import { ArtworkRailCard_artwork$key } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
-import { ArtworkItemCTAs } from "app/Components/Artwork/ArtworkItemCTAs"
 import {
   ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
   ArtworkRailCardImage,
@@ -16,6 +15,7 @@ import {
 } from "app/Components/ArtworkRail/LegacyArtworkRailCardImage"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
+import { ArtworkItemCTAs } from "app/Scenes/Artwork/Components/ArtworkItemCTAs"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"

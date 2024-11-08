@@ -7,10 +7,13 @@ import {
   Text,
   useSpace,
   Touchable,
+  NewFillHeartIcon,
+  NewHeartIcon,
 } from "@artsy/palette-mobile"
 import { ArtworkSaveButton_artwork$key } from "__generated__/ArtworkSaveButton_artwork.graphql"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { isOpenOrUpcomingSale } from "app/Scenes/Artwork/utils/isOpenOrUpcomingSale"
+import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { Schema } from "app/utils/track"
 import { StyleSheet } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -41,6 +44,14 @@ const SaveButtonIcon: React.FC<IconProps> = ({ isSaved }) => {
   return <HeartIcon accessibilityLabel="Save icon" />
 }
 
+const NewSaveButtonIcon: React.FC<IconProps> = ({ isSaved }) => {
+  if (isSaved) {
+    return <NewFillHeartIcon accessibilityLabel="Saved icon" fill="black100" />
+  }
+
+  return <NewHeartIcon accessibilityLabel="Save icon" />
+}
+
 const getSaveButtonText = (isSaved: boolean, openOrUpcomingSale: boolean) => {
   if (openOrUpcomingSale) {
     return "Watch lot"
@@ -68,6 +79,19 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({
   const space = useSpace()
   const { trackEvent } = useTracking()
   const artworkData = useFragment(ArtworkSaveButtonFragment, artwork)
+
+  const newSaveAndFollowOnArtworkCardExperiment = useExperimentVariant(
+    "onyx_artwork-card-save-and-follow-cta-redesign"
+  )
+
+  const enableNewSaveCTA =
+    newSaveAndFollowOnArtworkCardExperiment.enabled &&
+    newSaveAndFollowOnArtworkCardExperiment.payload === "variant-b"
+  const enableNewSaveAndFollowCTAs =
+    newSaveAndFollowOnArtworkCardExperiment.enabled &&
+    newSaveAndFollowOnArtworkCardExperiment.payload === "variant-c"
+  const showNewSaveCTA = enableNewSaveCTA || enableNewSaveAndFollowCTAs
+
   const { isSaved, saveArtworkToLists } = useSaveArtworkToArtworkLists({
     artworkFragmentRef: artworkData,
     onCompleted: (isArtworkSaved) => {
@@ -102,6 +126,8 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({
       <Flex flexDirection="row" justifyContent="flex-start" alignItems="center">
         {openOrUpcomingSale ? (
           <WatchLotIcon isSaved={!!isSaved} />
+        ) : showNewSaveCTA ? (
+          <NewSaveButtonIcon isSaved={!!isSaved} />
         ) : (
           <SaveButtonIcon isSaved={!!isSaved} />
         )}
