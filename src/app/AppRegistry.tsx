@@ -725,9 +725,6 @@ registerCity()
 for (const moduleName of Object.keys(modules)) {
   const descriptor = modules[moduleName as AppModule]
   if (Platform.OS === "ios") {
-    if (moduleName === "City") {
-      console.warn("Registering City moudle for iOS")
-    }
     // TODO: this should not be needed. right?
     register(moduleName, descriptor.Component, {
       fullBleed: descriptor.options.fullBleed,
