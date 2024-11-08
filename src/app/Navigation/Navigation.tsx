@@ -2,22 +2,23 @@ import { Flex, Text } from "@artsy/palette-mobile"
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { addBreadcrumb } from "@sentry/react-native"
+import { FPSCounter } from "app/Components/FPSCounter"
 import { LoadingSpinner } from "app/Components/Modals/LoadingModal"
 import {
   AuthenticatedRoutes,
   AuthenticatedRoutesParams,
 } from "app/Navigation/AuthenticatedRoutes/Tabs"
-import {
-  UnauthenticatedRoutes,
-  UnauthenticatedRoutesParams,
-} from "app/Navigation/UnauthenticatedRoutes"
+import { UnauthenticatedRoutesParams } from "app/Navigation/UnauthenticatedRoutes"
+import { OnboardingWelcomeScreens } from "app/Scenes/Onboarding/Onboarding"
 import { GlobalStore } from "app/store/GlobalStore"
 import { routingInstrumentation } from "app/system/errorReporting/setupSentry"
 import { internal_navigationRef } from "app/system/navigation/navigate"
-
 import { useReloadedDevNavigationState } from "app/system/navigation/useReloadedDevNavigationState"
+
+import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { logNavigation } from "app/utils/loggers"
+import { Fragment } from "react"
 import { Platform } from "react-native"
 import SiftReactNative from "sift-react-native"
 
@@ -33,6 +34,8 @@ export const Navigation = () => {
   )
 
   const isLoggedIn = GlobalStore.useAppState((state) => state.auth.userID)
+  const fpsCounter = useDevToggle("DTFPSCounter")
+
   const { setSessionState: setNavigationReady } = GlobalStore.actions
 
   // Code for Sift tracking; needs to be manually fired on Android
@@ -40,58 +43,61 @@ export const Navigation = () => {
   const enableAdditionalSiftAndroidTracking = useFeatureFlag(
     "AREnableAdditionalSiftAndroidTracking"
   )
-  const trackSiftAndroid = Platform.OS === "android" && enableAdditionalSiftAndroidTracking
-
   if (!isReady) {
     return <NavigationLoadingIndicator />
   }
 
+  const trackSiftAndroid = Platform.OS === "android" && enableAdditionalSiftAndroidTracking
+
   return (
-    <NavigationContainer
-      ref={internal_navigationRef}
-      theme={theme}
-      initialState={initialState}
-      onReady={() => {
-        routingInstrumentation.registerNavigationContainer(internal_navigationRef)
+    <Fragment>
+      <NavigationContainer
+        ref={internal_navigationRef}
+        theme={theme}
+        initialState={initialState}
+        onReady={() => {
+          routingInstrumentation.registerNavigationContainer(internal_navigationRef)
 
-        setNavigationReady({ isNavigationReady: true })
+          setNavigationReady({ isNavigationReady: true })
 
-        if (trackSiftAndroid) {
-          const initialRouteName = internal_navigationRef?.current?.getCurrentRoute()?.name
-          SiftReactNative.setPageName(`screen_${initialRouteName}`)
-          SiftReactNative.upload()
-        }
-      }}
-      onStateChange={(state) => {
-        saveSession(state)
+          if (trackSiftAndroid) {
+            const initialRouteName = internal_navigationRef?.current?.getCurrentRoute()?.name
+            SiftReactNative.setPageName(`screen_${initialRouteName}`)
+            SiftReactNative.upload()
+          }
+        }}
+        onStateChange={(state) => {
+          saveSession(state)
 
-        const currentRoute = internal_navigationRef?.current?.getCurrentRoute()
-        const params = currentRoute?.params
+          const currentRoute = internal_navigationRef?.current?.getCurrentRoute()
+          const params = currentRoute?.params
 
-        if (__DEV__ && logNavigation) {
-          console.log(
-            `navigated to ${currentRoute?.name} ${
-              currentRoute?.params ? JSON.stringify(currentRoute.params) : ""
-            } `
-          )
-        }
+          if (__DEV__ && logNavigation) {
+            console.log(
+              `navigated to ${currentRoute?.name} ${
+                currentRoute?.params ? JSON.stringify(currentRoute.params) : ""
+              } `
+            )
+          }
 
-        addBreadcrumb({
-          message: `navigated to ${currentRoute?.name}`,
-          category: "navigation",
-          data: { ...params },
-          level: "info",
-        })
+          addBreadcrumb({
+            message: `navigated to ${currentRoute?.name}`,
+            category: "navigation",
+            data: { ...params },
+            level: "info",
+          })
 
-        if (trackSiftAndroid) {
-          SiftReactNative.setPageName(`screen_${currentRoute?.name}`)
-          SiftReactNative.upload()
-        }
-      }}
-    >
-      {!isLoggedIn && <UnauthenticatedRoutes />}
-      {!!isLoggedIn && <AuthenticatedRoutes />}
-    </NavigationContainer>
+          if (trackSiftAndroid) {
+            SiftReactNative.setPageName(`screen_${currentRoute?.name}`)
+            SiftReactNative.upload()
+          }
+        }}
+      >
+        {!isLoggedIn && <OnboardingWelcomeScreens />}
+        {!!isLoggedIn && <AuthenticatedRoutes />}
+      </NavigationContainer>
+      {!!fpsCounter && <FPSCounter style={{ bottom: Platform.OS === "ios" ? 40 : undefined }} />}
+    </Fragment>
   )
 }
 

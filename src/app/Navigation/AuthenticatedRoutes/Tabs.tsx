@@ -8,6 +8,8 @@ import { SearchTab } from "app/Navigation/AuthenticatedRoutes/SearchTab"
 import { SellTab } from "app/Navigation/AuthenticatedRoutes/SellTab"
 import { registerSharedModalRoutes } from "app/Navigation/AuthenticatedRoutes/SharedRoutes"
 import { BottomTabsButton } from "app/Scenes/BottomTabs/BottomTabsButton"
+import { OnboardingQuiz } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingQuiz"
+import { GlobalStore } from "app/store/GlobalStore"
 import { internal_navigationRef } from "app/system/navigation/navigate"
 import { Platform } from "react-native"
 
@@ -67,14 +69,21 @@ const AppTabs: React.FC = () => {
 export const AuthenticatedRoutesStack = createNativeStackNavigator()
 
 export const AuthenticatedRoutes: React.FC = () => {
+  const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
+
+  if (onboardingState === "incomplete") {
+    return <OnboardingQuiz />
+  }
   return (
     <AuthenticatedRoutesStack.Navigator>
-      <AuthenticatedRoutesStack.Screen
-        name="AppTabs"
-        component={AppTabs}
-        options={{ headerShown: false }}
-      />
-      {registerSharedModalRoutes()}
+      <AuthenticatedRoutesStack.Group>
+        <AuthenticatedRoutesStack.Screen
+          name="AppTabs"
+          component={AppTabs}
+          options={{ headerShown: false }}
+        />
+        {registerSharedModalRoutes()}
+      </AuthenticatedRoutesStack.Group>
     </AuthenticatedRoutesStack.Navigator>
   )
 }
