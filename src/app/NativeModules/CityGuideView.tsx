@@ -1,9 +1,9 @@
 import { requireNativeComponent } from "react-native"
 
-const ARTMap = requireNativeComponent("ARTCityGuideView")
+const ARTCityGuideView = requireNativeComponent("ARTCityGuideView")
 
 export const CityGuideView: React.FC = () => (
-  <ARTMap // @ts-ignore
+  <ARTCityGuideView // @ts-ignore
     style={{ flex: 1 }}
   />
 )

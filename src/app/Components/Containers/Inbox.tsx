@@ -49,7 +49,6 @@ export class Inbox extends React.Component<Props, State> {
   flatListHeight = 0
 
   componentDidMount() {
-    // @ts-ignore
     this.listener = listenToNativeEvents((event) => {
       if (event.type === "NOTIFICATION_RECEIVED") {
         // TODO: Figure out this one, maybe in the individual components

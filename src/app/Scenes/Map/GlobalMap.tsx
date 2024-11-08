@@ -606,7 +606,7 @@ export class GlobalMap extends React.Component<Props, State> {
                       <PinsShapeLayer
                         filterID={cityTabs[this.state.activeIndex].id}
                         featureCollections={this.state.featureCollections}
-                        onPress={(e: any) => this.handleFeaturePress(e)}
+                        onPress={(e) => this.handleFeaturePress(e)}
                       />
                     )}
                     <ShowCardContainer>{this.renderShowCard()}</ShowCardContainer>

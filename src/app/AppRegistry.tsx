@@ -289,12 +289,12 @@ function register(
   AppRegistry.registerComponent(screenName, () => WrappedComponent)
 }
 
-function registerCity() {
-  console.warn("Registering City")
-  AppRegistry.registerComponent("City", () => CityView)
-  AppRegistry.registerComponent("Map", () => MapContainer)
-  AppRegistry.registerComponent("CityPicker", () => CityPicker)
-}
+// function registerCity() {
+//   console.warn("Registering City")
+//   AppRegistry.registerComponent("City", () => CityView)
+//   AppRegistry.registerComponent("Map", () => MapContainer)
+//   AppRegistry.registerComponent("CityPicker", () => CityPicker)
+// }
 
 export interface ViewOptions {
   modalPresentationStyle?: "fullScreen" | "pageSheet" | "formSheet"
@@ -720,8 +720,6 @@ export const modules = defineModules({
   WorksForYou: reactModule(WorksForYouQueryRenderer, {}, [WorksForYouScreenQuery]),
 })
 
-// Register react modules with the app registry
-registerCity()
 for (const moduleName of Object.keys(modules)) {
   const descriptor = modules[moduleName as AppModule]
   if (Platform.OS === "ios") {
