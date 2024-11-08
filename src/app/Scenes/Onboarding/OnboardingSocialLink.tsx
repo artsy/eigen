@@ -189,7 +189,6 @@ export const OnboardingSocialLink: React.FC<
               }}
               onSubmitEditing={handleSubmit}
               blurOnSubmit={false}
-              clearButtonMode="while-editing"
               placeholder="Password"
               returnKeyType="go"
               textContentType="password"
