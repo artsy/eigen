@@ -268,8 +268,9 @@ export const features = {
   },
   AREnableSignupLoginFusion: {
     description: "Enable the fused signup and login flow",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableSignupLoginFusion",
   },
   AREnableMarketingCollectionsCategories: {
     description: "Enable marketing collections categories elements in the home view",
