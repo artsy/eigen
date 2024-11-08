@@ -4,6 +4,7 @@ import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { AuthenticatedRoutesParams } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { LargeHeaderView } from "app/Navigation/Utils/LargeHeaderView"
+import { __unsafe__onboardingNavigationRef } from "app/Scenes/Onboarding/Onboarding"
 import { GlobalStore } from "app/store/GlobalStore"
 import { CodePushOptions } from "app/system/devTools/DevMenu/CodePushOptions"
 import { DevMenuButtonItem } from "app/system/devTools/DevMenu/Components/DevMenuButtonItem"
@@ -49,7 +50,12 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
       style={{ flex: 1, borderRadius: 4, overflow: "hidden" }}
       contentContainerStyle={{ paddingBottom: 80 }}
     >
-      {!!enableNewNavigation && <LargeHeaderView />}
+      {!!enableNewNavigation &&
+      // The logged out stack is using a js react-navigation stack instead of a native stack
+      // and it doesn't support large headers so we don't need this additional header
+      !__unsafe__onboardingNavigationRef.current ? (
+        <LargeHeaderView />
+      ) : null}
 
       {!enableNewNavigation && (
         <Flex flexDirection="row" justifyContent="space-between" alignItems="center" mb={2} pr={2}>
