@@ -128,14 +128,14 @@ const LoginWelcomeStepForm: React.FC = () => {
 
       <Input
         autoCapitalize="none"
-        autoComplete="email"
+        autoComplete="username"
+        importantForAutofill="yes"
         autoCorrect={false}
         blurOnSubmit={false}
         placeholderTextColor={color("black30")}
         ref={emailRef}
         spellCheck={false}
         keyboardType="email-address"
-        textContentType="username"
         returnKeyType="next"
         title="Email"
         value={values.email}

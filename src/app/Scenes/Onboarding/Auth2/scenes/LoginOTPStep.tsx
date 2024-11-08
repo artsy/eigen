@@ -89,6 +89,7 @@ export const LoginOTPStep: React.FC = () => {
           <Input
             autoCapitalize="none"
             autoComplete="one-time-code"
+            importantForAutofill="yes"
             autoCorrect={false}
             blurOnSubmit={false}
             error={errors.otp}
@@ -103,7 +104,6 @@ export const LoginOTPStep: React.FC = () => {
             returnKeyType="done"
             title={codeType === "authentication" ? "Authentication code" : "Recovery code"}
             value={values.otp}
-            textContentType="oneTimeCode"
             onChangeText={(text) => {
               handleChange("otp")(text)
             }}
