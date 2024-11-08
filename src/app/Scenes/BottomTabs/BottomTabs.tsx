@@ -18,7 +18,6 @@ export const BottomTabs: React.FC<BottomTabBarProps> = (props) => {
   const focusedRoute = findFocusedRoute(props.state)
   const params = focusedRoute?.params as any
   const module = modules[params?.moduleName as AppModule]
-  // const unreadConversationsCount = 3
   const unreadConversationsCount = GlobalStore.useAppState(
     (state) => state.bottomTabs.sessionState.unreadCounts.conversations
   )

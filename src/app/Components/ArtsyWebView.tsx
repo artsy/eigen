@@ -10,12 +10,14 @@ import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useEnvironment } from "app/utils/hooks/useEnvironment"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import { useWebViewCallback } from "app/utils/useWebViewEvent"
 import { debounce } from "lodash"
 import { parse as parseQueryString } from "query-string"
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 import { Platform, View } from "react-native"
+import { Edge, SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 import Share from "react-native-share"
 import WebView, { WebViewNavigation, WebViewProps } from "react-native-webview"
 import { useTracking } from "react-tracking"
@@ -41,6 +43,10 @@ export interface ArtsyWebViewConfig {
    * Always present in a modal
    */
   alwaysPresentModally?: boolean
+  /**
+   * Always present in a modal
+   */
+  safeAreaEdges?: Array<Edge>
 }
 
 type WebViewWithShareTitleUrl = WebView & { shareTitleUrl: string }
@@ -55,6 +61,7 @@ export const ArtsyWebViewPage = ({
   systemBackAction,
   backProps,
   backAction,
+  safeAreaEdges,
 }: {
   url: string
   isPresentedModally?: boolean
@@ -62,6 +69,9 @@ export const ArtsyWebViewPage = ({
   systemBackAction?: () => void
   backAction?: () => void
 } & ArtsyWebViewConfig) => {
+  const saInsets = useSafeAreaInsets()
+  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
+
   const [canGoBack, setCanGoBack] = useState(false)
   const webURL = useEnvironment().webURL
   const ref = useRef<WebViewWithShareTitleUrl>(null)
@@ -123,7 +133,11 @@ export const ArtsyWebViewPage = ({
   const leftButton = useRightCloseButton && !canGoBack ? undefined : handleBackButtonPress
 
   return (
-    <Flex flex={1} backgroundColor="white">
+    <Flex
+      flex={1}
+      pt={isPresentedModally || enableNewNavigation ? 0 : `${saInsets.top}px`}
+      backgroundColor="white"
+    >
       <ArtsyKeyboardAvoidingView>
         <FancyModalHeader
           useXButton={!!isPresentedModally && !canGoBack}
@@ -140,6 +154,7 @@ export const ArtsyWebViewPage = ({
           url={url}
           ref={ref}
           isPresentedModally={isPresentedModally}
+          safeAreaEdges={safeAreaEdges}
           onNavigationStateChange={
             mimicBrowserBackButton
               ? (evt) => {
@@ -159,12 +174,20 @@ export const ArtsyWebView = forwardRef<
     url: string
     onNavigationStateChange?: WebViewProps["onNavigationStateChange"]
     isPresentedModally?: boolean
+    safeAreaEdges?: Array<Edge>
   }
 >(
   (
-    { url, onNavigationStateChange: onNavigationStateChangeProp, isPresentedModally = false },
+    {
+      url,
+      onNavigationStateChange: onNavigationStateChangeProp,
+      isPresentedModally = false,
+      safeAreaEdges = [],
+    },
     ref
   ) => {
+    const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
+
     const innerRef = useRef<WebViewWithShareTitleUrl>(null)
     useImperativeHandle(ref, () => innerRef.current as WebViewWithShareTitleUrl)
     const userAgent = getCurrentEmissionState().userAgent
@@ -244,8 +267,10 @@ export const ArtsyWebView = forwardRef<
       }
     }
 
+    const WebViewWrapper = isPresentedModally && !enableNewNavigation ? SafeAreaView : View
+
     return (
-      <View style={{ flex: 1 }}>
+      <WebViewWrapper style={{ flex: 1 }} edges={safeAreaEdges}>
         <WebView
           ref={innerRef}
           // sharedCookiesEnabled is required on iOS for the user to be implicitly logged into force/prediction
@@ -295,7 +320,7 @@ export const ArtsyWebView = forwardRef<
             <Text color="red">webview</Text>
           </Flex>
         )}
-      </View>
+      </WebViewWrapper>
     )
   }
 )

@@ -33,17 +33,15 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
   useBackHandler(handleBackButton)
 
   useEffect(() => {
-    queueMicrotask(() => {
-      if (enableNewNavigation) {
-        navigation?.setOptions({
-          headerRight: () => (
-            <Flex justifyContent="center" alignItems="center">
-              <NavButtons onClose={onClose} />
-            </Flex>
-          ),
-        })
-      }
-    })
+    if (enableNewNavigation) {
+      navigation?.setOptions({
+        headerRight: () => (
+          <Flex justifyContent="center" alignItems="center">
+            <NavButtons onClose={onClose} />
+          </Flex>
+        ),
+      })
+    }
   }, [navigation])
 
   return (
