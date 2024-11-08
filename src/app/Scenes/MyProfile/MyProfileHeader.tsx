@@ -1,39 +1,38 @@
 import { ActionType, ContextModule, OwnerType, TappedCompleteYourProfile } from "@artsy/cohesion"
 import {
+  BellIcon,
+  Button,
   Flex,
+  HeartIcon,
+  Image,
   MapPinIcon,
+  MultiplePersonsIcon,
+  PersonIcon,
   SettingsIcon,
+  ShieldFilledIcon,
+  SimpleMessage,
+  Skeleton,
+  SkeletonBox,
+  SkeletonText,
   Spacer,
   Text,
   Touchable,
   useColor,
-  PersonIcon,
   useSpace,
   VerifiedPersonIcon,
-  ShieldFilledIcon,
-  HeartIcon,
-  MultiplePersonsIcon,
-  BellIcon,
-  SkeletonBox,
-  Skeleton,
-  SkeletonText,
-  Button,
-  Image,
-  SimpleMessage,
 } from "@artsy/palette-mobile"
 import { MyProfileHeaderQuery } from "__generated__/MyProfileHeaderQuery.graphql"
 import { MyProfileHeader_me$key } from "__generated__/MyProfileHeader_me.graphql"
 import { navigate } from "app/system/navigation/navigate"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { withSuspense } from "app/utils/hooks/withSuspense"
-import { useRefetch } from "app/utils/relayHelpers"
 import { TouchableOpacity } from "react-native"
-import { useFragment, useLazyLoadQuery, graphql } from "react-relay"
+import { fetchQuery, graphql, useFragment, useLazyLoadQuery } from "react-relay"
 interface MyProfileHeaderProps {
   meProp: MyProfileHeader_me$key
 }
 
 export const MyProfileHeader: React.FC<MyProfileHeaderProps> = ({ meProp }) => {
-  const { refetch } = useRefetch()
   const me = useFragment<MyProfileHeader_me$key>(myProfileHeaderFragment, meProp)
 
   const space = useSpace()
@@ -54,15 +53,7 @@ export const MyProfileHeader: React.FC<MyProfileHeaderProps> = ({ meProp }) => {
           accessibilityRole="button"
           haptic
           hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
-          onPress={() =>
-            navigate("/my-profile/settings", {
-              passProps: {
-                onSuccess: () => {
-                  refetch()
-                },
-              },
-            })
-          }
+          onPress={() => navigate("/my-profile/settings")}
           style={{ height: "100%" }}
         >
           <SettingsIcon width={24} height={24} />
@@ -73,13 +64,7 @@ export const MyProfileHeader: React.FC<MyProfileHeaderProps> = ({ meProp }) => {
       <Flex height={70} width={70} borderRadius={35} backgroundColor={color("black10")}>
         <TouchableOpacity
           onPress={() => {
-            navigate("/my-profile/edit", {
-              passProps: {
-                onSuccess: () => {
-                  refetch()
-                },
-              },
-            })
+            navigate("/my-profile/edit")
           }}
           testID="profile-image"
           style={{
@@ -139,7 +124,7 @@ export const MyProfileHeader: React.FC<MyProfileHeaderProps> = ({ meProp }) => {
         )}
       </Flex>
 
-      <Spacer y={2} />
+      <Spacer y={1} />
 
       {/* Activity */}
       <Flex flexDirection="row" px={2} alignSelf="stretch" justifyContent="space-between">
@@ -208,7 +193,13 @@ const MyProfileHeaderPlaceholder: React.FC<{}> = () => {
           </Flex>
         </Flex>
 
-        <Spacer y={2} />
+        <Spacer y={1} />
+
+        <Flex flexDirection="row" justifyContent="center" alignItems="center">
+          <SkeletonBox width={140} height={36} borderRadius={18} />
+        </Flex>
+
+        <Spacer y={1} />
 
         <Flex flexDirection="row" px={2} alignSelf="stretch" justifyContent="space-between">
           <Flex flex={1}>
@@ -284,6 +275,10 @@ const myProfileHeaderQuery = graphql`
     }
   }
 `
+
+export const fetchProfileData = async () => {
+  return fetchQuery<MyProfileHeaderQuery>(getRelayEnvironment(), myProfileHeaderQuery, {})
+}
 
 export const MyProfileHeaderQueryRenderer = withSuspense({
   Component: (props) => {

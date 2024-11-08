@@ -5,9 +5,11 @@ import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { PendingOfferSection } from "app/Scenes/OrderHistory/OrderDetails/Components/PendingOfferSection"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { compact } from "lodash"
+import { Fragment } from "react"
 import { SectionList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ArtworkInfoSectionFragmentContainer } from "./ArtworkInfoSection"
@@ -100,100 +102,96 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
   ])
 
   return (
-    <PageWithSimpleHeader title="Order Details">
-      <SectionList
-        initialNumToRender={21}
-        contentContainerStyle={{ paddingHorizontal: 20, marginTop: 20, paddingBottom: 47 }}
-        sections={DATA}
-        keyExtractor={(item, index) => item.key + index.toString()}
-        renderItem={({ item }) => {
-          return (
-            <Flex flexDirection="column" justifyContent="space-between">
-              <Box>{item}</Box>
-            </Flex>
-          )
-        }}
-        stickySectionHeadersEnabled={false}
-        renderSectionHeader={({ section: { title, data } }) =>
-          title && data ? (
-            <Box>
-              <Text mt={20} mb={10} variant="sm" weight="medium">
-                {title}
-              </Text>
-            </Box>
-          ) : null
-        }
-        SectionSeparatorComponent={(data) => (
-          <Box
-            height={!!data.leadingItem && !!data.trailingSection ? 2 : 0}
-            mt={data.leadingItem && data.trailingSection ? 2 : 0}
-            backgroundColor="black10"
-            flexDirection="column"
-            justifyContent="center"
-            alignItems="center"
-          />
-        )}
-      />
-    </PageWithSimpleHeader>
+    <SectionList
+      initialNumToRender={21}
+      contentContainerStyle={{ paddingHorizontal: 20, marginTop: 20, paddingBottom: 47 }}
+      sections={DATA}
+      keyExtractor={(item, index) => item.key + index.toString()}
+      renderItem={({ item }) => {
+        return (
+          <Flex flexDirection="column" justifyContent="space-between">
+            <Box>{item}</Box>
+          </Flex>
+        )
+      }}
+      stickySectionHeadersEnabled={false}
+      renderSectionHeader={({ section: { title, data } }) =>
+        title && data ? (
+          <Box>
+            <Text mt={20} mb={10} variant="sm" weight="medium">
+              {title}
+            </Text>
+          </Box>
+        ) : null
+      }
+      SectionSeparatorComponent={(data) => (
+        <Box
+          height={!!data.leadingItem && !!data.trailingSection ? 2 : 0}
+          mt={data.leadingItem && data.trailingSection ? 2 : 0}
+          backgroundColor="black10"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+        />
+      )}
+    />
   )
 }
 
 export const OrderDetailsPlaceholder: React.FC<{}> = () => (
-  <PageWithSimpleHeader title="Order Details">
-    <Flex px={2}>
-      <Flex flexDirection="row" mt={2}>
-        <Flex mr={2}>
-          <PlaceholderText width={80} marginTop={10} />
-          <PlaceholderText width={100} marginTop={10} />
-          <PlaceholderText width={50} marginTop={10} />
-          <PlaceholderText width={70} marginTop={10} />
-        </Flex>
-        <Flex flexGrow={1}>
-          <PlaceholderText width={90} marginTop={10} />
-          <PlaceholderText width={60} marginTop={10} />
-          <PlaceholderText width={65} marginTop={10} />
-          <PlaceholderText width={60} marginTop={10} />
-        </Flex>
+  <Flex px={2} testID="order-details-placeholder">
+    <Flex flexDirection="row" mt={2}>
+      <Flex mr={2}>
+        <PlaceholderText width={80} marginTop={10} />
+        <PlaceholderText width={100} marginTop={10} />
+        <PlaceholderText width={50} marginTop={10} />
+        <PlaceholderText width={70} marginTop={10} />
       </Flex>
-      <Flex flexDirection="column" justifyContent="center" alignItems="center" mt={1}>
-        <Separator mt="15px" mb={2} />
-      </Flex>
-      <Flex>
-        <PlaceholderText width={90} />
-        <Flex flexDirection="row" mt={2}>
-          <PlaceholderBox height={60} width={60} marginLeft={16} marginRight={22} />
-          <Flex>
-            <PlaceholderText width={50 + Math.random() * 100} />
-            <PlaceholderText width={20 + Math.random() * 100} marginTop={10} />
-            <PlaceholderText width={80 + Math.random() * 100} />
-            <PlaceholderText width={30 + Math.random() * 100} />
-            <PlaceholderText width={30 + Math.random() * 100} />
-          </Flex>
-        </Flex>
-      </Flex>
-      <Flex flexDirection="column" justifyContent="center" alignItems="center" mt={1}>
-        <Separator mt={1} mb={2} />
-      </Flex>
-      <PlaceholderText width={100} />
-      <Flex flexDirection="row" justifyContent="space-between">
-        <Flex mt="2px">
-          <PlaceholderText width={40} />
-          <PlaceholderText width={60} marginTop={15} />
-          <PlaceholderText width={30} />
-          <PlaceholderText width={40} marginTop={15} />
-        </Flex>
-        <Flex alignItems="flex-end">
-          <PlaceholderText width={50} />
-          <PlaceholderText width={40} marginTop={15} />
-          <PlaceholderText width={40} />
-          <PlaceholderText width={50} marginTop={15} />
-        </Flex>
-      </Flex>
-      <Flex flexDirection="column" justifyContent="center" alignItems="center" mt={1}>
-        <Separator mt={1} mb={2} />
+      <Flex flexGrow={1}>
+        <PlaceholderText width={90} marginTop={10} />
+        <PlaceholderText width={60} marginTop={10} />
+        <PlaceholderText width={65} marginTop={10} />
+        <PlaceholderText width={60} marginTop={10} />
       </Flex>
     </Flex>
-  </PageWithSimpleHeader>
+    <Flex flexDirection="column" justifyContent="center" alignItems="center" mt={1}>
+      <Separator mt="15px" mb={2} />
+    </Flex>
+    <Flex>
+      <PlaceholderText width={90} />
+      <Flex flexDirection="row" mt={2}>
+        <PlaceholderBox height={60} width={60} marginLeft={16} marginRight={22} />
+        <Flex>
+          <PlaceholderText width={50 + Math.random() * 100} />
+          <PlaceholderText width={20 + Math.random() * 100} marginTop={10} />
+          <PlaceholderText width={80 + Math.random() * 100} />
+          <PlaceholderText width={30 + Math.random() * 100} />
+          <PlaceholderText width={30 + Math.random() * 100} />
+        </Flex>
+      </Flex>
+    </Flex>
+    <Flex flexDirection="column" justifyContent="center" alignItems="center" mt={1}>
+      <Separator mt={1} mb={2} />
+    </Flex>
+    <PlaceholderText width={100} />
+    <Flex flexDirection="row" justifyContent="space-between">
+      <Flex mt="2px">
+        <PlaceholderText width={40} />
+        <PlaceholderText width={60} marginTop={15} />
+        <PlaceholderText width={30} />
+        <PlaceholderText width={40} marginTop={15} />
+      </Flex>
+      <Flex alignItems="flex-end">
+        <PlaceholderText width={50} />
+        <PlaceholderText width={40} marginTop={15} />
+        <PlaceholderText width={40} />
+        <PlaceholderText width={50} marginTop={15} />
+      </Flex>
+    </Flex>
+    <Flex flexDirection="column" justifyContent="center" alignItems="center" mt={1}>
+      <Separator mt={1} mb={2} />
+    </Flex>
+  </Flex>
 )
 
 export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
@@ -243,22 +241,31 @@ export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
 })
 
 export const OrderDetailsQueryRender: React.FC<{ orderID: string }> = ({ orderID: orderID }) => {
+  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
+  const Wrapper = enableNewNavigation
+    ? Fragment
+    : ({ children }: { children: React.ReactNode }) => (
+        <PageWithSimpleHeader title="Order Details">{children}</PageWithSimpleHeader>
+      )
+
   return (
-    <QueryRenderer<OrderDetailsQuery>
-      environment={getRelayEnvironment()}
-      query={graphql`
-        query OrderDetailsQuery($orderID: ID!) {
-          order: commerceOrder(id: $orderID) @optionalField {
-            ...OrderDetails_order
+    <Wrapper>
+      <QueryRenderer<OrderDetailsQuery>
+        environment={getRelayEnvironment()}
+        query={graphql`
+          query OrderDetailsQuery($orderID: ID!) {
+            order: commerceOrder(id: $orderID) @optionalField {
+              ...OrderDetails_order
+            }
           }
-        }
-      `}
-      render={renderWithPlaceholder({
-        Container: OrderDetailsContainer,
-        renderPlaceholder: () => <OrderDetailsPlaceholder />,
-      })}
-      variables={{ orderID }}
-      cacheConfig={{ force: true }}
-    />
+        `}
+        render={renderWithPlaceholder({
+          Container: OrderDetailsContainer,
+          renderPlaceholder: () => <OrderDetailsPlaceholder />,
+        })}
+        variables={{ orderID }}
+        cacheConfig={{ force: true }}
+      />
+    </Wrapper>
   )
 }

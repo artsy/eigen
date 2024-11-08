@@ -62,7 +62,7 @@ describe(BottomTabs, () => {
 
       await flushPromiseQueue()
 
-      expect(screen.queryByLabelText("home visual clue")).toBeTruthy()
+      expect(screen.getByLabelText("home visual clue")).toBeTruthy()
     })
 
     it("should NOT be displayed if there are NO unseen notifications", async () => {
@@ -179,8 +179,6 @@ describe(BottomTabs, () => {
     // Check badge counters
     const currentInboxCounter = await findBadgeCounterForTab("inbox")
     expect(currentInboxCounter).toHaveTextContent("3")
-
-    jest.useRealTimers()
   })
 })
 

@@ -24,9 +24,7 @@ describe("MyProfileHeader", () => {
     expect(profileImage).toBeTruthy()
     fireEvent.press(profileImage)
     expect(navigate).toHaveBeenCalledTimes(1)
-    expect(navigate).toHaveBeenCalledWith("/my-profile/edit", {
-      passProps: { onSuccess: expect.anything() },
-    })
+    expect(navigate).toHaveBeenCalledWith("/my-profile/edit")
   })
 
   describe("settings screen", () => {

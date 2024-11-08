@@ -293,6 +293,11 @@ export const features = {
     readyForRelease: false,
     showInDevMenu: true,
   },
+  AREnableNewNavigation: {
+    description: "Enable new navigation infra (Requires App Restart!)",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
   AREnablePaymentFailureBanner: {
     description: "Enable payment failure banner",
     readyForRelease: true,

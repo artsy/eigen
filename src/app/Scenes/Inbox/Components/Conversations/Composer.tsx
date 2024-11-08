@@ -19,6 +19,8 @@ const Container = styled.View`
   align-items: flex-start;
   border-top-width: 1px;
   border-top-color: ${themeGet("colors.black10")};
+  border-bottom-color: ${themeGet("colors.black10")};
+  border-bottom-width: 1px;
   padding: 10px;
   background-color: ${(p: ContainerProps) => (p.active ? "white" : themeGet("colors.black5"))};
 `

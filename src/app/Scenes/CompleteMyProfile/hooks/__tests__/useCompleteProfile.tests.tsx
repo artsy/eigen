@@ -1,9 +1,9 @@
 import { useNavigation, useRoute } from "@react-navigation/native"
-import { renderHook, act } from "@testing-library/react-hooks"
+import { act, renderHook } from "@testing-library/react-hooks"
 import { useToast } from "app/Components/Toast/toastHook"
 import { CompleteMyProfileStore } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
 import { useCompleteProfile } from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
-import { navigate as artsyNavigate } from "app/system/navigation/navigate"
+import { goBack as ArtsyGoBack } from "app/system/navigation/navigate"
 import { useUpdateMyProfile } from "app/utils/mutations/useUpdateMyProfile"
 
 jest.mock("@react-navigation/native", () => ({
@@ -17,6 +17,7 @@ jest.mock("app/utils/mutations/useUpdateMyProfile", () => ({
 
 jest.mock("app/system/navigation/navigate", () => ({
   navigate: jest.fn(),
+  goBack: jest.fn(),
 }))
 
 jest.mock("app/Components/Toast/toastHook", () => ({
@@ -94,7 +95,7 @@ describe("useCompleteProfile", () => {
     expect(mockGoBack).toHaveBeenCalled()
   })
 
-  it('should navigate to "/my-profile" if cannot go back', () => {
+  it('should navigate back to "/my-profile" if cannot go back', () => {
     useNavigationMock.mockReturnValue({
       navigate: mockNavigate,
       goBack: mockGoBack,
@@ -110,7 +111,7 @@ describe("useCompleteProfile", () => {
       result.current.goBack()
     })
 
-    expect(artsyNavigate).toHaveBeenCalledWith("/my-profile")
+    expect(ArtsyGoBack).toHaveBeenCalled()
   })
 
   it("should save and exit correctly", () => {

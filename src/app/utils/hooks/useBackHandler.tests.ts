@@ -1,11 +1,19 @@
 import { renderHook } from "@testing-library/react-hooks"
 import { BackHandler } from "react-native"
-import { useBackHandler, useAndroidGoBack } from "./useBackHandler"
+import { useBackHandler } from "./useBackHandler"
 
 jest.mock("react-native", () => ({
   BackHandler: {
     addEventListener: jest.fn(),
     removeEventListener: jest.fn(),
+  },
+  Platform: {
+    OS: "ios",
+  },
+  NativeModules: {
+    ArtsyNativeModule: {
+      gitCommitShortHash: "1234567",
+    },
   },
 }))
 
@@ -58,27 +66,6 @@ describe("useBackHandler Hooks", () => {
 
       expect(removeEventListenerMock).toBeCalledTimes(1)
       expect(removeEventListenerMock).toBeCalledWith("hardwareBackPress", handler)
-    })
-  })
-
-  describe("useAndroidGoBack", () => {
-    it("should add back press listener on screen mount", () => {
-      renderHook(() => useAndroidGoBack())
-
-      expect(addEventListenerMock).toHaveBeenCalledTimes(1)
-      expect(removeEventListenerMock).toHaveBeenCalledTimes(0)
-    })
-
-    it("should remove back press listener on screen unmount", () => {
-      const { unmount } = renderHook(() => useAndroidGoBack())
-
-      expect(addEventListenerMock).toHaveBeenCalledTimes(1)
-      expect(removeEventListenerMock).toHaveBeenCalledTimes(0)
-
-      unmount()
-
-      expect(addEventListenerMock).toHaveBeenCalledTimes(1)
-      expect(removeEventListenerMock).toHaveBeenCalledTimes(1)
     })
   })
 })

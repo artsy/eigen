@@ -7,25 +7,6 @@ import { sanitize } from "app/store/persistence"
 import { max, min, range } from "lodash"
 import { Platform } from "react-native"
 
-jest.mock("app/NativeModules/LegacyNativeModules", () => ({
-  LegacyNativeModules: {
-    ...jest.requireActual("app/NativeModules/LegacyNativeModules").LegacyNativeModules,
-    ARNotificationsManager: {
-      ...jest.requireActual("app/NativeModules/LegacyNativeModules").LegacyNativeModules
-        .ARNotificationsManager,
-      nativeState: {
-        userAgent: "Jest Unit Tests",
-        authenticationToken: null,
-        onboardingState: "none",
-        launchCount: 1,
-        deviceId: "testDevice",
-        userID: null,
-        userEmail: null,
-      },
-    },
-  },
-}))
-
 describe(migrate, () => {
   it("leaves an object untouched if there are no migrations pending", () => {
     const result = migrate({

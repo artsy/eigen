@@ -1,4 +1,4 @@
-import { Spacer, Flex, Box, Text, useSpace, Tabs } from "@artsy/palette-mobile"
+import { Box, Flex, Spacer, Tabs, Text, Touchable, useSpace } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { PartnerShows_partner$data } from "__generated__/PartnerShows_partner.graphql"
 import { TabEmptyState } from "app/Components/TabEmptyState"
@@ -6,7 +6,7 @@ import { TabEmptyState } from "app/Components/TabEmptyState"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useState } from "react"
-import { ActivityIndicator, ImageBackground, TouchableWithoutFeedback } from "react-native"
+import { ActivityIndicator, ImageBackground } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 import { PartnerShowsRailContainer as PartnerShowsRail } from "./PartnerShowsRail"
@@ -35,7 +35,7 @@ const ShowGridItem: React.FC<ShowGridItemProps> = (props) => {
   const styles = itemIndex % 2 === 0 ? { paddingRight: space(1) } : { paddingLeft: space(1) }
   return (
     <GridItem key={show.id}>
-      <TouchableWithoutFeedback onPress={onPress}>
+      <Touchable onPress={onPress}>
         <Box style={styles}>
           {showImageURL ? (
             <BackgroundImage key={show.id} resizeMode="cover" source={{ uri: showImageURL }} />
@@ -48,7 +48,7 @@ const ShowGridItem: React.FC<ShowGridItemProps> = (props) => {
             {show.exhibitionPeriod}
           </Text>
         </Box>
-      </TouchableWithoutFeedback>
+      </Touchable>
       <Spacer y={2} />
     </GridItem>
   )

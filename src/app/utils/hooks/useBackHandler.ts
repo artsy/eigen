@@ -1,5 +1,6 @@
 import { useFocusEffect } from "@react-navigation/native"
 import { goBack } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useCallback, useEffect } from "react"
 import { BackHandler, InteractionManager } from "react-native"
 
@@ -23,8 +24,14 @@ export function useBackHandler(handler: () => boolean) {
  *
  */
 export function useAndroidGoBack() {
+  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
+
   useFocusEffect(
     useCallback(() => {
+      if (enableNewNavigation) {
+        return
+      }
+
       const onBackPress = () => {
         // this is needed in order to wait for the animation to finish
         // before moving to the previous screen for better performance

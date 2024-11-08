@@ -1,20 +1,21 @@
 import {
-  Spacer,
   Box,
-  Text,
-  Separator,
-  Join,
   Button,
+  CloseIcon,
+  Join,
   Screen,
+  Separator,
+  Spacer,
+  Text,
   Touchable,
   useSpace,
-  CloseIcon,
 } from "@artsy/palette-mobile"
 import { ArtworkMediumQuery } from "__generated__/ArtworkMediumQuery.graphql"
 import { ArtworkMedium_artwork$data } from "__generated__/ArtworkMedium_artwork.graphql"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useAndroidGoBack } from "app/utils/hooks/useBackHandler"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -24,23 +25,27 @@ interface Props {
 }
 
 export const ArtworkMedium: React.FC<Props> = ({ artwork }) => {
-  useAndroidGoBack()
   const space = useSpace()
+  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
+
+  useAndroidGoBack()
 
   return (
     <Screen>
-      <Screen.Header
-        leftElements={
-          <Touchable
-            accessibilityRole="button"
-            accessibilityLabel="Close"
-            onPress={() => goBack()}
-            hitSlop={{ top: space(2), left: space(2), bottom: space(2), right: space(2) }}
-          >
-            <CloseIcon fill="black100" />
-          </Touchable>
-        }
-      />
+      {!enableNewNavigation && (
+        <Screen.Header
+          leftElements={
+            <Touchable
+              accessibilityRole="button"
+              accessibilityLabel="Close"
+              onPress={() => goBack()}
+              hitSlop={{ top: space(2), left: space(2), bottom: space(2), right: space(2) }}
+            >
+              <CloseIcon fill="black100" />
+            </Touchable>
+          }
+        />
+      )}
       <Screen.Body>
         <ScrollView>
           <Box py={2}>

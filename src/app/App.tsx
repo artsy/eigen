@@ -1,5 +1,6 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import * as Sentry from "@sentry/react-native"
+import { Navigation } from "app/Navigation/Navigation"
 import { GlobalStore, unsafe__getEnvironment, unsafe_getDevToggle } from "app/store/GlobalStore"
 import { codePushOptions } from "app/system/codepush"
 import { AsyncStorageDevtools } from "app/system/devTools/AsyncStorageDevTools"
@@ -10,6 +11,7 @@ import { setupSentry } from "app/system/errorReporting/setupSentry"
 import { ModalStack } from "app/system/navigation/ModalStack"
 import { usePurgeCacheOnAppUpdate } from "app/system/relay/usePurgeCacheOnAppUpdate"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { addTrackingProvider } from "app/utils/track"
 import {
   SEGMENT_TRACKING_PROVIDER,
@@ -93,6 +95,7 @@ const Main = () => {
   )
 
   const fpsCounter = useDevToggle("DTFPSCounter")
+  const useNewNavigation = useFeatureFlag("AREnableNewNavigation")
 
   useStripeConfig()
   useSiftConfig()
@@ -127,6 +130,9 @@ const Main = () => {
     return <ForceUpdate forceUpdateMessage={forceUpdateMessage} />
   }
 
+  if (useNewNavigation) {
+    return <Navigation />
+  }
   if (!isLoggedIn || onboardingState === "incomplete") {
     return <Onboarding />
   }
@@ -139,17 +145,19 @@ const Main = () => {
   )
 }
 
-const InnerApp = () => (
-  <Providers>
-    <AsyncStorageDevtools />
+const InnerApp = () => {
+  return (
+    <Providers>
+      <AsyncStorageDevtools />
 
-    <DevMenuWrapper>
-      <Main />
-    </DevMenuWrapper>
+      <DevMenuWrapper>
+        <Main />
+      </DevMenuWrapper>
 
-    <DynamicIslandStagingIndicator />
-  </Providers>
-)
+      <DynamicIslandStagingIndicator />
+    </Providers>
+  )
+}
 
 const SentryApp = !__DEV__ ? Sentry.wrap(InnerApp) : InnerApp
 export const App = codePush(codePushOptions)(SentryApp)

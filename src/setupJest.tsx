@@ -126,7 +126,9 @@ jest.mock("@react-navigation/native", () => {
       navigate: mockNavigate,
       dispatch: jest.fn(),
       addListener: jest.fn(),
+      setOptions: jest.fn(),
     }),
+    useScrollToTop: jest.fn(),
   }
 })
 

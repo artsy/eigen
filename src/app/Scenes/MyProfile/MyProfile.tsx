@@ -1,12 +1,14 @@
 import { NavigationContainer } from "@react-navigation/native"
-import { createStackNavigator } from "@react-navigation/stack"
+import { createStackNavigator, StackScreenProps } from "@react-navigation/stack"
 import { MyCollectionArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { MyProfileEditFormScreen } from "./MyProfileEditForm"
 import { MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer } from "./MyProfileHeaderMyCollectionAndSavedWorks"
 
 const Stack = createStackNavigator()
 
-export const MyProfile = () => {
+type MyProfileProps = StackScreenProps<any>
+
+export const MyProfile: React.FC<MyProfileProps> = () => {
   return (
     <NavigationContainer independent>
       <Stack.Navigator

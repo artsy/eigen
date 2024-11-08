@@ -1,6 +1,15 @@
 import { ActionType } from "@artsy/cohesion"
-import { Spacer, Flex, Separator, Tabs, Skeleton, SkeletonText } from "@artsy/palette-mobile"
+import {
+  Spacer,
+  Flex,
+  Separator,
+  Tabs,
+  Skeleton,
+  SkeletonText,
+  Screen,
+} from "@artsy/palette-mobile"
 import { TabsContainer } from "@artsy/palette-mobile/dist/elements/Tabs/TabsContainer"
+import { StackScreenProps } from "@react-navigation/stack"
 import { InboxQuery } from "__generated__/InboxQuery.graphql"
 import { Inbox_me$data } from "__generated__/Inbox_me.graphql"
 import { ConversationsContainer } from "app/Scenes/Inbox/Components/Conversations/Conversations"
@@ -137,20 +146,26 @@ export const InboxScreenQuery = graphql`
   }
 `
 
-export const InboxQueryRenderer: React.FC<{ isVisible: boolean }> = (props) => {
+interface InboxQueryRendererProps extends StackScreenProps<any> {
+  isVisible?: boolean
+}
+
+export const InboxQueryRenderer: React.FC<InboxQueryRendererProps> = (props) => {
   return (
-    <QueryRenderer<InboxQuery>
-      environment={getRelayEnvironment()}
-      query={InboxScreenQuery}
-      variables={{}}
-      render={(...args) =>
-        renderWithPlaceholder({
-          Container: InboxContainer,
-          initialProps: props,
-          renderPlaceholder: () => <InboxPlaceholder />,
-        })(...args)
-      }
-    />
+    <Screen>
+      <QueryRenderer<InboxQuery>
+        environment={getRelayEnvironment()}
+        query={InboxScreenQuery}
+        variables={{}}
+        render={(...args) =>
+          renderWithPlaceholder({
+            Container: InboxContainer,
+            initialProps: props,
+            renderPlaceholder: () => <InboxPlaceholder />,
+          })(...args)
+        }
+      />
+    </Screen>
   )
 }
 
