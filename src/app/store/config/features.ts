@@ -288,10 +288,11 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableDynamicHomeView",
   },
-  AREnableHomeVieTasksSection: {
+  AREnableHomeViewTasksSection: {
     description: "Enable the Home view tasks section",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableHomeViewTasksSection",
   },
   AREnablePaymentFailureBanner: {
     description: "Enable payment failure banner",
