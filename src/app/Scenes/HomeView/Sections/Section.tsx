@@ -32,7 +32,7 @@ export interface SectionSharedProps extends FlexProps {
 }
 
 export const Section: React.FC<SectionProps> = ({ section, ...rest }) => {
-  const enableHomeViewTasksSection = useFeatureFlag("AREnableHomeVieTasksSection")
+  const enableHomeViewTasksSection = useFeatureFlag("AREnableHomeViewTasksSection")
 
   if (!section.internalID) {
     if (__DEV__) {

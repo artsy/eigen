@@ -289,10 +289,11 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableDynamicHomeView",
   },
-  AREnableHomeVieTasksSection: {
+  AREnableHomeViewTasksSection: {
     description: "Enable the Home view tasks section",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableHomeViewTasksSection",
   },
   AREnableNewNavigation: {
     description: "Enable new navigation infra (Requires App Restart!)",
