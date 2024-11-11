@@ -110,6 +110,9 @@ export const useSocialLogin = () => {
       Alert.alert("No Artsy account found", error.message, [
         {
           text: "OK",
+          onPress: () => {
+            captureMessage("AUTH_BLOCKED: " + error.message)
+          },
         },
       ])
     } else {
