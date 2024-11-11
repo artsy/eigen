@@ -63,7 +63,7 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
   const partnerIcon = artworks[0]?.partner?.profile?.icon?.url
 
   const handleManageSaves = () => {
-    navigate("/settings/saves")
+    navigate("/favorites/saves")
   }
 
   return (

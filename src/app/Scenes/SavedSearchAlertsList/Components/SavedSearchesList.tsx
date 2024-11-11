@@ -104,7 +104,7 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
                   artworksCount: artworksCount,
                 })
               } else {
-                navigate(`settings/alerts/${item.internalID}/edit`)
+                navigate(`favorites/alerts/${item.internalID}/edit`)
               }
             }}
             onDelete={(id) => {

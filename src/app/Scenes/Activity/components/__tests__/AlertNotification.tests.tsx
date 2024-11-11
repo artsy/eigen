@@ -64,7 +64,7 @@ describe("AlertNotification", () => {
       fireEvent.press(editAlertButton)
 
       await waitFor(() =>
-        expect(navigate).toHaveBeenCalledWith("/settings/alerts/internal-alert-id/edit")
+        expect(navigate).toHaveBeenCalledWith("/favorites/alerts/internal-alert-id/edit")
       )
     })
   })
@@ -82,7 +82,7 @@ describe("AlertNotification", () => {
       fireEvent.press(editAlertButton)
 
       await waitFor(() =>
-        expect(navigate).toHaveBeenCalledWith("/settings/alerts/internal-alert-id/edit")
+        expect(navigate).toHaveBeenCalledWith("/favorites/alerts/internal-alert-id/edit")
       )
     })
   })
