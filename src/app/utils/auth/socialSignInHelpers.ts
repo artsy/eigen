@@ -109,17 +109,7 @@ export const useSocialLogin = () => {
     if (errorMode === "no account") {
       Alert.alert("No Artsy account found", error.message, [
         {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
           text: "OK",
-          onPress: () => {
-            // TODO: How should this be handled in auth2?
-            // navigation.replace(mode === "login" ? "OnboardingCreateAccount" : "OnboardingLogin", {
-            //   withFadeAnimation: true,
-            // })
-          },
         },
       ])
     } else {
