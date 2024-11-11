@@ -10,6 +10,7 @@ export type ExperimentDescriptor = {
   readonly description: string
   // value suggestions for the payload ideally matching the ones coming from Unleash
   readonly payloadSuggestions?: string[]
+  readonly variantSuggestions?: string[]
 } & ExperimentDescriptorUnion
 
 export const experiments = {
@@ -26,6 +27,7 @@ export const experiments = {
     fallbackVariant: "variant-a",
     description: "Redesign Save CTA and Add Follow CTA on Artwork Grid/Rail",
     payloadSuggestions: ["variant-a", "variant-b", "variant-c"],
+    variantSuggestions: ["variant-a", "variant-b", "variant-c"],
   },
 } satisfies { [key: string]: ExperimentDescriptor }
 

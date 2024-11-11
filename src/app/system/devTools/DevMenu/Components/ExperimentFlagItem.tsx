@@ -105,23 +105,45 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
                       <Text color="black100" variant="xs" mt="3px" mr={0.5}>
                         Suggestions:
                       </Text>
-                      <Pill
-                        variant="badge"
-                        mr={0.5}
-                        onPress={() => {
-                          setVariant("control")
-                        }}
-                      >
-                        control {experiment.unleashVariant === "control" && "(default)"}
-                      </Pill>
-                      <Pill
-                        variant="badge"
-                        onPress={() => {
-                          setVariant("experiment")
-                        }}
-                      >
-                        experiment {experiment.unleashVariant === "experiment" && "(default)"}
-                      </Pill>
+
+                      {!isEmpty(localExperiment.variantSuggestions) ? (
+                        <Flex flexDirection="row" mt={1} flexWrap="wrap" justifyContent="flex-end">
+                          {localExperiment.variantSuggestions?.map((variantSuggestion) => {
+                            return (
+                              <Pill
+                                variant="badge"
+                                mr={0.5}
+                                key={variantSuggestion}
+                                onPress={() => {
+                                  setPayload(variantSuggestion)
+                                }}
+                              >
+                                {variantSuggestion}
+                              </Pill>
+                            )
+                          })}
+                        </Flex>
+                      ) : (
+                        <>
+                          <Pill
+                            variant="badge"
+                            mr={0.5}
+                            onPress={() => {
+                              setVariant("control")
+                            }}
+                          >
+                            control {experiment.unleashVariant === "control" && "(default)"}
+                          </Pill>
+                          <Pill
+                            variant="badge"
+                            onPress={() => {
+                              setVariant("experiment")
+                            }}
+                          >
+                            experiment {experiment.unleashVariant === "experiment" && "(default)"}
+                          </Pill>
+                        </>
+                      )}
                     </Flex>
                   </Flex>
 
@@ -273,6 +295,7 @@ const CustomInput: React.FC<{
     <TextInput
       value={value}
       onChangeText={onChangeText}
+      autoCapitalize="none"
       style={{
         borderColor: "gray",
         borderWidth: 1,

@@ -43,6 +43,9 @@ export function useExperimentVariant(name: EXPERIMENT_NAME): {
     setVariant(client.getVariant(name))
   }, [lastUpdate])
 
+  const unleashVariant = variant?.name ?? "default-variant"
+  const unleashPayload = variant?.payload?.value
+
   const trackExperiment = (contextProps?: ContextProps) => {
     if (!enabled) {
       return
@@ -50,14 +53,11 @@ export function useExperimentVariant(name: EXPERIMENT_NAME): {
 
     reportExperimentVariant({
       experimentName: name,
-      variantName: variant?.name ?? "default-variant",
-      payload: variant?.payload?.value,
+      variantName: localVariantOverrides[name] || unleashVariant,
+      payload: localPayloadOverrides[name] || unleashPayload,
       ...(contextProps as ContextProps),
     })
   }
-
-  const unleashVariant = variant?.name ?? "default-variant"
-  const unleashPayload = variant?.payload?.value
 
   return {
     enabled: enabled ?? false,
