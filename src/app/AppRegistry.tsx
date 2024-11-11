@@ -292,13 +292,6 @@ function register(
   AppRegistry.registerComponent(screenName, () => WrappedComponent)
 }
 
-// function registerCity() {
-//   console.warn("Registering City")
-//   AppRegistry.registerComponent("City", () => CityView)
-//   AppRegistry.registerComponent("Map", () => MapContainer)
-//   AppRegistry.registerComponent("CityPicker", () => CityPicker)
-// }
-
 export interface ViewOptions {
   modalPresentationStyle?: "fullScreen" | "pageSheet" | "formSheet"
   hasOwnModalCloseButton?: boolean
