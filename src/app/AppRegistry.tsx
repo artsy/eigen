@@ -275,12 +275,6 @@ class PageWrapper extends React.Component<PageWrapperProps> {
   }
 }
 
-/**
- * eigen brigde
- * (RCTBridge *) 0x0000600001cd17a0
- * (RCTBridge *) 0x0000600001ccc870
- */
-
 function register(
   screenName: string,
   Component: React.ComponentType<any>,
