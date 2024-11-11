@@ -95,7 +95,7 @@ describe("ActivityRail", () => {
           item: {
             __typename: "PartnerOfferCreatedNotificationItem",
             available: true,
-            expiresAt: "2024-11-11T11:11:11+00:00",
+            expiresAt: "2025-11-11T11:11:11+00:00",
           },
         },
       }),
