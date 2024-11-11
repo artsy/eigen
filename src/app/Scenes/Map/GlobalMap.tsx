@@ -587,8 +587,9 @@ export class GlobalMap extends React.Component<Props, State> {
                 {...mapProps}
                 onRegionIsChanging={this.onRegionIsChanging}
                 onDidFinishRenderingMapFully={this.onDidFinishRenderingMapFully}
-                attributionEnabled={true}
-                attributionPosition={{ top: 10, left: 10 }}
+                attributionEnabled
+                logoEnabled
+                logoPosition={{ bottom: 150, left: 10 }}
                 onPress={this.onPressMap}
               >
                 <MapboxGL.Camera
