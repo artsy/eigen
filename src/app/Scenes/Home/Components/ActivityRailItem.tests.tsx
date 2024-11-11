@@ -83,6 +83,9 @@ describe("ActivityRail", () => {
   })
 
   it("renders a PARTNER_OFFER_CREATED artwork alert activity item", () => {
+    // Today is Friday, November 01, 2024 11:11:11.000 AM UTC in milliseconds
+    Date.now = () => 1730459471000
+
     renderWithRelay({
       Me: () => ({
         notification: {
