@@ -263,24 +263,6 @@ const CGFloat MARGIN = 10;
     }];
 }
 
-// TODO: display attribution on rn side
-//- (void)displayLicensingViews
-//{
-//    RNMBXMapView *mapView = FindMapView(self.mapVC.view);
-//    mapView.attribut
-//
-//    if (!self.attributionViewsConstraintsAdded) {
-//        // TODO: Ist kaput
-//        // [mapView.attributionButton alignBottomEdgeWithView:self.mapVC.view predicate:@"-50"];
-//        // [mapView.logoView alignBottomEdgeWithView:self.mapVC.view predicate:@"-50"];
-//        
-//        // TODO: replace with:
-//        [mapView.ornaments.options.attributionButton alignBottomEdgeWithView:self.mapVC.view predicate:@"-50"];
-//        [mapView.ornaments.options.logo alignBottomEdgeWithView:self.mapVC.view predicate:@"-50"];
-//        self.attributionViewsConstraintsAdded = YES;
-//    }
-//}
-
 - (void)userSelectedCityAtIndex:(NSInteger)cityIndex
 {
     ARCity *city = [[ARCity cities] objectAtIndex:cityIndex];
