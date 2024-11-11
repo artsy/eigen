@@ -1,31 +1,18 @@
 import { useCountryCodeQuery } from "__generated__/useCountryCodeQuery.graphql"
 import { useClientQuery } from "app/utils/useClientQuery"
-import { useEffect, useState } from "react"
-import { getIpAddress } from "react-native-device-info"
 import { graphql } from "react-relay"
 
 const USE_COUNTRY_CODE_QUERY = graphql`
-  query useCountryCodeQuery($ip: String!) {
-    requestLocation(ip: $ip) {
+  query useCountryCodeQuery {
+    requestLocation {
       countryCode
     }
   }
 `
 
 export const useCountryCode = () => {
-  const [ip, setIp] = useState("0.0.0.0")
-
-  useEffect(() => {
-    getIpAddress().then((ip) => {
-      setIp(ip)
-    })
-  }, [])
-
   const { data, loading, error } = useClientQuery<useCountryCodeQuery>({
     query: USE_COUNTRY_CODE_QUERY,
-    variables: {
-      ip,
-    },
     cacheConfig: {
       networkCacheConfig: {
         force: false,
