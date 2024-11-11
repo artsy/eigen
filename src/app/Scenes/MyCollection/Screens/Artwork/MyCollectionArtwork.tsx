@@ -6,7 +6,7 @@ import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
 import { MyCollectionArtworkAboutWork } from "app/Scenes/MyCollection/Screens/Artwork/Components/ArtworkAbout/MyCollectionArtworkAboutWork"
 import { MyCollectionArtworkArticles } from "app/Scenes/MyCollection/Screens/Artwork/Components/ArtworkAbout/MyCollectionArtworkArticles"
 import { GlobalStore } from "app/store/GlobalStore"
-import { goBack, navigate, popToRoot } from "app/system/navigation/navigate"
+import { goBack, navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { getVortexMedium } from "app/utils/marketPriceInsightHelpers"
@@ -72,7 +72,6 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
     navigate(`my-collection/artworks/${artwork?.internalID}/edit`, {
       passProps: {
         mode: "edit",
-        onDelete: popToRoot,
       },
     })
   }, [artwork])

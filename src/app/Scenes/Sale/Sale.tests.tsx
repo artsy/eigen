@@ -1,6 +1,6 @@
 import { waitFor } from "@testing-library/react-native"
 import { CascadingEndTimesBanner } from "app/Scenes/Artwork/Components/CascadingEndTimesBanner"
-import { navigate, popParentViewController } from "app/system/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { DateTime } from "luxon"
 import { Suspense } from "react"
@@ -9,7 +9,6 @@ import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
 import { SaleQueryRenderer } from "./Sale"
 
 jest.mock("app/system/navigation/navigate", () => ({
-  popParentViewController: jest.fn(),
   navigate: jest.fn(),
 }))
 
@@ -52,9 +51,11 @@ describe("Sale", () => {
     expect(navigate).toHaveBeenCalledTimes(0)
     await waitFor(() => expect(navigate).toHaveBeenCalledTimes(1))
     await waitFor(() =>
-      expect(navigate).toHaveBeenCalledWith("https://live-staging.artsy.net/live-sale-slug")
+      expect(navigate).toHaveBeenCalledWith("https://live-staging.artsy.net/live-sale-slug", {
+        replaceActiveModal: true,
+        replaceActiveScreen: true,
+      })
     )
-    await waitFor(() => expect(popParentViewController).toHaveBeenCalledTimes(1))
   })
 
   it("switches to live auction view when sale goes live with no endAt", async () => {
@@ -79,9 +80,11 @@ describe("Sale", () => {
     expect(navigate).toHaveBeenCalledTimes(0)
     await waitFor(() => expect(navigate).toHaveBeenCalledTimes(1))
     await waitFor(() =>
-      expect(navigate).toHaveBeenCalledWith("https://live-staging.artsy.net/live-sale-slug")
+      expect(navigate).toHaveBeenCalledWith("https://live-staging.artsy.net/live-sale-slug", {
+        replaceActiveModal: true,
+        replaceActiveScreen: true,
+      })
     )
-    await waitFor(() => expect(popParentViewController).toHaveBeenCalledTimes(1))
   })
 
   it("doesn't switch to live auction view when sale is closed", async () => {
@@ -104,7 +107,6 @@ describe("Sale", () => {
 
     await waitFor(() => {
       expect(navigate).toHaveBeenCalledTimes(0)
-      expect(popParentViewController).toHaveBeenCalledTimes(0)
     })
   })
 

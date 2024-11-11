@@ -10,10 +10,10 @@
     "@jridgewell/gen-mapping" "^0.3.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@artsy/cohesion@4.214.0":
-  version "4.214.0"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.214.0.tgz#e01d0e189427c94ad9aeade88fb959507a3122da"
-  integrity sha512-OGbvPxhCC7DuJ+aNR3yw5vXvsHE4jy1fbZs4cWL4KnChjk8vo7xMxqLQFmc8FXckmSFG2O5mdWnrhF8QEgIFPw==
+"@artsy/cohesion@4.215.0":
+  version "4.215.0"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.215.0.tgz#751aa7b6d0c5665d8e538dafcaf9cf6be864c956"
+  integrity sha512-gb+TMl59R3IPPKucTbsjhFlOom/y8GF4XkEE3Tfe8tA9Agt2FPZCJXIjYELIGiyRn9EKMQUjBeLF1G927ToSzQ==
   dependencies:
     core-js "3"
 
@@ -13319,10 +13319,10 @@ react-native-safe-area-context@3.4.0:
   resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-3.4.0.tgz#b751f492a7f7470bccb09f1a11ccc276a3c5fe98"
   integrity sha512-kmzSK8L9LX+1rF6+qPBZR0kjGn5rE0IHNHL4px/lNwyxA+0siekTkCG+BlzbBy4V3yKeLzQ+UxgT9mEtDHs/Tg==
 
-react-native-screens@3.34.0:
-  version "3.34.0"
-  resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-3.34.0.tgz#1291a460c5bc59e2ba581b42d40fa9a58d3b1197"
-  integrity sha512-8ri3Pd9QcpfXnVckOe/Lnto+BXmSPHV/Q0RB0XW0gDKsCv5wi5k7ez7g1SzgiYHl29MSdiqgjH30zUyOOowOaw==
+react-native-screens@3.35.0:
+  version "3.35.0"
+  resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-3.35.0.tgz#4acf4c7d331d47d33d0214d415779540b7664e0e"
+  integrity sha512-rmkqb/M/SQIrXwygk6pXcOhgHltYAhidf1WceO7ujAxkr6XtwmgFyd1HIztsrJa568GrAuwPdQ11I7TpVk+XsA==
   dependencies:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"

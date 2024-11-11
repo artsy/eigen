@@ -268,8 +268,9 @@ export const features = {
   },
   AREnableSignupLoginFusion: {
     description: "Enable the fused signup and login flow",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableSignupLoginFusion",
   },
   AREnableMarketingCollectionsCategories: {
     description: "Enable marketing collections categories elements in the home view",
@@ -288,8 +289,14 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableDynamicHomeView",
   },
-  AREnableHomeVieTasksSection: {
+  AREnableHomeViewTasksSection: {
     description: "Enable the Home view tasks section",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableHomeViewTasksSection",
+  },
+  AREnableNewNavigation: {
+    description: "Enable new navigation infra (Requires App Restart!)",
     readyForRelease: false,
     showInDevMenu: true,
   },

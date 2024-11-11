@@ -1,3 +1,4 @@
+import { Touchable } from "@artsy/palette-mobile"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
 import { ModalStack } from "app/system/navigation/ModalStack"
 import { switchTab } from "app/system/navigation/navigate"
@@ -5,7 +6,6 @@ import { extractText } from "app/utils/tests/extractText"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { TouchableWithoutFeedback } from "react-native"
 import { BottomTabsButton } from "./BottomTabsButton"
 
 const TestWrapper: React.FC<React.ComponentProps<typeof BottomTabsButton>> = (props) => {
@@ -24,7 +24,7 @@ describe(BottomTabsButton, () => {
     expect(__globalStoreTestUtils__?.getCurrentState().bottomTabs.sessionState.selectedTab).toBe(
       "home"
     )
-    tree.root.findByType(TouchableWithoutFeedback).props.onPress()
+    tree.root.findByType(Touchable).props.onPress()
     await flushPromiseQueue()
     expect(switchTab).toHaveBeenCalledWith("search")
   })
@@ -32,7 +32,7 @@ describe(BottomTabsButton, () => {
   it(`dispatches an analytics action on press`, async () => {
     const tree = renderWithWrappersLEGACY(<TestWrapper tab="sell" />)
     expect(mockTrackEvent).not.toHaveBeenCalled()
-    tree.root.findByType(TouchableWithoutFeedback).props.onPress()
+    tree.root.findByType(Touchable).props.onPress()
     await flushPromiseQueue()
     expect(switchTab).toHaveBeenCalledWith("sell")
     expect(mockTrackEvent).toHaveBeenCalledWith({

@@ -4,10 +4,11 @@ import { OrderHistory_me$data } from "__generated__/OrderHistory_me.graphql"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderBox, PlaceholderButton, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import React, { useCallback, useState } from "react"
+import React, { Fragment, useCallback, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { OrderHistoryRowContainer } from "./OrderHistoryRow"
@@ -18,7 +19,7 @@ export const OrderHistory: React.FC<{ me: OrderHistory_me$data; relay: RelayPagi
   relay,
   me,
 }) => {
-  const { color } = useTheme()
+  const { color, space } = useTheme()
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [isLoadingMore, setIsLoadingMore] = useState(false)
 
@@ -41,74 +42,64 @@ export const OrderHistory: React.FC<{ me: OrderHistory_me$data; relay: RelayPagi
   const orders = extractNodes(me.orders)
 
   return (
-    <PageWithSimpleHeader title="Order History">
-      <FlatList
-        style={{ flex: 1 }}
-        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
-        data={orders}
-        keyExtractor={(order) => order.code}
-        contentContainerStyle={{ flexGrow: 1, paddingTop: orders.length === 0 ? 10 : 20 }}
-        renderItem={({ item }) => (
-          <Flex flexDirection="row" justifyContent="space-between" px="15px">
-            <OrderHistoryRowContainer order={item} key={item.code} />
-          </Flex>
-        )}
-        ListEmptyComponent={
-          <Flex
-            flex={1}
-            flexDirection="column"
-            justifyContent="center"
-            alignItems="center"
-            px="15px"
-          >
-            <Text variant="sm-display" color={color("black60")}>
-              No orders
-            </Text>
-          </Flex>
-        }
-        onEndReachedThreshold={0.25}
-        onEndReached={onLoadMore}
-        ItemSeparatorComponent={() => (
-          <Flex flexDirection="column" justifyContent="center" alignItems="center" px="15px">
-            <Separator mt={10} mb={20} />
-          </Flex>
-        )}
-      />
-    </PageWithSimpleHeader>
+    <FlatList
+      style={{ flex: 1 }}
+      refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+      data={orders}
+      keyExtractor={(order) => order.code}
+      contentContainerStyle={{ flexGrow: 1, paddingTop: space(2) }}
+      renderItem={({ item }) => (
+        <Flex flexDirection="row" justifyContent="space-between" px="15px">
+          <OrderHistoryRowContainer order={item} key={item.code} />
+        </Flex>
+      )}
+      ListEmptyComponent={
+        <Flex flex={1} flexDirection="column" justifyContent="center" alignItems="center" px="15px">
+          <Text variant="sm-display" color={color("black60")}>
+            No orders
+          </Text>
+        </Flex>
+      }
+      onEndReachedThreshold={0.25}
+      onEndReached={onLoadMore}
+      ItemSeparatorComponent={() => (
+        <Flex flexDirection="column" justifyContent="center" alignItems="center" px="15px">
+          <Separator mt={10} mb={20} />
+        </Flex>
+      )}
+    />
   )
 }
 
 export const OrderHistoryPlaceholder: React.FC<{}> = () => (
-  <PageWithSimpleHeader title="Order History">
-    <Flex px="15px" mt="15px">
-      {times(2).map((index: number) => (
-        <Box key={index}>
-          <Flex mt={1}>
-            <Flex flexDirection="row" justifyContent="space-between">
-              <Box flexGrow={1}>
-                <PlaceholderBox height={50} width={50} />
-              </Box>
-              <Box flexGrow={3}>
-                <PlaceholderText width={50 + Math.random() * 100} />
-                <PlaceholderText width={50 + Math.random() * 100} />
-                <PlaceholderText width={50 + Math.random() * 100} />
-              </Box>
-              <Box flexGrow={1}>
-                <Flex alignItems="flex-end">
-                  <PlaceholderText width={50} />
-                  <PlaceholderText width={70} />
-                </Flex>
-              </Box>
-            </Flex>
+  <Flex px="15px" mt="15px">
+    {times(2).map((index: number) => (
+      <Box key={index}>
+        <Flex mt={1}>
+          <Flex flexDirection="row" justifyContent="space-between">
+            <Box flexGrow={1}>
+              <PlaceholderBox height={50} width={50} />
+            </Box>
+            <Box flexGrow={3}>
+              <PlaceholderText width={50 + Math.random() * 100} />
+              <PlaceholderText width={50 + Math.random() * 100} />
+              <PlaceholderText width={50 + Math.random() * 100} />
+            </Box>
+            <Box flexGrow={1}>
+              <Flex alignItems="flex-end">
+                <PlaceholderText width={50} />
+                <PlaceholderText width={70} />
+              </Flex>
+            </Box>
           </Flex>
-          <PlaceholderButton marginTop={10} />
-          <Flex flexDirection="column" justifyContent="center" alignItems="center" mt={1}>
-            <Separator mt={10} mb={20} />
-          </Flex>
-        </Box>
-      ))}
-    </Flex>
-  </PageWithSimpleHeader>
+        </Flex>
+        <PlaceholderButton marginTop={10} />
+        <Flex flexDirection="column" justifyContent="center" alignItems="center" mt={1}>
+          <Separator mt={10} mb={20} />
+        </Flex>
+      </Box>
+    ))}
+  </Flex>
 )
 
 export const OrderHistoryContainer = createPaginationContainer(
@@ -162,23 +153,33 @@ export const OrderHistoryContainer = createPaginationContainer(
 )
 
 export const OrderHistoryQueryRender: React.FC<{}> = ({}) => {
+  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
+
+  const Wrapper = enableNewNavigation
+    ? Fragment
+    : ({ children }: { children: React.ReactNode }) => (
+        <PageWithSimpleHeader title="Order History">{children}</PageWithSimpleHeader>
+      )
+
   return (
-    <QueryRenderer<OrderHistoryQuery>
-      environment={getRelayEnvironment()}
-      query={graphql`
-        query OrderHistoryQuery($count: Int!) {
-          me @optionalField {
-            name
-            ...OrderHistory_me @arguments(count: $count)
+    <Wrapper>
+      <QueryRenderer<OrderHistoryQuery>
+        environment={getRelayEnvironment()}
+        query={graphql`
+          query OrderHistoryQuery($count: Int!) {
+            me @optionalField {
+              name
+              ...OrderHistory_me @arguments(count: $count)
+            }
           }
-        }
-      `}
-      render={renderWithPlaceholder({
-        Container: OrderHistoryContainer,
-        renderPlaceholder: () => <OrderHistoryPlaceholder />,
-      })}
-      variables={{ count: NUM_ORDERS_TO_FETCH }}
-      cacheConfig={{ force: true }}
-    />
+        `}
+        render={renderWithPlaceholder({
+          Container: OrderHistoryContainer,
+          renderPlaceholder: () => <OrderHistoryPlaceholder />,
+        })}
+        variables={{ count: NUM_ORDERS_TO_FETCH }}
+        cacheConfig={{ force: true }}
+      />
+    </Wrapper>
   )
 }

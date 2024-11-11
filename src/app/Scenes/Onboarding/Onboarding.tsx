@@ -1,4 +1,4 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, useColor, useSpace } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import {
   CardStyleInterpolators,
@@ -70,7 +70,10 @@ export const __unsafe__onboardingNavigationRef: React.MutableRefObject<Navigatio
 
 export const OnboardingWelcomeScreens = () => {
   const userIsDev = GlobalStore.useAppState((s) => s.artsyPrefs.userIsDev.value)
+  const color = useColor()
+  const space = useSpace()
 
+  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
   const signupLoginFusionEnabled = useFeatureFlag("AREnableSignupLoginFusion")
 
   return (
@@ -85,6 +88,7 @@ export const OnboardingWelcomeScreens = () => {
         {signupLoginFusionEnabled ? (
           <StackNavigator.Group screenOptions={{ ...TransitionPresets.SlideFromRightIOS }}>
             <StackNavigator.Screen name="OnboardingHome" component={AuthApp} />
+            <StackNavigator.Screen name="OnboardingSocialLink" component={OnboardingSocialLink} />
             <StackNavigator.Screen name="OnboardingWebView" component={OnboardingWebView} />
           </StackNavigator.Group>
         ) : (
@@ -136,12 +140,27 @@ export const OnboardingWelcomeScreens = () => {
             <StackNavigator.Screen
               name="DevMenu"
               component={DevMenu}
-              options={{
-                headerShown: true,
-                header: () => {
-                  return <Flex height={50} />
-                },
-              }}
+              options={
+                !enableNewNavigation
+                  ? {
+                      headerShown: true,
+                      header: () => {
+                        return <Flex height={50} />
+                      },
+                    }
+                  : {
+                      headerLeftContainerStyle: {
+                        paddingLeft: space(1),
+                      },
+                      headerTitle: "Dev Settings",
+                      headerShown: true,
+                      headerTintColor: color("black100"),
+                      headerLeftLabelVisible: false,
+                      headerRightContainerStyle: {
+                        paddingRight: space(2),
+                      },
+                    }
+              }
             />
           )}
         </StackNavigator.Group>

@@ -16536,7 +16536,7 @@ type Query {
     limit: Int
     offset: Int
     sort: DiscoverArtworksSort
-    userId: String
+    userId: String!
   ): ArtworkConnection
 
   # A namespace external partners (provided by Galaxy)
@@ -21147,7 +21147,7 @@ type Viewer {
     limit: Int
     offset: Int
     sort: DiscoverArtworksSort
-    userId: String
+    userId: String!
   ): ArtworkConnection
 
   # A namespace external partners (provided by Galaxy)

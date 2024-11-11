@@ -5,12 +5,13 @@ import { useToast } from "app/Components/Toast/toastHook"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import React, { useEffect, useState } from "react"
+import React, { Fragment, useEffect, useState } from "react"
 import { ScrollView } from "react-native"
 import DeviceInfo from "react-native-device-info"
 import useDebounce from "react-use/lib/useDebounce"
 
 export const About: React.FC = () => {
+  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
   const { color } = useTheme()
   const appVersion = DeviceInfo.getVersion()
   const toast = useToast()
@@ -44,8 +45,14 @@ export const About: React.FC = () => {
     [tapCount]
   )
 
+  const Wrapper = enableNewNavigation
+    ? Fragment
+    : ({ children }: { children: React.ReactNode }) => (
+        <PageWithSimpleHeader title="About">{children}</PageWithSimpleHeader>
+      )
+
   return (
-    <PageWithSimpleHeader title="About">
+    <Wrapper>
       <ScrollView contentContainerStyle={{ paddingTop: 10 }}>
         <MenuItem
           title={showNewDisclaimer ? "Terms and Conditions" : "Terms of Use"}
@@ -66,6 +73,6 @@ export const About: React.FC = () => {
           }
         />
       </ScrollView>
-    </PageWithSimpleHeader>
+    </Wrapper>
   )
 }

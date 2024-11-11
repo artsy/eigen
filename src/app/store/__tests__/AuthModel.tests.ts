@@ -15,8 +15,6 @@ import {
 } from "react-native-fbsdk-next"
 import Keychain from "react-native-keychain"
 
-jest.unmock("app/NativeModules/LegacyNativeModules")
-
 const mockFetch = jest.fn()
 ;(global as any).fetch = mockFetch
 

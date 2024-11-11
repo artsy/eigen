@@ -8,7 +8,8 @@ import {
   Text,
 } from "@artsy/palette-mobile"
 import { MyCollectionArtworkFormDeleteArtworkModalQuery } from "__generated__/MyCollectionArtworkFormDeleteArtworkModalQuery.graphql"
-import { NoFallback, SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import LoadingModal from "app/Components/Modals/LoadingModal"
+import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useState } from "react"
 import { Modal } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -105,6 +106,6 @@ export const MyCollectionArtworkFormDeleteArtworkModal: React.FC<MyCollectionArt
         </Modal>
       )
     },
-    LoadingFallback: SpinnerFallback,
+    LoadingFallback: LoadingModal,
     ErrorFallback: NoFallback,
   })

@@ -1,12 +1,12 @@
 import {
-  Spacer,
   Box,
-  Text,
-  Separator,
-  Join,
   Button,
-  Screen,
   CloseIcon,
+  Join,
+  Screen,
+  Separator,
+  Spacer,
+  Text,
   Touchable,
   useSpace,
 } from "@artsy/palette-mobile"
@@ -15,6 +15,7 @@ import { ArtworkAttributionClassFAQ_artworkAttributionClasses$data } from "__gen
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useAndroidGoBack } from "app/utils/hooks/useBackHandler"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import React from "react"
 import { ScrollView } from "react-native"
@@ -25,23 +26,27 @@ interface Props {
 }
 
 export const ArtworkAttributionClassFAQ: React.FC<Props> = ({ artworkAttributionClasses }) => {
-  useAndroidGoBack()
   const space = useSpace()
+  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
 
+  useAndroidGoBack()
   return (
     <Screen>
-      <Screen.Header
-        leftElements={
-          <Touchable
-            accessibilityRole="button"
-            accessibilityLabel="Close"
-            onPress={() => goBack()}
-            hitSlop={{ top: space(2), left: space(2), bottom: space(2), right: space(2) }}
-          >
-            <CloseIcon fill="black100" />
-          </Touchable>
-        }
-      />
+      {!enableNewNavigation && (
+        <Screen.Header
+          leftElements={
+            <Touchable
+              accessibilityRole="button"
+              accessibilityLabel="Close"
+              onPress={() => goBack()}
+              hitSlop={{ top: space(2), left: space(2), bottom: space(2), right: space(2) }}
+            >
+              <CloseIcon fill="black100" />
+            </Touchable>
+          }
+        />
+      )}
+
       <Screen.Body>
         <ScrollView>
           <Box py={2}>

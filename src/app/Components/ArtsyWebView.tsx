@@ -1,7 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex, Text } from "@artsy/palette-mobile"
-import { addBreadcrumb } from "@sentry/react-native"
 import * as Sentry from "@sentry/react-native"
+import { addBreadcrumb } from "@sentry/react-native"
 import { BottomTabRoutes } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { matchRoute } from "app/routes"
 import { GlobalStore, getCurrentEmissionState } from "app/store/GlobalStore"
@@ -10,6 +10,7 @@ import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useEnvironment } from "app/utils/hooks/useEnvironment"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import { useWebViewCallback } from "app/utils/useWebViewEvent"
 import { debounce } from "lodash"
@@ -69,6 +70,7 @@ export const ArtsyWebViewPage = ({
   backAction?: () => void
 } & ArtsyWebViewConfig) => {
   const saInsets = useSafeAreaInsets()
+  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
 
   const [canGoBack, setCanGoBack] = useState(false)
   const webURL = useEnvironment().webURL
@@ -131,7 +133,11 @@ export const ArtsyWebViewPage = ({
   const leftButton = useRightCloseButton && !canGoBack ? undefined : handleBackButtonPress
 
   return (
-    <Flex flex={1} pt={isPresentedModally ? 0 : `${saInsets.top}px`} backgroundColor="white">
+    <Flex
+      flex={1}
+      pt={isPresentedModally || enableNewNavigation ? 0 : `${saInsets.top}px`}
+      backgroundColor="white"
+    >
       <ArtsyKeyboardAvoidingView>
         <FancyModalHeader
           useXButton={!!isPresentedModally && !canGoBack}
@@ -147,8 +153,8 @@ export const ArtsyWebViewPage = ({
         <ArtsyWebView
           url={url}
           ref={ref}
-          safeAreaEdges={safeAreaEdges}
           isPresentedModally={isPresentedModally}
+          safeAreaEdges={safeAreaEdges}
           onNavigationStateChange={
             mimicBrowserBackButton
               ? (evt) => {
@@ -180,6 +186,8 @@ export const ArtsyWebView = forwardRef<
     },
     ref
   ) => {
+    const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
+
     const innerRef = useRef<WebViewWithShareTitleUrl>(null)
     useImperativeHandle(ref, () => innerRef.current as WebViewWithShareTitleUrl)
     const userAgent = getCurrentEmissionState().userAgent
@@ -259,7 +267,7 @@ export const ArtsyWebView = forwardRef<
       }
     }
 
-    const WebViewWrapper = isPresentedModally ? SafeAreaView : View
+    const WebViewWrapper = isPresentedModally && !enableNewNavigation ? SafeAreaView : View
 
     return (
       <WebViewWrapper style={{ flex: 1 }} edges={safeAreaEdges}>

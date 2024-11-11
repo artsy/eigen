@@ -38,40 +38,37 @@ export const CollectionsChips: React.FC<CollectionsChipsProps> = ({
   }
 
   return (
-    <Flex pl={2}>
-      <FlatList
-        horizontal
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        pagingEnabled
-        snapToEnd={false}
-        data={rows}
-        snapToOffsets={snapToOffsets}
-        decelerationRate="fast"
-        ItemSeparatorComponent={() => <Spacer x={1} />}
-        contentContainerStyle={{ paddingRight: space(2) }}
-        keyExtractor={(item, index) => `item_${index}_${item[0]?.internalID}`}
-        renderItem={({ item }) => (
-          <Flex gap={1}>
-            {item.map((item, index) => {
-              return (
-                <Flex minWidth={CHIP_WIDTH} key={`collectionChips-row-${index}`}>
-                  <Chip
-                    key={item.internalID}
-                    title={item.title}
-                    onPress={() => {
-                      if (item?.slug) {
-                        handleChipPress(item.slug, index)
-                      }
-                    }}
-                  />
-                </Flex>
-              )
-            })}
-          </Flex>
-        )}
-      />
-    </Flex>
+    <FlatList
+      horizontal
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}
+      pagingEnabled
+      snapToEnd={false}
+      data={rows}
+      snapToOffsets={snapToOffsets}
+      decelerationRate="fast"
+      contentContainerStyle={{ paddingHorizontal: space(2), gap: space(1) }}
+      keyExtractor={(item, index) => `item_${index}_${item[0]?.internalID}`}
+      renderItem={({ item }) => (
+        <Flex gap={1}>
+          {item.map((item, index) => {
+            return (
+              <Flex minWidth={CHIP_WIDTH} key={`collectionChips-row-${index}`}>
+                <Chip
+                  key={item.internalID}
+                  title={item.title}
+                  onPress={() => {
+                    if (item?.slug) {
+                      handleChipPress(item.slug, index)
+                    }
+                  }}
+                />
+              </Flex>
+            )
+          })}
+        </Flex>
+      )}
+    />
   )
 }
 

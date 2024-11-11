@@ -1,11 +1,12 @@
 import { act, fireEvent } from "@testing-library/react-native"
-import { goBack, navigate } from "app/system/navigation/navigate"
+import { goBack, switchTab } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { OfferSubmittedModal } from "./OfferSubmittedModal"
 
 jest.mock("app/system/navigation/navigate", () => ({
   navigate: jest.fn(),
   goBack: jest.fn(),
+  switchTab: jest.fn(),
 }))
 
 let callback: undefined | (([...args]: any) => void)
@@ -37,6 +38,6 @@ describe("OfferSubmittedModal", () => {
     act(() => callback?.({ orderCode: "1234", message: "Test message" }))
 
     fireEvent.press(getAllByText("Go to inbox")[0])
-    expect(navigate).toHaveBeenCalledWith("inbox")
+    expect(switchTab).toHaveBeenCalledWith("inbox")
   })
 })

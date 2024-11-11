@@ -21,7 +21,7 @@ interface TaskProps {
 }
 export const Task = forwardRef<SwipeableMethods, TaskProps>(
   ({ disableSwipeable, onClearTask, onPress, ...restProps }, ref) => {
-    const { tappedNotification, tappedClearNotification } = useHomeViewTracking()
+    const { tappedTaskGroup, tappedClearTask } = useHomeViewTracking()
     const { submitMutation: dismissTask } = useDismissTask()
     const { submitMutation: acknowledgeTask } = useAcknowledgeTask()
     const fontScale = PixelRatio.getFontScale()
@@ -35,7 +35,7 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
       }
 
       acknowledgeTask({ variables: { taskID: task.internalID } })
-      tappedNotification(ContextModule.actNow, task.actionLink, task.internalID, task.taskType)
+      tappedTaskGroup(ContextModule.actNow, task.actionLink, task.internalID, task.taskType)
       onClearTask()
 
       navigate(task.actionLink)
@@ -43,7 +43,7 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
 
     const handleClearTask = async () => {
       dismissTask({ variables: { taskID: task.internalID } })
-      tappedClearNotification(ContextModule.actNow, task.actionLink, task.internalID, task.taskType)
+      tappedClearTask(ContextModule.actNow, task.actionLink, task.internalID, task.taskType)
       onClearTask()
     }
 

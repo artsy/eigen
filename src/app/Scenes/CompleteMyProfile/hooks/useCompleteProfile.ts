@@ -11,7 +11,7 @@ import {
   CompleteMyProfileStore,
 } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
 import { getNextRoute } from "app/Scenes/CompleteMyProfile/hooks/useCompleteMyProfileSteps"
-import { navigate as artsyNavigate } from "app/system/navigation/navigate"
+import { navigate as artsyNavigate, goBack as systemGoBack } from "app/system/navigation/navigate"
 import { useUpdateMyProfile } from "app/utils/mutations/useUpdateMyProfile"
 import { useMemo } from "react"
 
@@ -53,7 +53,7 @@ export const useCompleteProfile = () => {
     if (canGoBack()) {
       _goBack()
     } else {
-      artsyNavigate("/my-profile")
+      systemGoBack()
     }
   }
 
