@@ -262,7 +262,7 @@ export const features = {
   },
   AREnableCacheableDirective: {
     description: "Enable @cacheable Directive",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableCacheableDirective",
   },
