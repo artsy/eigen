@@ -10,7 +10,7 @@ import { useEnableProgressiveOnboarding } from "app/Components/ProgressiveOnboar
 import { RetryErrorBoundary, useRetryErrorBoundaryContext } from "app/Components/RetryErrorBoundary"
 import { EmailConfirmationBannerFragmentContainer } from "app/Scenes/Home/Components/EmailConfirmationBanner"
 import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
-import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
+import { HomeViewStore, HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { Section } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewExperimentTracking } from "app/Scenes/HomeView/hooks/useHomeViewExperimentTracking"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
@@ -49,6 +49,16 @@ export const HomeView: React.FC = () => {
       fetchKey,
     }
   )
+
+  const trackedSectionTypes = HomeViewStore.useStoreState((state) => state.trackedSectionTypes)
+
+  const { trackExperiment } = useExperimentVariant("onyx_artwork-card-save-and-follow-cta-redesign")
+
+  useEffect(() => {
+    if (trackedSectionTypes.includes("HomeViewSectionArtworks")) {
+      trackExperiment()
+    }
+  }, [trackedSectionTypes.includes("HomeViewSectionArtworks")])
 
   const { data, loadNext, hasNext } = usePaginationFragment<
     HomeViewQuery,
@@ -128,13 +138,6 @@ export const HomeView: React.FC = () => {
       },
     })
   }
-
-  // TODO: track on a Rail, use useHomeViewExperimentTracking (adjust the hook beforehand)
-  const { trackExperiment } = useExperimentVariant("onyx_artwork-card-save-and-follow-cta-redesign")
-
-  useEffect(() => {
-    trackExperiment()
-  }, [])
 
   return (
     <Screen safeArea={true}>
