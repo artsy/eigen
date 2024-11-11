@@ -232,28 +232,19 @@ const SocialLoginButtons: React.FC = () => {
         {Platform.OS === "ios" && osMajorVersion() >= 13 && (
           <Button variant="outline" onPress={handleApplePress}>
             <Flex alignItems="center" justifyContent="center">
-              <AppleIcon width="23px" height="23px" style={{ position: "relative", top: 4 }} />
+              {/* On iOS, the icons need to be nudged down to be centered in the button. */}
+              <AppleIcon width={23} height={23} style={{ top: 4 }} />
             </Flex>
           </Button>
         )}
-
         <Button variant="outline" onPress={handleGooglePress}>
           <Flex alignItems="center" justifyContent="center">
-            <GoogleIcon
-              width="23px"
-              height="23px"
-              style={Platform.OS === "ios" && { position: "relative", top: 4 }}
-            />
+            <GoogleIcon width={23} height={23} style={Platform.OS === "ios" && { top: 4 }} />
           </Flex>
         </Button>
-
         <Button variant="outline" onPress={handleFacebookPress}>
           <Flex alignItems="center" justifyContent="center">
-            <FacebookIcon
-              width="23px"
-              height="23px"
-              style={Platform.OS === "ios" && { position: "relative", top: 4 }}
-            />
+            <FacebookIcon width={23} height={23} style={Platform.OS === "ios" && { top: 4 }} />
           </Flex>
         </Button>
       </Flex>
