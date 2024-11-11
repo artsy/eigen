@@ -66,10 +66,10 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
 
   const enableNewSaveCTA =
     newSaveAndFollowOnArtworkCardExperiment.enabled &&
-    newSaveAndFollowOnArtworkCardExperiment.payload === "variant-b"
+    newSaveAndFollowOnArtworkCardExperiment.variant === "variant-b"
   const enableNewSaveAndFollowCTAs =
     newSaveAndFollowOnArtworkCardExperiment.enabled &&
-    newSaveAndFollowOnArtworkCardExperiment.payload === "variant-c"
+    newSaveAndFollowOnArtworkCardExperiment.variant === "variant-c"
 
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
 

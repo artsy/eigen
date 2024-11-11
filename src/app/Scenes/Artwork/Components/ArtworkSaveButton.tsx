@@ -41,10 +41,10 @@ const SaveButtonIcon: React.FC<IconProps> = ({ isSaved }) => {
 
   const enableNewSaveCTA =
     newSaveAndFollowOnArtworkCardExperiment.enabled &&
-    newSaveAndFollowOnArtworkCardExperiment.payload === "variant-b"
+    newSaveAndFollowOnArtworkCardExperiment.variant === "variant-b"
   const enableNewSaveAndFollowCTAs =
     newSaveAndFollowOnArtworkCardExperiment.enabled &&
-    newSaveAndFollowOnArtworkCardExperiment.payload === "variant-c"
+    newSaveAndFollowOnArtworkCardExperiment.variant === "variant-c"
   const showNewSaveCTA = enableNewSaveCTA || enableNewSaveAndFollowCTAs
 
   if (isSaved) {

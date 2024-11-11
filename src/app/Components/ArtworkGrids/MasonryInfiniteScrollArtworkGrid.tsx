@@ -81,7 +81,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
     "onyx_artwork-card-save-and-follow-cta-redesign"
   )
 
-  const enableShowOldSaveCTA = newSaveAndFollowOnArtworkCardExperiment.payload === "variant-a"
+  const enableShowOldSaveCTA = newSaveAndFollowOnArtworkCardExperiment.variant === "variant-a"
 
   const onEndReached = useCallback(() => {
     if (!!hasMore && !isLoading && !!loadMore) {

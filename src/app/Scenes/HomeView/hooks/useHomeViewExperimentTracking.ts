@@ -5,7 +5,6 @@ import { compact } from "lodash"
 import { useEffect } from "react"
 import { useTracking } from "react-tracking"
 
-// TODO: track only once per session
 export function useHomeViewExperimentTracking(
   homeViewExperiments: HomeViewQuery$data["homeView"]["experiments"]
 ) {

@@ -138,13 +138,13 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const enableShowOldSaveCTA =
     newSaveAndFollowOnArtworkCardExperiment.enabled &&
-    newSaveAndFollowOnArtworkCardExperiment.payload === "variant-a"
+    newSaveAndFollowOnArtworkCardExperiment.variant === "variant-a"
   const enableNewSaveCTA =
     newSaveAndFollowOnArtworkCardExperiment.enabled &&
-    newSaveAndFollowOnArtworkCardExperiment.payload === "variant-b"
+    newSaveAndFollowOnArtworkCardExperiment.variant === "variant-b"
   const enableNewSaveAndFollowCTAs =
     newSaveAndFollowOnArtworkCardExperiment.enabled &&
-    newSaveAndFollowOnArtworkCardExperiment.payload === "variant-c"
+    newSaveAndFollowOnArtworkCardExperiment.variant === "variant-c"
 
   let filterParams: any = undefined
 

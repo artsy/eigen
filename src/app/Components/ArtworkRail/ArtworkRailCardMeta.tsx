@@ -70,7 +70,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
 
   const enableShowOldSaveCTA =
     newSaveAndFollowOnArtworkCardExperiment.enabled &&
-    newSaveAndFollowOnArtworkCardExperiment.payload === "variant-a"
+    newSaveAndFollowOnArtworkCardExperiment.variant === "variant-a"
 
   const artwork = useFragment(artworkMetaFragment, artworkProp)
 
