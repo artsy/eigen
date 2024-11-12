@@ -1,5 +1,5 @@
 import { Flex, RoundSearchInput, Touchable } from "@artsy/palette-mobile"
-import { GlobalSearchInputOverlay } from "app/Components/GlobalSearchInputOverlay"
+import { GlobalSearchInputOverlay } from "app/Components/GlobalSearchInput/GlobalSearchInputOverlay"
 import { SEARCH_INPUT_PLACEHOLDER } from "app/Scenes/Search/Search"
 import { Fragment, useState } from "react"
 
