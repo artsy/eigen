@@ -16536,6 +16536,7 @@ type Query {
     limit: Int
     offset: Int
     sort: DiscoverArtworksSort
+    useRelatedArtworks: Boolean = false
     userId: String!
   ): ArtworkConnection
 
@@ -21147,6 +21148,7 @@ type Viewer {
     limit: Int
     offset: Int
     sort: DiscoverArtworksSort
+    useRelatedArtworks: Boolean = false
     userId: String!
   ): ArtworkConnection
 
