@@ -1,7 +1,10 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Spacer } from "@artsy/palette-mobile"
 import { ArtworkRailCard_artwork$key } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
-import { ArtworkRailCardImage } from "app/Components/ArtworkRail/ArtworkRailCardImage"
+import {
+  ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
+  ArtworkRailCardImage,
+} from "app/Components/ArtworkRail/ArtworkRailCardImage"
 import {
   ArtworkRailCardCommonProps,
   ArtworkRailCardMeta,
@@ -12,14 +15,17 @@ import {
 } from "app/Components/ArtworkRail/LegacyArtworkRailCardImage"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
+import { ArtworkItemCTAs } from "app/Scenes/Artwork/Components/ArtworkItemCTAs"
+import { getNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/getNewSaveAndFollowOnArtworkCardExperimentVariant"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
+import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
 import { useState } from "react"
 import { GestureResponderEvent, PixelRatio, TouchableHighlight } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
-export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = PixelRatio.getFontScale() * 90
+export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = PixelRatio.getFontScale() * 100
 export const ARTWORK_RAIL_CARD_MINIMUM_WIDTH = 140
 
 export interface ArtworkRailCardProps
@@ -52,6 +58,18 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const enableArtworkRailRedesignImageAspectRatio = useFeatureFlag(
     "AREnableArtworkRailRedesignImageAspectRatio"
   )
+  const enableNewSaveAndFollowOnArtworkCard = useFeatureFlag(
+    "AREnableNewSaveAndFollowOnArtworkCard"
+  )
+  const newSaveAndFollowOnArtworkCardExperiment = useExperimentVariant(
+    "onyx_artwork-card-save-and-follow-cta-redesign"
+  )
+
+  const { enableNewSaveCTA, enableNewSaveAndFollowCTAs } =
+    getNewSaveAndFollowOnArtworkCardExperimentVariant(
+      newSaveAndFollowOnArtworkCardExperiment.enabled,
+      newSaveAndFollowOnArtworkCardExperiment.variant
+    )
 
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
 
@@ -62,6 +80,13 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const supressArtwork = () => {
     ;(artwork as DissapearableArtwork)?._disappearable?.disappear()
   }
+
+  // 36 = 20 (padding) + 16 (icon size) + 5 (top padding)
+  const likeAndFollowCTAPadding =
+    enableNewSaveAndFollowOnArtworkCard && (enableNewSaveCTA || enableNewSaveAndFollowCTAs) ? 41 : 0
+  const artworkRailCardMetaPadding = 10
+  const artworkRailCardMetaDataHeight =
+    ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + artworkRailCardMetaPadding + likeAndFollowCTAPadding
 
   return (
     <Disappearable ref={(ref) => ((artwork as DissapearableArtwork)._disappearable = ref)}>
@@ -93,16 +118,18 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
             <Flex
               height={
                 enableArtworkRailRedesignImageAspectRatio
-                  ? "auto"
+                  ? ARTWORK_RAIL_CARD_IMAGE_HEIGHT + artworkRailCardMetaDataHeight
                   : LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT + ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT
               }
-              justifyContent="flex-end"
+              justifyContent={enableArtworkRailRedesignImageAspectRatio ? "flex-start" : "flex-end"}
             >
               {enableArtworkRailRedesignImageAspectRatio ? (
                 <ArtworkRailCardImage artwork={artwork} />
               ) : (
                 <LegacyArtworkRailCardImage artwork={artwork} />
               )}
+
+              <Spacer y={1} />
 
               <ArtworkRailCardMeta
                 artwork={artwork}
@@ -121,6 +148,19 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                 showPartnerName={showPartnerName}
                 showSaveIcon={showSaveIcon}
                 backgroundColor={backgroundColor}
+              />
+
+              {!!enableNewSaveAndFollowOnArtworkCard &&
+                !!(enableNewSaveCTA || enableNewSaveAndFollowCTAs) && <Spacer y={0.5} />}
+
+              <ArtworkItemCTAs
+                artwork={artwork}
+                showSaveIcon={showSaveIcon}
+                contextModule={contextModule}
+                contextScreen={contextScreen}
+                contextScreenOwnerId={contextScreenOwnerId}
+                contextScreenOwnerSlug={contextScreenOwnerSlug}
+                contextScreenOwnerType={contextScreenOwnerType}
               />
             </Flex>
           </TouchableHighlight>
@@ -145,5 +185,6 @@ const artworkFragment = graphql`
     ...ContextMenuArtwork_artwork
     ...CreateArtworkAlertModal_artwork
     ...LegacyArtworkRailCardImage_artwork
+    ...ArtworkItemCTAs_artwork
   }
 `

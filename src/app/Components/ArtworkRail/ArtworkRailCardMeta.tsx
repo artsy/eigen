@@ -3,11 +3,13 @@ import { ArtworkRailCardMeta_artwork$key } from "__generated__/ArtworkRailCardMe
 import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
 import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
-import { ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { useMetaDataTextColor } from "app/Components/ArtworkRail/ArtworkRailUtils"
 import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessage"
 import { HEART_ICON_SIZE } from "app/Components/constants"
+import { getNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/getNewSaveAndFollowOnArtworkCardExperimentVariant"
+import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
   ArtworkActionTrackingProps,
   tracks as artworkActionTracks,
@@ -59,6 +61,23 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
   showSaveIcon = false,
 }) => {
   const { trackEvent } = useTracking()
+  const enableNewSaveAndFollowOnArtworkCard = useFeatureFlag(
+    "AREnableNewSaveAndFollowOnArtworkCard"
+  )
+  const newSaveAndFollowOnArtworkCardExperiment = useExperimentVariant(
+    "onyx_artwork-card-save-and-follow-cta-redesign"
+  )
+
+  const { enableShowOldSaveCTA } = getNewSaveAndFollowOnArtworkCardExperimentVariant(
+    newSaveAndFollowOnArtworkCardExperiment.enabled,
+    newSaveAndFollowOnArtworkCardExperiment.variant
+  )
+
+  const showOldSaveCTA =
+    !!showSaveIcon &&
+    (!enableNewSaveAndFollowOnArtworkCard ||
+      !newSaveAndFollowOnArtworkCardExperiment.enabled ||
+      !!enableShowOldSaveCTA)
 
   const artwork = useFragment(artworkMetaFragment, artworkProp)
 
@@ -118,16 +137,13 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
 
   return (
     <Flex
-      my={1}
       style={{
-        height: ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT,
         ...metaContainerStyles,
       }}
-      backgroundColor={backgroundColor}
       flexDirection="row"
       justifyContent="space-between"
     >
-      <Flex flex={1} backgroundColor={backgroundColor}>
+      <Flex flex={1}>
         {!!lotLabel && (
           <Text lineHeight="20px" color={secondaryTextColor} numberOfLines={1}>
             Lot {lotLabel}
@@ -201,7 +217,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
         )}
       </Flex>
 
-      {!!showSaveIcon && (
+      {!!showOldSaveCTA && (
         <Flex flexDirection="row" alignItems="flex-start">
           {!!displayAuctionSignal && !!collectorSignals?.auction?.lotWatcherCount && (
             <Text lineHeight="20px" variant="xs" numberOfLines={1}>

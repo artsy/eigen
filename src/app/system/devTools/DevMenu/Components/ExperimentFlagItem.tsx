@@ -73,7 +73,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
             backgroundColor="rgba(0,0,0,0.5)"
           >
             <Flex
-              minHeight={600}
+              minHeight={650}
               width="95%"
               backgroundColor="white100"
               borderRadius={20}
@@ -86,7 +86,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
                     <CloseIcon height={24} width={24} />
                   </TouchableOpacity>
                 </Flex>
-                <Join separator={<Spacer y={2} />}>
+                <Join separator={<Spacer y={1} />}>
                   <Text>
                     Key: <Text fontWeight="bold">{flag}</Text>
                   </Text>
@@ -101,32 +101,55 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
                     </Text>
                     <CustomInput value={variant} onChangeText={setVariant} />
 
-                    <Flex flexDirection="row" mt={1} flexWrap="wrap" justifyContent="flex-end">
-                      <Text color="black100" variant="xs" mt="3px" mr={0.5}>
-                        Suggestions:
-                      </Text>
-                      <Pill
-                        variant="badge"
-                        mr={0.5}
-                        onPress={() => {
-                          setVariant("control")
-                        }}
-                      >
-                        control {experiment.unleashVariant === "control" && "(default)"}
-                      </Pill>
-                      <Pill
-                        variant="badge"
-                        onPress={() => {
-                          setVariant("experiment")
-                        }}
-                      >
-                        experiment {experiment.unleashVariant === "experiment" && "(default)"}
-                      </Pill>
-                    </Flex>
+                    {!isEmpty(localExperiment.variantSuggestions) ? (
+                      <Flex flexDirection="row" mt={1} flexWrap="wrap" justifyContent="flex-end">
+                        <Text color="black100" variant="xs" mt="3px" mr={0.5}>
+                          Suggestions:
+                        </Text>
+                        {localExperiment.variantSuggestions?.map((variantSuggestion) => {
+                          return (
+                            <Pill
+                              variant="badge"
+                              mr={0.5}
+                              mb={0.5}
+                              key={variantSuggestion}
+                              onPress={() => {
+                                setVariant(variantSuggestion)
+                              }}
+                            >
+                              {variantSuggestion}
+                            </Pill>
+                          )
+                        })}
+                      </Flex>
+                    ) : (
+                      <Flex flexDirection="row" mt={1} flexWrap="wrap" justifyContent="flex-end">
+                        <Text color="black100" variant="xs" mt="3px" mr={0.5}>
+                          Suggestions:
+                        </Text>
+                        <Pill
+                          variant="badge"
+                          mr={0.5}
+                          onPress={() => {
+                            setVariant("control")
+                          }}
+                        >
+                          control {experiment.unleashVariant === "control" && "(default)"}
+                        </Pill>
+                        <Pill
+                          variant="badge"
+                          onPress={() => {
+                            setVariant("experiment")
+                          }}
+                        >
+                          experiment {experiment.unleashVariant === "experiment" && "(default)"}
+                        </Pill>
+                      </Flex>
+                    )}
                   </Flex>
 
                   <Flex>
-                    <Text my={1} fontWeight="bold">
+                    <Text mb={1} fontWeight="bold">
                       Payload:
                     </Text>
                     <CustomInput value={payload} onChangeText={setPayload} />
@@ -140,6 +163,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
                             <Pill
                               variant="badge"
                               mr={0.5}
+                              mb={0.5}
                               key={payloadSuggestion}
                               onPress={() => {
                                 setPayload(payloadSuggestion)
@@ -273,6 +297,7 @@ const CustomInput: React.FC<{
     <TextInput
       value={value}
       onChangeText={onChangeText}
+      autoCapitalize="none"
       style={{
         borderColor: "gray",
         borderWidth: 1,

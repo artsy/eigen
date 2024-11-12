@@ -28,9 +28,12 @@ import { Disappearable, DissapearableArtwork } from "app/Components/Disappearabl
 import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
 import { HEART_ICON_SIZE } from "app/Components/constants"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
+import { ArtworkItemCTAs } from "app/Scenes/Artwork/Components/ArtworkItemCTAs"
+import { getNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/getNewSaveAndFollowOnArtworkCardExperimentVariant"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
+import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { getArtworkSignalTrackingFields } from "app/utils/getArtworkSignalTrackingFields"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { getTimer } from "app/utils/getTimer"
@@ -79,6 +82,7 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   trackingFlow?: string
   /** allows for artwork to be added to recent searches */
   updateRecentSearchesOnTap?: boolean
+  positionCTAs?: "column" | "row"
 }
 
 export const Artwork: React.FC<ArtworkProps> = ({
@@ -110,12 +114,32 @@ export const Artwork: React.FC<ArtworkProps> = ({
   titleTextStyle,
   trackTap,
   updateRecentSearchesOnTap = false,
+  positionCTAs = "column",
 }) => {
   const itemRef = useRef<any>()
   const color = useColor()
   const tracking = useTracking()
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
+  const enablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
+  const enableNewSaveAndFollowOnArtworkCard = useFeatureFlag(
+    "AREnableNewSaveAndFollowOnArtworkCard"
+  )
+  const newSaveAndFollowOnArtworkCardExperiment = useExperimentVariant(
+    "onyx_artwork-card-save-and-follow-cta-redesign"
+  )
+
+  const { enableShowOldSaveCTA, enableNewSaveCTA, enableNewSaveAndFollowCTAs } =
+    getNewSaveAndFollowOnArtworkCardExperimentVariant(
+      newSaveAndFollowOnArtworkCardExperiment.enabled,
+      newSaveAndFollowOnArtworkCardExperiment.variant
+    )
+
+  const showOldSaveCTA =
+    !hideSaveIcon &&
+    (!enableNewSaveAndFollowOnArtworkCard ||
+      !newSaveAndFollowOnArtworkCardExperiment.enabled ||
+      !!enableShowOldSaveCTA)
 
   let filterParams: any = undefined
 
@@ -185,7 +209,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
   })
 
   const { hasEnded } = getTimer(partnerOffer?.endAt || "")
-  const enablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
 
   const handleTap = () => {
     if (onPress) {
@@ -302,8 +325,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
                 </DurationProvider>
               </Box>
             )}
+
             <Flex
-              flexDirection="row"
+              flexDirection={positionCTAs}
               justifyContent="space-between"
               mt={1}
               style={artworkMetaStyle}
@@ -394,7 +418,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   />
                 )}
               </Flex>
-              {!hideSaveIcon && (
+              {!!showOldSaveCTA && (
                 <Flex flexDirection="row" alignItems="flex-start">
                   {!!isAuction && !!collectorSignals?.auction?.lotWatcherCount && (
                     <Text lineHeight="18px" variant="xs" numberOfLines={1}>
@@ -410,6 +434,21 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   </Touchable>
                 </Flex>
               )}
+
+              {!!enableNewSaveAndFollowOnArtworkCard &&
+                !!(enableNewSaveCTA || enableNewSaveAndFollowCTAs) && (
+                  <Spacer y={positionCTAs === "column" ? 0.5 : 0} />
+                )}
+
+              <ArtworkItemCTAs
+                artwork={artwork}
+                showSaveIcon={!hideSaveIcon}
+                contextModule={contextModule}
+                contextScreen={contextScreen}
+                contextScreenOwnerId={contextScreenOwnerId}
+                contextScreenOwnerSlug={contextScreenOwnerSlug}
+                contextScreenOwnerType={contextScreenOwnerType}
+              />
             </Flex>
           </View>
         </Touchable>
@@ -451,6 +490,7 @@ export default createFragmentContainer(Artwork, {
       includeAllImages: { type: "Boolean", defaultValue: false }
       width: { type: "Int" }
     ) {
+      ...ArtworkItemCTAs_artwork
       ...CreateArtworkAlertModal_artwork
       ...ContextMenuArtwork_artwork @arguments(width: $width)
       availability

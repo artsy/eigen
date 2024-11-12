@@ -106,6 +106,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
 
       <HomeViewSectionSentinel
         contextModule={section.contextModule as ContextModule}
+        sectionType={section.__typename}
         index={index}
       />
     </Flex>
