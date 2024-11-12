@@ -323,6 +323,7 @@ export function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/recently-viewed", "RecentlyViewed"),
     addRoute("/sell", "Sell"),
     addRoute("/search", "Search"),
+    addRoute("/search/modal", "SearchModal"),
     addRoute("/sell/inquiry", "ConsignmentInquiry"),
     addRoute("/sell/submissions/new", "SubmitArtwork"),
     addRoute("/sell/submissions/:externalID/edit", "SubmitArtworkEdit"),
