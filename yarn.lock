@@ -17,10 +17,10 @@
   dependencies:
     core-js "3"
 
-"@artsy/palette-mobile@14.0.0":
-  version "14.0.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-14.0.0.tgz#a30dcb23bb295ca1d3d6d7baf00932b74d64c867"
-  integrity sha512-L6abHcQgw1oB13Gk7yzpQzi5Z42YTczl6bHoUavMqm7NwEYFbWgdC0ILS4RPLiOZsFPFVz+wh2lBUmivF6pPDQ==
+"@artsy/palette-mobile@14.0.1":
+  version "14.0.1"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-14.0.1.tgz#6a7bfb8dd3c51fa1570ca10a561645d7f2237429"
+  integrity sha512-iaAcY+0/10eAGCub98tclFugfP+zUp2zQjGb3/qdxo6tJDP5ot+MWcPLbxOEpd6aucDdhhGvaDi2dk6sLS9lMQ==
   dependencies:
     "@artsy/palette-tokens" "^6.0.3"
     "@shopify/flash-list" "1.7.1"
