@@ -15,7 +15,7 @@ export const HomeHeader: React.FC = () => {
 
   if (enableNewSearchModal) {
     return (
-      <Flex>
+      <Flex backgroundColor="white100">
         {!!showPaymentFailureBanner && (
           <Suspense fallback={null}>
             <PaymentFailureBanner />
@@ -48,7 +48,7 @@ export const HomeHeader: React.FC = () => {
           <PaymentFailureBanner />
         </Suspense>
       )}
-      <Box py={2}>
+      <Box py={2} backgroundColor="white100">
         <Flex flexDirection="row" px={2} justifyContent="space-between" alignItems="center">
           <Box flex={1} />
           <Box>
