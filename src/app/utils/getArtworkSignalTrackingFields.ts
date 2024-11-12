@@ -9,8 +9,7 @@ type ArtworkSignalTrackingFields = Pick<
 >
 
 export const getArtworkSignalTrackingFields = (
-  collectorSignals: CollectorSignals,
-  auctionSignalsFeatureFlagEnabled?: boolean
+  collectorSignals: CollectorSignals
 ): ArtworkSignalTrackingFields => {
   if (!collectorSignals) {
     return {}
@@ -19,7 +18,7 @@ export const getArtworkSignalTrackingFields = (
   const artworkTrackingSignalLabels: ArtworkSignalTrackingFields = {}
   const { auction, primaryLabel } = collectorSignals
 
-  if (auctionSignalsFeatureFlagEnabled && auction) {
+  if (auction) {
     const { bidCount, lotWatcherCount } = auction
 
     artworkTrackingSignalLabels.signal_bid_count = bidCount

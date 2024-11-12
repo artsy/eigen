@@ -1,4 +1,4 @@
-import { Flex, Image, Text, useColor } from "@artsy/palette-mobile"
+import { Flex, Image, useColor } from "@artsy/palette-mobile"
 import { ContextMenuArtworkPreviewCardImage_artwork$key } from "__generated__/ContextMenuArtworkPreviewCardImage_artwork.graphql"
 import {
   LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
@@ -24,13 +24,12 @@ const artworkFragment = graphql`
 
 export interface ContextMenuArtworkPreviewCardImageProps {
   artwork: ContextMenuArtworkPreviewCardImage_artwork$key
-  urgencyTag?: string | null
   containerWidth?: number
 }
 
 export const ContextMenuArtworkPreviewCardImage: React.FC<
   ContextMenuArtworkPreviewCardImageProps
-> = ({ urgencyTag = null, containerWidth, ...restProps }) => {
+> = ({ containerWidth, ...restProps }) => {
   const artwork = useFragment(artworkFragment, restProps.artwork)
   const color = useColor()
 
@@ -68,22 +67,6 @@ export const ContextMenuArtworkPreviewCardImage: React.FC<
           width={containerWidth}
         />
       </Flex>
-      {!!urgencyTag && (
-        <Flex
-          backgroundColor={color("white100")}
-          position="absolute"
-          px="5px"
-          py="3px"
-          bottom="5px"
-          left="5px"
-          borderRadius={2}
-          alignSelf="flex-start"
-        >
-          <Text variant="xs" color={color("black100")} numberOfLines={1}>
-            {urgencyTag}
-          </Text>
-        </Flex>
-      )}
     </Flex>
   )
 }

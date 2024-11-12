@@ -82,9 +82,6 @@ export interface Props extends ArtworkActionTrackingProps {
   /** An array of child indices determining which children get docked to the top of the screen when scrolling.  */
   stickyHeaderIndices?: number[]
 
-  // Hide urgency tags (3 Days left, 1 hour left)
-  hideUrgencyTags?: boolean
-
   // Hide Partner name
   hidePartner?: boolean
 
@@ -189,7 +186,6 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
   hidePartner = false,
   hideRegisterBySignal,
   hideSaveIcon = false,
-  hideUrgencyTags,
   isLoading,
   isMyCollection = false,
   itemComponentProps,
@@ -351,7 +347,6 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
             contextScreen={contextScreen}
             artwork={artwork as any} // FIXME: Types are messed up here
             key={"artwork-" + itemIndex + "-" + artwork.id}
-            hideUrgencyTags={hideUrgencyTags}
             hidePartner={hidePartner}
             showLotLabel={showLotLabel}
             itemIndex={itemIndex}

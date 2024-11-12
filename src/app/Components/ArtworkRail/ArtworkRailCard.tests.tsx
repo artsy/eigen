@@ -66,34 +66,6 @@ describe("ArtworkRailCard", () => {
     })
   })
 
-  describe("cascading end times", () => {
-    // skipping since we don't use the UrgencyTag after releasing the auction signals
-    it.skip("shows the UrgencyTag component when the sale has cascading end times", () => {
-      renderWithRelay({
-        Artwork: () => ({
-          sale: {
-            isClosed: false,
-            isAuction: true,
-            endAt: "2020-08-23T11:10:09.000+00:00",
-          },
-          saleArtwork: {
-            extendedBiddingEndAt: "2020-08-23T13:13:09.000+00:00",
-            endAt: "2020-08-23T11:10:09.000+00:00",
-          },
-        }),
-      })
-
-      expect(screen.getByTestId("auction-urgency-tag")).toBeOnTheScreen()
-      expect(screen.getByText("3 days left")).toBeOnTheScreen()
-    })
-
-    it("does not show the UrgencyTag component when the sale does not have cascading end times", () => {
-      renderWithRelay({ Artwork: () => ({ sale: { isClosed: true, isAuction: true } }) })
-
-      expect(screen.queryByTestId("auction-urgency-tag")).not.toBeOnTheScreen()
-    })
-  })
-
   describe("lot label", () => {
     it("shows the lot number when provided", () => {
       renderWithRelay(
@@ -205,11 +177,6 @@ describe("ArtworkRailCard", () => {
     })
 
     describe("auction signals", () => {
-      beforeEach(
-        () =>
-          __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAuctionImprovementsSignals: true })
-      )
-
       describe("live auction", () => {
         it("shows the bidding live now signal", () => {
           renderWithRelay({

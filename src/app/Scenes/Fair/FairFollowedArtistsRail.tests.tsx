@@ -1,6 +1,5 @@
 import { FairFollowedArtistsRailTestsQuery } from "__generated__/FairFollowedArtistsRailTestsQuery.graphql"
 import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -123,7 +122,6 @@ describe("FairFollowedArtistsRail", () => {
   })
 
   it("tracks taps on artworks with auction signals", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAuctionImprovementsSignals: true })
     const wrapper = getWrapper({
       Fair: () => ({
         internalID: "xyz123",

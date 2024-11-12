@@ -204,8 +204,7 @@ export default class HomeAnalytics {
     id: string,
     index?: number,
     moduleHeight?: "single" | "double",
-    collectorSignals?: CollectorSignals,
-    auctionSignalsFeatureFlagEnabled?: boolean
+    collectorSignals?: CollectorSignals
   ): TappedArtworkGroup {
     return {
       action: ActionType.tappedArtworkGroup,
@@ -217,7 +216,7 @@ export default class HomeAnalytics {
       horizontal_slide_position: index,
       module_height: moduleHeight ?? "double",
       type: "thumbnail",
-      ...getArtworkSignalTrackingFields(collectorSignals, auctionSignalsFeatureFlagEnabled),
+      ...getArtworkSignalTrackingFields(collectorSignals),
     }
   }
 
