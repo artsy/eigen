@@ -534,6 +534,7 @@ describe("ArtworkGridItem", () => {
           variant: "variant-b",
           payload: "variant-b",
         })
+
       })
 
       it("renders only new Save CTA", () => {

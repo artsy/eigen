@@ -9,7 +9,6 @@ import { HEART_ICON_SIZE } from "app/Components/constants"
 import { getNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/getNewSaveAndFollowOnArtworkCardExperimentVariant"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
   ArtworkActionTrackingProps,
   tracks as artworkActionTracks,
@@ -78,6 +77,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
     (!enableNewSaveAndFollowOnArtworkCard ||
       !newSaveAndFollowOnArtworkCardExperiment.enabled ||
       !!enableShowOldSaveCTA)
+
 
   const artwork = useFragment(artworkMetaFragment, artworkProp)
 
