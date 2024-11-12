@@ -29,10 +29,10 @@ import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnbo
 import { HEART_ICON_SIZE } from "app/Components/constants"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
 import { ArtworkItemCTAs } from "app/Scenes/Artwork/Components/ArtworkItemCTAs"
+import { getNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/getNewSaveAndFollowOnArtworkCardExperimentVariant"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
-import { getExperimentVariant } from "app/utils/experiments/getExperimentVariant"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { getArtworkSignalTrackingFields } from "app/utils/getArtworkSignalTrackingFields"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
@@ -138,7 +138,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   )
 
   const { enableShowOldSaveCTA, enableNewSaveCTA, enableNewSaveAndFollowCTAs } =
-    getExperimentVariant(
+    getNewSaveAndFollowOnArtworkCardExperimentVariant(
       newSaveAndFollowOnArtworkCardExperiment.enabled,
       newSaveAndFollowOnArtworkCardExperiment.variant
     )

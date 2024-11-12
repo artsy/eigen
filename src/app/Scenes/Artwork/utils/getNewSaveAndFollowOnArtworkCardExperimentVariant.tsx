@@ -1,4 +1,7 @@
-export const getExperimentVariant = (enabled: boolean, variant: string) => {
+export const getNewSaveAndFollowOnArtworkCardExperimentVariant = (
+  enabled: boolean,
+  variant: string
+) => {
   let enableShowOldSaveCTA = false
   let enableNewSaveCTA = false
   let enableNewSaveAndFollowCTAs = false

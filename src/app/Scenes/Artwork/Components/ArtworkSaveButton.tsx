@@ -10,8 +10,8 @@ import {
 } from "@artsy/palette-mobile"
 import { ArtworkSaveButton_artwork$key } from "__generated__/ArtworkSaveButton_artwork.graphql"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
+import { getNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/getNewSaveAndFollowOnArtworkCardExperimentVariant"
 import { isOpenOrUpcomingSale } from "app/Scenes/Artwork/utils/isOpenOrUpcomingSale"
-import { getExperimentVariant } from "app/utils/experiments/getExperimentVariant"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { Schema } from "app/utils/track"
 import { StyleSheet } from "react-native"
@@ -40,10 +40,11 @@ const SaveButtonIcon: React.FC<IconProps> = ({ isSaved }) => {
     "onyx_artwork-card-save-and-follow-cta-redesign"
   )
 
-  const { enableNewSaveCTA, enableNewSaveAndFollowCTAs } = getExperimentVariant(
-    newSaveAndFollowOnArtworkCardExperiment.enabled,
-    newSaveAndFollowOnArtworkCardExperiment.variant
-  )
+  const { enableNewSaveCTA, enableNewSaveAndFollowCTAs } =
+    getNewSaveAndFollowOnArtworkCardExperimentVariant(
+      newSaveAndFollowOnArtworkCardExperiment.enabled,
+      newSaveAndFollowOnArtworkCardExperiment.variant
+    )
 
   const showNewSaveCTA = enableNewSaveCTA || enableNewSaveAndFollowCTAs
 

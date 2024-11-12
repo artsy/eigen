@@ -13,7 +13,7 @@ import { ArtworkItemCTAs_artwork$key } from "__generated__/ArtworkItemCTAs_artwo
 import { useFollowArtist } from "app/Components/Artist/useFollowArtist"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ARTWORK_RAIL_CARD_CTA_ICON_SIZE } from "app/Components/constants"
-import { getExperimentVariant } from "app/utils/experiments/getExperimentVariant"
+import { getNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/getNewSaveAndFollowOnArtworkCardExperimentVariant"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
@@ -48,10 +48,11 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
     "onyx_artwork-card-save-and-follow-cta-redesign"
   )
 
-  const { enableNewSaveCTA, enableNewSaveAndFollowCTAs } = getExperimentVariant(
-    newSaveAndFollowOnArtworkCardExperiment.enabled,
-    newSaveAndFollowOnArtworkCardExperiment.variant
-  )
+  const { enableNewSaveCTA, enableNewSaveAndFollowCTAs } =
+    getNewSaveAndFollowOnArtworkCardExperimentVariant(
+      newSaveAndFollowOnArtworkCardExperiment.enabled,
+      newSaveAndFollowOnArtworkCardExperiment.variant
+    )
 
   const artwork = useFragment(artworkFragment, artworkProp)
 

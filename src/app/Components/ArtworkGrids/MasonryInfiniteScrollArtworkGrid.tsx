@@ -4,7 +4,7 @@ import { MasonryFlashList, MasonryFlashListProps } from "@shopify/flash-list"
 import { PriceOfferMessage } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { MasonryArtworkGridItem } from "app/Components/ArtworkGrids/MasonryArtworkGridItem"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
-import { getExperimentVariant } from "app/utils/experiments/getExperimentVariant"
+import { getNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/getNewSaveAndFollowOnArtworkCardExperimentVariant"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
@@ -82,7 +82,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
     "onyx_artwork-card-save-and-follow-cta-redesign"
   )
 
-  const { enableShowOldSaveCTA } = getExperimentVariant(
+  const { enableShowOldSaveCTA } = getNewSaveAndFollowOnArtworkCardExperimentVariant(
     newSaveAndFollowOnArtworkCardExperiment.enabled,
     newSaveAndFollowOnArtworkCardExperiment.variant
   )
