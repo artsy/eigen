@@ -39,7 +39,6 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
   contextScreenOwnerType,
 }) => {
   const { trackEvent } = useTracking()
-  const enableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
   const enableNewSaveAndFollowOnArtworkCard = useFeatureFlag(
     "AREnableNewSaveAndFollowOnArtworkCard"
   )
@@ -66,8 +65,6 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
     sale,
     artist,
   } = artwork
-
-  const displayAuctionSignal = enableAuctionImprovementsSignals && sale?.isAuction
 
   const onArtworkSavedOrUnSaved = (saved: boolean) => {
     trackEvent(
@@ -120,7 +117,7 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
         />
       )}
 
-      {!!displayAuctionSignal && !!collectorSignals?.auction?.lotWatcherCount && (
+      {!!sale?.isAuction && !!collectorSignals?.auction?.lotWatcherCount && (
         <Text pl={0.5} variant="xxs" numberOfLines={1} textAlign="center">
           {collectorSignals.auction.lotWatcherCount}
         </Text>

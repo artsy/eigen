@@ -37,7 +37,6 @@ import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { getArtworkSignalTrackingFields } from "app/utils/getArtworkSignalTrackingFields"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { getTimer } from "app/utils/getTimer"
-import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { RandomNumberGenerator } from "app/utils/placeholders"
@@ -49,7 +48,6 @@ import React, { useRef, useState } from "react"
 import { View, ViewProps } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { LotCloseInfo } from "./LotCloseInfo"
 import { LotProgressBar } from "./LotProgressBar"
 
 export type PriceOfferMessage = { priceListedMessage: string; priceWithDiscountMessage: string }
@@ -68,8 +66,6 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   hideRegisterBySignal?: boolean
   hideSaleInfo?: boolean
   hideSaveIcon?: boolean
-  /** Hide urgency tags (3 Days left, 1 hour left) */
-  hideUrgencyTags?: boolean
   /** Pass Tap to override generic ing, used for home tracking in rails */
   itemIndex?: number
   lotLabelTextStyle?: TextProps
@@ -86,7 +82,6 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   trackingFlow?: string
   /** allows for artwork to be added to recent searches */
   updateRecentSearchesOnTap?: boolean
-  urgencyTagTextStyle?: TextProps
   positionCTAs?: "column" | "row"
 }
 
@@ -108,7 +103,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
   hideRegisterBySignal = false,
   hideSaleInfo = false,
   hideSaveIcon = false,
-  hideUrgencyTags = false,
   itemIndex,
   lotLabelTextStyle,
   onPress,
@@ -120,7 +114,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
   titleTextStyle,
   trackTap,
   updateRecentSearchesOnTap = false,
-  urgencyTagTextStyle,
   positionCTAs = "column",
 }) => {
   const itemRef = useRef<any>()
@@ -128,7 +121,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const tracking = useTracking()
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
-  const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
   const enablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
   const enableNewSaveAndFollowOnArtworkCard = useFeatureFlag(
     "AREnableNewSaveAndFollowOnArtworkCard"
@@ -255,10 +247,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
         query: contextScreenQuery,
         sort: filterParams?.sort,
         type: "thumbnail",
-        ...getArtworkSignalTrackingFields(
-          artwork.collectorSignals,
-          AREnableAuctionImprovementsSignals
-        ),
+        ...getArtworkSignalTrackingFields(artwork.collectorSignals),
       }
 
       tracking.trackEvent(genericTapEvent)
@@ -268,14 +257,12 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const saleInfo = saleMessageOrBidInfo({
     artwork,
     collectorSignals: collectorSignals,
-    auctionSignals: AREnableAuctionImprovementsSignals ? collectorSignals?.auction : null,
+    auctionSignals: collectorSignals?.auction,
   })
 
   const endsAt = artwork.sale?.cascadingEndTimeIntervalMinutes
     ? currentBiddingEndAt
     : artwork.saleArtwork?.endAt || artwork.sale?.endAt
-
-  const urgencyTag = getUrgencyTag(endsAt)
 
   const canShowAuctionProgressBar =
     !!artwork.sale?.extendedBiddingPeriodMinutes && !!artwork.sale?.extendedBiddingIntervalMinutes
@@ -287,8 +274,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const displayLimitedTimeOfferSignal =
     collectorSignals?.partnerOffer?.isAvailable && !isAuction && !displayPriceOfferMessage
-
-  const displayAuctionSignal = AREnableAuctionImprovementsSignals && isAuction
 
   const handleSupress = async (item: DissapearableArtwork) => {
     await item._disappearable?.disappear()
@@ -324,29 +309,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   blurhash={showBlurhash ? artwork.image.blurhash : undefined}
                   resizeMode="contain"
                 />
-
-                {Boolean(
-                  !hideUrgencyTags &&
-                    urgencyTag &&
-                    isAuction &&
-                    !artwork?.sale?.isClosed &&
-                    !displayAuctionSignal
-                ) && (
-                  <Flex
-                    position="absolute"
-                    bottom="5px"
-                    left="5px"
-                    backgroundColor="white"
-                    px="5px"
-                    py="3px"
-                    borderRadius={2}
-                    alignSelf="flex-start"
-                  >
-                    <Text variant="xs" color="black100" numberOfLines={1} {...urgencyTagTextStyle}>
-                      {urgencyTag}
-                    </Text>
-                  </Flex>
-                )}
               </View>
             )}
             {!!canShowAuctionProgressBar && (
@@ -376,17 +338,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
                     <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
                       Lot {artwork.saleArtwork.lotLabel}
                     </Text>
-                    {!!artwork.sale?.cascadingEndTimeIntervalMinutes && !displayAuctionSignal && (
-                      <DurationProvider startAt={endsAt ?? undefined}>
-                        <LotCloseInfo
-                          duration={null}
-                          saleArtwork={artwork.saleArtwork}
-                          sale={artwork.sale}
-                          lotEndAt={endsAt ?? undefined}
-                          hasBeenExtended={lotSaleExtended}
-                        />
-                      </DurationProvider>
-                    )}
                   </>
                 )}
                 {!!artwork.artistNames && (
@@ -452,7 +403,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   </Text>
                 )}
 
-                {!!displayAuctionSignal && !!collectorSignals && (
+                {!!isAuction && !!collectorSignals && (
                   <ArtworkAuctionTimer
                     collectorSignals={collectorSignals}
                     hideRegisterBySignal={hideRegisterBySignal}
@@ -469,7 +420,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
               </Flex>
               {!!showOldSaveCTA && (
                 <Flex flexDirection="row" alignItems="flex-start">
-                  {!!displayAuctionSignal && !!collectorSignals?.auction?.lotWatcherCount && (
+                  {!!isAuction && !!collectorSignals?.auction?.lotWatcherCount && (
                     <Text lineHeight="18px" variant="xs" numberOfLines={1}>
                       {collectorSignals.auction.lotWatcherCount}
                     </Text>

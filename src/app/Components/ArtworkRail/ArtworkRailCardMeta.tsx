@@ -61,7 +61,6 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
   showSaveIcon = false,
 }) => {
   const { trackEvent } = useTracking()
-  const enableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
   const enableNewSaveAndFollowOnArtworkCard = useFeatureFlag(
     "AREnableNewSaveAndFollowOnArtworkCard"
   )
@@ -101,7 +100,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
     artwork,
     isSmallTile: true,
     collectorSignals: collectorSignals,
-    auctionSignals: enableAuctionImprovementsSignals ? collectorSignals?.auction : null,
+    auctionSignals: collectorSignals?.auction,
   })
 
   const { primaryTextColor, secondaryTextColor } = useMetaDataTextColor({ dark })
@@ -109,7 +108,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
   const displayLimitedTimeOfferSignal =
     collectorSignals?.partnerOffer?.isAvailable && !sale?.isAuction
 
-  const displayAuctionSignal = enableAuctionImprovementsSignals && sale?.isAuction
+  const displayAuctionSignal = sale?.isAuction
 
   const onArtworkSavedOrUnSaved = (saved: boolean) => {
     trackEvent(

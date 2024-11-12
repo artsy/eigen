@@ -168,7 +168,7 @@ const HomeViewSectionFeaturedCollectionPlaceholder: React.FC<FlexProps> = () => 
       <SkeletonBox>
         <SkeletonBox height={HEADER_IMAGE_HEIGHT} />
 
-        <Flex mx={2} mt={2}>
+        <Flex mx={2} mt={2} testID="HomeViewSectionFeaturedCollectionPlaceholder">
           <SkeletonText color="white100" variant="lg-display" mb={0.5}>
             Section Title
           </SkeletonText>

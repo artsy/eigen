@@ -71,6 +71,7 @@ describe("HomeViewSectionSales", () => {
     renderWithRelay({
       HomeViewSectionSales: () => ({
         internalID: "home-view-section-sales",
+        contextModule: "auctionRail",
         component: {
           title: "Auctions",
           behaviors: {
@@ -107,22 +108,75 @@ describe("HomeViewSectionSales", () => {
 
     fireEvent.press(screen.getByText("sale 2"))
 
-    expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-        [
-          {
-            "action": "tappedAuctionGroup",
-            "context_module": "<mock-value-for-field-"contextModule">",
-            "context_screen_owner_type": "home",
-            "destination_screen_owner_id": "sale-2-id",
-            "destination_screen_owner_slug": "sale-2-slug",
-            "destination_screen_owner_type": "sale",
-            "horizontal_slide_position": 1,
-            "module_height": "double",
-            "type": "thumbnail",
-          },
-        ]
-      `)
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: "tappedAuctionGroup",
+        context_module: "auctionRail",
+        context_screen_owner_type: "home",
+        destination_screen_owner_id: "sale-2-id",
+        destination_screen_owner_slug: "sale-2-slug",
+        destination_screen_owner_type: "sale",
+        horizontal_slide_position: 1,
+        module_height: "double",
+        type: "thumbnail",
+      })
+    )
 
     expect(navigate).toHaveBeenCalledWith("/sale-2-href")
+  })
+
+  it("tracks view-all properly", async () => {
+    renderWithRelay({
+      HomeViewSectionSales: () => ({
+        internalID: "home-view-section-sales",
+        contextModule: "auctionRail",
+        component: {
+          title: "Auctions",
+          behaviors: {
+            viewAll: {
+              href: "/auctions",
+              buttonText: "Browse All Auctions",
+              ownerType: "auctions",
+            },
+          },
+        },
+        salesConnection: {
+          edges: [
+            {
+              node: {
+                name: "sale 1",
+                href: "/sale-1-href",
+                internalID: "sale-1-id",
+                slug: "sale-1-slug",
+                liveURLIfOpen: null,
+              },
+            },
+            {
+              node: {
+                name: "sale 2",
+                href: "/sale-2-href",
+                internalID: "sale-2-id",
+                slug: "sale-2-slug",
+                liveURLIfOpen: null,
+              },
+            },
+          ],
+        },
+      }),
+    })
+
+    fireEvent.press(screen.getByText("Browse All Auctions"))
+
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: "tappedAuctionResultGroup",
+        context_module: "auctionRail",
+        context_screen_owner_type: "home",
+        destination_screen_owner_type: "auctions",
+        type: "viewAll",
+      })
+    )
+
+    expect(navigate).toHaveBeenCalledWith("/auctions")
   })
 })

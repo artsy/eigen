@@ -1,10 +1,17 @@
 import { screen } from "@testing-library/react-native"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { MyProfileSettings } from "./MyProfileSettings"
 
 jest.mock("./LoggedInUserInfo")
 
 describe(MyProfileSettings, () => {
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({
+      AREnableNewNavigation: true,
+    })
+  })
+
   it("renders Edit Profile", () => {
     renderWithWrappers(<MyProfileSettings />)
     expect(screen.getByText("Edit Profile")).toBeOnTheScreen()

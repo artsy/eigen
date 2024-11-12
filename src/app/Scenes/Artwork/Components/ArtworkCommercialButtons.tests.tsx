@@ -571,10 +571,6 @@ describe("ArtworkCommercialButtons", () => {
     })
 
     describe("with auction signals", () => {
-      beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAuctionImprovementsSignals: true })
-      })
-
       it("trackEvent called when Contact Gallery pressed given Offerable and Inquireable artwork", () => {
         const artwork = {
           ...ArtworkFixture,

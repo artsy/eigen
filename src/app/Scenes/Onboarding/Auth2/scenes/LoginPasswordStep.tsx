@@ -121,6 +121,7 @@ const LoginPasswordStepForm: React.FC = () => {
       <Input
         autoCapitalize="none"
         autoComplete="password"
+        importantForAutofill="yes"
         autoCorrect={false}
         blurOnSubmit={false}
         error={submitCount > 0 ? errors.password : undefined}
@@ -128,7 +129,6 @@ const LoginPasswordStepForm: React.FC = () => {
         ref={passwordRef}
         returnKeyType="done"
         secureTextEntry
-        textContentType="password"
         testID="password"
         title="Password"
         value={values.password}

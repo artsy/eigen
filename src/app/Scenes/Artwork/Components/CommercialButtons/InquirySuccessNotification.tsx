@@ -1,6 +1,6 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
-import { navigate } from "app/system/navigation/navigate"
+import { switchTab } from "app/system/navigation/navigate"
 import { useArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { useScreenDimensions } from "app/utils/hooks"
 import React, { useEffect } from "react"
@@ -28,7 +28,7 @@ export const InquirySuccessNotification: React.FC = () => {
 
   const navigateToConversation = () => {
     dispatch({ type: "setSuccessNotificationVisible", payload: false })
-    navigate("inbox")
+    switchTab("inbox")
   }
 
   const handleRequestClose = () => {

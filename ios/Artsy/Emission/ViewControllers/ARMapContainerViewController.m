@@ -6,7 +6,8 @@
 #import "ARCity+GeospatialAdditions.h"
 
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
-#import <react-native-mapbox-gl/RCTMGLMapView.h>
+
+@import rnmapbox_maps;
 
 @import Pulley;
 @import CoreLocation;
@@ -88,15 +89,15 @@ FindParentScrollView(UIView *view)
     }
 }
 
-static RCTMGLMapView *
+static RNMBXMapView *
 FindMapView(UIView *view)
 {
     for (UIView *subview in view.subviews) {
-        if ([subview isKindOfClass:RCTMGLMapView.class]) {
-            return (RCTMGLMapView *)subview;
+        if ([subview isKindOfClass:RNMBXMapView.class]) {
+            return (RNMBXMapView *)subview;
         }
 
-        RCTMGLMapView *result = FindMapView(subview);
+        RNMBXMapView *result = FindMapView(subview);
         if (result) return result;
     }
     return nil;
@@ -132,9 +133,6 @@ const CGFloat MARGIN = 10;
     [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryUpdateDrawerPosition" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         NSString *positionString = note.userInfo[@"position"];
         [wself updateDrawerPosition:positionString];
-    }];
-    [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryMapHasRendered" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-        [wself displayLicensingViews];
     }];
     [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryQueryResponseReceived" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         if (wself.initialDataIsLoaded) {
@@ -263,17 +261,6 @@ const CGFloat MARGIN = 10;
     } completion:^(BOOL finished) {
         self.cityPickerContainerView.userInteractionEnabled = YES;
     }];
-}
-
-- (void)displayLicensingViews
-{
-    RCTMGLMapView *mapView = FindMapView(self.mapVC.view);
-
-    if (!self.attributionViewsConstraintsAdded) {
-        [mapView.attributionButton alignBottomEdgeWithView:self.mapVC.view predicate:@"-50"];
-        [mapView.logoView alignBottomEdgeWithView:self.mapVC.view predicate:@"-50"];
-        self.attributionViewsConstraintsAdded = YES;
-    }
 }
 
 - (void)userSelectedCityAtIndex:(NSInteger)cityIndex

@@ -237,6 +237,7 @@ describe(navigate, () => {
       [
         "inbox",
         {
+          "hidesBackButton": true,
           "moduleName": "Conversation",
           "onlyShowInTabName": "inbox",
           "props": {

@@ -11,7 +11,9 @@ import { ShippingFragmentContainer } from "app/Scenes/Inbox/Components/Conversat
 import { Support } from "app/Scenes/Inbox/Components/Conversations/Support"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
+import { Fragment } from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 
@@ -21,37 +23,34 @@ interface Props {
 }
 export const ConversationDetails: React.FC<Props> = ({ me }) => {
   const conversation = me.conversation
-  const partnerName = conversation?.to.name
   const item = conversation?.items?.[0]?.item
 
   const order = extractNodes(conversation?.orderConnection)
   const orderItem = order[0]
 
   return (
-    <PageWithSimpleHeader title={partnerName ?? ""}>
-      <ScrollView>
-        <Flex>
-          {!!orderItem && <SellerReplyEstimateFragmentContainer order={orderItem} />}
+    <ScrollView>
+      <Flex>
+        {!!orderItem && <SellerReplyEstimateFragmentContainer order={orderItem} />}
 
-          {!!item && <ItemInfoFragmentContainer item={item} />}
+        {!!item && <ItemInfoFragmentContainer item={item} />}
 
-          {!!item && !!orderItem && (
-            <OrderInformationFragmentContainer artwork={item} order={orderItem} />
-          )}
+        {!!item && !!orderItem && (
+          <OrderInformationFragmentContainer artwork={item} order={orderItem} />
+        )}
 
-          {!!orderItem && (
-            <>
-              <ShippingFragmentContainer order={orderItem} />
-              <PaymentMethodFragmentContainer order={orderItem} />
-            </>
-          )}
+        {!!orderItem && (
+          <>
+            <ShippingFragmentContainer order={orderItem} />
+            <PaymentMethodFragmentContainer order={orderItem} />
+          </>
+        )}
 
-          {!!conversation && <AttachmentListFragmentContainer conversation={conversation} />}
+        {!!conversation && <AttachmentListFragmentContainer conversation={conversation} />}
 
-          <Support />
-        </Flex>
-      </ScrollView>
-    </PageWithSimpleHeader>
+        <Support />
+      </Flex>
+    </ScrollView>
   )
 }
 
@@ -90,20 +89,30 @@ export const ConversationDetailsFragmentContainer = createFragmentContainer(Conv
 export const ConversationDetailsQueryRenderer: React.FC<{
   conversationID: string
 }> = ({ conversationID }) => {
+  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
+
+  const Wrapper = enableNewNavigation
+    ? Fragment
+    : ({ children }: { children: React.ReactNode }) => (
+        <PageWithSimpleHeader title="Details">{children}</PageWithSimpleHeader>
+      )
+
   return (
-    <QueryRenderer<ConversationDetailsQuery>
-      environment={getRelayEnvironment()}
-      query={graphql`
-        query ConversationDetailsQuery($conversationID: String!) {
-          me {
-            ...ConversationDetails_me
+    <Wrapper>
+      <QueryRenderer<ConversationDetailsQuery>
+        environment={getRelayEnvironment()}
+        query={graphql`
+          query ConversationDetailsQuery($conversationID: String!) {
+            me {
+              ...ConversationDetails_me
+            }
           }
-        }
-      `}
-      variables={{
-        conversationID,
-      }}
-      render={renderWithLoadProgress(ConversationDetailsFragmentContainer)}
-    />
+        `}
+        variables={{
+          conversationID,
+        }}
+        render={renderWithLoadProgress(ConversationDetailsFragmentContainer)}
+      />
+    </Wrapper>
   )
 }

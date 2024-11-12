@@ -23,7 +23,7 @@ import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
 import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
-import { Suspense, useCallback, useEffect, useState } from "react"
+import { RefObject, Suspense, useCallback, useEffect, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
@@ -144,7 +144,7 @@ export const HomeView: React.FC = () => {
       <Screen.Body fullwidth>
         <FlatList
           showsVerticalScrollIndicator={false}
-          ref={flashlistRef}
+          ref={flashlistRef as RefObject<FlatList>}
           data={sections}
           keyExtractor={(item) => item.internalID}
           renderItem={({ item, index }) => {
@@ -222,7 +222,7 @@ const sectionsFragment = graphql`
 `
 
 export const homeViewScreenQuery = graphql`
-  query HomeViewQuery($count: Int!, $cursor: String) @cacheable {
+  query HomeViewQuery($count: Int!, $cursor: String) {
     homeView {
       experiments {
         name

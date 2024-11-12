@@ -2,7 +2,6 @@ import { Box, Button, Input, LinkText, Spacer, Text } from "@artsy/palette-mobil
 import { useNavigation } from "@react-navigation/native"
 import { PhoneInput } from "app/Components/Input/PhoneInput"
 import { navigate } from "app/system/navigation/navigate"
-import { useScreenDimensions } from "app/utils/hooks"
 import { useFormikContext } from "formik"
 import { useEffect, useRef } from "react"
 import { Platform, ScrollView } from "react-native"
@@ -13,7 +12,6 @@ export const ConsignmentInquiryForm: React.FC<{
   canPopScreen: boolean
   recipientName?: string
 }> = ({ confirmLeaveEdit, canPopScreen, recipientName }) => {
-  const { safeAreaInsets } = useScreenDimensions()
   const { values, handleChange, errors, handleSubmit, isValid, dirty, validateField } =
     useFormikContext<InquiryFormikSchema>()
 
@@ -78,7 +76,7 @@ export const ConsignmentInquiryForm: React.FC<{
       keyboardDismissMode="interactive"
       keyboardShouldPersistTaps="handled"
     >
-      <Box pb={`${safeAreaInsets.bottom}px`} px={2}>
+      <Box p={2}>
         <Box>
           <Text variant="lg-display" mb={2}>
             {!!recipientName ? `Contact ${recipientName}` : "Contact a specialist"}

@@ -20,9 +20,6 @@ function createGlobalStore() {
     middleware.push(persistenceMiddleware)
 
     if (__DEV__) {
-      const reduxInFlipper = require("redux-flipper").default
-      middleware.push(reduxInFlipper())
-
       if (logAction) {
         middleware.push(logger)
       }
@@ -249,4 +246,8 @@ export function unsafe__getEnvironment() {
     environment: { env, strings },
   } = globalStoreInstance().getState().devicePrefs
   return { ...strings, stripePublishableKey, env, userIsDev: value }
+}
+
+export function unsafe_getDevPrefs() {
+  return globalStoreInstance().getState().devicePrefs
 }
