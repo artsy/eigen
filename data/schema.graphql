@@ -15961,6 +15961,15 @@ type PublishViewingRoomPayload {
 }
 
 type Query {
+  LikedDiscoveryArtworks(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    limit: Int
+    userId: String!
+  ): ArtworkConnection
+
   # Do not use (only used internally for stitching)
   _do_not_use_conversation(
     # The ID of the Conversation
@@ -20804,6 +20813,15 @@ type Video {
 
 # A wildcard used to support complex root queries in Relay
 type Viewer {
+  LikedDiscoveryArtworks(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    limit: Int
+    userId: String!
+  ): ArtworkConnection
+
   # Do not use (only used internally for stitching)
   _do_not_use_conversation(
     # The ID of the Conversation
