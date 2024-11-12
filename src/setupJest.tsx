@@ -233,7 +233,7 @@ jest.mock("@sentry/react-native", () => ({
   TimeToFullDisplay: () => null,
 }))
 
-jest.mock("@react-native-mapbox-gl/maps", () => ({
+jest.mock("@rnmapbox/maps", () => ({
   MapView: () => null,
   StyleURL: {
     Light: null,
@@ -358,13 +358,13 @@ function getNativeModules(): OurNativeModules {
     },
 
     ARNotificationsManager: {
-      nativeState: {
+      getConstants: jest.fn(() => ({
         userAgent: "Jest Unit Tests",
         authenticationToken: "authenticationToken",
         launchCount: 1,
         userID: "userID",
         userEmail: "user@example.com",
-      },
+      })),
       postNotificationName: jest.fn(),
       didFinishBootstrapping: jest.fn(),
       reactStateUpdated: jest.fn(),
@@ -429,13 +429,13 @@ jest.mock("app/NativeModules/LegacyNativeModules", () => ({
       LocalTimeZone: "",
     },
     ARNotificationsManager: {
-      nativeState: {
+      getConstants: jest.fn(() => ({
         userAgent: "Jest Unit Tests",
         authenticationToken: "authenticationToken",
         launchCount: 1,
         userID: "userID",
         userEmail: "user@example.com",
-      },
+      })),
       postNotificationName: jest.fn(),
       didFinishBootstrapping: jest.fn(),
       reactStateUpdated: jest.fn(),

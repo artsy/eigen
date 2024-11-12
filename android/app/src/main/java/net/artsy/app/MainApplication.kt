@@ -20,7 +20,6 @@ import com.microsoft.codepush.react.CodePush
 import com.segment.analytics.Analytics
 import net.artsy.app.utils.ReactNativeConfigUtils
 import io.sentry.react.RNSentryPackage
-import com.facebook.react.flipper.ReactNativeFlipper
 
 class MainApplication : Application(), ReactApplication {
 
@@ -42,7 +41,7 @@ class MainApplication : Application(), ReactApplication {
       }
 
   override val reactHost: ReactHost
-    get() = getDefaultReactHost(this.applicationContext, reactNativeHost)
+    get() = getDefaultReactHost(applicationContext, reactNativeHost)
 
 
     override fun onCreate() {
@@ -65,8 +64,6 @@ class MainApplication : Application(), ReactApplication {
         ).build()
 
         Analytics.setSingletonInstance(analytics)
-
-        ReactNativeFlipper.initializeFlipper(this, reactNativeHost.reactInstanceManager)
 
         registerActivityLifecycleCallbacks(BrazeActivityLifecycleCallbackListener())
     }

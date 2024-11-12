@@ -74,6 +74,7 @@ export const AutomountedBottomSheetModal: FC<AutomountedBottomSheetModalProps> =
       onAnimate={handlePresent}
       keyboardBlurBehavior="restore"
       backdropComponent={renderBackdrop}
+      enableDynamicSizing
       {...rest}
     />
   )

@@ -142,14 +142,13 @@ describe(migrate, () => {
 describe("artsy app store migrations", () => {
   it("are up to date", () => {
     // Reset the nativeState to its original state
-    LegacyNativeModules.ARNotificationsManager.nativeState = {
+    ;(LegacyNativeModules.ARNotificationsManager.getConstants as jest.Mock).mockReturnValueOnce({
       userAgent: "Jest Unit Tests",
       authenticationToken: null as any,
       launchCount: 1,
       userID: null as any,
       userEmail: null as any,
-    }
-
+    })
     __globalStoreTestUtils__?.reset()
 
     expect(migrate({ state: { version: 0 } })).toEqual(
@@ -332,11 +331,14 @@ describe("PendingPushNotification migration", () => {
 
 describe("CopyIOSNativeSessionAuthToTS migration", () => {
   beforeAll(() => {
-    LegacyNativeModules.ARNotificationsManager.nativeState = {
+    ;(LegacyNativeModules.ARNotificationsManager.getConstants as jest.Mock).mockReturnValueOnce({
+      userAgent: "Jest Unit Tests",
       authenticationToken: "authenticationToken",
-      onboardingState: "complete",
+      launchCount: 1,
       userID: "userID",
-    } as any
+      userEmail: "some@email.com",
+      onboardingState: "complete",
+    })
   })
 
   const migrationToTest = Versions.CopyIOSNativeSessionAuthToTS

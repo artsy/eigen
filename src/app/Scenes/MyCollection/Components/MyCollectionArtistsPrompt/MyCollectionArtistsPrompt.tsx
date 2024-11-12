@@ -5,7 +5,7 @@ import { SNAP_POINTS } from "app/Scenes/MyCollection/Components/MyCollectionBott
 import { MyCollectionAddCollectedArtistsStore } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsStore"
 import { MotiView } from "moti"
 import { FC } from "react"
-import { useDerivedValue } from "react-native-reanimated"
+import { useAnimatedStyle, withTiming } from "react-native-reanimated"
 
 export interface MyCollectionArtistsPromptProps {
   title: string
@@ -18,16 +18,16 @@ export const MyCollectionArtistsPrompt: FC<MyCollectionArtistsPromptProps> = ({
 }) => {
   const { animatedIndex } = useBottomSheet()
 
-  return (
-    <MotiView
-      animate={useDerivedValue(() => ({
-        height: animatedIndex.value === 1 ? SNAP_POINTS[1] : SNAP_POINTS[0],
-      }))}
-      transition={{
-        type: "timing",
+  const style = useAnimatedStyle(() => {
+    return {
+      height: withTiming(animatedIndex.value === 1 ? SNAP_POINTS[1] : SNAP_POINTS[0], {
         duration: 200,
-      }}
-    >
+      }),
+    }
+  })
+
+  return (
+    <MotiView style={style}>
       <Flex px={2} pt={1} pb={2} flex={1}>
         <Text variant="md">{title}</Text>
 

@@ -50,7 +50,7 @@ export interface NativeModel {
 }
 
 export const getNativeModel = (): NativeModel => ({
-  sessionState: LegacyNativeModules.ARNotificationsManager?.nativeState ?? {},
+  sessionState: LegacyNativeModules.ARNotificationsManager.getConstants(),
   setLocalState: action((state, nextNativeState) => {
     Object.assign(state.sessionState, nextNativeState)
   }),

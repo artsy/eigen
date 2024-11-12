@@ -836,7 +836,6 @@ export const modules = defineModules({
   WorksForYou: reactModule(WorksForYouQueryRenderer, {}, [WorksForYouScreenQuery]),
 })
 
-// Register react modules with the app registry
 for (const moduleName of Object.keys(modules)) {
   const descriptor = modules[moduleName as AppModule]
   if (Platform.OS === "ios" && !unsafe_getFeatureFlag("AREnableNewNavigation")) {

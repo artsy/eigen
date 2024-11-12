@@ -17,6 +17,7 @@ export const MyCollectionBottomSheetModalArtistsPrompt: React.FC<
     <AutomountedBottomSheetModal
       visible={visible}
       snapPoints={SNAP_POINTS}
+      enableDynamicSizing={false}
       enableOverDrag={false}
       onDismiss={onDismiss}
     >

@@ -13,7 +13,7 @@ export const DEFAULT_NAVIGATION_BAR_COLOR = "#FFFFFF"
 export const ArtsyNativeModule = {
   launchCount:
     Platform.OS === "ios"
-      ? LegacyNativeModules.ARNotificationsManager.nativeState.launchCount || 0
+      ? LegacyNativeModules.ARNotificationsManager.getConstants().launchCount
       : (NativeModules.ArtsyNativeModule.getConstants().launchCount as number),
   setAppStyling:
     Platform.OS === "ios"
