@@ -32,6 +32,7 @@ import { ArtworkItemCTAs } from "app/Scenes/Artwork/Components/ArtworkItemCTAs"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
+import { getExperimentVariant } from "app/utils/experiments/getExperimentVariant"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { getArtworkSignalTrackingFields } from "app/utils/getArtworkSignalTrackingFields"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
@@ -136,15 +137,11 @@ export const Artwork: React.FC<ArtworkProps> = ({
     "onyx_artwork-card-save-and-follow-cta-redesign"
   )
 
-  const enableShowOldSaveCTA =
-    newSaveAndFollowOnArtworkCardExperiment.enabled &&
-    newSaveAndFollowOnArtworkCardExperiment.variant === "variant-a"
-  const enableNewSaveCTA =
-    newSaveAndFollowOnArtworkCardExperiment.enabled &&
-    newSaveAndFollowOnArtworkCardExperiment.variant === "variant-b"
-  const enableNewSaveAndFollowCTAs =
-    newSaveAndFollowOnArtworkCardExperiment.enabled &&
-    newSaveAndFollowOnArtworkCardExperiment.variant === "variant-c"
+  const { enableShowOldSaveCTA, enableNewSaveCTA, enableNewSaveAndFollowCTAs } =
+    getExperimentVariant(
+      newSaveAndFollowOnArtworkCardExperiment.enabled,
+      newSaveAndFollowOnArtworkCardExperiment.variant
+    )
 
   let filterParams: any = undefined
 
