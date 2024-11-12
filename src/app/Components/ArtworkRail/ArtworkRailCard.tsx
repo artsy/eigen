@@ -85,7 +85,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     enableNewSaveAndFollowOnArtworkCard && (enableNewSaveCTA || enableNewSaveAndFollowCTAs) ? 41 : 0
   const artworkRailCardMetaPadding = 10
   const artworkRailCardMetaDataHeight =
-    ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + artworkRailCardMetaPadding + likeAndFollowCTAPadding // TODO: check height
+    ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + artworkRailCardMetaPadding + likeAndFollowCTAPadding
 
   return (
     <Disappearable ref={(ref) => ((artwork as DissapearableArtwork)._disappearable = ref)}>

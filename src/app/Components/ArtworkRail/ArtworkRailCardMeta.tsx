@@ -74,6 +74,12 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
     newSaveAndFollowOnArtworkCardExperiment.variant
   )
 
+  const showOldSaveCTA =
+    !!showSaveIcon &&
+    (!enableNewSaveAndFollowOnArtworkCard ||
+      !newSaveAndFollowOnArtworkCardExperiment.enabled ||
+      !!enableShowOldSaveCTA)
+
   const artwork = useFragment(artworkMetaFragment, artworkProp)
 
   const {
@@ -211,42 +217,40 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
           />
         )}
       </Flex>
-      {!!showSaveIcon &&
-        (!enableNewSaveAndFollowOnArtworkCard ||
-          !newSaveAndFollowOnArtworkCardExperiment.enabled ||
-          !!enableShowOldSaveCTA) && (
-          <Flex flexDirection="row" alignItems="flex-start">
-            {!!displayAuctionSignal && !!collectorSignals?.auction?.lotWatcherCount && (
-              <Text lineHeight="20px" variant="xs" numberOfLines={1}>
-                {collectorSignals.auction.lotWatcherCount}
-              </Text>
-            )}
 
-            <Touchable
-              haptic
-              hitSlop={{ bottom: 5, right: 5, left: 5, top: 5 }}
-              onPress={saveArtworkToLists}
-              testID="save-artwork-icon"
-              underlayColor={backgroundColor}
-            >
-              {isSaved ? (
-                <HeartFillIcon
-                  testID="filled-heart-icon"
-                  height={HEART_ICON_SIZE}
-                  width={HEART_ICON_SIZE}
-                  fill="blue100"
-                />
-              ) : (
-                <HeartIcon
-                  testID="empty-heart-icon"
-                  height={HEART_ICON_SIZE}
-                  width={HEART_ICON_SIZE}
-                  fill={primaryTextColor}
-                />
-              )}
-            </Touchable>
-          </Flex>
-        )}
+      {!!showOldSaveCTA && (
+        <Flex flexDirection="row" alignItems="flex-start">
+          {!!displayAuctionSignal && !!collectorSignals?.auction?.lotWatcherCount && (
+            <Text lineHeight="20px" variant="xs" numberOfLines={1}>
+              {collectorSignals.auction.lotWatcherCount}
+            </Text>
+          )}
+
+          <Touchable
+            haptic
+            hitSlop={{ bottom: 5, right: 5, left: 5, top: 5 }}
+            onPress={saveArtworkToLists}
+            testID="save-artwork-icon"
+            underlayColor={backgroundColor}
+          >
+            {isSaved ? (
+              <HeartFillIcon
+                testID="filled-heart-icon"
+                height={HEART_ICON_SIZE}
+                width={HEART_ICON_SIZE}
+                fill="blue100"
+              />
+            ) : (
+              <HeartIcon
+                testID="empty-heart-icon"
+                height={HEART_ICON_SIZE}
+                width={HEART_ICON_SIZE}
+                fill={primaryTextColor}
+              />
+            )}
+          </Touchable>
+        </Flex>
+      )}
     </Flex>
   )
 }

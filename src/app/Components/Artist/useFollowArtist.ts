@@ -17,7 +17,13 @@ interface Options {
 }
 
 export const useFollowArtist = (options: Options) => {
-  const { artist, showToast, contextModule, contextScreenOwnerType, ownerType } = options
+  const {
+    artist,
+    showToast,
+    contextModule,
+    contextScreenOwnerType = Schema.OwnerEntityTypes.Artist,
+    ownerType,
+  } = options
 
   const [isLoading, setIsLoading] = useState(false)
   const data = useFragment(fragment, artist)
@@ -112,8 +118,7 @@ export const useFollowArtist = (options: Options) => {
 
     setIsLoading(false)
 
-    showToast &&
-      !data.isFollowed &&
+    if (showToast && !data.isFollowed) {
       toast.show("Artist Followed", "bottom", {
         cta: "View Follows",
         onPress: () => {
@@ -123,6 +128,7 @@ export const useFollowArtist = (options: Options) => {
         backgroundColor: "green100",
         description: "Keep track of the artists you love",
       })
+    }
   }
 
   const onFollowChangeError = () => {

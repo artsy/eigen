@@ -143,6 +143,12 @@ export const Artwork: React.FC<ArtworkProps> = ({
       newSaveAndFollowOnArtworkCardExperiment.variant
     )
 
+  const showOldSaveCTA =
+    !hideSaveIcon &&
+    (!enableNewSaveAndFollowOnArtworkCard ||
+      !newSaveAndFollowOnArtworkCardExperiment.enabled ||
+      !!enableShowOldSaveCTA)
+
   let filterParams: any = undefined
 
   // This is needed to make sure the filter context is defined
@@ -461,25 +467,22 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   />
                 )}
               </Flex>
-              {!hideSaveIcon &&
-                (!enableNewSaveAndFollowOnArtworkCard ||
-                  !newSaveAndFollowOnArtworkCardExperiment.enabled ||
-                  !!enableShowOldSaveCTA) && (
-                  <Flex flexDirection="row" alignItems="flex-start">
-                    {!!displayAuctionSignal && !!collectorSignals?.auction?.lotWatcherCount && (
-                      <Text lineHeight="18px" variant="xs" numberOfLines={1}>
-                        {collectorSignals.auction.lotWatcherCount}
-                      </Text>
-                    )}
-                    <Touchable
-                      haptic
-                      onPress={disableArtworksListPrompt ? handleArtworkSave : saveArtworkToLists}
-                      testID="save-artwork-icon"
-                    >
-                      <ArtworkHeartIcon isSaved={!!isSaved} index={itemIndex} />
-                    </Touchable>
-                  </Flex>
-                )}
+              {!!showOldSaveCTA && (
+                <Flex flexDirection="row" alignItems="flex-start">
+                  {!!displayAuctionSignal && !!collectorSignals?.auction?.lotWatcherCount && (
+                    <Text lineHeight="18px" variant="xs" numberOfLines={1}>
+                      {collectorSignals.auction.lotWatcherCount}
+                    </Text>
+                  )}
+                  <Touchable
+                    haptic
+                    onPress={disableArtworksListPrompt ? handleArtworkSave : saveArtworkToLists}
+                    testID="save-artwork-icon"
+                  >
+                    <ArtworkHeartIcon isSaved={!!isSaved} index={itemIndex} />
+                  </Touchable>
+                </Flex>
+              )}
 
               {!!enableNewSaveAndFollowOnArtworkCard &&
                 !!(enableNewSaveCTA || enableNewSaveAndFollowCTAs) && (
