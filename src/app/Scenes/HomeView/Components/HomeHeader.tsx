@@ -1,6 +1,6 @@
-import { ArtsyLogoBlackIcon, Box, Flex, RoundSearchInput, Touchable } from "@artsy/palette-mobile"
+import { ArtsyLogoBlackIcon, Box, Flex } from "@artsy/palette-mobile"
+import { GlobalSearchInput } from "app/Components/GlobalSearchInput"
 import { PaymentFailureBanner } from "app/Scenes/HomeView/Components/PaymentFailureBanner"
-import { SEARCH_INPUT_PLACEHOLDER } from "app/Scenes/Search/Search"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Suspense } from "react"
@@ -30,18 +30,7 @@ export const HomeHeader: React.FC = () => {
             alignItems="center"
           >
             <Flex flex={1}>
-              <Touchable onPress={() => {}}>
-                <Flex pointerEvents="none">
-                  <RoundSearchInput
-                    placeholder={SEARCH_INPUT_PLACEHOLDER}
-                    accessibilityHint="Search artists, artworks, galleries etc."
-                    accessibilityLabel="Search artists, artworks, galleries etc."
-                    maxLength={55}
-                    numberOfLines={1}
-                    multiline={false}
-                  />
-                </Flex>
-              </Touchable>
+              <GlobalSearchInput />
             </Flex>
             <Flex alignItems="flex-end">
               <ActivityIndicator hasUnseenNotifications={hasUnseenNotifications} />
