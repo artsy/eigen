@@ -1,6 +1,6 @@
-import { ArtsyLogoBlackIcon, Flex, Box, Button, Spacer, Text } from "@artsy/palette-mobile"
-import SearchIcon from "app/Components/Icons/SearchIcon"
+import { ArtsyLogoBlackIcon, Box, Flex, RoundSearchInput, Touchable } from "@artsy/palette-mobile"
 import { PaymentFailureBanner } from "app/Scenes/HomeView/Components/PaymentFailureBanner"
+import { SEARCH_INPUT_PLACEHOLDER } from "app/Scenes/Search/Search"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Suspense } from "react"
@@ -15,27 +15,40 @@ export const HomeHeader: React.FC = () => {
 
   if (enableNewSearchModal) {
     return (
-      <>
+      <Flex>
         {!!showPaymentFailureBanner && (
           <Suspense fallback={null}>
             <PaymentFailureBanner />
           </Suspense>
         )}
         <Flex py={2}>
-          <Flex flexDirection="row" px={2} justifyContent="space-around" alignItems="center">
+          <Flex
+            flexDirection="row"
+            px={2}
+            gap={2}
+            justifyContent="space-around"
+            alignItems="center"
+          >
             <Flex flex={1}>
-              <Button block variant="fillGray" alignItems="flex-start" disabled>
-                <SearchIcon />
-                <Spacer x={2} />
-                <Text variant="sm-display">Search Artsy</Text>
-              </Button>
+              <Touchable onPress={() => {}}>
+                <Flex pointerEvents="none">
+                  <RoundSearchInput
+                    placeholder={SEARCH_INPUT_PLACEHOLDER}
+                    accessibilityHint="Search artists, artworks, galleries etc."
+                    accessibilityLabel="Search artists, artworks, galleries etc."
+                    maxLength={55}
+                    numberOfLines={1}
+                    multiline={false}
+                  />
+                </Flex>
+              </Touchable>
             </Flex>
-            <Flex width={50} alignItems="flex-end">
+            <Flex alignItems="flex-end">
               <ActivityIndicator hasUnseenNotifications={hasUnseenNotifications} />
             </Flex>
           </Flex>
         </Flex>
-      </>
+      </Flex>
     )
   }
 

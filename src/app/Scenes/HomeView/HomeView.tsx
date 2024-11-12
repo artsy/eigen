@@ -132,6 +132,9 @@ export const HomeView: React.FC = () => {
     <Screen safeArea={true}>
       <Screen.Body fullwidth>
         <FlatList
+          automaticallyAdjustKeyboardInsets
+          keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
           ref={flashlistRef as RefObject<FlatList>}
           data={sections}
