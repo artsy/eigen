@@ -1,10 +1,11 @@
 import { Flex, RoundSearchInput, Touchable } from "@artsy/palette-mobile"
-import { GlobalSearchInputModal } from "app/Components/GlobalSearchInputModal"
+import { GlobalSearchInputOverlay } from "app/Components/GlobalSearchInputOverlay"
 import { SEARCH_INPUT_PLACEHOLDER } from "app/Scenes/Search/Search"
 import { Fragment, useState } from "react"
 
 export const GlobalSearchInput: React.FC<{}> = () => {
   const [isVisible, setIsVisible] = useState(false)
+
   return (
     <Fragment>
       <Touchable
@@ -23,7 +24,7 @@ export const GlobalSearchInput: React.FC<{}> = () => {
           />
         </Flex>
       </Touchable>
-      <GlobalSearchInputModal visible={isVisible} hideModal={() => setIsVisible(false)} />
+      <GlobalSearchInputOverlay visible={isVisible} hideModal={() => setIsVisible(false)} />
     </Fragment>
   )
 }

@@ -5,7 +5,7 @@ import { SEARCH_INPUT_PLACEHOLDER } from "app/Scenes/Search/Search"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { FullWindowOverlay } from "react-native-screens"
 
-export const GlobalSearchInputModal: React.FC<{ visible: boolean; hideModal: () => void }> = ({
+export const GlobalSearchInputOverlay: React.FC<{ visible: boolean; hideModal: () => void }> = ({
   visible,
   hideModal,
 }) => {

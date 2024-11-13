@@ -1,9 +1,9 @@
-import { SearchModalScreen } from "app/Scenes/SearchModal/SeachModal"
+import { GlobalSearchInput } from "app/Components/GlobalSearchInput"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
-describe("SeachModal", () => {
+describe("GlobalSearchInput", () => {
   it("renders the search label properly", () => {
-    renderWithWrappers(<SearchModalScreen />)
+    renderWithWrappers(<GlobalSearchInput />)
 
     expect(/Search artists, artworks, etc/).toBeTruthy()
   })
