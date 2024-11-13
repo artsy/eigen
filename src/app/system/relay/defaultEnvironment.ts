@@ -28,15 +28,15 @@ export let _globalCacheRef: RelayQueryResponseCache | undefined
 const network = new RelayNetworkLayer(
   [
     // middlewares use LIFO. The bottom ones in the array will run first after the fetch.
-    cacheMiddleware({
-      size: 500, // max 500 requests
-      ttl: 900000, // 1 hour
-      clearOnMutation: true,
-      onInit: (cache) => (_globalCacheRef = cache),
-    }),
+    // cacheMiddleware({
+    //   size: 500, // max 500 requests
+    //   ttl: 900000, // 1 hour
+    //   clearOnMutation: true,
+    //   onInit: (cache) => (_globalCacheRef = cache),
+    // }),
     persistedQueryMiddleware(),
     metaphysicsURLMiddleware(),
-    rateLimitMiddleware(),
+    // rateLimitMiddleware(),
     uploadMiddleware(),
     // @ts-expect-error
     errorMiddleware(),

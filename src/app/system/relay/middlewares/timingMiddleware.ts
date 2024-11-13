@@ -8,6 +8,9 @@ export function timingMiddleware() {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     return next(req).then((res) => {
       const duration = Date.now() - startTime
+      if (operation.includes("Collection")) {
+        console.log({ duration, operation })
+      }
       volleyClient.send({
         type: "timing",
         name: "graphql-request-duration",

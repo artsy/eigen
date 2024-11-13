@@ -2,8 +2,6 @@ import { ActionType, ContextModule, OwnerType, TappedMainArtworkGrid } from "@ar
 import {
   Box,
   Flex,
-  HeartFillIcon,
-  HeartIcon,
   Image,
   Skeleton,
   SkeletonBox,
@@ -19,14 +17,12 @@ import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/Cr
 import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
+import { ArtworkGridItemSaveButtonQueryRenderer } from "app/Components/ArtworkGrids/ArtworkGridItemSaveButton"
 import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
-import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessage"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { DurationProvider } from "app/Components/Countdown"
 import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
-import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
-import { HEART_ICON_SIZE } from "app/Components/constants"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
 import { ArtworkItemCTAs } from "app/Scenes/Artwork/Components/ArtworkItemCTAs"
 import { getNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/getNewSaveAndFollowOnArtworkCardExperimentVariant"
@@ -34,16 +30,13 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
+import { useArtworkNonCacheableFields } from "app/utils/fetchArtworkNonCacheableFields"
 import { getArtworkSignalTrackingFields } from "app/utils/getArtworkSignalTrackingFields"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { getTimer } from "app/utils/getTimer"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { RandomNumberGenerator } from "app/utils/placeholders"
-import {
-  ArtworkActionTrackingProps,
-  tracks as artworkActionTracks,
-} from "app/utils/track/ArtworkActions"
+import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
 import React, { useRef, useState } from "react"
 import { View, ViewProps } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -129,6 +122,10 @@ export const Artwork: React.FC<ArtworkProps> = ({
     "onyx_artwork-card-save-and-follow-cta-redesign"
   )
 
+  const nonCacheableData = useArtworkNonCacheableFields(artwork.internalID)
+
+  console.log({ isSavedNonCacheable: nonCacheableData?.artwork?.isSaved })
+
   const { enableShowOldSaveCTA, enableNewSaveCTA, enableNewSaveAndFollowCTAs } =
     getNewSaveAndFollowOnArtworkCardExperimentVariant(
       newSaveAndFollowOnArtworkCardExperiment.enabled,
@@ -178,35 +175,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
   }
-
-  const onArtworkSavedOrUnSaved = (saved: boolean) => {
-    const { availability, isAcquireable, isBiddable, isInquireable, isOfferable } = artwork
-    const params = {
-      acquireable: isAcquireable,
-      availability,
-      biddable: isBiddable,
-      context_module: contextModule,
-      context_screen: contextScreen,
-      context_screen_owner_id: contextScreenOwnerId,
-      context_screen_owner_slug: contextScreenOwnerSlug,
-      context_screen_owner_type: contextScreenOwnerType,
-      inquireable: isInquireable,
-      offerable: isOfferable,
-    }
-    tracking.trackEvent(artworkActionTracks.saveOrUnsaveArtwork(saved, params))
-  }
-
-  const { isSaved, saveArtworkToLists } = useSaveArtworkToArtworkLists({
-    artworkFragmentRef: artwork,
-    onCompleted: onArtworkSavedOrUnSaved,
-  })
-
-  const handleArtworkSave = useSaveArtwork({
-    id: artwork.id,
-    internalID: artwork.internalID,
-    isSaved: !!artwork.isSaved,
-    onCompleted: onArtworkSavedOrUnSaved,
-  })
 
   const { hasEnded } = getTimer(partnerOffer?.endAt || "")
 
@@ -425,13 +393,16 @@ export const Artwork: React.FC<ArtworkProps> = ({
                       {collectorSignals.auction.lotWatcherCount}
                     </Text>
                   )}
-                  <Touchable
-                    haptic
-                    onPress={disableArtworksListPrompt ? handleArtworkSave : saveArtworkToLists}
-                    testID="save-artwork-icon"
-                  >
-                    <ArtworkHeartIcon isSaved={!!isSaved} index={itemIndex} />
-                  </Touchable>
+                  <ArtworkGridItemSaveButtonQueryRenderer
+                    disableArtworksListPrompt={disableArtworksListPrompt}
+                    id={artwork.internalID}
+                    contextModule={contextModule}
+                    contextScreen={contextScreen}
+                    contextScreenOwnerId={contextScreenOwnerId}
+                    contextScreenOwnerSlug={contextScreenOwnerSlug}
+                    contextScreenOwnerType={contextScreenOwnerType}
+                    itemIndex={itemIndex}
+                  />
                 </Flex>
               )}
 
@@ -463,26 +434,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
   )
 }
 
-const ArtworkHeartIcon: React.FC<{ isSaved: boolean | null; index?: number }> = ({
-  isSaved,
-  index,
-}) => {
-  const iconProps = { height: HEART_ICON_SIZE, width: HEART_ICON_SIZE, testID: "empty-heart-icon" }
-
-  if (isSaved) {
-    return <HeartFillIcon {...iconProps} testID="filled-heart-icon" fill="blue100" />
-  }
-  if (index === 0) {
-    // We only try to show the save onboard Popover in the 1st element
-    return (
-      <ProgressiveOnboardingSaveArtwork>
-        <HeartIcon {...iconProps} />
-      </ProgressiveOnboardingSaveArtwork>
-    )
-  }
-  return <HeartIcon {...iconProps} />
-}
-
 export default createFragmentContainer(Artwork, {
   artwork: graphql`
     fragment ArtworkGridItem_artwork on Artwork
@@ -510,7 +461,6 @@ export default createFragmentContainer(Artwork, {
       isBiddable
       isInquireable
       isOfferable
-      isSaved
       isUnlisted
       artistNames
       href
@@ -571,7 +521,6 @@ export default createFragmentContainer(Artwork, {
         ...ArtworkSocialSignal_collectorSignals
       }
       ...ArtworkSaleMessage_artwork
-      ...useSaveArtworkToArtworkLists_artwork
     }
   `,
 })

@@ -3,8 +3,10 @@ import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import {
   hasNoCacheParamPresent,
   hasPersonalizedArguments,
+  hasPersonalizedFields,
   isRequestCacheable,
   SKIP_CACHE_ARGUMENTS,
+  SKIP_CACHE_FIELDS,
 } from "app/system/relay/helpers/cacheHeaderMiddlewareHelpers"
 import { GraphQLRequest } from "app/system/relay/middlewares/types"
 import { Middleware } from "react-relay-network-modern"
@@ -47,6 +49,16 @@ export const shouldSkipCDNCache = (req: GraphQLRequest) => {
         )
       }
       // Don't use CDN cache if the query has a personalized argument
+      return true
+    }
+
+    if (typeof req.fetchOpts.body === "string" && hasPersonalizedFields(req)) {
+      if (__DEV__) {
+        console.warn(
+          `You are setting a personalized field on a @cacheable request, CDN cache will be ignored for ${req.operation.name}. \nList of personalized fields: `,
+          SKIP_CACHE_FIELDS.join(", ")
+        )
+      }
       return true
     }
 
