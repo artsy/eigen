@@ -78,7 +78,11 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
 
   // 36 = 20 (padding) + 16 (icon size) + 5 (top padding)
   const likeAndFollowCTAPadding =
-    enableNewSaveAndFollowOnArtworkCard && (enableNewSaveCTA || enableNewSaveAndFollowCTAs) ? 41 : 0
+    showSaveIcon &&
+    enableNewSaveAndFollowOnArtworkCard &&
+    (enableNewSaveCTA || enableNewSaveAndFollowCTAs)
+      ? 41
+      : 0
   const artworkRailCardMetaPadding = 10
   const artworkRailCardMetaDataHeight =
     ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + artworkRailCardMetaPadding + likeAndFollowCTAPadding
