@@ -114,6 +114,7 @@
     "@braze/react-native-sdk": "11.0.0",
     "@expo/react-native-action-sheet": "4.0.1",
     "@gorhom/bottom-sheet": "5.0.5",
+    "@gorhom/portal": "1.0.14",
     "@invertase/react-native-apple-authentication": "2.1.5",
     "@kesha-antonov/react-native-action-cable": "1.1.4",
     "@ptomasroos/react-native-multi-slider": "2.2.2",

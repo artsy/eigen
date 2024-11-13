@@ -1,5 +1,6 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, Spinner } from "@artsy/palette-mobile"
+import { PortalHost } from "@gorhom/portal"
 import { useFocusEffect } from "@react-navigation/native"
 import { HomeViewFetchMeQuery } from "__generated__/HomeViewFetchMeQuery.graphql"
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
@@ -165,6 +166,7 @@ export const HomeView: React.FC = () => {
           {...stickyHeaderProps}
         />
         {!!data?.me && <EmailConfirmationBannerFragmentContainer me={data.me} />}
+        <PortalHost name="SearchOverlay" />
       </Screen.Body>
     </Screen>
   )

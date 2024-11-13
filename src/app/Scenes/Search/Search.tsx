@@ -1,5 +1,6 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Spacer, Flex, Box, Screen } from "@artsy/palette-mobile"
+import { PortalHost } from "@gorhom/portal"
 import { useNavigation } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { SearchQuery, SearchQuery$variables } from "__generated__/SearchQuery.graphql"
@@ -181,6 +182,7 @@ export const Search: React.FC = () => {
               <Spacer y={4} />
             </Scrollable>
           )}
+          <PortalHost name="SearchOverlay" />
         </Flex>
       </ArtsyKeyboardAvoidingView>
     </SearchContext.Provider>
