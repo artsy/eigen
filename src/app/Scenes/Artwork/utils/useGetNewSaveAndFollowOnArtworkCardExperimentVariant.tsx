@@ -11,7 +11,7 @@ export const useGetNewSaveAndFollowOnArtworkCardExperimentVariant = (
   )
 
   const newSaveAndFollowOnArtworkCardExperiment = useExperimentVariant(experimentName)
-  const enabled = !newSaveAndFollowOnArtworkCardExperiment.enabled
+  const enabled = newSaveAndFollowOnArtworkCardExperiment.enabled
   const variant = newSaveAndFollowOnArtworkCardExperiment.variant
 
   let enableShowOldSaveCTA = false
