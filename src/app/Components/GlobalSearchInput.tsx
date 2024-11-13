@@ -5,6 +5,7 @@ import { Fragment, useState } from "react"
 
 export const GlobalSearchInput: React.FC<{}> = () => {
   const [isVisible, setIsVisible] = useState(false)
+
   return (
     <Fragment>
       <Touchable
