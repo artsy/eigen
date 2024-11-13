@@ -534,7 +534,6 @@ describe("ArtworkGridItem", () => {
           variant: "variant-b",
           payload: "variant-b",
         })
-
       })
 
       it("renders only new Save CTA", () => {
@@ -563,16 +562,16 @@ describe("ArtworkGridItem", () => {
         expect(screen.queryByTestId("heart-icon-empty")).not.toBeOnTheScreen()
       })
 
-      it("does not render new Save CTA if hideSaveIcon is true", () => {
-        renderWithRelay(
-          {
-            Artwork: () => artwork,
-          },
-          { hideSaveIcon: true }
-        )
+      it("does not render Save and Follow CTA if hideSaveIcon is true", () => {
+        renderWithRelay({}, { hideSaveIcon: true })
 
+        // do not render Save CTA
         expect(screen.queryByTestId("heart-icon-empty")).not.toBeOnTheScreen()
         expect(screen.queryByTestId("heart-icon-filled")).not.toBeOnTheScreen()
+
+        // do not render Follow CTA
+        expect(screen.queryByTestId("follow-icon-empty")).not.toBeOnTheScreen()
+        expect(screen.queryByTestId("follow-icon-filled")).not.toBeOnTheScreen()
       })
     })
 
@@ -619,16 +618,15 @@ describe("ArtworkGridItem", () => {
         expect(screen.queryByTestId("follow-icon-empty")).not.toBeOnTheScreen()
       })
 
-      it("does not render new Save CTA if hideSaveIcon is true", () => {
-        renderWithRelay(
-          {
-            Artwork: () => artwork,
-          },
-          { hideSaveIcon: true }
-        )
-
+      it("does not render Save and Follow CTA if hideSaveIcon is true", () => {
+        renderWithRelay({}, { hideSaveIcon: true })
+        // do not render Save CTA
         expect(screen.queryByTestId("heart-icon-empty")).not.toBeOnTheScreen()
         expect(screen.queryByTestId("heart-icon-filled")).not.toBeOnTheScreen()
+
+        // do not render Follow CTA
+        expect(screen.queryByTestId("follow-icon-empty")).not.toBeOnTheScreen()
+        expect(screen.queryByTestId("follow-icon-filled")).not.toBeOnTheScreen()
       })
     })
   })

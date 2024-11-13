@@ -35,7 +35,6 @@ interface MasonryArtworkGridItemProps {
   priceOfferMessage?: PriceOfferMessage
   hideSaveIcon?: boolean
   hideSaleInfo?: boolean
-  positionCTAs?: "column" | "row"
 }
 
 export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
@@ -52,7 +51,6 @@ export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
   onPress,
   partnerOffer,
   priceOfferMessage,
-  positionCTAs,
   ...rest
 }) => {
   const space = useSpace()
@@ -79,7 +77,7 @@ export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
         onPress={onPress}
         partnerOffer={partnerOffer}
         priceOfferMessage={priceOfferMessage}
-        positionCTAs={positionCTAs}
+        numColumns={numColumns}
       />
     </Flex>
   )

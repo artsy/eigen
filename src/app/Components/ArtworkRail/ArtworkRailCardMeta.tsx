@@ -6,8 +6,7 @@ import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSav
 import { useMetaDataTextColor } from "app/Components/ArtworkRail/ArtworkRailUtils"
 import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessage"
 import { HEART_ICON_SIZE } from "app/Components/constants"
-import { getNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/getNewSaveAndFollowOnArtworkCardExperimentVariant"
-import { useExperimentVariant } from "app/utils/experiments/hooks"
+import { useGetNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/useGetNewSaveAndFollowOnArtworkCardExperimentVariant"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
@@ -64,20 +63,13 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
   const enableNewSaveAndFollowOnArtworkCard = useFeatureFlag(
     "AREnableNewSaveAndFollowOnArtworkCard"
   )
-  const newSaveAndFollowOnArtworkCardExperiment = useExperimentVariant(
+
+  const { enabled, enableShowOldSaveCTA } = useGetNewSaveAndFollowOnArtworkCardExperimentVariant(
     "onyx_artwork-card-save-and-follow-cta-redesign"
   )
 
-  const { enableShowOldSaveCTA } = getNewSaveAndFollowOnArtworkCardExperimentVariant(
-    newSaveAndFollowOnArtworkCardExperiment.enabled,
-    newSaveAndFollowOnArtworkCardExperiment.variant
-  )
-
   const showOldSaveCTA =
-    !!showSaveIcon &&
-    (!enableNewSaveAndFollowOnArtworkCard ||
-      !newSaveAndFollowOnArtworkCardExperiment.enabled ||
-      !!enableShowOldSaveCTA)
+    !!showSaveIcon && (!enableNewSaveAndFollowOnArtworkCard || !enabled || !!enableShowOldSaveCTA)
 
   const artwork = useFragment(artworkMetaFragment, artworkProp)
 

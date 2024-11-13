@@ -78,7 +78,7 @@ describe("ArtworkItemCTAs", () => {
       expect(screen.queryByTestId("heart-icon-empty")).not.toBeOnTheScreen()
     })
 
-    it("does not render the new Save icon if showSaveIcon is false", () => {
+    it("does not render Save and Follow CTAs if showSaveIcon is false", () => {
       renderWithRelay(
         {
           Artwork: () => artwork,
@@ -86,8 +86,13 @@ describe("ArtworkItemCTAs", () => {
         { showSaveIcon: false }
       )
 
+      // do not render Save CTA
       expect(screen.queryByTestId("heart-icon-empty")).not.toBeOnTheScreen()
       expect(screen.queryByTestId("heart-icon-filled")).not.toBeOnTheScreen()
+
+      // do not render Follow CTA
+      expect(screen.queryByTestId("follow-icon-empty")).not.toBeOnTheScreen()
+      expect(screen.queryByTestId("follow-icon-filled")).not.toBeOnTheScreen()
     })
   })
 
@@ -103,7 +108,7 @@ describe("ArtworkItemCTAs", () => {
       })
     })
 
-    it("renders new Save icon", () => {
+    it("renders new Save CTA", () => {
       renderWithRelay(
         {
           Artwork: () => artwork,
@@ -120,10 +125,13 @@ describe("ArtworkItemCTAs", () => {
       expect(screen.queryByTestId("heart-icon-empty")).not.toBeOnTheScreen()
     })
 
-    it("renders new Follow icon", () => {
-      renderWithRelay({
-        Artwork: () => artwork,
-      })
+    it("renders new Follow CTA", () => {
+      renderWithRelay(
+        {
+          Artwork: () => artwork,
+        },
+        { showSaveIcon: true }
+      )
 
       expect(screen.getByTestId("follow-icon-empty")).toBeOnTheScreen()
       expect(screen.queryByTestId("follow-icon-filled")).not.toBeOnTheScreen()
@@ -134,7 +142,7 @@ describe("ArtworkItemCTAs", () => {
       expect(screen.queryByTestId("follow-icon-empty")).not.toBeOnTheScreen()
     })
 
-    it("does not render the new Save icon if showSaveIcon is false", () => {
+    it("does not render Save and Follow CTAs if showSaveIcon is false", () => {
       renderWithRelay(
         {
           Artwork: () => artwork,
@@ -142,8 +150,13 @@ describe("ArtworkItemCTAs", () => {
         { showSaveIcon: false }
       )
 
+      // do not render Save CTA
       expect(screen.queryByTestId("heart-icon-empty")).not.toBeOnTheScreen()
       expect(screen.queryByTestId("heart-icon-filled")).not.toBeOnTheScreen()
+
+      // do not render Follow CTA
+      expect(screen.queryByTestId("follow-icon-empty")).not.toBeOnTheScreen()
+      expect(screen.queryByTestId("follow-icon-filled")).not.toBeOnTheScreen()
     })
   })
 })

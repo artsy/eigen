@@ -16,9 +16,8 @@ import {
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
 import { ArtworkItemCTAs } from "app/Scenes/Artwork/Components/ArtworkItemCTAs"
-import { getNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/getNewSaveAndFollowOnArtworkCardExperimentVariant"
+import { useGetNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/useGetNewSaveAndFollowOnArtworkCardExperimentVariant"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
-import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
 import { useState } from "react"
@@ -61,14 +60,10 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const enableNewSaveAndFollowOnArtworkCard = useFeatureFlag(
     "AREnableNewSaveAndFollowOnArtworkCard"
   )
-  const newSaveAndFollowOnArtworkCardExperiment = useExperimentVariant(
-    "onyx_artwork-card-save-and-follow-cta-redesign"
-  )
 
   const { enableNewSaveCTA, enableNewSaveAndFollowCTAs } =
-    getNewSaveAndFollowOnArtworkCardExperimentVariant(
-      newSaveAndFollowOnArtworkCardExperiment.enabled,
-      newSaveAndFollowOnArtworkCardExperiment.variant
+    useGetNewSaveAndFollowOnArtworkCardExperimentVariant(
+      "onyx_artwork-card-save-and-follow-cta-redesign"
     )
 
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
@@ -83,7 +78,11 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
 
   // 36 = 20 (padding) + 16 (icon size) + 5 (top padding)
   const likeAndFollowCTAPadding =
-    enableNewSaveAndFollowOnArtworkCard && (enableNewSaveCTA || enableNewSaveAndFollowCTAs) ? 41 : 0
+    showSaveIcon &&
+    enableNewSaveAndFollowOnArtworkCard &&
+    (enableNewSaveCTA || enableNewSaveAndFollowCTAs)
+      ? 41
+      : 0
   const artworkRailCardMetaPadding = 10
   const artworkRailCardMetaDataHeight =
     ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + artworkRailCardMetaPadding + likeAndFollowCTAPadding

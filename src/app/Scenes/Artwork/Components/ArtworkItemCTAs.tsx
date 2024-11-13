@@ -13,8 +13,7 @@ import { ArtworkItemCTAs_artwork$key } from "__generated__/ArtworkItemCTAs_artwo
 import { useFollowArtist } from "app/Components/Artist/useFollowArtist"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ARTWORK_RAIL_CARD_CTA_ICON_SIZE } from "app/Components/constants"
-import { getNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/getNewSaveAndFollowOnArtworkCardExperimentVariant"
-import { useExperimentVariant } from "app/utils/experiments/hooks"
+import { useGetNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/useGetNewSaveAndFollowOnArtworkCardExperimentVariant"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import {
@@ -43,14 +42,9 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
     "AREnableNewSaveAndFollowOnArtworkCard"
   )
 
-  const newSaveAndFollowOnArtworkCardExperiment = useExperimentVariant(
-    "onyx_artwork-card-save-and-follow-cta-redesign"
-  )
-
   const { enableNewSaveCTA, enableNewSaveAndFollowCTAs } =
-    getNewSaveAndFollowOnArtworkCardExperimentVariant(
-      newSaveAndFollowOnArtworkCardExperiment.enabled,
-      newSaveAndFollowOnArtworkCardExperiment.variant
+    useGetNewSaveAndFollowOnArtworkCardExperimentVariant(
+      "onyx_artwork-card-save-and-follow-cta-redesign"
     )
 
   const artwork = useFragment(artworkFragment, artworkProp)
@@ -144,13 +138,16 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
     </ArtworkItemCTAsWrapper>
   )
 
-  if (enableNewSaveCTA && showSaveIcon) {
+  // do not render Save and Follow CTAs when showSaveIcon is false
+  if (!showSaveIcon) return null
+
+  if (enableNewSaveCTA) {
     return saveCTA
   } else if (enableNewSaveAndFollowCTAs) {
     return (
       <Flex flexDirection="row">
         <Join separator={<Spacer x={1} />}>
-          {!!showSaveIcon && saveCTA}
+          {saveCTA}
           {followCTA}
         </Join>
       </Flex>
