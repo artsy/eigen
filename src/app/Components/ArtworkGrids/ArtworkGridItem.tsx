@@ -29,7 +29,7 @@ import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnbo
 import { HEART_ICON_SIZE } from "app/Components/constants"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
 import { ArtworkItemCTAs } from "app/Scenes/Artwork/Components/ArtworkItemCTAs"
-import { getNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/getNewSaveAndFollowOnArtworkCardExperimentVariant"
+import { useGetNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/useGetNewSaveAndFollowOnArtworkCardExperimentVariant"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
@@ -38,6 +38,7 @@ import { getArtworkSignalTrackingFields } from "app/utils/getArtworkSignalTracki
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { getTimer } from "app/utils/getTimer"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { RandomNumberGenerator } from "app/utils/placeholders"
 import {
@@ -82,7 +83,7 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   trackingFlow?: string
   /** allows for artwork to be added to recent searches */
   updateRecentSearchesOnTap?: boolean
-  positionCTAs?: "column" | "row"
+  numColumns?: number
 }
 
 export const Artwork: React.FC<ArtworkProps> = ({
@@ -114,7 +115,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   titleTextStyle,
   trackTap,
   updateRecentSearchesOnTap = false,
-  positionCTAs = "column",
+  numColumns = NUM_COLUMNS_MASONRY,
 }) => {
   const itemRef = useRef<any>()
   const color = useColor()
@@ -129,10 +130,11 @@ export const Artwork: React.FC<ArtworkProps> = ({
     "onyx_artwork-card-save-and-follow-cta-redesign"
   )
 
-  const { enableShowOldSaveCTA, enableNewSaveCTA, enableNewSaveAndFollowCTAs } =
-    getNewSaveAndFollowOnArtworkCardExperimentVariant(
+  const { enableShowOldSaveCTA, enableNewSaveCTA, enableNewSaveAndFollowCTAs, positionCTAs } =
+    useGetNewSaveAndFollowOnArtworkCardExperimentVariant(
       newSaveAndFollowOnArtworkCardExperiment.enabled,
-      newSaveAndFollowOnArtworkCardExperiment.variant
+      newSaveAndFollowOnArtworkCardExperiment.variant,
+      numColumns
     )
 
   const showOldSaveCTA =

@@ -16,7 +16,7 @@ import {
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
 import { ArtworkItemCTAs } from "app/Scenes/Artwork/Components/ArtworkItemCTAs"
-import { getNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/getNewSaveAndFollowOnArtworkCardExperimentVariant"
+import { useGetNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/useGetNewSaveAndFollowOnArtworkCardExperimentVariant"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -66,7 +66,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   )
 
   const { enableNewSaveCTA, enableNewSaveAndFollowCTAs } =
-    getNewSaveAndFollowOnArtworkCardExperimentVariant(
+    useGetNewSaveAndFollowOnArtworkCardExperimentVariant(
       newSaveAndFollowOnArtworkCardExperiment.enabled,
       newSaveAndFollowOnArtworkCardExperiment.variant
     )

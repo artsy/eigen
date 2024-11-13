@@ -13,7 +13,7 @@ import { ArtworkItemCTAs_artwork$key } from "__generated__/ArtworkItemCTAs_artwo
 import { useFollowArtist } from "app/Components/Artist/useFollowArtist"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ARTWORK_RAIL_CARD_CTA_ICON_SIZE } from "app/Components/constants"
-import { getNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/getNewSaveAndFollowOnArtworkCardExperimentVariant"
+import { useGetNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/useGetNewSaveAndFollowOnArtworkCardExperimentVariant"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
@@ -48,7 +48,7 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
   )
 
   const { enableNewSaveCTA, enableNewSaveAndFollowCTAs } =
-    getNewSaveAndFollowOnArtworkCardExperimentVariant(
+    useGetNewSaveAndFollowOnArtworkCardExperimentVariant(
       newSaveAndFollowOnArtworkCardExperiment.enabled,
       newSaveAndFollowOnArtworkCardExperiment.variant
     )
