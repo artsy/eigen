@@ -138,13 +138,16 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
     </ArtworkItemCTAsWrapper>
   )
 
-  if (enableNewSaveCTA && showSaveIcon) {
+  // do not render Save and Follow CTAs when showSaveIcon is false
+  if (!showSaveIcon) return null
+
+  if (enableNewSaveCTA) {
     return saveCTA
   } else if (enableNewSaveAndFollowCTAs) {
     return (
       <Flex flexDirection="row">
         <Join separator={<Spacer x={1} />}>
-          {!!showSaveIcon && saveCTA}
+          {saveCTA}
           {followCTA}
         </Join>
       </Flex>
