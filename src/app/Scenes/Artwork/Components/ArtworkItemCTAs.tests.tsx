@@ -126,9 +126,12 @@ describe("ArtworkItemCTAs", () => {
     })
 
     it("renders new Follow CTA", () => {
-      renderWithRelay({
-        Artwork: () => artwork,
-      })
+      renderWithRelay(
+        {
+          Artwork: () => artwork,
+        },
+        { showSaveIcon: true }
+      )
 
       expect(screen.getByTestId("follow-icon-empty")).toBeOnTheScreen()
       expect(screen.queryByTestId("follow-icon-filled")).not.toBeOnTheScreen()
