@@ -18,7 +18,6 @@ import { Disappearable, DissapearableArtwork } from "app/Components/Disappearabl
 import { ArtworkItemCTAs } from "app/Scenes/Artwork/Components/ArtworkItemCTAs"
 import { useGetNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/useGetNewSaveAndFollowOnArtworkCardExperimentVariant"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
-import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
 import { useState } from "react"
@@ -61,14 +60,10 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const enableNewSaveAndFollowOnArtworkCard = useFeatureFlag(
     "AREnableNewSaveAndFollowOnArtworkCard"
   )
-  const newSaveAndFollowOnArtworkCardExperiment = useExperimentVariant(
-    "onyx_artwork-card-save-and-follow-cta-redesign"
-  )
 
   const { enableNewSaveCTA, enableNewSaveAndFollowCTAs } =
     useGetNewSaveAndFollowOnArtworkCardExperimentVariant(
-      newSaveAndFollowOnArtworkCardExperiment.enabled,
-      newSaveAndFollowOnArtworkCardExperiment.variant
+      "onyx_artwork-card-save-and-follow-cta-redesign"
     )
 
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)

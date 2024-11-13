@@ -1,13 +1,18 @@
+import { EXPERIMENT_NAME } from "app/utils/experiments/experiments"
+import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 
 export const useGetNewSaveAndFollowOnArtworkCardExperimentVariant = (
-  enabled: boolean,
-  variant: string,
+  experimentName: EXPERIMENT_NAME,
   numColumns?: number | undefined
 ) => {
   const enableNewSaveAndFollowOnArtworkCard = useFeatureFlag(
     "AREnableNewSaveAndFollowOnArtworkCard"
   )
+
+  const newSaveAndFollowOnArtworkCardExperiment = useExperimentVariant(experimentName)
+  const enabled = !newSaveAndFollowOnArtworkCardExperiment.enabled
+  const variant = newSaveAndFollowOnArtworkCardExperiment.variant
 
   let enableShowOldSaveCTA = false
   let enableNewSaveCTA = false
@@ -16,6 +21,7 @@ export const useGetNewSaveAndFollowOnArtworkCardExperimentVariant = (
 
   if (!enabled || !enableNewSaveAndFollowOnArtworkCard)
     return {
+      enabled,
       enableShowOldSaveCTA,
       enableNewSaveCTA,
       enableNewSaveAndFollowCTAs,
@@ -42,6 +48,7 @@ export const useGetNewSaveAndFollowOnArtworkCardExperimentVariant = (
   }
 
   return {
+    enabled,
     enableShowOldSaveCTA,
     enableNewSaveCTA,
     enableNewSaveAndFollowCTAs,

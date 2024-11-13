@@ -33,7 +33,6 @@ import { useGetNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
-import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { getArtworkSignalTrackingFields } from "app/utils/getArtworkSignalTrackingFields"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { getTimer } from "app/utils/getTimer"
@@ -126,22 +125,20 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const enableNewSaveAndFollowOnArtworkCard = useFeatureFlag(
     "AREnableNewSaveAndFollowOnArtworkCard"
   )
-  const newSaveAndFollowOnArtworkCardExperiment = useExperimentVariant(
-    "onyx_artwork-card-save-and-follow-cta-redesign"
+
+  const {
+    enabled,
+    enableShowOldSaveCTA,
+    enableNewSaveCTA,
+    enableNewSaveAndFollowCTAs,
+    positionCTAs,
+  } = useGetNewSaveAndFollowOnArtworkCardExperimentVariant(
+    "onyx_artwork-card-save-and-follow-cta-redesign",
+    numColumns
   )
 
-  const { enableShowOldSaveCTA, enableNewSaveCTA, enableNewSaveAndFollowCTAs, positionCTAs } =
-    useGetNewSaveAndFollowOnArtworkCardExperimentVariant(
-      newSaveAndFollowOnArtworkCardExperiment.enabled,
-      newSaveAndFollowOnArtworkCardExperiment.variant,
-      numColumns
-    )
-
   const showOldSaveCTA =
-    !hideSaveIcon &&
-    (!enableNewSaveAndFollowOnArtworkCard ||
-      !newSaveAndFollowOnArtworkCardExperiment.enabled ||
-      !!enableShowOldSaveCTA)
+    !hideSaveIcon && (!enableNewSaveAndFollowOnArtworkCard || !enabled || !!enableShowOldSaveCTA)
 
   let filterParams: any = undefined
 

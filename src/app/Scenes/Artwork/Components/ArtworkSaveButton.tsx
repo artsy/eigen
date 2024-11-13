@@ -12,7 +12,6 @@ import { ArtworkSaveButton_artwork$key } from "__generated__/ArtworkSaveButton_a
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { isOpenOrUpcomingSale } from "app/Scenes/Artwork/utils/isOpenOrUpcomingSale"
 import { useGetNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/useGetNewSaveAndFollowOnArtworkCardExperimentVariant"
-import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { Schema } from "app/utils/track"
 import { StyleSheet } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -36,14 +35,9 @@ const WatchLotIcon: React.FC<IconProps> = ({ isSaved }) => {
 }
 
 const SaveButtonIcon: React.FC<IconProps> = ({ isSaved }) => {
-  const newSaveAndFollowOnArtworkCardExperiment = useExperimentVariant(
-    "onyx_artwork-card-save-and-follow-cta-redesign"
-  )
-
   const { enableNewSaveCTA, enableNewSaveAndFollowCTAs } =
     useGetNewSaveAndFollowOnArtworkCardExperimentVariant(
-      newSaveAndFollowOnArtworkCardExperiment.enabled,
-      newSaveAndFollowOnArtworkCardExperiment.variant
+      "onyx_artwork-card-save-and-follow-cta-redesign"
     )
 
   const showNewSaveCTA = enableNewSaveCTA || enableNewSaveAndFollowCTAs
