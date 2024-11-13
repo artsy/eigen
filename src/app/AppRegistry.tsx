@@ -37,7 +37,6 @@ import { RecentlyViewedScreen } from "app/Scenes/RecentlyViewed/RecentlyViewed"
 import { SavedArtworks } from "app/Scenes/SavedArtworks/SavedArtworks"
 import { AlertArtworks } from "app/Scenes/SavedSearchAlert/AlertArtworks"
 import { SearchScreen, SearchScreenQuery } from "app/Scenes/Search/Search"
-import { SearchModalScreen } from "app/Scenes/SearchModal/SeachModal"
 import { SubmitArtworkForm } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { SubmitArtworkFormEditContainer } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkFormEdit"
 import { SimilarToRecentlyViewedScreen } from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
@@ -807,14 +806,6 @@ export const modules = defineModules({
     { isRootViewForTabName: "search", hidesBackButton: true, fullBleed: true },
     [SearchScreenQuery]
   ),
-  SearchModal: reactModule(SearchModalScreen, {
-    fullBleed: true,
-    hidesBackButton: true,
-    alwaysPresentModally: true,
-    screenOptions: {
-      animation: "fade",
-    },
-  }),
   Show: reactModule(ShowQueryRenderer, { fullBleed: true }),
   ShowMoreInfo: reactModule(ShowMoreInfoQueryRenderer),
   SimilarToRecentlyViewed: reactModule(SimilarToRecentlyViewedScreen, {
