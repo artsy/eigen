@@ -1,14 +1,24 @@
+import { useSaveArtworkToArtworkListsQuery } from "__generated__/useSaveArtworkToArtworkListsQuery.graphql"
 import { useSaveArtworkToArtworkLists_artwork$key } from "__generated__/useSaveArtworkToArtworkLists_artwork.graphql"
 import { useArtworkListContext } from "app/Components/ArtworkLists/ArtworkListContext"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { ArtworkEntity, ResultAction } from "app/Components/ArtworkLists/types"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { SaveArtworkOptions, useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
-import { graphql, useFragment } from "react-relay"
+import { fetchQuery, graphql, useFragment } from "react-relay"
 
 interface Options extends Pick<SaveArtworkOptions, "onCompleted" | "onError"> {
   artworkFragmentRef: useSaveArtworkToArtworkLists_artwork$key
   saveToDefaultCollectionOnly?: boolean
 }
+
+const useSaveArtworkToArtworkListsSavesQuery = graphql`
+  query useSaveArtworkToArtworkListsQuery($artworkID: String!) {
+    artwork(id: $artworkID) {
+      isSavedToList(default: false)
+    }
+  }
+`
 
 export const useSaveArtworkToArtworkLists = (options: Options) => {
   const { artworkFragmentRef, onCompleted, ...restOptions } = options
@@ -16,8 +26,6 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
   const { artworkListID, removedArtworkIDs } = useArtworkListContext()
   const artwork = useFragment(ArtworkFragment, artworkFragmentRef)
 
-  const customArtworkListsCount = artwork.customArtworkLists?.totalCount ?? 0
-  const isSavedToCustomArtworkLists = customArtworkListsCount > 0
   const artworkEntity: ArtworkEntity = {
     id: artwork.id,
     internalID: artwork.internalID,
@@ -27,17 +35,16 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
     imageURL: artwork.preview?.url ?? null,
     isInAuction: !!artwork.isInAuction,
   }
-  let isSaved = artwork.isSaved
+  let isSaved = artwork.isSavedToAnyList
 
   if (!options.saveToDefaultCollectionOnly) {
     if (artworkListID !== null) {
       const isArtworkRemovedFromArtworkList = removedArtworkIDs.find(
         (artworkID) => artworkID === artwork.internalID
       )
-
       isSaved = !isArtworkRemovedFromArtworkList
     } else {
-      isSaved = artwork.isSaved || isSavedToCustomArtworkLists
+      isSaved = artwork.isSavedToAnyList
     }
   }
 
@@ -45,7 +52,7 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
     ...restOptions,
     id: artwork.id,
     internalID: artwork.internalID,
-    isSaved: !!artwork.isSaved,
+    isSaved: !!artwork.isSavedToAnyList,
     onCompleted,
     optimisticUpdater: (isArtworkSaved, _store, isCalledBefore) => {
       if (isCalledBefore) {
@@ -82,17 +89,26 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
     })
   }
 
-  const saveArtworkToLists = () => {
-    if (options.saveToDefaultCollectionOnly) {
+  const saveArtworkToLists = async () => {
+    if (options.saveToDefaultCollectionOnly || !artwork.isSavedToAnyList) {
       saveArtworkToDefaultArtworkList()
       return
     }
 
-    if (artworkListID || isSavedToCustomArtworkLists) {
+    if (artworkListID) {
       openSelectArtworkListsForArtworkView()
       return
     }
+    const result = await fetchQuery<useSaveArtworkToArtworkListsQuery>(
+      getRelayEnvironment(),
+      useSaveArtworkToArtworkListsSavesQuery,
+      { artworkID: artwork.internalID }
+    ).toPromise()
 
+    if (result?.artwork?.isSavedToList) {
+      openSelectArtworkListsForArtworkView()
+      return
+    }
     saveArtworkToDefaultArtworkList()
   }
 
@@ -107,16 +123,13 @@ const ArtworkFragment = graphql`
     id
     internalID
     isInAuction
-    isSaved
+    isSavedToAnyList
     slug
     title
     date
     artistNames
     preview: image {
       url(version: "square")
-    }
-    customArtworkLists: collectionsConnection(first: 0, default: false, saves: true) {
-      totalCount
     }
   }
 `
