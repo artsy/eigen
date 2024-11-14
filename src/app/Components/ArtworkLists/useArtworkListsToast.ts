@@ -64,7 +64,7 @@ export const useArtworkListToast = (bottomPadding?: number | null) => {
     showToast(message, {
       cta: "View List",
       onPress: () => {
-        navigate(`/settings/saves/${artworkList.internalID}`)
+        navigate(`/favorites/saves/${artworkList.internalID}`)
       },
       backgroundColor: "green100",
     })
@@ -77,7 +77,7 @@ export const useArtworkListToast = (bottomPadding?: number | null) => {
     showToast(message, {
       cta: "View Saves",
       onPress: () => {
-        navigate("/settings/saves")
+        navigate("/favorites/saves")
       },
       backgroundColor: "green100",
     })

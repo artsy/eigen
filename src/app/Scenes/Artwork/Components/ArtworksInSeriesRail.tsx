@@ -12,7 +12,6 @@ import {
   CollectorSignals,
   getArtworkSignalTrackingFields,
 } from "app/utils/getArtworkSignalTrackingFields"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { isEmpty } from "lodash"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -23,7 +22,6 @@ interface ArtworksInSeriesRailProps {
 
 export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = (props) => {
   const { trackEvent } = useTracking()
-  const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
 
   const artwork = useFragment(artworkFragment, props.artwork)
 
@@ -49,14 +47,7 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = (props)
         onPress={(item) => {
           if (!item.href) return
 
-          trackEvent(
-            tracks.tappedArtwork(
-              artwork,
-              item,
-              item.collectorSignals,
-              AREnableAuctionImprovementsSignals
-            )
-          )
+          trackEvent(tracks.tappedArtwork(artwork, item, item.collectorSignals))
 
           navigate(item.href)
         }}
@@ -107,8 +98,7 @@ const tracks = {
   tappedArtwork: (
     sourceArtwork: ArtworksInSeriesRail_artwork$data,
     destination: { internalID: string; slug: string },
-    collectorSignals?: CollectorSignals,
-    auctionSignalsFeatureFlagEnabled?: boolean
+    collectorSignals?: CollectorSignals
   ) => ({
     action: ActionType.tappedArtworkGroup,
     context_module: ContextModule.moreFromThisSeries,
@@ -119,6 +109,6 @@ const tracks = {
     destination_screen_owner_id: destination.internalID,
     destination_screen_owner_slug: destination.slug,
     type: "thumbnail",
-    ...getArtworkSignalTrackingFields(collectorSignals, auctionSignalsFeatureFlagEnabled),
+    ...getArtworkSignalTrackingFields(collectorSignals),
   }),
 }

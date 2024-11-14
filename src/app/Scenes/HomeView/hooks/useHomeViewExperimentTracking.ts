@@ -1,5 +1,6 @@
 import { ExperimentViewed, ActionType, OwnerType } from "@artsy/cohesion"
 import { HomeViewQuery$data } from "__generated__/HomeViewQuery.graphql"
+import { HomeViewStore } from "app/Scenes/HomeView/HomeViewContext"
 import { compact } from "lodash"
 import { useEffect } from "react"
 import { useTracking } from "react-tracking"
@@ -7,6 +8,10 @@ import { useTracking } from "react-tracking"
 export function useHomeViewExperimentTracking(
   homeViewExperiments: HomeViewQuery$data["homeView"]["experiments"]
 ) {
+  const trackedExperiments = HomeViewStore.useStoreState((state) => state.trackedExperiments)
+  const addTrackedExperiment = HomeViewStore.useStoreActions(
+    (actions) => actions.addTrackedExperiment
+  )
   const { trackEvent } = useTracking()
 
   function trackViewedExperiment(name: string, variant: string) {
@@ -26,10 +31,17 @@ export function useHomeViewExperimentTracking(
     experiments.forEach(({ name, variant, enabled }) => {
       if (!enabled) {
         console.warn(`Experiment is not enabled: ${name}`)
-      } else if (!variant) {
+        return
+      }
+
+      if (!variant) {
         console.warn(`Experiment variant is missing for: ${name}`)
-      } else {
+        return
+      }
+
+      if (!trackedExperiments.includes(name)) {
         trackViewedExperiment(name, variant)
+        addTrackedExperiment(name)
       }
     })
   }, [homeViewExperiments])

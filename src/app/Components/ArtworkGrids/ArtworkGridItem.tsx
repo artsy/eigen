@@ -28,14 +28,16 @@ import { Disappearable, DissapearableArtwork } from "app/Components/Disappearabl
 import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
 import { HEART_ICON_SIZE } from "app/Components/constants"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
+import { ArtworkItemCTAs } from "app/Scenes/Artwork/Components/ArtworkItemCTAs"
+import { useGetNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/useGetNewSaveAndFollowOnArtworkCardExperimentVariant"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
 import { getArtworkSignalTrackingFields } from "app/utils/getArtworkSignalTrackingFields"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { getTimer } from "app/utils/getTimer"
-import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { RandomNumberGenerator } from "app/utils/placeholders"
 import {
@@ -46,7 +48,6 @@ import React, { useRef, useState } from "react"
 import { View, ViewProps } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { LotCloseInfo } from "./LotCloseInfo"
 import { LotProgressBar } from "./LotProgressBar"
 
 export type PriceOfferMessage = { priceListedMessage: string; priceWithDiscountMessage: string }
@@ -65,8 +66,6 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   hideRegisterBySignal?: boolean
   hideSaleInfo?: boolean
   hideSaveIcon?: boolean
-  /** Hide urgency tags (3 Days left, 1 hour left) */
-  hideUrgencyTags?: boolean
   /** Pass Tap to override generic ing, used for home tracking in rails */
   itemIndex?: number
   lotLabelTextStyle?: TextProps
@@ -83,7 +82,7 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   trackingFlow?: string
   /** allows for artwork to be added to recent searches */
   updateRecentSearchesOnTap?: boolean
-  urgencyTagTextStyle?: TextProps
+  numColumns?: number
 }
 
 export const Artwork: React.FC<ArtworkProps> = ({
@@ -104,7 +103,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
   hideRegisterBySignal = false,
   hideSaleInfo = false,
   hideSaveIcon = false,
-  hideUrgencyTags = false,
   itemIndex,
   lotLabelTextStyle,
   onPress,
@@ -116,14 +114,31 @@ export const Artwork: React.FC<ArtworkProps> = ({
   titleTextStyle,
   trackTap,
   updateRecentSearchesOnTap = false,
-  urgencyTagTextStyle,
+  numColumns = NUM_COLUMNS_MASONRY,
 }) => {
   const itemRef = useRef<any>()
   const color = useColor()
   const tracking = useTracking()
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
-  const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
+  const enablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
+  const enableNewSaveAndFollowOnArtworkCard = useFeatureFlag(
+    "AREnableNewSaveAndFollowOnArtworkCard"
+  )
+
+  const {
+    enabled,
+    enableShowOldSaveCTA,
+    enableNewSaveCTA,
+    enableNewSaveAndFollowCTAs,
+    positionCTAs,
+  } = useGetNewSaveAndFollowOnArtworkCardExperimentVariant(
+    "onyx_artwork-card-save-and-follow-cta-redesign",
+    numColumns
+  )
+
+  const showOldSaveCTA =
+    !hideSaveIcon && (!enableNewSaveAndFollowOnArtworkCard || !enabled || !!enableShowOldSaveCTA)
 
   let filterParams: any = undefined
 
@@ -193,7 +208,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
   })
 
   const { hasEnded } = getTimer(partnerOffer?.endAt || "")
-  const enablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
 
   const handleTap = () => {
     if (onPress) {
@@ -232,10 +246,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
         query: contextScreenQuery,
         sort: filterParams?.sort,
         type: "thumbnail",
-        ...getArtworkSignalTrackingFields(
-          artwork.collectorSignals,
-          AREnableAuctionImprovementsSignals
-        ),
+        ...getArtworkSignalTrackingFields(artwork.collectorSignals),
       }
 
       tracking.trackEvent(genericTapEvent)
@@ -245,14 +256,12 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const saleInfo = saleMessageOrBidInfo({
     artwork,
     collectorSignals: collectorSignals,
-    auctionSignals: AREnableAuctionImprovementsSignals ? collectorSignals?.auction : null,
+    auctionSignals: collectorSignals?.auction,
   })
 
   const endsAt = artwork.sale?.cascadingEndTimeIntervalMinutes
     ? currentBiddingEndAt
     : artwork.saleArtwork?.endAt || artwork.sale?.endAt
-
-  const urgencyTag = getUrgencyTag(endsAt)
 
   const canShowAuctionProgressBar =
     !!artwork.sale?.extendedBiddingPeriodMinutes && !!artwork.sale?.extendedBiddingIntervalMinutes
@@ -264,8 +273,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const displayLimitedTimeOfferSignal =
     collectorSignals?.partnerOffer?.isAvailable && !isAuction && !displayPriceOfferMessage
-
-  const displayAuctionSignal = AREnableAuctionImprovementsSignals && isAuction
 
   const handleSupress = async (item: DissapearableArtwork) => {
     await item._disappearable?.disappear()
@@ -301,29 +308,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   blurhash={showBlurhash ? artwork.image.blurhash : undefined}
                   resizeMode="contain"
                 />
-
-                {Boolean(
-                  !hideUrgencyTags &&
-                    urgencyTag &&
-                    isAuction &&
-                    !artwork?.sale?.isClosed &&
-                    !displayAuctionSignal
-                ) && (
-                  <Flex
-                    position="absolute"
-                    bottom="5px"
-                    left="5px"
-                    backgroundColor="white"
-                    px="5px"
-                    py="3px"
-                    borderRadius={2}
-                    alignSelf="flex-start"
-                  >
-                    <Text variant="xs" color="black100" numberOfLines={1} {...urgencyTagTextStyle}>
-                      {urgencyTag}
-                    </Text>
-                  </Flex>
-                )}
               </View>
             )}
             {!!canShowAuctionProgressBar && (
@@ -340,8 +324,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
                 </DurationProvider>
               </Box>
             )}
+
             <Flex
-              flexDirection="row"
+              flexDirection={positionCTAs}
               justifyContent="space-between"
               mt={1}
               style={artworkMetaStyle}
@@ -352,17 +337,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
                     <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
                       Lot {artwork.saleArtwork.lotLabel}
                     </Text>
-                    {!!artwork.sale?.cascadingEndTimeIntervalMinutes && !displayAuctionSignal && (
-                      <DurationProvider startAt={endsAt ?? undefined}>
-                        <LotCloseInfo
-                          duration={null}
-                          saleArtwork={artwork.saleArtwork}
-                          sale={artwork.sale}
-                          lotEndAt={endsAt ?? undefined}
-                          hasBeenExtended={lotSaleExtended}
-                        />
-                      </DurationProvider>
-                    )}
                   </>
                 )}
                 {!!artwork.artistNames && (
@@ -428,7 +402,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   </Text>
                 )}
 
-                {!!displayAuctionSignal && !!collectorSignals && (
+                {!!isAuction && !!collectorSignals && (
                   <ArtworkAuctionTimer
                     collectorSignals={collectorSignals}
                     hideRegisterBySignal={hideRegisterBySignal}
@@ -443,9 +417,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   />
                 )}
               </Flex>
-              {!hideSaveIcon && (
+              {!!showOldSaveCTA && (
                 <Flex flexDirection="row" alignItems="flex-start">
-                  {!!displayAuctionSignal && !!collectorSignals?.auction?.lotWatcherCount && (
+                  {!!isAuction && !!collectorSignals?.auction?.lotWatcherCount && (
                     <Text lineHeight="18px" variant="xs" numberOfLines={1}>
                       {collectorSignals.auction.lotWatcherCount}
                     </Text>
@@ -459,6 +433,21 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   </Touchable>
                 </Flex>
               )}
+
+              {!!enableNewSaveAndFollowOnArtworkCard &&
+                !!(enableNewSaveCTA || enableNewSaveAndFollowCTAs) && (
+                  <Spacer y={positionCTAs === "column" ? 0.5 : 0} />
+                )}
+
+              <ArtworkItemCTAs
+                artwork={artwork}
+                showSaveIcon={!hideSaveIcon}
+                contextModule={contextModule}
+                contextScreen={contextScreen}
+                contextScreenOwnerId={contextScreenOwnerId}
+                contextScreenOwnerSlug={contextScreenOwnerSlug}
+                contextScreenOwnerType={contextScreenOwnerType}
+              />
             </Flex>
           </View>
         </Touchable>
@@ -500,6 +489,7 @@ export default createFragmentContainer(Artwork, {
       includeAllImages: { type: "Boolean", defaultValue: false }
       width: { type: "Int" }
     ) {
+      ...ArtworkItemCTAs_artwork
       ...CreateArtworkAlertModal_artwork
       ...ContextMenuArtwork_artwork @arguments(width: $width)
       availability

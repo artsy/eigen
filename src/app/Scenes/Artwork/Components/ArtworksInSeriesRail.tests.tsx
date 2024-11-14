@@ -1,7 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworksInSeriesRailTestsQuery } from "__generated__/ArtworksInSeriesRailTestsQuery.graphql"
 import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -211,8 +210,6 @@ describe("ArtworksInSeriesRail", () => {
   })
 
   it("tracks clicks on an individual artwork with auction signals", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAuctionImprovementsSignals: true })
-
     renderWithRelay({
       Artwork: () => ({
         internalID: "artwork124",

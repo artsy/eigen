@@ -1,20 +1,21 @@
-import { Flex, Input, Separator } from "@artsy/palette-mobile"
+import { Flex, Input, Separator, Text, Touchable } from "@artsy/palette-mobile"
+import { useNavigation } from "@react-navigation/native"
 import { Stack } from "app/Components/Stack"
+import { MyAccountFieldEditScreen } from "app/Scenes/MyAccount/Components/MyAccountFieldEditScreen"
 import { getCurrentEmissionState, GlobalStore, unsafe__getEnvironment } from "app/store/GlobalStore"
-import React, { useEffect, useState } from "react"
-import { Alert, Text } from "react-native"
-import {
-  MyAccountFieldEditScreen,
-  MyAccountFieldEditScreenProps,
-} from "./Components/MyAccountFieldEditScreen"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import React, { Fragment, useEffect, useState } from "react"
+import { Alert } from "react-native"
 
 export const MyAccountEditPassword: React.FC<{}> = ({}) => {
+  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
   const [currentPassword, setCurrentPassword] = useState<string>("")
   const [newPassword, setNewPassword] = useState<string>("")
   const [passwordConfirmation, setPasswordConfirmation] = useState<string>("")
   const [receivedErrorCurrent, setReceivedErrorCurrent] = useState<string | undefined>(undefined)
   const [receivedErrorNew, setReceivedErrorNew] = useState<string | undefined>(undefined)
   const [receivedErrorConfirm, setReceivedErrorConfirm] = useState<string | undefined>(undefined)
+  const navigation = useNavigation()
 
   // resetting the errors when user types
   useEffect(() => {
@@ -27,7 +28,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
     setReceivedErrorConfirm(undefined)
   }, [passwordConfirmation])
 
-  const onSave: MyAccountFieldEditScreenProps["onSave"] = async () => {
+  const handleSave = async () => {
     const { authenticationToken, userAgent } = getCurrentEmissionState()
     const { gravityURL } = unsafe__getEnvironment()
     if (newPassword !== passwordConfirmation) {
@@ -86,47 +87,74 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
     }
   }
 
+  useEffect(() => {
+    const isValid = Boolean(currentPassword && newPassword && passwordConfirmation)
+
+    navigation.setOptions({
+      headerRight: () => {
+        return (
+          <Touchable onPress={handleSave} disabled={!isValid}>
+            <Text variant="xs" color={!!isValid ? "black100" : "black60"}>
+              Save
+            </Text>
+          </Touchable>
+        )
+      },
+    })
+  }, [navigation, currentPassword, newPassword, passwordConfirmation])
+
+  const Wrapper = enableNewNavigation
+    ? Fragment
+    : ({ children }: { children: React.ReactNode }) => (
+        <MyAccountFieldEditScreen
+          title="Password"
+          canSave={Boolean(currentPassword && newPassword && passwordConfirmation)}
+          onSave={handleSave}
+          contentContainerStyle={{ paddingHorizontal: 0 }}
+        >
+          {children}
+        </MyAccountFieldEditScreen>
+      )
+
   return (
-    <MyAccountFieldEditScreen
-      title="Password"
-      canSave={Boolean(currentPassword && newPassword && passwordConfirmation)}
-      onSave={onSave}
-      contentContainerStyle={{ paddingHorizontal: 0 }}
-    >
-      <Flex mx={2}>
-        <Input
-          autoComplete="password"
-          autoFocus
-          onChangeText={setCurrentPassword}
-          secureTextEntry
-          enableClearButton
-          title="Current password"
-          value={currentPassword}
-          error={receivedErrorCurrent}
-        />
+    <Wrapper>
+      <Flex pt={enableNewNavigation ? 2 : 0}>
+        <Flex mx={2}>
+          <Input
+            autoComplete="password"
+            autoFocus
+            onChangeText={setCurrentPassword}
+            secureTextEntry
+            enableClearButton
+            title="Current password"
+            value={currentPassword}
+            error={receivedErrorCurrent}
+          />
+        </Flex>
+        <Separator mb={2} mt={4} />
+        <Stack mx={2}>
+          <Text>
+            Password must include at least one uppercase letter, one lowercase letter, and one
+            number.
+          </Text>
+          <Input
+            onChangeText={setNewPassword}
+            secureTextEntry
+            enableClearButton
+            title="New password"
+            value={newPassword}
+            error={receivedErrorNew}
+          />
+          <Input
+            onChangeText={setPasswordConfirmation}
+            secureTextEntry
+            enableClearButton
+            title="Confirm new password"
+            value={passwordConfirmation}
+            error={receivedErrorConfirm}
+          />
+        </Stack>
       </Flex>
-      <Separator mb={2} mt={4} />
-      <Stack mx={2}>
-        <Text>
-          Password must include at least one uppercase letter, one lowercase letter, and one number.
-        </Text>
-        <Input
-          onChangeText={setNewPassword}
-          secureTextEntry
-          enableClearButton
-          title="New password"
-          value={newPassword}
-          error={receivedErrorNew}
-        />
-        <Input
-          onChangeText={setPasswordConfirmation}
-          secureTextEntry
-          enableClearButton
-          title="Confirm new password"
-          value={passwordConfirmation}
-          error={receivedErrorConfirm}
-        />
-      </Stack>
-    </MyAccountFieldEditScreen>
+    </Wrapper>
   )
 }

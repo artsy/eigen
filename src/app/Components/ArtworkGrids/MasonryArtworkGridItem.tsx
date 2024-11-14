@@ -77,6 +77,7 @@ export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
         onPress={onPress}
         partnerOffer={partnerOffer}
         priceOfferMessage={priceOfferMessage}
+        numColumns={numColumns}
       />
     </Flex>
   )

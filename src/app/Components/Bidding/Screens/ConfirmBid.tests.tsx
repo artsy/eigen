@@ -68,9 +68,9 @@ describe("ConfirmBid", () => {
 
   describe("disclaimer", () => {
     describe("when the user is not registered and AREnableNewTermsAndConditions is disabled", () => {
-       beforeEach(() => {
-          __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewTermsAndConditions: false })
-        })
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewTermsAndConditions: false })
+      })
 
       it("displays a checkbox", () => {
         renderWithWrappers(<ConfirmBid {...initialProps} />)
@@ -330,15 +330,15 @@ describe("ConfirmBid", () => {
       const conditionsOfSaleLink = component.root.findByType(LinkText)
       const conditionsOfSaleCheckbox = component.root.findByType(Checkbox)
 
-      yourMaxBidRow.instance.props.onPress()
+      fireEvent.press(yourMaxBidRow)
 
       expect(navigator.push).not.toHaveBeenCalled()
 
-      creditCardRow.instance.props.onPress()
+      fireEvent.press(creditCardRow)
 
       expect(navigator.push).not.toHaveBeenCalled()
 
-      billingAddressRow.instance.props.onPress()
+      fireEvent.press(billingAddressRow)
 
       expect(navigator.push).not.toHaveBeenCalled()
       expect(conditionsOfSaleLink.props.onPress).toBeUndefined()
@@ -466,7 +466,7 @@ describe("ConfirmBid", () => {
 
       expect(selectMaxBidRow.findAllByType(Text)[1].props.children).toEqual("$45,000")
 
-      selectMaxBidRow.instance.props.onPress()
+      fireEvent.press(selectMaxBidRow)
 
       const editScreen = fakeNavigator.nextStep().root.findByType(SelectMaxBid)
 
@@ -748,7 +748,7 @@ describe("ConfirmBid", () => {
         initialPropsForUnqualifiedUser
       ).root.findAllByType(TouchableWithoutFeedback)[1]
 
-      creditcardRow.instance.props.onPress()
+      fireEvent.press(creditcardRow)
 
       expect(nextStep?.component).toEqual(CreditCardForm)
     })

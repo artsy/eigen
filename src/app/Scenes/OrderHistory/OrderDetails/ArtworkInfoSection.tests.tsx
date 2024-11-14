@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import { ArtworkInfoSectionTestsQuery } from "__generated__/ArtworkInfoSectionTestsQuery.graphql"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
@@ -5,12 +6,7 @@ import { ArtworkInfoSectionFragmentContainer } from "./Components/ArtworkInfoSec
 
 describe("ArtworkInfoSection", () => {
   const { renderWithRelay } = setupTestWrapper<ArtworkInfoSectionTestsQuery>({
-    Component: (props) => {
-      if (props?.commerceOrder) {
-        return <ArtworkInfoSectionFragmentContainer artwork={props.commerceOrder} />
-      }
-      return null
-    },
+    Component: (props) => <ArtworkInfoSectionFragmentContainer artwork={props.commerceOrder!} />,
     query: graphql`
       query ArtworkInfoSectionTestsQuery @relay_test_operation {
         commerceOrder(id: "some-id") {
@@ -22,7 +18,7 @@ describe("ArtworkInfoSection", () => {
   })
 
   it("renders auction result when auction results are available", () => {
-    const tree = renderWithRelay({
+    renderWithRelay({
       CommerceOrder: () => ({
         internalID: "222",
         lineItems: {
@@ -50,20 +46,15 @@ describe("ArtworkInfoSection", () => {
       }),
     })
 
-    expect(tree.UNSAFE_getByProps({ testID: "date" }).props.children).toBe("2017")
-    expect(tree.UNSAFE_getByProps({ testID: "medium" }).props.children).toBe(
-      "Rayon thread on poly twill backed"
-    )
+    expect(screen.getByText("2017")).toBeOnTheScreen()
+    expect(screen.getByText("Rayon thread on poly twill backed")).toBeOnTheScreen()
 
-    expect(tree.UNSAFE_getByProps({ testID: "title" }).props.children).toBe(
-      "Set of Six (Six) Scout Series Embroidered Patches, "
-    )
-    expect(tree.UNSAFE_getByProps({ testID: "image" }).props.source).toStrictEqual({
-      uri: "https://homepages.cae.wisc.edu/~ece533/images/airplane.webp",
-    })
-    expect(tree.UNSAFE_getByProps({ testID: "artistNames" }).props.children).toBe(
-      "Kerry James Marshall"
-    )
-    expect(tree.UNSAFE_getByProps({ testID: "editionOf" }).props.children).toBe("edit of 30")
+    expect(
+      screen.getByText("Set of Six (Six) Scout Series Embroidered Patches, ")
+    ).toBeOnTheScreen()
+    expect(screen.getByText("Kerry James Marshall")).toBeOnTheScreen()
+    expect(screen.getByText("edit of 30")).toBeOnTheScreen()
+
+    expect(screen.getByTestId("image")).toBeOnTheScreen()
   })
 })

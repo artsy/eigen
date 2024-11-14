@@ -33,7 +33,7 @@ net.artsy.artsy.dev.pem
 # See note in Podfile
 ios/Artsy/App/Echo.json
 ios/Artsy/App/EchoNew.json
-ios/.xcode.env.local
+**/.xcode.env.local
 
 # Fastlane
 Preview.html
@@ -46,7 +46,7 @@ Preview.html
 .vendor
 
 # Ruby / Cocoa Pods
-Pods
+**/Pods/
 /vendor/bundle/
 
 # build artefacts

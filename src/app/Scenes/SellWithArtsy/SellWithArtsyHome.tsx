@@ -14,8 +14,9 @@ import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { RefreshEvents, SELL_SCREEN_REFRESH_KEY } from "app/utils/refreshHelpers"
 import { useSwitchStatusBarStyle } from "app/utils/useStatusBarStyle"
 import { compact } from "lodash"
-import { Suspense, useEffect, useReducer } from "react"
+import { RefObject, Suspense, useEffect, useReducer } from "react"
 import { StatusBarStyle } from "react-native"
+import { FlatList } from "react-native-gesture-handler"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 import { Footer } from "./Components/Footer"
@@ -140,7 +141,9 @@ export const SellWithArtsyHome: React.FC = () => {
         renderItem={({ item }) => item.content}
         ItemSeparatorComponent={() => <Spacer y={6} />}
         showsVerticalScrollIndicator={false}
-        innerRef={scrollViewRef}
+        windowSize={3}
+        initialNumToRender={__TEST__ ? 21 : 5}
+        innerRef={scrollViewRef as RefObject<FlatList>}
       />
 
       <StickySWAHeader onConsignPress={handleConsignPress} onInquiryPress={handleInquiryPress} />

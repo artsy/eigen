@@ -2,14 +2,13 @@ import { Touchable } from "@artsy/palette-mobile"
 import { ConversationTestsQuery } from "__generated__/ConversationTestsQuery.graphql"
 import ConnectivityBanner from "app/Components/ConnectivityBanner"
 import Composer from "app/Scenes/Inbox/Components/Conversations/Composer"
-import { navigationEvents } from "app/system/navigation/navigate"
+import { navigate, navigationEvents } from "app/system/navigation/navigate"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestInstance } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { Conversation, ConversationFragmentContainer } from "./Conversation"
-import { ConversationDetailsQueryRenderer } from "./ConversationDetails"
 
 jest.unmock("react-tracking")
 const mockNavigator = { push: jest.fn() }
@@ -93,11 +92,7 @@ it("clicking on detail link opens pushes detail screen into navigator", () => {
   })
   // @ts-ignore
   conversation.root.findAllByType(Touchable)[0].props.onPress()
-  expect(mockNavigator.push).toHaveBeenCalledWith({
-    component: ConversationDetailsQueryRenderer,
-    passProps: { conversationID: "123" },
-    title: "",
-  })
+  expect(navigate).toHaveBeenCalledWith("/conversation/123/details")
 })
 
 it("handles a dismissed modal with modalDismiss event", () => {

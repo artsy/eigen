@@ -1,10 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
+import { NativeState } from "app/store/NativeModel"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import { NativeModules as AllNativeModules, Platform } from "react-native"
 import { getLocales, getTimeZone } from "react-native-localize"
 import { ARScreenPresenterModule } from "./ARScreenPresenterModule"
-import type { NativeState } from "app/store/NativeModel"
 import type { ViewDescriptor } from "app/system/navigation/navigate"
 import type { Image as RNCImage } from "react-native-image-crop-picker"
 
@@ -36,7 +36,7 @@ interface LegacyNativeModules {
     getPushToken(): Promise<string | null>
   }
   ARNotificationsManager: {
-    nativeState: NativeState
+    getConstants(): NativeState
     postNotificationName(type: string, data: object): void
     didFinishBootstrapping(): void
     reactStateUpdated(state: {
@@ -128,10 +128,10 @@ const LegacyNativeModulesAndroid = {
   },
 
   ARNotificationsManager: {
-    nativeState: null as any,
     postNotificationName: noop("postNotificationName"),
     didFinishBootstrapping: () => null,
     reactStateUpdated: () => null,
+    getConstants: () => null as any,
   },
 
   ARTemporaryAPIModule: {

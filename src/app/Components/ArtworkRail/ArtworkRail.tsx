@@ -17,10 +17,7 @@ import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { PrefetchFlashList } from "app/Components/PrefetchFlashList"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { RandomWidthPlaceholderText } from "app/utils/placeholders"
-import {
-  ArtworkActionTrackingProps,
-  extractArtworkActionTrackingProps,
-} from "app/utils/track/ArtworkActions"
+import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
 import React, { ReactElement, useCallback } from "react"
 import { FlatList, ViewabilityConfig } from "react-native"
 import { isTablet } from "react-native-device-info"
@@ -86,7 +83,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
             showSaveIcon={showSaveIcon}
             hideIncreasedInterestSignal={hideIncreasedInterestSignal}
             hideCuratorsPickSignal={hideCuratorsPickSignal}
-            {...extractArtworkActionTrackingProps(otherProps)}
+            {...otherProps}
           />
         </Box>
       )

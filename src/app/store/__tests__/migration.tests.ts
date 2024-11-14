@@ -7,25 +7,6 @@ import { sanitize } from "app/store/persistence"
 import { max, min, range } from "lodash"
 import { Platform } from "react-native"
 
-jest.mock("app/NativeModules/LegacyNativeModules", () => ({
-  LegacyNativeModules: {
-    ...jest.requireActual("app/NativeModules/LegacyNativeModules").LegacyNativeModules,
-    ARNotificationsManager: {
-      ...jest.requireActual("app/NativeModules/LegacyNativeModules").LegacyNativeModules
-        .ARNotificationsManager,
-      nativeState: {
-        userAgent: "Jest Unit Tests",
-        authenticationToken: null,
-        onboardingState: "none",
-        launchCount: 1,
-        deviceId: "testDevice",
-        userID: null,
-        userEmail: null,
-      },
-    },
-  },
-}))
-
 describe(migrate, () => {
   it("leaves an object untouched if there are no migrations pending", () => {
     const result = migrate({
@@ -161,14 +142,13 @@ describe(migrate, () => {
 describe("artsy app store migrations", () => {
   it("are up to date", () => {
     // Reset the nativeState to its original state
-    LegacyNativeModules.ARNotificationsManager.nativeState = {
+    ;(LegacyNativeModules.ARNotificationsManager.getConstants as jest.Mock).mockReturnValueOnce({
       userAgent: "Jest Unit Tests",
       authenticationToken: null as any,
       launchCount: 1,
       userID: null as any,
       userEmail: null as any,
-    }
-
+    })
     __globalStoreTestUtils__?.reset()
 
     expect(migrate({ state: { version: 0 } })).toEqual(
@@ -351,11 +331,14 @@ describe("PendingPushNotification migration", () => {
 
 describe("CopyIOSNativeSessionAuthToTS migration", () => {
   beforeAll(() => {
-    LegacyNativeModules.ARNotificationsManager.nativeState = {
+    ;(LegacyNativeModules.ARNotificationsManager.getConstants as jest.Mock).mockReturnValueOnce({
+      userAgent: "Jest Unit Tests",
       authenticationToken: "authenticationToken",
-      onboardingState: "complete",
+      launchCount: 1,
       userID: "userID",
-    } as any
+      userEmail: "some@email.com",
+      onboardingState: "complete",
+    })
   })
 
   const migrationToTest = Versions.CopyIOSNativeSessionAuthToTS

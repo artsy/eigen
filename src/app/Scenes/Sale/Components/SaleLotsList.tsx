@@ -174,7 +174,6 @@ export const SaleLotsList: React.FC<Props> = ({
             isLoading={relay.isLoading}
             showLotLabel
             hidePartner
-            hideUrgencyTags
             hideRegisterBySignal
           />
         </Flex>

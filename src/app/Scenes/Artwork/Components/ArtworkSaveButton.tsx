@@ -11,6 +11,7 @@ import {
 import { ArtworkSaveButton_artwork$key } from "__generated__/ArtworkSaveButton_artwork.graphql"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { isOpenOrUpcomingSale } from "app/Scenes/Artwork/utils/isOpenOrUpcomingSale"
+import { useGetNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/useGetNewSaveAndFollowOnArtworkCardExperimentVariant"
 import { Schema } from "app/utils/track"
 import { StyleSheet } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -34,8 +35,20 @@ const WatchLotIcon: React.FC<IconProps> = ({ isSaved }) => {
 }
 
 const SaveButtonIcon: React.FC<IconProps> = ({ isSaved }) => {
+  const { enableNewSaveCTA, enableNewSaveAndFollowCTAs } =
+    useGetNewSaveAndFollowOnArtworkCardExperimentVariant(
+      "onyx_artwork-card-save-and-follow-cta-redesign"
+    )
+
+  const showNewSaveCTA = enableNewSaveCTA || enableNewSaveAndFollowCTAs
+
   if (isSaved) {
-    return <HeartFillIcon accessibilityLabel="Saved icon" fill="blue100" />
+    return (
+      <HeartFillIcon
+        accessibilityLabel="Saved icon"
+        fill={!showNewSaveCTA ? "black100" : "blue100"}
+      />
+    )
   }
 
   return <HeartIcon accessibilityLabel="Save icon" />
@@ -68,6 +81,7 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({
   const space = useSpace()
   const { trackEvent } = useTracking()
   const artworkData = useFragment(ArtworkSaveButtonFragment, artwork)
+
   const { isSaved, saveArtworkToLists } = useSaveArtworkToArtworkLists({
     artworkFragmentRef: artworkData,
     onCompleted: (isArtworkSaved) => {

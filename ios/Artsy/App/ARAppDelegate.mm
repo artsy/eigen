@@ -46,11 +46,6 @@
 
 @end
 
-#if defined(FB_SONARKIT_ENABLED) && (!defined(CI_DISABLE_FLIPPER) || (CI_DISABLE_FLIPPER != 1))
-#import <FlipperKit/FlipperClient.h>
-#import <FlipperPerformancePlugin.h>
-#endif
-
 @implementation ARAppDelegate
 
 static ARAppDelegate *_sharedInstance = nil;
@@ -112,13 +107,10 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [[ARLogger sharedLogger] startLogging];
 
-    AREmission *emission = [self setupSharedEmission];
+    [self setupSharedEmission];
 
     [AppCenterReactNative register];
 
-    RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
-    self.bridge = bridge;
-    [emission setBridge:bridge];
 
     self.moduleName = @"eigen";
 
@@ -136,10 +128,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    #if defined(FB_SONARKIT_ENABLED) && (!defined(CI_DISABLE_FLIPPER) ||    (CI_DISABLE_FLIPPER != 1))
-        FlipperClient *client = [FlipperClient sharedClient];
-        [client addPlugin:[FlipperPerformancePlugin new]];
-    #endif
     [self setupForAppLaunch:launchOptions];
 
     [self setupAnalytics:application withLaunchOptions:launchOptions];
@@ -154,6 +142,13 @@ static ARAppDelegate *_sharedInstance = nil;
     }
 
     return [super application:application didFinishLaunchingWithOptions:launchOptions];
+}
+
+- (RCTBridge *)createBridgeWithDelegate:(id<RCTBridgeDelegate>)delegate launchOptions:(NSDictionary *)launchOptions {
+    RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
+    AREmission *emission = [AREmission sharedInstance];
+    [emission setBridge:bridge];
+    return bridge;
 }
 
 - (UIView *)createRootViewWithBridge:(RCTBridge *)bridge
@@ -285,10 +280,10 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
-  return [self getBundleURL];
+    return [self bundleURL];
 }
 
-- (NSURL *)getBundleURL
+- (NSURL *)bundleURL
 {
 #if DEBUG
     return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];

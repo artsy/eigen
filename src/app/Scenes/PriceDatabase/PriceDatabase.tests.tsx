@@ -1,7 +1,7 @@
 import { act, fireEvent } from "@testing-library/react-native"
 import { ArtistAutosuggestResultsPaginationQuery } from "__generated__/ArtistAutosuggestResultsPaginationQuery.graphql"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { navigate } from "app/system/navigation/navigate"
+import * as navigation from "app/system/navigation/navigate"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithHookWrappersTL, renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -10,9 +10,11 @@ import { PriceDatabase } from "./PriceDatabase"
 
 describe(PriceDatabase, () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
+  const navigate = jest.spyOn(navigation, "navigate")
 
   beforeEach(() => {
     mockEnvironment = getMockRelayEnvironment()
+    jest.clearAllMocks()
   })
 
   it("renders the price database", () => {

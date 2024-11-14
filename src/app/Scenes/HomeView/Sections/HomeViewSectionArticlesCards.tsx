@@ -16,7 +16,7 @@ import {
 } from "__generated__/HomeViewSectionArticlesCards_section.graphql"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
-import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
+import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
@@ -141,7 +141,7 @@ const fragment = graphql`
 const HomeViewSectionArticlesCardsPlaceholder: React.FC<FlexProps> = (flexProps) => {
   return (
     <Skeleton>
-      <Flex {...flexProps}>
+      <Flex {...flexProps} testID="HomeViewSectionArticlesCardsPlaceholder">
         <Flex mx={2} p={2} border="1px solid" borderColor="black30" gap={2}>
           <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
             <SkeletonText variant="lg-display">title</SkeletonText>

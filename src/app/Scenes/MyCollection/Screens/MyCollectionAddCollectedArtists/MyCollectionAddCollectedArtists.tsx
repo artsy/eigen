@@ -6,12 +6,15 @@ import { MyCollectionAddCollectedArtistsAutosuggest } from "app/Scenes/MyCollect
 import { MyCollectionAddCollectedArtistsStore } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsStore"
 import { useSubmitMyCollectionArtists } from "app/Scenes/MyCollection/hooks/useSubmitMyCollectionArtists"
 import { dismissModal, goBack } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { pluralize } from "app/utils/pluralize"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { Suspense } from "react"
 
 export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
   const { bottom } = useScreenDimensions().safeAreaInsets
+  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
+
   const toast = useToast()
   const { submit, isSubmitting: isLoading } = useSubmitMyCollectionArtists(
     "MyCollectionAddCollectedArtists"
@@ -33,9 +36,13 @@ export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
 
   return (
     <Flex flex={1}>
-      <FancyModalHeader hideBottomDivider>
-        <Text textAlign="center">Add Artists You Collect</Text>
-      </FancyModalHeader>
+      {enableNewNavigation ? (
+        <Spacer y={2} />
+      ) : (
+        <FancyModalHeader hideBottomDivider>
+          <Text textAlign="center">Add Artists You Collect</Text>
+        </FancyModalHeader>
+      )}
 
       <Flex flex={1} px={2}>
         <Suspense fallback={() => null}>

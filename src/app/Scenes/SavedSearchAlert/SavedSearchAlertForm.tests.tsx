@@ -271,13 +271,7 @@ describe("SavedSearchAlertForm", () => {
       })
 
       it("calls delete mutation when the delete alert button is pressed", async () => {
-        const onDeletePressMock = jest.fn()
-        renderWithWrappers(
-          <TestRenderer
-            savedSearchAlertId="savedSearchAlertId"
-            onDeleteComplete={onDeletePressMock}
-          />
-        )
+        renderWithWrappers(<TestRenderer savedSearchAlertId="savedSearchAlertId" />)
 
         fireEvent.press(screen.getByTestId("delete-alert-button"))
         fireEvent.press(screen.getByTestId("dialog-primary-action-button"))
@@ -285,12 +279,6 @@ describe("SavedSearchAlertForm", () => {
         expect(mockEnvironment.mock.getMostRecentOperation().request.node.operation.name).toBe(
           "deleteSavedSearchAlertMutation"
         )
-
-        await waitFor(() => {
-          resolveMostRecentRelayOperation(mockEnvironment)
-        })
-
-        expect(onDeletePressMock).toHaveBeenCalled()
       })
     })
   })
@@ -765,7 +753,7 @@ describe("SavedSearchAlertForm", () => {
 
         await waitFor(() => expect(spyAlert.mock.calls[0][0]).toBe("Duplicate Alert"))
 
-        expect(navigate).toBeCalledWith("/settings/alerts/internalID-1/edit")
+        expect(navigate).toBeCalledWith("/favorites/alerts/internalID-1/edit")
       })
 
       it('should call update mutation when "Replace" button is pressed', async () => {

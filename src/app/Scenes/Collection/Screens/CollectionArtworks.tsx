@@ -27,11 +27,7 @@ interface CollectionArtworksProps {
   relay: RelayPaginationProp
 }
 
-export const CURATORS_PICKS_SLUGS = [
-  "curators-picks-emerging-artists",
-  "curators-picks-blue-chip-artists",
-  "trending-now",
-]
+export const CURATORS_PICKS_SLUGS = ["most-loved", "curators-picks"]
 
 export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collection, relay }) => {
   const { width } = useScreenDimensions()

@@ -93,8 +93,8 @@ describe("HomeView", () => {
     expect(screen.getByText("Tap here to verify your email address")).toBeTruthy()
   })
 
-  describe("home view experiements", () => {
-    it("fires an experiement_viewed event for enabled experiments", () => {
+  describe("home view experiments", () => {
+    it("fires an experiment_viewed event for enabled experiments", () => {
       renderWithRelay({
         HomeView: () => ({
           experiments: [
@@ -117,7 +117,7 @@ describe("HomeView", () => {
       )
     })
 
-    it("does not fire an experiement_viewed event for disabled experiments", () => {
+    it("does not fire an experiment_viewed event for disabled experiments", () => {
       renderWithRelay({
         HomeView: () => ({
           experiments: [
@@ -137,7 +137,7 @@ describe("HomeView", () => {
       )
     })
 
-    it("does not fire an experiement_viewed event when variant is missing", () => {
+    it("does not fire an experiment_viewed event when variant is missing", () => {
       renderWithRelay({
         HomeView: () => ({
           experiments: [

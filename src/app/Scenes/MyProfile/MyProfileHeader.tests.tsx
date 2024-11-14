@@ -24,9 +24,7 @@ describe("MyProfileHeader", () => {
     expect(profileImage).toBeTruthy()
     fireEvent.press(profileImage)
     expect(navigate).toHaveBeenCalledTimes(1)
-    expect(navigate).toHaveBeenCalledWith("/my-profile/edit", {
-      passProps: { onSuccess: expect.anything() },
-    })
+    expect(navigate).toHaveBeenCalledWith("/my-profile/edit")
   })
 
   describe("settings screen", () => {
@@ -61,10 +59,10 @@ describe("MyProfileHeader", () => {
       expect(navigate).toHaveBeenLastCalledWith("favorites")
 
       fireEvent.press(screen.getByText("Saves"))
-      expect(navigate).toHaveBeenLastCalledWith("settings/saves")
+      expect(navigate).toHaveBeenLastCalledWith("favorites/saves")
 
       fireEvent.press(screen.getByText("Alerts"))
-      expect(navigate).toHaveBeenLastCalledWith("settings/alerts")
+      expect(navigate).toHaveBeenLastCalledWith("favorites/alerts")
     })
   })
 })

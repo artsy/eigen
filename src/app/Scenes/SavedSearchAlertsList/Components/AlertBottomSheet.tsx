@@ -1,8 +1,7 @@
 import { Button, Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
-import { BottomSheetView, useBottomSheetDynamicSnapPoints } from "@gorhom/bottom-sheet"
+import { BottomSheetView } from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { navigate } from "app/system/navigation/navigate"
-import { FC, useMemo } from "react"
 
 export interface BottomSheetAlert {
   id: string
@@ -15,36 +14,28 @@ interface AlertBottomSheetProps {
   onDismiss: () => void
 }
 
-export const AlertBottomSheet: FC<AlertBottomSheetProps> = ({
+export const AlertBottomSheet: React.FC<AlertBottomSheetProps> = ({
   alert: { id, title, artworksCount },
   onDismiss,
 }) => {
-  const initialSnapPoints = useMemo(() => ["CONTENT_HEIGHT"], [])
-  const { animatedHandleHeight, animatedSnapPoints, animatedContentHeight, handleContentLayout } =
-    useBottomSheetDynamicSnapPoints(initialSnapPoints)
-
   const navigateToEditScreen = () => {
     onDismiss()
-    navigate(`settings/alerts/${id}/edit`)
+    navigate(`favorites/alerts/${id}/edit`)
   }
 
   const navigateToArtworks = () => {
     onDismiss()
-    navigate(`settings/alerts/${id}/artworks`)
+    navigate(`favorites/alerts/${id}/artworks`)
   }
 
   return (
     <AutomountedBottomSheetModal
-      // TODO: Onyx to fix the type issue of snapPoints + replace useBottomSheetDynamicSnapPoints
-      // @ts-ignore-next-line
-      snapPoints={animatedSnapPoints}
-      handleHeight={animatedHandleHeight}
-      contentHeight={animatedContentHeight}
+      enableDynamicSizing
       visible
       name="AlertBottomSheet"
       onDismiss={onDismiss}
     >
-      <BottomSheetView onLayout={handleContentLayout}>
+      <BottomSheetView>
         <Flex flex={1} mb={4} mx={2} alignItems="center">
           <Join separator={<Spacer y={2} />}>
             <Text variant="sm" fontWeight="bold">

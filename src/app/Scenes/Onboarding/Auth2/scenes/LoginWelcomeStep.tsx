@@ -1,7 +1,10 @@
 import {
+  AppleIcon,
   BackButton,
   Button,
+  FacebookIcon,
   Flex,
+  GoogleIcon,
   Input,
   LinkText,
   Spacer,
@@ -15,13 +18,13 @@ import { AuthContext } from "app/Scenes/Onboarding/Auth2/AuthContext"
 import { useAuthNavigation } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation"
 import { useInputAutofocus } from "app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus"
 import { OnboardingNavigationStack } from "app/Scenes/Onboarding/Onboarding"
-import { AuthPromiseRejectType, AuthPromiseResolveType } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useSocialLogin } from "app/utils/auth/socialSignInHelpers"
 import { osMajorVersion } from "app/utils/platformUtil"
 import { Formik, useFormikContext } from "formik"
 import { MotiView } from "moti"
-import React, { useRef, useState } from "react"
-import { Image, InteractionManager, Platform } from "react-native"
+import React, { useRef } from "react"
+import { Platform } from "react-native"
 import { Easing } from "react-native-reanimated"
 import * as Yup from "yup"
 
@@ -128,14 +131,14 @@ const LoginWelcomeStepForm: React.FC = () => {
 
       <Input
         autoCapitalize="none"
-        autoComplete="email"
+        autoComplete="username"
+        importantForAutofill="yes"
         autoCorrect={false}
         blurOnSubmit={false}
         placeholderTextColor={color("black30")}
         ref={emailRef}
         spellCheck={false}
         keyboardType="email-address"
-        textContentType="username"
         returnKeyType="next"
         title="Email"
         value={values.email}
@@ -200,24 +203,21 @@ const LoginWelcomeStepForm: React.FC = () => {
 }
 
 const SocialLoginButtons: React.FC = () => {
-  const [mode, _setMode] = useState<"login" | "signup">("login")
+  const { handleSocialLogin } = useSocialLogin()
 
   const handleApplePress = () =>
-    onSocialLogin(() => {
+    handleSocialLogin(() => {
       return GlobalStore.actions.auth.authApple({ agreedToReceiveEmails: true })
     })
 
   const handleGooglePress = () =>
-    onSocialLogin(() => {
+    handleSocialLogin(() => {
       return GlobalStore.actions.auth.authGoogle2()
     })
 
   const handleFacebookPress = () =>
-    onSocialLogin(() => {
-      return GlobalStore.actions.auth.authFacebook({
-        signInOrUp: mode === "login" ? "signIn" : "signUp",
-        agreedToReceiveEmails: mode === "signup",
-      })
+    handleSocialLogin(() => {
+      return GlobalStore.actions.auth.authFacebook2()
     })
 
   return (
@@ -228,50 +228,26 @@ const SocialLoginButtons: React.FC = () => {
 
       <Spacer y={1} />
 
-      <Flex flexDirection="row" justifyContent="space-evenly" width="100%">
+      <Flex flexDirection="row" gap={1} justifyContent="center" width="100%">
         {Platform.OS === "ios" && osMajorVersion() >= 13 && (
-          <Button variant="fillDark" width="100%" onPress={handleApplePress}>
-            <Flex height="100%" justifyContent="center" alignItems="center">
-              <Image source={require("images/apple.webp")} />
+          <Button variant="outline" onPress={handleApplePress}>
+            <Flex alignItems="center" justifyContent="center">
+              {/* On iOS, the icons need to be nudged down to be centered in the button. */}
+              <AppleIcon width={23} height={23} style={{ top: 4 }} />
             </Flex>
           </Button>
         )}
-
         <Button variant="outline" onPress={handleGooglePress}>
-          <Flex justifyContent="center" alignItems="center">
-            <Image
-              source={require("images/google.webp")}
-              style={{ position: "relative", top: 2 }}
-            />
+          <Flex alignItems="center" justifyContent="center">
+            <GoogleIcon width={23} height={23} style={Platform.OS === "ios" && { top: 4 }} />
           </Flex>
         </Button>
-
-        <Button variant="outline" width="100%" onPress={handleFacebookPress}>
-          <Flex justifyContent="center" alignItems="center">
-            <Image
-              source={require("images/facebook.webp")}
-              style={{ position: "relative", top: 2 }}
-            />
+        <Button variant="outline" onPress={handleFacebookPress}>
+          <Flex alignItems="center" justifyContent="center">
+            <FacebookIcon width={23} height={23} style={Platform.OS === "ios" && { top: 4 }} />
           </Flex>
         </Button>
       </Flex>
     </Flex>
   )
-}
-
-const onSocialLogin = async (callback: () => Promise<AuthPromiseResolveType>) => {
-  GlobalStore.actions.auth.setSessionState({ isLoading: true })
-
-  InteractionManager.runAfterInteractions(() => {
-    callback().catch((error: AuthPromiseRejectType) => {
-      InteractionManager.runAfterInteractions(() => {
-        GlobalStore.actions.auth.setSessionState({ isLoading: false })
-
-        InteractionManager.runAfterInteractions(() => {
-          // TODO: handle error like OnboardingSocialPick does
-          console.error(error)
-        })
-      })
-    })
-  })
 }

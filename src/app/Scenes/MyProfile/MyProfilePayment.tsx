@@ -1,4 +1,4 @@
-import { Spacer, Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { MyProfilePaymentDeleteCardMutation } from "__generated__/MyProfilePaymentDeleteCardMutation.graphql"
 import { MyProfilePaymentQuery } from "__generated__/MyProfilePaymentQuery.graphql"
 import { MyProfilePayment_me$data } from "__generated__/MyProfilePayment_me.graphql"
@@ -8,10 +8,11 @@ import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import React, { useCallback, useEffect, useReducer, useState } from "react"
+import React, { Fragment, useCallback, useEffect, useReducer, useState } from "react"
 import {
   ActivityIndicator,
   Alert,
@@ -133,56 +134,49 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me$data; relay: RelayPag
   const creditCards = extractNodes(me.creditCards)
 
   return (
-    <PageWithSimpleHeader title="Payment">
-      <FlatList
-        style={{ flex: 1 }}
-        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
-        data={creditCards}
-        keyExtractor={(item) => item.internalID}
-        contentContainerStyle={{ paddingTop: creditCards.length === 0 ? 10 : 20 }}
-        renderItem={({ item }) => (
-          <Flex flexDirection="row" justifyContent="space-between" px={2}>
-            <CreditCardDetailsContainer card={item} />
-            {deletingIDs[item.internalID] ? (
-              <ActivityIndicator size="small" />
-            ) : (
-              <TouchableOpacity
-                onPress={() => onRemove(item.internalID)}
-                hitSlop={{ top: 10, left: 20, right: 20, bottom: 10 }}
-              >
-                <Text variant="sm-display" color="red100">
-                  Remove
-                </Text>
-              </TouchableOpacity>
-            )}
-          </Flex>
-        )}
-        onEndReached={onLoadMore}
-        ItemSeparatorComponent={() => <Spacer y={1} />}
-        ListFooterComponent={
-          <Flex pt={creditCards.length === 0 ? undefined : 2}>
-            <MenuItem
-              title="Add New Card"
-              onPress={() => navigate("/my-profile/payment/new-card")}
-            />
-            {!!isLoadingMore && <ActivityIndicator style={{ marginTop: 30 }} />}
-          </Flex>
-        }
-      />
-    </PageWithSimpleHeader>
+    <FlatList
+      style={{ flex: 1 }}
+      refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+      data={creditCards}
+      keyExtractor={(item) => item.internalID}
+      contentContainerStyle={{ paddingTop: creditCards.length === 0 ? 10 : 20 }}
+      renderItem={({ item }) => (
+        <Flex flexDirection="row" justifyContent="space-between" px={2}>
+          <CreditCardDetailsContainer card={item} />
+          {deletingIDs[item.internalID] ? (
+            <ActivityIndicator size="small" />
+          ) : (
+            <TouchableOpacity
+              onPress={() => onRemove(item.internalID)}
+              hitSlop={{ top: 10, left: 20, right: 20, bottom: 10 }}
+            >
+              <Text variant="sm-display" color="red100">
+                Remove
+              </Text>
+            </TouchableOpacity>
+          )}
+        </Flex>
+      )}
+      onEndReached={onLoadMore}
+      ItemSeparatorComponent={() => <Spacer y={1} />}
+      ListFooterComponent={
+        <Flex pt={creditCards.length === 0 ? undefined : 2}>
+          <MenuItem title="Add New Card" onPress={() => navigate("/my-profile/payment/new-card")} />
+          {!!isLoadingMore && <ActivityIndicator style={{ marginTop: 30 }} />}
+        </Flex>
+      }
+    />
   )
 }
 
 export const MyProfilePaymentPlaceholder: React.FC<{}> = () => (
-  <PageWithSimpleHeader title="Payment">
-    <Flex px={2} py="15px">
-      {times(2).map((index: number) => (
-        <Flex key={index} py={1}>
-          <PlaceholderText width={100 + Math.random() * 100} />
-        </Flex>
-      ))}
-    </Flex>
-  </PageWithSimpleHeader>
+  <Flex px={2} py="15px">
+    {times(2).map((index: number) => (
+      <Flex key={index} py={1}>
+        <PlaceholderText width={100 + Math.random() * 100} />
+      </Flex>
+    ))}
+  </Flex>
 )
 
 const MyProfilePaymentContainer = createPaginationContainer(
@@ -228,22 +222,31 @@ const MyProfilePaymentContainer = createPaginationContainer(
 )
 
 export const MyProfilePaymentQueryRenderer: React.FC<{}> = ({}) => {
+  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
+  const Wrapper = enableNewNavigation
+    ? Fragment
+    : ({ children }: { children: React.ReactNode }) => (
+        <PageWithSimpleHeader title="Payment">{children}</PageWithSimpleHeader>
+      )
+
   return (
-    <QueryRenderer<MyProfilePaymentQuery>
-      environment={getRelayEnvironment()}
-      query={graphql`
-        query MyProfilePaymentQuery($count: Int!) {
-          me {
-            ...MyProfilePayment_me @arguments(count: $count)
+    <Wrapper>
+      <QueryRenderer<MyProfilePaymentQuery>
+        environment={getRelayEnvironment()}
+        query={graphql`
+          query MyProfilePaymentQuery($count: Int!) {
+            me {
+              ...MyProfilePayment_me @arguments(count: $count)
+            }
           }
-        }
-      `}
-      render={renderWithPlaceholder({
-        Container: MyProfilePaymentContainer,
-        renderPlaceholder: () => <MyProfilePaymentPlaceholder />,
-      })}
-      variables={{ count: NUM_CARDS_TO_FETCH }}
-      cacheConfig={{ force: true }}
-    />
+        `}
+        render={renderWithPlaceholder({
+          Container: MyProfilePaymentContainer,
+          renderPlaceholder: () => <MyProfilePaymentPlaceholder />,
+        })}
+        variables={{ count: NUM_CARDS_TO_FETCH }}
+        cacheConfig={{ force: true }}
+      />
+    </Wrapper>
   )
 }

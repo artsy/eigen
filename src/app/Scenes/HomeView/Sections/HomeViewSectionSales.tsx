@@ -22,7 +22,7 @@ import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
 } from "app/Scenes/HomeView/helpers/constants"
-import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
+import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
@@ -202,7 +202,7 @@ const HomeViewSectionSalesPlaceholder: React.FC<FlexProps> = (flexProps) => {
 }
 
 const homeViewSectionSalesQuery = graphql`
-  query HomeViewSectionSalesQuery($id: String!) @cacheable {
+  query HomeViewSectionSalesQuery($id: String!) {
     homeView {
       section(id: $id) {
         ...HomeViewSectionSales_section

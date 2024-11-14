@@ -24,6 +24,6 @@ describe("AlertBottomSheet", () => {
 
     fireEvent.press(screen.getByText("Edit Alert"))
 
-    expect(navigate).toHaveBeenCalledWith("settings/alerts/123/edit")
+    expect(navigate).toHaveBeenCalledWith("favorites/alerts/123/edit")
   })
 })

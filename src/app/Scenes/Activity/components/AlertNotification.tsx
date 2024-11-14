@@ -34,7 +34,7 @@ export const AlertNotification: FC<AlertNotificationProps> = ({ notification }) 
   }
 
   const handleEditAlertPress = () => {
-    navigate(`/settings/alerts/${alert.internalID}/edit`)
+    navigate(`/favorites/alerts/${alert.internalID}/edit`)
   }
 
   const handleViewAllWorksPress = () => {

@@ -135,7 +135,7 @@ describe(ConfirmationScreen, () => {
       fireEvent.press(manageButton!)
       await flushPromiseQueue()
 
-      expect(navigate).toHaveBeenCalledWith("/settings/alerts")
+      expect(navigate).toHaveBeenCalledWith("/favorites/alerts")
     })
 
     it("renders see-all button if there are more works to show", async () => {
@@ -223,8 +223,6 @@ describe(ConfirmationScreen, () => {
     })
 
     it("sends a tracking event when an artwork with a partner offer is tapped", async () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAuctionImprovementsSignals: true })
-
       renderWithRelay({
         FilterArtworksConnection: () => ({
           edges: [

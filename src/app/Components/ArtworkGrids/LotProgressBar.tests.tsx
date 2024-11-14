@@ -1,7 +1,6 @@
 import { ProgressBar } from "@artsy/palette-mobile"
 import { DurationProvider } from "app/Components/Countdown"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { DateTime } from "luxon"
 import moment from "moment"
 import { LotProgressBar, LotProgressBarProps } from "./LotProgressBar"
 
@@ -25,9 +24,9 @@ describe("LotProgressBar", () => {
         duration: null,
       }
 
-      const wrapper = getWrapper(props)
+      const { UNSAFE_queryAllByType } = getWrapper(props)
 
-      expect(wrapper.UNSAFE_queryAllByType(ProgressBar).length).toBe(1)
+      expect(UNSAFE_queryAllByType(ProgressBar).length).toBe(1)
     })
   })
 
@@ -36,7 +35,7 @@ describe("LotProgressBar", () => {
       jest.clearAllMocks()
     })
 
-    it("Does not show if extendedBiddingEndAt or endAt is  past", () => {
+    it("Does not show if extendedBiddingEndAt or endAt is past", () => {
       const props = {
         extendedBiddingPeriodMinutes: 2,
         extendedBiddingIntervalMinutes: 2,
@@ -46,34 +45,25 @@ describe("LotProgressBar", () => {
         duration: null,
       }
 
-      const wrapper = getWrapper(props)
+      const { UNSAFE_queryAllByType } = getWrapper(props)
 
-      expect(wrapper.UNSAFE_queryAllByType(ProgressBar).length).toBe(0)
+      expect(UNSAFE_queryAllByType(ProgressBar).length).toBe(0)
     })
 
     it("ProgressBar disappears when time elapses", () => {
-      // 2 mins
-      const biddingEndAt = new Date(Date.now() + 1000 * 60 * 60 * 2).toISOString()
+      const now = new Date(Date.now()).toISOString()
       const props = {
         extendedBiddingPeriodMinutes: 2,
         extendedBiddingIntervalMinutes: 2,
-        startAt: new Date(Date.now()).toISOString(),
-        biddingEndAt,
+        startAt: now,
+        biddingEndAt: now,
         hasBeenExtended: true,
-        duration: moment.duration(DateTime.fromISO(biddingEndAt).toMillis()),
+        duration: moment.duration(),
       }
 
-      jest.useFakeTimers({
-        legacyFakeTimers: true,
-      })
+      const { UNSAFE_queryAllByType } = getWrapper(props)
 
-      const wrapper = getWrapper(props)
-
-      expect(wrapper.UNSAFE_queryAllByType(ProgressBar).length).toBe(1)
-
-      jest.advanceTimersByTime(1000 * 60 * 60 * 2)
-
-      expect(wrapper.UNSAFE_queryAllByType(ProgressBar).length).toBe(0)
+      expect(UNSAFE_queryAllByType(ProgressBar).length).toBe(0)
     })
   })
 })

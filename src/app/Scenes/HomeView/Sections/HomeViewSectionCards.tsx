@@ -14,7 +14,7 @@ import { HomeViewSectionCardsQuery } from "__generated__/HomeViewSectionCardsQue
 import { HomeViewSectionCards_section$key } from "__generated__/HomeViewSectionCards_section.graphql"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
-import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
+import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -89,7 +89,7 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
                   top={space(1)}
                   left={space(1)}
                   backgroundColor="white100"
-                  p={0.5}
+                  px={0.5}
                 >
                   <Text variant="md">{card.title}</Text>
                 </Flex>

@@ -1,4 +1,4 @@
-import { Spacer, Flex, Box, Text, Button } from "@artsy/palette-mobile"
+import { Box, Button, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { MyAccountQuery } from "__generated__/MyAccountQuery.graphql"
 import { MyAccount_me$data } from "__generated__/MyAccount_me.graphql"
 import { MenuItem } from "app/Components/MenuItem"
@@ -9,15 +9,18 @@ import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useAppleLink } from "app/utils/LinkedAccounts/apple"
 import { useFacebookLink } from "app/utils/LinkedAccounts/facebook"
 import { useGoogleLink } from "app/utils/LinkedAccounts/google"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { times } from "lodash"
+import { Fragment } from "react"
 import { ActivityIndicator, Image, Platform, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { PRICE_BUCKETS } from "./MyAccountEditPriceRange"
 
 const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, relay }) => {
   const hasOnlyOneAuth = me.authentications.length + (me.hasPassword ? 1 : 0) < 2
+  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
 
   const onlyExistingAuthFor = (provider: "FACEBOOK" | "GOOGLE" | "APPLE") => {
     return (
@@ -69,8 +72,14 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
     ? PRICE_BUCKETS.find((i) => me.priceRange === i.value)?.label ?? "Select a price range"
     : "Select a price range"
 
+  const Wrapper = enableNewNavigation
+    ? Fragment
+    : ({ children }: { children: React.ReactNode }) => (
+        <PageWithSimpleHeader title="Account">{children}</PageWithSimpleHeader>
+      )
+
   return (
-    <PageWithSimpleHeader title="Account Settings">
+    <Wrapper>
       <ScrollView contentContainerStyle={{ paddingTop: 10 }}>
         <MenuItem
           title="Email"
@@ -192,21 +201,19 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
           <Text color="red100">Delete My Account</Text>
         </Button>
       </ScrollView>
-    </PageWithSimpleHeader>
+    </Wrapper>
   )
 }
 
 const MyAccountPlaceholder: React.FC = () => {
   return (
-    <PageWithSimpleHeader title="Account">
-      <Flex px={2} py={1}>
-        {times(5).map((index: number) => (
-          <Flex key={index} py="7.5px">
-            <PlaceholderText width={100 + Math.random() * 100} />
-          </Flex>
-        ))}
-      </Flex>
-    </PageWithSimpleHeader>
+    <Flex px={2} py={1}>
+      {times(5).map((index: number) => (
+        <Flex key={index} py="7.5px">
+          <PlaceholderText width={100 + Math.random() * 100} />
+        </Flex>
+      ))}
+    </Flex>
   )
 }
 

@@ -3,11 +3,16 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkGridItemTestsQuery } from "__generated__/ArtworkGridItemTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { DateTime } from "luxon"
 import { graphql } from "react-relay"
 import Artwork from "./ArtworkGridItem"
+
+jest.mock("app/utils/experiments/hooks", () => ({
+  useExperimentVariant: jest.fn(),
+}))
 
 describe("ArtworkGridItem", () => {
   const { renderWithRelay } = setupTestWrapper<ArtworkGridItemTestsQuery>({
@@ -23,6 +28,15 @@ describe("ArtworkGridItem", () => {
         }
       }
     `,
+  })
+
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({
+      AREnableNewSaveAndFollowOnArtworkCard: false,
+    })
+    ;(useExperimentVariant as jest.Mock).mockReturnValue({
+      enabled: false,
+    })
   })
 
   describe("tracking", () => {
@@ -133,10 +147,6 @@ describe("ArtworkGridItem", () => {
     })
 
     describe("with auction signals", () => {
-      beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAuctionImprovementsSignals: true })
-      })
-
       it("sends a tracking event when with time left to bid label", () => {
         renderWithRelay(
           {
@@ -438,26 +448,186 @@ describe("ArtworkGridItem", () => {
     })
   })
 
-  describe("save artworks", () => {
-    it("favourites works", () => {
-      renderWithRelay({
-        Artwork: () => artwork,
+  describe("Save and Follow CTAs", () => {
+    describe("Save CTA when ff and experiment are disabled", () => {
+      it("renders Save old CTA", () => {
+        renderWithRelay({
+          Artwork: () => artwork,
+        })
+
+        expect(screen.getByTestId("empty-heart-icon")).toBeOnTheScreen()
+        expect(screen.queryByTestId("filled-heart-icon")).not.toBeOnTheScreen()
+
+        fireEvent.press(screen.getByTestId("save-artwork-icon"))
+
+        expect(screen.getByTestId("filled-heart-icon")).toBeOnTheScreen()
+        expect(screen.queryByTestId("empty-heart-icon")).not.toBeOnTheScreen()
       })
 
-      expect(screen.getByTestId("empty-heart-icon")).toBeOnTheScreen()
-      expect(screen.queryByTestId("filled-heart-icon")).not.toBeOnTheScreen()
+      it("does not render Save CTA if hideSaveIcon is true", () => {
+        renderWithRelay({}, { hideSaveIcon: true })
 
-      fireEvent.press(screen.getByTestId("save-artwork-icon"))
+        expect(screen.queryByTestId("empty-heart-icon")).not.toBeOnTheScreen()
+        expect(screen.queryByTestId("filled-heart-icon")).not.toBeOnTheScreen()
+      })
 
-      expect(screen.getByTestId("filled-heart-icon")).toBeOnTheScreen()
-      expect(screen.queryByTestId("empty-heart-icon")).not.toBeOnTheScreen()
+      it("does not render new Save and Follow CTAs", () => {
+        renderWithRelay({}, { hideSaveIcon: false })
+
+        expect(screen.queryByTestId("heart-icon-empty")).not.toBeOnTheScreen()
+        expect(screen.queryByTestId("heart-icon-filled")).not.toBeOnTheScreen()
+
+        expect(screen.queryByTestId("follow-icon-empty")).not.toBeOnTheScreen()
+        expect(screen.queryByTestId("follow-icon-filled")).not.toBeOnTheScreen()
+      })
     })
 
-    it("is not visible when hideSaveIcon prop is specified", () => {
-      renderWithRelay({}, { hideSaveIcon: true })
+    describe("experiment enabled, variant-a", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({
+          AREnableNewSaveAndFollowOnArtworkCard: true,
+        })
+        ;(useExperimentVariant as jest.Mock).mockReturnValue({
+          enabled: true,
+          variant: "variant-a",
+          payload: "variant-a",
+        })
+      })
 
-      expect(screen.queryByTestId("empty-heart-icon")).not.toBeOnTheScreen()
-      expect(screen.queryByTestId("filled-heart-icon")).not.toBeOnTheScreen()
+      it("renders only old Save CTA", () => {
+        renderWithRelay({
+          Artwork: () => artwork,
+        })
+
+        expect(screen.getByTestId("empty-heart-icon")).toBeOnTheScreen()
+        expect(screen.queryByTestId("filled-heart-icon")).not.toBeOnTheScreen()
+
+        fireEvent.press(screen.getByTestId("save-artwork-icon"))
+
+        expect(screen.getByTestId("filled-heart-icon")).toBeOnTheScreen()
+        expect(screen.queryByTestId("empty-heart-icon")).not.toBeOnTheScreen()
+
+        // do not render vew Save CTA
+        expect(screen.queryByTestId("heart-icon-empty")).not.toBeOnTheScreen()
+        expect(screen.queryByTestId("heart-icon-filled")).not.toBeOnTheScreen()
+
+        // do not render Follow CTA
+        expect(screen.queryByTestId("follow-icon-filled")).not.toBeOnTheScreen()
+        expect(screen.queryByTestId("follow-icon-empty")).not.toBeOnTheScreen()
+      })
+
+      it("does not render Save CTA if hideSaveIcon is true", () => {
+        renderWithRelay({}, { hideSaveIcon: true })
+
+        expect(screen.queryByTestId("empty-heart-icon")).not.toBeOnTheScreen()
+        expect(screen.queryByTestId("filled-heart-icon")).not.toBeOnTheScreen()
+      })
+    })
+
+    describe("experiment enabled, variant-b", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({
+          AREnableNewSaveAndFollowOnArtworkCard: true,
+        })
+        ;(useExperimentVariant as jest.Mock).mockReturnValue({
+          enabled: true,
+          variant: "variant-b",
+          payload: "variant-b",
+        })
+      })
+
+      it("renders only new Save CTA", () => {
+        renderWithRelay(
+          {
+            Artwork: () => artwork,
+          },
+          { hideSaveIcon: false }
+        )
+
+        // do not render old Save CTA
+        expect(screen.queryByTestId("empty-heart-icon")).not.toBeOnTheScreen()
+        expect(screen.queryByTestId("filled-heart-icon")).not.toBeOnTheScreen()
+
+        // do not render Follow CTA
+        expect(screen.queryByTestId("follow-icon-empty")).not.toBeOnTheScreen()
+        expect(screen.queryByTestId("follow-icon-filled")).not.toBeOnTheScreen()
+
+        // render new Save CTA
+        expect(screen.getByTestId("heart-icon-empty")).toBeOnTheScreen()
+        expect(screen.queryByTestId("heart-icon-filled")).not.toBeOnTheScreen()
+
+        fireEvent.press(screen.getByTestId("heart-icon-empty"))
+
+        expect(screen.getByTestId("heart-icon-filled")).toBeOnTheScreen()
+        expect(screen.queryByTestId("heart-icon-empty")).not.toBeOnTheScreen()
+      })
+
+      it("does not render Save and Follow CTA if hideSaveIcon is true", () => {
+        renderWithRelay({}, { hideSaveIcon: true })
+
+        // do not render Save CTA
+        expect(screen.queryByTestId("heart-icon-empty")).not.toBeOnTheScreen()
+        expect(screen.queryByTestId("heart-icon-filled")).not.toBeOnTheScreen()
+
+        // do not render Follow CTA
+        expect(screen.queryByTestId("follow-icon-empty")).not.toBeOnTheScreen()
+        expect(screen.queryByTestId("follow-icon-filled")).not.toBeOnTheScreen()
+      })
+    })
+
+    describe("experiment enabled, variant-c", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({
+          AREnableNewSaveAndFollowOnArtworkCard: true,
+        })
+        ;(useExperimentVariant as jest.Mock).mockReturnValue({
+          enabled: true,
+          variant: "variant-c",
+          payload: "variant-c",
+        })
+      })
+
+      it("renders only new Save CTA and Follow CTA", () => {
+        renderWithRelay(
+          {
+            Artwork: () => artwork,
+          },
+          { hideSaveIcon: false }
+        )
+
+        // do not render old Save CTA
+        expect(screen.queryByTestId("empty-heart-icon")).not.toBeOnTheScreen()
+        expect(screen.queryByTestId("filled-heart-icon")).not.toBeOnTheScreen()
+
+        // render new Save CTA
+        expect(screen.getByTestId("heart-icon-empty")).toBeOnTheScreen()
+        expect(screen.queryByTestId("heart-icon-filled")).not.toBeOnTheScreen()
+
+        fireEvent.press(screen.getByTestId("heart-icon-empty"))
+
+        expect(screen.getByTestId("heart-icon-filled")).toBeOnTheScreen()
+        expect(screen.queryByTestId("heart-icon-empty")).not.toBeOnTheScreen()
+
+        // render Follow CTA
+        expect(screen.getByTestId("follow-icon-empty")).toBeOnTheScreen()
+        expect(screen.queryByTestId("follow-icon-filled")).not.toBeOnTheScreen()
+
+        fireEvent.press(screen.getByTestId("follow-icon-empty"))
+
+        expect(screen.getByTestId("follow-icon-filled")).toBeOnTheScreen()
+        expect(screen.queryByTestId("follow-icon-empty")).not.toBeOnTheScreen()
+      })
+
+      it("does not render Save and Follow CTA if hideSaveIcon is true", () => {
+        renderWithRelay({}, { hideSaveIcon: true })
+        // do not render Save CTA
+        expect(screen.queryByTestId("heart-icon-empty")).not.toBeOnTheScreen()
+        expect(screen.queryByTestId("heart-icon-filled")).not.toBeOnTheScreen()
+
+        // do not render Follow CTA
+        expect(screen.queryByTestId("follow-icon-empty")).not.toBeOnTheScreen()
+        expect(screen.queryByTestId("follow-icon-filled")).not.toBeOnTheScreen()
+      })
     })
   })
 
@@ -536,11 +706,6 @@ describe("ArtworkGridItem", () => {
     })
 
     describe("auction signals", () => {
-      beforeEach(
-        () =>
-          __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAuctionImprovementsSignals: true })
-      )
-
       describe("live auction", () => {
         it("shows the bidding live now signal", () => {
           renderWithRelay({
@@ -599,7 +764,9 @@ describe("ArtworkGridItem", () => {
               sale: { ...artwork.sale, isClosed: false },
               realizedPrice: null,
               collectorSignals: {
-                auction: { lotClosesAt: DateTime.fromMillis(Date.now()).plus({ days: 1 }).toISO() },
+                auction: {
+                  lotClosesAt: DateTime.fromMillis(Date.now()).plus({ days: 1 }).toISO(),
+                },
               },
             }),
           })
@@ -683,6 +850,8 @@ describe("ArtworkGridItem", () => {
       })
     })
   })
+
+  //
 })
 
 const artwork = {

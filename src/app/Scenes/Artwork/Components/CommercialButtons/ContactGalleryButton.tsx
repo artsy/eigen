@@ -12,7 +12,6 @@ import {
   CollectorSignals,
   getArtworkSignalTrackingFields,
 } from "app/utils/getArtworkSignalTrackingFields"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import React from "react"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -28,7 +27,6 @@ export const ContactGalleryButton: React.FC<ContactGalleryButtonProps> = ({
   ...rest
 }) => {
   const artworkData = useFragment(artworkFragment, artwork)
-  const AREnableAuctionImprovementsSignals = useFeatureFlag("AREnableAuctionImprovementsSignals")
 
   const { trackEvent } = useTracking()
 
@@ -42,8 +40,7 @@ export const ContactGalleryButton: React.FC<ContactGalleryButtonProps> = ({
                 tracks.trackTappedContactGallery(
                   artworkData.internalID,
                   artworkData.slug,
-                  artworkData.collectorSignals,
-                  AREnableAuctionImprovementsSignals
+                  artworkData.collectorSignals
                 )
               )
               dispatch({ type: "setInquiryModalVisible", payload: true })
@@ -64,14 +61,13 @@ const tracks = {
   trackTappedContactGallery: (
     artworkId: string,
     artworkSlug: string,
-    collectorSignals: CollectorSignals,
-    auctionSignalsFeatureFlagEnabled?: boolean
+    collectorSignals: CollectorSignals
   ): TappedContactGallery => ({
     action: ActionType.tappedContactGallery,
     context_owner_type: OwnerType.artwork,
     context_owner_id: artworkId,
     context_owner_slug: artworkSlug,
-    ...getArtworkSignalTrackingFields(collectorSignals, auctionSignalsFeatureFlagEnabled),
+    ...getArtworkSignalTrackingFields(collectorSignals),
   }),
 }
 

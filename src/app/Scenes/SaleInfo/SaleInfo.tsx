@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex, Text, Separator, Join } from "@artsy/palette-mobile"
+import { Flex, Text, Separator, Join, useSpace } from "@artsy/palette-mobile"
 import { SaleInfoQueryRendererQuery } from "__generated__/SaleInfoQueryRendererQuery.graphql"
 import { SaleInfo_me$data } from "__generated__/SaleInfo_me.graphql"
 import { SaleInfo_sale$data } from "__generated__/SaleInfo_sale.graphql"
@@ -62,6 +62,8 @@ const AuctionIsLive = () => (
 const markdownRules = defaultRules({ useNewTextStyles: true })
 
 export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
+  const space = useSpace()
+
   const panResponder = useRef<any>(null)
   useEffect(() => {
     panResponder.current = PanResponder.create({
@@ -92,10 +94,10 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
 
   return (
     <ProvideScreenTracking info={tracks.screen(sale.internalID, sale.slug)}>
-      <ScrollView contentContainerStyle={{ paddingBottom: 30 }}>
+      <ScrollView contentContainerStyle={{ paddingBottom: 30, paddingTop: space(2) }}>
         <Join separator={<Separator my={2} />}>
           {/*  About Auction */}
-          <Flex px={2} mt="70px">
+          <Flex px={2}>
             <Text variant="lg-display">About this auction</Text>
             <Text variant="sm-display" mt={1} mb={4}>
               {sale.name}
@@ -200,8 +202,10 @@ const BuyersPremium: React.FC<{ sale: SaleInfo_sale$data }> = (props) => {
 
 const SaleInfoPlaceholder = () => (
   <Join separator={<Separator my={2} />}>
-    <Flex px={2} mt="70px">
-      <Text variant="lg-display">About this auction</Text>
+    <Flex px={2}>
+      <Text variant="lg-display" mt={2}>
+        About this auction
+      </Text>
       <Separator my={1} />
       <PlaceholderBox marginBottom={20} height={30} width={200 + Math.random() * 100} />
       <PlaceholderBox marginBottom={10} height={50} />

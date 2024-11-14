@@ -10,19 +10,20 @@ import { useEnableProgressiveOnboarding } from "app/Components/ProgressiveOnboar
 import { RetryErrorBoundary, useRetryErrorBoundaryContext } from "app/Components/RetryErrorBoundary"
 import { EmailConfirmationBannerFragmentContainer } from "app/Scenes/Home/Components/EmailConfirmationBanner"
 import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
-import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
+import { HomeViewStore, HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { Section } from "app/Scenes/HomeView/Sections/Section"
-import { useHomeViewExperimentTracking } from "app/Scenes/HomeView/useHomeViewExperimentTracking"
-import { useHomeViewTracking } from "app/Scenes/HomeView/useHomeViewTracking"
+import { useHomeViewExperimentTracking } from "app/Scenes/HomeView/hooks/useHomeViewExperimentTracking"
+import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { searchQueryDefaultVariables } from "app/Scenes/Search/Search"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
+import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
 import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
-import { Suspense, useCallback, useEffect, useState } from "react"
+import { RefObject, Suspense, useCallback, useEffect, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
@@ -48,6 +49,16 @@ export const HomeView: React.FC = () => {
       fetchKey,
     }
   )
+
+  const trackedSectionTypes = HomeViewStore.useStoreState((state) => state.trackedSectionTypes)
+
+  const { trackExperiment } = useExperimentVariant("onyx_artwork-card-save-and-follow-cta-redesign")
+
+  useEffect(() => {
+    if (trackedSectionTypes.includes("HomeViewSectionArtworks")) {
+      trackExperiment()
+    }
+  }, [trackedSectionTypes.includes("HomeViewSectionArtworks")])
 
   const { data, loadNext, hasNext } = usePaginationFragment<
     HomeViewQuery,
@@ -133,7 +144,7 @@ export const HomeView: React.FC = () => {
       <Screen.Body fullwidth>
         <FlatList
           showsVerticalScrollIndicator={false}
-          ref={flashlistRef}
+          ref={flashlistRef as RefObject<FlatList>}
           data={sections}
           keyExtractor={(item) => item.internalID}
           renderItem={({ item, index }) => {
@@ -211,7 +222,7 @@ const sectionsFragment = graphql`
 `
 
 export const homeViewScreenQuery = graphql`
-  query HomeViewQuery($count: Int!, $cursor: String) @cacheable {
+  query HomeViewQuery($count: Int!, $cursor: String) {
     homeView {
       experiments {
         name

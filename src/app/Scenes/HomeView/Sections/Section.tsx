@@ -21,7 +21,7 @@ import { HomeViewSectionViewingRoomsQueryRenderer } from "app/Scenes/HomeView/Se
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
 
-interface SectionProps extends FlexProps {
+export interface SectionProps extends FlexProps {
   section: CleanRelayFragment<HomeViewSectionGeneric_section$data>
   index: number
 }
@@ -32,7 +32,7 @@ export interface SectionSharedProps extends FlexProps {
 }
 
 export const Section: React.FC<SectionProps> = ({ section, ...rest }) => {
-  const enableHomeViewTasksSection = useFeatureFlag("AREnableHomeVieTasksSection")
+  const enableHomeViewTasksSection = useFeatureFlag("AREnableHomeViewTasksSection")
 
   if (!section.internalID) {
     if (__DEV__) {

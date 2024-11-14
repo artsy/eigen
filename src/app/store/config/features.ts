@@ -236,12 +236,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableSubmitArtworkTier2Information",
   },
-  AREnableAuctionImprovementsSignals: {
-    description: "Enable new auction lot signals",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableAuctionImprovementsSignals",
-  },
   AREnableCollectionsWithoutHeaderImage: {
     description: "Remove the header image from collections",
     readyForRelease: true,
@@ -262,14 +256,15 @@ export const features = {
   },
   AREnableCacheableDirective: {
     description: "Enable @cacheable Directive",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableCacheableDirective",
   },
   AREnableSignupLoginFusion: {
     description: "Enable the fused signup and login flow",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableSignupLoginFusion",
   },
   AREnableMarketingCollectionsCategories: {
     description: "Enable marketing collections categories elements in the home view",
@@ -288,15 +283,28 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableDynamicHomeView",
   },
-  AREnableHomeVieTasksSection: {
+  AREnableHomeViewTasksSection: {
     description: "Enable the Home view tasks section",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableHomeViewTasksSection",
+  },
+  AREnableNewNavigation: {
+    description: "Enable new navigation infra (Requires App Restart!)",
     readyForRelease: false,
     showInDevMenu: true,
   },
-  AREnablePaymentFailureBanner: {
-    description: "Enable payment failure banner",
+  AREnableNewSaveAndFollowOnArtworkCard: {
+    description: "Redesign Save CTA and Add Follow CTA on Artwork Grid/Rail",
     readyForRelease: false,
     showInDevMenu: true,
+    /* echoFlagKey: "AREnableNewSaveAndFollowOnArtworkCard" */
+  },
+  AREnablePaymentFailureBanner: {
+    description: "Enable payment failure banner",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnablePaymentFailureBanner",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 
