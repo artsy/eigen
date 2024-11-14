@@ -6,7 +6,6 @@ import { Flex } from "@artsy/palette-mobile"
 import { ArtistCard_artist$data } from "__generated__/ArtistCard_artist.graphql"
 import { ArtistRailFollowMutation } from "__generated__/ArtistRailFollowMutation.graphql"
 import { ArtistRail_rail$data } from "__generated__/ArtistRail_rail.graphql"
-import { CARD_WIDTH } from "app/Components/Home/CardRailCard"
 import { CardRailFlatList, INTER_CARD_PADDING } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { defaultArtistVariables } from "app/Scenes/Artist/Artist"
@@ -116,13 +115,14 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
         data={artists}
         keyExtractor={(artist) => artist.id}
         ItemSeparatorComponent={null}
+        // TODO: See if this broke things
         // I noticed that sometimes FlatList seemed to get confused about where cards should be
         // and making this explicit fixes that.
-        getItemLayout={(_data, index) => ({
-          index,
-          offset: index * (CARD_WIDTH + INTER_CARD_PADDING),
-          length: CARD_WIDTH + INTER_CARD_PADDING,
-        })}
+        // getItemLayout={(_data, index) => ({
+        //   index,
+        //   offset: index * (CARD_WIDTH + INTER_CARD_PADDING),
+        //   length: CARD_WIDTH + INTER_CARD_PADDING,
+        // })}
         renderItem={({ item: artist, index }) => {
           return (
             <View style={{ flexDirection: "row" }}>

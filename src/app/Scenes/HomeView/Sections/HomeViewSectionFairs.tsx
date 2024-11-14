@@ -9,10 +9,7 @@ import { LARGE_IMAGE_SIZE, SMALL_IMAGE_SIZE } from "app/Components/ThreeUpImageL
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { HomeViewSectionFairsFairItem } from "app/Scenes/HomeView/Sections/HomeViewSectionFairsFairItem"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
-import {
-  HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
-  HORIZONTAL_FLATLIST_WINDOW_SIZE,
-} from "app/Scenes/HomeView/helpers/constants"
+import { HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT } from "app/Scenes/HomeView/helpers/constants"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -74,7 +71,6 @@ export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = ({
       <CardRailFlatList<any>
         data={fairs}
         initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
-        windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
         renderItem={({ item, index }) => {
           return (
             <HomeViewSectionFairsFairItem

@@ -29,7 +29,6 @@ export const SaleArtworksRail: React.FC<Props> = ({ me }) => {
       <CardRailFlatList
         data={artworks}
         initialNumToRender={INITIAL_NUMBER_TO_RENDER}
-        windowSize={3}
         renderItem={({ item: artwork }) => (
           <SaleArtworkTileRailCardContainer
             onPress={() => {

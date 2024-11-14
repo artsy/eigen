@@ -21,10 +21,7 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { PAGE_SIZE } from "app/Components/constants"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
-import {
-  HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
-  HORIZONTAL_FLATLIST_WINDOW_SIZE,
-} from "app/Scenes/HomeView/helpers/constants"
+import { HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT } from "app/Scenes/HomeView/helpers/constants"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -134,7 +131,6 @@ export const HomeViewSectionArtists: React.FC<HomeViewSectionArtworksProps> = ({
           )
         }}
         initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
-        windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
       />
 
       <HomeViewSectionSentinel
