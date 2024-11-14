@@ -47,7 +47,7 @@ export const AlertArtworksGrid: FC<AlertArtworksGridProps> = ({ alertId, fetchKe
   const numWorks = `${artworksCount} ${pluralize("work", artworksCount)}`
 
   const handleManageAlert = () => {
-    navigate(`settings/alerts/${alertId}/edit`)
+    navigate(`favorites/alerts/${alertId}/edit`)
   }
 
   const handleSeeAllMatchingWorks = () => {

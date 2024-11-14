@@ -41,7 +41,7 @@ describe("AlertArtworksGrid", () => {
       fireEvent.press(screen.getByText("Edit Alert"))
       await flushPromiseQueue()
 
-      expect(navigate).toHaveBeenCalledWith("settings/alerts/alert-id/edit")
+      expect(navigate).toHaveBeenCalledWith("favorites/alerts/alert-id/edit")
     })
   })
 
@@ -80,7 +80,7 @@ describe("AlertArtworksGrid", () => {
       fireEvent.press(screen.getByText("Edit Alert"))
       await flushPromiseQueue()
 
-      expect(navigate).toHaveBeenCalledWith("settings/alerts/alert-id/edit")
+      expect(navigate).toHaveBeenCalledWith("favorites/alerts/alert-id/edit")
     })
 
     it("see all matching works button navigates to the artist screen", async () => {

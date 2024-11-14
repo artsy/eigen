@@ -1,4 +1,3 @@
-import { parse } from "url"
 import { AppModule } from "app/AppRegistry"
 import { ArtsyWebViewConfig } from "app/Components/ArtsyWebView"
 import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
@@ -8,6 +7,7 @@ import { compact } from "lodash"
 import { parse as parseQueryString } from "query-string"
 import { Platform } from "react-native"
 import { GraphQLTaggedNode } from "relay-runtime"
+import { parse } from "url"
 
 export function matchRoute(
   url: string
@@ -327,11 +327,11 @@ export function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/sell/submissions/new", "SubmitArtwork"),
     addRoute("/sell/submissions/:externalID/edit", "SubmitArtworkEdit"),
     addRoute("/selling-with-artsy", "MyCollectionSellingWithartsyFAQ"),
-    addRoute("/settings/alerts", "SavedSearchAlertsList"),
-    addRoute("/settings/alerts/:savedSearchAlertId/edit", "EditSavedSearchAlert"),
-    addRoute("/settings/alerts/:alertId/artworks", "AlertArtworks"),
-    addRoute("/settings/saves", "SavedArtworks"),
-    addRoute("/settings/saves/:listID", "ArtworkList"),
+    addRoute("/favorites/alerts", "SavedSearchAlertsList"),
+    addRoute("/favorites/alerts/:savedSearchAlertId/edit", "EditSavedSearchAlert"),
+    addRoute("/favorites/alerts/:alertId/artworks", "AlertArtworks"),
+    addRoute("/favorites/saves", "SavedArtworks"),
+    addRoute("/favorites/saves/:listID", "ArtworkList"),
     addRoute("/settings/dark-mode", "DarkModeSettings"),
     addRoute("/show/:showID", "Show"),
     addRoute("/show/:showID/info", "ShowMoreInfo"),

@@ -129,7 +129,7 @@ export const MyProfileHeader: React.FC<MyProfileHeaderProps> = ({ meProp }) => {
       {/* Activity */}
       <Flex flexDirection="row" px={2} alignSelf="stretch" justifyContent="space-between">
         <Flex flex={1}>
-          <Touchable onPress={() => navigate("settings/saves")}>
+          <Touchable onPress={() => navigate("favorites/saves")}>
             <Flex justifyContent="center" alignItems="center">
               <Text variant="sm-display" weight="medium">
                 {me.counts.savedArtworks ?? "0"}
@@ -157,7 +157,7 @@ export const MyProfileHeader: React.FC<MyProfileHeaderProps> = ({ meProp }) => {
         </Flex>
 
         <Flex flex={1}>
-          <Touchable onPress={() => navigate("settings/alerts")}>
+          <Touchable onPress={() => navigate("favorites/alerts")}>
             <Flex justifyContent="center" alignItems="center">
               <Text variant="sm-display" weight="medium">
                 {me.counts.savedSearches ?? "0"}

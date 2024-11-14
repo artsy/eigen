@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedArtworkGroup } from "@artsy/cohesion"
-import { Box, Button, Flex, Spacer, Text, useTheme, Pill } from "@artsy/palette-mobile"
+import { Box, Button, Flex, Pill, Spacer, Text, useTheme } from "@artsy/palette-mobile"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import {
@@ -55,7 +55,7 @@ export const ConfirmationScreen: React.FC = () => {
   const handleManageAlerts = () => {
     closeModal?.()
     requestAnimationFrame(() => {
-      navigate("/settings/alerts")
+      navigate("/favorites/alerts")
     })
   }
 

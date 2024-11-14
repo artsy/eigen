@@ -20,12 +20,12 @@ export const AlertBottomSheet: React.FC<AlertBottomSheetProps> = ({
 }) => {
   const navigateToEditScreen = () => {
     onDismiss()
-    navigate(`settings/alerts/${id}/edit`)
+    navigate(`favorites/alerts/${id}/edit`)
   }
 
   const navigateToArtworks = () => {
     onDismiss()
-    navigate(`settings/alerts/${id}/artworks`)
+    navigate(`favorites/alerts/${id}/artworks`)
   }
 
   return (

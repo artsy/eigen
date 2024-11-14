@@ -85,7 +85,7 @@ describe("PartnerOfferCreatedNotification", () => {
 
       fireEvent.press(manageSavesLink)
 
-      expect(navigate).toHaveBeenCalledWith("/settings/saves")
+      expect(navigate).toHaveBeenCalledWith("/favorites/saves")
     })
 
     it("renders correct offer status and CTA when expired", () => {
