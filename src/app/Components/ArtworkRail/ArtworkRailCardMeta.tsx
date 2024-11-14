@@ -152,7 +152,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
 
         {!!title && (
           <RNText numberOfLines={1} ellipsizeMode="tail">
-            <Text lineHeight="20px" color={secondaryTextColor} variant="xs" fontStyle="italic">
+            <Text lineHeight="20px" color={secondaryTextColor} variant="xs">
               {title}
               {!!date && (
                 <Text lineHeight="20px" color={secondaryTextColor} variant="xs">
