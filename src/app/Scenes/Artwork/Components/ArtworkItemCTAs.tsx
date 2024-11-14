@@ -112,7 +112,7 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
       )}
 
       {!!sale?.isAuction && !!collectorSignals?.auction?.lotWatcherCount && (
-        <Text pl={0.5} variant="xxs" numberOfLines={1} textAlign="center">
+        <Text lineHeight="12px" pl={0.5} variant="xxs" numberOfLines={1} textAlign="center">
           {collectorSignals.auction.lotWatcherCount}
         </Text>
       )}
@@ -143,7 +143,7 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
 
   if (enableNewSaveCTA) {
     return saveCTA
-  } else if (enableNewSaveAndFollowCTAs) {
+  } else if (!enableNewSaveAndFollowCTAs) {
     return (
       <Flex flexDirection="row">
         <Join separator={<Spacer x={1} />}>
