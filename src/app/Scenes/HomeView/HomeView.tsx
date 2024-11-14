@@ -31,7 +31,7 @@ import { requestPushNotificationsPermission } from "app/utils/requestPushNotific
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
 import { useSwitchStatusBarStyle } from "app/utils/useStatusBarStyle"
 import { RefObject, Suspense, useCallback, useEffect, useState } from "react"
-import { FlatList, RefreshControl } from "react-native"
+import { FlatList, Linking, RefreshControl } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 export const NUMBER_OF_SECTIONS_TO_LOAD = 10
@@ -86,10 +86,15 @@ export const HomeView: React.FC = () => {
   const sections = extractNodes(data?.homeView.sectionsConnection)
 
   useEffect(() => {
-    prefetchUrl<SearchQuery>("search", searchQueryDefaultVariables)
-    prefetchUrl("my-profile")
-    prefetchUrl("inbox")
-    prefetchUrl("sell")
+    Linking.getInitialURL().then((url) => {
+      const isDeepLink = !!url
+      if (!isDeepLink) {
+        prefetchUrl<SearchQuery>("search", searchQueryDefaultVariables)
+        prefetchUrl("my-profile")
+        prefetchUrl("inbox")
+        prefetchUrl("sell")
+      }
+    })
   }, [])
 
   useEffect(() => {

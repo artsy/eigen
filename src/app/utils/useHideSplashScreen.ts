@@ -2,6 +2,7 @@ import { homeViewScreenQueryVariables } from "app/Scenes/HomeView/HomeView"
 import { GlobalStore } from "app/store/GlobalStore"
 import { usePrefetch } from "app/utils/queryPrefetching"
 import { useEffect } from "react"
+import { Linking } from "react-native"
 import RNBootSplash from "react-native-bootsplash"
 
 const HOME_VIEW_SPLASH_SCREEN_DELAY = 500
@@ -20,13 +21,17 @@ export const useHideSplashScreen = () => {
 
     if (isHydrated) {
       if (isLoggedIn && isNavigationReady) {
-        prefetchUrl("/", homeViewScreenQueryVariables(), {
-          force: false,
+        Linking.getInitialURL().then((url) => {
+          const isDeepLink = !!url
+          if (!isDeepLink) {
+            prefetchUrl("/", homeViewScreenQueryVariables(), {
+              force: false,
+            })
+          }
+          setTimeout(() => {
+            hideSplashScreen()
+          }, HOME_VIEW_SPLASH_SCREEN_DELAY)
         })
-
-        setTimeout(() => {
-          hideSplashScreen()
-        }, HOME_VIEW_SPLASH_SCREEN_DELAY)
 
         return
       }
