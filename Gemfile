@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 ruby ">= 2.6.10"
 
-gem 'fastlane', '2.223.1'
+gem 'fastlane'
 
 # Exclude problematic versions of cocoapods and activesupport that causes build failures.
 gem 'cocoapods', '>= 1.13', '!= 1.15.0', '!= 1.15.1'
