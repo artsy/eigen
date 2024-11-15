@@ -525,7 +525,11 @@ export const modules = defineModules({
   }),
   Feature: reactModule(FeatureQueryRenderer, { fullBleed: true }),
   FullArtistSeriesList: reactModule(ArtistSeriesFullArtistSeriesListQueryRenderer),
-  FullFeaturedArtistList: reactModule(CollectionFullFeaturedArtistListQueryRenderer),
+  FullFeaturedArtistList: reactModule(CollectionFullFeaturedArtistListQueryRenderer, {
+    screenOptions: {
+      headerTitle: "Featured Artists",
+    },
+  }),
   GalleriesForYou: reactModule(GalleriesForYouScreen, {
     fullBleed: true,
     hidesBackButton: true,
