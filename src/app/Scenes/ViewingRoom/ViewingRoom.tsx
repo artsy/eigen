@@ -1,4 +1,4 @@
-import { Spacer, ShareIcon, Flex, Box, Text, Button } from "@artsy/palette-mobile"
+import { Box, Button, Flex, ShareIcon, Spacer, Text } from "@artsy/palette-mobile"
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
 import { ViewingRoom_viewingRoom$data } from "__generated__/ViewingRoom_viewingRoom.graphql"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
@@ -254,19 +254,21 @@ export const ViewingRoomFragmentContainer = createFragmentContainer(ViewingRoom,
   `,
 })
 
+export const ViewingRoomScreenQuery = graphql`
+  query ViewingRoomQuery($viewingRoomID: ID!) @cacheable {
+    viewingRoom(id: $viewingRoomID) @principalField {
+      ...ViewingRoom_viewingRoom
+    }
+  }
+`
+
 export const ViewingRoomQueryRenderer: React.FC<{ viewing_room_id: string }> = ({
   viewing_room_id: viewingRoomID,
 }) => {
   return (
     <QueryRenderer<ViewingRoomQuery>
       environment={getRelayEnvironment()}
-      query={graphql`
-        query ViewingRoomQuery($viewingRoomID: ID!) @cacheable {
-          viewingRoom(id: $viewingRoomID) @principalField {
-            ...ViewingRoom_viewingRoom
-          }
-        }
-      `}
+      query={ViewingRoomScreenQuery}
       cacheConfig={{ force: false }}
       variables={{
         viewingRoomID,

@@ -829,7 +829,9 @@ export const modules = defineModules({
   Tag: reactModule(TagQueryRenderer, { hidesBackButton: true, fullBleed: true }),
   UnlistedArtworksFAQScreen: reactModule(UnlistedArtworksFAQScreen),
   VanityURLEntity: reactModule(VanityURLEntityRenderer, { fullBleed: true }),
-  ViewingRoom: reactModule(ViewingRoomQueryRenderer, { fullBleed: true }),
+  ViewingRoom: reactModule(ViewingRoomQueryRenderer, { fullBleed: true }, [
+    viewingRoomsListScreenQuery,
+  ]),
   ViewingRoomArtwork: reactModule(ViewingRoomArtworkScreen),
   ViewingRoomArtworks: reactModule(ViewingRoomArtworksQueryRenderer),
   ViewingRooms: reactModule(ViewingRoomsListScreen, {}, [viewingRoomsListScreenQuery]),
