@@ -359,7 +359,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                     numberOfLines={1}
                     {...titleTextStyle}
                   >
-                    <Text lineHeight="18px" variant="xs" weight="regular" italic>
+                    <Text lineHeight="18px" variant="xs" weight="regular">
                       {artwork.title}
                     </Text>
                     {artwork.date ? `, ${artwork.date}` : ""}
