@@ -21,6 +21,7 @@ import { Schema } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { compact } from "lodash"
 import React, { useMemo } from "react"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { ArtworkFilterNavigationStack } from "./ArtworkFilterNavigator"
@@ -297,6 +298,8 @@ export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonPr
   onPress,
   text = "Sort & Filter",
 }) => {
+  const insets = useSafeAreaInsets()
+
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const filterTypeState = ArtworksFiltersStore.useStoreState((state) => state.filterType)
 
@@ -342,7 +345,7 @@ export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonPr
     return selectedFiltersSum
   }
 
-  const roundedButtonStyle = { borderRadius: 50 }
+  const roundedButtonStyle = { borderRadius: 50, marginBottom: insets.bottom }
 
   return (
     <AnimatedBottomButton isVisible={isVisible} onPress={onPress} buttonStyles={roundedButtonStyle}>
