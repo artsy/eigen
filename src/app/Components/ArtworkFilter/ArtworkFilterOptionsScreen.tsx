@@ -299,6 +299,7 @@ export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonPr
   text = "Sort & Filter",
 }) => {
   const insets = useSafeAreaInsets()
+  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const filterTypeState = ArtworksFiltersStore.useStoreState((state) => state.filterType)
@@ -345,7 +346,10 @@ export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonPr
     return selectedFiltersSum
   }
 
-  const roundedButtonStyle = { borderRadius: 50, marginBottom: insets.bottom }
+  const roundedButtonStyle = {
+    borderRadius: 50,
+    marginBottom: enableNewNavigation ? insets.bottom : 0,
+  }
 
   return (
     <AnimatedBottomButton isVisible={isVisible} onPress={onPress} buttonStyles={roundedButtonStyle}>
