@@ -182,7 +182,6 @@ export const Search: React.FC = () => {
               <Spacer y={4} />
             </Scrollable>
           )}
-          <PortalHost name="SearchOverlay" />
         </Flex>
       </ArtsyKeyboardAvoidingView>
     </SearchContext.Provider>
@@ -203,11 +202,14 @@ type SearchScreenProps = StackScreenProps<any>
 
 export const SearchScreen: React.FC<SearchScreenProps> = () => {
   return (
-    <Screen>
-      <Suspense fallback={<SearchPlaceholder />}>
-        <Search />
-      </Suspense>
-    </Screen>
+    <>
+      <Screen>
+        <Suspense fallback={<SearchPlaceholder />}>
+          <Search />
+        </Suspense>
+      </Screen>
+      <PortalHost name="SearchOverlay" />
+    </>
   )
 }
 

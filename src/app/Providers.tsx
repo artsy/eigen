@@ -1,6 +1,5 @@
-import { Theme, Spinner, ScreenDimensionsProvider, Screen } from "@artsy/palette-mobile"
+import { Screen, ScreenDimensionsProvider, Spinner, Theme } from "@artsy/palette-mobile"
 import { ActionSheetProvider } from "@expo/react-native-action-sheet"
-import { PortalProvider } from "@gorhom/portal"
 import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { ShareSheetProvider } from "app/Components/ShareSheet/ShareSheetContext"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -59,7 +58,6 @@ export const TestProviders: React.FC<{ skipRelay?: boolean }> = ({
       TrackingProvider,
       GlobalStoreProvider,
       SafeAreaProvider,
-      PortalProvider,
       ProvideScreenDimensions,
       // FIXME: Only use one from palette-mobile
       // @ts-ignore

@@ -166,7 +166,6 @@ export const HomeView: React.FC = () => {
           {...stickyHeaderProps}
         />
         {!!data?.me && <EmailConfirmationBannerFragmentContainer me={data.me} />}
-        <PortalHost name="SearchOverlay" />
       </Screen.Body>
     </Screen>
   )
@@ -193,6 +192,7 @@ export const HomeViewScreen: React.FC = () => {
         <Suspense fallback={<HomeViewScreenPlaceholder />}>
           <HomeView />
         </Suspense>
+        <PortalHost name="SearchOverlay" />
       </RetryErrorBoundary>
     </HomeViewStoreProvider>
   )
