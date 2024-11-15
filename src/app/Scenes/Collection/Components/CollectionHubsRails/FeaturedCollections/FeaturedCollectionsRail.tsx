@@ -2,7 +2,7 @@ import { Spacer, Flex, useColor, Text, Touchable } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { FeaturedCollectionsRail_collection$data } from "__generated__/FeaturedCollectionsRail_collection.graphql"
 import { FeaturedCollectionsRail_collectionGroup$data } from "__generated__/FeaturedCollectionsRail_collectionGroup.graphql"
-import { AboveTheFoldFlashList } from "app/Components/AboveTheFoldFlashList"
+import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -60,7 +60,7 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
           {collectionGroup.name}
         </Text>
       </Flex>
-      <AboveTheFoldFlashList<FeaturedCollection>
+      <AboveTheFoldFlatList<FeaturedCollection>
         horizontal
         showsHorizontalScrollIndicator={false}
         data={collections as FeaturedCollection[]}

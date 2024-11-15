@@ -1,14 +1,14 @@
 import { Spacer } from "@artsy/palette-mobile"
 import {
-  AboveTheFoldFlashList,
-  AboveTheFoldFlashListProps,
-} from "app/Components/AboveTheFoldFlashList"
+  AboveTheFoldFlatList,
+  AboveTheFoldFlatListProps,
+} from "app/Components/AboveTheFoldFlatList"
 import Spinner from "app/Components/Spinner"
 import { View } from "react-native"
 
 export const INTER_CARD_PADDING = 15
 
-type CardRailFlatList<ItemType> = AboveTheFoldFlashListProps<ItemType>
+type CardRailFlatList<ItemType> = AboveTheFoldFlatListProps<ItemType>
 
 export function CardRailFlatList<ItemType>({
   initialNumToRender: initialNumToRenderProp,
@@ -17,7 +17,7 @@ export function CardRailFlatList<ItemType>({
   const initialNumToRender = initialNumToRenderProp || 2
 
   return (
-    <AboveTheFoldFlashList<ItemType>
+    <AboveTheFoldFlatList<ItemType>
       ListHeaderComponent={() => <Spacer x={2} />}
       ListFooterComponent={() => <Spacer x={2} />}
       ItemSeparatorComponent={() => <View style={{ width: INTER_CARD_PADDING }} />}

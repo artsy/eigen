@@ -10,7 +10,7 @@ import {
 import { captureMessage } from "@sentry/react-native"
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import { AutosuggestResults_results$data } from "__generated__/AutosuggestResults_results.graphql"
-import { AboveTheFoldFlashList } from "app/Components/AboveTheFoldFlashList"
+import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { AutosuggestResultsPlaceholder } from "app/Components/AutosuggestResults/AutosuggestResultsPlaceholder"
 import Spinner from "app/Components/Spinner"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
@@ -188,9 +188,9 @@ const AutosuggestResultsFlatList: React.FC<{
   }
 
   return (
-    <Flex style={{ width: "100%", height: "100%" }}>
+    <Flex>
       {!!showHeaderComponent && <HeaderComponent />}
-      <AboveTheFoldFlashList<AutosuggestResult>
+      <AboveTheFoldFlatList<AutosuggestResult>
         ListHeaderComponent={ListHeaderComponent}
         listRef={flatListRef}
         initialNumToRender={isTablet() ? 24 : 12}

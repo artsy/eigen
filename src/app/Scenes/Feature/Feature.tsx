@@ -1,7 +1,7 @@
 import { Spacer, Flex, Text, Separator, Box } from "@artsy/palette-mobile"
 import { FeatureQuery } from "__generated__/FeatureQuery.graphql"
 import { Feature_feature$data } from "__generated__/Feature_feature.graphql"
-import { AboveTheFoldFlashList } from "app/Components/AboveTheFoldFlashList"
+import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
 import { ReadMore } from "app/Components/ReadMore"
 import { Stack } from "app/Components/Stack"
@@ -169,7 +169,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
   }
 
   return (
-    <AboveTheFoldFlashList<FlatListSection>
+    <AboveTheFoldFlatList<FlatListSection>
       initialNumToRender={__TEST__ ? 100 : 6}
       data={[
         header,
