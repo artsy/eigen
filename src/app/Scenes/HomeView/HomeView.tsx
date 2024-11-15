@@ -177,7 +177,6 @@ export const HomeView: React.FC = () => {
           {...stickyHeaderProps}
         />
         {!!data?.me && <EmailConfirmationBannerFragmentContainer me={data.me} />}
-        <PortalHost name="SearchOverlay" />
       </Screen.Body>
     </Screen>
   )

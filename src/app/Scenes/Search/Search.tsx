@@ -182,7 +182,6 @@ export const Search: React.FC = () => {
               <Spacer y={4} />
             </Scrollable>
           )}
-          <PortalHost name="SearchOverlay" />
         </Flex>
       </ArtsyKeyboardAvoidingView>
     </SearchContext.Provider>
