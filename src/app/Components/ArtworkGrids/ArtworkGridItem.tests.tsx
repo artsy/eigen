@@ -628,6 +628,14 @@ describe("ArtworkGridItem", () => {
         expect(screen.queryByTestId("follow-icon-empty")).not.toBeOnTheScreen()
         expect(screen.queryByTestId("follow-icon-filled")).not.toBeOnTheScreen()
       })
+
+      it("does not render Follow CTA if hideSaveIcon is true", () => {
+        renderWithRelay({}, { hideFollowIcon: true })
+
+        // do not render Follow CTA
+        expect(screen.queryByTestId("follow-icon-empty")).not.toBeOnTheScreen()
+        expect(screen.queryByTestId("follow-icon-filled")).not.toBeOnTheScreen()
+      })
     })
   })
 

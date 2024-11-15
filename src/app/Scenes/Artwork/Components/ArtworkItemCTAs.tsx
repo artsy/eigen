@@ -26,11 +26,14 @@ import { useTracking } from "react-tracking"
 interface ArtworkItemCTAsProps extends ArtworkActionTrackingProps {
   artwork: ArtworkItemCTAs_artwork$key
   showSaveIcon?: boolean
+  showFollowIcon?: boolean
 }
 
 export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
   artwork: artworkProp,
   showSaveIcon = false,
+  // show follow icon by default, but allow it to be hidden on specific grids
+  showFollowIcon = true,
   contextModule,
   contextScreen,
   contextScreenOwnerId,
@@ -143,12 +146,12 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
 
   if (enableNewSaveCTA) {
     return saveCTA
-  } else if (!enableNewSaveAndFollowCTAs) {
+  } else if (enableNewSaveAndFollowCTAs) {
     return (
       <Flex flexDirection="row">
         <Join separator={<Spacer x={1} />}>
           {saveCTA}
-          {followCTA}
+          {!!showFollowIcon && followCTA}
         </Join>
       </Flex>
     )
