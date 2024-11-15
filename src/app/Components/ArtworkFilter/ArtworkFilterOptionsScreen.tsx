@@ -414,6 +414,12 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     filterType: "estimateRange",
     ScreenComponent: "EstimateRangeOptionsScreen",
   },
+  availability: {
+    displayText: FilterDisplayName.availability,
+    filterType: "availability",
+    ScreenComponent: "AvailabilityOptionsScreen",
+    configType: FilterConfigTypes.FilterScreenCheckboxItem,
+  },
   partnerIDs: {
     displayText: FilterDisplayName.partnerIDs,
     filterType: "partnerIDs",
@@ -534,6 +540,7 @@ const ArtworksFiltersSorted: FilterScreen[] = [
   "additionalGeneIDs",
   "priceRange",
   "sizes",
+  "availability",
   "waysToBuy",
   "materialsTerms",
   "artistNationalities",

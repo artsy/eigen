@@ -83,6 +83,7 @@ export type ArtworkFilterNavigationStack = {
   ArtistSeriesOptionsScreen: undefined
   AttributionClassOptionsScreen: undefined
   AuctionHouseOptionsScreen: undefined
+  AvailabilityOptionsScreen: undefined
   CategoriesOptionsScreen: undefined
   ColorOptionsScreen: undefined
   ColorsOptionsScreen: undefined
@@ -340,6 +341,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
               component={AttributionClassOptionsScreen}
             />
             <Stack.Screen name="AuctionHouseOptionsScreen" component={AuctionHouseOptionsScreen} />
+            <Stack.Screen name="AvailabilityOptionsScreen" component={AvailabilityOptionsScreen} />
             <Stack.Screen name="ColorsOptionsScreen" component={ColorsOptionsScreen} />
             <Stack.Screen
               name="EstimateRangeOptionsScreen"
