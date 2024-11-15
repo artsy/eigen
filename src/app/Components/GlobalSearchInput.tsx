@@ -13,6 +13,10 @@ export const GlobalSearchInput: React.FC<{}> = () => {
           setIsVisible(true)
         }}
       >
+        {/* In order to make the search input behave like a button here, we wrapped it with a
+         Touchable and set pointerEvents to none. This will prevent the input from receiving
+         touch events and make sure they are being handled by the Touchable.
+        */}
         <Flex pointerEvents="none">
           <RoundSearchInput
             placeholder={SEARCH_INPUT_PLACEHOLDER}
