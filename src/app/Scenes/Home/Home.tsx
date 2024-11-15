@@ -9,7 +9,6 @@ import {
   SpacingUnitDSValueNumber,
 } from "@artsy/palette-mobile"
 import { useFocusEffect } from "@react-navigation/native"
-import { ListRenderItem } from "@shopify/flash-list"
 import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { Home_articlesConnection$data } from "__generated__/Home_articlesConnection.graphql"
@@ -78,7 +77,15 @@ import {
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
 import { times } from "lodash"
 import React, { RefObject, createRef, memo, useCallback, useEffect, useRef, useState } from "react"
-import { Alert, RefreshControl, View, ViewProps, ViewToken, ViewabilityConfig } from "react-native"
+import {
+  Alert,
+  ListRenderItem,
+  RefreshControl,
+  View,
+  ViewProps,
+  ViewToken,
+  ViewabilityConfig,
+} from "react-native"
 import { isTablet } from "react-native-device-info"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { Environment, RelayRefetchProp, createRefetchContainer, graphql } from "react-relay"
