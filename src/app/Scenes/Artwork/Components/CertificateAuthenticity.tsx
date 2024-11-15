@@ -11,26 +11,31 @@ import {
 } from "@artsy/palette-mobile"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { useAndroidGoBack } from "app/utils/hooks/useBackHandler"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ScrollView } from "react-native"
 
 export const CertificateOfAuthenticity: React.FC = () => {
   useAndroidGoBack()
   const space = useSpace()
+  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
 
   return (
     <Screen>
-      <Screen.Header
-        leftElements={
-          <Touchable
-            accessibilityRole="button"
-            accessibilityLabel="Close"
-            onPress={() => goBack()}
-            hitSlop={{ top: space(2), left: space(2), bottom: space(2), right: space(2) }}
-          >
-            <CloseIcon fill="black100" />
-          </Touchable>
-        }
-      />
+      {!enableNewNavigation && (
+        <Screen.Header
+          leftElements={
+            <Touchable
+              accessibilityRole="button"
+              accessibilityLabel="Close"
+              onPress={() => goBack()}
+              hitSlop={{ top: space(2), left: space(2), bottom: space(2), right: space(2) }}
+            >
+              <CloseIcon fill="black100" />
+            </Touchable>
+          }
+        />
+      )}
+
       <Screen.Body>
         <ScrollView>
           <Box py={2}>
