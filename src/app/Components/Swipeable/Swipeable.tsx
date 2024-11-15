@@ -4,6 +4,7 @@ import ReanimatedSwipeable, {
   SwipeableMethods,
   SwipeableProps,
 } from "react-native-gesture-handler/ReanimatedSwipeable"
+import ReactNativeHapticFeedback from "react-native-haptic-feedback"
 import Animated, {
   runOnJS,
   SharedValue,
@@ -46,6 +47,7 @@ export const Swipeable = forwardRef<SwipeableMethods, SwipeableComponentProps>((
 
   const handleSwipeToInteract = () => {
     hasSwiped.current = true
+    ReactNativeHapticFeedback.trigger("impactLight")
     actionOnSwipe?.()
   }
 
@@ -65,8 +67,6 @@ export const Swipeable = forwardRef<SwipeableMethods, SwipeableComponentProps>((
       if (!actionOnSwipe || hasSwiped.current || !width.value) return style
 
       if (width.value + dragX.value * FRICTION <= SWIPE_TO_INTERACT_THRESHOLD) {
-        // TODO: Add haptic feedback
-
         runOnJS(handleSwipeToInteract)()
       }
 
