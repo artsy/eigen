@@ -1,4 +1,5 @@
-import { ArtsyLogoBlackIcon, Flex, Box } from "@artsy/palette-mobile"
+import { ArtsyLogoBlackIcon, Box, Flex } from "@artsy/palette-mobile"
+import { GlobalSearchInput } from "app/Components/GlobalSearchInput"
 import { PaymentFailureBanner } from "app/Scenes/HomeView/Components/PaymentFailureBanner"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -6,10 +7,39 @@ import { Suspense } from "react"
 import { ActivityIndicator } from "./ActivityIndicator"
 
 export const HomeHeader: React.FC = () => {
+  const enableNewSearchModal = useFeatureFlag("AREnableNewSearchModal")
   const showPaymentFailureBanner = useFeatureFlag("AREnablePaymentFailureBanner")
   const hasUnseenNotifications = GlobalStore.useAppState(
     (state) => state.bottomTabs.hasUnseenNotifications
   )
+
+  if (enableNewSearchModal) {
+    return (
+      <Flex backgroundColor="white100">
+        {!!showPaymentFailureBanner && (
+          <Suspense fallback={null}>
+            <PaymentFailureBanner />
+          </Suspense>
+        )}
+        <Flex py={2}>
+          <Flex
+            flexDirection="row"
+            px={2}
+            gap={2}
+            justifyContent="space-around"
+            alignItems="center"
+          >
+            <Flex flex={1}>
+              <GlobalSearchInput />
+            </Flex>
+            <Flex alignItems="flex-end">
+              <ActivityIndicator hasUnseenNotifications={hasUnseenNotifications} />
+            </Flex>
+          </Flex>
+        </Flex>
+      </Flex>
+    )
+  }
 
   return (
     <>
@@ -18,7 +48,7 @@ export const HomeHeader: React.FC = () => {
           <PaymentFailureBanner />
         </Suspense>
       )}
-      <Box py={2}>
+      <Box py={2} backgroundColor="white100">
         <Flex flexDirection="row" px={2} justifyContent="space-between" alignItems="center">
           <Box flex={1} />
           <Box>

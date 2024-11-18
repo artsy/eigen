@@ -1,12 +1,11 @@
-import { Box, Button, Text } from "@artsy/palette-mobile"
-import { NavigationContainer } from "@react-navigation/native"
-import { FancyModal } from "app/Components/FancyModal/FancyModal"
+import { Box, Button, Screen, Text } from "@artsy/palette-mobile"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { goBack, switchTab } from "app/system/navigation/navigate"
 import { useSetWebViewCallback } from "app/utils/useWebViewEvent"
 import React, { useState } from "react"
+import { Modal } from "react-native"
 
-export const OfferSubmittedModal: React.FC = (props) => {
+export const OfferSubmittedModal: React.FC = () => {
   const [visible, setVisible] = useState(false)
   const [offerData, setOfferData] = useState({ code: "", message: "" })
 
@@ -20,8 +19,11 @@ export const OfferSubmittedModal: React.FC = (props) => {
   )
 
   const onGoToInbox = () => {
-    switchTab("inbox")
     setVisible(false)
+    // Go to inbox after the modal is closed
+    requestAnimationFrame(() => {
+      switchTab("inbox")
+    })
   }
 
   const onClose = () => {
@@ -29,8 +31,8 @@ export const OfferSubmittedModal: React.FC = (props) => {
   }
 
   return (
-    <NavigationContainer independent {...props}>
-      <FancyModal visible={visible} onBackgroundPressed={onClose}>
+    <Modal visible={visible} onRequestClose={onClose} animationType="fade">
+      <Screen>
         <FancyModalHeader rightCloseButton onRightButtonPress={onClose}>
           Make Offer
         </FancyModalHeader>
@@ -47,7 +49,7 @@ export const OfferSubmittedModal: React.FC = (props) => {
             Go to inbox
           </Button>
         </Box>
-      </FancyModal>
-    </NavigationContainer>
+      </Screen>
+    </Modal>
   )
 }

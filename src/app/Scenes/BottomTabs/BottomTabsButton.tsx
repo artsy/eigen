@@ -143,6 +143,7 @@ export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
             </Flex>
 
             <Flex
+              mt={enableNewNavigation ? 0.5 : 0}
               height={BOTTOM_TABS_TEXT_HEIGHT}
               width="100%"
               alignItems="center"

@@ -14,6 +14,7 @@ import { isHeaderShown } from "app/Navigation/Utils/isHeaderShown"
 import { isModalScreen } from "app/Navigation/Utils/isModalScreen"
 import { ICON_HEIGHT } from "app/Scenes/BottomTabs/BottomTabsIcon"
 import { goBack } from "app/system/navigation/navigate"
+import { isTablet } from "react-native-device-info"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 export const StackNavigator = createNativeStackNavigator<AuthenticatedRoutesParams>()
@@ -32,6 +33,7 @@ export const registerScreen: React.FC<StackNavigatorScreenProps> = ({ name, modu
       options={{
         presentation: isModalScreen(module) ? "fullScreenModal" : "card",
         headerShown: isHeaderShown(module),
+        orientation: !isTablet() ? "portrait" : "default",
         headerLeft: ({ canGoBack }) => {
           if (!canGoBack) {
             return null
