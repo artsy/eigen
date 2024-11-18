@@ -11,11 +11,7 @@ describe("HomeViewSectionCards", () => {
   const { renderWithRelay } = setupTestWrapper<HomeViewSectionCardsTestsQuery>({
     Component: (props) => (
       <HomeViewStoreProvider>
-        <HomeViewSectionCards
-          index={4}
-          section={props.homeView.section}
-          homeViewSectionId="test-id"
-        />
+        <HomeViewSectionCards index={4} section={props.homeView.section} />
       </HomeViewStoreProvider>
     ),
     query: graphql`
@@ -98,6 +94,9 @@ describe("HomeViewSectionCards", () => {
       })
     )
 
-    expect(navigate).toHaveBeenCalledWith(expect.stringMatching("/collections-by-category/Card 1"))
+    expect(navigate).toHaveBeenCalledWith(
+      expect.stringMatching("/collections-by-category/Card 1"),
+      expect.any(Object)
+    )
   })
 })

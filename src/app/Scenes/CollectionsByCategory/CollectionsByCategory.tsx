@@ -1,18 +1,21 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex, Screen } from "@artsy/palette-mobile"
 import { RouteProp, useRoute } from "@react-navigation/native"
+import { HomeViewSectionCardsCardQuery } from "__generated__/HomeViewSectionCardsCardQuery.graphql"
 import { BodyWithSuspense } from "app/Scenes/CollectionsByCategory/Body"
 import { FooterWithSuspense } from "app/Scenes/CollectionsByCategory/Footer"
 import { goBack } from "app/system/navigation/navigate"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { FC } from "react"
+import { PreloadedQuery } from "react-relay"
 
 type CollectionsByCategoriesNavigationRoutes = {
   collections: {
     category: string
     entityID: string
     homeViewSectionId: string
+    queryRef: PreloadedQuery<HomeViewSectionCardsCardQuery>
   }
 }
 

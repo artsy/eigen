@@ -1,8 +1,7 @@
 import { Flex, Separator, Skeleton, SkeletonText, Text } from "@artsy/palette-mobile"
 import { useRoute } from "@react-navigation/native"
 import { FlashList } from "@shopify/flash-list"
-import { BodyCollectionsByCategoryQuery } from "__generated__/BodyCollectionsByCategoryQuery.graphql"
-import { BodyCollectionsByCategory_viewer$key } from "__generated__/BodyCollectionsByCategory_viewer.graphql"
+import { BodyCollectionsByCategory_marketingCollections$key } from "__generated__/BodyCollectionsByCategory_marketingCollections.graphql"
 import {
   CollectionRailPlaceholder,
   CollectionRailWithSuspense,
@@ -12,19 +11,20 @@ import {
   CollectionsChips,
   CollectionsChipsPlaceholder,
 } from "app/Scenes/CollectionsByCategory/CollectionsChips"
+import { marketingCollectionsQuery } from "app/Scenes/HomeView/Components/HomeViewSectionCardsCard"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
-import { graphql, useLazyLoadQuery, useFragment } from "react-relay"
+import { graphql, useFragment, usePreloadedQuery } from "react-relay"
 
 interface BodyProps {
-  viewer: BodyCollectionsByCategory_viewer$key
+  marketingCollections: BodyCollectionsByCategory_marketingCollections$key
 }
 
-export const Body: React.FC<BodyProps> = ({ viewer }) => {
-  const data = useFragment(fragment, viewer)
+export const Body: React.FC<BodyProps> = ({ marketingCollections }) => {
+  const data = useFragment(fragment, marketingCollections)
   const { params } = useRoute<CollectionsByCategoriesRouteProp>()
   const category = params.category
 
-  if (!data?.marketingCollections) {
+  if (!data) {
     return null
   }
 
@@ -36,20 +36,20 @@ export const Body: React.FC<BodyProps> = ({ viewer }) => {
         </Text>
         <Text px={2}>Explore collections with {category}</Text>
         {/* TODO: fix typings broken by some unknown reason here, prob related to @plural */}
-        <CollectionsChips marketingCollections={data.marketingCollections as any} />
+        <CollectionsChips marketingCollections={marketingCollections as any} />
       </Flex>
 
       <Separator borderColor="black10" />
 
       <FlashList
         estimatedItemSize={ESTIMATED_ITEM_SIZE}
-        data={data.marketingCollections}
+        data={data}
         keyExtractor={(item) => `artwork_rail_${item?.slug}`}
         renderItem={({ item, index }) => {
           return (
             <CollectionRailWithSuspense
               slug={item?.slug ?? ""}
-              lastElement={index === data.marketingCollections.length - 1}
+              lastElement={index === data.length - 1}
             />
           )
         }}
@@ -61,13 +61,9 @@ export const Body: React.FC<BodyProps> = ({ viewer }) => {
 const ESTIMATED_ITEM_SIZE = 390
 
 const fragment = graphql`
-  fragment BodyCollectionsByCategory_viewer on Viewer
-  @argumentDefinitions(category: { type: "String" }) {
-    marketingCollections(category: $category, sort: CURATED, first: 20) {
-      ...CollectionsChips_marketingCollections
-
-      slug @required(action: NONE)
-    }
+  fragment BodyCollectionsByCategory_marketingCollections on MarketingCollection
+  @relay(plural: true) {
+    slug @required(action: NONE)
   }
 `
 
@@ -91,30 +87,16 @@ const BodyPlaceholder: React.FC = () => {
   )
 }
 
-const query = graphql`
-  query BodyCollectionsByCategoryQuery($category: String!) @cacheable {
-    viewer {
-      ...BodyCollectionsByCategory_viewer @arguments(category: $category)
-    }
-  }
-`
-
 export const BodyWithSuspense = withSuspense({
   Component: () => {
     const { params } = useRoute<CollectionsByCategoriesRouteProp>()
-    const data = useLazyLoadQuery<BodyCollectionsByCategoryQuery>(
-      query,
-      {
-        category: params.entityID,
-      },
-      { fetchPolicy: "store-and-network" }
-    )
+    const data = usePreloadedQuery(marketingCollectionsQuery, params.queryRef)
 
     if (!data.viewer) {
       return <BodyPlaceholder />
     }
 
-    return <Body viewer={data.viewer} />
+    return <Body marketingCollections={data.viewer.marketingCollections} />
   },
   LoadingFallback: BodyPlaceholder,
   ErrorFallback: NoFallback,
