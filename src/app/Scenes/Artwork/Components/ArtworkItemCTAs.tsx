@@ -32,7 +32,9 @@ interface ArtworkItemCTAsProps extends ArtworkActionTrackingProps {
 export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
   artwork: artworkProp,
   showSaveIcon = false,
-  // show follow icon by default, but allow it to be hidden on specific grids
+  /**
+   * Show follow icon by default, but allow it to be hidden on specific grids
+   */
   showFollowIcon = true,
   contextModule,
   contextScreen,
