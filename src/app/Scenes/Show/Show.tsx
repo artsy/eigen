@@ -13,7 +13,6 @@ import React, { useRef, useState } from "react"
 import { Animated } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ShowArtworksWithNavigation as ShowArtworks } from "./Components/ShowArtworks"
-import { ShowArtworksEmptyStateFragmentContainer } from "./Components/ShowArtworksEmptyState"
 import { ShowContextCardFragmentContainer as ShowContextCard } from "./Components/ShowContextCard"
 import { ShowHeaderFragmentContainer as ShowHeader } from "./Components/ShowHeader"
 import { ShowInfoFragmentContainer as ShowInfo } from "./Components/ShowInfo"
@@ -73,17 +72,13 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
 
     {
       key: "artworks",
-      element: Boolean(show.counts?.eligibleArtworks) ? (
-        <ShowArtworks {...artworkProps} />
-      ) : (
-        <ShowArtworksEmptyStateFragmentContainer show={show} mx={2} />
-      ),
+      element: <ShowArtworks {...artworkProps} />,
     },
 
     {
       key: "separator-bottom",
       element: (
-        <Box mx={2}>
+        <Box>
           <Separator />
         </Box>
       ),
@@ -142,9 +137,6 @@ export const ShowFragmentContainer = createFragmentContainer(Show, {
       viewingRoomIDs
       images(default: false) {
         __typename
-      }
-      counts {
-        eligibleArtworks
       }
     }
   `,

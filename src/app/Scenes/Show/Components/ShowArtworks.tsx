@@ -9,7 +9,8 @@ import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilter
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { SHOW2_ARTWORKS_PAGE_SIZE } from "app/Components/constants"
-import React, { useEffect } from "react"
+import { ShowArtworksEmptyStateFragmentContainer } from "app/Scenes/Show/Components/ShowArtworksEmptyState"
+import React, { useEffect, useRef } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 interface Props {
@@ -45,6 +46,7 @@ const ShowArtworks: React.FC<Props> = ({ show, relay, initiallyAppliedFilter }) 
   const { internalID, slug } = show
   const artworks = show.showArtworks
   const artworksTotal = artworks?.counts?.total ?? 0
+  const unfilteredArtworksTotalCount = useRef(artworksTotal)
   const artworkAggregations = (artworks?.aggregations ?? []) as aggregationsType
 
   const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions(
@@ -77,6 +79,12 @@ const ShowArtworks: React.FC<Props> = ({ show, relay, initiallyAppliedFilter }) 
     setFiltersCountAction({ ...counts, total: artworksTotal })
   }, [artworksTotal])
 
+  // No artworks are available for this show
+  if (unfilteredArtworksTotalCount.current === 0) {
+    return <ShowArtworksEmptyStateFragmentContainer show={show} />
+  }
+
+  // No artworks match the applied filters
   if (artworksTotal === 0) {
     return <FilteredArtworkGridZeroState id={internalID} slug={slug} />
   }
@@ -109,6 +117,7 @@ export const ShowArtworksPaginationContainer = createPaginationContainer(
       ) {
         slug
         internalID
+        ...ShowArtworksEmptyState_show
         showArtworks: filterArtworksConnection(
           first: $count
           after: $cursor
@@ -171,6 +180,7 @@ export const ShowArtworksPaginationContainer = createPaginationContainer(
       ) {
         show(id: $id) {
           ...ShowArtworks_show @arguments(count: $count, cursor: $cursor, input: $input)
+          ...ShowArtworksEmptyState_show
         }
       }
     `,
