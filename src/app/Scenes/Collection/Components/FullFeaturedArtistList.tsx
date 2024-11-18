@@ -3,9 +3,10 @@ import { FullFeaturedArtistListQuery } from "__generated__/FullFeaturedArtistLis
 import { FullFeaturedArtistList_collection$data } from "__generated__/FullFeaturedArtistList_collection.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
+import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import React from "react"
+import React, { Fragment } from "react"
 import { FlatList, ViewProps } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
@@ -37,8 +38,16 @@ export class FullFeaturedArtistList extends React.Component<Props> {
   render() {
     const allArtists = this.getFeaturedArtists()
 
+    const enableNewNavigation = unsafe_getFeatureFlag("AREnableNewNavigation")
+
+    const Wrapper = enableNewNavigation
+      ? Fragment
+      : ({ children }: { children: React.ReactNode }) => (
+          <PageWithSimpleHeader title="Featured Artists">{children}</PageWithSimpleHeader>
+        )
+
     return (
-      <PageWithSimpleHeader title="Featured Artists">
+      <Wrapper>
         <FlatList
           contentContainerStyle={{ marginLeft: 20, marginRight: 20, paddingVertical: 20 }}
           data={allArtists}
@@ -55,7 +64,7 @@ export class FullFeaturedArtistList extends React.Component<Props> {
             )
           }}
         />
-      </PageWithSimpleHeader>
+      </Wrapper>
     )
   }
 }
