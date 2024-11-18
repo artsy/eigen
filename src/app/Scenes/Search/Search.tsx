@@ -236,6 +236,6 @@ const tracks = {
   }),
 }
 
-const shouldStartSearching = (value: string) => {
+export const shouldStartSearching = (value: string) => {
   return value.length >= 2
 }
