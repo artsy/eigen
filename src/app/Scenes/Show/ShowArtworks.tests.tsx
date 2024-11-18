@@ -60,7 +60,7 @@ describe("ShowArtworks", () => {
 
     await flushPromiseQueue()
 
-    expect(getByText(/No results found/)).toBeTruthy()
+    expect(getByText(/This show is currently unavailable./)).toBeTruthy()
   })
 })
 
