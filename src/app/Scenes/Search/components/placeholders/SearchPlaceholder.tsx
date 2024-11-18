@@ -1,7 +1,15 @@
-import { Spacer, Flex, Box, Join } from "@artsy/palette-mobile"
+import {
+  Box,
+  Flex,
+  Join,
+  SEARCH_INPUT_CONTAINER_BORDER_RADIUS,
+  SEARCH_INPUT_CONTAINER_HEIGHT,
+  Spacer,
+} from "@artsy/palette-mobile"
 import { CARD_WIDTH } from "app/Components/Home/CardRailCard"
 import { MAX_SHOWN_RECENT_SEARCHES, useRecentSearches } from "app/Scenes/Search/SearchModel"
 import { IMAGE_SIZE } from "app/Scenes/Search/components/SearchResultImage"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
   PlaceholderBox,
   PlaceholderRaggedText,
@@ -110,15 +118,28 @@ const CuratedCollectionsPlaceholder = () => {
 }
 
 export const SearchPlaceholder: React.FC = () => {
+  const enableNewSearchModal = useFeatureFlag("AREnableNewSearchModal")
   return (
     <ProvidePlaceholderContext>
       <Box m={2} mb={0} testID="search-placeholder">
         {/* Search input */}
-        <PlaceholderBox height={50} />
+        {enableNewSearchModal ? (
+          <PlaceholderBox
+            height={SEARCH_INPUT_CONTAINER_HEIGHT}
+            borderRadius={SEARCH_INPUT_CONTAINER_BORDER_RADIUS}
+          />
+        ) : (
+          <PlaceholderBox height={50} />
+        )}
+
         <Spacer y={2} />
 
-        <RecentSearchesPlaceholder />
-        <Spacer y={4} />
+        {!enableNewSearchModal && (
+          <>
+            <RecentSearchesPlaceholder />
+            <Spacer y={4} />
+          </>
+        )}
 
         <TrendingArtistPlaceholder />
         <Spacer y={4} />
