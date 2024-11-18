@@ -273,7 +273,6 @@ export function goBack(backProps?: GoBackProps) {
 
   if (enableNewNavigation) {
     if (internal_navigationRef.current?.isReady()) {
-      console.log("===go back===")
       internal_navigationRef.current.dispatch(StackActions.pop())
     }
     return
