@@ -1,4 +1,4 @@
-import { GlobalSearchInput } from "app/Components/GlobalSearchInput"
+import { GlobalSearchInput } from "app/Components/GlobalSearchInput/GlobalSearchInput"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("GlobalSearchInput", () => {
