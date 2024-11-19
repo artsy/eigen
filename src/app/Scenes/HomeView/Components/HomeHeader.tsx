@@ -1,5 +1,5 @@
 import { ArtsyLogoBlackIcon, Box, Flex } from "@artsy/palette-mobile"
-import { GlobalSearchInput } from "app/Components/GlobalSearchInput"
+import { GlobalSearchInput } from "app/Components/GlobalSearchInput/GlobalSearchInput"
 import { PaymentFailureBanner } from "app/Scenes/HomeView/Components/PaymentFailureBanner"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"

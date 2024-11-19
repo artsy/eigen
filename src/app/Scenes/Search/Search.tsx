@@ -1,10 +1,10 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Spacer, Flex, Box, Screen } from "@artsy/palette-mobile"
+import { Box, Flex, Screen, Spacer } from "@artsy/palette-mobile"
 import { PortalHost } from "@gorhom/portal"
 import { useNavigation } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { SearchQuery, SearchQuery$variables } from "__generated__/SearchQuery.graphql"
-import { GlobalSearchInput } from "app/Components/GlobalSearchInput"
+import { GlobalSearchInput } from "app/Components/GlobalSearchInput/GlobalSearchInput"
 import { SearchInput } from "app/Components/SearchInput"
 import { SearchPills } from "app/Scenes/Search/SearchPills"
 import { useRefetchWhenQueryChanged } from "app/Scenes/Search/useRefetchWhenQueryChanged"
@@ -236,6 +236,6 @@ const tracks = {
   }),
 }
 
-const shouldStartSearching = (value: string) => {
+export const shouldStartSearching = (value: string) => {
   return value.length >= 2
 }
