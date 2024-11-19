@@ -139,7 +139,7 @@ import { ShowMoreInfoQueryRenderer } from "./Scenes/Show/Screens/ShowMoreInfo"
 import { ShowQueryRenderer } from "./Scenes/Show/Show"
 import { TagQueryRenderer } from "./Scenes/Tag/Tag"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
-import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
+import { ViewingRoomQueryRenderer, ViewingRoomScreenQuery } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkScreen } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
 import {
@@ -833,7 +833,7 @@ export const modules = defineModules({
   Tag: reactModule(TagQueryRenderer, { hidesBackButton: true, fullBleed: true }),
   UnlistedArtworksFAQScreen: reactModule(UnlistedArtworksFAQScreen),
   VanityURLEntity: reactModule(VanityURLEntityRenderer, { fullBleed: true }),
-  ViewingRoom: reactModule(ViewingRoomQueryRenderer, { fullBleed: true }),
+  ViewingRoom: reactModule(ViewingRoomQueryRenderer, { fullBleed: true }, [ViewingRoomScreenQuery]),
   ViewingRoomArtwork: reactModule(ViewingRoomArtworkScreen),
   ViewingRoomArtworks: reactModule(ViewingRoomArtworksQueryRenderer),
   ViewingRooms: reactModule(ViewingRoomsListScreen, {}, [viewingRoomsListScreenQuery]),
