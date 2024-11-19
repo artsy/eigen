@@ -156,11 +156,9 @@ describe("AutosuggestResults", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewNavigation: true })
   })
 
-  // TODO: fix this test once echo has been updated in the echo repo
-  // This is currently failing because the echo flag is not yet available in S3
-  // afterEach(() => {
-  //   expect(consoleErrorMock).not.toHaveBeenCalled()
-  // })
+  afterEach(() => {
+    expect(consoleErrorMock).not.toHaveBeenCalled()
+  })
 
   it(`has no elements to begin with`, async () => {
     const tree = renderWithWrappersLEGACY(<TestWrapper query="" />)
