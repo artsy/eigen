@@ -1,4 +1,4 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { TaskTestQuery } from "__generated__/TaskTestQuery.graphql"
 import { Task } from "app/Components/Tasks/Task"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -41,14 +41,14 @@ describe("Task Component", () => {
     expect(screen.getByText("Test Message")).toBeOnTheScreen()
   })
 
-  it("should dismiss when the task is cleared", () => {
+  it("should dismiss when the task is cleared", async () => {
     renderWithRelay({ Task: () => mockTask })
 
     const clearButton = screen.getByText("Clear")
 
     fireEvent.press(clearButton)
 
-    expect(mockClearTask).toHaveBeenCalled()
+    await waitFor(() => expect(mockClearTask).toHaveBeenCalled())
     expect(mockDissmissTask).toHaveBeenCalled()
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedClearTask",
@@ -60,12 +60,12 @@ describe("Task Component", () => {
     })
   })
 
-  it("should acknowledge the task when pressed", () => {
+  it("should acknowledge the task when pressed", async () => {
     renderWithRelay({ Task: () => mockTask })
 
     fireEvent.press(screen.getByText("Test Task"))
 
-    expect(mockAcknowledgeTask).toHaveBeenCalled()
+    await waitFor(() => expect(mockAcknowledgeTask).toHaveBeenCalled())
     expect(mockClearTask).toHaveBeenCalled()
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedTaskGroup",
