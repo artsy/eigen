@@ -1,6 +1,6 @@
 import { Button, Flex, Text } from "@artsy/palette-mobile"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { navigate } from "app/system/navigation/navigate"
+import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { useScreenDimensions } from "app/utils/hooks"
 import { Image } from "react-native"
 
@@ -20,10 +20,13 @@ export const CareerHighlightsPromotionalCard: React.FC = () => {
           mt={4}
           block
           onPress={() => {
-            navigate("my-collection/artworks/new", {
-              passProps: {
-                source: Tab.insights,
-              },
+            dismissModal()
+            requestAnimationFrame(() => {
+              navigate("my-collection/artworks/new", {
+                passProps: {
+                  source: Tab.insights,
+                },
+              })
             })
           }}
         >
