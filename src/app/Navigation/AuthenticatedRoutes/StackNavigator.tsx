@@ -14,6 +14,7 @@ import { isHeaderShown } from "app/Navigation/Utils/isHeaderShown"
 import { isModalScreen } from "app/Navigation/Utils/isModalScreen"
 import { ICON_HEIGHT } from "app/Scenes/BottomTabs/BottomTabsIcon"
 import { goBack } from "app/system/navigation/navigate"
+import { Platform } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
@@ -58,6 +59,7 @@ export const registerScreen: React.FC<StackNavigatorScreenProps> = ({ name, modu
         headerTitle: "",
         headerTitleAlign: "center",
         ...module.options.screenOptions,
+        headerShadowVisible: Platform.OS === "ios",
         headerTitleStyle: {
           fontFamily: THEMES.v3.fonts.sans.regular,
           ...THEMES.v3.textTreatments["sm-display"],
