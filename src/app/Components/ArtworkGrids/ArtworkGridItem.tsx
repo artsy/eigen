@@ -66,6 +66,7 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   hideRegisterBySignal?: boolean
   hideSaleInfo?: boolean
   hideSaveIcon?: boolean
+  hideFollowIcon?: boolean
   /** Pass Tap to override generic ing, used for home tracking in rails */
   itemIndex?: number
   lotLabelTextStyle?: TextProps
@@ -103,6 +104,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   hideRegisterBySignal = false,
   hideSaleInfo = false,
   hideSaveIcon = false,
+  hideFollowIcon = false,
   itemIndex,
   lotLabelTextStyle,
   onPress,
@@ -359,7 +361,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                     numberOfLines={1}
                     {...titleTextStyle}
                   >
-                    <Text lineHeight="18px" variant="xs" weight="regular" italic>
+                    <Text lineHeight="18px" variant="xs" weight="regular">
                       {artwork.title}
                     </Text>
                     {artwork.date ? `, ${artwork.date}` : ""}
@@ -442,6 +444,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
               <ArtworkItemCTAs
                 artwork={artwork}
                 showSaveIcon={!hideSaveIcon}
+                showFollowIcon={!hideFollowIcon}
                 contextModule={contextModule}
                 contextScreen={contextScreen}
                 contextScreenOwnerId={contextScreenOwnerId}

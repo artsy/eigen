@@ -34,6 +34,7 @@ interface MasonryArtworkGridItemProps {
   partnerOffer?: PartnerOffer | null
   priceOfferMessage?: PriceOfferMessage
   hideSaveIcon?: boolean
+  hideFollowIcon?: boolean
   hideSaleInfo?: boolean
 }
 

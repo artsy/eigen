@@ -94,6 +94,14 @@ describe("ArtworkItemCTAs", () => {
       expect(screen.queryByTestId("follow-icon-empty")).not.toBeOnTheScreen()
       expect(screen.queryByTestId("follow-icon-filled")).not.toBeOnTheScreen()
     })
+
+    it("does not render Follow CTA if showFollowIcon is false", () => {
+      renderWithRelay({}, { showFollowIcon: false })
+
+      // do not render Follow CTA
+      expect(screen.queryByTestId("follow-icon-empty")).not.toBeOnTheScreen()
+      expect(screen.queryByTestId("follow-icon-filled")).not.toBeOnTheScreen()
+    })
   })
 
   describe("variant-c", () => {
