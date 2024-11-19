@@ -80,12 +80,12 @@ export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = ({
       <CardRailFlatList<FairItem>
         data={fairs}
         initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
-        prefetchUrlExtractor={(item) => {
-          return item?.href
+        prefetchUrlExtractor={(fair) => {
+          return `/fair/${fair?.slug}`
         }}
         prefetchVariablesExtractor={(item) => {
           return {
-            fairID: item?.internalID,
+            fairID: item?.slug,
           }
         }}
         renderItem={({ item, index }) => {
@@ -130,17 +130,17 @@ const fragment = graphql`
         }
       }
     }
-    ownerType
-
     fairsConnection(first: 10) {
       edges {
         node {
           href
           internalID
+          slug
           ...HomeViewSectionFairsFairItem_fair
         }
       }
     }
+    ownerType
   }
 `
 
