@@ -11,13 +11,13 @@ export const SharedValuesLevel5: React.FC<{}> = () => {
   const translateX = useSharedValue(0)
 
   const handlePress = () => {
-    translateX.value = translateX.value === 0 ? Dimensions.get("window").width - 100 : 0
+    translateX.set((value) => (value === 0 ? Dimensions.get("window").width - 100 : 0))
   }
 
   const animatedStyles = useAnimatedStyle(() => {
     return {
       transform: [
-        { translateX: withTiming(translateX.value, { duration: 1000, easing: Easing.bounce }) },
+        { translateX: withTiming(translateX.get(), { duration: 1000, easing: Easing.bounce }) },
       ],
     }
   })

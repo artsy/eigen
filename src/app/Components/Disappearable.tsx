@@ -22,7 +22,7 @@ export const Disappearable = forwardRef<Disappearable, React.PropsWithChildren<{
 
     const animatedStyles = useAnimatedStyle(() => {
       return {
-        opacity: opacity.value,
+        opacity: opacity.get(),
       }
     })
 
@@ -30,9 +30,11 @@ export const Disappearable = forwardRef<Disappearable, React.PropsWithChildren<{
       ref,
       () => ({
         async disappear() {
-          opacity.value = withTiming(0, { duration: 500 }, () => {
-            runOnJS(setShowContent)(false)
-          })
+          opacity.set(() =>
+            withTiming(0, { duration: 500 }, () => {
+              runOnJS(setShowContent)(false)
+            })
+          )
         },
       }),
       []

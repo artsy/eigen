@@ -6,14 +6,14 @@ export const SharedValuesLevel2: React.FC<{}> = () => {
   const width = useSharedValue(100)
 
   const handlePress = () => {
-    width.value = width.value + 50
+    width.set((value) => value + 50)
   }
 
   return (
     <View style={{ flex: 1, alignItems: "center" }}>
       <Animated.View
         style={{
-          width,
+          width: width.get(),
           height: 100,
           backgroundColor: "violet",
         }}

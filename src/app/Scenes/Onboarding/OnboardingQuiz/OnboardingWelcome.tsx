@@ -61,40 +61,42 @@ const OnboardingWelcome = () => {
   const fadeOutAnimationsArr = [
     useAnimatedStyle(() => {
       "worklet"
-      return { opacity: opacity.value - 1 }
+      return { opacity: opacity.get() - 1 }
     }),
     useAnimatedStyle(() => {
       "worklet"
-      return { opacity: opacity.value - 2 }
+      return { opacity: opacity.get() - 2 }
     }),
     useAnimatedStyle(() => {
       "worklet"
-      return { opacity: opacity.value - 3 }
+      return { opacity: opacity.get() - 3 }
     }),
     useAnimatedStyle(() => {
       "worklet"
-      return { opacity: opacity.value - 4 }
+      return { opacity: opacity.get() - 4 }
     }),
     useAnimatedStyle(() => {
       "worklet"
-      return { opacity: opacity.value - 5 }
+      return { opacity: opacity.get() - 5 }
     }),
     useAnimatedStyle(() => {
       "worklet"
-      return { opacity: opacity.value - 6 }
+      return { opacity: opacity.get() - 6 }
     }),
   ]
 
   useEffect(() => {
-    opacity.value = withDelay(
-      FIRST_WELCOME_SCREEN_DELAY,
-      withSequence(
-        withTiming(2, { duration: IMG_DISPLAY_DURATION, easing: Easing.linear }),
-        withTiming(3, { duration: IMG_DISPLAY_DURATION, easing: Easing.linear }),
-        withTiming(4, { duration: IMG_DISPLAY_DURATION, easing: Easing.linear }),
-        withTiming(5, { duration: IMG_DISPLAY_DURATION, easing: Easing.linear }),
-        withTiming(6, { duration: IMG_DISPLAY_DURATION, easing: Easing.linear }),
-        withTiming(7, { duration: LAST_IMG_DISPLAY_DURATION, easing: Easing.linear })
+    opacity.set(() =>
+      withDelay(
+        FIRST_WELCOME_SCREEN_DELAY,
+        withSequence(
+          withTiming(2, { duration: IMG_DISPLAY_DURATION, easing: Easing.linear }),
+          withTiming(3, { duration: IMG_DISPLAY_DURATION, easing: Easing.linear }),
+          withTiming(4, { duration: IMG_DISPLAY_DURATION, easing: Easing.linear }),
+          withTiming(5, { duration: IMG_DISPLAY_DURATION, easing: Easing.linear }),
+          withTiming(6, { duration: IMG_DISPLAY_DURATION, easing: Easing.linear }),
+          withTiming(7, { duration: LAST_IMG_DISPLAY_DURATION, easing: Easing.linear })
+        )
       )
     )
   }, [])
