@@ -13,10 +13,6 @@ const DEFAULT_QUERIES_PER_INTERVAL = 60
 let limiter: RateLimiter
 
 export const usePrefetch = () => {
-  if (__TEST__) {
-    return () => null
-  }
-
   return prefetchRoute
 }
 
