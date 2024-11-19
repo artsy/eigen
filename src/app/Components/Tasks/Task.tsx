@@ -28,13 +28,13 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
 
     const task = useFragment(taskFragment, restProps.task)
 
-    const handlePressTask = () => {
+    const handlePressTask = async () => {
       if (onPress) {
         onPress()
         return
       }
 
-      acknowledgeTask({ variables: { taskID: task.internalID } })
+      await acknowledgeTask({ variables: { taskID: task.internalID } })
       tappedTaskGroup(ContextModule.actNow, task.actionLink, task.internalID, task.taskType)
       onClearTask()
 
@@ -42,7 +42,7 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
     }
 
     const handleClearTask = async () => {
-      dismissTask({ variables: { taskID: task.internalID } })
+      await dismissTask({ variables: { taskID: task.internalID } })
       tappedClearTask(ContextModule.actNow, task.actionLink, task.internalID, task.taskType)
       onClearTask()
     }

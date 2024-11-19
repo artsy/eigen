@@ -28,7 +28,7 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
   ...flexProps
 }) => {
   const swipeableRef = useRef<SwipeableMethods>(null)
-  const [displayTask, setDisplayTask] = useState(true)
+  const [displayTask, setDisplayTask] = useState(false)
   const section = useFragment(tasksFragment, sectionProp)
   const tasks = extractNodes(section.tasksConnection)
   const isFocused = useIsFocused()
@@ -63,6 +63,10 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
       })
     }
   }, [shouldStartOnboardingAnimation])
+
+  useEffect(() => {
+    setDisplayTask(!!task)
+  }, [task])
 
   if (!task) {
     return null
@@ -148,10 +152,16 @@ const homeViewSectionTasksQuery = graphql`
 `
 
 export const HomeViewSectionTasksQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
-  Component: ({ sectionID, index, ...flexProps }) => {
-    const data = useLazyLoadQuery<HomeViewSectionTasksQuery>(homeViewSectionTasksQuery, {
-      id: sectionID,
-    })
+  Component: ({ sectionID, index, refetchKey, ...flexProps }) => {
+    const data = useLazyLoadQuery<HomeViewSectionTasksQuery>(
+      homeViewSectionTasksQuery,
+      { id: sectionID },
+      {
+        fetchKey: refetchKey,
+        fetchPolicy: "store-and-network",
+        networkCacheConfig: { force: true },
+      }
+    )
 
     if (!data.homeView.section) {
       return null

@@ -24,11 +24,13 @@ import { CleanRelayFragment } from "app/utils/relayHelpers"
 export interface SectionProps extends FlexProps {
   section: CleanRelayFragment<HomeViewSectionGeneric_section$data>
   index: number
+  refetchKey?: number
 }
 
 export interface SectionSharedProps extends FlexProps {
   index: number
   sectionID: string
+  refetchKey?: number
 }
 
 export const Section: React.FC<SectionProps> = ({ section, ...rest }) => {
