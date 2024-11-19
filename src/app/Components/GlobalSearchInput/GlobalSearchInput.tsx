@@ -22,6 +22,7 @@ export const GlobalSearchInput: React.FC<{}> = () => {
           )
           setIsVisible(true)
         }}
+        testID="search-button"
       >
         {/* In order to make the search input behave like a button here, we wrapped it with a
          Touchable and set pointerEvents to none. This will prevent the input from receiving
