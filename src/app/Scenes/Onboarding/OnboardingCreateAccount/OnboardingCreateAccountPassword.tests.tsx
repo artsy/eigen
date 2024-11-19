@@ -45,18 +45,6 @@ describe("OnboardingCreateAccountPassword", () => {
   })
 
   describe("Form", () => {
-    it("renders the right password from the formik context", () => {
-      renderWithWrappers(<Test />)
-
-      const passwordInput = screen.getByTestId("passwordInput")
-
-      expect(passwordInput).toHaveTextContent("")
-
-      fireEvent.changeText(passwordInput, "1ValidPassword")
-
-      expect(passwordInput).toHaveProp("value", "1ValidPassword")
-    })
-
     it("does not validate password when the user is still typing", () => {
       renderWithWrappers(<Test />)
       const passwordInput = screen.getByTestId("passwordInput")

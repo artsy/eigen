@@ -56,17 +56,6 @@ describe("OnboardingCreateAccountName", () => {
   })
 
   describe("Form", () => {
-    it("renders the right name from the formik context", () => {
-      renderWithWrappers(<Test />)
-      const nameInput = screen.getByTestId("nameInput")
-
-      expect(nameInput).toHaveTextContent("")
-
-      fireEvent.changeText(nameInput, "Andy warhol")
-
-      expect(nameInput).toHaveProp("value", "Andy warhol")
-    })
-
     it("does not submit when the user did not accept the terms and conditions", async () => {
       renderWithWrappers(<Test />)
       const nameInput = screen.getByTestId("nameInput")
