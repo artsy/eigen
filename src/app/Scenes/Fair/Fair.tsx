@@ -1,12 +1,12 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import {
   Flex,
-  Tabs,
+  ShareIcon,
   Skeleton,
   SkeletonBox,
-  useScreenDimensions,
   SkeletonText,
-  ShareIcon,
+  Tabs,
+  useScreenDimensions,
 } from "@artsy/palette-mobile"
 import { FairQuery } from "__generated__/FairQuery.graphql"
 import { Fair_fair$data, Fair_fair$key } from "__generated__/Fair_fair.graphql"
@@ -141,7 +141,7 @@ const fragment = graphql`
   }
 `
 
-const query = graphql`
+export const FairScreenQuery = graphql`
   query FairQuery($fairID: String!) @cacheable {
     fair(id: $fairID) @principalField {
       ...Fair_fair
@@ -155,7 +155,7 @@ interface FairQueryRendererProps {
 
 const FairQueryRenderer: React.FC<FairQueryRendererProps> = ({ fairID }) => {
   const data = useLazyLoadQuery<FairQuery>(
-    query,
+    FairScreenQuery,
     { fairID },
     {
       networkCacheConfig: {
