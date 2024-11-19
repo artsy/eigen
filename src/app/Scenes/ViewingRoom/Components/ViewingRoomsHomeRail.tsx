@@ -103,7 +103,7 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({
         initialNumToRender={isTablet() ? 10 : 5}
         keyExtractor={(item) => `${item.internalID}`}
         prefetchUrlExtractor={(viewingRoom) => `/viewing-room/${viewingRoom?.slug}`}
-        prefetchVariablesExtractor={(viewingRoom) => ({ viewingRoomID: viewingRoom?.internalID })}
+        prefetchVariablesExtractor={(viewingRoom) => ({ viewingRoomID: viewingRoom?.slug })}
         renderItem={({ item, index }) => {
           const tag = tagForStatus(item.status, item.distanceToOpen, item.distanceToClose)
           return (

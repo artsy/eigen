@@ -36,33 +36,6 @@ export enum ViewingRoomStatus {
   CLOSED = "closed",
 }
 
-export const ClosedNotice: React.FC<{ status: string; partnerHref?: string | null }> = ({
-  status,
-  partnerHref,
-}) => {
-  let finalText = ""
-  if (status === ViewingRoomStatus.CLOSED) {
-    finalText =
-      "This viewing room is now closed. We invite you to view this gallery’s current works."
-  } else if (status === ViewingRoomStatus.SCHEDULED) {
-    finalText =
-      "This viewing room is not yet open. We invite you to view this gallery’s current works."
-  }
-
-  return (
-    <Flex alignItems="center">
-      <Text variant="sm" mt={4} mx={4} textAlign="center">
-        {finalText}
-      </Text>
-      {!!partnerHref && (
-        <Button variant="fillGray" onPress={() => navigate(partnerHref)} mt={2}>
-          Visit gallery
-        </Button>
-      )}
-    </Flex>
-  )
-}
-
 export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
   const viewingRoom = props.viewingRoom
   const [displayViewWorksButton, setDisplayViewWorksButton] = useState(false)
@@ -202,6 +175,33 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
         <ViewingRoomViewWorksButtonContainer isVisible={displayViewWorksButton} {...props} />
       </View>
     </ProvideScreenTracking>
+  )
+}
+
+export const ClosedNotice: React.FC<{ status: string; partnerHref?: string | null }> = ({
+  status,
+  partnerHref,
+}) => {
+  let finalText = ""
+  if (status === ViewingRoomStatus.CLOSED) {
+    finalText =
+      "This viewing room is now closed. We invite you to view this gallery’s current works."
+  } else if (status === ViewingRoomStatus.SCHEDULED) {
+    finalText =
+      "This viewing room is not yet open. We invite you to view this gallery’s current works."
+  }
+
+  return (
+    <Flex alignItems="center">
+      <Text variant="sm" mt={4} mx={4} textAlign="center">
+        {finalText}
+      </Text>
+      {!!partnerHref && (
+        <Button variant="fillGray" onPress={() => navigate(partnerHref)} mt={2}>
+          Visit gallery
+        </Button>
+      )}
+    </Flex>
   )
 }
 
