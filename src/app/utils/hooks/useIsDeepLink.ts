@@ -3,8 +3,11 @@ import { useEffect, useState } from "react"
 import { Linking } from "react-native"
 
 /**
- * This is a hook that returns whether the user came from a deep link or not
+ * This is a hook that returns whether or not the user came from a deep link
+ * (defined as a direct navigation to a route other than "/").
+ *
  * This can be used to avoid rendering content in previous screens in react-navigation history
+ *
  * @returns {isDeepLink: boolean | null} isDeepLink is true if the user came from a deep link
  */
 export const useIsDeepLink = () => {
@@ -23,7 +26,14 @@ export const useIsDeepLink = () => {
   useEffect(() => {
     Linking.getInitialURL()
       .then((url) => {
-        const isDeepLink = !!url
+        if (!url) {
+          setIsDeepLink(false)
+          return
+        }
+
+        const targetURL = url.replace("artsy://", "")
+        const isDeepLink = targetURL !== "/"
+
         if (!isDeepLink) {
           setIsDeepLink(false)
         } else {

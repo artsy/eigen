@@ -20,7 +20,7 @@ describe("useIsDeepLink", () => {
 
   it("should return true if opened from a deep link", async () => {
     // Setup the mock to return the specific URL
-    mockLinkingGetInitialURL.mockResolvedValue("artst.net/foo/bar")
+    mockLinkingGetInitialURL.mockResolvedValue("artsy:///foo/bar")
     mockUseIsFocusedMock.mockReturnValue(true)
 
     // Render the hook under test
@@ -39,6 +39,22 @@ describe("useIsDeepLink", () => {
   it("should return false if not opened from a deep link", async () => {
     // Setup the mock to return null
     mockLinkingGetInitialURL.mockResolvedValue(null)
+    mockUseIsFocusedMock.mockReturnValue(true)
+
+    // Render the hook under test
+    const { result, waitForNextUpdate } = renderHook(() => useIsDeepLink())
+
+    // Wait for async effects to resolve
+    await waitForNextUpdate()
+
+    expect(result.current.isDeepLink).toEqual(false)
+    expect(mockUseIsFocusedMock).toHaveBeenCalled()
+    expect(mockLinkingGetInitialURL).toHaveBeenCalled()
+  })
+
+  it("should return false if opened from a link to /", async () => {
+    // Setup the mock to return null
+    mockLinkingGetInitialURL.mockResolvedValue("artsy:///")
     mockUseIsFocusedMock.mockReturnValue(true)
 
     // Render the hook under test
