@@ -272,17 +272,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableMarketingCollectionsCategories",
   },
-  ARPreferLegacyHomeScreen: {
-    description: "Prefer legacy home screen",
-    readyForRelease: false,
-    showInDevMenu: true,
-  },
-  AREnableDynamicHomeView: {
-    description: "Enable new home screen",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableDynamicHomeView",
-  },
   AREnableHomeViewTasksSection: {
     description: "Enable the Home view tasks section",
     readyForRelease: true,
