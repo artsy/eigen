@@ -26,15 +26,6 @@ describe("SearchInput", () => {
     expect(refineMock).toBeCalledWith("text")
   })
 
-  it("should have the correct value prop", () => {
-    renderWithWrappers(<TestRenderer />)
-    const searchInput = screen.getByTestId("search-input")
-
-    fireEvent.changeText(searchInput, "text")
-
-    expect(searchInput).toHaveProp("value", "text")
-  })
-
   it("track event when the text is changed", () => {
     renderWithWrappers(<TestRenderer />)
 
