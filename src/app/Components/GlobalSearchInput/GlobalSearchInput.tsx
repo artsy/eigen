@@ -1,15 +1,25 @@
+import { ActionType, ContextModule } from "@artsy/cohesion"
 import { Flex, RoundSearchInput, Touchable } from "@artsy/palette-mobile"
 import { GlobalSearchInputOverlay } from "app/Components/GlobalSearchInput/GlobalSearchInputOverlay"
 import { SEARCH_INPUT_PLACEHOLDER } from "app/Scenes/Search/Search"
+import { useSelectedTab } from "app/utils/hooks/useSelectedTab"
 import { Fragment, useState } from "react"
+import { useTracking } from "react-tracking"
 
 export const GlobalSearchInput: React.FC<{}> = () => {
   const [isVisible, setIsVisible] = useState(false)
+  const tracking = useTracking()
+  const selectedTab = useSelectedTab()
 
   return (
     <Fragment>
       <Touchable
         onPress={() => {
+          tracking.trackEvent(
+            tracks.tappedGlobalSearchBar({
+              contextModule: selectedTab as ContextModule,
+            })
+          )
           setIsVisible(true)
         }}
       >
@@ -31,4 +41,11 @@ export const GlobalSearchInput: React.FC<{}> = () => {
       <GlobalSearchInputOverlay visible={isVisible} hideModal={() => setIsVisible(false)} />
     </Fragment>
   )
+}
+
+const tracks = {
+  tappedGlobalSearchBar: ({ contextModule }: { contextModule: ContextModule }) => ({
+    action: ActionType.tappedGlobalSearchBar,
+    context_module: contextModule,
+  }),
 }
