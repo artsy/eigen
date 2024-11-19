@@ -57,9 +57,7 @@ export function PrefetchFlashList<ItemType>({
         }
 
         addViewedUrl(url)
-        prefetchUrl(url, variables, {
-          force: false,
-        })
+        prefetchUrl(url, variables)
       })
     },
     []
