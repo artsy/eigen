@@ -344,3 +344,13 @@ https://github.com/software-mansion/react-native-gesture-handler/pull/3149
 #### Explanation/Context:
 
 We want to be able to open the swipeable view using the `openRight` function, but it doesn't seem to be working as expected. This patch is a workaround to make it work.
+
+## react-native-collapsible-tab-view patch
+
+#### When we can remove this:
+
+After updates to both/either react native react-native-collapsible-tab-view. Remove the patch, reinstall deps and run the app on Android and check if affected components like My Collection render correctly. If they do you can remove the patch.
+
+#### Explanation/Context:
+
+After upgrading to react native 0.75 screens like my collection using this library stopped rendering on Android. This was fixed with a patch that added some style changes to the components from the package.
