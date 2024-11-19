@@ -98,15 +98,7 @@ export const GlobalSearchInputOverlay: React.FC<{ visible: boolean; hideModal: (
     <FadeIn style={{ flex: 1 }} slide={false}>
       <Portal hostName="SearchOverlay">
         <Flex style={{ ...StyleSheet.absoluteFillObject }}>
-          <Flex
-            style={{
-              flex: 1,
-              backgroundColor: "white",
-              top: insets.top,
-              right: insets.right,
-              left: insets.left,
-            }}
-          >
+          <Flex flex={1} backgroundColor="white100" style={{ ...insets }}>
             <Flex px={2} pt={2}>
               <RoundSearchInput
                 placeholder={SEARCH_INPUT_PLACEHOLDER}
