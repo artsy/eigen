@@ -1,4 +1,4 @@
-import { Flex, Box, ClassTheme, Text } from "@artsy/palette-mobile"
+import { Box, ClassTheme, Flex, Text } from "@artsy/palette-mobile"
 import MapboxGL from "@rnmapbox/maps"
 import { themeGet } from "@styled-system/theme-get"
 import { GlobalMap_viewer$data } from "__generated__/GlobalMap_viewer.graphql"
@@ -549,7 +549,13 @@ export class GlobalMap extends React.Component<Props, State> {
               resizeMode="cover"
               style={{ ...this.backgroundImageSize }}
             />
-            <TopButtonsContainer style={{ top: this.props.safeAreaInsets.top + 12 }}>
+
+            {/* We do this gymnastics to get accurately the top inset
+              We are injecting two extra margins that on the native side that we need to deduct
+              https://github.com/artsy/eigen/blob/054ef4fea23bf401a53fc3f44bebb30933ca80f2/ios/Artsy/Emission/ViewControllers/ARMapContainerViewController.m#L119
+              https://github.com/artsy/eigen/blob/054ef4fea23bf401a53fc3f44bebb30933ca80f2/ios/Artsy/View_Controllers/Util/ARNavigationController.m#L212
+             */}
+            <TopButtonsContainer style={{ top: this.props.safeAreaInsets.top - 12 - 10 }}>
               <Animated.View
                 style={{
                   transform: [
