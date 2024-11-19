@@ -333,7 +333,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
               mt={1}
               style={artworkMetaStyle}
             >
-              <Flex flex={1}>
+              <Flex>
                 {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
                   <>
                     <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
