@@ -1,3 +1,4 @@
+import { tappedTabBar } from "@artsy/cohesion"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { AppModule, modules } from "app/AppRegistry"
@@ -7,10 +8,13 @@ import { ProfileTab } from "app/Navigation/AuthenticatedRoutes/ProfileTab"
 import { SearchTab } from "app/Navigation/AuthenticatedRoutes/SearchTab"
 import { SellTab } from "app/Navigation/AuthenticatedRoutes/SellTab"
 import { registerSharedModalRoutes } from "app/Navigation/AuthenticatedRoutes/SharedRoutes"
+import { BottomTabOption, BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { BottomTabsButton } from "app/Scenes/BottomTabs/BottomTabsButton"
+import { bottomTabsConfig } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { OnboardingQuiz } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingQuiz"
 import { GlobalStore } from "app/store/GlobalStore"
 import { internal_navigationRef } from "app/system/navigation/navigate"
+import { postEventToProviders } from "app/utils/track/providers"
 import { Platform } from "react-native"
 
 if (Platform.OS === "ios") {
@@ -55,6 +59,21 @@ const AppTabs: React.FC = () => {
             return <BottomTabsButton tab={route.name} onPress={props.onPress} />
           },
         }
+      }}
+      screenListeners={{
+        tabPress: (e) => {
+          // the tab name is saved in e.target postfixed with random string like sell-Nw_wCNTWwOg95v
+          const tabName = Object.keys(bottomTabsConfig).find((tab) => e.target?.startsWith(tab))
+
+          if (tabName) {
+            postEventToProviders(
+              tappedTabBar({
+                tab: bottomTabsConfig[tabName as BottomTabType].analyticsDescription,
+                contextScreenOwnerType: BottomTabOption[tabName as BottomTabType],
+              })
+            )
+          }
+        },
       }}
     >
       <Tab.Screen name="home" component={HomeTab} />

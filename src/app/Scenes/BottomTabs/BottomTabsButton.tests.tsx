@@ -19,55 +19,62 @@ const TestWrapper: React.FC<React.ComponentProps<typeof BottomTabsButton>> = (pr
 }
 
 describe(BottomTabsButton, () => {
-  it(`updates the selected tab state on press`, async () => {
-    const tree = renderWithWrappersLEGACY(<TestWrapper tab="search" />)
-    expect(__globalStoreTestUtils__?.getCurrentState().bottomTabs.sessionState.selectedTab).toBe(
-      "home"
-    )
-    tree.root.findByType(Touchable).props.onPress()
-    await flushPromiseQueue()
-    expect(switchTab).toHaveBeenCalledWith("search")
-  })
-
-  it(`dispatches an analytics action on press`, async () => {
-    const tree = renderWithWrappersLEGACY(<TestWrapper tab="sell" />)
-    expect(mockTrackEvent).not.toHaveBeenCalled()
-    tree.root.findByType(Touchable).props.onPress()
-    await flushPromiseQueue()
-    expect(switchTab).toHaveBeenCalledWith("sell")
-    expect(mockTrackEvent).toHaveBeenCalledWith({
-      action: "tappedTabBar",
-      badge: false,
-      context_module: "tabBar",
-      context_screen_owner_type: "home",
-      tab: "sell",
+  describe("when AREnableNewNavigation is false", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        AREnableNewNavigation: false,
+      })
     })
-  })
+    it(`updates the selected tab state on press`, async () => {
+      const tree = renderWithWrappersLEGACY(<TestWrapper tab="search" />)
+      expect(__globalStoreTestUtils__?.getCurrentState().bottomTabs.sessionState.selectedTab).toBe(
+        "home"
+      )
+      tree.root.findByType(Touchable).props.onPress()
+      await flushPromiseQueue()
+      expect(switchTab).toHaveBeenCalledWith("search")
+    })
 
-  describe(`badge`, () => {
-    it(`doesn't show anything when the number is 0`, async () => {
+    it(`dispatches an analytics action on press`, async () => {
       const tree = renderWithWrappersLEGACY(<TestWrapper tab="sell" />)
-      expect(extractText(tree.root)).toBe("Sell")
-      tree.update(<TestWrapper tab="sell" badgeCount={0} />)
-      expect(extractText(tree.root)).toBe("Sell")
+      expect(mockTrackEvent).not.toHaveBeenCalled()
+      tree.root.findByType(Touchable).props.onPress()
+      await flushPromiseQueue()
+      expect(switchTab).toHaveBeenCalledWith("sell")
+      expect(mockTrackEvent).toHaveBeenCalledWith({
+        action: "tappedTabBar",
+        badge: false,
+        context_module: "tabBar",
+        context_screen_owner_type: "home",
+        tab: "sell",
+      })
     })
-    it(`shows the number when the number is bigger than 0`, async () => {
-      const tree = renderWithWrappersLEGACY(<TestWrapper tab="sell" badgeCount={1} />)
-      expect(extractText(tree.root)).toBe("Sell1")
-      tree.update(<TestWrapper tab="sell" badgeCount={5} />)
-      expect(extractText(tree.root)).toBe("Sell5")
-      tree.update(<TestWrapper tab="sell" badgeCount={52} />)
-      expect(extractText(tree.root)).toBe("Sell52")
-    })
-    it(`tops out at 99`, async () => {
-      const tree = renderWithWrappersLEGACY(<TestWrapper tab="sell" badgeCount={1} />)
-      expect(extractText(tree.root)).toBe("Sell1")
-      tree.update(<TestWrapper tab="sell" badgeCount={99} />)
-      expect(extractText(tree.root)).toBe("Sell99")
-      tree.update(<TestWrapper tab="sell" badgeCount={100} />)
-      expect(extractText(tree.root)).toBe("Sell99+")
-      tree.update(<TestWrapper tab="sell" badgeCount={2343} />)
-      expect(extractText(tree.root)).toBe("Sell99+")
+
+    describe(`badge`, () => {
+      it(`doesn't show anything when the number is 0`, async () => {
+        const tree = renderWithWrappersLEGACY(<TestWrapper tab="sell" />)
+        expect(extractText(tree.root)).toBe("Sell")
+        tree.update(<TestWrapper tab="sell" badgeCount={0} />)
+        expect(extractText(tree.root)).toBe("Sell")
+      })
+      it(`shows the number when the number is bigger than 0`, async () => {
+        const tree = renderWithWrappersLEGACY(<TestWrapper tab="sell" badgeCount={1} />)
+        expect(extractText(tree.root)).toBe("Sell1")
+        tree.update(<TestWrapper tab="sell" badgeCount={5} />)
+        expect(extractText(tree.root)).toBe("Sell5")
+        tree.update(<TestWrapper tab="sell" badgeCount={52} />)
+        expect(extractText(tree.root)).toBe("Sell52")
+      })
+      it(`tops out at 99`, async () => {
+        const tree = renderWithWrappersLEGACY(<TestWrapper tab="sell" badgeCount={1} />)
+        expect(extractText(tree.root)).toBe("Sell1")
+        tree.update(<TestWrapper tab="sell" badgeCount={99} />)
+        expect(extractText(tree.root)).toBe("Sell99")
+        tree.update(<TestWrapper tab="sell" badgeCount={100} />)
+        expect(extractText(tree.root)).toBe("Sell99+")
+        tree.update(<TestWrapper tab="sell" badgeCount={2343} />)
+        expect(extractText(tree.root)).toBe("Sell99+")
+      })
     })
   })
 })

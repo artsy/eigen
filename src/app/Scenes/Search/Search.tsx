@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Spacer, Flex, Box, Screen } from "@artsy/palette-mobile"
+import { Box, Flex, Screen, Spacer } from "@artsy/palette-mobile"
 import { PortalHost } from "@gorhom/portal"
 import { useNavigation } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
