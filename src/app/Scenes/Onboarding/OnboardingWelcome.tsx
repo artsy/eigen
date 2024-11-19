@@ -43,7 +43,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
   const translateX = useSharedValue(0)
   const slideAnim = useAnimatedStyle(() => {
     "worklet"
-    return { transform: [{ translateX: translateX.value }] }
+    return { transform: [{ translateX: translateX.get() }] }
   })
   useEffect(() => {
     // We want to animate the background only when the device width is smaller than the scaled image width
@@ -53,9 +53,11 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
     if (screenWidth < imgWidth) {
       const rightMarginFirstStop = 120
       const rightMarginSecondStop = 320
-      translateX.value = withSequence(
-        withTiming(-(imgWidth - screenWidth - rightMarginFirstStop), { duration: 40000 }),
-        withTiming(-(imgWidth - screenWidth - rightMarginSecondStop), { duration: 10000 })
+      translateX.set(() =>
+        withSequence(
+          withTiming(-(imgWidth - screenWidth - rightMarginFirstStop), { duration: 40000 }),
+          withTiming(-(imgWidth - screenWidth - rightMarginSecondStop), { duration: 10000 })
+        )
       )
     }
   }, [])

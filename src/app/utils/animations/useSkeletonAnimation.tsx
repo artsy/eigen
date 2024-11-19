@@ -19,13 +19,13 @@ export function useSkeletonAnimation({
   const shared = useSharedValue(0)
 
   useEffect(() => {
-    shared.value = withRepeat(withTiming(1, { duration: speed }), Infinity, true)
+    shared.set(() => withRepeat(withTiming(1, { duration: speed }), Infinity, true))
   }, [])
 
   const animatedStyle = useAnimatedStyle(() => {
     "worklet"
     return {
-      opacity: interpolate(shared.value, [0, 1], [targetOpacityValue, 1]),
+      opacity: interpolate(shared.get(), [0, 1], [targetOpacityValue, 1]),
     }
   })
 

@@ -6,7 +6,7 @@ export const SharedValuesLevel1: React.FC<{}> = () => {
   return (
     <Animated.View
       style={{
-        width,
+        width: width.get(),
         height: 100,
         backgroundColor: "violet",
       }}

@@ -16,12 +16,12 @@ export const AnimatableHeaderProvider = ({ children }: { children: React.ReactNo
   const headerHeight = space(6)
 
   const onScrollForAnimation = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    scrollOffsetY.value = event.nativeEvent.contentOffset.y
+    scrollOffsetY.set(() => event.nativeEvent.contentOffset.y)
 
     if (largeTitleHeight === -1) {
       setTitleShown(false)
     } else {
-      if (scrollOffsetY.value >= largeTitleEndEdge) {
+      if (scrollOffsetY.get() >= largeTitleEndEdge) {
         setTitleShown(true)
       } else {
         setTitleShown(false)

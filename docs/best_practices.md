@@ -290,12 +290,12 @@ const Image = () => {
 
    const onLoadEnd = () => {
      "worklet"
-     loading.value = false
+     loading.set(() => false)
    }
 
   const animatedStyles = useAnimatedStyle(() => {
     return {
-      opacity: withTiming(loading.value ? 1 : 0, { duration: 200, easing: Easing.sin }),
+      opacity: withTiming(loading.get() ? 1 : 0, { duration: 200, easing: Easing.sin }),
     }
 
   return (

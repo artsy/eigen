@@ -60,13 +60,13 @@ export const Swipeable = forwardRef<SwipeableMethods, SwipeableComponentProps>((
       "worklet"
 
       const style = {
-        width: progress.value >= 1 ? -dragX.value - 10 : undefined,
+        width: progress.get() >= 1 ? -dragX.get() - 10 : undefined,
       }
 
       // Don't do anything if the action is disabled, if the user has already swiped, or if the width is not yet set (on first render)
-      if (!actionOnSwipe || hasSwiped.current || !width.value) return style
+      if (!actionOnSwipe || hasSwiped.current || !width.get()) return style
 
-      if (width.value + dragX.value * FRICTION <= SWIPE_TO_INTERACT_THRESHOLD) {
+      if (width.get() + dragX.get() * FRICTION <= SWIPE_TO_INTERACT_THRESHOLD) {
         runOnJS(handleSwipeToInteract)()
       }
 
@@ -104,7 +104,7 @@ export const Swipeable = forwardRef<SwipeableMethods, SwipeableComponentProps>((
   return (
     <Flex
       onLayout={(event) => {
-        width.value = event.nativeEvent.layout.width
+        width.set(() => event.nativeEvent.layout.width)
       }}
     >
       <ReanimatedSwipeable
