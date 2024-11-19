@@ -50,7 +50,7 @@ describe("HomeViewSectionTasks", () => {
   })
 
   it("navigates and tracks when tapping a task", async () => {
-    renderWithRelay({
+    const { mockResolveLastOperation } = renderWithRelay({
       HomeViewSectionTasks: () => ({
         internalID: "home-view-section-recommended-tasks",
         component: {
@@ -61,6 +61,11 @@ describe("HomeViewSectionTasks", () => {
     })
 
     fireEvent.press(screen.getByText("Task 1"))
+
+    await waitFor(() => {
+      // mock reslove the mutation
+      mockResolveLastOperation({})
+    })
 
     expect(navigate).toHaveBeenCalledWith("/test-link")
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
@@ -79,7 +84,7 @@ describe("HomeViewSectionTasks", () => {
   })
 
   it("clears and tracks when clearing a dask", async () => {
-    renderWithRelay({
+    const { mockResolveLastOperation } = renderWithRelay({
       HomeViewSectionTasks: () => ({
         internalID: "home-view-section-recommended-tasks",
         component: {
@@ -90,6 +95,11 @@ describe("HomeViewSectionTasks", () => {
     })
 
     fireEvent.press(screen.getByText("Clear"))
+
+    await waitFor(() => {
+      // mock reslove the mutation
+      mockResolveLastOperation({})
+    })
 
     await waitFor(() => {
       expect(screen.queryByText("Task 1")).not.toBeOnTheScreen()

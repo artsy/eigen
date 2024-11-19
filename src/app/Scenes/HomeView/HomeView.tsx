@@ -69,6 +69,7 @@ export const HomeView: React.FC = () => {
   >(sectionsFragment, queryData.viewer)
 
   const [savedArtworksCount, setSavedArtworksCount] = useState(0)
+  const [refetchKey, setRefetchKey] = useState(0)
 
   useDismissSavedArtwork(savedArtworksCount > 0)
   useEnableProgressiveOnboarding()
@@ -134,6 +135,7 @@ export const HomeView: React.FC = () => {
     }).subscribe({
       complete: () => {
         setIsRefreshing(false)
+        setRefetchKey((prev) => prev + 1)
       },
       error: (error: Error) => {
         setIsRefreshing(false)
@@ -161,7 +163,7 @@ export const HomeView: React.FC = () => {
           data={sections}
           keyExtractor={(item) => item.internalID}
           renderItem={({ item, index }) => {
-            return <Section section={item} my={2} index={index} />
+            return <Section section={item} my={2} index={index} refetchKey={refetchKey} />
           }}
           onEndReached={() => loadNext(NUMBER_OF_SECTIONS_TO_LOAD)}
           ListHeaderComponent={HomeHeader}
