@@ -14,7 +14,9 @@ describe("MyCollectionAddCollectedArtists", () => {
   it("renders MyCollectionAddCollectedArtists", async () => {
     renderWithRelay()
 
-    expect(screen.getByText("Add Artists You Collect")).toBeOnTheScreen()
+    await flushPromiseQueue()
+
+    expect(screen.getByPlaceholderText("Search for artists on Artsy")).toBeOnTheScreen()
   })
 
   it("adds collected artists by creating user interests", async () => {

@@ -291,8 +291,9 @@ export const features = {
   },
   AREnableNewNavigation: {
     description: "Enable new navigation infra (Requires App Restart!)",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableNewNavigation",
   },
   AREnableNewSaveAndFollowOnArtworkCard: {
     description: "Redesign Save CTA and Add Follow CTA on Artwork Grid/Rail",

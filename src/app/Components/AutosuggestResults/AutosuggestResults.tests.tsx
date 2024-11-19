@@ -4,6 +4,7 @@ import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import Spinner from "app/Components/Spinner"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
 import { AutosuggestSearchResult } from "app/Scenes/Search/components/AutosuggestSearchResult"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { CatchErrors } from "app/utils/CatchErrors"
 import { extractText } from "app/utils/tests/extractText"
@@ -152,6 +153,7 @@ describe("AutosuggestResults", () => {
     consoleErrorMock.mockClear()
     notifyRecentSearchMock.mockClear()
     inputBlurMock.mockClear()
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewNavigation: true })
   })
 
   afterEach(() => {
