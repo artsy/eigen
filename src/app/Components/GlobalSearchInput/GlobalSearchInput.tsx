@@ -2,7 +2,6 @@ import { ActionType, ContextModule } from "@artsy/cohesion"
 import { Flex, RoundSearchInput, Touchable } from "@artsy/palette-mobile"
 import { GlobalSearchInputOverlay } from "app/Components/GlobalSearchInput/GlobalSearchInputOverlay"
 import { ICON_HIT_SLOP } from "app/Components/constants"
-import { SEARCH_INPUT_PLACEHOLDER } from "app/Scenes/Search/Search"
 import { useSelectedTab } from "app/utils/hooks/useSelectedTab"
 import { Fragment, useState } from "react"
 import { useTracking } from "react-tracking"
@@ -32,7 +31,7 @@ export const GlobalSearchInput: React.FC<{}> = () => {
         */}
         <Flex pointerEvents="none">
           <RoundSearchInput
-            placeholder={SEARCH_INPUT_PLACEHOLDER}
+            placeholder="Search Artsy"
             accessibilityHint="Search artists, artworks, galleries etc."
             accessibilityLabel="Search artists, artworks, galleries etc."
             maxLength={55}

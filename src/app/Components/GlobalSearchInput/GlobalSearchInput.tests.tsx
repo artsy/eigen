@@ -18,7 +18,7 @@ describe("GlobalSearchInput", () => {
   it("renders the search label properly", () => {
     renderWithWrappers(<GlobalSearchInput />)
 
-    expect(/Search artists, artworks, etc/).toBeTruthy()
+    expect(/Search Artsy/).toBeTruthy()
   })
 
   it("tracks the search bar tapped event", () => {
