@@ -10,6 +10,7 @@ import { MAX_SHOWN_RECENT_SEARCHES, useRecentSearches } from "app/Scenes/Search/
 import { SearchPills } from "app/Scenes/Search/SearchPills"
 import { SearchResults } from "app/Scenes/Search/SearchResults"
 import { SEARCH_PILLS } from "app/Scenes/Search/constants"
+import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { Suspense, useEffect, useState } from "react"
 import { ScrollView, StyleSheet } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -83,6 +84,13 @@ export const GlobalSearchInputOverlay: React.FC<{ visible: boolean; hideModal: (
 }) => {
   const [query, setQuery] = useState("")
   const insets = useSafeAreaInsets()
+
+  useBackHandler(() => {
+    if (visible) {
+      hideModal()
+    }
+    return true
+  })
 
   useEffect(() => {
     if (!visible) {
