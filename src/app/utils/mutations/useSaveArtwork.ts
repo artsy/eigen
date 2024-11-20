@@ -55,7 +55,7 @@ export const useSaveArtwork = ({
       },
       optimisticUpdater: (store) => {
         const artwork = store.get(id)
-        artwork?.setValue(nextSavedState, "isSaved")
+        artwork?.setValue(nextSavedState, "isSavedToAnyList")
 
         optimisticUpdater?.(nextSavedState, store, optimisticUpdaterCalledBefore)
 
@@ -76,7 +76,7 @@ const Mutation = graphql`
     saveArtwork(input: { artworkID: $artworkID, remove: $remove }) {
       artwork {
         id
-        isSaved
+        isSavedToAnyList
         collectorSignals {
           auction {
             lotWatcherCount

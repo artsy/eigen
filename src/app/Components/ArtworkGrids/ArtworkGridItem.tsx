@@ -203,7 +203,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const handleArtworkSave = useSaveArtwork({
     id: artwork.id,
     internalID: artwork.internalID,
-    isSaved: !!artwork.isSaved,
+    isSaved: !!artwork.isSavedToAnyList,
     onCompleted: onArtworkSavedOrUnSaved,
   })
 
@@ -509,7 +509,7 @@ export default createFragmentContainer(Artwork, {
       isBiddable
       isInquireable
       isOfferable
-      isSaved
+      isSavedToAnyList
       isUnlisted
       artistNames
       href
