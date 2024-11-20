@@ -155,7 +155,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
    */
   async updatePhoneNumber() {
     return new Promise<void>((done, reject) => {
-      const { phoneNumber } = this.state.billingAddress!
+      const phoneNumber = this.state.billingAddress?.phoneNumber
       commitMutation<ConfirmBidUpdateUserMutation>(this.props.relay.environment, {
         onCompleted: (_, errors) => {
           if (errors && errors.length) {
@@ -295,8 +295,8 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       `,
       variables: {
         input: {
-          saleID: this.props.sale_artwork.sale!.slug,
-          artworkID: this.props.sale_artwork.artwork!.slug,
+          saleID: this.props.sale_artwork.sale?.slug as string,
+          artworkID: this.props.sale_artwork.artwork?.slug as string,
           maxBidAmountCents: this.selectedBid().cents,
         },
       },
@@ -304,12 +304,12 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   verifyBidderPosition(results: ConfirmBidCreateBidderPositionMutation["response"]) {
-    const { result } = results.createBidderPosition!
+    const data = results.createBidderPosition
 
-    if (result!.status === "SUCCESS") {
-      this.bidPlacedSuccessfully(result!.position!.internalID)
+    if (data?.result && data?.result?.status === "SUCCESS") {
+      this.bidPlacedSuccessfully(data.result.position?.internalID as string)
     } else {
-      this.presentBidResult(result!)
+      this.presentBidResult(data?.result as any)
     }
   }
 
@@ -324,21 +324,20 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   checkBidderPosition(data: BidderPositionQuery["response"] | undefined) {
-    // eslint-disable-next-line no-unsafe-optional-chaining
-    const { bidder_position } = data?.me!
+    const bidderPosition = data?.me?.bidder_position
 
-    if (bidder_position!.status === "PENDING" && this.pollCount < MAX_POLL_ATTEMPTS) {
+    if (bidderPosition?.status === "PENDING" && this.pollCount < MAX_POLL_ATTEMPTS) {
       // initiating new request here (vs setInterval) to make sure we wait for the previous call to return before making a new one
       const wait = __TEST__ ? (cb: any) => cb() : setTimeout
       wait(() => {
-        bidderPositionQuery(bidder_position!.position!.internalID)
+        bidderPositionQuery(bidderPosition.position?.internalID as string)
           .then(this.checkBidderPosition.bind(this))
           .catch((error) => this.presentErrorResult(error))
       }, 1000)
 
       this.pollCount += 1
     } else {
-      this.presentBidResult(bidder_position as any)
+      this.presentBidResult(bidderPosition as any)
     }
   }
 
@@ -356,8 +355,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
   refreshBidderInfo = () => {
     this.props.relay.refetch(
-      // FIXME: Should this be internalID?
-      { saleID: this.props.sale_artwork.sale!.slug },
+      { saleID: this.props.sale_artwork.sale?.slug },
       null,
       (error) => {
         if (error) {
@@ -397,13 +395,13 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
   presentBidResult(bidderPositionResult: BidderPositionResult) {
     LegacyNativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkBidUpdated", {
-      ARAuctionID: this.props.sale_artwork.sale!.slug,
-      ARAuctionArtworkID: this.props.sale_artwork.artwork!.slug,
+      ARAuctionID: this.props.sale_artwork.sale?.slug,
+      ARAuctionArtworkID: this.props.sale_artwork.artwork?.slug,
     })
     LegacyNativeModules.ARNotificationsManager.postNotificationName(
       "ARAuctionArtworkRegistrationUpdated",
       {
-        ARAuctionID: this.props.sale_artwork.sale!.slug,
+        ARAuctionID: this.props.sale_artwork.sale?.slug,
       }
     )
 
@@ -445,8 +443,13 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   render() {
     const { sale_artwork } = this.props
     const { id, artwork, lot_label, sale } = sale_artwork
+
+    if (!sale || !artwork) {
+      return null
+    }
+
     const { requiresPaymentInformation, requiresCheckbox, isLoading } = this.state
-    const artworkImage = artwork!.image
+    const artworkImage = artwork.image
 
     const websocketEnabled = !!sale?.cascadingEndTimeIntervalMinutes
 
@@ -480,11 +483,11 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
             <Box>
               <Flex m={4} alignItems="center">
-                {!!artworkImage && (
+                {!!artworkImage?.url && (
                   <Image
                     resizeMode="contain"
                     style={{ width: 50, height: 50 }}
-                    source={{ uri: artworkImage.url! }}
+                    source={{ uri: artworkImage.url }}
                   />
                 )}
 
@@ -495,7 +498,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                   numberOfLines={1}
                   ellipsizeMode="tail"
                 >
-                  {artwork!.artist_names}
+                  {artwork.artist_names}
                 </Text>
                 <Text variant="xs" weight="medium">
                   Lot {lot_label}
@@ -508,9 +511,10 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                   textAlign="center"
                   numberOfLines={1}
                   ellipsizeMode="tail"
+                  testID="artwork-title"
                 >
-                  {artwork!.title}
-                  {!!artwork!.date && <Text variant="xs">, {artwork!.date}</Text>}
+                  {artwork.title}
+                  {!!artwork.date && <Text variant="xs">, {artwork.date}</Text>}
                 </Text>
               </Flex>
 
@@ -569,13 +573,13 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                         : () => this.onGeneralTermsAndConditionsOfSaleLinkPressed()
                     }
                   >
-                    {partnerName(sale!)} General Terms and Conditions of Sale
+                    {partnerName(sale)} General Terms and Conditions of Sale
                   </LinkText>
                   . I understand that all bids are binding and may not be retracted.
                 </Text>
               </Checkbox>
             ) : (
-              <Flex alignItems="center" px={4}>
+              <Flex alignItems="center" px={4} testID="disclaimer-text">
                 <Text variant="xs" mt={2} color="black60">
                   I agree to{" "}
                   <LinkText
@@ -586,7 +590,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                         : () => this.onGeneralTermsAndConditionsOfSaleLinkPressed()
                     }
                   >
-                    {partnerName(sale!)} General Terms and Conditions of Sale
+                    {partnerName(sale)} General Terms and Conditions of Sale
                   </LinkText>
                   . I understand that all bids are binding and may not be retracted.
                 </Text>
