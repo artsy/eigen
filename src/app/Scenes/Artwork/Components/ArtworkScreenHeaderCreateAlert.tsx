@@ -58,7 +58,7 @@ const ArtworkScreenHeaderCreateAlert_artwork = graphql`
     isEligibleToCreateAlert
     isInAuction
     ...CreateArtworkAlertModal_artwork
-    artists {
+    artists(shallow: true) {
       internalID
     }
     isForSale

@@ -141,7 +141,7 @@ export const ArtworkHeaderFragmentContainer = createFragmentContainer(ArtworkHea
       internalID
       slug
       visibilityLevel
-      artists {
+      artists(shallow: true) {
         name
       }
       partner {

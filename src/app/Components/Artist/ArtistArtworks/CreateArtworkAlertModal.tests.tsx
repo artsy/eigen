@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import { CreateArtworkAlertModal_artwork$data } from "__generated__/CreateArtworkAlertModal_artwork.graphql"
 import {
   CreateArtworkAlertModal,
@@ -24,13 +25,13 @@ describe("CreateArtworkAlertModal", () => {
   })
 
   it("returns null if artwork is ineligible", () => {
-    const { queryByText } = renderWithRelay({
+    renderWithRelay({
       Artwork: () => ({
         isEligibleToCreateAlert: false,
       }),
     })
 
-    expect(queryByText("CreateSavedSearchModal")).toBeFalsy()
+    expect(screen.queryByText("CreateSavedSearchModal")).toBeFalsy()
   })
 
   it("returns renders modal", () => {
@@ -50,7 +51,7 @@ describe("CreateArtworkAlertModal", () => {
 
 describe("computeArtworkAlertProps", () => {
   const artwork = {
-    artistsArray: [{ name: "foo", internalID: "bar" }],
+    artists: [{ name: "foo", internalID: "bar" }],
     isEligibleToCreateAlert: true,
     attributionClass: {
       internalID: "1",

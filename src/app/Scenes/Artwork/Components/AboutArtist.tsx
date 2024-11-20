@@ -71,7 +71,7 @@ export const AboutArtistFragmentContainer = createFragmentContainer(AboutArtist,
   artwork: graphql`
     fragment AboutArtist_artwork on Artwork {
       displayArtistBio
-      artists {
+      artists(shallow: true) {
         id
         biographyBlurb {
           text
@@ -79,7 +79,7 @@ export const AboutArtistFragmentContainer = createFragmentContainer(AboutArtist,
 
         ...ArtistListItem_artist
       }
-      artist {
+      artist(shallow: true) {
         partnerBiographyBlurb {
           text
         }

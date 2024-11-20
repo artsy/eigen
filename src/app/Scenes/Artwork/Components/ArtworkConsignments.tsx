@@ -48,7 +48,7 @@ export const ArtworkConsignments: React.FC<ArtworkConsignmentsProps> = ({ artwor
 
 const artworkConsignmentsFragment = graphql`
   fragment ArtworkConsignments_artwork on Artwork {
-    artists {
+    artists(shallow: true) {
       isConsignable
       name
     }

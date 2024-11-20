@@ -111,7 +111,7 @@ export const ArtworkMakerTitleFragmentContainer = createFragmentContainer(Artwor
   artwork: graphql`
     fragment ArtworkMakerTitle_artwork on Artwork {
       culturalMaker
-      artists {
+      artists(shallow: true) {
         name
         href
       }
