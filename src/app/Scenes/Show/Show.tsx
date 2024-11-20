@@ -57,10 +57,11 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
       key: "filter",
       element: (
         <Flex backgroundColor="white">
-          <Spacer y={1} />
+          <Separator />
           <HeaderArtworksFilter
             animationValue={filterComponentAnimationValue}
             onPress={toggleFilterArtworksModal}
+            disableYAxisAnimation
           />
         </Flex>
       ),
@@ -100,7 +101,7 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
         <Animated.FlatList<Section>
           data={sections}
           keyExtractor={({ key }) => key}
-          stickyHeaderIndices={[sections.findIndex((section) => section.key === "filter") + 1]}
+          stickyHeaderIndices={[sections.findIndex((section) => section.key === "filter")]}
           viewabilityConfig={viewConfigRef.current}
           ListFooterComponent={<Spacer y={2} />}
           ItemSeparatorComponent={() => <Spacer y="15px" />}

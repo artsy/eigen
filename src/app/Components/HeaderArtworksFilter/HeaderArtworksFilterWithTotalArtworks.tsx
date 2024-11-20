@@ -3,6 +3,7 @@ import { HeaderArtworksFilter } from "app/Components/HeaderArtworksFilter/Header
 import { Animated } from "react-native"
 
 interface HeaderArtworksFilterWithTotalArtworksProps {
+  disableYAxisAnimation?: boolean
   animationValue?: Animated.Value
   onPress: () => void
   hideArtworksCount?: boolean

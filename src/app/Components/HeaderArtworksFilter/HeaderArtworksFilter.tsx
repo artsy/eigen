@@ -12,10 +12,11 @@ import { Animated, Dimensions, LayoutChangeEvent, PixelRatio } from "react-nativ
 import { isTablet } from "react-native-device-info"
 
 export interface FilterProps {
-  total: number
   animationValue?: Animated.Value
-  onPress: () => void
+  disableYAxisAnimation?: boolean
   hideArtworksCount?: boolean
+  onPress: () => void
+  total: number
 }
 
 interface SeparatorWithSmoothOpacityProps {
@@ -62,6 +63,7 @@ export const SeparatorWithSmoothOpacity: React.FC<SeparatorWithSmoothOpacityProp
 
 export const HeaderArtworksFilter: React.FC<FilterProps> = ({
   animationValue,
+  disableYAxisAnimation,
   hideArtworksCount,
   onPress,
   total,
@@ -114,19 +116,22 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({
 
   return (
     <Box backgroundColor="white" onLayout={(e) => _onLayout(e)} testID="HeaderArtworksFilter">
-      {!!animationValue && <SeparatorWithSmoothOpacity {...separatorProps} />}
+      {!!animationValue && !disableYAxisAnimation && (
+        <SeparatorWithSmoothOpacity {...separatorProps} />
+      )}
       {!!total && (
         <Animated.View
           style={{
             transform: [
               {
-                translateY:
-                  animationValue?.interpolate({
-                    inputRange:
-                      filterPageY > 0 ? [0, filterPageY - ANIM_START, filterPageY] : [0, 0, 0],
-                    outputRange: filterPageY > 0 ? [0, 0, TRANSLATE_Y_VALUE] : [0, 0, 0],
-                    extrapolate: "clamp",
-                  }) ?? 0,
+                translateY: !disableYAxisAnimation
+                  ? animationValue?.interpolate({
+                      inputRange:
+                        filterPageY > 0 ? [0, filterPageY - ANIM_START, filterPageY] : [0, 0, 0],
+                      outputRange: filterPageY > 0 ? [0, 0, TRANSLATE_Y_VALUE] : [0, 0, 0],
+                      extrapolate: "clamp",
+                    }) ?? 0
+                  : 0,
               },
             ],
           }}
