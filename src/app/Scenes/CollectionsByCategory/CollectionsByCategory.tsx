@@ -10,11 +10,9 @@ import { FC } from "react"
 
 type CollectionsByCategoriesNavigationRoutes = {
   collections: {
-    props: {
-      category: string
-      entityID: string
-      homeViewSectionId: string
-    }
+    category: string
+    entityID: string
+    homeViewSectionId: string
   }
 }
 
@@ -26,7 +24,7 @@ export type CollectionsByCategoriesRouteProp = RouteProp<
 export const CollectionsByCategory: FC = () => {
   const { params } = useRoute<CollectionsByCategoriesRouteProp>()
 
-  const category = params.props.category
+  const category = params.category
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -42,7 +40,7 @@ export const CollectionsByCategory: FC = () => {
             <Flex gap={4}>
               <BodyWithSuspense />
 
-              <FooterWithSuspense homeViewSectionId={params.props.homeViewSectionId} />
+              <FooterWithSuspense homeViewSectionId={params.homeViewSectionId} />
             </Flex>
           </Screen.ScrollView>
         </Screen.Body>

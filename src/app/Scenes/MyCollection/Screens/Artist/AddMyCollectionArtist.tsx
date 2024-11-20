@@ -59,14 +59,14 @@ export const AddMyCollectionArtist: React.FC = () => {
       validateOnChange: true,
       validateOnBlur: true,
       initialValues: {
-        name: route?.params?.props?.artistDisplayName || "",
+        name: route?.params?.artistDisplayName || "",
         nationality: "",
         birthYear: "",
         deathYear: "",
       },
       initialErrors: {},
       onSubmit: () => {
-        const { onSubmit } = route?.params?.props || {}
+        const { onSubmit } = route?.params || {}
         if (onSubmit) {
           onSubmit(values)
         }

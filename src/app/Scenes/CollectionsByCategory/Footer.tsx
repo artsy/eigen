@@ -18,7 +18,7 @@ export const Footer: FC<FooterProps> = ({ cards, homeViewSectionId }) => {
   const { params } = useRoute<CollectionsByCategoriesRouteProp>()
   const data = useFragment(fragment, cards)
 
-  const category = decodeURI(params.props.category)
+  const category = decodeURI(params.category)
 
   const categories = extractNodes(data?.cardsConnection).filter((c) => c.title !== category)
 

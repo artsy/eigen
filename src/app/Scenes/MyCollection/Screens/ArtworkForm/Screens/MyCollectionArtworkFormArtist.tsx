@@ -43,15 +43,13 @@ export const MyCollectionArtworkFormArtist: React.FC<
     GlobalStore.actions.myCollection.artwork.resetForm()
 
     navigation.navigate("AddMyCollectionArtist", {
-      props: {
-        artistDisplayName: artistDisplayName,
-        onSubmit: (values) => {
-          GlobalStore.actions.myCollection.artwork.updateFormValues({
-            customArtist: values,
-            metric: preferredMetric,
-          })
-          navigation.navigate("ArtworkFormMain")
-        },
+      artistDisplayName: artistDisplayName,
+      onSubmit: (values) => {
+        GlobalStore.actions.myCollection.artwork.updateFormValues({
+          customArtist: values,
+          metric: preferredMetric,
+        })
+        navigation.navigate("ArtworkFormMain")
       },
     })
   }
