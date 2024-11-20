@@ -21,7 +21,7 @@ export const GlobalSearchInputOverlayEmptyState = () => {
         Find the art you love
       </Text>
       <Text variant="sm-display" textAlign="center" mt={1} color="black60">
-        Search for artists, artworks, galleries and more. Save for later or add alerts.
+        Search for artists, artworks, galleries, and more. Save for later or add alerts.
       </Text>
     </Flex>
   )
