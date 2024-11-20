@@ -22,7 +22,7 @@ interface BodyProps {
 export const Body: React.FC<BodyProps> = ({ viewer }) => {
   const data = useFragment(fragment, viewer)
   const { params } = useRoute<CollectionsByCategoriesRouteProp>()
-  const category = params.props.category
+  const category = params.category
 
   if (!data?.marketingCollections) {
     return null
@@ -105,7 +105,7 @@ export const BodyWithSuspense = withSuspense({
     const data = useLazyLoadQuery<BodyCollectionsByCategoryQuery>(
       query,
       {
-        category: params.props.entityID,
+        category: params.entityID,
       },
       { fetchPolicy: "store-and-network" }
     )
