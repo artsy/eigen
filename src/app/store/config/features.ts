@@ -299,7 +299,7 @@ export const features = {
     description: "Redesign Save CTA and Add Follow CTA on Artwork Grid/Rail",
     readyForRelease: false,
     showInDevMenu: true,
-    /* echoFlagKey: "AREnableNewSaveAndFollowOnArtworkCard" */
+    echoFlagKey: "AREnableNewSaveAndFollowOnArtworkCard",
   },
   AREnablePaymentFailureBanner: {
     description: "Enable payment failure banner",
