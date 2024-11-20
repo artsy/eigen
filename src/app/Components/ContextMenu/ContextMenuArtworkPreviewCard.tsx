@@ -44,7 +44,7 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
 
   const saleMessage = saleMessageOrBidInfo({ artwork, isSmallTile: true })
 
-  const { primaryTextColor, secondaryTextColor, backgroundColor } = useMetaDataTextColor({ dark })
+  const { primaryColor, secondaryColor, backgroundColor } = useMetaDataTextColor({ dark })
 
   const getTextHeight = () => {
     return ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT
@@ -69,26 +69,26 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
       >
         <Flex flex={1} backgroundColor={backgroundColor}>
           {!!lotLabel && (
-            <Text lineHeight="20px" color={secondaryTextColor} numberOfLines={1}>
+            <Text lineHeight="20px" color={secondaryColor} numberOfLines={1}>
               Lot {lotLabel}
             </Text>
           )}
           {!hideArtistName && !!artistNames && (
-            <Text color={primaryTextColor} numberOfLines={1} lineHeight="20px" variant="xs">
+            <Text color={primaryColor} numberOfLines={1} lineHeight="20px" variant="xs">
               {artistNames}
             </Text>
           )}
           {!!title && (
             <Text
               lineHeight="20px"
-              color={secondaryTextColor}
+              color={secondaryColor}
               numberOfLines={1}
               variant="xs"
               fontStyle="italic"
             >
               {title}
               {!!date && (
-                <Text lineHeight="20px" color={secondaryTextColor} numberOfLines={1} variant="xs">
+                <Text lineHeight="20px" color={secondaryColor} numberOfLines={1} variant="xs">
                   {title && date ? ", " : ""}
                   {date}
                 </Text>
@@ -97,7 +97,7 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
           )}
 
           {!!showPartnerName && !!partner?.name && (
-            <Text lineHeight="20px" variant="xs" color={secondaryTextColor} numberOfLines={1}>
+            <Text lineHeight="20px" variant="xs" color={secondaryColor} numberOfLines={1}>
               {partner?.name}
             </Text>
           )}
@@ -107,7 +107,7 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
                 <Text
                   lineHeight="20px"
                   variant="xs"
-                  color={primaryTextColor}
+                  color={primaryColor}
                   numberOfLines={1}
                   fontWeight={500}
                 >

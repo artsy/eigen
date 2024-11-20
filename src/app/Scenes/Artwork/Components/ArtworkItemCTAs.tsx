@@ -55,8 +55,7 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
       "onyx_artwork-card-save-and-follow-cta-redesign"
     )
 
-  const { saveAndFollowCTAColor, saveAndFollowCTAFillColor, saveAndFollowCTABackgroundColor } =
-    useMetaDataTextColor({ dark })
+  const { primaryColor, ctaBackgroundColor } = useMetaDataTextColor({ dark })
 
   const artwork = useFragment(artworkFragment, artworkProp)
 
@@ -109,21 +108,21 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
     <ArtworkItemCTAsWrapper
       onPress={saveArtworkToLists}
       testID="save-artwork"
-      backgroundColor={saveAndFollowCTABackgroundColor}
+      backgroundColor={ctaBackgroundColor}
     >
       {isSaved ? (
         <NewFillHeartIcon
           testID="heart-icon-filled"
           height={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
           width={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
-          fill={saveAndFollowCTAFillColor}
+          fill={primaryColor}
         />
       ) : (
         <NewHeartIcon
           testID="heart-icon-empty"
           height={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
           width={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
-          fill={saveAndFollowCTAColor}
+          fill={primaryColor}
         />
       )}
 
@@ -139,21 +138,21 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
     <ArtworkItemCTAsWrapper
       onPress={handleFollowToggle}
       testID="follow-artist"
-      backgroundColor={saveAndFollowCTABackgroundColor}
+      backgroundColor={ctaBackgroundColor}
     >
       {artist?.isFollowed ? (
         <FollowArtistFillIcon
           testID="follow-icon-filled"
           height={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
           width={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
-          fill={saveAndFollowCTAFillColor}
+          fill={primaryColor}
         />
       ) : (
         <FollowArtistIcon
           testID="follow-icon-empty"
           height={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
           width={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
-          fill={saveAndFollowCTAColor}
+          fill={primaryColor}
         />
       )}
     </ArtworkItemCTAsWrapper>
