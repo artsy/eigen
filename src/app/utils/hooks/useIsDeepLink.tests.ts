@@ -1,8 +1,8 @@
 import { renderHook } from "@testing-library/react-hooks"
+import { matchRoute } from "app/routes"
 import { useIsDeepLink } from "app/utils/hooks/useIsDeepLink"
 import { Linking } from "react-native"
 
-// Existing mocks
 const mockUseIsFocusedMock = jest.fn()
 jest.mock("@react-navigation/native", () => ({
   useIsFocused: () => mockUseIsFocusedMock(),
@@ -14,13 +14,18 @@ jest.mock("react-native", () => ({
   },
 }))
 
-// Start of the new test case
+jest.mock("app/routes", () => ({
+  matchRoute: jest.fn(),
+}))
+
 describe("useIsDeepLink", () => {
   const mockLinkingGetInitialURL = Linking.getInitialURL as jest.Mock
+  const mockMatchRoute = matchRoute as jest.Mock
 
   it("should return true if opened from a deep link", async () => {
     // Setup the mock to return the specific URL
-    mockLinkingGetInitialURL.mockResolvedValue("artsy:///foo/bar")
+    mockLinkingGetInitialURL.mockResolvedValue("artsy:///artwork/foo")
+    mockMatchRoute.mockReturnValue({ type: "match", module: "Artwork" })
     mockUseIsFocusedMock.mockReturnValue(true)
 
     // Render the hook under test
@@ -34,6 +39,7 @@ describe("useIsDeepLink", () => {
     })
     expect(mockUseIsFocusedMock).toHaveBeenCalled()
     expect(mockLinkingGetInitialURL).toHaveBeenCalled()
+    expect(mockMatchRoute).toHaveBeenCalled()
   })
 
   it("should return false if not opened from a deep link", async () => {
@@ -50,11 +56,13 @@ describe("useIsDeepLink", () => {
     expect(result.current.isDeepLink).toEqual(false)
     expect(mockUseIsFocusedMock).toHaveBeenCalled()
     expect(mockLinkingGetInitialURL).toHaveBeenCalled()
+    expect(mockMatchRoute).toHaveBeenCalled()
   })
 
   it("should return false if opened from a link to /", async () => {
     // Setup the mock to return null
     mockLinkingGetInitialURL.mockResolvedValue("artsy:///")
+    mockMatchRoute.mockReturnValue({ type: "match", module: "Home" })
     mockUseIsFocusedMock.mockReturnValue(true)
 
     // Render the hook under test
@@ -66,5 +74,6 @@ describe("useIsDeepLink", () => {
     expect(result.current.isDeepLink).toEqual(false)
     expect(mockUseIsFocusedMock).toHaveBeenCalled()
     expect(mockLinkingGetInitialURL).toHaveBeenCalled()
+    expect(mockMatchRoute).toHaveBeenCalled()
   })
 })

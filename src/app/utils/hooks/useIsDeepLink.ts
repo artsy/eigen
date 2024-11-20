@@ -1,4 +1,5 @@
 import { useIsFocused } from "@react-navigation/native"
+import { matchRoute } from "app/routes"
 import { useEffect, useState } from "react"
 import { Linking } from "react-native"
 
@@ -31,13 +32,15 @@ export const useIsDeepLink = () => {
           return
         }
 
-        const targetURL = url.replace("artsy://", "")
-        const isDeepLink = targetURL !== "/"
+        const result = matchRoute(url)
+        const isExternalUrl = result.type === "external_url"
+        const isHomeLink = result.type === "match" && result.module === "Home"
+        const shouldTreatAsDeepLink = !isHomeLink && !isExternalUrl
 
-        if (!isDeepLink) {
-          setIsDeepLink(false)
-        } else {
+        if (shouldTreatAsDeepLink) {
           setIsDeepLink(true)
+        } else {
+          setIsDeepLink(false)
         }
       })
       .catch((error) => {
