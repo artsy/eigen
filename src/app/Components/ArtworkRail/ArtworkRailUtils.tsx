@@ -5,5 +5,18 @@ export const useMetaDataTextColor = ({ dark }: { dark: boolean }) => {
 
   const backgroundColor = dark ? "black100" : "white100"
 
-  return { primaryTextColor, secondaryTextColor, backgroundColor }
+  const saveAndFollowCTAColor = dark ? "white100" : "black100"
+
+  const saveAndFollowCTAFillColor = dark ? "white100" : "black100"
+
+  const saveAndFollowCTABackgroundColor = dark ? "black100" : "black5"
+
+  return {
+    primaryTextColor,
+    secondaryTextColor,
+    backgroundColor,
+    saveAndFollowCTAColor,
+    saveAndFollowCTAFillColor,
+    saveAndFollowCTABackgroundColor,
+  }
 }
