@@ -18965,7 +18965,7 @@ type System {
   # The schema for difference micro-service settings
   services: Services
 
-  # Gravity system time, necessary for synchronizing device clocks.
+  # Core system time, helpful for reliable times on clients.
   time: SystemTime
 
   # List of all available product privileges
@@ -18974,17 +18974,14 @@ type System {
 
 type SystemTime {
   day: Int
-  dst: Boolean
   hour: Int
   iso8601: String
   min: Int
   month: Int
   sec: Int
   unix: Int
-  utcOffset: Int
   wday: Int
   year: Int
-  zone: String
 }
 
 type Tag implements Node {
