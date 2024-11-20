@@ -550,10 +550,7 @@ export class GlobalMap extends React.Component<Props, State> {
               style={{ ...this.backgroundImageSize }}
             />
 
-            {/* We do this gymnastics to get accurately the top inset
-              We are injecting two extra margins that on the native side that we need to deduct
-              https://github.com/artsy/eigen/blob/054ef4fea23bf401a53fc3f44bebb30933ca80f2/ios/Artsy/Emission/ViewControllers/ARMapContainerViewController.m#L119
-              https://github.com/artsy/eigen/blob/054ef4fea23bf401a53fc3f44bebb30933ca80f2/ios/Artsy/View_Controllers/Util/ARNavigationController.m#L212
+            {/* TODO: safeArea insets are being reported back incorrectly here, so we have to subtract, we should look further into why, possibly with how we register these components, possibly because they are partially native. 
              */}
             <TopButtonsContainer style={{ top: this.props.safeAreaInsets.top - 12 - 10 }}>
               <Animated.View
