@@ -1,21 +1,25 @@
 import { Box, Flex, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
+import { ListRenderItem } from "@shopify/flash-list"
 import {
   ArtworkRail_artworks$data,
   ArtworkRail_artworks$key,
 } from "__generated__/ArtworkRail_artworks.graphql"
-import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
+import {
+  ARTWORK_RAIL_CARD_MINIMUM_WIDTH,
+  ArtworkRailCard,
+} from "app/Components/ArtworkRail/ArtworkRailCard"
 import {
   ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
   ARTWORK_RAIL_MIN_IMAGE_WIDTH,
 } from "app/Components/ArtworkRail/ArtworkRailCardImage"
 import { LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT } from "app/Components/ArtworkRail/LegacyArtworkRailCardImage"
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
-import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
+import { PrefetchFlashList } from "app/Components/PrefetchFlashList"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { RandomWidthPlaceholderText } from "app/utils/placeholders"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
 import React, { ReactElement, useCallback } from "react"
-import { FlatList, ListRenderItem, ViewabilityConfig } from "react-native"
+import { FlatList, ViewabilityConfig } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 
@@ -87,8 +91,9 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
     [hideArtistName, onPress, showPartnerName]
   )
   return (
-    <PrefetchFlatList
+    <PrefetchFlashList
       data={artworks}
+      estimatedItemSize={ARTWORK_RAIL_CARD_MINIMUM_WIDTH}
       horizontal
       keyExtractor={(item) => item.internalID}
       ListFooterComponent={
