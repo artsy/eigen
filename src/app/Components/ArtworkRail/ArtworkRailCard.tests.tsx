@@ -114,13 +114,6 @@ describe("ArtworkRailCard", () => {
   })
 
   describe("artwork image", () => {
-    beforeEach(
-      () =>
-        __globalStoreTestUtils__?.injectFeatureFlags({
-          AREnableArtworkRailRedesignImageAspectRatio: true,
-        })
-    )
-
     it("renders the artwork image", () => {
       renderWithRelay({ Artwork: () => artwork })
 
