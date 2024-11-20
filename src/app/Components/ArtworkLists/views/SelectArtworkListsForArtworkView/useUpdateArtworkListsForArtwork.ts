@@ -49,6 +49,9 @@ export const useUpdateArtworkListsForArtwork = (artworkID: string): MutationResu
           return
         }
 
+        const addedCounts = getArtworkListsCountByType(response?.addedToArtworkLists)
+        const removedCounts = getArtworkListsCountByType(response?.removedFromArtworkLists)
+
         /**
          * Update `totalCount` field, based on which we decide
          * whether to display the manage lists for artwork modal or
