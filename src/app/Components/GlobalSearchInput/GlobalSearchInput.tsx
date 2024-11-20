@@ -1,6 +1,7 @@
 import { ActionType, ContextModule } from "@artsy/cohesion"
 import { Flex, RoundSearchInput, Touchable } from "@artsy/palette-mobile"
 import { GlobalSearchInputOverlay } from "app/Components/GlobalSearchInput/GlobalSearchInputOverlay"
+import { ICON_HIT_SLOP } from "app/Components/constants"
 import { SEARCH_INPUT_PLACEHOLDER } from "app/Scenes/Search/Search"
 import { useSelectedTab } from "app/utils/hooks/useSelectedTab"
 import { Fragment, useState } from "react"
@@ -22,6 +23,7 @@ export const GlobalSearchInput: React.FC<{}> = () => {
           )
           setIsVisible(true)
         }}
+        hitSlop={ICON_HIT_SLOP}
         testID="search-button"
       >
         {/* In order to make the search input behave like a button here, we wrapped it with a
