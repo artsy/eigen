@@ -7,6 +7,7 @@ import { getContextModuleByPillName } from "app/Scenes/Search/helpers"
 import { PillType } from "app/Scenes/Search/types"
 import { useRefetchWhenQueryChanged } from "app/Scenes/Search/useRefetchWhenQueryChanged"
 import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
+import { useSelectedTab } from "app/utils/hooks/useSelectedTab"
 import { Schema } from "app/utils/track"
 import { useEffect, useRef, useState } from "react"
 import { ScrollView } from "react-native"
@@ -15,6 +16,12 @@ import { useThrottle } from "react-use"
 
 export const useSearch = ({ query }: { query: string }) => {
   const throttledQuery = useThrottle(query, SEARCH_THROTTLE_INTERVAL)
+  const selectedTab = useSelectedTab()
+
+  let contextScreenOwnerType = OwnerType.search
+  if (selectedTab === "home") {
+    contextScreenOwnerType = OwnerType.home
+  }
 
   const didMount = useRef(false)
   const searchPillsRef = useRef<ScrollView>(null)
@@ -39,7 +46,7 @@ export const useSearch = ({ query }: { query: string }) => {
     const contextModule = getContextModuleByPillName(selectedPill.displayName)
 
     setSelectedPill(pill)
-    trackEvent(tracks.tappedPill(contextModule, pill.displayName, query))
+    trackEvent(tracks.tappedPill(contextModule, contextScreenOwnerType, pill.displayName, query))
   }
 
   useEffect(() => {
@@ -49,18 +56,13 @@ export const useSearch = ({ query }: { query: string }) => {
     }
 
     if (query.length === 0) {
-      trackEvent({
-        action_type: Schema.ActionNames.ARAnalyticsSearchCleared,
-      })
+      trackEvent(tracks.trackSearchCleared(contextScreenOwnerType))
       handleResetSearchInput()
 
       return
     }
 
-    trackEvent({
-      action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
-      query: query,
-    })
+    trackEvent(tracks.trackSearchStarted(contextScreenOwnerType, query))
   }, [query.trim()])
 
   const handleResetSearchInput = () => {
@@ -86,12 +88,26 @@ export const useSearch = ({ query }: { query: string }) => {
 }
 
 const tracks = {
-  tappedPill: (contextModule: ContextModule, subject: string, query: string) => ({
-    context_screen_owner_type: OwnerType.search,
-    context_screen: Schema.PageNames.Search,
+  tappedPill: (
+    contextModule: ContextModule,
+    contextScreenOwnerType: OwnerType,
+    subject: string,
+    query: string
+  ) => ({
+    context_screen_owner_type: contextScreenOwnerType,
+    context_screen: contextScreenOwnerType,
     context_module: contextModule,
     subject,
     query,
     action: ActionType.tappedNavigationTab,
+  }),
+  trackSearchStarted: (contextScreenOwnerType: OwnerType, query: string) => ({
+    context_screen_owner_type: contextScreenOwnerType,
+    action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
+    query,
+  }),
+  trackSearchCleared: (contextScreenOwnerType: OwnerType) => ({
+    action_type: Schema.ActionNames.ARAnalyticsSearchCleared,
+    context_screen_owner_type: contextScreenOwnerType,
   }),
 }
