@@ -55,7 +55,7 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
       "onyx_artwork-card-save-and-follow-cta-redesign"
     )
 
-  const { primaryColor, ctaBackgroundColor } = useMetaDataTextColor({ dark })
+  const { primaryColor } = useMetaDataTextColor({ dark })
 
   const artwork = useFragment(artworkFragment, artworkProp)
 
@@ -105,11 +105,7 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
   }
 
   const saveCTA = (
-    <ArtworkItemCTAsWrapper
-      onPress={saveArtworkToLists}
-      testID="save-artwork"
-      backgroundColor={ctaBackgroundColor}
-    >
+    <ArtworkItemCTAsWrapper onPress={saveArtworkToLists} testID="save-artwork" dark={dark}>
       {isSaved ? (
         <NewFillHeartIcon
           testID="heart-icon-filled"
@@ -135,11 +131,7 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
   )
 
   const followCTA = (
-    <ArtworkItemCTAsWrapper
-      onPress={handleFollowToggle}
-      testID="follow-artist"
-      backgroundColor={ctaBackgroundColor}
-    >
+    <ArtworkItemCTAsWrapper onPress={handleFollowToggle} testID="follow-artist" dark={dark}>
       {artist?.isFollowed ? (
         <FollowArtistFillIcon
           testID="follow-icon-filled"
@@ -177,9 +169,9 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
 
 const ArtworkItemCTAsWrapper: React.FC<{
   onPress?: () => void
-  backgroundColor?: string
+  dark?: boolean
   testID: string
-}> = ({ onPress, backgroundColor, testID, children }) => {
+}> = ({ onPress, dark, testID, children }) => {
   return (
     <Touchable
       haptic
@@ -195,17 +187,11 @@ const ArtworkItemCTAsWrapper: React.FC<{
         flexDirection="row"
         p={1}
         borderRadius={50}
-        style={
-          backgroundColor === "black100"
-            ? {
-                borderColor: "white",
-                borderWidth: 1,
-              }
-            : {}
-        }
+        borderColor={dark ? "white" : undefined}
+        borderWidth={dark ? 1 : undefined}
         justifyContent="center"
         alignItems="center"
-        backgroundColor={backgroundColor}
+        backgroundColor={dark ? "black100" : "black5"}
       >
         {children}
       </Flex>
