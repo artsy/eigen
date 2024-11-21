@@ -84,6 +84,7 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   /** allows for artwork to be added to recent searches */
   updateRecentSearchesOnTap?: boolean
   numColumns?: number
+  hideViewFollowsLink?: boolean
 }
 
 export const Artwork: React.FC<ArtworkProps> = ({
@@ -117,6 +118,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   trackTap,
   updateRecentSearchesOnTap = false,
   numColumns = NUM_COLUMNS_MASONRY,
+  hideViewFollowsLink = false,
 }) => {
   const itemRef = useRef<any>()
   const color = useColor()
@@ -445,6 +447,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                 artwork={artwork}
                 showSaveIcon={!hideSaveIcon}
                 showFollowIcon={!hideFollowIcon}
+                hideViewFollowsLink={hideViewFollowsLink}
                 contextModule={contextModule}
                 contextScreen={contextScreen}
                 contextScreenOwnerId={contextScreenOwnerId}

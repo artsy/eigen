@@ -56,6 +56,7 @@ const OnboardingMarketingCollection: React.FC<OnboardingMarketingCollectionProps
           disableArtworksListPrompt
           hideCuratorsPick={slug === "curators-picks-emerging"}
           hideIncreasedInterest={slug === "curators-picks-emerging"}
+          hideViewFollowsLink
         />
         <Flex p={2} backgroundColor="white">
           <Button block onPress={() => navigate("OnboardingPostFollowLoadingScreen")} mb={1}>

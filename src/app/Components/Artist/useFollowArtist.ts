@@ -14,6 +14,7 @@ interface Options {
   contextModule?: ContextModule
   contextScreenOwnerType?: OwnerType
   ownerType?: Schema.OwnerEntityTypes | OwnerType
+  hideViewFollowsLink?: boolean
 }
 
 export const useFollowArtist = (options: Options) => {
@@ -23,6 +24,7 @@ export const useFollowArtist = (options: Options) => {
     contextModule,
     contextScreenOwnerType = Schema.OwnerEntityTypes.Artist,
     ownerType,
+    hideViewFollowsLink,
   } = options
 
   const [isLoading, setIsLoading] = useState(false)
@@ -119,15 +121,21 @@ export const useFollowArtist = (options: Options) => {
     setIsLoading(false)
 
     if (showToast && !data.isFollowed) {
-      toast.show("Artist Followed", "bottom", {
-        cta: "View Follows",
-        onPress: () => {
-          switchTab("profile")
-          navigate("favorites")
-        },
-        backgroundColor: "green100",
-        description: "Keep track of the artists you love",
-      })
+      if (hideViewFollowsLink) {
+        toast.show("Artist Followed", "bottom", {
+          backgroundColor: "green100",
+        })
+      } else {
+        toast.show("Artist Followed", "bottom", {
+          cta: "View Follows",
+          onPress: () => {
+            switchTab("profile")
+            navigate("favorites")
+          },
+          backgroundColor: "green100",
+          description: "Keep track of the artists you love",
+        })
+      }
     }
   }
 
