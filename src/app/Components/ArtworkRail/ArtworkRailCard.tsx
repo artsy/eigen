@@ -69,12 +69,12 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     ;(artwork as DissapearableArtwork)?._disappearable?.disappear()
   }
 
-  // 36 = 20 (padding) + 16 (icon size) + 5 (top padding)
+  // 36 = 20 (padding) + 18 (icon size) + 5 (top padding)
   const likeAndFollowCTAPadding =
     showSaveIcon &&
     enableNewSaveAndFollowOnArtworkCard &&
     (enableNewSaveCTA || enableNewSaveAndFollowCTAs)
-      ? 41
+      ? 43
       : 0
   const artworkRailCardMetaPadding = 10
   const artworkRailCardMetaDataHeight =
@@ -140,6 +140,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
               <ArtworkItemCTAs
                 artwork={artwork}
                 showSaveIcon={showSaveIcon}
+                dark={dark}
                 contextModule={contextModule}
                 contextScreen={contextScreen}
                 contextScreenOwnerId={contextScreenOwnerId}

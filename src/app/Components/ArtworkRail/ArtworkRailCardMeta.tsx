@@ -95,7 +95,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
     auctionSignals: collectorSignals?.auction,
   })
 
-  const { primaryTextColor, secondaryTextColor } = useMetaDataTextColor({ dark })
+  const { primaryColor, secondaryColor } = useMetaDataTextColor({ dark })
 
   const displayLimitedTimeOfferSignal =
     collectorSignals?.partnerOffer?.isAvailable && !sale?.isAuction
@@ -137,14 +137,14 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
     >
       <Flex flex={1}>
         {!!lotLabel && (
-          <Text lineHeight="20px" color={secondaryTextColor} numberOfLines={1}>
+          <Text lineHeight="20px" color={secondaryColor} numberOfLines={1}>
             Lot {lotLabel}
           </Text>
         )}
 
         {!hideArtistName && !!artistNames && (
           <RNText numberOfLines={1} ellipsizeMode="tail">
-            <Text color={primaryTextColor} lineHeight="20px" variant="xs">
+            <Text color={primaryColor} lineHeight="20px" variant="xs">
               {artistNames}
             </Text>
           </RNText>
@@ -152,10 +152,10 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
 
         {!!title && (
           <RNText numberOfLines={1} ellipsizeMode="tail">
-            <Text lineHeight="20px" color={secondaryTextColor} variant="xs">
+            <Text lineHeight="20px" color={secondaryColor} variant="xs">
               {title}
               {!!date && (
-                <Text lineHeight="20px" color={secondaryTextColor} variant="xs">
+                <Text lineHeight="20px" color={secondaryColor} variant="xs">
                   {title && date ? ", " : ""}
                   {date}
                 </Text>
@@ -166,7 +166,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
 
         {!!showPartnerName && !!partner?.name && (
           <RNText numberOfLines={1} ellipsizeMode="tail">
-            <Text lineHeight="20px" variant="xs" color={secondaryTextColor}>
+            <Text lineHeight="20px" variant="xs" color={secondaryColor}>
               {partner?.name}
             </Text>
           </RNText>
@@ -187,7 +187,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
           <Text
             lineHeight="20px"
             variant="xs"
-            color={primaryTextColor}
+            color={primaryColor}
             numberOfLines={1}
             fontWeight="bold"
           >
@@ -236,7 +236,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
                 testID="empty-heart-icon"
                 height={HEART_ICON_SIZE}
                 width={HEART_ICON_SIZE}
-                fill={primaryTextColor}
+                fill={primaryColor}
               />
             )}
           </Touchable>

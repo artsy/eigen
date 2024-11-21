@@ -12,6 +12,7 @@ import {
 import { ArtworkItemCTAs_artwork$key } from "__generated__/ArtworkItemCTAs_artwork.graphql"
 import { useFollowArtist } from "app/Components/Artist/useFollowArtist"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
+import { useMetaDataTextColor } from "app/Components/ArtworkRail/ArtworkRailUtils"
 import { ARTWORK_RAIL_CARD_CTA_ICON_SIZE } from "app/Components/constants"
 import { useGetNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/useGetNewSaveAndFollowOnArtworkCardExperimentVariant"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -27,6 +28,7 @@ interface ArtworkItemCTAsProps extends ArtworkActionTrackingProps {
   artwork: ArtworkItemCTAs_artwork$key
   showSaveIcon?: boolean
   showFollowIcon?: boolean
+  dark?: boolean
 }
 
 export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
@@ -36,6 +38,7 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
    * Show follow icon by default, but allow it to be hidden on specific grids
    */
   showFollowIcon = true,
+  dark = false,
   contextModule,
   contextScreen,
   contextScreenOwnerId,
@@ -51,6 +54,8 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
     useGetNewSaveAndFollowOnArtworkCardExperimentVariant(
       "onyx_artwork-card-save-and-follow-cta-redesign"
     )
+
+  const { primaryColor } = useMetaDataTextColor({ dark })
 
   const artwork = useFragment(artworkFragment, artworkProp)
 
@@ -100,19 +105,20 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
   }
 
   const saveCTA = (
-    <ArtworkItemCTAsWrapper onPress={saveArtworkToLists} testID="save-artwork">
+    <ArtworkItemCTAsWrapper onPress={saveArtworkToLists} testID="save-artwork" dark={dark}>
       {isSaved ? (
         <NewFillHeartIcon
           testID="heart-icon-filled"
           height={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
           width={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
-          fill="black100"
+          fill={primaryColor}
         />
       ) : (
         <NewHeartIcon
           testID="heart-icon-empty"
           height={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
           width={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
+          fill={primaryColor}
         />
       )}
 
@@ -125,19 +131,20 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
   )
 
   const followCTA = (
-    <ArtworkItemCTAsWrapper onPress={handleFollowToggle} testID="follow-artist">
+    <ArtworkItemCTAsWrapper onPress={handleFollowToggle} testID="follow-artist" dark={dark}>
       {artist?.isFollowed ? (
         <FollowArtistFillIcon
           testID="follow-icon-filled"
           height={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
           width={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
-          fill="black100"
+          fill={primaryColor}
         />
       ) : (
         <FollowArtistIcon
           testID="follow-icon-empty"
           height={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
           width={ARTWORK_RAIL_CARD_CTA_ICON_SIZE}
+          fill={primaryColor}
         />
       )}
     </ArtworkItemCTAsWrapper>
@@ -160,11 +167,11 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
   } else return null
 }
 
-const ArtworkItemCTAsWrapper: React.FC<{ onPress?: () => void; testID: string }> = ({
-  onPress,
-  testID,
-  children,
-}) => {
+const ArtworkItemCTAsWrapper: React.FC<{
+  onPress?: () => void
+  dark?: boolean
+  testID: string
+}> = ({ onPress, dark, testID, children }) => {
   return (
     <Touchable
       haptic
@@ -180,9 +187,11 @@ const ArtworkItemCTAsWrapper: React.FC<{ onPress?: () => void; testID: string }>
         flexDirection="row"
         p={1}
         borderRadius={50}
+        borderColor={dark ? "white" : undefined}
+        borderWidth={dark ? 1 : undefined}
         justifyContent="center"
         alignItems="center"
-        backgroundColor="black5"
+        backgroundColor={dark ? "black100" : "black5"}
       >
         {children}
       </Flex>
