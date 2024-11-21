@@ -19,6 +19,7 @@ import {
   navigateToPartner,
   SlugType,
 } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import { useContext } from "react"
 import { TouchableOpacity } from "react-native"
@@ -71,6 +72,8 @@ export const AutosuggestSearchResult: React.FC<{
   updateRecentSearchesOnTap = true,
   showQuickNavigationButtons = false,
 }) => {
+  const enableNewSearchModal = useFeatureFlag("AREnableNewSearchModal")
+
   const { inputRef, queryRef } = useContext(SearchContext)
   const { trackEvent } = useTracking()
 
@@ -81,9 +84,7 @@ export const AutosuggestSearchResult: React.FC<{
     if (onResultPress) {
       onResultPress(result)
     } else {
-      inputRef.current?.blur()
-      // need to wait a tick to push next view otherwise the input won't blur ¯\_(ツ)_/¯
-      setTimeout(() => {
+      if (enableNewSearchModal) {
         navigateToResult(result, passProps)
         if (updateRecentSearchesOnTap) {
           GlobalStore.actions.search.addRecentSearch({
@@ -91,8 +92,19 @@ export const AutosuggestSearchResult: React.FC<{
             props: result,
           })
         }
-      }, 20)
-
+      } else {
+        inputRef.current?.blur()
+        // need to wait a tick to push next view otherwise the input won't blur ¯\_(ツ)_/¯
+        setTimeout(() => {
+          navigateToResult(result, passProps)
+          if (updateRecentSearchesOnTap) {
+            GlobalStore.actions.search.addRecentSearch({
+              type: "AUTOSUGGEST_RESULT_TAPPED",
+              props: result,
+            })
+          }
+        }, 20)
+      }
       if (trackResultPress) {
         trackResultPress(result, itemIndex)
         return
