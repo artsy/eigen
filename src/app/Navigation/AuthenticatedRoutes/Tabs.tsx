@@ -13,7 +13,7 @@ import { BottomTabsButton } from "app/Scenes/BottomTabs/BottomTabsButton"
 import { bottomTabsConfig } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { OnboardingQuiz } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingQuiz"
 import { GlobalStore } from "app/store/GlobalStore"
-import { internal_navigationRef } from "app/system/navigation/navigate"
+import { internal_navigationRef, switchTab } from "app/system/navigation/navigate"
 import { postEventToProviders } from "app/utils/track/providers"
 import { Platform } from "react-native"
 
@@ -66,6 +66,7 @@ const AppTabs: React.FC = () => {
           const tabName = Object.keys(bottomTabsConfig).find((tab) => e.target?.startsWith(tab))
 
           if (tabName) {
+            switchTab(tabName as BottomTabType)
             postEventToProviders(
               tappedTabBar({
                 tab: bottomTabsConfig[tabName as BottomTabType].analyticsDescription,

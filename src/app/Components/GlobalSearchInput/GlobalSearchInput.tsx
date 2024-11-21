@@ -1,15 +1,18 @@
-import { ActionType, ContextModule } from "@artsy/cohesion"
+import { ActionType, OwnerType } from "@artsy/cohesion"
 import { Flex, RoundSearchInput, Touchable } from "@artsy/palette-mobile"
 import { GlobalSearchInputOverlay } from "app/Components/GlobalSearchInput/GlobalSearchInputOverlay"
+import { useDismissSearchOverlayOnTabBarPress } from "app/Components/GlobalSearchInput/utils/useDismissSearchOverlayOnTabBarPress"
 import { ICON_HIT_SLOP } from "app/Components/constants"
-import { useSelectedTab } from "app/utils/hooks/useSelectedTab"
 import { Fragment, useState } from "react"
 import { useTracking } from "react-tracking"
 
-export const GlobalSearchInput: React.FC<{}> = () => {
+export const GlobalSearchInput: React.FC<{
+  ownerType: OwnerType
+}> = ({ ownerType }) => {
   const [isVisible, setIsVisible] = useState(false)
   const tracking = useTracking()
-  const selectedTab = useSelectedTab()
+
+  useDismissSearchOverlayOnTabBarPress({ isVisible, ownerType, setIsVisible })
 
   return (
     <Fragment>
@@ -17,7 +20,7 @@ export const GlobalSearchInput: React.FC<{}> = () => {
         onPress={() => {
           tracking.trackEvent(
             tracks.tappedGlobalSearchBar({
-              contextModule: selectedTab as ContextModule,
+              ownerType,
             })
           )
           setIsVisible(true)
@@ -40,14 +43,18 @@ export const GlobalSearchInput: React.FC<{}> = () => {
           />
         </Flex>
       </Touchable>
-      <GlobalSearchInputOverlay visible={isVisible} hideModal={() => setIsVisible(false)} />
+      <GlobalSearchInputOverlay
+        ownerType={ownerType}
+        visible={isVisible}
+        hideModal={() => setIsVisible(false)}
+      />
     </Fragment>
   )
 }
 
 const tracks = {
-  tappedGlobalSearchBar: ({ contextModule }: { contextModule: ContextModule }) => ({
+  tappedGlobalSearchBar: ({ ownerType }: { ownerType: OwnerType }) => ({
     action: ActionType.tappedGlobalSearchBar,
-    context_module: contextModule,
+    context_screen_owner_type: ownerType,
   }),
 }

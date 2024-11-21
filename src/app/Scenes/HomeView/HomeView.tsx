@@ -205,7 +205,7 @@ export const HomeViewScreen: React.FC = () => {
         <Suspense fallback={<HomeViewScreenPlaceholder />}>
           <HomeView />
         </Suspense>
-        <PortalHost name="SearchOverlay" />
+        <PortalHost name={`${OwnerType.home}-SearchOverlay`} />
       </RetryErrorBoundary>
     </HomeViewStoreProvider>
   )

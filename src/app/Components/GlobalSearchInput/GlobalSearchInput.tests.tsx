@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { GlobalSearchInput } from "app/Components/GlobalSearchInput/GlobalSearchInput"
 import { useSelectedTab } from "app/utils/hooks/useSelectedTab"
@@ -8,6 +9,10 @@ jest.mock("app/utils/hooks/useSelectedTab", () => ({
   useSelectedTab: jest.fn(),
 }))
 
+jest.mock("app/Components/GlobalSearchInput/utils/useDismissSearchOverlayOnTabBarPress", () => ({
+  useDismissSearchOverlayOnTabBarPress: jest.fn(),
+}))
+
 describe("GlobalSearchInput", () => {
   const mockUseledTab = useSelectedTab as jest.Mock
 
@@ -16,20 +21,20 @@ describe("GlobalSearchInput", () => {
   })
 
   it("renders the search label properly", () => {
-    renderWithWrappers(<GlobalSearchInput />)
+    renderWithWrappers(<GlobalSearchInput ownerType={OwnerType.home} />)
 
     expect(/Search Artsy/).toBeTruthy()
   })
 
   it("tracks the search bar tapped event", () => {
-    renderWithWrappers(<GlobalSearchInput />)
+    renderWithWrappers(<GlobalSearchInput ownerType={OwnerType.home} />)
 
     fireEvent.press(screen.getByTestId("search-button"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({
         action: "tappedGlobalSearchBar",
-        context_module: "home",
+        context_screen_owner_type: "home",
       })
     )
   })
