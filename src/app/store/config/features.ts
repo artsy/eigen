@@ -200,12 +200,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableAlertBottomSheet",
   },
-  AREnableNewTermsAndConditions: {
-    description: "Enable new terms and conditions",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableNewTermsAndConditions",
-  },
   AREnableLongPressOnNewForYouRail: {
     description: "Enable Context Menu on artwork cards on new for you rail",
     readyForRelease: true,
