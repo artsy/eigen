@@ -22,11 +22,11 @@ export const HomeHeader: React.FC = () => {
             <PaymentFailureBanner />
           </Suspense>
         )}
-        <Flex py={2}>
+        <Flex pb={1} pt={2}>
           <Flex
             flexDirection="row"
             px={2}
-            gap={2}
+            gap={1}
             justifyContent="space-around"
             alignItems="center"
           >

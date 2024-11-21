@@ -20,7 +20,7 @@ export const GlobalSearchInputOverlayEmptyState = () => {
       <Text selectable={false} variant="lg-display" textAlign="center">
         Find the art you love
       </Text>
-      <Text selectable={false} variant="sm-display" textAlign="center" mt={1} color="black60">
+      <Text selectable={false} variant="sm" textAlign="center" mt={1} color="black60">
         Search for artists, artworks, galleries, and more. Save for later or add alerts.
       </Text>
     </Flex>

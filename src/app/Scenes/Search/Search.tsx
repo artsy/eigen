@@ -133,7 +133,7 @@ export const Search: React.FC = () => {
   return (
     <SearchContext.Provider value={searchProviderValues}>
       <ArtsyKeyboardAvoidingView>
-        <Flex p={2} pb={0}>
+        <Flex p={2} pb={enableNewSearchModal ? 1 : 0}>
           {enableNewSearchModal ? (
             <GlobalSearchInput ownerType={OwnerType.search} />
           ) : (
