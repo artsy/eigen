@@ -21,7 +21,7 @@ export const HomeHeader: React.FC = () => {
             <PaymentFailureBanner />
           </Suspense>
         )}
-        <Flex py={2}>
+        <Flex py={1}>
           <Flex
             flexDirection="row"
             px={2}
