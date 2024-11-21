@@ -1,4 +1,4 @@
-import { Text, LinkText, Checkbox, Button } from "@artsy/palette-mobile"
+import { Button, Checkbox, LinkText, Text } from "@artsy/palette-mobile"
 import { createToken } from "@stripe/stripe-react-native"
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { BidderPositionQuery$data } from "__generated__/BidderPositionQuery.graphql"
@@ -13,7 +13,6 @@ import { Address } from "app/Components/Bidding/types"
 import { Modal } from "app/Components/Modal"
 import Spinner from "app/Components/Spinner"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import * as navigation from "app/system/navigation/navigate"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import NavigatorIOS, {
@@ -25,7 +24,6 @@ import { TouchableWithoutFeedback } from "react-native"
 import relay from "react-relay"
 import { ReactTestRenderer } from "react-test-renderer"
 import { BidResultScreen } from "./BidResult"
-import { BillingAddress } from "./BillingAddress"
 import { ConfirmBid, ConfirmBidProps } from "./ConfirmBid"
 import { CreditCardForm } from "./CreditCardForm"
 import { SelectMaxBid } from "./SelectMaxBid"
@@ -67,11 +65,7 @@ describe("ConfirmBid", () => {
   })
 
   describe("disclaimer", () => {
-    describe("when the user is not registered and AREnableNewTermsAndConditions is disabled", () => {
-      beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewTermsAndConditions: false })
-      })
-
+    describe("when the user is not registered", () => {
       it("displays a checkbox", () => {
         renderWithWrappers(<ConfirmBid {...initialProps} />)
 
@@ -82,7 +76,7 @@ describe("ConfirmBid", () => {
         renderWithWrappers(<ConfirmBid {...initialProps} />)
 
         expect(screen.getByTestId("disclaimer")).toHaveTextContent(
-          "I agree to Artsy's and Christie's Conditions of Sale. I understand that all bids are binding and may not be retracted."
+          "I agree to Artsy's and Christie's General Terms and Conditions of Sale. I understand that all bids are binding and may not be retracted."
         )
       })
 
@@ -94,46 +88,15 @@ describe("ConfirmBid", () => {
 
         renderWithWrappers(<ConfirmBid {...initialProps} />)
 
-        fireEvent.press(screen.getByText("Artsy's and Christie's Conditions of Sale"))
+        fireEvent.press(
+          screen.getByText("Artsy's and Christie's General Terms and Conditions of Sale")
+        )
 
-        expect(navigation.navigate).toHaveBeenCalledWith("/conditions-of-sale")
-      })
-
-      describe("when AREnableNewTermsAndConditions is enabled", () => {
-        beforeEach(() => {
-          __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewTermsAndConditions: true })
-        })
-
-        it("displays a disclaimer", () => {
-          renderWithWrappers(<ConfirmBid {...initialProps} />)
-
-          expect(screen.getByTestId("disclaimer")).toHaveTextContent(
-            "I agree to Artsy's and Christie's General Terms and Conditions of Sale. I understand that all bids are binding and may not be retracted."
-          )
-        })
-
-        it("navigates to the terms screen when the user taps the link", () => {
-          jest.mock("app/system/navigation/navigate", () => ({
-            ...jest.requireActual("app/system/navigation/navigate"),
-            navigate: jest.fn(),
-          }))
-
-          renderWithWrappers(<ConfirmBid {...initialProps} />)
-
-          fireEvent.press(
-            screen.getByText("Artsy's and Christie's General Terms and Conditions of Sale")
-          )
-
-          expect(navigation.navigate).toHaveBeenCalledWith("/terms")
-        })
+        expect(navigation.navigate).toHaveBeenCalledWith("/terms")
       })
     })
 
-    describe("when the user is registered and AREnableNewTermsAndConditions is disabled", () => {
-      beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewTermsAndConditions: false })
-      })
-
+    describe("when the user is registered", () => {
       it("does not display a checkbox", () => {
         renderWithWrappers(<ConfirmBid {...initialPropsForRegisteredUser} />)
 
@@ -144,7 +107,7 @@ describe("ConfirmBid", () => {
         renderWithWrappers(<ConfirmBid {...initialPropsForRegisteredUser} />)
 
         expect(screen.getByTestId("disclaimer")).toHaveTextContent(
-          "I agree to Artsy's and Christie's Conditions of Sale. I understand that all bids are binding and may not be retracted."
+          "I agree to Artsy's and Christie's General Terms and Conditions of Sale. I understand that all bids are binding and may not be retracted."
         )
       })
 
@@ -156,75 +119,42 @@ describe("ConfirmBid", () => {
 
         renderWithWrappers(<ConfirmBid {...initialPropsForRegisteredUser} />)
 
-        fireEvent.press(screen.getByText("Artsy's and Christie's Conditions of Sale"))
+        fireEvent.press(
+          screen.getByText("Artsy's and Christie's General Terms and Conditions of Sale")
+        )
 
-        expect(navigation.navigate).toHaveBeenCalledWith("/conditions-of-sale")
-      })
-
-      describe("when AREnableNewTermsAndConditions is enabled", () => {
-        beforeEach(() => {
-          __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewTermsAndConditions: true })
-        })
-
-        it("displays a disclaimer", () => {
-          renderWithWrappers(<ConfirmBid {...initialPropsForRegisteredUser} />)
-
-          expect(screen.getByTestId("disclaimer")).toHaveTextContent(
-            "I agree to Artsy's and Christie's General Terms and Conditions of Sale. I understand that all bids are binding and may not be retracted."
-          )
-        })
-
-        it("navigates to the terms when the user taps the link", () => {
-          jest.mock("app/system/navigation/navigate", () => ({
-            ...jest.requireActual("app/system/navigation/navigate"),
-            navigate: jest.fn(),
-          }))
-
-          renderWithWrappers(<ConfirmBid {...initialPropsForRegisteredUser} />)
-
-          fireEvent.press(
-            screen.getByText("Artsy's and Christie's General Terms and Conditions of Sale")
-          )
-
-          expect(navigation.navigate).toHaveBeenCalledWith("/terms")
-        })
+        expect(navigation.navigate).toHaveBeenCalledWith("/terms")
       })
     })
   })
 
   it("enables the bid button when checkbox is ticked", () => {
-    const component = mountConfirmBidComponent(initialProps)
-
-    expect(findPlaceBidButton(component).props.onPress).toBeFalsy()
-
-    component.root.findByType(Checkbox).props.onPress()
-
-    expect(findPlaceBidButton(component).props.onPress).toBeDefined()
+    renderWithWrappers(<ConfirmBid {...initialProps} />)
+    expect(screen.getByTestId("bid-button")).toBeDisabled()
+    fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
+    expect(screen.getByTestId("bid-button")).toBeEnabled()
   })
 
   it("enables the bid button by default if the user is registered", () => {
-    const component = mountConfirmBidComponent(initialPropsForRegisteredUser)
-
-    expect(findPlaceBidButton(component).props.onPress).toBeDefined()
+    renderWithWrappers(<ConfirmBid {...initialPropsForRegisteredUser} />)
+    expect(screen.getByTestId("bid-button")).toBeEnabled()
   })
 
   it("displays the artwork title correctly with date", () => {
-    const component = mountConfirmBidComponent(initialProps)
-
-    expect(serifChildren(component)).toContain(", 2015")
+    renderWithWrappers(<ConfirmBid {...initialProps} />)
+    expect(screen.getByTestId("artwork-title")).toHaveTextContent(/^Meteor Shower, 2015$/)
   })
 
   it("displays the artwork title correctly without date", () => {
     const datelessProps = merge({}, initialProps, { sale_artwork: { artwork: { date: null } } })
-    const component = renderWithWrappersLEGACY(<ConfirmBid {...datelessProps} />)
-
-    expect(serifChildren(component)).not.toContain(`${saleArtwork.artwork!.title},`)
+    renderWithWrappers(<ConfirmBid {...datelessProps} />)
+    expect(screen.getByTestId("artwork-title")).toHaveTextContent(/^Meteor Shower$/)
   })
 
-  it("can load and display price summary", () => {
-    const component = mountConfirmBidComponent(initialProps)
+  it("can load and display price summary", async () => {
+    const view = mountConfirmBidComponent(initialProps)
 
-    expect(component.root.findAllByType(Spinner).length).toEqual(1)
+    expect((await view.root.findAllByType(Spinner)).length).toEqual(1)
     getMockRelayEnvironment().mock.resolveMostRecentOperation(() => ({
       data: {
         node: {
@@ -241,10 +171,10 @@ describe("ConfirmBid", () => {
       },
     }))
 
-    expect(component.root.findAllByType(Spinner).length).toEqual(0)
+    expect((await view.root.findAllByType(Spinner)).length).toEqual(0)
 
-    const TextText = component.root
-      .findAllByType(Text)
+    const TextText = (await view.root.findAllByType(Text))
+      // eslint-disable-next-line testing-library/no-node-access
       .map((TextComponent) => TextComponent.props.children as string)
       .join(" ")
 
@@ -255,24 +185,16 @@ describe("ConfirmBid", () => {
 
   describe("checkbox and payment info display", () => {
     it("shows no checkbox or payment info if the user is registered", () => {
-      const component = mountConfirmBidComponent(initialPropsForRegisteredUser)
-
-      expect(component.root.findAllByType(Checkbox).length).toEqual(0)
-      expect(component.root.findAllByType(BidInfoRow).length).toEqual(1)
-
-      const serifs = component.root.findAllByType(Text)
-      expect(
-        serifs.find(
-          (s) => s.props.children.join && s.props.children.join("").includes("I agree to")
-        )
-      ).toBeTruthy()
+      renderWithWrappers(<ConfirmBid {...initialPropsForRegisteredUser} />)
+      expect(screen.queryByTestId("disclaimer-checkbox")).toBeNull()
+      expect(screen.queryByTestId("payment-info-row")).toBeNull()
+      expect(screen.getByTestId("disclaimer-text")).toHaveTextContent("I agree to")
     })
 
     it("shows a checkbox but no payment info if the user is not registered and has cc on file", () => {
-      const component = mountConfirmBidComponent(initialProps)
-
-      expect(component.root.findAllByType(Checkbox).length).toEqual(1)
-      expect(component.root.findAllByType(BidInfoRow).length).toEqual(1)
+      renderWithWrappers(<ConfirmBid {...initialProps} />)
+      expect(screen.getByTestId("disclaimer-checkbox")).toBeDefined()
+      expect(screen.queryByTestId("payment-info-row")).toBeNull()
     })
 
     it("shows a checkbox and payment info if the user is not registered and has no cc on file", async () => {
@@ -288,47 +210,42 @@ describe("ConfirmBid", () => {
 
   describe("when pressing bid button", () => {
     it("commits mutation", () => {
-      const component = mountConfirmBidComponent(initialProps)
-
-      component.root.findByType(Checkbox).props.onPress()
-
+      renderWithWrappers(<ConfirmBid {...initialProps} />)
+      fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
       relay.commitMutation = jest.fn()
-
-      findPlaceBidButton(component).props.onPress()
+      fireEvent.press(screen.getByTestId("bid-button"))
       expect(relay.commitMutation).toHaveBeenCalled()
     })
 
-    it("shows a spinner", () => {
-      const component = mountConfirmBidComponent(initialProps)
+    it("shows a spinner", async () => {
+      const view = mountConfirmBidComponent(initialProps)
 
-      component.root.findByType(Checkbox).props.onPress()
+      ;(await view.root.findByType(Checkbox)).props.onPress()
       relay.commitMutation = jest.fn()
-      const placeBidButton = findPlaceBidButton(component)
+      const placeBidButton = await findPlaceBidButton(view)
 
       placeBidButton.props.onPress()
 
       expect(placeBidButton.props.loading).toEqual(true)
     })
 
-    it("disables tap events while a spinner is being shown", () => {
+    it("disables tap events while a spinner is being shown", async () => {
       const navigator = { push: jest.fn() } as any
       relay.commitMutation = jest.fn()
 
-      const component = mountConfirmBidComponent({ ...initialPropsForUnqualifiedUser, navigator })
+      const view = mountConfirmBidComponent({ ...initialPropsForUnqualifiedUser, navigator })
 
-      component.root.findByType(ConfirmBid).instance.setState({
+      ;(await view.root.findByType(ConfirmBid)).instance.setState({
         conditionsOfSaleChecked: true,
         creditCardToken: stripeToken,
         billingAddress,
       })
+      ;(await findPlaceBidButton(view)).props.onPress()
 
-      findPlaceBidButton(component).props.onPress()
-
-      const yourMaxBidRow = component.root.findAllByType(TouchableWithoutFeedback)[0]
-      const creditCardRow = component.root.findAllByType(TouchableWithoutFeedback)[1]
-      const billingAddressRow = component.root.findAllByType(TouchableWithoutFeedback)[2]
-      const conditionsOfSaleLink = component.root.findByType(LinkText)
-      const conditionsOfSaleCheckbox = component.root.findByType(Checkbox)
+      const yourMaxBidRow = (await view.root.findAllByType(TouchableWithoutFeedback))[0]
+      const creditCardRow = (await view.root.findAllByType(TouchableWithoutFeedback))[1]
+      const conditionsOfSaleLink = await view.root.findByType(LinkText)
+      const conditionsOfSaleCheckbox = await view.root.findByType(Checkbox)
 
       fireEvent.press(yourMaxBidRow)
 
@@ -338,24 +255,21 @@ describe("ConfirmBid", () => {
 
       expect(navigator.push).not.toHaveBeenCalled()
 
-      fireEvent.press(billingAddressRow)
-
-      expect(navigator.push).not.toHaveBeenCalled()
       expect(conditionsOfSaleLink.props.onPress).toBeUndefined()
       expect(conditionsOfSaleCheckbox.props.disabled).toBeTruthy()
     })
 
     describe("when pressing bid", () => {
       it("commits the mutation", () => {
-        const component = mountConfirmBidComponent(initialProps)
+        renderWithWrappers(<ConfirmBid {...initialProps} />)
 
-        component.root.findByType(Checkbox).props.onPress()
+        fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
         bidderPositionQueryMock.mockReturnValueOnce(
           Promise.resolve(mockRequestResponses.pollingForBid.highestBidder)
         )
         relay.commitMutation = jest.fn()
 
-        findPlaceBidButton(component).props.onPress()
+        fireEvent.press(screen.getByTestId("bid-button"))
 
         expect(relay.commitMutation).toHaveBeenCalled()
       })
@@ -363,25 +277,25 @@ describe("ConfirmBid", () => {
       describe("when mutation fails", () => {
         it("does not verify bid position", () => {
           // Probably due to a network problem.
-          const component = mountConfirmBidComponent(initialProps)
+          renderWithWrappers(<ConfirmBid {...initialProps} />)
 
-          component.root.findByType(Checkbox).props.onPress()
+          fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
           console.error = jest.fn() // Silences component logging.
           relay.commitMutation = commitMutationMock((_, { onError }) => {
             onError!(new Error("An error occurred."))
             return { dispose: jest.fn() }
           }) as any
 
-          findPlaceBidButton(component).props.onPress()
+          fireEvent.press(screen.getByTestId("bid-button"))
 
           expect(relay.commitMutation).toHaveBeenCalled()
           expect(bidderPositionQueryMock).not.toHaveBeenCalled()
         })
 
         it("displays an error message on a network failure", () => {
-          const component = mountConfirmBidComponent(initialProps)
+          renderWithWrappers(<ConfirmBid {...initialProps} />)
 
-          component.root.findByType(Checkbox).props.onPress()
+          fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
           console.error = jest.fn() // Silences component logging.
 
           // A TypeError is raised when the device has no internet connection.
@@ -390,7 +304,7 @@ describe("ConfirmBid", () => {
             return { dispose: jest.fn() }
           }) as any
 
-          findPlaceBidButton(component).props.onPress()
+          fireEvent.press(screen.getByTestId("bid-button"))
 
           expect(nextStep?.component).toEqual(BidResultScreen)
           expect(nextStep?.passProps).toEqual(
@@ -415,10 +329,10 @@ describe("ConfirmBid", () => {
             return { dispose: jest.fn() }
           }) as any
 
-          const component = mountConfirmBidComponent(initialProps)
+          renderWithWrappers(<ConfirmBid {...initialProps} />)
 
-          component.root.findByType(Checkbox).props.onPress()
-          findPlaceBidButton(component).props.onPress()
+          fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
+          fireEvent.press(screen.getByTestId("bid-button"))
 
           await waitFor(() => !!nextStep)
 
@@ -438,7 +352,7 @@ describe("ConfirmBid", () => {
   })
 
   describe("editing bid amount", () => {
-    it("allows you to go to the max bid edit screen and select a new max bid", () => {
+    it("allows you to go to the max bid edit screen and select a new max bid", async () => {
       const fakeNavigator = new FakeNavigator()
       const fakeNavigatorProps = {
         ...initialPropsForRegisteredUser,
@@ -457,23 +371,24 @@ describe("ConfirmBid", () => {
         passProps: fakeNavigatorProps,
       })
 
-      const component = mountConfirmBidComponent({
+      const view = mountConfirmBidComponent({
         ...initialPropsForRegisteredUser,
         navigator: fakeNavigator,
       })
 
-      const selectMaxBidRow = component.root.findAllByType(TouchableWithoutFeedback)[0]
+      const selectMaxBidRow = (await view.root.findAllByType(TouchableWithoutFeedback))[0]
 
-      expect(selectMaxBidRow.findAllByType(Text)[1].props.children).toEqual("$45,000")
+      // eslint-disable-next-line testing-library/no-node-access
+      expect((await selectMaxBidRow.findAllByType(Text))[1].props.children).toEqual("$45,000")
 
       fireEvent.press(selectMaxBidRow)
 
-      const editScreen = fakeNavigator.nextStep().root.findByType(SelectMaxBid)
+      const editScreen = await fakeNavigator.nextStep().root.findByType(SelectMaxBid)
 
       expect(editScreen.props.selectedBidIndex).toEqual(0)
 
       editScreen.instance.setState({ selectedBidIndex: 1 })
-      editScreen.findByType(Button).props.onPress()
+      ;(await editScreen.findByType(Button)).props.onPress()
 
       const { selectedBidIndex } = fakeNavigator.nextRoute().passProps as any
       expect(selectedBidIndex).toEqual(1)
@@ -483,9 +398,9 @@ describe("ConfirmBid", () => {
   describe("polling to verify bid position", () => {
     describe("bid success", () => {
       it("polls for new results", async () => {
-        const component = mountConfirmBidComponent(initialProps)
+        renderWithWrappers(<ConfirmBid {...initialProps} />)
 
-        component.root.findByType(Checkbox).props.onPress()
+        fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
         relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
           onCompleted!(mockRequestResponses.placingBid.bidAccepted, null)
           return { dispose: jest.fn() }
@@ -500,7 +415,7 @@ describe("ConfirmBid", () => {
           }
         })
 
-        findPlaceBidButton(component).props.onPress()
+        fireEvent.press(screen.getByTestId("bid-button"))
         await waitFor(() => !!nextStep)
 
         expect(nextStep?.component).toEqual(BidResultScreen)
@@ -513,9 +428,9 @@ describe("ConfirmBid", () => {
       })
 
       it("shows error when polling attempts exceed max", async () => {
-        const component = mountConfirmBidComponent(initialProps)
+        renderWithWrappers(<ConfirmBid {...initialProps} />)
 
-        component.root.findByType(Checkbox).props.onPress()
+        fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
         bidderPositionQueryMock.mockReturnValue(
           Promise.resolve(mockRequestResponses.pollingForBid.pending)
         )
@@ -524,7 +439,7 @@ describe("ConfirmBid", () => {
           return { dispose: jest.fn() }
         }) as any
 
-        findPlaceBidButton(component).props.onPress()
+        fireEvent.press(screen.getByTestId("bid-button"))
         await waitFor(() => !!nextStep)
 
         expect(nextStep?.component).toEqual(BidResultScreen)
@@ -536,9 +451,9 @@ describe("ConfirmBid", () => {
       })
 
       it("shows successful bid result when highest bidder", async () => {
-        const component = mountConfirmBidComponent(initialProps)
+        renderWithWrappers(<ConfirmBid {...initialProps} />)
 
-        component.root.findByType(Checkbox).props.onPress()
+        fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
         bidderPositionQueryMock.mockReturnValueOnce(
           Promise.resolve(mockRequestResponses.pollingForBid.highestBidder)
         )
@@ -547,7 +462,7 @@ describe("ConfirmBid", () => {
           return { dispose: jest.fn() }
         }) as any
 
-        findPlaceBidButton(component).props.onPress()
+        fireEvent.press(screen.getByTestId("bid-button"))
         await waitFor(() => !!nextStep)
 
         expect(nextStep?.component).toEqual(BidResultScreen)
@@ -560,9 +475,9 @@ describe("ConfirmBid", () => {
       })
 
       it("shows outbid bidSuccessResult when outbid", async () => {
-        const component = mountConfirmBidComponent(initialProps)
+        renderWithWrappers(<ConfirmBid {...initialProps} />)
 
-        component.root.findByType(Checkbox).props.onPress()
+        fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
         bidderPositionQueryMock.mockReturnValueOnce(
           Promise.resolve(mockRequestResponses.pollingForBid.outbid)
         )
@@ -571,7 +486,7 @@ describe("ConfirmBid", () => {
           return { dispose: jest.fn() }
         }) as any
 
-        findPlaceBidButton(component).props.onPress()
+        fireEvent.press(screen.getByTestId("bid-button"))
         await waitFor(() => !!nextStep)
 
         expect(nextStep?.component).toEqual(BidResultScreen)
@@ -583,9 +498,9 @@ describe("ConfirmBid", () => {
       })
 
       it("shows reserve not met when reserve is not met", async () => {
-        const component = mountConfirmBidComponent(initialProps)
+        renderWithWrappers(<ConfirmBid {...initialProps} />)
 
-        component.root.findByType(Checkbox).props.onPress()
+        fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
         bidderPositionQueryMock.mockReturnValueOnce(
           Promise.resolve(mockRequestResponses.pollingForBid.reserveNotMet)
         )
@@ -594,7 +509,7 @@ describe("ConfirmBid", () => {
           return { dispose: jest.fn() }
         }) as any
 
-        findPlaceBidButton(component).props.onPress()
+        fireEvent.press(screen.getByTestId("bid-button"))
         await waitFor(() => !!nextStep)
 
         expect(nextStep?.component).toEqual(BidResultScreen)
@@ -608,12 +523,16 @@ describe("ConfirmBid", () => {
 
       it("updates the main auction screen", async () => {
         const mockedMockNavigator = { push: jest.fn() }
-        const component = mountConfirmBidComponent({
-          ...initialProps,
-          navigator: mockedMockNavigator as any,
-          refreshSaleArtwork: jest.fn(),
-        })
-        component.root.findByType(Checkbox).props.onPress()
+
+        renderWithWrappers(
+          <ConfirmBid
+            {...initialProps}
+            navigator={mockedMockNavigator as any}
+            refreshSaleArtwork={jest.fn()}
+          />
+        )
+
+        fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
         bidderPositionQueryMock.mockReturnValueOnce(
           Promise.resolve(mockRequestResponses.pollingForBid.reserveNotMet)
         )
@@ -622,7 +541,7 @@ describe("ConfirmBid", () => {
           return { dispose: jest.fn() }
         }) as any
 
-        findPlaceBidButton(component).props.onPress()
+        fireEvent.press(screen.getByTestId("bid-button"))
         await waitFor(() => mockPostNotificationName.mock.calls.length > 0)
 
         expect(mockPostNotificationName).toHaveBeenCalledWith(
@@ -687,15 +606,17 @@ describe("ConfirmBid", () => {
 
     describe("bid failure", () => {
       it("shows the error screen with a failure", async () => {
-        const component = mountConfirmBidComponent(initialProps)
+        renderWithWrappers(<ConfirmBid {...initialProps} />)
 
-        component.root.findByType(Checkbox).props.onPress()
+        fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
+
         relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
           onCompleted!(mockRequestResponses.placingBid.bidRejected, null)
           return { dispose: jest.fn() }
         }) as any
 
-        findPlaceBidButton(component).props.onPress()
+        fireEvent.press(screen.getByTestId("bid-button"))
+
         await waitFor(() => !!nextStep)
 
         expect(nextStep?.component).toEqual(BidResultScreen)
@@ -723,30 +644,9 @@ describe("ConfirmBid", () => {
       bidButton.props.onPress()
     }
 
-    // skipping since we don't have billing address now
-    xit("shows the billing address that the user typed in the billing address form", () => {
-      const billingAddressRow = mountConfirmBidComponent(
-        initialPropsForUnqualifiedUser
-      ).root.findAllByType(TouchableWithoutFeedback)[2]
-
-      billingAddressRow.instance.props.onPress()
-
-      const passProps = nextStep?.passProps as {
-        onSubmit: (address: Address) => void
-      }
-
-      expect(nextStep?.component).toEqual(BillingAddress)
-      passProps.onSubmit(billingAddress)
-
-      expect(billingAddressRow.findAllByType(Text)[1].props.children).toEqual(
-        "401 Broadway 25th floor New York NY"
-      )
-    })
-
-    it("shows the credit card form when the user tap the edit text in the credit card row", () => {
-      const creditcardRow = mountConfirmBidComponent(
-        initialPropsForUnqualifiedUser
-      ).root.findAllByType(TouchableWithoutFeedback)[1]
+    it("shows the credit card form when the user tap the edit text in the credit card row", async () => {
+      const view = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
+      const creditcardRow = (await view.root.findAllByType(TouchableWithoutFeedback))[1]
 
       fireEvent.press(creditcardRow)
 
@@ -820,14 +720,15 @@ describe("ConfirmBid", () => {
         return { dispose: jest.fn() }
       }) as any
 
-      const component = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
+      const view = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
 
-      await fillOutFormAndSubmit(component)
+      await fillOutFormAndSubmit(view)
 
-      const modal = await component.root.findByType(Modal)
+      const modal = await view.root.findByType(Modal)
       const modalText = await modal.findAllByType(Text)
       const modalButton = await modal.findByType(Button)
 
+      // eslint-disable-next-line testing-library/no-node-access
       expect(modalText[1].props.children).toEqual([
         "There was a problem processing your information. Check your payment details and try again.",
       ])
@@ -874,9 +775,9 @@ describe("ConfirmBid", () => {
         return { dispose: jest.fn() }
       }) as any
 
-      const component = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
+      const view = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
 
-      await fillOutFormAndSubmit(component)
+      await fillOutFormAndSubmit(view)
 
       expect(nextStep?.component).toEqual(BidResultScreen)
       expect(nextStep?.passProps).toEqual(
@@ -975,9 +876,9 @@ describe("ConfirmBid", () => {
         console.error = jest.fn() // Silences component logging.
         bidderPositionQueryMock.mockReturnValueOnce(Promise.reject({ message: "error" }))
 
-        const component = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
+        const view = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
 
-        fillOutFormAndSubmit(component)
+        fillOutFormAndSubmit(view)
         await waitFor(() => !!nextStep)
 
         expect(nextStep?.component).toEqual(BidResultScreen)
@@ -998,21 +899,15 @@ describe("ConfirmBid", () => {
     it("sale endtime defaults to extendedBiddingEndtime", () => {
       renderWithWrappers(<ConfirmBid {...initialPropsForCascadingSale} />)
 
-      expect(screen.queryByText("00d 00h 00m 10s")).toBeOnTheScreen()
+      expect(screen.getByText("00d 00h 00m 10s")).toBeOnTheScreen()
     })
 
     it("shows the sale's end time if the sale does not have cascading end times", () => {
       renderWithWrappers(<ConfirmBid {...initialPropsForNonCascadingSale} />)
 
-      expect(screen.queryByText("00d 00h 00m 10s")).toBeOnTheScreen()
+      expect(screen.getByText("00d 00h 00m 10s")).toBeOnTheScreen()
     })
   })
-
-  const serifChildren = (comp: ReactTestRenderer) =>
-    comp.root
-      .findAllByType(Text)
-      .map((c) => (c.props.children.join ? c.props.children.join("") : c.props.children))
-      .join(" ")
 
   const baseSaleArtwork = {
     id: "node-id",
