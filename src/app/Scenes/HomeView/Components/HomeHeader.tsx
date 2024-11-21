@@ -25,7 +25,7 @@ export const HomeHeader: React.FC = () => {
           <Flex
             flexDirection="row"
             px={2}
-            gap={2}
+            gap={1}
             justifyContent="space-around"
             alignItems="center"
           >
