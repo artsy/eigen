@@ -242,12 +242,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableCollectionsWithoutHeaderImage",
   },
-  AREnableArtworkRailRedesignImageAspectRatio: {
-    description: "Enable new aspect ratio for artwork rail images",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableArtworkRailRedesignImageAspectRatio",
-  },
   ARUseMetaphysicsCDN: {
     description: "Use Metaphysics CDN (requires app restart)",
     readyForRelease: true,
