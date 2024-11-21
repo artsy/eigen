@@ -9,91 +9,91 @@ import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"
 
 describe("Registration result component", () => {
   it("renders registration pending properly", () => {
-    const tree = renderWithWrappersLEGACY(
+    const view = renderWithWrappersLEGACY(
       <RegistrationResult
         status={RegistrationStatus.RegistrationStatusPending}
         needsIdentityVerification={false}
       />
     )
-    expect(extractText(tree.root)).toMatch("Registration pending")
-    expect(extractText(tree.root)).toMatch(
+    expect(extractText(view.root)).toMatch("Registration pending")
+    expect(extractText(view.root)).toMatch(
       "Artsy is reviewing your registration and you will receive an email when it has been confirmed. Please email "
     )
-    expect(extractText(tree.root)).not.toMatch(
+    expect(extractText(view.root)).not.toMatch(
       "This auction requires Artsy to verify your identity before bidding."
     )
   })
 
   it("renders registration pending with an explanation about IDV", () => {
-    const tree = renderWithWrappersLEGACY(
+    const view = renderWithWrappersLEGACY(
       <RegistrationResult
         status={RegistrationStatus.RegistrationStatusPending}
         needsIdentityVerification
       />
     )
 
-    expect(extractText(tree.root)).toMatch("Registration pending")
-    expect(extractText(tree.root)).toMatch(
+    expect(extractText(view.root)).toMatch("Registration pending")
+    expect(extractText(view.root)).toMatch(
       "This auction requires Artsy to verify your identity before bidding."
     )
-    expect(extractText(tree.root)).not.toMatch(
+    expect(extractText(view.root)).not.toMatch(
       "Artsy is reviewing your registration and you will receive an email when it has been confirmed. Please email "
     )
   })
 
-  it("does not render the icon when the registration status is pending", () => {
-    const component = renderWithWrappersLEGACY(
+  it("does not render the icon when the registration status is pending", async () => {
+    const view = renderWithWrappersLEGACY(
       <RegistrationResult status={RegistrationStatus.RegistrationStatusPending} />
     )
 
-    expect(component.root.findAllByType(Icon20).length).toEqual(0)
+    expect((await view.root.findAllByType(Icon20)).length).toEqual(0)
   })
 
   it("renders registration complete properly", () => {
-    const tree = renderWithWrappersLEGACY(
+    const view = renderWithWrappersLEGACY(
       <RegistrationResult status={RegistrationStatus.RegistrationStatusComplete} />
     )
-    expect(extractText(tree.root)).toMatch("Registration complete")
+    expect(extractText(view.root)).toMatch("Registration complete")
   })
 
   it("renders registration error properly", () => {
-    const tree = renderWithWrappersLEGACY(
+    const view = renderWithWrappersLEGACY(
       <RegistrationResult status={RegistrationStatus.RegistrationStatusError} />
     )
 
-    expect(extractText(tree.root)).toMatch("An error occurred")
-    expect(extractText(tree.root)).toMatch("Please contact")
-    expect(extractText(tree.root)).toMatch("with any questions.")
+    expect(extractText(view.root)).toMatch("An error occurred")
+    expect(extractText(view.root)).toMatch("Please contact")
+    expect(extractText(view.root)).toMatch("with any questions.")
   })
 
   it("renders an error screen when the status is a network error", () => {
-    const tree = renderWithWrappersLEGACY(
+    const view = renderWithWrappersLEGACY(
       <RegistrationResult status={RegistrationStatus.RegistrationStatusNetworkError} />
     )
 
-    expect(extractText(tree.root)).toMatch("An error occurred")
-    expect(extractText(tree.root)).toMatch("Please\ncheck your internet connection\nand try again.")
+    expect(extractText(view.root)).toMatch("An error occurred")
+    expect(extractText(view.root)).toMatch("Please\ncheck your internet connection\nand try again.")
   })
 
   it("renders registration error and mailto link properly", async () => {
     Linking.canOpenURL = jest.fn().mockReturnValue(Promise.resolve(true))
     Linking.openURL = jest.fn()
 
-    const component = renderWithWrappersLEGACY(
+    const view = renderWithWrappersLEGACY(
       <RegistrationResult status={RegistrationStatus.RegistrationStatusError} />
     )
-    await component.root.findByType(LinkText).props.onPress()
+    await (await view.root.findByType(LinkText)).props.onPress()
     expect(Linking.openURL).toBeCalledWith("mailto:support@artsy.net")
   })
 
-  it("dismisses the controller when the continue button is pressed", () => {
+  it("dismisses the controller when the continue button is pressed", async () => {
     jest.useFakeTimers({
       legacyFakeTimers: true,
     })
-    const component = renderWithWrappersLEGACY(
+    const view = renderWithWrappersLEGACY(
       <RegistrationResult status={RegistrationStatus.RegistrationStatusComplete} />
     )
-    component.root.findByType(Button).props.onPress()
+    ;(await view.root.findByType(Button)).props.onPress()
     jest.runAllTicks()
 
     expect(dismissModal).toHaveBeenCalled()
