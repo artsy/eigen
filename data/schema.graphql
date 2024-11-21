@@ -8846,31 +8846,31 @@ type DeleteCreditCardPayload {
   me: Me
 }
 
-type DeleteDiscoveryUserReferencesMutationFailure {
+type DeleteDiscoveryUserMutationFailure {
   mutationError: GravityMutationError
 }
 
-input DeleteDiscoveryUserReferencesMutationInput {
+input DeleteDiscoveryUserMutationInput {
   clientMutationId: String
 
   # The user's ID
   userId: String!
 }
 
-type DeleteDiscoveryUserReferencesMutationPayload {
+type DeleteDiscoveryUserMutationPayload {
   clientMutationId: String
 
   # On success: return boolean. On failure: MutationError.
-  deleteDiscoveryUserReferencesResponseOrError: DeleteDiscoveryUserReferencesResponseOrError
+  deleteDiscoveryUserResponseOrError: DeleteDiscoveryUserResponseOrError
 }
 
-type DeleteDiscoveryUserReferencesMutationSuccess {
+type DeleteDiscoveryUserMutationSuccess {
   success: Boolean
 }
 
-union DeleteDiscoveryUserReferencesResponseOrError =
-    DeleteDiscoveryUserReferencesMutationFailure
-  | DeleteDiscoveryUserReferencesMutationSuccess
+union DeleteDiscoveryUserResponseOrError =
+    DeleteDiscoveryUserMutationFailure
+  | DeleteDiscoveryUserMutationSuccess
 
 type DeleteFeatureFailure {
   mutationError: GravityMutationError
@@ -13645,10 +13645,10 @@ type Mutation {
   # Remove a credit card
   deleteCreditCard(input: DeleteCreditCardInput!): DeleteCreditCardPayload
 
-  # Deletes a user artwork references in weaviate
-  deleteDiscoveryUserReferences(
-    input: DeleteDiscoveryUserReferencesMutationInput!
-  ): DeleteDiscoveryUserReferencesMutationPayload
+  # Deletes a user from the Infinite Discovery system.
+  deleteDiscoveryUserMutation(
+    input: DeleteDiscoveryUserMutationInput!
+  ): DeleteDiscoveryUserMutationPayload
 
   # deletes a feature.
   deleteFeature(input: DeleteFeatureMutationInput!): DeleteFeatureMutationPayload
