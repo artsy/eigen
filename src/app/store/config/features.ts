@@ -200,12 +200,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableAlertBottomSheet",
   },
-  AREnableNewTermsAndConditions: {
-    description: "Enable new terms and conditions",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableNewTermsAndConditions",
-  },
   AREnableLongPressOnNewForYouRail: {
     description: "Enable Context Menu on artwork cards on new for you rail",
     readyForRelease: true,
@@ -241,12 +235,6 @@ export const features = {
     readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableCollectionsWithoutHeaderImage",
-  },
-  AREnableArtworkRailRedesignImageAspectRatio: {
-    description: "Enable new aspect ratio for artwork rail images",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableArtworkRailRedesignImageAspectRatio",
   },
   ARUseMetaphysicsCDN: {
     description: "Use Metaphysics CDN (requires app restart)",
@@ -288,7 +276,7 @@ export const features = {
     description: "Redesign Save CTA and Add Follow CTA on Artwork Grid/Rail",
     readyForRelease: false,
     showInDevMenu: true,
-    /* echoFlagKey: "AREnableNewSaveAndFollowOnArtworkCard" */
+    echoFlagKey: "AREnableNewSaveAndFollowOnArtworkCard",
   },
   AREnablePaymentFailureBanner: {
     description: "Enable payment failure banner",

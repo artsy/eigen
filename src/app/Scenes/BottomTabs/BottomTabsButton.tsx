@@ -121,7 +121,7 @@ export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
       }}
       {...buttonProps}
     >
-      <View style={{ flex: 1 }}>
+      <Flex flex={1} pt={enableNewNavigation ? 0.5 : 0}>
         <ProgressiveOnboardingFindSavedArtwork tab={tab}>
           <Flex flex={1} alignItems="center" overflow="hidden">
             <Flex flex={1} height={ICON_HEIGHT} width={ICON_WIDTH} justifyContent="center">
@@ -188,7 +188,7 @@ export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
             </View>
           </IconWrapper>
         )}
-      </View>
+      </Flex>
     </Touchable>
   )
 }

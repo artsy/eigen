@@ -732,7 +732,7 @@ export const ArtworkContainer = createRefetchContainer(
           type
           isInquireable
         }
-        artist {
+        artist(shallow: true) {
           biographyBlurb {
             text
           }
@@ -774,7 +774,7 @@ export const ArtworkContainer = createRefetchContainer(
             }
           }
         }
-        artists {
+        artists(shallow: true) {
           isConsignable
         }
         isEligibleForArtsyGuarantee

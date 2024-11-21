@@ -119,7 +119,7 @@ const artworkFragment = graphql`
   fragment ArtworkLotDetails_artwork on Artwork {
     isForSale
     title
-    artist {
+    artist(shallow: true) {
       name
     }
     sale {

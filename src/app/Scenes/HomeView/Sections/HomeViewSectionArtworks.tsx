@@ -11,19 +11,17 @@ import {
 import { ArtworkRail_artworks$data } from "__generated__/ArtworkRail_artworks.graphql"
 import { HomeViewSectionArtworksQuery } from "__generated__/HomeViewSectionArtworksQuery.graphql"
 import { HomeViewSectionArtworks_section$key } from "__generated__/HomeViewSectionArtworks_section.graphql"
-import { ARTWORK_RAIL_IMAGE_WIDTH, ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
+import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import {
   ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
   ARTWORK_RAIL_MIN_IMAGE_WIDTH,
 } from "app/Components/ArtworkRail/ArtworkRailCardImage"
-import { LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT } from "app/Components/ArtworkRail/LegacyArtworkRailCardImage"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
@@ -151,9 +149,6 @@ const homeViewSectionArtworksQuery = graphql`
 
 const HomeViewSectionArtworksPlaceholder: React.FC<FlexProps> = (flexProps) => {
   const randomValue = useMemoizedRandom()
-  const enableArtworkRailRedesignImageAspectRatio = useFeatureFlag(
-    "AREnableArtworkRailRedesignImageAspectRatio"
-  )
 
   return (
     <Skeleton>
@@ -166,17 +161,10 @@ const HomeViewSectionArtworksPlaceholder: React.FC<FlexProps> = (flexProps) => {
             <Join separator={<Spacer x={2} />}>
               {times(2 + randomValue * 10).map((index) => (
                 <Flex key={index}>
-                  {enableArtworkRailRedesignImageAspectRatio ? (
-                    <SkeletonBox
-                      height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
-                      width={ARTWORK_RAIL_MIN_IMAGE_WIDTH * 2}
-                    />
-                  ) : (
-                    <SkeletonBox
-                      height={LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
-                      width={ARTWORK_RAIL_IMAGE_WIDTH}
-                    />
-                  )}
+                  <SkeletonBox
+                    height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
+                    width={ARTWORK_RAIL_MIN_IMAGE_WIDTH * 2}
+                  />
                   <Spacer y={1} />
 
                   <Join separator={<Spacer y={0.5} />}>

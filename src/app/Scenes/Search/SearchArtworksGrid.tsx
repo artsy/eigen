@@ -107,6 +107,7 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
           // this number is the estimated size of the artworkGridItem component
           estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
           keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="on-drag"
           ListEmptyComponent={
             <Box mb="80px" pt={6}>
               <Box px={2}>

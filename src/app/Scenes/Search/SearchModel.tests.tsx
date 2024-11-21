@@ -94,6 +94,12 @@ describe("Recent Searches", () => {
 })
 
 describe(useRecentSearches, () => {
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({
+      AREnableNewSearchModal: true,
+    })
+  })
+
   it("truncates the list of recent searches", async () => {
     let localRecentSearches: SearchModel["recentSearches"] = []
     let globalRecentSearches: SearchModel["recentSearches"] = []
@@ -128,7 +134,7 @@ describe(useRecentSearches, () => {
 
     await flushPromiseQueue()
 
-    expect(localRecentSearches.length).toBe(5)
+    expect(localRecentSearches.length).toBe(10)
     expect(globalRecentSearches.length).toBe(10)
 
     tree.update(
@@ -139,7 +145,7 @@ describe(useRecentSearches, () => {
 
     await flushPromiseQueue()
 
-    expect(localRecentSearches.length).toBe(8)
+    expect(localRecentSearches.length).toBe(10)
     expect(globalRecentSearches.length).toBe(10)
   })
 })

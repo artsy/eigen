@@ -32,11 +32,11 @@ export const CollectionRail: FC<CollectionRailProps> = ({
   const collection = useFragment(fragment, _collection)
   const { trackArtworkRailItemTap, trackArtworkRailViewAllTap } = useCollectionByCategoryTracking()
 
-  if (!collection || collection.artworksConnection?.counts.total === 0) {
+  const artworks = extractNodes(collection?.artworksConnection)
+
+  if (!collection || !artworks.length) {
     return null
   }
-
-  const artworks = extractNodes(collection.artworksConnection)
 
   const handleArtworkPress = (artwork: ArtworkRail_artworks$data[0], index: number) => {
     trackArtworkRailItemTap(artwork.internalID, index)
@@ -89,9 +89,6 @@ const fragment = graphql`
     slug @required(action: NONE)
 
     artworksConnection(first: 10, sort: "-decayed_merch") {
-      counts @required(action: NONE) {
-        total
-      }
       edges {
         node {
           ...ArtworkRail_artworks

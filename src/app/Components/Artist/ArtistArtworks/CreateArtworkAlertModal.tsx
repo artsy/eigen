@@ -34,7 +34,7 @@ export const CreateArtworkAlertModal: React.FC<CreateArtworkAlertModalProps> = (
         internalID
         slug
         isEligibleToCreateAlert
-        artistsArray: artists {
+        artists(shallow: true) {
           internalID
           name
         }
@@ -92,7 +92,7 @@ export const computeArtworkAlertProps = (
   let aggregations: Aggregations = []
   let additionalGeneIDs: string[] = []
 
-  const artists = compact(artwork?.artistsArray)
+  const artists = compact(artwork?.artists)
   const attributionClass = compact([artwork?.attributionClass?.internalID])
   const formattedArtists: SavedSearchEntityArtist[] = artists.map((artist) => ({
     id: artist.internalID,

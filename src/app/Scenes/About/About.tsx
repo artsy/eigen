@@ -19,7 +19,6 @@ export const About: React.FC = () => {
   const { value: userIsDev, flipValue: userIsDevFlipValue } = GlobalStore.useAppState(
     (store) => store.artsyPrefs.userIsDev
   )
-  const showNewDisclaimer = useFeatureFlag("AREnableNewTermsAndConditions")
 
   useEffect(() => {
     const flip = (userIsDev && tapCount >= 3) || (!userIsDev && tapCount >= 7)
@@ -54,15 +53,9 @@ export const About: React.FC = () => {
   return (
     <Wrapper>
       <ScrollView contentContainerStyle={{ paddingTop: 10 }}>
-        <MenuItem
-          title={showNewDisclaimer ? "Terms and Conditions" : "Terms of Use"}
-          onPress={() => navigate("/terms")}
-        />
+        <MenuItem title="Terms and Conditions" onPress={() => navigate("/terms")} />
         <MenuItem title="Privacy Policy" onPress={() => navigate("/privacy")} />
-        <MenuItem
-          title={showNewDisclaimer ? "Auction Supplement" : "Conditions of Sale"}
-          onPress={() => navigate(showNewDisclaimer ? "/supplemental-cos" : "/conditions-of-sale")}
-        />
+        <MenuItem title="Auction Supplement" onPress={() => navigate("/supplemental-cos")} />
         <MenuItem
           title="Version"
           text={appVersion}
