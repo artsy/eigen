@@ -9,7 +9,7 @@ import { Linking } from "react-native"
  *
  * This can be used to avoid rendering content in previous screens in react-navigation history
  *
- * @returns {isDeepLink: boolean | null} isDeepLink is true if the user came from a deep link
+ * @returns {isDeepLink: boolean | null}` isDeepLink` is true if the user came from a deep link. Initially, it is set to `null` while retrieving the deep link URL asynchronously and will be set to `false` if retrieving the `URL` fails.
  */
 export const useIsDeepLink = () => {
   const [isDeepLink, setIsDeepLink] = useState<boolean | null>(null)
@@ -37,11 +37,7 @@ export const useIsDeepLink = () => {
         const isHomeLink = result.type === "match" && result.module === "Home"
         const shouldTreatAsDeepLink = !isHomeLink && !isExternalUrl
 
-        if (shouldTreatAsDeepLink) {
-          setIsDeepLink(true)
-        } else {
-          setIsDeepLink(false)
-        }
+        setIsDeepLink(shouldTreatAsDeepLink)
       })
       .catch((error) => {
         console.error("Error getting initial URL", error)
