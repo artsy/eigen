@@ -45,6 +45,7 @@ export const searchQueryDefaultVariables: SearchQuery$variables = {
 }
 
 export const Search: React.FC = () => {
+  const searchInputRef = useRef<GlobalSearchInput>(null)
   const enableNewSearchModal = useFeatureFlag("AREnableNewSearchModal")
   const searchPillsRef = useRef<ScrollView>(null)
   const [searchQuery, setSearchQuery] = useState<string>("")
@@ -63,9 +64,14 @@ export const Search: React.FC = () => {
 
   useRefetchWhenQueryChanged({ query: searchQuery, refetch })
 
+  // Focus input and open keyboard on bottom nav Search tab double-tab
   const scrollableRef = useBottomTabsScrollToTop(() => {
-    // Focus input and open keyboard on bottom nav Search tab double-tab
-    searchProviderValues.inputRef.current?.focus()
+    if (enableNewSearchModal) {
+      searchInputRef.current?.focus()
+    } else {
+      // Focus input and open keyboard on bottom nav Search tab double-tab
+      searchProviderValues.inputRef.current?.focus()
+    }
   })
 
   // TODO: to be removed on ES results PR
@@ -136,7 +142,7 @@ export const Search: React.FC = () => {
       <ArtsyKeyboardAvoidingView>
         <Flex p={2} pb={enableNewSearchModal ? 1 : 0}>
           {enableNewSearchModal ? (
-            <GlobalSearchInput ownerType={OwnerType.search} />
+            <GlobalSearchInput ownerType={OwnerType.search} ref={searchInputRef} />
           ) : (
             <SearchInput
               ref={searchProviderValues?.inputRef}
