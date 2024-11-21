@@ -9,7 +9,6 @@ import { fetchQuery, graphql, useFragment } from "react-relay"
 
 interface Options extends Pick<SaveArtworkOptions, "onCompleted" | "onError"> {
   artworkFragmentRef: useSaveArtworkToArtworkLists_artwork$key
-  saveToDefaultCollectionOnly?: boolean
 }
 
 const useSaveArtworkToArtworkListsSavesQuery = graphql`
@@ -37,15 +36,13 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
   }
   let isSaved = artwork.isSavedToAnyList
 
-  if (!options.saveToDefaultCollectionOnly) {
-    if (artworkListID !== null) {
-      const isArtworkRemovedFromArtworkList = removedArtworkIDs.find(
-        (artworkID) => artworkID === artwork.internalID
-      )
-      isSaved = !isArtworkRemovedFromArtworkList
-    } else {
-      isSaved = artwork.isSavedToAnyList
-    }
+  if (artworkListID !== null) {
+    const isArtworkRemovedFromArtworkList = removedArtworkIDs.find(
+      (artworkID) => artworkID === artwork.internalID
+    )
+    isSaved = !isArtworkRemovedFromArtworkList
+  } else {
+    isSaved = artwork.isSavedToAnyList
   }
 
   const saveArtworkToDefaultArtworkList = useSaveArtwork({
@@ -56,10 +53,6 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
     onCompleted,
     optimisticUpdater: (isArtworkSaved, _store, isCalledBefore) => {
       if (isCalledBefore) {
-        return
-      }
-
-      if (options.saveToDefaultCollectionOnly) {
         return
       }
 
@@ -90,7 +83,7 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
   }
 
   const saveArtworkToLists = async () => {
-    if (options.saveToDefaultCollectionOnly || !artwork.isSavedToAnyList) {
+    if (!artwork.isSavedToAnyList) {
       saveArtworkToDefaultArtworkList()
       return
     }

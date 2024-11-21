@@ -12,7 +12,6 @@ import { ArtworkActions_artwork$data } from "__generated__/ArtworkActions_artwor
 import { ArtworkHeader_artwork$data } from "__generated__/ArtworkHeader_artwork.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { ArtworkSaveButton } from "app/Scenes/Artwork/Components/ArtworkSaveButton"
-import { isOpenOrUpcomingSale } from "app/Scenes/Artwork/utils/isOpenOrUpcomingSale"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { cm2in } from "app/utils/conversions"
 import { Schema } from "app/utils/track"
@@ -48,11 +47,9 @@ export const shareContent = (
 }
 
 export const ArtworkActions: React.FC<ArtworkActionsProps> = ({ artwork, shareOnPress }) => {
-  const { image, id, slug, heightCm, widthCm, isHangable, sale } = artwork
+  const { image, id, slug, heightCm, widthCm, isHangable } = artwork
   const { trackEvent } = useTracking()
   const space = useSpace()
-
-  const openOrUpcomingSale = isOpenOrUpcomingSale(sale)
 
   const openViewInRoom = () => {
     if (image?.url == null || heightCm == null || widthCm == null) {
@@ -80,7 +77,7 @@ export const ArtworkActions: React.FC<ArtworkActionsProps> = ({ artwork, shareOn
   return (
     <Flex justifyContent="center" flexDirection="row" width="100%">
       <Join separator={<Spacer x={2} />}>
-        <ArtworkSaveButton artwork={artwork} saveToDefaultCollectionOnly={openOrUpcomingSale} />
+        <ArtworkSaveButton artwork={artwork} />
         {!!(LegacyNativeModules.ARCocoaConstantsModule.AREnabled && isHangable) && (
           <Touchable
             hitSlop={{
@@ -133,10 +130,6 @@ export const ArtworkActionsFragmentContainer = createFragmentContainer(ArtworkAc
       }
       widthCm
       heightCm
-      sale {
-        isAuction
-        isClosed
-      }
     }
   `,
 })
