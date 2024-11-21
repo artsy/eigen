@@ -286,8 +286,9 @@ export const features = {
   },
   AREnableNewSearchModal: {
     description: "Enable new search modal",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableNewSearchModal",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 
