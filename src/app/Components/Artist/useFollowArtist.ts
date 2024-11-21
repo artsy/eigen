@@ -124,7 +124,6 @@ export const useFollowArtist = (options: Options) => {
       if (hideViewFollowsLink) {
         toast.show("Artist Followed", "bottom", {
           backgroundColor: "green100",
-          description: "Keep track of the artists you love",
         })
       } else {
         toast.show("Artist Followed", "bottom", {
