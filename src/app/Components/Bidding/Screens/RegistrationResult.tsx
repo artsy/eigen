@@ -100,7 +100,7 @@ const resultEnumToPageName = (result: RegistrationStatus) => {
     ({
       context_screen: resultEnumToPageName(props.status),
       context_screen_owner_type: null,
-    } as any) /* STRICTNESS_MIGRATION */
+    }) as any /* STRICTNESS_MIGRATION */
 )
 export class RegistrationResult extends React.Component<RegistrationResultProps> {
   backButtonListener?: NativeEventSubscription = undefined
@@ -172,7 +172,13 @@ export class RegistrationResult extends React.Component<RegistrationResultProps>
               {msg}
             </Markdown>
           </Flex>
-          <Button variant="outline" onPress={() => dismissModal()} block width={100}>
+          <Button
+            variant="outline"
+            onPress={() => dismissModal()}
+            block
+            width={100}
+            testID="continue-button"
+          >
             {status === RegistrationStatus.RegistrationStatusPending
               ? "View works in this sale"
               : "Continue"}

@@ -1,8 +1,9 @@
-import { LinkText, Button } from "@artsy/palette-mobile"
+import { LinkText } from "@artsy/palette-mobile"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { Icon20 } from "app/Components/Bidding/Components/Icon"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 
 import { Linking } from "react-native"
 import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"
@@ -82,18 +83,22 @@ describe("Registration result component", () => {
     const view = renderWithWrappersLEGACY(
       <RegistrationResult status={RegistrationStatus.RegistrationStatusError} />
     )
-    await (await view.root.findByType(LinkText)).props.onPress()
+
+    const linkText = await view.root.findByType(LinkText)
+    await linkText.props.onPress()
     expect(Linking.openURL).toBeCalledWith("mailto:support@artsy.net")
   })
 
-  it("dismisses the controller when the continue button is pressed", async () => {
+  it("dismisses the controller when the continue button is pressed", () => {
     jest.useFakeTimers({
       legacyFakeTimers: true,
     })
-    const view = renderWithWrappersLEGACY(
+    renderWithWrappers(
       <RegistrationResult status={RegistrationStatus.RegistrationStatusComplete} />
     )
-    ;(await view.root.findByType(Button)).props.onPress()
+
+    fireEvent.press(screen.getByTestId("continue-button"))
+
     jest.runAllTicks()
 
     expect(dismissModal).toHaveBeenCalled()
