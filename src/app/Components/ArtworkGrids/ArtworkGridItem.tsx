@@ -333,7 +333,10 @@ export const Artwork: React.FC<ArtworkProps> = ({
               mt={1}
               style={artworkMetaStyle}
             >
-              <Flex flexGrow={1}>
+              <Flex
+                flexGrow={positionCTAs === "column" ? 1 : undefined}
+                flex={positionCTAs === "row" ? 1 : undefined}
+              >
                 {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
                   <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
                     Lot {artwork.saleArtwork.lotLabel}
