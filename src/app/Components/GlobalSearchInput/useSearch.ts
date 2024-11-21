@@ -18,10 +18,7 @@ export const useSearch = ({ query }: { query: string }) => {
   const throttledQuery = useThrottle(query, SEARCH_THROTTLE_INTERVAL)
   const selectedTab = useSelectedTab()
 
-  let contextScreenOwnerType = OwnerType.search
-  if (selectedTab === "home") {
-    contextScreenOwnerType = OwnerType.home
-  }
+  const contextScreenOwnerType = selectedTab === "home" ? OwnerType.home : OwnerType.search
 
   const didMount = useRef(false)
   const searchPillsRef = useRef<ScrollView>(null)
