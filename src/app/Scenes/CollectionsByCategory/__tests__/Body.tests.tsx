@@ -6,9 +6,7 @@ import { graphql } from "react-relay"
 
 jest.mock("@react-navigation/native", () => ({
   useRoute: () => ({
-    params: {
-      props: { category: "mock-category" },
-    },
+    params: { category: "mock-category" },
   }),
 }))
 

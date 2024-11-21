@@ -32,8 +32,9 @@ import { getContextModuleByPillName } from "./helpers"
 import { PillType } from "./types"
 
 export const SEARCH_INPUT_PLACEHOLDER = [
-  "Search artists, artworks, etc",
-  "Search artworks, etc",
+  "Search artists, artworks, galleries, etc.",
+  "Search artists, artworks, etc.",
+  "Search artworks, etc.",
   "Search",
 ]
 

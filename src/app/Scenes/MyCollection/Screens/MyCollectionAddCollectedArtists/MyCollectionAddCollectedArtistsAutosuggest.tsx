@@ -66,7 +66,7 @@ export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => 
 
   // We are using this gymnastics to make sure that sent params are captured no matter if we navigate
   // using navigation.navigate or the global navigate function
-  const navigationProps: { passProps: ArtworkFormScreen["AddMyCollectionArtist"]["props"] } = {
+  const navigationProps: { passProps: ArtworkFormScreen["AddMyCollectionArtist"] } = {
     passProps: {
       onSubmit: (values) => {
         addCustomArtist(values)

@@ -8,10 +8,8 @@ import { graphql } from "react-relay"
 jest.mock("@react-navigation/native", () => ({
   useRoute: () => ({
     params: {
-      props: {
-        category: "mock-category",
-        homeViewSectionId: "test-id",
-      },
+      category: "mock-category",
+      homeViewSectionId: "test-id",
     },
   }),
 }))

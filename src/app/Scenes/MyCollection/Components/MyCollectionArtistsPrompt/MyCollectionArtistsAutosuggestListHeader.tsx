@@ -5,7 +5,7 @@ import { MyCollectionAddCollectedArtistsStore } from "app/Scenes/MyCollection/Sc
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { FC } from "react"
 
-type CustomArtistNavigationProps = ArtworkFormScreen["AddMyCollectionArtist"]["props"]
+type CustomArtistNavigationProps = ArtworkFormScreen["AddMyCollectionArtist"]
 
 interface MyCollectionArtistsAutosuggestListHeaderProps {
   debouncedQuery: string

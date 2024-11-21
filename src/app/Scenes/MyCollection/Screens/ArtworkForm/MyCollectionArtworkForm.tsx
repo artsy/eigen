@@ -43,10 +43,8 @@ export type ArtworkFormScreen = {
   ArtworkFormArtwork: undefined
   // Params can be deleted as soon as we consolidate add artwork and add artist flows
   AddMyCollectionArtist: {
-    props: {
-      artistDisplayName: string
-      onSubmit: (artistId: MyCollectionCustomArtistSchema) => void
-    }
+    artistDisplayName: string
+    onSubmit: (artistId: MyCollectionCustomArtistSchema) => void
   }
   ArtworkFormMain: undefined
   AddPhotos: undefined
