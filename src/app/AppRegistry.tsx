@@ -359,6 +359,9 @@ export const modules = defineModules({
   ArtQuizResults: reactModule(ArtQuizResults, {
     fullBleed: true,
     hidesBackButton: true,
+    screenOptions: {
+      animationTypeForReplace: "pop",
+    },
   }),
   Article: reactModule(ArticleScreen, {
     fullBleed: true,
