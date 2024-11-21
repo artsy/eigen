@@ -27,6 +27,7 @@ interface ArtworkItemCTAsProps extends ArtworkActionTrackingProps {
   artwork: ArtworkItemCTAs_artwork$key
   showSaveIcon?: boolean
   showFollowIcon?: boolean
+  hideViewFollowsLink?: boolean
 }
 
 export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
@@ -36,6 +37,10 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
    * Show follow icon by default, but allow it to be hidden on specific grids
    */
   showFollowIcon = true,
+  /**
+   *  do not hide view vollows link by default, hide on the Onboarding flow
+   */
+  hideViewFollowsLink = false,
   contextModule,
   contextScreen,
   contextScreenOwnerId,
@@ -93,6 +98,7 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
     contextModule,
     contextScreenOwnerType,
     ownerType: Schema.OwnerEntityTypes.Artwork,
+    hideViewFollowsLink,
   })
 
   if (!enableNewSaveAndFollowOnArtworkCard) {
