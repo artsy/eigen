@@ -135,7 +135,7 @@ export const Search: React.FC = () => {
       <ArtsyKeyboardAvoidingView>
         <Flex p={2} pb={0}>
           {enableNewSearchModal ? (
-            <GlobalSearchInput />
+            <GlobalSearchInput ownerType={OwnerType.search} />
           ) : (
             <SearchInput
               ref={searchProviderValues?.inputRef}
@@ -209,7 +209,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = () => {
           <Search />
         </Suspense>
       </Screen>
-      <PortalHost name="SearchOverlay" />
+      <PortalHost name={`${OwnerType.search}-SearchOverlay`} />
     </>
   )
 }
