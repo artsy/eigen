@@ -539,7 +539,7 @@ export default createFragmentContainer(Artwork, {
         endAt
         extendedBiddingEndAt
       }
-      partner {
+      partner(shallow: true) {
         name
       }
       image(includeAll: $includeAllImages) {

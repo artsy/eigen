@@ -272,7 +272,7 @@ const artworkMetaFragment = graphql`
       }
     }
     saleMessage
-    partner {
+    partner(shallow: true) {
       name
     }
     title

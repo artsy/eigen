@@ -92,7 +92,7 @@ const similarWorksFragment = graphql`
     internalID
     slug
     isEligibleToCreateAlert
-    artistsArray: artists {
+    artists(shallow: true) {
       internalID
       name
     }

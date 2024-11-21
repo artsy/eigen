@@ -145,7 +145,7 @@ const artworkFragment = graphql`
       endAt
       extendedBiddingEndAt
     }
-    partner {
+    partner(shallow: true) {
       name
     }
   }

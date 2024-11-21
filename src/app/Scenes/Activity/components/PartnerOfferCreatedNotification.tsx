@@ -173,7 +173,7 @@ export const PartnerOfferCreatedNotificationFragment = graphql`
       edges {
         node {
           internalID
-          partner {
+          partner(shallow: true) {
             profile {
               icon {
                 url(version: "square140")
