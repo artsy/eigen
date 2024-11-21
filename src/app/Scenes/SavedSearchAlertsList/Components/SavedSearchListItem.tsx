@@ -46,8 +46,8 @@ export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) =
 
   // Reset the swipe when user swipes another item
   if (!isSwipingActive) {
-    translateX.value = withTiming(0, { duration: 500, easing: Easing.out(Easing.circle) })
-    isDeleteButtonVisible.value = false
+    translateX.set(() => withTiming(0, { duration: 500, easing: Easing.out(Easing.circle) }))
+    isDeleteButtonVisible.set(() => false)
   }
 
   const pan = Gesture.Pan()
@@ -59,37 +59,45 @@ export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) =
     })
     .onChange((event) => {
       // Prevent swiping to the right
-      if (translateX.value >= 0 && event.translationX > 0) {
+      if (translateX.get() >= 0 && event.translationX > 0) {
         return
       }
 
       // Prevent over-swiping to the left
-      if (translateX.value <= -DELETE_BUTTON_WIDTH && event.translationX < 0) {
+      if (translateX.get() <= -DELETE_BUTTON_WIDTH && event.translationX < 0) {
         return
       }
 
-      translateX.value = isDeleteButtonVisible.value
+      translateX.value = isDeleteButtonVisible.get()
         ? event.translationX - DELETE_BUTTON_WIDTH
         : event.translationX
+
+      if (isDeleteButtonVisible.get()) {
+        translateX.set(() => event.translationX - DELETE_BUTTON_WIDTH)
+      } else {
+        translateX.set(() => event.translationX)
+      }
     })
     .onEnd(() => {
       // If the user swipes more than half of the delete button width, show the delete button fully
-      if (translateX.value < -DELETE_BUTTON_WIDTH / 2) {
-        translateX.value = withTiming(-DELETE_BUTTON_WIDTH, {
-          duration: 500,
-          easing: Easing.out(Easing.circle),
-        })
-        isDeleteButtonVisible.value = true
+      if (translateX.get() < -DELETE_BUTTON_WIDTH / 2) {
+        translateX.set(() =>
+          withTiming(-DELETE_BUTTON_WIDTH, {
+            duration: 500,
+            easing: Easing.out(Easing.circle),
+          })
+        )
+        isDeleteButtonVisible.set(() => true)
       } else {
         // Otherwise, hide the delete button
-        translateX.value = withTiming(0, { duration: 500, easing: Easing.out(Easing.circle) })
-        isDeleteButtonVisible.value = false
+        translateX.set(() => withTiming(0, { duration: 500, easing: Easing.out(Easing.circle) }))
+        isDeleteButtonVisible.set(() => false)
       }
     })
 
   const animatedStyles = useAnimatedStyle(() => {
     return {
-      transform: [{ translateX: translateX.value }],
+      transform: [{ translateX: translateX.get() }],
     }
   })
 

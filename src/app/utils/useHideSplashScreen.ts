@@ -1,7 +1,5 @@
-import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { homeViewScreenQueryVariables } from "app/Scenes/HomeView/HomeView"
 import { GlobalStore } from "app/store/GlobalStore"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { usePrefetch } from "app/utils/queryPrefetching"
 import { useEffect } from "react"
 import RNBootSplash from "react-native-bootsplash"
@@ -15,32 +13,25 @@ export const useHideSplashScreen = () => {
 
   const prefetchUrl = usePrefetch()
 
-  const preferLegacyHomeScreen = useFeatureFlag("ARPreferLegacyHomeScreen")
-
-  const shouldDisplayNewHomeView = ArtsyNativeModule.isBetaOrDev && !preferLegacyHomeScreen
-
   useEffect(() => {
     const hideSplashScreen = async () => {
       await RNBootSplash.hide({ fade: true })
     }
 
     if (isHydrated) {
-      if (shouldDisplayNewHomeView) {
-        if (isLoggedIn && isNavigationReady) {
-          if (shouldDisplayNewHomeView) {
-            prefetchUrl("/", homeViewScreenQueryVariables(), {
-              force: false,
-            })
-            setTimeout(() => {
-              hideSplashScreen()
-            }, HOME_VIEW_SPLASH_SCREEN_DELAY)
-          }
-          return
-        }
-        if (!isLoggedIn) {
+      if (isLoggedIn && isNavigationReady) {
+        prefetchUrl("/", homeViewScreenQueryVariables(), {
+          force: false,
+        })
+
+        setTimeout(() => {
           hideSplashScreen()
-        }
-      } else {
+        }, HOME_VIEW_SPLASH_SCREEN_DELAY)
+
+        return
+      }
+
+      if (!isLoggedIn) {
         hideSplashScreen()
       }
     }

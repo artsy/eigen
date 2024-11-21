@@ -122,8 +122,14 @@ const ForgotPasswordStepForm: React.FC = () => {
               spellCheck={false}
               testID="email-address"
               textContentType="emailAddress"
-              value={values.email}
               error={errors.email}
+              defaultValue={values.email}
+              onKeyPress={(e) => {
+                // Avoid spaces from being submitted
+                if (e.nativeEvent.key === "Space") {
+                  e.preventDefault()
+                }
+              }}
               onChangeText={(text) => {
                 handleChange("email")(text.trim())
               }}

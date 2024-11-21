@@ -46,7 +46,7 @@ const SaveButtonIcon: React.FC<IconProps> = ({ isSaved }) => {
     return (
       <HeartFillIcon
         accessibilityLabel="Saved icon"
-        fill={!showNewSaveCTA ? "black100" : "blue100"}
+        fill={showNewSaveCTA ? "black100" : "blue100"}
       />
     )
   }

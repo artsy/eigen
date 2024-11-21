@@ -4,6 +4,7 @@ import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { useSpringValue } from "app/Scenes/Artwork/Components/ImageCarousel/useSpringValue"
 import { goBack } from "app/system/navigation/navigate"
 import { useScreenDimensions } from "app/utils/hooks"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { compact } from "lodash"
 import { Suspense, useState } from "react"
@@ -46,6 +47,8 @@ const CareerHighlightsBigCardsSwiperScreen: React.FC<CareerHighlightsBigCardsSwi
   const space = useSpace()
   const insets = useSafeAreaInsets()
   const { width: screenWidth } = useScreenDimensions()
+
+  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
 
   const data = useLazyLoadQuery<CareerHighlightsBigCardsSwiperQuery>(
     CareerHighlightsBigCardsSwiperScreenQuery,
@@ -146,7 +149,7 @@ const CareerHighlightsBigCardsSwiperScreen: React.FC<CareerHighlightsBigCardsSwi
 
   return (
     <>
-      <Flex mt={Platform.OS === "android" ? `${insets.top}px` : undefined}>
+      <Flex mt={Platform.OS === "android" && !enableNewNavigation ? `${insets.top}px` : undefined}>
         <FancyModalHeader
           alignItems="flex-start"
           rightCloseButton

@@ -9,10 +9,6 @@ import {
   ArtworkRailCardCommonProps,
   ArtworkRailCardMeta,
 } from "app/Components/ArtworkRail/ArtworkRailCardMeta"
-import {
-  LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
-  LegacyArtworkRailCardImage,
-} from "app/Components/ArtworkRail/LegacyArtworkRailCardImage"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
 import { ArtworkItemCTAs } from "app/Scenes/Artwork/Components/ArtworkItemCTAs"
@@ -54,9 +50,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   testID,
   ...restProps
 }) => {
-  const enableArtworkRailRedesignImageAspectRatio = useFeatureFlag(
-    "AREnableArtworkRailRedesignImageAspectRatio"
-  )
   const enableNewSaveAndFollowOnArtworkCard = useFeatureFlag(
     "AREnableNewSaveAndFollowOnArtworkCard"
   )
@@ -76,12 +69,12 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     ;(artwork as DissapearableArtwork)?._disappearable?.disappear()
   }
 
-  // 36 = 20 (padding) + 16 (icon size) + 5 (top padding)
+  // 36 = 20 (padding) + 18 (icon size) + 5 (top padding)
   const likeAndFollowCTAPadding =
     showSaveIcon &&
     enableNewSaveAndFollowOnArtworkCard &&
     (enableNewSaveCTA || enableNewSaveAndFollowCTAs)
-      ? 41
+      ? 43
       : 0
   const artworkRailCardMetaPadding = 10
   const artworkRailCardMetaDataHeight =
@@ -115,18 +108,10 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
             testID={testID}
           >
             <Flex
-              height={
-                enableArtworkRailRedesignImageAspectRatio
-                  ? ARTWORK_RAIL_CARD_IMAGE_HEIGHT + artworkRailCardMetaDataHeight
-                  : LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT + ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT
-              }
-              justifyContent={enableArtworkRailRedesignImageAspectRatio ? "flex-start" : "flex-end"}
+              height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT + artworkRailCardMetaDataHeight}
+              justifyContent="flex-start"
             >
-              {enableArtworkRailRedesignImageAspectRatio ? (
-                <ArtworkRailCardImage artwork={artwork} />
-              ) : (
-                <LegacyArtworkRailCardImage artwork={artwork} />
-              )}
+              <ArtworkRailCardImage artwork={artwork} />
 
               <Spacer y={1} />
 
@@ -155,6 +140,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
               <ArtworkItemCTAs
                 artwork={artwork}
                 showSaveIcon={showSaveIcon}
+                dark={dark}
                 contextModule={contextModule}
                 contextScreen={contextScreen}
                 contextScreenOwnerId={contextScreenOwnerId}
@@ -183,7 +169,6 @@ const artworkFragment = graphql`
     ...ArtworkRailCardMeta_artwork
     ...ContextMenuArtwork_artwork
     ...CreateArtworkAlertModal_artwork
-    ...LegacyArtworkRailCardImage_artwork
     ...ArtworkItemCTAs_artwork
   }
 `

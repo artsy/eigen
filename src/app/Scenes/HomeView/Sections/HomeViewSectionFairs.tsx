@@ -1,7 +1,10 @@
 import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import { Flex, FlexProps, Join, Skeleton, SkeletonBox, Spacer } from "@artsy/palette-mobile"
 import { HomeViewSectionFairsQuery } from "__generated__/HomeViewSectionFairsQuery.graphql"
-import { HomeViewSectionFairs_section$key } from "__generated__/HomeViewSectionFairs_section.graphql"
+import {
+  HomeViewSectionFairs_section$data,
+  HomeViewSectionFairs_section$key,
+} from "__generated__/HomeViewSectionFairs_section.graphql"
 import { CardRailCard, CardRailMetadataContainer } from "app/Components/Home/CardRailCard"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
@@ -18,6 +21,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { times } from "lodash"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
@@ -25,6 +29,8 @@ interface HomeViewSectionFairsProps {
   section: HomeViewSectionFairs_section$key
   index: number
 }
+
+type FairItem = ExtractNodeType<HomeViewSectionFairs_section$data["fairsConnection"]>
 
 export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = ({
   section: sectionProp,
@@ -63,7 +69,7 @@ export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = ({
 
   return (
     <Flex {...flexProps}>
-      <Flex pl={2} pr={2}>
+      <Flex px={2}>
         <SectionTitle
           title={section.component?.title}
           subtitle={section.component?.description}
@@ -71,10 +77,17 @@ export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = ({
         />
       </Flex>
 
-      <CardRailFlatList<any>
+      <CardRailFlatList<FairItem>
         data={fairs}
         initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
-        windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
+        prefetchUrlExtractor={(fair) => {
+          return `/fair/${fair?.slug}`
+        }}
+        prefetchVariablesExtractor={(item) => {
+          return {
+            fairID: item?.slug,
+          }
+        }}
         renderItem={({ item, index }) => {
           return (
             <HomeViewSectionFairsFairItem
@@ -91,6 +104,7 @@ export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = ({
             />
           )
         }}
+        windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
       />
 
       <HomeViewSectionSentinel
@@ -116,16 +130,17 @@ const fragment = graphql`
         }
       }
     }
-    ownerType
-
     fairsConnection(first: 10) {
       edges {
         node {
+          href
           internalID
+          slug
           ...HomeViewSectionFairsFairItem_fair
         }
       }
     }
+    ownerType
   }
 `
 

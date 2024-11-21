@@ -1,11 +1,6 @@
 import { EventEmitter } from "events"
 import { ActionType, OwnerType, Screen } from "@artsy/cohesion"
-import {
-  CommonActions,
-  NavigationContainerRef,
-  StackActions,
-  TabActions,
-} from "@react-navigation/native"
+import { NavigationContainerRef, StackActions, TabActions } from "@react-navigation/native"
 import { addBreadcrumb, captureMessage } from "@sentry/react-native"
 import { AppModule, modules, ViewOptions } from "app/AppRegistry"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
@@ -139,12 +134,12 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
           // This allows us to also override the back button behavior in the tab
           requestAnimationFrame(() => {
             internal_navigationRef.current?.dispatch(
-              CommonActions.navigate(result.module, { ...result.params, ...options.passProps })
+              StackActions.push(result.module, { ...result.params, ...options.passProps })
             )
           })
         } else {
           internal_navigationRef.current?.dispatch(
-            CommonActions.navigate(result.module, { ...result.params, ...options.passProps })
+            StackActions.push(result.module, { ...result.params, ...options.passProps })
           )
         }
       }

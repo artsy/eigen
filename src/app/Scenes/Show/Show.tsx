@@ -13,7 +13,6 @@ import React, { useRef, useState } from "react"
 import { Animated } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ShowArtworksWithNavigation as ShowArtworks } from "./Components/ShowArtworks"
-import { ShowArtworksEmptyStateFragmentContainer } from "./Components/ShowArtworksEmptyState"
 import { ShowContextCardFragmentContainer as ShowContextCard } from "./Components/ShowContextCard"
 import { ShowHeaderFragmentContainer as ShowHeader } from "./Components/ShowHeader"
 import { ShowInfoFragmentContainer as ShowInfo } from "./Components/ShowInfo"
@@ -58,10 +57,11 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
       key: "filter",
       element: (
         <Flex backgroundColor="white">
-          <Spacer y={1} />
+          <Separator />
           <HeaderArtworksFilter
             animationValue={filterComponentAnimationValue}
             onPress={toggleFilterArtworksModal}
+            disableYAxisAnimation
           />
         </Flex>
       ),
@@ -73,17 +73,13 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
 
     {
       key: "artworks",
-      element: Boolean(show.counts?.eligibleArtworks) ? (
-        <ShowArtworks {...artworkProps} />
-      ) : (
-        <ShowArtworksEmptyStateFragmentContainer show={show} mx={2} />
-      ),
+      element: <ShowArtworks {...artworkProps} />,
     },
 
     {
       key: "separator-bottom",
       element: (
-        <Box mx={2}>
+        <Box>
           <Separator />
         </Box>
       ),
@@ -105,7 +101,7 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
         <Animated.FlatList<Section>
           data={sections}
           keyExtractor={({ key }) => key}
-          stickyHeaderIndices={[sections.findIndex((section) => section.key === "filter") + 1]}
+          stickyHeaderIndices={[sections.findIndex((section) => section.key === "filter")]}
           viewabilityConfig={viewConfigRef.current}
           ListFooterComponent={<Spacer y={2} />}
           ItemSeparatorComponent={() => <Spacer y="15px" />}
@@ -142,9 +138,6 @@ export const ShowFragmentContainer = createFragmentContainer(Show, {
       viewingRoomIDs
       images(default: false) {
         __typename
-      }
-      counts {
-        eligibleArtworks
       }
     }
   `,

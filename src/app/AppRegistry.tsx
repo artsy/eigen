@@ -79,7 +79,7 @@ import { CityPicker } from "./Scenes/City/CityPicker"
 import { CitySavedListQueryRenderer } from "./Scenes/City/CitySavedList"
 import { CitySectionListQueryRenderer } from "./Scenes/City/CitySectionList"
 import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
-import { FairScreen } from "./Scenes/Fair/Fair"
+import { FairScreen, FairScreenQuery } from "./Scenes/Fair/Fair"
 import { FairAllFollowedArtistsQueryRenderer } from "./Scenes/Fair/FairAllFollowedArtists"
 import { FairArticlesQueryRenderer } from "./Scenes/Fair/FairArticles"
 import { FairMoreInfoQueryRenderer } from "./Scenes/Fair/FairMoreInfo"
@@ -139,7 +139,7 @@ import { ShowMoreInfoQueryRenderer } from "./Scenes/Show/Screens/ShowMoreInfo"
 import { ShowQueryRenderer } from "./Scenes/Show/Show"
 import { TagQueryRenderer } from "./Scenes/Tag/Tag"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
-import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
+import { ViewingRoomQueryRenderer, ViewingRoomScreenQuery } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkScreen } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
 import {
@@ -515,7 +515,7 @@ export const modules = defineModules({
     hidesBackButton: true,
     hidesBottomTabs: true,
   }),
-  Fair: reactModule(FairScreen, { fullBleed: true, hidesBackButton: true }),
+  Fair: reactModule(FairScreen, { fullBleed: true, hidesBackButton: true }, [FairScreenQuery]),
   FairMoreInfo: reactModule(FairMoreInfoQueryRenderer, { fullBleed: true, hidesBackButton: true }),
   FairArticles: reactModule(FairArticlesQueryRenderer),
   FairAllFollowedArtists: reactModule(FairAllFollowedArtistsQueryRenderer),
@@ -525,7 +525,11 @@ export const modules = defineModules({
   }),
   Feature: reactModule(FeatureQueryRenderer, { fullBleed: true }),
   FullArtistSeriesList: reactModule(ArtistSeriesFullArtistSeriesListQueryRenderer),
-  FullFeaturedArtistList: reactModule(CollectionFullFeaturedArtistListQueryRenderer),
+  FullFeaturedArtistList: reactModule(CollectionFullFeaturedArtistListQueryRenderer, {
+    screenOptions: {
+      headerTitle: "Featured Artists",
+    },
+  }),
   GalleriesForYou: reactModule(GalleriesForYouScreen, {
     fullBleed: true,
     hidesBackButton: true,
@@ -829,7 +833,7 @@ export const modules = defineModules({
   Tag: reactModule(TagQueryRenderer, { hidesBackButton: true, fullBleed: true }),
   UnlistedArtworksFAQScreen: reactModule(UnlistedArtworksFAQScreen),
   VanityURLEntity: reactModule(VanityURLEntityRenderer, { fullBleed: true }),
-  ViewingRoom: reactModule(ViewingRoomQueryRenderer, { fullBleed: true }),
+  ViewingRoom: reactModule(ViewingRoomQueryRenderer, { fullBleed: true }, [ViewingRoomScreenQuery]),
   ViewingRoomArtwork: reactModule(ViewingRoomArtworkScreen),
   ViewingRoomArtworks: reactModule(ViewingRoomArtworksQueryRenderer),
   ViewingRooms: reactModule(ViewingRoomsListScreen, {}, [viewingRoomsListScreenQuery]),

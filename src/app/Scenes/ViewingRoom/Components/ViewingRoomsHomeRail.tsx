@@ -6,6 +6,7 @@ import {
 } from "__generated__/ViewingRoomsHomeRailQuery.graphql"
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { MediumCard } from "app/Components/Cards"
+import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -14,7 +15,6 @@ import { ExtractNodeType } from "app/utils/relayHelpers"
 import { Schema } from "app/utils/track"
 import { times } from "lodash"
 import React, { memo, Suspense } from "react"
-import { FlatList } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -95,13 +95,15 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({
 
   return (
     <Flex>
-      <FlatList
+      <PrefetchFlatList
         horizontal
         ListHeaderComponent={() => <Spacer x={2} />}
         ListFooterComponent={() => <Spacer x={2} />}
         data={regular}
         initialNumToRender={isTablet() ? 10 : 5}
         keyExtractor={(item) => `${item.internalID}`}
+        prefetchUrlExtractor={(viewingRoom) => `/viewing-room/${viewingRoom?.slug}`}
+        prefetchVariablesExtractor={(viewingRoom) => ({ viewingRoomID: viewingRoom?.slug })}
         renderItem={({ item, index }) => {
           const tag = tagForStatus(item.status, item.distanceToOpen, item.distanceToClose)
           return (

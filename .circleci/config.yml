@@ -88,12 +88,12 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v22-pods-{{ checksum ".manifests/cocoapods" }}
+            - v23-pods-{{ checksum ".manifests/cocoapods" }}
       - run:
           name: Install Pods
           command: cd ios; bundle exec pod check --ignore-dev-pods || bundle exec pod install; cd ..;
       - save_cache:
-          key: v22-pods-{{ checksum ".manifests/cocoapods" }}
+          key: v23-pods-{{ checksum ".manifests/cocoapods" }}
           paths:
             - ios/Pods
             # this changes after pod install because we don't install dev tools on CI
@@ -185,7 +185,7 @@ jobs:
       BUNDLE_PATH: .vendor
 
     macos:
-      xcode: 15.1
+      xcode: 16.1
       resource_class: macos.m1.medium.gen1
 
     steps:

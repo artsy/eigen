@@ -1,5 +1,6 @@
 import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Action, action } from "easy-peasy"
 
 export const MAX_SAVED_RECENT_SEARCHES = 100
@@ -40,7 +41,9 @@ export const getSearchModel = (): SearchModel => ({
 })
 
 export const useRecentSearches = (numSearches: number = MAX_SHOWN_RECENT_SEARCHES) => {
+  const enableNewSearchModal = useFeatureFlag("AREnableNewSearchModal")
+
   return GlobalStore.useAppState((state) => {
     return state.search.recentSearches
-  }).slice(0, numSearches)
+  }).slice(0, enableNewSearchModal ? MAX_SAVED_RECENT_SEARCHES : numSearches)
 }

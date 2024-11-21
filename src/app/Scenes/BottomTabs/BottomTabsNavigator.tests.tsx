@@ -1,9 +1,14 @@
 import { screen } from "@testing-library/react-native"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { ModalStack } from "app/system/navigation/ModalStack"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { BottomTabsNavigator } from "./BottomTabsNavigator"
 
 describe(BottomTabsNavigator, () => {
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewNavigation: false })
+  })
+
   it("shows the current tab content", async () => {
     renderWithWrappers(
       <ModalStack>

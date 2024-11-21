@@ -6,11 +6,11 @@ export const SharedValuesLevel4: React.FC<{}> = () => {
   const translateX = useSharedValue(0)
 
   const handlePress = () => {
-    translateX.value += 20
+    translateX.set((value) => (value += 20))
   }
 
   const animatedStyles = useAnimatedStyle(() => ({
-    transform: [{ translateX: withSpring(translateX.value) }],
+    transform: [{ translateX: withSpring(translateX.get()) }],
   }))
 
   return (

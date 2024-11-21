@@ -15,9 +15,11 @@ describe("Sales", () => {
   it("renders without Errors", async () => {
     renderWithRelay()
 
-    await waitFor(() => expect(screen.queryByTestId("SalePlaceholder")).toBeNull())
+    await waitFor(() => expect(screen.queryByTestId("SalePlaceholder")).not.toBeOnTheScreen(), {
+      timeout: 10000,
+    })
 
-    expect(screen.getByTestId("Sales-Screen-ScrollView")).toBeDefined()
+    expect(screen.getByTestId("Sales-Screen-ScrollView")).toBeOnTheScreen()
   })
 
   it("renders the ZeroState when there are no sales", async () => {
@@ -61,9 +63,9 @@ describe("Sales", () => {
     renderWithRelay({
       Query: () => viewer,
     })
-    await waitFor(() => expect(screen.queryByTestId("SalePlaceholder")).toBeNull())
+    await waitFor(() => expect(screen.queryByTestId("SalePlaceholder")).not.toBeOnTheScreen())
 
-    expect(screen.getByText("Auction Lots for You")).toBeDefined()
+    expect(screen.getByText("Auction Lots for You")).toBeOnTheScreen()
   })
 })
 

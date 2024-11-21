@@ -1,4 +1,4 @@
-import { Flex, Box, ClassTheme, Text } from "@artsy/palette-mobile"
+import { Box, ClassTheme, Flex, Text } from "@artsy/palette-mobile"
 import MapboxGL from "@rnmapbox/maps"
 import { themeGet } from "@styled-system/theme-get"
 import { GlobalMap_viewer$data } from "__generated__/GlobalMap_viewer.graphql"
@@ -549,7 +549,10 @@ export class GlobalMap extends React.Component<Props, State> {
               resizeMode="cover"
               style={{ ...this.backgroundImageSize }}
             />
-            <TopButtonsContainer style={{ top: this.props.safeAreaInsets.top + 12 }}>
+
+            {/* TODO: safeArea insets are being reported back incorrectly here, so we have to subtract, we should look further into why, possibly with how we register these components, possibly because they are partially native. 
+             */}
+            <TopButtonsContainer style={{ top: this.props.safeAreaInsets.top - 12 - 10 }}>
               <Animated.View
                 style={{
                   transform: [

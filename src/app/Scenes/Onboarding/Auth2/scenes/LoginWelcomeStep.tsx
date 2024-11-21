@@ -141,7 +141,13 @@ const LoginWelcomeStepForm: React.FC = () => {
         keyboardType="email-address"
         returnKeyType="next"
         title="Email"
-        value={values.email}
+        defaultValue={values.email}
+        onKeyPress={(e) => {
+          // Avoid spaces from being submitted
+          if (e.nativeEvent.key === "Space") {
+            e.preventDefault()
+          }
+        }}
         onChangeText={(text) => {
           handleChange("email")(text.trim())
         }}

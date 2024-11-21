@@ -62,19 +62,19 @@ const Solution1 = () => {
 
   const tap = Gesture.Pan()
     .onBegin(() => {
-      pressed.value = true
+      pressed.set(() => true)
     })
     .onChange((event) => {
-      offset.value = event.translationX
+      offset.set(() => event.translationX)
     })
     .onFinalize(() => {
-      offset.value = withTiming(0)
-      pressed.value = false
+      offset.set(() => withTiming(0))
+      pressed.set(() => false)
     })
 
   const animatedStyles = useAnimatedStyle(() => ({
-    backgroundColor: pressed.value ? "red" : "violet",
-    transform: [{ translateX: offset.value }, { scale: withTiming(pressed.value ? 1.2 : 1) }],
+    backgroundColor: pressed.get() ? "red" : "violet",
+    transform: [{ translateX: offset.value }, { scale: withTiming(pressed.get() ? 1.2 : 1) }],
   }))
 
   return (
@@ -103,22 +103,22 @@ const Solution2 = () => {
   const tap = Gesture.Pan()
     .onStart(() => {})
     .onChange((event) => {
-      dragX.value = !isIconVisible.value ? event.translationX : event.translationX - THRESHOLD
+      dragX.set(() => (!isIconVisible.get() ? event.translationX : event.translationX - THRESHOLD))
     })
     .onFinalize(() => {
-      if (dragX.value < -THRESHOLD) {
-        dragX.value = withSpring(-THRESHOLD)
+      if (dragX.get() < -THRESHOLD) {
+        dragX.set(() => withSpring(-THRESHOLD))
         isIconVisible.value = true
       } else {
-        dragX.value = withSpring(0)
-        isIconVisible.value = false
+        dragX.set(() => withSpring(0))
+        isIconVisible.set(() => false)
       }
     })
 
   const animatedStyles = useAnimatedStyle(() => ({
     transform: [
       {
-        translateX: dragX.value,
+        translateX: dragX.get(),
       },
     ],
   }))

@@ -200,12 +200,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableAlertBottomSheet",
   },
-  AREnableNewTermsAndConditions: {
-    description: "Enable new terms and conditions",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableNewTermsAndConditions",
-  },
   AREnableLongPressOnNewForYouRail: {
     description: "Enable Context Menu on artwork cards on new for you rail",
     readyForRelease: true,
@@ -242,12 +236,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableCollectionsWithoutHeaderImage",
   },
-  AREnableArtworkRailRedesignImageAspectRatio: {
-    description: "Enable new aspect ratio for artwork rail images",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableArtworkRailRedesignImageAspectRatio",
-  },
   ARUseMetaphysicsCDN: {
     description: "Use Metaphysics CDN (requires app restart)",
     readyForRelease: true,
@@ -272,17 +260,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableMarketingCollectionsCategories",
   },
-  ARPreferLegacyHomeScreen: {
-    description: "Prefer legacy home screen",
-    readyForRelease: false,
-    showInDevMenu: true,
-  },
-  AREnableDynamicHomeView: {
-    description: "Enable new home screen",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableDynamicHomeView",
-  },
   AREnableHomeViewTasksSection: {
     description: "Enable the Home view tasks section",
     readyForRelease: true,
@@ -291,20 +268,27 @@ export const features = {
   },
   AREnableNewNavigation: {
     description: "Enable new navigation infra (Requires App Restart!)",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableNewNavigation",
   },
   AREnableNewSaveAndFollowOnArtworkCard: {
     description: "Redesign Save CTA and Add Follow CTA on Artwork Grid/Rail",
     readyForRelease: false,
     showInDevMenu: true,
-    /* echoFlagKey: "AREnableNewSaveAndFollowOnArtworkCard" */
+    echoFlagKey: "AREnableNewSaveAndFollowOnArtworkCard",
   },
   AREnablePaymentFailureBanner: {
     description: "Enable payment failure banner",
     readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnablePaymentFailureBanner",
+  },
+  AREnableNewSearchModal: {
+    description: "Enable new search modal",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableNewSearchModal",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 

@@ -1,5 +1,6 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, Spinner } from "@artsy/palette-mobile"
+import { PortalHost } from "@gorhom/portal"
 import { useFocusEffect } from "@react-navigation/native"
 import { HomeViewFetchMeQuery } from "__generated__/HomeViewFetchMeQuery.graphql"
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
@@ -66,6 +67,7 @@ export const HomeView: React.FC = () => {
   >(sectionsFragment, queryData.viewer)
 
   const [savedArtworksCount, setSavedArtworksCount] = useState(0)
+  const [refetchKey, setRefetchKey] = useState(0)
 
   useDismissSavedArtwork(savedArtworksCount > 0)
   useEnableProgressiveOnboarding()
@@ -131,6 +133,7 @@ export const HomeView: React.FC = () => {
     }).subscribe({
       complete: () => {
         setIsRefreshing(false)
+        setRefetchKey((prev) => prev + 1)
       },
       error: (error: Error) => {
         setIsRefreshing(false)
@@ -143,12 +146,15 @@ export const HomeView: React.FC = () => {
     <Screen safeArea={true}>
       <Screen.Body fullwidth>
         <FlatList
+          automaticallyAdjustKeyboardInsets
+          keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
           ref={flashlistRef as RefObject<FlatList>}
           data={sections}
           keyExtractor={(item) => item.internalID}
           renderItem={({ item, index }) => {
-            return <Section section={item} my={2} index={index} />
+            return <Section section={item} my={2} index={index} refetchKey={refetchKey} />
           }}
           onEndReached={() => loadNext(NUMBER_OF_SECTIONS_TO_LOAD)}
           ListHeaderComponent={HomeHeader}
@@ -161,6 +167,7 @@ export const HomeView: React.FC = () => {
           }
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
           onEndReachedThreshold={2}
+          stickyHeaderIndices={[0]}
         />
         {!!data?.me && <EmailConfirmationBannerFragmentContainer me={data.me} />}
       </Screen.Body>
@@ -189,6 +196,7 @@ export const HomeViewScreen: React.FC = () => {
         <Suspense fallback={<HomeViewScreenPlaceholder />}>
           <HomeView />
         </Suspense>
+        <PortalHost name={`${OwnerType.home}-SearchOverlay`} />
       </RetryErrorBoundary>
     </HomeViewStoreProvider>
   )

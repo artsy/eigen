@@ -39,6 +39,7 @@ export const NotificationArtworkList: FC<NotificationArtworkListProps> = ({
         onScroll={scrollHandler}
         partnerOffer={partnerOffer}
         priceOfferMessage={priceOfferMessage}
+        hideFollowIcon
       />
     </Flex>
   )

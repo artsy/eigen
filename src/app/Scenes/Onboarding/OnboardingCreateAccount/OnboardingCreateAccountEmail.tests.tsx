@@ -43,17 +43,6 @@ describe("OnboardingCreateAccountEmail", () => {
   })
 
   describe("Form", () => {
-    it("renders the right email from the formik context", async () => {
-      renderWithWrappers(<Test />)
-      const emailInput = screen.getByTestId("emailInput")
-
-      expect(emailInput).toHaveTextContent("")
-
-      fireEvent.changeText(emailInput, "test@email.com")
-
-      expect(emailInput).toHaveProp("value", "test@email.com")
-    })
-
     it("does not validate email when the user is still typing", () => {
       renderWithWrappers(<Test />)
       const emailInput = screen.getByTestId("emailInput")

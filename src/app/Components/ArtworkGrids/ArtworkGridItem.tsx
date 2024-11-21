@@ -66,6 +66,7 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   hideRegisterBySignal?: boolean
   hideSaleInfo?: boolean
   hideSaveIcon?: boolean
+  hideFollowIcon?: boolean
   /** Pass Tap to override generic ing, used for home tracking in rails */
   itemIndex?: number
   lotLabelTextStyle?: TextProps
@@ -83,6 +84,7 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   /** allows for artwork to be added to recent searches */
   updateRecentSearchesOnTap?: boolean
   numColumns?: number
+  hideViewFollowsLink?: boolean
 }
 
 export const Artwork: React.FC<ArtworkProps> = ({
@@ -103,6 +105,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   hideRegisterBySignal = false,
   hideSaleInfo = false,
   hideSaveIcon = false,
+  hideFollowIcon = false,
   itemIndex,
   lotLabelTextStyle,
   onPress,
@@ -115,6 +118,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   trackTap,
   updateRecentSearchesOnTap = false,
   numColumns = NUM_COLUMNS_MASONRY,
+  hideViewFollowsLink = false,
 }) => {
   const itemRef = useRef<any>()
   const color = useColor()
@@ -331,7 +335,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
               mt={1}
               style={artworkMetaStyle}
             >
-              <Flex flex={1}>
+              <Flex>
                 {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
                   <>
                     <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
@@ -359,7 +363,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                     numberOfLines={1}
                     {...titleTextStyle}
                   >
-                    <Text lineHeight="18px" variant="xs" weight="regular" italic>
+                    <Text lineHeight="18px" variant="xs" weight="regular">
                       {artwork.title}
                     </Text>
                     {artwork.date ? `, ${artwork.date}` : ""}
@@ -442,6 +446,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
               <ArtworkItemCTAs
                 artwork={artwork}
                 showSaveIcon={!hideSaveIcon}
+                showFollowIcon={!hideFollowIcon}
+                hideViewFollowsLink={hideViewFollowsLink}
                 contextModule={contextModule}
                 contextScreen={contextScreen}
                 contextScreenOwnerId={contextScreenOwnerId}
@@ -536,7 +542,7 @@ export default createFragmentContainer(Artwork, {
         endAt
         extendedBiddingEndAt
       }
-      partner {
+      partner(shallow: true) {
         name
       }
       image(includeAll: $includeAllImages) {

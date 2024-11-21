@@ -32,6 +32,7 @@ interface MasonryInfiniteScrollArtworkGridProps extends MasonryFlashListOmittedP
   hasMore?: boolean
   hideSaleInfo?: boolean
   hideSaveIcon?: boolean
+  hideFollowIcon?: boolean
   isLoading?: boolean
   loadMore?: (pageSize: number) => void
   onPress?: (artworkID: string) => void
@@ -46,6 +47,7 @@ interface MasonryInfiniteScrollArtworkGridProps extends MasonryFlashListOmittedP
  * a masonry grid in a Tab surface, use Tabs.Masonry instead.
  *
  */
+
 export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArtworkGridProps> = ({
   animated = false,
   artworks,
@@ -57,6 +59,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   hasMore,
   hideSaleInfo,
   hideSaveIcon,
+  hideFollowIcon,
   isLoading,
   ListEmptyComponent,
   ListHeaderComponent,
@@ -102,6 +105,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
         onPress={onPress}
         hideSaleInfo={hideSaleInfo}
         hideSaveIcon={hideSaveIcon}
+        hideFollowIcon={hideFollowIcon}
       />
     ),
     [rest.numColumns]

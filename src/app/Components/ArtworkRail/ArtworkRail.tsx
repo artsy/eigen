@@ -12,10 +12,8 @@ import {
   ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
   ARTWORK_RAIL_MIN_IMAGE_WIDTH,
 } from "app/Components/ArtworkRail/ArtworkRailCardImage"
-import { LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT } from "app/Components/ArtworkRail/LegacyArtworkRailCardImage"
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { PrefetchFlashList } from "app/Components/PrefetchFlashList"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { RandomWidthPlaceholderText } from "app/utils/placeholders"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
 import React, { ReactElement, useCallback } from "react"
@@ -24,7 +22,6 @@ import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 
 export const INITIAL_NUM_TO_RENDER = isTablet() ? 10 : 5
-export const ARTWORK_RAIL_IMAGE_WIDTH = 295
 
 type Artwork = ArtworkRail_artworks$data[0]
 
@@ -135,26 +132,16 @@ const artworksFragment = graphql`
 `
 
 export const ArtworkRailPlaceholder: React.FC = () => {
-  const enableArtworkRailRedesignImageAspectRatio = useFeatureFlag(
-    "AREnableArtworkRailRedesignImageAspectRatio"
-  )
   const cards = !isTablet() ? 2 : 6
 
   return (
     <Flex gap={2} flexDirection="row">
       {Array.from({ length: cards }).map((_, index) => (
         <Flex key={index}>
-          {enableArtworkRailRedesignImageAspectRatio ? (
-            <SkeletonBox
-              height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
-              width={ARTWORK_RAIL_MIN_IMAGE_WIDTH * 2}
-            />
-          ) : (
-            <SkeletonBox
-              height={LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
-              width={ARTWORK_RAIL_IMAGE_WIDTH}
-            />
-          )}
+          <SkeletonBox
+            height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
+            width={ARTWORK_RAIL_MIN_IMAGE_WIDTH * 2}
+          />
           <Spacer y={2} />
           <SkeletonText>Artist</SkeletonText>
           <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />

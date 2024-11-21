@@ -1,11 +1,10 @@
 import { Flex, Image, useColor } from "@artsy/palette-mobile"
 import { ContextMenuArtworkPreviewCardImage_artwork$key } from "__generated__/ContextMenuArtworkPreviewCardImage_artwork.graphql"
-import {
-  LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
-  ARTWORK_RAIL_CARD_IMAGE_WIDTH,
-} from "app/Components/ArtworkRail/LegacyArtworkRailCardImage"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { graphql, useFragment } from "react-relay"
+
+export const LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT = 320
+export const ARTWORK_RAIL_CARD_IMAGE_WIDTH = 295
 
 const artworkFragment = graphql`
   fragment ContextMenuArtworkPreviewCardImage_artwork on Artwork
