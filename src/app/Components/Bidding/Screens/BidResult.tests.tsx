@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { BidResultTestsQuery } from "__generated__/BidResultTestsQuery.graphql"
 import { BidResult_sale_artwork$data } from "__generated__/BidResult_sale_artwork.graphql"
 import { BidderPositionResult } from "app/Components/Bidding/types"
@@ -73,27 +73,23 @@ describe("BidResult component", () => {
 
   describe("high bidder", () => {
     it("renders a timer", () => {
-      const { getByLabelText } = renderWithWrappers(
-        <TestWrapper bidderPositionResult={Statuses.winning} />
-      )
+      renderWithWrappers(<TestWrapper bidderPositionResult={Statuses.winning} />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Sale: () => sale,
       })
 
-      expect(getByLabelText("Countdown")).toBeTruthy()
+      expect(screen.getByLabelText("Countdown")).toBeTruthy()
     })
 
     it("dismisses the controller when the continue button is pressed", () => {
-      const { getByText } = renderWithWrappers(
-        <TestWrapper bidderPositionResult={Statuses.winning} />
-      )
+      renderWithWrappers(<TestWrapper bidderPositionResult={Statuses.winning} />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Sale: () => sale,
       })
 
-      fireEvent.press(getByText("Continue"))
+      fireEvent.press(screen.getByText("Continue"))
       jest.runAllTicks()
 
       expect(dismissModal).toHaveBeenCalled()
@@ -103,27 +99,23 @@ describe("BidResult component", () => {
 
   describe("low bidder", () => {
     it("renders a timer", () => {
-      const { getByLabelText } = renderWithWrappers(
-        <TestWrapper bidderPositionResult={Statuses.outbid} />
-      )
+      renderWithWrappers(<TestWrapper bidderPositionResult={Statuses.outbid} />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Sale: () => sale,
       })
 
-      expect(getByLabelText("Countdown")).toBeTruthy()
+      expect(screen.getByLabelText("Countdown")).toBeTruthy()
     })
 
     it("pops to root when bid-again button is pressed", () => {
-      const { getByText } = renderWithWrappers(
-        <TestWrapper bidderPositionResult={Statuses.outbid} />
-      )
+      renderWithWrappers(<TestWrapper bidderPositionResult={Statuses.outbid} />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Sale: () => sale,
       })
 
-      fireEvent.press(getByText("Bid again"))
+      fireEvent.press(screen.getByText("Bid again"))
 
       expect(refreshBidderInfoMock).toHaveBeenCalled()
       expect(refreshSaleArtworkInfoMock).toHaveBeenCalled()
@@ -133,27 +125,23 @@ describe("BidResult component", () => {
 
   describe("live bidding has started", () => {
     it("doesn't render a timer", () => {
-      const { queryByLabelText } = renderWithWrappers(
-        <TestWrapper bidderPositionResult={Statuses.live_bidding_started} />
-      )
+      renderWithWrappers(<TestWrapper bidderPositionResult={Statuses.live_bidding_started} />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Sale: () => sale,
       })
 
-      expect(queryByLabelText("Countdown")).toBeFalsy()
+      expect(screen.queryByLabelText("Countdown")).toBeFalsy()
     })
 
     it("dismisses controller and presents live interface when continue button is pressed", () => {
-      const { getByText } = renderWithWrappers(
-        <TestWrapper bidderPositionResult={Statuses.live_bidding_started} />
-      )
+      renderWithWrappers(<TestWrapper bidderPositionResult={Statuses.live_bidding_started} />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Sale: () => sale,
       })
 
-      fireEvent.press(getByText("Continue"))
+      fireEvent.press(screen.getByText("Continue"))
       jest.runAllTicks()
 
       expect(navigate).toHaveBeenCalledWith("https://live-staging.artsy.net/sale-id", {
