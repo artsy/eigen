@@ -511,93 +511,102 @@ parameters:
 workflows:
   version: 2
   nightly:
-    triggers:
-      - schedule:
-          cron: "0 6 * * *"
+    # triggers:
+    #   - schedule:
+    #       cron: "0 6 * * *"
+    #       filters:
+    #         branches:
+    #           only:
+    #             - main
+
+    jobs:
+      - deploy-nightly-beta:
           filters:
             branches:
-              only:
+              ignore:
                 - main
-    jobs:
-      - deploy-nightly-beta
-      - run-nightly-tasks
-
-  flag-check:
-    triggers:
-      - schedule:
-          cron: "0 6 * * 4"
-          filters:
-            branches:
-              only:
-                - main
-    jobs:
-      - check-flags
-
-  build-run-tests-for-echo:
-    when: << pipeline.parameters.run_workflow_build-run-tests-for-echo >>
-    jobs:
-      - build-echo-test-js
-      - test-js
-
-  test-build-deploy:
-    when: << pipeline.parameters.run_workflow_test-build-deploy >>
-    jobs:
-      - detect-secrets:
+      - run-nightly-tasks:
           filters:
             branches:
               ignore:
                 - main
 
-      - check-code:
-          context: danger-github-oss
+  # flag-check:
+  #   triggers:
+  #     - schedule:
+  #         cron: "0 6 * * 4"
+  #         filters:
+  #           branches:
+  #             only:
+  #               - main
+  #   jobs:
+  #     - check-flags
 
-      - check-and-deploy:
-          filters:
-            branches:
-              only:
-                - main
+  # build-run-tests-for-echo:
+  #   when: << pipeline.parameters.run_workflow_build-run-tests-for-echo >>
+  #   jobs:
+  #     - build-echo-test-js
+  #     - test-js
 
-      - test-js
+  # test-build-deploy:
+  #   when: << pipeline.parameters.run_workflow_test-build-deploy >>
+  #   jobs:
+  #     - detect-secrets:
+  #         filters:
+  #           branches:
+  #             ignore:
+  #               - main
 
-      - build-test-js
+  #     - check-code:
+  #         context: danger-github-oss
 
-      - horizon/block:
-          context: horizon
-          project_id: 37
-          filters:
-            branches:
-              only:
-                - beta-ios
-                - beta-android
+  #     - check-and-deploy:
+  #         filters:
+  #           branches:
+  #             only:
+  #               - main
 
-      - build-test-app-ios:
-          filters:
-            branches:
-              ignore:
-                - beta-android
-          requires:
-            - test-js
-            - check-code
-            - build-test-js
-            - horizon/block
+  #     - test-js
 
-      - build-test-app-android:
-          filters:
-            branches:
-              ignore:
-                - beta-ios
-          requires:
-            - test-js
-            - check-code
-            - build-test-js
-            - horizon/block
+  #     - build-test-js
 
-      - update-metaphysics:
-          filters:
-            branches:
-              only:
-                - beta-ios
-                - beta-android
-          requires:
-            - build-test-app-ios
-            - build-test-app-android
+  #     - horizon/block:
+  #         context: horizon
+  #         project_id: 37
+  #         filters:
+  #           branches:
+  #             only:
+  #               - beta-ios
+  #               - beta-android
+
+  #     - build-test-app-ios:
+  #         filters:
+  #           branches:
+  #             ignore:
+  #               - beta-android
+  #         requires:
+  #           - test-js
+  #           - check-code
+  #           - build-test-js
+  #           - horizon/block
+
+  #     - build-test-app-android:
+  #         filters:
+  #           branches:
+  #             ignore:
+  #               - beta-ios
+  #         requires:
+  #           - test-js
+  #           - check-code
+  #           - build-test-js
+  #           - horizon/block
+
+  #     - update-metaphysics:
+  #         filters:
+  #           branches:
+  #             only:
+  #               - beta-ios
+  #               - beta-android
+  #         requires:
+  #           - build-test-app-ios
+  #           - build-test-app-android
