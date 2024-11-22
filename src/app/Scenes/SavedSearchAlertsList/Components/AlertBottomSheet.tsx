@@ -35,8 +35,8 @@ export const AlertBottomSheet: React.FC<AlertBottomSheetProps> = ({
       name="AlertBottomSheet"
       onDismiss={onDismiss}
     >
-      <BottomSheetView>
-        <Flex flex={1} mb={4} mx={2} alignItems="center">
+      <BottomSheetView style={{ flex: 1 }}>
+        <Flex mb={4} mx={2} alignItems="center">
           <Join separator={<Spacer y={2} />}>
             <Text variant="sm" fontWeight="bold">
               {title}
