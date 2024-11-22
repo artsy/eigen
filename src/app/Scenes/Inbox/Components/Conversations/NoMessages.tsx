@@ -5,7 +5,7 @@ import { useTracking } from "react-tracking"
 
 export const NoMessages: React.FC = () => {
   const tracking = useTracking()
-  const noMessagesButtonText = "Explore works"
+  const noMessagesButtonText = "Explore Works"
 
   const handleViewWorks = () => {
     tracking.trackEvent({
