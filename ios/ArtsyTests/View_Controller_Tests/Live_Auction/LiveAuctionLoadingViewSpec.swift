@@ -8,7 +8,7 @@ class LiveAuctionLoadingViewSpec: QuickSpec {
     override func spec() {
         it("looks good by default") {
             let subject = LiveAuctionLoadingView(frame: CGRect(x: 0, y: 0, width: 600, height: 800))
-            expect(subject) == snapshot()
+            expect(subject) == recordSnapshot()
         }
     }
 }

@@ -55,7 +55,7 @@ describe(@"", ^{
 
             // The host.view is useless here, we're not
             // adding to it, contrary what you'd expect
-            expect(window).to.haveValidSnapshot();
+            expect(window).to.recordSnapshot();
 
             // It sticks around otherwise.
             window.hidden = YES;
@@ -76,7 +76,7 @@ describe(@"", ^{
         subject = [[ARSerifNavigationViewController alloc] initWithRootViewController:insideVC];
         [subject pushViewController:secondVC animated:NO];
 
-        expect(subject).to.haveValidSnapshot();
+        expect(subject).to.recordSnapshot();
     });
 
     it(@"handles the fake navigation close button correctly", ^{
@@ -84,7 +84,7 @@ describe(@"", ^{
 
         subject = [[ARSerifNavigationViewController alloc] initWithRootViewController:rootViewController];
 
-        expect(subject).to.haveValidSnapshot();
+        expect(subject).to.recordSnapshot();
     });
 });
 

@@ -35,7 +35,7 @@ import Artsy
 //                    subject.suppressJumpingToOpenLots = true
 //
 //                    subject.stubTraitCollection(UITraitCollection(horizontalSizeClass: horizontalSizeClass))
-//                    expect(subject).to( haveValidSnapshot() )
+//                    expect(subject).to( recordSnapshot )
 //                }
 //            }
 //        }

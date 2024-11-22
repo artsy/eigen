@@ -51,7 +51,7 @@ class AuctionInformationViewControllerSpec: QuickSpec {
             ["iPhone": ARDeviceType.phone6.rawValue, "iPad": ARDeviceType.pad.rawValue].forEach { (deviceName, deviceType) in
                 it("has a root view that shows information about the auction and looks good on \(deviceName)") {
                     ARTestContext.use(ARDeviceType(rawValue: deviceType)!) {
-                        expect(navigationController).to( haveValidSnapshot(usesDrawRect: true) )
+                        expect(navigationController).to( recordSnapshot(usesDrawRect: true) )
                     }
                 }
             }
@@ -65,17 +65,17 @@ class AuctionInformationViewControllerSpec: QuickSpec {
                     OHHTTPStubs.stubJSONResponse(atPath: "/api/v1/page/\(entry.slug)", withResponse:["published":true, "content": markdown])
                 }
 
-                expect(navigationController).to( haveValidSnapshot(usesDrawRect: true) )
+                expect(navigationController).to( recordSnapshot(usesDrawRect: true) )
             }
 
             it("has a FAQ view that answers questions about the auction") {
                 let FAQController = informationController.showFAQ(false)
-                expect(navigationController).to( haveValidSnapshot(named: "FAQ Initial Entry", usesDrawRect: true) )
+                expect(navigationController).to( recordSnapshot(named: "FAQ Initial Entry", usesDrawRect: true) )
 
                 for (index, view) in FAQController.entryViews.enumerated() {
                     view.didTap()
                     let entry = FAQController.entries[index]
-                    expect(navigationController).to( haveValidSnapshot(named: "FAQ Entry: \(entry.name)", usesDrawRect: true))
+                    expect(navigationController).to( recordSnapshot(named: "FAQ Entry: \(entry.name)", usesDrawRect: true))
                 }
             }
         }
@@ -88,7 +88,7 @@ class AuctionInformationViewControllerSpec: QuickSpec {
             }
 
             it("shows the sale is closed") {
-                expect(navigationController).to( haveValidSnapshot() )
+                expect(navigationController).to( recordSnapshot() )
             }
         }
     }

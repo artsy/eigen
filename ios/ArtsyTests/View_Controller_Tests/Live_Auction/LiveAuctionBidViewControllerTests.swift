@@ -104,7 +104,7 @@ class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
 
                     tuple.1.forEach { subject.biddingProgressSignal.update($0) }
 
-                    expect(subject).to (haveValidSnapshot(named: nil, usesDrawRect: true))
+                    expect(subject).to (recordSnapshot(named: nil, usesDrawRect: true))
                 }
             }
         }

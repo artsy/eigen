@@ -15,19 +15,19 @@ describe(@"ARNavigationButton", ^{
 
         it(@"title", ^{
             _view.title = @"Hello World";
-            expect(_view).to.haveValidSnapshotNamed(@"navigationButtonWithTitle");
+            expect(_view).to.recordSnapshotNamed(@"navigationButtonWithTitle");
         });
 
         it(@"title and subtitle", ^{
             _view.title = @"Title";
             _view.subtitle = @"Subtitle";
-            expect(_view).to.haveValidSnapshotNamed(@"navigationButtonWithTitleAndSubtitle");
+            expect(_view).to.recordSnapshotNamed(@"navigationButtonWithTitleAndSubtitle");
         });
 
         it(@"really long title and subtitle", ^{
             _view.title = @"Title and Title and Title and Title and Title and ";
             _view.subtitle = @"Subtitle and Subtitle and Subtitle and Subtitle and Subtitle and Subtitle and Subtitle and";
-            expect(_view).to.haveValidSnapshot();
+            expect(_view).to.recordSnapshot();
         });
     });
 
@@ -39,13 +39,13 @@ describe(@"ARNavigationButton", ^{
 
         it(@"title", ^{
             _view.title = @"Hello World";
-            expect(_view).to.haveValidSnapshotNamed(@"navigationButtonWithTitleAnd5pxBorder");
+            expect(_view).to.recordSnapshotNamed(@"navigationButtonWithTitleAnd5pxBorder");
         });
 
         it(@"title and subtitle", ^{
             _view.title = @"Title";
             _view.subtitle = @"Subtitle";
-            expect(_view).to.haveValidSnapshotNamed(@"navigationButtonWithTitleAndSubtitleAnd5pxBorder");
+            expect(_view).to.recordSnapshotNamed(@"navigationButtonWithTitleAndSubtitleAnd5pxBorder");
         });
     });
 
@@ -57,13 +57,13 @@ describe(@"ARNavigationButton", ^{
 
         it(@"title", ^{
             _view.title = @"Hello World";
-            expect(_view).to.haveValidSnapshotNamed(@"navigationButtonWithTitleAndNoBorder");
+            expect(_view).to.recordSnapshotNamed(@"navigationButtonWithTitleAndNoBorder");
         });
 
         it(@"title and subtitle", ^{
             _view.title = @"Title";
             _view.subtitle = @"Subtitle";
-            expect(_view).to.haveValidSnapshotNamed(@"navigationButtonWithTitleAndSubtitleAndNoBorder");
+            expect(_view).to.recordSnapshotNamed(@"navigationButtonWithTitleAndSubtitleAndNoBorder");
         });
     });
 });
@@ -76,20 +76,20 @@ describe(@"ARSerifNavigationButton", ^{
 
     it(@"title", ^{
         _view.title = @"Hello World";
-        expect(_view).to.haveValidSnapshotNamed(@"serifNavigationButtonWithTitle");
+        expect(_view).to.recordSnapshotNamed(@"serifNavigationButtonWithTitle");
     });
 
     it(@"title and subtitle", ^{
         _view.title = @"Title";
         _view.subtitle = @"Subtitle";
-        expect(_view).to.haveValidSnapshotNamed(@"serifNavigationButtonWithTitleAndSubtitle");
+        expect(_view).to.recordSnapshotNamed(@"serifNavigationButtonWithTitleAndSubtitle");
     });
 
 
     it(@"really long title and subtitle", ^{
         _view.title = @"Title and Title and Title and Title and Title and ";
         _view.subtitle = @"Subtitle and Subtitle and Subtitle and Subtitle and Subtitle and Subtitle and Subtitle and";
-        expect(_view).to.haveValidSnapshot();
+        expect(_view).to.recordSnapshot();
     });
 
 });

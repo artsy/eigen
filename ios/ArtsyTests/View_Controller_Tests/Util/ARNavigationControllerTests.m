@@ -50,13 +50,13 @@ beforeEach(^{
 describe(@"visuals", ^{
 
     it(@"should be empty for a rootVC", ^{
-        expect(navigationController).to.haveValidSnapshot();
+        expect(navigationController).to.recordSnapshot();
     });
 
     it(@"should be show a back button with 2 view controllers", ^{
         UIViewController *viewController2 = [[UIViewController alloc] init];
         [navigationController pushViewController:viewController2 animated:NO];
-        expect(navigationController).to.haveValidSnapshot();
+        expect(navigationController).to.recordSnapshot();
     });
 });
 

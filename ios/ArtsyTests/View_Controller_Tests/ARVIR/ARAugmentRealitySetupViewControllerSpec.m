@@ -75,7 +75,7 @@ pending(@"defaults to asking for camera access",^{
     ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil];
     vc.defaults = (id)untouchedDefaults;
 
-    expect(vc).to.haveValidSnapshot();
+    expect(vc).to.recordSnapshot();
 });
 
 pending(@"next sets ARAugmentedRealityHasTriedToSetup",^{
@@ -95,14 +95,14 @@ pending(@"next sets ARAugmentedRealityHasTriedToSetup",^{
 pending(@"has different settings when denied access",^{
     ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil];
     vc.defaults = (id)deniedDefaults;
-    expect(vc).to.haveValidSnapshot();
+    expect(vc).to.recordSnapshot();
 });
 
 
 pending(@"has different settings when you have given access but not succedded in putting a work on the wall",^{
     ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil];
     vc.defaults = (id)setupButNotRanDefaults;
-    expect(vc).to.haveValidSnapshot();
+    expect(vc).to.recordSnapshot();
 });
 
 

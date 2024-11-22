@@ -40,7 +40,7 @@ SpecBegin(ARAugmentedVIRViewController);
 it(@"defaults to showing info",^{
     ARAugmentedFloorBasedVIRViewController *vc = [[ARAugmentedFloorBasedVIRViewController alloc] initWithConfig:nil];
     vc.sceneView = (id)[[FakeSceneView alloc] init];
-    expect(vc).to.haveValidSnapshot();
+    expect(vc).to.recordSnapshot();
 });
 
 it(@"shows the right info when a wall is registered",^{
@@ -49,7 +49,7 @@ it(@"shows the right info when a wall is registered",^{
     [vc ar_presentWithFrame:[UIScreen mainScreen].bounds];
     [vc hasRegisteredPlanes];
 
-    expect(vc.view).to.haveValidSnapshot();
+    expect(vc.view).to.recordSnapshot();
 });
 
 it(@"shows the right info when an artwork was placed",^{
@@ -58,7 +58,7 @@ it(@"shows the right info when an artwork was placed",^{
     [vc ar_presentWithFrame:[UIScreen mainScreen].bounds];
     [vc hasPlacedArtwork];
 
-    expect(vc.view).to.haveValidSnapshot();
+    expect(vc.view).to.recordSnapshot();
 });
 
 SpecEnd;

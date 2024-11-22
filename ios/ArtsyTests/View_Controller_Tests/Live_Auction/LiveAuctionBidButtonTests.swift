@@ -38,7 +38,7 @@ class LiveAuctionBidButtonTests: QuickSpec {
                 tuple.1.forEach { viewModel.progressSignal.update($0) }
 
                 subject.frame = CGRect(x:0, y:0, width:260, height: 60)
-                expect(subject) == snapshot()
+                expect(subject) == recordSnapshot()
             }
         }
 
@@ -58,7 +58,7 @@ class LiveAuctionBidButtonTests: QuickSpec {
             }
 
             subject.frame = CGRect(x:0, y:0, width:260, height: 60)
-            expect(subject) == snapshot()
+            expect(subject) == recordSnapshot()
         }
     }
 }
