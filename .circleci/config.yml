@@ -185,7 +185,7 @@ jobs:
       BUNDLE_PATH: .vendor
 
     macos:
-      xcode: 15.1
+      xcode: 16.1
       resource_class: macos.m1.medium.gen1
 
     steps:
@@ -206,7 +206,7 @@ jobs:
       BUNDLE_PATH: .vendor
 
     macos:
-      xcode: 15.1
+      xcode: 16.1
       resource_class: macos.m1.medium.gen1
 
     steps:
