@@ -1483,7 +1483,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-blob-util (0.19.9):
+  - react-native-blob-util (0.19.11):
     - React-Core
   - react-native-blurhash (1.1.11):
     - React-Core
@@ -1566,8 +1566,27 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-view-shot (3.8.0):
+  - react-native-view-shot (4.0.2):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.01.01.00)
+    - RCTRequired
+    - RCTTypeSafety
     - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - react-native-webview (13.6.3):
     - React-Core
   - React-nativeconfig (0.75.4)
@@ -2050,8 +2069,27 @@ PODS:
     - ReactCommon/turbomodule/core
     - Sentry/HybridSDK (= 8.36.0)
     - Yoga
-  - RNShare (10.0.2):
+  - RNShare (11.1.0):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.01.01.00)
+    - RCTRequired
+    - RCTTypeSafety
     - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - RNSVG (14.1.0):
     - React-Core
   - SDWebImage (5.19.1):
@@ -2720,7 +2758,7 @@ SPEC CHECKSUMS:
   React-logger: 80d87daf2f98bf95ab668b79062c1e0c3f0c2f8a
   React-Mapbuffer: acffb35a53a5f474ede09f082ac609b41aafab2e
   React-microtasksnativemodule: 71ca9282bce93b319218d75362c0d646b376eb43
-  react-native-blob-util: 6560d6fc4b940ec140f9c3ebe21c8669b1df789b
+  react-native-blob-util: f7234c91ad0e3faeee51b3edee80b61553f74993
   react-native-blurhash: 275104c6fb85e754c448854024bf7a8d4571ba8a
   react-native-config: 1baea138c9641f8460d7730568daf2ff3738c4db
   react-native-context-menu-view: 74fbcf8a5f842c4802d0121addda2f8ffca43604
@@ -2735,7 +2773,7 @@ SPEC CHECKSUMS:
   react-native-render-html: 5afc4751f1a98621b3009432ef84c47019dcb2bd
   react-native-safe-area-context: 8d2875c0b41484fda7ab7c803f40d016b8a7ca8c
   react-native-shake: e225eeedd2404d68f79904051622fff0e877ec08
-  react-native-view-shot: d1a701eb0719c6dccbd20b4bb43b1069f304cb70
+  react-native-view-shot: 732355b3dd55559f53e66434638e2de5e59c14ed
   react-native-webview: 508a7967877321541cc7ff68740f2c294243415c
   React-nativeconfig: 8c83d992b9cc7d75b5abe262069eaeea4349f794
   React-NativeModulesApple: 97f606f09fd9840b3868333984d6a0e7bcc425b5
@@ -2782,7 +2820,7 @@ SPEC CHECKSUMS:
   RNReanimated: 6398ee150e1ebeda517fdd1e1b5525833a0c0ddc
   RNScreens: 35bb8e81aeccf111baa0ea01a54231390dbbcfd9
   RNSentry: 8473fe16e2b05a9a6f4336369af0fa713e1eaf59
-  RNShare: 01c717e457489779d16293d2afef36995aadd001
+  RNShare: 6204e6a1987ba3e7c47071ef703e5449a0e3548a
   RNSVG: 6d5ed33b6635ed6d6ecb50744dcf127580c39ed5
   SDWebImage: 40b0b4053e36c660a764958bff99eed16610acbb
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
