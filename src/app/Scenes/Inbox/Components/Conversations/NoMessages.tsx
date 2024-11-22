@@ -1,11 +1,11 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex, Text, Button } from "@artsy/palette-mobile"
-import { navigate } from "app/system/navigation/navigate"
+import { Button, Flex, Text } from "@artsy/palette-mobile"
+import { switchTab } from "app/system/navigation/navigate"
 import { useTracking } from "react-tracking"
 
 export const NoMessages: React.FC = () => {
   const tracking = useTracking()
-  const noMessagesButtonText = " Explore works"
+  const noMessagesButtonText = "Explore Works"
 
   const handleViewWorks = () => {
     tracking.trackEvent({
@@ -14,7 +14,7 @@ export const NoMessages: React.FC = () => {
       context_screen_owner_type: OwnerType.inboxInquiries,
       subject: noMessagesButtonText,
     })
-    navigate(`/`)
+    switchTab("home")
   }
 
   return (
