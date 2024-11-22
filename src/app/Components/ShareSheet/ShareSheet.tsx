@@ -73,26 +73,29 @@ export const ShareSheet = () => {
         throw error
       }
 
-      // Step 3: If isArtwork, track event share
+      // Step 3: Process the base64 and remove any line breaks https://github.com/react-native-share/react-native-share/issues/1506#issuecomment-2486205386
+      const processedBase64Image = base64Data.replace(/(\r\n|\n|\r)/gm, "")
+
+      // Step 4: If isArtwork, track event share
       if (isArtwork) {
         trackEvent(
           share(tracks.customShare(CustomService.instagram_stories, data?.internalID, data?.slug))
         )
       }
 
-      // Step 4: Share single from share library
+      // Step 5: Share single from share library
 
       try {
         await Share.shareSingle({
           appId: Config.ARTSY_FACEBOOK_APP_ID,
           social: Social.InstagramStories,
-          backgroundImage: `data:image/png;base64,${base64Data}`,
+          backgroundImage: `data:image/png;base64,${processedBase64Image}`,
         })
       } catch (error) {
         console.error("Failed to open Instagram story:", error)
 
         Sentry.withScope((scope) => {
-          scope.setExtra("base64Data", base64Data)
+          scope.setExtra("base64Data", processedBase64Image)
           scope.setExtra("error", error)
           captureMessage("Opened Instagram story failure")
         })
@@ -143,10 +146,13 @@ export const ShareSheet = () => {
       base64Data = await getImageBase64(currentImageUrl)
     }
 
+    // Process the base64 and remove any line breaks https://github.com/react-native-share/react-native-share/issues/1506#issuecomment-2486205386
+    const processedBase64Image = base64Data.replace(/(\r\n|\n|\r)/gm, "")
+
     try {
       const res = await Share.open({
         ...shareOptions,
-        ...(!!base64Data && { url: base64Data }),
+        ...(!!base64Data && { url: processedBase64Image }),
       })
 
       if (isArtwork) {
