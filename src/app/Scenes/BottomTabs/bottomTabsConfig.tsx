@@ -1,5 +1,4 @@
 import { OwnerType, TappedTabBarArgs } from "@artsy/cohesion"
-import { VisualCluesConstMap } from "app/store/config/visualClues"
 import { BottomTabType } from "./BottomTabType"
 
 export type BottomTabRoute = "/" | "/search" | "/inbox" | "/sell" | "/my-profile"
@@ -37,6 +36,5 @@ export const bottomTabsConfig: {
     route: "/my-profile",
     analyticsDescription: OwnerType.profile,
     name: "Profile",
-    visualClues: [VisualCluesConstMap.MyCollectionInsights],
   },
 }
