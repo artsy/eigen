@@ -18,7 +18,7 @@ func runTheTest(message: String? = nil) {
     containerView.addSubview(subject)
     subject.align(toView: containerView)
 
-    expect(containerView).to( recordSnapshot() )
+    expect(containerView).to( haveValidSnapshot() )
 }
 
 class SaleOnHoldOverlayViewTests: QuickSpec {
@@ -64,12 +64,12 @@ class SaleOnHoldOverlayViewTests: QuickSpec {
 
             xit("handles subsequent message updates") {
                 setNimbleTolerance(0.1)
-                expect(containerView).to(recordSnapshot(named: "initial message"))
+                expect(containerView).to(haveValidSnapshot(named: "initial message"))
 
                 messages.update("subsequently updated message")
                 // This expectation uses drawRect to delay the snapshot until after a subsequent render pass (for Autolayout to do its thing).
                 setNimbleTolerance(0.1)
-                expect(containerView).to(recordSnapshot(named: "updated message", usesDrawRect: true))
+                expect(containerView).to(haveValidSnapshot(named: "updated message", usesDrawRect: true))
             }
         }
     }

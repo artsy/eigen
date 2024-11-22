@@ -29,12 +29,12 @@ class LiveAuctionLotListStickyCellCollectionViewLayoutTests: QuickSpec {
         }
 
         it("looks good by default") {
-            expect(container) == recordSnapshot()
+            expect(container) == snapshot()
         }
 
         it("looks good when stuck to the top") {
             collectionView.setContentOffset(CGPoint(x: 0, y: 100), animated: false) // simulates a scroll
-            expect(container) == recordSnapshot()
+            expect(container) == snapshot()
         }
 
         it("looks good when stuck to the bottom") {
@@ -42,7 +42,7 @@ class LiveAuctionLotListStickyCellCollectionViewLayoutTests: QuickSpec {
             collectionView.reloadData()
             subject.setActiveIndex(8)
 
-            expect(container) == recordSnapshot()
+            expect(container) == snapshot()
         }
     }
 }

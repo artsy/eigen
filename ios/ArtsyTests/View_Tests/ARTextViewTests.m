@@ -7,7 +7,7 @@ describe(@"with HTML", ^{
         ARTextView *textView = [[ARTextView alloc] init];
         [textView setHTMLString:@"<p>lorem ipsum</p><p><b>lorem</b> ipsum</p><p>lorem ipsum</p>"];
         textView.frame = CGRectMake(0, 0, 80, 200);
-        expect(textView).to.recordSnapshot();
+        expect(textView).to.haveValidSnapshot();
     });
 });
 

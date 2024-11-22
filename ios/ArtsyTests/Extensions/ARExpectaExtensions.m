@@ -19,7 +19,7 @@ void _itTestsWithDevicesRecordingAsynchronouslyWithName(id self, int lineNumber,
             if (name) {
                 expectation.haveValidSnapshotNamed([name stringByAppendingString:suffix]);
             } else {
-                expectation.recordSnapshot();
+                expectation.haveValidSnapshot();
             }
         }
     };
