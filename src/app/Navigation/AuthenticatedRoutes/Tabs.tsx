@@ -94,6 +94,7 @@ export const AuthenticatedRoutes: React.FC = () => {
   if (onboardingState === "incomplete") {
     return <OnboardingQuiz />
   }
+
   return (
     <AuthenticatedRoutesStack.Navigator>
       <AuthenticatedRoutesStack.Group>

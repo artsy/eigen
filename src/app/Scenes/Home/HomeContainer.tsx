@@ -12,18 +12,19 @@ export const InnerHomeContainer = () => {
   const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
   const showPlayground = useDevToggle("DTShowPlayground")
 
-  const navigateToArtQuiz = async () => {
-    await navigate("/art-quiz")
-  }
-
   useSwitchStatusBarStyle("dark-content", "dark-content")
 
   useEffect(() => {
     if (artQuizState === "incomplete" && isNavigationReady) {
-      navigateToArtQuiz()
+      // Wait for react-navigation to start drawing the screen before navigating to ArtQuiz
+      requestAnimationFrame(() => {
+        navigate("/art-quiz", {
+          replaceActiveScreen: true,
+        })
+      })
       return
     }
-  }, [artQuizState, navigateToArtQuiz, isNavigationReady])
+  }, [artQuizState, isNavigationReady])
 
   if (artQuizState === "incomplete") {
     return null
