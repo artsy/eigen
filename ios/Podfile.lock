@@ -240,9 +240,9 @@ PODS:
   - nanopb/encode (2.30910.0)
   - Nimble (13.2.1):
     - CwlPreconditionTesting (~> 2.2.0)
-  - Nimble-Snapshots (9.7.0):
-    - Nimble-Snapshots/Core (= 9.7.0)
-  - Nimble-Snapshots/Core (9.7.0):
+  - Nimble-Snapshots (9.8.0):
+    - Nimble-Snapshots/Core (= 9.8.0)
+  - Nimble-Snapshots/Core (9.8.0):
     - iOSSnapshotTestCase (~> 8.0)
     - Nimble (~> 13.0)
   - ObjectiveSugar (1.1.0)
@@ -2200,7 +2200,7 @@ DEPENDENCIES:
   - MultiDelegate
   - nanopb
   - Nimble (~> 13.0)
-  - Nimble-Snapshots (= 9.7.0)
+  - Nimble-Snapshots (= 9.8.0)
   - ObjectiveSugar
   - OCMock
   - OHHTTPStubs (= 3.1.2)
@@ -2721,7 +2721,7 @@ SPEC CHECKSUMS:
   MultiDelegate: 228e2321b74f45ea43ae19c268fdd60fd88d99b7
   nanopb: 438bc412db1928dac798aa6fd75726007be04262
   Nimble: 9e81a67096dab1d1f5160d7a3f8fa7a1eeec38fd
-  Nimble-Snapshots: 7f2710c507469eb0fc4912f45d0f280e15f91966
+  Nimble-Snapshots: 240ea76ee8e52dfc1387b8d0d9bf1db3420cabbd
   ObjectiveSugar: a6a25f23d657c19df0a0b972466d5b5ca9f5295c
   OCMock: 9491e4bec59e0b267d52a9184ff5605995e74be8
   OHHTTPStubs: c93230597bc5c8b74bcfdb403cc8773515b8b08c
@@ -2851,6 +2851,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 055f92ad73f8c8600a93f0e25ac0b2344c3b07e6
 
-PODFILE CHECKSUM: 46318adcb474038e55e674055ad6287fc96886af
+PODFILE CHECKSUM: 1ad2c11c9fcf27a0ecd1b21668bca159cfeb9ed8
 
 COCOAPODS: 1.14.3
