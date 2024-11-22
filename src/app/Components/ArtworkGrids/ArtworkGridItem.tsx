@@ -335,13 +335,14 @@ export const Artwork: React.FC<ArtworkProps> = ({
               mt={1}
               style={artworkMetaStyle}
             >
-              <Flex>
+              <Flex
+                flexGrow={positionCTAs === "column" ? 1 : undefined}
+                flex={positionCTAs === "row" ? 1 : undefined}
+              >
                 {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
-                  <>
-                    <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
-                      Lot {artwork.saleArtwork.lotLabel}
-                    </Text>
-                  </>
+                  <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
+                    Lot {artwork.saleArtwork.lotLabel}
+                  </Text>
                 )}
                 {!!artwork.artistNames && (
                   <Text
@@ -421,6 +422,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   />
                 )}
               </Flex>
+
               {!!showOldSaveCTA && (
                 <Flex flexDirection="row" alignItems="flex-start">
                   {!!isAuction && !!collectorSignals?.auction?.lotWatcherCount && (
