@@ -2548,7 +2548,7 @@ type Artwork implements Node & Searchable & Sellable {
   onlyShipsDomestically: Boolean
   partner(
     # Use whatever is in the original response instead of making a request
-    shallow: Boolean
+    shallow: Boolean = true
   ): Partner
   partnerOffersConnection(
     after: String
