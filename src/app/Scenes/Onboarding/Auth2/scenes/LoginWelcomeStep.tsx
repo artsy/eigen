@@ -188,6 +188,7 @@ const LoginWelcomeStepForm: React.FC = () => {
           <LinkText
             variant="xxs"
             onPress={() => navigation.navigate("OnboardingWebView", { url: "/terms" })}
+            accessibilityHint="View the Terms and Conditions"
           >
             Terms and Conditions
           </LinkText>{" "}
@@ -195,6 +196,7 @@ const LoginWelcomeStepForm: React.FC = () => {
           <LinkText
             variant="xxs"
             onPress={() => navigation.navigate("OnboardingWebView", { url: "/privacy" })}
+            accessibilityHint="View the Privacy Policy"
           >
             Privacy Policy
           </LinkText>
