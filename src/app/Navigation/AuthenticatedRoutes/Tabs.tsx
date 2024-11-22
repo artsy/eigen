@@ -70,7 +70,7 @@ const AppTabs: React.FC = () => {
           },
           tabBarLabel: () => {
             return (
-              <Text variant="xxs" style={{ top: -2 }}>
+              <Text variant="xxs" style={{ top: -4 }} selectable={false}>
                 {bottomTabsConfig[route.name].name}
               </Text>
             )
