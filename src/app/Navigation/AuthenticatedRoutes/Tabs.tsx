@@ -1,5 +1,5 @@
 import { tappedTabBar } from "@artsy/cohesion"
-import { Text } from "@artsy/palette-mobile"
+import { Text, useColor } from "@artsy/palette-mobile"
 import { THEME } from "@artsy/palette-tokens"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
@@ -17,6 +17,7 @@ import { bottomTabsConfig } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { OnboardingQuiz } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingQuiz"
 import { GlobalStore } from "app/store/GlobalStore"
 import { internal_navigationRef } from "app/system/navigation/navigate"
+import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { postEventToProviders } from "app/utils/track/providers"
 import { Platform } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -47,7 +48,14 @@ const BOTTOM_TABS_HEIGHT = 60
 
 const AppTabs: React.FC = () => {
   const { tabsBadges } = useBottomTabsBadges()
+  const color = useColor()
+  const isStaging = useIsStaging()
   const insets = useSafeAreaInsets()
+
+  const stagingTabBarStyle = {
+    borderTopColor: color("devpurple"),
+    borderTopWidth: 1,
+  }
 
   return (
     <Tab.Navigator
@@ -63,6 +71,8 @@ const AppTabs: React.FC = () => {
               currentRoute && modules[currentRoute as AppModule]?.options.hidesBottomTabs
                 ? "none"
                 : "flex",
+
+            ...(isStaging ? stagingTabBarStyle : {}),
           },
           tabBarHideOnKeyboard: true,
           tabBarIcon: ({ focused }) => {
