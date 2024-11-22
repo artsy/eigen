@@ -9,7 +9,9 @@ const VISUAL_CLUE_HEIGHT = 10
 
 type BadgeProps = { badgeCount?: string | number; badgeStyle: StyleProp<TextStyle> }
 /**
- * This hook is used to get the badge deftails each tab
+ * This hook is used to get badge details for each bottom tab
+ * @returns an object with the badge count and style for each tab
+ * @example { home: { badgeCount: 5, badgeStyle: { backgroundColor: "red" } }, search: { badgeCount: undefined, badgeStyle: {} } }
  */
 export const useBottomTabsBadges = () => {
   const color = useColor()
