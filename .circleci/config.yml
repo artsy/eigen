@@ -570,6 +570,8 @@ workflows:
                 - beta-ios
                 - beta-android
 
+      - run-nightly-tasks
+
       - build-test-app-ios:
           filters:
             branches:
