@@ -346,6 +346,9 @@ export const modules = defineModules({
     options: {
       fullBleed: true,
       hidesBottomTabs: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
   ActivityItem: reactModule({
@@ -353,6 +356,9 @@ export const modules = defineModules({
     options: {
       fullBleed: true,
       hidesBottomTabs: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
   About: reactModule({
