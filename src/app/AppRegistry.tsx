@@ -287,12 +287,18 @@ function register(
 }
 
 export interface ViewOptions {
+  // TODO: Remove this once we the old infra code gets removed
   modalPresentationStyle?: "fullScreen" | "pageSheet" | "formSheet"
+  // @deprecated Use screenOptions.headerShown instead
+  // TODO: Remove this once we the old infra code gets removed
   hasOwnModalCloseButton?: boolean
   alwaysPresentModally?: boolean
+  // @deprecated Use screenOptions.headerShown instead
+  // TODO: Remove this once we the old infra code gets removed
   hidesBackButton?: boolean
   hidesBottomTabs?: boolean
   fullBleed?: boolean
+  // TODO: Remove this once we the old infra code gets removed
   ignoreTabs?: boolean
   // If this module is the root view of a particular tab, name it here
   isRootViewForTabName?: BottomTabType
@@ -308,11 +314,15 @@ export type ModuleDescriptor = {
   options: ViewOptions
 }
 
-function reactModule(
-  Component: React.ComponentType<any>,
-  options: ViewOptions = {},
+function reactModule({
+  Component,
+  options = {},
+  Queries,
+}: {
+  Component: React.ComponentType<any>
+  options?: ViewOptions
   Queries?: GraphQLTaggedNode[]
-): ModuleDescriptor {
+}): ModuleDescriptor {
   return { type: "react", options, Component, Queries }
 }
 
@@ -322,7 +332,6 @@ function defineModules<T extends string>(obj: Record<T, ModuleDescriptor>) {
 }
 
 const artQuizScreenOptions = {
-  hidesBackButton: true,
   fullBleed: true,
   screenOptions: {
     gestureEnabled: false,
@@ -332,515 +341,885 @@ const artQuizScreenOptions = {
 export type AppModule = keyof typeof modules
 
 export const modules = defineModules({
-  Activity: reactModule(ActivityScreen, {
-    fullBleed: true,
-    hidesBackButton: true,
-    hidesBottomTabs: true,
-  }),
-  ActivityItem: reactModule(ActivityItemScreenQueryRenderer, {
-    fullBleed: true,
-    hidesBackButton: true,
-    hidesBottomTabs: true,
-  }),
-  About: reactModule(About, {
-    screenOptions: {
-      headerTitle: "About",
-    },
-  }),
-  AddMyCollectionArtist: reactModule(AddMyCollectionArtist, {
-    hidesBackButton: true,
-  }),
-  AlertArtworks: reactModule(AlertArtworks, {
-    fullBleed: true,
-    hidesBackButton: true,
-    hidesBottomTabs: true,
-  }),
-  ArtQuiz: reactModule(ArtQuiz, { ...artQuizScreenOptions, hidesBottomTabs: true }),
-  ArtQuizResults: reactModule(ArtQuizResults, {
-    fullBleed: true,
-    hidesBackButton: true,
-    screenOptions: {
-      animationTypeForReplace: "pop",
-    },
-  }),
-  Article: reactModule(ArticleScreen, {
-    fullBleed: true,
-    hidesBackButton: true,
-  }),
-  ArticleSlideShow: reactModule(ArticlesSlideShowScreen, {
-    fullBleed: true,
-    hidesBackButton: true,
-    hidesBottomTabs: true,
-  }),
-  Articles: reactModule(
-    ArticlesScreen,
-    {
+  Activity: reactModule({
+    Component: ActivityScreen,
+    options: {
       fullBleed: true,
-      hidesBackButton: true,
-    },
-    [ArticlesScreenQuery]
-  ),
-  Artist: reactModule(ArtistQueryRenderer, { fullBleed: true, hidesBackButton: true }, [
-    ArtistScreenQuery,
-  ]),
-  ArtistShows: reactModule(ArtistShows2QueryRenderer),
-  ArtistArticles: reactModule(ArtistArticlesQueryRenderer, {
-    fullBleed: true,
-    hidesBackButton: true,
-  }),
-  ArtistSeries: reactModule(ArtistSeriesQueryRenderer, {
-    fullBleed: true,
-    hidesBackButton: true,
-  }),
-  Artwork: reactModule(
-    ArtworkScreen,
-    {
-      hidesBackButton: true,
       hidesBottomTabs: true,
     },
-    [ArtworkScreenQuery]
-  ),
-  ArtworkMedium: reactModule(ArtworkMediumQueryRenderer, {
-    fullBleed: true,
-    alwaysPresentModally: !unsafe_getFeatureFlag("AREnableNewNavigation"),
-    modalPresentationStyle: !unsafe_getFeatureFlag("AREnableNewNavigation")
-      ? "fullScreen"
-      : undefined,
   }),
-  ArtworkAttributionClassFAQ: reactModule(ArtworkAttributionClassFAQQueryRenderer, {
-    fullBleed: true,
-    alwaysPresentModally: !unsafe_getFeatureFlag("AREnableNewNavigation"),
-    modalPresentationStyle: !unsafe_getFeatureFlag("AREnableNewNavigation")
-      ? "fullScreen"
-      : undefined,
-  }),
-  ArtworkCertificateAuthenticity: reactModule(CertificateOfAuthenticity, {
-    fullBleed: true,
-    alwaysPresentModally: !unsafe_getFeatureFlag("AREnableNewNavigation"),
-    modalPresentationStyle: !unsafe_getFeatureFlag("AREnableNewNavigation")
-      ? "fullScreen"
-      : undefined,
-  }),
-  ArtworkList: reactModule(ArtworkListScreen, { hidesBackButton: true }),
-  ArtworkRecommendations: reactModule(ArtworkRecommendationsScreen),
-  Auction: reactModule(SaleQueryRenderer, { fullBleed: true }, [SaleScreenQuery]),
-  Auctions: reactModule(
-    SalesScreen,
-    {
-      hidesBackButton: true,
+  ActivityItem: reactModule({
+    Component: ActivityItemScreenQueryRenderer,
+    options: {
       fullBleed: true,
-    },
-    [SalesScreenQuery]
-  ),
-  AuctionInfo: reactModule(SaleInfoQueryRenderer),
-  AuctionResult: reactModule(AuctionResultQueryRenderer, {
-    hidesBackButton: !unsafe_getFeatureFlag("AREnableNewNavigation"),
-  }),
-  AuctionResultsForArtistsYouFollow: reactModule(
-    AuctionResultsForArtistsYouFollowQueryRenderer,
-    {},
-    [AuctionResultsForArtistsYouFollowPrefetchQuery]
-  ),
-  AuctionResultsForArtistsYouCollect: reactModule(AuctionResultsForArtistsYouCollect),
-  AuctionRegistration: reactModule(RegistrationFlow, {
-    alwaysPresentModally: true,
-    fullBleed: Platform.OS === "ios" && !unsafe_getFeatureFlag("AREnableNewNavigation"),
-    hasOwnModalCloseButton: true,
-    screenOptions: {
-      // Don't allow the screen to be swiped away by mistake
-      gestureEnabled: false,
+      hidesBottomTabs: true,
     },
   }),
-  AuctionBidArtwork: reactModule(BidFlow, {
-    alwaysPresentModally: true,
-    hasOwnModalCloseButton: true,
-    fullBleed: !unsafe_getFeatureFlag("AREnableNewNavigation"),
-  }),
-  AuctionBuyersPremium: reactModule(AuctionBuyersPremiumQueryRenderer, {
-    fullBleed: true,
-    alwaysPresentModally: !unsafe_getFeatureFlag("AREnableNewNavigation"),
-    modalPresentationStyle: !unsafe_getFeatureFlag("AREnableNewNavigation")
-      ? "fullScreen"
-      : undefined,
-  }),
-  BottomTabs: reactModule(BottomTabs, { fullBleed: true }),
-  BrowseSimilarWorks: reactModule(BrowseSimilarWorksQueryRenderer, {
-    hidesBackButton: true,
-    hidesBottomTabs: true,
-  }),
-  CareerHighlightsBigCardsSwiper: reactModule(CareerHighlightsBigCardsSwiper, {
-    alwaysPresentModally: !unsafe_getFeatureFlag("AREnableNewNavigation"),
-    fullBleed: !unsafe_getFeatureFlag("AREnableNewNavigation"),
-    hidesBackButton: true,
-    hidesBottomTabs: unsafe_getFeatureFlag("AREnableNewNavigation"),
-  }),
-  City: reactModule(CityView, { fullBleed: true, ignoreTabs: true }),
-  CityFairList: reactModule(CityFairListQueryRenderer, { fullBleed: true }),
-  CityPicker: reactModule(CityPicker, { fullBleed: true, ignoreTabs: true }),
-  CitySavedList: reactModule(CitySavedListQueryRenderer),
-  CitySectionList: reactModule(CitySectionListQueryRenderer),
-  Collection: reactModule(CollectionScreen, { fullBleed: true, hidesBackButton: true }),
-  CollectionsByCategory: reactModule(CollectionsByCategory, {
-    fullBleed: true,
-    hidesBackButton: true,
-  }),
-  ConsignmentInquiry: reactModule(ConsignmentInquiryScreen, {
-    hidesBottomTabs: !unsafe_getFeatureFlag("AREnableNewNavigation"),
-    screenOptions: {
-      gestureEnabled: false,
-    },
-  }),
-  Conversation: reactModule(Conversation, {
-    onlyShowInTabName: "inbox",
-    hidesBackButton: true,
-  }),
-  ConversationDetails: reactModule(ConversationDetailsQueryRenderer, {
-    screenOptions: {
-      headerTitle: "Details",
-    },
-  }),
-  DarkModeSettings: reactModule(DarkModeSettings),
-  DevMenu: reactModule(DevMenu, {
-    // No need to hide bottom tabs if it's a modal because they will be hidden by default
-    hidesBottomTabs: !unsafe_getFeatureFlag("AREnableNewNavigation"),
-    hidesBackButton: !unsafe_getFeatureFlag("AREnableNewNavigation"),
-    alwaysPresentModally: !!unsafe_getFeatureFlag("AREnableNewNavigation"),
-    fullBleed: !!unsafe_getFeatureFlag("AREnableNewNavigation"),
-    screenOptions: {
-      headerTitle: "Dev Settings",
-      headerLargeTitle: true,
-      headerLeft: () => {
-        return <Flex />
+  About: reactModule({
+    Component: About,
+    options: {
+      screenOptions: {
+        headerTitle: "About",
       },
     },
   }),
-  EditSavedSearchAlert: reactModule(EditSavedSearchAlertQueryRenderer, {
-    hidesBackButton: true,
-    hidesBottomTabs: true,
-  }),
-  Fair: reactModule(FairScreen, { fullBleed: true, hidesBackButton: true }, [FairScreenQuery]),
-  FairMoreInfo: reactModule(FairMoreInfoQueryRenderer, { fullBleed: true, hidesBackButton: true }),
-  FairArticles: reactModule(FairArticlesQueryRenderer),
-  FairAllFollowedArtists: reactModule(FairAllFollowedArtistsQueryRenderer),
-  Favorites: reactModule(Favorites, {
-    fullBleed: true,
-    hidesBackButton: true,
-  }),
-  Feature: reactModule(FeatureQueryRenderer, { fullBleed: true }),
-  FullArtistSeriesList: reactModule(ArtistSeriesFullArtistSeriesListQueryRenderer),
-  FullFeaturedArtistList: reactModule(CollectionFullFeaturedArtistListQueryRenderer, {
-    screenOptions: {
-      headerTitle: "Featured Artists",
+  AddMyCollectionArtist: reactModule({
+    Component: AddMyCollectionArtist,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
-  GalleriesForYou: reactModule(GalleriesForYouScreen, {
-    fullBleed: true,
-    hidesBackButton: true,
-  }),
-  Gene: reactModule(GeneQueryRenderer, {
-    fullBleed: true,
-    hidesBackButton: true,
-  }),
-  Home: reactModule(
-    HomeContainer,
-    {
-      isRootViewForTabName: "home",
-      hidesBackButton: true,
+  AlertArtworks: reactModule({
+    Component: AlertArtworks,
+    options: {
       fullBleed: true,
-    },
-    [homeViewScreenQuery]
-  ),
-  HomeView: reactModule(HomeViewScreen, { hidesBackButton: true }),
-  HomeViewSectionScreen: reactModule(HomeViewSectionScreenQueryRenderer, {
-    hidesBackButton: true,
-    fullBleed: true,
-  }),
-  Inbox: reactModule(
-    InboxQueryRenderer,
-    {
-      isRootViewForTabName: "inbox",
-      hidesBackButton: true,
-      fullBleed: true,
-    },
-    [InboxScreenQuery]
-  ),
-  Inquiry: reactModule(Inquiry, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
-  LiveAuction: reactModule(LiveAuctionView, {
-    alwaysPresentModally: true,
-    hasOwnModalCloseButton: true,
-    modalPresentationStyle: "fullScreen",
-  }),
-  LocalDiscovery: reactModule(CityGuideView, {
-    fullBleed: true,
-    screenOptions: unsafe_getFeatureFlag("AREnableNewNavigation")
-      ? {
-          headerTransparent: true,
-          headerLeft: () => {
-            return (
-              <BackButton
-                style={{
-                  top: 0,
-                  left: 0,
-                }}
-                onPress={() => {
-                  goBack()
-                }}
-              />
-            )
-          },
-        }
-      : undefined,
-  }),
-  MakeOfferModal: reactModule(MakeOfferModalQueryRenderer, {
-    hasOwnModalCloseButton: true,
-  }),
-  MedianSalePriceAtAuction: reactModule(MedianSalePriceAtAuction),
-  Map: reactModule(MapContainer, { fullBleed: true, ignoreTabs: true }),
-  MyAccount: reactModule(MyAccountQueryRenderer, {
-    screenOptions: {
-      headerTitle: "Account Settings",
-    },
-  }),
-  MyAccountEditEmail: reactModule(MyAccountEditEmailQueryRenderer, {
-    hidesBackButton: !unsafe_getFeatureFlag("AREnableNewNavigation"),
-    screenOptions: {
-      headerTitle: "Email",
-    },
-  }),
-  MyAccountEditPriceRange: reactModule(MyAccountEditPriceRangeQueryRenderer, {
-    hidesBackButton: !unsafe_getFeatureFlag("AREnableNewNavigation"),
-    screenOptions: {
-      headerTitle: "Price Range",
-    },
-  }),
-  MyAccountEditPassword: reactModule(MyAccountEditPassword, {
-    hidesBackButton: !unsafe_getFeatureFlag("AREnableNewNavigation"),
-    screenOptions: {
-      headerTitle: "Password",
-    },
-  }),
-  MyAccountEditPhone: reactModule(MyAccountEditPhoneQueryRenderer, {
-    hidesBackButton: !unsafe_getFeatureFlag("AREnableNewNavigation"),
-    screenOptions: {
-      headerTitle: "Phone Number",
-    },
-  }),
-  MyAccountDeleteAccount: reactModule(MyAccountDeleteAccountQueryRenderer),
-  MyBids: reactModule(MyBidsQueryRenderer),
-  MyCollection: reactModule(MyCollectionQueryRenderer),
-  MyCollectionArtwork: reactModule(
-    MyCollectionArtworkScreen,
-    { fullBleed: true, hidesBackButton: true },
-    [MyCollectionArtworkScreenQuery]
-  ),
-  MyCollectionArtworkAdd: reactModule(MyCollectionArtworkAdd, {
-    hidesBackButton: true,
-    hidesBottomTabs: !unsafe_getFeatureFlag("AREnableNewNavigation"),
-    alwaysPresentModally: true,
-    modalPresentationStyle: "fullScreen",
-    screenOptions: {
-      gestureEnabled: false,
-    },
-  }),
-  MyCollectionArtworkEdit: reactModule(MyCollectionArtworkEditQueryRenderer, {
-    hidesBackButton: true,
-    hidesBottomTabs: !unsafe_getFeatureFlag("AREnableNewNavigation"),
-    alwaysPresentModally: true,
-    modalPresentationStyle: "fullScreen",
-    screenOptions: {
-      gestureEnabled: false,
-    },
-  }),
-  MyCollectionAddCollectedArtists: reactModule(MyCollectionAddCollectedArtistsScreen, {
-    hidesBackButton: !unsafe_getFeatureFlag("AREnableNewNavigation"),
-    hidesBottomTabs: true,
-    screenOptions: {
-      headerTitle: "Add Artists You Collect",
-      gestureEnabled: false,
-    },
-  }),
-  MyCollectionSellingWithartsyFAQ: reactModule(MyCollectionSellingWithArtsyFAQ),
-  MyCollectionCollectedArtistsPrivacy: reactModule(
-    MyCollectionCollectedArtistsPrivacyQueryRenderer,
-    {
-      hidesBackButton: true,
       hidesBottomTabs: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
+  ArtQuiz: reactModule({
+    Component: ArtQuiz,
+    options: { ...artQuizScreenOptions, hidesBottomTabs: true },
+  }),
+  ArtQuizResults: reactModule({
+    Component: ArtQuizResults,
+    options: {
+      fullBleed: true,
+      screenOptions: {
+        animationTypeForReplace: "pop",
+        headerShown: false,
+      },
+    },
+  }),
+  Article: reactModule({
+    Component: ArticleScreen,
+    options: {
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
+  ArticleSlideShow: reactModule({
+    Component: ArticlesSlideShowScreen,
+    options: {
+      fullBleed: true,
+      hidesBottomTabs: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
+  Articles: reactModule({
+    Component: ArticlesScreen,
+    options: {
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    Queries: [ArticlesScreenQuery],
+  }),
+  Artist: reactModule({
+    Component: ArtistQueryRenderer,
+    options: {
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    Queries: [ArtistScreenQuery],
+  }),
+  ArtistShows: reactModule({ Component: ArtistShows2QueryRenderer }),
+  ArtistArticles: reactModule({
+    Component: ArtistArticlesQueryRenderer,
+    options: {
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
+  ArtistSeries: reactModule({
+    Component: ArtistSeriesQueryRenderer,
+    options: {
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
+  Artwork: reactModule({
+    Component: ArtworkScreen,
+    options: {
+      hidesBottomTabs: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    Queries: [ArtworkScreenQuery],
+  }),
+  ArtworkMedium: reactModule({
+    Component: ArtworkMediumQueryRenderer,
+    options: {
+      fullBleed: true,
+      alwaysPresentModally: !unsafe_getFeatureFlag("AREnableNewNavigation"),
+      modalPresentationStyle: !unsafe_getFeatureFlag("AREnableNewNavigation")
+        ? "fullScreen"
+        : undefined,
+    },
+  }),
+  ArtworkAttributionClassFAQ: reactModule({
+    Component: ArtworkAttributionClassFAQQueryRenderer,
+    options: {
+      fullBleed: true,
+      alwaysPresentModally: !unsafe_getFeatureFlag("AREnableNewNavigation"),
+      modalPresentationStyle: !unsafe_getFeatureFlag("AREnableNewNavigation")
+        ? "fullScreen"
+        : undefined,
+    },
+  }),
+  ArtworkCertificateAuthenticity: reactModule({
+    Component: CertificateOfAuthenticity,
+    options: {
+      fullBleed: true,
+      alwaysPresentModally: !unsafe_getFeatureFlag("AREnableNewNavigation"),
+      modalPresentationStyle: !unsafe_getFeatureFlag("AREnableNewNavigation")
+        ? "fullScreen"
+        : undefined,
+    },
+  }),
+  ArtworkList: reactModule({
+    Component: ArtworkListScreen,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
+  ArtworkRecommendations: reactModule({ Component: ArtworkRecommendationsScreen }),
+  Auction: reactModule({
+    Component: SaleQueryRenderer,
+    options: { fullBleed: true },
+    Queries: [SaleScreenQuery],
+  }),
+  Auctions: reactModule({
+    Component: SalesScreen,
+    options: {
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    Queries: [SalesScreenQuery],
+  }),
+  AuctionInfo: reactModule({ Component: SaleInfoQueryRenderer }),
+  AuctionResult: reactModule({
+    Component: AuctionResultQueryRenderer,
+    options: {
+      hidesBackButton: !unsafe_getFeatureFlag("AREnableNewNavigation"),
+    },
+  }),
+  AuctionResultsForArtistsYouFollow: reactModule({
+    Component: AuctionResultsForArtistsYouFollowQueryRenderer,
+    Queries: [AuctionResultsForArtistsYouFollowPrefetchQuery],
+  }),
+  AuctionResultsForArtistsYouCollect: reactModule({
+    Component: AuctionResultsForArtistsYouCollect,
+  }),
+  AuctionRegistration: reactModule({
+    Component: RegistrationFlow,
+    options: {
+      alwaysPresentModally: true,
+      fullBleed: Platform.OS === "ios" && !unsafe_getFeatureFlag("AREnableNewNavigation"),
+      screenOptions: {
+        // Don't allow the screen to be swiped away by mistake
+        gestureEnabled: false,
+        headerShown: false,
+      },
+    },
+  }),
+  AuctionBidArtwork: reactModule({
+    Component: BidFlow,
+    options: {
+      alwaysPresentModally: true,
+      fullBleed: !unsafe_getFeatureFlag("AREnableNewNavigation"),
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
+  AuctionBuyersPremium: reactModule({
+    Component: AuctionBuyersPremiumQueryRenderer,
+    options: {
+      fullBleed: true,
+      alwaysPresentModally: !unsafe_getFeatureFlag("AREnableNewNavigation"),
+      modalPresentationStyle: !unsafe_getFeatureFlag("AREnableNewNavigation")
+        ? "fullScreen"
+        : undefined,
+    },
+  }),
+  BottomTabs: reactModule({ Component: BottomTabs, options: { fullBleed: true } }),
+  BrowseSimilarWorks: reactModule({
+    Component: BrowseSimilarWorksQueryRenderer,
+    options: {
+      hidesBottomTabs: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
+  CareerHighlightsBigCardsSwiper: reactModule({
+    Component: CareerHighlightsBigCardsSwiper,
+    options: {
+      alwaysPresentModally: !unsafe_getFeatureFlag("AREnableNewNavigation"),
+      fullBleed: !unsafe_getFeatureFlag("AREnableNewNavigation"),
+      hidesBottomTabs: unsafe_getFeatureFlag("AREnableNewNavigation"),
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
+  City: reactModule({ Component: CityView, options: { fullBleed: true, ignoreTabs: true } }),
+  CityFairList: reactModule({ Component: CityFairListQueryRenderer, options: { fullBleed: true } }),
+  CityPicker: reactModule({
+    Component: CityPicker,
+    options: { fullBleed: true, ignoreTabs: true },
+  }),
+  CitySavedList: reactModule({ Component: CitySavedListQueryRenderer }),
+  CitySectionList: reactModule({ Component: CitySectionListQueryRenderer }),
+  Collection: reactModule({
+    Component: CollectionScreen,
+    options: {
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
+  CollectionsByCategory: reactModule({
+    Component: CollectionsByCategory,
+    options: {
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
+  ConsignmentInquiry: reactModule({
+    Component: ConsignmentInquiryScreen,
+    options: {
+      hidesBottomTabs: !unsafe_getFeatureFlag("AREnableNewNavigation"),
       screenOptions: {
         gestureEnabled: false,
       },
-    }
-  ),
+    },
+  }),
+  Conversation: reactModule({
+    Component: Conversation,
+    options: {
+      onlyShowInTabName: "inbox",
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
+  ConversationDetails: reactModule({
+    Component: ConversationDetailsQueryRenderer,
+    options: {
+      screenOptions: {
+        headerTitle: "Details",
+      },
+    },
+  }),
+  DarkModeSettings: reactModule({ Component: DarkModeSettings }),
+  DevMenu: reactModule({
+    Component: DevMenu,
+    options: {
+      // No need to hide bottom tabs if it's a modal because they will be hidden by default
+      hidesBottomTabs: !unsafe_getFeatureFlag("AREnableNewNavigation"),
+      hidesBackButton: !unsafe_getFeatureFlag("AREnableNewNavigation"),
+      alwaysPresentModally: !!unsafe_getFeatureFlag("AREnableNewNavigation"),
+      fullBleed: !!unsafe_getFeatureFlag("AREnableNewNavigation"),
+      screenOptions: {
+        headerTitle: "Dev Settings",
+        headerLargeTitle: true,
+        headerLeft: () => {
+          return <Flex />
+        },
+      },
+    },
+  }),
+  EditSavedSearchAlert: reactModule({
+    Component: EditSavedSearchAlertQueryRenderer,
+    options: {
+      hidesBottomTabs: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
+  Fair: reactModule({
+    Component: FairScreen,
+    options: {
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    Queries: [FairScreenQuery],
+  }),
+  FairMoreInfo: reactModule({
+    Component: FairMoreInfoQueryRenderer,
+    options: {
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
+  FairArticles: reactModule({ Component: FairArticlesQueryRenderer }),
+  FairAllFollowedArtists: reactModule({ Component: FairAllFollowedArtistsQueryRenderer }),
+  Favorites: reactModule({
+    Component: Favorites,
+    options: {
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
+  Feature: reactModule({ Component: FeatureQueryRenderer, options: { fullBleed: true } }),
+  FullArtistSeriesList: reactModule({ Component: ArtistSeriesFullArtistSeriesListQueryRenderer }),
+  FullFeaturedArtistList: reactModule({
+    Component: CollectionFullFeaturedArtistListQueryRenderer,
+    options: {
+      screenOptions: {
+        headerTitle: "Featured Artists",
+      },
+    },
+  }),
+  GalleriesForYou: reactModule({
+    Component: GalleriesForYouScreen,
+    options: {
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
+  Gene: reactModule({
+    Component: GeneQueryRenderer,
+    options: {
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
+  Home: reactModule({
+    Component: HomeContainer,
+    options: {
+      isRootViewForTabName: "home",
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    Queries: [homeViewScreenQuery],
+  }),
+  HomeView: reactModule({
+    Component: HomeViewScreen,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
+  HomeViewSectionScreen: reactModule({
+    Component: HomeViewSectionScreenQueryRenderer,
+    options: {
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
+  Inbox: reactModule({
+    Component: InboxQueryRenderer,
+    options: {
+      isRootViewForTabName: "inbox",
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    Queries: [InboxScreenQuery],
+  }),
+  Inquiry: reactModule({
+    Component: Inquiry,
+    options: {
+      alwaysPresentModally: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
+  LiveAuction: reactModule({
+    Component: LiveAuctionView,
+    options: {
+      alwaysPresentModally: true,
+      modalPresentationStyle: "fullScreen",
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
+  LocalDiscovery: reactModule({
+    Component: CityGuideView,
+    options: {
+      fullBleed: true,
+      screenOptions: unsafe_getFeatureFlag("AREnableNewNavigation")
+        ? {
+            headerTransparent: true,
+            headerLeft: () => {
+              return (
+                <BackButton
+                  style={{
+                    top: 0,
+                    left: 0,
+                  }}
+                  onPress={() => {
+                    goBack()
+                  }}
+                />
+              )
+            },
+          }
+        : undefined,
+    },
+  }),
+  MakeOfferModal: reactModule({
+    Component: MakeOfferModalQueryRenderer,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
+  MedianSalePriceAtAuction: reactModule({ Component: MedianSalePriceAtAuction }),
+  Map: reactModule({ Component: MapContainer, options: { fullBleed: true, ignoreTabs: true } }),
+  MyAccount: reactModule({
+    Component: MyAccountQueryRenderer,
+    options: {
+      screenOptions: {
+        headerTitle: "Account Settings",
+      },
+    },
+  }),
+  MyAccountEditEmail: reactModule({
+    Component: MyAccountEditEmailQueryRenderer,
+    options: {
+      hidesBackButton: !unsafe_getFeatureFlag("AREnableNewNavigation"),
+      screenOptions: {
+        headerTitle: "Email",
+      },
+    },
+  }),
+  MyAccountEditPriceRange: reactModule({
+    Component: MyAccountEditPriceRangeQueryRenderer,
+    options: {
+      hidesBackButton: !unsafe_getFeatureFlag("AREnableNewNavigation"),
+      screenOptions: {
+        headerTitle: "Price Range",
+      },
+    },
+  }),
+  MyAccountEditPassword: reactModule({
+    Component: MyAccountEditPassword,
+    options: {
+      hidesBackButton: !unsafe_getFeatureFlag("AREnableNewNavigation"),
+      screenOptions: {
+        headerTitle: "Password",
+      },
+    },
+  }),
+  MyAccountEditPhone: reactModule({
+    Component: MyAccountEditPhoneQueryRenderer,
+    options: {
+      hidesBackButton: !unsafe_getFeatureFlag("AREnableNewNavigation"),
+      screenOptions: {
+        headerTitle: "Phone Number",
+      },
+    },
+  }),
+  MyAccountDeleteAccount: reactModule({ Component: MyAccountDeleteAccountQueryRenderer }),
+  MyBids: reactModule({ Component: MyBidsQueryRenderer }),
+  MyCollection: reactModule({ Component: MyCollectionQueryRenderer }),
+  MyCollectionArtwork: reactModule({
+    Component: MyCollectionArtworkScreen,
+    options: {
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    Queries: [MyCollectionArtworkScreenQuery],
+  }),
+  MyCollectionArtworkAdd: reactModule({
+    Component: MyCollectionArtworkAdd,
+    options: {
+      hidesBottomTabs: !unsafe_getFeatureFlag("AREnableNewNavigation"),
+      alwaysPresentModally: true,
+      modalPresentationStyle: "fullScreen",
+      screenOptions: {
+        gestureEnabled: false,
+        headerShown: false,
+      },
+    },
+  }),
+  MyCollectionArtworkEdit: reactModule({
+    Component: MyCollectionArtworkEditQueryRenderer,
+    options: {
+      hidesBottomTabs: !unsafe_getFeatureFlag("AREnableNewNavigation"),
+      alwaysPresentModally: true,
+      modalPresentationStyle: "fullScreen",
+      screenOptions: {
+        gestureEnabled: false,
+        headerShown: false,
+      },
+    },
+  }),
+  MyCollectionAddCollectedArtists: reactModule({
+    Component: MyCollectionAddCollectedArtistsScreen,
+    options: {
+      hidesBackButton: !unsafe_getFeatureFlag("AREnableNewNavigation"),
+      hidesBottomTabs: true,
+      screenOptions: {
+        headerTitle: "Add Artists You Collect",
+        gestureEnabled: false,
+      },
+    },
+  }),
+  MyCollectionSellingWithartsyFAQ: reactModule({ Component: MyCollectionSellingWithArtsyFAQ }),
+  MyCollectionCollectedArtistsPrivacy: reactModule({
+    Component: MyCollectionCollectedArtistsPrivacyQueryRenderer,
+    options: {
+      hidesBottomTabs: true,
+      screenOptions: {
+        gestureEnabled: false,
+        headerShown: false,
+      },
+    },
+  }),
 
-  MyProfile: reactModule(
-    MyProfile,
-    {
+  MyProfile: reactModule({
+    Component: MyProfile,
+    options: {
       isRootViewForTabName: "profile",
       fullBleed: true,
-      hidesBackButton: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
-    [MyCollectionScreenQuery]
-  ),
-  CompleteMyProfile: reactModule(CompleteMyProfile, {
-    fullBleed: true,
-    hidesBackButton: true,
-    hidesBottomTabs: true,
+    Queries: [MyCollectionScreenQuery],
   }),
-  MyProfileEditForm: reactModule(MyProfileEditFormScreen, {
-    screenOptions: {
-      headerTitle: "Edit Profile",
-    },
-  }),
-  MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer, {
-    screenOptions: {
-      headerTitle: "Payment",
-    },
-  }),
-  MyProfileSettings: reactModule(MyProfileSettings, {
-    screenOptions: {
-      headerTitle: "Account",
-    },
-  }),
-  MySellingProfile: reactModule(View),
-  NewWorksForYou: reactModule(NewWorksForYouQueryRenderer, {
-    hidesBottomTabs: true,
-    hidesBackButton: true,
-    fullBleed: true,
-  }),
-  MyProfilePaymentNewCreditCard: reactModule(MyProfilePaymentNewCreditCard, {
-    screenOptions: {
-      headerTitle: "Add new card",
-    },
-  }),
-  MyProfilePushNotifications: reactModule(MyProfilePushNotificationsQueryRenderer, {
-    screenOptions: {
-      headerTitle: "Push Notifications",
-    },
-  }),
-  NewWorksFromGalleriesYouFollow: reactModule(NewWorksFromGalleriesYouFollowScreen, {
-    hidesBackButton: true,
-    fullBleed: true,
-  }),
-  News: reactModule(
-    NewsScreen,
-    {
+  CompleteMyProfile: reactModule({
+    Component: CompleteMyProfile,
+    options: {
       fullBleed: true,
-      hidesBackButton: true,
-    },
-    [NewsScreenQuery]
-  ),
-  OrderHistory: reactModule(OrderHistoryQueryRender, {
-    screenOptions: {
-      headerTitle: "Order History",
+      hidesBottomTabs: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
-  OrderDetails: reactModule(OrderDetailsQueryRender, {
-    screenOptions: {
-      headerTitle: "Order Details",
+  MyProfileEditForm: reactModule({
+    Component: MyProfileEditFormScreen,
+    options: {
+      screenOptions: {
+        headerTitle: "Edit Profile",
+      },
     },
   }),
-  Partner: reactModule(PartnerQueryRenderer, {
-    fullBleed: true,
-    hidesBackButton: true,
-  }),
-  PartnerLocations: reactModule(PartnerLocations),
-  PartnerOfferContainer: reactModule(PartnerOfferContainer, {
-    hidesBottomTabs: true,
-    hidesBackButton: true,
-  }),
-  PriceDatabase: reactModule(PriceDatabase, { hidesBackButton: true }),
-  PrivacyRequest: reactModule(PrivacyRequest, {
-    screenOptions: {
-      headerTitle: "Personal Data Request",
+  MyProfilePayment: reactModule({
+    Component: MyProfilePaymentQueryRenderer,
+    options: {
+      screenOptions: {
+        headerTitle: "Payment",
+      },
     },
   }),
-  PurchaseModal: reactModule(PurchaseModalQueryRenderer, {
-    hasOwnModalCloseButton: true,
-  }),
-  ModalWebView: reactModule(ArtsyWebViewPage, {
-    hasOwnModalCloseButton: true,
-    hidesBackButton: true,
-    alwaysPresentModally: true,
-    modalPresentationStyle: !unsafe_getFeatureFlag("AREnableNewNavigation")
-      ? "fullScreen"
-      : undefined,
-    screenOptions: {
-      gestureEnabled: false,
+  MyProfileSettings: reactModule({
+    Component: MyProfileSettings,
+    options: {
+      screenOptions: {
+        headerTitle: "Account",
+      },
     },
   }),
-  ReactWebView: reactModule(ArtsyWebViewPage, {
-    fullBleed: !unsafe_getFeatureFlag("AREnableNewNavigation"),
-    hasOwnModalCloseButton: true,
-    hidesBackButton: true,
+  MySellingProfile: reactModule({ Component: View }),
+  NewWorksForYou: reactModule({
+    Component: NewWorksForYouQueryRenderer,
+    options: {
+      hidesBottomTabs: true,
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
   }),
-  RequestForPriceEstimateScreen: reactModule(RequestForPriceEstimateScreen),
-  RequestForPriceEstimateConfirmationScreen: reactModule(
-    RequestForPriceEstimateConfirmationScreen,
-    { hidesBackButton: true }
-  ),
-  RecentlyViewed: reactModule(
-    RecentlyViewedScreen,
-    {
-      hidesBackButton: true,
+  MyProfilePaymentNewCreditCard: reactModule({
+    Component: MyProfilePaymentNewCreditCard,
+    options: {
+      screenOptions: {
+        headerTitle: "Add new card",
+      },
+    },
+  }),
+  MyProfilePushNotifications: reactModule({
+    Component: MyProfilePushNotificationsQueryRenderer,
+    options: {
+      screenOptions: {
+        headerTitle: "Push Notifications",
+      },
+    },
+  }),
+  NewWorksFromGalleriesYouFollow: reactModule({
+    Component: NewWorksFromGalleriesYouFollowScreen,
+    options: {
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
+  News: reactModule({
+    Component: NewsScreen,
+    options: {
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    Queries: [NewsScreenQuery],
+  }),
+  OrderHistory: reactModule({
+    Component: OrderHistoryQueryRender,
+    options: {
+      screenOptions: {
+        headerTitle: "Order History",
+      },
+    },
+  }),
+  OrderDetails: reactModule({
+    Component: OrderDetailsQueryRender,
+    options: {
+      screenOptions: {
+        headerTitle: "Order Details",
+      },
+    },
+  }),
+  Partner: reactModule({
+    Component: PartnerQueryRenderer,
+    options: {
       fullBleed: true,
     },
-    [RecentlyViewedScreenQuery]
-  ),
-  RecommendedAuctionLots: reactModule(RecommendedAuctionLotsQueryRenderer, {
-    hidesBottomTabs: true,
-    hidesBackButton: true,
-    fullBleed: true,
   }),
-  Sell: reactModule(
-    SellWithArtsy,
-    { isRootViewForTabName: "sell", fullBleed: true, hidesBackButton: true },
-    [SellWithArtsyHomeScreenQuery]
-  ),
-  SellNotRootTabView: reactModule(SellWithArtsy),
-  SavedArtworks: reactModule(SavedArtworks, {
-    fullBleed: true,
-    hidesBackButton: true,
-  }),
-  SavedSearchAlertsList: reactModule(SavedSearchAlertsListQueryRenderer, {
-    fullBleed: true,
-    hidesBackButton: true,
-  }),
-  Search: reactModule(
-    SearchScreen,
-    { isRootViewForTabName: "search", hidesBackButton: true, fullBleed: true },
-    [SearchScreenQuery]
-  ),
-  Show: reactModule(ShowQueryRenderer, { fullBleed: true }),
-  ShowMoreInfo: reactModule(ShowMoreInfoQueryRenderer),
-  SimilarToRecentlyViewed: reactModule(SimilarToRecentlyViewedScreen, {
-    hidesBackButton: true,
-    fullBleed: true,
-  }),
-  SubmitArtwork: reactModule(SubmitArtworkForm, {
-    hidesBackButton: true,
-    alwaysPresentModally: true,
-    modalPresentationStyle: !unsafe_getFeatureFlag("AREnableNewNavigation")
-      ? "fullScreen"
-      : undefined,
-    screenOptions: {
-      gestureEnabled: false,
+  PartnerLocations: reactModule({ Component: PartnerLocations }),
+  PartnerOfferContainer: reactModule({
+    Component: PartnerOfferContainer,
+    options: {
+      hidesBottomTabs: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
-  SubmitArtworkEdit: reactModule(SubmitArtworkFormEditContainer, {
-    hidesBackButton: true,
-    alwaysPresentModally: true,
-    hidesBottomTabs: true,
-    screenOptions: {
-      gestureEnabled: false,
+  PriceDatabase: reactModule({
+    Component: PriceDatabase,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
-  Tag: reactModule(TagQueryRenderer, { hidesBackButton: true, fullBleed: true }),
-  UnlistedArtworksFAQScreen: reactModule(UnlistedArtworksFAQScreen),
-  VanityURLEntity: reactModule(VanityURLEntityRenderer, { fullBleed: true }),
-  ViewingRoom: reactModule(ViewingRoomQueryRenderer, { fullBleed: true }, [ViewingRoomScreenQuery]),
-  ViewingRoomArtwork: reactModule(ViewingRoomArtworkScreen),
-  ViewingRoomArtworks: reactModule(ViewingRoomArtworksQueryRenderer),
-  ViewingRooms: reactModule(ViewingRoomsListScreen, {}, [viewingRoomsListScreenQuery]),
-  WorksForYou: reactModule(WorksForYouQueryRenderer, {}, [WorksForYouScreenQuery]),
+  PrivacyRequest: reactModule({
+    Component: PrivacyRequest,
+    options: {
+      screenOptions: {
+        headerTitle: "Personal Data Request",
+      },
+    },
+  }),
+  PurchaseModal: reactModule({
+    Component: PurchaseModalQueryRenderer,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
+  ModalWebView: reactModule({
+    Component: ArtsyWebViewPage,
+    options: {
+      alwaysPresentModally: true,
+      modalPresentationStyle: !unsafe_getFeatureFlag("AREnableNewNavigation")
+        ? "fullScreen"
+        : undefined,
+      screenOptions: {
+        gestureEnabled: false,
+        headerShown: false,
+      },
+    },
+  }),
+  ReactWebView: reactModule({
+    Component: ArtsyWebViewPage,
+    options: {
+      fullBleed: !unsafe_getFeatureFlag("AREnableNewNavigation"),
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
+  RequestForPriceEstimateScreen: reactModule({ Component: RequestForPriceEstimateScreen }),
+  RequestForPriceEstimateConfirmationScreen: reactModule({
+    Component: RequestForPriceEstimateConfirmationScreen,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
+  RecentlyViewed: reactModule({
+    Component: RecentlyViewedScreen,
+    options: {
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    Queries: [RecentlyViewedScreenQuery],
+  }),
+  RecommendedAuctionLots: reactModule({
+    Component: RecommendedAuctionLotsQueryRenderer,
+    options: {
+      hidesBottomTabs: true,
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
+  Sell: reactModule({
+    Component: SellWithArtsy,
+    options: {
+      isRootViewForTabName: "sell",
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    Queries: [SellWithArtsyHomeScreenQuery],
+  }),
+  SellNotRootTabView: reactModule({ Component: SellWithArtsy }),
+  SavedArtworks: reactModule({
+    Component: SavedArtworks,
+    options: {
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
+  SavedSearchAlertsList: reactModule({
+    Component: SavedSearchAlertsListQueryRenderer,
+    options: {
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
+  Search: reactModule({
+    Component: SearchScreen,
+    options: {
+      isRootViewForTabName: "search",
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    Queries: [SearchScreenQuery],
+  }),
+  Show: reactModule({ Component: ShowQueryRenderer, options: { fullBleed: true } }),
+  ShowMoreInfo: reactModule({ Component: ShowMoreInfoQueryRenderer }),
+  SimilarToRecentlyViewed: reactModule({
+    Component: SimilarToRecentlyViewedScreen,
+    options: {
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
+  SubmitArtwork: reactModule({
+    Component: SubmitArtworkForm,
+    options: {
+      alwaysPresentModally: true,
+      modalPresentationStyle: !unsafe_getFeatureFlag("AREnableNewNavigation")
+        ? "fullScreen"
+        : undefined,
+      screenOptions: {
+        gestureEnabled: false,
+        headerShown: false,
+      },
+    },
+  }),
+  SubmitArtworkEdit: reactModule({
+    Component: SubmitArtworkFormEditContainer,
+    options: {
+      alwaysPresentModally: true,
+      hidesBottomTabs: true,
+      screenOptions: {
+        gestureEnabled: false,
+        headerShown: false,
+      },
+    },
+  }),
+  Tag: reactModule({
+    Component: TagQueryRenderer,
+    options: {
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
+  UnlistedArtworksFAQScreen: reactModule({ Component: UnlistedArtworksFAQScreen }),
+  VanityURLEntity: reactModule({
+    Component: VanityURLEntityRenderer,
+    options: { fullBleed: true },
+  }),
+  ViewingRoom: reactModule({
+    Component: ViewingRoomQueryRenderer,
+    options: { fullBleed: true },
+    Queries: [ViewingRoomScreenQuery],
+  }),
+  ViewingRoomArtwork: reactModule({ Component: ViewingRoomArtworkScreen }),
+  ViewingRoomArtworks: reactModule({ Component: ViewingRoomArtworksQueryRenderer }),
+  ViewingRooms: reactModule({
+    Component: ViewingRoomsListScreen,
+    Queries: [viewingRoomsListScreenQuery],
+  }),
+  WorksForYou: reactModule({
+    Component: WorksForYouQueryRenderer,
+    Queries: [WorksForYouScreenQuery],
+  }),
 })
 
 for (const moduleName of Object.keys(modules)) {
