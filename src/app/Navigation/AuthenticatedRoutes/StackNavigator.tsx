@@ -71,6 +71,7 @@ export const registerScreen: React.FC<StackNavigatorScreenProps> = ({ name, modu
         const isFullBleed =
           module.options.fullBleed ??
           // when no header is visible, we want to make sure we are bound by the insets
+          module.options.screenOptions?.headerShown ??
           isHeaderShown(module)
 
         const hidesBottomTabs = module.options.hidesBottomTabs || isModalScreen(module)

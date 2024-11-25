@@ -8,7 +8,6 @@ import {
   AuthenticatedRoutes,
   AuthenticatedRoutesParams,
 } from "app/Navigation/AuthenticatedRoutes/Tabs"
-import { UnauthenticatedRoutesParams } from "app/Navigation/UnauthenticatedRoutes"
 import { OnboardingWelcomeScreens } from "app/Scenes/Onboarding/Onboarding"
 import { GlobalStore } from "app/store/GlobalStore"
 import { routingInstrumentation } from "app/system/errorReporting/setupSentry"
@@ -23,7 +22,7 @@ import SiftReactNative from "sift-react-native"
 
 export const internal_navigationRef = { current: null as NavigationContainerRef<any> | null }
 
-export type NavigationRoutesParams = UnauthenticatedRoutesParams & AuthenticatedRoutesParams
+export type NavigationRoutesParams = AuthenticatedRoutesParams
 
 export const MainStackNavigator = createNativeStackNavigator<NavigationRoutesParams>()
 
