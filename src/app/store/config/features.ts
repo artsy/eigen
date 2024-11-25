@@ -274,7 +274,7 @@ export const features = {
   },
   AREnableNewSaveAndFollowOnArtworkCard: {
     description: "Redesign Save CTA and Add Follow CTA on Artwork Grid/Rail",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableNewSaveAndFollowOnArtworkCard",
   },
