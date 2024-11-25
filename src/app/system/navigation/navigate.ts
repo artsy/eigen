@@ -1,13 +1,13 @@
 import { EventEmitter } from "events"
 import { ActionType, OwnerType, Screen } from "@artsy/cohesion"
 import { NavigationContainerRef, StackActions, TabActions } from "@react-navigation/native"
-import { addBreadcrumb, captureMessage } from "@sentry/react-native"
 import { AppModule, modules, ViewOptions } from "app/AppRegistry"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { matchRoute } from "app/routes"
 import { GlobalStore, unsafe__getSelectedTab, unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import { propsStore } from "app/store/PropsStore"
+import { getValidTargetURL } from "app/system/navigation/utils/getValidTargetURL"
 import { postEventToProviders } from "app/utils/track/providers"
 import { visualize } from "app/utils/visualizer"
 import { InteractionManager, Linking, Platform } from "react-native"
@@ -37,59 +37,14 @@ export interface NavigateOptions {
   replaceActiveScreen?: boolean
   // Only when onlyShowInTabName specified
   popToRootTabView?: boolean
-  ignoreDebounce?: boolean
   showInTabName?: BottomTabType
 }
 
-let lastInvocation = { url: "", timestamp: 0 }
-
 export async function navigate(url: string, options: NavigateOptions = {}) {
-  let targetURL = url
-
-  addBreadcrumb({
-    message: `navigate to ${url}`,
-    category: "navigation",
-    data: { url, options },
-    level: "info",
-  })
-
-  // handle artsy:// urls, we can just remove it
-  targetURL = url.replace("artsy://", "")
+  const enableNewNavigation = unsafe_getFeatureFlag("AREnableNewNavigation")
+  const targetURL = await getValidTargetURL(url)
 
   visualize("NAV", targetURL, { targetURL, options }, "DTShowNavigationVisualiser")
-
-  // Debounce double taps
-  const ignoreDebounce = options.ignoreDebounce ?? false
-  if (
-    lastInvocation.url === targetURL &&
-    Date.now() - lastInvocation.timestamp < 1000 &&
-    !ignoreDebounce
-  ) {
-    return
-  }
-
-  lastInvocation = { url: targetURL, timestamp: Date.now() }
-
-  // marketing url requires redirect
-  if (targetURL.startsWith("https://click.artsy.net")) {
-    let response
-    try {
-      response = await fetch(targetURL)
-    } catch (error) {
-      if (__DEV__) {
-        console.warn(error)
-      } else {
-        captureMessage(
-          `[navigate] Error fetching marketing url redirect on: ${targetURL} failed with error: ${error}`,
-          "error"
-        )
-      }
-    }
-
-    if (response?.url) {
-      targetURL = response.url
-    }
-  }
 
   const result = matchRoute(targetURL)
 
@@ -99,13 +54,50 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
   }
 
   const module = modules[result.module]
-  const presentModally = options.modal ?? module.options.alwaysPresentModally ?? false
+
   const {
     replaceActiveModal = false,
     replaceActiveScreen = false,
     popToRootTabView,
     showInTabName,
   } = options
+
+  if (enableNewNavigation) {
+    if (!internal_navigationRef.current || !internal_navigationRef.current?.isReady()) {
+      if (__DEV__) {
+        throw new Error(
+          `You are attempting to navigate before the navigation is ready.{\n}
+           Make sure that the App NavigationContainer isReady is ready`
+        )
+      }
+      return
+    }
+
+    if (replaceActiveModal || replaceActiveScreen) {
+      internal_navigationRef.current.dispatch(
+        StackActions.replace(result.module, { ...result.params, ...options.passProps })
+      )
+    } else {
+      if (module.options.onlyShowInTabName) {
+        switchTab(module.options.onlyShowInTabName)
+        // We wait for a frame to allow the tab to be switched before we navigate
+        // This allows us to also override the back button behavior in the tab
+        requestAnimationFrame(() => {
+          internal_navigationRef.current?.dispatch(
+            StackActions.push(result.module, { ...result.params, ...options.passProps })
+          )
+        })
+      } else {
+        internal_navigationRef.current?.dispatch(
+          StackActions.push(result.module, { ...result.params, ...options.passProps })
+        )
+      }
+    }
+
+    return
+  }
+
+  const presentModally = options.modal ?? module.options.alwaysPresentModally ?? false
 
   const screenDescriptor: ViewDescriptor = {
     type: module.type,
@@ -117,34 +109,6 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
       ...options.passProps,
     },
     ...module.options,
-  }
-
-  const enableNewNavigation = unsafe_getFeatureFlag("AREnableNewNavigation")
-
-  if (enableNewNavigation) {
-    if (internal_navigationRef.current?.isReady()) {
-      if (replaceActiveModal || replaceActiveScreen) {
-        internal_navigationRef.current.dispatch(
-          StackActions.replace(result.module, { ...result.params, ...options.passProps })
-        )
-      } else {
-        if (module.options.onlyShowInTabName) {
-          switchTab(module.options.onlyShowInTabName)
-          // We wait for a frame to allow the tab to be switched before we navigate
-          // This allows us to also override the back button behavior in the tab
-          requestAnimationFrame(() => {
-            internal_navigationRef.current?.dispatch(
-              StackActions.push(result.module, { ...result.params, ...options.passProps })
-            )
-          })
-        } else {
-          internal_navigationRef.current?.dispatch(
-            StackActions.push(result.module, { ...result.params, ...options.passProps })
-          )
-        }
-      }
-    }
-    return
   }
 
   // Set props which we will reinject later. See HACKS.md
