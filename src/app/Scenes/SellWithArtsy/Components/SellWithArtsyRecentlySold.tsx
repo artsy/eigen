@@ -10,6 +10,7 @@ import {
   ARTWORK_RAIL_CARD_MINIMUM_WIDTH,
   ArtworkRailCard,
 } from "app/Components/ArtworkRail/ArtworkRailCard"
+import { ARTWORK_RAIL_CARD_IMAGE_HEIGHT } from "app/Components/ArtworkRail/ArtworkRailCardImage"
 import { PrefetchFlashList } from "app/Components/PrefetchFlashList"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -104,9 +105,8 @@ const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> = ({
           onPress={() => {
             onPress?.(item, index)
           }}
-          metaContainerStyles={{
-            height: PixelRatio.getFontScale() * 100,
-          }}
+          // adding 20 to make sure the estimated section is not cut off when displayed in two lines
+          containerHeight={ARTWORK_RAIL_CARD_IMAGE_HEIGHT + PixelRatio.getFontScale() * 100 + 20}
           showPartnerName={showPartnerName}
           SalePriceComponent={
             <RecentlySoldCardSection
