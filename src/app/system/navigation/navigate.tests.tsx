@@ -20,7 +20,7 @@ jest.mock("app/store/GlobalStore", () => ({
   unsafe__getEnvironment: jest.fn().mockReturnValue({
     webURL: "https://www.artsy.net",
   }),
-  unsafe_getFeatureFlag: jest.fn().mockReturnValue(false),
+  unsafe_getFeatureFlag: jest.fn(),
   unsafe_getDevToggle: jest.fn().mockReturnValue(false),
   GlobalStore: {
     actions: {
@@ -30,6 +30,10 @@ jest.mock("app/store/GlobalStore", () => ({
       },
     },
   },
+}))
+
+jest.mock("app/Navigation/Navigation", () => ({
+  internal_navigationRef: jest.fn(),
 }))
 
 describe(navigate, () => {
@@ -47,15 +51,15 @@ describe(navigate, () => {
   })
 
   describe("routes to various screens", () => {
-    it("like artwork", () => {
+    it("like artwork", async () => {
       navigate("/artwork/josef-albers-homage-to-the-square")
+      await flushPromiseQueue()
       expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalled()
       expect(args(LegacyNativeModules.ARScreenPresenterModule.pushView as any))
         .toMatchInlineSnapshot(`
         [
           "home",
           {
-            "hidesBackButton": true,
             "hidesBottomTabs": true,
             "moduleName": "Artwork",
             "props": {
@@ -63,13 +67,17 @@ describe(navigate, () => {
             },
             "replaceActiveModal": false,
             "replaceActiveScreen": false,
+            "screenOptions": {
+              "headerShown": false,
+            },
             "type": "react",
           },
         ]
       `)
     })
-    it("like artist", () => {
+    it("like artist", async () => {
       navigate("/artist/banksy")
+      await flushPromiseQueue()
       expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalled()
       expect(args(LegacyNativeModules.ARScreenPresenterModule.pushView as any))
         .toMatchInlineSnapshot(`
@@ -77,20 +85,23 @@ describe(navigate, () => {
           "home",
           {
             "fullBleed": true,
-            "hidesBackButton": true,
             "moduleName": "Artist",
             "props": {
               "artistID": "banksy",
             },
             "replaceActiveModal": false,
             "replaceActiveScreen": false,
+            "screenOptions": {
+              "headerShown": false,
+            },
             "type": "react",
           },
         ]
       `)
     })
-    it("like vanity urls", () => {
+    it("like vanity urls", async () => {
       navigate("/artsy-vanguard-2019")
+      await flushPromiseQueue()
       expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalled()
       expect(args(LegacyNativeModules.ARScreenPresenterModule.pushView as any))
         .toMatchInlineSnapshot(`
@@ -111,8 +122,9 @@ describe(navigate, () => {
     })
   })
 
-  it("opens external urls with Linking", () => {
+  it("opens external urls with Linking", async () => {
     navigate("https://google.com/banana")
+    await flushPromiseQueue()
     expect(Linking.openURL).toHaveBeenCalledWith("https://google.com/banana")
   })
 
@@ -129,7 +141,6 @@ describe(navigate, () => {
         "home",
         {
           "fullBleed": true,
-          "hidesBackButton": true,
           "moduleName": "Artist",
           "props": {
             "artistID": "banksy",
@@ -137,6 +148,9 @@ describe(navigate, () => {
           },
           "replaceActiveModal": false,
           "replaceActiveScreen": false,
+          "screenOptions": {
+            "headerShown": false,
+          },
           "type": "react",
         },
       ]
@@ -163,13 +177,15 @@ describe(navigate, () => {
           "home",
           {
             "fullBleed": true,
-            "hidesBackButton": true,
             "moduleName": "Artist",
             "props": {
               "artistID": "kaws",
             },
             "replaceActiveModal": false,
             "replaceActiveScreen": false,
+            "screenOptions": {
+              "headerShown": false,
+            },
             "type": "react",
           },
         ]
@@ -178,14 +194,14 @@ describe(navigate, () => {
   })
 
   describe("presents modals", () => {
-    it("when the screen requires it", () => {
+    it("when the screen requires it", async () => {
       navigate("https://live.artsy.net/blah")
+      await flushPromiseQueue()
       expect(args(LegacyNativeModules.ARScreenPresenterModule.presentModal as any))
         .toMatchInlineSnapshot(`
         [
           {
             "alwaysPresentModally": true,
-            "hasOwnModalCloseButton": true,
             "modalPresentationStyle": "fullScreen",
             "moduleName": "LiveAuction",
             "props": {
@@ -193,6 +209,9 @@ describe(navigate, () => {
             },
             "replaceActiveModal": false,
             "replaceActiveScreen": false,
+            "screenOptions": {
+              "headerShown": false,
+            },
             "type": "react",
           },
         ]
@@ -237,7 +256,6 @@ describe(navigate, () => {
       [
         "inbox",
         {
-          "hidesBackButton": true,
           "moduleName": "Conversation",
           "onlyShowInTabName": "inbox",
           "props": {
@@ -245,6 +263,9 @@ describe(navigate, () => {
           },
           "replaceActiveModal": false,
           "replaceActiveScreen": false,
+          "screenOptions": {
+            "headerShown": false,
+          },
           "type": "react",
         },
       ]
@@ -268,11 +289,13 @@ describe(navigate, () => {
         "profile",
         {
           "fullBleed": true,
-          "hidesBackButton": true,
           "moduleName": "SavedSearchAlertsList",
           "props": {},
           "replaceActiveModal": false,
           "replaceActiveScreen": false,
+          "screenOptions": {
+            "headerShown": false,
+          },
           "type": "react",
         },
       ]

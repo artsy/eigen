@@ -28,7 +28,7 @@ describe("SelectMaxBid", () => {
 
     // shows a spinner while fetching new bid increments
     screen.UNSAFE_getByType(SelectMaxBid).instance._test_refreshSaleArtwork(true) // hacky way to call this, but its an old component that needs refactoring
-    expect(screen.queryByTestId("spinner")).toBeTruthy()
+    expect(screen.getByTestId("spinner")).toBeTruthy()
 
     // removes the spinner once the refetch is complete
     screen.UNSAFE_getByType(SelectMaxBid).instance._test_refreshSaleArtwork(false) // hacky way to call this, but its an old component that needs refactoring

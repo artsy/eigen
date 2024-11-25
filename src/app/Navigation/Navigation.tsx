@@ -1,5 +1,5 @@
 import { Flex, Text } from "@artsy/palette-mobile"
-import { DefaultTheme, NavigationContainer } from "@react-navigation/native"
+import { DefaultTheme, NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { addBreadcrumb } from "@sentry/react-native"
 import { FPSCounter } from "app/Components/FPSCounter"
@@ -8,11 +8,9 @@ import {
   AuthenticatedRoutes,
   AuthenticatedRoutesParams,
 } from "app/Navigation/AuthenticatedRoutes/Tabs"
-import { UnauthenticatedRoutesParams } from "app/Navigation/UnauthenticatedRoutes"
 import { OnboardingWelcomeScreens } from "app/Scenes/Onboarding/Onboarding"
 import { GlobalStore } from "app/store/GlobalStore"
 import { routingInstrumentation } from "app/system/errorReporting/setupSentry"
-import { internal_navigationRef } from "app/system/navigation/navigate"
 import { useReloadedDevNavigationState } from "app/system/navigation/useReloadedDevNavigationState"
 
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
@@ -22,7 +20,9 @@ import { Fragment } from "react"
 import { Platform } from "react-native"
 import SiftReactNative from "sift-react-native"
 
-export type NavigationRoutesParams = UnauthenticatedRoutesParams & AuthenticatedRoutesParams
+export const internal_navigationRef = { current: null as NavigationContainerRef<any> | null }
+
+export type NavigationRoutesParams = AuthenticatedRoutesParams
 
 export const MainStackNavigator = createNativeStackNavigator<NavigationRoutesParams>()
 

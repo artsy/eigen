@@ -145,7 +145,7 @@ target 'Artsy' do
     # Swift pods 🎉
     pod 'Quick', '2.0.0'
     pod 'Nimble', '~> 13.0'
-    pod 'Nimble-Snapshots', '9.7.0'
+    pod 'Nimble-Snapshots', '9.8.0'
   end
 
   post_install do |installer|

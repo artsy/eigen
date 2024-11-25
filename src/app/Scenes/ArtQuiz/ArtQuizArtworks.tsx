@@ -95,6 +95,7 @@ const ArtQuizArtworksScreen = () => {
 
     if (activeIndex + 1 === artworks.length) {
       navigate("/art-quiz/results", {
+        replaceActiveScreen: true,
         passProps: {
           isCalculatingResult: true,
         },
@@ -149,7 +150,9 @@ const ArtQuizArtworksScreen = () => {
 
   const handleOnSkip = () => {
     popoverMessage.hide()
-    navigate("/")
+    navigate("/", {
+      replaceActiveScreen: true,
+    })
   }
 
   const artworkCards: Card[] = artworks.slice(activeCardIndex).map((artwork) => {

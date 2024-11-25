@@ -21,7 +21,7 @@ asdf plugin add java
 
 ### Set up iOS
 
-Download Xcode version 15. You can find all available versions of Xcode at [Apple's Developer Portal 🔐](http://developer.apple.com/download/more/).
+Download Xcode version 16. You can find all available versions of Xcode at [Apple's Developer Portal 🔐](http://developer.apple.com/download/more/).
 
 Ask your mentor to add you on the [firebase.console](https://console.firebase.google.com/project/eigen-a7d3b/settings/iam) to be able to release.
 

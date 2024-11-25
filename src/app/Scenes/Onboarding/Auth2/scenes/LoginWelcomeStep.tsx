@@ -130,6 +130,7 @@ const LoginWelcomeStepForm: React.FC = () => {
       <Text variant="sm-display">Sign up or log in</Text>
 
       <Input
+        accessibilityHint="Enter your email address"
         autoCapitalize="none"
         autoComplete="username"
         importantForAutofill="yes"
@@ -169,6 +170,7 @@ const LoginWelcomeStepForm: React.FC = () => {
           onPress={handleSubmit}
           loading={isSubmitting}
           disabled={!isValid || !values.email}
+          accessibilityHint="Continue to the next screen"
         >
           Continue
         </Button>
@@ -179,6 +181,7 @@ const LoginWelcomeStepForm: React.FC = () => {
         animate={{ opacity: isModalExpanded ? 0 : 1 }}
         transition={{ type: "timing", duration: 400, easing: Easing.linear }}
         style={{ display: isModalExpanded ? "none" : "flex" }}
+        testID="social-signin-and-disclaimers"
       >
         <Spacer y={2} />
 
@@ -191,6 +194,7 @@ const LoginWelcomeStepForm: React.FC = () => {
           <LinkText
             variant="xxs"
             onPress={() => navigation.navigate("OnboardingWebView", { url: "/terms" })}
+            accessibilityHint="View the Terms and Conditions"
           >
             Terms and Conditions
           </LinkText>{" "}
@@ -198,6 +202,7 @@ const LoginWelcomeStepForm: React.FC = () => {
           <LinkText
             variant="xxs"
             onPress={() => navigation.navigate("OnboardingWebView", { url: "/privacy" })}
+            accessibilityHint="View the Privacy Policy"
           >
             Privacy Policy
           </LinkText>
@@ -236,19 +241,31 @@ const SocialLoginButtons: React.FC = () => {
 
       <Flex flexDirection="row" gap={1} justifyContent="center" width="100%">
         {Platform.OS === "ios" && osMajorVersion() >= 13 && (
-          <Button variant="outline" onPress={handleApplePress}>
+          <Button
+            variant="outline"
+            onPress={handleApplePress}
+            accessibilityHint="Sign in with Apple"
+          >
             <Flex alignItems="center" justifyContent="center">
               {/* On iOS, the icons need to be nudged down to be centered in the button. */}
               <AppleIcon width={23} height={23} style={{ top: 4 }} />
             </Flex>
           </Button>
         )}
-        <Button variant="outline" onPress={handleGooglePress}>
+        <Button
+          variant="outline"
+          onPress={handleGooglePress}
+          accessibilityHint="Sign in with Google"
+        >
           <Flex alignItems="center" justifyContent="center">
             <GoogleIcon width={23} height={23} style={Platform.OS === "ios" && { top: 4 }} />
           </Flex>
         </Button>
-        <Button variant="outline" onPress={handleFacebookPress}>
+        <Button
+          variant="outline"
+          onPress={handleFacebookPress}
+          accessibilityHint="Sign in with Facebook"
+        >
           <Flex alignItems="center" justifyContent="center">
             <FacebookIcon width={23} height={23} style={Platform.OS === "ios" && { top: 4 }} />
           </Flex>

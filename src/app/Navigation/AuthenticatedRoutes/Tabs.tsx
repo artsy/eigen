@@ -1,4 +1,6 @@
 import { tappedTabBar } from "@artsy/cohesion"
+import { Text, useColor } from "@artsy/palette-mobile"
+import { THEME } from "@artsy/palette-tokens"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { AppModule, modules } from "app/AppRegistry"
@@ -8,14 +10,17 @@ import { ProfileTab } from "app/Navigation/AuthenticatedRoutes/ProfileTab"
 import { SearchTab } from "app/Navigation/AuthenticatedRoutes/SearchTab"
 import { SellTab } from "app/Navigation/AuthenticatedRoutes/SellTab"
 import { registerSharedModalRoutes } from "app/Navigation/AuthenticatedRoutes/SharedRoutes"
+import { internal_navigationRef } from "app/Navigation/Navigation"
+import { useBottomTabsBadges } from "app/Navigation/Utils/useBottomTabsBadges"
 import { BottomTabOption, BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
-import { BottomTabsButton } from "app/Scenes/BottomTabs/BottomTabsButton"
+import { BottomTabsIcon } from "app/Scenes/BottomTabs/BottomTabsIcon"
 import { bottomTabsConfig } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { OnboardingQuiz } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingQuiz"
 import { GlobalStore } from "app/store/GlobalStore"
-import { internal_navigationRef, switchTab } from "app/system/navigation/navigate"
+import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { postEventToProviders } from "app/utils/track/providers"
 import { Platform } from "react-native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 if (Platform.OS === "ios") {
   require("app/Navigation/AuthenticatedRoutes/NativeScreens")
@@ -39,7 +44,19 @@ type TabRoutesParams = {
 
 const Tab = createBottomTabNavigator<TabRoutesParams>()
 
+const BOTTOM_TABS_HEIGHT = 60
+
 const AppTabs: React.FC = () => {
+  const { tabsBadges } = useBottomTabsBadges()
+  const color = useColor()
+  const isStaging = useIsStaging()
+  const insets = useSafeAreaInsets()
+
+  const stagingTabBarStyle = {
+    borderTopColor: color("devpurple"),
+    borderTopWidth: 1,
+  }
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => {
@@ -49,24 +66,39 @@ const AppTabs: React.FC = () => {
           tabBarStyle: {
             animate: true,
             position: "absolute",
+            height: BOTTOM_TABS_HEIGHT + insets.bottom,
             display:
               currentRoute && modules[currentRoute as AppModule]?.options.hidesBottomTabs
                 ? "none"
                 : "flex",
+
+            ...(isStaging ? stagingTabBarStyle : {}),
           },
           tabBarHideOnKeyboard: true,
-          tabBarButton: (props) => {
-            return <BottomTabsButton tab={route.name} onPress={props.onPress} />
+          tabBarIcon: ({ focused }) => {
+            return <BottomTabsIcon tab={route.name} state={focused ? "active" : "inactive"} />
           },
+          tabBarLabel: () => {
+            return (
+              <Text variant="xxs" style={{ top: -4 }} selectable={false}>
+                {bottomTabsConfig[route.name].name}
+              </Text>
+            )
+          },
+          tabBarActiveTintColor: THEME.colors["black100"],
+          tabBarInactiveTintColor: THEME.colors["black60"],
+          ...tabsBadges[route.name],
         }
       }}
       screenListeners={{
         tabPress: (e) => {
           // the tab name is saved in e.target postfixed with random string like sell-Nw_wCNTWwOg95v
-          const tabName = Object.keys(bottomTabsConfig).find((tab) => e.target?.startsWith(tab))
+          const tabName = Object.keys(bottomTabsConfig).find(
+            (tab) => e.target?.startsWith(tab)
+          ) as BottomTabType
 
-          if (tabName) {
-            switchTab(tabName as BottomTabType)
+          if (Object.keys(BottomTabOption).includes(tabName)) {
+            GlobalStore.actions.bottomTabs.setSelectedTab(tabName)
             postEventToProviders(
               tappedTabBar({
                 tab: bottomTabsConfig[tabName as BottomTabType].analyticsDescription,
@@ -94,6 +126,7 @@ export const AuthenticatedRoutes: React.FC = () => {
   if (onboardingState === "incomplete") {
     return <OnboardingQuiz />
   }
+
   return (
     <AuthenticatedRoutesStack.Navigator>
       <AuthenticatedRoutesStack.Group>
