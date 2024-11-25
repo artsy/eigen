@@ -8,11 +8,12 @@ import { PixelRatio } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 
-const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = 70
+const ARTWORK_PREVIEW_TEXT_CONTAINER_HEIGHT = 70
 
 const useFullWidth = () => {
   const space = useSpace()
   const { width } = useScreenDimensions()
+  console.warn("width", width)
   const extraLargeWidth = isTablet() ? 400 : width - space(4)
   return extraLargeWidth
 }
@@ -47,7 +48,7 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
   const { primaryColor, secondaryColor, backgroundColor } = useMetaDataTextColor({ dark })
 
   const getTextHeight = () => {
-    return ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT
+    return ARTWORK_PREVIEW_TEXT_CONTAINER_HEIGHT
   }
 
   const containerWidth = FULL_WIDTH_RAIL_CARD_IMAGE_WIDTH
