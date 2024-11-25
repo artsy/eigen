@@ -1,8 +1,9 @@
 import { EventEmitter } from "events"
 import { ActionType, OwnerType, Screen } from "@artsy/cohesion"
-import { NavigationContainerRef, StackActions, TabActions } from "@react-navigation/native"
+import { StackActions, TabActions } from "@react-navigation/native"
 import { AppModule, modules, ViewOptions } from "app/AppRegistry"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { internal_navigationRef } from "app/Navigation/Navigation"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { matchRoute } from "app/routes"
 import { GlobalStore, unsafe__getSelectedTab, unsafe_getFeatureFlag } from "app/store/GlobalStore"
@@ -11,8 +12,6 @@ import { getValidTargetURL } from "app/system/navigation/utils/getValidTargetURL
 import { postEventToProviders } from "app/utils/track/providers"
 import { visualize } from "app/utils/visualizer"
 import { InteractionManager, Linking, Platform } from "react-native"
-
-export const internal_navigationRef = { current: null as NavigationContainerRef<any> | null }
 
 export interface ViewDescriptor extends ViewOptions {
   type: "react" | "native"
@@ -37,8 +36,11 @@ export interface NavigateOptions {
   replaceActiveScreen?: boolean
   // Only when onlyShowInTabName specified
   popToRootTabView?: boolean
+  ignoreDebounce?: boolean
   showInTabName?: BottomTabType
 }
+
+let lastInvocation = { url: "", timestamp: 0 }
 
 export async function navigate(url: string, options: NavigateOptions = {}) {
   const enableNewNavigation = unsafe_getFeatureFlag("AREnableNewNavigation")
@@ -62,6 +64,17 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
     showInTabName,
   } = options
 
+  // Debounce double taps
+  const ignoreDebounce = options.ignoreDebounce ?? false
+  if (
+    lastInvocation.url === targetURL &&
+    Date.now() - lastInvocation.timestamp < 1000 &&
+    !ignoreDebounce
+  ) {
+    return
+  }
+
+  lastInvocation = { url: targetURL, timestamp: Date.now() }
   if (enableNewNavigation) {
     if (!internal_navigationRef.current || !internal_navigationRef.current?.isReady()) {
       if (__DEV__) {

@@ -210,6 +210,7 @@ export const handleReceivedNotification = (
     if (isLoggedIn && hasUrl) {
       navigate(notification.data.url as string, {
         passProps: notification.data,
+        ignoreDebounce: true,
       })
       // clear any pending notification
       GlobalStore.actions.pendingPushNotification.setPendingPushNotification(null)

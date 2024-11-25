@@ -150,6 +150,7 @@ describe("Push Notification Tests", () => {
       Push.handleReceivedNotification(notification)
       expect(navigate).toHaveBeenNthCalledWith(1, notification.data.url, {
         passProps: notification.data,
+        ignoreDebounce: true,
       })
     })
 
