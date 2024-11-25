@@ -15,6 +15,12 @@ const requestPushNotificationsPermissionSpy = jest.spyOn(
   "requestPushNotificationsPermission"
 )
 
+jest.mock("app/utils/hooks/useIsDeepLink", () => {
+  return {
+    useIsDeepLink: jest.fn().mockReturnValue({ isDeepLink: false }),
+  }
+})
+
 describe("HomeView", () => {
   const { renderWithRelay } = setupTestWrapper<HomeViewSectionArtworksTestsQuery>({
     Component: () => {
