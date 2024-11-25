@@ -55,7 +55,6 @@ describe(navigate, () => {
         [
           "home",
           {
-            "hidesBackButton": true,
             "hidesBottomTabs": true,
             "moduleName": "Artwork",
             "props": {
@@ -63,6 +62,9 @@ describe(navigate, () => {
             },
             "replaceActiveModal": false,
             "replaceActiveScreen": false,
+            "screenOptions": {
+              "headerShown": false,
+            },
             "type": "react",
           },
         ]
@@ -77,13 +79,15 @@ describe(navigate, () => {
           "home",
           {
             "fullBleed": true,
-            "hidesBackButton": true,
             "moduleName": "Artist",
             "props": {
               "artistID": "banksy",
             },
             "replaceActiveModal": false,
             "replaceActiveScreen": false,
+            "screenOptions": {
+              "headerShown": false,
+            },
             "type": "react",
           },
         ]
@@ -129,7 +133,6 @@ describe(navigate, () => {
         "home",
         {
           "fullBleed": true,
-          "hidesBackButton": true,
           "moduleName": "Artist",
           "props": {
             "artistID": "banksy",
@@ -137,6 +140,9 @@ describe(navigate, () => {
           },
           "replaceActiveModal": false,
           "replaceActiveScreen": false,
+          "screenOptions": {
+            "headerShown": false,
+          },
           "type": "react",
         },
       ]
@@ -163,13 +169,15 @@ describe(navigate, () => {
           "home",
           {
             "fullBleed": true,
-            "hidesBackButton": true,
             "moduleName": "Artist",
             "props": {
               "artistID": "kaws",
             },
             "replaceActiveModal": false,
             "replaceActiveScreen": false,
+            "screenOptions": {
+              "headerShown": false,
+            },
             "type": "react",
           },
         ]
@@ -185,7 +193,6 @@ describe(navigate, () => {
         [
           {
             "alwaysPresentModally": true,
-            "hasOwnModalCloseButton": true,
             "modalPresentationStyle": "fullScreen",
             "moduleName": "LiveAuction",
             "props": {
@@ -193,6 +200,9 @@ describe(navigate, () => {
             },
             "replaceActiveModal": false,
             "replaceActiveScreen": false,
+            "screenOptions": {
+              "headerShown": false,
+            },
             "type": "react",
           },
         ]
@@ -237,7 +247,6 @@ describe(navigate, () => {
       [
         "inbox",
         {
-          "hidesBackButton": true,
           "moduleName": "Conversation",
           "onlyShowInTabName": "inbox",
           "props": {
@@ -245,6 +254,9 @@ describe(navigate, () => {
           },
           "replaceActiveModal": false,
           "replaceActiveScreen": false,
+          "screenOptions": {
+            "headerShown": false,
+          },
           "type": "react",
         },
       ]
@@ -268,11 +280,13 @@ describe(navigate, () => {
         "profile",
         {
           "fullBleed": true,
-          "hidesBackButton": true,
           "moduleName": "SavedSearchAlertsList",
           "props": {},
           "replaceActiveModal": false,
           "replaceActiveScreen": false,
+          "screenOptions": {
+            "headerShown": false,
+          },
           "type": "react",
         },
       ]
