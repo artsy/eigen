@@ -287,12 +287,18 @@ function register(
 }
 
 export interface ViewOptions {
+  // TODO: Remove this once we the old infra code gets removed
   modalPresentationStyle?: "fullScreen" | "pageSheet" | "formSheet"
+  // @deprecated Use screenOptions.headerShown instead
+  // TODO: Remove this once we the old infra code gets removed
   hasOwnModalCloseButton?: boolean
   alwaysPresentModally?: boolean
+  // @deprecated Use screenOptions.headerShown instead
+  // TODO: Remove this once we the old infra code gets removed
   hidesBackButton?: boolean
   hidesBottomTabs?: boolean
   fullBleed?: boolean
+  // TODO: Remove this once we the old infra code gets removed
   ignoreTabs?: boolean
   // If this module is the root view of a particular tab, name it here
   isRootViewForTabName?: BottomTabType
@@ -326,7 +332,6 @@ function defineModules<T extends string>(obj: Record<T, ModuleDescriptor>) {
 }
 
 const artQuizScreenOptions = {
-  hidesBackButton: true,
   fullBleed: true,
   screenOptions: {
     gestureEnabled: false,
@@ -340,7 +345,6 @@ export const modules = defineModules({
     Component: ActivityScreen,
     options: {
       fullBleed: true,
-      hidesBackButton: true,
       hidesBottomTabs: true,
     },
   }),
@@ -348,7 +352,6 @@ export const modules = defineModules({
     Component: ActivityItemScreenQueryRenderer,
     options: {
       fullBleed: true,
-      hidesBackButton: true,
       hidesBottomTabs: true,
     },
   }),
@@ -363,15 +366,19 @@ export const modules = defineModules({
   AddMyCollectionArtist: reactModule({
     Component: AddMyCollectionArtist,
     options: {
-      hidesBackButton: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
   AlertArtworks: reactModule({
     Component: AlertArtworks,
     options: {
       fullBleed: true,
-      hidesBackButton: true,
       hidesBottomTabs: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
   ArtQuiz: reactModule({
@@ -382,9 +389,9 @@ export const modules = defineModules({
     Component: ArtQuizResults,
     options: {
       fullBleed: true,
-      hidesBackButton: true,
       screenOptions: {
         animationTypeForReplace: "pop",
+        headerShown: false,
       },
     },
   }),
@@ -392,43 +399,68 @@ export const modules = defineModules({
     Component: ArticleScreen,
     options: {
       fullBleed: true,
-      hidesBackButton: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
   ArticleSlideShow: reactModule({
     Component: ArticlesSlideShowScreen,
     options: {
       fullBleed: true,
-      hidesBackButton: true,
       hidesBottomTabs: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
   Articles: reactModule({
     Component: ArticlesScreen,
     options: {
       fullBleed: true,
-      hidesBackButton: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
     Queries: [ArticlesScreenQuery],
   }),
   Artist: reactModule({
     Component: ArtistQueryRenderer,
-
-    options: { fullBleed: true, hidesBackButton: true },
+    options: {
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
     Queries: [ArtistScreenQuery],
   }),
   ArtistShows: reactModule({ Component: ArtistShows2QueryRenderer }),
   ArtistArticles: reactModule({
     Component: ArtistArticlesQueryRenderer,
-    options: { fullBleed: true, hidesBackButton: true },
+    options: {
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
   }),
   ArtistSeries: reactModule({
     Component: ArtistSeriesQueryRenderer,
-    options: { fullBleed: true, hidesBackButton: true },
+    options: {
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
   }),
   Artwork: reactModule({
     Component: ArtworkScreen,
-    options: { hidesBackButton: true, hidesBottomTabs: true },
+    options: {
+      hidesBottomTabs: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
     Queries: [ArtworkScreenQuery],
   }),
   ArtworkMedium: reactModule({
@@ -461,7 +493,14 @@ export const modules = defineModules({
         : undefined,
     },
   }),
-  ArtworkList: reactModule({ Component: ArtworkListScreen, options: { hidesBackButton: true } }),
+  ArtworkList: reactModule({
+    Component: ArtworkListScreen,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
   ArtworkRecommendations: reactModule({ Component: ArtworkRecommendationsScreen }),
   Auction: reactModule({
     Component: SaleQueryRenderer,
@@ -471,8 +510,10 @@ export const modules = defineModules({
   Auctions: reactModule({
     Component: SalesScreen,
     options: {
-      hidesBackButton: true,
       fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
     Queries: [SalesScreenQuery],
   }),
@@ -495,10 +536,10 @@ export const modules = defineModules({
     options: {
       alwaysPresentModally: true,
       fullBleed: Platform.OS === "ios" && !unsafe_getFeatureFlag("AREnableNewNavigation"),
-      hasOwnModalCloseButton: true,
       screenOptions: {
         // Don't allow the screen to be swiped away by mistake
         gestureEnabled: false,
+        headerShown: false,
       },
     },
   }),
@@ -506,8 +547,10 @@ export const modules = defineModules({
     Component: BidFlow,
     options: {
       alwaysPresentModally: true,
-      hasOwnModalCloseButton: true,
       fullBleed: !unsafe_getFeatureFlag("AREnableNewNavigation"),
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
   AuctionBuyersPremium: reactModule({
@@ -524,8 +567,10 @@ export const modules = defineModules({
   BrowseSimilarWorks: reactModule({
     Component: BrowseSimilarWorksQueryRenderer,
     options: {
-      hidesBackButton: true,
       hidesBottomTabs: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
   CareerHighlightsBigCardsSwiper: reactModule({
@@ -533,8 +578,10 @@ export const modules = defineModules({
     options: {
       alwaysPresentModally: !unsafe_getFeatureFlag("AREnableNewNavigation"),
       fullBleed: !unsafe_getFeatureFlag("AREnableNewNavigation"),
-      hidesBackButton: true,
       hidesBottomTabs: unsafe_getFeatureFlag("AREnableNewNavigation"),
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
   City: reactModule({ Component: CityView, options: { fullBleed: true, ignoreTabs: true } }),
@@ -547,13 +594,20 @@ export const modules = defineModules({
   CitySectionList: reactModule({ Component: CitySectionListQueryRenderer }),
   Collection: reactModule({
     Component: CollectionScreen,
-    options: { fullBleed: true, hidesBackButton: true },
+    options: {
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
   }),
   CollectionsByCategory: reactModule({
     Component: CollectionsByCategory,
     options: {
       fullBleed: true,
-      hidesBackButton: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
   ConsignmentInquiry: reactModule({
@@ -569,7 +623,9 @@ export const modules = defineModules({
     Component: Conversation,
     options: {
       onlyShowInTabName: "inbox",
-      hidesBackButton: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
   ConversationDetails: reactModule({
@@ -601,18 +657,30 @@ export const modules = defineModules({
   EditSavedSearchAlert: reactModule({
     Component: EditSavedSearchAlertQueryRenderer,
     options: {
-      hidesBackButton: true,
       hidesBottomTabs: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
   Fair: reactModule({
     Component: FairScreen,
-    options: { fullBleed: true, hidesBackButton: true },
+    options: {
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
     Queries: [FairScreenQuery],
   }),
   FairMoreInfo: reactModule({
     Component: FairMoreInfoQueryRenderer,
-    options: { fullBleed: true, hidesBackButton: true },
+    options: {
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
   }),
   FairArticles: reactModule({ Component: FairArticlesQueryRenderer }),
   FairAllFollowedArtists: reactModule({ Component: FairAllFollowedArtistsQueryRenderer }),
@@ -620,7 +688,9 @@ export const modules = defineModules({
     Component: Favorites,
     options: {
       fullBleed: true,
-      hidesBackButton: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
   Feature: reactModule({ Component: FeatureQueryRenderer, options: { fullBleed: true } }),
@@ -637,52 +707,76 @@ export const modules = defineModules({
     Component: GalleriesForYouScreen,
     options: {
       fullBleed: true,
-      hidesBackButton: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
   Gene: reactModule({
     Component: GeneQueryRenderer,
     options: {
       fullBleed: true,
-      hidesBackButton: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
   Home: reactModule({
     Component: HomeContainer,
     options: {
       isRootViewForTabName: "home",
-      hidesBackButton: true,
       fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
     Queries: [homeViewScreenQuery],
   }),
-  HomeView: reactModule({ Component: HomeViewScreen, options: { hidesBackButton: true } }),
+  HomeView: reactModule({
+    Component: HomeViewScreen,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
   HomeViewSectionScreen: reactModule({
     Component: HomeViewSectionScreenQueryRenderer,
     options: {
-      hidesBackButton: true,
       fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
   Inbox: reactModule({
     Component: InboxQueryRenderer,
     options: {
       isRootViewForTabName: "inbox",
-      hidesBackButton: true,
       fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
     Queries: [InboxScreenQuery],
   }),
   Inquiry: reactModule({
     Component: Inquiry,
-    options: { alwaysPresentModally: true, hasOwnModalCloseButton: true },
+    options: {
+      alwaysPresentModally: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
   }),
   LiveAuction: reactModule({
     Component: LiveAuctionView,
     options: {
       alwaysPresentModally: true,
-      hasOwnModalCloseButton: true,
       modalPresentationStyle: "fullScreen",
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
   LocalDiscovery: reactModule({
@@ -712,7 +806,9 @@ export const modules = defineModules({
   MakeOfferModal: reactModule({
     Component: MakeOfferModalQueryRenderer,
     options: {
-      hasOwnModalCloseButton: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
   MedianSalePriceAtAuction: reactModule({ Component: MedianSalePriceAtAuction }),
@@ -766,30 +862,35 @@ export const modules = defineModules({
   MyCollection: reactModule({ Component: MyCollectionQueryRenderer }),
   MyCollectionArtwork: reactModule({
     Component: MyCollectionArtworkScreen,
-    options: { fullBleed: true, hidesBackButton: true },
+    options: {
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
     Queries: [MyCollectionArtworkScreenQuery],
   }),
   MyCollectionArtworkAdd: reactModule({
     Component: MyCollectionArtworkAdd,
     options: {
-      hidesBackButton: true,
       hidesBottomTabs: !unsafe_getFeatureFlag("AREnableNewNavigation"),
       alwaysPresentModally: true,
       modalPresentationStyle: "fullScreen",
       screenOptions: {
         gestureEnabled: false,
+        headerShown: false,
       },
     },
   }),
   MyCollectionArtworkEdit: reactModule({
     Component: MyCollectionArtworkEditQueryRenderer,
     options: {
-      hidesBackButton: true,
       hidesBottomTabs: !unsafe_getFeatureFlag("AREnableNewNavigation"),
       alwaysPresentModally: true,
       modalPresentationStyle: "fullScreen",
       screenOptions: {
         gestureEnabled: false,
+        headerShown: false,
       },
     },
   }),
@@ -808,10 +909,10 @@ export const modules = defineModules({
   MyCollectionCollectedArtistsPrivacy: reactModule({
     Component: MyCollectionCollectedArtistsPrivacyQueryRenderer,
     options: {
-      hidesBackButton: true,
       hidesBottomTabs: true,
       screenOptions: {
         gestureEnabled: false,
+        headerShown: false,
       },
     },
   }),
@@ -821,7 +922,9 @@ export const modules = defineModules({
     options: {
       isRootViewForTabName: "profile",
       fullBleed: true,
-      hidesBackButton: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
     Queries: [MyCollectionScreenQuery],
   }),
@@ -829,8 +932,10 @@ export const modules = defineModules({
     Component: CompleteMyProfile,
     options: {
       fullBleed: true,
-      hidesBackButton: true,
       hidesBottomTabs: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
   MyProfileEditForm: reactModule({
@@ -862,8 +967,10 @@ export const modules = defineModules({
     Component: NewWorksForYouQueryRenderer,
     options: {
       hidesBottomTabs: true,
-      hidesBackButton: true,
       fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
   MyProfilePaymentNewCreditCard: reactModule({
@@ -885,15 +992,19 @@ export const modules = defineModules({
   NewWorksFromGalleriesYouFollow: reactModule({
     Component: NewWorksFromGalleriesYouFollowScreen,
     options: {
-      hidesBackButton: true,
       fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
   News: reactModule({
     Component: NewsScreen,
     options: {
       fullBleed: true,
-      hidesBackButton: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
     Queries: [NewsScreenQuery],
   }),
@@ -917,7 +1028,6 @@ export const modules = defineModules({
     Component: PartnerQueryRenderer,
     options: {
       fullBleed: true,
-      hidesBackButton: true,
     },
   }),
   PartnerLocations: reactModule({ Component: PartnerLocations }),
@@ -925,10 +1035,19 @@ export const modules = defineModules({
     Component: PartnerOfferContainer,
     options: {
       hidesBottomTabs: true,
-      hidesBackButton: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
-  PriceDatabase: reactModule({ Component: PriceDatabase, options: { hidesBackButton: true } }),
+  PriceDatabase: reactModule({
+    Component: PriceDatabase,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  }),
   PrivacyRequest: reactModule({
     Component: PrivacyRequest,
     options: {
@@ -940,20 +1059,21 @@ export const modules = defineModules({
   PurchaseModal: reactModule({
     Component: PurchaseModalQueryRenderer,
     options: {
-      hasOwnModalCloseButton: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
   ModalWebView: reactModule({
     Component: ArtsyWebViewPage,
     options: {
-      hasOwnModalCloseButton: true,
-      hidesBackButton: true,
       alwaysPresentModally: true,
       modalPresentationStyle: !unsafe_getFeatureFlag("AREnableNewNavigation")
         ? "fullScreen"
         : undefined,
       screenOptions: {
         gestureEnabled: false,
+        headerShown: false,
       },
     },
   }),
@@ -961,20 +1081,27 @@ export const modules = defineModules({
     Component: ArtsyWebViewPage,
     options: {
       fullBleed: !unsafe_getFeatureFlag("AREnableNewNavigation"),
-      hasOwnModalCloseButton: true,
-      hidesBackButton: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
   RequestForPriceEstimateScreen: reactModule({ Component: RequestForPriceEstimateScreen }),
   RequestForPriceEstimateConfirmationScreen: reactModule({
     Component: RequestForPriceEstimateConfirmationScreen,
-    options: { hidesBackButton: true },
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
   }),
   RecentlyViewed: reactModule({
     Component: RecentlyViewedScreen,
     options: {
-      hidesBackButton: true,
       fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
     Queries: [RecentlyViewedScreenQuery],
   }),
@@ -982,13 +1109,21 @@ export const modules = defineModules({
     Component: RecommendedAuctionLotsQueryRenderer,
     options: {
       hidesBottomTabs: true,
-      hidesBackButton: true,
       fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
   Sell: reactModule({
     Component: SellWithArtsy,
-    options: { isRootViewForTabName: "sell", fullBleed: true, hidesBackButton: true },
+    options: {
+      isRootViewForTabName: "sell",
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
     Queries: [SellWithArtsyHomeScreenQuery],
   }),
   SellNotRootTabView: reactModule({ Component: SellWithArtsy }),
@@ -996,19 +1131,29 @@ export const modules = defineModules({
     Component: SavedArtworks,
     options: {
       fullBleed: true,
-      hidesBackButton: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
   SavedSearchAlertsList: reactModule({
     Component: SavedSearchAlertsListQueryRenderer,
     options: {
       fullBleed: true,
-      hidesBackButton: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
   Search: reactModule({
     Component: SearchScreen,
-    options: { isRootViewForTabName: "search", hidesBackButton: true, fullBleed: true },
+    options: {
+      isRootViewForTabName: "search",
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
     Queries: [SearchScreenQuery],
   }),
   Show: reactModule({ Component: ShowQueryRenderer, options: { fullBleed: true } }),
@@ -1016,37 +1161,44 @@ export const modules = defineModules({
   SimilarToRecentlyViewed: reactModule({
     Component: SimilarToRecentlyViewedScreen,
     options: {
-      hidesBackButton: true,
       fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
   SubmitArtwork: reactModule({
     Component: SubmitArtworkForm,
     options: {
-      hidesBackButton: true,
       alwaysPresentModally: true,
       modalPresentationStyle: !unsafe_getFeatureFlag("AREnableNewNavigation")
         ? "fullScreen"
         : undefined,
       screenOptions: {
         gestureEnabled: false,
+        headerShown: false,
       },
     },
   }),
   SubmitArtworkEdit: reactModule({
     Component: SubmitArtworkFormEditContainer,
     options: {
-      hidesBackButton: true,
       alwaysPresentModally: true,
       hidesBottomTabs: true,
       screenOptions: {
         gestureEnabled: false,
+        headerShown: false,
       },
     },
   }),
   Tag: reactModule({
     Component: TagQueryRenderer,
-    options: { hidesBackButton: true, fullBleed: true },
+    options: {
+      fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
   }),
   UnlistedArtworksFAQScreen: reactModule({ Component: UnlistedArtworksFAQScreen }),
   VanityURLEntity: reactModule({
