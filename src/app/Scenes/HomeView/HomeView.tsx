@@ -2,6 +2,7 @@ import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, Spinner } from "@artsy/palette-mobile"
 import { PortalHost } from "@gorhom/portal"
 import { useFocusEffect } from "@react-navigation/native"
+import * as Sentry from "@sentry/react-native"
 import { HomeViewFetchMeQuery } from "__generated__/HomeViewFetchMeQuery.graphql"
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
 import { HomeViewSectionsConnection_viewer$key } from "__generated__/HomeViewSectionsConnection_viewer.graphql"
@@ -15,15 +16,20 @@ import { HomeViewStore, HomeViewStoreProvider } from "app/Scenes/HomeView/HomeVi
 import { Section } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewExperimentTracking } from "app/Scenes/HomeView/hooks/useHomeViewExperimentTracking"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
+import { Playground } from "app/Scenes/Playground/Playground"
 import { searchQueryDefaultVariables } from "app/Scenes/Search/Search"
+import { GlobalStore } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { extractNodes } from "app/utils/extractNodes"
+import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
 import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
+import { useSwitchStatusBarStyle } from "app/utils/useStatusBarStyle"
 import { RefObject, Suspense, useCallback, useEffect, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
@@ -175,21 +181,33 @@ export const HomeView: React.FC = () => {
   )
 }
 
-const HomeViewScreenPlaceholder: React.FC = () => {
-  return (
-    <ProvidePlaceholderContext>
-      <Screen safeArea={true}>
-        <Screen.Body fullwidth>
-          <Flex testID="new-home-view-skeleton">
-            <HomeHeader />
-          </Flex>
-        </Screen.Body>
-      </Screen>
-    </ProvidePlaceholderContext>
-  )
-}
+const HomeViewScreenComponent: React.FC = () => {
+  const artQuizState = GlobalStore.useAppState((state) => state.auth.onboardingArtQuizState)
+  const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
+  const showPlayground = useDevToggle("DTShowPlayground")
 
-export const HomeViewScreen: React.FC = () => {
+  useSwitchStatusBarStyle("dark-content", "dark-content")
+
+  useEffect(() => {
+    if (artQuizState === "incomplete" && isNavigationReady) {
+      // Wait for react-navigation to start drawing the screen before navigating to ArtQuiz
+      requestAnimationFrame(() => {
+        navigate("/art-quiz", {
+          replaceActiveScreen: true,
+        })
+      })
+      return
+    }
+  }, [artQuizState, isNavigationReady])
+
+  if (artQuizState === "incomplete") {
+    return null
+  }
+
+  if (showPlayground) {
+    return <Playground />
+  }
+
   return (
     <HomeViewStoreProvider>
       <RetryErrorBoundary trackErrorBoundary={false}>
@@ -201,6 +219,8 @@ export const HomeViewScreen: React.FC = () => {
     </HomeViewStoreProvider>
   )
 }
+
+export const HomeViewScreen = Sentry.withProfiler(HomeViewScreenComponent)
 
 const sectionsFragment = graphql`
   fragment HomeViewSectionsConnection_viewer on Viewer
@@ -243,3 +263,17 @@ export const homeViewScreenQuery = graphql`
     }
   }
 `
+
+const HomeViewScreenPlaceholder: React.FC = () => {
+  return (
+    <ProvidePlaceholderContext>
+      <Screen safeArea={true}>
+        <Screen.Body fullwidth>
+          <Flex testID="new-home-view-skeleton">
+            <HomeHeader />
+          </Flex>
+        </Screen.Body>
+      </Screen>
+    </ProvidePlaceholderContext>
+  )
+}
