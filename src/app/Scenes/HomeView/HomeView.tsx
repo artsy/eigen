@@ -25,6 +25,7 @@ import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
+import { useIsDeepLink } from "app/utils/hooks/useIsDeepLink"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
 import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
@@ -191,6 +192,8 @@ const HomeViewScreenComponent: React.FC = () => {
   const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
   const showPlayground = useDevToggle("DTShowPlayground")
 
+  const { isDeepLink } = useIsDeepLink()
+
   useSwitchStatusBarStyle("dark-content", "dark-content")
 
   useEffect(() => {
@@ -204,6 +207,12 @@ const HomeViewScreenComponent: React.FC = () => {
       return
     }
   }, [artQuizState, isNavigationReady])
+
+  // We want to avoid rendering the home view when the user comes back from a deep link
+  // Because it triggers a lot of queries that affect the user's experience and can be avoided
+  if (isDeepLink !== false) {
+    return null
+  }
 
   if (artQuizState === "incomplete") {
     return null
