@@ -23,6 +23,7 @@ describe("Body", () => {
         viewer @required(action: NONE) {
           marketingCollections(first: 2) {
             ...BodyCollectionsByCategory_marketingCollections
+            ...CollectionsChips_marketingCollections
           }
         }
       }
