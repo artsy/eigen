@@ -12,7 +12,7 @@ import { PillType, SearchResultInterface } from "app/Scenes/Search/types"
 import { extractNodes } from "app/utils/extractNodes"
 import { Suspense, useCallback, useContext, useEffect, useRef } from "react"
 import { ErrorBoundary } from "react-error-boundary"
-import { Keyboard, Text } from "react-native"
+import { Keyboard } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
