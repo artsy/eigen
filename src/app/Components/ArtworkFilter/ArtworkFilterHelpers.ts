@@ -260,7 +260,7 @@ export interface FilterCounts {
 }
 
 export type SelectedFiltersCounts = {
-  [Name in FilterParamName | "waysToBuy" | "year"]: number
+  [Name in FilterParamName | "waysToBuy" | "year" | "availability"]: number
 }
 
 export const filterKeyFromAggregation: Record<
@@ -330,6 +330,8 @@ const DEFAULT_TAG_ARTWORK_PARAMS = {
   ...DEFAULT_ARTWORKS_PARAMS,
   sort: "-partner_updated_at",
 } as FilterParams
+
+const availabilityFilterNames = [FilterParamName.forSale]
 
 const createdYearsFilterNames = [
   FilterParamName.earliestCreatedYear,
@@ -418,7 +420,7 @@ export const aggregationNameFromFilter: Record<string, AggregationName | undefin
 
 export const aggregationForFilter = (filterKey: string, aggregations: Aggregations) => {
   const aggregationName = aggregationNameFromFilter[filterKey]
-  const aggregation = aggregations!.find((value) => value.slice === aggregationName)
+  const aggregation = aggregations.find((value) => value.slice === aggregationName)
   return aggregation
 }
 
@@ -570,6 +572,10 @@ export const getSelectedFiltersCounts = (selectedFilters: FilterArray) => {
 
   selectedFilters.forEach(({ paramName, paramValue }: FilterData) => {
     switch (true) {
+      case availabilityFilterNames.includes(paramName): {
+        counts.availability = 1
+        break
+      }
       case waysToBuyFilterNames.includes(paramName): {
         counts.waysToBuy = (counts.waysToBuy ?? 0) + 1
         break

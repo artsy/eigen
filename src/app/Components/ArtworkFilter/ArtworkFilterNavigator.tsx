@@ -18,6 +18,7 @@ import { ArtistIDsOptionsScreen } from "app/Components/ArtworkFilter/Filters/Art
 import { ArtistNationalitiesOptionsScreen } from "app/Components/ArtworkFilter/Filters/ArtistNationalitiesOptions"
 import { ArtistSeriesOptionsScreen } from "app/Components/ArtworkFilter/Filters/ArtistSeriesOptions.tsx"
 import { AttributionClassOptionsScreen } from "app/Components/ArtworkFilter/Filters/AttributionClassOptions"
+import { AvailabilityOptionsScreen } from "app/Components/ArtworkFilter/Filters/AvailabilityOptions"
 import { CategoriesOptionsScreen } from "app/Components/ArtworkFilter/Filters/CategoriesOptions"
 import { ColorsOptionsScreen } from "app/Components/ArtworkFilter/Filters/ColorsOptions"
 import { EstimateRangeOptionsScreen } from "app/Components/ArtworkFilter/Filters/EstimateRangeOptions"

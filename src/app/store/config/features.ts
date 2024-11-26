@@ -284,6 +284,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableNewSearchModal",
   },
+  AREnableAvailabilityFilter: {
+    description: "Enable availability filter",
+    readyForRelease: false,
+    showInDevMenu: true,
+    // echoFlagKey: "AREnableAvailabilityFilter",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {

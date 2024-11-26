@@ -48,7 +48,7 @@ export const AvailabilityOptionsScreen: React.FC<AvailabilityOptionsScreenProps>
   const handleSelect = (option: FilterData, updatedValue: boolean) => {
     selectFiltersAction({
       displayText: option.displayText,
-      paramValue: updatedValue,
+      paramValue: updatedValue || undefined,
       paramName: option.paramName,
     })
   }

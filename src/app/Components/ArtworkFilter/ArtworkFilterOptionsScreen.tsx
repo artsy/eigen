@@ -49,6 +49,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
   StackScreenProps<ArtworkFilterNavigationStack, "FilterOptionsScreen">
 > = ({ navigation, route }) => {
   const enableArtistSeriesFilter = useFeatureFlag("AREnableArtistSeriesFilter")
+  const enableAvailabilityFilter = useFeatureFlag("AREnableAvailabilityFilter")
   const tracking = useTracking()
   const { closeModal, id, mode, slug, title = "Sort & Filter" } = route.params
 
@@ -104,7 +105,9 @@ export const ArtworkFilterOptionsScreen: React.FC<
     .filter((filterOption) => filterOption.filterType)
     // Filter out the Artist Series filter if the feature flag is disabled
     .filter(
-      (filterOption) => enableArtistSeriesFilter || filterOption.filterType !== "artistSeriesIDs"
+      (filterOption) =>
+        (enableArtistSeriesFilter || filterOption.filterType !== "artistSeriesIDs") &&
+        (enableAvailabilityFilter || filterOption.filterType !== "availability")
     )
 
   const clearAllFilters = () => {
@@ -215,6 +218,7 @@ export const getStaticFilterOptionsByMode = (
     default:
       return [
         filterOptionToDisplayConfigMap.attributionClass,
+        filterOptionToDisplayConfigMap.availability,
         filterOptionToDisplayConfigMap.sort,
         filterOptionToDisplayConfigMap.waysToBuy,
       ]
@@ -418,7 +422,6 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     displayText: FilterDisplayName.availability,
     filterType: "availability",
     ScreenComponent: "AvailabilityOptionsScreen",
-    configType: FilterConfigTypes.FilterScreenCheckboxItem,
   },
   partnerIDs: {
     displayText: FilterDisplayName.partnerIDs,
@@ -513,6 +516,7 @@ const ArtistArtworksFiltersSorted: FilterScreen[] = [
   "artistSeriesIDs",
   "sizes",
   "waysToBuy",
+  "availability",
   "materialsTerms",
   "locationCities",
   "majorPeriods",
@@ -540,7 +544,6 @@ const ArtworksFiltersSorted: FilterScreen[] = [
   "additionalGeneIDs",
   "priceRange",
   "sizes",
-  "availability",
   "waysToBuy",
   "materialsTerms",
   "artistNationalities",
