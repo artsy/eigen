@@ -10,9 +10,9 @@ import { SingleIndexSearchPlaceholder } from "app/Scenes/Search/components/place
 import { SEARCH_PILL_KEY_TO_SEARCH_ENTITY } from "app/Scenes/Search/constants"
 import { PillType, SearchResultInterface } from "app/Scenes/Search/types"
 import { extractNodes } from "app/utils/extractNodes"
-import { Suspense, useContext, useEffect, useRef } from "react"
+import { Suspense, useCallback, useContext, useEffect, useRef } from "react"
 import { ErrorBoundary } from "react-error-boundary"
-import { Keyboard } from "react-native"
+import { Keyboard, Text } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
@@ -21,7 +21,7 @@ interface SearchResultsProps {
   selectedPill: PillType
 }
 
-const PAGE_SIZE = isTablet() ? 20 : 10
+const PAGE_SIZE = isTablet() ? 40 : 20
 const ESTIMATED_ITEM_SIZE = 56
 
 export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selectedPill }) => {
@@ -63,6 +63,10 @@ export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selec
     }
   }, [query])
 
+  const renderItem = useCallback(({ item, index }) => {
+    return <SearchResult result={item} selectedPill={selectedPill} query={query} position={index} />
+  }, [])
+
   return (
     <FlashList
       accessibilityRole="list"
@@ -71,9 +75,7 @@ export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selec
       contentContainerStyle={{ paddingVertical: space(1), paddingHorizontal: space(2) }}
       data={hits}
       keyExtractor={(item, index) => item.internalID ?? index.toString()}
-      renderItem={({ item, index }) => (
-        <SearchResult result={item} selectedPill={selectedPill} query={query} position={index} />
-      )}
+      renderItem={renderItem}
       estimatedItemSize={ESTIMATED_ITEM_SIZE}
       showsVerticalScrollIndicator={false}
       ItemSeparatorComponent={() => <Spacer y={2} />}
@@ -89,6 +91,7 @@ export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selec
       }
       onScrollBeginDrag={handleOnScrollBeginDrag}
       onEndReached={handleLoadMore}
+      onEndReachedThreshold={0.5}
     />
   )
 }
