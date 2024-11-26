@@ -3,6 +3,7 @@ import { Flex, RoundSearchInput, Touchable } from "@artsy/palette-mobile"
 import { GlobalSearchInputOverlay } from "app/Components/GlobalSearchInput/GlobalSearchInputOverlay"
 import { useDismissSearchOverlayOnTabBarPress } from "app/Components/GlobalSearchInput/utils/useDismissSearchOverlayOnTabBarPress"
 import { ICON_HIT_SLOP } from "app/Components/constants"
+import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
 import { forwardRef, Fragment, useImperativeHandle, useState } from "react"
 import { useTracking } from "react-tracking"
 
@@ -16,13 +17,14 @@ export type GlobalSearchInput = {
 export const GlobalSearchInput = forwardRef<GlobalSearchInput, GlobalSearchInputProps>(
   ({ ownerType }, ref) => {
     const [isVisible, setIsVisible] = useState(false)
+    const debouncedIsVisible = useDebouncedValue({ value: isVisible })
     const tracking = useTracking()
 
     useDismissSearchOverlayOnTabBarPress({ isVisible, ownerType, setIsVisible })
 
     useImperativeHandle(ref, () => ({
       focus: () => {
-        if (!isVisible) {
+        if (!debouncedIsVisible.debouncedValue) {
           setIsVisible(true)
         }
       },

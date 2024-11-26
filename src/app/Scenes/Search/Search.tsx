@@ -64,12 +64,11 @@ export const Search: React.FC = () => {
 
   useRefetchWhenQueryChanged({ query: searchQuery, refetch })
 
-  // Focus input and open keyboard on bottom nav Search tab double-tab
   const scrollableRef = useBottomTabsScrollToTop(() => {
     if (enableNewSearchModal) {
+      // Focus input and open keyboard on bottom nav Search tab double-tab
       searchInputRef.current?.focus()
     } else {
-      // Focus input and open keyboard on bottom nav Search tab double-tab
       searchProviderValues.inputRef.current?.focus()
     }
   })
