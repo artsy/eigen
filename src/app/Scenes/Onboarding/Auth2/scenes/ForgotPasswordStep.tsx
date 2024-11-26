@@ -102,13 +102,14 @@ const ForgotPasswordStepForm: React.FC = () => {
 
         {!!requestedPasswordReset ? (
           <Text color="blue100" mt={1} variant="sm">
-            Password reset link set—check your email. Please note, you must wait 5 minutes to
+            Password reset link sent—check your email. Please note, you must wait 5 minutes to
             receive another link.
           </Text>
         ) : (
           <>
             <Spacer y={2} />
             <Input
+              accessibilityHint="Enter your email address"
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect={false}
