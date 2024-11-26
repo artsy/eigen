@@ -39,7 +39,7 @@ describe("TimeOffsetProvider", () => {
   })
 
   it("injects timeOffsetInMilliSeconds as a context", async () => {
-    const { queryByText } = renderWithWrappers(<TestWrapper />)
+    const { queryByText, findByText } = renderWithWrappers(<TestWrapper />)
 
     // Set up a situation where the phone's clock is ahead of Gravity's clock by 10 minutes.
     resolveMostRecentRelayOperation(mockEnvironment, {
@@ -50,6 +50,6 @@ describe("TimeOffsetProvider", () => {
       }),
     })
 
-    await waitFor(() => expect(queryByText(`Time Offset: ${10 * MINUTES}`)).toBeTruthy())
+    await findByText(`Time Offset: ${10 * MINUTES}`)
   })
 })

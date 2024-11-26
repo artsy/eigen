@@ -3,12 +3,12 @@ import {
   ImageCarouselContext,
   ImageDescriptor,
 } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
+import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 import { useContext, useEffect, useState } from "react"
 import { LayoutAnimation } from "react-native"
 import FastImage from "react-native-fast-image"
 import { Zoom } from "react-native-reanimated-zoom"
 import usePrevious from "react-use/lib/usePrevious"
-import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 
 export interface ImageZoomViewAndroidProps {
   image: ImageDescriptor
