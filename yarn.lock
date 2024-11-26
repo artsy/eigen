@@ -3508,10 +3508,10 @@
     color "^4.2.3"
     warn-once "^0.1.0"
 
-"@rnmapbox/maps@10.1.31":
-  version "10.1.31"
-  resolved "https://registry.yarnpkg.com/@rnmapbox/maps/-/maps-10.1.31.tgz#7fd3ca1f1707e89b15c64c85a16ad83fc5b754e5"
-  integrity sha512-nNmw99kgQC7SUo/OxhvcF1Jm6Z69iij4Sh0PlYoZpru5W4sJQsMCi6u81r8lCiS1XQ2aTH6ZBcT7RdpRs7uzbg==
+"@rnmapbox/maps@10.1.33":
+  version "10.1.33"
+  resolved "https://registry.yarnpkg.com/@rnmapbox/maps/-/maps-10.1.33.tgz#ef2bbe4b4d7af8c1822d1d5840b8b9b4ffa4ba57"
+  integrity sha512-+J1aJnZ6q0N3044doCb6To/Eftpsn3Eq78AYPMa/Ig9x/u1eWpmbt5WbXJCehkOltGsjvTCenn+/gZKsXMZfww==
   dependencies:
     "@turf/along" "6.5.0"
     "@turf/distance" "6.5.0"
