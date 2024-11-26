@@ -2,6 +2,7 @@ import { ContextModule } from "@artsy/cohesion"
 import {
   ArrowDownIcon,
   ArrowUpIcon,
+  Box,
   Flex,
   FlexProps,
   Skeleton,
@@ -26,14 +27,17 @@ import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { AnimatePresence, MotiView } from "moti"
-import { useEffect, useRef, useState } from "react"
-import { InteractionManager } from "react-native"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { CellRendererProps, InteractionManager, ListRenderItem } from "react-native"
 import { FlatList } from "react-native-gesture-handler"
 import { SwipeableMethods } from "react-native-gesture-handler/ReanimatedSwipeable"
 import { Easing } from "react-native-reanimated"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
-const MAX_NUMBER_OF_TASKS = 5
+const MAX_NUMBER_OF_TASKS = 10
+
+// Height of each task + seperator
+const TASK_CARD_HEIGHT = 92
 
 type Task = ExtractNodeType<HomeViewSectionTasks_section$data["tasksConnection"]>
 
@@ -99,12 +103,64 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
     // setDisplayTask(false)
   }
 
+  const renderCell = useCallback(({ index, ...rest }: CellRendererProps<Task>) => {
+    return <Box zIndex={-index} {...rest} />
+  }, [])
+
+  const renderItem = useCallback<ListRenderItem<Task>>(
+    ({ item, index }) => {
+      let scaleX = 1
+      let translateY = 0
+      let opacity = 1
+
+      if (!showAll && index !== 0) {
+        scaleX = 1 - index * 0.05
+        translateY = -83 * index
+        opacity = 1 - index * 0.15
+        if (index > 2) {
+          opacity = 0
+        }
+      }
+
+      return (
+        <Flex>
+          <MotiView
+            key={item.internalID + index}
+            transition={{ type: "timing", duration: 500 }}
+            animate={{ transform: [{ scaleX }, { translateY }], opacity }}
+          >
+            <Task
+              disableSwipeable={displayTaskStack}
+              onClearTask={() => handleClearTask(item)}
+              onPress={displayTaskStack ? () => setShowAll((prev) => !prev) : undefined}
+              ref={swipeableRef}
+              task={item}
+            />
+          </MotiView>
+        </Flex>
+      )
+    },
+    [displayTaskStack, handleClearTask, showAll]
+  )
+
+  const motiViewHeight = useMemo(() => {
+    // this is the height of the first task card + the section title height + padding
+    const singleTaskHeight = TASK_CARD_HEIGHT + 40 + 40
+
+    if (!showAll) {
+      return singleTaskHeight
+    }
+
+    return singleTaskHeight + (filteredTasks.length - 1) * TASK_CARD_HEIGHT
+  }, [filteredTasks, showAll])
+
   return (
     <AnimatePresence>
       {!!filteredTasks.length && (
         <MotiView
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          transition={{ type: "timing" }}
+          animate={{ opacity: 1, height: motiViewHeight }}
+          exit={{ opacity: 0, height: 0 }}
           exitTransition={{ type: "timing", easing: Easing.inOut(Easing.ease) }}
         >
           <Flex {...flexProps}>
@@ -115,7 +171,7 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
                   return (
                     <Flex flexDirection="row">
                       <Text variant="xs">{showAll ? "Show less" : "Show all"}</Text>
-                      <HeaderIconComponent />
+                      <HeaderIconComponent ml={5} mt="2px" />
                     </Flex>
                   )
                 }}
@@ -126,30 +182,12 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
             <Touchable onPress={() => !showAll && setShowAll((prev) => !prev)}>
               <Flex mr={2}>
                 <FlatList
-                  data={filteredTasks.slice(0, showAll ? filteredTasks.length : 1)}
-                  keyExtractor={(item) => item.internalID + showAll}
+                  scrollEnabled={false}
+                  data={filteredTasks}
+                  keyExtractor={(item) => item.internalID}
+                  CellRendererComponent={renderCell}
                   ItemSeparatorComponent={() => <Spacer y={1} />}
-                  renderItem={({ item }) => {
-                    return (
-                      <Flex>
-                        <MotiView key={item.internalID} style={{ zIndex: 1 }}>
-                          <Task
-                            disableSwipeable={displayTaskStack}
-                            onClearTask={() => handleClearTask(item)}
-                            onPress={
-                              displayTaskStack ? () => setShowAll((prev) => !prev) : undefined
-                            }
-                            ref={swipeableRef}
-                            task={task}
-                          />
-                        </MotiView>
-
-                        {!!displayTaskStack && (
-                          <TaskStack taskSize={Math.max(filteredTasks.length - 1, 2)} />
-                        )}
-                      </Flex>
-                    )
-                  }}
+                  renderItem={renderItem}
                 />
               </Flex>
             </Touchable>
@@ -234,46 +272,3 @@ export const HomeViewSectionTasksQueryRenderer: React.FC<SectionSharedProps> = w
   LoadingFallback: HomeViewSectionTasksPlaceholder,
   ErrorFallback: NoFallback,
 })
-
-interface TaskStackProps {
-  taskSize: number
-}
-
-const TaskStack: React.FC<TaskStackProps> = ({ taskSize }) => {
-  return (
-    <Flex>
-      {taskSize > 1 && (
-        <Flex
-          ml={2}
-          style={{
-            transform: [{ scale: 0.965 }],
-            height: 12,
-            marginTop: -4,
-            backgroundColor: "#2D2D2D",
-            borderColor: "#2D2D2D",
-          }}
-          flexDirection="row"
-          border="1px solid"
-          borderRadius={5}
-          zIndex={-1}
-        />
-      )}
-      {taskSize > 2 && (
-        <Flex
-          ml={2}
-          style={{
-            transform: [{ scale: 0.928 }],
-            height: 12,
-            marginTop: -5,
-            backgroundColor: "#515151",
-            borderColor: "#515151",
-          }}
-          flexDirection="row"
-          border="1px solid"
-          borderRadius={5}
-          zIndex={-2}
-        />
-      )}
-    </Flex>
-  )
-}
