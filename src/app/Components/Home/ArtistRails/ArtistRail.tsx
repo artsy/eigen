@@ -11,7 +11,7 @@ import { CardRailFlatList, INTER_CARD_PADDING } from "app/Components/Home/CardRa
 import { SectionTitle } from "app/Components/SectionTitle"
 import { defaultArtistVariables } from "app/Scenes/Artist/Artist"
 import { RailScrollProps } from "app/Scenes/Home/Components/types"
-import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
+import HomeAnalytics from "app/Scenes/HomeView/helpers/homeAnalytics"
 import { Schema } from "app/utils/track"
 import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View, ViewProps } from "react-native"
@@ -110,7 +110,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
         <SectionTitle title={props.title} subtitle={props.subtitle} />
       </Flex>
       <CardRailFlatList<SuggestedArtist>
-        prefetchUrlExtractor={(item) => item?.href!}
+        prefetchUrlExtractor={(item) => item?.href}
         prefetchVariablesExtractor={defaultArtistVariables}
         listRef={listRef}
         data={artists}
@@ -129,9 +129,11 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
               <ArtistCard
                 artist={artist as any}
                 onPress={() => {
+                  if (!props.rail.key) return
+
                   trackEvent(
                     HomeAnalytics.artistThumbnailTapEvent(
-                      props.rail.key!,
+                      props.rail.key,
                       artist.internalID,
                       artist.slug,
                       index

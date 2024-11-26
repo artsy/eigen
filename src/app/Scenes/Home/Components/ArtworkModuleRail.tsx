@@ -2,7 +2,7 @@ import { Flex } from "@artsy/palette-mobile"
 import { ArtworkModuleRail_rail$data } from "__generated__/ArtworkModuleRail_rail.graphql"
 import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
-import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
+import HomeAnalytics from "app/Scenes/HomeView/helpers/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import {
   ArtworkActionTrackingProps,

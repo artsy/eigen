@@ -3,7 +3,7 @@ import { ActivityRail_viewer$key } from "__generated__/ActivityRail_viewer.graph
 import { SectionTitle } from "app/Components/SectionTitle"
 import { shouldDisplayNotification } from "app/Scenes/Activity/utils/shouldDisplayNotification"
 import { ActivityRailItem } from "app/Scenes/Home/Components/ActivityRailItem"
-import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
+import HomeAnalytics from "app/Scenes/HomeView/helpers/homeAnalytics"
 import { matchRoute } from "app/routes"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
