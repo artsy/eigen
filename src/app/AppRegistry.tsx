@@ -22,7 +22,6 @@ import { CollectionScreen } from "app/Scenes/Collection/Collection"
 import { CollectionsByCategory } from "app/Scenes/CollectionsByCategory/CollectionsByCategory"
 import { CompleteMyProfile } from "app/Scenes/CompleteMyProfile/CompleteMyProfile"
 import { GalleriesForYouScreen } from "app/Scenes/GalleriesForYou/GalleriesForYouScreen"
-import { HomeContainer } from "app/Scenes/Home/HomeContainer"
 import { HomeViewScreen, homeViewScreenQuery } from "app/Scenes/HomeView/HomeView"
 import { HomeViewSectionScreenQueryRenderer } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreen"
 import { AddMyCollectionArtist } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
@@ -346,6 +345,9 @@ export const modules = defineModules({
     options: {
       fullBleed: true,
       hidesBottomTabs: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
   ActivityItem: reactModule({
@@ -353,6 +355,9 @@ export const modules = defineModules({
     options: {
       fullBleed: true,
       hidesBottomTabs: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
   About: reactModule({
@@ -722,7 +727,7 @@ export const modules = defineModules({
     },
   }),
   Home: reactModule({
-    Component: HomeContainer,
+    Component: HomeViewScreen,
     options: {
       isRootViewForTabName: "home",
       fullBleed: true,

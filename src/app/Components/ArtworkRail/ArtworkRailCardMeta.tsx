@@ -23,7 +23,7 @@ export interface ArtworkRailCardCommonProps extends ArtworkActionTrackingProps {
   hideIncreasedInterestSignal?: boolean
   hideCuratorsPickSignal?: boolean
   lotLabel?: string | null
-  metaContainerStyles?: {}
+  containerHeight?: number
   showSaveIcon?: boolean
   showPartnerName?: boolean
   /**
@@ -54,7 +54,6 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
   hideCuratorsPickSignal = false,
   hideIncreasedInterestSignal = false,
   lotLabel,
-  metaContainerStyles,
   SalePriceComponent,
   showPartnerName = false,
   showSaveIcon = false,
@@ -128,13 +127,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
     !sale?.isAuction && !displayLimitedTimeOfferSignal && !!collectorSignals
 
   return (
-    <Flex
-      style={{
-        ...metaContainerStyles,
-      }}
-      flexDirection="row"
-      justifyContent="space-between"
-    >
+    <Flex flexDirection="row" justifyContent="space-between">
       <Flex flex={1}>
         {!!lotLabel && (
           <Text lineHeight="20px" color={secondaryColor} numberOfLines={1}>

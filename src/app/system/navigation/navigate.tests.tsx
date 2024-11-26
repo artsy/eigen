@@ -20,7 +20,7 @@ jest.mock("app/store/GlobalStore", () => ({
   unsafe__getEnvironment: jest.fn().mockReturnValue({
     webURL: "https://www.artsy.net",
   }),
-  unsafe_getFeatureFlag: jest.fn().mockReturnValue(false),
+  unsafe_getFeatureFlag: jest.fn(),
   unsafe_getDevToggle: jest.fn().mockReturnValue(false),
   GlobalStore: {
     actions: {
@@ -30,6 +30,10 @@ jest.mock("app/store/GlobalStore", () => ({
       },
     },
   },
+}))
+
+jest.mock("app/Navigation/Navigation", () => ({
+  internal_navigationRef: jest.fn(),
 }))
 
 describe(navigate, () => {
@@ -47,8 +51,9 @@ describe(navigate, () => {
   })
 
   describe("routes to various screens", () => {
-    it("like artwork", () => {
+    it("like artwork", async () => {
       navigate("/artwork/josef-albers-homage-to-the-square")
+      await flushPromiseQueue()
       expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalled()
       expect(args(LegacyNativeModules.ARScreenPresenterModule.pushView as any))
         .toMatchInlineSnapshot(`
@@ -70,8 +75,9 @@ describe(navigate, () => {
         ]
       `)
     })
-    it("like artist", () => {
+    it("like artist", async () => {
       navigate("/artist/banksy")
+      await flushPromiseQueue()
       expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalled()
       expect(args(LegacyNativeModules.ARScreenPresenterModule.pushView as any))
         .toMatchInlineSnapshot(`
@@ -93,8 +99,9 @@ describe(navigate, () => {
         ]
       `)
     })
-    it("like vanity urls", () => {
+    it("like vanity urls", async () => {
       navigate("/artsy-vanguard-2019")
+      await flushPromiseQueue()
       expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalled()
       expect(args(LegacyNativeModules.ARScreenPresenterModule.pushView as any))
         .toMatchInlineSnapshot(`
@@ -115,8 +122,9 @@ describe(navigate, () => {
     })
   })
 
-  it("opens external urls with Linking", () => {
+  it("opens external urls with Linking", async () => {
     navigate("https://google.com/banana")
+    await flushPromiseQueue()
     expect(Linking.openURL).toHaveBeenCalledWith("https://google.com/banana")
   })
 
@@ -186,8 +194,9 @@ describe(navigate, () => {
   })
 
   describe("presents modals", () => {
-    it("when the screen requires it", () => {
+    it("when the screen requires it", async () => {
       navigate("https://live.artsy.net/blah")
+      await flushPromiseQueue()
       expect(args(LegacyNativeModules.ARScreenPresenterModule.presentModal as any))
         .toMatchInlineSnapshot(`
         [

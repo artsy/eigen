@@ -4,7 +4,7 @@ import { ArtworkRecommendationsRail_me$key } from "__generated__/ArtworkRecommen
 import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { useItemsImpressionsTracking } from "app/Scenes/Home/Components/useImpressionsTracking"
-import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
+import HomeAnalytics from "app/Scenes/HomeView/helpers/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { CollectorSignals } from "app/utils/getArtworkSignalTrackingFields"

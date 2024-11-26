@@ -13,9 +13,9 @@ const fs = require("fs")
 const chalk = require("chalk")
 
 const desiredVersions = {
-  xcode: "15.0",
+  xcode: "16.1",
   androidStudio: "2022.3",
-  ruby: "3.1.4",
+  ruby: "3.1.6",
   bundler: "2.4.3",
 }
 
@@ -161,7 +161,7 @@ const checkPodDependenciesAreUpToDate = async () => {
     // https://github.com/square/cocoapods-check/issues/18
     // This is a bug for some react native deps in cocoapods-check
     // might be a nice OSS contribution opportunity!
-    const knownException = `~RNImageCropPicker, ~RNPermissions, ~React-Codegen\n[!] \`pod install\` will install 3 Pods.`
+    const knownException = `~RNFastImage, ~RNImageCropPicker, ~RNPermissions, ~RNShare, ~React-RCTFabric, ~ReactCodegen, ~react-native-blob-util, ~react-native-view-shot\n[!] \`pod install\` will install 8 Pods.`
 
     // pod check will return status 1 even for only warnings
     if (status !== 0) {

@@ -618,3 +618,7 @@ jest.mock("react-native-document-picker", () => ({
   default: jest.fn(),
   pick: jest.fn(),
 }))
+
+jest.mock("app/utils/queryPrefetching", () => ({
+  usePrefetch: jest.fn(() => jest.fn()),
+}))

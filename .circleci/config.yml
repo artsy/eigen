@@ -185,7 +185,7 @@ jobs:
       BUNDLE_PATH: .vendor
 
     macos:
-      xcode: 15.1
+      xcode: 16.1
       resource_class: macos.m1.medium.gen1
 
     steps:
@@ -206,7 +206,7 @@ jobs:
       BUNDLE_PATH: .vendor
 
     macos:
-      xcode: 15.1
+      xcode: 16.1
       resource_class: macos.m1.medium.gen1
 
     steps:
@@ -227,7 +227,7 @@ jobs:
       BUNDLE_PATH: .vendor
 
     macos:
-      xcode: 15.1
+      xcode: 16.1
       resource_class: macos.m1.medium.gen1
 
     steps:
@@ -322,7 +322,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 15.1
+      xcode: 16.1
       resource_class: macos.m1.medium.gen1
 
     steps:
@@ -406,7 +406,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 15.1
+      xcode: 16.1
       resource_class: macos.m1.medium.gen1
 
     steps:
@@ -447,9 +447,9 @@ jobs:
       - install-gems
       - install-cocoapods
       - macos/preboot-simulator:
-          version: "17.2"
+          version: "18.1"
           platform: "iOS"
-          device: "iPhone 15 Pro"
+          device: "iPhone 16 Pro"
       - build-app-ios
       - macos/install-rosetta
       - run:

@@ -43,7 +43,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   hideCuratorsPickSignal = false,
   lotLabel,
   showPartnerName = false,
-  metaContainerStyles,
+  containerHeight,
   onPress,
   SalePriceComponent,
   showSaveIcon = false,
@@ -108,7 +108,9 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
             testID={testID}
           >
             <Flex
-              height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT + artworkRailCardMetaDataHeight}
+              height={
+                containerHeight ?? ARTWORK_RAIL_CARD_IMAGE_HEIGHT + artworkRailCardMetaDataHeight
+              }
               justifyContent="flex-start"
             >
               <ArtworkRailCardImage artwork={artwork} />
@@ -127,7 +129,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                 hideCuratorsPickSignal={hideCuratorsPickSignal}
                 hideIncreasedInterestSignal={hideIncreasedInterestSignal}
                 lotLabel={lotLabel}
-                metaContainerStyles={metaContainerStyles}
                 SalePriceComponent={SalePriceComponent}
                 showPartnerName={showPartnerName}
                 showSaveIcon={showSaveIcon}
