@@ -210,7 +210,6 @@ const AutosuggestResultsFlatList: React.FC<{
   return (
     <Flex style={{ width: "100%", height: "100%" }}>
       {!!showHeaderComponent && <HeaderComponent />}
-      <Text>Autosuggest</Text>
       <AboveTheFoldFlashList<AutosuggestResult>
         ListHeaderComponent={ListHeaderComponent}
         listRef={flatListRef}
