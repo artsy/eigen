@@ -18,6 +18,7 @@ import { ArtistIDsOptionsScreen } from "app/Components/ArtworkFilter/Filters/Art
 import { ArtistNationalitiesOptionsScreen } from "app/Components/ArtworkFilter/Filters/ArtistNationalitiesOptions"
 import { ArtistSeriesOptionsScreen } from "app/Components/ArtworkFilter/Filters/ArtistSeriesOptions.tsx"
 import { AttributionClassOptionsScreen } from "app/Components/ArtworkFilter/Filters/AttributionClassOptions"
+import { AvailabilityOptionsScreen } from "app/Components/ArtworkFilter/Filters/AvailabilityOptions"
 import { CategoriesOptionsScreen } from "app/Components/ArtworkFilter/Filters/CategoriesOptions"
 import { ColorsOptionsScreen } from "app/Components/ArtworkFilter/Filters/ColorsOptions"
 import { EstimateRangeOptionsScreen } from "app/Components/ArtworkFilter/Filters/EstimateRangeOptions"
@@ -83,6 +84,7 @@ export type ArtworkFilterNavigationStack = {
   ArtistSeriesOptionsScreen: undefined
   AttributionClassOptionsScreen: undefined
   AuctionHouseOptionsScreen: undefined
+  AvailabilityOptionsScreen: undefined
   CategoriesOptionsScreen: undefined
   ColorOptionsScreen: undefined
   ColorsOptionsScreen: undefined
@@ -340,6 +342,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
               component={AttributionClassOptionsScreen}
             />
             <Stack.Screen name="AuctionHouseOptionsScreen" component={AuctionHouseOptionsScreen} />
+            <Stack.Screen name="AvailabilityOptionsScreen" component={AvailabilityOptionsScreen} />
             <Stack.Screen name="ColorsOptionsScreen" component={ColorsOptionsScreen} />
             <Stack.Screen
               name="EstimateRangeOptionsScreen"
