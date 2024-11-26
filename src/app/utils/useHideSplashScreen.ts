@@ -24,9 +24,7 @@ export const useHideSplashScreen = () => {
         Linking.getInitialURL().then((url) => {
           const isDeepLink = !!url
           if (!isDeepLink) {
-            prefetchUrl("/", homeViewScreenQueryVariables(), {
-              force: false,
-            })
+            prefetchUrl("/", homeViewScreenQueryVariables())
           }
           setTimeout(() => {
             hideSplashScreen()
