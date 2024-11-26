@@ -3,8 +3,7 @@ import { ContextMenuArtworkPreviewCardImage_artwork$key } from "__generated__/Co
 import { graphql, useFragment } from "react-relay"
 
 const ARTWORK_PREVIEW_IMAGE_MAX_HEIGHT = 400
-const ARTWORK_PREVIEW_IMAGE_MIN_HEIGHT = 320
-const PADDING = 10
+const ARTWORK_PREVIEW_IMAGE_MIN_HEIGHT = 215
 
 export interface ContextMenuArtworkPreviewCardImageProps {
   artwork: ContextMenuArtworkPreviewCardImage_artwork$key
@@ -27,31 +26,26 @@ export const ContextMenuArtworkPreviewCardImage: React.FC<
     const imageHeight = imageWidth / imageAspectRatio
 
     let containerHeight = imageHeight
-    let horizontalPadding = 0
-    let verticalPadding = 0
 
     // Case when the image height is less than the minimum height
     if (imageHeight <= ARTWORK_PREVIEW_IMAGE_MIN_HEIGHT) {
       containerHeight = ARTWORK_PREVIEW_IMAGE_MIN_HEIGHT
-      verticalPadding = PADDING
     }
 
     // Case when the image height exceeds the maximum height
     if (imageHeight >= ARTWORK_PREVIEW_IMAGE_MAX_HEIGHT) {
       containerHeight = ARTWORK_PREVIEW_IMAGE_MAX_HEIGHT
-      horizontalPadding = PADDING
     }
 
     const displayImageHeight =
-      containerHeight <= ARTWORK_PREVIEW_IMAGE_MIN_HEIGHT
-        ? Math.max(containerHeight, ARTWORK_PREVIEW_IMAGE_MIN_HEIGHT) - 2 * verticalPadding
+      imageHeight <= ARTWORK_PREVIEW_IMAGE_MIN_HEIGHT
+        ? Math.min(imageHeight, ARTWORK_PREVIEW_IMAGE_MIN_HEIGHT)
         : Math.min(
-            Math.max(containerHeight, ARTWORK_PREVIEW_IMAGE_MIN_HEIGHT),
+            Math.max(imageHeight, ARTWORK_PREVIEW_IMAGE_MIN_HEIGHT),
             ARTWORK_PREVIEW_IMAGE_MAX_HEIGHT
-          ) -
-          2 * verticalPadding
+          )
 
-    const displayImageWidth = displayImageHeight * imageAspectRatio - 2 * horizontalPadding
+    const displayImageWidth = Math.min(displayImageHeight * imageAspectRatio, imageWidth)
 
     return { containerHeight, displayImageWidth, displayImageHeight }
   }
@@ -71,7 +65,6 @@ export const ContextMenuArtworkPreviewCardImage: React.FC<
 
   return (
     <Flex
-      backgroundColor="black5"
       justifyContent="center"
       alignItems="center"
       height={containerHeight}
