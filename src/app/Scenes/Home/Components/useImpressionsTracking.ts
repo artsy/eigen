@@ -1,11 +1,11 @@
 import { ContextModule } from "@artsy/cohesion"
-import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
+import HomeAnalytics from "app/Scenes/HomeView/helpers/homeAnalytics"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useEffect, useRef, useState } from "react"
 import { ViewToken, ViewabilityConfig } from "react-native"
 import { useTracking } from "react-tracking"
 
-type TrackableItem = { id: string; index: number }
+type TrackableItem = { id: string; index: number | null }
 
 export const useItemsImpressionsTracking = ({
   isRailVisible = true,
@@ -33,8 +33,9 @@ export const useItemsImpressionsTracking = ({
     ({ viewableItems }: { viewableItems: ViewToken[]; changed: ViewToken[] }) => {
       if (enableItemsViewsTracking) {
         const newRenderdItems: Array<TrackableItem> = []
+
         viewableItems.forEach(({ item, index }) => {
-          newRenderdItems.push({ id: item.internalID, index: index! })
+          newRenderdItems.push({ id: item.internalID, index })
         })
         setRenderedItems(newRenderdItems)
       }
@@ -45,7 +46,7 @@ export const useItemsImpressionsTracking = ({
     // We would like to trigger the tracking only when the rail is visible and only once per item
     if (enableItemsViewsTracking && isRailVisible && renderedItems.length > 0) {
       renderedItems.forEach(({ id, index }) => {
-        if (!trackedItems.has(id)) {
+        if (!trackedItems.has(id) && index !== null) {
           tracking.trackEvent(
             HomeAnalytics.trackItemViewed({
               artworkId: id,

@@ -1,9 +1,12 @@
 import { ContextModule } from "@artsy/cohesion"
 import { Flex, FlexProps, Skeleton, SkeletonBox, Spacer } from "@artsy/palette-mobile"
 import { HomeViewSectionHeroUnitsQuery } from "__generated__/HomeViewSectionHeroUnitsQuery.graphql"
-import { HomeViewSectionHeroUnits_section$key } from "__generated__/HomeViewSectionHeroUnits_section.graphql"
+import {
+  HomeViewSectionHeroUnits_section$data,
+  HomeViewSectionHeroUnits_section$key,
+} from "__generated__/HomeViewSectionHeroUnits_section.graphql"
 import { PaginationDots } from "app/Components/PaginationDots"
-import { HERO_UNIT_CARD_HEIGHT, HeroUnit } from "app/Scenes/Home/Components/HeroUnitsRail"
+import { HERO_UNIT_CARD_HEIGHT, HeroUnit } from "app/Scenes/Home/Components/HeroUnit"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import {
@@ -14,6 +17,7 @@ import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracki
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { isNumber } from "lodash"
 import { useRef, useState } from "react"
 import { FlatList, ViewabilityConfig, ViewToken } from "react-native"
@@ -23,6 +27,10 @@ interface HomeViewSectionHeroUnitsProps extends FlexProps {
   section: HomeViewSectionHeroUnits_section$key
   index: number
 }
+
+export type HeroUnitItem = ExtractNodeType<
+  HomeViewSectionHeroUnits_section$data["heroUnitsConnection"]
+>
 
 export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> = ({
   section: sectionProp,

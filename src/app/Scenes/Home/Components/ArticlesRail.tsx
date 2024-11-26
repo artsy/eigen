@@ -2,11 +2,11 @@ import { Flex, Spacer } from "@artsy/palette-mobile"
 import { ArticlesRail_articlesConnection$data } from "__generated__/ArticlesRail_articlesConnection.graphql"
 import { ArticleCardContainer } from "app/Components/ArticleCard"
 import { SectionTitle } from "app/Components/SectionTitle"
-import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
 } from "app/Scenes/HomeView/helpers/constants"
+import HomeAnalytics from "app/Scenes/HomeView/helpers/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
