@@ -2,10 +2,17 @@ import { OwnerType } from "@artsy/cohesion"
 import { Flex, Text } from "@artsy/palette-mobile"
 import * as Sentry from "@sentry/react-native"
 import { addBreadcrumb } from "@sentry/react-native"
+import { TabModuleNames, modules } from "app/AppRegistry"
 import { BottomTabRoutes } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { matchRoute } from "app/routes"
 import { GlobalStore, getCurrentEmissionState } from "app/store/GlobalStore"
-import { GoBackProps, dismissModal, goBack, navigate } from "app/system/navigation/navigate"
+import {
+  GoBackProps,
+  dismissModal,
+  goBack,
+  navigate,
+  switchTab,
+} from "app/system/navigation/navigate"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
@@ -219,6 +226,18 @@ export const ArtsyWebView = forwardRef<
       // to the articles route, which would cause a loop and once in the webview to
       // redirect you to either a native article view or an article webview
       if (result.type === "match" && result.module === "Article") {
+        return
+      }
+
+      if (result.type === "match" && TabModuleNames.includes(result.module)) {
+        const module = modules[result.module]
+
+        dismissModal(() => {
+          if (module.options.isRootViewForTabName) {
+            switchTab(module.options.isRootViewForTabName)
+          }
+        })
+
         return
       }
 

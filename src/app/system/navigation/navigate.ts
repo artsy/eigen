@@ -238,8 +238,10 @@ export function dismissModal(after?: () => void) {
     if (Platform.OS === "android") {
       navigationEvents.emit("modalDismissed")
     }
-
-    after?.()
+    // we might get a race condition that causes the UI to freeze
+    requestAnimationFrame(() => {
+      after?.()
+    })
   })
 }
 

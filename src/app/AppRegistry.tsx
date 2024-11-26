@@ -1238,3 +1238,10 @@ for (const moduleName of Object.keys(modules)) {
     })
   }
 }
+
+export const TabModuleNames = Object.keys(modules).filter((moduleName) => {
+  const descriptor = modules[moduleName as AppModule]
+  return (
+    descriptor.type === "react" && descriptor.Component && descriptor.options.isRootViewForTabName
+  )
+})
