@@ -13,7 +13,6 @@ const ARTWORK_PREVIEW_TEXT_CONTAINER_HEIGHT = 70
 const useFullWidth = () => {
   const space = useSpace()
   const { width } = useScreenDimensions()
-  console.warn("width", width)
   const extraLargeWidth = isTablet() ? 400 : width - space(4)
   return extraLargeWidth
 }
