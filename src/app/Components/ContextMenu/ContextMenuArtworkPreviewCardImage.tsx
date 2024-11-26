@@ -3,7 +3,7 @@ import { ContextMenuArtworkPreviewCardImage_artwork$key } from "__generated__/Co
 import { graphql, useFragment } from "react-relay"
 
 const ARTWORK_PREVIEW_IMAGE_MAX_HEIGHT = 400
-const ARTWORK_PREVIEW_IMAGE_MIN_HEIGHT = 320
+const ARTWORK_PREVIEW_IMAGE_MIN_HEIGHT = 50
 
 export interface ContextMenuArtworkPreviewCardImageProps {
   artwork: ContextMenuArtworkPreviewCardImage_artwork$key
