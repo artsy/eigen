@@ -221,15 +221,15 @@ PODS:
   - Mantle (1.5.6):
     - Mantle/extobjc (= 1.5.6)
   - Mantle/extobjc (1.5.6)
-  - MapboxCommon (23.10.1)
-  - MapboxCoreMaps (10.18.0):
-    - MapboxCommon (~> 23.10)
-  - MapboxMaps (10.18.2):
-    - MapboxCommon (= 23.10.1)
-    - MapboxCoreMaps (= 10.18.0)
-    - MapboxMobileEvents (= 1.0.10)
+  - MapboxCommon (23.11.0)
+  - MapboxCoreMaps (10.19.1):
+    - MapboxCommon (~> 23.11)
+  - MapboxMaps (10.19.0):
+    - MapboxCommon (= 23.11.0)
+    - MapboxCoreMaps (= 10.19.1)
+    - MapboxMobileEvents (= 2.0.0)
     - Turf (= 2.8.0)
-  - MapboxMobileEvents (1.0.10)
+  - MapboxMobileEvents (2.0.0)
   - MARKRangeSlider (1.1.1)
   - MMMarkdown (0.4)
   - MultiDelegate (0.0.4)
@@ -1922,14 +1922,14 @@ PODS:
     - React-Core
   - RNLocalize (2.1.3):
     - React-Core
-  - rnmapbox-maps (10.1.31):
-    - MapboxMaps (~> 10.18.2)
+  - rnmapbox-maps (10.1.33):
+    - MapboxMaps (~> 10.19.0)
     - React
     - React-Core
-    - rnmapbox-maps/DynamicLibrary (= 10.1.31)
+    - rnmapbox-maps/DynamicLibrary (= 10.1.33)
     - Turf
-  - rnmapbox-maps/DynamicLibrary (10.1.31):
-    - MapboxMaps (~> 10.18.2)
+  - rnmapbox-maps/DynamicLibrary (10.1.33):
+    - MapboxMaps (~> 10.19.0)
     - React
     - React-Core
     - Turf
@@ -2712,10 +2712,10 @@ SPEC CHECKSUMS:
   JWTDecode: 178e47e5d28d3abcff778bacced8342858cd6cb5
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
   Mantle: a197db93e0f1e36194b1fdbc078219a8492eaef2
-  MapboxCommon: 0ff437e44988da6856e280d00ffb266564ed0487
-  MapboxCoreMaps: f1bd9405f5b9d3e343f2fe4138775299699a22fb
-  MapboxMaps: e76b14f52c54c40b76ddecd04f40448e6f35a864
-  MapboxMobileEvents: de50b3a4de180dd129c326e09cd12c8adaaa46d6
+  MapboxCommon: 119f3759f7dc9457f0695848108ab323eb643cb4
+  MapboxCoreMaps: ca17f67baced23f8c952166ac6314c35bad3f66c
+  MapboxMaps: b7f29ec7c33f7dc6d2947c1148edce6db81db9a7
+  MapboxMobileEvents: d044b9edbe0ec7df60f6c2c9634fe9a7f449266b
   MARKRangeSlider: ef7e1fe84d22996f47fd72dcb8de50b9410aac47
   MMMarkdown: 44f1c5216cfcd70bc0e076b0f91876d6323a73b8
   MultiDelegate: 228e2321b74f45ea43ae19c268fdd60fd88d99b7
@@ -2814,7 +2814,7 @@ SPEC CHECKSUMS:
   RNImageCropPicker: d14a08134d1b5bc2d5f29a12ce3ac1d402dd2389
   RNKeychain: 3194f1c9d8599f39e570b4b5ecbcdd8cd610e771
   RNLocalize: 8493c6dd9ed1d4b52325796cdb81d794fc04f3bf
-  rnmapbox-maps: e07d03977b24cce5954888f6c914ddc747360fcc
+  rnmapbox-maps: 42fe0ccc373fe24032aa224736feb4c39a24d604
   RNPermissions: 92430517fd4353d5b2b7217cd1ca48ddd2875245
   RNReactNativeHapticFeedback: 7601768ee65ffc86fc93d7c30dd917031144ed3d
   RNReanimated: 6398ee150e1ebeda517fdd1e1b5525833a0c0ddc
