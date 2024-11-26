@@ -173,6 +173,26 @@ const AutosuggestResultsFlatList: React.FC<{
     )
   }, [hasMoreResults, noResults, ListFooterComponent])
 
+  const renderItem = useCallback(({ item, index }) => {
+    if (CustomListItemComponent) {
+      return <CustomListItemComponent item={item} highlight={query} />
+    }
+
+    return (
+      <Flex mb={2}>
+        <AutosuggestSearchResult
+          highlight={query}
+          result={item}
+          showResultType={showResultType}
+          onResultPress={onResultPress}
+          showQuickNavigationButtons={showQuickNavigationButtons}
+          trackResultPress={trackResultPress}
+          itemIndex={index}
+        />
+      </Flex>
+    )
+  }, [])
+
   if (shouldShowLoadingPlaceholder) {
     return (
       <ProvidePlaceholderContext>
@@ -190,6 +210,7 @@ const AutosuggestResultsFlatList: React.FC<{
   return (
     <Flex style={{ width: "100%", height: "100%" }}>
       {!!showHeaderComponent && <HeaderComponent />}
+      <Text>Autosuggest</Text>
       <AboveTheFoldFlashList<AutosuggestResult>
         ListHeaderComponent={ListHeaderComponent}
         listRef={flatListRef}
@@ -201,25 +222,7 @@ const AutosuggestResultsFlatList: React.FC<{
         keyboardShouldPersistTaps="handled"
         numColumns={numColumns}
         ListEmptyComponent={noResults ? () => <ListEmptyComponent query={query} /> : null}
-        renderItem={({ item, index }) => {
-          if (CustomListItemComponent) {
-            return <CustomListItemComponent item={item} highlight={query} />
-          }
-
-          return (
-            <Flex mb={2}>
-              <AutosuggestSearchResult
-                highlight={query}
-                result={item}
-                showResultType={showResultType}
-                onResultPress={onResultPress}
-                showQuickNavigationButtons={showQuickNavigationButtons}
-                trackResultPress={trackResultPress}
-                itemIndex={index}
-              />
-            </Flex>
-          )
-        }}
+        renderItem={renderItem}
         onScrollBeginDrag={onScrollBeginDrag}
         onEndReached={onEndReached}
       />
