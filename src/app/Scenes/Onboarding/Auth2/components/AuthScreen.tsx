@@ -3,7 +3,6 @@ import { AuthContext, AuthScreen as AuthScreenItem } from "app/Scenes/Onboarding
 
 interface AuthScreenProps {
   name: AuthScreenItem["name"]
-  isVisible?: boolean
 }
 
 export const AuthScreen: React.FC<AuthScreenProps> = ({ children, name }) => {
@@ -12,7 +11,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ children, name }) => {
 
   return (
     <>
-      <Flex display={isVisible ? "flex" : "none"} zIndex={isVisible ? 1 : 0}>
+      <Flex display={isVisible ? "flex" : "none"} zIndex={isVisible ? 1 : 0} testID="auth-screen">
         {children}
       </Flex>
     </>

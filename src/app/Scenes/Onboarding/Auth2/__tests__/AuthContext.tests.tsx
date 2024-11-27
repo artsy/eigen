@@ -21,8 +21,6 @@ describe("AuthContext", () => {
       }
     )
 
-    // console.log(view.result)
-
     return {
       getState: () => view.result.current.state,
       actions: view.result.current.actions,
