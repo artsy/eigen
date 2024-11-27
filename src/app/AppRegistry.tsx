@@ -730,6 +730,7 @@ export const modules = defineModules({
     Component: HomeViewScreen,
     options: {
       isRootViewForTabName: "home",
+      onlyShowInTabName: "home",
       fullBleed: true,
       screenOptions: {
         headerShown: false,
@@ -758,6 +759,7 @@ export const modules = defineModules({
     Component: InboxQueryRenderer,
     options: {
       isRootViewForTabName: "inbox",
+      onlyShowInTabName: "inbox",
       fullBleed: true,
       screenOptions: {
         headerShown: false,
@@ -926,6 +928,7 @@ export const modules = defineModules({
     Component: MyProfile,
     options: {
       isRootViewForTabName: "profile",
+      onlyShowInTabName: "profile",
       fullBleed: true,
       screenOptions: {
         headerShown: false,
@@ -1124,6 +1127,7 @@ export const modules = defineModules({
     Component: SellWithArtsy,
     options: {
       isRootViewForTabName: "sell",
+      onlyShowInTabName: "sell",
       fullBleed: true,
       screenOptions: {
         headerShown: false,
@@ -1154,6 +1158,7 @@ export const modules = defineModules({
     Component: SearchScreen,
     options: {
       isRootViewForTabName: "search",
+      onlyShowInTabName: "search",
       fullBleed: true,
       screenOptions: {
         headerShown: false,

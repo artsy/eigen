@@ -93,13 +93,16 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
     } else {
       if (module.options.onlyShowInTabName) {
         switchTab(module.options.onlyShowInTabName)
-        // We wait for a frame to allow the tab to be switched before we navigate
-        // This allows us to also override the back button behavior in the tab
-        requestAnimationFrame(() => {
-          internal_navigationRef.current?.dispatch(
-            StackActions.push(result.module, { ...result.params, ...options.passProps })
-          )
-        })
+
+        if (!module.options.isRootViewForTabName) {
+          // We wait for a frame to allow the tab to be switched before we navigate
+          // This allows us to also override the back button behavior in the tab
+          requestAnimationFrame(() => {
+            internal_navigationRef.current?.dispatch(
+              StackActions.push(result.module, { ...result.params, ...options.passProps })
+            )
+          })
+        }
       } else {
         internal_navigationRef.current?.dispatch(
           StackActions.push(result.module, { ...result.params, ...options.passProps })
