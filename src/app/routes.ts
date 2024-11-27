@@ -1,3 +1,4 @@
+import { parse } from "url"
 import { AppModule } from "app/AppRegistry"
 import { ArtsyWebViewConfig } from "app/Components/ArtsyWebView"
 import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
@@ -7,7 +8,6 @@ import { compact } from "lodash"
 import { parse as parseQueryString } from "query-string"
 import { Platform } from "react-native"
 import { GraphQLTaggedNode } from "relay-runtime"
-import { parse } from "url"
 
 export function matchRoute(
   url: string
@@ -71,6 +71,7 @@ export function addWebViewRoute(url: string, config?: ArtsyWebViewConfig) {
     config?.alwaysPresentModally ? "ModalWebView" : "ReactWebView",
     (params) => ({
       url: replaceParams(url, params),
+      isPresentedModally: !!config?.alwaysPresentModally,
       ...config,
     })
   )

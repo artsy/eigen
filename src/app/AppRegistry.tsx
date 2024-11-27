@@ -549,6 +549,7 @@ export const modules = defineModules({
     HomeContainer,
     {
       isRootViewForTabName: "home",
+      onlyShowInTabName: "home",
       hidesBackButton: true,
       fullBleed: true,
     },
@@ -563,6 +564,7 @@ export const modules = defineModules({
     InboxQueryRenderer,
     {
       isRootViewForTabName: "inbox",
+      onlyShowInTabName: "inbox",
       hidesBackButton: true,
       fullBleed: true,
     },
@@ -679,6 +681,7 @@ export const modules = defineModules({
     MyProfile,
     {
       isRootViewForTabName: "profile",
+      onlyShowInTabName: "profile",
       fullBleed: true,
       hidesBackButton: true,
     },
@@ -796,7 +799,12 @@ export const modules = defineModules({
   }),
   Sell: reactModule(
     SellWithArtsy,
-    { isRootViewForTabName: "sell", fullBleed: true, hidesBackButton: true },
+    {
+      isRootViewForTabName: "sell",
+      onlyShowInTabName: "sell",
+      fullBleed: true,
+      hidesBackButton: true,
+    },
     [SellWithArtsyHomeScreenQuery]
   ),
   SellNotRootTabView: reactModule(SellWithArtsy),
@@ -810,7 +818,12 @@ export const modules = defineModules({
   }),
   Search: reactModule(
     SearchScreen,
-    { isRootViewForTabName: "search", hidesBackButton: true, fullBleed: true },
+    {
+      isRootViewForTabName: "search",
+      onlyShowInTabName: "search",
+      hidesBackButton: true,
+      fullBleed: true,
+    },
     [SearchScreenQuery]
   ),
   Show: reactModule(ShowQueryRenderer, { fullBleed: true }),
