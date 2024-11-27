@@ -59,6 +59,7 @@ export const registerScreen: React.FC<StackNavigatorScreenProps> = ({ name, modu
         headerTitle: "",
         headerTitleAlign: "center",
         ...module.options.screenOptions,
+        gestureEnabled: true,
         headerShadowVisible: Platform.OS === "ios",
         headerTitleStyle: {
           fontFamily: THEMES.v3.fonts.sans.regular,
