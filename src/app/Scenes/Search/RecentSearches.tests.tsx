@@ -50,7 +50,7 @@ describe("Recent Searches", () => {
     expect(screen.queryByText("Banksy")).toBeTruthy()
   })
 
-  it("shows a maxiumum of 5 searches", () => {
+  it("shows all recent searches", () => {
     renderWithWrappers(<TestPage />)
 
     GlobalStore.actions.search.addRecentSearch(banksy)
@@ -60,7 +60,7 @@ describe("Recent Searches", () => {
     GlobalStore.actions.search.addRecentSearch(joanMitchell)
     GlobalStore.actions.search.addRecentSearch(anniAlbers)
 
-    expect(screen.queryByText("Banksy")).toBeNull()
+    expect(screen.queryByText("Banksy")).toBeTruthy()
     expect(screen.queryByText("Andy Warhol")).toBeTruthy()
     expect(screen.queryByText("Keith Haring")).toBeTruthy()
     expect(screen.queryByText("Yayoi Kusama")).toBeTruthy()
