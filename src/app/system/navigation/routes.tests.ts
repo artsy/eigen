@@ -671,6 +671,7 @@ describe("artsy.net routes", () => {
        "module": "ModalWebView",
        "params": {
          "alwaysPresentModally": true,
+         "isPresentedModally": true,
          "url": "/terms",
        },
        "type": "match",
@@ -684,6 +685,7 @@ describe("artsy.net routes", () => {
        "module": "ModalWebView",
        "params": {
          "alwaysPresentModally": true,
+         "isPresentedModally": true,
          "url": "/privacy",
        },
        "type": "match",
@@ -696,6 +698,7 @@ describe("artsy.net routes", () => {
       {
         "module": "ReactWebView",
         "params": {
+          "isPresentedModally": false,
           "url": "/unsubscribe",
         },
         "type": "match",
@@ -870,6 +873,7 @@ describe("artsy.net routes", () => {
         "module": "ModalWebView",
         "params": {
           "alwaysPresentModally": true,
+          "isPresentedModally": true,
           "url": "/conditions-of-sale",
         },
         "type": "match",
@@ -1129,6 +1133,7 @@ describe("artsy.net routes", () => {
       {
         "module": "ReactWebView",
         "params": {
+          "isPresentedModally": false,
           "url": "/categories",
         },
         "type": "match",
@@ -1142,6 +1147,7 @@ describe("artsy.net routes", () => {
         "module": "ModalWebView",
         "params": {
           "alwaysPresentModally": true,
+          "isPresentedModally": true,
           "url": "/privacy",
         },
         "type": "match",
@@ -1184,6 +1190,7 @@ describe("artsy.net routes", () => {
       {
         "module": "ReactWebView",
         "params": {
+          "isPresentedModally": false,
           "url": "/the/mighty/boosh",
         },
         "type": "match",
@@ -1193,6 +1200,7 @@ describe("artsy.net routes", () => {
       {
         "module": "ReactWebView",
         "params": {
+          "isPresentedModally": false,
           "url": "/one-hundred/years-of/solitude",
         },
         "type": "match",
@@ -1249,12 +1257,16 @@ describe("addWebViewRoute", () => {
   it("returns a route matcher for web views", () => {
     const matcher = addWebViewRoute("/conditions-of-sale")
     expect(matcher.module).toBe("ReactWebView")
-    expect(matcher.match(["conditions-of-sale"])).toEqual({ url: "/conditions-of-sale" })
+    expect(matcher.match(["conditions-of-sale"])).toEqual({
+      isPresentedModally: false,
+      url: "/conditions-of-sale",
+    })
   })
 
   it("inlines params and wildcards in the original route", () => {
     const matcher = addWebViewRoute("/artist/:artistID/*")
     expect(matcher.match(["artist", "banksy", "auction-results", "8907"])).toEqual({
+      isPresentedModally: false,
       url: "/artist/banksy/auction-results/8907",
     })
   })
@@ -1262,6 +1274,7 @@ describe("addWebViewRoute", () => {
   it("inlines params in the original order history route", () => {
     const matcher = addWebViewRoute("/user/purchases/:orderID")
     expect(matcher.match(["user", "purchases", "8907"])).toEqual({
+      isPresentedModally: false,
       url: "/user/purchases/8907",
     })
   })
@@ -1269,6 +1282,7 @@ describe("addWebViewRoute", () => {
   it("inlines params in the original article route", () => {
     const matcher = addWebViewRoute("/article/:orderID")
     expect(matcher.match(["article", "article-article"])).toEqual({
+      isPresentedModally: false,
       url: "/article/article-article",
     })
   })
