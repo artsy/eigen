@@ -3,6 +3,7 @@ import { Box, Flex, Screen, Spacer } from "@artsy/palette-mobile"
 import { PortalHost } from "@gorhom/portal"
 import { useNavigation } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
+import { withProfiler } from "@sentry/react-native"
 import { SearchQuery, SearchQuery$variables } from "__generated__/SearchQuery.graphql"
 import { GlobalSearchInput } from "app/Components/GlobalSearchInput/GlobalSearchInput"
 import { SearchInput } from "app/Components/SearchInput"
@@ -201,7 +202,7 @@ export const SearchScreenQuery = graphql`
 
 type SearchScreenProps = StackScreenProps<any>
 
-export const SearchScreen: React.FC<SearchScreenProps> = () => {
+const SearchScreenInner: React.FC<SearchScreenProps> = () => {
   return (
     <>
       <Screen>
@@ -213,6 +214,8 @@ export const SearchScreen: React.FC<SearchScreenProps> = () => {
     </>
   )
 }
+
+export const SearchScreen = withProfiler(SearchScreenInner, { name: "Search" })
 
 const Scrollable = styled(ScrollView).attrs(() => ({
   keyboardDismissMode: "on-drag",
