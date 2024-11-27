@@ -29,6 +29,7 @@ import {
 import { Schema } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import React, { useCallback, useEffect, useState } from "react"
+import { Keyboard } from "react-native"
 
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -58,8 +59,11 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
     setFilterArtworkModalVisible(false)
   }
   const handleOpenFilterArtworksModal = () => {
+    Keyboard.dismiss()
+    requestAnimationFrame(() => {
+      setFilterArtworkModalVisible(true)
+    })
     trackEvent(tracks.openFilterModal())
-    setFilterArtworkModalVisible(true)
   }
 
   const loadMore = useCallback(() => {
