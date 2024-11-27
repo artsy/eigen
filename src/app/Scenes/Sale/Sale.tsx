@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { Box, Flex, Join, Spacer } from "@artsy/palette-mobile"
+import { Box, Flex, Join, Screen, Spacer } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
 import { SaleAboveTheFoldQuery } from "__generated__/SaleAboveTheFoldQuery.graphql"
 import { SaleBelowTheFoldNewQuery$data } from "__generated__/SaleBelowTheFoldNewQuery.graphql"
@@ -17,7 +17,7 @@ import { LoadFailureView } from "app/Components/LoadFailureView"
 import Spinner from "app/Components/Spinner"
 import { CascadingEndTimesBanner } from "app/Scenes/Artwork/Components/CascadingEndTimesBanner"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
-import { navigate } from "app/system/navigation/navigate"
+import { goBack, navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { AuctionWebsocketContextProvider } from "app/utils/Websockets/auctions/AuctionSocketContext"
@@ -471,48 +471,54 @@ export const SaleQueryRenderer: React.FC<{
   }, [])
 
   return (
-    <AboveTheFoldQueryRenderer<SaleAboveTheFoldQuery, SaleBelowTheFoldQuery>
-      environment={environment || getRelayEnvironment()}
-      above={{
-        query: SaleScreenQuery,
-        variables: { saleID, saleSlug: saleID },
-      }}
-      below={
-        enableArtworksConnection
-          ? {
-              query: SaleScreenBelowNewQuery,
-              variables: {
-                saleID,
-                // @ts-ignore
-                input: {
-                  sort: DEFAULT_NEW_SALE_ARTWORK_SORT.paramValue,
-                  priceRange: "",
-                },
-              },
-            }
-          : {
-              query: SaleScreenBelowQuery,
-              variables: { saleID },
-            }
-      }
-      render={({ props, error }) => {
-        if (error) {
-          if (__DEV__) {
-            console.error(error)
-          } else {
-            captureMessage(`SaleQueryRenderer ${error.message}`)
+    <Screen>
+      <Screen.Header onBack={goBack} />
+
+      <Screen.Body fullwidth>
+        <AboveTheFoldQueryRenderer<SaleAboveTheFoldQuery, SaleBelowTheFoldQuery>
+          environment={environment || getRelayEnvironment()}
+          above={{
+            query: SaleScreenQuery,
+            variables: { saleID, saleSlug: saleID },
+          }}
+          below={
+            enableArtworksConnection
+              ? {
+                  query: SaleScreenBelowNewQuery,
+                  variables: {
+                    saleID,
+                    // @ts-ignore
+                    input: {
+                      sort: DEFAULT_NEW_SALE_ARTWORK_SORT.paramValue,
+                      priceRange: "",
+                    },
+                  },
+                }
+              : {
+                  query: SaleScreenBelowQuery,
+                  variables: { saleID },
+                }
           }
-          return <LoadFailureView error={error} trackErrorBoundary={false} />
-        }
-        if (!props?.above.me || !props.above.sale) {
-          return <SalePlaceholder />
-        }
-        return <SaleContainer sale={props.above.sale} me={props.above.me} below={props.below} />
-      }}
-      cacheConfig={{
-        force: true,
-      }}
-      fetchPolicy="store-and-network"
-    />
+          render={({ props, error }) => {
+            if (error) {
+              if (__DEV__) {
+                console.error(error)
+              } else {
+                captureMessage(`SaleQueryRenderer ${error.message}`)
+              }
+              return <LoadFailureView error={error} trackErrorBoundary={false} />
+            }
+            if (!props?.above.me || !props.above.sale) {
+              return <SalePlaceholder />
+            }
+            return <SaleContainer sale={props.above.sale} me={props.above.me} below={props.below} />
+          }}
+          cacheConfig={{
+            force: true,
+          }}
+          fetchPolicy="store-and-network"
+        />
+      </Screen.Body>
+    </Screen>
   )
 }

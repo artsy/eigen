@@ -509,7 +509,7 @@ export const modules = defineModules({
   ArtworkRecommendations: reactModule({ Component: ArtworkRecommendationsScreen }),
   Auction: reactModule({
     Component: SaleQueryRenderer,
-    options: { fullBleed: true },
+    options: { fullBleed: true, screenOptions: { headerShown: false } },
     Queries: [SaleScreenQuery],
   }),
   Auctions: reactModule({
