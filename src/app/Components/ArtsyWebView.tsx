@@ -2,17 +2,10 @@ import { OwnerType } from "@artsy/cohesion"
 import { Flex, Text } from "@artsy/palette-mobile"
 import * as Sentry from "@sentry/react-native"
 import { addBreadcrumb } from "@sentry/react-native"
-import { TabModuleNames, modules } from "app/AppRegistry"
 import { BottomTabRoutes } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { matchRoute } from "app/routes"
 import { GlobalStore, getCurrentEmissionState } from "app/store/GlobalStore"
-import {
-  GoBackProps,
-  dismissModal,
-  goBack,
-  navigate,
-  switchTab,
-} from "app/system/navigation/navigate"
+import { GoBackProps, dismissModal, goBack, navigate } from "app/system/navigation/navigate"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
@@ -229,18 +222,6 @@ export const ArtsyWebView = forwardRef<
         return
       }
 
-      if (result.type === "match" && TabModuleNames.includes(result.module)) {
-        const module = modules[result.module]
-
-        dismissModal(() => {
-          if (module.options.isRootViewForTabName) {
-            switchTab(module.options.isRootViewForTabName)
-          }
-        })
-
-        return
-      }
-
       // if it's a route that we know we don't have a native view for, keep it in the webview
       // only vanityURLs which do not have a native screen ends up in the webview. So also keep in webview for VanityUrls
       // TODO:- Handle cases where a vanityURl lands in a webview and then webview url navigation state changes
@@ -279,7 +260,9 @@ export const ArtsyWebView = forwardRef<
         dismissModal(() => {
           // We need to navigate only after the modal has been dismissed to avoid a race
           // condition breaking the UI
-          navigate(targetURL)
+          setTimeout(() => {
+            navigate(targetURL)
+          }, 500)
         })
       } else {
         navigate(targetURL)
