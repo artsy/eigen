@@ -627,7 +627,6 @@ export const modules = defineModules({
   Conversation: reactModule({
     Component: Conversation,
     options: {
-      isRootViewForTabName: "inbox",
       onlyShowInTabName: "inbox",
       screenOptions: {
         headerShown: false,
