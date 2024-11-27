@@ -1,5 +1,5 @@
 import { tappedTabBar } from "@artsy/cohesion"
-import { Text, useColor } from "@artsy/palette-mobile"
+import { Flex, Text, useColor } from "@artsy/palette-mobile"
 import { THEME } from "@artsy/palette-tokens"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
@@ -76,13 +76,30 @@ const AppTabs: React.FC = () => {
           },
           tabBarHideOnKeyboard: true,
           tabBarIcon: ({ focused }) => {
-            return <BottomTabsIcon tab={route.name} state={focused ? "active" : "inactive"} />
+            return (
+              <Flex flex={1}>
+                <BottomTabsIcon tab={route.name} state={focused ? "active" : "inactive"} />
+              </Flex>
+            )
           },
           tabBarLabel: () => {
             return (
-              <Text variant="xxs" style={{ top: -4 }} selectable={false}>
-                {bottomTabsConfig[route.name].name}
-              </Text>
+              <Flex
+                flex={1}
+                position="absolute"
+                alignItems="flex-end"
+                justifyContent="flex-end"
+                height={BOTTOM_TABS_HEIGHT}
+              >
+                <Text
+                  variant="xxs"
+                  style={{ top: Platform.OS === "ios" ? -4 : 0 }}
+                  selectable={false}
+                  textAlign="center"
+                >
+                  {bottomTabsConfig[route.name].name}
+                </Text>
+              </Flex>
             )
           },
           tabBarActiveTintColor: THEME.colors["black100"],
