@@ -91,7 +91,7 @@ export const GlobalSearchInputOverlay: React.FC<{
     if (visible) {
       hideModal()
     }
-    return true
+    return false
   })
 
   useEffect(() => {

@@ -2,10 +2,10 @@ import {
   ArtsyKeyboardAvoidingView,
   Button,
   Flex,
-  Join,
-  Spacer,
   Input,
   InputRef,
+  Join,
+  Spacer,
 } from "@artsy/palette-mobile"
 import { RouteProp, useIsFocused, useNavigation, useRoute } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
