@@ -7,8 +7,10 @@ export interface ArtworkRailCardImageProps {
   artwork: ArtworkRailCardImage_artwork$key
 }
 export const ARTWORK_RAIL_CARD_IMAGE_HEIGHT = 215
-export const ARTWORK_RAIL_MIN_IMAGE_WIDTH = 140
-export const ARTWORK_RAIL_MAX_IMAGE_WIDTH = 340
+
+export const ARTWORK_RAIL_CARD_MIN_WIDTH = 140
+export const ARTWORK_RAIL_CARD_MAX_WIDTH = 340
+
 const PADDING = 10
 
 export const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({ ...restProps }) => {
@@ -28,24 +30,21 @@ export const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({ ...r
     let verticalPadding = 0
 
     // Case when the image width is narrower than the maximum width
-    if (imageWidth <= ARTWORK_RAIL_MIN_IMAGE_WIDTH) {
-      containerWidth = ARTWORK_RAIL_MIN_IMAGE_WIDTH
+    if (imageWidth <= ARTWORK_RAIL_CARD_MIN_WIDTH) {
+      containerWidth = ARTWORK_RAIL_CARD_MIN_WIDTH
       verticalPadding = PADDING
     }
 
     // Case when the image width is wider than the maximum width
-    if (imageWidth >= ARTWORK_RAIL_MAX_IMAGE_WIDTH) {
-      containerWidth = ARTWORK_RAIL_MAX_IMAGE_WIDTH
+    if (imageWidth >= ARTWORK_RAIL_CARD_MAX_WIDTH) {
+      containerWidth = ARTWORK_RAIL_CARD_MAX_WIDTH
       horizontalPadding = PADDING
     }
 
     const displayImageWidth =
-      imageWidth <= ARTWORK_RAIL_MIN_IMAGE_WIDTH
-        ? Math.min(imageWidth, ARTWORK_RAIL_MIN_IMAGE_WIDTH) - 2 * horizontalPadding
-        : Math.min(
-            Math.max(imageWidth, ARTWORK_RAIL_MIN_IMAGE_WIDTH),
-            ARTWORK_RAIL_MAX_IMAGE_WIDTH
-          ) -
+      imageWidth <= ARTWORK_RAIL_CARD_MIN_WIDTH
+        ? Math.min(imageWidth, ARTWORK_RAIL_CARD_MIN_WIDTH) - 2 * horizontalPadding
+        : Math.min(Math.max(imageWidth, ARTWORK_RAIL_CARD_MIN_WIDTH), ARTWORK_RAIL_CARD_MAX_WIDTH) -
           2 * horizontalPadding
 
     const displayImageHeight =

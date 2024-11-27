@@ -6,11 +6,11 @@ import {
   SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$key,
 } from "__generated__/SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection.graphql"
 import { ArtworkRailProps } from "app/Components/ArtworkRail/ArtworkRail"
+import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
 import {
-  ARTWORK_RAIL_CARD_MINIMUM_WIDTH,
-  ArtworkRailCard,
-} from "app/Components/ArtworkRail/ArtworkRailCard"
-import { ARTWORK_RAIL_CARD_IMAGE_HEIGHT } from "app/Components/ArtworkRail/ArtworkRailCardImage"
+  ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
+  ARTWORK_RAIL_CARD_MIN_WIDTH,
+} from "app/Components/ArtworkRail/ArtworkRailCardImage"
 import { PrefetchFlashList } from "app/Components/PrefetchFlashList"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -126,7 +126,7 @@ const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> = ({
     <PrefetchFlashList
       // We need to set the maximum number of artworks to not cause layout shifts
       data={recentlySoldArtworks.slice(0, MAX_NUMBER_OF_ARTWORKS)}
-      estimatedItemSize={ARTWORK_RAIL_CARD_MINIMUM_WIDTH}
+      estimatedItemSize={ARTWORK_RAIL_CARD_MIN_WIDTH}
       horizontal
       keyExtractor={(item, index) => String(item?.artwork?.slug || index)}
       ItemSeparatorComponent={() => <Spacer x="15px" />}

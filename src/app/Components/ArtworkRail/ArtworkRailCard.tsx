@@ -3,6 +3,8 @@ import { ArtworkRailCard_artwork$key } from "__generated__/ArtworkRailCard_artwo
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import {
   ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
+  ARTWORK_RAIL_CARD_MAX_WIDTH,
+  ARTWORK_RAIL_CARD_MIN_WIDTH,
   ArtworkRailCardImage,
 } from "app/Components/ArtworkRail/ArtworkRailCardImage"
 import {
@@ -21,7 +23,6 @@ import { GestureResponderEvent, PixelRatio, TouchableHighlight } from "react-nat
 import { graphql, useFragment } from "react-relay"
 
 export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = PixelRatio.getFontScale() * 100
-export const ARTWORK_RAIL_CARD_MINIMUM_WIDTH = 140
 
 export interface ArtworkRailCardProps
   extends ArtworkActionTrackingProps,
@@ -112,6 +113,8 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                 containerHeight ?? ARTWORK_RAIL_CARD_IMAGE_HEIGHT + artworkRailCardMetaDataHeight
               }
               justifyContent="flex-start"
+              minWidth={ARTWORK_RAIL_CARD_MIN_WIDTH}
+              maxWidth={ARTWORK_RAIL_CARD_MAX_WIDTH}
             >
               <ArtworkRailCardImage artwork={artwork} />
 
