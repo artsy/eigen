@@ -1,14 +1,10 @@
-import { findFocusedRoute } from "@react-navigation/native"
 import * as Sentry from "@sentry/react-native"
-import { TransactionContext } from "@sentry/types"
-import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
-import { BottomTabOption } from "app/Scenes/BottomTabs/BottomTabType"
 import { appJson } from "app/utils/jsonFiles"
 import { Platform } from "react-native"
 import Config from "react-native-config"
 import DeviceInfo from "react-native-device-info"
 
-export const routingInstrumentation = new Sentry.ReactNavigationInstrumentation({
+export const routingInstrumentation = Sentry.reactNavigationIntegration({
   enableTimeToInitialDisplay: true,
 })
 
@@ -69,34 +65,11 @@ export function setupSentry(props: SetupSentryProps = { debug: false }) {
     enableWatchdogTerminationTracking: false,
     attachStacktrace: true,
     tracesSampleRate: props.debug ? 1.0 : 0.05,
+    profilesSampleRate: props.debug ? 1.0 : 0.05,
     debug: props.debug,
     integrations: [
       Sentry.reactNativeTracingIntegration({
         routingInstrumentation,
-        beforeNavigate: (context: TransactionContext) => {
-          /**
-           * This is a hack because our navigation setup is weird.
-           * We have a main modal stack at the root and then every screen presented
-           * in a tab gets its own stack. Sentry is registering every screen in a tab as
-           * a screen transaction for the root screen. For example, tapping on an
-           * artwork in the home screen will fire as `screen:home` instead of `screen:artwork`.
-           * To fix it we find the focused route and update the context name to the correct screen name.
-           * This should be updated if we change our navigation setup.
-           */
-          if (__unsafe_mainModalStackRef?.current) {
-            const mainNavState = __unsafe_mainModalStackRef.current?.getState()
-            const focusedRoute = findFocusedRoute(mainNavState)
-            const routeParams = focusedRoute?.params as { moduleName?: string }
-            if (routeParams?.moduleName && !(routeParams?.moduleName in BottomTabOption)) {
-              context.name = `screen:${routeParams.moduleName.toLowerCase()}`
-            }
-            context.sampled = true
-          } else {
-            // for now not sampling off main modal stack to avoid noise
-            context.sampled = false
-          }
-          return context
-        },
       }),
     ],
     ...props,
