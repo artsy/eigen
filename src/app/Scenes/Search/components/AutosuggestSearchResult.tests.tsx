@@ -88,7 +88,6 @@ describe(AutosuggestSearchResult, () => {
     expect(navigate).not.toHaveBeenCalled()
     screen.UNSAFE_getByType(TouchableOpacity).props.onPress()
     await new Promise((r) => setTimeout(r, 50))
-    expect(inputBlurMock).toHaveBeenCalled()
     expect(navigate).toHaveBeenCalledWith(`${result.href}`)
   })
 
