@@ -15,10 +15,6 @@ export function useDeepLinks() {
   const { trackEvent } = useTracking()
 
   useEffect(() => {
-    if (!isNavigationReady) {
-      return
-    }
-
     Linking.getInitialURL().then((url) => {
       if (url) {
         handleDeepLink(url)
@@ -27,10 +23,6 @@ export function useDeepLinks() {
   }, [isNavigationReady])
 
   useEffect(() => {
-    if (!isNavigationReady) {
-      return
-    }
-
     const subscription = Linking.addListener("url", ({ url }) => {
       handleDeepLink(url)
     })
