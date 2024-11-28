@@ -153,5 +153,5 @@ const InnerApp = () => {
   )
 }
 
-const SentryApp = !__DEV__ ? Sentry.wrap(InnerApp) : InnerApp
+const SentryApp = !__DEV__ || debugSentry ? Sentry.wrap(InnerApp) : InnerApp
 export const App = codePush(codePushOptions)(SentryApp)

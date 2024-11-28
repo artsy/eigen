@@ -232,6 +232,9 @@ jest.mock("@sentry/react-native", () => ({
   wrap: jest.fn().mockImplementation((component) => component),
   withProfiler: jest.fn().mockImplementation((component) => component),
   TimeToFullDisplay: () => null,
+  reactNavigationIntegration: jest.fn().mockImplementation(() => ({
+    registerNavigationContainer: jest.fn(),
+  })),
 }))
 
 jest.mock("@rnmapbox/maps", () => ({
