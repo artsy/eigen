@@ -29,7 +29,9 @@ export const AlertBottomSheet: React.FC<AlertBottomSheetProps> = ({
     navigate(`favorites/alerts/${id}/artworks`)
   }
 
-  // flex 1 presents the bottom sheet differently on android vs ios see eigen for info
+  // Platform specific code for the bottom sheet
+  // due to being rendered differently on android vs ios
+  // see eigen https://github.com/artsy/eigen/pull/11216 for screenshots
   const bottomSheetViewStyles = Platform.OS === "ios" ? { flex: 1 } : {}
 
   return (
