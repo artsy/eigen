@@ -22,7 +22,8 @@ import { useState } from "react"
 import { GestureResponderEvent, PixelRatio, TouchableHighlight } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
-export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = PixelRatio.getFontScale() * 100
+const fontScale = PixelRatio.getFontScale()
+export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = fontScale * 100
 
 export interface ArtworkRailCardProps
   extends ArtworkActionTrackingProps,
@@ -75,9 +76,9 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     showSaveIcon &&
     enableNewSaveAndFollowOnArtworkCard &&
     (enableNewSaveCTA || enableNewSaveAndFollowCTAs)
-      ? 43
+      ? fontScale * 43
       : 0
-  const artworkRailCardMetaPadding = 10
+  const artworkRailCardMetaPadding = fontScale * 10
   const artworkRailCardMetaDataHeight =
     ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + artworkRailCardMetaPadding + likeAndFollowCTAPadding
 

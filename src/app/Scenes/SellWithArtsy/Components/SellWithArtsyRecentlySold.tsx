@@ -22,6 +22,7 @@ import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 const MAX_NUMBER_OF_ARTWORKS = 30
+const fontScale = PixelRatio.getFontScale()
 
 interface SellWithArtsyRecentlySoldProps {
   recentlySoldArtworks: SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$key
@@ -105,8 +106,9 @@ const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> = ({
           onPress={() => {
             onPress?.(item, index)
           }}
-          // adding 20 to make sure the estimated section is not cut off when displayed in two lines
-          containerHeight={ARTWORK_RAIL_CARD_IMAGE_HEIGHT + PixelRatio.getFontScale() * 100 + 20}
+          // 102 = 92px (text container height) + 10px (padding)
+          // 20px is the height of a second line of the Estimate price when displayed in two lines
+          containerHeight={ARTWORK_RAIL_CARD_IMAGE_HEIGHT + fontScale * (102 + 20)}
           showPartnerName={showPartnerName}
           SalePriceComponent={
             <RecentlySoldCardSection
@@ -123,22 +125,25 @@ const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> = ({
     [hideArtistName, onPress, showPartnerName]
   )
   return (
-    <PrefetchFlashList
-      // We need to set the maximum number of artworks to not cause layout shifts
-      data={recentlySoldArtworks.slice(0, MAX_NUMBER_OF_ARTWORKS)}
-      estimatedItemSize={ARTWORK_RAIL_CARD_MIN_WIDTH}
-      horizontal
-      keyExtractor={(item, index) => String(item?.artwork?.slug || index)}
-      ItemSeparatorComponent={() => <Spacer x="15px" />}
-      ListFooterComponent={ListFooterComponent}
-      ListHeaderComponent={ListHeaderComponent}
-      listRef={listRef}
-      onEndReached={onEndReached}
-      onEndReachedThreshold={onEndReachedThreshold}
-      prefetchUrlExtractor={(item) => item?.artwork?.href || undefined}
-      renderItem={renderItem}
-      showsHorizontalScrollIndicator={false}
-    />
+    <>
+      <Text>{fontScale}</Text>
+      <PrefetchFlashList
+        // We need to set the maximum number of artworks to not cause layout shifts
+        data={recentlySoldArtworks.slice(0, MAX_NUMBER_OF_ARTWORKS)}
+        estimatedItemSize={ARTWORK_RAIL_CARD_MIN_WIDTH}
+        horizontal
+        keyExtractor={(item, index) => String(item?.artwork?.slug || index)}
+        ItemSeparatorComponent={() => <Spacer x="15px" />}
+        ListFooterComponent={ListFooterComponent}
+        ListHeaderComponent={ListHeaderComponent}
+        listRef={listRef}
+        onEndReached={onEndReached}
+        onEndReachedThreshold={onEndReachedThreshold}
+        prefetchUrlExtractor={(item) => item?.artwork?.href || undefined}
+        renderItem={renderItem}
+        showsHorizontalScrollIndicator={false}
+      />
+    </>
   )
 }
 
@@ -155,14 +160,16 @@ const RecentlySoldCardSection: React.FC<RecentlySoldCardSectionProps> = ({
   highEstimateDisplay,
   performanceDisplay,
 }) => {
+  const priceFontSize = fontScale > 1 ? "sm" : "md"
+
   return (
     <Flex>
       <Flex flexDirection="row">
-        <Text variant="md" numberOfLines={1}>
+        <Text variant={priceFontSize} numberOfLines={1}>
           {priceRealizedDisplay}
         </Text>
         {!!performanceDisplay && (
-          <Text variant="md" color="green" numberOfLines={1} ml={0.5}>
+          <Text variant={priceFontSize} color="green" numberOfLines={1} ml={0.5}>
             {`+${performanceDisplay}`}
           </Text>
         )}
