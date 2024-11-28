@@ -142,7 +142,7 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
     <>
       <ToastComponent
         id={1}
-        positionIndex={-0.3}
+        positionIndex={-0.7}
         message="To be covered by the Artsy Guarantee, always communicate and pay through the Artsy platform."
         placement="top"
         backgroundColor="blue100"
