@@ -1,15 +1,16 @@
-name: iOS Release with Changelog
+name: Release with Changelog
 
 on:
   push:
     tags:
+      # we are using ios submisson tag although it is the same commit hash with android
       - "ios-*-submission"
 
 permissions:
   contents: write
 
 jobs:
-  generate-ios-release:
+  generate-release:
     runs-on: ubuntu-22.04
 
     steps:
@@ -67,5 +68,5 @@ jobs:
         run: |
           gh release create "${{ env.last_tag }}" \
               --repo "${{ github.repository }}" \
-              --title "iOS Release ${{ env.last_tag }}" \
+              --title "Release ${{ env.last_tag }}" \
               --notes "${{ env.changelog }}"
