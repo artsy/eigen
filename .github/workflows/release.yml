@@ -1,24 +1,72 @@
-name: Create release
+name: Release with Changelog
 
 on:
   push:
     tags:
-      - "*-release"
+      # we are using ios submisson tag although it is the same commit hash with android
+      - "ios-*-release"
 
 permissions:
   contents: write
 
 jobs:
-  release:
-    name: Release pushed tag
+  generate-release:
     runs-on: ubuntu-22.04
+
     steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20" # Adjust as needed
+          cache: "yarn"
+
+      - name: Fetch all tags
+        run: git fetch --tags
+
+      - name: Determine iOS tags
+        id: determine_ios_tags
+        run: |
+          # Get all iOS submission tags and sort them
+          ios_tags=$(git tag --list "ios-*-release" | sort -V)
+
+          # Get the last and second-to-last iOS tags
+          last_tag=$(echo "$ios_tags" | tail -n1)
+          second_last_tag=$(echo "$ios_tags" | tail -n2 | head -n1)
+
+          # Ensure tags are found
+          if [ -z "$last_tag" ] || [ -z "$second_last_tag" ]; then
+            echo "Error: Could not determine last or second-to-last iOS tag."
+            exit 1
+          fi
+
+          # Export tags for later steps
+          echo "last_tag=$last_tag" >> $GITHUB_ENV
+          echo "second_last_tag=$second_last_tag" >> $GITHUB_ENV
+
+      - name: Install dependencies
+        run: |
+          npm install -g yarn
+          yarn install
+          yarn global add tsx
+
+      - name: Generate changelog
+        id: generate_changelog
+        run: |
+          changelog=$(yarn generate-changelog "${{ env.second_last_tag }}" "${{ env.last_tag }}")
+          echo "changelog<<EOF" >> $GITHUB_ENV
+          echo "$changelog" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+        env:
+          CHANGELOG_GITHUB_TOKEN_KEY: ${{ secrets.CHANGELOG_GITHUB_TOKEN_KEY }}
+
       - name: Create release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.ref_name }}
         run: |
-          gh release create "$tag" \
-              --repo="$GITHUB_REPOSITORY" \
-              --title="${tag#v}" \
-              --generate-notes
+          gh release create "${{ env.last_tag }}" \
+              --repo "${{ github.repository }}" \
+              --title "Release ${{ env.last_tag }}" \
+              --notes "${{ env.changelog }}"
