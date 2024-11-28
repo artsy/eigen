@@ -1,7 +1,7 @@
 import { act, fireEvent } from "@testing-library/react-native"
 import { CollectionArtistSeriesRailTestsQuery } from "__generated__/CollectionArtistSeriesRailTestsQuery.graphql"
+import { CardRailCard } from "app/Components/CardRail/CardRailCard"
 import { GenericArtistSeriesRail } from "app/Components/GenericArtistSeriesRail"
-import { CardRailCard } from "app/Components/Home/CardRailCard"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import {
   CollectionArtistSeriesRail,

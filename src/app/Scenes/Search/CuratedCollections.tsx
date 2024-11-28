@@ -1,6 +1,6 @@
-import { Spacer, Box, BoxProps } from "@artsy/palette-mobile"
+import { Box, BoxProps, Spacer } from "@artsy/palette-mobile"
 import { CuratedCollections_collections$key } from "__generated__/CuratedCollections_collections.graphql"
-import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
+import { CardRailFlatList } from "app/Components/CardRail/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { compact } from "lodash"
 import { graphql, useFragment } from "react-relay"

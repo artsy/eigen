@@ -3,7 +3,7 @@ import { Flex, FlexProps, Join, Skeleton, SkeletonText, Spacer } from "@artsy/pa
 import { HomeViewSectionArticlesQuery } from "__generated__/HomeViewSectionArticlesQuery.graphql"
 import { HomeViewSectionArticles_section$key } from "__generated__/HomeViewSectionArticles_section.graphql"
 import { SkeletonArticleCard } from "app/Components/ArticleCard"
-import { ArticlesRailFragmentContainer } from "app/Scenes/Home/Components/ArticlesRail"
+import { ArticlesRailFragmentContainer } from "app/Scenes/HomeView/Components/ArticlesRail"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"

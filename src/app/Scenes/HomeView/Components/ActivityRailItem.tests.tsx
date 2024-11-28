@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react-native"
 import { ActivityRailItemTestQuery } from "__generated__/ActivityRailItemTestQuery.graphql"
-import { ActivityRailItem } from "app/Scenes/Home/Components/ActivityRailItem"
+import { ActivityRailItem } from "app/Scenes/HomeView/Components/ActivityRailItem"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 

@@ -1,6 +1,6 @@
 import { Spacer, Text } from "@artsy/palette-mobile"
 import { OtherCollectionsRail_collectionGroup$data } from "__generated__/OtherCollectionsRail_collectionGroup.graphql"
-import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
+import { CardRailFlatList } from "app/Components/CardRail/CardRailFlatList"
 import { navigate } from "app/system/navigation/navigate"
 import React, { useRef } from "react"
 import { TouchableOpacity, View } from "react-native"

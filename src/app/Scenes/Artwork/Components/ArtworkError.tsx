@@ -4,9 +4,9 @@ import { ArtworkErrorQuery } from "__generated__/ArtworkErrorQuery.graphql"
 import { ArtworkErrorRecentlyViewed_homePage$key } from "__generated__/ArtworkErrorRecentlyViewed_homePage.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { LoadFailureView } from "app/Components/LoadFailureView"
-import { ArtworkModuleRailFragmentContainer } from "app/Scenes/Home/Components/ArtworkModuleRail"
-import { ArtworkRecommendationsRail } from "app/Scenes/Home/Components/ArtworkRecommendationsRail"
-import { NewWorksForYouRail } from "app/Scenes/Home/Components/NewWorksForYouRail"
+import { ArtworkModuleRailFragmentContainer } from "app/Scenes/HomeView/Components/ArtworkModuleRail"
+import { ArtworkRecommendationsRail } from "app/Scenes/HomeView/Components/ArtworkRecommendationsRail"
+import { NewWorksForYouRail } from "app/Scenes/HomeView/Components/NewWorksForYouRail"
 import {
   DEFAULT_RECS_MODEL_VERSION,
   RECOMMENDATION_MODEL_EXPERIMENT_NAME,

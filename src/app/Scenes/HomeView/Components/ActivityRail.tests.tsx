@@ -1,6 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ActivityRailTestQuery } from "__generated__/ActivityRailTestQuery.graphql"
-import { ActivityRail } from "app/Scenes/Home/Components/ActivityRail"
+import { ActivityRail } from "app/Scenes/HomeView/Components/ActivityRail"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"

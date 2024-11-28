@@ -6,7 +6,7 @@ import {
   HomeViewSectionHeroUnits_section$key,
 } from "__generated__/HomeViewSectionHeroUnits_section.graphql"
 import { PaginationDots } from "app/Components/PaginationDots"
-import { HERO_UNIT_CARD_HEIGHT, HeroUnit } from "app/Scenes/Home/Components/HeroUnit"
+import { HERO_UNIT_CARD_HEIGHT, HeroUnit } from "app/Scenes/HomeView/Components/HeroUnit"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import {

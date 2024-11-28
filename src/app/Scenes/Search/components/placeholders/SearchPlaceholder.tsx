@@ -6,7 +6,7 @@ import {
   SEARCH_INPUT_CONTAINER_HEIGHT,
   Spacer,
 } from "@artsy/palette-mobile"
-import { CARD_WIDTH } from "app/Components/Home/CardRailCard"
+import { CARD_WIDTH } from "app/Components/CardRail/CardRailCard"
 import { MAX_SHOWN_RECENT_SEARCHES, useRecentSearches } from "app/Scenes/Search/SearchModel"
 import { IMAGE_SIZE } from "app/Scenes/Search/components/SearchResultImage"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"

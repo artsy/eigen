@@ -5,8 +5,8 @@ import {
   HomeViewSectionFairs_section$data,
   HomeViewSectionFairs_section$key,
 } from "__generated__/HomeViewSectionFairs_section.graphql"
-import { CardRailCard, CardRailMetadataContainer } from "app/Components/Home/CardRailCard"
-import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
+import { CardRailCard, CardRailMetadataContainer } from "app/Components/CardRail/CardRailCard"
+import { CardRailFlatList } from "app/Components/CardRail/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { LARGE_IMAGE_SIZE, SMALL_IMAGE_SIZE } from "app/Components/ThreeUpImageLayout"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
