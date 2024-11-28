@@ -1,5 +1,4 @@
 import { ActionType, ContextModule, OwnerType, TappedCreateAlert } from "@artsy/cohesion"
-import { Flex } from "@artsy/palette-mobile"
 import { NavigationContainer } from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
@@ -32,12 +31,12 @@ import { TimePeriodOptionsScreen } from "app/Components/ArtworkFilter/Filters/Ti
 import { ViewAsOptionsScreen } from "app/Components/ArtworkFilter/Filters/ViewAsOptions"
 import { WaysToBuyOptionsScreen } from "app/Components/ArtworkFilter/Filters/WaysToBuyOptions"
 import { YearOptionsScreen } from "app/Components/ArtworkFilter/Filters/YearOptions"
-import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { GlobalStore } from "app/store/GlobalStore"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import { useEffect, useState } from "react"
-import { ViewProps } from "react-native"
+import { Modal, ViewProps } from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
 import { useTracking } from "react-tracking"
 import {
   FilterModalMode as ArtworkFilterMode,
@@ -314,13 +313,8 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
 
   return (
     <NavigationContainer independent>
-      <FancyModal
-        visible={props.visible}
-        onBackgroundPressed={handleClosingModal}
-        fullScreen
-        animationPosition="right"
-      >
-        <Flex flex={1}>
+      <Modal visible={props.visible} onDismiss={handleClosingModal} animationType="slide">
+        <SafeAreaView edges={["top"]} style={{ flex: 1 }}>
           <Stack.Navigator
             // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
             detachInactiveScreens={false}
@@ -409,8 +403,8 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
             attributes={attributes}
             sizeMetric={filterState.sizeMetric}
           />
-        </Flex>
-      </FancyModal>
+        </SafeAreaView>
+      </Modal>
     </NavigationContainer>
   )
 }
