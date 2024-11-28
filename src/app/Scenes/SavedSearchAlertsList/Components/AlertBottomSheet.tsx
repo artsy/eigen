@@ -2,6 +2,7 @@ import { Button, Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { BottomSheetView } from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { navigate } from "app/system/navigation/navigate"
+import { Platform } from "react-native"
 
 export interface BottomSheetAlert {
   id: string
@@ -28,6 +29,11 @@ export const AlertBottomSheet: React.FC<AlertBottomSheetProps> = ({
     navigate(`favorites/alerts/${id}/artworks`)
   }
 
+  // Platform specific code for the bottom sheet
+  // due to being rendered differently on android vs ios
+  // see eigen https://github.com/artsy/eigen/pull/11216 for screenshots
+  const bottomSheetViewStyles = Platform.OS === "ios" ? { flex: 1 } : {}
+
   return (
     <AutomountedBottomSheetModal
       enableDynamicSizing
@@ -35,7 +41,7 @@ export const AlertBottomSheet: React.FC<AlertBottomSheetProps> = ({
       name="AlertBottomSheet"
       onDismiss={onDismiss}
     >
-      <BottomSheetView style={{ flex: 1 }}>
+      <BottomSheetView style={bottomSheetViewStyles}>
         <Flex mb={4} mx={2} alignItems="center">
           <Join separator={<Spacer y={2} />}>
             <Text variant="sm" fontWeight="bold">
