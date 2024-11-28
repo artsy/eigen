@@ -4,7 +4,7 @@ on:
   push:
     tags:
       # we are using ios submisson tag although it is the same commit hash with android
-      - "ios-*-submission"
+      - "ios-*-release"
 
 permissions:
   contents: write
@@ -30,7 +30,7 @@ jobs:
         id: determine_ios_tags
         run: |
           # Get all iOS submission tags and sort them
-          ios_tags=$(git tag --list "ios-*-submission" | sort -V)
+          ios_tags=$(git tag --list "ios-*-release" | sort -V)
 
           # Get the last and second-to-last iOS tags
           last_tag=$(echo "$ios_tags" | tail -n1)
