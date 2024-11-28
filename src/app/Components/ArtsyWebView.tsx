@@ -258,7 +258,6 @@ export const ArtsyWebView = forwardRef<
 
       if (shouldDismissModal) {
         dismissModal(() => {
-          // We need to navigate only after the modal has been dismissed to avoid a race
           // condition breaking the UI
           navigate(targetURL)
         })
