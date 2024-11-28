@@ -22,6 +22,7 @@ import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 const MAX_NUMBER_OF_ARTWORKS = 30
+const fontScale = PixelRatio.getFontScale()
 
 interface SellWithArtsyRecentlySoldProps {
   recentlySoldArtworks: SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$key
@@ -106,7 +107,7 @@ const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> = ({
             onPress?.(item, index)
           }}
           // adding 20 to make sure the estimated section is not cut off when displayed in two lines
-          containerHeight={ARTWORK_RAIL_CARD_IMAGE_HEIGHT + PixelRatio.getFontScale() * 100 + 20}
+          containerHeight={ARTWORK_RAIL_CARD_IMAGE_HEIGHT + fontScale * 100 + fontScale * 20}
           showPartnerName={showPartnerName}
           SalePriceComponent={
             <RecentlySoldCardSection
@@ -155,14 +156,16 @@ const RecentlySoldCardSection: React.FC<RecentlySoldCardSectionProps> = ({
   highEstimateDisplay,
   performanceDisplay,
 }) => {
+  const priceFontSize = fontScale > 1 ? "sm" : "md"
+
   return (
     <Flex>
       <Flex flexDirection="row">
-        <Text variant="md" numberOfLines={1}>
+        <Text variant={priceFontSize} numberOfLines={1}>
           {priceRealizedDisplay}
         </Text>
         {!!performanceDisplay && (
-          <Text variant="md" color="green" numberOfLines={1} ml={0.5}>
+          <Text variant={priceFontSize} color="green" numberOfLines={1} ml={0.5}>
             {`+${performanceDisplay}`}
           </Text>
         )}
