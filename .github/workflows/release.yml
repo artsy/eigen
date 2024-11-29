@@ -3,8 +3,7 @@ name: Release with Changelog
 on:
   push:
     tags:
-      # we are using ios submisson tag although it is the same commit hash with android
-      - "ios-*-release"
+      - "ios-*-submission"
 
 permissions:
   contents: write
@@ -20,31 +19,36 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20" # Adjust as needed
+          node-version: "20"
           cache: "yarn"
 
       - name: Fetch all tags
         run: git fetch --tags
 
-      - name: Determine iOS tags
-        id: determine_ios_tags
+      - name: Determine iOS and Android tags
+        id: determine_tags
         run: |
-          # Get all iOS submission tags and sort them
-          ios_tags=$(git tag --list "ios-*-release" | sort -V)
+          # Get all iOS release tags and sort them
+          ios_tags=$(git tag --list "ios-*-submission" | sort -V)
 
           # Get the last and second-to-last iOS tags
-          last_tag=$(echo "$ios_tags" | tail -n1)
-          second_last_tag=$(echo "$ios_tags" | tail -n2 | head -n1)
+          last_ios_tag=$(echo "$ios_tags" | tail -n1)
+          second_last_ios_tag=$(echo "$ios_tags" | tail -n2 | head -n1)
+
+          # Find the corresponding Android tag for the same commit hash as the last iOS tag
+          commit_hash=$(git rev-list -n 1 "$last_ios_tag")
+          android_tag=$(git tag --contains "$commit_hash" | grep "android-.*-submission" | head -n1)
 
           # Ensure tags are found
-          if [ -z "$last_tag" ] || [ -z "$second_last_tag" ]; then
-            echo "Error: Could not determine last or second-to-last iOS tag."
+          if [ -z "$last_ios_tag" ] || [ -z "$second_last_ios_tag" ] || [ -z "$android_tag" ]; then
+            echo "Error: Could not determine all required tags."
             exit 1
           fi
 
           # Export tags for later steps
-          echo "last_tag=$last_tag" >> $GITHUB_ENV
-          echo "second_last_tag=$second_last_tag" >> $GITHUB_ENV
+          echo "last_ios_tag=$last_ios_tag" >> $GITHUB_ENV
+          echo "second_last_ios_tag=$second_last_ios_tag" >> $GITHUB_ENV
+          echo "android_tag=$android_tag" >> $GITHUB_ENV
 
       - name: Install dependencies
         run: |
@@ -55,7 +59,14 @@ jobs:
       - name: Generate changelog
         id: generate_changelog
         run: |
-          changelog=$(yarn generate-changelog "${{ env.second_last_tag }}" "${{ env.last_tag }}")
+          base_changelog=$(yarn generate-changelog "${{ env.second_last_ios_tag }}" "${{ env.last_ios_tag }}")
+
+          # Add monitoring links
+          ios_link="Monitor the iOS release on Sentry [here](https://artsynet.sentry.io/releases/${{ env.last_ios_tag }}/?project=5867225)"
+          android_link="Monitor the Android release on Sentry [here](https://artsynet.sentry.io/releases/${{ env.android_tag }}/?project=5867225)"
+
+          changelog="${base_changelog}\n\n$ios_link\n$android_link"
+
           echo "changelog<<EOF" >> $GITHUB_ENV
           echo "$changelog" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
@@ -66,7 +77,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create "${{ env.last_tag }}" \
+          # Extract the version from the iOS tag for the title
+          version=$(echo "${{ env.last_ios_tag }}" | sed -E 's/^ios-([0-9]+\.[0-9]+\.[0-9]+)-.*/\1/')
+
+          gh release create "${{ env.last_ios_tag }}" \
               --repo "${{ github.repository }}" \
-              --title "Release ${{ env.last_tag }}" \
+              --title "$version" \
               --notes "${{ env.changelog }}"
