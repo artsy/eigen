@@ -17,6 +17,10 @@ export function useDeepLinks() {
   const { trackEvent } = useTracking()
 
   useEffect(() => {
+    if (!isNavigationReady) {
+      return
+    }
+
     Linking.getInitialURL().then((url) => {
       if (url) {
         handleDeepLink(url)
@@ -25,6 +29,10 @@ export function useDeepLinks() {
   }, [isNavigationReady, isNavRefReady])
 
   useEffect(() => {
+    if (!isNavigationReady) {
+      return
+    }
+
     const subscription = Linking.addListener("url", ({ url }) => {
       handleDeepLink(url)
     })
@@ -64,9 +72,7 @@ export function useDeepLinks() {
     // We navigate them to the the deep link
     if (isHydrated && isLoggedIn && isNavigationReady) {
       // and we track the deep link
-      setTimeout(() => {
-        navigate(deepLinkUrl)
-      }, 100)
+      navigate(deepLinkUrl)
       return
     }
 
@@ -78,10 +84,7 @@ export function useDeepLinks() {
   useEffect(() => {
     if (isLoggedIn && launchURL.current && isNavigationReady) {
       // Navigate to the saved launch url
-      setTimeout(() => {
-        // @ts-expect-error
-        navigate(launchURL?.current)
-      }, 100)
+      navigate(launchURL?.current)
       // Reset the launchURL
       launchURL.current = null
     }

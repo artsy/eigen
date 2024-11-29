@@ -16,6 +16,7 @@ import { useReloadedDevNavigationState } from "app/system/navigation/useReloaded
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { logNavigation } from "app/utils/loggers"
+import { useDeepLinks } from "app/utils/useDeepLinks"
 import { Fragment } from "react"
 import { Platform } from "react-native"
 import SiftReactNative from "sift-react-native"
@@ -37,6 +38,8 @@ export const Navigation = () => {
   const fpsCounter = useDevToggle("DTFPSCounter")
 
   const { setSessionState: setNavigationReady } = GlobalStore.actions
+
+  useDeepLinks()
 
   // Code for Sift tracking; needs to be manually fired on Android
   // See https://github.com/SiftScience/sift-react-native/pull/23#issuecomment-1630984250

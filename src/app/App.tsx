@@ -16,7 +16,6 @@ import {
   SegmentTrackingProvider,
 } from "app/utils/track/SegmentTrackingProvider"
 import { useAndroidAppStyling } from "app/utils/useAndroidAppStyling"
-import { useDeepLinks } from "app/utils/useDeepLinks"
 import { useHideSplashScreen } from "app/utils/useHideSplashScreen"
 import { useIdentifyUser } from "app/utils/useIdentifyUser"
 import { useSiftConfig } from "app/utils/useSiftConfig"
@@ -96,7 +95,7 @@ const Main = () => {
   useStripeConfig()
   useSiftConfig()
   useWebViewCookies()
-  useDeepLinks()
+
   useInitialNotification()
   useInitializeQueryPrefetching()
   useIdentifyUser()
@@ -111,6 +110,8 @@ const Main = () => {
   usePurgeCacheOnAppUpdate()
   useHideSplashScreen()
   useAndroidAppStyling()
+
+  // useDeepLinks()
 
   useEffect(() => {
     if (isLoggedIn) {
