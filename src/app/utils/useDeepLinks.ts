@@ -5,9 +5,10 @@ import { useEffect, useRef } from "react"
 import { Linking } from "react-native"
 import { useTracking } from "react-tracking"
 
-export function useDeepLinks(isNavigationReady: boolean) {
+export function useDeepLinks() {
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
+  const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
 
   const launchURL = useRef<string | null>(null)
 
