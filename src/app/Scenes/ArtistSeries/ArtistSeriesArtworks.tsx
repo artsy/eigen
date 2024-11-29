@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Box, Tabs, useScreenDimensions, Flex, useSpace } from "@artsy/palette-mobile"
+import { Box, Flex, Tabs, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { MasonryFlashListRef } from "@shopify/flash-list"
 import { ArtistSeriesArtworks_artistSeries$key } from "__generated__/ArtistSeriesArtworks_artistSeries.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
@@ -62,20 +62,16 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
     })
   }, [artworksTotal])
 
-  const handleFilterToggle = () => {
-    setFilterArtworkModalVisible((prev) => {
-      return !prev
-    })
-  }
-
   const openFilterArtworksModal = () => {
     tracking.trackEvent(tracks.openFilterWindow(data.id, data.slug))
-    handleFilterToggle()
+
+    setFilterArtworkModalVisible(true)
   }
 
   const closeFilterArtworksModal = () => {
     tracking.trackEvent(tracks.closeFilterWindow(data.id, data.slug))
-    handleFilterToggle()
+
+    setFilterArtworkModalVisible(false)
   }
 
   const loadMore = useCallback(() => {
