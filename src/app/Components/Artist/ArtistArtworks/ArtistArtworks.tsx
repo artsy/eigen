@@ -67,7 +67,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   const { width } = useScreenDimensions()
   const showCreateAlertAtEndOfList = useFeatureFlag("ARShowCreateAlertInArtistArtworksListFooter")
   const artworks = useMemo(() => extractNodes(artist.artworks), [artist.artworks])
-
+  const artworksCount = artist.artworks?.counts?.total ?? 0
   const gridRef = useRef<MasonryFlashListRef<(typeof artworks)[0]>>(null)
 
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
@@ -291,8 +291,8 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
               />
             </Tabs.SubTabBar>
             <Flex pt={1}>
-              <Text variant="xs" weight="medium">{`${artist.counts?.artworks} Artwork${
-                artist.counts?.artworks > 1 ? "s" : ""
+              <Text variant="xs" weight="medium">{`${artworksCount} Artwork${
+                artworksCount > 1 ? "s" : ""
               }:`}</Text>
             </Flex>
           </>
@@ -365,6 +365,9 @@ export default createPaginationContainer(
         }
         artworks: filterArtworksConnection(first: $count, after: $cursor, input: $input)
           @connection(key: "ArtistArtworksGrid_artworks") {
+          counts {
+            total
+          }
           edges {
             node {
               id
