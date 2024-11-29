@@ -76,7 +76,14 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
 
   lastInvocation = { url: targetURL, timestamp: Date.now() }
   if (enableNewNavigation) {
+    visualize("New NAV", targetURL, { targetURL, options }, "DTShowNavigationVisualiser")
     if (!internal_navigationRef.current || !internal_navigationRef.current?.isReady()) {
+      visualize(
+        "ERROR NAV NOT READY",
+        targetURL,
+        { targetURL, options },
+        "DTShowNavigationVisualiser"
+      )
       if (__DEV__) {
         throw new Error(
           `You are attempting to navigate before the navigation is ready.{\n}
@@ -87,8 +94,8 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
     }
 
     if (replaceActiveModal || replaceActiveScreen) {
-      visualize("Test1", targetURL, { targetURL, options }, "DTShowNavigationVisualiser")
       requestAnimationFrame(() => {
+        visualize("Test1", targetURL, { targetURL, options }, "DTShowNavigationVisualiser")
         internal_navigationRef.current?.dispatch(
           StackActions.replace(result.module, { ...result.params, ...options.passProps })
         )
@@ -100,16 +107,16 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
         if (!module.options.isRootViewForTabName) {
           // We wait for a frame to allow the tab to be switched before we navigate
           // This allows us to also override the back button behavior in the tab
-          visualize("Test2", targetURL, { targetURL, options }, "DTShowNavigationVisualiser")
           requestAnimationFrame(() => {
+            visualize("Test2", targetURL, { targetURL, options }, "DTShowNavigationVisualiser")
             internal_navigationRef.current?.dispatch(
               StackActions.push(result.module, { ...result.params, ...options.passProps })
             )
           })
         }
       } else {
-        visualize("Test3", targetURL, { targetURL, options }, "DTShowNavigationVisualiser")
         requestAnimationFrame(() => {
+          visualize("Test3", targetURL, { targetURL, options }, "DTShowNavigationVisualiser")
           internal_navigationRef.current?.dispatch(
             StackActions.push(result.module, { ...result.params, ...options.passProps })
           )
