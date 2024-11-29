@@ -286,9 +286,9 @@ export const features = {
   },
   AREnableAvailabilityFilter: {
     description: "Enable availability filter",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
-    // echoFlagKey: "AREnableAvailabilityFilter",
+    echoFlagKey: "AREnableAvailabilityFilter",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 
