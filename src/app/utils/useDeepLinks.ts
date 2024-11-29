@@ -64,7 +64,9 @@ export function useDeepLinks() {
     // We navigate them to the the deep link
     if (isHydrated && isLoggedIn && isNavigationReady) {
       // and we track the deep link
-      navigate(deepLinkUrl)
+      setTimeout(() => {
+        navigate(deepLinkUrl)
+      }, 100)
       return
     }
 
@@ -76,7 +78,10 @@ export function useDeepLinks() {
   useEffect(() => {
     if (isLoggedIn && launchURL.current && isNavigationReady) {
       // Navigate to the saved launch url
-      navigate(launchURL.current)
+      setTimeout(() => {
+        // @ts-expect-error
+        navigate(launchURL?.current)
+      }, 100)
       // Reset the launchURL
       launchURL.current = null
     }
