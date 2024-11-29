@@ -87,9 +87,12 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
     }
 
     if (replaceActiveModal || replaceActiveScreen) {
-      internal_navigationRef.current.dispatch(
-        StackActions.replace(result.module, { ...result.params, ...options.passProps })
-      )
+      visualize("Test1", targetURL, { targetURL, options }, "DTShowNavigationVisualiser")
+      requestAnimationFrame(() => {
+        internal_navigationRef.current?.dispatch(
+          StackActions.replace(result.module, { ...result.params, ...options.passProps })
+        )
+      })
     } else {
       if (module.options.onlyShowInTabName) {
         switchTab(module.options.onlyShowInTabName)
@@ -97,6 +100,7 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
         if (!module.options.isRootViewForTabName) {
           // We wait for a frame to allow the tab to be switched before we navigate
           // This allows us to also override the back button behavior in the tab
+          visualize("Test2", targetURL, { targetURL, options }, "DTShowNavigationVisualiser")
           requestAnimationFrame(() => {
             internal_navigationRef.current?.dispatch(
               StackActions.push(result.module, { ...result.params, ...options.passProps })
@@ -104,9 +108,12 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
           })
         }
       } else {
-        internal_navigationRef.current?.dispatch(
-          StackActions.push(result.module, { ...result.params, ...options.passProps })
-        )
+        visualize("Test3", targetURL, { targetURL, options }, "DTShowNavigationVisualiser")
+        requestAnimationFrame(() => {
+          internal_navigationRef.current?.dispatch(
+            StackActions.push(result.module, { ...result.params, ...options.passProps })
+          )
+        })
       }
     }
 
