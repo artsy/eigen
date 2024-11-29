@@ -39,7 +39,7 @@ export const Navigation = () => {
 
   const { setSessionState: setNavigationReady } = GlobalStore.actions
 
-  useDeepLinks()
+  useDeepLinks(internal_navigationRef?.current?.isReady() ?? false)
 
   // Code for Sift tracking; needs to be manually fired on Android
   // See https://github.com/SiftScience/sift-react-native/pull/23#issuecomment-1630984250
