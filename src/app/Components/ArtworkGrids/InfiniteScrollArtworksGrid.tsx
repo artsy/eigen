@@ -123,6 +123,8 @@ export interface Props extends ArtworkActionTrackingProps {
   hideRegisterBySignal?: boolean
 
   hideViewFollowsLink?: boolean
+
+  hideCreateAlertOnArtworkPreview?: boolean
 }
 
 interface PrivateProps {
@@ -188,6 +190,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
   hidePartner = false,
   hideRegisterBySignal,
   hideViewFollowsLink = false,
+  hideCreateAlertOnArtworkPreview = false,
   hideSaveIcon = false,
   isLoading,
   isMyCollection = false,
@@ -362,6 +365,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
             hideCuratorsPickSignal={hideCuratorsPick}
             hideRegisterBySignal={hideRegisterBySignal}
             hideViewFollowsLink={hideViewFollowsLink}
+            hideCreateAlertOnArtworkPreview={hideCreateAlertOnArtworkPreview}
           />
         )
         // Setting a marginBottom on the artwork component didn’t work, so using a spacer view instead.
