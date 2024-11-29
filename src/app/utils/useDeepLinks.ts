@@ -1,4 +1,5 @@
 import { captureMessage } from "@sentry/react-native"
+import { internal_navigationRef } from "app/Navigation/Navigation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useEffect, useRef } from "react"
@@ -9,6 +10,7 @@ export function useDeepLinks() {
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
+  const isNavRefReady = internal_navigationRef.current?.isReady()
 
   const launchURL = useRef<string | null>(null)
 
@@ -20,7 +22,7 @@ export function useDeepLinks() {
         handleDeepLink(url)
       }
     })
-  }, [isNavigationReady])
+  }, [isNavigationReady, isNavRefReady])
 
   useEffect(() => {
     const subscription = Linking.addListener("url", ({ url }) => {
@@ -30,7 +32,7 @@ export function useDeepLinks() {
     return () => {
       subscription.remove()
     }
-  }, [isHydrated, isLoggedIn, isNavigationReady])
+  }, [isHydrated, isLoggedIn, isNavigationReady, isNavRefReady])
 
   const handleDeepLink = async (url: string) => {
     let targetURL
@@ -78,7 +80,7 @@ export function useDeepLinks() {
       // Reset the launchURL
       launchURL.current = null
     }
-  }, [isLoggedIn, isHydrated, launchURL.current, isNavigationReady])
+  }, [isLoggedIn, isHydrated, launchURL.current, isNavigationReady, isNavRefReady])
 }
 
 const tracks = {

@@ -76,10 +76,6 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
 
   lastInvocation = { url: targetURL, timestamp: Date.now() }
   if (enableNewNavigation) {
-    setTimeout(() => {
-      // waiting for nav to get ready
-      // only for deeplinks
-    }, 100)
     visualize("New NAV", targetURL, { targetURL, options }, "DTShowNavigationVisualiser")
     if (!internal_navigationRef.current || !internal_navigationRef.current?.isReady()) {
       visualize(
