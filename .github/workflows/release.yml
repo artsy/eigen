@@ -77,7 +77,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          # Extract the version from the iOS tag for the title
+          version=$(echo "${{ env.last_ios_tag }}" | sed -E 's/^ios-([0-9]+\.[0-9]+\.[0-9]+)-.*/\1/')
+
           gh release create "${{ env.last_ios_tag }}" \
               --repo "${{ github.repository }}" \
-              --title "Release ${{ env.last_ios_tag }}" \
+              --title "$version" \
               --notes "${{ env.changelog }}"
