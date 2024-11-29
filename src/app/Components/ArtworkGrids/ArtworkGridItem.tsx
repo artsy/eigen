@@ -85,6 +85,7 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   updateRecentSearchesOnTap?: boolean
   numColumns?: number
   hideViewFollowsLink?: boolean
+  hideCreateAlertOnArtworkPreview?: boolean
 }
 
 export const Artwork: React.FC<ArtworkProps> = ({
@@ -119,6 +120,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   updateRecentSearchesOnTap = false,
   numColumns = NUM_COLUMNS_MASONRY,
   hideViewFollowsLink = false,
+  hideCreateAlertOnArtworkPreview = false,
 }) => {
   const itemRef = useRef<any>()
   const color = useColor()
@@ -293,6 +295,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
         contextScreenOwnerType={contextScreenOwnerType}
         onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
         artwork={artwork}
+        hideCreateAlertOnArtworkPreview={hideCreateAlertOnArtworkPreview}
       >
         <Touchable
           haptic
