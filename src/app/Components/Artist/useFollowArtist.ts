@@ -2,7 +2,7 @@ import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { useFollowArtist_artist$key } from "__generated__/useFollowArtist_artist.graphql"
 import { useFollowArtist_artist_Mutation } from "__generated__/useFollowArtist_artist_Mutation.graphql"
 import { useToast } from "app/Components/Toast/toastHook"
-import { navigate, switchTab } from "app/system/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
 import { useState } from "react"
 import { useFragment, graphql, useMutation } from "react-relay"
@@ -129,7 +129,6 @@ export const useFollowArtist = (options: Options) => {
         toast.show("Artist Followed", "bottom", {
           cta: "View Follows",
           onPress: () => {
-            switchTab("profile")
             navigate("favorites")
           },
           backgroundColor: "green100",
