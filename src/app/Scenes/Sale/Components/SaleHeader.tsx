@@ -33,7 +33,7 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
   const shouldShowShareButton = !!sale?.href && !!sale?.name
 
   return (
-    <>
+    <Flex>
       {!!sale.coverImage?.url && (
         <Animated.View
           style={{
@@ -162,7 +162,7 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
           />
         </Flex>
       </View>
-    </>
+    </Flex>
   )
 }
 

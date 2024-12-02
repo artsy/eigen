@@ -5,19 +5,86 @@ import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { RateLimiter } from "limiter"
 import { useEffect } from "react"
 import { fetchQuery, GraphQLTaggedNode } from "react-relay"
-import {
-  CacheConfig,
-  createOperationDescriptor,
-  getRequest,
-  OperationType,
-  Variables,
-  VariablesOf,
-} from "relay-runtime"
+import { OperationType, Variables, VariablesOf } from "relay-runtime"
 import { logPrefetching } from "./loggers"
 
 const DEFAULT_QUERIES_PER_INTERVAL = 60
 
 let limiter: RateLimiter
+
+export const usePrefetch = () => {
+  return prefetchRoute
+}
+
+const prefetchRoute = async <TQuery extends OperationType>(
+  route: string,
+  variables?: VariablesOf<TQuery>
+) => {
+  if (await isRateLimited()) {
+    if (logPrefetching) console.log("[queryPrefetching] Rate limit reached.")
+    return
+  }
+
+  const result = matchRoute(route)
+
+  if (result.type !== "match") {
+    return
+  }
+
+  const module = modules[result.module]
+
+  if (module.type !== "react") {
+    if (logPrefetching) console.error(`[queryPrefetching] Cannot prefetch ${module.type} module.`)
+    return
+  }
+
+  const queries = module.Queries
+
+  if (!queries) {
+    if (logPrefetching)
+      console.error(`[queryPrefetching] Cannot not find queries for route ${route}.`)
+    return
+  }
+
+  const allVariables = { ...result.params, ...variables }
+
+  return queries.map((query) => {
+    return prefetchQuery({ query, variables: allVariables, route })
+  })
+}
+
+const prefetchQuery = async ({
+  query,
+  variables,
+  route,
+}: {
+  query: GraphQLTaggedNode
+  variables?: Variables
+  route?: string
+}) => {
+  const environment = getRelayEnvironment()
+
+  return fetchQuery(environment, query, variables ?? {}, {
+    fetchPolicy: "store-or-network",
+    networkCacheConfig: {
+      force: false,
+    },
+  }).subscribe({
+    start: () => {
+      if (logPrefetching) {
+        console.log("[queryPrefetching] Starting prefetch:", route)
+      }
+    },
+    complete: () => {
+      if (logPrefetching) {
+        console.log("[queryPrefetching] Completed:", route)
+      }
+    },
+    error: () => {
+      console.error("[queryPrefetching] Error prefetching:", route)
+    },
+  })
+}
 
 // Initializes the rate limiter because we load parameters from Echo.
 export const useInitializeQueryPrefetching = () => {
@@ -38,92 +105,8 @@ export const useInitializeQueryPrefetching = () => {
 }
 
 // Limit requests and don't execute when rate limit is reached.
-async function isRateLimited() {
+const isRateLimited = async () => {
   const remainingRequests = await limiter.removeTokens(1)
 
   return remainingRequests < 0
-}
-
-const prefetchQuery = async ({
-  query,
-  variables,
-  networkCacheConfig = {
-    force: true,
-  },
-}: {
-  query: GraphQLTaggedNode
-  variables?: Variables
-  networkCacheConfig?: CacheConfig
-}) => {
-  const environment = getRelayEnvironment()
-  const operation = createOperationDescriptor(getRequest(query), variables ?? {})
-
-  try {
-    await fetchQuery(environment, query, variables ?? {}, {
-      networkCacheConfig,
-    }).toPromise()
-    // this will retain the result in the relay store so it's not garbage collected.
-    environment.retain(operation)
-  } catch (error) {
-    // We don't want to throw an error here because we don't want to block the user from navigating to the page.
-    // We still want to log the error so we can investigate it.
-    if (__DEV__) {
-      console.log(`Prefetching query failed: ${error}`)
-    }
-  }
-}
-
-const prefetchUrl = async <TQuery extends OperationType>(
-  url: string,
-  variables?: VariablesOf<TQuery>,
-  networkCacheConfig: CacheConfig = {
-    force: true,
-  }
-) => {
-  if (await isRateLimited()) {
-    console.log("Reached prefetching rate limit.")
-    return
-  }
-
-  const result = matchRoute(url)
-
-  if (result.type !== "match") {
-    return
-  }
-
-  const module = modules[result.module]
-
-  if (module.type !== "react") {
-    console.error(`Failed to prefetch ${url} (cannot prefetch ${module.type} module).`)
-    return
-  }
-
-  const queries = module.Queries
-
-  if (!queries) {
-    console.error(`Failed to prefetch "${url}" (couldn't find queries).`)
-    return
-  }
-
-  const allVariables = { ...result.params, ...variables }
-
-  try {
-    for (const query of queries) {
-      await prefetchQuery({ query, variables: allVariables, networkCacheConfig })
-    }
-  } catch (error) {
-    console.error(`Prefetching "${url}" failed.`, error)
-  }
-
-  if (logPrefetching) {
-    console.log(`Prefetching "${url}"`)
-  }
-}
-
-export const usePrefetch = () => {
-  if (__TEST__) {
-    return () => null
-  }
-
-  return prefetchUrl
 }

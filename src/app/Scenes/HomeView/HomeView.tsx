@@ -10,7 +10,7 @@ import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { useDismissSavedArtwork } from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
 import { useEnableProgressiveOnboarding } from "app/Components/ProgressiveOnboarding/useEnableProgressiveOnboarding"
 import { RetryErrorBoundary, useRetryErrorBoundaryContext } from "app/Components/RetryErrorBoundary"
-import { EmailConfirmationBannerFragmentContainer } from "app/Scenes/Home/Components/EmailConfirmationBanner"
+import { EmailConfirmationBannerFragmentContainer } from "app/Scenes/HomeView/Components/EmailConfirmationBanner"
 import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
 import { HomeViewStore, HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { Section } from "app/Scenes/HomeView/Sections/Section"
@@ -25,13 +25,14 @@ import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
+import { useIsDeepLink } from "app/utils/hooks/useIsDeepLink"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
 import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
 import { useSwitchStatusBarStyle } from "app/utils/useStatusBarStyle"
 import { RefObject, Suspense, useCallback, useEffect, useState } from "react"
-import { FlatList, RefreshControl } from "react-native"
+import { FlatList, Linking, RefreshControl } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 export const NUMBER_OF_SECTIONS_TO_LOAD = 10
@@ -86,10 +87,15 @@ export const HomeView: React.FC = () => {
   const sections = extractNodes(data?.homeView.sectionsConnection)
 
   useEffect(() => {
-    prefetchUrl<SearchQuery>("search", searchQueryDefaultVariables)
-    prefetchUrl("my-profile")
-    prefetchUrl("inbox")
-    prefetchUrl("sell")
+    Linking.getInitialURL().then((url) => {
+      const isDeepLink = !!url
+      if (!isDeepLink) {
+        prefetchUrl<SearchQuery>("search", searchQueryDefaultVariables)
+        prefetchUrl("my-profile")
+        prefetchUrl("inbox")
+        prefetchUrl("sell")
+      }
+    })
   }, [])
 
   useEffect(() => {
@@ -186,6 +192,8 @@ const HomeViewScreenComponent: React.FC = () => {
   const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
   const showPlayground = useDevToggle("DTShowPlayground")
 
+  const { isDeepLink } = useIsDeepLink()
+
   useSwitchStatusBarStyle("dark-content", "dark-content")
 
   useEffect(() => {
@@ -199,6 +207,12 @@ const HomeViewScreenComponent: React.FC = () => {
       return
     }
   }, [artQuizState, isNavigationReady])
+
+  // We want to avoid rendering the home view when the user comes back from a deep link
+  // Because it triggers a lot of queries that affect the user's experience and can be avoided
+  if (isDeepLink !== false) {
+    return null
+  }
 
   if (artQuizState === "incomplete") {
     return null

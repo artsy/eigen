@@ -17,11 +17,14 @@ jest.mock("app/Scenes/CollectionsByCategory/CollectionRail", () => ({
 
 describe("Body", () => {
   const { renderWithRelay } = setupTestWrapper<BodyHomeViewSectionCardsTestQuery>({
-    Component: Body,
+    Component: ({ viewer }) => <Body marketingCollections={viewer.marketingCollections} />,
     query: graphql`
       query BodyHomeViewSectionCardsTestQuery {
         viewer @required(action: NONE) {
-          ...BodyCollectionsByCategory_viewer @arguments(category: "category")
+          marketingCollections(first: 2) {
+            ...BodyCollectionsByCategory_marketingCollections
+            ...CollectionsChips_marketingCollections
+          }
         }
       }
     `,

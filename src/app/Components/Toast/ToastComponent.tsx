@@ -40,8 +40,7 @@ export const ToastComponent = ({
   const toastDuration = TOAST_DURATION_MAP[duration]
   const color = useColor()
   const { width, height } = useScreenDimensions()
-  const { top: topSafeAreaInset, bottom: bottomSafeAreaInset } =
-    useScreenDimensions().safeAreaInsets
+  const { bottom: bottomSafeAreaInset } = useScreenDimensions().safeAreaInsets
   const [opacityAnim] = useState(new Animated.Value(0))
 
   const { showActionSheetWithOptions } = useActionSheet()
@@ -172,8 +171,7 @@ export const ToastComponent = ({
       }
       top={
         placement === "top"
-          ? topSafeAreaInset +
-            NAVBAR_HEIGHT +
+          ? NAVBAR_HEIGHT +
             EDGE_TOAST_PADDING +
             positionIndex * (EDGE_TOAST_HEIGHT + EDGE_TOAST_PADDING)
           : undefined

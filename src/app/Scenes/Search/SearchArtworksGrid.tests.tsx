@@ -1,9 +1,9 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { SearchArtworksGridTestsQuery } from "__generated__/SearchArtworksGridTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { Modal } from "react-native"
 import { graphql } from "react-relay"
 import { SearchArtworksGridPaginationContainer } from "./SearchArtworksGrid"
 
@@ -49,7 +49,7 @@ describe("SearchArtworksGrid", () => {
   it("tracks filter modal closing", () => {
     renderWithRelay()
 
-    screen.UNSAFE_getAllByType(FancyModal)[0].props.onBackgroundPressed()
+    screen.UNSAFE_getAllByType(Modal)[0].props.onDismiss()
 
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
       [

@@ -126,15 +126,16 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
     tracking.trackEvent(tracks.trackClear(id, slug))
   }
 
-  const handleFilterToggle = () => {
-    setFilterArtworkModalVisible((prev) => {
-      if (!prev) {
-        tracking.trackEvent(tracks.openArtworksFilter(fair))
-      } else {
-        tracking.trackEvent(tracks.closeArtworksFilter(fair))
-      }
-      return !prev
-    })
+  const handleFilterOpen = () => {
+    setFilterArtworkModalVisible(true)
+
+    tracking.trackEvent(tracks.openArtworksFilter(fair))
+  }
+
+  const handleFilterClose = () => {
+    setFilterArtworkModalVisible(false)
+
+    tracking.trackEvent(tracks.closeArtworksFilter(fair))
   }
 
   const filteredArtworks = extractNodes(data.fairArtworks)
@@ -165,7 +166,7 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
             <Tabs.SubTabBar>
               <HeaderArtworksFilterWithTotalArtworks
                 hideArtworksCount={true}
-                onPress={handleFilterToggle}
+                onPress={handleFilterOpen}
               />
             </Tabs.SubTabBar>
 
@@ -185,8 +186,8 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
         id={data.internalID}
         slug={data.slug}
         mode={FilterModalMode.Fair}
-        exitModal={handleFilterToggle}
-        closeModal={handleFilterToggle}
+        exitModal={handleFilterClose}
+        closeModal={handleFilterClose}
       />
     </>
   )

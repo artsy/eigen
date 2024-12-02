@@ -16,7 +16,7 @@ import { HomeViewSectionFeaturedCollection_section$key } from "__generated__/Hom
 import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import {
   ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
-  ARTWORK_RAIL_MIN_IMAGE_WIDTH,
+  ARTWORK_RAIL_CARD_MIN_WIDTH,
 } from "app/Components/ArtworkRail/ArtworkRailCardImage"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
@@ -178,7 +178,7 @@ const HomeViewSectionFeaturedCollectionPlaceholder: React.FC<FlexProps> = () => 
             <Flex>
               <SkeletonBox
                 height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
-                width={ARTWORK_RAIL_MIN_IMAGE_WIDTH * 2}
+                width={ARTWORK_RAIL_CARD_MIN_WIDTH * 2}
               />
               <Spacer y={2} />
               <SkeletonText>Andy Warhol</SkeletonText>

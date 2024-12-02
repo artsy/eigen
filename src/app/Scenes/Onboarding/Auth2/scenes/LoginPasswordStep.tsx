@@ -119,6 +119,7 @@ const LoginPasswordStepForm: React.FC = () => {
       <Text variant="sm-display">Welcome back to Artsy</Text>
 
       <Input
+        accessibilityHint="Enter your password"
         autoCapitalize="none"
         autoComplete="password"
         importantForAutofill="yes"
@@ -162,6 +163,7 @@ const LoginPasswordStepForm: React.FC = () => {
         onPress={handleSubmit}
         disabled={!isValid || !values.password}
         loading={isSubmitting}
+        accessibilityHint="Continue to the next screen"
       >
         Continue
       </Button>
@@ -181,6 +183,7 @@ const LoginPasswordStepForm: React.FC = () => {
                 })
                 resetForm()
               }}
+              accessibilityHint="Go to the sign-up screen"
             >
               Sign up.
             </LinkText>

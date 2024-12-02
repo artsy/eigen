@@ -61,10 +61,12 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
   const shouldDisplaySpinner =
     !!isLoading && !!artworksList.length && !!relay.isLoading() && !!relay.hasMore()
 
-  const handleFilterToggle = () => {
-    setFilterArtworkModalVisible((prev) => {
-      return !prev
-    })
+  const handleFilterOpen = () => {
+    setFilterArtworkModalVisible(true)
+  }
+
+  const handleFilterClose = () => {
+    setFilterArtworkModalVisible(false)
   }
 
   const loadMore = () => {
@@ -154,7 +156,7 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
         ListHeaderComponentStyle={{ zIndex: 1 }}
         ListHeaderComponent={
           <Tabs.SubTabBar>
-            <HeaderArtworksFilterWithTotalArtworks onPress={handleFilterToggle} />
+            <HeaderArtworksFilterWithTotalArtworks onPress={handleFilterOpen} />
           </Tabs.SubTabBar>
         }
         ListFooterComponent={
@@ -166,8 +168,8 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
         slug={collection.slug}
         visible={!!isFilterArtworksModalVisible}
         name={collection.title ?? ""}
-        exitModal={handleFilterToggle}
-        closeModal={handleFilterToggle}
+        exitModal={handleFilterClose}
+        closeModal={handleFilterClose}
         mode={FilterModalMode.ArtistArtworks}
         shouldShowCreateAlertButton
       />

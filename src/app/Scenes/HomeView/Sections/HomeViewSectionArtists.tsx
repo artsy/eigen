@@ -11,14 +11,14 @@ import {
 } from "@artsy/palette-mobile"
 import { HomeViewSectionArtistsMainQuery } from "__generated__/HomeViewSectionArtistsMainQuery.graphql"
 import { HomeViewSectionArtists_section$data } from "__generated__/HomeViewSectionArtists_section.graphql"
+import { CardRailFlatList } from "app/Components/CardRail/CardRailFlatList"
+import { SectionTitle } from "app/Components/SectionTitle"
+import { PAGE_SIZE } from "app/Components/constants"
 import {
   ARTIST_CARD_WIDTH,
   IMAGE_MAX_HEIGHT as ARTIST_RAIL_IMAGE_MAX_HEIGHT,
   ArtistCardContainer,
-} from "app/Components/Home/ArtistRails/ArtistCard"
-import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
-import { SectionTitle } from "app/Components/SectionTitle"
-import { PAGE_SIZE } from "app/Components/constants"
+} from "app/Scenes/HomeView/Components/ArtistRails/ArtistCard"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import {

@@ -35,6 +35,7 @@ interface ContextMenuArtworkProps {
   artworkDisplayProps?: ArtworkDisplayProps
   contextScreenOwnerType?: ScreenOwnerType
   contextModule?: ContextModule
+  hideCreateAlertOnArtworkPreview?: boolean
 }
 
 const artworkFragment = graphql`
@@ -75,6 +76,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   onSupressArtwork,
   contextScreenOwnerType,
   contextModule,
+  hideCreateAlertOnArtworkPreview,
   ...restProps
 }) => {
   const artwork = useFragment(artworkFragment, restProps.artwork)
@@ -193,7 +195,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
       })
     }
 
-    if (enableCreateAlerts) {
+    if (enableCreateAlerts && !hideCreateAlertOnArtworkPreview) {
       // Put create alert at front since it is high intent
       contextMenuActions.unshift({
         title: "Create alert",

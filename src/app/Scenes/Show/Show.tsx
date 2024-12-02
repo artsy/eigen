@@ -38,11 +38,15 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
 
   const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 30 })
 
-  const toggleFilterArtworksModal = () => {
-    setVisible(!visible)
+  const openeFilterArtworksModal = () => {
+    setVisible(true)
   }
 
-  const artworkProps = { show, visible, toggleFilterArtworksModal }
+  const closeFilterArtworksModal = () => {
+    setVisible(false)
+  }
+
+  const artworkProps = { show, visible, openeFilterArtworksModal, closeFilterArtworksModal }
 
   const sections: Section[] = [
     { key: "header", element: <ShowHeader show={show} mx={2} mt={2} /> },
@@ -60,7 +64,7 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
           <Separator />
           <HeaderArtworksFilter
             animationValue={filterComponentAnimationValue}
-            onPress={toggleFilterArtworksModal}
+            onPress={openeFilterArtworksModal}
             disableYAxisAnimation
           />
         </Flex>

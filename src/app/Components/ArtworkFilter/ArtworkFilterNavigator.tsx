@@ -1,5 +1,4 @@
 import { ActionType, ContextModule, OwnerType, TappedCreateAlert } from "@artsy/cohesion"
-import { Flex } from "@artsy/palette-mobile"
 import { NavigationContainer } from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
@@ -18,6 +17,7 @@ import { ArtistIDsOptionsScreen } from "app/Components/ArtworkFilter/Filters/Art
 import { ArtistNationalitiesOptionsScreen } from "app/Components/ArtworkFilter/Filters/ArtistNationalitiesOptions"
 import { ArtistSeriesOptionsScreen } from "app/Components/ArtworkFilter/Filters/ArtistSeriesOptions.tsx"
 import { AttributionClassOptionsScreen } from "app/Components/ArtworkFilter/Filters/AttributionClassOptions"
+import { AvailabilityOptionsScreen } from "app/Components/ArtworkFilter/Filters/AvailabilityOptions"
 import { CategoriesOptionsScreen } from "app/Components/ArtworkFilter/Filters/CategoriesOptions"
 import { ColorsOptionsScreen } from "app/Components/ArtworkFilter/Filters/ColorsOptions"
 import { EstimateRangeOptionsScreen } from "app/Components/ArtworkFilter/Filters/EstimateRangeOptions"
@@ -31,12 +31,12 @@ import { TimePeriodOptionsScreen } from "app/Components/ArtworkFilter/Filters/Ti
 import { ViewAsOptionsScreen } from "app/Components/ArtworkFilter/Filters/ViewAsOptions"
 import { WaysToBuyOptionsScreen } from "app/Components/ArtworkFilter/Filters/WaysToBuyOptions"
 import { YearOptionsScreen } from "app/Components/ArtworkFilter/Filters/YearOptions"
-import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { GlobalStore } from "app/store/GlobalStore"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import { useEffect, useState } from "react"
-import { ViewProps } from "react-native"
+import { Modal, ViewProps } from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
 import { useTracking } from "react-tracking"
 import {
   FilterModalMode as ArtworkFilterMode,
@@ -83,6 +83,7 @@ export type ArtworkFilterNavigationStack = {
   ArtistSeriesOptionsScreen: undefined
   AttributionClassOptionsScreen: undefined
   AuctionHouseOptionsScreen: undefined
+  AvailabilityOptionsScreen: undefined
   CategoriesOptionsScreen: undefined
   ColorOptionsScreen: undefined
   ColorsOptionsScreen: undefined
@@ -312,13 +313,8 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
 
   return (
     <NavigationContainer independent>
-      <FancyModal
-        visible={props.visible}
-        onBackgroundPressed={handleClosingModal}
-        fullScreen
-        animationPosition="right"
-      >
-        <Flex flex={1}>
+      <Modal visible={props.visible} onDismiss={handleClosingModal} animationType="slide">
+        <SafeAreaView edges={["top"]} style={{ flex: 1 }}>
           <Stack.Navigator
             // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
             detachInactiveScreens={false}
@@ -340,6 +336,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
               component={AttributionClassOptionsScreen}
             />
             <Stack.Screen name="AuctionHouseOptionsScreen" component={AuctionHouseOptionsScreen} />
+            <Stack.Screen name="AvailabilityOptionsScreen" component={AvailabilityOptionsScreen} />
             <Stack.Screen name="ColorsOptionsScreen" component={ColorsOptionsScreen} />
             <Stack.Screen
               name="EstimateRangeOptionsScreen"
@@ -406,8 +403,8 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
             attributes={attributes}
             sizeMetric={filterState.sizeMetric}
           />
-        </Flex>
-      </FancyModal>
+        </SafeAreaView>
+      </Modal>
     </NavigationContainer>
   )
 }

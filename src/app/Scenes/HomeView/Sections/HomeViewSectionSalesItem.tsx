@@ -7,7 +7,7 @@ import {
 import {
   CardRailCard,
   CardRailMetadataContainer as MetadataContainer,
-} from "app/Components/Home/CardRailCard"
+} from "app/Components/CardRail/CardRailCard"
 import { ThreeUpImageLayout } from "app/Components/ThreeUpImageLayout"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"

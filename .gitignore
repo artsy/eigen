@@ -152,3 +152,5 @@ tsconfig.tsbuildinfo
 # Keep these, so we can keep the folders these appear in.
 !.gitkeep
 #########################################################
+
+main.jsbundle.map

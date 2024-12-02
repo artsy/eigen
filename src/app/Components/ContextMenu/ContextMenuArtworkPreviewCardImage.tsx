@@ -1,16 +1,96 @@
 import { Flex, Image, useColor } from "@artsy/palette-mobile"
 import { ContextMenuArtworkPreviewCardImage_artwork$key } from "__generated__/ContextMenuArtworkPreviewCardImage_artwork.graphql"
-import { sizeToFit } from "app/utils/useSizeToFit"
 import { graphql, useFragment } from "react-relay"
 
-export const LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT = 320
-export const ARTWORK_RAIL_CARD_IMAGE_WIDTH = 295
+const ARTWORK_PREVIEW_IMAGE_MAX_HEIGHT = 400
+const ARTWORK_PREVIEW_IMAGE_MIN_HEIGHT = 50
+
+export interface ContextMenuArtworkPreviewCardImageProps {
+  artwork: ContextMenuArtworkPreviewCardImage_artwork$key
+  containerWidth: number
+}
+
+export const ContextMenuArtworkPreviewCardImage: React.FC<
+  ContextMenuArtworkPreviewCardImageProps
+> = ({ containerWidth, ...restProps }) => {
+  const artwork = useFragment(artworkFragment, restProps.artwork)
+  const color = useColor()
+
+  const aspectRatio = artwork?.contextMenuImage?.aspectRatio
+  const { width, height, src } = artwork?.contextMenuImage?.resized || {}
+
+  const useImageDimensions = () => {
+    const imageAspectRatio = aspectRatio ?? (width && height ? width / height : 1)
+
+    const imageWidth = containerWidth
+    const imageHeight = imageWidth / imageAspectRatio
+
+    let containerHeight = imageHeight
+
+    // Case when the image height is less than the minimum height
+    if (imageHeight <= ARTWORK_PREVIEW_IMAGE_MIN_HEIGHT) {
+      containerHeight = ARTWORK_PREVIEW_IMAGE_MIN_HEIGHT
+    }
+
+    // Case when the image height exceeds the maximum height
+    if (imageHeight >= ARTWORK_PREVIEW_IMAGE_MAX_HEIGHT) {
+      containerHeight = ARTWORK_PREVIEW_IMAGE_MAX_HEIGHT
+    }
+
+    const displayImageHeight =
+      imageHeight <= ARTWORK_PREVIEW_IMAGE_MIN_HEIGHT
+        ? Math.min(imageHeight, ARTWORK_PREVIEW_IMAGE_MIN_HEIGHT)
+        : Math.min(
+            Math.max(imageHeight, ARTWORK_PREVIEW_IMAGE_MIN_HEIGHT),
+            ARTWORK_PREVIEW_IMAGE_MAX_HEIGHT
+          )
+
+    const displayImageWidth = Math.min(displayImageHeight * imageAspectRatio, imageWidth)
+
+    return { containerHeight, displayImageWidth, displayImageHeight }
+  }
+
+  const { containerHeight, displayImageWidth, displayImageHeight } = useImageDimensions()
+
+  if (!src) {
+    return (
+      <Flex
+        bg={color("black30")}
+        width={containerWidth}
+        height={ARTWORK_PREVIEW_IMAGE_MIN_HEIGHT}
+        style={{ borderRadius: 2 }}
+      />
+    )
+  }
+
+  return (
+    <Flex
+      justifyContent="center"
+      alignItems="center"
+      height={containerHeight}
+      width={containerWidth}
+    >
+      {!!src && (
+        <Image
+          src={src}
+          width={displayImageWidth}
+          height={displayImageHeight}
+          aspectRatio={aspectRatio}
+          performResize={false}
+          resizeMode="cover"
+          testID="artwork-rail-card-image"
+        />
+      )}
+    </Flex>
+  )
+}
 
 const artworkFragment = graphql`
   fragment ContextMenuArtworkPreviewCardImage_artwork on Artwork
   @argumentDefinitions(width: { type: "Int" }) {
     contextMenuImage: image {
       url(version: ["larger", "large", "medium", "small", "square"])
+      aspectRatio
       resized(width: $width) {
         src
         srcSet
@@ -20,52 +100,3 @@ const artworkFragment = graphql`
     }
   }
 `
-
-export interface ContextMenuArtworkPreviewCardImageProps {
-  artwork: ContextMenuArtworkPreviewCardImage_artwork$key
-  containerWidth?: number
-}
-
-export const ContextMenuArtworkPreviewCardImage: React.FC<
-  ContextMenuArtworkPreviewCardImageProps
-> = ({ containerWidth, ...restProps }) => {
-  const artwork = useFragment(artworkFragment, restProps.artwork)
-  const color = useColor()
-
-  const { width, height, src } = artwork?.contextMenuImage?.resized || {}
-
-  if (!src) {
-    return (
-      <Flex
-        bg={color("black30")}
-        width={width}
-        height={LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
-        style={{ borderRadius: 2 }}
-      />
-    )
-  }
-
-  const imageDimensions = sizeToFit(
-    {
-      width: width ?? 0,
-      height: height ?? 0,
-    },
-    {
-      width: ARTWORK_RAIL_CARD_IMAGE_WIDTH,
-      height: LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
-    }
-  )
-
-  return (
-    <Flex>
-      <Flex width={containerWidth}>
-        <Image
-          style={{ maxHeight: LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT }}
-          src={src}
-          height={imageDimensions.height || LEGACY_ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
-          width={containerWidth}
-        />
-      </Flex>
-    </Flex>
-  )
-}

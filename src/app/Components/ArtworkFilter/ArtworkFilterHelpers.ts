@@ -19,6 +19,7 @@ export enum FilterDisplayName {
   artistsIFollow = "Artist",
   artistSeriesIDs = "Artist Series",
   attributionClass = "Rarity",
+  availability = "Availability",
   categories = "Medium",
   colors = "Color",
   estimateRange = "Price/Estimate Range",
@@ -50,6 +51,7 @@ export enum FilterParamName {
   colors = "colors",
   earliestCreatedYear = "earliestCreatedYear",
   estimateRange = "estimateRange",
+  forSale = "forSale",
   height = "height",
   keyword = "keyword",
   latestCreatedYear = "latestCreatedYear",
@@ -87,6 +89,7 @@ export const QueryParamsToFilterValueMapping: Record<string, FilterParamName> = 
   colors: FilterParamName.colors,
   earliest_created_year: FilterParamName.earliestCreatedYear,
   estimate_range: FilterParamName.estimateRange,
+  for_sale: FilterParamName.forSale,
   height: FilterParamName.height,
   keyword: FilterParamName.keyword,
   latest_created_year: FilterParamName.latestCreatedYear,
@@ -140,6 +143,7 @@ export const ParamDefaultValues = {
   colors: [],
   earliestCreatedYear: undefined,
   estimateRange: "",
+  forSale: undefined,
   height: "*-*",
   includeArtworksByFollowedArtists: false,
   inquireableOnly: false,
@@ -175,6 +179,7 @@ export const defaultCommonFilterOptions = {
   colors: ParamDefaultValues.colors,
   earliestCreatedYear: ParamDefaultValues.earliestCreatedYear,
   estimateRange: ParamDefaultValues.estimateRange,
+  forSale: ParamDefaultValues.forSale,
   height: ParamDefaultValues.height,
   includeArtworksByFollowedArtists: ParamDefaultValues.includeArtworksByFollowedArtists,
   inquireableOnly: ParamDefaultValues.inquireableOnly,
@@ -255,7 +260,7 @@ export interface FilterCounts {
 }
 
 export type SelectedFiltersCounts = {
-  [Name in FilterParamName | "waysToBuy" | "year"]: number
+  [Name in FilterParamName | "waysToBuy" | "year" | "availability"]: number
 }
 
 export const filterKeyFromAggregation: Record<
@@ -325,6 +330,8 @@ const DEFAULT_TAG_ARTWORK_PARAMS = {
   ...DEFAULT_ARTWORKS_PARAMS,
   sort: "-partner_updated_at",
 } as FilterParams
+
+const availabilityFilterNames = [FilterParamName.forSale]
 
 const createdYearsFilterNames = [
   FilterParamName.earliestCreatedYear,
@@ -413,7 +420,7 @@ export const aggregationNameFromFilter: Record<string, AggregationName | undefin
 
 export const aggregationForFilter = (filterKey: string, aggregations: Aggregations) => {
   const aggregationName = aggregationNameFromFilter[filterKey]
-  const aggregation = aggregations!.find((value) => value.slice === aggregationName)
+  const aggregation = aggregations.find((value) => value.slice === aggregationName)
   return aggregation
 }
 
@@ -565,6 +572,10 @@ export const getSelectedFiltersCounts = (selectedFilters: FilterArray) => {
 
   selectedFilters.forEach(({ paramName, paramValue }: FilterData) => {
     switch (true) {
+      case availabilityFilterNames.includes(paramName): {
+        counts.availability = 1
+        break
+      }
       case waysToBuyFilterNames.includes(paramName): {
         counts.waysToBuy = (counts.waysToBuy ?? 0) + 1
         break

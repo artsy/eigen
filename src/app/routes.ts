@@ -71,6 +71,7 @@ export function addWebViewRoute(url: string, config?: ArtsyWebViewConfig) {
     config?.alwaysPresentModally ? "ModalWebView" : "ReactWebView",
     (params) => ({
       url: replaceParams(url, params),
+      isPresentedModally: !!config?.alwaysPresentModally,
       ...config,
     })
   )

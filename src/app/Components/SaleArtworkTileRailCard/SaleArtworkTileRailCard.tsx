@@ -5,10 +5,10 @@ import {
   tappedEntityGroup,
   TappedEntityGroupArgs,
 } from "@artsy/cohesion"
-import { Flex, Box, useColor, Text } from "@artsy/palette-mobile"
+import { Box, Flex, Text, useColor } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { SaleArtworkTileRailCard_saleArtwork$data } from "__generated__/SaleArtworkTileRailCard_saleArtwork.graphql"
-import { CARD_WIDTH } from "app/Components/Home/CardRailCard"
+import { CARD_WIDTH } from "app/Components/CardRail/CardRailCard"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { UrgencyInfo } from "app/Components/SaleArtworkTileRailCard/UrgencyInfo"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"

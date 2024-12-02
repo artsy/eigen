@@ -13,13 +13,13 @@ import {
   HomeViewSectionMarketingCollections_section$data,
   HomeViewSectionMarketingCollections_section$key,
 } from "__generated__/HomeViewSectionMarketingCollections_section.graphql"
+import { CardRailFlatList } from "app/Components/CardRail/CardRailFlatList"
 import {
   DEFAULT_HORIZONTAL_IMAGE_DIMENSIONS,
   DEFAULT_LARGE_IMAGE_DIMENSIONS,
   DEFAULT_SMALL_IMAGE_DIMENSIONS,
   GAP,
 } from "app/Components/FiveUpImageLayout"
-import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import {

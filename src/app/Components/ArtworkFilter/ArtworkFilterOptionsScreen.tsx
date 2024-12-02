@@ -21,7 +21,6 @@ import { Schema } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { compact } from "lodash"
 import React, { useMemo } from "react"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { ArtworkFilterNavigationStack } from "./ArtworkFilterNavigator"
@@ -49,6 +48,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
   StackScreenProps<ArtworkFilterNavigationStack, "FilterOptionsScreen">
 > = ({ navigation, route }) => {
   const enableArtistSeriesFilter = useFeatureFlag("AREnableArtistSeriesFilter")
+  const enableAvailabilityFilter = useFeatureFlag("AREnableAvailabilityFilter")
   const tracking = useTracking()
   const { closeModal, id, mode, slug, title = "Sort & Filter" } = route.params
 
@@ -104,7 +104,9 @@ export const ArtworkFilterOptionsScreen: React.FC<
     .filter((filterOption) => filterOption.filterType)
     // Filter out the Artist Series filter if the feature flag is disabled
     .filter(
-      (filterOption) => enableArtistSeriesFilter || filterOption.filterType !== "artistSeriesIDs"
+      (filterOption) =>
+        (enableArtistSeriesFilter || filterOption.filterType !== "artistSeriesIDs") &&
+        (enableAvailabilityFilter || filterOption.filterType !== "availability")
     )
 
   const clearAllFilters = () => {
@@ -215,6 +217,7 @@ export const getStaticFilterOptionsByMode = (
     default:
       return [
         filterOptionToDisplayConfigMap.attributionClass,
+        filterOptionToDisplayConfigMap.availability,
         filterOptionToDisplayConfigMap.sort,
         filterOptionToDisplayConfigMap.waysToBuy,
       ]
@@ -298,9 +301,6 @@ export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonPr
   onPress,
   text = "Sort & Filter",
 }) => {
-  const insets = useSafeAreaInsets()
-  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
-
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const filterTypeState = ArtworksFiltersStore.useStoreState((state) => state.filterType)
 
@@ -348,7 +348,7 @@ export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonPr
 
   const roundedButtonStyle = {
     borderRadius: 50,
-    marginBottom: enableNewNavigation ? insets.bottom : 0,
+    marginBottom: 0,
   }
 
   return (
@@ -413,6 +413,11 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     displayText: FilterDisplayName.estimateRange,
     filterType: "estimateRange",
     ScreenComponent: "EstimateRangeOptionsScreen",
+  },
+  availability: {
+    displayText: FilterDisplayName.availability,
+    filterType: "availability",
+    ScreenComponent: "AvailabilityOptionsScreen",
   },
   partnerIDs: {
     displayText: FilterDisplayName.partnerIDs,
@@ -491,6 +496,7 @@ const CollectionFiltersSorted: FilterScreen[] = [
   "priceRange",
   "sizes",
   "waysToBuy",
+  "availability",
   "materialsTerms",
   "artistNationalities",
   "locationCities",
@@ -507,6 +513,7 @@ const ArtistArtworksFiltersSorted: FilterScreen[] = [
   "artistSeriesIDs",
   "sizes",
   "waysToBuy",
+  "availability",
   "materialsTerms",
   "locationCities",
   "majorPeriods",
@@ -521,6 +528,7 @@ const ArtistSeriesFiltersSorted: FilterScreen[] = [
   "priceRange",
   "sizes",
   "waysToBuy",
+  "availability",
   "materialsTerms",
   "locationCities",
   "majorPeriods",
@@ -535,6 +543,7 @@ const ArtworksFiltersSorted: FilterScreen[] = [
   "priceRange",
   "sizes",
   "waysToBuy",
+  "availability",
   "materialsTerms",
   "artistNationalities",
   "locationCities",
@@ -550,6 +559,7 @@ const FairFiltersSorted: FilterScreen[] = [
   "priceRange",
   "sizes",
   "waysToBuy",
+  "availability",
   "materialsTerms",
   "artistNationalities",
   "locationCities",
@@ -573,6 +583,7 @@ const ShowFiltersSorted: FilterScreen[] = [
   "priceRange",
   "sizes",
   "waysToBuy",
+  "availability",
   "materialsTerms",
   "artistNationalities",
   "majorPeriods",
@@ -587,6 +598,7 @@ const PartnerFiltersSorted: FilterScreen[] = [
   "priceRange",
   "sizes",
   "waysToBuy",
+  "availability",
   "materialsTerms",
   "artistNationalities",
   "majorPeriods",
@@ -601,6 +613,7 @@ const TagAndGeneFiltersSorted: FilterScreen[] = [
   "priceRange",
   "sizes",
   "waysToBuy",
+  "availability",
   "materialsTerms",
   "artistNationalities",
   "locationCities",

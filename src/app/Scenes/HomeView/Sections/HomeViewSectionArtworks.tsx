@@ -14,7 +14,7 @@ import { HomeViewSectionArtworks_section$key } from "__generated__/HomeViewSecti
 import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import {
   ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
-  ARTWORK_RAIL_MIN_IMAGE_WIDTH,
+  ARTWORK_RAIL_CARD_MIN_WIDTH,
 } from "app/Components/ArtworkRail/ArtworkRailCardImage"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
@@ -163,7 +163,7 @@ const HomeViewSectionArtworksPlaceholder: React.FC<FlexProps> = (flexProps) => {
                 <Flex key={index}>
                   <SkeletonBox
                     height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
-                    width={ARTWORK_RAIL_MIN_IMAGE_WIDTH * 2}
+                    width={ARTWORK_RAIL_CARD_MIN_WIDTH * 2}
                   />
                   <Spacer y={1} />
 

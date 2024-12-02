@@ -260,12 +260,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableMarketingCollectionsCategories",
   },
-  AREnableHomeViewTasksSection: {
-    description: "Enable the Home view tasks section",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableHomeViewTasksSection",
-  },
   AREnableNewNavigation: {
     description: "Enable new navigation infra (Requires App Restart!)",
     readyForRelease: true,
@@ -289,6 +283,12 @@ export const features = {
     readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableNewSearchModal",
+  },
+  AREnableAvailabilityFilter: {
+    description: "Enable availability filter",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableAvailabilityFilter",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 

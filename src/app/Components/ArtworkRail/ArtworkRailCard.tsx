@@ -3,6 +3,8 @@ import { ArtworkRailCard_artwork$key } from "__generated__/ArtworkRailCard_artwo
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import {
   ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
+  ARTWORK_RAIL_CARD_MAX_WIDTH,
+  ARTWORK_RAIL_CARD_MIN_WIDTH,
   ArtworkRailCardImage,
 } from "app/Components/ArtworkRail/ArtworkRailCardImage"
 import {
@@ -20,8 +22,8 @@ import { useState } from "react"
 import { GestureResponderEvent, PixelRatio, TouchableHighlight } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
-export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = PixelRatio.getFontScale() * 100
-export const ARTWORK_RAIL_CARD_MINIMUM_WIDTH = 140
+const fontScale = PixelRatio.getFontScale()
+export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = fontScale * 100
 
 export interface ArtworkRailCardProps
   extends ArtworkActionTrackingProps,
@@ -74,9 +76,9 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     showSaveIcon &&
     enableNewSaveAndFollowOnArtworkCard &&
     (enableNewSaveCTA || enableNewSaveAndFollowCTAs)
-      ? 43
+      ? fontScale * 43
       : 0
-  const artworkRailCardMetaPadding = 10
+  const artworkRailCardMetaPadding = fontScale * 10
   const artworkRailCardMetaDataHeight =
     ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + artworkRailCardMetaPadding + likeAndFollowCTAPadding
 
@@ -112,6 +114,8 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                 containerHeight ?? ARTWORK_RAIL_CARD_IMAGE_HEIGHT + artworkRailCardMetaDataHeight
               }
               justifyContent="flex-start"
+              minWidth={ARTWORK_RAIL_CARD_MIN_WIDTH}
+              maxWidth={ARTWORK_RAIL_CARD_MAX_WIDTH}
             >
               <ArtworkRailCardImage artwork={artwork} />
 

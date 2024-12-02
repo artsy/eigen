@@ -127,6 +127,7 @@ jest.mock("@react-navigation/native", () => {
       dispatch: jest.fn(),
       addListener: jest.fn(),
       setOptions: jest.fn(),
+      getParent: jest.fn(),
     }),
     useScrollToTop: jest.fn(),
   }
@@ -231,6 +232,9 @@ jest.mock("@sentry/react-native", () => ({
   wrap: jest.fn().mockImplementation((component) => component),
   withProfiler: jest.fn().mockImplementation((component) => component),
   TimeToFullDisplay: () => null,
+  reactNavigationIntegration: jest.fn().mockImplementation(() => ({
+    registerNavigationContainer: jest.fn(),
+  })),
 }))
 
 jest.mock("@rnmapbox/maps", () => ({
@@ -617,4 +621,8 @@ jest.mock("@react-native-community/geolocation", () => ({
 jest.mock("react-native-document-picker", () => ({
   default: jest.fn(),
   pick: jest.fn(),
+}))
+
+jest.mock("app/utils/queryPrefetching", () => ({
+  usePrefetch: jest.fn(() => jest.fn()),
 }))

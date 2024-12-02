@@ -15,25 +15,31 @@ export interface AuthScreen {
   params?: Record<string, any>
 }
 
-interface AuthContextModel {
+export interface AuthContextModel {
+  // state
   currentScreen: AuthScreen | undefined
-  goBack: Action<AuthContextModel>
   isModalExpanded: boolean
   isMounted: boolean
   previousScreens: Array<AuthScreen | undefined>
+
+  // actions
+  goBack: Action<AuthContextModel>
   setCurrentScreen: Action<AuthContextModel, AuthScreen>
   setModalExpanded: Action<AuthContextModel, boolean>
   setParams: Action<AuthContextModel, Record<string, any>>
 }
 
-export const AuthContext = createContextStore<AuthContextModel>({
+export const defaultState: AuthContextModel = {
+  // state
   currentScreen: { name: "LoginWelcomeStep" },
-  goBack: action((state) => {
-    state.currentScreen = state.previousScreens.pop()
-  }),
   isModalExpanded: false,
   isMounted: false,
   previousScreens: [],
+
+  // actions
+  goBack: action((state) => {
+    state.currentScreen = state.previousScreens.pop()
+  }),
   setCurrentScreen: action((state, currentScreen) => {
     state.previousScreens.push(state.currentScreen)
     state.currentScreen = currentScreen
@@ -47,4 +53,9 @@ export const AuthContext = createContextStore<AuthContextModel>({
       state.currentScreen.params = { ...(state.currentScreen.params ?? {}), ...params }
     }
   }),
-})
+}
+
+export const AuthContext = createContextStore<AuthContextModel>((initialState) => ({
+  ...defaultState,
+  ...initialState,
+}))

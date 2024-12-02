@@ -5,7 +5,6 @@ import {
   Skeleton,
   SkeletonText,
   Spacer,
-  useScreenDimensions,
 } from "@artsy/palette-mobile"
 import { ArtworkRail_artworks$data } from "__generated__/ArtworkRail_artworks.graphql"
 import { CollectionRailCollectionsByCategoryQuery } from "__generated__/CollectionRailCollectionsByCategoryQuery.graphql"
@@ -14,10 +13,9 @@ import { ArtworkRail, ArtworkRailPlaceholder } from "app/Components/ArtworkRail/
 import { SectionTitle } from "app/Components/SectionTitle"
 import { useCollectionByCategoryTracking } from "app/Scenes/CollectionsByCategory/hooks/useCollectionByCategoryTracking"
 import { navigate } from "app/system/navigation/navigate"
-import { ElementInView } from "app/utils/ElementInView"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense, NoFallback } from "app/utils/hooks/withSuspense"
-import { FC, useState } from "react"
+import { FC } from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface CollectionRailProps {
@@ -125,8 +123,8 @@ export const CollectionRailPlaceholder: FC<Partial<CollectionRailProps>> = ({ la
 }
 
 const query = graphql`
-  query CollectionRailCollectionsByCategoryQuery($slug: String!, $isVisible: Boolean!) {
-    marketingCollection(slug: $slug) @include(if: $isVisible) {
+  query CollectionRailCollectionsByCategoryQuery($slug: String!) {
+    marketingCollection(slug: $slug) {
       ...CollectionRail_marketingCollection
 
       title
@@ -143,26 +141,14 @@ export const CollectionRailWithSuspense = withSuspense<
   CollectionRailWithSuspenseProps & Partial<CollectionRailProps>
 >({
   Component: ({ slug, lastElement }) => {
-    const { height } = useScreenDimensions()
-    const [isVisible, setIsVisible] = useState(false)
-    const data = useLazyLoadQuery<CollectionRailCollectionsByCategoryQuery>(query, {
-      slug,
-      isVisible,
-    })
+    const data = useLazyLoadQuery<CollectionRailCollectionsByCategoryQuery>(
+      query,
+      { slug },
+      { fetchPolicy: "store-and-network" }
+    )
 
-    const handleOnVisible = () => {
-      if (!isVisible) {
-        setIsVisible(true)
-      }
-    }
-
-    if (!data?.marketingCollection || !isVisible) {
-      // We don't need to overfetch all rails at once, fetch as they become closer to be visible
-      return (
-        <ElementInView onVisible={handleOnVisible} visibilityMargin={-height}>
-          <CollectionRailPlaceholder lastElement={lastElement} />
-        </ElementInView>
-      )
+    if (!data?.marketingCollection) {
+      return <CollectionRailPlaceholder lastElement={lastElement} />
     }
 
     return <CollectionRail collection={data.marketingCollection} lastElement={lastElement} />
