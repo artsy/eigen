@@ -4,7 +4,7 @@ import { ArtworkRail_artworks$data } from "__generated__/ArtworkRail_artworks.gr
 import { NewWorksForYouRail_artworkConnection$key } from "__generated__/NewWorksForYouRail_artworkConnection.graphql"
 import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { useItemsImpressionsTracking } from "app/Scenes/Home/Components/useImpressionsTracking"
+import { useItemsImpressionsTracking } from "app/Scenes/HomeView/Components/useImpressionsTracking"
 import HomeAnalytics from "app/Scenes/HomeView/helpers/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"

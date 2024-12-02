@@ -1,7 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
 import { SaleArtworksRail_me$data } from "__generated__/SaleArtworksRail_me.graphql"
-import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
+import { CardRailFlatList } from "app/Components/CardRail/CardRailFlatList"
 import { SaleArtworkTileRailCardContainer } from "app/Components/SaleArtworkTileRailCard"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"

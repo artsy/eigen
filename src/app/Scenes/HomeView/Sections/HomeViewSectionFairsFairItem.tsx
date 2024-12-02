@@ -3,7 +3,7 @@ import {
   HomeViewSectionFairsFairItem_fair$data,
   HomeViewSectionFairsFairItem_fair$key,
 } from "__generated__/HomeViewSectionFairsFairItem_fair.graphql"
-import { CardRailCard, CardRailMetadataContainer } from "app/Components/Home/CardRailCard"
+import { CardRailCard, CardRailMetadataContainer } from "app/Components/CardRail/CardRailCard"
 import { ThreeUpImageLayout } from "app/Components/ThreeUpImageLayout"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"

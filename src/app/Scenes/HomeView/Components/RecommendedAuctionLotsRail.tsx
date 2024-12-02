@@ -6,8 +6,8 @@ import {
 } from "__generated__/RecommendedAuctionLotsRail_artworkConnection.graphql"
 import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { RailScrollProps } from "app/Scenes/Home/Components/types"
-import { useItemsImpressionsTracking } from "app/Scenes/Home/Components/useImpressionsTracking"
+import { RailScrollProps } from "app/Scenes/HomeView/Components/types"
+import { useItemsImpressionsTracking } from "app/Scenes/HomeView/Components/useImpressionsTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import {
