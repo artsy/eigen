@@ -16,10 +16,6 @@ export const CollectionArtworksFilter: React.FC<FilterProps> = ({ collection }) 
 
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
 
-  const toggleFilterArtworksModal = () => {
-    setFilterArtworkModalVisible(!isFilterArtworksModalVisible)
-  }
-
   const openFilterArtworksModal = () => {
     tracking.trackEvent({
       action_name: "filter",
@@ -29,7 +25,7 @@ export const CollectionArtworksFilter: React.FC<FilterProps> = ({ collection }) 
       context_screen_owner_slug: collection.slug,
       action_type: Schema.ActionTypes.Tap,
     })
-    toggleFilterArtworksModal()
+    setFilterArtworkModalVisible(true)
   }
 
   const closeFilterArtworksModal = () => {
@@ -41,7 +37,7 @@ export const CollectionArtworksFilter: React.FC<FilterProps> = ({ collection }) 
       context_screen_owner_slug: collection.slug,
       action_type: Schema.ActionTypes.Tap,
     })
-    toggleFilterArtworksModal()
+    setFilterArtworkModalVisible(false)
   }
 
   return (
@@ -51,7 +47,7 @@ export const CollectionArtworksFilter: React.FC<FilterProps> = ({ collection }) 
         id={collection.id}
         slug={collection.slug}
         visible={isFilterArtworksModalVisible}
-        exitModal={toggleFilterArtworksModal}
+        exitModal={closeFilterArtworksModal}
         closeModal={closeFilterArtworksModal}
         mode={FilterModalMode.Collection}
       />
