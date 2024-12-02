@@ -22,11 +22,11 @@ interface Props {
 interface ArtworkProps {
   show: Show_show$data
   visible: boolean
-  toggleFilterArtworksModal: () => void
+  closeFilterArtworksModal: () => void
 }
 
 export const ShowArtworksWithNavigation = (props: ArtworkProps) => {
-  const { show, visible, toggleFilterArtworksModal } = props
+  const { show, visible, closeFilterArtworksModal } = props
   return (
     <Box px={2}>
       <ShowArtworksPaginationContainer show={show} />
@@ -35,8 +35,8 @@ export const ShowArtworksWithNavigation = (props: ArtworkProps) => {
         id={show.internalID}
         slug={show.slug}
         mode={FilterModalMode.Show}
-        exitModal={toggleFilterArtworksModal}
-        closeModal={toggleFilterArtworksModal}
+        exitModal={closeFilterArtworksModal}
+        closeModal={closeFilterArtworksModal}
       />
     </Box>
   )
