@@ -20,7 +20,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { postEventToProviders } from "app/utils/track/providers"
 import { useCallback } from "react"
-import { Platform } from "react-native"
+import { InteractionManager, Platform } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 if (Platform.OS === "ios") {
@@ -133,9 +133,9 @@ const AppTabs: React.FC = () => {
       screenListeners={{
         tabPress: (e) => {
           // The goal of this is to queue up the tab press event to be handled after the tab has changed
-          setTimeout(() => {
+          InteractionManager.runAfterInteractions(() => {
             handleTabPress(e)
-          }, 0)
+          })
         },
       }}
     >
