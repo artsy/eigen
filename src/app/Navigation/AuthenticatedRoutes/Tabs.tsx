@@ -19,7 +19,8 @@ import { OnboardingQuiz } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingQ
 import { GlobalStore } from "app/store/GlobalStore"
 import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { postEventToProviders } from "app/utils/track/providers"
-import { Platform } from "react-native"
+import { useCallback } from "react"
+import { InteractionManager, Platform } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 if (Platform.OS === "ios") {
@@ -51,6 +52,28 @@ const AppTabs: React.FC = () => {
   const color = useColor()
   const isStaging = useIsStaging()
   const insets = useSafeAreaInsets()
+
+  const selectedTab = GlobalStore.useAppState((state) => state.bottomTabs.sessionState.selectedTab)
+
+  const handleTabPress = useCallback(
+    (e) => {
+      // the tab name is saved in e.target postfixed with random string like sell-Nw_wCNTWwOg95v
+      const tabName = Object.keys(bottomTabsConfig).find(
+        (tab) => e.target?.startsWith(tab)
+      ) as BottomTabType
+
+      if (Object.keys(BottomTabOption).includes(tabName) && selectedTab !== tabName) {
+        GlobalStore.actions.bottomTabs.setSelectedTab(tabName)
+        postEventToProviders(
+          tappedTabBar({
+            tab: bottomTabsConfig[tabName as BottomTabType].analyticsDescription,
+            contextScreenOwnerType: BottomTabOption[tabName as BottomTabType],
+          })
+        )
+      }
+    },
+    [selectedTab]
+  )
 
   const stagingTabBarStyle = {
     borderTopColor: color("devpurple"),
@@ -109,20 +132,10 @@ const AppTabs: React.FC = () => {
       }}
       screenListeners={{
         tabPress: (e) => {
-          // the tab name is saved in e.target postfixed with random string like sell-Nw_wCNTWwOg95v
-          const tabName = Object.keys(bottomTabsConfig).find(
-            (tab) => e.target?.startsWith(tab)
-          ) as BottomTabType
-
-          if (Object.keys(BottomTabOption).includes(tabName)) {
-            GlobalStore.actions.bottomTabs.setSelectedTab(tabName)
-            postEventToProviders(
-              tappedTabBar({
-                tab: bottomTabsConfig[tabName as BottomTabType].analyticsDescription,
-                contextScreenOwnerType: BottomTabOption[tabName as BottomTabType],
-              })
-            )
-          }
+          // The goal of this is to queue up the tab press event to be handled after the tab has changed
+          InteractionManager.runAfterInteractions(() => {
+            handleTabPress(e)
+          })
         },
       }}
     >
