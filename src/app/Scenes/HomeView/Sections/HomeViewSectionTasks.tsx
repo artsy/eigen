@@ -10,7 +10,6 @@ import {
   SkeletonText,
   Spacer,
   Text,
-  Touchable,
 } from "@artsy/palette-mobile"
 import { useIsFocused } from "@react-navigation/native"
 import { HomeViewSectionTasksQuery } from "__generated__/HomeViewSectionTasksQuery.graphql"
@@ -181,18 +180,16 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
               />
             </Flex>
 
-            <Touchable onPress={() => !showAll && setShowAll((prev) => !prev)}>
-              <Flex mr={2}>
-                <FlatList
-                  scrollEnabled={false}
-                  data={filteredTasks}
-                  keyExtractor={(item) => item.internalID}
-                  CellRendererComponent={renderCell}
-                  ItemSeparatorComponent={() => <Spacer y={1} />}
-                  renderItem={renderItem}
-                />
-              </Flex>
-            </Touchable>
+            <Flex mr={2}>
+              <FlatList
+                scrollEnabled={false}
+                data={filteredTasks}
+                keyExtractor={(item) => item.internalID}
+                CellRendererComponent={renderCell}
+                ItemSeparatorComponent={() => <Spacer y={1} />}
+                renderItem={renderItem}
+              />
+            </Flex>
 
             <HomeViewSectionSentinel
               contextModule={section.contextModule as ContextModule}
