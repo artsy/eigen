@@ -109,20 +109,23 @@ const AppTabs: React.FC = () => {
       }}
       screenListeners={{
         tabPress: (e) => {
-          // the tab name is saved in e.target postfixed with random string like sell-Nw_wCNTWwOg95v
-          const tabName = Object.keys(bottomTabsConfig).find(
-            (tab) => e.target?.startsWith(tab)
-          ) as BottomTabType
+          // The goal of this is to queue up the tab press event to be handled after the animation is done
+          requestAnimationFrame(() => {
+            // the tab name is saved in e.target postfixed with random string like sell-Nw_wCNTWwOg95v
+            const tabName = Object.keys(bottomTabsConfig).find(
+              (tab) => e.target?.startsWith(tab)
+            ) as BottomTabType
 
-          if (Object.keys(BottomTabOption).includes(tabName)) {
-            GlobalStore.actions.bottomTabs.setSelectedTab(tabName)
-            postEventToProviders(
-              tappedTabBar({
-                tab: bottomTabsConfig[tabName as BottomTabType].analyticsDescription,
-                contextScreenOwnerType: BottomTabOption[tabName as BottomTabType],
-              })
-            )
-          }
+            if (Object.keys(BottomTabOption).includes(tabName)) {
+              GlobalStore.actions.bottomTabs.setSelectedTab(tabName)
+              postEventToProviders(
+                tappedTabBar({
+                  tab: bottomTabsConfig[tabName as BottomTabType].analyticsDescription,
+                  contextScreenOwnerType: BottomTabOption[tabName as BottomTabType],
+                })
+              )
+            }
+          })
         },
       }}
     >
