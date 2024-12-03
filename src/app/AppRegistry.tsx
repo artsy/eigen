@@ -285,16 +285,17 @@ function register(
 }
 
 export interface ViewOptions {
-  // TODO: Remove this once we the old infra code gets removed
+  // TODO: Remove this once the old infra code gets removed
   modalPresentationStyle?: "fullScreen" | "pageSheet" | "formSheet"
   // @deprecated Use screenOptions.headerShown instead
-  // TODO: Remove this once we the old infra code gets removed
+  // TODO: Remove this once the old infra code gets removed
   hasOwnModalCloseButton?: boolean
   alwaysPresentModally?: boolean
   // @deprecated Use screenOptions.headerShown instead
-  // TODO: Remove this once we the old infra code gets removed
+  // TODO: Remove this once the old infra code gets removed
   hidesBackButton?: boolean
   hidesBottomTabs?: boolean
+  // TODO: Remove this once the old infra code gets removed
   fullBleed?: boolean
   // TODO: Remove this once we the old infra code gets removed
   ignoreTabs?: boolean
