@@ -18,11 +18,12 @@ import { goBack } from "app/system/navigation/navigate"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useEffect } from "react"
-import { NativeModules, ScrollView } from "react-native"
+import { NativeModules, PixelRatio, ScrollView } from "react-native"
 import DeviceInfo from "react-native-device-info"
 
 export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
   const userEmail = GlobalStore.useAppState((s) => s.auth.userEmail)
+  const fontScale = PixelRatio.getFontScale()
   const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
   const navigation = useNavigation<NavigationProp<AuthenticatedRoutesParams, "DevMenu">>()
 
@@ -75,6 +76,9 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
       </Text>
       <Text variant="xs" color="grey" mx={2}>
         Email: <Text variant="xs">{userEmail}</Text>
+      </Text>
+      <Text variant="xs" color="grey" mx={2}>
+        Font scale: <Text variant="xs">{fontScale}</Text>
       </Text>
       <DevMenuButtonItem title="Open RN Dev Menu" onPress={() => NativeModules?.DevMenu?.show()} />
       <Spacer y={2} />

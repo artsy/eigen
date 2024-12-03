@@ -125,25 +125,22 @@ const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> = ({
     [hideArtistName, onPress, showPartnerName]
   )
   return (
-    <>
-      <Text>{fontScale}</Text>
-      <PrefetchFlashList
-        // We need to set the maximum number of artworks to not cause layout shifts
-        data={recentlySoldArtworks.slice(0, MAX_NUMBER_OF_ARTWORKS)}
-        estimatedItemSize={ARTWORK_RAIL_CARD_MIN_WIDTH}
-        horizontal
-        keyExtractor={(item, index) => String(item?.artwork?.slug || index)}
-        ItemSeparatorComponent={() => <Spacer x="15px" />}
-        ListFooterComponent={ListFooterComponent}
-        ListHeaderComponent={ListHeaderComponent}
-        listRef={listRef}
-        onEndReached={onEndReached}
-        onEndReachedThreshold={onEndReachedThreshold}
-        prefetchUrlExtractor={(item) => item?.artwork?.href || undefined}
-        renderItem={renderItem}
-        showsHorizontalScrollIndicator={false}
-      />
-    </>
+    <PrefetchFlashList
+      // We need to set the maximum number of artworks to not cause layout shifts
+      data={recentlySoldArtworks.slice(0, MAX_NUMBER_OF_ARTWORKS)}
+      estimatedItemSize={ARTWORK_RAIL_CARD_MIN_WIDTH}
+      horizontal
+      keyExtractor={(item, index) => String(item?.artwork?.slug || index)}
+      ItemSeparatorComponent={() => <Spacer x="15px" />}
+      ListFooterComponent={ListFooterComponent}
+      ListHeaderComponent={ListHeaderComponent}
+      listRef={listRef}
+      onEndReached={onEndReached}
+      onEndReachedThreshold={onEndReachedThreshold}
+      prefetchUrlExtractor={(item) => item?.artwork?.href || undefined}
+      renderItem={renderItem}
+      showsHorizontalScrollIndicator={false}
+    />
   )
 }
 
