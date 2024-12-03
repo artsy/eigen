@@ -99,8 +99,6 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
     }
 
     setClearedTasks((prev) => [...prev, task.internalID])
-
-    // setDisplayTask(false)
   }
 
   const renderCell = useCallback(({ index, ...rest }: CellRendererProps<Task>) => {
@@ -168,9 +166,13 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
               <SectionTitle
                 title={section.component?.title}
                 RightButtonContent={() => {
+                  if (filteredTasks.length < 2) {
+                    return null
+                  }
+
                   return (
                     <Flex flexDirection="row">
-                      <Text variant="xs">{showAll ? "Show less" : "Show all"}</Text>
+                      <Text variant="xs">{showAll ? "Show Less" : "Show All"}</Text>
                       <HeaderIconComponent ml={5} mt="2px" />
                     </Flex>
                   )
