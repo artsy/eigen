@@ -71,12 +71,12 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     ;(artwork as DissapearableArtwork)?._disappearable?.disappear()
   }
 
-  // 36 = 20 (padding) + 18 (icon size) + 5 (top padding)
+  // 36 = 20 (padding) + 18 (icon size) + 5 (top padding) + 2 (border radius when dark background)
   const likeAndFollowCTAPadding =
     showSaveIcon &&
     enableNewSaveAndFollowOnArtworkCard &&
     (enableNewSaveCTA || enableNewSaveAndFollowCTAs)
-      ? fontScale * 43
+      ? fontScale * (43 + (dark ? 2 : 0))
       : 0
   const artworkRailCardMetaPadding = fontScale * 10
   const artworkRailCardMetaDataHeight =
