@@ -129,7 +129,14 @@ export const ArtworkItemCTAs: React.FC<ArtworkItemCTAsProps> = ({
       )}
 
       {!!sale?.isAuction && !!collectorSignals?.auction?.lotWatcherCount && (
-        <Text lineHeight="12px" pl={0.5} variant="xxs" numberOfLines={1} textAlign="center">
+        <Text
+          lineHeight="12px"
+          pl={0.5}
+          variant="xxs"
+          numberOfLines={1}
+          textAlign="center"
+          color={primaryColor}
+        >
           {collectorSignals.auction.lotWatcherCount}
         </Text>
       )}
