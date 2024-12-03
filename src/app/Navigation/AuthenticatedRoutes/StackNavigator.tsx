@@ -14,6 +14,7 @@ import { isHeaderShown } from "app/Navigation/Utils/isHeaderShown"
 import { isModalScreen } from "app/Navigation/Utils/isModalScreen"
 import { ICON_HEIGHT } from "app/Scenes/BottomTabs/BottomTabsIcon"
 import { goBack } from "app/system/navigation/navigate"
+import { memo } from "react"
 import { Platform } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -92,36 +93,34 @@ export interface ScreenWrapperProps {
   readonly hidesBottomTabs?: boolean
 }
 
-export const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
-  fullBleed = false,
-  hidesBottomTabs = false,
-  children,
-}) => {
-  const safeAreaInsets = useSafeAreaInsets()
-  // We don't have the bottom tabs context on modal screens
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const tabBarHeight = hidesBottomTabs ? 0 : useBottomTabBarHeight()
+export const ScreenWrapper: React.FC<ScreenWrapperProps> = memo(
+  ({ fullBleed = false, hidesBottomTabs = false, children }) => {
+    const safeAreaInsets = useSafeAreaInsets()
+    // We don't have the bottom tabs context on modal screens
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const tabBarHeight = hidesBottomTabs ? 0 : useBottomTabBarHeight()
 
-  const padding = fullBleed
-    ? {
-        paddingBottom: hidesBottomTabs ? 0 : tabBarHeight,
-      }
-    : {
-        // Bottom inset + bottom tabs height - bottom tabs border
-        paddingBottom: hidesBottomTabs ? 0 : safeAreaInsets.bottom + ICON_HEIGHT - 2,
-        paddingTop: safeAreaInsets.top,
-        paddingRight: safeAreaInsets.right,
-        paddingLeft: safeAreaInsets.left,
-      }
+    const padding = fullBleed
+      ? {
+          paddingBottom: hidesBottomTabs ? 0 : tabBarHeight,
+        }
+      : {
+          // Bottom inset + bottom tabs height - bottom tabs border
+          paddingBottom: hidesBottomTabs ? 0 : safeAreaInsets.bottom + ICON_HEIGHT - 2,
+          paddingTop: safeAreaInsets.top,
+          paddingRight: safeAreaInsets.right,
+          paddingLeft: safeAreaInsets.left,
+        }
 
-  return (
-    <Flex
-      flex={1}
-      style={{
-        ...padding,
-      }}
-    >
-      {children}
-    </Flex>
-  )
-}
+    return (
+      <Flex
+        flex={1}
+        style={{
+          ...padding,
+        }}
+      >
+        {children}
+      </Flex>
+    )
+  }
+)

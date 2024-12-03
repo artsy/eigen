@@ -14,7 +14,7 @@ import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { RefreshEvents, SELL_SCREEN_REFRESH_KEY } from "app/utils/refreshHelpers"
 import { useSwitchStatusBarStyle } from "app/utils/useStatusBarStyle"
 import { compact } from "lodash"
-import { RefObject, Suspense, useEffect, useReducer } from "react"
+import { memo, RefObject, Suspense, useEffect, useReducer } from "react"
 import { StatusBarStyle } from "react-native"
 import { FlatList } from "react-native-gesture-handler"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -171,13 +171,13 @@ export const SellWithArtsyHomeScreenQuery = graphql`
   }
 `
 
-export const SellWithArtsyHomeQueryRenderer: React.FC = () => {
+export const SellWithArtsyHomeQueryRenderer: React.FC = memo(() => {
   return (
     <Suspense fallback={<SellWithArtsyHomePlaceholder />}>
       <SellWithArtsyHome />
     </Suspense>
   )
-}
+})
 
 const SellWithArtsyHomePlaceholder: React.FC = () => {
   return (

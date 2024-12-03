@@ -36,7 +36,7 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
-import React, { useEffect, useState } from "react"
+import React, { memo, useEffect, useState } from "react"
 import { RefreshControl } from "react-native"
 import {
   QueryRenderer,
@@ -333,7 +333,7 @@ export const MyCollectionScreenQuery = graphql`
   }
 `
 
-export const MyCollectionQueryRenderer: React.FC = () => {
+export const MyCollectionQueryRenderer: React.FC = memo(() => {
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({
@@ -366,7 +366,7 @@ export const MyCollectionQueryRenderer: React.FC = () => {
       </MyCollectionArtworksKeywordStore.Provider>
     </ProvideScreenTrackingWithCohesionSchema>
   )
-}
+})
 
 export const MyCollectionPlaceholder: React.FC = () => {
   return (

@@ -20,7 +20,7 @@ import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { track } from "app/utils/track"
 import { ActionNames, ActionTypes } from "app/utils/track/schema"
-import React from "react"
+import React, { memo } from "react"
 import { EmitterSubscription } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
@@ -150,7 +150,7 @@ interface InboxQueryRendererProps extends StackScreenProps<any> {
   isVisible?: boolean
 }
 
-export const InboxQueryRenderer: React.FC<InboxQueryRendererProps> = (props) => {
+export const InboxQueryRenderer: React.FC<InboxQueryRendererProps> = memo((props) => {
   return (
     <Screen>
       <QueryRenderer<InboxQuery>
@@ -167,7 +167,7 @@ export const InboxQueryRenderer: React.FC<InboxQueryRendererProps> = (props) => 
       />
     </Screen>
   )
-}
+})
 
 export const InboxPlaceholder = () => {
   return (

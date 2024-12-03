@@ -15,7 +15,7 @@ import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import { throttle } from "lodash"
-import { Suspense, useEffect, useMemo, useRef, useState } from "react"
+import { memo, Suspense, useEffect, useMemo, useRef, useState } from "react"
 import { Platform, ScrollView } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql } from "react-relay"
@@ -215,7 +215,7 @@ const SearchScreenInner: React.FC<SearchScreenProps> = () => {
   )
 }
 
-export const SearchScreen = withProfiler(SearchScreenInner, { name: "Search" })
+export const SearchScreen = memo(withProfiler(SearchScreenInner, { name: "Search" }))
 
 const Scrollable = styled(ScrollView).attrs(() => ({
   keyboardDismissMode: "on-drag",

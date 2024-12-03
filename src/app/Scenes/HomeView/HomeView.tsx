@@ -31,7 +31,7 @@ import { usePrefetch } from "app/utils/queryPrefetching"
 import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
 import { useSwitchStatusBarStyle } from "app/utils/useStatusBarStyle"
-import { RefObject, Suspense, useCallback, useEffect, useState } from "react"
+import { memo, RefObject, Suspense, useCallback, useEffect, useState } from "react"
 import { FlatList, Linking, RefreshControl } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
@@ -234,7 +234,7 @@ const HomeViewScreenComponent: React.FC = () => {
   )
 }
 
-export const HomeViewScreen = Sentry.withProfiler(HomeViewScreenComponent)
+export const HomeViewScreen = memo(Sentry.withProfiler(HomeViewScreenComponent))
 
 const sectionsFragment = graphql`
   fragment HomeViewSectionsConnection_viewer on Viewer
