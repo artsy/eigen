@@ -1,6 +1,6 @@
 import { AutosuggestResultsPaginationQuery$rawResponse } from "__generated__/AutosuggestResultsPaginationQuery.graphql"
 import { AutosuggestResultsQuery$rawResponse } from "__generated__/AutosuggestResultsQuery.graphql"
-import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
+import { InfiniteScrollFlashList } from "app/Components/InfiniteScrollFlashList"
 import Spinner from "app/Components/Spinner"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
 import { AutosuggestSearchResult } from "app/Scenes/Search/components/AutosuggestSearchResult"
@@ -190,14 +190,14 @@ describe("AutosuggestResults", () => {
 
     expect(env.mock.getAllOperations()).toHaveLength(0)
 
-    // even if AboveTheFoldFlatList calls onEndReached, we ignore it until the user explicitly scrolls
+    // even if InfiniteScrollFlashList calls onEndReached, we ignore it until the user explicitly scrolls
     act(() => {
-      tree.root.findByType(AboveTheFoldFlatList).props.onEndReached()
+      tree.root.findByType(InfiniteScrollFlashList).props.onEndReached()
     })
     expect(env.mock.getAllOperations()).toHaveLength(0)
 
     act(() => {
-      tree.root.findByType(AboveTheFoldFlatList).props.onScrollBeginDrag()
+      tree.root.findByType(InfiniteScrollFlashList).props.onScrollBeginDrag()
     })
     expect(env.mock.getAllOperations()).toHaveLength(1)
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
@@ -215,7 +215,7 @@ describe("AutosuggestResults", () => {
 
     // and it works if onEndReached is called now
     act(() => {
-      tree.root.findByType(AboveTheFoldFlatList).props.onEndReached()
+      tree.root.findByType(InfiniteScrollFlashList).props.onEndReached()
     })
     expect(env.mock.getAllOperations()).toHaveLength(1)
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
@@ -239,7 +239,7 @@ describe("AutosuggestResults", () => {
       env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
     })
     const scrollToOffsetMock = jest.fn()
-    tree.root.findByType(AboveTheFoldFlatList).findByType(FlatList).instance.scrollToOffset =
+    tree.root.findByType(InfiniteScrollFlashList).findByType(FlatList).instance.scrollToOffset =
       scrollToOffsetMock
 
     act(() => {
@@ -257,12 +257,12 @@ describe("AutosuggestResults", () => {
     act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
     expect(tree.root.findAllByType(Spinner)).toHaveLength(1)
 
-    act(() => tree.root.findByType(AboveTheFoldFlatList).props.onScrollBeginDrag())
+    act(() => tree.root.findByType(InfiniteScrollFlashList).props.onScrollBeginDrag())
     act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage2 }))
 
     expect(tree.root.findAllByType(Spinner)).toHaveLength(1)
 
-    act(() => tree.root.findByType(AboveTheFoldFlatList).props.onEndReached())
+    act(() => tree.root.findByType(InfiniteScrollFlashList).props.onEndReached())
     act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage3 }))
 
     expect(tree.root.findAllByType(Spinner)).toHaveLength(0)

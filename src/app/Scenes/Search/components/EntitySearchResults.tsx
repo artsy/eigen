@@ -1,4 +1,5 @@
 import { Flex, Spacer, Spinner, useSpace } from "@artsy/palette-mobile"
+import { FlashList } from "@shopify/flash-list"
 import { EntitySearchResultsQuery } from "__generated__/EntitySearchResultsQuery.graphql"
 import { EntitySearchResults_searchConnection$key } from "__generated__/EntitySearchResults_searchConnection.graphql"
 import { SimpleErrorMessage } from "app/Components/ErrorView/SimpleErrorMessage"
@@ -7,11 +8,11 @@ import { SearchResult } from "app/Scenes/Search/components/SearchResult"
 import { SingleIndexEmptyResultsMessage } from "app/Scenes/Search/components/SingleIndexEmptyResultsMessage"
 import { SingleIndexSearchPlaceholder } from "app/Scenes/Search/components/placeholders/SingleIndexSearchPlaceholder"
 import { SEARCH_PILL_KEY_TO_SEARCH_ENTITY } from "app/Scenes/Search/constants"
-import { PillType } from "app/Scenes/Search/types"
+import { PillType, SearchResultInterface } from "app/Scenes/Search/types"
 import { extractNodes } from "app/utils/extractNodes"
-import { Suspense, useContext, useEffect, useRef } from "react"
+import { Suspense, useCallback, useContext, useEffect, useRef } from "react"
 import { ErrorBoundary } from "react-error-boundary"
-import { FlatList, Keyboard } from "react-native"
+import { Keyboard } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
@@ -20,12 +21,13 @@ interface SearchResultsProps {
   selectedPill: PillType
 }
 
-const PAGE_SIZE = isTablet() ? 20 : 10
+const PAGE_SIZE = isTablet() ? 40 : 20
+const ESTIMATED_ITEM_SIZE = 56
 const SEARCH_RESULTS_BOTTOM_PADDING = 140
 
 export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selectedPill }) => {
   const space = useSpace()
-  const flatListRef = useRef<FlatList>(null)
+  const flashListRef = useRef<FlashList<SearchResultInterface>>(null)
   const { inputRef } = useContext(SearchContext)
 
   const selectedEntity = SEARCH_PILL_KEY_TO_SEARCH_ENTITY?.[selectedPill.key]
@@ -41,7 +43,7 @@ export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selec
     EntitySearchResults_searchConnection$key
   >(entitySearchResultsFragment, queryData)
 
-  const hits = extractNodes(data?.searchConnection)
+  const hits = (extractNodes(data?.searchConnection) as SearchResultInterface[]) ?? []
 
   const handleLoadMore = () => {
     if (!hasNext || isLoadingNext) {
@@ -57,16 +59,20 @@ export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selec
   }
 
   useEffect(() => {
-    if (flatListRef.current) {
-      flatListRef.current.scrollToOffset({ offset: 0, animated: true })
+    if (flashListRef.current) {
+      flashListRef.current.scrollToOffset({ offset: 0, animated: true })
     }
   }, [query])
 
+  const renderItem = useCallback(({ item, index }) => {
+    return <SearchResult result={item} selectedPill={selectedPill} query={query} position={index} />
+  }, [])
+
   return (
-    <FlatList
+    <FlashList
       accessibilityRole="list"
       accessibilityLabel={`${selectedPill.displayName} search results list`}
-      ref={flatListRef}
+      ref={flashListRef}
       contentContainerStyle={{
         paddingVertical: space(1),
         paddingHorizontal: space(2),
@@ -74,10 +80,8 @@ export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selec
       }}
       data={hits}
       keyExtractor={(item, index) => item.internalID ?? index.toString()}
-      renderItem={({ item, index }) => (
-        <SearchResult result={item} selectedPill={selectedPill} query={query} position={index} />
-      )}
-      initialNumToRender={PAGE_SIZE}
+      renderItem={renderItem}
+      estimatedItemSize={ESTIMATED_ITEM_SIZE}
       showsVerticalScrollIndicator={false}
       ItemSeparatorComponent={() => <Spacer y={2} />}
       keyboardDismissMode="on-drag"
@@ -92,6 +96,7 @@ export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selec
       }
       onScrollBeginDrag={handleOnScrollBeginDrag}
       onEndReached={handleLoadMore}
+      onEndReachedThreshold={0.5}
     />
   )
 }
