@@ -1,4 +1,4 @@
-import { Flex, Spacer, useSpace, Spinner } from "@artsy/palette-mobile"
+import { Flex, Spacer, Spinner, useSpace } from "@artsy/palette-mobile"
 import { EntitySearchResultsQuery } from "__generated__/EntitySearchResultsQuery.graphql"
 import { EntitySearchResults_searchConnection$key } from "__generated__/EntitySearchResults_searchConnection.graphql"
 import { SimpleErrorMessage } from "app/Components/ErrorView/SimpleErrorMessage"
@@ -21,6 +21,7 @@ interface SearchResultsProps {
 }
 
 const PAGE_SIZE = isTablet() ? 20 : 10
+const SEARCH_RESULTS_BOTTOM_PADDING = 140
 
 export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selectedPill }) => {
   const space = useSpace()
@@ -66,7 +67,11 @@ export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selec
       accessibilityRole="list"
       accessibilityLabel={`${selectedPill.displayName} search results list`}
       ref={flatListRef}
-      contentContainerStyle={{ paddingVertical: space(1), paddingHorizontal: space(2) }}
+      contentContainerStyle={{
+        paddingVertical: space(1),
+        paddingHorizontal: space(2),
+        paddingBottom: SEARCH_RESULTS_BOTTOM_PADDING,
+      }}
       data={hits}
       keyExtractor={(item, index) => item.internalID ?? index.toString()}
       renderItem={({ item, index }) => (
