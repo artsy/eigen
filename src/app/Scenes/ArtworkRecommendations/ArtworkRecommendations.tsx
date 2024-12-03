@@ -1,10 +1,9 @@
 import { OwnerType } from "@artsy/cohesion"
-import { SimpleMessage, Spacer } from "@artsy/palette-mobile"
+import { SimpleMessage } from "@artsy/palette-mobile"
 import { ArtworkRecommendationsQuery } from "__generated__/ArtworkRecommendationsQuery.graphql"
 import { ArtworkRecommendations_me$key } from "__generated__/ArtworkRecommendations_me.graphql"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
-import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
@@ -12,9 +11,7 @@ import { useRefreshControl } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { Suspense } from "react"
-import { useLazyLoadQuery, usePaginationFragment, graphql } from "react-relay"
-
-const SCREEN_TITLE = "Artwork Recommendations"
+import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 export const ArtworkRecommendations: React.FC = () => {
   const queryData = useLazyLoadQuery<ArtworkRecommendationsQuery>(
@@ -34,20 +31,18 @@ export const ArtworkRecommendations: React.FC = () => {
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.artworkRecommendations })}
     >
-      <PageWithSimpleHeader title={SCREEN_TITLE}>
-        <MasonryInfiniteScrollArtworkGrid
-          artworks={artworks}
-          contextScreenOwnerType={OwnerType.artworkRecommendations}
-          contextScreen={OwnerType.artworkRecommendations}
-          ListEmptyComponent={
-            <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
-          }
-          refreshControl={RefreshControl}
-          hasMore={hasNext}
-          loadMore={() => loadNext(PAGE_SIZE)}
-          isLoading={isLoadingNext}
-        />
-      </PageWithSimpleHeader>
+      <MasonryInfiniteScrollArtworkGrid
+        artworks={artworks}
+        contextScreenOwnerType={OwnerType.artworkRecommendations}
+        contextScreen={OwnerType.artworkRecommendations}
+        ListEmptyComponent={
+          <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
+        }
+        refreshControl={RefreshControl}
+        hasMore={hasNext}
+        loadMore={() => loadNext(PAGE_SIZE)}
+        isLoading={isLoadingNext}
+      />
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }
@@ -97,10 +92,7 @@ export const ArtworkRecommendationsScreen: React.FC = (props) => {
 const Placeholder = () => {
   return (
     <ProvidePlaceholderContext>
-      <PageWithSimpleHeader title={SCREEN_TITLE}>
-        <Spacer y={2} />
-        <PlaceholderGrid />
-      </PageWithSimpleHeader>
+      <PlaceholderGrid />
     </ProvidePlaceholderContext>
   )
 }

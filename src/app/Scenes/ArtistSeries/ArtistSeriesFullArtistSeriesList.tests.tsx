@@ -2,7 +2,6 @@ import { Touchable } from "@artsy/palette-mobile"
 import { ArtistSeriesFullArtistSeriesListTestsQuery } from "__generated__/ArtistSeriesFullArtistSeriesListTestsQuery.graphql"
 import { ArtistSeriesFullArtistSeriesListFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
-import { extractText } from "app/utils/tests/extractText"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
@@ -49,11 +48,6 @@ describe("Full Artist Series List", () => {
     })
     return root
   }
-
-  it("renders the Full Artist Series Page Header", () => {
-    const root = getWrapper()
-    expect(extractText(root)).toContain("Artist Series")
-  })
 
   it("renders the all of an artist's associated Artist Series", async () => {
     const root = getWrapper()

@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType, SaveCollectedArtwork } from "@artsy/cohesion"
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Screen } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { MyCollectionArtworkEditQuery } from "__generated__/MyCollectionArtworkEditQuery.graphql"
@@ -230,9 +230,11 @@ export const MyCollectionArtworkAdd: React.FC<{
 
 export const MyCollectionArtworkFormScreen: React.FC<MyCollectionArtworkFormProps> = (props) => {
   return (
-    <MyCollectionArtworkStore.Provider runtimeModel={props}>
-      <MyCollectionArtworkForm {...props} />
-    </MyCollectionArtworkStore.Provider>
+    <Screen>
+      <MyCollectionArtworkStore.Provider runtimeModel={props}>
+        <MyCollectionArtworkForm {...props} />
+      </MyCollectionArtworkStore.Provider>
+    </Screen>
   )
 }
 

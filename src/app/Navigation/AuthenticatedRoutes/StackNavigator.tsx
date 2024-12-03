@@ -12,11 +12,9 @@ import { ModuleDescriptor } from "app/AppRegistry"
 import { AuthenticatedRoutesParams } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { isHeaderShown } from "app/Navigation/Utils/isHeaderShown"
 import { isModalScreen } from "app/Navigation/Utils/isModalScreen"
-import { ICON_HEIGHT } from "app/Scenes/BottomTabs/BottomTabsIcon"
 import { goBack } from "app/system/navigation/navigate"
 import { Platform } from "react-native"
 import { isTablet } from "react-native-device-info"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 export const StackNavigator = createNativeStackNavigator<AuthenticatedRoutesParams>()
 
@@ -69,16 +67,11 @@ export const registerScreen: React.FC<StackNavigatorScreenProps> = ({ name, modu
       }}
       children={(screenProps) => {
         const params = screenProps.route.params || {}
-        const isFullBleed =
-          module.options.fullBleed ??
-          // when no header is visible, we want to make sure we are bound by the insets
-          module.options.screenOptions?.headerShown ??
-          isHeaderShown(module)
 
         const hidesBottomTabs = module.options.hidesBottomTabs || isModalScreen(module)
 
         return (
-          <ScreenWrapper fullBleed={isFullBleed} hidesBottomTabs={hidesBottomTabs}>
+          <ScreenWrapper hidesBottomTabs={hidesBottomTabs}>
             <module.Component {...params} {...{ ...screenProps }} />
           </ScreenWrapper>
         )
@@ -88,37 +81,22 @@ export const registerScreen: React.FC<StackNavigatorScreenProps> = ({ name, modu
 }
 
 export interface ScreenWrapperProps {
-  fullBleed?: boolean
   readonly hidesBottomTabs?: boolean
 }
 
 export const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
-  fullBleed = false,
   hidesBottomTabs = false,
   children,
 }) => {
-  const safeAreaInsets = useSafeAreaInsets()
   // We don't have the bottom tabs context on modal screens
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const tabBarHeight = hidesBottomTabs ? 0 : useBottomTabBarHeight()
-
-  const padding = fullBleed
-    ? {
-        paddingBottom: hidesBottomTabs ? 0 : tabBarHeight,
-      }
-    : {
-        // Bottom inset + bottom tabs height - bottom tabs border
-        paddingBottom: hidesBottomTabs ? 0 : safeAreaInsets.bottom + ICON_HEIGHT - 2,
-        paddingTop: safeAreaInsets.top,
-        paddingRight: safeAreaInsets.right,
-        paddingLeft: safeAreaInsets.left,
-      }
 
   return (
     <Flex
       flex={1}
       style={{
-        ...padding,
+        paddingBottom: hidesBottomTabs ? 0 : tabBarHeight,
       }}
     >
       {children}

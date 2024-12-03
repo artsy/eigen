@@ -1,4 +1,4 @@
-import { useScreenDimensions } from "@artsy/palette-mobile"
+import { Screen, useScreenDimensions } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { SubmitArtworkAddDetails } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddDetails"
@@ -80,18 +80,20 @@ export const SubmitArtworkForm: React.FC<SubmitArtworkProps> = (props) => {
   const initialScreen: SubmitArtworkScreen = props.initialStep || "StartFlow"
 
   return (
-    <SubmitArtworkFormStoreProvider
-      runtimeModel={{
-        currentStep: initialScreen,
-      }}
-    >
-      <SubmitArtworkFormContent
-        initialValues={props.initialValues}
-        initialStep={initialScreen}
-        navigationState={props.navigationState}
-        hasStartedFlowFromMyCollection={props.hasStartedFlowFromMyCollection}
-      />
-    </SubmitArtworkFormStoreProvider>
+    <Screen>
+      <SubmitArtworkFormStoreProvider
+        runtimeModel={{
+          currentStep: initialScreen,
+        }}
+      >
+        <SubmitArtworkFormContent
+          initialValues={props.initialValues}
+          initialStep={initialScreen}
+          navigationState={props.navigationState}
+          hasStartedFlowFromMyCollection={props.hasStartedFlowFromMyCollection}
+        />
+      </SubmitArtworkFormStoreProvider>
+    </Screen>
   )
 }
 

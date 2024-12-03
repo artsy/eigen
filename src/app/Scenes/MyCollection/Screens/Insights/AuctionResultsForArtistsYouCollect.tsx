@@ -1,8 +1,8 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { BackButton, Flex, Screen, Text, useSpace } from "@artsy/palette-mobile"
 import { AuctionResultsForArtistsYouCollectQuery } from "__generated__/AuctionResultsForArtistsYouCollectQuery.graphql"
 import { AuctionResultsForArtistsYouCollect_me$key } from "__generated__/AuctionResultsForArtistsYouCollect_me.graphql"
 import { AuctionResultsList, LoadingSkeleton } from "app/Components/AuctionResultsList"
-import { navigate } from "app/system/navigation/navigate"
+import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import React, { Suspense, useState } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
@@ -58,12 +58,24 @@ export const ListOfresults: React.FC<{}> = () => {
 }
 
 export const AuctionResultsForArtistsYouCollect: React.FC = () => {
+  const space = useSpace()
+
   return (
-    <Suspense
-      fallback={<LoadingSkeleton title="Recently Sold at Auctions" listHeader={<ListHeader />} />}
-    >
-      <ListOfresults />
-    </Suspense>
+    <Screen>
+      <Suspense
+        fallback={<LoadingSkeleton title="Recently Sold at Auctions" listHeader={<ListHeader />} />}
+      >
+        <ListOfresults />
+      </Suspense>
+
+      <BackButton
+        style={{
+          padding: space(2),
+          position: "absolute",
+        }}
+        onPress={goBack}
+      />
+    </Screen>
   )
 }
 

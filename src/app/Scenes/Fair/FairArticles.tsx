@@ -7,6 +7,7 @@ import {
   SimpleMessage,
   Button,
   Touchable,
+  Screen,
 } from "@artsy/palette-mobile"
 import { FairArticlesQuery } from "__generated__/FairArticlesQuery.graphql"
 import { FairArticles_fair$data } from "__generated__/FairArticles_fair.graphql"
@@ -67,10 +68,6 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
   return (
     <ScrollView>
       <Box px={2} py={6}>
-        <Text variant="lg-display">Articles</Text>
-
-        <Spacer y={1} />
-
         <Join separator={<Spacer y={4} />}>
           <Touchable
             onPress={() => {
@@ -106,7 +103,7 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
             </Box>
           </Touchable>
 
-          <FlatList<typeof remainingArticles[number]>
+          <FlatList<(typeof remainingArticles)[number]>
             data={remainingArticles}
             keyExtractor={({ node }, i) => node?.internalID ?? `${i}`}
             ItemSeparatorComponent={() => <Spacer y={4} />}
@@ -213,11 +210,13 @@ export const FairArticlesPaginationContainer = createPaginationContainer(
 
 export const FairArticlesQueryRenderer: React.FC<FairArticlesQueryRendererProps> = ({ fairID }) => {
   return (
-    <QueryRenderer<FairArticlesQuery>
-      environment={getRelayEnvironment()}
-      query={FAIR2_ARTICLES_QUERY}
-      variables={{ id: fairID, first: FAIR2_ARTICLES_PAGE_SIZE }}
-      render={renderWithLoadProgress(FairArticlesPaginationContainer)}
-    />
+    <Screen>
+      <QueryRenderer<FairArticlesQuery>
+        environment={getRelayEnvironment()}
+        query={FAIR2_ARTICLES_QUERY}
+        variables={{ id: fairID, first: FAIR2_ARTICLES_PAGE_SIZE }}
+        render={renderWithLoadProgress(FairArticlesPaginationContainer)}
+      />
+    </Screen>
   )
 }

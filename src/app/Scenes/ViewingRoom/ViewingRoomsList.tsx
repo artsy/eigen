@@ -1,8 +1,7 @@
-import { Flex, Spacer, useSpace } from "@artsy/palette-mobile"
+import { Flex, Screen, Spacer, useSpace } from "@artsy/palette-mobile"
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { ViewingRoomsListQuery } from "__generated__/ViewingRoomsListQuery.graphql"
 import { ViewingRoomsList_viewingRooms$key } from "__generated__/ViewingRoomsList_viewingRooms.graphql"
-import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { PAGE_SIZE } from "app/Components/constants"
 import { RailScrollRef } from "app/Scenes/HomeView/Components/types"
@@ -16,8 +15,6 @@ import { FlatList, RefreshControl } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 import { featuredFragment, FeaturedRail } from "./Components/ViewingRoomsListFeatured"
 import { ViewingRoomsListItem } from "./Components/ViewingRoomsListItem"
-
-const SCREEN_TITLE = "Viewing Rooms"
 
 const fragmentSpec = graphql`
   fragment ViewingRoomsList_viewingRooms on Query
@@ -96,69 +93,69 @@ export const ViewingRoomsList = () => {
 
   return (
     <ProvideScreenTracking info={tracks.screen()}>
-      <PageWithSimpleHeader title={SCREEN_TITLE}>
-        <Flex flexDirection="column" justifyContent="space-between" height="100%">
-          <FlatList
-            numColumns={numColumns}
-            key={`${numColumns}`}
-            ListHeaderComponent={() => (
-              <>
-                <Spacer y={2} />
-                {featuredLength > 0 && (
-                  <>
-                    <Flex mx={2}>
-                      <SectionTitle title="Featured" />
-                    </Flex>
-                    <FeaturedRail featured={queryData.featured} scrollRef={scrollRef} />
-                    <Spacer y={4} />
-                  </>
-                )}
-                <Flex mx={2}>
-                  <SectionTitle title="Latest" />
-                </Flex>
-              </>
-            )}
-            data={viewingRooms}
-            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
-            keyExtractor={(item) => `${item.internalID}-${numColumns}`}
-            renderItem={({ item, index }) => {
-              if (numColumns === 1) {
-                return (
+      <Flex flexDirection="column" justifyContent="space-between" height="100%">
+        <FlatList
+          numColumns={numColumns}
+          key={`${numColumns}`}
+          contentContainerStyle={{
+            paddingTop: space(2),
+          }}
+          ListHeaderComponent={() => (
+            <>
+              {featuredLength > 0 && (
+                <>
                   <Flex mx={2}>
+                    <SectionTitle title="Featured" />
+                  </Flex>
+                  <FeaturedRail featured={queryData.featured} scrollRef={scrollRef} />
+                  <Spacer y={4} />
+                </>
+              )}
+              <Flex mx={2}>
+                <SectionTitle title="Latest" />
+              </Flex>
+            </>
+          )}
+          data={viewingRooms}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
+          keyExtractor={(item) => `${item.internalID}-${numColumns}`}
+          renderItem={({ item, index }) => {
+            if (numColumns === 1) {
+              return (
+                <Flex mx={2}>
+                  <ViewingRoomsListItem item={item} />
+                </Flex>
+              )
+            } else {
+              return (
+                <Flex flex={1 / numColumns} flexDirection="row">
+                  {/* left list padding */ index % numColumns === 0 && <Spacer x={2} />}
+                  {/* left side separator */ index % numColumns > 0 && <Spacer x={1} />}
+                  <Flex flex={1}>
                     <ViewingRoomsListItem item={item} />
                   </Flex>
-                )
-              } else {
-                return (
-                  <Flex flex={1 / numColumns} flexDirection="row">
-                    {/* left list padding */ index % numColumns === 0 && <Spacer x={2} />}
-                    {/* left side separator */ index % numColumns > 0 && <Spacer x={1} />}
-                    <Flex flex={1}>
-                      <ViewingRoomsListItem item={item} />
-                    </Flex>
-                    {
-                      /* right side separator*/ index % numColumns < numColumns - 1 && (
-                        <Spacer x={1} />
-                      )
-                    }
-                    {
-                      /* right list padding */ index % numColumns === numColumns - 1 && (
-                        <Spacer x={2} />
-                      )
-                    }
-                  </Flex>
-                )
-              }
-            }}
-            ItemSeparatorComponent={() => <Spacer y={4} />}
-            onEndReached={handleLoadMore}
-            onEndReachedThreshold={1}
-            ListFooterComponent={() =>
-              hasNext ? <LoadingMorePlaceholder /> : <Flex height={space(6)} />
+                  {
+                    /* right side separator*/ index % numColumns < numColumns - 1 && (
+                      <Spacer x={1} />
+                    )
+                  }
+                  {
+                    /* right list padding */ index % numColumns === numColumns - 1 && (
+                      <Spacer x={2} />
+                    )
+                  }
+                </Flex>
+              )
             }
-          />
-        </Flex>
-      </PageWithSimpleHeader>
+          }}
+          ItemSeparatorComponent={() => <Spacer y={4} />}
+          onEndReached={handleLoadMore}
+          onEndReachedThreshold={1}
+          ListFooterComponent={() =>
+            hasNext ? <LoadingMorePlaceholder /> : <Flex height={space(6)} />
+          }
+        />
+      </Flex>
     </ProvideScreenTracking>
   )
 }
@@ -172,29 +169,26 @@ const tracks = {
 }
 
 const Placeholder = () => (
-  <ProvidePlaceholderContext>
-    <PageWithSimpleHeader title={SCREEN_TITLE}>
-      <Spacer y={2} />
-      <Flex ml={2} testID="viewing-rooms-list-placeholder">
-        <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
-        <Flex flexDirection="row">
-          {times(4).map((i) => (
-            <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
-          ))}
-        </Flex>
-      </Flex>
-      <Flex mx={2} mt={4}>
-        <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
-        {times(2).map((i) => (
-          <Fragment key={i}>
-            <PlaceholderBox width="100%" height={220} />
-            <PlaceholderText width={120 + Math.random() * 100} marginTop={10} />
-            <PlaceholderText width={80 + Math.random() * 100} marginTop={6} />
-          </Fragment>
+  <Flex>
+    <Flex ml={2} testID="viewing-rooms-list-placeholder" mt={2}>
+      <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
+      <Flex flexDirection="row">
+        {times(4).map((i) => (
+          <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
         ))}
       </Flex>
-    </PageWithSimpleHeader>
-  </ProvidePlaceholderContext>
+    </Flex>
+    <Flex mx={2} mt={4}>
+      <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
+      {times(2).map((i) => (
+        <Fragment key={i}>
+          <PlaceholderBox width="100%" height={220} />
+          <PlaceholderText width={120 + Math.random() * 100} marginTop={10} />
+          <PlaceholderText width={80 + Math.random() * 100} marginTop={6} />
+        </Fragment>
+      ))}
+    </Flex>
+  </Flex>
 )
 
 const LoadingMorePlaceholder = () => (
@@ -213,7 +207,9 @@ const LoadingMorePlaceholder = () => (
 )
 
 export const ViewingRoomsListScreen = () => (
-  <Suspense fallback={<Placeholder />}>
-    <ViewingRoomsList />
-  </Suspense>
+  <Screen safeArea={false}>
+    <Suspense fallback={<Placeholder />}>
+      <ViewingRoomsList />
+    </Suspense>
+  </Screen>
 )

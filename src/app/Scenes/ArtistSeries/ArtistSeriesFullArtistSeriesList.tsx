@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex, Box, Text } from "@artsy/palette-mobile"
+import { Flex, useSpace } from "@artsy/palette-mobile"
 import { ArtistSeriesFullArtistSeriesListQuery } from "__generated__/ArtistSeriesFullArtistSeriesListQuery.graphql"
 import { ArtistSeriesFullArtistSeriesList_artist$data } from "__generated__/ArtistSeriesFullArtistSeriesList_artist.graphql"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
@@ -16,6 +16,7 @@ interface FullArtistSeriesListProps {
 
 export const FullArtistSeriesList: React.FC<FullArtistSeriesListProps> = ({ artist }) => {
   const seriesList = artist?.artistSeriesConnection?.edges ?? []
+  const space = useSpace()
 
   if (!artist || seriesList.length === 0) {
     return null
@@ -28,12 +29,7 @@ export const FullArtistSeriesList: React.FC<FullArtistSeriesListProps> = ({ arti
         context_screen_owner_type: OwnerEntityTypes.AllArtistSeries,
       }}
     >
-      <ScrollView>
-        <Box px={2} py={2}>
-          <Text variant="sm-display" weight="medium" textAlign="center">
-            Artist Series
-          </Text>
-        </Box>
+      <ScrollView contentContainerStyle={{ paddingTop: space(2) }}>
         {seriesList.map((series, index) => (
           <Flex key={series?.node?.internalID ?? index} flexDirection="row" mb={1} px={2}>
             <ArtistSeriesListItem

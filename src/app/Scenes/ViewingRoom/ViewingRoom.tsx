@@ -1,19 +1,18 @@
-import { Box, Button, Flex, ShareIcon, Spacer, Text } from "@artsy/palette-mobile"
+import { Button, Flex, ShareIcon, Spacer, Text } from "@artsy/palette-mobile"
+import { useNavigation } from "@react-navigation/native"
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
 import { ViewingRoom_viewingRoom$data } from "__generated__/ViewingRoom_viewingRoom.graphql"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { useScreenDimensions } from "app/utils/hooks"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { once } from "lodash"
-import React, { useCallback, useState } from "react"
-import { FlatList, LayoutAnimation, TouchableWithoutFeedback, View, ViewToken } from "react-native"
+import React, { useCallback, useEffect, useState } from "react"
+import { FlatList, LayoutAnimation, TouchableOpacity, View, ViewToken } from "react-native"
 import RNShare from "react-native-share"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
-import styled from "styled-components/native"
 import { ViewingRoomArtworkRailContainer } from "./Components/ViewingRoomArtworkRail"
 import { ViewingRoomHeaderContainer } from "./Components/ViewingRoomHeader"
 import { ViewingRoomSubsectionsContainer } from "./Components/ViewingRoomSubsections"
@@ -40,6 +39,20 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
   const viewingRoom = props.viewingRoom
   const [displayViewWorksButton, setDisplayViewWorksButton] = useState(false)
   const tracking = useTracking()
+
+  const navigation = useNavigation()
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        return (
+          <TouchableOpacity onPress={handleViewingRoomShare} testID="share-button">
+            <ShareIcon width={24} height={24} />
+          </TouchableOpacity>
+        )
+      },
+    })
+  }, [navigation])
   const trackBodyImpression = useCallback(
     once(() =>
       tracking.trackEvent(tracks.bodyImpression(viewingRoom.internalID, viewingRoom.slug))
@@ -125,33 +138,9 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
     )
   }
 
-  const ButtonBox = styled(Box)`
-    position: absolute;
-    top: ${useScreenDimensions().safeAreaInsets.top + 12}px;
-    right: 12px;
-    z-index: 1;
-    background-color: #ffffff;
-    height: 40px;
-    width: 40px;
-    border-radius: 50px;
-    align-items: center;
-    justify-content: center;
-  `
-
-  const ShareButton = () => {
-    return (
-      <TouchableWithoutFeedback onPress={() => handleViewingRoomShare()} testID="share-button">
-        <ButtonBox>
-          <ShareIcon fill="black100" height="25px" width="100%" />
-        </ButtonBox>
-      </TouchableWithoutFeedback>
-    )
-  }
-
   return (
     <ProvideScreenTracking info={tracks.context(viewingRoom.internalID, viewingRoom.slug)}>
       <View style={{ flex: 1, position: "relative" }}>
-        <ShareButton />
         <FlatList<ViewingRoomSection>
           onViewableItemsChanged={useCallback(({ viewableItems }) => {
             if (viewableItems.find((viewableItem: ViewToken) => viewableItem.item.key === "body")) {

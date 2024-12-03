@@ -1,4 +1,4 @@
-import { Spacer, Flex, Box, Text, Separator } from "@artsy/palette-mobile"
+import { Box, Flex, Screen, Separator, Spacer } from "@artsy/palette-mobile"
 import { FairAllFollowedArtistsQuery } from "__generated__/FairAllFollowedArtistsQuery.graphql"
 import { FairAllFollowedArtists_fair$data } from "__generated__/FairAllFollowedArtists_fair.graphql"
 import { FairAllFollowedArtists_fairForFilters$data } from "__generated__/FairAllFollowedArtists_fairForFilters.graphql"
@@ -47,11 +47,6 @@ export const FairAllFollowedArtists: React.FC<FairAllFollowedArtistsProps> = ({
   return (
     <ArtworkFiltersStoreProvider>
       <ScrollView>
-        <Text mt={2} mb={1} textAlign="center" variant="sm">
-          Artworks
-        </Text>
-        <Separator />
-        <Spacer y={2} />
         <Box px="15px">
           <FairArtworksWithoutTabs
             fair={fair}
@@ -128,25 +123,27 @@ export const FairAllFollowedArtistsFragmentContainer = createFragmentContainer(
 
 export const FairAllFollowedArtistsQueryRenderer: React.FC<{ fairID: string }> = ({ fairID }) => {
   return (
-    <QueryRenderer<FairAllFollowedArtistsQuery>
-      environment={getRelayEnvironment()}
-      query={graphql`
-        query FairAllFollowedArtistsQuery($fairID: String!) {
-          fair(id: $fairID) @principalField {
-            ...FairAllFollowedArtists_fair
-          }
+    <Screen>
+      <QueryRenderer<FairAllFollowedArtistsQuery>
+        environment={getRelayEnvironment()}
+        query={graphql`
+          query FairAllFollowedArtistsQuery($fairID: String!) {
+            fair(id: $fairID) @principalField {
+              ...FairAllFollowedArtists_fair
+            }
 
-          fairForFilters: fair(id: $fairID) {
-            ...FairAllFollowedArtists_fairForFilters
+            fairForFilters: fair(id: $fairID) {
+              ...FairAllFollowedArtists_fairForFilters
+            }
           }
-        }
-      `}
-      variables={{ fairID }}
-      render={renderWithPlaceholder({
-        Container: FairAllFollowedArtistsFragmentContainer,
-        renderPlaceholder: () => <FairAllFollowedArtistsPlaceholder />,
-      })}
-    />
+        `}
+        variables={{ fairID }}
+        render={renderWithPlaceholder({
+          Container: FairAllFollowedArtistsFragmentContainer,
+          renderPlaceholder: () => <FairAllFollowedArtistsPlaceholder />,
+        })}
+      />
+    </Screen>
   )
 }
 

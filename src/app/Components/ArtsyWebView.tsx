@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Screen, Text } from "@artsy/palette-mobile"
 import * as Sentry from "@sentry/react-native"
 import { addBreadcrumb } from "@sentry/react-native"
 import { BottomTabRoutes } from "app/Scenes/BottomTabs/bottomTabsConfig"
@@ -133,38 +133,40 @@ export const ArtsyWebViewPage = ({
   const leftButton = useRightCloseButton && !canGoBack ? undefined : handleBackButtonPress
 
   return (
-    <Flex
-      flex={1}
-      pt={isPresentedModally || enableNewNavigation ? 0 : `${saInsets.top}px`}
-      backgroundColor="white"
-    >
-      <ArtsyKeyboardAvoidingView>
-        <FancyModalHeader
-          useXButton={!!isPresentedModally && !canGoBack}
-          onLeftButtonPress={leftButton}
-          useShareButton={showShareButton}
-          rightCloseButton={useRightCloseButton}
-          onRightButtonPress={
-            showShareButton || useRightCloseButton ? onRightButtonPress : undefined
-          }
-        >
-          {title}
-        </FancyModalHeader>
-        <ArtsyWebView
-          url={url}
-          ref={ref}
-          isPresentedModally={isPresentedModally}
-          safeAreaEdges={safeAreaEdges}
-          onNavigationStateChange={
-            mimicBrowserBackButton
-              ? (evt) => {
-                  setCanGoBack(evt.canGoBack)
-                }
-              : undefined
-          }
-        />
-      </ArtsyKeyboardAvoidingView>
-    </Flex>
+    <Screen>
+      <Flex
+        flex={1}
+        pt={isPresentedModally || enableNewNavigation ? 0 : `${saInsets.top}px`}
+        backgroundColor="white"
+      >
+        <ArtsyKeyboardAvoidingView>
+          <FancyModalHeader
+            useXButton={!!isPresentedModally && !canGoBack}
+            onLeftButtonPress={leftButton}
+            useShareButton={showShareButton}
+            rightCloseButton={useRightCloseButton}
+            onRightButtonPress={
+              showShareButton || useRightCloseButton ? onRightButtonPress : undefined
+            }
+          >
+            {title}
+          </FancyModalHeader>
+          <ArtsyWebView
+            url={url}
+            ref={ref}
+            isPresentedModally={isPresentedModally}
+            safeAreaEdges={safeAreaEdges}
+            onNavigationStateChange={
+              mimicBrowserBackButton
+                ? (evt) => {
+                    setCanGoBack(evt.canGoBack)
+                  }
+                : undefined
+            }
+          />
+        </ArtsyKeyboardAvoidingView>
+      </Flex>
+    </Screen>
   )
 }
 
