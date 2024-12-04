@@ -93,10 +93,6 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
   }, [shouldStartOnboardingAnimation])
 
   const handleClearTask = (task: Task) => {
-    if (!task) {
-      return
-    }
-
     setClearedTasks((prev) => [...prev, task.internalID])
   }
 
