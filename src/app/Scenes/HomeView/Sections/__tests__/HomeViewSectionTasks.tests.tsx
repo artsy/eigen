@@ -47,6 +47,44 @@ describe("HomeViewSectionTasks", () => {
 
     expect(screen.getByText("Task 1")).toBeOnTheScreen()
     expect(screen.getByText("Task Message 1")).toBeOnTheScreen()
+
+    fireEvent.press(screen.getByText("Show All"))
+
+    expect(screen.getByText("Task 1")).toBeOnTheScreen()
+    expect(screen.getByText("Task 2")).toBeOnTheScreen()
+    expect(screen.getByText("Task Message 2")).toBeOnTheScreen()
+
+    expect(screen.getByText("Show Less")).toBeOnTheScreen()
+  })
+
+  it("shouldn't render Show All button when there is only one task", () => {
+    renderWithRelay({
+      HomeViewSectionTasks: () => ({
+        internalID: "home-view-section-recommended-tasks",
+        component: {
+          title: "Act Now",
+        },
+        tasksConnection: {
+          edges: [
+            {
+              node: {
+                actionLink: "/test-link",
+                actionMessage: "View",
+                imageUrl: "https://d2v80f5yrouhh2.cloudfront.net/1/1.jpg",
+                message: "Task Message 1",
+                title: "Task 1",
+                taskType: "send_wire",
+              },
+            },
+          ],
+        },
+      }),
+    })
+
+    expect(screen.getByText("Act Now")).toBeOnTheScreen()
+    expect(screen.getByText("Task 1")).toBeOnTheScreen()
+    expect(screen.getByText("Task Message 1")).toBeOnTheScreen()
+    expect(screen.queryByText("Show All")).not.toBeOnTheScreen()
   })
 
   it("navigates and tracks when tapping a task", async () => {
@@ -60,6 +98,7 @@ describe("HomeViewSectionTasks", () => {
       }),
     })
 
+    fireEvent.press(screen.getByText("Show All"))
     fireEvent.press(screen.getByText("Task 1"))
 
     await waitFor(() => {
@@ -75,7 +114,7 @@ describe("HomeViewSectionTasks", () => {
           "context_module": "actNow",
           "context_screen_owner_type": "home",
           "destination_path": "/test-link",
-          "task_id": "one",
+          "task_id": "<Task-mock-id-1>",
           "task_type": "send_wire",
           "type": "thumbnail",
         },
@@ -94,15 +133,15 @@ describe("HomeViewSectionTasks", () => {
       }),
     })
 
-    fireEvent.press(screen.getByText("Clear"))
+    expect(screen.getByText("Task 1")).toBeOnTheScreen()
+    expect(screen.getByText("Task 2")).toBeOnTheScreen()
+
+    // Tap Clear on the first task
+    fireEvent.press(screen.getAllByText("Clear")[0])
 
     await waitFor(() => {
       // mock reslove the mutation
       mockResolveLastOperation({})
-    })
-
-    await waitFor(() => {
-      expect(screen.queryByText("Task 1")).not.toBeOnTheScreen()
     })
 
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
@@ -112,11 +151,15 @@ describe("HomeViewSectionTasks", () => {
           "context_module": "actNow",
           "context_screen_owner_type": "home",
           "destination_path": "/test-link",
-          "task_id": "one",
+          "task_id": "<Task-mock-id-1>",
           "task_type": "send_wire",
         },
       ]
     `)
+
+    await waitFor(() => {
+      expect(screen.queryByText("Task 1")).not.toBeOnTheScreen()
+    })
   })
 })
 
@@ -127,10 +170,18 @@ const mockTasks = {
         actionLink: "/test-link",
         actionMessage: "View",
         imageUrl: "https://d2v80f5yrouhh2.cloudfront.net/1/1.jpg",
-        internalID: "one",
         message: "Task Message 1",
         title: "Task 1",
         taskType: "send_wire",
+      },
+    },
+    {
+      node: {
+        actionLink: "/test-link2",
+        actionMessage: "View",
+        imageUrl: "https://d2v80f5yrouhh2.cloudfront.net/2/2.jpg",
+        message: "Task Message 2",
+        title: "Task 2",
       },
     },
   ],

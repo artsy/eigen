@@ -19,6 +19,7 @@ interface TaskProps {
   onPress?: () => void
   task: Task_task$key
 }
+
 export const Task = forwardRef<SwipeableMethods, TaskProps>(
   ({ disableSwipeable, onClearTask, onPress, ...restProps }, ref) => {
     const { tappedTaskGroup, tappedClearTask } = useHomeViewTracking()
