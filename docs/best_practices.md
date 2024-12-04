@@ -322,4 +322,3 @@ The following parts of the iOS app are handled in native code:
 - Analytics for Native UI.
 - View In Room (Augmented Reality)
 - City Guide Drawer Handling
-  Ø
