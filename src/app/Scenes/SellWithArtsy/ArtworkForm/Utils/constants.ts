@@ -39,3 +39,5 @@ export const SUBMIT_ARTWORK_APPROVED_SUBMISSION_STEPS: SubmitArtworkScreen[] = [
 ]
 
 export const TIER_1_STATES = ["DRAFT", "SUBMITTED"]
+
+export const ELIGIBLE_TO_EIDIT_STATES = ["REJECTED", "CLOSED", "PUBLISHED"]
