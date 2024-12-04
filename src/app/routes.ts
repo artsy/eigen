@@ -1,7 +1,7 @@
 import { parse } from "url"
 import { AppModule } from "app/AppRegistry"
 import { ArtsyWebViewConfig } from "app/Components/ArtsyWebView"
-import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
+import { internal_navigationRef } from "app/Navigation/Navigation"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { RouteMatcher } from "app/system/navigation/RouteMatcher"
 import { compact } from "lodash"
@@ -150,7 +150,7 @@ export function getModuleMap(): ModuleMap {
 // Helper method that returns the current URL
 export const getCurrentURL = () => {
   const moduleMap = getModuleMap()
-  const moduleDescriptor = __unsafe_mainModalStackRef.current?.getCurrentRoute()?.params as any
+  const moduleDescriptor = internal_navigationRef.current?.getCurrentRoute()?.params as any
 
   const { webURL } = unsafe__getEnvironment()
 

@@ -382,17 +382,6 @@ function getNativeModules(): OurNativeModules {
     ARPHPhotoPickerModule: {
       requestPhotos: jest.fn(),
     },
-    ARScreenPresenterModule: {
-      switchTab: jest.fn(),
-      dismissModal: jest.fn(),
-      pushView: jest.fn(),
-      goBack: jest.fn(),
-      updateShouldHideBackButton: jest.fn(),
-      popStack: jest.fn(),
-      popToRootAndScrollToTop: jest.fn(),
-      popToRootOrScrollToTop: jest.fn(),
-      presentModal: jest.fn(),
-    },
     AREventsModule: {
       requestAppStoreRating: jest.fn(),
     },
@@ -413,8 +402,6 @@ function getNativeModules(): OurNativeModules {
   }
 }
 
-// ARScreenPresenterModule is no longer a native module on either platform
-// so we must mock differently
 jest.mock("app/NativeModules/LegacyNativeModules", () => ({
   LegacyNativeModules: {
     ARTNativeScreenPresenterModule: {
@@ -452,17 +439,6 @@ jest.mock("app/NativeModules/LegacyNativeModules", () => ({
     },
     ARPHPhotoPickerModule: {
       requestPhotos: jest.fn(),
-    },
-    ARScreenPresenterModule: {
-      switchTab: jest.fn(),
-      dismissModal: jest.fn(),
-      pushView: jest.fn(),
-      goBack: jest.fn(),
-      updateShouldHideBackButton: jest.fn(),
-      popStack: jest.fn(),
-      popToRootAndScrollToTop: jest.fn(),
-      popToRootOrScrollToTop: jest.fn(),
-      presentModal: jest.fn(),
     },
     AREventsModule: {
       requestAppStoreRating: jest.fn(),
