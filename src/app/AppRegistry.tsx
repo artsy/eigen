@@ -24,6 +24,7 @@ import { GalleriesForYouScreen } from "app/Scenes/GalleriesForYou/GalleriesForYo
 import { HomeViewScreen, homeViewScreenQuery } from "app/Scenes/HomeView/HomeView"
 import { HomeViewSectionScreenQueryRenderer } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreen"
 import { ConversationQueryRenderer } from "app/Scenes/Inbox/Screens/Conversation"
+import InfiniteDiscovery from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
 import { AddMyCollectionArtist } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
 import { MyCollectionArtworkEditQueryRenderer } from "app/Scenes/MyCollection/Screens/ArtworkForm/Screens/MyCollectionArtworkEdit"
 import { MyCollectionCollectedArtistsPrivacyQueryRenderer } from "app/Scenes/MyCollection/Screens/CollectedArtistsPrivacy/MyCollectionCollectedArtistsPrivacy"
@@ -577,6 +578,16 @@ export const modules = defineModules({
       },
     },
     Queries: [InboxScreenQuery],
+  }),
+  InfiniteDiscovery: reactModule({
+    Component: InfiniteDiscovery,
+    options: {
+      fullBleed: true,
+      hidesBottomTabs: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
   }),
   Inquiry: reactModule({
     Component: InquiryQueryRenderer,
