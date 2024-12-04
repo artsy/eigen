@@ -1,6 +1,6 @@
 import { modules } from "app/AppRegistry"
-import { commonRoutes } from "app/Navigation/AuthenticatedRoutes/CommonRoutes"
 import { registerScreen, StackNavigator } from "app/Navigation/AuthenticatedRoutes/StackNavigator"
+import { commonRoutes } from "app/Navigation/AuthenticatedRoutes/commonRoutes"
 
 export const HomeTab: React.FC = () => {
   return (

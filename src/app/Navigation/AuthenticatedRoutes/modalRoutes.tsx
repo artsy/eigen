@@ -1,6 +1,6 @@
 import { modules as allModules, AppModule } from "app/AppRegistry"
 import { registerScreen } from "app/Navigation/AuthenticatedRoutes/StackNavigator"
-import { AuthenticatedRoutesStack } from "app/Navigation/AuthenticatedRoutes/Tabs"
+import { ModalStack } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { isModalScreen } from "app/Navigation/Utils/isModalScreen"
 
 const modules = Object.fromEntries(
@@ -23,13 +23,13 @@ const modalModules = Object.entries(modules).filter(([_, module]) => isModalScre
  */
 export const modalRoutes = () => {
   return (
-    <AuthenticatedRoutesStack.Group screenOptions={{ presentation: "modal" }}>
+    <ModalStack.Group screenOptions={{ presentation: "modal" }}>
       {modalModules.map(([moduleName, module]) => {
         return registerScreen({
           name: moduleName as AppModule,
           module: module,
         })
       })}
-    </AuthenticatedRoutesStack.Group>
+    </ModalStack.Group>
   )
 }
