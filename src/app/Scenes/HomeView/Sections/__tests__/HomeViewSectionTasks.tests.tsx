@@ -39,7 +39,7 @@ describe("HomeViewSectionTasks", () => {
         component: {
           title: "Act Now",
         },
-        tasksConnection: mockTasks,
+        tasks: mockTasks,
       }),
     })
 
@@ -64,7 +64,7 @@ describe("HomeViewSectionTasks", () => {
         component: {
           title: "Act Now",
         },
-        tasksConnection: {
+        tasks: {
           edges: [
             {
               node: {
@@ -94,7 +94,7 @@ describe("HomeViewSectionTasks", () => {
         component: {
           title: "Act Now",
         },
-        tasksConnection: mockTasks,
+        tasks: mockTasks,
       }),
     })
 
@@ -129,7 +129,7 @@ describe("HomeViewSectionTasks", () => {
         component: {
           title: "Act Now",
         },
-        tasksConnection: mockTasks,
+        tasks: mockTasks,
       }),
     })
 

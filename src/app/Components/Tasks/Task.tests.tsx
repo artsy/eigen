@@ -11,11 +11,11 @@ const mockDissmissTask = jest.fn()
 const mockAcknowledgeTask = jest.fn()
 
 jest.mock("app/utils/mutations/useDismissTask", () => ({
-  useDismissTask: () => ({ submitMutation: mockDissmissTask }),
+  useDismissTask: () => [mockDissmissTask],
 }))
 
 jest.mock("app/utils/mutations/useAcknowledgeTask.ts", () => ({
-  useAcknowledgeTask: () => ({ submitMutation: mockAcknowledgeTask }),
+  useAcknowledgeTask: () => [mockAcknowledgeTask],
 }))
 
 describe("Task Component", () => {
