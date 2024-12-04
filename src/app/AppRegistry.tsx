@@ -386,7 +386,6 @@ export const modules = defineModules({
     Component: BidFlow,
     options: {
       alwaysPresentModally: true,
-
       screenOptions: {
         headerShown: false,
       },
@@ -563,7 +562,6 @@ export const modules = defineModules({
     options: {
       isRootViewForTabName: "home",
       onlyShowInTabName: "home",
-
       screenOptions: {
         headerShown: false,
       },
@@ -583,7 +581,6 @@ export const modules = defineModules({
     options: {
       isRootViewForTabName: "inbox",
       onlyShowInTabName: "inbox",
-
       screenOptions: {
         headerShown: false,
       },
@@ -695,7 +692,6 @@ export const modules = defineModules({
     Component: MyCollectionArtworkAdd,
     options: {
       alwaysPresentModally: true,
-
       screenOptions: {
         gestureEnabled: false,
         headerShown: false,
@@ -706,7 +702,6 @@ export const modules = defineModules({
     Component: MyCollectionArtworkEditQueryRenderer,
     options: {
       alwaysPresentModally: true,
-
       screenOptions: {
         gestureEnabled: false,
         headerShown: false,
@@ -734,13 +729,11 @@ export const modules = defineModules({
       },
     },
   }),
-
   MyProfile: reactModule({
     Component: MyProfile,
     options: {
       isRootViewForTabName: "profile",
       onlyShowInTabName: "profile",
-
       screenOptions: {
         headerShown: false,
       },
@@ -785,7 +778,6 @@ export const modules = defineModules({
     Component: NewWorksForYouQueryRenderer,
     options: {
       hidesBottomTabs: true,
-
       screenOptions: {
         headerShown: false,
       },
@@ -886,7 +878,6 @@ export const modules = defineModules({
     Component: ArtsyWebViewPage,
     options: {
       alwaysPresentModally: true,
-
       screenOptions: {
         gestureEnabled: false,
         headerShown: false,
@@ -923,7 +914,6 @@ export const modules = defineModules({
     Component: RecommendedAuctionLotsQueryRenderer,
     options: {
       hidesBottomTabs: true,
-
       screenOptions: {
         headerShown: false,
       },
@@ -934,7 +924,6 @@ export const modules = defineModules({
     options: {
       isRootViewForTabName: "sell",
       onlyShowInTabName: "sell",
-
       screenOptions: {
         headerShown: false,
       },
@@ -963,7 +952,6 @@ export const modules = defineModules({
     options: {
       isRootViewForTabName: "search",
       onlyShowInTabName: "search",
-
       screenOptions: {
         headerShown: false,
       },
@@ -984,7 +972,6 @@ export const modules = defineModules({
     Component: SubmitArtworkForm,
     options: {
       alwaysPresentModally: true,
-
       screenOptions: {
         gestureEnabled: false,
         headerShown: false,
@@ -1023,7 +1010,6 @@ export const modules = defineModules({
   }),
   ViewingRoom: reactModule({
     Component: ViewingRoomQueryRenderer,
-
     Queries: [ViewingRoomScreenQuery],
   }),
   ViewingRoomArtwork: reactModule({ Component: ViewingRoomArtworkScreen }),
