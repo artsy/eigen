@@ -1,5 +1,6 @@
 import { screen } from "@testing-library/react-native"
 import { FairAllFollowedArtistsTestsQuery } from "__generated__/FairAllFollowedArtistsTestsQuery.graphql"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { FairAllFollowedArtistsFragmentContainer } from "./FairAllFollowedArtists"
@@ -19,9 +20,20 @@ describe("FairAllFollowedArtists", () => {
     `,
   })
 
-  it.only("renders", () => {
-    renderWithRelay()
+  it("shows empty state when there are no artworks", async () => {
+    renderWithRelay({
+      FilterArtworksConnection() {
+        return {
+          counts: {
+            total: 0,
+          },
+          edges: [],
+        }
+      },
+    })
 
-    expect(screen.getByText("Artworks")).toBeOnTheScreen()
+    await flushPromiseQueue()
+
+    expect(screen.getByText(/No results found/)).toBeOnTheScreen()
   })
 })
