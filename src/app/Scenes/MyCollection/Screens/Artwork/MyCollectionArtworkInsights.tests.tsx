@@ -1,6 +1,5 @@
 import { screen } from "@testing-library/react-native"
 import { MyCollectionArtworkInsightsTestsQuery } from "__generated__/MyCollectionArtworkInsightsTestsQuery.graphql"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { MyCollectionArtworkInsights } from "./MyCollectionArtworkInsights"
@@ -67,50 +66,24 @@ describe("MyCollectionArtworkInsights", () => {
     expect(screen.getByText("Comparable Works")).toBeTruthy()
   })
 
-  describe("AREnableSubmitArtworkTier2Information feature flag is on", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({
-        AREnableSubmitArtworkTier2Information: true,
-      })
+  it("renders the submission status when status is REJECTES", async () => {
+    renderWithRelay({
+      Query: () => ({
+        artwork: { ...mockArtwork, consignmentSubmission: { state: "REJECTED" } },
+      }),
     })
 
-    it("renders the submission status when status is REJECTES", async () => {
-      renderWithRelay({
-        Query: () => ({
-          artwork: { ...mockArtwork, consignmentSubmission: { state: "REJECTED" } },
-        }),
-      })
-
-      expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).not.toBe(null)
-    })
-
-    it("does not render the submission status when status is not REJECTES", async () => {
-      renderWithRelay({
-        Query: () => ({
-          artwork: { ...mockArtwork, consignmentSubmission: { state: "APPROVED" } },
-        }),
-      })
-
-      expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).toBe(null)
-    })
+    expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).not.toBe(null)
   })
 
-  describe("AREnableSubmitArtworkTier2Information feature flag is off", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({
-        AREnableSubmitArtworkTier2Information: false,
-      })
+  it("does not render the submission status when status is not REJECTES", async () => {
+    renderWithRelay({
+      Query: () => ({
+        artwork: { ...mockArtwork, consignmentSubmission: { state: "APPROVED" } },
+      }),
     })
 
-    it("does not render the submission status when status is REJECTES ", async () => {
-      renderWithRelay({
-        Query: () => ({
-          artwork: { ...mockArtwork, consignmentSubmission: { state: "REJECTED" } },
-        }),
-      })
-
-      expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).toBe(null)
-    })
+    expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).toBe(null)
   })
 
   describe("Conditional Display of RequestForPriceEstimateBanner", () => {

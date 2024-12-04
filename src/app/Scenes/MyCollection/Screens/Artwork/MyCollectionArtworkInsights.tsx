@@ -4,7 +4,6 @@ import { MyCollectionArtworkInsights_marketPriceInsights$key } from "__generated
 import { MyCollectionArtworkInsights_me$key } from "__generated__/MyCollectionArtworkInsights_me.graphql"
 import { PriceEstimateRequested } from "app/Scenes/MyCollection/Screens/Artwork/Components/ArtworkInsights/RequestForPriceEstimate/PriceEstimateRequested"
 import { MyCollectionArtworkSubmissionStatus } from "app/Scenes/MyCollection/Screens/Artwork/Components/MyCollectionArtworkSubmissionStatus"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { graphql, useFragment } from "react-relay"
 import { MyCollectionArtworkArtistAuctionResults } from "./Components/ArtworkInsights/MyCollectionArtworkArtistAuctionResults"
 import { MyCollectionArtworkArtistMarket } from "./Components/ArtworkInsights/MyCollectionArtworkArtistMarket"
@@ -22,10 +21,6 @@ interface MyCollectionArtworkInsightsProps {
 export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsProps> = ({
   ...restProps
 }) => {
-  const enableSubmitArtworkTier2Information = useFeatureFlag(
-    "AREnableSubmitArtworkTier2Information"
-  )
-
   const artwork = useFragment(artworkFragment, restProps.artwork)
 
   const marketPriceInsights = useFragment(
@@ -48,7 +43,7 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
         </>
       )}
 
-      {!!enableSubmitArtworkTier2Information && !!isSubmissionRejected && (
+      {!!isSubmissionRejected && (
         <>
           <MyCollectionArtworkSubmissionStatus artwork={artwork} />
           <Separator my={4} borderColor="black10" />
