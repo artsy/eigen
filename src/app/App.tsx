@@ -37,6 +37,8 @@ import { usePreferredThemeTracking } from "./utils/usePreferredThemeTracking"
 import { useScreenReaderTracking } from "./utils/useScreenReaderTracking"
 import useSyncNativeAuthState from "./utils/useSyncAuthState"
 
+require("./system/ignoreLogs")
+
 if (__DEV__) {
   // Don't open RN dev menu with shake. We use it for our own Dev Menu.
   NativeModules.DevSettings.setIsShakeToShowDevMenuEnabled(false)

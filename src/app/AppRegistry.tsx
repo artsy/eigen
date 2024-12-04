@@ -42,7 +42,7 @@ import { SimilarToRecentlyViewedScreen } from "app/Scenes/SimilarToRecentlyViewe
 import { BackButton } from "app/system/navigation/BackButton"
 import { goBack } from "app/system/navigation/navigate"
 import React from "react"
-import { LogBox, View } from "react-native"
+import { View } from "react-native"
 import { GraphQLTaggedNode } from "react-relay"
 import { ArtsyWebViewPage } from "./Components/ArtsyWebView"
 import { CityGuideView } from "./NativeModules/CityGuideView"
@@ -141,14 +141,6 @@ import {
 } from "./Scenes/ViewingRoom/ViewingRoomsList"
 import { DevMenu } from "./system/devTools/DevMenu/DevMenu"
 
-LogBox.ignoreLogs([
-  "Non-serializable values were found in the navigation state",
-
-  "Require cycle:",
-
-  ".removeListener(", // this is coming from https://github.com/facebook/react-native/blob/v0.68.0-rc.2/Libraries/AppState/AppState.js and other libs.
-])
-
 export interface ViewOptions {
   alwaysPresentModally?: boolean
   // @deprecated Use screenOptions.headerShown instead
@@ -182,12 +174,6 @@ function reactModule({
 // little helper function to make sure we get both intellisense and good type information on the result
 function defineModules<T extends string>(obj: Record<T, ModuleDescriptor>) {
   return obj
-}
-
-const artQuizScreenOptions = {
-  screenOptions: {
-    gestureEnabled: false,
-  },
 }
 
 export type AppModule = keyof typeof modules
@@ -238,7 +224,12 @@ export const modules = defineModules({
   }),
   ArtQuiz: reactModule({
     Component: ArtQuiz,
-    options: { ...artQuizScreenOptions, hidesBottomTabs: true },
+    options: {
+      screenOptions: {
+        gestureEnabled: false,
+      },
+      hidesBottomTabs: true,
+    },
   }),
   ArtQuizResults: reactModule({
     Component: ArtQuizResults,
