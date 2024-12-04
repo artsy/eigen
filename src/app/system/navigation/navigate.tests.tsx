@@ -1,12 +1,8 @@
-import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { internal_navigationRef } from "app/Navigation/Navigation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { Linking } from "react-native"
 import { navigate } from "./navigate"
-
-function args(mock: jest.Mock) {
-  return mock.mock.calls[mock.mock.calls.length - 1]
-}
 
 jest.unmock("./navigate")
 
@@ -32,14 +28,15 @@ jest.mock("app/store/GlobalStore", () => ({
   },
 }))
 
-jest.mock("app/Navigation/Navigation", () => ({
-  internal_navigationRef: jest.fn(),
-}))
-
 describe(navigate, () => {
   beforeEach(() => {
+    // @ts-expect-error
+    internal_navigationRef.current = {
+      isReady: jest.fn().mockReturnValue(true),
+      dispatch: jest.fn(),
+    }
+
     Linking.openURL = jest.fn()
-    LegacyNativeModules.ARScreenPresenterModule.pushView = jest.fn()
     jest.spyOn(global, "requestAnimationFrame").mockImplementation((cb) => {
       cb(0)
       return 0
@@ -54,70 +51,26 @@ describe(navigate, () => {
     it("like artwork", async () => {
       navigate("/artwork/josef-albers-homage-to-the-square")
       await flushPromiseQueue()
-      expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalled()
-      expect(args(LegacyNativeModules.ARScreenPresenterModule.pushView as any))
-        .toMatchInlineSnapshot(`
-        [
-          "home",
-          {
-            "hidesBottomTabs": true,
-            "moduleName": "Artwork",
-            "props": {
-              "artworkID": "josef-albers-homage-to-the-square",
-            },
-            "replaceActiveModal": false,
-            "replaceActiveScreen": false,
-            "screenOptions": {
-              "headerShown": false,
-            },
-            "type": "react",
-          },
-        ]
-      `)
+      expect(internal_navigationRef.current?.dispatch).toHaveBeenCalledWith({
+        payload: { name: "Artwork", params: { artworkID: "josef-albers-homage-to-the-square" } },
+        type: "PUSH",
+      })
     })
     it("like artist", async () => {
       navigate("/artist/banksy")
       await flushPromiseQueue()
-      expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalled()
-      expect(args(LegacyNativeModules.ARScreenPresenterModule.pushView as any))
-        .toMatchInlineSnapshot(`
-        [
-          "home",
-          {
-            "moduleName": "Artist",
-            "props": {
-              "artistID": "banksy",
-            },
-            "replaceActiveModal": false,
-            "replaceActiveScreen": false,
-            "screenOptions": {
-              "headerShown": false,
-            },
-            "type": "react",
-          },
-        ]
-      `)
+      expect(internal_navigationRef.current?.dispatch).toHaveBeenCalledWith({
+        payload: { name: "Artist", params: { artistID: "banksy" } },
+        type: "PUSH",
+      })
     })
     it("like vanity urls", async () => {
       navigate("/artsy-vanguard-2019")
       await flushPromiseQueue()
-      expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalled()
-      expect(args(LegacyNativeModules.ARScreenPresenterModule.pushView as any))
-        .toMatchInlineSnapshot(`
-        [
-          "home",
-          {
-            "fullBleed": true,
-            "moduleName": "VanityURLEntity",
-            "props": {
-              "slug": "artsy-vanguard-2019",
-            },
-            "replaceActiveModal": false,
-            "replaceActiveScreen": false,
-            "type": "react",
-          },
-        ]
-      `)
+      expect(internal_navigationRef.current?.dispatch).toHaveBeenCalledWith({
+        payload: { name: "VanityURLEntity", params: { slug: "artsy-vanguard-2019" } },
+        type: "PUSH",
+      })
     })
   })
 
@@ -133,26 +86,10 @@ describe(navigate, () => {
         someAdditionalKey: "value",
       },
     })
-    expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalled()
-    expect(args(LegacyNativeModules.ARScreenPresenterModule.pushView as any))
-      .toMatchInlineSnapshot(`
-      [
-        "home",
-        {
-          "moduleName": "Artist",
-          "props": {
-            "artistID": "banksy",
-            "someAdditionalKey": "value",
-          },
-          "replaceActiveModal": false,
-          "replaceActiveScreen": false,
-          "screenOptions": {
-            "headerShown": false,
-          },
-          "type": "react",
-        },
-      ]
-    `)
+    expect(internal_navigationRef.current?.dispatch).toHaveBeenCalledWith({
+      payload: { name: "Artist", params: { artistID: "banksy", someAdditionalKey: "value" } },
+      type: "PUSH",
+    })
   })
 
   describe("marketing links", () => {
@@ -168,75 +105,30 @@ describe(navigate, () => {
     it("reroutes marketing links", async () => {
       await navigate("https://click.artsy.net/artist/kaws")
       expect(fetch).toHaveBeenCalledTimes(1)
-      expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalled()
-      expect(args(LegacyNativeModules.ARScreenPresenterModule.pushView as any))
-        .toMatchInlineSnapshot(`
-        [
-          "home",
-          {
-            "moduleName": "Artist",
-            "props": {
-              "artistID": "kaws",
-            },
-            "replaceActiveModal": false,
-            "replaceActiveScreen": false,
-            "screenOptions": {
-              "headerShown": false,
-            },
-            "type": "react",
-          },
-        ]
-      `)
-    })
-  })
-
-  describe("presents modals", () => {
-    it("when the screen requires it", async () => {
-      navigate("https://live.artsy.net/blah")
-      await flushPromiseQueue()
-      expect(args(LegacyNativeModules.ARScreenPresenterModule.presentModal as any))
-        .toMatchInlineSnapshot(`
-        [
-          {
-            "alwaysPresentModally": true,
-            "modalPresentationStyle": "fullScreen",
-            "moduleName": "LiveAuction",
-            "props": {
-              "slug": "blah",
-            },
-            "replaceActiveModal": false,
-            "replaceActiveScreen": false,
-            "screenOptions": {
-              "headerShown": false,
-            },
-            "type": "react",
-          },
-        ]
-      `)
-    })
-
-    it("when the modal option is set", () => {
-      navigate("/artwork/kaws-cross-eyed-weird-ears-cartoon-thing", { modal: true })
-      expect(args(LegacyNativeModules.ARScreenPresenterModule.presentModal as any))
+      expect(internal_navigationRef.current?.dispatch).toHaveBeenCalledWith({
+        payload: { name: "Artist", params: { artistID: "kaws" } },
+        type: "PUSH",
+      })
     })
   })
 
   it("switches tab and pops the view stack when routing to a root tab view", async () => {
     await navigate("/search")
     expect(GlobalStore.actions.bottomTabs.setSelectedTab).toHaveBeenCalledWith("search")
-    expect(LegacyNativeModules.ARScreenPresenterModule.switchTab).toHaveBeenCalledWith("search")
-    expect(
-      LegacyNativeModules.ARScreenPresenterModule.popToRootAndScrollToTop
-    ).toHaveBeenCalledWith("search")
+    expect(internal_navigationRef.current?.dispatch).toHaveBeenCalledWith({
+      payload: { name: "search", params: {} },
+      type: "JUMP_TO",
+    })
   })
 
   it("passes tab props when switching", async () => {
     await navigate("/search?query=banksy")
     expect(GlobalStore.actions.bottomTabs.setSelectedTab).toHaveBeenCalledWith("search")
-    expect(LegacyNativeModules.ARScreenPresenterModule.switchTab).toHaveBeenCalledWith("search")
-    expect(
-      LegacyNativeModules.ARScreenPresenterModule.popToRootAndScrollToTop
-    ).toHaveBeenCalledWith("search")
+    expect(internal_navigationRef.current?.dispatch).toHaveBeenCalledWith({
+      payload: { name: "search", params: { query: "banksy" } },
+      type: "JUMP_TO",
+    })
+
     expect(GlobalStore.actions.bottomTabs.setTabProps).toHaveBeenCalledWith({
       tab: "search",
       props: { query: "banksy" },
@@ -246,57 +138,15 @@ describe(navigate, () => {
   it("switches tab before pushing in cases where that's required", async () => {
     await navigate("/conversation/234")
     expect(GlobalStore.actions.bottomTabs.setSelectedTab).toHaveBeenCalledWith("inbox")
-    expect(LegacyNativeModules.ARScreenPresenterModule.switchTab).toHaveBeenCalledWith("inbox")
     await flushPromiseQueue()
-    expect(args(LegacyNativeModules.ARScreenPresenterModule.pushView as any))
-      .toMatchInlineSnapshot(`
-      [
-        "inbox",
-        {
-          "moduleName": "Conversation",
-          "onlyShowInTabName": "inbox",
-          "props": {
-            "conversationID": "234",
-          },
-          "replaceActiveModal": false,
-          "replaceActiveScreen": false,
-          "screenOptions": {
-            "headerShown": false,
-          },
-          "type": "react",
-        },
-      ]
-    `)
-  })
-
-  it("pop to root tab view in cases where that's required", async () => {
-    await navigate("my-profile/payment")
-    await navigate("favorites/alerts", {
-      popToRootTabView: true,
-      showInTabName: "profile",
+    expect(internal_navigationRef.current?.dispatch).toHaveBeenNthCalledWith(1, {
+      payload: { name: "inbox", params: { conversationID: "234" } },
+      type: "JUMP_TO",
     })
-
-    await flushPromiseQueue()
-
-    expect(GlobalStore.actions.bottomTabs.setSelectedTab).toHaveBeenCalledWith("profile")
-    expect(LegacyNativeModules.ARScreenPresenterModule.switchTab).toHaveBeenCalledWith("profile")
-    expect(args(LegacyNativeModules.ARScreenPresenterModule.pushView as any))
-      .toMatchInlineSnapshot(`
-      [
-        "profile",
-        {
-          "fullBleed": true,
-          "moduleName": "SavedSearchAlertsList",
-          "props": {},
-          "replaceActiveModal": false,
-          "replaceActiveScreen": false,
-          "screenOptions": {
-            "headerShown": false,
-          },
-          "type": "react",
-        },
-      ]
-    `)
+    expect(internal_navigationRef.current?.dispatch).toHaveBeenNthCalledWith(2, {
+      payload: { name: "Conversation", params: { conversationID: "234" } },
+      type: "PUSH",
+    })
   })
 
   describe("debouncing", () => {
@@ -314,41 +164,41 @@ describe(navigate, () => {
 
     it("happens when the user taps more than once in under a second", async () => {
       await navigate("/artist/banksy")
-      expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalledTimes(1)
+      expect(internal_navigationRef.current?.dispatch).toHaveBeenCalledTimes(1)
 
       mockDateNow.mockReturnValue(100)
       await navigate("/artist/banksy")
-      expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalledTimes(1)
+      expect(internal_navigationRef.current?.dispatch).toHaveBeenCalledTimes(1)
 
       mockDateNow.mockReturnValue(500)
       await navigate("/artist/banksy")
-      expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalledTimes(1)
+      expect(internal_navigationRef.current?.dispatch).toHaveBeenCalledTimes(1)
 
       mockDateNow.mockReturnValue(999)
       await navigate("/artist/banksy")
-      expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalledTimes(1)
+      expect(internal_navigationRef.current?.dispatch).toHaveBeenCalledTimes(1)
     })
 
     it("doesn't happen when the user taps more than once in more than a second", async () => {
       mockDateNow.mockReturnValue(0)
       await navigate("/artist/andy-warhol")
-      expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalledTimes(1)
+      expect(internal_navigationRef.current?.dispatch).toHaveBeenCalledTimes(1)
 
       mockDateNow.mockReturnValue(100)
       await navigate("/artist/andy-warhol")
-      expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalledTimes(1)
+      expect(internal_navigationRef.current?.dispatch).toHaveBeenCalledTimes(1)
 
       mockDateNow.mockReturnValue(1500)
       await navigate("/artist/andy-warhol")
-      expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalledTimes(2)
+      expect(internal_navigationRef.current?.dispatch).toHaveBeenCalledTimes(2)
 
       mockDateNow.mockReturnValue(2000)
       await navigate("/artist/andy-warhol")
-      expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalledTimes(2)
+      expect(internal_navigationRef.current?.dispatch).toHaveBeenCalledTimes(2)
 
       mockDateNow.mockReturnValue(5000)
       await navigate("/artist/andy-warhol")
-      expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalledTimes(3)
+      expect(internal_navigationRef.current?.dispatch).toHaveBeenCalledTimes(3)
     })
   })
 })

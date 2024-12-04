@@ -1,7 +1,8 @@
-import { FETCH_NOTIFICATIONS_INFO_INTERVAL } from "app/Scenes/BottomTabs/BottomTabs"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useEffect } from "react"
 import { useInterval } from "react-use"
+
+export const FETCH_NOTIFICATIONS_INFO_INTERVAL = 60 * 1000 // every 60 seconds
 
 export const useTabBarBadge = () => {
   const unreadConversationsCount = GlobalStore.useAppState(

@@ -254,12 +254,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableMarketingCollectionsCategories",
   },
-  AREnableNewNavigation: {
-    description: "Enable new navigation infra (Requires App Restart!)",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableNewNavigation",
-  },
   AREnableNewSaveAndFollowOnArtworkCard: {
     description: "Redesign Save CTA and Add Follow CTA on Artwork Grid/Rail",
     readyForRelease: true,

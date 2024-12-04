@@ -42,7 +42,7 @@ export const homeViewScreenQueryVariables = () => ({
 })
 
 export const HomeView: React.FC = () => {
-  const flashlistRef = useBottomTabsScrollToTop("home")
+  const flashlistRef = useBottomTabsScrollToTop()
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   const { fetchKey } = useRetryErrorBoundaryContext()

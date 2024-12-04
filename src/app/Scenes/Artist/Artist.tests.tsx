@@ -1,5 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { ModalStack } from "app/system/navigation/ModalStack"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { postEventToProviders } from "app/utils/track/providers"
@@ -44,13 +44,11 @@ describe("Artist", () => {
   }
 
   const TestWrapper = (props: Record<string, any>) => (
-    <ModalStack>
-      <ArtistQueryRenderer artistID="ignored" environment={mockEnvironment} {...props} />
-    </ModalStack>
+    <ArtistQueryRenderer artistID="ignored" environment={mockEnvironment} {...props} />
   )
 
   it("returns an empty state if artist has no artworks", async () => {
-    renderWithHookWrappersTL(<TestWrapper />)
+    renderWithHookWrappersTL(<TestWrapper />, getRelayEnvironment(), { includeNavigation: true })
     const emptyTitle = "Get notified when new works are available"
     const emptyMessage =
       "There are currently no works for sale for this artist. Create an alert, and we’ll let you know when new works are added."
@@ -70,7 +68,7 @@ describe("Artist", () => {
   })
 
   it("should render all tabs", async () => {
-    renderWithHookWrappersTL(<TestWrapper />)
+    renderWithHookWrappersTL(<TestWrapper />, getRelayEnvironment(), { includeNavigation: true })
 
     mockMostRecentOperation("ArtistAboveTheFoldQuery")
     mockMostRecentOperation("ArtistBelowTheFoldQuery", {
@@ -88,7 +86,7 @@ describe("Artist", () => {
   })
 
   it("tracks a page view", async () => {
-    renderWithHookWrappersTL(<TestWrapper />)
+    renderWithHookWrappersTL(<TestWrapper />, getRelayEnvironment(), { includeNavigation: true })
 
     mockMostRecentOperation("ArtistAboveTheFoldQuery")
 
@@ -104,7 +102,7 @@ describe("Artist", () => {
   })
 
   it("displays follow button for artist with formatted follow count", () => {
-    renderWithHookWrappersTL(<TestWrapper />)
+    renderWithHookWrappersTL(<TestWrapper />, getRelayEnvironment(), { includeNavigation: true })
 
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
@@ -122,7 +120,7 @@ describe("Artist", () => {
   })
 
   it("tracks follow change on follow button click", async () => {
-    renderWithHookWrappersTL(<TestWrapper />)
+    renderWithHookWrappersTL(<TestWrapper />, getRelayEnvironment(), { includeNavigation: true })
 
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {

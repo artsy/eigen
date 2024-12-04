@@ -2,15 +2,12 @@ import { Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { MyAccountEditPriceRangeQuery } from "__generated__/MyAccountEditPriceRangeQuery.graphql"
 import { MyAccountEditPriceRange_me$data } from "__generated__/MyAccountEditPriceRange_me.graphql"
-import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { Select, SelectOption } from "app/Components/Select"
-import { MyAccountFieldEditScreen } from "app/Scenes/MyAccount/Components/MyAccountFieldEditScreen"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderBox } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import React, { Fragment, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { updateMyUserProfile } from "./updateMyUserProfile"
 
@@ -18,7 +15,6 @@ const MyAccountEditPriceRange: React.FC<{
   me: MyAccountEditPriceRange_me$data
 }> = ({ me }) => {
   const navigation = useNavigation()
-  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
 
   const [receivedError, setReceivedError] = useState<string | undefined>(undefined)
   const [priceRange, setPriceRange] = useState<string>(me.priceRange ?? "")
@@ -54,28 +50,9 @@ const MyAccountEditPriceRange: React.FC<{
     }
   }
 
-  const Wrapper = enableNewNavigation
-    ? Fragment
-    : ({ children }: { children: React.ReactNode }) => (
-        <MyAccountFieldEditScreen
-          title="Price Range"
-          canSave={!!priceRange && priceRange !== me.priceRange}
-          onSave={async (dismiss) => {
-            try {
-              await updateMyUserProfile({ priceRangeMin, priceRangeMax })
-              dismiss()
-            } catch (e: any) {
-              setReceivedError(e)
-            }
-          }}
-        >
-          {children}
-        </MyAccountFieldEditScreen>
-      )
-
   return (
-    <Wrapper>
-      <Flex p={enableNewNavigation ? 2 : 0}>
+    <>
+      <Flex p={2}>
         <Select
           title="Price Range"
           options={PRICE_BUCKETS}
@@ -96,23 +73,12 @@ const MyAccountEditPriceRange: React.FC<{
           hasError={!!receivedError}
         />
       </Flex>
-    </Wrapper>
+    </>
   )
 }
 
 const MyAccountEditPriceRangePlaceholder: React.FC<{}> = ({}) => {
-  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
-  const Wrapper = enableNewNavigation
-    ? Fragment
-    : ({ children }: { children: React.ReactNode }) => (
-        <PageWithSimpleHeader title="Price Range">{children}</PageWithSimpleHeader>
-      )
-
-  return (
-    <Wrapper>
-      <PlaceholderBox height={40} />
-    </Wrapper>
-  )
+  return <PlaceholderBox height={40} />
 }
 
 export const MyAccountEditPriceRangeContainer = createFragmentContainer(MyAccountEditPriceRange, {

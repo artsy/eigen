@@ -10,7 +10,6 @@ import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { ModuleDescriptor } from "app/AppRegistry"
 import { AuthenticatedRoutesParams } from "app/Navigation/AuthenticatedRoutes/Tabs"
-import { isHeaderShown } from "app/Navigation/Utils/isHeaderShown"
 import { isModalScreen } from "app/Navigation/Utils/isModalScreen"
 import { goBack } from "app/system/navigation/navigate"
 import { Platform } from "react-native"
@@ -30,8 +29,6 @@ export const registerScreen: React.FC<StackNavigatorScreenProps> = ({ name, modu
       name={name}
       key={name}
       options={{
-        presentation: isModalScreen(module) ? "fullScreenModal" : "card",
-        headerShown: isHeaderShown(module),
         orientation: !isTablet() ? "portrait" : "default",
         headerLeft: ({ canGoBack }) => {
           if (!canGoBack) {

@@ -1,16 +1,16 @@
 import {
-  ReloadIcon,
-  Flex,
+  BackButton,
   Box,
   BoxProps,
-  useColor,
+  DEFAULT_HIT_SLOP,
+  Flex,
+  ReloadIcon,
   Text,
   Touchable,
-  BackButton,
-  DEFAULT_HIT_SLOP,
+  useColor,
 } from "@artsy/palette-mobile"
 import * as Sentry from "@sentry/react-native"
-import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
+import { internal_navigationRef } from "app/Navigation/Navigation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
@@ -82,10 +82,10 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
   }
 
   useEffect(() => {
-    const routeParams = __unsafe_mainModalStackRef?.current?.getCurrentRoute()?.params
+    const routeParams = internal_navigationRef?.current?.getCurrentRoute()?.params
 
     trackLoadFailureView(error, routeParams)
-  }, [error, __unsafe_mainModalStackRef?.current?.getCurrentRoute()?.params])
+  }, [error, internal_navigationRef?.current?.getCurrentRoute()?.params])
 
   const playAnimation = () => {
     setIsAnimating(true)

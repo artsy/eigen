@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { BackButton, InfoCircleIcon, Touchable } from "@artsy/palette-mobile"
 import NetInfo from "@react-native-community/netinfo"
 import { ConversationQuery } from "__generated__/ConversationQuery.graphql"
@@ -15,7 +16,7 @@ import { goBack, navigate, navigationEvents } from "app/system/navigation/naviga
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { track as _track, Schema, Track } from "app/utils/track"
+import { track as _track, ProvideScreenTracking, Schema, Track } from "app/utils/track"
 import React from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import styled from "styled-components/native"
@@ -256,20 +257,28 @@ export const ConversationQueryRenderer: React.FC<{
 }> = (props) => {
   const { conversationID, navigator } = props
   return (
-    <QueryRenderer<ConversationQuery>
-      environment={getRelayEnvironment()}
-      query={graphql`
-        query ConversationQuery($conversationID: String!) {
-          me {
-            ...Conversation_me
-          }
-        }
-      `}
-      variables={{
-        conversationID,
+    <ProvideScreenTracking
+      info={{
+        context_screen: Schema.PageNames.ConversationPage,
+        context_screen_owner_id: props.conversationID,
+        context_screen_owner_type: OwnerType.conversation,
       }}
-      cacheConfig={{ force: true }}
-      render={renderWithLoadProgress(ConversationFragmentContainer, { navigator })}
-    />
+    >
+      <QueryRenderer<ConversationQuery>
+        environment={getRelayEnvironment()}
+        query={graphql`
+          query ConversationQuery($conversationID: String!) {
+            me {
+              ...Conversation_me
+            }
+          }
+        `}
+        variables={{
+          conversationID,
+        }}
+        cacheConfig={{ force: true }}
+        render={renderWithLoadProgress(ConversationFragmentContainer, { navigator })}
+      />
+    </ProvideScreenTracking>
   )
 }

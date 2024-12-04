@@ -172,11 +172,7 @@ For adding a screen that corresponds to a page on artsy.net add a new route and 
 
 See our documentation on adding a route for more details: [Adding a new route](https://github.com/artsy/eigen/blob/main/docs/adding_a_new_route.md) and to [create a new screen](https://github.com/artsy/eigen/blob/main/docs/adding_a_new_screen.md).
 
-### iOS Navigation
-
-- For native iOS code we use the **ARScreenPresenterModule**. Once the new app shell is finished (expected March 2022), we will be using `react-navigation`.
-
-For the most part you don't have to worry about this.
+[For Artsy Engineers] If you want to learn more about our navigation infra, take a look at this [recording](https://drive.google.com/drive/u/0/folders/1wUAUHt86WLQMy7Fx3MU7k4bj4y1ngaCk)
 
 ## Analytics and tracking
 
@@ -326,9 +322,3 @@ The following parts of the iOS app are handled in native code:
 - Analytics for Native UI.
 - View In Room (Augmented Reality)
 - City Guide Drawer Handling
-
-The following parts of the iOS app are handled in native code, but will be managed by React Native once the new app shell is finished (expected March 2022):
-
-- ARScreenPresenterModule to navigate between view controllers.
-- The top-level tab bar, and each tab's navigation controller.
-- Deep-link and notification handling.

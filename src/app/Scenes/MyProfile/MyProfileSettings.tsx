@@ -1,30 +1,30 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Button, Flex, Separator, Spacer, Text, useColor, useSpace } from "@artsy/palette-mobile"
+import {
+  Button,
+  Flex,
+  Screen,
+  Separator,
+  Spacer,
+  Text,
+  useColor,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { MenuItem } from "app/Components/MenuItem"
-import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { Fragment } from "react"
 import { Alert, ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
 
 export const MyProfileSettings: React.FC = () => {
   const color = useColor()
   const space = useSpace()
-  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
 
   const tracking = useTracking()
   const separatorColor = color("black5")
 
-  const Wrapper = enableNewNavigation
-    ? Fragment
-    : ({ children }: { children: React.ReactNode }) => (
-        <PageWithSimpleHeader title="Profile">{children}</PageWithSimpleHeader>
-      )
   return (
-    <Wrapper>
+    <Screen>
       <ScrollView contentContainerStyle={{ paddingTop: space(2) }}>
         <Text variant="xs" color="black60" px={2}>
           Settings
@@ -79,7 +79,7 @@ export const MyProfileSettings: React.FC = () => {
         </Flex>
         <Spacer y={1} />
       </ScrollView>
-    </Wrapper>
+    </Screen>
   )
 }
 

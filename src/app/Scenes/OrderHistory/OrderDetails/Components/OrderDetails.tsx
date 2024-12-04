@@ -1,15 +1,12 @@
-import { Flex, Box, Text, Separator } from "@artsy/palette-mobile"
+import { Box, Flex, Separator, Text } from "@artsy/palette-mobile"
 import { OrderDetailsQuery } from "__generated__/OrderDetailsQuery.graphql"
 import { OrderDetails_order$data } from "__generated__/OrderDetails_order.graphql"
-import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { PendingOfferSection } from "app/Scenes/OrderHistory/OrderDetails/Components/PendingOfferSection"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { compact } from "lodash"
-import { Fragment } from "react"
 import { SectionList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ArtworkInfoSectionFragmentContainer } from "./ArtworkInfoSection"
@@ -241,31 +238,22 @@ export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
 })
 
 export const OrderDetailsQueryRender: React.FC<{ orderID: string }> = ({ orderID: orderID }) => {
-  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
-  const Wrapper = enableNewNavigation
-    ? Fragment
-    : ({ children }: { children: React.ReactNode }) => (
-        <PageWithSimpleHeader title="Order Details">{children}</PageWithSimpleHeader>
-      )
-
   return (
-    <Wrapper>
-      <QueryRenderer<OrderDetailsQuery>
-        environment={getRelayEnvironment()}
-        query={graphql`
-          query OrderDetailsQuery($orderID: ID!) {
-            order: commerceOrder(id: $orderID) @optionalField {
-              ...OrderDetails_order
-            }
+    <QueryRenderer<OrderDetailsQuery>
+      environment={getRelayEnvironment()}
+      query={graphql`
+        query OrderDetailsQuery($orderID: ID!) {
+          order: commerceOrder(id: $orderID) @optionalField {
+            ...OrderDetails_order
           }
-        `}
-        render={renderWithPlaceholder({
-          Container: OrderDetailsContainer,
-          renderPlaceholder: () => <OrderDetailsPlaceholder />,
-        })}
-        variables={{ orderID }}
-        cacheConfig={{ force: true }}
-      />
-    </Wrapper>
+        }
+      `}
+      render={renderWithPlaceholder({
+        Container: OrderDetailsContainer,
+        renderPlaceholder: () => <OrderDetailsPlaceholder />,
+      })}
+      variables={{ orderID }}
+      cacheConfig={{ force: true }}
+    />
   )
 }

@@ -16,7 +16,6 @@ import { NavButtons } from "app/system/devTools/DevMenu/Components/NavButtons"
 import { NavigateTo } from "app/system/devTools/DevMenu/Components/NavigateTo"
 import { goBack } from "app/system/navigation/navigate"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useEffect } from "react"
 import { NativeModules, PixelRatio, ScrollView } from "react-native"
 import DeviceInfo from "react-native-device-info"
@@ -24,7 +23,6 @@ import DeviceInfo from "react-native-device-info"
 export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
   const userEmail = GlobalStore.useAppState((s) => s.auth.userEmail)
   const fontScale = PixelRatio.getFontScale()
-  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
   const navigation = useNavigation<NavigationProp<AuthenticatedRoutesParams, "DevMenu">>()
 
   const handleBackButton = () => {
@@ -35,15 +33,13 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
   useBackHandler(handleBackButton)
 
   useEffect(() => {
-    if (enableNewNavigation) {
-      navigation?.setOptions({
-        headerRight: () => (
-          <Flex justifyContent="center" alignItems="center">
-            <NavButtons onClose={onClose} />
-          </Flex>
-        ),
-      })
-    }
+    navigation?.setOptions({
+      headerRight: () => (
+        <Flex justifyContent="center" alignItems="center">
+          <NavButtons onClose={onClose} />
+        </Flex>
+      ),
+    })
   }, [navigation])
 
   return (
@@ -51,22 +47,12 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
       style={{ flex: 1, borderRadius: 4, overflow: "hidden" }}
       contentContainerStyle={{ paddingBottom: 80 }}
     >
-      {!!enableNewNavigation &&
-      // The logged out stack is using a js react-navigation stack instead of a native stack
-      // and it doesn't support large headers so we don't need this additional header
-      !__unsafe__onboardingNavigationRef.current ? (
-        <LargeHeaderView />
-      ) : null}
-
-      {!enableNewNavigation && (
-        <Flex flexDirection="row" justifyContent="space-between" alignItems="center" mb={2} pr={2}>
-          <Text variant="lg-display" px={2}>
-            Dev Settings
-          </Text>
-          <NavButtons onClose={onClose} />
-        </Flex>
-      )}
-
+      {
+        // The logged out stack is using a js react-navigation stack instead of a native stack
+        // and it doesn't support large headers so we don't need this additional header
+        !__unsafe__onboardingNavigationRef.current ? <LargeHeaderView /> : null
+      }
+      å
       <Text variant="xs" color="grey" mx={2} mt={2}>
         Build:{" "}
         <Text variant="xs">

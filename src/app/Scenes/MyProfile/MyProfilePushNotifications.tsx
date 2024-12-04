@@ -1,7 +1,6 @@
 import { Box, Button, Flex, Join, Separator, Text } from "@artsy/palette-mobile"
 import { MyProfilePushNotificationsQuery } from "__generated__/MyProfilePushNotificationsQuery.graphql"
 import { MyProfilePushNotifications_me$data } from "__generated__/MyProfilePushNotifications_me.graphql"
-import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { SwitchMenu } from "app/Components/SwitchMenu"
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -14,7 +13,7 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { requestSystemPermissions } from "app/utils/requestPushNotificationsPermission"
 import useAppState from "app/utils/useAppState"
 import { debounce } from "lodash"
-import React, { Fragment, useCallback, useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { Alert, Linking, Platform, RefreshControl, ScrollView, View } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
@@ -332,32 +331,23 @@ const MyProfilePushNotificationsContainer = createRefetchContainer(
 )
 
 export const MyProfilePushNotificationsQueryRenderer: React.FC<{}> = ({}) => {
-  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
-  const Wrapper = enableNewNavigation
-    ? Fragment
-    : ({ children }: { children: React.ReactNode }) => (
-        <PageWithSimpleHeader title="Push Notifications">{children}</PageWithSimpleHeader>
-      )
-
   return (
-    <Wrapper>
-      <QueryRenderer<MyProfilePushNotificationsQuery>
-        environment={getRelayEnvironment()}
-        query={graphql`
-          query MyProfilePushNotificationsQuery {
-            me {
-              ...MyProfilePushNotifications_me
-            }
+    <QueryRenderer<MyProfilePushNotificationsQuery>
+      environment={getRelayEnvironment()}
+      query={graphql`
+        query MyProfilePushNotificationsQuery {
+          me {
+            ...MyProfilePushNotifications_me
           }
-        `}
-        render={renderWithPlaceholder({
-          Container: MyProfilePushNotificationsContainer,
-          renderPlaceholder: () => (
-            <MyProfilePushNotifications isLoading me={{} as any} relay={null as any} />
-          ),
-        })}
-        variables={{}}
-      />
-    </Wrapper>
+        }
+      `}
+      render={renderWithPlaceholder({
+        Container: MyProfilePushNotificationsContainer,
+        renderPlaceholder: () => (
+          <MyProfilePushNotifications isLoading me={{} as any} relay={null as any} />
+        ),
+      })}
+      variables={{}}
+    />
   )
 }

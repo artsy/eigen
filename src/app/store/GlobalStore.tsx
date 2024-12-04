@@ -1,6 +1,4 @@
-import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
-import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { DevToggleName, FeatureName, features } from "app/store/config/features"
 import { logAction } from "app/utils/loggers"
 import { Actions, createStore, createTypedHooks, StoreProvider } from "easy-peasy"
@@ -125,24 +123,6 @@ export function getCurrentEmissionState() {
 }
 
 // Unsafe calls. Must be colocated here:
-
-/**
- * This is safe, but is marked unsafe because it should not be used within react components since it does not cause re-renders.
- * Use `useSelectedTab` in react components, and use this in rare cases where you need to know the current tab outside of
- * react components.
- */
-export function unsafe__getSelectedTab(): BottomTabType {
-  const tabState = __unsafe_mainModalStackRef?.current
-    ?.getRootState()
-    ?.routes.find((r) => r.state?.type === "tab")?.state
-  if (!tabState) {
-    return "home"
-  } else {
-    const { index, routes } = tabState
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return routes[index!].name as BottomTabType
-  }
-}
 
 /**
  * This is marked as unsafe because it will not cause a re-render

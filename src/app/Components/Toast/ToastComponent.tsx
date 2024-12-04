@@ -1,7 +1,7 @@
 import { Box, Flex, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
-import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
+import { internal_navigationRef } from "app/Navigation/Navigation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useScreenDimensions } from "app/utils/hooks"
 import { useEffect, useMemo, useState } from "react"
@@ -69,8 +69,8 @@ export const ToastComponent = ({
 
     const { modules } = require("app/AppRegistry")
 
-    const moduleName = __unsafe_mainModalStackRef?.current?.getCurrentRoute()?.params // @ts-expect-error
-      ?.moduleName as keyof typeof modules
+    const moduleName = internal_navigationRef?.current?.getCurrentRoute()
+      ?.name as keyof typeof modules
 
     const isBottomTabHidden = modules[moduleName]?.options?.hidesBottomTabs
 

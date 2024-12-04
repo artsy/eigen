@@ -1,11 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { NativeState } from "app/store/NativeModel"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import { NativeModules as AllNativeModules, Platform } from "react-native"
 import { getLocales, getTimeZone } from "react-native-localize"
-import { ARScreenPresenterModule } from "./ARScreenPresenterModule"
-import type { ViewDescriptor } from "app/system/navigation/navigate"
 import type { Image as RNCImage } from "react-native-image-crop-picker"
 
 const noop: any = (name: string) => () =>
@@ -75,17 +72,6 @@ interface LegacyNativeModules {
       cacheKey: string
     ): void
   }
-  ARScreenPresenterModule: {
-    switchTab(tab: BottomTabType): void
-    pushView(currentTabStackID: string, descriptor: ViewDescriptor): void
-    presentModal(descriptor: ViewDescriptor): void
-    dismissModal(): void
-    goBack(currentTabStackID: string): void
-    popStack(stackID: string): void
-    popToRootOrScrollToTop(stackID: string): void
-    popToRootAndScrollToTop(stackID: string): Promise<void>
-    updateShouldHideBackButton(shouldHideBackButton: boolean, currentTabStackID: string): void
-  }
   ARTDeeplinkTimeoutModule: {
     invalidateDeeplinkTimeout(): void
   }
@@ -145,14 +131,12 @@ const LegacyNativeModulesAndroid = {
   ARPHPhotoPickerModule: {
     requestPhotos: noop("requestPhotos"),
   },
-  ARScreenPresenterModule,
   AREventsModule: {
     requestAppStoreRating: noop("requestAppStoreRating"),
   },
 }
 
 const LegacyNativeModulesIOS: LegacyNativeModules = {
-  ARScreenPresenterModule,
   ARTDeeplinkTimeoutModule: AllNativeModules.ARTDeeplinkTimeoutModule,
   ARTNativeScreenPresenterModule: AllNativeModules.ARTNativeScreenPresenterModule,
   ARCocoaConstantsModule: AllNativeModules.ARCocoaConstantsModule,

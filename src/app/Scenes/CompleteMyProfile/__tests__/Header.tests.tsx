@@ -4,6 +4,7 @@ import * as useCompleteProfile from "app/Scenes/CompleteMyProfile/hooks/useCompl
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 jest.mock("@react-navigation/native", () => ({
+  ...jest.requireActual("@react-navigation/native"),
   useNavigation: jest.fn(),
   useRoute: () => ({ name: "LocationStep" }),
 }))

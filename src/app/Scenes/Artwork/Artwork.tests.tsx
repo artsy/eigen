@@ -19,7 +19,6 @@ import {
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { ModalStack } from "app/system/navigation/ModalStack"
 import { navigationEvents } from "app/system/navigation/navigate"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
@@ -57,15 +56,13 @@ describe("Artwork", () => {
   let environment: ReturnType<typeof createMockEnvironment>
 
   const TestRenderer = ({ isVisible = true, onLoad = jest.fn() }) => (
-    <ModalStack>
-      <ArtworkScreen
-        isVisible={isVisible}
-        artworkID="ignored"
-        environment={environment}
-        tracking={{ trackEvent: jest.fn() } as any}
-        onLoad={onLoad}
-      />
-    </ModalStack>
+    <ArtworkScreen
+      isVisible={isVisible}
+      artworkID="ignored"
+      environment={environment}
+      tracking={{ trackEvent: jest.fn() } as any}
+      onLoad={onLoad}
+    />
   )
 
   beforeEach(() => {
@@ -78,7 +75,7 @@ describe("Artwork", () => {
   })
 
   it("renders above the fold content before the full query has been resolved", async () => {
-    renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
     // ArtworkAboveTheFoldQuery
     resolveMostRecentRelayOperation(environment)
@@ -92,7 +89,7 @@ describe("Artwork", () => {
   })
 
   it("renders all content after the full query has been resolved", async () => {
-    renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
     // ArtworkAboveTheFoldQuery
     resolveMostRecentRelayOperation(environment, {
@@ -128,7 +125,7 @@ describe("Artwork", () => {
 
   describe("artist series components", () => {
     it("renders when there are artist series to show", async () => {
-      renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
@@ -167,7 +164,7 @@ describe("Artwork", () => {
     })
 
     it("does not render when there are no artist series to show", async () => {
-      renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment)
@@ -200,7 +197,7 @@ describe("Artwork", () => {
     })
 
     it("tracks a click to an artist series item", async () => {
-      renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
@@ -274,7 +271,7 @@ describe("Artwork", () => {
   })
 
   it("renders the ArtworkDetails component when conditionDescription is null but canRequestLotConditionsReport is true", async () => {
-    renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
     // ArtworkAboveTheFoldQuery
     resolveMostRecentRelayOperation(environment)
@@ -306,7 +303,7 @@ describe("Artwork", () => {
 
   it("updates the above-the-fold content on re-appear", async () => {
     // eslint-disable-next-line testing-library/render-result-naming-convention
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
     // ArtworkAboveTheFoldQuery
     resolveMostRecentRelayOperation(environment, {
@@ -386,7 +383,7 @@ describe("Artwork", () => {
   describe("Live Auction States", () => {
     describe("has the correct state for a work that is in an auction that is currently live", () => {
       it("for which I am registered", () => {
-        renderWithWrappers(<TestRenderer />)
+        renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
         // ArtworkAboveTheFoldQuery
         resolveMostRecentRelayOperation(environment, {
@@ -404,7 +401,7 @@ describe("Artwork", () => {
       })
 
       it("for which I am not registered and registration is open", async () => {
-        renderWithWrappers(<TestRenderer />)
+        renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
         // ArtworkAboveTheFoldQuery
         resolveMostRecentRelayOperation(environment, {
@@ -425,7 +422,7 @@ describe("Artwork", () => {
       })
 
       it("for which I am not registered and registration is closed", () => {
-        renderWithWrappers(<TestRenderer />)
+        renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
         // ArtworkAboveTheFoldQuery
         resolveMostRecentRelayOperation(environment, {
@@ -446,7 +443,7 @@ describe("Artwork", () => {
 
   describe("Partner Section", () => {
     it("should display contact gallery button when partner is inquireable", () => {
-      renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
@@ -487,7 +484,7 @@ describe("Artwork", () => {
     })
 
     it("should not display contact gallery button when partner is not inquireable", () => {
-      renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
@@ -529,7 +526,7 @@ describe("Artwork", () => {
 
   describe("Shipping and taxes", () => {
     it("should be rendered when the work has `for sale` availability", async () => {
-      renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
@@ -555,7 +552,7 @@ describe("Artwork", () => {
     })
 
     it("should NOT be rendered if the work has any other availability", () => {
-      renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment)
       // ArtworkMarkAsRecentlyViewedQuery
@@ -572,7 +569,7 @@ describe("Artwork", () => {
     })
 
     it("should NOT be rendered if the work is in auction", () => {
-      renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
@@ -597,7 +594,7 @@ describe("Artwork", () => {
 
   describe("Artsy Guarantee section", () => {
     it("should be displayed when eligible for artsy guarantee", async () => {
-      renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
@@ -632,7 +629,7 @@ describe("Artwork", () => {
     })
 
     it("should not be displayed when ineligible for artsy guarantee", async () => {
-      renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment)
@@ -656,7 +653,7 @@ describe("Artwork", () => {
 
   describe("Context Card", () => {
     it("should NOT be displayed if the work is in a non-auction sale", async () => {
-      renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
@@ -681,7 +678,7 @@ describe("Artwork", () => {
     })
 
     it("should be displayed if the work is in an auction", async () => {
-      renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
@@ -716,7 +713,7 @@ describe("Artwork", () => {
 
   describe("About the work section", () => {
     it("should NOT be rendered", async () => {
-      renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment)
@@ -737,7 +734,7 @@ describe("Artwork", () => {
     })
 
     it("should be rendered", async () => {
-      renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment)
@@ -759,7 +756,7 @@ describe("Artwork", () => {
 
   describe("Provenance/Exhibition history/Bibliography", () => {
     it("should NOT be rendered", async () => {
-      renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment)
@@ -783,7 +780,7 @@ describe("Artwork", () => {
     })
 
     it("should be rendered", async () => {
-      renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment)
@@ -809,7 +806,7 @@ describe("Artwork", () => {
 
   describe("About the artist", () => {
     it("should NOT be rendered", async () => {
-      renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment)
@@ -829,7 +826,7 @@ describe("Artwork", () => {
     })
 
     it("should be rendered", async () => {
-      renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment)
@@ -855,7 +852,7 @@ describe("Artwork", () => {
 
   describe("Other works", () => {
     it("should NOT be rendered", async () => {
-      renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment)
@@ -882,7 +879,7 @@ describe("Artwork", () => {
     })
 
     it("should be rendered", async () => {
-      renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
@@ -933,7 +930,7 @@ describe("Artwork", () => {
 
   describe("Consigments", () => {
     it("shows consign link if at least 1 artist is consignable", async () => {
-      renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment)
@@ -958,7 +955,7 @@ describe("Artwork", () => {
     })
 
     it("doesn't render section", async () => {
-      renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
@@ -993,7 +990,7 @@ describe("Artwork", () => {
 
   describe("Unlisted Private Artworks", () => {
     it("renders correct components for unlisted private artworks", async () => {
-      renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
@@ -1041,7 +1038,7 @@ describe("Artwork", () => {
     })
 
     it("tracks partner name taps", async () => {
-      renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment, {

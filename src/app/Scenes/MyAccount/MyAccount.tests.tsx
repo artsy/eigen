@@ -1,7 +1,6 @@
 import { Text } from "@artsy/palette-mobile"
 import { MyAccountTestsQuery } from "__generated__/MyAccountTestsQuery.graphql"
 import { MenuItem } from "app/Components/MenuItem"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Platform } from "react-native"
@@ -59,9 +58,6 @@ describe(MyAccountQueryRenderer, () => {
   )
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
-    __globalStoreTestUtils__?.injectFeatureFlags({
-      AREnableNewNavigation: true,
-    })
   })
 
   it("truncated long emails", () => {

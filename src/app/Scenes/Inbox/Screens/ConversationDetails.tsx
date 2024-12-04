@@ -1,7 +1,6 @@
 import { Flex } from "@artsy/palette-mobile"
 import { ConversationDetailsQuery } from "__generated__/ConversationDetailsQuery.graphql"
 import { ConversationDetails_me$data } from "__generated__/ConversationDetails_me.graphql"
-import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { ItemInfoFragmentContainer } from "app/Scenes/Inbox/Components/Conversations/ItemInfo"
 import { OrderInformationFragmentContainer } from "app/Scenes/Inbox/Components/Conversations/OrderInformation"
 import { PaymentMethodFragmentContainer } from "app/Scenes/Inbox/Components/Conversations/PaymentMethod"
@@ -11,9 +10,7 @@ import { ShippingFragmentContainer } from "app/Scenes/Inbox/Components/Conversat
 import { Support } from "app/Scenes/Inbox/Components/Conversations/Support"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { Fragment } from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 
@@ -89,30 +86,20 @@ export const ConversationDetailsFragmentContainer = createFragmentContainer(Conv
 export const ConversationDetailsQueryRenderer: React.FC<{
   conversationID: string
 }> = ({ conversationID }) => {
-  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
-
-  const Wrapper = enableNewNavigation
-    ? Fragment
-    : ({ children }: { children: React.ReactNode }) => (
-        <PageWithSimpleHeader title="Details">{children}</PageWithSimpleHeader>
-      )
-
   return (
-    <Wrapper>
-      <QueryRenderer<ConversationDetailsQuery>
-        environment={getRelayEnvironment()}
-        query={graphql`
-          query ConversationDetailsQuery($conversationID: String!) {
-            me {
-              ...ConversationDetails_me
-            }
+    <QueryRenderer<ConversationDetailsQuery>
+      environment={getRelayEnvironment()}
+      query={graphql`
+        query ConversationDetailsQuery($conversationID: String!) {
+          me {
+            ...ConversationDetails_me
           }
-        `}
-        variables={{
-          conversationID,
-        }}
-        render={renderWithLoadProgress(ConversationDetailsFragmentContainer)}
-      />
-    </Wrapper>
+        }
+      `}
+      variables={{
+        conversationID,
+      }}
+      render={renderWithLoadProgress(ConversationDetailsFragmentContainer)}
+    />
   )
 }

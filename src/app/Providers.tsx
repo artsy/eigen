@@ -1,4 +1,4 @@
-import { Theme, Spinner, ScreenDimensionsProvider, Screen } from "@artsy/palette-mobile"
+import { Screen, ScreenDimensionsProvider, Spinner, Theme } from "@artsy/palette-mobile"
 import { ActionSheetProvider } from "@expo/react-native-action-sheet"
 import { PortalProvider } from "@gorhom/portal"
 import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsContext"
@@ -6,6 +6,7 @@ import { ShareSheetProvider } from "app/Components/ShareSheet/ShareSheetContext"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvideScreenDimensions } from "app/utils/hooks/useScreenDimensions"
+import { NavigationTestsProvider } from "app/utils/tests/NavigationTestsProvider"
 import { Component, Suspense } from "react"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { SafeAreaProvider } from "react-native-safe-area-context"
@@ -50,12 +51,14 @@ export const Providers: React.FC<{ children: React.ReactNode }> = ({ children })
     children
   )
 
-export const TestProviders: React.FC<{ skipRelay?: boolean }> = ({
+export const TestProviders: React.FC<{ skipRelay?: boolean; includeNavigation?: boolean }> = ({
   children,
   skipRelay = false,
+  includeNavigation = false,
 }) => {
   return combineProviders(
     [
+      includeNavigation && NavigationTestsProvider,
       TrackingProvider,
       GlobalStoreProvider,
       SafeAreaProvider,

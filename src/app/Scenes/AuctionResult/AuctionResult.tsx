@@ -4,12 +4,11 @@ import {
   Flex,
   Join,
   NoArtworkIcon,
+  Separator,
   Spacer,
   Text,
   useSpace,
   useTheme,
-  Separator,
-  BackButton,
 } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { addBreadcrumb } from "@sentry/react-native"
@@ -22,10 +21,9 @@ import {
 import { ratioColor } from "app/Components/AuctionResult/AuctionResultMidEstimate"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { AuthenticatedRoutesParams } from "app/Navigation/AuthenticatedRoutes/Tabs"
-import { goBack, navigate } from "app/system/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { QAInfoPanel } from "app/utils/QAInfo"
 import { useScreenDimensions } from "app/utils/hooks"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderBox } from "app/utils/placeholders"
 import { getImageSquareDimensions } from "app/utils/resizeImage"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
@@ -51,10 +49,8 @@ export const AuctionResult: React.FC<Props> = (props) => {
   const artist = useFragment(artistFragment, props.artist)
   const auctionResult = useFragment(auctionResultFragment, props.auctionResult)
   const navigation = useNavigation<NavigationProp<AuthenticatedRoutesParams, "AuctionResult">>()
-  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
 
   const { theme } = useTheme()
-  const space = useSpace()
 
   const tracking = useTracking()
 
@@ -235,21 +231,6 @@ export const AuctionResult: React.FC<Props> = (props) => {
 
   return (
     <ProvideScreenTrackingWithCohesionSchema info={tracks.screen(auctionResult.internalID)}>
-      {!enableNewNavigation && (
-        <Flex flexDirection="row" alignItems="center" height={44} px={2}>
-          <Flex pr={2} alignItems="center">
-            <BackButton
-              onPress={goBack}
-              hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
-            />
-          </Flex>
-          <Text variant="sm" numberOfLines={1} style={{ flexShrink: 1 }}>
-            {auctionResult.title}
-          </Text>
-          {!!auctionResult.dateText && <Text variant="sm">, {auctionResult.dateText}</Text>}
-        </Flex>
-      )}
-
       <ScrollView>
         <Join separator={<Spacer y={2} />}>
           {!!auctionResult?.images?.larger && (

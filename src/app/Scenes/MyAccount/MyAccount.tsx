@@ -2,25 +2,21 @@ import { Box, Button, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { MyAccountQuery } from "__generated__/MyAccountQuery.graphql"
 import { MyAccount_me$data } from "__generated__/MyAccount_me.graphql"
 import { MenuItem } from "app/Components/MenuItem"
-import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useAppleLink } from "app/utils/LinkedAccounts/apple"
 import { useFacebookLink } from "app/utils/LinkedAccounts/facebook"
 import { useGoogleLink } from "app/utils/LinkedAccounts/google"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Fragment } from "react"
 import { ActivityIndicator, Image, Platform, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { PRICE_BUCKETS } from "./MyAccountEditPriceRange"
 
 const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, relay }) => {
   const hasOnlyOneAuth = me.authentications.length + (me.hasPassword ? 1 : 0) < 2
-  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
 
   const onlyExistingAuthFor = (provider: "FACEBOOK" | "GOOGLE" | "APPLE") => {
     return (
@@ -72,136 +68,128 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
     ? PRICE_BUCKETS.find((i) => me.priceRange === i.value)?.label ?? "Select a price range"
     : "Select a price range"
 
-  const Wrapper = enableNewNavigation
-    ? Fragment
-    : ({ children }: { children: React.ReactNode }) => (
-        <PageWithSimpleHeader title="Account">{children}</PageWithSimpleHeader>
-      )
-
   return (
-    <Wrapper>
-      <ScrollView contentContainerStyle={{ paddingTop: 10 }}>
+    <ScrollView contentContainerStyle={{ paddingTop: 10 }}>
+      <MenuItem
+        title="Email"
+        value={me.email}
+        ellipsizeMode="middle"
+        onPress={() => {
+          navigate("my-account/edit-email")
+        }}
+      />
+      <MenuItem
+        title="Phone"
+        value={me.phone || "Add phone"}
+        onPress={() => navigate("my-account/edit-phone")}
+      />
+      <MenuItem
+        title="Price Range"
+        value={priceRangeValue}
+        onPress={() => navigate("my-account/edit-price-range")}
+      />
+      {!!me.hasPassword && (
         <MenuItem
-          title="Email"
-          value={me.email}
-          ellipsizeMode="middle"
-          onPress={() => {
-            navigate("my-account/edit-email")
-          }}
+          title="Password"
+          value="Change password"
+          onPress={() => navigate("my-account/edit-password")}
         />
-        <MenuItem
-          title="Phone"
-          value={me.phone || "Add phone"}
-          onPress={() => navigate("my-account/edit-phone")}
-        />
-        <MenuItem
-          title="Price Range"
-          value={priceRangeValue}
-          onPress={() => navigate("my-account/edit-price-range")}
-        />
-        {!!me.hasPassword && (
+      )}
+      {!!me.paddleNumber && <MenuItem title="Paddle Number" value={me.paddleNumber} />}
+      {!!showLinkedAccounts && (
+        <Flex mt={4}>
+          <Box mx={2}>
+            <SectionTitle title="LINKED ACCOUNTS" />
+          </Box>
+
           <MenuItem
-            title="Password"
-            value="Change password"
-            onPress={() => navigate("my-account/edit-password")}
+            title="Facebook"
+            disabled={loading || onlyExistingAuthFor("FACEBOOK")}
+            allowDisabledVisualClue
+            rightView={
+              fbLoading ? (
+                <ActivityIndicator size="small" color="black" />
+              ) : (
+                <Flex flexDirection="row" alignItems="center">
+                  <Image
+                    source={require(`images/facebook.webp`)}
+                    resizeMode="contain"
+                    style={{ marginRight: 10 }}
+                  />
+                  <Text variant="sm-display" color="black60" lineHeight="18px">
+                    {facebookLinked ? "Unlink" : "Link"}
+                  </Text>
+                </Flex>
+              )
+            }
+            onPress={
+              fbLoading || onlyExistingAuthFor("FACEBOOK")
+                ? () => null
+                : () => linkOrUnlink("facebook")
+            }
           />
-        )}
-        {!!me.paddleNumber && <MenuItem title="Paddle Number" value={me.paddleNumber} />}
-        {!!showLinkedAccounts && (
-          <Flex mt={4}>
-            <Box mx={2}>
-              <SectionTitle title="LINKED ACCOUNTS" />
-            </Box>
 
+          <MenuItem
+            title="Google"
+            disabled={loading || onlyExistingAuthFor("GOOGLE")}
+            allowDisabledVisualClue
+            rightView={
+              googleLoading ? (
+                <ActivityIndicator size="small" color="black" />
+              ) : (
+                <Flex flexDirection="row" alignItems="center">
+                  <Image
+                    source={require(`images/google.webp`)}
+                    resizeMode="contain"
+                    style={{ marginRight: 10 }}
+                  />
+                  <Text variant="sm-display" color="black60" lineHeight="18px">
+                    {googleLinked ? "Unlink" : "Link"}
+                  </Text>
+                </Flex>
+              )
+            }
+            onPress={
+              googleLoading || onlyExistingAuthFor("GOOGLE")
+                ? () => null
+                : () => linkOrUnlink("google")
+            }
+          />
+          {!!showLinkApple && (
             <MenuItem
-              title="Facebook"
-              disabled={loading || onlyExistingAuthFor("FACEBOOK")}
+              title="Apple"
+              disabled={loading || onlyExistingAuthFor("APPLE")}
               allowDisabledVisualClue
               rightView={
-                fbLoading ? (
+                appleLoading ? (
                   <ActivityIndicator size="small" color="black" />
                 ) : (
                   <Flex flexDirection="row" alignItems="center">
                     <Image
-                      source={require(`images/facebook.webp`)}
+                      source={require(`images/apple.webp`)}
                       resizeMode="contain"
-                      style={{ marginRight: 10 }}
+                      style={{ marginRight: 10, tintColor: "black" }}
                     />
                     <Text variant="sm-display" color="black60" lineHeight="18px">
-                      {facebookLinked ? "Unlink" : "Link"}
+                      {appleLinked ? "Unlink" : "Link"}
                     </Text>
                   </Flex>
                 )
               }
               onPress={
-                fbLoading || onlyExistingAuthFor("FACEBOOK")
+                appleLoading || onlyExistingAuthFor("APPLE")
                   ? () => null
-                  : () => linkOrUnlink("facebook")
+                  : () => linkOrUnlink("apple")
               }
             />
-
-            <MenuItem
-              title="Google"
-              disabled={loading || onlyExistingAuthFor("GOOGLE")}
-              allowDisabledVisualClue
-              rightView={
-                googleLoading ? (
-                  <ActivityIndicator size="small" color="black" />
-                ) : (
-                  <Flex flexDirection="row" alignItems="center">
-                    <Image
-                      source={require(`images/google.webp`)}
-                      resizeMode="contain"
-                      style={{ marginRight: 10 }}
-                    />
-                    <Text variant="sm-display" color="black60" lineHeight="18px">
-                      {googleLinked ? "Unlink" : "Link"}
-                    </Text>
-                  </Flex>
-                )
-              }
-              onPress={
-                googleLoading || onlyExistingAuthFor("GOOGLE")
-                  ? () => null
-                  : () => linkOrUnlink("google")
-              }
-            />
-            {!!showLinkApple && (
-              <MenuItem
-                title="Apple"
-                disabled={loading || onlyExistingAuthFor("APPLE")}
-                allowDisabledVisualClue
-                rightView={
-                  appleLoading ? (
-                    <ActivityIndicator size="small" color="black" />
-                  ) : (
-                    <Flex flexDirection="row" alignItems="center">
-                      <Image
-                        source={require(`images/apple.webp`)}
-                        resizeMode="contain"
-                        style={{ marginRight: 10, tintColor: "black" }}
-                      />
-                      <Text variant="sm-display" color="black60" lineHeight="18px">
-                        {appleLinked ? "Unlink" : "Link"}
-                      </Text>
-                    </Flex>
-                  )
-                }
-                onPress={
-                  appleLoading || onlyExistingAuthFor("APPLE")
-                    ? () => null
-                    : () => linkOrUnlink("apple")
-                }
-              />
-            )}
-          </Flex>
-        )}
-        <Spacer y={2} />
-        <Button variant="text" block onPress={() => navigate("my-account/delete-account")}>
-          <Text color="red100">Delete My Account</Text>
-        </Button>
-      </ScrollView>
-    </Wrapper>
+          )}
+        </Flex>
+      )}
+      <Spacer y={2} />
+      <Button variant="text" block onPress={() => navigate("my-account/delete-account")}>
+        <Text color="red100">Delete My Account</Text>
+      </Button>
+    </ScrollView>
   )
 }
 

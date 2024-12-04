@@ -1,22 +1,8 @@
-import EventEmitter from "events"
 import { useScrollToTop } from "@react-navigation/native"
-import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import React, { useEffect, useRef } from "react"
+import React, { useRef } from "react"
 import { FlatList, ScrollView } from "react-native"
 
-export const BottomTabsEvents = new EventEmitter()
-BottomTabsEvents.setMaxListeners(20)
-
-export const SCROLL_TO_TOP_EVENT = "scrollToTop"
-
-export const scrollTabToTop = (tab: BottomTabType) => {
-  BottomTabsEvents.emit(`${SCROLL_TO_TOP_EVENT}-${tab}`)
-}
-
-export const useBottomTabsScrollToTop = (tab: BottomTabType, onScrollToTop?: () => void) => {
-  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
-
+export const useBottomTabsScrollToTop = (onScrollToTop?: () => void) => {
   const ref = useRef<ScrollView | FlatList>(null)
 
   useScrollToTop(
@@ -36,18 +22,6 @@ export const useBottomTabsScrollToTop = (tab: BottomTabType, onScrollToTop?: () 
 
     onScrollToTop?.()
   }
-
-  useEffect(() => {
-    if (enableNewNavigation) {
-      return
-    }
-
-    BottomTabsEvents.addListener(`${SCROLL_TO_TOP_EVENT}-${tab}`, handleScrollToTopEvent)
-
-    return () => {
-      BottomTabsEvents.removeListener(`${SCROLL_TO_TOP_EVENT}-${tab}`, handleScrollToTopEvent)
-    }
-  }, [])
 
   return ref
 }

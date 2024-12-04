@@ -4,15 +4,13 @@ import { MyProfilePaymentQuery } from "__generated__/MyProfilePaymentQuery.graph
 import { MyProfilePayment_me$data } from "__generated__/MyProfilePayment_me.graphql"
 import { CreditCardDetailsContainer } from "app/Components/CreditCardDetails"
 import { MenuItem } from "app/Components/MenuItem"
-import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import React, { Fragment, useCallback, useEffect, useReducer, useState } from "react"
+import React, { useCallback, useEffect, useReducer, useState } from "react"
 import {
   ActivityIndicator,
   Alert,
@@ -222,31 +220,22 @@ const MyProfilePaymentContainer = createPaginationContainer(
 )
 
 export const MyProfilePaymentQueryRenderer: React.FC<{}> = ({}) => {
-  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
-  const Wrapper = enableNewNavigation
-    ? Fragment
-    : ({ children }: { children: React.ReactNode }) => (
-        <PageWithSimpleHeader title="Payment">{children}</PageWithSimpleHeader>
-      )
-
   return (
-    <Wrapper>
-      <QueryRenderer<MyProfilePaymentQuery>
-        environment={getRelayEnvironment()}
-        query={graphql`
-          query MyProfilePaymentQuery($count: Int!) {
-            me {
-              ...MyProfilePayment_me @arguments(count: $count)
-            }
+    <QueryRenderer<MyProfilePaymentQuery>
+      environment={getRelayEnvironment()}
+      query={graphql`
+        query MyProfilePaymentQuery($count: Int!) {
+          me {
+            ...MyProfilePayment_me @arguments(count: $count)
           }
-        `}
-        render={renderWithPlaceholder({
-          Container: MyProfilePaymentContainer,
-          renderPlaceholder: () => <MyProfilePaymentPlaceholder />,
-        })}
-        variables={{ count: NUM_CARDS_TO_FETCH }}
-        cacheConfig={{ force: true }}
-      />
-    </Wrapper>
+        }
+      `}
+      render={renderWithPlaceholder({
+        Container: MyProfilePaymentContainer,
+        renderPlaceholder: () => <MyProfilePaymentPlaceholder />,
+      })}
+      variables={{ count: NUM_CARDS_TO_FETCH }}
+      cacheConfig={{ force: true }}
+    />
   )
 }

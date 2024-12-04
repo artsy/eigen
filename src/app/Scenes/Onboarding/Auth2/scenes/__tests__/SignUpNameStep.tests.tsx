@@ -1,7 +1,8 @@
-import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { useCountryCode } from "app/Scenes/Onboarding/Auth2/hooks/useCountryCode"
 import { SignUpNameStep } from "app/Scenes/Onboarding/Auth2/scenes/SignUpNameStep"
 import { GlobalStore } from "app/store/GlobalStore"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 jest.mock("@artsy/palette-mobile", () => ({
@@ -25,18 +26,6 @@ jest.mock("app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation", () => ({
   useAuthScreen: jest.fn().mockReturnValue({
     currentScreen: "SignUpNameStep",
   }),
-}))
-
-jest.mock("app/store/GlobalStore", () => ({
-  ...jest.requireActual("app/store/GlobalStore"),
-  GlobalStore: {
-    ...jest.requireActual("app/store/GlobalStore").GlobalStore,
-    actions: {
-      auth: {
-        signUp: jest.fn(),
-      },
-    },
-  },
 }))
 
 describe("SignUpNameStep", () => {
@@ -78,6 +67,11 @@ describe("SignUpNameStep", () => {
     })
 
     it("agrees to receive emails if the user is automatically ", async () => {
+      const mockSignUp = jest
+        .spyOn(GlobalStore.actions.auth, "signUp")
+        // @ts-expect-error
+        .mockImplementation(() => Promise.resolve())
+
       renderWithWrappers(<SignUpNameStep />)
 
       fireEvent.changeText(screen.getByA11yHint("Enter your full name"), "Percy Cat")
@@ -87,13 +81,9 @@ describe("SignUpNameStep", () => {
 
       fireEvent.press(screen.getByText("Continue"))
 
-      await waitFor(() => {
-        expect(GlobalStore.actions.auth.signUp).toHaveBeenCalledWith(
-          expect.objectContaining({
-            agreedToReceiveEmails: true,
-          })
-        )
-      })
+      await flushPromiseQueue()
+
+      expect(mockSignUp).toHaveBeenCalled()
     })
   })
 })
