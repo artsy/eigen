@@ -224,12 +224,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "ARSWAMakeAllDimensionsOptional",
   },
-  AREnableSubmitArtworkTier2Information: {
-    description: "Enable submit artwork tier 2 information",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableSubmitArtworkTier2Information",
-  },
   AREnableCollectionsWithoutHeaderImage: {
     description: "Remove the header image from collections",
     readyForRelease: true,

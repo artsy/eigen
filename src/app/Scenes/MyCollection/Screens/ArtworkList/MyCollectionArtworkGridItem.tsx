@@ -30,9 +30,6 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
   const displayImage = artwork.images?.find((i: any) => i?.isDefault) || artwork.images?.[0]
   const { width } = useScreenDimensions()
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
-  const enableSubmitArtworkTier2Information = useFeatureFlag(
-    "AREnableSubmitArtworkTier2Information"
-  )
 
   const localImage = useLocalImage(displayImage)
 
@@ -144,7 +141,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
               </Box>
             )}
 
-            {!!enableSubmitArtworkTier2Information && <SubmissionStatus artwork={artwork} />}
+            <SubmissionStatus artwork={artwork} />
           </Box>
         </View>
       </TouchableHighlight>
