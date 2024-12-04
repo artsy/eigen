@@ -84,27 +84,23 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
     return
   }
 
+  const props = { ...result.params, ...options.passProps }
+
   if (options.replaceActiveModal || options.replaceActiveScreen) {
-    internal_navigationRef.current.dispatch(
-      StackActions.replace(result.module, { ...result.params, ...options.passProps })
-    )
+    internal_navigationRef.current.dispatch(StackActions.replace(result.module, props))
   } else {
     if (module.options.onlyShowInTabName) {
-      switchTab(module.options.onlyShowInTabName)
+      switchTab(module.options.onlyShowInTabName, props)
 
       if (!module.options.isRootViewForTabName) {
         // We wait for a frame to allow the tab to be switched before we navigate
         // This allows us to also override the back button behavior in the tab
         requestAnimationFrame(() => {
-          internal_navigationRef.current?.dispatch(
-            StackActions.push(result.module, { ...result.params, ...options.passProps })
-          )
+          internal_navigationRef.current?.dispatch(StackActions.push(result.module, props))
         })
       }
     } else {
-      internal_navigationRef.current?.dispatch(
-        StackActions.push(result.module, { ...result.params, ...options.passProps })
-      )
+      internal_navigationRef.current?.dispatch(StackActions.push(result.module, props))
     }
   }
 }
