@@ -1,5 +1,6 @@
 import { ContextModule } from "@artsy/cohesion"
 import { Flex, Image, Text, Touchable } from "@artsy/palette-mobile"
+import { captureMessage } from "@sentry/react-native"
 import { Task_task$key } from "__generated__/Task_task.graphql"
 import { Swipeable } from "app/Components/Swipeable/Swipeable"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
@@ -15,19 +16,18 @@ const TASK_IMAGE_SIZE = 60
 
 interface TaskProps {
   disableSwipeable?: boolean
-  onClearTask: () => void
+  onClearTask?: () => void
   onPress?: () => void
   task: Task_task$key
 }
 
 export const Task = forwardRef<SwipeableMethods, TaskProps>(
   ({ disableSwipeable, onClearTask, onPress, ...restProps }, ref) => {
-    const { tappedTaskGroup, tappedClearTask } = useHomeViewTracking()
-    const { submitMutation: dismissTask } = useDismissTask()
-    const { submitMutation: acknowledgeTask } = useAcknowledgeTask()
-    const fontScale = PixelRatio.getFontScale()
-
     const task = useFragment(taskFragment, restProps.task)
+    const { tappedTaskGroup, tappedClearTask } = useHomeViewTracking()
+    const [dismissTask, dismissInProgress] = useDismissTask(task.id)
+    const [acknowledgeTask, acknowledgeInProgress] = useAcknowledgeTask(task.id)
+    const fontScale = PixelRatio.getFontScale()
 
     const handlePressTask = async () => {
       if (onPress) {
@@ -35,17 +35,45 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
         return
       }
 
-      await acknowledgeTask({ variables: { taskID: task.internalID } })
+      if (acknowledgeInProgress) {
+        return
+      }
+
+      acknowledgeTask({
+        variables: { taskID: task.internalID },
+        onError: (error) => {
+          if (__DEV__) {
+            console.error("[useAcknowledgeTaskMutation] Error: ", error.message)
+          } else {
+            captureMessage(`useAcknowledgeTaskMutation ${error.message}`)
+          }
+        },
+      })
+
       tappedTaskGroup(ContextModule.actNow, task.actionLink, task.internalID, task.taskType)
-      onClearTask()
+      onClearTask?.()
 
       navigate(task.actionLink)
     }
 
     const handleClearTask = async () => {
-      await dismissTask({ variables: { taskID: task.internalID } })
+      if (dismissInProgress) {
+        return
+      }
+
+      dismissTask({
+        variables: { taskID: task.internalID },
+        onError: (error) => {
+          if (__DEV__) {
+            console.error("[useDismissTaskMutation] Error: ", error.message)
+          } else {
+            captureMessage(`useDismissTaskMutation ${error.message}`)
+          }
+        },
+      })
+
       tappedClearTask(ContextModule.actNow, task.actionLink, task.internalID, task.taskType)
-      onClearTask()
+      onClearTask?.()
     }
 
     return (
@@ -62,7 +90,7 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
         enabled={!disableSwipeable}
       >
         <Flex backgroundColor="white100" borderRadius={5}>
-          <Touchable onPress={handlePressTask}>
+          <Touchable onPress={handlePressTask} disabled={dismissInProgress}>
             <Flex
               p={1}
               ml={2}
@@ -96,6 +124,7 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
 
 const taskFragment = graphql`
   fragment Task_task on Task {
+    id
     actionLink
     imageUrl
     internalID

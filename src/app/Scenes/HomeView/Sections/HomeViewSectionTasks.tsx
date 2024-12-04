@@ -38,7 +38,7 @@ const MAX_NUMBER_OF_TASKS = 10
 // Height of each task + seperator
 const TASK_CARD_HEIGHT = 92
 
-type Task = ExtractNodeType<HomeViewSectionTasks_section$data["tasksConnection"]>
+type Task = ExtractNodeType<HomeViewSectionTasks_section$data["tasks"]>
 
 interface HomeViewSectionTasksProps extends FlexProps {
   section: HomeViewSectionTasks_section$key
@@ -52,17 +52,15 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
 }) => {
   const swipeableRef = useRef<SwipeableMethods>(null)
   const section = useFragment(tasksFragment, sectionProp)
-  const tasks = extractNodes(section.tasksConnection)
+  const tasks = extractNodes(section.tasks)
   const isFocused = useIsFocused()
 
   const { isDismissed } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
   const { dismiss } = GlobalStore.actions.progressiveOnboarding
 
-  const [clearedTasks, setClearedTasks] = useState<string[]>([])
   const [showAll, setShowAll] = useState(false)
 
-  const filteredTasks = tasks.filter((task) => !clearedTasks.includes(task.internalID))
-  const displayTaskStack = filteredTasks.length > 1 && !showAll
+  const displayTaskStack = tasks.length > 1 && !showAll
   const HeaderIconComponent = showAll ? ArrowUpIcon : ArrowDownIcon
 
   const task = tasks?.[0]
@@ -92,10 +90,6 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
     }
   }, [shouldStartOnboardingAnimation])
 
-  const handleClearTask = (task: Task) => {
-    setClearedTasks((prev) => [...prev, task.internalID])
-  }
-
   const renderCell = useCallback(({ index, ...rest }: CellRendererProps<Task>) => {
     return <Box zIndex={-index} {...rest} />
   }, [])
@@ -124,7 +118,6 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
           >
             <Task
               disableSwipeable={displayTaskStack}
-              onClearTask={() => handleClearTask(item)}
               onPress={displayTaskStack ? () => setShowAll((prev) => !prev) : undefined}
               ref={swipeableRef}
               task={item}
@@ -133,7 +126,7 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
         </Flex>
       )
     },
-    [displayTaskStack, handleClearTask, showAll]
+    [displayTaskStack, showAll]
   )
 
   const motiViewHeight = useMemo(() => {
@@ -144,12 +137,12 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
       return singleTaskHeight
     }
 
-    return singleTaskHeight + (filteredTasks.length - 1) * TASK_CARD_HEIGHT
-  }, [filteredTasks, showAll])
+    return singleTaskHeight + (tasks.length - 1) * TASK_CARD_HEIGHT
+  }, [tasks, showAll])
 
   return (
     <AnimatePresence>
-      {!!filteredTasks.length && (
+      {!!tasks.length && (
         <MotiView
           transition={{ type: "timing" }}
           animate={{ opacity: 1, height: motiViewHeight }}
@@ -161,7 +154,7 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
               <SectionTitle
                 title={section.component?.title}
                 RightButtonContent={() => {
-                  if (filteredTasks.length < 2) {
+                  if (tasks.length < 2) {
                     return null
                   }
 
@@ -179,7 +172,7 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
             <Flex mr={2}>
               <FlatList
                 scrollEnabled={false}
-                data={filteredTasks}
+                data={tasks}
                 keyExtractor={(item) => item.internalID}
                 CellRendererComponent={renderCell}
                 ItemSeparatorComponent={() => <Spacer y={1} />}
@@ -207,7 +200,7 @@ const tasksFragment = graphql`
     component {
       title
     }
-    tasksConnection(first: $numberOfTasks) {
+    tasks: tasksConnection(first: $numberOfTasks) @connection(key: "HomeViewSectionTasks_tasks") {
       edges {
         node {
           internalID
