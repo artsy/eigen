@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Box, Separator, SpacingUnit, useSpace } from "@artsy/palette-mobile"
+import { Box, Screen, Separator, SpacingUnit, useSpace } from "@artsy/palette-mobile"
 import { ArtworkAboveTheFoldQuery } from "__generated__/ArtworkAboveTheFoldQuery.graphql"
 import { ArtworkBelowTheFoldQuery } from "__generated__/ArtworkBelowTheFoldQuery.graphql"
 import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRecentlyViewedQuery.graphql"
@@ -885,12 +885,12 @@ export const ArtworkScreen: React.FC<ArtworkScreenProps> = (props) => {
   const [artworkProps, setArtworkProps] = useState<ArtworkProps | null>(null)
 
   return (
-    <>
+    <Screen>
       {!!artworkProps?.artworkAboveTheFold && (
         <ArtworkScreenHeader artwork={artworkProps.artworkAboveTheFold} />
       )}
 
       <ArtworkQueryRenderer {...props} onLoad={(props) => setArtworkProps(props)} />
-    </>
+    </Screen>
   )
 }

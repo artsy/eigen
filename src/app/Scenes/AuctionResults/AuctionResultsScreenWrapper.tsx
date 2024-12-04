@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Screen, Text } from "@artsy/palette-mobile"
 import { AuctionResultsScreenWrapperContainerQuery } from "__generated__/AuctionResultsScreenWrapperContainerQuery.graphql"
 import { AuctionResultsScreenWrapper_me$data } from "__generated__/AuctionResultsScreenWrapper_me.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -192,32 +192,34 @@ export const AuctionResultsScreenScreenWrapperQueryQueryRenderer: React.FC<{
   state: AuctionResultsState
 }> = ({ state = AuctionResultsState.ALL }) => {
   return (
-    <QueryRenderer<AuctionResultsScreenWrapperContainerQuery>
-      environment={getRelayEnvironment()}
-      query={AuctionResultsScreenWrapperQuery}
-      variables={{
-        state,
-        sort: AuctionResultsSorts.DATE_DESC,
-      }}
-      cacheConfig={{
-        force: true,
-      }}
-      render={renderWithPlaceholder({
-        Container: AuctionResultsScreenWrapperContainer,
-        renderPlaceholder: () => {
-          return (
-            <LoadingSkeleton
-              title={getTitleByState(state)}
-              listHeader={<ListHeader state={state} />}
-            />
-          )
-        },
-        initialProps: {
+    <Screen>
+      <QueryRenderer<AuctionResultsScreenWrapperContainerQuery>
+        environment={getRelayEnvironment()}
+        query={AuctionResultsScreenWrapperQuery}
+        variables={{
           state,
           sort: AuctionResultsSorts.DATE_DESC,
-        },
-      })}
-    />
+        }}
+        cacheConfig={{
+          force: true,
+        }}
+        render={renderWithPlaceholder({
+          Container: AuctionResultsScreenWrapperContainer,
+          renderPlaceholder: () => {
+            return (
+              <LoadingSkeleton
+                title={getTitleByState(state)}
+                listHeader={<ListHeader state={state} />}
+              />
+            )
+          },
+          initialProps: {
+            state,
+            sort: AuctionResultsSorts.DATE_DESC,
+          },
+        })}
+      />
+    </Screen>
   )
 }
 

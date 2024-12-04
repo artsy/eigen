@@ -71,7 +71,6 @@ import {
   AuctionResultsForArtistsYouFollowQueryRenderer,
 } from "./Scenes/AuctionResults/AuctionResultsForArtistsYouFollow"
 import { BottomTabOption, BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
-import { BottomTabs } from "./Scenes/BottomTabs/BottomTabs"
 import { CityView } from "./Scenes/City/City"
 import { CityFairListQueryRenderer } from "./Scenes/City/CityFairList"
 import { CityPicker } from "./Scenes/City/CityPicker"
@@ -286,16 +285,17 @@ function register(
 }
 
 export interface ViewOptions {
-  // TODO: Remove this once we the old infra code gets removed
+  // TODO: Remove this once the old infra code gets removed
   modalPresentationStyle?: "fullScreen" | "pageSheet" | "formSheet"
   // @deprecated Use screenOptions.headerShown instead
-  // TODO: Remove this once we the old infra code gets removed
+  // TODO: Remove this once the old infra code gets removed
   hasOwnModalCloseButton?: boolean
   alwaysPresentModally?: boolean
   // @deprecated Use screenOptions.headerShown instead
-  // TODO: Remove this once we the old infra code gets removed
+  // TODO: Remove this once the old infra code gets removed
   hidesBackButton?: boolean
   hidesBottomTabs?: boolean
+  // TODO: Remove this once the old infra code gets removed
   fullBleed?: boolean
   // TODO: Remove this once we the old infra code gets removed
   ignoreTabs?: boolean
@@ -432,7 +432,6 @@ export const modules = defineModules({
   Artist: reactModule({
     Component: ArtistQueryRenderer,
     options: {
-      fullBleed: true,
       screenOptions: {
         headerShown: false,
       },
@@ -506,7 +505,14 @@ export const modules = defineModules({
       },
     },
   }),
-  ArtworkRecommendations: reactModule({ Component: ArtworkRecommendationsScreen }),
+  ArtworkRecommendations: reactModule({
+    Component: ArtworkRecommendationsScreen,
+    options: {
+      screenOptions: {
+        headerTitle: "Artwork Recommendations",
+      },
+    },
+  }),
   Auction: reactModule({
     Component: SaleQueryRenderer,
     options: { fullBleed: true, screenOptions: { headerShown: false } },
@@ -531,10 +537,20 @@ export const modules = defineModules({
   }),
   AuctionResultsForArtistsYouFollow: reactModule({
     Component: AuctionResultsForArtistsYouFollowQueryRenderer,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
     Queries: [AuctionResultsForArtistsYouFollowPrefetchQuery],
   }),
   AuctionResultsForArtistsYouCollect: reactModule({
     Component: AuctionResultsForArtistsYouCollect,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
   }),
   AuctionRegistration: reactModule({
     Component: RegistrationFlow,
@@ -568,7 +584,6 @@ export const modules = defineModules({
         : undefined,
     },
   }),
-  BottomTabs: reactModule({ Component: BottomTabs, options: { fullBleed: true } }),
   BrowseSimilarWorks: reactModule({
     Component: BrowseSimilarWorksQueryRenderer,
     options: {
@@ -687,8 +702,22 @@ export const modules = defineModules({
       },
     },
   }),
-  FairArticles: reactModule({ Component: FairArticlesQueryRenderer }),
-  FairAllFollowedArtists: reactModule({ Component: FairAllFollowedArtistsQueryRenderer }),
+  FairArticles: reactModule({
+    Component: FairArticlesQueryRenderer,
+    options: {
+      screenOptions: {
+        headerTitle: "Articles",
+      },
+    },
+  }),
+  FairAllFollowedArtists: reactModule({
+    Component: FairAllFollowedArtistsQueryRenderer,
+    options: {
+      screenOptions: {
+        headerTitle: "Artworks",
+      },
+    },
+  }),
   Favorites: reactModule({
     Component: Favorites,
     options: {
@@ -699,7 +728,14 @@ export const modules = defineModules({
     },
   }),
   Feature: reactModule({ Component: FeatureQueryRenderer, options: { fullBleed: true } }),
-  FullArtistSeriesList: reactModule({ Component: ArtistSeriesFullArtistSeriesListQueryRenderer }),
+  FullArtistSeriesList: reactModule({
+    Component: ArtistSeriesFullArtistSeriesListQueryRenderer,
+    options: {
+      screenOptions: {
+        headerTitle: "Artist Series",
+      },
+    },
+  }),
   FullFeaturedArtistList: reactModule({
     Component: CollectionFullFeaturedArtistListQueryRenderer,
     options: {
@@ -737,14 +773,6 @@ export const modules = defineModules({
       },
     },
     Queries: [homeViewScreenQuery],
-  }),
-  HomeView: reactModule({
-    Component: HomeViewScreen,
-    options: {
-      screenOptions: {
-        headerShown: false,
-      },
-    },
   }),
   HomeViewSectionScreen: reactModule({
     Component: HomeViewSectionScreenQueryRenderer,
@@ -1036,6 +1064,9 @@ export const modules = defineModules({
     Component: PartnerQueryRenderer,
     options: {
       fullBleed: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
   PartnerLocations: reactModule({ Component: PartnerLocations }),
@@ -1210,7 +1241,14 @@ export const modules = defineModules({
       },
     },
   }),
-  UnlistedArtworksFAQScreen: reactModule({ Component: UnlistedArtworksFAQScreen }),
+  UnlistedArtworksFAQScreen: reactModule({
+    Component: UnlistedArtworksFAQScreen,
+    options: {
+      screenOptions: {
+        headerTitle: "Private Listings",
+      },
+    },
+  }),
   VanityURLEntity: reactModule({
     Component: VanityURLEntityRenderer,
     options: { fullBleed: true },
@@ -1225,6 +1263,11 @@ export const modules = defineModules({
   ViewingRooms: reactModule({
     Component: ViewingRoomsListScreen,
     Queries: [viewingRoomsListScreenQuery],
+    options: {
+      screenOptions: {
+        headerTitle: "Viewing Rooms",
+      },
+    },
   }),
   WorksForYou: reactModule({
     Component: WorksForYouQueryRenderer,

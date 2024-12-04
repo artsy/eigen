@@ -2,6 +2,7 @@ import { OwnerType } from "@artsy/cohesion"
 import {
   Box,
   Flex,
+  Screen,
   Separator,
   SkeletonBox,
   SkeletonText,
@@ -177,16 +178,18 @@ const artworkListFragment = graphql`
 
 export const ArtworkListScreen: FC<ArtworkListScreenProps> = (props) => {
   return (
-    <ProvideScreenTrackingWithCohesionSchema
-      info={screen({
-        context_screen_owner_type: OwnerType.saves,
-        context_screen_owner_id: props.listID,
-      })}
-    >
-      <Suspense fallback={<ArtworkListPlaceholder />}>
-        <ArtworkList {...props} />
-      </Suspense>
-    </ProvideScreenTrackingWithCohesionSchema>
+    <Screen>
+      <ProvideScreenTrackingWithCohesionSchema
+        info={screen({
+          context_screen_owner_type: OwnerType.saves,
+          context_screen_owner_id: props.listID,
+        })}
+      >
+        <Suspense fallback={<ArtworkListPlaceholder />}>
+          <ArtworkList {...props} />
+        </Suspense>
+      </ProvideScreenTrackingWithCohesionSchema>
+    </Screen>
   )
 }
 

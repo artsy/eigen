@@ -1,4 +1,4 @@
-import { Spacer, Flex, Text, useScreenDimensions, Image } from "@artsy/palette-mobile"
+import { Flex, Image, Text, useScreenDimensions } from "@artsy/palette-mobile"
 import { FairHeader_fair$key } from "__generated__/FairHeader_fair.graphql"
 import { FC } from "react"
 import { graphql, useFragment } from "react-relay"
@@ -42,9 +42,7 @@ export const FairHeader: FC<FairHeaderProps> = ({ fair }) => {
             </Flex>
           )}
         </Flex>
-      ) : (
-        <Spacer y={6} />
-      )}
+      ) : null}
       <Flex px={2} pointerEvents="none">
         <Text variant="lg-display" py={2}>
           {data.name}

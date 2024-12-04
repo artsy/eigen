@@ -1,4 +1,4 @@
-import { Flex, useSpace, useColor } from "@artsy/palette-mobile"
+import { Flex, useSpace, useColor, Screen } from "@artsy/palette-mobile"
 import { CareerHighlightsBigCardsSwiperQuery } from "__generated__/CareerHighlightsBigCardsSwiperQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { useSpringValue } from "app/Scenes/Artwork/Components/ImageCarousel/useSpringValue"
@@ -194,9 +194,11 @@ export const CareerHighlightsBigCardsSwiper = (
   props: CareerHighlightsBigCardsSwiperScreenProps
 ) => {
   return (
-    <Suspense fallback={props.openPromoCard ? <LoadingSkeletonPromoCard /> : <LoadingSkeleton />}>
-      <CareerHighlightsBigCardsSwiperScreen {...props} />
-    </Suspense>
+    <Screen>
+      <Suspense fallback={props.openPromoCard ? <LoadingSkeletonPromoCard /> : <LoadingSkeleton />}>
+        <CareerHighlightsBigCardsSwiperScreen {...props} />
+      </Suspense>
+    </Screen>
   )
 }
 

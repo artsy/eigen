@@ -1,5 +1,5 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
-import { BorderBox, Flex, Text, Button } from "@artsy/palette-mobile"
+import { BorderBox, Button, Flex, Text } from "@artsy/palette-mobile"
 import { PurchaseModalQuery } from "__generated__/PurchaseModalQuery.graphql"
 import { PurchaseModal_artwork$data } from "__generated__/PurchaseModal_artwork.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"

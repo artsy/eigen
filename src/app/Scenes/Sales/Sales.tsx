@@ -1,7 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, Spinner } from "@artsy/palette-mobile"
 import { SalesQuery } from "__generated__/SalesQuery.graphql"
-import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { Stack } from "app/Components/Stack"
 import { RecommendedAuctionLotsRail } from "app/Scenes/HomeView/Components/RecommendedAuctionLotsRail"
 import { goBack } from "app/system/navigation/navigate"
@@ -111,11 +110,9 @@ export const SalesScreen = () => {
     >
       <Suspense
         fallback={
-          <PageWithSimpleHeader title="Auctions">
-            <Flex flex={1} justifyContent="center" alignItems="center">
-              <Spinner testID="SalePlaceholder" />
-            </Flex>
-          </PageWithSimpleHeader>
+          <Flex flex={1} justifyContent="center" alignItems="center">
+            <Spinner testID="SalePlaceholder" />
+          </Flex>
         }
       >
         <Sales />

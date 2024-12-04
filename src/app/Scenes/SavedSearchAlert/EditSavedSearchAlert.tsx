@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { ArtsyKeyboardAvoidingView } from "@artsy/palette-mobile"
+import { ArtsyKeyboardAvoidingView, Screen } from "@artsy/palette-mobile"
 import { NavigationContainer } from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import { EditSavedSearchAlertQuery } from "__generated__/EditSavedSearchAlertQuery.graphql"
@@ -223,33 +223,35 @@ export const EditSavedSearchAlertQueryRenderer: React.FC<EditSavedSearchAlertBas
   const { savedSearchAlertId } = props
 
   return (
-    <SavedSearchAlertQueryRenderer
-      alertId={savedSearchAlertId}
-      render={renderWithPlaceholder({
-        render: (relayProps: SavedSearchAlertQuery["response"]) => (
-          <QueryRenderer<EditSavedSearchAlertQuery>
-            environment={getRelayEnvironment()}
-            query={graphql`
-              query EditSavedSearchAlertQuery($artistIDs: [String]) {
-                viewer {
-                  ...EditSavedSearchAlert_viewer
+    <Screen>
+      <SavedSearchAlertQueryRenderer
+        alertId={savedSearchAlertId}
+        render={renderWithPlaceholder({
+          render: (relayProps: SavedSearchAlertQuery["response"]) => (
+            <QueryRenderer<EditSavedSearchAlertQuery>
+              environment={getRelayEnvironment()}
+              query={graphql`
+                query EditSavedSearchAlertQuery($artistIDs: [String]) {
+                  viewer {
+                    ...EditSavedSearchAlert_viewer
+                  }
+                  artists(ids: $artistIDs) {
+                    ...EditSavedSearchAlert_artists
+                  }
                 }
-                artists(ids: $artistIDs) {
-                  ...EditSavedSearchAlert_artists
-                }
-              }
-            `}
-            variables={{ artistIDs: relayProps.me?.alert?.artistIDs as string[] }}
-            render={renderWithPlaceholder({
-              Container: EditSavedSearchAlertRefetchContainer,
-              renderPlaceholder: () => <EditSavedSearchFormPlaceholder />,
-              initialProps: { savedSearchAlertId, ...relayProps },
-            })}
-            cacheConfig={{ force: true }}
-          />
-        ),
-        renderPlaceholder: () => <EditSavedSearchFormPlaceholder />,
-      })}
-    />
+              `}
+              variables={{ artistIDs: relayProps.me?.alert?.artistIDs as string[] }}
+              render={renderWithPlaceholder({
+                Container: EditSavedSearchAlertRefetchContainer,
+                renderPlaceholder: () => <EditSavedSearchFormPlaceholder />,
+                initialProps: { savedSearchAlertId, ...relayProps },
+              })}
+              cacheConfig={{ force: true }}
+            />
+          ),
+          renderPlaceholder: () => <EditSavedSearchFormPlaceholder />,
+        })}
+      />
+    </Screen>
   )
 }

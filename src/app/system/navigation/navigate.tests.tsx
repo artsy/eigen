@@ -84,7 +84,6 @@ describe(navigate, () => {
         [
           "home",
           {
-            "fullBleed": true,
             "moduleName": "Artist",
             "props": {
               "artistID": "banksy",
@@ -140,7 +139,6 @@ describe(navigate, () => {
       [
         "home",
         {
-          "fullBleed": true,
           "moduleName": "Artist",
           "props": {
             "artistID": "banksy",
@@ -176,7 +174,6 @@ describe(navigate, () => {
         [
           "home",
           {
-            "fullBleed": true,
             "moduleName": "Artist",
             "props": {
               "artistID": "kaws",

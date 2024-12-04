@@ -1,3 +1,4 @@
+import { Screen } from "@artsy/palette-mobile"
 import { TimeOffsetProvider } from "app/Components/Bidding/Context/TimeOffsetProvider"
 import { SelectMaxBidQueryRenderer } from "app/Components/Bidding/Screens/SelectMaxBid"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
@@ -12,15 +13,17 @@ export const BidFlow: React.FC<
   const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
 
   return (
-    <View
-      style={{
-        flex: 1,
-        paddingTop: Platform.OS === "android" && !enableNewNavigation ? insets.top : 0,
-      }}
-    >
-      <TimeOffsetProvider>
-        <NavigatorIOS initialRoute={{ component: SelectMaxBidQueryRenderer, passProps: props }} />
-      </TimeOffsetProvider>
-    </View>
+    <Screen>
+      <View
+        style={{
+          flex: 1,
+          paddingTop: Platform.OS === "android" && !enableNewNavigation ? insets.top : 0,
+        }}
+      >
+        <TimeOffsetProvider>
+          <NavigatorIOS initialRoute={{ component: SelectMaxBidQueryRenderer, passProps: props }} />
+        </TimeOffsetProvider>
+      </View>
+    </Screen>
   )
 }
