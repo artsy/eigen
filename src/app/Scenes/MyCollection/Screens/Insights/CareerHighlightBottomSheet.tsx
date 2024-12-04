@@ -1,11 +1,10 @@
 import { Flex } from "@artsy/palette-mobile"
 import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet"
 import { CareerHighlightBottomSheet_query$key } from "__generated__/CareerHighlightBottomSheet_query.graphql"
-import { LegacyBackButtonContext } from "app/system/navigation/NavStack"
 import { delay } from "app/utils/delay"
 import { useScreenDimensions } from "app/utils/hooks"
 import { compact } from "lodash"
-import { useCallback, useContext, useEffect, useMemo, useRef } from "react"
+import { useCallback, useEffect, useMemo, useRef } from "react"
 import { isTablet } from "react-native-device-info"
 import { FlatList } from "react-native-gesture-handler"
 import { graphql, useFragment } from "react-relay"
@@ -35,8 +34,6 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
   artistSparklines,
 }) => {
   const data = useFragment(careerHighlighsBottomSheetFragment, artistSparklines)
-
-  const backButtonContext = useContext(LegacyBackButtonContext)
 
   const dataForFlatlist = (): Array<{
     year: number
@@ -86,10 +83,7 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
 
   const handleSheetChanges = useCallback((index: number) => {
     if (index === -1) {
-      backButtonContext.updateShouldHideBackButton(false)
       onXAxisHighlightPressed(null)
-    } else {
-      backButtonContext.updateShouldHideBackButton(true)
     }
   }, [])
 

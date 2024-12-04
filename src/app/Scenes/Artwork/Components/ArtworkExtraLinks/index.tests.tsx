@@ -2,7 +2,6 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkExtraLinks_artwork$data } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
-import { ModalStack } from "app/system/navigation/ModalStack"
 import { switchTab } from "app/system/navigation/navigate"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -20,11 +19,7 @@ const getWrapper = ({
   artwork: CleanRelayFragment<ArtworkExtraLinks_artwork$data>
   auctionState?: AuctionTimerState
 }) =>
-  renderWithWrappers(
-    <ModalStack>
-      <ArtworkExtraLinks artwork={artwork as any} auctionState={auctionState!} />
-    </ModalStack>
-  )
+  renderWithWrappers(<ArtworkExtraLinks artwork={artwork as any} auctionState={auctionState!} />)
 
 describe("ArtworkExtraLinks", () => {
   it("redirects to sell tab", () => {

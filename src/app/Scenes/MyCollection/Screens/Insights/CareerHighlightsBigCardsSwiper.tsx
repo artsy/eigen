@@ -1,21 +1,13 @@
-import { Flex, useSpace, useColor, Screen } from "@artsy/palette-mobile"
+import { Flex, Screen, useColor, useSpace } from "@artsy/palette-mobile"
 import { CareerHighlightsBigCardsSwiperQuery } from "__generated__/CareerHighlightsBigCardsSwiperQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { useSpringValue } from "app/Scenes/Artwork/Components/ImageCarousel/useSpringValue"
 import { goBack } from "app/system/navigation/navigate"
 import { useScreenDimensions } from "app/utils/hooks"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { compact } from "lodash"
 import { Suspense, useState } from "react"
-import {
-  Animated,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-  Platform,
-  ScrollView,
-} from "react-native"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { Animated, NativeScrollEvent, NativeSyntheticEvent, ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import {
   CareerHighlightBigCardBiennial,
@@ -45,10 +37,7 @@ const CareerHighlightsBigCardsSwiperScreen: React.FC<CareerHighlightsBigCardsSwi
 }) => {
   const color = useColor()
   const space = useSpace()
-  const insets = useSafeAreaInsets()
   const { width: screenWidth } = useScreenDimensions()
-
-  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
 
   const data = useLazyLoadQuery<CareerHighlightsBigCardsSwiperQuery>(
     CareerHighlightsBigCardsSwiperScreenQuery,
@@ -149,7 +138,7 @@ const CareerHighlightsBigCardsSwiperScreen: React.FC<CareerHighlightsBigCardsSwi
 
   return (
     <>
-      <Flex mt={Platform.OS === "android" && !enableNewNavigation ? `${insets.top}px` : undefined}>
+      <Flex>
         <FancyModalHeader
           alignItems="flex-start"
           rightCloseButton

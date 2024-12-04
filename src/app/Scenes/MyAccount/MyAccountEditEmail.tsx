@@ -2,14 +2,12 @@ import { Flex, Input, Text, Touchable } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { MyAccountEditEmailQuery } from "__generated__/MyAccountEditEmailQuery.graphql"
 import { MyAccountEditEmail_me$data } from "__generated__/MyAccountEditEmail_me.graphql"
-import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { useToast } from "app/Components/Toast/toastHook"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderBox } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import React, { Fragment, useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { string } from "yup"
 import { MyAccountFieldEditScreen } from "./Components/MyAccountFieldEditScreen"
@@ -20,7 +18,6 @@ const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me$data; relay: Rela
   relay,
 }) => {
   const [email, setEmail] = useState<string>(me.email ?? "")
-  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
 
   const [receivedError, setReceivedError] = useState<string | undefined>(undefined)
   const navigation = useNavigation()
@@ -65,22 +62,9 @@ const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me$data; relay: Rela
 
   const toast = useToast()
 
-  const Wrapper = enableNewNavigation
-    ? Fragment
-    : ({ children }: { children: React.ReactNode }) => (
-        <MyAccountFieldEditScreen
-          ref={editScreenRef}
-          title="Email"
-          canSave={isEmailValid}
-          onSave={handleSave}
-        >
-          {children}
-        </MyAccountFieldEditScreen>
-      )
-
   return (
-    <Wrapper>
-      <Flex p={enableNewNavigation ? 2 : 0}>
+    <>
+      <Flex p={2}>
         <Input
           accessibilityLabel="email-input"
           enableClearButton
@@ -98,23 +82,12 @@ const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me$data; relay: Rela
           error={receivedError}
         />
       </Flex>
-    </Wrapper>
+    </>
   )
 }
 
-const MyAccountEditEmailPlaceholder: React.FC<{}> = ({}) => {
-  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
-  const Wrapper = enableNewNavigation
-    ? Fragment
-    : ({ children }: { children: React.ReactNode }) => (
-        <PageWithSimpleHeader title="Email">{children}</PageWithSimpleHeader>
-      )
-
-  return (
-    <Wrapper>
-      <PlaceholderBox height={40} />
-    </Wrapper>
-  )
+const MyAccountEditEmailPlaceholder: React.FC<{}> = () => {
+  return <PlaceholderBox height={40} />
 }
 
 export const MyAccountEditEmailContainer = createFragmentContainer(MyAccountEditEmail, {

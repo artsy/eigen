@@ -1,14 +1,12 @@
-import { Flex, Box, useTheme, Text, Separator } from "@artsy/palette-mobile"
+import { Box, Flex, Separator, Text, useTheme } from "@artsy/palette-mobile"
 import { OrderHistoryQuery } from "__generated__/OrderHistoryQuery.graphql"
 import { OrderHistory_me$data } from "__generated__/OrderHistory_me.graphql"
-import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderBox, PlaceholderButton, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import React, { Fragment, useCallback, useState } from "react"
+import React, { useCallback, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { OrderHistoryRowContainer } from "./OrderHistoryRow"
@@ -153,33 +151,23 @@ export const OrderHistoryContainer = createPaginationContainer(
 )
 
 export const OrderHistoryQueryRender: React.FC<{}> = ({}) => {
-  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
-
-  const Wrapper = enableNewNavigation
-    ? Fragment
-    : ({ children }: { children: React.ReactNode }) => (
-        <PageWithSimpleHeader title="Order History">{children}</PageWithSimpleHeader>
-      )
-
   return (
-    <Wrapper>
-      <QueryRenderer<OrderHistoryQuery>
-        environment={getRelayEnvironment()}
-        query={graphql`
-          query OrderHistoryQuery($count: Int!) {
-            me @optionalField {
-              name
-              ...OrderHistory_me @arguments(count: $count)
-            }
+    <QueryRenderer<OrderHistoryQuery>
+      environment={getRelayEnvironment()}
+      query={graphql`
+        query OrderHistoryQuery($count: Int!) {
+          me @optionalField {
+            name
+            ...OrderHistory_me @arguments(count: $count)
           }
-        `}
-        render={renderWithPlaceholder({
-          Container: OrderHistoryContainer,
-          renderPlaceholder: () => <OrderHistoryPlaceholder />,
-        })}
-        variables={{ count: NUM_ORDERS_TO_FETCH }}
-        cacheConfig={{ force: true }}
-      />
-    </Wrapper>
+        }
+      `}
+      render={renderWithPlaceholder({
+        Container: OrderHistoryContainer,
+        renderPlaceholder: () => <OrderHistoryPlaceholder />,
+      })}
+      variables={{ count: NUM_ORDERS_TO_FETCH }}
+      cacheConfig={{ force: true }}
+    />
   )
 }

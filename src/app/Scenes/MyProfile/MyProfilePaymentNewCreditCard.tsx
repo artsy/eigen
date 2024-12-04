@@ -5,14 +5,12 @@ import { CreateCardTokenParams } from "@stripe/stripe-react-native/lib/typescrip
 import { MyProfilePaymentNewCreditCardSaveCardMutation } from "__generated__/MyProfilePaymentNewCreditCardSaveCardMutation.graphql"
 import { CountrySelect } from "app/Components/CountrySelect"
 import { CreditCardField } from "app/Components/CreditCardField/CreditCardField"
-import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { Select } from "app/Components/Select/SelectV2"
 import { Stack } from "app/Components/Stack"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Action, Computed, action, computed, useLocalStore } from "easy-peasy"
-import React, { Fragment, useEffect, useRef } from "react"
+import React, { useEffect, useRef } from "react"
 import { Alert, ScrollView } from "react-native"
 import { commitMutation, graphql } from "react-relay"
 import { __triggerRefresh } from "./MyProfilePayment"
@@ -68,7 +66,6 @@ interface Store {
 
 export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
   const { createToken } = useStripe()
-  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
 
   const [state, actions] = useLocalStore<Store>(() => ({
     fields: {
@@ -167,14 +164,8 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
     }
   }
 
-  const Wrapper = enableNewNavigation
-    ? Fragment
-    : ({ children }: { children: React.ReactNode }) => (
-        <PageWithSimpleHeader title="Add Credit Card">{children}</PageWithSimpleHeader>
-      )
-
   return (
-    <Wrapper>
+    <>
       <ScrollView ref={scrollViewRef}>
         <Flex p={2}>
           <Stack spacing={2}>
@@ -260,7 +251,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
           </Stack>
         </Flex>
       </ScrollView>
-    </Wrapper>
+    </>
   )
 }
 

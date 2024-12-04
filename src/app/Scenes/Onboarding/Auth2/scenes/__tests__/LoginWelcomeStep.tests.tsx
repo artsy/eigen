@@ -1,4 +1,3 @@
-import { useNavigation } from "@react-navigation/native"
 import { act, fireEvent, screen } from "@testing-library/react-native"
 import { useRecaptcha } from "app/Components/Recaptcha/Recaptcha"
 import { AuthContext } from "app/Scenes/Onboarding/Auth2/AuthContext"
@@ -6,12 +5,10 @@ import { useAuthNavigation } from "app/Scenes/Onboarding/Auth2/hooks/useAuthNavi
 import { LoginWelcomeStep } from "app/Scenes/Onboarding/Auth2/scenes/LoginWelcomeStep"
 import { GlobalStore } from "app/store/GlobalStore"
 import { osMajorVersion } from "app/utils/platformUtil"
+import { mockNavigate } from "app/utils/tests/navigationMocks"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Platform } from "react-native"
 
-jest.mock("@react-navigation/native", () => ({
-  useNavigation: jest.fn(),
-}))
 jest.mock("app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation")
 jest.mock("app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus")
 jest.mock("app/utils/platformUtil")
@@ -20,7 +17,6 @@ jest.mock("app/Components/Recaptcha/Recaptcha", () => ({
 }))
 
 describe("LoginWelcomeStep", () => {
-  const mockUseNavigation = useNavigation as jest.Mock
   const mockUseAuthNavigation = useAuthNavigation as jest.Mock
   const mockUseRecaptcha = useRecaptcha as jest.Mock
   const mockOSMajorVersion = osMajorVersion as jest.Mock
@@ -160,31 +156,21 @@ describe("LoginWelcomeStep", () => {
   })
 
   it("provides a link to the terms and conditions", async () => {
-    const navigateSpy = jest.fn()
-    mockUseNavigation.mockReturnValueOnce({
-      navigate: navigateSpy,
-    })
-
     renderWelcomeStep()
 
     // eslint-disable-next-line testing-library/no-unnecessary-act
     await act(() => fireEvent.press(screen.getByA11yHint("View the Terms and Conditions")))
 
-    expect(navigateSpy).toHaveBeenCalledWith("OnboardingWebView", { url: "/terms" })
+    expect(mockNavigate).toHaveBeenCalledWith("OnboardingWebView", { url: "/terms" })
   })
 
   it("provides a link to the privacy policy", async () => {
-    const navigateSpy = jest.fn()
-    mockUseNavigation.mockReturnValueOnce({
-      navigate: navigateSpy,
-    })
-
     renderWelcomeStep()
 
     // eslint-disable-next-line testing-library/no-unnecessary-act
     await act(() => fireEvent.press(screen.getByA11yHint("View the Privacy Policy")))
 
-    expect(navigateSpy).toHaveBeenCalledWith("OnboardingWebView", { url: "/privacy" })
+    expect(mockNavigate).toHaveBeenCalledWith("OnboardingWebView", { url: "/privacy" })
   })
 })
 

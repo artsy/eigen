@@ -55,7 +55,7 @@ export const SellWithArtsyHome: React.FC = () => {
   const onFocusStatusBarStyle: StatusBarStyle = "dark-content"
   const onBlurStatusBarStyle: StatusBarStyle = "dark-content"
 
-  const scrollViewRef = useBottomTabsScrollToTop("sell")
+  const scrollViewRef = useBottomTabsScrollToTop()
 
   useSwitchStatusBarStyle(onFocusStatusBarStyle, onBlurStatusBarStyle)
 

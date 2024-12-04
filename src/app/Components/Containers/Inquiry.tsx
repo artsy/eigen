@@ -1,4 +1,4 @@
-import { Spacer, Box, Separator, Button } from "@artsy/palette-mobile"
+import { Box, Button, Separator, Spacer } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { InquiryQuery } from "__generated__/InquiryQuery.graphql"
 import { Inquiry_artwork$data } from "__generated__/Inquiry_artwork.graphql"
@@ -9,7 +9,7 @@ import { dismissModal } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { Schema, Track, track as _track } from "app/utils/track"
+import { track as _track, ProvideScreenTracking, Schema, Track } from "app/utils/track"
 import React from "react"
 import { View } from "react-native"
 import { isTablet } from "react-native-device-info"
@@ -277,19 +277,27 @@ export const InquiryFragmentContainer = createFragmentContainer(Inquiry, {
 
 export const InquiryQueryRenderer: React.FC<{ artworkID: string }> = ({ artworkID }) => {
   return (
-    <QueryRenderer<InquiryQuery>
-      environment={getRelayEnvironment()}
-      query={graphql`
-        query InquiryQuery($artworkID: String!) {
-          artwork(id: $artworkID) {
-            ...Inquiry_artwork
-          }
-        }
-      `}
-      variables={{
-        artworkID,
+    <ProvideScreenTracking
+      info={{
+        context_screen: Schema.PageNames.InquiryPage,
+        context_screen_owner_slug: artworkID,
+        context_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
       }}
-      render={renderWithLoadProgress(InquiryFragmentContainer)}
-    />
+    >
+      <QueryRenderer<InquiryQuery>
+        environment={getRelayEnvironment()}
+        query={graphql`
+          query InquiryQuery($artworkID: String!) {
+            artwork(id: $artworkID) {
+              ...Inquiry_artwork
+            }
+          }
+        `}
+        variables={{
+          artworkID,
+        }}
+        render={renderWithLoadProgress(InquiryFragmentContainer)}
+      />
+    </ProvideScreenTracking>
   )
 }

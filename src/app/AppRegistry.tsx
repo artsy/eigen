@@ -8,7 +8,6 @@ import {
   WorksForYouQueryRenderer,
   WorksForYouScreenQuery,
 } from "app/Components/Containers/WorksForYou"
-import { FadeIn } from "app/Components/FadeIn"
 import { ActivityItemScreenQueryRenderer } from "app/Scenes/Activity/ActivityItemScreen"
 import { ArtQuiz } from "app/Scenes/ArtQuiz/ArtQuiz"
 import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
@@ -24,6 +23,7 @@ import { CompleteMyProfile } from "app/Scenes/CompleteMyProfile/CompleteMyProfil
 import { GalleriesForYouScreen } from "app/Scenes/GalleriesForYou/GalleriesForYouScreen"
 import { HomeViewScreen, homeViewScreenQuery } from "app/Scenes/HomeView/HomeView"
 import { HomeViewSectionScreenQueryRenderer } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreen"
+import { ConversationQueryRenderer } from "app/Scenes/Inbox/Screens/Conversation"
 import { AddMyCollectionArtist } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
 import { MyCollectionArtworkEditQueryRenderer } from "app/Scenes/MyCollection/Screens/ArtworkForm/Screens/MyCollectionArtworkEdit"
 import { MyCollectionCollectedArtistsPrivacyQueryRenderer } from "app/Scenes/MyCollection/Screens/CollectedArtistsPrivacy/MyCollectionCollectedArtistsPrivacy"
@@ -41,16 +41,12 @@ import { SubmitArtworkFormEditContainer } from "app/Scenes/SellWithArtsy/Artwork
 import { SimilarToRecentlyViewedScreen } from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
 import { BackButton } from "app/system/navigation/BackButton"
 import { goBack } from "app/system/navigation/navigate"
-import { ArtsyKeyboardAvoidingViewContext } from "app/utils/ArtsyKeyboardAvoidingView"
-import { SafeAreaInsets, useScreenDimensions } from "app/utils/hooks"
-import { useSelectedTab } from "app/utils/hooks/useSelectedTab"
 import React from "react"
-import { AppRegistry, LogBox, Platform, View } from "react-native"
+import { LogBox, View } from "react-native"
 import { GraphQLTaggedNode } from "react-relay"
 import { ArtsyWebViewPage } from "./Components/ArtsyWebView"
 import { CityGuideView } from "./NativeModules/CityGuideView"
 import { LiveAuctionView } from "./NativeModules/LiveAuctionView"
-import { Providers } from "./Providers"
 import { About } from "./Scenes/About/About"
 import { ActivityScreen } from "./Scenes/Activity/ActivityScreen"
 import { ArticlesScreen, ArticlesScreenQuery } from "./Scenes/Articles/Articles"
@@ -70,7 +66,7 @@ import {
   AuctionResultsForArtistsYouFollowPrefetchQuery,
   AuctionResultsForArtistsYouFollowQueryRenderer,
 } from "./Scenes/AuctionResults/AuctionResultsForArtistsYouFollow"
-import { BottomTabOption, BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
+import { BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
 import { CityView } from "./Scenes/City/City"
 import { CityFairListQueryRenderer } from "./Scenes/City/CityFairList"
 import { CityPicker } from "./Scenes/City/CityPicker"
@@ -86,7 +82,6 @@ import { FeatureQueryRenderer } from "./Scenes/Feature/Feature"
 import { GeneQueryRenderer } from "./Scenes/Gene/Gene"
 import { MakeOfferModalQueryRenderer } from "./Scenes/Inbox/Components/Conversations/MakeOfferModal"
 import { PurchaseModalQueryRenderer } from "./Scenes/Inbox/Components/Conversations/PurchaseModal"
-import { ConversationNavigator } from "./Scenes/Inbox/ConversationNavigator"
 import { ConversationDetailsQueryRenderer } from "./Scenes/Inbox/Screens/ConversationDetails"
 import { MapContainer } from "./Scenes/Map/MapContainer"
 import { MyAccountQueryRenderer } from "./Scenes/MyAccount/MyAccount"
@@ -144,10 +139,7 @@ import {
   ViewingRoomsListScreen,
   viewingRoomsListScreenQuery,
 } from "./Scenes/ViewingRoom/ViewingRoomsList"
-import { GlobalStore, unsafe_getFeatureFlag } from "./store/GlobalStore"
-import { propsStore } from "./store/PropsStore"
 import { DevMenu } from "./system/devTools/DevMenu/DevMenu"
-import { Schema, screenTrack } from "./utils/track"
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
@@ -157,148 +149,10 @@ LogBox.ignoreLogs([
   ".removeListener(", // this is coming from https://github.com/facebook/react-native/blob/v0.68.0-rc.2/Libraries/AppState/AppState.js and other libs.
 ])
 
-interface PartnerLocationsProps {
-  partnerID: string
-  safeAreaInsets: SafeAreaInsets
-  isVisible: boolean
-}
-const PartnerLocations = (props: PartnerLocationsProps) => (
-  <PartnerLocationsQueryRenderer {...props} />
-)
-
-interface InquiryProps {
-  artworkID: string
-}
-const Inquiry: React.FC<InquiryProps> = screenTrack<InquiryProps>((props) => {
-  return {
-    context_screen: Schema.PageNames.InquiryPage,
-    context_screen_owner_slug: props.artworkID,
-    context_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
-  }
-})((props) => <InquiryQueryRenderer {...props} />)
-
-interface ConversationProps {
-  conversationID: string
-}
-const Conversation: React.FC<ConversationProps> = screenTrack<ConversationProps>((props) => {
-  return {
-    context_screen: Schema.PageNames.ConversationPage,
-    context_screen_owner_id: props.conversationID,
-    context_screen_owner_type: Schema.OwnerEntityTypes.Conversation,
-  }
-})(ConversationNavigator)
-
-interface PageWrapperProps {
-  fullBleed?: boolean
-  isMainView?: boolean
-  ignoreTabs?: boolean
-  ViewComponent: React.ComponentType<any>
-  viewProps: any
-  moduleName: string
-}
-
-const InnerPageWrapper: React.FC<PageWrapperProps> = ({
-  fullBleed,
-  isMainView,
-  ignoreTabs = false,
-  ViewComponent,
-  viewProps,
-}) => {
-  const safeAreaInsets = useScreenDimensions().safeAreaInsets
-  const paddingTop = fullBleed ? 0 : safeAreaInsets.top
-  const paddingBottom = isMainView ? 0 : safeAreaInsets.bottom
-  const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
-  // if we're in a modal, just pass isVisible through
-
-  let isVisible = viewProps.isVisible
-  if (!ignoreTabs) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const currentTab = useSelectedTab()
-    if (BottomTabOption[viewProps.navStackID as BottomTabType]) {
-      // otherwise, make sure it respects the current tab
-      isVisible = isVisible && currentTab === viewProps.navStackID
-    }
-  }
-
-  const isPresentedModally = viewProps.isPresentedModally
-  return (
-    <ArtsyKeyboardAvoidingViewContext.Provider
-      value={{ isVisible, isPresentedModally, bottomOffset: paddingBottom }}
-    >
-      <View style={{ flex: 1, paddingTop, paddingBottom }}>
-        {isHydrated ? (
-          <FadeIn style={{ flex: 1 }} slide={false}>
-            <ViewComponent {...{ ...viewProps, isVisible }} />
-          </FadeIn>
-        ) : null}
-      </View>
-    </ArtsyKeyboardAvoidingViewContext.Provider>
-  )
-}
-
-class PageWrapper extends React.Component<PageWrapperProps> {
-  pageProps: PageWrapperProps
-
-  constructor(props: PageWrapperProps) {
-    super(props)
-    this.pageProps = this.savePageProps()
-  }
-
-  componentDidUpdate() {
-    if (this.props.moduleName === "Map") {
-      // workaround for City Guide. DO NOT USE FOR OTHER THINGS!
-      // basically, only for the city guide component, we recreate the pageprops fresh.
-      // thats because of the funky way the native and RN components in city guide are set up.
-      // if we dont refresh them, then the city guide does not change cities from the dropdown.
-      this.pageProps = this.savePageProps()
-    }
-  }
-
-  savePageProps() {
-    return {
-      ...this.props,
-      viewProps: {
-        ...this.props.viewProps,
-        ...propsStore.getPropsForModule(this.props.moduleName),
-      },
-    }
-  }
-
-  render() {
-    return (
-      <Providers>
-        <InnerPageWrapper {...this.pageProps} />
-      </Providers>
-    )
-  }
-}
-
-function register(
-  screenName: string,
-  Component: React.ComponentType<any>,
-  options?: Omit<PageWrapperProps, "ViewComponent" | "viewProps">
-) {
-  const WrappedComponent = (props: any) => (
-    <PageWrapper {...options} moduleName={screenName} ViewComponent={Component} viewProps={props} />
-  )
-  AppRegistry.registerComponent(screenName, () => WrappedComponent)
-}
-
 export interface ViewOptions {
-  // TODO: Remove this once the old infra code gets removed
-  modalPresentationStyle?: "fullScreen" | "pageSheet" | "formSheet"
-  // @deprecated Use screenOptions.headerShown instead
-  // TODO: Remove this once the old infra code gets removed
-  hasOwnModalCloseButton?: boolean
   alwaysPresentModally?: boolean
   // @deprecated Use screenOptions.headerShown instead
-  // TODO: Remove this once the old infra code gets removed
-  hidesBackButton?: boolean
   hidesBottomTabs?: boolean
-  // TODO: Remove this once the old infra code gets removed
-  fullBleed?: boolean
-  // TODO: Remove this once we the old infra code gets removed
-  ignoreTabs?: boolean
   // If this module is the root view of a particular tab, name it here
   isRootViewForTabName?: BottomTabType
   // If this module should only be shown in one particular tab, name it here
@@ -331,7 +185,6 @@ function defineModules<T extends string>(obj: Record<T, ModuleDescriptor>) {
 }
 
 const artQuizScreenOptions = {
-  fullBleed: true,
   screenOptions: {
     gestureEnabled: false,
   },
@@ -343,7 +196,6 @@ export const modules = defineModules({
   Activity: reactModule({
     Component: ActivityScreen,
     options: {
-      fullBleed: true,
       hidesBottomTabs: true,
       screenOptions: {
         headerShown: false,
@@ -353,7 +205,6 @@ export const modules = defineModules({
   ActivityItem: reactModule({
     Component: ActivityItemScreenQueryRenderer,
     options: {
-      fullBleed: true,
       hidesBottomTabs: true,
       screenOptions: {
         headerShown: false,
@@ -379,7 +230,6 @@ export const modules = defineModules({
   AlertArtworks: reactModule({
     Component: AlertArtworks,
     options: {
-      fullBleed: true,
       hidesBottomTabs: true,
       screenOptions: {
         headerShown: false,
@@ -393,7 +243,6 @@ export const modules = defineModules({
   ArtQuizResults: reactModule({
     Component: ArtQuizResults,
     options: {
-      fullBleed: true,
       screenOptions: {
         animationTypeForReplace: "pop",
         headerShown: false,
@@ -403,7 +252,6 @@ export const modules = defineModules({
   Article: reactModule({
     Component: ArticleScreen,
     options: {
-      fullBleed: true,
       screenOptions: {
         headerShown: false,
       },
@@ -412,7 +260,6 @@ export const modules = defineModules({
   ArticleSlideShow: reactModule({
     Component: ArticlesSlideShowScreen,
     options: {
-      fullBleed: true,
       hidesBottomTabs: true,
       screenOptions: {
         headerShown: false,
@@ -422,7 +269,6 @@ export const modules = defineModules({
   Articles: reactModule({
     Component: ArticlesScreen,
     options: {
-      fullBleed: true,
       screenOptions: {
         headerShown: false,
       },
@@ -442,7 +288,6 @@ export const modules = defineModules({
   ArtistArticles: reactModule({
     Component: ArtistArticlesQueryRenderer,
     options: {
-      fullBleed: true,
       screenOptions: {
         headerShown: false,
       },
@@ -451,7 +296,6 @@ export const modules = defineModules({
   ArtistSeries: reactModule({
     Component: ArtistSeriesQueryRenderer,
     options: {
-      fullBleed: true,
       screenOptions: {
         headerShown: false,
       },
@@ -469,33 +313,12 @@ export const modules = defineModules({
   }),
   ArtworkMedium: reactModule({
     Component: ArtworkMediumQueryRenderer,
-    options: {
-      fullBleed: true,
-      alwaysPresentModally: !unsafe_getFeatureFlag("AREnableNewNavigation"),
-      modalPresentationStyle: !unsafe_getFeatureFlag("AREnableNewNavigation")
-        ? "fullScreen"
-        : undefined,
-    },
   }),
   ArtworkAttributionClassFAQ: reactModule({
     Component: ArtworkAttributionClassFAQQueryRenderer,
-    options: {
-      fullBleed: true,
-      alwaysPresentModally: !unsafe_getFeatureFlag("AREnableNewNavigation"),
-      modalPresentationStyle: !unsafe_getFeatureFlag("AREnableNewNavigation")
-        ? "fullScreen"
-        : undefined,
-    },
   }),
   ArtworkCertificateAuthenticity: reactModule({
     Component: CertificateOfAuthenticity,
-    options: {
-      fullBleed: true,
-      alwaysPresentModally: !unsafe_getFeatureFlag("AREnableNewNavigation"),
-      modalPresentationStyle: !unsafe_getFeatureFlag("AREnableNewNavigation")
-        ? "fullScreen"
-        : undefined,
-    },
   }),
   ArtworkList: reactModule({
     Component: ArtworkListScreen,
@@ -515,13 +338,12 @@ export const modules = defineModules({
   }),
   Auction: reactModule({
     Component: SaleQueryRenderer,
-    options: { fullBleed: true, screenOptions: { headerShown: false } },
+    options: { screenOptions: { headerShown: false } },
     Queries: [SaleScreenQuery],
   }),
   Auctions: reactModule({
     Component: SalesScreen,
     options: {
-      fullBleed: true,
       screenOptions: {
         headerShown: false,
       },
@@ -531,9 +353,6 @@ export const modules = defineModules({
   AuctionInfo: reactModule({ Component: SaleInfoQueryRenderer }),
   AuctionResult: reactModule({
     Component: AuctionResultQueryRenderer,
-    options: {
-      hidesBackButton: !unsafe_getFeatureFlag("AREnableNewNavigation"),
-    },
   }),
   AuctionResultsForArtistsYouFollow: reactModule({
     Component: AuctionResultsForArtistsYouFollowQueryRenderer,
@@ -556,7 +375,6 @@ export const modules = defineModules({
     Component: RegistrationFlow,
     options: {
       alwaysPresentModally: true,
-      fullBleed: Platform.OS === "ios" && !unsafe_getFeatureFlag("AREnableNewNavigation"),
       screenOptions: {
         // Don't allow the screen to be swiped away by mistake
         gestureEnabled: false,
@@ -568,7 +386,7 @@ export const modules = defineModules({
     Component: BidFlow,
     options: {
       alwaysPresentModally: true,
-      fullBleed: !unsafe_getFeatureFlag("AREnableNewNavigation"),
+
       screenOptions: {
         headerShown: false,
       },
@@ -576,13 +394,6 @@ export const modules = defineModules({
   }),
   AuctionBuyersPremium: reactModule({
     Component: AuctionBuyersPremiumQueryRenderer,
-    options: {
-      fullBleed: true,
-      alwaysPresentModally: !unsafe_getFeatureFlag("AREnableNewNavigation"),
-      modalPresentationStyle: !unsafe_getFeatureFlag("AREnableNewNavigation")
-        ? "fullScreen"
-        : undefined,
-    },
   }),
   BrowseSimilarWorks: reactModule({
     Component: BrowseSimilarWorksQueryRenderer,
@@ -596,26 +407,22 @@ export const modules = defineModules({
   CareerHighlightsBigCardsSwiper: reactModule({
     Component: CareerHighlightsBigCardsSwiper,
     options: {
-      alwaysPresentModally: !unsafe_getFeatureFlag("AREnableNewNavigation"),
-      fullBleed: !unsafe_getFeatureFlag("AREnableNewNavigation"),
-      hidesBottomTabs: unsafe_getFeatureFlag("AREnableNewNavigation"),
+      hidesBottomTabs: true,
       screenOptions: {
         headerShown: false,
       },
     },
   }),
-  City: reactModule({ Component: CityView, options: { fullBleed: true, ignoreTabs: true } }),
-  CityFairList: reactModule({ Component: CityFairListQueryRenderer, options: { fullBleed: true } }),
+  City: reactModule({ Component: CityView }),
+  CityFairList: reactModule({ Component: CityFairListQueryRenderer }),
   CityPicker: reactModule({
     Component: CityPicker,
-    options: { fullBleed: true, ignoreTabs: true },
   }),
   CitySavedList: reactModule({ Component: CitySavedListQueryRenderer }),
   CitySectionList: reactModule({ Component: CitySectionListQueryRenderer }),
   Collection: reactModule({
     Component: CollectionScreen,
     options: {
-      fullBleed: true,
       screenOptions: {
         headerShown: false,
       },
@@ -624,7 +431,6 @@ export const modules = defineModules({
   CollectionsByCategory: reactModule({
     Component: CollectionsByCategory,
     options: {
-      fullBleed: true,
       screenOptions: {
         headerShown: false,
       },
@@ -633,14 +439,13 @@ export const modules = defineModules({
   ConsignmentInquiry: reactModule({
     Component: ConsignmentInquiryScreen,
     options: {
-      hidesBottomTabs: !unsafe_getFeatureFlag("AREnableNewNavigation"),
       screenOptions: {
         gestureEnabled: false,
       },
     },
   }),
   Conversation: reactModule({
-    Component: Conversation,
+    Component: ConversationQueryRenderer,
     options: {
       onlyShowInTabName: "inbox",
       screenOptions: {
@@ -660,11 +465,7 @@ export const modules = defineModules({
   DevMenu: reactModule({
     Component: DevMenu,
     options: {
-      // No need to hide bottom tabs if it's a modal because they will be hidden by default
-      hidesBottomTabs: !unsafe_getFeatureFlag("AREnableNewNavigation"),
-      hidesBackButton: !unsafe_getFeatureFlag("AREnableNewNavigation"),
-      alwaysPresentModally: !!unsafe_getFeatureFlag("AREnableNewNavigation"),
-      fullBleed: !!unsafe_getFeatureFlag("AREnableNewNavigation"),
+      alwaysPresentModally: true,
       screenOptions: {
         headerTitle: "Dev Settings",
         headerLargeTitle: true,
@@ -686,7 +487,6 @@ export const modules = defineModules({
   Fair: reactModule({
     Component: FairScreen,
     options: {
-      fullBleed: true,
       screenOptions: {
         headerShown: false,
       },
@@ -696,7 +496,6 @@ export const modules = defineModules({
   FairMoreInfo: reactModule({
     Component: FairMoreInfoQueryRenderer,
     options: {
-      fullBleed: true,
       screenOptions: {
         headerShown: false,
       },
@@ -721,13 +520,12 @@ export const modules = defineModules({
   Favorites: reactModule({
     Component: Favorites,
     options: {
-      fullBleed: true,
       screenOptions: {
         headerShown: false,
       },
     },
   }),
-  Feature: reactModule({ Component: FeatureQueryRenderer, options: { fullBleed: true } }),
+  Feature: reactModule({ Component: FeatureQueryRenderer }),
   FullArtistSeriesList: reactModule({
     Component: ArtistSeriesFullArtistSeriesListQueryRenderer,
     options: {
@@ -747,7 +545,6 @@ export const modules = defineModules({
   GalleriesForYou: reactModule({
     Component: GalleriesForYouScreen,
     options: {
-      fullBleed: true,
       screenOptions: {
         headerShown: false,
       },
@@ -756,7 +553,6 @@ export const modules = defineModules({
   Gene: reactModule({
     Component: GeneQueryRenderer,
     options: {
-      fullBleed: true,
       screenOptions: {
         headerShown: false,
       },
@@ -767,7 +563,7 @@ export const modules = defineModules({
     options: {
       isRootViewForTabName: "home",
       onlyShowInTabName: "home",
-      fullBleed: true,
+
       screenOptions: {
         headerShown: false,
       },
@@ -777,7 +573,6 @@ export const modules = defineModules({
   HomeViewSectionScreen: reactModule({
     Component: HomeViewSectionScreenQueryRenderer,
     options: {
-      fullBleed: true,
       screenOptions: {
         headerShown: false,
       },
@@ -788,7 +583,7 @@ export const modules = defineModules({
     options: {
       isRootViewForTabName: "inbox",
       onlyShowInTabName: "inbox",
-      fullBleed: true,
+
       screenOptions: {
         headerShown: false,
       },
@@ -796,7 +591,7 @@ export const modules = defineModules({
     Queries: [InboxScreenQuery],
   }),
   Inquiry: reactModule({
-    Component: Inquiry,
+    Component: InquiryQueryRenderer,
     options: {
       alwaysPresentModally: true,
       screenOptions: {
@@ -808,7 +603,6 @@ export const modules = defineModules({
     Component: LiveAuctionView,
     options: {
       alwaysPresentModally: true,
-      modalPresentationStyle: "fullScreen",
       screenOptions: {
         headerShown: false,
       },
@@ -817,25 +611,22 @@ export const modules = defineModules({
   LocalDiscovery: reactModule({
     Component: CityGuideView,
     options: {
-      fullBleed: true,
-      screenOptions: unsafe_getFeatureFlag("AREnableNewNavigation")
-        ? {
-            headerTransparent: true,
-            headerLeft: () => {
-              return (
-                <BackButton
-                  style={{
-                    top: 0,
-                    left: 0,
-                  }}
-                  onPress={() => {
-                    goBack()
-                  }}
-                />
-              )
-            },
-          }
-        : undefined,
+      screenOptions: {
+        headerTransparent: true,
+        headerLeft: () => {
+          return (
+            <BackButton
+              style={{
+                top: 0,
+                left: 0,
+              }}
+              onPress={() => {
+                goBack()
+              }}
+            />
+          )
+        },
+      },
     },
   }),
   MakeOfferModal: reactModule({
@@ -847,7 +638,7 @@ export const modules = defineModules({
     },
   }),
   MedianSalePriceAtAuction: reactModule({ Component: MedianSalePriceAtAuction }),
-  Map: reactModule({ Component: MapContainer, options: { fullBleed: true, ignoreTabs: true } }),
+  Map: reactModule({ Component: MapContainer }),
   MyAccount: reactModule({
     Component: MyAccountQueryRenderer,
     options: {
@@ -859,7 +650,6 @@ export const modules = defineModules({
   MyAccountEditEmail: reactModule({
     Component: MyAccountEditEmailQueryRenderer,
     options: {
-      hidesBackButton: !unsafe_getFeatureFlag("AREnableNewNavigation"),
       screenOptions: {
         headerTitle: "Email",
       },
@@ -868,7 +658,6 @@ export const modules = defineModules({
   MyAccountEditPriceRange: reactModule({
     Component: MyAccountEditPriceRangeQueryRenderer,
     options: {
-      hidesBackButton: !unsafe_getFeatureFlag("AREnableNewNavigation"),
       screenOptions: {
         headerTitle: "Price Range",
       },
@@ -877,7 +666,6 @@ export const modules = defineModules({
   MyAccountEditPassword: reactModule({
     Component: MyAccountEditPassword,
     options: {
-      hidesBackButton: !unsafe_getFeatureFlag("AREnableNewNavigation"),
       screenOptions: {
         headerTitle: "Password",
       },
@@ -886,7 +674,6 @@ export const modules = defineModules({
   MyAccountEditPhone: reactModule({
     Component: MyAccountEditPhoneQueryRenderer,
     options: {
-      hidesBackButton: !unsafe_getFeatureFlag("AREnableNewNavigation"),
       screenOptions: {
         headerTitle: "Phone Number",
       },
@@ -898,7 +685,6 @@ export const modules = defineModules({
   MyCollectionArtwork: reactModule({
     Component: MyCollectionArtworkScreen,
     options: {
-      fullBleed: true,
       screenOptions: {
         headerShown: false,
       },
@@ -908,9 +694,8 @@ export const modules = defineModules({
   MyCollectionArtworkAdd: reactModule({
     Component: MyCollectionArtworkAdd,
     options: {
-      hidesBottomTabs: !unsafe_getFeatureFlag("AREnableNewNavigation"),
       alwaysPresentModally: true,
-      modalPresentationStyle: "fullScreen",
+
       screenOptions: {
         gestureEnabled: false,
         headerShown: false,
@@ -920,9 +705,8 @@ export const modules = defineModules({
   MyCollectionArtworkEdit: reactModule({
     Component: MyCollectionArtworkEditQueryRenderer,
     options: {
-      hidesBottomTabs: !unsafe_getFeatureFlag("AREnableNewNavigation"),
       alwaysPresentModally: true,
-      modalPresentationStyle: "fullScreen",
+
       screenOptions: {
         gestureEnabled: false,
         headerShown: false,
@@ -932,7 +716,6 @@ export const modules = defineModules({
   MyCollectionAddCollectedArtists: reactModule({
     Component: MyCollectionAddCollectedArtistsScreen,
     options: {
-      hidesBackButton: !unsafe_getFeatureFlag("AREnableNewNavigation"),
       hidesBottomTabs: true,
       screenOptions: {
         headerTitle: "Add Artists You Collect",
@@ -957,7 +740,7 @@ export const modules = defineModules({
     options: {
       isRootViewForTabName: "profile",
       onlyShowInTabName: "profile",
-      fullBleed: true,
+
       screenOptions: {
         headerShown: false,
       },
@@ -967,7 +750,6 @@ export const modules = defineModules({
   CompleteMyProfile: reactModule({
     Component: CompleteMyProfile,
     options: {
-      fullBleed: true,
       hidesBottomTabs: true,
       screenOptions: {
         headerShown: false,
@@ -1003,7 +785,7 @@ export const modules = defineModules({
     Component: NewWorksForYouQueryRenderer,
     options: {
       hidesBottomTabs: true,
-      fullBleed: true,
+
       screenOptions: {
         headerShown: false,
       },
@@ -1028,7 +810,6 @@ export const modules = defineModules({
   NewWorksFromGalleriesYouFollow: reactModule({
     Component: NewWorksFromGalleriesYouFollowScreen,
     options: {
-      fullBleed: true,
       screenOptions: {
         headerShown: false,
       },
@@ -1037,7 +818,6 @@ export const modules = defineModules({
   News: reactModule({
     Component: NewsScreen,
     options: {
-      fullBleed: true,
       screenOptions: {
         headerShown: false,
       },
@@ -1063,13 +843,12 @@ export const modules = defineModules({
   Partner: reactModule({
     Component: PartnerQueryRenderer,
     options: {
-      fullBleed: true,
       screenOptions: {
         headerShown: false,
       },
     },
   }),
-  PartnerLocations: reactModule({ Component: PartnerLocations }),
+  PartnerLocations: reactModule({ Component: PartnerLocationsQueryRenderer }),
   PartnerOfferContainer: reactModule({
     Component: PartnerOfferContainer,
     options: {
@@ -1107,9 +886,7 @@ export const modules = defineModules({
     Component: ArtsyWebViewPage,
     options: {
       alwaysPresentModally: true,
-      modalPresentationStyle: !unsafe_getFeatureFlag("AREnableNewNavigation")
-        ? "fullScreen"
-        : undefined,
+
       screenOptions: {
         gestureEnabled: false,
         headerShown: false,
@@ -1119,7 +896,6 @@ export const modules = defineModules({
   ReactWebView: reactModule({
     Component: ArtsyWebViewPage,
     options: {
-      fullBleed: !unsafe_getFeatureFlag("AREnableNewNavigation"),
       screenOptions: {
         headerShown: false,
       },
@@ -1137,7 +913,6 @@ export const modules = defineModules({
   RecentlyViewed: reactModule({
     Component: RecentlyViewedScreen,
     options: {
-      fullBleed: true,
       screenOptions: {
         headerShown: false,
       },
@@ -1148,7 +923,7 @@ export const modules = defineModules({
     Component: RecommendedAuctionLotsQueryRenderer,
     options: {
       hidesBottomTabs: true,
-      fullBleed: true,
+
       screenOptions: {
         headerShown: false,
       },
@@ -1159,7 +934,7 @@ export const modules = defineModules({
     options: {
       isRootViewForTabName: "sell",
       onlyShowInTabName: "sell",
-      fullBleed: true,
+
       screenOptions: {
         headerShown: false,
       },
@@ -1170,7 +945,6 @@ export const modules = defineModules({
   SavedArtworks: reactModule({
     Component: SavedArtworks,
     options: {
-      fullBleed: true,
       screenOptions: {
         headerShown: false,
       },
@@ -1179,7 +953,6 @@ export const modules = defineModules({
   SavedSearchAlertsList: reactModule({
     Component: SavedSearchAlertsListQueryRenderer,
     options: {
-      fullBleed: true,
       screenOptions: {
         headerShown: false,
       },
@@ -1190,19 +963,18 @@ export const modules = defineModules({
     options: {
       isRootViewForTabName: "search",
       onlyShowInTabName: "search",
-      fullBleed: true,
+
       screenOptions: {
         headerShown: false,
       },
     },
     Queries: [SearchScreenQuery],
   }),
-  Show: reactModule({ Component: ShowQueryRenderer, options: { fullBleed: true } }),
+  Show: reactModule({ Component: ShowQueryRenderer }),
   ShowMoreInfo: reactModule({ Component: ShowMoreInfoQueryRenderer }),
   SimilarToRecentlyViewed: reactModule({
     Component: SimilarToRecentlyViewedScreen,
     options: {
-      fullBleed: true,
       screenOptions: {
         headerShown: false,
       },
@@ -1212,9 +984,7 @@ export const modules = defineModules({
     Component: SubmitArtworkForm,
     options: {
       alwaysPresentModally: true,
-      modalPresentationStyle: !unsafe_getFeatureFlag("AREnableNewNavigation")
-        ? "fullScreen"
-        : undefined,
+
       screenOptions: {
         gestureEnabled: false,
         headerShown: false,
@@ -1235,7 +1005,6 @@ export const modules = defineModules({
   Tag: reactModule({
     Component: TagQueryRenderer,
     options: {
-      fullBleed: true,
       screenOptions: {
         headerShown: false,
       },
@@ -1251,11 +1020,10 @@ export const modules = defineModules({
   }),
   VanityURLEntity: reactModule({
     Component: VanityURLEntityRenderer,
-    options: { fullBleed: true },
   }),
   ViewingRoom: reactModule({
     Component: ViewingRoomQueryRenderer,
-    options: { fullBleed: true },
+
     Queries: [ViewingRoomScreenQuery],
   }),
   ViewingRoomArtwork: reactModule({ Component: ViewingRoomArtworkScreen }),
@@ -1274,15 +1042,3 @@ export const modules = defineModules({
     Queries: [WorksForYouScreenQuery],
   }),
 })
-
-for (const moduleName of Object.keys(modules)) {
-  const descriptor = modules[moduleName as AppModule]
-  if (Platform.OS === "ios" && !unsafe_getFeatureFlag("AREnableNewNavigation")) {
-    // TODO: this should not be needed. right?
-    register(moduleName, descriptor.Component, {
-      fullBleed: descriptor.options.fullBleed,
-      ignoreTabs: descriptor.options.ignoreTabs,
-      moduleName,
-    })
-  }
-}

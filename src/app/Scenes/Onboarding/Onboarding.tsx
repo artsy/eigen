@@ -1,4 +1,4 @@
-import { Flex, useColor, useSpace } from "@artsy/palette-mobile"
+import { useColor, useSpace } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import {
   CardStyleInterpolators,
@@ -73,7 +73,6 @@ export const OnboardingWelcomeScreens = () => {
   const color = useColor()
   const space = useSpace()
 
-  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
   const signupLoginFusionEnabled = useFeatureFlag("AREnableSignupLoginFusion")
 
   return (
@@ -140,27 +139,18 @@ export const OnboardingWelcomeScreens = () => {
             <StackNavigator.Screen
               name="DevMenu"
               component={DevMenu}
-              options={
-                !enableNewNavigation
-                  ? {
-                      headerShown: true,
-                      header: () => {
-                        return <Flex height={50} />
-                      },
-                    }
-                  : {
-                      headerLeftContainerStyle: {
-                        paddingLeft: space(1),
-                      },
-                      headerTitle: "Dev Settings",
-                      headerShown: true,
-                      headerTintColor: color("black100"),
-                      headerLeftLabelVisible: false,
-                      headerRightContainerStyle: {
-                        paddingRight: space(2),
-                      },
-                    }
-              }
+              options={{
+                headerLeftContainerStyle: {
+                  paddingLeft: space(1),
+                },
+                headerTitle: "Dev Settings",
+                headerShown: true,
+                headerTintColor: color("black100"),
+                headerLeftLabelVisible: false,
+                headerRightContainerStyle: {
+                  paddingRight: space(2),
+                },
+              }}
             />
           )}
         </StackNavigator.Group>

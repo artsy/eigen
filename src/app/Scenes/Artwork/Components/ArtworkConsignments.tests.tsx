@@ -1,7 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkConsignments_artwork_TestQuery } from "__generated__/ArtworkConsignments_artwork_TestQuery.graphql"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
-import { ModalStack } from "app/system/navigation/ModalStack"
 import { switchTab } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
@@ -34,11 +33,7 @@ describe("ArtworkConsignments", () => {
     )
 
     if (data.artwork) {
-      return (
-        <ModalStack>
-          <ArtworkConsignments artwork={data.artwork} />
-        </ModalStack>
-      )
+      return <ArtworkConsignments artwork={data.artwork} />
     }
 
     return null

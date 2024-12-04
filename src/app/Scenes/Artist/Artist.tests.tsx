@@ -1,5 +1,4 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { ModalStack } from "app/system/navigation/ModalStack"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { postEventToProviders } from "app/utils/track/providers"
@@ -44,9 +43,7 @@ describe("Artist", () => {
   }
 
   const TestWrapper = (props: Record<string, any>) => (
-    <ModalStack>
-      <ArtistQueryRenderer artistID="ignored" environment={mockEnvironment} {...props} />
-    </ModalStack>
+    <ArtistQueryRenderer artistID="ignored" environment={mockEnvironment} {...props} />
   )
 
   it("returns an empty state if artist has no artworks", async () => {

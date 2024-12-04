@@ -1,14 +1,11 @@
 import { Flex, Input, Separator, Text, Touchable } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { Stack } from "app/Components/Stack"
-import { MyAccountFieldEditScreen } from "app/Scenes/MyAccount/Components/MyAccountFieldEditScreen"
 import { getCurrentEmissionState, GlobalStore, unsafe__getEnvironment } from "app/store/GlobalStore"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import React, { Fragment, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Alert } from "react-native"
 
 export const MyAccountEditPassword: React.FC<{}> = ({}) => {
-  const enableNewNavigation = useFeatureFlag("AREnableNewNavigation")
   const [currentPassword, setCurrentPassword] = useState<string>("")
   const [newPassword, setNewPassword] = useState<string>("")
   const [passwordConfirmation, setPasswordConfirmation] = useState<string>("")
@@ -103,58 +100,42 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
     })
   }, [navigation, currentPassword, newPassword, passwordConfirmation])
 
-  const Wrapper = enableNewNavigation
-    ? Fragment
-    : ({ children }: { children: React.ReactNode }) => (
-        <MyAccountFieldEditScreen
-          title="Password"
-          canSave={Boolean(currentPassword && newPassword && passwordConfirmation)}
-          onSave={handleSave}
-          contentContainerStyle={{ paddingHorizontal: 0 }}
-        >
-          {children}
-        </MyAccountFieldEditScreen>
-      )
-
   return (
-    <Wrapper>
-      <Flex pt={enableNewNavigation ? 2 : 0}>
-        <Flex mx={2}>
-          <Input
-            autoComplete="password"
-            autoFocus
-            onChangeText={setCurrentPassword}
-            secureTextEntry
-            enableClearButton
-            title="Current password"
-            value={currentPassword}
-            error={receivedErrorCurrent}
-          />
-        </Flex>
-        <Separator mb={2} mt={4} />
-        <Stack mx={2}>
-          <Text>
-            Password must include at least one uppercase letter, one lowercase letter, and one
-            number.
-          </Text>
-          <Input
-            onChangeText={setNewPassword}
-            secureTextEntry
-            enableClearButton
-            title="New password"
-            value={newPassword}
-            error={receivedErrorNew}
-          />
-          <Input
-            onChangeText={setPasswordConfirmation}
-            secureTextEntry
-            enableClearButton
-            title="Confirm new password"
-            value={passwordConfirmation}
-            error={receivedErrorConfirm}
-          />
-        </Stack>
+    <Flex pt={2}>
+      <Flex mx={2}>
+        <Input
+          autoComplete="password"
+          autoFocus
+          onChangeText={setCurrentPassword}
+          secureTextEntry
+          enableClearButton
+          title="Current password"
+          value={currentPassword}
+          error={receivedErrorCurrent}
+        />
       </Flex>
-    </Wrapper>
+      <Separator mb={2} mt={4} />
+      <Stack mx={2}>
+        <Text>
+          Password must include at least one uppercase letter, one lowercase letter, and one number.
+        </Text>
+        <Input
+          onChangeText={setNewPassword}
+          secureTextEntry
+          enableClearButton
+          title="New password"
+          value={newPassword}
+          error={receivedErrorNew}
+        />
+        <Input
+          onChangeText={setPasswordConfirmation}
+          secureTextEntry
+          enableClearButton
+          title="Confirm new password"
+          value={passwordConfirmation}
+          error={receivedErrorConfirm}
+        />
+      </Stack>
+    </Flex>
   )
 }

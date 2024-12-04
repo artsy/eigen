@@ -9,11 +9,16 @@ import { ReactElement } from "simple-markdown"
 
 interface WrappersProps {
   skipRelay?: boolean
+  includeNavigation?: boolean
 }
 
-const Wrappers: React.FC<WrappersProps> = ({ skipRelay, children }) => (
-  <TestProviders skipRelay={skipRelay}>{children}</TestProviders>
-)
+const Wrappers: React.FC<WrappersProps> = ({ skipRelay, includeNavigation, children }) => {
+  return (
+    <TestProviders includeNavigation={includeNavigation} skipRelay={skipRelay}>
+      {children}
+    </TestProviders>
+  )
+}
 
 /**
  * Returns given component wrapped with our page wrappers
