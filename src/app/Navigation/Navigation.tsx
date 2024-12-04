@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { addBreadcrumb } from "@sentry/react-native"
 import { FPSCounter } from "app/Components/FPSCounter"
 import { LoadingSpinner } from "app/Components/Modals/LoadingModal"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import {
   AuthenticatedRoutes,
   AuthenticatedRoutesParams,
@@ -59,6 +60,7 @@ export const Navigation = () => {
           routingInstrumentation.registerNavigationContainer(internal_navigationRef)
 
           setNavigationReady({ isNavigationReady: true })
+          LegacyNativeModules.ARNotificationsManager.didFinishBootstrapping()
 
           if (trackSiftAndroid) {
             const initialRouteName = internal_navigationRef?.current?.getCurrentRoute()?.name

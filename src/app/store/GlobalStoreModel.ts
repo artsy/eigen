@@ -118,7 +118,6 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
     (actions) => actions.rehydrate,
     () => {
       LegacyNativeModules.ARNotificationsManager.reactStateUpdated(unsafe__getEnvironment())
-      LegacyNativeModules.ARNotificationsManager.didFinishBootstrapping()
     }
   ),
   sessionState: {

@@ -65,6 +65,7 @@ export const ModalStack: React.FC = ({ children }) => {
         routingInstrumentation.registerNavigationContainer(__unsafe_mainModalStackRef)
 
         setNavigationReady({ isNavigationReady: true })
+        LegacyNativeModules.ARNotificationsManager.didFinishBootstrapping()
 
         if (trackSiftAndroid) {
           const initialRouteName = __unsafe_mainModalStackRef?.current?.getCurrentRoute()?.name
