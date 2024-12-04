@@ -88,12 +88,13 @@ export const renderWithWrappers = (component: ReactElement, wrapperProps?: Wrapp
  */
 export const renderWithHookWrappersTL = (
   component: ReactElement,
-  environment: Environment = getRelayEnvironment()
+  environment: Environment = getRelayEnvironment(),
+  wrapperProps?: WrappersProps
 ) => {
   const jsx = (
     <RelayEnvironmentProvider environment={environment}>
       <Suspense fallback="Loading...">{component}</Suspense>
     </RelayEnvironmentProvider>
   )
-  return renderWithWrappers(jsx)
+  return renderWithWrappers(jsx, wrapperProps)
 }
