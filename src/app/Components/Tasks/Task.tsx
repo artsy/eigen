@@ -29,7 +29,7 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
     const [acknowledgeTask, acknowledgeInProgress] = useAcknowledgeTask(task.id)
     const fontScale = PixelRatio.getFontScale()
 
-    const handlePressTask = async () => {
+    const handlePressTask = () => {
       if (onPress) {
         onPress()
         return
@@ -56,7 +56,7 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
       navigate(task.actionLink)
     }
 
-    const handleClearTask = async () => {
+    const handleClearTask = () => {
       if (dismissInProgress) {
         return
       }
