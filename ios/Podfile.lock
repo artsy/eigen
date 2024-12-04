@@ -59,7 +59,7 @@ PODS:
     - BrazeKit (= 9.0.0)
   - BrazeUI (9.0.0):
     - BrazeKit (= 9.0.0)
-  - BVLinearGradient (2.6.2):
+  - BVLinearGradient (2.8.3):
     - React-Core
   - CocoaLumberjack (3.7.2):
     - CocoaLumberjack/Core (= 3.7.2)
@@ -2667,7 +2667,7 @@ SPEC CHECKSUMS:
   BrazeKit: 7406e77825c624d8e7a162d858a4bffdf79270f5
   BrazeLocation: 43405bf92037c9840f5f5467a7b8418583bc7850
   BrazeUI: 9e86bd30ca84f66444a5f6d95e438057000f4d0f
-  BVLinearGradient: 7815a70ab485b7b155186dd0cc836363e0288cad
+  BVLinearGradient: cb006ba232a1f3e4f341bb62c42d1098c284da70
   CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
   CodePush: 8ba8ea6dbaf817d5e51dbbbd622e15150ba814dd
   CwlCatchException: 51bf8319009a31104ea6f0568730d1ecc25b6454
