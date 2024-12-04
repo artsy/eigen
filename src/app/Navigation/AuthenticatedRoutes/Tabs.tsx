@@ -9,7 +9,7 @@ import { InboxTab } from "app/Navigation/AuthenticatedRoutes/InboxTab"
 import { ProfileTab } from "app/Navigation/AuthenticatedRoutes/ProfileTab"
 import { SearchTab } from "app/Navigation/AuthenticatedRoutes/SearchTab"
 import { SellTab } from "app/Navigation/AuthenticatedRoutes/SellTab"
-import { registerSharedModalRoutes } from "app/Navigation/AuthenticatedRoutes/SharedRoutes"
+import { modalRoutes } from "app/Navigation/AuthenticatedRoutes/modalRoutes"
 import { internal_navigationRef } from "app/Navigation/Navigation"
 import { useBottomTabsBadges } from "app/Navigation/Utils/useBottomTabsBadges"
 import { BottomTabOption, BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
@@ -165,7 +165,7 @@ export const AuthenticatedRoutes: React.FC = () => {
           component={AppTabs}
           options={{ headerShown: false }}
         />
-        {registerSharedModalRoutes()}
+        {modalRoutes()}
       </AuthenticatedRoutesStack.Group>
     </AuthenticatedRoutesStack.Navigator>
   )

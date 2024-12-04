@@ -1,5 +1,5 @@
 import { modules } from "app/AppRegistry"
-import { registerSharedRoutes } from "app/Navigation/AuthenticatedRoutes/SharedRoutes"
+import { commonRoutes } from "app/Navigation/AuthenticatedRoutes/CommonRoutes"
 import { registerScreen, StackNavigator } from "app/Navigation/AuthenticatedRoutes/StackNavigator"
 
 export const HomeTab: React.FC = () => {
@@ -9,7 +9,7 @@ export const HomeTab: React.FC = () => {
         name: "Home",
         module: modules["Home"],
       })}
-      {registerSharedRoutes()}
+      {commonRoutes()}
     </StackNavigator.Navigator>
   )
 }

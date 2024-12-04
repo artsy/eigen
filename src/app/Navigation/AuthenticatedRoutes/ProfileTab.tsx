@@ -1,5 +1,5 @@
 import { modules } from "app/AppRegistry"
-import { registerSharedRoutes } from "app/Navigation/AuthenticatedRoutes/SharedRoutes"
+import { commonRoutes } from "app/Navigation/AuthenticatedRoutes/CommonRoutes"
 import { registerScreen, StackNavigator } from "app/Navigation/AuthenticatedRoutes/StackNavigator"
 
 export const ProfileTab: React.FC = () => {
@@ -10,7 +10,7 @@ export const ProfileTab: React.FC = () => {
         module: modules["MyProfile"],
       })}
 
-      {registerSharedRoutes()}
+      {commonRoutes()}
     </StackNavigator.Navigator>
   )
 }
