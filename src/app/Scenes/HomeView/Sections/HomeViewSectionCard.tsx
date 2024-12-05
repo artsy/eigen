@@ -187,6 +187,8 @@ function getRoute(card: any) {
   } else if (card.entityType === "Page" && card.entityID === OwnerType.galleriesForYou) {
     // not a canonical web url, thus the indirection above
     route = "/galleries-for-you"
+  } else if (card.entityType === "Page" && card.entityID === OwnerType.infiniteDiscovery) {
+    route = "/infinite-discovery"
   }
 
   return route
