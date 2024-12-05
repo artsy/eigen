@@ -1,7 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import { MyCollectionAddCollectedArtistsScreen } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtists"
-import { dismissModal, navigate, goBack } from "app/system/navigation/navigate"
+import { dismissModal, goBack, navigate } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -49,7 +49,7 @@ describe("MyCollectionAddCollectedArtists", () => {
               "category": "COLLECTED_BEFORE",
               "interestId": "internal-id",
               "interestType": "ARTIST",
-              "private": true,
+              "private": false,
             },
           ],
         },
