@@ -30,7 +30,7 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
   const canBeRemoved = artworksCountWithinMyCollection === 0
   const { showActionSheetWithOptions } = useActionSheet()
 
-  const [isPrivate, setIsPrivate] = useState(me.userInterest?.private ?? true)
+  const [isPrivate, setIsPrivate] = useState(me.userInterest?.private ?? false)
 
   const setViewKind = MyCollectionTabsStore.useStoreActions((actions) => actions.setViewKind)
 
