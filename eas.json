@@ -1,15 +1,24 @@
 {
   "cli": {
-    "version": ">= 13.4.2",
+    "version": "13.4.2",
     "appVersionSource": "remote"
   },
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "ios": {
+        "scheme": "Artsy",
+        "buildConfiguration": "Debug"
+      }
     },
     "preview": {
-      "distribution": "internal"
+      "distribution": "internal",
+      "ios": {
+        "scheme": "Artsy",
+        "buildConfiguration": "Debug",
+        "simulator": true
+      }
     },
     "production": {
       "autoIncrement": true
