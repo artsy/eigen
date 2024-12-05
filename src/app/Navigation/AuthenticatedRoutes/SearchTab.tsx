@@ -1,6 +1,6 @@
 import { modules } from "app/AppRegistry"
 import { registerScreen, StackNavigator } from "app/Navigation/AuthenticatedRoutes/StackNavigator"
-import { commonRoutes } from "app/Navigation/AuthenticatedRoutes/commonRoutes"
+import { sharedRoutes } from "app/Navigation/AuthenticatedRoutes/sharedRoutes"
 
 export const SearchTab: React.FC = () => {
   return (
@@ -10,7 +10,7 @@ export const SearchTab: React.FC = () => {
         module: modules["Search"],
       })}
 
-      {commonRoutes()}
+      {sharedRoutes()}
     </StackNavigator.Navigator>
   )
 }

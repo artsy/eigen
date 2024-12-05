@@ -148,7 +148,7 @@ const AppTabs: React.FC = () => {
   )
 }
 
-export const ModalStack = createNativeStackNavigator()
+export const AuthenticatedRoutesStack = createNativeStackNavigator()
 
 export const AuthenticatedRoutes: React.FC = () => {
   const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
@@ -158,11 +158,15 @@ export const AuthenticatedRoutes: React.FC = () => {
   }
 
   return (
-    <ModalStack.Navigator>
-      <ModalStack.Group>
-        <ModalStack.Screen name="AppTabs" component={AppTabs} options={{ headerShown: false }} />
+    <AuthenticatedRoutesStack.Navigator>
+      <AuthenticatedRoutesStack.Group>
+        <AuthenticatedRoutesStack.Screen
+          name="AppTabs"
+          component={AppTabs}
+          options={{ headerShown: false }}
+        />
         {modalRoutes()}
-      </ModalStack.Group>
-    </ModalStack.Navigator>
+      </AuthenticatedRoutesStack.Group>
+    </AuthenticatedRoutesStack.Navigator>
   )
 }

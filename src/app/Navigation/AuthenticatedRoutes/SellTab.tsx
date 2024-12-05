@@ -1,6 +1,6 @@
 import { modules } from "app/AppRegistry"
 import { registerScreen, StackNavigator } from "app/Navigation/AuthenticatedRoutes/StackNavigator"
-import { commonRoutes } from "app/Navigation/AuthenticatedRoutes/commonRoutes"
+import { sharedRoutes } from "app/Navigation/AuthenticatedRoutes/sharedRoutes"
 
 export const SellTab: React.FC = () => {
   return (
@@ -10,7 +10,7 @@ export const SellTab: React.FC = () => {
         module: modules["Sell"],
       })}
 
-      {commonRoutes()}
+      {sharedRoutes()}
     </StackNavigator.Navigator>
   )
 }

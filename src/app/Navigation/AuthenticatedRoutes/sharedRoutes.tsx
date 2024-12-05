@@ -7,9 +7,10 @@ const nonModalModules = Object.entries(nonTabModules).filter(
 )
 
 /**
- * This represents the screens that can be accessed from any tab
+ * This represents the screens that can be accessed from any tab.
+ * For example the artwork screen and the artist screen can be accessed from any tab
  */
-export const commonRoutes = () => {
+export const sharedRoutes = () => {
   return (
     <StackNavigator.Group>
       {nonModalModules.map(([moduleName, module]) => {
