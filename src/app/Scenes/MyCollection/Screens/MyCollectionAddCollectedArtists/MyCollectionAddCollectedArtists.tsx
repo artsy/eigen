@@ -34,12 +34,10 @@ export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
   return (
     <Screen>
       <Screen.Body>
-        <Flex flex={1} pt={2}>
-          <Flex flex={1} px={2}>
-            <Suspense fallback={() => null}>
-              <MyCollectionAddCollectedArtistsAutosuggest />
-            </Suspense>
-          </Flex>
+        <Flex flex={1} mt={1}>
+          <Suspense fallback={() => null}>
+            <MyCollectionAddCollectedArtistsAutosuggest />
+          </Suspense>
 
           <Spacer y={4} />
 
@@ -48,7 +46,7 @@ export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
             bottom={0}
             alignItems="center"
             alignSelf="center"
-            p={2}
+            pb={2}
             right={0}
             left={0}
             backgroundColor="white100"
@@ -59,9 +57,9 @@ export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
               </Text>
             </Button>
           </Flex>
-
-          <LoadingModal isVisible={isLoading} dark />
         </Flex>
+
+        <LoadingModal isVisible={isLoading} dark />
       </Screen.Body>
     </Screen>
   )
