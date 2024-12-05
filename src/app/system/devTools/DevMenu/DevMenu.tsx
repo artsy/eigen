@@ -52,7 +52,6 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
         // and it doesn't support large headers so we don't need this additional header
         !__unsafe__onboardingNavigationRef.current ? <LargeHeaderView /> : null
       }
-      å
       <Text variant="xs" color="grey" mx={2} mt={2}>
         Build:{" "}
         <Text variant="xs">
