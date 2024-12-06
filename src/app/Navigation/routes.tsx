@@ -11,7 +11,6 @@ import {
 } from "app/Components/Containers/WorksForYou"
 import { CityGuideView } from "app/NativeModules/CityGuideView"
 import { LiveAuctionView } from "app/NativeModules/LiveAuctionView"
-import { addRoute } from "app/Navigation/utils/addRoute"
 import { About } from "app/Scenes/About/About"
 import { ActivityItemScreenQueryRenderer } from "app/Scenes/Activity/ActivityItemScreen"
 import { ActivityScreen } from "app/Scenes/Activity/ActivityScreen"
@@ -137,7 +136,6 @@ import {
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { DevMenu } from "app/system/devTools/DevMenu/DevMenu"
 import { goBack } from "app/system/navigation/navigate"
-import { RouteMatcher } from "app/system/navigation/utils/RouteMatcher"
 import { replaceParams } from "app/system/navigation/utils/replaceParams"
 import { compact } from "lodash"
 import React from "react"
@@ -1488,17 +1486,5 @@ export const liveDotArtsyRoutes = defineRoutes([
         }),
       },
 ])
-
-export const liveDotArtsyDotNet: RouteMatcher[] = compact(
-  liveDotArtsyRoutes.map(({ path, injectParams, ...screenDescriptor }) =>
-    addRoute(path, screenDescriptor, injectParams)
-  )
-)
-
-export const artsyDotNet = compact(
-  artsyDotNetRoutes.map(({ path, injectParams, ...screenDescriptor }) =>
-    addRoute(path, screenDescriptor, injectParams)
-  )
-)
 
 export const routes = compact([...artsyDotNetRoutes, ...liveDotArtsyRoutes])
