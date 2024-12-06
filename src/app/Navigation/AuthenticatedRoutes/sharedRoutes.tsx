@@ -1,7 +1,7 @@
 import { registerScreen, StackNavigator } from "app/Navigation/AuthenticatedRoutes/StackNavigator"
-import { nonTabModules } from "app/Navigation/helpers/getNonTabModules"
-import { isModalScreen } from "app/Navigation/helpers/isModalScreen"
 import { AppModule } from "app/Navigation/routes"
+import { nonTabModules } from "app/Navigation/utils/getNonTabModules"
+import { isModalScreen } from "app/Navigation/utils/isModalScreen"
 
 const nonModalModules = Object.entries(nonTabModules).filter(
   ([_, module]) => !isModalScreen(module)
