@@ -3,8 +3,8 @@ import { ActivityRailItem_item$data } from "__generated__/ActivityRailItem_item.
 import { FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ORDERED_ARTWORK_SORTS } from "app/Components/ArtworkFilter/Filters/SortOptions"
 import { SUPPORTED_NOTIFICATION_TYPES } from "app/Scenes/Activity/ActivityItemScreen"
-import { matchRoute } from "app/routes"
 import { navigate } from "app/system/navigation/navigate"
+import { matchRoute } from "app/system/navigation/utils/matchRoute"
 import { last } from "lodash"
 import { parse as parseQueryString } from "query-string"
 
