@@ -163,6 +163,7 @@ const ArtworkCardImages = ({
               >
                 <OpaqueImageView
                   imageURL={image.src}
+                  useRawURL={true}
                   height={containerHeight * ZOOM_IN_FACTOR}
                   width={imageWidth * ZOOM_IN_FACTOR}
                 />
