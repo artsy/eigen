@@ -1,13 +1,13 @@
 import { fireEvent, screen } from "@testing-library/react-native"
+import { InfiniteDiscovery } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
 import { InfiniteDiscoveryContext } from "app/Scenes/InfiniteDiscovery/InfiniteDiscoveryContext"
-import { InfiniteDiscoveryHeader } from "app/Scenes/InfiniteDiscovery/InfiniteDiscoveryHeader"
 import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { action } from "easy-peasy"
 
 jest.mock("app/system/navigation/navigate")
 
-describe("InfiniteDiscoveryHeader", () => {
+describe("InfiniteDiscovery", () => {
   const mockNavigate = navigate as jest.Mock
 
   beforeEach(() => {
@@ -19,7 +19,7 @@ describe("InfiniteDiscoveryHeader", () => {
       <InfiniteDiscoveryContext.Provider
         runtimeModel={{ artworkIds: ["1", "2", "3"], currentArtworkId: "2" }}
       >
-        <InfiniteDiscoveryHeader />
+        <InfiniteDiscovery />
       </InfiniteDiscoveryContext.Provider>
     )
     expect(screen.getByText("Back")).toBeOnTheScreen()
@@ -30,7 +30,7 @@ describe("InfiniteDiscoveryHeader", () => {
       <InfiniteDiscoveryContext.Provider
         runtimeModel={{ artworkIds: ["1", "2", "3"], currentArtworkId: "1" }}
       >
-        <InfiniteDiscoveryHeader />
+        <InfiniteDiscovery />
       </InfiniteDiscoveryContext.Provider>
     )
     expect(screen.queryByText("Back")).not.toBeOnTheScreen()
@@ -46,7 +46,7 @@ describe("InfiniteDiscoveryHeader", () => {
           goBack: action(mockGoBack),
         }}
       >
-        <InfiniteDiscoveryHeader />
+        <InfiniteDiscovery />
       </InfiniteDiscoveryContext.Provider>
     )
     fireEvent.press(screen.getByText("Back"))
@@ -56,7 +56,7 @@ describe("InfiniteDiscoveryHeader", () => {
   it("navigates to home view when the exit button is pressed", () => {
     renderWithWrappers(
       <InfiniteDiscoveryContext.Provider>
-        <InfiniteDiscoveryHeader />
+        <InfiniteDiscovery />
       </InfiniteDiscoveryContext.Provider>
     )
     fireEvent.press(screen.getByText("Exit"))
