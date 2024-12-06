@@ -1,5 +1,5 @@
-import { ModuleDescriptor } from "app/AppRegistry"
+import { ModuleDescriptor } from "app/Navigation/routes"
 
-export const isModalScreen = (module: ModuleDescriptor) => {
-  return !!module.options.alwaysPresentModally
+export const isModalScreen = (module: ModuleDescriptor<any>) => {
+  return !!module.options?.alwaysPresentModally
 }

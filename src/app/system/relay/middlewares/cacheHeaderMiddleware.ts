@@ -1,5 +1,5 @@
-import { getCurrentURL } from "app/routes"
 import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
+import { getCurrentURL } from "app/system/navigation/utils/getCurrentURL"
 import {
   hasNoCacheParamPresent,
   hasPersonalizedArguments,

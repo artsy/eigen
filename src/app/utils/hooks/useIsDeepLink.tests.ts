@@ -1,5 +1,5 @@
 import { renderHook } from "@testing-library/react-hooks"
-import { matchRoute } from "app/routes"
+import { matchRoute } from "app/system/navigation/utils/matchRoute"
 import { useIsDeepLink } from "app/utils/hooks/useIsDeepLink"
 import { Linking } from "react-native"
 
@@ -14,7 +14,7 @@ jest.mock("react-native", () => ({
   },
 }))
 
-jest.mock("app/routes", () => ({
+jest.mock("app/Navigation/Navigation", () => ({
   matchRoute: jest.fn(),
 }))
 
