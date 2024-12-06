@@ -18,7 +18,6 @@ import { HomeViewSectionSalesQueryRenderer } from "app/Scenes/HomeView/Sections/
 import { HomeViewSectionShowsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionShows"
 import { HomeViewSectionTasksQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionTasks"
 import { HomeViewSectionViewingRoomsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionViewingRooms"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
 
 export interface SectionProps extends FlexProps {
@@ -34,19 +33,10 @@ export interface SectionSharedProps extends FlexProps {
 }
 
 export const Section: React.FC<SectionProps> = ({ section, ...rest }) => {
-  const isInfiniteDiscoveryEnabled = useFeatureFlag("AREnableInfiniteDiscovery")
-
   if (!section.internalID) {
     if (__DEV__) {
       throw new Error("Section has no internalID")
     }
-    return null
-  }
-
-  if (
-    section.internalID === "home-view-section-infinite-discovery" &&
-    !isInfiniteDiscoveryEnabled
-  ) {
     return null
   }
 

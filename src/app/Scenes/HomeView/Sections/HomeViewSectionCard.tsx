@@ -15,6 +15,7 @@ import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeView
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { isTablet } from "react-native-device-info"
 import FastImage from "react-native-fast-image"
@@ -157,6 +158,8 @@ const homeViewSectionCardQuery = graphql`
 
 export const HomeViewSectionCardQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
   Component: ({ sectionID, index, ...flexProps }) => {
+    const isInfiniteDiscoveryEnabled = useFeatureFlag("AREnableInfiniteDiscovery")
+
     const data = useLazyLoadQuery<HomeViewSectionCardQuery>(
       homeViewSectionCardQuery,
       {
@@ -168,6 +171,10 @@ export const HomeViewSectionCardQueryRenderer: React.FC<SectionSharedProps> = wi
         },
       }
     )
+
+    if (sectionID === "home-view-section-infinite-discovery" && !isInfiniteDiscoveryEnabled) {
+      return null
+    }
 
     if (!data.homeView.section) {
       return null
@@ -183,12 +190,16 @@ function getRoute(card: any) {
   let route
 
   if (card?.href) {
-    route = card.href
-  } else if (card.entityType === "Page" && card.entityID === OwnerType.galleriesForYou) {
+    return card.href
+  }
+
+  if (card.entityType === "Page" && card.entityID === OwnerType.galleriesForYou) {
     // not a canonical web url, thus the indirection above
-    route = "/galleries-for-you"
-  } else if (card.entityType === "Page" && card.entityID === OwnerType.infiniteDiscovery) {
-    route = "/infinite-discovery"
+    return "/galleries-for-you"
+  }
+
+  if (card.entityType === "Page" && card.entityID === OwnerType.infiniteDiscovery) {
+    return "/infinite-discovery"
   }
 
   return route
