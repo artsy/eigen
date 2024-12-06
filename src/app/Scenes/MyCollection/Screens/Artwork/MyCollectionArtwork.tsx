@@ -13,7 +13,6 @@ import { LoadingSpinner } from "app/Components/Modals/LoadingModal"
 import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
 import { MyCollectionArtworkAboutWork } from "app/Scenes/MyCollection/Screens/Artwork/Components/ArtworkAbout/MyCollectionArtworkAboutWork"
 import { MyCollectionArtworkArticles } from "app/Scenes/MyCollection/Screens/Artwork/Components/ArtworkAbout/MyCollectionArtworkArticles"
-import { ELIGIBLE_TO_EIDIT_STATES } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -100,10 +99,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
 
   const articles = extractNodes(artwork.artist?.articles)
 
-  const isEditable =
-    !artwork.consignmentSubmission?.internalID ||
-    (artwork.consignmentSubmission?.internalID &&
-      ELIGIBLE_TO_EIDIT_STATES.includes(artwork.consignmentSubmission?.state))
+  const isEditable = !artwork.consignmentSubmission || artwork.consignmentSubmission?.isEditable
 
   return (
     <Screen>
@@ -318,7 +314,7 @@ export const ArtworkMetaProps = graphql`
     # TODO: move logic to the edit artwork view https://artsyproduct.atlassian.net/browse/CX-2846
     consignmentSubmission @optionalField {
       internalID
-      state
+      isEditable
       displayText
     }
     pricePaid {

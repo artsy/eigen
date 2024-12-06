@@ -2716,6 +2716,9 @@ type ArtworkConsignmentSubmission {
   externalID: String
   inProgress: Boolean
   internalID: String
+
+  # Whether the user is allowed to edit the associated My Collection artwork.
+  isEditable: Boolean
   isSold: Boolean
 
   # Submission state.
