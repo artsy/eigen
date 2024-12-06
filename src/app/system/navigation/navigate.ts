@@ -1,24 +1,15 @@
 import { EventEmitter } from "events"
 import { ActionType, OwnerType, Screen } from "@artsy/cohesion"
 import { StackActions, TabActions } from "@react-navigation/native"
-import { AppModule, modules, ViewOptions } from "app/AppRegistry"
 import { internal_navigationRef } from "app/Navigation/Navigation"
+import { modules } from "app/Navigation/utils/modules"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
-import { matchRoute } from "app/routes"
 import { GlobalStore } from "app/store/GlobalStore"
 import { getValidTargetURL } from "app/system/navigation/utils/getValidTargetURL"
+import { matchRoute } from "app/system/navigation/utils/matchRoute"
 import { postEventToProviders } from "app/utils/track/providers"
 import { visualize } from "app/utils/visualizer"
 import { InteractionManager, Linking, Platform } from "react-native"
-
-export interface ViewDescriptor extends ViewOptions {
-  type: "react" | "native"
-  moduleName: AppModule
-  // Whether the new view should replace the previous (modal only)
-  replaceActiveModal?: boolean
-  replaceActiveScreen?: boolean
-  props: object
-}
 
 export interface GoBackProps {
   previousScreen?: string
@@ -89,10 +80,10 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
   if (options.replaceActiveModal || options.replaceActiveScreen) {
     internal_navigationRef.current.dispatch(StackActions.replace(result.module, props))
   } else {
-    if (module.options.onlyShowInTabName) {
-      switchTab(module.options.onlyShowInTabName, props)
+    if (module.options?.onlyShowInTabName) {
+      switchTab(module.options?.onlyShowInTabName, props)
 
-      if (!module.options.isRootViewForTabName) {
+      if (!module.options?.isRootViewForTabName) {
         // We wait for a frame to allow the tab to be switched before we navigate
         // This allows us to also override the back button behavior in the tab
         requestAnimationFrame(() => {

@@ -1,6 +1,6 @@
-import { modules } from "app/AppRegistry"
-import { matchRoute } from "app/routes"
+import { modules } from "app/Navigation/utils/modules"
 import { GlobalStore } from "app/store/GlobalStore"
+import { matchRoute } from "app/system/navigation/utils/matchRoute"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { RateLimiter } from "limiter"
 import { useEffect } from "react"
@@ -32,11 +32,6 @@ const prefetchRoute = async <TQuery extends OperationType>(
   }
 
   const module = modules[result.module]
-
-  if (module.type !== "react") {
-    if (logPrefetching) console.error(`[queryPrefetching] Cannot prefetch ${module.type} module.`)
-    return
-  }
 
   const queries = module.Queries
 
