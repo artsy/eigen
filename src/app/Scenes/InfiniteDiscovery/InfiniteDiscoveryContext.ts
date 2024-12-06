@@ -2,14 +2,14 @@ import { Color } from "@artsy/palette-mobile"
 import { action, Action, createContextStore } from "easy-peasy"
 
 export interface InfiniteDiscoveryContextModel {
-  artworkIds: Color[]
-  currentArtworkId: Color
-  goBack: Action<this>
-  goForward: Action<this>
+  artworks: Color[]
+  currentArtwork: Color
+  goToPreviousArtwork: Action<this>
+  goToNextArtwork: Action<this>
 }
 
 export const initialModel: InfiniteDiscoveryContextModel = {
-  artworkIds: [
+  artworks: [
     "black100",
     "white100",
     "green100",
@@ -19,18 +19,18 @@ export const initialModel: InfiniteDiscoveryContextModel = {
     "purple100",
     "blue100",
   ],
-  currentArtworkId: "black100",
-  goBack: action((state) => {
-    const currentIndex = state.artworkIds.indexOf(state.currentArtworkId)
+  currentArtwork: "black100",
+  goToPreviousArtwork: action((state) => {
+    const currentIndex = state.artworks.indexOf(state.currentArtwork)
     if (currentIndex - 1 < 0) return
     const previousIndex = currentIndex - 1
-    state.currentArtworkId = state.artworkIds[previousIndex]
+    state.currentArtwork = state.artworks[previousIndex]
   }),
-  goForward: action((state) => {
-    const currentIndex = state.artworkIds.indexOf(state.currentArtworkId)
-    if (currentIndex + 1 === state.artworkIds.length) return
+  goToNextArtwork: action((state) => {
+    const currentIndex = state.artworks.indexOf(state.currentArtwork)
+    if (currentIndex + 1 === state.artworks.length) return
     const nextIndex = currentIndex + 1
-    state.currentArtworkId = state.artworkIds[nextIndex]
+    state.currentArtwork = state.artworks[nextIndex]
   }),
 }
 

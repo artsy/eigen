@@ -17,7 +17,7 @@ describe("InfiniteDiscovery", () => {
   it("shows the back button if the current artwork is not the first artwork", () => {
     renderWithWrappers(
       <InfiniteDiscoveryContext.Provider
-        runtimeModel={{ artworkIds: ["1", "2", "3"], currentArtworkId: "2" }}
+        runtimeModel={{ artworks: ["1", "2", "3"], currentArtwork: "2" }}
       >
         <InfiniteDiscovery />
       </InfiniteDiscoveryContext.Provider>
@@ -28,7 +28,7 @@ describe("InfiniteDiscovery", () => {
   it("hides the back button if the current artwork is on the first artwork", () => {
     renderWithWrappers(
       <InfiniteDiscoveryContext.Provider
-        runtimeModel={{ artworkIds: ["1", "2", "3"], currentArtworkId: "1" }}
+        runtimeModel={{ artworks: ["1", "2", "3"], currentArtwork: "1" }}
       >
         <InfiniteDiscovery />
       </InfiniteDiscoveryContext.Provider>
@@ -37,20 +37,20 @@ describe("InfiniteDiscovery", () => {
   })
 
   it("returns to the previous artwork when the back button is pressed", () => {
-    const mockGoBack = jest.fn().mockImplementation()
+    const mockGoToPreviousArtwork = jest.fn().mockImplementation()
     renderWithWrappers(
       <InfiniteDiscoveryContext.Provider
         runtimeModel={{
-          artworkIds: ["1", "2", "3"],
-          currentArtworkId: "2",
-          goBack: action(mockGoBack),
+          artworks: ["1", "2", "3"],
+          currentArtwork: "2",
+          goToPreviousArtwork: action(mockGoToPreviousArtwork),
         }}
       >
         <InfiniteDiscovery />
       </InfiniteDiscoveryContext.Provider>
     )
     fireEvent.press(screen.getByText("Back"))
-    expect(mockGoBack).toHaveBeenCalled()
+    expect(mockGoToPreviousArtwork).toHaveBeenCalled()
   })
 
   it("navigates to home view when the exit button is pressed", () => {

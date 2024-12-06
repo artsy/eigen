@@ -21,15 +21,19 @@ export const InfiniteDiscoveryView: React.FC = () => {
 }
 
 export const InfiniteDiscovery: React.FC = () => {
-  const artworkIds = InfiniteDiscoveryContext.useStoreState((state) => state.artworkIds)
-  const currentArtworkId = InfiniteDiscoveryContext.useStoreState((state) => state.currentArtworkId)
-  const goBack = InfiniteDiscoveryContext.useStoreActions((action) => action.goBack)
-  const goForward = InfiniteDiscoveryContext.useStoreActions((actions) => actions.goForward)
+  const artworks = InfiniteDiscoveryContext.useStoreState((state) => state.artworks)
+  const currentArtwork = InfiniteDiscoveryContext.useStoreState((state) => state.currentArtwork)
+  const goToPreviousArtwork = InfiniteDiscoveryContext.useStoreActions(
+    (action) => action.goToPreviousArtwork
+  )
+  const goToNextArtwork = InfiniteDiscoveryContext.useStoreActions(
+    (actions) => actions.goToNextArtwork
+  )
 
-  const canGoBack = artworkIds.length && currentArtworkId !== artworkIds[0]
+  const canGoBack = artworks.length && currentArtwork !== artworks[0]
 
   const handleBackPressed = () => {
-    goBack()
+    goToPreviousArtwork()
   }
 
   const handleExitPressed = () => {
@@ -41,7 +45,7 @@ export const InfiniteDiscovery: React.FC = () => {
   }
 
   const handleSwipedLeft = () => {
-    goForward()
+    goToNextArtwork()
   }
 
   return (
@@ -62,7 +66,7 @@ export const InfiniteDiscovery: React.FC = () => {
       />
       <Screen.Body>
         <FancySwiper
-          cards={artworkCards(artworkIds)}
+          cards={artworkCards(artworks)}
           onSwipeRight={handleSwipedRight}
           onSwipeLeft={handleSwipedLeft}
         />
@@ -71,8 +75,8 @@ export const InfiniteDiscovery: React.FC = () => {
   )
 }
 
-const artworkCards = (artworkIds: Color[]) => {
-  return artworkIds.map((artworkId) => {
+const artworkCards = (artworks: Color[]) => {
+  return artworks.map((artwork) => {
     const { color, space } = useTheme()
     const { width } = useScreenDimensions()
     return {
@@ -83,7 +87,7 @@ const artworkCards = (artworkIds: Color[]) => {
             <Button variant="outlineGray">Follow</Button>
           </Flex>
           <Flex
-            backgroundColor={color(artworkId)}
+            backgroundColor={color(artwork)}
             height={250}
             testID="image-frame"
             width={250}
@@ -105,7 +109,7 @@ const artworkCards = (artworkIds: Color[]) => {
           </Flex>
         </Flex>
       ),
-      id: artworkId,
+      id: artwork,
     }
   })
 }
