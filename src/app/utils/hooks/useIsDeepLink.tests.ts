@@ -2,7 +2,6 @@ import { renderHook } from "@testing-library/react-hooks"
 import { matchRoute } from "app/system/navigation/utils/matchRoute"
 import { useIsDeepLink } from "app/utils/hooks/useIsDeepLink"
 import { Linking } from "react-native"
-
 const mockUseIsFocusedMock = jest.fn()
 jest.mock("@react-navigation/native", () => ({
   useIsFocused: () => mockUseIsFocusedMock(),
@@ -14,7 +13,7 @@ jest.mock("react-native", () => ({
   },
 }))
 
-jest.mock("app/Navigation/Navigation", () => ({
+jest.mock("app/system/navigation/utils/matchRoute", () => ({
   matchRoute: jest.fn(),
 }))
 

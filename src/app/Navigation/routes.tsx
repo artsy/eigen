@@ -1,4 +1,3 @@
-import { parse } from "url"
 import { BackButton, Flex } from "@artsy/palette-mobile"
 import { NativeStackNavigationOptions } from "@react-navigation/native-stack"
 import { ArtsyWebViewConfig, ArtsyWebViewPage } from "app/Components/ArtsyWebView"
@@ -12,6 +11,7 @@ import {
 } from "app/Components/Containers/WorksForYou"
 import { CityGuideView } from "app/NativeModules/CityGuideView"
 import { LiveAuctionView } from "app/NativeModules/LiveAuctionView"
+import { addRoute } from "app/Navigation/utils/addRoute"
 import { About } from "app/Scenes/About/About"
 import { ActivityItemScreenQueryRenderer } from "app/Scenes/Activity/ActivityItemScreen"
 import { ActivityScreen } from "app/Scenes/Activity/ActivityScreen"
@@ -139,7 +139,7 @@ import { DevMenu } from "app/system/devTools/DevMenu/DevMenu"
 import { goBack } from "app/system/navigation/navigate"
 import { RouteMatcher } from "app/system/navigation/utils/RouteMatcher"
 import { replaceParams } from "app/system/navigation/utils/replaceParams"
-import { compact, uniqBy } from "lodash"
+import { compact } from "lodash"
 import React from "react"
 import { Platform } from "react-native"
 import { GraphQLTaggedNode } from "react-relay"
@@ -152,19 +152,6 @@ export interface ViewOptions {
   // If this module should only be shown in one particular tab, name it here
   onlyShowInTabName?: BottomTabType
   screenOptions?: NativeStackNavigationOptions
-}
-
-export const addRoute = (
-  route: string,
-  module: {
-    name: AppModule
-    Component: React.ComponentType<any>
-    options?: ViewOptions
-    Queries?: GraphQLTaggedNode[]
-  },
-  paramsMapper?: (val: any) => object
-) => {
-  return new RouteMatcher(route, module.name, paramsMapper)
 }
 
 const defineWebViewRoute = (url: string, config?: ArtsyWebViewConfig) => {
@@ -187,28 +174,6 @@ const defineWebViewRoute = (url: string, config?: ArtsyWebViewConfig) => {
   } as const
 }
 
-export function addWebViewRoute(url: string, config?: ArtsyWebViewConfig) {
-  return addRoute(
-    url,
-    {
-      name: config?.alwaysPresentModally ? "ModalWebView" : "ReactWebView",
-      Component: ArtsyWebViewPage,
-      options: {
-        alwaysPresentModally: config?.alwaysPresentModally,
-        screenOptions: {
-          gestureEnabled: false,
-          headerShown: false,
-        },
-      },
-    },
-    (params) => ({
-      url: replaceParams(url, params),
-      isPresentedModally: !!config?.alwaysPresentModally,
-      ...config,
-    })
-  )
-}
-
 export type ModuleDescriptor<T = string> = {
   path: string
   name: T
@@ -223,9 +188,9 @@ function defineRoutes<T extends string>(obj: Array<ModuleDescriptor<T>>) {
   return obj
 }
 
-export type AppModule = (typeof routes | typeof liveDotArtsyRoutes)[0]["name"]
+export type AppModule = (typeof artsyDotNetRoutes | typeof liveDotArtsyRoutes)[0]["name"]
 
-export const routes = defineRoutes([
+export const artsyDotNetRoutes = defineRoutes([
   {
     path: "/",
     name: "Home",
@@ -1493,7 +1458,7 @@ export const routes = defineRoutes([
   }),
 ])
 
-const liveDotArtsyRoutes = defineRoutes([
+export const liveDotArtsyRoutes = defineRoutes([
   Platform.OS === "ios"
     ? {
         path: "/*",
@@ -1524,37 +1489,16 @@ const liveDotArtsyRoutes = defineRoutes([
       },
 ])
 
-const liveDotArtsyDotNet: RouteMatcher[] = compact(
+export const liveDotArtsyDotNet: RouteMatcher[] = compact(
   liveDotArtsyRoutes.map(({ path, injectParams, ...screenDescriptor }) =>
     addRoute(path, screenDescriptor, injectParams)
   )
 )
 
-const artsyDotNet = compact(
-  routes.map(({ path, injectParams, ...screenDescriptor }) =>
+export const artsyDotNet = compact(
+  artsyDotNetRoutes.map(({ path, injectParams, ...screenDescriptor }) =>
     addRoute(path, screenDescriptor, injectParams)
   )
 )
 
-export function getDomainMap(): Record<string, RouteMatcher[] | null> {
-  const routesForDomain = {
-    "live.artsy.net": liveDotArtsyDotNet,
-    "live-staging.artsy.net": liveDotArtsyDotNet,
-    "staging.artsy.net": artsyDotNet,
-    "artsy.net": artsyDotNet,
-    "www.artsy.net": artsyDotNet,
-    [parse(unsafe__getEnvironment().webURL).host ?? "artsy.net"]: artsyDotNet,
-  }
-
-  return routesForDomain
-}
-
-/**
- * Modules is a record of all the modules in the app
- * The key difference between this and the routes array is that two routes can lead to the same
- * module screen. However modules are all unique
- */
-export const modules: Record<AppModule, ModuleDescriptor<AppModule>> = uniqBy(
-  routes.concat(liveDotArtsyRoutes as any),
-  "name"
-).reduce((acc, value) => ({ ...acc, [value.name]: value }), {} as any)
+export const routes = compact([...artsyDotNetRoutes, ...liveDotArtsyRoutes])

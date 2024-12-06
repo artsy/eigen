@@ -1,5 +1,6 @@
 import { internal_navigationRef } from "app/Navigation/Navigation"
-import { AppModule, getDomainMap } from "app/Navigation/routes"
+import { AppModule } from "app/Navigation/routes"
+import { getDomainMap } from "app/Navigation/utils/getDomainMap"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 
 // Helper method that returns the current URL

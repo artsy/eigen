@@ -1,4 +1,4 @@
-import { modules } from "app/Navigation/routes"
+import { modules } from "app/Navigation/utils/modules"
 import { GlobalStore } from "app/store/GlobalStore"
 import { matchRoute } from "app/system/navigation/utils/matchRoute"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"

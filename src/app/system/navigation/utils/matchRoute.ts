@@ -1,5 +1,6 @@
 import { parse } from "url"
-import { AppModule, getDomainMap } from "app/Navigation/routes"
+import { AppModule } from "app/Navigation/routes"
+import { getDomainMap } from "app/Navigation/utils/getDomainMap"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { parse as parseQueryString } from "query-string"
 import { GraphQLTaggedNode } from "react-relay"

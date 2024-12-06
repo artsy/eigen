@@ -1,4 +1,4 @@
-import { addRoute, addWebViewRoute } from "app/Navigation/routes"
+import { addRoute, addWebViewRoute } from "app/Navigation/utils/addRoute"
 import { matchRoute } from "app/system/navigation/utils/matchRoute"
 import { replaceParams } from "app/system/navigation/utils/replaceParams"
 import { View } from "react-native"
