@@ -209,7 +209,7 @@ export function addWebViewRoute(url: string, config?: ArtsyWebViewConfig) {
   )
 }
 
-export type ModuleDescriptor<T> = {
+export type ModuleDescriptor<T = string> = {
   path: string
   name: T
   Component: React.ComponentType<any>
@@ -1554,7 +1554,7 @@ export function getDomainMap(): Record<string, RouteMatcher[] | null> {
  * The key difference between this and the routes array is that two routes can lead to the same
  * module screen. However modules are all unique
  */
-export const modules: Record<AppModule, ModuleDescriptor<any>> = uniqBy(
+export const modules: Record<AppModule, ModuleDescriptor<AppModule>> = uniqBy(
   routes.concat(liveDotArtsyRoutes as any),
   "name"
 ).reduce((acc, value) => ({ ...acc, [value.name]: value }), {} as any)

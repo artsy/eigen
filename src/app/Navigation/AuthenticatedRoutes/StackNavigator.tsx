@@ -19,7 +19,7 @@ export const StackNavigator = createNativeStackNavigator<AuthenticatedRoutesPara
 
 type StackNavigatorScreenProps = {
   name: AppModule
-  module: ModuleDescriptor<any>
+  module: ModuleDescriptor
 } & Omit<React.ComponentProps<typeof StackNavigator.Screen>, "component" | "getComponent">
 
 export const registerScreen: React.FC<StackNavigatorScreenProps> = ({ name, module, ...props }) => {
@@ -31,7 +31,7 @@ export const registerScreen: React.FC<StackNavigatorScreenProps> = ({ name, modu
       options={{
         presentation: isModalScreen(module) ? "fullScreenModal" : "card",
         orientation: !isTablet() ? "portrait" : "default",
-        headerShown: module.options.screenOptions?.headerShown ?? true,
+        headerShown: module.options?.screenOptions?.headerShown ?? true,
         headerLeft: ({ canGoBack }) => {
           if (!canGoBack) {
             return null
