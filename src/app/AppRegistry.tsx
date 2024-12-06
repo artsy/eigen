@@ -582,9 +582,9 @@ export const modules = defineModules({
   InfiniteDiscovery: reactModule({
     Component: InfiniteDiscoveryView,
     options: {
-      fullBleed: true,
-      hidesBackButton: true,
-      hidesBottomTabs: true,
+      screenOptions: {
+        headerShown: false,
+      },
     },
   }),
   Inquiry: reactModule({
