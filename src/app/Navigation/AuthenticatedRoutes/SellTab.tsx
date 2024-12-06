@@ -1,6 +1,6 @@
 import { modules } from "app/AppRegistry"
-import { registerSharedRoutes } from "app/Navigation/AuthenticatedRoutes/SharedRoutes"
 import { registerScreen, StackNavigator } from "app/Navigation/AuthenticatedRoutes/StackNavigator"
+import { sharedRoutes } from "app/Navigation/AuthenticatedRoutes/sharedRoutes"
 
 export const SellTab: React.FC = () => {
   return (
@@ -10,7 +10,7 @@ export const SellTab: React.FC = () => {
         module: modules["Sell"],
       })}
 
-      {registerSharedRoutes()}
+      {sharedRoutes()}
     </StackNavigator.Navigator>
   )
 }

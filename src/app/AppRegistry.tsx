@@ -42,7 +42,7 @@ import { SimilarToRecentlyViewedScreen } from "app/Scenes/SimilarToRecentlyViewe
 import { BackButton } from "app/system/navigation/BackButton"
 import { goBack } from "app/system/navigation/navigate"
 import React from "react"
-import { LogBox, View } from "react-native"
+import { View } from "react-native"
 import { GraphQLTaggedNode } from "react-relay"
 import { ArtsyWebViewPage } from "./Components/ArtsyWebView"
 import { CityGuideView } from "./NativeModules/CityGuideView"
@@ -141,14 +141,6 @@ import {
 } from "./Scenes/ViewingRoom/ViewingRoomsList"
 import { DevMenu } from "./system/devTools/DevMenu/DevMenu"
 
-LogBox.ignoreLogs([
-  "Non-serializable values were found in the navigation state",
-
-  "Require cycle:",
-
-  ".removeListener(", // this is coming from https://github.com/facebook/react-native/blob/v0.68.0-rc.2/Libraries/AppState/AppState.js and other libs.
-])
-
 export interface ViewOptions {
   alwaysPresentModally?: boolean
   // @deprecated Use screenOptions.headerShown instead
@@ -182,12 +174,6 @@ function reactModule({
 // little helper function to make sure we get both intellisense and good type information on the result
 function defineModules<T extends string>(obj: Record<T, ModuleDescriptor>) {
   return obj
-}
-
-const artQuizScreenOptions = {
-  screenOptions: {
-    gestureEnabled: false,
-  },
 }
 
 export type AppModule = keyof typeof modules
@@ -238,7 +224,12 @@ export const modules = defineModules({
   }),
   ArtQuiz: reactModule({
     Component: ArtQuiz,
-    options: { ...artQuizScreenOptions, hidesBottomTabs: true },
+    options: {
+      screenOptions: {
+        gestureEnabled: false,
+      },
+      hidesBottomTabs: true,
+    },
   }),
   ArtQuizResults: reactModule({
     Component: ArtQuizResults,
@@ -386,7 +377,6 @@ export const modules = defineModules({
     Component: BidFlow,
     options: {
       alwaysPresentModally: true,
-
       screenOptions: {
         headerShown: false,
       },
@@ -563,7 +553,6 @@ export const modules = defineModules({
     options: {
       isRootViewForTabName: "home",
       onlyShowInTabName: "home",
-
       screenOptions: {
         headerShown: false,
       },
@@ -583,7 +572,6 @@ export const modules = defineModules({
     options: {
       isRootViewForTabName: "inbox",
       onlyShowInTabName: "inbox",
-
       screenOptions: {
         headerShown: false,
       },
@@ -695,7 +683,6 @@ export const modules = defineModules({
     Component: MyCollectionArtworkAdd,
     options: {
       alwaysPresentModally: true,
-
       screenOptions: {
         gestureEnabled: false,
         headerShown: false,
@@ -706,7 +693,6 @@ export const modules = defineModules({
     Component: MyCollectionArtworkEditQueryRenderer,
     options: {
       alwaysPresentModally: true,
-
       screenOptions: {
         gestureEnabled: false,
         headerShown: false,
@@ -734,13 +720,11 @@ export const modules = defineModules({
       },
     },
   }),
-
   MyProfile: reactModule({
     Component: MyProfile,
     options: {
       isRootViewForTabName: "profile",
       onlyShowInTabName: "profile",
-
       screenOptions: {
         headerShown: false,
       },
@@ -785,7 +769,6 @@ export const modules = defineModules({
     Component: NewWorksForYouQueryRenderer,
     options: {
       hidesBottomTabs: true,
-
       screenOptions: {
         headerShown: false,
       },
@@ -886,7 +869,6 @@ export const modules = defineModules({
     Component: ArtsyWebViewPage,
     options: {
       alwaysPresentModally: true,
-
       screenOptions: {
         gestureEnabled: false,
         headerShown: false,
@@ -923,7 +905,6 @@ export const modules = defineModules({
     Component: RecommendedAuctionLotsQueryRenderer,
     options: {
       hidesBottomTabs: true,
-
       screenOptions: {
         headerShown: false,
       },
@@ -934,7 +915,6 @@ export const modules = defineModules({
     options: {
       isRootViewForTabName: "sell",
       onlyShowInTabName: "sell",
-
       screenOptions: {
         headerShown: false,
       },
@@ -963,7 +943,6 @@ export const modules = defineModules({
     options: {
       isRootViewForTabName: "search",
       onlyShowInTabName: "search",
-
       screenOptions: {
         headerShown: false,
       },
@@ -984,7 +963,6 @@ export const modules = defineModules({
     Component: SubmitArtworkForm,
     options: {
       alwaysPresentModally: true,
-
       screenOptions: {
         gestureEnabled: false,
         headerShown: false,
@@ -1023,7 +1001,6 @@ export const modules = defineModules({
   }),
   ViewingRoom: reactModule({
     Component: ViewingRoomQueryRenderer,
-
     Queries: [ViewingRoomScreenQuery],
   }),
   ViewingRoomArtwork: reactModule({ Component: ViewingRoomArtworkScreen }),
@@ -1042,3 +1019,14 @@ export const modules = defineModules({
     Queries: [WorksForYouScreenQuery],
   }),
 })
+
+export const nonTabModules = Object.fromEntries(
+  Object.entries(modules).filter(([_, module]) => {
+    return (
+      // The module should not be a root view for a tab
+      !module.options.isRootViewForTabName &&
+      // The module is not an restricted to a specific tab
+      !module.options.onlyShowInTabName
+    )
+  })
+)

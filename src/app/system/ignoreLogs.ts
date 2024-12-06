@@ -14,4 +14,9 @@ LogBox.ignoreLogs([
   // This is for the Artist page, which will likely get redone soon anyway.
   "VirtualizedLists should never be nested inside plain ScrollViews with the same orientation - use another VirtualizedList-backed container instead.",
   "Picker has been extracted",
+  "Non-serializable values were found in the navigation state",
+
+  "Require cycle:",
+
+  ".removeListener(", // this is coming from https://github.com/facebook/react-native/blob/v0.68.0-rc.2/Libraries/AppState/AppState.js and other libs.
 ])
