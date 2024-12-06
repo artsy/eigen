@@ -36,6 +36,7 @@ export const ImageWithLoadingState = React.forwardRef<View, ImageWithLoadingStat
           <Image
             blurhash={showBlurhash ? blurhash : undefined}
             src={imageURL}
+            performResize={false}
             aspectRatio={width / height}
             height={height}
             width={width}

@@ -41,6 +41,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
               <Image
                 src={artworkImageUrl}
                 blurhash={showBlurhash ? artworkVersion.image.blurhash : undefined}
+                performResize={false}
                 height={50}
                 width={50}
                 testID="image"

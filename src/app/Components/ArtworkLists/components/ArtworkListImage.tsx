@@ -18,7 +18,7 @@ export const ArtworkListImage: FC<ArtworkListImageProps> = ({
   return (
     <Flex bg="black5" {...rest}>
       {imageURL ? (
-        <OpaqueImageView imageURL={imageURL} width={size} height={size} />
+        <OpaqueImageView imageURL={imageURL} width={size} height={size} useRawURL={true} />
       ) : (
         <ArtworkListNoImage
           width={size}
