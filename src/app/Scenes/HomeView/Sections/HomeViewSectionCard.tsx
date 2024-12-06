@@ -138,7 +138,7 @@ const HomeViewSectionCardPlaceholder: React.FC<FlexProps> = (flexProps) => {
 
   return (
     <Skeleton>
-      <Flex {...flexProps}>
+      <Flex {...flexProps} testID="HomeViewSectionCardPlaceholder">
         <SkeletonBox height={height * 0.5} width="100%"></SkeletonBox>
       </Flex>
     </Skeleton>

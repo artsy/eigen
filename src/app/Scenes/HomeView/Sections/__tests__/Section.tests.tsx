@@ -1,4 +1,4 @@
-import { screen, render } from "@testing-library/react-native"
+import { render, screen } from "@testing-library/react-native"
 import { Section, SectionProps } from "app/Scenes/HomeView/Sections/Section"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -112,6 +112,40 @@ describe("Section", () => {
       } as SectionProps["section"]
       renderWithWrappers(<Section section={section} index={1} />)
       expect(screen.getByTestId("HomeViewSectionCardsChipsPlaceholder")).toBeOnTheScreen()
+    })
+  })
+
+  describe("with AREnableInfiniteDiscovery feature flag enabled", () => {
+    beforeEach(() => {
+      mockUseFeatureFlag.mockImplementation((key) => {
+        if (key === "AREnableInfiniteDiscovery") return true
+      })
+    })
+
+    it("shows the infinite discovery section", () => {
+      const section = {
+        __typename: "HomeViewSectionCard",
+        internalID: "home-view-section-infinite-discovery",
+      } as SectionProps["section"]
+      renderWithWrappers(<Section section={section} index={1} />)
+      expect(screen.getByTestId("HomeViewSectionCardPlaceholder")).toBeOnTheScreen()
+    })
+  })
+
+  describe("with AREnableInfiniteDiscovery feature flag disabled", () => {
+    beforeEach(() => {
+      mockUseFeatureFlag.mockImplementation((key) => {
+        if (key === "AREnableInfiniteDiscovery") return false
+      })
+    })
+
+    it("hides the infinite discovery section", () => {
+      const section = {
+        __typename: "HomeViewSectionCard",
+        internalID: "home-view-section-infinite-discovery",
+      } as SectionProps["section"]
+      renderWithWrappers(<Section section={section} index={1} />)
+      expect(screen.queryByTestId("HomeViewSectionCardPlaceholder")).not.toBeOnTheScreen()
     })
   })
 })
