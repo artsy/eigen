@@ -1,12 +1,12 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { InfiniteDiscoveryContext } from "app/Scenes/InfiniteDiscovery/InfiniteDiscoveryContext"
-import InfiniteDiscoveryHeader from "app/Scenes/InfiniteDiscovery/InfiniteDiscoveryHeader"
-import InfiniteDiscoveryScreen from "app/Scenes/InfiniteDiscovery/InfiniteDiscoveryScreen"
+import { InfiniteDiscoveryHeader } from "app/Scenes/InfiniteDiscovery/InfiniteDiscoveryHeader"
+import { InfiniteDiscoveryScreen } from "app/Scenes/InfiniteDiscovery/InfiniteDiscoveryScreen"
 
 const Stack = createStackNavigator()
 
-export default () => {
+export const InfiniteDiscovery: React.FC = () => {
   return (
     <InfiniteDiscoveryContext.Provider>
       <NavigationContainer independent>

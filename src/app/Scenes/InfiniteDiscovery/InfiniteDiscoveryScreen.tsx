@@ -3,9 +3,9 @@ import { FancySwiper } from "app/Components/FancySwiper/FancySwiper"
 import { Card } from "app/Components/FancySwiper/FancySwiperCard"
 import { InfiniteDiscoveryContext } from "app/Scenes/InfiniteDiscovery/InfiniteDiscoveryContext"
 
-export default () => {
+export const InfiniteDiscoveryScreen: React.FC = () => {
   const artworkIds = InfiniteDiscoveryContext.useStoreState((state) => state.artworkIds)
-  const goNext = InfiniteDiscoveryContext.useStoreActions((actions) => actions.goForward)
+  const goForward = InfiniteDiscoveryContext.useStoreActions((actions) => actions.goForward)
 
   const { color, space } = useTheme()
   const { width } = useScreenDimensions()
@@ -15,7 +15,7 @@ export default () => {
       jsx: (
         <Flex width={width - space(4)} height={500} backgroundColor="white">
           <Flex flexDirection="row" justifyContent="space-between" testID="artist-header">
-            <Text variant="sm-display">Gao Hang</Text>
+            <Text variant="sm-display">Artist Name</Text>
             <Button variant="outlineGray">Follow</Button>
           </Flex>
           <Flex
@@ -29,13 +29,13 @@ export default () => {
             <Flex>
               <Flex flexDirection="row">
                 <Text color={color("black60")} italic variant="sm-display">
-                  He So Real,
+                  Artwork Title,
                 </Text>
                 <Text color={color("black60")} variant="sm-display">
-                  2022
+                  2024
                 </Text>
               </Flex>
-              <Text variant="sm-display">$2,304</Text>
+              <Text variant="sm-display">$1,234</Text>
             </Flex>
             <Button variant="fillGray">Save</Button>
           </Flex>
@@ -50,7 +50,7 @@ export default () => {
   }
 
   const handleSwipedLeft = () => {
-    goNext()
+    goForward()
   }
 
   return (

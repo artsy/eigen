@@ -1,9 +1,12 @@
 import { Flex, Text, Touchable, useScreenDimensions } from "@artsy/palette-mobile"
-import useInfiniteDiscovery from "app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscovery"
+import { InfiniteDiscoveryContext } from "app/Scenes/InfiniteDiscovery/InfiniteDiscoveryContext"
 import { navigate } from "app/system/navigation/navigate"
 
-export default () => {
-  const { artworkIds, currentArtworkId, goBack } = useInfiniteDiscovery()
+export const InfiniteDiscoveryHeader: React.FC = () => {
+  const artworkIds = InfiniteDiscoveryContext.useStoreState((state) => state.artworkIds)
+  const currentArtworkId = InfiniteDiscoveryContext.useStoreState((state) => state.currentArtworkId)
+  const goBack = InfiniteDiscoveryContext.useStoreActions((action) => action.goBack)
+
   const { safeAreaInsets } = useScreenDimensions()
 
   const canGoBack = artworkIds.length && currentArtworkId !== artworkIds[0]
