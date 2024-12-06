@@ -482,6 +482,7 @@ describe("MyCollectionArtworkForm", () => {
                   consignmentSubmission: {
                     displayText: "In progress",
                     internalID: "submission-id",
+                    isEditable: false,
                   },
                   dimensions: {
                     in: "23",
