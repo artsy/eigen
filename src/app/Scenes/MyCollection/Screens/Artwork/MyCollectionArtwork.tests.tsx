@@ -36,7 +36,7 @@ describe("My Collection Artwork", () => {
       renderWithRelay({
         Artwork: () => ({
           ...artwork,
-          consignmentSubmission: { internalID: "submission-id", state: "SUBMITTED" }, // "SUBMITTED", "DRAFT", "HOLD", "RESUBMITTED"
+          consignmentSubmission: { internalID: "submission-id", isEditable: false },
         }),
       })
 
@@ -56,7 +56,7 @@ describe("My Collection Artwork", () => {
       renderWithRelay({
         Artwork: () => ({
           ...artwork,
-          consignmentSubmission: { internalID: "submission-id", state: "PUBLISHED" }, // "PUBLISHED", "REJECTED" or "CLOSED",
+          consignmentSubmission: { internalID: "submission-id", isEditable: true },
         }),
       })
 
