@@ -3,7 +3,7 @@ import { NavigationProp, useNavigation } from "@react-navigation/native"
 
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { AuthenticatedRoutesParams } from "app/Navigation/AuthenticatedRoutes/Tabs"
-import { LargeHeaderView } from "app/Navigation/Utils/LargeHeaderView"
+import { LargeHeaderView } from "app/Navigation/utils/LargeHeaderView"
 import { __unsafe__onboardingNavigationRef } from "app/Scenes/Onboarding/Onboarding"
 import { GlobalStore } from "app/store/GlobalStore"
 import { CodePushOptions } from "app/system/devTools/DevMenu/CodePushOptions"
