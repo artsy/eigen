@@ -1,14 +1,6 @@
-import { screen, render } from "@testing-library/react-native"
+import { render, screen } from "@testing-library/react-native"
 import { Section, SectionProps } from "app/Scenes/HomeView/Sections/Section"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-
-jest.mock("app/utils/hooks/useFeatureFlag", () => ({
-  useFeatureFlag: jest.fn(),
-}))
-
-const mockUseFeatureFlag = useFeatureFlag as jest.Mock
-mockUseFeatureFlag.mockImplementation(() => true)
 
 describe("Section", () => {
   describe("when in __DEV__ mode", () => {
