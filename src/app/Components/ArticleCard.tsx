@@ -1,6 +1,14 @@
-import { Spacer, Flex, useTheme, Text, Touchable, SkeletonBox, SkeletonText } from "@artsy/palette-mobile"
+import {
+  Spacer,
+  Flex,
+  useTheme,
+  Text,
+  Touchable,
+  SkeletonBox,
+  SkeletonText,
+} from "@artsy/palette-mobile"
 import { ArticleCard_article$data } from "__generated__/ArticleCard_article.graphql"
-import { OpaqueImageView } from "app/Components/OpaqueImageView2"
+import { OpaqueImageView } from "app/Components/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
 import { compact } from "lodash"
 import { DateTime } from "luxon"
@@ -97,10 +105,7 @@ export const ArticleCardContainer = createFragmentContainer(ArticleCard, {
 
 export const SkeletonArticleCard: React.FC = () => (
   <Flex maxWidth={ARTICLE_CARD_IMAGE_WIDTH}>
-    <SkeletonBox
-      height={ARTICLE_CARD_IMAGE_HEIGHT}
-      width={ARTICLE_CARD_IMAGE_WIDTH}
-    />
+    <SkeletonBox height={ARTICLE_CARD_IMAGE_HEIGHT} width={ARTICLE_CARD_IMAGE_WIDTH} />
     <Spacer y={1} />
     <SkeletonText variant="lg-display" mb={0.5}>
       10 Shows we suggest you don't miss during Berlin Art Week

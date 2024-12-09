@@ -1,6 +1,6 @@
 import { Flex, FlexProps } from "@artsy/palette-mobile"
 import { ArtworkListNoImage } from "app/Components/ArtworkLists/components/ArtworkListNoImage"
-import { OpaqueImageView } from "app/Components/OpaqueImageView2"
+import { OpaqueImageView } from "app/Components/OpaqueImageView"
 import { FC } from "react"
 
 export interface ArtworkListImageProps extends FlexProps {

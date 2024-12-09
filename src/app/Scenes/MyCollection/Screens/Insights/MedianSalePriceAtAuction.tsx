@@ -1,7 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Spacer, NoArtworkIcon, Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { MedianSalePriceAtAuctionQuery } from "__generated__/MedianSalePriceAtAuctionQuery.graphql"
-import { OpaqueImageView } from "app/Components/OpaqueImageView2"
+import { OpaqueImageView } from "app/Components/OpaqueImageView"
 import { useScreenDimensions } from "app/utils/hooks"
 import {
   PlaceholderBox,

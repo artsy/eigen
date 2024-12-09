@@ -1,5 +1,5 @@
 import { NoImageIcon, Flex, useColor } from "@artsy/palette-mobile"
-import { OpaqueImageView } from "app/Components/OpaqueImageView2"
+import { OpaqueImageView } from "app/Components/OpaqueImageView"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import React from "react"
 

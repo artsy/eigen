@@ -1,7 +1,7 @@
 import { Flex, Box, useSpace, Text, Spinner, Separator, Touchable } from "@artsy/palette-mobile"
 import { ViewingRoomArtworksQueryRendererQuery } from "__generated__/ViewingRoomArtworksQueryRendererQuery.graphql"
 import { ViewingRoomArtworks_viewingRoom$data } from "__generated__/ViewingRoomArtworks_viewingRoom.graphql"
-import { OpaqueImageView } from "app/Components/OpaqueImageView2"
+import { OpaqueImageView } from "app/Components/OpaqueImageView"
 import { ReadMore } from "app/Components/ReadMore"
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"

@@ -7,7 +7,7 @@ import {
   useSpace,
 } from "@artsy/palette-mobile"
 import { PartnerListItem_partner$key } from "__generated__/PartnerListItem_partner.graphql"
-import { OpaqueImageView } from "app/Components/OpaqueImageView2"
+import { OpaqueImageView } from "app/Components/OpaqueImageView"
 import { sortByDistance } from "app/Scenes/GalleriesForYou/helpers"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
