@@ -106,7 +106,6 @@ export const OpaqueImageView: React.FC<ImageRestProps & DimensionProps> = ({
   aspectRatio,
   ...props
 }) => {
-  const usePaletteImage = useFeatureFlag("ARUsePaletteImage")
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
   const color = useColor()
@@ -192,7 +191,7 @@ export const OpaqueImageView: React.FC<ImageRestProps & DimensionProps> = ({
     return
   }
 
-  if (usePaletteImage && props.imageURL) {
+  if (props.imageURL) {
     return (
       <Image
         src={props.imageURL}
