@@ -6,9 +6,9 @@ import {
   Touchable,
   SkeletonBox,
   SkeletonText,
+  Image,
 } from "@artsy/palette-mobile"
 import { ArticleCard_article$data } from "__generated__/ArticleCard_article.graphql"
-import { OpaqueImageView } from "app/Components/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
 import { compact } from "lodash"
 import { DateTime } from "luxon"
@@ -50,8 +50,8 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
             (isFluid ? (
               <>
                 <View style={{ width }}>
-                  <OpaqueImageView
-                    imageURL={imageURL}
+                  <Image
+                    src={imageURL}
                     // aspect ratio is fixed to 1.33 to match the old image aspect ratio
                     aspectRatio={1.33}
                     // 40 here comes from the mx={2} from the parent component
@@ -60,8 +60,8 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
                 </View>
               </>
             ) : (
-              <OpaqueImageView
-                imageURL={imageURL}
+              <Image
+                src={imageURL}
                 width={ARTICLE_CARD_IMAGE_WIDTH}
                 height={ARTICLE_CARD_IMAGE_HEIGHT}
               />
