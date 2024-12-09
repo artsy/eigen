@@ -1,5 +1,4 @@
-import { Box } from "@artsy/palette-mobile"
-import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { Box, Image } from "@artsy/palette-mobile"
 import styled from "styled-components/native"
 
 interface ThreeUpImageLayoutProps {
@@ -17,24 +16,12 @@ export const ThreeUpImageLayout: React.FC<ThreeUpImageLayoutProps> = ({ imageURL
 
   return (
     <ArtworkImageContainer>
-      <ImageView
-        width={LARGE_IMAGE_SIZE}
-        height={LARGE_IMAGE_SIZE}
-        imageURL={artworkImageURLs[0]}
-      />
+      <Image width={LARGE_IMAGE_SIZE} height={LARGE_IMAGE_SIZE} src={artworkImageURLs[0]} />
       <Division />
       <Box>
-        <ImageView
-          width={SMALL_IMAGE_SIZE}
-          height={SMALL_IMAGE_SIZE}
-          imageURL={artworkImageURLs[1]}
-        />
+        <Image width={SMALL_IMAGE_SIZE} height={SMALL_IMAGE_SIZE} src={artworkImageURLs[1]} />
         <Division horizontal />
-        <ImageView
-          width={SMALL_IMAGE_SIZE}
-          height={SMALL_IMAGE_SIZE}
-          imageURL={artworkImageURLs[2]}
-        />
+        <Image width={SMALL_IMAGE_SIZE} height={SMALL_IMAGE_SIZE} src={artworkImageURLs[2]} />
       </Box>
     </ArtworkImageContainer>
   )

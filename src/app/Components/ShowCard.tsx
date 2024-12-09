@@ -1,7 +1,14 @@
-import { Spacer, Flex, Text, Touchable, SkeletonBox, SkeletonText } from "@artsy/palette-mobile"
+import {
+  Spacer,
+  Flex,
+  Text,
+  Touchable,
+  SkeletonBox,
+  SkeletonText,
+  Image,
+} from "@artsy/palette-mobile"
 import { toTitleCase } from "@artsy/to-title-case"
 import { ShowCard_show$data } from "__generated__/ShowCard_show.graphql"
-import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
 import { compact } from "lodash"
 import { GestureResponderEvent, ViewProps } from "react-native"
@@ -40,7 +47,7 @@ export const ShowCard: React.FC<ShowCardProps> = ({ show, onPress }) => {
     <Flex width={WIDTH}>
       <Touchable haptic onPress={onTap}>
         <Flex width={WIDTH} overflow="hidden">
-          {!!imageURL && <ImageView imageURL={imageURL} width={WIDTH} height={HEIGHT} />}
+          {!!imageURL && <Image src={imageURL} width={WIDTH} height={HEIGHT} />}
           <Spacer y={1} />
           <Text numberOfLines={2} ellipsizeMode="tail" variant="sm-display" mb={0.5}>
             {show.name}
