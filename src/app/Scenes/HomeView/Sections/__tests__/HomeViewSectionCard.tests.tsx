@@ -1,13 +1,30 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { fireEvent, render, screen } from "@testing-library/react-native"
 import { HomeViewSectionCardTestsQuery } from "__generated__/HomeViewSectionCardTestsQuery.graphql"
 import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
-import { HomeViewSectionCard } from "app/Scenes/HomeView/Sections/HomeViewSectionCard"
+import {
+  HomeViewSectionCard,
+  HomeViewSectionCardQueryRenderer,
+} from "app/Scenes/HomeView/Sections/HomeViewSectionCard"
 import { navigate } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
+jest.mock("app/utils/hooks/useFeatureFlag", () => ({
+  useFeatureFlag: jest.fn(),
+}))
+jest.mock("app/utils/hooks/withSuspense")
+
 describe("HomeViewSectionCard", () => {
+  const mockUseFeatureFlag = useFeatureFlag as jest.Mock
+  const mockWithSuspense = withSuspense as jest.Mock
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
   const { renderWithRelay } = setupTestWrapper<HomeViewSectionCardTestsQuery>({
     Component: (props) => {
       return (
@@ -60,5 +77,41 @@ describe("HomeViewSectionCard", () => {
       ]
     `)
     expect(navigate).toHaveBeenCalledWith("/a-route")
+  })
+
+  it("renders the infinite discovery section when AREnableInfiniteDiscovery is enabled", () => {
+    mockUseFeatureFlag.mockImplementation((key) => {
+      if (key === "AREnableInfiniteDiscovery") {
+        return true
+      }
+    })
+    mockWithSuspense.mockReturnValue(() => {})
+
+    render(
+      <HomeViewSectionCardQueryRenderer
+        sectionID="home-view-section-infinite-discovery"
+        index={0}
+      />
+    )
+
+    expect(mockWithSuspense).toHaveBeenCalledOnce()
+  })
+
+  it("hides the infinite discovery section when AREnableInfiniteDiscovery is disabled", () => {
+    mockUseFeatureFlag.mockImplementation((key) => {
+      if (key === "AREnableInfiniteDiscovery") {
+        return false
+      }
+    })
+    mockWithSuspense.mockReturnValue(() => {})
+
+    render(
+      <HomeViewSectionCardQueryRenderer
+        sectionID="home-view-section-infinite-discovery"
+        index={0}
+      />
+    )
+
+    expect(mockWithSuspense).not.toHaveBeenCalled()
   })
 })

@@ -156,35 +156,37 @@ const homeViewSectionCardQuery = graphql`
   }
 `
 
-export const HomeViewSectionCardQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
-  Component: ({ sectionID, index, ...flexProps }) => {
-    const isInfiniteDiscoveryEnabled = useFeatureFlag("AREnableInfiniteDiscovery")
+export const HomeViewSectionCardQueryRenderer: React.FC<SectionSharedProps> = (props) => {
+  const isInfiniteDiscoveryEnabled = useFeatureFlag("AREnableInfiniteDiscovery")
 
-    const data = useLazyLoadQuery<HomeViewSectionCardQuery>(
-      homeViewSectionCardQuery,
-      {
-        id: sectionID,
-      },
-      {
-        networkCacheConfig: {
-          force: false,
+  if (props.sectionID === "home-view-section-infinite-discovery" && !isInfiniteDiscoveryEnabled) {
+    return null
+  }
+
+  return withSuspense({
+    Component: ({ sectionID, index, ...flexProps }) => {
+      const data = useLazyLoadQuery<HomeViewSectionCardQuery>(
+        homeViewSectionCardQuery,
+        {
+          id: sectionID,
         },
+        {
+          networkCacheConfig: {
+            force: false,
+          },
+        }
+      )
+
+      if (!data.homeView.section) {
+        return null
       }
-    )
 
-    if (sectionID === "home-view-section-infinite-discovery" && !isInfiniteDiscoveryEnabled) {
-      return null
-    }
-
-    if (!data.homeView.section) {
-      return null
-    }
-
-    return <HomeViewSectionCard section={data.homeView.section} index={index} {...flexProps} />
-  },
-  LoadingFallback: HomeViewSectionCardPlaceholder,
-  ErrorFallback: NoFallback,
-})
+      return <HomeViewSectionCard section={data.homeView.section} index={index} {...flexProps} />
+    },
+    LoadingFallback: HomeViewSectionCardPlaceholder,
+    ErrorFallback: NoFallback,
+  })(props)
+}
 
 function getRoute(card: any) {
   let route
