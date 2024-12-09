@@ -123,7 +123,7 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
         <Flex>
           <MotiView
             key={item.internalID + index}
-            transition={{ type: "timing", duration: 500 }}
+            transition={{ type: "timing" }}
             animate={{ transform: [{ scaleX }, { translateY }], opacity }}
           >
             <Task
