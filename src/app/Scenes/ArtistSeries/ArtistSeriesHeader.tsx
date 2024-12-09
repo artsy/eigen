@@ -5,10 +5,9 @@ import {
   OwnerType,
   unfollowedArtist,
 } from "@artsy/cohesion"
-import { Box, Text } from "@artsy/palette-mobile"
+import { Box, Image, Text } from "@artsy/palette-mobile"
 import { ArtistSeriesHeader_artistSeries$data } from "__generated__/ArtistSeriesHeader_artistSeries.graphql"
 import { useArtistHeaderImageDimensions } from "app/Components/Artist/ArtistHeader"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { ArtistListItemNew } from "app/Scenes/Onboarding/OnboardingQuiz/Components/ArtistListItem"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -49,13 +48,15 @@ export const ArtistSeriesHeader: React.FC<ArtistSeriesHeaderProps> = ({ artistSe
   return (
     <>
       <Box mb={2} pointerEvents="none" alignItems="center">
-        <OpaqueImageView
-          testID="ArtistSeriesHeaderImage"
-          imageURL={image?.url}
-          width={width}
-          aspectRatio={aspectRatio}
-          height={height}
-        />
+        {!!image?.url && (
+          <Image
+            testID="ArtistSeriesHeaderImage"
+            src={image?.url}
+            width={width}
+            aspectRatio={aspectRatio}
+            height={height}
+          />
+        )}
       </Box>
       <Box pointerEvents="none">
         <Text variant="lg-display" mx={2}>
