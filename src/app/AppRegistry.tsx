@@ -227,6 +227,7 @@ export const modules = defineModules({
     options: {
       screenOptions: {
         gestureEnabled: false,
+        headerShown: false,
       },
       hidesBottomTabs: true,
     },
