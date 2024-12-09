@@ -3,7 +3,6 @@ import { Flex, Text, useColor } from "@artsy/palette-mobile"
 import { THEME } from "@artsy/palette-tokens"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { AppModule, modules } from "app/AppRegistry"
 import { HomeTab } from "app/Navigation/AuthenticatedRoutes/HomeTab"
 import { InboxTab } from "app/Navigation/AuthenticatedRoutes/InboxTab"
 import { ProfileTab } from "app/Navigation/AuthenticatedRoutes/ProfileTab"
@@ -11,7 +10,9 @@ import { SearchTab } from "app/Navigation/AuthenticatedRoutes/SearchTab"
 import { SellTab } from "app/Navigation/AuthenticatedRoutes/SellTab"
 import { modalRoutes } from "app/Navigation/AuthenticatedRoutes/modalRoutes"
 import { internal_navigationRef } from "app/Navigation/Navigation"
-import { useBottomTabsBadges } from "app/Navigation/Utils/useBottomTabsBadges"
+import { AppModule } from "app/Navigation/routes"
+import { modules } from "app/Navigation/utils/modules"
+import { useBottomTabsBadges } from "app/Navigation/utils/useBottomTabsBadges"
 import { BottomTabOption, BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { BottomTabsIcon } from "app/Scenes/BottomTabs/BottomTabsIcon"
 import { bottomTabsConfig } from "app/Scenes/BottomTabs/bottomTabsConfig"
@@ -91,7 +92,7 @@ const AppTabs: React.FC = () => {
             position: "absolute",
             height: BOTTOM_TABS_HEIGHT + insets.bottom,
             display:
-              currentRoute && modules[currentRoute as AppModule]?.options.hidesBottomTabs
+              currentRoute && modules[currentRoute as AppModule]?.options?.hidesBottomTabs
                 ? "none"
                 : "flex",
 

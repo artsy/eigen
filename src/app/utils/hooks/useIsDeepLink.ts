@@ -1,5 +1,5 @@
 import { useIsFocused } from "@react-navigation/native"
-import { matchRoute } from "app/routes"
+import { matchRoute } from "app/system/navigation/utils/matchRoute"
 import { useEffect, useState } from "react"
 import { Linking } from "react-native"
 
