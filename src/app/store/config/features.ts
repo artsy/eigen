@@ -230,18 +230,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableCollectionsWithoutHeaderImage",
   },
-  ARUseMetaphysicsCDN: {
-    description: "Use Metaphysics CDN (requires app restart)",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "ARUseMetaphysicsCDN",
-  },
-  AREnableCacheableDirective: {
-    description: "Enable @cacheable Directive",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableCacheableDirective",
-  },
   AREnableSignupLoginFusion: {
     description: "Enable the fused signup and login flow",
     readyForRelease: true,
