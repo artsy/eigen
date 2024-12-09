@@ -11999,6 +11999,7 @@ scalar JSON
 type Job {
   # HTML of job listing
   content: String!
+  departmentName: String!
 
   # The url of the job listing on Greenhouse
   externalURL: String!
