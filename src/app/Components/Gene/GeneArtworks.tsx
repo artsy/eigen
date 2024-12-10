@@ -1,12 +1,12 @@
 import { OwnerType } from "@artsy/cohesion"
 import {
   Box,
-  Text,
+  Flex,
   SimpleMessage,
   Tabs,
-  Flex,
-  useSpace,
+  Text,
   useScreenDimensions,
+  useSpace,
 } from "@artsy/palette-mobile"
 import { GeneArtworks_gene$data } from "__generated__/GeneArtworks_gene.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
@@ -140,7 +140,7 @@ export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ ge
             </Tabs.SubTabBar>
             <Flex pt={1}>
               <Text variant="xs" color="black60">
-                Showing {artworksTotal} works
+                {`Showing ${artworksTotal} work${artworksTotal > 1 ? "s" : ""}`}
               </Text>
             </Flex>
           </>
@@ -188,7 +188,6 @@ export const GeneArtworksPaginationContainer = createPaginationContainer(
             LOCATION_CITY
             MATERIALS_TERMS
           ]
-          forSale: true
           input: $input
         ) @connection(key: "GeneArtworksGrid_artworks") {
           counts {
