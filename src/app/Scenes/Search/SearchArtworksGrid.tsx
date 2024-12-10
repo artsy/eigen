@@ -1,13 +1,13 @@
 import { OwnerType } from "@artsy/cohesion"
 import {
+  Box,
+  Flex,
   quoteLeft,
   quoteRight,
-  Box,
-  useTheme,
-  Text,
-  Flex,
-  useScreenDimensions,
   Spinner,
+  Text,
+  useScreenDimensions,
+  useTheme,
 } from "@artsy/palette-mobile"
 import { MasonryFlashList } from "@shopify/flash-list"
 import { SearchArtworksGrid_viewer$data } from "__generated__/SearchArtworksGrid_viewer.graphql"
@@ -21,8 +21,8 @@ import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { extractNodes } from "app/utils/extractNodes"
 import {
-  NUM_COLUMNS_MASONRY,
   ESTIMATED_MASONRY_ITEM_SIZE,
+  NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
 } from "app/utils/masonryHelpers"
 
@@ -47,6 +47,7 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
     (state) => state.setFiltersCountAction
   )
   const artworks = extractNodes(viewer.artworks)
+  const artworksCount = viewer.artworks?.counts?.total ?? 0
   const { width } = useScreenDimensions()
 
   const shouldDisplaySpinner = !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
@@ -94,10 +95,19 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
         closeModal={handleCloseFilterArtworksModal}
         mode={FilterModalMode.Search}
       />
+
+      {/* <Flex flexDirection="row" justifyContent="space-between" alignItems="center"> */}
       <ArtworksFilterHeader
-        selectedFiltersCount={appliedFiltersCount}
+        childrenPosition="left"
         onFilterPress={handleOpenFilterArtworksModal}
-      />
+        selectedFiltersCount={appliedFiltersCount}
+      >
+        <Text variant="xs" color="black60">
+          {artworksCount} {artworksCount === 1 ? "Artwork" : "Artworks"}
+        </Text>
+      </ArtworksFilterHeader>
+      {/* </Flex> */}
+
       <Flex flex={1} justifyContent="center" mx={2}>
         <MasonryFlashList
           showsVerticalScrollIndicator={false}
@@ -199,6 +209,7 @@ export const SearchArtworksGridPaginationContainer = createPaginationContainer(
           }
           counts {
             followedArtists
+            total
           }
           edges {
             node {
