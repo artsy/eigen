@@ -41,7 +41,7 @@ export const shouldSkipCDNCache = (req: GraphQLRequest) => {
     if (hasPersonalizedArguments(req.variables)) {
       if (__DEV__) {
         console.warn(
-          `CDN cache will be ingore for ${
+          `CDN cache will be ignore for ${
             req.operation.name
           } because you are setting a personalized argument on a cacheable request. List of personalized arguments: ${SKIP_CACHE_ARGUMENTS.join(
             ", "
