@@ -112,6 +112,7 @@
 		<string>instagram</string>
 		<string>instagram-stories</string>
 		<string>whatsapp</string>
+		<string>tg</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
