@@ -127,7 +127,6 @@ const AppTabs: React.FC = () => {
           },
           tabBarActiveTintColor: THEME.colors["black100"],
           tabBarInactiveTintColor: THEME.colors["black60"],
-          ...tabsBadges[route.name],
         }
       }}
       screenListeners={{
@@ -139,11 +138,11 @@ const AppTabs: React.FC = () => {
         },
       }}
     >
-      <Tab.Screen name="home" component={HomeTab} />
+      <Tab.Screen name="home" component={HomeTab} options={{ ...tabsBadges["home"] }} />
       <Tab.Screen name="search" component={SearchTab} />
-      <Tab.Screen name="inbox" component={InboxTab} />
+      <Tab.Screen name="inbox" component={InboxTab} options={{ ...tabsBadges["inbox"] }} />
       <Tab.Screen name="sell" component={SellTab} />
-      <Tab.Screen name="profile" component={ProfileTab} />
+      <Tab.Screen name="profile" component={ProfileTab} options={{ ...tabsBadges["profile"] }} />
     </Tab.Navigator>
   )
 }
