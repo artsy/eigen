@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { BackButton, InfoCircleIcon, Touchable } from "@artsy/palette-mobile"
+import { BackButton, InfoCircleIcon, Screen, Touchable } from "@artsy/palette-mobile"
 import NetInfo from "@react-native-community/netinfo"
 import { ConversationQuery } from "__generated__/ConversationQuery.graphql"
 import { Conversation_me$data } from "__generated__/Conversation_me.graphql"
@@ -257,28 +257,30 @@ export const ConversationQueryRenderer: React.FC<{
 }> = (props) => {
   const { conversationID, navigator } = props
   return (
-    <ProvideScreenTracking
-      info={{
-        context_screen: Schema.PageNames.ConversationPage,
-        context_screen_owner_id: props.conversationID,
-        context_screen_owner_type: OwnerType.conversation,
-      }}
-    >
-      <QueryRenderer<ConversationQuery>
-        environment={getRelayEnvironment()}
-        query={graphql`
-          query ConversationQuery($conversationID: String!) {
-            me {
-              ...Conversation_me
-            }
-          }
-        `}
-        variables={{
-          conversationID,
+    <Screen>
+      <ProvideScreenTracking
+        info={{
+          context_screen: Schema.PageNames.ConversationPage,
+          context_screen_owner_id: props.conversationID,
+          context_screen_owner_type: OwnerType.conversation,
         }}
-        cacheConfig={{ force: true }}
-        render={renderWithLoadProgress(ConversationFragmentContainer, { navigator })}
-      />
-    </ProvideScreenTracking>
+      >
+        <QueryRenderer<ConversationQuery>
+          environment={getRelayEnvironment()}
+          query={graphql`
+            query ConversationQuery($conversationID: String!) {
+              me {
+                ...Conversation_me
+              }
+            }
+          `}
+          variables={{
+            conversationID,
+          }}
+          cacheConfig={{ force: true }}
+          render={renderWithLoadProgress(ConversationFragmentContainer, { navigator })}
+        />
+      </ProvideScreenTracking>
+    </Screen>
   )
 }
