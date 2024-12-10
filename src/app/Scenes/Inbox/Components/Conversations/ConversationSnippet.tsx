@@ -97,7 +97,7 @@ export class ConversationSnippet extends React.Component<Props> {
                       <Indicator />
                     </Unread>
                   )}
-                  <ImageView imageURL={imageURL} blurhash={blurhash} />
+                  {!!imageURL && <ImageView src={imageURL} blurhash={blurhash} />}
                 </Flex>
                 <Flex ml={1} style={{ flex: 1 }}>
                   <Flex flexDirection="row" mb="2px" style={{ flex: 0, alignItems: "center" }}>
