@@ -24,7 +24,7 @@ export class FairEventSectionCard extends Component<Props> {
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
         <Container>
-          {!!image && <BackgroundImage imageURL={image.url} />}
+          {!!image?.url && <BackgroundImage src={image.url} />}
           <Overlay />
           <Flex flexDirection="column" px={2}>
             {profile?.icon?.url ? <Logo source={{ uri: profile.icon.url }} /> : null}
