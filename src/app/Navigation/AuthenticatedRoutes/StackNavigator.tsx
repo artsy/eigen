@@ -9,6 +9,7 @@ import {
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { ModuleDescriptor } from "app/AppRegistry"
+import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
 import { AuthenticatedRoutesParams } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { isModalScreen } from "app/Navigation/Utils/isModalScreen"
 import { goBack } from "app/system/navigation/navigate"
@@ -92,13 +93,15 @@ export const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
   const tabBarHeight = hidesBottomTabs ? 0 : useBottomTabBarHeight()
 
   return (
-    <Flex
-      flex={1}
-      style={{
-        paddingBottom: hidesBottomTabs ? 0 : tabBarHeight,
-      }}
-    >
-      {children}
-    </Flex>
+    <RetryErrorBoundary>
+      <Flex
+        flex={1}
+        style={{
+          paddingBottom: hidesBottomTabs ? 0 : tabBarHeight,
+        }}
+      >
+        {children}
+      </Flex>
+    </RetryErrorBoundary>
   )
 }

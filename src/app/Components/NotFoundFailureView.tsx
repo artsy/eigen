@@ -1,4 +1,4 @@
-import { Flex, Text, Button, Screen } from "@artsy/palette-mobile"
+import { Button, Flex, Screen, Text } from "@artsy/palette-mobile"
 import * as Sentry from "@sentry/react-native"
 import { goBack } from "app/system/navigation/navigate"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
