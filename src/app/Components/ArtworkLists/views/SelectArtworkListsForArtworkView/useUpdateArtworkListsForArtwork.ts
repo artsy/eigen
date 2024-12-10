@@ -36,18 +36,8 @@ export const useUpdateArtworkListsForArtwork = (artworkID: string): MutationResu
         }
 
         const response = data.artworksCollectionsBatchUpdate?.responseOrError
-        const addedCounts = getArtworkListsCountByType(response?.addedToArtworkLists)
-        const removedCounts = getArtworkListsCountByType(response?.removedFromArtworkLists)
 
-        // Set `isSaved` field to `true` if artwork was saved in "Saved Artworks"
-        if (addedCounts.default > 0) {
-          artwork.setValue(true, "isSaved")
-        }
-
-        // Set `isSaved` field to `false` if artwork was unsaved from "Saved Artworks"
-        if (removedCounts.default > 0) {
-          artwork.setValue(false, "isSaved")
-        }
+        artwork.setValue(response?.artwork?.isSavedToAnyList ?? false, "isSavedToAnyList")
 
         const entity = artwork.getLinkedRecord("collectionsConnection", {
           first: 0,
@@ -58,6 +48,9 @@ export const useUpdateArtworkListsForArtwork = (artworkID: string): MutationResu
         if (!entity) {
           return
         }
+
+        const addedCounts = getArtworkListsCountByType(response?.addedToArtworkLists)
+        const removedCounts = getArtworkListsCountByType(response?.removedFromArtworkLists)
 
         /**
          * Update `totalCount` field, based on which we decide
@@ -105,6 +98,9 @@ const SaveArtworkListsMutation = graphql`
     artworksCollectionsBatchUpdate(input: $input) {
       responseOrError {
         ... on ArtworksCollectionsBatchUpdateSuccess {
+          artwork {
+            isSavedToAnyList
+          }
           addedToArtworkLists: addedToCollections {
             internalID
             default
