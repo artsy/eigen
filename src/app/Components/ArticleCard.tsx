@@ -1,6 +1,14 @@
-import { Spacer, Flex, useTheme, Text, Touchable, SkeletonBox, SkeletonText } from "@artsy/palette-mobile"
+import {
+  Spacer,
+  Flex,
+  useTheme,
+  Text,
+  Touchable,
+  SkeletonBox,
+  SkeletonText,
+  Image,
+} from "@artsy/palette-mobile"
 import { ArticleCard_article$data } from "__generated__/ArticleCard_article.graphql"
-import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { navigate } from "app/system/navigation/navigate"
 import { compact } from "lodash"
 import { DateTime } from "luxon"
@@ -42,8 +50,8 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
             (isFluid ? (
               <>
                 <View style={{ width }}>
-                  <OpaqueImageView
-                    imageURL={imageURL}
+                  <Image
+                    src={imageURL}
                     // aspect ratio is fixed to 1.33 to match the old image aspect ratio
                     aspectRatio={1.33}
                     // 40 here comes from the mx={2} from the parent component
@@ -52,8 +60,8 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
                 </View>
               </>
             ) : (
-              <OpaqueImageView
-                imageURL={imageURL}
+              <Image
+                src={imageURL}
                 width={ARTICLE_CARD_IMAGE_WIDTH}
                 height={ARTICLE_CARD_IMAGE_HEIGHT}
               />
@@ -97,10 +105,7 @@ export const ArticleCardContainer = createFragmentContainer(ArticleCard, {
 
 export const SkeletonArticleCard: React.FC = () => (
   <Flex maxWidth={ARTICLE_CARD_IMAGE_WIDTH}>
-    <SkeletonBox
-      height={ARTICLE_CARD_IMAGE_HEIGHT}
-      width={ARTICLE_CARD_IMAGE_WIDTH}
-    />
+    <SkeletonBox height={ARTICLE_CARD_IMAGE_HEIGHT} width={ARTICLE_CARD_IMAGE_WIDTH} />
     <Spacer y={1} />
     <SkeletonText variant="lg-display" mb={0.5}>
       10 Shows we suggest you don't miss during Berlin Art Week

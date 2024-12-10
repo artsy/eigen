@@ -1,6 +1,6 @@
+import { Image } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ActiveBid_bid$data } from "__generated__/ActiveBid_bid.graphql"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { BodyText, MetadataText } from "app/Scenes/Inbox/Components/Typography"
 import { navigate } from "app/system/navigation/navigate"
 import React from "react"
@@ -22,7 +22,7 @@ const Content = styled.View`
   align-items: center;
 `
 
-const ImageView = styled(OpaqueImageView)`
+const ImageView = styled(Image)`
   width: 80px;
   height: 80px;
   border-radius: 4px;

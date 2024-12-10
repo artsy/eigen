@@ -1,5 +1,4 @@
-import { Avatar, Flex } from "@artsy/palette-mobile"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { Avatar, Flex, Image } from "@artsy/palette-mobile"
 
 export const IMAGE_SIZE = 40
 
@@ -22,13 +21,15 @@ export const SearchResultImage: React.FC<{
       borderRadius={round ? IMAGE_SIZE / 2 : 0}
       overflow="hidden"
     >
-      <OpaqueImageView
-        testID={testID}
-        useRawURL={resultType === "Article"}
-        imageURL={imageURL}
-        height={IMAGE_SIZE}
-        width={IMAGE_SIZE}
-      />
+      {!!imageURL && (
+        <Image
+          testID={testID}
+          performResize={!(resultType === "Article")}
+          src={imageURL}
+          height={IMAGE_SIZE}
+          width={IMAGE_SIZE}
+        />
+      )}
     </Flex>
   )
 }

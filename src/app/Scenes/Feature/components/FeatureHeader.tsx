@@ -1,6 +1,5 @@
-import { Flex, FlexProps, Text } from "@artsy/palette-mobile"
+import { Flex, FlexProps, Image, Text } from "@artsy/palette-mobile"
 import { FeatureHeader_feature$data } from "__generated__/FeatureHeader_feature.graphql"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Stack } from "app/Components/Stack"
 import { useScreenDimensions } from "app/utils/hooks"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
@@ -17,9 +16,9 @@ export const FeatureHeader: React.FC<FeatureHeaderProps> = ({ feature }) => {
   const imageHeight = isTablet() ? height * 0.6 : width
   const imageWidth = isTablet() ? width / 2 : width
 
-  const image = (
-    <OpaqueImageView imageURL={feature.image?.url} width={imageWidth} height={imageHeight} />
-  )
+  const image = !!feature.image?.url ? (
+    <Image src={feature.image?.url} width={imageWidth} height={imageHeight} />
+  ) : null
   const title = (
     <Text
       variant="lg-display"

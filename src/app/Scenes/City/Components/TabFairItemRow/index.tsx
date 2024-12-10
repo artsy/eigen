@@ -1,5 +1,4 @@
-import { Flex, Box, ClassTheme, Text } from "@artsy/palette-mobile"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { Flex, Box, ClassTheme, Text, Image } from "@artsy/palette-mobile"
 import { Fair } from "app/Scenes/Map/types"
 import { navigate } from "app/system/navigation/navigate"
 import React from "react"
@@ -26,11 +25,7 @@ export class TabFairItemRow extends React.Component<Props> {
             <TouchableWithoutFeedback onPress={() => this.handleTap(item)}>
               <Flex flexWrap="nowrap" flexDirection="row" alignItems="center" mr={1}>
                 <RoundedImageWrapper>
-                  <OpaqueImageView
-                    height={58}
-                    width={58}
-                    imageURL={fairImage! /* STRICTNESS_MIGRATION */}
-                  />
+                  {!!fairImage && <Image height={58} width={58} src={fairImage} />}
                 </RoundedImageWrapper>
                 <Box width={boxWidth} pl={1}>
                   {!!item.name && (

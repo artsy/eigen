@@ -1,6 +1,6 @@
+import { Image } from "@artsy/palette-mobile"
 import { screen } from "@testing-library/react-native"
 import { CollectionHeaderTestsQuery } from "__generated__/CollectionHeaderTestsQuery.graphql"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { CollectionFixture } from "app/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -29,7 +29,7 @@ describe("collection header", () => {
     it("passes the collection header image url to collection header", () => {
       renderWithRelay({ MarketingCollection: () => CollectionFixture })
 
-      expect(screen.UNSAFE_queryByType(OpaqueImageView)).not.toBeTruthy()
+      expect(screen.UNSAFE_queryByType(Image)).not.toBeTruthy()
     })
 
     it("passes the url of the most marketable artwork in the collection to the collection header when there is no headerImage value present", () => {
@@ -40,7 +40,7 @@ describe("collection header", () => {
         }),
       })
 
-      expect(screen.UNSAFE_queryByType(OpaqueImageView)).not.toBeOnTheScreen()
+      expect(screen.UNSAFE_queryByType(Image)).not.toBeOnTheScreen()
     })
   })
 
@@ -54,9 +54,9 @@ describe("collection header", () => {
     it("passes the collection header image url to collection header", () => {
       renderWithRelay({ MarketingCollection: () => CollectionFixture })
 
-      expect(screen.UNSAFE_queryByType(OpaqueImageView)).toBeTruthy()
-      expect(screen.UNSAFE_getByType(OpaqueImageView)).toHaveProp(
-        "imageURL",
+      expect(screen.UNSAFE_queryByType(Image)).toBeTruthy()
+      expect(screen.UNSAFE_getByType(Image)).toHaveProp(
+        "src",
         "http://imageuploadedbymarketingteam.jpg"
       )
     })
@@ -69,9 +69,9 @@ describe("collection header", () => {
         }),
       })
 
-      expect(screen.UNSAFE_queryByType(OpaqueImageView)).toBeOnTheScreen()
-      expect(screen.UNSAFE_getByType(OpaqueImageView)).toHaveProp(
-        "imageURL",
+      expect(screen.UNSAFE_queryByType(Image)).toBeOnTheScreen()
+      expect(screen.UNSAFE_getByType(Image)).toHaveProp(
+        "src",
         "https://defaultmostmarketableartworkincollectionimage.jpg"
       )
     })

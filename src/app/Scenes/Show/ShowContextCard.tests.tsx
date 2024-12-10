@@ -1,5 +1,5 @@
+import { Image } from "@artsy/palette-mobile"
 import { ShowContextCardTestsQuery } from "__generated__/ShowContextCardTestsQuery.graphql"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { extractText } from "app/utils/tests/extractText"
@@ -77,9 +77,7 @@ describe("ShowContextCard", () => {
       expect(text).toMatch("Part of IFPDA Print Fair 2020")
       expect(text).toMatch("Jan 1 - Jan 31")
 
-      const renderedImages = wrapper.root
-        .findAllByType(OpaqueImageView)
-        .map((img) => img.props.imageURL)
+      const renderedImages = wrapper.root.findAllByType(Image).map((img) => img.props.src)
 
       expect(renderedImages).toContain("http://test.artsy.net/fair-logo.jpg")
       expect(renderedImages).toContain("http://test.artsy.net/fair-main.jpg")

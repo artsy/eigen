@@ -1,6 +1,5 @@
-import { Flex, Box, Text, Separator, Touchable } from "@artsy/palette-mobile"
+import { Flex, Box, Text, Separator, Touchable, Image } from "@artsy/palette-mobile"
 import { ItemArtwork_artwork$data } from "__generated__/ItemArtwork_artwork.graphql"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -22,13 +21,15 @@ export const ItemArtwork: React.FC<ItemArtworkProps> = ({ artwork }) => {
         <Touchable onPress={() => artwork.href && navigate(artwork.href)}>
           <Flex flexDirection="row">
             <Box height="100px" width="100px" justifyContent="center" backgroundColor="pink">
-              <OpaqueImageView
-                testID="artworkImage"
-                imageURL={artwork.image?.thumbnailUrl}
-                width={100}
-                height={100}
-                blurhash={showBlurhash ? artwork.image?.blurhash : undefined}
-              />
+              {!!artwork.image?.thumbnailUrl && (
+                <Image
+                  testID="artworkImage"
+                  src={artwork.image?.thumbnailUrl}
+                  width={100}
+                  height={100}
+                  blurhash={showBlurhash ? artwork.image?.blurhash : undefined}
+                />
+              )}
             </Box>
 
             <Flex flexDirection="column" ml={2} flexShrink={1}>

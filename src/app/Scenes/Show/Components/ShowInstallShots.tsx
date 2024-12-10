@@ -1,6 +1,5 @@
-import { Spacer, Box, BoxProps, Text } from "@artsy/palette-mobile"
+import { Spacer, Box, BoxProps, Text, Image } from "@artsy/palette-mobile"
 import { ShowInstallShots_show$data } from "__generated__/ShowInstallShots_show.graphql"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { compact } from "lodash"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -14,7 +13,7 @@ export const ShowInstallShots: React.FC<ShowInstallShotsProps> = ({ show, ...res
 
   return (
     <Box {...rest}>
-      <FlatList<typeof images[number]>
+      <FlatList<(typeof images)[number]>
         data={images}
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -30,10 +29,10 @@ export const ShowInstallShots: React.FC<ShowInstallShotsProps> = ({ show, ...res
           return (
             <Box>
               {!!image.dimensions.height && (
-                <OpaqueImageView
+                <Image
                   width={image.dimensions.width}
                   height={image.dimensions.height}
-                  imageURL={image.src}
+                  src={image.src}
                 />
               )}
 

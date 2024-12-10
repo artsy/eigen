@@ -1,9 +1,8 @@
-import { Spacer, Flex, useColor, Text, Touchable } from "@artsy/palette-mobile"
+import { Spacer, Flex, useColor, Text, Touchable, Image } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { FeaturedCollectionsRail_collection$data } from "__generated__/FeaturedCollectionsRail_collection.graphql"
 import { FeaturedCollectionsRail_collectionGroup$data } from "__generated__/FeaturedCollectionsRail_collectionGroup.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
-import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { defaultRules, renderMarkdown } from "app/utils/renderMarkdown"
@@ -91,10 +90,10 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
               }}
             >
               <ImageWrapper key={index} p={2}>
-                <ImageView
+                <Image
                   width={220}
                   height={190}
-                  imageURL={result?.featuredCollectionArtworks?.edges?.[0]?.node?.image?.url ?? ""}
+                  src={result?.featuredCollectionArtworks?.edges?.[0]?.node?.image?.url ?? ""}
                   blurhash={
                     showBlurhash
                       ? result?.featuredCollectionArtworks?.edges?.[0]?.node?.image?.blurhash

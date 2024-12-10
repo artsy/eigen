@@ -1,7 +1,6 @@
-import { ShareIcon, Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { ShareIcon, Flex, Text, Touchable, Image } from "@artsy/palette-mobile"
 import { SaleHeader_sale$data } from "__generated__/SaleHeader_sale.graphql"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { navigate } from "app/system/navigation/navigate"
 import { getAbsoluteTimeOfSale, saleTime, useRelativeTimeOfSale } from "app/utils/saleTime"
@@ -57,8 +56,8 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
           }}
         >
           <View testID="sale-header-hero">
-            <OpaqueImageView
-              imageURL={sale.coverImage.url}
+            <Image
+              src={sale.coverImage.url}
               width={Dimensions.get("window").width}
               height={COVER_IMAGE_HEIGHT}
             />

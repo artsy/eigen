@@ -1,6 +1,5 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Image, Text } from "@artsy/palette-mobile"
 import { TrendingArtistCard_artist$key } from "__generated__/TrendingArtistCard_artist.graphql"
-import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { TouchableHighlight } from "react-native"
 import { useFragment, graphql } from "react-relay"
 
@@ -22,11 +21,9 @@ export const TrendingArtistCard: React.FC<TrendingArtistCardProps> = ({ artist, 
       onPress={onPress}
     >
       <Flex>
-        <OpaqueImageView
-          imageURL={data.coverArtwork?.image?.url}
-          width={CARD_WIDTH}
-          height={CARD_HEIGHT}
-        />
+        {!!data.coverArtwork?.image?.url && (
+          <Image src={data.coverArtwork?.image?.url} width={CARD_WIDTH} height={CARD_HEIGHT} />
+        )}
 
         <Flex mt={1}>
           <Text variant="xs" numberOfLines={1}>

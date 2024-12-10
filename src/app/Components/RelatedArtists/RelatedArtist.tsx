@@ -1,6 +1,5 @@
-import { Spacer, ClassTheme, Text } from "@artsy/palette-mobile"
+import { Spacer, ClassTheme, Text, Image } from "@artsy/palette-mobile"
 import { RelatedArtist_artist$data } from "__generated__/RelatedArtist_artist.graphql"
-import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
 import { Component } from "react"
 import { TouchableWithoutFeedback, View } from "react-native"
@@ -27,12 +26,14 @@ class RelatedArtist extends Component<Props> {
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
         <View style={{ width: this.props.imageSize.width }}>
-          <ImageView
-            height={this.props.imageSize.height}
-            width={this.props.imageSize.width}
-            style={[{ overflow: "hidden", borderRadius: 2 }]}
-            imageURL={artist.coverArtwork?.image?.url}
-          />
+          {!!artist.coverArtwork?.image?.url && (
+            <Image
+              height={this.props.imageSize.height}
+              width={this.props.imageSize.width}
+              style={[{ overflow: "hidden", borderRadius: 2 }]}
+              src={artist.coverArtwork?.image?.url}
+            />
+          )}
           <Spacer y={1} />
           <Text variant="sm" weight="medium">
             {artist.name}

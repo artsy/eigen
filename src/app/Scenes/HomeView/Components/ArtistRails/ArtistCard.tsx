@@ -1,7 +1,14 @@
-import { CloseIcon, Flex, FollowButton, Text, Touchable, useColor } from "@artsy/palette-mobile"
+import {
+  CloseIcon,
+  Flex,
+  FollowButton,
+  Image,
+  Text,
+  Touchable,
+  useColor,
+} from "@artsy/palette-mobile"
 import { ArtistCard_artist$data } from "__generated__/ArtistCard_artist.graphql"
 import { useFollowArtist } from "app/Components/Artist/useFollowArtist"
-import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -161,9 +168,9 @@ const ArtworkCardImages = ({
                 alignItems="center"
                 overflow="hidden"
               >
-                <OpaqueImageView
-                  imageURL={image.src}
-                  useRawURL={true}
+                <Image
+                  src={image.src}
+                  performResize={false}
                   height={containerHeight * ZOOM_IN_FACTOR}
                   width={imageWidth * ZOOM_IN_FACTOR}
                 />

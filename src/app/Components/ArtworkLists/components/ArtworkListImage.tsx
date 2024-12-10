@@ -1,6 +1,5 @@
-import { Flex, FlexProps } from "@artsy/palette-mobile"
+import { Flex, FlexProps, Image } from "@artsy/palette-mobile"
 import { ArtworkListNoImage } from "app/Components/ArtworkLists/components/ArtworkListNoImage"
-import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { FC } from "react"
 
 export interface ArtworkListImageProps extends FlexProps {
@@ -18,7 +17,7 @@ export const ArtworkListImage: FC<ArtworkListImageProps> = ({
   return (
     <Flex bg="black5" {...rest}>
       {imageURL ? (
-        <OpaqueImageView imageURL={imageURL} width={size} height={size} useRawURL={true} />
+        <Image src={imageURL} width={size} height={size} performResize={false} />
       ) : (
         <ArtworkListNoImage
           width={size}

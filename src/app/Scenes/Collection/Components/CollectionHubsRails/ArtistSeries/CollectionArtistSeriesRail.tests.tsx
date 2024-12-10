@@ -1,8 +1,8 @@
+import { Image } from "@artsy/palette-mobile"
 import { act, fireEvent } from "@testing-library/react-native"
 import { CollectionArtistSeriesRailTestsQuery } from "__generated__/CollectionArtistSeriesRailTestsQuery.graphql"
 import { CardRailCard } from "app/Components/CardRail/CardRailCard"
 import { GenericArtistSeriesRail } from "app/Components/GenericArtistSeriesRail"
-import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import {
   CollectionArtistSeriesRail,
   CollectionArtistSeriesRailContainer,
@@ -111,26 +111,26 @@ describe("Artist Series Rail", () => {
     it("renders three images of the correct size in an artist series", () => {
       const { UNSAFE_getAllByType } = renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
-      expect(UNSAFE_getAllByType(ImageView)[0]).toHaveProp(
-        "imageURL",
+      expect(UNSAFE_getAllByType(Image)[0]).toHaveProp(
+        "src",
         "https://cindy-sherman-untitled-film-stills/medium.jpg"
       )
-      expect(UNSAFE_getAllByType(ImageView)[0]).toHaveProp("height", 180)
-      expect(UNSAFE_getAllByType(ImageView)[0]).toHaveProp("width", 180)
+      expect(UNSAFE_getAllByType(Image)[0]).toHaveProp("height", 180)
+      expect(UNSAFE_getAllByType(Image)[0]).toHaveProp("width", 180)
 
-      expect(UNSAFE_getAllByType(ImageView)[1]).toHaveProp(
-        "imageURL",
+      expect(UNSAFE_getAllByType(Image)[1]).toHaveProp(
+        "src",
         "https://cindy-sherman-untitled-film-stills-2/medium.jpg"
       )
-      expect(UNSAFE_getAllByType(ImageView)[1]).toHaveProp("height", 90)
-      expect(UNSAFE_getAllByType(ImageView)[1]).toHaveProp("width", 90)
+      expect(UNSAFE_getAllByType(Image)[1]).toHaveProp("height", 90)
+      expect(UNSAFE_getAllByType(Image)[1]).toHaveProp("width", 90)
 
-      expect(UNSAFE_getAllByType(ImageView)[2]).toHaveProp(
-        "imageURL",
+      expect(UNSAFE_getAllByType(Image)[2]).toHaveProp(
+        "src",
         "https://cindy-sherman-untitled-film-stills-3/medium.jpg"
       )
-      expect(UNSAFE_getAllByType(ImageView)[2]).toHaveProp("height", 90)
-      expect(UNSAFE_getAllByType(ImageView)[2]).toHaveProp("width", 90)
+      expect(UNSAFE_getAllByType(Image)[2]).toHaveProp("height", 90)
+      expect(UNSAFE_getAllByType(Image)[2]).toHaveProp("width", 90)
     })
 
     it("renders the collection hub rail title", () => {
