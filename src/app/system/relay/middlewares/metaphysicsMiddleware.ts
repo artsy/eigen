@@ -1,10 +1,6 @@
 import { captureMessage } from "@sentry/react-native"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import {
-  getCurrentEmissionState,
-  unsafe__getEnvironment,
-  unsafe_getFeatureFlag,
-} from "app/store/GlobalStore"
+import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/GlobalStore"
 import { CACHEABLE_DIRECTIVE_REGEX } from "app/system/relay/helpers/cacheHeaderMiddlewareHelpers"
 import { shouldSkipCDNCache } from "app/system/relay/middlewares/cacheHeaderMiddleware"
 import { GraphQLRequest } from "app/system/relay/middlewares/types"
@@ -96,20 +92,12 @@ export function metaphysicsExtensionsLoggerMiddleware() {
 export function metaphysicsURLMiddleware() {
   return urlMiddleware({
     url: () => {
-      const metaphysicsURL = unsafe_getFeatureFlag("ARUseMetaphysicsCDN")
-        ? unsafe__getEnvironment().metaphysicsCDNURL
-        : unsafe__getEnvironment().metaphysicsURL
-
-      return metaphysicsURL
+      return unsafe__getEnvironment().metaphysicsCDNURL
     },
     headers: (req) => {
       const { userAgent, userID, authenticationToken } = getCurrentEmissionState()
 
       const includeAuthHeaders =
-        // Always include auth headers if not using CDN
-        !unsafe_getFeatureFlag("ARUseMetaphysicsCDN") ||
-        // Always include headers if not using @cacheable directive
-        !unsafe_getFeatureFlag("AREnableCacheableDirective") ||
         // If using CDN, include them only if the request is not cacheable
         shouldSkipCDNCache(req as GraphQLRequest)
 
