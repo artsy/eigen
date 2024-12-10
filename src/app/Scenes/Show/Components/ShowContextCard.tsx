@@ -99,7 +99,7 @@ const ContextCard: React.FC<ContextCardProps> = ({
     <SmallCard images={imageUrls} /> // 3-up image layout
   ) : (
     <Flex width="100%" borderRadius={4} overflow="hidden">
-      <Image width={width} aspectRatio={1.5} src={imageUrls[0]} />
+      <Image testID="main-image" width={width} aspectRatio={1.5} src={imageUrls[0]} />
     </Flex>
   )
 
@@ -123,7 +123,7 @@ const ContextCard: React.FC<ContextCardProps> = ({
               bottom={0}
               left={2}
             >
-              <Image width={60} height={40} src={iconUrl} />
+              <Image testID="icon-image" width={60} height={40} src={iconUrl} />
             </Flex>
           )}
         </Box>
