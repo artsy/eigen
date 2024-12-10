@@ -146,7 +146,7 @@ class ActiveBid extends React.Component<Props, State> {
       <TouchableWithoutFeedback onPress={this.handleTap}>
         <Container>
           <Content>
-            <ImageView imageURL={imageURL} blurhash={blurhash} />
+            <ImageView src={imageURL} blurhash={blurhash} />
             <MetadataContainer>
               <StatusLabel status={this.state.status}>{this.statusLabel}</StatusLabel>
               <BodyText>{headline}</BodyText>
