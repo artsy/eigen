@@ -71,7 +71,12 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({
         <Flex flexDirection="row" justifyContent="space-between" width="100%">
           <Flex flexDirection="row">
             <Flex height={70} width={70} borderRadius={2} overflow="hidden">
-              <Image src={listItem?.node?.image?.url ?? ""} height={70} width={70} />
+              <Image
+                testID="list-item-image"
+                src={listItem?.node?.image?.url ?? ""}
+                height={70}
+                width={70}
+              />
             </Flex>
             <Flex ml={1} justifyContent="center">
               <Text variant="sm" testID="title">
