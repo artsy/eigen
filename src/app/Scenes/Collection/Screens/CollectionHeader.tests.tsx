@@ -1,4 +1,3 @@
-import { Image } from "@artsy/palette-mobile"
 import { screen } from "@testing-library/react-native"
 import { CollectionHeaderTestsQuery } from "__generated__/CollectionHeaderTestsQuery.graphql"
 import { CollectionFixture } from "app/Scenes/Collection/Components/__fixtures__/CollectionFixture"
@@ -29,7 +28,7 @@ describe("collection header", () => {
     it("passes the collection header image url to collection header", () => {
       renderWithRelay({ MarketingCollection: () => CollectionFixture })
 
-      expect(screen.UNSAFE_queryByType(Image)).not.toBeTruthy()
+      expect(screen.UNSAFE_queryByProps({ testID: "header-image" })).not.toBeTruthy()
     })
 
     it("passes the url of the most marketable artwork in the collection to the collection header when there is no headerImage value present", () => {
@@ -40,7 +39,7 @@ describe("collection header", () => {
         }),
       })
 
-      expect(screen.UNSAFE_queryByType(Image)).not.toBeOnTheScreen()
+      expect(screen.UNSAFE_queryByProps({ testID: "header-image" })).not.toBeOnTheScreen()
     })
   })
 
@@ -54,8 +53,8 @@ describe("collection header", () => {
     it("passes the collection header image url to collection header", () => {
       renderWithRelay({ MarketingCollection: () => CollectionFixture })
 
-      expect(screen.UNSAFE_queryByType(Image)).toBeTruthy()
-      expect(screen.UNSAFE_getByType(Image)).toHaveProp(
+      expect(screen.UNSAFE_queryByProps({ testID: "header-image" })).toBeTruthy()
+      expect(screen.UNSAFE_queryByProps({ testID: "header-image" })).toHaveProp(
         "src",
         "http://imageuploadedbymarketingteam.jpg"
       )
@@ -69,8 +68,8 @@ describe("collection header", () => {
         }),
       })
 
-      expect(screen.UNSAFE_queryByType(Image)).toBeOnTheScreen()
-      expect(screen.UNSAFE_getByType(Image)).toHaveProp(
+      expect(screen.UNSAFE_queryByProps({ testID: "header-image" })).toBeOnTheScreen()
+      expect(screen.UNSAFE_queryByProps({ testID: "header-image" })).toHaveProp(
         "src",
         "https://defaultmostmarketableartworkincollectionimage.jpg"
       )

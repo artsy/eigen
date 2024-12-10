@@ -26,7 +26,7 @@ export const CollectionHeader: React.FC<CollectionHeaderProps> = ({ collection }
     <>
       {!shouldHideHeaderImage && (
         <Box mb={2} pointerEvents="none">
-          <Image src={url} height={HEADER_IMAGE_HEIGHT} width={screenWidth} />
+          <Image testID="header-image" src={url} height={HEADER_IMAGE_HEIGHT} width={screenWidth} />
         </Box>
       )}
       <Box mb={2} pointerEvents="none">
