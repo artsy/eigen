@@ -1,5 +1,4 @@
 import { getCurrentURL } from "app/routes"
-import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import {
   hasNoCacheParamPresent,
   hasPersonalizedArguments,
@@ -22,7 +21,7 @@ export const shouldSkipCDNCache = (req: GraphQLRequest) => {
     if (req.cacheConfig?.force === true) {
       if (__DEV__) {
         console.warn(
-          "You are setting force: true on a cacheable request, CDN cache will be ignored."
+          `CDN cache will be ingore for ${req.operation.name} because you are setting force to true. Either remove @cacheable or set force to false`
         )
       }
       return true
@@ -42,8 +41,11 @@ export const shouldSkipCDNCache = (req: GraphQLRequest) => {
     if (hasPersonalizedArguments(req.variables)) {
       if (__DEV__) {
         console.warn(
-          "You are setting a personalized argument on a cacheable request, CDN cache will be ignored.\nList of personalized arguments: ",
-          SKIP_CACHE_ARGUMENTS.join(", ")
+          `CDN cache will be ignore for ${
+            req.operation.name
+          } because you are setting a personalized argument on a cacheable request. List of personalized arguments: ${SKIP_CACHE_ARGUMENTS.join(
+            ", "
+          )}`
         )
       }
       // Don't use CDN cache if the query has a personalized argument
@@ -61,18 +63,11 @@ export const shouldSkipCDNCache = (req: GraphQLRequest) => {
 export const cacheHeaderMiddleware = (): Middleware => {
   return (next) => async (req) => {
     const cacheControlHeader = (() => {
-      const enableCacheableDirective = unsafe_getFeatureFlag("AREnableCacheableDirective")
-      switch (true) {
-        // Skip CDN cache if cacheable directive feature flag is disabled
-        case !enableCacheableDirective:
-        case shouldSkipCDNCache(req as GraphQLRequest): {
-          return { "Cache-Control": "no-cache" }
-        }
-
-        default: {
-          return {}
-        }
+      if (shouldSkipCDNCache(req as GraphQLRequest)) {
+        return { "Cache-Control": "no-cache" }
       }
+
+      return {}
     })()
 
     // @ts-expect-error
