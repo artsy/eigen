@@ -16,12 +16,27 @@ export const ThreeUpImageLayout: React.FC<ThreeUpImageLayoutProps> = ({ imageURL
 
   return (
     <ArtworkImageContainer>
-      <Image width={LARGE_IMAGE_SIZE} height={LARGE_IMAGE_SIZE} src={artworkImageURLs[0]} />
+      <Image
+        testID="image-1"
+        width={LARGE_IMAGE_SIZE}
+        height={LARGE_IMAGE_SIZE}
+        src={artworkImageURLs[0]}
+      />
       <Division />
       <Box>
-        <Image width={SMALL_IMAGE_SIZE} height={SMALL_IMAGE_SIZE} src={artworkImageURLs[1]} />
+        <Image
+          testID="image-2"
+          width={SMALL_IMAGE_SIZE}
+          height={SMALL_IMAGE_SIZE}
+          src={artworkImageURLs[1]}
+        />
         <Division horizontal />
-        <Image width={SMALL_IMAGE_SIZE} height={SMALL_IMAGE_SIZE} src={artworkImageURLs[2]} />
+        <Image
+          testID="image-3"
+          width={SMALL_IMAGE_SIZE}
+          height={SMALL_IMAGE_SIZE}
+          src={artworkImageURLs[2]}
+        />
       </Box>
     </ArtworkImageContainer>
   )
