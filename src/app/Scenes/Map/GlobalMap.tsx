@@ -550,7 +550,7 @@ export class GlobalMap extends React.Component<Props, State> {
               style={{ ...this.backgroundImageSize }}
             />
 
-            {/* TODO: safeArea insets are being reported back incorrectly here, so we have to subtract, we should look further into why, possibly with how we register these components, possibly because they are partially native. 
+            {/* TODO: safeArea insets are being reported back incorrectly here, so we have to subtract, we should look further into why, possibly with how we register these components, possibly because they are partially native.
              */}
             <TopButtonsContainer style={{ top: this.props.safeAreaInsets.top - 12 - 10 }}>
               <Animated.View
@@ -588,8 +588,8 @@ export class GlobalMap extends React.Component<Props, State> {
                 ref={this.map}
                 style={{ width: "100%", height: Dimensions.get("window").height }}
                 {...mapProps}
-                onRegionIsChanging={this.onRegionIsChanging}
-                onDidFinishRenderingMapFully={this.onDidFinishRenderingMapFully}
+                onCameraChanged={this.onRegionIsChanging}
+                onDidFinishLoadingMap={this.onDidFinishRenderingMapFully}
                 attributionEnabled
                 logoEnabled
                 logoPosition={{ bottom: 150, left: 10 }}
@@ -692,7 +692,7 @@ export class GlobalMap extends React.Component<Props, State> {
         { lat, lng },
         visibleFeatures
       )
-      const points = clusterEngine.getLeaves(nearestFeature.properties.cluster_id, Infinity)
+      const points = clusterEngine.getLeaves(nearestFeature?.properties?.cluster_id, Infinity)
       activeShows = points.map((a) => a.properties) as any
       this.setState({
         nearestFeature,
