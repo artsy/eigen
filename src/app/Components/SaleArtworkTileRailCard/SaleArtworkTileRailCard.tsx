@@ -89,6 +89,7 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
   const imageDisplay = artwork?.image?.imageURL ? (
     <Flex px={0.5} pb={0.5} justifyContent="flex-end" overflow="hidden" borderRadius={2}>
       <Image
+        testID="sale-artwork-image"
         src={artwork.image.imageURL}
         width={imageWidth}
         height={IMAGE_CONTAINER_WIDTH}
