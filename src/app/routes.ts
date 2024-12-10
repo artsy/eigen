@@ -267,6 +267,7 @@ export function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/gene/:geneID", "Gene"),
     addRoute("/home-view/sections/:sectionID", "HomeViewSectionScreen"),
     addRoute("/inbox", "Inbox"),
+    addRoute("/infinite-discovery", "InfiniteDiscovery"),
     addRoute("/inquiry/:artworkID", "Inquiry"),
     addRoute("/local-discovery", "LocalDiscovery"),
     addRoute("/make-offer/:artworkID", "MakeOfferModal"),

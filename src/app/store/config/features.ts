@@ -278,6 +278,11 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableAvailabilityFilter",
   },
+  AREnableInfiniteDiscovery: {
+    description: "Enable infinite discovery",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
