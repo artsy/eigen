@@ -20,6 +20,19 @@ export const AboutArtist: React.FC<AboutArtistProps> = ({ artwork }) => {
 
   const text = biographyBlurb
 
+  console.log(
+    "ROOP",
+    JSON.stringify(
+      {
+        hasSingleArtist,
+        biographyBlurb,
+        text,
+      },
+      null,
+      2
+    )
+  )
+
   const textLimit = truncatedTextLimit()
 
   if (!artists.length) {
@@ -73,16 +86,11 @@ export const AboutArtistFragmentContainer = createFragmentContainer(AboutArtist,
       displayArtistBio
       artists(shallow: true) {
         id
-        biographyBlurb {
+        biographyBlurb(partnerBio: false) {
           text
         }
 
         ...ArtistListItem_artist
-      }
-      artist(shallow: true) {
-        partnerBiographyBlurb {
-          text
-        }
       }
       isUnlisted
     }
