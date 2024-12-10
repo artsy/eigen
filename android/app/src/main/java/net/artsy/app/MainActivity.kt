@@ -9,6 +9,7 @@ import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.content.Intent
+import android.content.IntentSender
 import android.net.Uri
 import androidx.annotation.Nullable
 import com.facebook.react.ReactActivity
@@ -18,9 +19,20 @@ import com.dieam.reactnativepushnotification.modules.RNPushNotification
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
 import com.facebook.react.defaults.DefaultReactActivityDelegate
 
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import androidx.activity.result.contract.ActivityResultContracts
+import com.google.android.play.core.appupdate.AppUpdateInfo
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateOptions
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
+
 import android.util.Log
 
 class MainActivity : ReactActivity() {
+    private val DAYS_FOR_FLEXIBLE_UPDATE = 7
+    private val TAG = "ArtsyApp"
+    private lateinit var appUpdateManager: AppUpdateManager
 
     /**
      * Returns the name of the main component registered from JavaScript. This is
@@ -90,6 +102,53 @@ class MainActivity : ReactActivity() {
                 return null
             }
         })
+        appUpdateManager = AppUpdateManagerFactory.create(this)
+
+        checkForAppUpdate()
+    }
+
+    private fun checkForAppUpdate() {
+        Log.d(TAG, "here we go!")
+        Log.d(TAG, "checkForAppUpdate: started checking for update!")
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+
+        appUpdateInfoTask.addOnFailureListener { appUpdateInfo ->
+            Log.d(TAG, "checkForAppUpdate: task failed: ${appUpdateInfo.toString()}")
+        }
+
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            Log.d(TAG, "checkForAppUpdate: adding listener, appUpdateInfo: ${appUpdateInfo.toString()}")
+
+            Log.d(TAG, "checkForAppUpdate: conditions: \n" +
+                    "appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE: ${appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE}\n" +
+                    "(appUpdateInfo.clientVersionStalenessDays() ?: -1) >= DAYS_FOR_FLEXIBLE_UPDATE: ${(appUpdateInfo.clientVersionStalenessDays() ?: -1) >= DAYS_FOR_FLEXIBLE_UPDATE}\n" +
+                    "appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE): ${appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)}"
+            )
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
+                appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
+                Log.d(TAG, "appUpdateInfoTask.addOnSuccessListener: passed appUpdateInfo if statements")
+                // Start a flexible update
+                try {
+                    Log.d(TAG, "appUpdateInfoTask.addOnSuccessListener: trying to start an update flow")
+                    appUpdateManager.startUpdateFlowForResult(
+                        appUpdateInfo,
+                        registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+                            Log.d(TAG, "startUpdateFlowForResult: getting result: ${result.toString()}")
+                            // handle callback
+                            if (result.resultCode != RESULT_OK) {
+                                Log.d(TAG, "Update flow failed! Result code: ${result.resultCode}")
+                                // If the update is canceled or fails,
+                                // you can request to start the update again.
+                            }
+                        },
+                        AppUpdateOptions.newBuilder(AppUpdateType.FLEXIBLE).build()
+                    )
+                } catch (e: IntentSender.SendIntentException) {
+                    Log.d(TAG, "startUpdateFlowForResult: errored out with ${e.toString()}")
+                    e.printStackTrace()
+                }
+            }
+        }
     }
 
     // Basic overriding this class required for braze integration:
