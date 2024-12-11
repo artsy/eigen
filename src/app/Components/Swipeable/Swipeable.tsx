@@ -1,4 +1,5 @@
 import { Color, Flex, Touchable, useColor } from "@artsy/palette-mobile"
+import { debounce } from "lodash"
 import { forwardRef } from "react"
 import ReanimatedSwipeable, {
   SwipeableMethods,
@@ -49,7 +50,7 @@ export const Swipeable = forwardRef<SwipeableMethods, SwipeableComponentProps>((
     if (!hasSwiped.get() && swipeDistance <= SWIPE_TO_INTERACT_THRESHOLD) {
       hasSwiped.set(true)
       ReactNativeHapticFeedback.trigger("impactLight")
-      actionOnSwipe?.()
+      debounce(() => actionOnSwipe?.())()
     }
   }
 
