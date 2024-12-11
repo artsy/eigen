@@ -29,6 +29,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
+import { memo } from "react"
 import { Dimensions, FlatList } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
@@ -214,7 +215,7 @@ const homeViewSectionAuctionResultsQuery = graphql`
   }
 `
 
-export const HomeViewSectionAuctionResultsQueryRenderer: React.FC<SectionSharedProps> =
+export const HomeViewSectionAuctionResultsQueryRenderer: React.FC<SectionSharedProps> = memo(
   withSuspense({
     Component: ({ sectionID, index, ...flexProps }) => {
       const data = useLazyLoadQuery<HomeViewSectionAuctionResultsQuery>(
@@ -239,3 +240,4 @@ export const HomeViewSectionAuctionResultsQueryRenderer: React.FC<SectionSharedP
     LoadingFallback: HomeViewSectionAuctionResultsPlaceholder,
     ErrorFallback: NoFallback,
   })
+)

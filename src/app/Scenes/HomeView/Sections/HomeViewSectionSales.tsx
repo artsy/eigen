@@ -28,7 +28,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
-import { useRef } from "react"
+import { memo, useRef } from "react"
 import { FlatList } from "react-native-gesture-handler"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
@@ -211,26 +211,28 @@ const homeViewSectionSalesQuery = graphql`
   }
 `
 
-export const HomeViewSectionSalesQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
-  Component: ({ sectionID, index, ...flexProps }) => {
-    const data = useLazyLoadQuery<HomeViewSectionSalesQuery>(
-      homeViewSectionSalesQuery,
-      {
-        id: sectionID,
-      },
-      {
-        networkCacheConfig: {
-          force: false,
+export const HomeViewSectionSalesQueryRenderer: React.FC<SectionSharedProps> = memo(
+  withSuspense({
+    Component: ({ sectionID, index, ...flexProps }) => {
+      const data = useLazyLoadQuery<HomeViewSectionSalesQuery>(
+        homeViewSectionSalesQuery,
+        {
+          id: sectionID,
         },
+        {
+          networkCacheConfig: {
+            force: false,
+          },
+        }
+      )
+
+      if (!data.homeView.section) {
+        return null
       }
-    )
 
-    if (!data.homeView.section) {
-      return null
-    }
-
-    return <HomeViewSectionSales section={data.homeView.section} index={index} {...flexProps} />
-  },
-  LoadingFallback: HomeViewSectionSalesPlaceholder,
-  ErrorFallback: NoFallback,
-})
+      return <HomeViewSectionSales section={data.homeView.section} index={index} {...flexProps} />
+    },
+    LoadingFallback: HomeViewSectionSalesPlaceholder,
+    ErrorFallback: NoFallback,
+  })
+)

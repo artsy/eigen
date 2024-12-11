@@ -19,7 +19,7 @@ import { useScreenDimensions } from "app/utils/hooks"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { isNumber } from "lodash"
-import { useRef, useState } from "react"
+import { memo, useRef, useState } from "react"
 import { FlatList, ViewabilityConfig, ViewToken } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
@@ -149,26 +149,30 @@ const homeViewSectionHeroUnitsQuery = graphql`
   }
 `
 
-export const HomeViewSectionHeroUnitsQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
-  Component: ({ sectionID, index, ...flexProps }) => {
-    const data = useLazyLoadQuery<HomeViewSectionHeroUnitsQuery>(
-      homeViewSectionHeroUnitsQuery,
-      {
-        id: sectionID,
-      },
-      {
-        networkCacheConfig: {
-          force: false,
+export const HomeViewSectionHeroUnitsQueryRenderer: React.FC<SectionSharedProps> = memo(
+  withSuspense({
+    Component: ({ sectionID, index, ...flexProps }) => {
+      const data = useLazyLoadQuery<HomeViewSectionHeroUnitsQuery>(
+        homeViewSectionHeroUnitsQuery,
+        {
+          id: sectionID,
         },
+        {
+          networkCacheConfig: {
+            force: false,
+          },
+        }
+      )
+
+      if (!data.homeView.section) {
+        return null
       }
-    )
 
-    if (!data.homeView.section) {
-      return null
-    }
-
-    return <HomeViewSectionHeroUnits section={data.homeView.section} index={index} {...flexProps} />
-  },
-  LoadingFallback: HomeViewSectionHeroUnitsPlaceholder,
-  ErrorFallback: NoFallback,
-})
+      return (
+        <HomeViewSectionHeroUnits section={data.homeView.section} index={index} {...flexProps} />
+      )
+    },
+    LoadingFallback: HomeViewSectionHeroUnitsPlaceholder,
+    ErrorFallback: NoFallback,
+  })
+)

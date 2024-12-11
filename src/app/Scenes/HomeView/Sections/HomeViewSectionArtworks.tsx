@@ -25,6 +25,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
+import { memo } from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionArtworksProps extends FlexProps {
@@ -184,18 +185,22 @@ const HomeViewSectionArtworksPlaceholder: React.FC<FlexProps> = (flexProps) => {
   )
 }
 
-export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
-  Component: ({ sectionID, index, ...flexProps }) => {
-    const data = useLazyLoadQuery<HomeViewSectionArtworksQuery>(homeViewSectionArtworksQuery, {
-      id: sectionID,
-    })
+export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> = memo(
+  withSuspense({
+    Component: ({ sectionID, index, ...flexProps }) => {
+      const data = useLazyLoadQuery<HomeViewSectionArtworksQuery>(homeViewSectionArtworksQuery, {
+        id: sectionID,
+      })
 
-    if (!data.homeView.section) {
-      return null
-    }
+      if (!data.homeView.section) {
+        return null
+      }
 
-    return <HomeViewSectionArtworks section={data.homeView.section} index={index} {...flexProps} />
-  },
-  LoadingFallback: HomeViewSectionArtworksPlaceholder,
-  ErrorFallback: NoFallback,
-})
+      return (
+        <HomeViewSectionArtworks section={data.homeView.section} index={index} {...flexProps} />
+      )
+    },
+    LoadingFallback: HomeViewSectionArtworksPlaceholder,
+    ErrorFallback: NoFallback,
+  })
+)

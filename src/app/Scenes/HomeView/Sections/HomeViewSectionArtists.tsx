@@ -32,6 +32,7 @@ import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { times } from "lodash"
+import { memo } from "react"
 import {
   createPaginationContainer,
   graphql,
@@ -252,24 +253,26 @@ const HomeViewSectionArtistsPlaceholder: React.FC<FlexProps> = (flexProps) => {
   )
 }
 
-export const HomeViewSectionArtistsQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
-  Component: ({ sectionID, index, ...flexProps }) => {
-    const data = useLazyLoadQuery<HomeViewSectionArtistsMainQuery>(homeViewSectionArtistsQuery, {
-      id: sectionID,
-    })
+export const HomeViewSectionArtistsQueryRenderer: React.FC<SectionSharedProps> = memo(
+  withSuspense({
+    Component: ({ sectionID, index, ...flexProps }) => {
+      const data = useLazyLoadQuery<HomeViewSectionArtistsMainQuery>(homeViewSectionArtistsQuery, {
+        id: sectionID,
+      })
 
-    if (!data.homeView.section) {
-      return null
-    }
+      if (!data.homeView.section) {
+        return null
+      }
 
-    return (
-      <HomeViewSectionArtistsPaginationContainer
-        section={data.homeView.section}
-        index={index}
-        {...flexProps}
-      />
-    )
-  },
-  LoadingFallback: HomeViewSectionArtistsPlaceholder,
-  ErrorFallback: NoFallback,
-})
+      return (
+        <HomeViewSectionArtistsPaginationContainer
+          section={data.homeView.section}
+          index={index}
+          {...flexProps}
+        />
+      )
+    },
+    LoadingFallback: HomeViewSectionArtistsPlaceholder,
+    ErrorFallback: NoFallback,
+  })
+)

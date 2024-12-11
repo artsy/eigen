@@ -8,6 +8,7 @@ import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { memo } from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionShowsProps extends FlexProps {
@@ -79,26 +80,28 @@ const homeViewSectionShowsQuery = graphql`
   }
 `
 
-export const HomeViewSectionShowsQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
-  Component: ({ sectionID, index, ...flexProps }) => {
-    const data = useLazyLoadQuery<HomeViewSectionShowsQuery>(
-      homeViewSectionShowsQuery,
-      {
-        id: sectionID,
-      },
-      {
-        networkCacheConfig: {
-          force: false,
+export const HomeViewSectionShowsQueryRenderer: React.FC<SectionSharedProps> = memo(
+  withSuspense({
+    Component: ({ sectionID, index, ...flexProps }) => {
+      const data = useLazyLoadQuery<HomeViewSectionShowsQuery>(
+        homeViewSectionShowsQuery,
+        {
+          id: sectionID,
         },
+        {
+          networkCacheConfig: {
+            force: false,
+          },
+        }
+      )
+
+      if (!data.homeView.section) {
+        return null
       }
-    )
 
-    if (!data.homeView.section) {
-      return null
-    }
-
-    return <HomeViewSectionShows section={data.homeView.section} index={index} {...flexProps} />
-  },
-  LoadingFallback: HomeViewSectionShowsPlaceholder,
-  ErrorFallback: NoFallback,
-})
+      return <HomeViewSectionShows section={data.homeView.section} index={index} {...flexProps} />
+    },
+    LoadingFallback: HomeViewSectionShowsPlaceholder,
+    ErrorFallback: NoFallback,
+  })
+)

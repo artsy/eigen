@@ -38,6 +38,7 @@ import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { times } from "lodash"
+import { memo } from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionMarketingCollectionsProps {
@@ -228,7 +229,7 @@ const homeViewSectionMarketingCollectionsQuery = graphql`
   }
 `
 
-export const HomeViewSectionMarketingCollectionsQueryRenderer: React.FC<SectionSharedProps> =
+export const HomeViewSectionMarketingCollectionsQueryRenderer: React.FC<SectionSharedProps> = memo(
   withSuspense({
     Component: ({ sectionID, index, ...flexProps }) => {
       const data = useLazyLoadQuery<HomeViewSectionMarketingCollectionsQuery>(
@@ -258,3 +259,4 @@ export const HomeViewSectionMarketingCollectionsQueryRenderer: React.FC<SectionS
     LoadingFallback: HomeViewSectionMarketingCollectionsPlaceholder,
     ErrorFallback: NoFallback,
   })
+)

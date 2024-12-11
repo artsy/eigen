@@ -18,7 +18,7 @@ import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
-import React from "react"
+import React, { memo } from "react"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
@@ -126,19 +126,19 @@ const HomeViewCardsPlaceholder: React.FC = () => {
   )
 }
 
-export const HomeViewSectionCardsQueryRenderer = withSuspense<
-  Pick<SectionSharedProps, "sectionID" | "index">
->({
-  Component: ({ sectionID, index }) => {
-    const isEnabled = useFeatureFlag("AREnableMarketingCollectionsCategories")
-    const data = useLazyLoadQuery<HomeViewSectionCardsQuery>(query, { id: sectionID, isEnabled })
+export const HomeViewSectionCardsQueryRenderer = memo(
+  withSuspense<Pick<SectionSharedProps, "sectionID" | "index">>({
+    Component: ({ sectionID, index }) => {
+      const isEnabled = useFeatureFlag("AREnableMarketingCollectionsCategories")
+      const data = useLazyLoadQuery<HomeViewSectionCardsQuery>(query, { id: sectionID, isEnabled })
 
-    if (!data?.homeView.section || !isEnabled) {
-      return null
-    }
+      if (!data?.homeView.section || !isEnabled) {
+        return null
+      }
 
-    return <HomeViewSectionCards section={data.homeView.section} index={index} />
-  },
-  LoadingFallback: HomeViewCardsPlaceholder,
-  ErrorFallback: NoFallback,
-})
+      return <HomeViewSectionCards section={data.homeView.section} index={index} />
+    },
+    LoadingFallback: HomeViewCardsPlaceholder,
+    ErrorFallback: NoFallback,
+  })
+)
