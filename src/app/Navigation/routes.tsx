@@ -241,6 +241,7 @@ export const artsyDotNetRoutes = defineRoutes([
     options: {
       screenOptions: {
         gestureEnabled: false,
+        headerShown: false,
       },
       hidesBottomTabs: true,
     },

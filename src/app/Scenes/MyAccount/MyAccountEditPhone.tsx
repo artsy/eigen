@@ -71,9 +71,9 @@ const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me$data }> = ({ me }
 
 const MyAccountEditPhonePlaceholder: React.FC<{}> = ({}) => {
   return (
-    <>
+    <Flex p={2}>
       <PlaceholderBox height={40} />
-    </>
+    </Flex>
   )
 }
 

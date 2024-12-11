@@ -101,7 +101,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
   }, [navigation, currentPassword, newPassword, passwordConfirmation])
 
   return (
-    <Flex pt={2}>
+    <Flex>
       <Flex mx={2}>
         <Input
           autoComplete="password"
