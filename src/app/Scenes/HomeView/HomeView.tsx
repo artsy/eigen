@@ -236,7 +236,7 @@ const HomeViewScreenComponent: React.FC = () => {
   )
 }
 
-export const HomeViewScreen = Sentry.withProfiler(HomeViewScreenComponent)
+export const HomeViewScreen = memo(Sentry.withProfiler(HomeViewScreenComponent))
 
 const sectionsFragment = graphql`
   fragment HomeViewSectionsConnection_viewer on Viewer
