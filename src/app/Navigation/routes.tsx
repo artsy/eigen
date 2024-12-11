@@ -1463,9 +1463,7 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "VanityURLEntity",
     Component: VanityURLEntityRenderer,
   },
-  defineWebViewRoute("/*", {
-    alwaysPresentModally: true,
-  }),
+  defineWebViewRoute("/*"),
 ])
 
 export const liveDotArtsyRoutes = defineRoutes([
