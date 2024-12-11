@@ -48,11 +48,11 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ selectedPill, quer
     )
   }
 
-  if (!isTopPillSelected && !isArtworksPillSelected) {
-    return (
-      <EntitySearchResultsScreen query={query} selectedPill={selectedPill} key={selectedPill.key} />
-    )
+  if (isArtworksPillSelected) {
+    return <SearchArtworksQueryRenderer keyword={query} />
   }
 
-  return <SearchArtworksQueryRenderer keyword={query} />
+  return (
+    <EntitySearchResultsScreen query={query} selectedPill={selectedPill} key={selectedPill.key} />
+  )
 }
