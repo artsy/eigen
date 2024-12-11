@@ -1,6 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Touchable } from "@artsy/palette-mobile"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
 import { ArtistSeriesConnectionEdge } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { navigate } from "app/system/navigation/navigate"
@@ -35,7 +34,7 @@ describe("ArtistSeriesListItem", () => {
 
     const instance = artistSeriesListItem.root.findAllByType(Touchable)[0]
 
-    expect(instance.findByType(OpaqueImageView).props.imageURL).toBe(
+    expect(instance.findAllByProps({ testID: "list-item-image" })[0].props.src).toBe(
       "https://d32dm0rphc51dk.cloudfront.net/dL3hz4h6f_tMHQjVHsdO4w/medium.jpg"
     )
     expect(instance.findByProps({ testID: "count" }).props.children).toBe("25 available")

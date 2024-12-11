@@ -1,5 +1,4 @@
 import { SaleArtworkTileRailCardTestsQuery } from "__generated__/SaleArtworkTileRailCardTestsQuery.graphql"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
@@ -61,10 +60,9 @@ describe("SaleArtworkTileRailCard", () => {
     expect(extractText(tree.root)).toContain("Captain America")
 
     // Render the sale artwork image while mainting the correct aspect ratio
-    const image = tree.root.findAllByType(OpaqueImageView)
-    expect(image.length).toBe(1)
-    expect(image[0].props.height).toBe(CONTAINER_HEIGHT)
-    expect(image[0].props.width).toBe(CONTAINER_HEIGHT * 0.75) // The mock image aspect ratio is 0.75
+    const image = tree.root.findByProps({ testID: "sale-artwork-image" })
+    expect(image.props.height).toBe(CONTAINER_HEIGHT)
+    expect(image.props.width).toBe(CONTAINER_HEIGHT * 0.75) // The mock image aspect ratio is 0.75
   })
 
   it("renders custom sale artwork message when useCustomSaleMessage is set to true", () => {
@@ -79,10 +77,9 @@ describe("SaleArtworkTileRailCard", () => {
 
     resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
-    const image = tree.root.findAllByType(OpaqueImageView)
-    expect(image.length).toBe(1)
-    expect(image[0].props.height).toBe(CONTAINER_HEIGHT)
-    expect(image[0].props.width).toBe(CONTAINER_HEIGHT)
+    const image = tree.root.findByProps({ testID: "sale-artwork-image" })
+    expect(image.props.height).toBe(CONTAINER_HEIGHT)
+    expect(image.props.width).toBe(CONTAINER_HEIGHT)
   })
 })
 

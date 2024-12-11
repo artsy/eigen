@@ -1,9 +1,8 @@
-import { Flex, Box, ClassTheme, Text, Button, Touchable } from "@artsy/palette-mobile"
+import { Flex, Box, ClassTheme, Text, Button, Touchable, Image } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ShowItemRowMutation } from "__generated__/ShowItemRowMutation.graphql"
 import { ShowItemRow_show$data } from "__generated__/ShowItemRow_show.graphql"
 import { Pin } from "app/Components/Icons/Pin"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { exhibitionDates } from "app/Scenes/Map/exhibitionPeriodParser"
 import { navigate } from "app/system/navigation/navigate"
 import { hrefForPartialShow } from "app/utils/router"
@@ -131,7 +130,7 @@ export class ShowItemRow extends React.Component<Props, State> {
               </DefaultImageContainer>
             ) : (
               <DefaultImageContainer>
-                <OpaqueImageView width={62} height={62} imageURL={imageURL} />
+                <Image width={62} height={62} src={imageURL} />
               </DefaultImageContainer>
             )}
             <Flex flexDirection="column" flexGrow={1} width={165} mr={1}>

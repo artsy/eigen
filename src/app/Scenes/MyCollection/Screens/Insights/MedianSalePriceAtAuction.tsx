@@ -1,7 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Spacer, NoArtworkIcon, Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { Spacer, NoArtworkIcon, Flex, Text, Touchable, Image } from "@artsy/palette-mobile"
 import { MedianSalePriceAtAuctionQuery } from "__generated__/MedianSalePriceAtAuctionQuery.graphql"
-import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { useScreenDimensions } from "app/utils/hooks"
 import {
   PlaceholderBox,
@@ -80,7 +79,7 @@ const MedianSalePriceAtAuctionScreen: React.FC<MedianSalePriceAtAuctionProps> = 
               style={{ marginTop: 3 }}
             >
               {data.artist?.imageUrl ? (
-                <OpaqueImageView width={40} height={40} imageURL={data.artist.imageUrl} />
+                <Image width={40} height={40} src={data.artist.imageUrl} />
               ) : (
                 <NoArtworkIcon width={28} height={28} opacity={0.3} />
               )}

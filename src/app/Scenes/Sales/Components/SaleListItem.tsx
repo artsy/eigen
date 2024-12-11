@@ -1,6 +1,5 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Image, Text } from "@artsy/palette-mobile"
 import { SaleListItem_sale$data } from "__generated__/SaleListItem_sale.graphql"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
 import { TouchableOpacity, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -44,7 +43,7 @@ export const SaleListItem: React.FC<Props> = (props) => {
             overflow="hidden"
             mb={0.5}
           >
-            <OpaqueImageView width={containerWidth} height={containerWidth} imageURL={image.url} />
+            <Image width={containerWidth} height={containerWidth} src={image.url} />
           </Flex>
         )}
         <Text variant="sm" numberOfLines={2} weight="medium">

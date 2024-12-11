@@ -1,5 +1,5 @@
+import { Image } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import {
   ImageCarouselContext,
   ImageDescriptor,
@@ -365,10 +365,10 @@ export const ImageZoomView =
                 transform,
               }}
             >
-              <OpaqueImageView
-                noAnimation
-                imageURL={image.resized?.src || image.url}
-                useRawURL
+              <Image
+                // TODO: noAnimation, check if we still need a solution for this
+                src={image.resized?.src || image.url || ""}
+                performResize={false}
                 width={imageFittedWithinScreen.width}
                 height={imageFittedWithinScreen.height}
               />

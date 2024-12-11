@@ -1,6 +1,5 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Image, Text } from "@artsy/palette-mobile"
 import { FeatureFeaturedLink_featuredLink$data } from "__generated__/FeatureFeaturedLink_featuredLink.graphql"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
 import { TouchableOpacity } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
@@ -23,11 +22,9 @@ const FeatureFeaturedLink: React.FC<FeatureFeaturedLinkProps> = ({ featuredLink,
           }
         }}
       >
-        <OpaqueImageView
-          imageURL={featuredLink.image?.url}
-          width={width}
-          height={(width / 3) * 4}
-        />
+        {!!featuredLink.image?.url && (
+          <Image src={featuredLink.image?.url} width={width} height={(width / 3) * 4} />
+        )}
         <LinearGradient
           colors={["rgba(0,0,0,0)", "rgba(0,0,0,0.4)"]}
           style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 180 }}

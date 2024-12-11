@@ -1,6 +1,5 @@
-import { NoArtworkIcon, Flex, useColor, Text, Touchable } from "@artsy/palette-mobile"
+import { NoArtworkIcon, Flex, useColor, Text, Touchable, Image } from "@artsy/palette-mobile"
 import { ArtistItem_artist$key } from "__generated__/ArtistItem_artist.graphql"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { graphql, useFragment } from "react-relay"
 
 interface ArtistItemProps {
@@ -40,7 +39,7 @@ export const ArtistItem: React.FC<ArtistItemProps> = ({ isFirst, onPress, ...res
           {!artist.imageUrl ? (
             <NoArtworkIcon width={28} height={28} opacity={0.3} />
           ) : (
-            <OpaqueImageView width={40} height={40} imageURL={artist.imageUrl} />
+            <Image width={40} height={40} src={artist.imageUrl} />
           )}
         </Flex>
         {/* Sale Artwork Artist Name, Nationality and Birthday */}

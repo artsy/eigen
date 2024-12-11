@@ -109,8 +109,8 @@ export const DeepZoomTile: React.FC<DeepZoomTileProps> = ({
           backgroundColor: !showing
             ? "rgba(255, 0, 0, 0.2)"
             : !loaded
-            ? "rgba(0, 0, 255, 0.2)"
-            : "rgba(0, 255, 0, 0.2)",
+              ? "rgba(0, 0, 255, 0.2)"
+              : "rgba(0, 255, 0, 0.2)",
         }}
       />
     )
@@ -130,17 +130,6 @@ export const DeepZoomTile: React.FC<DeepZoomTileProps> = ({
       }}
     >
       <Image onLoad={onLoad} source={{ uri: url }} style={{ width, height }} />
-      {/*
-        // TODO: Figure out why we get tearing at tile seams when using this in eigen but not emission
-        <OpaqueImageView
-          imageURL={url}
-          noAnimation
-          useRawURL
-          placeholderBackgroundColor="white"
-          failSilently
-          highPriority
-        />
-      */}
     </Animated.View>
   )
 }

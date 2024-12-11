@@ -1,5 +1,4 @@
-import { Spacer, Flex, Box, BoxProps, useTheme, Text } from "@artsy/palette-mobile"
-import { OpaqueImageView as NewOpaqueImageView } from "app/Components/OpaqueImageView2"
+import { Spacer, Flex, Box, BoxProps, useTheme, Text, Image } from "@artsy/palette-mobile"
 import LinearGradient from "react-native-linear-gradient"
 import { CardTag, CardTagProps } from "./CardTag"
 
@@ -30,11 +29,7 @@ export const MediumCard: React.FC<MediumCardProps> = ({ image, title, subtitle, 
       {...rest}
     >
       <Flex flex={2} backgroundColor="black10">
-        <NewOpaqueImageView
-          imageURL={image}
-          height={MEDIUM_CARD_HEIGHT}
-          width={MEDIUM_CARD_WIDTH}
-        />
+        <Image src={image} height={MEDIUM_CARD_HEIGHT} width={MEDIUM_CARD_WIDTH} />
       </Flex>
       <LinearGradient
         colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 1)"]}

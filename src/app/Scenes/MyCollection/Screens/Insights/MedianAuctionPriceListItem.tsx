@@ -1,6 +1,13 @@
-import { Flex, NoArtworkIcon, Text, ToolTip, Touchable, useColor } from "@artsy/palette-mobile"
+import {
+  Flex,
+  Image,
+  NoArtworkIcon,
+  Text,
+  ToolTip,
+  Touchable,
+  useColor,
+} from "@artsy/palette-mobile"
 import { MedianAuctionPriceRail_me$data } from "__generated__/MedianAuctionPriceRail_me.graphql"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { VisualCluesConstMap } from "app/store/config/visualClues"
 import { setVisualClueAsSeen } from "app/utils/hooks/useVisualClue"
 import { isNil } from "lodash"
@@ -49,7 +56,7 @@ export const MedianAuctionPriceListItem: React.FC<Props> = ({
             style={{ marginTop: 3 }}
           >
             {!!artist?.imageUrl ? (
-              <OpaqueImageView width={40} height={40} imageURL={artist?.imageUrl} />
+              <Image width={40} height={40} src={artist?.imageUrl} />
             ) : (
               <NoArtworkIcon width={20} height={20} opacity={0.3} />
             )}

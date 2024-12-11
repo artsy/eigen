@@ -1,5 +1,4 @@
-import { NoImageIcon, Flex, useColor } from "@artsy/palette-mobile"
-import { OpaqueImageView } from "app/Components/OpaqueImageView2"
+import { NoImageIcon, Flex, useColor, Image } from "@artsy/palette-mobile"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import React from "react"
 
@@ -44,13 +43,12 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
   const targetURL = imageURL.replace(":version", "large")
   return (
     <Flex testID="Image-Remote">
-      <OpaqueImageView
-        imageURL={targetURL}
-        retryFailedURLs
+      <Image
+        src={targetURL}
         height={imageHeight}
         width={imageWidth}
         aspectRatio={aspectRatio}
-        useRawURL={useRawURL}
+        performResize={!useRawURL}
         blurhash={showBlurhash ? blurhash : undefined}
       />
     </Flex>

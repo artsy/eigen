@@ -5,11 +5,10 @@ import {
   tappedEntityGroup,
   TappedEntityGroupArgs,
 } from "@artsy/cohesion"
-import { Box, Flex, Text, useColor } from "@artsy/palette-mobile"
+import { Box, Flex, Image, Text, useColor } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { SaleArtworkTileRailCard_saleArtwork$data } from "__generated__/SaleArtworkTileRailCard_saleArtwork.graphql"
 import { CARD_WIDTH } from "app/Components/CardRail/CardRailCard"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { UrgencyInfo } from "app/Components/SaleArtworkTileRailCard/UrgencyInfo"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
@@ -89,8 +88,9 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
 
   const imageDisplay = artwork?.image?.imageURL ? (
     <Flex px={0.5} pb={0.5} justifyContent="flex-end" overflow="hidden" borderRadius={2}>
-      <OpaqueImageView
-        imageURL={artwork.image.imageURL}
+      <Image
+        testID="sale-artwork-image"
+        src={artwork.image.imageURL}
         width={imageWidth}
         height={IMAGE_CONTAINER_WIDTH}
         blurhash={showBlurhash ? artwork.image.blurhash : undefined}

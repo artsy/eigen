@@ -5,8 +5,7 @@ import {
   ScreenOwnerType,
   TappedArtistSeriesGroup,
 } from "@artsy/cohesion"
-import { ArrowRightIcon, Flex, useColor, Text, Touchable } from "@artsy/palette-mobile"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { ArrowRightIcon, Flex, useColor, Text, Touchable, Image } from "@artsy/palette-mobile"
 import { ArtistSeriesConnectionEdge } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { navigate } from "app/system/navigation/navigate"
 import { useTracking } from "react-tracking"
@@ -72,7 +71,12 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({
         <Flex flexDirection="row" justifyContent="space-between" width="100%">
           <Flex flexDirection="row">
             <Flex height={70} width={70} borderRadius={2} overflow="hidden">
-              <OpaqueImageView imageURL={listItem?.node?.image?.url ?? ""} height={70} width={70} />
+              <Image
+                testID="list-item-image"
+                src={listItem?.node?.image?.url ?? ""}
+                height={70}
+                width={70}
+              />
             </Flex>
             <Flex ml={1} justifyContent="center">
               <Text variant="sm" testID="title">

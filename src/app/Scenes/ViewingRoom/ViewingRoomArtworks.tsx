@@ -1,7 +1,15 @@
-import { Flex, Box, useSpace, Text, Spinner, Separator, Touchable } from "@artsy/palette-mobile"
+import {
+  Flex,
+  Box,
+  useSpace,
+  Text,
+  Spinner,
+  Separator,
+  Touchable,
+  Image,
+} from "@artsy/palette-mobile"
 import { ViewingRoomArtworksQueryRendererQuery } from "__generated__/ViewingRoomArtworksQueryRendererQuery.graphql"
 import { ViewingRoomArtworks_viewingRoom$data } from "__generated__/ViewingRoomArtworks_viewingRoom.graphql"
-import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { ReadMore } from "app/Components/ReadMore"
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -53,11 +61,13 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = (props) =
               }}
             >
               <Box>
-                <OpaqueImageView
-                  imageURL={artwork.image?.url}
-                  width={width}
-                  aspectRatio={artwork?.image?.aspectRatio}
-                />
+                {!!artwork.image?.url && (
+                  <Image
+                    src={artwork.image?.url}
+                    width={width}
+                    aspectRatio={artwork?.image?.aspectRatio}
+                  />
+                )}
                 <Box mt={1} mx={2}>
                   <Text variant="sm">{artwork.artistNames}</Text>
                   <Text variant="sm" color="black60" key={index}>

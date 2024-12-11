@@ -1,8 +1,7 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex, Box, BoxProps, Text, useScreenDimensions } from "@artsy/palette-mobile"
+import { Flex, Box, BoxProps, Text, useScreenDimensions, Image } from "@artsy/palette-mobile"
 import { ShowContextCard_show$data } from "__generated__/ShowContextCard_show.graphql"
 import { SmallCard } from "app/Components/Cards"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { TouchableOpacity } from "react-native"
@@ -100,7 +99,7 @@ const ContextCard: React.FC<ContextCardProps> = ({
     <SmallCard images={imageUrls} /> // 3-up image layout
   ) : (
     <Flex width="100%" borderRadius={4} overflow="hidden">
-      <OpaqueImageView width={width} aspectRatio={1.5} imageURL={imageUrls[0]} />
+      <Image testID="main-image" width={width} aspectRatio={1.5} src={imageUrls[0]} />
     </Flex>
   )
 
@@ -124,12 +123,7 @@ const ContextCard: React.FC<ContextCardProps> = ({
               bottom={0}
               left={2}
             >
-              <OpaqueImageView
-                width={60}
-                height={40}
-                imageURL={iconUrl}
-                placeholderBackgroundColor="white"
-              />
+              <Image testID="icon-image" width={60} height={40} src={iconUrl} />
             </Flex>
           )}
         </Box>

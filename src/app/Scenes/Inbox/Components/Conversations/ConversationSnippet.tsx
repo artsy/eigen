@@ -1,7 +1,6 @@
-import { Flex, ClassTheme, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, ClassTheme, Text, Touchable, Image } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ConversationSnippet_conversation$data } from "__generated__/ConversationSnippet_conversation.graphql"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Schema, Track, track as _track } from "app/utils/track"
 import moment from "moment"
 import React from "react"
@@ -29,7 +28,7 @@ const Indicator = styled.View`
   background-color: ${themeGet("colors.blue100")};
 `
 
-const ImageView = styled(OpaqueImageView)`
+const ImageView = styled(Image)`
   width: 80px;
   height: 80px;
   border-radius: 2px;
@@ -98,7 +97,7 @@ export class ConversationSnippet extends React.Component<Props> {
                       <Indicator />
                     </Unread>
                   )}
-                  <ImageView imageURL={imageURL} blurhash={blurhash} />
+                  {!!imageURL && <ImageView src={imageURL} blurhash={blurhash} />}
                 </Flex>
                 <Flex ml={1} style={{ flex: 1 }}>
                   <Flex flexDirection="row" mb="2px" style={{ flex: 0, alignItems: "center" }}>

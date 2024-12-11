@@ -5,9 +5,8 @@ import {
   tappedEntityGroup,
   TappedEntityGroupArgs,
 } from "@artsy/cohesion"
-import { Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, Image, Text, Touchable } from "@artsy/palette-mobile"
 import { SaleArtworkListItem_artwork$data } from "__generated__/SaleArtworkListItem_artwork.graphql"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { navigate } from "app/system/navigation/navigate"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
@@ -69,15 +68,15 @@ export const SaleArtworkListItem: React.FC<Props> = ({ artwork, contextScreenOwn
     >
       <Touchable onPress={onPress}>
         <Flex flexDirection="row" alignItems="center" height={CONTAINER_HEIGHT} ref={itemRef}>
-          {!!artwork.image && (
+          {!!artwork.image?.small && (
             <Flex
               height={CONTAINER_HEIGHT}
               width={CONTAINER_HEIGHT}
               alignItems="center"
               justifyContent="center"
             >
-              <OpaqueImageView
-                imageURL={artwork.image?.small}
+              <Image
+                src={artwork.image?.small}
                 height={imageDimensions.height}
                 width={imageDimensions.width}
                 aspectRatio={artwork.image?.aspectRatio ?? 1}

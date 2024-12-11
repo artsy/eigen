@@ -182,12 +182,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableArtworkListOfferability",
   },
-  ARUsePaletteImage: {
-    description: "Use Palette Image Component",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "ARUsePaletteImageComponent",
-  },
   ARShowBlurhashImagePlaceholder: {
     description: "Show blurhash image placeholder (works only when using Palette Image Component)",
     readyForRelease: true,
@@ -358,9 +352,6 @@ export const devToggles: { [key: string]: DevToggleDescriptor } = {
   },
   DTShowErrorInLoadFailureView: {
     description: "Show error in load failure view",
-  },
-  DTEnableNewImageLabel: {
-    description: "Show a label on new OpaqueImageView",
   },
   DTDisableNavigationStateRehydration: {
     description:
