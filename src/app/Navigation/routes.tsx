@@ -151,8 +151,8 @@ export interface ViewOptions {
   onlyShowInTabName?: BottomTabType
   screenOptions?: NativeStackNavigationOptions
 }
-
-const defineWebViewRoute = (url: string, config?: ArtsyWebViewConfig) => {
+// Default WebView Route Definition
+const webViewRoute = (url: string, config?: ArtsyWebViewConfig) => {
   return {
     path: url,
     name: config?.alwaysPresentModally ? "ModalWebView" : "ReactWebView",
@@ -1432,30 +1432,30 @@ export const artsyDotNetRoutes = defineRoutes([
     Component: WorksForYouQueryRenderer,
     Queries: [WorksForYouScreenQuery],
   },
-  defineWebViewRoute("/auction-faq", {
+  webViewRoute("/auction-faq", {
     alwaysPresentModally: true,
   }),
-  defineWebViewRoute("/buy-now-feature-faq"),
-  defineWebViewRoute("/buyer-guarantee"),
-  defineWebViewRoute("/categories"),
-  defineWebViewRoute("/conditions-of-sale", {
+  webViewRoute("/buy-now-feature-faq"),
+  webViewRoute("/buyer-guarantee"),
+  webViewRoute("/categories"),
+  webViewRoute("/conditions-of-sale", {
     alwaysPresentModally: true,
   }),
-  defineWebViewRoute("/identity-verification-faq"),
-  defineWebViewRoute("/meet-the-specialists"),
-  defineWebViewRoute("/orders/:orderID", {
+  webViewRoute("/identity-verification-faq"),
+  webViewRoute("/meet-the-specialists"),
+  webViewRoute("/orders/:orderID", {
     mimicBrowserBackButton: true,
     useRightCloseButton: true,
     alwaysPresentModally: true,
   }),
-  defineWebViewRoute("/price-database"),
-  defineWebViewRoute("/privacy", {
+  webViewRoute("/price-database"),
+  webViewRoute("/privacy", {
     alwaysPresentModally: true,
   }),
-  defineWebViewRoute("/terms", {
+  webViewRoute("/terms", {
     alwaysPresentModally: true,
   }),
-  defineWebViewRoute("/unsubscribe"),
+  webViewRoute("/unsubscribe"),
 
   // Every other route needs to go above
   {
@@ -1463,7 +1463,7 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "VanityURLEntity",
     Component: VanityURLEntityRenderer,
   },
-  defineWebViewRoute("/*"),
+  webViewRoute("/*"),
 ])
 
 export const liveDotArtsyRoutes = defineRoutes([
