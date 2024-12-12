@@ -202,7 +202,7 @@ describe("OrderHistoryRow", () => {
   })
 
   describe("update payment method button", () => {
-    it("is includes a message and button go fix payment when the displayState is PAYMENT_FAILED", () => {
+    it("includes a message and button go fix payment when the displayState is PAYMENT_FAILED", () => {
       renderWithRelay({
         CommerceOrder: () => ({
           ...mockOrder,
@@ -295,7 +295,7 @@ describe("OrderHistoryRow", () => {
       expect(extractText(screen.getByTestId("view-order-button"))).toContain("View Offer")
     })
 
-    it("shows 'view order' when the order has an approved offer", () => {
+    it("shows 'view offer' when the order has an approved offer", () => {
       renderWithRelay({
         CommerceOrder: () => ({
           ...mockOrder,
@@ -304,7 +304,7 @@ describe("OrderHistoryRow", () => {
         }),
       })
 
-      expect(extractText(screen.getByTestId("view-order-button"))).toContain("View Order")
+      expect(extractText(screen.getByTestId("view-order-button"))).toContain("View Offer")
     })
 
     it("navigates to the counteroffer when the order has a submitted offer", () => {
@@ -314,15 +314,16 @@ describe("OrderHistoryRow", () => {
           internalID: "internal-id",
           displayState: "SUBMITTED",
           mode: "OFFER",
+          buyerAction: "OFFER_RECEIVED",
         }),
       })
-      const button = screen.UNSAFE_getByProps({ testID: "view-order-button" })
+      const button = screen.UNSAFE_getByProps({ testID: "counteroffer-button" })
 
       fireEvent.press(button)
 
       expect(navigate).toHaveBeenCalledWith("/orders/internal-id", {
         modal: true,
-        passProps: { orderID: "internal-id", title: "Make Offer" },
+        passProps: { orderID: "internal-id", title: "Review Offer" },
       })
     })
 

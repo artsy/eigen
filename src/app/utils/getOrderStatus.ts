@@ -1,6 +1,9 @@
 import { CommerceOrderDisplayStateEnum } from "__generated__/OrderDetailsHeader_info.graphql"
+import { CommerceBuyerOfferActionEnum } from "__generated__/OrderHistoryRow_order.graphql"
 
-export function getOrderStatus(displayState: CommerceOrderDisplayStateEnum): string {
+export function getOrderStatus(
+  displayState: CommerceOrderDisplayStateEnum | CommerceBuyerOfferActionEnum
+): string {
   switch (displayState) {
     case "SUBMITTED":
       return "pending"
@@ -20,6 +23,8 @@ export function getOrderStatus(displayState: CommerceOrderDisplayStateEnum): str
       return "canceled"
     case "PAYMENT_FAILED":
       return "payment failed"
+    case "OFFER_RECEIVED":
+      return "counteroffer received"
     default:
       return ""
   }
