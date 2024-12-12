@@ -28,7 +28,7 @@ import { sortBy, times } from "lodash"
 import { useState } from "react"
 import { LayoutAnimation } from "react-native"
 import { isTablet } from "react-native-device-info"
-import { useLazyLoadQuery, graphql } from "react-relay"
+import { graphql, useLazyLoadQuery } from "react-relay"
 
 export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => {
   const [query, setQuery] = useState("")
@@ -230,7 +230,13 @@ const CollectedArtistListItem: React.FC<{
   }
 
   return (
-    <Flex alignItems="center" justifyContent="center" width={isTablet() ? "20%" : "50%"} mt={2}>
+    <Flex
+      alignItems="center"
+      justifyContent="center"
+      width={isTablet() ? "20%" : "50%"}
+      mt={2}
+      m="auto"
+    >
       <Touchable onPress={handlePress} disabled={disabled}>
         <Flex width="100%" alignItems="center">
           <Flex

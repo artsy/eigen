@@ -1,10 +1,9 @@
-import { Flex, Box, Text } from "@artsy/palette-mobile"
+import { Flex, Box, Text, Image } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Fair } from "app/Scenes/Map/types"
 import { navigate } from "app/system/navigation/navigate"
 import { Component } from "react"
-import { Dimensions, Image, TouchableWithoutFeedback } from "react-native"
+import { Dimensions, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
 
 interface Props {
@@ -25,7 +24,7 @@ export class FairEventSectionCard extends Component<Props> {
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
         <Container>
-          {!!image && <BackgroundImage imageURL={image.url} />}
+          {!!image?.url && <BackgroundImage src={image.url} />}
           <Overlay />
           <Flex flexDirection="column" px={2}>
             {profile?.icon?.url ? <Logo source={{ uri: profile.icon.url }} /> : null}
@@ -48,7 +47,7 @@ export class FairEventSectionCard extends Component<Props> {
   }
 }
 
-const BackgroundImage = styled(OpaqueImageView)`
+const BackgroundImage = styled(Image)`
   background: ${themeGet("colors.black60")};
   position: absolute;
   height: 100%;

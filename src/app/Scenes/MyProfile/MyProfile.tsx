@@ -1,6 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps } from "@react-navigation/stack"
 import { MyCollectionArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
+import { memo } from "react"
 import { MyProfileEditFormScreen } from "./MyProfileEditForm"
 import { MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer } from "./MyProfileHeaderMyCollectionAndSavedWorks"
 
@@ -8,7 +9,7 @@ const Stack = createStackNavigator()
 
 type MyProfileProps = StackScreenProps<any>
 
-export const MyProfile: React.FC<MyProfileProps> = () => {
+export const MyProfile: React.FC<MyProfileProps> = memo(() => {
   return (
     <NavigationContainer independent>
       <Stack.Navigator
@@ -28,4 +29,4 @@ export const MyProfile: React.FC<MyProfileProps> = () => {
       </Stack.Navigator>
     </NavigationContainer>
   )
-}
+})

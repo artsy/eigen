@@ -73,16 +73,11 @@ export const AboutArtistFragmentContainer = createFragmentContainer(AboutArtist,
       displayArtistBio
       artists(shallow: true) {
         id
-        biographyBlurb {
+        biographyBlurb(partnerBio: false) {
           text
         }
 
         ...ArtistListItem_artist
-      }
-      artist(shallow: true) {
-        partnerBiographyBlurb {
-          text
-        }
       }
       isUnlisted
     }

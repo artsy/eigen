@@ -31,7 +31,7 @@ import { usePrefetch } from "app/utils/queryPrefetching"
 import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
 import { useSwitchStatusBarStyle } from "app/utils/useStatusBarStyle"
-import { RefObject, Suspense, useCallback, useEffect, useState } from "react"
+import { memo, RefObject, Suspense, useCallback, useEffect, useState } from "react"
 import { FlatList, Linking, RefreshControl } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
@@ -41,7 +41,7 @@ export const homeViewScreenQueryVariables = () => ({
   count: NUMBER_OF_SECTIONS_TO_LOAD,
 })
 
-export const HomeView: React.FC = () => {
+export const HomeView: React.FC = memo(() => {
   const flashlistRef = useBottomTabsScrollToTop()
   const [isRefreshing, setIsRefreshing] = useState(false)
 
@@ -180,12 +180,13 @@ export const HomeView: React.FC = () => {
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
           onEndReachedThreshold={2}
           stickyHeaderIndices={[0]}
+          windowSize={15}
         />
         {!!data?.me && <EmailConfirmationBannerFragmentContainer me={data.me} />}
       </Screen.Body>
     </Screen>
   )
-}
+})
 
 const HomeViewScreenComponent: React.FC = () => {
   const artQuizState = GlobalStore.useAppState((state) => state.auth.onboardingArtQuizState)
@@ -234,7 +235,7 @@ const HomeViewScreenComponent: React.FC = () => {
   )
 }
 
-export const HomeViewScreen = Sentry.withProfiler(HomeViewScreenComponent)
+export const HomeViewScreen = memo(Sentry.withProfiler(HomeViewScreenComponent))
 
 const sectionsFragment = graphql`
   fragment HomeViewSectionsConnection_viewer on Viewer

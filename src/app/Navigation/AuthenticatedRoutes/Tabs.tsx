@@ -9,7 +9,7 @@ import { InboxTab } from "app/Navigation/AuthenticatedRoutes/InboxTab"
 import { ProfileTab } from "app/Navigation/AuthenticatedRoutes/ProfileTab"
 import { SearchTab } from "app/Navigation/AuthenticatedRoutes/SearchTab"
 import { SellTab } from "app/Navigation/AuthenticatedRoutes/SellTab"
-import { registerSharedModalRoutes } from "app/Navigation/AuthenticatedRoutes/SharedRoutes"
+import { modalRoutes } from "app/Navigation/AuthenticatedRoutes/modalRoutes"
 import { internal_navigationRef } from "app/Navigation/Navigation"
 import { useBottomTabsBadges } from "app/Navigation/Utils/useBottomTabsBadges"
 import { BottomTabOption, BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
@@ -127,7 +127,6 @@ const AppTabs: React.FC = () => {
           },
           tabBarActiveTintColor: THEME.colors["black100"],
           tabBarInactiveTintColor: THEME.colors["black60"],
-          ...tabsBadges[route.name],
         }
       }}
       screenListeners={{
@@ -139,11 +138,11 @@ const AppTabs: React.FC = () => {
         },
       }}
     >
-      <Tab.Screen name="home" component={HomeTab} />
+      <Tab.Screen name="home" component={HomeTab} options={{ ...tabsBadges["home"] }} />
       <Tab.Screen name="search" component={SearchTab} />
-      <Tab.Screen name="inbox" component={InboxTab} />
+      <Tab.Screen name="inbox" component={InboxTab} options={{ ...tabsBadges["inbox"] }} />
       <Tab.Screen name="sell" component={SellTab} />
-      <Tab.Screen name="profile" component={ProfileTab} />
+      <Tab.Screen name="profile" component={ProfileTab} options={{ ...tabsBadges["profile"] }} />
     </Tab.Navigator>
   )
 }
@@ -165,7 +164,7 @@ export const AuthenticatedRoutes: React.FC = () => {
           component={AppTabs}
           options={{ headerShown: false }}
         />
-        {registerSharedModalRoutes()}
+        {modalRoutes()}
       </AuthenticatedRoutesStack.Group>
     </AuthenticatedRoutesStack.Navigator>
   )

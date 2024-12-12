@@ -20,7 +20,7 @@ import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { CustomShareSheetItem } from "app/Components/ShareSheet/ShareSheetItem"
-import { getImageBase64, getShareImages, shareContent } from "app/Components/ShareSheet/helpers"
+import { getShareImages, shareContent } from "app/Components/ShareSheet/helpers"
 import { useToast } from "app/Components/Toast/toastHook"
 import { InstagramStoryViewShot } from "app/Scenes/Artwork/Components/InstagramStoryViewShot"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -133,6 +133,8 @@ export const ShareSheet = () => {
   }
 
   // User presses the more button and is presented with a native list of options
+  // note that we do not share the base64 image here since it is not supported
+  // from most of the apps.
   const handleMorePress = async () => {
     const details = shareContent(data)
 
@@ -141,18 +143,9 @@ export const ShareSheet = () => {
       message: details.message + "\n" + details.url,
     }
 
-    let base64Data = ""
-    if (data.type !== "sale" && data.type !== "default") {
-      base64Data = await getImageBase64(currentImageUrl)
-    }
-
-    // Process the base64 and remove any line breaks https://github.com/react-native-share/react-native-share/issues/1506#issuecomment-2486205386
-    const processedBase64Image = base64Data.replace(/(\r\n|\n|\r)/gm, "")
-
     try {
       const res = await Share.open({
         ...shareOptions,
-        ...(!!base64Data && { url: processedBase64Image }),
       })
 
       if (isArtwork) {

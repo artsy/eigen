@@ -22,6 +22,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
+import { memo } from "react"
 import { FlatList } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
@@ -192,18 +193,22 @@ const HomeViewSectionActivityPlaceholder: React.FC<FlexProps> = (flexProps) => {
   )
 }
 
-export const HomeViewSectionActivityQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
-  Component: ({ sectionID, index, ...flexProps }) => {
-    const data = useLazyLoadQuery<HomeViewSectionActivityQuery>(homeViewSectionActivityQuery, {
-      id: sectionID,
-    })
+export const HomeViewSectionActivityQueryRenderer: React.FC<SectionSharedProps> = memo(
+  withSuspense({
+    Component: ({ sectionID, index, ...flexProps }) => {
+      const data = useLazyLoadQuery<HomeViewSectionActivityQuery>(homeViewSectionActivityQuery, {
+        id: sectionID,
+      })
 
-    if (!data.homeView.section) {
-      return null
-    }
+      if (!data.homeView.section) {
+        return null
+      }
 
-    return <HomeViewSectionActivity section={data.homeView.section} index={index} {...flexProps} />
-  },
-  LoadingFallback: HomeViewSectionActivityPlaceholder,
-  ErrorFallback: NoFallback,
-})
+      return (
+        <HomeViewSectionActivity section={data.homeView.section} index={index} {...flexProps} />
+      )
+    },
+    LoadingFallback: HomeViewSectionActivityPlaceholder,
+    ErrorFallback: NoFallback,
+  })
+)

@@ -9,11 +9,12 @@ import {
   ARTWORK_RAIL_CARD_MIN_WIDTH,
 } from "app/Components/ArtworkRail/ArtworkRailCardImage"
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
+import { PrefetchFlashList } from "app/Components/PrefetchFlashList"
 import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
 import { RandomWidthPlaceholderText } from "app/utils/placeholders"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
-import React, { ReactElement, useCallback } from "react"
-import { FlatList, ListRenderItem, ViewabilityConfig } from "react-native"
+import React, { memo, ReactElement, useCallback } from "react"
+import { FlatList, ListRenderItem, Platform, ViewabilityConfig } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 
@@ -40,74 +41,86 @@ export interface ArtworkRailProps extends ArtworkActionTrackingProps {
   viewabilityConfig?: ViewabilityConfig | undefined
 }
 
-export const ArtworkRail: React.FC<ArtworkRailProps> = ({
-  listRef,
-  onPress,
-  onEndReached,
-  onEndReachedThreshold,
-  ListHeaderComponent = <Spacer x={2} />,
-  ListFooterComponent = <Spacer x={2} />,
-  hideArtistName = false,
-  showPartnerName = true,
-  dark = false,
-  showSaveIcon = false,
-  viewabilityConfig,
-  onViewableItemsChanged,
-  onMorePress,
-  hideIncreasedInterestSignal,
-  hideCuratorsPickSignal,
-  ...otherProps
-}) => {
-  const artworks = useFragment(artworksFragment, otherProps.artworks)
+export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
+  ({
+    listRef,
+    onPress,
+    onEndReached,
+    onEndReachedThreshold,
+    ListHeaderComponent = <Spacer x={2} />,
+    ListFooterComponent = <Spacer x={2} />,
+    hideArtistName = false,
+    showPartnerName = true,
+    dark = false,
+    showSaveIcon = false,
+    viewabilityConfig,
+    onViewableItemsChanged,
+    onMorePress,
+    hideIncreasedInterestSignal,
+    hideCuratorsPickSignal,
+    ...otherProps
+  }) => {
+    const artworks = useFragment(artworksFragment, otherProps.artworks)
 
-  const renderItem: ListRenderItem<Artwork> = useCallback(
-    ({ item, index }) => {
-      return (
-        <Box pr={2}>
-          <ArtworkRailCard
-            testID={`artwork-${item.slug}`}
-            artwork={item}
-            showPartnerName={showPartnerName}
-            hideArtistName={hideArtistName}
-            dark={dark}
-            onPress={() => {
-              onPress?.(item, index)
-            }}
-            showSaveIcon={showSaveIcon}
-            hideIncreasedInterestSignal={hideIncreasedInterestSignal}
-            hideCuratorsPickSignal={hideCuratorsPickSignal}
-            {...otherProps}
-          />
-        </Box>
-      )
-    },
-    [hideArtistName, onPress, showPartnerName]
-  )
-  return (
-    <PrefetchFlatList
-      data={artworks}
-      horizontal
-      keyExtractor={(item) => item.internalID}
-      ListFooterComponent={
-        <>
-          {!!onMorePress && (
-            <BrowseMoreRailCard dark={dark} onPress={onMorePress} text="Browse All Artworks" />
-          )}
-          {ListFooterComponent}
-        </>
-      }
-      ListHeaderComponent={ListHeaderComponent}
-      listRef={listRef}
-      onEndReached={onEndReached}
-      onEndReachedThreshold={onEndReachedThreshold}
-      onViewableItemsChanged={onViewableItemsChanged}
-      prefetchUrlExtractor={(item) => item?.href || undefined}
-      renderItem={renderItem}
-      showsHorizontalScrollIndicator={false}
-      viewabilityConfig={viewabilityConfig}
-    />
-  )
-}
+    const renderItem: ListRenderItem<Artwork> = useCallback(
+      ({ item, index }) => {
+        return (
+          <Box pr={2}>
+            <ArtworkRailCard
+              testID={`artwork-${item.slug}`}
+              artwork={item}
+              showPartnerName={showPartnerName}
+              hideArtistName={hideArtistName}
+              dark={dark}
+              onPress={() => {
+                onPress?.(item, index)
+              }}
+              showSaveIcon={showSaveIcon}
+              hideIncreasedInterestSignal={hideIncreasedInterestSignal}
+              hideCuratorsPickSignal={hideCuratorsPickSignal}
+              {...otherProps}
+            />
+          </Box>
+        )
+      },
+      [hideArtistName, onPress, showPartnerName]
+    )
+
+    // On android we are using a flatlist to fix some image issues
+    // Context https://github.com/artsy/eigen/pull/11207
+    const Wrapper =
+      Platform.OS === "ios"
+        ? (props: any) => (
+            <PrefetchFlashList estimatedItemSize={ARTWORK_RAIL_CARD_MIN_WIDTH} {...props} />
+          )
+        : PrefetchFlatList
+
+    return (
+      <Wrapper
+        data={artworks}
+        horizontal
+        keyExtractor={(item) => item.internalID}
+        ListFooterComponent={
+          <>
+            {!!onMorePress && (
+              <BrowseMoreRailCard dark={dark} onPress={onMorePress} text="Browse All Artworks" />
+            )}
+            {ListFooterComponent}
+          </>
+        }
+        ListHeaderComponent={ListHeaderComponent}
+        listRef={listRef}
+        onEndReached={onEndReached}
+        onEndReachedThreshold={onEndReachedThreshold}
+        onViewableItemsChanged={onViewableItemsChanged}
+        prefetchUrlExtractor={(item) => item?.href || undefined}
+        renderItem={renderItem}
+        showsHorizontalScrollIndicator={false}
+        viewabilityConfig={viewabilityConfig}
+      />
+    )
+  }
+)
 
 const artworksFragment = graphql`
   fragment ArtworkRail_artworks on Artwork @relay(plural: true) {

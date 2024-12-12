@@ -1,7 +1,7 @@
 import { Flex } from "@artsy/palette-mobile"
+import { createGeminiUrl } from "@artsy/palette-mobile/dist/utils/createGeminiUrl"
 import { captureMessage } from "@sentry/react-native"
 import { ImageCarousel_figures$data } from "__generated__/ImageCarousel_figures.graphql"
-import { createGeminiUrl } from "app/Components/OpaqueImageView/createGeminiUrl"
 import { useLocalImages } from "app/utils/LocalImageStore"
 import { useScreenDimensions } from "app/utils/hooks"
 import { guardFactory } from "app/utils/types/guardFactory"

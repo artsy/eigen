@@ -23,7 +23,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
-import { Suspense } from "react"
+import { memo, Suspense } from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionViewingRoomsProps extends FlexProps {
@@ -145,28 +145,30 @@ const homeViewSectionViewingRoomsQuery = graphql`
   }
 `
 
-export const HomeViewSectionViewingRoomsQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
-  Component: ({ sectionID, index, ...flexProps }) => {
-    const data = useLazyLoadQuery<HomeViewSectionViewingRoomsQuery>(
-      homeViewSectionViewingRoomsQuery,
-      {
-        id: sectionID,
-      },
-      {
-        networkCacheConfig: {
-          force: false,
+export const HomeViewSectionViewingRoomsQueryRenderer: React.FC<SectionSharedProps> = memo(
+  withSuspense({
+    Component: ({ sectionID, index, ...flexProps }) => {
+      const data = useLazyLoadQuery<HomeViewSectionViewingRoomsQuery>(
+        homeViewSectionViewingRoomsQuery,
+        {
+          id: sectionID,
         },
+        {
+          networkCacheConfig: {
+            force: false,
+          },
+        }
+      )
+
+      if (!data.homeView.section) {
+        return null
       }
-    )
 
-    if (!data.homeView.section) {
-      return null
-    }
-
-    return (
-      <HomeViewSectionViewingRooms section={data.homeView.section} index={index} {...flexProps} />
-    )
-  },
-  LoadingFallback: HomeViewSectionArtworksPlaceholder,
-  ErrorFallback: NoFallback,
-})
+      return (
+        <HomeViewSectionViewingRooms section={data.homeView.section} index={index} {...flexProps} />
+      )
+    },
+    LoadingFallback: HomeViewSectionArtworksPlaceholder,
+    ErrorFallback: NoFallback,
+  })
+)

@@ -1,6 +1,6 @@
 import { modules } from "app/AppRegistry"
-import { registerSharedRoutes } from "app/Navigation/AuthenticatedRoutes/SharedRoutes"
 import { registerScreen, StackNavigator } from "app/Navigation/AuthenticatedRoutes/StackNavigator"
+import { sharedRoutes } from "app/Navigation/AuthenticatedRoutes/sharedRoutes"
 
 export const HomeTab: React.FC = () => {
   return (
@@ -9,7 +9,7 @@ export const HomeTab: React.FC = () => {
         name: "Home",
         module: modules["Home"],
       })}
-      {registerSharedRoutes()}
+      {sharedRoutes()}
     </StackNavigator.Navigator>
   )
 }

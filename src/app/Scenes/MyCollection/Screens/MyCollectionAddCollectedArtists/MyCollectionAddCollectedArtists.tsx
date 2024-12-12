@@ -1,4 +1,4 @@
-import { Button, Flex, Spacer, Text, useScreenDimensions } from "@artsy/palette-mobile"
+import { Button, Flex, Screen, Spacer, Text, useScreenDimensions } from "@artsy/palette-mobile"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { useToast } from "app/Components/Toast/toastHook"
 import { MyCollectionAddCollectedArtistsAutosuggest } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsAutosuggest"
@@ -32,34 +32,36 @@ export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
   }
 
   return (
-    <Flex flex={1} pt={2}>
-      <Flex flex={1} px={2}>
-        <Suspense fallback={() => null}>
-          <MyCollectionAddCollectedArtistsAutosuggest />
-        </Suspense>
-      </Flex>
+    <Screen>
+      <Screen.Body>
+        <Flex flex={1} mt={1}>
+          <Suspense fallback={() => null}>
+            <MyCollectionAddCollectedArtistsAutosuggest />
+          </Suspense>
 
-      <Spacer y={4} />
+          <Spacer y={4} />
 
-      <Flex
-        position="absolute"
-        bottom={0}
-        alignItems="center"
-        alignSelf="center"
-        p={2}
-        right={0}
-        left={0}
-        backgroundColor="white100"
-      >
-        <Button block disabled={!count || isLoading} onPress={handleSubmit} mb={`${bottom}px`}>
-          <Text color="white100">
-            Add Selected {pluralize(`Artist`, count)} • {count}
-          </Text>
-        </Button>
-      </Flex>
+          <Flex
+            position="absolute"
+            bottom={0}
+            alignItems="center"
+            alignSelf="center"
+            pb={2}
+            right={0}
+            left={0}
+            backgroundColor="white100"
+          >
+            <Button block disabled={!count || isLoading} onPress={handleSubmit} mb={`${bottom}px`}>
+              <Text color="white100">
+                Add Selected {pluralize(`Artist`, count)} • {count}
+              </Text>
+            </Button>
+          </Flex>
+        </Flex>
 
-      <LoadingModal isVisible={isLoading} dark />
-    </Flex>
+        <LoadingModal isVisible={isLoading} dark />
+      </Screen.Body>
+    </Screen>
   )
 }
 

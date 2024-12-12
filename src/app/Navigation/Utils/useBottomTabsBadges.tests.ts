@@ -39,11 +39,11 @@ describe("useBottomTabsBadges", () => {
     const { result } = renderHook(() => useBottomTabsBadges())
 
     expect(result.current.tabsBadges).toMatchObject({
-      home: { badgeCount: undefined, badgeStyle: {} },
-      search: { badgeCount: undefined, badgeStyle: {} },
-      inbox: { badgeCount: undefined, badgeStyle: {} },
-      sell: { badgeCount: undefined, badgeStyle: {} },
-      profile: { badgeCount: undefined, badgeStyle: {} },
+      home: { tabBarBadge: undefined, tabBarBadgeStyle: {} },
+      search: { tabBarBadge: undefined, tabBarBadgeStyle: {} },
+      inbox: { tabBarBadge: undefined, tabBarBadgeStyle: {} },
+      sell: { tabBarBadge: undefined, tabBarBadgeStyle: {} },
+      profile: { tabBarBadge: undefined, tabBarBadgeStyle: {} },
     })
   })
 
@@ -56,8 +56,8 @@ describe("useBottomTabsBadges", () => {
     const { result } = renderHook(() => useBottomTabsBadges())
 
     expect(result.current.tabsBadges.home).toMatchObject({
-      badgeCount: "",
-      badgeStyle: {
+      tabBarBadge: "",
+      tabBarBadgeStyle: {
         // Whatever style we have here
       },
     })
@@ -72,8 +72,8 @@ describe("useBottomTabsBadges", () => {
     const { result } = renderHook(() => useBottomTabsBadges())
 
     expect(result.current.tabsBadges.inbox).toMatchObject({
-      badgeCount: 5,
-      badgeStyle: {
+      tabBarBadge: 5,
+      tabBarBadgeStyle: {
         // Whatever style we have here
       },
     })
@@ -88,8 +88,8 @@ describe("useBottomTabsBadges", () => {
     const { result } = renderHook(() => useBottomTabsBadges())
 
     expect(result.current.tabsBadges.inbox).toMatchObject({
-      badgeCount: 5,
-      badgeStyle: {
+      tabBarBadge: 5,
+      tabBarBadgeStyle: {
         // Whatever style we have here
       },
     })

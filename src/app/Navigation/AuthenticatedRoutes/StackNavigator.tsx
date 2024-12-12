@@ -9,9 +9,11 @@ import {
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { ModuleDescriptor } from "app/AppRegistry"
+import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
 import { AuthenticatedRoutesParams } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { isModalScreen } from "app/Navigation/Utils/isModalScreen"
 import { goBack } from "app/system/navigation/navigate"
+import { memo } from "react"
 import { Platform } from "react-native"
 import { isTablet } from "react-native-device-info"
 
@@ -29,7 +31,9 @@ export const registerScreen: React.FC<StackNavigatorScreenProps> = ({ name, modu
       name={name}
       key={name}
       options={{
+        presentation: isModalScreen(module) ? "fullScreenModal" : "card",
         orientation: !isTablet() ? "portrait" : "default",
+        headerShown: module.options.screenOptions?.headerShown ?? true,
         headerLeft: ({ canGoBack }) => {
           if (!canGoBack) {
             return null
@@ -81,22 +85,23 @@ export interface ScreenWrapperProps {
   readonly hidesBottomTabs?: boolean
 }
 
-export const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
-  hidesBottomTabs = false,
-  children,
-}) => {
-  // We don't have the bottom tabs context on modal screens
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const tabBarHeight = hidesBottomTabs ? 0 : useBottomTabBarHeight()
+export const ScreenWrapper: React.FC<ScreenWrapperProps> = memo(
+  ({ hidesBottomTabs = false, children }) => {
+    // We don't have the bottom tabs context on modal screens
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const tabBarHeight = hidesBottomTabs ? 0 : useBottomTabBarHeight()
 
-  return (
-    <Flex
-      flex={1}
-      style={{
-        paddingBottom: hidesBottomTabs ? 0 : tabBarHeight,
-      }}
-    >
-      {children}
-    </Flex>
-  )
-}
+    return (
+      <RetryErrorBoundary>
+        <Flex
+          flex={1}
+          style={{
+            paddingBottom: hidesBottomTabs ? 0 : tabBarHeight,
+          }}
+        >
+          {children}
+        </Flex>
+      </RetryErrorBoundary>
+    )
+  }
+)

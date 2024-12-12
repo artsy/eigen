@@ -8,10 +8,10 @@ import {
   Button,
   Touchable,
   Screen,
+  Image,
 } from "@artsy/palette-mobile"
 import { FairArticlesQuery } from "__generated__/FairArticlesQuery.graphql"
 import { FairArticles_fair$data } from "__generated__/FairArticles_fair.graphql"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useEnvironment } from "app/utils/hooks/useEnvironment"
@@ -77,12 +77,13 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
             }}
           >
             <Box position="relative">
-              <OpaqueImageView
-                width={imageWidth}
-                height={(4 / 3) * imageWidth}
-                imageURL={heroArticle?.thumbnailImage?.url}
-              />
-
+              {!!heroArticle?.thumbnailImage?.url && (
+                <Image
+                  width={imageWidth}
+                  height={(4 / 3) * imageWidth}
+                  src={heroArticle.thumbnailImage.url}
+                />
+              )}
               <Box bg="white100" pt={2} px={2} width="85%" position="absolute" bottom={0} right={0}>
                 <Text variant="sm-display" mb={1}>
                   {heroArticle?.title}
@@ -116,11 +117,13 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
                     }
                   }}
                 >
-                  <OpaqueImageView
-                    width={imageWidth}
-                    height={(9 / 16) * imageWidth}
-                    imageURL={article?.thumbnailImage?.url}
-                  />
+                  {!!article?.thumbnailImage?.url && (
+                    <Image
+                      width={imageWidth}
+                      height={(9 / 16) * imageWidth}
+                      src={article?.thumbnailImage?.url}
+                    />
+                  )}
 
                   <Box width="95%">
                     <Text variant="sm-display" mt={1} mb={1}>

@@ -1,6 +1,12 @@
-import { screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { Text } from "react-native"
 import { MyCollectionArtworkScreen } from "./MyCollectionArtwork"
+
+jest.mock("@artsy/palette-mobile", () => ({
+  ...jest.requireActual("@artsy/palette-mobile"),
+  Popover: (props: any) => <MockedPopover {...props} />,
+}))
 
 describe("My Collection Artwork", () => {
   const { renderWithRelay } = setupTestWrapper({ Component: MyCollectionArtworkScreen })
@@ -26,14 +32,11 @@ describe("My Collection Artwork", () => {
   })
 
   describe("Edit button", () => {
-    it("should be hidden when consignmentSubmission is available", async () => {
+    it("should be visible, greyed out and open a popover when submission process is not complete", async () => {
       renderWithRelay({
         Artwork: () => ({
-          id: "random-id",
-          artist: { internalID: "internal-id" },
-          medium: "medium",
-          category: "medium",
-          consignmentSubmission: { internalID: "submission-id" },
+          ...artwork,
+          consignmentSubmission: { internalID: "submission-id", isEditable: false },
         }),
       })
 
@@ -41,18 +44,32 @@ describe("My Collection Artwork", () => {
         screen.queryByTestId("my-collection-artwork-placeholder")
       )
 
-      expect(screen.queryByText("Edit")).not.toBeOnTheScreen()
+      expect(screen.getByText("Edit")).toBeOnTheScreen()
+      expect(screen.getByText("Edit").props.color).toEqual("black60")
+
+      fireEvent.press(screen.getByText("Edit"))
+
+      expect(screen.getByText("Popover")).toBeOnTheScreen()
     })
 
-    it("should be visible when consignmentSubmission is not available", async () => {
+    it("should be visible when the artwork submission is complete", async () => {
       renderWithRelay({
         Artwork: () => ({
-          id: "random-id",
-          artist: { internalID: "internal-id" },
-          medium: "medium",
-          category: "medium",
-          consignmentSubmission: null,
+          ...artwork,
+          consignmentSubmission: { internalID: "submission-id", isEditable: true },
         }),
+      })
+
+      await waitForElementToBeRemoved(() =>
+        screen.queryByTestId("my-collection-artwork-placeholder")
+      )
+
+      expect(screen.getByText("Edit")).toBeOnTheScreen()
+    })
+
+    it("should be visible when the artwork does not have an associated submission", async () => {
+      renderWithRelay({
+        Artwork: () => ({ ...artwork, consignmentSubmission: null }),
       })
 
       await waitForElementToBeRemoved(() =>
@@ -63,3 +80,19 @@ describe("My Collection Artwork", () => {
     })
   })
 })
+
+const artwork = {
+  id: "random-id",
+  artist: { internalID: "internal-id" },
+  medium: "medium",
+  category: "medium",
+}
+
+const MockedPopover: React.FC<any> = ({ children, onDismiss }) => {
+  return (
+    <>
+      <Text onPress={onDismiss}>Popover</Text>
+      {children}
+    </>
+  )
+}

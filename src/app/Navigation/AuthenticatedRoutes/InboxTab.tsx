@@ -1,6 +1,6 @@
 import { modules } from "app/AppRegistry"
-import { registerSharedRoutes } from "app/Navigation/AuthenticatedRoutes/SharedRoutes"
 import { registerScreen, StackNavigator } from "app/Navigation/AuthenticatedRoutes/StackNavigator"
+import { sharedRoutes } from "app/Navigation/AuthenticatedRoutes/sharedRoutes"
 
 export const InboxTab: React.FC = () => {
   return (
@@ -9,12 +9,13 @@ export const InboxTab: React.FC = () => {
         name: "Inbox",
         module: modules["Inbox"],
       })}
+
       {registerScreen({
         name: "Conversation",
         module: modules["Conversation"],
       })}
 
-      {registerSharedRoutes()}
+      {sharedRoutes()}
     </StackNavigator.Navigator>
   )
 }

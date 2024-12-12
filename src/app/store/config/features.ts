@@ -182,12 +182,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableArtworkListOfferability",
   },
-  ARUsePaletteImage: {
-    description: "Use Palette Image Component",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "ARUsePaletteImageComponent",
-  },
   ARShowBlurhashImagePlaceholder: {
     description: "Show blurhash image placeholder (works only when using Palette Image Component)",
     readyForRelease: true,
@@ -230,18 +224,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableCollectionsWithoutHeaderImage",
   },
-  ARUseMetaphysicsCDN: {
-    description: "Use Metaphysics CDN (requires app restart)",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "ARUseMetaphysicsCDN",
-  },
-  AREnableCacheableDirective: {
-    description: "Enable @cacheable Directive",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableCacheableDirective",
-  },
   AREnableSignupLoginFusion: {
     description: "Enable the fused signup and login flow",
     readyForRelease: true,
@@ -277,6 +259,11 @@ export const features = {
     readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableAvailabilityFilter",
+  },
+  AREnableInfiniteDiscovery: {
+    description: "Enable infinite discovery",
+    readyForRelease: false,
+    showInDevMenu: true,
   },
 } satisfies { [key: string]: FeatureDescriptor }
 
@@ -365,9 +352,6 @@ export const devToggles: { [key: string]: DevToggleDescriptor } = {
   },
   DTShowErrorInLoadFailureView: {
     description: "Show error in load failure view",
-  },
-  DTEnableNewImageLabel: {
-    description: "Show a label on new OpaqueImageView",
   },
   DTDisableNavigationStateRehydration: {
     description:

@@ -1,10 +1,10 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex, Screen, Text } from "@artsy/palette-mobile"
+import { BackButton, Flex, Screen, Text, useSpace } from "@artsy/palette-mobile"
 import { AuctionResultsScreenWrapperContainerQuery } from "__generated__/AuctionResultsScreenWrapperContainerQuery.graphql"
 import { AuctionResultsScreenWrapper_me$data } from "__generated__/AuctionResultsScreenWrapper_me.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { AuctionResultsList, LoadingSkeleton } from "app/Components/AuctionResultsList"
-import { navigate } from "app/system/navigation/navigate"
+import { goBack, navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -191,6 +191,8 @@ const getDescriptionByState = (state: AuctionResultsState) => {
 export const AuctionResultsScreenScreenWrapperQueryQueryRenderer: React.FC<{
   state: AuctionResultsState
 }> = ({ state = AuctionResultsState.ALL }) => {
+  const space = useSpace()
+
   return (
     <Screen>
       <QueryRenderer<AuctionResultsScreenWrapperContainerQuery>
@@ -218,6 +220,13 @@ export const AuctionResultsScreenScreenWrapperQueryQueryRenderer: React.FC<{
             sort: AuctionResultsSorts.DATE_DESC,
           },
         })}
+      />
+      <BackButton
+        style={{
+          padding: space(2),
+          position: "absolute",
+        }}
+        onPress={goBack}
       />
     </Screen>
   )

@@ -1,7 +1,6 @@
 import { ActionType, ContextModule, OwnerType, TappedArticleGroup } from "@artsy/cohesion"
-import { Box, BoxProps, useColor, Text, Touchable } from "@artsy/palette-mobile"
+import { Box, BoxProps, useColor, Text, Touchable, Image } from "@artsy/palette-mobile"
 import { FairEditorial_fair$data } from "__generated__/FairEditorial_fair.graphql"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -86,7 +85,7 @@ export const FairEditorial: React.FC<FairEditorialProps> = ({ fair, ...rest }) =
               </Box>
 
               {!!article.thumbnailImage?.src && (
-                <OpaqueImageView width={90} height={50} imageURL={article.thumbnailImage.src} />
+                <Image width={90} height={50} src={article.thumbnailImage.src} />
               )}
             </Box>
           </Touchable>

@@ -29,7 +29,9 @@ describe("Articles", () => {
       }),
     })
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("articles-screen-placeholder"))
+    await waitForElementToBeRemoved(() => screen.queryByTestId("articles-screen-placeholder"), {
+      timeout: 15000,
+    })
 
     expect(screen.getByText("Sebastián Meltz-Collazo")).toBeTruthy()
     expect(

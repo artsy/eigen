@@ -22,7 +22,7 @@ export const useAddUserInterestArtists = (source: string) => {
           category: "COLLECTED_BEFORE" as UserInterestCategory,
           interestId: artistId,
           interestType: "ARTIST" as UserInterestInterestType,
-          private: true,
+          private: false,
         }
       })
 

@@ -1,5 +1,6 @@
 import { Color, Flex, Touchable, useColor } from "@artsy/palette-mobile"
-import { forwardRef, useRef } from "react"
+import { debounce } from "lodash"
+import { forwardRef } from "react"
 import ReanimatedSwipeable, {
   SwipeableMethods,
   SwipeableProps,
@@ -43,12 +44,14 @@ export const Swipeable = forwardRef<SwipeableMethods, SwipeableComponentProps>((
   const color = useColor()
   const width = useSharedValue(0)
 
-  const hasSwiped = useRef(false)
+  const hasSwiped = useSharedValue(false)
 
-  const handleSwipeToInteract = () => {
-    hasSwiped.current = true
-    ReactNativeHapticFeedback.trigger("impactLight")
-    actionOnSwipe?.()
+  const handleSwipeToInteract = (swipeDistance: number) => {
+    if (!hasSwiped.get() && swipeDistance <= SWIPE_TO_INTERACT_THRESHOLD) {
+      hasSwiped.set(true)
+      ReactNativeHapticFeedback.trigger("impactLight")
+      debounce(() => actionOnSwipe?.())()
+    }
   }
 
   const RightActions = (
@@ -64,10 +67,12 @@ export const Swipeable = forwardRef<SwipeableMethods, SwipeableComponentProps>((
       }
 
       // Don't do anything if the action is disabled, if the user has already swiped, or if the width is not yet set (on first render)
-      if (!actionOnSwipe || hasSwiped.current || !width.get()) return style
+      if (!actionOnSwipe || hasSwiped.get() || !width.get()) return style
 
-      if (width.get() + dragX.get() * FRICTION <= SWIPE_TO_INTERACT_THRESHOLD) {
-        runOnJS(handleSwipeToInteract)()
+      const swipeDistance = width.get() + dragX.get() * FRICTION
+
+      if (swipeDistance <= SWIPE_TO_INTERACT_THRESHOLD) {
+        runOnJS(handleSwipeToInteract)(swipeDistance)
       }
 
       return style

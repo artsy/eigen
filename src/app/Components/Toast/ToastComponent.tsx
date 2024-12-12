@@ -1,6 +1,5 @@
-import { Box, Flex, Text, Touchable, useColor } from "@artsy/palette-mobile"
+import { Box, Flex, Image, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
-import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { internal_navigationRef } from "app/Navigation/Navigation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useScreenDimensions } from "app/utils/hooks"
@@ -128,7 +127,7 @@ export const ToastComponent = ({
 
         {!!imageURL && (
           <Box borderWidth={1} borderColor="white100" mr={1}>
-            <OpaqueImageView imageURL={imageURL} width={IMAGE_SIZE} height={IMAGE_SIZE} />
+            <Image src={imageURL} width={IMAGE_SIZE} height={IMAGE_SIZE} />
           </Box>
         )}
 
