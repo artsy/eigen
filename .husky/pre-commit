@@ -1,5 +1,10 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
+# Skip pre-commit during a merge
+if git rev-parse -q --verify MERGE_HEAD > /dev/null 2>&1; then
+    echo "Merge in progress; skipping pre-commit hook."
+    exit 0
+fi
 
 yarn lint-staged
