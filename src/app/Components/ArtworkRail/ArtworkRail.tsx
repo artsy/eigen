@@ -86,6 +86,8 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
       [hideArtistName, onPress, showPartnerName]
     )
 
+    // On android we are using a flatlist to fix some image issues
+    // Context https://github.com/artsy/eigen/pull/11207
     const Wrapper =
       Platform.OS === "ios"
         ? (props: any) => (
