@@ -8,11 +8,17 @@ export const OFFSET_X = 100
 
 interface FancySwiperProps {
   cards: Card[]
-  onSwipeRight: () => void
+  hideActionButtons?: boolean
   onSwipeLeft: () => void
+  onSwipeRight: () => void
 }
 
-export const FancySwiper = ({ cards, onSwipeRight, onSwipeLeft }: FancySwiperProps) => {
+export const FancySwiper = ({
+  cards,
+  hideActionButtons = false,
+  onSwipeLeft,
+  onSwipeRight,
+}: FancySwiperProps) => {
   const remainingCards = cards.reverse()
   const swiper = useRef<Animated.ValueXY>(new Animated.ValueXY()).current
 
@@ -84,7 +90,7 @@ export const FancySwiper = ({ cards, onSwipeRight, onSwipeLeft }: FancySwiperPro
           )
         })}
       </Flex>
-      <FancySwiperIcons swiper={swiper} OnPress={onSwipeHandler} />
+      {!hideActionButtons && <FancySwiperIcons swiper={swiper} OnPress={onSwipeHandler} />}
     </>
   )
 }
