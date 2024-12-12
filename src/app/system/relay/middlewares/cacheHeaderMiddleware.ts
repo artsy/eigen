@@ -1,4 +1,4 @@
-import { getCurrentURL } from "app/routes"
+import { getCurrentURL } from "app/system/navigation/utils/getCurrentURL"
 import {
   hasNoCacheParamPresent,
   hasPersonalizedArguments,

@@ -1,4 +1,7 @@
-import { addRoute, addWebViewRoute, matchRoute, replaceParams } from "app/routes"
+import { addRoute, addWebViewRoute } from "app/Navigation/utils/addRoute"
+import { matchRoute } from "app/system/navigation/utils/matchRoute"
+import { replaceParams } from "app/system/navigation/utils/replaceParams"
+import { View } from "react-native"
 
 describe("artsy.net routes", () => {
   it("routes to Home", () => {
@@ -1291,14 +1294,10 @@ describe("addWebViewRoute", () => {
 describe("addRoute", () => {
   it("returns a route matcher for a route", () => {
     expect(
-      addRoute("/home/:id/thing/:slug/other_thing/:slug2", "Home").match([
-        "home",
-        "mounir",
-        "thing",
-        "blah",
-        "other_thing",
-        "blah2",
-      ])
+      addRoute("/home/:id/thing/:slug/other_thing/:slug2", {
+        name: "Home",
+        Component: View,
+      }).match(["home", "mounir", "thing", "blah", "other_thing", "blah2"])
     ).toEqual({ id: "mounir", slug: "blah", slug2: "blah2" })
   })
 })

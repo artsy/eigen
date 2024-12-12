@@ -25,47 +25,32 @@ Example of situations where **you do need** to add a new route:
 
 #### How to add a global app route
 
-1. Add the new route to `routes.ts`.
+Add your screen to `routes.tsx`.
 
-   ```typescript
-   ...
-   addRoute("/my-screen", "MyScreen"),
-   // addWebViewRoute("/my-web-view-screen", "MyWebViewScreen"), // In case the new route is a webview
-   ...
-   ```
-
-   > Don't forget to write a test at route.tests.tsx
-
-   > Ideally, the route you are adding, should match the one in **Force**. This is because we would like _users who receive a deep link into the app and do not have the app installed_, to be redirected to the web version of the route in Web.
-
-2. Add the route to `src/main/AndroidManifest.xml`. This step is required to enable deep linking on Android
-   ```xml
-   ...
-   <data android:pathPrefix="/my-screen" />
-   ...
-   ```
-3. Register your screen at `AppRegistry.tsx`.
-   ```typescript
-   MyScreen: reactModule(
-      MyScreen, // The screen name in the app
-      {
-        // Show the screen as a modal always
-        // PS: The screen will show up as a modal but won't be treated as modal. This is great to avoid common modal pifalls
-        alwaysPresentModally?: boolean
-        // This screen refers to a tab in the app
-        isRootViewForTabName: BottomTabType,
-        fullBleed?: boolean
-        // Hide the close button inside the moda
-        hasOwnModalCloseButton?: boolean
-        hidesBackButton?: boolean
-        // Specify how you want the screen to show up
-        // See https://developer.apple.com/documentation/uikit/uiviewcontroller/1621355-modalpresentationstyle?language=objc
-        modalPresentationStyle?: "fullScreen" | "pageSheet" | "formSheet"
-        // If this module should only be shown in one particular tab, add it here
-        onlyShowInTabName?: BottomTabType
+```typescript
+export const artsyDotNetRoutes = defineRoutes([
+  ...
+  {
+    path: "/my-screen-path",
+    name: "MyScreen",
+    Component: MyScreen,
+    options: {
+      screenOptions: {
+        headerTitle: "My Screen Title",
       },
-    ),
-   ```
+    },
+  },
+  ...
+])
+```
+
+Note: **[Android only]**: If you want to enable deep linking for your new screen, add the route to `src/main/AndroidManifest.xml`.
+
+```xml
+...
+<data android:pathPrefix="/my-screen" />
+...
+```
 
 ### Context specific app routes
 

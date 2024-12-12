@@ -87,7 +87,11 @@ const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me$data; relay: Rela
 }
 
 const MyAccountEditEmailPlaceholder: React.FC<{}> = () => {
-  return <PlaceholderBox height={40} />
+  return (
+    <Flex p={2}>
+      <PlaceholderBox height={40} />
+    </Flex>
+  )
 }
 
 export const MyAccountEditEmailContainer = createFragmentContainer(MyAccountEditEmail, {
