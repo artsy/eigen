@@ -3,7 +3,7 @@ import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { SellWithArtsyHomeQueryRenderer } from "app/Scenes/SellWithArtsy/SellWithArtsyHome"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack, switchTab } from "app/system/navigation/navigate"
-import { useCallback, useEffect, useRef } from "react"
+import { memo, useCallback, useEffect, useRef } from "react"
 import { BackHandler } from "react-native"
 
 export interface SellTabProps {
@@ -12,7 +12,7 @@ export interface SellTabProps {
 
 type SellWithArtsyProps = StackScreenProps<any>
 
-export const SellWithArtsy: React.FC<SellWithArtsyProps> = () => {
+export const SellWithArtsy: React.FC<SellWithArtsyProps> = memo(() => {
   const sellTabProps = GlobalStore.useAppState((state) => {
     return state.bottomTabs.sessionState.tabProps.sell ?? {}
   }) as SellTabProps
@@ -45,4 +45,4 @@ export const SellWithArtsy: React.FC<SellWithArtsyProps> = () => {
   }, [sellTabPropsRef.current])
 
   return <SellWithArtsyHomeQueryRenderer />
-}
+})

@@ -23,6 +23,7 @@ import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { times } from "lodash"
+import { memo } from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionFairsProps {
@@ -204,26 +205,28 @@ const homeViewSectionFairsQuery = graphql`
   }
 `
 
-export const HomeViewSectionFairsQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
-  Component: ({ sectionID, index, ...flexProps }) => {
-    const data = useLazyLoadQuery<HomeViewSectionFairsQuery>(
-      homeViewSectionFairsQuery,
-      {
-        id: sectionID,
-      },
-      {
-        networkCacheConfig: {
-          force: false,
+export const HomeViewSectionFairsQueryRenderer: React.FC<SectionSharedProps> = memo(
+  withSuspense({
+    Component: ({ sectionID, index, ...flexProps }) => {
+      const data = useLazyLoadQuery<HomeViewSectionFairsQuery>(
+        homeViewSectionFairsQuery,
+        {
+          id: sectionID,
         },
+        {
+          networkCacheConfig: {
+            force: false,
+          },
+        }
+      )
+
+      if (!data.homeView.section) {
+        return null
       }
-    )
 
-    if (!data.homeView.section) {
-      return null
-    }
-
-    return <HomeViewSectionFairs section={data.homeView.section} index={index} {...flexProps} />
-  },
-  LoadingFallback: HomeViewSectionFairsPlaceholder,
-  ErrorFallback: NoFallback,
-})
+      return <HomeViewSectionFairs section={data.homeView.section} index={index} {...flexProps} />
+    },
+    LoadingFallback: HomeViewSectionFairsPlaceholder,
+    ErrorFallback: NoFallback,
+  })
+)

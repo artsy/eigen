@@ -22,6 +22,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { times } from "lodash"
+import { memo } from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionArticlesCardsProps {
@@ -176,8 +177,8 @@ const homeViewSectionArticlesCardsQuery = graphql`
   }
 `
 
-export const HomeViewSectionArticlesCardsQueryRenderer: React.FC<SectionSharedProps> = withSuspense(
-  {
+export const HomeViewSectionArticlesCardsQueryRenderer: React.FC<SectionSharedProps> = memo(
+  withSuspense({
     Component: ({ sectionID, index, ...flexProps }) => {
       const data = useLazyLoadQuery<HomeViewSectionArticlesCardsQuery>(
         homeViewSectionArticlesCardsQuery,
@@ -205,5 +206,5 @@ export const HomeViewSectionArticlesCardsQueryRenderer: React.FC<SectionSharedPr
     },
     LoadingFallback: HomeViewSectionArticlesCardsPlaceholder,
     ErrorFallback: NoFallback,
-  }
+  })
 )

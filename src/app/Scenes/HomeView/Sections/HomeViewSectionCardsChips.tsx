@@ -11,6 +11,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { memo } from "react"
 import { FlatList } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -161,25 +162,27 @@ const query = graphql`
   }
 `
 
-export const HomeViewSectionCardsChipsQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
-  Component: ({ sectionID, index, ...flexProps }) => {
-    const isEnabled = useFeatureFlag("AREnableMarketingCollectionsCategories")
-    const data = useLazyLoadQuery<HomeViewSectionCardsChipsQuery>(query, {
-      id: sectionID,
-      isEnabled,
-    })
+export const HomeViewSectionCardsChipsQueryRenderer: React.FC<SectionSharedProps> = memo(
+  withSuspense({
+    Component: ({ sectionID, index, ...flexProps }) => {
+      const isEnabled = useFeatureFlag("AREnableMarketingCollectionsCategories")
+      const data = useLazyLoadQuery<HomeViewSectionCardsChipsQuery>(query, {
+        id: sectionID,
+        isEnabled,
+      })
 
-    if (!data?.homeView.section || !isEnabled) {
-      return null
-    }
+      if (!data?.homeView.section || !isEnabled) {
+        return null
+      }
 
-    return (
-      <HomeViewSectionCardsChips section={data.homeView.section} index={index} {...flexProps} />
-    )
-  },
-  LoadingFallback: HomeViewSectionCardsChipsPlaceholder,
-  ErrorFallback: NoFallback,
-})
+      return (
+        <HomeViewSectionCardsChips section={data.homeView.section} index={index} {...flexProps} />
+      )
+    },
+    LoadingFallback: HomeViewSectionCardsChipsPlaceholder,
+    ErrorFallback: NoFallback,
+  })
+)
 
 const getColumns = <T extends Object>(data: T[], numRows: number, numColumns: number): T[][] => {
   const rows: T[][] = Array.from({ length: numColumns }, () => [])

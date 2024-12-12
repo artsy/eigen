@@ -26,7 +26,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { AnimatePresence, MotiView } from "moti"
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { CellRendererProps, InteractionManager, ListRenderItem } from "react-native"
 import { FlatList } from "react-native-gesture-handler"
 import { SwipeableMethods } from "react-native-gesture-handler/ReanimatedSwipeable"
@@ -250,24 +250,26 @@ const homeViewSectionTasksQuery = graphql`
   }
 `
 
-export const HomeViewSectionTasksQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
-  Component: ({ sectionID, index, refetchKey, ...flexProps }) => {
-    const data = useLazyLoadQuery<HomeViewSectionTasksQuery>(
-      homeViewSectionTasksQuery,
-      { id: sectionID, numberOfTasks: MAX_NUMBER_OF_TASKS },
-      {
-        fetchKey: refetchKey,
-        fetchPolicy: "store-and-network",
-        networkCacheConfig: { force: true },
+export const HomeViewSectionTasksQueryRenderer: React.FC<SectionSharedProps> = memo(
+  withSuspense({
+    Component: ({ sectionID, index, refetchKey, ...flexProps }) => {
+      const data = useLazyLoadQuery<HomeViewSectionTasksQuery>(
+        homeViewSectionTasksQuery,
+        { id: sectionID, numberOfTasks: MAX_NUMBER_OF_TASKS },
+        {
+          fetchKey: refetchKey,
+          fetchPolicy: "store-and-network",
+          networkCacheConfig: { force: true },
+        }
+      )
+
+      if (!data.homeView.section) {
+        return null
       }
-    )
 
-    if (!data.homeView.section) {
-      return null
-    }
-
-    return <HomeViewSectionTasks section={data.homeView.section} index={index} {...flexProps} />
-  },
-  LoadingFallback: HomeViewSectionTasksPlaceholder,
-  ErrorFallback: NoFallback,
-})
+      return <HomeViewSectionTasks section={data.homeView.section} index={index} {...flexProps} />
+    },
+    LoadingFallback: HomeViewSectionTasksPlaceholder,
+    ErrorFallback: NoFallback,
+  })
+)

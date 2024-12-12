@@ -17,6 +17,7 @@ import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracki
 import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { memo } from "react"
 import { isTablet } from "react-native-device-info"
 import FastImage from "react-native-fast-image"
 import LinearGradient from "react-native-linear-gradient"
@@ -156,7 +157,7 @@ const homeViewSectionCardQuery = graphql`
   }
 `
 
-export const HomeViewSectionCardQueryRenderer: React.FC<SectionSharedProps> = (props) => {
+export const HomeViewSectionCardQueryRenderer: React.FC<SectionSharedProps> = memo((props) => {
   const isInfiniteDiscoveryEnabled = useFeatureFlag("AREnableInfiniteDiscovery")
 
   if (props.sectionID === "home-view-section-infinite-discovery" && !isInfiniteDiscoveryEnabled) {
@@ -186,7 +187,7 @@ export const HomeViewSectionCardQueryRenderer: React.FC<SectionSharedProps> = (p
     LoadingFallback: HomeViewSectionCardPlaceholder,
     ErrorFallback: NoFallback,
   })(props)
-}
+})
 
 function getRoute(card: any) {
   let route

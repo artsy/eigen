@@ -24,6 +24,7 @@ import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracki
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { memo } from "react"
 import { TouchableOpacity, useWindowDimensions } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
@@ -203,7 +204,7 @@ const homeViewSectionFeaturedCollectionQuery = graphql`
   }
 `
 
-export const HomeViewSectionFeaturedCollectionQueryRenderer: React.FC<SectionSharedProps> =
+export const HomeViewSectionFeaturedCollectionQueryRenderer: React.FC<SectionSharedProps> = memo(
   withSuspense({
     Component: ({ sectionID, index, ...flexProps }) => {
       const data = useLazyLoadQuery<HomeViewSectionFeaturedCollectionQuery>(
@@ -233,3 +234,4 @@ export const HomeViewSectionFeaturedCollectionQueryRenderer: React.FC<SectionSha
     LoadingFallback: HomeViewSectionFeaturedCollectionPlaceholder,
     ErrorFallback: NoFallback,
   })
+)
