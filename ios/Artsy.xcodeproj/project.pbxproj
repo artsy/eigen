@@ -505,7 +505,7 @@
 		CBE327A027E275A400395A93 /* Bidder.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3266527E275A300395A93 /* Bidder.m */; };
 		CBE327A127E275A400395A93 /* BidderPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3266627E275A300395A93 /* BidderPosition.m */; };
 		CBE327A227E275A400395A93 /* SystemTime.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3266927E275A300395A93 /* SystemTime.m */; };
-		E15070752CCFE89B00615118 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		E15070752CCFE89B00615118 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
 		E15070762CCFE8A900615118 /* ARTLiveAuctionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3259A27E275A200395A93 /* ARTLiveAuctionViewManager.m */; };
 		E15070772CCFE8C400615118 /* LiveAuctionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3259B27E275A200395A93 /* LiveAuctionView.swift */; };
 		E1856EA22C98923B00849C0E /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E1856EA12C98923B00849C0E /* BootSplash.storyboard */; };
@@ -3829,7 +3829,7 @@
 			files = (
 				E15070772CCFE8C400615118 /* LiveAuctionView.swift in Sources */,
 				E15070762CCFE8A900615118 /* ARTLiveAuctionViewManager.m in Sources */,
-				E15070752CCFE89B00615118 /* (null) in Sources */,
+				E15070752CCFE89B00615118 /* BuildFile in Sources */,
 				1A4B97C7283CDD5A00878EAE /* ARMapContainerViewController.m in Sources */,
 				CBE3279227E275A400395A93 /* User.m in Sources */,
 				CBE3277927E275A400395A93 /* ArtsyAPI+Notifications.m in Sources */,
@@ -4328,8 +4328,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_NAME = Artsy;
 				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy;
+				PRODUCT_NAME = Artsy;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Artsy/Resources/Artsy-Bridging-Header.h";
@@ -4409,8 +4409,8 @@
 					"-Wl",
 					"-ld_classic",
 				);
-				PRODUCT_NAME = Artsy;
 				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy;
+				PRODUCT_NAME = Artsy;
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore net.artsy.artsy";
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Artsy/Resources/Artsy-Bridging-Header.h";
@@ -4704,8 +4704,8 @@
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
 				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.BrazePushServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -4750,8 +4750,8 @@
 				);
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
 				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.BrazePushServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore net.artsy.artsy.BrazePushServiceExtension";
 				SKIP_INSTALL = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -4797,8 +4797,8 @@
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
 				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.ArtsyWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -4844,8 +4844,8 @@
 				);
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
 				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.ArtsyWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore net.artsy.artsy.ArtsyWidget";
 				SKIP_INSTALL = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
