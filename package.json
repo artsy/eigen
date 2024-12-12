@@ -228,7 +228,7 @@
     "@react-native/typescript-config": "0.76.5",
     "@testing-library/jest-native": "5.4.3",
     "@testing-library/react-hooks": "8.0.1",
-    "@testing-library/react-native": "12.4.5",
+    "@testing-library/react-native": "12.9.0",
     "@types/argparse": "2.0.10",
     "@types/autosuggest-highlight": "3.2.3",
     "@types/chalk": "2.2.0",
