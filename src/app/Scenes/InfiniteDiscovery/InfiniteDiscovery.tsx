@@ -1,14 +1,6 @@
-import {
-  Button,
-  Color,
-  Flex,
-  Screen,
-  Text,
-  Touchable,
-  useScreenDimensions,
-  useTheme,
-} from "@artsy/palette-mobile"
+import { Button, Flex, Image, Screen, Text, Touchable, useTheme } from "@artsy/palette-mobile"
 import { FancySwiper } from "app/Components/FancySwiper/FancySwiper"
+import { Card } from "app/Components/FancySwiper/FancySwiperCard"
 import { InfiniteDiscoveryContext } from "app/Scenes/InfiniteDiscovery/InfiniteDiscoveryContext"
 import { navigate } from "app/system/navigation/navigate"
 
@@ -21,6 +13,8 @@ export const InfiniteDiscoveryView: React.FC = () => {
 }
 
 export const InfiniteDiscovery: React.FC = () => {
+  const { color } = useTheme()
+
   const artworks = InfiniteDiscoveryContext.useStoreState((state) => state.artworks)
   const currentArtwork = InfiniteDiscoveryContext.useStoreState((state) => state.currentArtwork)
   const goToPreviousArtwork = InfiniteDiscoveryContext.useStoreActions(
@@ -30,7 +24,8 @@ export const InfiniteDiscovery: React.FC = () => {
     (actions) => actions.goToNextArtwork
   )
 
-  const canGoBack = artworks.length && currentArtwork !== artworks[0]
+  const currentArtworkIndex = artworks.indexOf(currentArtwork)
+  const canGoBack = currentArtworkIndex > 0
 
   const handleBackPressed = () => {
     goToPreviousArtwork()
@@ -48,6 +43,37 @@ export const InfiniteDiscovery: React.FC = () => {
     goToNextArtwork()
   }
 
+  const artworkCards: Card[] = artworks.slice(currentArtworkIndex).map((artwork) => {
+    return {
+      jsx: (
+        <>
+          <Flex flexDirection="row" justifyContent="space-between" testID="artist-header">
+            <Text variant="sm-display">Artist Name</Text>
+            <Button variant="outlineGray">Follow</Button>
+          </Flex>
+          <Flex alignItems="center">
+            <Image src="https://d32dm0rphc51dk.cloudfront.net/Wor_U4FSvsAmEAEFj1iyVg/medium.jpg" />
+          </Flex>
+          <Flex flexDirection="row" justifyContent="space-between" testID="artwork-info">
+            <Flex>
+              <Flex flexDirection="row">
+                <Text color={color("black60")} italic variant="sm-display">
+                  Artwork Title,
+                </Text>
+                <Text color={color("black60")} variant="sm-display">
+                  2024
+                </Text>
+              </Flex>
+              <Text variant="sm-display">$1,234</Text>
+            </Flex>
+            <Button variant="fillGray">Save</Button>
+          </Flex>
+        </>
+      ),
+      id: artwork,
+    }
+  })
+
   return (
     <Screen>
       <Screen.Header
@@ -64,52 +90,14 @@ export const InfiniteDiscovery: React.FC = () => {
           </Touchable>
         }
       />
-      <Screen.Body>
+      <Screen.Body fullwidth>
         <FancySwiper
-          cards={artworkCards(artworks)}
+          cards={artworkCards}
+          hideActionButtons
           onSwipeRight={handleSwipedRight}
           onSwipeLeft={handleSwipedLeft}
         />
       </Screen.Body>
     </Screen>
   )
-}
-
-const artworkCards = (artworks: Color[]) => {
-  return artworks.map((artwork) => {
-    const { color, space } = useTheme()
-    const { width } = useScreenDimensions()
-    return {
-      jsx: (
-        <Flex width={width - space(4)} height={500} backgroundColor="white">
-          <Flex flexDirection="row" justifyContent="space-between" testID="artist-header">
-            <Text variant="sm-display">Artist Name</Text>
-            <Button variant="outlineGray">Follow</Button>
-          </Flex>
-          <Flex
-            backgroundColor={color(artwork)}
-            height={250}
-            testID="image-frame"
-            width={250}
-          ></Flex>
-          <Flex testID="multi-image-tabs" />
-          <Flex flexDirection="row" justifyContent="space-between" testID="artwork-info">
-            <Flex>
-              <Flex flexDirection="row">
-                <Text color={color("black60")} italic variant="sm-display">
-                  Artwork Title,
-                </Text>
-                <Text color={color("black60")} variant="sm-display">
-                  2024
-                </Text>
-              </Flex>
-              <Text variant="sm-display">$1,234</Text>
-            </Flex>
-            <Button variant="fillGray">Save</Button>
-          </Flex>
-        </Flex>
-      ),
-      id: artwork,
-    }
-  })
 }

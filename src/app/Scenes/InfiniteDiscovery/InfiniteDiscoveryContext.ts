@@ -9,17 +9,8 @@ export interface InfiniteDiscoveryContextModel {
 }
 
 export const initialModel: InfiniteDiscoveryContextModel = {
-  artworks: [
-    "black100",
-    "white100",
-    "green100",
-    "yellow100",
-    "orange100",
-    "red100",
-    "purple100",
-    "blue100",
-  ],
-  currentArtwork: "black100",
+  artworks: ["red100", "green100", "blue100"],
+  currentArtwork: "red100",
   goToPreviousArtwork: action((state) => {
     const currentIndex = state.artworks.indexOf(state.currentArtwork)
     if (currentIndex - 1 < 0) return
