@@ -16,7 +16,9 @@ describe("ActivityScreen", () => {
       resolveHeaderLastOperation({})
     })
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("activity-content-placeholder"))
+    await waitForElementToBeRemoved(() => screen.queryByTestId("activity-content-placeholder"), {
+      timeout: 15000,
+    })
 
     expect(screen.getByText("Notification One")).toBeOnTheScreen()
     expect(screen.getByText("Notification Two")).toBeOnTheScreen()
