@@ -80,7 +80,7 @@ async function createJiraIssue(issueSummary: string, issueLink: string) {
       body: JSON.stringify({
         fields: {
           project: {
-            key: "APPL",
+            key: "PBRW",
           },
           summary: issueSummary,
           description: {
