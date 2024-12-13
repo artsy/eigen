@@ -10,6 +10,9 @@ import {
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
 import React, { useState } from "react"
 
+// Necessary screen margin to still see the complete modal on the screen
+const TOP_SCREEN_MARGIN = 120
+
 interface InfoButtonProps {
   maxModalHeight?: number
   modalContent: JSX.Element
@@ -64,7 +67,7 @@ export const InfoButton: React.FC<InfoButtonProps> = ({
       )}
 
       <AutoHeightBottomSheet visible={modalVisible} onDismiss={() => setModalVisible(false)}>
-        <Flex mx={2} mb={4} mt={1} maxHeight={screenHeight - 120}>
+        <Flex mx={2} mb={4} mt={1} maxHeight={screenHeight - TOP_SCREEN_MARGIN}>
           <Text variant="lg-display">{modalTitle ?? title}</Text>
 
           <Spacer y={2} />
