@@ -133,14 +133,12 @@ export const AuctionResult: React.FC<Props> = (props) => {
   const salePriceMessage = auctionResultText(auctionResult as AuctionResultHelperData)
   const showPriceUSD = auctionResult.priceRealized?.displayUSD && auctionResult.currency !== "USD"
 
-  const renderRealizedPriceModal = () => (
+  const SalePriceInfoModal: React.FC = () => (
     <>
-      <Spacer y={1} />
       <Text>
         The sale price includes the hammer price and buyer’s premium, as well as any other
         additional fees (e.g., Artist’s Resale Rights).
       </Text>
-      <Spacer y={2} />
     </>
   )
 
@@ -170,8 +168,7 @@ export const AuctionResult: React.FC<Props> = (props) => {
                 tracking.trackEvent(tracks.tapMarketStatsInfo())
               }}
               modalTitle="Sale Price"
-              maxModalHeight={180}
-              modalContent={renderRealizedPriceModal()}
+              modalContent={<SalePriceInfoModal />}
             />
           </Flex>
           {auctionResult.priceRealized?.display ? (
@@ -214,8 +211,7 @@ export const AuctionResult: React.FC<Props> = (props) => {
             tracking.trackEvent(tracks.tapMarketStatsInfo())
           }}
           modalTitle="Pre-sale Estimate"
-          maxModalHeight={180}
-          modalContent={renderRealizedPriceModal()}
+          modalContent={<SalePriceInfoModal />}
         />
 
         {!!auctionResult.estimate?.display ? (

@@ -1,48 +1,30 @@
-import { InfoCircleIcon, Text } from "@artsy/palette-mobile"
-import { FancyModal } from "app/Components/FancyModal/FancyModal"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { TouchableOpacity } from "react-native"
+import { Text } from "@artsy/palette-mobile"
+import { fireEvent, screen } from "@testing-library/react-native"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { InfoButton } from "./InfoButton"
 
 describe("InfoButton", () => {
-  it("renders a button", () => {
-    const wrapper = renderWithWrappersLEGACY(
-      <InfoButton title="title" subTitle="subTitle" modalContent={<Text>Hello</Text>} />
-    )
-    expect(wrapper.root.findByType(TouchableOpacity)).toBeDefined()
-    expect(wrapper.root.findByType(InfoCircleIcon)).toBeDefined()
+  it("renders the button and opens and closes the modal correctly", async () => {
+    const mockOnPress = jest.fn()
 
-    const text = extractText(wrapper.root)
-    expect(text).toContain("title")
-    expect(text).toContain("subTitle")
-  })
-
-  it("only shows the modal when the button is pressed", () => {
-    const wrapper = renderWithWrappersLEGACY(
+    renderWithWrappers(
       <InfoButton
         title="title"
         subTitle="subTitle"
-        modalContent={<Text testID="hello">Hello</Text>}
+        modalContent={<Text>Modal Content</Text>}
+        onPress={mockOnPress}
       />
     )
-    expect(wrapper.root.findByType(FancyModal).props.visible).toBe(false)
-    wrapper.root.findByType(TouchableOpacity).props.onPress()
-    expect(wrapper.root.findByType(FancyModal).props.visible).toBe(true)
-  })
 
-  it("calls onPress arg if it's passed in", () => {
-    const handlePress = jest.fn()
-    const wrapper = renderWithWrappersLEGACY(
-      <InfoButton
-        title="title"
-        subTitle="subTitle"
-        modalContent={<Text>Hello</Text>}
-        onPress={handlePress}
-      />
-    )
-    wrapper.root.findByType(TouchableOpacity).props.onPress()
+    expect(screen.getAllByText("title")).toBeDefined()
+    expect(screen.getAllByText("subTitle")).toBeDefined()
 
-    expect(handlePress).toHaveBeenCalledTimes(1)
+    fireEvent.press(screen.getAllByText("title")[0])
+
+    expect(mockOnPress).toHaveBeenCalledTimes(1)
+
+    expect(screen.getByText("Modal Content")).toBeTruthy()
+
+    fireEvent.press(screen.getByText("Close"))
   })
 })

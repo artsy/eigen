@@ -1,9 +1,9 @@
 import { Button, Flex, InfoCircleIcon, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
 import React, { useState } from "react"
+import { ScrollView } from "react-native"
 
 interface InfoButtonProps {
-  maxModalHeight?: number
   modalContent: JSX.Element
   modalTitle?: string
   onPress?: () => void
@@ -54,18 +54,25 @@ export const InfoButton: React.FC<InfoButtonProps> = ({
       )}
 
       <AutoHeightBottomSheet visible={modalVisible} onDismiss={() => setModalVisible(false)}>
-        <Flex mx={2} mb={4} mt={1}>
-          <Text variant="lg-display">{modalTitle ?? title}</Text>
+        <Flex pb={4} pt={1} height="100%">
+          <Text mx={2} variant="lg-display">
+            {modalTitle ?? title}
+          </Text>
 
           <Spacer y={2} />
 
-          {modalContent}
-
+          <Flex flex={1}>
+            <ScrollView>
+              <Flex px={2}>{modalContent}</Flex>
+            </ScrollView>
+          </Flex>
           <Spacer y={2} />
 
-          <Button variant="outline" block onPress={() => setModalVisible(false)}>
-            Close
-          </Button>
+          <Flex px={2}>
+            <Button variant="outline" block onPress={() => setModalVisible(false)}>
+              Close
+            </Button>
+          </Flex>
         </Flex>
       </AutoHeightBottomSheet>
     </>

@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
-import { Spacer, bullet, Flex, Box, Text, Separator } from "@artsy/palette-mobile"
+import { Box, bullet, Flex, Separator, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtistInsightsAuctionResults_artist$data } from "__generated__/ArtistInsightsAuctionResults_artist.graphql"
 import { ArtistInsightsEmpty } from "app/Components/Artist/ArtistInsights/ArtistsInsightsEmpty"
 import {
@@ -156,9 +156,8 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
     })
   }
 
-  const renderAuctionResultsModal = () => (
+  const AuctionResultsInfoModal = () => (
     <>
-      <Spacer y={1} />
       <Text>
         These auction results bring together sale data from top auction houses around the world,
         including Christie’s, Sotheby’s, Phillips and Bonhams. Results are updated daily.
@@ -168,7 +167,6 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
         Please note that the sale price includes the hammer price and buyer’s premium, as well as
         any other additional fees (e.g., Artist’s Resale Rights).
       </Text>
-      <Spacer y={2} />
     </>
   )
 
@@ -245,7 +243,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
               tracking.trackEvent(tracks.tapAuctionResultsInfo())
             }}
             modalTitle="Auction Results"
-            modalContent={renderAuctionResultsModal()}
+            modalContent={<AuctionResultsInfoModal />}
           />
         </Flex>
         <Text variant="xs" color="black60">
@@ -272,7 +270,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
               auctionResult={item}
               onPress={() => {
                 tracking.trackEvent(tracks.tapAuctionGroup(item.internalID, artist.internalID))
-                navigate(`/artist/${artist?.slug!}/auction-result/${item.internalID}`)
+                navigate(`/artist/${artist?.slug}/auction-result/${item.internalID}`)
               }}
             />
           )}
