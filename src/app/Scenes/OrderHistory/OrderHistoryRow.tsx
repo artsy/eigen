@@ -1,12 +1,18 @@
 import { ActionType, ContextModule, OwnerType, TappedChangePaymentMethod } from "@artsy/cohesion"
 import { Flex, Box, Text, Button, Image } from "@artsy/palette-mobile"
-import { OrderHistoryRow_order$data } from "__generated__/OrderHistoryRow_order.graphql"
+import {
+  OrderHistoryRow_order$data,
+  CommerceOrderDisplayStateEnum,
+  CommerceBuyerOfferActionEnum,
+  CommerceOrderModeEnum,
+} from "__generated__/OrderHistoryRow_order.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { getOrderStatus } from "app/utils/getOrderStatus"
 import { getTrackingUrl } from "app/utils/getTrackingUrl"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import moment from "moment"
+import React from "react"
 import { Linking } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -14,21 +20,100 @@ interface OrderHistoryRowProps {
   order: OrderHistoryRow_order$data
 }
 
+type BuyerDisplayStateEnum = CommerceBuyerOfferActionEnum | CommerceOrderDisplayStateEnum
+interface OrderActionButtonProps {
+  displayState: BuyerDisplayStateEnum
+  orderId: string
+  mode: CommerceOrderModeEnum | null | undefined
+}
+
+const getStateColor = (displayState: BuyerDisplayStateEnum) => {
+  switch (displayState) {
+    case "CANCELED":
+    case "PAYMENT_FAILED":
+      return "red100"
+    case "OFFER_RECEIVED":
+      return "blue100"
+    default:
+      return "black60"
+  }
+}
+
+const OrderActionButton: React.FC<OrderActionButtonProps> = ({ displayState, orderId, mode }) => {
+  switch (displayState) {
+    case "PAYMENT_FAILED":
+      return (
+        <Button
+          block
+          variant="fillDark"
+          onPress={() => {
+            tracks.tappedChangePaymentMethod({ id: orderId })
+            navigate(`/orders/${orderId}/payment/new`, {
+              modal: true,
+              passProps: { orderID: orderId, title: "Update Payment Details" },
+            })
+          }}
+          testID="update-payment-button"
+        >
+          Update Payment Method
+        </Button>
+      )
+    case "OFFER_RECEIVED":
+      return (
+        <Button
+          block
+          variant="fillDark"
+          onPress={() =>
+            navigate(`/orders/${orderId}`, {
+              modal: true,
+              passProps: { orderID: orderId, title: "Review Offer" },
+            })
+          }
+          testID="counteroffer-button"
+        >
+          Respond to Counteroffer
+        </Button>
+      )
+    case "SUBMITTED":
+    case "APPROVED":
+    case "FULFILLED":
+    case "PROCESSING":
+    case "PROCESSING_APPROVAL":
+    case "IN_TRANSIT":
+      return (
+        <Button
+          block
+          variant="fillGray"
+          onPress={() => navigate(`/user/purchases/${orderId}`)}
+          testID="view-order-button"
+        >
+          {mode == "OFFER" ? "View Offer" : "View Order"}
+        </Button>
+      )
+    default:
+      return null
+  }
+}
+
 export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
-  const [lineItem] = extractNodes(order?.lineItems)
+  const { displayState, buyerAction } = order
+  const [lineItem] = extractNodes(order.lineItems)
   const { artwork, artworkVersion } = lineItem || {}
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
   const trackingUrl = getTrackingUrl(lineItem)
 
-  const orderStatus = getOrderStatus(order.displayState)
-  const orderStatusColor = ["canceled", "payment failed"].includes(orderStatus)
-    ? "red100"
-    : "black60"
-
-  const showFixPayment = orderStatus === "payment failed"
-  const showViewOrder =
-    !showFixPayment && orderStatus && !["canceled", "refunded"].includes(orderStatus)
-  const isViewOffer = orderStatus === "pending" && order?.mode === "OFFER"
+  let buyerDisplayState: BuyerDisplayStateEnum = displayState
+  if (
+    buyerDisplayState == "SUBMITTED" &&
+    !!buyerAction &&
+    ["OFFER_RECEIVED", "OFFER_RECEIVED_CONFIRM_NEEDED", "OFFER_ACCEPTED_CONFIRM_NEEDED"].includes(
+      buyerAction
+    )
+  ) {
+    buyerDisplayState = "OFFER_RECEIVED"
+  }
+  const orderStatusText = getOrderStatus(buyerDisplayState)
+  const orderStatusColor = getStateColor(buyerDisplayState)
 
   const artworkImageUrl = artworkVersion?.image?.resized?.url
 
@@ -71,7 +156,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
             <Text textAlign="right" variant="sm" testID="price">
               {order.buyerTotal}
             </Text>
-            {!!orderStatus && (
+            {!!orderStatusText && (
               <Text
                 textAlign="right"
                 variant="xs"
@@ -79,7 +164,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
                 style={{ textTransform: "capitalize" }}
                 testID="order-status"
               >
-                {orderStatus}
+                {orderStatusText}
               </Text>
             )}
           </Flex>
@@ -97,40 +182,12 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
             Track Package
           </Button>
         )}
-        {!!showViewOrder && (
-          <Button
-            block
-            variant="fillGray"
-            onPress={
-              isViewOffer
-                ? () =>
-                    navigate(`/orders/${order.internalID}`, {
-                      modal: true,
-                      passProps: { orderID: order.internalID, title: "Make Offer" },
-                    })
-                : () => navigate(`/user/purchases/${order.internalID}`)
-            }
-            testID="view-order-button"
-          >
-            {isViewOffer ? "View Offer" : "View Order"}
-          </Button>
-        )}
-        {!!showFixPayment && (
-          <Button
-            block
-            variant="fillDark"
-            onPress={() => {
-              tracks.tappedChangePaymentMethod({ id: order.internalID })
-              navigate(`/orders/${order.internalID}/payment/new`, {
-                modal: true,
-                passProps: { orderID: order.internalID, title: "Update Payment Details" },
-              })
-            }}
-            testID="update-payment-button"
-          >
-            Update Payment Method
-          </Button>
-        )}
+
+        <OrderActionButton
+          displayState={buyerDisplayState}
+          orderId={order.internalID}
+          mode={order.mode}
+        />
       </Box>
     </Flex>
   )
@@ -176,6 +233,9 @@ export const OrderHistoryRowContainer = createFragmentContainer(OrderHistoryRow,
             }
           }
         }
+      }
+      ... on CommerceOfferOrder {
+        buyerAction
       }
     }
   `,
