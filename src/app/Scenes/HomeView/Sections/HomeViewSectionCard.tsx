@@ -148,7 +148,7 @@ const HomeViewSectionCardPlaceholder: React.FC<FlexProps> = (flexProps) => {
 }
 
 const homeViewSectionCardQuery = graphql`
-  query HomeViewSectionCardQuery($id: String!) @cacheable {
+  query HomeViewSectionCardQuery($id: String!) {
     homeView {
       section(id: $id) {
         ...HomeViewSectionCard_section
