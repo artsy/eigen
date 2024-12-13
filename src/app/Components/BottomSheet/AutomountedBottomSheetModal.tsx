@@ -1,3 +1,4 @@
+import { useScreenDimensions } from "@artsy/palette-mobile"
 import {
   BottomSheetBackdropProps,
   BottomSheetModal,
@@ -19,6 +20,7 @@ export const AutomountedBottomSheetModal: FC<AutomountedBottomSheetModalProps> =
 }) => {
   const ref = useRef<BottomSheetModal>(null)
   const [modalIsPresented, setModalIsPresented] = useState(false)
+  const { height: screenHeight, safeAreaInsets } = useScreenDimensions()
 
   // dismiss modal on back button press on Android
   useBackHandler(() => {
@@ -75,6 +77,7 @@ export const AutomountedBottomSheetModal: FC<AutomountedBottomSheetModalProps> =
       keyboardBlurBehavior="restore"
       backdropComponent={renderBackdrop}
       enableDynamicSizing
+      maxDynamicContentSize={screenHeight - safeAreaInsets.top}
       {...rest}
     />
   )

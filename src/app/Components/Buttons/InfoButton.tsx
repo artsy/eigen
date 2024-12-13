@@ -1,17 +1,6 @@
-import {
-  Button,
-  Flex,
-  InfoCircleIcon,
-  Spacer,
-  Text,
-  Touchable,
-  useScreenDimensions,
-} from "@artsy/palette-mobile"
+import { Button, Flex, InfoCircleIcon, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
 import React, { useState } from "react"
-
-// Necessary screen margin to still see the complete modal on the screen
-const TOP_SCREEN_MARGIN = 120
 
 interface InfoButtonProps {
   maxModalHeight?: number
@@ -34,8 +23,6 @@ export const InfoButton: React.FC<InfoButtonProps> = ({
   trackEvent,
 }) => {
   const [modalVisible, setModalVisible] = useState(false)
-
-  const { height: screenHeight } = useScreenDimensions()
 
   return (
     <>
@@ -67,7 +54,7 @@ export const InfoButton: React.FC<InfoButtonProps> = ({
       )}
 
       <AutoHeightBottomSheet visible={modalVisible} onDismiss={() => setModalVisible(false)}>
-        <Flex mx={2} mb={4} mt={1} maxHeight={screenHeight - TOP_SCREEN_MARGIN}>
+        <Flex mx={2} mb={4} mt={1}>
           <Text variant="lg-display">{modalTitle ?? title}</Text>
 
           <Spacer y={2} />
