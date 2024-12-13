@@ -16485,13 +16485,19 @@ type Query {
     after: String
     before: String
     certainty: Float
+
+    # (Only for when useOpenSearch is true) Exclude these artworks from the response
+    excludeArtworkIds: [String]
     first: Int
     last: Int
+
+    # (Only for when useOpenSearch is true) These artworks are used to calculate the taste profile vector. Such artworks are excluded from the response
+    likedArtworkIds: [String]
     limit: Int
     offset: Int
     sort: DiscoverArtworksSort
-    useRelatedArtworks: Boolean = false
-    userId: String!
+    useOpenSearch: Boolean = false
+    userId: String
   ): ArtworkConnection
 
   # A namespace external partners (provided by Galaxy)
@@ -21068,13 +21074,19 @@ type Viewer {
     after: String
     before: String
     certainty: Float
+
+    # (Only for when useOpenSearch is true) Exclude these artworks from the response
+    excludeArtworkIds: [String]
     first: Int
     last: Int
+
+    # (Only for when useOpenSearch is true) These artworks are used to calculate the taste profile vector. Such artworks are excluded from the response
+    likedArtworkIds: [String]
     limit: Int
     offset: Int
     sort: DiscoverArtworksSort
-    useRelatedArtworks: Boolean = false
-    userId: String!
+    useOpenSearch: Boolean = false
+    userId: String
   ): ArtworkConnection
 
   # A namespace external partners (provided by Galaxy)
