@@ -29,8 +29,6 @@ const Indicator = styled.View`
 `
 
 const ImageView = styled(Image)`
-  width: 80px;
-  height: 80px;
   border-radius: 2px;
 `
 
@@ -97,7 +95,9 @@ export class ConversationSnippet extends React.Component<Props> {
                       <Indicator />
                     </Unread>
                   )}
-                  {!!imageURL && <ImageView src={imageURL} blurhash={blurhash} />}
+                  {!!imageURL && (
+                    <ImageView src={imageURL} blurhash={blurhash} width={80} height={80} />
+                  )}
                 </Flex>
                 <Flex ml={1} style={{ flex: 1 }}>
                   <Flex flexDirection="row" mb="2px" style={{ flex: 0, alignItems: "center" }}>
