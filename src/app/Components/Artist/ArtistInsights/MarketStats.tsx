@@ -3,10 +3,10 @@ import {
   DecreaseIcon,
   Flex,
   IncreaseIcon,
+  Join,
+  Separator,
   Spacer,
   Text,
-  Separator,
-  Join,
 } from "@artsy/palette-mobile"
 import { MarketStatsQuery } from "__generated__/MarketStatsQuery.graphql"
 import { MarketStats_priceInsightsConnection$data } from "__generated__/MarketStats_priceInsightsConnection.graphql"

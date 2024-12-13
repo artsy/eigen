@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
-import { Spacer, TriangleDown, Flex, Text, Separator } from "@artsy/palette-mobile"
+import { Flex, Separator, Spacer, Text, TriangleDown } from "@artsy/palette-mobile"
 import { MyCollectionArtworkDemandIndex_artwork$key } from "__generated__/MyCollectionArtworkDemandIndex_artwork.graphql"
 import { MyCollectionArtworkDemandIndex_artworkPriceInsights$key } from "__generated__/MyCollectionArtworkDemandIndex_artworkPriceInsights.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
@@ -35,13 +35,10 @@ export const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandI
       <InfoButton
         title="Demand index"
         modalContent={
-          <>
-            <Spacer y={1} />
-            <Text>
-              Overall strength of demand for this artist and medium combination. Based on the last
-              36 months of auction sale data from top commercial auction houses.
-            </Text>
-          </>
+          <Text>
+            Overall strength of demand for this artist and medium combination. Based on the last 36
+            months of auction sale data from top commercial auction houses.
+          </Text>
         }
         onPress={() => trackEvent(tracks.tappedInfoBubble(artwork?.internalID, artwork?.slug))}
       />
