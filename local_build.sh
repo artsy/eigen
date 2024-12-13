@@ -15,4 +15,12 @@ set -e
 # popd
 
 echo "Starting EAS build..."
+
+
+# Need to have env already accessible for eas builds
+# This doesn't work but maybe something similar will?
+# temp remove from gitignore?
+# cp "./.env.shared" "./.env"
+
+
 dotenv -f ".env.shared" yarn eas build --local --platform ios --profile "$1"
