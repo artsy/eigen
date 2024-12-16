@@ -82,6 +82,10 @@ export const Navigation = () => {
             )
           }
 
+          if (currentRoute && Platform.OS === "ios") {
+            LegacyNativeModules.ARTDeeplinkTimeoutModule.invalidateDeeplinkTimeout()
+          }
+
           addBreadcrumb({
             message: `navigated to ${currentRoute?.name}`,
             category: "navigation",
