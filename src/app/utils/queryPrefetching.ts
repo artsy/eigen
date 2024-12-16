@@ -17,9 +17,11 @@ export const usePrefetch = () => {
 }
 
 const prefetchRoute = async <TQuery extends OperationType>(
-  route: string,
+  route?: string | null,
   variables?: VariablesOf<TQuery>
 ) => {
+  if (!route) return null
+
   if (await isRateLimited()) {
     if (logPrefetching) console.log("[queryPrefetching] Rate limit reached.")
     return

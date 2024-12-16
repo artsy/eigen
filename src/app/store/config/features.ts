@@ -265,6 +265,12 @@ export const features = {
     readyForRelease: false,
     showInDevMenu: true,
   },
+  AREnableViewPortPrefetching: {
+    description: "Enable viewport prefetching",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableViewPortPrefetching",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
