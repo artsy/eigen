@@ -163,5 +163,22 @@ target 'Artsy' do
             config.build_settings["IPHONEOS_DEPLOYMENT_TARGET"] = "14.0"
         end
     end
+
+     # TODO:
+     # * ORStackView: Move Laura's changes into master and update
+     # * Send PRs for the rest
+     %w[
+       Pods/ORStackView/Classes/ios/ORStackView.h
+     ].flat_map { |x| Dir.glob(x) }.each do |header|
+       system("chmod +w #{header}")
+       addition = "#import <UIKit/UIKit.h>\n"
+       contents = File.read(header)
+       next if contents.include?(addition)
+
+       File.open(header, 'w') do |file|
+         file.puts addition
+         file.puts contents
+       end
+     end
   end
 end
