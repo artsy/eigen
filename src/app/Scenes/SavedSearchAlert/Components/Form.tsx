@@ -109,15 +109,12 @@ export const Form: React.FC<FormProps> = ({
               trackEvent={() => {
                 tracking.trackEvent(tracks.tappedCreateAlertHeaderButton())
               }}
-              maxModalHeight={300}
               modalTitle="Create Alert"
               modalContent={
-                <Flex py={1}>
-                  <Text>
-                    On the hunt for a particular work? Create an alert and we’ll let you know when
-                    matching works are added to Artsy.
-                  </Text>
-                </Flex>
+                <Text>
+                  On the hunt for a particular work? Create an alert and we’ll let you know when
+                  matching works are added to Artsy.
+                </Text>
               }
             />
             <Spacer y={4} />

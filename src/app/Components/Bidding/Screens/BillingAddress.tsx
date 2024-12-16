@@ -1,4 +1,4 @@
-import { Flex, Text, Button, InputRef, Input } from "@artsy/palette-mobile"
+import { Button, Flex, Input, InputRef, Text } from "@artsy/palette-mobile"
 import { findCountryNameByCountryCode } from "app/Components/Bidding/Utils/findCountryNameByCountryCode"
 import { validateAddressFieldsPresence } from "app/Components/Bidding/Validators/validateAddressFieldsPresence"
 import { Address } from "app/Components/Bidding/types"
@@ -214,13 +214,12 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
           />
 
           <ScreenDimensionsContext.Consumer>
-            {({ height }) => {
+            {() => {
               const countryError = checkFieldError("country")
 
               return (
                 <Flex mb={4} mt={2}>
                   <CountrySelect
-                    maxModalHeight={height * 0.95}
                     onSelectValue={(value: string) => handleCountrySelection(value)}
                     value={address.country.shortName}
                     hasError={!!countryError}

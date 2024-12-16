@@ -3,10 +3,10 @@ import {
   DecreaseIcon,
   Flex,
   IncreaseIcon,
+  Join,
+  Separator,
   Spacer,
   Text,
-  Separator,
-  Join,
 } from "@artsy/palette-mobile"
 import { MarketStatsQuery } from "__generated__/MarketStatsQuery.graphql"
 import { MarketStats_priceInsightsConnection$data } from "__generated__/MarketStats_priceInsightsConnection.graphql"
@@ -19,7 +19,6 @@ import { formatSellThroughRate } from "app/utils/marketPriceInsightHelpers"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useRef, useState } from "react"
-import { ScrollView } from "react-native"
 import { createFragmentContainer, Environment, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -47,48 +46,6 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
   if (priceInsights.length === 0) {
     return null
   }
-
-  const renderInfoModal = () => (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <Spacer y={1} />
-      <Text>
-        The following data points provide an overview of an artist’s auction market for a specific
-        medium (e.g., photography, painting) over the past 36 months.
-      </Text>
-      <Spacer y={2} />
-      <Text>
-        These market signals bring together data from top auction houses around the world, including
-        Christie’s, Sotheby’s, Phillips and Bonhams.
-      </Text>
-      <Spacer y={2} />
-      <Text>
-        In this data set, please note that the sale price includes the hammer price and buyer’s
-        premium, as well as any other additional fees (e.g., Artist’s Resale Rights). The data set
-        only includes works valued over $1,000.
-      </Text>
-      <Spacer y={2} />
-      <Text fontWeight="bold">Average yearly lots sold</Text>
-      <Spacer y={1} />
-      <Text>The average number of lots sold per year at auction over the past 36 months.</Text>
-      <Spacer y={2} />
-      <Text fontWeight="bold">Sell-through rate</Text>
-      <Spacer y={1} />
-      <Text>The percentage of lots in auctions that sold over the past 36 months.</Text>
-      <Spacer y={2} />
-      <Text fontWeight="bold">Average sale price</Text>
-      <Spacer y={1} />
-      <Text>The average sale price of lots sold at auction over the past 36 months.</Text>
-      <Spacer y={2} />
-      <Text fontWeight="bold">Sale price over estimate</Text>
-      <Spacer y={1} />
-      <Text>
-        The average percentage difference of the sale price over the mid-estimate (the midpoint of
-        the low and high estimates set by the auction house before the auction takes place) for lots
-        sold at auction over the past 36 months.
-      </Text>
-      <Spacer y="100px" />
-    </ScrollView>
-  )
 
   const averageValueSold =
     (selectedPriceInsight.annualValueSoldCents as number) /
@@ -119,7 +76,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
             tracking.trackEvent(tracks.tapMarketStatsInfo())
           }}
           modalTitle="Market Signals"
-          modalContent={renderInfoModal()}
+          modalContent={<InfoModalContent />}
         />
       </Flex>
       <Text variant="xs" color="black60" my={0.5}>
@@ -250,6 +207,47 @@ const LoadingSkeleton = () => {
     </>
   )
 }
+
+const InfoModalContent: React.FC = () => (
+  <>
+    <Spacer y={1} />
+    <Text>
+      The following data points provide an overview of an artist’s auction market for a specific
+      medium (e.g., photography, painting) over the past 36 months.
+    </Text>
+    <Spacer y={2} />
+    <Text>
+      These market signals bring together data from top auction houses around the world, including
+      Christie’s, Sotheby’s, Phillips and Bonhams.
+    </Text>
+    <Spacer y={2} />
+    <Text>
+      In this data set, please note that the sale price includes the hammer price and buyer’s
+      premium, as well as any other additional fees (e.g., Artist’s Resale Rights). The data set
+      only includes works valued over $1,000.
+    </Text>
+    <Spacer y={2} />
+    <Text fontWeight="bold">Average yearly lots sold</Text>
+    <Spacer y={1} />
+    <Text>The average number of lots sold per year at auction over the past 36 months.</Text>
+    <Spacer y={2} />
+    <Text fontWeight="bold">Sell-through rate</Text>
+    <Spacer y={1} />
+    <Text>The percentage of lots in auctions that sold over the past 36 months.</Text>
+    <Spacer y={2} />
+    <Text fontWeight="bold">Average sale price</Text>
+    <Spacer y={1} />
+    <Text>The average sale price of lots sold at auction over the past 36 months.</Text>
+    <Spacer y={2} />
+    <Text fontWeight="bold">Sale price over estimate</Text>
+    <Spacer y={1} />
+    <Text>
+      The average percentage difference of the sale price over the mid-estimate (the midpoint of the
+      low and high estimates set by the auction house before the auction takes place) for lots sold
+      at auction over the past 36 months.
+    </Text>
+  </>
+)
 
 const tracks = {
   tapMarketStatsInfo: (): TappedInfoBubble => ({

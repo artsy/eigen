@@ -1,12 +1,9 @@
-import { InfoCircleIcon, Flex, Text } from "@artsy/palette-mobile"
-import { FancyModal } from "app/Components/FancyModal/FancyModal"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { ScreenMargin } from "app/Scenes/MyCollection/Components/ScreenMargin"
+import { Button, Flex, InfoCircleIcon, Spacer, Text, Touchable } from "@artsy/palette-mobile"
+import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
 import React, { useState } from "react"
-import { TouchableOpacity } from "react-native"
+import { ScrollView } from "react-native"
 
 interface InfoButtonProps {
-  maxModalHeight?: number
   modalContent: JSX.Element
   modalTitle?: string
   onPress?: () => void
@@ -17,7 +14,6 @@ interface InfoButtonProps {
 }
 
 export const InfoButton: React.FC<InfoButtonProps> = ({
-  maxModalHeight,
   modalContent,
   modalTitle,
   onPress,
@@ -30,40 +26,55 @@ export const InfoButton: React.FC<InfoButtonProps> = ({
 
   return (
     <>
-      <Flex flexDirection="row" alignItems="center">
-        {titleElement ? (
-          titleElement
-        ) : (
-          <Text variant="sm" mr={0.5}>
-            {title}
-          </Text>
-        )}
-        <TouchableOpacity
-          onPress={() => {
-            setModalVisible(true)
-            trackEvent?.()
-            onPress?.()
-          }}
-          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-        >
+      <Touchable
+        onPress={() => {
+          setModalVisible(true)
+          trackEvent?.()
+          onPress?.()
+        }}
+        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+      >
+        <Flex flexDirection="row" alignItems="center">
+          {titleElement ? (
+            titleElement
+          ) : (
+            <Text variant="sm" mr={0.5}>
+              {title}
+            </Text>
+          )}
+
           <InfoCircleIcon fill="black60" />
-        </TouchableOpacity>
-      </Flex>
+        </Flex>
+      </Touchable>
+
       {!!subTitle && (
         <Text variant="xs" color="black60">
           {subTitle}
         </Text>
       )}
-      <FancyModal
-        visible={modalVisible}
-        maxHeight={maxModalHeight}
-        onBackgroundPressed={() => setModalVisible(false)}
-      >
-        <FancyModalHeader useXButton onLeftButtonPress={() => setModalVisible(false)}>
-          {modalTitle ?? title}
-        </FancyModalHeader>
-        <ScreenMargin>{modalContent}</ScreenMargin>
-      </FancyModal>
+
+      <AutoHeightBottomSheet visible={modalVisible} onDismiss={() => setModalVisible(false)}>
+        <Flex pb={4} pt={1} height="100%">
+          <Text mx={2} variant="lg-display">
+            {modalTitle ?? title}
+          </Text>
+
+          <Spacer y={2} />
+
+          <Flex flex={1}>
+            <ScrollView>
+              <Flex px={2}>{modalContent}</Flex>
+            </ScrollView>
+          </Flex>
+          <Spacer y={2} />
+
+          <Flex px={2}>
+            <Button variant="outline" block onPress={() => setModalVisible(false)}>
+              Close
+            </Button>
+          </Flex>
+        </Flex>
+      </AutoHeightBottomSheet>
     </>
   )
 }

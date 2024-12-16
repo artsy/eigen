@@ -1,12 +1,12 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
 import {
-  Spacer,
-  IncreaseIcon,
   DecreaseIcon,
   Flex,
-  useSpace,
-  Text,
+  IncreaseIcon,
   Separator,
+  Spacer,
+  Text,
+  useSpace,
 } from "@artsy/palette-mobile"
 import { MyCollectionArtworkArtistMarket_artwork$key } from "__generated__/MyCollectionArtworkArtistMarket_artwork.graphql"
 import { MyCollectionArtworkArtistMarket_artworkPriceInsights$key } from "__generated__/MyCollectionArtworkArtistMarket_artworkPriceInsights.graphql"
@@ -126,7 +126,6 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
         modalTitle="Artist Market Insights"
         modalContent={
           <>
-            <Spacer y={0.5} />
             <Text>
               These statistics are based on the last 36 months of auction sale data from top
               commercial auction houses.
