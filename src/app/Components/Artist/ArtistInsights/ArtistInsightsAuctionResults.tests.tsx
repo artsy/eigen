@@ -208,7 +208,7 @@ describe("ArtistInsightsAuctionResults", () => {
         }),
       })
 
-      expect(extractText(tree.root.findAllByType(Text)[1])).toBe(
+      expect(extractText(tree.root.findAllByType(Text)[5])).toBe(
         "1 result • Sorted by most recent sale date"
       )
     })
@@ -224,7 +224,7 @@ describe("ArtistInsightsAuctionResults", () => {
           },
         }),
       })
-      expect(extractText(tree.root.findAllByType(Text)[1])).toBe(
+      expect(extractText(tree.root.findAllByType(Text)[5])).toBe(
         "10 results • Sorted by most recent sale date"
       )
     })
