@@ -16,11 +16,8 @@ set -e
 
 echo "Starting EAS build..."
 
+# Generate easignore that has files needed to build excluded by default
+./scripts/deploys/generate_easignore.sh
 
-# Need to have env already accessible for eas builds
-# This doesn't work but maybe something similar will?
-# temp remove from gitignore?
-# cp "./.env.shared" "./.env"
-
-
+# Run with dotenv so podfile has access to env vars
 dotenv -f ".env.shared" yarn eas build --local --platform ios --profile "$1"

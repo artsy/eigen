@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Define paths
-GITIGNORE_PATH="../../.gitignore"
-EASIGNORE_PATH="../../.easignore"
+GITIGNORE_PATH="./.gitignore"
+EASIGNORE_PATH="./.easignore"
 
 # Files to include in EAS that are excluded by .gitignore
 FILES_TO_INCLUDE=(
