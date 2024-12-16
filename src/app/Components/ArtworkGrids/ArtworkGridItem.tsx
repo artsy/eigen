@@ -288,11 +288,17 @@ export const Artwork: React.FC<ArtworkProps> = ({
     await item._disappearable?.disappear()
   }
 
+  const handleVisible = () => {
+    if (enableViewPortPrefetching && artwork.href) {
+      prefetchUrl(artwork.href)
+    }
+  }
+
   const displayArtworkSocialSignal =
     !isAuction && !displayLimitedTimeOfferSignal && !!collectorSignals
 
   return (
-    <ElementInView onVisible={() => enableViewPortPrefetching && prefetchUrl(artwork.href)}>
+    <ElementInView onVisible={handleVisible}>
       <Disappearable ref={(ref) => ((artwork as any)._disappearable = ref)}>
         <ContextMenuArtwork
           onSupressArtwork={() => handleSupress(artwork as any)}
