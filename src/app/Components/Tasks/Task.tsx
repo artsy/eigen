@@ -50,6 +50,7 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
 
     return (
       <Swipeable
+        testID={`user-task-${task.internalID}`}
         ref={ref}
         actionComponent={
           <Text variant="xs" color="white100">
@@ -63,7 +64,9 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
         actionOnSwipe={() => {
           handleClearTask()
         }}
-        onSwipeableWillOpen={onOpenTask}
+        onSwipeableWillOpen={() => {
+          onOpenTask()
+        }}
         enabled={!disableSwipeable}
       >
         <Flex backgroundColor="white100" borderRadius={5}>
