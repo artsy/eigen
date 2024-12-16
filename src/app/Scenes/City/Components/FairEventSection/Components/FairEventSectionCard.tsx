@@ -21,15 +21,21 @@ export class FairEventSectionCard extends Component<Props> {
       fair: { image, name, profile, exhibition_period },
     } = this.props
 
+    const width = Dimensions.get("window").width / 2 + 50
+
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
         <Container>
-          {!!image?.url && <BackgroundImage src={image.url} />}
-          <Overlay />
-          <Flex flexDirection="column" px={2}>
-            {profile?.icon?.url ? <Logo source={{ uri: profile.icon.url }} /> : null}
+          {!!image?.url && (
+            <BackgroundImage src={image.url} height={310} width={width} zIndex={1} />
+          )}
+          <Overlay zIndex={2} />
+          <Flex flexDirection="column" px={2} style={{ position: "absolute" }} zIndex={3}>
+            {!!profile?.icon?.url ? (
+              <Logo src={profile?.icon?.url} width={100} height={100} />
+            ) : null}
           </Flex>
-          <Box p={2} style={{ position: "absolute", bottom: 0, left: 0 }}>
+          <Box p={2} style={{ position: "absolute", bottom: 0, left: 0 }} zIndex={4}>
             <Flex flexDirection="column" flexGrow={1}>
               <Text variant="sm" weight="medium" color="white">
                 {name}
@@ -49,9 +55,6 @@ export class FairEventSectionCard extends Component<Props> {
 
 const BackgroundImage = styled(Image)`
   background: ${themeGet("colors.black60")};
-  position: absolute;
-  height: 100%;
-  width: 100%;
 `
 
 const Container = styled(Box)`
@@ -71,9 +74,8 @@ const Overlay = styled.View`
 `
 
 const Logo = styled(Image)`
-  width: 100px;
-  height: 100px;
   background-color: transparent;
   margin-bottom: ${themeGet("space.1")};
+  position: absolute;
   tint-color: white;
 `
