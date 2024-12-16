@@ -23,8 +23,6 @@ const Content = styled.View`
 `
 
 const ImageView = styled(Image)`
-  width: 80px;
-  height: 80px;
   border-radius: 4px;
 `
 
@@ -146,7 +144,7 @@ class ActiveBid extends React.Component<Props, State> {
       <TouchableWithoutFeedback onPress={this.handleTap}>
         <Container>
           <Content>
-            <ImageView src={imageURL} blurhash={blurhash} />
+            <ImageView src={imageURL} blurhash={blurhash} width={80} height={80} />
             <MetadataContainer>
               <StatusLabel status={this.state.status}>{this.statusLabel}</StatusLabel>
               <BodyText>{headline}</BodyText>
