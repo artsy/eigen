@@ -4,7 +4,7 @@ import { ActivityScreenStore } from "app/Scenes/Activity/ActivityScreenStore"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 export const ActivityHeader: React.FC = () => {
-  const data = useLazyLoadQuery<ActivityHeaderQuery>(query, {})
+  const data = useLazyLoadQuery<ActivityHeaderQuery>(activityHeaderQuery, {})
 
   const type = ActivityScreenStore.useStoreState((state) => state.type)
   const setType = ActivityScreenStore.useStoreActions((actions) => actions.setType)
@@ -48,7 +48,7 @@ export const ActivityHeader: React.FC = () => {
   )
 }
 
-const query = graphql`
+export const activityHeaderQuery = graphql`
   query ActivityHeaderQuery {
     viewer {
       partnerOfferNotifications: notificationsConnection(

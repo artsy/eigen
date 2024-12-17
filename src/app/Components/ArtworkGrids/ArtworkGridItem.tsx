@@ -26,6 +26,7 @@ import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwor
 import { DurationProvider } from "app/Components/Countdown"
 import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
 import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
+import { RouterLink } from "app/Components/RouterLink"
 import { HEART_ICON_SIZE } from "app/Components/constants"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
 import { ArtworkItemCTAs } from "app/Scenes/Artwork/Components/ArtworkItemCTAs"
@@ -235,6 +236,11 @@ export const Artwork: React.FC<ArtworkProps> = ({
     }
   }
 
+  const passProps =
+    partnerOffer && !!hasEnded && !!enablePartnerOfferOnArtworkScreen
+      ? { artworkOfferExpired: true }
+      : undefined
+
   const trackArtworkTap = () => {
     // Unless you explicitly pass in a tracking function or provide a contextScreenOwnerType, we won't track
     // taps from the grid.
@@ -307,11 +313,13 @@ export const Artwork: React.FC<ArtworkProps> = ({
           artwork={artwork}
           hideCreateAlertOnArtworkPreview={hideCreateAlertOnArtworkPreview}
         >
-          <Touchable
+          <RouterLink
             haptic
             underlayColor={color("white100")}
             activeOpacity={0.8}
             onPress={handleTap}
+            passProps={passProps}
+            to={artwork.href}
             testID={`artworkGridItem-${artwork.title}`}
           >
             <View ref={itemRef}>
@@ -471,7 +479,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                 />
               </Flex>
             </View>
-          </Touchable>
+          </RouterLink>
         </ContextMenuArtwork>
 
         <CreateArtworkAlertModal
