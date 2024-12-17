@@ -88,6 +88,12 @@ export const OnboardingWelcomeScreens = () => {
           <StackNavigator.Group screenOptions={{ ...TransitionPresets.SlideFromRightIOS }}>
             <StackNavigator.Screen name="OnboardingHome" component={AuthApp} />
             <StackNavigator.Screen name="OnboardingSocialLink" component={OnboardingSocialLink} />
+            {/**
+             * There are two "Forgot Password?" forms in this flow:
+             * 1. The ForgotPasswordStep step in the OnboardingHome screen
+             * 2. The ForgotPassword screen linked-to in the OnboardingSocialLink screen
+             */}
+            <StackNavigator.Screen name="ForgotPassword" component={ForgotPassword} />
             <StackNavigator.Screen name="OnboardingWebView" component={OnboardingWebView} />
           </StackNavigator.Group>
         ) : (
