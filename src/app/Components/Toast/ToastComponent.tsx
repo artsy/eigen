@@ -66,10 +66,13 @@ export const ToastComponent = ({
       return TABBAR_HEIGHT
     }
 
-    const { modules } = require("app/Navigation/routes")
+    const { modules } = require("app/Navigation/utils/modules")
 
     const moduleName = internal_navigationRef?.current?.getCurrentRoute()
       ?.name as keyof typeof modules
+
+    console.log({ modules })
+    console.log({ moduleName })
 
     const isBottomTabHidden = modules[moduleName]?.options?.hidesBottomTabs
 
