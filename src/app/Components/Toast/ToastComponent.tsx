@@ -1,6 +1,7 @@
 import { Box, Flex, Image, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { internal_navigationRef } from "app/Navigation/Navigation"
+import { modules } from "app/Navigation/utils/modules"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useScreenDimensions } from "app/utils/hooks"
 import { useEffect, useMemo, useState } from "react"
@@ -65,8 +66,6 @@ export const ToastComponent = ({
     if (__TEST__) {
       return TABBAR_HEIGHT
     }
-
-    const { modules } = require("app/Navigation/routes")
 
     const moduleName = internal_navigationRef?.current?.getCurrentRoute()
       ?.name as keyof typeof modules
