@@ -179,6 +179,8 @@ function defineModules<T extends string>(obj: Record<T, ModuleDescriptor>) {
 
 export type AppModule = keyof typeof modules
 
+// comment
+
 export const modules = defineModules({
   Activity: reactModule({
     Component: ActivityScreen,
