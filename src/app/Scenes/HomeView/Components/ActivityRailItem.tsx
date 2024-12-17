@@ -4,6 +4,7 @@ import {
   ActivityRailItem_item$key,
   NotificationTypesEnum,
 } from "__generated__/ActivityRailItem_item.graphql"
+import { RouterLink } from "app/Components/RouterLink"
 import { ActivityItemTypeLabel } from "app/Scenes/Activity/ActivityItemTypeLabel"
 import {
   ExpiresInTimer,
@@ -11,9 +12,8 @@ import {
 } from "app/Scenes/Activity/components/ExpiresInTimer"
 import { PartnerOfferBadge } from "app/Scenes/Activity/components/PartnerOffeBadge"
 import { useMarkNotificationAsRead } from "app/Scenes/Activity/mutations/useMarkNotificationAsRead"
-import { navigateToActivityItem } from "app/Scenes/Activity/utils/navigateToActivityItem"
+import { getActivityItemHref } from "app/Scenes/Activity/utils/getActivityItemHref"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { TouchableOpacity } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
 interface ActivityRailItemProps {
@@ -35,8 +35,6 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
     props.onPress?.(item)
 
     markAsRead(item)
-
-    navigateToActivityItem(item)
   }
 
   const image = item.previewImages[0]
@@ -48,8 +46,10 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
     return null
   }
 
+  const { href, passProps } = getActivityItemHref(item)
+
   return (
-    <TouchableOpacity activeOpacity={0.65} onPress={handlePress}>
+    <RouterLink activeOpacity={0.65} onPress={handlePress} to={href} passProps={passProps}>
       <Flex flexDirection="row" width={ACTIVITY_RAIL_ITEM_WIDTH}>
         <Flex
           mr={1}
@@ -91,7 +91,7 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
           </Flex>
         </Flex>
       </Flex>
-    </TouchableOpacity>
+    </RouterLink>
   )
 }
 
