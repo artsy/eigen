@@ -1,5 +1,5 @@
 import { memo } from "react"
-import { Animated, GestureResponderHandlers, StyleSheet } from "react-native"
+import { Animated, GestureResponderHandlers } from "react-native"
 import { OFFSET_X } from "./FancySwiper"
 
 export interface Card {
@@ -27,8 +27,7 @@ export const FancySwiperCard = memo(
     return (
       <Animated.View
         style={[
-          StyleSheet.absoluteFillObject,
-          { zIndex: -1, backgroundColor: "white" },
+          { position: "absolute", zIndex: -1, backgroundColor: "white" },
           isTopCard && animatedStyle,
         ]}
         {...rest}
