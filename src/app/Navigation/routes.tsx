@@ -12,8 +12,13 @@ import {
 import { CityGuideView } from "app/NativeModules/CityGuideView"
 import { LiveAuctionView } from "app/NativeModules/LiveAuctionView"
 import { About } from "app/Scenes/About/About"
-import { ActivityItemScreenQueryRenderer } from "app/Scenes/Activity/ActivityItemScreen"
+import { activityContentQuery } from "app/Scenes/Activity/ActivityContent"
+import {
+  ActivityItemQuery,
+  ActivityItemScreenQueryRenderer,
+} from "app/Scenes/Activity/ActivityItemScreen"
 import { ActivityScreen } from "app/Scenes/Activity/ActivityScreen"
+import { activityHeaderQuery } from "app/Scenes/Activity/components/ActivityHeader"
 import { ArtQuiz } from "app/Scenes/ArtQuiz/ArtQuiz"
 import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
 import { ArticleScreen } from "app/Scenes/Article/ArticleScreen"
@@ -232,6 +237,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    Queries: [activityHeaderQuery, activityContentQuery],
   },
   {
     path: "/notification/:notificationID",
@@ -243,6 +249,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    Queries: [ActivityItemQuery],
   },
   {
     path: "/art-quiz",
