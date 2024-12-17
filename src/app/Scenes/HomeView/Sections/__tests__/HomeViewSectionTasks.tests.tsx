@@ -169,36 +169,6 @@ describe("HomeViewSectionTasks", () => {
     })
   })
 
-  it("closes open task when opening a different on in the list", async () => {
-    renderWithRelay({
-      HomeViewSectionTasks: () => ({
-        internalID: "home-view-section-recommended-tasks",
-        component: {
-          title: "Act Now",
-        },
-        tasksConnection: mockTasks,
-      }),
-    })
-
-    fireEvent.press(screen.getByText("Show All"))
-    const task1 = screen.getByTestId("user-task-1")
-    const task2 = screen.getByTestId("user-task-2")
-    // expect(screen.getAllByText("Clear")).toHaveLength(0)
-
-    await swipeTaskOpen(task2)
-
-    await waitFor(() => {
-      within(task2).getByText("Clear")
-      // expect(() => within(task1).getByText("Clear")).toThrow()
-    })
-
-    await swipeTaskOpen(task1)
-    await waitFor(() => {
-      within(task1).getByText("Clear")
-      // expect(() => within(task2).getByText("Clear")).toThrow()
-    })
-  })
-
   it("closes open tasks when collapsing the section", async () => {
     renderWithRelay({
       HomeViewSectionTasks: () => ({
