@@ -71,9 +71,6 @@ export const ToastComponent = ({
     const moduleName = internal_navigationRef?.current?.getCurrentRoute()
       ?.name as keyof typeof modules
 
-    console.log({ modules })
-    console.log({ moduleName })
-
     const isBottomTabHidden = modules[moduleName]?.options?.hidesBottomTabs
 
     // We currently handle custom bottom padding only for when the bottom tab bar is hidden
